@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after immutable M1g acceptance from artifact `9053047653`; M1h phase-front field-chart consumer is next.
+Last updated: **2026-08-10 UTC** after M1h compile/package completion from artifact `9066967620`; immutable M1h runtime is next.
 
 ## Rules
 
@@ -22,7 +22,7 @@ Last updated: **2026-08-10 UTC** after immutable M1g acceptance from artifact `9
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. `PR8-R034 / G4-R007` remains active.
+T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h compile artifact `9066967620` creates no stable product regression event from compile-only evidence; semantic acceptance remains pending. `PR8-R034 / G4-R007` remains active.
 
 | Cause category | Pattern | Events | Recurrences |
 |---|---|---:|---:|
@@ -55,6 +55,7 @@ good: distinct semantic type + named checked adapter + typed failure.
 - M1d phase-front route source-vertex/interior-transition consumer: **accepted**.
 - M1e ordered segment-route step identity is accepted. M1f continuation-route steps cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and immutable runtime acceptance is complete.
 - M1g periodic crossings cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and are **immutable accepted**.
+- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use; compile/package is complete and runtime acceptance is pending.
 
 M1d accepted invariants:
 
@@ -84,7 +85,7 @@ good: named semantic contract + independent oracle + direct representative evide
 - Bunny known-red with independent oracle before fatal product-success assertion;
 - Vase bounded 60-second safety-only evidence.
 
-Focused migration tests do not replace this authority. M1g preservation passed exact artifact execution from `9053047653`.
+Focused migration tests do not replace this authority. M1g preservation passed exact artifact execution from `9053047653`. M1h adds six focused contracts, but `RP-02 / TA-05` preservation remains pending until exact artifact runtime.
 
 ### RP-03 — policy/stage state conflation
 
@@ -245,6 +246,23 @@ No new stable regression event or recurrence is assigned. Historical totals rema
 ### M1h next RP-01 / RP-05 boundary
 
 Fresh accepted-source inspection selects `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` as the next real field-chart owner. The current producer creates connected equal-orientation charts and carries their identity as bare integers. M1h must adopt checked `FieldChartId` there while preserving chart partitioning/numbering and all behavior. The M1g runtime-discovered executable-relative fixture lookup defect is a required test-infrastructure correction in the same Code + Build turn. `SurfaceTraceSegment::sourceChart`, M2–M6, G4 repair, and nonzero periodic Z4 support remain out of scope.
+
+## M1h compile/package pattern record — runtime pending
+
+M1h implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` migrates the real field-chart owner `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` from bare semantic integers to checked `FieldChartId`, while retaining legacy representation only at explicit compatibility boundaries. The deterministic chart partition/BFS numbering is unchanged. Missing typed lattice chart authority is fail-closed before aggregate front acceptance. Periodic and bounded-disk single-chart lattice states use checked chart zero.
+
+Compile/package authority:
+
+- run/job `31398571348 / 93487537918`, **120/120**;
+- result artifact `9066967620`, ZIP SHA-256 `16d04835f9186b94fbb1ab987c5cd0bebd801daa7f368d01dc58139f67f5fe03`;
+- log artifact `9066968049`, ZIP SHA-256 `d6fa10a4b188b5569dfc73008c1a6e8a6f3a4e51f64cf4232a568087b36ac816`;
+- manifest **69/69**, SHA-256 `63c7000e00cf8608861d1651d84c02ddf419581dd7763ba25a9b3837162b92c9`;
+- six focused M1h contracts compiled and unexecuted;
+- all Code + Build runtime flags false;
+- packaged sibling `../test-data` resolution correction compiled;
+- current report `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Report.md`.
+
+No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `RP-02 / TA-05` remain runtime pending for M1h. `RP-07` is preservation-only and unchanged.
 
 ## Current G4 stable-ID mapping
 

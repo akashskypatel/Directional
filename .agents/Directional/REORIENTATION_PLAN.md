@@ -51,7 +51,7 @@ M0 preserve immutable evidence [complete]
    M1e segment route transport consumer [accepted]
    M1f vertex continuation route transport consumer [accepted]
    M1g periodic holonomy route transport consumer [accepted]
-   M1h phase-front field-chart consumer [next]
+   M1h phase-front field-chart consumer [compile/package complete; runtime next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -163,7 +163,9 @@ Fresh accepted-source inspection selects the next real M1 semantic owner:
 
 This producer creates connected equal-orientation field charts and currently stores/carries their identity as bare integers. `authority::FieldChartId` already exists. M1h adopts that type at the producer/constructive-front boundary while preserving chart partitioning/numbering, phase and lattice values, front topology, public compatibility output, periodic behavior, and G4 outcomes. `SurfaceTraceSegment::sourceChart`, chart-relation certificates, public schema retirement, M2–M6, and G4 repair remain out of scope unless the M1h plan names a narrow compile compatibility touchpoint.
 
-Next plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.
+M1h implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` is now compile/package complete. It preserves the established chart partition/numbering while adopting checked `FieldChartId` at the phase-frame/constructive-front boundary, carries typed optional lattice chart authority, and corrects packaged sibling `../test-data` lookup. Run/job `31398571348 / 93487537918` built **120/120** without generated runtime execution; exact artifacts are `9066967620 / 9066968049` with a **69/69** content manifest. Six M1h contracts compile but remain unexecuted.
+
+Next immutable Test + Benchmark plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## 5. Required target-stage corrections
 

@@ -2,13 +2,37 @@
 
 ## Mandatory next turn
 
-Run **M1h Phase-Front Field-Chart Consumer — Code + Build only** under:
+Run **M1h Phase-Front Field-Chart Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1g are immutable accepted. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1g are immutable accepted. M1h is compile/package complete and runtime pending. Review policy is `never`.
 
-M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted from exact artifact `9053047653`. The next bounded owner is `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`. M1h must adopt checked `FieldChartId` at that real producer/consumer boundary while preserving chart partitioning/numbering, phase/front topology, compatibility output, periodic rejection behavior, and all G4 outcomes. The same Code + Build turn must make packaged fixture lookup recognize the executable-relative sibling `../test-data` layout discovered during M1g runtime. No generated Directional binary may execute in Code + Build.
+Consume only M1h result/log artifacts `9066967620 / 9066968049` produced from implementation `de4e2ba7c19d2e49931655dc22d758f50656d054`. Rebuild, relink, regeneration, source/test/build/fixture edits, repair, and substitution are prohibited. Expected producer discovery is **202**, M1h focused is **6/6** individually, and required-green producer is **187/187**. The package must resolve sibling `../test-data` directly; do not recreate the M1g runtime fixture symlink.
+
+## M1h compile/package authority — runtime pending
+
+Selected seam:
+`build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`.
+
+| Evidence | Value |
+|---|---|
+| implementation | `de4e2ba7c19d2e49931655dc22d758f50656d054` |
+| build run/job | `31398571348 / 93487537918` |
+| result artifact / SHA-256 | `9066967620` / `16d04835f9186b94fbb1ab987c5cd0bebd801daa7f368d01dc58139f67f5fe03` |
+| log artifact / SHA-256 | `9066968049` / `d6fa10a4b188b5569dfc73008c1a6e8a6f3a4e51f64cf4232a568087b36ac816` |
+| recursive manifest | **69/69**, `63c7000e00cf8608861d1651d84c02ddf419581dd7763ba25a9b3837162b92c9` |
+| package | **70** regular files including `SHA256SUMS`; 7 executables; 2 static libraries; 27 fixtures |
+| build | **120/120**, Release/static/Ninja/PRE_TEST, **8:22.50**, peak RSS **1,850,536 KiB** |
+| runtime | **false** |
+
+M1h preserves the existing planar equal-orientation chart partition/BFS numbering, crosses it through checked `FieldChartId`, stores explicit typed optional authority in `LocalLatticeState`, and converts back only at legacy representation boundaries. Periodic and bounded-disk lattice state establish checked chart zero. Downstream hashing/equality/quotient compatibility was touched only as required by the typed state. `SurfaceTraceSegment::sourceChart` remains a compatibility integer schema.
+
+Exactly six `SurfaceCellPhaseFrontFieldChartAuthorityMigration` contracts are compiled but unexecuted. The package also contains the executable-relative sibling fixture lookup correction identified by M1g runtime. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input ran in Code + Build.
+
+Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Report.md`.
+
+Authoritative next plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## M1g immutable acceptance authority
 

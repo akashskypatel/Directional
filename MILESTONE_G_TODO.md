@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a through M1g architecture slices are immutable accepted. M1h Phase-Front Field-Chart Consumer Code + Build is next. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a through M1g architecture slices are immutable accepted. M1h Phase-Front Field-Chart Consumer is compile/package complete and immutable runtime is next. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -62,11 +62,11 @@ M1e accepted facts remain retained in the durable handoff and regression tracker
 
 ## Authoritative next turn
 
-Run **M1h Phase-Front Field-Chart Consumer — Code + Build only** under:
+Run **M1h Phase-Front Field-Chart Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-The selected owner is `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`. Adopt checked `FieldChartId` without changing chart discovery/numbering, front topology, public compatibility values, periodic behavior, or G4 outcomes. Also correct packaged fixture lookup to recognize executable-relative sibling `../test-data`. Compile/package only; execute no generated Directional binary.
+Consume only exact artifacts `9066967620 / 9066968049` from implementation `de4e2ba7c19d2e49931655dc22d758f50656d054`. Expected producer discovery is **202**, M1h focused **6/6**, and required-green producer **187/187**. Rebuild/edit nothing. The package must locate sibling `../test-data` without an external fixture symlink.
 
 ## M1f vertex-continuation transport — immutable accepted
 
@@ -97,6 +97,25 @@ All eight historical/deferred producer reds retained their entering classes. Bun
 
 Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
+## M1h phase-front field-chart authority — compile/package complete
+
+Selected boundary:
+`build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`.
+
+Implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` retains deterministic chart partition/numbering, crosses checked `FieldChartId`, carries typed optional lattice chart authority, and uses explicit compatibility conversions downstream. The package-layout correction resolves executable-relative sibling `../test-data` before historical fallbacks.
+
+| Evidence | Value |
+|---|---|
+| Build run/job | `31398571348 / 93487537918`, **120/120** |
+| Result artifact / SHA-256 | `9066967620` / `16d04835f9186b94fbb1ab987c5cd0bebd801daa7f368d01dc58139f67f5fe03` |
+| Log artifact / SHA-256 | `9066968049` / `d6fa10a4b188b5569dfc73008c1a6e8a6f3a4e51f64cf4232a568087b36ac816` |
+| Recursive manifest | **69/69**, `63c7000e00cf8608861d1651d84c02ddf419581dd7763ba25a9b3837162b92c9` |
+| Package | **70** regular files; 7 executables; 2 static libraries; 27 fixtures |
+| M1h focused | exactly **6 compiled, unexecuted** |
+| Build boundary | Release/static/Ninja/PRE_TEST; runtime **false** |
+
+No stable regression event or recurrence is assigned from compile-only evidence. Runtime preservation and semantic acceptance remain pending.
+
 ## Regression disposition
 
 - `RP-01`: M1e checked step domains **accepted**; M1f continuation-step domains **accepted**.
@@ -104,6 +123,7 @@ Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Tr
 - `RP-07`: M1e cumulative ordered-route transport **accepted**; M1f continuation transport **accepted**.
 - `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through immutable M1e validation; M1f preservation accepted under exact artifact-only validation.
 - M1g `RP-01 / RP-05 / RP-07` is **immutable accepted**; exact M1g artifact execution re-proved `RP-02 / TA-05` preservation.
+- M1h `RP-01 / RP-05` is compile/package complete; six focused `RP-02 / TA-05` contracts compile, with immutable runtime pending.
 - No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
 - Strict-validator timing remains nondeterministic: M1e **6/10 pass, 4/10 fail**; M1f **9/10 pass, 1/10 fail**. It remains a deferred performance-test defect; no threshold/retry workaround is authorized.
@@ -125,7 +145,8 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 ## Core references
 
 - `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
