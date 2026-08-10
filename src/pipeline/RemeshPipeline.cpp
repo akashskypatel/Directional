@@ -2703,7 +2703,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
       const auto &relation = phaseFront.periodicHolonomies[
           static_cast<std::size_t>(first.periodicRelation)];
-      if (relation.sourceComponent != first.sourceComponent ||
+      if (relation.sourceComponent != legacy_phase_front_source_component(first) ||
           relation.sourceTopologyRegion != first.sourceTopologyRegion ||
           relation.latticeTranslation.squaredNorm() == 0 ||
           !exact_interior_route_valid(relation.sourceRouteEdges,
