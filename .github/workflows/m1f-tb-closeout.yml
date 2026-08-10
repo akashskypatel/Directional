@@ -29,7 +29,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           # Temporary updater ordering fixes. Preserve exact old semantic blocks until
-          # their guarded replacements run; only then rewrite remaining stale paths.
+          # their guarded replacements run; then update any remaining live reference.
           python3 - <<'PY'
           from pathlib import Path
           p = Path('.agents/connector-tasks/m1f_tb_closeout.py')
@@ -39,6 +39,10 @@ jobs:
               raise SystemExit(f'unexpected updater ordering target count: {s.count(old)}')
           s = s.replace(old, "t = t.replace(M1F_TB_PLAN, M1G_PLAN)", 1)
           s = s.replace(old, "t = t.replace(M1F_CB_REPORT, M1F_REPORT)", 1)
+          marker = "# Core references: stale paths already replaced; ensure next plan is present.\nwrite(path, t)"
+          if s.count(marker) != 1:
+              raise SystemExit(f'milestone post-replacement marker count: {s.count(marker)}')
+          s = s.replace(marker, "t = t.replace(M1F_TB_PLAN, M1G_PLAN)\n# Core references: stale paths already replaced; ensure next plan is present.\nwrite(path, t)", 1)
           p.write_text(s)
           PY
           python3 .agents/connector-tasks/m1f_tb_closeout.py
