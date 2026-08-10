@@ -13,7 +13,7 @@ Last updated: **2026-08-10 UTC** after immutable M1k edge topology-region accept
 - Known-red/deferred product cases stay explicit and are never relabeled green/expected-failure to close architecture work.
 - Focused/helper passes cannot close representative product intent.
 - Before every turn review `RP-01` through `RP-09`; every touched pattern needs an exact invariant and counterexample/representative gate.
-- Stale per-turn documents are not historical authority. Once their facts are folded into this tracker/current report/audit inventory, they may be removed under the handoff cleanup policy.
+- Stale per-turn documents are not historical authority. Once their necessary facts are folded into this tracker/current report/audit inventory/changelog, they may be removed under `.agents/Directional/CLEAN_UP_POLICY.md` and `.agents/Directional/RETENTION_POLICY.md`.
 
 ## Historical PR-wide authority
 
@@ -229,7 +229,6 @@ M1f immutable authority:
 
 No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
 
-
 ### M1h blocked runtime / test-authority record
 
 - implementation: `de4e2ba7c19d2e49931655dc22d758f50656d054`; artifact `9066967620`; manifest **69/69**; producer discovery **202**;
@@ -239,7 +238,7 @@ No new stable regression event or recurrence is assigned. Historical totals rema
 - direct products green from arbitrary extraction with no fixture symlink; historical/deferred red classes unchanged;
 - diagnosis: fixture samples lattice-corner chart IDs `{0,2}` while producer/segment authority still proves chart domain `{0,1,2}`; test incorrectly equates producer-domain and occurrence coverage;
 - disposition: **test-authority defect, not stable product regression**; historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active;
-- next: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+- historical next at this checkpoint was M1i; that consumed plan/report set has since been retired under `CLEAN_UP_POLICY.md`. Current next action is owned by the handoff and `TODO.md`.
 
 ### M1g immutable accepted pattern record
 
@@ -257,17 +256,17 @@ Immutable authority:
 - Bunny known-red and Vase bounded safety-only under run `31394985769`;
 - strict-validator characterization **1/10 pass, 9/10 fail**, retaining the existing nondeterministic performance-test defect;
 - exact local and remote postflight passed;
-- report `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
+- stale per-turn M1h evidence was subsequently consolidated into `.agents/Directional/CHANGELOG.md` and the tracker; the old report was retired under `CLEAN_UP_POLICY.md`.
 
 No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
 
-### M1h next RP-01 / RP-05 boundary
+### Historical M1h RP-01 / RP-05 boundary
 
-Fresh accepted-source inspection selects `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` as the next real field-chart owner. The current producer creates connected equal-orientation charts and carries their identity as bare integers. M1h must adopt checked `FieldChartId` there while preserving chart partitioning/numbering and all behavior. The M1g runtime-discovered executable-relative fixture lookup defect is a required test-infrastructure correction in the same Code + Build turn. `SurfaceTraceSegment::sourceChart`, M2–M6, G4 repair, and nonzero periodic Z4 support remain out of scope.
+Accepted-source inspection selected `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` as the real field-chart owner. The producer created connected equal-orientation charts and carried their identity as bare integers. M1h adopted checked `FieldChartId` there while preserving chart partitioning/numbering and all behavior. The M1g runtime-discovered executable-relative fixture lookup defect was corrected in the same bounded migration. `SurfaceTraceSegment::sourceChart`, M2–M6, G4 repair, and nonzero periodic Z4 support remained out of scope.
 
-## M1h compile/package pattern record — runtime pending
+## Historical M1h compile/package pattern record
 
-M1h implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` migrates the real field-chart owner `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` from bare semantic integers to checked `FieldChartId`, while retaining legacy representation only at explicit compatibility boundaries. The deterministic chart partition/BFS numbering is unchanged. Missing typed lattice chart authority is fail-closed before aggregate front acceptance. Periodic and bounded-disk single-chart lattice states use checked chart zero.
+M1h implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` migrated the real field-chart owner `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` from bare semantic integers to checked `FieldChartId`, while retaining legacy representation only at explicit compatibility boundaries. The deterministic chart partition/BFS numbering was unchanged. Missing typed lattice chart authority was fail-closed before aggregate front acceptance. Periodic and bounded-disk single-chart lattice states used checked chart zero.
 
 Compile/package authority:
 
@@ -278,9 +277,9 @@ Compile/package authority:
 - six focused M1h contracts compiled and unexecuted;
 - all Code + Build runtime flags false;
 - packaged sibling `../test-data` resolution correction compiled;
-- current report `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
+- subsequent test-authority remediation and immutable acceptance are retained in `.agents/Directional/CHANGELOG.md`; the superseded per-turn report was retired under `CLEAN_UP_POLICY.md`.
 
-No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `RP-02 / TA-05` remain runtime pending for M1h. `RP-07` is preservation-only and unchanged.
+No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `RP-02 / TA-05` were subsequently accepted at M1h. `RP-07` remained preservation-only and unchanged.
 
 ## Current G4 stable-ID mapping
 
@@ -310,10 +309,10 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | ID | State |
 |---|---|
 | `AR-01` | M2: closed producer outcomes |
-| `AR-02` | M1a through M1g **accepted**; M1h phase-front field-chart consumer next |
-| `AR-03` | strong identity adoption through M1g **accepted**; M1h checked field-chart identity next |
-| `AR-04` | `FieldChartId` exists; production phase-front chart migration selected for M1h |
-| `AR-05` | representation boundaries through M1g **accepted**; M1h field-chart representation boundary next |
+| `AR-02` | M1a through M1k **accepted**; M1l phase-front cell topology-region consumer next |
+| `AR-03` | strong identity adoption through M1k **accepted**; M1l checked cell topology-region identity next |
+| `AR-04` | `FieldChartId` production phase-front chart migration accepted; current M1l concerns `TopologyRegionId` cell authority |
+| `AR-05` | representation boundaries through M1k **accepted**; M1l cell topology-region representation boundary next |
 | `AR-06` | M4 relation registry/certificates |
 | `AR-07` | M3 global conformity |
 | `AR-08` | M2/M3 producer-scoped immutable output |
@@ -330,10 +329,10 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `TA-02` | T2 ten-case direct matrix pending |
 | `TA-03` | metric definitions/baselines pending |
 | `TA-04` | T3/T4 generation/shrinking/fuzz pending |
-| `TA-05` | **test authority resolved and preserved through M1g** |
+| `TA-05` | **test authority resolved and preserved through M1k** |
 | `TA-06` | T1 mutation suite **29/29** accepted and preserved |
 | `TA-07` | exact package/discovery authority accepted and preserved |
-| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route composition accepted; M1h chart contracts next |
+| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region authority accepted; M1l cell topology-region contracts next |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
 | `TA-11` | topology/lineage/disposition adequate; quality expansion later |
@@ -341,6 +340,6 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
 
-The next turn is **Code + Build only**. Adopt checked `FieldChartId` at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`, correct packaged fixture lookup to recognize sibling `../test-data`, compile/package the required artifact, and execute no generated Directional binary. M1h remains runtime pending until a following immutable Test + Benchmark turn.
+The next turn is **Code + Build only**. Migrate only `SurfacePhaseFrontCell::sourceTopologyRegion` at the established phase-front cell topology-region consumer to checked `TopologyRegionId`, keep still-raw downstream materializer/occurrence representations behind explicit compatibility conversions, preserve M1a-M1k and G4 behavior, compile/package the required six focused contracts, and execute no generated Directional binary.
