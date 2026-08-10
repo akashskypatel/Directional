@@ -18,8 +18,6 @@ env:
   BASE_SOURCE_SHA: d5a97953416196a8fc74c8d9790a1ae7b646ca2d
   PATCH_FILE: .agents/Directional/turn-payloads/m1l-cell-topology-region.patch
   EXPECTED_PATCH_SHA256: af9fb6a2f7c242aed12f2005bc97698a1e1cf02a7374fc98d7b1e1a264bb28e2
-  LOG_DIR: ${{ runner.temp }}/m1l-apply-logs
-  ACTIVITY_LOG: ${{ runner.temp }}/m1l-apply-logs/activity.log
 
 jobs:
   apply:
@@ -29,14 +27,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p "$LOG_DIR"
+          log_dir="$RUNNER_TEMP/m1l-apply-logs"
+          activity_log="$log_dir/activity.log"
+          mkdir -p "$log_dir"
           printf '%s\n' \
             "run_id=$GITHUB_RUN_ID" \
             "event_sha=$GITHUB_SHA" \
             "ref=$GITHUB_REF" \
             "repository=$GITHUB_REPOSITORY" \
             "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-            > "$ACTIVITY_LOG"
+            > "$activity_log"
 
       - name: Checkout exact event source
         uses: actions/checkout@v4
@@ -48,7 +48,9 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          log_dir="$RUNNER_TEMP/m1l-apply-logs"
+          activity_log="$log_dir/activity.log"
+          exec > >(tee -a "$activity_log") 2>&1
           actual_patch_sha=$(sha256sum "$PATCH_FILE" | awk '{print $1}')
           printf 'patch_sha256=%s\n' "$actual_patch_sha"
           test "$actual_patch_sha" = "$EXPECTED_PATCH_SHA256"
