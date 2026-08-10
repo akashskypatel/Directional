@@ -1,2 +1,0 @@
-triggered: 2026-08-10T20:47:00Z
-scope: temporary control-plane workflow metadata only
