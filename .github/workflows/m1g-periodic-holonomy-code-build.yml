@@ -1,14 +1,14 @@
 name: m1g-periodic-holonomy-code-build
 
 on:
-  pull_request:
+  push:
     branches:
-      - surface_cell_quad
+      - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
       - '.agents/connector-triggers/m1g-periodic-holonomy-code-build'
 
 permissions:
-  contents: read
+  contents: write
   actions: read
 
 concurrency:
@@ -298,6 +298,7 @@ jobs:
           echo "package_dir=$pkg" >> "$GITHUB_OUTPUT"
 
       - name: Upload immutable build result
+        id: result_artifact
         uses: actions/upload-artifact@v4
         with:
           name: m1g-periodic-holonomy-code-build-result
@@ -306,6 +307,7 @@ jobs:
           retention-days: 14
 
       - name: Always upload detailed activity log
+        id: log_artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -314,3 +316,76 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           compression-level: 6
+
+      - name: Publish temporary connector-visible run authority
+        if: ${{ always() && !cancelled() }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_CONTEXT_STATUS: ${{ job.status }}
+          RESULT_ARTIFACT_ID: ${{ steps.result_artifact.outputs['artifact-id'] }}
+          RESULT_ARTIFACT_URL: ${{ steps.result_artifact.outputs['artifact-url'] }}
+          RESULT_ARTIFACT_DIGEST: ${{ steps.result_artifact.outputs['artifact-digest'] }}
+          LOG_ARTIFACT_ID: ${{ steps.log_artifact.outputs['artifact-id'] }}
+          LOG_ARTIFACT_URL: ${{ steps.log_artifact.outputs['artifact-url'] }}
+          LOG_ARTIFACT_DIGEST: ${{ steps.log_artifact.outputs['artifact-digest'] }}
+        run: |
+          set -Eeuo pipefail
+          job_id="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs?filter=latest&per_page=100" \
+              --jq '.jobs[] | select(.name == "code-build") | .id' | head -n 1
+          )"
+          test -n "$job_id"
+
+          git fetch origin "$BRANCH"
+          git switch -C m1g-run-authority "origin/$BRANCH"
+          mkdir -p .agents/connector-status
+          export JOB_ID="$job_id"
+          python3 - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          def integer(name):
+              value = os.environ.get(name, '')
+              return int(value) if value else None
+
+          status = {
+              'turn': 'M1g Periodic Holonomy Route Transport Consumer Code+Build',
+              'branch': os.environ['BRANCH'],
+              'implementationCommit': os.environ['IMPLEMENTATION_COMMIT'],
+              'triggerCommit': os.environ['GITHUB_SHA'],
+              'runId': integer('GITHUB_RUN_ID'),
+              'runAttempt': integer('GITHUB_RUN_ATTEMPT'),
+              'jobId': integer('JOB_ID'),
+              'jobContextStatus': os.environ['JOB_CONTEXT_STATUS'],
+              'resultArtifact': {
+                  'id': integer('RESULT_ARTIFACT_ID'),
+                  'url': os.environ.get('RESULT_ARTIFACT_URL', ''),
+                  'digest': os.environ.get('RESULT_ARTIFACT_DIGEST', ''),
+              },
+              'logArtifact': {
+                  'id': integer('LOG_ARTIFACT_ID'),
+                  'url': os.environ.get('LOG_ARTIFACT_URL', ''),
+                  'digest': os.environ.get('LOG_ARTIFACT_DIGEST', ''),
+              },
+              'runtimeExecution': False,
+              'testExecution': False,
+              'benchmarkExecution': False,
+              'ctestExecution': False,
+              'cliExecution': False,
+              'fuzzerExecution': False,
+              'customInputExecution': False,
+              'reportedUtc': datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+          }
+          Path('.agents/connector-status/m1g-periodic-holonomy-code-build.json').write_text(
+              json.dumps(status, indent=2, sort_keys=True) + '\n'
+          )
+          PY
+          git config user.name 'OpenAI Agent'
+          git config user.email 'noreply@openai.com'
+          git add .agents/connector-status/m1g-periodic-holonomy-code-build.json
+          git commit -m 'ci: record M1g build run authority'
+          git push origin HEAD:"$BRANCH"
