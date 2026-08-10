@@ -1,121 +1,87 @@
 # GitHub Workflow Policy
 
-## Scope
+## Purpose
 
-This policy governs all agent-authored GitHub Actions workflows, connector trigger files, helper payloads, and artifact-runtime workflows used while working on `akashskypatel/Directional`, especially draft PR #8 on `agent/surface_cell_quad/p5-recover-bridge-healing`.
+Use GitHub Actions only as the bounded remote execution plane when the connected GitHub control plane cannot perform the required computation. The turn-based workflow remains authoritative: Actions never relax Code + Build, Test + Benchmark, or Review boundaries.
 
-It is durable process authority. The current turn, exact artifact, and next action are owned by `.agents/Directional/Future_Chat_Session_Handoff.md`.
+## Durable workflow state
 
-## Repository-control rules
+The only approved durable workflow on `agent/surface_cell_quad/p5-recover-bridge-healing` is:
 
-1. Keep PR #8 open, draft, and unmerged unless the user explicitly changes that instruction.
-2. Review policy is `never` unless the user explicitly requests a review turn.
-3. Fetch fresh PR/head state before a turn. Do not assume the branch has not moved externally.
-4. Code + Build and Test + Benchmark remain separate turns. A Code + Build artifact must be immutable input to its following Test + Benchmark turn.
-5. Every completed turn's **final repository write** is exactly one new top-level PR #8 conversation comment after all branch-file writes and PR metadata updates. No repository mutation follows that comment.
+- `.github/workflows/agent-source-snapshot.yml`
 
-## Code + Build workflow rules
+Turn-specific build/test workflows, connector trigger markers, payload/patch transfer files, and generated repository artifacts are temporary. They must be removed after their result/log artifacts and exact source authority are verified.
 
-A Code + Build workflow may:
+At the G3 field-correspondence witness artifact-only Test + Benchmark closeout on 2026-08-08, final verification again showed only the durable workflow above; `.agents/connector-triggers` and `.agents/Directional/turn-payloads` were absent. No workflow or payload was created during that artifact-only validation turn.
 
-- apply the bounded approved source/test edits;
-- install compile prerequisites;
-- shallow-fetch required submodules;
-- configure the approved build;
-- compile/link explicitly approved targets;
-- create an immutable package containing executables, libraries, fixtures, source patch/archive, source-blob metadata, toolchain/submodule data, static test manifests, command-boundary metadata, logs, and recursive checksums;
-- upload result and detailed-log artifacts.
+## Mandatory workflow requirements
 
-A Code + Build workflow must not execute a generated Directional binary. This prohibition includes:
+Every workflow created or modified for agent work must:
 
-- GoogleTest discovery (`--gtest_list_tests`);
-- any test;
-- any benchmark;
-- `ctest`;
-- CLI/GUI/help/version commands;
-- fuzzers;
-- custom input.
+1. initialize a persistent detailed activity log before checkout or any other fallible work;
+2. capture event/ref/source identity, tool versions, commands/output, exit context, final repository status, and relevant resource information;
+3. stream command output to both the Actions console and the persistent activity log;
+4. use an `EXIT` trap or equivalent failure-safe logging where appropriate;
+5. upload the dedicated diagnostic log artifact under `if: always()` with `if-no-files-found: error`;
+6. keep the diagnostic log artifact separate from successful build/result artifacts;
+7. avoid printing tokens, secrets, credentials, authenticated URLs, or secret-bearing arguments;
+8. never modify `.github/workflows/**` from inside a workflow;
+9. use narrow triggers and `concurrency` so unrelated commits cannot retrigger bounded work;
+10. use least-privilege permissions;
+11. preserve exact source authority and fail closed on unexpected input hashes.
 
-Record `runtimeExecution=false` and individual false flags for prohibited command classes in package metadata. `CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST` is required so configure/build does not execute test binaries.
+## Code + Build execution boundary
 
-The workflow must initialize its activity log before fallible setup, preserve logs even on failure where possible, enforce the approved changed-path boundary, and push the implementation commit before build packaging so the artifact identifies one exact implementation.
+Compile-only workflows may checkout exact bounded source, apply a pre-verified source/test patch, install compile dependencies, initialize shallow submodules, configure with `PRE_TEST` or equivalent compile-only-safe discovery, compile/link explicitly approved targets, and package binaries/libraries/fixtures/source/logs/metadata/checksums.
 
-## Immutable artifact rules
+They may **not** execute any generated project binary, including tests, benchmarks, CLI/GUI programs, help/list commands, discovery commands, custom-mesh commands, or version/smoke execution. Successful build artifacts must record `runtimeExecution=false` or equivalent command-boundary evidence.
 
-Every build package used by a Test + Benchmark turn must have:
+## Test + Benchmark execution boundary
 
-- a stable workflow run/job identity;
-- GitHub artifact ID and outer SHA-256 digest;
-- recursive `SHA256SUMS` generated over every regular package file except the manifest itself;
-- source/build authority metadata identifying base, implementation, build-event commit, workflow run/attempt, configuration, and `runtimeExecution=false`;
-- exact source-blob metadata for touched and preserved authority files;
-- executable content hashes;
-- static focused/authority test manifests;
-- fixture inventory;
-- build logs and resource usage.
+Artifact-only Test + Benchmark turns download the exact declared build artifact, verify outer digest/recursive checksums/source/blobs/dependency/fixture closure/command-boundary metadata before runtime execution, extract into a fresh arbitrary directory, may create runtime-only symlinks only for immutable packaged fixture paths, and execute validation only from packaged binaries/inputs.
 
-The following Test + Benchmark turn verifies this authority before executing any packaged binary and re-verifies it after runtime.
+They may **not** configure, compile, relink, regenerate code/discovery, patch packaged source, modify fixtures/manifests, or edit implementation/test/benchmark/validator/build logic. An invalid artifact is an infrastructure failure; do not create a replacement build inside Test + Benchmark.
 
-## Test + Benchmark workflow/runtime rules
+## Trigger/payload lifecycle
 
-A Test + Benchmark turn may execute only the exact immutable artifact selected by the authoritative plan. It must not configure, compile, link, regenerate, patch, substitute, or repair source/tests/fixtures/regular package content.
+When dispatch is unavailable and a temporary exact-path push trigger is required:
 
-Before runtime:
+1. create one bounded workflow with an exact unique marker path;
+2. create only payload/patch files required by that workflow;
+3. trigger exactly once unless a diagnosed retry is required;
+4. verify source/result/log artifacts and exact output authority;
+5. **remove or disable the bounded path-filtered workflow before deleting its trigger marker**, so marker cleanup cannot retrigger the same workflow;
+6. remove marker/payload after the workflow is no longer triggerable;
+7. verify final workflow and temporary directories afterward.
 
-1. verify GitHub artifact identity/digest and build-run identity;
-2. reject unsafe archive paths;
-3. verify the recursive manifest itself and every packaged checksum;
-4. verify expected regular-file/fixture/library/executable inventory;
-5. verify build authority and source blobs;
-6. verify executable hashes;
-7. reject zero-selection test success.
+Do not leave trigger-only debris or stale payloads in the long-lived PR branch.
 
-If artifact extraction strips executable permission, permission may be restored **only after content-hash verification**. Non-regular fixture locator symlinks may be created only when needed and must be recorded separately from packaged content.
+## Artifact evidence requirements
 
-Runtime classification comes from selected count, filter, stdout/stderr, return code, elapsed time, resource evidence, and the test/oracle contract—not from workflow-job success alone.
+A Code + Build artifact should contain, when applicable, exact source commit/blob IDs, source patches/archive, dependency/submodule authority, five required test/benchmark executables and project libraries, production fixture closure, configure/build/toolchain logs, compile database where useful, command-boundary metadata and recursive checksum manifest.
 
-After runtime, reverify original outer ZIP hash, manifest, every package checksum, selected executable hashes, and regular-file count.
+Record workflow run/job IDs, artifact IDs/names/digests, log artifact IDs/digests and retention metadata when available.
 
-## Bunny/Vase long-runtime rule
+## Failure handling
 
-The user authorizes ephemeral artifact-only GitHub Actions workflows for long-running Bunny/Vase comparisons when local execution limits make them impractical.
-
-Such workflows must:
-
-- download the exact already-built artifact by run/artifact identity;
-- verify GitHub digest, complete package manifest, implementation/build authority, and selected executable hash before execution;
-- configure/build/relink/regenerate nothing;
-- restore executable mode only after content verification;
-- run the exact existing requested test under an explicit time guard;
-- retain raw runtime log, selected count, return code, elapsed time, resource usage, and postflight hashes as an evidence artifact;
-- treat timeout only as bounded safety evidence, never correctness or proof of nontermination;
-- remove temporary workflow/trigger/helper files before turn closeout.
-
-## Temporary workflow lifecycle
-
-Temporary connector workflows, trigger files, and apply scripts exist only to execute one bounded turn. Once their result/evidence artifacts have been captured:
-
-1. verify the run/jobs/artifacts needed for the report;
-2. delete the temporary trigger;
-3. delete the temporary workflow;
-4. delete a temporary apply script if one was committed solely for that run;
-5. verify no temporary file remains in the durable workflow/agent entry points.
-
-The durable `.github/workflows/agent-source-snapshot.yml` is not a temporary turn workflow and must not be removed by routine cleanup.
+- Diagnose failed workflows from the dedicated detailed log artifact, not only step summaries.
+- Do not rerun a deterministic malformed workflow without fixing it first.
+- Never synthesize success from a failed command.
+- Never weaken tests/validators to obtain a green workflow.
+- Never force-push merely to bypass a moving branch or stale content SHA.
+- Compare exact blobs/hashes before deciding a patch is absent or already applied.
+- A compile-only failure may be corrected in the same Code + Build turn when the correction is bounded to the diagnosed compile/source issue and no generated project runtime is executed.
 
 ## Durable `.agents/Directional` evidence cleanup interlock
 
-The authoritative detailed cleanup policy lives in `Future_Chat_Session_Handoff.md` and must remain there. Workflow closeout must respect it:
+The detailed cleanup policy lives in `Future_Chat_Session_Handoff.md` and must remain there. In addition to the workflow lifecycle above:
 
-- every Test + Benchmark turn begins by cleaning stale prior checked-in evidence after its accepted facts are folded into durable/live authority;
-- every Test + Benchmark turn ends with the newly authoritative report plus exactly one next Code + Build plan in addition to durable `.agents/Directional` documents;
+- every Test + Benchmark turn begins by cleaning stale prior checked-in evidence after its accepted facts, stable regression IDs, artifact identities, and unresolved blockers have been folded into durable/live authority;
+- every Test + Benchmark turn ends with the new authoritative Test + Benchmark report plus exactly one next Code + Build plan in addition to durable `.agents/Directional` documents;
 - consumed Test + Benchmark plans, superseded preceding Code + Build plans/reports, old per-turn evidence indexes/machine summaries, and temporary workflow payloads are removed;
-- immutable GitHub Actions artifacts remain governed by their retention settings and are not deleted merely because checked-in summaries are stale;
-- retained durable docs are audited for stale live-file references and corrected before closeout.
+- external immutable GitHub Actions artifacts remain governed by retention settings and are not deleted merely because checked-in summaries become stale;
+- retained durable/live documents are audited for references to deleted stale current-head files and corrected before closeout; historical filenames tied to cited commits may remain as provenance when explicitly described as historical.
 
-## Failure discipline
+## End-of-turn hygiene
 
-- Infrastructure/package-authority failure before runtime is not product pass/fail. Stop before executing the package.
-- A required-green runtime regression blocks advancement. Capture exact evidence and return to a corrective Code + Build plan; never patch inside the immutable turn.
-- Persistence of an already-known red is not automatically a new regression recurrence. Use the stable-ID rules in `Regression_Root_Cause_Tracker.md`.
-- Never make a test pass synthetically, weaken a validator, substitute generic output, or classify workflow success as product success.
+At both start and end of every turn inspect `.github/workflows`, temporary connector triggers and payload/patch directories; remove stale turn-specific state; preserve the durable snapshot workflow; ensure retained documentation references only files that still exist (except explicitly historical commit-bound provenance); and make the mandatory top-level PR #8 closeout comment the final repository write after all documentation and PR metadata updates.
