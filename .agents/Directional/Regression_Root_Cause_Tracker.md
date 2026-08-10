@@ -92,7 +92,6 @@ M1i source-scope migration must preserve `RP-02 / TA-05` while adding production
 Authoritative next Code + Build plan: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 
 ### RP-03 — policy/stage state conflation
-### RP-03 — policy/stage state conflation
 
 ```text
 bad: attempted/succeeded/disposition/debug retention are combined into mutable policy state.
