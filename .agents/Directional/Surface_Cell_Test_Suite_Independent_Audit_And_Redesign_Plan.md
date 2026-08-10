@@ -6,7 +6,9 @@
 **Planning baseline:** `a3fba7dc83d9d5b77cdbd10794e3c460de526dbc`  
 **Repository:** `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8  
 **Decision:** **redesign required; the current suite is a contributing part of the recurring-regression system, but it is not the sole cause**  
-**Last updated:** 2026-08-09 UTC
+**Last updated:** 2026-08-10 UTC
+
+> **Durable evidence-retention note:** this document is normative audit/redesign authority, not per-turn evidence. Current Test + Benchmark artifacts/results are retained only in the single current turn report plus durable live trackers. The mandatory cleanup policy in `.agents/Directional/Future_Chat_Session_Handoff.md` requires every Test + Benchmark turn to clean superseded checked-in evidence at start and replace it with current evidence at closeout. Historical per-turn report filenames below are provenance tied to cited commits and need not exist at the current branch head.
 
 ## 1. Scope and review boundary
 
@@ -196,172 +198,358 @@ Required layers are cumulative:
 | Layer | Purpose | Examples |
 |---|---|---|
 | L0 type/schema | make invalid states unrepresentable | non-convertible IDs, closed outcomes, schema tamper |
-| L1 stage contract | isolate stage postconditions | transport composition, rail schedule, quotient exact-once |
-| L2 property/metamorphic | remove representation dependence | row permutations, route reversal, rigid transforms, branch relabeling |
-| L3 independent semantic verification | test actual output meaning | incidence/topology, source support, certificates, no recovery |
-| L4 representative direct corpus | prove the public pipeline | all ten committed tri-mesh cases, strict direct disposition |
-| L5 robustness/fuzz | discover unanticipated state shapes | structured generators, sanitizer fuzzing, minimized replay |
-| L6 quality/performance | prove usefulness and bounded operation | alignment, approximation, element quality, determinism, work/RSS/time |
+| L1 focused semantic | one relation with positive/negative witness | branch transport, hard-rail relation, source support |
+| L2 metamorphic/property | representation changes cannot change semantics | row reorder, reversal, cycle rotation, rigid transform |
+| L3 direct representative | public production entry and independent oracle | plane, seam, close sheets, cylinder, torus, sphere, feature, bunny, vase |
+| L4 quality/corpus | geometry/field/quality/resource thresholds and corpus disposition | alignment, approximation, scaled Jacobian, RSS/work |
 
-A lower layer cannot close a higher-layer gate.
+No lower layer may be used as a substitute for a required higher layer.
 
-## 8. Product oracle
+## 8. Fixture and corpus redesign
 
-### 8.1 Exact invariants
+### 8.1 Versioned semantic manifest
 
-Successful direct output must independently satisfy:
+Create `tests/fixtures/surface-cells/manifest.json` or an equivalent machine-readable manifest. Each case records:
 
-- non-empty, degree-four faces only;
-- valid indices; no degenerate or duplicate faces;
-- orientable manifold incidence; no T-junctions or self-intersections;
-- connected-component count, boundary-loop count, and Euler characteristic consistent with the declared source/topology policy;
-- one accepted cell to one output quad;
-- complete source support, lineage, ownership, and certificate consumption;
-- no fallback, source-grid recovery, hidden generic substitution, or predicted-topology repair;
-- deterministic canonical semantic digest under permitted representation changes;
-- finite global work and resource ledger.
+- stable case ID and version;
+- mesh/field paths and SHA-256;
+- triangle-only input proof;
+- components, boundary loops, Euler characteristic/genus, nonmanifold/degenerate flags;
+- scale and target-size policy;
+- field generator/source and field variation statistics;
+- expected matching/holonomy/singularity/features at the semantic level;
+- intended product contract and oracle thresholds;
+- allowed terminal disposition during staged migration;
+- tier (`pre-merge`, `nightly`, `fuzz-corpus`).
 
-These are hard invariants, not tunable quality thresholds.
+Tests validate the manifest before using a fixture. An incorrect fixture becomes a clear precondition failure rather than a misleading product regression.
 
-### 8.2 Calibrated geometric and field-quality gates
+### 8.2 Required committed matrix
 
-The suite must measure and eventually gate:
+The default direct matrix becomes the ten committed cases listed in section 3.3. A case may be an expected typed failure while the staged producer capability is incomplete, but the failure must be explicitly defined by the gate and cannot use fallback/recovery.
 
-- bidirectional surface approximation;
-- field-alignment error distribution;
-- hard-feature recall and feature-alignment error;
-- boundary approximation/preservation;
-- angle deviation from 90 degrees;
-- edge-length/target-size error;
-- aspect ratio, warpage, scaled Jacobian, and inverted/near-zero-area elements;
-- valence distribution and irregular-vertex placement;
-- normal deviation where relevant;
-- runtime, peak RSS, and work-ledger growth.
+Use `bunny_1k_random.obj` as the irregular Bunny authority. Do not reintroduce an already-regularized bunny as the primary arbitrary-triangle proof.
 
-This review does not invent numeric limits. T1–T5 must establish metric definitions, mutation sensitivity, baselines on accepted fixtures/reference implementations where applicable, and explicit approval of thresholds before they become release gates.
+### 8.3 Adversarial synthetic families
 
-## 9. Corpus and field coverage
+Generate bounded, deterministic families for:
 
-The fixture manifest must classify each case by:
+- rotated/flipped row/vertex permutations;
+- close disconnected sheets with variable gap;
+- triangles with aspect ratio and minimum-angle ladders;
+- small normal and vertex perturbations;
+- branch/matching rotation and cycle start offsets;
+- multiple topology regions and relation-chain shapes;
+- fans of degree 2–12 with duplicate/wraparound sectors;
+- hard-rail breakpoint counts, direction reversal, and multi-rail reachability;
+- nonmanifold edge/vertex cases and degenerate triangles;
+- disconnected components and orientation variants.
 
-- triangle-mesh validity class: clean manifold, boundary, multi-component, near-degenerate, nonmanifold, self-intersecting, duplicated, disconnected, or triangle soup;
-- topology: components, genus/Euler characteristic, boundary loops, orientability;
-- geometry: scale, curvature range, thinness, close sheets, noise, skinny/vanishing triangles;
-- features: none, open/closed hard rails, corners, intersections, mechanical features;
-- cross field: source, tangent variation, matching distribution, singularity count/index, boundary/non-contractible holonomy, discontinuities;
-- target size: uniform/spatially varying, ratios, feasibility, expected adaptivity;
-- expected disposition and exact invariant set;
-- tier, timeout/work budget, license, checksum, and provenance.
+Generators must record seeds and provide deterministic shrinkers that reduce vertices/faces/relations while preserving the failing semantic precondition.
 
-The committed ten-case corpus is the production smoke matrix. A larger stratified corpus is a nightly/benchmark tier. Invalid inputs must assert a typed fail-closed disposition; they must not be relabeled as expected product successes.
+## 9. Independent product oracle
 
-## 10. Generative, metamorphic, and fuzz design
+Create a test-only oracle module that consumes only:
 
-### 10.1 Deterministic structured properties
+```text
+source mesh + prescribed/generated cross field + explicit feature constraints
+candidate quad mesh + exported production lineage/certificates
+```
 
-Start without a mandatory third-party dependency. Build small test-only generators for:
+It does not call producer validation to decide acceptance.
 
-- manifold triangulated disks, annuli, spheres, tori, and multiple components;
-- close parallel sheets, thin tubes, hard-rail graphs, fans, closed cyclic orbits, and relation graphs;
-- cross fields with controlled quarter-turn matching, cycle holonomy, singularity index, discontinuities, and tangent variation;
-- valid and deliberately corrupted certificates;
-- target-size fields near feasibility and tolerance boundaries.
+### 9.1 Exact/topological invariants
 
-Every failure logs a stable seed and serialized input. The shrinker minimizes faces/vertices/relations while preserving the documented precondition. Minimized counterexamples become named replay fixtures before the bug is considered contained. RapidCheck may be adopted only if it improves generation/shrinking without obscuring seed/corpus authority.
+Gate on:
 
-### 10.2 Metamorphic families
+- non-empty pure quads for a success disposition;
+- valid indices and finite vertices;
+- manifold incidence where the contract requires it;
+- connected components;
+- boundary-loop count;
+- Euler characteristic / genus;
+- no duplicate faces/edges under canonical semantic identity;
+- complete output vertex/face lineage;
+- exact source-support containment;
+- consumed certificate/quotient authority when exported;
+- no fallback/recovery in strict direct mode.
 
-At minimum:
+### 9.2 Field and feature invariants
 
-- source vertex/face row permutation;
-- component and producer emission order;
-- cyclic start rotation and route reversal with orientation inversion;
-- thread/schedule and associative container order;
-- rigid transform and uniform scale with correspondingly scaled target/tolerances;
-- triangulation diagonal flips that preserve the source surface and field semantics;
-- equivalent cross-field branch relabeling by quarter turns;
-- target-size and geometry perturbation within a declared equivalence envelope;
-- repeated calls, alternating success/failure sequences, and fresh-process replay.
+Independently recompute:
 
-Each relation states which output facts must remain equal, which may vary, and which must change.
+- output edge tangent alignment to the nearest valid cross-field branch on its source support;
+- field transport consistency across source edges/cycles;
+- hard-feature/boundary curve adherence;
+- singularity/index compatibility where prescribed.
 
-### 10.3 Coverage-guided fuzzing
+### 9.3 Geometric and quality metrics
 
-After structured generators are accepted, add Clang/libFuzzer targets for fast, reentrant stage boundaries:
+Record and, after baseline calibration, gate:
 
-- source/field deserialization and sanitization;
-- source-support classification;
-- transport composition/cycle verification;
-- topology/certificate validation;
-- occurrence/quotient relation ingestion;
-- independent semantic verifier.
+- surface approximation distance normalized by source scale;
+- field alignment angular error distributions;
+- hard-feature distance/alignment error;
+- scaled Jacobian;
+- quad angle and aspect distributions;
+- target edge-length/area deviation;
+- irregular valence distribution;
+- output-size expansion;
+- time, RSS, and monotone work metrics.
 
-Use ASan/UBSan, valid and invalid seed corpora, per-target size/work limits, corpus minimization, and automatic reproducer preservation. The full production pipeline belongs in a bounded process-isolated corpus harness unless it becomes fast and reentrant enough for in-process fuzzing. Timeout, crash, sanitizer finding, unbounded work, or nondeterministic result is a failure; “did not crash” is never product correctness.
+Thresholds are calibrated from the manifest/reference corpus and research-guided quality targets. They are not guessed inside a failing turn.
 
-## 11. Gate and packaging policy
+## 10. Oracle mutation tests
 
-Every required test must be compiled and independently discovered in the immutable artifact. Labels distinguish meaning; build options do not hide mandatory authority.
+For every independent oracle family, deliberately corrupt a valid candidate and prove rejection:
 
-| Label | Meaning |
-|---|---|
-| `contract-required` | accepted fast invariant; must remain green |
-| `intent-smoke` | all ten committed direct cases; unresolved product cases remain explicit red evidence until fixed |
-| `metamorphic` | representation/parameter equivalence |
-| `oracle-mutation` | independent verifier sensitivity |
-| `fuzz-replay` | committed minimized counterexamples |
-| `corpus-nightly` | larger valid/invalid representative corpus |
-| `quality-benchmark` | calibrated geometry/field/resource evidence |
-| `historical-diagnostic` | retained history; never counted as current product proof |
+- rotate or randomize the field while keeping geometry fixed;
+- move output vertices off the source surface;
+- change one quad index to create duplicate/degenerate/nonmanifold incidence;
+- delete or duplicate a face;
+- cross-connect close sheets;
+- corrupt a source-support tag;
+- drop or alter a quotient/transport certificate;
+- reverse a hard-rail path without inverse transport;
+- perturb a feature vertex off the source feature.
 
-Known-red intent tests are not disabled or reported as green. Their explicit status is separate from the required-green regression preservation gate. Promotion to required-green needs one accepted immutable Test + Benchmark result; demotion needs Review.
+These tests directly counter `TA-06`: an oracle that accepts the corruption is not independent enough to certify production.
 
-Artifact preflight must verify executable, exact discovered name, label, fixture/corpus checksum, seed/reproducer manifest, sanitizer mode when applicable, and metric schema. Aggregate pass counts cannot replace the named gate matrix.
+## 11. Property-based and metamorphic tests
 
-## 12. Staged redesign and architecture integration
+Introduce a C++ property layer such as RapidCheck or a small project-native deterministic generator/shrinker if dependency policy favors no new library.
 
-The already compiled multi-rail artifact remains the mandatory next Test + Benchmark turn. This review does not invalidate or replace it.
+Mandatory properties include:
 
-After M0 artifact closeout, testing and architecture migrate in interlocked slices:
+1. face-row permutation preserves canonical product topology/lineage/quality within tolerance;
+2. vertex-row permutation preserves semantics after canonical remap;
+3. route reversal composes the exact inverse transport;
+4. cycle start rotation preserves holonomy;
+5. source-edge endpoint reversal preserves the same canonical edge identity;
+6. per-component input permutation preserves independent component results;
+7. 4-way cross-field branch relabeling preserves the geometric field;
+8. orientation-preserving rigid transforms preserve topology and normalized quality;
+9. scale plus proportional target-size scaling preserves normalized result metrics;
+10. generated fan/cycle/relation graphs satisfy authority consumption exactly once.
 
-| Test milestone | Scope | Exit evidence | Architecture/product dependency |
-|---|---|---|---|
-| `T0` audit and authority separation | this review; normative strategy separated from runtime history | audit, tracker, design, roadmap, TODO/milestone/handoff agree | complete now |
-| `T1` independent oracle foundation | test-only topology/lineage/geometry primitives, mutation cases, labels/package manifest | compile-only Code + Build then immutable Test + Benchmark; mutations rejected | prerequisite to M1 |
-| `T2` direct corpus and semantic manifest | all ten direct cases, declared preconditions, strict direct dispositions, explicit known-red reporting | discovery and named matrix evidence | before M2 behavior migration |
-| `T3` metamorphic/property framework | generators, seed replay, shrinking, row/cycle/transform/sequence properties | at least one intentional mutation per property family; minimized replay | before M3/M4 acceptance |
-| `T4` sanitizer fuzz and robustness | fast stage fuzz targets, ASan/UBSan, corpus minimization; process harness for full pipeline | bounded campaign plus zero unresolved findings and replay | before M5 closure |
-| `T5` representative quality/corpus gates | calibrated metrics, hard invariants, stratified external corpus | approved thresholds/baselines and nightly evidence | before G6/G7 readiness |
-| `T6` CI and adequacy hardening | default discovery, shard labels, oracle mutation adequacy, resource trends | no hidden mandatory tests; stable failure taxonomy | required for M6/G7 closure |
+Failed properties must emit seed, shrunk fixture/graph, and semantic diff.
 
-Each `Tn` implementation follows Code + Build then immutable Test + Benchmark. Code + Build may edit test/benchmark/CMake support and compile/package, but may not run generated binaries. Test + Benchmark may run only the exact artifact and may not edit test authority.
+## 12. Fuzzing
 
-Do not pause all architecture work for a monolithic test rewrite. Accept T1 first, then require the relevant T2–T6 evidence before each dependent architecture/product milestone.
+### 12.1 Targets
 
-## 13. Immediate next-turn instructions
+Add bounded libFuzzer-style targets for:
 
-1. Run the already authorized artifact-only multi-rail Test + Benchmark plan against artifacts `9031804178 / 9031804382` unchanged.
-2. Interpret its focused results under `RP-02` and `RP-09`; direct torus remains the representative authority.
-3. Preserve or update `G4-R007` from runtime evidence; do not count this documentation review as a regression event.
-4. After artifact closeout, the first mutating turn is **T1 independent test-oracle foundation — Code + Build**, not M1 production migration.
-   Use `.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
-5. T1 must be test/build-support only, behavior-preserving, separately packaged, and followed by an immutable Test + Benchmark turn.
-6. M1 authority-kernel work may begin only after T1 acceptance and must consume the new test-authority format.
+- `SurfacePoint` / exact source-support normalization;
+- authority ID and legacy conversion boundaries;
+- canonical route/grid automorphism operations;
+- phase-front boundary/certificate validation;
+- quotient relation materialization on small generated occurrence complexes;
+- generated triangle-mesh + raw-field preconditions for the direct producer, with strict work budgets.
 
-## 14. Review decision
+### 12.2 Sanitizers
 
-**Changes required.** The suite has meaningful local coverage, but its current direct oracle, fixture gating, packaging split, and lack of generative/fuzz evidence are insufficient for the stated arbitrary-triangle-mesh to cross-field-aligned pure-quad product. `TA-01` through `TA-12` are open. Product or architecture completion cannot be claimed until their milestone-specific close conditions are met.
+Run fuzz/property/nightly targets under:
 
-## 15. Primary references
+- ASan;
+- UBSan;
+- debug assertions;
+- optional TSan only for thread-safe deterministic units, not as the first fuzz tier.
 
-1. Vaxman et al., [Directional Field Synthesis, Design, and Processing](https://avaxman.github.io/Directional/), 2016.
-2. Bommes et al., [Mixed-Integer Quadrangulation](https://www.graphics.rwth-aachen.de/publication/0344/), 2009.
-3. Ebke et al., [QEx](https://github.com/hcebke/libQEx), 2013.
-4. Pietroni et al., [QuadWild / Reliable Feature-Line Driven Quad Remeshing](https://www.quadmesh.cloud/), 2021.
-5. Jakob et al., [Instant Field-Aligned Meshes](https://rgl.epfl.ch/publications/Jakob2015Instant), 2015.
-6. [LLVM libFuzzer documentation](https://llvm.org/docs/LibFuzzer.html).
-7. [RapidCheck](https://github.com/emil-e/rapidcheck).
-8. Zhou and Jacobson, [Thingi10K](https://arxiv.org/abs/1605.04797) and [dataset repository](https://github.com/Thingi10K/Thingi10K).
-9. [libQEx reference-mesh tests](https://github.com/hcebke/libQEx/blob/517dcaa0cc87646baa89e52cfc8e23766776f6d5/tests/reference_meshes.cc).
+### 12.3 Corpus and replay
+
+Commit only minimized, semantically labeled reproducers. CI replays them before random fuzz time. Record fuzzer binary SHA, seed/corpus version, sanitizer configuration, and timeout/work budget.
+
+## 13. Repetition, sequence, work, and resource tests
+
+Because `RP-04` and `RP-06` recurred, add both:
+
+- **fresh-process repetition:** same case N times in isolated processes;
+- **in-process sequence:** deterministic case permutations through one process.
+
+Assert:
+
+- semantic output hash equality or stable typed failure;
+- no state leaked between cases;
+- monotone global work ledger never exceeds the declared budget;
+- candidate/state counts remain bounded by declared input-derived formulas;
+- RSS and time stay within calibrated baseline bands at the appropriate CI tier.
+
+Do not infer a leak from scheduler-sensitive sub-millisecond timings or from one environment. Resource baselines require repeated distributions and comparable machines.
+
+## 14. Package and discovery authority
+
+Every immutable Code + Build package gains a test-evidence manifest containing:
+
+- implementation/source blob IDs;
+- executable names and SHA-256;
+- exact discovered test names/counts by tier;
+- fixture/corpus manifest SHA and file hashes;
+- generator/fuzzer version and seeds/corpus version;
+- approved oracle module SHA;
+- benchmark thresholds/baseline version;
+- command-boundary metadata proving no runtime during Code + Build.
+
+The following Test + Benchmark turn performs native discovery from the packaged executables, fails on zero selection or missing required tests, and records exact selected names.
+
+## 15. Test + Benchmark result schema
+
+A result report is insufficient if it says only “N/N passed.” Record per semantic case:
+
+```text
+case ID / fixture hash / field hash or generator seed
+intended contract and proved precondition
+selected test/oracle names
+producer disposition / typed failure
+pure-quad rate
+components / boundaries / Euler / manifold facts
+source-lineage/support/certificate facts
+field/feature/geometric/quality metrics
+semantic hash / deterministic comparison
+elapsed / RSS / work ledger
+pass/fail and exact reason
+artifact/executable hashes
+```
+
+Known-red cases stay in the denominator and are classified explicitly; they are not converted to expected success or silently excluded.
+
+## 16. Staged execution plan
+
+This redesign is incremental and preserves turn separation.
+
+### T0 — policy and manifest foundation
+
+**Status:** complete by this review/documentation turn.
+
+- `tests/TESTING_STRATEGY.md` is normative-only;
+- this audit defines the redesign;
+- reorientation and handoff gate feature expansion on T1.
+
+### T1 — independent test-oracle foundation
+
+**Status:** accepted; its durable facts are now represented in the live tracker/current report and immutable artifact history rather than retained stale per-turn reports.
+
+Implemented the first independent oracle executable/library, topology/lineage/disposition checks, oracle mutation tests, exact package/discovery authority, and representative direct-path ordering.
+
+### T2 — complete direct semantic matrix
+
+**Status:** pending.
+
+- versioned ten-case fixture manifest;
+- prescribed topology/field cases in default direct authority;
+- independent oracle on every case;
+- direct failures classified by typed stage.
+
+### T3 — property/metamorphic layer
+
+**Status:** pending.
+
+- row/vertex/order/orientation/scale/field relabeling properties;
+- seed recording and shrinking;
+- replay corpus.
+
+### T4 — fuzz/sanitizer layer
+
+**Status:** pending.
+
+- small authority/canonicalization/quotient fuzz targets;
+- ASan/UBSan CI;
+- minimized corpus replay.
+
+### T5 — calibrated product-quality gates
+
+**Status:** pending.
+
+- independent field/feature/geometric/quality metrics;
+- approved baselines/thresholds;
+- Bunny/Vase and prescribed cases promoted only when prerequisites are ready.
+
+### T6 — hardening and default-on
+
+**Status:** pending.
+
+- CI tiers and resource distributions;
+- full corpus/fuzz replay;
+- no stale historical target as hidden coverage;
+- retirement of representation-brittle tests after replacement evidence exists.
+
+## 17. Acceptance gates
+
+### T1 acceptance
+
+Accepted and preserved through current M1 work. It must continue to provide exact package/discovery and independent topology/lineage/disposition authority.
+
+### T2 acceptance
+
+- all ten committed cases discovered in the default direct matrix;
+- semantic fixture manifest validates;
+- exact independent topology/lineage oracle runs for every case;
+- no required case is omitted due to runtime or known-red state.
+
+### T3 acceptance
+
+- required metamorphic properties pass over declared seed set;
+- at least one deliberate mutation per property is rejected;
+- shrinker emits a smaller reproducer for a seeded failing mutation.
+
+### T4 acceptance
+
+- sanitizer builds clean on committed replay corpus;
+- bounded fuzz campaign executes declared target set without uncontrolled work/memory;
+- all prior minimized reproducers replay deterministically.
+
+### T5 acceptance
+
+- all required product metrics independently computed;
+- thresholds/baselines versioned and approved;
+- direct representative cases meet their declared gate rather than merely returning `success`.
+
+### T6 acceptance
+
+- pre-merge and nightly tiers are reproducible;
+- repeated sequence/process tests meet deterministic/resource budgets;
+- oracle mutation coverage remains effective;
+- legacy representation-only coverage has documented replacement authority.
+
+## 18. Stop conditions and anti-shortcuts
+
+Stop and redesign the test rather than weakening it if:
+
+- the fixture does not prove the intended precondition;
+- the oracle imports the producer decision it is meant to verify;
+- a raw ID, count, hash, or retention flag is serving as semantic identity;
+- a quality threshold has no calibrated rationale;
+- a generated failure cannot be reproduced from its seed;
+- a property cannot be shrunk without losing the failing precondition;
+- a required test is not actually discovered from the immutable package;
+- the direct product remains red while only a focused helper is green.
+
+Never use source-grid recovery, generic producer substitution, validator weakening, fixture-specific product branches, or synthetic output construction to close a strict direct SurfaceCells gate.
+
+## 19. Current ordering relative to architecture migration
+
+Current ordering is:
+
+1. T0 complete;
+2. T1 independent oracle/package authority accepted;
+3. M1 bounded authority migration proceeds while preserving T1 on every immutable turn;
+4. T2–T6 expand representative semantic/corpus/fuzz/quality authority before later feature/default-on closure.
+
+The live exact next turn is owned by `.agents/Directional/Future_Chat_Session_Handoff.md`, not this durable redesign document.
+
+## 20. Research references
+
+Primary/documented sources used for the domain-specific testing redesign:
+
+1. [Directional Fields: A Survey](https://doi.org/10.1111/cgf.14285).
+2. [Mixed-Integer Quadrangulation (MIQ)](https://libigl.github.io/tutorial/#global-seamless-integer-grid-parametrization).
+3. [QEx: Robust Quad Mesh Extraction](https://www.graphics.rwth-aachen.de/publication/03300/) and [libQEx](https://github.com/hcebke/libQEx).
+4. [QuadWild](https://github.com/nicopietroni/quadwild).
+5. [Instant Field-Aligned Meshes](https://github.com/wjakob/instant-meshes).
+6. [Thingi10K](https://ten-thousand-models.appspot.com/).
+7. [LLVM libFuzzer](https://llvm.org/docs/LibFuzzer.html).
+8. [RapidCheck](https://github.com/emil-e/rapidcheck).
+9. [Geometry Central surface-mesh tests](https://github.com/nmwsharp/geometry-central/blob/master/test/src/surface_mesh_test.cpp).
 10. [Geometry Central intrinsic-triangulation properties](https://github.com/nmwsharp/geometry-central/blob/019669ddabda05e0f71fa3587cfb3c1dadf19cb8/test/src/intrinsic_triangulation_test.cpp).
 11. [CGAL remeshing tests](https://github.com/CGAL/cgal/blob/548fc90ea5d38402df679426283475ec78db0537/PMP_Remeshing/test/PMP_Remeshing/remeshing_test.cpp).
 12. [Turn-Based Coding Agent Skill](https://github.com/akashskypatel/turn-based-coding-agent-skill).
