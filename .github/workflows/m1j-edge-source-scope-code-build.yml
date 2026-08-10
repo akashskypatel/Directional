@@ -1,0 +1,342 @@
+name: m1j-edge-source-scope-code-build
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1j-edge-source-scope-code-build'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m1j-edge-source-scope-code-build
+  cancel-in-progress: false
+
+env:
+  LOG_DIR: /tmp/m1j-edge-source-scope-code-build-logs
+  ACTIVITY_LOG: /tmp/m1j-edge-source-scope-code-build-logs/activity.log
+  BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+  ACCEPTED_M1I: b037157921094604f1b0c17f9c8b7076c7604b3b
+  ACCEPTED_M1I_RESULT_ARTIFACT: '9072101943'
+  EDIT_PAYLOAD: .agents/Directional/turn-payloads/m1j-edge-source-scope.py
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          printf '%s\n' \
+            'turn=M1j Phase-Front Edge Source-Scope Consumer Code+Build' \
+            "run_id=$GITHUB_RUN_ID" \
+            "run_attempt=$GITHUB_RUN_ATTEMPT" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "accepted_m1i=$ACCEPTED_M1I" \
+            "accepted_m1i_result_artifact=$ACCEPTED_M1I_RESULT_ARTIFACT" \
+            'runtimeExecution=false' \
+            'testExecution=false' \
+            'benchmarkExecution=false' \
+            'ctestExecution=false' \
+            'cliExecution=false' \
+            'fuzzerExecution=false' \
+            'customInputExecution=false' \
+            'prohibited=generated Directional binary execution; discovery/list; tests; benchmarks; ctest; CLI/GUI/help/version; fuzzers; custom input' \
+            "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee "$ACTIVITY_LOG"
+
+      - name: Checkout exact triggering branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH }}
+          fetch-depth: 500
+          submodules: false
+
+      - name: Apply bounded M1j source/test edits and push implementation
+        id: source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=source-edit exit_code=$rc"; git status --short --branch || true; exit $rc' EXIT
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$ACCEPTED_M1I" HEAD
+          test "$(git rev-parse 'HEAD:include/directional/geometry/SurfaceCellTracing.h')" = '4036b16a3dc7e20369a9cd65a4422c61be58afb4'
+          test "$(git rev-parse 'HEAD:src/geometry/SurfaceCellTracing.cpp')" = '33a41e70e240f198eaa49184c3a87773986b84cb'
+          test "$(git rev-parse 'HEAD:src/pipeline/RemeshPipeline.cpp')" = '601d02b7560e489246e30e1fa572f8ac2d6d1250'
+          test "$(git rev-parse 'HEAD:tests/SurfaceCellsPhase10Tests.cpp')" = 'f63396f54e70d3c106cd2acbc4758e9d4fb1dda0'
+          test "$(git rev-parse 'HEAD:tests/TestFixturePaths.h')" = '4a981f772ee70780d0011696010a0e1b8bef6972'
+          python3 "$EDIT_PAYLOAD"
+          git diff --check
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          printf '%s\n' "${changed[@]}" | tee "$LOG_DIR/changed-source-paths.txt"
+          test "${#changed[@]}" -eq 4
+          test "${changed[0]}" = 'include/directional/geometry/SurfaceCellTracing.h'
+          test "${changed[1]}" = 'src/geometry/SurfaceCellTracing.cpp'
+          test "${changed[2]}" = 'src/pipeline/RemeshPipeline.cpp'
+          test "${changed[3]}" = 'tests/SurfaceCellsPhase10Tests.cpp'
+          python3 - <<'PY' | tee "$LOG_DIR/static-contracts.txt"
+          from pathlib import Path
+          import re
+          header = Path('include/directional/geometry/SurfaceCellTracing.h').read_text()
+          tracing = Path('src/geometry/SurfaceCellTracing.cpp').read_text()
+          pipeline = Path('src/pipeline/RemeshPipeline.cpp').read_text()
+          tests = Path('tests/SurfaceCellsPhase10Tests.cpp').read_text()
+          suite = 'SurfaceCellPhaseFrontEdgeSourceScopeAuthorityMigration'
+          names = [n.strip() for n in re.findall(r'TEST\(\s*' + re.escape(suite) + r'\s*,\s*([^)]+)\)', tests)]
+          expected = [
+              'PlanarEdgesPublishCheckedDefaultComponentAndSheet',
+              'ExplicitSourceLabelsRemainDistinctTypedEdgeDomains',
+              'MultipleObservedSheetsDoNotInventRepresentativeEdgeSheet',
+              'MalformedOrMismatchedEdgeScopeFailsClosed',
+              'FaceRowPermutationPreservesTypedEdgeSourceScope',
+              'TypedEdgeToLegacyPipelineBoundaryPreservesCompatibility',
+          ]
+          assert names == expected, names
+          edge = header[header.index('struct SurfaceFrontEdge'):header.index('struct SurfaceFrontEvent')]
+          assert 'std::optional<authority::SourceComponentId> sourceComponent;' in edge
+          assert 'std::optional<authority::IsolationSheetId> sourceSheet;' in edge
+          assert 'std::vector<authority::IsolationSheetId> sourceIsolationSheets;' in edge
+          assert 'int sourceComponent = -1;' not in edge
+          assert 'int sourceSheet = -1;' not in edge
+          assert tracing.count('edge.sourceComponent = cell.sourceComponent;') == 3
+          assert 'edge.sourceComponent = region.sourceComponent;' not in tracing
+          assert 'legacy_phase_front_source_component(edge)' in tracing
+          assert 'legacy_phase_front_source_component(edge)' in pipeline
+          assert 'edge.sourceComponent != owner.sourceComponent' in pipeline
+          assert 'edge.sourceIsolationSheets != owner.sourceIsolationSheets' in pipeline
+          print('M1j focused contracts=6')
+          print('sourceTopologyRegion remains legacy int')
+          print('runtime execution=none')
+          PY
+          parent=$(git rev-parse HEAD)
+          git config user.name 'OpenAI Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add -- include/directional/geometry/SurfaceCellTracing.h src/geometry/SurfaceCellTracing.cpp src/pipeline/RemeshPipeline.cpp tests/SurfaceCellsPhase10Tests.cpp
+          git diff --cached --check
+          git commit -m 'refactor: type phase-front edge source scope'
+          implementation=$(git rev-parse HEAD)
+          git push origin "HEAD:$BRANCH"
+          remote=$(git ls-remote origin "refs/heads/$BRANCH" | cut -f1)
+          test "$remote" = "$implementation"
+          printf '%s\n' "source_parent=$parent" "implementation_commit=$implementation" > "$LOG_DIR/source-authority.txt"
+          echo "implementation=$implementation" >> "$GITHUB_OUTPUT"
+          echo "source_parent=$parent" >> "$GITHUB_OUTPUT"
+
+      - name: Install compile prerequisites
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=install-prerequisites exit_code=$rc"; exit $rc' EXIT
+          sudo apt-get update
+          sudo apt-get install -y ninja-build libgmp-dev xz-utils time
+
+      - name: Fetch shallow submodules
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=submodules exit_code=$rc"; exit $rc' EXIT
+          git submodule sync --recursive
+          git -c protocol.version=2 submodule update --init --recursive --depth 1 --recommend-shallow
+          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+
+      - name: Record toolchain and exact source authority
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=source-authority exit_code=$rc"; exit $rc' EXIT
+          test "$(git rev-parse HEAD)" = '${{ steps.source.outputs.implementation }}'
+          test -z "$(git status --porcelain=v1)"
+          git --version
+          cmake --version
+          ninja --version
+          c++ --version | head -n 1
+          git diff --check '${{ steps.source.outputs.source_parent }}' '${{ steps.source.outputs.implementation }}'
+          mapfile -t committed < <(git diff --name-only '${{ steps.source.outputs.source_parent }}' '${{ steps.source.outputs.implementation }}' | LC_ALL=C sort)
+          test "${#committed[@]}" -eq 4
+          printf '%s\n' "${committed[@]}"
+
+      - name: Configure Release static compile-only build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=configure exit_code=$rc"; exit $rc' EXIT
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile approved targets only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=compile exit_code=$rc"; exit $rc' EXIT
+          /usr/bin/time -v -o "$LOG_DIR/build-resources.txt" \
+            cmake --build build --parallel 2 --target \
+              directional_core directional_pipeline directional_compiled_api_tests \
+              directional_surface_cell_producer_tests directional_surface_cell_oracle_tests \
+              directional_surface_cell_authority_kernel_tests directional_surface_cell_completion_tests \
+              directional_surface_cell_validation_tests directional_benchmarks 2>&1 | tee "$LOG_DIR/build.log"
+
+      - name: Package immutable compile artifact
+        id: package
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=package exit_code=$rc"; exit $rc' EXIT
+          implementation='${{ steps.source.outputs.implementation }}'
+          source_parent='${{ steps.source.outputs.source_parent }}'
+          test "$(git rev-parse HEAD)" = "$implementation"
+          pkg="$RUNNER_TEMP/m1j-edge-source-scope-code-build-result"
+          mkdir -p "$pkg/bin" "$pkg/lib" "$pkg/logs" "$pkg/metadata" "$pkg/source" "$pkg/test-data/benchmarks"
+          for exe in directional_compiled_api_tests directional_surface_cell_producer_tests directional_surface_cell_oracle_tests directional_surface_cell_authority_kernel_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_benchmarks; do
+            test -x "build/$exe"
+            cp "build/$exe" "$pkg/bin/$exe"
+          done
+          cp build/libdirectional_core.a build/libdirectional_pipeline.a "$pkg/lib/"
+          cp -a benchmarks/fixtures "$pkg/test-data/benchmarks/fixtures"
+          cp "$LOG_DIR"/* "$pkg/logs/"
+          cp build/compile_commands.json "$pkg/source/compile_commands.json"
+          cp "$EDIT_PAYLOAD" "$pkg/source/m1j-edge-source-scope.py"
+          git archive --format=tar "$implementation" | xz -T0 -6 > "$pkg/source/directional-m1j-edge-source-scope-source-no-deps.tar.xz"
+          python3 - <<'PY' > "$pkg/metadata/focused-test-counts.txt"
+          from pathlib import Path
+          import re
+          p10 = Path('tests/SurfaceCellsPhase10Tests.cpp').read_text()
+          quotient = Path('tests/SurfaceCellTransitionQuotientTests.cpp').read_text()
+          optimizer = Path('tests/SurfaceMeshOptimizerPhase22Tests.cpp').read_text()
+          authority = Path('tests/SurfaceCellAuthorityKernelTests.cpp').read_text()
+          oracle = Path('tests/SurfaceCellProductOracleTests.cpp').read_text()
+          suites = {
+              'M1j': (p10, 'SurfaceCellPhaseFrontEdgeSourceScopeAuthorityMigration', 6),
+              'M1i': (p10, 'SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration', 6),
+              'M1h': (p10, 'SurfaceCellPhaseFrontFieldChartAuthorityMigration', 6),
+              'M1g': (p10, 'SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration', 6),
+              'M1f': (p10, 'SurfaceCellVertexContinuationRouteTransportAuthorityMigration', 6),
+              'M1e': (p10, 'SurfaceCellSegmentRouteTransportAuthorityMigration', 6),
+              'M1c': (p10, 'SurfaceCellFieldTransitionAuthorityMigration', 6),
+              'M1d': (quotient, 'SurfaceCellPhaseFrontRouteAuthorityMigration', 6),
+              'M1b': (optimizer, 'SurfaceOptimizationRailAuthorityMigration', 6),
+          }
+          for label, (text, suite, expected) in suites.items():
+              names = [n.strip() for n in re.findall(r'TEST\(\s*' + re.escape(suite) + r'\s*,\s*([^)]+)\)', text)]
+              assert len(names) == expected and len(set(names)) == expected, (label, names)
+              print(f'{label}={len(names)}')
+              Path(f'/tmp/{label}-tests.txt').write_text('\n'.join(f'{suite}.{name}' for name in names) + '\n')
+          all_authority = re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', authority)
+          all_oracle = re.findall(r'TEST\(\s*([^,]+),\s*([^)]+)\)', oracle)
+          assert len(all_authority) == 14 and len(set(all_authority)) == 14
+          assert len(all_oracle) == 29 and len(set(all_oracle)) == 29
+          print('M1a=14')
+          print('T1=29')
+          Path('/tmp/M1a-tests.txt').write_text('\n'.join(f'{a.strip()}.{b.strip()}' for a, b in all_authority) + '\n')
+          Path('/tmp/T1-tests.txt').write_text('\n'.join(f'{a.strip()}.{b.strip()}' for a, b in all_oracle) + '\n')
+          PY
+          for label in M1j M1i M1h M1g M1f M1e M1d M1c M1b; do cp "/tmp/$label-tests.txt" "$pkg/metadata/${label,,}-focused-test-names.txt"; done
+          cp /tmp/M1a-tests.txt "$pkg/metadata/m1a-test-names.txt"
+          cp /tmp/T1-tests.txt "$pkg/metadata/t1-oracle-test-names.txt"
+          printf '%s\n' \
+            'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Plane' \
+            'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/MultiFaceSeam' \
+            'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/CloseSheets' \
+            'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder' \
+            > "$pkg/metadata/direct-product-test-names.txt"
+          printf '%s\n' 'runtimeExecution=false' 'testExecution=false' 'benchmarkExecution=false' 'ctestExecution=false' 'cliExecution=false' 'fuzzerExecution=false' 'customInputExecution=false' > "$pkg/metadata/command-boundary.txt"
+          cat > "$pkg/metadata/build-authority.json" <<EOF
+          {
+            "turn": "M1j Phase-Front Edge Source-Scope Consumer Code+Build",
+            "implementationCommit": "$implementation",
+            "sourceParent": "$source_parent",
+            "acceptedM1iImplementation": "$ACCEPTED_M1I",
+            "acceptedM1iResultArtifact": "$ACCEPTED_M1I_RESULT_ARTIFACT",
+            "eventCommit": "$GITHUB_SHA",
+            "runId": "$GITHUB_RUN_ID",
+            "runAttempt": "$GITHUB_RUN_ATTEMPT",
+            "configuration": "Release",
+            "generator": "Ninja",
+            "sharedLibraries": false,
+            "gtestDiscoveryMode": "PRE_TEST",
+            "runtimeExecution": false,
+            "testExecution": false,
+            "benchmarkExecution": false,
+            "ctestExecution": false,
+            "cliExecution": false,
+            "fuzzerExecution": false,
+            "customInputExecution": false
+          }
+          EOF
+          git rev-parse "$implementation:include/directional/geometry/SurfaceCellTracing.h" > "$pkg/metadata/tracing-header-blob.txt"
+          git rev-parse "$implementation:src/geometry/SurfaceCellTracing.cpp" > "$pkg/metadata/tracing-blob.txt"
+          git rev-parse "$implementation:src/pipeline/RemeshPipeline.cpp" > "$pkg/metadata/pipeline-blob.txt"
+          git rev-parse "$implementation:tests/SurfaceCellsPhase10Tests.cpp" > "$pkg/metadata/phase10-test-blob.txt"
+          git rev-parse "$implementation:tests/TestFixturePaths.h" > "$pkg/metadata/fixture-paths-blob.txt"
+          git rev-parse "$implementation:.agents/Directional/Future_Chat_Session_Handoff.md" > "$pkg/metadata/handoff-blob.txt"
+          git rev-parse "$implementation:.agents/Directional/GitHub_Workflow_Policy.md" > "$pkg/metadata/workflow-policy-blob.txt"
+          find "$pkg/test-data/benchmarks/fixtures" -type f -printf '%P\n' | LC_ALL=C sort > "$pkg/metadata/fixture-files.txt"
+          test "$(wc -l < "$pkg/metadata/fixture-files.txt")" -eq 27
+          (cd "$pkg" && sha256sum bin/* | LC_ALL=C sort) > "$pkg/metadata/executable-sha256.txt"
+          (cd "$pkg" && sha256sum lib/* | LC_ALL=C sort) > "$pkg/metadata/library-sha256.txt"
+          find "$pkg" -type f ! -name SHA256SUMS -printf '%P\0' | LC_ALL=C sort -z | while IFS= read -r -d '' path; do
+            (cd "$pkg" && sha256sum "$path")
+          done > "$pkg/SHA256SUMS"
+          (cd "$pkg" && sha256sum -c SHA256SUMS >/dev/null)
+          sha256sum "$pkg/SHA256SUMS" | tee "$LOG_DIR/package-manifest-sha256.txt"
+          printf '%s\n' \
+            "regular_files=$(find "$pkg" -type f | wc -l)" \
+            "executables=$(find "$pkg/bin" -maxdepth 1 -type f | wc -l)" \
+            "libraries=$(find "$pkg/lib" -maxdepth 1 -type f | wc -l)" \
+            "fixtures=$(find "$pkg/test-data/benchmarks/fixtures" -type f | wc -l)" | tee "$LOG_DIR/package-cardinality.txt"
+          echo "pkg=$pkg" >> "$GITHUB_OUTPUT"
+
+      - name: Final source and command-boundary pre-upload check
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=final-preupload exit_code=$rc"; exit $rc' EXIT
+          test "$(git rev-parse HEAD)" = '${{ steps.source.outputs.implementation }}'
+          test -z "$(git status --porcelain=v1)"
+          grep -Fx 'runtimeExecution=false' '${{ steps.package.outputs.pkg }}/metadata/command-boundary.txt'
+          grep -Fx 'testExecution=false' '${{ steps.package.outputs.pkg }}/metadata/command-boundary.txt'
+          grep -Fx 'benchmarkExecution=false' '${{ steps.package.outputs.pkg }}/metadata/command-boundary.txt'
+          printf '%s\n' "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$ACTIVITY_LOG"
+          cp "$ACTIVITY_LOG" '${{ steps.package.outputs.pkg }}/logs/activity-final.log'
+
+      - name: Upload immutable Code + Build result
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1j-edge-source-scope-code-build-result
+          path: ${{ steps.package.outputs.pkg }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload dedicated diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1j-edge-source-scope-code-build-logs
+          path: ${{ env.LOG_DIR }}
+          if-no-files-found: error
+          retention-days: 14
