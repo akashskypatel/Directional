@@ -2,20 +2,36 @@
 
 ## Mandatory next turn
 
-Run **M1i Phase-Front Cell Source-Scope Consumer — Code + Build only** under:
+Run **M1i Phase-Front Cell Source-Scope Consumer — immutable Artifact-Only Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1h are immutable accepted. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1h are immutable accepted. M1i is compile/package complete and runtime pending. Review policy is `never`.
 
-M1i is bounded to:
+Consume only result/log artifacts `9072101943 / 9072102331` from implementation `b037157921094604f1b0c17f9c8b7076c7604b3b`. Result/log ZIP SHA-256 are `e30860e5ec411dc4dc446d0a4dc65ce6f15c5784a6f5daca138ab44d7196bf25 / 38353b8c101a298d9a537a82da17e075180619343246a6ba4a8e2f430bd14d44`; recursive package manifest is **72/72**, digest `f5614100e1638990d46c7c8fa3d7c720c837dfae1ae515387977d4c0b9e9cac3`.
 
+Rebuild, relink, configure, regeneration, source/test/build/fixture edits, repair, substitution, and runtime fixture symlinks are prohibited. Expected native producer discovery is **208**, M1i focused **6/6** individually, and required-green producer **193/193**. Preserve M1h–M1b focused suites, validation **77/77**, M1a **14/14**, T1 **29/29**, direct Plane/MultiFaceSeam/CloseSheets/Cylinder oracle authority, all eight historical/deferred red classes, strict-validator 10-process characterization, Bunny/Vase bounded comparison, and exact postflight.
+
+## M1i Code + Build authority — runtime pending
+
+Selected seam:
 `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
 
-It migrates cell-owned source-component/isolation-sheet authority to checked `SourceComponentId` / `IsolationSheetId` while preserving current source-scope semantics and using explicit compatibility conversions only for still-raw neighboring consumers. Do not expand into `SurfaceFrontEdge` scope migration, `TopologyRegionId`, hard-rail/periodic owner IDs, M2–M6, or G4 behavior repair.
+Implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` changes exactly four paths: the tracing header, tracing implementation, pipeline compatibility consumers, and phase-10 tests. `SurfacePhaseFrontCell` now owns optional checked `SourceComponentId`, optional checked `IsolationSheetId`, and a typed sorted isolation-sheet collection. Raw edge/pipeline representations remain explicit compatibility boundaries only. Exactly six `SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration` contracts compile and were **not executed**.
 
-This next turn is **Code + Build only**. Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input.
+Authoritative build/package run/job `31411770135 / 93531293415` compiled **120/120** Release/static/Ninja/PRE_TEST in **7:39.61**, peak RSS **1,857,412 KiB**. Package is 73 regular files, seven executables, two libraries, 27 fixtures, with **72/72** verified checksums. Every runtime-execution flag is false.
 
+First attempt `31410750675` also compiled **120/120** but failed only in package checksum verification because the manifest was checked from the repository cwd rather than package cwd. The retry made no source delta and records that provenance in the final package. First-attempt log artifact is `9071739970`.
+
+M1i is not semantically accepted until immutable runtime passes. Historical regression totals remain **34 events / 14 categories / 20 recurrences**; `PR8-R034 / G4-R007` remains active.
+
+Current Code + Build report:
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Report.md`.
+
+Authoritative next plan:
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+
+## M1h immutable acceptance authority
 ## M1h immutable acceptance authority
 
 M1h is accepted from remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` over unchanged production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` and exact artifacts `9069186973 / 9069187317`.

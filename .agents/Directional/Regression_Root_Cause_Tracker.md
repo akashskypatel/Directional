@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after immutable M1h acceptance from remediation artifact `9069186973`; M1i cell source-scope authority is next.
+Last updated: **2026-08-10 UTC** after M1i cell source-scope Code + Build from artifact `9072101943`; immutable runtime is next.
 
 ## Rules
 
@@ -22,7 +22,7 @@ Last updated: **2026-08-10 UTC** after immutable M1h acceptance from remediation
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h artifact `9066967620` created no stable product regression event: its sole focused failure was classified as a test-authority witness defect while all entering product/preservation authority remained unchanged. Remediation artifact `9069186973` is now immutable accepted with focused **6/6**, required-green **187/187**, full entering preservation/direct-product authority, unchanged historical-red classes, and exact postflight. No stable product regression event or recurrence is added. `PR8-R034 / G4-R007` remains active.
+T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h artifact `9066967620` created no stable product regression event: its sole focused failure was classified as a test-authority witness defect while all entering product/preservation authority remained unchanged. Remediation artifact `9069186973` is now immutable accepted with focused **6/6**, required-green **187/187**, full entering preservation/direct-product authority, unchanged historical-red classes, and exact postflight. M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` compiled **120/120** and packaged as artifact `9072101943`; no generated runtime executed, so no stable product regression event or recurrence is assigned from M1i compile-only evidence. `PR8-R034 / G4-R007` remains active.
 
 | Cause category | Pattern | Events | Recurrences |
 |---|---|---:|---:|
@@ -55,7 +55,7 @@ good: distinct semantic type + named checked adapter + typed failure.
 - M1d phase-front route source-vertex/interior-transition consumer: **accepted**.
 - M1e ordered segment-route step identity is accepted. M1f continuation-route steps cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and immutable runtime acceptance is complete.
 - M1g periodic crossings cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and are **immutable accepted**.
-- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i next targets cell-owned `SourceComponentId` / `IsolationSheetId` scope.
+- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i now carries cell-owned source component/sheet state through checked `SourceComponentId` / `IsolationSheetId`; compile/package is complete and runtime acceptance is pending.
 
 M1d accepted invariants:
 
@@ -87,9 +87,9 @@ good: named semantic contract + independent oracle + direct representative evide
 
 Focused migration tests do not replace this authority. M1h remediation artifact `9069186973` is now immutable accepted: producer discovery **202**, required-green **187/187**, M1h **6/6**, all M1g–M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean without a fixture symlink, all eight historical/deferred red classes unchanged, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. The prior `MultipleOrientationChartsPreserveEstablishedNumbering` failure remains classified as a test-authority witness defect, not a product regression. Historical totals stay **34 / 14 / 20**.
 
-M1i source-scope migration must preserve `RP-02 / TA-05` while adding production-path counterexamples for `SourceComponentId` versus `IsolationSheetId`, malformed enabled labels, face-row permutation, and typed-to-legacy compatibility derivation.
+M1i source-scope migration adds six compiled production-path contracts covering `SourceComponentId` versus `IsolationSheetId`, multi-sheet no-representative semantics, malformed enabled labels, face-row permutation, and typed-to-legacy compatibility derivation. They remain runtime pending; compile success is not test authority. The first package attempt's wrong-working-directory checksum failure was orchestration-only and caused no source change.
 
-Authoritative next Code + Build plan: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+Authoritative next immutable runtime plan: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`. Expected producer discovery is **208**, M1i focused **6/6**, and required-green **193/193**. Historical totals remain **34 / 14 / 20**.
 
 ### RP-03 — policy/stage state conflation
 

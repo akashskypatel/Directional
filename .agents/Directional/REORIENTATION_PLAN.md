@@ -52,7 +52,7 @@ M0 preserve immutable evidence [complete]
    M1f vertex continuation route transport consumer [accepted]
    M1g periodic holonomy route transport consumer [accepted]
    M1h phase-front field-chart consumer [accepted]
-   M1i phase-front cell source-scope consumer [selected; Code + Build next]
+   M1i phase-front cell source-scope consumer [compile/package complete; immutable runtime next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -113,10 +113,12 @@ M1e is accepted. Its facts remain folded into the durable handoff and regression
 
 M1h is immutable accepted from remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` and artifacts `9069186973 / 9069187317`: producer discovery **202**, focused **6/6**, required-green **187/187**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, unchanged historical-red classes, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. No new stable product regression or recurrence was created.
 
-Fresh accepted-source inspection selects M1i at `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`. The cell still persists source-component/isolation-sheet identity as raw integers although the authority kernel already defines `SourceComponentId` and `IsolationSheetId`.
+M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` is compile/package complete at `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`. Cell-owned component/sheet identity now crosses checked `SourceComponentId` / `IsolationSheetId` boundaries; neighboring raw representations remain explicit compatibility only.
 
-Authoritative next Code + Build plan:
-`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+Authoritative build/package run `31411770135` compiled **120/120** with exact artifacts `9072101943 / 9072102331`, recursive manifest **72/72**, and no generated Directional runtime execution. The first packaging attempt compiled successfully but its checksum verification used the wrong cwd; the corrected retry made no source delta. M1i semantic acceptance remains pending immutable runtime.
+
+Authoritative next Artifact-Only Test + Benchmark plan:
+`.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 

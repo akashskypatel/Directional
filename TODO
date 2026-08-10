@@ -5,15 +5,18 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a through M1h immutable accepted; M1i phase-front cell source-scope consumer selected for Code + Build**.
-- Accepted M1h remediation implementation `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0`; production implementation remains `de4e2ba7c19d2e49931655dc22d758f50656d054`.
-- M1h artifacts `9069186973 / 9069187317`: producer **202**, focused **6/6**, required-green **187/187**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products green without fixture symlink, all eight historical/deferred red classes unchanged.
-- Heavy run `31407263138`: Bunny unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase bounded safety-only at 60 seconds; both preserved exact **72/72** package authority.
-- Strict-validator timing remains deferred after fresh **0/10** characterization; no threshold/retry workaround is authorized.
-- M1i seam: `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`; migrate only cell-owned source scope to checked `SourceComponentId` / `IsolationSheetId`.
-- Authoritative next turn: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+- Architecture migration: **M1a through M1h immutable accepted; M1i source-scope Code + Build complete and immutable runtime pending**.
+- M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b`; seam `phase_front_cell_source_scope -> SurfacePhaseFrontCell::{sourceComponent, sourceSheet, sourceIsolationSheets}`.
+- Cell-owned source scope now uses checked `SourceComponentId` / `IsolationSheetId`; raw edge/pipeline values are explicit compatibility boundaries only.
+- Successful build run/job `31411770135 / 93531293415`: **120/120**, Release/static/Ninja/PRE_TEST, artifacts `9072101943 / 9072102331`, ZIP SHA-256 `e30860e5ec411dc4dc446d0a4dc65ce6f15c5784a6f5daca138ab44d7196bf25 / 38353b8c101a298d9a537a82da17e075180619343246a6ba4a8e2f430bd14d44`.
+- Package manifest **72/72**, digest `f5614100e1638990d46c7c8fa3d7c720c837dfae1ae515387977d4c0b9e9cac3`; 73 regular files, 7 executables, 2 libraries, 27 fixtures.
+- First build attempt `31410750675` compiled **120/120** and failed only at package checksum verification due wrong cwd; corrected retry made no source delta. First-attempt logs `9071739970`.
+- Code + Build runtime boundary: **false**; six M1i contracts compiled and were not executed.
+- Authoritative next turn: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+- Expected runtime authority: producer discovery **208**, M1i focused **6/6**, required-green **193/193**, full M1h–M1b/validation/M1a/T1/direct/historical/heavy/postflight preservation.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
-- Current immutable report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
+- Current Code + Build report: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Report.md`.
+## M1d immutable acceptance
 ## M1d immutable acceptance
 
 Selected accepted seam:
