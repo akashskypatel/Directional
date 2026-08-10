@@ -42,7 +42,8 @@ jobs:
           set -Eeuo pipefail
           git config user.name 'OpenAI Directional Agent'
           git config user.email 'directional-agent@users.noreply.github.com'
-          git add -- .agents/Directional/Future_Chat_Session_Handoff.md .agents/Directional/REORIENTATION_PLAN.md .agents/Directional/Regression_Root_Cause_Tracker.md MILESTONE_G_TODO.md TODO
+          git add -f -- .agents/Directional/Future_Chat_Session_Handoff.md .agents/Directional/REORIENTATION_PLAN.md .agents/Directional/Regression_Root_Cause_Tracker.md
+          git add -- MILESTONE_G_TODO.md TODO
           git diff --cached --check
           git commit -m 'docs: hand off M1h remediation immutable runtime'
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
