@@ -105,7 +105,7 @@ jobs:
           echo "[m1k] package immutable compile outputs without execution"
           PKG="$RESULT_DIR/package"
           mkdir -p "$PKG/bin" "$PKG/lib" \
-                   "$PKG/test-data/benchmarks/fixtures" \
+                   "$PKG/test-data/benchmarks" \
                    "$PKG/source" "$PKG/metadata"
 
           executables=(
@@ -127,13 +127,15 @@ jobs:
             cp "$BUILD_DIR/$library" "$PKG/lib/$library"
           done
 
-          cp -a benchmarks/fixtures/milestone-g \
-            "$PKG/test-data/benchmarks/fixtures/milestone-g"
-          FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures/milestone-g" \
+          cp -a benchmarks/fixtures "$PKG/test-data/benchmarks/fixtures"
+          FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures" \
+            -type f | wc -l | tr -d ' ')
+          MILESTONE_G_FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures/milestone-g" \
             -type f | wc -l | tr -d ' ')
           echo "[m1k] fixture_count=$FIXTURE_COUNT"
-          if [[ "$FIXTURE_COUNT" != "27" ]]; then
-            echo "[m1k] unexpected fixture count"
+          echo "[m1k] milestone_g_fixture_count=$MILESTONE_G_FIXTURE_COUNT"
+          if [[ "$FIXTURE_COUNT" != "27" || "$MILESTONE_G_FIXTURE_COUNT" != "21" ]]; then
+            echo "[m1k] unexpected source-authoritative fixture layout"
             exit 45
           fi
 
@@ -219,6 +221,7 @@ jobs:
           echo "manifest_sha256=$MANIFEST_SHA" | tee -a "$LOG_DIR/package-summary.txt"
           echo "package_regular_files=$PACKAGE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
           echo "fixtures=$FIXTURE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "milestone_g_fixtures=$MILESTONE_G_FIXTURE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
           echo "executables=${#executables[@]}" | tee -a "$LOG_DIR/package-summary.txt"
           echo "libraries=${#libraries[@]}" | tee -a "$LOG_DIR/package-summary.txt"
           echo "implementation_sha=$IMPLEMENTATION_SHA" | tee -a "$LOG_DIR/package-summary.txt"
