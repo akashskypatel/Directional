@@ -54,7 +54,8 @@ M0 preserve immutable evidence [complete]
    M1h phase-front field-chart consumer [accepted]
    M1i phase-front cell source-scope consumer [accepted]
    M1j phase-front edge source-scope consumer [accepted]
-   M1k phase-front edge topology-region consumer [selected; Code + Build next]
+   M1k phase-front edge topology-region consumer [accepted]
+   M1l phase-front cell topology-region consumer [selected; Code + Build next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -119,8 +120,15 @@ M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` is immutable accep
 
 Accepted-source inspection selects M1j at `SurfacePhaseFrontCell typed source scope -> SurfaceFrontEdge::{sourceComponent, sourceSheet, sourceIsolationSheets}`. Edge publication currently downgrades typed cell authority back to raw integers and region aggregation later overwrites/normalizes those raw edge fields. M1j migrates only edge-owned component/sheet authority, keeps raw `sourceTopologyRegion` out of scope, and requires aggregators to verify rather than recreate semantic source scope.
 
-Authoritative next Code + Build plan:
+Historical M1j Code + Build plan:
 `.agents/Directional/Architecture_M1j_Phase_Front_Edge_Source_Scope_Consumer_Code_Build_Plan.md`.
+
+M1j is immutable accepted. M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is likewise immutable accepted from artifact `9079318682` and runtime evidence `9080245848`: producer **220**, focused **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, historical-red classes unchanged, and exact **68/68** postflight.
+
+Accepted-source inspection selects M1l at `SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`. M1l migrates only cell-owned `TopologyRegionId` authority and leaves global region construction/schema migration for later bounded consumers/M2-M4.
+
+Authoritative next Code + Build plan:
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 

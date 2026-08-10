@@ -5,15 +5,16 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a through M1j immutable accepted; M1k Code + Build compile/package complete, immutable runtime pending**.
-- M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` migrates only `SurfaceFrontEdge::sourceTopologyRegion` to checked `TopologyRegionId`; topology-region construction/numbering and neighboring raw compatibility schemas remain unchanged.
-- Authoritative Code + Build run/job `31430898273 / 93593780187`; result/log artifacts `9079318682 / 9079319269`; recursive package manifest **68/68**, digest `0b76267ea2e40c5c417c0cade77e0b95d75fe1c27a6a2a94cc283f6c7660583c`; package has 69 regular files, 7 executables, 2 static libraries, and 27 fixtures.
-- Code + Build executed **no** generated Directional binary, test discovery/list, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
-- Authoritative next turn: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
-- Expected runtime authority: producer discovery **220**, M1k focused **6/6**, required-green **205/205**, plus complete entering preservation and exact immutable postflight.
-- Historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active. Compile/package orchestration retries did not establish a stable product regression.
+- Architecture migration: **M1a through M1k immutable accepted; M1l cell topology-region consumer selected for Code + Build**.
+- M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is immutable accepted from exact Code + Build artifacts `9079318682 / 9079319269` and artifact-only runtime run/job `31433794426 / 93603203081`.
+- Runtime authority: producer **220**, M1k **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, Bunny known-red unchanged, Vase bounded safety-only, exact **68/68** postflight.
+- Strict-validator timing sampled **10/10 pass** in fresh processes but remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect; no threshold/retry workaround is authorized.
+- Authoritative next turn: `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
+- M1l seam: `SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`.
+- Expected following runtime authority after M1l build: producer discovery **226**, M1l focused **6/6**, required-green **211/211**, plus complete entering preservation and exact immutable postflight.
+- Historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active. M1k extraction/harness/evidence-retention anomalies did not establish a stable product regression.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
-- Current Code + Build report: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Report.md`.
+- Current immutable report: `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1d immutable acceptance
 

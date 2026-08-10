@@ -2,39 +2,40 @@
 
 ## Mandatory next turn
 
-Run **M1k Phase-Front Edge Topology-Region Consumer — immutable Artifact-Only Test + Benchmark only** under:
+Run **M1l Phase-Front Cell Topology-Region Consumer — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1j are immutable accepted; M1k is compile/package complete but **not** semantically accepted until the artifact-only runtime turn passes. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1k are immutable accepted. Review policy is `never`.
 
-M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` changes only the edge-owned topology-region authority seam:
+M1l is bounded to:
 
-`SurfaceTopologyRegion::id / normalize_scope -> SurfaceFrontEdge::sourceTopologyRegion -> still-raw pipeline compatibility consumers`.
+`SurfaceTopologyRegion::id / normalize_scope -> SurfacePhaseFrontCell::sourceTopologyRegion -> still-raw materializer compatibility consumers`.
 
-`SurfaceFrontEdge::sourceTopologyRegion` is now checked optional `TopologyRegionId`. Existing topology-region discovery, partitioning, numbering, `SurfacePhaseFrontCell::sourceTopologyRegion`, raw region-by-face maps, periodic/bounded-disk/certificate topology-region schemas, component/sheet authority, M2-M6, and G4 product behavior remain out of scope.
+Migrate only cell-owned topology-region identity to checked `TopologyRegionId`. Preserve `SurfaceTopologyRegion::id`, raw region-by-face maps, certificate/periodic/bounded-disk/occurrence/lineage region schemas, topology-region discovery/partition/numbering, accepted component/sheet and edge-region authority, M2-M6, fallback/recovery, optimization, and G4 behavior.
 
-Authoritative Code + Build evidence:
+This is **Code + Build only**. Execute no generated Directional binary, GoogleTest discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input. Exactly six M1l production-path contracts compile only. Expected following runtime authority is producer **226**, M1l **6/6**, required-green **211/211**, plus all entering preservation gates.
 
-- run/job `31430898273 / 93593780187`;
-- result artifact `9079318682`, ZIP SHA-256 `90b8deea85c12460ae45b66d0c7aa67fa3771074b60841fd1a0e586b0088869d`;
-- log artifact `9079319269`, ZIP SHA-256 `1a9a06fe42e2329cff1ff9d5b4eba0b7986af47d855229119e6d76bc2f07e381`;
-- recursive package manifest **68/68**, SHA-256 `0b76267ea2e40c5c417c0cade77e0b95d75fe1c27a6a2a94cc283f6c7660583c`;
-- package cardinality **69** regular files including `SHA256SUMS`, seven executables, two static libraries, and 27 fixtures;
-- Release/static/Ninja/PRE_TEST approved targets compiled successfully; wall `8:19.09`, peak RSS `1860456 KiB`;
-- every runtime/test/benchmark/discovery/ctest/CLI/fuzzer/custom-input flag is false.
+Lessons that affect execution:
 
-The six compiled M1k production-path contracts remain **unexecuted** until the next turn. Expected runtime discovery is producer **220**; require M1k **6/6** individually and required-green producer **205/205**, plus M1j-M1b preservation, M1d/M1c counterexamples, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products, historical/deferred-red classification, strict timing characterization, bounded Bunny/Vase comparison when gates permit, and exact postflight.
+- use the exact accepted M1k source/package authority below; later documentation/control-plane commits are not runtime evidence commits;
+- Python `zipfile.extractall` did not preserve packaged executable mode bits during one local validation attempt; immutable runtime extraction must use a method such as CLI `unzip` that preserves the archive's natural executable attributes, never `chmod`/repair the package;
+- a single local Cylinder harness stall did not reproduce in immediate bounded local execution or either controlled remote run; do not add product workarounds for it;
+- the first remote M1k semantic run was green but its evidence upload used the wrong temp-root path; evidence paths in future workflows must use `${ runner.temp }`/`$RUNNER_TEMP` consistently.
 
-The Code + Build orchestration had pre-semantic failures while establishing the immutable package (patch recount, post-build untracked build-dir cleanliness, and incomplete fixture-copy cardinality). These were control-plane/package issues; the exact M1k implementation compiled successfully and no generated Directional runtime executed. Do **not** create a stable product-regression event from those retries.
-
-Durable-document safety remains mandatory: design, architecture, policy, handoff, tracker, and planning documents must not be destructively rewritten or have durable information removed except in an explicitly user-authorized review turn or with explicit user authorization. Routine status updates must be surgical and preserve prior durable information.
-
-Current report:
-`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Code_Build_Report.md`.
+Current immutable report:
+`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Plan.md`.
+
+## M1k immutable acceptance authority
+
+M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is immutable accepted from exact Code + Build artifacts `9079318682 / 9079319269` and authoritative artifact-only runtime `31433794426 / 93603203081`. Runtime evidence/log artifacts are `9080245848 / 9080246452`.
+
+Acceptance authority: producer discovery **220**, M1k focused **6/6**, M1j-M1b focused preservation green, M1d/M1c counterexamples **3/3 + 3/3**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean, all eight historical/deferred red classes unchanged, strict timing fresh **10/10** but still deferred as nondeterministic, Bunny unchanged `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`, Vase bounded safety-only at 60 seconds, and exact **68/68** immutable postflight.
+
+No stable product regression event or recurrence was created. Historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active.
 
 ## M1j immutable acceptance authority
 
