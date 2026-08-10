@@ -21,29 +21,24 @@ jobs:
           ref: agent/surface_cell_quad/p5-recover-bridge-healing
           fetch-depth: 100
           submodules: false
-      - name: Apply surgical durable status closeout
+      - name: Apply surgical tracker formatting fix
         shell: bash
         run: |
           set -Eeuo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 .agents/Directional/turn-payloads/m1h-runtime-closeout.py
+          python3 .agents/Directional/turn-payloads/m1h-runtime-closeout-fix.py
           git diff --check
           mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
           printf '%s\n' "${changed[@]}"
-          test "${#changed[@]}" -eq 5
-          test "${changed[0]}" = '.agents/Directional/Future_Chat_Session_Handoff.md'
-          test "${changed[1]}" = '.agents/Directional/REORIENTATION_PLAN.md'
-          test "${changed[2]}" = '.agents/Directional/Regression_Root_Cause_Tracker.md'
-          test "${changed[3]}" = 'MILESTONE_G_TODO.md'
-          test "${changed[4]}" = 'TODO'
-      - name: Commit and push durable closeout
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = '.agents/Directional/Regression_Root_Cause_Tracker.md'
+      - name: Commit and push formatting fix
         shell: bash
         run: |
           set -Eeuo pipefail
           git config user.name 'OpenAI Directional Agent'
           git config user.email 'directional-agent@users.noreply.github.com'
-          git add -f -- .agents/Directional/Future_Chat_Session_Handoff.md .agents/Directional/REORIENTATION_PLAN.md .agents/Directional/Regression_Root_Cause_Tracker.md
-          git add -- MILESTONE_G_TODO.md TODO
+          git add -f -- .agents/Directional/Regression_Root_Cause_Tracker.md
           git diff --cached --check
-          git commit -m 'docs: accept M1h and hand off M1i source scope'
+          git commit -m 'docs: fix M1h regression tracker heading'
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
