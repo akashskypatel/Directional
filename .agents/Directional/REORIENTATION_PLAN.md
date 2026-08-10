@@ -111,7 +111,7 @@ Immutable M1e authority:
 M1e is accepted. Its facts remain folded into the durable handoff and regression tracker.
 
 Authoritative next Code + Build plan:
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 
@@ -149,23 +149,19 @@ Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::m
 
 The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring. Fresh accepted-source inspection selects the separate periodic face-cycle `totalMatching` accumulator as M1g. M1g is representation-only and must preserve current nonzero-rotation `PeriodicHolonomyMismatch` rejection so `G4-B003` remains unresolved.
 
-### M1g immutable acceptance and M1h selection
+### M1g immutable acceptance and M1h runtime block
 
-Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted at the periodic canonical-face-cycle whole-route transport owner. Exact artifact-only runtime passed M1g **6/6**, producer discovery **196**, required-green **181/181**, M1f/M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct independent-oracle products. Eight historical/deferred reds retained their classes, Bunny remained the known completion red, Vase remained bounded safety-only, and exact package postflight passed. Nonzero rotation remains `PeriodicHolonomyMismatch`; `G4-B003` is not closed.
+M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` remains immutable accepted. M1h production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` compiled/package successfully at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`, including the sibling `../test-data` package lookup correction.
 
-Current evidence: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Exact M1h runtime from artifact `9066967620` discovered **202** producer tests. Five of six M1h focused contracts passed; all M1g–M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products, package portability, and eight historical/deferred red classes were preserved. Required-green was **186/187** with the same sole M1h failure.
 
-M1g runtime also exposed a package-layout portability defect: `test_data_root()` checks `bin/test-data` while the accepted package stores `../test-data`. The next Code + Build must correct that executable-relative lookup without changing test semantics.
+The failure is test-authority, not production behavior: `MultipleOrientationChartsPreserveEstablishedNumbering` assumes all producer charts must appear among accepted lattice-corner occurrences. The fixture independently retains chart domain `{0,1,2}` but samples lattice corners only on `{0,2}`. M1h `RP-01 / RP-05` therefore remains runtime pending until the witness is corrected and a fresh immutable package passes all six contracts.
 
-Fresh accepted-source inspection selects the next real M1 semantic owner:
+Current evidence: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-`build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`.
+Next plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
 
-This producer creates connected equal-orientation field charts and currently stores/carries their identity as bare integers. `authority::FieldChartId` already exists. M1h adopts that type at the producer/constructive-front boundary while preserving chart partitioning/numbering, phase and lattice values, front topology, public compatibility output, periodic behavior, and G4 outcomes. `SurfaceTraceSegment::sourceChart`, chart-relation certificates, public schema retirement, M2–M6, and G4 repair remain out of scope unless the M1h plan names a narrow compile compatibility touchpoint.
-
-M1h implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` is now compile/package complete. It preserves the established chart partition/numbering while adopting checked `FieldChartId` at the phase-frame/constructive-front boundary, carries typed optional lattice chart authority, and corrects packaged sibling `../test-data` lookup. Run/job `31398571348 / 93487537918` built **120/120** without generated runtime execution; exact artifacts are `9066967620 / 9066968049` with a **69/69** content manifest. Six M1h contracts compile but remain unexecuted.
-
-Next immutable Test + Benchmark plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+Do not advance to another M1 consumer, M2, or G4 repair before corrected M1h immutable acceptance.
 
 ## 5. Required target-stage corrections
 

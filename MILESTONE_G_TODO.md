@@ -60,13 +60,19 @@ M1e does not migrate the separate periodic-holonomy loop, `FieldChartId`, public
 
 M1e accepted facts remain retained in the durable handoff and regression tracker.
 
-## Authoritative next turn
+## M1h runtime block and authoritative next turn
 
-Run **M1h Phase-Front Field-Chart Consumer — immutable Test + Benchmark only** under:
+Exact M1h artifacts `9066967620 / 9066968049` passed immutable package authority, producer discovery **202**, all entering focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products without fixture symlink, and unchanged historical-red classes. M1h focused is **5/6** and required-green is **186/187**, both blocked only by `MultipleOrientationChartsPreserveEstablishedNumbering`.
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
+Diagnosis: the existing multi-orientation fixture retains producer chart numbering `{0,1,2}`, including compatibility chart `1` on face `3` and chart `2` on face `10`, but its accepted lattice corners sample only charts `{0,2}`. The test incorrectly treats producer-domain coverage as lattice-occurrence coverage. This is a test-authority defect, not a product regression. Do not change the chart-domain expectation to `{0,2}`; repair the witness.
 
-Consume only exact artifacts `9066967620 / 9066968049` from implementation `de4e2ba7c19d2e49931655dc22d758f50656d054`. Expected producer discovery is **202**, M1h focused **6/6**, and required-green producer **187/187**. Rebuild/edit nothing. The package must locate sibling `../test-data` without an external fixture symlink.
+Run **M1h Phase-Front Field-Chart Test-Authority Remediation — Code + Build only** under:
+
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`
+
+The remediation is expected to be test-only. Production M1h source and the runtime-proven sibling `../test-data` fixture lookup remain unchanged unless source inspection proves a real semantic contradiction. Compile/package only; execute no generated Directional binary.
+
+Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1f vertex-continuation transport — immutable accepted
 
@@ -95,7 +101,7 @@ Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted 
 
 All eight historical/deferred producer reds retained their entering classes. Bunny remains the known completion red and Vase bounded safety-only. Nonzero periodic rotation remains `PeriodicHolonomyMismatch`, so `G4-B003` is still unresolved. Heavy comparison run `31394985769` and exact local/remote postflight preserved immutable package authority. No new stable regression event or recurrence was created.
 
-Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1h phase-front field-chart authority — compile/package complete
 
@@ -144,9 +150,9 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;

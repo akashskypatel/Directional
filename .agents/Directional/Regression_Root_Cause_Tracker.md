@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after M1h compile/package completion from artifact `9066967620`; immutable M1h runtime is next.
+Last updated: **2026-08-10 UTC** after blocked M1h immutable runtime from artifact `9066967620`; test-authority remediation is next.
 
 ## Rules
 
@@ -22,7 +22,7 @@ Last updated: **2026-08-10 UTC** after M1h compile/package completion from artif
 - **20 recurrences**;
 - **114 regression-bearing result-document commits**.
 
-T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h compile artifact `9066967620` creates no stable product regression event from compile-only evidence; semantic acceptance remains pending. `PR8-R034 / G4-R007` remains active.
+T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h artifact `9066967620` creates no stable product regression event: immutable runtime is blocked by one newly introduced focused test-authority witness, while all entering product/preservation authority remained unchanged. Semantic acceptance remains pending. `PR8-R034 / G4-R007` remains active.
 
 | Cause category | Pattern | Events | Recurrences |
 |---|---|---:|---:|
@@ -85,7 +85,7 @@ good: named semantic contract + independent oracle + direct representative evide
 - Bunny known-red with independent oracle before fatal product-success assertion;
 - Vase bounded 60-second safety-only evidence.
 
-Focused migration tests do not replace this authority. M1g preservation passed exact artifact execution from `9053047653`. M1h adds six focused contracts, but `RP-02 / TA-05` preservation remains pending until exact artifact runtime.
+Focused migration tests do not replace this authority. M1g preservation passed exact artifact execution from `9053047653`. M1h exact artifact runtime preserved entering `RP-02 / TA-05` authority but the new M1h suite is **5/6** because `MultipleOrientationChartsPreserveEstablishedNumbering` conflates producer chart-domain coverage with lattice-corner occurrence coverage. Required-green is **186/187** with that same sole failure. No stable product regression event or recurrence is added; M1h acceptance remains blocked until the test witness is corrected and re-run from a fresh immutable package.
 
 ### RP-03 — policy/stage state conflation
 
@@ -223,6 +223,18 @@ M1f immutable authority:
 
 No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
 
+
+### M1h blocked runtime / test-authority record
+
+- implementation: `de4e2ba7c19d2e49931655dc22d758f50656d054`; artifact `9066967620`; manifest **69/69**; producer discovery **202**;
+- focused: **5/6**; sole failure `MultipleOrientationChartsPreserveEstablishedNumbering`;
+- required-green: **186/187**, same sole failure;
+- M1g/M1f/M1e/M1d/M1c/M1b focused preservation green; validation **77/77**; M1a **14/14**; T1 **29/29**;
+- direct products green from arbitrary extraction with no fixture symlink; historical/deferred red classes unchanged;
+- diagnosis: fixture samples lattice-corner chart IDs `{0,2}` while producer/segment authority still proves chart domain `{0,1,2}`; test incorrectly equates producer-domain and occurrence coverage;
+- disposition: **test-authority defect, not stable product regression**; historical totals remain **34 / 14 / 20**; `PR8-R034 / G4-R007` remains active;
+- next: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
+
 ### M1g immutable accepted pattern record
 
 M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` migrates the periodic canonical-face-cycle whole-route accumulator to checked source vertices, canonical topology keys, checked compact transitions, `TransitionStep`, `CanonicalRoute`, and typed transport composition. It preserves current `PeriodicHolonomyMismatch` rejection for nonzero cycle rotation. `G4-B003` remains unresolved.
@@ -239,7 +251,7 @@ Immutable authority:
 - Bunny known-red and Vase bounded safety-only under run `31394985769`;
 - strict-validator characterization **1/10 pass, 9/10 fail**, retaining the existing nondeterministic performance-test defect;
 - exact local and remote postflight passed;
-- report `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+- report `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
 
@@ -260,7 +272,7 @@ Compile/package authority:
 - six focused M1h contracts compiled and unexecuted;
 - all Code + Build runtime flags false;
 - packaged sibling `../test-data` resolution correction compiled;
-- current report `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Report.md`.
+- current report `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `RP-02 / TA-05` remain runtime pending for M1h. `RP-07` is preservation-only and unchanged.
 
@@ -323,6 +335,6 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Code_Build_Plan.md`.
 
 The next turn is **Code + Build only**. Adopt checked `FieldChartId` at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`, correct packaged fixture lookup to recognize sibling `../test-data`, compile/package the required artifact, and execute no generated Directional binary. M1h remains runtime pending until a following immutable Test + Benchmark turn.
