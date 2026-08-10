@@ -2,15 +2,15 @@
 
 ## Mandatory next turn
 
-Run **M1f Vertex Continuation Route Transport Consumer — immutable Test + Benchmark only** under:
+Run **M1g Periodic Holonomy Route Transport Consumer — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`
 
-Consume only immutable result/log artifacts `9050850344 / 9050850513` produced from implementation `baed0f24831c476f45a1b742c12314e3fb03e10e`. Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c/M1d/M1e remain immutable accepted; M1f is compile/package complete and runtime-pending. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c/M1d/M1e/M1f are immutable accepted. Review policy is `never`.
 
-This next turn may execute packaged binaries but may not edit source/tests/fixtures/build logic, configure, compile, relink, regenerate discovery, repair packaged content, or substitute an artifact. Long/resource-heavy cases may use narrowly scoped GitHub Actions under the durable workflow policy below, but remote execution does not relax artifact-only authority.
+M1g migrates only the separate periodic whole-cycle `totalMatching` transport accumulator to the accepted checked route/`GridAutomorphism` algebra. It is representation-only: preserve canonical face-cycle discovery/order, `PeriodicHolonomyMismatch` rejection semantics, legacy matching behavior, public `SurfacePeriodicHolonomy` compatibility output, lattice translation/cut-route behavior, G4 outcomes, and unresolved `G4-B003` nonzero periodic Z4 capability. Code + Build may edit/configure/compile/package but may execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
 
-## M1f compile/package authority — immutable runtime pending
+## M1f compile/package authority — historical accepted build
 
 Selected seam:
 `surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
@@ -30,8 +30,19 @@ M1f replaces `PathState::matching` raw signed accumulation with checked source-s
 
 Exactly six `SurfaceCellVertexContinuationRouteTransportAuthorityMigration` contracts are compiled but unexecuted. The expected next-turn producer discovery is **190** and required-green producer segment is **175/175**. The first compile attempt `17afbfd8baf0d369d9136534c0a11784ca0dca10` failed because a forward declaration crossed the existing anonymous-namespace helper ownership boundary; the surgical correction introduced a local continuation provenance helper and compiled successfully without changing accepted M1e authority.
 
-Current Code + Build report:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Report.md`.
+The superseded Code + Build report has been folded into the current immutable M1f report:
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+## M1f immutable acceptance authority
+
+Exact artifact-only validation accepted implementation `baed0f24831c476f45a1b742c12314e3fb03e10e`: producer discovery **190**, M1f **6/6**, required-green producer **175/175**, M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and direct Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle gates all passed. Bunny preserved the known `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0` failure after independent-oracle rejection; Vase reached `[ RUN ]` and remained bounded safety-only at 60 seconds. Strict-validator timing remained nondeterministic at **9/10 pass, 1/10 fail** in fresh M1f characterization. Local and remote postflight preserved exact artifact/package authority.
+
+Remote heavy-case evidence: run `31357556834`; Bunny job/artifact `93360001159 / 9051190671` (`04c1c9a74dd5c0d104006230180043d7d0eed6a22812379558138c4c4b7fcadf`), Vase job/artifact `93360001142 / 9051188086` (`84cf33ee9ef469c33b149a0e4a77620df13207d991a89f73ed5c6c2c9da06750`). The temporary runtime workflow was removed before its trigger.
+
+A non-blocking package metadata defect was found: `metadata/direct-product-test-names.txt` contains stale nonexistent non-parameterized names for MultiFaceSeam and CloseSheets. Runtime authority used the accepted parameterized independent-oracle product tests; the next Code + Build plan corrects only this packaging metadata.
+
+Current immutable report:
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1e immutable acceptance authority
 
@@ -57,7 +68,7 @@ The malformed contract was narrowly corrected after Review: typed construction i
 Immutable runtime acceptance passed M1e focused **6/6**, producer discovery **184**, required-green producer **169/169**, M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and direct Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle gates. The strict-validator 5% microbenchmark was characterized as nondeterministic (**6/10 pass, 4/10 fail**) and remains deferred; it is not stable product evidence.
 
 Current immutable report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Accepted M1d immutable authority
 
@@ -90,7 +101,7 @@ Direct required-green products from the exact M1d producer executable remain ind
 All nine historical/deferred producer reds remain explicit with their prior failure classes; no new regression or recurrence was created.
 
 M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and the current immutable report:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1d accepted semantic boundary
 
@@ -189,9 +200,9 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
@@ -199,9 +210,9 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 - `TODO`;
 - `MILESTONE_G_TODO.md`.
 
-At the start of immutable M1f Test + Benchmark, fetch fresh PR/head and artifact state; verify implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` remains an ancestor and artifacts `9050850344 / 9050850513` remain unexpired with exact declared digests. Do not assume this handoff's documentation head if external commits move the branch.
+At the start of M1g Code + Build, fetch fresh PR/head state; verify accepted M1f implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` remains an ancestor, then inspect the current periodic whole-cycle transport owner before editing. Do not assume this handoff's documentation head if external commits move the branch.
 
-If immutable M1f validation finds any required-green semantic or preservation regression, remain at M1f and return to corrective Code + Build. Do not advance to periodic whole-cycle holonomy, production `FieldChartId`, M2, or G4 remediation until M1f is accepted.
+If M1g inspection shows the periodic face-cycle path no longer owns the raw cumulative transport described by the authoritative plan, stop and revise the plan rather than migrating a different owner. M1g must not implement nonzero periodic Z4 support; `G4-B003` remains a separate product blocker.
 
 After all branch-file and PR-body writes for a completed turn, the final repository write is exactly one new top-level PR #8 conversation comment.
 

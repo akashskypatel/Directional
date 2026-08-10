@@ -49,7 +49,8 @@ M0 preserve immutable evidence [complete]
    M1c field-transition consumer [accepted]
    M1d phase-front route identity consumer [accepted]
    M1e segment route transport consumer [accepted]
-   M1f vertex continuation route transport consumer [compile/package complete; runtime pending]
+   M1f vertex continuation route transport consumer [accepted]
+   M1g periodic holonomy route transport consumer [next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -90,7 +91,7 @@ Accepted M1d authority:
 - exact package postflight preserved.
 
 Accepted M1d evidence:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 M1e is immutable accepted at:
 
@@ -108,10 +109,10 @@ Immutable M1e authority:
 - Code + Build executed no generated Directional binary, discovery, test, or benchmark; immutable runtime subsequently passed M1e **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct required-green products.
 
 M1e is accepted. The authoritative current report is:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 Authoritative next immutable Test + Benchmark plan:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 
@@ -139,15 +140,15 @@ M1e implementation `a0330d0...` adopts:
 
 The accepted implementation preserves existing public/raw provenance and matching storage and excludes the separate periodic-holonomy loop, field-chart production, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery expansion, optimization, and G4 repair. Immutable semantic acceptance passed.
 
-### M1f compile/package checkpoint
+### M1f immutable acceptance and M1g selection
 
 M1f selects the next real cumulative transport owner:
 
 `surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
 
-Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::matching` unrestricted signed accumulation with checked step authority, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition while preserving route search/ranking and compatibility output. Compile/package run `31356131866 / 93356062724` completed **120/120** with immutable artifact `9050850344`, manifest **59/59** `3607c79873f45d035e6b1339288ed26582007a9068768da167abc603c376059e`, and no generated runtime. M1f remains unaccepted until exact artifact-only semantic validation.
+Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::matching` unrestricted signed accumulation with checked step authority, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition while preserving route search/ranking and compatibility output. Exact artifact-only validation accepted M1f: producer **190**, focused **6/6**, required-green **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, direct products oracle-clean, Bunny known-red preserved, Vase bounded safety-only, and exact postflight clean. Current evidence: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring.
+The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring. Fresh accepted-source inspection selects the separate periodic face-cycle `totalMatching` accumulator as M1g. M1g is representation-only and must preserve current nonzero-rotation `PeriodicHolonomyMismatch` rejection so `G4-B003` remains unresolved.
 
 ## 5. Required target-stage corrections
 
