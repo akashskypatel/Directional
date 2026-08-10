@@ -76,13 +76,14 @@ jobs:
           exec > >(tee -a "$LOG") 2>&1
           git config user.name 'OpenAI Directional Agent'
           git config user.email 'directional-agent@users.noreply.github.com'
-          git add -- \
+          git add -f -- \
             .agents/Directional/Future_Chat_Session_Handoff.md \
             .agents/Directional/REORIENTATION_PLAN.md \
-            .agents/Directional/Regression_Root_Cause_Tracker.md \
-            MILESTONE_G_TODO.md \
-            TODO
+            .agents/Directional/Regression_Root_Cause_Tracker.md
+          git add -- MILESTONE_G_TODO.md TODO
           git diff --cached --check
+          mapfile -t staged < <(git diff --cached --name-only | LC_ALL=C sort)
+          test "${#staged[@]}" -eq 5
           git diff --cached --name-status
           git commit -m 'docs: accept M1i runtime and select M1j'
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
