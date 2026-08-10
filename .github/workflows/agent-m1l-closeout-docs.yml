@@ -29,8 +29,8 @@ jobs:
         run: |
           set -Eeuo pipefail
           python3 .agents/Directional/turn-payloads/m1l-closeout-docs.py
-          git add \
-            TODO.md \
+          git add TODO.md
+          git add -f \
             .agents/Directional/CHANGELOG.md \
             .agents/Directional/Future_Chat_Session_Handoff.md \
             .agents/Directional/REORIENTATION_PLAN.md \
