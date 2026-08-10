@@ -1,0 +1,102 @@
+name: Agent M1l Apply Source Patch
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1l-apply.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1l-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  BASE_SOURCE_SHA: d5a97953416196a8fc74c8d9790a1ae7b646ca2d
+  PATCH_FILE: .agents/Directional/turn-payloads/m1l-cell-topology-region.patch
+  EXPECTED_PATCH_SHA256: af9fb6a2f7c242aed12f2005bc97698a1e1cf02a7374fc98d7b1e1a264bb28e2
+  LOG_DIR: ${{ runner.temp }}/m1l-apply-logs
+  ACTIVITY_LOG: ${{ runner.temp }}/m1l-apply-logs/activity.log
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent log
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$LOG_DIR"
+          printf '%s\n' \
+            "run_id=$GITHUB_RUN_ID" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" \
+            "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            > "$ACTIVITY_LOG"
+
+      - name: Checkout exact event source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Verify and apply M1l patch
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          actual_patch_sha=$(sha256sum "$PATCH_FILE" | awk '{print $1}')
+          printf 'patch_sha256=%s\n' "$actual_patch_sha"
+          test "$actual_patch_sha" = "$EXPECTED_PATCH_SHA256"
+
+          if grep -Eq '^(---|\+\+\+) [ab]/\.github/workflows/' "$PATCH_FILE"; then
+            echo 'Patch modifies .github/workflows/**, which is forbidden.' >&2
+            exit 2
+          fi
+
+          git diff --quiet "$BASE_SOURCE_SHA" -- \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            tests/SurfaceCellTransitionQuotientTests.cpp
+
+          git apply --recount --check "$PATCH_FILE"
+          git apply --recount --index "$PATCH_FILE"
+          git diff --check --cached
+
+          actual_paths=$(git diff --cached --name-only | LC_ALL=C sort)
+          expected_paths=$(printf '%s\n' \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellTransitionQuotientTests.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp | LC_ALL=C sort)
+          test "$actual_paths" = "$expected_paths"
+
+          printf '%s\n' '--- staged diff stat ---'
+          git diff --cached --stat
+          printf '%s\n' '--- staged changed paths ---'
+          printf '%s\n' "$actual_paths"
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'refactor(surface-cell): type cell topology-region authority'
+          implementation_sha=$(git rev-parse HEAD)
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          printf 'implementation_sha=%s\n' "$implementation_sha"
+          printf 'finished_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      - name: Always upload detailed workflow logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1l-apply-patch-logs-${{ github.run_id }}
+          path: ${{ runner.temp }}/m1l-apply-logs
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 6
