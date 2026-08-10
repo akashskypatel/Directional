@@ -1,5 +1,6 @@
 M1k Phase-Front Edge Topology-Region Consumer Code + Build
-attempt: 2
-triggered: 2026-08-10T20:18:00Z
-workflow fix: git apply --recount
+attempt: 3
+triggered: 2026-08-10T20:28:00Z
+implementation: b9181364926cea840e9cb50da21fe721f33fd874
+workflow fix: ignore generated untracked build/log directories in source-cleanliness gate
 runtime policy: compile/package only; no generated Directional execution
