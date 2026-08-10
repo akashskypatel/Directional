@@ -28,6 +28,20 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
+          # Temporary updater fix: in TODO, preserve the exact Code+Build report line
+          # until its semantic replacement is applied. The original ordering replaced
+          # only the path too early and made the guarded exact replacement unreachable.
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('.agents/connector-tasks/m1f_tb_closeout.py')
+          s = p.read_text()
+          old = "t = t.replace(M1F_CB_REPORT, M1F_REPORT).replace(M1F_TB_PLAN, M1G_PLAN)"
+          new = "t = t.replace(M1F_TB_PLAN, M1G_PLAN)"
+          if s.count(old) < 1:
+              raise SystemExit('temporary updater ordering target missing')
+          s = s.replace(old, new, 1)
+          p.write_text(s)
+          PY
           python3 .agents/connector-tasks/m1f_tb_closeout.py
           git diff --check
           echo 'changed paths:'
@@ -35,7 +49,9 @@ jobs:
           # Durable/live edits plus exactly three superseded per-turn deletions only.
           mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
           printf '%s\n' "${changed[@]}"
-          test "${#changed[@]}" -eq 8
+          test "${#changed[@]}" -eq 9
+          # The ninth path is the temporary updater self-correction and is not committed.
+          printf '%s\n' "${changed[@]}" | grep -Fx '.agents/connector-tasks/m1f_tb_closeout.py'
           printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/Future_Chat_Session_Handoff.md'
           printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/REORIENTATION_PLAN.md'
           printf '%s\n' "${changed[@]}" | grep -Fx '.agents/Directional/Regression_Root_Cause_Tracker.md'
@@ -49,6 +65,8 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
+          # Revert the temporary updater self-correction; the helper itself is cleanup-only.
+          git checkout -- .agents/connector-tasks/m1f_tb_closeout.py
           git config user.name directional-agent
           git config user.email directional-agent@users.noreply.github.com
           git add TODO MILESTONE_G_TODO.md
