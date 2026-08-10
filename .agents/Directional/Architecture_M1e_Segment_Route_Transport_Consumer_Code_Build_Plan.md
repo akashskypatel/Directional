@@ -146,8 +146,12 @@ Required contracts:
    - prove the migrated semantic route still publishes the exact ordered existing source topology and compact transition provenance expected by downstream consumers.
 
 5. `MalformedAuthoritativeStepMetadataFailsClosedWithoutFallback`
-   - corrupt authoritative route-step metadata so typed identity/transport cannot be established;
-   - require the existing typed phase-front failure path and no geometric/legacy recovery.
+   - corrupt the authoritative `sourceEdge` sentinel for a predetermined edge
+     on the exact multi-step route;
+   - prove planar transition validation still succeeds and the real
+     `segment_on_source` consumer rejects that step as
+     `MissingTransitionProvenance`, with concrete cell/side diagnostics and no
+     geometric/legacy recovery.
 
 6. `LegacyMatchingFallbackUsesSameTypedRouteComposition`
    - exercise the existing explicitly permitted `edgeTransitions`-absent matching path;
@@ -156,6 +160,24 @@ Required contracts:
 Tests must call real production entry points that execute `segment_on_source`; no standalone reimplementation of route composition is valid test authority. Each test must assert observable product/failure/provenance relations, not just construction mechanics.
 
 If a proposed fixture does not actually create the intended multi-step route or transport variation, fix the test input/fixture construction rather than weakening the contract.
+
+### 7.1 Review-authorized reachability correction
+
+The independent Review turn found that the original malformed-step wording was
+not reachable through the production entry point. After
+`source_edge_provenance` succeeds, the step topology comes from a real mesh
+edge, its compact transition value comes from a contiguous derived map, and
+`TransitionStep::interior` is construction-total for those validated facts.
+Corrupting a transition endpoint instead fails earlier in transition lookup and
+does not test this consumer.
+
+The corrected fifth contract therefore targets the immediately preceding
+authoritative provenance boundary inside `segment_on_source`. A nonnegative
+`CrossFieldEdgeTransition::sourceEdge` remains validation metadata only; it is
+not promoted to the semantic `InteriorTransitionId`. The typed ID continues to
+come exclusively from the compact value returned by
+`source_edge_provenance`. This correction removes an unreachable test premise
+without broadening M1e production scope.
 
 ## 8. Required preserved witnesses
 

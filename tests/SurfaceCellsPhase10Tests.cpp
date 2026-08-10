@@ -8,12 +8,14 @@
 #include <directional/validation/MeshValidator.h>
 #include <directional/validation/ValidationVisualizer.h>
 
+#include <algorithm>
 #include <cmath>
 #include <chrono>
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
+#include <tuple>
 
 #include <gtest/gtest.h>
 
@@ -889,6 +891,438 @@ std::size_t multi_edge_transition_count(
     }
   }
   return count;
+}
+
+int fixture_quarter_turn(const int value) {
+  return ((value % 4) + 4) % 4;
+}
+
+Eigen::MatrixXd relabeled_xy_raw_field(
+    const std::vector<int> &branchLabels) {
+  Eigen::Matrix<double, 4, 3> branches;
+  branches << 1.0, 0.0, 0.0,
+              0.0, 1.0, 0.0,
+             -1.0, 0.0, 0.0,
+              0.0, -1.0, 0.0;
+  Eigen::MatrixXd field(static_cast<Eigen::Index>(branchLabels.size()), 12);
+  for (Eigen::Index face = 0; face < field.rows(); ++face) {
+    const int label = fixture_quarter_turn(
+        branchLabels[static_cast<std::size_t>(face)]);
+    for (int branch = 0; branch < 4; ++branch) {
+      field.block<1, 3>(face, 3 * branch) =
+          branches.row(fixture_quarter_turn(label + branch));
+    }
+  }
+  return field;
+}
+
+struct SegmentRouteKey {
+  int previousFace = -1;
+  int currentFace = -1;
+  std::vector<std::uint64_t> sourceTopology;
+
+  bool operator==(const SegmentRouteKey &) const = default;
+};
+
+struct SegmentRouteObservation {
+  SegmentRouteKey key;
+  int matching = 0;
+  std::vector<int> sourceEdges;
+  int transitionSourceEdge = -1;
+  int sourceVertex = -1;
+  int previousExitEdge = -1;
+  int currentEntryEdge = -1;
+};
+
+int attached_source_vertex(const directional::TriMesh &mesh, const int face,
+                           const Eigen::RowVector3d &barycentric) {
+  int sourceVertex = -1;
+  for (int corner = 0; corner < 3; ++corner) {
+    if (barycentric[corner] < 1.0 - 1.0e-10) continue;
+    if (sourceVertex >= 0) return -1;
+    sourceVertex = mesh.F(face, corner);
+  }
+  return sourceVertex;
+}
+
+std::vector<SegmentRouteObservation> segment_route_observations(
+    const directional::TriMesh &mesh,
+    const directional::geometry::SurfaceCellNetwork &network) {
+  std::vector<SegmentRouteObservation> observations;
+  for (const auto &cell : network.phaseFront.cells) {
+    for (const auto &path : cell.boundaryPaths) {
+      for (std::size_t index = 1; index < path.size(); ++index) {
+        const auto &previous = path[index - 1U];
+        const auto &current = path[index];
+        if (current.transitionSourceTopology.empty()) continue;
+        const int previousVertex = attached_source_vertex(
+            mesh, previous.face, previous.endBarycentric);
+        const int currentVertex = attached_source_vertex(
+            mesh, current.face, current.startBarycentric);
+        observations.push_back(
+            {{previous.face, current.face, current.transitionSourceTopology},
+             current.matching, current.transitionSourceEdges,
+             current.transitionSourceEdge,
+             previousVertex >= 0 && previousVertex == currentVertex
+                 ? previousVertex
+                 : -1,
+             previous.exitEdge, current.entryEdge});
+      }
+    }
+  }
+  return observations;
+}
+
+std::vector<SegmentRouteObservation> observations_for_route(
+    const directional::TriMesh &mesh,
+    const directional::geometry::SurfaceCellNetwork &network,
+    const SegmentRouteKey &key) {
+  std::vector<SegmentRouteObservation> matches;
+  for (const auto &observation : segment_route_observations(mesh, network)) {
+    if (observation.key == key) matches.push_back(observation);
+  }
+  return matches;
+}
+
+using SegmentRouteSemanticSnapshot =
+    std::tuple<int, int, std::vector<std::uint64_t>, int, std::vector<int>,
+               int, int, int, int>;
+
+std::vector<SegmentRouteSemanticSnapshot> segment_route_semantic_snapshot(
+    const directional::TriMesh &mesh,
+    const directional::geometry::SurfaceCellNetwork &network) {
+  std::vector<SegmentRouteSemanticSnapshot> snapshot;
+  for (const auto &observation : segment_route_observations(mesh, network)) {
+    snapshot.emplace_back(
+        observation.key.previousFace, observation.key.currentFace,
+        observation.key.sourceTopology, observation.matching,
+        observation.sourceEdges, observation.transitionSourceEdge,
+        observation.sourceVertex, observation.previousExitEdge,
+        observation.currentEntryEdge);
+  }
+  std::sort(snapshot.begin(), snapshot.end());
+  return snapshot;
+}
+
+struct SegmentRouteFixture {
+  directional::TriMesh mesh;
+  std::vector<int> branchLabels;
+  directional::fields::CrossFieldResult authoritativeField;
+  SegmentRouteKey forwardRoute;
+  SegmentRouteKey reverseRoute;
+  std::vector<int> forwardCompactEdges;
+  std::vector<int> reverseCompactEdges;
+};
+
+SegmentRouteFixture make_segment_route_fixture() {
+  SegmentRouteFixture fixture;
+  fixture.mesh = make_vertex_fan_plane_mesh();
+  fixture.branchLabels.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  fixture.branchLabels[3] = 1;
+  fixture.branchLabels[10] = 3;
+  fixture.authoritativeField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          fixture.mesh, relabeled_xy_raw_field(fixture.branchLabels));
+
+  const std::uint64_t first =
+      directional::pipeline::surface_cell_source_edge_key(1, 7);
+  const std::uint64_t second =
+      directional::pipeline::surface_cell_source_edge_key(6, 7);
+  fixture.forwardRoute = {2, 10, {first, second}};
+  fixture.reverseRoute = {10, 2, {second, first}};
+  // Independent lexicographic enumeration of the fixture's 29 interior
+  // source edges assigns (1,7) -> 2 and (6,7) -> 9.
+  fixture.forwardCompactEdges = {2, 9};
+  fixture.reverseCompactEdges = {9, 2};
+  return fixture;
+}
+
+directional::geometry::SurfaceCellNetwork build_segment_route_network(
+    const SegmentRouteFixture &fixture,
+    const directional::fields::CrossFieldResult &crossField) {
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(fixture.mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(fixture.mesh.F.rows()), 0);
+  return directional::geometry::build_surface_cell_network(
+      fixture.mesh.V, fixture.mesh.F, crossField, targetSize, options);
+}
+
+const directional::fields::CrossFieldEdgeTransition *transition_for_edge(
+    const directional::fields::CrossFieldResult &crossField,
+    const std::uint64_t topology) {
+  const auto found = std::find_if(
+      crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
+      [&](const auto &transition) {
+        return directional::pipeline::surface_cell_source_edge_key(
+                   transition.sourceVertex0, transition.sourceVertex1) ==
+               topology;
+      });
+  return found == crossField.edgeTransitions.end() ? nullptr : &*found;
+}
+
+directional::fields::CrossFieldEdgeTransition *transition_for_edge(
+    directional::fields::CrossFieldResult &crossField,
+    const std::uint64_t topology) {
+  const auto found = std::find_if(
+      crossField.edgeTransitions.begin(), crossField.edgeTransitions.end(),
+      [&](const auto &transition) {
+        return directional::pipeline::surface_cell_source_edge_key(
+                   transition.sourceVertex0, transition.sourceVertex1) ==
+               topology;
+      });
+  return found == crossField.edgeTransitions.end() ? nullptr : &*found;
+}
+
+int directed_matching(
+    const directional::fields::CrossFieldEdgeTransition &transition,
+    const int sourceFace, const int targetFace) {
+  if (transition.firstFace == sourceFace &&
+      transition.secondFace == targetFace) {
+    return transition.matching;
+  }
+  if (transition.firstFace == targetFace &&
+      transition.secondFace == sourceFace) {
+    return -transition.matching;
+  }
+  return 0;
+}
+
+directional::fields::CrossFieldResult make_legacy_segment_route_field(
+    const SegmentRouteFixture &fixture) {
+  auto legacy = fixture.authoritativeField;
+  legacy.edgeTransitions.clear();
+
+  std::map<std::uint64_t, std::array<int, 2>> incidence;
+  for (int face = 0; face < fixture.mesh.F.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const std::uint64_t topology =
+          directional::pipeline::surface_cell_source_edge_key(
+              fixture.mesh.F(face, corner),
+              fixture.mesh.F(face, (corner + 1) % 3));
+      auto [found, inserted] = incidence.try_emplace(
+          topology, std::array<int, 2>{face, -1});
+      if (!inserted && found->second[0] != face && found->second[1] < 0) {
+        found->second[1] = face;
+      }
+    }
+  }
+
+  int interiorCount = 0;
+  for (const auto &[topology, faces] : incidence) {
+    (void)topology;
+    if (faces[0] >= 0 && faces[1] >= 0) ++interiorCount;
+  }
+  legacy.matching.resize(interiorCount);
+  legacy.effort = Eigen::VectorXd::Zero(interiorCount);
+  int compact = 0;
+  for (const auto &[topology, faces] : incidence) {
+    (void)topology;
+    if (faces[0] < 0 || faces[1] < 0) continue;
+    legacy.matching[compact++] = fixture_quarter_turn(
+        fixture.branchLabels[static_cast<std::size_t>(faces[0])] -
+        fixture.branchLabels[static_cast<std::size_t>(faces[1])]);
+  }
+  return legacy;
+}
+
+TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
+     MultiStepVertexFanComposesTypedRouteTransport) {
+  const SegmentRouteFixture fixture = make_segment_route_fixture();
+  const auto *first = transition_for_edge(
+      fixture.authoritativeField, fixture.forwardRoute.sourceTopology[0]);
+  const auto *second = transition_for_edge(
+      fixture.authoritativeField, fixture.forwardRoute.sourceTopology[1]);
+  ASSERT_NE(nullptr, first);
+  ASSERT_NE(nullptr, second);
+  const int firstTurn = fixture_quarter_turn(directed_matching(*first, 2, 3));
+  const int secondTurn =
+      fixture_quarter_turn(directed_matching(*second, 3, 10));
+  EXPECT_EQ(3, firstTurn);
+  EXPECT_EQ(2, secondTurn);
+  EXPECT_NE(0, firstTurn);
+  EXPECT_NE(0, secondTurn);
+
+  const auto network =
+      build_segment_route_network(fixture, fixture.authoritativeField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  const auto witnesses =
+      observations_for_route(fixture.mesh, network, fixture.forwardRoute);
+  ASSERT_FALSE(witnesses.empty())
+      << "fixture must execute the exact 2 -> 3 -> 10 vertex-fan route";
+  for (const auto &witness : witnesses) {
+    EXPECT_EQ(1, witness.matching);
+    EXPECT_EQ(7, witness.sourceVertex);
+    EXPECT_GE(witness.previousExitEdge, 0);
+    EXPECT_GE(witness.currentEntryEdge, 0);
+  }
+}
+
+TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
+     ReverseObservedRouteUsesExactTransportInverse) {
+  const SegmentRouteFixture fixture = make_segment_route_fixture();
+  const auto network =
+      build_segment_route_network(fixture, fixture.authoritativeField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition);
+
+  const auto forward =
+      observations_for_route(fixture.mesh, network, fixture.forwardRoute);
+  const auto reverse =
+      observations_for_route(fixture.mesh, network, fixture.reverseRoute);
+  ASSERT_FALSE(forward.empty());
+  ASSERT_FALSE(reverse.empty());
+  for (const auto &observation : forward) {
+    EXPECT_EQ(1, observation.matching);
+    EXPECT_EQ(7, observation.sourceVertex);
+  }
+  for (const auto &observation : reverse) {
+    EXPECT_EQ(3, observation.matching);
+    EXPECT_EQ(7, observation.sourceVertex);
+  }
+  EXPECT_EQ(0, fixture_quarter_turn(forward.front().matching +
+                                    reverse.front().matching));
+}
+
+TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
+     EquivalentSignedQuarterTurnsComposeSemantically) {
+  const SegmentRouteFixture fixture = make_segment_route_fixture();
+  auto equivalent = fixture.authoritativeField;
+  auto *first =
+      transition_for_edge(equivalent, fixture.forwardRoute.sourceTopology[0]);
+  auto *second =
+      transition_for_edge(equivalent, fixture.forwardRoute.sourceTopology[1]);
+  ASSERT_NE(nullptr, first);
+  ASSERT_NE(nullptr, second);
+  const int originalFirst = first->matching;
+  const int originalSecond = second->matching;
+  first->matching += 4;
+  second->matching -= 4;
+  EXPECT_NE(originalFirst, first->matching);
+  EXPECT_NE(originalSecond, second->matching);
+  EXPECT_EQ(fixture_quarter_turn(originalFirst),
+            fixture_quarter_turn(first->matching));
+  EXPECT_EQ(fixture_quarter_turn(originalSecond),
+            fixture_quarter_turn(second->matching));
+
+  const auto baseline =
+      build_segment_route_network(fixture, fixture.authoritativeField);
+  const auto relabeled = build_segment_route_network(fixture, equivalent);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            baseline.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            relabeled.phaseFront.disposition);
+  EXPECT_EQ(segment_route_semantic_snapshot(fixture.mesh, baseline),
+            segment_route_semantic_snapshot(fixture.mesh, relabeled));
+  const auto witnesses =
+      observations_for_route(fixture.mesh, relabeled, fixture.forwardRoute);
+  ASSERT_FALSE(witnesses.empty());
+  for (const auto &witness : witnesses) EXPECT_EQ(1, witness.matching);
+}
+
+TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
+     RouteTopologyAndCompactTransitionProvenanceRemainUnchanged) {
+  const SegmentRouteFixture fixture = make_segment_route_fixture();
+  const auto network =
+      build_segment_route_network(fixture, fixture.authoritativeField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition);
+
+  const auto forward =
+      observations_for_route(fixture.mesh, network, fixture.forwardRoute);
+  const auto reverse =
+      observations_for_route(fixture.mesh, network, fixture.reverseRoute);
+  ASSERT_FALSE(forward.empty());
+  ASSERT_FALSE(reverse.empty());
+  for (const auto &observation : forward) {
+    EXPECT_EQ(fixture.forwardRoute.sourceTopology,
+              observation.key.sourceTopology);
+    EXPECT_EQ(fixture.forwardCompactEdges, observation.sourceEdges);
+    EXPECT_EQ(9, observation.transitionSourceEdge);
+    EXPECT_EQ(7, observation.sourceVertex);
+  }
+  for (const auto &observation : reverse) {
+    EXPECT_EQ(fixture.reverseRoute.sourceTopology,
+              observation.key.sourceTopology);
+    EXPECT_EQ(fixture.reverseCompactEdges, observation.sourceEdges);
+    EXPECT_EQ(2, observation.transitionSourceEdge);
+    EXPECT_EQ(7, observation.sourceVertex);
+  }
+}
+
+TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
+     MalformedAuthoritativeStepMetadataFailsClosedWithoutFallback) {
+  const SegmentRouteFixture fixture = make_segment_route_fixture();
+  const auto baseline =
+      build_segment_route_network(fixture, fixture.authoritativeField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            baseline.phaseFront.disposition);
+  ASSERT_FALSE(observations_for_route(fixture.mesh, baseline,
+                                      fixture.forwardRoute)
+                   .empty());
+
+  auto malformed = fixture.authoritativeField;
+  auto *transition =
+      transition_for_edge(malformed, fixture.forwardRoute.sourceTopology[1]);
+  ASSERT_NE(nullptr, transition);
+  ASSERT_GE(transition->sourceEdge, 0);
+  transition->sourceEdge = -1;
+
+  const auto rejected = build_segment_route_network(fixture, malformed);
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            rejected.phaseFront.disposition);
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                MissingTransitionProvenance,
+            rejected.phaseFront.failure.reason);
+  EXPECT_GE(rejected.phaseFront.failure.cell, 0);
+  EXPECT_GE(rejected.phaseFront.failure.side, 0);
+  EXPECT_EQ(7, rejected.phaseFront.failure.sourceVertex);
+  EXPECT_TRUE((rejected.phaseFront.failure.face == 3 &&
+               rejected.phaseFront.failure.targetFace == 10) ||
+              (rejected.phaseFront.failure.face == 10 &&
+               rejected.phaseFront.failure.targetFace == 3));
+  EXPECT_FALSE(rejected.phaseFront.succeeded);
+  EXPECT_TRUE(rejected.phaseFront.cells.empty());
+  EXPECT_TRUE(rejected.seeds.empty());
+  EXPECT_TRUE(rejected.traces.empty());
+  EXPECT_TRUE(rejected.proposals.empty());
+}
+
+TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
+     LegacyMatchingFallbackUsesSameTypedRouteComposition) {
+  const SegmentRouteFixture fixture = make_segment_route_fixture();
+  const auto legacyField = make_legacy_segment_route_field(fixture);
+  ASSERT_TRUE(legacyField.edgeTransitions.empty());
+  ASSERT_EQ(29, legacyField.matching.size());
+  EXPECT_EQ(3, legacyField.matching[2]);
+  EXPECT_EQ(2, legacyField.matching[9]);
+
+  const auto authoritative =
+      build_segment_route_network(fixture, fixture.authoritativeField);
+  const auto legacy = build_segment_route_network(fixture, legacyField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            authoritative.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            legacy.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             legacy.phaseFront.failure.reason);
+  EXPECT_EQ(segment_route_semantic_snapshot(fixture.mesh, authoritative),
+            segment_route_semantic_snapshot(fixture.mesh, legacy));
+  const auto forward =
+      observations_for_route(fixture.mesh, legacy, fixture.forwardRoute);
+  const auto reverse =
+      observations_for_route(fixture.mesh, legacy, fixture.reverseRoute);
+  ASSERT_FALSE(forward.empty());
+  ASSERT_FALSE(reverse.empty());
+  for (const auto &observation : forward) EXPECT_EQ(1, observation.matching);
+  for (const auto &observation : reverse) EXPECT_EQ(3, observation.matching);
 }
 
 TEST(SurfaceCellsPhase10,
