@@ -286,10 +286,13 @@ struct SurfaceFrontEdge {
   int oppositeEdge = -1;
   int unfilledSide = 1;
   bool exterior = false;
-  int sourceComponent = -1;
+  /// Authoritative connected source component owning this front side.
+  std::optional<authority::SourceComponentId> sourceComponent;
   int sourceTopologyRegion = -1;
-  int sourceSheet = -1;
-  std::vector<int> sourceIsolationSheets;
+  /// Single-sheet authority; empty for legitimate multi-sheet front sides.
+  std::optional<authority::IsolationSheetId> sourceSheet;
+  /// Complete sorted isolation-sheet authority inherited from the owning cell.
+  std::vector<authority::IsolationSheetId> sourceIsolationSheets;
   SurfaceFrontBoundaryKind boundaryKind =
       SurfaceFrontBoundaryKind::OrdinaryInterior;
   /// Exact owner in SurfacePhaseFrontResult::periodicHolonomies.

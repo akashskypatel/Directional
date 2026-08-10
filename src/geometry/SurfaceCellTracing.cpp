@@ -5586,6 +5586,32 @@ legacy_phase_front_isolation_sheets(const SurfacePhaseFrontCell &cell) {
   return legacy;
 }
 
+
+int legacy_phase_front_source_component(const SurfaceFrontEdge &edge) {
+  return edge.sourceComponent.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   edge.sourceComponent.value()))
+             : -1;
+}
+
+int legacy_phase_front_source_sheet(const SurfaceFrontEdge &edge) {
+  return edge.sourceSheet.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   edge.sourceSheet.value()))
+             : -1;
+}
+
+std::vector<int> legacy_phase_front_isolation_sheets(
+    const SurfaceFrontEdge &edge) {
+  std::vector<int> legacy;
+  legacy.reserve(edge.sourceIsolationSheets.size());
+  for (const authority::IsolationSheetId sheet : edge.sourceIsolationSheets) {
+    legacy.push_back(static_cast<int>(
+        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+  }
+  return legacy;
+}
+
 SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     const Eigen::MatrixXi &faces, const SurfaceCellTracingOptions &options,
     const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
@@ -5936,9 +5962,9 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
             cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
         edge.filledCell = cellId;
         edge.filledSide = side;
-        edge.sourceComponent = legacy_phase_front_source_component(cell);
-        edge.sourceSheet = legacy_phase_front_source_sheet(cell);
-        edge.sourceIsolationSheets = legacy_phase_front_isolation_sheets(cell);
+        edge.sourceComponent = cell.sourceComponent;
+        edge.sourceSheet = cell.sourceSheet;
+        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const Eigen::Vector2i from = edge.fromLattice.latticeCoordinate;
@@ -7484,9 +7510,9 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
         edge.advanceSign = (delta.x() + delta.y()) >= 0 ? 1 : -1;
         edge.filledCell = cell.id;
         edge.filledSide = side;
-        edge.sourceComponent = legacy_phase_front_source_component(cell);
-        edge.sourceSheet = legacy_phase_front_source_sheet(cell);
-        edge.sourceIsolationSheets = legacy_phase_front_isolation_sheets(cell);
+        edge.sourceComponent = cell.sourceComponent;
+        edge.sourceSheet = cell.sourceSheet;
+        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const int a = canonical_node(edge.fromLattice.latticeCoordinate);
@@ -8811,9 +8837,9 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
         }
         edge.filledCell = cell.id;
         edge.filledSide = side;
-        edge.sourceComponent = legacy_phase_front_source_component(cell);
-        edge.sourceSheet = legacy_phase_front_source_sheet(cell);
-        edge.sourceIsolationSheets = legacy_phase_front_isolation_sheets(cell);
+        edge.sourceComponent = cell.sourceComponent;
+        edge.sourceSheet = cell.sourceSheet;
+        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const int a = node_index(edge.fromLattice.latticeCoordinate.x(),
@@ -9238,13 +9264,63 @@ SurfacePhaseFrontResult build_uniform_phase_front(
         return false;
       }
     }
+    const std::size_t componentExtent =
+        source_label_authority_extent(options.sourceFaceComponents);
+    const std::size_t sheetExtent =
+        source_label_authority_extent(options.sourceFaceSheets);
+    const auto typedRegionComponent =
+        authority::LegacyAuthorityAdapters::source_component(
+            region.sourceComponent, componentExtent);
+    if (!typedRegionComponent) return false;
+    std::vector<authority::IsolationSheetId> typedRegionSheets;
+    typedRegionSheets.reserve(region.isolationSheets.size());
+    for (const int rawSheet : region.isolationSheets) {
+      const auto typedSheet = authority::LegacyAuthorityAdapters::isolation_sheet(
+          rawSheet, sheetExtent);
+      if (!typedSheet) return false;
+      typedRegionSheets.push_back(typedSheet.value());
+    }
+    if (typedRegionSheets.empty() ||
+        !std::is_sorted(typedRegionSheets.begin(), typedRegionSheets.end()) ||
+        std::adjacent_find(typedRegionSheets.begin(), typedRegionSheets.end()) !=
+            typedRegionSheets.end()) {
+      return false;
+    }
     for (auto &edge : local.edges) {
       edge.sourceTopologyRegion = region.id;
-      edge.sourceComponent = region.sourceComponent;
-      if (!normalize_sheets(edge.sourceIsolationSheets)) return false;
-      edge.sourceSheet = edge.sourceIsolationSheets.size() == 1U
-                             ? edge.sourceIsolationSheets.front()
-                             : singleIsolationSheet;
+      const auto owner = std::find_if(
+          local.cells.begin(), local.cells.end(),
+          [&](const SurfacePhaseFrontCell &cell) {
+            return cell.id == edge.filledCell;
+          });
+      if (owner == local.cells.end() || !edge.sourceComponent.has_value() ||
+          edge.sourceComponent.value() != typedRegionComponent.value() ||
+          edge.sourceComponent != owner->sourceComponent ||
+          edge.sourceSheet != owner->sourceSheet ||
+          edge.sourceIsolationSheets != owner->sourceIsolationSheets ||
+          edge.sourceIsolationSheets.empty() ||
+          !std::is_sorted(edge.sourceIsolationSheets.begin(),
+                          edge.sourceIsolationSheets.end()) ||
+          std::adjacent_find(edge.sourceIsolationSheets.begin(),
+                             edge.sourceIsolationSheets.end()) !=
+              edge.sourceIsolationSheets.end()) {
+        return false;
+      }
+      for (const authority::IsolationSheetId typedSheet :
+           edge.sourceIsolationSheets) {
+        if (!std::binary_search(typedRegionSheets.begin(),
+                                typedRegionSheets.end(), typedSheet)) {
+          return false;
+        }
+      }
+      if (edge.sourceIsolationSheets.size() == 1U) {
+        if (!edge.sourceSheet.has_value() ||
+            edge.sourceSheet.value() != edge.sourceIsolationSheets.front()) {
+          return false;
+        }
+      } else if (edge.sourceSheet.has_value()) {
+        return false;
+      }
     }
     return true;
   };
@@ -9380,7 +9456,12 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       return result;
     }
     for (SurfaceFrontEdge &edge : local.edges) {
-      if (edge.sourceComponent != region.sourceComponent ||
+      const auto typedRegionComponent =
+          authority::LegacyAuthorityAdapters::source_component(
+              region.sourceComponent,
+              source_label_authority_extent(options.sourceFaceComponents));
+      if (!typedRegionComponent || !edge.sourceComponent.has_value() ||
+          edge.sourceComponent.value() != typedRegionComponent.value() ||
           edge.sourceTopologyRegion != region.id) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
@@ -9512,7 +9593,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     std::vector<std::int64_t> from = support_key(edge.from);
     std::vector<std::int64_t> to = support_key(edge.to);
     if (edge.oppositeEdge >= 0 || !edge.exterior || from.empty() || to.empty() ||
-        edge.sourceRouteTopology.empty()) {
+        !edge.sourceComponent.has_value() || edge.sourceRouteTopology.empty()) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
@@ -9523,8 +9604,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     std::vector<std::uint64_t> route = edge.sourceRouteTopology;
     std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
     if (reversed < route) route = std::move(reversed);
-    hardRailGroups[{edge.sourceComponent, std::move(from), std::move(to),
-                    std::move(route)}]
+    hardRailGroups[{legacy_phase_front_source_component(edge), std::move(from),
+                    std::move(to), std::move(route)}]
         .push_back(edgeIndex);
   }
   std::set<int> pairedHardEdges;

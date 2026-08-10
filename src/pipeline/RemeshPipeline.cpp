@@ -948,6 +948,34 @@ std::vector<int> legacy_phase_front_isolation_sheets(
   return legacy;
 }
 
+int legacy_phase_front_source_component(
+    const geometry::SurfaceFrontEdge &edge) {
+  return edge.sourceComponent.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   edge.sourceComponent.value()))
+             : -1;
+}
+
+int legacy_phase_front_source_sheet(
+    const geometry::SurfaceFrontEdge &edge) {
+  return edge.sourceSheet.has_value()
+             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+                   edge.sourceSheet.value()))
+             : -1;
+}
+
+std::vector<int> legacy_phase_front_isolation_sheets(
+    const geometry::SurfaceFrontEdge &edge) {
+  std::vector<int> legacy;
+  legacy.reserve(edge.sourceIsolationSheets.size());
+  for (const authority::IsolationSheetId sheet : edge.sourceIsolationSheets) {
+    legacy.push_back(static_cast<int>(
+        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+  }
+  return legacy;
+}
+
+
 std::uint64_t hash_trace_network(
     const geometry::SurfaceCellNetwork &network) {
   std::uint64_t seed = structural_hash_seed("tracing");
@@ -1106,10 +1134,10 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, edge.oppositeEdge);
     hash_combine_i64(seed, edge.unfilledSide);
     hash_combine_i64(seed, edge.exterior ? 1 : 0);
-    hash_combine_i64(seed, edge.sourceComponent);
+    hash_combine_i64(seed, legacy_phase_front_source_component(edge));
     hash_combine_i64(seed, edge.sourceTopologyRegion);
-    hash_combine_i64(seed, edge.sourceSheet);
-    hash_vector(seed, edge.sourceIsolationSheets);
+    hash_combine_i64(seed, legacy_phase_front_source_sheet(edge));
+    hash_vector(seed, legacy_phase_front_isolation_sheets(edge));
     hash_combine_i64(seed, static_cast<int>(edge.boundaryKind));
     hash_combine_i64(seed, edge.periodicRelation);
     hash_combine_i64(seed, edge.railId);
@@ -2402,8 +2430,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         phaseFront.cells[static_cast<std::size_t>(cell->second)];
     const int slot = cell->second * 4 + edge.filledSide;
     if (edgeByCellSide[static_cast<std::size_t>(slot)] >= 0 ||
-        edge.sourceComponent != legacy_phase_front_source_component(owner) ||
+        edge.sourceComponent != owner.sourceComponent ||
         edge.sourceTopologyRegion != owner.sourceTopologyRegion ||
+        edge.sourceSheet != owner.sourceSheet ||
+        edge.sourceIsolationSheets != owner.sourceIsolationSheets ||
         !trace_equal(edge.from,
                      owner.corners[static_cast<std::size_t>(edge.filledSide)]) ||
         !trace_equal(edge.to, owner.corners[static_cast<std::size_t>(
@@ -2417,8 +2447,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         edge.sourceIsolationSheets.empty() ||
         !std::is_sorted(edge.sourceIsolationSheets.begin(),
                         edge.sourceIsolationSheets.end()) ||
-        !isolation_sheets_connected(edge.sourceTopologyRegion,
-                                    edge.sourceIsolationSheets)) {
+        !isolation_sheets_connected(
+            edge.sourceTopologyRegion,
+            legacy_phase_front_isolation_sheets(edge))) {
       result.failure = "InvalidAuthoritativePhaseFrontSideAuthority";
       return result;
     }
