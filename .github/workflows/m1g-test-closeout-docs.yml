@@ -67,7 +67,7 @@ jobs:
           test -z "$(git status --short -- src include tests cmake CMakeLists.txt 2>/dev/null || true)"
           git config user.name 'OpenAI Directional Agent'
           git config user.email 'directional-agent@users.noreply.github.com'
-          git add TODO MILESTONE_G_TODO.md .agents/Directional
+          git add -u -- TODO MILESTONE_G_TODO.md .agents/Directional
           git diff --cached --check
           git commit -m 'docs: close M1g immutable runtime turn'
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
