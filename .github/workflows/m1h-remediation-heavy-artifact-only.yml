@@ -1,0 +1,215 @@
+name: m1h-remediation-heavy-artifact-only
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1h-remediation-heavy-artifact-only'
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: m1h-remediation-heavy-artifact-only
+  cancel-in-progress: false
+
+env:
+  RESULT_ARTIFACT_ID: '9069186973'
+  RESULT_SHA256: 'd2b334f278f0281c5b3a5a5a6b33ba8bf085b7cf374376beb437e559646d9df8'
+  MANIFEST_SHA256: '4b8839695369a114567a38fbcddc4dde7d1cea8b024940cb2071a256d9d594d8'
+  PRODUCER_SHA256: '937adceea641f372ee42eeb9a3b91c3bba2088847755cc234eaf0b3754f208ac'
+  IMPLEMENTATION: '32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0'
+  BASE_M1H: 'de4e2ba7c19d2e49931655dc22d758f50656d054'
+
+jobs:
+  heavy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - case: bunny
+            filter: 'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/BunnyRandom'
+            limit: '120'
+          - case: vase
+            filter: 'UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase'
+            limit: '60'
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          log="$RUNNER_TEMP/m1h-heavy-${{ matrix.case }}-activity.log"
+          printf '%s\n' \
+            'turn=M1h remediation immutable Artifact-Only Test+Benchmark heavy comparison' \
+            "case=${{ matrix.case }}" \
+            "run_id=$GITHUB_RUN_ID" \
+            "run_attempt=$GITHUB_RUN_ATTEMPT" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "artifact_id=$RESULT_ARTIFACT_ID" \
+            "expected_result_sha256=$RESULT_SHA256" \
+            "implementation=$IMPLEMENTATION" \
+            "base_m1h=$BASE_M1H" \
+            'configure=false' \
+            'build=false' \
+            'relink=false' \
+            'regeneration=false' \
+            'fixtureSymlink=false' \
+            "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee "$log"
+          echo "ACTIVITY_LOG=$log" >> "$GITHUB_ENV"
+
+      - name: Download exact immutable result artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=download exit_code=$rc"; exit $rc' EXIT
+          work="$RUNNER_TEMP/m1h-heavy-${{ matrix.case }}"
+          mkdir -p "$work"
+          echo "WORK=$work" >> "$GITHUB_ENV"
+          python3 --version
+          curl --fail --location --silent --show-error \
+            -H 'Accept: application/vnd.github+json' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${RESULT_ARTIFACT_ID}/zip" \
+            -o "$work/result.zip"
+          echo "$RESULT_SHA256  $work/result.zip" | sha256sum -c -
+          sha256sum "$work/result.zip"
+
+      - name: Immutable preflight
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step=preflight exit_code=$rc"; exit $rc' EXIT
+          pkg="$WORK/pkg"
+          mkdir -p "$pkg"
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+          from zipfile import ZipFile
+          import os
+          z=Path(os.environ['WORK'])/'result.zip'
+          out=Path(os.environ['WORK'])/'pkg'
+          with ZipFile(z) as f:
+              for name in f.namelist():
+                  p=PurePosixPath(name)
+                  if p.is_absolute() or '..' in p.parts:
+                      raise SystemExit(f'unsafe archive member: {name}')
+              f.extractall(out)
+          print('safe extraction ok')
+          PY
+          cd "$pkg"
+          echo "$MANIFEST_SHA256  SHA256SUMS" | sha256sum -c -
+          test "$(wc -l < SHA256SUMS)" -eq 72
+          sha256sum -c SHA256SUMS
+          test "$(find . -type f | wc -l)" -eq 73
+          test "$(find bin -maxdepth 1 -type f | wc -l)" -eq 7
+          test "$(find lib -maxdepth 1 -type f | wc -l)" -eq 2
+          test "$(find test-data/benchmarks/fixtures -type f | wc -l)" -eq 27
+          test ! -e bin/test-data
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          d=json.loads(Path('metadata/build-authority.json').read_text())
+          assert d['implementationCommit']==os.environ['IMPLEMENTATION']
+          assert d['baseM1hProductionImplementation']==os.environ['BASE_M1H']
+          assert d['runId']=='31404102605'
+          assert d['configuration']=='Release' and d['generator']=='Ninja'
+          assert d['sharedLibraries'] is False
+          assert d['gtestDiscoveryMode']=='PRE_TEST'
+          assert d['productionSourceDelta'] is False
+          for k in ['runtimeExecution','testExecution','benchmarkExecution','ctestExecution','cliExecution','fuzzerExecution','customInputExecution']:
+              assert d[k] is False, (k,d[k])
+          print('build authority ok')
+          PY
+          echo "$PRODUCER_SHA256  bin/directional_surface_cell_producer_tests" | sha256sum -c -
+          grep -Fx '71b991896846a486f29a550ddde4260748b03cd7' metadata/phase10-test-blob.txt
+          grep -Fx '102b2bbd3f57ec6b994cbe99b39c6d283eb0bf66' metadata/tracing-header-blob.txt
+          grep -Fx '0a8d85c20893ef65f2a2ba572096f2f38e2f652e' metadata/tracing-blob.txt
+          grep -Fx 'db87264809b35e325ad6c8f44fabef6ddca3883a' metadata/pipeline-blob.txt
+          grep -Fx '4a981f772ee70780d0011696010a0e1b8bef6972' metadata/fixture-paths-blob.txt
+          printf 'preflight_regular_files=73\npreflight_fixtures=27\nfixtureSymlink=false\n' | tee "$WORK/preflight.txt"
+          chmod +x bin/directional_surface_cell_producer_tests
+
+      - name: Run bounded heavy case
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          evidence="$WORK/evidence"
+          mkdir -p "$evidence"
+          cd "$WORK/pkg"
+          test ! -e bin/test-data
+          set +e
+          /usr/bin/time -v -o "$evidence/time.txt" \
+            timeout --signal=TERM --kill-after=5s "${{ matrix.limit }}" \
+            ./bin/directional_surface_cell_producer_tests \
+            --gtest_filter='${{ matrix.filter }}' \
+            > "$evidence/runtime.log" 2>&1
+          rc=$?
+          set -e
+          printf '%s\n' \
+            "case=${{ matrix.case }}" \
+            "filter=${{ matrix.filter }}" \
+            "limit_seconds=${{ matrix.limit }}" \
+            "runtime_rc=$rc" \
+            "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee "$evidence/result.txt"
+          cat "$evidence/time.txt" || true
+          tail -100 "$evidence/runtime.log" || true
+
+      - name: Immutable postflight
+        if: always()
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          pkg="$WORK/pkg"
+          evidence="$WORK/evidence"
+          mkdir -p "$evidence"
+          cd "$pkg"
+          echo "$RESULT_SHA256  $WORK/result.zip" | sha256sum -c -
+          echo "$MANIFEST_SHA256  SHA256SUMS" | sha256sum -c -
+          sha256sum -c SHA256SUMS > "$evidence/postflight-checksums.txt"
+          test "$(find . -type f | wc -l)" -eq 73
+          test "$(find bin -maxdepth 1 -type f | wc -l)" -eq 7
+          test "$(find lib -maxdepth 1 -type f | wc -l)" -eq 2
+          test "$(find test-data/benchmarks/fixtures -type f | wc -l)" -eq 27
+          test ! -e bin/test-data
+          echo "$PRODUCER_SHA256  bin/directional_surface_cell_producer_tests" | sha256sum -c -
+          printf '%s\n' \
+            "result_zip_sha256=$(sha256sum "$WORK/result.zip" | awk '{print $1}')" \
+            "manifest_sha256=$(sha256sum SHA256SUMS | awk '{print $1}')" \
+            'content_checksums=72/72' \
+            'regular_files=73' \
+            'executables=7' \
+            'libraries=2' \
+            'fixtures=27' \
+            'fixtureSymlink=false' \
+            "producer_sha256=$(sha256sum bin/directional_surface_cell_producer_tests | awk '{print $1}')" \
+            > "$evidence/postflight.txt"
+          cp "$ACTIVITY_LOG" "$evidence/activity.log"
+
+      - name: Upload heavy runtime evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1h-remediation-${{ matrix.case }}-runtime-evidence
+          path: ${{ env.WORK }}/evidence
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload heavy diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1h-remediation-${{ matrix.case }}-runtime-log
+          path: ${{ env.ACTIVITY_LOG }}
+          if-no-files-found: error
+          retention-days: 14
