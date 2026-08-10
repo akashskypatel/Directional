@@ -21,7 +21,7 @@ Lessons that affect execution:
 - use the exact accepted M1k source/package authority below; later documentation/control-plane commits are not runtime evidence commits;
 - Python `zipfile.extractall` did not preserve packaged executable mode bits during one local validation attempt; immutable runtime extraction must use a method such as CLI `unzip` that preserves the archive's natural executable attributes, never `chmod`/repair the package;
 - a single local Cylinder harness stall did not reproduce in immediate bounded local execution or either controlled remote run; do not add product workarounds for it;
-- the first remote M1k semantic run was green but its evidence upload used the wrong temp-root path; evidence paths in future workflows must use `${ runner.temp }`/`$RUNNER_TEMP` consistently.
+- the first remote M1k semantic run was green but its evidence upload used the wrong temp-root path; evidence paths in future workflows must use `${{ runner.temp }}`/`$RUNNER_TEMP` consistently.
 
 Current immutable report:
 `.agents/Directional/Architecture_M1k_Phase_Front_Edge_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
