@@ -938,8 +938,7 @@ std::optional<int> expected_segment_route_matching(
     const SegmentRouteObservation &observation) {
   using directional::authority::GridAutomorphism;
   using directional::authority::QuarterTurn;
-  GridAutomorphism total{QuarterTurn::from_integer(0),
-                         Eigen::Vector2i::Zero()};
+  GridAutomorphism total = GridAutomorphism::identity();
   int face = observation.previousFace;
   for (const std::uint64_t topology : observation.sourceTopology) {
     const auto transition = std::find_if(
@@ -961,9 +960,9 @@ std::optional<int> expected_segment_route_matching(
     } else {
       return std::nullopt;
     }
-    total = directional::authority::compose(
+    total = compose(
         GridAutomorphism{QuarterTurn::from_integer(matching),
-                         Eigen::Vector2i::Zero()},
+                         directional::authority::LatticeTranslation{0, 0}},
         total);
     face = nextFace;
   }

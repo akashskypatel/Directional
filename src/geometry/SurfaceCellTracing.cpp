@@ -5289,7 +5289,7 @@ bool segment_on_source(
               interiorTransition.value()},
           authority::GridAutomorphism{
               authority::QuarterTurn::from_integer(transition.matching),
-              Eigen::Vector2i::Zero()},
+              authority::LatticeTranslation{0, 0}},
           authority::Orientation::Forward);
       if (!typedStep) {
         return rejectStepAuthority();
@@ -5317,10 +5317,10 @@ bool segment_on_source(
     }
     const authority::CanonicalRoute typedRoute =
         authority::CanonicalRoute::from_observed_steps(std::move(observedSteps));
-    authority::GridAutomorphism routeTransport{
-        authority::QuarterTurn::from_integer(0), Eigen::Vector2i::Zero()};
+    authority::GridAutomorphism routeTransport =
+        authority::GridAutomorphism::identity();
     for (const authority::TransitionStep &step : typedRoute.oriented_steps()) {
-      routeTransport = authority::compose(step.transport(), routeTransport);
+      routeTransport = compose(step.transport(), routeTransport);
     }
     previous.exitEdge = previousEdge;
     current.entryEdge = currentEdge;
