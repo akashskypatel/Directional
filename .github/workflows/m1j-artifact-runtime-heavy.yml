@@ -1,0 +1,161 @@
+name: m1j-artifact-runtime-heavy
+
+on:
+  push:
+    paths:
+      - '.agents/connector-triggers/m1j-artifact-runtime-heavy'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: m1j-artifact-runtime-heavy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  heavy:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: bunny
+            test: UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/BunnyRandom
+            timeout_seconds: 120
+            expected_rc: 1
+          - label: vase
+            test: UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase
+            timeout_seconds: 60
+            expected_rc: 124
+    env:
+      RESULT_ARTIFACT_ID: '9076217893'
+      RESULT_ZIP_SHA256: 'a428735f68793e7f4721094b11400c6b4d1276dbea4e6eeb1496fd0ce13f178c'
+      MANIFEST_SHA256: '2134a0102a38b75d16c859be8fd862ab037c312609ab9bbae19499c9f875da59'
+      PRODUCER_SHA256: '04d5d4d59c3e7e9d15cc3e57b0887086939735867aeb1a122a4b3b82be826e40'
+      IMPLEMENTATION: 'd5f681173600dc32dc7617de6105d9e584e593be'
+      LABEL: ${{ matrix.label }}
+      TEST_FILTER: ${{ matrix.test }}
+      TIMEOUT_SECONDS: ${{ matrix.timeout_seconds }}
+      EXPECTED_RC: ${{ matrix.expected_rc }}
+      LOG_DIR: /tmp/m1j-heavy-logs
+      EVIDENCE_DIR: /tmp/m1j-heavy-evidence
+      PKG_DIR: /tmp/m1j-heavy-package
+      WORK_DIR: /tmp/m1j-heavy-work
+
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR" "$EVIDENCE_DIR" "$WORK_DIR"
+          printf '%s\n' \
+            'turn=M1j immutable Artifact-Only Test+Benchmark heavy comparison' \
+            "label=$LABEL" \
+            "event_sha=$GITHUB_SHA" \
+            "implementation=$IMPLEMENTATION" \
+            "artifact_id=$RESULT_ARTIFACT_ID" \
+            'configure=false' 'compile=false' 'relink=false' 'regenerate=false' \
+            'sourceEdit=false' 'testEdit=false' 'fixtureEdit=false' 'packageRepair=false' \
+            'fixtureSymlink=false' \
+            "started_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee "$LOG_DIR/activity.log"
+
+      - name: Exact artifact preflight, bounded runtime, and postflight
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          trap 'rc=$?; echo "step=heavy-runtime exit_code=$rc"; echo "finished_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)"; exit $rc' EXIT
+          rm -rf "$PKG_DIR"
+          mkdir -p "$PKG_DIR"
+          zip=/tmp/m1j-result.zip
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${RESULT_ARTIFACT_ID}/zip"
+          curl --fail --silent --show-error --location \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "$api" -o "$zip"
+          echo "$(sha256sum "$zip")" | tee "$EVIDENCE_DIR/result-zip-sha256.txt"
+          test "$(sha256sum "$zip" | awk '{print $1}')" = "$RESULT_ZIP_SHA256"
+          zipinfo -1 "$zip" | while IFS= read -r p; do
+            case "$p" in
+              /*|../*|*/../*|*/..) echo "unsafe archive member: $p"; exit 91 ;;
+            esac
+          done
+          unzip -q "$zip" -d "$PKG_DIR"
+          test "$(sha256sum "$PKG_DIR/SHA256SUMS" | awk '{print $1}')" = "$MANIFEST_SHA256"
+          (cd "$PKG_DIR" && sha256sum -c SHA256SUMS) > "$EVIDENCE_DIR/preflight-manifest-check.txt"
+          test "$(wc -l < "$PKG_DIR/SHA256SUMS")" -eq 67
+          test "$(find "$PKG_DIR" -type f | wc -l)" -eq 68
+          test "$(find "$PKG_DIR/bin" -maxdepth 1 -type f | wc -l)" -eq 7
+          test "$(find "$PKG_DIR/lib" -maxdepth 1 -type f | wc -l)" -eq 2
+          test "$(find "$PKG_DIR/test-data/benchmarks/fixtures" -type f | wc -l)" -eq 27
+          test "$(find "$PKG_DIR" -type l | wc -l)" -eq 0
+          test ! -e "$PKG_DIR/bin/test-data"
+          test "$(sha256sum "$PKG_DIR/bin/directional_surface_cell_producer_tests" | awk '{print $1}')" = "$PRODUCER_SHA256"
+          grep -F "\"implementationCommit\": \"$IMPLEMENTATION\"" "$PKG_DIR/metadata/build-authority.json" >/dev/null
+          for key in runtimeExecution testExecution benchmarkExecution ctestExecution cliExecution fuzzerExecution customInputExecution; do
+            grep -F "\"${key}\": false" "$PKG_DIR/metadata/build-authority.json" >/dev/null
+          done
+          printf '%s\n' \
+            "regular_files=$(find "$PKG_DIR" -type f | wc -l)" \
+            "manifest_entries=$(wc -l < "$PKG_DIR/SHA256SUMS")" \
+            "executables=$(find "$PKG_DIR/bin" -maxdepth 1 -type f | wc -l)" \
+            "libraries=$(find "$PKG_DIR/lib" -maxdepth 1 -type f | wc -l)" \
+            "fixtures=$(find "$PKG_DIR/test-data/benchmarks/fixtures" -type f | wc -l)" \
+            "fixtureSymlink=false" > "$EVIDENCE_DIR/preflight-cardinality.txt"
+          producer="$PKG_DIR/bin/directional_surface_cell_producer_tests"
+          runtime_log="$LOG_DIR/${LABEL}-runtime.log"
+          resources="$LOG_DIR/${LABEL}-resources.txt"
+          set +e
+          (cd "$WORK_DIR" && /usr/bin/time -v -o "$resources" timeout "${TIMEOUT_SECONDS}s" "$producer" --gtest_filter="$TEST_FILTER") > "$runtime_log" 2>&1
+          rc=$?
+          set -e
+          echo "runtime_rc=$rc" | tee "$EVIDENCE_DIR/${LABEL}-summary.txt"
+          echo "expected_rc=$EXPECTED_RC" | tee -a "$EVIDENCE_DIR/${LABEL}-summary.txt"
+          echo "test=$TEST_FILTER" | tee -a "$EVIDENCE_DIR/${LABEL}-summary.txt"
+          echo "timeout_seconds=$TIMEOUT_SECONDS" | tee -a "$EVIDENCE_DIR/${LABEL}-summary.txt"
+          grep -F '[ RUN      ]' "$runtime_log" >/dev/null
+          if [ "$LABEL" = bunny ]; then
+            test "$rc" -eq 1
+            grep -F 'NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0' "$runtime_log" >/dev/null
+          else
+            test "$rc" -eq 124
+          fi
+          test "$rc" -eq "$EXPECTED_RC"
+          test "$(sha256sum "$zip" | awk '{print $1}')" = "$RESULT_ZIP_SHA256"
+          test "$(sha256sum "$PKG_DIR/SHA256SUMS" | awk '{print $1}')" = "$MANIFEST_SHA256"
+          (cd "$PKG_DIR" && sha256sum -c SHA256SUMS) > "$EVIDENCE_DIR/postflight-manifest-check.txt"
+          test "$(wc -l < "$PKG_DIR/SHA256SUMS")" -eq 67
+          test "$(find "$PKG_DIR" -type f | wc -l)" -eq 68
+          test "$(find "$PKG_DIR/bin" -maxdepth 1 -type f | wc -l)" -eq 7
+          test "$(find "$PKG_DIR/lib" -maxdepth 1 -type f | wc -l)" -eq 2
+          test "$(find "$PKG_DIR/test-data/benchmarks/fixtures" -type f | wc -l)" -eq 27
+          test "$(find "$PKG_DIR" -type l | wc -l)" -eq 0
+          test ! -e "$PKG_DIR/bin/test-data"
+          test "$(sha256sum "$producer" | awk '{print $1}')" = "$PRODUCER_SHA256"
+          printf '%s\n' \
+            "postflight_result_sha=$RESULT_ZIP_SHA256" \
+            "postflight_manifest_sha=$MANIFEST_SHA256" \
+            "postflight_producer_sha=$PRODUCER_SHA256" \
+            'fixtureSymlink=false' >> "$EVIDENCE_DIR/${LABEL}-summary.txt"
+
+      - name: Upload heavy comparison evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1j-${{ matrix.label }}-artifact-runtime-evidence
+          path: /tmp/m1j-heavy-evidence
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload dedicated diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1j-${{ matrix.label }}-artifact-runtime-logs
+          path: /tmp/m1j-heavy-logs
+          if-no-files-found: error
+          retention-days: 14
