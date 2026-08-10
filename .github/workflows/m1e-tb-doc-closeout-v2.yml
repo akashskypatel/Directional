@@ -1,0 +1,98 @@
+name: M1e TB Documentation Closeout v2
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1e-tb-doc-closeout-v2.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m1e-tb-doc-closeout-v2
+  cancel-in-progress: false
+
+env:
+  ACTIVITY_LOG: /tmp/m1e-tb-doc-closeout-v2.log
+  RESULT_FILE: /tmp/m1e-tb-doc-closeout-v2-result.txt
+
+jobs:
+  closeout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize activity log
+        shell: bash
+        run: |
+          set -uo pipefail
+          : > "$ACTIVITY_LOG"
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          echo "task=m1e-tb-doc-closeout-v2"
+          echo "event=${GITHUB_EVENT_NAME}"
+          echo "ref=${GITHUB_REF}"
+          echo "sha=${GITHUB_SHA}"
+          echo "run_id=${GITHUB_RUN_ID}"
+          echo "runner_os=${RUNNER_OS}"
+          echo "started_utc=$(date -u +%FT%TZ)"
+
+      - name: Checkout authoritative branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 1
+
+      - name: Apply bounded documentation status corrections
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          trap 'rc=$?; echo "step_exit=$rc"; git status --short || true; exit $rc' EXIT
+          python3 .agents/connector-tasks/m1e_tb_doc_closeout.py
+          echo "Changed paths:"
+          git status --short
+          changed=$(git status --short | awk '{print $2}')
+          for p in $changed; do
+            case "$p" in
+              TODO|MILESTONE_G_TODO.md|.agents/Directional/Future_Chat_Session_Handoff.md|.agents/Directional/REORIENTATION_PLAN.md|.agents/Directional/Regression_Root_Cause_Tracker.md) ;;
+              *) echo "unexpected changed path: $p"; exit 20 ;;
+            esac
+          done
+          git diff --check
+          git diff --stat
+
+      - name: Commit documentation closeout
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$ACTIVITY_LOG") 2>&1
+          git config user.name "directional-agent"
+          git config user.email "directional-agent@users.noreply.github.com"
+          git add TODO MILESTONE_G_TODO.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/REORIENTATION_PLAN.md \
+            .agents/Directional/Regression_Root_Cause_Tracker.md
+          git diff --cached --check
+          git commit -m "docs: accept M1e and route next M1f turn"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          echo "result_commit=$(git rev-parse HEAD)" | tee "$RESULT_FILE"
+          echo "finished_utc=$(date -u +%FT%TZ)" | tee -a "$RESULT_FILE"
+          git status --short | tee -a "$RESULT_FILE"
+
+      - name: Upload closeout result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1e-tb-doc-closeout-v2-result
+          path: /tmp/m1e-tb-doc-closeout-v2-result.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1e-tb-doc-closeout-v2-logs
+          path: /tmp/m1e-tb-doc-closeout-v2.log
+          if-no-files-found: error
+          retention-days: 14
