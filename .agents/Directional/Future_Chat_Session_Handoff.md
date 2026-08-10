@@ -2,13 +2,41 @@
 
 ## Mandatory next turn
 
-Run **M1g Periodic Holonomy Route Transport Consumer — Code + Build only** under:
+Run **M1g Periodic Holonomy Route Transport Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
 Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. M1a/M1b/M1c/M1d/M1e/M1f are immutable accepted. Review policy is `never`.
 
-M1g migrates only the separate periodic whole-cycle `totalMatching` transport accumulator to the accepted checked route/`GridAutomorphism` algebra. It is representation-only: preserve canonical face-cycle discovery/order, `PeriodicHolonomyMismatch` rejection semantics, legacy matching behavior, public `SurfacePeriodicHolonomy` compatibility output, lattice translation/cut-route behavior, G4 outcomes, and unresolved `G4-B003` nonzero periodic Z4 capability. Code + Build may edit/configure/compile/package but may execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
+M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is compile/package complete and runtime pending. Consume only result/log artifacts `9053047653 / 9053048092`; do not rebuild, relink, regenerate, repair, edit, or substitute packaged content. Expected producer discovery is **196**, M1g focused is **6/6** individually, and required-green producer is **181/181**. Preserve the existing nonzero whole-cycle `PeriodicHolonomyMismatch` rejection so `G4-B003` remains unresolved.
+
+## M1g compile/package authority — runtime pending
+
+Selected seam:
+`periodic canonical face cycle -> ordered source-edge crossings -> whole-cycle holonomy decision`.
+
+| Evidence | Value |
+|---|---|
+| implementation | `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` |
+| build run/job | `31362470744 / 93373936472` |
+| result artifact / SHA-256 | `9053047653` / `296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c` |
+| log artifact / SHA-256 | `9053048092` / `c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9` |
+| recursive manifest | **64/64**, `89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae` |
+| package | **65** regular files including `SHA256SUMS`; 7 executables; 2 static libraries; 27 fixtures |
+| build | **120/120**, Release/static/Ninja/PRE_TEST, **6:48.58**, peak RSS **1,848,960 KiB** |
+| runtime | **false** |
+
+M1g replaces only the periodic whole-cycle raw matching accumulator with checked `SourceVertexId`, canonical `SourceEdgeTopologyKey`, checked `InteriorTransitionId`, one `TransitionStep` per observed crossing, one `CanonicalRoute`, and ordered `GridAutomorphism` composition. Canonical face-cycle discovery/order, raw route output, legacy matching behavior, failure semantics, public periodic holonomy, lattice translation/cut route, and G4 outcomes remain unchanged.
+
+Exactly six `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration` contracts are compiled but unexecuted. The package corrects `metadata/direct-product-test-names.txt` to the four existing parameterized Plane/MultiFaceSeam/CloseSheets/Cylinder names without changing product or test behavior.
+
+The final connector-visible build used temporary draft child PR #11 solely because the installed connector lists pull-request runs. PR #11 was closed unmerged after verification. The temporary workflow was removed before its marker. Only run/job `31362470744 / 93373936472` is M1g Code + Build authority.
+
+Current report:
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`.
+
+Authoritative next plan:
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## M1f compile/package authority — historical accepted build
 
@@ -30,8 +58,8 @@ M1f replaces `PathState::matching` raw signed accumulation with checked source-s
 
 Exactly six `SurfaceCellVertexContinuationRouteTransportAuthorityMigration` contracts are compiled but unexecuted. The expected next-turn producer discovery is **190** and required-green producer segment is **175/175**. The first compile attempt `17afbfd8baf0d369d9136534c0a11784ca0dca10` failed because a forward declaration crossed the existing anonymous-namespace helper ownership boundary; the surgical correction introduced a local continuation provenance helper and compiled successfully without changing accepted M1e authority.
 
-The superseded Code + Build report has been folded into the current immutable M1f report:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+The superseded M1f per-turn report has been folded into this handoff, the regression tracker, and the current M1g Code + Build report:
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## M1f immutable acceptance authority
 
@@ -39,10 +67,9 @@ Exact artifact-only validation accepted implementation `baed0f24831c476f45a1b742
 
 Remote heavy-case evidence: run `31357556834`; Bunny job/artifact `93360001159 / 9051190671` (`04c1c9a74dd5c0d104006230180043d7d0eed6a22812379558138c4c4b7fcadf`), Vase job/artifact `93360001142 / 9051188086` (`84cf33ee9ef469c33b149a0e4a77620df13207d991a89f73ed5c6c2c9da06750`). The temporary runtime workflow was removed before its trigger.
 
-A non-blocking package metadata defect was found: `metadata/direct-product-test-names.txt` contains stale nonexistent non-parameterized names for MultiFaceSeam and CloseSheets. Runtime authority used the accepted parameterized independent-oracle product tests; the next Code + Build plan corrects only this packaging metadata.
+A non-blocking M1f package metadata defect was found: `metadata/direct-product-test-names.txt` contained stale nonexistent non-parameterized names for MultiFaceSeam and CloseSheets. M1f runtime authority used the accepted parameterized independent-oracle product tests. The M1g package now records the four exact parameterized names without changing product/test behavior.
 
-Current immutable report:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1f accepted facts are retained here, in the regression tracker, and in the current M1g Code + Build report.
 
 ## M1e immutable acceptance authority
 
@@ -67,8 +94,7 @@ The malformed contract was narrowly corrected after Review: typed construction i
 
 Immutable runtime acceptance passed M1e focused **6/6**, producer discovery **184**, required-green producer **169/169**, M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and direct Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle gates. The strict-validator 5% microbenchmark was characterized as nondeterministic (**6/10 pass, 4/10 fail**) and remains deferred; it is not stable product evidence.
 
-Current immutable report:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1e accepted facts remain retained in this handoff and the regression tracker.
 
 ## Accepted M1d immutable authority
 
@@ -100,8 +126,7 @@ Direct required-green products from the exact M1d producer executable remain ind
 
 All nine historical/deferred producer reds remain explicit with their prior failure classes; no new regression or recurrence was created.
 
-M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and the current immutable report:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and this handoff.
 
 ## M1d accepted semantic boundary
 
@@ -200,9 +225,8 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;

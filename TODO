@@ -5,10 +5,10 @@ Last updated: 2026-08-10 UTC
 - Phase: P5 — producer-correct direct surface paving.
 - Product gate: **G4 topology-distinct completion and singularities active**.
 - Test architecture: **T1 independent oracle/package foundation accepted**.
-- Architecture migration: **M1a/M1b/M1c/M1d/M1e/M1f immutable accepted; M1g Periodic Holonomy Route Transport Consumer Code + Build active**.
+- Architecture migration: **M1a/M1b/M1c/M1d/M1e/M1f immutable accepted; M1g Periodic Holonomy Route Transport Consumer compile/package complete, immutable runtime pending**.
 - M1e immutable acceptance: implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`, build run/job `31351113129 / 93341993183`, artifacts `9049125645 / 9049125905`; focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean.
 - Review-authorized test correction: malformed route-step construction is unreachable after successful derived provenance validation, so the fifth contract proves the real `segment_on_source` predecessor provenance boundary rejects without fallback.
-- Authoritative next turn: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`.
+- Authoritative next turn: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`.
 - Draft PR #8 stays open, draft, and unmerged.
 - Review policy: `never`.
@@ -62,8 +62,7 @@ M1e excludes periodic-holonomy loop transport, `FieldChartId`, public schema cha
 
 The final product/test diff is exactly `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. The package records **61/61** recursive checksums (`36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`), 62 regular files, seven executables, two static libraries, and 27 fixtures. Immutable runtime passed M1e focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct required-green products.
 
-Current immutable report:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1e accepted facts remain retained in the durable handoff and regression tracker.
 
 ## M1f immutable acceptance checkpoint
 
@@ -74,13 +73,15 @@ Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable accepted 
 
 The first compile-only implementation `17afbfd8baf0d369d9136534c0a11784ca0dca10` exposed a namespace-ownership ambiguity in `source_edge_provenance`; the correction was source-local and compiled successfully. No new stable regression event or recurrence was created.
 
-Current immutable report: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`. Next Code + Build: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`. The next build must also correct the stale MultiFaceSeam/CloseSheets names in packaged `metadata/direct-product-test-names.txt` without product-behavior changes.
+M1f accepted facts remain retained in the durable handoff and regression tracker. Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`. The M1g package corrects the stale MultiFaceSeam/CloseSheets names in `metadata/direct-product-test-names.txt` to the existing parameterized product names without product-behavior changes.
 
-## M1g Code + Build active checkpoint
+## M1g compile/package checkpoint — immutable runtime pending
 
 Starting branch authority is `c4bbc5c347611a024531966ddd22494863da15ef`. The selected periodic canonical-face-cycle owner now stages checked source-vertex/topology/compact-transition adapters, one `TransitionStep` per observed crossing, one `CanonicalRoute`, and ordered `GridAutomorphism` composition while retaining the existing zero-rotation `PeriodicHolonomyMismatch` decision. Six `SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration` production-path contracts are compiled but must remain unexecuted until the immutable Test + Benchmark turn.
 
-The staged product/test scope is limited to `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. Local `g++ -fsyntax-only` checks pass for both translation units. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input has run. Authoritative pushed-commit compile/package evidence is still pending.
+Final implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` changes only `src/geometry/SurfaceCellTracing.cpp`, `tests/SurfaceCellsPhase10Tests.cpp`, and this Code + Build TODO relative to starting authority. Run/job `31362470744 / 93373936472` completed **120/120** Release/static/Ninja/PRE_TEST build steps and produced result/log artifacts `9053047653 / 9053048092`. Exact ZIP digests are `296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c / c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9`; recursive package authority is **64/64** checksums, 65 regular files, seven executables, two static libraries, and 27 fixtures. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input ran.
+
+Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`. Next immutable Test + Benchmark: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`. Expected producer discovery is **196** and required-green producer is **181/181**.
 
 ## Regression status
 
@@ -88,6 +89,7 @@ The staged product/test scope is limited to `src/geometry/SurfaceCellTracing.cpp
 - `RP-05`: M1e accepted; M1f continuation route identity/orientation **accepted**.
 - `RP-07`: M1e accepted; M1f typed cumulative continuation-route composition **accepted**.
 - `RP-02 / TA-05`: independent authority preserved through exact M1f artifact-only validation.
+- M1g `RP-01 / RP-05 / RP-07` periodic-route migration is compile/package complete and runtime pending; preservation is not accepted until immutable artifact execution.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active and unchanged on production artifact `9031804178`.
 - Strict-validator timing remains deferred: M1e produced **6/10 pass, 4/10 fail** and M1f produced **9/10 pass, 1/10 fail** across fresh repetitions, confirming the sub-millisecond 5% timing gate is nondeterministic rather than stable product evidence.

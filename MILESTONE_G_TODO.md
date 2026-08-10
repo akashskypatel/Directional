@@ -6,7 +6,7 @@ Last updated: 2026-08-10 UTC
 
 G0 truthful authority **accepted** → G1 uniform phase-front plane **accepted** → G2 cross-chart / close-sheet isolation **accepted** → G3 periodic closure / holonomy **accepted** → **G4 topology-distinct completion and singularities active** → G5 adaptivity/features → G6 Bunny/Vase production success → G7 hardening.
 
-Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d/M1e/M1f architecture slices are immutable accepted. M1g Periodic Holonomy Route Transport Consumer Code + Build is next. Architecture migration remains separate from G4 product acceptance.
+Production remains known-red on direct torus. T1 independent authority and M1a/M1b/M1c/M1d/M1e/M1f architecture slices are immutable accepted. M1g Periodic Holonomy Route Transport Consumer is compile/package complete and immutable runtime validation is next. Architecture migration remains separate from G4 product acceptance.
 
 ## M1d phase-front route identity — immutable accepted
 
@@ -58,23 +58,40 @@ M1e does not migrate the separate periodic-holonomy loop, `FieldChartId`, public
 | validation / M1a / T1 | **77/77**, **14/14**, **29/29** |
 | direct products | Plane / MultiFaceSeam / CloseSheets / Cylinder green and independent-oracle clean |
 
-Current immutable report:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1e accepted facts remain retained in the durable handoff and regression tracker.
 
 ## Authoritative next turn
 
-Run **M1g Periodic Holonomy Route Transport Consumer — Code + Build only** under:
+Run **M1g Periodic Holonomy Route Transport Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
 
-M1g migrates only the separate periodic whole-cycle `totalMatching` transport owner to checked typed route algebra while preserving current zero-rotation `PeriodicHolonomyMismatch` rejection semantics and leaving `G4-B003` unresolved. No generated Directional binary may execute during Code + Build.
+Consume only exact M1g artifacts `9053047653 / 9053048092`. Rebuild, relink, regeneration, source/test/build/fixture edits, repair, and artifact substitution are prohibited. Expected producer discovery is **196**, M1g focused is **6/6** individually, and required-green producer is **181/181**. Existing nonzero periodic rotation rejection remains mandatory and `G4-B003` stays unresolved.
 
 ## M1f vertex-continuation transport — immutable accepted
 
 Selected boundary:
 `surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
 
-Final implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable accepted from artifacts `9050850344 / 9050850513`: producer discovery **190**, M1f **6/6**, required-green **175/175**, M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle gates passed. Bunny preserved `NotProductionReady:completion`, Vase was bounded safety-only at 60 seconds, and local/remote postflight preserved exact **59/59** package authority. Current report: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`. A checksum-valid but stale direct-product metadata-name defect is deferred to the next Code + Build packaging correction.
+Final implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable accepted from artifacts `9050850344 / 9050850513`: producer discovery **190**, M1f **6/6**, required-green **175/175**, M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle gates passed. Bunny preserved `NotProductionReady:completion`, Vase was bounded safety-only at 60 seconds, and local/remote postflight preserved exact **59/59** package authority. Accepted facts remain in the durable handoff and regression tracker. M1g corrects the checksum-valid direct-product metadata names without behavior changes.
+
+## M1g periodic-holonomy route transport — compile/package complete
+
+Selected boundary:
+`periodic canonical face cycle -> ordered source-edge crossings -> whole-cycle holonomy decision`.
+
+Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` replaces only the whole-cycle raw matching accumulator with checked crossing domains, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition. It preserves canonical cycle discovery/order, legacy matching, public periodic holonomy, lattice/cut route, `PeriodicHolonomyMismatch`, current G4 outcomes, and unresolved `G4-B003`.
+
+| Evidence | Value |
+|---|---|
+| Build run/job | `31362470744 / 93373936472`, **120/120** |
+| Result artifact / SHA-256 | `9053047653` / `296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c` |
+| Log artifact / SHA-256 | `9053048092` / `c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9` |
+| Recursive manifest | **64/64**, `89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae` |
+| Package | **65** regular files; 7 executables; 2 static libraries; 27 fixtures |
+| Build boundary | Release/static/Ninja/PRE_TEST; runtime **false** |
+
+Exactly six M1g production-path contracts are compiled and unexecuted. The package contains the corrected four parameterized direct-product test names. Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## Regression disposition
 
@@ -82,6 +99,7 @@ Final implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable acc
 - `RP-05`: M1e semantic step identity and observed/canonical route order **accepted**; M1f continuation route identity/orientation **accepted**.
 - `RP-07`: M1e cumulative ordered-route transport **accepted**; M1f continuation transport **accepted**.
 - `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through immutable M1e validation; M1f preservation accepted under exact artifact-only validation.
+- M1g `RP-01 / RP-05 / RP-07` is compile/package complete and runtime pending; no M1g preservation claim is accepted before exact artifact execution.
 - No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
 - Strict-validator timing remains nondeterministic: M1e **6/10 pass, 4/10 fail**; M1f **9/10 pass, 1/10 fail**. It remains a deferred performance-test defect; no threshold/retry workaround is authorized.
@@ -102,9 +120,8 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 
 ## Core references
 
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;

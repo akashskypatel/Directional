@@ -50,7 +50,7 @@ M0 preserve immutable evidence [complete]
    M1d phase-front route identity consumer [accepted]
    M1e segment route transport consumer [accepted]
    M1f vertex continuation route transport consumer [accepted]
-   M1g periodic holonomy route transport consumer [next]
+   M1g periodic holonomy route transport consumer [compile/package complete; runtime next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -90,8 +90,7 @@ Accepted M1d authority:
 - Bunny known-red preserved, Vase bounded safety-only;
 - exact package postflight preserved.
 
-Accepted M1d evidence:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Accepted M1d evidence remains folded into the durable handoff and regression tracker.
 
 M1e is immutable accepted at:
 
@@ -108,11 +107,10 @@ Immutable M1e authority:
 - final product/test scope exactly two paths;
 - Code + Build executed no generated Directional binary, discovery, test, or benchmark; immutable runtime subsequently passed M1e **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct required-green products.
 
-M1e is accepted. The authoritative current report is:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+M1e is accepted. Its facts remain folded into the durable handoff and regression tracker.
 
 Authoritative next immutable Test + Benchmark plan:
-`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 
@@ -146,9 +144,15 @@ M1f selects the next real cumulative transport owner:
 
 `surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
 
-Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::matching` unrestricted signed accumulation with checked step authority, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition while preserving route search/ranking and compatibility output. Exact artifact-only validation accepted M1f: producer **190**, focused **6/6**, required-green **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, direct products oracle-clean, Bunny known-red preserved, Vase bounded safety-only, and exact postflight clean. Current evidence: `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::matching` unrestricted signed accumulation with checked step authority, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition while preserving route search/ranking and compatibility output. Exact artifact-only validation accepted M1f: producer **190**, focused **6/6**, required-green **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, direct products oracle-clean, Bunny known-red preserved, Vase bounded safety-only, and exact postflight clean. Accepted evidence remains in the durable handoff and regression tracker.
 
 The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring. Fresh accepted-source inspection selects the separate periodic face-cycle `totalMatching` accumulator as M1g. M1g is representation-only and must preserve current nonzero-rotation `PeriodicHolonomyMismatch` rejection so `G4-B003` remains unresolved.
+
+### M1g compile/package checkpoint
+
+Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` replaces only the periodic whole-cycle raw matching accumulator with checked crossing identity, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition. Canonical face-cycle discovery/order, raw route/public holonomy, legacy compatibility, lattice/cut route, nonzero-rotation rejection, and G4 outcomes remain unchanged.
+
+Code + Build run/job `31362470744 / 93373936472` completed **120/120** with result artifact `9053047653` (`296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c`), log artifact `9053048092` (`c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9`), and manifest **64/64** (`89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae`). Runtime is false; six M1g contracts are compiled and unexecuted. Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`.
 
 ## 5. Required target-stage corrections
 
@@ -192,7 +196,7 @@ Later testing work remains T2–T6: direct semantic corpus, property/metamorphic
 
 ### M1 — authority kernel and compatibility boundaries
 
-Continue bounded consumers only. `resolve_vertex_continuation` is now M1f compile/package complete at the cumulative ordered route transport owner without changing path discovery/ranking; immutable runtime validation is the next gate. The separate periodic-holonomy transport loop and production `FieldChartId` adoption remain possible later M1 candidates, but neither is pre-approved merely by type availability.
+Continue bounded consumers only. `resolve_vertex_continuation` is immutable accepted at M1f. The separate periodic-holonomy route transport is M1g compile/package complete without changing cycle discovery, output, or rejection behavior; immutable M1g runtime validation is the next gate. Production `FieldChartId` adoption and any later M1 consumer remain unselected until M1g acceptance and fresh source inspection.
 
 ### M2 — closed producer outcomes and single-writer scope
 
