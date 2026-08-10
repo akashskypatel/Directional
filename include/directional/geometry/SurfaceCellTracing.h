@@ -392,7 +392,8 @@ struct SurfacePhaseFrontCell {
   int id = -1;
   /// Authoritative connected source component owning this cell.
   std::optional<authority::SourceComponentId> sourceComponent;
-  int sourceTopologyRegion = -1;
+  /// Authoritative source-topology region owning this cell after normalization.
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
   /// Single-sheet compatibility authority; empty for legitimate multi-sheet cells.
   std::optional<authority::IsolationSheetId> sourceSheet;
   /// Complete sorted isolation-sheet authority observed by this cell.

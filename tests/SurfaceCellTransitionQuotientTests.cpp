@@ -1,6 +1,7 @@
 #include "BenchmarkQuality.h"
 #include "TestFixturePaths.h"
 
+#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/io/ReadOBJ.h>
 #include <directional/pipeline/RemeshPipeline.h>
 #include <directional/validation/MeshValidator.h>
@@ -350,7 +351,13 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
         fixture.network.phaseFront.topologyRegions.begin(),
         fixture.network.phaseFront.topologyRegions.end(),
         [&](const auto &candidate) {
-          return candidate.id == cell.sourceTopologyRegion;
+          if (!cell.sourceTopologyRegion.has_value()) return false;
+          const auto typedCandidate =
+              directional::authority::LegacyAuthorityAdapters::topology_region(
+                  candidate.id,
+                  fixture.network.phaseFront.topologyRegions.size());
+          return typedCandidate &&
+                 typedCandidate.value() == cell.sourceTopologyRegion.value();
         });
     if (region == fixture.network.phaseFront.topologyRegions.end() ||
         region->sourceFaces.empty()) {
