@@ -288,7 +288,7 @@ struct SurfaceFrontEdge {
   bool exterior = false;
   /// Authoritative connected source component owning this front side.
   std::optional<authority::SourceComponentId> sourceComponent;
-  int sourceTopologyRegion = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
   /// Single-sheet authority; empty for legitimate multi-sheet front sides.
   std::optional<authority::IsolationSheetId> sourceSheet;
   /// Complete sorted isolation-sheet authority inherited from the owning cell.

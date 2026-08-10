@@ -5594,6 +5594,14 @@ int legacy_phase_front_source_component(const SurfaceFrontEdge &edge) {
              : -1;
 }
 
+int legacy_phase_front_source_topology_region(const SurfaceFrontEdge &edge) {
+  return edge.sourceTopologyRegion.has_value()
+             ? static_cast<int>(
+                   authority::LegacyAuthorityAdapters::to_legacy_index(
+                       edge.sourceTopologyRegion.value()))
+             : -1;
+}
+
 int legacy_phase_front_source_sheet(const SurfaceFrontEdge &edge) {
   return edge.sourceSheet.has_value()
              ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
@@ -9271,6 +9279,10 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const auto typedRegionComponent =
         authority::LegacyAuthorityAdapters::source_component(
             region.sourceComponent, componentExtent);
+    const auto typedRegion =
+        authority::LegacyAuthorityAdapters::topology_region(
+            region.id, result.topologyRegions.size());
+    if (!typedRegion) return false;
     if (!typedRegionComponent) return false;
     std::vector<authority::IsolationSheetId> typedRegionSheets;
     typedRegionSheets.reserve(region.isolationSheets.size());
@@ -9287,7 +9299,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       return false;
     }
     for (auto &edge : local.edges) {
-      edge.sourceTopologyRegion = region.id;
+      edge.sourceTopologyRegion = typedRegion.value();
       const auto owner = std::find_if(
           local.cells.begin(), local.cells.end(),
           [&](const SurfacePhaseFrontCell &cell) {
@@ -9295,6 +9307,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
           });
       if (owner == local.cells.end() || !edge.sourceComponent.has_value() ||
           edge.sourceComponent.value() != typedRegionComponent.value() ||
+          !edge.sourceTopologyRegion.has_value() ||
+          edge.sourceTopologyRegion.value() != typedRegion.value() ||
           edge.sourceComponent != owner->sourceComponent ||
           edge.sourceSheet != owner->sourceSheet ||
           edge.sourceIsolationSheets != owner->sourceIsolationSheets ||
@@ -9445,6 +9459,16 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       cell.id += cellOffset;
       result.cells.push_back(std::move(cell));
     }
+    const auto typedRegion =
+        authority::LegacyAuthorityAdapters::topology_region(
+            region.id, result.topologyRegions.size());
+    if (!typedRegion) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+          -1, -1, region.sourceFaces.empty() ? -1 : region.sourceFaces.front());
+      return result;
+    }
     const std::set<int> requiredIsolationSheets(region.isolationSheets.begin(),
                                                  region.isolationSheets.end());
     if (!localCoverage || coveredIsolationSheets != requiredIsolationSheets ||
@@ -9462,7 +9486,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
               source_label_authority_extent(options.sourceFaceComponents));
       if (!typedRegionComponent || !edge.sourceComponent.has_value() ||
           edge.sourceComponent.value() != typedRegionComponent.value() ||
-          edge.sourceTopologyRegion != region.id) {
+          !edge.sourceTopologyRegion.has_value() ||
+          edge.sourceTopologyRegion.value() != typedRegion.value()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
