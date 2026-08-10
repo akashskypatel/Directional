@@ -26,7 +26,7 @@ jobs:
         run: |
           set -Eeuo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 .agents/Directional/turn-payloads/m1h-remediation-build-closeout.py
+          python3 .agents/Directional/turn-payloads/m1h-remediation-build-closeout-v2.py
           git diff --check
           git diff --name-only | LC_ALL=C sort
           mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
