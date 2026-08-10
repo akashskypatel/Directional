@@ -1,0 +1,52 @@
+name: m1i-durable-todo-restore
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - '.agents/connector-triggers/m1i-durable-todo-restore'
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 100
+          submodules: false
+      - name: Restore exact durable TODO and remove accidental temporary markers
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git show 19d55ffce38844d29194f084269c769d5f13aa36:TODO > TODO
+          git rm -- \
+            .agents/Directional/DO_NOT_DELETE_TEMP_RESTORE_NOTE \
+            .agents/Directional/RESTORE_POLICY_NOTE.md \
+            .agents/Directional/THIS_SHOULD_NOT_EXIST \
+            .agents/Directional/STOP_MARKER \
+            .agents/Directional/RECOVERY_SENTINEL \
+            .agents/Directional/FIXME_TREE_TOOL \
+            .agents/Directional/TOOL_CALL_ERROR_NOTE
+          test "$(git hash-object TODO)" = '2b20ffd9aceb5d5d957949ee0e7b6ad952021125'
+          git diff --check
+          mapfile -t changed < <(git diff --name-only | LC_ALL=C sort)
+          printf '%s\n' "${changed[@]}"
+          test "${#changed[@]}" -eq 8
+      - name: Commit and push restoration
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          git config user.name 'OpenAI Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add -- TODO
+          git diff --cached --check
+          git commit -m 'docs: restore durable TODO after accidental replacement'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
