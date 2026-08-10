@@ -1,0 +1,326 @@
+name: Agent M1l Cell Topology Region Code Build
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1l-code-build.txt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-m1l-cell-topology-region-code-build
+  cancel-in-progress: false
+
+jobs:
+  code-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      IMPLEMENTATION_SHA: 5e7313b469da64f3a7a87862c65d4ca1a8a972fb
+      SEMANTIC_SOURCE_BASE: d5a97953416196a8fc74c8d9790a1ae7b646ca2d
+      ENTERING_ACCEPTED_M1K: b9181364926cea840e9cb50da21fe721f33fd874
+      BUILD_DIR: build-m1l
+      RESULT_DIR: m1l-cell-topology-region-code-build-result
+      LOG_DIR: m1l-cell-topology-region-code-build-logs
+    steps:
+      - name: Checkout exact M1l implementation and shallow submodules
+        uses: actions/checkout@v4
+        with:
+          ref: 5e7313b469da64f3a7a87862c65d4ca1a8a972fb
+          fetch-depth: 2
+          submodules: recursive
+
+      - name: Compile and package exact M1l implementation
+        id: code_build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          trap 'rc=$?; echo "[m1l] exit_code=$rc"; git status --short || true; exit $rc' EXIT
+
+          CHECKOUT_SHA=$(git rev-parse HEAD)
+          SOURCE_PARENT=$(git rev-parse HEAD^)
+          echo "[m1l] event_sha=$GITHUB_SHA"
+          echo "[m1l] implementation_sha=$IMPLEMENTATION_SHA"
+          echo "[m1l] checkout_sha=$CHECKOUT_SHA"
+          echo "[m1l] immediate_source_parent=$SOURCE_PARENT"
+          echo "[m1l] semantic_source_base=$SEMANTIC_SOURCE_BASE"
+          if [[ "$CHECKOUT_SHA" != "$IMPLEMENTATION_SHA" ]]; then
+            echo "[m1l] exact implementation checkout mismatch"
+            exit 41
+          fi
+          if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
+            echo "[m1l] tracked tree not clean before configure"
+            git status --short
+            exit 42
+          fi
+
+          echo "[m1l] toolchain and submodules"
+          cmake --version | tee "$LOG_DIR/cmake-version.txt"
+          ninja --version | tee "$LOG_DIR/ninja-version.txt"
+          c++ --version | tee "$LOG_DIR/compiler-version.txt"
+          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+
+          echo "[m1l] configure Release/static/Ninja/PRE_TEST"
+          cmake -S . -B "$BUILD_DIR" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee "$LOG_DIR/configure.log"
+
+          echo "[m1l] compile-only approved targets"
+          /usr/bin/time -v cmake --build "$BUILD_DIR" --parallel 2 --target \
+            directional_core \
+            directional_pipeline \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_oracle_tests \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks \
+            2>&1 | tee "$LOG_DIR/build.log"
+
+          if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
+            echo "[m1l] tracked source changed during configure/build"
+            git status --short
+            exit 43
+          fi
+          if [[ "$(git rev-parse HEAD)" != "$IMPLEMENTATION_SHA" ]]; then
+            echo "[m1l] checkout moved during build"
+            exit 44
+          fi
+
+          echo "[m1l] package immutable compile outputs without execution"
+          PKG="$RESULT_DIR/package"
+          mkdir -p "$PKG/bin" "$PKG/lib" "$PKG/logs" \
+                   "$PKG/test-data/benchmarks" "$PKG/source" "$PKG/metadata"
+
+          executables=(
+            directional_compiled_api_tests
+            directional_surface_cell_producer_tests
+            directional_surface_cell_oracle_tests
+            directional_surface_cell_authority_kernel_tests
+            directional_surface_cell_completion_tests
+            directional_surface_cell_validation_tests
+            directional_benchmarks
+          )
+          for executable in "${executables[@]}"; do
+            test -f "$BUILD_DIR/$executable"
+            cp "$BUILD_DIR/$executable" "$PKG/bin/$executable"
+          done
+          libraries=(libdirectional_core.a libdirectional_pipeline.a)
+          for library in "${libraries[@]}"; do
+            test -f "$BUILD_DIR/$library"
+            cp "$BUILD_DIR/$library" "$PKG/lib/$library"
+          done
+
+          cp -a benchmarks/fixtures "$PKG/test-data/benchmarks/fixtures"
+          FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures" -type f | wc -l | tr -d ' ')
+          MILESTONE_G_FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures/milestone-g" -type f | wc -l | tr -d ' ')
+          echo "[m1l] fixture_count=$FIXTURE_COUNT"
+          echo "[m1l] milestone_g_fixture_count=$MILESTONE_G_FIXTURE_COUNT"
+          if [[ "$FIXTURE_COUNT" != "27" || "$MILESTONE_G_FIXTURE_COUNT" != "21" ]]; then
+            echo "[m1l] unexpected source-authoritative fixture layout"
+            exit 45
+          fi
+
+          git archive --format=tar "$IMPLEMENTATION_SHA" | xz -T2 -6 \
+            > "$PKG/source/directional-m1l-cell-topology-region-source-no-deps.tar.xz"
+          test -f "$BUILD_DIR/compile_commands.json"
+          cp "$BUILD_DIR/compile_commands.json" "$PKG/source/compile_commands.json"
+          git diff --binary "$SEMANTIC_SOURCE_BASE" "$IMPLEMENTATION_SHA" -- \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellTransitionQuotientTests.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            > "$PKG/source/m1l-semantic-source.patch"
+
+          cp "$LOG_DIR/configure.log" "$PKG/logs/configure.log"
+          cp "$LOG_DIR/build.log" "$PKG/logs/build.log"
+          cp "$LOG_DIR/submodules.txt" "$PKG/logs/submodules.txt"
+          grep -E 'Elapsed \(wall clock\) time|Maximum resident set size|Exit status' \
+            "$LOG_DIR/build.log" > "$PKG/logs/build-resources.txt" || true
+
+          cat > "$PKG/metadata/build-authority.json" <<EOF
+          {
+            "turn": "M1l Phase-Front Cell Topology-Region Consumer Code+Build",
+            "implementationCommit": "$IMPLEMENTATION_SHA",
+            "immediateSourceParent": "$SOURCE_PARENT",
+            "semanticSourceBase": "$SEMANTIC_SOURCE_BASE",
+            "acceptedM1kImplementation": "$ENTERING_ACCEPTED_M1K",
+            "eventCommit": "$GITHUB_SHA",
+            "runId": "$GITHUB_RUN_ID",
+            "runAttempt": "$GITHUB_RUN_ATTEMPT",
+            "configuration": "Release",
+            "generator": "Ninja",
+            "sharedLibraries": false,
+            "gtestDiscoveryMode": "PRE_TEST",
+            "runtimeExecution": false,
+            "gtestListExecution": false,
+            "testExecution": false,
+            "benchmarkExecution": false,
+            "ctestExecution": false,
+            "cliExecution": false,
+            "fuzzerExecution": false,
+            "customInputExecution": false,
+            "expectedProducerDiscoveryNextTurn": 226,
+            "expectedM1lFocusedNextTurn": 6,
+            "expectedRequiredGreenNextTurn": 211
+          }
+          EOF
+
+          cat > "$PKG/metadata/command-boundary.txt" <<'EOF'
+          runtimeExecution=false
+          gtestListExecution=false
+          testExecution=false
+          benchmarkExecution=false
+          ctestExecution=false
+          cliExecution=false
+          fuzzerExecution=false
+          customInputExecution=false
+          EOF
+
+          cat > "$PKG/metadata/direct-product-test-names.txt" <<'EOF'
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Plane
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/MultiFaceSeam
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/CloseSheets
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder
+          EOF
+
+          cat > "$PKG/metadata/m1l-focused-test-names.txt" <<'EOF'
+          SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration.PlanarCellPublishesCheckedTopologyRegionZero
+          SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration.DistinctCellTopologyRegionsRemainDistinctFromIsolationSheets
+          SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration.MissingOrInvalidCellTopologyRegionFailsClosed
+          SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration.FaceRowPermutationPreservesTypedCellTopologyRegion
+          SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration.TypedCellAndEdgeTopologyRegionAuthorityAgreeSemantically
+          SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration.TypedCellTopologyRegionToLegacyMaterializerBoundaryPreservesCompatibility
+          EOF
+
+          cat > "$PKG/metadata/focused-test-counts.txt" <<'EOF'
+          M1l=6
+          M1k=6
+          M1j=6
+          M1i=6
+          M1h=6
+          M1g=6
+          M1f=6
+          M1e=6
+          M1d=6
+          M1c=6
+          M1b=6
+          M1a=14
+          T1=29
+          EOF
+
+          cat > "$PKG/metadata/historical-deferred-red-test-names.txt" <<'EOF'
+          SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets
+          SurfaceCellTransitionQuotient.FullPeriodicRotationAndTranslationMaterialize
+          SurfaceCellTransitionQuotient.TamperedFullPeriodicTransformIsRejected
+          SurfaceCellTransitionQuotient.MultiplePeriodicRelationsSurviveRelationReorderingByExplicitOwner
+          SurfaceCellTransitionQuotient.SwappedPeriodicRelationOwnersAreRejected
+          SurfaceCellTransitionQuotient.MissingPeriodicRelationOwnerIsRejected
+          SurfaceCellTransitionQuotient.QuotientLineageRetainsScalarPointAndCompleteSortedAuthority
+          SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary
+          EOF
+
+          cat > "$PKG/metadata/deferred-characterization-test-names.txt" <<'EOF'
+          SurfaceCellsPhase10.StrictValidatorOverheadStaysBelowFivePercent
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/BunnyRandom
+          UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Vase
+          EOF
+
+          printf '%s\n' \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellTransitionQuotientTests.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            > "$PKG/metadata/changed-paths.txt"
+
+          {
+            echo "include/directional/geometry/SurfaceCellTracing.h $(git rev-parse "$IMPLEMENTATION_SHA:include/directional/geometry/SurfaceCellTracing.h")"
+            echo "src/geometry/SurfaceCellTracing.cpp $(git rev-parse "$IMPLEMENTATION_SHA:src/geometry/SurfaceCellTracing.cpp")"
+            echo "src/pipeline/RemeshPipeline.cpp $(git rev-parse "$IMPLEMENTATION_SHA:src/pipeline/RemeshPipeline.cpp")"
+            echo "tests/SurfaceCellTransitionQuotientTests.cpp $(git rev-parse "$IMPLEMENTATION_SHA:tests/SurfaceCellTransitionQuotientTests.cpp")"
+            echo "tests/SurfaceCellsPhase10Tests.cpp $(git rev-parse "$IMPLEMENTATION_SHA:tests/SurfaceCellsPhase10Tests.cpp")"
+            echo "tests/TestFixturePaths.h $(git rev-parse "$IMPLEMENTATION_SHA:tests/TestFixturePaths.h")"
+          } > "$PKG/metadata/source-blobs.txt"
+
+          find "$PKG/test-data/benchmarks/fixtures" -type f \
+            | sed "s#^$PKG/##" | sort > "$PKG/metadata/fixture-files.txt"
+          cat > "$PKG/metadata/package-layout.txt" <<EOF
+          executables=7
+          staticLibraries=2
+          fixtures=$FIXTURE_COUNT
+          milestoneGFixtures=$MILESTONE_G_FIXTURE_COUNT
+          sourceArchive=source/directional-m1l-cell-topology-region-source-no-deps.tar.xz
+          semanticPatch=source/m1l-semantic-source.patch
+          compileCommands=source/compile_commands.json
+          EOF
+
+          (cd "$PKG" && sha256sum bin/* > metadata/executable-sha256.txt)
+          (cd "$PKG" && sha256sum lib/* > metadata/library-sha256.txt)
+
+          (cd "$PKG" && \
+            find . -type f ! -name SHA256SUMS -print0 | sort -z | \
+            xargs -0 sha256sum > SHA256SUMS && \
+            sha256sum -c SHA256SUMS)
+          MANIFEST_COUNT=$(wc -l < "$PKG/SHA256SUMS" | tr -d ' ')
+          MANIFEST_SHA=$(sha256sum "$PKG/SHA256SUMS" | awk '{print $1}')
+          PACKAGE_COUNT=$(find "$PKG" -type f | wc -l | tr -d ' ')
+          NINJA_PROGRESS=$(grep -oE '\[[0-9]+/[0-9]+\]' "$LOG_DIR/build.log" | tail -n 1 || true)
+          PRODUCER_SHA=$(sha256sum "$PKG/bin/directional_surface_cell_producer_tests" | awk '{print $1}')
+          echo "manifest_count=$MANIFEST_COUNT" | tee "$LOG_DIR/package-summary.txt"
+          echo "manifest_sha256=$MANIFEST_SHA" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "package_regular_files=$PACKAGE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "fixtures=$FIXTURE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "milestone_g_fixtures=$MILESTONE_G_FIXTURE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "executables=${#executables[@]}" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "libraries=${#libraries[@]}" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "ninja_final_progress=$NINJA_PROGRESS" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "producer_sha256=$PRODUCER_SHA" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "implementation_sha=$IMPLEMENTATION_SHA" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "immediate_source_parent=$SOURCE_PARENT" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "semantic_source_base=$SEMANTIC_SOURCE_BASE" | tee -a "$LOG_DIR/package-summary.txt"
+
+          echo "implementation_sha=$IMPLEMENTATION_SHA" >> "$GITHUB_OUTPUT"
+          echo "source_parent=$SOURCE_PARENT" >> "$GITHUB_OUTPUT"
+          echo "manifest_count=$MANIFEST_COUNT" >> "$GITHUB_OUTPUT"
+          echo "manifest_sha=$MANIFEST_SHA" >> "$GITHUB_OUTPUT"
+          echo "package_count=$PACKAGE_COUNT" >> "$GITHUB_OUTPUT"
+          echo "producer_sha=$PRODUCER_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Upload immutable M1l result package
+        if: always() && steps.code_build.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1l-cell-topology-region-code-build-result-final
+          path: m1l-cell-topology-region-code-build-result/package
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed M1l logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1l-cell-topology-region-code-build-logs-authoritative
+          path: m1l-cell-topology-region-code-build-logs
+          if-no-files-found: warn
+          retention-days: 14
