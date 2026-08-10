@@ -22,7 +22,7 @@ It owns migration order, dependencies, stop conditions, and acceptance gates. It
 | Test audit and T0–T6 redesign | `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md` |
 | Current turn / exact next action | `TODO`, `MILESTONE_G_TODO.md`, `.agents/Directional/Future_Chat_Session_Handoff.md` |
 | Regression history / repeated code shapes | `.agents/Directional/Regression_Root_Cause_Tracker.md` |
-| Current immutable evidence | current retained per-turn report |
+| Current evidence | current retained per-turn report |
 
 If this roadmap conflicts with `DESIGN.md`, the design wins and this file must be corrected before implementation. A runtime report may update current status but cannot waive a migration invariant.
 
@@ -48,7 +48,7 @@ M0 preserve immutable evidence [complete]
    M1b first source/provenance consumer [accepted]
    M1c field-transition consumer [accepted]
    M1d phase-front route identity consumer [accepted]
-   M1e segment route transport consumer [next]
+   M1e segment route transport consumer [compile/package complete; immutable runtime next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -70,55 +70,47 @@ The current implementation remains behavioral comparison authority and migration
 
 ## 3. Current M1 checkpoint
 
-M1d is immutable accepted at:
-
-`pipeline::build_authoritative_phase_front_mesh -> exact_interior_route_valid`.
-
-Accepted M1d authority:
-
-- implementation `9446fc82d98d336d3bd59c190dd2bbbe94bd2e25`;
-- result artifact `9046308272`, SHA-256 `6a9dd880e2e7548b8afc88da48e7ed49935e6ce672ba1af208eee8f84678152c`;
-- manifest **59/59**, SHA-256 `e9859b25bd6d3a721484abdae679fcf898a85e1903b176192696d4b6b9e7eef0`;
-- producer discovery **178** / required-green **163/163**;
-- M1d **6/6**, route witnesses **3/3**;
-- M1c **6/6** + transition counterexamples **3/3**;
-- M1b **6/6** + validation **77/77**;
-- M1a **14/14**, T1 **29/29**;
-- Plane/MultiFaceSeam/CloseSheets/Cylinder green and independent-oracle clean;
-- Bunny known-red preserved, Vase bounded safety-only;
-- exact package postflight preserved.
-
-Current retained evidence:
-`.agents/Directional/Architecture_M1d_Phase_Front_Route_Identity_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
-
-The authoritative next turn is M1e under:
-`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Plan.md`.
-
-## 4. M1e rationale and boundary
-
-M1d intentionally did not introduce `TransitionStep` / `CanonicalRoute` because its consumer validated route identity but did not own per-step transport.
-
-M1e selects a real transport-owning seam:
+M1d remains immutable accepted. M1e is now compile/package complete at:
 
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
 
-The current code owns an ordered `VertexPathStep` sequence and performs raw:
+M1e compile authority:
 
-```text
-totalMatching += transition.matching
-current.matching = normalized_branch(totalMatching)
-```
+- final implementation `bb9cb63a36b64fe2f7c462ad864492c8352b65e8`;
+- result artifact `9047295489`, SHA-256 `74e5a1abe37d14c5cdf8a13b753b3f70b80b6a61d83ec051d3b8e4d44b8b8e9f`;
+- log artifact `9047295703`, SHA-256 `9df806949994145dba689b58afcc49106cedd1aadafbff409d70705188400f52`;
+- manifest **61/61**, SHA-256 `ae82db8c02575926fe28ede2cbd6a4738cf7ed4e7ae1576ce8778970c532bc8e`;
+- Release/static/Ninja **120/120**;
+- build wall **8:08.51**, peak RSS **1,848,636 KiB**;
+- `runtimeExecution=false`;
+- exactly six M1e route-composition contracts compiled;
+- expected following producer discovery **184**, required-green **169**.
 
-M1e may therefore adopt:
+Current retained Code + Build evidence:
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Code_Build_Report.md`.
+
+The authoritative next turn is immutable M1e validation under:
+`.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+
+Compile success does not accept M1e semantics.
+
+## 4. M1e rationale and implemented boundary
+
+M1d intentionally did not introduce `TransitionStep` / `CanonicalRoute` because its consumer validated route identity but did not own per-step transport. M1e selected a real transport-owning seam whose legacy code accumulated raw signed matchings across an ordered `VertexPathStep` sequence.
+
+The compiled M1e correction now adopts:
 
 - checked `SourceVertexId` / `InteriorTransitionId` step identity;
 - canonical `SourceEdgeTopologyKey`;
 - `QuarterTurn` + zero-shift `GridAutomorphism` per directed step;
 - `TransitionStep` for each observed crossing;
 - `CanonicalRoute` for canonical storage while consuming `oriented_steps()` to preserve behaviorally observed order;
-- algebraic composition/inverse instead of unrestricted signed matching accumulation.
+- algebraic automorphism composition instead of unrestricted signed cumulative matching;
+- raw `current.matching` only as final compatibility output.
 
-M1e must preserve existing public/raw provenance and matching storage and excludes the separate periodic-holonomy loop, field-chart production, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery expansion, optimization, and G4 repair.
+Existing ordered raw topology/provenance, effort, transition resolution, route discovery and the explicit legacy transition path are preserved. M1e excludes the periodic-holonomy loop, field-chart production, public schema retirement, topology/conformity/quotient work, validation, fallback/recovery expansion, optimization, and G4 repair.
+
+The first implementation attempt was compile-red because it passed `Eigen::Vector2i` where `GridAutomorphism` requires `LatticeTranslation` and qualified a hidden-friend `compose`. That was corrected inside the same Code + Build turn before any generated runtime. Two later v2 workflow syntax attempts created no jobs. None is a stable runtime regression event.
 
 ## 5. Required target-stage corrections
 
@@ -150,11 +142,13 @@ The migration must reverse consumer reconstruction: each stage writes one immuta
 9. Recursive/retrying/combinatorial paths touched by a slice require one shared work ledger and monotone progress measure.
 10. Any regression blocks the next migration slice; diagnose within the current ownership boundary rather than bypassing with fallback or feature work.
 11. No validator weakening, expected-output synthesis, fixture-specific branch, proximity weld, recovery substitution, or predicted topology count may satisfy acceptance.
-12. Stale per-turn evidence is cleaned under the mandatory handoff policy after its accepted facts are folded into durable/live authority. Durable design/audit/regression documents remain.
+12. Stale per-turn evidence is cleaned under the mandatory handoff policy after its necessary facts are folded into durable/live authority.
 
 ## 7. Test interlock
 
-T1 independent oracle/package authority is accepted and is a preservation prerequisite for M1. M1d preserved it exactly. M1e focused transport contracts may supplement but never replace producer accounting, M1d/M1c/M1b/M1a/T1 preservation, direct product oracles, known-red classification, and immutable package postflight.
+T1 independent oracle/package authority is accepted and is a preservation prerequisite for M1. M1d preserved it exactly. M1e compile/package statically preserves the accepted authority files and adds six focused transport contracts, but no runtime claim is accepted yet.
+
+The following immutable turn must require exact producer discovery **184**, required-green **169/169**, M1e **6/6**, ordered vertex-fan **2/2**, M1d/M1c/M1b/M1a/T1 preservation, four direct independent-oracle cases, all nine explicit historical/deferred reds, Bunny known-red, Vase bounded safety-only, and exact package postflight.
 
 Later testing work remains T2–T6: direct semantic corpus, property/metamorphic generation, fuzz replay, calibrated quality/corpus gates, and CI/resource/oracle hardening.
 
@@ -162,7 +156,7 @@ Later testing work remains T2–T6: direct semantic corpus, property/metamorphic
 
 ### M1 — authority kernel and compatibility boundaries
 
-Continue bounded consumers only. After M1e, inspect the remaining real owners before selecting another slice. The periodic-holonomy transport loop and production `FieldChartId` adoption remain possible later M1 candidates, but neither is pre-approved merely by type availability.
+Do not select another M1 consumer until M1e is immutable accepted. After acceptance, inspect remaining real semantic owners before choosing another bounded slice. The periodic-holonomy transport loop and production `FieldChartId` adoption remain possible later M1 candidates, not pre-approved changes.
 
 ### M2 — closed producer outcomes and single-writer scope
 
@@ -174,7 +168,7 @@ Compute one exact hard-rail breakpoint schedule and certificate before local reg
 
 ### M4 — certificate-carrying chart and quotient relations
 
-Publish explicit directed occurrence/transport/quotient relations with verifiable certificates. Validators verify rather than reconstruct them. This owns remaining global-local relation debt behind periodic/G4 capability.
+Publish explicit directed occurrence/transport/quotient relations with verifiable certificates. Validators verify rather than reconstruct them.
 
 ### M5 — occurrence, embedding, and independent verification split
 
@@ -197,4 +191,4 @@ Bunny production completion, Vase bounded runtime, prescribed sphere, G5/G6, fal
 
 ## 10. Resume rule
 
-Always read `.agents/Directional/Future_Chat_Session_Handoff.md` first. It owns the exact current turn, artifact, current retained report, cleanup policy, and next plan. If this roadmap conflicts with a newer committed authoritative plan/report, the newer plan/report governs current execution and this roadmap must be corrected before architecture expansion.
+Always read `.agents/Directional/Future_Chat_Session_Handoff.md` first. It owns the exact current turn, artifact, retained report, cleanup policy, and next plan. If this roadmap conflicts with a newer committed authoritative plan/report, the newer plan/report governs current execution and this roadmap must be corrected before architecture expansion.
