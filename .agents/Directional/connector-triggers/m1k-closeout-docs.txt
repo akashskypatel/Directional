@@ -1,4 +1,6 @@
 M1k Code + Build durable closeout
-triggered: 2026-08-10T21:01:00Z
+attempt: 2
+triggered: 2026-08-10T21:05:00Z
 source implementation: b9181364926cea840e9cb50da21fe721f33fd874
+workflow: YAML-safe external closeout script
 next turn: immutable Artifact-Only Test + Benchmark
