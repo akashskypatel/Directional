@@ -1,0 +1,278 @@
+name: M1k Edge Topology Region Code Build
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/Directional/connector-triggers/m1k-edge-topology-region-code-build.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: m1k-edge-topology-region-code-build
+  cancel-in-progress: false
+
+jobs:
+  code-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      BRANCH: agent/surface_cell_quad/p5-recover-bridge-healing
+      PATCH_FILE: .agents/Directional/turn-payloads/m1k-edge-topology-region.patch
+      BUILD_DIR: build-m1k
+      RESULT_DIR: m1k-edge-topology-region-code-build-result
+      LOG_DIR: m1k-edge-topology-region-code-build-logs
+    steps:
+      - name: Checkout shallow source and submodules
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 2
+          submodules: recursive
+
+      - name: Apply M1k delta, push exact source commit, compile and package
+        id: code_build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$LOG_DIR"
+          exec > >(tee -a "$LOG_DIR/activity.log") 2>&1
+          trap 'rc=$?; echo "[m1k] exit_code=$rc"; git status --short || true; exit $rc' EXIT
+
+          echo "[m1k] event_sha=$GITHUB_SHA"
+          echo "[m1k] checkout_sha=$(git rev-parse HEAD)"
+          echo "[m1k] branch=$BRANCH"
+          git config user.name "OpenAI Agent"
+          git config user.email "noreply@openai.com"
+
+          echo "[m1k] patch preflight"
+          git apply --check "$PATCH_FILE"
+          git apply "$PATCH_FILE"
+          git diff --check
+
+          mapfile -t changed < <(git diff --name-only | sort)
+          expected=(
+            include/directional/geometry/SurfaceCellTracing.h
+            src/geometry/SurfaceCellTracing.cpp
+            src/pipeline/RemeshPipeline.cpp
+            tests/SurfaceCellsPhase10Tests.cpp
+          )
+          mapfile -t expected_sorted < <(printf '%s\n' "${expected[@]}" | sort)
+          printf '[m1k] changed=%s\n' "${changed[*]}"
+          if [[ "${changed[*]}" != "${expected_sorted[*]}" ]]; then
+            echo "[m1k] unexpected source/test scope"
+            exit 41
+          fi
+
+          git add -- "${expected[@]}"
+          git commit -m "refactor(surface-cell): type edge topology-region authority"
+          IMPLEMENTATION_SHA=$(git rev-parse HEAD)
+          SOURCE_PARENT=$(git rev-parse HEAD^)
+          echo "[m1k] implementation_sha=$IMPLEMENTATION_SHA"
+          echo "[m1k] source_parent=$SOURCE_PARENT"
+          git push origin "HEAD:$BRANCH"
+          REMOTE_SHA=$(git ls-remote origin "refs/heads/$BRANCH" | awk '{print $1}')
+          echo "[m1k] remote_sha=$REMOTE_SHA"
+          if [[ "$REMOTE_SHA" != "$IMPLEMENTATION_SHA" ]]; then
+            echo "[m1k] pushed source authority mismatch"
+            exit 42
+          fi
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "[m1k] source tree not clean before configure"
+            git status --short
+            exit 43
+          fi
+
+          echo "[m1k] toolchain"
+          cmake --version | tee "$LOG_DIR/cmake-version.txt"
+          ninja --version | tee "$LOG_DIR/ninja-version.txt"
+          c++ --version | tee "$LOG_DIR/compiler-version.txt"
+
+          echo "[m1k] configure Release/static/Ninja/PRE_TEST"
+          cmake -S . -B "$BUILD_DIR" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee "$LOG_DIR/configure.log"
+
+          echo "[m1k] compile-only approved targets"
+          /usr/bin/time -v cmake --build "$BUILD_DIR" --parallel 2 --target \
+            directional_core \
+            directional_pipeline \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_oracle_tests \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks \
+            2>&1 | tee "$LOG_DIR/build.log"
+
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "[m1k] source tree changed during configure/build"
+            git status --short
+            exit 44
+          fi
+          if [[ "$(git rev-parse HEAD)" != "$IMPLEMENTATION_SHA" ]]; then
+            echo "[m1k] checkout moved during build"
+            exit 45
+          fi
+
+          echo "[m1k] package immutable compile outputs without execution"
+          PKG="$RESULT_DIR/package"
+          mkdir -p "$PKG/bin" "$PKG/lib" \
+                   "$PKG/test-data/benchmarks/fixtures" \
+                   "$PKG/source" "$PKG/metadata"
+
+          executables=(
+            directional_compiled_api_tests
+            directional_surface_cell_producer_tests
+            directional_surface_cell_oracle_tests
+            directional_surface_cell_authority_kernel_tests
+            directional_surface_cell_completion_tests
+            directional_surface_cell_validation_tests
+            directional_benchmarks
+          )
+          for executable in "${executables[@]}"; do
+            test -f "$BUILD_DIR/$executable"
+            cp "$BUILD_DIR/$executable" "$PKG/bin/$executable"
+          done
+          libraries=(libdirectional_core.a libdirectional_pipeline.a)
+          for library in "${libraries[@]}"; do
+            test -f "$BUILD_DIR/$library"
+            cp "$BUILD_DIR/$library" "$PKG/lib/$library"
+          done
+
+          cp -a benchmarks/fixtures/milestone-g \
+            "$PKG/test-data/benchmarks/fixtures/milestone-g"
+          FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures/milestone-g" \
+            -type f | wc -l | tr -d ' ')
+          echo "[m1k] fixture_count=$FIXTURE_COUNT"
+          if [[ "$FIXTURE_COUNT" != "27" ]]; then
+            echo "[m1k] unexpected fixture count"
+            exit 46
+          fi
+
+          tar -czf "$PKG/source/m1k-source.tar.gz" \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            tests/TestFixturePaths.h
+
+          cat > "$PKG/metadata/build_authority.txt" <<EOF
+          turn=M1k Phase-Front Edge Topology-Region Consumer Code+Build
+          implementation_sha=$IMPLEMENTATION_SHA
+          source_parent=$SOURCE_PARENT
+          entering_accepted_m1j=d5f681173600dc32dc7617de6105d9e584e593be
+          event_sha=$GITHUB_SHA
+          remote_sha=$REMOTE_SHA
+          configuration=Release
+          linkage=static
+          generator=Ninja
+          gtest_discovery_mode=PRE_TEST
+          approved_targets=9
+          expected_native_producer_discovery_next_turn=220
+          expected_required_green_next_turn=205
+          review_policy=never
+          EOF
+
+          cat > "$PKG/metadata/runtime_command_boundary.txt" <<'EOF'
+          generated_directional_runtime_execution=false
+          test_execution=false
+          benchmark_execution=false
+          gtest_discovery_or_list_execution=false
+          ctest_execution=false
+          cli_gui_help_version_execution=false
+          fuzzer_execution=false
+          custom_input_execution=false
+          EOF
+
+          cat > "$PKG/metadata/focused_test_manifest.txt" <<'EOF'
+          SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration.PlanarEdgesPublishCheckedTopologyRegionZero
+          SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration.DistinctTopologyRegionsRemainDistinctFromIsolationSheets
+          SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration.MissingOrInvalidEdgeTopologyRegionFailsClosed
+          SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration.FaceRowPermutationPreservesTypedEdgeTopologyRegion
+          SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration.CrossRegionOppositesRetainDistinctTypedRegionIdentity
+          SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration.TypedEdgeTopologyRegionToLegacyPipelineBoundaryPreservesCompatibility
+          EOF
+
+          printf '%s\n' \
+            include/directional/geometry/SurfaceCellTracing.h \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            > "$PKG/metadata/changed_paths.txt"
+
+          {
+            echo "include/directional/geometry/SurfaceCellTracing.h $(git rev-parse "$IMPLEMENTATION_SHA:include/directional/geometry/SurfaceCellTracing.h")"
+            echo "src/geometry/SurfaceCellTracing.cpp $(git rev-parse "$IMPLEMENTATION_SHA:src/geometry/SurfaceCellTracing.cpp")"
+            echo "src/pipeline/RemeshPipeline.cpp $(git rev-parse "$IMPLEMENTATION_SHA:src/pipeline/RemeshPipeline.cpp")"
+            echo "tests/SurfaceCellsPhase10Tests.cpp $(git rev-parse "$IMPLEMENTATION_SHA:tests/SurfaceCellsPhase10Tests.cpp")"
+            echo "tests/TestFixturePaths.h $(git rev-parse "$IMPLEMENTATION_SHA:tests/TestFixturePaths.h")"
+          } > "$PKG/metadata/source_blobs.txt"
+
+          cp "$LOG_DIR/configure.log" "$PKG/metadata/configure.log"
+          cp "$LOG_DIR/build.log" "$PKG/metadata/build.log"
+          cp "$LOG_DIR/cmake-version.txt" "$PKG/metadata/cmake-version.txt"
+          cp "$LOG_DIR/ninja-version.txt" "$PKG/metadata/ninja-version.txt"
+          cp "$LOG_DIR/compiler-version.txt" "$PKG/metadata/compiler-version.txt"
+
+          (cd "$PKG" && sha256sum bin/* > metadata/executable_sha256.txt)
+          (cd "$PKG" && sha256sum lib/* > metadata/library_sha256.txt)
+          NINJA_PROGRESS=$(grep -oE '\[[0-9]+/[0-9]+\]' "$LOG_DIR/build.log" | tail -n 1 || true)
+          echo "ninja_final_progress=$NINJA_PROGRESS" > "$PKG/metadata/build_progress.txt"
+          grep -E 'Elapsed \(wall clock\) time|Maximum resident set size' \
+            "$LOG_DIR/build.log" > "$PKG/metadata/build_resource_usage.txt" || true
+
+          (cd "$PKG" && \
+            find . -type f ! -name SHA256SUMS -print0 | sort -z | \
+            xargs -0 sha256sum > SHA256SUMS && \
+            sha256sum -c SHA256SUMS)
+          MANIFEST_COUNT=$(wc -l < "$PKG/SHA256SUMS" | tr -d ' ')
+          MANIFEST_SHA=$(sha256sum "$PKG/SHA256SUMS" | awk '{print $1}')
+          PACKAGE_COUNT=$(find "$PKG" -type f | wc -l | tr -d ' ')
+          echo "manifest_count=$MANIFEST_COUNT" | tee "$LOG_DIR/package-summary.txt"
+          echo "manifest_sha256=$MANIFEST_SHA" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "package_regular_files=$PACKAGE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "fixtures=$FIXTURE_COUNT" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "executables=${#executables[@]}" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "libraries=${#libraries[@]}" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "implementation_sha=$IMPLEMENTATION_SHA" | tee -a "$LOG_DIR/package-summary.txt"
+          echo "source_parent=$SOURCE_PARENT" | tee -a "$LOG_DIR/package-summary.txt"
+
+          echo "implementation_sha=$IMPLEMENTATION_SHA" >> "$GITHUB_OUTPUT"
+          echo "source_parent=$SOURCE_PARENT" >> "$GITHUB_OUTPUT"
+          echo "manifest_count=$MANIFEST_COUNT" >> "$GITHUB_OUTPUT"
+          echo "manifest_sha=$MANIFEST_SHA" >> "$GITHUB_OUTPUT"
+          echo "package_count=$PACKAGE_COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Upload immutable M1k result package
+        if: always() && steps.code_build.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1k-edge-topology-region-code-build-result
+          path: m1k-edge-topology-region-code-build-result/package
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload detailed M1k logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1k-edge-topology-region-code-build-logs
+          path: m1k-edge-topology-region-code-build-logs
+          if-no-files-found: warn
+          retention-days: 14
