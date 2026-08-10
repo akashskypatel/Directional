@@ -1,3 +1,4 @@
+#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/fields/PointSampledCrossField.h>
 #include <directional/io/ReadOBJ.h>
 #include <directional/meshing/PatchQuadrangulator.h>
@@ -4425,6 +4426,208 @@ TEST(SurfaceCellVertexContinuationRouteTransportAuthorityMigration,
   EXPECT_EQ(3, authoritative.matching);
   EXPECT_EQ(3, legacy.matching);
   EXPECT_NEAR(authoritative.matchingEffort, legacy.matchingEffort, 1.0e-12);
+}
+
+
+TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
+     PlanarMultiFaceFrontPublishesCheckedSingleChart) {
+  const directional::TriMesh mesh = make_vertex_fan_plane_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+  ASSERT_FALSE(network.phaseFront.cells.empty());
+  for (const auto &cell : network.phaseFront.cells) {
+    for (const auto &state : cell.lattice) {
+      ASSERT_TRUE(state.sourceChart.has_value());
+      EXPECT_EQ(0U,
+                directional::authority::LegacyAuthorityAdapters::to_legacy_index(
+                    state.sourceChart.value()));
+    }
+  }
+}
+
+TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
+     MultipleOrientationChartsPreserveEstablishedNumbering) {
+  const SegmentRouteFixture fixture = make_segment_route_fixture();
+  const auto network =
+      build_segment_route_network(fixture, fixture.authoritativeField);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             network.phaseFront.failure.reason);
+
+  std::set<std::size_t> typedCharts;
+  for (const auto &cell : network.phaseFront.cells) {
+    for (const auto &state : cell.lattice) {
+      ASSERT_TRUE(state.sourceChart.has_value());
+      typedCharts.insert(
+          directional::authority::LegacyAuthorityAdapters::to_legacy_index(
+              state.sourceChart.value()));
+    }
+  }
+  EXPECT_EQ((std::set<std::size_t>{0U, 1U, 2U}), typedCharts);
+
+  std::map<int, std::set<int>> compatibilityChartsByFace;
+  for (const auto &cell : network.phaseFront.cells) {
+    for (const auto &path : cell.boundaryPaths) {
+      for (const auto &segment : path) {
+        compatibilityChartsByFace[segment.face].insert(segment.sourceChart);
+      }
+    }
+  }
+  EXPECT_EQ((std::set<int>{1}), compatibilityChartsByFace[3]);
+  EXPECT_EQ((std::set<int>{2}), compatibilityChartsByFace[10]);
+}
+
+TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
+     NumericCoincidenceCannotCrossAuthorityDomains) {
+  using directional::authority::AuthorityDomain;
+  using directional::authority::DomainErrorCode;
+  using directional::authority::FieldChartId;
+  using directional::authority::LegacyAuthorityAdapters;
+
+  const auto chart = LegacyAuthorityAdapters::field_chart(0, 1);
+  const auto face = LegacyAuthorityAdapters::source_face(0, 1);
+  ASSERT_TRUE(chart);
+  ASSERT_TRUE(face);
+  EXPECT_EQ(LegacyAuthorityAdapters::to_legacy_index(chart.value()),
+            LegacyAuthorityAdapters::to_legacy_index(face.value()));
+
+  const auto wrongDomain = LegacyAuthorityAdapters::checked<FieldChartId>(
+      AuthorityDomain::SourceFace, 0, 1);
+  ASSERT_FALSE(wrongDomain);
+  EXPECT_EQ(DomainErrorCode::DomainMismatch, wrongDomain.error().code);
+  EXPECT_EQ(AuthorityDomain::FieldChart, wrongDomain.error().expectedDomain);
+}
+
+TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
+     MissingOrInvalidChartAuthorityCannotMasqueradeAsValid) {
+  directional::geometry::LocalLatticeState state;
+  EXPECT_FALSE(state.sourceChart.has_value());
+
+  const auto negative =
+      directional::authority::LegacyAuthorityAdapters::field_chart(-1, 3);
+  const auto outOfRange =
+      directional::authority::LegacyAuthorityAdapters::field_chart(3, 3);
+  EXPECT_FALSE(negative);
+  EXPECT_FALSE(outOfRange);
+
+  const auto valid =
+      directional::authority::LegacyAuthorityAdapters::field_chart(0, 3);
+  ASSERT_TRUE(valid);
+  state.sourceChart = valid.value();
+  ASSERT_TRUE(state.sourceChart.has_value());
+  EXPECT_EQ(0U,
+            directional::authority::LegacyAuthorityAdapters::to_legacy_index(
+                state.sourceChart.value()));
+}
+
+TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
+     FaceRowPermutationPreservesTypedPlanarChartAuthority) {
+  const directional::TriMesh forwardMesh = make_vertex_fan_plane_mesh(false);
+  const directional::TriMesh reverseMesh = make_vertex_fan_plane_mesh(true);
+  const auto forwardField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          forwardMesh, constant_xy_raw_field(forwardMesh.F.rows()));
+  const auto reverseField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          reverseMesh, constant_xy_raw_field(reverseMesh.F.rows()));
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(forwardMesh.V.rows(), 0.125);
+  directional::geometry::SurfaceCellTracingOptions forwardOptions;
+  forwardOptions.sourceFaceComponents.assign(
+      static_cast<std::size_t>(forwardMesh.F.rows()), 0);
+  forwardOptions.sourceFaceSheets.assign(
+      static_cast<std::size_t>(forwardMesh.F.rows()), 0);
+  directional::geometry::SurfaceCellTracingOptions reverseOptions = forwardOptions;
+
+  const auto forward = directional::geometry::build_surface_cell_network(
+      forwardMesh.V, forwardMesh.F, forwardField, targetSize, forwardOptions);
+  const auto reverse = directional::geometry::build_surface_cell_network(
+      reverseMesh.V, reverseMesh.F, reverseField, targetSize, reverseOptions);
+
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            forward.phaseFront.disposition);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            reverse.phaseFront.disposition);
+  ASSERT_EQ(forward.phaseFront.cells.size(), reverse.phaseFront.cells.size());
+  for (const auto *network : {&forward, &reverse}) {
+    for (const auto &cell : network->phaseFront.cells) {
+      for (const auto &state : cell.lattice) {
+        ASSERT_TRUE(state.sourceChart.has_value());
+        EXPECT_EQ(
+            0U,
+            directional::authority::LegacyAuthorityAdapters::to_legacy_index(
+                state.sourceChart.value()));
+      }
+    }
+  }
+}
+
+TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
+     PeriodicAndBoundedDiskSingleChartPathsUseCheckedChartZero) {
+  const CurvedDiskFixture disk = make_curved_disk_fixture();
+  const auto bounded = directional::geometry::build_surface_cell_network(
+      disk.vertices, disk.faces, disk.faceAxisX, disk.faceAxisY,
+      disk.targetSize, disk.options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            bounded.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             bounded.phaseFront.failure.reason);
+  ASSERT_FALSE(bounded.phaseFront.cells.empty());
+  for (const auto &cell : bounded.phaseFront.cells) {
+    for (const auto &state : cell.lattice) {
+      ASSERT_TRUE(state.sourceChart.has_value());
+      EXPECT_EQ(0U,
+                directional::authority::LegacyAuthorityAdapters::to_legacy_index(
+                    state.sourceChart.value()));
+    }
+  }
+
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/cylinder.rawfield");
+  directional::TriMesh mesh;
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const Eigen::MatrixXd rawField =
+      read_rawfield_fixture(fieldPath, mesh.F.rows());
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh,
+                                                                    rawField);
+  const Eigen::VectorXd target =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.25);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto periodic = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, target, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            periodic.phaseFront.disposition)
+      << directional::geometry::surface_phase_front_failure_reason_name(
+             periodic.phaseFront.failure.reason);
+  ASSERT_FALSE(periodic.phaseFront.cells.empty());
+  for (const auto &cell : periodic.phaseFront.cells) {
+    for (const auto &state : cell.lattice) {
+      ASSERT_TRUE(state.sourceChart.has_value());
+      EXPECT_EQ(0U,
+                directional::authority::LegacyAuthorityAdapters::to_legacy_index(
+                    state.sourceChart.value()));
+    }
+  }
 }
 
 } // namespace

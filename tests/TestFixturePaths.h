@@ -49,10 +49,16 @@ inline std::filesystem::path test_executable_directory() {
 }
 
 inline std::filesystem::path test_data_root() {
-  const std::filesystem::path packaged =
-      test_executable_directory() / "test-data";
-  if (std::filesystem::exists(packaged / "benchmarks" / "fixtures")) {
-    return packaged;
+  const std::filesystem::path executableDirectory =
+      test_executable_directory();
+  const std::filesystem::path siblingPackage =
+      executableDirectory.parent_path() / "test-data";
+  if (std::filesystem::exists(siblingPackage / "benchmarks" / "fixtures")) {
+    return siblingPackage;
+  }
+  const std::filesystem::path legacyPackage = executableDirectory / "test-data";
+  if (std::filesystem::exists(legacyPackage / "benchmarks" / "fixtures")) {
+    return legacyPackage;
   }
   return std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR);
 }

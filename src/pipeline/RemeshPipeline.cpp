@@ -1058,7 +1058,13 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, state.latticeCoordinate.y());
     hash_combine_i64(seed, state.branchRotation);
     hash_combine_i64(seed, state.scaleLevel);
-    hash_combine_i64(seed, state.sourceChart);
+    hash_combine_i64(seed, state.sourceChart.has_value() ? 1 : 0);
+    if (state.sourceChart.has_value()) {
+      hash_combine_i64(
+          seed, static_cast<std::int64_t>(
+                    authority::LegacyAuthorityAdapters::to_legacy_index(
+                        state.sourceChart.value())));
+    }
   };
   hash_combine_u64(seed, network.phaseFront.edges.size());
   for (const geometry::SurfaceFrontEdge &edge : network.phaseFront.edges) {
@@ -1875,10 +1881,13 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   };
   const auto lattice_equal = [](const geometry::LocalLatticeState &first,
                                 const geometry::LocalLatticeState &second) {
+    if (!first.sourceChart.has_value() || !second.sourceChart.has_value()) {
+      return false;
+    }
     return first.latticeCoordinate == second.latticeCoordinate &&
            first.branchRotation == second.branchRotation &&
            first.scaleLevel == second.scaleLevel &&
-           first.sourceChart == second.sourceChart &&
+           first.sourceChart.value() == second.sourceChart.value() &&
            (first.phase - second.phase).norm() <= 1.0e-10;
   };
   const auto make_surface_point = [&](const geometry::SurfaceTracePoint &trace,
@@ -2710,12 +2719,18 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         result.failure = "QuotientSourceSupportConflict";
         return result;
       }
+      if (!occurrence.lattice.sourceChart.has_value()) {
+        result.failure = "MissingFieldChartAuthority";
+        return result;
+      }
       domainStates.push_back(
           {occurrence.topologyRegion, occurrence.point.sheet,
            occurrence.lattice.latticeCoordinate.x(),
            occurrence.lattice.latticeCoordinate.y(),
            occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
-           occurrence.lattice.sourceChart});
+           static_cast<std::int64_t>(
+               authority::LegacyAuthorityAdapters::to_legacy_index(
+                   occurrence.lattice.sourceChart.value()))});
       sheetsByTopologyRegion[occurrence.topologyRegion].insert(
           occurrence.point.sheet);
     }
@@ -2775,9 +2790,11 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       // Source triangle topology and exact barycentric chart select the
       // representative. The face row is only a final lookup tie-break for an
       // already identical chart; it is never a merge or provenance policy.
-      return std::tuple{weightedVertices, occurrence.point.sheet,
-                        occurrence.lattice.sourceChart,
-                        occurrence.topologyRegion, occurrence.point.face};
+      return std::tuple{
+          weightedVertices, occurrence.point.sheet,
+          authority::LegacyAuthorityAdapters::to_legacy_index(
+              occurrence.lattice.sourceChart.value()),
+          occurrence.topologyRegion, occurrence.point.face};
     };
     const int representative = *std::min_element(
         quotient.members.begin(), quotient.members.end(),

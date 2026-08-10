@@ -4459,9 +4459,29 @@ struct UniformPhaseFrame {
   double maxV = 0.0;
   /// Per-face local branch that represents the global +U lattice direction.
   std::vector<int> faceBranchRotation;
-  /// Connected source chart of equal branch orientation.
-  std::vector<int> faceChart;
+  /// Connected field chart of equal branch orientation.
+  std::vector<std::optional<authority::FieldChartId>> faceChart;
 };
+
+std::optional<authority::FieldChartId> single_field_chart_authority() {
+  const auto chart = authority::LegacyAuthorityAdapters::field_chart(0, 1);
+  if (!chart) {
+    return std::nullopt;
+  }
+  return chart.value();
+}
+
+bool phase_front_cells_have_field_chart_authority(
+    const std::vector<SurfacePhaseFrontCell> &cells) {
+  for (const SurfacePhaseFrontCell &cell : cells) {
+    for (const LocalLatticeState &state : cell.lattice) {
+      if (!state.sourceChart.has_value()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
 
 Eigen::Vector2d phase_uv(const UniformPhaseFrame &frame,
                          const Eigen::RowVector3d &point) {
@@ -4741,28 +4761,46 @@ bool build_planar_phase_frame(
     }
   }
 
-  frame.faceChart.assign(static_cast<std::size_t>(faces.rows()), -1);
+  // Preserve the established BFS partition and numbering as compatibility
+  // representation, then cross one checked boundary into semantic chart IDs.
+  std::vector<int> legacyFaceChart(static_cast<std::size_t>(faces.rows()), -1);
   int nextChart = 0;
   for (const int seed : activeFaces) {
-    if (frame.faceChart[static_cast<std::size_t>(seed)] >= 0) {
+    if (legacyFaceChart[static_cast<std::size_t>(seed)] >= 0) {
       continue;
     }
     std::queue<int> queue;
     queue.push(seed);
-    frame.faceChart[static_cast<std::size_t>(seed)] = nextChart;
+    legacyFaceChart[static_cast<std::size_t>(seed)] = nextChart;
     while (!queue.empty()) {
       const int face = queue.front();
       queue.pop();
       for (const int adjacent :
            equalOrientationAdjacency[static_cast<std::size_t>(face)]) {
-        if (frame.faceChart[static_cast<std::size_t>(adjacent)] >= 0) {
+        if (legacyFaceChart[static_cast<std::size_t>(adjacent)] >= 0) {
           continue;
         }
-        frame.faceChart[static_cast<std::size_t>(adjacent)] = nextChart;
+        legacyFaceChart[static_cast<std::size_t>(adjacent)] = nextChart;
         queue.push(adjacent);
       }
     }
     ++nextChart;
+  }
+  if (nextChart <= 0) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::MissingFaceState);
+    return false;
+  }
+  frame.faceChart.assign(static_cast<std::size_t>(faces.rows()), std::nullopt);
+  for (const int face : activeFaces) {
+    const auto chart = authority::LegacyAuthorityAdapters::field_chart(
+        legacyFaceChart[static_cast<std::size_t>(face)],
+        static_cast<std::size_t>(nextChart));
+    if (!chart) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::MissingFaceState,
+                              -1, -1, face);
+      return false;
+    }
+    frame.faceChart[static_cast<std::size_t>(face)] = chart.value();
   }
 
   frame.minU = frame.minV = std::numeric_limits<double>::infinity();
@@ -5143,7 +5181,7 @@ bool segment_on_source(
     if (selectedFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
         frame.faceBranchRotation[static_cast<std::size_t>(selectedFace)] < 0 ||
         selectedFace >= static_cast<int>(frame.faceChart.size()) ||
-        frame.faceChart[static_cast<std::size_t>(selectedFace)] < 0) {
+        !frame.faceChart[static_cast<std::size_t>(selectedFace)].has_value()) {
       set_phase_front_failure(failure,
                               SurfacePhaseFrontFailureReason::MissingFaceState,
                               cellId, sideId, selectedFace);
@@ -5191,8 +5229,9 @@ bool segment_on_source(
     segment.endBarycentric = bary1;
     segment.family = family;
     segment.sign = sign;
-    segment.sourceChart =
-        frame.faceChart[static_cast<std::size_t>(selectedFace)];
+    segment.sourceChart = static_cast<int>(
+        authority::LegacyAuthorityAdapters::to_legacy_index(
+            frame.faceChart[static_cast<std::size_t>(selectedFace)].value()));
     segments.push_back(std::move(segment));
   }
   if (segments.empty()) {
@@ -5781,7 +5820,8 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
             cell.corners[static_cast<std::size_t>(corner)].face;
         if (sourceFace < 0 ||
             sourceFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
-            sourceFace >= static_cast<int>(frame.faceChart.size())) {
+            sourceFace >= static_cast<int>(frame.faceChart.size()) ||
+            !frame.faceChart[static_cast<std::size_t>(sourceFace)].has_value()) {
           set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::MissingFaceState, cell.id, corner, sourceFace);
           return result;
         }
@@ -7324,7 +7364,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
         state.latticeCoordinate = {
             corner == 1 || corner == 2 ? u + 1 : u,
             corner >= 2 ? v + 1 : v};
-        state.sourceChart = 0;
+        state.sourceChart = single_field_chart_authority();
       }
       for (int side = 0; side < 4; ++side) {
         const Eigen::Vector2i delta =
@@ -8635,7 +8675,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
         state.branchRotation = normalized_branch(
             faceBranchRotation[static_cast<std::size_t>(sourceFace)] +
             chartUBranch);
-        state.sourceChart = 0;
+        state.sourceChart = single_field_chart_authority();
       }
       const std::array<int, 4> globalBranches{
           chartUBranch, normalized_branch(chartUBranch + 1),
@@ -9200,7 +9240,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
         firstUnsupportedRegion = static_cast<int>(regionBuilds.size());
       }
     } else {
-      if (!local.succeeded || local.cells.empty()) {
+      if (!local.succeeded || local.cells.empty() ||
+          !phase_front_cells_have_field_chart_authority(local.cells)) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         result.failure = local.failure;
         set_phase_front_failure(

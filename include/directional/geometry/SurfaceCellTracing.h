@@ -17,6 +17,7 @@
 #include <limits>
 #include <map>
 #include <numeric>
+#include <optional>
 #include <queue>
 #include <set>
 #include <stdexcept>
@@ -26,6 +27,7 @@
 
 #include <Eigen/Dense>
 
+#include <directional/authority/AuthorityIds.h>
 #include <directional/fields/CrossField.h>
 #include <directional/geometry/ReliefTopology.h>
 
@@ -174,8 +176,8 @@ struct LocalLatticeState {
   /// Local branch index that represents the domain +U lattice direction.
   int branchRotation = 0;
   int scaleLevel = 0;
-  /// Authoritative source chart owning this point's selected source face.
-  int sourceChart = -1;
+  /// Authoritative field chart owning this point's selected source face.
+  std::optional<authority::FieldChartId> sourceChart;
 };
 
 enum class SurfaceFrontEventKind : int {
