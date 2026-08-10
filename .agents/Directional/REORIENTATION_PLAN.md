@@ -50,7 +50,8 @@ M0 preserve immutable evidence [complete]
    M1d phase-front route identity consumer [accepted]
    M1e segment route transport consumer [accepted]
    M1f vertex continuation route transport consumer [accepted]
-   M1g periodic holonomy route transport consumer [compile/package complete; runtime next]
+   M1g periodic holonomy route transport consumer [accepted]
+   M1h phase-front field-chart consumer [next]
    later bounded M1 consumers [pending]
 -> M2 closed outcomes and single-writer snapshots
 -> M3 global conformity plan
@@ -109,8 +110,8 @@ Immutable M1e authority:
 
 M1e is accepted. Its facts remain folded into the durable handoff and regression tracker.
 
-Authoritative next immutable Test + Benchmark plan:
-`.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+Authoritative next Code + Build plan:
+`.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 
@@ -148,11 +149,21 @@ Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` replaces `PathState::m
 
 The first compile attempt surfaced a namespace-ownership mistake in a new provenance forward declaration. The correction kept the existing anonymous helper untouched and introduced a narrow continuation-owned provenance helper, avoiding unrelated ownership refactoring. Fresh accepted-source inspection selects the separate periodic face-cycle `totalMatching` accumulator as M1g. M1g is representation-only and must preserve current nonzero-rotation `PeriodicHolonomyMismatch` rejection so `G4-B003` remains unresolved.
 
-### M1g compile/package checkpoint
+### M1g immutable acceptance and M1h selection
 
-Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` replaces only the periodic whole-cycle raw matching accumulator with checked crossing identity, `TransitionStep`, `CanonicalRoute`, and typed `GridAutomorphism` composition. Canonical face-cycle discovery/order, raw route/public holonomy, legacy compatibility, lattice/cut route, nonzero-rotation rejection, and G4 outcomes remain unchanged.
+Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted at the periodic canonical-face-cycle whole-route transport owner. Exact artifact-only runtime passed M1g **6/6**, producer discovery **196**, required-green **181/181**, M1f/M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct independent-oracle products. Eight historical/deferred reds retained their classes, Bunny remained the known completion red, Vase remained bounded safety-only, and exact package postflight passed. Nonzero rotation remains `PeriodicHolonomyMismatch`; `G4-B003` is not closed.
 
-Code + Build run/job `31362470744 / 93373936472` completed **120/120** with result artifact `9053047653` (`296f3ed13f2f09143a14f63555171d013939c2525052a56b807ea7f00cf1bd0c`), log artifact `9053048092` (`c5c3d964d9210982bfb08d0cf46900308a2498cee9ea2e54879dd35e61cacbd9`), and manifest **64/64** (`89beb0a12c1051a0fd4d55af6a8ee27e897c0f610045efa8b270a42dc09d51ae`). Runtime is false; six M1g contracts are compiled and unexecuted. Current report: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Code_Build_Report.md`.
+Current evidence: `.agents/Directional/Architecture_M1g_Periodic_Holonomy_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+M1g runtime also exposed a package-layout portability defect: `test_data_root()` checks `bin/test-data` while the accepted package stores `../test-data`. The next Code + Build must correct that executable-relative lookup without changing test semantics.
+
+Fresh accepted-source inspection selects the next real M1 semantic owner:
+
+`build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`.
+
+This producer creates connected equal-orientation field charts and currently stores/carries their identity as bare integers. `authority::FieldChartId` already exists. M1h adopts that type at the producer/constructive-front boundary while preserving chart partitioning/numbering, phase and lattice values, front topology, public compatibility output, periodic behavior, and G4 outcomes. `SurfaceTraceSegment::sourceChart`, chart-relation certificates, public schema retirement, M2–M6, and G4 repair remain out of scope unless the M1h plan names a narrow compile compatibility touchpoint.
+
+Next plan: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Consumer_Code_Build_Plan.md`.
 
 ## 5. Required target-stage corrections
 
@@ -196,7 +207,7 @@ Later testing work remains T2–T6: direct semantic corpus, property/metamorphic
 
 ### M1 — authority kernel and compatibility boundaries
 
-Continue bounded consumers only. `resolve_vertex_continuation` is immutable accepted at M1f. The separate periodic-holonomy route transport is M1g compile/package complete without changing cycle discovery, output, or rejection behavior; immutable M1g runtime validation is the next gate. Production `FieldChartId` adoption and any later M1 consumer remain unselected until M1g acceptance and fresh source inspection.
+Continue bounded consumers only. M1g periodic-holonomy route transport is immutable accepted without changing cycle discovery, output, or rejection behavior. Fresh accepted-source inspection selects M1h production `FieldChartId` adoption at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`. M1h remains representation-only; later M1 consumers remain unselected until immutable M1h acceptance.
 
 ### M2 — closed producer outcomes and single-writer scope
 
