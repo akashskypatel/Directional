@@ -2894,7 +2894,7 @@ TEST(SurfaceCellsPhase10,
   bool sawCrossSheetScope = false;
   for (const auto &cell : network.phaseFront.cells) {
     sawCrossSheetScope |= cell.sourceIsolationSheets.size() > 1U;
-    EXPECT_EQ(0, cell.sourceTopologyRegion);
+    EXPECT_EQ(0, legacy_phase_front_topology_region(cell));
   }
   EXPECT_TRUE(sawCrossSheetScope);
   const auto materialized =
