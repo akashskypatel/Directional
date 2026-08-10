@@ -31,7 +31,9 @@ The production blob is byte-identical to the final reviewed production hunk at `
 
 The malformed contract was narrowly corrected after Review: typed construction is unreachable as a distinct failure once derived topology/compact provenance validates, so the test targets the real predecessor `source_edge_provenance` boundary and requires `MissingTransitionProvenance` without fallback. `CrossFieldEdgeTransition::sourceEdge` remains validation metadata, not semantic `InteriorTransitionId`.
 
-Code + Build report:
+Immutable runtime acceptance passed M1e focused **6/6**, producer discovery **184**, required-green producer **169/169**, M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and direct Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle gates. The strict-validator 5% microbenchmark was characterized as nondeterministic (**6/10 pass, 4/10 fail**) and remains deferred; it is not stable product evidence.
+
+Current immutable report:
 `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## Accepted M1d immutable authority
@@ -64,7 +66,7 @@ Direct required-green products from the exact M1d producer executable remain ind
 
 All nine historical/deferred producer reds remain explicit with their prior failure classes; no new regression or recurrence was created.
 
-Authoritative report:
+M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and the current immutable report:
 `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## M1d accepted semantic boundary

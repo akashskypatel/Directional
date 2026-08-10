@@ -69,7 +69,7 @@ bad: compile/helper/status/count claimed as product proof.
 good: named semantic contract + independent oracle + direct representative evidence.
 ```
 
-`RP-02 / TA-05` remains **test-authority resolved and preserved through M1d**; M1e preservation is accepted under immutable artifact execution:
+`RP-02 / TA-05` remains **test-authority resolved and preserved through M1e** under immutable artifact execution:
 
 - producer discovery exactly **184**;
 - required-green producer segment **169/169**;
@@ -101,7 +101,7 @@ bad: nested retries each have local bounds but total work can grow without one m
 good: one shared work ledger + monotone progress measure + deterministic exhaustion failure.
 ```
 
-Untouched by M1a–M1e. Vase remains bounded safety-only evidence. M1e must add no search/retry loop.
+Untouched by M1a–M1e. Vase remains bounded safety-only evidence. M1e added no search/retry loop; M1f must preserve this.
 
 ### RP-05 — representation-dependent identity
 
@@ -114,7 +114,7 @@ good: semantic strong ID/key is authoritative; row/hash is an explicit compatibi
 - M1b semantic source identity versus row representation: **accepted**.
 - M1c canonical `SourceEdgeTopologyKey` versus raw packed source-edge key: **accepted**.
 - M1d route identity versus packed route key/index: **accepted**.
-- M1e compiles each route step through canonical `SourceEdgeTopologyKey` + `InteriorTransitionId`; observed route orientation is preserved through `CanonicalRoute::oriented_steps()` rather than canonical storage order becoming behavioral order. Runtime acceptance is complete.
+- M1e routes each step through canonical `SourceEdgeTopologyKey` + `InteriorTransitionId`; observed route orientation is preserved through `CanonicalRoute::oriented_steps()` rather than canonical storage order becoming behavioral order. Immutable runtime is accepted.
 
 ### RP-06 — state-cardinality growth
 
@@ -136,7 +136,7 @@ M1c is accepted at individual edge transport: `QuarterTurn::from_integer`, algeb
 
 M1d preserved this unchanged.
 
-**M1e is the current direct RP-07 migration:** `segment_on_source` now compiles typed zero-shift `GridAutomorphism` per step, `TransitionStep`/`CanonicalRoute` for the observed route, algebraic composition in observed order, and integer matching only at the final compatibility write. Immutable runtime acceptance is complete.
+**M1e is the accepted direct RP-07 migration:** `segment_on_source` now compiles typed zero-shift `GridAutomorphism` per step, `TransitionStep`/`CanonicalRoute` for the observed route, algebraic composition in observed order, and integer matching only at the final compatibility write. Immutable runtime acceptance is complete.
 
 The separate periodic-holonomy accumulation remains outside M1e.
 
@@ -181,7 +181,7 @@ Prior M1a/M1b/M1c detailed per-turn reports were cleaned after their accepted fa
 | `RP-02 / TA-05` | **preserved** deterministic hard-authored expected values, independent compact IDs, semantic snapshot keys | producer 184, required-green 169/169, M1d/M1c/M1b/M1a/T1/direct evidence |
 | `RP-03/04/06/08/09` | untouched | unchanged dispositions/accounting |
 
-M1e compile authority:
+M1e immutable authority:
 
 - implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10`;
 - build run/job `31351113129 / 93341993183`, **120/120**;

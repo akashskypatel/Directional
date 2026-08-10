@@ -108,10 +108,10 @@ Immutable M1e authority:
 - Code + Build executed no generated Directional binary, discovery, test, or benchmark; immutable runtime subsequently passed M1e **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct required-green products.
 
 M1e is accepted. The authoritative current report is:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
-
-Current M1e Code + Build report:
 `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+
+Authoritative next Code + Build plan:
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 
