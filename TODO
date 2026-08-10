@@ -14,6 +14,7 @@ Last updated: 2026-08-10 UTC
 - Authoritative next turn: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
 - Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`; draft PR #8 stays open/unmerged; review policy `never`.
 - Current immutable report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
+
 ## M1d immutable acceptance
 
 Selected accepted seam:
@@ -43,90 +44,45 @@ Nine historical/deferred producer reds remain explicit and unchanged in class. B
 
 Both local and remote postflight preserved the exact result artifact, manifest, producer, and all **59/59** packaged checksums. Temporary runtime workflow/trigger files were removed.
 
-M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and the current immutable M1e report.
+M1d accepted facts are retained in `.agents/Directional/Regression_Root_Cause_Tracker.md` and the current immutable report.
 
 ## M1e immutable acceptance
 
 Selected seam:
 `surface_cell_tracing_detail::segment_on_source -> ordered transition route between consecutive SurfaceTraceSegment attachments`.
 
-The consumer owns an ordered `VertexPathStep` sequence. M1e replaces raw signed `transition.matching` accumulation at this real transport owner with:
+Implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` replaces only raw cumulative signed matching across the ordered step route with checked step identity, `QuarterTurn` / zero-shift `GridAutomorphism`, `TransitionStep`, `CanonicalRoute`, and typed algebraic composition while preserving observed route direction through `oriented_steps()` and retaining the existing raw output/provenance representation.
 
-- checked source-vertex/interior-transition step identity;
-- canonical `SourceEdgeTopologyKey`;
-- typed `QuarterTurn` / zero-shift `GridAutomorphism` per observed step;
-- `TransitionStep` and one `CanonicalRoute`;
-- algebraic composition using `CanonicalRoute::oriented_steps()` so canonical storage cannot change observed route direction;
-- raw `current.matching` and ordered provenance only at existing compatibility output boundaries.
+M1e does not migrate the separate periodic-holonomy loop, `FieldChartId`, public route/segment schemas, topology-region planning, shared rail scheduling, quotient/certificate ownership, validators, fixtures, fallback/recovery expansion, optimization, or G4 behavior.
 
-M1e excludes periodic-holonomy loop transport, `FieldChartId`, public schema changes, topology/conformity/quotient work, validators, fallback/recovery expansion, optimization, and G4 repair.
+Immutable runtime accepted M1e focused **6/6**, producer discovery **184**, required-green **169/169**, M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct products. Strict-validator timing remained deferred at **6/10 pass, 4/10 fail**.
 
-The final product/test diff is exactly `src/geometry/SurfaceCellTracing.cpp` and `tests/SurfaceCellsPhase10Tests.cpp`. The package records **61/61** recursive checksums (`36a6377350aa4b58205ccd881a7ee34156800d28e3c5edecf634769289d9e7e5`), 62 regular files, seven executables, two static libraries, and 27 fixtures. Immutable runtime passed M1e focused **6/6**, producer required-green **169/169**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct required-green products.
-
-M1e accepted facts remain retained in the durable handoff and regression tracker.
-
-## M1f immutable acceptance checkpoint
+## M1f immutable acceptance
 
 Selected seam:
 `surface_cell_tracing_detail::resolve_vertex_continuation -> ordered source-vertex continuation route`.
 
-Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable accepted from artifacts `9050850344 / 9050850513`: producer discovery **190**, M1f focused **6/6**, required-green producer **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct products green and independent-oracle clean. Bunny remains known-red, Vase bounded safety-only, and exact postflight preserved **59/59** package checksums.
+Implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` is immutable accepted from artifacts `9050850344 / 9050850513`: producer **190**, M1f **6/6**, required-green **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct products. Strict-validator timing remained deferred at **9/10 pass, 1/10 fail**.
 
-The first compile-only implementation `17afbfd8baf0d369d9136534c0a11784ca0dca10` exposed a namespace-ownership ambiguity in `source_edge_provenance`; the correction was source-local and compiled successfully. No new stable regression event or recurrence was created.
-
-M1f accepted facts remain retained in the durable handoff and regression tracker. Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`. The M1g package corrects the stale MultiFaceSeam/CloseSheets names in `metadata/direct-product-test-names.txt` to the existing parameterized product names without product-behavior changes.
-
-## M1g immutable acceptance checkpoint
+## M1g immutable acceptance
 
 Selected boundary:
 `periodic canonical face cycle -> ordered source-edge crossings -> whole-cycle holonomy decision`.
 
-Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted from result/log artifacts `9053047653 / 9053048092`. Exact runtime authority: producer discovery **196**, M1g focused **6/6**, required-green producer **181/181**, M1f/M1e/M1d/M1c/M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle products all green. Eight historical/deferred reds retained their entering classes. Bunny preserved `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remained bounded safety-only at 60 seconds.
+Implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` is immutable accepted from artifacts `9053047653 / 9053048092`: producer **196**, M1g **6/6**, required-green **181/181**, validation **77/77**, M1a **14/14**, T1 **29/29**, and all four direct products. Nonzero periodic rotation remains `PeriodicHolonomyMismatch`; `G4-B003` is unresolved. Strict-validator timing remained deferred at **1/10 pass, 9/10 fail**.
 
-Remote heavy run `31394985769` produced dedicated Bunny evidence/log artifacts `9065273769 / 9065273267` and Vase evidence/log artifacts `9065263527 / 9065262959`. Exact local/remote postflight preserved the result ZIP, build-log ZIP, **64/64** content manifest, 65 regular files, seven executables, two libraries, and 27 fixtures. No new stable regression or recurrence was created.
-
-M1g preserves nonzero `PeriodicHolonomyMismatch`; `G4-B003` remains unresolved. Strict-validator timing remains deferred after M1g **1/10 pass, 9/10 fail** fresh characterization.
-
-Artifact runtime also confirmed a portability defect in `tests/TestFixturePaths.h`: the helper searches `bin/test-data`, while the package stores sibling `../test-data`. M1h must correct only that lookup fallback and then adopt checked `FieldChartId` at `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` without changing product behavior.
-
-Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`.
-
-Next Code + Build: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
-
-## M1h compile/package checkpoint — immutable runtime pending
+## M1h immutable acceptance
 
 Selected seam:
 `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart`.
 
-Implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` is compile/package complete from run/job `31398571348 / 93487537918`. Result/log artifacts are `9066967620 / 9066968049` with ZIP SHA-256 `16d04835f9186b94fbb1ab987c5cd0bebd801daa7f368d01dc58139f67f5fe03 / d6fa10a4b188b5569dfc73008c1a6e8a6f3a4e51f64cf4232a568087b36ac816`. The package has **69/69** checksummed contents, 70 regular files, seven executables, two static libraries, and 27 fixtures. Build is **120/120** Release/static/Ninja/PRE_TEST and every runtime flag is false.
-
-M1h changes exactly five production/test paths. Six focused field-chart contracts compile and remain unexecuted. The same slice corrects packaged fixture discovery to recognize sibling `../test-data`; immutable runtime must prove this without an external symlink.
-
-Current report: `.agents/Directional/Architecture_M1h_Phase_Front_Field_Chart_Test_Authority_Remediation_Artifact_Only_Test_Benchmark_Report.md`. Next immutable runtime: `.agents/Directional/Architecture_M1i_Phase_Front_Cell_Source_Scope_Consumer_Code_Build_Plan.md`.
+Production implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` is immutable accepted with remediation witness commit `32b22d3ee8aa46ba2d1fd149ce04204a4206d0c0` from artifacts `9069186973 / 9069187317`. Producer discovery is **202**, M1h focused **6/6**, required-green **187/187**, validation **77/77**, M1a **14/14**, T1 **29/29**, all four direct products are independent-oracle clean without a fixture symlink, and all eight historical/deferred reds remain unchanged. Bunny remains known-red; Vase remains bounded safety-only. Exact **72/72** package authority was preserved.
 
 ## Regression status
 
-- `RP-01`: M1e accepted; M1f checked continuation-step domains **accepted**.
-- `RP-05`: M1e accepted; M1f continuation route identity/orientation **accepted**.
-- `RP-07`: M1e accepted; M1f typed cumulative continuation-route composition **accepted**.
-- `RP-02 / TA-05`: independent authority preserved through exact M1f artifact-only validation.
-- M1g `RP-01 / RP-05 / RP-07` periodic-route migration is **immutable accepted**; `RP-02 / TA-05` preservation is re-proven from exact artifact execution.
-- M1h `RP-01 / RP-05` field-chart migration is compile/package complete; six `RP-02 / TA-05` contracts are compiled but runtime acceptance remains pending.
+- `RP-01`: M1h `FieldChartId` migration **accepted**; M1i next targets cell-owned `SourceComponentId` / `IsolationSheetId`.
+- `RP-02 / TA-05`: independent authority preserved through M1h exact artifact execution.
+- `RP-05`: M1h chart identity migration **accepted**.
 - Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains active and unchanged on production artifact `9031804178`.
-- Strict-validator timing remains deferred: M1e produced **6/10 pass, 4/10 fail** and M1f produced **9/10 pass, 1/10 fail** across fresh repetitions, confirming the sub-millisecond 5% timing gate is nondeterministic rather than stable product evidence.
-
-## Deferred blockers
-
-1. active direct-torus `G4-R007`;
-2. shared hard-rail scheduling `G4-B002`;
-3. nonzero periodic Z4 production capability `G4-B003`;
-4. positive multi-isolation witness `G4-B004`;
-5. historical transition-quotient/completion failures;
-6. strict-validator timing;
-7. prescribed sphere, G5/G6, Bunny/Vase production success, fallback/recovery, optimization;
-8. later M1 consumers, M2–M6 and T2–T6.
-
-Stale per-turn `.agents/Directional` evidence is governed by the mandatory cleanup policy in `Future_Chat_Session_Handoff.md`. Every Test + Benchmark turn begins with stale-evidence cleanup and ends with the current report plus exactly one next Code + Build plan.
-
-Every completed turn ends with one new top-level PR #8 conversation comment after all other branch and PR-body writes.
+- Strict-validator timing remains a deferred nondeterministic microbenchmark defect; no threshold/retry workaround is authorized.
