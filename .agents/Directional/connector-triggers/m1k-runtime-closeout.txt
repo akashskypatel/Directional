@@ -1,6 +1,0 @@
-M1k immutable Artifact-Only Test + Benchmark closeout
-accepted implementation: b9181364926cea840e9cb50da21fe721f33fd874
-runtime: 31433794426 / 93603203081
-next: M1l Code + Build
-correction: runner.temp handoff syntax
-triggered: 2026-08-10T21:41:00Z
