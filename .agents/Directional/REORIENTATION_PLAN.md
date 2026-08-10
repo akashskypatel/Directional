@@ -110,8 +110,8 @@ Immutable M1e authority:
 M1e is accepted. The authoritative current report is:
 `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
-Authoritative next Code + Build plan:
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
+Authoritative next immutable Test + Benchmark plan:
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## 4. M1e accepted boundary and M1f selection
 

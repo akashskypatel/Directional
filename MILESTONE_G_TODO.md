@@ -63,11 +63,11 @@ Current immutable report:
 
 ## Authoritative next turn
 
-Run **M1f Vertex Continuation Route Transport Consumer — Code + Build only** under:
+Run **M1f Vertex Continuation Route Transport Consumer — immutable Test + Benchmark only** under:
 
-`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
 
-M1f is intentionally limited to the real `resolve_vertex_continuation` ordered source-vertex route transport owner. It must preserve continuation path discovery/ranking and defer periodic whole-cycle holonomy, `FieldChartId`, M2–M6, and G4 remediation.
+Consume only immutable artifacts `9050850344 / 9050850513`. Rebuild, relink, regeneration, product/test/build/fixture edits, repair, and artifact substitution are prohibited. M1f remains runtime-pending until the focused, complete producer, preservation, direct-product, and immutable postflight gates pass.
 
 ## M1f vertex-continuation transport — compile/package complete
 
@@ -83,7 +83,7 @@ Run immutable Test + Benchmark only under `.agents/Directional/Architecture_M1f_
 - `RP-01`: M1e checked step domains **accepted**; M1f continuation-step domains **compile-complete/runtime-pending**.
 - `RP-05`: M1e semantic step identity and observed/canonical route order **accepted**; M1f continuation route identity/orientation **compile-complete/runtime-pending**.
 - `RP-07`: M1e cumulative ordered-route transport **accepted**; M1f continuation transport **compile-complete/runtime-pending**.
-- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through immutable M1e validation.
+- `RP-02 / TA-05`: exact producer/M1d/M1c/M1b/M1a/T1/direct authority preserved through immutable M1e validation; M1f preservation pending exact artifact-only validation.
 - No new stable regression event or recurrence. Historical totals remain **34 events / 14 categories / 20 recurrences**.
 - `PR8-R034 / G4-R007` remains **active** under production artifact `9031804178`.
 - Strict-validator timing is nondeterministic under the exact M1e artifact (**6/10 pass, 4/10 fail**) and remains a deferred performance-test defect; no threshold/retry workaround is authorized.
@@ -105,7 +105,8 @@ The mandatory durable cleanup policy is in `.agents/Directional/Future_Chat_Sess
 ## Core references
 
 - `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;

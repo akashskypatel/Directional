@@ -190,9 +190,8 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 ## Core references
 
 - `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`;
-- `.agents/Directional/Architecture_M1e_Segment_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1f_Vertex_Continuation_Route_Transport_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/DESIGN.md`;
 - `.agents/Directional/REORIENTATION_PLAN.md`;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`;
@@ -200,9 +199,9 @@ For every future temporary path-filtered workflow cleanup, follow the durable `G
 - `TODO`;
 - `MILESTONE_G_TODO.md`.
 
-At the start of M1f Code + Build, fetch fresh PR/head state; verify accepted M1e implementation `a0330d0107f7d7340e9f8644d26dd6c8b753ff10` remains an ancestor, then inspect the current `resolve_vertex_continuation` owner before editing. Do not assume this handoff's documentation head if external commits move the branch.
+At the start of immutable M1f Test + Benchmark, fetch fresh PR/head and artifact state; verify implementation `baed0f24831c476f45a1b742c12314e3fb03e10e` remains an ancestor and artifacts `9050850344 / 9050850513` remain unexpired with exact declared digests. Do not assume this handoff's documentation head if external commits move the branch.
 
-If M1f inspection shows the selected continuation consumer no longer owns the raw cumulative transport described by the authoritative plan, stop and revise the plan rather than migrating a different owner. After a successful compile/package-only M1f turn, the next turn is immutable Test + Benchmark against that exact artifact.
+If immutable M1f validation finds any required-green semantic or preservation regression, remain at M1f and return to corrective Code + Build. Do not advance to periodic whole-cycle holonomy, production `FieldChartId`, M2, or G4 remediation until M1f is accepted.
 
 After all branch-file and PR-body writes for a completed turn, the final repository write is exactly one new top-level PR #8 conversation comment.
 
