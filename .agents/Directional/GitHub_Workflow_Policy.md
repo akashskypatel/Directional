@@ -42,6 +42,8 @@ Artifact-only Test + Benchmark turns download the exact declared build artifact,
 
 They may **not** configure, compile, relink, regenerate code/discovery, patch packaged source, modify fixtures/manifests, or edit implementation/test/benchmark/validator/build logic. An invalid artifact is an infrastructure failure; do not create a replacement build inside Test + Benchmark.
 
+Long-running or resource-heavy tests and benchmarks are explicitly permitted on temporary, narrowly scoped GitHub Actions workflows. They remain subject to the same Test + Benchmark artifact-only boundary, exact preflight/postflight authority, logging requirements, bounded time/resource controls, and temporary-workflow cleanup lifecycle; remote execution is an execution-plane choice, not permission to combine build and runtime validation.
+
 ## Trigger/payload lifecycle
 
 When dispatch is unavailable and a temporary exact-path push trigger is required:

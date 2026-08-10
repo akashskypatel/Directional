@@ -3719,4 +3719,240 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(64U, result.diagnostics.surfaceCellCompletedQuadCount);
 }
 
+
+struct VertexContinuationRouteFixture {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  Eigen::MatrixXd faceAxisX;
+  Eigen::MatrixXd faceAxisY;
+  std::map<std::uint64_t, std::array<int, 2>> edgeFaces;
+  std::map<std::uint64_t, int> edgeMatchingIndices;
+  std::vector<directional::fields::CrossFieldEdgeTransition> transitions;
+  Eigen::VectorXi legacyMatching;
+  Eigen::VectorXd legacyEffort;
+  directional::geometry::SurfaceCellTracingOptions options;
+  std::vector<std::uint64_t> forwardTopology;
+  std::vector<int> forwardCompactEdges;
+  Eigen::RowVector3d forwardDirection = Eigen::RowVector3d::Zero();
+};
+
+VertexContinuationRouteFixture make_vertex_continuation_route_fixture() {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  VertexContinuationRouteFixture fixture;
+  fixture.vertices.resize(5, 3);
+  fixture.vertices << 0.0, 0.0, 0.0,
+                      1.0, 0.0, 0.0,
+                      0.0, 1.0, 0.0,
+                     -1.0, 0.0, 0.0,
+                      0.0,-1.0, 0.0;
+  fixture.faces.resize(4, 3);
+  fixture.faces << 0, 1, 2,
+                   0, 2, 3,
+                   0, 3, 4,
+                   0, 4, 1;
+
+  const double invSqrt2 = 1.0 / std::sqrt(2.0);
+  const Eigen::RowVector3d diagonal(invSqrt2, invSqrt2, 0.0);
+  const Eigen::RowVector3d perpendicular(-invSqrt2, invSqrt2, 0.0);
+  fixture.forwardDirection = diagonal;
+  fixture.faceAxisX.resize(4, 3);
+  fixture.faceAxisY.resize(4, 3);
+  fixture.faceAxisX.row(0) = perpendicular;
+  fixture.faceAxisY.row(0) = -diagonal;
+  fixture.faceAxisX.row(1) = perpendicular;
+  fixture.faceAxisY.row(1) = diagonal;
+  fixture.faceAxisX.row(2) = diagonal;
+  fixture.faceAxisY.row(2) = perpendicular;
+  fixture.faceAxisX.row(3) = perpendicular;
+  fixture.faceAxisY.row(3) = -diagonal;
+
+  fixture.edgeFaces = detail::edge_faces(fixture.faces);
+  fixture.edgeMatchingIndices = detail::edge_matching_indices(fixture.edgeFaces);
+  const std::uint64_t first = detail::edge_key(0, 3);
+  const std::uint64_t second = detail::edge_key(0, 2);
+  fixture.forwardTopology = {first, second};
+  fixture.forwardCompactEdges = {2, 1};
+
+  directional::fields::CrossFieldEdgeTransition firstTransition;
+  firstTransition.sourceEdge = 2;
+  firstTransition.sourceVertex0 = 0;
+  firstTransition.sourceVertex1 = 3;
+  firstTransition.firstFace = 2;
+  firstTransition.secondFace = 1;
+  firstTransition.matching = 1;
+  firstTransition.effort = 0.25;
+  fixture.transitions.push_back(firstTransition);
+
+  directional::fields::CrossFieldEdgeTransition secondTransition;
+  secondTransition.sourceEdge = 1;
+  secondTransition.sourceVertex0 = 0;
+  secondTransition.sourceVertex1 = 2;
+  secondTransition.firstFace = 1;
+  secondTransition.secondFace = 0;
+  secondTransition.matching = 2;
+  secondTransition.effort = 0.5;
+  fixture.transitions.push_back(secondTransition);
+
+  fixture.legacyMatching =
+      Eigen::VectorXi::Zero(static_cast<int>(fixture.edgeMatchingIndices.size()));
+  fixture.legacyEffort =
+      Eigen::VectorXd::Zero(static_cast<int>(fixture.edgeMatchingIndices.size()));
+  fixture.legacyMatching[fixture.edgeMatchingIndices.at(first)] = -1;
+  fixture.legacyMatching[fixture.edgeMatchingIndices.at(second)] = -2;
+  fixture.legacyEffort[fixture.edgeMatchingIndices.at(first)] = 0.25;
+  fixture.legacyEffort[fixture.edgeMatchingIndices.at(second)] = 0.5;
+
+  fixture.options.sourceFaceComponents = {0, 0, 0, 0};
+  fixture.options.sourceFaceSheets = {0, 0, 0, 0};
+  fixture.options.hardFeatureEdges.insert(detail::edge_key(0, 1));
+  fixture.options.hardFeatureEdges.insert(detail::edge_key(0, 4));
+  return fixture;
+}
+
+directional::geometry::surface_cell_tracing_detail::VertexContinuationResult
+resolve_vertex_continuation_fixture(
+    const VertexContinuationRouteFixture &fixture, const int currentFace,
+    const int currentFamily, const int currentSign,
+    const Eigen::RowVector3d &incomingDirection,
+    const std::vector<directional::fields::CrossFieldEdgeTransition>
+        *transitions) {
+  namespace detail = directional::geometry::surface_cell_tracing_detail;
+  const auto lookup = transitions != nullptr
+                          ? detail::edge_transition_lookup(*transitions)
+                          : detail::EdgeTransitionLookup{};
+  return detail::resolve_vertex_continuation(
+      fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
+      fixture.edgeFaces, fixture.edgeMatchingIndices, lookup, currentFace, 0,
+      currentFamily, currentSign, incomingDirection, fixture.options,
+      &fixture.legacyMatching, &fixture.legacyEffort, transitions);
+}
+
+TEST(SurfaceCellVertexContinuationRouteTransportAuthorityMigration,
+     MultiStepContinuationComposesTypedTransport) {
+  const auto fixture = make_vertex_continuation_route_fixture();
+  ASSERT_EQ(2U, fixture.transitions.size());
+  EXPECT_EQ(1, fixture.transitions[0].matching);
+  EXPECT_EQ(2, fixture.transitions[1].matching);
+
+  const auto result = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &fixture.transitions);
+
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            result.status);
+  EXPECT_EQ(0, result.face);
+  EXPECT_EQ((std::vector<int>{2, 1, 0}), result.facePath);
+  EXPECT_EQ(3, result.matching);
+  EXPECT_EQ(1, result.family);
+  EXPECT_EQ(-1, result.sign);
+  EXPECT_TRUE(result.direction.isApprox(fixture.forwardDirection, 1.0e-12));
+}
+
+TEST(SurfaceCellVertexContinuationRouteTransportAuthorityMigration,
+     ReverseObservedContinuationUsesExactTransportInverse) {
+  const auto fixture = make_vertex_continuation_route_fixture();
+  const auto forward = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &fixture.transitions);
+  const auto reverse = resolve_vertex_continuation_fixture(
+      fixture, 0, 1, 1, -fixture.forwardDirection, &fixture.transitions);
+
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            forward.status);
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            reverse.status);
+  EXPECT_EQ(3, forward.matching);
+  EXPECT_EQ(1, reverse.matching);
+  EXPECT_EQ((std::vector<int>{0, 1, 2}), reverse.facePath);
+  EXPECT_EQ(0, fixture_quarter_turn(forward.matching + reverse.matching));
+}
+
+TEST(SurfaceCellVertexContinuationRouteTransportAuthorityMigration,
+     EquivalentSignedRepresentationsNormalizeSemantically) {
+  const auto fixture = make_vertex_continuation_route_fixture();
+  auto plusFour = fixture.transitions;
+  plusFour[0].matching += 4;
+  auto minusFour = fixture.transitions;
+  minusFour[1].matching -= 4;
+
+  const auto baseline = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &fixture.transitions);
+  const auto positive = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &plusFour);
+  const auto negative = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &minusFour);
+
+  for (const auto *result : {&baseline, &positive, &negative}) {
+    ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                  VertexContinuationStatus::Found,
+              result->status);
+    EXPECT_EQ(3, result->matching);
+    EXPECT_EQ((std::vector<int>{2, 1, 0}), result->facePath);
+  }
+}
+
+TEST(SurfaceCellVertexContinuationRouteTransportAuthorityMigration,
+     ContinuationFacePathPreservesIndependentCompactRouteAuthority) {
+  const auto fixture = make_vertex_continuation_route_fixture();
+  ASSERT_EQ(2U, fixture.forwardTopology.size());
+  ASSERT_EQ(2U, fixture.forwardCompactEdges.size());
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::edge_key(0, 3),
+            fixture.forwardTopology[0]);
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::edge_key(0, 2),
+            fixture.forwardTopology[1]);
+  EXPECT_EQ((std::vector<int>{2, 1}), fixture.forwardCompactEdges);
+
+  const auto result = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &fixture.transitions);
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            result.status);
+  EXPECT_EQ((std::vector<int>{2, 1, 0}), result.facePath);
+  EXPECT_EQ(3, result.matching);
+}
+
+TEST(SurfaceCellVertexContinuationRouteTransportAuthorityMigration,
+     MalformedAuthoritativeStepProvenanceFailsClosedWithoutLegacyFallback) {
+  const auto fixture = make_vertex_continuation_route_fixture();
+  const auto baseline = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &fixture.transitions);
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            baseline.status);
+
+  auto malformed = fixture.transitions;
+  malformed[0].sourceEdge = -1;
+  const auto rejected = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &malformed);
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::FieldMetadata,
+            rejected.status);
+  EXPECT_EQ(-1, rejected.face);
+  EXPECT_TRUE(rejected.facePath.empty());
+}
+
+TEST(SurfaceCellVertexContinuationRouteTransportAuthorityMigration,
+     LegacyMatchingPathUsesSameTypedRouteComposition) {
+  const auto fixture = make_vertex_continuation_route_fixture();
+  const auto authoritative = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, &fixture.transitions);
+  const auto legacy = resolve_vertex_continuation_fixture(
+      fixture, 2, 0, 1, fixture.forwardDirection, nullptr);
+
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            authoritative.status);
+  ASSERT_EQ(directional::geometry::surface_cell_tracing_detail::
+                VertexContinuationStatus::Found,
+            legacy.status);
+  EXPECT_EQ(authoritative.face, legacy.face);
+  EXPECT_EQ(authoritative.family, legacy.family);
+  EXPECT_EQ(authoritative.sign, legacy.sign);
+  EXPECT_EQ(authoritative.facePath, legacy.facePath);
+  EXPECT_EQ(3, authoritative.matching);
+  EXPECT_EQ(3, legacy.matching);
+  EXPECT_NEAR(authoritative.matchingEffort, legacy.matchingEffort, 1.0e-12);
+}
+
 } // namespace

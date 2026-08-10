@@ -1530,6 +1530,14 @@ bool continuation_is_better(const VertexContinuationResult &candidate,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
+bool source_edge_provenance(
+    const std::uint64_t edgeKey,
+    const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<std::uint64_t, int> &sourceMatchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    int &sourceEdge);
+
 VertexContinuationResult resolve_vertex_continuation(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
@@ -1551,8 +1559,8 @@ VertexContinuationResult resolve_vertex_continuation(
     int face = -1;
     int family = 0;
     int sign = 1;
-    int matching = 0;
     double effort = 0.0;
+    std::vector<authority::TransitionStep> routeSteps;
     Eigen::RowVector3d direction = Eigen::RowVector3d::Zero();
     Eigen::RowVector3d transportedIncoming = Eigen::RowVector3d::Zero();
     std::vector<int> faces;
@@ -1612,11 +1620,63 @@ VertexContinuationResult resolve_vertex_continuation(
         continue;
       }
 
+      int sourceEdge = -1;
+      if (!source_edge_provenance(
+              step.edgeKey, edgeFaces, edgeMatchingIndices, transitionLookup,
+              edgeTransitions, sourceEdge)) {
+        metadataFailure = true;
+        continue;
+      }
+      const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
+          static_cast<std::int64_t>(step.edgeKey >> 32U),
+          static_cast<std::size_t>(vertices.rows()));
+      const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
+          static_cast<std::int64_t>(step.edgeKey & 0xffffffffULL),
+          static_cast<std::size_t>(vertices.rows()));
+      if (!firstVertex || !secondVertex) {
+        metadataFailure = true;
+        continue;
+      }
+      const auto topology = authority::SourceEdgeTopologyKey::make(
+          firstVertex.value(), secondVertex.value());
+      if (!topology) {
+        metadataFailure = true;
+        continue;
+      }
+      const std::uint64_t compatibilityTopology = edge_key(
+          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+              topology.value().first())),
+          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
+              topology.value().second())));
+      if (compatibilityTopology != step.edgeKey) {
+        metadataFailure = true;
+        continue;
+      }
+      const auto interiorTransition =
+          authority::LegacyAuthorityAdapters::interior_transition(
+              sourceEdge, edgeMatchingIndices.size());
+      if (!interiorTransition) {
+        metadataFailure = true;
+        continue;
+      }
+      const auto typedStep = authority::TransitionStep::interior(
+          topology.value(),
+          std::optional<authority::InteriorTransitionId>{
+              interiorTransition.value()},
+          authority::GridAutomorphism{
+              authority::QuarterTurn::from_integer(transition.matching),
+              authority::LatticeTranslation{0, 0}},
+          authority::Orientation::Forward);
+      if (!typedStep) {
+        metadataFailure = true;
+        continue;
+      }
+
       PathState next = path;
       next.face = step.face;
       next.family = transition.family;
       next.sign = transition.sign;
-      next.matching += transition.matching;
+      next.routeSteps.push_back(typedStep.value());
       next.effort += std::abs(transition.effort);
       next.direction = transition.direction;
       next.transportedIncoming = transport_direction_between_faces(
@@ -1635,7 +1695,16 @@ VertexContinuationResult resolve_vertex_continuation(
         candidate.face = next.face;
         candidate.family = next.family;
         candidate.sign = next.sign;
-        candidate.matching = next.matching;
+        const authority::CanonicalRoute typedRoute =
+            authority::CanonicalRoute::from_observed_steps(next.routeSteps);
+        authority::GridAutomorphism routeTransport =
+            authority::GridAutomorphism::identity();
+        for (const authority::TransitionStep &routeStep :
+             typedRoute.oriented_steps()) {
+          routeTransport = compose(routeStep.transport(), routeTransport);
+        }
+        candidate.matching =
+            static_cast<int>(routeTransport.rotation.value());
         candidate.matchingEffort = next.effort;
         candidate.turnAngle = std::acos(std::clamp(
             next.transportedIncoming.dot(next.direction), -1.0, 1.0));
