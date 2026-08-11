@@ -5982,7 +5982,6 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
 
   struct EdgeOwner {
     int edge = -1;
-    int cell = -1;
   };
   std::map<std::pair<int, int>, EdgeOwner> openEdges;
   for (int v = 0; v < result.gridV; ++v) {
@@ -5998,8 +5997,16 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
                           frame.minV + stepV * (v + 1)),
           Eigen::Vector2d(frame.minU + stepU * u,
                           frame.minV + stepV * (v + 1))};
-      SurfacePhaseFrontCell cell(region.id);
-      cell.id = static_cast<int>(result.cells.size());
+      const auto cellId = authority::CellId::from_index(
+          static_cast<std::int64_t>(result.cells.size()),
+          static_cast<std::size_t>(result.gridU) *
+              static_cast<std::size_t>(result.gridV));
+      if (!cellId) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      SurfacePhaseFrontCell cell(region.id, cellId.value());
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
             points[static_cast<std::size_t>(nodeIds[corner])];
@@ -6013,7 +6020,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
             sourceFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
             sourceFace >= static_cast<int>(frame.faceChart.size()) ||
             !frame.faceChart[static_cast<std::size_t>(sourceFace)].has_value()) {
-          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::MissingFaceState, cell.id, corner, sourceFace);
+          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::MissingFaceState, static_cast<int>(cell.id.index()), corner, sourceFace);
           return result;
         }
         state.branchRotation =
@@ -6032,8 +6039,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
                 uv[(side + 1) % 4],
                 globalBranches[static_cast<std::size_t>(side)], faceAxisX,
                 faceAxisY, sourceEdgeFaces, sourceMatchingIndices,
-                edgeMatching, edgeEffort, edgeTransitions, options, cell.id,
-                side, result.failure,
+                edgeMatching, edgeEffort, edgeTransitions, options,
+                static_cast<int>(cell.id.index()), side, result.failure,
                 cell.boundaryPaths[static_cast<std::size_t>(side)])) {
           return result;
         }
@@ -6041,14 +6048,13 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
       if (!orient_and_validate_phase_front_cell(
               vertices, faces, frame, std::min(stepU, stepV), options, region,
               cell)) {
-        set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation, cell.id);
+        set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation, static_cast<int>(cell.id.index()));
         return result;
       }
 
-      const int cellId = cell.id;
       for (int side = 0; side < 4; ++side) {
         const auto &path = cell.boundaryPaths[static_cast<std::size_t>(side)];
-        SurfaceFrontEdge edge(region.id);
+        SurfaceFrontEdge edge(region.id, cell.id);
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
         const Eigen::Vector2i latticeDelta =
@@ -6068,13 +6074,12 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
           edge.family = 1;
           edge.advanceSign = -1;
         } else {
-          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidLatticeEdge, cell.id, side);
+          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidLatticeEdge, static_cast<int>(cell.id.index()), side);
           return result;
         }
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
         edge.toLattice =
             cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
-        edge.filledCell = cellId;
         edge.filledSide = side;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
@@ -6086,7 +6091,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
         const std::pair<int, int> canonical{key.first, key.second};
         const auto found = openEdges.find(canonical);
         if (found == openEdges.end()) {
-          openEdges.emplace(canonical, EdgeOwner{edgeId, cellId});
+          openEdges.emplace(canonical, EdgeOwner{edgeId});
         } else {
           SurfaceFrontEdge &first =
               result.edges[static_cast<std::size_t>(found->second.edge)];
@@ -6100,7 +6105,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
               first.family != second.family ||
               first.advanceSign == second.advanceSign ||
               first.sourceTopologyRegion != second.sourceTopologyRegion) {
-            set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::FrontOwnershipConflict, cell.id, side);
+            set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::FrontOwnershipConflict, static_cast<int>(cell.id.index()), side);
             return result;
           }
           first.oppositeEdge = edgeId;
@@ -6122,22 +6127,22 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
     (void)key;
     SurfaceFrontEdge &edge =
         result.edges[static_cast<std::size_t>(owner.edge)];
-    if (edge.filledCell < 0 ||
-        edge.filledCell >= static_cast<int>(result.cells.size()) ||
+    if (edge.filledCell.index() >= result.cells.size() ||
         edge.filledSide < 0 || edge.filledSide >= 4) {
       set_phase_front_failure(
           result.failure,
           SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
-          edge.filledCell, edge.filledSide);
+          static_cast<int>(edge.filledCell.index()), edge.filledSide);
       return result;
     }
     const auto boundaryReason = assign_open_front_boundary_authority(
         vertices, faces, options, sourceEdgeFaces, sourceMatchingIndices,
-        result.cells[static_cast<std::size_t>(edge.filledCell)]
+        result.cells[edge.filledCell.index()]
             .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
         edge);
     if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
-      set_phase_front_failure(result.failure, boundaryReason, edge.filledCell,
+      set_phase_front_failure(result.failure, boundaryReason,
+                              static_cast<int>(edge.filledCell.index()),
                               edge.filledSide);
       return result;
     }
@@ -6151,13 +6156,13 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
   for (const SurfacePhaseFrontCell &cell : result.cells) {
     if (!cell.orientationValidated ||
         cell.sourceTopologyRegion != region.id) {
-      set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState, cell.id);
+      set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState, static_cast<int>(cell.id.index()));
       return result;
     }
   }
   for (const SurfaceFrontEdge &edge : result.edges) {
     const bool hasTwin = edge.oppositeEdge >= 0;
-    if (edge.filledCell < 0 || edge.unfilledSide != 0 ||
+    if (edge.filledCell.index() >= result.cells.size() || edge.unfilledSide != 0 ||
         hasTwin == edge.exterior ||
         (hasTwin && (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
                      result.edges[static_cast<std::size_t>(edge.oppositeEdge)]
@@ -7556,8 +7561,16 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
           Eigen::Vector2d(u1, stepV * v),
           Eigen::Vector2d(u1, stepV * (v + 1)),
           Eigen::Vector2d(u0, stepV * (v + 1))};
-      SurfacePhaseFrontCell cell(region.id);
-      cell.id = static_cast<int>(result.cells.size());
+      const auto cellId = authority::CellId::from_index(
+          static_cast<std::int64_t>(result.cells.size()),
+          static_cast<std::size_t>(result.gridU) *
+              static_cast<std::size_t>(result.gridV));
+      if (!cellId) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      SurfacePhaseFrontCell cell(region.id, cellId.value());
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
             points[static_cast<std::size_t>(nodeIds[corner])];
@@ -7582,7 +7595,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
         if (cell.boundaryPaths[static_cast<std::size_t>(side)].empty()) {
           set_phase_front_failure(result.failure,
                                   SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
-                                  cell.id, side);
+                                  static_cast<int>(cell.id.index()), side);
           return result;
         }
       }
@@ -7593,7 +7606,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
           CellRejectionReason::Accepted) {
         set_phase_front_failure(result.failure,
                                 SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
-                                cell.id);
+                                static_cast<int>(cell.id.index()));
         return result;
       }
       std::array<Eigen::RowVector3d, 4> positions =
@@ -7605,7 +7618,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
           loopNormal.squaredNorm() <= 1.0e-24 || expectedNormal.squaredNorm() <= 1.0e-24) {
         set_phase_front_failure(result.failure,
                                 SurfacePhaseFrontFailureReason::InvalidCellOrientation,
-                                cell.id);
+                                static_cast<int>(cell.id.index()));
         return result;
       }
       if (loopNormal.dot(expectedNormal) < 0.0) {
@@ -7617,13 +7630,13 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
           !phase_front_cell_matches_region(cell, options, region)) {
         set_phase_front_failure(result.failure,
                                 SurfacePhaseFrontFailureReason::InvalidCellOrientation,
-                                cell.id);
+                                static_cast<int>(cell.id.index()));
         return result;
       }
       cell.orientationValidated = true;
 
       for (int side = 0; side < 4; ++side) {
-        SurfaceFrontEdge edge(region.id);
+        SurfaceFrontEdge edge(region.id, cell.id);
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
@@ -7632,7 +7645,6 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
                                       edge.fromLattice.latticeCoordinate;
         edge.family = delta.x() != 0 ? 0 : 1;
         edge.advanceSign = (delta.x() + delta.y()) >= 0 ? 1 : -1;
-        edge.filledCell = cell.id;
         edge.filledSide = side;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
@@ -7650,7 +7662,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
               first.advanceSign == second.advanceSign) {
             set_phase_front_failure(result.failure,
                                     SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
-                                    cell.id, side);
+                                    static_cast<int>(cell.id.index()), side);
             return result;
           }
           first.oppositeEdge = edgeId;
@@ -7671,7 +7683,8 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
               set_phase_front_failure(
                   result.failure,
                   SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
-                  first.filledCell, first.filledSide);
+                  static_cast<int>(first.filledCell.index()),
+                  first.filledSide);
               return result;
             }
             first.periodicRelation = periodicRelation.value();
@@ -7699,25 +7712,25 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
          edge.fromLattice.latticeCoordinate.y() != result.gridV)) {
       set_phase_front_failure(result.failure,
                               SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
-                              edge.filledCell, owner.edge);
+                              static_cast<int>(edge.filledCell.index()), owner.edge);
       return result;
     }
-    if (edge.filledCell < 0 ||
-        edge.filledCell >= static_cast<int>(result.cells.size()) ||
+    if (edge.filledCell.index() >= result.cells.size() ||
         edge.filledSide < 0 || edge.filledSide >= 4) {
       set_phase_front_failure(
           result.failure,
           SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
-          edge.filledCell, edge.filledSide);
+          static_cast<int>(edge.filledCell.index()), edge.filledSide);
       return result;
     }
     const auto boundaryReason = assign_open_front_boundary_authority(
         vertices, faces, options, sourceEdgeFaces, sourceMatchingIndices,
-        result.cells[static_cast<std::size_t>(edge.filledCell)]
+        result.cells[edge.filledCell.index()]
             .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
         edge);
     if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
-      set_phase_front_failure(result.failure, boundaryReason, edge.filledCell,
+      set_phase_front_failure(result.failure, boundaryReason,
+                              static_cast<int>(edge.filledCell.index()),
                               edge.filledSide);
       return result;
     }
@@ -7731,7 +7744,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
   for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size()); ++edgeIndex) {
     const auto &edge = result.edges[static_cast<std::size_t>(edgeIndex)];
     const bool hasTwin = edge.oppositeEdge >= 0;
-    if (edge.filledCell < 0 || edge.unfilledSide != 0 || hasTwin == edge.exterior ||
+    if (edge.filledCell.index() >= result.cells.size() || edge.unfilledSide != 0 || hasTwin == edge.exterior ||
         (hasTwin && (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
                      result.edges[static_cast<std::size_t>(edge.oppositeEdge)].oppositeEdge != edgeIndex))) {
       set_phase_front_failure(result.failure,
@@ -8858,8 +8871,16 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           Eigen::Vector2d(stepU * (u + 1), stepV * v),
           Eigen::Vector2d(stepU * (u + 1), stepV * (v + 1)),
           Eigen::Vector2d(stepU * u, stepV * (v + 1))};
-      SurfacePhaseFrontCell cell(region.id);
-      cell.id = static_cast<int>(result.cells.size());
+      const auto cellId = authority::CellId::from_index(
+          static_cast<std::int64_t>(result.cells.size()),
+          static_cast<std::size_t>(result.gridU) *
+              static_cast<std::size_t>(result.gridV));
+      if (!cellId) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      SurfacePhaseFrontCell cell(region.id, cellId.value());
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
             points[static_cast<std::size_t>(nodeIds[corner])];
@@ -8869,7 +8890,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
             faceBranchRotation[static_cast<std::size_t>(sourceFace)] < 0) {
           set_phase_front_failure(
               result.failure, SurfacePhaseFrontFailureReason::MissingFaceState,
-              cell.id, corner, sourceFace);
+              static_cast<int>(cell.id.index()), corner, sourceFace);
           return result;
         }
         auto &state = cell.lattice[static_cast<std::size_t>(corner)];
@@ -8896,7 +8917,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         if (cell.boundaryPaths[static_cast<std::size_t>(side)].empty()) {
           set_phase_front_failure(
               result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
-              cell.id, side);
+              static_cast<int>(cell.id.index()), side);
           return result;
         }
       }
@@ -8907,7 +8928,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           CellRejectionReason::Accepted) {
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
-            cell.id);
+            static_cast<int>(cell.id.index()));
         return result;
       }
       auto positions = phase_front_corner_positions(vertices, faces, cell);
@@ -8921,7 +8942,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           expectedNormal.squaredNorm() <= 1.0e-24) {
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation,
-            cell.id);
+            static_cast<int>(cell.id.index()));
         return result;
       }
       if (loopNormal.dot(expectedNormal) < 0.0) {
@@ -8933,13 +8954,13 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
           !phase_front_cell_matches_region(cell, options, region)) {
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation,
-            cell.id);
+            static_cast<int>(cell.id.index()));
         return result;
       }
       cell.orientationValidated = true;
 
       for (int side = 0; side < 4; ++side) {
-        SurfaceFrontEdge edge(region.id);
+        SurfaceFrontEdge edge(region.id, cell.id);
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
@@ -8961,10 +8982,9 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         } else {
           set_phase_front_failure(
               result.failure, SurfacePhaseFrontFailureReason::InvalidLatticeEdge,
-              cell.id, side);
+              static_cast<int>(cell.id.index()), side);
           return result;
         }
-        edge.filledCell = cell.id;
         edge.filledSide = side;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
@@ -8990,7 +9010,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
               first.sourceTopologyRegion != second.sourceTopologyRegion) {
             set_phase_front_failure(
                 result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
-                cell.id, side);
+                static_cast<int>(cell.id.index()), side);
             return result;
           }
           first.oppositeEdge = edgeId;
@@ -9038,14 +9058,13 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
         (a.x() == result.gridU && b.x() == result.gridU) ||
         (a.y() == 0 && b.y() == 0) ||
         (a.y() == result.gridV && b.y() == result.gridV);
-    if (!onBoundary || edge.filledCell < 0 ||
-        edge.filledCell >= static_cast<int>(result.cells.size())) {
+    if (!onBoundary || edge.filledCell.index() >= result.cells.size()) {
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
-          edge.filledCell, owner.edge);
+          static_cast<int>(edge.filledCell.index()), owner.edge);
       return result;
     }
-    const auto &cell = result.cells[static_cast<std::size_t>(edge.filledCell)];
+    const auto &cell = result.cells[edge.filledCell.index()];
     int side = -1;
     for (int candidate = 0; candidate < 4; ++candidate) {
       const auto &from = cell.lattice[static_cast<std::size_t>(candidate)]
@@ -9063,15 +9082,15 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
             cell.boundaryPaths[static_cast<std::size_t>(side)])) {
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
-          edge.filledCell, owner.edge);
+          static_cast<int>(edge.filledCell.index()), owner.edge);
       return result;
     }
     const auto boundaryReason = assign_open_front_boundary_authority(
         vertices, faces, options, sourceEdgeFaces, sourceMatchingIndices,
         cell.boundaryPaths[static_cast<std::size_t>(side)], edge);
     if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
-      set_phase_front_failure(result.failure, boundaryReason, edge.filledCell,
-                              side);
+      set_phase_front_failure(result.failure, boundaryReason,
+                              static_cast<int>(edge.filledCell.index()), side);
       return result;
     }
     edge.exterior = true;
@@ -9085,7 +9104,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
   for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size()); ++edgeIndex) {
     const auto &edge = result.edges[static_cast<std::size_t>(edgeIndex)];
     const bool hasTwin = edge.oppositeEdge >= 0;
-    if (edge.filledCell < 0 || edge.unfilledSide != 0 ||
+    if (edge.filledCell.index() >= result.cells.size() || edge.unfilledSide != 0 ||
         hasTwin == edge.exterior ||
         (hasTwin &&
          (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
@@ -9503,7 +9522,12 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     return result;
   }
 
-  int cellOffset = 0;
+  const std::size_t finalCellExtent = std::accumulate(
+      regionBuilds.begin(), regionBuilds.end(), std::size_t{0},
+      [](const std::size_t count, const RegionBuild &build) {
+        return count + build.result.cells.size();
+      });
+  std::size_t cellOffset = 0U;
   int edgeOffset = 0;
   std::set<authority::TopologyRegionId> coveredRegions;
   for (RegionBuild &build : regionBuilds) {
@@ -9517,11 +9541,21 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
-            cell.id, -1, cell.corners.front().face);
+            static_cast<int>(cell.id.index()), -1, cell.corners.front().face);
         return result;
       }
       localCoverage = true;
-      cell.id += cellOffset;
+      const auto finalCellId = authority::CellId::from_index(
+          static_cast<std::int64_t>(cellOffset + cell.id.index()),
+          finalCellExtent);
+      if (!finalCellId) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState,
+            static_cast<int>(cell.id.index()));
+        return result;
+      }
+      cell.id = finalCellId.value();
       result.cells.push_back(std::move(cell));
     }
     if (!localCoverage || !coveredRegions.insert(region.id).second) {
@@ -9546,7 +9580,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
           set_phase_front_failure(
               result.failure,
               SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
-              edge.filledCell, edge.filledSide);
+              static_cast<int>(edge.filledCell.index()), edge.filledSide);
           return result;
         }
         const auto key = periodic_relation_key(
@@ -9561,7 +9595,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
           set_phase_front_failure(
               result.failure,
               SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
-              edge.filledCell, edge.filledSide);
+              static_cast<int>(edge.filledCell.index()), edge.filledSide);
           return result;
         }
         const auto relationId = authority::PeriodicRelationId::from_index(
@@ -9572,12 +9606,22 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
           set_phase_front_failure(
               result.failure,
               SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
-              edge.filledCell, edge.filledSide);
+              static_cast<int>(edge.filledCell.index()), edge.filledSide);
           return result;
         }
         edge.periodicRelation = relationId.value();
       }
-      edge.filledCell += cellOffset;
+      const auto finalFilledCell = authority::CellId::from_index(
+          static_cast<std::int64_t>(cellOffset + edge.filledCell.index()),
+          finalCellExtent);
+      if (!finalFilledCell) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalEdgeState,
+            static_cast<int>(edge.filledCell.index()), edge.filledSide);
+        return result;
+      }
+      edge.filledCell = finalFilledCell.value();
       if (edge.oppositeEdge >= 0) edge.oppositeEdge += edgeOffset;
       result.edges.push_back(std::move(edge));
     }
@@ -9586,7 +9630,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       if (event.secondEdge >= 0) event.secondEdge += edgeOffset;
       result.events.push_back(std::move(event));
     }
-    cellOffset = static_cast<int>(result.cells.size());
+    cellOffset = result.cells.size();
     edgeOffset = static_cast<int>(result.edges.size());
   }
 
@@ -9686,7 +9730,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
-          edge.filledCell, edge.filledSide);
+          static_cast<int>(edge.filledCell.index()), edge.filledSide);
       return result;
     }
     if (to < from) std::swap(from, to);
@@ -9702,8 +9746,9 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
           pair.empty() ? -1
-                       : result.edges[static_cast<std::size_t>(pair.front())]
-                             .filledCell,
+                        : static_cast<int>(
+                             result.edges[static_cast<std::size_t>(pair.front())]
+                                 .filledCell.index()),
           pair.empty() ? -1
                        : result.edges[static_cast<std::size_t>(pair.front())]
                              .filledSide);
@@ -9721,7 +9766,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
-          first.filledCell, first.filledSide);
+          static_cast<int>(first.filledCell.index()), first.filledSide);
       return result;
     }
     first.oppositeEdge = pair[1];
@@ -9864,7 +9909,7 @@ SurfaceCellNetwork build_surface_cell_network(
     network.proposals.reserve(phaseFront.cells.size());
     for (const SurfacePhaseFrontCell &cell : phaseFront.cells) {
       SurfaceCellProposal proposal;
-      proposal.seedId = cell.id;
+      proposal.seedId = static_cast<int>(cell.id.index());
       proposal.accepted = true;
       proposal.rejection = CellRejectionReason::Accepted;
       proposal.corners = cell.corners;

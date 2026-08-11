@@ -292,8 +292,8 @@ struct SourceTopologyRegions {
 };
 
 struct SurfaceFrontEdge {
-  explicit SurfaceFrontEdge(authority::TopologyRegionId region)
-      : sourceTopologyRegion(region) {}
+  SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
+      : filledCell(owner), sourceTopologyRegion(region) {}
 
   SurfaceTracePoint from;
   SurfaceTracePoint to;
@@ -301,7 +301,7 @@ struct SurfaceFrontEdge {
   int advanceSign = 1;
   LocalLatticeState fromLattice;
   LocalLatticeState toLattice;
-  int filledCell = -1;
+  authority::CellId filledCell;
   /// Counter-clockwise side of filledCell represented by this edge.
   int filledSide = -1;
   int oppositeEdge = -1;
@@ -400,10 +400,10 @@ struct SurfaceBoundedDiskBoundaryPhase {
 };
 
 struct SurfacePhaseFrontCell {
-  explicit SurfacePhaseFrontCell(authority::TopologyRegionId region)
-      : sourceTopologyRegion(region) {}
+  SurfacePhaseFrontCell(authority::TopologyRegionId region, authority::CellId cell)
+      : id(cell), sourceTopologyRegion(region) {}
 
-  int id = -1;
+  authority::CellId id;
   /// Authoritative source-topology region owning this cell.
   authority::TopologyRegionId sourceTopologyRegion;
   bool orientationValidated = false;

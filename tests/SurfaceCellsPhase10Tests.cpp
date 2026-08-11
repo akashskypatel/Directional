@@ -3063,11 +3063,10 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPreservesAuthoritativeHardBoundary) {
   for (const auto &edge : network.phaseFront.product().edges) {
     if (!edge.exterior) continue;
     ++exteriorCount;
-    ASSERT_GE(edge.filledCell, 0);
-    ASSERT_LT(edge.filledCell,
-              static_cast<int>(network.phaseFront.product().cells.size()));
+    ASSERT_LT(edge.filledCell.index(),
+              network.phaseFront.product().cells.size());
     const auto &cell =
-        network.phaseFront.product().cells[static_cast<std::size_t>(edge.filledCell)];
+        network.phaseFront.product().cells[edge.filledCell.index()];
     bool matchedSide = false;
     for (int side = 0; side < 4; ++side) {
       if (cell.lattice[static_cast<std::size_t>(side)].latticeCoordinate !=
@@ -4905,7 +4904,8 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
   ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
-  std::map<int, const directional::geometry::SurfacePhaseFrontCell *> cellsById;
+  std::map<directional::authority::CellId,
+           const directional::geometry::SurfacePhaseFrontCell *> cellsById;
   for (const auto &cell : network.phaseFront.product().cells) {
     ASSERT_TRUE(cellsById.emplace(cell.id, &cell).second);
     EXPECT_EQ(cell.sourceTopologyRegion,

@@ -1135,7 +1135,7 @@ std::uint64_t hash_trace_network(
       hash_combine_i64(seed, edge.advanceSign);
       hash_lattice_state(edge.fromLattice);
       hash_lattice_state(edge.toLattice);
-      hash_combine_i64(seed, edge.filledCell);
+      hash_semantic_id(seed, edge.filledCell);
       hash_combine_i64(seed, edge.filledSide);
       hash_combine_i64(seed, edge.oppositeEdge);
       hash_combine_i64(seed, edge.unfilledSide);
@@ -1157,7 +1157,7 @@ std::uint64_t hash_trace_network(
     }
     hash_combine_u64(seed, phaseFront->cells.size());
     for (const geometry::SurfacePhaseFrontCell &cell : phaseFront->cells) {
-      hash_combine_i64(seed, cell.id);
+      hash_semantic_id(seed, cell.id);
       hash_semantic_id(seed, cell.sourceTopologyRegion);
       hash_combine_i64(seed, cell.orientationValidated ? 1 : 0);
       for (const geometry::SurfaceTracePoint &corner : cell.corners) {
@@ -2287,7 +2287,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     geometry::SurfaceCellProjectionChart chart;
     geometry::LocalLatticeState lattice;
     int topologyRegion = -1;
-    int cellId = -1;
     int corner = -1;
   };
   const int occurrenceCount = static_cast<int>(phaseFront.cells.size()) * 4;
@@ -2339,14 +2338,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return result;
   }
 
-  std::map<int, int> cellIndexById;
+  std::map<authority::CellId, int> cellIndexById;
   std::set<authority::TopologyRegionId> consumedTopologyRegions;
   for (int cellIndex = 0;
        cellIndex < static_cast<int>(phaseFront.cells.size()); ++cellIndex) {
     const auto &cell = phaseFront.cells[static_cast<std::size_t>(cellIndex)];
-    result.invalidCell = cell.id;
+    result.invalidCell = static_cast<int>(cell.id.index());
     const auto region = topologyRegionById.find(cell.sourceTopologyRegion);
-    if (cell.id < 0 || !cellIndexById.emplace(cell.id, cellIndex).second ||
+    if (!cellIndexById.emplace(cell.id, cellIndex).second ||
         !cell.orientationValidated || region == topologyRegionById.end() ||
         region->second->isolationSheets.empty() ||
         !isolation_sheets_connected_typed(
@@ -2387,7 +2386,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       occurrence.chart = {component, trace.face, sheet};
       occurrence.lattice = cell.lattice[static_cast<std::size_t>(corner)];
       occurrence.topologyRegion = static_cast<int>(cell.sourceTopologyRegion.index());
-      occurrence.cellId = cell.id;
       occurrence.corner = corner;
       if (!occurrence.point.valid() || !occurrence.point.position.allFinite() ||
           !occurrence.support.valid || !occurrence.chart.valid()) {
