@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m1-ra-wip-a3.txt
+      - .agents/connector-triggers/m1-ra-wip-a4.txt
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           : > "$LOG"
           {
-            echo "task=M1 R-A WIP A3 phase-front materializer"
+            echo "task=M1 R-A WIP A4 typed source-entity authority"
             echo "event=$GITHUB_EVENT_NAME"
             echo "ref=$GITHUB_REF"
             echo "sha=$GITHUB_SHA"
@@ -50,10 +50,10 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git --version
 
-          PATCH="$RUNNER_TEMP/m1-ra-wip-a3.patch"
-          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a3.patch.gz.b64 | gzip -dc > "$PATCH"
+          PATCH="$RUNNER_TEMP/m1-ra-wip-a4.patch"
+          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a4.patch.gz.b64 | gzip -dc > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "afd5d54d9bd792f036f95555a448be95fe26f974be315dfb6044439850c5c3d9"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "c88b5b59a7d0147d5c3ca7ad9ae65b68e24a32f4d2fd39c1c04d5c8a9456c394"
           if grep -E '^diff --git a/\.github/workflows/' "$PATCH"; then
             echo "workflow path found in patch" >&2
             exit 1
@@ -62,15 +62,15 @@ jobs:
           git apply --check "$PATCH"
           git apply "$PATCH"
           git diff --check
-          git add src/pipeline/RemeshPipeline.cpp
+          git add include/directional/authority/AuthorityIds.h include/directional/geometry/SourceChartTransitions.h
           echo "staged_paths_begin"
           git diff --cached --name-only
           echo "staged_paths_end"
-          test "$(git diff --cached --name-only | wc -l)" -eq 1
+          test "$(git diff --cached --name-only | wc -l)" -eq 2
 
           git config user.name "directional-agent"
           git config user.email "directional-agent@users.noreply.github.com"
-          git commit -m "wip(m1): derive phase-front materializer authority from region product"
+          git commit -m "wip(m1): replace raw source entity identity with typed authority"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "pushed_head=$(git rev-parse HEAD)"
 
@@ -78,7 +78,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-ra-wip-a3-log-${{ github.run_id }}
+          name: m1-ra-wip-a4-log-${{ github.run_id }}
           path: ${{ runner.temp }}/activity.log
           if-no-files-found: error
           retention-days: 7
