@@ -61,38 +61,33 @@ This is a DURABLE mandatory start-of-turn checklist that must be followed at the
 
 ## Mandatory next turn
 
-Run **M1 Single-Authority Cutover — Code + Build only** under:
+Run **M1 Single-Authority Cutover — Artifact-Only Test + Benchmark** under:
 
-`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Reviewed source authority is M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; review baseline is `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`; authoritative planning commit is `7054eb7add540b35b9892ee18b1488d8bcaa9514`. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1l remain immutable accepted evidence. Review policy after the following Test + Benchmark turn is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Exact packaged implementation is `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`; entering immutable comparison authority is M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`. Product gate **G4 topology-distinct completion and singularities** remains active but does not resume until M1 artifact-only acceptance. Review policy is `never`.
 
-The final cutover replaces the complete affected authority contracts in one turn:
+Consume exact Code + Build result artifact `9105462679` (`m1-single-authority-cutover-code-build-result-31501276992`, digest `sha256:f73f6e02ff7cb3254dce46694af460d3703c7869985bcb69648eb528db9c6ad2`) without rebuilding or modifying the package. Code + Build log artifact is `9105463175`. The recursive package manifest is **57/57** with SHA-256 `ebd5f1587feec0120260eacd127f45fcf66784f5effaf1a60703e7471f9454b4` and contains 27 fixture files.
 
-- checked strong-ID ingress with numeric projection only at direct storage/export leaves;
-- one typed topology-region product consumed by cells, edges, relations, certificates, occurrences, and materialization;
-- a fully typed isolation-seam certificate;
-- one chart, source-support, route, and periodic-transport representation;
-- one exhaustive producer outcome;
-- deletion of displaced fields, helpers, aliases, and representation-only tests.
+The next turn must independently discover the packaged test inventory; run the five new cutover semantic contract groups, entering M1a–M1l preservation gates, route/transition counterexamples, T1, validation/compiled API/required-green producer coverage, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent product oracles; execute and classify all historical/deferred reds; characterize strict-validator timing and bounded Bunny/Vase; repeat the packaged-source duplicate-authority audit; and close with immutable postflight. Do not predeclare a test total.
 
-Preserve G0–G3 semantic invariants, truthful typed failures, deterministic identity, strict direct disposition, and no fallback. The M1l artifact is comparison evidence, not a requirement to reproduce raw numbering, hashes, row order, or known-incomplete product output. Classify semantic differences under the plan.
+If all required semantic gates pass with no unclassified product regression and the static source audit remains clean, close M1 and return directly to G4. Do not open another M1 letter slice. If M1 fails, create one bounded Code + Build plan only for the proven semantic/source-authority defect; do not restore displaced raw mirrors/adapters.
 
-This is **Code + Build only**. Execute no generated Directional binary, GoogleTest discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input. Compile and package the complete final cutover. Do not predeclare discovery totals; the following artifact-only turn discovers and validates the actual semantic inventory.
-
-Current immutable report:
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
+Current Code + Build report:
+`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ## Current immutable authority
 
-M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` is immutable accepted from Code + Build artifacts `9083262395 / 9083262833` and artifact-only runtime `31444022339 / 93634344918`, with runtime evidence/log artifacts `9083913766 / 9083913939`. Producer authority is **226** discovered, M1l **6/6**, required-green **211/211**, all M1k-M1b focused preservation green, M1d/M1c counterexamples **3/3 + 3/3**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean. All eight historical/deferred red classifications and exact **56/56** postflight were preserved.
+M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest immutable runtime-accepted authority until the next artifact-only turn completes. Its accepted runtime preserved the existing required-green semantic/product baselines, direct Plane/MultiFaceSeam/CloseSheets/Cylinder oracles, all historical/deferred red classifications, and exact postflight as recorded durably in `CHANGELOG.md`.
 
-Strict-validator timing sampled **10/10 pass** but remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. No stable product regression event or recurrence was created; historical totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
+The final M1 cutover implementation `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` is **compile-valid and packaged, not runtime-accepted yet**. Final package run/job `31501276992 / 93811595735` compiled **121/121** approved steps in Release/static/Ninja/PRE_TEST, with all generated-runtime/test/benchmark/discovery/ctest/CLI/fuzzer/custom-input flags false. The source-only cutover audit was clean for every displaced symbol and legacy domain-error term required by the plan. Exact evidence is retained in `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md` and external Actions artifacts `9105462679 / 9105463175`.
 
-Repository-side per-turn retention is clean: `.agents/Directional` retains the current M1l immutable Test + Benchmark report and the single final-cutover next-turn plan in addition to durable documents. The rejected unimplemented one-field plan is removed. Temporary M1l workflows, triggers, and payloads are absent; only `.github/workflows/agent-source-snapshot.yml` remains durable.
+Strict-validator timing remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny and Vase remain characterization/product gates rather than M1 success requirements unless the cutover introduces a required-invariant regression or unexplained semantic drift. Historical regression totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
+
+Repository-side Code + Build execution state is clean: consumed M1 cutover workflows were retired before their trigger markers/payloads, then consumed triggers/payloads were removed. Only the durable `.github/workflows/agent-source-snapshot.yml` remains. The packaged implementation commit remains separate from later documentation/cleanup commits; do not relabel later handoff/control-plane commits as build evidence.
 
 ## Mandatory end-of-turn checklist
 
@@ -109,23 +104,24 @@ This is a DURABLE mandatory end-of-turn checklist that must be followed at the e
 - Product gate **G4 topology-distinct completion and singularities** remains active; it becomes the primary queue again after immutable M1 cutover acceptance.
 - `PR8-R034 / G4-R007` / `G4-B001` remains the active direct-torus `LocalSheetMismatch` blocker.
 - `G4-B002` shared hard-rail scheduling, `G4-B003` nonzero periodic Z4 capability, and `G4-B004` positive multi-isolation witness remain unresolved.
-- M1a through M1l acceptance and the planned cutover do not claim G4 product completion.
+- M1a through M1l acceptance and the final cutover Code + Build do not claim G4 product completion.
 
 ## Resume-critical execution lessons
 
-- Use exact accepted M1l implementation/package/runtime authority above; later documentation/control-plane commits are not runtime-evidence commits.
-- One local first-process Cylinder stall did not reproduce in the immediate bounded local retry or authoritative remote artifact-only run. Do not add a product workaround without new product evidence.
-- Do not answer a compile failure by restoring a displaced numeric field/helper/alias. Migrate the affected consumer within the same turn or stop only at a plan-defined genuine blocker.
-- Preserve test intent with distinct typed witnesses and semantic assertions. Remove raw-conversion assertions; do not weaken fixtures, failures, product oracles, or known-red reporting.
-- Treat M1l output differences as evidence to classify. Required invariant regressions block; representation changes and earlier truthful failures do not automatically require reproducing old internals.
+- Validate exact artifact `9105462679` from implementation `5b1c9b...`; later documentation/cleanup commits are not runtime-evidence commits.
+- Preserve the artifact's natural executable mode bits during extraction. Do not `chmod` or repair the immutable package.
+- A zero-selected GoogleTest filter is an orchestration failure, never a semantic pass. Independently discover exact names before focused execution.
+- Do not answer a semantic failure by restoring a displaced numeric field/helper/alias. Classify representation changes versus invariant regressions under the next-turn plan.
+- Preserve test intent with distinct typed witnesses and semantic assertions; do not weaken fixtures, failures, product oracles, or known-red reporting.
+- One local first-process Cylinder stall in prior M1 evidence did not reproduce in immediate retry or authoritative remote runs. Do not add a product workaround without new reproducible product evidence.
 
 Workflow-specific execution rules and lessons are maintained in `.agents/Directional/GitHub_Workflow_Policy.md`.
 
 ## Core references
 
 - `TODO.md`;
-- `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md`;
+- `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`;
 - `.agents/Directional/CHANGELOG.md`;
 - `.agents/Directional/CLEAN_UP_POLICY.md`;
 - `.agents/Directional/RETENTION_POLICY.md`;

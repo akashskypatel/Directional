@@ -10,17 +10,21 @@ Keep this file task-oriented. Exact current-turn instructions belong in `.agents
 
 ## Current focus
 
-- [ ] **M1 single-authority cutover: Code + Build only.**
-  - Authoritative plan: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
-  - Replace the complete affected producer-to-consumer authority contracts in one turn: checked ID ingress; one topology-region product; complete isolation-seam certificates; one chart/support/route/periodic transport representation; exhaustive producer outcome; deletion of displaced fields/helpers/tests.
-  - Preserve G0–G3 semantic invariants, truthful typed failures, determinism, strict direct disposition, and no fallback. Do not force prior raw numbering, hashes, row order, or known-incomplete product output.
+- [x] **M1 single-authority cutover: Code + Build complete.**
+  - Final implementation: `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`.
+  - Final package run/job: `31501276992 / 93811595735`; result/log artifacts `9105462679 / 9105463175`.
+  - Release/static/Ninja/PRE_TEST compile completed **121/121**; generated runtime/test/benchmark/discovery/ctest/CLI/fuzzer/custom-input execution remained false.
+  - Static cutover audit is clean for the displaced symbols and legacy domain-error terminology required by the final-cutover plan.
+- [ ] **M1 single-authority cutover: immutable Artifact-Only Test + Benchmark acceptance.**
+  - Authoritative plan: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`.
+  - Consume exact artifact `9105462679` from implementation `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` without rebuilding or modifying the package.
+  - Independently discover the actual test inventory; require the five new semantic cutover groups, entering M1a–M1l preservation gates, direct-product oracles, historical/deferred-red classification, packaged-source duplicate-authority audit, bounded characterization, and immutable postflight.
 - [x] **M1l — Phase-Front Cell Topology-Region Consumer: immutable accepted.**
   - Implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; Code + Build artifacts `9083262395 / 9083262833`; immutable runtime `31444022339 / 93634344918`, evidence/log artifacts `9083913766 / 9083913939`.
   - Producer **226**, M1l **6/6**, required-green **211/211**, full entering preservation/direct-product authority, unchanged known-red classes, and exact **56/56** postflight.
-- [ ] After the final cutover Code + Build artifact is produced, run the separate immutable **Artifact-Only Test + Benchmark** turn. Discover the actual test inventory; require the new semantic contract groups, all entering semantic preservation gates, direct-product oracles, known-red classification, and a clean duplicate-authority source audit.
 - [ ] After immutable M1 acceptance, close M1 and return the primary queue to **G4 production work**. Do not select another authority-migration letter slice.
 
-Current baseline: T1 and M1a-M1l are immutable accepted. Product gate G4 remains active and independent of architecture-migration acceptance. Draft PR #8 remains open and unmerged.
+Current baseline: T1 and M1a-M1l are immutable accepted. The final M1 cutover is compile-valid and packaged but remains runtime-unaccepted until the next artifact-only turn. Product gate G4 remains active and independent of architecture-migration acceptance. Draft PR #8 remains open and unmerged.
 
 ## Product roadmap
 
@@ -54,7 +58,8 @@ Current baseline: T1 and M1a-M1l are immutable accepted. Product gate G4 remains
   - [x] M1j phase-front edge source-scope consumer.
   - [x] M1k phase-front edge topology-region consumer.
   - [x] M1l phase-front cell topology-region consumer.
-  - [ ] Final cutover: replace all remaining affected producer/storage/verifier/materializer contracts together, remove the displaced forms, build/package, then validate separately.
+  - [x] Final cutover implementation/build/package: replace remaining affected producer/storage/verifier/materializer contracts together and remove displaced forms.
+  - [ ] Final cutover immutable artifact-only acceptance.
 - [ ] **M2 — remaining closed stage products and single-writer scope.** When active product work reaches a producer outside the M1 cutover, replace its complete outcome/snapshot contract in that production turn; do not run another representation-only campaign.
 - [ ] **M3 — global conformity before regional production.** Compute one exact hard-rail breakpoint schedule and certificate before local regions commit cells; both sides consume the identical ordered schedule; remove post-hoc local pairing as authority.
 - [ ] **M4 — certificate-carrying chart and quotient relations.** Publish explicit directed occurrence/transport/quotient relations with verifiable certificates; validators verify rather than reconstruct them; close remaining global-local relation debt behind periodic/G4 capability.
