@@ -247,8 +247,8 @@ struct SurfaceArrangementOptions {
   /// This bypasses fan-sector inference for the phase-front producer path.
   bool useAuthoritativeProposalCycles = false;
   std::set<std::uint64_t> hardFeatureEdges;
-  const std::vector<int> *sourceFaceComponents = nullptr;
-  const std::vector<int> *sourceFaceSheets = nullptr;
+  // Complete typed source authority. Raw classifier arrays are ingress-only.
+  const SourceTopologyRegions *sourceAuthority = nullptr;
 };
 
 struct SurfaceArrangementArc {

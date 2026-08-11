@@ -6547,10 +6547,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     arrangementOptions.useAuthoritativeProposalCycles =
         useAuthoritativePhaseFront;
     arrangementOptions.hardFeatureEdges = hardFeatureRailEdges;
-    arrangementOptions.sourceFaceComponents =
-        &result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
-    arrangementOptions.sourceFaceSheets =
-        &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
+    arrangementOptions.sourceAuthority =
+        phaseFrontProduct != nullptr
+            ? &phaseFrontProduct->sourceTopologyRegions
+            : nullptr;
     const std::vector<geometry::SurfaceArrangementArc> &arrangementInputArcs =
         retainForExecution
             ? result.surfaceCellContext.embeddedArrangementArcs
