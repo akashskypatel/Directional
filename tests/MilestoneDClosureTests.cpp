@@ -11,6 +11,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -633,12 +634,12 @@ TEST(MilestoneDClosure, CompleteInterfaceCommitsAndPreservesProtectedRails) {
       complex.halfedges[static_cast<std::size_t>(protectedHalfedge)];
   ASSERT_GE(halfedge.twin, 0);
   halfedge.hardFeature = true;
-  halfedge.railId = 77;
+  halfedge.railId = directional::tests::test_hard_rail_id(77);
   halfedge.railT0 = 0.125;
   halfedge.railT1 = 0.875;
   auto &twin = complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
   twin.hardFeature = true;
-  twin.railId = 77;
+  twin.railId = directional::tests::test_hard_rail_id(77);
   twin.railT0 = 0.875;
   twin.railT1 = 0.125;
   const auto protectedBefore =

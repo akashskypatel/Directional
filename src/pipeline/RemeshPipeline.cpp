@@ -801,6 +801,14 @@ void hash_semantic_id(
 }
 
 template <typename Tag>
+void hash_optional_semantic_id(
+    std::uint64_t &seed,
+    const std::optional<authority::SemanticId<Tag>> &value) {
+  hash_combine_i64(seed, value.has_value() ? 1 : 0);
+  if (value.has_value()) hash_semantic_id(seed, value.value());
+}
+
+template <typename Tag>
 void hash_vector(
     std::uint64_t &seed,
     const std::vector<authority::SemanticId<Tag>> &values) {
@@ -972,7 +980,7 @@ void hash_trace_segment(std::uint64_t &seed,
     hash_semantic_id(seed, segment.sourceChart.value());
   }
   hash_canonical_route(seed, segment.entryRoute);
-  hash_combine_i64(seed, segment.railId);
+  hash_optional_semantic_id(seed, segment.railId);
   hash_combine_i64(seed, segment.curveId);
   hash_combine_i64(seed, segment.railIntervalIndex);
   hash_combine_i64(seed, segment.railSideSign);
@@ -1010,7 +1018,7 @@ std::uint64_t hash_trace_network(
   hash_vector(seed, network.sourceFaceSheets);
   hash_combine_u64(seed, network.authoritativeRails.size());
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
-    hash_combine_i64(seed, rail.id);
+    hash_semantic_id(seed, rail.id);
     hash_combine_i64(seed, static_cast<int>(rail.kind));
     hash_combine_i64(seed, rail.curveId);
     hash_combine_i64(seed, rail.component);
@@ -1146,7 +1154,7 @@ std::uint64_t hash_trace_network(
       if (edge.periodicRelation.has_value()) {
         hash_semantic_id(seed, edge.periodicRelation.value());
       }
-      hash_combine_i64(seed, edge.railId);
+      hash_optional_semantic_id(seed, edge.railId);
       hash_canonical_route(seed, edge.route);
     }
     hash_combine_u64(seed, phaseFront->events.size());
@@ -1328,7 +1336,7 @@ std::uint64_t hash_flow_rep_selection_input_components(
     hash_combine_i64(seed, arc.hardFeatureRail ? 1 : 0);
     hash_combine_i64(seed, arc.strandProvenance);
     hash_combine_i64(seed, arc.featureProvenance);
-    hash_combine_i64(seed, arc.railId);
+    hash_optional_semantic_id(seed, arc.railId);
     hash_combine_i64(seed, arc.curveId);
     hash_combine_double(seed, arc.railT0);
     hash_combine_double(seed, arc.railT1);
@@ -1427,7 +1435,7 @@ std::uint64_t hash_arrangement_arcs(
     hash_combine_i64(seed, arc.featureClass);
     hash_combine_i64(seed, arc.hardFeature ? 1 : 0);
     hash_combine_i64(seed, arc.provenance);
-    hash_combine_i64(seed, arc.railId);
+    hash_optional_semantic_id(seed, arc.railId);
     hash_combine_i64(seed, arc.curveId);
     hash_combine_i64(seed, arc.sourceComponent);
     hash_combine_i64(seed, arc.sourceSheet);
@@ -1462,7 +1470,7 @@ std::uint64_t hash_surface_complex(
       hash_combine_i64(seed, occurrence.sourceSheet);
       hash_combine_i64(seed, occurrence.sourceArc);
       hash_combine_i64(seed, occurrence.provenance);
-      hash_combine_i64(seed, occurrence.railId);
+      hash_optional_semantic_id(seed, occurrence.railId);
       hash_combine_i64(seed, occurrence.curveId);
       hash_combine_double(seed, occurrence.sourceT0);
       hash_combine_double(seed, occurrence.sourceT1);
@@ -1488,7 +1496,7 @@ std::uint64_t hash_surface_complex(
     hash_combine_i64(seed, halfedge.hardFeature ? 1 : 0);
     hash_combine_i64(seed, halfedge.layoutSupport ? 1 : 0);
     hash_combine_i64(seed, halfedge.singularitySupport ? 1 : 0);
-    hash_combine_i64(seed, halfedge.railId);
+    hash_optional_semantic_id(seed, halfedge.railId);
     hash_combine_i64(seed, halfedge.curveId);
     hash_combine_i64(seed, halfedge.sourceComponent);
     hash_combine_i64(seed, halfedge.sourceSheet);
@@ -1615,6 +1623,11 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
     hash_vector(seed, lineage.sourceTopologyRegions);
     hash_vector(seed, lineage.sourceIsolationSheets);
     hash_source_support(seed, lineage.sourceSupport);
+    hash_combine_i64(seed, lineage.quotientClass.has_value() ? 1 : 0);
+    if (lineage.quotientClass.has_value()) {
+      hash_semantic_id(seed, lineage.quotientClass.value());
+    }
+    hash_vector(seed, lineage.sourceOccurrences);
     hash_combine_u64(seed, lineage.sourceCharts.size());
     for (const auto &chart : lineage.sourceCharts) {
       hash_semantic_id(seed, chart.chart);
@@ -1629,7 +1642,7 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
       if (equivalence.periodicRelation.has_value()) {
         hash_semantic_id(seed, equivalence.periodicRelation.value());
       }
-      hash_combine_i64(seed, equivalence.railId);
+      hash_optional_semantic_id(seed, equivalence.railId);
       hash_grid_automorphism(seed, equivalence.action);
       hash_canonical_route(seed, equivalence.route);
       hash_vector(seed, equivalence.isolationSeams);
@@ -2137,14 +2150,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
   }
 
-  const auto typed_region_id = [&](const int raw)
-      -> std::optional<authority::TopologyRegionId> {
-    if (raw < 0) return std::nullopt;
-    const auto id = authority::TopologyRegionId::from_index(
-        raw, topologyRegionById.size());
-    if (!id || topologyRegionById.count(id.value()) == 0U) return std::nullopt;
-    return id.value();
-  };
   const std::size_t isolationSheetExtent = sourceFaceSheets.empty()
       ? 0U
       : static_cast<std::size_t>(
@@ -2155,29 +2160,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const auto id = authority::IsolationSheetId::from_index(
         raw, isolationSheetExtent);
     return id ? std::optional(id.value()) : std::nullopt;
-  };
-  const auto typed_sheet_ids = [&](const std::vector<int> &raw)
-      -> std::optional<std::vector<authority::IsolationSheetId>> {
-    std::vector<authority::IsolationSheetId> result;
-    result.reserve(raw.size());
-    for (const int value : raw) {
-      const auto id = authority::IsolationSheetId::from_index(
-          value, isolationSheetExtent);
-      if (!id) return std::nullopt;
-      result.push_back(id.value());
-    }
-    return result;
-  };
-  const auto typed_source_edge_topology = [&](const std::uint64_t raw)
-      -> std::optional<authority::SourceEdgeTopologyKey> {
-    const auto first = authority::SourceVertexId::from_index(
-        static_cast<std::int64_t>(raw >> 32U), sourceVertices.rows());
-    const auto second = authority::SourceVertexId::from_index(
-        static_cast<std::int64_t>(raw & 0xffffffffULL), sourceVertices.rows());
-    if (!first || !second) return std::nullopt;
-    const auto topology = authority::SourceEdgeTopologyKey::make(
-        first.value(), second.value());
-    return topology ? std::optional(topology.value()) : std::nullopt;
   };
   const auto isolation_sheets_connected_typed =
       [&](const authority::TopologyRegionId regionId,
@@ -2208,14 +2190,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           return reached.count(sheet) != 0U;
         });
       };
-  const auto isolation_sheets_connected =
-      [&](const int regionId, const std::vector<int> &sheets) {
-        const auto typedRegion = typed_region_id(regionId);
-        const auto typedSheets = typed_sheet_ids(sheets);
-        return typedRegion && typedSheets &&
-               isolation_sheets_connected_typed(typedRegion.value(),
-                                                typedSheets.value());
-      };
   for (const auto &[regionId, region] : topologyRegionById) {
     if (!isolation_sheets_connected_typed(regionId, region->isolationSheets)) {
       result.failure = "DisconnectedAuthoritativeIsolationSheetGraph";
@@ -2224,6 +2198,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   }
 
   struct OccurrenceData {
+    explicit OccurrenceData(authority::OccurrenceId occurrenceId)
+        : id(occurrenceId) {}
+
+    authority::OccurrenceId id;
     geometry::SurfacePoint point;
     std::optional<authority::SourceSupport> support;
     std::optional<geometry::SourceProjectionChart> chart;
@@ -2232,8 +2210,18 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     int corner = -1;
   };
   const int occurrenceCount = static_cast<int>(phaseFront.cells.size()) * 4;
-  std::vector<OccurrenceData> occurrences(
-      static_cast<std::size_t>(occurrenceCount));
+  std::vector<OccurrenceData> occurrences;
+  occurrences.reserve(static_cast<std::size_t>(occurrenceCount));
+  for (int occurrenceIndex = 0; occurrenceIndex < occurrenceCount;
+       ++occurrenceIndex) {
+    const auto occurrenceId = authority::OccurrenceId::from_index(
+        occurrenceIndex, static_cast<std::size_t>(occurrenceCount));
+    if (!occurrenceId) {
+      result.failure = "InvalidAuthoritativeOccurrenceId";
+      return result;
+    }
+    occurrences.emplace_back(occurrenceId.value());
+  }
   std::vector<int> parents(static_cast<std::size_t>(occurrenceCount));
   std::vector<int> ranks(static_cast<std::size_t>(occurrenceCount), 0);
   std::iota(parents.begin(), parents.end(), 0);
@@ -2629,14 +2617,15 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     } else if (first.boundaryKind ==
                geometry::SurfaceFrontBoundaryKind::HardRail) {
       if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
-          (first.railId >= 0 && second.railId >= 0 &&
+          (first.railId.has_value() && second.railId.has_value() &&
            first.railId != second.railId) ||
           first.route != second.route.reversed()) {
         result.failure = "InvalidHardRailTransport";
         return result;
       }
       equivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;
-      equivalence.railId = first.railId >= 0 ? first.railId : second.railId;
+      equivalence.railId =
+          first.railId.has_value() ? first.railId : second.railId;
       equivalence.route = first.route;
     } else if (first.boundaryKind ==
                geometry::SurfaceFrontBoundaryKind::PeriodicCut) {
@@ -2714,8 +2703,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       authority::TopologyRegionId, authority::IsolationSheetId, int, int, int,
       int, authority::FieldChartId>;
   struct QuotientClass {
-    int root = -1;
-    std::vector<int> members;
+    int root = -1; // union-find representation index only
+    std::vector<int> memberIndices; // occurrence-vector representation indices
+    std::vector<authority::OccurrenceId> members;
+    std::optional<authority::QuotientClassId> id;
     std::optional<authority::SourceSupport> support;
     std::vector<QuotientDomainState> domainStates;
   };
@@ -2771,7 +2762,13 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                        domainStates.end());
     QuotientClass quotient;
     quotient.root = root;
-    quotient.members = std::move(members);
+    quotient.memberIndices = std::move(members);
+    quotient.members.reserve(quotient.memberIndices.size());
+    for (const int memberIndex : quotient.memberIndices) {
+      quotient.members.push_back(
+          occurrences[static_cast<std::size_t>(memberIndex)].id);
+    }
+    std::sort(quotient.members.begin(), quotient.members.end());
     quotient.support = support.value();
     quotient.domainStates = std::move(domainStates);
     const QuotientClassKey key{quotient.support.value(),
@@ -2787,6 +2784,16 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
               return std::tie(first.support.value(), first.domainStates) <
                      std::tie(second.support.value(), second.domainStates);
             });
+  for (std::size_t classIndex = 0; classIndex < quotientClasses.size();
+       ++classIndex) {
+    const auto quotientClassId = authority::QuotientClassId::from_index(
+        static_cast<std::int64_t>(classIndex), quotientClasses.size());
+    if (!quotientClassId) {
+      result.failure = "InvalidAuthoritativeQuotientClassId";
+      return result;
+    }
+    quotientClasses[classIndex].id = quotientClassId.value();
+  }
 
   result.mesh.vertexPositions.resize(
       static_cast<int>(quotientClasses.size()), 3);
@@ -2816,7 +2823,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           occurrence.topologyRegion.value(), occurrence.point.face};
     };
     const int representative = *std::min_element(
-        quotient.members.begin(), quotient.members.end(),
+        quotient.memberIndices.begin(), quotient.memberIndices.end(),
         [&](const int first, const int second) {
           return representative_key(first) < representative_key(second);
         });
@@ -2826,7 +2833,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     std::set<authority::TopologyRegionId> topologyRegions;
     std::set<authority::IsolationSheetId> isolationSheets;
     std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
-    for (const int member : quotient.members) {
+    for (const int member : quotient.memberIndices) {
       const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
       const double tolerance = 1.0e-9 * std::max(
           {1.0, representativeOccurrence.point.position.norm(),
@@ -2873,6 +2880,12 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     lineage.sourceIsolationSheets.assign(isolationSheets.begin(),
                                          isolationSheets.end());
     lineage.sourceSupport = representativeOccurrence.support;
+    if (!quotient.id.has_value()) {
+      result.failure = "MissingAuthoritativeQuotientClassId";
+      return result;
+    }
+    lineage.quotientClass = quotient.id.value();
+    lineage.sourceOccurrences = quotient.members;
     lineage.equivalences = std::move(equivalences);
     result.mesh.vertexLineage.push_back(std::move(lineage));
   }
@@ -3395,8 +3408,11 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     if (run.empty()) {
       return true;
     }
-    geometry::SurfaceCellRail rail;
-    rail.id = static_cast<int>(result.rails.size());
+    const auto railId = authority::HardRailId::from_index(
+        static_cast<std::int64_t>(result.rails.size()), result.rails.size() + 1U);
+    if (!railId) return fail_edge(
+        ordered[static_cast<std::size_t>(run.front())].edgeIndex);
+    geometry::SurfaceCellRail rail(railId.value());
     rail.kind = ordered[static_cast<std::size_t>(run.front())].kind;
     rail.curveId = curve.id;
     rail.component = curve.component;
@@ -3552,8 +3568,13 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
     if (!surface_cell_feature_edge_is_rail(edge)) {
       continue;
     }
-    geometry::SurfaceCellRail rail;
-    rail.id = static_cast<int>(result.rails.size());
+    const auto railId = authority::HardRailId::from_index(
+        static_cast<std::int64_t>(result.rails.size()), result.rails.size() + 1U);
+    if (!railId) {
+      fail_edge(edgeIndex);
+      return result;
+    }
+    geometry::SurfaceCellRail rail(railId.value());
     rail.kind = edge.edgeClass == geometry::AdaptiveFeatureClass::Hard
                     ? geometry::SurfaceCellRailKind::HardFeature
                     : geometry::SurfaceCellRailKind::Boundary;
@@ -3577,16 +3598,18 @@ SurfaceCellRailBuildResult build_authoritative_surface_cell_rails(
       geometry::surface_cell_tracing_detail::RailBuildStatus::Valid) {
     result.success = false;
     result.validationStatus = railValidation.status;
-    result.failedRailId = railValidation.railId;
+    result.failedRailId =
+        railValidation.railId.has_value()
+            ? static_cast<int>(railValidation.railId->index())
+            : -1;
     result.failedIntervalIndex = railValidation.intervalIndex;
-    if (railValidation.railId >= 0 &&
-        railValidation.railId < static_cast<int>(result.rails.size()) &&
+    if (railValidation.railId.has_value() &&
+        railValidation.railId->index() < result.rails.size() &&
         railValidation.intervalIndex >= 0 &&
         railValidation.intervalIndex < static_cast<int>(
-            result.rails[static_cast<std::size_t>(railValidation.railId)]
-                .sourceEdges.size())) {
+            result.rails[railValidation.railId->index()].sourceEdges.size())) {
       result.failedEdgeIndex =
-          result.rails[static_cast<std::size_t>(railValidation.railId)]
+          result.rails[railValidation.railId->index()]
               .sourceEdges[static_cast<std::size_t>(
                   railValidation.intervalIndex)];
     }
@@ -3731,7 +3754,7 @@ std::uint64_t hash_surface_cell_rails(
   std::uint64_t seed = structural_hash_seed("rails");
   hash_combine_u64(seed, rails.size());
   for (const geometry::SurfaceCellRail &rail : rails) {
-    hash_combine_i64(seed, rail.id);
+    hash_semantic_id(seed, rail.id);
     hash_combine_i64(seed, static_cast<int>(rail.kind));
     hash_combine_i64(seed, rail.curveId);
     hash_combine_i64(seed, rail.component);
@@ -7733,13 +7756,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             validation::SourceHardRailChartEquivalence projected;
             projected.firstFrontEdge = equivalence.firstFrontEdge;
             projected.secondFrontEdge = equivalence.secondFrontEdge;
-            const auto rail = authority::HardRailId::from_index(
-                equivalence.railId, authoritativeRails.size());
-            if (!rail) {
+            if (!equivalence.railId.has_value() ||
+                equivalence.railId->index() >= authoritativeRails.size()) {
               chartAuthorityProjectionValid = false;
               break;
             }
-            projected.rail = rail.value();
+            projected.rail = equivalence.railId.value();
             projected.route = equivalence.route;
             authority.hardRailEquivalences.push_back(
                 std::move(projected));
@@ -9642,6 +9664,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
   int fieldChartOffset = 0;
   int frontEdgeOffset = 0;
   int periodicRelationOffset = 0;
+  int occurrenceOffset = 0;
+  int quotientClassOffset = 0;
   bool allHaveSourceLabels = true;
   bool allHaveAuthoritativeRails = true;
   merged.surfaceCellContext.sourceSurfaceLabels.componentByFace.assign(
@@ -9867,11 +9891,13 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
         componentResult.surfaceCellContext.hasAuthoritativeRails;
     for (geometry::SurfaceCellRail rail :
          componentResult.surfaceCellContext.authoritativeRails) {
-      localMaximumRail = std::max(localMaximumRail, rail.id);
+      const int localRail = static_cast<int>(rail.id.index());
+      localMaximumRail = std::max(localMaximumRail, localRail);
       localMaximumCurve = std::max(localMaximumCurve, rail.curveId);
-      if (rail.id >= 0) {
-        rail.id += railOffset;
-      }
+      const int globalRail = localRail + railOffset;
+      rail.id = authority::HardRailId::from_index(
+                    globalRail, static_cast<std::size_t>(globalRail + 1))
+                    .value();
       if (rail.curveId >= 0) {
         rail.curveId += curveOffset;
       }
@@ -9920,6 +9946,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
     int localMaximumFieldChart = -1;
     int localMaximumFrontEdge = -1;
     int localMaximumPeriodicRelation = -1;
+    int localMaximumOccurrence = -1;
+    int localMaximumQuotientClass = -1;
     if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
       for (const int sheet :
            componentResult.surfaceCellContext.sourceSurfaceLabels
@@ -9980,6 +10008,32 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
               chart = geometry::SourceProjectionChart(globalChartId.value(),
                                                       globalFaceId.value());
             }
+          }
+          if (lineage.quotientClass.has_value()) {
+            const int localClass =
+                static_cast<int>(lineage.quotientClass->index());
+            localMaximumQuotientClass =
+                std::max(localMaximumQuotientClass, localClass);
+            const int globalClass = localClass + quotientClassOffset;
+            const auto remapped = authority::QuotientClassId::from_index(
+                globalClass, static_cast<std::size_t>(globalClass + 1));
+            if (remapped) {
+              lineage.quotientClass = remapped.value();
+            } else {
+              lineage.quotientClass.reset();
+            }
+          }
+          for (authority::OccurrenceId &occurrence :
+               lineage.sourceOccurrences) {
+            const int localOccurrence =
+                static_cast<int>(occurrence.index());
+            localMaximumOccurrence =
+                std::max(localMaximumOccurrence, localOccurrence);
+            const int globalOccurrence = localOccurrence + occurrenceOffset;
+            const auto remapped = authority::OccurrenceId::from_index(
+                globalOccurrence,
+                static_cast<std::size_t>(globalOccurrence + 1));
+            if (remapped) occurrence = remapped.value();
           }
           if (lineage.sourceSupport.has_value()) {
             const auto remap_vertex_id = [&](const authority::SourceVertexId local)
@@ -10061,7 +10115,13 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
                 equivalence.periodicRelation = relationId.value();
               }
             }
-            if (equivalence.railId >= 0) equivalence.railId += railOffset;
+            if (equivalence.railId.has_value()) {
+              const int globalRail =
+                  static_cast<int>(equivalence.railId->index()) + railOffset;
+              equivalence.railId = authority::HardRailId::from_index(
+                  globalRail, static_cast<std::size_t>(globalRail + 1))
+                                       .value();
+            }
             const auto remappedRoute = remap_route(equivalence.route);
             if (!remappedRoute) {
               equivalence.route = authority::CanonicalRoute{};
@@ -10108,8 +10168,13 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           lineage.featureInterval.start, component, index, sheetOffset);
       lineage.featureInterval.end = remap_component_surface_point(
           lineage.featureInterval.end, component, index, sheetOffset);
-      if (lineage.featureInterval.railId >= 0) {
-        lineage.featureInterval.railId += railOffset;
+      if (lineage.featureInterval.railId.has_value()) {
+        const int globalRail =
+            static_cast<int>(lineage.featureInterval.railId->index()) +
+            railOffset;
+        lineage.featureInterval.railId = authority::HardRailId::from_index(
+            globalRail, static_cast<std::size_t>(globalRail + 1))
+                                             .value();
       }
       if (lineage.featureInterval.curveId >= 0) {
         lineage.featureInterval.curveId += curveOffset;
@@ -10147,8 +10212,13 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
             lineage.featureInterval.start, component, index, sheetOffset);
         lineage.featureInterval.end = remap_component_surface_point(
             lineage.featureInterval.end, component, index, sheetOffset);
-        if (lineage.featureInterval.railId >= 0) {
-          lineage.featureInterval.railId += railOffset;
+        if (lineage.featureInterval.railId.has_value()) {
+          const int globalRail =
+              static_cast<int>(lineage.featureInterval.railId->index()) +
+              railOffset;
+          lineage.featureInterval.railId = authority::HardRailId::from_index(
+              globalRail, static_cast<std::size_t>(globalRail + 1))
+                                               .value();
         }
         if (lineage.featureInterval.curveId >= 0) {
           lineage.featureInterval.curveId += curveOffset;
@@ -10266,6 +10336,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
     fieldChartOffset += localMaximumFieldChart + 1;
     frontEdgeOffset += localMaximumFrontEdge + 1;
     periodicRelationOffset += localMaximumPeriodicRelation + 1;
+    occurrenceOffset += localMaximumOccurrence + 1;
+    quotientClassOffset += localMaximumQuotientClass + 1;
   }
 
   merged.surfaceCellContext.hasSourceSurfaceLabels =

@@ -2504,7 +2504,10 @@ void write_remesh_diagnostics_json(std::ostream &out,
                     : "false")
             << ","
             << "\"railId\":"
-            << (halfedge != nullptr ? halfedge->railId : -1) << ","
+            << (halfedge != nullptr && halfedge->railId.has_value()
+                    ? static_cast<std::int64_t>(halfedge->railId->index())
+                    : -1)
+            << ","
             << "\"fromDegree\":"
             << arrangement_node_degree(halfedge != nullptr ? halfedge->from
                                                             : -1)

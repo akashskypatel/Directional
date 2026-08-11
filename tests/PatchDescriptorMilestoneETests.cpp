@@ -8,6 +8,7 @@
 #include <numeric>
 #include <stdexcept>
 #include <vector>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -110,7 +111,7 @@ Fixture make_patch(const std::vector<int> &sideCounts,
     edge.sourceFace = i;
     edge.sourceComponent = 2;
     edge.sourceSheet = 4;
-    edge.railId = side;
+    edge.railId = directional::tests::test_hard_rail_id(side);
     edge.curveId = 100 + side;
     edge.hardFeature = side == 0;
     cell.halfedges.push_back(i);
@@ -603,7 +604,8 @@ TEST(PatchDescriptorMilestoneE, DerivesOrderedSidesSubdivisionsAndFeatures) {
   EXPECT_EQ(descriptor.patch.boundaryProvenance.size(), 10U);
   EXPECT_TRUE(descriptor.sides.front().hardFeature);
   EXPECT_EQ(descriptor.sides.front().railIds,
-            (std::set<int>{0}));
+            (std::set<directional::authority::HardRailId>{
+                directional::tests::test_hard_rail_id(0)}));
   EXPECT_EQ(descriptor.sides.front().curveIds,
             (std::set<int>{100}));
   EXPECT_TRUE(descriptor.feasibility.admissible);

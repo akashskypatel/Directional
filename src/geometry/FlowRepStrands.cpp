@@ -266,12 +266,12 @@ bool arc_has_complete_provenance(const FlowRepArc &arc) {
     return false;
   }
   if (arc.mandatoryRail) {
-    return arc.initiallyActive && arc.railId >= 0 && arc.curveId >= 0 &&
+    return arc.initiallyActive && arc.railId.has_value() && arc.curveId >= 0 &&
            arc.strandProvenance >= 0 &&
            (arc.boundaryRail || arc.hardFeatureRail);
   }
   if (arc.layoutSupport) {
-    return !arc.boundaryRail && !arc.hardFeatureRail && arc.railId < 0 &&
+    return !arc.boundaryRail && !arc.hardFeatureRail && !arc.railId.has_value() &&
            arc.curveId < 0 && arc.proposalId < 0 && arc.supportTraceId >= 0 &&
            arc.supportSeedId >= 0 && arc.supportSegment >= 0 &&
            arc.sameStrandHint == arc.supportTraceId;
@@ -513,16 +513,16 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
       arc.strandProvenance = -2 - supportTraceId;
       arc.sameStrandHint = supportTraceId;
     }
-    arc.hardFeatureRail = mandatory || segment.railId >= 0;
-    arc.mandatoryRail = mandatory || segment.railId >= 0;
-    if (segment.railId >= 0) {
+    arc.hardFeatureRail = mandatory || segment.railId.has_value();
+    arc.mandatoryRail = mandatory || segment.railId.has_value();
+    if (segment.railId.has_value()) {
       arc.featureProvenance = segment.curveId;
       arc.featureClass = 3;
       arc.railId = segment.railId;
       arc.curveId = segment.curveId;
       arc.railT0 = segment.railT0;
       arc.railT1 = segment.railT1;
-      arc.sameStrandHint = segment.railId;
+      arc.sameStrandHint = -1;
     }
     flow_rep_detail::assign_intrinsic_endpoint_keys(arc, faces);
     arcs.push_back(arc);
@@ -556,13 +556,13 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
       arc.mandatoryRail = true;
       arc.boundaryRail = rail.kind == SurfaceCellRailKind::Boundary;
       arc.hardFeatureRail = rail.kind == SurfaceCellRailKind::HardFeature;
-      arc.strandProvenance = rail.id;
+      arc.strandProvenance = static_cast<int>(rail.id.index());
       arc.featureProvenance = rail.curveId;
       arc.railId = rail.id;
       arc.curveId = rail.curveId;
       arc.railT0 = a.railParameter;
       arc.railT1 = b.railParameter;
-      arc.sameStrandHint = rail.id;
+      arc.sameStrandHint = -1;
       flow_rep_detail::assign_intrinsic_endpoint_keys(arc, faces);
       arcs.push_back(arc);
     }
@@ -637,12 +637,12 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
             network.traces[static_cast<std::size_t>(traceId)];
         if (trace.segments.empty() ||
             !terminal_is_embedded_anchor(trace.termination) ||
-            trace.segments.front().railId >= 0) {
+            trace.segments.front().railId.has_value()) {
           continue;
         }
         std::vector<SurfaceTraceSegment> supportPath;
         for (const SurfaceTraceSegment &segment : trace.segments) {
-          if (segment.railId >= 0) {
+          if (segment.railId.has_value()) {
             break;
           }
           supportPath.push_back(segment);
@@ -699,12 +699,12 @@ std::vector<FlowRepArc> build_flow_rep_arcs_from_network(
     if (trace.segments.empty() ||
         trace.termination == TraceTerminationReason::FieldMetadata ||
         trace.termination == TraceTerminationReason::SourceSheet ||
-        trace.segments.front().railId >= 0) {
+        trace.segments.front().railId.has_value()) {
       continue;
     }
     std::vector<SurfaceTraceSegment> supportPath;
     for (const SurfaceTraceSegment &segment : trace.segments) {
-      if (segment.railId >= 0) {
+      if (segment.railId.has_value()) {
         break;
       }
       supportPath.push_back(segment);
@@ -1036,7 +1036,7 @@ FlowRepSelectionInput build_flow_rep_selection_input(
 
     bool hasAuthoritativeRailSuffix = false;
     for (const SurfaceTraceSegment &segment : separatrix.trace.segments) {
-      if (segment.railId >= 0) {
+      if (segment.railId.has_value()) {
         hasAuthoritativeRailSuffix = true;
         break;
       }
@@ -1298,6 +1298,12 @@ FlowRepAffinity compute_flow_rep_affinity(
       flow_rep_detail::arcs_adjacent(a, b, options.adjacentDistance);
   const double parallel =
       std::abs(flow_rep_detail::arc_tangent(a).dot(flow_rep_detail::arc_tangent(b)));
+  if (adjacent && a.railId.has_value() && b.railId.has_value() &&
+      a.railId == b.railId) {
+    affinity.score = 0.75 + parallel;
+    affinity.cue = FlowRepAffinityCue::JunctionContinuation;
+    return affinity;
+  }
   if (adjacent && a.sameStrandHint >= 0 && a.sameStrandHint == b.sameStrandHint) {
     affinity.score = 0.75 + parallel;
     affinity.cue = FlowRepAffinityCue::JunctionContinuation;
@@ -1854,14 +1860,14 @@ bool cycle_evaluations_are_valid(
 namespace directional::geometry::flow_rep_detail {
 
 FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc) {
-  if (arc.mandatoryRail || arc.railId >= 0) {
-    return {0, arc.railId, arc.curveId, arc.family, arc.sourceComponent};
+  if (arc.mandatoryRail || arc.railId.has_value()) {
+    return {0, arc.railId, arc.curveId, -1, arc.family, arc.sourceComponent};
   }
   if (arc.proposalId >= 0 && arc.proposalSide >= 0) {
-    return {1, arc.proposalId, arc.proposalSide, arc.family,
+    return {1, std::nullopt, arc.proposalId, arc.proposalSide, arc.family,
             arc.sourceComponent};
   }
-  return {2, arc.sameStrandHint, arc.family, arc.sourceComponent,
+  return {2, std::nullopt, arc.sameStrandHint, -1, arc.family,
           arc.sourceComponent};
 }
 

@@ -16,6 +16,7 @@
 #include "BenchmarkCases.h"
 #include "TestFixturePaths.h"
 #include <directional/geometry/GeneralGraphMatching.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -484,8 +485,7 @@ TEST(MilestoneGP26, FeatureRailAssemblyAcceptsIncidentSheetCharts) {
   provenance[4].sheet = 0;
   provenance[4].barycentric << 0.0, 0.0, 1.0;
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 9;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(9));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.curveId = 7;
   rail.component = 0;

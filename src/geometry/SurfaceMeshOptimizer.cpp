@@ -201,14 +201,14 @@ int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constraints,
 
 namespace directional::geometry::surface_optimizer_detail {
 
-int feature_sequence_for_vertex(
+SurfaceFeatureSequenceKey feature_sequence_for_vertex(
     const SurfaceOptimizationConstraints &constraints, const int vertex) {
-  if (constraints.featureRailIds.size() > 0 && vertex >= 0 &&
-      vertex < constraints.featureRailIds.size() &&
-      constraints.featureRailIds(vertex) >= 0) {
-    return constraints.featureRailIds(vertex);
+  if (vertex >= 0 &&
+      static_cast<std::size_t>(vertex) < constraints.featureRailIds.size() &&
+      constraints.featureRailIds[static_cast<std::size_t>(vertex)].has_value()) {
+    return {constraints.featureRailIds[static_cast<std::size_t>(vertex)], -1};
   }
-  return feature_curve_for_vertex(constraints, vertex);
+  return {std::nullopt, feature_curve_for_vertex(constraints, vertex)};
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -702,9 +702,11 @@ bool immutable_rail_edge(
       constraints.featureRailIds.size() <= secondVertex) {
     return false;
   }
-  const int firstRail = constraints.featureRailIds(firstVertex);
-  const int secondRail = constraints.featureRailIds(secondVertex);
-  return firstRail >= 0 && firstRail == secondRail;
+  const auto &firstRail =
+      constraints.featureRailIds[static_cast<std::size_t>(firstVertex)];
+  const auto &secondRail =
+      constraints.featureRailIds[static_cast<std::size_t>(secondVertex)];
+  return firstRail.has_value() && firstRail == secondRail;
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -974,12 +976,13 @@ Eigen::MatrixXd project_vertices(
   if (features.empty()) {
     features = constraints.featureVertices;
   }
-  int previousSequence = std::numeric_limits<int>::min();
+  std::optional<SurfaceFeatureSequenceKey> previousSequence;
   double previous = -std::numeric_limits<double>::infinity();
   for (const int v : features) {
     if (v >= 0 && v < params.size()) {
-      const int sequenceId = feature_sequence_for_vertex(constraints, v);
-      if (sequenceId != previousSequence) {
+      const SurfaceFeatureSequenceKey sequenceId =
+          feature_sequence_for_vertex(constraints, v);
+      if (!previousSequence.has_value() || sequenceId != previousSequence.value()) {
         previousSequence = sequenceId;
         previous = -std::numeric_limits<double>::infinity();
       }
@@ -1438,7 +1441,7 @@ double feature_order_energy(
     const Eigen::MatrixXd &vertices,
     const SurfaceOptimizationConstraints &constraints) {
   const std::vector<int> features = ordered_feature_vertices(constraints);
-  int previousSequence = std::numeric_limits<int>::min();
+  std::optional<SurfaceFeatureSequenceKey> previousSequence;
   int previousVertex = -1;
   SurfaceFeatureProjection previousProjection;
   double energy = 0.0;
@@ -1446,16 +1449,18 @@ double feature_order_energy(
     if (vertex < 0 || vertex >= vertices.rows()) {
       continue;
     }
-    const int sequence = feature_sequence_for_vertex(constraints, vertex);
+    const SurfaceFeatureSequenceKey sequence =
+        feature_sequence_for_vertex(constraints, vertex);
     const SurfaceFeatureProjection projection =
         project_to_feature_curve(vertices.row(vertex), constraints, vertex);
     if (!projection.valid) {
-      previousSequence = std::numeric_limits<int>::min();
+      previousSequence.reset();
       previousVertex = -1;
       previousProjection = {};
       continue;
     }
-    if (sequence == previousSequence && previousVertex >= 0) {
+    if (previousSequence.has_value() && sequence == previousSequence.value() &&
+        previousVertex >= 0) {
       const double violation =
           previousProjection.orderCoordinate - projection.orderCoordinate;
       if (violation > 0.0) {
@@ -1997,14 +2002,15 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
 
   const std::vector<int> orderedFeatures =
       ordered_feature_vertices(constraints);
-  int previousSequence = std::numeric_limits<int>::min();
+  std::optional<SurfaceFeatureSequenceKey> previousSequence;
   int previousVertex = -1;
   SurfaceFeatureProjection previousProjection;
   for (const int vertex : orderedFeatures) {
     if (vertex < 0 || vertex >= vertices.rows()) {
       continue;
     }
-    const int sequence = feature_sequence_for_vertex(constraints, vertex);
+    const SurfaceFeatureSequenceKey sequence =
+        feature_sequence_for_vertex(constraints, vertex);
     SurfaceFeatureProjection projection =
         featureProjections[static_cast<std::size_t>(vertex)];
     if (!projection.valid) {
@@ -2013,12 +2019,13 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
       featureProjections[static_cast<std::size_t>(vertex)] = projection;
     }
     if (!projection.valid) {
-      previousSequence = std::numeric_limits<int>::min();
+      previousSequence.reset();
       previousVertex = -1;
       previousProjection = {};
       continue;
     }
-    if (sequence == previousSequence && previousVertex >= 0) {
+    if (previousSequence.has_value() && sequence == previousSequence.value() &&
+        previousVertex >= 0) {
       const double violation =
           previousProjection.orderCoordinate - projection.orderCoordinate;
       if (violation > 0.0) {

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -134,9 +135,9 @@ TEST(SurfaceMeshOptimizerPhase20,
   constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
   constraints.featureCurveIds(1) = 17;
   constraints.featureCurveIds(2) = 17;
-  constraints.featureRailIds = Eigen::VectorXi::Constant(4, -1);
-  constraints.featureRailIds(1) = 4;
-  constraints.featureRailIds(2) = 4;
+  constraints.featureRailIds.assign(4, std::nullopt);
+  constraints.featureRailIds[1] = directional::tests::test_hard_rail_id(4);
+  constraints.featureRailIds[2] = directional::tests::test_hard_rail_id(4);
   constraints.featureCurveIntervals.clear();
   constraints.featureCurveIntervals.push_back(
       {17, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}, 0, 0});
@@ -323,9 +324,9 @@ TEST(SurfaceMeshOptimizerPhase20,
   constraints.featureCurveIds = Eigen::VectorXi::Constant(4, -1);
   constraints.featureCurveIds(1) = 7;
   constraints.featureCurveIds(2) = 7;
-  constraints.featureRailIds = Eigen::VectorXi::Constant(4, -1);
-  constraints.featureRailIds(1) = 5;
-  constraints.featureRailIds(2) = 5;
+  constraints.featureRailIds.assign(4, std::nullopt);
+  constraints.featureRailIds[1] = directional::tests::test_hard_rail_id(5);
+  constraints.featureRailIds[2] = directional::tests::test_hard_rail_id(5);
   constraints.featureCurveIntervals.push_back(
       {7, {0.0, 0.0, 0.0}, {1.0, 0.0, 0.0}, 0, 0});
 

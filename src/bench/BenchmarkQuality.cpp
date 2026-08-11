@@ -1033,6 +1033,11 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
     }
     append_semantic_ids(record, lineage.sourceTopologyRegions);
     append_semantic_ids(record, lineage.sourceIsolationSheets);
+    record.push_back(lineage.quotientClass.has_value()
+                         ? static_cast<std::int64_t>(
+                               lineage.quotientClass->index())
+                         : -1);
+    append_semantic_ids(record, lineage.sourceOccurrences);
 
     std::vector<geometry::SourceProjectionChart> charts =
         lineage.sourceCharts;
@@ -1081,7 +1086,10 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
     if (lineage.kind ==
         geometry::PureQuadVertexLineageKind::OrderedFeatureInterval) {
       record.insert(record.end(),
-                    {lineage.featureInterval.railId,
+                    {lineage.featureInterval.railId.has_value()
+                         ? static_cast<std::int64_t>(
+                               lineage.featureInterval.railId->index())
+                         : -1,
                      lineage.featureInterval.curveId,
                      bits(lineage.featureInterval.parameter)});
     }

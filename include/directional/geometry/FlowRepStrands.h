@@ -95,7 +95,7 @@ struct FlowRepArc {
   bool hardFeatureRail = false;
   int strandProvenance = -1;
   int featureProvenance = -1;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   double railT0 = 0.0;
   double railT1 = 1.0;
@@ -441,7 +441,16 @@ bool cycle_evaluations_are_valid(
 
 namespace flow_rep_detail {
 
-using FlowRepLogicalStrandKey = std::tuple<int, int, int, int, int>;
+struct FlowRepLogicalStrandKey {
+  int kind = 0;
+  std::optional<authority::HardRailId> rail;
+  int primary = -1;
+  int secondary = -1;
+  int family = 0;
+  int sourceComponent = -1;
+
+  auto operator<=>(const FlowRepLogicalStrandKey &) const = default;
+};
 
 FlowRepLogicalStrandKey logical_strand_key(const FlowRepArc &arc);
 

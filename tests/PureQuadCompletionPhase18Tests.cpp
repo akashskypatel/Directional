@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -845,7 +846,8 @@ TEST(PureQuadCompletionPhase18, P18MapsEveryQuadToPatchAndCompletionOperation) {
 
 TEST(PureQuadCompletionPhase18, P18MapsBoundaryFeatureVerticesToOrderedIntervals) {
   auto p = patch({1, 1, 1, 1});
-  p.boundaryRailIds.assign(p.boundaryVertices.size(), 7);
+  p.boundaryRailIds.assign(
+      p.boundaryVertices.size(), directional::tests::test_hard_rail_id(7));
   p.boundaryCurveIds.assign(p.boundaryVertices.size(), 11);
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 3;
@@ -856,7 +858,8 @@ TEST(PureQuadCompletionPhase18, P18MapsBoundaryFeatureVerticesToOrderedIntervals
     EXPECT_TRUE(lineage.valid());
     EXPECT_EQ(lineage.kind,
               directional::geometry::PureQuadVertexLineageKind::OrderedFeatureInterval);
-    EXPECT_EQ(lineage.featureInterval.railId, 7);
+    EXPECT_EQ(lineage.featureInterval.railId,
+              directional::tests::test_hard_rail_id(7));
     EXPECT_EQ(lineage.featureInterval.curveId, 11);
   }
 }

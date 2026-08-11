@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -608,10 +609,10 @@ TEST(SurfaceComplexSimplificationPhase17,
     if (halfedge.id < halfedge.twin && halfedge.family < 0) {
       protectedHalfedge = halfedge.id;
       halfedge.hardFeature = true;
-      halfedge.railId = 77;
+      halfedge.railId = directional::tests::test_hard_rail_id(77);
       auto &twin = complex.halfedges[static_cast<std::size_t>(halfedge.twin)];
       twin.hardFeature = true;
-      twin.railId = 77;
+      twin.railId = directional::tests::test_hard_rail_id(77);
       break;
     }
   }
@@ -632,7 +633,7 @@ TEST(SurfaceComplexSimplificationPhase17,
   ASSERT_GT(result.committed, 0);
   EXPECT_TRUE(std::any_of(result.complex.halfedges.begin(), result.complex.halfedges.end(),
                           [](const auto &halfedge) {
-                            return halfedge.hardFeature && halfedge.railId == 77;
+                            return halfedge.hardFeature && halfedge.railId == directional::tests::test_hard_rail_id(77);
                           }));
   EXPECT_TRUE(result.complex.diagnostics.topologyValid);
 }

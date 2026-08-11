@@ -22,6 +22,7 @@
 
 #include "BenchmarkCases.h"
 #include "TestFixturePaths.h"
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -609,10 +610,10 @@ TEST(SurfaceCellPipelinePhase20,
                 network.traces[0].segments[0].railSideSign = -1;
               }));
   EXPECT_NE(hash([](auto &network) {
-                network.traces[0].segments[0].railId = 7;
+                network.traces[0].segments[0].railId = directional::tests::test_hard_rail_id(7);
               }),
             hash([](auto &network) {
-                network.traces[0].segments[0].railId = 8;
+                network.traces[0].segments[0].railId = directional::tests::test_hard_rail_id(8);
               }));
   EXPECT_NE(hash([](auto &network) {
                 network.traces[0].segments[0].railT1 = 0.25;
@@ -639,7 +640,7 @@ TEST(SurfaceCellPipelinePhase20, ArrangementArcHashChangesWhenRailIdentityChange
   first[0].featureClass = 3;
   first[0].hardFeature = true;
   first[0].provenance = 5;
-  first[0].railId = 4;
+  first[0].railId = directional::tests::test_hard_rail_id(4);
   first[0].curveId = 21;
   first[0].sourceComponent = 2;
   first[0].railT0 = 0.25;
@@ -1542,7 +1543,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHard
   std::set<int> railIds;
   for (const directional::geometry::SurfaceCellRail &rail :
        context.authoritativeRails) {
-    railIds.insert(rail.id);
+    railIds.insert(static_cast<int>(rail.id.index()));
     hasBoundaryRail = hasBoundaryRail ||
         rail.kind == directional::geometry::SurfaceCellRailKind::Boundary;
     hasHardRail = hasHardRail ||
@@ -1574,7 +1575,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHard
   bool sawHardFlowRepRail = false;
   bool sawBoundaryFlowRepRail = false;
   for (const directional::geometry::FlowRepArc &arc : context.flowRepArcs) {
-    if (arc.railId >= 0) {
+    if (arc.railId.has_value()) {
       EXPECT_TRUE(arc.mandatoryRail);
       EXPECT_GE(arc.curveId, 0);
       EXPECT_LE(arc.railT0, arc.railT1);
@@ -1594,7 +1595,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHard
   bool sawArrangementRail = false;
   for (const directional::geometry::SurfaceArrangementArc &arc :
        context.embeddedArrangementArcs) {
-    if (arc.railId >= 0) {
+    if (arc.railId.has_value()) {
       sawArrangementRail = true;
       EXPECT_GE(arc.curveId, 0);
       EXPECT_TRUE(arc.hardFeature);
@@ -1637,7 +1638,7 @@ TEST(SurfaceCellPipelinePhase20, LiveTracingConsumesAuthoritativeBoundaryAndHard
   bool sawHalfedgeRail = false;
   for (const directional::geometry::SurfaceArrangementHalfedge &halfedge :
        context.arrangement.halfedges) {
-    if (halfedge.railId >= 0) {
+    if (halfedge.railId.has_value()) {
       sawHalfedgeRail = true;
       EXPECT_GE(halfedge.curveId, 0);
       EXPECT_GE(halfedge.railT0, 0.0);

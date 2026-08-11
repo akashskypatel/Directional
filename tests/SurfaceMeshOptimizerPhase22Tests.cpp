@@ -10,6 +10,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -743,8 +744,7 @@ TEST(SurfaceMeshOptimizerPhase22,
   using directional::geometry::SurfaceCellRailKind;
   using directional::geometry::SurfaceCellRailSample;
 
-  SurfaceCellRail boundary;
-  boundary.id = 1;
+  SurfaceCellRail boundary(directional::tests::test_hard_rail_id(1));
   boundary.curveId = 1;
   boundary.component = 0;
   boundary.kind = SurfaceCellRailKind::Boundary;
@@ -762,8 +762,7 @@ TEST(SurfaceMeshOptimizerPhase22,
     boundary.samples.push_back(end);
   }
 
-  SurfaceCellRail feature;
-  feature.id = 2;
+  SurfaceCellRail feature(directional::tests::test_hard_rail_id(2));
   feature.curveId = 7;
   feature.component = 0;
   feature.kind = SurfaceCellRailKind::HardFeature;
@@ -1385,8 +1384,7 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
   auto constraints = make_m1b_sheet_constraints();
   constraints.sourceFaceSheet = {0, 0, 1};
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 5;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(5));
   rail.curveId = 9;
   rail.component = 7;
   rail.samples.resize(2);
@@ -1408,7 +1406,7 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
   ASSERT_EQ(constraints.featureVertices, std::vector<int>({0}));
   ASSERT_EQ(constraints.featureCurveIds.size(), 1);
   EXPECT_EQ(constraints.featureCurveIds(0), 9);
-  EXPECT_EQ(constraints.featureRailIds(0), 5);
+  EXPECT_EQ(constraints.featureRailIds[0], directional::tests::test_hard_rail_id(5));
 }
 
 TEST(SurfaceOptimizationRailAuthorityMigration,

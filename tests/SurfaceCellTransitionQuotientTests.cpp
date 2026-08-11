@@ -1114,6 +1114,10 @@ TEST(SurfaceCellTransitionQuotient,
   for (const auto &lineage : result.mesh.vertexLineage) {
     EXPECT_TRUE(lineage.sourcePoint.valid());
     EXPECT_TRUE(lineage.sourceSupport.has_value());
+    EXPECT_TRUE(lineage.quotientClass.has_value());
+    EXPECT_FALSE(lineage.sourceOccurrences.empty());
+    EXPECT_TRUE(std::is_sorted(lineage.sourceOccurrences.begin(),
+                               lineage.sourceOccurrences.end()));
     EXPECT_FALSE(lineage.sourceTopologyRegions.empty());
     EXPECT_FALSE(lineage.sourceIsolationSheets.empty());
     EXPECT_FALSE(lineage.sourceCharts.empty());

@@ -16,6 +16,10 @@ namespace directional::geometry::surface_cell_feasibility_detail {
 
 namespace {
 
+std::int64_t rail_id_leaf(const std::optional<authority::HardRailId> &rail) {
+  return rail.has_value() ? static_cast<std::int64_t>(rail->index()) : -1;
+}
+
 void append_rollback_word(std::vector<std::uint64_t> &identity,
                           const std::int64_t value) {
   identity.push_back(static_cast<std::uint64_t>(value));
@@ -79,7 +83,7 @@ std::vector<std::uint64_t> exact_rollback_identity(
       append_rollback_word(identity, occurrence.sourceSheet);
       append_rollback_word(identity, occurrence.sourceArc);
       append_rollback_word(identity, occurrence.provenance);
-      append_rollback_word(identity, occurrence.railId);
+      append_rollback_word(identity, rail_id_leaf(occurrence.railId));
       append_rollback_word(identity, occurrence.curveId);
       append_rollback_double(identity, occurrence.sourceT0);
       append_rollback_double(identity, occurrence.sourceT1);
@@ -98,7 +102,7 @@ std::vector<std::uint64_t> exact_rollback_identity(
          {edge.id, edge.twin, edge.next, edge.from, edge.to, edge.sourceArc,
           edge.family, edge.strand, edge.featureClass, edge.sourceFace,
           edge.hardFeature ? 1 : 0, edge.layoutSupport ? 1 : 0,
-          edge.singularitySupport ? 1 : 0, edge.railId, edge.curveId,
+          edge.singularitySupport ? 1 : 0, rail_id_leaf(edge.railId), edge.curveId,
           edge.sourceComponent, edge.sourceSheet, edge.proposalId,
           edge.proposalSeedId, edge.proposalSide,
           edge.proposalBoundarySegment, edge.cell}) {
@@ -116,7 +120,7 @@ std::vector<std::uint64_t> exact_rollback_identity(
             provenance.sourceFace, provenance.family, provenance.strand,
             provenance.featureClass, provenance.hardFeature ? 1 : 0,
             provenance.layoutSupport ? 1 : 0,
-            provenance.singularitySupport ? 1 : 0, provenance.railId,
+            provenance.singularitySupport ? 1 : 0, rail_id_leaf(provenance.railId),
             provenance.curveId, provenance.sourceComponent,
             provenance.sourceSheet, provenance.proposalId,
             provenance.proposalSeedId, provenance.proposalSide,
@@ -1422,7 +1426,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
                   : value.sourceComponent == selectedScope.first &&
                         value.sourceSheet == selectedScope.second;
               return std::make_tuple(
-                  compatible ? 0 : 1, value.railId >= 0 ? 1 : 0,
+                  compatible ? 0 : 1, value.railId.has_value() ? 1 : 0,
                   value.hardFeature ? 0 : 1, value.sourceFace,
                   value.sourceArc, value.provenance, value.family,
                   value.strand, value.railId, value.curveId);

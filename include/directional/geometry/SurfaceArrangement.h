@@ -261,7 +261,7 @@ struct SurfaceArrangementArc {
   int featureClass = 0;
   bool hardFeature = false;
   int provenance = -1;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   int sourceComponent = -1;
   int sourceSheet = -1;
@@ -285,7 +285,7 @@ struct SurfaceArrangementNodeOccurrence {
   int sourceSheet = -1;
   int sourceArc = -1;
   int provenance = -1;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   double sourceT0 = 0.0;
   double sourceT1 = 0.0;
@@ -303,7 +303,7 @@ struct SurfaceArrangementProvenance {
   bool hardFeature = false;
   bool layoutSupport = false;
   bool singularitySupport = false;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   int sourceComponent = -1;
   int sourceSheet = -1;
@@ -345,7 +345,7 @@ struct SurfaceArrangementHalfedge {
   bool hardFeature = false;
   bool layoutSupport = false;
   bool singularitySupport = false;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   int sourceComponent = -1;
   int sourceSheet = -1;
@@ -579,7 +579,7 @@ struct Segment2 {
   bool hardFeature = false;
   bool layoutSupport = false;
   bool singularitySupport = false;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   int sourceComponent = -1;
   int sourceSheet = -1;

@@ -674,14 +674,9 @@ rail_interval_refs(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
   RailIntervalBuildResult result;
-  std::set<int> railIds;
-  std::map<std::uint64_t, int> edgeOwners;
+  std::set<authority::HardRailId> railIds;
+  std::map<std::uint64_t, authority::HardRailId> edgeOwners;
   for (const SurfaceCellRail &rail : rails) {
-    if (rail.id < 0) {
-      result.status = RailBuildStatus::InvalidRailId;
-      result.railId = rail.id;
-      return result;
-    }
     if (!railIds.insert(rail.id).second) {
       result.status = RailBuildStatus::DuplicateRailId;
       result.railId = rail.id;
@@ -798,8 +793,7 @@ rail_interval_refs(
       }
       edgeOwners.emplace(key, rail.id);
 
-      SurfaceCellRailIntervalRef ref;
-      ref.railId = rail.id;
+      SurfaceCellRailIntervalRef ref(rail.id);
       ref.curveId = rail.curveId;
       ref.intervalIndex = interval;
       ref.sourceFace = a.sourceFace;
@@ -3077,8 +3071,8 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
         SurfaceTracePoint point;
         point.face = sample.sourceFace;
         point.barycentric = sample.barycentric;
-        surface_cell_tracing_detail::append_seed(seeds, seen, point, provenance,
-                                                 rail.id);
+        surface_cell_tracing_detail::append_seed(
+            seeds, seen, point, provenance, static_cast<int>(rail.id.index()));
         // A hard feature is embedded in both incident face charts. Seed both
         // sides so transverse field branches connect the rail to cells on each
         // side instead of depending on the arbitrary provenance face.
@@ -3100,7 +3094,8 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
                 surface_cell_tracing_detail::remap_barycentric_to_neighbor(
                     faces, sample.sourceFace, neighbor, sample.barycentric);
             surface_cell_tracing_detail::append_seed(
-                seeds, seen, opposite, provenance, rail.id);
+                seeds, seen, opposite, provenance,
+                static_cast<int>(rail.id.index()));
           }
         }
       }
@@ -5660,7 +5655,7 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
   std::set<std::uint64_t> seenTopology;
   std::optional<std::uint64_t> lastTopology;
   std::vector<authority::TransitionStep> observedSteps;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   constexpr double tolerance = 1.0e-9;
   for (const SurfaceTraceSegment &segment : path) {
     if (segment.face < 0 || segment.face >= faces.rows() ||
@@ -5748,8 +5743,8 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
       }
       lastTopology = topology;
     }
-    if (segment.railId >= 0) {
-      if (railId >= 0 && railId != segment.railId) {
+    if (segment.railId.has_value()) {
+      if (railId.has_value() && railId != segment.railId) {
         return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
       }
       railId = segment.railId;

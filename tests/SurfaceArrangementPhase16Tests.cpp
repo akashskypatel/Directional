@@ -10,6 +10,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -841,7 +842,7 @@ TEST(SurfaceArrangementPhase16,
                              {0.0, 0.75, 0.25}, 0, true);
   first.strand = 31;
   first.provenance = 41;
-  first.railId = 51;
+  first.railId = directional::tests::test_hard_rail_id(51);
   first.curveId = 61;
   first.sourceComponent = 2;
   first.sourceSheet = 3;
@@ -854,7 +855,7 @@ TEST(SurfaceArrangementPhase16,
                               {0.75, 0.0, 0.25}, 1, false);
   second.strand = 32;
   second.provenance = 42;
-  second.railId = 52;
+  second.railId = directional::tests::test_hard_rail_id(52);
   second.curveId = 62;
   second.sourceComponent = 2;
   second.sourceSheet = 3;
@@ -882,7 +883,7 @@ TEST(SurfaceArrangementPhase16,
     std::set<int> sourceFaces;
     std::set<int> strands;
     std::set<int> provenances;
-    std::set<int> railIds;
+    std::set<directional::authority::HardRailId> railIds;
     std::set<int> curveIds;
     std::set<int> proposalIds;
     for (const auto &value : halfedge.provenance) {
@@ -900,7 +901,10 @@ TEST(SurfaceArrangementPhase16,
     EXPECT_EQ(sourceFaces, (std::set<int>{0, 1}));
     EXPECT_EQ(strands, (std::set<int>{31, 32}));
     EXPECT_EQ(provenances, (std::set<int>{41, 42}));
-    EXPECT_EQ(railIds, (std::set<int>{51, 52}));
+    EXPECT_EQ(railIds,
+              (std::set<directional::authority::HardRailId>{
+                  directional::tests::test_hard_rail_id(51),
+                  directional::tests::test_hard_rail_id(52)}));
     EXPECT_EQ(curveIds, (std::set<int>{61, 62}));
     EXPECT_EQ(proposalIds, (std::set<int>{71, 72}));
     EXPECT_TRUE(halfedge.hardFeature);

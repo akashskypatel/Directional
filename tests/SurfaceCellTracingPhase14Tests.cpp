@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -249,7 +250,9 @@ std::uint64_t network_hash(const directional::geometry::SurfaceCellNetwork &netw
       mix(segment.matching);
       mix(static_cast<std::int64_t>(
           std::llround(segment.matchingEffort * 1.0e9)));
-      mix(segment.railId);
+      mix(segment.railId.has_value()
+              ? static_cast<std::int64_t>(segment.railId->index())
+              : -1);
       mix(segment.curveId);
       mix(segment.railIntervalIndex);
       mix(segment.railSideSign);
@@ -389,8 +392,7 @@ TEST(SurfaceCellTracingPhase14,
   options.defaultTargetSize = 1.1;
   options.sourceFaceComponents = {0, 0};
   options.sourceFaceSheets = {0, 1};
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 1;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(1));
   directional::geometry::SurfaceCellRailSample sample;
   sample.sourceFace = 0;
   sample.barycentric << 1.0, 0.0, 0.0;
@@ -425,8 +427,7 @@ TEST(SurfaceCellTracingPhase14,
   options.sourceFaceComponents = {0, 0};
   options.sourceFaceSheets = {0, 1};
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 19;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(19));
   rail.curveId = 7;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.samples = {
@@ -1199,8 +1200,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
   options.maxTraceLength = 0.75;
   options.hardFeatureEdges.insert(
       directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 5;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(5));
   rail.curveId = 8;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   directional::geometry::SurfaceCellRailSample a;
@@ -1230,7 +1230,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailIsFollowed) {
   EXPECT_TRUE(std::any_of(
       trace.segments.begin(), trace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 5 && segment.curveId == 8 &&
+        return segment.railId == directional::tests::test_hard_rail_id(5) && segment.curveId == 8 &&
                segment.railIntervalIndex == 0;
       }));
 }
@@ -1271,8 +1271,7 @@ TEST(SurfaceCellTracingPhase14,
       directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
   options.sourceFaceComponents.assign(mesh.faces.rows(), 0);
   options.sourceFaceSheets.assign(mesh.faces.rows(), 0);
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 43;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(43));
   rail.curveId = 9;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.samples = {
@@ -1293,12 +1292,12 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_TRUE(std::any_of(
       trace.segments.begin(), trace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 43 && segment.railIntervalIndex == 0 &&
+        return segment.railId == directional::tests::test_hard_rail_id(43) && segment.railIntervalIndex == 0 &&
                segment.railSideSign != 0;
       }));
 
   directional::geometry::SurfaceCellRail reverseRail = rail;
-  reverseRail.id = 44;
+  reverseRail.id = directional::tests::test_hard_rail_id(44);
   reverseRail.samples = {
       rail_sample(mesh, 1, 2, 0.0, 1.0,
                   Eigen::RowVector3d(0.0, 1.0, 0.0), 3),
@@ -1494,8 +1493,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailPreservesIntervalMetada
   options.hardFeatureEdges.insert(
       directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 42;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(42));
   rail.curveId = 7;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   directional::geometry::SurfaceCellRailSample a;
@@ -1522,7 +1520,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailPreservesIntervalMetada
   const auto followed = std::find_if(
       trace.segments.begin(), trace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 42;
+        return segment.railId == directional::tests::test_hard_rail_id(42);
       });
   ASSERT_NE(trace.segments.end(), followed);
   EXPECT_EQ(7, followed->curveId);
@@ -1541,8 +1539,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
   options.hardFeatureEdges.insert(
       directional::geometry::surface_cell_tracing_detail::edge_key(0, 3));
 
-  directional::geometry::SurfaceCellRail faceZeroRail;
-  faceZeroRail.id = 91;
+  directional::geometry::SurfaceCellRail faceZeroRail(directional::tests::test_hard_rail_id(91));
   faceZeroRail.curveId = 21;
   faceZeroRail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   faceZeroRail.samples = {
@@ -1563,12 +1560,11 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
   EXPECT_TRUE(std::any_of(
       oppositeTrace.segments.begin(), oppositeTrace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 91 && segment.curveId == 21 &&
+        return segment.railId == directional::tests::test_hard_rail_id(91) && segment.curveId == 21 &&
                segment.railIntervalIndex == 0;
       }));
 
-  directional::geometry::SurfaceCellRail faceOneReversedRail;
-  faceOneReversedRail.id = 92;
+  directional::geometry::SurfaceCellRail faceOneReversedRail(directional::tests::test_hard_rail_id(92));
   faceOneReversedRail.curveId = 22;
   faceOneReversedRail.kind =
       directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -1590,7 +1586,7 @@ TEST(SurfaceCellTracingPhase14, CompatibleHardFeatureRailEntersFromEitherSide) {
   EXPECT_TRUE(std::any_of(
       reversedTrace.segments.begin(), reversedTrace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 92 && segment.curveId == 22 &&
+        return segment.railId == directional::tests::test_hard_rail_id(92) && segment.curveId == 22 &&
                segment.railIntervalIndex == 0;
       }));
 }
@@ -1612,8 +1608,7 @@ TEST(SurfaceCellTracingPhase14,
   options.hardFeatureEdges.insert(
       directional::geometry::surface_cell_tracing_detail::edge_key(4, 8));
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 77;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(77));
   rail.curveId = 11;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   directional::geometry::SurfaceCellRailSample a0;
@@ -1644,8 +1639,7 @@ TEST(SurfaceCellTracingPhase14,
   b1.position = mesh.vertices.row(7);
   rail.samples = {a0, b0, a1, b1};
   options.authoritativeRails.push_back(rail);
-  directional::geometry::SurfaceCellRail spur;
-  spur.id = 78;
+  directional::geometry::SurfaceCellRail spur(directional::tests::test_hard_rail_id(78));
   spur.curveId = 12;
   spur.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   directional::geometry::SurfaceCellRailSample spurA;
@@ -1672,12 +1666,12 @@ TEST(SurfaceCellTracingPhase14,
   std::vector<double> ends;
   for (const directional::geometry::SurfaceTraceSegment &segment :
        trace.segments) {
-    if (segment.railId == 77) {
+    if (segment.railId == directional::tests::test_hard_rail_id(77)) {
       intervals.push_back(segment.railIntervalIndex);
       starts.push_back(segment.railT0);
       ends.push_back(segment.railT1);
     }
-    EXPECT_NE(78, segment.railId);
+    EXPECT_NE(segment.railId, directional::tests::test_hard_rail_id(78));
   }
   ASSERT_GE(intervals.size(), 2U);
   EXPECT_EQ(0, intervals[0]);
@@ -1715,8 +1709,7 @@ TEST(SurfaceCellTracingPhase14,
   options.sourceFaceSheets[4] = 1;
   options.sourceFaceSheets[7] = 1;
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 93;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(93));
   rail.curveId = 23;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.samples = {
@@ -1738,12 +1731,12 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_TRUE(std::any_of(
       trace.segments.begin(), trace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 93 && segment.railIntervalIndex == 0;
+        return segment.railId == directional::tests::test_hard_rail_id(93) && segment.railIntervalIndex == 0;
       }));
   EXPECT_TRUE(std::any_of(
       trace.segments.begin(), trace.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 93 && segment.railIntervalIndex == 1;
+        return segment.railId == directional::tests::test_hard_rail_id(93) && segment.railIntervalIndex == 1;
       }));
 
   options.sourceFaceComponents[4] = 1;
@@ -1756,7 +1749,7 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_FALSE(std::any_of(
       componentBlocked.segments.begin(), componentBlocked.segments.end(),
       [](const directional::geometry::SurfaceTraceSegment &segment) {
-        return segment.railId == 93 && segment.railIntervalIndex == 1;
+        return segment.railId == directional::tests::test_hard_rail_id(93) && segment.railIntervalIndex == 1;
       }));
 }
 
@@ -1765,8 +1758,7 @@ TEST(SurfaceCellTracingPhase14,
   const MeshFixture mesh = make_grid(2);
   const auto edgeFaces =
       directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 95;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(95));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
@@ -1819,8 +1811,7 @@ TEST(SurfaceCellTracingPhase14,
     return directional::geometry::trace_surface_field(
         mesh.vertices, mesh.faces, x, y, seed, 0, 1, options);
   };
-  directional::geometry::SurfaceCellRail odd;
-  odd.id = 101;
+  directional::geometry::SurfaceCellRail odd(directional::tests::test_hard_rail_id(101));
   odd.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   odd.samples.push_back(rail_sample(mesh, 0, 1, 0.0, 0.0,
                                      Eigen::RowVector3d(1.0, 0.0, 0.0), 0));
@@ -1828,7 +1819,7 @@ TEST(SurfaceCellTracingPhase14,
             directional::geometry::TraceTerminationReason::FieldMetadata);
 
   directional::geometry::SurfaceCellRail invalid = odd;
-  invalid.id = 102;
+  invalid.id = directional::tests::test_hard_rail_id(directional::tests::test_hard_rail_id(102));
   invalid.samples = {
       rail_sample(mesh, 0, 99, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1837,7 +1828,7 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_EQ(trace_with({invalid}).termination,
             directional::geometry::TraceTerminationReason::FieldMetadata);
   directional::geometry::SurfaceCellRail invalidMiddle = invalid;
-  invalidMiddle.id = 105;
+  invalidMiddle.id = directional::tests::test_hard_rail_id(105);
   invalidMiddle.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1854,7 +1845,7 @@ TEST(SurfaceCellTracingPhase14,
   EXPECT_EQ(trace_with({invalidMiddle}).termination,
             directional::geometry::TraceTerminationReason::FieldMetadata);
   directional::geometry::SurfaceCellRail invalidFinal = invalidMiddle;
-  invalidFinal.id = 106;
+  invalidFinal.id = directional::tests::test_hard_rail_id(106);
   invalidFinal.samples[2].sourceEdge = 2;
   invalidFinal.samples[3].sourceEdge = 2;
   invalidFinal.samples[4].sourceEdge = 99;
@@ -1863,7 +1854,7 @@ TEST(SurfaceCellTracingPhase14,
             directional::geometry::TraceTerminationReason::FieldMetadata);
 
   directional::geometry::SurfaceCellRail valid = invalid;
-  valid.id = 103;
+  valid.id = directional::tests::test_hard_rail_id(103);
   valid.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
                   Eigen::RowVector3d(1.0, 0.0, 0.0), 0),
@@ -1879,7 +1870,7 @@ TEST(SurfaceCellTracingPhase14,
   const auto edgeFaces =
       directional::geometry::surface_cell_tracing_detail::edge_faces(mesh.faces);
   directional::geometry::SurfaceCellRail ordered = valid;
-  ordered.id = 104;
+  ordered.id = directional::tests::test_hard_rail_id(104);
   ordered.closed = false;
   ordered.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
@@ -1927,8 +1918,7 @@ TEST(SurfaceCellTracingPhase14,
         rails, mesh.vertices, mesh.faces, edgeFaces);
   };
 
-  directional::geometry::SurfaceCellRail first;
-  first.id = 201;
+  directional::geometry::SurfaceCellRail first(directional::tests::test_hard_rail_id(201));
   first.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   first.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
@@ -1936,13 +1926,12 @@ TEST(SurfaceCellTracingPhase14,
       rail_sample(mesh, 0, 1, 1.0, 0.5,
                   Eigen::RowVector3d(0.0, 0.0, 1.0), 4)};
 
-  directional::geometry::SurfaceCellRail empty;
-  empty.id = 200;
+  directional::geometry::SurfaceCellRail empty(directional::tests::test_hard_rail_id(200));
   EXPECT_EQ(validate({empty}).status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::EmptyRail);
 
   directional::geometry::SurfaceCellRail disconnected = first;
-  disconnected.id = 202;
+  disconnected.id = directional::tests::test_hard_rail_id(202);
   disconnected.samples.insert(
       disconnected.samples.end(),
       {rail_sample(mesh, 3, 2, 0.0, 0.5,
@@ -1953,7 +1942,7 @@ TEST(SurfaceCellTracingPhase14,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::DisconnectedIntervals);
 
   directional::geometry::SurfaceCellRail parameterGap = first;
-  parameterGap.id = 203;
+  parameterGap.id = directional::tests::test_hard_rail_id(203);
   parameterGap.samples.insert(
       parameterGap.samples.end(),
       {rail_sample(mesh, 7, 1, 0.0, 0.6,
@@ -1964,19 +1953,19 @@ TEST(SurfaceCellTracingPhase14,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::NonContiguousIntervals);
 
   directional::geometry::SurfaceCellRail invalidGeometry = first;
-  invalidGeometry.id = 204;
+  invalidGeometry.id = directional::tests::test_hard_rail_id(204);
   invalidGeometry.samples[1].position.x() += 0.25;
   EXPECT_EQ(validate({invalidGeometry}).status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidSampleGeometry);
 
   directional::geometry::SurfaceCellRail invalidLocalParameter = first;
-  invalidLocalParameter.id = 206;
+  invalidLocalParameter.id = directional::tests::test_hard_rail_id(206);
   invalidLocalParameter.samples[0].parameter = 0.25;
   EXPECT_EQ(validate({invalidLocalParameter}).status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::InvalidRailParameters);
 
   directional::geometry::SurfaceCellRail duplicateEdge = first;
-  duplicateEdge.id = 205;
+  duplicateEdge.id = directional::tests::test_hard_rail_id(205);
   EXPECT_EQ(validate({first, duplicateEdge}).status,
             directional::geometry::surface_cell_tracing_detail::RailBuildStatus::DuplicateInterval);
 }
@@ -1990,8 +1979,7 @@ TEST(SurfaceCellTracingPhase14,
   for (auto &[key, faces] : reversedEdgeFaces) {
     std::swap(faces[0], faces[1]);
   }
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 96;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(96));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.samples = {
       rail_sample(mesh, 0, 1, 0.0, 0.0,
@@ -2102,8 +2090,7 @@ TEST(SurfaceCellTracingPhase14,
   options.sourceFaceSheets[4] = 1;
   options.sourceFaceSheets[7] = 1;
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 94;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(94));
   rail.curveId = 24;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.samples = {
@@ -2149,8 +2136,7 @@ TEST(SurfaceCellTracingPhase14, ClosedHardFeatureRailWrapsIntervalSequence) {
   options.hardFeatureEdges.insert(
       directional::geometry::surface_cell_tracing_detail::edge_key(2, 0));
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 88;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(88));
   rail.curveId = 12;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.closed = true;
@@ -2183,7 +2169,7 @@ TEST(SurfaceCellTracingPhase14, ClosedHardFeatureRailWrapsIntervalSequence) {
   std::vector<int> intervals;
   for (const directional::geometry::SurfaceTraceSegment &segment :
        trace.segments) {
-    if (segment.railId == 88) {
+    if (segment.railId == directional::tests::test_hard_rail_id(88)) {
       intervals.push_back(segment.railIntervalIndex);
     }
   }
@@ -2360,8 +2346,7 @@ TEST(SurfaceCellTracingPhase14, CellBoundaryRejectsProperHardRailCrossing) {
   segment.startBarycentric << 0.5, 0.5, 0.0;
   segment.endBarycentric << 0.5, 0.0, 0.5;
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 17;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(17));
   directional::geometry::SurfaceCellRailSample a;
   a.sourceFace = 0;
   a.barycentric << 0.75, 0.0, 0.25;
@@ -2383,8 +2368,7 @@ TEST(SurfaceCellTracingPhase14, HardRailCrossingUsesEndpointPairsOnly) {
   segment.startBarycentric << 0.5, 0.5, 0.0;
   segment.endBarycentric << 0.5, 0.0, 0.5;
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 19;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(19));
   const auto sample = [](const Eigen::RowVector3d &barycentric) {
     directional::geometry::SurfaceCellRailSample result;
     result.sourceFace = 0;

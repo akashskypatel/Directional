@@ -9,6 +9,7 @@
 #include <vector>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -232,7 +233,7 @@ FlowRepArc mandatory_rail(const int id, const double y,
   value.boundaryRail = true;
   value.strandProvenance = id;
   value.featureProvenance = id;
-  value.railId = id;
+  value.railId = directional::tests::test_hard_rail_id(id);
   value.curveId = id;
   return value;
 }
@@ -305,7 +306,9 @@ FlowRepArc endpoint_completion_arc(
   value.sameStrandHint = id;
   value.mandatoryRail = mandatory;
   value.boundaryRail = mandatory;
-  value.railId = mandatory ? id : -1;
+  value.railId = mandatory
+                     ? std::optional(directional::tests::test_hard_rail_id(id))
+                     : std::nullopt;
   value.curveId = mandatory ? id : -1;
   return value;
 }
@@ -1288,8 +1291,7 @@ TEST(FlowRepStrandsPhase15,
   network.sourceFaceComponents = {3};
   network.sourceFaceSheets = {5};
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 7;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.curveId = 11;
   rail.component = 3;
@@ -1364,8 +1366,7 @@ TEST(FlowRepStrandsPhase15,
   network.sourceFaceComponents = {3};
   network.sourceFaceSheets = {5};
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 7;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.curveId = 11;
   rail.component = 3;
@@ -1435,8 +1436,7 @@ TEST(FlowRepStrandsPhase15,
   TetrahedralSingularityFixture fixture =
       tetrahedral_singularity_fixture();
 
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 7;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
   rail.curveId = 11;
   rail.component = 0;
@@ -2206,8 +2206,7 @@ TEST(FlowRepStrandsPhase15,
   const auto make_rail = [&](const int id, const int curve,
                              const Eigen::RowVector3d &start,
                              const Eigen::RowVector3d &end) {
-    directional::geometry::SurfaceCellRail rail;
-    rail.id = id;
+    directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(id));
     rail.curveId = curve;
     rail.component = 3;
     rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -2385,7 +2384,7 @@ TEST(FlowRepStrandsPhase15,
         : side == 2 ? Eigen::RowVector3d(0.5, 0.5, 0.0)
                     : Eigen::RowVector3d(1.0, 0.0, 0.0);
     if (side == 0) {
-      segment.railId = 8;
+      segment.railId = directional::tests::test_hard_rail_id(8);
       segment.curveId = 9;
       segment.railT0 = 0.0;
       segment.railT1 = 1.0;

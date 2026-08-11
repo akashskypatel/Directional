@@ -182,8 +182,8 @@ extract_sides(const SurfaceCellComplex &complex,
     side.boundaryVertices.push_back(edge.from);
     ++side.subdivisionCount;
     side.hardFeature = side.hardFeature || edge.hardFeature;
-    if (edge.railId >= 0) {
-      side.railIds.insert(edge.railId);
+    if (edge.railId.has_value()) {
+      side.railIds.insert(edge.railId.value());
     }
     if (edge.curveId >= 0) {
       side.curveIds.insert(edge.curveId);
@@ -333,7 +333,9 @@ std::vector<std::int64_t> provenance_semantics(
       provenance.hardFeature ? 1 : 0,
       provenance.layoutSupport ? 1 : 0,
       provenance.singularitySupport ? 1 : 0,
-      provenance.railId,
+      provenance.railId.has_value()
+          ? static_cast<std::int64_t>(provenance.railId->index())
+          : -1,
       provenance.curveId,
       provenance.sourceComponent,
       provenance.sourceSheet,
@@ -386,7 +388,9 @@ std::vector<std::int64_t> halfedge_identity(
                  edge.hardFeature ? 1 : 0,
                  edge.layoutSupport ? 1 : 0,
                  edge.singularitySupport ? 1 : 0,
-                 edge.railId,
+                 edge.railId.has_value()
+                     ? static_cast<std::int64_t>(edge.railId->index())
+                     : -1,
                  edge.curveId,
                  edge.sourceComponent,
                  edge.sourceSheet,
@@ -1774,7 +1778,7 @@ std::uint64_t logical_descriptor_payload_bytes(
            sizeof(int);
   bytes += static_cast<std::uint64_t>(patch.boundaryProvenance.size()) *
            sizeof(SurfacePoint);
-  bytes += static_cast<std::uint64_t>(patch.boundaryRailIds.size()) * sizeof(int);
+  bytes += static_cast<std::uint64_t>(patch.boundaryRailIds.size()) * sizeof(std::optional<authority::HardRailId>);
   bytes += static_cast<std::uint64_t>(patch.boundaryCurveIds.size()) * sizeof(int);
   bytes += static_cast<std::uint64_t>(patch.sourceFaces.size()) * sizeof(int);
   return bytes;
@@ -1806,7 +1810,7 @@ std::uint64_t estimated_descriptor_payload_owned_bytes(
   bytes += static_cast<std::uint64_t>(patch.boundaryProvenance.capacity()) *
            sizeof(SurfacePoint);
   bytes += static_cast<std::uint64_t>(patch.boundaryRailIds.capacity()) *
-           sizeof(int);
+           sizeof(std::optional<authority::HardRailId>);
   bytes += static_cast<std::uint64_t>(patch.boundaryCurveIds.capacity()) *
            sizeof(int);
   bytes += static_cast<std::uint64_t>(patch.sourceFaces.capacity()) *
@@ -2271,9 +2275,26 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
     }
   }
 
+  void append_completion_dependency_set(
+      PatchCompletionDependencyIdentity &identity,
+      const std::set<authority::HardRailId> &values) {
+    identity.push_back(static_cast<std::int64_t>(values.size()));
+    for (const authority::HardRailId value : values) {
+      identity.push_back(static_cast<std::int64_t>(value.index()));
+    }
+  }
+
   int completion_dependency_label(const std::vector<int> &values,
                                   const std::size_t index) {
     return index < values.size() ? values[index] : -1;
+  }
+
+  std::int64_t completion_dependency_label(
+      const std::vector<std::optional<authority::HardRailId>> &values,
+      const std::size_t index) {
+    return index < values.size() && values[index].has_value()
+               ? static_cast<std::int64_t>(values[index]->index())
+               : -1;
   }
 
   void append_completion_dependency_point(
@@ -2498,10 +2519,10 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
     fields.boundarySourceCoordinates =
         canonical_completion_boundary_dependency(descriptor);
 
-    std::set<int> railIds;
+    std::set<authority::HardRailId> railIds;
     std::set<int> curveIds;
-    for (const int rail : patch.boundaryRailIds) {
-      if (rail >= 0) railIds.insert(rail);
+    for (const auto rail : patch.boundaryRailIds) {
+      if (rail.has_value()) railIds.insert(rail.value());
     }
     for (const int curve : patch.boundaryCurveIds) {
       if (curve >= 0) curveIds.insert(curve);

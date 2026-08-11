@@ -146,7 +146,7 @@ void fill_surface_optimization_rail_constraints(
   constraints.featureRailAuthorityProvided = true;
   int nextIntervalId = 0;
   for (const SurfaceCellRail &rail : rails) {
-    const int curveId = rail.curveId >= 0 ? rail.curveId : rail.id;
+    const int curveId = rail.curveId;
     for (int sampleIndex = 0;
          sampleIndex + 1 < static_cast<int>(rail.samples.size());
          sampleIndex += 2) {
@@ -182,8 +182,8 @@ void fill_surface_optimization_rail_constraints(
 
   constraints.featureCurveIds =
       Eigen::VectorXi::Constant(outputVertices.rows(), -1);
-  constraints.featureRailIds =
-      Eigen::VectorXi::Constant(outputVertices.rows(), -1);
+  constraints.featureRailIds.assign(
+      static_cast<std::size_t>(outputVertices.rows()), std::nullopt);
   constraints.featureIntervalIds =
       Eigen::VectorXi::Constant(outputVertices.rows(), -1);
   constraints.featureParameters = Eigen::VectorXd::Zero(outputVertices.rows());
@@ -198,10 +198,14 @@ void fill_surface_optimization_rail_constraints(
   struct FeatureAssignment {
     int vertex = -1;
     int curveId = -1;
-    int sequenceId = -1;
+    SurfaceFeatureSequenceKey sequence;
     int order = -1;
     double parameter = 0.0;
     double localParameter = 0.0;
+  };
+  const auto sequence_key = [](const SurfaceFeatureCurveInterval &interval) {
+    return SurfaceFeatureSequenceKey{
+        interval.railId, interval.railId.has_value() ? -1 : interval.curveId};
   };
   std::vector<FeatureAssignment> assignments;
   // Authority membership is many-to-many at feature junctions. The optimizer
@@ -256,9 +260,7 @@ void fill_surface_optimization_rail_constraints(
     for (const IncidentInterval &incident : incidentIntervals) {
       const SurfaceFeatureCurveInterval &interval = *incident.interval;
       authorityAssignments.push_back(
-          {vertex, interval.curveId,
-           interval.railId >= 0 ? interval.railId : interval.curveId,
-           interval.order,
+          {vertex, interval.curveId, sequence_key(interval), interval.order,
            interval.parameterStart +
                incident.localParameter *
                    (interval.parameterEnd - interval.parameterStart),
@@ -266,14 +268,13 @@ void fill_surface_optimization_rail_constraints(
     }
     constraints.featureVertices.push_back(vertex);
     constraints.featureCurveIds(vertex) = best->curveId;
-    constraints.featureRailIds(vertex) = best->railId;
+    constraints.featureRailIds[static_cast<std::size_t>(vertex)] = best->railId;
     constraints.featureIntervalIds(vertex) = best->intervalId;
     constraints.featureParameters(vertex) =
         best->parameterStart +
         bestLocalParameter * (best->parameterEnd - best->parameterStart);
     assignments.push_back(
-        {vertex, best->curveId,
-         best->railId >= 0 ? best->railId : best->curveId, best->order,
+        {vertex, best->curveId, sequence_key(*best), best->order,
          constraints.featureParameters(vertex), bestLocalParameter});
     bool fixed = false;
     for (std::size_t first = 0; first < incidentIntervals.size() && !fixed;
@@ -314,8 +315,8 @@ void fill_surface_optimization_rail_constraints(
   }
   std::stable_sort(assignments.begin(), assignments.end(),
                    [](const FeatureAssignment &a, const FeatureAssignment &b) {
-                     if (a.sequenceId != b.sequenceId) {
-                       return a.sequenceId < b.sequenceId;
+                     if (a.sequence != b.sequence) {
+                       return a.sequence < b.sequence;
                      }
                      if (a.curveId != b.curveId) {
                        return a.curveId < b.curveId;
@@ -335,8 +336,8 @@ void fill_surface_optimization_rail_constraints(
                    authorityAssignments.end(),
                    [](const FeatureAssignment &a,
                       const FeatureAssignment &b) {
-                     if (a.sequenceId != b.sequenceId) {
-                       return a.sequenceId < b.sequenceId;
+                     if (a.sequence != b.sequence) {
+                       return a.sequence < b.sequence;
                      }
                      if (a.order != b.order) {
                        return a.order < b.order;
@@ -356,7 +357,8 @@ void fill_surface_optimization_rail_constraints(
   for (const SurfaceCellRail &rail : rails) {
     std::vector<int> sequence;
     for (const FeatureAssignment &assignment : authorityAssignments) {
-      if (assignment.sequenceId != rail.id) {
+      if (assignment.sequence !=
+          SurfaceFeatureSequenceKey{rail.id, -1}) {
         continue;
       }
       if (sequence.empty() || sequence.back() != assignment.vertex) {

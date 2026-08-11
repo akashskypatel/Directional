@@ -100,7 +100,14 @@ struct SurfaceFeatureCurveInterval {
   double parameterStart = 0.0;
   double parameterEnd = 1.0;
   bool curveClosed = false;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
+};
+
+struct SurfaceFeatureSequenceKey {
+  std::optional<authority::HardRailId> rail;
+  int curveId = -1;
+
+  auto operator<=>(const SurfaceFeatureSequenceKey &) const = default;
 };
 
 struct SurfaceOptimizationConstraints {
@@ -128,7 +135,7 @@ struct SurfaceOptimizationConstraints {
   std::vector<std::pair<Eigen::RowVector3d, Eigen::RowVector3d>> featureIntervals;
   std::vector<SurfaceFeatureCurveInterval> featureCurveIntervals;
   Eigen::VectorXi featureCurveIds;
-  Eigen::VectorXi featureRailIds;
+  std::vector<std::optional<authority::HardRailId>> featureRailIds;
   Eigen::VectorXi featureIntervalIds;
   Eigen::VectorXd featureParameters;
   std::vector<int> orderedFeatureVertices;
@@ -139,7 +146,7 @@ struct SurfaceOptimizationConstraints {
   std::vector<std::vector<int>> authoritativeBoundaryLoops;
   std::vector<std::vector<int>> authoritativeFeatureRails;
   std::size_t requiredFeatureRailCount = 0;
-  std::vector<int> missingFeatureRailIds;
+  std::vector<authority::HardRailId> missingFeatureRailIds;
   // Distinguishes an explicitly supplied empty authority set from callers
   // that never configured feature-rail authority. An empty authoritative set
   // is still meaningful: it proves that no hard feature rails are expected.
@@ -284,7 +291,7 @@ struct SurfaceFinalValidationReport {
   // Retained for actionable production diagnostics; aggregate counters alone
   // cannot identify the offending output face, edge, or missing rail.
   std::vector<validation::MeshValidationIssue> strictValidationIssues;
-  std::vector<int> missingFeatureRailIds;
+  std::vector<authority::HardRailId> missingFeatureRailIds;
 };
 
 struct SurfaceOptimizationOverlay {

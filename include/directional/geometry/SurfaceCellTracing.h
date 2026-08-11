@@ -91,7 +91,9 @@ struct SurfaceCellRailSample {
 };
 
 struct SurfaceCellRail {
-  int id = -1;
+  explicit SurfaceCellRail(authority::HardRailId railId) : id(railId) {}
+
+  authority::HardRailId id;
   SurfaceCellRailKind kind = SurfaceCellRailKind::Boundary;
   int curveId = -1;
   int component = -1;
@@ -124,7 +126,7 @@ struct SurfaceTraceSegment {
   /// The first interval has an empty route; every stored step is an interior
   /// transition and owns topology, transition identity, transport, and orientation.
   authority::CanonicalRoute entryRoute;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int curveId = -1;
   int railIntervalIndex = -1;
   int railSideSign = 0;
@@ -314,7 +316,7 @@ struct SurfaceFrontEdge {
   /// Exact owner in SurfacePhaseFrontProduct::periodicHolonomies.
   std::optional<authority::PeriodicRelationId> periodicRelation;
   /// Optional exact rail owner.
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   /// Canonical source route carrying topology, transition identity, and transport.
   authority::CanonicalRoute route;
 };
@@ -868,7 +870,10 @@ bool source_faces_share_component(const SurfaceCellTracingOptions &options,
                                   const int a, const int b);
 
 struct SurfaceCellRailIntervalRef {
-  int railId = -1;
+  explicit SurfaceCellRailIntervalRef(authority::HardRailId rail)
+      : railId(rail) {}
+
+  authority::HardRailId railId;
   int curveId = -1;
   int intervalIndex = -1;
   int sourceFace = -1;
@@ -913,7 +918,7 @@ enum class RailBuildStatus : int {
 struct RailIntervalBuildResult {
   RailBuildStatus status = RailBuildStatus::Valid;
   std::vector<SurfaceCellRailIntervalRef> intervals;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   int intervalIndex = -1;
 };
 

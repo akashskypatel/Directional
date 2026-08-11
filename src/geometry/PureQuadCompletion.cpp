@@ -365,15 +365,15 @@ void initialize_boundary_embedding(const PureQuadPatch &patch,
           lineage.outputVertex, lineage.sourceComponent, lineage.sourceSheet};
     }
     lineage.authoritativeIdentity = lineage.stitchIdentity;
-    const int rail =
+    const std::optional<authority::HardRailId> rail =
         i < static_cast<int>(patch.boundaryRailIds.size())
             ? patch.boundaryRailIds[static_cast<std::size_t>(i)]
-            : -1;
+            : std::nullopt;
     const int curve =
         i < static_cast<int>(patch.boundaryCurveIds.size())
             ? patch.boundaryCurveIds[static_cast<std::size_t>(i)]
             : -1;
-    if (rail >= 0 || curve >= 0) {
+    if (rail.has_value() || curve >= 0) {
       lineage.kind = PureQuadVertexLineageKind::OrderedFeatureInterval;
       lineage.featureInterval.railId = rail;
       lineage.featureInterval.curveId = curve;

@@ -44,7 +44,7 @@ struct PatchSideDescriptor {
   std::vector<int> boundaryVertices;
   int subdivisionCount = 0;
   bool hardFeature = false;
-  std::set<int> railIds;
+  std::set<authority::HardRailId> railIds;
   std::set<int> curveIds;
 };
 

@@ -1454,7 +1454,7 @@ bool same_logical_side(
                             normalized_family(b.family)) {
     return false;
   }
-  const bool sameRail = a.railId >= 0 && a.railId == b.railId &&
+  const bool sameRail = a.railId.has_value() && a.railId == b.railId &&
                         (a.curveId < 0 || b.curveId < 0 ||
                          a.curveId == b.curveId);
   const bool sameCurve = a.curveId >= 0 && a.curveId == b.curveId;
@@ -2466,7 +2466,7 @@ SurfaceCellComplex build_surface_cell_complex(
            const SurfaceArrangementProvenance &rhs) {
           const auto key = [](const SurfaceArrangementProvenance &value) {
             return std::make_tuple(
-                value.railId >= 0 ? 0 : 1,
+                value.railId.has_value() ? 0 : 1,
                 value.hardFeature ? 0 : 1,
                 value.railId, value.curveId, value.sourceComponent,
                 value.sourceSheet, value.sourceFace,
@@ -2481,7 +2481,7 @@ SurfaceCellComplex build_surface_cell_complex(
         });
     const SurfaceArrangementProvenance *authoritativeRail =
         railPrimary != halfedge.provenance.end() &&
-                railPrimary->railId >= 0
+                railPrimary->railId.has_value()
             ? &*railPrimary
             : nullptr;
     halfedge.sourceArc = primary.sourceArc;
@@ -5945,7 +5945,9 @@ SurfaceCellComplex build_surface_cell_complex(
     record.push_back(halfedge.family);
     record.push_back(halfedge.strand);
     record.push_back(halfedge.hardFeature ? 1 : 0);
-    record.push_back(halfedge.railId);
+    record.push_back(halfedge.railId.has_value()
+                         ? static_cast<std::int64_t>(halfedge.railId->index())
+                         : -1);
     record.push_back(halfedge.curveId);
     incidenceRecords.push_back(std::move(record));
   }
@@ -7090,11 +7092,11 @@ SurfaceCellComplex build_surface_cell_complex(
       const bool hasNonRail = std::any_of(
           ownershipEntries.begin(), ownershipEntries.end(),
           [](const SurfaceArrangementProvenance *entry) {
-            return entry->railId < 0;
+            return !entry->railId.has_value();
           });
       std::set<int> edgeRoots;
       for (const SurfaceArrangementProvenance *entry : ownershipEntries) {
-        if (hasNonRail && entry->railId >= 0) {
+        if (hasNonRail && entry->railId.has_value()) {
           continue;
         }
         const int root = chartRoot({entry->sourceComponent, entry->sourceFace,
@@ -7203,7 +7205,7 @@ SurfaceCellComplex build_surface_cell_complex(
       }
       const auto key = [&](const SurfaceArrangementProvenance *value) {
         return std::make_tuple(
-            value->railId >= 0 ? 1 : 0,
+            value->railId.has_value() ? 1 : 0,
             cellFaces.count(value->sourceFace) != 0U ? 0 : 1,
             value->sourceFace, value->sourceComponent, value->sourceSheet,
             value->sourceArc, value->provenance, value->family, value->strand,
@@ -7222,7 +7224,7 @@ SurfaceCellComplex build_surface_cell_complex(
              const SurfaceArrangementProvenance &rhs) {
             const auto railKey = [](const SurfaceArrangementProvenance &value) {
               return std::make_tuple(
-                  value.railId >= 0 ? 0 : 1,
+                  value.railId.has_value() ? 0 : 1,
                   value.hardFeature ? 0 : 1, value.railId, value.curveId,
                   value.sourceArc, value.sourceFace,
                   static_cast<std::int64_t>(
@@ -7233,7 +7235,7 @@ SurfaceCellComplex build_surface_cell_complex(
             return railKey(lhs) < railKey(rhs);
           });
       const SurfaceArrangementProvenance *authoritativeRail =
-          railEntry != edge.provenance.end() && railEntry->railId >= 0
+          railEntry != edge.provenance.end() && railEntry->railId.has_value()
               ? &*railEntry
               : nullptr;
       edge.sourceArc = primary.sourceArc;
@@ -7761,7 +7763,9 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
       mix(occurrence.sourceSheet);
       mix(occurrence.sourceArc);
       mix(occurrence.provenance);
-      mix(occurrence.railId);
+      mix(occurrence.railId.has_value()
+              ? static_cast<std::int64_t>(occurrence.railId->index())
+              : -1);
       mix(occurrence.curveId);
       mix(static_cast<std::int64_t>(
           std::llround(occurrence.sourceT0 * 1.0e10)));
@@ -7791,7 +7795,9 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
       mix(value.hardFeature ? 1 : 0);
       mix(value.layoutSupport ? 1 : 0);
       mix(value.singularitySupport ? 1 : 0);
-      mix(value.railId);
+      mix(value.railId.has_value()
+              ? static_cast<std::int64_t>(value.railId->index())
+              : -1);
       mix(value.curveId);
       mix(value.sourceComponent);
       mix(value.sourceSheet);

@@ -3,6 +3,7 @@
 #include <cmath>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 namespace {
 
@@ -562,7 +563,8 @@ TEST(SurfaceMeshOptimizerPhase19,
   directional::geometry::SurfaceOptimizationConstraints constraints;
   constraints.fixedVertices = {0, 1};
   constraints.featureVertices = {0, 1};
-  constraints.featureRailIds = Eigen::VectorXi::Constant(2, 17);
+  constraints.featureRailIds.assign(
+      2, directional::tests::test_hard_rail_id(17));
   constraints.localTargetSize = Eigen::VectorXd::Constant(2, 0.25);
 
   directional::geometry::SurfacePoint first;

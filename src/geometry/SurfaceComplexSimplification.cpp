@@ -2,6 +2,10 @@
 
 namespace directional::geometry::surface_simplification_detail {
 
+std::int64_t rail_id_leaf(const std::optional<authority::HardRailId> &rail) {
+  return rail.has_value() ? static_cast<std::int64_t>(rail->index()) : -1;
+}
+
 bool element_protected(const SurfaceSimplificationElement &element) {
   return element.hardFeature || element.boundary || element.basinRoot ||
          element.rootLabelProtected || element.singularityProtected;
@@ -74,7 +78,7 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
       mix(occurrence.sourceSheet);
       mix(occurrence.sourceArc);
       mix(occurrence.provenance);
-      mix(occurrence.railId);
+      mix(rail_id_leaf(occurrence.railId));
       mix(occurrence.curveId);
       mix(static_cast<std::int64_t>(
           std::llround(occurrence.sourceT0 * 1.0e10)));
@@ -106,7 +110,7 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(halfedge.hardFeature ? 1 : 0);
     mix(halfedge.layoutSupport ? 1 : 0);
     mix(halfedge.singularitySupport ? 1 : 0);
-    mix(halfedge.railId);
+    mix(rail_id_leaf(halfedge.railId));
     mix(halfedge.curveId);
     mix(halfedge.sourceComponent);
     mix(halfedge.sourceSheet);
@@ -127,7 +131,7 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
       mix(value.hardFeature ? 1 : 0);
       mix(value.layoutSupport ? 1 : 0);
       mix(value.singularitySupport ? 1 : 0);
-      mix(value.railId);
+      mix(rail_id_leaf(value.railId));
       mix(value.curveId);
       mix(value.sourceComponent);
       mix(value.sourceSheet);
@@ -587,7 +591,7 @@ std::multiset<std::vector<std::int64_t>> protected_support(
           value.hardFeature ? 1 : 0,
           value.layoutSupport ? 1 : 0,
           value.singularitySupport ? 1 : 0,
-          value.railId,
+          rail_id_leaf(value.railId),
           value.curveId,
           value.sourceComponent,
           value.sourceSheet,
@@ -1974,7 +1978,7 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
               std::min(edge.from, edge.to), std::max(edge.from, edge.to),
               edge.family, edge.strand, edge.featureClass,
               edge.hardFeature ? 1 : 0, edge.layoutSupport ? 1 : 0,
-              edge.singularitySupport ? 1 : 0, edge.railId, edge.curveId,
+              edge.singularitySupport ? 1 : 0, rail_id_leaf(edge.railId), edge.curveId,
               edge.sourceComponent, edge.sourceSheet, edge.proposalSide,
               edge.proposalBoundarySegment};
           for (const SurfaceArrangementProvenance &provenance :
@@ -1985,7 +1989,7 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
                  provenance.featureClass, provenance.hardFeature ? 1 : 0,
                  provenance.layoutSupport ? 1 : 0,
                  provenance.singularitySupport ? 1 : 0,
-                 provenance.railId, provenance.curveId,
+                 rail_id_leaf(provenance.railId), provenance.curveId,
                  provenance.sourceComponent, provenance.sourceSheet,
                  provenance.proposalSide,
                  provenance.proposalBoundarySegment});

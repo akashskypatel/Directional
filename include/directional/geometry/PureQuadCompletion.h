@@ -178,8 +178,8 @@ struct PureQuadEmbeddingFailure {
 enum class PureQuadVertexLineageKind : int { SourceTriangle = 0, OrderedFeatureInterval = 1 };
 
 struct PureQuadFeatureIntervalLineage {
-  int railId = -1; int curveId = -1; SurfacePoint start; SurfacePoint end; double parameter = 0.0;
-  [[nodiscard]] bool valid() const { return (railId >= 0 || curveId >= 0) && start.valid() && end.valid() && parameter >= 0.0 && parameter <= 1.0; }
+  std::optional<authority::HardRailId> railId; int curveId = -1; SurfacePoint start; SurfacePoint end; double parameter = 0.0;
+  [[nodiscard]] bool valid() const { return (railId.has_value() || curveId >= 0) && start.valid() && end.valid() && parameter >= 0.0 && parameter <= 1.0; }
 };
 
 enum class PureQuadEquivalenceKind : int {
@@ -194,7 +194,7 @@ struct PureQuadEquivalenceProvenance {
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
   std::optional<authority::PeriodicRelationId> periodicRelation;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
   authority::GridAutomorphism action = authority::GridAutomorphism::identity();
   authority::CanonicalRoute route;
   std::vector<authority::SourceEdgeTopologyKey> isolationSeams;
@@ -221,6 +221,10 @@ struct PureQuadVertexLineage {
   std::vector<SourceProjectionChart> sourceCharts;
   std::vector<authority::IsolationSheetId> sourceIsolationSheets;
   std::optional<authority::SourceSupport> sourceSupport;
+  /// Canonical quotient owner when this vertex was materialized from phase-front occurrences.
+  std::optional<authority::QuotientClassId> quotientClass;
+  /// Exact typed source-corner occurrences consumed by quotient materialization.
+  std::vector<authority::OccurrenceId> sourceOccurrences;
   std::vector<PureQuadEquivalenceProvenance> equivalences;
   [[nodiscard]] bool valid() const {
     return outputVertex >= 0 &&
@@ -260,7 +264,7 @@ enum class TopologyTemplateKind : int {
 struct PureQuadPatch {
   std::vector<int> boundaryVertices;
   std::vector<SurfacePoint> boundaryProvenance;
-  std::vector<int> boundaryRailIds;
+  std::vector<std::optional<authority::HardRailId>> boundaryRailIds;
   std::vector<int> boundaryCurveIds;
   std::vector<int> boundaryComponents;
   std::vector<int> boundarySheets;
