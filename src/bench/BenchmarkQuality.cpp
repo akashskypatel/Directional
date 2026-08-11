@@ -1008,7 +1008,7 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
                   {bits(result.vertices(vertex, 0)),
                    bits(result.vertices(vertex, 1)),
                    bits(result.vertices(vertex, 2)),
-                   static_cast<int>(lineage.kind), lineage.sourceComponent,
+                   static_cast<int>(lineage.kind),
                    lineage.sourceSupport.has_value() ? 1 : 0});
     if (lineage.sourceSupport.has_value()) {
       const auto &support = lineage.sourceSupport.value();
