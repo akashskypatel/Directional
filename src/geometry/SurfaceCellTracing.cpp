@@ -9252,9 +9252,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
 bool build_isolation_seam_transport_certificates(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
-    const SurfaceCellTracingOptions &options,
-    const std::vector<authority::TopologyRegionId> &topologyRegionByFace,
-    const std::vector<SurfaceTopologyRegion> &topologyRegions,
+    const SourceTopologyRegions &sourceAuthority,
     const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
     const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
@@ -9264,31 +9262,9 @@ bool build_isolation_seam_transport_certificates(
   if (faces.cols() != 3 || vertices.cols() != 3 ||
       faceAxisX.rows() != faces.rows() || faceAxisX.cols() != 3 ||
       faceAxisY.rows() != faces.rows() || faceAxisY.cols() != 3 ||
-      topologyRegionByFace.size() != static_cast<std::size_t>(faces.rows()) ||
-      !source_label_arrays_valid(options, faces.rows())) {
+      sourceAuthority.face_count() != static_cast<std::size_t>(faces.rows())) {
     return false;
   }
-
-  int maximumVertex = -1;
-  for (int face = 0; face < faces.rows(); ++face) {
-    for (int corner = 0; corner < 3; ++corner) {
-      maximumVertex = std::max(maximumVertex, faces(face, corner));
-    }
-  }
-  const std::size_t vertexExtent =
-      static_cast<std::size_t>(std::max(0, maximumVertex + 1));
-  int maximumSheet = -1;
-  if (!options.sourceFaceSheets.empty()) {
-    maximumSheet = *std::max_element(options.sourceFaceSheets.begin(),
-                                     options.sourceFaceSheets.end());
-  } else if (!options.sourceFaceComponents.empty()) {
-    maximumSheet = *std::max_element(options.sourceFaceComponents.begin(),
-                                     options.sourceFaceComponents.end());
-  } else {
-    maximumSheet = 0;
-  }
-  const std::size_t sheetExtent =
-      static_cast<std::size_t>(std::max(0, maximumSheet + 1));
 
   const auto &incident = sourceEdgeFaces;
   const auto &matchingIndices = sourceMatchingIndices;
@@ -9305,21 +9281,14 @@ bool build_isolation_seam_transport_certificates(
           : EdgeTransitionLookup{};
   if (transitionLookup.duplicate) return false;
 
-  const auto typed_face_key = [&](const int face)
-      -> std::optional<authority::SourceFaceTopologyKey> {
-    const auto a = authority::SourceVertexId::from_index(faces(face, 0), vertexExtent);
-    const auto b = authority::SourceVertexId::from_index(faces(face, 1), vertexExtent);
-    const auto c = authority::SourceVertexId::from_index(faces(face, 2), vertexExtent);
-    if (!a || !b || !c) return std::nullopt;
-    auto key = authority::SourceFaceTopologyKey::make(
-        std::array<authority::SourceVertexId, 3>{a.value(), b.value(), c.value()});
-    if (!key) return std::nullopt;
-    return key.value();
+  const auto typed_row = [&](const int face)
+      -> std::optional<authority::SourceFaceId> {
+    return authority::SourceFaceId::from_index(face, sourceAuthority.face_count());
   };
 
   std::set<std::pair<authority::TopologyRegionId,
                      authority::SourceEdgeTopologyKey>> seen;
-  for (const SurfaceTopologyRegion &region : topologyRegions) {
+  for (const SurfaceTopologyRegion &region : sourceAuthority.regions()) {
     for (const authority::SourceEdgeTopologyKey &seam :
          region.isolation_seams()) {
       const std::uint64_t rawSeam = edge_key(
@@ -9339,44 +9308,29 @@ bool build_isolation_seam_transport_certificates(
 
       int firstFace = foundIncident->second[0];
       int secondFace = foundIncident->second[1];
-      if (firstFace == secondFace || firstFace >= faces.rows() ||
-          secondFace >= faces.rows() ||
-          topologyRegionByFace[static_cast<std::size_t>(firstFace)] != region.id() ||
-          topologyRegionByFace[static_cast<std::size_t>(secondFace)] != region.id() ||
-          face_label_or_default(options.sourceFaceComponents, firstFace, 0) !=
-              static_cast<int>(region.source_component().index()) ||
-          face_label_or_default(options.sourceFaceComponents, secondFace, 0) !=
-              static_cast<int>(region.source_component().index())) {
+      const auto firstRow = typed_row(firstFace);
+      const auto secondRow = typed_row(secondFace);
+      if (!firstRow || !secondRow || firstFace == secondFace ||
+          sourceAuthority.region_for_row(firstRow.value()) != region.id() ||
+          sourceAuthority.region_for_row(secondRow.value()) != region.id() ||
+          sourceAuthority.component_for_row(firstRow.value()) !=
+              region.source_component() ||
+          sourceAuthority.component_for_row(secondRow.value()) !=
+              region.source_component()) {
         return false;
       }
 
-      auto firstTopology = typed_face_key(firstFace);
-      auto secondTopology = typed_face_key(secondFace);
-      if (!firstTopology.has_value() || !secondTopology.has_value() ||
-          firstTopology.value() == secondTopology.value()) {
+      auto firstTopology = sourceAuthority.topology_for_row(firstRow.value());
+      auto secondTopology = sourceAuthority.topology_for_row(secondRow.value());
+      auto firstSheet = sourceAuthority.sheet_for_row(firstRow.value());
+      auto secondSheet = sourceAuthority.sheet_for_row(secondRow.value());
+      if (firstTopology == secondTopology || firstSheet == secondSheet) {
         return false;
       }
-      if (secondTopology.value() < firstTopology.value()) {
+      if (secondTopology < firstTopology) {
         std::swap(firstFace, secondFace);
         std::swap(firstTopology, secondTopology);
-      }
-
-      const int firstSheetValue = face_label_or_default(
-          options.sourceFaceSheets, firstFace,
-          static_cast<int>(region.source_component().index()));
-      const int secondSheetValue = face_label_or_default(
-          options.sourceFaceSheets, secondFace,
-          static_cast<int>(region.source_component().index()));
-      const auto firstSheet = authority::IsolationSheetId::from_index(
-          firstSheetValue, sheetExtent);
-      const auto secondSheet = authority::IsolationSheetId::from_index(
-          secondSheetValue, sheetExtent);
-      if (!firstSheet || !secondSheet || firstSheet.value() == secondSheet.value() ||
-          !std::binary_search(region.isolationSheets.begin(),
-                              region.isolationSheets.end(), firstSheet.value()) ||
-          !std::binary_search(region.isolationSheets.begin(),
-                              region.isolationSheets.end(), secondSheet.value())) {
-        return false;
+        std::swap(firstSheet, secondSheet);
       }
       if (effectiveTransitions != nullptr) {
         const auto transition = transitionLookup.byEdge.find(rawSeam);
@@ -9433,8 +9387,8 @@ bool build_isolation_seam_transport_certificates(
       }
 
       const auto certificate = SurfaceIsolationSeamTransportCertificate::make(
-          region.id(), seam, transitionId.value(), firstTopology.value(),
-          secondTopology.value(), firstSheet.value(), secondSheet.value(),
+          region.id(), seam, transitionId.value(), firstTopology,
+          secondTopology, firstSheet, secondSheet,
           authority::QuarterTurn::from_integer(*forwardQuarterTurn),
           authority::QuarterTurn::from_integer(*reverseQuarterTurn));
       if (!certificate.has_value()) return false;
@@ -9694,7 +9648,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
-          -1, -1, region.sourceFaces.empty() ? -1 : static_cast<int>(region.sourceFaces.front().index()));
+          -1, -1, build.work->sourceRows.empty() ? -1 : static_cast<int>(build.work->sourceRows.front().index()));
       return result;
     }
     for (SurfaceFrontEdge &edge : local.edges) {
@@ -9702,7 +9656,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
-            -1, -1, region.sourceFaces.empty() ? -1 : static_cast<int>(region.sourceFaces.front().index()));
+            -1, -1, build.work->sourceRows.empty() ? -1 : static_cast<int>(build.work->sourceRows.front().index()));
         return result;
       }
       if (edge.boundaryKind == SurfaceFrontBoundaryKind::PeriodicCut) {
@@ -9918,8 +9872,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       result.events.end());
 
   if (!build_isolation_seam_transport_certificates(
-          vertices, faces, faceAxisX, faceAxisY, options,
-          result.sourceTopologyRegions.regionByFace, result.sourceTopologyRegions.regions,
+          vertices, faces, faceAxisX, faceAxisY, *result.sourceTopologyRegions,
           sourceEdgeFaces, sourceMatchingIndices, edgeMatching, edgeEffort,
           edgeTransitions,
           result.isolationSeamTransportCertificates)) {
