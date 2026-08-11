@@ -781,7 +781,10 @@ void orient_quads_to_source_normals(
 std::vector<geometry::SurfaceArrangementArc>
 surface_arrangement_arcs_from_flow_rep(
     const std::vector<geometry::FlowRepArc> &arcs,
-    const geometry::FlowRepSparseNetwork &sparseNetwork);
+    const geometry::FlowRepSparseNetwork &sparseNetwork,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SourceTopologyRegions *sourceAuthority,
+    const std::set<std::uint64_t> *hardFeatureEdges);
 
 struct FieldAlignedSourceQuadRecoveryResult {
   bool success = false;

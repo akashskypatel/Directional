@@ -881,6 +881,19 @@ void hash_source_support(
   }
 }
 
+void hash_source_projection_chart(
+    std::uint64_t &seed, const geometry::SourceProjectionChart &chart) {
+  hash_semantic_id(seed, chart.chart);
+  hash_semantic_id(seed, chart.face);
+}
+
+void hash_optional_source_projection_chart(
+    std::uint64_t &seed,
+    const std::optional<geometry::SourceProjectionChart> &chart) {
+  hash_combine_i64(seed, chart.has_value() ? 1 : 0);
+  if (chart.has_value()) hash_source_projection_chart(seed, *chart);
+}
+
 } // namespace directional::pipeline
 
 namespace directional::pipeline {
@@ -1440,8 +1453,8 @@ std::uint64_t hash_arrangement_arcs(
     hash_combine_i64(seed, arc.provenance);
     hash_optional_semantic_id(seed, arc.railId);
     hash_combine_i64(seed, arc.curveId);
-    hash_combine_i64(seed, arc.sourceComponent);
-    hash_combine_i64(seed, arc.sourceSheet);
+    hash_optional_semantic_id(seed, arc.sourceTopologyRegion);
+    hash_optional_source_projection_chart(seed, arc.sourceChart);
     hash_combine_i64(seed, arc.proposalId);
     hash_combine_i64(seed, arc.proposalSeedId);
     hash_combine_i64(seed, arc.proposalSide);
@@ -1469,8 +1482,8 @@ std::uint64_t hash_surface_complex(
          node.occurrences) {
       hash_combine_i64(seed, occurrence.sourceFace);
       hash_row_vector(seed, occurrence.barycentric);
-      hash_combine_i64(seed, occurrence.sourceComponent);
-      hash_combine_i64(seed, occurrence.sourceSheet);
+      hash_optional_semantic_id(seed, occurrence.sourceTopologyRegion);
+      hash_optional_source_projection_chart(seed, occurrence.sourceChart);
       hash_combine_i64(seed, occurrence.sourceArc);
       hash_combine_i64(seed, occurrence.provenance);
       hash_optional_semantic_id(seed, occurrence.railId);
@@ -1501,8 +1514,8 @@ std::uint64_t hash_surface_complex(
     hash_combine_i64(seed, halfedge.singularitySupport ? 1 : 0);
     hash_optional_semantic_id(seed, halfedge.railId);
     hash_combine_i64(seed, halfedge.curveId);
-    hash_combine_i64(seed, halfedge.sourceComponent);
-    hash_combine_i64(seed, halfedge.sourceSheet);
+    hash_optional_semantic_id(seed, halfedge.sourceTopologyRegion);
+    hash_optional_source_projection_chart(seed, halfedge.sourceChart);
     hash_combine_i64(seed, halfedge.proposalId);
     hash_combine_i64(seed, halfedge.proposalSeedId);
     hash_combine_i64(seed, halfedge.proposalSide);
@@ -1514,8 +1527,11 @@ std::uint64_t hash_surface_complex(
   for (const geometry::SurfaceArrangementCell &cell : complex.cells) {
     hash_combine_i64(seed, cell.id);
     hash_combine_i64(seed, cell.sourceFace);
-    hash_combine_i64(seed, cell.sourceComponent);
-    hash_combine_i64(seed, cell.sourceSheet);
+    hash_optional_semantic_id(seed, cell.sourceTopologyRegion);
+    hash_combine_u64(seed, cell.sourceCharts.size());
+    for (const auto &chart : cell.sourceCharts) {
+      hash_source_projection_chart(seed, chart);
+    }
     hash_vector(seed, cell.sourceFaces);
     hash_vector(seed, cell.halfedges);
     hash_vector(seed, cell.boundaryCycleOffsets);
@@ -4310,7 +4326,16 @@ namespace directional::pipeline {
 std::vector<geometry::SurfaceArrangementArc>
 surface_arrangement_arcs_from_flow_rep(
     const std::vector<geometry::FlowRepArc> &arcs,
-    const geometry::FlowRepSparseNetwork &sparseNetwork) {
+    const geometry::FlowRepSparseNetwork &sparseNetwork,
+    const Eigen::MatrixXi &sourceFaces,
+    const geometry::SourceTopologyRegions *sourceAuthority,
+    const std::set<std::uint64_t> *hardFeatureEdges) {
+  std::optional<geometry::SourceChartTransitionGraph> transitionGraph;
+  if (sourceAuthority != nullptr &&
+      sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(sourceFaces.rows()))) {
+    transitionGraph.emplace(sourceFaces, *sourceAuthority, hardFeatureEdges);
+  }
   std::set<int> retained(sparseNetwork.retainedArcIds.begin(),
                          sparseNetwork.retainedArcIds.end());
   if (retained.empty() && sparseNetwork.removedArcIds.empty()) {
@@ -4336,10 +4361,16 @@ surface_arrangement_arcs_from_flow_rep(
     arrangementArc.provenance = arc.id;
     arrangementArc.railId = arc.railId;
     arrangementArc.curveId = arc.curveId;
-    arrangementArc.sourceTopologyRegion = arc.sourceTopologyRegion;
-    // Numeric component/sheet projections are derived later from sourceAuthority.
-    arrangementArc.sourceComponent = -1;
-    arrangementArc.sourceSheet = -1;
+    if (sourceAuthority != nullptr && transitionGraph.has_value()) {
+      const auto row = authority::SourceFaceId::from_index(
+          arc.sourceFace, sourceAuthority->face_count());
+      const auto chart = transitionGraph->chart(arc.sourceFace);
+      if (row && chart.has_value()) {
+        arrangementArc.sourceTopologyRegion =
+            sourceAuthority->region_for_row(row.value());
+        arrangementArc.sourceChart = chart.value();
+      }
+    }
     arrangementArc.proposalId = arc.proposalId;
     arrangementArc.proposalSeedId = arc.proposalSeedId;
     arrangementArc.proposalSide = arc.proposalSide;
@@ -6490,8 +6521,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         retainForExecution ? result.surfaceCellContext.flowRepNetwork
                                    : sparseFlowRep;
     std::vector<geometry::SurfaceArrangementArc> arrangementArcs =
-        surface_arrangement_arcs_from_flow_rep(embeddingFlowRepArcs,
-                                               embeddingSparseFlowRep);
+        surface_arrangement_arcs_from_flow_rep(
+            embeddingFlowRepArcs, embeddingSparseFlowRep, meshWhole.F,
+            phaseFrontProduct != nullptr
+                ? &phaseFrontProduct->sourceTopologyRegions
+                : nullptr,
+            hardFeatureRailEdges.empty() ? nullptr : &hardFeatureRailEdges);
     if (!retainForExecution) {
       // Arrangement arcs are a compact projection of the retained FlowRep.
       // Release the much larger dense arc graph before building the DCEL.
