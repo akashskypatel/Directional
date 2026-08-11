@@ -7624,13 +7624,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       constraints.sourceNormals = meshWhole.faceNormals;
       constraints.sourceFieldX = faceAxisX;
       constraints.sourceFieldY = faceAxisY;
-      constraints.sourceFaceComponent =
-          result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
-      constraints.sourceFaceSheet =
-          result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
       if (phaseFrontProduct != nullptr) {
         constraints.sourceAuthority =
-            phaseFrontProduct->sourceTopologyRegions;
+            &phaseFrontProduct->sourceTopologyRegions;
       }
       constraints.sourceHardFeatureEdges = hardFeatureRailEdges;
       constraints.outputQuadSourceFaces.assign(

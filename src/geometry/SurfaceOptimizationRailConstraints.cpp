@@ -12,6 +12,24 @@ namespace {
 constexpr std::size_t legacy_source_vertex_extent =
     static_cast<std::size_t>(std::numeric_limits<int>::max()) + 1U;
 
+std::pair<int, int> source_face_numeric_scope(
+    const SurfaceOptimizationConstraints &constraints, const int face) {
+  if (constraints.sourceAuthority == nullptr || face < 0 ||
+      face >= constraints.sourceFaces.rows() ||
+      !constraints.sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(constraints.sourceFaces.rows()))) {
+    return {-1, -1};
+  }
+  const auto row = authority::SourceFaceId::from_index(
+      face, constraints.sourceAuthority->face_count());
+  if (!row) return {-1, -1};
+  return {
+      static_cast<int>(
+          constraints.sourceAuthority->component_for_row(row.value()).index()),
+      static_cast<int>(
+          constraints.sourceAuthority->sheet_for_row(row.value()).index())};
+}
+
 } // namespace
 
 bool source_face_contains_vertex(
@@ -105,20 +123,12 @@ bool provenance_supports_interval_sheet(
     }
   }
 
-  if (interval.component >= 0 &&
-      constraints.sourceFaceComponent.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
-      constraints.sourceFaceComponent[
-          (intervalFace).index()] !=
-          interval.component) {
+  const auto [intervalComponent, intervalSheet] =
+      source_face_numeric_scope(constraints, static_cast<int>(intervalFace.index()));
+  if (interval.component >= 0 && intervalComponent != interval.component) {
     return false;
   }
-  if (interval.sheet >= 0 &&
-      constraints.sourceFaceSheet.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
-      constraints.sourceFaceSheet[
-          (intervalFace).index()] !=
-          interval.sheet) {
+  if (interval.sheet >= 0 && intervalSheet != interval.sheet) {
     return false;
   }
   return true;
@@ -160,14 +170,11 @@ void fill_surface_optimization_rail_constraints(
       interval.railId = rail.id;
       interval.order = sampleIndex / 2;
       interval.sourceFace = start.sourceFace;
-      interval.component = rail.component;
-      interval.sheet =
-          start.sourceFace >= 0 &&
-                  start.sourceFace <
-                      static_cast<int>(constraints.sourceFaceSheet.size())
-              ? constraints.sourceFaceSheet[static_cast<std::size_t>(
-                    start.sourceFace)]
-              : -1;
+      const auto [sourceComponent, sourceSheet] =
+          surface_optimization_rail_detail::source_face_numeric_scope(
+              constraints, start.sourceFace);
+      interval.component = sourceComponent >= 0 ? sourceComponent : rail.component;
+      interval.sheet = sourceSheet;
       interval.parameterStart = start.railParameter;
       interval.parameterEnd = end.railParameter;
       interval.curveClosed = rail.closed;

@@ -119,11 +119,8 @@ struct SurfaceOptimizationConstraints {
   Eigen::MatrixXd sourceFieldY;
   Eigen::VectorXi sourceComponent;
   // Complete source authority for all semantic region/component/sheet queries.
-  std::optional<SourceTopologyRegions> sourceAuthority;
-  // Temporary numeric projections retained only by low-level geometric
-  // projection code pending their dedicated contract cutover.
-  std::vector<int> sourceFaceComponent;
-  std::vector<int> sourceFaceSheet;
+  // The pipeline owns this product for the complete optimizer lifetime.
+  const SourceTopologyRegions *sourceAuthority = nullptr;
   // Authoritative source chart at each output quad center. Vertex provenance
   // is intentionally multi-chart on source vertices and edges, so it cannot
   // by itself select a stable orientation/field chart for the whole quad.
@@ -369,23 +366,27 @@ struct SourceProjectionCache {
 
     std::vector<unsigned char> mask(
         static_cast<std::size_t>(constraints->sourceFaces.rows()), 1);
-    const bool componentsComplete =
-        constraints->sourceFaceComponent.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows());
-    const bool sheetsComplete =
-        constraints->sourceFaceSheet.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows());
+    const bool authorityComplete =
+        constraints->sourceAuthority != nullptr &&
+        constraints->sourceAuthority->complete_for_face_count(
+            static_cast<std::size_t>(constraints->sourceFaces.rows()));
     for (int face = 0; face < constraints->sourceFaces.rows(); ++face) {
+      const auto row = authority::SourceFaceId::from_index(
+          face, static_cast<std::size_t>(constraints->sourceFaces.rows()));
+      if (!authorityComplete || !row) {
+        mask[static_cast<std::size_t>(face)] = 0;
+        continue;
+      }
       if (requiredComponent >= 0 &&
-          (!componentsComplete ||
-           constraints->sourceFaceComponent[static_cast<std::size_t>(face)] !=
-               requiredComponent)) {
+          static_cast<int>(
+              constraints->sourceAuthority->component_for_row(row.value()).index()) !=
+              requiredComponent) {
         mask[static_cast<std::size_t>(face)] = 0;
       }
       if (requiredSheet >= 0 &&
-          (!sheetsComplete ||
-           constraints->sourceFaceSheet[static_cast<std::size_t>(face)] !=
-               requiredSheet)) {
+          static_cast<int>(
+              constraints->sourceAuthority->sheet_for_row(row.value()).index()) !=
+              requiredSheet) {
         mask[static_cast<std::size_t>(face)] = 0;
       }
     }
@@ -424,15 +425,18 @@ struct SourceProjectionCache {
     }
     SurfaceProjectionOptions options;
     options.allowedFaces = allowed_faces(requiredComponent, requiredSheet);
-    if (constraints->sourceFaceComponent.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceComponents = &constraints->sourceFaceComponent;
+    SurfacePoint projected = bvh->project(point.transpose(), options);
+    if (projected.valid() && constraints->sourceAuthority != nullptr) {
+      const auto row = authority::SourceFaceId::from_index(
+          projected.face, constraints->sourceAuthority->face_count());
+      if (row) {
+        projected.component = static_cast<int>(
+            constraints->sourceAuthority->component_for_row(row.value()).index());
+        projected.sheet = static_cast<int>(
+            constraints->sourceAuthority->sheet_for_row(row.value()).index());
+      }
     }
-    if (constraints->sourceFaceSheet.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceSheets = &constraints->sourceFaceSheet;
-    }
-    return bvh->project(point.transpose(), options);
+    return projected;
   }
 
   [[nodiscard]] SurfacePoint project(const Eigen::RowVector3d &point,
@@ -443,15 +447,18 @@ struct SourceProjectionCache {
     }
     SurfaceProjectionOptions options;
     options.allowedFaces = allowed_faces(requiredFaces);
-    if (constraints->sourceFaceComponent.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceComponents = &constraints->sourceFaceComponent;
+    SurfacePoint projected = bvh->project(point.transpose(), options);
+    if (projected.valid() && constraints->sourceAuthority != nullptr) {
+      const auto row = authority::SourceFaceId::from_index(
+          projected.face, constraints->sourceAuthority->face_count());
+      if (row) {
+        projected.component = static_cast<int>(
+            constraints->sourceAuthority->component_for_row(row.value()).index());
+        projected.sheet = static_cast<int>(
+            constraints->sourceAuthority->sheet_for_row(row.value()).index());
+      }
     }
-    if (constraints->sourceFaceSheet.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceSheets = &constraints->sourceFaceSheet;
-    }
-    return bvh->project(point.transpose(), options);
+    return projected;
   }
 
   const SurfaceOptimizationConstraints *constraints = nullptr;
@@ -628,9 +635,7 @@ struct OutputProjectionCache {
     const validation::source_authoritative_detail::SourcePointLabelSupport
         labelSupport(
             constraints != nullptr ? &constraints->sourceFaces : nullptr,
-            constraints != nullptr && constraints->sourceAuthority.has_value()
-                ? &*constraints->sourceAuthority
-                : nullptr,
+            constraints != nullptr ? constraints->sourceAuthority : nullptr,
             constraints != nullptr ? &constraints->sourceHardFeatureEdges
                                    : nullptr);
     for (int face = 0; face < quads.rows(); ++face) {

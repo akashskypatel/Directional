@@ -743,6 +743,24 @@ double effective_edge_target_size(
 
 namespace directional::geometry::surface_optimizer_detail {
 
+std::pair<int, int> source_face_numeric_scope(
+    const SurfaceOptimizationConstraints &constraints, const int face) {
+  if (constraints.sourceAuthority == nullptr || face < 0 ||
+      face >= constraints.sourceFaces.rows() ||
+      !constraints.sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(constraints.sourceFaces.rows()))) {
+    return {-1, -1};
+  }
+  const auto row = authority::SourceFaceId::from_index(
+      face, constraints.sourceAuthority->face_count());
+  if (!row) return {-1, -1};
+  return {
+      static_cast<int>(
+          constraints.sourceAuthority->component_for_row(row.value()).index()),
+      static_cast<int>(
+          constraints.sourceAuthority->sheet_for_row(row.value()).index())};
+}
+
 bool provenance_is_complete(
     const SurfacePoint &point,
     const SurfaceOptimizationConstraints &constraints) {
@@ -756,16 +774,13 @@ bool provenance_is_complete(
       point.barycentric.maxCoeff() > 1.0 + 1.0e-10) {
     return false;
   }
-  const bool componentsAuthoritative =
+  const bool sourceAuthorityComplete =
       constraints.sourceFaces.rows() > 0 &&
-      constraints.sourceFaceComponent.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows());
-  const bool sheetsAuthoritative =
-      constraints.sourceFaces.rows() > 0 &&
-      constraints.sourceFaceSheet.size() ==
-          static_cast<std::size_t>(constraints.sourceFaces.rows());
-  return (!componentsAuthoritative || point.component >= 0) &&
-         (!sheetsAuthoritative || point.sheet >= 0);
+      constraints.sourceAuthority != nullptr &&
+      constraints.sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(constraints.sourceFaces.rows()));
+  return !sourceAuthorityComplete ||
+         (point.component >= 0 && point.sheet >= 0);
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -833,16 +848,10 @@ SurfacePoint project_to_provenance_entity(
   }
   projected.squaredDistance =
       (candidate.transpose() - projected.position).squaredNorm();
-  if (constraints.sourceFaceComponent.size() ==
-      static_cast<std::size_t>(constraints.sourceFaces.rows())) {
-    projected.component = constraints.sourceFaceComponent[
-        static_cast<std::size_t>(seed.face)];
-  }
-  if (constraints.sourceFaceSheet.size() ==
-      static_cast<std::size_t>(constraints.sourceFaces.rows())) {
-    projected.sheet =
-        constraints.sourceFaceSheet[static_cast<std::size_t>(seed.face)];
-  }
+  const auto [component, sheet] =
+      source_face_numeric_scope(constraints, seed.face);
+  projected.component = component;
+  projected.sheet = sheet;
   return projected;
 }
 
@@ -1116,10 +1125,7 @@ std::pair<int, int> consistent_component_sheet(
     const SurfaceOptimizationConstraints *constraints) {
   if (constraints != nullptr) {
     const validation::source_authoritative_detail::SourcePointLabelSupport
-        labelSupport(&constraints->sourceFaces,
-                     constraints->sourceAuthority.has_value()
-                         ? &*constraints->sourceAuthority
-                         : nullptr,
+        labelSupport(&constraints->sourceFaces, constraints->sourceAuthority,
                      &constraints->sourceHardFeatureEdges);
     if (labelSupport.available()) {
       std::vector<const SurfacePoint *> points;
@@ -1219,10 +1225,7 @@ SurfacePoint quad_reference_surface_point(
     centroid += 0.25 * vertices.row(quads(face, corner));
   }
   const validation::source_authoritative_detail::SourcePointLabelSupport
-      labelSupport(&constraints.sourceFaces,
-                   constraints.sourceAuthority.has_value()
-                       ? &*constraints.sourceAuthority
-                       : nullptr,
+      labelSupport(&constraints.sourceFaces, constraints.sourceAuthority,
                    &constraints.sourceHardFeatureEdges);
   std::vector<const SurfacePoint *> points;
   points.reserve(4);
@@ -1908,9 +1911,7 @@ make_source_authoritative_validator_options(
   validation::SourceAuthoritativeMeshValidatorOptions validatorOptions;
   validatorOptions.sourceVertices = &constraints.sourceVertices;
   validatorOptions.sourceFaces = &constraints.sourceFaces;
-  validatorOptions.sourceAuthority =
-      constraints.sourceAuthority.has_value() ? &*constraints.sourceAuthority
-                                              : nullptr;
+  validatorOptions.sourceAuthority = constraints.sourceAuthority;
   validatorOptions.vertexProvenance = &provenance;
   validatorOptions.vertexChartAuthority =
       constraints.vertexChartAuthority.empty()
@@ -2554,10 +2555,7 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   const std::vector<SurfacePoint> &provenance = optimization.vertexProvenance;
   SourceProjectionCache sourceProjection(constraints);
   const validation::source_authoritative_detail::SourcePointLabelSupport
-      sourceLabelSupport(&constraints.sourceFaces,
-                         constraints.sourceAuthority.has_value()
-                             ? &*constraints.sourceAuthority
-                             : nullptr,
+      sourceLabelSupport(&constraints.sourceFaces, constraints.sourceAuthority,
                          &constraints.sourceHardFeatureEdges);
 
   // Sample the complete output faces, not only their vertices. Bilinear 3x3
@@ -2641,14 +2639,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
     const std::vector<Eigen::Vector3d> barycentrics =
         triangle_sample_barycentrics();
     for (int face = 0; face < constraints.sourceFaces.rows(); ++face) {
-      const int component =
-          face < static_cast<int>(constraints.sourceFaceComponent.size())
-              ? constraints.sourceFaceComponent[static_cast<std::size_t>(face)]
-              : -1;
-      const int sheet =
-          face < static_cast<int>(constraints.sourceFaceSheet.size())
-              ? constraints.sourceFaceSheet[static_cast<std::size_t>(face)]
-              : -1;
+      const auto [component, sheet] =
+          source_face_numeric_scope(constraints, face);
       for (const Eigen::Vector3d &barycentric : barycentrics) {
         SurfacePoint sourcePoint;
         sourcePoint.face = face;
@@ -3124,16 +3116,12 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
             sourcePoint.barycentric.setZero();
             sourcePoint.barycentric(corner) = 1.0;
             sourcePoint.position = position.transpose();
-            sourcePoint.component =
-                face < static_cast<int>(constraints.sourceFaceComponent.size())
-                    ? constraints.sourceFaceComponent[static_cast<std::size_t>(face)]
-                    : -1;
-            sourcePoint.sheet =
-                face < static_cast<int>(constraints.sourceFaceSheet.size())
-                    ? constraints.sourceFaceSheet[static_cast<std::size_t>(face)]
-                    : -1;
-            component = sourcePoint.component;
-            sheet = sourcePoint.sheet;
+            const auto [faceComponent, faceSheet] =
+                source_face_numeric_scope(constraints, face);
+            sourcePoint.component = faceComponent;
+            sourcePoint.sheet = faceSheet;
+            component = faceComponent;
+            sheet = faceSheet;
             break;
           }
           if (sourcePoint.valid()) {
