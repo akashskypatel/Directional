@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m1-ra-wip-a5.txt
+      - .agents/connector-triggers/m1-ra-wip-a6.txt
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           : > "$LOG"
           {
-            echo "task=M1 R-A WIP A5 arrangement typed source authority"
+            echo "task=M1 R-A WIP A6 completion typed source authority"
             echo "event=$GITHUB_EVENT_NAME"
             echo "ref=$GITHUB_REF"
             echo "sha=$GITHUB_SHA"
@@ -50,10 +50,10 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git --version
 
-          PATCH="$RUNNER_TEMP/m1-ra-wip-a5.patch"
-          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a5.patch.gz.b64 | gzip -dc > "$PATCH"
+          PATCH="$RUNNER_TEMP/m1-ra-wip-a6.patch"
+          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a6.patch.gz.b64 | gzip -dc > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "972e2f394bfecbd335f95e8e3c6221f31eea98bdfa60ca08507f3956ec5ed5d6"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "e520564e5dad823826082d99f9873d9667d33c59cd5890a58517c923b2f844f6"
           if grep -E '^diff --git a/\.github/workflows/' "$PATCH"; then
             echo "workflow path found in patch" >&2
             exit 1
@@ -62,15 +62,15 @@ jobs:
           git apply --check "$PATCH"
           git apply "$PATCH"
           git diff --check
-          git add include/directional/geometry/SurfaceArrangement.h src/geometry/SurfaceArrangement.cpp src/pipeline/RemeshPipeline.cpp
+          git add include/directional/geometry/PatchDescriptor.h include/directional/geometry/PureQuadCompletion.h src/geometry/PatchDescriptor.cpp src/geometry/PureQuadCompletion.cpp src/pipeline/RemeshPipeline.cpp
           echo "staged_paths_begin"
           git diff --cached --name-only
           echo "staged_paths_end"
-          test "$(git diff --cached --name-only | wc -l)" -eq 3
+          test "$(git diff --cached --name-only | wc -l)" -eq 5
 
           git config user.name "directional-agent"
           git config user.email "directional-agent@users.noreply.github.com"
-          git commit -m "wip(m1): route arrangement through typed source authority"
+          git commit -m "wip(m1): route pure-quad completion through typed source authority"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "pushed_head=$(git rev-parse HEAD)"
 
@@ -78,7 +78,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-ra-wip-a5-log-${{ github.run_id }}
+          name: m1-ra-wip-a6-log-${{ github.run_id }}
           path: ${{ runner.temp }}/activity.log
           if-no-files-found: error
           retention-days: 7
