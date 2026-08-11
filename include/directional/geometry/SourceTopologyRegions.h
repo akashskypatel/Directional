@@ -49,7 +49,7 @@ public:
        int eulerCharacteristic, int boundaryLoopCount);
 
   [[nodiscard]] authority::TopologyRegionId id() const noexcept { return id_; }
-  [[nodiscard]] authority::SourceComponentId source_component() const noexcept {
+  [[nodiscard]] authority::SourceComponentId component() const noexcept {
     return sourceComponent_;
   }
   [[nodiscard]] int euler_characteristic() const noexcept {
@@ -156,7 +156,7 @@ public:
   }
   [[nodiscard]] authority::SourceComponentId
   component_for_row(authority::SourceFaceId row) const {
-    return region(region_for_row(row)).source_component();
+    return region(region_for_row(row)).component();
   }
   [[nodiscard]] authority::IsolationSheetId
   sheet_for_row(authority::SourceFaceId row) const {
@@ -166,6 +166,21 @@ public:
   topology_for_row(authority::SourceFaceId row) const {
     return face_authority(row).topology;
   }
+  [[nodiscard]] std::vector<authority::SourceFaceId>
+  rows_for_region(authority::TopologyRegionId id) const {
+    std::vector<authority::SourceFaceId> rows;
+    const SurfaceTopologyRegion &owner = region(id);
+    rows.reserve(owner.faces().size());
+    for (const SourceRegionFaceAuthority &face : owner.faces()) {
+      const auto row = row_for_topology(face.topology);
+      if (row.has_value()) {
+        rows.push_back(*row);
+      }
+    }
+    std::sort(rows.begin(), rows.end());
+    return rows;
+  }
+
   [[nodiscard]] std::optional<authority::SourceFaceId>
   row_for_topology(const authority::SourceFaceTopologyKey &topology) const {
     const auto it = std::lower_bound(

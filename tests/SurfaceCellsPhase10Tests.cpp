@@ -85,10 +85,10 @@ const directional::geometry::SurfaceTopologyRegion &phase_front_region(
     const directional::geometry::SurfacePhaseFrontResult &phaseFront,
     const directional::authority::TopologyRegionId id) {
   const auto found = std::find_if(
-      phaseFront.product().sourceTopologyRegions.regions.begin(),
-      phaseFront.product().sourceTopologyRegions.regions.end(),
-      [&](const auto &region) { return region.id == id; });
-  if (found == phaseFront.product().sourceTopologyRegions.regions.end()) {
+      phaseFront.product().sourceTopologyRegions.regions().begin(),
+      phaseFront.product().sourceTopologyRegions.regions().end(),
+      [&](const auto &region) { return region.id() == id; });
+  if (found == phaseFront.product().sourceTopologyRegions.regions().end()) {
     throw std::runtime_error("Missing typed topology-region authority.");
   }
   return *found;
@@ -105,13 +105,25 @@ int phase_front_component(
     const directional::geometry::SurfacePhaseFrontResult &phaseFront,
     const auto &owner) {
   return static_cast<int>(
-      phase_front_region(phaseFront, owner).sourceComponent.index());
+      phase_front_region(phaseFront, owner).component().index());
+}
+
+std::vector<directional::authority::IsolationSheetId> topology_region_sheets(
+    const directional::geometry::SurfaceTopologyRegion &region) {
+  std::vector<directional::authority::IsolationSheetId> sheets;
+  sheets.reserve(region.faces().size());
+  for (const auto &face : region.faces()) {
+    sheets.push_back(face.sheet);
+  }
+  std::sort(sheets.begin(), sheets.end());
+  sheets.erase(std::unique(sheets.begin(), sheets.end()), sheets.end());
+  return sheets;
 }
 
 std::optional<int> phase_front_single_sheet(
     const directional::geometry::SurfacePhaseFrontResult &phaseFront,
     const auto &owner) {
-  const auto &sheets = phase_front_region(phaseFront, owner).isolationSheets;
+  const auto sheets = topology_region_sheets(phase_front_region(phaseFront, owner));
   if (sheets.size() != 1U) return std::nullopt;
   return static_cast<int>(sheets.front().index());
 }
@@ -120,7 +132,8 @@ std::vector<int> phase_front_sheets(
     const directional::geometry::SurfacePhaseFrontResult &phaseFront,
     const auto &owner) {
   std::vector<int> result;
-  for (const auto sheet : phase_front_region(phaseFront, owner).isolationSheets) {
+  for (const auto sheet :
+       topology_region_sheets(phase_front_region(phaseFront, owner))) {
     result.push_back(static_cast<int>(sheet.index()));
   }
   return result;
@@ -1614,7 +1627,7 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(materialized.boundaryLoopCount, 1);
   EXPECT_EQ(materialized.eulerCharacteristic, 1);
   EXPECT_EQ(materialized.consumedTopologyRegions,
-            guidance.phaseFront.product().sourceTopologyRegions.regions.size());
+            guidance.phaseFront.product().sourceTopologyRegions.regions().size());
 
   auto embeddedOptions = guidanceOptions;
   embeddedOptions.reliefBarriersEmbedded = true;
@@ -1626,7 +1639,7 @@ TEST(SurfaceCellsPhase10,
   EXPECT_TRUE(embedded.seeds.empty());
   EXPECT_TRUE(embedded.traces.empty());
   EXPECT_TRUE(embedded.proposals.empty());
-  ASSERT_EQ(1U, guidance.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_EQ(1U, guidance.phaseFront.product().sourceTopologyRegions.regions().size());
   EXPECT_EQ(nullptr, embedded.phaseFront.produced_product());
   EXPECT_NE(embedded.phaseFront.rejection_reason(),
             directional::geometry::SurfacePhaseFrontFailureReason::None);
@@ -2614,19 +2627,22 @@ TEST(SurfaceCellsPhase10,
   ASSERT_NE(fullIncident.end(), found);
   ASSERT_GE(found->second[0], 0);
   ASSERT_GE(found->second[1], 0);
-  ASSERT_FALSE(directional::geometry::surface_cell_tracing_detail::
-                   source_faces_compatible(fixture.options, found->second[0],
-                                           found->second[1]));
-
   const auto topology =
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(fixture.faces, fixture.options);
   ASSERT_TRUE(topology.has_value());
-  ASSERT_EQ(1U, topology->regions.size());
-  const auto &region = topology->regions.front();
-  EXPECT_EQ(1, region.eulerCharacteristic);
-  EXPECT_EQ(1, region.boundaryLoopCount);
-  ASSERT_EQ(2U, region.isolationSheets.size());
+  directional::geometry::SurfaceCellTracingOptions typedOptions = fixture.options;
+  typedOptions.sourceFaceComponents.clear();
+  typedOptions.sourceFaceSheets.clear();
+  typedOptions.sourceAuthority = &*topology;
+  ASSERT_FALSE(directional::geometry::surface_cell_tracing_detail::
+                   source_faces_compatible(typedOptions, found->second[0],
+                                           found->second[1]));
+  ASSERT_EQ(1U, topology->regions().size());
+  const auto &region = topology->regions().front();
+  EXPECT_EQ(1, region.euler_characteristic());
+  EXPECT_EQ(1, region.boundary_loop_count());
+  ASSERT_EQ(2U, topology_region_sheets(region).size());
   const auto firstVertex = directional::authority::SourceVertexId::from_index(
       0, static_cast<std::size_t>(fixture.vertices.rows()));
   const auto secondVertex = directional::authority::SourceVertexId::from_index(
@@ -2636,17 +2652,13 @@ TEST(SurfaceCellsPhase10,
   const auto typedSharedEdge = directional::authority::SourceEdgeTopologyKey::make(
       firstVertex.value(), secondVertex.value());
   ASSERT_TRUE(typedSharedEdge);
-  EXPECT_TRUE(std::binary_search(region.internalIsolationSeamTopology.begin(),
-                                 region.internalIsolationSeamTopology.end(),
+  EXPECT_TRUE(std::binary_search(region.isolation_seams().begin(),
+                                 region.isolation_seams().end(),
                                  typedSharedEdge.value()));
-  EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
-                  source_edge_is_internal_isolation_seam(
-                      fixture.options, fixture.faces.rows(), topology->regionByFace,
-                      found->second[0], found->second[1], sharedEdge));
   EXPECT_FALSE(
       directional::geometry::surface_cell_tracing_detail::
           source_edge_is_authoritative_local_boundary(
-              fixture.options, fixture.faces.rows(), found->second[0],
+              typedOptions, fixture.faces.rows(), found->second[0],
               found->second, sharedEdge));
 }
 
@@ -2662,22 +2674,22 @@ TEST(SurfaceCellsPhase10,
   ASSERT_NE(fullIncident.end(), found);
   ASSERT_GE(found->second[0], 0);
   ASSERT_GE(found->second[1], 0);
-  ASSERT_TRUE(directional::geometry::surface_cell_tracing_detail::
-                  source_faces_compatible(fixture.options, found->second[0],
-                                          found->second[1]));
   const auto topology =
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(fixture.faces, fixture.options);
   ASSERT_TRUE(topology.has_value());
-  ASSERT_EQ(1U, topology->regions.size());
-  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
-                   source_edge_is_internal_isolation_seam(
-                       fixture.options, fixture.faces.rows(), topology->regionByFace,
-                       found->second[0], found->second[1], sharedEdge));
+  directional::geometry::SurfaceCellTracingOptions typedOptions = fixture.options;
+  typedOptions.sourceFaceComponents.clear();
+  typedOptions.sourceFaceSheets.clear();
+  typedOptions.sourceAuthority = &*topology;
+  ASSERT_TRUE(directional::geometry::surface_cell_tracing_detail::
+                  source_faces_compatible(typedOptions, found->second[0],
+                                          found->second[1]));
+  ASSERT_EQ(1U, topology->regions().size());
   EXPECT_FALSE(
       directional::geometry::surface_cell_tracing_detail::
           source_edge_is_authoritative_local_boundary(
-              fixture.options, fixture.faces.rows(), found->second[0],
+              typedOptions, fixture.faces.rows(), found->second[0],
               found->second, sharedEdge));
 }
 
@@ -2695,15 +2707,15 @@ TEST(SurfaceCellsPhase10,
           build_source_topology_regions(reversed.faces, reversed.options);
   ASSERT_TRUE(forwardTopology.has_value());
   ASSERT_TRUE(reversedTopology.has_value());
-  ASSERT_EQ(1U, forwardTopology->regions.size());
-  ASSERT_EQ(1U, reversedTopology->regions.size());
-  const auto &a = forwardTopology->regions.front();
-  const auto &b = reversedTopology->regions.front();
-  EXPECT_EQ(a.eulerCharacteristic, b.eulerCharacteristic);
-  EXPECT_EQ(a.boundaryLoopCount, b.boundaryLoopCount);
-  EXPECT_EQ(a.isolationSheets, b.isolationSheets);
-  EXPECT_EQ(a.boundaryEdgeTopology, b.boundaryEdgeTopology);
-  EXPECT_EQ(a.internalIsolationSeamTopology, b.internalIsolationSeamTopology);
+  ASSERT_EQ(1U, forwardTopology->regions().size());
+  ASSERT_EQ(1U, reversedTopology->regions().size());
+  const auto &a = forwardTopology->regions().front();
+  const auto &b = reversedTopology->regions().front();
+  EXPECT_EQ(a.euler_characteristic(), b.euler_characteristic());
+  EXPECT_EQ(a.boundary_loop_count(), b.boundary_loop_count());
+  EXPECT_EQ(topology_region_sheets(a), topology_region_sheets(b));
+  EXPECT_EQ(a.boundary_edges(), b.boundary_edges());
+  EXPECT_EQ(a.isolation_seams(), b.isolation_seams());
   EXPECT_EQ(directional::geometry::surface_topology_region_hash(a),
             directional::geometry::surface_topology_region_hash(b));
 }
@@ -2715,12 +2727,12 @@ TEST(SurfaceCellsPhase10,
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(fixture.faces, fixture.options);
   ASSERT_TRUE(topology.has_value());
-  ASSERT_EQ(1U, topology->regions.size());
-  const auto &region = topology->regions.front();
-  EXPECT_EQ(0, region.eulerCharacteristic);
-  EXPECT_EQ(2, region.boundaryLoopCount);
-  ASSERT_EQ(2U, region.isolationSheets.size());
-  EXPECT_FALSE(region.internalIsolationSeamTopology.empty());
+  ASSERT_EQ(1U, topology->regions().size());
+  const auto &region = topology->regions().front();
+  EXPECT_EQ(0, region.euler_characteristic());
+  EXPECT_EQ(2, region.boundary_loop_count());
+  ASSERT_EQ(2U, topology_region_sheets(region).size());
+  EXPECT_FALSE(region.isolation_seams().empty());
   EXPECT_NE(0U, directional::geometry::surface_topology_region_hash(region));
 }
 
@@ -2734,20 +2746,20 @@ TEST(SurfaceCellsPhase10,
       build_source_topology_regions(reversed.faces, reversed.options);
   ASSERT_TRUE(a.has_value());
   ASSERT_TRUE(b.has_value());
-  ASSERT_EQ(1U, a->regions.size());
-  ASSERT_EQ(1U, b->regions.size());
-  EXPECT_EQ(a->regions.front().eulerCharacteristic,
-            b->regions.front().eulerCharacteristic);
-  EXPECT_EQ(a->regions.front().boundaryLoopCount,
-            b->regions.front().boundaryLoopCount);
-  EXPECT_EQ(a->regions.front().boundaryEdgeTopology,
-            b->regions.front().boundaryEdgeTopology);
-  EXPECT_EQ(a->regions.front().internalIsolationSeamTopology,
-            b->regions.front().internalIsolationSeamTopology);
+  ASSERT_EQ(1U, a->regions().size());
+  ASSERT_EQ(1U, b->regions().size());
+  EXPECT_EQ(a->regions().front().euler_characteristic(),
+            b->regions().front().euler_characteristic());
+  EXPECT_EQ(a->regions().front().boundary_loop_count(),
+            b->regions().front().boundary_loop_count());
+  EXPECT_EQ(a->regions().front().boundary_edges(),
+            b->regions().front().boundary_edges());
+  EXPECT_EQ(a->regions().front().isolation_seams(),
+            b->regions().front().isolation_seams());
   EXPECT_EQ(directional::geometry::surface_topology_region_hash(
-                a->regions.front()),
+                a->regions().front()),
             directional::geometry::surface_topology_region_hash(
-                b->regions.front()));
+                b->regions().front()));
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2764,11 +2776,7 @@ TEST(SurfaceCellsPhase10,
   const auto topology = directional::geometry::surface_cell_tracing_detail::
       build_source_topology_regions(faces, options);
   ASSERT_TRUE(topology.has_value());
-  ASSERT_EQ(2U, topology->regions.size());
-  EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
-                   source_edge_is_internal_isolation_seam(
-                       options, faces.rows(), topology->regionByFace, 0, 1,
-                       sharedEdge));
+  ASSERT_EQ(2U, topology->regions().size());
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2806,7 +2814,7 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.rejection_reason());
-  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions().size());
   int hardEdges = 0;
   int hardMerges = 0;
   for (const auto &edge : network.phaseFront.product().edges) {
@@ -2855,8 +2863,15 @@ TEST(SurfaceCellsPhase10,
   const auto topology = directional::geometry::surface_cell_tracing_detail::
       build_source_topology_regions(faces, options);
   ASSERT_TRUE(topology.has_value());
-  ASSERT_EQ(2U, topology->regions.size());
-  EXPECT_NE(topology->regionByFace[0], topology->regionByFace[1]);
+  ASSERT_EQ(2U, topology->regions().size());
+  const auto firstRow = directional::authority::SourceFaceId::from_index(
+      0, topology->face_count());
+  const auto secondRow = directional::authority::SourceFaceId::from_index(
+      1, topology->face_count());
+  ASSERT_TRUE(firstRow);
+  ASSERT_TRUE(secondRow);
+  EXPECT_NE(topology->region_for_row(firstRow.value()),
+            topology->region_for_row(secondRow.value()));
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2890,17 +2905,17 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.rejection_reason());
-  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
-  EXPECT_FALSE(network.phaseFront.product().sourceTopologyRegions.regions.front()
-                   .internalIsolationSeamTopology.empty());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions().size());
+  EXPECT_FALSE(network.phaseFront.product().sourceTopologyRegions.regions().front()
+                   .isolation_seams().empty());
   ASSERT_EQ(1U,
             network.phaseFront.product().isolationSeamTransportCertificates.size());
   const auto &certificate =
       network.phaseFront.product().isolationSeamTransportCertificates.front();
-  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.front().id,
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions().front().id(),
             certificate.region);
-  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.front()
-                .internalIsolationSeamTopology.front(),
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions().front()
+                .isolation_seams().front(),
             certificate.seam);
   EXPECT_LT(certificate.transition.index(),
             static_cast<std::size_t>(crossField.matching.size()));
@@ -2911,8 +2926,8 @@ TEST(SurfaceCellsPhase10,
   bool sawCrossSheetScope = false;
   for (const auto &cell : network.phaseFront.product().cells) {
     sawCrossSheetScope |=
-        phase_front_region(network.phaseFront, cell).isolationSheets.size() > 1U;
-    EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.front().id,
+        topology_region_sheets(phase_front_region(network.phaseFront, cell)).size() > 1U;
+    EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions().front().id(),
               cell.sourceTopologyRegion);
   }
   EXPECT_TRUE(sawCrossSheetScope);
@@ -2922,7 +2937,7 @@ TEST(SurfaceCellsPhase10,
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(network.phaseFront.product().isolationSeamTransportCertificates.size(),
             materialized.consumedInternalIsolationSeams);
-  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.size(),
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions().size(),
             materialized.consumedTopologyRegions);
   EXPECT_EQ(1, materialized.connectedComponents);
   EXPECT_EQ(1, materialized.boundaryLoopCount);
@@ -4105,18 +4120,25 @@ TEST(SurfaceCellsPhase10,
       << directional::geometry::surface_phase_front_failure_reason_name(
              phaseFront.rejection_reason());
   EXPECT_TRUE(phaseFront.is_produced());
-  ASSERT_FALSE(network.phaseFront.product().sourceTopologyRegions.regions.empty());
-  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.size(),
+  ASSERT_FALSE(network.phaseFront.product().sourceTopologyRegions.regions().empty());
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions().size(),
             result.diagnostics.surfaceCellTopologyRegionCount);
   ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()),
-            network.phaseFront.product().sourceTopologyRegions.regionByFace.size());
-  for (const auto region : network.phaseFront.product().sourceTopologyRegions.regionByFace)
-    EXPECT_LT(region.index(),
-              network.phaseFront.product().sourceTopologyRegions.regions.size());
+            network.phaseFront.product().sourceTopologyRegions.face_count());
+  for (std::size_t rowIndex = 0;
+       rowIndex < network.phaseFront.product().sourceTopologyRegions.face_count();
+       ++rowIndex) {
+    const auto row = directional::authority::SourceFaceId::from_index(
+        rowIndex, network.phaseFront.product().sourceTopologyRegions.face_count());
+    ASSERT_TRUE(row);
+    EXPECT_LT(network.phaseFront.product().sourceTopologyRegions
+                  .region_for_row(row.value()).index(),
+              network.phaseFront.product().sourceTopologyRegions.regions().size());
+  }
   bool sawMultiSheetRegionWithInternalSeam = false;
-  for (const auto &region : network.phaseFront.product().sourceTopologyRegions.regions) {
-    if (region.isolationSheets.size() > 1U &&
-        !region.internalIsolationSeamTopology.empty()) {
+  for (const auto &region : network.phaseFront.product().sourceTopologyRegions.regions()) {
+    if (topology_region_sheets(region).size() > 1U &&
+        !region.isolation_seams().empty()) {
       sawMultiSheetRegionWithInternalSeam = true;
     }
   }
@@ -4811,14 +4833,14 @@ TEST(SurfaceCellAuthorityContractCutover,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.rejection_reason());
-  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions().size());
   ASSERT_FALSE(network.phaseFront.product().cells.empty());
-  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions.front();
-  ASSERT_EQ(1U, region.isolationSheets.size());
-  EXPECT_EQ(0U, region.sourceComponent.index());
-  EXPECT_EQ(0U, region.isolationSheets.front().index());
+  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions().front();
+  ASSERT_EQ(1U, topology_region_sheets(region).size());
+  EXPECT_EQ(0U, region.component().index());
+  EXPECT_EQ(0U, topology_region_sheets(region).front().index());
   for (const auto &cell : network.phaseFront.product().cells) {
-    EXPECT_EQ(region.id, cell.sourceTopologyRegion);
+    EXPECT_EQ(region.id(), cell.sourceTopologyRegion);
   }
 }
 
@@ -4842,13 +4864,13 @@ TEST(SurfaceCellAuthorityContractCutover,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
-  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
-  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions.front();
-  ASSERT_EQ(1U, region.isolationSheets.size());
-  EXPECT_EQ(2U, region.sourceComponent.index());
-  EXPECT_EQ(5U, region.isolationSheets.front().index());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions().size());
+  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions().front();
+  ASSERT_EQ(1U, topology_region_sheets(region).size());
+  EXPECT_EQ(2U, region.component().index());
+  EXPECT_EQ(5U, topology_region_sheets(region).front().index());
   for (const auto &cell : network.phaseFront.product().cells) {
-    EXPECT_EQ(region.id, cell.sourceTopologyRegion);
+    EXPECT_EQ(region.id(), cell.sourceTopologyRegion);
   }
 }
 
@@ -4869,13 +4891,13 @@ TEST(SurfaceCellAuthorityContractCutover,
             network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.rejection_reason());
-  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
-  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions.front();
-  ASSERT_EQ(2U, region.isolationSheets.size());
-  EXPECT_EQ(0U, region.isolationSheets[0].index());
-  EXPECT_EQ(1U, region.isolationSheets[1].index());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions().size());
+  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions().front();
+  ASSERT_EQ(2U, topology_region_sheets(region).size());
+  EXPECT_EQ(0U, topology_region_sheets(region)[0].index());
+  EXPECT_EQ(1U, topology_region_sheets(region)[1].index());
   for (const auto &cell : network.phaseFront.product().cells) {
-    EXPECT_EQ(region.id, cell.sourceTopologyRegion);
+    EXPECT_EQ(region.id(), cell.sourceTopologyRegion);
     EXPECT_EQ((std::vector<int>{0, 1}),
               phase_front_sheets(network.phaseFront, cell));
     EXPECT_FALSE(phase_front_single_sheet(network.phaseFront, cell).has_value());
@@ -4898,13 +4920,13 @@ TEST(SurfaceCellAuthorityContractCutover,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
-  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions().size());
   std::map<directional::authority::CellId,
            const directional::geometry::SurfacePhaseFrontCell *> cellsById;
   for (const auto &cell : network.phaseFront.product().cells) {
     ASSERT_TRUE(cellsById.emplace(cell.id, &cell).second);
     EXPECT_EQ(cell.sourceTopologyRegion,
-              phase_front_region(network.phaseFront, cell).id);
+              phase_front_region(network.phaseFront, cell).id());
   }
   ASSERT_FALSE(network.phaseFront.product().edges.empty());
   for (const auto &edge : network.phaseFront.product().edges) {
@@ -4912,7 +4934,7 @@ TEST(SurfaceCellAuthorityContractCutover,
     ASSERT_NE(cellsById.end(), owner);
     EXPECT_EQ(owner->second->sourceTopologyRegion, edge.sourceTopologyRegion);
     EXPECT_EQ(edge.sourceTopologyRegion,
-              phase_front_region(network.phaseFront, edge).id);
+              phase_front_region(network.phaseFront, edge).id());
   }
 }
 
@@ -4945,10 +4967,10 @@ TEST(SurfaceCellAuthorityContractCutover,
 
   const auto snapshot = [](const auto &network) {
     std::multiset<std::pair<std::uint64_t, int>> result;
-    for (const auto &region : network.phaseFront.product().sourceTopologyRegions.regions) {
+    for (const auto &region : network.phaseFront.product().sourceTopologyRegions.regions()) {
       const int cellCount = static_cast<int>(std::count_if(
           network.phaseFront.product().cells.begin(), network.phaseFront.product().cells.end(),
-          [&](const auto &cell) { return cell.sourceTopologyRegion == region.id; }));
+          [&](const auto &cell) { return cell.sourceTopologyRegion == region.id(); }));
       result.emplace(
           directional::geometry::surface_topology_region_hash(region), cellCount);
     }
@@ -4972,17 +4994,17 @@ TEST(SurfaceCellAuthorityContractCutover,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
-  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions().size());
   ASSERT_FALSE(network.phaseFront.product().cells.empty());
 
   auto changed = network.phaseFront.product();
   const auto current = changed.cells.front().sourceTopologyRegion;
   const auto replacement = std::find_if(
-      changed.sourceTopologyRegions.regions.begin(),
-      changed.sourceTopologyRegions.regions.end(),
-      [&](const auto &region) { return region.id != current; });
-  ASSERT_NE(changed.sourceTopologyRegions.regions.end(), replacement);
-  changed.cells.front().sourceTopologyRegion = replacement->id;
+      changed.sourceTopologyRegions.regions().begin(),
+      changed.sourceTopologyRegions.regions().end(),
+      [&](const auto &region) { return region.id() != current; });
+  ASSERT_NE(changed.sourceTopologyRegions.regions().end(), replacement);
+  changed.cells.front().sourceTopologyRegion = replacement->id();
   const auto rejected = directional::pipeline::build_authoritative_phase_front_mesh(
       mesh.V, mesh.F, changed);
   EXPECT_FALSE(rejected.success);
@@ -5004,17 +5026,17 @@ TEST(SurfaceCellAuthorityContractCutover,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition());
-  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions().size());
   ASSERT_FALSE(network.phaseFront.product().edges.empty());
 
   auto changed = network.phaseFront.product();
   const auto current = changed.edges.front().sourceTopologyRegion;
   const auto replacement = std::find_if(
-      changed.sourceTopologyRegions.regions.begin(),
-      changed.sourceTopologyRegions.regions.end(),
-      [&](const auto &region) { return region.id != current; });
-  ASSERT_NE(changed.sourceTopologyRegions.regions.end(), replacement);
-  changed.edges.front().sourceTopologyRegion = replacement->id;
+      changed.sourceTopologyRegions.regions().begin(),
+      changed.sourceTopologyRegions.regions().end(),
+      [&](const auto &region) { return region.id() != current; });
+  ASSERT_NE(changed.sourceTopologyRegions.regions().end(), replacement);
+  changed.edges.front().sourceTopologyRegion = replacement->id();
   const auto rejected = directional::pipeline::build_authoritative_phase_front_mesh(
       mesh.V, mesh.F, changed);
   EXPECT_FALSE(rejected.success);
@@ -5052,10 +5074,10 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto materialized = directional::pipeline::build_authoritative_phase_front_mesh(
       mesh.V, mesh.F, network.phaseFront.product());
   ASSERT_TRUE(materialized.success) << materialized.failure;
-  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.size(),
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions().size(),
             materialized.consumedTopologyRegions);
   EXPECT_EQ(static_cast<std::size_t>(mesh.F.rows()),
-            network.phaseFront.product().sourceTopologyRegions.regionByFace.size());
+            network.phaseFront.product().sourceTopologyRegions.face_count());
 }
 
 } // namespace

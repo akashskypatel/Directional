@@ -2932,7 +2932,7 @@ std::uint64_t surface_topology_region_hash_impl(const SurfaceTopologyRegion &reg
     hash *= 1099511628211ULL;
   };
   consume(region.id().index());
-  consume(region.source_component().index());
+  consume(region.component().index());
   consume(static_cast<std::uint64_t>(region.euler_characteristic()));
   consume(static_cast<std::uint64_t>(region.boundary_loop_count()));
   for (const SourceRegionFaceAuthority &face : region.faces()) {
@@ -5762,7 +5762,7 @@ bool phase_front_cell_matches_region(
     return row.has_value() &&
            sourceAuthority.region_for_row(row.value()) == region.id() &&
            sourceAuthority.component_for_row(row.value()) ==
-               region.source_component();
+               region.component();
   };
   for (const SurfaceTracePoint &corner : cell.corners) {
     if (!consume_face(corner.face)) return false;
@@ -9333,9 +9333,9 @@ bool build_isolation_seam_transport_certificates(
           sourceAuthority.region_for_row(firstRow.value()) != region.id() ||
           sourceAuthority.region_for_row(secondRow.value()) != region.id() ||
           sourceAuthority.component_for_row(firstRow.value()) !=
-              region.source_component() ||
+              region.component() ||
           sourceAuthority.component_for_row(secondRow.value()) !=
-              region.source_component()) {
+              region.component()) {
         return false;
       }
 
@@ -9843,7 +9843,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
       return result;
     }
     if (to < from) std::swap(from, to);
-    hardRailGroups[{edgeRegion->source_component(), std::move(from),
+    hardRailGroups[{edgeRegion->component(), std::move(from),
                     std::move(to), edge.route}]
         .push_back(edgeIndex);
   }

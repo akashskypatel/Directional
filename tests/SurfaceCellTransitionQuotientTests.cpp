@@ -358,8 +358,6 @@ PhaseFrontFixture make_torus_pipeline_fixture() {
                              result.diagnostics.terminalFailureStage);
   }
   fixture.network = result.surfaceCellContext.traceNetwork;
-  fixture.components = fixture.network.sourceFaceComponents;
-  fixture.sheets = fixture.network.sourceFaceSheets;
   require_produced(fixture, "torus pipeline");
   return fixture;
 }
@@ -447,21 +445,24 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
        cellIndex < fixture.network.phaseFront.product().cells.size(); ++cellIndex) {
     const auto &cell = fixture.network.phaseFront.product().cells[cellIndex];
     const auto region = std::find_if(
-        fixture.network.phaseFront.product().sourceTopologyRegions.regions.begin(),
-        fixture.network.phaseFront.product().sourceTopologyRegions.regions.end(),
+        fixture.network.phaseFront.product().sourceTopologyRegions.regions().begin(),
+        fixture.network.phaseFront.product().sourceTopologyRegions.regions().end(),
         [&](const auto &candidate) {
-          return candidate.id == cell.sourceTopologyRegion;
+          return candidate.id() == cell.sourceTopologyRegion;
         });
-    if (region == fixture.network.phaseFront.product().sourceTopologyRegions.regions.end() ||
-        region->sourceFaces.empty()) {
+    if (region == fixture.network.phaseFront.product().sourceTopologyRegions.regions().end() ||
+        region->faces().empty()) {
       continue;
     }
+    const auto regionalRows =
+        fixture.network.phaseFront.product().sourceTopologyRegions.rows_for_region(
+            region->id());
     Eigen::MatrixXi regionalFaces(
-        static_cast<Eigen::Index>(region->sourceFaces.size()), 3);
-    for (std::size_t row = 0; row < region->sourceFaces.size(); ++row) {
+        static_cast<Eigen::Index>(regionalRows.size()), 3);
+    for (std::size_t row = 0; row < regionalRows.size(); ++row) {
       regionalFaces.row(static_cast<Eigen::Index>(row)) =
           fixture.mesh.F.row(static_cast<Eigen::Index>(
-              region->sourceFaces[row].index()));
+              regionalRows[row].index()));
     }
     const auto regionalIncidence = directional::geometry::
         surface_cell_tracing_detail::edge_faces(regionalFaces);
@@ -606,8 +607,6 @@ directional::pipeline::RemeshResult semantic_two_component_result() {
     lineage.sourcePoint.barycentric = Eigen::Vector3d(1.0, 0.0, 0.0);
     lineage.sourcePoint.position = result.vertices.row(vertex).transpose();
     lineage.sourcePoint.squaredDistance = 0.0;
-    lineage.sourceComponent = component;
-    lineage.sourceSheet = component;
     lineage.sourceTopologyRegions = {test_topology_region_id(component)};
     lineage.sourceIsolationSheets = {test_isolation_sheet_id(component)};
     lineage.sourceCharts = {test_projection_chart(component, component)};
@@ -840,8 +839,8 @@ TEST(SurfaceCellIsolationSeamCertificateAuthority,
   auto &certificate = tampered.product().isolationSeamTransportCertificates.front();
   const auto wrongRegion = directional::authority::TopologyRegionId::from_index(
       static_cast<std::int64_t>(
-          tampered.product().sourceTopologyRegions.regions.size()),
-      tampered.product().sourceTopologyRegions.regions.size() + 1U);
+          tampered.product().sourceTopologyRegions.regions().size()),
+      tampered.product().sourceTopologyRegions.regions().size() + 1U);
   ASSERT_TRUE(wrongRegion);
   certificate.region = wrongRegion.value();
   const auto result = materialize(fixture, tampered);
@@ -886,7 +885,6 @@ TEST(SurfaceCellTransitionQuotient,
   for (const auto &lineage : result.mesh.vertexLineage) {
     if (lineage.sourceIsolationSheets.size() <= 1U) continue;
     foundMultiIsolationLineage = true;
-    EXPECT_EQ(-1, lineage.sourceSheet);
     EXPECT_TRUE(std::is_sorted(lineage.sourceIsolationSheets.begin(),
                                lineage.sourceIsolationSheets.end()));
     EXPECT_TRUE(std::is_sorted(lineage.sourceCharts.begin(),
@@ -915,7 +913,8 @@ TEST(SurfaceCellTransitionQuotient,
           result.mesh.vertexLineage[static_cast<std::size_t>(first)];
       const auto &secondLineage =
           result.mesh.vertexLineage[static_cast<std::size_t>(second)];
-      if (firstLineage.sourceComponent != secondLineage.sourceComponent) {
+      if (firstLineage.sourceTopologyRegions !=
+          secondLineage.sourceTopologyRegions) {
         foundCoincidentDistinctVertices = true;
       }
     }
@@ -1315,10 +1314,8 @@ TEST(SurfaceCellTransitionQuotient,
   for (std::size_t vertex = 4; vertex < mutation.outputVertexLineage.size();
        ++vertex) {
     auto &lineage = mutation.outputVertexLineage[vertex];
-    lineage.sourceComponent = 0;
     lineage.sourcePoint.component = 0;
     lineage.sourcePoint.sheet = 0;
-    lineage.sourceSheet = 0;
     lineage.sourceTopologyRegions = {test_topology_region_id(0)};
     lineage.sourceIsolationSheets = {test_isolation_sheet_id(0)};
     lineage.sourceCharts = {test_projection_chart(0, 0)};

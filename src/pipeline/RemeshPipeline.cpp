@@ -1052,7 +1052,7 @@ std::uint64_t hash_trace_network(
     hash_combine_u64(seed, phaseFront->sourceTopologyRegions.regions().size());
     for (const auto &region : phaseFront->sourceTopologyRegions.regions()) {
       hash_semantic_id(seed, region.id());
-      hash_semantic_id(seed, region.source_component());
+      hash_semantic_id(seed, region.component());
       hash_combine_i64(seed, region.euler_characteristic());
       hash_combine_i64(seed, region.boundary_loop_count());
       hash_combine_u64(seed, geometry::surface_topology_region_hash(region));
@@ -2139,9 +2139,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         phaseFront.sourceTopologyRegions.region_for_row(*source_face_id(secondFace)) !=
             certificate.region ||
         phaseFront.sourceTopologyRegions.component_for_row(*source_face_id(firstFace)) !=
-            region->second->source_component() ||
+            region->second->component() ||
         phaseFront.sourceTopologyRegions.component_for_row(*source_face_id(secondFace)) !=
-            region->second->source_component() ||
+            region->second->component() ||
         phaseFront.sourceTopologyRegions.sheet_for_row(*source_face_id(firstFace)) !=
             certificate.firstSheet ||
         phaseFront.sourceTopologyRegions.sheet_for_row(*source_face_id(secondFace)) !=
@@ -2290,7 +2290,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           phaseFront.sourceTopologyRegions.component_for_row(*faceId);
       const authority::IsolationSheetId typedSheet =
           phaseFront.sourceTopologyRegions.sheet_for_row(*faceId);
-      if (typedComponent != region->second->source_component() ||
+      if (typedComponent != region->second->component() ||
           phaseFront.sourceTopologyRegions.region_for_row(*faceId) !=
               cell.sourceTopologyRegion ||
           !std::binary_search(
@@ -6136,7 +6136,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         }
         SurfaceCellPeriodicHolonomyDiagnostics diagnostic;
         diagnostic.sourceComponent =
-            static_cast<int>(region->source_component().index());
+            static_cast<int>(region->component().index());
         diagnostic.sourceTopologyRegion =
             static_cast<int>(relation.sourceTopologyRegion.index());
         const std::vector<authority::IsolationSheetId> regionSheets =
