@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m1-ra-wip-a7.txt
+      - .agents/connector-triggers/m1-ra-wip-a7-retry1.txt
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           : > "$LOG"
           {
-            echo "task=M1 R-A WIP A7 validator and recovery typed source authority"
+            echo "task=M1 R-A WIP A7 validator and recovery typed source authority retry1"
             echo "event=$GITHUB_EVENT_NAME"
             echo "ref=$GITHUB_REF"
             echo "sha=$GITHUB_SHA"
@@ -50,8 +50,12 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git --version
 
+          BASE64="$RUNNER_TEMP/m1-ra-wip-a7.patch.gz.b64"
+          cat .agents/Directional/turn-payloads/m1-ra-wip-a7.part.00 \
+              .agents/Directional/turn-payloads/m1-ra-wip-a7.part.01 \
+              .agents/Directional/turn-payloads/m1-ra-wip-a7.part.02 > "$BASE64"
           PATCH="$RUNNER_TEMP/m1-ra-wip-a7.patch"
-          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a7.patch.gz.b64 | gzip -dc > "$PATCH"
+          base64 -d "$BASE64" | gzip -dc > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
           test "$(sha256sum "$PATCH" | awk '{print $1}')" = "e78cc491c03013c742f6fa4bec97771beb97fbdd0161e6d382c27548f135794c"
           if grep -E '^diff --git a/\.github/workflows/' "$PATCH"; then
@@ -78,7 +82,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-ra-wip-a7-log-${{ github.run_id }}
+          name: m1-ra-wip-a7-retry1-log-${{ github.run_id }}
           path: ${{ runner.temp }}/activity.log
           if-no-files-found: error
           retention-days: 7
