@@ -1,0 +1,27 @@
+     boundaryEdges.reserve(scratch.boundaryEdges.size());
+     for (const std::uint64_t rawEdge : scratch.boundaryEdges) {
+@@ -2755,16 +2894,16 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
+       }
+       isolationSeams.push_back(*edge);
+     }
+-    published.regions.emplace_back(
++    const auto region = SurfaceTopologyRegion::make(
+         regionId.value(), component.value(), std::move(regionFaces),
+-        std::move(sheets), std::move(boundaryEdges),
+-        std::move(isolationSeams), scratch.eulerCharacteristic,
+-        scratch.boundaryLoopCount);
+-  }
+-  if (!published.complete_for_face_count(static_cast<std::size_t>(faceCount))) {
+-    return std::nullopt;
++        std::move(boundaryEdges), std::move(isolationSeams),
++        scratch.eulerCharacteristic, scratch.boundaryLoopCount);
++    if (!region) {
++      return std::nullopt;
++    }
++    publishedRegions.push_back(*region);
+   }
+-  return published;
++  return SourceTopologyRegions::make(faces, std::move(publishedRegions));
+ }
+ 
+ std::uint64_t surface_topology_region_hash_impl(const SurfaceTopologyRegion &region) {
