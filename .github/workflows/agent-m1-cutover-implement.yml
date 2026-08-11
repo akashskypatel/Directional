@@ -8,14 +8,14 @@ on:
       - .agents/connector-triggers/m1-cutover-implement.txt
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: agent-m1-cutover-implement
   cancel-in-progress: false
 
 jobs:
-  implement-build:
+  compile-probe:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -26,54 +26,34 @@ jobs:
           mkdir -p "$RUNNER_TEMP/m1-cutover"
           LOG="$RUNNER_TEMP/m1-cutover/activity.log"
           {
-            echo "M1 cutover implementation start: $(date -u +%FT%TZ)"
+            echo "M1 cutover compile probe start: $(date -u +%FT%TZ)"
             echo "event=${GITHUB_EVENT_NAME}"
-            echo "ref=${GITHUB_REF}"
             echo "trigger_sha=${GITHUB_SHA}"
+            echo "source_sha=${{ github.event.before }}"
             echo "runner=${RUNNER_OS}/${RUNNER_ARCH}"
           } | tee "$LOG"
 
-      - name: Checkout exact trigger commit
+      - name: Checkout source parent of trigger marker
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
-          fetch-depth: 2
+          ref: ${{ github.event.before }}
+          fetch-depth: 1
           submodules: recursive
 
-      - name: Apply cutover codemod and push implementation checkpoint
+      - name: Verify source boundary and configure
         shell: bash
         run: |
           set -Eeuo pipefail
           LOG="$RUNNER_TEMP/m1-cutover/activity.log"
           exec > >(tee -a "$LOG") 2>&1
-          test "$(git rev-parse HEAD)" = "$GITHUB_SHA" || exit 91
-          echo "[cutover] applying deterministic source codemod"
-          python3 .agents/Directional/turn-payloads/m1_single_authority_cutover.py
-          git diff --check
+          SOURCE_SHA="${{ github.event.before }}"
+          echo "checkout_sha=$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA" || exit 91
           echo "[cutover] banned adapter audit"
           if git grep -n -E -- 'LegacyAuthorityAdapters|to_legacy_index|NegativeLegacyValue|OutOfRangeLegacyValue|legacyValue' -- include src tests CMakeLists.txt cmake; then
             echo "[cutover] obsolete adapter/domain terminology remains"
             exit 92
           fi
-          git status --short
-          if [[ -z "$(git status --porcelain)" ]]; then
-            echo "[cutover] no changes produced"
-            exit 93
-          fi
-          git config user.name "Directional Coding Agent"
-          git config user.email "actions@users.noreply.github.com"
-          git add include src tests CMakeLists.txt cmake
-          git commit -m "refactor(authority): cut over direct semantic ID ingress"
-          IMPLEMENTATION_SHA=$(git rev-parse HEAD)
-          echo "implementation_sha=$IMPLEMENTATION_SHA" | tee "$RUNNER_TEMP/m1-cutover/implementation.txt"
-          git push origin "HEAD:agent/surface_cell_quad/p5-recover-bridge-healing"
-
-      - name: Configure compile-only build
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          LOG="$RUNNER_TEMP/m1-cutover/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
           echo "[cutover] configure Release/static/Ninja/PRE_TEST"
           cmake -S . -B build-m1-cutover -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
@@ -113,7 +93,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-cutover-implement-log-${{ github.run_id }}
+          name: m1-cutover-compile-probe-${{ github.run_id }}
           path: ${{ runner.temp }}/m1-cutover
           if-no-files-found: error
           retention-days: 7
