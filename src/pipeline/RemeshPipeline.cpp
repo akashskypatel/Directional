@@ -148,14 +148,12 @@ std::uint64_t set_payload_logical_bytes(const std::set<T> &values) {
 
 std::uint64_t surface_trace_segment_owned_bytes(
     const geometry::SurfaceTraceSegment &segment) {
-  return vector_owned_bytes(segment.entryRouteTransitionIndices) +
-         vector_owned_bytes(segment.entryRouteTopologyKeys);
+  return vector_owned_bytes(segment.entryRoute.steps());
 }
 
 std::uint64_t surface_trace_segment_logical_bytes(
     const geometry::SurfaceTraceSegment &segment) {
-  return vector_logical_bytes(segment.entryRouteTransitionIndices) +
-         vector_logical_bytes(segment.entryRouteTopologyKeys);
+  return vector_logical_bytes(segment.entryRoute.steps());
 }
 
 std::uint64_t surface_trace_path_owned_bytes(
@@ -932,10 +930,21 @@ void hash_trace_segment(std::uint64_t &seed,
   hash_combine_i64(seed, segment.exitEdge);
   hash_combine_i64(seed, segment.matching);
   hash_combine_double(seed, segment.matchingEffort);
-  hash_combine_i64(seed, segment.sourceChart);
-  hash_combine_i64(seed, segment.entryTransitionIndex);
-  hash_vector(seed, segment.entryRouteTransitionIndices);
-  hash_vector(seed, segment.entryRouteTopologyKeys);
+  hash_combine_i64(seed, segment.sourceChart.has_value() ? 1 : 0);
+  if (segment.sourceChart.has_value()) {
+    hash_semantic_id(seed, segment.sourceChart.value());
+  }
+  hash_combine_u64(seed, segment.entryRoute.steps().size());
+  for (const authority::TransitionStep &step : segment.entryRoute.steps()) {
+    hash_source_edge_topology_key(seed, step.topology());
+    hash_combine_i64(seed, static_cast<int>(step.kind()));
+    hash_combine_i64(seed, step.interior().has_value() ? 1 : 0);
+    if (step.interior().has_value()) hash_semantic_id(seed, step.interior().value());
+    hash_combine_i64(seed, step.transport().rotation.value());
+    hash_combine_i64(seed, step.transport().shift.x);
+    hash_combine_i64(seed, step.transport().shift.y);
+    hash_combine_i64(seed, static_cast<int>(step.orientation()));
+  }
   hash_combine_i64(seed, segment.railId);
   hash_combine_i64(seed, segment.curveId);
   hash_combine_i64(seed, segment.railIntervalIndex);
@@ -2571,47 +2580,39 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         isolationSeamsByFrontEdge[static_cast<std::size_t>(edgeIndex)];
     for (const auto &segment :
          owner.boundaryPaths[static_cast<std::size_t>(edge.filledSide)]) {
-      const int expectedLastSourceEdge =
-          segment.entryRouteTransitionIndices.empty()
-              ? -1
-              : segment.entryRouteTransitionIndices.back();
-      if (segment.entryRouteTransitionIndices.size() !=
-              segment.entryRouteTopologyKeys.size() ||
-          segment.entryTransitionIndex != expectedLastSourceEdge) {
-        result.failure = "InvalidAuthoritativeTransitionSourceEdge";
-        return result;
-      }
-      for (std::size_t routeIndex = 0;
-           routeIndex < segment.entryRouteTransitionIndices.size(); ++routeIndex) {
-        const int entryTransitionIndex =
-            segment.entryRouteTransitionIndices[routeIndex];
-        const std::uint64_t topology =
-            segment.entryRouteTopologyKeys[routeIndex];
+      for (const authority::TransitionStep &step :
+           segment.entryRoute.oriented_steps()) {
+        if (step.kind() != authority::TransitionStepKind::Interior ||
+            !step.interior().has_value()) {
+          result.failure = "InvalidAuthoritativeTransitionSourceEdge";
+          return result;
+        }
+        const std::uint64_t topology = source_edge_leaf_key(step.topology());
         const auto incidence = exactSourceIncidence.find(topology);
         const auto sourceEdge = sourceEdgeIndices.find(topology);
         if (incidence == exactSourceIncidence.end() ||
             incidence->second[0] < 0 || incidence->second[1] < 0 ||
             sourceEdge == sourceEdgeIndices.end() ||
-            sourceEdge->second != entryTransitionIndex) {
+            step.interior()->index() !=
+                static_cast<std::size_t>(sourceEdge->second)) {
           result.failure = "InvalidAuthoritativeTransitionSourceEdge";
           return result;
         }
-        const auto typedTopology = typed_source_edge_topology(topology);
         const auto edgeRegion = typed_region_id(
             phase_front_source_topology_region(edge));
-        if (!typedTopology || !edgeRegion) {
+        if (!edgeRegion) {
           result.failure = "InvalidAuthoritativeTransitionSourceEdge";
           return result;
         }
         if (isolationCertificateBySeam.count(
-                {edgeRegion.value(), typedTopology.value()}) != 0U) {
+                {edgeRegion.value(), step.topology()}) != 0U) {
           crossedIsolationSeams.push_back(topology);
           continue;
         }
         const bool belongsToOtherRegion = std::any_of(
             isolationCertificateBySeam.begin(),
             isolationCertificateBySeam.end(), [&](const auto &entry) {
-              return entry.first.second == typedTopology.value();
+              return entry.first.second == step.topology();
             });
         if (belongsToOtherRegion) {
           result.failure = "IsolationSeamTransitionOwnerMismatch";

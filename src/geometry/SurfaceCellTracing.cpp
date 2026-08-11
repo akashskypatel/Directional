@@ -3364,13 +3364,7 @@ SurfaceTraceSegment reversed_trace_segment(SurfaceTraceSegment segment) {
   segment.sign = -segment.sign;
   segment.railSideSign = -segment.railSideSign;
   segment.matching = (4 - (segment.matching % 4) + 4) % 4;
-  std::reverse(segment.entryRouteTransitionIndices.begin(),
-               segment.entryRouteTransitionIndices.end());
-  std::reverse(segment.entryRouteTopologyKeys.begin(),
-               segment.entryRouteTopologyKeys.end());
-  segment.entryTransitionIndex = segment.entryRouteTransitionIndices.empty()
-                                     ? -1
-                                     : segment.entryRouteTransitionIndices.back();
+  segment.entryRoute = segment.entryRoute.reversed();
   return segment;
 }
 
@@ -5384,9 +5378,8 @@ bool segment_on_source(
     segment.endBarycentric = bary1;
     segment.family = family;
     segment.sign = sign;
-    segment.sourceChart = static_cast<int>(
-        (
-            frame.faceChart[static_cast<std::size_t>(selectedFace)].value()).index());
+    segment.sourceChart =
+        frame.faceChart[static_cast<std::size_t>(selectedFace)];
     segments.push_back(std::move(segment));
   }
   if (segments.empty()) {
@@ -5611,11 +5604,7 @@ bool segment_on_source(
     current.entryEdge = currentEdge;
     current.matching = static_cast<int>(routeTransport.rotation.value());
     current.matchingEffort = totalEffort;
-    current.entryRouteTransitionIndices = std::move(sourceEdges);
-    current.entryRouteTopologyKeys = std::move(sourceTopology);
-    current.entryTransitionIndex = current.entryRouteTransitionIndices.empty()
-                                       ? -1
-                                       : current.entryRouteTransitionIndices.back();
+    current.entryRoute = typedRoute;
   }
   return true;
 }
@@ -6520,7 +6509,7 @@ std::vector<SurfaceTraceSegment> periodic_chart_segment(
     segment.endBarycentric = bary1;
     segment.family = family;
     segment.sign = sign;
-    segment.sourceChart = 0;
+    segment.sourceChart = single_field_chart_authority();
     if (!path.empty() && path.back().face == segment.face) {
       path.back().endBarycentric = segment.endBarycentric;
       continue;
@@ -6638,7 +6627,7 @@ std::vector<SurfaceTraceSegment> bounded_disk_chart_segment(
     segment.endBarycentric = bary1;
     segment.family = family;
     segment.sign = sign;
-    segment.sourceChart = 0;
+    segment.sourceChart = single_field_chart_authority();
     if (!path.empty() && path.back().face == segment.face &&
         path.back().family == segment.family && path.back().sign == segment.sign &&
         (path.back().endBarycentric - segment.startBarycentric).norm() <= 1.0e-10) {

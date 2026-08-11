@@ -350,12 +350,7 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
         fixture.network.phaseFront.sourceTopologyRegions.regions.end(),
         [&](const auto &candidate) {
           if (!cell.sourceTopologyRegion.has_value()) return false;
-          const auto typedCandidate =
-              directional::authority::TopologyRegionId::from_index(
-                  candidate.id,
-                  fixture.network.phaseFront.sourceTopologyRegions.regions.size());
-          return typedCandidate &&
-                 typedCandidate.value() == cell.sourceTopologyRegion.value();
+          return candidate.id == cell.sourceTopologyRegion.value();
         });
     if (region == fixture.network.phaseFront.sourceTopologyRegions.regions.end() ||
         region->sourceFaces.empty()) {
@@ -365,7 +360,8 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
         static_cast<Eigen::Index>(region->sourceFaces.size()), 3);
     for (std::size_t row = 0; row < region->sourceFaces.size(); ++row) {
       regionalFaces.row(static_cast<Eigen::Index>(row)) =
-          fixture.mesh.F.row(region->sourceFaces[row]);
+          fixture.mesh.F.row(static_cast<Eigen::Index>(
+              region->sourceFaces[row].index()));
     }
     const auto regionalIncidence = directional::geometry::
         surface_cell_tracing_detail::edge_faces(regionalFaces);
@@ -377,15 +373,17 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
       for (std::size_t segmentIndex = 0; segmentIndex < path.size();
            ++segmentIndex) {
         const auto &segment = path[segmentIndex];
-        if (segment.entryRouteTransitionIndices.size() !=
-            segment.entryRouteTopologyKeys.size()) {
-          throw std::runtime_error(
-              "Transition route numeric/topology lengths differ");
-        }
-        for (std::size_t route = 0;
-             route < segment.entryRouteTopologyKeys.size(); ++route) {
+        const auto routeSteps = segment.entryRoute.oriented_steps();
+        for (std::size_t route = 0; route < routeSteps.size(); ++route) {
+          const auto &step = routeSteps[route];
+          if (step.kind() != directional::authority::TransitionStepKind::Interior ||
+              !step.interior().has_value()) {
+            continue;
+          }
           const std::uint64_t topology =
-              segment.entryRouteTopologyKeys[route];
+              directional::pipeline::surface_cell_source_edge_key(
+                  static_cast<int>(step.topology().first().index()),
+                  static_cast<int>(step.topology().second().index()));
           const auto globalIndex = sourceWide.find(topology);
           const auto localIndex = regionLocal.find(topology);
           const auto incident = sourceIncidence.find(topology);
@@ -393,7 +391,8 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
               localIndex == regionLocal.end() ||
               incident == sourceIncidence.end() || incident->second[0] < 0 ||
               incident->second[1] < 0 ||
-              segment.entryRouteTransitionIndices[route] != globalIndex->second) {
+              step.interior()->index() !=
+                  static_cast<std::size_t>(globalIndex->second)) {
             continue;
           }
 
@@ -452,21 +451,39 @@ bool replace_transition_index(SurfacePhaseFrontResult &phaseFront,
   auto &path = cell.boundaryPaths[witness.side];
   if (witness.segment >= path.size()) return false;
   auto &segment = path[witness.segment];
-  if (segment.entryRouteTransitionIndices.size() !=
-          segment.entryRouteTopologyKeys.size() ||
-      witness.route >= segment.entryRouteTransitionIndices.size() ||
-      segment.entryRouteTopologyKeys[witness.route] != witness.topology ||
-      segment.entryRouteTransitionIndices[witness.route] !=
-          witness.sourceWideCompact ||
-      segment.entryTransitionIndex != segment.entryRouteTransitionIndices.back()) {
+  auto steps = segment.entryRoute.oriented_steps();
+  if (witness.route >= steps.size()) return false;
+  const auto &original = steps[witness.route];
+  const std::uint64_t topology =
+      directional::pipeline::surface_cell_source_edge_key(
+          static_cast<int>(original.topology().first().index()),
+          static_cast<int>(original.topology().second().index()));
+  if (original.kind() != directional::authority::TransitionStepKind::Interior ||
+      !original.interior().has_value() || topology != witness.topology ||
+      original.interior()->index() !=
+          static_cast<std::size_t>(witness.sourceWideCompact)) {
     return false;
   }
-  segment.entryRouteTransitionIndices[witness.route] = replacement;
-  if (witness.route + 1U == segment.entryRouteTransitionIndices.size()) {
-    segment.entryTransitionIndex = replacement;
-  }
-  return segment.entryRouteTransitionIndices[witness.route] == replacement &&
-         segment.entryRouteTopologyKeys[witness.route] == witness.topology;
+  const auto replacementId =
+      directional::authority::InteriorTransitionId::from_index(
+          replacement, static_cast<std::size_t>(replacement + 1));
+  if (!replacementId) return false;
+  const auto replacementStep = directional::authority::TransitionStep::interior(
+      original.topology(), replacementId.value(), original.transport(),
+      original.orientation());
+  if (!replacementStep) return false;
+  steps[witness.route] = replacementStep.value();
+  segment.entryRoute =
+      directional::authority::CanonicalRoute::from_observed_steps(
+          std::move(steps));
+  const auto mutated = segment.entryRoute.oriented_steps();
+  return witness.route < mutated.size() && mutated[witness.route].interior() &&
+         mutated[witness.route].interior()->index() ==
+             static_cast<std::size_t>(replacement) &&
+         directional::pipeline::surface_cell_source_edge_key(
+             static_cast<int>(mutated[witness.route].topology().first().index()),
+             static_cast<int>(mutated[witness.route].topology().second().index())) ==
+             witness.topology;
 }
 
 directional::pipeline::RemeshResult semantic_two_component_result() {
@@ -559,12 +576,15 @@ TEST(SurfaceCellTransitionQuotient,
   const auto &witnessPath = witnessCell.boundaryPaths[witness.side];
   ASSERT_LT(witness.segment, witnessPath.size());
   const auto &witnessSegment = witnessPath[witness.segment];
-  ASSERT_LT(witness.route, witnessSegment.entryRouteTransitionIndices.size());
-  ASSERT_LT(witness.route, witnessSegment.entryRouteTopologyKeys.size());
+  const auto witnessSteps = witnessSegment.entryRoute.oriented_steps();
+  ASSERT_LT(witness.route, witnessSteps.size());
+  ASSERT_TRUE(witnessSteps[witness.route].interior().has_value());
+  EXPECT_EQ(static_cast<std::size_t>(witness.sourceWideCompact),
+            witnessSteps[witness.route].interior()->index());
   EXPECT_EQ(witness.topology,
-            witnessSegment.entryRouteTopologyKeys[witness.route]);
-  EXPECT_EQ(witness.sourceWideCompact,
-            witnessSegment.entryRouteTransitionIndices[witness.route]);
+            directional::pipeline::surface_cell_source_edge_key(
+                static_cast<int>(witnessSteps[witness.route].topology().first().index()),
+                static_cast<int>(witnessSteps[witness.route].topology().second().index())));
 
   const auto sourceIncidence = directional::geometry::
       surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
@@ -573,18 +593,18 @@ TEST(SurfaceCellTransitionQuotient,
   for (const auto &cell : fixture.network.phaseFront.cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
-        ASSERT_EQ(segment.entryRouteTransitionIndices.size(),
-                  segment.entryRouteTopologyKeys.size());
-        EXPECT_EQ(segment.entryRouteTransitionIndices.empty()
-                      ? -1
-                      : segment.entryRouteTransitionIndices.back(),
-                  segment.entryTransitionIndex);
-        for (std::size_t route = 0;
-             route < segment.entryRouteTransitionIndices.size(); ++route) {
-          const auto expected =
-              sourceWide.find(segment.entryRouteTopologyKeys[route]);
+        for (const auto &step : segment.entryRoute.oriented_steps()) {
+          ASSERT_EQ(directional::authority::TransitionStepKind::Interior,
+                    step.kind());
+          ASSERT_TRUE(step.interior().has_value());
+          const std::uint64_t topology =
+              directional::pipeline::surface_cell_source_edge_key(
+                  static_cast<int>(step.topology().first().index()),
+                  static_cast<int>(step.topology().second().index()));
+          const auto expected = sourceWide.find(topology);
           ASSERT_NE(expected, sourceWide.end());
-          EXPECT_EQ(expected->second, segment.entryRouteTransitionIndices[route]);
+          EXPECT_EQ(static_cast<std::size_t>(expected->second),
+                    step.interior()->index());
         }
       }
     }
@@ -672,14 +692,11 @@ TEST(SurfaceCellTransitionQuotient,
                 .size());
   const auto &certificate =
       fixture.network.phaseFront.isolationSeamTransportCertificates.front();
-  EXPECT_GE(certificate.sourceEdgeIndex, 0);
-  EXPECT_NE(certificate.firstIsolationSheet,
-            certificate.secondIsolationSheet);
-  EXPECT_EQ(0, (certificate.forwardQuarterTurn +
-                certificate.reverseQuarterTurn) % 4);
-  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
-                isolation_seam_transport_certificate_hash(certificate),
-            certificate.structuralHash);
+  EXPECT_LT(certificate.transition.index(), fixture.mesh.EF.rows());
+  EXPECT_NE(certificate.firstSheet, certificate.secondSheet);
+  EXPECT_EQ(certificate.forward.inverse(), certificate.reverse);
+  EXPECT_NE(0U, directional::geometry::surface_cell_tracing_detail::
+                    isolation_seam_transport_certificate_hash(certificate));
   const auto result = materialize(fixture, fixture.network.phaseFront);
   ASSERT_TRUE(result.success) << result.failure;
   EXPECT_EQ(1U, result.consumedInternalIsolationSeams);
@@ -714,10 +731,12 @@ TEST(SurfaceCellTransitionQuotient,
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
   ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
   auto &certificate = tampered.isolationSeamTransportCertificates.front();
-  ++certificate.sourceTopologyRegion;
-  certificate.structuralHash = directional::geometry::
-      surface_cell_tracing_detail::isolation_seam_transport_certificate_hash(
-          certificate);
+  const auto wrongRegion = directional::authority::TopologyRegionId::from_index(
+      static_cast<std::int64_t>(
+          tampered.sourceTopologyRegions.regions.size()),
+      tampered.sourceTopologyRegions.regions.size() + 1U);
+  ASSERT_TRUE(wrongRegion);
+  certificate.region = wrongRegion.value();
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidAuthoritativeIsolationSeamCertificate", result.failure);
@@ -729,10 +748,10 @@ TEST(SurfaceCellTransitionQuotient,
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
   ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
   auto &certificate = tampered.isolationSeamTransportCertificates.front();
-  certificate.firstIsolationSheet = 99;
-  certificate.structuralHash = directional::geometry::
-      surface_cell_tracing_detail::isolation_seam_transport_certificate_hash(
-          certificate);
+  const auto wrongSheet = directional::authority::IsolationSheetId::from_index(
+      99, 100);
+  ASSERT_TRUE(wrongSheet);
+  certificate.firstSheet = wrongSheet.value();
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("IsolationSeamCertificateSourceAuthorityMismatch", result.failure);
@@ -744,11 +763,8 @@ TEST(SurfaceCellTransitionQuotient,
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
   ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
   auto &certificate = tampered.isolationSeamTransportCertificates.front();
-  certificate.reverseQuarterTurn =
-      (certificate.reverseQuarterTurn + 1) % 4;
-  certificate.structuralHash = directional::geometry::
-      surface_cell_tracing_detail::isolation_seam_transport_certificate_hash(
-          certificate);
+  certificate.reverse = directional::authority::QuarterTurn::from_integer(
+      static_cast<int>(certificate.reverse.value()) + 1);
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidAuthoritativeIsolationSeamCertificate", result.failure);

@@ -974,7 +974,7 @@ std::size_t multi_edge_transition_count(
   for (const auto &cell : network.phaseFront.cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
-        if (segment.entryRouteTransitionIndices.size() > 1U) {
+        if (segment.entryRoute.steps().size() > 1U) {
           ++count;
         }
       }
@@ -1018,7 +1018,6 @@ struct SegmentRouteObservation {
   SegmentRouteKey key;
   int matching = 0;
   std::vector<int> sourceEdges;
-  int entryTransitionIndex = -1;
   int sourceVertex = -1;
   int previousExitEdge = -1;
   int currentEntryEdge = -1;
@@ -1044,15 +1043,33 @@ std::vector<SegmentRouteObservation> segment_route_observations(
       for (std::size_t index = 1; index < path.size(); ++index) {
         const auto &previous = path[index - 1U];
         const auto &current = path[index];
-        if (current.entryRouteTopologyKeys.empty()) continue;
+        const auto routeSteps = current.entryRoute.oriented_steps();
+        if (routeSteps.empty()) continue;
+        std::vector<std::uint64_t> sourceTopology;
+        std::vector<int> sourceEdges;
+        sourceTopology.reserve(routeSteps.size());
+        sourceEdges.reserve(routeSteps.size());
+        bool routeValid = true;
+        for (const auto &step : routeSteps) {
+          if (step.kind() != directional::authority::TransitionStepKind::Interior ||
+              !step.interior().has_value()) {
+            routeValid = false;
+            break;
+          }
+          sourceTopology.push_back(
+              directional::pipeline::surface_cell_source_edge_key(
+                  static_cast<int>(step.topology().first().index()),
+                  static_cast<int>(step.topology().second().index())));
+          sourceEdges.push_back(static_cast<int>(step.interior()->index()));
+        }
+        if (!routeValid) continue;
         const int previousVertex = attached_source_vertex(
             mesh, previous.face, previous.endBarycentric);
         const int currentVertex = attached_source_vertex(
             mesh, current.face, current.startBarycentric);
         observations.push_back(
-            {{previous.face, current.face, current.entryRouteTopologyKeys},
-             current.matching, current.entryRouteTransitionIndices,
-             current.entryTransitionIndex,
+            {{previous.face, current.face, std::move(sourceTopology)},
+             current.matching, std::move(sourceEdges),
              previousVertex >= 0 && previousVertex == currentVertex
                  ? previousVertex
                  : -1,
@@ -1076,7 +1093,7 @@ std::vector<SegmentRouteObservation> observations_for_route(
 
 using SegmentRouteSemanticSnapshot =
     std::tuple<int, int, std::vector<std::uint64_t>, int, std::vector<int>,
-               int, int, int, int>;
+               int, int, int>;
 
 std::vector<SegmentRouteSemanticSnapshot> segment_route_semantic_snapshot(
     const directional::TriMesh &mesh,
@@ -1086,8 +1103,8 @@ std::vector<SegmentRouteSemanticSnapshot> segment_route_semantic_snapshot(
     snapshot.emplace_back(
         observation.key.previousFace, observation.key.currentFace,
         observation.key.sourceTopology, observation.matching,
-        observation.sourceEdges, observation.entryTransitionIndex,
-        observation.sourceVertex, observation.previousExitEdge,
+        observation.sourceEdges, observation.sourceVertex,
+        observation.previousExitEdge,
         observation.currentEntryEdge);
   }
   std::sort(snapshot.begin(), snapshot.end());
@@ -1335,14 +1352,16 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
     EXPECT_EQ(fixture.forwardRoute.sourceTopology,
               observation.key.sourceTopology);
     EXPECT_EQ(fixture.forwardCompactEdges, observation.sourceEdges);
-    EXPECT_EQ(9, observation.entryTransitionIndex);
+    ASSERT_FALSE(observation.sourceEdges.empty());
+    EXPECT_EQ(9, observation.sourceEdges.back());
     EXPECT_EQ(7, observation.sourceVertex);
   }
   for (const auto &observation : reverse) {
     EXPECT_EQ(fixture.reverseRoute.sourceTopology,
               observation.key.sourceTopology);
     EXPECT_EQ(fixture.reverseCompactEdges, observation.sourceEdges);
-    EXPECT_EQ(2, observation.entryTransitionIndex);
+    ASSERT_FALSE(observation.sourceEdges.empty());
+    EXPECT_EQ(2, observation.sourceEdges.back());
     EXPECT_EQ(7, observation.sourceVertex);
   }
 }
@@ -1443,9 +1462,10 @@ TEST(SurfaceCellsPhase10,
     for (const auto &path : cell.boundaryPaths) {
       ASSERT_FALSE(path.empty());
       for (const auto &segment : path) {
-        if (!segment.entryRouteTransitionIndices.empty()) {
-          EXPECT_EQ(segment.entryTransitionIndex,
-                    segment.entryRouteTransitionIndices.back());
+        for (const auto &step : segment.entryRoute.oriented_steps()) {
+          EXPECT_EQ(directional::authority::TransitionStepKind::Interior,
+                    step.kind());
+          EXPECT_TRUE(step.interior().has_value());
         }
       }
     }
@@ -1576,8 +1596,10 @@ TEST(SurfaceCellsPhase10,
   ASSERT_EQ(guidance.phaseFront.sourceTopologyRegions.regions.size(),
             embedded.phaseFront.sourceTopologyRegions.regions.size());
   ASSERT_EQ(1U, embedded.phaseFront.sourceTopologyRegions.regions.size());
-  EXPECT_EQ(guidance.phaseFront.sourceTopologyRegions.regions.front().structuralHash,
-            embedded.phaseFront.sourceTopologyRegions.regions.front().structuralHash);
+  EXPECT_EQ(directional::geometry::surface_topology_region_hash(
+                guidance.phaseFront.sourceTopologyRegions.regions.front()),
+            directional::geometry::surface_topology_region_hash(
+                embedded.phaseFront.sourceTopologyRegions.regions.front()));
   EXPECT_NE(embedded.phaseFront.failure.reason,
             directional::geometry::SurfacePhaseFrontFailureReason::None);
 }
@@ -2606,9 +2628,9 @@ TEST(SurfaceCellsPhase10,
   const auto topology =
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(fixture.faces, fixture.options);
-  ASSERT_TRUE(topology.valid);
-  ASSERT_EQ(1U, topology.regions.size());
-  const auto &region = topology.regions.front();
+  ASSERT_TRUE(topology.has_value());
+  ASSERT_EQ(1U, topology->regions.size());
+  const auto &region = topology->regions.front();
   EXPECT_EQ(1, region.eulerCharacteristic);
   EXPECT_EQ(1, region.boundaryLoopCount);
   ASSERT_EQ(2U, region.isolationSheets.size());
@@ -2617,7 +2639,7 @@ TEST(SurfaceCellsPhase10,
                                  sharedEdge));
   EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
                   source_edge_is_internal_isolation_seam(
-                      fixture.options, fixture.faces.rows(), topology.regionByFace,
+                      fixture.options, fixture.faces.rows(), topology->regionByFace,
                       found->second[0], found->second[1], sharedEdge));
   EXPECT_FALSE(
       directional::geometry::surface_cell_tracing_detail::
@@ -2644,11 +2666,11 @@ TEST(SurfaceCellsPhase10,
   const auto topology =
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(fixture.faces, fixture.options);
-  ASSERT_TRUE(topology.valid);
-  ASSERT_EQ(1U, topology.regions.size());
+  ASSERT_TRUE(topology.has_value());
+  ASSERT_EQ(1U, topology->regions.size());
   EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
                    source_edge_is_internal_isolation_seam(
-                       fixture.options, fixture.faces.rows(), topology.regionByFace,
+                       fixture.options, fixture.faces.rows(), topology->regionByFace,
                        found->second[0], found->second[1], sharedEdge));
   EXPECT_FALSE(
       directional::geometry::surface_cell_tracing_detail::
@@ -2669,18 +2691,19 @@ TEST(SurfaceCellsPhase10,
   const auto reversedTopology =
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(reversed.faces, reversed.options);
-  ASSERT_TRUE(forwardTopology.valid);
-  ASSERT_TRUE(reversedTopology.valid);
-  ASSERT_EQ(1U, forwardTopology.regions.size());
-  ASSERT_EQ(1U, reversedTopology.regions.size());
-  const auto &a = forwardTopology.regions.front();
-  const auto &b = reversedTopology.regions.front();
+  ASSERT_TRUE(forwardTopology.has_value());
+  ASSERT_TRUE(reversedTopology.has_value());
+  ASSERT_EQ(1U, forwardTopology->regions.size());
+  ASSERT_EQ(1U, reversedTopology->regions.size());
+  const auto &a = forwardTopology->regions.front();
+  const auto &b = reversedTopology->regions.front();
   EXPECT_EQ(a.eulerCharacteristic, b.eulerCharacteristic);
   EXPECT_EQ(a.boundaryLoopCount, b.boundaryLoopCount);
   EXPECT_EQ(a.isolationSheets, b.isolationSheets);
   EXPECT_EQ(a.boundaryEdgeTopology, b.boundaryEdgeTopology);
   EXPECT_EQ(a.internalIsolationSeamTopology, b.internalIsolationSeamTopology);
-  EXPECT_EQ(a.structuralHash, b.structuralHash);
+  EXPECT_EQ(directional::geometry::surface_topology_region_hash(a),
+            directional::geometry::surface_topology_region_hash(b));
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2689,14 +2712,14 @@ TEST(SurfaceCellsPhase10,
   const auto topology =
       directional::geometry::surface_cell_tracing_detail::
           build_source_topology_regions(fixture.faces, fixture.options);
-  ASSERT_TRUE(topology.valid);
-  ASSERT_EQ(1U, topology.regions.size());
-  const auto &region = topology.regions.front();
+  ASSERT_TRUE(topology.has_value());
+  ASSERT_EQ(1U, topology->regions.size());
+  const auto &region = topology->regions.front();
   EXPECT_EQ(0, region.eulerCharacteristic);
   EXPECT_EQ(2, region.boundaryLoopCount);
   ASSERT_EQ(2U, region.isolationSheets.size());
   EXPECT_FALSE(region.internalIsolationSeamTopology.empty());
-  EXPECT_NE(0U, region.structuralHash);
+  EXPECT_NE(0U, directional::geometry::surface_topology_region_hash(region));
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2707,19 +2730,22 @@ TEST(SurfaceCellsPhase10,
       build_source_topology_regions(forward.faces, forward.options);
   const auto b = directional::geometry::surface_cell_tracing_detail::
       build_source_topology_regions(reversed.faces, reversed.options);
-  ASSERT_TRUE(a.valid);
-  ASSERT_TRUE(b.valid);
-  ASSERT_EQ(1U, a.regions.size());
-  ASSERT_EQ(1U, b.regions.size());
-  EXPECT_EQ(a.regions.front().eulerCharacteristic,
-            b.regions.front().eulerCharacteristic);
-  EXPECT_EQ(a.regions.front().boundaryLoopCount,
-            b.regions.front().boundaryLoopCount);
-  EXPECT_EQ(a.regions.front().boundaryEdgeTopology,
-            b.regions.front().boundaryEdgeTopology);
-  EXPECT_EQ(a.regions.front().internalIsolationSeamTopology,
-            b.regions.front().internalIsolationSeamTopology);
-  EXPECT_EQ(a.regions.front().structuralHash, b.regions.front().structuralHash);
+  ASSERT_TRUE(a.has_value());
+  ASSERT_TRUE(b.has_value());
+  ASSERT_EQ(1U, a->regions.size());
+  ASSERT_EQ(1U, b->regions.size());
+  EXPECT_EQ(a->regions.front().eulerCharacteristic,
+            b->regions.front().eulerCharacteristic);
+  EXPECT_EQ(a->regions.front().boundaryLoopCount,
+            b->regions.front().boundaryLoopCount);
+  EXPECT_EQ(a->regions.front().boundaryEdgeTopology,
+            b->regions.front().boundaryEdgeTopology);
+  EXPECT_EQ(a->regions.front().internalIsolationSeamTopology,
+            b->regions.front().internalIsolationSeamTopology);
+  EXPECT_EQ(directional::geometry::surface_topology_region_hash(
+                a->regions.front()),
+            directional::geometry::surface_topology_region_hash(
+                b->regions.front()));
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2735,11 +2761,11 @@ TEST(SurfaceCellsPhase10,
   options.hardFeatureEdges.insert(sharedEdge);
   const auto topology = directional::geometry::surface_cell_tracing_detail::
       build_source_topology_regions(faces, options);
-  ASSERT_TRUE(topology.valid);
-  ASSERT_EQ(2U, topology.regions.size());
+  ASSERT_TRUE(topology.has_value());
+  ASSERT_EQ(2U, topology->regions.size());
   EXPECT_FALSE(directional::geometry::surface_cell_tracing_detail::
                    source_edge_is_internal_isolation_seam(
-                       options, faces.rows(), topology.regionByFace, 0, 1,
+                       options, faces.rows(), topology->regionByFace, 0, 1,
                        sharedEdge));
 }
 
@@ -2828,9 +2854,9 @@ TEST(SurfaceCellsPhase10,
   options.sourceFaceSheets = {0, 1};
   const auto topology = directional::geometry::surface_cell_tracing_detail::
       build_source_topology_regions(faces, options);
-  ASSERT_TRUE(topology.valid);
-  ASSERT_EQ(2U, topology.regions.size());
-  EXPECT_NE(topology.regionByFace[0], topology.regionByFace[1]);
+  ASSERT_TRUE(topology.has_value());
+  ASSERT_EQ(2U, topology->regions.size());
+  EXPECT_NE(topology->regionByFace[0], topology->regionByFace[1]);
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2864,30 +2890,30 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.sourceTopologyRegions.regions.size());
-  EXPECT_FALSE(network.sourceTopologyRegions.regions.front().internalIsolationSeamTopology.empty());
+  ASSERT_EQ(1U, network.phaseFront.sourceTopologyRegions.regions.size());
+  EXPECT_FALSE(network.phaseFront.sourceTopologyRegions.regions.front()
+                   .internalIsolationSeamTopology.empty());
   ASSERT_EQ(1U,
             network.phaseFront.isolationSeamTransportCertificates.size());
   const auto &certificate =
       network.phaseFront.isolationSeamTransportCertificates.front();
-  EXPECT_EQ(network.sourceTopologyRegions.regions.front().id,
-            certificate.sourceTopologyRegion);
-  EXPECT_EQ(network.sourceTopologyRegions.regions.front().sourceComponent,
-            certificate.sourceComponent);
-  EXPECT_EQ(network.sourceTopologyRegions.regions.front().internalIsolationSeamTopology.front(),
-            certificate.sourceEdgeTopology);
-  EXPECT_GE(certificate.sourceEdgeIndex, 0);
-  EXPECT_NE(certificate.firstIsolationSheet,
-            certificate.secondIsolationSheet);
-  EXPECT_EQ(0, (certificate.forwardQuarterTurn +
-                certificate.reverseQuarterTurn) % 4);
-  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
-                isolation_seam_transport_certificate_hash(certificate),
-            certificate.structuralHash);
+  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.front().id,
+            certificate.region);
+  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.front()
+                .internalIsolationSeamTopology.front(),
+            certificate.seam);
+  EXPECT_LT(certificate.transition.index(),
+            static_cast<std::size_t>(crossField.matching.size()));
+  EXPECT_NE(certificate.firstSheet, certificate.secondSheet);
+  EXPECT_EQ(certificate.forward.inverse(), certificate.reverse);
+  EXPECT_NE(0U, directional::geometry::surface_cell_tracing_detail::
+                    isolation_seam_transport_certificate_hash(certificate));
   bool sawCrossSheetScope = false;
   for (const auto &cell : network.phaseFront.cells) {
     sawCrossSheetScope |= cell.sourceIsolationSheets.size() > 1U;
-    EXPECT_EQ(0, legacy_phase_front_topology_region(cell));
+    ASSERT_TRUE(cell.sourceTopologyRegion.has_value());
+    EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.front().id,
+              cell.sourceTopologyRegion.value());
   }
   EXPECT_TRUE(sawCrossSheetScope);
   const auto materialized =
@@ -4073,7 +4099,9 @@ TEST(SurfaceCellsPhase10,
             result.diagnostics.surfaceCellTopologyRegionCount);
   ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()),
             network.sourceTopologyRegions.regionByFace.size());
-  for (const int region : network.sourceTopologyRegions.regionByFace) EXPECT_GE(region, 0);
+  for (const auto region : network.phaseFront.sourceTopologyRegions.regionByFace)
+    EXPECT_LT(region.index(),
+              network.phaseFront.sourceTopologyRegions.regions.size());
   bool sawMultiSheetRegionWithInternalSeam = false;
   for (const auto &region : network.sourceTopologyRegions.regions) {
     if (region.isolationSheets.size() > 1U &&
@@ -4576,11 +4604,15 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
         ASSERT_LT(segment.face, fixture.mesh.F.rows());
         const int expectedChart =
             expectedChartByFace[static_cast<std::size_t>(segment.face)];
-        EXPECT_EQ(expectedChart, segment.sourceChart)
+        ASSERT_TRUE(segment.sourceChart.has_value());
+        EXPECT_EQ(static_cast<std::size_t>(expectedChart),
+                  segment.sourceChart->index())
             << "source face " << segment.face
-            << " must preserve the hard-authored producer chart numbering";
-        compatibilityChartsByFace[segment.face].insert(segment.sourceChart);
-        producerCompatibilityCharts.insert(segment.sourceChart);
+            << " must preserve the hard-authored producer chart identity";
+        compatibilityChartsByFace[segment.face].insert(
+            static_cast<int>(segment.sourceChart->index()));
+        producerCompatibilityCharts.insert(
+            static_cast<int>(segment.sourceChart->index()));
       }
     }
   }
@@ -5400,13 +5432,15 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
             reverse.phaseFront.disposition);
 
   const auto semanticSnapshot = [](const auto &network) {
-    std::map<int, std::pair<std::uint64_t, int>> result;
+    std::map<directional::authority::TopologyRegionId,
+             std::pair<std::uint64_t, int>> result;
     for (const auto &region : network.phaseFront.sourceTopologyRegions.regions) {
-      result[region.id].first = region.structuralHash;
+      result[region.id].first =
+          directional::geometry::surface_topology_region_hash(region);
     }
     for (const auto &edge : network.phaseFront.edges) {
       EXPECT_TRUE(edge.sourceTopologyRegion.has_value());
-      ++result[legacy_phase_front_topology_region(edge)].second;
+      ++result[edge.sourceTopologyRegion.value()].second;
     }
     return result;
   };
@@ -5460,8 +5494,8 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
         edge.oppositeEdge)];
     ASSERT_TRUE(opposite.sourceTopologyRegion.has_value());
     EXPECT_NE(edge.sourceTopologyRegion, opposite.sourceTopologyRegion);
-    EXPECT_NE(legacy_phase_front_topology_region(edge),
-              legacy_phase_front_topology_region(opposite));
+    EXPECT_NE(edge.sourceTopologyRegion.value(),
+              opposite.sourceTopologyRegion.value());
     ++pairedHardEdges;
   }
   EXPECT_GT(pairedHardEdges, 0);
@@ -5499,7 +5533,7 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
               static_cast<int>(network.phaseFront.sourceTopologyRegions.regionByFace.size()));
     EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regionByFace[
                   static_cast<std::size_t>(edge.from.face)],
-              legacy_phase_front_topology_region(edge));
+              edge.sourceTopologyRegion.value());
   }
 
   const auto materialized =
@@ -5554,7 +5588,9 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
     ASSERT_TRUE(cell.sourceTopologyRegion.has_value());
     ASSERT_TRUE(cell.sourceComponent.has_value());
     ASSERT_TRUE(cell.sourceSheet.has_value());
-    EXPECT_EQ(0, legacy_phase_front_topology_region(cell));
+    ASSERT_TRUE(cell.sourceTopologyRegion.has_value());
+    EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.front().id,
+              cell.sourceTopologyRegion.value());
     EXPECT_EQ(0, legacy_phase_front_component(cell));
     EXPECT_EQ(0, legacy_phase_front_sheet(cell));
   }
@@ -5677,13 +5713,15 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
             reverse.phaseFront.disposition);
 
   const auto semanticSnapshot = [](const auto &network) {
-    std::map<int, std::pair<std::uint64_t, int>> result;
+    std::map<directional::authority::TopologyRegionId,
+             std::pair<std::uint64_t, int>> result;
     for (const auto &region : network.phaseFront.sourceTopologyRegions.regions) {
-      result[region.id].first = region.structuralHash;
+      result[region.id].first =
+          directional::geometry::surface_topology_region_hash(region);
     }
     for (const auto &cell : network.phaseFront.cells) {
       EXPECT_TRUE(cell.sourceTopologyRegion.has_value());
-      ++result[legacy_phase_front_topology_region(cell)].second;
+      ++result[cell.sourceTopologyRegion.value()].second;
     }
     return result;
   };

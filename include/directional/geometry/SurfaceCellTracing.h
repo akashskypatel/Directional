@@ -117,16 +117,12 @@ struct SurfaceTraceSegment {
   int exitEdge = -1;
   int matching = 0;
   double matchingEffort = 0.0;
-  /// Connected chart of equal branch orientation containing this segment.
-  int sourceChart = -1;
-  /// Last source edge crossed to enter this segment, or -1 for the first interval.
-  int entryTransitionIndex = -1;
-  /// Ordered source-wide compact interior-transition indices crossed to enter
-  /// this segment. Ordinary crossings contain one entry; exact source-vertex
-  /// fan crossings retain every authoritative edge in traversal order.
-  std::vector<int> entryRouteTransitionIndices;
-  /// Canonical source-edge endpoint keys parallel to entryRouteTransitionIndices.
-  std::vector<std::uint64_t> entryRouteTopologyKeys;
+  /// Connected field chart containing this segment.
+  std::optional<authority::FieldChartId> sourceChart;
+  /// Canonical typed transport route crossed to enter this segment.
+  /// The first interval has an empty route; every stored step is an interior
+  /// transition and owns topology, transition identity, transport, and orientation.
+  authority::CanonicalRoute entryRoute;
   int railId = -1;
   int curveId = -1;
   int railIntervalIndex = -1;
