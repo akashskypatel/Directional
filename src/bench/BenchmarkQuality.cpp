@@ -1022,13 +1022,24 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
     std::vector<Record> equivalenceRecords;
     for (const auto &equivalence : lineage.equivalences) {
       Record relation{
-          static_cast<int>(equivalence.kind), equivalence.quarterTurnRotation,
-          equivalence.latticeTranslation.x(),
-          equivalence.latticeTranslation.y(),
-          static_cast<std::int64_t>(equivalence.routeTopologyKeys.size())};
-      for (const std::uint64_t topology :
-           equivalence.routeTopologyKeys) {
-        relation.push_back(static_cast<std::int64_t>(topology));
+          static_cast<int>(equivalence.kind),
+          static_cast<int>(equivalence.action.rotation.value()),
+          equivalence.action.shift.x, equivalence.action.shift.y,
+          static_cast<std::int64_t>(equivalence.route.steps().size())};
+      for (const authority::TransitionStep &step : equivalence.route.steps()) {
+        relation.push_back(static_cast<std::int64_t>(step.topology().first().index()));
+        relation.push_back(static_cast<std::int64_t>(step.topology().second().index()));
+        relation.push_back(static_cast<std::int64_t>(step.kind()));
+        relation.push_back(step.interior().has_value()
+                               ? static_cast<std::int64_t>(step.interior()->index())
+                               : -1);
+      }
+      relation.push_back(
+          static_cast<std::int64_t>(equivalence.isolationSeams.size()));
+      for (const authority::SourceEdgeTopologyKey &topology :
+           equivalence.isolationSeams) {
+        relation.push_back(static_cast<std::int64_t>(topology.first().index()));
+        relation.push_back(static_cast<std::int64_t>(topology.second().index()));
       }
       equivalenceRecords.push_back(std::move(relation));
     }

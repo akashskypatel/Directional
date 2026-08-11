@@ -26,6 +26,8 @@
 
 #include <Eigen/Dense>
 
+#include <directional/authority/CanonicalRoute.h>
+
 #include <directional/meshing/PatchRegion.h>
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/geometry/SurfacePointSupport.h>
@@ -191,37 +193,13 @@ struct PureQuadEquivalenceProvenance {
   PureQuadEquivalenceKind kind = PureQuadEquivalenceKind::OrdinaryFront;
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
-  int periodicRelation = -1;
+  std::optional<authority::PeriodicRelationId> periodicRelation;
   int railId = -1;
-  int quarterTurnRotation = 0;
-  Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
-  std::vector<std::uint64_t> routeTopologyKeys;
+  authority::GridAutomorphism action = authority::GridAutomorphism::identity();
+  authority::CanonicalRoute route;
+  std::vector<authority::SourceEdgeTopologyKey> isolationSeams;
 
-  friend bool operator<(const PureQuadEquivalenceProvenance &lhs,
-                        const PureQuadEquivalenceProvenance &rhs) {
-    return std::make_tuple(
-               lhs.kind, lhs.quarterTurnRotation,
-               lhs.latticeTranslation.x(), lhs.latticeTranslation.y(),
-               lhs.railId, lhs.routeTopologyKeys, lhs.firstFrontEdge,
-               lhs.secondFrontEdge, lhs.periodicRelation) <
-           std::make_tuple(
-               rhs.kind, rhs.quarterTurnRotation,
-               rhs.latticeTranslation.x(), rhs.latticeTranslation.y(),
-               rhs.railId, rhs.routeTopologyKeys, rhs.firstFrontEdge,
-               rhs.secondFrontEdge, rhs.periodicRelation);
-  }
-
-  friend bool operator==(const PureQuadEquivalenceProvenance &lhs,
-                         const PureQuadEquivalenceProvenance &rhs) {
-    return lhs.kind == rhs.kind &&
-           lhs.firstFrontEdge == rhs.firstFrontEdge &&
-           lhs.secondFrontEdge == rhs.secondFrontEdge &&
-           lhs.periodicRelation == rhs.periodicRelation &&
-           lhs.railId == rhs.railId &&
-           lhs.quarterTurnRotation == rhs.quarterTurnRotation &&
-           lhs.latticeTranslation == rhs.latticeTranslation &&
-           lhs.routeTopologyKeys == rhs.routeTopologyKeys;
-  }
+  auto operator<=>(const PureQuadEquivalenceProvenance &) const = default;
 };
 
 struct PureQuadVertexLineage {

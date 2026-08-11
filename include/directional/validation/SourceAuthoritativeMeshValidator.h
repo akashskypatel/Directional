@@ -27,6 +27,8 @@
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
+#include <directional/authority/CanonicalRoute.h>
+
 #include <directional/geometry/SourceChartTransitions.h>
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/geometry/SurfacePointSupport.h>
@@ -50,23 +52,9 @@ struct SourceHardRailChartEquivalence {
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
   int railId = -1;
-  std::vector<std::uint64_t> routeTopologyKeys;
+  authority::CanonicalRoute route;
 
-  friend bool operator<(const SourceHardRailChartEquivalence &lhs,
-                        const SourceHardRailChartEquivalence &rhs) {
-    return std::tie(lhs.railId, lhs.routeTopologyKeys,
-                    lhs.firstFrontEdge, lhs.secondFrontEdge) <
-           std::tie(rhs.railId, rhs.routeTopologyKeys,
-                    rhs.firstFrontEdge, rhs.secondFrontEdge);
-  }
-
-  friend bool operator==(const SourceHardRailChartEquivalence &lhs,
-                         const SourceHardRailChartEquivalence &rhs) {
-    return lhs.firstFrontEdge == rhs.firstFrontEdge &&
-           lhs.secondFrontEdge == rhs.secondFrontEdge &&
-           lhs.railId == rhs.railId &&
-           lhs.routeTopologyKeys == rhs.routeTopologyKeys;
-  }
+  auto operator<=>(const SourceHardRailChartEquivalence &) const = default;
 };
 
 /** Validation-only projection of the complete quotient lineage retained for

@@ -642,36 +642,32 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
   };
 
   const auto route_is_well_formed = [](
-                                        const std::vector<std::uint64_t>
-                                            &route) {
-    if (route.empty() ||
-        std::set<std::uint64_t>(route.begin(), route.end()).size() !=
-            route.size()) {
-      return false;
+                                        const authority::CanonicalRoute &route) {
+    if (route.empty()) return false;
+    std::set<authority::SourceEdgeTopologyKey> uniqueTopology;
+    for (const authority::TransitionStep &step : route.steps()) {
+      if (step.kind() != authority::TransitionStepKind::Interior ||
+          !step.interior().has_value() ||
+          !uniqueTopology.insert(step.topology()).second) {
+        return false;
+      }
     }
-    const std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
-    return !(reversed < route);
+    return true;
   };
   const auto point_touches_edge = [](
                                       const geometry::SurfacePointSourceSupport
                                           &support,
-                                      const std::uint64_t topology) {
-    const int first = static_cast<int>(topology >> 32U);
-    const int second = static_cast<int>(
-        topology & static_cast<std::uint64_t>(0xffffffffU));
+                                      const authority::SourceEdgeTopologyKey
+                                          &topology) {
     if (!support.identity.has_value()) return false;
     if (const auto *edgeSupport =
             std::get_if<authority::SourceEdgeSupport>(&support.identity.value())) {
-      return static_cast<int>(edgeSupport->edge.first().index()) ==
-                 std::min(first, second) &&
-             static_cast<int>(edgeSupport->edge.second().index()) ==
-                 std::max(first, second);
+      return edgeSupport->edge == topology;
     }
     if (const auto *vertexSupport =
             std::get_if<authority::SourceVertexSupport>(&support.identity.value())) {
-      const int sourceVertex =
-          static_cast<int>(vertexSupport->vertex.index());
-      return sourceVertex == first || sourceVertex == second;
+      return vertexSupport->vertex == topology.first() ||
+             vertexSupport->vertex == topology.second();
     }
     return false;
   };
@@ -684,16 +680,20 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     if (equivalence.firstFrontEdge < 0 ||
         equivalence.firstFrontEdge >= equivalence.secondFrontEdge ||
         equivalence.railId < 0 ||
-        !route_is_well_formed(equivalence.routeTopologyKeys)) {
+        !route_is_well_formed(equivalence.route)) {
       return false;
     }
     bool touchesPoint = false;
     std::pair<int, int> separated{-1, -1};
-    for (const std::uint64_t topology :
-         equivalence.routeTopologyKeys) {
-      const auto incidence = sourceEdgeFaces.find(topology);
+    for (const authority::TransitionStep &step : equivalence.route.steps()) {
+      const authority::SourceEdgeTopologyKey &topology = step.topology();
+      const std::uint64_t rawTopology =
+          geometry::surface_cell_tracing_detail::edge_key(
+              static_cast<int>(topology.first().index()),
+              static_cast<int>(topology.second().index()));
+      const auto incidence = sourceEdgeFaces.find(rawTopology);
       if (hardFeatureEdges == nullptr ||
-          hardFeatureEdges->count(topology) == 0U ||
+          hardFeatureEdges->count(rawTopology) == 0U ||
           incidence == sourceEdgeFaces.end() ||
           incidence->second.size() != 2U) {
         return false;

@@ -313,12 +313,11 @@ struct SurfaceFrontEdge {
   SurfaceFrontBoundaryKind boundaryKind =
       SurfaceFrontBoundaryKind::OrdinaryInterior;
   /// Exact owner in SurfacePhaseFrontResult::periodicHolonomies.
-  int periodicRelation = -1;
-  /// Optional exact rail owner; routeTopologyKeys remains authoritative.
+  std::optional<authority::PeriodicRelationId> periodicRelation;
+  /// Optional exact rail owner.
   int railId = -1;
-  /// Source-wide compact interior-transition indices parallel to topology.
-  std::vector<int> routeTransitionIndices;
-  std::vector<std::uint64_t> routeTopologyKeys;
+  /// Canonical source route carrying topology, transition identity, and transport.
+  authority::CanonicalRoute route;
 };
 
 struct SurfaceFrontEvent {
@@ -333,16 +332,12 @@ struct SurfacePeriodicHolonomy {
   int sourceTopologyRegion = -1;
   int sourceSheet = -1;
   std::vector<int> sourceIsolationSheets;
-  int quarterTurnRotation = 0;
-  Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
-  /// Source-wide compact interior-transition route for one periodic transport.
-  std::vector<int> routeTransitionIndices;
-  /// Canonical source-edge endpoint keys parallel to routeTransitionIndices.
-  std::vector<std::uint64_t> routeTopologyKeys;
-  /// Source-wide compact indices forming the boundary-to-boundary cut.
-  std::vector<int> cutSourceEdges;
-  /// Canonical source-edge endpoint keys parallel to cutSourceEdges.
-  std::vector<std::uint64_t> cutSourceTopology;
+  /// Intrinsic quotient action owned as one rotation/translation value.
+  authority::GridAutomorphism action = authority::GridAutomorphism::identity();
+  /// Canonical closed source transport route around the periodic cycle.
+  authority::CanonicalRoute route;
+  /// Canonical source-edge route forming the boundary-to-boundary cut.
+  authority::CanonicalRoute cutRoute;
 };
 
 enum class SurfacePeriodicHolonomyInsertStatus : int {
