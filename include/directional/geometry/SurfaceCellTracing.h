@@ -23,6 +23,7 @@
 #include <stdexcept>
 #include <tuple>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include <Eigen/Dense>
@@ -310,7 +311,7 @@ struct SurfaceFrontEdge {
   authority::TopologyRegionId sourceTopologyRegion;
   SurfaceFrontBoundaryKind boundaryKind =
       SurfaceFrontBoundaryKind::OrdinaryInterior;
-  /// Exact owner in SurfacePhaseFrontResult::periodicHolonomies.
+  /// Exact owner in SurfacePhaseFrontProduct::periodicHolonomies.
   std::optional<authority::PeriodicRelationId> periodicRelation;
   /// Optional exact rail owner.
   int railId = -1;
@@ -487,11 +488,7 @@ enum class SurfaceCellProducerDisposition : int {
 const char *surface_cell_producer_disposition_name(
     SurfaceCellProducerDisposition disposition);
 
-struct SurfacePhaseFrontResult {
-  SurfaceCellProducerDisposition disposition =
-      SurfaceCellProducerDisposition::NotApplicable;
-  bool attempted = false;
-  bool succeeded = false;
+struct SurfacePhaseFrontProduct {
   int gridU = 0;
   int gridV = 0;
   SourceTopologyRegions sourceTopologyRegions;
@@ -499,10 +496,121 @@ struct SurfacePhaseFrontResult {
       isolationSeamTransportCertificates;
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
   std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
-  SurfacePhaseFrontFailure failure;
   std::vector<SurfaceFrontEdge> edges;
   std::vector<SurfaceFrontEvent> events;
   std::vector<SurfacePhaseFrontCell> cells;
+};
+
+struct NotApplicable {};
+
+template <typename T> struct Produced {
+  T product;
+};
+
+template <typename Failure> struct Rejected {
+  Failure failure;
+};
+
+template <typename T>
+using ProducerOutcome =
+    std::variant<NotApplicable, Produced<T>, Rejected<SurfacePhaseFrontFailure>>;
+
+class SurfacePhaseFrontResult {
+public:
+  using Product = SurfacePhaseFrontProduct;
+  using Outcome = ProducerOutcome<Product>;
+
+  SurfacePhaseFrontResult() = default;
+
+  [[nodiscard]] static SurfacePhaseFrontResult not_applicable() {
+    return SurfacePhaseFrontResult(Outcome{NotApplicable{}});
+  }
+
+  [[nodiscard]] static SurfacePhaseFrontResult produced(Product product) {
+    if (product.cells.empty() || product.edges.empty() ||
+        product.sourceTopologyRegions.regions.empty() ||
+        product.sourceTopologyRegions.regionByFace.empty()) {
+      throw std::invalid_argument(
+          "Produced phase-front outcome requires a complete nonempty product.");
+    }
+    return SurfacePhaseFrontResult(Outcome{Produced<Product>{std::move(product)}});
+  }
+
+  [[nodiscard]] static SurfacePhaseFrontResult rejected(
+      SurfacePhaseFrontFailure failure) {
+    if (failure.reason == SurfacePhaseFrontFailureReason::None) {
+      throw std::invalid_argument(
+          "Rejected phase-front outcome requires a typed failure.");
+    }
+    return SurfacePhaseFrontResult(
+        Outcome{Rejected<SurfacePhaseFrontFailure>{std::move(failure)}});
+  }
+
+  [[nodiscard]] SurfaceCellProducerDisposition disposition() const noexcept {
+    if (std::holds_alternative<Produced<Product>>(outcome_)) {
+      return SurfaceCellProducerDisposition::Produced;
+    }
+    if (std::holds_alternative<Rejected<SurfacePhaseFrontFailure>>(outcome_)) {
+      return SurfaceCellProducerDisposition::Rejected;
+    }
+    return SurfaceCellProducerDisposition::NotApplicable;
+  }
+
+  [[nodiscard]] bool is_produced() const noexcept {
+    return std::holds_alternative<Produced<Product>>(outcome_);
+  }
+
+  [[nodiscard]] bool is_rejected() const noexcept {
+    return std::holds_alternative<Rejected<SurfacePhaseFrontFailure>>(outcome_);
+  }
+
+  [[nodiscard]] bool is_not_applicable() const noexcept {
+    return std::holds_alternative<NotApplicable>(outcome_);
+  }
+
+  [[nodiscard]] Product *produced_product() noexcept {
+    auto *produced = std::get_if<Produced<Product>>(&outcome_);
+    return produced == nullptr ? nullptr : &produced->product;
+  }
+
+  [[nodiscard]] const Product *produced_product() const noexcept {
+    const auto *produced = std::get_if<Produced<Product>>(&outcome_);
+    return produced == nullptr ? nullptr : &produced->product;
+  }
+
+  [[nodiscard]] Product &product() {
+    return std::get<Produced<Product>>(outcome_).product;
+  }
+
+  [[nodiscard]] const Product &product() const {
+    return std::get<Produced<Product>>(outcome_).product;
+  }
+
+  [[nodiscard]] SurfacePhaseFrontFailure *rejection() noexcept {
+    auto *rejected =
+        std::get_if<Rejected<SurfacePhaseFrontFailure>>(&outcome_);
+    return rejected == nullptr ? nullptr : &rejected->failure;
+  }
+
+  [[nodiscard]] const SurfacePhaseFrontFailure *rejection() const noexcept {
+    const auto *rejected =
+        std::get_if<Rejected<SurfacePhaseFrontFailure>>(&outcome_);
+    return rejected == nullptr ? nullptr : &rejected->failure;
+  }
+
+  [[nodiscard]] SurfacePhaseFrontFailureReason rejection_reason() const noexcept {
+    const SurfacePhaseFrontFailure *failure = rejection();
+    return failure == nullptr ? SurfacePhaseFrontFailureReason::None
+                              : failure->reason;
+  }
+
+  [[nodiscard]] const Outcome &outcome() const noexcept { return outcome_; }
+
+private:
+  explicit SurfacePhaseFrontResult(Outcome outcome)
+      : outcome_(std::move(outcome)) {}
+
+  Outcome outcome_{NotApplicable{}};
 };
 
 /**

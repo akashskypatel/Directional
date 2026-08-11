@@ -5834,7 +5834,58 @@ bool orient_and_validate_phase_front_cell(
 
 } // namespace
 
-SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
+struct SurfacePhaseFrontBuildState {
+  SurfaceCellProducerDisposition disposition =
+      SurfaceCellProducerDisposition::NotApplicable;
+  bool attempted = false;
+  bool succeeded = false;
+  int gridU = 0;
+  int gridV = 0;
+  SourceTopologyRegions sourceTopologyRegions;
+  std::vector<SurfaceIsolationSeamTransportCertificate>
+      isolationSeamTransportCertificates;
+  std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
+  std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
+  SurfacePhaseFrontFailure failure;
+  std::vector<SurfaceFrontEdge> edges;
+  std::vector<SurfaceFrontEvent> events;
+  std::vector<SurfacePhaseFrontCell> cells;
+};
+
+SurfacePhaseFrontResult publish_phase_front_result(
+    SurfacePhaseFrontBuildState state) {
+  if (state.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+    return SurfacePhaseFrontResult::not_applicable();
+  }
+  if (state.disposition == SurfaceCellProducerDisposition::Rejected) {
+    if (state.failure.reason == SurfacePhaseFrontFailureReason::None) {
+      state.failure.reason = SurfacePhaseFrontFailureReason::InvalidFinalCellState;
+    }
+    return SurfacePhaseFrontResult::rejected(std::move(state.failure));
+  }
+  if (!state.succeeded || state.cells.empty() || state.edges.empty()) {
+    if (state.failure.reason == SurfacePhaseFrontFailureReason::None) {
+      state.failure.reason = SurfacePhaseFrontFailureReason::InvalidFinalCellState;
+    }
+    return SurfacePhaseFrontResult::rejected(std::move(state.failure));
+  }
+
+  SurfacePhaseFrontProduct product;
+  product.gridU = state.gridU;
+  product.gridV = state.gridV;
+  product.sourceTopologyRegions = std::move(state.sourceTopologyRegions);
+  product.isolationSeamTransportCertificates =
+      std::move(state.isolationSeamTransportCertificates);
+  product.periodicHolonomies = std::move(state.periodicHolonomies);
+  product.boundedDiskBoundaryPhases =
+      std::move(state.boundedDiskBoundaryPhases);
+  product.edges = std::move(state.edges);
+  product.events = std::move(state.events);
+  product.cells = std::move(state.cells);
+  return SurfacePhaseFrontResult::produced(std::move(product));
+}
+
+SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
@@ -5845,7 +5896,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
     const Eigen::VectorXi *edgeMatching,
     const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
-  SurfacePhaseFrontResult result;
+  SurfacePhaseFrontBuildState result;
   result.attempted = options.enableUniformPhaseFront;
   if (!result.attempted) {
     return result;
@@ -6541,7 +6592,7 @@ std::vector<SurfaceTraceSegment> bounded_disk_chart_segment(
 
 } // namespace
 
-SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
+SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
@@ -6551,7 +6602,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
     const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
-  SurfacePhaseFrontResult result;
+  SurfacePhaseFrontBuildState result;
   result.attempted = options.enableUniformPhaseFront;
   if (!result.attempted || !options.singularityVertices.empty() ||
       activeFaces.empty()) {
@@ -7701,7 +7752,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
 }
 
 
-SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
+SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
@@ -7711,7 +7762,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
     const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
-  SurfacePhaseFrontResult result;
+  SurfacePhaseFrontBuildState result;
   result.attempted = options.enableUniformPhaseFront;
   if (!result.attempted || !options.singularityVertices.empty() ||
       activeFaces.empty()) {
@@ -9260,14 +9311,14 @@ bool build_isolation_seam_transport_certificates(
 
 
 
-SurfacePhaseFrontResult build_uniform_phase_front(
+SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize,
     const SurfaceCellTracingOptions &options,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
-  SurfacePhaseFrontResult result;
+  SurfacePhaseFrontBuildState result;
   result.attempted = options.enableUniformPhaseFront;
   if (!result.attempted) return result;
   if (!source_label_arrays_valid(options, faces.rows())) {
@@ -9323,14 +9374,14 @@ SurfacePhaseFrontResult build_uniform_phase_front(
 
   struct RegionBuild {
     const RegionWork *work = nullptr;
-    SurfacePhaseFrontResult result;
+    SurfacePhaseFrontBuildState result;
   };
   std::vector<RegionBuild> regionBuilds;
   regionBuilds.reserve(regions.size());
   bool anyProduced = false;
   int firstUnsupportedRegion = -1;
 
-  const auto validate_region_scope = [&](const SurfacePhaseFrontResult &local,
+  const auto validate_region_scope = [&](const SurfacePhaseFrontBuildState &local,
                                          const SurfaceTopologyRegion &region) {
     for (const auto &relation : local.periodicHolonomies) {
       if (relation.sourceTopologyRegion != region.id) return false;
@@ -9360,7 +9411,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   };
 
   const auto retain_bounded_disk_boundary_phases =
-      [&](SurfacePhaseFrontResult &local) {
+      [&](SurfacePhaseFrontBuildState &local) {
         for (auto &phase : local.boundedDiskBoundaryPhases) {
           result.boundedDiskBoundaryPhases.push_back(std::move(phase));
         }
@@ -9369,7 +9420,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
 
   for (const RegionWork &work : regions) {
     const SurfaceTopologyRegion &region = *work.region;
-    SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
+    SurfacePhaseFrontBuildState local = build_uniform_phase_front_for_faces(
         vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
         region, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
         edgeEffort, edgeTransitions);
@@ -9457,7 +9508,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   std::set<authority::TopologyRegionId> coveredRegions;
   for (RegionBuild &build : regionBuilds) {
     const SurfaceTopologyRegion &region = *build.work->region;
-    SurfacePhaseFrontResult &local = build.result;
+    SurfacePhaseFrontBuildState &local = build.result;
     bool localCoverage = false;
     const authority::TopologyRegionId typedRegion = region.id;
     for (SurfacePhaseFrontCell &cell : local.cells) {
@@ -9804,14 +9855,14 @@ SurfaceCellNetwork build_surface_cell_network(
   network.reliefRootVertices = options.reliefRootVertices;
   network.reliefRegionLabels = options.reliefRegionLabels;
   network.reliefBarrierEdges = options.reliefBarrierEdges;
-  network.phaseFront =
-      surface_cell_tracing_detail::build_uniform_phase_front(
+  network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
+      surface_cell_tracing_detail::build_uniform_phase_front_state(
           vertices, faces, faceAxisX, faceAxisY, targetSize, options,
-          edgeMatching, edgeEffort, edgeTransitions);
-  if (network.phaseFront.disposition ==
-      SurfaceCellProducerDisposition::Produced) {
-    network.proposals.reserve(network.phaseFront.cells.size());
-    for (const SurfacePhaseFrontCell &cell : network.phaseFront.cells) {
+          edgeMatching, edgeEffort, edgeTransitions));
+  if (network.phaseFront.is_produced()) {
+    const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
+    network.proposals.reserve(phaseFront.cells.size());
+    for (const SurfacePhaseFrontCell &cell : phaseFront.cells) {
       SurfaceCellProposal proposal;
       proposal.seedId = cell.id;
       proposal.accepted = true;
@@ -9827,8 +9878,7 @@ SurfaceCellNetwork build_surface_cell_network(
     network.stats.accepted = static_cast<int>(network.proposals.size());
     return network;
   }
-  if (network.phaseFront.disposition ==
-      SurfaceCellProducerDisposition::Rejected) {
+  if (network.phaseFront.is_rejected()) {
     return network;
   }
   network.seeds =

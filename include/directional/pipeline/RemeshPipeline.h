@@ -568,7 +568,7 @@ struct AuthoritativePhaseFrontMeshResult {
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
-    const geometry::SurfacePhaseFrontResult &phaseFront,
+    const geometry::SurfacePhaseFrontProduct &phaseFront,
     const std::vector<int> &sourceFaceComponents,
     const std::vector<int> &sourceFaceSheets);
 

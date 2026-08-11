@@ -136,13 +136,13 @@ Eigen::MatrixXd read_rawfield(const std::filesystem::path &path,
 
 void require_produced(const PhaseFrontFixture &fixture,
                       const std::string &fixtureName) {
-  if (fixture.network.phaseFront.disposition !=
+  if (fixture.network.phaseFront.disposition() !=
           SurfaceCellProducerDisposition::Produced ||
-      !fixture.network.phaseFront.succeeded) {
+      !fixture.network.phaseFront.is_produced()) {
     throw std::runtime_error(
         fixtureName + " producer failed: " +
         directional::geometry::surface_phase_front_failure_reason_name(
-            fixture.network.phaseFront.failure.reason));
+            fixture.network.phaseFront.rejection_reason()));
   }
 }
 
@@ -372,14 +372,14 @@ const PhaseFrontFixture &torus_fixture() {
 AuthoritativePhaseFrontMeshResult materialize(
     const PhaseFrontFixture &fixture, const SurfacePhaseFrontResult &phaseFront) {
   return directional::pipeline::build_authoritative_phase_front_mesh(
-      fixture.mesh.V, fixture.mesh.F, phaseFront, fixture.components,
+      fixture.mesh.V, fixture.mesh.F, phaseFront.product(), fixture.components,
       fixture.sheets);
 }
 
 int first_edge_of_kind(const SurfacePhaseFrontResult &phaseFront,
                        const SurfaceFrontBoundaryKind kind) {
-  for (int edge = 0; edge < static_cast<int>(phaseFront.edges.size()); ++edge) {
-    if (phaseFront.edges[static_cast<std::size_t>(edge)].boundaryKind == kind) {
+  for (int edge = 0; edge < static_cast<int>(phaseFront.product().edges.size()); ++edge) {
+    if (phaseFront.product().edges[static_cast<std::size_t>(edge)].boundaryKind == kind) {
       return edge;
     }
   }
@@ -408,15 +408,15 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
           fixture.mesh, constant_xy_field(fixture.mesh.F.rows()));
 
   for (std::size_t cellIndex = 0;
-       cellIndex < fixture.network.phaseFront.cells.size(); ++cellIndex) {
-    const auto &cell = fixture.network.phaseFront.cells[cellIndex];
+       cellIndex < fixture.network.phaseFront.product().cells.size(); ++cellIndex) {
+    const auto &cell = fixture.network.phaseFront.product().cells[cellIndex];
     const auto region = std::find_if(
-        fixture.network.phaseFront.sourceTopologyRegions.regions.begin(),
-        fixture.network.phaseFront.sourceTopologyRegions.regions.end(),
+        fixture.network.phaseFront.product().sourceTopologyRegions.regions.begin(),
+        fixture.network.phaseFront.product().sourceTopologyRegions.regions.end(),
         [&](const auto &candidate) {
           return candidate.id == cell.sourceTopologyRegion;
         });
-    if (region == fixture.network.phaseFront.sourceTopologyRegions.regions.end() ||
+    if (region == fixture.network.phaseFront.product().sourceTopologyRegions.regions.end() ||
         region->sourceFaces.empty()) {
       continue;
     }
@@ -509,8 +509,8 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
 bool replace_transition_index(SurfacePhaseFrontResult &phaseFront,
                                const TransitionIndexDomainWitness &witness,
                                const int replacement) {
-  if (witness.cell >= phaseFront.cells.size()) return false;
-  auto &cell = phaseFront.cells[witness.cell];
+  if (witness.cell >= phaseFront.product().cells.size()) return false;
+  auto &cell = phaseFront.product().cells[witness.cell];
   if (witness.side >= cell.boundaryPaths.size()) return false;
   auto &path = cell.boundaryPaths[witness.side];
   if (witness.segment >= path.size()) return false;
@@ -634,8 +634,8 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_NE(witness.sourceWideCompact, witness.fullEfRow);
   EXPECT_NE(witness.regionLocalCompact, witness.fullEfRow);
 
-  ASSERT_LT(witness.cell, fixture.network.phaseFront.cells.size());
-  const auto &witnessCell = fixture.network.phaseFront.cells[witness.cell];
+  ASSERT_LT(witness.cell, fixture.network.phaseFront.product().cells.size());
+  const auto &witnessCell = fixture.network.phaseFront.product().cells[witness.cell];
   ASSERT_LT(witness.side, witnessCell.boundaryPaths.size());
   const auto &witnessPath = witnessCell.boundaryPaths[witness.side];
   ASSERT_LT(witness.segment, witnessPath.size());
@@ -654,7 +654,7 @@ TEST(SurfaceCellTransitionQuotient,
       surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
   const auto sourceWide = directional::geometry::
       surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
-  for (const auto &cell : fixture.network.phaseFront.cells) {
+  for (const auto &cell : fixture.network.phaseFront.product().cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
         for (const auto &step : segment.entryRoute.oriented_steps()) {
@@ -675,7 +675,7 @@ TEST(SurfaceCellTransitionQuotient,
   }
 
   bool observedGenuineBoundary = false;
-  for (const auto &edge : fixture.network.phaseFront.edges) {
+  for (const auto &edge : fixture.network.phaseFront.product().edges) {
     if (edge.boundaryKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) {
       continue;
     }
@@ -715,7 +715,7 @@ TEST(SurfaceCellTransitionQuotient,
      TopologyOnlyGenuineBoundaryMaterializes) {
   const auto &fixture = square_fixture();
   std::size_t genuineBoundaries = 0U;
-  for (const auto &edge : fixture.network.phaseFront.edges) {
+  for (const auto &edge : fixture.network.phaseFront.product().edges) {
     if (edge.boundaryKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) {
       continue;
     }
@@ -739,7 +739,7 @@ TEST(SurfaceCellTransitionQuotient,
   const int boundary = first_edge_of_kind(
       tampered, SurfaceFrontBoundaryKind::GenuineSourceBoundary);
   ASSERT_GE(boundary, 0);
-  auto &edge = tampered.edges[static_cast<std::size_t>(boundary)];
+  auto &edge = tampered.product().edges[static_cast<std::size_t>(boundary)];
   ASSERT_TRUE(route_is_all_boundary(edge.route));
   const auto transition =
       directional::authority::InteriorTransitionId::from_index(0, 1);
@@ -760,10 +760,10 @@ TEST(SurfaceCellTransitionQuotient,
      ReciprocalIsolationSeamCertificateMaterializes) {
   const auto &fixture = split_isolation_fixture();
   ASSERT_EQ(1U,
-            fixture.network.phaseFront.isolationSeamTransportCertificates
+            fixture.network.phaseFront.product().isolationSeamTransportCertificates
                 .size());
   const auto &certificate =
-      fixture.network.phaseFront.isolationSeamTransportCertificates.front();
+      fixture.network.phaseFront.product().isolationSeamTransportCertificates.front();
   EXPECT_LT(certificate.transition.index(), fixture.mesh.EF.rows());
   EXPECT_NE(certificate.firstSheet, certificate.secondSheet);
   EXPECT_EQ(certificate.forward.inverse(), certificate.reverse);
@@ -778,8 +778,8 @@ TEST(SurfaceCellTransitionQuotient,
      MissingIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
-  tampered.isolationSeamTransportCertificates.clear();
+  ASSERT_FALSE(tampered.product().isolationSeamTransportCertificates.empty());
+  tampered.product().isolationSeamTransportCertificates.clear();
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("IsolationSeamCertificateBijectionMismatch", result.failure);
@@ -789,9 +789,9 @@ TEST(SurfaceCellTransitionQuotient,
      DuplicateIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
-  tampered.isolationSeamTransportCertificates.push_back(
-      tampered.isolationSeamTransportCertificates.front());
+  ASSERT_FALSE(tampered.product().isolationSeamTransportCertificates.empty());
+  tampered.product().isolationSeamTransportCertificates.push_back(
+      tampered.product().isolationSeamTransportCertificates.front());
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidAuthoritativeIsolationSeamCertificate", result.failure);
@@ -801,12 +801,12 @@ TEST(SurfaceCellTransitionQuotient,
      WrongOwnerIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
-  auto &certificate = tampered.isolationSeamTransportCertificates.front();
+  ASSERT_FALSE(tampered.product().isolationSeamTransportCertificates.empty());
+  auto &certificate = tampered.product().isolationSeamTransportCertificates.front();
   const auto wrongRegion = directional::authority::TopologyRegionId::from_index(
       static_cast<std::int64_t>(
-          tampered.sourceTopologyRegions.regions.size()),
-      tampered.sourceTopologyRegions.regions.size() + 1U);
+          tampered.product().sourceTopologyRegions.regions.size()),
+      tampered.product().sourceTopologyRegions.regions.size() + 1U);
   ASSERT_TRUE(wrongRegion);
   certificate.region = wrongRegion.value();
   const auto result = materialize(fixture, tampered);
@@ -818,8 +818,8 @@ TEST(SurfaceCellTransitionQuotient,
      WrongSheetIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
-  auto &certificate = tampered.isolationSeamTransportCertificates.front();
+  ASSERT_FALSE(tampered.product().isolationSeamTransportCertificates.empty());
+  auto &certificate = tampered.product().isolationSeamTransportCertificates.front();
   const auto wrongSheet = directional::authority::IsolationSheetId::from_index(
       99, 100);
   ASSERT_TRUE(wrongSheet);
@@ -833,8 +833,8 @@ TEST(SurfaceCellTransitionQuotient,
      NonreciprocalIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  ASSERT_FALSE(tampered.isolationSeamTransportCertificates.empty());
-  auto &certificate = tampered.isolationSeamTransportCertificates.front();
+  ASSERT_FALSE(tampered.product().isolationSeamTransportCertificates.empty());
+  auto &certificate = tampered.product().isolationSeamTransportCertificates.front();
   certificate.reverse = directional::authority::QuarterTurn::from_integer(
       static_cast<int>(certificate.reverse.value()) + 1);
   const auto result = materialize(fixture, tampered);
@@ -895,9 +895,9 @@ TEST(SurfaceCellTransitionQuotient,
       fixture.network.phaseFront, SurfaceFrontBoundaryKind::OrdinaryInterior);
   ASSERT_GE(ordinary, 0);
   const auto &edge =
-      fixture.network.phaseFront.edges[static_cast<std::size_t>(ordinary)];
+      fixture.network.phaseFront.product().edges[static_cast<std::size_t>(ordinary)];
   ASSERT_GE(edge.oppositeEdge, 0);
-  const auto &opposite = fixture.network.phaseFront.edges[
+  const auto &opposite = fixture.network.phaseFront.product().edges[
       static_cast<std::size_t>(edge.oppositeEdge)];
   const auto position = [&](const auto &point) {
     Eigen::Vector3d value = Eigen::Vector3d::Zero();
@@ -924,7 +924,7 @@ TEST(SurfaceCellTransitionQuotient,
   const int ordinary =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::OrdinaryInterior);
   ASSERT_GE(ordinary, 0);
-  tampered.edges[static_cast<std::size_t>(ordinary)]
+  tampered.product().edges[static_cast<std::size_t>(ordinary)]
       .fromLattice.latticeCoordinate.x() += 1;
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
@@ -934,19 +934,19 @@ TEST(SurfaceCellTransitionQuotient,
 TEST(SurfaceCellTransitionQuotient,
      FullPeriodicRotationAndTranslationMaterialize) {
   const auto &fixture = winding_cylinder_fixture();
-  ASSERT_FALSE(fixture.network.phaseFront.periodicHolonomies.empty());
+  ASSERT_FALSE(fixture.network.phaseFront.product().periodicHolonomies.empty());
   const auto relation = std::find_if(
-      fixture.network.phaseFront.periodicHolonomies.begin(),
-      fixture.network.phaseFront.periodicHolonomies.end(),
+      fixture.network.phaseFront.product().periodicHolonomies.begin(),
+      fixture.network.phaseFront.product().periodicHolonomies.end(),
       [](const auto &candidate) {
         return candidate.action.rotation != directional::authority::QuarterTurn{} &&
                (candidate.action.shift.x != 0 || candidate.action.shift.y != 0);
       });
-  ASSERT_NE(fixture.network.phaseFront.periodicHolonomies.end(), relation)
+  ASSERT_NE(fixture.network.phaseFront.product().periodicHolonomies.end(), relation)
       << "the winding cross field must exercise a non-identity Z4 action";
   const auto result = materialize(fixture, fixture.network.phaseFront);
   ASSERT_TRUE(result.success) << result.failure;
-  EXPECT_EQ(fixture.network.phaseFront.periodicHolonomies.size(),
+  EXPECT_EQ(fixture.network.phaseFront.product().periodicHolonomies.size(),
             result.consumedPeriodicHolonomies);
 }
 
@@ -955,11 +955,11 @@ TEST(SurfaceCellTransitionQuotient,
   const auto &fixture = winding_cylinder_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
   const auto relation = std::find_if(
-      tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
+      tampered.product().periodicHolonomies.begin(), tampered.product().periodicHolonomies.end(),
       [](const auto &candidate) {
         return candidate.action.shift.x != 0 || candidate.action.shift.y != 0;
       });
-  ASSERT_NE(tampered.periodicHolonomies.end(), relation);
+  ASSERT_NE(tampered.product().periodicHolonomies.end(), relation);
   relation->action.rotation = directional::authority::QuarterTurn::from_integer(
       static_cast<int>(relation->action.rotation.value()) + 1);
   const auto result = materialize(fixture, tampered);
@@ -972,11 +972,11 @@ TEST(SurfaceCellTransitionQuotient,
   const auto &fixture = torus_fixture();
   SurfacePhaseFrontResult reordered = fixture.network.phaseFront;
   const int relationCount =
-      static_cast<int>(reordered.periodicHolonomies.size());
+      static_cast<int>(reordered.product().periodicHolonomies.size());
   ASSERT_GT(relationCount, 1);
-  std::reverse(reordered.periodicHolonomies.begin(),
-               reordered.periodicHolonomies.end());
-  for (auto &edge : reordered.edges) {
+  std::reverse(reordered.product().periodicHolonomies.begin(),
+               reordered.product().periodicHolonomies.end());
+  for (auto &edge : reordered.product().edges) {
     if (edge.periodicRelation.has_value()) {
       const std::size_t oldIndex = edge.periodicRelation->index();
       ASSERT_LT(oldIndex, static_cast<std::size_t>(relationCount));
@@ -991,7 +991,7 @@ TEST(SurfaceCellTransitionQuotient,
   }
   const auto result = materialize(fixture, reordered);
   ASSERT_TRUE(result.success) << result.failure;
-  EXPECT_EQ(reordered.periodicHolonomies.size(),
+  EXPECT_EQ(reordered.product().periodicHolonomies.size(),
             result.consumedPeriodicHolonomies);
 }
 
@@ -999,9 +999,9 @@ TEST(SurfaceCellTransitionQuotient,
      SwappedPeriodicRelationOwnersAreRejected) {
   const auto &fixture = torus_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  ASSERT_GT(tampered.periodicHolonomies.size(), 1U);
-  std::reverse(tampered.periodicHolonomies.begin(),
-               tampered.periodicHolonomies.end());
+  ASSERT_GT(tampered.product().periodicHolonomies.size(), 1U);
+  std::reverse(tampered.product().periodicHolonomies.begin(),
+               tampered.product().periodicHolonomies.end());
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
 }
@@ -1013,7 +1013,7 @@ TEST(SurfaceCellTransitionQuotient,
   const int periodic =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::PeriodicCut);
   ASSERT_GE(periodic, 0);
-  tampered.edges[static_cast<std::size_t>(periodic)].periodicRelation =
+  tampered.product().edges[static_cast<std::size_t>(periodic)].periodicRelation =
       std::nullopt;
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
@@ -1027,9 +1027,9 @@ TEST(SurfaceCellTransitionQuotient,
                                           SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   const auto &edge =
-      fixture.network.phaseFront.edges[static_cast<std::size_t>(hardRail)];
+      fixture.network.phaseFront.product().edges[static_cast<std::size_t>(hardRail)];
   ASSERT_GE(edge.oppositeEdge, 0);
-  const auto &opposite = fixture.network.phaseFront.edges[
+  const auto &opposite = fixture.network.phaseFront.product().edges[
       static_cast<std::size_t>(edge.oppositeEdge)];
   EXPECT_NE(edge.sourceTopologyRegion, opposite.sourceTopologyRegion);
   EXPECT_TRUE(route_is_all_interior(edge.route));
@@ -1046,7 +1046,7 @@ TEST(SurfaceCellTransitionQuotient,
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
-  tampered.edges[static_cast<std::size_t>(hardRail)].oppositeEdge = -1;
+  tampered.product().edges[static_cast<std::size_t>(hardRail)].oppositeEdge = -1;
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidAuthoritativePhaseFrontOwnership", result.failure);
@@ -1060,9 +1060,9 @@ TEST(SurfaceCellTransitionQuotient,
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   const int opposite =
-      tampered.edges[static_cast<std::size_t>(hardRail)].oppositeEdge;
+      tampered.product().edges[static_cast<std::size_t>(hardRail)].oppositeEdge;
   ASSERT_GE(opposite, 0);
-  tampered.edges[static_cast<std::size_t>(opposite)].oppositeEdge = opposite;
+  tampered.product().edges[static_cast<std::size_t>(opposite)].oppositeEdge = opposite;
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidAuthoritativePhaseFrontOwnership", result.failure);
@@ -1100,8 +1100,8 @@ TEST(SurfaceCellTransitionQuotient,
      RepeatedAuthoritativeCellCornerIsRejected) {
   const auto &fixture = square_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  ASSERT_FALSE(tampered.cells.empty());
-  tampered.cells.front().corners[1] = tampered.cells.front().corners[0];
+  ASSERT_FALSE(tampered.product().cells.empty());
+  tampered.product().cells.front().corners[1] = tampered.product().cells.front().corners[0];
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
 }
@@ -1139,7 +1139,7 @@ TEST(SurfaceCellTransitionQuotient,
   const int ordinary =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::OrdinaryInterior);
   ASSERT_GE(ordinary, 0);
-  auto &edge = tampered.edges[static_cast<std::size_t>(ordinary)];
+  auto &edge = tampered.product().edges[static_cast<std::size_t>(ordinary)];
   const int opposite = edge.oppositeEdge;
   ASSERT_GE(opposite, 0);
   const std::uint64_t interiorTopology =
@@ -1149,7 +1149,7 @@ TEST(SurfaceCellTransitionQuotient,
   edge.boundaryKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
   edge.route = boundary_route_from_raw_topology(
       interiorTopology, static_cast<std::size_t>(fixture.mesh.V.rows()));
-  auto &other = tampered.edges[static_cast<std::size_t>(opposite)];
+  auto &other = tampered.product().edges[static_cast<std::size_t>(opposite)];
   other.oppositeEdge = -1;
   other.exterior = true;
   other.boundaryKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
@@ -1221,8 +1221,11 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ("tracing", retained.diagnostics.terminalFailureStage);
   EXPECT_TRUE(retained.surfaceCellContext.hasTraceNetwork);
   EXPECT_FALSE(released.surfaceCellContext.hasTraceNetwork);
-  EXPECT_FALSE(retained.surfaceCellContext.traceNetwork.phaseFront.cells.empty());
-  EXPECT_TRUE(released.surfaceCellContext.traceNetwork.phaseFront.cells.empty());
+  ASSERT_TRUE(retained.surfaceCellContext.traceNetwork.phaseFront.is_produced());
+  EXPECT_FALSE(
+      retained.surfaceCellContext.traceNetwork.phaseFront.product().cells.empty());
+  EXPECT_EQ(nullptr,
+            released.surfaceCellContext.traceNetwork.phaseFront.produced_product());
 }
 
 TEST(SurfaceCellTransitionQuotient,
@@ -1313,7 +1316,7 @@ TEST(SurfaceCellTypedTransportAuthority,
                                           SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   const auto &edge =
-      fixture.network.phaseFront.edges[static_cast<std::size_t>(hardRail)];
+      fixture.network.phaseFront.product().edges[static_cast<std::size_t>(hardRail)];
   ASSERT_TRUE(route_is_all_interior(edge.route));
 
   const auto sourceIncidence = directional::geometry::
@@ -1340,15 +1343,15 @@ TEST(SurfaceCellTypedTransportAuthority,
                                           SurfaceFrontBoundaryKind::PeriodicCut);
   ASSERT_GE(periodic, 0);
   const auto &edge =
-      fixture.network.phaseFront.edges[static_cast<std::size_t>(periodic)];
+      fixture.network.phaseFront.product().edges[static_cast<std::size_t>(periodic)];
   ASSERT_TRUE(route_is_all_interior(edge.route));
   ASSERT_TRUE(edge.periodicRelation.has_value());
   ASSERT_LT(edge.periodicRelation->index(),
-            fixture.network.phaseFront.periodicHolonomies.size());
+            fixture.network.phaseFront.product().periodicHolonomies.size());
 
   const auto result = materialize(fixture, fixture.network.phaseFront);
   ASSERT_TRUE(result.success) << result.failure;
-  EXPECT_EQ(fixture.network.phaseFront.periodicHolonomies.size(),
+  EXPECT_EQ(fixture.network.phaseFront.product().periodicHolonomies.size(),
             result.consumedPeriodicHolonomies);
 }
 
@@ -1359,7 +1362,7 @@ TEST(SurfaceCellTypedTransportAuthority,
                                           SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   const auto &edge =
-      fixture.network.phaseFront.edges[static_cast<std::size_t>(hardRail)];
+      fixture.network.phaseFront.product().edges[static_cast<std::size_t>(hardRail)];
   ASSERT_TRUE(route_is_all_interior(edge.route));
   const auto invalid = directional::authority::TransitionStep::interior(
       edge.route.steps().front().topology(), std::nullopt,
@@ -1387,7 +1390,7 @@ TEST(SurfaceCellTypedTransportAuthority,
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
-  auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
+  auto &edge = tampered.product().edges[static_cast<std::size_t>(hardRail)];
   ASSERT_TRUE(route_is_all_interior(edge.route));
 
   const auto sourceIncidence = directional::geometry::
@@ -1430,7 +1433,7 @@ TEST(SurfaceCellTypedTransportAuthority,
   const int hardRail =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
-  auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
+  auto &edge = tampered.product().edges[static_cast<std::size_t>(hardRail)];
   ASSERT_TRUE(route_is_all_interior(edge.route));
   std::vector<directional::authority::TransitionStep> steps(
       edge.route.steps().begin(), edge.route.steps().end());

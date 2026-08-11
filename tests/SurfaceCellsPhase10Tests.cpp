@@ -71,14 +71,24 @@ bool route_is_all_interior(const directional::authority::CanonicalRoute &route) 
 }
 
 
+
+const directional::geometry::SurfacePhaseFrontFailure &phase_front_rejection(
+    const directional::geometry::SurfacePhaseFrontResult &phaseFront) {
+  const auto *failure = phaseFront.rejection();
+  if (failure == nullptr) {
+    throw std::runtime_error("Expected rejected phase-front outcome.");
+  }
+  return *failure;
+}
+
 const directional::geometry::SurfaceTopologyRegion &phase_front_region(
     const directional::geometry::SurfacePhaseFrontResult &phaseFront,
     const directional::authority::TopologyRegionId id) {
   const auto found = std::find_if(
-      phaseFront.sourceTopologyRegions.regions.begin(),
-      phaseFront.sourceTopologyRegions.regions.end(),
+      phaseFront.product().sourceTopologyRegions.regions.begin(),
+      phaseFront.product().sourceTopologyRegions.regions.end(),
       [&](const auto &region) { return region.id == id; });
-  if (found == phaseFront.sourceTopologyRegions.regions.end()) {
+  if (found == phaseFront.product().sourceTopologyRegions.regions.end()) {
     throw std::runtime_error("Missing typed topology-region authority.");
   }
   return *found;
@@ -997,7 +1007,7 @@ std::set<std::uint64_t> interior_source_edges(
 std::size_t multi_edge_transition_count(
     const directional::geometry::SurfaceCellNetwork &network) {
   std::size_t count = 0;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
         if (segment.entryRoute.steps().size() > 1U) {
@@ -1064,7 +1074,7 @@ std::vector<SegmentRouteObservation> segment_route_observations(
     const directional::TriMesh &mesh,
     const directional::geometry::SurfaceCellNetwork &network) {
   std::vector<SegmentRouteObservation> observations;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (std::size_t index = 1; index < path.size(); ++index) {
         const auto &previous = path[index - 1U];
@@ -1283,9 +1293,9 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
   const auto network =
       build_segment_route_network(fixture, fixture.authoritativeField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
+             network.phaseFront.rejection_reason());
   const auto witnesses =
       observations_for_route(fixture.mesh, network, fixture.forwardRoute);
   ASSERT_FALSE(witnesses.empty())
@@ -1304,7 +1314,7 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
   const auto network =
       build_segment_route_network(fixture, fixture.authoritativeField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
 
   const auto forward =
       observations_for_route(fixture.mesh, network, fixture.forwardRoute);
@@ -1349,9 +1359,9 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
       build_segment_route_network(fixture, fixture.authoritativeField);
   const auto relabeled = build_segment_route_network(fixture, equivalent);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            baseline.phaseFront.disposition);
+            baseline.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            relabeled.phaseFront.disposition);
+            relabeled.phaseFront.disposition());
   EXPECT_EQ(segment_route_semantic_snapshot(fixture.mesh, baseline),
             segment_route_semantic_snapshot(fixture.mesh, relabeled));
   const auto witnesses =
@@ -1366,7 +1376,7 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
   const auto network =
       build_segment_route_network(fixture, fixture.authoritativeField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
 
   const auto forward =
       observations_for_route(fixture.mesh, network, fixture.forwardRoute);
@@ -1398,7 +1408,7 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
   const auto baseline =
       build_segment_route_network(fixture, fixture.authoritativeField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            baseline.phaseFront.disposition);
+            baseline.phaseFront.disposition());
   ASSERT_FALSE(observations_for_route(fixture.mesh, baseline,
                                       fixture.forwardRoute)
                    .empty());
@@ -1412,19 +1422,19 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
 
   const auto rejected = build_segment_route_network(fixture, malformed);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            rejected.phaseFront.disposition);
+            rejected.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 MissingTransitionProvenance,
-            rejected.phaseFront.failure.reason);
-  EXPECT_GE(rejected.phaseFront.failure.cell, 0);
-  EXPECT_GE(rejected.phaseFront.failure.side, 0);
-  EXPECT_EQ(7, rejected.phaseFront.failure.sourceVertex);
-  EXPECT_TRUE((rejected.phaseFront.failure.face == 3 &&
-               rejected.phaseFront.failure.targetFace == 10) ||
-              (rejected.phaseFront.failure.face == 10 &&
-               rejected.phaseFront.failure.targetFace == 3));
-  EXPECT_FALSE(rejected.phaseFront.succeeded);
-  EXPECT_TRUE(rejected.phaseFront.cells.empty());
+            rejected.phaseFront.rejection_reason());
+  EXPECT_GE(phase_front_rejection(rejected.phaseFront).cell, 0);
+  EXPECT_GE(phase_front_rejection(rejected.phaseFront).side, 0);
+  EXPECT_EQ(7, phase_front_rejection(rejected.phaseFront).sourceVertex);
+  EXPECT_TRUE((phase_front_rejection(rejected.phaseFront).face == 3 &&
+               phase_front_rejection(rejected.phaseFront).targetFace == 10) ||
+              (phase_front_rejection(rejected.phaseFront).face == 10 &&
+               phase_front_rejection(rejected.phaseFront).targetFace == 3));
+  EXPECT_FALSE(rejected.phaseFront.is_produced());
+  EXPECT_EQ(nullptr, rejected.phaseFront.produced_product());
   EXPECT_TRUE(rejected.seeds.empty());
   EXPECT_TRUE(rejected.traces.empty());
   EXPECT_TRUE(rejected.proposals.empty());
@@ -1443,11 +1453,11 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
       build_segment_route_network(fixture, fixture.authoritativeField);
   const auto legacy = build_segment_route_network(fixture, legacyField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            authoritative.phaseFront.disposition);
+            authoritative.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            legacy.phaseFront.disposition)
+            legacy.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             legacy.phaseFront.failure.reason);
+             legacy.phaseFront.rejection_reason());
   EXPECT_EQ(segment_route_semantic_snapshot(fixture.mesh, authoritative),
             segment_route_semantic_snapshot(fixture.mesh, legacy));
   const auto forward =
@@ -1476,14 +1486,14 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
 
-  ASSERT_TRUE(network.phaseFront.succeeded)
+  ASSERT_TRUE(network.phaseFront.is_produced())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  EXPECT_EQ(8, network.phaseFront.gridU);
-  EXPECT_EQ(8, network.phaseFront.gridV);
-  EXPECT_EQ(64U, network.phaseFront.cells.size());
+             network.phaseFront.rejection_reason());
+  EXPECT_EQ(8, network.phaseFront.product().gridU);
+  EXPECT_EQ(8, network.phaseFront.product().gridV);
+  EXPECT_EQ(64U, network.phaseFront.product().cells.size());
   EXPECT_GT(multi_edge_transition_count(network), 0U);
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     EXPECT_TRUE(cell.orientationValidated);
     for (const auto &path : cell.boundaryPaths) {
       ASSERT_FALSE(path.empty());
@@ -1523,10 +1533,10 @@ TEST(SurfaceCellsPhase10,
   const auto reverse = directional::geometry::build_surface_cell_network(
       reverseMesh.V, reverseMesh.F, reverseField, targetSize, reverseOptions);
 
-  ASSERT_TRUE(forward.phaseFront.succeeded);
-  ASSERT_TRUE(reverse.phaseFront.succeeded);
-  EXPECT_EQ(forward.phaseFront.cells.size(), reverse.phaseFront.cells.size());
-  EXPECT_EQ(forward.phaseFront.edges.size(), reverse.phaseFront.edges.size());
+  ASSERT_TRUE(forward.phaseFront.is_produced());
+  ASSERT_TRUE(reverse.phaseFront.is_produced());
+  EXPECT_EQ(forward.phaseFront.product().cells.size(), reverse.phaseFront.product().cells.size());
+  EXPECT_EQ(forward.phaseFront.product().edges.size(), reverse.phaseFront.product().edges.size());
   EXPECT_EQ(multi_edge_transition_count(forward),
             multi_edge_transition_count(reverse));
 }
@@ -1548,12 +1558,12 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
 
-  EXPECT_FALSE(network.phaseFront.succeeded);
+  EXPECT_FALSE(network.phaseFront.is_produced());
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 DuplicateTransitionMetadata,
-            network.phaseFront.failure.reason);
+            network.phaseFront.rejection_reason());
   EXPECT_TRUE(network.seeds.empty());
   EXPECT_TRUE(network.traces.empty());
   EXPECT_TRUE(network.proposals.empty());
@@ -1579,11 +1589,11 @@ TEST(SurfaceCellsPhase10,
   const auto guidance = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, guidanceOptions);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            guidance.phaseFront.disposition)
+            guidance.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             guidance.phaseFront.failure.reason);
-  EXPECT_TRUE(guidance.phaseFront.succeeded);
-  for (const auto &edge : guidance.phaseFront.edges) {
+             guidance.phaseFront.rejection_reason());
+  EXPECT_TRUE(guidance.phaseFront.is_produced());
+  for (const auto &edge : guidance.phaseFront.product().edges) {
     EXPECT_GE(edge.filledSide, 0);
     EXPECT_LT(edge.filledSide, 4);
     EXPECT_NE(edge.boundaryKind,
@@ -1598,7 +1608,7 @@ TEST(SurfaceCellsPhase10,
   }
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          mesh.V, mesh.F, guidance.phaseFront,
+          mesh.V, mesh.F, guidance.phaseFront.product(),
           guidanceOptions.sourceFaceComponents,
           guidanceOptions.sourceFaceSheets);
   ASSERT_TRUE(materialized.success) << materialized.failure;
@@ -1606,26 +1616,21 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(materialized.boundaryLoopCount, 1);
   EXPECT_EQ(materialized.eulerCharacteristic, 1);
   EXPECT_EQ(materialized.consumedTopologyRegions,
-            guidance.phaseFront.sourceTopologyRegions.regions.size());
+            guidance.phaseFront.product().sourceTopologyRegions.regions.size());
 
   auto embeddedOptions = guidanceOptions;
   embeddedOptions.reliefBarriersEmbedded = true;
   const auto embedded = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, embeddedOptions);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            embedded.phaseFront.disposition);
-  EXPECT_FALSE(embedded.phaseFront.succeeded);
+            embedded.phaseFront.disposition());
+  EXPECT_FALSE(embedded.phaseFront.is_produced());
   EXPECT_TRUE(embedded.seeds.empty());
   EXPECT_TRUE(embedded.traces.empty());
   EXPECT_TRUE(embedded.proposals.empty());
-  ASSERT_EQ(guidance.phaseFront.sourceTopologyRegions.regions.size(),
-            embedded.phaseFront.sourceTopologyRegions.regions.size());
-  ASSERT_EQ(1U, embedded.phaseFront.sourceTopologyRegions.regions.size());
-  EXPECT_EQ(directional::geometry::surface_topology_region_hash(
-                guidance.phaseFront.sourceTopologyRegions.regions.front()),
-            directional::geometry::surface_topology_region_hash(
-                embedded.phaseFront.sourceTopologyRegions.regions.front()));
-  EXPECT_NE(embedded.phaseFront.failure.reason,
+  ASSERT_EQ(1U, guidance.phaseFront.product().sourceTopologyRegions.regions.size());
+  EXPECT_EQ(nullptr, embedded.phaseFront.produced_product());
+  EXPECT_NE(embedded.phaseFront.rejection_reason(),
             directional::geometry::SurfacePhaseFrontFailureReason::None);
 }
 
@@ -1657,24 +1662,24 @@ TEST(SurfaceCellsPhase10,
       mesh.V, mesh.F, crossField, targetSize, options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_TRUE(network.phaseFront.succeeded);
-  EXPECT_EQ(128U, network.phaseFront.cells.size());
+             network.phaseFront.rejection_reason());
+  ASSERT_TRUE(network.phaseFront.is_produced());
+  EXPECT_EQ(128U, network.phaseFront.product().cells.size());
   std::set<std::pair<int, int>> sheetKeys;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     sheetKeys.emplace(phase_front_component(network.phaseFront, cell),
                      phase_front_single_sheet(network.phaseFront, cell).value_or(-1));
   }
   EXPECT_EQ((std::set<std::pair<int, int>>{{0, 0}, {1, 1}}), sheetKeys);
-  for (const auto &edge : network.phaseFront.edges) {
+  for (const auto &edge : network.phaseFront.product().edges) {
     if (edge.oppositeEdge < 0) {
       continue;
     }
     ASSERT_LT(edge.oppositeEdge,
-              static_cast<int>(network.phaseFront.edges.size()));
-    const auto &opposite = network.phaseFront.edges[
+              static_cast<int>(network.phaseFront.product().edges.size()));
+    const auto &opposite = network.phaseFront.product().edges[
         static_cast<std::size_t>(edge.oppositeEdge)];
     EXPECT_EQ(edge.sourceTopologyRegion, opposite.sourceTopologyRegion);
   }
@@ -1720,12 +1725,12 @@ TEST(SurfaceCellsPhase10,
   const auto reverse = build(reverseMesh, reversedRaw);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            forward.phaseFront.disposition);
+            forward.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            reverse.phaseFront.disposition);
-  EXPECT_EQ(forward.phaseFront.cells.size(), reverse.phaseFront.cells.size());
-  EXPECT_EQ(forward.phaseFront.edges.size(), reverse.phaseFront.edges.size());
-  EXPECT_EQ(forward.phaseFront.events.size(), reverse.phaseFront.events.size());
+            reverse.phaseFront.disposition());
+  EXPECT_EQ(forward.phaseFront.product().cells.size(), reverse.phaseFront.product().cells.size());
+  EXPECT_EQ(forward.phaseFront.product().edges.size(), reverse.phaseFront.product().edges.size());
+  EXPECT_EQ(forward.phaseFront.product().events.size(), reverse.phaseFront.product().events.size());
 }
 
 TEST(SurfaceCellsPhase10,
@@ -1749,25 +1754,25 @@ TEST(SurfaceCellsPhase10,
       mesh.V, mesh.F, crossField, targetSize, options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_TRUE(!network.phaseFront.periodicHolonomies.empty());
+             network.phaseFront.rejection_reason());
+  ASSERT_TRUE(!network.phaseFront.product().periodicHolonomies.empty());
   EXPECT_EQ(directional::authority::QuarterTurn{},
-            network.phaseFront.periodicHolonomies.front().action.rotation);
-  EXPECT_EQ(network.phaseFront.gridU,
-            network.phaseFront.periodicHolonomies.front().action.shift.x);
-  EXPECT_EQ(0, network.phaseFront.periodicHolonomies.front().action.shift.y);
-  EXPECT_GT(network.phaseFront.gridU, 2);
-  EXPECT_GT(network.phaseFront.gridV, 0);
-  EXPECT_EQ(static_cast<std::size_t>(network.phaseFront.gridU *
-                                     network.phaseFront.gridV),
-            network.phaseFront.cells.size());
+            network.phaseFront.product().periodicHolonomies.front().action.rotation);
+  EXPECT_EQ(network.phaseFront.product().gridU,
+            network.phaseFront.product().periodicHolonomies.front().action.shift.x);
+  EXPECT_EQ(0, network.phaseFront.product().periodicHolonomies.front().action.shift.y);
+  EXPECT_GT(network.phaseFront.product().gridU, 2);
+  EXPECT_GT(network.phaseFront.product().gridV, 0);
+  EXPECT_EQ(static_cast<std::size_t>(network.phaseFront.product().gridU *
+                                     network.phaseFront.product().gridV),
+            network.phaseFront.product().cells.size());
   EXPECT_TRUE(route_is_all_interior(
-      network.phaseFront.periodicHolonomies.front().route));
-  EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().cutRoute.empty());
+      network.phaseFront.product().periodicHolonomies.front().route));
+  EXPECT_FALSE(network.phaseFront.product().periodicHolonomies.front().cutRoute.empty());
   int periodicEdgeCount = 0;
-  for (const auto &edge : network.phaseFront.edges) {
+  for (const auto &edge : network.phaseFront.product().edges) {
     EXPECT_GE(edge.filledSide, 0);
     EXPECT_LT(edge.filledSide, 4);
     if (edge.boundaryKind ==
@@ -1782,14 +1787,14 @@ TEST(SurfaceCellsPhase10,
   EXPECT_GT(periodicEdgeCount, 0);
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          mesh.V, mesh.F, network.phaseFront, options.sourceFaceComponents,
+          mesh.V, mesh.F, network.phaseFront.product(), options.sourceFaceComponents,
           options.sourceFaceSheets);
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(materialized.connectedComponents, 1);
   EXPECT_EQ(materialized.boundaryLoopCount, 2);
   EXPECT_EQ(materialized.eulerCharacteristic, 0);
   EXPECT_EQ(materialized.consumedPeriodicHolonomies,
-            network.phaseFront.periodicHolonomies.size());
+            network.phaseFront.product().periodicHolonomies.size());
 }
 
 TEST(SurfaceCellsPhase10,
@@ -1824,13 +1829,13 @@ TEST(SurfaceCellsPhase10,
   const auto forward = build(forwardMesh, forwardRaw);
   const auto reverse = build(reverseMesh, reversedRaw);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            forward.phaseFront.disposition);
+            forward.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            reverse.phaseFront.disposition);
-  EXPECT_EQ(forward.phaseFront.gridU, reverse.phaseFront.gridU);
-  EXPECT_EQ(forward.phaseFront.gridV, reverse.phaseFront.gridV);
-  EXPECT_EQ(forward.phaseFront.periodicHolonomies.front().action,
-            reverse.phaseFront.periodicHolonomies.front().action);
+            reverse.phaseFront.disposition());
+  EXPECT_EQ(forward.phaseFront.product().gridU, reverse.phaseFront.product().gridU);
+  EXPECT_EQ(forward.phaseFront.product().gridV, reverse.phaseFront.product().gridV);
+  EXPECT_EQ(forward.phaseFront.product().periodicHolonomies.front().action,
+            reverse.phaseFront.product().periodicHolonomies.front().action);
   const auto expectCanonicalCompactRoute = [](
       const directional::TriMesh &mesh, const std::vector<int> &sourceEdges,
       const std::vector<std::uint64_t> &sourceTopology) {
@@ -1845,8 +1850,8 @@ TEST(SurfaceCellsPhase10,
       EXPECT_EQ(expected->second, sourceEdges[route]);
     }
   };
-  const auto &forwardHolonomy = forward.phaseFront.periodicHolonomies.front();
-  const auto &reverseHolonomy = reverse.phaseFront.periodicHolonomies.front();
+  const auto &forwardHolonomy = forward.phaseFront.product().periodicHolonomies.front();
+  const auto &reverseHolonomy = reverse.phaseFront.product().periodicHolonomies.front();
   EXPECT_EQ(forwardHolonomy.route, reverseHolonomy.route);
   EXPECT_EQ(forwardHolonomy.cutRoute, reverseHolonomy.cutRoute);
   expectCanonicalCompactRoute(forwardMesh,
@@ -1881,7 +1886,7 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
 
   std::set<int> sourceBoundaryVertices;
   for (int edge = 0; edge < mesh.EV.rows(); ++edge) {
@@ -1894,11 +1899,11 @@ TEST(SurfaceCellsPhase10,
   ASSERT_FALSE(sourceBoundaryVertices.empty());
 
   std::set<int> phaseBoundaryVertices;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     for (int corner = 0; corner < 4; ++corner) {
       const auto &state = cell.lattice[static_cast<std::size_t>(corner)];
       if (state.latticeCoordinate.y() != 0 &&
-          state.latticeCoordinate.y() != network.phaseFront.gridV) {
+          state.latticeCoordinate.y() != network.phaseFront.product().gridV) {
         continue;
       }
       const auto &point = cell.corners[static_cast<std::size_t>(corner)];
@@ -1938,9 +1943,9 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
+             network.phaseFront.rejection_reason());
 
   const auto segmentPoint = [&mesh](
       const directional::geometry::SurfaceTraceSegment &segment,
@@ -1956,7 +1961,7 @@ TEST(SurfaceCellsPhase10,
   };
 
   int exactSourceVertexEndpoints = 0;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     for (int side = 0; side < 4; ++side) {
       const auto &path = cell.boundaryPaths[static_cast<std::size_t>(side)];
       ASSERT_FALSE(path.empty());
@@ -2047,9 +2052,9 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
+             network.phaseFront.rejection_reason());
 
   const auto faceNormal = [&](const int face) -> Eigen::RowVector3d {
     const Eigen::RowVector3d edge01 =
@@ -2081,7 +2086,7 @@ TEST(SurfaceCellsPhase10,
   };
 
   int observedVSegments = 0;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
         if (segment.family != 1) continue;
@@ -2176,12 +2181,12 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, faceAxisX, faceAxisY, targetSize, options);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 AmbiguousPeriodicRingCorrespondence,
-            network.phaseFront.failure.reason)
+            network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
+             network.phaseFront.rejection_reason());
   EXPECT_TRUE(network.seeds.empty());
   EXPECT_TRUE(network.traces.empty());
   EXPECT_TRUE(network.proposals.empty());
@@ -2205,22 +2210,22 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
 
   int periodicMergeCount = 0;
-  for (const auto &event : network.phaseFront.events) {
+  for (const auto &event : network.phaseFront.product().events) {
     if (event.kind == directional::geometry::SurfaceFrontEventKind::PeriodicFrontMerge) {
       ++periodicMergeCount;
     }
   }
-  EXPECT_EQ(network.phaseFront.gridV, periodicMergeCount);
-  for (const auto &edge : network.phaseFront.edges) {
+  EXPECT_EQ(network.phaseFront.product().gridV, periodicMergeCount);
+  for (const auto &edge : network.phaseFront.product().edges) {
     const int fromU = edge.fromLattice.latticeCoordinate.x();
     const int toU = edge.toLattice.latticeCoordinate.x();
     const bool cutEdge = edge.family == 1 &&
         ((fromU == 0 && toU == 0) ||
-         (fromU == network.phaseFront.gridU &&
-          toU == network.phaseFront.gridU));
+         (fromU == network.phaseFront.product().gridU &&
+          toU == network.phaseFront.product().gridU));
     if (cutEdge) {
       EXPECT_FALSE(edge.exterior);
       EXPECT_GE(edge.oppositeEdge, 0);
@@ -2322,7 +2327,7 @@ std::uint64_t phase_front_geometry_hash(
     state ^= static_cast<std::uint64_t>(value);
     state *= 1099511628211ULL;
   };
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     consume(phase_front_component(network.phaseFront, cell), hash);
     consume(phase_front_single_sheet(network.phaseFront, cell).value_or(-1), hash);
     consume(cell.lattice[0].latticeCoordinate.x(), hash);
@@ -2520,11 +2525,12 @@ TEST(SurfaceCellsPhase10,
       fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
       fixture.targetSize, fixture.options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
-  const auto &phase = network.phaseFront.boundedDiskBoundaryPhases.front();
+             network.phaseFront.rejection_reason());
+  ASSERT_NE(nullptr, network.phaseFront.produced_product());
+  ASSERT_EQ(1U, network.phaseFront.product().boundedDiskBoundaryPhases.size());
+  const auto &phase = network.phaseFront.product().boundedDiskBoundaryPhases.front();
   EXPECT_TRUE(phase.rectangular);
   EXPECT_TRUE(phase.polygonClosed);
   EXPECT_TRUE(phase.chartConstructed);
@@ -2539,36 +2545,21 @@ TEST(SurfaceCellsPhase10,
 }
 
 TEST(SurfaceCellsPhase10,
-     PolygonalCurvedDiskBuildsFieldAuthoritativeSixRunPhaseAndChart) {
+     PolygonalCurvedDiskRejectsWithoutPublishingPartialPhase) {
   const CurvedDiskFixture fixture = make_polygonal_curved_disk_fixture();
   const auto network = directional::geometry::build_surface_cell_network(
       fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
       fixture.targetSize, fixture.options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskFrontPairing,
-            network.phaseFront.failure.reason)
+            network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
-  const auto &phase = network.phaseFront.boundedDiskBoundaryPhases.front();
-  EXPECT_FALSE(phase.rectangular);
-  EXPECT_TRUE(phase.polygonClosed);
-  EXPECT_TRUE(phase.chartConstructed);
-  EXPECT_EQ(4, phase.signedQuarterTurnSum);
-  ASSERT_EQ(6U, phase.runs.size());
-  EXPECT_NE(0U, phase.structuralHash);
-  int reflexCorners = 0;
-  for (const auto &run : phase.runs) {
-    if (run.signedQuarterTurnToNext < 0) ++reflexCorners;
-    EXPECT_GT(run.intrinsicLength, 0.0);
-    EXPECT_FALSE(run.sourceVertices.empty());
-    EXPECT_EQ(run.sourceFaces.size(), run.sourceEdgeTopology.size());
-    EXPECT_EQ(run.sourceFaces.size(), run.edgeAuthority.size());
-  }
-  EXPECT_EQ(1, reflexCorners);
+             network.phaseFront.rejection_reason());
+  EXPECT_EQ(nullptr, network.phaseFront.produced_product())
+      << "rejected producer outcomes must not expose partial phase authority";
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2579,17 +2570,17 @@ TEST(SurfaceCellsPhase10,
       fixture.targetSize, fixture.options);
 
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskBoundaryTurn,
-            network.phaseFront.failure.reason)
+            network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  EXPECT_TRUE(network.phaseFront.cells.empty());
+             network.phaseFront.rejection_reason());
+  EXPECT_EQ(nullptr, network.phaseFront.produced_product());
 }
 
 TEST(SurfaceCellsPhase10,
-     PolygonalCurvedDiskBoundaryPhaseIsInvariantToFaceRowEnumeration) {
+     PolygonalCurvedDiskRejectionIsInvariantToFaceRowEnumeration) {
   const CurvedDiskFixture forward = make_polygonal_curved_disk_fixture(false);
   const CurvedDiskFixture reversed = make_polygonal_curved_disk_fixture(true);
   const auto forwardNetwork = directional::geometry::build_surface_cell_network(
@@ -2599,36 +2590,17 @@ TEST(SurfaceCellsPhase10,
       reversed.vertices, reversed.faces, reversed.faceAxisX, reversed.faceAxisY,
       reversed.targetSize, reversed.options);
 
-  ASSERT_EQ(forwardNetwork.phaseFront.disposition,
-            reversedNetwork.phaseFront.disposition);
-  ASSERT_EQ(forwardNetwork.phaseFront.failure.reason,
-            reversedNetwork.phaseFront.failure.reason);
-  ASSERT_EQ(1U, forwardNetwork.phaseFront.boundedDiskBoundaryPhases.size());
-  ASSERT_EQ(1U, reversedNetwork.phaseFront.boundedDiskBoundaryPhases.size());
-  const auto &forwardPhase =
-      forwardNetwork.phaseFront.boundedDiskBoundaryPhases.front();
-  const auto &reversedPhase =
-      reversedNetwork.phaseFront.boundedDiskBoundaryPhases.front();
-  EXPECT_EQ(forwardPhase.structuralHash, reversedPhase.structuralHash);
-  EXPECT_EQ(forwardPhase.signedQuarterTurnSum,
-            reversedPhase.signedQuarterTurnSum);
-  EXPECT_EQ(forwardPhase.rectangular, reversedPhase.rectangular);
-  EXPECT_EQ(forwardPhase.polygonClosed, reversedPhase.polygonClosed);
-  EXPECT_EQ(forwardPhase.chartConstructed, reversedPhase.chartConstructed);
-  ASSERT_EQ(forwardPhase.runs.size(), reversedPhase.runs.size());
-  for (std::size_t run = 0; run < forwardPhase.runs.size(); ++run) {
-    EXPECT_EQ(forwardPhase.runs[run].branch, reversedPhase.runs[run].branch);
-    EXPECT_EQ(forwardPhase.runs[run].signedQuarterTurnToNext,
-              reversedPhase.runs[run].signedQuarterTurnToNext);
-    EXPECT_NEAR(forwardPhase.runs[run].intrinsicLength,
-                reversedPhase.runs[run].intrinsicLength, 1.0e-12);
-    EXPECT_LE((forwardPhase.runs[run].chartStart -
-               reversedPhase.runs[run].chartStart).norm(),
-              1.0e-12);
-    EXPECT_LE((forwardPhase.runs[run].chartEnd -
-               reversedPhase.runs[run].chartEnd).norm(),
-              1.0e-12);
-  }
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            forwardNetwork.phaseFront.disposition());
+  EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
+            reversedNetwork.phaseFront.disposition());
+  EXPECT_EQ(forwardNetwork.phaseFront.rejection_reason(),
+            reversedNetwork.phaseFront.rejection_reason());
+  EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
+                InvalidBoundedDiskFrontPairing,
+            forwardNetwork.phaseFront.rejection_reason());
+  EXPECT_EQ(nullptr, forwardNetwork.phaseFront.produced_product());
+  EXPECT_EQ(nullptr, reversedNetwork.phaseFront.produced_product());
 }
 
 TEST(SurfaceCellsPhase10,
@@ -2834,13 +2806,13 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       vertices, faces, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
+             network.phaseFront.rejection_reason());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
   int hardEdges = 0;
   int hardMerges = 0;
-  for (const auto &edge : network.phaseFront.edges) {
+  for (const auto &edge : network.phaseFront.product().edges) {
     if (edge.boundaryKind !=
         directional::geometry::SurfaceFrontBoundaryKind::HardRail) {
       continue;
@@ -2849,13 +2821,13 @@ TEST(SurfaceCellsPhase10,
     ASSERT_GE(edge.oppositeEdge, 0);
     EXPECT_FALSE(edge.exterior);
     EXPECT_TRUE(route_is_all_interior(edge.route));
-    const auto &opposite = network.phaseFront.edges[static_cast<std::size_t>(
+    const auto &opposite = network.phaseFront.product().edges[static_cast<std::size_t>(
         edge.oppositeEdge)];
     EXPECT_EQ(opposite.oppositeEdge,
-              static_cast<int>(&edge - network.phaseFront.edges.data()));
+              static_cast<int>(&edge - network.phaseFront.product().edges.data()));
     EXPECT_NE(edge.sourceTopologyRegion, opposite.sourceTopologyRegion);
   }
-  for (const auto &event : network.phaseFront.events) {
+  for (const auto &event : network.phaseFront.product().events) {
     hardMerges += event.kind ==
                       directional::geometry::SurfaceFrontEventKind::
                           HardRailMerge
@@ -2867,7 +2839,7 @@ TEST(SurfaceCellsPhase10,
 
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          vertices, faces, network.phaseFront, options.sourceFaceComponents,
+          vertices, faces, network.phaseFront.product(), options.sourceFaceComponents,
           options.sourceFaceSheets);
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(materialized.connectedComponents, 1);
@@ -2919,19 +2891,19 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       vertices, faces, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.sourceTopologyRegions.regions.size());
-  EXPECT_FALSE(network.phaseFront.sourceTopologyRegions.regions.front()
+             network.phaseFront.rejection_reason());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  EXPECT_FALSE(network.phaseFront.product().sourceTopologyRegions.regions.front()
                    .internalIsolationSeamTopology.empty());
   ASSERT_EQ(1U,
-            network.phaseFront.isolationSeamTransportCertificates.size());
+            network.phaseFront.product().isolationSeamTransportCertificates.size());
   const auto &certificate =
-      network.phaseFront.isolationSeamTransportCertificates.front();
-  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.front().id,
+      network.phaseFront.product().isolationSeamTransportCertificates.front();
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.front().id,
             certificate.region);
-  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.front()
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.front()
                 .internalIsolationSeamTopology.front(),
             certificate.seam);
   EXPECT_LT(certificate.transition.index(),
@@ -2941,21 +2913,21 @@ TEST(SurfaceCellsPhase10,
   EXPECT_NE(0U, directional::geometry::surface_cell_tracing_detail::
                     isolation_seam_transport_certificate_hash(certificate));
   bool sawCrossSheetScope = false;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     sawCrossSheetScope |=
         phase_front_region(network.phaseFront, cell).isolationSheets.size() > 1U;
-    EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.front().id,
+    EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.front().id,
               cell.sourceTopologyRegion);
   }
   EXPECT_TRUE(sawCrossSheetScope);
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          vertices, faces, network.phaseFront, options.sourceFaceComponents,
+          vertices, faces, network.phaseFront.product(), options.sourceFaceComponents,
           options.sourceFaceSheets);
   ASSERT_TRUE(materialized.success) << materialized.failure;
-  EXPECT_EQ(network.phaseFront.isolationSeamTransportCertificates.size(),
+  EXPECT_EQ(network.phaseFront.product().isolationSeamTransportCertificates.size(),
             materialized.consumedInternalIsolationSeams);
-  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.size(),
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.size(),
             materialized.consumedTopologyRegions);
   EXPECT_EQ(1, materialized.connectedComponents);
   EXPECT_EQ(1, materialized.boundaryLoopCount);
@@ -2997,13 +2969,13 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       vertices, faces, crossField, targetSize, options);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidTopologyRegionTransport,
-            network.phaseFront.failure.reason)
+            network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  EXPECT_TRUE(network.phaseFront.cells.empty());
+             network.phaseFront.rejection_reason());
+  EXPECT_EQ(nullptr, network.phaseFront.produced_product());
 }
 
 TEST(SurfaceCellsPhase10, CurvedBoundedDiskPhaseFrontIsStructurallyApplicable) {
@@ -3014,31 +2986,31 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPhaseFrontIsStructurallyApplicable) {
 
   EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::
                 UnsupportedSourceSheetTopology,
-            network.phaseFront.failure.reason);
+            network.phaseFront.rejection_reason());
   EXPECT_NE(directional::geometry::SurfacePhaseFrontFailureReason::NonPlanarSource,
-            network.phaseFront.failure.reason);
-  if (network.phaseFront.disposition ==
+            network.phaseFront.rejection_reason());
+  if (network.phaseFront.disposition() ==
       directional::geometry::SurfaceCellProducerDisposition::Rejected) {
     EXPECT_TRUE(
-        network.phaseFront.failure.reason ==
+        network.phaseFront.rejection_reason() ==
             directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskTransport ||
-        network.phaseFront.failure.reason ==
+        network.phaseFront.rejection_reason() ==
             directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskBoundaryPhase ||
-        network.phaseFront.failure.reason ==
+        network.phaseFront.rejection_reason() ==
             directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskChart ||
-        network.phaseFront.failure.reason ==
+        network.phaseFront.rejection_reason() ==
             directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskFrontPairing)
         << directional::geometry::surface_phase_front_failure_reason_name(
-               network.phaseFront.failure.reason);
+               network.phaseFront.rejection_reason());
   } else {
     EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-              network.phaseFront.disposition);
-    EXPECT_TRUE(network.phaseFront.succeeded);
-    EXPECT_FALSE(network.phaseFront.cells.empty());
+              network.phaseFront.disposition());
+    EXPECT_TRUE(network.phaseFront.is_produced());
+    EXPECT_FALSE(network.phaseFront.product().cells.empty());
   }
 }
 
@@ -3052,15 +3024,16 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskIsInvariantToFaceRowEnumeration) {
       reversed.vertices, reversed.faces, reversed.faceAxisX, reversed.faceAxisY,
       reversed.targetSize, reversed.options);
 
-  EXPECT_EQ(forwardNetwork.phaseFront.disposition,
-            reversedNetwork.phaseFront.disposition);
-  EXPECT_EQ(forwardNetwork.phaseFront.failure.reason,
-            reversedNetwork.phaseFront.failure.reason);
-  EXPECT_EQ(forwardNetwork.phaseFront.gridU, reversedNetwork.phaseFront.gridU);
-  EXPECT_EQ(forwardNetwork.phaseFront.gridV, reversedNetwork.phaseFront.gridV);
-  EXPECT_EQ(forwardNetwork.phaseFront.cells.size(),
-            reversedNetwork.phaseFront.cells.size());
-  if (forwardNetwork.phaseFront.disposition ==
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            forwardNetwork.phaseFront.disposition());
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            reversedNetwork.phaseFront.disposition());
+  EXPECT_EQ(forwardNetwork.phaseFront.product().gridU,
+            reversedNetwork.phaseFront.product().gridU);
+  EXPECT_EQ(forwardNetwork.phaseFront.product().gridV, reversedNetwork.phaseFront.product().gridV);
+  EXPECT_EQ(forwardNetwork.phaseFront.product().cells.size(),
+            reversedNetwork.phaseFront.product().cells.size());
+  if (forwardNetwork.phaseFront.disposition() ==
       directional::geometry::SurfaceCellProducerDisposition::Produced) {
     EXPECT_EQ(curved_disk_phase_front_geometry_hash(forward, forwardNetwork),
               curved_disk_phase_front_geometry_hash(reversed, reversedNetwork));
@@ -3073,13 +3046,13 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPreservesAuthoritativeHardBoundary) {
       fixture.vertices, fixture.faces, fixture.faceAxisX, fixture.faceAxisY,
       fixture.targetSize, fixture.options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
+             network.phaseFront.rejection_reason());
+  ASSERT_EQ(1U, network.phaseFront.product().boundedDiskBoundaryPhases.size());
   bool sawHardFeatureAuthority = false;
   for (const auto &run :
-       network.phaseFront.boundedDiskBoundaryPhases.front().runs) {
+       network.phaseFront.product().boundedDiskBoundaryPhases.front().runs) {
     for (const auto &authority : run.edgeAuthority) {
       sawHardFeatureAuthority |= authority.hardFeature;
     }
@@ -3087,14 +3060,14 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskPreservesAuthoritativeHardBoundary) {
   EXPECT_TRUE(sawHardFeatureAuthority);
 
   std::size_t exteriorCount = 0;
-  for (const auto &edge : network.phaseFront.edges) {
+  for (const auto &edge : network.phaseFront.product().edges) {
     if (!edge.exterior) continue;
     ++exteriorCount;
     ASSERT_GE(edge.filledCell, 0);
     ASSERT_LT(edge.filledCell,
-              static_cast<int>(network.phaseFront.cells.size()));
+              static_cast<int>(network.phaseFront.product().cells.size()));
     const auto &cell =
-        network.phaseFront.cells[static_cast<std::size_t>(edge.filledCell)];
+        network.phaseFront.product().cells[static_cast<std::size_t>(edge.filledCell)];
     bool matchedSide = false;
     for (int side = 0; side < 4; ++side) {
       if (cell.lattice[static_cast<std::size_t>(side)].latticeCoordinate !=
@@ -3146,13 +3119,13 @@ TEST(SurfaceCellsPhase10, CurvedBoundedDiskInvalidReciprocalTransportFailsClosed
       fixture.vertices, fixture.faces, crossField, fixture.targetSize,
       fixture.options);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskTransport,
-            network.phaseFront.failure.reason)
+            network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  EXPECT_TRUE(network.phaseFront.cells.empty());
+             network.phaseFront.rejection_reason());
+  EXPECT_EQ(nullptr, network.phaseFront.produced_product());
 }
 
 TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
@@ -3227,12 +3200,12 @@ TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
   const auto network = directional::geometry::build_surface_cell_network(
       vertices, faces, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
+             network.phaseFront.rejection_reason());
 
   std::map<std::pair<int, int>, int> cellsBySheet;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     ++cellsBySheet[{phase_front_component(network.phaseFront, cell),
                     phase_front_single_sheet(network.phaseFront, cell).value_or(-1)}];
   }
@@ -3240,10 +3213,10 @@ TEST(SurfaceCellsPhase10, PhaseFrontComposesPlanarPeriodicAndCurvedDiskSheets) {
   EXPECT_GT((cellsBySheet[std::pair<int, int>{0, 0}]), 0);
   EXPECT_GT((cellsBySheet[std::pair<int, int>{1, 1}]), 0);
   EXPECT_GT((cellsBySheet[std::pair<int, int>{2, 2}]), 0);
-  ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
+  ASSERT_EQ(1U, network.phaseFront.product().periodicHolonomies.size());
   EXPECT_EQ(1, phase_front_single_sheet(
                    network.phaseFront,
-                   network.phaseFront.periodicHolonomies.front()).value_or(-1));
+                   network.phaseFront.product().periodicHolonomies.front()).value_or(-1));
 }
 
 TEST(SurfaceCellsPhase10,
@@ -3317,21 +3290,15 @@ TEST(SurfaceCellsPhase10,
       vertices, faces, crossField, targetSize, options);
 
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 InvalidBoundedDiskFrontPairing,
-            network.phaseFront.failure.reason)
+            network.phaseFront.rejection_reason())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
-  EXPECT_EQ(1, phase_front_single_sheet(
-                   network.phaseFront,
-                   network.phaseFront.periodicHolonomies.front()).value_or(-1));
-  ASSERT_EQ(1U, network.phaseFront.boundedDiskBoundaryPhases.size());
-  EXPECT_FALSE(network.phaseFront.boundedDiskBoundaryPhases.front().rectangular);
-  EXPECT_TRUE(network.phaseFront.boundedDiskBoundaryPhases.front().chartConstructed);
-  EXPECT_TRUE(network.phaseFront.cells.empty())
-      << "aggregate rejection must not leak partial source-sheet cells";
+             network.phaseFront.rejection_reason());
+  EXPECT_EQ(nullptr, network.phaseFront.produced_product())
+      << "rejected producer outcomes must not expose partial authority";
+
 }
 
 TEST(SurfaceCellsPhase10,
@@ -3381,20 +3348,20 @@ TEST(SurfaceCellsPhase10,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_TRUE(network.phaseFront.succeeded);
-  ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
+             network.phaseFront.rejection_reason());
+  ASSERT_TRUE(network.phaseFront.is_produced());
+  ASSERT_EQ(1U, network.phaseFront.product().periodicHolonomies.size());
   EXPECT_EQ(1, phase_front_component(
                    network.phaseFront,
-                   network.phaseFront.periodicHolonomies.front()));
+                   network.phaseFront.product().periodicHolonomies.front()));
   EXPECT_EQ(1, phase_front_single_sheet(
                    network.phaseFront,
-                   network.phaseFront.periodicHolonomies.front()).value_or(-1));
+                   network.phaseFront.product().periodicHolonomies.front()).value_or(-1));
 
   std::map<std::pair<int, int>, int> cellsBySheet;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     ++cellsBySheet[{phase_front_component(network.phaseFront, cell),
                     phase_front_single_sheet(network.phaseFront, cell).value_or(-1)}];
   }
@@ -3470,23 +3437,21 @@ TEST(SurfaceCellsPhase10,
     const auto &network = built->first;
     const auto &options = built->second;
     EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-              network.phaseFront.disposition);
+              network.phaseFront.disposition());
     EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                   UnsupportedSourceSheetTopology,
-              network.phaseFront.failure.reason)
+              network.phaseFront.rejection_reason())
         << directional::geometry::surface_phase_front_failure_reason_name(
-               network.phaseFront.failure.reason);
-    EXPECT_FALSE(network.phaseFront.succeeded);
-    EXPECT_TRUE(network.phaseFront.cells.empty());
-    EXPECT_TRUE(network.phaseFront.edges.empty());
-    EXPECT_TRUE(network.phaseFront.events.empty());
-    ASSERT_GE(network.phaseFront.failure.face, 0);
-    ASSERT_LT(network.phaseFront.failure.face,
+               network.phaseFront.rejection_reason());
+    EXPECT_FALSE(network.phaseFront.is_produced());
+    EXPECT_EQ(nullptr, network.phaseFront.produced_product());
+    ASSERT_GE(phase_front_rejection(network.phaseFront).face, 0);
+    ASSERT_LT(phase_front_rejection(network.phaseFront).face,
               static_cast<int>(options.sourceFaceSheets.size()));
     EXPECT_EQ(1, options.sourceFaceComponents[
-                     static_cast<std::size_t>(network.phaseFront.failure.face)]);
+                     static_cast<std::size_t>(phase_front_rejection(network.phaseFront).face)]);
     EXPECT_EQ(1, options.sourceFaceSheets[
-                     static_cast<std::size_t>(network.phaseFront.failure.face)]);
+                     static_cast<std::size_t>(phase_front_rejection(network.phaseFront).face)]);
   }
 }
 
@@ -3920,11 +3885,11 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
 
   const auto network = build_periodic_route_network(fixture, field);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
-  const auto &holonomy = network.phaseFront.periodicHolonomies.front();
+             network.phaseFront.rejection_reason());
+  ASSERT_EQ(1U, network.phaseFront.product().periodicHolonomies.size());
+  const auto &holonomy = network.phaseFront.product().periodicHolonomies.front();
   EXPECT_EQ(directional::authority::QuarterTurn{}, holonomy.action.rotation);
   EXPECT_EQ(periodic_route_topology(fixture), route_topology(holonomy.route));
   EXPECT_EQ(independent_periodic_route_compact_ids(fixture),
@@ -3966,19 +3931,19 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   const auto reverse =
       build_periodic_route_network(reverseFixture, reverseField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            forward.phaseFront.disposition);
+            forward.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            reverse.phaseFront.disposition);
-  ASSERT_EQ(1U, forward.phaseFront.periodicHolonomies.size());
-  ASSERT_EQ(1U, reverse.phaseFront.periodicHolonomies.size());
+            reverse.phaseFront.disposition());
+  ASSERT_EQ(1U, forward.phaseFront.product().periodicHolonomies.size());
+  ASSERT_EQ(1U, reverse.phaseFront.product().periodicHolonomies.size());
   EXPECT_EQ(directional::authority::QuarterTurn{},
-            forward.phaseFront.periodicHolonomies.front().action.rotation);
+            forward.phaseFront.product().periodicHolonomies.front().action.rotation);
   EXPECT_EQ(directional::authority::QuarterTurn{},
-            reverse.phaseFront.periodicHolonomies.front().action.rotation);
+            reverse.phaseFront.product().periodicHolonomies.front().action.rotation);
   EXPECT_EQ(periodic_route_topology(forwardFixture),
-            route_topology(forward.phaseFront.periodicHolonomies.front().route));
+            route_topology(forward.phaseFront.product().periodicHolonomies.front().route));
   EXPECT_EQ(periodic_route_topology(reverseFixture),
-            route_topology(reverse.phaseFront.periodicHolonomies.front().route));
+            route_topology(reverse.phaseFront.product().periodicHolonomies.front().route));
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
@@ -3999,15 +3964,15 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   const auto equivalent =
       build_periodic_route_network(fixture, equivalentField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            baseline.phaseFront.disposition);
+            baseline.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            equivalent.phaseFront.disposition);
-  ASSERT_EQ(1U, baseline.phaseFront.periodicHolonomies.size());
-  ASSERT_EQ(1U, equivalent.phaseFront.periodicHolonomies.size());
+            equivalent.phaseFront.disposition());
+  ASSERT_EQ(1U, baseline.phaseFront.product().periodicHolonomies.size());
+  ASSERT_EQ(1U, equivalent.phaseFront.product().periodicHolonomies.size());
   EXPECT_EQ(periodic_holonomy_snapshot(
-                baseline.phaseFront.periodicHolonomies.front()),
+                baseline.phaseFront.product().periodicHolonomies.front()),
             periodic_holonomy_snapshot(
-                equivalent.phaseFront.periodicHolonomies.front()));
+                equivalent.phaseFront.product().periodicHolonomies.front()));
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
@@ -4021,23 +3986,23 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   const auto permuted =
       build_periodic_route_network(reordered, reorderedField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            baseline.phaseFront.disposition);
+            baseline.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            permuted.phaseFront.disposition);
-  ASSERT_EQ(1U, baseline.phaseFront.periodicHolonomies.size());
-  ASSERT_EQ(1U, permuted.phaseFront.periodicHolonomies.size());
+            permuted.phaseFront.disposition());
+  ASSERT_EQ(1U, baseline.phaseFront.product().periodicHolonomies.size());
+  ASSERT_EQ(1U, permuted.phaseFront.product().periodicHolonomies.size());
   const auto expectedTopology = periodic_route_topology(fixture);
   const auto expectedCompact = independent_periodic_route_compact_ids(fixture);
   ASSERT_EQ(expectedTopology, periodic_route_topology(reordered));
   ASSERT_EQ(expectedCompact, independent_periodic_route_compact_ids(reordered));
   EXPECT_EQ(expectedTopology,
-            route_topology(baseline.phaseFront.periodicHolonomies.front().route));
+            route_topology(baseline.phaseFront.product().periodicHolonomies.front().route));
   EXPECT_EQ(expectedTopology,
-            route_topology(permuted.phaseFront.periodicHolonomies.front().route));
+            route_topology(permuted.phaseFront.product().periodicHolonomies.front().route));
   EXPECT_EQ(expectedCompact,
-            route_transition_ids(baseline.phaseFront.periodicHolonomies.front().route));
+            route_transition_ids(baseline.phaseFront.product().periodicHolonomies.front().route));
   EXPECT_EQ(expectedCompact,
-            route_transition_ids(permuted.phaseFront.periodicHolonomies.front().route));
+            route_transition_ids(permuted.phaseFront.product().periodicHolonomies.front().route));
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
@@ -4052,16 +4017,16 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
 
   const auto rejected = build_periodic_route_network(fixture, malformed);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            rejected.phaseFront.disposition);
+            rejected.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 PeriodicHolonomyMismatch,
-            rejected.phaseFront.failure.reason);
+            rejected.phaseFront.rejection_reason());
   EXPECT_EQ(fixture.expectedRoute.front().sourceFace,
-            rejected.phaseFront.failure.face);
+            phase_front_rejection(rejected.phaseFront).face);
   EXPECT_EQ(fixture.expectedRoute.front().targetFace,
-            rejected.phaseFront.failure.targetFace);
-  EXPECT_FALSE(rejected.phaseFront.succeeded);
-  EXPECT_TRUE(rejected.phaseFront.cells.empty());
+            phase_front_rejection(rejected.phaseFront).targetFace);
+  EXPECT_FALSE(rejected.phaseFront.is_produced());
+  EXPECT_EQ(nullptr, rejected.phaseFront.produced_product());
   EXPECT_TRUE(rejected.seeds.empty());
   EXPECT_TRUE(rejected.traces.empty());
   EXPECT_TRUE(rejected.proposals.empty());
@@ -4079,17 +4044,17 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
       build_periodic_route_network(fixture, authoritativeField);
   const auto legacy = build_periodic_route_network(fixture, legacyField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            authoritative.phaseFront.disposition);
+            authoritative.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            legacy.phaseFront.disposition)
+            legacy.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             legacy.phaseFront.failure.reason);
-  ASSERT_EQ(1U, authoritative.phaseFront.periodicHolonomies.size());
-  ASSERT_EQ(1U, legacy.phaseFront.periodicHolonomies.size());
+             legacy.phaseFront.rejection_reason());
+  ASSERT_EQ(1U, authoritative.phaseFront.product().periodicHolonomies.size());
+  ASSERT_EQ(1U, legacy.phaseFront.product().periodicHolonomies.size());
   EXPECT_EQ(periodic_holonomy_snapshot(
-                authoritative.phaseFront.periodicHolonomies.front()),
+                authoritative.phaseFront.product().periodicHolonomies.front()),
             periodic_holonomy_snapshot(
-                legacy.phaseFront.periodicHolonomies.front()));
+                legacy.phaseFront.product().periodicHolonomies.front()));
 }
 
 TEST(SurfaceCellsPhase10,
@@ -4142,20 +4107,20 @@ TEST(SurfaceCellsPhase10,
   const auto &network = result.surfaceCellContext.traceNetwork;
   const auto &phaseFront = network.phaseFront;
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            phaseFront.disposition)
+            phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             phaseFront.failure.reason);
-  EXPECT_TRUE(phaseFront.succeeded);
-  ASSERT_FALSE(network.phaseFront.sourceTopologyRegions.regions.empty());
-  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.size(),
+             phaseFront.rejection_reason());
+  EXPECT_TRUE(phaseFront.is_produced());
+  ASSERT_FALSE(network.phaseFront.product().sourceTopologyRegions.regions.empty());
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.size(),
             result.diagnostics.surfaceCellTopologyRegionCount);
   ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()),
-            network.phaseFront.sourceTopologyRegions.regionByFace.size());
-  for (const auto region : network.phaseFront.sourceTopologyRegions.regionByFace)
+            network.phaseFront.product().sourceTopologyRegions.regionByFace.size());
+  for (const auto region : network.phaseFront.product().sourceTopologyRegions.regionByFace)
     EXPECT_LT(region.index(),
-              network.phaseFront.sourceTopologyRegions.regions.size());
+              network.phaseFront.product().sourceTopologyRegions.regions.size());
   bool sawMultiSheetRegionWithInternalSeam = false;
-  for (const auto &region : network.phaseFront.sourceTopologyRegions.regions) {
+  for (const auto &region : network.phaseFront.product().sourceTopologyRegions.regions) {
     if (region.isolationSheets.size() > 1U &&
         !region.internalIsolationSeamTopology.empty()) {
       sawMultiSheetRegionWithInternalSeam = true;
@@ -4163,11 +4128,11 @@ TEST(SurfaceCellsPhase10,
   }
   EXPECT_TRUE(sawMultiSheetRegionWithInternalSeam);
   EXPECT_EQ(result.diagnostics.surfaceCellInternalIsolationSeamCount,
-            phaseFront.isolationSeamTransportCertificates.size());
+            phaseFront.product().isolationSeamTransportCertificates.size());
   EXPECT_EQ(result.diagnostics.surfaceCellTopologyRegionCount,
             result.diagnostics.surfaceCellTopologyRegionHashes.size());
-  EXPECT_FALSE(phaseFront.periodicHolonomies.empty());
-  EXPECT_EQ(phaseFront.periodicHolonomies.size(),
+  EXPECT_FALSE(phaseFront.product().periodicHolonomies.empty());
+  EXPECT_EQ(phaseFront.product().periodicHolonomies.size(),
             result.diagnostics.surfaceCellPeriodicHolonomies.size());
   ASSERT_EQ(static_cast<std::size_t>(result.vertices.rows()),
             result.outputVertexLineage.size());
@@ -4203,8 +4168,8 @@ TEST(SurfaceCellsPhase10,
   const auto valid = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            valid.phaseFront.disposition);
-  const auto &holonomy = valid.phaseFront.periodicHolonomies.front();
+            valid.phaseFront.disposition());
+  const auto &holonomy = valid.phaseFront.product().periodicHolonomies.front();
   ASSERT_TRUE(route_is_all_interior(holonomy.route));
   const std::uint64_t tamperedTopology =
       test_source_edge_key(holonomy.route.steps().front().topology());
@@ -4258,10 +4223,10 @@ TEST(SurfaceCellsPhase10,
   const auto malformed = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   EXPECT_EQ(directional::geometry::SurfaceCellProducerDisposition::Rejected,
-            malformed.phaseFront.disposition);
+            malformed.phaseFront.disposition());
   EXPECT_EQ(directional::geometry::SurfacePhaseFrontFailureReason::
                 PeriodicHolonomyMismatch,
-            malformed.phaseFront.failure.reason);
+            malformed.phaseFront.rejection_reason());
   EXPECT_TRUE(malformed.seeds.empty());
   EXPECT_TRUE(malformed.traces.empty());
   EXPECT_TRUE(malformed.proposals.empty());
@@ -4311,11 +4276,11 @@ TEST(SurfaceCellsPhase10,
   ASSERT_TRUE(result.surfaceCellContext.hasTraceNetwork);
   const auto &network = result.surfaceCellContext.traceNetwork;
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  EXPECT_TRUE(network.phaseFront.succeeded);
-  EXPECT_FALSE(network.phaseFront.periodicHolonomies.empty());
+             network.phaseFront.rejection_reason());
+  EXPECT_TRUE(network.phaseFront.is_produced());
+  EXPECT_FALSE(network.phaseFront.product().periodicHolonomies.empty());
   EXPECT_TRUE(result.diagnostics.surfaceCellPeriodicHolonomyAvailable);
   EXPECT_TRUE(network.seeds.empty());
   EXPECT_TRUE(network.traces.empty());
@@ -4352,11 +4317,11 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ("Produced",
             result.diagnostics.surfaceCellAuthoritativeProducerDisposition);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  EXPECT_TRUE(network.phaseFront.succeeded);
-  EXPECT_EQ(64U, network.phaseFront.cells.size());
+             network.phaseFront.rejection_reason());
+  EXPECT_TRUE(network.phaseFront.is_produced());
+  EXPECT_EQ(64U, network.phaseFront.product().cells.size());
   EXPECT_TRUE(network.seeds.empty());
   EXPECT_TRUE(network.traces.empty());
   ASSERT_TRUE(result.success)
@@ -4618,11 +4583,11 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
       mesh.V, mesh.F, crossField, targetSize, options);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_FALSE(network.phaseFront.cells.empty());
-  for (const auto &cell : network.phaseFront.cells) {
+             network.phaseFront.rejection_reason());
+  ASSERT_FALSE(network.phaseFront.product().cells.empty());
+  for (const auto &cell : network.phaseFront.product().cells) {
     for (const auto &state : cell.lattice) {
       ASSERT_TRUE(state.sourceChart.has_value());
       EXPECT_EQ(0U,
@@ -4638,9 +4603,9 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
   const auto network =
       build_segment_route_network(fixture, fixture.authoritativeField);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
+             network.phaseFront.rejection_reason());
 
   ASSERT_GT(fixture.mesh.F.rows(), 10);
   std::vector<int> expectedChartByFace(
@@ -4650,7 +4615,7 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
 
   std::map<int, std::set<int>> compatibilityChartsByFace;
   std::set<int> producerCompatibilityCharts;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
         ASSERT_GE(segment.face, 0);
@@ -4674,7 +4639,7 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
   EXPECT_EQ((std::set<int>{2}), compatibilityChartsByFace[10]);
 
   std::set<std::size_t> typedOccurrenceCharts;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     ASSERT_EQ(cell.corners.size(), cell.lattice.size());
     for (std::size_t corner = 0; corner < cell.lattice.size(); ++corner) {
       const auto &state = cell.lattice[corner];
@@ -4765,12 +4730,12 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
       reverseMesh.V, reverseMesh.F, reverseField, targetSize, reverseOptions);
 
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            forward.phaseFront.disposition);
+            forward.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            reverse.phaseFront.disposition);
-  ASSERT_EQ(forward.phaseFront.cells.size(), reverse.phaseFront.cells.size());
+            reverse.phaseFront.disposition());
+  ASSERT_EQ(forward.phaseFront.product().cells.size(), reverse.phaseFront.product().cells.size());
   for (const auto *network : {&forward, &reverse}) {
-    for (const auto &cell : network->phaseFront.cells) {
+    for (const auto &cell : network->phaseFront.product().cells) {
       for (const auto &state : cell.lattice) {
         ASSERT_TRUE(state.sourceChart.has_value());
         EXPECT_EQ(
@@ -4789,11 +4754,11 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
       disk.vertices, disk.faces, disk.faceAxisX, disk.faceAxisY,
       disk.targetSize, disk.options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            bounded.phaseFront.disposition)
+            bounded.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             bounded.phaseFront.failure.reason);
-  ASSERT_FALSE(bounded.phaseFront.cells.empty());
-  for (const auto &cell : bounded.phaseFront.cells) {
+             bounded.phaseFront.rejection_reason());
+  ASSERT_FALSE(bounded.phaseFront.product().cells.empty());
+  for (const auto &cell : bounded.phaseFront.product().cells) {
     for (const auto &state : cell.lattice) {
       ASSERT_TRUE(state.sourceChart.has_value());
       EXPECT_EQ(0U,
@@ -4821,11 +4786,11 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
   const auto periodic = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, target, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            periodic.phaseFront.disposition)
+            periodic.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             periodic.phaseFront.failure.reason);
-  ASSERT_FALSE(periodic.phaseFront.cells.empty());
-  for (const auto &cell : periodic.phaseFront.cells) {
+             periodic.phaseFront.rejection_reason());
+  ASSERT_FALSE(periodic.phaseFront.product().cells.empty());
+  for (const auto &cell : periodic.phaseFront.product().cells) {
     for (const auto &state : cell.lattice) {
       ASSERT_TRUE(state.sourceChart.has_value());
       EXPECT_EQ(0U,
@@ -4849,16 +4814,16 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.sourceTopologyRegions.regions.size());
-  ASSERT_FALSE(network.phaseFront.cells.empty());
-  const auto &region = network.phaseFront.sourceTopologyRegions.regions.front();
+             network.phaseFront.rejection_reason());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_FALSE(network.phaseFront.product().cells.empty());
+  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions.front();
   ASSERT_EQ(1U, region.isolationSheets.size());
   EXPECT_EQ(0U, region.sourceComponent.index());
   EXPECT_EQ(0U, region.isolationSheets.front().index());
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     EXPECT_EQ(region.id, cell.sourceTopologyRegion);
   }
 }
@@ -4882,13 +4847,13 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
-  ASSERT_EQ(1U, network.phaseFront.sourceTopologyRegions.regions.size());
-  const auto &region = network.phaseFront.sourceTopologyRegions.regions.front();
+            network.phaseFront.disposition());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions.front();
   ASSERT_EQ(1U, region.isolationSheets.size());
   EXPECT_EQ(2U, region.sourceComponent.index());
   EXPECT_EQ(5U, region.isolationSheets.front().index());
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     EXPECT_EQ(region.id, cell.sourceTopologyRegion);
   }
 }
@@ -4907,15 +4872,15 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition)
+            network.phaseFront.disposition())
       << directional::geometry::surface_phase_front_failure_reason_name(
-             network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.sourceTopologyRegions.regions.size());
-  const auto &region = network.phaseFront.sourceTopologyRegions.regions.front();
+             network.phaseFront.rejection_reason());
+  ASSERT_EQ(1U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  const auto &region = network.phaseFront.product().sourceTopologyRegions.regions.front();
   ASSERT_EQ(2U, region.isolationSheets.size());
   EXPECT_EQ(0U, region.isolationSheets[0].index());
   EXPECT_EQ(1U, region.isolationSheets[1].index());
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     EXPECT_EQ(region.id, cell.sourceTopologyRegion);
     EXPECT_EQ((std::vector<int>{0, 1}),
               phase_front_sheets(network.phaseFront, cell));
@@ -4938,16 +4903,16 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
-  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
+            network.phaseFront.disposition());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
   std::map<int, const directional::geometry::SurfacePhaseFrontCell *> cellsById;
-  for (const auto &cell : network.phaseFront.cells) {
+  for (const auto &cell : network.phaseFront.product().cells) {
     ASSERT_TRUE(cellsById.emplace(cell.id, &cell).second);
     EXPECT_EQ(cell.sourceTopologyRegion,
               phase_front_region(network.phaseFront, cell).id);
   }
-  ASSERT_FALSE(network.phaseFront.edges.empty());
-  for (const auto &edge : network.phaseFront.edges) {
+  ASSERT_FALSE(network.phaseFront.product().edges.empty());
+  for (const auto &edge : network.phaseFront.product().edges) {
     const auto owner = cellsById.find(edge.filledCell);
     ASSERT_NE(cellsById.end(), owner);
     EXPECT_EQ(owner->second->sourceTopologyRegion, edge.sourceTopologyRegion);
@@ -4979,15 +4944,15 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto reverse = directional::geometry::build_surface_cell_network(
       reverseMesh.V, reverseMesh.F, reverseField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            forward.phaseFront.disposition);
+            forward.phaseFront.disposition());
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            reverse.phaseFront.disposition);
+            reverse.phaseFront.disposition());
 
   const auto snapshot = [](const auto &network) {
     std::multiset<std::pair<std::uint64_t, int>> result;
-    for (const auto &region : network.phaseFront.sourceTopologyRegions.regions) {
+    for (const auto &region : network.phaseFront.product().sourceTopologyRegions.regions) {
       const int cellCount = static_cast<int>(std::count_if(
-          network.phaseFront.cells.begin(), network.phaseFront.cells.end(),
+          network.phaseFront.product().cells.begin(), network.phaseFront.product().cells.end(),
           [&](const auto &cell) { return cell.sourceTopologyRegion == region.id; }));
       result.emplace(
           directional::geometry::surface_topology_region_hash(region), cellCount);
@@ -5011,11 +4976,11 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
-  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
-  ASSERT_FALSE(network.phaseFront.cells.empty());
+            network.phaseFront.disposition());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_FALSE(network.phaseFront.product().cells.empty());
 
-  auto changed = network.phaseFront;
+  auto changed = network.phaseFront.product();
   const auto current = changed.cells.front().sourceTopologyRegion;
   const auto replacement = std::find_if(
       changed.sourceTopologyRegions.regions.begin(),
@@ -5044,11 +5009,11 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
-  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
-  ASSERT_FALSE(network.phaseFront.edges.empty());
+            network.phaseFront.disposition());
+  ASSERT_EQ(2U, network.phaseFront.product().sourceTopologyRegions.regions.size());
+  ASSERT_FALSE(network.phaseFront.product().edges.empty());
 
-  auto changed = network.phaseFront;
+  auto changed = network.phaseFront.product();
   const auto current = changed.edges.front().sourceTopologyRegion;
   const auto replacement = std::find_if(
       changed.sourceTopologyRegions.regions.begin(),
@@ -5089,16 +5054,16 @@ TEST(SurfaceCellAuthorityContractCutover,
   const auto network = directional::geometry::build_surface_cell_network(
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
-            network.phaseFront.disposition);
+            network.phaseFront.disposition());
 
   const auto materialized = directional::pipeline::build_authoritative_phase_front_mesh(
-      mesh.V, mesh.F, network.phaseFront, options.sourceFaceComponents,
+      mesh.V, mesh.F, network.phaseFront.product(), options.sourceFaceComponents,
       options.sourceFaceSheets);
   ASSERT_TRUE(materialized.success) << materialized.failure;
-  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.size(),
+  EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.size(),
             materialized.consumedTopologyRegions);
   EXPECT_EQ(static_cast<std::size_t>(mesh.F.rows()),
-            network.phaseFront.sourceTopologyRegions.regionByFace.size());
+            network.phaseFront.product().sourceTopologyRegions.regionByFace.size());
 }
 
 } // namespace
