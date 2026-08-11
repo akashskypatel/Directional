@@ -1,17 +1,17 @@
-name: Agent M1 R-A Apply WIP A0
+name: Agent M1 R-A Apply WIP
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m1-ra-wip-a0-retry2.txt
+      - .agents/connector-triggers/m1-ra-wip-a1.txt
 
 permissions:
   contents: write
 
 concurrency:
-  group: agent-m1-ra-apply-wip-a0
+  group: agent-m1-ra-apply-wip
   cancel-in-progress: false
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           : > "$LOG"
           {
-            echo "task=M1 R-A WIP A0 source patch"
+            echo "task=M1 R-A WIP A1 source patch"
             echo "event=$GITHUB_EVENT_NAME"
             echo "ref=$GITHUB_REF"
             echo "sha=$GITHUB_SHA"
@@ -50,14 +50,10 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git --version
 
-          PATCH="$RUNNER_TEMP/m1-ra-wip-a0.patch"
-          cat \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0-header.patch \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0-tracing-h.patch \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0-tracing-cpp.patch \
-            > "$PATCH"
+          PATCH="$RUNNER_TEMP/m1-ra-wip-a1.patch"
+          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a1.patch.gz.b64 | gzip -dc > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "07d8c087373bb8f9181ce1c946a32c2122875b27b7e810854ec595de2ec44d43"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "776ae8c4d155fa161f46073911a9502501172634d2a8796b3f85f23d5ab51246"
           if grep -E '^diff --git a/\.github/workflows/' "$PATCH"; then
             echo "workflow path found in patch" >&2
             exit 1
@@ -66,18 +62,15 @@ jobs:
           git apply --check "$PATCH"
           git apply "$PATCH"
           git diff --check
-          git add \
-            include/directional/geometry/SourceTopologyRegions.h \
-            include/directional/geometry/SurfaceCellTracing.h \
-            src/geometry/SurfaceCellTracing.cpp
+          git add include/directional/geometry/SurfaceCellTracing.h src/geometry/SurfaceCellTracing.cpp
           echo "staged_paths_begin"
           git diff --cached --name-only
           echo "staged_paths_end"
-          test "$(git diff --cached --name-only | wc -l)" -eq 3
+          test "$(git diff --cached --name-only | wc -l)" -eq 2
 
           git config user.name "directional-agent"
           git config user.email "directional-agent@users.noreply.github.com"
-          git commit -m "wip(m1): introduce checked source topology authority product"
+          git commit -m "wip(m1): route phase-front region checks through authority product"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "pushed_head=$(git rev-parse HEAD)"
 
@@ -85,7 +78,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-ra-wip-a0-log-${{ github.run_id }}
+          name: m1-ra-wip-a1-log-${{ github.run_id }}
           path: ${{ runner.temp }}/activity.log
           if-no-files-found: error
           retention-days: 7
