@@ -201,7 +201,7 @@ The former M1k per-turn report was retired under `CLEAN_UP_POLICY.md` after its 
 
 ### Operational notes
 
-- The preceding immutable runtime from artifact `9066967620` was blocked at M1h **5/6** and required-green **186/187** because the focused witness conflated producer chart-domain coverage `{0,1,2}` with sampled lattice-occurrence coverage `{0,2}`. It was classified as a test-authority defect, not a product regression; the accepted remediation was test-only and preserved the production implementation.
+- The preceding immutable runtime from artifact `9066967620` was blocked at M1h **5/6** and required-green **186/187** because the focused witness conflated producer chart-domain coverage `{0,1,2}` with sampled lattice-occurrence coverage `{0,2}`. It was classified as a test-authority witness defect, not a product regression; the accepted remediation was test-only and preserved the production implementation.
 - Historical regression totals remained **34 events / 14 categories / 20 recurrences**.
 - The superseded M1h artifact-only report was removed under `CLEAN_UP_POLICY.md` after its durable implementation/test-authority facts were consolidated here and in the regression tracker/GitHub artifact history.
 
