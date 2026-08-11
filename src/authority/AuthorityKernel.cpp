@@ -9,6 +9,7 @@
 #include <directional/authority/SourceSupport.h>
 
 #include <algorithm>
+#include <array>
 #include <utility>
 
 namespace directional::authority {
@@ -25,6 +26,19 @@ SourceEdgeTopologyKey::make(SourceVertexId a, SourceVertexId b) {
     std::swap(a, b);
   }
   return DomainResult<SourceEdgeTopologyKey>(SourceEdgeTopologyKey(a, b));
+}
+
+
+DomainResult<SourceFaceTopologyKey>
+SourceFaceTopologyKey::make(std::array<SourceVertexId, 3> vertices) {
+  std::sort(vertices.begin(), vertices.end());
+  if (vertices[0] == vertices[1] || vertices[1] == vertices[2]) {
+    return DomainResult<SourceFaceTopologyKey>(DomainError{
+        DomainErrorCode::DegenerateSourceFace, AuthorityDomain::SourceFace,
+        std::nullopt, static_cast<std::int64_t>(vertices[0].index()), 0});
+  }
+  return DomainResult<SourceFaceTopologyKey>(
+      SourceFaceTopologyKey(std::move(vertices)));
 }
 
 TransitionStep TransitionStep::boundary(SourceEdgeTopologyKey topology,
@@ -83,6 +97,14 @@ std::vector<TransitionStep> CanonicalRoute::oriented_steps() const {
 
 CanonicalRoute CanonicalRoute::reversed() const {
   return CanonicalRoute(canonicalSteps_, reverse_orientation(canonicalOrientation_));
+}
+
+GridAutomorphism CanonicalRoute::composed_transport() const noexcept {
+  GridAutomorphism result = GridAutomorphism::identity();
+  for (const TransitionStep &step : oriented_steps()) {
+    result = compose(step.transport(), result);
+  }
+  return result;
 }
 
 } // namespace directional::authority

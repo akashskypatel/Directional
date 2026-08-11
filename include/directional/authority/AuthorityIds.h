@@ -9,6 +9,7 @@
 #ifndef DIRECTIONAL_AUTHORITY_AUTHORITY_IDS_H
 #define DIRECTIONAL_AUTHORITY_AUTHORITY_IDS_H
 
+#include <array>
 #include <compare>
 #include <cstddef>
 #include <cstdint>
@@ -39,6 +40,7 @@ enum class DomainErrorCode : std::uint8_t {
   IndexOutOfRange,
   DomainMismatch,
   DegenerateSourceEdge,
+  DegenerateSourceFace,
   MissingInteriorTransition,
 };
 
@@ -198,6 +200,24 @@ private:
 
   SourceVertexId first_;
   SourceVertexId second_;
+};
+
+class SourceFaceTopologyKey {
+public:
+  [[nodiscard]] static DomainResult<SourceFaceTopologyKey>
+  make(std::array<SourceVertexId, 3> vertices);
+
+  [[nodiscard]] const std::array<SourceVertexId, 3> &vertices() const noexcept {
+    return vertices_;
+  }
+
+  auto operator<=>(const SourceFaceTopologyKey &) const = default;
+
+private:
+  explicit SourceFaceTopologyKey(std::array<SourceVertexId, 3> vertices)
+      : vertices_(std::move(vertices)) {}
+
+  std::array<SourceVertexId, 3> vertices_;
 };
 
 } // namespace directional::authority

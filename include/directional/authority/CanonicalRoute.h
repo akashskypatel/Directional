@@ -63,6 +63,8 @@ private:
 
 class CanonicalRoute {
 public:
+  CanonicalRoute() = default;
+
   [[nodiscard]] static CanonicalRoute
   from_observed_steps(std::vector<TransitionStep> observedSteps);
 
@@ -76,6 +78,8 @@ public:
 
   [[nodiscard]] std::vector<TransitionStep> oriented_steps() const;
   [[nodiscard]] CanonicalRoute reversed() const;
+  [[nodiscard]] GridAutomorphism composed_transport() const noexcept;
+  [[nodiscard]] bool empty() const noexcept { return canonicalSteps_.empty(); }
 
   auto operator<=>(const CanonicalRoute &) const = default;
 

@@ -28,6 +28,7 @@
 #include <Eigen/Dense>
 
 #include <directional/authority/AuthorityIds.h>
+#include <directional/authority/CanonicalRoute.h>
 #include <directional/fields/CrossField.h>
 #include <directional/geometry/ReliefTopology.h>
 
@@ -201,16 +202,34 @@ enum class SurfaceFrontBoundaryKind : int {
 
 /** Exact source-adjacent producer region, independent of proximity-isolation sheets. */
 struct SurfaceTopologyRegion {
-  int id = -1;
-  int sourceComponent = -1;
+  authority::TopologyRegionId id;
+  authority::SourceComponentId sourceComponent;
   int eulerCharacteristic = 0;
   int boundaryLoopCount = 0;
-  std::uint64_t structuralHash = 0;
-  std::vector<int> sourceFaces;
-  std::vector<int> isolationSheets;
-  std::vector<std::uint64_t> boundaryEdgeTopology;
-  std::vector<std::uint64_t> internalIsolationSeamTopology;
+  std::vector<authority::SourceFaceId> sourceFaces;
+  std::vector<authority::IsolationSheetId> isolationSheets;
+  std::vector<authority::SourceEdgeTopologyKey> boundaryEdgeTopology;
+  std::vector<authority::SourceEdgeTopologyKey> internalIsolationSeamTopology;
+
+  SurfaceTopologyRegion(
+      authority::TopologyRegionId regionId,
+      authority::SourceComponentId component,
+      std::vector<authority::SourceFaceId> faces,
+      std::vector<authority::IsolationSheetId> sheets,
+      std::vector<authority::SourceEdgeTopologyKey> boundaryEdges,
+      std::vector<authority::SourceEdgeTopologyKey> isolationSeams,
+      int euler, int boundaryLoops)
+      : id(regionId), sourceComponent(component),
+        eulerCharacteristic(euler), boundaryLoopCount(boundaryLoops),
+        sourceFaces(std::move(faces)), isolationSheets(std::move(sheets)),
+        boundaryEdgeTopology(std::move(boundaryEdges)),
+        internalIsolationSeamTopology(std::move(isolationSeams)) {}
+
+  auto operator<=>(const SurfaceTopologyRegion &) const = default;
 };
+
+[[nodiscard]] std::uint64_t
+surface_topology_region_hash(const SurfaceTopologyRegion &region);
 
 /**
  * Reciprocal source-field transport across one retained local-isolation seam.
@@ -220,57 +239,59 @@ struct SurfaceTopologyRegion {
  * transport entries are aligned with those canonical face identities.
  */
 struct SurfaceIsolationSeamTransportCertificate {
-  int sourceComponent = -1;
-  int sourceTopologyRegion = -1;
-  std::uint64_t sourceEdgeTopology = 0;
-  /// Source-wide compact interior-transition index for sourceEdgeTopology.
-  int sourceEdgeIndex = -1;
-  std::array<int, 3> firstSourceFaceTopology{{-1, -1, -1}};
-  std::array<int, 3> secondSourceFaceTopology{{-1, -1, -1}};
-  int firstIsolationSheet = -1;
-  int secondIsolationSheet = -1;
-  int forwardQuarterTurn = 0;
-  int reverseQuarterTurn = 0;
-  std::uint64_t structuralHash = 0;
+  authority::TopologyRegionId region;
+  authority::SourceEdgeTopologyKey seam;
+  authority::InteriorTransitionId transition;
+  authority::SourceFaceTopologyKey firstFace;
+  authority::SourceFaceTopologyKey secondFace;
+  authority::IsolationSheetId firstSheet;
+  authority::IsolationSheetId secondSheet;
+  authority::QuarterTurn forward;
+  authority::QuarterTurn reverse;
 
-  friend bool operator<(
-      const SurfaceIsolationSeamTransportCertificate &lhs,
-      const SurfaceIsolationSeamTransportCertificate &rhs) {
-    return std::tie(
-               lhs.sourceComponent, lhs.sourceTopologyRegion,
-               lhs.sourceEdgeTopology, lhs.sourceEdgeIndex,
-               lhs.firstSourceFaceTopology, lhs.secondSourceFaceTopology,
-               lhs.firstIsolationSheet, lhs.secondIsolationSheet,
-               lhs.forwardQuarterTurn, lhs.reverseQuarterTurn) <
-           std::tie(
-               rhs.sourceComponent, rhs.sourceTopologyRegion,
-               rhs.sourceEdgeTopology, rhs.sourceEdgeIndex,
-               rhs.firstSourceFaceTopology, rhs.secondSourceFaceTopology,
-               rhs.firstIsolationSheet, rhs.secondIsolationSheet,
-               rhs.forwardQuarterTurn, rhs.reverseQuarterTurn);
+  [[nodiscard]] static std::optional<SurfaceIsolationSeamTransportCertificate>
+  make(authority::TopologyRegionId region,
+       authority::SourceEdgeTopologyKey seam,
+       authority::InteriorTransitionId transition,
+       authority::SourceFaceTopologyKey firstFace,
+       authority::SourceFaceTopologyKey secondFace,
+       authority::IsolationSheetId firstSheet,
+       authority::IsolationSheetId secondSheet,
+       authority::QuarterTurn forward, authority::QuarterTurn reverse) {
+    if (firstSheet == secondSheet ||
+        compose(forward, reverse) != authority::QuarterTurn{}) {
+      return std::nullopt;
+    }
+    return SurfaceIsolationSeamTransportCertificate(
+        region, seam, transition, firstFace, secondFace, firstSheet,
+        secondSheet, forward, reverse);
   }
 
-  friend bool operator==(
-      const SurfaceIsolationSeamTransportCertificate &lhs,
-      const SurfaceIsolationSeamTransportCertificate &rhs) {
-    return lhs.sourceComponent == rhs.sourceComponent &&
-           lhs.sourceTopologyRegion == rhs.sourceTopologyRegion &&
-           lhs.sourceEdgeTopology == rhs.sourceEdgeTopology &&
-           lhs.sourceEdgeIndex == rhs.sourceEdgeIndex &&
-           lhs.firstSourceFaceTopology == rhs.firstSourceFaceTopology &&
-           lhs.secondSourceFaceTopology == rhs.secondSourceFaceTopology &&
-           lhs.firstIsolationSheet == rhs.firstIsolationSheet &&
-           lhs.secondIsolationSheet == rhs.secondIsolationSheet &&
-           lhs.forwardQuarterTurn == rhs.forwardQuarterTurn &&
-           lhs.reverseQuarterTurn == rhs.reverseQuarterTurn &&
-           lhs.structuralHash == rhs.structuralHash;
-  }
+  auto operator<=>(const SurfaceIsolationSeamTransportCertificate &) const = default;
+
+private:
+  SurfaceIsolationSeamTransportCertificate(
+      authority::TopologyRegionId regionValue,
+      authority::SourceEdgeTopologyKey seamValue,
+      authority::InteriorTransitionId transitionValue,
+      authority::SourceFaceTopologyKey firstFaceValue,
+      authority::SourceFaceTopologyKey secondFaceValue,
+      authority::IsolationSheetId firstSheetValue,
+      authority::IsolationSheetId secondSheetValue,
+      authority::QuarterTurn forwardValue, authority::QuarterTurn reverseValue)
+      : region(regionValue), seam(seamValue), transition(transitionValue),
+        firstFace(firstFaceValue), secondFace(secondFaceValue),
+        firstSheet(firstSheetValue), secondSheet(secondSheetValue),
+        forward(forwardValue), reverse(reverseValue) {}
 };
 
 struct SourceTopologyRegions {
-  bool valid = true;
-  std::vector<int> regionByFace;
+  std::vector<authority::TopologyRegionId> regionByFace;
   std::vector<SurfaceTopologyRegion> regions;
+
+  [[nodiscard]] bool complete_for_face_count(std::size_t faceCount) const noexcept {
+    return regionByFace.size() == faceCount;
+  }
 };
 
 struct SurfaceFrontEdge {
@@ -1047,13 +1068,14 @@ SourceSurfaceLabels classify_source_surface_labels(
     const std::set<std::uint64_t> &barrierEdges = {},
     const SourceSurfaceClassifierOptions &options = {});
 
-SourceTopologyRegions build_source_topology_regions(
+std::optional<SourceTopologyRegions> build_source_topology_regions(
     const Eigen::MatrixXi &faces,
     const SurfaceCellTracingOptions &options);
 
 bool source_edge_is_internal_isolation_seam(
     const SurfaceCellTracingOptions &options, const int faceCount,
-    const std::vector<int> &regionByFace, const int firstFace,
+    const std::vector<authority::TopologyRegionId> &regionByFace,
+    const int firstFace,
     const int secondFace, const std::uint64_t edgeKey);
 
 bool source_surface_classifier_options_valid(
