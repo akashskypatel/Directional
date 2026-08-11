@@ -61,31 +61,33 @@ This is a DURABLE mandatory start-of-turn checklist that must be followed at the
 
 ## Mandatory next turn
 
-Run **M1l Phase-Front Cell Topology-Region Consumer — immutable Artifact-Only Test + Benchmark only** under:
+Run **M1m Isolation-Seam Certificate Topology-Region Consumer — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`
+`.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1k are immutable accepted. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1l are immutable accepted. Review policy is `never`.
 
-Consume only M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` from exact Code + Build artifacts `9083262395 / 9083262833`. Their outer ZIP SHA-256 values are `3d79b86dbda5e87134aef79330d02c227e0c1ba1f291f24bff6a3946c1aa895c / a638cf52e9761ddead175aa32aa6824703c98c4553f97c0627e81baa82b3f1b8`.
+M1m is bounded to:
 
-This turn is artifact-only: do not edit source/tests/build/fixtures, rebuild, relink, configure, regenerate, substitute/repair package contents, alter executable permissions, or create fixture symlinks. Use the exact plan for preflight, discovery, M1l **6/6**, entering preservation, required-green **211/211**, independent product gates, known-red classification, timing characterization, bounded Bunny/Vase comparison, and exact postflight.
+`SurfaceTopologyRegion::id / build_isolation_seam_transport_certificates -> SurfaceIsolationSeamTransportCertificate::sourceTopologyRegion -> still-raw materializer/hash compatibility consumers`.
 
-Current Code + Build report:
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Report.md`.
+Migrate only certificate-owned topology-region identity to checked `TopologyRegionId`. Preserve `SurfaceTopologyRegion::id`, raw region-by-face maps, periodic/bounded-disk/occurrence/lineage region schemas, topology-region construction/numbering, accepted cell/edge region authority, certificate transport semantics, M2-M6, fallback/recovery, optimization, and G4 behavior.
+
+This is **Code + Build only**. Execute no generated Directional binary, GoogleTest discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input. Exactly six M1m production-path contracts compile only. Expected following runtime authority is producer **232**, M1m **6/6**, required-green **217/217**, plus all entering preservation gates.
+
+Current immutable report:
+`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`.
+`.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`.
 
 ## Current immutable authority
 
-M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` remains the current immutable semantic authority: producer **220**, M1k **6/6**, required-green **205/205**, full entering preservation, and required representative products accepted. Exact historical acceptance detail is retained in `CHANGELOG.md` and the regression tracker.
+M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` is immutable accepted from Code + Build artifacts `9083262395 / 9083262833` and artifact-only runtime `31444022339 / 93634344918`, with runtime evidence/log artifacts `9083913766 / 9083913939`. Producer authority is **226** discovered, M1l **6/6**, required-green **211/211**, all M1k-M1b focused preservation green, M1d/M1c counterexamples **3/3 + 3/3**, validation **77/77**, M1a **14/14**, T1 **29/29**, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent-oracle clean. All eight historical/deferred red classifications and exact **56/56** postflight were preserved.
 
-Strict-validator timing remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. No stable product regression event or recurrence was created; historical totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
+Strict-validator timing sampled **10/10 pass** but remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. No stable product regression event or recurrence was created; historical totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
 
-M1l Code + Build is complete but **not semantically accepted**. Its current immutable package authority is run/job `31441661026 / 93627457924`, artifacts `9083262395 / 9083262833`, manifest **56/56**, and producer SHA-256 `fe7da9a182c785ae14ba24264682470cce7ceec119ce34251a4bee80c7113856`.
-
-Repository-side cleanup is complete: the only retained per-turn files are the M1l Code + Build report and the M1l artifact-only next-turn plan; temporary M1l workflows, triggers, and payloads are removed, and only `.github/workflows/agent-source-snapshot.yml` remains durable.
+Repository-side per-turn retention is clean after closeout: retain the M1l immutable Test + Benchmark report and the single M1m next-turn plan in addition to durable documents. The consumed M1l Code + Build report and artifact-only plan are superseded once their necessary facts are preserved in the retained report/changelog/tracker.
 
 ## Mandatory end-of-turn checklist
 
@@ -102,21 +104,21 @@ This is a DURABLE mandatory end-of-turn checklist that must be followed at the e
 - Product gate **G4 topology-distinct completion and singularities** remains active and separate from architecture migration.
 - `PR8-R034 / G4-R007` / `G4-B001` remains the active direct-torus `LocalSheetMismatch` blocker.
 - `G4-B002` shared hard-rail scheduling, `G4-B003` nonzero periodic Z4 capability, and `G4-B004` positive multi-isolation witness remain unresolved.
-- M1a through M1k architecture acceptance does not claim G4 product completion.
+- M1a through M1l architecture acceptance does not claim G4 product completion.
 
 ## Resume-critical execution lessons
 
-- Use exact M1l artifact `9083262395` as the only next-turn runtime package; later documentation/control-plane commits are not runtime-evidence commits.
-- The first M1l compile exposed one stale raw test assertion; the corrected code subsequently compiled **121/121**. A later packaging attempt failed only because shallow history omitted the semantic diff base; the authoritative package explicitly fetched that base before manifest creation.
-- A single local Cylinder harness stall did not reproduce in immediate bounded local execution or controlled remote runs. Do not add product workarounds for it without new product evidence.
+- Use exact accepted M1l implementation/package/runtime authority above; later documentation/control-plane commits are not runtime-evidence commits.
+- One local first-process Cylinder stall did not reproduce in the immediate bounded local retry or authoritative remote artifact-only run. Do not add a product workaround without new product evidence.
+- M1m existing wrong-owner certificate coverage must preserve semantic intent after typing: use a genuinely distinct checked topology-region witness when needed rather than manufacturing an ID with a knowingly false extent. Detailed requirements are in the M1m plan.
 
 Workflow-specific execution rules and lessons are maintained in `.agents/Directional/GitHub_Workflow_Policy.md`.
 
 ## Core references
 
 - `TODO.md`;
-- `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Plan.md`;
+- `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
+- `.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`;
 - `.agents/Directional/CHANGELOG.md`;
 - `.agents/Directional/CLEAN_UP_POLICY.md`;
 - `.agents/Directional/RETENTION_POLICY.md`;
