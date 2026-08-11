@@ -891,7 +891,8 @@ TEST(SurfaceArrangementPhase16,
       sourceFaces.insert(value.sourceFace);
       strands.insert(value.strand);
       provenances.insert(value.provenance);
-      railIds.insert(value.railId);
+      ASSERT_TRUE(value.railId.has_value());
+      railIds.insert(value.railId.value());
       curveIds.insert(value.curveId);
       proposalIds.insert(value.proposalId);
       EXPECT_EQ(value.sourceComponent, 2);

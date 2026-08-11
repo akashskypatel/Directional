@@ -414,11 +414,17 @@ Fixture make_same_corner_distinct_boundary_components() {
 
   directional::geometry::SurfaceCellComplex alternate = component.complex;
   for (auto &edge : alternate.halfedges) {
-    edge.railId += 1000;
+    if (edge.railId.has_value()) {
+      edge.railId = test_hard_rail_id(
+          static_cast<int>(edge.railId->index()) + 1000);
+    }
     edge.curveId += 2000;
     edge.proposalBoundarySegment += 3000;
     for (auto &provenance : edge.provenance) {
-      provenance.railId += 1000;
+      if (provenance.railId.has_value()) {
+        provenance.railId = test_hard_rail_id(
+            static_cast<int>(provenance.railId->index()) + 1000);
+      }
       provenance.curveId += 2000;
       provenance.proposalBoundarySegment += 3000;
     }
@@ -500,7 +506,7 @@ Fixture make_valid_parallel_route_same_corner_complex() {
     edge.strand = edge.sourceArc;
     edge.sourceComponent = 0;
     edge.sourceSheet = 0;
-    edge.railId = (alternateRoute ? 1000 : 0) + side;
+    edge.railId = test_hard_rail_id((alternateRoute ? 1000 : 0) + side);
     edge.curveId = (alternateRoute ? 2000 : 1000) + side;
     edge.sourceT0 = 0.0;
     edge.sourceT1 = 1.0;

@@ -99,13 +99,14 @@ std::vector<std::uint64_t> exact_rollback_identity(
       identity, static_cast<std::int64_t>(complex.halfedges.size()));
   for (const SurfaceArrangementHalfedge &edge : complex.halfedges) {
     for (const std::int64_t value :
-         {edge.id, edge.twin, edge.next, edge.from, edge.to, edge.sourceArc,
-          edge.family, edge.strand, edge.featureClass, edge.sourceFace,
-          edge.hardFeature ? 1 : 0, edge.layoutSupport ? 1 : 0,
-          edge.singularitySupport ? 1 : 0, rail_id_leaf(edge.railId), edge.curveId,
-          edge.sourceComponent, edge.sourceSheet, edge.proposalId,
-          edge.proposalSeedId, edge.proposalSide,
-          edge.proposalBoundarySegment, edge.cell}) {
+         std::array<std::int64_t, 22>{
+             edge.id, edge.twin, edge.next, edge.from, edge.to,
+             edge.sourceArc, edge.family, edge.strand, edge.featureClass,
+             edge.sourceFace, edge.hardFeature ? 1 : 0,
+             edge.layoutSupport ? 1 : 0, edge.singularitySupport ? 1 : 0,
+             rail_id_leaf(edge.railId), edge.curveId, edge.sourceComponent,
+             edge.sourceSheet, edge.proposalId, edge.proposalSeedId,
+             edge.proposalSide, edge.proposalBoundarySegment, edge.cell}) {
       append_rollback_word(identity, value);
     }
     append_rollback_double(identity, edge.sourceT0);
@@ -116,15 +117,17 @@ std::vector<std::uint64_t> exact_rollback_identity(
         identity, static_cast<std::int64_t>(edge.provenance.size()));
     for (const SurfaceArrangementProvenance &provenance : edge.provenance) {
       for (const std::int64_t value :
-           {provenance.sourceArc, provenance.provenance,
-            provenance.sourceFace, provenance.family, provenance.strand,
-            provenance.featureClass, provenance.hardFeature ? 1 : 0,
-            provenance.layoutSupport ? 1 : 0,
-            provenance.singularitySupport ? 1 : 0, rail_id_leaf(provenance.railId),
-            provenance.curveId, provenance.sourceComponent,
-            provenance.sourceSheet, provenance.proposalId,
-            provenance.proposalSeedId, provenance.proposalSide,
-            provenance.proposalBoundarySegment}) {
+           std::array<std::int64_t, 17>{
+               provenance.sourceArc, provenance.provenance,
+               provenance.sourceFace, provenance.family, provenance.strand,
+               provenance.featureClass, provenance.hardFeature ? 1 : 0,
+               provenance.layoutSupport ? 1 : 0,
+               provenance.singularitySupport ? 1 : 0,
+               rail_id_leaf(provenance.railId), provenance.curveId,
+               provenance.sourceComponent, provenance.sourceSheet,
+               provenance.proposalId, provenance.proposalSeedId,
+               provenance.proposalSide,
+               provenance.proposalBoundarySegment}) {
         append_rollback_word(identity, value);
       }
       append_rollback_double(identity, provenance.sourceT0);
