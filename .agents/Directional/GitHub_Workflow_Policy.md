@@ -40,6 +40,23 @@ Compile-only workflows may checkout exact bounded source, apply a pre-verified s
 
 They may **not** execute any generated project binary, including tests, benchmarks, CLI/GUI programs, help/list commands, discovery commands, custom-mesh commands, or version/smoke execution. Successful build artifacts must record `runtimeExecution=false` or equivalent command-boundary evidence.
 
+## Compile-cache policy
+
+Compile-only GitHub Actions jobs should use GitHub Actions dependency caching when repeated rebuilds of nearby commits would otherwise recompile unchanged translation units. The cache is a performance aid only; exact source SHA, toolchain, configure options, and compile command remain authoritative, and a cache hit is never build evidence by itself. See GitHub's dependency-caching reference: https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching#managing-caches.
+
+For C/C++ work, prefer a compiler cache such as `ccache` over restoring an opaque whole build tree. A compiler cache safely reuses object results keyed by compiler/options/source content while allowing Ninja/CMake to rebuild changed units. Cache keys must include the runner OS, compiler/toolchain identity, build mode, and a deliberately versioned cache epoch. Restore keys may fall back only within that compatible toolchain/build-mode lineage.
+
+When a compile fails after producing reusable objects, the workflow should preserve those compiler-cache entries before reporting the final compile failure, so the corrected re-trigger can reuse completed work without violating the Code + Build runtime boundary. The workflow must still fail closed on the original compile exit code after cache/evidence handling.
+
+Keep compile caches lean. Do **not** create an unbounded per-commit cache lineage. Use one of these bounded strategies:
+
+- reuse an existing compatible cache key/epoch whenever possible instead of minting a new cache for every source SHA; or
+- if rolling keys are required to capture new partial-build entries, cap the compiler cache size aggressively and prune old runner-cache entries so only the smallest useful recent lineage is retained.
+
+Repository cache storage must not become a second artifact archive. Cache generated object/compiler entries only; do not cache packaged build artifacts, immutable evidence archives, source snapshots, fixtures already in Git, or other durable records. Prefer a small bounded cache (for example a few hundred MiB for the active compile lineage) and rely on GitHub's cache eviction of entries not accessed for more than seven days as an additional backstop, not as the primary anti-bloat mechanism. If a workflow introduces rolling cache keys, it must document the retention/pruning mechanism in the workflow or turn record.
+
+Cache restore/save operations must be logged, including cache key, hit/miss status when available, configured size cap, and whether pruning occurred. Cache contents must never contain secrets or credentials.
+
 ## Test + Benchmark execution boundary
 
 Artifact-only Test + Benchmark turns download the exact declared build artifact, verify outer digest/recursive checksums/source/blobs/dependency/fixture closure/command-boundary metadata before runtime execution, extract into a fresh arbitrary directory, may create runtime-only symlinks only for immutable packaged fixture paths, and execute validation only from packaged binaries/inputs.
