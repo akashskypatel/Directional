@@ -6,7 +6,6 @@
 
 #include <directional/authority/AuthorityIds.h>
 #include <directional/authority/CanonicalRoute.h>
-#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/authority/SourceSupport.h>
 
 #include <algorithm>
@@ -20,7 +19,7 @@ SourceEdgeTopologyKey::make(SourceVertexId a, SourceVertexId b) {
     return DomainResult<SourceEdgeTopologyKey>(DomainError{
         DomainErrorCode::DegenerateSourceEdge,
         AuthorityDomain::SourceEdgeTopology, std::nullopt,
-        static_cast<std::int64_t>(a.value()), 0});
+        static_cast<std::int64_t>(a.index()), 0});
   }
   if (b < a) {
     std::swap(a, b);
@@ -84,84 +83,6 @@ std::vector<TransitionStep> CanonicalRoute::oriented_steps() const {
 
 CanonicalRoute CanonicalRoute::reversed() const {
   return CanonicalRoute(canonicalSteps_, reverse_orientation(canonicalOrientation_));
-}
-
-DomainResult<SourceVertexId>
-LegacyAuthorityAdapters::source_vertex(std::int64_t legacyValue,
-                                       std::size_t extent) {
-  return checked<SourceVertexId>(AuthorityDomain::SourceVertex, legacyValue,
-                                 extent);
-}
-
-DomainResult<SourceFaceId>
-LegacyAuthorityAdapters::source_face(std::int64_t legacyValue,
-                                     std::size_t extent) {
-  return checked<SourceFaceId>(AuthorityDomain::SourceFace, legacyValue, extent);
-}
-
-DomainResult<InteriorTransitionId>
-LegacyAuthorityAdapters::interior_transition(std::int64_t legacyValue,
-                                             std::size_t extent) {
-  return checked<InteriorTransitionId>(AuthorityDomain::InteriorTransition,
-                                       legacyValue, extent);
-}
-
-DomainResult<SourceComponentId>
-LegacyAuthorityAdapters::source_component(std::int64_t legacyValue,
-                                          std::size_t extent) {
-  return checked<SourceComponentId>(AuthorityDomain::SourceComponent,
-                                    legacyValue, extent);
-}
-
-DomainResult<IsolationSheetId>
-LegacyAuthorityAdapters::isolation_sheet(std::int64_t legacyValue,
-                                         std::size_t extent) {
-  return checked<IsolationSheetId>(AuthorityDomain::IsolationSheet, legacyValue,
-                                   extent);
-}
-
-DomainResult<TopologyRegionId>
-LegacyAuthorityAdapters::topology_region(std::int64_t legacyValue,
-                                         std::size_t extent) {
-  return checked<TopologyRegionId>(AuthorityDomain::TopologyRegion, legacyValue,
-                                   extent);
-}
-
-DomainResult<FieldChartId>
-LegacyAuthorityAdapters::field_chart(std::int64_t legacyValue,
-                                     std::size_t extent) {
-  return checked<FieldChartId>(AuthorityDomain::FieldChart, legacyValue, extent);
-}
-
-DomainResult<HardRailId>
-LegacyAuthorityAdapters::hard_rail(std::int64_t legacyValue,
-                                   std::size_t extent) {
-  return checked<HardRailId>(AuthorityDomain::HardRail, legacyValue, extent);
-}
-
-DomainResult<PeriodicRelationId>
-LegacyAuthorityAdapters::periodic_relation(std::int64_t legacyValue,
-                                           std::size_t extent) {
-  return checked<PeriodicRelationId>(AuthorityDomain::PeriodicRelation,
-                                     legacyValue, extent);
-}
-
-DomainResult<CellId> LegacyAuthorityAdapters::cell(std::int64_t legacyValue,
-                                                    std::size_t extent) {
-  return checked<CellId>(AuthorityDomain::Cell, legacyValue, extent);
-}
-
-DomainResult<OccurrenceId>
-LegacyAuthorityAdapters::occurrence(std::int64_t legacyValue,
-                                    std::size_t extent) {
-  return checked<OccurrenceId>(AuthorityDomain::Occurrence, legacyValue, extent);
-}
-
-DomainResult<QuotientClassId>
-LegacyAuthorityAdapters::quotient_class(std::int64_t legacyValue,
-                                        std::size_t extent) {
-  return checked<QuotientClassId>(AuthorityDomain::QuotientClass, legacyValue,
-                                  extent);
 }
 
 } // namespace directional::authority
