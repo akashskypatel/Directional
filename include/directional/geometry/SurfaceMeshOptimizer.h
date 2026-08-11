@@ -469,7 +469,7 @@ SurfacePoint nearest_source_point(
 int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constraints,
                                     const int vertex);
 
-int feature_sequence_for_vertex(
+SurfaceFeatureSequenceKey feature_sequence_for_vertex(
     const SurfaceOptimizationConstraints &constraints, const int vertex);
 
 int feature_interval_for_vertex(
