@@ -2996,8 +2996,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     lineage.outputQuad = outputQuad;
     lineage.sourcePatch = 0;
     lineage.operation = geometry::PureQuadCompletionBackend::ClosedForm;
-    lineage.operationLocalQuad =
-        phaseFront.cells[static_cast<std::size_t>(pending.cellIndex)].id;
+    lineage.operationLocalQuad = static_cast<int>(
+        phaseFront.cells[static_cast<std::size_t>(pending.cellIndex)].id.index());
     lineage.completionVariant = 0;
     lineage.boundaryOnly = false;
     result.mesh.quadLineage.push_back(std::move(lineage));
