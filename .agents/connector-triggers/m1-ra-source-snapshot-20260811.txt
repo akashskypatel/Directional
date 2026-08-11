@@ -1,3 +1,5 @@
 M1 R-A source snapshot trigger
 workflow: .github/workflows/agent-m1-ra-source-snapshot.yml
 created: 2026-08-11
+attempt: 2
+purpose: compare current remote against complete local R-A source authority product
