@@ -659,15 +659,21 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     const int first = static_cast<int>(topology >> 32U);
     const int second = static_cast<int>(
         topology & static_cast<std::uint64_t>(0xffffffffU));
-    if (support.kind ==
-        geometry::SurfacePointSourceEntityKind::SourceEdge) {
-      return support.sourceEdge ==
-             std::make_pair(std::min(first, second),
-                            std::max(first, second));
+    if (!support.identity.has_value()) return false;
+    if (const auto *edgeSupport =
+            std::get_if<authority::SourceEdgeSupport>(&support.identity.value())) {
+      return static_cast<int>(edgeSupport->edge.first().index()) ==
+                 std::min(first, second) &&
+             static_cast<int>(edgeSupport->edge.second().index()) ==
+                 std::max(first, second);
     }
-    return support.kind ==
-               geometry::SurfacePointSourceEntityKind::SourceVertex &&
-           (support.sourceVertex == first || support.sourceVertex == second);
+    if (const auto *vertexSupport =
+            std::get_if<authority::SourceVertexSupport>(&support.identity.value())) {
+      const int sourceVertex =
+          static_cast<int>(vertexSupport->vertex.index());
+      return sourceVertex == first || sourceVertex == second;
+    }
+    return false;
   };
   const auto relation_components = [&](
                                         const SourceHardRailChartEquivalence
@@ -734,7 +740,8 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     if (!support.valid()) {
       return false;
     }
-    for (const int face : support.supportedFaces) {
+    for (const authority::SourceFaceId sourceFace : support.incidentFaces) {
+      const int face = static_cast<int>(sourceFace.index());
       geometry::SurfacePoint rebound;
       if (!transitionGraph.rebind(point, face, rebound)) {
         continue;
@@ -818,9 +825,12 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
       for (const geometry::SurfaceCellProjectionChart &chart :
            authority.sourceCharts) {
         if (!chart.valid() || chart.sourceFace >= sourceFaces->rows() ||
-            !std::binary_search(support.supportedFaces.begin(),
-                                support.supportedFaces.end(),
-                                chart.sourceFace)) {
+            !std::binary_search(
+                support.incidentFaces.begin(), support.incidentFaces.end(),
+                authority::SourceFaceId::from_index(
+                    chart.sourceFace,
+                    static_cast<std::size_t>(sourceFaces->rows()))
+                    .value())) {
           return {};
         }
         const geometry::SourceProjectionChart actual =

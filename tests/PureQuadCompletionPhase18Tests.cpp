@@ -1029,18 +1029,28 @@ TEST(PureQuadCompletionPhase18,
   const auto vertexSupport =
       resolver.resolve(fixture.patch.boundaryProvenance[0]);
   ASSERT_TRUE(vertexSupport.valid());
-  EXPECT_EQ(directional::geometry::SurfacePointSourceEntityKind::SourceVertex,
-            vertexSupport.kind);
-  EXPECT_EQ(0, vertexSupport.sourceVertex);
-  EXPECT_EQ((std::vector<int>{0, 1}), vertexSupport.supportedFaces);
+  ASSERT_TRUE(vertexSupport.identity.has_value());
+  const auto *vertex =
+      std::get_if<directional::authority::SourceVertexSupport>(
+          &vertexSupport.identity.value());
+  ASSERT_NE(nullptr, vertex);
+  EXPECT_EQ(0U, vertex->vertex.index());
+  ASSERT_EQ(2U, vertexSupport.incidentFaces.size());
+  EXPECT_EQ(0U, vertexSupport.incidentFaces[0].index());
+  EXPECT_EQ(1U, vertexSupport.incidentFaces[1].index());
 
   const auto edgeSupport =
       resolver.resolve(fixture.patch.boundaryProvenance[3]);
   ASSERT_TRUE(edgeSupport.valid());
-  EXPECT_EQ(directional::geometry::SurfacePointSourceEntityKind::SourceEdge,
-            edgeSupport.kind);
-  EXPECT_EQ((std::pair<int, int>{0, 2}), edgeSupport.sourceEdge);
-  EXPECT_EQ((std::vector<int>{0, 1}), edgeSupport.supportedFaces);
+  ASSERT_TRUE(edgeSupport.identity.has_value());
+  const auto *edge = std::get_if<directional::authority::SourceEdgeSupport>(
+      &edgeSupport.identity.value());
+  ASSERT_NE(nullptr, edge);
+  EXPECT_EQ(0U, edge->edge.first().index());
+  EXPECT_EQ(2U, edge->edge.second().index());
+  ASSERT_EQ(2U, edgeSupport.incidentFaces.size());
+  EXPECT_EQ(0U, edgeSupport.incidentFaces[0].index());
+  EXPECT_EQ(1U, edgeSupport.incidentFaces[1].index());
 }
 
 TEST(PureQuadCompletionPhase18,
@@ -1091,8 +1101,10 @@ TEST(PureQuadCompletionPhase18,
       "CompletionOwnershipSourceSupportEscape:"));
   EXPECT_TRUE(completion.ownershipRejection.active);
   EXPECT_TRUE(completion.ownershipRejection.boundaryVertex);
-  EXPECT_EQ(directional::geometry::SurfacePointSourceEntityKind::FaceInterior,
-            completion.ownershipRejection.sourceEntityKind);
+  ASSERT_TRUE(completion.ownershipRejection.sourceSupport.has_value());
+  EXPECT_TRUE(std::holds_alternative<
+              directional::authority::SourceFaceInteriorSupport>(
+      completion.ownershipRejection.sourceSupport.value()));
 }
 
 TEST(PureQuadCompletionPhase18,

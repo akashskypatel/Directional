@@ -222,17 +222,24 @@ public:
     }
     entity.component = sourceChart.component;
     const int chartComponent = chart_component(point.face);
-    if (support.kind == SurfacePointSourceEntityKind::FaceInterior) {
+    if (const auto *faceSupport =
+            std::get_if<authority::SourceFaceInteriorSupport>(
+                &support.identity.value())) {
       entity.kind = SourceEntityKind::FaceInterior;
-      entity.firstSourceIndex = point.face;
+      entity.firstSourceIndex =
+          static_cast<int>(faceSupport->face.index());
       entity.intrinsicFan = chartComponent;
-      entity.canonical = face_identity(point.face, chartComponent);
+      entity.canonical = face_identity(entity.firstSourceIndex, chartComponent);
       return entity;
     }
-    if (support.kind == SurfacePointSourceEntityKind::SourceEdge) {
+    if (const auto *edgeSupport =
+            std::get_if<authority::SourceEdgeSupport>(
+                &support.identity.value())) {
       entity.kind = SourceEntityKind::SourceEdge;
-      entity.firstSourceIndex = support.sourceEdge.first;
-      entity.secondSourceIndex = support.sourceEdge.second;
+      entity.firstSourceIndex =
+          static_cast<int>(edgeSupport->edge.first().index());
+      entity.secondSourceIndex =
+          static_cast<int>(edgeSupport->edge.second().index());
       entity.intrinsicFan = chartComponent;
       entity.canonical.valid = chartComponent >= 0;
       entity.canonical.values = {
@@ -241,18 +248,22 @@ public:
           chartComponent};
       return entity;
     }
-    if (support.kind == SurfacePointSourceEntityKind::SourceVertex) {
-      const auto found = vertexFanOrdinal_.find({point.face, support.sourceVertex});
+    if (const auto *vertexSupport =
+            std::get_if<authority::SourceVertexSupport>(
+                &support.identity.value())) {
+      const int sourceVertex =
+          static_cast<int>(vertexSupport->vertex.index());
+      const auto found = vertexFanOrdinal_.find({point.face, sourceVertex});
       if (found == vertexFanOrdinal_.end()) {
         return {};
       }
       entity.kind = SourceEntityKind::SourceVertex;
-      entity.firstSourceIndex = support.sourceVertex;
+      entity.firstSourceIndex = sourceVertex;
       entity.intrinsicFan = found->second;
       entity.canonical.valid = true;
       entity.canonical.values = {
           static_cast<std::int64_t>(SourceEntityKind::SourceVertex),
-          entity.component, support.sourceVertex, entity.intrinsicFan};
+          entity.component, sourceVertex, entity.intrinsicFan};
       return entity;
     }
     return {};
@@ -350,7 +361,8 @@ public:
         return -1;
       }
       std::set<int> pointComponents;
-      for (const int face : support.supportedFaces) {
+      for (const authority::SourceFaceId sourceFace : support.incidentFaces) {
+        const int face = static_cast<int>(sourceFace.index());
         SurfacePoint rebound;
         if (rebind(*point, face, rebound)) {
           const int component = chart_component(face);

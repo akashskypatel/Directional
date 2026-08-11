@@ -17,6 +17,7 @@
 #include <map>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <set>
 #include <string>
 #include <tuple>
@@ -337,11 +338,8 @@ struct PureQuadCompletionOwnershipRejection {
   int completionVariant = 0;
   int storedFace = -1;
   Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
-  SurfacePointSourceEntityKind sourceEntityKind =
-      SurfacePointSourceEntityKind::Invalid;
-  int sourceVertex = -1;
-  std::array<int, 2> sourceEdge{{-1, -1}};
-  std::vector<int> candidateSupportedFaces;
+  std::optional<authority::SourceSupport> sourceSupport;
+  std::vector<authority::SourceFaceId> candidateSupportedFaces;
   std::vector<int> patchSourceFaces;
   int sourceComponent = -1;
   int sourceSheet = -1;

@@ -13,36 +13,16 @@
 #include <algorithm>
 #include <cmath>
 #include <map>
+#include <optional>
 #include <utility>
 #include <vector>
 
 #include <Eigen/Core>
 
+#include <directional/authority/SourceSupport.h>
 #include <directional/geometry/SurfacePoint.h>
 
 namespace directional::geometry {
-
-enum class SurfacePointSourceEntityKind : int {
-  Invalid = 0,
-  FaceInterior = 1,
-  SourceEdge = 2,
-  SourceVertex = 3,
-};
-
-inline const char *surface_point_source_entity_kind_name(
-    const SurfacePointSourceEntityKind kind) {
-  switch (kind) {
-  case SurfacePointSourceEntityKind::Invalid:
-    return "invalid";
-  case SurfacePointSourceEntityKind::FaceInterior:
-    return "face-interior";
-  case SurfacePointSourceEntityKind::SourceEdge:
-    return "source-edge";
-  case SurfacePointSourceEntityKind::SourceVertex:
-    return "source-vertex";
-  }
-  return "invalid";
-}
 
 enum class SurfacePointSourceSupportFailure : int {
   None = 0,
@@ -79,19 +59,36 @@ inline const char *surface_point_source_support_failure_name(
 }
 
 struct SurfacePointSourceSupport {
-  SurfacePointSourceEntityKind kind = SurfacePointSourceEntityKind::Invalid;
+  std::optional<authority::SourceSupport> identity;
   SurfacePointSourceSupportFailure failure =
       SurfacePointSourceSupportFailure::None;
-  int sourceVertex = -1;
-  std::pair<int, int> sourceEdge{-1, -1};
-  std::vector<int> supportedFaces;
+  std::vector<authority::SourceFaceId> incidentFaces;
 
   [[nodiscard]] bool valid() const {
-    return kind != SurfacePointSourceEntityKind::Invalid &&
+    return identity.has_value() &&
            failure == SurfacePointSourceSupportFailure::None &&
-           !supportedFaces.empty();
+           !incidentFaces.empty();
+  }
+
+  [[nodiscard]] std::optional<authority::SourceSupportKind> kind() const {
+    if (!identity.has_value()) return std::nullopt;
+    return authority::support_kind(identity.value());
   }
 };
+
+inline const char *surface_point_source_support_kind_name(
+    const SurfacePointSourceSupport &support) {
+  if (!support.identity.has_value()) return "invalid";
+  switch (authority::support_kind(support.identity.value())) {
+  case authority::SourceSupportKind::FaceInterior:
+    return "face-interior";
+  case authority::SourceSupportKind::Edge:
+    return "source-edge";
+  case authority::SourceSupportKind::Vertex:
+    return "source-vertex";
+  }
+  return "invalid";
+}
 
 /**
  * Resolves the intrinsic source entity supporting a SurfacePoint.
@@ -175,44 +172,61 @@ public:
       }
     }
 
+    const auto sourceFace = authority::SourceFaceId::from_index(
+        point.face, static_cast<std::size_t>(sourceFaces_->rows()));
+    if (!sourceFace) {
+      result.failure = SurfacePointSourceSupportFailure::InvalidSourceFace;
+      return result;
+    }
+
     if (supportCorners.size() == 3U) {
-      result.kind = SurfacePointSourceEntityKind::FaceInterior;
-      result.supportedFaces.push_back(point.face);
+      result.identity = authority::SourceFaceInteriorSupport{sourceFace.value()};
+      result.incidentFaces.push_back(sourceFace.value());
       return result;
     }
     if (supportCorners.size() == 2U) {
       const int first = (*sourceFaces_)(point.face, supportCorners[0]);
       const int second = (*sourceFaces_)(point.face, supportCorners[1]);
-      if (first < 0 || second < 0 || first == second) {
+      const auto firstVertex = authority::SourceVertexId::from_index(
+          first, vertexFaces_.size());
+      const auto secondVertex = authority::SourceVertexId::from_index(
+          second, vertexFaces_.size());
+      if (!firstVertex || !secondVertex) {
         result.failure =
             SurfacePointSourceSupportFailure::AmbiguousSourceEntity;
         return result;
       }
-      result.kind = SurfacePointSourceEntityKind::SourceEdge;
-      result.sourceEdge = canonical_edge(first, second);
-      const auto found = edgeFaces_.find(result.sourceEdge);
+      const auto edge = authority::SourceEdgeTopologyKey::make(
+          firstVertex.value(), secondVertex.value());
+      if (!edge) {
+        result.failure =
+            SurfacePointSourceSupportFailure::AmbiguousSourceEntity;
+        return result;
+      }
+      const auto found = edgeFaces_.find(edge.value());
       if (found == edgeFaces_.end() || found->second.empty()) {
-        result.kind = SurfacePointSourceEntityKind::Invalid;
         result.failure =
             SurfacePointSourceSupportFailure::MissingSourceEntityIncidence;
         return result;
       }
-      result.supportedFaces = found->second;
+      result.identity = authority::SourceEdgeSupport{edge.value()};
+      result.incidentFaces = found->second;
       return result;
     }
     if (supportCorners.size() == 1U) {
       const int vertex = (*sourceFaces_)(point.face, supportCorners.front());
-      if (vertex < 0 || vertex >= static_cast<int>(vertexFaces_.size())) {
+      const auto sourceVertex = authority::SourceVertexId::from_index(
+          vertex, vertexFaces_.size());
+      if (!sourceVertex) {
         result.failure =
             SurfacePointSourceSupportFailure::AmbiguousSourceEntity;
         return result;
       }
-      result.kind = SurfacePointSourceEntityKind::SourceVertex;
-      result.sourceVertex = vertex;
-      result.supportedFaces =
-          vertexFaces_[static_cast<std::size_t>(vertex)];
-      if (result.supportedFaces.empty()) {
-        result.kind = SurfacePointSourceEntityKind::Invalid;
+      result.identity = authority::SourceVertexSupport{sourceVertex.value()};
+      result.incidentFaces =
+          vertexFaces_[sourceVertex.value().index()];
+      if (result.incidentFaces.empty()) {
+        result.identity.reset();
         result.failure =
             SurfacePointSourceSupportFailure::MissingSourceEntityIncidence;
       }
@@ -224,12 +238,6 @@ public:
   }
 
 private:
-  [[nodiscard]] static std::pair<int, int> canonical_edge(const int first,
-                                                           const int second) {
-    return first < second ? std::make_pair(first, second)
-                          : std::make_pair(second, first);
-  }
-
   void build_incidence() {
     if (!available()) {
       return;
@@ -242,19 +250,31 @@ private:
     }
     vertexFaces_.resize(
         static_cast<std::size_t>(std::max(0, maximumVertex + 1)));
+    const std::size_t faceExtent =
+        static_cast<std::size_t>(sourceFaces_->rows());
     for (int face = 0; face < sourceFaces_->rows(); ++face) {
+      const auto sourceFace = authority::SourceFaceId::from_index(face, faceExtent);
+      if (!sourceFace) continue;
       for (int corner = 0; corner < 3; ++corner) {
         const int vertex = (*sourceFaces_)(face, corner);
         const int next = (*sourceFaces_)(face, (corner + 1) % 3);
-        if (vertex >= 0 && vertex < static_cast<int>(vertexFaces_.size())) {
-          vertexFaces_[static_cast<std::size_t>(vertex)].push_back(face);
+        const auto sourceVertex = authority::SourceVertexId::from_index(
+            vertex, vertexFaces_.size());
+        if (sourceVertex) {
+          vertexFaces_[sourceVertex.value().index()].push_back(sourceFace.value());
         }
-        if (vertex >= 0 && next >= 0 && vertex != next) {
-          edgeFaces_[canonical_edge(vertex, next)].push_back(face);
+        const auto nextVertex = authority::SourceVertexId::from_index(
+            next, vertexFaces_.size());
+        if (sourceVertex && nextVertex) {
+          const auto edge = authority::SourceEdgeTopologyKey::make(
+              sourceVertex.value(), nextVertex.value());
+          if (edge) {
+            edgeFaces_[edge.value()].push_back(sourceFace.value());
+          }
         }
       }
     }
-    for (std::vector<int> &faces : vertexFaces_) {
+    for (auto &faces : vertexFaces_) {
       canonicalize_faces(faces);
     }
     for (auto &[edge, faces] : edgeFaces_) {
@@ -263,15 +283,18 @@ private:
     }
   }
 
-  static void canonicalize_faces(std::vector<int> &faces) {
+  static void canonicalize_faces(std::vector<authority::SourceFaceId> &faces) {
     std::sort(faces.begin(), faces.end());
     faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
   }
 
   const Eigen::MatrixXi *sourceFaces_ = nullptr;
   double barycentricTolerance_ = 1.0e-8;
-  std::vector<std::vector<int>> vertexFaces_;
-  std::map<std::pair<int, int>, std::vector<int>> edgeFaces_;
+  std::vector<std::vector<authority::SourceFaceId>> vertexFaces_;
+  std::map<authority::SourceEdgeTopologyKey,
+           std::vector<authority::SourceFaceId>>
+      edgeFaces_;
+
 };
 
 } // namespace directional::geometry

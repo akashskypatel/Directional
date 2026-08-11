@@ -836,6 +836,24 @@ void hash_source_face_topology_key(
   }
 }
 
+void hash_source_support(
+    std::uint64_t &seed,
+    const std::optional<authority::SourceSupport> &support) {
+  hash_combine_i64(seed, support.has_value() ? 1 : 0);
+  if (!support.has_value()) return;
+  hash_combine_i64(seed, static_cast<int>(authority::support_kind(*support)));
+  if (const auto *vertex =
+          std::get_if<authority::SourceVertexSupport>(&*support)) {
+    hash_semantic_id(seed, vertex->vertex);
+  } else if (const auto *edge =
+                 std::get_if<authority::SourceEdgeSupport>(&*support)) {
+    hash_source_edge_topology_key(seed, edge->edge);
+  } else if (const auto *face =
+                 std::get_if<authority::SourceFaceInteriorSupport>(&*support)) {
+    hash_semantic_id(seed, face->face);
+  }
+}
+
 } // namespace directional::pipeline
 
 namespace directional::pipeline {
@@ -7246,14 +7264,35 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             static_cast<std::size_t>(coordinate)] =
             ownershipRejection.barycentric(coordinate);
       }
-      result.diagnostics.surfaceCellCompletionOwnershipEntityKind =
-          static_cast<int>(ownershipRejection.sourceEntityKind);
-      result.diagnostics.surfaceCellCompletionOwnershipSourceVertex =
-          ownershipRejection.sourceVertex;
-      result.diagnostics.surfaceCellCompletionOwnershipSourceEdge =
-          ownershipRejection.sourceEdge;
-      result.diagnostics.surfaceCellCompletionOwnershipCandidateFaces =
-          ownershipRejection.candidateSupportedFaces;
+      result.diagnostics.surfaceCellCompletionOwnershipEntityKind = 0;
+      result.diagnostics.surfaceCellCompletionOwnershipSourceVertex = -1;
+      result.diagnostics.surfaceCellCompletionOwnershipSourceEdge = {{-1, -1}};
+      if (ownershipRejection.sourceSupport.has_value()) {
+        if (const auto *vertex =
+                std::get_if<authority::SourceVertexSupport>(
+                    &ownershipRejection.sourceSupport.value())) {
+          result.diagnostics.surfaceCellCompletionOwnershipEntityKind = 3;
+          result.diagnostics.surfaceCellCompletionOwnershipSourceVertex =
+              static_cast<int>(vertex->vertex.index());
+        } else if (const auto *edge =
+                       std::get_if<authority::SourceEdgeSupport>(
+                           &ownershipRejection.sourceSupport.value())) {
+          result.diagnostics.surfaceCellCompletionOwnershipEntityKind = 2;
+          result.diagnostics.surfaceCellCompletionOwnershipSourceEdge = {
+              {static_cast<int>(edge->edge.first().index()),
+               static_cast<int>(edge->edge.second().index())}};
+        } else {
+          result.diagnostics.surfaceCellCompletionOwnershipEntityKind = 1;
+        }
+      }
+      result.diagnostics.surfaceCellCompletionOwnershipCandidateFaces.clear();
+      result.diagnostics.surfaceCellCompletionOwnershipCandidateFaces.reserve(
+          ownershipRejection.candidateSupportedFaces.size());
+      for (const authority::SourceFaceId sourceFace :
+           ownershipRejection.candidateSupportedFaces) {
+        result.diagnostics.surfaceCellCompletionOwnershipCandidateFaces.push_back(
+            static_cast<int>(sourceFace.index()));
+      }
       result.diagnostics.surfaceCellCompletionOwnershipPatchFaces =
           ownershipRejection.patchSourceFaces;
       result.diagnostics.surfaceCellCompletionOwnershipComponent =
@@ -7631,11 +7670,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         hash_combine_double(completionHash,
                             hashRejection.barycentric(coordinate));
       }
-      hash_combine_i64(completionHash,
-                       static_cast<int>(hashRejection.sourceEntityKind));
-      hash_combine_i64(completionHash, hashRejection.sourceVertex);
-      hash_combine_i64(completionHash, hashRejection.sourceEdge[0]);
-      hash_combine_i64(completionHash, hashRejection.sourceEdge[1]);
+      hash_source_support(completionHash, hashRejection.sourceSupport);
       hash_vector(completionHash, hashRejection.candidateSupportedFaces);
       hash_vector(completionHash, hashRejection.patchSourceFaces);
       hash_combine_i64(completionHash, hashRejection.sourceComponent);
@@ -7690,10 +7725,16 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             failure.localVertex;
         result.diagnostics.surfaceCellFirstInvalidProducerFace =
             failure.storedFace;
-        result.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
-            failure.sourceEdge[0];
-        result.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
-            failure.sourceEdge[1];
+        if (failure.sourceSupport.has_value()) {
+          if (const auto *edge =
+                  std::get_if<authority::SourceEdgeSupport>(
+                      &failure.sourceSupport.value())) {
+            result.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+                static_cast<int>(edge->edge.first().index());
+            result.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+                static_cast<int>(edge->edge.second().index());
+          }
+        }
       } else {
         result.diagnostics.surfaceCellFirstInvalidProducerStage =
             "completion";

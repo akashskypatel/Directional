@@ -5705,73 +5705,6 @@ bool phase_front_cell_source_scope(
   return component.has_value() && !isolationSheets.empty();
 }
 
-int legacy_phase_front_source_component(const SurfacePhaseFrontCell &cell) {
-  return cell.sourceComponent.has_value()
-             ? static_cast<int>((
-                   cell.sourceComponent.value()).index())
-             : -1;
-}
-
-int legacy_phase_front_source_topology_region(const SurfacePhaseFrontCell &cell) {
-  return cell.sourceTopologyRegion.has_value()
-             ? static_cast<int>(
-                   (
-                       cell.sourceTopologyRegion.value()).index())
-             : -1;
-}
-
-int legacy_phase_front_source_sheet(const SurfacePhaseFrontCell &cell) {
-  return cell.sourceSheet.has_value()
-             ? static_cast<int>((
-                   cell.sourceSheet.value()).index())
-             : -1;
-}
-
-std::vector<int>
-legacy_phase_front_isolation_sheets(const SurfacePhaseFrontCell &cell) {
-  std::vector<int> legacy;
-  legacy.reserve(cell.sourceIsolationSheets.size());
-  for (const authority::IsolationSheetId sheet : cell.sourceIsolationSheets) {
-    legacy.push_back(static_cast<int>(
-        (sheet).index()));
-  }
-  return legacy;
-}
-
-
-int legacy_phase_front_source_component(const SurfaceFrontEdge &edge) {
-  return edge.sourceComponent.has_value()
-             ? static_cast<int>((
-                   edge.sourceComponent.value()).index())
-             : -1;
-}
-
-int legacy_phase_front_source_topology_region(const SurfaceFrontEdge &edge) {
-  return edge.sourceTopologyRegion.has_value()
-             ? static_cast<int>(
-                   (
-                       edge.sourceTopologyRegion.value()).index())
-             : -1;
-}
-
-int legacy_phase_front_source_sheet(const SurfaceFrontEdge &edge) {
-  return edge.sourceSheet.has_value()
-             ? static_cast<int>((
-                   edge.sourceSheet.value()).index())
-             : -1;
-}
-
-std::vector<int> legacy_phase_front_isolation_sheets(
-    const SurfaceFrontEdge &edge) {
-  std::vector<int> legacy;
-  legacy.reserve(edge.sourceIsolationSheets.size());
-  for (const authority::IsolationSheetId sheet : edge.sourceIsolationSheets) {
-    legacy.push_back(static_cast<int>(
-        (sheet).index()));
-  }
-  return legacy;
-}
-
 SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     const Eigen::MatrixXi &faces, const SurfaceCellTracingOptions &options,
     const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
@@ -9430,23 +9363,6 @@ SurfacePhaseFrontResult build_uniform_phase_front(
                                    const SurfaceTopologyRegion &region) {
     const int singleIsolationSheet =
         region.isolationSheets.size() == 1U ? static_cast<int>(region.isolationSheets.front().index()) : -1;
-    const auto normalize_sheets = [&](std::vector<int> &sheets) {
-      std::sort(sheets.begin(), sheets.end());
-      sheets.erase(std::unique(sheets.begin(), sheets.end()), sheets.end());
-      if (sheets.empty()) {
-        for (const authority::IsolationSheetId sheet : region.isolationSheets)
-          sheets.push_back(static_cast<int>(sheet.index()));
-      }
-      for (const int sheet : sheets) {
-        const auto typedSheet = authority::IsolationSheetId::from_index(
-            sheet, source_label_authority_extent(options.sourceFaceSheets));
-        if (!typedSheet || !std::binary_search(region.isolationSheets.begin(),
-                                region.isolationSheets.end(), typedSheet.value())) {
-          return false;
-        }
-      }
-      return true;
-    };
     for (auto &relation : local.periodicHolonomies) {
       relation.sourceComponent = static_cast<int>(region.sourceComponent.index());
       relation.sourceTopologyRegion = static_cast<int>(region.id.index());
@@ -9467,15 +9383,13 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const authority::TopologyRegionId typedRegion = region.id;
     for (auto &cell : local.cells) {
       cell.sourceTopologyRegion = typedRegion;
-      const int cellComponent = legacy_phase_front_source_component(cell);
-      const int cellSheet = legacy_phase_front_source_sheet(cell);
-      const std::vector<int> cellSheets =
-          legacy_phase_front_isolation_sheets(cell);
-      std::vector<int> normalizedSheets = cellSheets;
-      if (cellComponent != static_cast<int>(region.sourceComponent.index()) ||
-          !normalize_sheets(normalizedSheets) ||
-          normalizedSheets != cellSheets ||
-          cellSheet != (cellSheets.size() == 1U ? cellSheets.front() : -1)) {
+      const bool expectedSingleSheet = region.isolationSheets.size() == 1U;
+      if (!cell.sourceComponent.has_value() ||
+          cell.sourceComponent.value() != region.sourceComponent ||
+          cell.sourceIsolationSheets != region.isolationSheets ||
+          cell.sourceSheet.has_value() != expectedSingleSheet ||
+          (expectedSingleSheet &&
+           cell.sourceSheet.value() != region.isolationSheets.front())) {
         return false;
       }
     }
@@ -9644,32 +9558,28 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const SurfaceTopologyRegion &region = *build.work->region;
     SurfacePhaseFrontResult &local = build.result;
     bool localCoverage = false;
-    std::set<int> coveredIsolationSheets;
+    std::set<authority::IsolationSheetId> coveredIsolationSheets;
     const authority::TopologyRegionId typedRegion = region.id;
     for (SurfacePhaseFrontCell &cell : local.cells) {
-      const int cellComponent = legacy_phase_front_source_component(cell);
-      const std::vector<int> cellSheets =
-          legacy_phase_front_isolation_sheets(cell);
-      if (cellComponent != static_cast<int>(region.sourceComponent.index()) ||
+      if (!cell.sourceComponent.has_value() ||
+          cell.sourceComponent.value() != region.sourceComponent ||
           !cell.sourceTopologyRegion.has_value() ||
           cell.sourceTopologyRegion.value() != typedRegion ||
-          cellSheets.empty()) {
+          cell.sourceIsolationSheets.empty()) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
             cell.id, -1, cell.corners.front().face);
         return result;
       }
-      for (const int sheet : cellSheets) {
-        coveredIsolationSheets.insert(sheet);
-      }
+      coveredIsolationSheets.insert(cell.sourceIsolationSheets.begin(),
+                                    cell.sourceIsolationSheets.end());
       localCoverage = true;
       cell.id += cellOffset;
       result.cells.push_back(std::move(cell));
     }
-    std::set<int> requiredIsolationSheets;
-    for (const authority::IsolationSheetId sheet : region.isolationSheets)
-      requiredIsolationSheets.insert(static_cast<int>(sheet.index()));
+    const std::set<authority::IsolationSheetId> requiredIsolationSheets(
+        region.isolationSheets.begin(), region.isolationSheets.end());
     if (!localCoverage || coveredIsolationSheets != requiredIsolationSheets ||
         !coveredRegions.insert(region.id).second) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -9747,7 +9657,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   // output boundary. Pair the two chart copies by exact source-simplex
   // support and ordered rail topology; geometry is never a merge predicate.
   struct HardRailPairKey {
-    int component = -1;
+    authority::SourceComponentId component;
     std::vector<std::int64_t> firstEndpoint;
     std::vector<std::int64_t> secondEndpoint;
     std::vector<std::uint64_t> route;
@@ -9828,7 +9738,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     std::vector<std::uint64_t> route = edge.routeTopologyKeys;
     std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
     if (reversed < route) route = std::move(reversed);
-    hardRailGroups[{legacy_phase_front_source_component(edge), std::move(from),
+    hardRailGroups[{edge.sourceComponent.value(), std::move(from),
                     std::move(to), std::move(route)}]
         .push_back(edgeIndex);
   }

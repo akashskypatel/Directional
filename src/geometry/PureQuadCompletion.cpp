@@ -612,6 +612,18 @@ std::string completion_ownership_face_list(const std::vector<int> &faces) {
   return stream.str();
 }
 
+std::string completion_ownership_face_list(
+    const std::vector<authority::SourceFaceId> &faces) {
+  std::ostringstream stream;
+  for (std::size_t index = 0; index < faces.size(); ++index) {
+    if (index != 0U) {
+      stream << ',';
+    }
+    stream << faces[index].index();
+  }
+  return stream.str();
+}
+
 bool completion_ownership_face_matches_labels(
     const int face, const PureQuadVertexLineage &lineage,
     const std::vector<int> *sourceFaceComponents,
@@ -644,6 +656,18 @@ void set_completion_ownership_rejection(
     const bool boundaryVertex, const int completionVariant,
     const SurfacePointSourceSupport &support,
     const std::vector<int> &patchSourceFaces, std::string &failure) {
+  int sourceVertex = -1;
+  std::array<int, 2> sourceEdge{{-1, -1}};
+  if (support.identity.has_value()) {
+    if (const auto *vertex =
+            std::get_if<authority::SourceVertexSupport>(&support.identity.value())) {
+      sourceVertex = static_cast<int>(vertex->vertex.index());
+    } else if (const auto *edge =
+                   std::get_if<authority::SourceEdgeSupport>(&support.identity.value())) {
+      sourceEdge = {static_cast<int>(edge->edge.first().index()),
+                    static_cast<int>(edge->edge.second().index())};
+    }
+  }
   failure = failureCode + ":sourcePatch=" +
             std::to_string(mesh.sourcePatch) + ";localVertex=" +
             std::to_string(lineage.localVertex) + ";boundary=" +
@@ -654,11 +678,11 @@ void set_completion_ownership_rejection(
             std::to_string(provenance.barycentric(0)) + "," +
             std::to_string(provenance.barycentric(1)) + "," +
             std::to_string(provenance.barycentric(2)) + ";entity=" +
-            surface_point_source_entity_kind_name(support.kind) +
-            ";sourceVertex=" + std::to_string(support.sourceVertex) +
-            ";sourceEdge=" + std::to_string(support.sourceEdge.first) + "," +
-            std::to_string(support.sourceEdge.second) + ";candidateFaces=" +
-            completion_ownership_face_list(support.supportedFaces) +
+            surface_point_source_support_kind_name(support) +
+            ";sourceVertex=" + std::to_string(sourceVertex) +
+            ";sourceEdge=" + std::to_string(sourceEdge[0]) + "," +
+            std::to_string(sourceEdge[1]) + ";candidateFaces=" +
+            completion_ownership_face_list(support.incidentFaces) +
             ";patchFaces=" +
             completion_ownership_face_list(patchSourceFaces) +
             ";component=" + std::to_string(lineage.sourceComponent) +
@@ -677,10 +701,8 @@ void set_completion_ownership_rejection(
   rejection->completionVariant = completionVariant;
   rejection->storedFace = provenance.face;
   rejection->barycentric = provenance.barycentric;
-  rejection->sourceEntityKind = support.kind;
-  rejection->sourceVertex = support.sourceVertex;
-  rejection->sourceEdge = {{support.sourceEdge.first, support.sourceEdge.second}};
-  rejection->candidateSupportedFaces = support.supportedFaces;
+  rejection->sourceSupport = support.identity;
+  rejection->candidateSupportedFaces = support.incidentFaces;
   rejection->patchSourceFaces = patchSourceFaces;
   rejection->sourceComponent = lineage.sourceComponent;
   rejection->sourceSheet = lineage.sourceSheet;
@@ -795,13 +817,25 @@ bool validate_completion_domain_ownership(
         return false;
       }
     } else {
-      support.kind = SurfacePointSourceEntityKind::FaceInterior;
-      support.supportedFaces = {provenance.face};
+      if (sourceFaceMatrix == nullptr) {
+        failure = "CompletionOwnershipInvalidSourceSupport";
+        return false;
+      }
+      const auto sourceFace = authority::SourceFaceId::from_index(
+          provenance.face, static_cast<std::size_t>(sourceFaceMatrix->rows()));
+      if (!sourceFace) {
+        failure = "CompletionOwnershipInvalidSourceSupport";
+        return false;
+      }
+      support.identity =
+          authority::SourceFaceInteriorSupport{sourceFace.value()};
+      support.incidentFaces = {sourceFace.value()};
     }
 
     bool intersectsPatch = false;
     std::vector<int> compatibleFaces;
-    for (const int candidateFace : support.supportedFaces) {
+    for (const authority::SourceFaceId sourceFace : support.incidentFaces) {
+      const int candidateFace = static_cast<int>(sourceFace.index());
       if (sourceFaces.count(candidateFace) == 0U) {
         continue;
       }
@@ -860,10 +894,14 @@ bool validate_completion_domain_ownership(
           return false;
         }
         Eigen::Vector3d rebound = Eigen::Vector3d::Zero();
-        if (support.kind == SurfacePointSourceEntityKind::SourceVertex) {
+        if (const auto *vertexSupport =
+                std::get_if<authority::SourceVertexSupport>(
+                    &support.identity.value())) {
+          const int sourceVertex =
+              static_cast<int>(vertexSupport->vertex.index());
           bool found = false;
           for (int corner = 0; corner < 3; ++corner) {
-            if ((*sourceFaceMatrix)(selectedFace, corner) == support.sourceVertex) {
+            if ((*sourceFaceMatrix)(selectedFace, corner) == sourceVertex) {
               rebound(corner) = 1.0;
               found = true;
               break;
@@ -873,9 +911,13 @@ bool validate_completion_domain_ownership(
             failure = "CompletionOwnershipCannotRebindSourceVertex";
             return false;
           }
-        } else if (support.kind == SurfacePointSourceEntityKind::SourceEdge) {
-          const int sourceA = support.sourceEdge.first;
-          const int sourceB = support.sourceEdge.second;
+        } else if (const auto *edgeSupport =
+                       std::get_if<authority::SourceEdgeSupport>(
+                           &support.identity.value())) {
+          const int sourceA =
+              static_cast<int>(edgeSupport->edge.first().index());
+          const int sourceB =
+              static_cast<int>(edgeSupport->edge.second().index());
           double weightA = 0.0;
           double weightB = 0.0;
           for (int corner = 0; corner < 3; ++corner) {
@@ -2276,7 +2318,9 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         return selected;
       }
       std::vector<int> compatibleFaces;
-      for (const int face : firstSupport.supportedFaces) {
+      for (const authority::SourceFaceId sourceFace :
+           firstSupport.incidentFaces) {
+        const int face = static_cast<int>(sourceFace.index());
         bool allCompatible = true;
         for (const SurfacePoint *candidate : candidates) {
           SurfacePoint rebound;
@@ -2312,7 +2356,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     }
 
     SurfacePointSourceSupport commonSupport;
-    std::vector<int> commonFaces;
+    std::vector<authority::SourceFaceId> commonFaces;
     bool initialized = false;
     for (const auto &[patchIndex, localRow] :
          pending.provenanceCandidates) {
@@ -2333,18 +2377,16 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       }
       if (!initialized) {
         commonSupport = support;
-        commonFaces = support.supportedFaces;
+        commonFaces = support.incidentFaces;
         initialized = true;
       } else {
-        if (support.kind != commonSupport.kind ||
-            support.sourceVertex != commonSupport.sourceVertex ||
-            support.sourceEdge != commonSupport.sourceEdge) {
+        if (support.identity != commonSupport.identity) {
           return selected;
         }
-        std::vector<int> intersection;
+        std::vector<authority::SourceFaceId> intersection;
         std::set_intersection(commonFaces.begin(), commonFaces.end(),
-                              support.supportedFaces.begin(),
-                              support.supportedFaces.end(),
+                              support.incidentFaces.begin(),
+                              support.incidentFaces.end(),
                               std::back_inserter(intersection));
         commonFaces = std::move(intersection);
       }
@@ -2352,29 +2394,38 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     if (!initialized || commonFaces.empty()) {
       return selected;
     }
-    const int selectedFace = *std::min_element(commonFaces.begin(),
-                                               commonFaces.end());
-    if (selectedFace < 0 || selectedFace >= sourceFaces->rows()) {
+    const authority::SourceFaceId selectedFaceId =
+        *std::min_element(commonFaces.begin(), commonFaces.end());
+    const int selectedFace = static_cast<int>(selectedFaceId.index());
+    if (selectedFace >= sourceFaces->rows()) {
       return selected;
     }
 
     Eigen::Vector3d rebound = Eigen::Vector3d::Zero();
-    if (commonSupport.kind == SurfacePointSourceEntityKind::SourceVertex) {
+    if (const auto *vertexSupport =
+            std::get_if<authority::SourceVertexSupport>(
+                &commonSupport.identity.value())) {
+      const int sourceVertex =
+          static_cast<int>(vertexSupport->vertex.index());
       for (int corner = 0; corner < 3; ++corner) {
-        if ((*sourceFaces)(selectedFace, corner) ==
-            commonSupport.sourceVertex) {
+        if ((*sourceFaces)(selectedFace, corner) == sourceVertex) {
           rebound(corner) = 1.0;
         }
       }
-    } else if (commonSupport.kind ==
-               SurfacePointSourceEntityKind::SourceEdge) {
+    } else if (const auto *edgeSupport =
+                   std::get_if<authority::SourceEdgeSupport>(
+                       &commonSupport.identity.value())) {
+      const int sourceEdgeFirst =
+          static_cast<int>(edgeSupport->edge.first().index());
+      const int sourceEdgeSecond =
+          static_cast<int>(edgeSupport->edge.second().index());
       double firstWeight = 0.0;
       double secondWeight = 0.0;
       for (int corner = 0; corner < 3; ++corner) {
         const int sourceVertex = (*sourceFaces)(selected.face, corner);
-        if (sourceVertex == commonSupport.sourceEdge.first) {
+        if (sourceVertex == sourceEdgeFirst) {
           firstWeight += selected.barycentric(corner);
-        } else if (sourceVertex == commonSupport.sourceEdge.second) {
+        } else if (sourceVertex == sourceEdgeSecond) {
           secondWeight += selected.barycentric(corner);
         }
       }
@@ -2386,9 +2437,9 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       secondWeight /= sum;
       for (int corner = 0; corner < 3; ++corner) {
         const int sourceVertex = (*sourceFaces)(selectedFace, corner);
-        if (sourceVertex == commonSupport.sourceEdge.first) {
+        if (sourceVertex == sourceEdgeFirst) {
           rebound(corner) = firstWeight;
-        } else if (sourceVertex == commonSupport.sourceEdge.second) {
+        } else if (sourceVertex == sourceEdgeSecond) {
           rebound(corner) = secondWeight;
         }
       }

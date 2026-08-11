@@ -364,23 +364,23 @@ struct SourcePointLabelSupport {
            sheets->size() == static_cast<std::size_t>(sourceFaces->rows());
   }
 
-  [[nodiscard]] std::vector<int>
+  [[nodiscard]] std::vector<authority::SourceFaceId>
   supported_faces(const geometry::SurfacePoint &point) const {
     if (!available()) {
       return {};
     }
-    return sourceSupport.resolve(point).supportedFaces;
+    return sourceSupport.resolve(point).incidentFaces;
   }
 
   [[nodiscard]] std::set<std::pair<int, int>>
   supported_labels(const geometry::SurfacePoint &point) const {
     std::set<std::pair<int, int>> labels;
-    for (const int face : supported_faces(point)) {
-      if (face < 0 || face >= sourceFaces->rows()) {
+    for (const authority::SourceFaceId sourceFace : supported_faces(point)) {
+      const std::size_t face = sourceFace.index();
+      if (face >= static_cast<std::size_t>(sourceFaces->rows())) {
         continue;
       }
-      labels.insert({(*components)[static_cast<std::size_t>(face)],
-                     (*sheets)[static_cast<std::size_t>(face)]});
+      labels.insert({(*components)[face], (*sheets)[face]});
     }
     return labels;
   }

@@ -2147,6 +2147,25 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << ",";
   const geometry::PureQuadCompletionOwnershipRejection &ownershipRejection =
       result.surfaceCellContext.firstCompletionOwnershipRejection;
+  const char *ownershipSupportKind = "invalid";
+  int ownershipSourceVertex = -1;
+  std::array<int, 2> ownershipSourceEdge{{-1, -1}};
+  if (ownershipRejection.sourceSupport.has_value()) {
+    if (const auto *vertex =
+            std::get_if<authority::SourceVertexSupport>(
+                &ownershipRejection.sourceSupport.value())) {
+      ownershipSupportKind = "source-vertex";
+      ownershipSourceVertex = static_cast<int>(vertex->vertex.index());
+    } else if (const auto *edge =
+                   std::get_if<authority::SourceEdgeSupport>(
+                       &ownershipRejection.sourceSupport.value())) {
+      ownershipSupportKind = "source-edge";
+      ownershipSourceEdge = {static_cast<int>(edge->edge.first().index()),
+                             static_cast<int>(edge->edge.second().index())};
+    } else {
+      ownershipSupportKind = "face-interior";
+    }
+  }
   out << "\"completionOwnershipFailure\":\""
       << escape_json(ownershipRejection.failure) << "\","
       << "\"completionOwnershipSourcePatch\":"
@@ -2167,14 +2186,11 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << ownershipRejection.barycentric(1) << ","
       << ownershipRejection.barycentric(2) << "],"
       << "\"completionOwnershipEntityKind\":\""
-      << geometry::surface_point_source_entity_kind_name(
-             ownershipRejection.sourceEntityKind)
-      << "\","
+      << ownershipSupportKind << "\","
       << "\"completionOwnershipSourceVertex\":"
-      << ownershipRejection.sourceVertex << ","
+      << ownershipSourceVertex << ","
       << "\"completionOwnershipSourceEdge\":["
-      << ownershipRejection.sourceEdge[0] << ","
-      << ownershipRejection.sourceEdge[1] << "],"
+      << ownershipSourceEdge[0] << "," << ownershipSourceEdge[1] << "],"
       << "\"completionOwnershipComponent\":"
       << ownershipRejection.sourceComponent << ","
       << "\"completionOwnershipSheet\":"
@@ -2184,7 +2200,7 @@ void write_remesh_diagnostics_json(std::ostream &out,
        faceIndex < ownershipRejection.candidateSupportedFaces.size();
        ++faceIndex) {
     if (faceIndex > 0U) out << ",";
-    out << ownershipRejection.candidateSupportedFaces[faceIndex];
+    out << ownershipRejection.candidateSupportedFaces[faceIndex].index();
   }
   out << "],\"completionOwnershipPatchFaces\":[";
   for (std::size_t faceIndex = 0;

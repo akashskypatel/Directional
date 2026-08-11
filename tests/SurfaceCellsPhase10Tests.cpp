@@ -2634,9 +2634,18 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(1, region.eulerCharacteristic);
   EXPECT_EQ(1, region.boundaryLoopCount);
   ASSERT_EQ(2U, region.isolationSheets.size());
+  const auto firstVertex = directional::authority::SourceVertexId::from_index(
+      0, static_cast<std::size_t>(fixture.vertices.rows()));
+  const auto secondVertex = directional::authority::SourceVertexId::from_index(
+      1, static_cast<std::size_t>(fixture.vertices.rows()));
+  ASSERT_TRUE(firstVertex);
+  ASSERT_TRUE(secondVertex);
+  const auto typedSharedEdge = directional::authority::SourceEdgeTopologyKey::make(
+      firstVertex.value(), secondVertex.value());
+  ASSERT_TRUE(typedSharedEdge);
   EXPECT_TRUE(std::binary_search(region.internalIsolationSeamTopology.begin(),
                                  region.internalIsolationSeamTopology.end(),
-                                 sharedEdge));
+                                 typedSharedEdge.value()));
   EXPECT_TRUE(directional::geometry::surface_cell_tracing_detail::
                   source_edge_is_internal_isolation_seam(
                       fixture.options, fixture.faces.rows(), topology->regionByFace,
@@ -5784,7 +5793,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
   ASSERT_FALSE(network.phaseFront.cells.empty());
   for (const auto &cell : network.phaseFront.cells) {
     ASSERT_TRUE(cell.sourceTopologyRegion.has_value());
-    const int rawRegion = legacy_phase_front_topology_region(cell);
+    const auto region = cell.sourceTopologyRegion.value();
     for (const auto &corner : cell.corners) {
       ASSERT_GE(corner.face, 0);
       ASSERT_LT(
@@ -5793,7 +5802,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
       EXPECT_EQ(
           network.phaseFront.sourceTopologyRegions.regionByFace[
               static_cast<std::size_t>(corner.face)],
-          rawRegion);
+          region);
     }
   }
 
@@ -5808,9 +5817,10 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
   const std::uint64_t baselineHash =
       directional::pipeline::hash_trace_network(network);
   auto changed = network;
-  const int current =
-      legacy_phase_front_topology_region(changed.phaseFront.cells.front());
-  const int replacement = current == 0 ? 1 : 0;
+  ASSERT_TRUE(changed.phaseFront.cells.front().sourceTopologyRegion.has_value());
+  const auto current =
+      changed.phaseFront.cells.front().sourceTopologyRegion.value();
+  const int replacement = current.index() == 0U ? 1 : 0;
   const auto typedReplacement =
       directional::authority::TopologyRegionId::from_index(
           replacement, changed.phaseFront.sourceTopologyRegions.regions.size());
