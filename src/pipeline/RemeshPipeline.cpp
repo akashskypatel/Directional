@@ -7771,7 +7771,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             validation::SourceHardRailChartEquivalence projected;
             projected.firstFrontEdge = equivalence.firstFrontEdge;
             projected.secondFrontEdge = equivalence.secondFrontEdge;
-            projected.railId = equivalence.railId;
+            const auto rail = authority::HardRailId::from_index(
+                equivalence.railId, authoritativeRails.size());
+            if (!rail) {
+              chartAuthorityProjectionValid = false;
+              break;
+            }
+            projected.rail = rail.value();
             projected.route = equivalence.route;
             authority.hardRailEquivalences.push_back(
                 std::move(projected));
@@ -9671,6 +9677,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
   int railOffset = 0;
   int curveOffset = 0;
   int topologyRegionOffset = 0;
+  int fieldChartOffset = 0;
   int frontEdgeOffset = 0;
   int periodicRelationOffset = 0;
   bool allHaveSourceLabels = true;
@@ -10279,6 +10286,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
     railOffset += localMaximumRail + 1;
     curveOffset += localMaximumCurve + 1;
     topologyRegionOffset += localMaximumTopologyRegion + 1;
+    fieldChartOffset += localMaximumFieldChart + 1;
     frontEdgeOffset += localMaximumFrontEdge + 1;
     periodicRelationOffset += localMaximumPeriodicRelation + 1;
   }
