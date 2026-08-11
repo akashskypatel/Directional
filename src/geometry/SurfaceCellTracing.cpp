@@ -422,35 +422,13 @@ bool orient_transition_into_face_from_edge(
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-bool source_label_arrays_enabled(
-    const SurfaceCellTracingOptions &options) {
-  return !options.sourceFaceComponents.empty() || !options.sourceFaceSheets.empty();
-}
-
-} // namespace directional::geometry::surface_cell_tracing_detail
-
-namespace directional::geometry::surface_cell_tracing_detail {
-
-bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
-                                      const int faceCount) {
-  if (options.sourceAuthority != nullptr) {
-    return options.sourceAuthority->face_count() ==
-           static_cast<std::size_t>(std::max(0, faceCount));
-  }
-  if (!source_label_arrays_enabled(options)) {
+bool source_authority_valid(const SurfaceCellTracingOptions &options,
+                            const int faceCount) {
+  if (options.sourceAuthority == nullptr) {
     return true;
   }
-  if (static_cast<int>(options.sourceFaceComponents.size()) != faceCount ||
-      static_cast<int>(options.sourceFaceSheets.size()) != faceCount) {
-    return false;
-  }
-  for (int face = 0; face < faceCount; ++face) {
-    if (options.sourceFaceComponents[static_cast<std::size_t>(face)] < 0 ||
-        options.sourceFaceSheets[static_cast<std::size_t>(face)] < 0) {
-      return false;
-    }
-  }
-  return true;
+  return options.sourceAuthority->complete_for_face_count(
+      static_cast<std::size_t>(std::max(0, faceCount)));
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -458,37 +436,24 @@ bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
 namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_faces_compatible(const SurfaceCellTracingOptions &options,
-                                    const int a, const int b) {
-  if (options.sourceAuthority != nullptr) {
-    if (a < 0 || b < 0 ||
-        static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
-        static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
-      return false;
-    }
-    const auto first = authority::SourceFaceId::from_index(
-        a, options.sourceAuthority->face_count());
-    const auto second = authority::SourceFaceId::from_index(
-        b, options.sourceAuthority->face_count());
-    return first && second &&
-           options.sourceAuthority->component_for_row(first.value()) ==
-               options.sourceAuthority->component_for_row(second.value()) &&
-           options.sourceAuthority->sheet_for_row(first.value()) ==
-               options.sourceAuthority->sheet_for_row(second.value());
-  }
-  if (!source_label_arrays_enabled(options)) {
+                             const int a, const int b) {
+  if (options.sourceAuthority == nullptr) {
     return true;
   }
   if (a < 0 || b < 0 ||
-      a >= static_cast<int>(options.sourceFaceComponents.size()) ||
-      b >= static_cast<int>(options.sourceFaceComponents.size()) ||
-      a >= static_cast<int>(options.sourceFaceSheets.size()) ||
-      b >= static_cast<int>(options.sourceFaceSheets.size())) {
+      static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
+      static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
     return false;
   }
-  return options.sourceFaceComponents[static_cast<std::size_t>(a)] ==
-             options.sourceFaceComponents[static_cast<std::size_t>(b)] &&
-         options.sourceFaceSheets[static_cast<std::size_t>(a)] ==
-             options.sourceFaceSheets[static_cast<std::size_t>(b)];
+  const auto first = authority::SourceFaceId::from_index(
+      a, options.sourceAuthority->face_count());
+  const auto second = authority::SourceFaceId::from_index(
+      b, options.sourceAuthority->face_count());
+  return first && second &&
+         options.sourceAuthority->component_for_row(first.value()) ==
+             options.sourceAuthority->component_for_row(second.value()) &&
+         options.sourceAuthority->sheet_for_row(first.value()) ==
+             options.sourceAuthority->sheet_for_row(second.value());
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -552,30 +517,21 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_faces_share_component(const SurfaceCellTracingOptions &options,
                                   const int a, const int b) {
-  if (options.sourceAuthority != nullptr) {
-    if (a < 0 || b < 0 ||
-        static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
-        static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
-      return false;
-    }
-    const auto first = authority::SourceFaceId::from_index(
-        a, options.sourceAuthority->face_count());
-    const auto second = authority::SourceFaceId::from_index(
-        b, options.sourceAuthority->face_count());
-    return first && second &&
-           options.sourceAuthority->component_for_row(first.value()) ==
-               options.sourceAuthority->component_for_row(second.value());
-  }
-  if (!source_label_arrays_enabled(options)) {
+  if (options.sourceAuthority == nullptr) {
     return true;
   }
   if (a < 0 || b < 0 ||
-      a >= static_cast<int>(options.sourceFaceComponents.size()) ||
-      b >= static_cast<int>(options.sourceFaceComponents.size())) {
+      static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
+      static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
     return false;
   }
-  return options.sourceFaceComponents[static_cast<std::size_t>(a)] ==
-         options.sourceFaceComponents[static_cast<std::size_t>(b)];
+  const auto first = authority::SourceFaceId::from_index(
+      a, options.sourceAuthority->face_count());
+  const auto second = authority::SourceFaceId::from_index(
+      b, options.sourceAuthority->face_count());
+  return first && second &&
+         options.sourceAuthority->component_for_row(first.value()) ==
+             options.sourceAuthority->component_for_row(second.value());
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -2603,8 +2559,36 @@ namespace directional::geometry::surface_cell_tracing_detail {
 std::optional<SourceTopologyRegions> build_source_topology_regions(
     const Eigen::MatrixXi &faces, const SurfaceCellTracingOptions &options) {
   const int faceCount = static_cast<int>(faces.rows());
-  if (faces.cols() != 3 || faceCount <= 0 ||
-      !source_label_arrays_valid(options, faceCount)) {
+  const bool rawLabelsEnabled = !options.sourceFaceComponents.empty() ||
+                                !options.sourceFaceSheets.empty();
+  const auto raw_labels_valid = [&]() {
+    if (!rawLabelsEnabled) return true;
+    if (static_cast<int>(options.sourceFaceComponents.size()) != faceCount ||
+        static_cast<int>(options.sourceFaceSheets.size()) != faceCount) {
+      return false;
+    }
+    for (int face = 0; face < faceCount; ++face) {
+      if (options.sourceFaceComponents[static_cast<std::size_t>(face)] < 0 ||
+          options.sourceFaceSheets[static_cast<std::size_t>(face)] < 0) {
+        return false;
+      }
+    }
+    return true;
+  };
+  const auto raw_component = [&](const int face) {
+    return face_label_or_default(options.sourceFaceComponents, face, 0);
+  };
+  const auto raw_sheet = [&](const int face) {
+    return face_label_or_default(options.sourceFaceSheets, face, 0);
+  };
+  const auto raw_share_component = [&](const int first, const int second) {
+    return raw_component(first) == raw_component(second);
+  };
+  const auto raw_compatible = [&](const int first, const int second) {
+    return raw_share_component(first, second) &&
+           raw_sheet(first) == raw_sheet(second);
+  };
+  if (faces.cols() != 3 || faceCount <= 0 || !raw_labels_valid()) {
     return std::nullopt;
   }
 
@@ -2623,9 +2607,9 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
   for (int face = 0; face < faceCount; ++face) {
     maxComponent = std::max(
         maxComponent,
-        face_label_or_default(options.sourceFaceComponents, face, 0));
+        raw_component(face));
     maxSheet = std::max(
-        maxSheet, face_label_or_default(options.sourceFaceSheets, face, 0));
+        maxSheet, raw_sheet(face));
   }
   const std::size_t componentExtent =
       static_cast<std::size_t>(std::max(0, maxComponent)) + 1U;
@@ -2647,7 +2631,7 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
     if (first >= faceCount || second >= faceCount || first == second) {
       return std::nullopt;
     }
-    if (!source_faces_share_component(options, first, second)) {
+    if (!raw_share_component(first, second)) {
       continue;
     }
     if (options.hardFeatureEdges.count(key) != 0U) {
@@ -2734,20 +2718,18 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
     RegionScratch region;
     region.id = regionId;
     region.sourceFaces = source.faces;
-    region.sourceComponent = face_label_or_default(
-        options.sourceFaceComponents, region.sourceFaces.front(), 0);
+    region.sourceComponent = raw_component(region.sourceFaces.front());
     if (region.sourceComponent < 0) {
       return std::nullopt;
     }
     region.sourceSheets.reserve(region.sourceFaces.size());
     for (const int face : region.sourceFaces) {
       scratchRegionByFace[static_cast<std::size_t>(face)] = regionId;
-      if (face_label_or_default(options.sourceFaceComponents, face, 0) !=
+      if (raw_component(face) !=
           region.sourceComponent) {
         return std::nullopt;
       }
-      const int sheet = face_label_or_default(options.sourceFaceSheets, face,
-                                               region.sourceComponent);
+      const int sheet = raw_sheet(face);
       if (sheet < 0) {
         return std::nullopt;
       }
@@ -2764,9 +2746,9 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
                scratchRegionByFace[static_cast<std::size_t>(firstFace)] >= 0 &&
                scratchRegionByFace[static_cast<std::size_t>(firstFace)] ==
                    scratchRegionByFace[static_cast<std::size_t>(secondFace)] &&
-               source_label_arrays_valid(options, faceCount) &&
-               source_faces_share_component(options, firstFace, secondFace) &&
-               !source_faces_compatible(options, firstFace, secondFace) &&
+               raw_labels_valid() &&
+               raw_share_component(firstFace, secondFace) &&
+               !raw_compatible(firstFace, secondFace) &&
                options.hardFeatureEdges.count(edgeKey) == 0U &&
                (!options.reliefBarriersEmbedded ||
                 options.reliefBarrierEdges.count(edgeKey) == 0U);
@@ -2981,7 +2963,7 @@ bool source_edge_is_internal_isolation_seam(
       static_cast<int>(regionByFace.size()) != faceCount ||
       regionByFace[static_cast<std::size_t>(firstFace)] !=
           regionByFace[static_cast<std::size_t>(secondFace)] ||
-      !source_label_arrays_valid(options, faceCount) ||
+      !source_authority_valid(options, faceCount) ||
       !source_faces_share_component(options, firstFace, secondFace) ||
       source_faces_compatible(options, firstFace, secondFace) ||
       options.hardFeatureEdges.count(edgeKey) != 0U ||
@@ -3221,7 +3203,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     throw std::invalid_argument("surface seeds require a 3D triangle mesh.");
   }
   const int vertexCount = static_cast<int>(vertices.rows());
-  if (!surface_cell_tracing_detail::source_label_arrays_valid(
+  if (!surface_cell_tracing_detail::source_authority_valid(
           options, static_cast<int>(faces.rows()))) {
     throw std::invalid_argument(
         "source face component/sheet labels must cover every source face.");
@@ -3866,7 +3848,7 @@ SurfaceTraceResult trace_surface_field(
     result.termination = TraceTerminationReason::FieldMetadata;
     return result;
   }
-  if (!surface_cell_tracing_detail::source_label_arrays_valid(
+  if (!surface_cell_tracing_detail::source_authority_valid(
           options, static_cast<int>(faces.rows()))) {
     result.termination = TraceTerminationReason::FieldMetadata;
     return result;
@@ -9453,7 +9435,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   SurfacePhaseFrontBuildState result;
   result.attempted = options.enableUniformPhaseFront;
   if (!result.attempted) return result;
-  if (!source_label_arrays_valid(options, faces.rows())) {
+  if (!source_authority_valid(options, faces.rows())) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(result.failure,
                             SurfacePhaseFrontFailureReason::InvalidInput);

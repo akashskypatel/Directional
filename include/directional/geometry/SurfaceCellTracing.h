@@ -818,12 +818,6 @@ bool barycentric_derivative(const Eigen::MatrixXd &vertices,
                                    const Eigen::RowVector3d &direction,
                                    Eigen::RowVector3d &dbary);
 
-bool source_label_arrays_enabled(
-    const SurfaceCellTracingOptions &options);
-
-bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
-                                      const int faceCount);
-
 bool source_faces_compatible(const SurfaceCellTracingOptions &options,
                                     const int a, const int b);
 
