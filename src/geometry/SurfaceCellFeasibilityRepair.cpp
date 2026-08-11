@@ -44,7 +44,6 @@ std::vector<std::uint64_t> exact_rollback_identity(
       static_cast<std::int64_t>(complex.sourceOwnershipRegistry.size()));
   for (const SurfaceCellOwnershipClassRecord &record :
        complex.sourceOwnershipRegistry) {
-    append_rollback_word(identity, record.sourceComponent);
     append_rollback_word(identity, record.canonicalMembership.valid ? 1 : 0);
     append_rollback_word(
         identity,

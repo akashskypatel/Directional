@@ -81,7 +81,6 @@ struct SurfaceCellOwnershipClassRecord {
   // Semantic ownership is the typed producer region. Component/sheet values
   // are projections of SourceTopologyRegions and are never authority here.
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  int sourceComponent = -1; // derived diagnostic projection; remove after callers cut over
   // Face-row-independent exact membership signature. Each member stores
   // {field chart, sorted source-triangle vertex ids}; source component/sheet
   // authority is owned outside the projection-chart value.

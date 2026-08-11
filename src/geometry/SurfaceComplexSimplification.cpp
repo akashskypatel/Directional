@@ -51,7 +51,6 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   mix(static_cast<int>(complex.sourceOwnershipRegistry.size()));
   for (const SurfaceCellOwnershipClassRecord &record :
        complex.sourceOwnershipRegistry) {
-    mix(record.sourceComponent);
     mix(record.canonicalMembership.valid ? 1 : 0);
     for (const std::int64_t value : record.canonicalMembership.values) {
       mix(value);

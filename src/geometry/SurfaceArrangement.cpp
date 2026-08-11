@@ -1618,7 +1618,6 @@ bool canonicalize_surface_cell_ownership(
   const auto record_for_cell = [&](const SurfaceArrangementCell &cell) {
     SurfaceCellOwnershipClassRecord record;
     record.sourceTopologyRegion = cell.sourceTopologyRegion;
-    record.sourceComponent = cell.sourceComponent;
     record.exactCharts = cell.sourceCharts;
     std::sort(record.exactCharts.begin(), record.exactCharts.end());
     record.exactCharts.erase(
@@ -1662,7 +1661,6 @@ bool canonicalize_surface_cell_ownership(
     }
     const int ordinal = static_cast<int>(std::distance(records.begin(), found));
     cell.sourceTopologyRegion = record.sourceTopologyRegion;
-    cell.sourceComponent = record.sourceComponent;
     if (!record.sourceTopologyRegion.has_value()) {
       return false;
     }
@@ -6959,7 +6957,6 @@ SurfaceCellComplex build_surface_cell_complex(
       continue;
     }
     SurfaceCellOwnershipClassRecord record;
-    record.sourceComponent = charts.front().sourceComponent;
     const auto firstPublished = transitionGraph.chart(charts.front().sourceFace);
     const auto firstRegion = firstPublished.has_value()
                                  ? transitionGraph.topology_region(*firstPublished)
@@ -6972,8 +6969,7 @@ SurfaceCellComplex build_surface_cell_complex(
     members.reserve(charts.size());
     bool valid = true;
     for (const SourceChart &chart : charts) {
-      if (chart.sourceComponent != record.sourceComponent ||
-          chart.sourceFace < 0 || chart.sourceFace >= faces.rows()) {
+      if (chart.sourceFace < 0 || chart.sourceFace >= faces.rows()) {
         valid = false;
         break;
       }
@@ -7718,7 +7714,6 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     mix(record.sourceTopologyRegion.has_value()
             ? static_cast<std::int64_t>(record.sourceTopologyRegion->index())
             : -1);
-    mix(record.sourceComponent);
     mix(record.canonicalMembership.valid ? 1 : 0);
     mix(static_cast<std::int64_t>(record.canonicalMembership.values.size()));
     for (const std::int64_t value : record.canonicalMembership.values) {
