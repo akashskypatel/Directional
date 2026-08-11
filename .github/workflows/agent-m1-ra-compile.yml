@@ -13,7 +13,6 @@ concurrency: {group: agent-m1-ra-compile, cancel-in-progress: false}
 
 env:
   SOURCE_SHA: 5c6a2129bf6df1adaceebbb24f576cd092b55dec
-  CCACHE_DIR: ${{ runner.temp }}/ccache
   CCACHE_MAXSIZE: 256M
   CCACHE_COMPRESS: "true"
 
@@ -40,6 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          export CCACHE_DIR="$RUNNER_TEMP/ccache"
           sudo apt-get update
           sudo apt-get install -y ccache
           ccache --version
@@ -66,7 +66,7 @@ jobs:
         id: ccache-restore
         uses: actions/cache/restore@v4
         with:
-          path: ${{ env.CCACHE_DIR }}
+          path: ${{ runner.temp }}/ccache
           key: ${{ steps.cache-key.outputs.key }}
           restore-keys: |
             ${{ steps.cache-key.outputs.prefix }}
@@ -76,6 +76,7 @@ jobs:
         run: |
           set -euo pipefail
           LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          export CCACHE_DIR="$RUNNER_TEMP/ccache"
           echo "cache_hit=${{ steps.ccache-restore.outputs.cache-hit }}"
           echo "cache_primary_key=${{ steps.cache-key.outputs.key }}"
           echo "cache_matched_key=${{ steps.ccache-restore.outputs.cache-matched-key }}"
@@ -113,6 +114,7 @@ jobs:
         run: |
           set -uo pipefail
           LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          export CCACHE_DIR="$RUNNER_TEMP/ccache"
           test "$(git rev-parse HEAD)" = "$SOURCE_SHA" || { echo 1 > "$RUNNER_TEMP/build-exit-code"; exit 0; }
           set +e
           cmake --build build-m1-ra --target \
@@ -139,7 +141,7 @@ jobs:
         if: always() && steps.ccache-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
-          path: ${{ env.CCACHE_DIR }}
+          path: ${{ runner.temp }}/ccache
           key: ${{ steps.cache-key.outputs.key }}
 
       - name: Prune stale M1 compiler caches
