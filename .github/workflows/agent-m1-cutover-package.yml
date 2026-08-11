@@ -23,14 +23,13 @@ jobs:
       ENTERING_M1L_SHA: bd140cff4572412e6f4ecd70a6ce0fe85310932c
       BUILD_DIR: build-m1-cutover-final
       RESULT_DIR: m1-single-authority-cutover-code-build-result
-      LOG_DIR: ${{ runner.temp }}/m1-cutover-final-logs
     steps:
       - name: Initialize persistent activity log
         shell: bash
         run: |
           set -uo pipefail
-          mkdir -p "$LOG_DIR"
-          LOG="$LOG_DIR/activity.log"
+          mkdir -p "$RUNNER_TEMP/m1-cutover-final-logs"
+          LOG="$RUNNER_TEMP/m1-cutover-final-logs/activity.log"
           {
             echo "M1 final package start: $(date -u +%FT%TZ)"
             echo "event=${GITHUB_EVENT_NAME}"
@@ -50,7 +49,7 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          LOG="$LOG_DIR/activity.log"
+          LOG="$RUNNER_TEMP/m1-cutover-final-logs/activity.log"
           exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "[m1-final] audit_exit_code=$rc"; git status --short || true; exit $rc' EXIT
           test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_SHA" || exit 41
@@ -109,13 +108,13 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          LOG="$LOG_DIR/activity.log"
+          LOG="$RUNNER_TEMP/m1-cutover-final-logs/activity.log"
           exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "[m1-final] configure_exit_code=$rc"; git status --short || true; exit $rc' EXIT
-          cmake --version | tee "$LOG_DIR/cmake-version.txt"
-          ninja --version | tee "$LOG_DIR/ninja-version.txt"
-          c++ --version | tee "$LOG_DIR/compiler-version.txt"
-          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+          cmake --version | tee "$RUNNER_TEMP/m1-cutover-final-logs/cmake-version.txt"
+          ninja --version | tee "$RUNNER_TEMP/m1-cutover-final-logs/ninja-version.txt"
+          c++ --version | tee "$RUNNER_TEMP/m1-cutover-final-logs/compiler-version.txt"
+          git submodule status --recursive | tee "$RUNNER_TEMP/m1-cutover-final-logs/submodules.txt"
           cmake -S . -B "$BUILD_DIR" -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
@@ -131,13 +130,13 @@ jobs:
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
-            2>&1 | tee "$LOG_DIR/configure.log"
+            2>&1 | tee "$RUNNER_TEMP/m1-cutover-final-logs/configure.log"
 
       - name: Compile and link approved targets only
         shell: bash
         run: |
           set -Eeuo pipefail
-          LOG="$LOG_DIR/activity.log"
+          LOG="$RUNNER_TEMP/m1-cutover-final-logs/activity.log"
           exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "[m1-final] build_exit_code=$rc"; git status --short || true; exit $rc' EXIT
           echo "compile-only; no generated Directional binary execution"
@@ -147,7 +146,7 @@ jobs:
             directional_surface_cell_oracle_tests directional_surface_cell_authority_kernel_tests \
             directional_surface_cell_completion_tests directional_surface_cell_validation_tests \
             directional_benchmarks \
-            2>&1 | tee "$LOG_DIR/build.log"
+            2>&1 | tee "$RUNNER_TEMP/m1-cutover-final-logs/build.log"
           test -z "$(git status --porcelain --untracked-files=no)" || exit 46
           test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_SHA" || exit 47
 
@@ -155,7 +154,7 @@ jobs:
         shell: bash
         run: |
           set -Eeuo pipefail
-          LOG="$LOG_DIR/activity.log"
+          LOG="$RUNNER_TEMP/m1-cutover-final-logs/activity.log"
           exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "[m1-final] package_exit_code=$rc"; git status --short || true; exit $rc' EXIT
           PKG="$RESULT_DIR/package"
@@ -208,13 +207,13 @@ jobs:
             fi
           done < "$PKG/metadata/changed-paths.txt"
 
-          cp "$LOG_DIR/activity.log" "$PKG/logs/activity.log"
-          cp "$LOG_DIR/configure.log" "$PKG/logs/configure.log"
-          cp "$LOG_DIR/build.log" "$PKG/logs/build.log"
-          cp "$LOG_DIR/cmake-version.txt" "$PKG/logs/cmake-version.txt"
-          cp "$LOG_DIR/ninja-version.txt" "$PKG/logs/ninja-version.txt"
-          cp "$LOG_DIR/compiler-version.txt" "$PKG/logs/compiler-version.txt"
-          cp "$LOG_DIR/submodules.txt" "$PKG/logs/submodules.txt"
+          cp "$RUNNER_TEMP/m1-cutover-final-logs/activity.log" "$PKG/logs/activity.log"
+          cp "$RUNNER_TEMP/m1-cutover-final-logs/configure.log" "$PKG/logs/configure.log"
+          cp "$RUNNER_TEMP/m1-cutover-final-logs/build.log" "$PKG/logs/build.log"
+          cp "$RUNNER_TEMP/m1-cutover-final-logs/cmake-version.txt" "$PKG/logs/cmake-version.txt"
+          cp "$RUNNER_TEMP/m1-cutover-final-logs/ninja-version.txt" "$PKG/logs/ninja-version.txt"
+          cp "$RUNNER_TEMP/m1-cutover-final-logs/compiler-version.txt" "$PKG/logs/compiler-version.txt"
+          cp "$RUNNER_TEMP/m1-cutover-final-logs/submodules.txt" "$PKG/logs/submodules.txt"
 
           FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures" -type f | wc -l | tr -d ' ')
           cat > "$PKG/metadata/build-authority.json" <<EOF
