@@ -11,6 +11,22 @@ bool element_protected(const SurfaceSimplificationElement &element) {
          element.rootLabelProtected || element.singularityProtected;
 }
 
+void append_source_scope_identity(
+    std::vector<std::int64_t> &identity,
+    const std::optional<authority::TopologyRegionId> &region,
+    const std::optional<SourceProjectionChart> &chart) {
+  identity.push_back(region.has_value()
+                         ? static_cast<std::int64_t>(region->index())
+                         : -1);
+  if (!chart.has_value()) {
+    identity.push_back(-1);
+    return;
+  }
+  identity.push_back(static_cast<std::int64_t>(chart->chart.index()));
+  identity.push_back(static_cast<std::int64_t>(chart->face.index()));
+}
+
+
 } // namespace directional::geometry::surface_simplification_detail
 
 namespace directional::geometry::surface_simplification_detail {
@@ -45,19 +61,31 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     hash ^= static_cast<std::uint64_t>(value);
     hash *= 1099511628211ULL;
   };
+  const auto mix_scope = [&](
+      const std::optional<authority::TopologyRegionId> &region,
+      const std::optional<SourceProjectionChart> &chart) {
+    mix(region.has_value() ? static_cast<std::int64_t>(region->index()) : -1);
+    if (!chart.has_value()) { mix(-1); return; }
+    mix(static_cast<std::int64_t>(chart->chart.index()));
+    mix(static_cast<std::int64_t>(chart->face.index()));
+  };
+  const auto mix_required_chart = [&](const SourceProjectionChart &chart) {
+    mix(static_cast<std::int64_t>(chart.chart.index()));
+    mix(static_cast<std::int64_t>(chart.face.index()));
+  };
   mix(static_cast<int>(complex.nodes.size()));
   mix(static_cast<int>(complex.halfedges.size()));
   mix(static_cast<int>(complex.cells.size()));
   mix(static_cast<int>(complex.sourceOwnershipRegistry.size()));
   for (const SurfaceCellOwnershipClassRecord &record :
        complex.sourceOwnershipRegistry) {
+    mix(record.sourceTopologyRegion.has_value() ? static_cast<std::int64_t>(record.sourceTopologyRegion->index()) : -1);
     mix(record.canonicalMembership.valid ? 1 : 0);
     for (const std::int64_t value : record.canonicalMembership.values) {
       mix(value);
     }
     for (const SourceProjectionChart &chart : record.exactCharts) {
-      mix(static_cast<std::int64_t>(chart.chart.index()));
-      mix(static_cast<std::int64_t>(chart.face.index()));
+      mix_required_chart(chart);
     }
   }
   for (const SurfaceArrangementNode &node : complex.nodes) {
@@ -73,8 +101,7 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(static_cast<int>(node.occurrences.size()));
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
       mix(occurrence.sourceFace);
-      mix(occurrence.sourceComponent);
-      mix(occurrence.sourceSheet);
+      mix_scope(occurrence.sourceTopologyRegion, occurrence.sourceChart);
       mix(occurrence.sourceArc);
       mix(occurrence.provenance);
       mix(rail_id_leaf(occurrence.railId));
@@ -111,8 +138,7 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     mix(halfedge.singularitySupport ? 1 : 0);
     mix(rail_id_leaf(halfedge.railId));
     mix(halfedge.curveId);
-    mix(halfedge.sourceComponent);
-    mix(halfedge.sourceSheet);
+    mix_scope(halfedge.sourceTopologyRegion, halfedge.sourceChart);
     mix(halfedge.proposalId);
     mix(halfedge.proposalSeedId);
     mix(halfedge.proposalSide);
@@ -132,8 +158,7 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
       mix(value.singularitySupport ? 1 : 0);
       mix(rail_id_leaf(value.railId));
       mix(value.curveId);
-      mix(value.sourceComponent);
-      mix(value.sourceSheet);
+      mix_scope(value.sourceTopologyRegion, value.sourceChart);
       mix(value.proposalId);
       mix(value.proposalSeedId);
       mix(value.proposalSide);
@@ -148,15 +173,15 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
   for (const SurfaceArrangementCell &cell : complex.cells) {
     mix(cell.id);
     mix(cell.sourceFace);
-    mix(cell.sourceComponent);
-    mix(cell.sourceSheet);
+    mix(cell.sourceTopologyRegion.has_value()
+            ? static_cast<std::int64_t>(cell.sourceTopologyRegion->index())
+            : -1);
     mix(cell.sourceOwnershipClass.valid ? 1 : 0);
     for (const std::int64_t value : cell.sourceOwnershipClass.values) {
       mix(value);
     }
     for (const SourceProjectionChart &chart : cell.sourceCharts) {
-      mix(static_cast<std::int64_t>(chart.chart.index()));
-      mix(static_cast<std::int64_t>(chart.face.index()));
+      mix_required_chart(chart);
     }
     for (const int sourceFace : cell.sourceFaces) {
       mix(sourceFace);
@@ -580,28 +605,21 @@ std::multiset<std::vector<std::int64_t>> protected_support(
       const double sourceHi = std::max(value.sourceT0, value.sourceT1);
       const double railLo = std::min(value.railT0, value.railT1);
       const double railHi = std::max(value.railT0, value.railT1);
-      provenanceKeys.push_back({
-          value.sourceArc,
-          value.provenance,
-          value.sourceFace,
-          value.family,
-          value.strand,
-          value.featureClass,
-          value.hardFeature ? 1 : 0,
-          value.layoutSupport ? 1 : 0,
-          value.singularitySupport ? 1 : 0,
-          rail_id_leaf(value.railId),
-          value.curveId,
-          value.sourceComponent,
-          value.sourceSheet,
-          value.proposalId,
-          value.proposalSeedId,
-          value.proposalSide,
-          value.proposalBoundarySegment,
-          static_cast<std::int64_t>(std::llround(sourceLo * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(sourceHi * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(railLo * 1.0e10)),
-          static_cast<std::int64_t>(std::llround(railHi * 1.0e10))});
+      std::vector<std::int64_t> provenanceKey{
+          value.sourceArc, value.provenance, value.sourceFace, value.family,
+          value.strand, value.featureClass, value.hardFeature ? 1 : 0,
+          value.layoutSupport ? 1 : 0, value.singularitySupport ? 1 : 0,
+          rail_id_leaf(value.railId), value.curveId};
+      append_source_scope_identity(provenanceKey, value.sourceTopologyRegion,
+                                   value.sourceChart);
+      provenanceKey.insert(provenanceKey.end(),
+          {value.proposalId, value.proposalSeedId, value.proposalSide,
+           value.proposalBoundarySegment,
+           static_cast<std::int64_t>(std::llround(sourceLo * 1.0e10)),
+           static_cast<std::int64_t>(std::llround(sourceHi * 1.0e10)),
+           static_cast<std::int64_t>(std::llround(railLo * 1.0e10)),
+           static_cast<std::int64_t>(std::llround(railHi * 1.0e10))});
+      provenanceKeys.push_back(std::move(provenanceKey));
     }
     std::sort(provenanceKeys.begin(), provenanceKeys.end());
 
@@ -1061,8 +1079,7 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     mergedCell.boundaryComponentCount = 1;
     mergedCell.eulerCharacteristic = 1;
     std::set<int> mergedSourceFaces;
-    std::set<int> mergedComponents;
-    std::set<int> mergedSheets;
+    std::set<authority::TopologyRegionId> mergedRegions;
     std::set<int> mergedBoundaryLoops;
     int mergedBoundarySide = 0;
     std::set<SurfaceCellCanonicalIdentity> mergedOwnershipClasses;
@@ -1080,8 +1097,8 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
           find_surface_cell_ownership_class(complex, ownership) == nullptr) {
         return invalid;
       }
-      mergedComponents.insert(cell.sourceComponent);
-      mergedSheets.insert(cell.sourceSheet);
+      if (!cell.sourceTopologyRegion.has_value()) return invalid;
+      mergedRegions.insert(cell.sourceTopologyRegion.value());
       mergedBoundaryLoops.insert(cell.sourceBoundaryLoopIds.begin(),
                                  cell.sourceBoundaryLoopIds.end());
       if (cell.sourceBoundarySide != 0) {
@@ -1094,14 +1111,12 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       mergedCharts.insert(cell.sourceCharts.begin(), cell.sourceCharts.end());
       mergedOwnershipClasses.insert(ownership);
     }
-    if (mergedOwnershipClasses.size() != 1U ||
-        mergedComponents.size() != 1U || mergedSheets.size() != 1U) {
+    if (mergedOwnershipClasses.size() != 1U || mergedRegions.size() != 1U) {
       return invalid;
     }
     mergedCell.sourceOwnershipClass = *mergedOwnershipClasses.begin();
     mergedCell.sourceCharts.assign(mergedCharts.begin(), mergedCharts.end());
-    mergedCell.sourceComponent = *mergedComponents.begin();
-    mergedCell.sourceSheet = *mergedSheets.begin();
+    mergedCell.sourceTopologyRegion = *mergedRegions.begin();
     mergedCell.sourceFaces.assign(mergedSourceFaces.begin(),
                                   mergedSourceFaces.end());
     mergedCell.sourceBoundaryLoopIds.assign(mergedBoundaryLoops.begin(),
@@ -1977,9 +1992,13 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
               std::min(edge.from, edge.to), std::max(edge.from, edge.to),
               edge.family, edge.strand, edge.featureClass,
               edge.hardFeature ? 1 : 0, edge.layoutSupport ? 1 : 0,
-              edge.singularitySupport ? 1 : 0, rail_id_leaf(edge.railId), edge.curveId,
-              edge.sourceComponent, edge.sourceSheet, edge.proposalSide,
-              edge.proposalBoundarySegment};
+              edge.singularitySupport ? 1 : 0, rail_id_leaf(edge.railId),
+              edge.curveId};
+          append_source_scope_identity(edgeIdentity, edge.sourceTopologyRegion,
+                                       edge.sourceChart);
+          edgeIdentity.insert(edgeIdentity.end(),
+                              {edge.proposalSide,
+                               edge.proposalBoundarySegment});
           for (const SurfaceArrangementProvenance &provenance :
                edge.provenance) {
             edgeIdentity.insert(
@@ -1988,10 +2007,13 @@ SurfaceSimplificationResult simplify_surface_cell_complex_impl(
                  provenance.featureClass, provenance.hardFeature ? 1 : 0,
                  provenance.layoutSupport ? 1 : 0,
                  provenance.singularitySupport ? 1 : 0,
-                 rail_id_leaf(provenance.railId), provenance.curveId,
-                 provenance.sourceComponent, provenance.sourceSheet,
-                 provenance.proposalSide,
-                 provenance.proposalBoundarySegment});
+                 rail_id_leaf(provenance.railId), provenance.curveId});
+            append_source_scope_identity(edgeIdentity,
+                                         provenance.sourceTopologyRegion,
+                                         provenance.sourceChart);
+            edgeIdentity.insert(edgeIdentity.end(),
+                                {provenance.proposalSide,
+                                 provenance.proposalBoundarySegment});
           }
           edges.push_back(std::move(edgeIdentity));
         }
