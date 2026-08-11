@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m1-ra-wip-a7-retry1.txt
+      - .agents/connector-triggers/m1-ra-wip-a8.txt
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           : > "$LOG"
           {
-            echo "task=M1 R-A WIP A7 validator and recovery typed source authority retry1"
+            echo "task=M1 R-A WIP A8 typed topology-region semantic witnesses"
             echo "event=$GITHUB_EVENT_NAME"
             echo "ref=$GITHUB_REF"
             echo "sha=$GITHUB_SHA"
@@ -50,14 +50,15 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git --version
 
-          BASE64="$RUNNER_TEMP/m1-ra-wip-a7.patch.gz.b64"
-          cat .agents/Directional/turn-payloads/m1-ra-wip-a7.part.00 \
-              .agents/Directional/turn-payloads/m1-ra-wip-a7.part.01 \
-              .agents/Directional/turn-payloads/m1-ra-wip-a7.part.02 > "$BASE64"
-          PATCH="$RUNNER_TEMP/m1-ra-wip-a7.patch"
+          BASE64="$RUNNER_TEMP/m1-ra-wip-a8.patch.gz.b64"
+          cat .agents/Directional/turn-payloads/m1-ra-wip-a8.part.00 \
+              .agents/Directional/turn-payloads/m1-ra-wip-a8.part.01 \
+              .agents/Directional/turn-payloads/m1-ra-wip-a8.part.02 \
+              .agents/Directional/turn-payloads/m1-ra-wip-a8.part.03 > "$BASE64"
+          PATCH="$RUNNER_TEMP/m1-ra-wip-a8.patch"
           base64 -d "$BASE64" | gzip -dc > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "e78cc491c03013c742f6fa4bec97771beb97fbdd0161e6d382c27548f135794c"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "a2663a34e16cf57737feb9a9785b835cdea83521025a3c04fce3720330124fff"
           if grep -E '^diff --git a/\.github/workflows/' "$PATCH"; then
             echo "workflow path found in patch" >&2
             exit 1
@@ -66,15 +67,15 @@ jobs:
           git apply --check "$PATCH"
           git apply "$PATCH"
           git diff --check
-          git add include/directional/geometry/SurfaceMeshOptimizer.h include/directional/pipeline/RemeshPipeline.h include/directional/validation/SourceAuthoritativeMeshValidator.h src/geometry/SurfaceMeshOptimizer.cpp src/pipeline/RemeshPipeline.cpp src/validation/SourceAuthoritativeMeshValidator.cpp
+          git add include/directional/geometry/SurfaceArrangement.h include/directional/geometry/SurfaceCellOwnership.h src/geometry/PatchDescriptor.cpp src/geometry/SurfaceArrangement.cpp
           echo "staged_paths_begin"
           git diff --cached --name-only
           echo "staged_paths_end"
-          test "$(git diff --cached --name-only | wc -l)" -eq 6
+          test "$(git diff --cached --name-only | wc -l)" -eq 4
 
           git config user.name "directional-agent"
           git config user.email "directional-agent@users.noreply.github.com"
-          git commit -m "wip(m1): route validation and recovery through typed source authority"
+          git commit -m "wip(m1): make topology region the semantic ownership witness"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "pushed_head=$(git rev-parse HEAD)"
 
@@ -82,7 +83,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-ra-wip-a7-retry1-log-${{ github.run_id }}
+          name: m1-ra-wip-a8-log-${{ github.run_id }}
           path: ${{ runner.temp }}/activity.log
           if-no-files-found: error
           retention-days: 7
