@@ -1,4 +1,5 @@
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
 #include <cstdint>
@@ -11,6 +12,20 @@ namespace {
 
 using directional::geometry::SurfacePoint;
 using directional::validation::MeshValidationFailureCode;
+
+directional::geometry::SourceTopologyRegions test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  return std::move(*authority);
+}
 
 directional::validation::source_authoritative_detail::TrianglePrimitive
 make_triangle_primitive(const Eigen::MatrixXd &vertices, const int a,
@@ -93,11 +108,12 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   const std::vector<int> sheets = {0, 0};
   const std::vector<SurfacePoint> provenance = square_provenance(vertices);
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::validation::SourceAuthoritativeMeshValidatorOptions options;
   options.sourceVertices = &vertices;
   options.sourceFaces = &sourceFaces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  options.sourceAuthority = &sourceAuthority;
   options.vertexProvenance = &provenance;
   options.authoritativeBoundaryLoops = {{0, 1, 2, 3}};
   options.requireLocalSheetCompatibility = false;
@@ -141,11 +157,12 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   assign(2, 0, 2);
   assign(3, 1, 2);
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::validation::SourceAuthoritativeMeshValidatorOptions options;
   options.sourceVertices = &vertices;
   options.sourceFaces = &sourceFaces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  options.sourceAuthority = &sourceAuthority;
   options.vertexProvenance = &provenance;
   options.authoritativeBoundaryLoops = {{0, 1, 2, 3}};
 
@@ -185,8 +202,10 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
     point.squaredDistance = 0.0;
   }
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   const directional::validation::source_authoritative_detail::
-      SourcePointLabelSupport support(&sourceFaces, &components, &sheets);
+      SourcePointLabelSupport support(&sourceFaces, &sourceAuthority);
   std::vector<const SurfacePoint *> points;
   for (const SurfacePoint &point : provenance) {
     points.push_back(&point);
@@ -215,9 +234,10 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   second.face = 1;
   second.barycentric << 0.5, 0.5, 0.0;
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   const directional::validation::source_authoritative_detail::
-      SourcePointLabelSupport support(&sourceFaces, &components, &sheets,
-                                      &hardEdges);
+      SourcePointLabelSupport support(&sourceFaces, &sourceAuthority, &hardEdges);
   const std::vector<const SurfacePoint *> points = {&first, &second};
   EXPECT_FALSE(support.have_compatible_chart(points));
 }
@@ -240,8 +260,10 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
   SurfacePoint opposite = first;
   opposite.face = 2;
 
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   const directional::validation::source_authoritative_detail::
-      SourcePointLabelSupport support(&sourceFaces, &components, &sheets);
+      SourcePointLabelSupport support(&sourceFaces, &sourceAuthority);
   const std::vector<const SurfacePoint *> points = {&first, &opposite};
   EXPECT_TRUE(support.have_compatible_chart(points));
 }
