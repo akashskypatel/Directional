@@ -247,7 +247,6 @@ struct SurfaceArrangementOptions {
   /// This bypasses fan-sector inference for the phase-front producer path.
   bool useAuthoritativeProposalCycles = false;
   std::set<std::uint64_t> hardFeatureEdges;
-  // Complete typed source authority. Raw classifier arrays are ingress-only.
   const SourceTopologyRegions *sourceAuthority = nullptr;
 };
 
@@ -264,8 +263,7 @@ struct SurfaceArrangementArc {
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  int sourceComponent = -1; // derived diagnostic projection
-  int sourceSheet = -1;     // derived diagnostic projection
+  std::optional<SourceProjectionChart> sourceChart;
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
@@ -283,8 +281,7 @@ struct SurfaceArrangementNodeOccurrence {
   // geometrically by two source sheets, so the node-level primary chart is
   // not sufficient to select an oriented halfedge endpoint.
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  int sourceComponent = -1; // derived diagnostic projection
-  int sourceSheet = -1;     // derived diagnostic projection
+  std::optional<SourceProjectionChart> sourceChart;
   int sourceArc = -1;
   int provenance = -1;
   std::optional<authority::HardRailId> railId;
@@ -308,8 +305,7 @@ struct SurfaceArrangementProvenance {
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  int sourceComponent = -1; // derived diagnostic projection
-  int sourceSheet = -1;     // derived diagnostic projection
+  std::optional<SourceProjectionChart> sourceChart;
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
@@ -324,8 +320,7 @@ struct SurfaceArrangementNode {
   int id = -1;
   int sourceFace = -1;
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  int sourceComponent = -1; // derived diagnostic projection
-  int sourceSheet = -1;     // derived diagnostic projection
+  std::optional<SourceProjectionChart> sourceChart;
   bool hardBarrierCrossing = false;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
   int sourceEdge = -1;
@@ -352,8 +347,7 @@ struct SurfaceArrangementHalfedge {
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  int sourceComponent = -1; // derived diagnostic projection
-  int sourceSheet = -1;     // derived diagnostic projection
+  std::optional<SourceProjectionChart> sourceChart;
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
@@ -371,13 +365,10 @@ struct SurfaceArrangementHalfedge {
 struct SurfaceArrangementCell {
   int id = -1;
   int sourceFace = -1;
-  // Exact ownership scope of the oriented cell is the producer topology region.
+  // Exact ownership scope of the oriented cell.  Source-face support is kept
+  // separately because one cell can span many source triangles while still
+  // belonging to one connected component and one source sheet.
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  // Component/sheet fields are temporary one-way diagnostic projections only.
-  int sourceComponent = -1;
-  // Legacy representative chart. Exact per-face charts are kept in
-  // sourceCharts and sourceOwnershipClass identifies their physical cell side.
-  int sourceSheet = -1;
   SurfaceCellCanonicalIdentity sourceOwnershipClass;
   std::vector<SourceProjectionChart> sourceCharts;
   std::vector<int> sourceFaces;
@@ -587,8 +578,7 @@ struct Segment2 {
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  int sourceComponent = -1; // derived diagnostic projection
-  int sourceSheet = -1;     // derived diagnostic projection
+  std::optional<SourceProjectionChart> sourceChart;
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
