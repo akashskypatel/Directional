@@ -515,8 +515,7 @@ SurfacePoint project_generated_point(
     const Eigen::Vector3d &target, const std::vector<SurfacePoint> &anchors,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets);
+    const SourceTopologyRegions *sourceAuthority);
 
 void initialize_boundary_embedding(const PureQuadPatch &patch,
                                           PureQuadMesh &mesh);
@@ -527,8 +526,7 @@ int append_embedded_vertex(
     const std::vector<SurfacePoint> &anchors,
     const SurfaceProjectionBvh *projection = nullptr,
     const std::vector<unsigned char> *allowedFaces = nullptr,
-    const std::vector<int> *faceComponents = nullptr,
-    const std::vector<int> *faceSheets = nullptr);
+    const SourceTopologyRegions *sourceAuthority = nullptr);
 
 bool fill_positions(PureQuadMesh &mesh);
 
@@ -562,8 +560,7 @@ bool complete_rectangular_grid(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets);
+    const SourceTopologyRegions *sourceAuthority);
 
 bool complete_six_vertex_transition(const PureQuadPatch &patch,
                                            PureQuadMesh &mesh);
@@ -575,8 +572,7 @@ bool complete_singularity_pole(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets);
+    const SourceTopologyRegions *sourceAuthority);
 
 bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh);
 

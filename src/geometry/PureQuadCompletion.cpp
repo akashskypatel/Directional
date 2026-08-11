@@ -294,33 +294,33 @@ SurfacePoint project_generated_point(
     const Eigen::Vector3d &target, const std::vector<SurfacePoint> &anchors,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets) {
+    const SourceTopologyRegions *sourceAuthority) {
+  const auto derive_source_payload = [&](SurfacePoint &point) {
+    if (!point.valid() || sourceAuthority == nullptr) return point.valid();
+    const auto row = authority::SourceFaceId::from_index(
+        point.face, sourceAuthority->face_count());
+    if (!row) return false;
+    point.component = static_cast<int>(
+        sourceAuthority->component_for_row(row.value()).index());
+    point.sheet = static_cast<int>(
+        sourceAuthority->sheet_for_row(row.value()).index());
+    return true;
+  };
   if (projection != nullptr) {
     SurfaceProjectionOptions options;
     options.allowedFaces = allowedFaces;
-    options.faceComponents = faceComponents;
-    options.faceSheets = faceSheets;
     SurfacePoint projected = projection->project(target, options);
-    if (projected.valid()) {
-      return projected;
-    }
+    if (derive_source_payload(projected)) return projected;
   }
 
-  // Standalone completion tests may not provide a source mesh. A fallback is
-  // truthful only when all anchors refer to the same source triangle and
-  // sheet. Real multi-triangle patches must provide a projection context.
   const SurfacePoint averaged = average_source_point(anchors);
-  if (!averaged.valid()) {
-    return {};
-  }
+  if (!averaged.valid()) return {};
   for (const SurfacePoint &anchor : anchors) {
-    if (!anchor.valid() || anchor.face != averaged.face ||
-        anchor.component != averaged.component || anchor.sheet != averaged.sheet) {
-      return {};
-    }
+    if (!anchor.valid() || anchor.face != averaged.face) return {};
   }
-  return averaged;
+  SurfacePoint result = averaged;
+  if (!derive_source_payload(result)) return {};
+  return result;
 }
 
 } // namespace directional::geometry::pure_quad_detail
@@ -343,6 +343,14 @@ void initialize_boundary_embedding(const PureQuadPatch &patch,
         mesh.boundaryVertices[static_cast<std::size_t>(i)];
     lineage.sourcePatch = mesh.sourcePatch;
     lineage.localVertex = lineage.outputVertex;
+    if (i < static_cast<int>(patch.boundaryTopologyRegions.size())) {
+      lineage.sourceTopologyRegions.push_back(
+          patch.boundaryTopologyRegions[static_cast<std::size_t>(i)]);
+    }
+    if (i < static_cast<int>(patch.boundaryCharts.size())) {
+      lineage.sourceCharts.push_back(
+          patch.boundaryCharts[static_cast<std::size_t>(i)]);
+    }
     lineage.stitchIdentity.kind =
         PureQuadStitchIdentityKind::ArrangementBoundaryNode;
     if (i < static_cast<int>(patch.boundaryNodeIdentities.size()) &&
@@ -353,12 +361,18 @@ void initialize_boundary_embedding(const PureQuadPatch &patch,
       // Compatibility path for standalone completion fixtures. Production
       // descriptors always provide the exact arrangement-node identity.
       lineage.stitchIdentity.canonical.valid = true;
-      lineage.stitchIdentity.canonical.values = {
-          lineage.outputVertex,
-          patch.domainIdentity.sourceTopologyRegion.has_value()
-              ? static_cast<std::int64_t>(
-                    patch.domainIdentity.sourceTopologyRegion->index())
-              : -1};
+      lineage.stitchIdentity.canonical.values = {lineage.outputVertex};
+      if (!lineage.sourceTopologyRegions.empty()) {
+        lineage.stitchIdentity.canonical.values.push_back(
+            static_cast<std::int64_t>(
+                lineage.sourceTopologyRegions.front().index()));
+      }
+      if (!lineage.sourceCharts.empty()) {
+        lineage.stitchIdentity.canonical.values.push_back(
+            static_cast<std::int64_t>(lineage.sourceCharts.front().chart.index()));
+        lineage.stitchIdentity.canonical.values.push_back(
+            static_cast<std::int64_t>(lineage.sourceCharts.front().face.index()));
+      }
     }
     lineage.authoritativeIdentity = lineage.stitchIdentity;
     const std::optional<authority::HardRailId> rail =
@@ -393,14 +407,10 @@ int append_embedded_vertex(
     const std::vector<SurfacePoint> &anchors,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets) {
+    const SourceTopologyRegions *sourceAuthority) {
   const SurfacePoint point = project_generated_point(
-      targetPosition, anchors, projection, allowedFaces, faceComponents,
-      faceSheets);
-  if (!point.valid()) {
-    return std::numeric_limits<int>::max();
-  }
+      targetPosition, anchors, projection, allowedFaces, sourceAuthority);
+  if (!point.valid()) return std::numeric_limits<int>::max();
   const int vertex = next_generated_vertex(nextInterior);
   mesh.vertices.push_back(vertex);
   mesh.vertexProvenance.push_back(point);
@@ -409,15 +419,28 @@ int append_embedded_vertex(
   lineage.sourcePoint = point;
   lineage.sourcePatch = mesh.sourcePatch;
   lineage.localVertex = vertex;
+  if (sourceAuthority != nullptr) {
+    const auto row = authority::SourceFaceId::from_index(
+        point.face, sourceAuthority->face_count());
+    if (row) {
+      lineage.sourceTopologyRegions.push_back(
+          sourceAuthority->region_for_row(row.value()));
+      lineage.sourceIsolationSheets.push_back(
+          sourceAuthority->sheet_for_row(row.value()));
+    }
+  }
   lineage.stitchIdentity.kind =
       PureQuadStitchIdentityKind::GeneratedPatchInterior;
   lineage.stitchIdentity.canonical.valid = true;
-  lineage.stitchIdentity.canonical.values = {
-      mesh.sourcePatch, vertex,
-      mesh.domainIdentity.sourceTopologyRegion.has_value()
-          ? static_cast<std::int64_t>(
-                mesh.domainIdentity.sourceTopologyRegion->index())
-          : -1};
+  lineage.stitchIdentity.canonical.values = {mesh.sourcePatch, vertex};
+  if (!lineage.sourceTopologyRegions.empty()) {
+    lineage.stitchIdentity.canonical.values.push_back(
+        static_cast<std::int64_t>(lineage.sourceTopologyRegions.front().index()));
+  }
+  if (!lineage.sourceIsolationSheets.empty()) {
+    lineage.stitchIdentity.canonical.values.push_back(
+        static_cast<std::int64_t>(lineage.sourceIsolationSheets.front().index()));
+  }
   lineage.authoritativeIdentity = lineage.stitchIdentity;
   mesh.vertexLineage.push_back(std::move(lineage));
   return vertex;
@@ -445,25 +468,21 @@ bool fill_positions(PureQuadMesh &mesh) {
 }
 
 
-const SurfacePoint *lineage_source_point(
-    const PureQuadVertexLineage &lineage) {
-  if (lineage.kind == PureQuadVertexLineageKind::SourceTriangle &&
-      lineage.sourcePoint.valid()) {
-    return &lineage.sourcePoint;
-  }
-  if (lineage.kind == PureQuadVertexLineageKind::OrderedFeatureInterval &&
-      lineage.featureInterval.start.valid()) {
-    return &lineage.featureInterval.start;
-  }
-  return nullptr;
-}
 
 std::pair<int, int> diagnostic_source_scope(const PureQuadMesh &mesh) {
+  // One-way representation-only diagnostic projection. These raw labels are
+  // never consulted for semantic equality, ordering, ownership, or routing.
   for (const PureQuadVertexLineage &lineage : mesh.vertexLineage) {
-    if (const SurfacePoint *point = lineage_source_point(lineage);
-        point != nullptr) {
-      return {point->component, point->sheet};
+    const SurfacePoint *point = nullptr;
+    if (lineage.kind == PureQuadVertexLineageKind::SourceTriangle &&
+        lineage.sourcePoint.valid()) {
+      point = &lineage.sourcePoint;
+    } else if (lineage.kind ==
+                   PureQuadVertexLineageKind::OrderedFeatureInterval &&
+               lineage.featureInterval.start.valid()) {
+      point = &lineage.featureInterval.start;
     }
+    if (point != nullptr) return {point->component, point->sheet};
   }
   return {-1, -1};
 }
@@ -475,9 +494,6 @@ bool completed_quads_have_simple_embedding(
   failure.sourcePatch = mesh.sourcePatch;
   failure.backend = mesh.backend;
   failure.completionVariant = completionVariant;
-  const auto [diagnosticComponent, diagnosticSheet] = diagnostic_source_scope(mesh);
-  failure.sourceComponent = diagnosticComponent;
-  failure.sourceSheet = diagnosticSheet;
   const auto reject = [&](const PureQuadEmbeddingFailureKind kind,
                           const int localQuad) {
     failure.active = true;
@@ -504,12 +520,6 @@ bool completed_quads_have_simple_embedding(
           const SurfacePoint &point = mesh.vertexProvenance[index];
           if (point.face >= 0) {
             sourceFaces.insert(point.face);
-          }
-          if (failure.sourceComponent < 0) {
-            failure.sourceComponent = point.component;
-          }
-          if (failure.sourceSheet < 0) {
-            failure.sourceSheet = point.sheet;
           }
         }
       }
@@ -647,34 +657,30 @@ std::string completion_ownership_face_list(
   return stream.str();
 }
 
-bool completion_ownership_face_matches_labels(
+bool completion_ownership_face_matches_authority(
     const int face, const PureQuadVertexLineage &lineage,
-    const SourceTopologyRegions *sourceAuthority,
-    const std::set<std::uint64_t> *sourceHardFeatureEdges) {
-  (void)sourceHardFeatureEdges;
-  if (face < 0 || sourceAuthority == nullptr ||
-      static_cast<std::size_t>(face) >= sourceAuthority->face_count()) {
-    return false;
-  }
-  const auto faceId = authority::SourceFaceId::from_index(
+    const SourceTopologyRegions *sourceAuthority) {
+  if (face < 0 || sourceAuthority == nullptr) return false;
+  const auto row = authority::SourceFaceId::from_index(
       face, sourceAuthority->face_count());
-  if (!faceId) {
+  if (!row) return false;
+  const authority::TopologyRegionId region =
+      sourceAuthority->region_for_row(row.value());
+  const authority::IsolationSheetId sheet =
+      sourceAuthority->sheet_for_row(row.value());
+  if (!lineage.sourceTopologyRegions.empty() &&
+      std::find(lineage.sourceTopologyRegions.begin(),
+                lineage.sourceTopologyRegions.end(), region) ==
+          lineage.sourceTopologyRegions.end()) {
     return false;
   }
-  const SurfacePoint *anchor = lineage_source_point(lineage);
-  if (anchor == nullptr || anchor->face < 0 ||
-      static_cast<std::size_t>(anchor->face) >= sourceAuthority->face_count()) {
+  if (!lineage.sourceIsolationSheets.empty() &&
+      std::find(lineage.sourceIsolationSheets.begin(),
+                lineage.sourceIsolationSheets.end(), sheet) ==
+          lineage.sourceIsolationSheets.end()) {
     return false;
   }
-  const auto anchorId = authority::SourceFaceId::from_index(
-      anchor->face, sourceAuthority->face_count());
-  if (!anchorId) {
-    return false;
-  }
-  return sourceAuthority->region_for_row(faceId.value()) ==
-             sourceAuthority->region_for_row(anchorId.value()) &&
-         sourceAuthority->sheet_for_row(faceId.value()) ==
-             sourceAuthority->sheet_for_row(anchorId.value());
+  return true;
 }
 
 void set_completion_ownership_rejection(
@@ -683,7 +689,8 @@ void set_completion_ownership_rejection(
     const PureQuadVertexLineage &lineage, const SurfacePoint &provenance,
     const bool boundaryVertex, const int completionVariant,
     const SurfacePointSourceSupport &support,
-    const std::vector<int> &patchSourceFaces, std::string &failure) {
+    const std::vector<int> &patchSourceFaces,
+    const SourceTopologyRegions *sourceAuthority, std::string &failure) {
   int sourceVertex = -1;
   std::array<int, 2> sourceEdge{{-1, -1}};
   if (support.identity.has_value()) {
@@ -711,15 +718,22 @@ void set_completion_ownership_rejection(
             ";sourceEdge=" + std::to_string(sourceEdge[0]) + "," +
             std::to_string(sourceEdge[1]) + ";candidateFaces=" +
             completion_ownership_face_list(support.incidentFaces) +
-            ";patchFaces=" +
-            completion_ownership_face_list(patchSourceFaces) +
+            ";patchFaces=" + completion_ownership_face_list(patchSourceFaces) +
             ";component=" +
-            std::to_string(lineage_source_point(lineage) != nullptr
-                               ? lineage_source_point(lineage)->component
+            std::to_string((sourceAuthority != nullptr && provenance.face >= 0 &&
+                            authority::SourceFaceId::from_index(
+                                provenance.face, sourceAuthority->face_count()))
+                               ? static_cast<int>(sourceAuthority->component_for_row(
+                                     authority::SourceFaceId::from_index(
+                                         provenance.face, sourceAuthority->face_count()).value()).index())
                                : -1) +
             ";sheet=" +
-            std::to_string(lineage_source_point(lineage) != nullptr
-                               ? lineage_source_point(lineage)->sheet
+            std::to_string((sourceAuthority != nullptr && provenance.face >= 0 &&
+                            authority::SourceFaceId::from_index(
+                                provenance.face, sourceAuthority->face_count()))
+                               ? static_cast<int>(sourceAuthority->sheet_for_row(
+                                     authority::SourceFaceId::from_index(
+                                         provenance.face, sourceAuthority->face_count()).value()).index())
                                : -1) +
             ";supportFailure=" +
             surface_point_source_support_failure_name(support.failure);
@@ -738,11 +752,6 @@ void set_completion_ownership_rejection(
   rejection->sourceSupport = support.identity;
   rejection->candidateSupportedFaces = support.incidentFaces;
   rejection->patchSourceFaces = patchSourceFaces;
-  const SurfacePoint *diagnosticPoint = lineage_source_point(lineage);
-  rejection->sourceComponent =
-      diagnosticPoint != nullptr ? diagnosticPoint->component : -1;
-  rejection->sourceSheet =
-      diagnosticPoint != nullptr ? diagnosticPoint->sheet : -1;
 }
 
 bool validate_completion_domain_ownership(
@@ -848,7 +857,7 @@ bool validate_completion_domain_ownership(
         set_completion_ownership_rejection(
             ownershipRejection, "CompletionOwnershipInvalidSourceSupport",
             mesh, lineage, provenance, true, completionVariant, support,
-            patchSourceFaces, failure);
+            patchSourceFaces, sourceAuthority, failure);
         return false;
       }
     } else {
@@ -875,8 +884,8 @@ bool validate_completion_domain_ownership(
         continue;
       }
       intersectsPatch = true;
-      bool compatible = completion_ownership_face_matches_labels(
-          candidateFace, lineage, sourceAuthority, sourceHardFeatureEdges);
+      bool compatible = completion_ownership_face_matches_authority(
+          candidateFace, lineage, sourceAuthority);
       if (compatible && transitionAuthorityAvailable) {
         SurfacePoint rebound;
         compatible = transitionGraph.rebind(provenance, candidateFace, rebound);
@@ -892,7 +901,7 @@ bool validate_completion_domain_ownership(
       set_completion_ownership_rejection(
           ownershipRejection, failureCode, mesh, lineage, provenance,
           boundaryVertex, completionVariant, support, patchSourceFaces,
-          failure);
+          sourceAuthority, failure);
       return false;
     }
 
@@ -1302,8 +1311,7 @@ bool complete_rectangular_grid(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets) {
+    const SourceTopologyRegions *sourceAuthority) {
   if (patch.sideEdgeCounts.size() != 4 ||
       patch.sideEdgeCounts[0] != patch.sideEdgeCounts[2] ||
       patch.sideEdgeCounts[1] != patch.sideEdgeCounts[3]) {
@@ -1337,7 +1345,7 @@ bool complete_rectangular_grid(
           (1.0 - u) * v * c01.position;
       grid[y][x] = append_embedded_vertex(
           mesh, nextInterior, target, {c00, c10, c11, c01}, projection,
-          allowedFaces, faceComponents, faceSheets);
+          allowedFaces, sourceAuthority);
       if (grid[y][x] == std::numeric_limits<int>::max()) {
         return false;
       }
@@ -1433,8 +1441,7 @@ bool complete_singularity_pole(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets) {
+    const SourceTopologyRegions *sourceAuthority) {
   if (patch.singularityCount != 1) return false;
   const int valence = expected_valence(patch.singularIndexNumerator);
   if (valence < 3 || valence > 6 ||
@@ -1452,7 +1459,7 @@ bool complete_singularity_pole(
   target /= static_cast<double>(patch.boundaryProvenance.size());
   const int pole = append_embedded_vertex(
       mesh, nextInterior, target, patch.boundaryProvenance, projection,
-      allowedFaces, faceComponents, faceSheets);
+      allowedFaces, sourceAuthority);
   if (pole == std::numeric_limits<int>::max()) {
     return false;
   }
@@ -1568,34 +1575,11 @@ PureQuadCompletionResult complete_pure_quad_patch(
   }
   const std::vector<unsigned char> *allowedFacePtr =
       allowedFaces.empty() ? nullptr : &allowedFaces;
-  std::vector<int> derivedComponents;
-  std::vector<int> derivedSheets;
-  if (options.sourceFaces != nullptr && options.sourceAuthority != nullptr &&
-      options.sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(options.sourceFaces->rows()))) {
-    derivedComponents.resize(static_cast<std::size_t>(options.sourceFaces->rows()));
-    derivedSheets.resize(static_cast<std::size_t>(options.sourceFaces->rows()));
-    for (int face = 0; face < options.sourceFaces->rows(); ++face) {
-      const auto faceId = authority::SourceFaceId::from_index(
-          face, options.sourceAuthority->face_count());
-      if (!faceId) {
-        continue;
-      }
-      derivedComponents[static_cast<std::size_t>(face)] = static_cast<int>(
-          options.sourceAuthority->component_for_row(faceId.value()).index());
-      derivedSheets[static_cast<std::size_t>(face)] = static_cast<int>(
-          options.sourceAuthority->sheet_for_row(faceId.value()).index());
-    }
-  }
-  const std::vector<int> *derivedComponentPtr =
-      derivedComponents.empty() ? nullptr : &derivedComponents;
-  const std::vector<int> *derivedSheetPtr =
-      derivedSheets.empty() ? nullptr : &derivedSheets;
   bool completed = false;
   if (!boundedFallbackAdmissible && patch.singularityCount != 0) {
     completed = pure_quad_detail::complete_singularity_pole(
         patch, mesh, projection.get(), allowedFacePtr,
-        derivedComponentPtr, derivedSheetPtr);
+        options.sourceAuthority);
     if (!completed) {
       result.failureReason =
           PureQuadPatchRejectReason::UnsupportedSingularityCompletion;
@@ -1605,7 +1589,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
   if (!completed && !boundedFallbackAdmissible) {
     completed = pure_quad_detail::complete_rectangular_grid(
         patch, mesh, projection.get(), allowedFacePtr,
-        derivedComponentPtr, derivedSheetPtr);
+        options.sourceAuthority);
   }
   if (!completed && !boundedFallbackAdmissible && boundaryCount == 6) {
     completed = pure_quad_detail::complete_six_vertex_transition(
@@ -1655,8 +1639,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
            << ";vertices=" << failure.localVertices[0] << ','
            << failure.localVertices[1] << ',' << failure.localVertices[2]
            << ',' << failure.localVertices[3]
-           << ";component=" << failure.sourceComponent
-           << ";sheet=" << failure.sourceSheet << ";sourceFaces=";
+           << ";sourceFaces=";
     for (std::size_t index = 0; index < failure.sourceFaces.size(); ++index) {
       if (index != 0U) {
         stream << ',';
@@ -2537,15 +2520,10 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     }
     selected.face = selectedFace;
     selected.barycentric = rebound;
-    const auto selectedFaceId = authority::SourceFaceId::from_index(
-        selectedFace, sourceAuthority->face_count());
-    if (!selectedFaceId) {
-      return selected;
-    }
     selected.component = static_cast<int>(
-        sourceAuthority->component_for_row(selectedFaceId.value()).index());
+        sourceAuthority->component_for_row(selectedFaceId).index());
     selected.sheet = static_cast<int>(
-        sourceAuthority->sheet_for_row(selectedFaceId.value()).index());
+        sourceAuthority->sheet_for_row(selectedFaceId).index());
     return selected;
   };
   for (int row = 0; row < static_cast<int>(pendingVertices.size()); ++row) {
