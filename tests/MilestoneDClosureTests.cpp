@@ -551,10 +551,8 @@ TEST(MilestoneDClosure, InteriorHardRailIsNotClassifiedAsExteriorBoundary) {
       EXPECT_FALSE(left.sourceOwnershipClass == right.sourceOwnershipClass);
       ASSERT_EQ(left.sourceCharts.size(), 1U);
       ASSERT_EQ(right.sourceCharts.size(), 1U);
-      EXPECT_NE(left.sourceCharts.front().sourceFace,
-                right.sourceCharts.front().sourceFace);
-      EXPECT_EQ(left.sourceCharts.front().sourceComponent,
-                right.sourceCharts.front().sourceComponent);
+      EXPECT_NE(left.sourceCharts.front().face, right.sourceCharts.front().face);
+      EXPECT_EQ(left.sourceComponent, right.sourceComponent);
     }
   }
   EXPECT_EQ(boundedHardRailTwinPairs, 1);

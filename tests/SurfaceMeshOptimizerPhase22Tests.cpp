@@ -160,10 +160,42 @@ SurfacePoint source_vertex_point(
 }
 
 directional::geometry::SourceProjectionChart source_chart(
-    const int face, const std::vector<int> &components,
-    const std::vector<int> &sheets) {
-  return {components[static_cast<std::size_t>(face)], face,
-          sheets[static_cast<std::size_t>(face)]};
+    const int face, const Eigen::MatrixXi &sourceFaces,
+    const std::vector<int> &components, const std::vector<int> &sheets,
+    const std::set<std::uint64_t> *hardEdges = nullptr) {
+  directional::geometry::SourceChartTransitionGraph graph(
+      sourceFaces, components, sheets, hardEdges);
+  const auto chart = graph.chart(face);
+  if (!chart.has_value()) {
+    throw std::runtime_error("Invalid source-chart test authority.");
+  }
+  return chart.value();
+}
+
+
+void remap_source_charts(
+    std::vector<SourceVertexChartAuthority> &authority,
+    const std::vector<int> &faceRemap, const Eigen::MatrixXi &sourceFaces,
+    const std::vector<int> &components, const std::vector<int> &sheets,
+    const std::set<std::uint64_t> *hardEdges = nullptr) {
+  directional::geometry::SourceChartTransitionGraph graph(
+      sourceFaces, components, sheets, hardEdges);
+  for (SourceVertexChartAuthority &vertexAuthority : authority) {
+    for (auto &chart : vertexAuthority.sourceCharts) {
+      const std::size_t oldFace = chart.face.index();
+      if (oldFace >= faceRemap.size()) {
+        throw std::runtime_error("Invalid source-chart face remap.");
+      }
+      const int newFace = faceRemap[oldFace];
+      const auto remapped = graph.chart(newFace);
+      if (!remapped.has_value()) {
+        throw std::runtime_error("Invalid remapped source-chart authority.");
+      }
+      chart = remapped.value();
+    }
+    std::sort(vertexAuthority.sourceCharts.begin(),
+              vertexAuthority.sourceCharts.end());
+  }
 }
 
 directional::authority::CanonicalRoute hard_rail_route(
@@ -193,7 +225,12 @@ SourceHardRailChartEquivalence hard_rail_equivalence(
     const int railId, const int firstFrontEdge, const int secondFrontEdge,
     const std::uint64_t topology) {
   SourceHardRailChartEquivalence equivalence;
-  equivalence.railId = railId;
+  const auto rail = directional::authority::HardRailId::from_index(
+      railId, 4096);
+  if (!rail) {
+    throw std::runtime_error("Invalid hard-rail test identity.");
+  }
+  equivalence.rail = rail.value();
   equivalence.firstFrontEdge = firstFrontEdge;
   equivalence.secondFrontEdge = secondFrontEdge;
   equivalence.route = hard_rail_route(topology);
@@ -230,6 +267,8 @@ HardRailValidationFixture make_hard_rail_validation_fixture() {
       1, 2, 5, 4;
   fixture.components = {0, 0, 0, 0};
   fixture.sheets = {0, 0, 1, 1};
+  const std::uint64_t railTopology = source_edge_key(1, 4);
+  fixture.hardEdges.insert(railTopology);
   fixture.provenance = {
       source_vertex_point(fixture.vertices, fixture.sourceFaces,
                           fixture.components, fixture.sheets, 0, 0),
@@ -248,21 +287,20 @@ HardRailValidationFixture make_hard_rail_validation_fixture() {
     SourceVertexChartAuthority &authority = fixture.authority[vertex];
     authority.retained = true;
     authority.sourceCharts.push_back(source_chart(
-        fixture.provenance[vertex].face, fixture.components,
-        fixture.sheets));
+        fixture.provenance[vertex].face, fixture.sourceFaces,
+        fixture.components, fixture.sheets, &fixture.hardEdges));
   }
-  const std::uint64_t railTopology = source_edge_key(1, 4);
   const SourceHardRailChartEquivalence equivalence =
       hard_rail_equivalence(7, 10, 11, railTopology);
   for (const int vertex : {1, 4}) {
     SourceVertexChartAuthority &authority =
         fixture.authority[static_cast<std::size_t>(vertex)];
     authority.sourceCharts.push_back(
-        source_chart(3, fixture.components, fixture.sheets));
+        source_chart(3, fixture.sourceFaces, fixture.components, fixture.sheets,
+                     &fixture.hardEdges));
     std::sort(authority.sourceCharts.begin(), authority.sourceCharts.end());
     authority.hardRailEquivalences.push_back(equivalence);
   }
-  fixture.hardEdges.insert(railTopology);
   return fixture;
 }
 
@@ -287,6 +325,9 @@ HardRailValidationFixture make_multi_rail_validation_fixture() {
   fixture.components.assign(outerVertexCount, 0);
   fixture.sheets = {2, 2, 2, 2, 1, 1, 1, 1,
                     0, 0, 0, 0, 3, 3, 3, 3};
+  fixture.hardEdges.insert(source_edge_key(0, 9));
+  fixture.hardEdges.insert(source_edge_key(0, 5));
+  fixture.hardEdges.insert(source_edge_key(0, 13));
   fixture.provenance.reserve(static_cast<std::size_t>(outerVertexCount + 1));
   fixture.provenance.push_back(source_vertex_point(
       fixture.vertices, fixture.sourceFaces, fixture.components,
@@ -302,8 +343,8 @@ HardRailValidationFixture make_multi_rail_validation_fixture() {
     SourceVertexChartAuthority &authority = fixture.authority[vertex];
     authority.retained = true;
     authority.sourceCharts.push_back(source_chart(
-        fixture.provenance[vertex].face, fixture.components,
-        fixture.sheets));
+        fixture.provenance[vertex].face, fixture.sourceFaces,
+        fixture.components, fixture.sheets, &fixture.hardEdges));
   }
 
   const SourceHardRailChartEquivalence aToB =
@@ -315,26 +356,32 @@ HardRailValidationFixture make_multi_rail_validation_fixture() {
 
   SourceVertexChartAuthority &center = fixture.authority[0];
   center.sourceCharts.push_back(
-      source_chart(4, fixture.components, fixture.sheets));
+      source_chart(4, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
   center.sourceCharts.push_back(
-      source_chart(0, fixture.components, fixture.sheets));
+      source_chart(0, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
   center.sourceCharts.push_back(
-      source_chart(12, fixture.components, fixture.sheets));
+      source_chart(12, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
   center.hardRailEquivalences = {aToB, bToC, unusedAToD};
 
   SourceVertexChartAuthority &bToCPeer = fixture.authority[5];
   bToCPeer.sourceCharts.push_back(
-      source_chart(3, fixture.components, fixture.sheets));
+      source_chart(3, fixture.sourceFaces, fixture.components, fixture.sheets,
+                     &fixture.hardEdges));
   bToCPeer.hardRailEquivalences.push_back(bToC);
 
   SourceVertexChartAuthority &aToBPeer = fixture.authority[9];
   aToBPeer.sourceCharts.push_back(
-      source_chart(7, fixture.components, fixture.sheets));
+      source_chart(7, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
   aToBPeer.hardRailEquivalences.push_back(aToB);
 
   SourceVertexChartAuthority &aToDPeer = fixture.authority[13];
   aToDPeer.sourceCharts.push_back(
-      source_chart(11, fixture.components, fixture.sheets));
+      source_chart(11, fixture.sourceFaces, fixture.components, fixture.sheets,
+                   &fixture.hardEdges));
   aToDPeer.hardRailEquivalences.push_back(unusedAToD);
 
   for (SourceVertexChartAuthority &authority : fixture.authority) {
@@ -944,7 +991,8 @@ TEST(SurfaceMeshOptimizerPhase22,
   offFacePeer.erase(
       std::remove_if(offFacePeer.begin(), offFacePeer.end(),
                      [](const SourceHardRailChartEquivalence &equivalence) {
-                       return equivalence.railId == 21;
+                       return equivalence.rail.has_value() &&
+                              equivalence.rail->index() == 21U;
                      }),
       offFacePeer.end());
   const auto validation =
@@ -966,14 +1014,15 @@ TEST(SurfaceMeshOptimizerPhase22,
     relations.erase(
         std::remove_if(relations.begin(), relations.end(),
                        [](const SourceHardRailChartEquivalence &equivalence) {
-                         return equivalence.railId == 21;
+                         return equivalence.rail.has_value() &&
+                              equivalence.rail->index() == 21U;
                        }),
         relations.end());
   }
   auto &peerCharts = fixture.authority[5].sourceCharts;
   peerCharts.erase(
       std::remove_if(peerCharts.begin(), peerCharts.end(),
-                     [](const auto &chart) { return chart.sourceFace == 3; }),
+                     [](const auto &chart) { return chart.face.index() == 3U; }),
       peerCharts.end());
 
   const auto validation =
@@ -1018,7 +1067,11 @@ TEST(SurfaceMeshOptimizerPhase22,
   };
 
   HardRailValidationFixture wrongRail = make_hard_rail_validation_fixture();
-  wrongRail.authority[1].hardRailEquivalences[0].railId = 8;
+  {
+    const auto rail = directional::authority::HardRailId::from_index(8, 4096);
+    ASSERT_TRUE(rail.has_value());
+    wrongRail.authority[1].hardRailEquivalences[0].rail = rail.value();
+  }
   expect_local_sheet_mismatch(wrongRail);
 
   HardRailValidationFixture wrongRoute = make_hard_rail_validation_fixture();
@@ -1034,7 +1087,8 @@ TEST(SurfaceMeshOptimizerPhase22,
 
   HardRailValidationFixture unsupported = make_hard_rail_validation_fixture();
   unsupported.authority[1].sourceCharts.push_back(
-      source_chart(1, unsupported.components, unsupported.sheets));
+      source_chart(1, unsupported.sourceFaces, unsupported.components,
+                   unsupported.sheets, &unsupported.hardEdges));
   std::sort(unsupported.authority[1].sourceCharts.begin(),
             unsupported.authority[1].sourceCharts.end());
   expect_local_sheet_mismatch(unsupported);
@@ -1079,13 +1133,16 @@ TEST(SurfaceMeshOptimizerPhase22,
                           2, 1),
       source_vertex_point(sourceVertices, sourceFaces, components, sheets,
                           3, 2)};
+  std::set<std::uint64_t> hardEdges = {
+      source_edge_key(0, 1), source_edge_key(1, 2),
+      source_edge_key(2, 3), source_edge_key(3, 0)};
   std::vector<SourceVertexChartAuthority> authority(4);
   for (std::size_t vertex = 0; vertex < authority.size(); ++vertex) {
     authority[vertex].retained = true;
     authority[vertex].sourceCharts.push_back(
-        source_chart(provenance[vertex].face, components, sheets));
+        source_chart(provenance[vertex].face, sourceFaces, components, sheets,
+                     &hardEdges));
   }
-  std::set<std::uint64_t> hardEdges;
   const auto add_relation = [&](const int firstVertex, const int secondVertex,
                                 const int targetFace, const int railId,
                                 const int firstFrontEdge) {
@@ -1094,10 +1151,9 @@ TEST(SurfaceMeshOptimizerPhase22,
     const SourceHardRailChartEquivalence equivalence =
         hard_rail_equivalence(railId, firstFrontEdge, firstFrontEdge + 1,
                               topology);
-    hardEdges.insert(topology);
     for (const int vertex : {firstVertex, secondVertex}) {
       authority[static_cast<std::size_t>(vertex)].sourceCharts.push_back(
-          source_chart(targetFace, components, sheets));
+          source_chart(targetFace, sourceFaces, components, sheets, &hardEdges));
       authority[static_cast<std::size_t>(vertex)]
           .hardRailEquivalences.push_back(equivalence);
     }
@@ -1150,9 +1206,10 @@ TEST(SurfaceMeshOptimizerPhase22,
   for (std::size_t vertex = 0; vertex < authority.size(); ++vertex) {
     authority[vertex].retained = true;
     authority[vertex].sourceCharts.push_back(
-        source_chart(provenance[vertex].face, components, sheets));
+        source_chart(provenance[vertex].face, sourceFaces, components, sheets,
+                     &hardEdges));
   }
-  authority[0].sourceCharts.push_back(source_chart(2, components, sheets));
+  authority[0].sourceCharts.push_back(source_chart(2, sourceFaces, components, sheets));
   std::sort(authority[0].sourceCharts.begin(),
             authority[0].sourceCharts.end());
   auto options = make_options(source, sourceFaces, components, sheets,
@@ -1194,13 +1251,9 @@ TEST(SurfaceMeshOptimizerPhase22,
   for (SurfacePoint &point : reversed.provenance) {
     point.face = remap[static_cast<std::size_t>(point.face)];
   }
-  for (SourceVertexChartAuthority &vertexAuthority : reversed.authority) {
-    for (auto &chart : vertexAuthority.sourceCharts) {
-      chart.sourceFace = remap[static_cast<std::size_t>(chart.sourceFace)];
-    }
-    std::sort(vertexAuthority.sourceCharts.begin(),
-              vertexAuthority.sourceCharts.end());
-  }
+  remap_source_charts(reversed.authority, remap, reversed.sourceFaces,
+                      reversed.components, reversed.sheets,
+                      &reversed.hardEdges);
 
   const auto reversedValidation =
       directional::validation::validate_source_authoritative_surface_mesh(
@@ -1236,12 +1289,9 @@ TEST(SurfaceMeshOptimizerPhase22,
   for (SurfacePoint &point : reversed.provenance) {
     point.face = remap[static_cast<std::size_t>(point.face)];
   }
-  for (SourceVertexChartAuthority &authority : reversed.authority) {
-    for (auto &chart : authority.sourceCharts) {
-      chart.sourceFace = remap[static_cast<std::size_t>(chart.sourceFace)];
-    }
-    std::sort(authority.sourceCharts.begin(), authority.sourceCharts.end());
-  }
+  remap_source_charts(reversed.authority, remap, reversed.sourceFaces,
+                      reversed.components, reversed.sheets,
+                      &reversed.hardEdges);
 
   const auto reversedChart = resolve_quad_chart(reversed, 0);
   ASSERT_TRUE(reversedChart.valid());

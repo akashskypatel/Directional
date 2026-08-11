@@ -21,6 +21,18 @@
 
 namespace {
 
+directional::geometry::SourceProjectionChart test_projection_chart(
+    const int fieldChart, const int sourceFace) {
+  const auto chart = directional::authority::FieldChartId::from_index(
+      fieldChart, static_cast<std::size_t>(std::max(fieldChart + 1, 1)));
+  const auto face = directional::authority::SourceFaceId::from_index(
+      sourceFace, static_cast<std::size_t>(std::max(sourceFace + 1, 1)));
+  if (!chart || !face) {
+    throw std::runtime_error("Invalid test projection chart.");
+  }
+  return {chart.value(), face.value()};
+}
+
 using directional::geometry::SurfaceCellNetwork;
 using directional::geometry::SurfaceCellProducerDisposition;
 using directional::geometry::SurfaceFrontBoundaryKind;
@@ -574,7 +586,7 @@ directional::pipeline::RemeshResult semantic_two_component_result() {
     lineage.sourceSheet = component;
     lineage.sourceTopologyRegions = {component};
     lineage.sourceIsolationSheets = {component};
-    lineage.sourceCharts = {{component, component, component}};
+    lineage.sourceCharts = {test_projection_chart(component, component)};
     lineage.sourceSupportIdentity.valid = true;
     lineage.sourceSupportIdentity.values = {component, 0, vertex % 4};
     result.outputVertexLineage.push_back(std::move(lineage));
@@ -1281,7 +1293,7 @@ TEST(SurfaceCellTransitionQuotient,
     lineage.sourceSheet = 0;
     lineage.sourceTopologyRegions = {0};
     lineage.sourceIsolationSheets = {0};
-    lineage.sourceCharts = {{0, 0, 0}};
+    lineage.sourceCharts = {test_projection_chart(0, 0)};
   }
   EXPECT_NE(directional::bench::benchmark_output_semantic_hash(baseline),
             directional::bench::benchmark_output_semantic_hash(mutation));

@@ -6,9 +6,22 @@
 #include <array>
 #include <limits>
 #include <numeric>
+#include <stdexcept>
 #include <vector>
 
 namespace {
+
+directional::geometry::SourceProjectionChart test_projection_chart(
+    const int fieldChart, const int sourceFace) {
+  const auto chart = directional::authority::FieldChartId::from_index(
+      fieldChart, static_cast<std::size_t>(std::max(fieldChart + 1, 1)));
+  const auto face = directional::authority::SourceFaceId::from_index(
+      sourceFace, static_cast<std::size_t>(std::max(sourceFace + 1, 1)));
+  if (!chart || !face) {
+    throw std::runtime_error("Invalid test projection chart.");
+  }
+  return {chart.value(), face.value()};
+}
 
 struct Fixture {
   Eigen::MatrixXd V;
@@ -343,7 +356,7 @@ Fixture make_two_odd_cells_with_shared_interface() {
       cell.sourceComponent = 0;
       cell.sourceSheet = 0;
       cell.sourceFaces = {sourceFace};
-      cell.sourceCharts = {{0, sourceFace, 0}};
+      cell.sourceCharts = {test_projection_chart(0, sourceFace)};
     }
     cell.halfedges = std::move(halfedges);
     cell.sideFamilies = boundaryCycle ? std::vector<int>{0, 1, 0, 1}

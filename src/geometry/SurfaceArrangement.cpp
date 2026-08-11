@@ -4049,7 +4049,8 @@ SurfaceCellComplex build_surface_cell_complex(
               if (!chart.has_value()) {
                 continue;
               }
-              const int root = transitionGraph.chart_component(chart.value());
+              const int root =
+                  transitionGraph.chart_component(chart->sourceFace);
               if (root >= 0) {
                 roots.insert(root);
               }
@@ -4689,10 +4690,8 @@ SurfaceCellComplex build_surface_cell_complex(
                     continue;
                   }
                   sawEntityMatch = true;
-                  const int root = transitionGraph.chart_component(
-                      SourceChartScope{sourceChart.sourceComponent,
-                                    sourceChart.localSheet,
-                                    sourceChart.sourceFace});
+                  const int root =
+                      transitionGraph.chart_component(sourceChart.sourceFace);
                   if (root != record.transitionRoot) {
                     continue;
                   }
@@ -4767,10 +4766,8 @@ SurfaceCellComplex build_surface_cell_complex(
                       witness.kind != identityEntity.kind) {
                     continue;
                   }
-                  const int witnessRoot = transitionGraph.chart_component(
-                      SourceChartScope{witness.sourceComponent,
-                                    witness.sourceSheet,
-                                    witness.sourceFace});
+                  const int witnessRoot =
+                      transitionGraph.chart_component(witness.sourceFace);
                   if (witnessRoot != record.transitionRoot) {
                     continue;
                   }

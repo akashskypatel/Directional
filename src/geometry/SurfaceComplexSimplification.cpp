@@ -1059,6 +1059,7 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     mergedCell.eulerCharacteristic = 1;
     std::set<int> mergedSourceFaces;
     std::set<int> mergedComponents;
+    std::set<int> mergedSheets;
     std::set<int> mergedBoundaryLoops;
     int mergedBoundarySide = 0;
     std::set<SurfaceCellCanonicalIdentity> mergedOwnershipClasses;
@@ -1077,6 +1078,7 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
         return invalid;
       }
       mergedComponents.insert(cell.sourceComponent);
+      mergedSheets.insert(cell.sourceSheet);
       mergedBoundaryLoops.insert(cell.sourceBoundaryLoopIds.begin(),
                                  cell.sourceBoundaryLoopIds.end());
       if (cell.sourceBoundarySide != 0) {
@@ -1090,15 +1092,13 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
       mergedOwnershipClasses.insert(ownership);
     }
     if (mergedOwnershipClasses.size() != 1U ||
-        mergedComponents.size() != 1U) {
+        mergedComponents.size() != 1U || mergedSheets.size() != 1U) {
       return invalid;
     }
     mergedCell.sourceOwnershipClass = *mergedOwnershipClasses.begin();
     mergedCell.sourceCharts.assign(mergedCharts.begin(), mergedCharts.end());
     mergedCell.sourceComponent = *mergedComponents.begin();
-    mergedCell.sourceSheet = !mergedCell.sourceCharts.empty()
-                                 ? mergedCell.sourceCharts.front().localSheet
-                                 : -1;
+    mergedCell.sourceSheet = *mergedSheets.begin();
     mergedCell.sourceFaces.assign(mergedSourceFaces.begin(),
                                   mergedSourceFaces.end());
     mergedCell.sourceBoundaryLoopIds.assign(mergedBoundaryLoops.begin(),

@@ -1336,15 +1336,17 @@ TEST(SurfaceArrangementPhase16,
   ASSERT_TRUE(cell->sourceOwnershipClass.valid);
   ASSERT_EQ(2U, cell->sourceCharts.size());
   EXPECT_EQ((std::set<int>{0, 1}),
-            (std::set<int>{cell->sourceCharts[0].localSheet,
-                           cell->sourceCharts[1].localSheet}));
+            (std::set<int>{sheets[cell->sourceCharts[0].face.index()],
+                           sheets[cell->sourceCharts[1].face.index()]}));
   for (const int halfedgeId : cell->halfedges) {
     const auto &edge =
         complex.halfedges[static_cast<std::size_t>(halfedgeId)];
-    EXPECT_TRUE(std::binary_search(
-        cell->sourceCharts.begin(), cell->sourceCharts.end(),
-        directional::geometry::SourceProjectionChart{
-            edge.sourceComponent, edge.sourceFace, edge.sourceSheet}));
+    directional::geometry::SourceChartTransitionGraph transitionGraph(
+        fixture.faces, components, sheets);
+    const auto chart = transitionGraph.chart(edge.sourceFace);
+    ASSERT_TRUE(chart.has_value());
+    EXPECT_TRUE(std::binary_search(cell->sourceCharts.begin(),
+                                   cell->sourceCharts.end(), chart.value()));
   }
 }
 
@@ -1487,8 +1489,8 @@ TEST(SurfaceArrangementPhase16,
       });
   ASSERT_NE(interior, complex.cells.end());
   ASSERT_EQ(interior->sourceCharts.size(), 2U);
-  EXPECT_NE(interior->sourceCharts[0].localSheet,
-            interior->sourceCharts[1].localSheet);
+  EXPECT_NE(sheets[interior->sourceCharts[0].face.index()],
+            sheets[interior->sourceCharts[1].face.index()]);
 }
 
 TEST(SurfaceArrangementPhase16,
@@ -1577,10 +1579,9 @@ TEST(SurfaceArrangementPhase16,
   ASSERT_TRUE(interior->sourceOwnershipClass.valid);
   EXPECT_EQ(2U, interior->sourceOwnershipClass.values.size());
   ASSERT_EQ(2U, interior->sourceCharts.size());
-  EXPECT_EQ(0, interior->sourceCharts[0].localSheet);
-  EXPECT_EQ(0, interior->sourceCharts[1].localSheet);
-  EXPECT_NE(interior->sourceCharts[0].sourceFace,
-            interior->sourceCharts[1].sourceFace);
+  EXPECT_EQ(0, sheets[interior->sourceCharts[0].face.index()]);
+  EXPECT_EQ(0, sheets[interior->sourceCharts[1].face.index()]);
+  EXPECT_NE(interior->sourceCharts[0].face, interior->sourceCharts[1].face);
   const auto *record = directional::geometry::find_surface_cell_ownership_class(
       complex, interior->sourceOwnershipClass);
   ASSERT_NE(nullptr, record);

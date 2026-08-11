@@ -11,12 +11,25 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
 #include <gtest/gtest.h>
 
 namespace {
+
+directional::geometry::SourceProjectionChart test_projection_chart(
+    const int fieldChart, const int sourceFace) {
+  const auto chart = directional::authority::FieldChartId::from_index(
+      fieldChart, static_cast<std::size_t>(std::max(fieldChart + 1, 1)));
+  const auto face = directional::authority::SourceFaceId::from_index(
+      sourceFace, static_cast<std::size_t>(std::max(sourceFace + 1, 1)));
+  if (!chart || !face) {
+    throw std::runtime_error("Invalid test projection chart.");
+  }
+  return {chart.value(), face.value()};
+}
 
 using directional::bench::BenchmarkCase;
 using directional::bench::BenchmarkField;
@@ -68,8 +81,8 @@ directional::pipeline::RemeshResult square_quad_result() {
     lineage.sourceSheet = 0;
     lineage.sourceTopologyRegions = {0};
     lineage.sourceIsolationSheets = {0};
-    lineage.sourceCharts = {{0, sourceFaces[static_cast<std::size_t>(vertex)],
-                             0}};
+    lineage.sourceCharts = {test_projection_chart(
+        0, sourceFaces[static_cast<std::size_t>(vertex)])};
     lineage.sourceSupportIdentity.valid = true;
     lineage.sourceSupportIdentity.values = {0, 0, vertex};
     result.outputVertexLineage.push_back(std::move(lineage));
@@ -106,7 +119,7 @@ directional::pipeline::RemeshResult two_component_quad_result() {
     lineage.sourceSheet = component;
     lineage.sourceTopologyRegions = {component};
     lineage.sourceIsolationSheets = {component};
-    lineage.sourceCharts = {{component, component, component}};
+    lineage.sourceCharts = {test_projection_chart(component, component)};
     lineage.sourceSupportIdentity.valid = true;
     lineage.sourceSupportIdentity.values = {component, 0, vertex % 4};
     result.outputVertexLineage.push_back(std::move(lineage));
