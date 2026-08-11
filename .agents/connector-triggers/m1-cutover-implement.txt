@@ -1,5 +1,5 @@
 turn=M1-single-authority-cutover
 workflow=agent-m1-cutover-implement.yml
-requested_at=2026-08-11T03:42:00Z
-attempt=13
-stage=typed-region-scope-and-test-cutover
+requested_at=2026-08-11T03:58:00Z
+attempt=14
+stage=region-validation-compile-fix
