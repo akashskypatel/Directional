@@ -800,6 +800,44 @@ void hash_vector(std::uint64_t &seed,
   }
 }
 
+template <typename Tag>
+void hash_semantic_id(
+    std::uint64_t &seed, const authority::SemanticId<Tag> &value) {
+  hash_combine_u64(seed, value.index());
+}
+
+template <typename Tag>
+void hash_vector(
+    std::uint64_t &seed,
+    const std::vector<authority::SemanticId<Tag>> &values) {
+  hash_combine_u64(seed, values.size());
+  for (const auto &value : values) {
+    hash_semantic_id(seed, value);
+  }
+}
+
+void hash_source_edge_topology_key(
+    std::uint64_t &seed, const authority::SourceEdgeTopologyKey &topology) {
+  hash_semantic_id(seed, topology.first());
+  hash_semantic_id(seed, topology.second());
+}
+
+void hash_vector(
+    std::uint64_t &seed,
+    const std::vector<authority::SourceEdgeTopologyKey> &values) {
+  hash_combine_u64(seed, values.size());
+  for (const auto &value : values) {
+    hash_source_edge_topology_key(seed, value);
+  }
+}
+
+void hash_source_face_topology_key(
+    std::uint64_t &seed, const authority::SourceFaceTopologyKey &topology) {
+  for (const authority::SourceVertexId vertex : topology.vertices()) {
+    hash_semantic_id(seed, vertex);
+  }
+}
+
 } // namespace directional::pipeline
 
 namespace directional::pipeline {
@@ -1010,11 +1048,11 @@ std::uint64_t hash_trace_network(
   hash_vector(seed, network.sourceTopologyRegions.regionByFace);
   hash_combine_u64(seed, network.sourceTopologyRegions.regions.size());
   for (const auto &region : network.sourceTopologyRegions.regions) {
-    hash_combine_i64(seed, region.id);
-    hash_combine_i64(seed, region.sourceComponent);
+    hash_semantic_id(seed, region.id);
+    hash_semantic_id(seed, region.sourceComponent);
     hash_combine_i64(seed, region.eulerCharacteristic);
     hash_combine_i64(seed, region.boundaryLoopCount);
-    hash_combine_u64(seed, region.structuralHash);
+    hash_combine_u64(seed, geometry::surface_topology_region_hash(region));
     hash_vector(seed, region.isolationSheets);
     hash_vector(seed, region.boundaryEdgeTopology);
     hash_vector(seed, region.internalIsolationSeamTopology);
@@ -1056,21 +1094,18 @@ std::uint64_t hash_trace_network(
       seed, network.phaseFront.isolationSeamTransportCertificates.size());
   for (const auto &certificate :
        network.phaseFront.isolationSeamTransportCertificates) {
-    hash_combine_i64(seed, certificate.sourceComponent);
-    hash_combine_i64(seed, certificate.sourceTopologyRegion);
-    hash_combine_u64(seed, certificate.sourceEdgeTopology);
-    hash_combine_i64(seed, certificate.sourceEdgeIndex);
-    for (const int vertex : certificate.firstSourceFaceTopology) {
-      hash_combine_i64(seed, vertex);
-    }
-    for (const int vertex : certificate.secondSourceFaceTopology) {
-      hash_combine_i64(seed, vertex);
-    }
-    hash_combine_i64(seed, certificate.firstIsolationSheet);
-    hash_combine_i64(seed, certificate.secondIsolationSheet);
-    hash_combine_i64(seed, certificate.forwardQuarterTurn);
-    hash_combine_i64(seed, certificate.reverseQuarterTurn);
-    hash_combine_u64(seed, certificate.structuralHash);
+    hash_semantic_id(seed, certificate.region);
+    hash_source_edge_topology_key(seed, certificate.seam);
+    hash_semantic_id(seed, certificate.transition);
+    hash_source_face_topology_key(seed, certificate.firstFace);
+    hash_source_face_topology_key(seed, certificate.secondFace);
+    hash_semantic_id(seed, certificate.firstSheet);
+    hash_semantic_id(seed, certificate.secondSheet);
+    hash_combine_i64(seed, certificate.forward.value());
+    hash_combine_i64(seed, certificate.reverse.value());
+    hash_combine_u64(
+        seed, geometry::surface_cell_tracing_detail::
+                  isolation_seam_transport_certificate_hash(certificate));
   }
   hash_combine_u64(seed, network.phaseFront.periodicHolonomies.size());
   for (const auto &relation : network.phaseFront.periodicHolonomies) {
@@ -2056,7 +2091,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
            const geometry::SurfaceTopologyRegion *> topologyRegionById;
   std::vector<std::optional<authority::TopologyRegionId>> topologyRegionByFace(
       static_cast<std::size_t>(sourceFaces.rows()));
-  for (const auto &region : phaseFront.source_topology_regions().regions) {
+  for (const auto &region : phaseFront.sourceTopologyRegions.regions) {
     if (region.sourceFaces.empty() ||
         !topologyRegionById.emplace(region.id, &region).second) {
       result.failure = "InvalidAuthoritativeTopologyRegion";
@@ -2076,15 +2111,15 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     result.failure = "MissingAuthoritativeTopologyRegions";
     return result;
   }
-  if (!phaseFront.source_topology_regions().regionByFace.empty()) {
-    if (phaseFront.source_topology_regions().regionByFace.size() !=
+  if (!phaseFront.sourceTopologyRegions.regionByFace.empty()) {
+    if (phaseFront.sourceTopologyRegions.regionByFace.size() !=
         topologyRegionByFace.size()) {
       result.failure = "AuthoritativeTopologyRegionMapMismatch";
       return result;
     }
     for (std::size_t face = 0; face < topologyRegionByFace.size(); ++face) {
       if (!topologyRegionByFace[face].has_value() ||
-          phaseFront.source_topology_regions().regionByFace[face] !=
+          phaseFront.sourceTopologyRegions.regionByFace[face] !=
               topologyRegionByFace[face].value()) {
         result.failure = "AuthoritativeTopologyRegionMapMismatch";
         return result;
@@ -2151,7 +2186,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   }
 
   for (const auto &certificate :
-       phaseFront.isolation_seam_transport_certificates()) {
+       phaseFront.isolationSeamTransportCertificates) {
     const auto region = topologyRegionById.find(certificate.region);
     const IsolationSeamKey key{certificate.region, certificate.seam};
     const std::uint64_t seamKey = source_edge_leaf_key(certificate.seam);
@@ -2170,8 +2205,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         certificate.transition.index() !=
             static_cast<std::size_t>(sourceEdge->second) ||
         certificate.firstSheet == certificate.secondSheet ||
-        compose(certificate.forward, certificate.reverse) !=
-            authority::QuarterTurn{}) {
+        certificate.forward.inverse() != certificate.reverse) {
       result.failure = "InvalidAuthoritativeIsolationSeamCertificate";
       return result;
     }
@@ -6211,7 +6245,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       result.diagnostics.surfaceCellInternalIsolationSeamCount +=
           region.internalIsolationSeamTopology.size();
       result.diagnostics.surfaceCellTopologyRegionHashes.push_back(
-          region.structuralHash);
+          geometry::surface_topology_region_hash(region));
       result.diagnostics.surfaceCellTopologyRegionEulerCharacteristics.push_back(
           region.eulerCharacteristic);
       result.diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts.push_back(
