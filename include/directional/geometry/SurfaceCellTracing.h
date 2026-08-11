@@ -452,6 +452,9 @@ const char *surface_cell_producer_disposition_name(
     SurfaceCellProducerDisposition disposition);
 
 struct SurfacePhaseFrontProduct {
+  explicit SurfacePhaseFrontProduct(SourceTopologyRegions authority)
+      : sourceTopologyRegions(std::move(authority)) {}
+
   int gridU = 0;
   int gridV = 0;
   SourceTopologyRegions sourceTopologyRegions;
@@ -491,8 +494,8 @@ public:
 
   [[nodiscard]] static SurfacePhaseFrontResult produced(Product product) {
     if (product.cells.empty() || product.edges.empty() ||
-        product.sourceTopologyRegions.regions.empty() ||
-        product.sourceTopologyRegions.regionByFace.empty()) {
+        product.sourceTopologyRegions.regions().empty() ||
+        product.sourceTopologyRegions.face_count() == 0U) {
       throw std::invalid_argument(
           "Produced phase-front outcome requires a complete nonempty product.");
     }
