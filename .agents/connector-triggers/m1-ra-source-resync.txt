@@ -1,2 +1,0 @@
-purpose=m1-ra-source-resync
-workflow=agent-m1-ra-source-resync.yml
