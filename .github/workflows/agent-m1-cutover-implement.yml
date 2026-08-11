@@ -52,6 +52,8 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add include src tests CMakeLists.txt cmake
           git commit -m "refactor(authority): publish typed topology regions"
+          git fetch origin agent/surface_cell_quad/p5-recover-bridge-healing
+          git rebase FETCH_HEAD
           IMPLEMENTATION_SHA=$(git rev-parse HEAD)
           echo "implementation_sha=$IMPLEMENTATION_SHA" | tee "$RUNNER_TEMP/m1-cutover/implementation.txt"
           git push origin "HEAD:agent/surface_cell_quad/p5-recover-bridge-healing"
