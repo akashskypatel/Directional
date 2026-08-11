@@ -1,0 +1,74 @@
+name: Agent M1l Acceptance Closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1l-acceptance-closeout.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1l-acceptance-closeout-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent diagnostic log
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          mkdir -p "$RUNNER_TEMP/m1l-closeout-logs"
+          {
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            echo "repository=$GITHUB_REPOSITORY"
+            date -u +"started_utc=%Y-%m-%dT%H:%M:%SZ"
+          } | tee "$RUNNER_TEMP/m1l-closeout-logs/activity.log"
+
+      - name: Checkout exact event source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Apply bounded M1l acceptance documentation updates
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/m1l-closeout-logs/activity.log") 2>&1
+          trap 'rc=$?; echo "closeout_exit=$rc"; git status --short || true; exit $rc' EXIT
+          python3 .agents/Directional/turn-payloads/m1l-acceptance-closeout.py
+          git add -f \
+            TODO.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/REORIENTATION_PLAN.md \
+            .agents/Directional/Regression_Root_Cause_Tracker.md
+          git diff --check --cached
+          actual_paths=$(git diff --cached --name-only | LC_ALL=C sort)
+          expected_paths=$(printf '%s\n' \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/REORIENTATION_PLAN.md \
+            .agents/Directional/Regression_Root_Cause_Tracker.md \
+            TODO.md | LC_ALL=C sort)
+          test "$actual_paths" = "$expected_paths"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(surface-cell): accept M1l and select M1m'
+          git push origin "HEAD:$GITHUB_REF_NAME"
+
+      - name: Upload M1l closeout diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1l-acceptance-closeout-logs
+          path: ${{ runner.temp }}/m1l-closeout-logs
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 6
