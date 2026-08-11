@@ -70,8 +70,7 @@ struct SourceAuthoritativeMeshValidatorOptions {
   double geometricTolerance = 1.0e-9;
   const Eigen::MatrixXd *sourceVertices = nullptr;
   const Eigen::MatrixXi *sourceFaces = nullptr;
-  const std::vector<int> *sourceFaceComponents = nullptr;
-  const std::vector<int> *sourceFaceSheets = nullptr;
+  const geometry::SourceTopologyRegions *sourceAuthority = nullptr;
   const std::vector<geometry::SurfacePoint> *vertexProvenance = nullptr;
   const std::vector<SourceVertexChartAuthority> *vertexChartAuthority =
       nullptr;
@@ -305,20 +304,16 @@ struct SourceChartCompatibility {
 
 struct SourcePointLabelSupport {
   const Eigen::MatrixXi *sourceFaces = nullptr;
-  const std::vector<int> *components = nullptr;
-  const std::vector<int> *sheets = nullptr;
+  const geometry::SourceTopologyRegions *authority = nullptr;
   geometry::SurfacePointSourceSupportResolver sourceSupport;
   geometry::SourceChartTransitionGraph transitionGraph;
 
   SourcePointLabelSupport(
       const Eigen::MatrixXi *faces,
-      const std::vector<int> *sourceComponents,
-      const std::vector<int> *sourceSheets,
+      const geometry::SourceTopologyRegions *sourceAuthority,
       const std::set<std::uint64_t> *hardFeatureEdges = nullptr)
-      : sourceFaces(faces), components(sourceComponents), sheets(sourceSheets),
-        sourceSupport(faces),
-        transitionGraph(faces, sourceComponents, sourceSheets,
-                        hardFeatureEdges),
+      : sourceFaces(faces), authority(sourceAuthority), sourceSupport(faces),
+        transitionGraph(faces, sourceAuthority, hardFeatureEdges),
         hardFeatureEdges(hardFeatureEdges) {
     if (faces == nullptr || faces->cols() != 3) {
       return;
@@ -348,9 +343,9 @@ struct SourcePointLabelSupport {
 
   [[nodiscard]] bool available() const {
     return sourceSupport.available() && transitionGraph.available() &&
-           components != nullptr && sheets != nullptr &&
-           components->size() == static_cast<std::size_t>(sourceFaces->rows()) &&
-           sheets->size() == static_cast<std::size_t>(sourceFaces->rows());
+           authority != nullptr && sourceFaces != nullptr &&
+           authority->complete_for_face_count(
+               static_cast<std::size_t>(sourceFaces->rows()));
   }
 
   [[nodiscard]] std::vector<authority::SourceFaceId>
@@ -369,7 +364,10 @@ struct SourcePointLabelSupport {
       if (face >= static_cast<std::size_t>(sourceFaces->rows())) {
         continue;
       }
-      labels.insert({(*components)[face], (*sheets)[face]});
+      const auto component = authority->component_for_row(sourceFace);
+      const auto sheet = authority->sheet_for_row(sourceFace);
+      labels.insert({static_cast<int>(component.index()),
+                     static_cast<int>(sheet.index())});
     }
     return labels;
   }
@@ -424,8 +422,16 @@ struct SourcePointLabelSupport {
     }
     for (const int face : chartFaces) {
       if (face >= 0 && face < sourceFaces->rows()) {
-        labels.insert({(*components)[static_cast<std::size_t>(face)],
-                       (*sheets)[static_cast<std::size_t>(face)]});
+        const auto sourceFaceId = authority::SourceFaceId::from_index(
+            face, authority->face_count());
+        if (sourceFaceId) {
+          labels.insert({static_cast<int>(
+                             authority->component_for_row(sourceFaceId.value())
+                                 .index()),
+                         static_cast<int>(
+                             authority->sheet_for_row(sourceFaceId.value())
+                                 .index())});
+        }
       }
     }
     return labels;

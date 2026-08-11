@@ -118,6 +118,10 @@ struct SurfaceOptimizationConstraints {
   Eigen::MatrixXd sourceFieldX;
   Eigen::MatrixXd sourceFieldY;
   Eigen::VectorXi sourceComponent;
+  // Complete source authority for all semantic region/component/sheet queries.
+  std::optional<SourceTopologyRegions> sourceAuthority;
+  // Temporary numeric projections retained only by low-level geometric
+  // projection code pending their dedicated contract cutover.
   std::vector<int> sourceFaceComponent;
   std::vector<int> sourceFaceSheet;
   // Authoritative source chart at each output quad center. Vertex provenance

@@ -1906,8 +1906,9 @@ make_source_authoritative_validator_options(
   validation::SourceAuthoritativeMeshValidatorOptions validatorOptions;
   validatorOptions.sourceVertices = &constraints.sourceVertices;
   validatorOptions.sourceFaces = &constraints.sourceFaces;
-  validatorOptions.sourceFaceComponents = &constraints.sourceFaceComponent;
-  validatorOptions.sourceFaceSheets = &constraints.sourceFaceSheet;
+  validatorOptions.sourceAuthority =
+      constraints.sourceAuthority.has_value() ? &*constraints.sourceAuthority
+                                              : nullptr;
   validatorOptions.vertexProvenance = &provenance;
   validatorOptions.vertexChartAuthority =
       constraints.vertexChartAuthority.empty()

@@ -808,8 +808,7 @@ int source_quad_edge_family(
 FieldAlignedSourceQuadRecoveryResult
 recover_unique_field_aligned_source_quads(
     const TriMesh &mesh, const fields::CrossFieldResult &crossField,
-    const std::vector<int> *sourceFaceComponents = nullptr,
-    const std::vector<int> *sourceFaceSheets = nullptr,
+    const geometry::SourceTopologyRegions *sourceAuthority = nullptr,
     const std::set<std::uint64_t> *excludedDiagonalEdges = nullptr);
 
 struct SourceGridRecoveryTargetSizeResult {

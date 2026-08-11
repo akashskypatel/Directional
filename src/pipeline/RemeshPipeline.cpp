@@ -4487,8 +4487,7 @@ namespace directional::pipeline {
 FieldAlignedSourceQuadRecoveryResult
 recover_unique_field_aligned_source_quads(
     const TriMesh &mesh, const fields::CrossFieldResult &crossField,
-    const std::vector<int> *sourceFaceComponents,
-    const std::vector<int> *sourceFaceSheets,
+    const geometry::SourceTopologyRegions *sourceAuthority,
     const std::set<std::uint64_t> *excludedDiagonalEdges) {
   FieldAlignedSourceQuadRecoveryResult result;
   if (mesh.F.cols() != 3 || mesh.F.rows() == 0 ||
@@ -5060,14 +5059,16 @@ recover_unique_field_aligned_source_quads(
         barycentric(1) * mesh.V.row(mesh.F(sourceFace, 1)).transpose() +
         barycentric(2) * mesh.V.row(mesh.F(sourceFace, 2)).transpose();
     point.squaredDistance = 0.0;
-    if (sourceFaceComponents != nullptr && sourceFace >= 0 &&
-        sourceFace < static_cast<int>(sourceFaceComponents->size())) {
-      point.component =
-          (*sourceFaceComponents)[static_cast<std::size_t>(sourceFace)];
-    }
-    if (sourceFaceSheets != nullptr && sourceFace >= 0 &&
-        sourceFace < static_cast<int>(sourceFaceSheets->size())) {
-      point.sheet = (*sourceFaceSheets)[static_cast<std::size_t>(sourceFace)];
+    if (sourceAuthority != nullptr && sourceFace >= 0 &&
+        static_cast<std::size_t>(sourceFace) < sourceAuthority->face_count()) {
+      const auto sourceFaceId = authority::SourceFaceId::from_index(
+          sourceFace, sourceAuthority->face_count());
+      if (sourceFaceId) {
+        point.component = static_cast<int>(
+            sourceAuthority->component_for_row(sourceFaceId.value()).index());
+        point.sheet = static_cast<int>(
+            sourceAuthority->sheet_for_row(sourceFaceId.value()).index());
+      }
     }
     return point;
   };
@@ -7226,11 +7227,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       const FieldAlignedSourceQuadRecoveryResult recovery =
           recover_unique_field_aligned_source_quads(
               meshWhole, result.surfaceCellContext.crossField,
-              result.surfaceCellContext.hasSourceSurfaceLabels
-                  ? &result.surfaceCellContext.sourceSurfaceLabels.componentByFace
-                  : nullptr,
-              result.surfaceCellContext.hasSourceSurfaceLabels
-                  ? &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace
+              phaseFrontProduct != nullptr
+                  ? &phaseFrontProduct->sourceTopologyRegions
                   : nullptr,
               &hardFeatureRailEdges);
       if (recovery.success) {
@@ -7642,6 +7640,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
       constraints.sourceFaceSheet =
           result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
+      if (phaseFrontProduct != nullptr) {
+        constraints.sourceAuthority =
+            phaseFrontProduct->sourceTopologyRegions;
+      }
       constraints.sourceHardFeatureEdges = hardFeatureRailEdges;
       constraints.outputQuadSourceFaces.assign(
           static_cast<std::size_t>(completedQuads.rows()), -1);

@@ -743,11 +743,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
         transitionGraph.source_component(declared.value());
     const auto declaredSheet =
         transitionGraph.isolation_sheet(declared.value());
-    if (!declaredComponent.has_value() || !declaredSheet.has_value() ||
-        (point.component >= 0 &&
-         point.component != static_cast<int>(declaredComponent->index())) ||
-        (point.sheet >= 0 &&
-         point.sheet != static_cast<int>(declaredSheet->index()))) {
+    if (!declaredComponent.has_value() || !declaredSheet.has_value()) {
       return false;
     }
     support = sourceSupport.resolve(point);
@@ -1129,8 +1125,8 @@ validate_source_authoritative_surface_mesh(
 
   const auto &provenance = *options.vertexProvenance;
   const SourcePointLabelSupport labelSupport(
-      options.sourceFaces, options.sourceFaceComponents,
-      options.sourceFaceSheets, &options.sourceHardFeatureEdges);
+      options.sourceFaces, options.sourceAuthority,
+      &options.sourceHardFeatureEdges);
   const double sourceScale =
       options.sourceVertices->rows() == 0
           ? 1.0
@@ -1186,29 +1182,38 @@ validate_source_authoritative_surface_mesh(
       result.provenanceCoverageComplete = false;
       result.fail({MeshValidationFailureCode::SourcePositionMismatch, vertex});
     }
-    if (options.sourceFaceComponents != nullptr) {
-      if (static_cast<std::size_t>(point.face) >=
-              options.sourceFaceComponents->size() ||
-          point.component != (*options.sourceFaceComponents)[
-                                 static_cast<std::size_t>(point.face)]) {
-        result.fail({MeshValidationFailureCode::SourceComponentMismatch,
-                     vertex});
-      }
-    }
-    if (options.sourceFaceSheets != nullptr) {
-      if (static_cast<std::size_t>(point.face) >=
-              options.sourceFaceSheets->size() ||
-          point.sheet != (*options.sourceFaceSheets)[
-                             static_cast<std::size_t>(point.face)]) {
-        result.fail({MeshValidationFailureCode::SourceSheetMismatch, vertex});
+    if (options.sourceAuthority != nullptr &&
+        options.sourceAuthority->complete_for_face_count(
+            static_cast<std::size_t>(options.sourceFaces->rows()))) {
+      const auto sourceFaceId = authority::SourceFaceId::from_index(
+          point.face, options.sourceAuthority->face_count());
+      if (!sourceFaceId) {
+        result.fail({MeshValidationFailureCode::InvalidProvenance, vertex});
+      } else {
+        // component/sheet on SurfacePoint are representation projections only.
+        // Validate them against typed authority, but never use them to choose
+        // semantic connectivity or source-chart compatibility.
+        const int expectedComponent = static_cast<int>(
+            options.sourceAuthority->component_for_row(sourceFaceId.value())
+                .index());
+        const int expectedSheet = static_cast<int>(
+            options.sourceAuthority->sheet_for_row(sourceFaceId.value()).index());
+        if (point.component >= 0 && point.component != expectedComponent) {
+          result.fail({MeshValidationFailureCode::SourceComponentMismatch,
+                       vertex});
+        }
+        if (point.sheet >= 0 && point.sheet != expectedSheet) {
+          result.fail({MeshValidationFailureCode::SourceSheetMismatch, vertex});
+        }
       }
     }
   }
 
   result.localSheetCompatibilityPassed = true;
   if (options.requireLocalSheetCompatibility &&
-      (options.sourceFaceComponents == nullptr ||
-       options.sourceFaceSheets == nullptr ||
+      (options.sourceAuthority == nullptr ||
+       !options.sourceAuthority->complete_for_face_count(
+           static_cast<std::size_t>(options.sourceFaces->rows())) ||
        !chartAuthorityCardinalityValid)) {
     result.localSheetCompatibilityPassed = false;
     if (!chartAuthorityCardinalityValid) {
