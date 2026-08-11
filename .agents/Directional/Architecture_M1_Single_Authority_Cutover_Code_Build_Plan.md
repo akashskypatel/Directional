@@ -1,11 +1,271 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Review decision:** rejected and replaced  
+**Current status:** independent review rejected implementation `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` as M1-complete; remediation Code + Build selected  
+**Original planning decision:** prior narrow M1m plan rejected and replaced  
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0. Independent review amendment — remediation required
+
+**Review date:** 2026-08-11 UTC  
+**Explicit review authority:** user-requested independent review  
+**Reviewed range:** `9192fd04a50e72c20a6e58c1c7e6b71ccfcbb31f` through `facdb346dc2dc417f6b1966c71ac9a048a57d8c5` (inclusive)  
+**Reviewed implementation:** `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`  
+**Review verdict:** **rejected as an M1-complete implementation; compile-valid partial cutover only**  
+**Next turn:** **M1 Single-Authority Cutover Remediation — Code + Build only**  
+**Runtime gate:** artifact `9105462679` is retained as historical compile evidence but is **not** an M1 acceptance candidate
+
+This amendment controls wherever it conflicts with the original plan below. The original requirements remain in force where this amendment does not replace them.
+
+The implementation correctly deleted `LegacyAuthorityAdapters`, installed checked `SemanticId::from_index`, replaced the named route mirrors, introduced typed region/cell/rail/occurrence/quotient references, published a variant outcome, and compiled all 121 approved build steps. Those changes must be retained.
+
+The implementation did not complete the promised vertical cutover. Raw source identity and scope still coexist with the new types and still participate in semantic decisions. The source-only audit was too narrow to detect those duplicates. Do not run the pending artifact-only acceptance plan against `9105462679`; first complete the remediation packages below and produce a new immutable compile artifact.
+
+### 0.1 Blocking review findings
+
+#### M1-R01 — source component, sheet, face, and support authority remains duplicated
+
+Confirmed affected contracts include:
+
+- `SourceChartTransitionGraph`, which still receives raw `vector<int>` component/sheet arrays;
+- `SourceEntityId`, which reconstructs raw kind/component/source-index/fan fields and a numeric canonical vector from typed `SourceSupport`;
+- `SurfaceCellOwnershipClassRecord` and `SurfaceCellDomainIdentity`, whose raw component/sheet fields participate in equality, ordering, and hashing;
+- arrangement arcs, occurrences, provenance, nodes, halfedges, cells, and private segment records, which retain raw source face/component/sheet ownership;
+- `PureQuadPatch` and `PureQuadVertexLineage`, which retain raw component/sheet authority beside typed regions, sheets, charts, and support;
+- `build_authoritative_phase_front_mesh`, which receives raw `sourceFaceComponents` and `sourceFaceSheets` beside `SourceTopologyRegions` and reads both as authority;
+- materializer occurrence/representative selection, which reads `SurfacePoint::{face,component,sheet}` after typed region/chart/support values already exist.
+
+This violates the one-owner rule, AR-03/AR-04/AR-05/AR-09, and Sections 1, 3, 4B, and 4D of this plan.
+
+#### M1-R02 — face-row handles and hashes still define semantic identity/order
+
+- `SourceProjectionChart` stores `SourceFaceId`, which is currently an Eigen face-row handle.
+- `SourceFaceInteriorSupport` also uses that row handle as its semantic identity.
+- `surface_topology_region_hash_impl` hashes region IDs and face-row IDs, and `build_uniform_phase_front_state` uses that hash to order region work.
+- `SourceChartTransition::structuralHash` hashes from/to face rows.
+- the new face-row permutation contract compares region hashes instead of a row-independent semantic snapshot.
+
+The current model therefore cannot satisfy the declared source-face-row permutation invariant. A diagnostic hash also participates in production ordering, directly violating Section 2.
+
+#### M1-R03 — published authority values remain mutable and incompletely validated
+
+- `SurfaceTopologyRegion`, `SourceTopologyRegions`, `SurfaceIsolationSeamTransportCertificate`, `SurfacePeriodicHolonomy`, and `SurfacePhaseFrontProduct` expose mutable public fields.
+- non-const `SurfacePhaseFrontResult::product()` permits mutation after publication.
+- `SourceTopologyRegions::complete_for_face_count` checks only vector length; it does not prove region-ID validity, exact face membership, or map/region bijection.
+- `SurfacePhaseFrontResult::produced` checks non-emptiness, not the complete product invariant.
+- `SurfaceIsolationSeamTransportCertificate::make` checks only distinct sheets and reciprocal turns. Owner membership, seam incidence, transition identity, face authority, canonical ordering, and sheet membership are deferred to a later consumer.
+- `SurfacePeriodicHolonomy` has no stored `PeriodicRelationId`; vector position remains its implicit owner.
+
+Tests mutate these published objects to manufacture malformed states. That proves the stated “malformed value is unrepresentable” and immutable-product requirements are not met.
+
+#### M1-R04 — checked ingress and numeric-leaf rules remain violated
+
+- `SurfaceOptimizationRailConstraints.cpp` constructs `SourceVertexId` with an `INT_MAX + 1` compatibility extent instead of the actual source-vertex container extent.
+- phase-chart construction explicitly preserves a raw `legacyFaceChart` BFS partition/numbering before converting it to `FieldChartId`.
+- `SemanticId::value()` remains as a compatibility alias, and a kernel test compares coincident raw values across domains.
+- numeric projections are stored in `SourceEntityId`/`SurfaceCellCanonicalIdentity`, compared in materializer representative keys, hashed for region/chart identity, and unpacked from `GridAutomorphism` into a second rotation/translation pair for validation.
+
+Private numeric scratch is permitted only while constructing a value and only when it cannot escape, become compatibility authority, or affect semantic equality/order/hash.
+
+#### M1-R05 — required tests are incomplete or proxy-only
+
+The packaged source declares all five required groups, but the required intent is not complete:
+
+- no `SourceFaceTopologyKey` canonicalization/degeneracy test exists;
+- compile-time domain separation covers selected pairs, not every semantic-ID domain;
+- `RepresentationHandlePerturbationDoesNotChangeCanonicalRoute` mutates an unrelated local vector that is never consumed by the route;
+- certificate coverage omits wrong-transition and wrong-face-key cases;
+- the topology-region group does not positively and negatively exercise periodic and bounded-disk region ownership;
+- `RequiredRegionReferencesCannotPublishMissingAuthority` checks only default constructibility and never attempts incomplete face-map publication;
+- typed-transport coverage omits segment-route authority, a positive source-boundary route contract, canonical reversal equivalence, and the declared nonzero-Z4 behavior;
+- support/chart coverage does not provide a genuinely close disconnected-sheet fixture, multiple orientation-chart identity, or row-permuted support/chart equality;
+- the face-row permutation test uses a structural hash as its oracle, which `TESTING_STRATEGY.md` explicitly disallows;
+- numerous accepted M1i–M1l semantic tests were removed; only representation/compatibility assertions may remain deleted. Any lost fail-closed or cross-region intent must be restored under the new contracts.
+
+#### M1-R06 — the static audit and completion report overstate closure
+
+The recorded audit checks a short banned-name list and then prints `static_cutover_audit=clean`. It does not inspect the duplicate fields and read-back paths above. Consequently these Code + Build report claims are not established:
+
+- “numeric projections remain representation leaves”;
+- “chart/source-support identity uses one typed contract”;
+- “topology-region authority is typed through occurrence consumers”;
+- “raw semantic mirror fields covered by the cutover are absent.”
+
+The compile/package identity, checksums, command boundary, and 121/121 build result remain valid evidence. The M1-complete status and next-turn selection do not.
+
+### 0.2 Corrected authority model
+
+The remediation must distinguish a checked row locator from row-independent semantic identity.
+
+```cpp
+struct SourceRegionFaceAuthority {
+  SourceFaceTopologyKey topology; // semantic face identity
+  IsolationSheetId sheet;         // owned once for this region member
+};
+
+class SurfaceTopologyRegion {
+public:
+  static DomainResult<SurfaceTopologyRegion> make(/* complete validated data */);
+  TopologyRegionId id() const noexcept;
+  SourceComponentId component() const noexcept;
+  const std::vector<SourceRegionFaceAuthority>& faces() const noexcept;
+  const std::vector<SourceEdgeTopologyKey>& boundary_edges() const noexcept;
+  const std::vector<SourceEdgeTopologyKey>& isolation_seams() const noexcept;
+private:
+  // validated immutable fields
+};
+
+class SourceTopologyRegions {
+public:
+  static DomainResult<SourceTopologyRegions> make(/* source faces + regions */);
+  TopologyRegionId region_for_row(SourceFaceId row) const;
+  const SourceRegionFaceAuthority& face_authority(SourceFaceId row) const;
+  const SurfaceTopologyRegion& region(TopologyRegionId id) const;
+private:
+  // row-to-region/member data is a derived lookup index only;
+  // component, sheet, and face topology are not copied into it.
+};
+
+struct SourceProjectionChart {
+  FieldChartId chart;
+  SourceFaceTopologyKey face;
+};
+
+struct SourceFaceInteriorSupport {
+  SourceFaceTopologyKey face;
+};
+```
+
+Equivalent repository-conventional names are allowed. These rules are not:
+
+1. `SourceFaceId` is a checked matrix-row locator. It may be used to access the source matrix or the derived row lookup, but it is not face topology and must not participate in semantic equality, ordering, or hashes.
+2. A region owns source component once and each member face’s sheet once. The row lookup points to those facts; it does not copy them.
+3. `SourceProjectionChart` and face-interior `SourceSupport` use `SourceFaceTopologyKey`, so their equality survives source-face row permutation.
+4. Raw classifier arrays are ingress data only. They are checked once while constructing the typed source-authority product and are not passed beside that product to later semantic consumers.
+5. A general geometric `SurfacePoint` may remain a projection payload, but its raw component/sheet fields are not read as authority in the affected producer, verifier, materializer, arrangement-ownership, completion, or lineage paths. Authoritative code carries typed region/chart/support separately and derives any export-only integers after validation.
+
+### 0.3 Mandatory remediation packages — one Code + Build turn
+
+Complete these packages in order. The final pushed source and build artifact must contain all packages; no package may be deferred to another M1 slice.
+
+#### R-A. Build and publish one complete typed source-authority product
+
+1. Extend `SurfaceTopologyRegion` membership to pair row-independent face topology with the face’s typed isolation sheet.
+2. Replace public aggregate construction with checked factories and private fields. Validate sorted/unique region IDs, region faces, sheets, boundary edges, and seam edges; exact face coverage; one region per source row; component consistency; and row topology matching the stored face key.
+3. Keep any incomplete `optional`/integer build state inside `.cpp` builders only. Publish no object until the complete face-map/region bijection closes.
+4. Consume raw classifier component/sheet arrays only in this builder. Replace later raw-array parameters with `const SourceTopologyRegions&` or the owning phase-front product.
+5. Change `SourceChartTransitionGraph`, affected arrangement/patch/validator consumers, and the materializer to query component/sheet/region through this product.
+6. Remove `SourceEntityId`. Represent resolved entity identity with `authority::SourceSupport`, `SourceProjectionChart`, and a strong typed fan/chart identifier when fan distinction is required. Add a new strong ID domain only if `FieldChartId` cannot correctly own that distinction.
+7. Remove or replace raw component/sheet mirrors in semantic records, including `SurfaceCellOwnershipClassRecord`, `SurfaceCellDomainIdentity`, arrangement ownership/provenance records, `PureQuadPatch`, and `PureQuadVertexLineage`. Diagnostic/export records may contain derived integers only when no production path reads them back.
+8. Remove raw component/sheet arguments from `build_authoritative_phase_front_mesh`. Materializer occurrences derive region, component, and sheet from the published source-authority product and carry required, not optional, typed region/chart/support after construction.
+
+#### R-B. Make face, support, and chart identity row-independent
+
+1. Change `SourceProjectionChart::face` and `SourceFaceInteriorSupport::face` to `SourceFaceTopologyKey`.
+2. Build the face key once from checked source vertices at ingress. Maintain a derived key-to-row/row-to-key lookup for Eigen access; never store its row as semantic identity.
+3. Assign `FieldChartId` in canonical topology order. Remove the compatibility-numbering goal and `legacyFaceChart`; private traversal ordinals may exist only until canonical IDs are assigned.
+4. Sort topology regions and chart transitions by their canonical typed fields, never by a digest.
+5. Make region/chart/support diagnostic digests derive from canonical typed topology and typed ownership. Exclude row locators and do not use the digest for equality, ordering, lookup, validation, or production scheduling.
+6. Replace every affected face-row permutation assertion with a semantic snapshot of topology keys, typed ownership, routes, certificates, and output correspondence.
+
+#### R-C. Close and freeze published products and certificates
+
+1. Make `SurfaceTopologyRegion`, `SourceTopologyRegions`, `SurfaceIsolationSeamTransportCertificate`, `SurfacePeriodicHolonomy`, and `SurfacePhaseFrontProduct` factory-constructed values with private state and const accessors.
+2. Remove non-const `SurfacePhaseFrontResult::product()`. The `.cpp` build state remains mutable; the published `Produced` payload does not.
+3. Make `SurfacePhaseFrontProduct::make` validate all region, cell, edge, periodic, bounded-disk, certificate, and ID-reference bijections before returning `Produced`.
+4. Replace certificate `optional` construction with a typed `DomainResult`/certificate error. The factory receives enough typed source authority to validate owner region, seam membership/incidence, transition identity, canonical face order, distinct and correctly owned sheets, and reciprocal quarter turns.
+5. No certificate member is publicly mutable. Negative tests call the factory with malformed inputs and assert the precise typed rejection; they do not prove correctness by corrupting an already published value.
+6. Give every `SurfacePeriodicHolonomy` its own `PeriodicRelationId`; verify uniqueness and edge ownership at product construction. Consumers resolve relations by typed ID, not vector position.
+7. Keep derived diagnostic/export hashes outside semantic value state when practical. If cached for diagnostics, compute only after successful construction and never consume it as authority.
+
+#### R-D. Finish checked ingress and remove compatibility bridges
+
+1. Remove `SemanticId::value()`; retain `index()` as the only numeric projection spelling. `DomainResult::value()` is unrelated and remains.
+2. Pass the actual source-vertex extent into rail-constraint conversion. Delete `legacy_source_vertex_extent`; an ID outside the owning mesh/container must reject.
+3. Delete the compatibility chart numbering/name and all affected comments or tests whose purpose is preserving the displaced representation.
+4. Audit every `.index()`/quarter-turn numeric projection in the affected source. It is allowed only inline at a direct matrix/vector access or one-way diagnostic/export encoding. It must not be assigned to persistent semantic state, inserted into a semantic tuple/map/set key, compared to a second raw authority, or used to order work.
+5. Replace materializer periodic validation’s unpacked integer rotation/`Eigen::Vector2i` pair with `GridAutomorphism::apply`, `compose`, and `inverse` on typed lattice values.
+6. Preserve unrelated geometry/product behavior. Do not restore an adapter, alias, raw mirror, fallback, or representation-numbering oracle to fix compilation.
+
+#### R-E. Complete typed owner use without expanding into later product algorithms
+
+1. Store and resolve `PeriodicRelationId`, `HardRailId`, `CellId`, `OccurrenceId`, and `QuotientClassId` at every affected semantic owner/reference. A vector offset may remain an explicitly named local storage index only when it is not exported or compared as identity.
+2. Replace relation-vector positional ownership with typed-ID maps or checked lookup tables derived from the published product.
+3. Make route construction fail closed for structural invalidity already required by M1: missing interior IDs, invented boundary IDs, unsupported mixed step kinds, and duplicate step authority where the current product contract forbids it.
+4. Keep topology-to-transition certificate/reconstruction work that is explicitly assigned to M4 out of this remediation. M1 must remove numeric mirrors and invalid public states; it must not implement a new G4 algorithm.
+
+#### R-F. Restore intent-complete compile contracts
+
+Compile, but do not execute, the following added/adapted tests in the new artifact:
+
+1. `SurfaceCellAuthorityKernel`
+   - generate compile-time non-convertibility checks for every pair of distinct semantic-ID domains;
+   - check lower/upper/negative/out-of-range construction for representative domains and actual-ingress extent use;
+   - add `SourceFaceTopologyKey` permutation canonicalization and repeated-vertex rejection;
+   - delete the unrelated-vector “representation perturbation” test and replace it with a real route-input/order metamorphic contract.
+2. `SurfaceCellAuthorityContractCutover`
+   - factory rejection for missing, duplicate, out-of-range, and conflicting face/region membership;
+   - positive and tamper contracts for cell, edge, periodic, and bounded-disk typed region ownership;
+   - materializer API compile contract proving raw component/sheet arrays are no longer accepted;
+   - face-row permutation equality over semantic snapshots, not hashes.
+3. `SurfaceCellIsolationSeamCertificateAuthority`
+   - positive reciprocal multi-sheet construction/materialization;
+   - factory rejection for wrong region, seam, transition, first/second face key, sheet membership/order, duplicate key, and nonreciprocal transport;
+   - exact-once consumption observed through the immutable product.
+4. `SurfaceCellTypedTransportAuthority`
+   - segment entry routes, hard-rail routes, genuine source-boundary routes, and periodic/cut routes;
+   - canonical reversal/inversion using actual route inputs;
+   - swapped topology/transition and invented boundary-transition rejection;
+   - truthful nonzero-Z4 unsupported behavior unless production already supports it.
+5. `SurfaceCellSourceSupportAndChartAuthority`
+   - distinct vertex/edge/face-interior variants using topology-key face identity;
+   - genuinely close disconnected sheets and distinct orientation charts;
+   - source-face row permutation preserving support/chart/entity identity;
+   - malformed/ambiguous support typed rejection.
+6. Restore every removed M1i–M1l fail-closed, cross-region, multi-sheet, and permutation intent not covered by the new tests. Do not restore tests whose sole intent was adapter round-trip, raw numbering, hash identity, or compatibility output.
+
+Every test must establish its precondition and assert a semantic input/output or construction-rejection contract. Existence, exact count, hash equality, compile success, or an unrelated mutation is not sufficient evidence.
+
+#### R-G. Replace the false-positive static audit
+
+The final pre-build audit must fail, not merely print, when any displaced contract remains. At minimum:
+
+1. retain the original banned-symbol list;
+2. add `SourceEntityId`, `legacyFaceChart`, `legacy_source_vertex_extent`, the `SemanticId::value()` compatibility accessor, and affected “legacy representative/compatibility path” branches;
+3. enumerate every raw face/component/sheet field in the affected semantic structs and prove it was removed, typed, or moved to a one-way diagnostic/export record;
+4. enumerate every affected `.index()` call and classify it as a direct container leaf or one-way export; any unclassified use fails the audit;
+5. add compile-time schema assertions that published region/certificate/product fields are private/const-only and malformed construction APIs are unavailable;
+6. prove `build_authoritative_phase_front_mesh` and affected validators no longer accept raw component/sheet authority beside the typed product;
+7. record the checked paths, match counts, and allowed leaf inventory in the package. A heading-only audit followed by `clean` is insufficient.
+
+### 0.4 Corrected Code + Build and acceptance sequence
+
+1. Implement R-A through R-G in one Code + Build turn on the current branch.
+2. Configure and compile the established Release/static/Ninja/PRE_TEST targets only. Do not execute generated binaries, discovery, tests, benchmarks, CLI, fuzzers, or custom inputs.
+3. Package the exact final implementation, source archive/diff, compile logs, new checked audit, test-source manifest, fixtures, and recursive checksums.
+4. Retire or rewrite the current artifact-only plan so it names the new implementation/artifact and includes the corrected tests above. Artifact `9105462679` must not be relabeled as acceptance evidence.
+5. Run a separate immutable Artifact-Only Test + Benchmark turn against the new package.
+6. Close M1 only if the new source audit, focused semantic groups, entering preservation gates, direct product oracles, known-red classification, bounded characterization, and immutable postflight all close.
+7. Resume G4 directly after M1 acceptance. Do not open another M1 letter slice and do not defer any finding above to M2–M6.
+
+### 0.5 Remediation definition of done
+
+The remediation Code + Build turn is complete only when all of the following are true at one pushed implementation commit:
+
+- exactly one source-authority product owns region/component/sheet/face topology for the affected pipeline;
+- chart and face-interior support identity are invariant to source-face row permutation;
+- no affected semantic record stores a raw component/sheet/face mirror beside typed authority;
+- published regions, certificates, periodic relations, and phase-front products cannot be mutated into invalid states;
+- every semantic owner named by M1 is stored and resolved by its strong ID rather than vector position;
+- numeric projections are confined to reviewed direct storage/export leaves;
+- diagnostic hashes do not order work or serve as semantic test oracles;
+- all missing test intents in M1-R05 are compiled into the artifact;
+- the expanded audit closes with explicit evidence;
+- the exact source builds under the Code + Build boundary;
+- the next turn is immutable validation of the new artifact, not validation of `9105462679`.
 
 ## 1. Decision and outcome
 
