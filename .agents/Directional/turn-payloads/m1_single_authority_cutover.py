@@ -68,6 +68,9 @@ def rewrite(text: str) -> str:
         r'^\s*using\s+(?:directional::)?authority::LegacyAuthorityAdapters;\s*\n',
         '', text, flags=re.MULTILINE)
 
+    # Formatting may split a class scope from the called method/template.
+    text = re.sub(r'(LegacyAuthorityAdapters::)\s+', r'\1', text)
+
     # Checked construction belongs to the semantic ID type itself.
     for method, id_type in FACTORIES.items():
         for qualifier in (
