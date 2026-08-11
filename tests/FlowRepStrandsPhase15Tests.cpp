@@ -20,6 +20,62 @@ using directional::geometry::FlowRepSelectionFailureCode;
 using directional::geometry::FlowRepSparseNetwork;
 using directional::geometry::FlowRepSparseOptions;
 
+auto test_topology_region_id(const int value) {
+  const auto id = directional::authority::TopologyRegionId::from_index(
+      value, static_cast<std::size_t>(value + 1));
+  if (!id) {
+    throw std::runtime_error("Invalid test topology-region ID.");
+  }
+  return id.value();
+}
+
+auto test_isolation_sheet_id(const int value) {
+  const auto id = directional::authority::IsolationSheetId::from_index(
+      value, static_cast<std::size_t>(value + 1));
+  if (!id) {
+    throw std::runtime_error("Invalid test isolation-sheet ID.");
+  }
+  return id.value();
+}
+
+directional::geometry::SourceTopologyRegions test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents = components;
+  options.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, options);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  return std::move(*authority);
+}
+
+void attach_source_authority(
+    directional::geometry::SurfaceCellNetwork &network,
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  auto sourceAuthority = test_source_authority(faces, components, sheets);
+  if (sourceAuthority.regions().empty()) {
+    throw std::runtime_error("Typed test source authority has no regions.");
+  }
+  const auto owner = sourceAuthority.regions().front().id();
+  const auto cell = directional::authority::CellId::from_index(0, 1);
+  if (!cell) {
+    throw std::runtime_error("Failed to construct typed test cell ID.");
+  }
+  directional::geometry::SurfacePhaseFrontProduct product(
+      std::move(sourceAuthority));
+  product.cells.emplace_back(owner, cell.value());
+  product.cells.back().orientationValidated = true;
+  product.edges.emplace_back(owner, cell.value());
+  product.edges.back().filledSide = 0;
+  product.edges.back().exterior = true;
+  network.phaseFront = directional::geometry::SurfacePhaseFrontResult::produced(
+      std::move(product));
+}
+
 directional::geometry::FlowRepArc arc(const int id, const double x0,
                                       const double y0, const double x1,
                                       const double y1, const int family = 0) {
@@ -38,8 +94,8 @@ directional::geometry::FlowRepArc embedded_arc(
   a.sourceFace = 0;
   a.startBarycentric = start;
   a.endBarycentric = end;
-  a.sourceComponent = 3;
-  a.sourceSheet = 5;
+  a.sourceTopologyRegion = test_topology_region_id(3);
+  a.sourceIsolationSheet = test_isolation_sheet_id(5);
   a.strandProvenance = 7;
   a.featureProvenance = 11;
   return a;
@@ -75,8 +131,8 @@ FlowRepArc selection_arc(const int id, const Eigen::RowVector3d &start,
       : side == 1 ? Eigen::RowVector3d(0.0, 0.0, 1.0)
       : side == 2 ? Eigen::RowVector3d(0.5, 0.5, 0.0)
                   : Eigen::RowVector3d(1.0, 0.0, 0.0);
-  value.sourceComponent = 3;
-  value.sourceSheet = 5;
+  value.sourceTopologyRegion = test_topology_region_id(3);
+  value.sourceIsolationSheet = test_isolation_sheet_id(5);
   value.strandProvenance = 0;
   value.proposalId = 0;
   value.proposalSeedId = 23;
@@ -104,8 +160,8 @@ FlowRepCoverageSample coverage_sample(const FlowRepArc &sourceArc,
   sample.sourceFace = sourceArc.sourceFace;
   sample.barycentric =
       0.5 * (sourceArc.startBarycentric + sourceArc.endBarycentric);
-  sample.sourceComponent = sourceArc.sourceComponent;
-  sample.sourceSheet = sourceArc.sourceSheet;
+  sample.sourceTopologyRegion = sourceArc.sourceTopologyRegion;
+  sample.sourceIsolationSheet = sourceArc.sourceIsolationSheet;
   sample.targetSize = targetSize;
   sample.sourceArcId = sourceArc.id;
   return sample;
@@ -138,8 +194,8 @@ TetrahedralSingularityFixture tetrahedral_singularity_fixture() {
   fixture.faces.resize(4, 3);
   fixture.faces << 0, 1, 2, 0, 2, 3, 0, 3, 1, 1, 3, 2;
   fixture.targetSize = Eigen::VectorXd::Constant(4, 0.5);
-  fixture.network.sourceFaceComponents.assign(4, 0);
-  fixture.network.sourceFaceSheets.assign(4, 0);
+  attach_source_authority(fixture.network, fixture.faces, {0, 0, 0, 0},
+                          {0, 0, 0, 0});
   for (int branch = 0; branch < 3; ++branch) {
     directional::geometry::SurfaceSingularitySeparatrix separatrix;
     separatrix.sourceVertex = 0;
@@ -185,8 +241,7 @@ arrangement_arcs(const std::vector<FlowRepArc> &arcs) {
     embedded.featureClass = arc.featureClass;
     embedded.hardFeature = arc.hardFeatureRail || arc.mandatoryRail;
     embedded.provenance = arc.id;
-    embedded.sourceComponent = arc.sourceComponent;
-    embedded.sourceSheet = arc.sourceSheet;
+    embedded.sourceTopologyRegion = arc.sourceTopologyRegion;
     embedded.layoutSupport = arc.layoutSupport;
     embedded.singularitySupport = arc.singularitySupport;
     result.push_back(std::move(embedded));
@@ -227,8 +282,8 @@ FlowRepArc mandatory_rail(const int id, const double y,
   value.sourceFace = 0;
   value.startBarycentric << 1.0, 0.0, 0.0;
   value.endBarycentric << 0.0, 1.0, 0.0;
-  value.sourceComponent = 3;
-  value.sourceSheet = sourceSheet;
+  value.sourceTopologyRegion = test_topology_region_id(3);
+  value.sourceIsolationSheet = test_isolation_sheet_id(sourceSheet);
   value.mandatoryRail = true;
   value.boundaryRail = true;
   value.strandProvenance = id;
@@ -294,8 +349,8 @@ FlowRepArc endpoint_completion_arc(
   value.sourceFace = sourceFace;
   value.startBarycentric = startBarycentric;
   value.endBarycentric = endBarycentric;
-  value.sourceComponent = sourceComponent;
-  value.sourceSheet = sourceSheet;
+  value.sourceTopologyRegion = test_topology_region_id(sourceComponent);
+  value.sourceIsolationSheet = test_isolation_sheet_id(sourceSheet);
   value.family = 0;
   value.strandProvenance = id;
   value.featureProvenance = id;
@@ -335,6 +390,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {3};
   tracing.sourceFaceSheets = {5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   // Force generated connector insertion to reallocate the arc vector.
@@ -354,8 +412,10 @@ TEST(FlowRepStrandsPhase15,
   for (std::size_t index = arcs.size(); index < result.arcs.size(); ++index) {
     const FlowRepArc &added = result.arcs[index];
     EXPECT_EQ(added.sourceFace, 0);
-    EXPECT_EQ(added.sourceComponent, 3);
-    EXPECT_EQ(added.sourceSheet, 5);
+    ASSERT_TRUE(added.sourceTopologyRegion.has_value());
+    ASSERT_TRUE(added.sourceIsolationSheet.has_value());
+    EXPECT_EQ(*added.sourceTopologyRegion, test_topology_region_id(3));
+    EXPECT_EQ(*added.sourceIsolationSheet, test_isolation_sheet_id(5));
     EXPECT_TRUE(added.layoutSupport);
     EXPECT_TRUE(added.startBarycentric.allFinite());
     EXPECT_TRUE(added.endBarycentric.allFinite());
@@ -389,6 +449,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {3};
   tracing.sourceFaceSheets = {5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   completion.intersectionTolerance = 1.0e-9;
@@ -437,6 +500,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {3};
   tracing.sourceFaceSheets = {5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   completion.intersectionTolerance = 1.0e-9;
@@ -482,12 +548,12 @@ TEST(FlowRepStrandsPhase15,
     arrangementArc.endBarycentric = arc.endBarycentric;
     arrangementArc.family = arc.family;
     arrangementArc.provenance = arc.id;
-    arrangementArc.sourceComponent = arc.sourceComponent;
-    arrangementArc.sourceSheet = arc.sourceSheet;
+    arrangementArc.sourceTopologyRegion = arc.sourceTopologyRegion;
     arrangementArcs.push_back(arrangementArc);
   }
   directional::geometry::SurfaceArrangementOptions arrangementOptions;
   arrangementOptions.insertBoundaryRails = false;
+  arrangementOptions.sourceAuthority = &sourceAuthority;
   const auto complex = directional::geometry::build_surface_cell_complex(
       vertices, faces, arrangementArcs, arrangementOptions);
 
@@ -550,6 +616,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {3};
   tracing.sourceFaceSheets = {5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   completion.intersectionTolerance = 1.0e-9;
@@ -623,6 +692,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {3, 3};
   tracing.sourceFaceSheets = {5, 6};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   completion.intersectionTolerance = 1.0e-9;
@@ -654,12 +726,12 @@ TEST(FlowRepStrandsPhase15,
     arrangementArc.endBarycentric = arc.endBarycentric;
     arrangementArc.family = arc.family;
     arrangementArc.provenance = arc.id;
-    arrangementArc.sourceComponent = arc.sourceComponent;
-    arrangementArc.sourceSheet = arc.sourceSheet;
+    arrangementArc.sourceTopologyRegion = arc.sourceTopologyRegion;
     arrangementArcs.push_back(arrangementArc);
   }
   directional::geometry::SurfaceArrangementOptions arrangementOptions;
   arrangementOptions.insertBoundaryRails = false;
+  arrangementOptions.sourceAuthority = &sourceAuthority;
   const auto complex = directional::geometry::build_surface_cell_complex(
       vertices, faces, arrangementArcs, arrangementOptions);
 
@@ -727,6 +799,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {0, 0};
   tracing.sourceFaceSheets = {5, 5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
 
@@ -776,6 +851,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {0, 0};
   tracing.sourceFaceSheets = {5, 6};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
 
@@ -841,6 +919,9 @@ TEST(FlowRepStrandsPhase15,
       directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
   tracing.sourceFaceComponents = {0, 0};
   tracing.sourceFaceSheets = {5, 5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
 
@@ -906,6 +987,9 @@ TEST(FlowRepStrandsPhase15,
       directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
   tracing.sourceFaceComponents = {0};
   tracing.sourceFaceSheets = {5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   completion.intersectionTolerance = 1.0e-9;
@@ -969,6 +1053,9 @@ TEST(FlowRepStrandsPhase15,
       directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
   tracing.sourceFaceComponents = {0};
   tracing.sourceFaceSheets = {5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   completion.intersectionTolerance = 1.0e-9;
@@ -1031,6 +1118,9 @@ TEST(FlowRepStrandsPhase15,
       directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
   tracing.sourceFaceComponents = {0, 0};
   tracing.sourceFaceSheets = {5, 6};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
 
@@ -1090,6 +1180,9 @@ TEST(FlowRepStrandsPhase15,
       directional::geometry::surface_cell_tracing_detail::edge_key(1, 2));
   tracing.sourceFaceComponents = {0, 1};
   tracing.sourceFaceSheets = {5, 6};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
 
@@ -1175,6 +1268,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {0, 0};
   tracing.sourceFaceSheets = {5, 6};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
 
@@ -1220,6 +1316,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {3};
   tracing.sourceFaceSheets = {5};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   const auto result = directional::geometry::complete_flow_rep_endpoints(
@@ -1265,6 +1364,9 @@ TEST(FlowRepStrandsPhase15,
   tracing.maxTraceSegments = 16;
   tracing.sourceFaceComponents = {3, 4};
   tracing.sourceFaceSheets = {5, 6};
+  const auto sourceAuthority = test_source_authority(
+      faces, tracing.sourceFaceComponents, tracing.sourceFaceSheets);
+  tracing.sourceAuthority = &sourceAuthority;
   directional::geometry::FlowRepEndpointCompletionOptions completion;
   completion.requireAllEndpointsResolved = true;
   const auto result = directional::geometry::complete_flow_rep_endpoints(
@@ -1288,8 +1390,7 @@ TEST(FlowRepStrandsPhase15,
   faces << 0, 1, 2;
 
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
+  attach_source_authority(network, faces, {3}, {5});
 
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -1363,8 +1464,7 @@ TEST(FlowRepStrandsPhase15,
   faces << 0, 1, 2;
 
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
+  attach_source_authority(network, faces, {3}, {5});
 
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(7));
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -1670,8 +1770,7 @@ TEST(FlowRepStrandsPhase15,
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
+  attach_source_authority(network, faces, {3}, {5});
   directional::geometry::SurfaceTraceSeed seed;
   seed.id = 0;
   seed.sourceId = 0;
@@ -1711,8 +1810,10 @@ TEST(FlowRepStrandsPhase15,
   EXPECT_FALSE(arcs.front().mandatoryRail);
   EXPECT_EQ(arcs.front().supportSeedId, 0);
   EXPECT_EQ(arcs.front().sourceFace, 0);
-  EXPECT_EQ(arcs.front().sourceComponent, 3);
-  EXPECT_EQ(arcs.front().sourceSheet, 5);
+  ASSERT_TRUE(arcs.front().sourceTopologyRegion.has_value());
+  ASSERT_TRUE(arcs.front().sourceIsolationSheet.has_value());
+  EXPECT_EQ(*arcs.front().sourceTopologyRegion, test_topology_region_id(3));
+  EXPECT_EQ(*arcs.front().sourceIsolationSheet, test_isolation_sheet_id(5));
   EXPECT_NEAR((arcs.front().start - vertices.row(0)).norm(), 0.0, 1.0e-12);
 }
 
@@ -1724,8 +1825,7 @@ TEST(FlowRepStrandsPhase15,
   faces << 0, 1, 2;
 
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
+  attach_source_authority(network, faces, {3}, {5});
 
   directional::geometry::SurfaceSingularitySeparatrix separatrix;
   separatrix.sourceVertex = 0;
@@ -1764,8 +1864,10 @@ TEST(FlowRepStrandsPhase15,
   EXPECT_FALSE(arcs.front().endEmbeddedAnchor);
   EXPECT_EQ(arcs.front().supportSeedId, 0);
   EXPECT_EQ(arcs.front().sourceFace, 0);
-  EXPECT_EQ(arcs.front().sourceComponent, 3);
-  EXPECT_EQ(arcs.front().sourceSheet, 5);
+  ASSERT_TRUE(arcs.front().sourceTopologyRegion.has_value());
+  ASSERT_TRUE(arcs.front().sourceIsolationSheet.has_value());
+  EXPECT_EQ(*arcs.front().sourceTopologyRegion, test_topology_region_id(3));
+  EXPECT_EQ(*arcs.front().sourceIsolationSheet, test_isolation_sheet_id(5));
 }
 
 TEST(FlowRepStrandsPhase15,
@@ -1795,8 +1897,7 @@ TEST(FlowRepStrandsPhase15,
        {directional::geometry::TraceTerminationReason::FieldMetadata,
         directional::geometry::TraceTerminationReason::SourceSheet}) {
     directional::geometry::SurfaceCellNetwork network;
-    network.sourceFaceComponents = {3};
-    network.sourceFaceSheets = {5};
+    attach_source_authority(network, faces, {3}, {5});
     separatrix.trace.termination = termination;
     network.singularSeparatrices = {separatrix};
 
@@ -1962,13 +2063,13 @@ TEST(FlowRepStrandsPhase15,
 
   FlowRepArc first;
   first.sourceFace = 0;
-  first.sourceComponent = 7;
+  first.sourceTopologyRegion = test_topology_region_id(7);
   first.startBarycentric << 0.25, 0.75, 0.0;
   first.endBarycentric << 0.10, 0.90, 0.0;
 
   FlowRepArc second;
   second.sourceFace = 1;
-  second.sourceComponent = 7;
+  second.sourceTopologyRegion = test_topology_region_id(7);
   second.startBarycentric << 0.75, 0.25, 0.0;
   second.endBarycentric << 0.90, 0.10, 0.0;
 
@@ -1996,7 +2097,7 @@ TEST(FlowRepStrandsPhase15,
 
   FlowRepArc first;
   first.sourceFace = 0;
-  first.sourceComponent = 2;
+  first.sourceTopologyRegion = test_topology_region_id(2);
   first.start << 0.0, 0.0, 0.0;
   first.end << 1.0, 0.0, 0.0;
   first.startBarycentric << 1.0 - 1.0e-8, 1.0e-8, 0.0;
@@ -2030,8 +2131,8 @@ TEST(FlowRepStrandsPhase15,
      ManualArcEndpointKeyRetainsWorldSpaceFallback) {
   FlowRepArc first = arc(0, 1.0, 2.0, 3.0, 4.0);
   FlowRepArc second = first;
-  first.sourceComponent = 5;
-  second.sourceComponent = 5;
+  first.sourceTopologyRegion = test_topology_region_id(5);
+  second.sourceTopologyRegion = test_topology_region_id(5);
 
   EXPECT_FALSE(first.startIntrinsicEndpointKeyValid);
   EXPECT_EQ(directional::geometry::flow_rep_detail::embedded_endpoint_key(
@@ -2039,7 +2140,7 @@ TEST(FlowRepStrandsPhase15,
             directional::geometry::flow_rep_detail::embedded_endpoint_key(
                 second, true));
 
-  second.sourceComponent = 6;
+  second.sourceTopologyRegion = test_topology_region_id(6);
   EXPECT_NE(directional::geometry::flow_rep_detail::embedded_endpoint_key(
                 first, true),
             directional::geometry::flow_rep_detail::embedded_endpoint_key(
@@ -2139,9 +2240,6 @@ TEST(FlowRepStrandsPhase15, ExtractsMaximalFlowlinesFromStrands) {
 
 TEST(FlowRepStrandsPhase15, NetworkConversionUsesOnlyAcceptedClosedBoundaries) {
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
-
   directional::geometry::SurfaceTraceSegment halfTraceSegment;
   halfTraceSegment.face = 0;
   halfTraceSegment.startBarycentric << 0.5, 0.5, 0.0;
@@ -2172,6 +2270,7 @@ TEST(FlowRepStrandsPhase15, NetworkConversionUsesOnlyAcceptedClosedBoundaries) {
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
+  attach_source_authority(network, faces, {3}, {5});
 
   const auto arcs =
       directional::geometry::build_flow_rep_arcs_from_network(vertices, faces,
@@ -2182,8 +2281,10 @@ TEST(FlowRepStrandsPhase15, NetworkConversionUsesOnlyAcceptedClosedBoundaries) {
   EXPECT_EQ(arcs[0].family, 1);
   EXPECT_FALSE(arcs[0].mandatoryRail);
   EXPECT_FALSE(arcs[0].hardFeatureRail);
-  EXPECT_EQ(arcs[0].sourceComponent, 3);
-  EXPECT_EQ(arcs[0].sourceSheet, 5);
+  ASSERT_TRUE(arcs[0].sourceTopologyRegion.has_value());
+  ASSERT_TRUE(arcs[0].sourceIsolationSheet.has_value());
+  EXPECT_EQ(*arcs[0].sourceTopologyRegion, test_topology_region_id(3));
+  EXPECT_EQ(*arcs[0].sourceIsolationSheet, test_isolation_sheet_id(5));
   EXPECT_EQ(arcs[0].proposalId, 0);
   EXPECT_EQ(arcs[0].proposalSeedId, 17);
   EXPECT_EQ(arcs[0].proposalSide, 0);
@@ -2198,8 +2299,6 @@ TEST(FlowRepStrandsPhase15, NetworkConversionUsesOnlyAcceptedClosedBoundaries) {
 TEST(FlowRepStrandsPhase15,
      RailEndpointTracesBecomeDeduplicatedOptionalLayoutSupport) {
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
 
   const Eigen::RowVector3d edge01Mid(0.5, 0.5, 0.0);
   const Eigen::RowVector3d edge12Mid(0.0, 0.5, 0.5);
@@ -2267,6 +2366,7 @@ TEST(FlowRepStrandsPhase15,
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
+  attach_source_authority(network, faces, {3}, {5});
   const auto arcs = directional::geometry::build_flow_rep_arcs_from_network(
       vertices, faces, network);
 
@@ -2305,8 +2405,6 @@ TEST(FlowRepStrandsPhase15,
 TEST(FlowRepStrandsPhase15,
      SelectionInputBuildsNormalizedCoverageAndClosedCycleEvidence) {
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
   directional::geometry::SurfaceCellProposal proposal;
   proposal.seedId = 23;
   proposal.accepted = true;
@@ -2333,6 +2431,7 @@ TEST(FlowRepStrandsPhase15,
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
+  attach_source_authority(network, faces, {3}, {5});
   Eigen::VectorXd targetSize(3);
   targetSize << 0.25, 0.5, 1.0;
 
@@ -2349,8 +2448,10 @@ TEST(FlowRepStrandsPhase15,
   for (const auto &sample : input.coverageSamples) {
     EXPECT_GT(sample.targetSize, 0.0);
     EXPECT_EQ(sample.sourceFace, 0);
-    EXPECT_EQ(sample.sourceComponent, 3);
-    EXPECT_EQ(sample.sourceSheet, 5);
+    ASSERT_TRUE(sample.sourceTopologyRegion.has_value());
+    ASSERT_TRUE(sample.sourceIsolationSheet.has_value());
+    EXPECT_EQ(*sample.sourceTopologyRegion, test_topology_region_id(3));
+    EXPECT_EQ(*sample.sourceIsolationSheet, test_isolation_sheet_id(5));
     sampledArcIds.insert(sample.sourceArcId);
   }
   EXPECT_EQ(sampledArcIds, (std::set<int>{0, 1, 2, 3}));
@@ -2363,8 +2464,6 @@ TEST(FlowRepStrandsPhase15,
 TEST(FlowRepStrandsPhase15,
      ProposalRailSegmentsRemainMandatoryCycleEvidence) {
   directional::geometry::SurfaceCellNetwork network;
-  network.sourceFaceComponents = {3};
-  network.sourceFaceSheets = {5};
   directional::geometry::SurfaceCellProposal proposal;
   proposal.seedId = 31;
   proposal.accepted = true;
@@ -2397,6 +2496,7 @@ TEST(FlowRepStrandsPhase15,
   vertices << 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0;
   Eigen::MatrixXi faces(1, 3);
   faces << 0, 1, 2;
+  attach_source_authority(network, faces, {3}, {5});
   const Eigen::VectorXd targetSize = Eigen::VectorXd::Ones(3);
 
   const auto input = directional::geometry::build_flow_rep_selection_input(
@@ -2528,7 +2628,7 @@ TEST(FlowRepStrandsPhase15, MissingCycleEvidenceFailsAfterCoverageValidation) {
 
 TEST(FlowRepStrandsPhase15, IncompleteEmbeddedProvenanceFailsClosed) {
   std::vector<FlowRepArc> arcs = square_selection_arcs();
-  arcs[2].sourceSheet = -1;
+  arcs[2].sourceIsolationSheet.reset();
   auto samples = coverage_for_active_arcs(arcs);
 
   const auto network = directional::geometry::select_sparse_flow_rep_network(
@@ -2679,8 +2779,8 @@ TEST(FlowRepStrandsPhase15,
       selection_arc(2, {1.0, 0.0, 0.0}, {1.0, 1.0, 0.0}, 1, 0),
   };
   arcs[1].sourceFace = 1;
-  arcs[1].sourceComponent = arcs[0].sourceComponent;
-  arcs[1].sourceSheet = arcs[0].sourceSheet;
+  arcs[1].sourceTopologyRegion = arcs[0].sourceTopologyRegion;
+  arcs[1].sourceIsolationSheet = arcs[0].sourceIsolationSheet;
   arcs[1].startBarycentric << 1.0, 0.0, 0.0;
   arcs[1].endBarycentric << 0.0, 1.0, 0.0;
 
