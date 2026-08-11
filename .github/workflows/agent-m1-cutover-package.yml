@@ -1,0 +1,302 @@
+name: Agent M1 Cutover Final Package
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1-cutover-package.txt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-m1-cutover-final-package
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      IMPLEMENTATION_SHA: 5b1c9b314ae1ff2888abf1b81d716a44e63ea45e
+      ENTERING_M1L_SHA: bd140cff4572412e6f4ecd70a6ce0fe85310932c
+      BUILD_DIR: build-m1-cutover-final
+      RESULT_DIR: m1-single-authority-cutover-code-build-result
+      LOG_DIR: ${{ runner.temp }}/m1-cutover-final-logs
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$LOG_DIR"
+          LOG="$LOG_DIR/activity.log"
+          {
+            echo "M1 final package start: $(date -u +%FT%TZ)"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "trigger_sha=${GITHUB_SHA}"
+            echo "implementation_sha=${IMPLEMENTATION_SHA}"
+            echo "runner=${RUNNER_OS}/${RUNNER_ARCH}"
+          } | tee "$LOG"
+
+      - name: Checkout exact implementation and shallow submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.IMPLEMENTATION_SHA }}
+          fetch-depth: 2
+          submodules: recursive
+
+      - name: Verify source authority and static cutover audit
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$LOG_DIR/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          trap 'rc=$?; echo "[m1-final] audit_exit_code=$rc"; git status --short || true; exit $rc' EXIT
+          test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_SHA" || exit 41
+          SOURCE_PARENT=$(git rev-parse "$IMPLEMENTATION_SHA^")
+          test -z "$(git status --porcelain --untracked-files=no)" || exit 42
+          mkdir -p "$RESULT_DIR/package/metadata"
+          echo "immediate_source_parent=$SOURCE_PARENT" | tee "$RESULT_DIR/package/metadata/immediate-source-parent.txt"
+          AUDIT="$RESULT_DIR/package/metadata/source-cutover-audit.txt"
+          : > "$AUDIT"
+          patterns=(
+            LegacyAuthorityAdapters
+            to_legacy_index
+            legacy_phase_front_
+            transitionSourceEdge
+            transitionSourceEdges
+            transitionSourceTopology
+            sourceRouteEdges
+            sourceRouteTopology
+            sourceTopologyRegionByFace
+            'struct SourceChartId'
+            'struct SurfaceCellSourceChart'
+          )
+          for p in "${patterns[@]}"; do
+            echo "### BANNED: $p" | tee -a "$AUDIT"
+            matches=$(git grep -n -F -- "$p" -- include src tests CMakeLists.txt cmake || true)
+            if [[ -n "$matches" ]]; then
+              printf '%s\n' "$matches" | tee -a "$AUDIT"
+              exit 43
+            fi
+          done
+          echo "### LEGACY DOMAIN ERROR TERMINOLOGY" | tee -a "$AUDIT"
+          domain_matches=$(git grep -n -E -- \
+            'NegativeLegacyValue|OutOfRangeLegacyValue|legacyValue' \
+            -- include src tests || true)
+          if [[ -n "$domain_matches" ]]; then
+            printf '%s\n' "$domain_matches" | tee -a "$AUDIT"
+            exit 44
+          fi
+          echo "### DUPLICATE SEMANTIC FIELD AUDIT" | tee -a "$AUDIT"
+          duplicate_matches=$(git grep -n -E -- \
+            '(^|[^[:alnum:]_])(int|std::int64_t|std::uint64_t)[[:space:]]+(railId|periodicRelation|filledCell|sourceTopologyRegion)([^[:alnum:]_]|$)|std::vector<int>[[:space:]]+(boundaryRailIds|featureRailIds)|Eigen::VectorXi[[:space:]]+featureRailIds' \
+            -- include/directional/geometry/SurfaceCellTracing.h \
+               include/directional/geometry/PureQuadCompletion.h \
+               include/directional/geometry/SurfaceArrangement.h \
+               include/directional/geometry/FlowRepStrands.h \
+               include/directional/geometry/PatchDescriptor.h \
+               include/directional/geometry/SurfaceMeshOptimizer.h || true)
+          if [[ -n "$duplicate_matches" ]]; then
+            printf '%s\n' "$duplicate_matches" | tee -a "$AUDIT"
+            exit 45
+          fi
+          echo "static_cutover_audit=clean" | tee -a "$AUDIT"
+          git diff --check "$IMPLEMENTATION_SHA^" "$IMPLEMENTATION_SHA"
+
+      - name: Configure compile-only build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$LOG_DIR/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          trap 'rc=$?; echo "[m1-final] configure_exit_code=$rc"; git status --short || true; exit $rc' EXIT
+          cmake --version | tee "$LOG_DIR/cmake-version.txt"
+          ninja --version | tee "$LOG_DIR/ninja-version.txt"
+          c++ --version | tee "$LOG_DIR/compiler-version.txt"
+          git submodule status --recursive | tee "$LOG_DIR/submodules.txt"
+          cmake -S . -B "$BUILD_DIR" -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee "$LOG_DIR/configure.log"
+
+      - name: Compile and link approved targets only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$LOG_DIR/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          trap 'rc=$?; echo "[m1-final] build_exit_code=$rc"; git status --short || true; exit $rc' EXIT
+          echo "compile-only; no generated Directional binary execution"
+          /usr/bin/time -v cmake --build "$BUILD_DIR" --parallel 2 --target \
+            directional_core directional_pipeline \
+            directional_compiled_api_tests directional_surface_cell_producer_tests \
+            directional_surface_cell_oracle_tests directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_completion_tests directional_surface_cell_validation_tests \
+            directional_benchmarks \
+            2>&1 | tee "$LOG_DIR/build.log"
+          test -z "$(git status --porcelain --untracked-files=no)" || exit 46
+          test "$(git rev-parse HEAD)" = "$IMPLEMENTATION_SHA" || exit 47
+
+      - name: Package immutable compile outputs
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$LOG_DIR/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          trap 'rc=$?; echo "[m1-final] package_exit_code=$rc"; git status --short || true; exit $rc' EXIT
+          PKG="$RESULT_DIR/package"
+          SOURCE_PARENT=$(git rev-parse "$IMPLEMENTATION_SHA^")
+          mkdir -p "$PKG/bin" "$PKG/lib" "$PKG/logs" \
+                   "$PKG/test-data/benchmarks" "$PKG/source" "$PKG/metadata"
+
+          executables=(
+            directional_compiled_api_tests
+            directional_surface_cell_producer_tests
+            directional_surface_cell_oracle_tests
+            directional_surface_cell_authority_kernel_tests
+            directional_surface_cell_completion_tests
+            directional_surface_cell_validation_tests
+            directional_benchmarks
+          )
+          for executable in "${executables[@]}"; do
+            test -f "$BUILD_DIR/$executable"
+            cp "$BUILD_DIR/$executable" "$PKG/bin/$executable"
+          done
+          libraries=(libdirectional_core.a libdirectional_pipeline.a)
+          for library in "${libraries[@]}"; do
+            test -f "$BUILD_DIR/$library"
+            cp "$BUILD_DIR/$library" "$PKG/lib/$library"
+          done
+
+          cp -a benchmarks/fixtures "$PKG/test-data/benchmarks/fixtures"
+          cp "$BUILD_DIR/compile_commands.json" "$PKG/source/compile_commands.json"
+          git archive --format=tar "$IMPLEMENTATION_SHA" | xz -T2 -6 \
+            > "$PKG/source/directional-m1-single-authority-cutover-source-no-deps.tar.xz"
+          git fetch --no-tags --depth=1 origin "$ENTERING_M1L_SHA"
+          git diff --binary "$ENTERING_M1L_SHA" "$IMPLEMENTATION_SHA" -- \
+            include src tests CMakeLists.txt cmake \
+            > "$PKG/source/m1-single-authority-cutover.patch"
+          git diff --name-status "$ENTERING_M1L_SHA" "$IMPLEMENTATION_SHA" -- \
+            include src tests CMakeLists.txt cmake \
+            > "$PKG/metadata/changed-paths.txt"
+          : > "$PKG/metadata/changed-source-blobs.txt"
+          while IFS=$'\t' read -r status path extra; do
+            [[ -z "$status" ]] && continue
+            target_path="$path"
+            if [[ "$status" == R* || "$status" == C* ]]; then
+              target_path="$extra"
+            fi
+            if git cat-file -e "$IMPLEMENTATION_SHA:$target_path" 2>/dev/null; then
+              echo "$status $target_path $(git rev-parse "$IMPLEMENTATION_SHA:$target_path")" \
+                >> "$PKG/metadata/changed-source-blobs.txt"
+            else
+              echo "$status $target_path DELETED" >> "$PKG/metadata/changed-source-blobs.txt"
+            fi
+          done < "$PKG/metadata/changed-paths.txt"
+
+          cp "$LOG_DIR/activity.log" "$PKG/logs/activity.log"
+          cp "$LOG_DIR/configure.log" "$PKG/logs/configure.log"
+          cp "$LOG_DIR/build.log" "$PKG/logs/build.log"
+          cp "$LOG_DIR/cmake-version.txt" "$PKG/logs/cmake-version.txt"
+          cp "$LOG_DIR/ninja-version.txt" "$PKG/logs/ninja-version.txt"
+          cp "$LOG_DIR/compiler-version.txt" "$PKG/logs/compiler-version.txt"
+          cp "$LOG_DIR/submodules.txt" "$PKG/logs/submodules.txt"
+
+          FIXTURE_COUNT=$(find "$PKG/test-data/benchmarks/fixtures" -type f | wc -l | tr -d ' ')
+          cat > "$PKG/metadata/build-authority.json" <<EOF
+          {
+            "turn": "M1 Single-Authority Cutover Code+Build",
+            "implementationCommit": "$IMPLEMENTATION_SHA",
+            "immediateSourceParent": "$SOURCE_PARENT",
+            "enteringAcceptedM1l": "$ENTERING_M1L_SHA",
+            "triggerCommit": "$GITHUB_SHA",
+            "runId": "$GITHUB_RUN_ID",
+            "runAttempt": "$GITHUB_RUN_ATTEMPT",
+            "configuration": "Release",
+            "generator": "Ninja",
+            "sharedLibraries": false,
+            "gtestDiscoveryMode": "PRE_TEST",
+            "fixtureFileCount": $FIXTURE_COUNT,
+            "runtimeExecution": false,
+            "gtestListExecution": false,
+            "testExecution": false,
+            "benchmarkExecution": false,
+            "ctestExecution": false,
+            "cliExecution": false,
+            "fuzzerExecution": false,
+            "customInputExecution": false
+          }
+          EOF
+          cat > "$PKG/metadata/command-boundary.txt" <<'EOF'
+          runtimeExecution=false
+          gtestListExecution=false
+          testExecution=false
+          benchmarkExecution=false
+          ctestExecution=false
+          cliExecution=false
+          fuzzerExecution=false
+          customInputExecution=false
+          EOF
+          cat > "$PKG/metadata/cutover-test-groups.txt" <<'EOF'
+          SurfaceCellAuthorityKernel
+          SurfaceCellAuthorityContractCutover
+          SurfaceCellIsolationSeamCertificateAuthority
+          SurfaceCellTypedTransportAuthority
+          SurfaceCellSourceSupportAndChartAuthority
+          EOF
+          : > "$PKG/metadata/cutover-test-source-locations.txt"
+          for group in SurfaceCellAuthorityKernel SurfaceCellAuthorityContractCutover \
+                       SurfaceCellIsolationSeamCertificateAuthority \
+                       SurfaceCellTypedTransportAuthority \
+                       SurfaceCellSourceSupportAndChartAuthority; do
+            matches=$(git grep -n -F -- "$group" -- tests || true)
+            if [[ -z "$matches" ]]; then
+              echo "missing cutover test group in source: $group"
+              exit 48
+            fi
+            printf '%s\n' "$matches" >> \
+              "$PKG/metadata/cutover-test-source-locations.txt"
+          done
+          find "$PKG/test-data/benchmarks/fixtures" -type f \
+            | sed "s#^$PKG/##" | sort > "$PKG/metadata/fixture-files.txt"
+          printf '%s\n' "${executables[@]}" > "$PKG/metadata/executables.txt"
+          printf '%s\n' "${libraries[@]}" > "$PKG/metadata/libraries.txt"
+
+          (cd "$PKG" && find . -type f ! -name SHA256SUMS -print0 | sort -z | \
+            xargs -0 sha256sum > SHA256SUMS && sha256sum -c SHA256SUMS)
+          echo "manifest_count=$(wc -l < "$PKG/SHA256SUMS" | tr -d ' ')"
+          echo "manifest_sha256=$(sha256sum "$PKG/SHA256SUMS" | awk '{print $1}')"
+          echo "fixture_count=$FIXTURE_COUNT"
+          echo "implementation_sha=$IMPLEMENTATION_SHA"
+
+      - name: Upload immutable result package
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-single-authority-cutover-code-build-result-${{ github.run_id }}
+          path: m1-single-authority-cutover-code-build-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-single-authority-cutover-code-build-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m1-cutover-final-logs
+          if-no-files-found: error
+          retention-days: 7
