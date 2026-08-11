@@ -4144,7 +4144,7 @@ TEST(SurfaceCellsPhase10,
     EXPECT_FALSE(lineage.sourceTopologyRegions.empty());
     EXPECT_FALSE(lineage.sourceIsolationSheets.empty());
     EXPECT_FALSE(lineage.sourceCharts.empty());
-    EXPECT_TRUE(lineage.sourceSupportIdentity.valid);
+    EXPECT_TRUE(lineage.sourceSupport.has_value());
   }
 }
 

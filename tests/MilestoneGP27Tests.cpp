@@ -31,6 +31,31 @@ directional::geometry::SourceProjectionChart test_projection_chart(
   return {chart.value(), face.value()};
 }
 
+
+directional::authority::TopologyRegionId test_topology_region_id(
+    const int value) {
+  const auto id = directional::authority::TopologyRegionId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) throw std::runtime_error("Invalid test topology-region ID.");
+  return id.value();
+}
+
+directional::authority::IsolationSheetId test_isolation_sheet_id(
+    const int value) {
+  const auto id = directional::authority::IsolationSheetId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) throw std::runtime_error("Invalid test isolation-sheet ID.");
+  return id.value();
+}
+
+directional::authority::SourceSupport test_source_vertex_support(
+    const int value) {
+  const auto id = directional::authority::SourceVertexId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) throw std::runtime_error("Invalid test source-vertex support.");
+  return directional::authority::SourceVertexSupport{id.value()};
+}
+
 using directional::bench::BenchmarkCase;
 using directional::bench::BenchmarkField;
 using directional::bench::BenchmarkMesh;
@@ -79,12 +104,11 @@ directional::pipeline::RemeshResult square_quad_result() {
     lineage.sourcePoint.squaredDistance = 0.0;
     lineage.sourceComponent = 0;
     lineage.sourceSheet = 0;
-    lineage.sourceTopologyRegions = {0};
-    lineage.sourceIsolationSheets = {0};
+    lineage.sourceTopologyRegions = {test_topology_region_id(0)};
+    lineage.sourceIsolationSheets = {test_isolation_sheet_id(0)};
     lineage.sourceCharts = {test_projection_chart(
         0, sourceFaces[static_cast<std::size_t>(vertex)])};
-    lineage.sourceSupportIdentity.valid = true;
-    lineage.sourceSupportIdentity.values = {0, 0, vertex};
+    lineage.sourceSupport = test_source_vertex_support(vertex);
     result.outputVertexLineage.push_back(std::move(lineage));
   }
   directional::geometry::PureQuadFaceLineage faceLineage;
@@ -117,11 +141,10 @@ directional::pipeline::RemeshResult two_component_quad_result() {
     lineage.sourcePoint.squaredDistance = 0.0;
     lineage.sourceComponent = component;
     lineage.sourceSheet = component;
-    lineage.sourceTopologyRegions = {component};
-    lineage.sourceIsolationSheets = {component};
+    lineage.sourceTopologyRegions = {test_topology_region_id(component)};
+    lineage.sourceIsolationSheets = {test_isolation_sheet_id(component)};
     lineage.sourceCharts = {test_projection_chart(component, component)};
-    lineage.sourceSupportIdentity.valid = true;
-    lineage.sourceSupportIdentity.values = {component, 0, vertex % 4};
+    lineage.sourceSupport = test_source_vertex_support(vertex % 4);
     result.outputVertexLineage.push_back(std::move(lineage));
   }
   for (int face = 0; face < 2; ++face) {
@@ -347,8 +370,8 @@ TEST(MilestoneGP27, SemanticHashDetectsConnectivityAndLineageMutation) {
                 connectivityMutation));
 
   auto lineageMutation = baseline;
-  lineageMutation.outputVertexLineage.front()
-      .sourceSupportIdentity.values.back() += 1;
+  lineageMutation.outputVertexLineage.front().sourceSupport =
+      test_source_vertex_support(1);
   EXPECT_NE(baselineSemantic,
             directional::bench::benchmark_output_semantic_hash(
                 lineageMutation));

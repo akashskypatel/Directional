@@ -36,10 +36,13 @@ TEST(SurfaceCellAuthorityKernel, StrongIdsAreStaticallyNonInterconvertible) {
   SUCCEED();
 }
 
-TEST(SurfaceCellAuthorityKernel, CheckedLegacyConversionAcceptsAndRejectsDomainErrors) {
-  const auto valid = directional::authority::SourceFaceId::from_index(3, 8);
-  ASSERT_TRUE(valid.has_value());
-  EXPECT_EQ(valid.value().value(), 3u);
+TEST(SurfaceCellAuthorityKernel, CheckedConstructionAcceptsBoundariesAndRejectsDomainErrors) {
+  const auto lower = directional::authority::SourceFaceId::from_index(0, 8);
+  const auto upper = directional::authority::SourceFaceId::from_index(7, 8);
+  ASSERT_TRUE(lower.has_value());
+  ASSERT_TRUE(upper.has_value());
+  EXPECT_EQ(lower.value().index(), 0u);
+  EXPECT_EQ(upper.value().index(), 7u);
 
   const auto negative = directional::authority::SourceFaceId::from_index(-1, 8);
   ASSERT_FALSE(negative.has_value());
@@ -223,17 +226,7 @@ TEST(SurfaceCellAuthorityKernel, RepresentationHandlePerturbationDoesNotChangeCa
   EXPECT_EQ(representationHandles.front(), 42u);
 }
 
-TEST(SurfaceCellAuthorityKernel, LegacyAdapterRoundTripPreservesSemanticValue) {
-  const auto region = directional::authority::TopologyRegionId::from_index(4, 9);
-  ASSERT_TRUE(region.has_value());
-  const auto raw = (region.value()).index();
-  const auto reconstructed = directional::authority::TopologyRegionId::from_index(
-      static_cast<std::int64_t>(raw), 9);
-  ASSERT_TRUE(reconstructed.has_value());
-  EXPECT_EQ(reconstructed.value(), region.value());
-}
-
-TEST(SurfaceCellAuthorityKernel, DeliberateCrossDomainAdapterMisuseIsRejected) {
+TEST(SurfaceCellAuthorityKernel, CrossDomainConstructionIsRejected) {
   const auto misuse = FieldChartId::from_domain_index(
       AuthorityDomain::SourceFace, 1, 4);
   ASSERT_FALSE(misuse.has_value());

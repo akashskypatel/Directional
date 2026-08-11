@@ -1020,8 +1020,8 @@ TEST(PureQuadCompletionPhase18,
 }
 
 
-TEST(PureQuadCompletionPhase18,
-     SourceSupportResolverUsesIntrinsicVertexAndEdgeIncidence) {
+TEST(SurfaceCellSourceSupportAndChartAuthority,
+     SourceSupportVariantsAreDistinctAndMalformedSupportFailsTyped) {
   const CompletionFixture fixture = source_support_alias_patch();
   directional::geometry::SurfacePointSourceSupportResolver resolver(
       fixture.faces);
@@ -1051,6 +1051,31 @@ TEST(PureQuadCompletionPhase18,
   ASSERT_EQ(2U, edgeSupport.incidentFaces.size());
   EXPECT_EQ(0U, edgeSupport.incidentFaces[0].index());
   EXPECT_EQ(1U, edgeSupport.incidentFaces[1].index());
+
+  directional::geometry::SurfacePoint faceInterior;
+  faceInterior.face = 0;
+  faceInterior.component = 0;
+  faceInterior.sheet = 0;
+  faceInterior.barycentric << 0.2, 0.3, 0.5;
+  const auto faceSupport = resolver.resolve(faceInterior);
+  ASSERT_TRUE(faceSupport.valid());
+  ASSERT_TRUE(faceSupport.identity.has_value());
+  const auto *face =
+      std::get_if<directional::authority::SourceFaceInteriorSupport>(
+          &faceSupport.identity.value());
+  ASSERT_NE(nullptr, face);
+  EXPECT_EQ(0U, face->face.index());
+  EXPECT_NE(vertexSupport.identity, edgeSupport.identity);
+  EXPECT_NE(vertexSupport.identity, faceSupport.identity);
+  EXPECT_NE(edgeSupport.identity, faceSupport.identity);
+
+  faceInterior.face = fixture.faces.rows();
+  const auto malformed = resolver.resolve(faceInterior);
+  EXPECT_FALSE(malformed.valid());
+  EXPECT_FALSE(malformed.identity.has_value());
+  EXPECT_EQ(directional::geometry::SurfacePointSourceSupportFailure::
+                InvalidSourceFace,
+            malformed.failure);
 }
 
 TEST(PureQuadCompletionPhase18,

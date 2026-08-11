@@ -1964,7 +1964,7 @@ TEST(SourceChartTransitionsR1,
   EXPECT_FALSE(graph.rebind(left, 1, rebound));
 }
 
-TEST(SourceChartTransitionsR1,
+TEST(SurfaceCellSourceSupportAndChartAuthority,
      DisconnectedCloseSheetsNeverShareTransitionComponent) {
   Eigen::MatrixXi faces(2, 3);
   faces << 0, 1, 2,
@@ -1980,7 +1980,7 @@ TEST(SourceChartTransitionsR1,
             graph.chart_component_identity(graph.chart_component(1)));
 }
 
-TEST(SourceChartTransitionsR1,
+TEST(SurfaceCellSourceSupportAndChartAuthority,
      ComponentIdentityIsInvariantToSourceFaceRowPermutation) {
   Eigen::MatrixXi faces(2, 3);
   faces << 0, 1, 2,
@@ -2003,7 +2003,7 @@ TEST(SourceChartTransitionsR1,
             second.chart_component_identity(second.chart_component(0)));
 }
 
-TEST(SourceChartTransitionsR1,
+TEST(SurfaceCellSourceSupportAndChartAuthority,
      WholeMeshOrientationReversalPreservesCanonicalTransitions) {
   Eigen::MatrixXi faces(2, 3);
   faces << 0, 1, 2,

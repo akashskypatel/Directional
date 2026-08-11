@@ -966,6 +966,14 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
     target.push_back(static_cast<std::int64_t>(values.size()));
     for (const int value : values) target.push_back(value);
   };
+  const auto append_semantic_ids = [](Record &target, auto values) {
+    std::sort(values.begin(), values.end());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
+    target.push_back(static_cast<std::int64_t>(values.size()));
+    for (const auto value : values) {
+      target.push_back(static_cast<std::int64_t>(value.index()));
+    }
+  };
 
   std::vector<const geometry::PureQuadVertexLineage *> lineageByVertex(
       static_cast<std::size_t>(result.vertices.rows()), nullptr);
@@ -1001,13 +1009,30 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
                    bits(result.vertices(vertex, 1)),
                    bits(result.vertices(vertex, 2)),
                    static_cast<int>(lineage.kind), lineage.sourceComponent,
-                   lineage.sourceSupportIdentity.valid ? 1 : 0});
-    record.push_back(static_cast<std::int64_t>(
-        lineage.sourceSupportIdentity.values.size()));
-    record.insert(record.end(), lineage.sourceSupportIdentity.values.begin(),
-                  lineage.sourceSupportIdentity.values.end());
-    append_ints(record, lineage.sourceTopologyRegions);
-    append_ints(record, lineage.sourceIsolationSheets);
+                   lineage.sourceSupport.has_value() ? 1 : 0});
+    if (lineage.sourceSupport.has_value()) {
+      const auto &support = lineage.sourceSupport.value();
+      record.push_back(static_cast<std::int64_t>(
+          authority::support_kind(support)));
+      if (const auto *vertexSupport =
+              std::get_if<authority::SourceVertexSupport>(&support)) {
+        record.push_back(static_cast<std::int64_t>(
+            vertexSupport->vertex.index()));
+      } else if (const auto *edgeSupport =
+                     std::get_if<authority::SourceEdgeSupport>(&support)) {
+        record.push_back(static_cast<std::int64_t>(
+            edgeSupport->edge.first().index()));
+        record.push_back(static_cast<std::int64_t>(
+            edgeSupport->edge.second().index()));
+      } else if (const auto *faceSupport =
+                     std::get_if<authority::SourceFaceInteriorSupport>(
+                         &support)) {
+        record.push_back(static_cast<std::int64_t>(
+            faceSupport->face.index()));
+      }
+    }
+    append_semantic_ids(record, lineage.sourceTopologyRegions);
+    append_semantic_ids(record, lineage.sourceIsolationSheets);
 
     std::vector<geometry::SourceProjectionChart> charts =
         lineage.sourceCharts;

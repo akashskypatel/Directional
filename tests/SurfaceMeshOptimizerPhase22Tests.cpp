@@ -1206,10 +1206,10 @@ TEST(SurfaceMeshOptimizerPhase22,
   for (std::size_t vertex = 0; vertex < authority.size(); ++vertex) {
     authority[vertex].retained = true;
     authority[vertex].sourceCharts.push_back(
-        source_chart(provenance[vertex].face, sourceFaces, components, sheets,
-                     &hardEdges));
+        source_chart(provenance[vertex].face, sourceFaces, components, sheets));
   }
-  authority[0].sourceCharts.push_back(source_chart(2, sourceFaces, components, sheets));
+  authority[0].sourceCharts.push_back(
+      source_chart(2, sourceFaces, components, sheets));
   std::sort(authority[0].sourceCharts.begin(),
             authority[0].sourceCharts.end());
   auto options = make_options(source, sourceFaces, components, sheets,

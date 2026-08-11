@@ -1614,12 +1614,7 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
     hash_combine_u64(seed, lineage.authoritativeIdentity.hash());
     hash_vector(seed, lineage.sourceTopologyRegions);
     hash_vector(seed, lineage.sourceIsolationSheets);
-    hash_combine_i64(seed, lineage.sourceSupportIdentity.valid ? 1 : 0);
-    hash_combine_u64(seed, lineage.sourceSupportIdentity.values.size());
-    for (const std::int64_t value :
-         lineage.sourceSupportIdentity.values) {
-      hash_combine_i64(seed, value);
-    }
+    hash_source_support(seed, lineage.sourceSupport);
     hash_combine_u64(seed, lineage.sourceCharts.size());
     for (const auto &chart : lineage.sourceCharts) {
       hash_semantic_id(seed, chart.chart);
@@ -1971,70 +1966,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     point.squaredDistance = 0.0;
     return point;
   };
-  const auto support_identity = [&](const geometry::SurfaceTracePoint &trace,
-                                    const int component) {
-    geometry::SurfaceCellCanonicalIdentity identity;
-    if (trace.face < 0 || trace.face >= sourceFaces.rows() ||
-        !trace.barycentric.allFinite()) {
-      return identity;
-    }
-    constexpr double tolerance = 1.0e-9;
-    constexpr double scale = 1.0e12;
-    identity.valid = true;
-    identity.values = {component};
-    int vertexCorner = -1;
-    for (int corner = 0; corner < 3; ++corner) {
-      if (std::abs(trace.barycentric[corner] - 1.0) <= tolerance) {
-        vertexCorner = corner;
-      }
-    }
-    if (vertexCorner >= 0) {
-      identity.values.insert(identity.values.end(),
-                             {0, sourceFaces(trace.face, vertexCorner)});
-      return identity;
-    }
-    int zeroCorner = -1;
-    for (int corner = 0; corner < 3; ++corner) {
-      if (std::abs(trace.barycentric[corner]) <= tolerance) {
-        if (zeroCorner >= 0) {
-          identity.valid = false;
-          identity.values.clear();
-          return identity;
-        }
-        zeroCorner = corner;
-      }
-    }
-    if (zeroCorner >= 0) {
-      const int firstCorner = (zeroCorner + 1) % 3;
-      const int secondCorner = (zeroCorner + 2) % 3;
-      const int firstVertex = sourceFaces(trace.face, firstCorner);
-      const int secondVertex = sourceFaces(trace.face, secondCorner);
-      const int low = std::min(firstVertex, secondVertex);
-      const int high = std::max(firstVertex, secondVertex);
-      const double highWeight = firstVertex == high
-                                    ? trace.barycentric[firstCorner]
-                                    : trace.barycentric[secondCorner];
-      identity.values.insert(
-          identity.values.end(),
-          {1, low, high,
-           static_cast<std::int64_t>(std::llround(
-               std::clamp(highWeight, 0.0, 1.0) * scale))});
-      return identity;
-    }
-    std::array<std::pair<int, double>, 3> weightedVertices;
-    for (int corner = 0; corner < 3; ++corner) {
-      weightedVertices[static_cast<std::size_t>(corner)] =
-          {sourceFaces(trace.face, corner), trace.barycentric[corner]};
-    }
-    std::sort(weightedVertices.begin(), weightedVertices.end());
-    identity.values.push_back(2);
-    for (const auto &[vertex, weight] : weightedVertices) {
-      identity.values.push_back(vertex);
-      identity.values.push_back(static_cast<std::int64_t>(std::llround(
-          std::clamp(weight, 0.0, 1.0) * scale)));
-    }
-    return identity;
-  };
+  const geometry::SurfacePointSourceSupportResolver sourceSupportResolver(
+      sourceFaces);
 
   std::map<authority::TopologyRegionId,
            const geometry::SurfaceTopologyRegion *> topologyRegionById;
@@ -2212,14 +2145,24 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     if (!id || topologyRegionById.count(id.value()) == 0U) return std::nullopt;
     return id.value();
   };
-  const auto typed_sheet_ids = [](const std::vector<int> &raw)
+  const std::size_t isolationSheetExtent = sourceFaceSheets.empty()
+      ? 0U
+      : static_cast<std::size_t>(
+            *std::max_element(sourceFaceSheets.begin(), sourceFaceSheets.end()) +
+            1);
+  const auto typed_sheet_id = [&](const int raw)
+      -> std::optional<authority::IsolationSheetId> {
+    const auto id = authority::IsolationSheetId::from_index(
+        raw, isolationSheetExtent);
+    return id ? std::optional(id.value()) : std::nullopt;
+  };
+  const auto typed_sheet_ids = [&](const std::vector<int> &raw)
       -> std::optional<std::vector<authority::IsolationSheetId>> {
     std::vector<authority::IsolationSheetId> result;
     result.reserve(raw.size());
-    const std::size_t extent = raw.empty() ? 0U :
-        static_cast<std::size_t>(*std::max_element(raw.begin(), raw.end()) + 1);
     for (const int value : raw) {
-      const auto id = authority::IsolationSheetId::from_index(value, extent);
+      const auto id = authority::IsolationSheetId::from_index(
+          value, isolationSheetExtent);
       if (!id) return std::nullopt;
       result.push_back(id.value());
     }
@@ -2282,10 +2225,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
 
   struct OccurrenceData {
     geometry::SurfacePoint point;
-    geometry::SurfaceCellCanonicalIdentity support;
+    std::optional<authority::SourceSupport> support;
     std::optional<geometry::SourceProjectionChart> chart;
     geometry::LocalLatticeState lattice;
-    int topologyRegion = -1;
+    std::optional<authority::TopologyRegionId> topologyRegion;
     int corner = -1;
   };
   const int occurrenceCount = static_cast<int>(phaseFront.cells.size()) * 4;
@@ -2381,7 +2324,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       OccurrenceData &occurrence = occurrences[static_cast<std::size_t>(
           cellIndex * 4 + corner)];
       occurrence.point = make_surface_point(trace, component, sheet);
-      occurrence.support = support_identity(trace, component);
+      const auto resolvedSupport = sourceSupportResolver.resolve(occurrence.point);
+      if (resolvedSupport.valid()) {
+        occurrence.support = resolvedSupport.identity.value();
+      }
       occurrence.lattice = cell.lattice[static_cast<std::size_t>(corner)];
       const auto sourceFaceId = authority::SourceFaceId::from_index(
           trace.face, static_cast<std::size_t>(sourceFaces.rows()));
@@ -2389,10 +2335,11 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         occurrence.chart.emplace(occurrence.lattice.sourceChart.value(),
                                  sourceFaceId.value());
       }
-      occurrence.topologyRegion = static_cast<int>(cell.sourceTopologyRegion.index());
+      occurrence.topologyRegion = cell.sourceTopologyRegion;
       occurrence.corner = corner;
       if (!occurrence.point.valid() || !occurrence.point.position.allFinite() ||
-          !occurrence.support.valid || !occurrence.chart.has_value()) {
+          !occurrence.support.has_value() || !occurrence.chart.has_value() ||
+          !occurrence.topologyRegion.has_value()) {
         result.failure = "InvalidAuthoritativePhaseFrontCorner";
         return result;
       }
@@ -2763,42 +2710,58 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   for (int occurrence = 0; occurrence < occurrenceCount; ++occurrence) {
     membersByRoot[find_root(occurrence)].push_back(occurrence);
   }
+  using QuotientDomainState = std::tuple<
+      authority::TopologyRegionId, authority::IsolationSheetId, int, int, int,
+      int, authority::FieldChartId>;
   struct QuotientClass {
     int root = -1;
     std::vector<int> members;
-    std::vector<std::int64_t> orderingKey;
+    std::optional<authority::SourceSupport> support;
+    std::vector<QuotientDomainState> domainStates;
   };
+  using QuotientClassKey =
+      std::pair<authority::SourceSupport, std::vector<QuotientDomainState>>;
   std::vector<QuotientClass> quotientClasses;
-  std::set<std::vector<std::int64_t>> uniqueClassKeys;
+  std::set<QuotientClassKey> uniqueClassKeys;
   for (auto &[root, members] : membersByRoot) {
     const auto &support =
         occurrences[static_cast<std::size_t>(members.front())].support;
-    std::vector<std::array<std::int64_t, 7>> domainStates;
-    std::map<int, std::set<int>> sheetsByTopologyRegion;
+    if (!support.has_value()) {
+      result.failure = "MissingAuthoritativeSourceSupport";
+      return result;
+    }
+    std::vector<QuotientDomainState> domainStates;
+    std::map<authority::TopologyRegionId, std::set<authority::IsolationSheetId>>
+        sheetsByTopologyRegion;
     for (const int member : members) {
       const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
       if (occurrence.support != support) {
         result.failure = "QuotientSourceSupportConflict";
         return result;
       }
-      if (!occurrence.lattice.sourceChart.has_value()) {
+      if (!occurrence.lattice.sourceChart.has_value() ||
+          !occurrence.topologyRegion.has_value()) {
         result.failure = "MissingFieldChartAuthority";
         return result;
       }
-      domainStates.push_back(
-          {occurrence.topologyRegion, occurrence.point.sheet,
-           occurrence.lattice.latticeCoordinate.x(),
-           occurrence.lattice.latticeCoordinate.y(),
-           occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
-           static_cast<std::int64_t>(
-               (
-                   occurrence.lattice.sourceChart.value()).index())});
-      sheetsByTopologyRegion[occurrence.topologyRegion].insert(
-          occurrence.point.sheet);
+      const auto sheet = typed_sheet_id(occurrence.point.sheet);
+      if (!sheet.has_value()) {
+        result.failure = "InvalidAuthoritativeIsolationSheet";
+        return result;
+      }
+      domainStates.emplace_back(
+          occurrence.topologyRegion.value(), sheet.value(),
+          occurrence.lattice.latticeCoordinate.x(),
+          occurrence.lattice.latticeCoordinate.y(),
+          occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
+          occurrence.lattice.sourceChart.value());
+      sheetsByTopologyRegion[occurrence.topologyRegion.value()].insert(
+          sheet.value());
     }
     for (const auto &[regionId, sheetSet] : sheetsByTopologyRegion) {
-      const std::vector<int> sheets(sheetSet.begin(), sheetSet.end());
-      if (!isolation_sheets_connected(regionId, sheets)) {
+      const std::vector<authority::IsolationSheetId> sheets(
+          sheetSet.begin(), sheetSet.end());
+      if (!isolation_sheets_connected_typed(regionId, sheets)) {
         result.failure = "DisconnectedQuotientIsolationAuthority";
         return result;
       }
@@ -2809,17 +2772,11 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     QuotientClass quotient;
     quotient.root = root;
     quotient.members = std::move(members);
-    quotient.orderingKey.push_back(
-        static_cast<std::int64_t>(support.values.size()));
-    quotient.orderingKey.insert(quotient.orderingKey.end(),
-                                support.values.begin(), support.values.end());
-    quotient.orderingKey.push_back(
-        static_cast<std::int64_t>(domainStates.size()));
-    for (const auto &state : domainStates) {
-      quotient.orderingKey.insert(quotient.orderingKey.end(), state.begin(),
-                                  state.end());
-    }
-    if (!uniqueClassKeys.insert(quotient.orderingKey).second) {
+    quotient.support = support.value();
+    quotient.domainStates = std::move(domainStates);
+    const QuotientClassKey key{quotient.support.value(),
+                               quotient.domainStates};
+    if (!uniqueClassKeys.insert(key).second) {
       result.failure = "UnpairedDuplicateAuthoritativeCorner";
       return result;
     }
@@ -2827,7 +2784,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   }
   std::sort(quotientClasses.begin(), quotientClasses.end(),
             [](const QuotientClass &first, const QuotientClass &second) {
-              return first.orderingKey < second.orderingKey;
+              return std::tie(first.support.value(), first.domainStates) <
+                     std::tie(second.support.value(), second.domainStates);
             });
 
   result.mesh.vertexPositions.resize(
@@ -2854,9 +2812,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       // already identical chart; it is never a merge or provenance policy.
       return std::tuple{
           weightedVertices, occurrence.point.sheet,
-          (
-              occurrence.lattice.sourceChart.value()).index(),
-          occurrence.topologyRegion, occurrence.point.face};
+          occurrence.lattice.sourceChart.value(),
+          occurrence.topologyRegion.value(), occurrence.point.face};
     };
     const int representative = *std::min_element(
         quotient.members.begin(), quotient.members.end(),
@@ -2866,8 +2823,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const auto &representativeOccurrence =
         occurrences[static_cast<std::size_t>(representative)];
     std::set<geometry::SourceProjectionChart> charts;
-    std::set<int> topologyRegions;
-    std::set<int> isolationSheets;
+    std::set<authority::TopologyRegionId> topologyRegions;
+    std::set<authority::IsolationSheetId> isolationSheets;
     std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
     for (const int member : quotient.members) {
       const auto &occurrence = occurrences[static_cast<std::size_t>(member)];
@@ -2880,8 +2837,13 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         return result;
       }
       charts.insert(occurrence.chart.value());
-      topologyRegions.insert(occurrence.topologyRegion);
-      isolationSheets.insert(occurrence.point.sheet);
+      topologyRegions.insert(occurrence.topologyRegion.value());
+      const auto isolationSheet = typed_sheet_id(occurrence.point.sheet);
+      if (!isolationSheet.has_value()) {
+        result.failure = "InvalidAuthoritativeIsolationSheet";
+        return result;
+      }
+      isolationSheets.insert(isolationSheet.value());
       const auto &memberEquivalences =
           occurrenceEquivalences[static_cast<std::size_t>(member)];
       equivalences.insert(equivalences.end(), memberEquivalences.begin(),
@@ -2903,14 +2865,14 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     lineage.localVertex = outputVertex;
     lineage.sourceComponent = representativeOccurrence.point.component;
     lineage.sourceSheet = isolationSheets.size() == 1U
-                              ? *isolationSheets.begin()
+                              ? static_cast<int>(isolationSheets.begin()->index())
                               : -1;
     lineage.sourceTopologyRegions.assign(topologyRegions.begin(),
                                          topologyRegions.end());
     lineage.sourceCharts.assign(charts.begin(), charts.end());
     lineage.sourceIsolationSheets.assign(isolationSheets.begin(),
                                          isolationSheets.end());
-    lineage.sourceSupportIdentity = representativeOccurrence.support;
+    lineage.sourceSupport = representativeOccurrence.support;
     lineage.equivalences = std::move(equivalences);
     result.mesh.vertexLineage.push_back(std::move(lineage));
   }
@@ -9979,15 +9941,23 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
         [&](geometry::PureQuadVertexLineage &lineage) {
           lineage.sourceComponent = static_cast<int>(index);
           lineage.sourceSheet = lineage.sourcePoint.sheet;
-          for (int &region : lineage.sourceTopologyRegions) {
-            if (region >= 0) {
-              localMaximumTopologyRegion =
-                  std::max(localMaximumTopologyRegion, region);
-              region += topologyRegionOffset;
-            }
+          for (authority::TopologyRegionId &region :
+               lineage.sourceTopologyRegions) {
+            const int localRegion = static_cast<int>(region.index());
+            localMaximumTopologyRegion =
+                std::max(localMaximumTopologyRegion, localRegion);
+            const int globalRegion = localRegion + topologyRegionOffset;
+            const auto remapped = authority::TopologyRegionId::from_index(
+                globalRegion, static_cast<std::size_t>(globalRegion + 1));
+            if (remapped) region = remapped.value();
           }
-          for (int &sheet : lineage.sourceIsolationSheets) {
-            if (sheet >= 0) sheet += sheetOffset;
+          for (authority::IsolationSheetId &sheet :
+               lineage.sourceIsolationSheets) {
+            const int globalSheet =
+                static_cast<int>(sheet.index()) + sheetOffset;
+            const auto remapped = authority::IsolationSheetId::from_index(
+                globalSheet, static_cast<std::size_t>(globalSheet + 1));
+            if (remapped) sheet = remapped.value();
           }
           for (geometry::SourceProjectionChart &chart :
                lineage.sourceCharts) {
@@ -10011,52 +9981,59 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
                                                       globalFaceId.value());
             }
           }
-          auto &identity = lineage.sourceSupportIdentity;
-          if (identity.valid && identity.values.size() >= 3U) {
-            identity.values[0] = static_cast<std::int64_t>(index);
-            const auto remap_vertex = [&](const std::size_t position) {
-              if (position >= identity.values.size() ||
-                  identity.values[position] < 0 ||
-                  identity.values[position] >=
-                      static_cast<std::int64_t>(
-                          component.originalVertices.size())) {
-                identity.valid = false;
-                return;
+          if (lineage.sourceSupport.has_value()) {
+            const auto remap_vertex_id = [&](const authority::SourceVertexId local)
+                -> std::optional<authority::SourceVertexId> {
+              if (local.index() >= component.originalVertices.size()) {
+                return std::nullopt;
               }
-              identity.values[position] = component.originalVertices[
-                  static_cast<std::size_t>(identity.values[position])];
+              const int globalVertex =
+                  component.originalVertices[local.index()];
+              const auto id = authority::SourceVertexId::from_index(
+                  globalVertex, static_cast<std::size_t>(globalVertex + 1));
+              return id ? std::optional(id.value()) : std::nullopt;
             };
-            if (identity.values[1] == 0 && identity.values.size() == 3U) {
-              remap_vertex(2U);
-            } else if (identity.values[1] == 1 &&
-                       identity.values.size() == 5U) {
-              remap_vertex(2U);
-              remap_vertex(3U);
-            } else if (identity.values[1] == 2 &&
-                       identity.values.size() == 8U) {
-              remap_vertex(2U);
-              remap_vertex(4U);
-              remap_vertex(6U);
-            }
-            if (identity.valid && identity.values[1] == 1 &&
-                identity.values[2] > identity.values[3]) {
-              std::swap(identity.values[2], identity.values[3]);
-              identity.values[4] = 1000000000000LL - identity.values[4];
-            } else if (identity.valid && identity.values[1] == 2) {
-              std::array<std::pair<std::int64_t, std::int64_t>, 3>
-                  weightedVertices{{
-                      {identity.values[2], identity.values[3]},
-                      {identity.values[4], identity.values[5]},
-                      {identity.values[6], identity.values[7]}}};
-              std::sort(weightedVertices.begin(), weightedVertices.end());
-              for (std::size_t entry = 0; entry < weightedVertices.size();
-                   ++entry) {
-                identity.values[2U + entry * 2U] =
-                    weightedVertices[entry].first;
-                identity.values[3U + entry * 2U] =
-                    weightedVertices[entry].second;
+            const auto remap_face_id = [&](const authority::SourceFaceId local)
+                -> std::optional<authority::SourceFaceId> {
+              if (local.index() >= component.originalFaces.size()) {
+                return std::nullopt;
+              }
+              const int globalFace = component.originalFaces[local.index()];
+              const auto id = authority::SourceFaceId::from_index(
+                  globalFace, static_cast<std::size_t>(globalFace + 1));
+              return id ? std::optional(id.value()) : std::nullopt;
+            };
+            std::optional<authority::SourceSupport> remappedSupport;
+            if (const auto *vertex = std::get_if<authority::SourceVertexSupport>(
+                    &lineage.sourceSupport.value())) {
+              const auto remapped = remap_vertex_id(vertex->vertex);
+              if (remapped) {
+                remappedSupport = authority::SourceVertexSupport{
+                    remapped.value()};
+              }
+            } else if (const auto *edge =
+                           std::get_if<authority::SourceEdgeSupport>(
+                               &lineage.sourceSupport.value())) {
+              const auto first = remap_vertex_id(edge->edge.first());
+              const auto second = remap_vertex_id(edge->edge.second());
+              if (first && second) {
+                const auto topology = authority::SourceEdgeTopologyKey::make(
+                    first.value(), second.value());
+                if (topology) {
+                  remappedSupport = authority::SourceEdgeSupport{
+                      topology.value()};
+                }
+              }
+            } else if (const auto *face =
+                           std::get_if<authority::SourceFaceInteriorSupport>(
+                               &lineage.sourceSupport.value())) {
+              const auto remapped = remap_face_id(face->face);
+              if (remapped) {
+                remappedSupport = authority::SourceFaceInteriorSupport{
+                    remapped.value()};
               }
             }
+            lineage.sourceSupport = std::move(remappedSupport);
           }
           for (geometry::PureQuadEquivalenceProvenance &equivalence :
                lineage.equivalences) {

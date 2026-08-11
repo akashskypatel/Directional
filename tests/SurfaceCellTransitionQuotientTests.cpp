@@ -33,6 +33,31 @@ directional::geometry::SourceProjectionChart test_projection_chart(
   return {chart.value(), face.value()};
 }
 
+
+directional::authority::TopologyRegionId test_topology_region_id(
+    const int value) {
+  const auto id = directional::authority::TopologyRegionId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) throw std::runtime_error("Invalid test topology-region ID.");
+  return id.value();
+}
+
+directional::authority::IsolationSheetId test_isolation_sheet_id(
+    const int value) {
+  const auto id = directional::authority::IsolationSheetId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) throw std::runtime_error("Invalid test isolation-sheet ID.");
+  return id.value();
+}
+
+directional::authority::SourceSupport test_source_vertex_support(
+    const int value) {
+  const auto id = directional::authority::SourceVertexId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) throw std::runtime_error("Invalid test source-vertex support.");
+  return directional::authority::SourceVertexSupport{id.value()};
+}
+
 using directional::geometry::SurfaceCellNetwork;
 using directional::geometry::SurfaceCellProducerDisposition;
 using directional::geometry::SurfaceFrontBoundaryKind;
@@ -584,11 +609,10 @@ directional::pipeline::RemeshResult semantic_two_component_result() {
     lineage.sourcePoint.squaredDistance = 0.0;
     lineage.sourceComponent = component;
     lineage.sourceSheet = component;
-    lineage.sourceTopologyRegions = {component};
-    lineage.sourceIsolationSheets = {component};
+    lineage.sourceTopologyRegions = {test_topology_region_id(component)};
+    lineage.sourceIsolationSheets = {test_isolation_sheet_id(component)};
     lineage.sourceCharts = {test_projection_chart(component, component)};
-    lineage.sourceSupportIdentity.valid = true;
-    lineage.sourceSupportIdentity.values = {component, 0, vertex % 4};
+    lineage.sourceSupport = test_source_vertex_support(vertex % 4);
     result.outputVertexLineage.push_back(std::move(lineage));
   }
   for (int face = 0; face < 2; ++face) {
@@ -768,7 +792,7 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ("InvalidSourceBoundaryAuthority", result.failure);
 }
 
-TEST(SurfaceCellTransitionQuotient,
+TEST(SurfaceCellIsolationSeamCertificateAuthority,
      ReciprocalIsolationSeamCertificateMaterializes) {
   const auto &fixture = split_isolation_fixture();
   ASSERT_EQ(1U,
@@ -786,7 +810,7 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ(1U, result.consumedInternalIsolationSeams);
 }
 
-TEST(SurfaceCellTransitionQuotient,
+TEST(SurfaceCellIsolationSeamCertificateAuthority,
      MissingIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
@@ -797,7 +821,7 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ("IsolationSeamCertificateBijectionMismatch", result.failure);
 }
 
-TEST(SurfaceCellTransitionQuotient,
+TEST(SurfaceCellIsolationSeamCertificateAuthority,
      DuplicateIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
@@ -809,7 +833,7 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ("InvalidAuthoritativeIsolationSeamCertificate", result.failure);
 }
 
-TEST(SurfaceCellTransitionQuotient,
+TEST(SurfaceCellIsolationSeamCertificateAuthority,
      WrongOwnerIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
@@ -826,7 +850,7 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ("InvalidAuthoritativeIsolationSeamCertificate", result.failure);
 }
 
-TEST(SurfaceCellTransitionQuotient,
+TEST(SurfaceCellIsolationSeamCertificateAuthority,
      WrongSheetIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
@@ -841,7 +865,7 @@ TEST(SurfaceCellTransitionQuotient,
   EXPECT_EQ("IsolationSeamCertificateSourceAuthorityMismatch", result.failure);
 }
 
-TEST(SurfaceCellTransitionQuotient,
+TEST(SurfaceCellIsolationSeamCertificateAuthority,
      NonreciprocalIsolationSeamCertificateIsRejected) {
   const auto &fixture = split_isolation_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
@@ -1089,7 +1113,7 @@ TEST(SurfaceCellTransitionQuotient,
   bool foundSeamEquivalence = false;
   for (const auto &lineage : result.mesh.vertexLineage) {
     EXPECT_TRUE(lineage.sourcePoint.valid());
-    EXPECT_TRUE(lineage.sourceSupportIdentity.valid);
+    EXPECT_TRUE(lineage.sourceSupport.has_value());
     EXPECT_FALSE(lineage.sourceTopologyRegions.empty());
     EXPECT_FALSE(lineage.sourceIsolationSheets.empty());
     EXPECT_FALSE(lineage.sourceCharts.empty());
@@ -1275,7 +1299,8 @@ TEST(SurfaceCellTransitionQuotient,
      SemanticDigestDetectsSourceSupportMutation) {
   const auto baseline = semantic_two_component_result();
   auto mutation = baseline;
-  mutation.outputVertexLineage.front().sourceSupportIdentity.values.back() += 1;
+  mutation.outputVertexLineage.front().sourceSupport =
+      test_source_vertex_support(1);
   EXPECT_NE(directional::bench::benchmark_output_semantic_hash(baseline),
             directional::bench::benchmark_output_semantic_hash(mutation));
 }
@@ -1291,8 +1316,8 @@ TEST(SurfaceCellTransitionQuotient,
     lineage.sourcePoint.component = 0;
     lineage.sourcePoint.sheet = 0;
     lineage.sourceSheet = 0;
-    lineage.sourceTopologyRegions = {0};
-    lineage.sourceIsolationSheets = {0};
+    lineage.sourceTopologyRegions = {test_topology_region_id(0)};
+    lineage.sourceIsolationSheets = {test_isolation_sheet_id(0)};
     lineage.sourceCharts = {test_projection_chart(0, 0)};
   }
   EXPECT_NE(directional::bench::benchmark_output_semantic_hash(baseline),
