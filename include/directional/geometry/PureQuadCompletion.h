@@ -218,7 +218,7 @@ struct PureQuadVertexLineage {
   int sourceSheet = -1;
   /// Full retained authority for quotient-materialized vertices.
   std::vector<int> sourceTopologyRegions;
-  std::vector<SurfaceCellProjectionChart> sourceCharts;
+  std::vector<SourceProjectionChart> sourceCharts;
   std::vector<int> sourceIsolationSheets;
   SurfaceCellCanonicalIdentity sourceSupportIdentity;
   std::vector<PureQuadEquivalenceProvenance> equivalences;

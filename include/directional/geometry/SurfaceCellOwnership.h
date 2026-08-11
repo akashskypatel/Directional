@@ -18,6 +18,8 @@
 #include <tuple>
 #include <vector>
 
+#include <directional/authority/AuthorityIds.h>
+
 namespace directional::geometry {
 
 struct SurfaceCellCanonicalIdentity {
@@ -58,50 +60,38 @@ struct SurfaceCellCanonicalIdentity {
 };
 
 
-struct SurfaceCellProjectionChart {
-  int sourceComponent = -1;
-  int sourceFace = -1;
-  int localSheet = -1;
+/** Exact projection chart identity. Component/sheet membership is owned by
+ * SourceTopologyRegions and source-label authority, never copied here. */
+struct SourceProjectionChart {
+  authority::FieldChartId chart;
+  authority::SourceFaceId face;
 
-  [[nodiscard]] bool valid() const {
-    return sourceComponent >= 0 && sourceFace >= 0 && localSheet >= 0;
-  }
+  SourceProjectionChart(authority::FieldChartId fieldChart,
+                        authority::SourceFaceId sourceFace)
+      : chart(fieldChart), face(sourceFace) {}
 
-  friend bool operator==(const SurfaceCellProjectionChart &lhs,
-                         const SurfaceCellProjectionChart &rhs) {
-    return std::tie(lhs.sourceComponent, lhs.sourceFace, lhs.localSheet) ==
-           std::tie(rhs.sourceComponent, rhs.sourceFace, rhs.localSheet);
-  }
+  [[nodiscard]] bool valid() const noexcept { return true; }
 
-  friend bool operator!=(const SurfaceCellProjectionChart &lhs,
-                         const SurfaceCellProjectionChart &rhs) {
-    return !(lhs == rhs);
-  }
-
-  friend bool operator<(const SurfaceCellProjectionChart &lhs,
-                        const SurfaceCellProjectionChart &rhs) {
-    return std::tie(lhs.sourceComponent, lhs.sourceFace, lhs.localSheet) <
-           std::tie(rhs.sourceComponent, rhs.sourceFace, rhs.localSheet);
-  }
+  auto operator<=>(const SourceProjectionChart &) const = default;
 };
 
 
 struct SurfaceCellOwnershipClassRecord {
   int sourceComponent = -1;
   // Face-row-independent exact membership signature. Each member stores
-  // {component, localSheet, sorted source-triangle vertex ids}.
+  // {field chart, sorted source-triangle vertex ids}; source component/sheet
+  // authority is owned outside the projection-chart value.
   SurfaceCellCanonicalIdentity canonicalMembership;
   // Runtime lookup table retaining the exact source-face chart records.
-  std::vector<SurfaceCellProjectionChart> exactCharts;
+  std::vector<SourceProjectionChart> exactCharts;
 
   [[nodiscard]] bool valid() const {
     return sourceComponent >= 0 && canonicalMembership.valid &&
            !exactCharts.empty() &&
            std::is_sorted(exactCharts.begin(), exactCharts.end()) &&
            std::all_of(exactCharts.begin(), exactCharts.end(),
-                       [&](const SurfaceCellProjectionChart &chart) {
-                         return chart.valid() &&
-                                chart.sourceComponent == sourceComponent;
+                       [](const SourceProjectionChart &chart) {
+                         return chart.valid();
                        });
   }
 

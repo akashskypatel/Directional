@@ -52,10 +52,9 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     for (const std::int64_t value : record.canonicalMembership.values) {
       mix(value);
     }
-    for (const SurfaceCellProjectionChart &chart : record.exactCharts) {
-      mix(chart.sourceComponent);
-      mix(chart.sourceFace);
-      mix(chart.localSheet);
+    for (const SourceProjectionChart &chart : record.exactCharts) {
+      mix(static_cast<std::int64_t>(chart.chart.index()));
+      mix(static_cast<std::int64_t>(chart.face.index()));
     }
   }
   for (const SurfaceArrangementNode &node : complex.nodes) {
@@ -152,10 +151,9 @@ std::uint64_t complex_structural_hash(const SurfaceCellComplex &complex) {
     for (const std::int64_t value : cell.sourceOwnershipClass.values) {
       mix(value);
     }
-    for (const SurfaceCellProjectionChart &chart : cell.sourceCharts) {
-      mix(chart.sourceComponent);
-      mix(chart.sourceFace);
-      mix(chart.localSheet);
+    for (const SourceProjectionChart &chart : cell.sourceCharts) {
+      mix(static_cast<std::int64_t>(chart.chart.index()));
+      mix(static_cast<std::int64_t>(chart.face.index()));
     }
     for (const int sourceFace : cell.sourceFaces) {
       mix(sourceFace);
@@ -1064,7 +1062,7 @@ SurfaceCellComplex rebuild_complex_after_halfedge_removal(
     std::set<int> mergedBoundaryLoops;
     int mergedBoundarySide = 0;
     std::set<SurfaceCellCanonicalIdentity> mergedOwnershipClasses;
-    std::set<SurfaceCellProjectionChart> mergedCharts;
+    std::set<SourceProjectionChart> mergedCharts;
     double fallbackArea = 0.0;
     for (const int cellId : mergeComponent) {
       const SurfaceArrangementCell &cell =

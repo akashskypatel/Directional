@@ -1009,14 +1009,15 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
     append_ints(record, lineage.sourceTopologyRegions);
     append_ints(record, lineage.sourceIsolationSheets);
 
-    std::vector<geometry::SurfaceCellProjectionChart> charts =
+    std::vector<geometry::SourceProjectionChart> charts =
         lineage.sourceCharts;
     std::sort(charts.begin(), charts.end());
     charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
     record.push_back(static_cast<std::int64_t>(charts.size()));
     for (const auto &chart : charts) {
-      record.insert(record.end(), {chart.sourceComponent, chart.sourceFace,
-                                   chart.localSheet});
+      record.insert(record.end(),
+                    {static_cast<std::int64_t>(chart.chart.index()),
+                     static_cast<std::int64_t>(chart.face.index())});
     }
 
     std::vector<Record> equivalenceRecords;

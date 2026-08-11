@@ -679,7 +679,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
                                         std::pair<int, int> &components) {
     if (equivalence.firstFrontEdge < 0 ||
         equivalence.firstFrontEdge >= equivalence.secondFrontEdge ||
-        equivalence.railId < 0 ||
+        !equivalence.rail.has_value() ||
         !route_is_well_formed(equivalence.route)) {
       return false;
     }
@@ -729,15 +729,25 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
   const auto initialize_scalar_state = [&]
       (const geometry::SurfacePoint &point,
        geometry::SurfacePointSourceSupport &support,
-       geometry::SourceProjectionChart &declared, std::set<int> &scalarComponents,
+       std::optional<geometry::SourceProjectionChart> &declared,
+       std::set<int> &scalarComponents,
        std::map<int, std::set<int>> &exactFaces) {
     if (point.face < 0 || point.face >= sourceFaces->rows()) {
       return false;
     }
     declared = transitionGraph.chart(point.face);
-    if (!declared.valid() ||
-        (point.component >= 0 && point.component != declared.component) ||
-        (point.sheet >= 0 && point.sheet != declared.localSheet)) {
+    if (!declared.has_value()) {
+      return false;
+    }
+    const auto declaredComponent =
+        transitionGraph.source_component(declared.value());
+    const auto declaredSheet =
+        transitionGraph.isolation_sheet(declared.value());
+    if (!declaredComponent.has_value() || !declaredSheet.has_value() ||
+        (point.component >= 0 &&
+         point.component != static_cast<int>(declaredComponent->index())) ||
+        (point.sheet >= 0 &&
+         point.sheet != static_cast<int>(declaredSheet->index()))) {
       return false;
     }
     support = sourceSupport.resolve(point);
@@ -764,7 +774,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     for (std::size_t pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
       const geometry::SurfacePoint *point = points[pointIndex];
       geometry::SurfacePointSourceSupport support;
-      geometry::SourceProjectionChart declared;
+      std::optional<geometry::SourceProjectionChart> declared;
       std::set<int> scalarComponents;
       std::map<int, std::set<int>> exactFaces;
       if (point == nullptr ||
@@ -811,44 +821,53 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
       }
 
       geometry::SurfacePointSourceSupport support;
-      geometry::SourceProjectionChart declared;
+      std::optional<geometry::SourceProjectionChart> declared;
       std::set<int> scalarComponents;
       std::map<int, std::set<int>> scalarFaces;
       if (!initialize_scalar_state((*completePoints)[vertex], support,
                                    declared, scalarComponents, scalarFaces)) {
         return {};
       }
-      const geometry::SurfaceCellProjectionChart declaredChart{
-          declared.component, declared.sourceFace, declared.localSheet};
-      if (!std::binary_search(authority.sourceCharts.begin(),
-                              authority.sourceCharts.end(), declaredChart)) {
+      if (!declared.has_value() ||
+          !std::binary_search(authority.sourceCharts.begin(),
+                              authority.sourceCharts.end(), declared.value())) {
         return {};
       }
 
       AuthorityGraph &graph = graphs[vertex];
-      for (const geometry::SurfaceCellProjectionChart &chart :
+      for (const geometry::SourceProjectionChart &chart :
            authority.sourceCharts) {
-        if (!chart.valid() || chart.sourceFace >= sourceFaces->rows() ||
-            !std::binary_search(
-                support.incidentFaces.begin(), support.incidentFaces.end(),
-                authority::SourceFaceId::from_index(
-                    chart.sourceFace,
-                    static_cast<std::size_t>(sourceFaces->rows()))
-                    .value())) {
+        const std::size_t sourceFace = chart.face.index();
+        const auto sourceFaceId = authority::SourceFaceId::from_index(
+            static_cast<std::int64_t>(sourceFace),
+            static_cast<std::size_t>(sourceFaces->rows()));
+        if (!chart.valid() ||
+            sourceFace >= static_cast<std::size_t>(sourceFaces->rows()) ||
+            !sourceFaceId ||
+            !std::binary_search(support.incidentFaces.begin(),
+                                support.incidentFaces.end(),
+                                sourceFaceId.value())) {
           return {};
         }
-        const geometry::SourceProjectionChart actual =
-            transitionGraph.chart(chart.sourceFace);
-        if (!actual.valid() || actual.component != chart.sourceComponent ||
-            actual.localSheet != chart.localSheet ||
-            actual.component != declared.component) {
+        const auto actual =
+            transitionGraph.chart(static_cast<int>(sourceFace));
+        if (!actual.has_value() || actual.value() != chart ||
+            !declared.has_value()) {
           return {};
         }
-        const int component = transitionGraph.chart_component(actual);
+        const auto actualComponent =
+            transitionGraph.source_component(actual.value());
+        const auto declaredComponent =
+            transitionGraph.source_component(declared.value());
+        if (!actualComponent.has_value() || !declaredComponent.has_value() ||
+            actualComponent.value() != declaredComponent.value()) {
+          return {};
+        }
+        const int component = transitionGraph.chart_component(actual.value());
         if (component < 0) {
           return {};
         }
-        graph.exactFaces[component].insert(chart.sourceFace);
+        graph.exactFaces[component].insert(static_cast<int>(sourceFace));
       }
       for (const int component : scalarComponents) {
         if (graph.exactFaces.count(component) != 0U) {

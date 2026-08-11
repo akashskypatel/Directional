@@ -1343,7 +1343,7 @@ TEST(SurfaceArrangementPhase16,
         complex.halfedges[static_cast<std::size_t>(halfedgeId)];
     EXPECT_TRUE(std::binary_search(
         cell->sourceCharts.begin(), cell->sourceCharts.end(),
-        directional::geometry::SurfaceCellProjectionChart{
+        directional::geometry::SourceProjectionChart{
             edge.sourceComponent, edge.sourceFace, edge.sourceSheet}));
   }
 }

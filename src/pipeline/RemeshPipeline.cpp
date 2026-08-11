@@ -1622,9 +1622,8 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
     }
     hash_combine_u64(seed, lineage.sourceCharts.size());
     for (const auto &chart : lineage.sourceCharts) {
-      hash_combine_i64(seed, chart.sourceComponent);
-      hash_combine_i64(seed, chart.sourceFace);
-      hash_combine_i64(seed, chart.localSheet);
+      hash_semantic_id(seed, chart.chart);
+      hash_semantic_id(seed, chart.face);
     }
     hash_combine_u64(seed, lineage.equivalences.size());
     for (const auto &equivalence : lineage.equivalences) {
@@ -2284,7 +2283,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   struct OccurrenceData {
     geometry::SurfacePoint point;
     geometry::SurfaceCellCanonicalIdentity support;
-    geometry::SurfaceCellProjectionChart chart;
+    std::optional<geometry::SourceProjectionChart> chart;
     geometry::LocalLatticeState lattice;
     int topologyRegion = -1;
     int corner = -1;
@@ -2383,12 +2382,17 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           cellIndex * 4 + corner)];
       occurrence.point = make_surface_point(trace, component, sheet);
       occurrence.support = support_identity(trace, component);
-      occurrence.chart = {component, trace.face, sheet};
       occurrence.lattice = cell.lattice[static_cast<std::size_t>(corner)];
+      const auto sourceFaceId = authority::SourceFaceId::from_index(
+          trace.face, static_cast<std::size_t>(sourceFaces.rows()));
+      if (sourceFaceId && occurrence.lattice.sourceChart.has_value()) {
+        occurrence.chart.emplace(occurrence.lattice.sourceChart.value(),
+                                 sourceFaceId.value());
+      }
       occurrence.topologyRegion = static_cast<int>(cell.sourceTopologyRegion.index());
       occurrence.corner = corner;
       if (!occurrence.point.valid() || !occurrence.point.position.allFinite() ||
-          !occurrence.support.valid || !occurrence.chart.valid()) {
+          !occurrence.support.valid || !occurrence.chart.has_value()) {
         result.failure = "InvalidAuthoritativePhaseFrontCorner";
         return result;
       }
@@ -2861,7 +2865,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         });
     const auto &representativeOccurrence =
         occurrences[static_cast<std::size_t>(representative)];
-    std::set<geometry::SurfaceCellProjectionChart> charts;
+    std::set<geometry::SourceProjectionChart> charts;
     std::set<int> topologyRegions;
     std::set<int> isolationSheets;
     std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
@@ -2875,7 +2879,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         result.failure = "QuotientGeometryConsistencyFailure";
         return result;
       }
-      charts.insert(occurrence.chart);
+      charts.insert(occurrence.chart.value());
       topologyRegions.insert(occurrence.topologyRegion);
       isolationSheets.insert(occurrence.point.sheet);
       const auto &memberEquivalences =
@@ -9944,6 +9948,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
 
     int localMaximumSheet = -1;
     int localMaximumTopologyRegion = -1;
+    int localMaximumFieldChart = -1;
     int localMaximumFrontEdge = -1;
     int localMaximumPeriodicRelation = -1;
     if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
@@ -9977,18 +9982,27 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           for (int &sheet : lineage.sourceIsolationSheets) {
             if (sheet >= 0) sheet += sheetOffset;
           }
-          for (geometry::SurfaceCellProjectionChart &chart :
+          for (geometry::SourceProjectionChart &chart :
                lineage.sourceCharts) {
-            chart.sourceComponent = static_cast<int>(index);
-            if (chart.sourceFace >= 0 &&
-                chart.sourceFace <
-                    static_cast<int>(component.originalFaces.size())) {
-              chart.sourceFace = component.originalFaces[
-                  static_cast<std::size_t>(chart.sourceFace)];
-            } else {
-              chart.sourceFace = -1;
+            const int localChart = static_cast<int>(chart.chart.index());
+            const int localFace = static_cast<int>(chart.face.index());
+            localMaximumFieldChart =
+                std::max(localMaximumFieldChart, localChart);
+            if (localFace < 0 ||
+                localFace >= static_cast<int>(component.originalFaces.size())) {
+              continue;
             }
-            if (chart.localSheet >= 0) chart.localSheet += sheetOffset;
+            const int globalFace = component.originalFaces[
+                static_cast<std::size_t>(localFace)];
+            const auto globalChartId = authority::FieldChartId::from_index(
+                localChart + fieldChartOffset,
+                static_cast<std::size_t>(localChart + fieldChartOffset + 1));
+            const auto globalFaceId = authority::SourceFaceId::from_index(
+                globalFace, static_cast<std::size_t>(globalFace + 1));
+            if (globalChartId && globalFaceId) {
+              chart = geometry::SourceProjectionChart(globalChartId.value(),
+                                                      globalFaceId.value());
+            }
           }
           auto &identity = lineage.sourceSupportIdentity;
           if (identity.valid && identity.values.size() >= 3U) {

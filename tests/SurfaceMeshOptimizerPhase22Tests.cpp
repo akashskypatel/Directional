@@ -159,7 +159,7 @@ SurfacePoint source_vertex_point(
   return point;
 }
 
-directional::geometry::SurfaceCellProjectionChart source_chart(
+directional::geometry::SourceProjectionChart source_chart(
     const int face, const std::vector<int> &components,
     const std::vector<int> &sheets) {
   return {components[static_cast<std::size_t>(face)], face,

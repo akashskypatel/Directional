@@ -10,6 +10,7 @@
 #ifndef DIRECTIONAL_VALIDATION_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_H
 #define DIRECTIONAL_VALIDATION_SOURCE_AUTHORITATIVE_MESH_VALIDATOR_H
 
+#include <optional>
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -51,7 +52,7 @@ struct MeshTopologySummary {
 struct SourceHardRailChartEquivalence {
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
-  int railId = -1;
+  std::optional<authority::HardRailId> rail;
   authority::CanonicalRoute route;
 
   auto operator<=>(const SourceHardRailChartEquivalence &) const = default;
@@ -61,7 +62,7 @@ struct SourceHardRailChartEquivalence {
  * one output vertex. Scalar SurfacePoint authority remains separate. */
 struct SourceVertexChartAuthority {
   bool retained = false;
-  std::vector<geometry::SurfaceCellProjectionChart> sourceCharts;
+  std::vector<geometry::SourceProjectionChart> sourceCharts;
   std::vector<SourceHardRailChartEquivalence> hardRailEquivalences;
 };
 

@@ -50,10 +50,11 @@ std::vector<std::uint64_t> exact_rollback_identity(
     }
     append_rollback_word(
         identity, static_cast<std::int64_t>(record.exactCharts.size()));
-    for (const SurfaceCellProjectionChart &chart : record.exactCharts) {
-      append_rollback_word(identity, chart.sourceComponent);
-      append_rollback_word(identity, chart.sourceFace);
-      append_rollback_word(identity, chart.localSheet);
+    for (const SourceProjectionChart &chart : record.exactCharts) {
+      append_rollback_word(
+          identity, static_cast<std::int64_t>(chart.chart.index()));
+      append_rollback_word(
+          identity, static_cast<std::int64_t>(chart.face.index()));
     }
   }
 
@@ -144,10 +145,11 @@ std::vector<std::uint64_t> exact_rollback_identity(
     }
     append_rollback_word(identity,
                          static_cast<std::int64_t>(cell.sourceCharts.size()));
-    for (const SurfaceCellProjectionChart &chart : cell.sourceCharts) {
-      append_rollback_word(identity, chart.sourceComponent);
-      append_rollback_word(identity, chart.sourceFace);
-      append_rollback_word(identity, chart.localSheet);
+    for (const SourceProjectionChart &chart : cell.sourceCharts) {
+      append_rollback_word(
+          identity, static_cast<std::int64_t>(chart.chart.index()));
+      append_rollback_word(
+          identity, static_cast<std::int64_t>(chart.face.index()));
     }
     const auto appendVector = [&](const std::vector<int> &values) {
       append_rollback_word(identity,
@@ -887,11 +889,13 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
         }
         const SurfaceArrangementHalfedge &edge =
             input.halfedges[static_cast<std::size_t>(halfedgeId)];
-        const SurfaceCellProjectionChart exactChart{
-            edge.sourceComponent, edge.sourceFace, edge.sourceSheet};
-        if (!exactChart.valid() ||
-            !std::binary_search(cell.sourceCharts.begin(),
-                                cell.sourceCharts.end(), exactChart)) {
+        const auto exactChart = std::find_if(
+            cell.sourceCharts.begin(), cell.sourceCharts.end(),
+            [&](const SourceProjectionChart &chart) {
+              return chart.face.index() ==
+                     static_cast<std::size_t>(edge.sourceFace);
+            });
+        if (edge.sourceFace < 0 || exactChart == cell.sourceCharts.end()) {
           result.firstScopeFailure.active = true;
           result.firstScopeFailure.originalCell = cell.id;
           result.firstScopeFailure.replacementCell = cell.id;
@@ -899,29 +903,25 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
           result.firstScopeFailure.twin = edge.twin;
           result.firstScopeFailure.selectedComponent = edge.sourceComponent;
           result.firstScopeFailure.selectedSheet = edge.sourceSheet;
-          for (const SurfaceCellProjectionChart &chart : cell.sourceCharts) {
-            result.firstScopeFailure.availableComponents.push_back(
-                chart.sourceComponent);
-            result.firstScopeFailure.availableSheets.push_back(
-                chart.localSheet);
-          }
+          result.firstScopeFailure.availableComponents.push_back(
+              cell.sourceComponent);
+          result.firstScopeFailure.availableSheets.push_back(
+              cell.sourceSheet);
           result.firstScopeFailure.mutationPhase = "preflight";
           return returnCommittedFailure("MixedCellSourceScope");
         }
       }
-      const SurfaceCellProjectionChart &representative = cell.sourceCharts.front();
-      if (cell.sourceComponent >= 0 &&
-          cell.sourceComponent != representative.sourceComponent) {
+      if (cell.sourceComponent < 0 || cell.sourceSheet < 0) {
         result.firstScopeFailure.active = true;
         result.firstScopeFailure.originalCell = cell.id;
         result.firstScopeFailure.replacementCell = cell.id;
         result.firstScopeFailure.selectedComponent = cell.sourceComponent;
         result.firstScopeFailure.selectedSheet = cell.sourceSheet;
         result.firstScopeFailure.mutationPhase = "preflight";
-        return returnCommittedFailure("MixedCellSourceScope");
+        return returnCommittedFailure("MissingCellSourceScope");
       }
       authoritativeCellScopes[static_cast<std::size_t>(cellIndex)] =
-          {representative.sourceComponent, representative.localSheet};
+          {cell.sourceComponent, cell.sourceSheet};
       continue;
     }
 
@@ -1310,7 +1310,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
        rebuilt.sourceOwnershipRegistry) {
     result.rollbackUndoOwnedBytes +=
         static_cast<std::uint64_t>(record.exactCharts.capacity()) *
-            sizeof(SurfaceCellProjectionChart) +
+            sizeof(SourceProjectionChart) +
         static_cast<std::uint64_t>(
             record.canonicalMembership.values.capacity()) *
             sizeof(std::int64_t);
@@ -1345,7 +1345,7 @@ SurfaceCellSubdivisionResult subdivide_surface_cell_complex_edges(
         static_cast<std::uint64_t>(undo.sideEdgeCounts.capacity()) * sizeof(int) +
         static_cast<std::uint64_t>(undo.sourceFaces.capacity()) * sizeof(int) +
         static_cast<std::uint64_t>(cell.sourceCharts.capacity()) *
-            sizeof(SurfaceCellProjectionChart) +
+            sizeof(SourceProjectionChart) +
         static_cast<std::uint64_t>(
             cell.sourceOwnershipClass.values.capacity()) *
             sizeof(std::int64_t);
