@@ -16,12 +16,33 @@ directional::geometry::SourceProjectionChart test_projection_chart(
     const int fieldChart, const int sourceFace) {
   const auto chart = directional::authority::FieldChartId::from_index(
       fieldChart, static_cast<std::size_t>(std::max(fieldChart + 1, 1)));
-  const auto face = directional::authority::SourceFaceId::from_index(
-      sourceFace, static_cast<std::size_t>(std::max(sourceFace + 1, 1)));
-  if (!chart || !face) {
+  if (!chart || sourceFace < 0) {
     throw std::runtime_error("Invalid test projection chart.");
   }
-  return {chart.value(), face.value()};
+  const std::size_t vertexExtent =
+      static_cast<std::size_t>(3 * sourceFace + 3);
+  std::array<directional::authority::SourceVertexId, 3> vertices{
+      directional::authority::SourceVertexId::from_index(
+          3 * sourceFace, vertexExtent).value(),
+      directional::authority::SourceVertexId::from_index(
+          3 * sourceFace + 1, vertexExtent).value(),
+      directional::authority::SourceVertexId::from_index(
+          3 * sourceFace + 2, vertexExtent).value()};
+  const auto topology =
+      directional::authority::SourceFaceTopologyKey::make(vertices);
+  if (!topology) {
+    throw std::runtime_error("Invalid test source-face topology key.");
+  }
+  return {chart.value(), topology.value()};
+}
+
+auto test_topology_region_id(const int value) {
+  const auto id = directional::authority::TopologyRegionId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) {
+    throw std::runtime_error("Invalid test topology-region ID.");
+  }
+  return id.value();
 }
 
 struct Fixture {
@@ -68,10 +89,12 @@ Fixture make_patch(const std::vector<int> &sideCounts,
   directional::geometry::SurfaceArrangementCell cell;
   cell.id = 0;
   cell.sourceFace = 0;
-  cell.sourceComponent = 2;
-  cell.sourceSheet = 4;
+  cell.sourceTopologyRegion = test_topology_region_id(2);
   cell.sourceFaces.resize(boundaryCount);
   std::iota(cell.sourceFaces.begin(), cell.sourceFaces.end(), 0);
+  for (const int sourceFace : cell.sourceFaces) {
+    cell.sourceCharts.push_back(test_projection_chart(0, sourceFace));
+  }
   cell.sideEdgeCounts = sideCounts;
   cell.sideFamilies.resize(sideCounts.size());
   for (int i = 0; i < static_cast<int>(sideCounts.size()); ++i) {
@@ -94,9 +117,14 @@ Fixture make_patch(const std::vector<int> &sideCounts,
     auto &node = fixture.complex.nodes[static_cast<std::size_t>(i)];
     node.id = i;
     node.sourceFace = i;
+    node.sourceTopologyRegion = test_topology_region_id(2);
+    node.sourceChart = test_projection_chart(0, i);
     node.barycentric << 0.0, 1.0, 0.0;
     directional::geometry::SurfaceArrangementNodeOccurrence previousFace;
     previousFace.sourceFace = (i + boundaryCount - 1) % boundaryCount;
+    previousFace.sourceTopologyRegion = test_topology_region_id(2);
+    previousFace.sourceChart =
+        test_projection_chart(0, previousFace.sourceFace);
     previousFace.barycentric << 0.0, 0.0, 1.0;
     node.occurrences.push_back(previousFace);
     node.hardBarrierCrossing = hardBarrier && i == 0;
@@ -109,8 +137,8 @@ Fixture make_patch(const std::vector<int> &sideCounts,
     edge.cell = 0;
     edge.family = side & 1;
     edge.sourceFace = i;
-    edge.sourceComponent = 2;
-    edge.sourceSheet = 4;
+    edge.sourceTopologyRegion = test_topology_region_id(2);
+    edge.sourceChart = test_projection_chart(0, i);
     edge.railId = directional::tests::test_hard_rail_id(side);
     edge.curveId = 100 + side;
     edge.hardFeature = side == 0;
@@ -276,28 +304,29 @@ Fixture make_two_odd_cells_with_shared_interface() {
   for (int vertex = 0; vertex < 4; ++vertex) {
     auto &node = fixture.complex.nodes[static_cast<std::size_t>(vertex)];
     node.id = vertex;
-    node.sourceComponent = 0;
-    node.sourceSheet = 0;
+    node.sourceTopologyRegion = test_topology_region_id(0);
     if (face0Bary[static_cast<std::size_t>(vertex)].allFinite()) {
       node.sourceFace = 0;
+      node.sourceChart = test_projection_chart(0, 0);
       node.barycentric = face0Bary[static_cast<std::size_t>(vertex)];
       directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
       occurrence.sourceFace = 0;
+      occurrence.sourceTopologyRegion = test_topology_region_id(0);
+      occurrence.sourceChart = test_projection_chart(0, 0);
       occurrence.barycentric = face0Bary[static_cast<std::size_t>(vertex)];
-      occurrence.sourceComponent = 0;
-      occurrence.sourceSheet = 0;
       node.occurrences.push_back(std::move(occurrence));
     }
     if (face1Bary[static_cast<std::size_t>(vertex)].allFinite()) {
       if (node.sourceFace < 0) {
         node.sourceFace = 1;
+        node.sourceChart = test_projection_chart(0, 1);
         node.barycentric = face1Bary[static_cast<std::size_t>(vertex)];
       }
       directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
       occurrence.sourceFace = 1;
+      occurrence.sourceTopologyRegion = test_topology_region_id(0);
+      occurrence.sourceChart = test_projection_chart(0, 1);
       occurrence.barycentric = face1Bary[static_cast<std::size_t>(vertex)];
-      occurrence.sourceComponent = 0;
-      occurrence.sourceSheet = 0;
       node.occurrences.push_back(std::move(occurrence));
     }
   }
@@ -319,16 +348,16 @@ Fixture make_two_odd_cells_with_shared_interface() {
     edge.sourceArc = id / 2;
     edge.family = family;
     edge.strand = id / 2;
-    edge.sourceComponent = 0;
-    edge.sourceSheet = 0;
+    edge.sourceTopologyRegion = test_topology_region_id(0);
+    edge.sourceChart = test_projection_chart(0, sourceFace);
     edge.hardFeature = hardFeature;
     directional::geometry::SurfaceArrangementProvenance provenance;
     provenance.sourceArc = edge.sourceArc;
     provenance.sourceFace = sourceFace;
     provenance.family = family;
     provenance.strand = edge.strand;
-    provenance.sourceComponent = 0;
-    provenance.sourceSheet = 0;
+    provenance.sourceTopologyRegion = test_topology_region_id(0);
+    provenance.sourceChart = test_projection_chart(0, sourceFace);
     edge.provenance.push_back(provenance);
   };
 
@@ -354,8 +383,7 @@ Fixture make_two_odd_cells_with_shared_interface() {
     cell.id = id;
     cell.sourceFace = sourceFace;
     if (sourceFace >= 0) {
-      cell.sourceComponent = 0;
-      cell.sourceSheet = 0;
+      cell.sourceTopologyRegion = test_topology_region_id(0);
       cell.sourceFaces = {sourceFace};
       cell.sourceCharts = {test_projection_chart(0, sourceFace)};
     }
@@ -473,8 +501,7 @@ Fixture make_valid_parallel_route_same_corner_complex() {
   for (int vertex = 0; vertex < 4; ++vertex) {
     auto &node = fixture.complex.nodes[static_cast<std::size_t>(vertex)];
     node.id = vertex;
-    node.sourceComponent = 0;
-    node.sourceSheet = 0;
+    node.sourceTopologyRegion = test_topology_region_id(0);
     for (int face = 0; face < fixture.F.rows(); ++face) {
       for (int corner = 0; corner < 3; ++corner) {
         if (fixture.F(face, corner) != vertex) continue;
@@ -482,9 +509,15 @@ Fixture make_valid_parallel_route_same_corner_complex() {
         barycentric(corner) = 1.0;
         if (node.sourceFace < 0) {
           node.sourceFace = face;
+          node.sourceChart = test_projection_chart(0, face);
           node.barycentric = barycentric;
         }
-        node.occurrences.push_back({face, barycentric});
+        directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
+        occurrence.sourceFace = face;
+        occurrence.barycentric = barycentric;
+        occurrence.sourceTopologyRegion = test_topology_region_id(0);
+        occurrence.sourceChart = test_projection_chart(0, face);
+        node.occurrences.push_back(std::move(occurrence));
       }
     }
   }
@@ -504,8 +537,8 @@ Fixture make_valid_parallel_route_same_corner_complex() {
     edge.sourceFace = 2 * side;
     edge.sourceArc = 100 * (alternateRoute ? 2 : 1) + side;
     edge.strand = edge.sourceArc;
-    edge.sourceComponent = 0;
-    edge.sourceSheet = 0;
+    edge.sourceTopologyRegion = test_topology_region_id(0);
+    edge.sourceChart = test_projection_chart(0, edge.sourceFace);
     edge.railId = directional::tests::test_hard_rail_id(
         (alternateRoute ? 1000 : 0) + side);
     edge.curveId = (alternateRoute ? 2000 : 1000) + side;
@@ -517,8 +550,8 @@ Fixture make_valid_parallel_route_same_corner_complex() {
       provenance.sourceFace = face;
       provenance.family = edge.family;
       provenance.strand = edge.strand;
-      provenance.sourceComponent = 0;
-      provenance.sourceSheet = 0;
+      provenance.sourceTopologyRegion = test_topology_region_id(0);
+      provenance.sourceChart = test_projection_chart(0, face);
       provenance.railId = edge.railId;
       provenance.curveId = edge.curveId;
       provenance.sourceT0 = 0.0;
@@ -561,7 +594,11 @@ Fixture make_valid_parallel_route_same_corner_complex() {
     auto &cell = fixture.complex.cells[static_cast<std::size_t>(id)];
     cell.id = id;
     cell.sourceFace = 0;
+    cell.sourceTopologyRegion = test_topology_region_id(0);
     cell.sourceFaces = allFaces;
+    for (const int sourceFace : allFaces) {
+      cell.sourceCharts.push_back(test_projection_chart(0, sourceFace));
+    }
     cell.halfedges = std::move(halfedges);
     cell.sideFamilies = {0, 1, 0, 1};
     cell.sideEdgeCounts = {1, 1, 1, 1};
@@ -1297,8 +1334,8 @@ TEST(PatchDescriptorMilestoneE,
      AuthoritativeCellScopeOverridesMultiScopeBoundaryDuringSubdivision) {
   Fixture fixture = make_authoritative_patch({1, 1, 1, 1});
   auto &interior = fixture.complex.cells.front();
-  ASSERT_EQ(2, interior.sourceComponent);
-  ASSERT_EQ(4, interior.sourceSheet);
+  ASSERT_TRUE(interior.sourceTopologyRegion.has_value());
+  EXPECT_EQ(*interior.sourceTopologyRegion, test_topology_region_id(2));
   ASSERT_FALSE(interior.halfedges.empty());
 
   const int selectedHalfedge = interior.halfedges.front();
@@ -1306,8 +1343,8 @@ TEST(PatchDescriptorMilestoneE,
       static_cast<std::size_t>(selectedHalfedge)];
   directional::geometry::SurfaceArrangementProvenance alternate;
   alternate.sourceFace = edge.sourceFace;
-  alternate.sourceComponent = 9;
-  alternate.sourceSheet = 11;
+  alternate.sourceTopologyRegion = test_topology_region_id(9);
+  alternate.sourceChart = test_projection_chart(0, edge.sourceFace);
   alternate.sourceArc = edge.sourceArc;
   alternate.railId = edge.railId;
   alternate.curveId = edge.curveId;
@@ -1325,19 +1362,22 @@ TEST(PatchDescriptorMilestoneE,
   ASSERT_LT(static_cast<std::size_t>(interior.id), result.complex.cells.size());
   const auto &replacement =
       result.complex.cells[static_cast<std::size_t>(interior.id)];
-  EXPECT_EQ(2, replacement.sourceComponent);
-  EXPECT_EQ(4, replacement.sourceSheet);
+  ASSERT_TRUE(replacement.sourceTopologyRegion.has_value());
+  EXPECT_EQ(*replacement.sourceTopologyRegion, test_topology_region_id(2));
   for (const int halfedgeId : replacement.halfedges) {
     ASSERT_GE(halfedgeId, 0);
     ASSERT_LT(static_cast<std::size_t>(halfedgeId),
               result.complex.halfedges.size());
     const auto &replacementEdge =
         result.complex.halfedges[static_cast<std::size_t>(halfedgeId)];
-    EXPECT_EQ(2, replacementEdge.sourceComponent);
-    EXPECT_EQ(4, replacementEdge.sourceSheet);
+    ASSERT_TRUE(replacementEdge.sourceTopologyRegion.has_value());
+    ASSERT_TRUE(replacementEdge.sourceChart.has_value());
+    EXPECT_EQ(*replacementEdge.sourceTopologyRegion, test_topology_region_id(2));
     for (const auto &provenance : replacementEdge.provenance) {
-      EXPECT_EQ(2, provenance.sourceComponent);
-      EXPECT_EQ(4, provenance.sourceSheet);
+      ASSERT_TRUE(provenance.sourceTopologyRegion.has_value());
+      ASSERT_TRUE(provenance.sourceChart.has_value());
+      EXPECT_EQ(*provenance.sourceTopologyRegion, test_topology_region_id(2));
+      EXPECT_EQ(*provenance.sourceChart, *replacementEdge.sourceChart);
     }
     for (const int nodeId : {replacementEdge.from, replacementEdge.to}) {
       ASSERT_GE(nodeId, 0);
@@ -1347,8 +1387,9 @@ TEST(PatchDescriptorMilestoneE,
           node.occurrences.begin(), node.occurrences.end(),
           [&](const auto &occurrence) {
             return occurrence.sourceFace == replacementEdge.sourceFace &&
-                   occurrence.sourceComponent == 2 &&
-                   occurrence.sourceSheet == 4;
+                   occurrence.sourceTopologyRegion ==
+                       replacementEdge.sourceTopologyRegion &&
+                   occurrence.sourceChart == replacementEdge.sourceChart;
           });
       EXPECT_TRUE(hasAuthoritativeOccurrence);
     }
@@ -1416,9 +1457,9 @@ TEST(PatchDescriptorMilestoneE,
         std::remove_if(node.occurrences.begin(), node.occurrences.end(),
                        [&](const auto &occurrence) {
                          return occurrence.sourceFace == edge.sourceFace &&
-                                occurrence.sourceComponent ==
-                                    edge.sourceComponent &&
-                                occurrence.sourceSheet == edge.sourceSheet &&
+                                occurrence.sourceTopologyRegion ==
+                                    edge.sourceTopologyRegion &&
+                                occurrence.sourceChart == edge.sourceChart &&
                                 occurrence.sourceArc == edge.sourceArc &&
                                 (badProvenance < 0 ||
                                  occurrence.provenance == badProvenance);
@@ -1433,8 +1474,8 @@ TEST(PatchDescriptorMilestoneE,
     directional::geometry::SurfaceArrangementNodeOccurrence occurrence;
     occurrence.sourceFace = edge.sourceFace;
     occurrence.barycentric = barycentric;
-    occurrence.sourceComponent = edge.sourceComponent;
-    occurrence.sourceSheet = edge.sourceSheet;
+    occurrence.sourceTopologyRegion = edge.sourceTopologyRegion;
+    occurrence.sourceChart = edge.sourceChart;
     occurrence.sourceArc = edge.sourceArc;
     occurrence.provenance = edge.provenance.empty()
                                 ? -1
