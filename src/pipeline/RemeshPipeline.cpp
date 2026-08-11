@@ -2052,19 +2052,20 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return identity;
   };
 
-  std::map<int, const geometry::SurfaceTopologyRegion *> topologyRegionById;
-  std::vector<int> topologyRegionByFace(
-      static_cast<std::size_t>(sourceFaces.rows()), -1);
-  for (const auto &region : phaseFront.sourceTopologyRegions.regions) {
-    if (region.id < 0 || region.sourceComponent < 0 ||
-        region.sourceFaces.empty() ||
+  std::map<authority::TopologyRegionId,
+           const geometry::SurfaceTopologyRegion *> topologyRegionById;
+  std::vector<std::optional<authority::TopologyRegionId>> topologyRegionByFace(
+      static_cast<std::size_t>(sourceFaces.rows()));
+  for (const auto &region : phaseFront.source_topology_regions().regions) {
+    if (region.sourceFaces.empty() ||
         !topologyRegionById.emplace(region.id, &region).second) {
       result.failure = "InvalidAuthoritativeTopologyRegion";
       return result;
     }
-    for (const int face : region.sourceFaces) {
+    for (const authority::SourceFaceId faceId : region.sourceFaces) {
+      const auto face = static_cast<int>(faceId.index());
       if (face < 0 || face >= sourceFaces.rows() ||
-          topologyRegionByFace[static_cast<std::size_t>(face)] >= 0) {
+          topologyRegionByFace[static_cast<std::size_t>(face)].has_value()) {
         result.failure = "InvalidAuthoritativeTopologyRegion";
         return result;
       }
@@ -2075,10 +2076,20 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     result.failure = "MissingAuthoritativeTopologyRegions";
     return result;
   }
-  if (!phaseFront.sourceTopologyRegions.regionByFace.empty() &&
-      phaseFront.sourceTopologyRegions.regionByFace != topologyRegionByFace) {
-    result.failure = "AuthoritativeTopologyRegionMapMismatch";
-    return result;
+  if (!phaseFront.source_topology_regions().regionByFace.empty()) {
+    if (phaseFront.source_topology_regions().regionByFace.size() !=
+        topologyRegionByFace.size()) {
+      result.failure = "AuthoritativeTopologyRegionMapMismatch";
+      return result;
+    }
+    for (std::size_t face = 0; face < topologyRegionByFace.size(); ++face) {
+      if (!topologyRegionByFace[face].has_value() ||
+          phaseFront.source_topology_regions().regionByFace[face] !=
+              topologyRegionByFace[face].value()) {
+        result.failure = "AuthoritativeTopologyRegionMapMismatch";
+        return result;
+      }
+    }
   }
 
   const auto exactSourceIncidence =
@@ -2086,22 +2097,36 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   const auto sourceEdgeIndices =
       geometry::surface_cell_tracing_detail::edge_matching_indices(
           exactSourceIncidence);
-  const auto canonical_source_face = [&](const int face) {
-    std::array<int, 3> topology{
-        sourceFaces(face, 0), sourceFaces(face, 1), sourceFaces(face, 2)};
-    std::sort(topology.begin(), topology.end());
-    return topology;
-  };
-  const auto normalized_quarter_turn = [](const int rotation) {
-    const int remainder = rotation % 4;
-    return remainder < 0 ? remainder + 4 : remainder;
+  const auto source_edge_leaf_key =
+      [](const authority::SourceEdgeTopologyKey &topology) {
+        return geometry::surface_cell_tracing_detail::edge_key(
+            static_cast<int>(topology.first().index()),
+            static_cast<int>(topology.second().index()));
+      };
+  const auto canonical_source_face = [&](const int face)
+      -> std::optional<authority::SourceFaceTopologyKey> {
+    std::array<authority::SourceVertexId, 3> vertices = {
+        authority::SourceVertexId::from_index(sourceFaces(face, 0),
+                                              sourceVertices.rows()).value(),
+        authority::SourceVertexId::from_index(sourceFaces(face, 1),
+                                              sourceVertices.rows()).value(),
+        authority::SourceVertexId::from_index(sourceFaces(face, 2),
+                                              sourceVertices.rows()).value()};
+    const auto topology = authority::SourceFaceTopologyKey::make(vertices);
+    if (!topology) return std::nullopt;
+    return topology.value();
   };
 
-  using IsolationSeamKey = std::pair<int, std::uint64_t>;
+  using IsolationSeamKey =
+      std::pair<authority::TopologyRegionId,
+                authority::SourceEdgeTopologyKey>;
   std::map<IsolationSeamKey,
            const geometry::SurfaceIsolationSeamTransportCertificate *>
       isolationCertificateBySeam;
-  std::map<int, std::map<int, std::set<int>>> isolationSheetGraphByRegion;
+  std::map<authority::TopologyRegionId,
+           std::map<authority::IsolationSheetId,
+                    std::set<authority::IsolationSheetId>>>
+      isolationSheetGraphByRegion;
   std::size_t requiredIsolationSeams = 0U;
   for (const auto &[regionId, region] : topologyRegionById) {
     if (region->isolationSheets.empty() ||
@@ -2119,98 +2144,85 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       return result;
     }
     auto &graph = isolationSheetGraphByRegion[regionId];
-    for (const int sheet : region->isolationSheets) {
-      if (sheet < 0) {
-        result.failure = "InvalidAuthoritativeTopologyRegionIsolationAuthority";
-        return result;
-      }
+    for (const authority::IsolationSheetId sheet : region->isolationSheets) {
       graph[sheet];
     }
     requiredIsolationSeams += region->internalIsolationSeamTopology.size();
   }
 
   for (const auto &certificate :
-       phaseFront.isolationSeamTransportCertificates) {
-    const auto region =
-        topologyRegionById.find(certificate.sourceTopologyRegion);
-    const IsolationSeamKey key{certificate.sourceTopologyRegion,
-                               certificate.sourceEdgeTopology};
-    const auto incidence =
-        exactSourceIncidence.find(certificate.sourceEdgeTopology);
-    const auto sourceEdge =
-        sourceEdgeIndices.find(certificate.sourceEdgeTopology);
+       phaseFront.isolation_seam_transport_certificates()) {
+    const auto region = topologyRegionById.find(certificate.region);
+    const IsolationSeamKey key{certificate.region, certificate.seam};
+    const std::uint64_t seamKey = source_edge_leaf_key(certificate.seam);
+    const auto incidence = exactSourceIncidence.find(seamKey);
+    const auto sourceEdge = sourceEdgeIndices.find(seamKey);
     if (region == topologyRegionById.end() ||
-        certificate.sourceComponent != region->second->sourceComponent ||
         !std::binary_search(
             region->second->internalIsolationSeamTopology.begin(),
             region->second->internalIsolationSeamTopology.end(),
-            certificate.sourceEdgeTopology) ||
+            certificate.seam) ||
         !isolationCertificateBySeam.emplace(key, &certificate).second ||
         incidence == exactSourceIncidence.end() || incidence->second[0] < 0 ||
         incidence->second[1] < 0 ||
         incidence->second[0] == incidence->second[1] ||
         sourceEdge == sourceEdgeIndices.end() ||
-        certificate.sourceEdgeIndex != sourceEdge->second ||
-        certificate.firstIsolationSheet < 0 ||
-        certificate.secondIsolationSheet < 0 ||
-        certificate.firstIsolationSheet == certificate.secondIsolationSheet ||
-        normalized_quarter_turn(certificate.forwardQuarterTurn) !=
-            certificate.forwardQuarterTurn ||
-        normalized_quarter_turn(certificate.reverseQuarterTurn) !=
-            certificate.reverseQuarterTurn ||
-        normalized_quarter_turn(certificate.forwardQuarterTurn +
-                                certificate.reverseQuarterTurn) != 0 ||
-        certificate.structuralHash !=
-            geometry::surface_cell_tracing_detail::
-                isolation_seam_transport_certificate_hash(certificate)) {
+        certificate.transition.index() !=
+            static_cast<std::size_t>(sourceEdge->second) ||
+        certificate.firstSheet == certificate.secondSheet ||
+        compose(certificate.forward, certificate.reverse) !=
+            authority::QuarterTurn{}) {
       result.failure = "InvalidAuthoritativeIsolationSeamCertificate";
       return result;
     }
 
     int firstFace = incidence->second[0];
     int secondFace = incidence->second[1];
-    std::array<int, 3> firstTopology = canonical_source_face(firstFace);
-    std::array<int, 3> secondTopology = canonical_source_face(secondFace);
-    if (secondTopology < firstTopology) {
+    auto firstTopology = canonical_source_face(firstFace);
+    auto secondTopology = canonical_source_face(secondFace);
+    if (!firstTopology.has_value() || !secondTopology.has_value()) {
+      result.failure = "InvalidAuthoritativeIsolationSeamCertificate";
+      return result;
+    }
+    if (secondTopology.value() < firstTopology.value()) {
       std::swap(firstFace, secondFace);
       std::swap(firstTopology, secondTopology);
     }
-    if (firstTopology != certificate.firstSourceFaceTopology ||
-        secondTopology != certificate.secondSourceFaceTopology ||
-        topologyRegionByFace[static_cast<std::size_t>(firstFace)] !=
-            certificate.sourceTopologyRegion ||
-        topologyRegionByFace[static_cast<std::size_t>(secondFace)] !=
-            certificate.sourceTopologyRegion ||
+    if (firstTopology.value() != certificate.firstFace ||
+        secondTopology.value() != certificate.secondFace ||
+        !topologyRegionByFace[static_cast<std::size_t>(firstFace)].has_value() ||
+        !topologyRegionByFace[static_cast<std::size_t>(secondFace)].has_value() ||
+        topologyRegionByFace[static_cast<std::size_t>(firstFace)].value() !=
+            certificate.region ||
+        topologyRegionByFace[static_cast<std::size_t>(secondFace)].value() !=
+            certificate.region ||
         sourceFaceComponents[static_cast<std::size_t>(firstFace)] !=
-            certificate.sourceComponent ||
+            static_cast<int>(region->second->sourceComponent.index()) ||
         sourceFaceComponents[static_cast<std::size_t>(secondFace)] !=
-            certificate.sourceComponent ||
+            static_cast<int>(region->second->sourceComponent.index()) ||
         sourceFaceSheets[static_cast<std::size_t>(firstFace)] !=
-            certificate.firstIsolationSheet ||
+            static_cast<int>(certificate.firstSheet.index()) ||
         sourceFaceSheets[static_cast<std::size_t>(secondFace)] !=
-            certificate.secondIsolationSheet ||
+            static_cast<int>(certificate.secondSheet.index()) ||
         !std::binary_search(region->second->isolationSheets.begin(),
                             region->second->isolationSheets.end(),
-                            certificate.firstIsolationSheet) ||
+                            certificate.firstSheet) ||
         !std::binary_search(region->second->isolationSheets.begin(),
                             region->second->isolationSheets.end(),
-                            certificate.secondIsolationSheet)) {
+                            certificate.secondSheet)) {
       result.failure = "IsolationSeamCertificateSourceAuthorityMismatch";
       return result;
     }
-    auto &graph =
-        isolationSheetGraphByRegion[certificate.sourceTopologyRegion];
-    graph[certificate.firstIsolationSheet].insert(
-        certificate.secondIsolationSheet);
-    graph[certificate.secondIsolationSheet].insert(
-        certificate.firstIsolationSheet);
+    auto &graph = isolationSheetGraphByRegion[certificate.region];
+    graph[certificate.firstSheet].insert(certificate.secondSheet);
+    graph[certificate.secondSheet].insert(certificate.firstSheet);
   }
   if (isolationCertificateBySeam.size() != requiredIsolationSeams) {
     result.failure = "IsolationSeamCertificateBijectionMismatch";
     return result;
   }
   for (const auto &[regionId, region] : topologyRegionById) {
-    for (const std::uint64_t seam :
+    for (const authority::SourceEdgeTopologyKey &seam :
          region->internalIsolationSeamTopology) {
       if (isolationCertificateBySeam.count({regionId, seam}) != 1U) {
         result.failure = "IsolationSeamCertificateBijectionMismatch";
