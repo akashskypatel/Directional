@@ -1117,8 +1117,9 @@ std::pair<int, int> consistent_component_sheet(
   if (constraints != nullptr) {
     const validation::source_authoritative_detail::SourcePointLabelSupport
         labelSupport(&constraints->sourceFaces,
-                     &constraints->sourceFaceComponent,
-                     &constraints->sourceFaceSheet,
+                     constraints->sourceAuthority.has_value()
+                         ? &*constraints->sourceAuthority
+                         : nullptr,
                      &constraints->sourceHardFeatureEdges);
     if (labelSupport.available()) {
       std::vector<const SurfacePoint *> points;
@@ -1219,8 +1220,9 @@ SurfacePoint quad_reference_surface_point(
   }
   const validation::source_authoritative_detail::SourcePointLabelSupport
       labelSupport(&constraints.sourceFaces,
-                   &constraints.sourceFaceComponent,
-                   &constraints.sourceFaceSheet,
+                   constraints.sourceAuthority.has_value()
+                       ? &*constraints.sourceAuthority
+                       : nullptr,
                    &constraints.sourceHardFeatureEdges);
   std::vector<const SurfacePoint *> points;
   points.reserve(4);
@@ -2553,8 +2555,9 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
   SourceProjectionCache sourceProjection(constraints);
   const validation::source_authoritative_detail::SourcePointLabelSupport
       sourceLabelSupport(&constraints.sourceFaces,
-                         &constraints.sourceFaceComponent,
-                         &constraints.sourceFaceSheet,
+                         constraints.sourceAuthority.has_value()
+                             ? &*constraints.sourceAuthority
+                             : nullptr,
                          &constraints.sourceHardFeatureEdges);
 
   // Sample the complete output faces, not only their vertices. Bilinear 3x3

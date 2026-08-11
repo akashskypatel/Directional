@@ -31,6 +31,7 @@
 #include <directional/meshing/PatchRegion.h>
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/geometry/SurfacePointSupport.h>
+#include <directional/geometry/SourceTopologyRegions.h>
 #include <directional/geometry/SurfaceCellOwnership.h>
 #include <directional/validation/MeshValidator.h>
 

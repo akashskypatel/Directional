@@ -1330,8 +1330,8 @@ std::uint64_t hash_flow_rep_selection_input_components(
     hash_combine_i64(seed, arc.endIntrinsicEndpointKeyValid ? 1 : 0);
     hash_combine_u64(seed, arc.startIntrinsicEndpointKey);
     hash_combine_u64(seed, arc.endIntrinsicEndpointKey);
-    hash_combine_i64(seed, arc.sourceComponent);
-    hash_combine_i64(seed, arc.sourceSheet);
+    hash_optional_semantic_id(seed, arc.sourceTopologyRegion);
+    hash_optional_semantic_id(seed, arc.sourceIsolationSheet);
     hash_combine_i64(seed, arc.family);
     hash_combine_i64(seed, arc.featureClass);
     hash_combine_i64(seed, arc.mandatoryRail ? 1 : 0);
@@ -1367,8 +1367,8 @@ std::uint64_t hash_flow_rep_selection_input_components(
     hash_row_vector(seed, sample.position);
     hash_combine_i64(seed, sample.sourceFace);
     hash_row_vector(seed, sample.barycentric);
-    hash_combine_i64(seed, sample.sourceComponent);
-    hash_combine_i64(seed, sample.sourceSheet);
+    hash_optional_semantic_id(seed, sample.sourceTopologyRegion);
+    hash_optional_semantic_id(seed, sample.sourceIsolationSheet);
     hash_combine_double(seed, sample.targetSize);
     hash_combine_i64(seed, sample.sourceArcId);
   }
@@ -2386,7 +2386,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                        owner.lattice[static_cast<std::size_t>(
                            (edge.filledSide + 1) % 4)]) ||
         !isolation_sheets_connected_typed(
-            edge.sourceTopologyRegion, edgeRegion->second->isolationSheets)) {
+            edge.sourceTopologyRegion, edgeRegion->second->isolation_sheets())) {
       result.failure = "InvalidAuthoritativePhaseFrontSideAuthority";
       return result;
     }
@@ -2502,7 +2502,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const auto region = topologyRegionById.find(relation.sourceTopologyRegion);
     if (region == topologyRegionById.end() ||
         !isolation_sheets_connected_typed(
-            relation.sourceTopologyRegion, region->second->isolationSheets)) {
+            relation.sourceTopologyRegion, region->second->isolation_sheets())) {
       result.failure = "InvalidPeriodicRelationIsolationAuthority";
       return result;
     }
@@ -4336,8 +4336,10 @@ surface_arrangement_arcs_from_flow_rep(
     arrangementArc.provenance = arc.id;
     arrangementArc.railId = arc.railId;
     arrangementArc.curveId = arc.curveId;
-    arrangementArc.sourceComponent = arc.sourceComponent;
-    arrangementArc.sourceSheet = arc.sourceSheet;
+    arrangementArc.sourceTopologyRegion = arc.sourceTopologyRegion;
+    // Numeric component/sheet projections are derived later from sourceAuthority.
+    arrangementArc.sourceComponent = -1;
+    arrangementArc.sourceSheet = -1;
     arrangementArc.proposalId = arc.proposalId;
     arrangementArc.proposalSeedId = arc.proposalSeedId;
     arrangementArc.proposalSide = arc.proposalSide;
@@ -7153,10 +7155,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       }
       result.diagnostics.surfaceCellCompletionOwnershipPatchFaces =
           ownershipRejection.patchSourceFaces;
-      result.diagnostics.surfaceCellCompletionOwnershipComponent =
-          ownershipRejection.sourceComponent;
-      result.diagnostics.surfaceCellCompletionOwnershipSheet =
-          ownershipRejection.sourceSheet;
+      // Raw component/sheet diagnostics are representation leaves only. The
+      // ownership rejection now carries typed source support instead.
+      result.diagnostics.surfaceCellCompletionOwnershipComponent = -1;
+      result.diagnostics.surfaceCellCompletionOwnershipSheet = -1;
     }
     if (retainForExecution) {
       result.surfaceCellContext.simplifiedComplex = simplifiedComplexForHash;
@@ -7533,8 +7535,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       hash_source_support(completionHash, hashRejection.sourceSupport);
       hash_vector(completionHash, hashRejection.candidateSupportedFaces);
       hash_vector(completionHash, hashRejection.patchSourceFaces);
-      hash_combine_i64(completionHash, hashRejection.sourceComponent);
-      hash_combine_i64(completionHash, hashRejection.sourceSheet);
     }
     const SurfaceCellObjectIdentity completionIdentity = make_identity(
         "completion", completionHash, completedQuadCount);

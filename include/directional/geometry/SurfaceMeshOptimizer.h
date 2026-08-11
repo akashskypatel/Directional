@@ -628,8 +628,9 @@ struct OutputProjectionCache {
     const validation::source_authoritative_detail::SourcePointLabelSupport
         labelSupport(
             constraints != nullptr ? &constraints->sourceFaces : nullptr,
-            constraints != nullptr ? &constraints->sourceFaceComponent : nullptr,
-            constraints != nullptr ? &constraints->sourceFaceSheet : nullptr,
+            constraints != nullptr && constraints->sourceAuthority.has_value()
+                ? &*constraints->sourceAuthority
+                : nullptr,
             constraints != nullptr ? &constraints->sourceHardFeatureEdges
                                    : nullptr);
     for (int face = 0; face < quads.rows(); ++face) {
@@ -653,11 +654,14 @@ struct OutputProjectionCache {
             quad_chart_authority(quads, face, *constraints,
                                  provenance.size());
         if (authority.valid) {
-          labels = labelSupport.chart_labels(
+          const auto typedLabels = labelSupport.chart_labels(
               labelSupport.compatible_chart_faces(points,
                                                   authority.vertices,
                                                   &provenance,
                                                   &constraints->vertexChartAuthority));
+          for (const auto &[typedComponent, typedSheet] : typedLabels) {
+            labels.insert({typedComponent, typedSheet});
+          }
         }
       }
       if (labels.empty() && component >= 0 && sheet >= 0) {
