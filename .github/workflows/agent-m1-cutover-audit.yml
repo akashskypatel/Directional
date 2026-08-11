@@ -68,14 +68,14 @@ jobs:
           )
           for p in "${patterns[@]}"; do
             echo "### PATTERN: $p"
-            rg -n --hidden --glob '!build/**' --glob '!.git/**' --glob '!benchmark-results/**' -- "$p" include src tests CMakeLists.txt cmake || true
+            git grep -n -F -- "$p" -- include src tests CMakeLists.txt cmake || true
           done
           echo "--- related authority/product definitions ---"
-          rg -n --hidden --glob '!.git/**' -- \
+          git grep -n -E -- \
             'SurfaceTopologyRegion|SourceTopologyRegions|SurfaceIsolationSeamTransportCertificate|SurfacePeriodicHolonomy|SurfacePhaseFrontResult|SurfacePhaseFrontCell|SurfaceFrontEdge|SourceChartId|SurfacePointSourceSupport|LegacyAuthorityAdapters' \
-            include/directional src/authority src/geometry src/pipeline src/validation tests || true
+            -- include/directional src/authority src/geometry src/pipeline src/validation tests || true
           echo "--- domain-error terminology ---"
-          rg -n --hidden --glob '!.git/**' -- 'NegativeLegacyValue|OutOfRangeLegacyValue|legacyValue' include src tests || true
+          git grep -n -E -- 'NegativeLegacyValue|OutOfRangeLegacyValue|legacyValue' -- include src tests || true
           echo "M1 source audit end: $(date -u +%FT%TZ)"
 
       - name: Upload persistent activity log
