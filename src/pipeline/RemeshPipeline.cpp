@@ -2167,12 +2167,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
     if (firstTopology.value() != certificate.firstFace ||
         secondTopology.value() != certificate.secondFace ||
-        !topologyRegionByFace[static_cast<std::size_t>(firstFace)].has_value() ||
-        !topologyRegionByFace[static_cast<std::size_t>(secondFace)].has_value() ||
-        topologyRegionByFace[static_cast<std::size_t>(firstFace)].value() !=
-            certificate.region ||
-        topologyRegionByFace[static_cast<std::size_t>(secondFace)].value() !=
-            certificate.region ||
+        topologyRegionByFace[static_cast<std::size_t>(firstFace)] != certificate.region ||
+        topologyRegionByFace[static_cast<std::size_t>(secondFace)] != certificate.region ||
         sourceFaceComponents[static_cast<std::size_t>(firstFace)] !=
             static_cast<int>(region->second->sourceComponent.index()) ||
         sourceFaceComponents[static_cast<std::size_t>(secondFace)] !=
@@ -6150,11 +6146,12 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             return candidate.id == relation.sourceTopologyRegion;
           });
       if (region == traceNetwork.phaseFront.sourceTopologyRegions.regions.end()) {
-        result.status = RemeshStatus::NotProductionReady;
-        result.diagnostics.notReadyStage = "tracing";
-        result.diagnostics.notReadyReason =
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "tracing/phase-front";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
             "InvalidAuthoritativePeriodicTopologyRegion";
-        return result;
+        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                                  "tracing");
       }
       SurfaceCellPeriodicHolonomyDiagnostics diagnostic;
       diagnostic.sourceComponent =
