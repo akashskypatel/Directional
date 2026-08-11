@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m1-ra-wip-a0-retry1.txt
+      - .agents/connector-triggers/m1-ra-wip-a0-retry2.txt
 
 permissions:
   contents: write
@@ -52,14 +52,12 @@ jobs:
 
           PATCH="$RUNNER_TEMP/m1-ra-wip-a0.patch"
           cat \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0.part.00 \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0.part.01 \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0.part.02 \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0.part.03 \
-            .agents/Directional/turn-payloads/m1-ra-wip-a0.part.04 \
+            .agents/Directional/turn-payloads/m1-ra-wip-a0-header.patch \
+            .agents/Directional/turn-payloads/m1-ra-wip-a0-tracing-h.patch \
+            .agents/Directional/turn-payloads/m1-ra-wip-a0-tracing-cpp.patch \
             > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "017e2661a17fd3d2294cd2e8c33a01971b93dc8b1bf0cf544efc263ad1d14592"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "07d8c087373bb8f9181ce1c946a32c2122875b27b7e810854ec595de2ec44d43"
           if grep -E '^diff --git a/\.github/workflows/' "$PATCH"; then
             echo "workflow path found in patch" >&2
             exit 1
