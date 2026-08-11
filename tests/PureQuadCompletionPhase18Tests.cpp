@@ -1,4 +1,6 @@
 #include <directional/geometry/PureQuadCompletion.h>
+#include <directional/geometry/SourceChartTransitions.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
 #include <cmath>
@@ -11,6 +13,64 @@
 #include "TestAuthorityIds.h"
 
 namespace {
+
+directional::geometry::SourceTopologyRegions test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  return std::move(*authority);
+}
+
+auto test_topology_region_id(const int value) {
+  const auto id = directional::authority::TopologyRegionId::from_index(
+      value, static_cast<std::size_t>(std::max(value + 1, 1)));
+  if (!id) {
+    throw std::runtime_error("Invalid test topology-region ID.");
+  }
+  return id.value();
+}
+
+directional::geometry::SourceProjectionChart test_source_chart(
+    const Eigen::MatrixXi &faces,
+    const directional::geometry::SourceTopologyRegions &authority,
+    const int sourceFace) {
+  directional::geometry::SourceChartTransitionGraph graph(&faces, &authority,
+                                                           nullptr);
+  const auto chart = graph.chart(sourceFace);
+  if (!chart.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source chart.");
+  }
+  return chart.value();
+}
+
+void assign_patch_boundary_authority(
+    directional::geometry::PureQuadPatch &patch, const Eigen::MatrixXi &faces,
+    const directional::geometry::SourceTopologyRegions &authority,
+    const std::vector<int> &sourceFaces) {
+  if (sourceFaces.size() != patch.boundaryVertices.size()) {
+    throw std::runtime_error("Test patch source-scope size mismatch.");
+  }
+  patch.boundaryTopologyRegions.clear();
+  patch.boundaryCharts.clear();
+  for (const int sourceFace : sourceFaces) {
+    const auto row = directional::authority::SourceFaceId::from_index(
+        sourceFace, authority.face_count());
+    if (!row) {
+      throw std::runtime_error("Invalid test patch source face.");
+    }
+    patch.boundaryTopologyRegions.push_back(
+        authority.region_for_row(row.value()));
+    patch.boundaryCharts.push_back(
+        test_source_chart(faces, authority, sourceFace));
+  }
+}
 
 directional::geometry::PureQuadPatch patch(std::vector<int> sides) {
   directional::geometry::PureQuadPatch p;
@@ -89,6 +149,15 @@ CompletionFixture generated_plane_patch() {
             fixture.vertices, fixture.faces,
             boundary[static_cast<std::size_t>(index)]));
   }
+  const auto authority =
+      test_source_authority(fixture.faces, {0, 0, 1}, {0, 0, 1});
+  std::vector<int> boundaryFaces;
+  boundaryFaces.reserve(fixture.patch.boundaryProvenance.size());
+  for (const auto &point : fixture.patch.boundaryProvenance) {
+    boundaryFaces.push_back(point.face);
+  }
+  assign_patch_boundary_authority(fixture.patch, fixture.faces, authority,
+                                  boundaryFaces);
   return fixture;
 }
 
@@ -96,8 +165,11 @@ void assign_distinct_domain_identity(
     directional::geometry::PureQuadMesh &mesh, const int token) {
   auto &identity = mesh.domainIdentity;
   identity.valid = true;
-  identity.sourceComponent = 3;
-  identity.sourceSheet = 5;
+  identity.sourceTopologyRegion = test_topology_region_id(3);
+  identity.sourceOwnershipClass.valid = true;
+  identity.sourceOwnershipClass.values = {401, 3};
+  identity.sourceChartMap.valid = true;
+  identity.sourceChartMap.values = {503, 5};
   identity.boundaryNodeCount = 4;
   identity.boundaryHalfedgeCount = 4;
   identity.sourceSupportCount = 2;
@@ -114,8 +186,11 @@ void assign_same_support_distinct_boundary_identity(
     directional::geometry::PureQuadMesh &mesh, const int boundaryToken) {
   auto &identity = mesh.domainIdentity;
   identity.valid = true;
-  identity.sourceComponent = 3;
-  identity.sourceSheet = 5;
+  identity.sourceTopologyRegion = test_topology_region_id(3);
+  identity.sourceOwnershipClass.valid = true;
+  identity.sourceOwnershipClass.values = {401, 3};
+  identity.sourceChartMap.valid = true;
+  identity.sourceChartMap.values = {503, 5};
   identity.boundaryNodeCount = 4;
   identity.boundaryHalfedgeCount = 4;
   identity.sourceSupportCount = 2;
@@ -149,6 +224,9 @@ std::vector<directional::geometry::PureQuadMesh> completed_cylinder_patches(
   }
 
   std::vector<directional::geometry::PureQuadMesh> patches;
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
   for (int segment = 0; segment < segments; ++segment) {
     const int next = (segment + 1) % segments;
     directional::geometry::PureQuadPatch cylinderPatch;
@@ -162,10 +240,18 @@ std::vector<directional::geometry::PureQuadMesh> completed_cylinder_patches(
           directional::geometry::project_to_surface(
               vertices, faces, vertices.row(vertex).transpose()));
     }
+    std::vector<int> boundaryFaces;
+    boundaryFaces.reserve(cylinderPatch.boundaryProvenance.size());
+    for (const auto &point : cylinderPatch.boundaryProvenance) {
+      boundaryFaces.push_back(point.face);
+    }
+    assign_patch_boundary_authority(cylinderPatch, faces, sourceAuthority,
+                                    boundaryFaces);
     directional::geometry::PureQuadCompletionOptions options;
     options.sourcePatch = segment;
     options.sourceVertices = &vertices;
     options.sourceFaces = &faces;
+    options.sourceAuthority = &sourceAuthority;
     const auto completion =
         directional::geometry::complete_pure_quad_patch(cylinderPatch, options);
     if (!completion.success) {
@@ -190,8 +276,6 @@ CompletionFixture source_support_alias_patch() {
   fixture.patch.turns = {1, 1, 1, 1};
   fixture.patch.sourceFaces = {0};
   fixture.patch.boundaryVertices = {10, 11, 12, 13};
-  fixture.patch.boundaryComponents.assign(4, 0);
-  fixture.patch.boundarySheets.assign(4, 0);
 
   directional::geometry::SurfacePoint vertexAlias;
   vertexAlias.face = 1;
@@ -228,6 +312,10 @@ CompletionFixture source_support_alias_patch() {
 
   fixture.patch.boundaryProvenance = {
       vertexAlias, faceZeroVertexOne, faceZeroVertexTwo, edgeAlias};
+  const auto authority =
+      test_source_authority(fixture.faces, {0, 0}, {0, 1});
+  assign_patch_boundary_authority(fixture.patch, fixture.faces, authority,
+                                  {0, 0, 0, 0});
   return fixture;
 }
 
@@ -967,6 +1055,9 @@ TEST(PureQuadCompletionPhase18,
   options.sourcePatch = 17;
   options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(
+      fixture.faces, {0, 0, 1}, {0, 0, 1});
+  options.sourceAuthority = &sourceAuthority;
 
   const auto completion = directional::geometry::complete_pure_quad_patch(
       fixture.patch, options);
@@ -1000,6 +1091,9 @@ TEST(PureQuadCompletionPhase18,
   options.sourcePatch = 0;
   options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(
+      fixture.faces, {0, 0, 1}, {0, 0, 1});
+  options.sourceAuthority = &sourceAuthority;
   const auto completion = directional::geometry::complete_pure_quad_patch(
       fixture.patch, options);
   ASSERT_TRUE(completion.success);
@@ -1067,7 +1161,13 @@ TEST(SurfaceCellSourceSupportAndChartAuthority,
       std::get_if<directional::authority::SourceFaceInteriorSupport>(
           &faceSupport.identity.value());
   ASSERT_NE(nullptr, face);
-  EXPECT_EQ(0U, face->face.index());
+  const auto sourceRow = directional::authority::SourceFaceId::from_index(
+      0, static_cast<std::size_t>(fixture.faces.rows()));
+  ASSERT_TRUE(sourceRow.has_value());
+  const auto sourceAuthority =
+      test_source_authority(fixture.faces, {0, 0}, {0, 1});
+  EXPECT_EQ(sourceAuthority.face_authority(sourceRow.value()).topology,
+            face->face);
   EXPECT_NE(vertexSupport.identity, edgeSupport.identity);
   EXPECT_NE(vertexSupport.identity, faceSupport.identity);
   EXPECT_NE(edgeSupport.identity, faceSupport.identity);
@@ -1090,8 +1190,9 @@ TEST(PureQuadCompletionPhase18,
   options.sourcePatch = 27;
   options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  const auto sourceAuthority =
+      test_source_authority(fixture.faces, components, sheets);
+  options.sourceAuthority = &sourceAuthority;
 
   const auto completion = directional::geometry::complete_pure_quad_patch(
       fixture.patch, options);
@@ -1118,8 +1219,9 @@ TEST(PureQuadCompletionPhase18,
   options.sourcePatch = 31;
   options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  const auto sourceAuthority =
+      test_source_authority(fixture.faces, components, sheets);
+  options.sourceAuthority = &sourceAuthority;
 
   const auto completion = directional::geometry::complete_pure_quad_patch(
       fixture.patch, options);
@@ -1142,6 +1244,9 @@ TEST(PureQuadCompletionPhase18,
   options.sourcePatch = 36;
   options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(
+      fixture.faces, {0, 0, 1}, {0, 0, 1});
+  options.sourceAuthority = &sourceAuthority;
   const auto completion = directional::geometry::complete_pure_quad_patch(
       fixture.patch, options);
   ASSERT_TRUE(completion.success) << completion.failure;
@@ -1165,7 +1270,7 @@ TEST(PureQuadCompletionPhase18,
     EXPECT_TRUE(directional::geometry::pure_quad_detail::
                     validate_completion_domain_ownership(
                         fixture.patch, allowedMesh, 0, &resolver,
-                        &fixture.faces, nullptr, nullptr, failure, &rejection))
+                        &fixture.faces, nullptr, failure, &rejection))
         << "allowed face " << allowedFace << ": " << failure;
     EXPECT_FALSE(rejection.active);
   }
@@ -1178,6 +1283,9 @@ TEST(PureQuadCompletionPhase18,
   options.sourcePatch = 37;
   options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
+  const auto sourceAuthority = test_source_authority(
+      fixture.faces, {0, 0, 1}, {0, 0, 1});
+  options.sourceAuthority = &sourceAuthority;
   const auto completion = directional::geometry::complete_pure_quad_patch(
       fixture.patch, options);
   ASSERT_TRUE(completion.success) << completion.failure;
@@ -1205,7 +1313,7 @@ TEST(PureQuadCompletionPhase18,
   EXPECT_FALSE(directional::geometry::pure_quad_detail::
                    validate_completion_domain_ownership(
                        fixture.patch, escapedMesh, 0, &resolver,
-                       &fixture.faces, nullptr, nullptr, failure, &rejection));
+                       &fixture.faces, nullptr, failure, &rejection));
   EXPECT_TRUE(failure.starts_with(
       "CompletionOwnershipSourceSupportEscape:"));
   EXPECT_TRUE(rejection.active);
@@ -1215,15 +1323,16 @@ TEST(PureQuadCompletionPhase18,
 TEST(PureQuadCompletionPhase18,
      CompletionRejectsComponentSheetMismatchAtSharedSourceEntity) {
   CompletionFixture fixture = source_support_alias_patch();
-  fixture.patch.boundarySheets[0] = 7;
+  fixture.patch.boundaryTopologyRegions[0] = test_topology_region_id(7);
   const std::vector<int> components{0, 0};
   const std::vector<int> sheets{0, 1};
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 43;
   options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  const auto sourceAuthority =
+      test_source_authority(fixture.faces, components, sheets);
+  options.sourceAuthority = &sourceAuthority;
 
   const auto completion = directional::geometry::complete_pure_quad_patch(
       fixture.patch, options);
@@ -1232,7 +1341,7 @@ TEST(PureQuadCompletionPhase18,
   EXPECT_TRUE(completion.failure.starts_with(
       "CompletionOwnershipComponentSheetMismatch:"));
   EXPECT_TRUE(completion.ownershipRejection.active);
-  EXPECT_EQ(7, completion.ownershipRejection.sourceSheet);
+  EXPECT_EQ(1, completion.ownershipRejection.sourceSheet);
 }
 
 TEST(PureQuadCompletionPhase18,
