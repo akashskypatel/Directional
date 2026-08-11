@@ -11,14 +11,14 @@ root = pathlib.Path(__file__).resolve().parents[3]
 payload_dir = pathlib.Path(__file__).resolve().parent
 encoded = "".join(
     (payload_dir / f"m1_closed_outcome.part{i:02d}").read_text().strip()
-    for i in range(6)
+    for i in range(2)
 )
 patch = zlib.decompress(base64.b64decode(encoded))
 assert hashlib.sha256(patch).hexdigest() == (
-    "099a29f851199a04ccacc63c780c7bea353ae2c6f013b3c00052b242fd440286"
+    "b09149ff38f986722d610c7aa6e7134ea90df74e7d799978d917e96748ebf869"
 )
 subprocess.run(
     ["git", "apply", "--check", "-"], cwd=root, input=patch, check=True
 )
 subprocess.run(["git", "apply", "-"], cwd=root, input=patch, check=True)
-print(f"applied {len(patch)} bytes of closed producer-outcome cutover")
+print(f"applied {len(patch)} bytes of typed CellId owner cutover")
