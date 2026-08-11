@@ -568,9 +568,7 @@ struct AuthoritativePhaseFrontMeshResult {
 AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     const Eigen::MatrixXd &sourceVertices,
     const Eigen::MatrixXi &sourceFaces,
-    const geometry::SurfacePhaseFrontProduct &phaseFront,
-    const std::vector<int> &sourceFaceComponents,
-    const std::vector<int> &sourceFaceSheets);
+    const geometry::SurfacePhaseFrontProduct &phaseFront);
 
 using RemeshPipelineClock = std::chrono::steady_clock;
 

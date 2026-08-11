@@ -1608,9 +1608,7 @@ TEST(SurfaceCellsPhase10,
   }
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          mesh.V, mesh.F, guidance.phaseFront.product(),
-          guidanceOptions.sourceFaceComponents,
-          guidanceOptions.sourceFaceSheets);
+          mesh.V, mesh.F, guidance.phaseFront.product());
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(materialized.connectedComponents, 1);
   EXPECT_EQ(materialized.boundaryLoopCount, 1);
@@ -1787,8 +1785,7 @@ TEST(SurfaceCellsPhase10,
   EXPECT_GT(periodicEdgeCount, 0);
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          mesh.V, mesh.F, network.phaseFront.product(), options.sourceFaceComponents,
-          options.sourceFaceSheets);
+          mesh.V, mesh.F, network.phaseFront.product());
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(materialized.connectedComponents, 1);
   EXPECT_EQ(materialized.boundaryLoopCount, 2);
@@ -2839,8 +2836,7 @@ TEST(SurfaceCellsPhase10,
 
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          vertices, faces, network.phaseFront.product(), options.sourceFaceComponents,
-          options.sourceFaceSheets);
+          vertices, faces, network.phaseFront.product());
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(materialized.connectedComponents, 1);
   EXPECT_EQ(materialized.boundaryLoopCount, 1);
@@ -2922,8 +2918,7 @@ TEST(SurfaceCellsPhase10,
   EXPECT_TRUE(sawCrossSheetScope);
   const auto materialized =
       directional::pipeline::build_authoritative_phase_front_mesh(
-          vertices, faces, network.phaseFront.product(), options.sourceFaceComponents,
-          options.sourceFaceSheets);
+          vertices, faces, network.phaseFront.product());
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(network.phaseFront.product().isolationSeamTransportCertificates.size(),
             materialized.consumedInternalIsolationSeams);
@@ -4989,8 +4984,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_NE(changed.sourceTopologyRegions.regions.end(), replacement);
   changed.cells.front().sourceTopologyRegion = replacement->id;
   const auto rejected = directional::pipeline::build_authoritative_phase_front_mesh(
-      mesh.V, mesh.F, changed, options.sourceFaceComponents,
-      options.sourceFaceSheets);
+      mesh.V, mesh.F, changed);
   EXPECT_FALSE(rejected.success);
   EXPECT_EQ("AuthoritativePhaseFrontSourceLabelMismatch", rejected.failure);
 }
@@ -5022,8 +5016,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   ASSERT_NE(changed.sourceTopologyRegions.regions.end(), replacement);
   changed.edges.front().sourceTopologyRegion = replacement->id;
   const auto rejected = directional::pipeline::build_authoritative_phase_front_mesh(
-      mesh.V, mesh.F, changed, options.sourceFaceComponents,
-      options.sourceFaceSheets);
+      mesh.V, mesh.F, changed);
   EXPECT_FALSE(rejected.success);
   EXPECT_EQ("InvalidAuthoritativePhaseFrontSideAuthority", rejected.failure);
 }
@@ -5057,8 +5050,7 @@ TEST(SurfaceCellAuthorityContractCutover,
             network.phaseFront.disposition());
 
   const auto materialized = directional::pipeline::build_authoritative_phase_front_mesh(
-      mesh.V, mesh.F, network.phaseFront.product(), options.sourceFaceComponents,
-      options.sourceFaceSheets);
+      mesh.V, mesh.F, network.phaseFront.product());
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(network.phaseFront.product().sourceTopologyRegions.regions.size(),
             materialized.consumedTopologyRegions);

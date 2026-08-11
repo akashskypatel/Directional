@@ -409,8 +409,7 @@ const PhaseFrontFixture &torus_fixture() {
 AuthoritativePhaseFrontMeshResult materialize(
     const PhaseFrontFixture &fixture, const SurfacePhaseFrontResult &phaseFront) {
   return directional::pipeline::build_authoritative_phase_front_mesh(
-      fixture.mesh.V, fixture.mesh.F, phaseFront.product(), fixture.components,
-      fixture.sheets);
+      fixture.mesh.V, fixture.mesh.F, phaseFront.product());
 }
 
 int first_edge_of_kind(const SurfacePhaseFrontResult &phaseFront,
