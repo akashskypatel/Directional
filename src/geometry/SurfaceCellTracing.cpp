@@ -2458,25 +2458,17 @@ std::optional<SurfaceTopologyRegion> SurfaceTopologyRegion::make(
 }
 
 std::optional<SourceTopologyRegions> SourceTopologyRegions::make(
-    const Eigen::MatrixXi &sourceFaces,
+    std::vector<authority::SourceFaceTopologyKey> rowTopology,
+    const std::vector<authority::SourceComponentId> &rowComponents,
+    const std::vector<authority::IsolationSheetId> &rowSheets,
     std::vector<SurfaceTopologyRegion> regions) {
-  const int faceCount = static_cast<int>(sourceFaces.rows());
-  if (sourceFaces.cols() != 3 || faceCount <= 0 || regions.empty()) {
+  const std::size_t faceCount = rowTopology.size();
+  if (faceCount == 0U || regions.empty() || rowComponents.size() != faceCount ||
+      rowSheets.size() != faceCount) {
     return std::nullopt;
   }
 
-  int maxVertex = -1;
-  for (int face = 0; face < faceCount; ++face) {
-    for (int corner = 0; corner < 3; ++corner) {
-      maxVertex = std::max(maxVertex, sourceFaces(face, corner));
-    }
-  }
-  if (maxVertex < 0) {
-    return std::nullopt;
-  }
-  const std::size_t vertexExtent = static_cast<std::size_t>(maxVertex) + 1U;
   const std::size_t regionExtent = regions.size();
-
   for (std::size_t index = 0; index < regions.size(); ++index) {
     const auto expected = authority::TopologyRegionId::from_index(
         static_cast<std::int64_t>(index), regionExtent);
@@ -2486,24 +2478,14 @@ std::optional<SourceTopologyRegions> SourceTopologyRegions::make(
   }
 
   std::vector<TopologyRow> topologyRows;
-  topologyRows.reserve(static_cast<std::size_t>(faceCount));
-  for (int face = 0; face < faceCount; ++face) {
-    const auto a = authority::SourceVertexId::from_index(
-        sourceFaces(face, 0), vertexExtent);
-    const auto b = authority::SourceVertexId::from_index(
-        sourceFaces(face, 1), vertexExtent);
-    const auto c = authority::SourceVertexId::from_index(
-        sourceFaces(face, 2), vertexExtent);
-    const auto row = authority::SourceFaceId::from_index(face, faceCount);
-    if (!a || !b || !c || !row) {
+  topologyRows.reserve(faceCount);
+  for (std::size_t rowIndex = 0; rowIndex < faceCount; ++rowIndex) {
+    const auto row = authority::SourceFaceId::from_index(
+        static_cast<std::int64_t>(rowIndex), faceCount);
+    if (!row) {
       return std::nullopt;
     }
-    const auto topology = authority::SourceFaceTopologyKey::make(
-        std::array<authority::SourceVertexId, 3>{a.value(), b.value(), c.value()});
-    if (!topology) {
-      return std::nullopt;
-    }
-    topologyRows.emplace_back(topology.value(), row.value());
+    topologyRows.emplace_back(rowTopology[rowIndex], row.value());
   }
   std::sort(topologyRows.begin(), topologyRows.end(),
             [](const TopologyRow &a, const TopologyRow &b) {
@@ -2519,8 +2501,7 @@ std::optional<SourceTopologyRegions> SourceTopologyRegions::make(
 
   using ScratchBinding =
       std::pair<authority::TopologyRegionId, std::size_t>;
-  std::vector<std::optional<ScratchBinding>> scratchBindings(
-      static_cast<std::size_t>(faceCount));
+  std::vector<std::optional<ScratchBinding>> scratchBindings(faceCount);
   for (const SurfaceTopologyRegion &region : regions) {
     for (std::size_t memberIndex = 0; memberIndex < region.faces().size();
          ++memberIndex) {
@@ -2532,7 +2513,9 @@ std::optional<SourceTopologyRegions> SourceTopologyRegions::make(
             return entry.topology < key;
           });
       if (found == topologyRows.end() || found->topology != member.topology ||
-          scratchBindings[found->row.index()].has_value()) {
+          scratchBindings[found->row.index()].has_value() ||
+          rowComponents[found->row.index()] != region.component() ||
+          rowSheets[found->row.index()] != member.sheet) {
         return std::nullopt;
       }
       scratchBindings[found->row.index()] =
@@ -2541,7 +2524,7 @@ std::optional<SourceTopologyRegions> SourceTopologyRegions::make(
   }
 
   std::vector<RowBinding> rowBindings;
-  rowBindings.reserve(static_cast<std::size_t>(faceCount));
+  rowBindings.reserve(faceCount);
   for (const auto &binding : scratchBindings) {
     if (!binding.has_value()) {
       return std::nullopt;
@@ -2922,7 +2905,28 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
     }
     publishedRegions.push_back(*region);
   }
-  return SourceTopologyRegions::make(faces, std::move(publishedRegions));
+  std::vector<authority::SourceFaceTopologyKey> rowTopology;
+  std::vector<authority::SourceComponentId> rowComponents;
+  std::vector<authority::IsolationSheetId> rowSheets;
+  rowTopology.reserve(static_cast<std::size_t>(faceCount));
+  rowComponents.reserve(static_cast<std::size_t>(faceCount));
+  rowSheets.reserve(static_cast<std::size_t>(faceCount));
+  for (int rawFace = 0; rawFace < faceCount; ++rawFace) {
+    const auto topology = typed_face(rawFace);
+    const auto component = authority::SourceComponentId::from_index(
+        raw_component(rawFace), componentExtent);
+    const auto sheet = authority::IsolationSheetId::from_index(
+        raw_sheet(rawFace), sheetExtent);
+    if (!topology || !component || !sheet) {
+      return std::nullopt;
+    }
+    rowTopology.push_back(*topology);
+    rowComponents.push_back(component.value());
+    rowSheets.push_back(sheet.value());
+  }
+  return SourceTopologyRegions::make(
+      std::move(rowTopology), rowComponents, rowSheets,
+      std::move(publishedRegions));
 }
 
 std::uint64_t surface_topology_region_hash_impl(const SurfaceTopologyRegion &region) {

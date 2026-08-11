@@ -128,7 +128,9 @@ private:
 class SourceTopologyRegions {
 public:
   [[nodiscard]] static std::optional<SourceTopologyRegions>
-  make(const Eigen::MatrixXi &sourceFaces,
+  make(std::vector<authority::SourceFaceTopologyKey> rowTopology,
+       const std::vector<authority::SourceComponentId> &rowComponents,
+       const std::vector<authority::IsolationSheetId> &rowSheets,
        std::vector<SurfaceTopologyRegion> regions);
 
   [[nodiscard]] std::size_t face_count() const noexcept {
