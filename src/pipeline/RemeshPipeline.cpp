@@ -6791,12 +6791,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.surfaceCellContext.crossField.singularCycles;
     completionOptions.descriptorOptions.singularIndices =
         result.surfaceCellContext.crossField.singularIndices;
-    if (result.surfaceCellContext.hasSourceSurfaceLabels) {
-      completionOptions.sourceFaceComponents =
-          &result.surfaceCellContext.sourceSurfaceLabels.componentByFace;
-      completionOptions.sourceFaceSheets =
-          &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace;
-    }
+    completionOptions.sourceAuthority =
+        phaseFrontProduct != nullptr
+            ? &phaseFrontProduct->sourceTopologyRegions
+            : nullptr;
     completionOptions.sourceHardFeatureEdges = &hardFeatureRailEdges;
     geometry::SurfaceCellComplexCompletionResult completionResult;
     if (useAuthoritativePhaseFront) {
@@ -7228,8 +7226,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       const FieldAlignedSourceQuadRecoveryResult recovery =
           recover_unique_field_aligned_source_quads(
               meshWhole, result.surfaceCellContext.crossField,
-              completionOptions.sourceFaceComponents,
-              completionOptions.sourceFaceSheets, &hardFeatureRailEdges);
+              result.surfaceCellContext.hasSourceSurfaceLabels
+                  ? &result.surfaceCellContext.sourceSurfaceLabels.componentByFace
+                  : nullptr,
+              result.surfaceCellContext.hasSourceSurfaceLabels
+                  ? &result.surfaceCellContext.sourceSurfaceLabels.localSheetByFace
+                  : nullptr,
+              &hardFeatureRailEdges);
       if (recovery.success) {
         aggregateLineageMesh = recovery.mesh;
         result.surfaceCellContext.completedPatches = {recovery.mesh};

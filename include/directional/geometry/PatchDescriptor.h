@@ -268,8 +268,7 @@ struct SurfaceCellComplexCompletionOptions {
   // atomic frontier transaction. Nonnegative values remain explicit test and
   // caller caps.
   int maxSameCornerInsertedVertices = -1;
-  const std::vector<int> *sourceFaceComponents = nullptr;
-  const std::vector<int> *sourceFaceSheets = nullptr;
+  const SourceTopologyRegions *sourceAuthority = nullptr;
   const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr;
 };
 

@@ -626,25 +626,27 @@ std::string completion_ownership_face_list(
 
 bool completion_ownership_face_matches_labels(
     const int face, const PureQuadVertexLineage &lineage,
-    const std::vector<int> *sourceFaceComponents,
-    const std::vector<int> *sourceFaceSheets,
+    const SourceTopologyRegions *sourceAuthority,
     const std::set<std::uint64_t> *sourceHardFeatureEdges) {
-  if (face < 0) {
+  (void)sourceHardFeatureEdges;
+  if (face < 0 || sourceAuthority == nullptr ||
+      static_cast<std::size_t>(face) >= sourceAuthority->face_count()) {
     return false;
   }
-  if (lineage.sourceComponent >= 0 && sourceFaceComponents != nullptr) {
-    if (static_cast<std::size_t>(face) >= sourceFaceComponents->size() ||
-        (*sourceFaceComponents)[static_cast<std::size_t>(face)] !=
-            lineage.sourceComponent) {
-      return false;
-    }
+  const auto faceId = authority::SourceFaceId::from_index(
+      face, sourceAuthority->face_count());
+  if (!faceId) {
+    return false;
   }
-  if (lineage.sourceSheet >= 0 && sourceFaceSheets != nullptr) {
-    if (static_cast<std::size_t>(face) >= sourceFaceSheets->size() ||
-        (*sourceFaceSheets)[static_cast<std::size_t>(face)] !=
-            lineage.sourceSheet) {
-      return false;
-    }
+  if (lineage.sourceComponent >= 0 &&
+      static_cast<int>(sourceAuthority->component_for_row(faceId.value()).index()) !=
+          lineage.sourceComponent) {
+    return false;
+  }
+  if (lineage.sourceSheet >= 0 &&
+      static_cast<int>(sourceAuthority->sheet_for_row(faceId.value()).index()) !=
+          lineage.sourceSheet) {
+    return false;
   }
   return true;
 }
@@ -713,8 +715,7 @@ bool validate_completion_domain_ownership(
     const int completionVariant,
     const SurfacePointSourceSupportResolver *sourceSupportResolver,
     const Eigen::MatrixXi *sourceFaceMatrix,
-    const std::vector<int> *sourceFaceComponents,
-    const std::vector<int> *sourceFaceSheets, std::string &failure,
+    const SourceTopologyRegions *sourceAuthority, std::string &failure,
     PureQuadCompletionOwnershipRejection *ownershipRejection,
     const std::set<std::uint64_t> *sourceHardFeatureEdges) {
   if (mesh.vertices.size() != mesh.vertexProvenance.size() ||
@@ -741,8 +742,7 @@ bool validate_completion_domain_ownership(
   const std::set<int> sourceFaces(patchSourceFaces.begin(),
                                   patchSourceFaces.end());
   const SourceChartTransitionGraph transitionGraph(
-      sourceFaceMatrix, sourceFaceComponents, sourceFaceSheets,
-      sourceHardFeatureEdges);
+      sourceFaceMatrix, sourceAuthority, sourceHardFeatureEdges);
   const bool transitionAuthorityAvailable = transitionGraph.available();
 
   std::map<int, std::size_t> vertexRows;
@@ -841,8 +841,7 @@ bool validate_completion_domain_ownership(
       }
       intersectsPatch = true;
       bool compatible = completion_ownership_face_matches_labels(
-          candidateFace, lineage, sourceFaceComponents, sourceFaceSheets,
-          sourceHardFeatureEdges);
+          candidateFace, lineage, sourceAuthority, sourceHardFeatureEdges);
       if (compatible && transitionAuthorityAvailable) {
         SurfacePoint rebound;
         compatible = transitionGraph.rebind(provenance, candidateFace, rebound);
@@ -1507,11 +1506,34 @@ PureQuadCompletionResult complete_pure_quad_patch(
   }
   const std::vector<unsigned char> *allowedFacePtr =
       allowedFaces.empty() ? nullptr : &allowedFaces;
+  std::vector<int> derivedComponents;
+  std::vector<int> derivedSheets;
+  if (options.sourceFaces != nullptr && options.sourceAuthority != nullptr &&
+      options.sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(options.sourceFaces->rows()))) {
+    derivedComponents.resize(static_cast<std::size_t>(options.sourceFaces->rows()));
+    derivedSheets.resize(static_cast<std::size_t>(options.sourceFaces->rows()));
+    for (int face = 0; face < options.sourceFaces->rows(); ++face) {
+      const auto faceId = authority::SourceFaceId::from_index(
+          face, options.sourceAuthority->face_count());
+      if (!faceId) {
+        continue;
+      }
+      derivedComponents[static_cast<std::size_t>(face)] = static_cast<int>(
+          options.sourceAuthority->component_for_row(faceId.value()).index());
+      derivedSheets[static_cast<std::size_t>(face)] = static_cast<int>(
+          options.sourceAuthority->sheet_for_row(faceId.value()).index());
+    }
+  }
+  const std::vector<int> *derivedComponentPtr =
+      derivedComponents.empty() ? nullptr : &derivedComponents;
+  const std::vector<int> *derivedSheetPtr =
+      derivedSheets.empty() ? nullptr : &derivedSheets;
   bool completed = false;
   if (!boundedFallbackAdmissible && patch.singularityCount != 0) {
     completed = pure_quad_detail::complete_singularity_pole(
         patch, mesh, projection.get(), allowedFacePtr,
-        options.sourceFaceComponents, options.sourceFaceSheets);
+        derivedComponentPtr, derivedSheetPtr);
     if (!completed) {
       result.failureReason =
           PureQuadPatchRejectReason::UnsupportedSingularityCompletion;
@@ -1521,7 +1543,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
   if (!completed && !boundedFallbackAdmissible) {
     completed = pure_quad_detail::complete_rectangular_grid(
         patch, mesh, projection.get(), allowedFacePtr,
-        options.sourceFaceComponents, options.sourceFaceSheets);
+        derivedComponentPtr, derivedSheetPtr);
   }
   if (!completed && !boundedFallbackAdmissible && boundaryCount == 6) {
     completed = pure_quad_detail::complete_six_vertex_transition(
@@ -1546,8 +1568,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
   std::string ownershipFailure;
   if (!pure_quad_detail::validate_completion_domain_ownership(
           patch, mesh, options.completionVariant, sourceSupportResolver,
-          options.sourceFaces, options.sourceFaceComponents,
-          options.sourceFaceSheets, ownershipFailure,
+          options.sourceFaces, options.sourceAuthority, ownershipFailure,
           &result.ownershipRejection, options.sourceHardFeatureEdges)) {
     result.failureReason = PureQuadPatchRejectReason::TopologyValidationFailed;
     result.failure = ownershipFailure;
@@ -1978,8 +1999,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
     const double positionTolerance,
     const Eigen::MatrixXi *sourceFaces,
-    const std::vector<int> *sourceFaceComponents,
-    const std::vector<int> *sourceFaceSheets,
+    const SourceTopologyRegions *sourceAuthority,
     const std::set<std::uint64_t> *sourceHardFeatureEdges) {
   PureQuadAssemblyResult result;
   if (patches.empty()) {
@@ -2262,15 +2282,12 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
   result.mesh.vertexLineage.reserve(pendingVertices.size());
   const bool sourceAuthorityAvailable =
       sourceFaces != nullptr && sourceFaces->cols() == 3 &&
-      sourceFaceComponents != nullptr && sourceFaceSheets != nullptr &&
-      sourceFaceComponents->size() ==
-          static_cast<std::size_t>(sourceFaces->rows()) &&
-      sourceFaceSheets->size() ==
-          static_cast<std::size_t>(sourceFaces->rows());
+      sourceAuthority != nullptr &&
+      sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(sourceFaces->rows()));
   const SurfacePointSourceSupportResolver sourceSupport(sourceFaces);
   const SourceChartTransitionGraph sourceTransitions(
-      sourceFaces, sourceFaceComponents, sourceFaceSheets,
-      sourceHardFeatureEdges);
+      sourceFaces, sourceAuthority, sourceHardFeatureEdges);
   const auto canonicalSharedProvenance = [&](const PendingOutputVertex &pending) {
     const PureQuadMesh &fallbackPatch =
         patches[static_cast<std::size_t>(pending.provenancePatchIndex)];
@@ -2284,7 +2301,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     if (sourceTransitions.available()) {
       std::vector<const SurfacePoint *> candidates;
       candidates.reserve(pending.provenanceCandidates.size());
-      SourceEntityId commonEntity;
+      SurfaceCellCanonicalIdentity commonEntity;
       bool haveEntity = false;
       for (const auto &[patchIndex, localRow] :
            pending.provenanceCandidates) {
@@ -2298,13 +2315,13 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         const SurfacePoint &candidate =
             patches[static_cast<std::size_t>(patchIndex)]
                 .vertexProvenance[static_cast<std::size_t>(localRow)];
-        const SourceEntityId entity = sourceTransitions.resolve_entity(candidate);
-        if (!entity.valid() ||
-            (haveEntity && entity.canonical != commonEntity.canonical)) {
+        const auto entity = sourceTransitions.resolve_entity(candidate);
+        if (!entity.has_value() || !entity->valid() ||
+            (haveEntity && entity->canonical != commonEntity)) {
           return selected;
         }
         if (!haveEntity) {
-          commonEntity = entity;
+          commonEntity = entity->canonical;
           haveEntity = true;
         }
         candidates.push_back(&candidate);
@@ -2454,10 +2471,15 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     }
     selected.face = selectedFace;
     selected.barycentric = rebound;
-    selected.component = (*sourceFaceComponents)[
-        static_cast<std::size_t>(selectedFace)];
-    selected.sheet =
-        (*sourceFaceSheets)[static_cast<std::size_t>(selectedFace)];
+    const auto selectedFaceId = authority::SourceFaceId::from_index(
+        selectedFace, sourceAuthority->face_count());
+    if (!selectedFaceId) {
+      return selected;
+    }
+    selected.component = static_cast<int>(
+        sourceAuthority->component_for_row(selectedFaceId.value()).index());
+    selected.sheet = static_cast<int>(
+        sourceAuthority->sheet_for_row(selectedFaceId.value()).index());
     return selected;
   };
   for (int row = 0; row < static_cast<int>(pendingVertices.size()); ++row) {

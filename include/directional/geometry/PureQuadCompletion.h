@@ -338,8 +338,7 @@ struct PureQuadCompletionOptions {
   const Eigen::MatrixXd *sourceVertices = nullptr;
   const Eigen::MatrixXi *sourceFaces = nullptr;
   const SurfacePointSourceSupportResolver *sourceSupportResolver = nullptr;
-  const std::vector<int> *sourceFaceComponents = nullptr;
-  const std::vector<int> *sourceFaceSheets = nullptr;
+  const SourceTopologyRegions *sourceAuthority = nullptr;
   const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr;
 };
 
@@ -361,8 +360,7 @@ bool validate_completion_domain_ownership(
     int completionVariant,
     const SurfacePointSourceSupportResolver *sourceSupportResolver,
     const Eigen::MatrixXi *sourceFaces,
-    const std::vector<int> *sourceFaceComponents,
-    const std::vector<int> *sourceFaceSheets, std::string &failure,
+    const SourceTopologyRegions *sourceAuthority, std::string &failure,
     PureQuadCompletionOwnershipRejection *ownershipRejection,
     const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr);
 
@@ -600,8 +598,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
     const double positionTolerance = 1.0e-9,
     const Eigen::MatrixXi *sourceFaces = nullptr,
-    const std::vector<int> *sourceFaceComponents = nullptr,
-    const std::vector<int> *sourceFaceSheets = nullptr,
+    const SourceTopologyRegions *sourceAuthority = nullptr,
     const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr);
 
 EndpointResolutionResult resolve_completion_endpoints(

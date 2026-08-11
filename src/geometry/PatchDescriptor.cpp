@@ -2973,8 +2973,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
     completionOptions.sourceVertices = &V;
     completionOptions.sourceFaces = &F;
     completionOptions.sourceSupportResolver = &sourceSupportResolver;
-    completionOptions.sourceFaceComponents = options.sourceFaceComponents;
-    completionOptions.sourceFaceSheets = options.sourceFaceSheets;
+    completionOptions.sourceAuthority = options.sourceAuthority;
     completionOptions.sourceHardFeatureEdges =
         options.sourceHardFeatureEdges;
     return complete_pure_quad_patch(descriptor.patch, completionOptions);
@@ -3089,8 +3088,8 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
         const bool ownershipValid =
             pure_quad_detail::validate_completion_domain_ownership(
                 descriptor.patch, reused, completionVariant,
-                &sourceSupportResolver, &F, options.sourceFaceComponents,
-                options.sourceFaceSheets, ownershipFailure,
+                &sourceSupportResolver, &F, options.sourceAuthority,
+                ownershipFailure,
                 &ownershipRejection, options.sourceHardFeatureEdges);
         const bool topologyValid =
             ownershipValid && pure_quad_topology_is_disk(reused) &&
@@ -3261,8 +3260,8 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
   };
 
   result.assembly = stitch_pure_quad_patches(
-      result.completedPatches, 1.0e-9, &F, options.sourceFaceComponents,
-      options.sourceFaceSheets, options.sourceHardFeatureEdges);
+      result.completedPatches, 1.0e-9, &F, options.sourceAuthority,
+      options.sourceHardFeatureEdges);
   result.completionTemplateAssemblyPasses = 1;
   std::vector<SurfaceCellOwnershipConflict> initialConflicts =
       normalizedConflicts(result.assembly);
@@ -3434,8 +3433,7 @@ SurfaceCellComplexCompletionResult complete_surface_cell_complex_pass(
     PureQuadAssemblyResult previousAssembly = std::move(result.assembly);
     PureQuadAssemblyResult candidateAssembly =
         stitch_pure_quad_patches(result.completedPatches, 1.0e-9, &F,
-                                 options.sourceFaceComponents,
-                                 options.sourceFaceSheets,
+                                 options.sourceAuthority,
                                  options.sourceHardFeatureEdges);
     ++result.completionTemplateAssemblyPasses;
     const std::vector<SurfaceCellOwnershipConflict> after =
