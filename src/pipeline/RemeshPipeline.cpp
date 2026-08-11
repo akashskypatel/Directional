@@ -1,5 +1,4 @@
 #include <directional/pipeline/RemeshPipeline.h>
-#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/geometry/GeneralGraphMatching.h>
 
 namespace directional::pipeline {
@@ -149,14 +148,14 @@ std::uint64_t set_payload_logical_bytes(const std::set<T> &values) {
 
 std::uint64_t surface_trace_segment_owned_bytes(
     const geometry::SurfaceTraceSegment &segment) {
-  return vector_owned_bytes(segment.transitionSourceEdges) +
-         vector_owned_bytes(segment.transitionSourceTopology);
+  return vector_owned_bytes(segment.entryRouteTransitionIndices) +
+         vector_owned_bytes(segment.entryRouteTopologyKeys);
 }
 
 std::uint64_t surface_trace_segment_logical_bytes(
     const geometry::SurfaceTraceSegment &segment) {
-  return vector_logical_bytes(segment.transitionSourceEdges) +
-         vector_logical_bytes(segment.transitionSourceTopology);
+  return vector_logical_bytes(segment.entryRouteTransitionIndices) +
+         vector_logical_bytes(segment.entryRouteTopologyKeys);
 }
 
 std::uint64_t surface_trace_path_owned_bytes(
@@ -203,8 +202,8 @@ std::uint64_t trace_network_owned_bytes(
                         vector_owned_bytes(network.authoritativeRails) +
                         vector_owned_bytes(network.sourceFaceComponents) +
                         vector_owned_bytes(network.sourceFaceSheets) +
-                        vector_owned_bytes(network.sourceFaceTopologyRegions) +
-                        vector_owned_bytes(network.topologyRegions) +
+                        vector_owned_bytes(network.sourceTopologyRegions.regionByFace) +
+                        vector_owned_bytes(network.sourceTopologyRegions.regions) +
                         vector_owned_bytes(network.reliefRootVertices) +
                         static_cast<std::uint64_t>(
                             network.reliefRegionLabels.size()) * sizeof(int) +
@@ -217,8 +216,8 @@ std::uint64_t trace_network_owned_bytes(
   }
   for (const geometry::SurfaceFrontEdge &edge : network.phaseFront.edges) {
     bytes += vector_owned_bytes(edge.sourceIsolationSheets) +
-             vector_owned_bytes(edge.sourceRouteEdges) +
-             vector_owned_bytes(edge.sourceRouteTopology);
+             vector_owned_bytes(edge.routeTransitionIndices) +
+             vector_owned_bytes(edge.routeTopologyKeys);
   }
   for (const geometry::SurfaceTraceResult &trace : network.traces) {
     bytes += surface_trace_result_owned_bytes(trace);
@@ -236,7 +235,7 @@ std::uint64_t trace_network_owned_bytes(
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     bytes += surface_cell_rail_owned_bytes(rail);
   }
-  for (const geometry::SurfaceTopologyRegion &region : network.topologyRegions) {
+  for (const geometry::SurfaceTopologyRegion &region : network.sourceTopologyRegions.regions) {
     bytes += vector_owned_bytes(region.sourceFaces) +
              vector_owned_bytes(region.isolationSheets) +
              vector_owned_bytes(region.boundaryEdgeTopology) +
@@ -260,8 +259,8 @@ std::uint64_t trace_network_logical_bytes(
                         vector_logical_bytes(network.authoritativeRails) +
                         vector_logical_bytes(network.sourceFaceComponents) +
                         vector_logical_bytes(network.sourceFaceSheets) +
-                        vector_logical_bytes(network.sourceFaceTopologyRegions) +
-                        vector_logical_bytes(network.topologyRegions) +
+                        vector_logical_bytes(network.sourceTopologyRegions.regionByFace) +
+                        vector_logical_bytes(network.sourceTopologyRegions.regions) +
                         vector_logical_bytes(network.reliefRootVertices) +
                         eigen_logical_bytes(network.reliefRegionLabels) +
                         set_payload_logical_bytes(network.reliefBarrierEdges);
@@ -273,8 +272,8 @@ std::uint64_t trace_network_logical_bytes(
   }
   for (const geometry::SurfaceFrontEdge &edge : network.phaseFront.edges) {
     bytes += vector_logical_bytes(edge.sourceIsolationSheets) +
-             vector_logical_bytes(edge.sourceRouteEdges) +
-             vector_logical_bytes(edge.sourceRouteTopology);
+             vector_logical_bytes(edge.routeTransitionIndices) +
+             vector_logical_bytes(edge.routeTopologyKeys);
   }
   for (const geometry::SurfaceTraceResult &trace : network.traces) {
     bytes += vector_logical_bytes(trace.states) +
@@ -294,7 +293,7 @@ std::uint64_t trace_network_logical_bytes(
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     bytes += vector_logical_bytes(rail.samples);
   }
-  for (const geometry::SurfaceTopologyRegion &region : network.topologyRegions) {
+  for (const geometry::SurfaceTopologyRegion &region : network.sourceTopologyRegions.regions) {
     bytes += vector_logical_bytes(region.sourceFaces) +
              vector_logical_bytes(region.isolationSheets) +
              vector_logical_bytes(region.boundaryEdgeTopology) +
@@ -896,9 +895,9 @@ void hash_trace_segment(std::uint64_t &seed,
   hash_combine_i64(seed, segment.matching);
   hash_combine_double(seed, segment.matchingEffort);
   hash_combine_i64(seed, segment.sourceChart);
-  hash_combine_i64(seed, segment.transitionSourceEdge);
-  hash_vector(seed, segment.transitionSourceEdges);
-  hash_vector(seed, segment.transitionSourceTopology);
+  hash_combine_i64(seed, segment.entryTransitionIndex);
+  hash_vector(seed, segment.entryRouteTransitionIndices);
+  hash_vector(seed, segment.entryRouteTopologyKeys);
   hash_combine_i64(seed, segment.railId);
   hash_combine_i64(seed, segment.curveId);
   hash_combine_i64(seed, segment.railIntervalIndex);
@@ -924,8 +923,8 @@ namespace directional::pipeline {
 int legacy_phase_front_source_component(
     const geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceComponent.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   cell.sourceComponent.value()))
+             ? static_cast<int>((
+                   cell.sourceComponent.value()).index())
              : -1;
 }
 
@@ -933,16 +932,16 @@ int legacy_phase_front_source_topology_region(
     const geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceTopologyRegion.has_value()
              ? static_cast<int>(
-                   authority::LegacyAuthorityAdapters::to_legacy_index(
-                       cell.sourceTopologyRegion.value()))
+                   (
+                       cell.sourceTopologyRegion.value()).index())
              : -1;
 }
 
 int legacy_phase_front_source_sheet(
     const geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceSheet.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   cell.sourceSheet.value()))
+             ? static_cast<int>((
+                   cell.sourceSheet.value()).index())
              : -1;
 }
 
@@ -952,7 +951,7 @@ std::vector<int> legacy_phase_front_isolation_sheets(
   legacy.reserve(cell.sourceIsolationSheets.size());
   for (const authority::IsolationSheetId sheet : cell.sourceIsolationSheets) {
     legacy.push_back(static_cast<int>(
-        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+        (sheet).index()));
   }
   return legacy;
 }
@@ -960,8 +959,8 @@ std::vector<int> legacy_phase_front_isolation_sheets(
 int legacy_phase_front_source_component(
     const geometry::SurfaceFrontEdge &edge) {
   return edge.sourceComponent.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   edge.sourceComponent.value()))
+             ? static_cast<int>((
+                   edge.sourceComponent.value()).index())
              : -1;
 }
 
@@ -969,16 +968,16 @@ int legacy_phase_front_source_topology_region(
     const geometry::SurfaceFrontEdge &edge) {
   return edge.sourceTopologyRegion.has_value()
              ? static_cast<int>(
-                   authority::LegacyAuthorityAdapters::to_legacy_index(
-                       edge.sourceTopologyRegion.value()))
+                   (
+                       edge.sourceTopologyRegion.value()).index())
              : -1;
 }
 
 int legacy_phase_front_source_sheet(
     const geometry::SurfaceFrontEdge &edge) {
   return edge.sourceSheet.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   edge.sourceSheet.value()))
+             ? static_cast<int>((
+                   edge.sourceSheet.value()).index())
              : -1;
 }
 
@@ -988,7 +987,7 @@ std::vector<int> legacy_phase_front_isolation_sheets(
   legacy.reserve(edge.sourceIsolationSheets.size());
   for (const authority::IsolationSheetId sheet : edge.sourceIsolationSheets) {
     legacy.push_back(static_cast<int>(
-        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+        (sheet).index()));
   }
   return legacy;
 }
@@ -1008,9 +1007,9 @@ std::uint64_t hash_trace_network(
   }
   hash_vector(seed, network.sourceFaceComponents);
   hash_vector(seed, network.sourceFaceSheets);
-  hash_vector(seed, network.sourceFaceTopologyRegions);
-  hash_combine_u64(seed, network.topologyRegions.size());
-  for (const auto &region : network.topologyRegions) {
+  hash_vector(seed, network.sourceTopologyRegions.regionByFace);
+  hash_combine_u64(seed, network.sourceTopologyRegions.regions.size());
+  for (const auto &region : network.sourceTopologyRegions.regions) {
     hash_combine_i64(seed, region.id);
     hash_combine_i64(seed, region.sourceComponent);
     hash_combine_i64(seed, region.eulerCharacteristic);
@@ -1082,8 +1081,8 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, relation.quarterTurnRotation);
     hash_combine_i64(seed, relation.latticeTranslation.x());
     hash_combine_i64(seed, relation.latticeTranslation.y());
-    hash_vector(seed, relation.sourceRouteEdges);
-    hash_vector(seed, relation.sourceRouteTopology);
+    hash_vector(seed, relation.routeTransitionIndices);
+    hash_vector(seed, relation.routeTopologyKeys);
     hash_vector(seed, relation.cutSourceEdges);
     hash_vector(seed, relation.cutSourceTopology);
   }
@@ -1135,8 +1134,8 @@ std::uint64_t hash_trace_network(
     if (state.sourceChart.has_value()) {
       hash_combine_i64(
           seed, static_cast<std::int64_t>(
-                    authority::LegacyAuthorityAdapters::to_legacy_index(
-                        state.sourceChart.value())));
+                    (
+                        state.sourceChart.value()).index()));
     }
   };
   hash_combine_u64(seed, network.phaseFront.edges.size());
@@ -1160,8 +1159,8 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, static_cast<int>(edge.boundaryKind));
     hash_combine_i64(seed, edge.periodicRelation);
     hash_combine_i64(seed, edge.railId);
-    hash_vector(seed, edge.sourceRouteEdges);
-    hash_vector(seed, edge.sourceRouteTopology);
+    hash_vector(seed, edge.routeTransitionIndices);
+    hash_vector(seed, edge.routeTopologyKeys);
   }
   hash_combine_u64(seed, network.phaseFront.events.size());
   for (const geometry::SurfaceFrontEvent &event : network.phaseFront.events) {
@@ -1653,7 +1652,7 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
       hash_combine_i64(seed, equivalence.quarterTurnRotation);
       hash_combine_i64(seed, equivalence.latticeTranslation.x());
       hash_combine_i64(seed, equivalence.latticeTranslation.y());
-      hash_vector(seed, equivalence.sourceRouteTopology);
+      hash_vector(seed, equivalence.routeTopologyKeys);
     }
   }
   hash_combine_u64(seed, mesh.quadLineage.size());
@@ -2056,7 +2055,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   std::map<int, const geometry::SurfaceTopologyRegion *> topologyRegionById;
   std::vector<int> topologyRegionByFace(
       static_cast<std::size_t>(sourceFaces.rows()), -1);
-  for (const auto &region : phaseFront.topologyRegions) {
+  for (const auto &region : phaseFront.sourceTopologyRegions.regions) {
     if (region.id < 0 || region.sourceComponent < 0 ||
         region.sourceFaces.empty() ||
         !topologyRegionById.emplace(region.id, &region).second) {
@@ -2076,8 +2075,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     result.failure = "MissingAuthoritativeTopologyRegions";
     return result;
   }
-  if (!phaseFront.sourceTopologyRegionByFace.empty() &&
-      phaseFront.sourceTopologyRegionByFace != topologyRegionByFace) {
+  if (!phaseFront.sourceTopologyRegions.regionByFace.empty() &&
+      phaseFront.sourceTopologyRegions.regionByFace != topologyRegionByFace) {
     result.failure = "AuthoritativeTopologyRegionMapMismatch";
     return result;
   }
@@ -2257,7 +2256,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   struct OccurrenceData {
     geometry::SurfacePoint point;
     geometry::SurfaceCellCanonicalIdentity support;
-    geometry::SurfaceCellSourceChart chart;
+    geometry::SurfaceCellProjectionChart chart;
     geometry::LocalLatticeState lattice;
     int topologyRegion = -1;
     int cellId = -1;
@@ -2382,10 +2381,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       const std::uint64_t rawTopology = routeTopology[index];
       const std::uint64_t firstLegacyVertex = rawTopology >> 32U;
       const std::uint64_t secondLegacyVertex = rawTopology & 0xffffffffULL;
-      const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
+      const auto firstVertex = directional::authority::SourceVertexId::from_index(
           static_cast<std::int64_t>(firstLegacyVertex),
           static_cast<std::size_t>(sourceVertices.rows()));
-      const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
+      const auto secondVertex = directional::authority::SourceVertexId::from_index(
           static_cast<std::int64_t>(secondLegacyVertex),
           static_cast<std::size_t>(sourceVertices.rows()));
       if (!firstVertex || !secondVertex) {
@@ -2398,11 +2397,11 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
 
       const std::size_t firstLegacyIndex =
-          authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().first());
+          (
+              topology.value().first()).index();
       const std::size_t secondLegacyIndex =
-          authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().second());
+          (
+              topology.value().second()).index();
       if (firstLegacyIndex >
               static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
           secondLegacyIndex >
@@ -2423,10 +2422,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         return false;
       }
       const auto suppliedTransition =
-          authority::LegacyAuthorityAdapters::interior_transition(
+          directional::authority::InteriorTransitionId::from_index(
               static_cast<std::int64_t>(routeEdges[index]), transitionExtent);
       const auto expectedTransition =
-          authority::LegacyAuthorityAdapters::interior_transition(
+          directional::authority::InteriorTransitionId::from_index(
               static_cast<std::int64_t>(sourceEdge->second), transitionExtent);
       if (!suppliedTransition || !expectedTransition ||
           suppliedTransition.value() != expectedTransition.value()) {
@@ -2436,8 +2435,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     return true;
   };
   const auto interior_source_route_valid = [&](const auto &edge) {
-    return exact_interior_route_valid(edge.sourceRouteEdges,
-                                      edge.sourceRouteTopology);
+    return exact_interior_route_valid(edge.routeTransitionIndices,
+                                      edge.routeTopologyKeys);
   };
   for (int edgeIndex = 0;
        edgeIndex < static_cast<int>(phaseFront.edges.size()); ++edgeIndex) {
@@ -2482,27 +2481,27 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     for (const auto &segment :
          owner.boundaryPaths[static_cast<std::size_t>(edge.filledSide)]) {
       const int expectedLastSourceEdge =
-          segment.transitionSourceEdges.empty()
+          segment.entryRouteTransitionIndices.empty()
               ? -1
-              : segment.transitionSourceEdges.back();
-      if (segment.transitionSourceEdges.size() !=
-              segment.transitionSourceTopology.size() ||
-          segment.transitionSourceEdge != expectedLastSourceEdge) {
+              : segment.entryRouteTransitionIndices.back();
+      if (segment.entryRouteTransitionIndices.size() !=
+              segment.entryRouteTopologyKeys.size() ||
+          segment.entryTransitionIndex != expectedLastSourceEdge) {
         result.failure = "InvalidAuthoritativeTransitionSourceEdge";
         return result;
       }
       for (std::size_t routeIndex = 0;
-           routeIndex < segment.transitionSourceEdges.size(); ++routeIndex) {
-        const int transitionSourceEdge =
-            segment.transitionSourceEdges[routeIndex];
+           routeIndex < segment.entryRouteTransitionIndices.size(); ++routeIndex) {
+        const int entryTransitionIndex =
+            segment.entryRouteTransitionIndices[routeIndex];
         const std::uint64_t topology =
-            segment.transitionSourceTopology[routeIndex];
+            segment.entryRouteTopologyKeys[routeIndex];
         const auto incidence = exactSourceIncidence.find(topology);
         const auto sourceEdge = sourceEdgeIndices.find(topology);
         if (incidence == exactSourceIncidence.end() ||
             incidence->second[0] < 0 || incidence->second[1] < 0 ||
             sourceEdge == sourceEdgeIndices.end() ||
-            sourceEdge->second != transitionSourceEdge) {
+            sourceEdge->second != entryTransitionIndex) {
           result.failure = "InvalidAuthoritativeTransitionSourceEdge";
           return result;
         }
@@ -2540,22 +2539,22 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     switch (edge.boundaryKind) {
     case geometry::SurfaceFrontBoundaryKind::OrdinaryInterior:
       if (!hasOpposite || edge.periodicRelation >= 0 || edge.exterior ||
-          !edge.sourceRouteEdges.empty() ||
-          !edge.sourceRouteTopology.empty()) {
+          !edge.routeTransitionIndices.empty() ||
+          !edge.routeTopologyKeys.empty()) {
         result.failure = "InvalidOrdinaryFrontRelation";
         return result;
       }
       break;
     case geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary:
       if (hasOpposite || !edge.exterior || edge.periodicRelation >= 0 ||
-          edge.sourceRouteTopology.empty() ||
-          !edge.sourceRouteEdges.empty()) {
+          edge.routeTopologyKeys.empty() ||
+          !edge.routeTransitionIndices.empty()) {
         result.failure = "InvalidSourceBoundaryAuthority";
         return result;
       }
       {
         std::set<std::uint64_t> uniqueTopology;
-        for (const std::uint64_t topology : edge.sourceRouteTopology) {
+        for (const std::uint64_t topology : edge.routeTopologyKeys) {
           const auto sourceEdge = exactSourceIncidence.find(topology);
           if (!uniqueTopology.insert(topology).second ||
               sourceEdge == exactSourceIncidence.end() ||
@@ -2673,29 +2672,29 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         return result;
       }
       equivalence.kind = geometry::PureQuadEquivalenceKind::OrdinaryFront;
-      equivalence.sourceRouteTopology =
+      equivalence.routeTopologyKeys =
           isolationSeamsByFrontEdge[static_cast<std::size_t>(edgeIndex)];
       const auto &secondSeams =
           isolationSeamsByFrontEdge[static_cast<std::size_t>(secondIndex)];
-      equivalence.sourceRouteTopology.insert(
-          equivalence.sourceRouteTopology.end(), secondSeams.begin(),
+      equivalence.routeTopologyKeys.insert(
+          equivalence.routeTopologyKeys.end(), secondSeams.begin(),
           secondSeams.end());
-      std::sort(equivalence.sourceRouteTopology.begin(),
-                equivalence.sourceRouteTopology.end());
-      equivalence.sourceRouteTopology.erase(
-          std::unique(equivalence.sourceRouteTopology.begin(),
-                      equivalence.sourceRouteTopology.end()),
-          equivalence.sourceRouteTopology.end());
+      std::sort(equivalence.routeTopologyKeys.begin(),
+                equivalence.routeTopologyKeys.end());
+      equivalence.routeTopologyKeys.erase(
+          std::unique(equivalence.routeTopologyKeys.begin(),
+                      equivalence.routeTopologyKeys.end()),
+          equivalence.routeTopologyKeys.end());
       const bool crossesSheets =
           occurrences[static_cast<std::size_t>(firstFrom)].point.sheet !=
               occurrences[static_cast<std::size_t>(secondTo)].point.sheet ||
           occurrences[static_cast<std::size_t>(firstTo)].point.sheet !=
               occurrences[static_cast<std::size_t>(secondFrom)].point.sheet;
-      if (crossesSheets && equivalence.sourceRouteTopology.empty()) {
+      if (crossesSheets && equivalence.routeTopologyKeys.empty()) {
         result.failure = "MissingIsolationSeamEquivalenceAuthority";
         return result;
       }
-      for (const std::uint64_t seam : equivalence.sourceRouteTopology) {
+      for (const std::uint64_t seam : equivalence.routeTopologyKeys) {
         if (isolationCertificateBySeam.count(
                 {legacy_phase_front_source_topology_region(first), seam}) !=
             1U) {
@@ -2708,15 +2707,15 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
           (first.railId >= 0 && second.railId >= 0 &&
            first.railId != second.railId) ||
-          canonical_route(first.sourceRouteTopology) !=
-              canonical_route(second.sourceRouteTopology)) {
+          canonical_route(first.routeTopologyKeys) !=
+              canonical_route(second.routeTopologyKeys)) {
         result.failure = "InvalidHardRailTransport";
         return result;
       }
       equivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;
       equivalence.railId = first.railId >= 0 ? first.railId : second.railId;
-      equivalence.sourceRouteTopology =
-          canonical_route(first.sourceRouteTopology);
+      equivalence.routeTopologyKeys =
+          canonical_route(first.routeTopologyKeys);
     } else if (first.boundaryKind ==
                geometry::SurfaceFrontBoundaryKind::PeriodicCut) {
       if (first.periodicRelation != second.periodicRelation ||
@@ -2732,13 +2731,13 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           relation.sourceTopologyRegion !=
               legacy_phase_front_source_topology_region(first) ||
           relation.latticeTranslation.squaredNorm() == 0 ||
-          !exact_interior_route_valid(relation.sourceRouteEdges,
-                                      relation.sourceRouteTopology) ||
+          !exact_interior_route_valid(relation.routeTransitionIndices,
+                                      relation.routeTopologyKeys) ||
           !exact_interior_route_valid(relation.cutSourceEdges,
                                       relation.cutSourceTopology) ||
-          canonical_route(first.sourceRouteTopology) !=
+          canonical_route(first.routeTopologyKeys) !=
               canonical_route(relation.cutSourceTopology) ||
-          canonical_route(second.sourceRouteTopology) !=
+          canonical_route(second.routeTopologyKeys) !=
               canonical_route(relation.cutSourceTopology)) {
         result.failure = "InvalidPeriodicRelation";
         return result;
@@ -2769,7 +2768,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       equivalence.periodicRelation = first.periodicRelation;
       equivalence.quarterTurnRotation = relation.quarterTurnRotation;
       equivalence.latticeTranslation = relation.latticeTranslation;
-      equivalence.sourceRouteTopology = relation.sourceRouteTopology;
+      equivalence.routeTopologyKeys = relation.routeTopologyKeys;
     } else {
       result.failure = "InvalidPairedBoundaryKind";
       return result;
@@ -2820,8 +2819,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
            occurrence.lattice.latticeCoordinate.y(),
            occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
            static_cast<std::int64_t>(
-               authority::LegacyAuthorityAdapters::to_legacy_index(
-                   occurrence.lattice.sourceChart.value()))});
+               (
+                   occurrence.lattice.sourceChart.value()).index())});
       sheetsByTopologyRegion[occurrence.topologyRegion].insert(
           occurrence.point.sheet);
     }
@@ -2883,8 +2882,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       // already identical chart; it is never a merge or provenance policy.
       return std::tuple{
           weightedVertices, occurrence.point.sheet,
-          authority::LegacyAuthorityAdapters::to_legacy_index(
-              occurrence.lattice.sourceChart.value()),
+          (
+              occurrence.lattice.sourceChart.value()).index(),
           occurrence.topologyRegion, occurrence.point.face};
     };
     const int representative = *std::min_element(
@@ -2894,7 +2893,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         });
     const auto &representativeOccurrence =
         occurrences[static_cast<std::size_t>(representative)];
-    std::set<geometry::SurfaceCellSourceChart> charts;
+    std::set<geometry::SurfaceCellProjectionChart> charts;
     std::set<int> topologyRegions;
     std::set<int> isolationSheets;
     std::vector<geometry::PureQuadEquivalenceProvenance> equivalences;
@@ -6179,8 +6178,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       diagnostic.quarterTurnRotation = relation.quarterTurnRotation;
       diagnostic.translationU = relation.latticeTranslation.x();
       diagnostic.translationV = relation.latticeTranslation.y();
-      diagnostic.sourceRouteEdges = relation.sourceRouteEdges;
-      diagnostic.sourceRouteTopology = relation.sourceRouteTopology;
+      diagnostic.routeTransitionIndices = relation.routeTransitionIndices;
+      diagnostic.routeTopologyKeys = relation.routeTopologyKeys;
       diagnostic.cutSourceEdges = relation.cutSourceEdges;
       diagnostic.cutSourceTopology = relation.cutSourceTopology;
       result.diagnostics.surfaceCellPeriodicHolonomies.push_back(
@@ -6197,7 +6196,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       result.diagnostics.surfaceCellPeriodicHolonomyTranslationV =
           primary.latticeTranslation.y();
       result.diagnostics.surfaceCellPeriodicHolonomyRouteEdgeCount =
-          primary.sourceRouteEdges.size();
+          primary.routeTransitionIndices.size();
       result.diagnostics.surfaceCellPeriodicCutEdgeCount =
           primary.cutSourceEdges.size();
     }
@@ -7728,8 +7727,8 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
             projected.firstFrontEdge = equivalence.firstFrontEdge;
             projected.secondFrontEdge = equivalence.secondFrontEdge;
             projected.railId = equivalence.railId;
-            projected.sourceRouteTopology =
-                equivalence.sourceRouteTopology;
+            projected.routeTopologyKeys =
+                equivalence.routeTopologyKeys;
             authority.hardRailEquivalences.push_back(
                 std::move(projected));
           }
@@ -9877,7 +9876,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           for (int &sheet : lineage.sourceIsolationSheets) {
             if (sheet >= 0) sheet += sheetOffset;
           }
-          for (geometry::SurfaceCellSourceChart &chart :
+          for (geometry::SurfaceCellProjectionChart &chart :
                lineage.sourceCharts) {
             chart.sourceComponent = static_cast<int>(index);
             if (chart.sourceFace >= 0 &&
@@ -9957,7 +9956,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
             }
             if (equivalence.railId >= 0) equivalence.railId += railOffset;
             for (std::uint64_t &topology :
-                 equivalence.sourceRouteTopology) {
+                 equivalence.routeTopologyKeys) {
               const int localFirst =
                   static_cast<int>(topology >> 32U);
               const int localSecond = static_cast<int>(

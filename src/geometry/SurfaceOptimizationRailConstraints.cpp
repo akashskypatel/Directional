@@ -1,7 +1,4 @@
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
-
-#include <directional/authority/LegacyAuthorityAdapters.h>
-
 #include <limits>
 
 namespace directional::geometry::surface_optimization_rail_detail {
@@ -20,19 +17,18 @@ constexpr std::size_t legacy_source_vertex_extent =
 bool source_face_contains_vertex(
     const Eigen::MatrixXi &faces, authority::SourceFaceId face,
     authority::SourceVertexId vertex) {
-  using authority::LegacyAuthorityAdapters;
   if (faces.cols() != 3 ||
-      LegacyAuthorityAdapters::to_legacy_index(face) >=
+      (face).index() >=
           static_cast<std::size_t>(faces.rows())) {
     return false;
   }
   const auto matches = [&](const int corner) {
     return static_cast<std::int64_t>(faces(
                static_cast<Eigen::Index>(
-                   LegacyAuthorityAdapters::to_legacy_index(face)),
+                   (face).index()),
                corner)) ==
            static_cast<std::int64_t>(
-               LegacyAuthorityAdapters::to_legacy_index(vertex));
+               (vertex).index());
   };
   return matches(0) || matches(1) || matches(2);
 }
@@ -45,7 +41,6 @@ bool provenance_supports_interval_sheet(
     const SurfacePoint &provenance,
     const SurfaceFeatureCurveInterval &interval,
     const SurfaceOptimizationConstraints &constraints) {
-  using authority::LegacyAuthorityAdapters;
   using authority::SourceFaceId;
   using authority::SourceVertexId;
   if (provenance.component >= 0 && interval.component >= 0 &&
@@ -67,9 +62,9 @@ bool provenance_supports_interval_sheet(
 
   const std::size_t sourceFaceExtent =
       static_cast<std::size_t>(constraints.sourceFaces.rows());
-  const auto provenanceFaceResult = LegacyAuthorityAdapters::source_face(
+  const auto provenanceFaceResult = directional::authority::SourceFaceId::from_index(
       provenance.face, sourceFaceExtent);
-  const auto intervalFaceResult = LegacyAuthorityAdapters::source_face(
+  const auto intervalFaceResult = directional::authority::SourceFaceId::from_index(
       interval.sourceFace, sourceFaceExtent);
   if (!provenanceFaceResult || !intervalFaceResult) {
     return false;
@@ -87,12 +82,12 @@ bool provenance_supports_interval_sheet(
     if (provenance.barycentric(corner) > 1.0e-8) {
       const int legacySourceVertex = constraints.sourceFaces(
           static_cast<Eigen::Index>(
-              LegacyAuthorityAdapters::to_legacy_index(provenanceFace)),
+              (provenanceFace).index()),
           corner);
       if (legacySourceVertex < 0) {
         return false;
       }
-      const auto sourceVertexResult = LegacyAuthorityAdapters::source_vertex(
+      const auto sourceVertexResult = directional::authority::SourceVertexId::from_index(
           legacySourceVertex, legacy_source_vertex_extent);
       if (!sourceVertexResult) {
         return false;
@@ -114,7 +109,7 @@ bool provenance_supports_interval_sheet(
       constraints.sourceFaceComponent.size() ==
           static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
       constraints.sourceFaceComponent[
-          LegacyAuthorityAdapters::to_legacy_index(intervalFace)] !=
+          (intervalFace).index()] !=
           interval.component) {
     return false;
   }
@@ -122,7 +117,7 @@ bool provenance_supports_interval_sheet(
       constraints.sourceFaceSheet.size() ==
           static_cast<std::size_t>(constraints.sourceFaces.rows()) &&
       constraints.sourceFaceSheet[
-          LegacyAuthorityAdapters::to_legacy_index(intervalFace)] !=
+          (intervalFace).index()] !=
           interval.sheet) {
     return false;
   }

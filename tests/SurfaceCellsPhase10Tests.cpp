@@ -1,4 +1,3 @@
-#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/fields/PointSampledCrossField.h>
 #include <directional/io/ReadOBJ.h>
 #include <directional/meshing/PatchQuadrangulator.h>
@@ -28,24 +27,21 @@ using directional::validation::MeshValidationFailureCode;
 int legacy_phase_front_component(
     const directional::geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceComponent.has_value()
-             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
-                                    to_legacy_index(cell.sourceComponent.value()))
+             ? static_cast<int>((cell.sourceComponent.value()).index())
              : -1;
 }
 
 int legacy_phase_front_topology_region(
     const directional::geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceTopologyRegion.has_value()
-             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
-                                    to_legacy_index(cell.sourceTopologyRegion.value()))
+             ? static_cast<int>((cell.sourceTopologyRegion.value()).index())
              : -1;
 }
 
 int legacy_phase_front_sheet(
     const directional::geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceSheet.has_value()
-             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
-                                    to_legacy_index(cell.sourceSheet.value()))
+             ? static_cast<int>((cell.sourceSheet.value()).index())
              : -1;
 }
 
@@ -56,7 +52,7 @@ std::vector<int> legacy_phase_front_sheets(
   for (const directional::authority::IsolationSheetId sheet :
        cell.sourceIsolationSheets) {
     legacy.push_back(static_cast<int>(
-        directional::authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+        (sheet).index()));
   }
   return legacy;
 }
@@ -64,24 +60,21 @@ std::vector<int> legacy_phase_front_sheets(
 int legacy_phase_front_component(
     const directional::geometry::SurfaceFrontEdge &edge) {
   return edge.sourceComponent.has_value()
-             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
-                                    to_legacy_index(edge.sourceComponent.value()))
+             ? static_cast<int>((edge.sourceComponent.value()).index())
              : -1;
 }
 
 int legacy_phase_front_topology_region(
     const directional::geometry::SurfaceFrontEdge &edge) {
   return edge.sourceTopologyRegion.has_value()
-             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
-                                    to_legacy_index(edge.sourceTopologyRegion.value()))
+             ? static_cast<int>((edge.sourceTopologyRegion.value()).index())
              : -1;
 }
 
 int legacy_phase_front_sheet(
     const directional::geometry::SurfaceFrontEdge &edge) {
   return edge.sourceSheet.has_value()
-             ? static_cast<int>(directional::authority::LegacyAuthorityAdapters::
-                                    to_legacy_index(edge.sourceSheet.value()))
+             ? static_cast<int>((edge.sourceSheet.value()).index())
              : -1;
 }
 
@@ -92,7 +85,7 @@ std::vector<int> legacy_phase_front_sheets(
   for (const directional::authority::IsolationSheetId sheet :
        edge.sourceIsolationSheets) {
     legacy.push_back(static_cast<int>(
-        directional::authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+        (sheet).index()));
   }
   return legacy;
 }
@@ -981,7 +974,7 @@ std::size_t multi_edge_transition_count(
   for (const auto &cell : network.phaseFront.cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
-        if (segment.transitionSourceEdges.size() > 1U) {
+        if (segment.entryRouteTransitionIndices.size() > 1U) {
           ++count;
         }
       }
@@ -1025,7 +1018,7 @@ struct SegmentRouteObservation {
   SegmentRouteKey key;
   int matching = 0;
   std::vector<int> sourceEdges;
-  int transitionSourceEdge = -1;
+  int entryTransitionIndex = -1;
   int sourceVertex = -1;
   int previousExitEdge = -1;
   int currentEntryEdge = -1;
@@ -1051,15 +1044,15 @@ std::vector<SegmentRouteObservation> segment_route_observations(
       for (std::size_t index = 1; index < path.size(); ++index) {
         const auto &previous = path[index - 1U];
         const auto &current = path[index];
-        if (current.transitionSourceTopology.empty()) continue;
+        if (current.entryRouteTopologyKeys.empty()) continue;
         const int previousVertex = attached_source_vertex(
             mesh, previous.face, previous.endBarycentric);
         const int currentVertex = attached_source_vertex(
             mesh, current.face, current.startBarycentric);
         observations.push_back(
-            {{previous.face, current.face, current.transitionSourceTopology},
-             current.matching, current.transitionSourceEdges,
-             current.transitionSourceEdge,
+            {{previous.face, current.face, current.entryRouteTopologyKeys},
+             current.matching, current.entryRouteTransitionIndices,
+             current.entryTransitionIndex,
              previousVertex >= 0 && previousVertex == currentVertex
                  ? previousVertex
                  : -1,
@@ -1093,7 +1086,7 @@ std::vector<SegmentRouteSemanticSnapshot> segment_route_semantic_snapshot(
     snapshot.emplace_back(
         observation.key.previousFace, observation.key.currentFace,
         observation.key.sourceTopology, observation.matching,
-        observation.sourceEdges, observation.transitionSourceEdge,
+        observation.sourceEdges, observation.entryTransitionIndex,
         observation.sourceVertex, observation.previousExitEdge,
         observation.currentEntryEdge);
   }
@@ -1342,14 +1335,14 @@ TEST(SurfaceCellSegmentRouteTransportAuthorityMigration,
     EXPECT_EQ(fixture.forwardRoute.sourceTopology,
               observation.key.sourceTopology);
     EXPECT_EQ(fixture.forwardCompactEdges, observation.sourceEdges);
-    EXPECT_EQ(9, observation.transitionSourceEdge);
+    EXPECT_EQ(9, observation.entryTransitionIndex);
     EXPECT_EQ(7, observation.sourceVertex);
   }
   for (const auto &observation : reverse) {
     EXPECT_EQ(fixture.reverseRoute.sourceTopology,
               observation.key.sourceTopology);
     EXPECT_EQ(fixture.reverseCompactEdges, observation.sourceEdges);
-    EXPECT_EQ(2, observation.transitionSourceEdge);
+    EXPECT_EQ(2, observation.entryTransitionIndex);
     EXPECT_EQ(7, observation.sourceVertex);
   }
 }
@@ -1450,9 +1443,9 @@ TEST(SurfaceCellsPhase10,
     for (const auto &path : cell.boundaryPaths) {
       ASSERT_FALSE(path.empty());
       for (const auto &segment : path) {
-        if (!segment.transitionSourceEdges.empty()) {
-          EXPECT_EQ(segment.transitionSourceEdge,
-                    segment.transitionSourceEdges.back());
+        if (!segment.entryRouteTransitionIndices.empty()) {
+          EXPECT_EQ(segment.entryTransitionIndex,
+                    segment.entryRouteTransitionIndices.back());
         }
       }
     }
@@ -1554,8 +1547,8 @@ TEST(SurfaceCellsPhase10,
       EXPECT_EQ(edge.boundaryKind,
                 directional::geometry::SurfaceFrontBoundaryKind::
                     GenuineSourceBoundary);
-      EXPECT_FALSE(edge.sourceRouteTopology.empty());
-      EXPECT_TRUE(edge.sourceRouteEdges.empty());
+      EXPECT_FALSE(edge.routeTopologyKeys.empty());
+      EXPECT_TRUE(edge.routeTransitionIndices.empty());
     }
   }
   const auto materialized =
@@ -1568,7 +1561,7 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(materialized.boundaryLoopCount, 1);
   EXPECT_EQ(materialized.eulerCharacteristic, 1);
   EXPECT_EQ(materialized.consumedTopologyRegions,
-            guidance.phaseFront.topologyRegions.size());
+            guidance.phaseFront.sourceTopologyRegions.regions.size());
 
   auto embeddedOptions = guidanceOptions;
   embeddedOptions.reliefBarriersEmbedded = true;
@@ -1580,11 +1573,11 @@ TEST(SurfaceCellsPhase10,
   EXPECT_TRUE(embedded.seeds.empty());
   EXPECT_TRUE(embedded.traces.empty());
   EXPECT_TRUE(embedded.proposals.empty());
-  ASSERT_EQ(guidance.phaseFront.topologyRegions.size(),
-            embedded.phaseFront.topologyRegions.size());
-  ASSERT_EQ(1U, embedded.phaseFront.topologyRegions.size());
-  EXPECT_EQ(guidance.phaseFront.topologyRegions.front().structuralHash,
-            embedded.phaseFront.topologyRegions.front().structuralHash);
+  ASSERT_EQ(guidance.phaseFront.sourceTopologyRegions.regions.size(),
+            embedded.phaseFront.sourceTopologyRegions.regions.size());
+  ASSERT_EQ(1U, embedded.phaseFront.sourceTopologyRegions.regions.size());
+  EXPECT_EQ(guidance.phaseFront.sourceTopologyRegions.regions.front().structuralHash,
+            embedded.phaseFront.sourceTopologyRegions.regions.front().structuralHash);
   EXPECT_NE(embedded.phaseFront.failure.reason,
             directional::geometry::SurfacePhaseFrontFailureReason::None);
 }
@@ -1723,7 +1716,7 @@ TEST(SurfaceCellsPhase10,
   EXPECT_EQ(static_cast<std::size_t>(network.phaseFront.gridU *
                                      network.phaseFront.gridV),
             network.phaseFront.cells.size());
-  EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().sourceRouteEdges.empty());
+  EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().routeTransitionIndices.empty());
   EXPECT_FALSE(network.phaseFront.periodicHolonomies.front().cutSourceEdges.empty());
   int periodicEdgeCount = 0;
   for (const auto &edge : network.phaseFront.edges) {
@@ -1734,7 +1727,7 @@ TEST(SurfaceCellsPhase10,
       ++periodicEdgeCount;
       EXPECT_EQ(edge.periodicRelation, 0);
       EXPECT_GE(edge.oppositeEdge, 0);
-      EXPECT_FALSE(edge.sourceRouteTopology.empty());
+      EXPECT_FALSE(edge.routeTopologyKeys.empty());
     }
   }
   EXPECT_GT(periodicEdgeCount, 0);
@@ -1807,17 +1800,17 @@ TEST(SurfaceCellsPhase10,
   };
   const auto &forwardHolonomy = forward.phaseFront.periodicHolonomies.front();
   const auto &reverseHolonomy = reverse.phaseFront.periodicHolonomies.front();
-  EXPECT_EQ(forwardHolonomy.sourceRouteTopology,
-            reverseHolonomy.sourceRouteTopology);
+  EXPECT_EQ(forwardHolonomy.routeTopologyKeys,
+            reverseHolonomy.routeTopologyKeys);
   EXPECT_EQ(forwardHolonomy.cutSourceTopology,
             reverseHolonomy.cutSourceTopology);
-  EXPECT_EQ(forwardHolonomy.sourceRouteEdges,
-            reverseHolonomy.sourceRouteEdges);
+  EXPECT_EQ(forwardHolonomy.routeTransitionIndices,
+            reverseHolonomy.routeTransitionIndices);
   EXPECT_EQ(forwardHolonomy.cutSourceEdges, reverseHolonomy.cutSourceEdges);
-  expectCanonicalCompactRoute(forwardMesh, forwardHolonomy.sourceRouteEdges,
-                              forwardHolonomy.sourceRouteTopology);
-  expectCanonicalCompactRoute(reverseMesh, reverseHolonomy.sourceRouteEdges,
-                              reverseHolonomy.sourceRouteTopology);
+  expectCanonicalCompactRoute(forwardMesh, forwardHolonomy.routeTransitionIndices,
+                              forwardHolonomy.routeTopologyKeys);
+  expectCanonicalCompactRoute(reverseMesh, reverseHolonomy.routeTransitionIndices,
+                              reverseHolonomy.routeTopologyKeys);
   expectCanonicalCompactRoute(forwardMesh, forwardHolonomy.cutSourceEdges,
                               forwardHolonomy.cutSourceTopology);
   expectCanonicalCompactRoute(reverseMesh, reverseHolonomy.cutSourceEdges,
@@ -2785,7 +2778,7 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
   int hardEdges = 0;
   int hardMerges = 0;
   for (const auto &edge : network.phaseFront.edges) {
@@ -2796,8 +2789,8 @@ TEST(SurfaceCellsPhase10,
     ++hardEdges;
     ASSERT_GE(edge.oppositeEdge, 0);
     EXPECT_FALSE(edge.exterior);
-    EXPECT_FALSE(edge.sourceRouteTopology.empty());
-    EXPECT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
+    EXPECT_FALSE(edge.routeTopologyKeys.empty());
+    EXPECT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
     const auto &opposite = network.phaseFront.edges[static_cast<std::size_t>(
         edge.oppositeEdge)];
     EXPECT_EQ(opposite.oppositeEdge,
@@ -2871,17 +2864,17 @@ TEST(SurfaceCellsPhase10,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.topologyRegions.size());
-  EXPECT_FALSE(network.topologyRegions.front().internalIsolationSeamTopology.empty());
+  ASSERT_EQ(1U, network.sourceTopologyRegions.regions.size());
+  EXPECT_FALSE(network.sourceTopologyRegions.regions.front().internalIsolationSeamTopology.empty());
   ASSERT_EQ(1U,
             network.phaseFront.isolationSeamTransportCertificates.size());
   const auto &certificate =
       network.phaseFront.isolationSeamTransportCertificates.front();
-  EXPECT_EQ(network.topologyRegions.front().id,
+  EXPECT_EQ(network.sourceTopologyRegions.regions.front().id,
             certificate.sourceTopologyRegion);
-  EXPECT_EQ(network.topologyRegions.front().sourceComponent,
+  EXPECT_EQ(network.sourceTopologyRegions.regions.front().sourceComponent,
             certificate.sourceComponent);
-  EXPECT_EQ(network.topologyRegions.front().internalIsolationSeamTopology.front(),
+  EXPECT_EQ(network.sourceTopologyRegions.regions.front().internalIsolationSeamTopology.front(),
             certificate.sourceEdgeTopology);
   EXPECT_GE(certificate.sourceEdgeIndex, 0);
   EXPECT_NE(certificate.firstIsolationSheet,
@@ -2904,7 +2897,7 @@ TEST(SurfaceCellsPhase10,
   ASSERT_TRUE(materialized.success) << materialized.failure;
   EXPECT_EQ(network.phaseFront.isolationSeamTransportCertificates.size(),
             materialized.consumedInternalIsolationSeams);
-  EXPECT_EQ(network.phaseFront.topologyRegions.size(),
+  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.size(),
             materialized.consumedTopologyRegions);
   EXPECT_EQ(1, materialized.connectedComponents);
   EXPECT_EQ(1, materialized.boundaryLoopCount);
@@ -3442,15 +3435,15 @@ TEST(SurfaceCellsPhase10,
   forward.sourceSheet = 7;
   forward.quarterTurnRotation = 0;
   forward.latticeTranslation = Eigen::Vector2i(8, 0);
-  forward.sourceRouteEdges = {4, 6, 8, 10};
-  forward.sourceRouteTopology = {40, 60, 80, 100};
+  forward.routeTransitionIndices = {4, 6, 8, 10};
+  forward.routeTopologyKeys = {40, 60, 80, 100};
   forward.cutSourceEdges = {12, 14};
   forward.cutSourceTopology = {120, 140};
 
   SurfacePeriodicHolonomy reverse = forward;
   reverse.latticeTranslation = Eigen::Vector2i(-8, 0);
-  std::reverse(reverse.sourceRouteEdges.begin(), reverse.sourceRouteEdges.end());
-  std::reverse(reverse.sourceRouteTopology.begin(), reverse.sourceRouteTopology.end());
+  std::reverse(reverse.routeTransitionIndices.begin(), reverse.routeTransitionIndices.end());
+  std::reverse(reverse.routeTopologyKeys.begin(), reverse.routeTopologyKeys.end());
   std::reverse(reverse.cutSourceEdges.begin(), reverse.cutSourceEdges.end());
   std::reverse(reverse.cutSourceTopology.begin(), reverse.cutSourceTopology.end());
 
@@ -3476,8 +3469,8 @@ TEST(SurfaceCellsPhase10,
     relation.sourceComponent = 0;
     relation.sourceSheet = sheet;
     relation.latticeTranslation = Eigen::Vector2i(6, 0);
-    relation.sourceRouteEdges = {sheet * 10 + 1};
-    relation.sourceRouteTopology = {routeKey};
+    relation.routeTransitionIndices = {sheet * 10 + 1};
+    relation.routeTopologyKeys = {routeKey};
     relation.cutSourceEdges = {sheet * 10 + 2};
     relation.cutSourceTopology = {cutKey};
     return relation;
@@ -3504,8 +3497,8 @@ TEST(SurfaceCellsPhase10,
     relation.sourceComponent = 0;
     relation.sourceSheet = 0;
     relation.latticeTranslation = Eigen::Vector2i(4, 0);
-    relation.sourceRouteEdges = {edge};
-    relation.sourceRouteTopology = {topology};
+    relation.routeTransitionIndices = {edge};
+    relation.routeTopologyKeys = {topology};
     relation.cutSourceEdges = {edge + 1};
     relation.cutSourceTopology = {topology + 1};
     return relation;
@@ -3534,8 +3527,8 @@ TEST(SurfaceCellsPhase10,
   first.sourceComponent = 0;
   first.sourceSheet = 0;
   first.latticeTranslation = Eigen::Vector2i(4, 0);
-  first.sourceRouteEdges = {1, 2};
-  first.sourceRouteTopology = {10, 20};
+  first.routeTransitionIndices = {1, 2};
+  first.routeTopologyKeys = {10, 20};
   first.cutSourceEdges = {3};
   first.cutSourceTopology = {30};
   SurfacePeriodicHolonomy conflicting = first;
@@ -3789,8 +3782,8 @@ PeriodicHolonomySnapshot periodic_holonomy_snapshot(
   return {holonomy.quarterTurnRotation,
           holonomy.latticeTranslation.x(),
           holonomy.latticeTranslation.y(),
-          holonomy.sourceRouteEdges,
-          holonomy.sourceRouteTopology,
+          holonomy.routeTransitionIndices,
+          holonomy.routeTopologyKeys,
           holonomy.cutSourceEdges,
           holonomy.cutSourceTopology};
 }
@@ -3857,9 +3850,9 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_EQ(1U, network.phaseFront.periodicHolonomies.size());
   const auto &holonomy = network.phaseFront.periodicHolonomies.front();
   EXPECT_EQ(0, holonomy.quarterTurnRotation);
-  EXPECT_EQ(periodic_route_topology(fixture), holonomy.sourceRouteTopology);
+  EXPECT_EQ(periodic_route_topology(fixture), holonomy.routeTopologyKeys);
   EXPECT_EQ(independent_periodic_route_compact_ids(fixture),
-            holonomy.sourceRouteEdges);
+            holonomy.routeTransitionIndices);
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
@@ -3905,9 +3898,9 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   EXPECT_EQ(0, forward.phaseFront.periodicHolonomies.front().quarterTurnRotation);
   EXPECT_EQ(0, reverse.phaseFront.periodicHolonomies.front().quarterTurnRotation);
   EXPECT_EQ(periodic_route_topology(forwardFixture),
-            forward.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+            forward.phaseFront.periodicHolonomies.front().routeTopologyKeys);
   EXPECT_EQ(periodic_route_topology(reverseFixture),
-            reverse.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+            reverse.phaseFront.periodicHolonomies.front().routeTopologyKeys);
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
@@ -3960,13 +3953,13 @@ TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
   ASSERT_EQ(expectedTopology, periodic_route_topology(reordered));
   ASSERT_EQ(expectedCompact, independent_periodic_route_compact_ids(reordered));
   EXPECT_EQ(expectedTopology,
-            baseline.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+            baseline.phaseFront.periodicHolonomies.front().routeTopologyKeys);
   EXPECT_EQ(expectedTopology,
-            permuted.phaseFront.periodicHolonomies.front().sourceRouteTopology);
+            permuted.phaseFront.periodicHolonomies.front().routeTopologyKeys);
   EXPECT_EQ(expectedCompact,
-            baseline.phaseFront.periodicHolonomies.front().sourceRouteEdges);
+            baseline.phaseFront.periodicHolonomies.front().routeTransitionIndices);
   EXPECT_EQ(expectedCompact,
-            permuted.phaseFront.periodicHolonomies.front().sourceRouteEdges);
+            permuted.phaseFront.periodicHolonomies.front().routeTransitionIndices);
 }
 
 TEST(SurfaceCellPeriodicHolonomyRouteTransportAuthorityMigration,
@@ -4075,14 +4068,14 @@ TEST(SurfaceCellsPhase10,
       << directional::geometry::surface_phase_front_failure_reason_name(
              phaseFront.failure.reason);
   EXPECT_TRUE(phaseFront.succeeded);
-  ASSERT_FALSE(network.topologyRegions.empty());
-  EXPECT_EQ(network.topologyRegions.size(),
+  ASSERT_FALSE(network.sourceTopologyRegions.regions.empty());
+  EXPECT_EQ(network.sourceTopologyRegions.regions.size(),
             result.diagnostics.surfaceCellTopologyRegionCount);
   ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()),
-            network.sourceFaceTopologyRegions.size());
-  for (const int region : network.sourceFaceTopologyRegions) EXPECT_GE(region, 0);
+            network.sourceTopologyRegions.regionByFace.size());
+  for (const int region : network.sourceTopologyRegions.regionByFace) EXPECT_GE(region, 0);
   bool sawMultiSheetRegionWithInternalSeam = false;
-  for (const auto &region : network.topologyRegions) {
+  for (const auto &region : network.sourceTopologyRegions.regions) {
     if (region.isolationSheets.size() > 1U &&
         !region.internalIsolationSeamTopology.empty()) {
       sawMultiSheetRegionWithInternalSeam = true;
@@ -4131,11 +4124,11 @@ TEST(SurfaceCellsPhase10,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             valid.phaseFront.disposition);
-  ASSERT_FALSE(valid.phaseFront.periodicHolonomies.front().sourceRouteEdges.empty());
+  ASSERT_FALSE(valid.phaseFront.periodicHolonomies.front().routeTransitionIndices.empty());
   const auto &holonomy = valid.phaseFront.periodicHolonomies.front();
-  ASSERT_EQ(holonomy.sourceRouteEdges.size(),
-            holonomy.sourceRouteTopology.size());
-  const std::uint64_t tamperedTopology = holonomy.sourceRouteTopology.front();
+  ASSERT_EQ(holonomy.routeTransitionIndices.size(),
+            holonomy.routeTopologyKeys.size());
+  const std::uint64_t tamperedTopology = holonomy.routeTopologyKeys.front();
   const auto sourceIncidence = directional::geometry::
       surface_cell_tracing_detail::edge_faces(mesh.F);
   const auto incident = sourceIncidence.find(tamperedTopology);
@@ -4146,7 +4139,7 @@ TEST(SurfaceCellsPhase10,
       surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
   const auto expectedRouteIndex = sourceWide.find(tamperedTopology);
   ASSERT_NE(sourceWide.end(), expectedRouteIndex);
-  EXPECT_EQ(expectedRouteIndex->second, holonomy.sourceRouteEdges.front());
+  EXPECT_EQ(expectedRouteIndex->second, holonomy.routeTransitionIndices.front());
 
   auto transition = crossField.edgeTransitions.end();
   int transitionCount = 0;
@@ -4552,8 +4545,8 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
     for (const auto &state : cell.lattice) {
       ASSERT_TRUE(state.sourceChart.has_value());
       EXPECT_EQ(0U,
-                directional::authority::LegacyAuthorityAdapters::to_legacy_index(
-                    state.sourceChart.value()));
+                (
+                    state.sourceChart.value()).index());
     }
   }
 }
@@ -4605,8 +4598,8 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
       ASSERT_GE(sourceFace, 0);
       ASSERT_LT(sourceFace, fixture.mesh.F.rows());
       const std::size_t typedChart =
-          directional::authority::LegacyAuthorityAdapters::to_legacy_index(
-              state.sourceChart.value());
+          (
+              state.sourceChart.value()).index();
       EXPECT_EQ(
           static_cast<std::size_t>(
               expectedChartByFace[static_cast<std::size_t>(sourceFace)]),
@@ -4626,16 +4619,14 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
   using directional::authority::AuthorityDomain;
   using directional::authority::DomainErrorCode;
   using directional::authority::FieldChartId;
-  using directional::authority::LegacyAuthorityAdapters;
-
-  const auto chart = LegacyAuthorityAdapters::field_chart(0, 1);
-  const auto face = LegacyAuthorityAdapters::source_face(0, 1);
+  const auto chart = directional::authority::FieldChartId::from_index(0, 1);
+  const auto face = directional::authority::SourceFaceId::from_index(0, 1);
   ASSERT_TRUE(chart);
   ASSERT_TRUE(face);
-  EXPECT_EQ(LegacyAuthorityAdapters::to_legacy_index(chart.value()),
-            LegacyAuthorityAdapters::to_legacy_index(face.value()));
+  EXPECT_EQ((chart.value()).index(),
+            (face.value()).index());
 
-  const auto wrongDomain = LegacyAuthorityAdapters::checked<FieldChartId>(
+  const auto wrongDomain = FieldChartId::from_domain_index(
       AuthorityDomain::SourceFace, 0, 1);
   ASSERT_FALSE(wrongDomain);
   EXPECT_EQ(DomainErrorCode::DomainMismatch, wrongDomain.error().code);
@@ -4648,20 +4639,20 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
   EXPECT_FALSE(state.sourceChart.has_value());
 
   const auto negative =
-      directional::authority::LegacyAuthorityAdapters::field_chart(-1, 3);
+      directional::authority::FieldChartId::from_index(-1, 3);
   const auto outOfRange =
-      directional::authority::LegacyAuthorityAdapters::field_chart(3, 3);
+      directional::authority::FieldChartId::from_index(3, 3);
   EXPECT_FALSE(negative);
   EXPECT_FALSE(outOfRange);
 
   const auto valid =
-      directional::authority::LegacyAuthorityAdapters::field_chart(0, 3);
+      directional::authority::FieldChartId::from_index(0, 3);
   ASSERT_TRUE(valid);
   state.sourceChart = valid.value();
   ASSERT_TRUE(state.sourceChart.has_value());
   EXPECT_EQ(0U,
-            directional::authority::LegacyAuthorityAdapters::to_legacy_index(
-                state.sourceChart.value()));
+            (
+                state.sourceChart.value()).index());
 }
 
 TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
@@ -4699,8 +4690,8 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
         ASSERT_TRUE(state.sourceChart.has_value());
         EXPECT_EQ(
             0U,
-            directional::authority::LegacyAuthorityAdapters::to_legacy_index(
-                state.sourceChart.value()));
+            (
+                state.sourceChart.value()).index());
       }
     }
   }
@@ -4721,8 +4712,8 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
     for (const auto &state : cell.lattice) {
       ASSERT_TRUE(state.sourceChart.has_value());
       EXPECT_EQ(0U,
-                directional::authority::LegacyAuthorityAdapters::to_legacy_index(
-                    state.sourceChart.value()));
+                (
+                    state.sourceChart.value()).index());
     }
   }
 
@@ -4753,8 +4744,8 @@ TEST(SurfaceCellPhaseFrontFieldChartAuthorityMigration,
     for (const auto &state : cell.lattice) {
       ASSERT_TRUE(state.sourceChart.has_value());
       EXPECT_EQ(0U,
-                directional::authority::LegacyAuthorityAdapters::to_legacy_index(
-                    state.sourceChart.value()));
+                (
+                    state.sourceChart.value()).index());
     }
   }
 }
@@ -4816,8 +4807,7 @@ TEST(SurfaceCellPhaseFrontCellSourceScopeAuthorityMigration,
     EXPECT_EQ(2, legacy_phase_front_component(cell));
     EXPECT_EQ(2, legacy_phase_front_sheet(cell));
   }
-  const auto wrongDomain = directional::authority::LegacyAuthorityAdapters::
-      checked<directional::authority::IsolationSheetId>(
+  const auto wrongDomain = directional::authority::IsolationSheetId::from_domain_index(
           directional::authority::AuthorityDomain::SourceComponent, 2, 3);
   ASSERT_FALSE(wrongDomain);
   EXPECT_EQ(directional::authority::DomainErrorCode::DomainMismatch,
@@ -5070,8 +5060,7 @@ TEST(SurfaceCellPhaseFrontEdgeSourceScopeAuthorityMigration,
     EXPECT_EQ(2, legacy_phase_front_component(edge));
     EXPECT_EQ(2, legacy_phase_front_sheet(edge));
   }
-  const auto wrongDomain = directional::authority::LegacyAuthorityAdapters::
-      checked<directional::authority::IsolationSheetId>(
+  const auto wrongDomain = directional::authority::IsolationSheetId::from_domain_index(
           directional::authority::AuthorityDomain::SourceComponent, 2, 3);
   ASSERT_FALSE(wrongDomain);
   EXPECT_EQ(directional::authority::DomainErrorCode::DomainMismatch,
@@ -5255,7 +5244,7 @@ TEST(SurfaceCellPhaseFrontEdgeSourceScopeAuthorityMigration,
   const std::uint64_t baselineHash = directional::pipeline::hash_trace_network(network);
   auto changed = network;
   const auto otherComponent =
-      directional::authority::LegacyAuthorityAdapters::source_component(1, 3);
+      directional::authority::SourceComponentId::from_index(1, 3);
   ASSERT_TRUE(otherComponent);
   changed.phaseFront.edges.front().sourceComponent = otherComponent.value();
   EXPECT_NE(baselineHash, directional::pipeline::hash_trace_network(changed));
@@ -5278,7 +5267,7 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(1U, network.phaseFront.sourceTopologyRegions.regions.size());
   ASSERT_FALSE(network.phaseFront.edges.empty());
   std::map<int, const directional::geometry::SurfacePhaseFrontCell *> cellsById;
   for (const auto &cell : network.phaseFront.cells) {
@@ -5315,7 +5304,7 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
 
   std::set<int> observedRegions;
   bool sawNumericCoincidence = false;
@@ -5326,10 +5315,9 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
     const int sheet = legacy_phase_front_sheet(edge);
     observedRegions.insert(region);
     sawNumericCoincidence |= region == sheet;
-    const auto wrongDomain = directional::authority::LegacyAuthorityAdapters::
-        checked<directional::authority::TopologyRegionId>(
+    const auto wrongDomain = directional::authority::TopologyRegionId::from_domain_index(
             directional::authority::AuthorityDomain::IsolationSheet, sheet,
-            network.phaseFront.topologyRegions.size());
+            network.phaseFront.sourceTopologyRegions.regions.size());
     ASSERT_FALSE(wrongDomain);
     EXPECT_EQ(directional::authority::DomainErrorCode::DomainMismatch,
               wrongDomain.error().code);
@@ -5366,9 +5354,8 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
   EXPECT_FALSE(missingResult.success);
   EXPECT_EQ("InvalidAuthoritativePhaseFrontSideAuthority", missingResult.failure);
 
-  const std::size_t regionExtent = network.phaseFront.topologyRegions.size();
-  const auto staleRegion = directional::authority::LegacyAuthorityAdapters::
-      topology_region(static_cast<std::int64_t>(regionExtent),
+  const std::size_t regionExtent = network.phaseFront.sourceTopologyRegions.regions.size();
+  const auto staleRegion = directional::authority::TopologyRegionId::from_index(static_cast<std::int64_t>(regionExtent),
                       regionExtent + 1U);
   ASSERT_TRUE(staleRegion);
   auto invalid = network.phaseFront;
@@ -5414,7 +5401,7 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
 
   const auto semanticSnapshot = [](const auto &network) {
     std::map<int, std::pair<std::uint64_t, int>> result;
-    for (const auto &region : network.phaseFront.topologyRegions) {
+    for (const auto &region : network.phaseFront.sourceTopologyRegions.regions) {
       result[region.id].first = region.structuralHash;
     }
     for (const auto &edge : network.phaseFront.edges) {
@@ -5460,7 +5447,7 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
   int pairedHardEdges = 0;
   for (const auto &edge : network.phaseFront.edges) {
     if (edge.boundaryKind !=
@@ -5503,14 +5490,14 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition);
-  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
   ASSERT_FALSE(network.phaseFront.edges.empty());
   for (const auto &edge : network.phaseFront.edges) {
     ASSERT_TRUE(edge.sourceTopologyRegion.has_value());
     ASSERT_GE(edge.from.face, 0);
     ASSERT_LT(edge.from.face,
-              static_cast<int>(network.phaseFront.sourceTopologyRegionByFace.size()));
-    EXPECT_EQ(network.phaseFront.sourceTopologyRegionByFace[
+              static_cast<int>(network.phaseFront.sourceTopologyRegions.regionByFace.size()));
+    EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regionByFace[
                   static_cast<std::size_t>(edge.from.face)],
               legacy_phase_front_topology_region(edge));
   }
@@ -5520,7 +5507,7 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
           mesh.V, mesh.F, network.phaseFront, options.sourceFaceComponents,
           options.sourceFaceSheets);
   ASSERT_TRUE(materialized.success) << materialized.failure;
-  EXPECT_EQ(network.phaseFront.topologyRegions.size(),
+  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.size(),
             materialized.consumedTopologyRegions);
 
   const std::uint64_t baselineHash =
@@ -5530,8 +5517,8 @@ TEST(SurfaceCellPhaseFrontEdgeTopologyRegionAuthorityMigration,
       changed.phaseFront.edges.front());
   const int replacement = current == 0 ? 1 : 0;
   const auto typedReplacement =
-      directional::authority::LegacyAuthorityAdapters::topology_region(
-          replacement, changed.phaseFront.topologyRegions.size());
+      directional::authority::TopologyRegionId::from_index(
+          replacement, changed.phaseFront.sourceTopologyRegions.regions.size());
   ASSERT_TRUE(typedReplacement);
   changed.phaseFront.edges.front().sourceTopologyRegion =
       typedReplacement.value();
@@ -5561,7 +5548,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(1U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(1U, network.phaseFront.sourceTopologyRegions.regions.size());
   ASSERT_FALSE(network.phaseFront.cells.empty());
   for (const auto &cell : network.phaseFront.cells) {
     ASSERT_TRUE(cell.sourceTopologyRegion.has_value());
@@ -5593,7 +5580,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
 
   std::set<int> observedRegions;
   bool sawNumericCoincidence = false;
@@ -5604,10 +5591,9 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
     const int sheet = legacy_phase_front_sheet(cell);
     observedRegions.insert(region);
     sawNumericCoincidence |= region == sheet;
-    const auto wrongDomain = directional::authority::LegacyAuthorityAdapters::
-        checked<directional::authority::TopologyRegionId>(
+    const auto wrongDomain = directional::authority::TopologyRegionId::from_domain_index(
             directional::authority::AuthorityDomain::IsolationSheet, sheet,
-            network.phaseFront.topologyRegions.size());
+            network.phaseFront.sourceTopologyRegions.regions.size());
     ASSERT_FALSE(wrongDomain);
     EXPECT_EQ(directional::authority::DomainErrorCode::DomainMismatch,
               wrongDomain.error().code);
@@ -5644,9 +5630,9 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
   EXPECT_FALSE(missingResult.success);
   EXPECT_EQ("InvalidAuthoritativePhaseFrontCell", missingResult.failure);
 
-  const std::size_t regionExtent = network.phaseFront.topologyRegions.size();
+  const std::size_t regionExtent = network.phaseFront.sourceTopologyRegions.regions.size();
   const auto staleRegion =
-      directional::authority::LegacyAuthorityAdapters::topology_region(
+      directional::authority::TopologyRegionId::from_index(
           static_cast<std::int64_t>(regionExtent), regionExtent + 1U);
   ASSERT_TRUE(staleRegion);
   auto invalid = network.phaseFront;
@@ -5692,7 +5678,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
 
   const auto semanticSnapshot = [](const auto &network) {
     std::map<int, std::pair<std::uint64_t, int>> result;
-    for (const auto &region : network.phaseFront.topologyRegions) {
+    for (const auto &region : network.phaseFront.sourceTopologyRegions.regions) {
       result[region.id].first = region.structuralHash;
     }
     for (const auto &cell : network.phaseFront.cells) {
@@ -5722,7 +5708,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
             network.phaseFront.disposition)
       << directional::geometry::surface_phase_front_failure_reason_name(
              network.phaseFront.failure.reason);
-  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
   std::map<int, const directional::geometry::SurfacePhaseFrontCell *> cellsById;
   std::set<int> cellRegions;
   for (const auto &cell : network.phaseFront.cells) {
@@ -5756,7 +5742,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
       mesh.V, mesh.F, crossField, targetSize, options);
   ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
             network.phaseFront.disposition);
-  ASSERT_EQ(2U, network.phaseFront.topologyRegions.size());
+  ASSERT_EQ(2U, network.phaseFront.sourceTopologyRegions.regions.size());
   ASSERT_FALSE(network.phaseFront.cells.empty());
   for (const auto &cell : network.phaseFront.cells) {
     ASSERT_TRUE(cell.sourceTopologyRegion.has_value());
@@ -5765,9 +5751,9 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
       ASSERT_GE(corner.face, 0);
       ASSERT_LT(
           corner.face,
-          static_cast<int>(network.phaseFront.sourceTopologyRegionByFace.size()));
+          static_cast<int>(network.phaseFront.sourceTopologyRegions.regionByFace.size()));
       EXPECT_EQ(
-          network.phaseFront.sourceTopologyRegionByFace[
+          network.phaseFront.sourceTopologyRegions.regionByFace[
               static_cast<std::size_t>(corner.face)],
           rawRegion);
     }
@@ -5778,7 +5764,7 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
           mesh.V, mesh.F, network.phaseFront, options.sourceFaceComponents,
           options.sourceFaceSheets);
   ASSERT_TRUE(materialized.success) << materialized.failure;
-  EXPECT_EQ(network.phaseFront.topologyRegions.size(),
+  EXPECT_EQ(network.phaseFront.sourceTopologyRegions.regions.size(),
             materialized.consumedTopologyRegions);
 
   const std::uint64_t baselineHash =
@@ -5788,8 +5774,8 @@ TEST(SurfaceCellPhaseFrontCellTopologyRegionAuthorityMigration,
       legacy_phase_front_topology_region(changed.phaseFront.cells.front());
   const int replacement = current == 0 ? 1 : 0;
   const auto typedReplacement =
-      directional::authority::LegacyAuthorityAdapters::topology_region(
-          replacement, changed.phaseFront.topologyRegions.size());
+      directional::authority::TopologyRegionId::from_index(
+          replacement, changed.phaseFront.sourceTopologyRegions.regions.size());
   ASSERT_TRUE(typedReplacement);
   changed.phaseFront.cells.front().sourceTopologyRegion =
       typedReplacement.value();

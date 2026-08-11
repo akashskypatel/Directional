@@ -1,4 +1,3 @@
-#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/geometry/SurfaceMeshOptimizer.h>
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
@@ -160,7 +159,7 @@ SurfacePoint source_vertex_point(
   return point;
 }
 
-directional::geometry::SurfaceCellSourceChart source_chart(
+directional::geometry::SurfaceCellProjectionChart source_chart(
     const int face, const std::vector<int> &components,
     const std::vector<int> &sheets) {
   return {components[static_cast<std::size_t>(face)], face,
@@ -174,7 +173,7 @@ SourceHardRailChartEquivalence hard_rail_equivalence(
   equivalence.railId = railId;
   equivalence.firstFrontEdge = firstFrontEdge;
   equivalence.secondFrontEdge = secondFrontEdge;
-  equivalence.sourceRouteTopology = {topology};
+  equivalence.routeTopologyKeys = {topology};
   return equivalence;
 }
 
@@ -1002,7 +1001,7 @@ TEST(SurfaceMeshOptimizerPhase22,
   HardRailValidationFixture wrongRoute = make_hard_rail_validation_fixture();
   wrongRoute.authority[1]
       .hardRailEquivalences[0]
-      .sourceRouteTopology = {source_edge_key(0, 1)};
+      .routeTopologyKeys = {source_edge_key(0, 1)};
   expect_local_sheet_mismatch(wrongRoute);
 
   HardRailValidationFixture nonreciprocal =

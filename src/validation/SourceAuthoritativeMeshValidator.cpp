@@ -678,13 +678,13 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     if (equivalence.firstFrontEdge < 0 ||
         equivalence.firstFrontEdge >= equivalence.secondFrontEdge ||
         equivalence.railId < 0 ||
-        !route_is_well_formed(equivalence.sourceRouteTopology)) {
+        !route_is_well_formed(equivalence.routeTopologyKeys)) {
       return false;
     }
     bool touchesPoint = false;
     std::pair<int, int> separated{-1, -1};
     for (const std::uint64_t topology :
-         equivalence.sourceRouteTopology) {
+         equivalence.routeTopologyKeys) {
       const auto incidence = sourceEdgeFaces.find(topology);
       if (hardFeatureEdges == nullptr ||
           hardFeatureEdges->count(topology) == 0U ||
@@ -719,7 +719,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
   const auto initialize_scalar_state = [&]
       (const geometry::SurfacePoint &point,
        geometry::SurfacePointSourceSupport &support,
-       geometry::SourceChartId &declared, std::set<int> &scalarComponents,
+       geometry::SourceProjectionChart &declared, std::set<int> &scalarComponents,
        std::map<int, std::set<int>> &exactFaces) {
     if (point.face < 0 || point.face >= sourceFaces->rows()) {
       return false;
@@ -753,7 +753,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     for (std::size_t pointIndex = 0; pointIndex < points.size(); ++pointIndex) {
       const geometry::SurfacePoint *point = points[pointIndex];
       geometry::SurfacePointSourceSupport support;
-      geometry::SourceChartId declared;
+      geometry::SourceProjectionChart declared;
       std::set<int> scalarComponents;
       std::map<int, std::set<int>> exactFaces;
       if (point == nullptr ||
@@ -800,14 +800,14 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
       }
 
       geometry::SurfacePointSourceSupport support;
-      geometry::SourceChartId declared;
+      geometry::SourceProjectionChart declared;
       std::set<int> scalarComponents;
       std::map<int, std::set<int>> scalarFaces;
       if (!initialize_scalar_state((*completePoints)[vertex], support,
                                    declared, scalarComponents, scalarFaces)) {
         return {};
       }
-      const geometry::SurfaceCellSourceChart declaredChart{
+      const geometry::SurfaceCellProjectionChart declaredChart{
           declared.component, declared.sourceFace, declared.localSheet};
       if (!std::binary_search(authority.sourceCharts.begin(),
                               authority.sourceCharts.end(), declaredChart)) {
@@ -815,7 +815,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
       }
 
       AuthorityGraph &graph = graphs[vertex];
-      for (const geometry::SurfaceCellSourceChart &chart :
+      for (const geometry::SurfaceCellProjectionChart &chart :
            authority.sourceCharts) {
         if (!chart.valid() || chart.sourceFace >= sourceFaces->rows() ||
             !std::binary_search(support.supportedFaces.begin(),
@@ -823,7 +823,7 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
                                 chart.sourceFace)) {
           return {};
         }
-        const geometry::SourceChartId actual =
+        const geometry::SourceProjectionChart actual =
             transitionGraph.chart(chart.sourceFace);
         if (!actual.valid() || actual.component != chart.sourceComponent ||
             actual.localSheet != chart.localSheet ||

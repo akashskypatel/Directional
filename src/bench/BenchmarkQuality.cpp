@@ -1009,7 +1009,7 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
     append_ints(record, lineage.sourceTopologyRegions);
     append_ints(record, lineage.sourceIsolationSheets);
 
-    std::vector<geometry::SurfaceCellSourceChart> charts =
+    std::vector<geometry::SurfaceCellProjectionChart> charts =
         lineage.sourceCharts;
     std::sort(charts.begin(), charts.end());
     charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
@@ -1025,9 +1025,9 @@ benchmark_output_semantic_hash(const pipeline::RemeshResult &result) {
           static_cast<int>(equivalence.kind), equivalence.quarterTurnRotation,
           equivalence.latticeTranslation.x(),
           equivalence.latticeTranslation.y(),
-          static_cast<std::int64_t>(equivalence.sourceRouteTopology.size())};
+          static_cast<std::int64_t>(equivalence.routeTopologyKeys.size())};
       for (const std::uint64_t topology :
-           equivalence.sourceRouteTopology) {
+           equivalence.routeTopologyKeys) {
         relation.push_back(static_cast<std::int64_t>(topology));
       }
       equivalenceRecords.push_back(std::move(relation));

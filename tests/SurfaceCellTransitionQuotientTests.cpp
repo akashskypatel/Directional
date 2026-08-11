@@ -1,7 +1,5 @@
 #include "BenchmarkQuality.h"
 #include "TestFixturePaths.h"
-
-#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/io/ReadOBJ.h>
 #include <directional/pipeline/RemeshPipeline.h>
 #include <directional/validation/MeshValidator.h>
@@ -348,18 +346,18 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
        cellIndex < fixture.network.phaseFront.cells.size(); ++cellIndex) {
     const auto &cell = fixture.network.phaseFront.cells[cellIndex];
     const auto region = std::find_if(
-        fixture.network.phaseFront.topologyRegions.begin(),
-        fixture.network.phaseFront.topologyRegions.end(),
+        fixture.network.phaseFront.sourceTopologyRegions.regions.begin(),
+        fixture.network.phaseFront.sourceTopologyRegions.regions.end(),
         [&](const auto &candidate) {
           if (!cell.sourceTopologyRegion.has_value()) return false;
           const auto typedCandidate =
-              directional::authority::LegacyAuthorityAdapters::topology_region(
+              directional::authority::TopologyRegionId::from_index(
                   candidate.id,
-                  fixture.network.phaseFront.topologyRegions.size());
+                  fixture.network.phaseFront.sourceTopologyRegions.regions.size());
           return typedCandidate &&
                  typedCandidate.value() == cell.sourceTopologyRegion.value();
         });
-    if (region == fixture.network.phaseFront.topologyRegions.end() ||
+    if (region == fixture.network.phaseFront.sourceTopologyRegions.regions.end() ||
         region->sourceFaces.empty()) {
       continue;
     }
@@ -379,15 +377,15 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
       for (std::size_t segmentIndex = 0; segmentIndex < path.size();
            ++segmentIndex) {
         const auto &segment = path[segmentIndex];
-        if (segment.transitionSourceEdges.size() !=
-            segment.transitionSourceTopology.size()) {
+        if (segment.entryRouteTransitionIndices.size() !=
+            segment.entryRouteTopologyKeys.size()) {
           throw std::runtime_error(
               "Transition route numeric/topology lengths differ");
         }
         for (std::size_t route = 0;
-             route < segment.transitionSourceTopology.size(); ++route) {
+             route < segment.entryRouteTopologyKeys.size(); ++route) {
           const std::uint64_t topology =
-              segment.transitionSourceTopology[route];
+              segment.entryRouteTopologyKeys[route];
           const auto globalIndex = sourceWide.find(topology);
           const auto localIndex = regionLocal.find(topology);
           const auto incident = sourceIncidence.find(topology);
@@ -395,7 +393,7 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
               localIndex == regionLocal.end() ||
               incident == sourceIncidence.end() || incident->second[0] < 0 ||
               incident->second[1] < 0 ||
-              segment.transitionSourceEdges[route] != globalIndex->second) {
+              segment.entryRouteTransitionIndices[route] != globalIndex->second) {
             continue;
           }
 
@@ -454,21 +452,21 @@ bool replace_transition_index(SurfacePhaseFrontResult &phaseFront,
   auto &path = cell.boundaryPaths[witness.side];
   if (witness.segment >= path.size()) return false;
   auto &segment = path[witness.segment];
-  if (segment.transitionSourceEdges.size() !=
-          segment.transitionSourceTopology.size() ||
-      witness.route >= segment.transitionSourceEdges.size() ||
-      segment.transitionSourceTopology[witness.route] != witness.topology ||
-      segment.transitionSourceEdges[witness.route] !=
+  if (segment.entryRouteTransitionIndices.size() !=
+          segment.entryRouteTopologyKeys.size() ||
+      witness.route >= segment.entryRouteTransitionIndices.size() ||
+      segment.entryRouteTopologyKeys[witness.route] != witness.topology ||
+      segment.entryRouteTransitionIndices[witness.route] !=
           witness.sourceWideCompact ||
-      segment.transitionSourceEdge != segment.transitionSourceEdges.back()) {
+      segment.entryTransitionIndex != segment.entryRouteTransitionIndices.back()) {
     return false;
   }
-  segment.transitionSourceEdges[witness.route] = replacement;
-  if (witness.route + 1U == segment.transitionSourceEdges.size()) {
-    segment.transitionSourceEdge = replacement;
+  segment.entryRouteTransitionIndices[witness.route] = replacement;
+  if (witness.route + 1U == segment.entryRouteTransitionIndices.size()) {
+    segment.entryTransitionIndex = replacement;
   }
-  return segment.transitionSourceEdges[witness.route] == replacement &&
-         segment.transitionSourceTopology[witness.route] == witness.topology;
+  return segment.entryRouteTransitionIndices[witness.route] == replacement &&
+         segment.entryRouteTopologyKeys[witness.route] == witness.topology;
 }
 
 directional::pipeline::RemeshResult semantic_two_component_result() {
@@ -561,12 +559,12 @@ TEST(SurfaceCellTransitionQuotient,
   const auto &witnessPath = witnessCell.boundaryPaths[witness.side];
   ASSERT_LT(witness.segment, witnessPath.size());
   const auto &witnessSegment = witnessPath[witness.segment];
-  ASSERT_LT(witness.route, witnessSegment.transitionSourceEdges.size());
-  ASSERT_LT(witness.route, witnessSegment.transitionSourceTopology.size());
+  ASSERT_LT(witness.route, witnessSegment.entryRouteTransitionIndices.size());
+  ASSERT_LT(witness.route, witnessSegment.entryRouteTopologyKeys.size());
   EXPECT_EQ(witness.topology,
-            witnessSegment.transitionSourceTopology[witness.route]);
+            witnessSegment.entryRouteTopologyKeys[witness.route]);
   EXPECT_EQ(witness.sourceWideCompact,
-            witnessSegment.transitionSourceEdges[witness.route]);
+            witnessSegment.entryRouteTransitionIndices[witness.route]);
 
   const auto sourceIncidence = directional::geometry::
       surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
@@ -575,18 +573,18 @@ TEST(SurfaceCellTransitionQuotient,
   for (const auto &cell : fixture.network.phaseFront.cells) {
     for (const auto &path : cell.boundaryPaths) {
       for (const auto &segment : path) {
-        ASSERT_EQ(segment.transitionSourceEdges.size(),
-                  segment.transitionSourceTopology.size());
-        EXPECT_EQ(segment.transitionSourceEdges.empty()
+        ASSERT_EQ(segment.entryRouteTransitionIndices.size(),
+                  segment.entryRouteTopologyKeys.size());
+        EXPECT_EQ(segment.entryRouteTransitionIndices.empty()
                       ? -1
-                      : segment.transitionSourceEdges.back(),
-                  segment.transitionSourceEdge);
+                      : segment.entryRouteTransitionIndices.back(),
+                  segment.entryTransitionIndex);
         for (std::size_t route = 0;
-             route < segment.transitionSourceEdges.size(); ++route) {
+             route < segment.entryRouteTransitionIndices.size(); ++route) {
           const auto expected =
-              sourceWide.find(segment.transitionSourceTopology[route]);
+              sourceWide.find(segment.entryRouteTopologyKeys[route]);
           ASSERT_NE(expected, sourceWide.end());
-          EXPECT_EQ(expected->second, segment.transitionSourceEdges[route]);
+          EXPECT_EQ(expected->second, segment.entryRouteTransitionIndices[route]);
         }
       }
     }
@@ -598,8 +596,8 @@ TEST(SurfaceCellTransitionQuotient,
       continue;
     }
     observedGenuineBoundary = true;
-    EXPECT_FALSE(edge.sourceRouteTopology.empty());
-    EXPECT_TRUE(edge.sourceRouteEdges.empty());
+    EXPECT_FALSE(edge.routeTopologyKeys.empty());
+    EXPECT_TRUE(edge.routeTransitionIndices.empty());
   }
   EXPECT_TRUE(observedGenuineBoundary);
 
@@ -641,8 +639,8 @@ TEST(SurfaceCellTransitionQuotient,
     ++genuineBoundaries;
     EXPECT_TRUE(edge.exterior);
     EXPECT_LT(edge.oppositeEdge, 0);
-    EXPECT_FALSE(edge.sourceRouteTopology.empty());
-    EXPECT_TRUE(edge.sourceRouteEdges.empty());
+    EXPECT_FALSE(edge.routeTopologyKeys.empty());
+    EXPECT_TRUE(edge.routeTransitionIndices.empty());
   }
   EXPECT_GT(genuineBoundaries, 0U);
   const auto result = materialize(fixture, fixture.network.phaseFront);
@@ -659,7 +657,7 @@ TEST(SurfaceCellTransitionQuotient,
   const int boundary = first_edge_of_kind(
       tampered, SurfaceFrontBoundaryKind::GenuineSourceBoundary);
   ASSERT_GE(boundary, 0);
-  tampered.edges[static_cast<std::size_t>(boundary)].sourceRouteEdges.push_back(
+  tampered.edges[static_cast<std::size_t>(boundary)].routeTransitionIndices.push_back(
       0);
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
@@ -937,9 +935,9 @@ TEST(SurfaceCellTransitionQuotient,
   const auto &opposite = fixture.network.phaseFront.edges[
       static_cast<std::size_t>(edge.oppositeEdge)];
   EXPECT_NE(edge.sourceTopologyRegion, opposite.sourceTopologyRegion);
-  EXPECT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
-  EXPECT_EQ(opposite.sourceRouteTopology.size(),
-            opposite.sourceRouteEdges.size());
+  EXPECT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
+  EXPECT_EQ(opposite.routeTopologyKeys.size(),
+            opposite.routeTransitionIndices.size());
   const auto result = materialize(fixture, fixture.network.phaseFront);
   ASSERT_TRUE(result.success) << result.failure;
   EXPECT_EQ(1, result.connectedComponents);
@@ -996,7 +994,7 @@ TEST(SurfaceCellTransitionQuotient,
     EXPECT_TRUE(
         std::is_sorted(lineage.equivalences.begin(), lineage.equivalences.end()));
     for (const auto &equivalence : lineage.equivalences) {
-      foundSeamEquivalence |= !equivalence.sourceRouteTopology.empty();
+      foundSeamEquivalence |= !equivalence.routeTopologyKeys.empty();
     }
   }
   EXPECT_TRUE(foundSeamEquivalence);
@@ -1053,14 +1051,14 @@ TEST(SurfaceCellTransitionQuotient,
   edge.oppositeEdge = -1;
   edge.exterior = true;
   edge.boundaryKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
-  edge.sourceRouteTopology = {interiorTopology};
-  edge.sourceRouteEdges.clear();
+  edge.routeTopologyKeys = {interiorTopology};
+  edge.routeTransitionIndices.clear();
   auto &other = tampered.edges[static_cast<std::size_t>(opposite)];
   other.oppositeEdge = -1;
   other.exterior = true;
   other.boundaryKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
-  other.sourceRouteTopology = {interiorTopology};
-  other.sourceRouteEdges.clear();
+  other.routeTopologyKeys = {interiorTopology};
+  other.routeTransitionIndices.clear();
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("FalseAuthoritativeSourceBoundary", result.failure);
@@ -1202,7 +1200,7 @@ TEST(SurfaceCellTransitionQuotient,
   equivalence.periodicRelation = 1;
   equivalence.quarterTurnRotation = 1;
   equivalence.latticeTranslation = Eigen::Vector2i(2, -1);
-  equivalence.sourceRouteTopology = {
+  equivalence.routeTopologyKeys = {
       directional::pipeline::surface_cell_source_edge_key(0, 1)};
   mutation.outputVertexLineage.front().equivalences.push_back(equivalence);
   EXPECT_NE(directional::bench::benchmark_output_semantic_hash(baseline),
@@ -1218,17 +1216,17 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
   ASSERT_GE(hardRail, 0);
   const auto &edge =
       fixture.network.phaseFront.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.sourceRouteTopology.empty());
-  ASSERT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
+  ASSERT_FALSE(edge.routeTopologyKeys.empty());
+  ASSERT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
 
   const auto sourceIncidence = directional::geometry::
       surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
   const auto sourceTransitions = directional::geometry::
       surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
-  for (std::size_t index = 0; index < edge.sourceRouteTopology.size(); ++index) {
-    const auto expected = sourceTransitions.find(edge.sourceRouteTopology[index]);
+  for (std::size_t index = 0; index < edge.routeTopologyKeys.size(); ++index) {
+    const auto expected = sourceTransitions.find(edge.routeTopologyKeys[index]);
     ASSERT_NE(sourceTransitions.end(), expected);
-    EXPECT_EQ(expected->second, edge.sourceRouteEdges[index]);
+    EXPECT_EQ(expected->second, edge.routeTransitionIndices[index]);
   }
 
   const auto result = materialize(fixture, fixture.network.phaseFront);
@@ -1244,8 +1242,8 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
   ASSERT_GE(periodic, 0);
   const auto &edge =
       fixture.network.phaseFront.edges[static_cast<std::size_t>(periodic)];
-  ASSERT_FALSE(edge.sourceRouteTopology.empty());
-  ASSERT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
+  ASSERT_FALSE(edge.routeTopologyKeys.empty());
+  ASSERT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
   ASSERT_GE(edge.periodicRelation, 0);
   ASSERT_LT(static_cast<std::size_t>(edge.periodicRelation),
             fixture.network.phaseFront.periodicHolonomies.size());
@@ -1270,18 +1268,18 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
 
   SurfacePhaseFrontResult negative = fixture.network.phaseFront;
   auto &negativeEdge = negative.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(negativeEdge.sourceRouteEdges.empty());
-  negativeEdge.sourceRouteEdges.front() = -1;
+  ASSERT_FALSE(negativeEdge.routeTransitionIndices.empty());
+  negativeEdge.routeTransitionIndices.front() = -1;
   const auto negativeResult = materialize(fixture, negative);
   EXPECT_FALSE(negativeResult.success);
   EXPECT_EQ("InvalidHardRailAuthority", negativeResult.failure);
 
   SurfacePhaseFrontResult outOfRange = fixture.network.phaseFront;
   auto &outOfRangeEdge = outOfRange.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(outOfRangeEdge.sourceRouteEdges.empty());
+  ASSERT_FALSE(outOfRangeEdge.routeTransitionIndices.empty());
   ASSERT_LE(sourceTransitions.size(),
             static_cast<std::size_t>(std::numeric_limits<int>::max()));
-  outOfRangeEdge.sourceRouteEdges.front() =
+  outOfRangeEdge.routeTransitionIndices.front() =
       static_cast<int>(sourceTransitions.size());
   const auto outOfRangeResult = materialize(fixture, outOfRange);
   EXPECT_FALSE(outOfRangeResult.success);
@@ -1296,8 +1294,8 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.sourceRouteTopology.empty());
-  edge.sourceRouteTopology.front() =
+  ASSERT_FALSE(edge.routeTopologyKeys.empty());
+  edge.routeTopologyKeys.front() =
       directional::pipeline::surface_cell_source_edge_key(
           0, static_cast<int>(fixture.mesh.V.rows()));
 
@@ -1314,13 +1312,13 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.sourceRouteEdges.empty());
+  ASSERT_FALSE(edge.routeTransitionIndices.empty());
 
   const auto sourceIncidence = directional::geometry::
       surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
   const auto sourceTransitions = directional::geometry::
       surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
-  const int current = edge.sourceRouteEdges.front();
+  const int current = edge.routeTransitionIndices.front();
   int alternate = -1;
   for (const auto &[topology, compact] : sourceTransitions) {
     (void)topology;
@@ -1331,7 +1329,7 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
   }
   ASSERT_GE(alternate, 0)
       << "hard-rail fixture must expose two valid compact transitions";
-  edge.sourceRouteEdges.front() = alternate;
+  edge.routeTransitionIndices.front() = alternate;
 
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
@@ -1346,10 +1344,10 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.sourceRouteTopology.empty());
-  ASSERT_EQ(edge.sourceRouteTopology.size(), edge.sourceRouteEdges.size());
-  edge.sourceRouteTopology.push_back(edge.sourceRouteTopology.front());
-  edge.sourceRouteEdges.push_back(edge.sourceRouteEdges.front());
+  ASSERT_FALSE(edge.routeTopologyKeys.empty());
+  ASSERT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
+  edge.routeTopologyKeys.push_back(edge.routeTopologyKeys.front());
+  edge.routeTransitionIndices.push_back(edge.routeTransitionIndices.front());
 
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);

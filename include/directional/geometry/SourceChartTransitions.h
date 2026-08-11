@@ -33,7 +33,7 @@ namespace directional::geometry {
 /** Exact per-face projection chart. Local-sheet remains authoritative
  * provenance. Exact manifold adjacency may cross local-sheet labels, while
  * component, hard-rail, boundary, and nonmanifold barriers remain authoritative. */
-struct SourceChartId {
+struct SourceProjectionChart {
   int component = -1;
   int localSheet = -1;
   int sourceFace = -1;
@@ -42,11 +42,11 @@ struct SourceChartId {
     return component >= 0 && localSheet >= 0 && sourceFace >= 0;
   }
 
-  friend bool operator==(const SourceChartId &lhs, const SourceChartId &rhs) {
+  friend bool operator==(const SourceProjectionChart &lhs, const SourceProjectionChart &rhs) {
     return std::tie(lhs.component, lhs.localSheet, lhs.sourceFace) ==
            std::tie(rhs.component, rhs.localSheet, rhs.sourceFace);
   }
-  friend bool operator<(const SourceChartId &lhs, const SourceChartId &rhs) {
+  friend bool operator<(const SourceProjectionChart &lhs, const SourceProjectionChart &rhs) {
     return std::tie(lhs.component, lhs.localSheet, lhs.sourceFace) <
            std::tie(rhs.component, rhs.localSheet, rhs.sourceFace);
   }
@@ -83,8 +83,8 @@ struct SourceEntityId {
 };
 
 struct SourceChartTransition {
-  SourceChartId from;
-  SourceChartId to;
+  SourceProjectionChart from;
+  SourceProjectionChart to;
   SourceEntityId sharedEntity;
   // +1 preserves the canonical source-edge endpoint order, -1 reverses it.
   int orientation = 1;
@@ -140,7 +140,7 @@ public:
                static_cast<std::size_t>(faces_->rows());
   }
 
-  [[nodiscard]] SourceChartId chart(const int sourceFace) const {
+  [[nodiscard]] SourceProjectionChart chart(const int sourceFace) const {
     if (!available() || sourceFace < 0 || sourceFace >= faces_->rows()) {
       return {};
     }
@@ -156,12 +156,12 @@ public:
     return faceChartComponent_[static_cast<std::size_t>(sourceFace)];
   }
 
-  [[nodiscard]] int chart_component(const SourceChartId &value) const {
+  [[nodiscard]] int chart_component(const SourceProjectionChart &value) const {
     if (!value.valid() || value.sourceFace < 0 || !available() ||
         value.sourceFace >= faces_->rows()) {
       return -1;
     }
-    const SourceChartId actual = chart(value.sourceFace);
+    const SourceProjectionChart actual = chart(value.sourceFace);
     if (actual.component != value.component ||
         actual.localSheet != value.localSheet) {
       return -1;
@@ -169,8 +169,8 @@ public:
     return chart_component(value.sourceFace);
   }
 
-  [[nodiscard]] bool same_chart_component(const SourceChartId &first,
-                                          const SourceChartId &second) const {
+  [[nodiscard]] bool same_chart_component(const SourceProjectionChart &first,
+                                          const SourceProjectionChart &second) const {
     const int a = chart_component(first);
     const int b = chart_component(second);
     return a >= 0 && a == b;
@@ -211,7 +211,7 @@ public:
     if (!available() || point.face < 0 || point.face >= faces_->rows()) {
       return entity;
     }
-    const SourceChartId sourceChart = chart(point.face);
+    const SourceProjectionChart sourceChart = chart(point.face);
     if ((point.component >= 0 && point.component != sourceChart.component) ||
         (point.sheet >= 0 && point.sheet != sourceChart.localSheet)) {
       return entity;
@@ -269,7 +269,7 @@ public:
     if (!sourceEntity.valid()) {
       return false;
     }
-    const SourceChartId targetChart = chart(targetFace);
+    const SourceProjectionChart targetChart = chart(targetFace);
     if (targetChart.component != sourceEntity.component) {
       return false;
     }
@@ -691,7 +691,7 @@ private:
               });
   }
 
-  [[nodiscard]] SourceChartId chart_unchecked(const int sourceFace) const {
+  [[nodiscard]] SourceProjectionChart chart_unchecked(const int sourceFace) const {
     return {(*components_)[static_cast<std::size_t>(sourceFace)],
             (*sheets_)[static_cast<std::size_t>(sourceFace)], sourceFace};
   }

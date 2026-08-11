@@ -83,8 +83,8 @@ struct SurfaceCellPeriodicHolonomyDiagnostics {
   int quarterTurnRotation = 0;
   int translationU = 0;
   int translationV = 0;
-  std::vector<int> sourceRouteEdges;
-  std::vector<std::uint64_t> sourceRouteTopology;
+  std::vector<int> routeTransitionIndices;
+  std::vector<std::uint64_t> routeTopologyKeys;
   std::vector<int> cutSourceEdges;
   std::vector<std::uint64_t> cutSourceTopology;
 };

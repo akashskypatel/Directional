@@ -50,13 +50,13 @@ struct SourceHardRailChartEquivalence {
   int firstFrontEdge = -1;
   int secondFrontEdge = -1;
   int railId = -1;
-  std::vector<std::uint64_t> sourceRouteTopology;
+  std::vector<std::uint64_t> routeTopologyKeys;
 
   friend bool operator<(const SourceHardRailChartEquivalence &lhs,
                         const SourceHardRailChartEquivalence &rhs) {
-    return std::tie(lhs.railId, lhs.sourceRouteTopology,
+    return std::tie(lhs.railId, lhs.routeTopologyKeys,
                     lhs.firstFrontEdge, lhs.secondFrontEdge) <
-           std::tie(rhs.railId, rhs.sourceRouteTopology,
+           std::tie(rhs.railId, rhs.routeTopologyKeys,
                     rhs.firstFrontEdge, rhs.secondFrontEdge);
   }
 
@@ -65,7 +65,7 @@ struct SourceHardRailChartEquivalence {
     return lhs.firstFrontEdge == rhs.firstFrontEdge &&
            lhs.secondFrontEdge == rhs.secondFrontEdge &&
            lhs.railId == rhs.railId &&
-           lhs.sourceRouteTopology == rhs.sourceRouteTopology;
+           lhs.routeTopologyKeys == rhs.routeTopologyKeys;
   }
 };
 
@@ -73,7 +73,7 @@ struct SourceHardRailChartEquivalence {
  * one output vertex. Scalar SurfacePoint authority remains separate. */
 struct SourceVertexChartAuthority {
   bool retained = false;
-  std::vector<geometry::SurfaceCellSourceChart> sourceCharts;
+  std::vector<geometry::SurfaceCellProjectionChart> sourceCharts;
   std::vector<SourceHardRailChartEquivalence> hardRailEquivalences;
 };
 

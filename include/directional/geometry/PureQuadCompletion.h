@@ -194,19 +194,19 @@ struct PureQuadEquivalenceProvenance {
   int railId = -1;
   int quarterTurnRotation = 0;
   Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
-  std::vector<std::uint64_t> sourceRouteTopology;
+  std::vector<std::uint64_t> routeTopologyKeys;
 
   friend bool operator<(const PureQuadEquivalenceProvenance &lhs,
                         const PureQuadEquivalenceProvenance &rhs) {
     return std::make_tuple(
                lhs.kind, lhs.quarterTurnRotation,
                lhs.latticeTranslation.x(), lhs.latticeTranslation.y(),
-               lhs.railId, lhs.sourceRouteTopology, lhs.firstFrontEdge,
+               lhs.railId, lhs.routeTopologyKeys, lhs.firstFrontEdge,
                lhs.secondFrontEdge, lhs.periodicRelation) <
            std::make_tuple(
                rhs.kind, rhs.quarterTurnRotation,
                rhs.latticeTranslation.x(), rhs.latticeTranslation.y(),
-               rhs.railId, rhs.sourceRouteTopology, rhs.firstFrontEdge,
+               rhs.railId, rhs.routeTopologyKeys, rhs.firstFrontEdge,
                rhs.secondFrontEdge, rhs.periodicRelation);
   }
 
@@ -219,7 +219,7 @@ struct PureQuadEquivalenceProvenance {
            lhs.railId == rhs.railId &&
            lhs.quarterTurnRotation == rhs.quarterTurnRotation &&
            lhs.latticeTranslation == rhs.latticeTranslation &&
-           lhs.sourceRouteTopology == rhs.sourceRouteTopology;
+           lhs.routeTopologyKeys == rhs.routeTopologyKeys;
   }
 };
 
@@ -239,7 +239,7 @@ struct PureQuadVertexLineage {
   int sourceSheet = -1;
   /// Full retained authority for quotient-materialized vertices.
   std::vector<int> sourceTopologyRegions;
-  std::vector<SurfaceCellSourceChart> sourceCharts;
+  std::vector<SurfaceCellProjectionChart> sourceCharts;
   std::vector<int> sourceIsolationSheets;
   SurfaceCellCanonicalIdentity sourceSupportIdentity;
   std::vector<PureQuadEquivalenceProvenance> equivalences;

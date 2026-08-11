@@ -58,7 +58,7 @@ struct SurfaceCellCanonicalIdentity {
 };
 
 
-struct SurfaceCellSourceChart {
+struct SurfaceCellProjectionChart {
   int sourceComponent = -1;
   int sourceFace = -1;
   int localSheet = -1;
@@ -67,19 +67,19 @@ struct SurfaceCellSourceChart {
     return sourceComponent >= 0 && sourceFace >= 0 && localSheet >= 0;
   }
 
-  friend bool operator==(const SurfaceCellSourceChart &lhs,
-                         const SurfaceCellSourceChart &rhs) {
+  friend bool operator==(const SurfaceCellProjectionChart &lhs,
+                         const SurfaceCellProjectionChart &rhs) {
     return std::tie(lhs.sourceComponent, lhs.sourceFace, lhs.localSheet) ==
            std::tie(rhs.sourceComponent, rhs.sourceFace, rhs.localSheet);
   }
 
-  friend bool operator!=(const SurfaceCellSourceChart &lhs,
-                         const SurfaceCellSourceChart &rhs) {
+  friend bool operator!=(const SurfaceCellProjectionChart &lhs,
+                         const SurfaceCellProjectionChart &rhs) {
     return !(lhs == rhs);
   }
 
-  friend bool operator<(const SurfaceCellSourceChart &lhs,
-                        const SurfaceCellSourceChart &rhs) {
+  friend bool operator<(const SurfaceCellProjectionChart &lhs,
+                        const SurfaceCellProjectionChart &rhs) {
     return std::tie(lhs.sourceComponent, lhs.sourceFace, lhs.localSheet) <
            std::tie(rhs.sourceComponent, rhs.sourceFace, rhs.localSheet);
   }
@@ -92,14 +92,14 @@ struct SurfaceCellOwnershipClassRecord {
   // {component, localSheet, sorted source-triangle vertex ids}.
   SurfaceCellCanonicalIdentity canonicalMembership;
   // Runtime lookup table retaining the exact source-face chart records.
-  std::vector<SurfaceCellSourceChart> exactCharts;
+  std::vector<SurfaceCellProjectionChart> exactCharts;
 
   [[nodiscard]] bool valid() const {
     return sourceComponent >= 0 && canonicalMembership.valid &&
            !exactCharts.empty() &&
            std::is_sorted(exactCharts.begin(), exactCharts.end()) &&
            std::all_of(exactCharts.begin(), exactCharts.end(),
-                       [&](const SurfaceCellSourceChart &chart) {
+                       [&](const SurfaceCellProjectionChart &chart) {
                          return chart.valid() &&
                                 chart.sourceComponent == sourceComponent;
                        });

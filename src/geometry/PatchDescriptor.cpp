@@ -473,7 +473,7 @@ SurfaceCellCanonicalIdentity source_support_identity(
 SurfaceCellCanonicalIdentity source_chart_map_identity(
     const SurfaceArrangementCell &cell, const Eigen::MatrixXi &F) {
   std::vector<std::vector<std::int64_t>> charts;
-  for (const SurfaceCellSourceChart &chart : cell.sourceCharts) {
+  for (const SurfaceCellProjectionChart &chart : cell.sourceCharts) {
     if (!chart.valid() || chart.sourceFace >= F.rows() || F.cols() != 3) {
       return {};
     }
@@ -490,7 +490,7 @@ SurfaceCellCanonicalIdentity source_chart_map_identity(
 }
 
 bool cell_contains_source_chart(const SurfaceArrangementCell &cell,
-                                const SurfaceCellSourceChart &chart) {
+                                const SurfaceCellProjectionChart &chart) {
   return std::binary_search(cell.sourceCharts.begin(), cell.sourceCharts.end(),
                             chart);
 }
@@ -533,7 +533,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   std::vector<std::vector<std::int64_t>> undirected;
   std::set<int> components;
   std::set<int> sheets;
-  std::set<SurfaceCellSourceChart> exactCharts;
+  std::set<SurfaceCellProjectionChart> exactCharts;
   std::set<int> seenBoundaryHalfedges;
   std::set<int> seenBoundaryNodes;
   directed.reserve(boundary.size());
@@ -714,7 +714,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
       audit.failure = SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
       return audit;
     }
-    for (const SurfaceCellSourceChart &chart : exactCharts) {
+    for (const SurfaceCellProjectionChart &chart : exactCharts) {
       if (!chart.valid() || !cell_contains_source_chart(cell, chart)) {
         audit.sourceFace = chart.sourceFace;
         audit.sourceComponent = chart.sourceComponent;
@@ -723,7 +723,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
         return audit;
       }
     }
-    for (const SurfaceCellSourceChart &chart : cell.sourceCharts) {
+    for (const SurfaceCellProjectionChart &chart : cell.sourceCharts) {
       if (!std::binary_search(ownershipRecord->exactCharts.begin(),
                               ownershipRecord->exactCharts.end(), chart)) {
         audit.sourceFace = chart.sourceFace;
@@ -1658,7 +1658,7 @@ std::uint64_t logical_complex_payload_bytes(
   for (const SurfaceCellOwnershipClassRecord &record :
        complex.sourceOwnershipRegistry) {
     bytes += static_cast<std::uint64_t>(record.exactCharts.size()) *
-             sizeof(SurfaceCellSourceChart);
+             sizeof(SurfaceCellProjectionChart);
     bytes += static_cast<std::uint64_t>(
                  record.canonicalMembership.values.size()) *
              sizeof(std::int64_t);
@@ -1679,7 +1679,7 @@ std::uint64_t logical_complex_payload_bytes(
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
     bytes += static_cast<std::uint64_t>(cell.sourceCharts.size()) *
-             sizeof(SurfaceCellSourceChart);
+             sizeof(SurfaceCellProjectionChart);
     bytes += static_cast<std::uint64_t>(
                  cell.sourceOwnershipClass.values.size()) *
              sizeof(std::int64_t);
@@ -1701,7 +1701,7 @@ std::uint64_t estimated_complex_owned_bytes(
   for (const SurfaceCellOwnershipClassRecord &record :
        complex.sourceOwnershipRegistry) {
     bytes += static_cast<std::uint64_t>(record.exactCharts.capacity()) *
-             sizeof(SurfaceCellSourceChart);
+             sizeof(SurfaceCellProjectionChart);
     bytes += static_cast<std::uint64_t>(
                  record.canonicalMembership.values.capacity()) *
              sizeof(std::int64_t);
@@ -1722,7 +1722,7 @@ std::uint64_t estimated_complex_owned_bytes(
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
     bytes += static_cast<std::uint64_t>(cell.sourceCharts.capacity()) *
-             sizeof(SurfaceCellSourceChart);
+             sizeof(SurfaceCellProjectionChart);
     bytes += static_cast<std::uint64_t>(
                  cell.sourceOwnershipClass.values.capacity()) *
              sizeof(std::int64_t);

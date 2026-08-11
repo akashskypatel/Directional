@@ -374,7 +374,7 @@ struct SurfaceArrangementCell {
   // sourceCharts and sourceOwnershipClass identifies their physical cell side.
   int sourceSheet = -1;
   SurfaceCellCanonicalIdentity sourceOwnershipClass;
-  std::vector<SurfaceCellSourceChart> sourceCharts;
+  std::vector<SurfaceCellProjectionChart> sourceCharts;
   std::vector<int> sourceFaces;
   std::vector<int> halfedges;
   // Start offsets of each directed boundary cycle in halfedges. A disk has

@@ -2,8 +2,6 @@
 
 #include <directional/authority/CanonicalRoute.h>
 #include <directional/authority/GridAutomorphism.h>
-#include <directional/authority/LegacyAuthorityAdapters.h>
-
 #include <Eigen/SparseCholesky>
 
 #include <optional>
@@ -1101,7 +1099,7 @@ auto periodic_relation_key(const SurfacePeriodicHolonomy &relation) {
       relation.quarterTurnRotation,
       relation.latticeTranslation.x(),
       relation.latticeTranslation.y(),
-      relation.sourceRouteTopology,
+      relation.routeTopologyKeys,
       relation.cutSourceTopology};
 }
 
@@ -1111,8 +1109,8 @@ bool periodic_relation_shape_valid(const SurfacePeriodicHolonomy &relation) {
   const bool hasLegacySheetScope = relation.sourceSheet >= 0;
   return relation.sourceComponent >= 0 && (hasRegionScope || hasLegacySheetScope) &&
          relation.latticeTranslation.squaredNorm() > 0 &&
-         !relation.sourceRouteEdges.empty() &&
-         relation.sourceRouteEdges.size() == relation.sourceRouteTopology.size() &&
+         !relation.routeTransitionIndices.empty() &&
+         relation.routeTransitionIndices.size() == relation.routeTopologyKeys.size() &&
          !relation.cutSourceEdges.empty() &&
          relation.cutSourceEdges.size() == relation.cutSourceTopology.size();
 }
@@ -1128,8 +1126,8 @@ SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
       std::unique(relation.sourceIsolationSheets.begin(),
                   relation.sourceIsolationSheets.end()),
       relation.sourceIsolationSheets.end());
-  relation.sourceRouteTopology =
-      canonical_cycle_topology(relation.sourceRouteTopology);
+  relation.routeTopologyKeys =
+      canonical_cycle_topology(relation.routeTopologyKeys);
   relation.cutSourceTopology = canonical_path_topology(relation.cutSourceTopology);
 
   SurfacePeriodicHolonomy inverse = relation;
@@ -1170,7 +1168,7 @@ SurfacePeriodicHolonomyInsertStatus insert_periodic_holonomy(
              ? existing.sourceTopologyRegion == relation.sourceTopologyRegion
              : existing.sourceSheet == relation.sourceSheet);
     if (!sameScope) continue;
-    if (existing.sourceRouteTopology == relation.sourceRouteTopology ||
+    if (existing.routeTopologyKeys == relation.routeTopologyKeys ||
         existing.cutSourceTopology == relation.cutSourceTopology) {
       return SurfacePeriodicHolonomyInsertStatus::Incompatible;
     }
@@ -1296,13 +1294,13 @@ BranchTransitionResult resolve_branch_transition(
         static_cast<std::size_t>(faces.rows());
     const std::size_t sourceVertexExtent =
         static_cast<std::size_t>(vertices.rows());
-    const auto sourceFaceResult = authority::LegacyAuthorityAdapters::source_face(
+    const auto sourceFaceResult = directional::authority::SourceFaceId::from_index(
         sourceFace, sourceFaceExtent);
-    const auto targetFaceResult = authority::LegacyAuthorityAdapters::source_face(
+    const auto targetFaceResult = directional::authority::SourceFaceId::from_index(
         targetFace, sourceFaceExtent);
-    const auto firstFaceResult = authority::LegacyAuthorityAdapters::source_face(
+    const auto firstFaceResult = directional::authority::SourceFaceId::from_index(
         found->second.firstFace, sourceFaceExtent);
-    const auto secondFaceResult = authority::LegacyAuthorityAdapters::source_face(
+    const auto secondFaceResult = directional::authority::SourceFaceId::from_index(
         found->second.secondFace, sourceFaceExtent);
     if (!sourceFaceResult || !targetFaceResult || !firstFaceResult ||
         !secondFaceResult) {
@@ -1322,10 +1320,10 @@ BranchTransitionResult resolve_branch_transition(
     }
 
     const auto firstVertexResult =
-        authority::LegacyAuthorityAdapters::source_vertex(
+        directional::authority::SourceVertexId::from_index(
             found->second.sourceVertex0, sourceVertexExtent);
     const auto secondVertexResult =
-        authority::LegacyAuthorityAdapters::source_vertex(
+        directional::authority::SourceVertexId::from_index(
             found->second.sourceVertex1, sourceVertexExtent);
     if (!firstVertexResult || !secondVertexResult) {
       return result;
@@ -1337,10 +1335,10 @@ BranchTransitionResult resolve_branch_transition(
     }
     const authority::SourceEdgeTopologyKey sourceEdge = sourceEdgeResult.value();
     const std::uint64_t transitionEdgeKey = edge_key(
-        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-            sourceEdge.first())),
-        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-            sourceEdge.second())));
+        static_cast<int>((
+            sourceEdge.first()).index()),
+        static_cast<int>((
+            sourceEdge.second()).index()));
     if (transitionEdgeKey != edgeKey) {
       return result;
     }
@@ -1649,10 +1647,10 @@ VertexContinuationResult resolve_vertex_continuation(
         metadataFailure = true;
         continue;
       }
-      const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
+      const auto firstVertex = directional::authority::SourceVertexId::from_index(
           static_cast<std::int64_t>(step.edgeKey >> 32U),
           static_cast<std::size_t>(vertices.rows()));
-      const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
+      const auto secondVertex = directional::authority::SourceVertexId::from_index(
           static_cast<std::int64_t>(step.edgeKey & 0xffffffffULL),
           static_cast<std::size_t>(vertices.rows()));
       if (!firstVertex || !secondVertex) {
@@ -1666,16 +1664,16 @@ VertexContinuationResult resolve_vertex_continuation(
         continue;
       }
       const std::uint64_t compatibilityTopology = edge_key(
-          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().first())),
-          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().second())));
+          static_cast<int>((
+              topology.value().first()).index()),
+          static_cast<int>((
+              topology.value().second()).index()));
       if (compatibilityTopology != step.edgeKey) {
         metadataFailure = true;
         continue;
       }
       const auto interiorTransition =
-          authority::LegacyAuthorityAdapters::interior_transition(
+          directional::authority::InteriorTransitionId::from_index(
               sourceEdge, edgeMatchingIndices.size());
       if (!interiorTransition) {
         metadataFailure = true;
@@ -3217,13 +3215,13 @@ SurfaceTraceSegment reversed_trace_segment(SurfaceTraceSegment segment) {
   segment.sign = -segment.sign;
   segment.railSideSign = -segment.railSideSign;
   segment.matching = (4 - (segment.matching % 4) + 4) % 4;
-  std::reverse(segment.transitionSourceEdges.begin(),
-               segment.transitionSourceEdges.end());
-  std::reverse(segment.transitionSourceTopology.begin(),
-               segment.transitionSourceTopology.end());
-  segment.transitionSourceEdge = segment.transitionSourceEdges.empty()
+  std::reverse(segment.entryRouteTransitionIndices.begin(),
+               segment.entryRouteTransitionIndices.end());
+  std::reverse(segment.entryRouteTopologyKeys.begin(),
+               segment.entryRouteTopologyKeys.end());
+  segment.entryTransitionIndex = segment.entryRouteTransitionIndices.empty()
                                      ? -1
-                                     : segment.transitionSourceEdges.back();
+                                     : segment.entryRouteTransitionIndices.back();
   return segment;
 }
 
@@ -4464,7 +4462,7 @@ struct UniformPhaseFrame {
 };
 
 std::optional<authority::FieldChartId> single_field_chart_authority() {
-  const auto chart = authority::LegacyAuthorityAdapters::field_chart(0, 1);
+  const auto chart = directional::authority::FieldChartId::from_index(0, 1);
   if (!chart) {
     return std::nullopt;
   }
@@ -4792,7 +4790,7 @@ bool build_planar_phase_frame(
   }
   frame.faceChart.assign(static_cast<std::size_t>(faces.rows()), std::nullopt);
   for (const int face : activeFaces) {
-    const auto chart = authority::LegacyAuthorityAdapters::field_chart(
+    const auto chart = directional::authority::FieldChartId::from_index(
         legacyFaceChart[static_cast<std::size_t>(face)],
         static_cast<std::size_t>(nextChart));
     if (!chart) {
@@ -5230,8 +5228,8 @@ bool segment_on_source(
     segment.family = family;
     segment.sign = sign;
     segment.sourceChart = static_cast<int>(
-        authority::LegacyAuthorityAdapters::to_legacy_index(
-            frame.faceChart[static_cast<std::size_t>(selectedFace)].value()));
+        (
+            frame.faceChart[static_cast<std::size_t>(selectedFace)].value()).index());
     segments.push_back(std::move(segment));
   }
   if (segments.empty()) {
@@ -5385,10 +5383,10 @@ bool segment_on_source(
             cellId, sideId, transitFace, step.face, sourceVertex);
         return false;
       };
-      const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
+      const auto firstVertex = directional::authority::SourceVertexId::from_index(
           static_cast<std::int64_t>(step.edgeKey >> 32U),
           static_cast<std::size_t>(vertices.rows()));
-      const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
+      const auto secondVertex = directional::authority::SourceVertexId::from_index(
           static_cast<std::int64_t>(step.edgeKey & 0xffffffffULL),
           static_cast<std::size_t>(vertices.rows()));
       if (!firstVertex || !secondVertex) {
@@ -5400,15 +5398,15 @@ bool segment_on_source(
         return rejectStepAuthority();
       }
       const auto compatibilityTopology = edge_key(
-          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().first())),
-          static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-              topology.value().second())));
+          static_cast<int>((
+              topology.value().first()).index()),
+          static_cast<int>((
+              topology.value().second()).index()));
       if (compatibilityTopology != step.edgeKey) {
         return rejectStepAuthority();
       }
       const auto interiorTransition =
-          authority::LegacyAuthorityAdapters::interior_transition(
+          directional::authority::InteriorTransitionId::from_index(
               sourceEdge, sourceMatchingIndices.size());
       if (!interiorTransition) {
         return rejectStepAuthority();
@@ -5456,11 +5454,11 @@ bool segment_on_source(
     current.entryEdge = currentEdge;
     current.matching = static_cast<int>(routeTransport.rotation.value());
     current.matchingEffort = totalEffort;
-    current.transitionSourceEdges = std::move(sourceEdges);
-    current.transitionSourceTopology = std::move(sourceTopology);
-    current.transitionSourceEdge = current.transitionSourceEdges.empty()
+    current.entryRouteTransitionIndices = std::move(sourceEdges);
+    current.entryRouteTopologyKeys = std::move(sourceTopology);
+    current.entryTransitionIndex = current.entryRouteTransitionIndices.empty()
                                        ? -1
-                                       : current.transitionSourceEdges.back();
+                                       : current.entryRouteTransitionIndices.back();
   }
   return true;
 }
@@ -5537,9 +5535,9 @@ bool phase_front_cell_source_scope(
         face_label_or_default(options.sourceFaceSheets, face, candidateComponent);
     if (candidateComponent < 0 || candidateSheet < 0) return false;
 
-    const auto typedComponent = authority::LegacyAuthorityAdapters::source_component(
+    const auto typedComponent = directional::authority::SourceComponentId::from_index(
         candidateComponent, componentExtent);
-    const auto typedSheet = authority::LegacyAuthorityAdapters::isolation_sheet(
+    const auto typedSheet = directional::authority::IsolationSheetId::from_index(
         candidateSheet, sheetExtent);
     if (!typedComponent || !typedSheet) return false;
     if (!component.has_value()) component = typedComponent.value();
@@ -5563,23 +5561,23 @@ bool phase_front_cell_source_scope(
 
 int legacy_phase_front_source_component(const SurfacePhaseFrontCell &cell) {
   return cell.sourceComponent.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   cell.sourceComponent.value()))
+             ? static_cast<int>((
+                   cell.sourceComponent.value()).index())
              : -1;
 }
 
 int legacy_phase_front_source_topology_region(const SurfacePhaseFrontCell &cell) {
   return cell.sourceTopologyRegion.has_value()
              ? static_cast<int>(
-                   authority::LegacyAuthorityAdapters::to_legacy_index(
-                       cell.sourceTopologyRegion.value()))
+                   (
+                       cell.sourceTopologyRegion.value()).index())
              : -1;
 }
 
 int legacy_phase_front_source_sheet(const SurfacePhaseFrontCell &cell) {
   return cell.sourceSheet.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   cell.sourceSheet.value()))
+             ? static_cast<int>((
+                   cell.sourceSheet.value()).index())
              : -1;
 }
 
@@ -5589,7 +5587,7 @@ legacy_phase_front_isolation_sheets(const SurfacePhaseFrontCell &cell) {
   legacy.reserve(cell.sourceIsolationSheets.size());
   for (const authority::IsolationSheetId sheet : cell.sourceIsolationSheets) {
     legacy.push_back(static_cast<int>(
-        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+        (sheet).index()));
   }
   return legacy;
 }
@@ -5597,23 +5595,23 @@ legacy_phase_front_isolation_sheets(const SurfacePhaseFrontCell &cell) {
 
 int legacy_phase_front_source_component(const SurfaceFrontEdge &edge) {
   return edge.sourceComponent.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   edge.sourceComponent.value()))
+             ? static_cast<int>((
+                   edge.sourceComponent.value()).index())
              : -1;
 }
 
 int legacy_phase_front_source_topology_region(const SurfaceFrontEdge &edge) {
   return edge.sourceTopologyRegion.has_value()
              ? static_cast<int>(
-                   authority::LegacyAuthorityAdapters::to_legacy_index(
-                       edge.sourceTopologyRegion.value()))
+                   (
+                       edge.sourceTopologyRegion.value()).index())
              : -1;
 }
 
 int legacy_phase_front_source_sheet(const SurfaceFrontEdge &edge) {
   return edge.sourceSheet.has_value()
-             ? static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-                   edge.sourceSheet.value()))
+             ? static_cast<int>((
+                   edge.sourceSheet.value()).index())
              : -1;
 }
 
@@ -5623,7 +5621,7 @@ std::vector<int> legacy_phase_front_isolation_sheets(
   legacy.reserve(edge.sourceIsolationSheets.size());
   for (const authority::IsolationSheetId sheet : edge.sourceIsolationSheets) {
     legacy.push_back(static_cast<int>(
-        authority::LegacyAuthorityAdapters::to_legacy_index(sheet)));
+        (sheet).index()));
   }
   return legacy;
 }
@@ -5634,7 +5632,7 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
     const std::map<std::uint64_t, int> &sourceMatchingIndices,
     const std::vector<SurfaceTraceSegment> &path, SurfaceFrontEdge &edge) {
   if (faces.cols() != 3 || path.empty() ||
-      !edge.sourceRouteEdges.empty() || !edge.sourceRouteTopology.empty()) {
+      !edge.routeTransitionIndices.empty() || !edge.routeTopologyKeys.empty()) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }
   const auto &incident = sourceEdgeFaces;
@@ -5696,14 +5694,14 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
       return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
     }
     kind = segmentKind;
-    if (edge.sourceRouteTopology.empty() ||
-        edge.sourceRouteTopology.back() != topology) {
+    if (edge.routeTopologyKeys.empty() ||
+        edge.routeTopologyKeys.back() != topology) {
       if (!seenTopology.insert(topology).second) {
         return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
       }
-      edge.sourceRouteTopology.push_back(topology);
+      edge.routeTopologyKeys.push_back(topology);
       if (segmentKind != SurfaceFrontBoundaryKind::GenuineSourceBoundary) {
-        edge.sourceRouteEdges.push_back(foundIndex->second);
+        edge.routeTransitionIndices.push_back(foundIndex->second);
       }
     }
     if (segment.railId >= 0) {
@@ -5713,14 +5711,14 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
       railId = segment.railId;
     }
   }
-  if (!kind.has_value() || edge.sourceRouteTopology.empty()) {
+  if (!kind.has_value() || edge.routeTopologyKeys.empty()) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }
   if ((*kind == SurfaceFrontBoundaryKind::GenuineSourceBoundary &&
-       !edge.sourceRouteEdges.empty()) ||
+       !edge.routeTransitionIndices.empty()) ||
       (*kind != SurfaceFrontBoundaryKind::GenuineSourceBoundary &&
-       (edge.sourceRouteEdges.size() != edge.sourceRouteTopology.size() ||
-        std::any_of(edge.sourceRouteEdges.begin(), edge.sourceRouteEdges.end(),
+       (edge.routeTransitionIndices.size() != edge.routeTopologyKeys.size() ||
+        std::any_of(edge.routeTransitionIndices.begin(), edge.routeTransitionIndices.end(),
                     [](const int sourceEdge) { return sourceEdge < 0; })))) {
     return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
   }
@@ -7308,10 +7306,10 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       if (topology != incident.end() && topology->second[1] == sourceFace) matching = -matching;
     }
 
-    const auto firstVertex = authority::LegacyAuthorityAdapters::source_vertex(
+    const auto firstVertex = directional::authority::SourceVertexId::from_index(
         static_cast<std::int64_t>(sharedKey >> 32U),
         static_cast<std::size_t>(vertices.rows()));
-    const auto secondVertex = authority::LegacyAuthorityAdapters::source_vertex(
+    const auto secondVertex = directional::authority::SourceVertexId::from_index(
         static_cast<std::int64_t>(sharedKey & 0xffffffffULL),
         static_cast<std::size_t>(vertices.rows()));
     if (!firstVertex || !secondVertex) {
@@ -7331,12 +7329,12 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       return result;
     }
     const std::uint64_t compatibilityTopology = edge_key(
-        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-            topology.value().first())),
-        static_cast<int>(authority::LegacyAuthorityAdapters::to_legacy_index(
-            topology.value().second())));
+        static_cast<int>((
+            topology.value().first()).index()),
+        static_cast<int>((
+            topology.value().second()).index()));
     const auto interiorTransition =
-        authority::LegacyAuthorityAdapters::interior_transition(
+        directional::authority::InteriorTransitionId::from_index(
             sourceEdge, sourceMatchingIndices.size());
     if (compatibilityTopology != sharedKey || !interiorTransition) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -7381,8 +7379,8 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
   SurfacePeriodicHolonomy &periodicHolonomy = result.periodicHolonomies.back();
   periodicHolonomy.quarterTurnRotation = 0;
   periodicHolonomy.latticeTranslation = {result.gridU, 0};
-  periodicHolonomy.sourceRouteEdges = std::move(holonomyRoute);
-  periodicHolonomy.sourceRouteTopology = std::move(holonomyRouteTopology);
+  periodicHolonomy.routeTransitionIndices = std::move(holonomyRoute);
+  periodicHolonomy.routeTopologyKeys = std::move(holonomyRouteTopology);
   const int component = face_label_or_default(options.sourceFaceComponents,
                                                activeFaces.front(), 0);
   const int sheet = face_label_or_default(options.sourceFaceSheets,
@@ -7562,10 +7560,10 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
             second.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
             first.periodicRelation = 0;
             second.periodicRelation = 0;
-            first.sourceRouteEdges = periodicHolonomy.cutSourceEdges;
-            second.sourceRouteEdges = periodicHolonomy.cutSourceEdges;
-            first.sourceRouteTopology = periodicHolonomy.cutSourceTopology;
-            second.sourceRouteTopology = periodicHolonomy.cutSourceTopology;
+            first.routeTransitionIndices = periodicHolonomy.cutSourceEdges;
+            second.routeTransitionIndices = periodicHolonomy.cutSourceEdges;
+            first.routeTopologyKeys = periodicHolonomy.cutSourceTopology;
+            second.routeTopologyKeys = periodicHolonomy.cutSourceTopology;
           }
           SurfaceFrontEvent event;
           event.kind = periodic ? SurfaceFrontEventKind::PeriodicFrontMerge
@@ -9267,7 +9265,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       phase.sourceIsolationSheets = region.isolationSheets;
     }
     const auto typedRegion =
-        authority::LegacyAuthorityAdapters::topology_region(
+        directional::authority::TopologyRegionId::from_index(
             region.id, result.topologyRegions.size());
     if (!typedRegion) return false;
     for (auto &cell : local.cells) {
@@ -9289,13 +9287,13 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const std::size_t sheetExtent =
         source_label_authority_extent(options.sourceFaceSheets);
     const auto typedRegionComponent =
-        authority::LegacyAuthorityAdapters::source_component(
+        directional::authority::SourceComponentId::from_index(
             region.sourceComponent, componentExtent);
     if (!typedRegionComponent) return false;
     std::vector<authority::IsolationSheetId> typedRegionSheets;
     typedRegionSheets.reserve(region.isolationSheets.size());
     for (const int rawSheet : region.isolationSheets) {
-      const auto typedSheet = authority::LegacyAuthorityAdapters::isolation_sheet(
+      const auto typedSheet = directional::authority::IsolationSheetId::from_index(
           rawSheet, sheetExtent);
       if (!typedSheet) return false;
       typedRegionSheets.push_back(typedSheet.value());
@@ -9453,7 +9451,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     bool localCoverage = false;
     std::set<int> coveredIsolationSheets;
     const auto typedRegion =
-        authority::LegacyAuthorityAdapters::topology_region(
+        directional::authority::TopologyRegionId::from_index(
             region.id, result.topologyRegions.size());
     if (!typedRegion) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
@@ -9495,7 +9493,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     }
     for (SurfaceFrontEdge &edge : local.edges) {
       const auto typedRegionComponent =
-          authority::LegacyAuthorityAdapters::source_component(
+          directional::authority::SourceComponentId::from_index(
               region.sourceComponent,
               source_label_authority_extent(options.sourceFaceComponents));
       if (!typedRegionComponent || !edge.sourceComponent.has_value() ||
@@ -9632,7 +9630,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     std::vector<std::int64_t> from = support_key(edge.from);
     std::vector<std::int64_t> to = support_key(edge.to);
     if (edge.oppositeEdge >= 0 || !edge.exterior || from.empty() || to.empty() ||
-        !edge.sourceComponent.has_value() || edge.sourceRouteTopology.empty()) {
+        !edge.sourceComponent.has_value() || edge.routeTopologyKeys.empty()) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
@@ -9640,7 +9638,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       return result;
     }
     if (to < from) std::swap(from, to);
-    std::vector<std::uint64_t> route = edge.sourceRouteTopology;
+    std::vector<std::uint64_t> route = edge.routeTopologyKeys;
     std::vector<std::uint64_t> reversed(route.rbegin(), route.rend());
     if (reversed < route) route = std::move(reversed);
     hardRailGroups[{legacy_phase_front_source_component(edge), std::move(from),
@@ -9808,9 +9806,9 @@ SurfaceCellNetwork build_surface_cell_network(
       surface_cell_tracing_detail::build_uniform_phase_front(
           vertices, faces, faceAxisX, faceAxisY, targetSize, options,
           edgeMatching, edgeEffort, edgeTransitions);
-  network.sourceFaceTopologyRegions =
-      network.phaseFront.sourceTopologyRegionByFace;
-  network.topologyRegions = network.phaseFront.topologyRegions;
+  network.sourceTopologyRegions.regionByFace =
+      network.phaseFront.sourceTopologyRegions.regionByFace;
+  network.sourceTopologyRegions.regions = network.phaseFront.sourceTopologyRegions.regions;
   if (network.phaseFront.disposition ==
       SurfaceCellProducerDisposition::Produced) {
     network.proposals.reserve(network.phaseFront.cells.size());

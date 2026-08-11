@@ -119,13 +119,13 @@ struct SurfaceTraceSegment {
   /// Connected chart of equal branch orientation containing this segment.
   int sourceChart = -1;
   /// Last source edge crossed to enter this segment, or -1 for the first interval.
-  int transitionSourceEdge = -1;
+  int entryTransitionIndex = -1;
   /// Ordered source-wide compact interior-transition indices crossed to enter
   /// this segment. Ordinary crossings contain one entry; exact source-vertex
   /// fan crossings retain every authoritative edge in traversal order.
-  std::vector<int> transitionSourceEdges;
-  /// Canonical source-edge endpoint keys parallel to transitionSourceEdges.
-  std::vector<std::uint64_t> transitionSourceTopology;
+  std::vector<int> entryRouteTransitionIndices;
+  /// Canonical source-edge endpoint keys parallel to entryRouteTransitionIndices.
+  std::vector<std::uint64_t> entryRouteTopologyKeys;
   int railId = -1;
   int curveId = -1;
   int railIntervalIndex = -1;
@@ -297,11 +297,11 @@ struct SurfaceFrontEdge {
       SurfaceFrontBoundaryKind::OrdinaryInterior;
   /// Exact owner in SurfacePhaseFrontResult::periodicHolonomies.
   int periodicRelation = -1;
-  /// Optional exact rail owner; sourceRouteTopology remains authoritative.
+  /// Optional exact rail owner; routeTopologyKeys remains authoritative.
   int railId = -1;
   /// Source-wide compact interior-transition indices parallel to topology.
-  std::vector<int> sourceRouteEdges;
-  std::vector<std::uint64_t> sourceRouteTopology;
+  std::vector<int> routeTransitionIndices;
+  std::vector<std::uint64_t> routeTopologyKeys;
 };
 
 struct SurfaceFrontEvent {
@@ -319,9 +319,9 @@ struct SurfacePeriodicHolonomy {
   int quarterTurnRotation = 0;
   Eigen::Vector2i latticeTranslation = Eigen::Vector2i::Zero();
   /// Source-wide compact interior-transition route for one periodic transport.
-  std::vector<int> sourceRouteEdges;
-  /// Canonical source-edge endpoint keys parallel to sourceRouteEdges.
-  std::vector<std::uint64_t> sourceRouteTopology;
+  std::vector<int> routeTransitionIndices;
+  /// Canonical source-edge endpoint keys parallel to routeTransitionIndices.
+  std::vector<std::uint64_t> routeTopologyKeys;
   /// Source-wide compact indices forming the boundary-to-boundary cut.
   std::vector<int> cutSourceEdges;
   /// Canonical source-edge endpoint keys parallel to cutSourceEdges.
@@ -487,8 +487,7 @@ struct SurfacePhaseFrontResult {
   bool succeeded = false;
   int gridU = 0;
   int gridV = 0;
-  std::vector<int> sourceTopologyRegionByFace;
-  std::vector<SurfaceTopologyRegion> topologyRegions;
+  SourceTopologyRegions sourceTopologyRegions;
   std::vector<SurfaceIsolationSeamTransportCertificate>
       isolationSeamTransportCertificates;
   std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
@@ -638,8 +637,7 @@ struct SurfaceCellNetwork {
   std::vector<SurfaceCellRail> authoritativeRails;
   std::vector<int> sourceFaceComponents;
   std::vector<int> sourceFaceSheets;
-  std::vector<int> sourceFaceTopologyRegions;
-  std::vector<SurfaceTopologyRegion> topologyRegions;
+  SourceTopologyRegions sourceTopologyRegions;
   std::vector<int> reliefRootVertices;
   Eigen::VectorXi reliefRegionLabels;
   std::set<std::uint64_t> reliefBarrierEdges;

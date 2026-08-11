@@ -9,7 +9,6 @@
 #include <directional/authority/AuthorityIds.h>
 #include <directional/authority/CanonicalRoute.h>
 #include <directional/authority/GridAutomorphism.h>
-#include <directional/authority/LegacyAuthorityAdapters.h>
 #include <directional/authority/SourceSupport.h>
 
 #include <cstddef>
@@ -38,25 +37,25 @@ TEST(SurfaceCellAuthorityKernel, StrongIdsAreStaticallyNonInterconvertible) {
 }
 
 TEST(SurfaceCellAuthorityKernel, CheckedLegacyConversionAcceptsAndRejectsDomainErrors) {
-  const auto valid = LegacyAuthorityAdapters::source_face(3, 8);
+  const auto valid = directional::authority::SourceFaceId::from_index(3, 8);
   ASSERT_TRUE(valid.has_value());
   EXPECT_EQ(valid.value().value(), 3u);
 
-  const auto negative = LegacyAuthorityAdapters::source_face(-1, 8);
+  const auto negative = directional::authority::SourceFaceId::from_index(-1, 8);
   ASSERT_FALSE(negative.has_value());
-  EXPECT_EQ(negative.error().code, DomainErrorCode::NegativeLegacyValue);
+  EXPECT_EQ(negative.error().code, DomainErrorCode::NegativeIndex);
   EXPECT_EQ(negative.error().expectedDomain, AuthorityDomain::SourceFace);
 
-  const auto outOfRange = LegacyAuthorityAdapters::source_face(8, 8);
+  const auto outOfRange = directional::authority::SourceFaceId::from_index(8, 8);
   ASSERT_FALSE(outOfRange.has_value());
-  EXPECT_EQ(outOfRange.error().code, DomainErrorCode::OutOfRangeLegacyValue);
-  EXPECT_EQ(outOfRange.error().legacyValue, 8);
+  EXPECT_EQ(outOfRange.error().code, DomainErrorCode::IndexOutOfRange);
+  EXPECT_EQ(outOfRange.error().inputValue, 8);
   EXPECT_EQ(outOfRange.error().extent, 8u);
 }
 
 TEST(SurfaceCellAuthorityKernel, NumericCoincidenceDoesNotConflateDomains) {
-  const auto face = LegacyAuthorityAdapters::source_face(2, 5);
-  const auto chart = LegacyAuthorityAdapters::field_chart(2, 5);
+  const auto face = directional::authority::SourceFaceId::from_index(2, 5);
+  const auto chart = directional::authority::FieldChartId::from_index(2, 5);
   ASSERT_TRUE(face.has_value());
   ASSERT_TRUE(chart.has_value());
 
@@ -67,8 +66,8 @@ TEST(SurfaceCellAuthorityKernel, NumericCoincidenceDoesNotConflateDomains) {
 }
 
 TEST(SurfaceCellAuthorityKernel, SourceEdgeCanonicalizationPreservesExplicitOrientation) {
-  const auto aResult = LegacyAuthorityAdapters::source_vertex(1, 8);
-  const auto bResult = LegacyAuthorityAdapters::source_vertex(6, 8);
+  const auto aResult = directional::authority::SourceVertexId::from_index(1, 8);
+  const auto bResult = directional::authority::SourceVertexId::from_index(6, 8);
   ASSERT_TRUE(aResult.has_value());
   ASSERT_TRUE(bResult.has_value());
 
@@ -90,8 +89,8 @@ TEST(SurfaceCellAuthorityKernel, SourceEdgeCanonicalizationPreservesExplicitOrie
 }
 
 TEST(SurfaceCellAuthorityKernel, SourceSupportAlternativesRemainTypeDistinct) {
-  const auto vertex = LegacyAuthorityAdapters::source_vertex(3, 8);
-  const auto face = LegacyAuthorityAdapters::source_face(3, 8);
+  const auto vertex = directional::authority::SourceVertexId::from_index(3, 8);
+  const auto face = directional::authority::SourceFaceId::from_index(3, 8);
   ASSERT_TRUE(vertex.has_value());
   ASSERT_TRUE(face.has_value());
 
@@ -136,8 +135,8 @@ TEST(SurfaceCellAuthorityKernel, NonzeroRotationTranslationRoundTripIsExact) {
 }
 
 TEST(SurfaceCellAuthorityKernel, BoundaryStepWithoutInteriorTransitionIsValid) {
-  const auto a = LegacyAuthorityAdapters::source_vertex(0, 4);
-  const auto b = LegacyAuthorityAdapters::source_vertex(1, 4);
+  const auto a = directional::authority::SourceVertexId::from_index(0, 4);
+  const auto b = directional::authority::SourceVertexId::from_index(1, 4);
   ASSERT_TRUE(a.has_value());
   ASSERT_TRUE(b.has_value());
   const auto key = SourceEdgeTopologyKey::make(a.value(), b.value());
@@ -150,8 +149,8 @@ TEST(SurfaceCellAuthorityKernel, BoundaryStepWithoutInteriorTransitionIsValid) {
 }
 
 TEST(SurfaceCellAuthorityKernel, InteriorStepRequiresNamedInteriorTransition) {
-  const auto a = LegacyAuthorityAdapters::source_vertex(0, 4);
-  const auto b = LegacyAuthorityAdapters::source_vertex(2, 4);
+  const auto a = directional::authority::SourceVertexId::from_index(0, 4);
+  const auto b = directional::authority::SourceVertexId::from_index(2, 4);
   ASSERT_TRUE(a.has_value());
   ASSERT_TRUE(b.has_value());
   const auto key = SourceEdgeTopologyKey::make(a.value(), b.value());
@@ -163,7 +162,7 @@ TEST(SurfaceCellAuthorityKernel, InteriorStepRequiresNamedInteriorTransition) {
   ASSERT_FALSE(missing.has_value());
   EXPECT_EQ(missing.error().code, DomainErrorCode::MissingInteriorTransition);
 
-  const auto transition = LegacyAuthorityAdapters::interior_transition(1, 3);
+  const auto transition = directional::authority::InteriorTransitionId::from_index(1, 3);
   ASSERT_TRUE(transition.has_value());
   const auto valid = TransitionStep::interior(
       key.value(), transition.value(),
@@ -175,9 +174,9 @@ TEST(SurfaceCellAuthorityKernel, InteriorStepRequiresNamedInteriorTransition) {
 }
 
 TEST(SurfaceCellAuthorityKernel, CanonicalRouteReversalRoundTripIsExact) {
-  const auto v0 = LegacyAuthorityAdapters::source_vertex(0, 6);
-  const auto v1 = LegacyAuthorityAdapters::source_vertex(1, 6);
-  const auto v2 = LegacyAuthorityAdapters::source_vertex(2, 6);
+  const auto v0 = directional::authority::SourceVertexId::from_index(0, 6);
+  const auto v1 = directional::authority::SourceVertexId::from_index(1, 6);
+  const auto v2 = directional::authority::SourceVertexId::from_index(2, 6);
   ASSERT_TRUE(v0.has_value());
   ASSERT_TRUE(v1.has_value());
   ASSERT_TRUE(v2.has_value());
@@ -204,8 +203,8 @@ TEST(SurfaceCellAuthorityKernel, CanonicalRouteReversalRoundTripIsExact) {
 }
 
 TEST(SurfaceCellAuthorityKernel, RepresentationHandlePerturbationDoesNotChangeCanonicalRoute) {
-  const auto v0 = LegacyAuthorityAdapters::source_vertex(0, 5);
-  const auto v1 = LegacyAuthorityAdapters::source_vertex(1, 5);
+  const auto v0 = directional::authority::SourceVertexId::from_index(0, 5);
+  const auto v1 = directional::authority::SourceVertexId::from_index(1, 5);
   ASSERT_TRUE(v0.has_value());
   ASSERT_TRUE(v1.has_value());
   const auto edge = SourceEdgeTopologyKey::make(v0.value(), v1.value());
@@ -225,17 +224,17 @@ TEST(SurfaceCellAuthorityKernel, RepresentationHandlePerturbationDoesNotChangeCa
 }
 
 TEST(SurfaceCellAuthorityKernel, LegacyAdapterRoundTripPreservesSemanticValue) {
-  const auto region = LegacyAuthorityAdapters::topology_region(4, 9);
+  const auto region = directional::authority::TopologyRegionId::from_index(4, 9);
   ASSERT_TRUE(region.has_value());
-  const auto raw = LegacyAuthorityAdapters::to_legacy_index(region.value());
-  const auto reconstructed = LegacyAuthorityAdapters::topology_region(
+  const auto raw = (region.value()).index();
+  const auto reconstructed = directional::authority::TopologyRegionId::from_index(
       static_cast<std::int64_t>(raw), 9);
   ASSERT_TRUE(reconstructed.has_value());
   EXPECT_EQ(reconstructed.value(), region.value());
 }
 
 TEST(SurfaceCellAuthorityKernel, DeliberateCrossDomainAdapterMisuseIsRejected) {
-  const auto misuse = LegacyAuthorityAdapters::checked<FieldChartId>(
+  const auto misuse = FieldChartId::from_domain_index(
       AuthorityDomain::SourceFace, 1, 4);
   ASSERT_FALSE(misuse.has_value());
   EXPECT_EQ(misuse.error().code, DomainErrorCode::DomainMismatch);
