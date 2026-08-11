@@ -77,6 +77,18 @@ struct ResolvedSourceEntity {
   [[nodiscard]] SourceEntityKind kind() const {
     return source_entity_kind(support);
   }
+
+  friend bool operator==(const ResolvedSourceEntity &lhs,
+                         const ResolvedSourceEntity &rhs) {
+    return lhs.support == rhs.support && lhs.chart == rhs.chart &&
+           lhs.vertexFan == rhs.vertexFan;
+  }
+
+  friend bool operator<(const ResolvedSourceEntity &lhs,
+                        const ResolvedSourceEntity &rhs) {
+    return std::tie(lhs.support, lhs.chart, lhs.vertexFan) <
+           std::tie(rhs.support, rhs.chart, rhs.vertexFan);
+  }
 };
 
 struct SourceChartTransition {

@@ -11,16 +11,39 @@ namespace directional::geometry::surface_arrangement_detail {
  * charts are SourceProjectionChart values from SourceChartTransitionGraph.
  */
 struct SourceChartScope {
-  int sourceComponent = -1;
-  int sourceFace = -1;
-  int localSheet = -1;
+  int sourceFace = -1; // checked row locator used only for matrix access
+  std::optional<SourceProjectionChart> chart;
 
   [[nodiscard]] bool valid() const noexcept {
-    return sourceComponent >= 0 && sourceFace >= 0 && localSheet >= 0;
+    return sourceFace >= 0 && chart.has_value();
   }
 
   auto operator<=>(const SourceChartScope &) const = default;
 };
+
+
+SurfaceCellCanonicalIdentity diagnostic_source_entity_identity(
+    const ResolvedSourceEntity &entity) {
+  SurfaceCellCanonicalIdentity identity;
+  if (!entity.valid()) return identity;
+  identity.valid = true;
+  identity.values.push_back(static_cast<std::int64_t>(entity.kind()));
+  if (const auto *vertex =
+          std::get_if<authority::SourceVertexSupport>(&entity.support)) {
+    identity.values.push_back(static_cast<std::int64_t>(vertex->vertex.index()));
+    identity.values.push_back(entity.vertexFan.has_value()
+                                  ? static_cast<std::int64_t>(entity.vertexFan->index())
+                                  : -1);
+  } else if (const auto *edge =
+                 std::get_if<authority::SourceEdgeSupport>(&entity.support)) {
+    identity.values.push_back(static_cast<std::int64_t>(edge->edge.first().index()));
+    identity.values.push_back(static_cast<std::int64_t>(edge->edge.second().index()));
+  } else if (const auto *face =
+                 std::get_if<authority::SourceFaceInteriorSupport>(&entity.support)) {
+    identity.values.push_back(static_cast<std::int64_t>(face->face.index()));
+  }
+  return identity;
+}
 
 template <typename T>
 std::uint64_t vector_storage_bytes(const std::vector<T> &values) {
@@ -114,30 +137,12 @@ namespace directional::geometry::surface_arrangement_detail {
 
 Eigen::RowVector3d node_barycentric_on_face(
     const SurfaceArrangementNode &node, const int face) {
-  return node_barycentric_on_face(node, face, -1, -1);
-}
-
-Eigen::RowVector3d node_barycentric_on_face(
-    const SurfaceArrangementNode &node, const int face,
-    const int component, const int sheet) {
-  const auto scopeCompatible = [](const int stored, const int requested) {
-    return requested < 0 || stored < 0 || stored == requested;
-  };
-  for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
-    if (occurrence.sourceFace == face &&
-        scopeCompatible(occurrence.sourceComponent, component) &&
-        scopeCompatible(occurrence.sourceSheet, sheet)) {
-      return occurrence.barycentric;
-    }
-  }
   for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
     if (occurrence.sourceFace == face) {
       return occurrence.barycentric;
     }
   }
-  if (node.sourceFace == face &&
-      scopeCompatible(node.sourceComponent, component) &&
-      scopeCompatible(node.sourceSheet, sheet)) {
+  if (node.sourceFace == face) {
     return node.barycentric;
   }
   return Eigen::RowVector3d::Constant(
@@ -515,10 +520,14 @@ NodeKey make_node_key(const Eigen::MatrixXi &faces, const int face,
 
 namespace directional::geometry::surface_arrangement_detail {
 
-using ScopedNodeKey = std::tuple<NodeKey, int, int>;
-using ScopedSourceEdgeKey = std::tuple<std::uint64_t, int>;
 using FaceVertexKey = std::pair<int, int>;
-using VertexFanScopes = std::map<FaceVertexKey, int>;
+using VertexFanScopes = std::map<FaceVertexKey, authority::SourceVertexFanId>;
+using NodeAuthorityScope = std::variant<std::monostate, authority::SourceVertexFanId,
+                                        authority::IsolationSheetId>;
+using ScopedNodeKey = std::tuple<NodeKey, authority::TopologyRegionId,
+                                 NodeAuthorityScope>;
+using ScopedSourceEdgeKey =
+    std::tuple<std::uint64_t, authority::TopologyRegionId>;
 
 struct VertexFanWedge {
   int order = -1;
@@ -529,70 +538,80 @@ struct VertexFanWedge {
 
 using VertexFanWedges = std::map<FaceVertexKey, VertexFanWedge>;
 
-void complete_segment_scope(const SurfaceArrangementOptions &options,
+std::optional<authority::SourceFaceId> source_row(
+    const SurfaceArrangementOptions &options, const int face) {
+  if (options.sourceAuthority == nullptr) return std::nullopt;
+  const auto row = authority::SourceFaceId::from_index(
+      face, options.sourceAuthority->face_count());
+  return row ? std::optional<authority::SourceFaceId>(row.value())
+             : std::nullopt;
+}
+
+std::optional<authority::IsolationSheetId> source_sheet(
+    const SurfaceArrangementOptions &options, const int face) {
+  const auto row = source_row(options, face);
+  return row.has_value()
+             ? std::optional<authority::IsolationSheetId>(
+                   options.sourceAuthority->sheet_for_row(*row))
+             : std::nullopt;
+}
+
+bool complete_segment_scope(const SurfaceArrangementOptions &options,
+                            const SourceChartTransitionGraph &transitionGraph,
                             Segment2 &segment) {
-  if (options.sourceAuthority == nullptr || segment.sourceFace < 0 ||
-      static_cast<std::size_t>(segment.sourceFace) >=
-          options.sourceAuthority->face_count()) {
-    return;
+  const auto row = source_row(options, segment.sourceFace);
+  const auto chart = transitionGraph.chart(segment.sourceFace);
+  if (!row.has_value() || !chart.has_value()) return false;
+  const authority::TopologyRegionId region =
+      options.sourceAuthority->region_for_row(*row);
+  if ((segment.sourceTopologyRegion.has_value() &&
+       segment.sourceTopologyRegion.value() != region) ||
+      (segment.sourceChart.has_value() && segment.sourceChart.value() != chart.value())) {
+    return false;
   }
-  const auto faceId = authority::SourceFaceId::from_index(
-      segment.sourceFace, options.sourceAuthority->face_count());
-  if (!faceId) {
-    return;
-  }
-  // These integer fields are temporary representation leaves on Segment2.
-  // SourceTopologyRegions is the only authority consulted to populate them.
-  segment.sourceTopologyRegion =
-      options.sourceAuthority->region_for_row(faceId.value());
-  segment.sourceComponent = static_cast<int>(
-      options.sourceAuthority->component_for_row(faceId.value()).index());
-  segment.sourceSheet = static_cast<int>(
-      options.sourceAuthority->sheet_for_row(faceId.value()).index());
+  segment.sourceTopologyRegion = region;
+  segment.sourceChart = chart.value();
+  return true;
 }
 
-bool same_segment_scope(const Segment2 &a, const Segment2 &b) {
-  return a.sourceComponent == b.sourceComponent &&
-         a.sourceSheet == b.sourceSheet;
+bool same_segment_scope(const SurfaceArrangementOptions &options,
+                        const Segment2 &a, const Segment2 &b) {
+  if (!a.sourceTopologyRegion.has_value() ||
+      !b.sourceTopologyRegion.has_value() ||
+      a.sourceTopologyRegion != b.sourceTopologyRegion) {
+    return false;
+  }
+  const auto aSheet = source_sheet(options, a.sourceFace);
+  const auto bSheet = source_sheet(options, b.sourceFace);
+  return aSheet.has_value() && bSheet.has_value() && aSheet == bSheet;
 }
 
-int canonical_node_sheet_scope(
-    const NodeKey &key, const int sourceFace, const int sourceSheet,
+NodeAuthorityScope canonical_node_authority_scope(
+    const NodeKey &key, const int sourceFace,
     const VertexFanScopes &vertexFanScopes,
-    const std::map<std::pair<int, int>, int> &sourceBoundaryLoopByVertexFan) {
+    const SurfaceArrangementOptions &options) {
   if (key.kind == 0) {
     const auto found = vertexFanScopes.find({sourceFace, key.vertex});
-    const int fanScope =
-        found == vertexFanScopes.end() ? sourceSheet : found->second;
-    const auto boundary =
-        sourceBoundaryLoopByVertexFan.find({key.vertex, fanScope});
-    if (boundary != sourceBoundaryLoopByVertexFan.end()) {
-      // A manifold source-boundary vertex fan is one physical arrangement
-      // node. Hard rails may split its source-interior sectors, but they may
-      // not clone the exterior endpoint. Distinct pinched fans retain distinct
-      // R1 fan scopes and therefore remain separate.
-      return -1 - boundary->second;
-    }
-    return fanScope;
+    return found == vertexFanScopes.end()
+               ? NodeAuthorityScope{std::monostate{}}
+               : NodeAuthorityScope{found->second};
   }
-  // An edge-interior source point is intrinsically shared by both incident
-  // triangle charts. Local sheet labels are chart labels and may differ
-  // across that adjacency, so they must not split the same source edge.
-  if (key.kind == 1) {
-    return -1;
-  }
-  return sourceSheet;
+  // An edge-interior source point is one exact source edge regardless of
+  // which incident isolation-sheet chart supplies the projection row.
+  if (key.kind == 1) return NodeAuthorityScope{std::monostate{}};
+  const auto sheet = source_sheet(options, sourceFace);
+  return sheet.has_value() ? NodeAuthorityScope{sheet.value()}
+                           : NodeAuthorityScope{std::monostate{}};
 }
 
 ScopedNodeKey make_scoped_node_key(
     const Eigen::MatrixXi &faces, const Segment2 &segment,
     const Eigen::Vector2d &uv, const VertexFanScopes &vertexFanScopes,
-    const std::map<std::pair<int, int>, int> &sourceBoundaryLoopByVertexFan) {
+    const SurfaceArrangementOptions &options) {
   const NodeKey key = make_node_key(faces, segment.sourceFace, uv);
-  return {key, segment.sourceComponent,
-          canonical_node_sheet_scope(key, segment.sourceFace,
-                                     segment.sourceSheet, vertexFanScopes,
-                                     sourceBoundaryLoopByVertexFan)};
+  return {key, segment.sourceTopologyRegion.value(),
+          canonical_node_authority_scope(key, segment.sourceFace,
+                                         vertexFanScopes, options)};
 }
 
 int face_vertex_corner(const Eigen::MatrixXi &faces, const int face,
@@ -612,7 +631,7 @@ int adjacent_face_across_vertex_edge(
     const Eigen::MatrixXi &faces,
     const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
     const VertexFanScopes &vertexFanScopes, const int face, const int vertex,
-    const int scope, const bool acrossWedgeEnd) {
+    const authority::SourceVertexFanId scope, const bool acrossWedgeEnd) {
   const int corner = face_vertex_corner(faces, face, vertex);
   if (corner < 0) {
     return -1;
@@ -664,7 +683,7 @@ VertexFanWedges build_vertex_fan_wedges(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
     const VertexFanScopes &vertexFanScopes) {
-  std::map<std::pair<int, int>, std::vector<int>> facesByFan;
+  std::map<std::pair<int, authority::SourceVertexFanId>, std::vector<int>> facesByFan;
   for (const auto &[faceVertex, scope] : vertexFanScopes) {
     facesByFan[{faceVertex.second, scope}].push_back(faceVertex.first);
   }
@@ -672,7 +691,7 @@ VertexFanWedges build_vertex_fan_wedges(
   VertexFanWedges wedges;
   for (auto &[fan, incidentFaces] : facesByFan) {
     const int vertex = fan.first;
-    const int scope = fan.second;
+    const authority::SourceVertexFanId scope = fan.second;
     std::sort(incidentFaces.begin(), incidentFaces.end());
     incidentFaces.erase(
         std::unique(incidentFaces.begin(), incidentFaces.end()),
@@ -1130,8 +1149,8 @@ struct BoundarySubsegmentWitness {
   std::uint64_t sourceEdgeKey = 0U;
   int sourceFace = -1;
   int sourceEdge = -1;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  std::optional<SourceProjectionChart> sourceChart;
   int side = 0;
   double parameter0 = 0.0;
   double parameter1 = 0.0;
@@ -1514,21 +1533,20 @@ namespace directional::geometry {
 const SurfaceCellOwnershipClassRecord *find_surface_cell_ownership_class(
     const SurfaceCellComplex &complex,
     const SurfaceCellCanonicalIdentity &key) {
-  int sourceRegionIndex = -1;
+  int regionIndex = -1;
   int ordinal = -1;
-  if (!decode_surface_cell_ownership_key(key, sourceRegionIndex, ordinal) ||
+  if (!decode_surface_cell_ownership_key(key, regionIndex, ordinal) ||
       ordinal < 0 ||
       ordinal >= static_cast<int>(complex.sourceOwnershipRegistry.size())) {
     return nullptr;
   }
   const SurfaceCellOwnershipClassRecord &record =
       complex.sourceOwnershipRegistry[static_cast<std::size_t>(ordinal)];
-  return record.sourceTopologyRegion.has_value() &&
+  return record.valid() &&
                  static_cast<int>(record.sourceTopologyRegion->index()) ==
-                     sourceRegionIndex &&
-             record.valid()
-         ? &record
-         : nullptr;
+                     regionIndex
+             ? &record
+             : nullptr;
 }
 
 bool validate_surface_cell_ownership_registry(
@@ -1586,19 +1604,20 @@ bool canonicalize_surface_cell_ownership(
         std::vector<std::array<std::int64_t, 4>> members;
         members.reserve(charts.size());
         for (const SourceProjectionChart &chart : charts) {
-          const std::size_t sourceFace = chart.face.index();
-          if (!chart.valid() || sourceFace >=
-                                    static_cast<std::size_t>(faces.rows())) {
+          if (!chart.valid()) {
             return SurfaceCellCanonicalIdentity{};
           }
-          std::array<int, 3> vertices{{
-              faces(static_cast<int>(sourceFace), 0),
-              faces(static_cast<int>(sourceFace), 1),
-              faces(static_cast<int>(sourceFace), 2)}};
+          if (chart.face.index() >= static_cast<std::size_t>(faces.rows())) {
+            return SurfaceCellCanonicalIdentity{};
+          }
+          std::array<std::int64_t, 3> vertices{{
+              faces(static_cast<int>(chart.face.index()), 0),
+              faces(static_cast<int>(chart.face.index()), 1),
+              faces(static_cast<int>(chart.face.index()), 2)}};
           std::sort(vertices.begin(), vertices.end());
           members.push_back({
-              static_cast<std::int64_t>(chart.chart.index()), vertices[0],
-              vertices[1], vertices[2]});
+              static_cast<std::int64_t>(chart.chart.index()),
+              vertices[0], vertices[1], vertices[2]});
         }
         std::sort(members.begin(), members.end());
         members.erase(std::unique(members.begin(), members.end()),
@@ -1661,11 +1680,8 @@ bool canonicalize_surface_cell_ownership(
     }
     const int ordinal = static_cast<int>(std::distance(records.begin(), found));
     cell.sourceTopologyRegion = record.sourceTopologyRegion;
-    if (!record.sourceTopologyRegion.has_value()) {
-      return false;
-    }
-    cell.sourceOwnershipClass =
-        make_surface_cell_ownership_key(*record.sourceTopologyRegion, ordinal);
+    cell.sourceOwnershipClass = make_surface_cell_ownership_key(
+        record.sourceTopologyRegion.value(), ordinal);
     cell.sourceCharts.erase(
         std::remove_if(cell.sourceCharts.begin(), cell.sourceCharts.end(),
                        [&](const SourceProjectionChart &chart) {
@@ -1740,75 +1756,70 @@ SurfaceCellComplex build_surface_cell_complex(
   const SourceBoundaryTopology sourceBoundaryTopology =
       build_source_boundary_topology(faces, edgeFaces);
 
-  // R-A: source component/sheet authority is published once by
-  // SourceTopologyRegions. Arrangement may retain derived integer projections
-  // temporarily for pre-cutover scratch records, but it never reconstructs or
-  // trusts raw classifier arrays.
-  const bool hasSourceAuthority =
-      options.sourceAuthority != nullptr &&
-      options.sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(faces.rows()));
-  std::vector<int> resolvedComponents(static_cast<std::size_t>(faces.rows()),
-                                      -1);
-  std::vector<int> resolvedSheets(static_cast<std::size_t>(faces.rows()), -1);
-  if (hasSourceAuthority) {
-    for (int face = 0; face < faces.rows(); ++face) {
-      const auto faceId = authority::SourceFaceId::from_index(
-          face, static_cast<std::size_t>(faces.rows()));
-      if (!faceId) {
-        continue;
-      }
-      resolvedComponents[static_cast<std::size_t>(face)] = static_cast<int>(
-          options.sourceAuthority->component_for_row(faceId.value()).index());
-      resolvedSheets[static_cast<std::size_t>(face)] = static_cast<int>(
-          options.sourceAuthority->sheet_for_row(faceId.value()).index());
-    }
+  if (options.sourceAuthority == nullptr ||
+      !options.sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(faces.rows()))) {
+    complex.diagnostics.incidenceFailure =
+        SurfaceArrangementIncidenceFailure::SourceTransitionUnavailable;
+    complex.diagnostics.incidenceValid = false;
+    complex.diagnostics.embeddingValid = false;
+    complex.diagnostics.orientationValid = false;
+    complex.diagnostics.cellsDiskValid = false;
+    complex.diagnostics.boundaryLoopsValid = false;
+    complex.diagnostics.eulerCharacteristicValid = false;
+    complex.diagnostics.topologyValid = false;
+    return complex;
   }
+  const SourceTopologyRegions &sourceAuthority = *options.sourceAuthority;
   SurfaceArrangementOptions resolvedOptions = options;
 
-  // R1 is the sole authority for source-chart connectivity. Build the graph
-  // before node identity or radial incidence so hard rails, boundaries,
-  // nonmanifold sectors, disconnected fans, and component barriers are never
-  // reconstructed from raw labels or geometric proximity.
+  // R1 consumes the one published source-authority product. No component or
+  // sheet classifier arrays are reconstructed downstream.
   const SourceChartTransitionGraph transitionGraph(
-      &faces, resolvedOptions.sourceAuthority,
-      &resolvedOptions.hardFeatureEdges);
+      faces, sourceAuthority, &resolvedOptions.hardFeatureEdges);
   if (!transitionGraph.available()) {
     embeddingValid = false;
     complex.diagnostics.incidenceFailure =
         SurfaceArrangementIncidenceFailure::SourceTransitionUnavailable;
   }
 
+  const auto checked_row = [&](const int sourceFace)
+      -> std::optional<authority::SourceFaceId> {
+    const auto row = authority::SourceFaceId::from_index(
+        sourceFace, sourceAuthority.face_count());
+    return row ? std::optional<authority::SourceFaceId>(row.value())
+               : std::nullopt;
+  };
+  const auto source_component_for_face = [&](const int sourceFace) {
+    const auto row = checked_row(sourceFace);
+    return row.has_value()
+               ? static_cast<int>(sourceAuthority.component_for_row(*row).index())
+               : -1;
+  };
+  const auto source_sheet_for_face = [&](const int sourceFace) {
+    const auto row = checked_row(sourceFace);
+    return row.has_value()
+               ? static_cast<int>(sourceAuthority.sheet_for_row(*row).index())
+               : -1;
+  };
+  const auto source_region_for_face = [&](const int sourceFace)
+      -> std::optional<authority::TopologyRegionId> {
+    const auto row = checked_row(sourceFace);
+    return row.has_value()
+               ? std::optional<authority::TopologyRegionId>(
+                     sourceAuthority.region_for_row(*row))
+               : std::nullopt;
+  };
   const auto chart_source_face = [](const SourceChartScope &chart) {
     return chart.sourceFace;
   };
-  const auto chart_source_component = [](const SourceChartScope &chart) {
-    return chart.sourceComponent;
+  const auto chart_source_component = [&](const SourceChartScope &chart) {
+    return source_component_for_face(chart.sourceFace);
   };
-  const auto chart_source_sheet = [](const SourceChartScope &chart) {
-    return chart.localSheet;
+  const auto chart_source_sheet = [&](const SourceChartScope &chart) {
+    return source_sheet_for_face(chart.sourceFace);
   };
-  const auto chart_for_source_scope =
-      [&](const int sourceFace, const int sourceComponent,
-          const int sourceSheet) -> std::optional<SourceChartScope> {
-        const auto published = transitionGraph.chart(sourceFace);
-        if (!published.has_value()) {
-          return std::nullopt;
-        }
-        const auto component = transitionGraph.source_component(published.value());
-        const auto sheet = transitionGraph.isolation_sheet(published.value());
-        if (!component.has_value() || !sheet.has_value() ||
-            static_cast<int>(component->index()) != sourceComponent ||
-            static_cast<int>(sheet->index()) != sourceSheet) {
-          return std::nullopt;
-        }
-        return SourceChartScope{sourceComponent, sourceFace, sourceSheet};
-      };
-
   VertexFanScopes vertexFanScopes;
-  std::vector<std::pair<SurfaceCellCanonicalIdentity, FaceVertexKey>>
-      vertexFanRecords;
-  vertexFanRecords.reserve(static_cast<std::size_t>(faces.rows()) * 3U);
   for (int face = 0; face < faces.rows(); ++face) {
     for (int corner = 0; corner < 3; ++corner) {
       const int vertex = faces(face, corner);
@@ -1816,53 +1827,28 @@ SurfaceCellComplex build_surface_cell_complex(
         throw std::invalid_argument(
             "surface arrangement received an invalid face index.");
       }
-      SurfaceCellCanonicalIdentity identity;
-      if (transitionGraph.available()) {
-        SurfacePoint point;
-        point.face = face;
-        point.component = resolvedComponents[static_cast<std::size_t>(face)];
-        point.sheet = resolvedSheets[static_cast<std::size_t>(face)];
-        point.barycentric = Eigen::Vector3d::Unit(corner);
-        const auto entity = transitionGraph.resolve_entity(point);
-        const auto *vertexSupport =
-            entity.has_value()
-                ? std::get_if<authority::SourceVertexSupport>(&entity->support)
-                : nullptr;
-        if (entity.has_value() && entity->valid() && vertexSupport != nullptr &&
-            static_cast<int>(vertexSupport->vertex.index()) == vertex) {
-          identity = entity->canonical;
-        }
+      SurfacePoint point;
+      point.face = face;
+      point.barycentric = Eigen::Vector3d::Unit(corner);
+      const auto entity = transitionGraph.resolve_entity(point);
+      const auto *vertexSupport =
+          entity.has_value() && entity->valid()
+              ? std::get_if<authority::SourceVertexSupport>(&entity->support)
+              : nullptr;
+      if (vertexSupport == nullptr || !entity->vertexFan.has_value() ||
+          static_cast<int>(vertexSupport->vertex.index()) != vertex) {
+        embeddingValid = false;
+        complex.diagnostics.incidenceFailure =
+            SurfaceArrangementIncidenceFailure::SourceTransitionUnavailable;
+        continue;
       }
-      if (!identity.valid) {
-        // Preserve a deterministic fail-closed scope when R1 is unavailable.
-        // The topology-valid flag remains false; this only prevents unrelated
-        // source vertices from being merged while diagnostics are produced.
-        identity.valid = true;
-        identity.values = {
-            static_cast<std::int64_t>(SourceEntityKind::SourceVertex),
-            resolvedComponents[static_cast<std::size_t>(face)], vertex, face};
-      }
-      vertexFanRecords.push_back({std::move(identity), {face, vertex}});
+      vertexFanScopes.insert_or_assign({face, vertex}, entity->vertexFan.value());
     }
-  }
-  std::sort(vertexFanRecords.begin(), vertexFanRecords.end(),
-            [](const auto &lhs, const auto &rhs) {
-              return std::tie(lhs.first, lhs.second) <
-                     std::tie(rhs.first, rhs.second);
-            });
-  int nextVertexFanScope = -1;
-  SurfaceCellCanonicalIdentity previousFan;
-  for (const auto &[identity, faceVertex] : vertexFanRecords) {
-    if (nextVertexFanScope < 0 || identity != previousFan) {
-      ++nextVertexFanScope;
-      previousFan = identity;
-    }
-    vertexFanScopes.emplace(faceVertex, nextVertexFanScope);
   }
   const VertexFanWedges vertexFanWedges = build_vertex_fan_wedges(
       vertices, faces, edgeFaces, vertexFanScopes);
 
-  std::map<std::pair<int, int>, int> sourceBoundaryLoopByVertexFan;
+  std::map<std::pair<int, authority::SourceVertexFanId>, int> sourceBoundaryLoopByVertexFan;
   bool sourceBoundaryVertexAliasesValid = sourceBoundaryTopology.valid;
   if (sourceBoundaryVertexAliasesValid) {
     for (const SourceBoundaryLoopRecord &loop : sourceBoundaryTopology.loops) {
@@ -1911,7 +1897,10 @@ SurfaceCellComplex build_surface_cell_complex(
       boundary.family = -1;
       boundary.hardFeature = hardFeature || boundaryEdge;
       boundary.featureClass = edge;
-      complete_segment_scope(resolvedOptions, boundary);
+      if (!complete_segment_scope(resolvedOptions, transitionGraph, boundary)) {
+        embeddingValid = false;
+        continue;
+      }
       segments.push_back(boundary);
     }
   }
@@ -1935,15 +1924,17 @@ SurfaceCellComplex build_surface_cell_complex(
     segment.railId = arc.railId;
     segment.curveId = arc.curveId;
     segment.sourceTopologyRegion = arc.sourceTopologyRegion;
-    segment.sourceComponent = arc.sourceComponent;
-    segment.sourceSheet = arc.sourceSheet;
+    segment.sourceChart = arc.sourceChart;
     segment.proposalId = arc.proposalId;
     segment.proposalSeedId = arc.proposalSeedId;
     segment.proposalSide = arc.proposalSide;
     segment.proposalBoundarySegment = arc.proposalBoundarySegment;
     segment.railT0 = arc.railT0;
     segment.railT1 = arc.railT1;
-    complete_segment_scope(resolvedOptions, segment);
+    if (!complete_segment_scope(resolvedOptions, transitionGraph, segment)) {
+      embeddingValid = false;
+      continue;
+    }
     if (clip_to_triangle(segment.start, segment.end, segment.sourceT0,
                          segment.sourceT1)) {
       segments.push_back(segment);
@@ -1994,7 +1985,8 @@ SurfaceCellComplex build_surface_cell_complex(
           segments[static_cast<std::size_t>(j)].sourceFace) {
         continue;
       }
-      if (!same_segment_scope(segments[static_cast<std::size_t>(i)],
+      if (!same_segment_scope(resolvedOptions,
+                              segments[static_cast<std::size_t>(i)],
                               segments[static_cast<std::size_t>(j)])) {
         continue;
       }
@@ -2021,12 +2013,12 @@ SurfaceCellComplex build_surface_cell_complex(
                 segments[static_cast<std::size_t>(j)], ti, tj)) {
           hardBarrierCrossingKeys.insert(make_scoped_node_key(
               faces, segments[static_cast<std::size_t>(i)], p,
-              vertexFanScopes, sourceBoundaryLoopByVertexFan));
+              vertexFanScopes, resolvedOptions));
         }
       }
       intersectionKeys.insert(make_scoped_node_key(
           faces, segments[static_cast<std::size_t>(i)], p,
-          vertexFanScopes, sourceBoundaryLoopByVertexFan));
+          vertexFanScopes, resolvedOptions));
     }
   }
   // A source edge is represented in both incident triangle charts.  If an
@@ -2069,9 +2061,13 @@ SurfaceCellComplex build_surface_cell_complex(
         std::abs(canonicalEnd - canonicalStart) <= 1.0e-14) {
       continue;
     }
+    if (!segment.sourceTopologyRegion.has_value()) {
+      embeddingValid = false;
+      continue;
+    }
     segmentsBySourceEdge[{source_edge_key(faces, segment.sourceFace,
                                           localEdge),
-                          segment.sourceComponent}]
+                          segment.sourceTopologyRegion.value()}]
         .push_back(
             {segmentIndex, localEdge, canonicalStart, canonicalEnd});
   }
@@ -2125,7 +2121,7 @@ SurfaceCellComplex build_surface_cell_complex(
   update_peak_memory(vector_storage_bytes(segments));
 
   std::map<ScopedNodeKey, int> nodeByKey;
-  std::vector<std::pair<int, int>> nodeScopes;
+  std::vector<std::pair<authority::TopologyRegionId, NodeAuthorityScope>> nodeScopes;
   const double positionTolerance =
       1.0e-9 * std::max(1.0, (vertices.colwise().maxCoeff() -
                              vertices.colwise().minCoeff()).norm());
@@ -2137,8 +2133,7 @@ SurfaceCellComplex build_surface_cell_complex(
         canonicalize_barycentric(uv_to_bary(rawUv));
     const Eigen::Vector2d uv = bary_to_uv(bary);
     const ScopedNodeKey scopedKey =
-        make_scoped_node_key(faces, segment, uv, vertexFanScopes,
-                             sourceBoundaryLoopByVertexFan);
+        make_scoped_node_key(faces, segment, uv, vertexFanScopes, resolvedOptions);
     const NodeKey &key = std::get<0>(scopedKey);
     auto found = nodeByKey.find(scopedKey);
     if (found != nodeByKey.end()) {
@@ -2165,9 +2160,9 @@ SurfaceCellComplex build_surface_cell_complex(
           std::any_of(node.occurrences.begin(), node.occurrences.end(),
                       [&](const SurfaceArrangementNodeOccurrence &occurrence) {
                         return occurrence.sourceFace == face &&
-                               occurrence.sourceComponent ==
-                                   segment.sourceComponent &&
-                               occurrence.sourceSheet == segment.sourceSheet &&
+                               occurrence.sourceTopologyRegion ==
+                                   segment.sourceTopologyRegion &&
+                               occurrence.sourceChart == segment.sourceChart &&
                                occurrence.sourceArc == segment.sourceArc &&
                                occurrence.provenance == segment.provenance &&
                                (occurrence.barycentric - bary).norm() <= 1.0e-12;
@@ -2177,8 +2172,7 @@ SurfaceCellComplex build_surface_cell_complex(
         occurrence.sourceFace = face;
         occurrence.barycentric = bary;
         occurrence.sourceTopologyRegion = segment.sourceTopologyRegion;
-        occurrence.sourceComponent = segment.sourceComponent;
-        occurrence.sourceSheet = segment.sourceSheet;
+        occurrence.sourceChart = segment.sourceChart;
         occurrence.sourceArc = segment.sourceArc;
         occurrence.provenance = segment.provenance;
         occurrence.railId = segment.railId;
@@ -2192,13 +2186,13 @@ SurfaceCellComplex build_surface_cell_complex(
                   [](const SurfaceArrangementNodeOccurrence &a,
                      const SurfaceArrangementNodeOccurrence &b) {
                     return std::tie(
-                               a.sourceComponent, a.sourceSheet,
+                               a.sourceTopologyRegion, a.sourceChart,
                                a.sourceFace, a.sourceArc, a.provenance,
                                a.railId, a.curveId, a.sourceT0, a.sourceT1,
                                a.railT0, a.railT1, a.barycentric[0],
                                a.barycentric[1], a.barycentric[2]) <
                            std::tie(
-                               b.sourceComponent, b.sourceSheet,
+                               b.sourceTopologyRegion, b.sourceChart,
                                b.sourceFace, b.sourceArc, b.provenance,
                                b.railId, b.curveId, b.sourceT0, b.sourceT1,
                                b.railT0, b.railT1, b.barycentric[0],
@@ -2211,8 +2205,7 @@ SurfaceCellComplex build_surface_cell_complex(
     node.id = static_cast<int>(complex.nodes.size());
     node.sourceFace = face;
     node.sourceTopologyRegion = segment.sourceTopologyRegion;
-    node.sourceComponent = segment.sourceComponent;
-    node.sourceSheet = segment.sourceSheet;
+    node.sourceChart = segment.sourceChart;
     node.hardBarrierCrossing =
         hardBarrierCrossingKeys.count(scopedKey) != 0;
     node.barycentric = bary;
@@ -2224,8 +2217,7 @@ SurfaceCellComplex build_surface_cell_complex(
     occurrence.sourceFace = face;
     occurrence.barycentric = bary;
     occurrence.sourceTopologyRegion = segment.sourceTopologyRegion;
-    occurrence.sourceComponent = segment.sourceComponent;
-    occurrence.sourceSheet = segment.sourceSheet;
+    occurrence.sourceChart = segment.sourceChart;
     occurrence.sourceArc = segment.sourceArc;
     occurrence.provenance = segment.provenance;
     occurrence.railId = segment.railId;
@@ -2264,8 +2256,7 @@ SurfaceCellComplex build_surface_cell_complex(
         value.railId = segment.railId;
         value.curveId = segment.curveId;
         value.sourceTopologyRegion = segment.sourceTopologyRegion;
-        value.sourceComponent = segment.sourceComponent;
-        value.sourceSheet = segment.sourceSheet;
+        value.sourceChart = segment.sourceChart;
         value.proposalId = segment.proposalId;
         value.proposalSeedId = segment.proposalSeedId;
         value.proposalSide = segment.proposalSide;
@@ -2286,8 +2277,8 @@ SurfaceCellComplex build_surface_cell_complex(
                  existing.singularitySupport == value.singularitySupport &&
                  existing.railId == value.railId &&
                  existing.curveId == value.curveId &&
-                 existing.sourceComponent == value.sourceComponent &&
-                 existing.sourceSheet == value.sourceSheet &&
+                 existing.sourceTopologyRegion == value.sourceTopologyRegion &&
+                 existing.sourceChart == value.sourceChart &&
                  existing.proposalId == value.proposalId &&
                  existing.proposalSeedId == value.proposalSeedId &&
                  existing.proposalSide == value.proposalSide &&
@@ -2391,7 +2382,7 @@ SurfaceCellComplex build_surface_cell_complex(
                 value.singularitySupport ? 0 : 1,
                 value.sourceFace, value.sourceArc, value.provenance,
                 value.family, value.strand, value.featureClass, value.railId,
-                value.curveId, value.sourceComponent, value.sourceSheet,
+                value.curveId, value.sourceTopologyRegion, value.sourceChart,
                 value.proposalId, value.proposalSeedId, value.proposalSide,
                 value.proposalBoundarySegment,
                 static_cast<std::int64_t>(
@@ -2417,8 +2408,8 @@ SurfaceCellComplex build_surface_cell_complex(
             return std::make_tuple(
                 value.railId.has_value() ? 0 : 1,
                 value.hardFeature ? 0 : 1,
-                value.railId, value.curveId, value.sourceComponent,
-                value.sourceSheet, value.sourceFace,
+                value.railId, value.curveId, value.sourceTopologyRegion,
+                value.sourceChart, value.sourceFace,
                 static_cast<std::int64_t>(
                     std::llround(std::min(value.railT0, value.railT1) *
                                  1.0e10)),
@@ -2464,12 +2455,9 @@ SurfaceCellComplex build_surface_cell_complex(
     halfedge.sourceTopologyRegion =
         authoritativeRail != nullptr ? authoritativeRail->sourceTopologyRegion
                                      : primary.sourceTopologyRegion;
-    halfedge.sourceComponent =
-        authoritativeRail != nullptr ? authoritativeRail->sourceComponent
-                                     : primary.sourceComponent;
-    halfedge.sourceSheet =
-        authoritativeRail != nullptr ? authoritativeRail->sourceSheet
-                                     : primary.sourceSheet;
+    halfedge.sourceChart =
+        authoritativeRail != nullptr ? authoritativeRail->sourceChart
+                                     : primary.sourceChart;
     halfedge.proposalId = primary.proposalId;
     halfedge.proposalSeedId = primary.proposalSeedId;
     halfedge.proposalSide = primary.proposalSide;
@@ -2484,9 +2472,7 @@ SurfaceCellComplex build_surface_cell_complex(
 
   struct DirectedWedgeWitness {
     int halfedge = -1;
-    int sourceFace = -1;
-    int sourceComponent = -1;
-    int sourceSheet = -1;
+    SourceChartScope chart;
     SourceEntityKind kind = SourceEntityKind::Invalid;
     double localParameter = 0.0;
     double leftScore = 0.0;
@@ -2535,26 +2521,21 @@ SurfaceCellComplex build_surface_cell_complex(
       [&](const SurfaceArrangementHalfedge &halfedge) {
         std::set<SourceChartScope> charts;
         const auto append_chart = [&](const int sourceFace,
-                                      const int sourceComponent,
-                                      const int sourceSheet) {
-          const auto published = transitionGraph.chart(sourceFace);
-          if (!published.has_value() || sourceFace < 0 ||
-              sourceFace >= faces.rows() ||
-              resolvedComponents[static_cast<std::size_t>(sourceFace)] !=
-                  sourceComponent ||
-              resolvedSheets[static_cast<std::size_t>(sourceFace)] !=
-                  sourceSheet) {
+                                      const std::optional<SourceProjectionChart> &sourceChart) {
+          if (!sourceChart.has_value() || sourceFace < 0 ||
+              sourceFace >= faces.rows()) {
             return;
           }
-          charts.insert(
-              SourceChartScope{sourceComponent, sourceFace, sourceSheet});
+          const auto published = transitionGraph.chart(sourceFace);
+          if (!published.has_value() || published.value() != sourceChart.value()) {
+            return;
+          }
+          charts.insert(SourceChartScope{sourceFace, sourceChart});
         };
         for (const SurfaceArrangementProvenance &entry : halfedge.provenance) {
-          append_chart(entry.sourceFace, entry.sourceComponent,
-                       entry.sourceSheet);
+          append_chart(entry.sourceFace, entry.sourceChart);
         }
-        append_chart(halfedge.sourceFace, halfedge.sourceComponent,
-                     halfedge.sourceSheet);
+        append_chart(halfedge.sourceFace, halfedge.sourceChart);
         return std::vector<SourceChartScope>(charts.begin(), charts.end());
       };
 
@@ -2575,22 +2556,23 @@ SurfaceCellComplex build_surface_cell_complex(
         }
         const SurfaceArrangementNode &node =
             complex.nodes[static_cast<std::size_t>(nodeId)];
-        Eigen::RowVector3d barycentric = node_barycentric_on_face(
-            node, sourceFace, sourceComponent, sourceSheet);
+        Eigen::RowVector3d barycentric =
+            node_barycentric_on_face(node, sourceFace);
         if (!barycentric.allFinite()) {
           for (const SurfaceArrangementNodeOccurrence &occurrence :
                node.occurrences) {
+            if (!occurrence.sourceChart.has_value()) continue;
             SurfacePoint source;
             source.face = occurrence.sourceFace;
-            source.component = occurrence.sourceComponent;
-            source.sheet = occurrence.sourceSheet;
             source.barycentric = occurrence.barycentric.transpose();
             SurfacePoint rebound;
-            if (transitionGraph.rebind(source, sourceFace, rebound) &&
-                rebound.component == sourceComponent &&
-                rebound.sheet == sourceSheet) {
-              barycentric = rebound.barycentric.transpose();
-              break;
+            if (transitionGraph.rebind(source, sourceFace, rebound)) {
+              const auto reboundChart = transitionGraph.chart(rebound.face);
+              if (reboundChart.has_value() &&
+                  reboundChart.value() == chart.chart.value()) {
+                barycentric = rebound.barycentric.transpose();
+                break;
+              }
             }
           }
         }
@@ -2598,6 +2580,9 @@ SurfaceCellComplex build_surface_cell_complex(
           return false;
         }
         point.face = sourceFace;
+        // SurfacePoint component/sheet remain projection payload only. They are
+        // derived after typed chart/authority validation and are never read as
+        // semantic authority in this path.
         point.component = sourceComponent;
         point.sheet = sourceSheet;
         point.barycentric = barycentric.transpose();
@@ -2634,18 +2619,21 @@ SurfaceCellComplex build_surface_cell_complex(
         leftScore = cross2(directionUv,
                            triangleCentroid - 0.5 * (fromUv + toUv));
 
-        if (const auto *vertexSupport =
-                std::get_if<authority::SourceVertexSupport>(&entity.support)) {
+        if (entity.kind() == SourceEntityKind::SourceVertex) {
+          const auto *vertexSupport =
+              std::get_if<authority::SourceVertexSupport>(&entity.support);
+          if (vertexSupport == nullptr) return false;
           SurfaceArrangementHalfedge chartHalfedge = halfedge;
           chartHalfedge.sourceFace = chart_source_face(chart);
-          chartHalfedge.sourceComponent = chart_source_component(chart);
-          chartHalfedge.sourceSheet = chart_source_sheet(chart);
+          chartHalfedge.sourceChart = chart.chart;
           return intrinsic_vertex_outgoing_parameter(
               vertices, faces, vertexFanWedges, complex.nodes, chartHalfedge,
               static_cast<int>(vertexSupport->vertex.index()), parameter);
         }
-        if (const auto *edgeSupport =
-                std::get_if<authority::SourceEdgeSupport>(&entity.support)) {
+        if (entity.kind() == SourceEntityKind::SourceEdge) {
+          const auto *edgeSupport =
+              std::get_if<authority::SourceEdgeSupport>(&entity.support);
+          if (edgeSupport == nullptr) return false;
           const int lowVertex =
               static_cast<int>(edgeSupport->edge.first().index());
           const int highVertex =
@@ -2699,8 +2687,7 @@ SurfaceCellComplex build_surface_cell_complex(
           parameter = std::atan2(y, direction.dot(edgeDirection));
           return std::isfinite(parameter);
         }
-        if (std::holds_alternative<authority::SourceFaceInteriorSupport>(
-                entity.support)) {
+        if (entity.kind() == SourceEntityKind::FaceInterior) {
           parameter = std::atan2(directionUv.y(), directionUv.x());
           if (parameter < 0.0) {
             parameter += 6.283185307179586476925286766559;
@@ -2861,7 +2848,7 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   } else {
   using DirectedWedgeMap =
-      std::map<SurfaceCellCanonicalIdentity,
+      std::map<ResolvedSourceEntity,
                std::map<int, std::vector<DirectedWedgeWitness>>>;
   std::vector<DirectedWedgeMap> wedgeWitnesses(complex.nodes.size());
   std::vector<std::vector<int>> outgoing(complex.nodes.size());
@@ -2896,13 +2883,11 @@ SurfaceCellComplex build_surface_cell_complex(
       }
       DirectedWedgeWitness witness;
       witness.halfedge = halfedge.id;
-      witness.sourceFace = chart_source_face(chart);
-      witness.sourceComponent = chart_source_component(chart);
-      witness.sourceSheet = chart_source_sheet(chart);
+      witness.chart = chart;
       witness.kind = entity->kind();
       witness.localParameter = parameter;
       witness.leftScore = leftScore;
-      wedgeWitnesses[static_cast<std::size_t>(halfedge.from)][entity->canonical]
+      wedgeWitnesses[static_cast<std::size_t>(halfedge.from)][*entity]
                     [halfedge.id]
                         .push_back(std::move(witness));
       witnessed = true;
@@ -2914,10 +2899,9 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
 
-  std::vector<std::map<SurfaceCellCanonicalIdentity,
-                       std::vector<DirectedWedgeRay>>>
+  std::vector<std::map<ResolvedSourceEntity, std::vector<DirectedWedgeRay>>>
       orderedWedges(complex.nodes.size());
-  std::vector<std::vector<SurfaceCellCanonicalIdentity>>
+  std::vector<std::vector<ResolvedSourceEntity>>
       halfedgeWedges(complex.halfedges.size());
   constexpr double twoPi = 6.283185307179586476925286766559;
   constexpr double parameterTolerance = 1.0e-10;
@@ -2931,7 +2915,7 @@ SurfaceCellComplex build_surface_cell_complex(
       for (const auto &[halfedgeId, witnesses] : raysByHalfedge) {
         (void)halfedgeId;
         for (const DirectedWedgeWitness &witness : witnesses) {
-          sourceFaceSet.insert(witness.sourceFace);
+          sourceFaceSet.insert(witness.chart.sourceFace);
           if (wedgeKind == SourceEntityKind::Invalid) {
             wedgeKind = witness.kind;
           } else if (wedgeKind != witness.kind) {
@@ -2968,7 +2952,7 @@ SurfaceCellComplex build_surface_cell_complex(
           if (wedgeKind == SourceEntityKind::SourceEdge &&
               wedgeFaces.size() == 2U) {
             const auto found = std::find(wedgeFaces.begin(), wedgeFaces.end(),
-                                         witness.sourceFace);
+                                         witness.chart.sourceFace);
             if (found == wedgeFaces.end()) {
               continue;
             }
@@ -3076,12 +3060,12 @@ SurfaceCellComplex build_surface_cell_complex(
           halfedge.id, halfedge.twin, -1);
       continue;
     }
-    const SurfaceCellCanonicalIdentity *selectedWedge = nullptr;
+    const ResolvedSourceEntity *selectedWedge = nullptr;
     if (candidateWedges.size() == 1U) {
       selectedWedge = &candidateWedges.front();
     } else {
-      std::vector<const SurfaceCellCanonicalIdentity *> leftCandidates;
-      for (const SurfaceCellCanonicalIdentity &candidate : candidateWedges) {
+      std::vector<const ResolvedSourceEntity *> leftCandidates;
+      for (const ResolvedSourceEntity &candidate : candidateWedges) {
         const auto wedgeFound =
             orderedWedges[static_cast<std::size_t>(halfedge.to)].find(candidate);
         if (wedgeFound ==
@@ -3159,7 +3143,8 @@ SurfaceCellComplex build_surface_cell_complex(
       continue;
     }
     candidateNext[static_cast<std::size_t>(halfedge.id)] = next;
-    successorWedge[static_cast<std::size_t>(halfedge.id)] = *selectedWedge;
+    successorWedge[static_cast<std::size_t>(halfedge.id)] =
+        diagnostic_source_entity_identity(*selectedWedge);
   }
 
   // Source-boundary exterior continuation is authoritative source topology,
@@ -3191,8 +3176,7 @@ SurfaceCellComplex build_surface_cell_complex(
       const auto witness_key = [&](const BoundarySubsegmentWitness &witness) {
         return std::make_tuple(
             witness.loop, witness.edgeOrder, witness.sourceEdgeKey,
-            witness.sourceFace, witness.sourceEdge, witness.sourceComponent,
-            witness.sourceSheet, witness.side,
+            witness.sourceTopologyRegion, witness.sourceChart, witness.side,
             quantized_parameter(witness.parameter0),
             quantized_parameter(witness.parameter1));
       };
@@ -3274,14 +3258,13 @@ SurfaceCellComplex build_surface_cell_complex(
           witness.sourceEdgeKey = edgeKey;
           witness.sourceFace = entry.sourceFace;
           witness.sourceEdge = sourceEdge;
-          witness.sourceComponent =
-              resolvedComponents[static_cast<std::size_t>(entry.sourceFace)];
-          witness.sourceSheet =
-              resolvedSheets[static_cast<std::size_t>(entry.sourceFace)];
-          if ((entry.sourceComponent >= 0 &&
-               entry.sourceComponent != witness.sourceComponent) ||
-              (entry.sourceSheet >= 0 &&
-               entry.sourceSheet != witness.sourceSheet)) {
+          witness.sourceTopologyRegion = entry.sourceTopologyRegion;
+          witness.sourceChart = entry.sourceChart;
+          const auto expectedRegion = source_region_for_face(entry.sourceFace);
+          const auto expectedChart = transitionGraph.chart(entry.sourceFace);
+          if (!expectedRegion.has_value() || !expectedChart.has_value() ||
+              witness.sourceTopologyRegion != expectedRegion ||
+              witness.sourceChart != expectedChart) {
             record_incidence_failure(
                 SurfaceArrangementIncidenceFailure::
                     ContradictoryBoundarySide,
@@ -3651,11 +3634,11 @@ SurfaceCellComplex build_surface_cell_complex(
           // Preserve the R2E5 degree-two producer exactly. One common
           // SourceVertex/SourceEdge identity is still required for the exact
           // two-ray inventory because no fan-scope cover is necessary.
-          std::vector<SurfaceCellCanonicalIdentity> commonWedges =
+          std::vector<ResolvedSourceEntity> commonWedges =
               halfedgeWedges[static_cast<std::size_t>(localOutgoing.front())];
           for (std::size_t index = 1;
                index < localOutgoing.size() && !commonWedges.empty(); ++index) {
-            std::vector<SurfaceCellCanonicalIdentity> intersection;
+            std::vector<ResolvedSourceEntity> intersection;
             const auto &memberships = halfedgeWedges[static_cast<std::size_t>(
                 localOutgoing[index])];
             std::set_intersection(commonWedges.begin(), commonWedges.end(),
@@ -3664,8 +3647,8 @@ SurfaceCellComplex build_surface_cell_complex(
             commonWedges = std::move(intersection);
           }
 
-          std::vector<const SurfaceCellCanonicalIdentity *> rotationCandidates;
-          for (const SurfaceCellCanonicalIdentity &identity : commonWedges) {
+          std::vector<const ResolvedSourceEntity *> rotationCandidates;
+          for (const ResolvedSourceEntity &identity : commonWedges) {
             const auto found = nodeWedges.find(identity);
             if (found == nodeWedges.end() ||
                 found->second.size() != localOutgoing.size()) {
@@ -3698,7 +3681,7 @@ SurfaceCellComplex build_surface_cell_complex(
             break;
           }
 
-          const SurfaceCellCanonicalIdentity &rotationIdentity =
+          const ResolvedSourceEntity &rotationIdentity =
               *rotationCandidates.front();
           const auto rotationFound = nodeWedges.find(rotationIdentity);
           if (rotationFound == nodeWedges.end() ||
@@ -3757,9 +3740,9 @@ SurfaceCellComplex build_surface_cell_complex(
           candidateNext[static_cast<std::size_t>(complementaryIncoming)] =
               exteriorTwin;
           successorWedge[static_cast<std::size_t>(exteriorIncoming)] =
-              rotationIdentity;
+              diagnostic_source_entity_identity(rotationIdentity);
           successorWedge[static_cast<std::size_t>(complementaryIncoming)] =
-              rotationIdentity;
+              diagnostic_source_entity_identity(rotationIdentity);
           localIncoming.insert(exteriorIncoming);
           localIncoming.insert(complementaryIncoming);
           ++localTargetCount[exteriorOutgoing];
@@ -3789,7 +3772,7 @@ SurfaceCellComplex build_surface_cell_complex(
             double rawAngle = 0.0;
             int liftTurn = 0;
             double leftScore = 0.0;
-            std::vector<SurfaceCellCanonicalIdentity> fanIdentities;
+            std::vector<ResolvedSourceEntity> fanIdentities;
           };
 
           std::vector<BoundaryFanSector> sectors;
@@ -3928,7 +3911,7 @@ SurfaceCellComplex build_surface_cell_complex(
                     node, key.incoming, key.sourceRay, key.target);
               };
           const auto combined_pair_fan_identity =
-              [](const std::vector<SurfaceCellCanonicalIdentity> &identities) {
+              [](const std::vector<ResolvedSourceEntity> &identities) {
                 SurfaceCellCanonicalIdentity combined;
                 if (identities.empty()) {
                   return combined;
@@ -3937,8 +3920,9 @@ SurfaceCellComplex build_surface_cell_complex(
                 combined.values.push_back(0x5041495246414eLL);
                 combined.values.push_back(
                     static_cast<std::int64_t>(identities.size()));
-                for (const SurfaceCellCanonicalIdentity &identity :
-                     identities) {
+                for (const ResolvedSourceEntity &entity : identities) {
+                  const SurfaceCellCanonicalIdentity identity =
+                      diagnostic_source_entity_identity(entity);
                   combined.values.push_back(
                       static_cast<std::int64_t>(identity.values.size()));
                   combined.values.insert(combined.values.end(),
@@ -3955,7 +3939,7 @@ SurfaceCellComplex build_surface_cell_complex(
             // roots because an authoritative hard rail may separate its two
             // incident boundary-side charts.
             int transitionRoot = -1;
-            std::vector<SurfaceCellCanonicalIdentity> fanIdentities;
+            std::vector<ResolvedSourceEntity> fanIdentities;
             SurfaceCellCanonicalIdentity sourceBoundaryIdentity;
             bool exterior = false;
             bool cyclicWrap = false;
@@ -3965,10 +3949,8 @@ SurfaceCellComplex build_surface_cell_complex(
             int exteriorTargetRoot = -1;
             int exteriorSourceSide = 0;
             int exteriorTargetSide = 0;
-            std::vector<SurfaceCellCanonicalIdentity>
-                exteriorSourceFanIdentities;
-            std::vector<SurfaceCellCanonicalIdentity>
-                exteriorTargetFanIdentities;
+            std::vector<ResolvedSourceEntity> exteriorSourceFanIdentities;
+            std::vector<ResolvedSourceEntity> exteriorTargetFanIdentities;
           };
 
           std::vector<BoundaryFanSector> interiorSectors;
@@ -3979,17 +3961,21 @@ SurfaceCellComplex build_surface_cell_complex(
           constexpr double cornerAngleTolerance = 1.0e-10;
 
           const auto canonical_entity_key = [](
-                                                const SurfaceCellCanonicalIdentity
-                                                    &identity) {
-            std::vector<std::int64_t> key = identity.values;
-            if (key.empty()) {
-              return std::vector<std::int64_t>{};
-            }
-            const auto kind = static_cast<SourceEntityKind>(key.front());
-            if ((kind == SourceEntityKind::SourceVertex ||
-                 kind == SourceEntityKind::SourceEdge) &&
-                key.size() >= 2U) {
-              key.pop_back();
+                                                const ResolvedSourceEntity
+                                                    &entity) {
+            if (!entity.valid()) return std::vector<std::int64_t>{};
+            std::vector<std::int64_t> key{
+                static_cast<std::int64_t>(entity.kind())};
+            if (const auto *vertex =
+                    std::get_if<authority::SourceVertexSupport>(&entity.support)) {
+              key.push_back(static_cast<std::int64_t>(vertex->vertex.index()));
+            } else if (const auto *edge =
+                           std::get_if<authority::SourceEdgeSupport>(&entity.support)) {
+              key.push_back(static_cast<std::int64_t>(edge->edge.first().index()));
+              key.push_back(static_cast<std::int64_t>(edge->edge.second().index()));
+            } else if (const auto *face =
+                           std::get_if<authority::SourceFaceInteriorSupport>(&entity.support)) {
+              key.push_back(static_cast<std::int64_t>(face->face.index()));
             }
             return key;
           };
@@ -4000,14 +3986,17 @@ SurfaceCellComplex build_surface_cell_complex(
                   witness.kind != SourceEntityKind::SourceEdge) {
                 continue;
               }
-              const auto chart = chart_for_source_scope(
-                  witness.sourceFace, witness.sourceComponent,
-                  witness.sourceSheet);
-              if (!chart.has_value()) {
+              if (!witness.chart.valid()) {
+                continue;
+              }
+              const auto published =
+                  transitionGraph.chart(witness.chart.sourceFace);
+              if (!published.has_value() ||
+                  published != witness.chart.chart) {
                 continue;
               }
               const int root =
-                  transitionGraph.chart_component(chart->sourceFace);
+                  transitionGraph.chart_component(witness.chart.sourceFace);
               if (root >= 0) {
                 roots.insert(root);
               }
@@ -4031,18 +4020,22 @@ SurfaceCellComplex build_surface_cell_complex(
                     boundaryWitness.halfedge != outgoingRay ||
                     boundaryWitness.sourceFace < 0 ||
                     boundaryWitness.sourceFace >= faces.rows() ||
-                    boundaryWitness.sourceComponent < 0 ||
-                    boundaryWitness.sourceSheet < 0) {
+                    !boundaryWitness.sourceTopologyRegion.has_value() ||
+                    !boundaryWitness.sourceChart.has_value()) {
                   return projection;
                 }
-                const auto chart = chart_for_source_scope(
-                    boundaryWitness.sourceFace,
-                    boundaryWitness.sourceComponent,
-                    boundaryWitness.sourceSheet);
-                if (!chart.has_value()) {
+                const auto expectedRegion =
+                    source_region_for_face(boundaryWitness.sourceFace);
+                const auto publishedChart =
+                    transitionGraph.chart(boundaryWitness.sourceFace);
+                if (!expectedRegion.has_value() ||
+                    expectedRegion != boundaryWitness.sourceTopologyRegion ||
+                    !publishedChart.has_value() ||
+                    publishedChart != boundaryWitness.sourceChart) {
                   return projection;
                 }
-                projection.chart = chart.value();
+                projection.chart = SourceChartScope{
+                    boundaryWitness.sourceFace, boundaryWitness.sourceChart};
                 SurfacePoint nodePoint;
                 if (!node_point_on_chart(node, projection.chart, nodePoint)) {
                   return projection;
@@ -4055,7 +4048,7 @@ SurfaceCellComplex build_surface_cell_complex(
                   return projection;
                 }
                 projection.canonicalEntityKey =
-                    canonical_entity_key(entity->canonical);
+                    canonical_entity_key(*entity);
                 projection.transitionRoot =
                     transitionGraph.chart_component(projection.chart.sourceFace);
                 projection.sourceBoundaryLoop = boundaryWitness.loop;
@@ -4069,7 +4062,7 @@ SurfaceCellComplex build_surface_cell_complex(
               };
 
           struct BoundaryRayProvenanceReconciliation {
-            std::vector<SurfaceCellCanonicalIdentity> agreeingIdentities;
+            std::vector<ResolvedSourceEntity> agreeingIdentities;
             bool contradictoryBoundaryClaim = false;
           };
           const auto reconcile_boundary_ray_provenance =
@@ -4081,7 +4074,7 @@ SurfaceCellComplex build_surface_cell_complex(
                   return reconciliation;
                 }
                 for (const auto &[fanIdentity, fanRays] : nodeWedges) {
-                  if (!fanIdentity.valid) {
+                  if (!fanIdentity.valid()) {
                     continue;
                   }
                   const auto rayFound = std::find_if(
@@ -4096,15 +4089,18 @@ SurfaceCellComplex build_surface_cell_complex(
                       canonical_entity_key(fanIdentity);
                   for (const DirectedWedgeWitness &witness :
                        rayFound->witnesses) {
-                    const auto witnessChart = chart_for_source_scope(
-                        witness.sourceFace, witness.sourceComponent,
-                        witness.sourceSheet);
-                    if (!witnessChart.has_value() ||
-                        witnessChart.value() != projection.chart) {
+                    if (!witness.chart.valid() ||
+                        witness.chart != projection.chart) {
+                      continue;
+                    }
+                    const auto publishedChart =
+                        transitionGraph.chart(witness.chart.sourceFace);
+                    if (!publishedChart.has_value() ||
+                        publishedChart != witness.chart.chart) {
                       continue;
                     }
                     const int witnessRoot = transitionGraph.chart_component(
-                        witnessChart->sourceFace);
+                        witness.chart.sourceFace);
                     if (entityKey != projection.canonicalEntityKey ||
                         witnessRoot != projection.transitionRoot) {
                       reconciliation.contradictoryBoundaryClaim = true;
@@ -4180,7 +4176,7 @@ SurfaceCellComplex build_surface_cell_complex(
                 node, exteriorIncoming, exteriorTwin, exteriorOutgoing);
             break;
           }
-          std::vector<SurfaceCellCanonicalIdentity> exteriorFanIdentities =
+          std::vector<ResolvedSourceEntity> exteriorFanIdentities =
               exteriorSourceProvenance.agreeingIdentities;
           exteriorFanIdentities.insert(
               exteriorFanIdentities.end(),
@@ -4226,7 +4222,7 @@ SurfaceCellComplex build_surface_cell_complex(
           // directed key, but conflicting normalized source entities or
           // transition roots fail closed rather than selecting a subset.
           for (const auto &[fanIdentity, fanRays] : nodeWedges) {
-            if (!fanIdentity.valid || fanRays.size() < 2U) {
+            if (!fanIdentity.valid() || fanRays.size() < 2U) {
               continue;
             }
             const std::vector<std::int64_t> entityKey =
@@ -4331,14 +4327,12 @@ SurfaceCellComplex build_surface_cell_complex(
                             witness.kind != SourceEntityKind::SourceEdge) {
                           continue;
                         }
-                        const SourceChartScope witnessChart{
-                            witness.sourceComponent, witness.sourceFace,
-                            witness.sourceSheet};
+                        const SourceChartScope witnessChart = witness.chart;
                         if (witnessChart != projection.chart) {
                           continue;
                         }
                         const int witnessRoot =
-                            transitionGraph.chart_component(witness.sourceFace);
+                            transitionGraph.chart_component(witness.chart.sourceFace);
                         if (entityKey != projection.canonicalEntityKey ||
                             witnessRoot != projection.transitionRoot) {
                           result.second = true;
@@ -4490,13 +4484,13 @@ SurfaceCellComplex build_surface_cell_complex(
           }
 
           struct IdentityPairChartEvidence {
-            SurfaceCellCanonicalIdentity identity;
+            ResolvedSourceEntity identity;
             SourceChartScope chart;
             std::map<int, DirectedWedgeWitness> rays;
           };
           struct PairLocalRayEvidence {
             DirectedWedgeWitness witness;
-            std::vector<SurfaceCellCanonicalIdentity> identities;
+            std::vector<ResolvedSourceEntity> identities;
           };
 
           // Resolve interval geometry independently for every already-owned
@@ -4526,10 +4520,10 @@ SurfaceCellComplex build_surface_cell_complex(
             std::vector<IdentityPairChartEvidence> identityEvidence;
             identityEvidence.reserve(record.fanIdentities.size());
 
-            for (const SurfaceCellCanonicalIdentity &identity :
+            for (const ResolvedSourceEntity &identity :
                  record.fanIdentities) {
-              context.identity = identity;
-              if (!identity.valid) {
+              context.identity = diagnostic_source_entity_identity(identity);
+              if (!identity.valid()) {
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::MissingFanIdentity,
                     key, context);
@@ -4608,9 +4602,7 @@ SurfaceCellComplex build_surface_cell_complex(
                     sourceWitness.kind != SourceEntityKind::SourceEdge) {
                   continue;
                 }
-                const SourceChartScope sourceChart{
-                    sourceWitness.sourceComponent, sourceWitness.sourceFace,
-                    sourceWitness.sourceSheet};
+                const SourceChartScope sourceChart = sourceWitness.chart;
                 if (!sourceChart.valid()) {
                   continue;
                 }
@@ -4620,10 +4612,7 @@ SurfaceCellComplex build_surface_cell_complex(
                       targetWitness.kind != SourceEntityKind::SourceEdge) {
                     continue;
                   }
-                  const SourceChartScope targetChart{
-                      targetWitness.sourceComponent,
-                      targetWitness.sourceFace,
-                      targetWitness.sourceSheet};
+                  const SourceChartScope targetChart = targetWitness.chart;
                   if (sourceChart != targetChart) {
                     continue;
                   }
@@ -4642,7 +4631,7 @@ SurfaceCellComplex build_surface_cell_complex(
                        entity->kind() != SourceEntityKind::SourceEdge) ||
                       sourceWitness.kind != entity->kind() ||
                       targetWitness.kind != entity->kind() ||
-                      canonical_entity_key(entity->canonical) !=
+                      canonical_entity_key(*entity) !=
                           record.canonicalEntityKey) {
                     continue;
                   }
@@ -4702,7 +4691,7 @@ SurfaceCellComplex build_surface_cell_complex(
               const auto identityEntity =
                   transitionGraph.resolve_entity(nodePoint);
               if (!identityEntity.has_value() || !identityEntity->valid() ||
-                  canonical_entity_key(identityEntity->canonical) !=
+                  canonical_entity_key(*identityEntity) !=
                       record.canonicalEntityKey) {
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::EntityMismatch, key,
@@ -4710,21 +4699,17 @@ SurfaceCellComplex build_surface_cell_complex(
                 break;
               }
 
-              IdentityPairChartEvidence evidence;
-              evidence.identity = identity;
-              evidence.chart = identityChart;
+              IdentityPairChartEvidence evidence{identity, identityChart, {}};
               for (const DirectedWedgeRay &ray : fanRays) {
                 const DirectedWedgeWitness *selectedWitness = nullptr;
                 for (const DirectedWedgeWitness &witness : ray.witnesses) {
-                  const SourceChartScope witnessChart{
-                      witness.sourceComponent, witness.sourceFace,
-                      witness.sourceSheet};
+                  const SourceChartScope witnessChart = witness.chart;
                   if (witnessChart != identityChart ||
                       witness.kind != identityEntity->kind()) {
                     continue;
                   }
                   const int witnessRoot =
-                      transitionGraph.chart_component(witness.sourceFace);
+                      transitionGraph.chart_component(witness.chart.sourceFace);
                   if (witnessRoot != record.transitionRoot) {
                     continue;
                   }
@@ -4795,14 +4780,12 @@ SurfaceCellComplex build_surface_cell_complex(
                   const DirectedWedgeWitness &existing =
                       found->second.witness;
                   if (existing.kind != witness.kind ||
-                      existing.sourceComponent != witness.sourceComponent ||
-                      existing.sourceFace != witness.sourceFace ||
-                      existing.sourceSheet != witness.sourceSheet ||
+                      existing.chart != witness.chart ||
                       std::abs(existing.localParameter -
                                witness.localParameter) > 1.0e-10 ||
                       std::abs(existing.leftScore - witness.leftScore) >
                           1.0e-10) {
-                    context.identity = evidence.identity;
+                    context.identity = diagnostic_source_entity_identity(evidence.identity);
                     record_pair_interval_failure(
                         SurfaceArrangementIntervalFailure::
                             IdentityIntervalConflict,
@@ -4838,7 +4821,7 @@ SurfaceCellComplex build_surface_cell_complex(
             if (!entity.has_value() || !entity->valid() ||
                 (entity->kind() != SourceEntityKind::SourceVertex &&
                  entity->kind() != SourceEntityKind::SourceEdge) ||
-                canonical_entity_key(entity->canonical) !=
+                canonical_entity_key(*entity) !=
                     record.canonicalEntityKey) {
               record_pair_interval_failure(
                   SurfaceArrangementIntervalFailure::EntityMismatch, key,
@@ -4855,30 +4838,31 @@ SurfaceCellComplex build_surface_cell_complex(
 
             int startCorner = -1;
             int endCorner = -1;
-            if (const auto *vertexSupport =
-                    std::get_if<authority::SourceVertexSupport>(
-                        &entity->support)) {
-              const int corner = face_vertex_corner(
-                  faces, commonChart.sourceFace,
-                  static_cast<int>(vertexSupport->vertex.index()));
+            if (entity->kind() == SourceEntityKind::SourceVertex) {
+              const auto *vertexSupport =
+                  std::get_if<authority::SourceVertexSupport>(&entity->support);
+              const int corner = vertexSupport == nullptr
+                  ? -1
+                  : face_vertex_corner(
+                        faces, commonChart.sourceFace,
+                        static_cast<int>(vertexSupport->vertex.index()));
               if (corner >= 0) {
                 startCorner = (corner + 1) % 3;
                 endCorner = (corner + 2) % 3;
               }
-            } else if (const auto *edgeSupport =
-                           std::get_if<authority::SourceEdgeSupport>(
-                               &entity->support)) {
-              const int lowVertex =
-                  static_cast<int>(edgeSupport->edge.first().index());
-              const int highVertex =
-                  static_cast<int>(edgeSupport->edge.second().index());
+            } else {
               for (int edge = 0; edge < 3; ++edge) {
                 const int first =
                     faces(commonChart.sourceFace, (edge + 1) % 3);
                 const int second =
                     faces(commonChart.sourceFace, (edge + 2) % 3);
-                if (std::min(first, second) == lowVertex &&
-                    std::max(first, second) == highVertex) {
+                const auto *edgeSupport =
+                    std::get_if<authority::SourceEdgeSupport>(&entity->support);
+                if (edgeSupport != nullptr &&
+                    std::min(first, second) ==
+                        static_cast<int>(edgeSupport->edge.first().index()) &&
+                    std::max(first, second) ==
+                        static_cast<int>(edgeSupport->edge.second().index())) {
                   startCorner = (edge + 2) % 3;
                   endCorner = (edge + 1) % 3;
                   break;
@@ -4938,7 +4922,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     rayEvidence.identities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : rayEvidence.identities.front();
+                        : diagnostic_source_entity_identity(
+                              rayEvidence.identities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::MissingChartWitness,
                     key, context);
@@ -4952,7 +4937,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     rayEvidence.identities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : rayEvidence.identities.front();
+                        : diagnostic_source_entity_identity(
+                              rayEvidence.identities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::MissingChartWitness,
                     key, context);
@@ -4988,7 +4974,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     rayEvidence.identities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : rayEvidence.identities.front();
+                        : diagnostic_source_entity_identity(
+                              rayEvidence.identities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::NonIntegralLiftTurn,
                     key, context);
@@ -4999,7 +4986,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     rayEvidence.identities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : rayEvidence.identities.front();
+                        : diagnostic_source_entity_identity(
+                              rayEvidence.identities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::NoAdmissibleLift, key,
                     context);
@@ -5010,7 +4998,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     rayEvidence.identities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : rayEvidence.identities.front();
+                        : diagnostic_source_entity_identity(
+                              rayEvidence.identities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::
                         MultipleAdmissibleLifts,
@@ -5052,7 +5041,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     chartRays[index].fanIdentities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : chartRays[index].fanIdentities.front();
+                        : diagnostic_source_entity_identity(
+                              chartRays[index].fanIdentities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::DuplicateLiftedAngle,
                     key, context);
@@ -5077,7 +5067,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     chartRays[index].fanIdentities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : chartRays[index].fanIdentities.front();
+                        : diagnostic_source_entity_identity(
+                              chartRays[index].fanIdentities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::
                         IdentityIntervalConflict,
@@ -5143,7 +5134,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     intruder.fanIdentities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : intruder.fanIdentities.front();
+                        : diagnostic_source_entity_identity(
+                              intruder.fanIdentities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::ThirdRayIntrusion, key,
                     context);
@@ -5192,7 +5184,8 @@ SurfaceCellComplex build_surface_cell_complex(
                 context.intrudingIdentity =
                     other.fanIdentities.empty()
                         ? SurfaceCellCanonicalIdentity{}
-                        : other.fanIdentities.front();
+                        : diagnostic_source_entity_identity(
+                              other.fanIdentities.front());
                 record_pair_interval_failure(
                     SurfaceArrangementIntervalFailure::ThirdRayIntrusion, key,
                     context);
@@ -5410,8 +5403,7 @@ SurfaceCellComplex build_surface_cell_complex(
                   !entry.hardFeature) {
                 continue;
               }
-              const SourceChartScope chart{
-                  entry.sourceComponent, entry.sourceFace, entry.sourceSheet};
+              const SourceChartScope chart{entry.sourceFace, entry.sourceChart};
               if (chart.valid() &&
                   transitionGraph.chart_component(chart.sourceFace) >= 0) {
                 incidentCharts.insert(chart);
@@ -5775,28 +5767,23 @@ SurfaceCellComplex build_surface_cell_complex(
         !transitionGraph.available()) {
       return identity;
     }
-    std::vector<SurfaceCellCanonicalIdentity> entities;
+    std::vector<ResolvedSourceEntity> entities;
     const SurfaceArrangementNode &node =
         complex.nodes[static_cast<std::size_t>(nodeId)];
-    const auto add_entity = [&](const int face, const int component,
-                                const int sheet,
+    const auto add_entity = [&](const int face,
                                 const Eigen::RowVector3d &barycentric) {
       SurfacePoint point;
       point.face = face;
-      point.component = component;
-      point.sheet = sheet;
       point.barycentric = barycentric.transpose();
       const auto entity = transitionGraph.resolve_entity(point);
-      if (entity.has_value() && entity->valid() && entity->canonical.valid) {
-        entities.push_back(entity->canonical);
+      if (entity.has_value() && entity->valid()) {
+        entities.push_back(*entity);
       }
     };
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
-      add_entity(occurrence.sourceFace, occurrence.sourceComponent,
-                 occurrence.sourceSheet, occurrence.barycentric);
+      add_entity(occurrence.sourceFace, occurrence.barycentric);
     }
-    add_entity(node.sourceFace, node.sourceComponent, node.sourceSheet,
-               node.barycentric);
+    add_entity(node.sourceFace, node.barycentric);
     std::sort(entities.begin(), entities.end());
     entities.erase(std::unique(entities.begin(), entities.end()), entities.end());
     if (entities.empty()) {
@@ -5804,18 +5791,17 @@ SurfaceCellComplex build_surface_cell_complex(
     }
     identity.valid = true;
     identity.values.push_back(static_cast<std::int64_t>(entities.size()));
-    for (const SurfaceCellCanonicalIdentity &entity : entities) {
+    for (const ResolvedSourceEntity &entity : entities) {
+      const SurfaceCellCanonicalIdentity encoded =
+          diagnostic_source_entity_identity(entity);
       identity.values.push_back(
-          static_cast<std::int64_t>(entity.values.size()));
-      identity.values.insert(identity.values.end(), entity.values.begin(),
-                             entity.values.end());
+          static_cast<std::int64_t>(encoded.values.size()));
+      identity.values.insert(identity.values.end(), encoded.values.begin(),
+                             encoded.values.end());
     }
     return identity;
   };
 
-  // Hash the complete successor permutation from canonical source entities,
-  // not transient node or halfedge ordinals. This keeps diagnostics invariant
-  // under source-face row order, traversal starts, and whole-mesh orientation.
   std::vector<std::vector<std::int64_t>> incidenceRecords;
   incidenceRecords.reserve(complex.halfedges.size());
   for (const SurfaceArrangementHalfedge &halfedge : complex.halfedges) {
@@ -6838,40 +6824,46 @@ SurfaceCellComplex build_surface_cell_complex(
     }
   }
 
-  // Build intrinsic equivalence classes for per-face local source charts.
-  // Local sheet integers are chart-local labels: adjacent source faces can use
-  // different values while still representing one physical cell side. Charts
-  // are joined only when the already-stitched DCEL contains the same intrinsic
-  // node occurrence on both source faces. Same-face labels are never joined,
-  // which keeps close/opposing sheets distinct.
+  // Build intrinsic equivalence classes for exact typed source charts. Region,
+  // component, sheet, and face identity are queried from the published source
+  // authority; raw classifier values never participate in ownership.
   using SourceChart = SourceChartScope;
   std::set<SourceChart> allCharts;
-  const auto addChart = [&](const int component, const int face,
-                            const int sheet) {
-    const SourceChart chart{component, face, sheet};
-    if (chart.valid()) {
-      allCharts.insert(chart);
+  const auto addChart = [&](const int face,
+                            const std::optional<SourceProjectionChart> &chart) {
+    if (face < 0 || face >= faces.rows() || !chart.has_value()) {
+      return;
+    }
+    const auto published = transitionGraph.chart(face);
+    if (published.has_value() && published.value() == chart.value()) {
+      allCharts.insert(SourceChart{face, chart});
     }
   };
-  if (hasSourceAuthority) {
-    for (int face = 0; face < faces.rows(); ++face) {
-      addChart(resolvedComponents[static_cast<std::size_t>(face)], face,
-               resolvedSheets[static_cast<std::size_t>(face)]);
-    }
+  for (int face = 0; face < faces.rows(); ++face) {
+    addChart(face, transitionGraph.chart(face));
   }
   for (const SurfaceArrangementNode &node : complex.nodes) {
-    addChart(node.sourceComponent, node.sourceFace, node.sourceSheet);
+    addChart(node.sourceFace, node.sourceChart);
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
-      addChart(occurrence.sourceComponent, occurrence.sourceFace,
-               occurrence.sourceSheet);
+      addChart(occurrence.sourceFace, occurrence.sourceChart);
     }
   }
   for (const SurfaceArrangementHalfedge &edge : complex.halfedges) {
-    addChart(edge.sourceComponent, edge.sourceFace, edge.sourceSheet);
+    addChart(edge.sourceFace, edge.sourceChart);
     for (const SurfaceArrangementProvenance &entry : edge.provenance) {
-      addChart(entry.sourceComponent, entry.sourceFace, entry.sourceSheet);
+      addChart(entry.sourceFace, entry.sourceChart);
     }
   }
+
+  const auto chartRegion = [&](const SourceChart &chart)
+      -> std::optional<authority::TopologyRegionId> {
+    if (!chart.valid()) return std::nullopt;
+    const auto row = checked_row(chart.sourceFace);
+    if (!row.has_value() || transitionGraph.chart(chart.sourceFace) != chart.chart) {
+      return std::nullopt;
+    }
+    return sourceAuthority.region_for_row(*row);
+  };
 
   std::vector<SourceChart> chartList(allCharts.begin(), allCharts.end());
   std::map<SourceChart, int> chartIndex;
@@ -6895,8 +6887,10 @@ SurfaceCellComplex build_surface_cell_complex(
   const auto unionCharts = [&](const SourceChart &a, const SourceChart &b) {
     const auto foundA = chartIndex.find(a);
     const auto foundB = chartIndex.find(b);
+    const auto regionA = chartRegion(a);
+    const auto regionB = chartRegion(b);
     if (foundA == chartIndex.end() || foundB == chartIndex.end() ||
-        a.sourceComponent != b.sourceComponent ||
+        !regionA.has_value() || regionA != regionB ||
         a.sourceFace == b.sourceFace) {
       return;
     }
@@ -6916,20 +6910,20 @@ SurfaceCellComplex build_surface_cell_complex(
   if (!transitionGraph.available()) {
     embeddingValid = false;
   } else {
-    // Ownership equivalence is derived from exact source incidence before
-    // output-cell ownership is assigned.  A stitched node occurrence is
-    // evidence that charts meet geometrically, but it is not authority to
-    // cross a hard rail, nonmanifold sector, disconnected component, or
-    // intrinsic vertex-fan boundary.
-    std::map<int, SourceChart> representativeByTransitionComponent;
+    // Transition-component connectivity is exact source topology, but a
+    // topology region remains the owning semantic scope and may never be
+    // merged merely because two local chart-component ordinals coincide.
+    std::map<std::pair<authority::TopologyRegionId, int>, SourceChart>
+        representativeByTransitionComponent;
     for (const SourceChart &chart : chartList) {
+      const auto region = chartRegion(chart);
       const int component = transitionGraph.chart_component(chart.sourceFace);
-      if (component < 0) {
+      if (!region.has_value() || component < 0) {
         embeddingValid = false;
         continue;
       }
-      const auto [found, inserted] =
-          representativeByTransitionComponent.emplace(component, chart);
+      const auto [found, inserted] = representativeByTransitionComponent.emplace(
+          std::make_pair(*region, component), chart);
       if (!inserted) {
         unionCharts(found->second, chart);
       }
@@ -6957,41 +6951,29 @@ SurfaceCellComplex build_surface_cell_complex(
       continue;
     }
     SurfaceCellOwnershipClassRecord record;
-    const auto firstPublished = transitionGraph.chart(charts.front().sourceFace);
-    const auto firstRegion = firstPublished.has_value()
-                                 ? transitionGraph.topology_region(*firstPublished)
-                                 : std::nullopt;
-    if (!firstRegion.has_value()) {
-      continue;
-    }
-    record.sourceTopologyRegion = firstRegion.value();
+    record.sourceTopologyRegion = chartRegion(charts.front());
     std::vector<std::array<std::int64_t, 4>> members;
     members.reserve(charts.size());
-    bool valid = true;
+    bool valid = record.sourceTopologyRegion.has_value();
     for (const SourceChart &chart : charts) {
-      if (chart.sourceFace < 0 || chart.sourceFace >= faces.rows()) {
+      const auto region = chartRegion(chart);
+      if (!region.has_value() || region != record.sourceTopologyRegion ||
+          chart.sourceFace < 0 || chart.sourceFace >= faces.rows() ||
+          !chart.chart.has_value()) {
         valid = false;
         break;
       }
-      const auto published = transitionGraph.chart(chart.sourceFace);
-      if (!published.has_value()) {
+      record.exactCharts.push_back(chart.chart.value());
+      const int row = static_cast<int>(chart.chart->face.index());
+      if (row < 0 || row >= faces.rows()) {
         valid = false;
         break;
       }
-      const auto region = transitionGraph.topology_region(*published);
-      if (!region.has_value() ||
-          region.value() != record.sourceTopologyRegion.value()) {
-        valid = false;
-        break;
-      }
-      record.exactCharts.push_back(published.value());
-      std::array<int, 3> vertices{{faces(chart.sourceFace, 0),
-                                   faces(chart.sourceFace, 1),
-                                   faces(chart.sourceFace, 2)}};
+      std::array<std::int64_t, 3> vertices{{faces(row, 0), faces(row, 1), faces(row, 2)}};
       std::sort(vertices.begin(), vertices.end());
       members.push_back({
-          static_cast<std::int64_t>(published->chart.index()), vertices[0],
-          vertices[1], vertices[2]});
+          static_cast<std::int64_t>(chart.chart->chart.index()),
+          vertices[0], vertices[1], vertices[2]});
     }
     std::sort(record.exactCharts.begin(), record.exactCharts.end());
     record.exactCharts.erase(
@@ -7035,10 +7017,11 @@ SurfaceCellComplex build_surface_cell_complex(
     }
     const SurfaceCellOwnershipClassRecord &record =
         complex.sourceOwnershipRegistry[static_cast<std::size_t>(found->second)];
-    return record.sourceTopologyRegion.has_value()
-               ? make_surface_cell_ownership_key(*record.sourceTopologyRegion,
-                                                 found->second)
-               : SurfaceCellCanonicalIdentity{};
+    if (!record.sourceTopologyRegion.has_value()) {
+      return SurfaceCellCanonicalIdentity{};
+    }
+    return make_surface_cell_ownership_key(record.sourceTopologyRegion.value(),
+                                           found->second);
   };
 
   for (SurfaceArrangementCell &cell : complex.cells) {
@@ -7057,8 +7040,7 @@ SurfaceCellComplex build_surface_cell_complex(
       }
       std::vector<const SurfaceArrangementProvenance *> ownershipEntries;
       for (const SurfaceArrangementProvenance &entry : edge.provenance) {
-        const SourceChart chart{entry.sourceComponent, entry.sourceFace,
-                                entry.sourceSheet};
+        const SourceChart chart{entry.sourceFace, entry.sourceChart};
         if (!chart.valid() ||
             (!cellFaces.empty() && cellFaces.count(entry.sourceFace) == 0U)) {
           continue;
@@ -7075,15 +7057,13 @@ SurfaceCellComplex build_surface_cell_complex(
         if (hasNonRail && entry->railId.has_value()) {
           continue;
         }
-        const int root = chartRoot({entry->sourceComponent, entry->sourceFace,
-                                    entry->sourceSheet});
+        const int root = chartRoot({entry->sourceFace, entry->sourceChart});
         if (root >= 0) {
           edgeRoots.insert(root);
         }
       }
       if (edgeRoots.empty()) {
-        const int root = chartRoot(
-            {edge.sourceComponent, edge.sourceFace, edge.sourceSheet});
+        const int root = chartRoot({edge.sourceFace, edge.sourceChart});
         if (root >= 0) {
           edgeRoots.insert(root);
         }
@@ -7100,25 +7080,22 @@ SurfaceCellComplex build_surface_cell_complex(
       }
     }
 
-    // Source-face labels are authoritative when every supported face belongs
-    // to one proven intrinsic class. Otherwise use the exact boundary-class
+    // Source-authority face membership is decisive when every supported face
+    // resolves to one intrinsic chart class. Otherwise use the exact boundary
     // intersection above. Neither path chooses a class by frequency or order.
     std::set<int> faceRoots;
-    if (hasSourceAuthority) {
-      for (const int face : cell.sourceFaces) {
-        if (face < 0 || face >= faces.rows()) {
-          faceRoots.clear();
-          break;
-        }
-        const int root = chartRoot(
-            {resolvedComponents[static_cast<std::size_t>(face)], face,
-             resolvedSheets[static_cast<std::size_t>(face)]});
-        if (root < 0) {
-          faceRoots.clear();
-          break;
-        }
-        faceRoots.insert(root);
+    for (const int face : cell.sourceFaces) {
+      const auto published = transitionGraph.chart(face);
+      if (!published.has_value()) {
+        faceRoots.clear();
+        break;
       }
+      const int root = chartRoot({face, published});
+      if (root < 0) {
+        faceRoots.clear();
+        break;
+      }
+      faceRoots.insert(root);
     }
     int selectedRoot = -1;
     if (authoritativeOrbitHalfedgeCount > 0U) {
@@ -7155,8 +7132,7 @@ SurfaceCellComplex build_surface_cell_complex(
           complex.halfedges[static_cast<std::size_t>(halfedgeId)];
       std::vector<const SurfaceArrangementProvenance *> compatible;
       for (const SurfaceArrangementProvenance &entry : edge.provenance) {
-        const SourceChart chart{entry.sourceComponent, entry.sourceFace,
-                                entry.sourceSheet};
+        const SourceChart chart{entry.sourceFace, entry.sourceChart};
         if (chartRoot(chart) == selectedRoot &&
             (cellFaces.empty() || cellFaces.count(entry.sourceFace) != 0U)) {
           compatible.push_back(&entry);
@@ -7164,8 +7140,7 @@ SurfaceCellComplex build_surface_cell_complex(
       }
       if (compatible.empty()) {
         for (const SurfaceArrangementProvenance &entry : edge.provenance) {
-          const SourceChart chart{entry.sourceComponent, entry.sourceFace,
-                                  entry.sourceSheet};
+          const SourceChart chart{entry.sourceFace, entry.sourceChart};
           if (chartRoot(chart) == selectedRoot) {
             compatible.push_back(&entry);
           }
@@ -7179,7 +7154,7 @@ SurfaceCellComplex build_surface_cell_complex(
         return std::make_tuple(
             value->railId.has_value() ? 1 : 0,
             cellFaces.count(value->sourceFace) != 0U ? 0 : 1,
-            value->sourceFace, value->sourceComponent, value->sourceSheet,
+            value->sourceFace, value->sourceTopologyRegion, value->sourceChart,
             value->sourceArc, value->provenance, value->family, value->strand,
             value->featureClass, value->railId, value->curveId,
             static_cast<std::int64_t>(
@@ -7217,8 +7192,8 @@ SurfaceCellComplex build_surface_cell_complex(
                               ? authoritativeRail->featureClass
                               : primary.featureClass;
       edge.sourceFace = primary.sourceFace;
-      edge.sourceComponent = primary.sourceComponent;
-      edge.sourceSheet = primary.sourceSheet;
+      edge.sourceTopologyRegion = primary.sourceTopologyRegion;
+      edge.sourceChart = primary.sourceChart;
       edge.sourceT0 = primary.sourceT0;
       edge.sourceT1 = primary.sourceT1;
       edge.hardFeature = edge.hardFeature || primary.hardFeature;
@@ -7238,13 +7213,14 @@ SurfaceCellComplex build_surface_cell_complex(
       edge.railT1 = authoritativeRail != nullptr ? authoritativeRail->railT1
                                                  : primary.railT1;
       selectedFaces.insert(edge.sourceFace);
-      selectedCharts.insert(
-          {edge.sourceComponent, edge.sourceFace, edge.sourceSheet});
+      selectedCharts.insert({edge.sourceFace, edge.sourceChart});
 
       const auto ensureOccurrence = [&](const int nodeId,
                                         const double sourceParameter,
                                         const double railParameter) {
-        if (nodeId < 0 || nodeId >= static_cast<int>(complex.nodes.size())) {
+        if (nodeId < 0 || nodeId >= static_cast<int>(complex.nodes.size()) ||
+            !edge.sourceTopologyRegion.has_value() ||
+            !edge.sourceChart.has_value()) {
           return false;
         }
         SurfaceArrangementNode &node =
@@ -7253,8 +7229,8 @@ SurfaceCellComplex build_surface_cell_complex(
             node.occurrences.begin(), node.occurrences.end(),
             [&](const SurfaceArrangementNodeOccurrence &occurrence) {
               return occurrence.sourceFace == edge.sourceFace &&
-                     occurrence.sourceComponent == edge.sourceComponent &&
-                     occurrence.sourceSheet == edge.sourceSheet;
+                     occurrence.sourceTopologyRegion == edge.sourceTopologyRegion &&
+                     occurrence.sourceChart == edge.sourceChart;
             });
         if (existing != node.occurrences.end()) {
           return true;
@@ -7263,17 +7239,21 @@ SurfaceCellComplex build_surface_cell_complex(
             node_barycentric_on_face(node, edge.sourceFace);
         if (!barycentric.allFinite()) {
           const auto tryRebind = [&](const int sourceFace,
-                                     const int sourceComponent,
-                                     const int sourceSheet,
+                                     const std::optional<SourceProjectionChart> &sourceChart,
                                      const Eigen::RowVector3d &sourceBarycentric) {
+            if (!sourceChart.has_value() ||
+                transitionGraph.chart(sourceFace) != sourceChart) {
+              return false;
+            }
             SurfacePoint sourcePoint;
             sourcePoint.face = sourceFace;
-            sourcePoint.component = sourceComponent;
-            sourcePoint.sheet = sourceSheet;
             sourcePoint.barycentric = sourceBarycentric.transpose();
             SurfacePoint rebound;
-            if (!transitionGraph.rebind(sourcePoint, edge.sourceFace,
-                                        rebound)) {
+            if (!transitionGraph.rebind(sourcePoint, edge.sourceFace, rebound)) {
+              return false;
+            }
+            const auto targetChart = transitionGraph.chart(edge.sourceFace);
+            if (!targetChart.has_value() || targetChart != edge.sourceChart) {
               return false;
             }
             barycentric = rebound.barycentric.transpose();
@@ -7282,15 +7262,15 @@ SurfaceCellComplex build_surface_cell_complex(
           bool rebound = false;
           for (const SurfaceArrangementNodeOccurrence &candidate :
                node.occurrences) {
-            if (tryRebind(candidate.sourceFace, candidate.sourceComponent,
-                          candidate.sourceSheet, candidate.barycentric)) {
+            if (tryRebind(candidate.sourceFace, candidate.sourceChart,
+                          candidate.barycentric)) {
               rebound = true;
               break;
             }
           }
           if (!rebound) {
-            rebound = tryRebind(node.sourceFace, node.sourceComponent,
-                                node.sourceSheet, node.barycentric);
+            rebound = tryRebind(node.sourceFace, node.sourceChart,
+                                node.barycentric);
           }
           if (!rebound) {
             return false;
@@ -7300,8 +7280,7 @@ SurfaceCellComplex build_surface_cell_complex(
         occurrence.sourceFace = edge.sourceFace;
         occurrence.barycentric = barycentric;
         occurrence.sourceTopologyRegion = edge.sourceTopologyRegion;
-        occurrence.sourceComponent = edge.sourceComponent;
-        occurrence.sourceSheet = edge.sourceSheet;
+        occurrence.sourceChart = edge.sourceChart;
         occurrence.sourceArc = edge.sourceArc;
         occurrence.provenance = primary.provenance;
         occurrence.railId = edge.railId;
@@ -7319,31 +7298,31 @@ SurfaceCellComplex build_surface_cell_complex(
       }
     }
     cell.sourceCharts.clear();
+    std::optional<authority::TopologyRegionId> selectedRegion;
     for (const SourceChart &selected : selectedCharts) {
-      const auto published = transitionGraph.chart(selected.sourceFace);
-      if (!published.has_value()) {
+      if (!selected.chart.has_value()) {
         embeddingValid = false;
         continue;
       }
-      cell.sourceCharts.push_back(published.value());
+      const auto region = chartRegion(selected);
+      if (!region.has_value() ||
+          (selectedRegion.has_value() && selectedRegion != region)) {
+        embeddingValid = false;
+        continue;
+      }
+      selectedRegion = region;
+      cell.sourceCharts.push_back(selected.chart.value());
     }
     std::sort(cell.sourceCharts.begin(), cell.sourceCharts.end());
     cell.sourceCharts.erase(
         std::unique(cell.sourceCharts.begin(), cell.sourceCharts.end()),
         cell.sourceCharts.end());
-    if (cell.sourceCharts.empty() || selectedCharts.empty()) {
+    if (cell.sourceCharts.empty() || selectedCharts.empty() ||
+        !selectedRegion.has_value()) {
       embeddingValid = false;
       continue;
     }
-    const auto selectedRegion =
-        transitionGraph.topology_region(cell.sourceCharts.front());
-    if (!selectedRegion.has_value()) {
-      embeddingValid = false;
-      continue;
-    }
-    cell.sourceTopologyRegion = selectedRegion.value();
-    cell.sourceComponent = selectedCharts.begin()->sourceComponent;
-    cell.sourceSheet = selectedCharts.begin()->localSheet;
+    cell.sourceTopologyRegion = selectedRegion;
     cell.sourceFaces.assign(selectedFaces.begin(), selectedFaces.end());
     cell.sourceFace = cell.sourceFaces.empty() ? -1 : cell.sourceFaces.front();
   }
@@ -7360,7 +7339,7 @@ SurfaceCellComplex build_surface_cell_complex(
       if (a.sourceFace != b.sourceFace) {
         continue;
       }
-      if (!same_segment_scope(a, b)) {
+      if (!same_segment_scope(resolvedOptions, a, b)) {
         continue;
       }
       double ta = 0.0;
@@ -7369,8 +7348,7 @@ SurfaceCellComplex build_surface_cell_complex(
       if (segment_intersection_params(a, b, ta, tb, p) && ta > 1.0e-8 &&
           ta < 1.0 - 1.0e-8 && tb > 1.0e-8 && tb < 1.0 - 1.0e-8) {
         const ScopedNodeKey key =
-            make_scoped_node_key(faces, a, p, vertexFanScopes,
-                                 sourceBoundaryLoopByVertexFan);
+            make_scoped_node_key(faces, a, p, vertexFanScopes, resolvedOptions);
         if (nodeByKey.count(key) == 0) {
           ++complex.diagnostics.unsplitCrossings;
         }
@@ -7388,12 +7366,11 @@ SurfaceCellComplex build_surface_cell_complex(
         }
         Segment2 scopeSegment;
         scopeSegment.sourceFace = occurrence.sourceFace;
-        scopeSegment.sourceComponent = halfedge.sourceComponent;
-        scopeSegment.sourceSheet = halfedge.sourceSheet;
+        scopeSegment.sourceTopologyRegion = halfedge.sourceTopologyRegion;
+        scopeSegment.sourceChart = halfedge.sourceChart;
         const ScopedNodeKey candidateScope = make_scoped_node_key(
-            faces, scopeSegment, point, vertexFanScopes,
-            sourceBoundaryLoopByVertexFan);
-        const std::pair<int, int> expectedScope =
+            faces, scopeSegment, point, vertexFanScopes, resolvedOptions);
+        const auto &expectedScope =
             nodeScopes[static_cast<std::size_t>(node.id)];
         if (std::get<1>(candidateScope) != expectedScope.first ||
             std::get<2>(candidateScope) != expectedScope.second) {
@@ -7708,12 +7685,29 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     hash ^= static_cast<std::uint64_t>(value);
     hash *= 1099511628211ULL;
   };
+  const auto mix_region = [&](
+      const std::optional<authority::TopologyRegionId> &region) {
+    mix(region.has_value()
+            ? static_cast<std::int64_t>(region->index())
+            : -1);
+  };
+  const auto mix_chart = [&](
+      const std::optional<SourceProjectionChart> &chart) {
+    if (!chart.has_value()) {
+      mix(-1);
+      return;
+    }
+    mix(static_cast<std::int64_t>(chart->chart.index()));
+    mix(static_cast<std::int64_t>(chart->face.index()));
+  };
+  const auto mix_required_chart = [&](const SourceProjectionChart &chart) {
+    mix(static_cast<std::int64_t>(chart.chart.index()));
+    mix(static_cast<std::int64_t>(chart.face.index()));
+  };
   mix(static_cast<std::int64_t>(complex.sourceOwnershipRegistry.size()));
   for (const SurfaceCellOwnershipClassRecord &record :
        complex.sourceOwnershipRegistry) {
-    mix(record.sourceTopologyRegion.has_value()
-            ? static_cast<std::int64_t>(record.sourceTopologyRegion->index())
-            : -1);
+    mix_region(record.sourceTopologyRegion);
     mix(record.canonicalMembership.valid ? 1 : 0);
     mix(static_cast<std::int64_t>(record.canonicalMembership.values.size()));
     for (const std::int64_t value : record.canonicalMembership.values) {
@@ -7721,8 +7715,7 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     }
     mix(static_cast<std::int64_t>(record.exactCharts.size()));
     for (const SourceProjectionChart &chart : record.exactCharts) {
-      mix(static_cast<std::int64_t>(chart.chart.index()));
-      mix(static_cast<std::int64_t>(chart.face.index()));
+      mix_required_chart(chart);
     }
   }
   mix(static_cast<int>(complex.nodes.size()));
@@ -7731,8 +7724,8 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
   for (const SurfaceArrangementNode &node : complex.nodes) {
     mix(node.hardBarrierCrossing ? 1 : 0);
     mix(node.sourceFace);
-    mix(node.sourceComponent);
-    mix(node.sourceSheet);
+    mix_region(node.sourceTopologyRegion);
+    mix_chart(node.sourceChart);
     mix(node.sourceEdge);
     mix(static_cast<std::int64_t>(std::llround(node.sourceEdgeParameter * 1.0e10)));
     for (int i = 0; i < 3; ++i) {
@@ -7741,11 +7734,8 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     mix(static_cast<int>(node.occurrences.size()));
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
       mix(occurrence.sourceFace);
-      mix(occurrence.sourceTopologyRegion.has_value()
-              ? static_cast<std::int64_t>(occurrence.sourceTopologyRegion->index())
-              : -1);
-      mix(occurrence.sourceComponent);
-      mix(occurrence.sourceSheet);
+      mix_region(occurrence.sourceTopologyRegion);
+      mix_chart(occurrence.sourceChart);
       mix(occurrence.sourceArc);
       mix(occurrence.provenance);
       mix(occurrence.railId.has_value()
@@ -7784,11 +7774,8 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
               ? static_cast<std::int64_t>(value.railId->index())
               : -1);
       mix(value.curveId);
-      mix(value.sourceTopologyRegion.has_value()
-              ? static_cast<std::int64_t>(value.sourceTopologyRegion->index())
-              : -1);
-      mix(value.sourceComponent);
-      mix(value.sourceSheet);
+      mix_region(value.sourceTopologyRegion);
+      mix_chart(value.sourceChart);
       mix(value.proposalId);
       mix(value.proposalSeedId);
       mix(value.proposalSide);
@@ -7800,18 +7787,13 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     }
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
-    mix(cell.sourceTopologyRegion.has_value()
-            ? static_cast<std::int64_t>(cell.sourceTopologyRegion->index())
-            : -1);
-    mix(cell.sourceComponent);
-    mix(cell.sourceSheet);
+    mix_region(cell.sourceTopologyRegion);
     mix(cell.sourceOwnershipClass.valid ? 1 : 0);
     for (const std::int64_t value : cell.sourceOwnershipClass.values) {
       mix(value);
     }
     for (const SourceProjectionChart &chart : cell.sourceCharts) {
-      mix(static_cast<std::int64_t>(chart.chart.index()));
-      mix(static_cast<std::int64_t>(chart.face.index()));
+      mix_required_chart(chart);
     }
     mix(cell.closed ? 1 : 0);
     mix(cell.disk ? 1 : 0);
