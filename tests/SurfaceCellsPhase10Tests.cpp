@@ -1773,7 +1773,8 @@ TEST(SurfaceCellsPhase10,
     if (edge.boundaryKind ==
         directional::geometry::SurfaceFrontBoundaryKind::PeriodicCut) {
       ++periodicEdgeCount;
-      EXPECT_EQ(edge.periodicRelation, 0);
+      ASSERT_TRUE(edge.periodicRelation.has_value());
+      EXPECT_EQ(edge.periodicRelation->index(), 0U);
       EXPECT_GE(edge.oppositeEdge, 0);
       EXPECT_FALSE(edge.route.empty());
     }

@@ -977,8 +977,16 @@ TEST(SurfaceCellTransitionQuotient,
   std::reverse(reordered.periodicHolonomies.begin(),
                reordered.periodicHolonomies.end());
   for (auto &edge : reordered.edges) {
-    if (edge.periodicRelation >= 0) {
-      edge.periodicRelation = relationCount - 1 - edge.periodicRelation;
+    if (edge.periodicRelation.has_value()) {
+      const std::size_t oldIndex = edge.periodicRelation->index();
+      ASSERT_LT(oldIndex, static_cast<std::size_t>(relationCount));
+      const std::size_t remappedIndex =
+          static_cast<std::size_t>(relationCount - 1) - oldIndex;
+      const auto remapped = directional::authority::PeriodicRelationId::from_index(
+          static_cast<std::int64_t>(remappedIndex),
+          static_cast<std::size_t>(relationCount));
+      ASSERT_TRUE(remapped);
+      edge.periodicRelation = remapped.value();
     }
   }
   const auto result = materialize(fixture, reordered);
@@ -1005,7 +1013,8 @@ TEST(SurfaceCellTransitionQuotient,
   const int periodic =
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::PeriodicCut);
   ASSERT_GE(periodic, 0);
-  tampered.edges[static_cast<std::size_t>(periodic)].periodicRelation = -1;
+  tampered.edges[static_cast<std::size_t>(periodic)].periodicRelation =
+      std::nullopt;
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidPeriodicCutAuthority", result.failure);
