@@ -155,9 +155,6 @@ struct SurfaceCellDomainIdentity {
   int boundaryHalfedgeCount = 0;
   int sourceSupportCount = 0;
   std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  // One-way diagnostic projections only; semantic equality/hash/order ignores them.
-  int sourceComponent = -1;
-  int sourceSheet = -1;
 
   [[nodiscard]] std::uint64_t hash() const {
     std::uint64_t seed = 1469598103934665603ULL;

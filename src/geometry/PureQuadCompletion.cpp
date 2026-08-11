@@ -446,6 +446,16 @@ bool fill_positions(PureQuadMesh &mesh) {
   return true;
 }
 
+
+std::pair<int, int> diagnostic_source_scope(const PureQuadMesh &mesh) {
+  for (const PureQuadVertexLineage &lineage : mesh.vertexLineage) {
+    if (lineage.sourceComponent >= 0 || lineage.sourceSheet >= 0) {
+      return {lineage.sourceComponent, lineage.sourceSheet};
+    }
+  }
+  return {-1, -1};
+}
+
 bool completed_quads_have_simple_embedding(
     const PureQuadMesh &mesh, const int completionVariant,
     PureQuadEmbeddingFailure &failure) {
@@ -453,8 +463,9 @@ bool completed_quads_have_simple_embedding(
   failure.sourcePatch = mesh.sourcePatch;
   failure.backend = mesh.backend;
   failure.completionVariant = completionVariant;
-  failure.sourceComponent = mesh.domainIdentity.sourceComponent;
-  failure.sourceSheet = mesh.domainIdentity.sourceSheet;
+  const auto [diagnosticComponent, diagnosticSheet] = diagnostic_source_scope(mesh);
+  failure.sourceComponent = diagnosticComponent;
+  failure.sourceSheet = diagnosticSheet;
   const auto reject = [&](const PureQuadEmbeddingFailureKind kind,
                           const int localQuad) {
     failure.active = true;
@@ -1863,10 +1874,14 @@ SurfaceCellOwnershipConflict make_ownership_conflict(
       firstMesh->domainIdentity.sourceSupportCount;
   conflict.secondSourceSupportCount =
       secondMesh->domainIdentity.sourceSupportCount;
-  conflict.firstComponent = firstMesh->domainIdentity.sourceComponent;
-  conflict.firstSheet = firstMesh->domainIdentity.sourceSheet;
-  conflict.secondComponent = secondMesh->domainIdentity.sourceComponent;
-  conflict.secondSheet = secondMesh->domainIdentity.sourceSheet;
+  const auto [firstComponent, firstSheet] =
+      pure_quad_detail::diagnostic_source_scope(*firstMesh);
+  const auto [secondComponent, secondSheet] =
+      pure_quad_detail::diagnostic_source_scope(*secondMesh);
+  conflict.firstComponent = firstComponent;
+  conflict.firstSheet = firstSheet;
+  conflict.secondComponent = secondComponent;
+  conflict.secondSheet = secondSheet;
   const PureQuadFaceLineage &firstLineage =
       firstMesh->quadLineage[static_cast<std::size_t>(first->localQuad)];
   const PureQuadFaceLineage &secondLineage =

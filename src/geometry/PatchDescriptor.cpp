@@ -791,10 +791,6 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   }
   audit.identity.sourceTopologyRegion = cell.sourceTopologyRegion;
   // Diagnostic projections remain one-way and are ignored by identity semantics.
-  audit.identity.sourceComponent = *components.begin();
-  audit.identity.sourceSheet = cell.sourceSheet >= 0
-                                   ? cell.sourceSheet
-                                   : *sheets.begin();
   if (!audit.identity.sourceSupport.valid ||
       audit.identity.sourceSupportCount <= 0) {
     audit.failure = SurfaceCellDomainIdentityFailureKind::InvalidSourceSupport;
@@ -2169,8 +2165,8 @@ PatchDescriptorSet derive_patch_descriptors(
 
   std::map<SurfaceCellDomainIdentity, int> orientedOwner;
   using UndirectedOwnerKey =
-      std::tuple<int, int, SurfaceCellCanonicalIdentity,
-                 SurfaceCellCanonicalIdentity>;
+      std::tuple<std::optional<authority::TopologyRegionId>,
+                 SurfaceCellCanonicalIdentity, SurfaceCellCanonicalIdentity>;
   std::map<UndirectedOwnerKey, int> undirectedOwner;
   for (int descriptorIndex = 0;
        descriptorIndex < static_cast<int>(result.descriptors.size());
@@ -2213,17 +2209,19 @@ PatchDescriptorSet derive_patch_descriptors(
       result.ownershipConflict.secondSourceSupportCount =
           identity.sourceSupportCount;
       result.ownershipConflict.firstComponent =
-          first.patch.domainIdentity.sourceComponent;
+          first.patch.boundaryComponents.empty() ? -1 : first.patch.boundaryComponents.front();
       result.ownershipConflict.firstSheet =
-          first.patch.domainIdentity.sourceSheet;
-      result.ownershipConflict.secondComponent = identity.sourceComponent;
-      result.ownershipConflict.secondSheet = identity.sourceSheet;
+          first.patch.boundarySheets.empty() ? -1 : first.patch.boundarySheets.front();
+      result.ownershipConflict.secondComponent =
+          descriptor.patch.boundaryComponents.empty() ? -1 : descriptor.patch.boundaryComponents.front();
+      result.ownershipConflict.secondSheet =
+          descriptor.patch.boundarySheets.empty() ? -1 : descriptor.patch.boundarySheets.front();
       break;
     }
 
-    const UndirectedOwnerKey key{
-        identity.sourceComponent, identity.sourceSheet,
-        identity.sourceSupport, identity.undirectedBoundary};
+    const UndirectedOwnerKey key{identity.sourceTopologyRegion,
+                                 identity.sourceSupport,
+                                 identity.undirectedBoundary};
     const auto [undirected, undirectedInserted] =
         undirectedOwner.emplace(key, descriptorIndex);
     if (!undirectedInserted) {
@@ -2248,11 +2246,13 @@ PatchDescriptorSet derive_patch_descriptors(
       result.ownershipConflict.secondSourceSupportCount =
           identity.sourceSupportCount;
       result.ownershipConflict.firstComponent =
-          first.patch.domainIdentity.sourceComponent;
+          first.patch.boundaryComponents.empty() ? -1 : first.patch.boundaryComponents.front();
       result.ownershipConflict.firstSheet =
-          first.patch.domainIdentity.sourceSheet;
-      result.ownershipConflict.secondComponent = identity.sourceComponent;
-      result.ownershipConflict.secondSheet = identity.sourceSheet;
+          first.patch.boundarySheets.empty() ? -1 : first.patch.boundarySheets.front();
+      result.ownershipConflict.secondComponent =
+          descriptor.patch.boundaryComponents.empty() ? -1 : descriptor.patch.boundaryComponents.front();
+      result.ownershipConflict.secondSheet =
+          descriptor.patch.boundarySheets.empty() ? -1 : descriptor.patch.boundarySheets.front();
       break;
     }
   }
@@ -2501,8 +2501,9 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
     fields.sourceDomain.insert(
         fields.sourceDomain.end(),
         {patch.domainIdentity.valid ? 1 : 0,
-         patch.domainIdentity.sourceComponent,
-         patch.domainIdentity.sourceSheet,
+         patch.domainIdentity.sourceTopologyRegion.has_value()
+             ? static_cast<std::int64_t>(patch.domainIdentity.sourceTopologyRegion->index())
+             : -1,
          patch.domainIdentity.boundaryNodeCount,
          patch.domainIdentity.boundaryHalfedgeCount,
          patch.domainIdentity.sourceSupportCount});
