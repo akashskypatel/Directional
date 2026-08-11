@@ -1,0 +1,132 @@
+@ private:
+         forward(forwardValue), reverse(reverseValue) {}
+ };
+ 
+-struct SourceTopologyRegions {
+-  std::vector<authority::TopologyRegionId> regionByFace;
+-  std::vector<SurfaceTopologyRegion> regions;
+-
+-  [[nodiscard]] bool complete_for_face_count(std::size_t faceCount) const noexcept {
+-    return regionByFace.size() == faceCount;
+-  }
+-};
+-
+ struct SurfaceFrontEdge {
+   SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
+       : filledCell(owner), sourceTopologyRegion(region) {}
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 4e8092c..2082dd2 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -2431,6 +2431,136 @@ SourceSurfaceLabels classify_source_surface_labels(
+ 
+ } // namespace directional::geometry::surface_cell_tracing_detail
+ 
++namespace directional::geometry {
++
++std::optional<SurfaceTopologyRegion> SurfaceTopologyRegion::make(
++    authority::TopologyRegionId id,
++    authority::SourceComponentId sourceComponent,
++    std::vector<SourceRegionFaceAuthority> faces,
++    std::vector<authority::SourceEdgeTopologyKey> boundaryEdges,
++    std::vector<authority::SourceEdgeTopologyKey> isolationSeams,
++    const int eulerCharacteristic, const int boundaryLoopCount) {
++  const auto facesSorted = std::is_sorted(
++      faces.begin(), faces.end(),
++      [](const SourceRegionFaceAuthority &a,
++         const SourceRegionFaceAuthority &b) { return a.topology < b.topology; });
++  const auto duplicateFace = std::adjacent_find(
++      faces.begin(), faces.end(),
++      [](const SourceRegionFaceAuthority &a,
++         const SourceRegionFaceAuthority &b) { return a.topology == b.topology; });
++  const auto sortedUnique = [](const auto &values) {
++    return std::is_sorted(values.begin(), values.end()) &&
++           std::adjacent_find(values.begin(), values.end()) == values.end();
++  };
++  if (faces.empty() || !facesSorted || duplicateFace != faces.end() ||
++      !sortedUnique(boundaryEdges) || !sortedUnique(isolationSeams) ||
++      boundaryLoopCount < 0) {
++    return std::nullopt;
++  }
++  for (const auto &edge : isolationSeams) {
++    if (std::binary_search(boundaryEdges.begin(), boundaryEdges.end(), edge)) {
++      return std::nullopt;
++    }
++  }
++  return SurfaceTopologyRegion(
++      id, sourceComponent, std::move(faces), std::move(boundaryEdges),
++      std::move(isolationSeams), eulerCharacteristic, boundaryLoopCount);
++}
++
++std::optional<SourceTopologyRegions> SourceTopologyRegions::make(
++    const Eigen::MatrixXi &sourceFaces,
++    std::vector<SurfaceTopologyRegion> regions) {
++  const int faceCount = static_cast<int>(sourceFaces.rows());
++  if (sourceFaces.cols() != 3 || faceCount <= 0 || regions.empty()) {
++    return std::nullopt;
++  }
++
++  int maxVertex = -1;
++  for (int face = 0; face < faceCount; ++face) {
++    for (int corner = 0; corner < 3; ++corner) {
++      maxVertex = std::max(maxVertex, sourceFaces(face, corner));
++    }
++  }
++  if (maxVertex < 0) {
++    return std::nullopt;
++  }
++  const std::size_t vertexExtent = static_cast<std::size_t>(maxVertex) + 1U;
++  const std::size_t regionExtent = regions.size();
++
++  for (std::size_t index = 0; index < regions.size(); ++index) {
++    const auto expected = authority::TopologyRegionId::from_index(
++        static_cast<std::int64_t>(index), regionExtent);
++    if (!expected || regions[index].id() != expected.value()) {
++      return std::nullopt;
++    }
++  }
++
++  std::vector<TopologyRow> topologyRows;
++  topologyRows.reserve(static_cast<std::size_t>(faceCount));
++  for (int face = 0; face < faceCount; ++face) {
++    std::array<authority::SourceVertexId, 3> vertices = {
++        authority::SourceVertexId::from_index(sourceFaces(face, 0), vertexExtent)
++            .value(),
++        authority::SourceVertexId::from_index(sourceFaces(face, 1), vertexExtent)
++            .value(),
++        authority::SourceVertexId::from_index(sourceFaces(face, 2), vertexExtent)
++            .value()};
++    const auto topology = authority::SourceFaceTopologyKey::make(vertices);
++    const auto row = authority::SourceFaceId::from_index(face, faceCount);
++    if (!topology || !row) {
++      return std::nullopt;
++    }
++    topologyRows.emplace_back(topology.value(), row.value());
++  }
++  std::sort(topologyRows.begin(), topologyRows.end(),
++            [](const TopologyRow &a, const TopologyRow &b) {
++              return a.topology < b.topology;
++            });
++  if (std::adjacent_find(
++          topologyRows.begin(), topologyRows.end(),
++          [](const TopologyRow &a, const TopologyRow &b) {
++            return a.topology == b.topology;
++          }) != topologyRows.end()) {
++    return std::nullopt;
++  }
++
++  using ScratchBinding =
++      std::pair<authority::TopologyRegionId, std::size_t>;
++  std::vector<std::optional<ScratchBinding>> scratchBindings(
++      static_cast<std::size_t>(faceCount));
++  for (const SurfaceTopologyRegion &region : regions) {
++    for (std::size_t memberIndex = 0; memberIndex < region.faces().size();
++         ++memberIndex) {
++      const SourceRegionFaceAuthority &member = region.faces()[memberIndex];
++      const auto found = std::lower_bound(
++          topologyRows.begin(), topologyRows.end(), member.topology,
++          [](const TopologyRow &entry,
++             const authority::SourceFaceTopologyKey &key) {
++            return entry.topology < key;
++          });
++      if (found == topologyR
