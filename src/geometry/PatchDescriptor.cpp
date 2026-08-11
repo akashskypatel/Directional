@@ -5,6 +5,43 @@
 
 namespace directional::geometry::patch_descriptor_detail {
 
+struct SourceScope {
+  std::optional<authority::TopologyRegionId> region;
+  std::optional<SourceProjectionChart> chart;
+
+  [[nodiscard]] bool valid() const noexcept {
+    return region.has_value() && chart.has_value();
+  }
+
+  auto operator<=>(const SourceScope &) const = default;
+};
+
+template <typename T>
+SourceScope source_scope(const T &value) {
+  return {value.sourceTopologyRegion, value.sourceChart};
+}
+
+void append_source_scope(std::vector<std::int64_t> &destination,
+                         const SourceScope &scope) {
+  destination.push_back(
+      scope.region.has_value()
+          ? static_cast<std::int64_t>(scope.region->index())
+          : -1);
+  if (!scope.chart.has_value()) {
+    destination.insert(destination.end(), {-1, -1, -1, -1});
+    return;
+  }
+  destination.push_back(
+      static_cast<std::int64_t>(scope.chart->chart.index()));
+  destination.push_back(static_cast<std::int64_t>(scope.chart->face.index()));
+}
+
+std::vector<std::int64_t> source_scope_identity(const SourceScope &scope) {
+  std::vector<std::int64_t> result;
+  append_source_scope(result, scope);
+  return result;
+}
+
 const SurfaceArrangementNode *find_node(
     const SurfaceCellComplex &complex, const int id) {
   if (id >= 0 && id < static_cast<int>(complex.nodes.size()) &&
@@ -68,18 +105,10 @@ SurfacePoint node_surface_point(const SurfaceArrangementNode &node,
                                        const Eigen::MatrixXi &F,
                                        const SurfaceArrangementHalfedge &edge) {
   SurfacePoint point;
-  point.component = edge.sourceComponent;
-  point.sheet = edge.sourceSheet;
+  const SourceScope edgeScope = source_scope(edge);
   const SurfaceArrangementNodeOccurrence *selected = nullptr;
   for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
-    const bool componentCompatible = occurrence.sourceComponent < 0 ||
-                                     edge.sourceComponent < 0 ||
-                                     occurrence.sourceComponent ==
-                                         edge.sourceComponent;
-    const bool sheetCompatible = occurrence.sourceSheet < 0 ||
-                                 edge.sourceSheet < 0 ||
-                                 occurrence.sourceSheet == edge.sourceSheet;
-    if (!componentCompatible || !sheetCompatible) {
+    if (!edgeScope.valid() || source_scope(occurrence) != edgeScope) {
       continue;
     }
     if (selected == nullptr ||
@@ -258,10 +287,9 @@ void append_identity(std::vector<std::int64_t> &destination,
 
 SurfaceCellCanonicalIdentity source_point_identity(
     const Eigen::MatrixXi &F, const int face,
-    const Eigen::RowVector3d &barycentric, const int component,
-    const int sheet) {
+    const Eigen::RowVector3d &barycentric, const SourceScope &scope) {
   SurfaceCellCanonicalIdentity result;
-  if (face < 0 || face >= F.rows() || F.cols() != 3 ||
+  if (!scope.valid() || face < 0 || face >= F.rows() || F.cols() != 3 ||
       !barycentric.allFinite()) {
     return result;
   }
@@ -273,7 +301,7 @@ SurfaceCellCanonicalIdentity source_point_identity(
   }
   std::sort(weights.begin(), weights.end());
   result.valid = true;
-  result.values = {component, sheet};
+  append_source_scope(result.values, scope);
   for (const auto &[vertex, weight] : weights) {
     result.values.push_back(vertex);
     result.values.push_back(weight);
@@ -283,24 +311,21 @@ SurfaceCellCanonicalIdentity source_point_identity(
 
 SurfaceCellCanonicalIdentity arrangement_node_identity(
     const SurfaceArrangementNode &node, const Eigen::MatrixXi &F,
-    const int component, const int sheet) {
+    const SourceScope &scope) {
   std::vector<SurfaceCellCanonicalIdentity> occurrences;
-  if ((node.sourceComponent < 0 || component < 0 ||
-       node.sourceComponent == component) &&
-      (node.sourceSheet < 0 || sheet < 0 || node.sourceSheet == sheet)) {
+  if (!scope.valid()) {
+    return {};
+  }
+  if (source_scope(node) == scope) {
     occurrences.push_back(
-        source_point_identity(F, node.sourceFace, node.barycentric, component,
-                              sheet));
+        source_point_identity(F, node.sourceFace, node.barycentric, scope));
   }
   for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
-    if ((occurrence.sourceComponent >= 0 && component >= 0 &&
-         occurrence.sourceComponent != component) ||
-        (occurrence.sourceSheet >= 0 && sheet >= 0 &&
-         occurrence.sourceSheet != sheet)) {
+    if (source_scope(occurrence) != scope) {
       continue;
     }
     occurrences.push_back(source_point_identity(
-        F, occurrence.sourceFace, occurrence.barycentric, component, sheet));
+        F, occurrence.sourceFace, occurrence.barycentric, scope));
   }
   occurrences.erase(
       std::remove_if(occurrences.begin(), occurrences.end(),
@@ -317,8 +342,8 @@ SurfaceCellCanonicalIdentity arrangement_node_identity(
     return result;
   }
   result.valid = true;
-  result.values = {component, sheet,
-                   static_cast<std::int64_t>(occurrences.size())};
+  append_source_scope(result.values, scope);
+  result.values.push_back(static_cast<std::int64_t>(occurrences.size()));
   for (const SurfaceCellCanonicalIdentity &occurrence : occurrences) {
     append_identity(result.values, occurrence);
   }
@@ -327,7 +352,7 @@ SurfaceCellCanonicalIdentity arrangement_node_identity(
 
 std::vector<std::int64_t> provenance_semantics(
     const SurfaceArrangementProvenance &provenance) {
-  return {
+  std::vector<std::int64_t> result{
       provenance.family,
       provenance.featureClass,
       provenance.hardFeature ? 1 : 0,
@@ -336,20 +361,19 @@ std::vector<std::int64_t> provenance_semantics(
       provenance.railId.has_value()
           ? static_cast<std::int64_t>(provenance.railId->index())
           : -1,
-      provenance.curveId,
-      provenance.sourceComponent,
-      provenance.sourceSheet,
-      provenance.proposalSide,
-      provenance.proposalBoundarySegment,
-      quantized_parameter(std::min(provenance.sourceT0,
-                                   provenance.sourceT1)),
-      quantized_parameter(std::max(provenance.sourceT0,
-                                   provenance.sourceT1)),
-      quantized_parameter(std::min(provenance.railT0,
-                                   provenance.railT1)),
-      quantized_parameter(std::max(provenance.railT0,
-                                   provenance.railT1)),
-  };
+      provenance.curveId};
+  append_source_scope(result, source_scope(provenance));
+  result.insert(result.end(),
+                {provenance.proposalSide, provenance.proposalBoundarySegment,
+                 quantized_parameter(std::min(provenance.sourceT0,
+                                              provenance.sourceT1)),
+                 quantized_parameter(std::max(provenance.sourceT0,
+                                              provenance.sourceT1)),
+                 quantized_parameter(std::min(provenance.railT0,
+                                              provenance.railT1)),
+                 quantized_parameter(std::max(provenance.railT0,
+                                              provenance.railT1))});
+  return result;
 }
 
 std::vector<std::int64_t> halfedge_identity(
@@ -358,13 +382,14 @@ std::vector<std::int64_t> halfedge_identity(
     const bool directed) {
   const SurfaceArrangementNode *from = find_node(complex, edge.from);
   const SurfaceArrangementNode *to = find_node(complex, edge.to);
-  if (from == nullptr || to == nullptr) {
+  const SourceScope edgeScope = source_scope(edge);
+  if (from == nullptr || to == nullptr || !edgeScope.valid()) {
     return {};
   }
-  SurfaceCellCanonicalIdentity fromIdentity = arrangement_node_identity(
-      *from, F, edge.sourceComponent, edge.sourceSheet);
-  SurfaceCellCanonicalIdentity toIdentity = arrangement_node_identity(
-      *to, F, edge.sourceComponent, edge.sourceSheet);
+  SurfaceCellCanonicalIdentity fromIdentity =
+      arrangement_node_identity(*from, F, edgeScope);
+  SurfaceCellCanonicalIdentity toIdentity =
+      arrangement_node_identity(*to, F, edgeScope);
   if (!fromIdentity.valid || !toIdentity.valid) {
     return {};
   }
@@ -391,11 +416,10 @@ std::vector<std::int64_t> halfedge_identity(
                  edge.railId.has_value()
                      ? static_cast<std::int64_t>(edge.railId->index())
                      : -1,
-                 edge.curveId,
-                 edge.sourceComponent,
-                 edge.sourceSheet,
-                 edge.proposalSide,
-                 edge.proposalBoundarySegment});
+                 edge.curveId});
+  append_source_scope(result, edgeScope);
+  result.insert(result.end(),
+                {edge.proposalSide, edge.proposalBoundarySegment});
   if (directed) {
     result.push_back(quantized_parameter(edge.sourceT0));
     result.push_back(quantized_parameter(edge.sourceT1));
@@ -418,6 +442,7 @@ std::vector<std::int64_t> halfedge_identity(
   }
   return result;
 }
+
 
 std::vector<std::vector<std::int64_t>> canonical_cycle_rotation(
     const std::vector<std::vector<std::int64_t>> &cycle) {
@@ -476,24 +501,20 @@ SurfaceCellCanonicalIdentity source_support_identity(
 
 SurfaceCellCanonicalIdentity source_chart_map_identity(
     const SurfaceArrangementCell &cell, const Eigen::MatrixXi &F) {
+  (void)F;
   std::vector<std::vector<std::int64_t>> charts;
   for (const SourceProjectionChart &chart : cell.sourceCharts) {
-    const std::size_t sourceFace = chart.face.index();
-    if (!chart.valid() || sourceFace >= static_cast<std::size_t>(F.rows()) ||
-        F.cols() != 3) {
+    if (!chart.valid()) {
       return {};
     }
-    std::array<int, 3> vertices{{F(static_cast<int>(sourceFace), 0),
-                                 F(static_cast<int>(sourceFace), 1),
-                                 F(static_cast<int>(sourceFace), 2)}};
-    std::sort(vertices.begin(), vertices.end());
     charts.push_back({static_cast<std::int64_t>(chart.chart.index()),
-                      vertices[0], vertices[1], vertices[2]});
+                      static_cast<std::int64_t>(chart.face.index())});
   }
   std::sort(charts.begin(), charts.end());
   charts.erase(std::unique(charts.begin(), charts.end()), charts.end());
   return flatten_identities(charts);
 }
+
 
 bool cell_contains_source_chart(const SurfaceArrangementCell &cell,
                                 const SourceProjectionChart &chart) {
@@ -534,11 +555,35 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
     audit.failure = SurfaceCellDomainIdentityFailureKind::OpenBoundary;
     return audit;
   }
+  if (!cell.sourceTopologyRegion.has_value() || cell.sourceCharts.empty() ||
+      !std::is_sorted(cell.sourceCharts.begin(), cell.sourceCharts.end())) {
+    audit.failure = SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
+    return audit;
+  }
+  if (!cell.sourceOwnershipClass.valid) {
+    audit.failure =
+        SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
+    return audit;
+  }
+  const SurfaceCellOwnershipClassRecord *ownershipRecord =
+      find_surface_cell_ownership_class(complex, cell.sourceOwnershipClass);
+  if (ownershipRecord == nullptr ||
+      ownershipRecord->sourceTopologyRegion != cell.sourceTopologyRegion) {
+    audit.failure =
+        SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
+    return audit;
+  }
+  for (const SourceProjectionChart &chart : cell.sourceCharts) {
+    if (!std::binary_search(ownershipRecord->exactCharts.begin(),
+                            ownershipRecord->exactCharts.end(), chart)) {
+      audit.failure =
+          SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
+      return audit;
+    }
+  }
 
   std::vector<std::vector<std::int64_t>> directed;
   std::vector<std::vector<std::int64_t>> undirected;
-  std::set<int> components;
-  std::set<int> sheets;
   std::set<SourceProjectionChart> exactCharts;
   std::set<int> seenBoundaryHalfedges;
   std::set<int> seenBoundaryNodes;
@@ -546,20 +591,14 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   undirected.reserve(boundary.size());
 
   const auto node_occurrence_failure =
-      [&](const SurfaceArrangementNode &node, const int component,
-          const int sheet, int &sourceFace) {
+      [&](const SurfaceArrangementNode &node, const SourceScope &scope,
+          int &sourceFace) {
         bool hasSourceChart = false;
         const auto accept = [&](const int face,
                                 const Eigen::RowVector3d &barycentric,
-                                const int occurrenceComponent,
-                                const int occurrenceSheet) {
-          if (face < 0 || face >= F.rows() || F.cols() != 3) {
-            return false;
-          }
-          if ((occurrenceComponent >= 0 && component >= 0 &&
-               occurrenceComponent != component) ||
-              (occurrenceSheet >= 0 && sheet >= 0 &&
-               occurrenceSheet != sheet)) {
+                                const SourceScope &occurrenceScope) {
+          if (face < 0 || face >= F.rows() || F.cols() != 3 ||
+              occurrenceScope != scope) {
             return false;
           }
           hasSourceChart = true;
@@ -570,17 +609,15 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
               std::abs(barycentric.sum() - 1.0) > 1.0e-8) {
             return false;
           }
-          return source_point_identity(F, face, barycentric, component, sheet)
-              .valid;
+          return source_point_identity(F, face, barycentric, scope).valid;
         };
-        if (accept(node.sourceFace, node.barycentric, node.sourceComponent,
-                   node.sourceSheet)) {
+        if (accept(node.sourceFace, node.barycentric, source_scope(node))) {
           return SurfaceCellDomainIdentityFailureKind::None;
         }
         for (const SurfaceArrangementNodeOccurrence &occurrence :
              node.occurrences) {
           if (accept(occurrence.sourceFace, occurrence.barycentric,
-                     occurrence.sourceComponent, occurrence.sourceSheet)) {
+                     source_scope(occurrence))) {
             return SurfaceCellDomainIdentityFailureKind::None;
           }
         }
@@ -641,27 +678,22 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
           SurfaceCellDomainIdentityFailureKind::InvalidEndpointNode;
       return audit;
     }
-
     if (!seenBoundaryNodes.insert(edge.from).second) {
       audit.nodeId = edge.from;
       audit.failure = SurfaceCellDomainIdentityFailureKind::RepeatedBoundaryNode;
       return audit;
     }
 
-    audit.sourceComponent = edge.sourceComponent;
-    audit.sourceSheet = edge.sourceSheet;
+    const SourceScope edgeScope = source_scope(edge);
+    audit.sourceComponent = -1;
+    audit.sourceSheet = -1;
     audit.sourceFace = edge.sourceFace;
-    components.insert(edge.sourceComponent);
-    sheets.insert(edge.sourceSheet);
-    const auto exactChart = std::find_if(
-        cell.sourceCharts.begin(), cell.sourceCharts.end(),
-        [&](const SourceProjectionChart &chart) {
-          return chart.face.index() ==
-                 static_cast<std::size_t>(edge.sourceFace);
-        });
-    if (edge.sourceFace >= 0 && exactChart != cell.sourceCharts.end()) {
-      exactCharts.insert(*exactChart);
+    if (!edgeScope.valid() || edgeScope.region != cell.sourceTopologyRegion ||
+        !cell_contains_source_chart(cell, edgeScope.chart.value())) {
+      audit.failure = SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
+      return audit;
     }
+    exactCharts.insert(edgeScope.chart.value());
 
     const SurfaceArrangementNode &from =
         complex.nodes[static_cast<std::size_t>(edge.from)];
@@ -669,8 +701,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
         complex.nodes[static_cast<std::size_t>(edge.to)];
     int validFace = -1;
     const SurfaceCellDomainIdentityFailureKind fromFailure =
-        node_occurrence_failure(from, edge.sourceComponent,
-                                edge.sourceSheet, validFace);
+        node_occurrence_failure(from, edgeScope, validFace);
     if (fromFailure != SurfaceCellDomainIdentityFailureKind::None) {
       audit.nodeId = edge.from;
       audit.sourceFace = validFace >= 0 ? validFace : edge.sourceFace;
@@ -679,8 +710,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
     }
     validFace = -1;
     const SurfaceCellDomainIdentityFailureKind toFailure =
-        node_occurrence_failure(to, edge.sourceComponent,
-                                edge.sourceSheet, validFace);
+        node_occurrence_failure(to, edgeScope, validFace);
     if (toFailure != SurfaceCellDomainIdentityFailureKind::None) {
       audit.nodeId = edge.to;
       audit.sourceFace = validFace >= 0 ? validFace : edge.sourceFace;
@@ -706,63 +736,13 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
     undirected.push_back(std::move(undirectedIdentity));
   }
 
-  if (components.size() != 1U) {
-    audit.failure =
-        SurfaceCellDomainIdentityFailureKind::MixedSourceComponent;
-    return audit;
-  }
-  const bool hasCanonicalOwnership = cell.sourceOwnershipClass.valid;
-  if (hasCanonicalOwnership) {
-    const SurfaceCellOwnershipClassRecord *ownershipRecord =
-        find_surface_cell_ownership_class(complex,
-                                           cell.sourceOwnershipClass);
-    if (ownershipRecord == nullptr ||
-        ownershipRecord->sourceComponent != *components.begin()) {
+  for (const SourceProjectionChart &chart : exactCharts) {
+    if (!std::binary_search(ownershipRecord->exactCharts.begin(),
+                            ownershipRecord->exactCharts.end(), chart)) {
       audit.failure =
           SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
       return audit;
     }
-    if (cell.sourceCharts.empty() ||
-        !std::is_sorted(cell.sourceCharts.begin(), cell.sourceCharts.end())) {
-      audit.failure = SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
-      return audit;
-    }
-    for (const SourceProjectionChart &chart : exactCharts) {
-      if (!chart.valid() || !cell_contains_source_chart(cell, chart)) {
-        audit.sourceFace = static_cast<int>(chart.face.index());
-        audit.sourceComponent = cell.sourceComponent;
-        audit.sourceSheet = cell.sourceSheet;
-        audit.failure = SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
-        return audit;
-      }
-    }
-    for (const SourceProjectionChart &chart : cell.sourceCharts) {
-      if (!std::binary_search(ownershipRecord->exactCharts.begin(),
-                              ownershipRecord->exactCharts.end(), chart)) {
-        audit.sourceFace = static_cast<int>(chart.face.index());
-        audit.sourceComponent = cell.sourceComponent;
-        audit.sourceSheet = cell.sourceSheet;
-        audit.failure =
-            SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
-        return audit;
-      }
-    }
-  } else if (sheets.size() != 1U) {
-    audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
-    return audit;
-  }
-
-  if (cell.sourceComponent >= 0 &&
-      cell.sourceComponent != *components.begin()) {
-    audit.sourceComponent = cell.sourceComponent;
-    audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceComponent;
-    return audit;
-  }
-  if (!hasCanonicalOwnership && cell.sourceSheet >= 0 &&
-      cell.sourceSheet != *sheets.begin()) {
-    audit.sourceSheet = cell.sourceSheet;
-    audit.failure = SurfaceCellDomainIdentityFailureKind::MixedSourceSheet;
-    return audit;
   }
 
   std::sort(undirected.begin(), undirected.end());
@@ -771,27 +751,15 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   audit.identity.undirectedBoundary = flatten_identities(undirected);
   audit.identity.sourceSupport = source_support_identity(cell, F);
   audit.identity.sourceOwnershipClass = cell.sourceOwnershipClass;
-  if (!audit.identity.sourceOwnershipClass.valid) {
-    audit.identity.sourceOwnershipClass.valid = true;
-    audit.identity.sourceOwnershipClass.values = {
-        *components.begin(), *sheets.begin()};
-  }
   audit.identity.sourceChartMap = source_chart_map_identity(cell, F);
-  if (!audit.identity.sourceChartMap.valid) {
-    audit.identity.sourceChartMap.valid = true;
-    audit.identity.sourceChartMap.values = {
-        *components.begin(), *sheets.begin()};
-  }
   audit.identity.boundaryNodeCount = static_cast<int>(boundary.size());
   audit.identity.boundaryHalfedgeCount = static_cast<int>(boundary.size());
   audit.identity.sourceSupportCount = source_support_count(cell, F);
-  if (!cell.sourceTopologyRegion.has_value()) {
-    audit.failure = SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
-    return audit;
-  }
   audit.identity.sourceTopologyRegion = cell.sourceTopologyRegion;
-  // Diagnostic projections remain one-way and are ignored by identity semantics.
   if (!audit.identity.sourceSupport.valid ||
+      !audit.identity.sourceOwnershipClass.valid ||
+      !audit.identity.sourceChartMap.valid ||
+      !audit.identity.sourceTopologyRegion.has_value() ||
       audit.identity.sourceSupportCount <= 0) {
     audit.failure = SurfaceCellDomainIdentityFailureKind::InvalidSourceSupport;
     return audit;
@@ -811,6 +779,7 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   audit.failure = SurfaceCellDomainIdentityFailureKind::None;
   return audit;
 }
+
 
 SurfaceCellDomainIdentity build_domain_identity(
     const SurfaceCellComplex &complex, const SurfaceArrangementCell &cell,
@@ -994,10 +963,11 @@ std::vector<std::int64_t> halfedge_geometric_support_identity(
   if (from == nullptr || to == nullptr) {
     return {};
   }
-  SurfaceCellCanonicalIdentity fromIdentity = arrangement_node_identity(
-      *from, F, edge.sourceComponent, edge.sourceSheet);
-  SurfaceCellCanonicalIdentity toIdentity = arrangement_node_identity(
-      *to, F, edge.sourceComponent, edge.sourceSheet);
+  const SourceScope edgeScope = source_scope(edge);
+  SurfaceCellCanonicalIdentity fromIdentity =
+      arrangement_node_identity(*from, F, edgeScope);
+  SurfaceCellCanonicalIdentity toIdentity =
+      arrangement_node_identity(*to, F, edgeScope);
   if (!fromIdentity.valid || !toIdentity.valid) {
     return {};
   }
@@ -1029,7 +999,8 @@ std::vector<std::int64_t> halfedge_geometric_support_identity(
   std::sort(support.begin(), support.end());
   support.erase(std::unique(support.begin(), support.end()), support.end());
 
-  std::vector<std::int64_t> result{edge.sourceComponent, edge.sourceSheet};
+  std::vector<std::int64_t> result;
+  append_source_scope(result, edgeScope);
   append_identity(result, fromIdentity);
   append_identity(result, toIdentity);
   result.push_back(static_cast<std::int64_t>(support.size()));
@@ -1054,8 +1025,7 @@ SurfaceCellCanonicalIdentity boundary_node_identity(
   if (node == nullptr) {
     return result;
   }
-  return arrangement_node_identity(*node, F, edge.sourceComponent,
-                                   edge.sourceSheet);
+  return arrangement_node_identity(*node, F, source_scope(edge));
 }
 
 std::vector<std::int64_t> endpoint_pair_identity(
@@ -1453,10 +1423,10 @@ void append_repair_domain_identity(
   destination.push_back(identity.boundaryNodeCount);
   destination.push_back(identity.boundaryHalfedgeCount);
   destination.push_back(identity.sourceSupportCount);
-  destination.push_back(identity.sourceTopologyRegion.has_value()
-                            ? static_cast<std::int64_t>(
-                                  identity.sourceTopologyRegion->index())
-                            : -1);
+  destination.push_back(
+      identity.sourceTopologyRegion.has_value()
+          ? static_cast<std::int64_t>(identity.sourceTopologyRegion->index())
+          : -1);
   append_repair_identity(destination, identity.orientedBoundary);
   append_repair_identity(destination, identity.undirectedBoundary);
   append_repair_identity(destination, identity.sourceSupport);
@@ -1539,12 +1509,12 @@ SurfaceCellRepairStateIdentity canonical_repair_state_identity(
             });
   for (const SurfaceArrangementNode *node : nodes) {
     identity.insert(identity.end(),
-                    {node->id, node->sourceFace, node->sourceComponent,
-                     node->sourceSheet, node->sourceEdge,
+                    {node->id, node->sourceFace, node->sourceEdge,
                      quantized_parameter(node->sourceEdgeParameter),
                      quantized_parameter(node->barycentric(0)),
                      quantized_parameter(node->barycentric(1)),
                      quantized_parameter(node->barycentric(2))});
+    append_source_scope(identity, source_scope(*node));
     std::vector<std::array<std::int64_t, 4>> occurrences;
     occurrences.reserve(node->occurrences.size());
     for (const SurfaceArrangementNodeOccurrence &occurrence :
@@ -2024,9 +1994,21 @@ PatchDescriptor derive_patch_descriptor(
     patch.boundaryVertices.push_back(node->id);
     patch.boundaryRailIds.push_back(edge.railId);
     patch.boundaryCurveIds.push_back(edge.curveId);
+    if (!edge.sourceTopologyRegion.has_value() || !edge.sourceChart.has_value()) {
+      patch.diskTopology = false;
+      descriptor.boundaryCycleValid = false;
+      descriptor.domainIdentityAudit.cellId = cell.id;
+      descriptor.domainIdentityAudit.halfedgeId = edge.id;
+      descriptor.domainIdentityAudit.failure =
+          SurfaceCellDomainIdentityFailureKind::MissingSourceChart;
+      descriptor.feasibility = check_pure_quad_patch_admissibility(patch);
+      return descriptor;
+    }
+    patch.boundaryTopologyRegions.push_back(edge.sourceTopologyRegion.value());
+    patch.boundaryCharts.push_back(edge.sourceChart.value());
     patch.boundaryNodeIdentities.push_back(
         patch_descriptor_detail::arrangement_node_identity(
-            *node, F, edge.sourceComponent, edge.sourceSheet));
+            *node, F, patch_descriptor_detail::source_scope(edge)));
     patch.boundaryProvenance.push_back(
         patch_descriptor_detail::node_surface_point(*node, V, F, edge));
     patch.hardFeatureCrossing =
@@ -2164,7 +2146,8 @@ PatchDescriptorSet derive_patch_descriptors(
   std::map<SurfaceCellDomainIdentity, int> orientedOwner;
   using UndirectedOwnerKey =
       std::tuple<std::optional<authority::TopologyRegionId>,
-                 SurfaceCellCanonicalIdentity, SurfaceCellCanonicalIdentity>;
+                 SurfaceCellCanonicalIdentity, SurfaceCellCanonicalIdentity,
+                 SurfaceCellCanonicalIdentity>;
   std::map<UndirectedOwnerKey, int> undirectedOwner;
   for (int descriptorIndex = 0;
        descriptorIndex < static_cast<int>(result.descriptors.size());
@@ -2206,20 +2189,16 @@ PatchDescriptorSet derive_patch_descriptors(
           first.patch.domainIdentity.sourceSupportCount;
       result.ownershipConflict.secondSourceSupportCount =
           identity.sourceSupportCount;
-      result.ownershipConflict.firstComponent =
-          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().component;
-      result.ownershipConflict.firstSheet =
-          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().sheet;
-      result.ownershipConflict.secondComponent =
-          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().component;
-      result.ownershipConflict.secondSheet =
-          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().sheet;
+      result.ownershipConflict.firstComponent = -1;
+      result.ownershipConflict.firstSheet = -1;
+      result.ownershipConflict.secondComponent = -1;
+      result.ownershipConflict.secondSheet = -1;
       break;
     }
 
-    const UndirectedOwnerKey key{identity.sourceTopologyRegion,
-                                 identity.sourceSupport,
-                                 identity.undirectedBoundary};
+    const UndirectedOwnerKey key{
+        identity.sourceTopologyRegion, identity.sourceOwnershipClass,
+        identity.sourceSupport, identity.undirectedBoundary};
     const auto [undirected, undirectedInserted] =
         undirectedOwner.emplace(key, descriptorIndex);
     if (!undirectedInserted) {
@@ -2243,14 +2222,10 @@ PatchDescriptorSet derive_patch_descriptors(
           first.patch.domainIdentity.sourceSupportCount;
       result.ownershipConflict.secondSourceSupportCount =
           identity.sourceSupportCount;
-      result.ownershipConflict.firstComponent =
-          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().component;
-      result.ownershipConflict.firstSheet =
-          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().sheet;
-      result.ownershipConflict.secondComponent =
-          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().component;
-      result.ownershipConflict.secondSheet =
-          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().sheet;
+      result.ownershipConflict.firstComponent = -1;
+      result.ownershipConflict.firstSheet = -1;
+      result.ownershipConflict.secondComponent = -1;
+      result.ownershipConflict.secondSheet = -1;
       break;
     }
   }
@@ -2306,12 +2281,20 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
   void append_completion_dependency_point(
       PatchCompletionDependencyIdentity &identity, const PureQuadPatch &patch,
       const std::size_t index) {
-    if (index >= patch.boundaryProvenance.size()) {
-      identity.insert(identity.end(), {-1, -1, -1, -1, -1, -1});
+    if (index >= patch.boundaryProvenance.size() ||
+        index >= patch.boundaryTopologyRegions.size() ||
+        index >= patch.boundaryCharts.size()) {
+      identity.insert(identity.end(), {-1, -1, -1, -1, -1, -1, -1,
+                                        -1, -1, -1, -1, -1});
       return;
     }
     const SurfacePoint &point = patch.boundaryProvenance[index];
-    identity.push_back(point.face);
+    const authority::TopologyRegionId region =
+        patch.boundaryTopologyRegions[index];
+    const SourceProjectionChart &chart = patch.boundaryCharts[index];
+    identity.push_back(static_cast<std::int64_t>(region.index()));
+    identity.push_back(static_cast<std::int64_t>(chart.chart.index()));
+    identity.push_back(static_cast<std::int64_t>(chart.face.index()));
     for (int coordinate = 0; coordinate < 3; ++coordinate) {
       identity.push_back(
           quantized_parameter(point.barycentric(coordinate)));
@@ -2321,6 +2304,7 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
     identity.push_back(
         completion_dependency_label(patch.boundaryCurveIds, index));
   }
+
 
   PatchCompletionDependencyIdentity completion_dependency_side_record(
       const PatchDescriptor &descriptor,
@@ -2493,7 +2477,8 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
         fields.sourceDomain.end(),
         {patch.domainIdentity.valid ? 1 : 0,
          patch.domainIdentity.sourceTopologyRegion.has_value()
-             ? static_cast<std::int64_t>(patch.domainIdentity.sourceTopologyRegion->index())
+             ? static_cast<std::int64_t>(
+                   patch.domainIdentity.sourceTopologyRegion->index())
              : -1,
          patch.domainIdentity.boundaryNodeCount,
          patch.domainIdentity.boundaryHalfedgeCount,

@@ -263,6 +263,8 @@ struct PureQuadPatch {
   std::vector<SurfacePoint> boundaryProvenance;
   std::vector<std::optional<authority::HardRailId>> boundaryRailIds;
   std::vector<int> boundaryCurveIds;
+  std::vector<authority::TopologyRegionId> boundaryTopologyRegions;
+  std::vector<SourceProjectionChart> boundaryCharts;
   std::vector<SurfaceCellCanonicalIdentity> boundaryNodeIdentities;
   SurfaceCellDomainIdentity domainIdentity;
   std::vector<int> sideEdgeCounts;
