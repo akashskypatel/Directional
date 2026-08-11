@@ -65,7 +65,7 @@ Run **M1 Single-Authority Cutover — Code + Build only** under:
 
 `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Reviewed source authority is M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; review baseline is `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`; authoritative planning commit is `PLANNING_COMMIT_TO_BE_RECORDED`. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1l remain immutable accepted evidence. Review policy after the following Test + Benchmark turn is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Reviewed source authority is M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; review baseline is `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`; authoritative planning commit is `7054eb7add540b35b9892ee18b1488d8bcaa9514`. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1l remain immutable accepted evidence. Review policy after the following Test + Benchmark turn is `never`.
 
 The final cutover replaces the complete affected authority contracts in one turn:
 
