@@ -920,7 +920,7 @@ void hash_trace_point(std::uint64_t &seed,
 
 namespace directional::pipeline {
 
-int legacy_phase_front_source_component(
+int phase_front_source_component(
     const geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceComponent.has_value()
              ? static_cast<int>((
@@ -928,7 +928,7 @@ int legacy_phase_front_source_component(
              : -1;
 }
 
-int legacy_phase_front_source_topology_region(
+int phase_front_source_topology_region(
     const geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceTopologyRegion.has_value()
              ? static_cast<int>(
@@ -937,7 +937,7 @@ int legacy_phase_front_source_topology_region(
              : -1;
 }
 
-int legacy_phase_front_source_sheet(
+int phase_front_source_sheet(
     const geometry::SurfacePhaseFrontCell &cell) {
   return cell.sourceSheet.has_value()
              ? static_cast<int>((
@@ -945,7 +945,7 @@ int legacy_phase_front_source_sheet(
              : -1;
 }
 
-std::vector<int> legacy_phase_front_isolation_sheets(
+std::vector<int> phase_front_isolation_sheets(
     const geometry::SurfacePhaseFrontCell &cell) {
   std::vector<int> legacy;
   legacy.reserve(cell.sourceIsolationSheets.size());
@@ -956,7 +956,7 @@ std::vector<int> legacy_phase_front_isolation_sheets(
   return legacy;
 }
 
-int legacy_phase_front_source_component(
+int phase_front_source_component(
     const geometry::SurfaceFrontEdge &edge) {
   return edge.sourceComponent.has_value()
              ? static_cast<int>((
@@ -964,7 +964,7 @@ int legacy_phase_front_source_component(
              : -1;
 }
 
-int legacy_phase_front_source_topology_region(
+int phase_front_source_topology_region(
     const geometry::SurfaceFrontEdge &edge) {
   return edge.sourceTopologyRegion.has_value()
              ? static_cast<int>(
@@ -973,7 +973,7 @@ int legacy_phase_front_source_topology_region(
              : -1;
 }
 
-int legacy_phase_front_source_sheet(
+int phase_front_source_sheet(
     const geometry::SurfaceFrontEdge &edge) {
   return edge.sourceSheet.has_value()
              ? static_cast<int>((
@@ -981,7 +981,7 @@ int legacy_phase_front_source_sheet(
              : -1;
 }
 
-std::vector<int> legacy_phase_front_isolation_sheets(
+std::vector<int> phase_front_isolation_sheets(
     const geometry::SurfaceFrontEdge &edge) {
   std::vector<int> legacy;
   legacy.reserve(edge.sourceIsolationSheets.size());
@@ -1151,11 +1151,11 @@ std::uint64_t hash_trace_network(
     hash_combine_i64(seed, edge.oppositeEdge);
     hash_combine_i64(seed, edge.unfilledSide);
     hash_combine_i64(seed, edge.exterior ? 1 : 0);
-    hash_combine_i64(seed, legacy_phase_front_source_component(edge));
+    hash_combine_i64(seed, phase_front_source_component(edge));
     hash_combine_i64(seed,
-                     legacy_phase_front_source_topology_region(edge));
-    hash_combine_i64(seed, legacy_phase_front_source_sheet(edge));
-    hash_vector(seed, legacy_phase_front_isolation_sheets(edge));
+                     phase_front_source_topology_region(edge));
+    hash_combine_i64(seed, phase_front_source_sheet(edge));
+    hash_vector(seed, phase_front_isolation_sheets(edge));
     hash_combine_i64(seed, static_cast<int>(edge.boundaryKind));
     hash_combine_i64(seed, edge.periodicRelation);
     hash_combine_i64(seed, edge.railId);
@@ -1171,11 +1171,11 @@ std::uint64_t hash_trace_network(
   hash_combine_u64(seed, network.phaseFront.cells.size());
   for (const geometry::SurfacePhaseFrontCell &cell : network.phaseFront.cells) {
     hash_combine_i64(seed, cell.id);
-    hash_combine_i64(seed, legacy_phase_front_source_component(cell));
+    hash_combine_i64(seed, phase_front_source_component(cell));
     hash_combine_i64(seed,
-                     legacy_phase_front_source_topology_region(cell));
-    hash_combine_i64(seed, legacy_phase_front_source_sheet(cell));
-    hash_vector(seed, legacy_phase_front_isolation_sheets(cell));
+                     phase_front_source_topology_region(cell));
+    hash_combine_i64(seed, phase_front_source_sheet(cell));
+    hash_vector(seed, phase_front_isolation_sheets(cell));
     hash_combine_i64(seed, cell.orientationValidated ? 1 : 0);
     for (const geometry::SurfaceTracePoint &corner : cell.corners) {
       hash_trace_point(seed, corner);
@@ -2231,35 +2231,77 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     }
   }
 
-  const auto isolation_sheets_connected =
-      [&](const int regionId, const std::vector<int> &sheets) {
+  const auto typed_region_id = [&](const int raw)
+      -> std::optional<authority::TopologyRegionId> {
+    if (raw < 0) return std::nullopt;
+    const auto id = authority::TopologyRegionId::from_index(
+        raw, topologyRegionById.size());
+    if (!id || topologyRegionById.count(id.value()) == 0U) return std::nullopt;
+    return id.value();
+  };
+  const auto typed_sheet_ids = [](const std::vector<int> &raw)
+      -> std::optional<std::vector<authority::IsolationSheetId>> {
+    std::vector<authority::IsolationSheetId> result;
+    result.reserve(raw.size());
+    const std::size_t extent = raw.empty() ? 0U :
+        static_cast<std::size_t>(*std::max_element(raw.begin(), raw.end()) + 1);
+    for (const int value : raw) {
+      const auto id = authority::IsolationSheetId::from_index(value, extent);
+      if (!id) return std::nullopt;
+      result.push_back(id.value());
+    }
+    return result;
+  };
+  const auto typed_source_edge_topology = [&](const std::uint64_t raw)
+      -> std::optional<authority::SourceEdgeTopologyKey> {
+    const auto first = authority::SourceVertexId::from_index(
+        static_cast<std::int64_t>(raw >> 32U), sourceVertices.rows());
+    const auto second = authority::SourceVertexId::from_index(
+        static_cast<std::int64_t>(raw & 0xffffffffULL), sourceVertices.rows());
+    if (!first || !second) return std::nullopt;
+    const auto topology = authority::SourceEdgeTopologyKey::make(
+        first.value(), second.value());
+    return topology ? std::optional(topology.value()) : std::nullopt;
+  };
+  const auto isolation_sheets_connected_typed =
+      [&](const authority::TopologyRegionId regionId,
+          const std::vector<authority::IsolationSheetId> &sheets) {
         const auto graph = isolationSheetGraphByRegion.find(regionId);
         if (graph == isolationSheetGraphByRegion.end() || sheets.empty() ||
             !std::is_sorted(sheets.begin(), sheets.end()) ||
             std::adjacent_find(sheets.begin(), sheets.end()) != sheets.end()) {
           return false;
         }
-        for (const int sheet : sheets) {
+        for (const authority::IsolationSheetId sheet : sheets) {
           if (graph->second.count(sheet) == 0U) return false;
         }
-        std::set<int> reached;
-        std::vector<int> stack{sheets.front()};
+        std::set<authority::IsolationSheetId> reached;
+        std::vector<authority::IsolationSheetId> stack{sheets.front()};
         while (!stack.empty()) {
-          const int sheet = stack.back();
+          const authority::IsolationSheetId sheet = stack.back();
           stack.pop_back();
           if (!reached.insert(sheet).second) continue;
           const auto neighbors = graph->second.find(sheet);
           if (neighbors == graph->second.end()) continue;
-          for (const int neighbor : neighbors->second) {
+          for (const authority::IsolationSheetId neighbor : neighbors->second) {
             if (reached.count(neighbor) == 0U) stack.push_back(neighbor);
           }
         }
-        return std::all_of(sheets.begin(), sheets.end(), [&](const int sheet) {
+        return std::all_of(sheets.begin(), sheets.end(),
+                           [&](const authority::IsolationSheetId sheet) {
           return reached.count(sheet) != 0U;
         });
       };
+  const auto isolation_sheets_connected =
+      [&](const int regionId, const std::vector<int> &sheets) {
+        const auto typedRegion = typed_region_id(regionId);
+        const auto typedSheets = typed_sheet_ids(sheets);
+        return typedRegion && typedSheets &&
+               isolation_sheets_connected_typed(typedRegion.value(),
+                                                typedSheets.value());
+      };
   for (const auto &[regionId, region] : topologyRegionById) {
-    if (!isolation_sheets_connected(regionId, region->isolationSheets)) {
+    if (!isolation_sheets_connected_typed(regionId, region->isolationSheets)) {
       result.failure = "DisconnectedAuthoritativeIsolationSheetGraph";
       return result;
     }
@@ -2313,18 +2355,21 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
        cellIndex < static_cast<int>(phaseFront.cells.size()); ++cellIndex) {
     const auto &cell = phaseFront.cells[static_cast<std::size_t>(cellIndex)];
     result.invalidCell = cell.id;
-    const int cellComponent = legacy_phase_front_source_component(cell);
-    const int cellSheet = legacy_phase_front_source_sheet(cell);
+    const int cellComponent = phase_front_source_component(cell);
+    const int cellSheet = phase_front_source_sheet(cell);
     const std::vector<int> cellIsolationSheets =
-        legacy_phase_front_isolation_sheets(cell);
+        phase_front_isolation_sheets(cell);
     const int cellTopologyRegion =
-        legacy_phase_front_source_topology_region(cell);
-    const auto region = topologyRegionById.find(cellTopologyRegion);
+        phase_front_source_topology_region(cell);
+    const auto cellTopologyRegionId = typed_region_id(cellTopologyRegion);
+    const auto region = cellTopologyRegionId
+                            ? topologyRegionById.find(cellTopologyRegionId.value())
+                            : topologyRegionById.end();
     if (cell.id < 0 || !cellIndexById.emplace(cell.id, cellIndex).second ||
         !cell.orientationValidated || cellComponent < 0 ||
         !cell.sourceTopologyRegion.has_value() ||
         region == topologyRegionById.end() ||
-        region->second->sourceComponent != cellComponent ||
+        static_cast<int>(region->second->sourceComponent.index()) != cellComponent ||
         cellIsolationSheets.empty() ||
         !std::is_sorted(cellIsolationSheets.begin(),
                         cellIsolationSheets.end()) ||
@@ -2350,7 +2395,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       if (component != cellComponent || sheet < 0 ||
           trace.face < 0 || trace.face >= sourceFaces.rows() ||
           topologyRegionByFace[static_cast<std::size_t>(trace.face)] !=
-              cellTopologyRegion ||
+              cellTopologyRegionId ||
           !std::binary_search(cellIsolationSheets.begin(),
                               cellIsolationSheets.end(), sheet)) {
         result.failure = "AuthoritativePhaseFrontSourceLabelMismatch";
@@ -2482,8 +2527,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         !std::is_sorted(edge.sourceIsolationSheets.begin(),
                         edge.sourceIsolationSheets.end()) ||
         !isolation_sheets_connected(
-            legacy_phase_front_source_topology_region(edge),
-            legacy_phase_front_isolation_sheets(edge))) {
+            phase_front_source_topology_region(edge),
+            phase_front_isolation_sheets(edge))) {
       result.failure = "InvalidAuthoritativePhaseFrontSideAuthority";
       return result;
     }
@@ -2517,16 +2562,22 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           result.failure = "InvalidAuthoritativeTransitionSourceEdge";
           return result;
         }
+        const auto typedTopology = typed_source_edge_topology(topology);
+        const auto edgeRegion = typed_region_id(
+            phase_front_source_topology_region(edge));
+        if (!typedTopology || !edgeRegion) {
+          result.failure = "InvalidAuthoritativeTransitionSourceEdge";
+          return result;
+        }
         if (isolationCertificateBySeam.count(
-                {legacy_phase_front_source_topology_region(edge), topology}) !=
-            0U) {
+                {edgeRegion.value(), typedTopology.value()}) != 0U) {
           crossedIsolationSeams.push_back(topology);
           continue;
         }
         const bool belongsToOtherRegion = std::any_of(
             isolationCertificateBySeam.begin(),
             isolationCertificateBySeam.end(), [&](const auto &entry) {
-              return entry.first.second == topology;
+              return entry.first.second == typedTopology.value();
             });
         if (belongsToOtherRegion) {
           result.failure = "IsolationSeamTransitionOwnerMismatch";
@@ -2603,10 +2654,13 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
   }
 
   for (const auto &relation : phaseFront.periodicHolonomies) {
-    const auto region =
-        topologyRegionById.find(relation.sourceTopologyRegion);
+    const auto relationRegion = typed_region_id(relation.sourceTopologyRegion);
+    const auto region = relationRegion
+                            ? topologyRegionById.find(relationRegion.value())
+                            : topologyRegionById.end();
     if (region == topologyRegionById.end() ||
-        relation.sourceComponent != region->second->sourceComponent ||
+        relation.sourceComponent !=
+            static_cast<int>(region->second->sourceComponent.index()) ||
         relation.sourceIsolationSheets.empty() ||
         !std::is_sorted(relation.sourceIsolationSheets.begin(),
                         relation.sourceIsolationSheets.end()) ||
@@ -2707,9 +2761,12 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         return result;
       }
       for (const std::uint64_t seam : equivalence.routeTopologyKeys) {
-        if (isolationCertificateBySeam.count(
-                {legacy_phase_front_source_topology_region(first), seam}) !=
-            1U) {
+        const auto typedSeam = typed_source_edge_topology(seam);
+        const auto firstRegion = typed_region_id(
+            phase_front_source_topology_region(first));
+        if (!typedSeam || !firstRegion ||
+            isolationCertificateBySeam.count(
+                {firstRegion.value(), typedSeam.value()}) != 1U) {
           result.failure = "InvalidIsolationSeamEquivalenceAuthority";
           return result;
         }
@@ -2739,9 +2796,9 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
       const auto &relation = phaseFront.periodicHolonomies[
           static_cast<std::size_t>(first.periodicRelation)];
-      if (relation.sourceComponent != legacy_phase_front_source_component(first) ||
+      if (relation.sourceComponent != phase_front_source_component(first) ||
           relation.sourceTopologyRegion !=
-              legacy_phase_front_source_topology_region(first) ||
+              phase_front_source_topology_region(first) ||
           relation.latticeTranslation.squaredNorm() == 0 ||
           !exact_interior_route_valid(relation.routeTransitionIndices,
                                       relation.routeTopologyKeys) ||
@@ -6144,13 +6201,13 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         geometry::surface_cell_producer_disposition_name(
             traceNetwork.phaseFront.disposition);
     result.diagnostics.surfaceCellTopologyRegionCount =
-        traceNetwork.topologyRegions.size();
+        traceNetwork.sourceTopologyRegions.regions.size();
     result.diagnostics.surfaceCellInternalIsolationSeamCount = 0U;
     result.diagnostics.surfaceCellTopologyRegionHashes.clear();
     result.diagnostics.surfaceCellTopologyRegionEulerCharacteristics.clear();
     result.diagnostics.surfaceCellTopologyRegionBoundaryLoopCounts.clear();
     result.diagnostics.surfaceCellTopologyRegionIsolationSheetCounts.clear();
-    for (const auto &region : traceNetwork.topologyRegions) {
+    for (const auto &region : traceNetwork.sourceTopologyRegions.regions) {
       result.diagnostics.surfaceCellInternalIsolationSeamCount +=
           region.internalIsolationSeamTopology.size();
       result.diagnostics.surfaceCellTopologyRegionHashes.push_back(
