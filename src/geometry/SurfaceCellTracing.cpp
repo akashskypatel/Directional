@@ -9283,7 +9283,10 @@ bool build_isolation_seam_transport_certificates(
 
   const auto typed_row = [&](const int face)
       -> std::optional<authority::SourceFaceId> {
-    return authority::SourceFaceId::from_index(face, sourceAuthority.face_count());
+    const auto row =
+        authority::SourceFaceId::from_index(face, sourceAuthority.face_count());
+    return row ? std::optional<authority::SourceFaceId>(row.value())
+               : std::nullopt;
   };
 
   std::set<std::pair<authority::TopologyRegionId,
@@ -9438,6 +9441,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     return result;
   }
   result.sourceTopologyRegions = std::move(*topology);
+  const SourceTopologyRegions &sourceAuthority = *result.sourceTopologyRegions;
 
   struct RegionWork {
     const SurfaceTopologyRegion *region = nullptr;
@@ -9597,9 +9601,14 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     const SurfaceTopologyRegion &unsupported =
         *regionBuilds[static_cast<std::size_t>(firstUnsupportedRegion)]
              .work->region;
-    const int canonicalFace = unsupported.sourceFaces.empty()
-                                  ? -1
-                                  : static_cast<int>(unsupported.sourceFaces.front().index());
+    int canonicalFace = -1;
+    if (!unsupported.faces().empty()) {
+      const auto row = result.sourceTopologyRegions->row_for_topology(
+          unsupported.faces().front().topology);
+      if (row.has_value()) {
+        canonicalFace = static_cast<int>(row->index());
+      }
+    }
     // Keep the established public reason while producer ownership is migrated
     // from local isolation sheets to exact source-topological regions.
     set_phase_front_failure(
