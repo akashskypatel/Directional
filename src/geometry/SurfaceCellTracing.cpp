@@ -5988,7 +5988,8 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
         }
       }
       if (!orient_and_validate_phase_front_cell(
-              vertices, faces, frame, std::min(stepU, stepV), options, cell)) {
+              vertices, faces, frame, std::min(stepU, stepV), options, region,
+              cell)) {
         set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation, cell.id);
         return result;
       }
