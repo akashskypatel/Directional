@@ -192,8 +192,6 @@ std::uint64_t trace_network_owned_bytes(
                         vector_owned_bytes(network.singularSeparatrices) +
                         vector_owned_bytes(network.proposals) +
                         vector_owned_bytes(network.authoritativeRails) +
-                        vector_owned_bytes(network.sourceFaceComponents) +
-                        vector_owned_bytes(network.sourceFaceSheets) +
                         vector_owned_bytes(network.reliefRootVertices) +
                         static_cast<std::uint64_t>(
                             network.reliefRegionLabels.size()) * sizeof(int) +
@@ -249,8 +247,6 @@ std::uint64_t trace_network_logical_bytes(
                         vector_logical_bytes(network.singularSeparatrices) +
                         vector_logical_bytes(network.proposals) +
                         vector_logical_bytes(network.authoritativeRails) +
-                        vector_logical_bytes(network.sourceFaceComponents) +
-                        vector_logical_bytes(network.sourceFaceSheets) +
                         vector_logical_bytes(network.reliefRootVertices) +
                         eigen_logical_bytes(network.reliefRegionLabels) +
                         set_payload_logical_bytes(network.reliefBarrierEdges);
@@ -1018,8 +1014,6 @@ std::uint64_t hash_trace_network(
   for (const std::uint64_t barrier : network.reliefBarrierEdges) {
     hash_combine_u64(seed, barrier);
   }
-  hash_vector(seed, network.sourceFaceComponents);
-  hash_vector(seed, network.sourceFaceSheets);
   hash_combine_u64(seed, network.authoritativeRails.size());
   for (const geometry::SurfaceCellRail &rail : network.authoritativeRails) {
     hash_semantic_id(seed, rail.id);

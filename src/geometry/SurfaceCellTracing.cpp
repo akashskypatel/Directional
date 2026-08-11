@@ -433,6 +433,10 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
                                       const int faceCount) {
+  if (options.sourceAuthority != nullptr) {
+    return options.sourceAuthority->face_count() ==
+           static_cast<std::size_t>(std::max(0, faceCount));
+  }
   if (!source_label_arrays_enabled(options)) {
     return true;
   }
@@ -455,6 +459,22 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_faces_compatible(const SurfaceCellTracingOptions &options,
                                     const int a, const int b) {
+  if (options.sourceAuthority != nullptr) {
+    if (a < 0 || b < 0 ||
+        static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
+        static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
+      return false;
+    }
+    const auto first = authority::SourceFaceId::from_index(
+        a, options.sourceAuthority->face_count());
+    const auto second = authority::SourceFaceId::from_index(
+        b, options.sourceAuthority->face_count());
+    return first && second &&
+           options.sourceAuthority->component_for_row(first.value()) ==
+               options.sourceAuthority->component_for_row(second.value()) &&
+           options.sourceAuthority->sheet_for_row(first.value()) ==
+               options.sourceAuthority->sheet_for_row(second.value());
+  }
   if (!source_label_arrays_enabled(options)) {
     return true;
   }
@@ -532,6 +552,20 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_faces_share_component(const SurfaceCellTracingOptions &options,
                                   const int a, const int b) {
+  if (options.sourceAuthority != nullptr) {
+    if (a < 0 || b < 0 ||
+        static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
+        static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
+      return false;
+    }
+    const auto first = authority::SourceFaceId::from_index(
+        a, options.sourceAuthority->face_count());
+    const auto second = authority::SourceFaceId::from_index(
+        b, options.sourceAuthority->face_count());
+    return first && second &&
+           options.sourceAuthority->component_for_row(first.value()) ==
+               options.sourceAuthority->component_for_row(second.value());
+  }
   if (!source_label_arrays_enabled(options)) {
     return true;
   }
@@ -9412,6 +9446,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize,
+    const SourceTopologyRegions &sourceAuthority,
     const SurfaceCellTracingOptions &options,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
@@ -9431,17 +9466,15 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   const auto sourceEdgeFaces = edge_faces(faces);
   const auto sourceMatchingIndices = edge_matching_indices(sourceEdgeFaces);
 
-  const auto topology = build_source_topology_regions(faces, options);
-  if (!topology.has_value() ||
-      !topology->complete_for_face_count(static_cast<std::size_t>(faces.rows())) ||
-      (faces.rows() > 0 && topology->regions().empty())) {
+  if (!sourceAuthority.complete_for_face_count(
+          static_cast<std::size_t>(faces.rows())) ||
+      (faces.rows() > 0 && sourceAuthority.regions().empty())) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(result.failure,
                             SurfacePhaseFrontFailureReason::InvalidTopologyRegion);
     return result;
   }
-  result.sourceTopologyRegions = std::move(*topology);
-  const SourceTopologyRegions &sourceAuthority = *result.sourceTopologyRegions;
+  result.sourceTopologyRegions = sourceAuthority;
 
   struct RegionWork {
     const SurfaceTopologyRegion *region = nullptr;
@@ -9988,14 +10021,25 @@ SurfaceCellNetwork build_surface_cell_network(
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
   SurfaceCellNetwork network;
   network.authoritativeRails = options.authoritativeRails;
-  network.sourceFaceComponents = options.sourceFaceComponents;
-  network.sourceFaceSheets = options.sourceFaceSheets;
   network.reliefRootVertices = options.reliefRootVertices;
   network.reliefRegionLabels = options.reliefRegionLabels;
   network.reliefBarrierEdges = options.reliefBarrierEdges;
+  network.sourceTopologyRegions =
+      surface_cell_tracing_detail::build_source_topology_regions(faces, options);
+  if (!network.sourceTopologyRegions.has_value()) {
+    SurfacePhaseFrontFailure failure;
+    failure.reason = SurfacePhaseFrontFailureReason::InvalidTopologyRegion;
+    network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+    return network;
+  }
+  SurfaceCellTracingOptions authoritativeOptions = options;
+  authoritativeOptions.sourceFaceComponents.clear();
+  authoritativeOptions.sourceFaceSheets.clear();
+  authoritativeOptions.sourceAuthority = &*network.sourceTopologyRegions;
   network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
       surface_cell_tracing_detail::build_uniform_phase_front_state(
-          vertices, faces, faceAxisX, faceAxisY, targetSize, options,
+          vertices, faces, faceAxisX, faceAxisY, targetSize,
+          *network.sourceTopologyRegions, authoritativeOptions,
           edgeMatching, edgeEffort, edgeTransitions));
   if (network.phaseFront.is_produced()) {
     const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
@@ -10020,17 +10064,17 @@ SurfaceCellNetwork build_surface_cell_network(
     return network;
   }
   network.seeds =
-      generate_deterministic_surface_seeds(vertices, faces, targetSize, options);
+      generate_deterministic_surface_seeds(vertices, faces, targetSize, authoritativeOptions);
   for (const SurfaceTraceSeed &seed : network.seeds) {
     for (int family = 0; family < 2; ++family) {
       for (const int sign : {-1, 1}) {
         network.traces.push_back(trace_surface_field(
-            vertices, faces, faceAxisX, faceAxisY, seed, family, sign, options,
+            vertices, faces, faceAxisX, faceAxisY, seed, family, sign, authoritativeOptions,
             edgeMatching, edgeEffort, edgeTransitions));
       }
     }
     SurfaceCellProposal proposal = make_surface_cell_proposal(
-        vertices, faces, faceAxisX, faceAxisY, targetSize, seed, options,
+        vertices, faces, faceAxisX, faceAxisY, targetSize, seed, authoritativeOptions,
         edgeMatching, edgeEffort, edgeTransitions);
     ++network.stats.attempted;
     switch (proposal.rejection) {

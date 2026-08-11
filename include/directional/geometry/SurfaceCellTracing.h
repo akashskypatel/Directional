@@ -703,8 +703,11 @@ struct SurfaceCellTracingOptions {
   std::set<std::uint64_t> hardFeatureEdges;
   std::vector<SurfaceCellRail> authoritativeRails;
   bool followCompatibleHardFeatureRails = true;
+  // Raw classifier labels are ingress-only. Once SourceTopologyRegions is
+  // constructed, downstream semantic consumers use sourceAuthority instead.
   std::vector<int> sourceFaceComponents;
   std::vector<int> sourceFaceSheets;
+  const SourceTopologyRegions *sourceAuthority = nullptr;
   SurfaceGuidePotential guidePotential;
 };
 
@@ -716,8 +719,7 @@ struct SurfaceCellNetwork {
   SurfaceSingularitySeparatrixStats singularSeparatrixStats;
   std::vector<SurfaceCellProposal> proposals;
   std::vector<SurfaceCellRail> authoritativeRails;
-  std::vector<int> sourceFaceComponents;
-  std::vector<int> sourceFaceSheets;
+  std::optional<SourceTopologyRegions> sourceTopologyRegions;
   std::vector<int> reliefRootVertices;
   Eigen::VectorXi reliefRegionLabels;
   std::set<std::uint64_t> reliefBarrierEdges;

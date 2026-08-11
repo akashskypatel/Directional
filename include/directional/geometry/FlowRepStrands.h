@@ -86,8 +86,8 @@ struct FlowRepArc {
   bool endIntrinsicEndpointKeyValid = false;
   std::uint64_t startIntrinsicEndpointKey = 0U;
   std::uint64_t endIntrinsicEndpointKey = 0U;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  std::optional<authority::IsolationSheetId> sourceIsolationSheet;
   int family = 0;
   int featureClass = 0;
   bool mandatoryRail = false;
@@ -127,8 +127,8 @@ struct FlowRepCoverageSample {
   Eigen::RowVector3d position = Eigen::RowVector3d::Zero();
   int sourceFace = -1;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  std::optional<authority::IsolationSheetId> sourceIsolationSheet;
   double targetSize = 0.0;
   int sourceArcId = -1;
 };
@@ -447,7 +447,7 @@ struct FlowRepLogicalStrandKey {
   int primary = -1;
   int secondary = -1;
   int family = 0;
-  int sourceComponent = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
 
   auto operator<=>(const FlowRepLogicalStrandKey &) const = default;
 };
