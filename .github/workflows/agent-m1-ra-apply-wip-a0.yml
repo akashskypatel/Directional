@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m1-ra-wip-a2.txt
+      - .agents/connector-triggers/m1-ra-wip-a3.txt
 
 permissions:
   contents: write
@@ -25,7 +25,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           : > "$LOG"
           {
-            echo "task=M1 R-A WIP A2 source patch"
+            echo "task=M1 R-A WIP A3 phase-front materializer"
             echo "event=$GITHUB_EVENT_NAME"
             echo "ref=$GITHUB_REF"
             echo "sha=$GITHUB_SHA"
@@ -50,10 +50,10 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git --version
 
-          PATCH="$RUNNER_TEMP/m1-ra-wip-a2.patch"
-          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a2.patch.gz.b64 | gzip -dc > "$PATCH"
+          PATCH="$RUNNER_TEMP/m1-ra-wip-a3.patch"
+          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a3.patch.gz.b64 | gzip -dc > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "382bcf151add3246dfddb13c5ba8ff9b5eb371e846932aa294c3aa5cb0040386"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "afd5d54d9bd792f036f95555a448be95fe26f974be315dfb6044439850c5c3d9"
           if grep -E '^diff --git a/\.github/workflows/' "$PATCH"; then
             echo "workflow path found in patch" >&2
             exit 1
@@ -62,7 +62,7 @@ jobs:
           git apply --check "$PATCH"
           git apply "$PATCH"
           git diff --check
-          git add src/geometry/SurfaceCellTracing.cpp
+          git add src/pipeline/RemeshPipeline.cpp
           echo "staged_paths_begin"
           git diff --cached --name-only
           echo "staged_paths_end"
@@ -70,7 +70,7 @@ jobs:
 
           git config user.name "directional-agent"
           git config user.email "directional-agent@users.noreply.github.com"
-          git commit -m "wip(m1): derive isolation seam certificates from authority product"
+          git commit -m "wip(m1): derive phase-front materializer authority from region product"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "pushed_head=$(git rev-parse HEAD)"
 
@@ -78,7 +78,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-ra-wip-a2-log-${{ github.run_id }}
+          name: m1-ra-wip-a3-log-${{ github.run_id }}
           path: ${{ runner.temp }}/activity.log
           if-no-files-found: error
           retention-days: 7
