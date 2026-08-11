@@ -1,0 +1,99 @@
+name: Agent M1 R-A Compile
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m1-ra-compile.txt]
+
+permissions: {contents: read}
+concurrency: {group: agent-m1-ra-compile, cancel-in-progress: false}
+
+env:
+  SOURCE_SHA: 6b8530fc4793bb3e2e3a9e766e0bbc9451069b47
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; : > "$LOG"
+          { echo "task=M1 R-A compile-only gate"; echo "event_sha=$GITHUB_SHA"; echo "source_sha=$SOURCE_SHA"; date -u +"utc=%Y-%m-%dT%H:%M:%SZ"; } | tee -a "$LOG"
+      - name: Checkout exact source commit and shallow submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 1
+          submodules: recursive
+      - name: Configure compile-only build
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          trap 'rc=$?; echo "configure_exit=$rc"; git status --short || true; exit $rc' EXIT
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          cmake --version; ninja --version; c++ --version
+          cmake -S . -B build-m1-ra -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
+            -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST
+      - name: Compile and link affected targets only
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          trap 'rc=$?; echo "build_exit=$rc"; echo "checked_out=$(git rev-parse HEAD)"; git status --short || true; exit $rc' EXIT
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          cmake --build build-m1-ra --target \
+            directional_core \
+            directional_pipeline \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_compiled_api_tests \
+            directional_benchmarks \
+            -- -j2
+          echo "No generated Directional binary, test, benchmark, discovery/listing, ctest, CLI/help/version, fuzzer, or custom input was executed."
+      - name: Package compile evidence
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          OUT="$RUNNER_TEMP/result"; mkdir -p "$OUT/metadata"
+          git rev-parse HEAD > "$OUT/metadata/source-commit.txt"
+          git status --porcelain=v1 > "$OUT/metadata/source-status.txt"
+          git archive --format=tar HEAD -o "$OUT/source.tar"
+          cp build-m1-ra/CMakeCache.txt "$OUT/metadata/CMakeCache.txt"
+          find build-m1-ra -maxdepth 1 -type f \( -name 'libdirectional_*.a' -o -name 'directional_*tests' -o -name 'directional_benchmarks' \) -exec cp -t "$OUT" {} +
+          (cd "$OUT" && find . -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+      - name: Upload compile result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-compile-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/result
+          if-no-files-found: error
+          retention-days: 7
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-compile-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
