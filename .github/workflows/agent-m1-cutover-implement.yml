@@ -1,0 +1,119 @@
+name: Agent M1 Cutover Implement
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1-cutover-implement.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1-cutover-implement
+  cancel-in-progress: false
+
+jobs:
+  implement-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$RUNNER_TEMP/m1-cutover"
+          LOG="$RUNNER_TEMP/m1-cutover/activity.log"
+          {
+            echo "M1 cutover implementation start: $(date -u +%FT%TZ)"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "ref=${GITHUB_REF}"
+            echo "trigger_sha=${GITHUB_SHA}"
+            echo "runner=${RUNNER_OS}/${RUNNER_ARCH}"
+          } | tee "$LOG"
+
+      - name: Checkout exact trigger commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: recursive
+
+      - name: Apply cutover codemod and push implementation checkpoint
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$RUNNER_TEMP/m1-cutover/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA" || exit 91
+          echo "[cutover] applying deterministic source codemod"
+          python3 .agents/Directional/turn-payloads/m1_single_authority_cutover.py
+          git diff --check
+          echo "[cutover] banned adapter audit"
+          if git grep -n -E -- 'LegacyAuthorityAdapters|to_legacy_index|NegativeLegacyValue|OutOfRangeLegacyValue|legacyValue' -- include src tests CMakeLists.txt cmake; then
+            echo "[cutover] obsolete adapter/domain terminology remains"
+            exit 92
+          fi
+          git status --short
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "[cutover] no changes produced"
+            exit 93
+          fi
+          git config user.name "Directional Coding Agent"
+          git config user.email "actions@users.noreply.github.com"
+          git add include src tests CMakeLists.txt cmake
+          git commit -m "refactor(authority): cut over direct semantic ID ingress"
+          IMPLEMENTATION_SHA=$(git rev-parse HEAD)
+          echo "implementation_sha=$IMPLEMENTATION_SHA" | tee "$RUNNER_TEMP/m1-cutover/implementation.txt"
+          git push origin "HEAD:agent/surface_cell_quad/p5-recover-bridge-healing"
+
+      - name: Configure compile-only build
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$RUNNER_TEMP/m1-cutover/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          echo "[cutover] configure Release/static/Ninja/PRE_TEST"
+          cmake -S . -B build-m1-cutover -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF
+
+      - name: Compile and link approved targets only
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$RUNNER_TEMP/m1-cutover/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          echo "[cutover] compile-only; no generated binary execution"
+          /usr/bin/time -v cmake --build build-m1-cutover --parallel 2 --target \
+            directional_core \
+            directional_pipeline \
+            directional_compiled_api_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_oracle_tests \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_benchmarks
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-cutover-implement-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m1-cutover
+          if-no-files-found: error
+          retention-days: 7
