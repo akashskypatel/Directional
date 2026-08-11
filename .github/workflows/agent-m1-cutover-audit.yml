@@ -78,11 +78,20 @@ jobs:
           git grep -n -E -- 'NegativeLegacyValue|OutOfRangeLegacyValue|legacyValue' -- include src tests || true
           echo "M1 source audit end: $(date -u +%FT%TZ)"
 
-      - name: Upload persistent activity log
+      - name: Export exact audited source
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          LOG="$RUNNER_TEMP/m1-audit/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          git archive --format=tar.gz --output="$RUNNER_TEMP/m1-audit/source.tar.gz" "$GITHUB_SHA"
+          sha256sum "$RUNNER_TEMP/m1-audit/source.tar.gz" | tee "$RUNNER_TEMP/m1-audit/source.sha256"
+
+      - name: Upload persistent audit evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-cutover-source-audit-log-${{ github.run_id }}
-          path: ${{ runner.temp }}/m1-audit/activity.log
+          name: m1-cutover-source-audit-${{ github.run_id }}
+          path: ${{ runner.temp }}/m1-audit
           if-no-files-found: error
           retention-days: 7
