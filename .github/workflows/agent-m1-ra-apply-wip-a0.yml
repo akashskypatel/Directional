@@ -3,7 +3,7 @@ name: Agent M1 R-A Apply WIP
 on:
   push:
     branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
-    paths: [.agents/connector-triggers/m1-ra-wip-a28.txt]
+    paths: [.agents/connector-triggers/m1-ra-wip-a29.txt]
 
 permissions: {contents: write}
 concurrency: {group: agent-m1-ra-apply-wip, cancel-in-progress: false}
@@ -17,7 +17,7 @@ jobs:
         run: |
           set -euo pipefail
           LOG="$RUNNER_TEMP/activity.log"; : > "$LOG"
-          { echo "task=M1 R-A WIP A28 migrate FlowRep tests to typed source authority"; echo "ref=$GITHUB_REF"; echo "sha=$GITHUB_SHA"; date -u +"utc=%Y-%m-%dT%H:%M:%SZ"; } | tee -a "$LOG"
+          { echo "task=M1 R-A WIP A29 migrate PatchDescriptor tests to typed source authority"; echo "ref=$GITHUB_REF"; echo "sha=$GITHUB_SHA"; date -u +"utc=%Y-%m-%dT%H:%M:%SZ"; } | tee -a "$LOG"
       - name: Checkout triggering commit
         uses: actions/checkout@v4
         with: {fetch-depth: 1}
@@ -28,26 +28,26 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "exit_code=$rc"; echo "final_head=$(git rev-parse HEAD 2>/dev/null || true)"; git status --short 2>/dev/null || true; exit $rc' EXIT
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          PATCH="$RUNNER_TEMP/a28.patch"
-          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a28.patch.gz.b64 | gzip -dc > "$PATCH"
+          PATCH="$RUNNER_TEMP/a29.patch"
+          base64 -d .agents/Directional/turn-payloads/m1-ra-wip-a29.patch.gz.b64 | gzip -dc > "$PATCH"
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "9ff720b86309074c04d029112862258f78859217c4ad71618e85ec5e9f45e9a2"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "89cae27120feeef3d05b605e865c174702851323aa129feb8a9913a471f8d629"
           ! grep -E '^diff --git a/\.github/workflows/' "$PATCH"
           git apply --check "$PATCH"
           git apply "$PATCH"
           git diff --check
-          git add tests/FlowRepStrandsPhase15Tests.cpp
+          git add tests/PatchDescriptorMilestoneETests.cpp
           test "$(git diff --cached --name-only | wc -l)" -eq 1
           git config user.name directional-agent
           git config user.email directional-agent@users.noreply.github.com
-          git commit -m "wip(m1): migrate FlowRep tests to typed source authority"
+          git commit -m "wip(m1): migrate PatchDescriptor tests to typed source authority"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "pushed_head=$(git rev-parse HEAD)"
       - name: Upload activity log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: "m1-ra-wip-a28-log-${{ github.run_id }}"
+          name: "m1-ra-wip-a29-log-${{ github.run_id }}"
           path: "${{ runner.temp }}/activity.log"
           if-no-files-found: error
           retention-days: 7
