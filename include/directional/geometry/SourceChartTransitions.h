@@ -14,7 +14,6 @@
 #include <array>
 #include <cmath>
 #include <cstdint>
-#include <limits>
 #include <map>
 #include <numeric>
 #include <optional>
@@ -26,6 +25,7 @@
 
 #include <Eigen/Core>
 
+#include <directional/geometry/SourceTopologyRegions.h>
 #include <directional/geometry/SurfaceCellOwnership.h>
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/geometry/SurfacePointSupport.h>
@@ -39,33 +39,50 @@ enum class SourceEntityKind : int {
   FaceInterior = 3,
 };
 
-struct SourceEntityId {
-  SourceEntityKind kind = SourceEntityKind::Invalid;
-  int component = -1;
-  int firstSourceIndex = -1;
-  int secondSourceIndex = -1;
-  int intrinsicFan = -1;
+[[nodiscard]] inline SourceEntityKind
+source_entity_kind(const authority::SourceSupport &support) {
+  switch (authority::support_kind(support)) {
+  case authority::SourceSupportKind::Vertex:
+    return SourceEntityKind::SourceVertex;
+  case authority::SourceSupportKind::Edge:
+    return SourceEntityKind::SourceEdge;
+  case authority::SourceSupportKind::FaceInterior:
+    return SourceEntityKind::FaceInterior;
+  }
+  return SourceEntityKind::Invalid;
+}
+
+/**
+ * Resolved source-entity authority.
+ *
+ * Source support and projection chart are typed authority. A vertex-fan id is
+ * present only when the same source vertex has more than one intrinsic fan.
+ * canonical is a deterministic derived representation for hashing/sorting; it
+ * is never read back as source authority.
+ */
+struct ResolvedSourceEntity {
+  authority::SourceSupport support;
+  SourceProjectionChart chart;
+  std::optional<authority::SourceVertexFanId> vertexFan;
   SurfaceCellCanonicalIdentity canonical;
 
-  [[nodiscard]] bool valid() const {
-    return kind != SourceEntityKind::Invalid && component >= 0 &&
-           firstSourceIndex >= 0 && intrinsicFan >= 0 && canonical.valid;
-  }
+  ResolvedSourceEntity(authority::SourceSupport sourceSupport,
+                       SourceProjectionChart projectionChart,
+                       std::optional<authority::SourceVertexFanId> fan,
+                       SurfaceCellCanonicalIdentity derivedCanonical)
+      : support(std::move(sourceSupport)), chart(std::move(projectionChart)),
+        vertexFan(fan), canonical(std::move(derivedCanonical)) {}
 
-  friend bool operator==(const SourceEntityId &lhs,
-                         const SourceEntityId &rhs) {
-    return lhs.kind == rhs.kind && lhs.component == rhs.component &&
-           lhs.firstSourceIndex == rhs.firstSourceIndex &&
-           lhs.secondSourceIndex == rhs.secondSourceIndex &&
-           lhs.intrinsicFan == rhs.intrinsicFan &&
-           lhs.canonical == rhs.canonical;
+  [[nodiscard]] bool valid() const noexcept { return canonical.valid; }
+  [[nodiscard]] SourceEntityKind kind() const {
+    return source_entity_kind(support);
   }
 };
 
 struct SourceChartTransition {
   SourceProjectionChart from;
   SourceProjectionChart to;
-  SourceEntityId sharedEntity;
+  authority::SourceEdgeSupport sharedEntity;
   // +1 preserves the canonical source-edge endpoint order, -1 reverses it.
   int orientation = 1;
   std::array<int, 3> fromCornerToTarget{{-1, -1, -1}};
@@ -73,33 +90,34 @@ struct SourceChartTransition {
   std::uint64_t structuralHash = 0U;
 
   SourceChartTransition(SourceProjectionChart source,
-                        SourceProjectionChart target)
-      : from(std::move(source)), to(std::move(target)) {}
+                        SourceProjectionChart target,
+                        authority::SourceEdgeSupport shared)
+      : from(std::move(source)), to(std::move(target)),
+        sharedEntity(std::move(shared)) {}
 
   [[nodiscard]] bool valid() const {
-    return sharedEntity.valid() && (orientation == 1 || orientation == -1);
+    return orientation == 1 || orientation == -1;
   }
 };
 
 /**
  * Canonical source-chart transition graph.
  *
- * Connectivity is derived only from exact source topology, source-component
- * labels, and hard-edge barriers. World-space proximity and source-triangle
- * pairing never participate. Local-sheet labels remain in chart identity,
- * provenance, and hashes, but do not split an otherwise admissible exact
- * manifold transition within one source component.
+ * Connectivity is derived only from exact source topology, the published
+ * SourceTopologyRegions product, and hard-edge barriers. World-space
+ * proximity and raw classifier arrays never participate. SurfacePoint's raw
+ * component/sheet fields are representation leaves and are never trusted as
+ * source authority by this graph.
  */
 class SourceChartTransitionGraph {
 public:
   SourceChartTransitionGraph(
       const Eigen::MatrixXi *sourceFaces,
-      const std::vector<int> *sourceFaceComponents,
-      const std::vector<int> *sourceFaceSheets,
+      const SourceTopologyRegions *sourceAuthority,
       const std::set<std::uint64_t> *hardFeatureEdges = nullptr,
       const double barycentricTolerance = 1.0e-8)
-      : faces_(sourceFaces), components_(sourceFaceComponents),
-        sheets_(sourceFaceSheets), hardFeatureEdges_(hardFeatureEdges),
+      : faces_(sourceFaces), authority_(sourceAuthority),
+        hardFeatureEdges_(hardFeatureEdges),
         supportResolver_(sourceFaces, barycentricTolerance),
         barycentricTolerance_(std::max(0.0, barycentricTolerance)) {
     build();
@@ -107,21 +125,18 @@ public:
 
   SourceChartTransitionGraph(
       const Eigen::MatrixXi &sourceFaces,
-      const std::vector<int> &sourceFaceComponents,
-      const std::vector<int> &sourceFaceSheets,
+      const SourceTopologyRegions &sourceAuthority,
       const std::set<std::uint64_t> *hardFeatureEdges = nullptr,
       const double barycentricTolerance = 1.0e-8)
-      : SourceChartTransitionGraph(&sourceFaces, &sourceFaceComponents,
-                                   &sourceFaceSheets, hardFeatureEdges,
-                                   barycentricTolerance) {}
+      : SourceChartTransitionGraph(&sourceFaces, &sourceAuthority,
+                                   hardFeatureEdges, barycentricTolerance) {}
 
   [[nodiscard]] bool available() const {
-    return faces_ != nullptr && faces_->cols() == 3 && components_ != nullptr &&
-           sheets_ != nullptr &&
-           components_->size() == static_cast<std::size_t>(faces_->rows()) &&
-           sheets_->size() == static_cast<std::size_t>(faces_->rows()) &&
+    return faces_ != nullptr && faces_->cols() == 3 && authority_ != nullptr &&
+           authority_->complete_for_face_count(
+               static_cast<std::size_t>(faces_->rows())) &&
            consistent_ && faceChartComponent_.size() ==
-               static_cast<std::size_t>(faces_->rows());
+                              static_cast<std::size_t>(faces_->rows());
   }
 
   [[nodiscard]] std::optional<SourceProjectionChart>
@@ -131,9 +146,8 @@ public:
         !faceFieldChart_[static_cast<std::size_t>(sourceFace)].has_value()) {
       return std::nullopt;
     }
-    const auto faceId = authority::SourceFaceId::from_index(
-        sourceFace, static_cast<std::size_t>(faces_->rows()));
-    if (!faceId) {
+    const auto faceId = source_face_id(sourceFace);
+    if (!faceId.has_value()) {
       return std::nullopt;
     }
     return SourceProjectionChart(
@@ -150,8 +164,8 @@ public:
   }
 
   [[nodiscard]] int chart_component(const SourceProjectionChart &value) const {
-    if (!available() || value.face.index() >=
-                            static_cast<std::size_t>(faces_->rows())) {
+    if (!available() ||
+        value.face.index() >= static_cast<std::size_t>(faces_->rows())) {
       return -1;
     }
     const int sourceFace = static_cast<int>(value.face.index());
@@ -164,30 +178,26 @@ public:
 
   [[nodiscard]] std::optional<authority::SourceComponentId>
   source_component(const SourceProjectionChart &value) const {
-    const int component = chart_component(value);
-    if (component < 0) {
+    if (chart_component(value) < 0 || authority_ == nullptr) {
       return std::nullopt;
     }
-    const int sourceFace = static_cast<int>(value.face.index());
-    const int raw = (*components_)[static_cast<std::size_t>(sourceFace)];
-    const std::size_t extent = label_extent(*components_);
-    const auto id = authority::SourceComponentId::from_index(raw, extent);
-    return id ? std::optional<authority::SourceComponentId>(id.value())
-              : std::nullopt;
+    return authority_->component_for_row(value.face);
   }
 
   [[nodiscard]] std::optional<authority::IsolationSheetId>
   isolation_sheet(const SourceProjectionChart &value) const {
-    const int component = chart_component(value);
-    if (component < 0) {
+    if (chart_component(value) < 0 || authority_ == nullptr) {
       return std::nullopt;
     }
-    const int sourceFace = static_cast<int>(value.face.index());
-    const int raw = (*sheets_)[static_cast<std::size_t>(sourceFace)];
-    const std::size_t extent = label_extent(*sheets_);
-    const auto id = authority::IsolationSheetId::from_index(raw, extent);
-    return id ? std::optional<authority::IsolationSheetId>(id.value())
-              : std::nullopt;
+    return authority_->sheet_for_row(value.face);
+  }
+
+  [[nodiscard]] std::optional<authority::TopologyRegionId>
+  topology_region(const SourceProjectionChart &value) const {
+    if (chart_component(value) < 0 || authority_ == nullptr) {
+      return std::nullopt;
+    }
+    return authority_->region_for_row(value.face);
   }
 
   [[nodiscard]] bool same_chart_component(const SourceProjectionChart &first,
@@ -210,8 +220,8 @@ public:
   [[nodiscard]] const SurfaceCellCanonicalIdentity &chart_component_identity(
       const int componentOrdinal) const {
     static const SurfaceCellCanonicalIdentity invalid;
-    if (componentOrdinal < 0 || componentOrdinal >=
-                                    static_cast<int>(chartComponentIdentity_.size())) {
+    if (componentOrdinal < 0 ||
+        componentOrdinal >= static_cast<int>(chartComponentIdentity_.size())) {
       return invalid;
     }
     return chartComponentIdentity_[static_cast<std::size_t>(componentOrdinal)];
@@ -227,70 +237,63 @@ public:
            hardFeatureEdges_->count(edge_key(firstVertex, secondVertex)) != 0U;
   }
 
-  [[nodiscard]] SourceEntityId resolve_entity(const SurfacePoint &point) const {
-    SourceEntityId entity;
+  [[nodiscard]] std::optional<ResolvedSourceEntity>
+  resolve_entity(const SurfacePoint &point) const {
     if (!available() || point.face < 0 || point.face >= faces_->rows()) {
-      return entity;
+      return std::nullopt;
     }
     const auto sourceChart = chart(point.face);
-    if (!sourceChart.has_value() ||
-        (point.component >= 0 &&
-         point.component != (*components_)[static_cast<std::size_t>(point.face)]) ||
-        (point.sheet >= 0 &&
-         point.sheet != (*sheets_)[static_cast<std::size_t>(point.face)])) {
-      return entity;
+    if (!sourceChart.has_value()) {
+      return std::nullopt;
     }
-    const SurfacePointSourceSupport support = supportResolver_.resolve(point);
-    if (!support.valid()) {
-      return entity;
+    const SurfacePointSourceSupport resolved = supportResolver_.resolve(point);
+    if (!resolved.valid()) {
+      return std::nullopt;
     }
-    entity.component = (*components_)[static_cast<std::size_t>(point.face)];
-    const int chartComponent = chart_component(point.face);
+    const authority::SourceSupport &support = resolved.identity.value();
+    const auto component = source_component(sourceChart.value());
+    if (!component.has_value()) {
+      return std::nullopt;
+    }
+
+    SurfaceCellCanonicalIdentity canonical;
+    std::optional<authority::SourceVertexFanId> vertexFan;
     if (const auto *faceSupport =
-            std::get_if<authority::SourceFaceInteriorSupport>(
-                &support.identity.value())) {
-      entity.kind = SourceEntityKind::FaceInterior;
-      entity.firstSourceIndex =
-          static_cast<int>(faceSupport->face.index());
-      entity.intrinsicFan = chartComponent;
-      entity.canonical = face_identity(entity.firstSourceIndex, chartComponent);
-      return entity;
-    }
-    if (const auto *edgeSupport =
-            std::get_if<authority::SourceEdgeSupport>(
-                &support.identity.value())) {
-      entity.kind = SourceEntityKind::SourceEdge;
-      entity.firstSourceIndex =
-          static_cast<int>(edgeSupport->edge.first().index());
-      entity.secondSourceIndex =
-          static_cast<int>(edgeSupport->edge.second().index());
-      entity.intrinsicFan = chartComponent;
-      entity.canonical.valid = chartComponent >= 0;
-      entity.canonical.values = {
+            std::get_if<authority::SourceFaceInteriorSupport>(&support)) {
+      canonical = face_identity(
+          static_cast<int>(faceSupport->face.index()),
+          sourceChart->chart);
+    } else if (const auto *edgeSupport =
+                   std::get_if<authority::SourceEdgeSupport>(&support)) {
+      canonical.valid = true;
+      canonical.values = {
           static_cast<std::int64_t>(SourceEntityKind::SourceEdge),
-          entity.component, entity.firstSourceIndex, entity.secondSourceIndex,
-          chartComponent};
-      return entity;
-    }
-    if (const auto *vertexSupport =
-            std::get_if<authority::SourceVertexSupport>(
-                &support.identity.value())) {
-      const int sourceVertex =
-          static_cast<int>(vertexSupport->vertex.index());
-      const auto found = vertexFanOrdinal_.find({point.face, sourceVertex});
-      if (found == vertexFanOrdinal_.end()) {
-        return {};
+          static_cast<std::int64_t>(component->index()),
+          static_cast<std::int64_t>(edgeSupport->edge.first().index()),
+          static_cast<std::int64_t>(edgeSupport->edge.second().index()),
+          static_cast<std::int64_t>(sourceChart->chart.index())};
+    } else if (const auto *vertexSupport =
+                   std::get_if<authority::SourceVertexSupport>(&support)) {
+      const int sourceVertex = static_cast<int>(vertexSupport->vertex.index());
+      const auto found = vertexFan_.find({point.face, sourceVertex});
+      if (found == vertexFan_.end()) {
+        return std::nullopt;
       }
-      entity.kind = SourceEntityKind::SourceVertex;
-      entity.firstSourceIndex = sourceVertex;
-      entity.intrinsicFan = found->second;
-      entity.canonical.valid = true;
-      entity.canonical.values = {
+      vertexFan = found->second;
+      canonical.valid = true;
+      canonical.values = {
           static_cast<std::int64_t>(SourceEntityKind::SourceVertex),
-          entity.component, sourceVertex, entity.intrinsicFan};
-      return entity;
+          static_cast<std::int64_t>(component->index()),
+          static_cast<std::int64_t>(vertexSupport->vertex.index()),
+          static_cast<std::int64_t>(vertexFan->index())};
+    } else {
+      return std::nullopt;
     }
-    return {};
+    if (!canonical.valid) {
+      return std::nullopt;
+    }
+    return ResolvedSourceEntity(support, sourceChart.value(), vertexFan,
+                                std::move(canonical));
   }
 
   /** Re-express an edge/vertex SurfacePoint in another exact chart. */
@@ -300,47 +303,57 @@ public:
     if (!available() || targetFace < 0 || targetFace >= faces_->rows()) {
       return false;
     }
-    const SourceEntityId sourceEntity = resolve_entity(point);
-    if (!sourceEntity.valid()) {
+    const auto sourceEntity = resolve_entity(point);
+    if (!sourceEntity.has_value()) {
       return false;
     }
     const auto targetChart = chart(targetFace);
-    if (!targetChart.has_value() ||
-        (*components_)[static_cast<std::size_t>(targetFace)] !=
-            sourceEntity.component) {
+    if (!targetChart.has_value()) {
+      return false;
+    }
+    const auto sourceComponent = source_component(sourceEntity->chart);
+    const auto targetComponent = source_component(targetChart.value());
+    if (!sourceComponent.has_value() || !targetComponent.has_value() ||
+        sourceComponent.value() != targetComponent.value()) {
       return false;
     }
 
     Eigen::Vector3d targetBarycentric = Eigen::Vector3d::Zero();
-    if (sourceEntity.kind == SourceEntityKind::FaceInterior) {
-      if (targetFace != point.face) {
+    if (const auto *faceSupport =
+            std::get_if<authority::SourceFaceInteriorSupport>(
+                &sourceEntity->support)) {
+      if (targetFace != static_cast<int>(faceSupport->face.index())) {
         return false;
       }
       targetBarycentric = point.barycentric;
-    } else if (sourceEntity.kind == SourceEntityKind::SourceVertex) {
-      const auto fan = vertexFanOrdinal_.find(
-          {targetFace, sourceEntity.firstSourceIndex});
-      if (fan == vertexFanOrdinal_.end() || fan->second != sourceEntity.intrinsicFan) {
+    } else if (const auto *vertexSupport =
+                   std::get_if<authority::SourceVertexSupport>(
+                       &sourceEntity->support)) {
+      const int sourceVertex = static_cast<int>(vertexSupport->vertex.index());
+      const auto fan = vertexFan_.find({targetFace, sourceVertex});
+      if (fan == vertexFan_.end() || !sourceEntity->vertexFan.has_value() ||
+          fan->second != sourceEntity->vertexFan.value()) {
         return false;
       }
-      const int targetCorner =
-          face_corner(targetFace, sourceEntity.firstSourceIndex);
+      const int targetCorner = face_corner(targetFace, sourceVertex);
       if (targetCorner < 0) {
         return false;
       }
       targetBarycentric(targetCorner) = 1.0;
-    } else if (sourceEntity.kind == SourceEntityKind::SourceEdge) {
-      if (chart_component(targetFace) != sourceEntity.intrinsicFan) {
+    } else if (const auto *edgeSupport =
+                   std::get_if<authority::SourceEdgeSupport>(
+                       &sourceEntity->support)) {
+      if (targetChart->chart != sourceEntity->chart.chart) {
         return false;
       }
-      const int sourceFirstCorner =
-          face_corner(point.face, sourceEntity.firstSourceIndex);
-      const int sourceSecondCorner =
-          face_corner(point.face, sourceEntity.secondSourceIndex);
-      const int targetFirstCorner =
-          face_corner(targetFace, sourceEntity.firstSourceIndex);
-      const int targetSecondCorner =
-          face_corner(targetFace, sourceEntity.secondSourceIndex);
+      const int firstSourceVertex =
+          static_cast<int>(edgeSupport->edge.first().index());
+      const int secondSourceVertex =
+          static_cast<int>(edgeSupport->edge.second().index());
+      const int sourceFirstCorner = face_corner(point.face, firstSourceVertex);
+      const int sourceSecondCorner = face_corner(point.face, secondSourceVertex);
+      const int targetFirstCorner = face_corner(targetFace, firstSourceVertex);
+      const int targetSecondCorner = face_corner(targetFace, secondSourceVertex);
       if (sourceFirstCorner < 0 || sourceSecondCorner < 0 ||
           targetFirstCorner < 0 || targetSecondCorner < 0) {
         return false;
@@ -364,8 +377,12 @@ public:
     }
     rebound = point;
     rebound.face = targetFace;
-    rebound.component = (*components_)[static_cast<std::size_t>(targetFace)];
-    rebound.sheet = (*sheets_)[static_cast<std::size_t>(targetFace)];
+    rebound.component = static_cast<int>(targetComponent->index());
+    const auto targetSheet = isolation_sheet(targetChart.value());
+    if (!targetSheet.has_value()) {
+      return false;
+    }
+    rebound.sheet = static_cast<int>(targetSheet->index());
     rebound.barycentric = targetBarycentric;
     return true;
   }
@@ -430,24 +447,23 @@ private:
     int localEdge = -1;
   };
 
-  [[nodiscard]] static std::size_t label_extent(
-      const std::vector<int> &labels) {
-    if (labels.empty() ||
-        std::any_of(labels.begin(), labels.end(),
-                    [](const int value) { return value < 0; })) {
-      return 0U;
-    }
-    return static_cast<std::size_t>(
-               *std::max_element(labels.begin(), labels.end())) +
-           1U;
-  }
-
   [[nodiscard]] static std::uint64_t edge_key(const int first,
                                                const int second) {
     const auto low = static_cast<std::uint32_t>(std::min(first, second));
     const auto high = static_cast<std::uint32_t>(std::max(first, second));
     return (static_cast<std::uint64_t>(low) << 32U) |
            static_cast<std::uint64_t>(high);
+  }
+
+  [[nodiscard]] std::optional<authority::SourceFaceId>
+  source_face_id(const int face) const {
+    if (faces_ == nullptr || face < 0 || face >= faces_->rows()) {
+      return std::nullopt;
+    }
+    const auto id = authority::SourceFaceId::from_index(
+        face, static_cast<std::size_t>(faces_->rows()));
+    return id ? std::optional<authority::SourceFaceId>(id.value())
+              : std::nullopt;
   }
 
   [[nodiscard]] int face_corner(const int face, const int sourceVertex) const {
@@ -463,57 +479,61 @@ private:
   }
 
   [[nodiscard]] SurfaceCellCanonicalIdentity
-  face_identity(const int face, const int componentOrdinal) const {
+  face_identity(const int face, const authority::FieldChartId chartId) const {
     SurfaceCellCanonicalIdentity identity;
-    if (!available() || face < 0 || face >= faces_->rows() ||
-        componentOrdinal < 0) {
+    const auto row = source_face_id(face);
+    if (!available() || !row.has_value() || authority_ == nullptr) {
       return identity;
     }
-    std::array<int, 3> vertices{{(*faces_)(face, 0), (*faces_)(face, 1),
-                                 (*faces_)(face, 2)}};
-    std::sort(vertices.begin(), vertices.end());
+    const auto component = authority_->component_for_row(row.value());
+    const auto &topology = authority_->topology_for_row(row.value());
+    const auto &vertices = topology.vertices();
     identity.valid = true;
     identity.values = {
         static_cast<std::int64_t>(SourceEntityKind::FaceInterior),
-        (*components_)[static_cast<std::size_t>(face)], vertices[0],
-        vertices[1], vertices[2], componentOrdinal};
+        static_cast<std::int64_t>(component.index()),
+        static_cast<std::int64_t>(vertices[0].index()),
+        static_cast<std::int64_t>(vertices[1].index()),
+        static_cast<std::int64_t>(vertices[2].index()),
+        static_cast<std::int64_t>(chartId.index())};
     return identity;
   }
 
   [[nodiscard]] SurfaceCellCanonicalIdentity
   component_membership_identity(const std::vector<int> &memberFaces) const {
     SurfaceCellCanonicalIdentity identity;
-    if (memberFaces.empty()) {
+    if (memberFaces.empty() || authority_ == nullptr) {
       return identity;
     }
     std::vector<std::array<std::int64_t, 5>> members;
     members.reserve(memberFaces.size());
     for (const int face : memberFaces) {
-      if (face < 0 || face >= faces_->rows()) {
+      const auto row = source_face_id(face);
+      if (!row.has_value()) {
         return {};
       }
-      std::array<int, 3> vertices{{(*faces_)(face, 0), (*faces_)(face, 1),
-                                   (*faces_)(face, 2)}};
-      std::sort(vertices.begin(), vertices.end());
-      members.push_back({(*components_)[static_cast<std::size_t>(face)],
-                         (*sheets_)[static_cast<std::size_t>(face)],
-                         vertices[0], vertices[1], vertices[2]});
+      const auto component = authority_->component_for_row(row.value());
+      const auto sheet = authority_->sheet_for_row(row.value());
+      const auto &vertices = authority_->topology_for_row(row.value()).vertices();
+      members.push_back({static_cast<std::int64_t>(component.index()),
+                         static_cast<std::int64_t>(sheet.index()),
+                         static_cast<std::int64_t>(vertices[0].index()),
+                         static_cast<std::int64_t>(vertices[1].index()),
+                         static_cast<std::int64_t>(vertices[2].index())});
     }
     std::sort(members.begin(), members.end());
     identity.valid = true;
     identity.values.push_back(static_cast<std::int64_t>(members.size()));
     for (const auto &member : members) {
-      identity.values.insert(identity.values.end(), member.begin(),
-                             member.end());
+      identity.values.insert(identity.values.end(), member.begin(), member.end());
     }
     return identity;
   }
 
   void build() {
-    if (faces_ == nullptr || faces_->cols() != 3 || components_ == nullptr ||
-        sheets_ == nullptr ||
-        components_->size() != static_cast<std::size_t>(faces_->rows()) ||
-        sheets_->size() != static_cast<std::size_t>(faces_->rows())) {
+    if (faces_ == nullptr || faces_->cols() != 3 || authority_ == nullptr ||
+        !authority_->complete_for_face_count(
+            static_cast<std::size_t>(faces_->rows()))) {
       return;
     }
 
@@ -534,6 +554,8 @@ private:
         edgeIncidence[edge_key(first, second)].push_back({face, corner});
       }
     }
+    const std::size_t vertexExtent =
+        static_cast<std::size_t>(std::max(0, maximumVertex + 1));
 
     std::vector<int> parent(static_cast<std::size_t>(faceCount));
     std::iota(parent.begin(), parent.end(), 0);
@@ -564,9 +586,14 @@ private:
     struct PendingTransition {
       int firstFace = -1;
       int secondFace = -1;
-      int lowVertex = -1;
-      int highVertex = -1;
+      authority::SourceEdgeTopologyKey edge;
       int orientation = 1;
+
+      PendingTransition(int first, int second,
+                        authority::SourceEdgeTopologyKey sourceEdge,
+                        int edgeOrientation)
+          : firstFace(first), secondFace(second), edge(std::move(sourceEdge)),
+            orientation(edgeOrientation) {}
     };
 
     std::vector<std::vector<int>> faceAdjacency(
@@ -574,38 +601,46 @@ private:
     std::vector<PendingTransition> pendingTransitions;
     for (const auto &[key, incident] : edgeIncidence) {
       if (incident.size() != 2U ||
-          (hardFeatureEdges_ != nullptr &&
-           hardFeatureEdges_->count(key) != 0U)) {
+          (hardFeatureEdges_ != nullptr && hardFeatureEdges_->count(key) != 0U)) {
         continue;
       }
       const int firstFace = incident[0].face;
       const int secondFace = incident[1].face;
-      if ((*components_)[static_cast<std::size_t>(firstFace)] !=
-          (*components_)[static_cast<std::size_t>(secondFace)]) {
+      const auto firstRow = source_face_id(firstFace);
+      const auto secondRow = source_face_id(secondFace);
+      if (!firstRow.has_value() || !secondRow.has_value() ||
+          authority_->component_for_row(firstRow.value()) !=
+              authority_->component_for_row(secondRow.value())) {
         continue;
       }
-      // Exact manifold topology, not a local projection-chart label, owns
-      // intrinsic adjacency. Local-sheet labels remain attached to each chart
-      // and still constrain non-topological capture and projection consumers.
       unite(firstFace, secondFace);
       faceAdjacency[static_cast<std::size_t>(firstFace)].push_back(secondFace);
       faceAdjacency[static_cast<std::size_t>(secondFace)].push_back(firstFace);
 
       const int lowVertex = static_cast<int>(key >> 32U);
       const int highVertex = static_cast<int>(key & 0xffffffffU);
+      const auto low = authority::SourceVertexId::from_index(lowVertex, vertexExtent);
+      const auto high = authority::SourceVertexId::from_index(highVertex, vertexExtent);
+      if (!low || !high) {
+        consistent_ = false;
+        return;
+      }
+      const auto edge = authority::SourceEdgeTopologyKey::make(
+          low.value(), high.value());
+      if (!edge) {
+        consistent_ = false;
+        return;
+      }
       const int orientation =
           edge_orientation(firstFace, secondFace, lowVertex, highVertex);
       if (orientation != -1) {
-        // An oriented manifold source must traverse a shared edge in opposite
-        // directions. Reject inconsistent chart composition before identity
-        // or output ownership can be committed.
         consistent_ = false;
         transitions_.clear();
         faceChartComponent_.clear();
         return;
       }
-      pendingTransitions.push_back(
-          {firstFace, secondFace, lowVertex, highVertex, orientation});
+      pendingTransitions.emplace_back(firstFace, secondFace, edge.value(),
+                                      orientation);
     }
 
     std::map<int, std::vector<int>> facesByRoot;
@@ -630,8 +665,7 @@ private:
               });
     faceChartComponent_.assign(static_cast<std::size_t>(faceCount), -1);
     faceFieldChart_.assign(static_cast<std::size_t>(faceCount), std::nullopt);
-    for (int ordinal = 0; ordinal < static_cast<int>(components.size());
-         ++ordinal) {
+    for (int ordinal = 0; ordinal < static_cast<int>(components.size()); ++ordinal) {
       const auto chartId = authority::FieldChartId::from_index(
           ordinal, components.size());
       if (!chartId) {
@@ -652,18 +686,13 @@ private:
 
     transitions_.reserve(2U * pendingTransitions.size());
     for (const PendingTransition &pending : pendingTransitions) {
-      SourceChartTransition forward(chart_unchecked(pending.firstFace),
-                                    chart_unchecked(pending.secondFace));
-      forward.sharedEntity.kind = SourceEntityKind::SourceEdge;
-      forward.sharedEntity.component =
-          (*components_)[static_cast<std::size_t>(pending.firstFace)];
-      forward.sharedEntity.firstSourceIndex = pending.lowVertex;
-      forward.sharedEntity.secondSourceIndex = pending.highVertex;
+      SourceChartTransition forward(
+          chart_unchecked(pending.firstFace), chart_unchecked(pending.secondFace),
+          authority::SourceEdgeSupport{pending.edge});
       forward.orientation = pending.orientation;
       for (int corner = 0; corner < 3; ++corner) {
         forward.fromCornerToTarget[static_cast<std::size_t>(corner)] =
-            face_corner(pending.secondFace,
-                        (*faces_)(pending.firstFace, corner));
+            face_corner(pending.secondFace, (*faces_)(pending.firstFace, corner));
       }
       transitions_.push_back(forward);
 
@@ -671,8 +700,7 @@ private:
       std::swap(reverse.from, reverse.to);
       for (int corner = 0; corner < 3; ++corner) {
         reverse.fromCornerToTarget[static_cast<std::size_t>(corner)] =
-            face_corner(pending.firstFace,
-                        (*faces_)(pending.secondFace, corner));
+            face_corner(pending.firstFace, (*faces_)(pending.secondFace, corner));
       }
       transitions_.push_back(reverse);
     }
@@ -689,8 +717,7 @@ private:
         }
       }
     }
-    for (int vertex = 0; vertex < static_cast<int>(incidentFaces.size());
-         ++vertex) {
+    for (int vertex = 0; vertex < static_cast<int>(incidentFaces.size()); ++vertex) {
       std::vector<int> faces = incidentFaces[static_cast<std::size_t>(vertex)];
       std::sort(faces.begin(), faces.end());
       faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
@@ -709,8 +736,7 @@ private:
           const int face = stack.back();
           stack.pop_back();
           fanFaces.push_back(face);
-          for (const int neighbor :
-               faceAdjacency[static_cast<std::size_t>(face)]) {
+          for (const int neighbor : faceAdjacency[static_cast<std::size_t>(face)]) {
             if (face_corner(neighbor, vertex) < 0 ||
                 unvisited.erase(neighbor) == 0U) {
               continue;
@@ -729,22 +755,20 @@ private:
                   return lhs.identity < rhs.identity;
                 });
       for (int ordinal = 0; ordinal < static_cast<int>(fans.size()); ++ordinal) {
+        const auto fanId = authority::SourceVertexFanId::from_index(
+            ordinal, fans.size());
+        if (!fanId) {
+          consistent_ = false;
+          vertexFan_.clear();
+          return;
+        }
         for (const int face : fans[static_cast<std::size_t>(ordinal)].faces) {
-          vertexFanOrdinal_[{face, vertex}] = ordinal;
+          vertexFan_.emplace(std::make_pair(face, vertex), fanId.value());
         }
       }
     }
 
     for (SourceChartTransition &transition : transitions_) {
-      const int sourceFace = static_cast<int>(transition.from.face.index());
-      transition.sharedEntity.intrinsicFan = chart_component(sourceFace);
-      transition.sharedEntity.canonical.valid = true;
-      transition.sharedEntity.canonical.values = {
-          static_cast<std::int64_t>(SourceEntityKind::SourceEdge),
-          transition.sharedEntity.component,
-          transition.sharedEntity.firstSourceIndex,
-          transition.sharedEntity.secondSourceIndex,
-          transition.sharedEntity.intrinsicFan};
       std::uint64_t hash = 1469598103934665603ULL;
       const auto mix = [&](const std::int64_t value) {
         hash ^= static_cast<std::uint64_t>(value);
@@ -755,27 +779,27 @@ private:
       mix(static_cast<std::int64_t>(transition.to.chart.index()));
       mix(static_cast<std::int64_t>(transition.to.face.index()));
       mix(transition.orientation);
-      mix(static_cast<std::int64_t>(transition.sharedEntity.canonical.hash()));
+      mix(static_cast<std::int64_t>(transition.sharedEntity.edge.first().index()));
+      mix(static_cast<std::int64_t>(transition.sharedEntity.edge.second().index()));
       transition.structuralHash = hash;
     }
     std::sort(transitions_.begin(), transitions_.end(),
               [](const SourceChartTransition &lhs,
                  const SourceChartTransition &rhs) {
-                return std::tie(lhs.from, lhs.to, lhs.sharedEntity.canonical,
+                return std::tie(lhs.from, lhs.to, lhs.sharedEntity.edge,
                                 lhs.orientation, lhs.fromCornerToTarget) <
-                       std::tie(rhs.from, rhs.to, rhs.sharedEntity.canonical,
+                       std::tie(rhs.from, rhs.to, rhs.sharedEntity.edge,
                                 rhs.orientation, rhs.fromCornerToTarget);
               });
   }
 
-  [[nodiscard]] SourceProjectionChart
-  chart_unchecked(const int sourceFace) const {
-    const auto faceId = authority::SourceFaceId::from_index(
-        sourceFace, static_cast<std::size_t>(faces_->rows()));
-    if (!faceId || sourceFace < 0 ||
+  [[nodiscard]] SourceProjectionChart chart_unchecked(const int sourceFace) const {
+    const auto faceId = source_face_id(sourceFace);
+    if (!faceId.has_value() || sourceFace < 0 ||
         sourceFace >= static_cast<int>(faceFieldChart_.size()) ||
         !faceFieldChart_[static_cast<std::size_t>(sourceFace)].has_value()) {
-      throw std::logic_error("Source projection chart requested before publication");
+      throw std::logic_error(
+          "Source projection chart requested before publication");
     }
     return SourceProjectionChart(
         faceFieldChart_[static_cast<std::size_t>(sourceFace)].value(),
@@ -803,15 +827,11 @@ private:
     if (firstDirection == 0 || secondDirection == 0) {
       return 1;
     }
-    // Consistently oriented manifold triangles traverse their shared edge in
-    // opposite directions; the coordinate map still preserves canonical
-    // low->high endpoint order.
     return firstDirection == -secondDirection ? -1 : 1;
   }
 
   const Eigen::MatrixXi *faces_ = nullptr;
-  const std::vector<int> *components_ = nullptr;
-  const std::vector<int> *sheets_ = nullptr;
+  const SourceTopologyRegions *authority_ = nullptr;
   const std::set<std::uint64_t> *hardFeatureEdges_ = nullptr;
   SurfacePointSourceSupportResolver supportResolver_;
   double barycentricTolerance_ = 1.0e-8;
@@ -819,7 +839,7 @@ private:
   std::vector<std::optional<authority::FieldChartId>> faceFieldChart_;
   std::vector<std::vector<int>> chartComponentFaces_;
   std::vector<SurfaceCellCanonicalIdentity> chartComponentIdentity_;
-  std::map<std::pair<int, int>, int> vertexFanOrdinal_;
+  std::map<std::pair<int, int>, authority::SourceVertexFanId> vertexFan_;
   std::vector<SourceChartTransition> transitions_;
   bool consistent_ = true;
 };

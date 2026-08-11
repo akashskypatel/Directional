@@ -28,6 +28,7 @@ enum class AuthorityDomain : std::uint8_t {
   IsolationSheet,
   TopologyRegion,
   FieldChart,
+  SourceVertexFan,
   HardRail,
   PeriodicRelation,
   Cell,
@@ -97,6 +98,9 @@ struct TopologyRegionTag {
 };
 struct FieldChartTag {
   static constexpr AuthorityDomain domain = AuthorityDomain::FieldChart;
+};
+struct SourceVertexFanTag {
+  static constexpr AuthorityDomain domain = AuthorityDomain::SourceVertexFan;
 };
 struct HardRailTag {
   static constexpr AuthorityDomain domain = AuthorityDomain::HardRail;
@@ -171,6 +175,7 @@ using SourceComponentId = SemanticId<detail::SourceComponentTag>;
 using IsolationSheetId = SemanticId<detail::IsolationSheetTag>;
 using TopologyRegionId = SemanticId<detail::TopologyRegionTag>;
 using FieldChartId = SemanticId<detail::FieldChartTag>;
+using SourceVertexFanId = SemanticId<detail::SourceVertexFanTag>;
 using HardRailId = SemanticId<detail::HardRailTag>;
 using PeriodicRelationId = SemanticId<detail::PeriodicRelationTag>;
 using CellId = SemanticId<detail::CellTag>;
