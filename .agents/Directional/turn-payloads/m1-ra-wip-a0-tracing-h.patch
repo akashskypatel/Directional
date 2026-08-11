@@ -1,0 +1,66 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index aa4bfc1..db59eff 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -32,6 +32,7 @@
+ #include <directional/authority/CanonicalRoute.h>
+ #include <directional/fields/CrossField.h>
+ #include <directional/geometry/ReliefTopology.h>
++#include <directional/geometry/SourceTopologyRegions.h>
+ 
+ namespace directional::geometry {
+ 
+@@ -199,37 +200,6 @@ enum class SurfaceFrontBoundaryKind : int {
+   PeriodicCut = 4,
+ };
+ 
+-/** Exact source-adjacent producer region, independent of proximity-isolation sheets. */
+-struct SurfaceTopologyRegion {
+-  authority::TopologyRegionId id;
+-  authority::SourceComponentId sourceComponent;
+-  int eulerCharacteristic = 0;
+-  int boundaryLoopCount = 0;
+-  std::vector<authority::SourceFaceId> sourceFaces;
+-  std::vector<authority::IsolationSheetId> isolationSheets;
+-  std::vector<authority::SourceEdgeTopologyKey> boundaryEdgeTopology;
+-  std::vector<authority::SourceEdgeTopologyKey> internalIsolationSeamTopology;
+-
+-  SurfaceTopologyRegion(
+-      authority::TopologyRegionId regionId,
+-      authority::SourceComponentId component,
+-      std::vector<authority::SourceFaceId> faces,
+-      std::vector<authority::IsolationSheetId> sheets,
+-      std::vector<authority::SourceEdgeTopologyKey> boundaryEdges,
+-      std::vector<authority::SourceEdgeTopologyKey> isolationSeams,
+-      int euler, int boundaryLoops)
+-      : id(regionId), sourceComponent(component),
+-        eulerCharacteristic(euler), boundaryLoopCount(boundaryLoops),
+-        sourceFaces(std::move(faces)), isolationSheets(std::move(sheets)),
+-        boundaryEdgeTopology(std::move(boundaryEdges)),
+-        internalIsolationSeamTopology(std::move(isolationSeams)) {}
+-
+-  auto operator<=>(const SurfaceTopologyRegion &) const = default;
+-};
+-
+-[[nodiscard]] std::uint64_t
+-surface_topology_region_hash(const SurfaceTopologyRegion &region);
+-
+ /**
+  * Reciprocal source-field transport across one retained local-isolation seam.
+  *
+@@ -284,15 +254,6 @@ private:
+         forward(forwardValue), reverse(reverseValue) {}
+ };
+ 
+-struct SourceTopologyRegions {
+-  std::vector<authority::TopologyRegionId> regionByFace;
+-  std::vector<SurfaceTopologyRegion> regions;
+-
+-  [[nodiscard]] bool complete_for_face_count(std::size_t faceCount) const noexcept {
+-    return regionByFace.size() == faceCount;
+-  }
+-};
+-
+ struct SurfaceFrontEdge {
+   SurfaceFrontEdge(authority::TopologyRegionId region, authority::CellId owner)
+       : filledCell(owner), sourceTopologyRegion(region) {}
