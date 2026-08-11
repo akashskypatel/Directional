@@ -1066,23 +1066,14 @@ int translation_orientation_rank(
 }
 
 auto periodic_relation_key(const SurfacePeriodicHolonomy &relation) {
-  return std::tuple{
-      relation.sourceComponent,
-      relation.sourceTopologyRegion,
-      relation.sourceSheet,
-      relation.action,
-      relation.route,
-      relation.cutRoute};
+  return std::tuple{relation.sourceTopologyRegion, relation.action,
+                    relation.route, relation.cutRoute};
 }
 
 bool periodic_relation_shape_valid(const SurfacePeriodicHolonomy &relation) {
-  const bool hasRegionScope =
-      relation.sourceTopologyRegion >= 0 && !relation.sourceIsolationSheets.empty();
-  const bool hasLegacySheetScope = relation.sourceSheet >= 0;
   const bool nonzeroTranslation =
       relation.action.shift.x != 0 || relation.action.shift.y != 0;
-  return relation.sourceComponent >= 0 && (hasRegionScope || hasLegacySheetScope) &&
-         nonzeroTranslation && !relation.route.empty() &&
+  return nonzeroTranslation && !relation.route.empty() &&
          !relation.cutRoute.empty();
 }
 
@@ -1090,13 +1081,6 @@ bool periodic_relation_shape_valid(const SurfacePeriodicHolonomy &relation) {
 
 SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
     SurfacePeriodicHolonomy relation) {
-  std::sort(relation.sourceIsolationSheets.begin(),
-            relation.sourceIsolationSheets.end());
-  relation.sourceIsolationSheets.erase(
-      std::unique(relation.sourceIsolationSheets.begin(),
-                  relation.sourceIsolationSheets.end()),
-      relation.sourceIsolationSheets.end());
-
   const authority::GridAutomorphism inverseAction = relation.action.inverse();
   const auto action_key = [](const authority::GridAutomorphism &action) {
     return std::tuple{translation_orientation_rank(action.shift),
@@ -1124,10 +1108,7 @@ SurfacePeriodicHolonomyInsertStatus insert_periodic_holonomy(
       return SurfacePeriodicHolonomyInsertStatus::Equivalent;
     }
     const bool sameScope =
-        existing.sourceComponent == relation.sourceComponent &&
-        ((existing.sourceTopologyRegion >= 0 && relation.sourceTopologyRegion >= 0)
-             ? existing.sourceTopologyRegion == relation.sourceTopologyRegion
-             : existing.sourceSheet == relation.sourceSheet);
+        existing.sourceTopologyRegion == relation.sourceTopologyRegion;
     if (!sameScope) continue;
     if (existing.route == relation.route ||
         existing.cutRoute == relation.cutRoute) {
@@ -5618,21 +5599,17 @@ std::size_t source_label_authority_extent(const std::vector<int> &labels) {
   return maximum >= 0 ? static_cast<std::size_t>(maximum) + 1U : 0U;
 }
 
-bool phase_front_cell_source_scope(
+bool phase_front_cell_matches_region(
     const SurfacePhaseFrontCell &cell,
     const SurfaceCellTracingOptions &options,
-    std::optional<authority::SourceComponentId> &component,
-    std::optional<authority::IsolationSheetId> &sheet,
-    std::vector<authority::IsolationSheetId> &isolationSheets) {
-  component.reset();
-  sheet.reset();
-  isolationSheets.clear();
+    const SurfaceTopologyRegion &region) {
   const std::size_t componentExtent =
       source_label_authority_extent(options.sourceFaceComponents);
   const std::size_t sheetExtent =
       source_label_authority_extent(options.sourceFaceSheets);
   if (componentExtent == 0U || sheetExtent == 0U) return false;
 
+  std::optional<authority::SourceComponentId> component;
   std::set<authority::IsolationSheetId> sheets;
   const auto consume_face = [&](const int face) {
     if (face < 0) return false;
@@ -5642,9 +5619,9 @@ bool phase_front_cell_source_scope(
         face_label_or_default(options.sourceFaceSheets, face, candidateComponent);
     if (candidateComponent < 0 || candidateSheet < 0) return false;
 
-    const auto typedComponent = directional::authority::SourceComponentId::from_index(
+    const auto typedComponent = authority::SourceComponentId::from_index(
         candidateComponent, componentExtent);
-    const auto typedSheet = directional::authority::IsolationSheetId::from_index(
+    const auto typedSheet = authority::IsolationSheetId::from_index(
         candidateSheet, sheetExtent);
     if (!typedComponent || !typedSheet) return false;
     if (!component.has_value()) component = typedComponent.value();
@@ -5661,9 +5638,11 @@ bool phase_front_cell_source_scope(
       if (!consume_face(segment.face)) return false;
     }
   }
-  isolationSheets.assign(sheets.begin(), sheets.end());
-  if (isolationSheets.size() == 1U) sheet = isolationSheets.front();
-  return component.has_value() && !isolationSheets.empty();
+  const std::vector<authority::IsolationSheetId> observedSheets(
+      sheets.begin(), sheets.end());
+  return component.has_value() && component.value() == region.sourceComponent &&
+         observedSheets == region.isolationSheets &&
+         cell.sourceTopologyRegion == region.id;
 }
 
 SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
@@ -5801,7 +5780,8 @@ SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
 bool orient_and_validate_phase_front_cell(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const UniformPhaseFrame &frame, const double target,
-    const SurfaceCellTracingOptions &options, SurfacePhaseFrontCell &cell) {
+    const SurfaceCellTracingOptions &options, const SurfaceTopologyRegion &region,
+    SurfacePhaseFrontCell &cell) {
   if (!(target > 0.0) || !std::isfinite(target)) {
     return false;
   }
@@ -5845,8 +5825,7 @@ bool orient_and_validate_phase_front_cell(
           CellRejectionReason::Accepted) {
     return false;
   }
-  if (!phase_front_cell_source_scope(cell, options, cell.sourceComponent,
-                                     cell.sourceSheet, cell.sourceIsolationSheets)) {
+  if (!phase_front_cell_matches_region(cell, options, region)) {
     return false;
   }
   cell.orientationValidated = true;
@@ -5859,6 +5838,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
+    const SurfaceTopologyRegion &region,
     const SurfaceCellTracingOptions &options,
     const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
     const std::map<std::uint64_t, int> &sourceMatchingIndices,
@@ -5967,7 +5947,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
                           frame.minV + stepV * (v + 1)),
           Eigen::Vector2d(frame.minU + stepU * u,
                           frame.minV + stepV * (v + 1))};
-      SurfacePhaseFrontCell cell;
+      SurfacePhaseFrontCell cell(region.id);
       cell.id = static_cast<int>(result.cells.size());
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
@@ -6016,7 +5996,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
       const int cellId = cell.id;
       for (int side = 0; side < 4; ++side) {
         const auto &path = cell.boundaryPaths[static_cast<std::size_t>(side)];
-        SurfaceFrontEdge edge;
+        SurfaceFrontEdge edge(region.id);
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
         const Eigen::Vector2i latticeDelta =
@@ -6044,9 +6024,6 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
             cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
         edge.filledCell = cellId;
         edge.filledSide = side;
-        edge.sourceComponent = cell.sourceComponent;
-        edge.sourceSheet = cell.sourceSheet;
-        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const Eigen::Vector2i from = edge.fromLattice.latticeCoordinate;
@@ -6070,7 +6047,7 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
                   second.fromLattice.latticeCoordinate ||
               first.family != second.family ||
               first.advanceSign == second.advanceSign ||
-              first.sourceComponent != second.sourceComponent) {
+              first.sourceTopologyRegion != second.sourceTopologyRegion) {
             set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::FrontOwnershipConflict, cell.id, side);
             return result;
           }
@@ -6120,8 +6097,8 @@ SurfacePhaseFrontResult build_uniform_phase_front_for_faces(
     result.events.push_back(event);
   }
   for (const SurfacePhaseFrontCell &cell : result.cells) {
-    if (!cell.orientationValidated || !cell.sourceComponent.has_value() ||
-        cell.sourceIsolationSheets.empty()) {
+    if (!cell.orientationValidated ||
+        cell.sourceTopologyRegion != region.id) {
       set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState, cell.id);
       return result;
     }
@@ -6567,6 +6544,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
+    const SurfaceTopologyRegion &region,
     const SurfaceCellTracingOptions &options,
     const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
     const std::map<std::uint64_t, int> &sourceMatchingIndices,
@@ -7442,18 +7420,12 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
   }
 
   result.disposition = SurfaceCellProducerDisposition::Rejected;
-  result.periodicHolonomies.emplace_back();
+  result.periodicHolonomies.emplace_back(region.id);
   SurfacePeriodicHolonomy &periodicHolonomy = result.periodicHolonomies.back();
   periodicHolonomy.action = authority::GridAutomorphism{
       authority::QuarterTurn{},
       authority::LatticeTranslation{result.gridU, 0}};
   periodicHolonomy.route = typedRoute;
-  const int component = face_label_or_default(options.sourceFaceComponents,
-                                               static_cast<int>(activeFaces.front().index()), 0);
-  const int sheet = face_label_or_default(options.sourceFaceSheets,
-                                           static_cast<int>(activeFaces.front().index()), component);
-  periodicHolonomy.sourceComponent = component;
-  periodicHolonomy.sourceSheet = sheet;
   std::vector<authority::TransitionStep> cutSteps;
   cutSteps.reserve(static_cast<std::size_t>(maxDistance));
   for (int layer = 0; layer < maxDistance; ++layer) {
@@ -7532,7 +7504,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
           Eigen::Vector2d(u1, stepV * v),
           Eigen::Vector2d(u1, stepV * (v + 1)),
           Eigen::Vector2d(u0, stepV * (v + 1))};
-      SurfacePhaseFrontCell cell;
+      SurfacePhaseFrontCell cell(region.id);
       cell.id = static_cast<int>(result.cells.size());
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
@@ -7590,9 +7562,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
         loopNormal = phase_front_loop_normal(positions);
       }
       if (loopNormal.dot(expectedNormal) <= 0.0 ||
-          !phase_front_cell_source_scope(cell, options, cell.sourceComponent,
-                                         cell.sourceSheet,
-                                         cell.sourceIsolationSheets)) {
+          !phase_front_cell_matches_region(cell, options, region)) {
         set_phase_front_failure(result.failure,
                                 SurfacePhaseFrontFailureReason::InvalidCellOrientation,
                                 cell.id);
@@ -7601,7 +7571,7 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
       cell.orientationValidated = true;
 
       for (int side = 0; side < 4; ++side) {
-        SurfaceFrontEdge edge;
+        SurfaceFrontEdge edge(region.id);
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
@@ -7612,9 +7582,6 @@ SurfacePhaseFrontResult build_periodic_annulus_phase_front_for_faces(
         edge.advanceSign = (delta.x() + delta.y()) >= 0 ? 1 : -1;
         edge.filledCell = cell.id;
         edge.filledSide = side;
-        edge.sourceComponent = cell.sourceComponent;
-        edge.sourceSheet = cell.sourceSheet;
-        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const int a = canonical_node(edge.fromLattice.latticeCoordinate);
@@ -7737,6 +7704,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
     const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
+    const SurfaceTopologyRegion &region,
     const SurfaceCellTracingOptions &options,
     const std::map<std::uint64_t, std::array<int, 2>> &sourceEdgeFaces,
     const std::map<std::uint64_t, int> &sourceMatchingIndices,
@@ -8296,13 +8264,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
     return result;
   }
 
-  const int component = face_label_or_default(options.sourceFaceComponents,
-                                               static_cast<int>(activeFaces.front().index()), 0);
-  const int sheet = face_label_or_default(options.sourceFaceSheets,
-                                           static_cast<int>(activeFaces.front().index()), component);
-  SurfaceBoundedDiskBoundaryPhase boundaryPhase;
-  boundaryPhase.sourceComponent = component;
-  boundaryPhase.sourceSheet = sheet;
+  SurfaceBoundedDiskBoundaryPhase boundaryPhase(region.id);
   boundaryPhase.chartUBranch = boundaryBranches.front();
   boundaryPhase.runs.reserve(runStarts.size());
 
@@ -8430,8 +8392,8 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
   const auto consume_boundary_i64 = [&](const std::int64_t value) {
     consume_boundary_hash(static_cast<std::uint64_t>(value));
   };
-  consume_boundary_i64(boundaryPhase.sourceComponent);
-  consume_boundary_i64(boundaryPhase.sourceSheet);
+  consume_boundary_i64(static_cast<std::int64_t>(
+      boundaryPhase.sourceTopologyRegion.index()));
   consume_boundary_i64(boundaryPhase.chartUBranch);
   consume_boundary_i64(boundaryPhase.signedQuarterTurnSum);
   consume_boundary_hash(boundaryPhase.runs.size());
@@ -8844,7 +8806,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
           Eigen::Vector2d(stepU * (u + 1), stepV * v),
           Eigen::Vector2d(stepU * (u + 1), stepV * (v + 1)),
           Eigen::Vector2d(stepU * u, stepV * (v + 1))};
-      SurfacePhaseFrontCell cell;
+      SurfacePhaseFrontCell cell(region.id);
       cell.id = static_cast<int>(result.cells.size());
       for (int corner = 0; corner < 4; ++corner) {
         cell.corners[static_cast<std::size_t>(corner)] =
@@ -8916,9 +8878,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
         loopNormal = phase_front_loop_normal(positions);
       }
       if (loopNormal.dot(expectedNormal) <= 0.0 ||
-          !phase_front_cell_source_scope(cell, options, cell.sourceComponent,
-                                         cell.sourceSheet,
-                                         cell.sourceIsolationSheets)) {
+          !phase_front_cell_matches_region(cell, options, region)) {
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation,
             cell.id);
@@ -8927,7 +8887,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
       cell.orientationValidated = true;
 
       for (int side = 0; side < 4; ++side) {
-        SurfaceFrontEdge edge;
+        SurfaceFrontEdge edge(region.id);
         edge.from = cell.corners[static_cast<std::size_t>(side)];
         edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
         edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
@@ -8954,9 +8914,6 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
         }
         edge.filledCell = cell.id;
         edge.filledSide = side;
-        edge.sourceComponent = cell.sourceComponent;
-        edge.sourceSheet = cell.sourceSheet;
-        edge.sourceIsolationSheets = cell.sourceIsolationSheets;
         const int edgeId = static_cast<int>(result.edges.size());
         result.edges.push_back(edge);
         const int a = node_index(edge.fromLattice.latticeCoordinate.x(),
@@ -8978,7 +8935,7 @@ SurfacePhaseFrontResult build_curved_bounded_disk_phase_front_for_faces(
                   second.fromLattice.latticeCoordinate ||
               first.family != second.family ||
               first.advanceSign == second.advanceSign ||
-              first.sourceComponent != second.sourceComponent) {
+              first.sourceTopologyRegion != second.sourceTopologyRegion) {
             set_phase_front_failure(
                 result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
                 cell.id, side);
@@ -9372,99 +9329,29 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   bool anyProduced = false;
   int firstUnsupportedRegion = -1;
 
-  const auto normalize_scope = [&](SurfacePhaseFrontResult &local,
-                                   const SurfaceTopologyRegion &region) {
-    const int singleIsolationSheet =
-        region.isolationSheets.size() == 1U ? static_cast<int>(region.isolationSheets.front().index()) : -1;
-    for (auto &relation : local.periodicHolonomies) {
-      relation.sourceComponent = static_cast<int>(region.sourceComponent.index());
-      relation.sourceTopologyRegion = static_cast<int>(region.id.index());
-      relation.sourceSheet = singleIsolationSheet;
-      relation.sourceIsolationSheets.clear();
-      for (const authority::IsolationSheetId sheet : region.isolationSheets)
-        relation.sourceIsolationSheets.push_back(static_cast<int>(sheet.index()));
-      relation = canonicalize_periodic_holonomy(std::move(relation));
+  const auto validate_region_scope = [&](const SurfacePhaseFrontResult &local,
+                                         const SurfaceTopologyRegion &region) {
+    for (const auto &relation : local.periodicHolonomies) {
+      if (relation.sourceTopologyRegion != region.id) return false;
     }
-    for (auto &phase : local.boundedDiskBoundaryPhases) {
-      phase.sourceComponent = static_cast<int>(region.sourceComponent.index());
-      phase.sourceTopologyRegion = static_cast<int>(region.id.index());
-      phase.sourceSheet = singleIsolationSheet;
-      phase.sourceIsolationSheets.clear();
-      for (const authority::IsolationSheetId sheet : region.isolationSheets)
-        phase.sourceIsolationSheets.push_back(static_cast<int>(sheet.index()));
+    for (const auto &phase : local.boundedDiskBoundaryPhases) {
+      if (phase.sourceTopologyRegion != region.id) return false;
     }
-    const authority::TopologyRegionId typedRegion = region.id;
-    for (auto &cell : local.cells) {
-      cell.sourceTopologyRegion = typedRegion;
-      const bool expectedSingleSheet = region.isolationSheets.size() == 1U;
-      if (!cell.sourceComponent.has_value() ||
-          cell.sourceComponent.value() != region.sourceComponent ||
-          cell.sourceIsolationSheets != region.isolationSheets ||
-          cell.sourceSheet.has_value() != expectedSingleSheet ||
-          (expectedSingleSheet &&
-           cell.sourceSheet.value() != region.isolationSheets.front())) {
+    for (const auto &cell : local.cells) {
+      if (cell.sourceTopologyRegion != region.id ||
+          !phase_front_cell_matches_region(cell, options, region)) {
         return false;
       }
     }
-    const std::size_t componentExtent =
-        source_label_authority_extent(options.sourceFaceComponents);
-    const std::size_t sheetExtent =
-        source_label_authority_extent(options.sourceFaceSheets);
-    const auto typedRegionComponent =
-        directional::authority::SourceComponentId::from_index(
-            static_cast<int>(region.sourceComponent.index()), componentExtent);
-    if (!typedRegionComponent) return false;
-    std::vector<authority::IsolationSheetId> typedRegionSheets;
-    typedRegionSheets.reserve(region.isolationSheets.size());
-    for (const authority::IsolationSheetId rawSheet : region.isolationSheets) {
-      (void)sheetExtent;
-      typedRegionSheets.push_back(rawSheet);
-    }
-    if (typedRegionSheets.empty() ||
-        !std::is_sorted(typedRegionSheets.begin(), typedRegionSheets.end()) ||
-        std::adjacent_find(typedRegionSheets.begin(), typedRegionSheets.end()) !=
-            typedRegionSheets.end()) {
-      return false;
-    }
-    for (auto &edge : local.edges) {
-      edge.sourceTopologyRegion = typedRegion;
+    for (const auto &edge : local.edges) {
+      if (edge.sourceTopologyRegion != region.id) return false;
       const auto owner = std::find_if(
           local.cells.begin(), local.cells.end(),
           [&](const SurfacePhaseFrontCell &cell) {
             return cell.id == edge.filledCell;
           });
       if (owner == local.cells.end() ||
-          !owner->sourceTopologyRegion.has_value() ||
-          owner->sourceTopologyRegion.value() != typedRegion ||
-          !edge.sourceComponent.has_value() ||
-          edge.sourceComponent.value() != typedRegionComponent.value() ||
-          !edge.sourceTopologyRegion.has_value() ||
-          edge.sourceTopologyRegion.value() != typedRegion ||
-          edge.sourceTopologyRegion != owner->sourceTopologyRegion ||
-          edge.sourceComponent != owner->sourceComponent ||
-          edge.sourceSheet != owner->sourceSheet ||
-          edge.sourceIsolationSheets != owner->sourceIsolationSheets ||
-          edge.sourceIsolationSheets.empty() ||
-          !std::is_sorted(edge.sourceIsolationSheets.begin(),
-                          edge.sourceIsolationSheets.end()) ||
-          std::adjacent_find(edge.sourceIsolationSheets.begin(),
-                             edge.sourceIsolationSheets.end()) !=
-              edge.sourceIsolationSheets.end()) {
-        return false;
-      }
-      for (const authority::IsolationSheetId typedSheet :
-           edge.sourceIsolationSheets) {
-        if (!std::binary_search(typedRegionSheets.begin(),
-                                typedRegionSheets.end(), typedSheet)) {
-          return false;
-        }
-      }
-      if (edge.sourceIsolationSheets.size() == 1U) {
-        if (!edge.sourceSheet.has_value() ||
-            edge.sourceSheet.value() != edge.sourceIsolationSheets.front()) {
-          return false;
-        }
-      } else if (edge.sourceSheet.has_value()) {
+          owner->sourceTopologyRegion != edge.sourceTopologyRegion) {
         return false;
       }
     }
@@ -9483,21 +9370,21 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const SurfaceTopologyRegion &region = *work.region;
     SurfacePhaseFrontResult local = build_uniform_phase_front_for_faces(
         vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
-        options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+        region, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
         edgeEffort, edgeTransitions);
     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
       local = build_periodic_annulus_phase_front_for_faces(
           vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
-          options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+          region, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
           edgeEffort, edgeTransitions);
     }
     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
       local = build_curved_bounded_disk_phase_front_for_faces(
           vertices, faces, faceAxisX, faceAxisY, targetSize, region.sourceFaces,
-          options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+          region, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
           edgeEffort, edgeTransitions);
     }
-    if (!normalize_scope(local, region)) {
+    if (!validate_region_scope(local, region)) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(result.failure,
                               SurfacePhaseFrontFailureReason::InvalidTopologyRegion);
@@ -9571,30 +9458,21 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     const SurfaceTopologyRegion &region = *build.work->region;
     SurfacePhaseFrontResult &local = build.result;
     bool localCoverage = false;
-    std::set<authority::IsolationSheetId> coveredIsolationSheets;
     const authority::TopologyRegionId typedRegion = region.id;
     for (SurfacePhaseFrontCell &cell : local.cells) {
-      if (!cell.sourceComponent.has_value() ||
-          cell.sourceComponent.value() != region.sourceComponent ||
-          !cell.sourceTopologyRegion.has_value() ||
-          cell.sourceTopologyRegion.value() != typedRegion ||
-          cell.sourceIsolationSheets.empty()) {
+      if (cell.sourceTopologyRegion != typedRegion ||
+          !phase_front_cell_matches_region(cell, options, region)) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
             cell.id, -1, cell.corners.front().face);
         return result;
       }
-      coveredIsolationSheets.insert(cell.sourceIsolationSheets.begin(),
-                                    cell.sourceIsolationSheets.end());
       localCoverage = true;
       cell.id += cellOffset;
       result.cells.push_back(std::move(cell));
     }
-    const std::set<authority::IsolationSheetId> requiredIsolationSheets(
-        region.isolationSheets.begin(), region.isolationSheets.end());
-    if (!localCoverage || coveredIsolationSheets != requiredIsolationSheets ||
-        !coveredRegions.insert(region.id).second) {
+    if (!localCoverage || !coveredRegions.insert(region.id).second) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
@@ -9602,14 +9480,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       return result;
     }
     for (SurfaceFrontEdge &edge : local.edges) {
-      const auto typedRegionComponent =
-          directional::authority::SourceComponentId::from_index(
-              static_cast<int>(region.sourceComponent.index()),
-              source_label_authority_extent(options.sourceFaceComponents));
-      if (!typedRegionComponent || !edge.sourceComponent.has_value() ||
-          edge.sourceComponent.value() != typedRegionComponent.value() ||
-          !edge.sourceTopologyRegion.has_value() ||
-          edge.sourceTopologyRegion.value() != typedRegion) {
+      if (edge.sourceTopologyRegion != typedRegion) {
         result.disposition = SurfaceCellProducerDisposition::Rejected;
         set_phase_front_failure(
             result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
@@ -9739,6 +9610,15 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     return key;
   };
 
+  const auto region_for_id = [&](const authority::TopologyRegionId id)
+      -> const SurfaceTopologyRegion * {
+    const auto found = std::find_if(
+        result.sourceTopologyRegions.regions.begin(),
+        result.sourceTopologyRegions.regions.end(),
+        [&](const SurfaceTopologyRegion &candidate) { return candidate.id == id; });
+    return found == result.sourceTopologyRegions.regions.end() ? nullptr
+                                                               : &*found;
+  };
   std::map<HardRailPairKey, std::vector<int>> hardRailGroups;
   for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size());
        ++edgeIndex) {
@@ -9747,8 +9627,10 @@ SurfacePhaseFrontResult build_uniform_phase_front(
     if (edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail) continue;
     std::vector<std::int64_t> from = support_key(edge.from);
     std::vector<std::int64_t> to = support_key(edge.to);
+    const SurfaceTopologyRegion *edgeRegion =
+        region_for_id(edge.sourceTopologyRegion);
     if (edge.oppositeEdge >= 0 || !edge.exterior || from.empty() || to.empty() ||
-        !edge.sourceComponent.has_value() || edge.route.empty()) {
+        edgeRegion == nullptr || edge.route.empty()) {
       result.disposition = SurfaceCellProducerDisposition::Rejected;
       set_phase_front_failure(
           result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
@@ -9756,7 +9638,7 @@ SurfacePhaseFrontResult build_uniform_phase_front(
       return result;
     }
     if (to < from) std::swap(from, to);
-    hardRailGroups[{edge.sourceComponent.value(), std::move(from),
+    hardRailGroups[{edgeRegion->sourceComponent, std::move(from),
                     std::move(to), edge.route}]
         .push_back(edgeIndex);
   }
@@ -9925,9 +9807,6 @@ SurfaceCellNetwork build_surface_cell_network(
       surface_cell_tracing_detail::build_uniform_phase_front(
           vertices, faces, faceAxisX, faceAxisY, targetSize, options,
           edgeMatching, edgeEffort, edgeTransitions);
-  network.sourceTopologyRegions.regionByFace =
-      network.phaseFront.sourceTopologyRegions.regionByFace;
-  network.sourceTopologyRegions.regions = network.phaseFront.sourceTopologyRegions.regions;
   if (network.phaseFront.disposition ==
       SurfaceCellProducerDisposition::Produced) {
     network.proposals.reserve(network.phaseFront.cells.size());

@@ -27,6 +27,71 @@ using directional::geometry::SurfaceFrontBoundaryKind;
 using directional::geometry::SurfacePhaseFrontResult;
 using directional::pipeline::AuthoritativePhaseFrontMeshResult;
 
+std::uint64_t raw_source_edge_key(
+    const directional::authority::SourceEdgeTopologyKey &topology) {
+  return directional::pipeline::surface_cell_source_edge_key(
+      static_cast<int>(topology.first().index()),
+      static_cast<int>(topology.second().index()));
+}
+
+bool route_is_all_boundary(const directional::authority::CanonicalRoute &route) {
+  return !route.empty() &&
+         std::all_of(route.steps().begin(), route.steps().end(), [](const auto &step) {
+           return step.kind() ==
+                  directional::authority::TransitionStepKind::Boundary;
+         });
+}
+
+bool route_is_all_interior(const directional::authority::CanonicalRoute &route) {
+  return !route.empty() &&
+         std::all_of(route.steps().begin(), route.steps().end(), [](const auto &step) {
+           return step.kind() ==
+                      directional::authority::TransitionStepKind::Interior &&
+                  step.interior().has_value();
+         });
+}
+
+directional::authority::CanonicalRoute boundary_route_from_raw_topology(
+    const std::uint64_t topology, const std::size_t vertexExtent) {
+  const auto first = directional::authority::SourceVertexId::from_index(
+      static_cast<std::int64_t>(topology >> 32U), vertexExtent);
+  const auto second = directional::authority::SourceVertexId::from_index(
+      static_cast<std::int64_t>(topology & 0xffffffffULL), vertexExtent);
+  if (!first || !second) throw std::runtime_error("Invalid boundary route vertices.");
+  const auto key = directional::authority::SourceEdgeTopologyKey::make(
+      first.value(), second.value());
+  if (!key) throw std::runtime_error("Degenerate boundary route topology.");
+  return directional::authority::CanonicalRoute::from_observed_steps({
+      directional::authority::TransitionStep::boundary(
+          key.value(), directional::authority::GridAutomorphism::identity(),
+          directional::authority::Orientation::Forward)});
+}
+
+directional::authority::CanonicalRoute test_interior_route(
+    const int firstVertex, const int secondVertex, const int transitionId,
+    const std::size_t vertexExtent = 64,
+    const std::size_t transitionExtent = 64) {
+  const auto first = directional::authority::SourceVertexId::from_index(
+      firstVertex, vertexExtent);
+  const auto second = directional::authority::SourceVertexId::from_index(
+      secondVertex, vertexExtent);
+  const auto transition = directional::authority::InteriorTransitionId::from_index(
+      transitionId, transitionExtent);
+  if (!first || !second || !transition) {
+    throw std::runtime_error("Invalid test interior-route authority.");
+  }
+  const auto topology = directional::authority::SourceEdgeTopologyKey::make(
+      first.value(), second.value());
+  if (!topology) throw std::runtime_error("Degenerate test route topology.");
+  const auto step = directional::authority::TransitionStep::interior(
+      topology.value(), transition.value(),
+      directional::authority::GridAutomorphism::identity(),
+      directional::authority::Orientation::Forward);
+  if (!step) throw std::runtime_error("Invalid test interior-route step.");
+  return directional::authority::CanonicalRoute::from_observed_steps(
+      {step.value()});
+}
+
 struct PhaseFrontFixture {
   directional::TriMesh mesh;
   std::vector<int> components;
@@ -349,8 +414,7 @@ TransitionIndexDomainWitness transition_index_domain_witness() {
         fixture.network.phaseFront.sourceTopologyRegions.regions.begin(),
         fixture.network.phaseFront.sourceTopologyRegions.regions.end(),
         [&](const auto &candidate) {
-          if (!cell.sourceTopologyRegion.has_value()) return false;
-          return candidate.id == cell.sourceTopologyRegion.value();
+          return candidate.id == cell.sourceTopologyRegion;
         });
     if (region == fixture.network.phaseFront.sourceTopologyRegions.regions.end() ||
         region->sourceFaces.empty()) {
@@ -616,8 +680,7 @@ TEST(SurfaceCellTransitionQuotient,
       continue;
     }
     observedGenuineBoundary = true;
-    EXPECT_FALSE(edge.routeTopologyKeys.empty());
-    EXPECT_TRUE(edge.routeTransitionIndices.empty());
+    EXPECT_TRUE(route_is_all_boundary(edge.route));
   }
   EXPECT_TRUE(observedGenuineBoundary);
 
@@ -659,8 +722,7 @@ TEST(SurfaceCellTransitionQuotient,
     ++genuineBoundaries;
     EXPECT_TRUE(edge.exterior);
     EXPECT_LT(edge.oppositeEdge, 0);
-    EXPECT_FALSE(edge.routeTopologyKeys.empty());
-    EXPECT_TRUE(edge.routeTransitionIndices.empty());
+    EXPECT_TRUE(route_is_all_boundary(edge.route));
   }
   EXPECT_GT(genuineBoundaries, 0U);
   const auto result = materialize(fixture, fixture.network.phaseFront);
@@ -677,8 +739,18 @@ TEST(SurfaceCellTransitionQuotient,
   const int boundary = first_edge_of_kind(
       tampered, SurfaceFrontBoundaryKind::GenuineSourceBoundary);
   ASSERT_GE(boundary, 0);
-  tampered.edges[static_cast<std::size_t>(boundary)].routeTransitionIndices.push_back(
-      0);
+  auto &edge = tampered.edges[static_cast<std::size_t>(boundary)];
+  ASSERT_TRUE(route_is_all_boundary(edge.route));
+  const auto transition =
+      directional::authority::InteriorTransitionId::from_index(0, 1);
+  ASSERT_TRUE(transition);
+  const auto step = directional::authority::TransitionStep::interior(
+      edge.route.steps().front().topology(), transition.value(),
+      directional::authority::GridAutomorphism::identity(),
+      directional::authority::Orientation::Forward);
+  ASSERT_TRUE(step);
+  edge.route = directional::authority::CanonicalRoute::from_observed_steps(
+      {step.value()});
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidSourceBoundaryAuthority", result.failure);
@@ -867,9 +939,8 @@ TEST(SurfaceCellTransitionQuotient,
       fixture.network.phaseFront.periodicHolonomies.begin(),
       fixture.network.phaseFront.periodicHolonomies.end(),
       [](const auto &candidate) {
-        const int rotation = ((candidate.quarterTurnRotation % 4) + 4) % 4;
-        return rotation != 0 &&
-               candidate.latticeTranslation.squaredNorm() != 0;
+        return candidate.action.rotation != directional::authority::QuarterTurn{} &&
+               (candidate.action.shift.x != 0 || candidate.action.shift.y != 0);
       });
   ASSERT_NE(fixture.network.phaseFront.periodicHolonomies.end(), relation)
       << "the winding cross field must exercise a non-identity Z4 action";
@@ -886,10 +957,11 @@ TEST(SurfaceCellTransitionQuotient,
   const auto relation = std::find_if(
       tampered.periodicHolonomies.begin(), tampered.periodicHolonomies.end(),
       [](const auto &candidate) {
-        return candidate.latticeTranslation.squaredNorm() != 0;
+        return candidate.action.shift.x != 0 || candidate.action.shift.y != 0;
       });
   ASSERT_NE(tampered.periodicHolonomies.end(), relation);
-  relation->quarterTurnRotation = (relation->quarterTurnRotation + 1) % 4;
+  relation->action.rotation = directional::authority::QuarterTurn::from_integer(
+      static_cast<int>(relation->action.rotation.value()) + 1);
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidPeriodicFrontTransport", result.failure);
@@ -951,9 +1023,8 @@ TEST(SurfaceCellTransitionQuotient,
   const auto &opposite = fixture.network.phaseFront.edges[
       static_cast<std::size_t>(edge.oppositeEdge)];
   EXPECT_NE(edge.sourceTopologyRegion, opposite.sourceTopologyRegion);
-  EXPECT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
-  EXPECT_EQ(opposite.routeTopologyKeys.size(),
-            opposite.routeTransitionIndices.size());
+  EXPECT_TRUE(route_is_all_interior(edge.route));
+  EXPECT_TRUE(route_is_all_interior(opposite.route));
   const auto result = materialize(fixture, fixture.network.phaseFront);
   ASSERT_TRUE(result.success) << result.failure;
   EXPECT_EQ(1, result.connectedComponents);
@@ -1010,7 +1081,7 @@ TEST(SurfaceCellTransitionQuotient,
     EXPECT_TRUE(
         std::is_sorted(lineage.equivalences.begin(), lineage.equivalences.end()));
     for (const auto &equivalence : lineage.equivalences) {
-      foundSeamEquivalence |= !equivalence.routeTopologyKeys.empty();
+      foundSeamEquivalence |= !equivalence.route.empty();
     }
   }
   EXPECT_TRUE(foundSeamEquivalence);
@@ -1067,14 +1138,14 @@ TEST(SurfaceCellTransitionQuotient,
   edge.oppositeEdge = -1;
   edge.exterior = true;
   edge.boundaryKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
-  edge.routeTopologyKeys = {interiorTopology};
-  edge.routeTransitionIndices.clear();
+  edge.route = boundary_route_from_raw_topology(
+      interiorTopology, static_cast<std::size_t>(fixture.mesh.V.rows()));
   auto &other = tampered.edges[static_cast<std::size_t>(opposite)];
   other.oppositeEdge = -1;
   other.exterior = true;
   other.boundaryKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
-  other.routeTopologyKeys = {interiorTopology};
-  other.routeTransitionIndices.clear();
+  other.route = boundary_route_from_raw_topology(
+      interiorTopology, static_cast<std::size_t>(fixture.mesh.V.rows()));
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("FalseAuthoritativeSourceBoundary", result.failure);
@@ -1213,18 +1284,20 @@ TEST(SurfaceCellTransitionQuotient,
       directional::geometry::PureQuadEquivalenceKind::PeriodicHolonomy;
   equivalence.firstFrontEdge = 3;
   equivalence.secondFrontEdge = 7;
-  equivalence.periodicRelation = 1;
-  equivalence.quarterTurnRotation = 1;
-  equivalence.latticeTranslation = Eigen::Vector2i(2, -1);
-  equivalence.routeTopologyKeys = {
-      directional::pipeline::surface_cell_source_edge_key(0, 1)};
+  const auto relationId =
+      directional::authority::PeriodicRelationId::from_index(1, 2);
+  ASSERT_TRUE(relationId);
+  equivalence.periodicRelation = relationId.value();
+  equivalence.action = {directional::authority::QuarterTurn::from_integer(1),
+                        {2, -1}};
+  equivalence.route = test_interior_route(0, 1, 0);
   mutation.outputVertexLineage.front().equivalences.push_back(equivalence);
   EXPECT_NE(directional::bench::benchmark_output_semantic_hash(baseline),
             directional::bench::benchmark_output_semantic_hash(mutation));
 }
 
 
-TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+TEST(SurfaceCellTypedTransportAuthority,
      ValidHardRailRouteUsesTypedIdentity) {
   const auto &fixture = hard_rail_fixture();
   const int hardRail = first_edge_of_kind(fixture.network.phaseFront,
@@ -1232,17 +1305,18 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
   ASSERT_GE(hardRail, 0);
   const auto &edge =
       fixture.network.phaseFront.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.routeTopologyKeys.empty());
-  ASSERT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
+  ASSERT_TRUE(route_is_all_interior(edge.route));
 
   const auto sourceIncidence = directional::geometry::
       surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
   const auto sourceTransitions = directional::geometry::
       surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
-  for (std::size_t index = 0; index < edge.routeTopologyKeys.size(); ++index) {
-    const auto expected = sourceTransitions.find(edge.routeTopologyKeys[index]);
+  for (const auto &step : edge.route.steps()) {
+    ASSERT_TRUE(step.interior().has_value());
+    const auto expected = sourceTransitions.find(raw_source_edge_key(step.topology()));
     ASSERT_NE(sourceTransitions.end(), expected);
-    EXPECT_EQ(expected->second, edge.routeTransitionIndices[index]);
+    EXPECT_EQ(static_cast<std::size_t>(expected->second),
+              step.interior()->index());
   }
 
   const auto result = materialize(fixture, fixture.network.phaseFront);
@@ -1250,7 +1324,7 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
   EXPECT_EQ(1, result.connectedComponents);
 }
 
-TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+TEST(SurfaceCellTypedTransportAuthority,
      ValidPeriodicCutRouteUsesTypedIdentity) {
   const auto &fixture = cylinder_fixture();
   const int periodic = first_edge_of_kind(fixture.network.phaseFront,
@@ -1258,10 +1332,9 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
   ASSERT_GE(periodic, 0);
   const auto &edge =
       fixture.network.phaseFront.edges[static_cast<std::size_t>(periodic)];
-  ASSERT_FALSE(edge.routeTopologyKeys.empty());
-  ASSERT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
-  ASSERT_GE(edge.periodicRelation, 0);
-  ASSERT_LT(static_cast<std::size_t>(edge.periodicRelation),
+  ASSERT_TRUE(route_is_all_interior(edge.route));
+  ASSERT_TRUE(edge.periodicRelation.has_value());
+  ASSERT_LT(edge.periodicRelation->index(),
             fixture.network.phaseFront.periodicHolonomies.size());
 
   const auto result = materialize(fixture, fixture.network.phaseFront);
@@ -1270,57 +1343,35 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
             result.consumedPeriodicHolonomies);
 }
 
-TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
-     InvalidInteriorTransitionIdFailsClosed) {
+TEST(SurfaceCellTypedTransportAuthority,
+     MissingInteriorTransitionIsRejectedByTypedFactory) {
   const auto &fixture = hard_rail_fixture();
   const int hardRail = first_edge_of_kind(fixture.network.phaseFront,
                                           SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
-  const auto sourceIncidence = directional::geometry::
-      surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
-  const auto sourceTransitions = directional::geometry::
-      surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
-  ASSERT_FALSE(sourceTransitions.empty());
-
-  SurfacePhaseFrontResult negative = fixture.network.phaseFront;
-  auto &negativeEdge = negative.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(negativeEdge.routeTransitionIndices.empty());
-  negativeEdge.routeTransitionIndices.front() = -1;
-  const auto negativeResult = materialize(fixture, negative);
-  EXPECT_FALSE(negativeResult.success);
-  EXPECT_EQ("InvalidHardRailAuthority", negativeResult.failure);
-
-  SurfacePhaseFrontResult outOfRange = fixture.network.phaseFront;
-  auto &outOfRangeEdge = outOfRange.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(outOfRangeEdge.routeTransitionIndices.empty());
-  ASSERT_LE(sourceTransitions.size(),
-            static_cast<std::size_t>(std::numeric_limits<int>::max()));
-  outOfRangeEdge.routeTransitionIndices.front() =
-      static_cast<int>(sourceTransitions.size());
-  const auto outOfRangeResult = materialize(fixture, outOfRange);
-  EXPECT_FALSE(outOfRangeResult.success);
-  EXPECT_EQ("InvalidHardRailAuthority", outOfRangeResult.failure);
+  const auto &edge =
+      fixture.network.phaseFront.edges[static_cast<std::size_t>(hardRail)];
+  ASSERT_TRUE(route_is_all_interior(edge.route));
+  const auto invalid = directional::authority::TransitionStep::interior(
+      edge.route.steps().front().topology(), std::nullopt,
+      directional::authority::GridAutomorphism::identity(),
+      directional::authority::Orientation::Forward);
+  ASSERT_FALSE(invalid);
+  EXPECT_EQ(directional::authority::DomainErrorCode::MissingInteriorTransition,
+            invalid.error().code);
 }
 
-TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
-     OutOfDomainPackedSourceVertexFailsClosed) {
+TEST(SurfaceCellTypedTransportAuthority,
+     OutOfDomainSourceVertexIsRejectedAtIngress) {
   const auto &fixture = hard_rail_fixture();
-  SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
-  const int hardRail =
-      first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
-  ASSERT_GE(hardRail, 0);
-  auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.routeTopologyKeys.empty());
-  edge.routeTopologyKeys.front() =
-      directional::pipeline::surface_cell_source_edge_key(
-          0, static_cast<int>(fixture.mesh.V.rows()));
-
-  const auto result = materialize(fixture, tampered);
-  EXPECT_FALSE(result.success);
-  EXPECT_EQ("InvalidHardRailAuthority", result.failure);
+  const auto invalid = directional::authority::SourceVertexId::from_index(
+      fixture.mesh.V.rows(), static_cast<std::size_t>(fixture.mesh.V.rows()));
+  ASSERT_FALSE(invalid);
+  EXPECT_EQ(directional::authority::DomainErrorCode::IndexOutOfRange,
+            invalid.error().code);
 }
 
-TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+TEST(SurfaceCellTypedTransportAuthority,
      RouteTopologyTransitionMismatchFailsClosed) {
   const auto &fixture = hard_rail_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
@@ -1328,13 +1379,13 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.routeTransitionIndices.empty());
+  ASSERT_TRUE(route_is_all_interior(edge.route));
 
   const auto sourceIncidence = directional::geometry::
       surface_cell_tracing_detail::edge_faces(fixture.mesh.F);
   const auto sourceTransitions = directional::geometry::
       surface_cell_tracing_detail::edge_matching_indices(sourceIncidence);
-  const int current = edge.routeTransitionIndices.front();
+  const int current = static_cast<int>(edge.route.steps().front().interior()->index());
   int alternate = -1;
   for (const auto &[topology, compact] : sourceTransitions) {
     (void)topology;
@@ -1345,14 +1396,25 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
   }
   ASSERT_GE(alternate, 0)
       << "hard-rail fixture must expose two valid compact transitions";
-  edge.routeTransitionIndices.front() = alternate;
+  const auto alternateId = directional::authority::InteriorTransitionId::from_index(
+      alternate, sourceTransitions.size());
+  ASSERT_TRUE(alternateId);
+  std::vector<directional::authority::TransitionStep> steps(
+      edge.route.steps().begin(), edge.route.steps().end());
+  const auto replacement = directional::authority::TransitionStep::interior(
+      steps.front().topology(), alternateId.value(), steps.front().transport(),
+      steps.front().orientation());
+  ASSERT_TRUE(replacement);
+  steps.front() = replacement.value();
+  edge.route = directional::authority::CanonicalRoute::from_observed_steps(
+      std::move(steps));
 
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);
   EXPECT_EQ("InvalidHardRailAuthority", result.failure);
 }
 
-TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
+TEST(SurfaceCellTypedTransportAuthority,
      DuplicateSemanticRouteTopologyFailsClosed) {
   const auto &fixture = hard_rail_fixture();
   SurfacePhaseFrontResult tampered = fixture.network.phaseFront;
@@ -1360,10 +1422,12 @@ TEST(SurfaceCellPhaseFrontRouteAuthorityMigration,
       first_edge_of_kind(tampered, SurfaceFrontBoundaryKind::HardRail);
   ASSERT_GE(hardRail, 0);
   auto &edge = tampered.edges[static_cast<std::size_t>(hardRail)];
-  ASSERT_FALSE(edge.routeTopologyKeys.empty());
-  ASSERT_EQ(edge.routeTopologyKeys.size(), edge.routeTransitionIndices.size());
-  edge.routeTopologyKeys.push_back(edge.routeTopologyKeys.front());
-  edge.routeTransitionIndices.push_back(edge.routeTransitionIndices.front());
+  ASSERT_TRUE(route_is_all_interior(edge.route));
+  std::vector<directional::authority::TransitionStep> steps(
+      edge.route.steps().begin(), edge.route.steps().end());
+  steps.push_back(steps.front());
+  edge.route = directional::authority::CanonicalRoute::from_observed_steps(
+      std::move(steps));
 
   const auto result = materialize(fixture, tampered);
   EXPECT_FALSE(result.success);

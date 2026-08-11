@@ -291,6 +291,9 @@ struct SourceTopologyRegions {
 };
 
 struct SurfaceFrontEdge {
+  explicit SurfaceFrontEdge(authority::TopologyRegionId region)
+      : sourceTopologyRegion(region) {}
+
   SurfaceTracePoint from;
   SurfaceTracePoint to;
   int family = 0;
@@ -303,13 +306,8 @@ struct SurfaceFrontEdge {
   int oppositeEdge = -1;
   int unfilledSide = 1;
   bool exterior = false;
-  /// Authoritative connected source component owning this front side.
-  std::optional<authority::SourceComponentId> sourceComponent;
-  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  /// Single-sheet authority; empty for legitimate multi-sheet front sides.
-  std::optional<authority::IsolationSheetId> sourceSheet;
-  /// Complete sorted isolation-sheet authority inherited from the owning cell.
-  std::vector<authority::IsolationSheetId> sourceIsolationSheets;
+  /// Authoritative topology region owning this front side.
+  authority::TopologyRegionId sourceTopologyRegion;
   SurfaceFrontBoundaryKind boundaryKind =
       SurfaceFrontBoundaryKind::OrdinaryInterior;
   /// Exact owner in SurfacePhaseFrontResult::periodicHolonomies.
@@ -328,10 +326,10 @@ struct SurfaceFrontEvent {
 
 /** Exact quotient relation between the two copies of an intrinsic annulus cut. */
 struct SurfacePeriodicHolonomy {
-  int sourceComponent = -1;
-  int sourceTopologyRegion = -1;
-  int sourceSheet = -1;
-  std::vector<int> sourceIsolationSheets;
+  explicit SurfacePeriodicHolonomy(authority::TopologyRegionId region)
+      : sourceTopologyRegion(region) {}
+
+  authority::TopologyRegionId sourceTopologyRegion;
   /// Intrinsic quotient action owned as one rotation/translation value.
   authority::GridAutomorphism action = authority::GridAutomorphism::identity();
   /// Canonical closed source transport route around the periodic cycle.
@@ -386,10 +384,10 @@ struct SurfaceBoundedDiskBoundaryRun {
  * run/corner authority for polygonal chart construction.
  */
 struct SurfaceBoundedDiskBoundaryPhase {
-  int sourceComponent = -1;
-  int sourceTopologyRegion = -1;
-  int sourceSheet = -1;
-  std::vector<int> sourceIsolationSheets;
+  explicit SurfaceBoundedDiskBoundaryPhase(authority::TopologyRegionId region)
+      : sourceTopologyRegion(region) {}
+
+  authority::TopologyRegionId sourceTopologyRegion;
   int chartUBranch = 0;
   int signedQuarterTurnSum = 0;
   double totalIntrinsicLength = 0.0;
@@ -401,15 +399,12 @@ struct SurfaceBoundedDiskBoundaryPhase {
 };
 
 struct SurfacePhaseFrontCell {
+  explicit SurfacePhaseFrontCell(authority::TopologyRegionId region)
+      : sourceTopologyRegion(region) {}
+
   int id = -1;
-  /// Authoritative connected source component owning this cell.
-  std::optional<authority::SourceComponentId> sourceComponent;
-  /// Authoritative source-topology region owning this cell after normalization.
-  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
-  /// Single-sheet compatibility authority; empty for legitimate multi-sheet cells.
-  std::optional<authority::IsolationSheetId> sourceSheet;
-  /// Complete sorted isolation-sheet authority observed by this cell.
-  std::vector<authority::IsolationSheetId> sourceIsolationSheets;
+  /// Authoritative source-topology region owning this cell.
+  authority::TopologyRegionId sourceTopologyRegion;
   bool orientationValidated = false;
   std::array<SurfaceTracePoint, 4> corners;
   std::array<LocalLatticeState, 4> lattice;
@@ -649,7 +644,6 @@ struct SurfaceCellNetwork {
   std::vector<SurfaceCellRail> authoritativeRails;
   std::vector<int> sourceFaceComponents;
   std::vector<int> sourceFaceSheets;
-  SourceTopologyRegions sourceTopologyRegions;
   std::vector<int> reliefRootVertices;
   Eigen::VectorXi reliefRegionLabels;
   std::set<std::uint64_t> reliefBarrierEdges;

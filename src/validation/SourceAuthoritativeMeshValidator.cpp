@@ -687,10 +687,14 @@ SourceChartCompatibility SourcePointLabelSupport::resolve_compatible_chart(
     std::pair<int, int> separated{-1, -1};
     for (const authority::TransitionStep &step : equivalence.route.steps()) {
       const authority::SourceEdgeTopologyKey &topology = step.topology();
+      const std::uint32_t firstVertex =
+          static_cast<std::uint32_t>(topology.first().index());
+      const std::uint32_t secondVertex =
+          static_cast<std::uint32_t>(topology.second().index());
       const std::uint64_t rawTopology =
-          geometry::surface_cell_tracing_detail::edge_key(
-              static_cast<int>(topology.first().index()),
-              static_cast<int>(topology.second().index()));
+          (static_cast<std::uint64_t>(std::min(firstVertex, secondVertex))
+           << 32U) |
+          static_cast<std::uint64_t>(std::max(firstVertex, secondVertex));
       const auto incidence = sourceEdgeFaces.find(rawTopology);
       if (hardFeatureEdges == nullptr ||
           hardFeatureEdges->count(rawTopology) == 0U ||

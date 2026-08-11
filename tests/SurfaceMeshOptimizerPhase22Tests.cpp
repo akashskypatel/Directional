@@ -166,6 +166,29 @@ directional::geometry::SurfaceCellProjectionChart source_chart(
           sheets[static_cast<std::size_t>(face)]};
 }
 
+directional::authority::CanonicalRoute hard_rail_route(
+    const std::uint64_t topology) {
+  const auto first = directional::authority::SourceVertexId::from_index(
+      static_cast<std::int64_t>(topology >> 32U), 4096);
+  const auto second = directional::authority::SourceVertexId::from_index(
+      static_cast<std::int64_t>(topology & 0xffffffffULL), 4096);
+  const auto transition =
+      directional::authority::InteriorTransitionId::from_index(0, 1);
+  if (!first || !second || !transition) {
+    throw std::runtime_error("Invalid hard-rail test authority.");
+  }
+  const auto key = directional::authority::SourceEdgeTopologyKey::make(
+      first.value(), second.value());
+  if (!key) throw std::runtime_error("Degenerate hard-rail test route.");
+  const auto step = directional::authority::TransitionStep::interior(
+      key.value(), transition.value(),
+      directional::authority::GridAutomorphism::identity(),
+      directional::authority::Orientation::Forward);
+  if (!step) throw std::runtime_error("Invalid hard-rail test route step.");
+  return directional::authority::CanonicalRoute::from_observed_steps(
+      {step.value()});
+}
+
 SourceHardRailChartEquivalence hard_rail_equivalence(
     const int railId, const int firstFrontEdge, const int secondFrontEdge,
     const std::uint64_t topology) {
@@ -173,7 +196,7 @@ SourceHardRailChartEquivalence hard_rail_equivalence(
   equivalence.railId = railId;
   equivalence.firstFrontEdge = firstFrontEdge;
   equivalence.secondFrontEdge = secondFrontEdge;
-  equivalence.routeTopologyKeys = {topology};
+  equivalence.route = hard_rail_route(topology);
   return equivalence;
 }
 
@@ -1001,7 +1024,7 @@ TEST(SurfaceMeshOptimizerPhase22,
   HardRailValidationFixture wrongRoute = make_hard_rail_validation_fixture();
   wrongRoute.authority[1]
       .hardRailEquivalences[0]
-      .routeTopologyKeys = {source_edge_key(0, 1)};
+      .route = hard_rail_route(source_edge_key(0, 1));
   expect_local_sheet_mismatch(wrongRoute);
 
   HardRailValidationFixture nonreciprocal =
