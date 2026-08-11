@@ -35,18 +35,18 @@ enum class AuthorityDomain : std::uint8_t {
 };
 
 enum class DomainErrorCode : std::uint8_t {
-  NegativeLegacyValue,
-  OutOfRangeLegacyValue,
+  NegativeIndex,
+  IndexOutOfRange,
   DomainMismatch,
   DegenerateSourceEdge,
   MissingInteriorTransition,
 };
 
 struct DomainError {
-  DomainErrorCode code = DomainErrorCode::NegativeLegacyValue;
+  DomainErrorCode code = DomainErrorCode::NegativeIndex;
   AuthorityDomain expectedDomain = AuthorityDomain::SourceVertex;
   std::optional<AuthorityDomain> suppliedDomain;
-  std::int64_t legacyValue = 0;
+  std::int64_t inputValue = 0;
   std::size_t extent = 0;
 
   auto operator<=>(const DomainError &) const = default;
@@ -72,8 +72,6 @@ public:
 private:
   std::variant<T, DomainError> state_;
 };
-
-class LegacyAuthorityAdapters;
 
 namespace detail {
 
@@ -124,7 +122,37 @@ public:
     return Tag::domain;
   }
 
-  [[nodiscard]] constexpr std::size_t value() const noexcept { return value_; }
+  [[nodiscard]] static DomainResult<SemanticId>
+  from_index(std::int64_t inputValue, std::size_t extent) {
+    if (inputValue < 0) {
+      return DomainResult<SemanticId>(DomainError{
+          DomainErrorCode::NegativeIndex, domain(), std::nullopt, inputValue,
+          extent});
+    }
+    const auto value = static_cast<std::uint64_t>(inputValue);
+    if (value >= extent) {
+      return DomainResult<SemanticId>(DomainError{
+          DomainErrorCode::IndexOutOfRange, domain(), std::nullopt, inputValue,
+          extent});
+    }
+    return DomainResult<SemanticId>(SemanticId(static_cast<std::size_t>(value)));
+  }
+
+  [[nodiscard]] static DomainResult<SemanticId>
+  from_domain_index(AuthorityDomain suppliedDomain, std::int64_t inputValue,
+                    std::size_t extent) {
+    if (suppliedDomain != domain()) {
+      return DomainResult<SemanticId>(DomainError{
+          DomainErrorCode::DomainMismatch, domain(), suppliedDomain, inputValue,
+          extent});
+    }
+    return from_index(inputValue, extent);
+  }
+
+  /** Representation-leaf projection only; never a semantic identity. */
+  [[nodiscard]] constexpr std::size_t index() const noexcept { return value_; }
+  /** Compatibility spelling for representation leaves. */
+  [[nodiscard]] constexpr std::size_t value() const noexcept { return index(); }
 
   auto operator<=>(const SemanticId &) const = default;
 
@@ -132,8 +160,6 @@ private:
   explicit constexpr SemanticId(std::size_t value) noexcept : value_(value) {}
 
   std::size_t value_;
-
-  friend class LegacyAuthorityAdapters;
 };
 
 using SourceVertexId = SemanticId<detail::SourceVertexTag>;
