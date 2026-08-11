@@ -785,6 +785,12 @@ SurfaceCellDomainIdentityAudit build_domain_identity_audit(
   audit.identity.boundaryNodeCount = static_cast<int>(boundary.size());
   audit.identity.boundaryHalfedgeCount = static_cast<int>(boundary.size());
   audit.identity.sourceSupportCount = source_support_count(cell, F);
+  if (!cell.sourceTopologyRegion.has_value()) {
+    audit.failure = SurfaceCellDomainIdentityFailureKind::OwnershipRegistryMismatch;
+    return audit;
+  }
+  audit.identity.sourceTopologyRegion = cell.sourceTopologyRegion;
+  // Diagnostic projections remain one-way and are ignored by identity semantics.
   audit.identity.sourceComponent = *components.begin();
   audit.identity.sourceSheet = cell.sourceSheet >= 0
                                    ? cell.sourceSheet
@@ -1451,8 +1457,10 @@ void append_repair_domain_identity(
   destination.push_back(identity.boundaryNodeCount);
   destination.push_back(identity.boundaryHalfedgeCount);
   destination.push_back(identity.sourceSupportCount);
-  destination.push_back(identity.sourceComponent);
-  destination.push_back(identity.sourceSheet);
+  destination.push_back(identity.sourceTopologyRegion.has_value()
+                            ? static_cast<std::int64_t>(
+                                  identity.sourceTopologyRegion->index())
+                            : -1);
   append_repair_identity(destination, identity.orientedBoundary);
   append_repair_identity(destination, identity.undirectedBoundary);
   append_repair_identity(destination, identity.sourceSupport);

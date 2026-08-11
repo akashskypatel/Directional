@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <array>
 #include <limits>
+#include <optional>
 #include <cstdint>
 #include <string>
 #include <tuple>
@@ -77,7 +78,10 @@ struct SourceProjectionChart {
 
 
 struct SurfaceCellOwnershipClassRecord {
-  int sourceComponent = -1;
+  // Semantic ownership is the typed producer region. Component/sheet values
+  // are projections of SourceTopologyRegions and are never authority here.
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  int sourceComponent = -1; // derived diagnostic projection; remove after callers cut over
   // Face-row-independent exact membership signature. Each member stores
   // {field chart, sorted source-triangle vertex ids}; source component/sheet
   // authority is owned outside the projection-chart value.
@@ -86,7 +90,7 @@ struct SurfaceCellOwnershipClassRecord {
   std::vector<SourceProjectionChart> exactCharts;
 
   [[nodiscard]] bool valid() const {
-    return sourceComponent >= 0 && canonicalMembership.valid &&
+    return sourceTopologyRegion.has_value() && canonicalMembership.valid &&
            !exactCharts.empty() &&
            std::is_sorted(exactCharts.begin(), exactCharts.end()) &&
            std::all_of(exactCharts.begin(), exactCharts.end(),
@@ -97,44 +101,44 @@ struct SurfaceCellOwnershipClassRecord {
 
   friend bool operator==(const SurfaceCellOwnershipClassRecord &lhs,
                          const SurfaceCellOwnershipClassRecord &rhs) {
-    return lhs.sourceComponent == rhs.sourceComponent &&
+    return lhs.sourceTopologyRegion == rhs.sourceTopologyRegion &&
            lhs.canonicalMembership == rhs.canonicalMembership &&
            lhs.exactCharts == rhs.exactCharts;
   }
 
   friend bool operator<(const SurfaceCellOwnershipClassRecord &lhs,
                         const SurfaceCellOwnershipClassRecord &rhs) {
-    return std::tie(lhs.sourceComponent, lhs.canonicalMembership,
+    return std::tie(lhs.sourceTopologyRegion, lhs.canonicalMembership,
                     lhs.exactCharts) <
-           std::tie(rhs.sourceComponent, rhs.canonicalMembership,
+           std::tie(rhs.sourceTopologyRegion, rhs.canonicalMembership,
                     rhs.exactCharts);
   }
 };
 
 inline SurfaceCellCanonicalIdentity
-make_surface_cell_ownership_key(const int sourceComponent,
+make_surface_cell_ownership_key(const authority::TopologyRegionId sourceRegion,
                                 const int classOrdinal) {
   SurfaceCellCanonicalIdentity identity;
-  if (sourceComponent < 0 || classOrdinal < 0) {
+  if (classOrdinal < 0) {
     return identity;
   }
   identity.valid = true;
-  identity.values = {sourceComponent, classOrdinal};
+  identity.values = {static_cast<std::int64_t>(sourceRegion.index()), classOrdinal};
   return identity;
 }
 
 inline bool decode_surface_cell_ownership_key(
-    const SurfaceCellCanonicalIdentity &identity, int &sourceComponent,
+    const SurfaceCellCanonicalIdentity &identity, int &sourceRegionIndex,
     int &classOrdinal) {
   if (!identity.valid || identity.values.size() != 2U ||
       identity.values[0] < 0 || identity.values[1] < 0 ||
       identity.values[0] > std::numeric_limits<int>::max() ||
       identity.values[1] > std::numeric_limits<int>::max()) {
-    sourceComponent = -1;
+    sourceRegionIndex = -1;
     classOrdinal = -1;
     return false;
   }
-  sourceComponent = static_cast<int>(identity.values[0]);
+  sourceRegionIndex = static_cast<int>(identity.values[0]);
   classOrdinal = static_cast<int>(identity.values[1]);
   return true;
 }
@@ -151,6 +155,8 @@ struct SurfaceCellDomainIdentity {
   int boundaryNodeCount = 0;
   int boundaryHalfedgeCount = 0;
   int sourceSupportCount = 0;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  // One-way diagnostic projections only; semantic equality/hash/order ignores them.
   int sourceComponent = -1;
   int sourceSheet = -1;
 
@@ -169,21 +175,24 @@ struct SurfaceCellDomainIdentity {
     mix(static_cast<std::uint64_t>(boundaryNodeCount));
     mix(static_cast<std::uint64_t>(boundaryHalfedgeCount));
     mix(static_cast<std::uint64_t>(sourceSupportCount));
-    mix(static_cast<std::uint64_t>(sourceComponent));
-    mix(static_cast<std::uint64_t>(sourceSheet));
+    mix(sourceTopologyRegion.has_value()
+            ? static_cast<std::uint64_t>(sourceTopologyRegion->index())
+            : std::numeric_limits<std::uint64_t>::max());
     return seed;
   }
 
   [[nodiscard]] bool same_source_ownership(
       const SurfaceCellDomainIdentity &other) const {
-    if (!valid || !other.valid || sourceComponent != other.sourceComponent) {
+    if (!valid || !other.valid || !sourceTopologyRegion.has_value() ||
+        !other.sourceTopologyRegion.has_value() ||
+        sourceTopologyRegion != other.sourceTopologyRegion) {
       return false;
     }
     if (sourceOwnershipClass.valid || other.sourceOwnershipClass.valid) {
       return sourceOwnershipClass.valid && other.sourceOwnershipClass.valid &&
              sourceOwnershipClass == other.sourceOwnershipClass;
     }
-    return sourceSheet == other.sourceSheet;
+    return true;
   }
 
   [[nodiscard]] bool same_oriented_domain(
@@ -210,8 +219,7 @@ struct SurfaceCellDomainIdentity {
   friend bool operator==(const SurfaceCellDomainIdentity &lhs,
                          const SurfaceCellDomainIdentity &rhs) {
     return lhs.valid == rhs.valid &&
-           lhs.sourceComponent == rhs.sourceComponent &&
-           lhs.sourceSheet == rhs.sourceSheet &&
+           lhs.sourceTopologyRegion == rhs.sourceTopologyRegion &&
            lhs.sourceOwnershipClass == rhs.sourceOwnershipClass &&
            lhs.sourceChartMap == rhs.sourceChartMap &&
            lhs.boundaryNodeCount == rhs.boundaryNodeCount &&
@@ -232,17 +240,14 @@ struct SurfaceCellDomainIdentity {
     if (lhs.valid != rhs.valid) {
       return lhs.valid < rhs.valid;
     }
-    if (lhs.sourceComponent != rhs.sourceComponent) {
-      return lhs.sourceComponent < rhs.sourceComponent;
+    if (lhs.sourceTopologyRegion != rhs.sourceTopologyRegion) {
+      return lhs.sourceTopologyRegion < rhs.sourceTopologyRegion;
     }
     if (lhs.sourceOwnershipClass != rhs.sourceOwnershipClass) {
       return lhs.sourceOwnershipClass < rhs.sourceOwnershipClass;
     }
     if (lhs.sourceChartMap != rhs.sourceChartMap) {
       return lhs.sourceChartMap < rhs.sourceChartMap;
-    }
-    if (lhs.sourceSheet != rhs.sourceSheet) {
-      return lhs.sourceSheet < rhs.sourceSheet;
     }
     if (lhs.sourceSupportCount != rhs.sourceSupportCount) {
       return lhs.sourceSupportCount < rhs.sourceSupportCount;

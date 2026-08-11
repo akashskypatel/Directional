@@ -543,6 +543,8 @@ void complete_segment_scope(const SurfaceArrangementOptions &options,
   }
   // These integer fields are temporary representation leaves on Segment2.
   // SourceTopologyRegions is the only authority consulted to populate them.
+  segment.sourceTopologyRegion =
+      options.sourceAuthority->region_for_row(faceId.value());
   segment.sourceComponent = static_cast<int>(
       options.sourceAuthority->component_for_row(faceId.value()).index());
   segment.sourceSheet = static_cast<int>(
@@ -1512,17 +1514,21 @@ namespace directional::geometry {
 const SurfaceCellOwnershipClassRecord *find_surface_cell_ownership_class(
     const SurfaceCellComplex &complex,
     const SurfaceCellCanonicalIdentity &key) {
-  int component = -1;
+  int sourceRegionIndex = -1;
   int ordinal = -1;
-  if (!decode_surface_cell_ownership_key(key, component, ordinal) ||
+  if (!decode_surface_cell_ownership_key(key, sourceRegionIndex, ordinal) ||
       ordinal < 0 ||
       ordinal >= static_cast<int>(complex.sourceOwnershipRegistry.size())) {
     return nullptr;
   }
   const SurfaceCellOwnershipClassRecord &record =
       complex.sourceOwnershipRegistry[static_cast<std::size_t>(ordinal)];
-  return record.sourceComponent == component && record.valid() ? &record
-                                                               : nullptr;
+  return record.sourceTopologyRegion.has_value() &&
+                 static_cast<int>(record.sourceTopologyRegion->index()) ==
+                     sourceRegionIndex &&
+             record.valid()
+         ? &record
+         : nullptr;
 }
 
 bool validate_surface_cell_ownership_registry(
@@ -1550,7 +1556,8 @@ bool validate_surface_cell_ownership_registry(
     }
     const SurfaceCellOwnershipClassRecord *record =
         find_surface_cell_ownership_class(complex, cell.sourceOwnershipClass);
-    if (record == nullptr || cell.sourceComponent != record->sourceComponent ||
+    if (record == nullptr ||
+        cell.sourceTopologyRegion != record->sourceTopologyRegion ||
         !std::is_sorted(cell.sourceCharts.begin(), cell.sourceCharts.end())) {
       return false;
     }
@@ -1610,6 +1617,7 @@ bool canonicalize_surface_cell_ownership(
 
   const auto record_for_cell = [&](const SurfaceArrangementCell &cell) {
     SurfaceCellOwnershipClassRecord record;
+    record.sourceTopologyRegion = cell.sourceTopologyRegion;
     record.sourceComponent = cell.sourceComponent;
     record.exactCharts = cell.sourceCharts;
     std::sort(record.exactCharts.begin(), record.exactCharts.end());
@@ -1653,9 +1661,13 @@ bool canonicalize_surface_cell_ownership(
       return false;
     }
     const int ordinal = static_cast<int>(std::distance(records.begin(), found));
+    cell.sourceTopologyRegion = record.sourceTopologyRegion;
     cell.sourceComponent = record.sourceComponent;
+    if (!record.sourceTopologyRegion.has_value()) {
+      return false;
+    }
     cell.sourceOwnershipClass =
-        make_surface_cell_ownership_key(record.sourceComponent, ordinal);
+        make_surface_cell_ownership_key(*record.sourceTopologyRegion, ordinal);
     cell.sourceCharts.erase(
         std::remove_if(cell.sourceCharts.begin(), cell.sourceCharts.end(),
                        [&](const SourceProjectionChart &chart) {
@@ -1924,6 +1936,7 @@ SurfaceCellComplex build_surface_cell_complex(
     segment.singularitySupport = arc.singularitySupport;
     segment.railId = arc.railId;
     segment.curveId = arc.curveId;
+    segment.sourceTopologyRegion = arc.sourceTopologyRegion;
     segment.sourceComponent = arc.sourceComponent;
     segment.sourceSheet = arc.sourceSheet;
     segment.proposalId = arc.proposalId;
@@ -2165,6 +2178,7 @@ SurfaceCellComplex build_surface_cell_complex(
         SurfaceArrangementNodeOccurrence occurrence;
         occurrence.sourceFace = face;
         occurrence.barycentric = bary;
+        occurrence.sourceTopologyRegion = segment.sourceTopologyRegion;
         occurrence.sourceComponent = segment.sourceComponent;
         occurrence.sourceSheet = segment.sourceSheet;
         occurrence.sourceArc = segment.sourceArc;
@@ -2198,6 +2212,7 @@ SurfaceCellComplex build_surface_cell_complex(
     SurfaceArrangementNode node;
     node.id = static_cast<int>(complex.nodes.size());
     node.sourceFace = face;
+    node.sourceTopologyRegion = segment.sourceTopologyRegion;
     node.sourceComponent = segment.sourceComponent;
     node.sourceSheet = segment.sourceSheet;
     node.hardBarrierCrossing =
@@ -2210,6 +2225,7 @@ SurfaceCellComplex build_surface_cell_complex(
     SurfaceArrangementNodeOccurrence occurrence;
     occurrence.sourceFace = face;
     occurrence.barycentric = bary;
+    occurrence.sourceTopologyRegion = segment.sourceTopologyRegion;
     occurrence.sourceComponent = segment.sourceComponent;
     occurrence.sourceSheet = segment.sourceSheet;
     occurrence.sourceArc = segment.sourceArc;
@@ -2249,6 +2265,7 @@ SurfaceCellComplex build_surface_cell_complex(
         value.singularitySupport = segment.singularitySupport;
         value.railId = segment.railId;
         value.curveId = segment.curveId;
+        value.sourceTopologyRegion = segment.sourceTopologyRegion;
         value.sourceComponent = segment.sourceComponent;
         value.sourceSheet = segment.sourceSheet;
         value.proposalId = segment.proposalId;
@@ -2446,6 +2463,9 @@ SurfaceCellComplex build_surface_cell_complex(
     halfedge.curveId =
         authoritativeRail != nullptr ? authoritativeRail->curveId
                                      : primary.curveId;
+    halfedge.sourceTopologyRegion =
+        authoritativeRail != nullptr ? authoritativeRail->sourceTopologyRegion
+                                     : primary.sourceTopologyRegion;
     halfedge.sourceComponent =
         authoritativeRail != nullptr ? authoritativeRail->sourceComponent
                                      : primary.sourceComponent;
@@ -6940,6 +6960,14 @@ SurfaceCellComplex build_surface_cell_complex(
     }
     SurfaceCellOwnershipClassRecord record;
     record.sourceComponent = charts.front().sourceComponent;
+    const auto firstPublished = transitionGraph.chart(charts.front().sourceFace);
+    const auto firstRegion = firstPublished.has_value()
+                                 ? transitionGraph.topology_region(*firstPublished)
+                                 : std::nullopt;
+    if (!firstRegion.has_value()) {
+      continue;
+    }
+    record.sourceTopologyRegion = firstRegion.value();
     std::vector<std::array<std::int64_t, 4>> members;
     members.reserve(charts.size());
     bool valid = true;
@@ -6951,6 +6979,12 @@ SurfaceCellComplex build_surface_cell_complex(
       }
       const auto published = transitionGraph.chart(chart.sourceFace);
       if (!published.has_value()) {
+        valid = false;
+        break;
+      }
+      const auto region = transitionGraph.topology_region(*published);
+      if (!region.has_value() ||
+          region.value() != record.sourceTopologyRegion.value()) {
         valid = false;
         break;
       }
@@ -7005,8 +7039,10 @@ SurfaceCellComplex build_surface_cell_complex(
     }
     const SurfaceCellOwnershipClassRecord &record =
         complex.sourceOwnershipRegistry[static_cast<std::size_t>(found->second)];
-    return make_surface_cell_ownership_key(record.sourceComponent,
-                                           found->second);
+    return record.sourceTopologyRegion.has_value()
+               ? make_surface_cell_ownership_key(*record.sourceTopologyRegion,
+                                                 found->second)
+               : SurfaceCellCanonicalIdentity{};
   };
 
   for (SurfaceArrangementCell &cell : complex.cells) {
@@ -7267,6 +7303,7 @@ SurfaceCellComplex build_surface_cell_complex(
         SurfaceArrangementNodeOccurrence occurrence;
         occurrence.sourceFace = edge.sourceFace;
         occurrence.barycentric = barycentric;
+        occurrence.sourceTopologyRegion = edge.sourceTopologyRegion;
         occurrence.sourceComponent = edge.sourceComponent;
         occurrence.sourceSheet = edge.sourceSheet;
         occurrence.sourceArc = edge.sourceArc;
@@ -7302,6 +7339,13 @@ SurfaceCellComplex build_surface_cell_complex(
       embeddingValid = false;
       continue;
     }
+    const auto selectedRegion =
+        transitionGraph.topology_region(cell.sourceCharts.front());
+    if (!selectedRegion.has_value()) {
+      embeddingValid = false;
+      continue;
+    }
+    cell.sourceTopologyRegion = selectedRegion.value();
     cell.sourceComponent = selectedCharts.begin()->sourceComponent;
     cell.sourceSheet = selectedCharts.begin()->localSheet;
     cell.sourceFaces.assign(selectedFaces.begin(), selectedFaces.end());
@@ -7671,6 +7715,9 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
   mix(static_cast<std::int64_t>(complex.sourceOwnershipRegistry.size()));
   for (const SurfaceCellOwnershipClassRecord &record :
        complex.sourceOwnershipRegistry) {
+    mix(record.sourceTopologyRegion.has_value()
+            ? static_cast<std::int64_t>(record.sourceTopologyRegion->index())
+            : -1);
     mix(record.sourceComponent);
     mix(record.canonicalMembership.valid ? 1 : 0);
     mix(static_cast<std::int64_t>(record.canonicalMembership.values.size()));
@@ -7699,6 +7746,9 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     mix(static_cast<int>(node.occurrences.size()));
     for (const SurfaceArrangementNodeOccurrence &occurrence : node.occurrences) {
       mix(occurrence.sourceFace);
+      mix(occurrence.sourceTopologyRegion.has_value()
+              ? static_cast<std::int64_t>(occurrence.sourceTopologyRegion->index())
+              : -1);
       mix(occurrence.sourceComponent);
       mix(occurrence.sourceSheet);
       mix(occurrence.sourceArc);
@@ -7739,6 +7789,9 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
               ? static_cast<std::int64_t>(value.railId->index())
               : -1);
       mix(value.curveId);
+      mix(value.sourceTopologyRegion.has_value()
+              ? static_cast<std::int64_t>(value.sourceTopologyRegion->index())
+              : -1);
       mix(value.sourceComponent);
       mix(value.sourceSheet);
       mix(value.proposalId);
@@ -7752,6 +7805,9 @@ std::uint64_t hash_surface_cell_complex(const SurfaceCellComplex &complex) {
     }
   }
   for (const SurfaceArrangementCell &cell : complex.cells) {
+    mix(cell.sourceTopologyRegion.has_value()
+            ? static_cast<std::int64_t>(cell.sourceTopologyRegion->index())
+            : -1);
     mix(cell.sourceComponent);
     mix(cell.sourceSheet);
     mix(cell.sourceOwnershipClass.valid ? 1 : 0);

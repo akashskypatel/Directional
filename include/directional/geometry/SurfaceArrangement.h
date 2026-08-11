@@ -263,8 +263,9 @@ struct SurfaceArrangementArc {
   int provenance = -1;
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  int sourceComponent = -1; // derived diagnostic projection
+  int sourceSheet = -1;     // derived diagnostic projection
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
@@ -281,8 +282,9 @@ struct SurfaceArrangementNodeOccurrence {
   // Exact source-chart scope. Edge-interior arrangement nodes may be shared
   // geometrically by two source sheets, so the node-level primary chart is
   // not sufficient to select an oriented halfedge endpoint.
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  int sourceComponent = -1; // derived diagnostic projection
+  int sourceSheet = -1;     // derived diagnostic projection
   int sourceArc = -1;
   int provenance = -1;
   std::optional<authority::HardRailId> railId;
@@ -305,8 +307,9 @@ struct SurfaceArrangementProvenance {
   bool singularitySupport = false;
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  int sourceComponent = -1; // derived diagnostic projection
+  int sourceSheet = -1;     // derived diagnostic projection
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
@@ -320,8 +323,9 @@ struct SurfaceArrangementProvenance {
 struct SurfaceArrangementNode {
   int id = -1;
   int sourceFace = -1;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  int sourceComponent = -1; // derived diagnostic projection
+  int sourceSheet = -1;     // derived diagnostic projection
   bool hardBarrierCrossing = false;
   Eigen::RowVector3d barycentric = Eigen::RowVector3d::Zero();
   int sourceEdge = -1;
@@ -347,8 +351,9 @@ struct SurfaceArrangementHalfedge {
   bool singularitySupport = false;
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  int sourceComponent = -1; // derived diagnostic projection
+  int sourceSheet = -1;     // derived diagnostic projection
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
@@ -366,9 +371,9 @@ struct SurfaceArrangementHalfedge {
 struct SurfaceArrangementCell {
   int id = -1;
   int sourceFace = -1;
-  // Exact ownership scope of the oriented cell.  Source-face support is kept
-  // separately because one cell can span many source triangles while still
-  // belonging to one connected component and one source sheet.
+  // Exact ownership scope of the oriented cell is the producer topology region.
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  // Component/sheet fields are temporary one-way diagnostic projections only.
   int sourceComponent = -1;
   // Legacy representative chart. Exact per-face charts are kept in
   // sourceCharts and sourceOwnershipClass identifies their physical cell side.
@@ -581,8 +586,9 @@ struct Segment2 {
   bool singularitySupport = false;
   std::optional<authority::HardRailId> railId;
   int curveId = -1;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
+  std::optional<authority::TopologyRegionId> sourceTopologyRegion;
+  int sourceComponent = -1; // derived diagnostic projection
+  int sourceSheet = -1;     // derived diagnostic projection
   int proposalId = -1;
   int proposalSeedId = -1;
   int proposalSide = -1;
