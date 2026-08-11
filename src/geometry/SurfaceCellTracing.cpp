@@ -2637,8 +2637,7 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
       return std::nullopt;
     }
     std::set<int> isolationSheets;
-    for (const authority::SourceFaceId faceId : region.sourceFaces) {
-      const int face = static_cast<int>(faceId.index());
+    for (const int face : region.sourceFaces) {
       scratchRegionByFace[static_cast<std::size_t>(face)] = regionId;
       if (face_label_or_default(options.sourceFaceComponents, face, 0) !=
           region.sourceComponent) {
@@ -2678,8 +2677,7 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
     std::set<int> regionVertices;
     std::set<std::uint64_t> regionEdges;
     std::map<int, std::vector<int>> boundaryAdjacency;
-    for (const authority::SourceFaceId faceId : region.sourceFaces) {
-      const int face = static_cast<int>(faceId.index());
+    for (const int face : region.sourceFaces) {
       for (int corner = 0; corner < 3; ++corner) {
         regionVertices.insert(faces(face, corner));
         const int a = faces(face, corner);
@@ -2833,7 +2831,7 @@ std::optional<SourceTopologyRegions> build_source_topology_regions(
   return published;
 }
 
-std::uint64_t surface_topology_region_hash(const SurfaceTopologyRegion &region) {
+std::uint64_t surface_topology_region_hash_impl(const SurfaceTopologyRegion &region) {
   std::uint64_t hash = 1469598103934665603ULL;
   const auto consume = [&](const std::uint64_t value) {
     hash ^= value;
@@ -9424,8 +9422,8 @@ SurfacePhaseFrontResult build_uniform_phase_front(
   }
   std::sort(regions.begin(), regions.end(), [](const RegionWork &a,
                                                 const RegionWork &b) {
-    if (surface_topology_region_hash(*a.region) != surface_topology_region_hash(*b.region)) {
-      return surface_topology_region_hash(*a.region) < surface_topology_region_hash(*b.region);
+    if (surface_topology_region_hash_impl(*a.region) != surface_topology_region_hash_impl(*b.region)) {
+      return surface_topology_region_hash_impl(*a.region) < surface_topology_region_hash_impl(*b.region);
     }
     return a.canonicalVertices < b.canonicalVertices;
   });
@@ -9919,6 +9917,10 @@ SurfacePhaseFrontResult build_uniform_phase_front(
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry {
+
+std::uint64_t surface_topology_region_hash(const SurfaceTopologyRegion &region) {
+  return surface_cell_tracing_detail::surface_topology_region_hash_impl(region);
+}
 
 const char *surface_cell_producer_disposition_name(
     const SurfaceCellProducerDisposition disposition) {
