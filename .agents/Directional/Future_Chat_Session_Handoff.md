@@ -87,7 +87,7 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` is immutable accep
 
 Strict-validator timing sampled **10/10 pass** but remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. No stable product regression event or recurrence was created; historical totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
 
-Repository-side per-turn retention is clean after closeout: retain the M1l immutable Test + Benchmark report and the single M1m next-turn plan in addition to durable documents. The consumed M1l Code + Build report and artifact-only plan are superseded once their necessary facts are preserved in the retained report/changelog/tracker.
+Repository-side per-turn retention is clean: `.agents/Directional` retains the current M1l immutable Test + Benchmark report and the single M1m next-turn plan in addition to durable documents. The consumed M1l Code + Build report and artifact-only plan have been retired after their necessary facts were preserved in the retained report/changelog/tracker. Temporary M1l workflows, triggers, and payloads are removed; only `.github/workflows/agent-source-snapshot.yml` remains durable.
 
 ## Mandatory end-of-turn checklist
 
