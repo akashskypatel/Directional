@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-10 UTC
+Last updated: 2026-08-11 UTC
 
 ## Purpose
 
@@ -10,15 +10,15 @@ Keep this file task-oriented. Exact current-turn instructions belong in `.agents
 
 ## Current focus
 
-- [ ] **M1m — Isolation-Seam Certificate Topology-Region Consumer: Code + Build only.**
-  - Authoritative plan: `.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`.
-  - Bounded seam: `SurfaceTopologyRegion::id / build_isolation_seam_transport_certificates -> SurfaceIsolationSeamTransportCertificate::sourceTopologyRegion -> still-raw materializer/hash compatibility consumers`.
-  - Migrate only certificate-owned topology-region identity to checked `TopologyRegionId`; preserve global topology-region construction/schema, accepted cell/edge region authority, all other raw compatibility schemas, M2-M6, fallback/recovery, optimization, and G4 behavior.
+- [ ] **M1 single-authority cutover: Code + Build only.**
+  - Authoritative plan: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
+  - Replace the complete affected producer-to-consumer authority contracts in one turn: checked ID ingress; one topology-region product; complete isolation-seam certificates; one chart/support/route/periodic transport representation; exhaustive producer outcome; deletion of displaced fields/helpers/tests.
+  - Preserve G0–G3 semantic invariants, truthful typed failures, determinism, strict direct disposition, and no fallback. Do not force prior raw numbering, hashes, row order, or known-incomplete product output.
 - [x] **M1l — Phase-Front Cell Topology-Region Consumer: immutable accepted.**
   - Implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; Code + Build artifacts `9083262395 / 9083262833`; immutable runtime `31444022339 / 93634344918`, evidence/log artifacts `9083913766 / 9083913939`.
   - Producer **226**, M1l **6/6**, required-green **211/211**, full entering preservation/direct-product authority, unchanged known-red classes, and exact **56/56** postflight.
-- [ ] After a successful M1m Code + Build artifact is produced, run the separate immutable **Artifact-Only Test + Benchmark** turn before selecting another architecture consumer.
-- [ ] Continue later bounded M1 consumers only after M1m immutable acceptance.
+- [ ] After the final cutover Code + Build artifact is produced, run the separate immutable **Artifact-Only Test + Benchmark** turn. Discover the actual test inventory; require the new semantic contract groups, all entering semantic preservation gates, direct-product oracles, known-red classification, and a clean duplicate-authority source audit.
+- [ ] After immutable M1 acceptance, close M1 and return the primary queue to **G4 production work**. Do not select another authority-migration letter slice.
 
 Current baseline: T1 and M1a-M1l are immutable accepted. Product gate G4 remains active and independent of architecture-migration acceptance. Draft PR #8 remains open and unmerged.
 
@@ -31,7 +31,7 @@ Current baseline: T1 and M1a-M1l are immutable accepted. Product gate G4 remains
 - [ ] **G4 — topology-distinct completion and singularities.**
   - [ ] `G4-B001` / `PR8-R034` / `G4-R007`: resolve direct-torus final `LocalSheetMismatch` and reach strict-valid torus **3/3**.
   - [ ] `G4-B002`: replace historical exact-torus `InvalidHardRailPairing` with one shared source-authoritative hard-rail schedule; architecture ownership is M3.
-  - [ ] `G4-B003`: support nonzero periodic Z4 production behavior with staged M1/M4 authority and independent product acceptance.
+  - [ ] `G4-B003`: support nonzero periodic Z4 production behavior with the completed M1 transport contract, the required M4 relation certificate, and independent product acceptance.
   - [ ] `G4-B004`: establish a positive multi-isolation quotient witness with focused and representative certificate evidence.
   - [ ] Return to prescribed-sphere singularity completion only when the active G4 prerequisite boundary permits it; prove the direct cause before elevating historical completion/simplification failures.
 - [ ] **G5 — adaptivity and hard features.**
@@ -41,7 +41,7 @@ Current baseline: T1 and M1a-M1l are immutable accepted. Product gate G4 remains
 ## Architecture migration roadmap
 
 - [x] **M0 — preserve immutable evidence.**
-- [ ] **M1 — authority kernel and staged production adoption.**
+- [ ] **M1 — single-authority contract cutover.**
   - [x] M1a authority kernel.
   - [x] M1b first source/provenance consumer.
   - [x] M1c field-transition consumer.
@@ -54,13 +54,12 @@ Current baseline: T1 and M1a-M1l are immutable accepted. Product gate G4 remains
   - [x] M1j phase-front edge source-scope consumer.
   - [x] M1k phase-front edge topology-region consumer.
   - [x] M1l phase-front cell topology-region consumer.
-  - [ ] M1m isolation-seam certificate topology-region consumer.
-  - [ ] Select and migrate later bounded M1 consumers one semantic owner at a time until raw compatibility authority no longer drives semantic decisions.
-- [ ] **M2 — closed producer outcomes and single-writer scope.** Replace overlapping attempted/succeeded/disposition state with exhaustive outcomes; introduce immutable source/topology/region authority products; remove consumer-side scope rewriting; separate temporary/public/diagnostic retention.
+  - [ ] Final cutover: replace all remaining affected producer/storage/verifier/materializer contracts together, remove the displaced forms, build/package, then validate separately.
+- [ ] **M2 — remaining closed stage products and single-writer scope.** When active product work reaches a producer outside the M1 cutover, replace its complete outcome/snapshot contract in that production turn; do not run another representation-only campaign.
 - [ ] **M3 — global conformity before regional production.** Compute one exact hard-rail breakpoint schedule and certificate before local regions commit cells; both sides consume the identical ordered schedule; remove post-hoc local pairing as authority.
 - [ ] **M4 — certificate-carrying chart and quotient relations.** Publish explicit directed occurrence/transport/quotient relations with verifiable certificates; validators verify rather than reconstruct them; close remaining global-local relation debt behind periodic/G4 capability.
 - [ ] **M5 — occurrence, embedding, and independent verification split.** Use explicit occurrences, exact source support, certificate-driven quotient materialization, and independently recomputed elementary source/output incidence.
-- [ ] **M6 — retire legacy representations and decompose ownership modules.** After typed consumers and immutable evidence exist, retire obsolete parallel raw authority, split oversized ownership modules, and harden diagnostics/resource/CI behavior.
+- [ ] **M6 — module boundaries and operational hardening.** Split oversized ownership modules and harden diagnostics/resource/CI after their product contracts are correct; do not defer deletion required by an earlier contract replacement.
 
 ## Required target-stage corrections
 

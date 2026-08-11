@@ -2,7 +2,7 @@
 
 **Status:** normative architecture  
 **Scope:** the direct, source-authoritative, pure-quad surface-cell backend  
-**Decision:** existing behavior may be verified, but new G4/G5 behavior must not extend the legacy authority model. All new work follows the staged migration in this document.
+**Decision:** this experimental branch stores one authority contract per semantic fact. Existing behavior is evidence only; each replacement is an in-place producer-to-consumer cutover and the displaced contract is deleted in the same change.
 
 ## 1. Document authority
 
@@ -11,7 +11,7 @@ This file defines architecture and invariants only. It intentionally contains no
 | Concern | Authoritative record |
 |---|---|
 | Normative product and architecture | this `DESIGN.md` |
-| Current gate and next accepted action | `TODO` and `MILESTONE_G_TODO.md` |
+| Current gate and next accepted action | `TODO.md` |
 | Exact next-session instructions | `.agents/Directional/Future_Chat_Session_Handoff.md` |
 | Runtime, build, and benchmark evidence | dated plan/report documents |
 | Regression history and repeated patterns | `.agents/Directional/Regression_Root_Cause_Tracker.md` |
@@ -371,7 +371,7 @@ surface_cells/
   diagnostics/     derived reports and serialization
 ```
 
-File size is not itself an invariant, but a module that combines producer selection, topology planning, canonicalization, materialization, validation, diagnostics, and fallback violates single ownership. New behavior is not added to the existing tracing, arrangement, or pipeline monolith unless it is an adapter that moves responsibility toward this layout.
+File size is not itself an invariant, but a module that combines producer selection, topology planning, canonicalization, materialization, validation, diagnostics, and fallback violates single ownership. New behavior belongs in the target modules. When an existing monolith must change, the affected ownership contract moves completely in that change; a retained bridge is not an architectural destination.
 
 ## 12. Verification matrix
 
@@ -431,41 +431,49 @@ product intent, nightly corpus/fuzz, and quality tiers; build options may not
 hide mandatory authority. A known-red intent test is reported, not disabled or
 counted as green.
 
-## 14. Migration plan
+## 14. Implementation transition
 
-This is a strangler migration. Each slice is independently reviewable and preserves the last immutable runtime artifact as comparison authority. No big-bang rewrite is approved.
+This branch is experimental and has no released surface-cell ABI or serialized schema to preserve. A semantic contract is replaced vertically from producer through verifier/materializer, and the displaced fields, helpers, and tests are removed in the same Code + Build turn. Immutable artifacts remain comparison evidence, but their internal numbering, hashes, row order, and incomplete product behavior are not design requirements.
 
 ### M0 — preserve evidence
 
-Run the already compiled multi-rail artifact exactly as its artifact-only plan requires. This records whether the current patch fixes `G4-R007`; it does not certify the legacy architecture. No source or test edit is mixed into this checkpoint.
+M0 and T1 are complete historical prerequisites. Their artifacts remain evidence for regression classification and independent-oracle adequacy; they do not certify the pre-cutover architecture.
 
-After M0, complete `T1` independent test-oracle foundation in its own
-Code + Build / immutable Test + Benchmark pair before M1 production migration.
-The queued implementation boundary is
-`.agents/Directional/Test_Architecture_T1_Independent_Oracle_Foundation_Code_Build_Plan.md`.
+### M1 — single-authority contract cutover
 
-### M1 — authority kernel and adapters
+Finish the authority transition in one Code + Build turn:
 
-Introduce strong IDs, one chart type, `SourceSupport`, `TransitionStep`, `CanonicalRoute`, and grid-automorphism algebra behind compatibility adapters. Behavior is unchanged.
-
-Acceptance:
-
-- compile-only Code + Build;
-- `T1` test-oracle/package authority is already accepted;
-- no public integer-domain conversion without a named checked function;
-- adapter round-trip properties and compile-time non-convertibility tests;
-- old runtime artifact remains the behavioral comparison baseline.
-
-### M2 — seal producer state and single-writer snapshots
-
-Replace `disposition + attempted + succeeded` with `ProducerOutcome<T>`. Replace duplicated region/sheet arrays with immutable authority snapshots and typed references. Aggregators validate rather than overwrite producer scope.
+- checked strong-ID construction at mesh/container ingress;
+- one source-chart value type and one exact `SourceSupport` identity;
+- `TransitionStep`, `CanonicalRoute`, and `GridAutomorphism` as the only stored transport contract;
+- one typed `SourceTopologyRegions` product referenced by cells, front edges, periodic/bounded-disk records, certificates, and occurrences;
+- one fully typed isolation-seam certificate;
+- one exhaustive producer outcome with no consumable partial payload;
+- numeric projection only at direct container/Eigen access or derived export encoding;
+- deletion of every displaced field, conversion helper, alias, and representation-only test.
 
 Acceptance:
 
-- inconsistent producer states are unrepresentable;
-- exhaustive dispatch tests cover all alternatives;
-- no generic producer runs after `Rejected`;
-- plane, seam, close sheets, and cylinder remain strict-valid.
+- compile-only Code + Build followed by separate immutable Test + Benchmark;
+- `T1` package/oracle authority remains accepted;
+- compile-time non-convertibility and checked-ingress boundary tests;
+- positive, tamper, and permutation tests for region, chart, support, route, periodic, and certificate contracts;
+- no duplicated semantic field or numeric bridge remains in the affected production/test surface;
+- G0–G3 semantic invariants, truthful typed failures, deterministic identity, and strict no-fallback disposition remain valid;
+- differences from the entering artifact are classified by product/design invariants rather than forced back to prior internal representation.
+
+After M1 immutable acceptance, the primary queue returns to G4. M2–M5 are not a separate multi-turn representation campaign: when a G4/G5 blocker requires one of those contracts, the production change implements that complete vertical contract and its evidence together.
+
+### M2 — closed stage products and single writers
+
+Any remaining producer with overlapping state is replaced by one exhaustive outcome and one immutable stage product. Consumers reference the product and may validate it; they do not rewrite or reconstruct its semantics.
+
+Acceptance:
+
+- inconsistent outcomes are unrepresentable;
+- exhaustive dispatch covers every alternative;
+- `Rejected` is terminal and cannot trigger substitution;
+- the affected direct product gate passes its independent oracle.
 
 ### M3 — global conformity plan
 
@@ -475,12 +483,12 @@ Acceptance:
 
 - exact shared-rail schedule positive/tamper tests;
 - target-size variation cannot create different side breakpoints;
-- the historical exact-torus `InvalidHardRailPairing` blocker is removed without post-hoc pairing;
+- the exact-torus `InvalidHardRailPairing` blocker is removed without post-hoc pairing;
 - work and solver bounds are reported.
 
 ### M4 — certificate-carrying chart and quotient relations
 
-Replace validator-side reachability reconstruction, boolean witness compression, front-edge equality, and parallel relation vectors with canonical relation IDs and explicit path certificates.
+Replace verifier-side reachability reconstruction, boolean witness compression, front-edge equality, and relation-vector coupling with canonical relation IDs and explicit path certificates in one producer-to-consumer change.
 
 Acceptance:
 
@@ -489,26 +497,26 @@ Acceptance:
 - missing, duplicate, conflicting, nonreciprocal, and representation-renumbered relations fail typed;
 - torus lineage and quotient acceptance are direct production evidence.
 
-### M5 — independent verification and occurrence split
+### M5 — occurrence, embedding, and independent verification
 
-Separate occurrence creation, quotient construction, geometry embedding, and validation. Centralize exact source support and remove consumer-specific quantized identity.
+Separate occurrence creation, quotient construction, geometry embedding, and validation as complete stage products. The verifier consumes certificates and independently recomputes elementary incidence; it never repairs producer state.
 
 Acceptance:
 
-- validator consumes certificates and independently recomputes elementary incidence only;
 - equal coordinates without a relation remain distinct;
-- all owned relations are consumed exactly once;
+- every owned relation is consumed exactly once;
+- exact source support is shared without consumer-specific quantized identity;
 - source-row, output-row, and scheduler permutation invariance passes.
 
-### M6 — decompose monoliths and retire adapters
+### M6 — module boundaries and operational hardening
 
-Move responsibilities to the target module layout, remove legacy duplicate types and caches, and make forbidden APIs unavailable.
+Move responsibilities to the target module layout and harden diagnostics, resource accounting, packaging, and CI after the owning product contracts are correct.
 
 Acceptance:
 
-- no semantic identity is a generic integer vector;
-- no public parallel topology/index route arrays remain;
+- forbidden producer/verifier dependencies are unavailable;
 - no semantic equality includes execution handles or backend choice;
+- diagnostics cannot feed semantic decisions;
 - no architecture-debt item in the regression tracker remains open.
 
 ## 15. Stop conditions

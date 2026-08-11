@@ -61,25 +61,30 @@ This is a DURABLE mandatory start-of-turn checklist that must be followed at the
 
 ## Mandatory next turn
 
-Run **M1m Isolation-Seam Certificate Topology-Region Consumer — Code + Build only** under:
+Run **M1 Single-Authority Cutover — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`
+`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Product gate **G4 topology-distinct completion and singularities** remains active. Architecture slices M1a through M1l are immutable accepted. Review policy is `never`.
+Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Reviewed source authority is M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; review baseline is `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`; authoritative planning commit is `PLANNING_COMMIT_TO_BE_RECORDED`. Product gate **G4 topology-distinct completion and singularities** remains active. M1a through M1l remain immutable accepted evidence. Review policy after the following Test + Benchmark turn is `never`.
 
-M1m is bounded to:
+The final cutover replaces the complete affected authority contracts in one turn:
 
-`SurfaceTopologyRegion::id / build_isolation_seam_transport_certificates -> SurfaceIsolationSeamTransportCertificate::sourceTopologyRegion -> still-raw materializer/hash compatibility consumers`.
+- checked strong-ID ingress with numeric projection only at direct storage/export leaves;
+- one typed topology-region product consumed by cells, edges, relations, certificates, occurrences, and materialization;
+- a fully typed isolation-seam certificate;
+- one chart, source-support, route, and periodic-transport representation;
+- one exhaustive producer outcome;
+- deletion of displaced fields, helpers, aliases, and representation-only tests.
 
-Migrate only certificate-owned topology-region identity to checked `TopologyRegionId`. Preserve `SurfaceTopologyRegion::id`, raw region-by-face maps, periodic/bounded-disk/occurrence/lineage region schemas, topology-region construction/numbering, accepted cell/edge region authority, certificate transport semantics, M2-M6, fallback/recovery, optimization, and G4 behavior.
+Preserve G0–G3 semantic invariants, truthful typed failures, deterministic identity, strict direct disposition, and no fallback. The M1l artifact is comparison evidence, not a requirement to reproduce raw numbering, hashes, row order, or known-incomplete product output. Classify semantic differences under the plan.
 
-This is **Code + Build only**. Execute no generated Directional binary, GoogleTest discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input. Exactly six M1m production-path contracts compile only. Expected following runtime authority is producer **232**, M1m **6/6**, required-green **217/217**, plus all entering preservation gates.
+This is **Code + Build only**. Execute no generated Directional binary, GoogleTest discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input. Compile and package the complete final cutover. Do not predeclare discovery totals; the following artifact-only turn discovers and validates the actual semantic inventory.
 
 Current immutable report:
 `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`.
 
 Authoritative next plan:
-`.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
 
 ## Current immutable authority
 
@@ -87,7 +92,7 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` is immutable accep
 
 Strict-validator timing sampled **10/10 pass** but remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny remains `NotProductionReady:completion traceSegments=170831 arrangementCells=0 completedQuads=0`; Vase remains bounded safety-only at 60 seconds. No stable product regression event or recurrence was created; historical totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
 
-Repository-side per-turn retention is clean: `.agents/Directional` retains the current M1l immutable Test + Benchmark report and the single M1m next-turn plan in addition to durable documents. The consumed M1l Code + Build report and artifact-only plan have been retired after their necessary facts were preserved in the retained report/changelog/tracker. Temporary M1l workflows, triggers, and payloads are removed; only `.github/workflows/agent-source-snapshot.yml` remains durable.
+Repository-side per-turn retention is clean: `.agents/Directional` retains the current M1l immutable Test + Benchmark report and the single final-cutover next-turn plan in addition to durable documents. The rejected unimplemented one-field plan is removed. Temporary M1l workflows, triggers, and payloads are absent; only `.github/workflows/agent-source-snapshot.yml` remains durable.
 
 ## Mandatory end-of-turn checklist
 
@@ -101,16 +106,18 @@ This is a DURABLE mandatory end-of-turn checklist that must be followed at the e
 
 ## Standing product and regression state
 
-- Product gate **G4 topology-distinct completion and singularities** remains active and separate from architecture migration.
+- Product gate **G4 topology-distinct completion and singularities** remains active; it becomes the primary queue again after immutable M1 cutover acceptance.
 - `PR8-R034 / G4-R007` / `G4-B001` remains the active direct-torus `LocalSheetMismatch` blocker.
 - `G4-B002` shared hard-rail scheduling, `G4-B003` nonzero periodic Z4 capability, and `G4-B004` positive multi-isolation witness remain unresolved.
-- M1a through M1l architecture acceptance does not claim G4 product completion.
+- M1a through M1l acceptance and the planned cutover do not claim G4 product completion.
 
 ## Resume-critical execution lessons
 
 - Use exact accepted M1l implementation/package/runtime authority above; later documentation/control-plane commits are not runtime-evidence commits.
 - One local first-process Cylinder stall did not reproduce in the immediate bounded local retry or authoritative remote artifact-only run. Do not add a product workaround without new product evidence.
-- M1m existing wrong-owner certificate coverage must preserve semantic intent after typing: use a genuinely distinct checked topology-region witness when needed rather than manufacturing an ID with a knowingly false extent. Detailed requirements are in the M1m plan.
+- Do not answer a compile failure by restoring a displaced numeric field/helper/alias. Migrate the affected consumer within the same turn or stop only at a plan-defined genuine blocker.
+- Preserve test intent with distinct typed witnesses and semantic assertions. Remove raw-conversion assertions; do not weaken fixtures, failures, product oracles, or known-red reporting.
+- Treat M1l output differences as evidence to classify. Required invariant regressions block; representation changes and earlier truthful failures do not automatically require reproducing old internals.
 
 Workflow-specific execution rules and lessons are maintained in `.agents/Directional/GitHub_Workflow_Policy.md`.
 
@@ -118,7 +125,7 @@ Workflow-specific execution rules and lessons are maintained in `.agents/Directi
 
 - `TODO.md`;
 - `.agents/Directional/Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md`;
-- `.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`;
+- `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`;
 - `.agents/Directional/CHANGELOG.md`;
 - `.agents/Directional/CLEAN_UP_POLICY.md`;
 - `.agents/Directional/RETENTION_POLICY.md`;

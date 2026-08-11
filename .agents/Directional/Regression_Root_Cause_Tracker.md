@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-10 UTC** after immutable M1l cell topology-region acceptance from Code + Build artifacts `9083262395 / 9083262833` and runtime evidence `9083913766`; M1m isolation-seam certificate topology-region authority is next.
+Last updated: **2026-08-11 UTC** after immutable M1l cell topology-region acceptance from Code + Build artifacts `9083262395 / 9083262833` and runtime evidence `9083913766`, followed by the Review decision to finish M1 with one single-authority cutover.
 
 ## Rules
 
@@ -46,7 +46,7 @@ Singletons: `INTRINSIC_SUPPORT_OVERCONSTRAINT`, `INCOMPLETE_TRANSACTIONAL_ROLLBA
 
 ```text
 bad: one bare integer is reused as face/transition/chart/rail/etc.
-good: distinct semantic type + named checked adapter + typed failure.
+good: distinct semantic type + checked construction at ingress + typed failure.
 ```
 
 - M1a strong-ID kernel: **accepted**.
@@ -55,12 +55,12 @@ good: distinct semantic type + named checked adapter + typed failure.
 - M1d phase-front route source-vertex/interior-transition consumer: **accepted**.
 - M1e ordered segment-route step identity is accepted. M1f continuation-route steps cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and immutable runtime acceptance is complete.
 - M1g periodic crossings cross checked source-vertex/interior-transition boundaries before `TransitionStep` construction and are **immutable accepted**.
-- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i cell-owned source component/sheet state through checked `SourceComponentId` / `IsolationSheetId` is **immutable accepted**. M1j immediately adjacent `SurfaceFrontEdge` component/sheet authority is **immutable accepted**. M1k edge-owned topology-region identity and M1l cell-owned topology-region identity are **immutable accepted** as checked `TopologyRegionId`. M1m next migrates `SurfaceIsolationSeamTransportCertificate::sourceTopologyRegion` so certificate ownership cannot remain a raw semantic integer.
+- M1h phase-front field charts cross checked `FieldChartId` boundaries before constructive-front semantic use and are **immutable accepted**. M1i cell-owned source component/sheet state through checked `SourceComponentId` / `IsolationSheetId` is **immutable accepted**. M1j immediately adjacent `SurfaceFrontEdge` component/sheet authority is **immutable accepted**. M1k edge-owned topology-region identity and M1l cell-owned topology-region identity are **immutable accepted** as checked `TopologyRegionId`. The final M1 cutover now removes every remaining stored numeric duplicate and makes the semantic model authoritative from producer through materializer.
 
 M1d accepted invariants:
 
-- packed route endpoint values cross checked `LegacyAuthorityAdapters::source_vertex(..., sourceVertices.rows())` before semantic use;
-- supplied and authoritative compact route values cross checked `LegacyAuthorityAdapters::interior_transition(..., sourceEdgeIndices.size())`;
+- packed route endpoint values are range-checked before `SourceVertexId` construction and semantic use;
+- supplied and authoritative compact route values are range-checked before `InteriorTransitionId` construction;
 - semantic transition equality is `InteriorTransitionId` equality, not raw integer equality;
 - malformed IDs remain fail-closed through existing HardRail/PeriodicCut authority failures.
 
@@ -89,7 +89,7 @@ Focused migration tests do not replace this authority. M1h remediation artifact 
 
 M1i source-scope migration is immutable accepted: producer discovery **208**, M1i **6/6**, required-green **193/193**, M1h-M1b focused preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, Bunny known-red, Vase bounded safety-only, and exact **72/72** postflight. The initial wrong-working-directory package checksum issue and a later zero-selected M1b executable-mapping mistake are orchestration defects only; neither changes semantic evidence.
 
-M1j edge source-scope migration is immutable accepted: producer discovery **214**, M1j **6/6**, required-green **199/199**, M1i-M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, strict timing **0/10**, Bunny known-red, Vase bounded safety-only, and exact **67/67** postflight. The initial compile mismatch and superseded incomplete-manifest artifact remain Code + Build/orchestration defects only. M1k preserves `RP-02 / TA-05`: producer **220**, M1k **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, known-red classes unchanged, and exact postflight. M1l now preserves and extends that authority: producer **226**, M1l **6/6**, required-green **211/211**, all M1k-M1b focused authority, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, all eight known-red classes unchanged, Bunny/Vase preserved, and exact **56/56** postflight. `RP-01 / RP-05 / RP-09` and `RP-02 / TA-05` are accepted at M1l. M1m must preserve the same authority while adding six production-path contracts for checked certificate topology-region ownership. No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
+M1j edge source-scope migration is immutable accepted: producer discovery **214**, M1j **6/6**, required-green **199/199**, M1i-M1b preservation, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products independent-oracle clean, all eight historical/deferred red classes unchanged, strict timing **0/10**, Bunny known-red, Vase bounded safety-only, and exact **67/67** postflight. The initial compile mismatch and superseded incomplete-manifest artifact remain Code + Build/orchestration defects only. M1k preserves `RP-02 / TA-05`: producer **220**, M1k **6/6**, required-green **205/205**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, known-red classes unchanged, and exact postflight. M1l now preserves and extends that authority: producer **226**, M1l **6/6**, required-green **211/211**, all M1k-M1b focused authority, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products oracle-clean, all eight known-red classes unchanged, Bunny/Vase preserved, and exact **56/56** postflight. `RP-01 / RP-05 / RP-09` and `RP-02 / TA-05` are accepted at M1l. The final M1 cutover must preserve this evidence while adding behavior-oriented contracts for the complete semantic producer-to-materializer path; discovery totals are measured from the resulting package rather than predeclared. No new stable regression event or recurrence is assigned. Historical totals remain **34 / 14 / 20**.
 
 ### RP-03 — policy/stage state conflation
 
@@ -113,7 +113,7 @@ Untouched by M1a–M1f. Vase remains bounded safety-only evidence. M1e/M1f/M1g a
 
 ```text
 bad: row/hash/traversal/allocation position becomes semantic identity.
-good: semantic strong ID/key is authoritative; row/hash is an explicit compatibility representation only.
+good: semantic strong ID/key is authoritative; numeric projection occurs only at a direct storage or export leaf.
 ```
 
 - M1a semantic ID/key kernel: **accepted**.
@@ -137,14 +137,14 @@ Untouched by M1a–M1e. M2/M4 own shared authority storage.
 
 ```text
 bad: quarter-turn/cyclic relation handled as unrestricted signed integer arithmetic.
-good: exact modulo-4 semantic algebra + explicit inverse/composition; legacy integer is compatibility representation only.
+good: exact modulo-4 semantic algebra + explicit inverse/composition; integer projection is confined to a direct output leaf.
 ```
 
-M1c is accepted at individual edge transport: `QuarterTurn::from_integer`, algebraic reverse `.inverse()`, raw signed matching retained only as compatibility output.
+M1c is accepted at individual edge transport: `QuarterTurn::from_integer`, algebraic reverse `.inverse()`, and a then-existing signed output projection. The final M1 cutover removes stored numeric transport state.
 
 M1d preserved this unchanged.
 
-**M1e is the accepted direct RP-07 migration:** `segment_on_source` now compiles typed zero-shift `GridAutomorphism` per step, `TransitionStep`/`CanonicalRoute` for the observed route, algebraic composition in observed order, and integer matching only at the final compatibility write. Immutable runtime acceptance is complete.
+**M1e is the accepted direct RP-07 migration:** `segment_on_source` now compiles typed zero-shift `GridAutomorphism` per step, `TransitionStep`/`CanonicalRoute` for the observed route, algebraic composition in observed order, and integer matching only at the then-existing output write. Immutable runtime acceptance is complete; the final cutover removes the stored numeric form.
 
 M1f is immutable accepted with the same typed algebra at `resolve_vertex_continuation`. M1g implementation `ee1abbd91d8ab39b84b107bba73ebf7aa0acceb2` replaces the separate periodic whole-cycle `totalMatching` accumulator with typed `CanonicalRoute` / `GridAutomorphism` composition and is **immutable accepted**. Nonzero periodic Z4 support remains out of scope and rejected through existing `PeriodicHolonomyMismatch` behavior.
 
@@ -156,7 +156,7 @@ Untouched. M2 owns migration.
 
 M1i exposes the next bounded `RP-09` seam: typed cell source scope is currently downgraded and then overwritten on `SurfaceFrontEdge`. M1j owns only the correction that edge publication preserves typed component/sheet authority and region aggregation verifies rather than recreates it. Global conformity/certificate migration remains M3/M4; `G4-R007` stays active.
 
-M1k is immutable accepted at the adjacent edge topology-region seam, and M1l is immutable accepted after removing the raw cell-region mirror so cell/edge ownership agrees as `TopologyRegionId` while still-raw materializer/occurrence schemas remain explicit compatibility boundaries. M1m next migrates the producer-published isolation-seam certificate region owner, while the materializer remains a verifier and raw map/hash representations stay explicit compatibility boundaries. Global topology planning remains outside M1m.
+M1k is immutable accepted at the adjacent edge topology-region seam, and M1l is immutable accepted after removing the raw cell-region mirror so cell/edge ownership agrees as `TopologyRegionId`. The final M1 cutover replaces the remaining raw certificate, materializer, occurrence, route, chart, support, and periodic ownership in one vertical change. The materializer verifies the single producer-authored authority product instead of reconstructing another one. Global topology planning remains outside this cutover.
 
 ## M1d immutable pattern record
 
@@ -187,7 +187,7 @@ Prior M1a/M1b/M1c detailed per-turn reports were cleaned after their accepted fa
 |---|---|---|
 | `RP-01` | **accepted** checked source vertices + compact interior transitions at each observed step | M1e 6/6 + complete producer preservation |
 | `RP-05` | **accepted** canonical topology key and semantic route-keyed observations; `oriented_steps()` preserves behavior order | forward/reverse and signed-equivalence contracts passed |
-| `RP-07` | **accepted** zero-shift `GridAutomorphism` route composition replaces raw cumulative signed addition | nonzero multi-step/inverse and legacy-path contracts passed |
+| `RP-07` | **accepted** zero-shift `GridAutomorphism` route composition replaces raw cumulative signed addition | nonzero multi-step/inverse and pre-cutover path contracts passed |
 | `RP-02 / TA-05` | **preserved** deterministic hard-authored expected values, independent compact IDs, semantic snapshot keys | producer 184, required-green 169/169, M1d/M1c/M1b/M1a/T1/direct evidence |
 | `RP-03/04/06/08/09` | untouched | unchanged dispositions/accounting |
 
@@ -211,7 +211,7 @@ The review-authorized malformed contract targets the reachable predecessor `sour
 |---|---|---|
 | `RP-01` | checked source vertices + compact interior transitions per continuation step | M1f **6/6** + complete producer preservation |
 | `RP-05` | canonical source-edge topology and observed/canonical route-order boundary | forward/reverse and signed-equivalence contracts passed |
-| `RP-07` | typed `GridAutomorphism` composition replaces `PathState::matching += transition.matching` | nonzero multi-step/inverse/equivalence/legacy contracts passed |
+| `RP-07` | typed `GridAutomorphism` composition replaces `PathState::matching += transition.matching` | nonzero multi-step/inverse/equivalence/pre-cutover contracts passed |
 | `RP-02 / TA-05` | direct production-consumer fixtures plus preserved independent product/oracle authority | producer **190**, required-green **175/175**, validation **77/77**, M1a **14/14**, T1 **29/29**, four direct products green |
 
 M1f immutable authority:
@@ -266,7 +266,7 @@ Accepted-source inspection selected `build_planar_phase_frame -> UniformPhaseFra
 
 ## Historical M1h compile/package pattern record
 
-M1h implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` migrated the real field-chart owner `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` from bare semantic integers to checked `FieldChartId`, while retaining legacy representation only at explicit compatibility boundaries. The deterministic chart partition/BFS numbering was unchanged. Missing typed lattice chart authority was fail-closed before aggregate front acceptance. Periodic and bounded-disk single-chart lattice states used checked chart zero.
+M1h implementation `de4e2ba7c19d2e49931655dc22d758f50656d054` migrated the real field-chart owner `build_planar_phase_frame -> UniformPhaseFrame::faceChart -> LocalLatticeState::sourceChart` from bare semantic integers to checked `FieldChartId`, while numeric projection remained at then-existing leaf accesses. The deterministic chart partition/BFS numbering was unchanged. Missing typed lattice chart authority was fail-closed before aggregate front acceptance. Periodic and bounded-disk single-chart lattice states used checked chart zero. The final M1 cutover removes the stored numeric form.
 
 Compile/package authority:
 
@@ -280,6 +280,17 @@ Compile/package authority:
 - subsequent test-authority remediation and immutable acceptance are retained in `.agents/Directional/CHANGELOG.md`; the superseded per-turn report was retired under `CLEAN_UP_POLICY.md`.
 
 No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `RP-02 / TA-05` were subsequently accepted at M1h. `RP-07` remained preservation-only and unchanged.
+
+## Single-authority strategy correction — 2026-08-11
+
+- Review baseline: `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`.
+- Reviewed accepted source: M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` from artifact `9083262395`.
+- The unimplemented one-field follow-up was rejected after source inspection showed that the remaining duplication spans certificate, topology-region, chart, support, route, periodic, rail, occurrence, quotient, and materializer contracts.
+- M1 now ends with one Code + Build turn that installs the semantic model across the complete producer-to-materializer path and deletes every displaced numeric semantic field, reconstruction path, helper bridge, and associated test.
+- The cutover must preserve G0–G3 invariants, truthful failure and disposition behavior, determinism, and the accepted M1l product evidence. Representation changes are evaluated by semantic invariants and behavior-oriented contracts, not by exact preservation of obsolete numbering, hashes, or iteration order.
+- No generated Directional binary runs in the cutover turn. A following immutable Test + Benchmark turn discovers the resulting inventory, runs all entering gates plus the new semantic contracts, and determines acceptance.
+- After immutable acceptance, M1 closes and the primary queue returns to G4 production work. Remaining architecture work is introduced only as a complete vertical contract needed by an active production blocker, not as another representation-only campaign.
+- This strategy correction changes no historical regression count: totals remain **34 / 14 / 20**.
 
 ## Current G4 stable-ID mapping
 
@@ -301,23 +312,23 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 |---|---|---|
 | `G4-B001` | Direct torus final `LocalSheetMismatch`. | strict-valid torus 3/3 |
 | `G4-B002` | Exact Phase10 torus `InvalidHardRailPairing`. | shared source-authoritative rail schedule; M3 |
-| `G4-B003` | Nonzero periodic Z4 production capability. | staged M1/M4 adoption + product acceptance |
+| `G4-B003` | Nonzero periodic Z4 production capability. | final M1 cutover + representative product acceptance |
 | `G4-B004` | Positive multi-isolation quotient witness. | focused + representative certificate evidence |
 
 ## Architecture enforcement register
 
 | ID | State |
 |---|---|
-| `AR-01` | M2: closed producer outcomes |
-| `AR-02` | M1a through M1l **accepted**; M1m isolation-seam certificate topology-region consumer next |
-| `AR-03` | strong identity adoption through M1l **accepted**; M1m checked certificate topology-region identity next |
-| `AR-04` | `FieldChartId` production phase-front chart migration accepted; current M1m concerns certificate-owned `TopologyRegionId` |
-| `AR-05` | representation boundaries through M1l **accepted**; M1m certificate hash/materializer raw representation boundary next |
-| `AR-06` | M4 relation registry/certificates; M1m changes only certificate region ID representation, not relation semantics |
-| `AR-07` | M3 global conformity |
-| `AR-08` | M2/M3 producer-scoped immutable output |
-| `AR-09` | tagged source-support representation exists; exact production rebinding remains M5 |
-| `AR-10` | incremental responsibility modules |
+| `AR-01` | final M1 cutover installs exhaustive `ProducerOutcome<SurfacePhaseFrontProduct>` |
+| `AR-02` | M1a through M1l **accepted**; complete single-authority cutover is next |
+| `AR-03` | final cutover closes strong identity from producer through materializer |
+| `AR-04` | final cutover replaces remaining chart, support, route, periodic, rail, occurrence, quotient, and certificate numeric ownership |
+| `AR-05` | after cutover, numeric projection is permitted only at a direct Eigen/vector storage or derived export leaf; it is never semantic authority |
+| `AR-06` | final cutover installs the complete typed isolation-seam transport certificate; later relation-registry work must be driven by a production blocker |
+| `AR-07` | global conformity becomes a complete production contract when G4 requires it |
+| `AR-08` | final cutover publishes one immutable producer-scoped phase-front product |
+| `AR-09` | final cutover replaces `SurfacePointSourceSupport` with the typed resolved support contract end to end |
+| `AR-10` | complete vertical product contracts now; module extraction only when justified by resumed production work |
 | `AR-11` | normative architecture/status separation maintained |
 | `AR-12` | T1 independent oracle/package accepted; T2–T6 expand authority |
 
@@ -332,7 +343,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `TA-05` | **test authority resolved and preserved through M1l** |
 | `TA-06` | T1 mutation suite **29/29** accepted and preserved |
 | `TA-07` | exact package/discovery authority accepted and preserved |
-| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region + M1l cell topology-region authority accepted; M1m certificate topology-region contracts next |
+| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region + M1l cell topology-region authority accepted; full cutover behavior contracts next |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
 | `TA-11` | topology/lineage/disposition adequate; quality expansion later |
@@ -340,6 +351,6 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-`.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`.
+`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
 
-The next turn is **Code + Build only**. Migrate only `SurfaceIsolationSeamTransportCertificate::sourceTopologyRegion` to checked optional `TopologyRegionId`, preserve certificate transport semantics and all raw global/materializer compatibility schemas, compile/package exactly six M1m production-path contracts, and execute no generated Directional binary. Expected following immutable runtime authority is producer **232**, M1m **6/6**, required-green **217/217**, plus all entering M1l-M1b preservation/product/known-red/postflight gates.
+The next turn is **Code + Build only**. Execute the complete cutover in the named plan, delete displaced fields and the helper bridge, compile and package behavior-oriented contracts discovered from the completed implementation, and execute no generated Directional binary. The following immutable Test + Benchmark turn must preserve all entering M1l–M1b, validation, M1a, T1, direct-product, known-red, timing-classification, and postflight authority while accepting the new semantic contracts. On acceptance, close M1 and resume G4 production work.
