@@ -9,7 +9,7 @@ permissions: {contents: read}
 concurrency: {group: agent-m1-ra-compile, cancel-in-progress: false}
 
 env:
-  SOURCE_SHA: 6b8530fc4793bb3e2e3a9e766e0bbc9451069b47
+  SOURCE_SHA: 7158b7e525a394c165bbdd7238257e5a4c19b045
 
 jobs:
   compile:
