@@ -5,11 +5,17 @@ on:
     branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
     paths: [.agents/connector-triggers/m1-ra-compile.txt]
 
-permissions: {contents: read}
+permissions:
+  contents: read
+  actions: write
+
 concurrency: {group: agent-m1-ra-compile, cancel-in-progress: false}
 
 env:
-  SOURCE_SHA: 7158b7e525a394c165bbdd7238257e5a4c19b045
+  SOURCE_SHA: 5c6a2129bf6df1adaceebbb24f576cd092b55dec
+  CCACHE_DIR: ${{ runner.temp }}/ccache
+  CCACHE_MAXSIZE: 256M
+  CCACHE_COMPRESS: "true"
 
 jobs:
   compile:
@@ -20,13 +26,62 @@ jobs:
         run: |
           set -euo pipefail
           LOG="$RUNNER_TEMP/activity.log"; : > "$LOG"
-          { echo "task=M1 R-A compile-only gate"; echo "event_sha=$GITHUB_SHA"; echo "source_sha=$SOURCE_SHA"; date -u +"utc=%Y-%m-%dT%H:%M:%SZ"; } | tee -a "$LOG"
+          { echo "task=M1 R-A compile-only gate"; echo "event_sha=$GITHUB_SHA"; echo "source_sha=$SOURCE_SHA"; echo "ccache_max_size=$CCACHE_MAXSIZE"; date -u +"utc=%Y-%m-%dT%H:%M:%SZ"; } | tee -a "$LOG"
+
       - name: Checkout exact source commit and shallow submodules
         uses: actions/checkout@v4
         with:
           ref: ${{ env.SOURCE_SHA }}
           fetch-depth: 1
           submodules: recursive
+
+      - name: Install compiler cache
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y ccache
+          ccache --version
+          mkdir -p "$CCACHE_DIR"
+          ccache --set-config=max_size="$CCACHE_MAXSIZE"
+          ccache --set-config=compression=true
+
+      - name: Compute compatible cache lineage
+        id: cache-key
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          compiler="$(c++ -dumpfullversion -dumpversion)"
+          prefix="m1-ra-${RUNNER_OS}-gcc-${compiler}-release-ccache-v2-"
+          key="${prefix}${GITHUB_RUN_ID}"
+          echo "compiler=$compiler" >> "$GITHUB_OUTPUT"
+          echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
+          echo "key=$key" >> "$GITHUB_OUTPUT"
+          echo "cache_prefix=$prefix"
+          echo "cache_primary_key=$key"
+
+      - name: Restore most recent compatible compiler cache
+        id: ccache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            ${{ steps.cache-key.outputs.prefix }}
+
+      - name: Record cache restore state
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          echo "cache_hit=${{ steps.ccache-restore.outputs.cache-hit }}"
+          echo "cache_primary_key=${{ steps.cache-key.outputs.key }}"
+          echo "cache_matched_key=${{ steps.ccache-restore.outputs.cache-matched-key }}"
+          echo "ccache_max_size=$CCACHE_MAXSIZE"
+          ccache -s
+
       - name: Configure compile-only build
         shell: bash
         run: |
@@ -37,6 +92,7 @@ jobs:
           cmake --version; ninja --version; c++ --version
           cmake -S . -B build-m1-ra -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DBUILD_SHARED_LIBS=OFF \
             -DDIRECTIONAL_BUILD_CLI=OFF \
             -DDIRECTIONAL_BUILD_GUI=OFF \
@@ -50,13 +106,15 @@ jobs:
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST
+
       - name: Compile and link affected targets only
+        id: compile
         shell: bash
         run: |
-          set -euo pipefail
+          set -uo pipefail
           LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
-          trap 'rc=$?; echo "build_exit=$rc"; echo "checked_out=$(git rev-parse HEAD)"; git status --short || true; exit $rc' EXIT
-          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA" || { echo 1 > "$RUNNER_TEMP/build-exit-code"; exit 0; }
+          set +e
           cmake --build build-m1-ra --target \
             directional_core \
             directional_pipeline \
@@ -67,7 +125,68 @@ jobs:
             directional_compiled_api_tests \
             directional_benchmarks \
             -- -j2
+          rc=$?
+          set -e
+          echo "$rc" > "$RUNNER_TEMP/build-exit-code"
+          echo "build_exit=$rc"
+          echo "checked_out=$(git rev-parse HEAD)"
+          git status --short || true
+          ccache -s
           echo "No generated Directional binary, test, benchmark, discovery/listing, ctest, CLI/help/version, fuzzer, or custom input was executed."
+          exit 0
+
+      - name: Save updated partial compiler cache
+        if: always() && steps.ccache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CCACHE_DIR }}
+          key: ${{ steps.cache-key.outputs.key }}
+
+      - name: Prune stale M1 compiler caches
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CACHE_PREFIX: ${{ steps.cache-key.outputs.prefix }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          echo "cache_prune_prefix=$CACHE_PREFIX"
+          echo "cache_prune_policy=retain newest compatible entry; current rolling save may temporarily yield at most two entries"
+          list="$RUNNER_TEMP/m1-cache-list.tsv"
+          gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/caches?per_page=100" \
+            --jq '.actions_caches[] | [.id, .key, .last_accessed_at] | @tsv' > "$list"
+          mapfile -t stale < <(
+            awk -F '\t' -v p="$CACHE_PREFIX" 'substr($2,1,length(p))==p {print $3"\t"$1"\t"$2}' "$list" \
+              | sort -r \
+              | tail -n +2
+          )
+          if (( ${#stale[@]} == 0 )); then
+            echo "cache_pruned=0"
+          else
+            for entry in "${stale[@]}"; do
+              IFS=$'\t' read -r accessed id key <<< "$entry"
+              echo "cache_prune_delete id=$id key=$key last_accessed=$accessed"
+              gh api --method DELETE "/repos/$GITHUB_REPOSITORY/actions/caches/$id"
+            done
+            echo "cache_pruned=${#stale[@]}"
+          fi
+          echo "cache_storage_cap_per_entry=$CCACHE_MAXSIZE"
+
+      - name: Propagate compile status
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
+          if [[ ! -f "$RUNNER_TEMP/build-exit-code" ]]; then
+            echo "compile_status=missing"
+            exit 1
+          fi
+          rc="$(cat "$RUNNER_TEMP/build-exit-code")"
+          echo "compile_status=$rc"
+          exit "$rc"
+
       - name: Package compile evidence
         if: success()
         shell: bash
@@ -79,8 +198,16 @@ jobs:
           git status --porcelain=v1 > "$OUT/metadata/source-status.txt"
           git archive --format=tar HEAD -o "$OUT/source.tar"
           cp build-m1-ra/CMakeCache.txt "$OUT/metadata/CMakeCache.txt"
+          {
+            echo "runtimeExecution=false"
+            echo "compilerCache=ccache"
+            echo "compilerCacheMaxSize=$CCACHE_MAXSIZE"
+            echo "compilerCachePrimaryKey=${{ steps.cache-key.outputs.key }}"
+            echo "compilerCacheMatchedKey=${{ steps.ccache-restore.outputs.cache-matched-key }}"
+          } > "$OUT/metadata/command-boundary.txt"
           find build-m1-ra -maxdepth 1 -type f \( -name 'libdirectional_*.a' -o -name 'directional_*tests' -o -name 'directional_benchmarks' \) -exec cp -t "$OUT" {} +
           (cd "$OUT" && find . -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+
       - name: Upload compile result
         if: success()
         uses: actions/upload-artifact@v4
@@ -89,6 +216,7 @@ jobs:
           path: ${{ runner.temp }}/result
           if-no-files-found: error
           retention-days: 7
+
       - name: Upload persistent activity log
         if: always()
         uses: actions/upload-artifact@v4
