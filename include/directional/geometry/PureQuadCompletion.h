@@ -170,8 +170,6 @@ struct PureQuadEmbeddingFailure {
   int completionVariant = 0;
   int localQuad = -1;
   std::array<int, 4> localVertices{{-1, -1, -1, -1}};
-  int sourceComponent = -1;
-  int sourceSheet = -1;
   std::vector<int> sourceFaces;
 };
 
@@ -214,8 +212,6 @@ struct PureQuadVertexLineage {
   PureQuadStitchIdentity authoritativeIdentity;
   int sourcePatch = -1;
   int localVertex = -1;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
   /// Full retained authority for quotient-materialized vertices.
   std::vector<authority::TopologyRegionId> sourceTopologyRegions;
   std::vector<SourceProjectionChart> sourceCharts;
@@ -266,8 +262,6 @@ struct PureQuadPatch {
   std::vector<SurfacePoint> boundaryProvenance;
   std::vector<std::optional<authority::HardRailId>> boundaryRailIds;
   std::vector<int> boundaryCurveIds;
-  std::vector<int> boundaryComponents;
-  std::vector<int> boundarySheets;
   std::vector<SurfaceCellCanonicalIdentity> boundaryNodeIdentities;
   SurfaceCellDomainIdentity domainIdentity;
   std::vector<int> sideEdgeCounts;
@@ -323,8 +317,6 @@ struct PureQuadCompletionOwnershipRejection {
   std::optional<authority::SourceSupport> sourceSupport;
   std::vector<authority::SourceFaceId> candidateSupportedFaces;
   std::vector<int> patchSourceFaces;
-  int sourceComponent = -1;
-  int sourceSheet = -1;
 };
 
 struct PureQuadCompletionOptions {

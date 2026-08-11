@@ -2024,8 +2024,6 @@ PatchDescriptor derive_patch_descriptor(
     patch.boundaryVertices.push_back(node->id);
     patch.boundaryRailIds.push_back(edge.railId);
     patch.boundaryCurveIds.push_back(edge.curveId);
-    patch.boundaryComponents.push_back(edge.sourceComponent);
-    patch.boundarySheets.push_back(edge.sourceSheet);
     patch.boundaryNodeIdentities.push_back(
         patch_descriptor_detail::arrangement_node_identity(
             *node, F, edge.sourceComponent, edge.sourceSheet));
@@ -2209,13 +2207,13 @@ PatchDescriptorSet derive_patch_descriptors(
       result.ownershipConflict.secondSourceSupportCount =
           identity.sourceSupportCount;
       result.ownershipConflict.firstComponent =
-          first.patch.boundaryComponents.empty() ? -1 : first.patch.boundaryComponents.front();
+          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().component;
       result.ownershipConflict.firstSheet =
-          first.patch.boundarySheets.empty() ? -1 : first.patch.boundarySheets.front();
+          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().sheet;
       result.ownershipConflict.secondComponent =
-          descriptor.patch.boundaryComponents.empty() ? -1 : descriptor.patch.boundaryComponents.front();
+          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().component;
       result.ownershipConflict.secondSheet =
-          descriptor.patch.boundarySheets.empty() ? -1 : descriptor.patch.boundarySheets.front();
+          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().sheet;
       break;
     }
 
@@ -2246,13 +2244,13 @@ PatchDescriptorSet derive_patch_descriptors(
       result.ownershipConflict.secondSourceSupportCount =
           identity.sourceSupportCount;
       result.ownershipConflict.firstComponent =
-          first.patch.boundaryComponents.empty() ? -1 : first.patch.boundaryComponents.front();
+          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().component;
       result.ownershipConflict.firstSheet =
-          first.patch.boundarySheets.empty() ? -1 : first.patch.boundarySheets.front();
+          first.patch.boundaryProvenance.empty() ? -1 : first.patch.boundaryProvenance.front().sheet;
       result.ownershipConflict.secondComponent =
-          descriptor.patch.boundaryComponents.empty() ? -1 : descriptor.patch.boundaryComponents.front();
+          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().component;
       result.ownershipConflict.secondSheet =
-          descriptor.patch.boundarySheets.empty() ? -1 : descriptor.patch.boundarySheets.front();
+          descriptor.patch.boundaryProvenance.empty() ? -1 : descriptor.patch.boundaryProvenance.front().sheet;
       break;
     }
   }
@@ -2309,14 +2307,11 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
       PatchCompletionDependencyIdentity &identity, const PureQuadPatch &patch,
       const std::size_t index) {
     if (index >= patch.boundaryProvenance.size()) {
-      identity.insert(identity.end(), {-1, -1, -1, -1, -1, -1, -1,
-                                        -1, -1, -1});
+      identity.insert(identity.end(), {-1, -1, -1, -1, -1, -1});
       return;
     }
     const SurfacePoint &point = patch.boundaryProvenance[index];
     identity.push_back(point.face);
-    identity.push_back(point.component);
-    identity.push_back(point.sheet);
     for (int coordinate = 0; coordinate < 3; ++coordinate) {
       identity.push_back(
           quantized_parameter(point.barycentric(coordinate)));
@@ -2325,10 +2320,6 @@ using PatchCompletionDependencyIdentity = std::vector<std::int64_t>;
         completion_dependency_label(patch.boundaryRailIds, index));
     identity.push_back(
         completion_dependency_label(patch.boundaryCurveIds, index));
-    identity.push_back(
-        completion_dependency_label(patch.boundaryComponents, index));
-    identity.push_back(
-        completion_dependency_label(patch.boundarySheets, index));
   }
 
   PatchCompletionDependencyIdentity completion_dependency_side_record(

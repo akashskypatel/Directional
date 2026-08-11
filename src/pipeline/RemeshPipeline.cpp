@@ -1622,8 +1622,6 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
     hash_combine_i64(seed, lineage.outputVertex);
     hash_combine_i64(seed, lineage.sourcePatch);
     hash_combine_i64(seed, lineage.localVertex);
-    hash_combine_i64(seed, lineage.sourceComponent);
-    hash_combine_i64(seed, lineage.sourceSheet);
     hash_combine_i64(seed, static_cast<int>(lineage.stitchIdentity.kind));
     hash_combine_u64(seed, lineage.stitchIdentity.hash());
     hash_combine_i64(seed,
@@ -2856,10 +2854,6 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     lineage.sourcePoint = representativeOccurrence.point;
     lineage.sourcePatch = 0;
     lineage.localVertex = outputVertex;
-    lineage.sourceComponent = representativeOccurrence.point.component;
-    lineage.sourceSheet = isolationSheets.size() == 1U
-                              ? static_cast<int>(isolationSheets.begin()->index())
-                              : -1;
     lineage.sourceTopologyRegions.assign(topologyRegions.begin(),
                                          topologyRegions.end());
     lineage.sourceCharts.assign(charts.begin(), charts.end());
@@ -9958,8 +9952,6 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
 
     const auto remap_quotient_lineage_authority =
         [&](geometry::PureQuadVertexLineage &lineage) {
-          lineage.sourceComponent = static_cast<int>(index);
-          lineage.sourceSheet = lineage.sourcePoint.sheet;
           for (authority::TopologyRegionId &region :
                lineage.sourceTopologyRegions) {
             const int localRegion = static_cast<int>(region.index());
