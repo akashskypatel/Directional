@@ -1,0 +1,50 @@
+name: Agent M1 R-A REV-11-13 Durable Records
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m1-ra-rev-11-13-docs.txt]
+
+permissions:
+  contents: write
+
+jobs:
+  sync-records:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+
+      - name: Apply and publish durable records
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          cat \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13-docs.part00 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13-docs.part01 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13-docs.part02 \
+            > "$RUNNER_TEMP/docs.patch.b64"
+          test "$(sha256sum "$RUNNER_TEMP/docs.patch.b64" | cut -d' ' -f1)" = "2bf43e8878379bb5be72e95accf60565de5d3e36d54a784cc4ae7c2f06606c12"
+          base64 --decode "$RUNNER_TEMP/docs.patch.b64" | gzip -d > "$RUNNER_TEMP/docs.patch"
+          test "$(sha256sum "$RUNNER_TEMP/docs.patch" | cut -d' ' -f1)" = "e6778aafcc7e44cccf1f6d701de348ee05391f55ed7ea9b6fa38b91ec5d1b022"
+          git apply --check "$RUNNER_TEMP/docs.patch"
+          git apply "$RUNNER_TEMP/docs.patch"
+          git diff --check
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            TODO.md | sort)"
+          printf 'changed_files=\n%s\n' "$changed"
+          test "$changed" = "$expected"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          printf '%s\n' "$changed" | xargs git add -f --
+          git commit -m "docs: record R-A REV-11 through REV-13 closure"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo 'runtimeExecution=false'
