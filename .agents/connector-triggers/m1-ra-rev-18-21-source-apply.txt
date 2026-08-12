@@ -1,2 +1,0 @@
-Apply the exact R-A-REV-18 through R-A-REV-21 Code + Build source patch and run static source audit.
-Runtime execution is prohibited.
