@@ -1,0 +1,1 @@
+Restore Future_Chat_Session_Handoff.md byte-for-byte from durable head 9724510e71209d89756ed38efcbd420e68e31be1 after an accidental connector replacement. Control-plane only; no runtime execution.
