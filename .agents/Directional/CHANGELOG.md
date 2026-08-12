@@ -17,6 +17,20 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — R-A-REV-21 coverage and R-A-REV-22 through R-A-REV-24
+
+- Closed the missing REV-21 Code + Build test intent with an authority-only source-row permutation mismatch negative and a consistently permuted source-matrix-plus-authority positive.
+- Closed REV-22 at the Code + Build boundary: final aggregate validation retains and globally remaps independent boundary, feature-rail, hard-feature, vertex-chart, output-face, and provenance authority and runs the strict boundary/feature/local-sheet oracle instead of a weakened aggregate validator.
+- Closed REV-23 at the Code + Build boundary: removed the pipeline-owned duplicate aggregate stitch-key schema and rebuilds post-remap keys through the completion-owned canonical constructor; stale-kind and generated-interior post-publication re-stitch contracts compile.
+- Closed REV-24 at the Code + Build boundary: direct source-authoritative validation rejects null or same-extent foreign `SourceTopologyRegions` before optional gates and reports `sourceAuthorityUsed` only after exact source-topology proof.
+
+### Validation — complete R-A inventory and fresh focused compile
+
+- Exact clean implementation/test source: `9d88d0e47cfc039e5399ebee334290b1eeae792b`. `.agents/Directional/R_A_Closure_Inventory.py --root .` generated the retained `R_A_Closure_Inventory_Report.md` through REV-24 with **17 affected paths, 38 probes, 164 probe matches, 22 allowed/0 unexpected raw-projection leaves, 2 allowed/0 unexpected face-count leaves, final static PASS**.
+- Focused compile run/job `31634075824 / 94239861945` completed Release/static/Ninja/PRE_TEST **118/118**, build exit `0`. Result artifact `9156381103`, SHA-256 `f75021d0e7dc3462fafd0460c4d93f51d508dfa8bed4621c1c641c758d94b8c3`; log artifact `9156381524`, SHA-256 `761562ef59092d163bf94b50e37ef94875f1e25da3f9b4da3eb7e9ccdcc915c2`.
+- Independent artifact inspection verified **26** regular files, self-excluding manifest **25/25**, zero self references, five empty source-status snapshots, exact source archive and dependency revisions, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`. ccache recorded **84/108 hits (77.78%)** and retained the newest two compatible caches.
+- This closes the requested implementation/static/compile findings only. Overall R-A remains open until the separate immutable artifact-only focused runtime contracts pass. M1l remains immutable runtime authority; regression totals remain **34 / 14 / 20**.
+
 ### Review — R-A closure after REV-18 through REV-21 rejected
 
 - Independent Review inspected exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`; later source changes are durable documentation only.

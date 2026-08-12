@@ -25,29 +25,35 @@ Do not add transcripts, chronological tool history, copied artifact tables, supe
 
 ## Mandatory next turn
 
-Run one **Code + Build only** correction turn for the rejected R-A closure gate.
+Run one **artifact-only Test + Benchmark cadence turn** against the fresh REV-21-through-REV-24 focused compile package. Do not rebuild or change implementation, test, benchmark, build, fixture, or inventory source.
 
-Repository: `akashskypatel/Directional`  
-Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`  
-PR: #8 remains open, draft, and unmerged  
-Reviewed implementation/test source: `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`  
-Independent-review boundary: `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`  
-Review decision/planning commit: `e325991a9332fcfe522c26c1d55f249924f1a14c`
+Repository: `akashskypatel/Directional`
+Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
+PR: #8 remains open, draft, and unmerged
+Exact compile-valid implementation/test source: `9d88d0e47cfc039e5399ebee334290b1eeae792b`
+Compile run/job: `31634075824 / 94239861945`
+Result artifact: `9156381103`, SHA-256 `f75021d0e7dc3462fafd0460c4d93f51d508dfa8bed4621c1c641c758d94b8c3`
+Log artifact: `9156381524`, SHA-256 `761562ef59092d163bf94b50e37ef94875f1e25da3f9b4da3eb7e9ccdcc915c2`
 
-The next turn must:
+Before executing any packaged binary, verify:
 
-1. close **R-A-REV-22** by carrying globally remapped boundary, feature, hard-edge, vertex-chart, output-face, and provenance authority into the actual final merged-product validator; enable applicable strict gates and add boundary-bearing positive/tamper contracts;
-2. close **R-A-REV-23** by deleting the duplicate aggregate stitch-key schema, rebuilding through the canonical completion constructor, deriving kind from authoritative patch structure, and proving generated-interior lineages remain resolvable/re-stitchable;
-3. close **R-A-REV-24** by requiring a non-null exact-matching `SourceTopologyRegions` at direct source-authoritative validator entry regardless of optional gates, setting `sourceAuthorityUsed` only after proof, and adding direct null/foreign-authority negatives;
-4. complete **R-A-REV-21** coverage with an authority-only row-permutation rejection and a consistently permuted source-matrix-plus-authority positive;
-5. rerun the complete retained R-A inventory through REV-24 and record checked paths, exact commands/patterns, match counts, and every allowed leaf;
-6. produce one fresh focused Release/static/Ninja/PRE_TEST package with clean source provenance and a verified self-excluding manifest.
+1. exact source `9d88d0e47cfc039e5399ebee334290b1eeae792b` and its packaged source archive;
+2. outer artifact digests and recursive self-excluding manifest **25/25** with zero self references;
+3. all five source-status snapshots are empty;
+4. dependency revisions, Release/static/Ninja/PRE_TEST build metadata, build exit `0`, and `runtimeExecution=false`;
+5. packaged `R_A_Closure_Inventory_Report.md` corresponds to source `9d88d0e47cfc039e5399ebee334290b1eeae792b` and reports 17 affected paths, 38 probes, 164 probe matches, 22/22 allowed raw-projection leaves, 2/2 allowed face-count leaves, zero unexpected leaves, and final static PASS.
 
-Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input in that Code + Build turn. Do not restore a raw mirror, compatibility identity, fallback, fixture exception, proxy oracle, output-derived authority, or extent-only binding.
+Then execute focused semantic contracts for:
 
-Partial artifacts `9153147035 / 9153147459` are superseded as a runtime task. Do not execute, reuse, or relabel them as R-A/M1 acceptance evidence. A separate immutable artifact-only cadence turn may run only the fresh corrected package. The retained full M1 artifact-only plan remains dormant until one fresh full R-A-through-R-G package exists.
+- REV-21 authority-only row-permutation rejection and consistently paired matrix-plus-authority permutation acceptance;
+- REV-22 boundary-bearing final strict oracle plus missing/tampered boundary and feature authority rejection;
+- REV-23 canonical aggregate stitch identity, stale-kind rejection/rebuild, and generated-interior post-publication re-stitch;
+- REV-24 direct null and same-extent foreign source-authority rejection with optional gates disabled;
+- adjacent retained R-A transactional rollback, owner/certificate, optimizer/final-validator authority, and zero-publication contracts needed to detect regressions from this correction package.
 
-Do not implement M3, M4, M7, or Pipeline A while M1 is active.
+Classify every failure from immutable runtime evidence. Do not rebuild, weaken validation, restore aliases/fallbacks, or alter fixtures to synthesize green output. Mark R-A complete only if the full focused runtime gate passes organically; otherwise record precise corrective work for the next Code + Build turn.
+
+The retained full `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md` remains dormant until one fresh complete R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this cadence turn.
 
 ## Current authority
 
@@ -61,15 +67,15 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 
 ### R-A closure status
 
-- Overall R-A is **rejected/open** and was not marked complete.
-- REV-18-through-REV-21 remain bounded compile-only progress at source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; no new semantic contract executed.
-- **REV-22 is open:** final aggregate validation omits strict authority and rejects boundary-bearing positives against an empty expected loop set.
-- **REV-23 is open:** aggregate stitch rebuilding copies stale kind and emits a schema different from canonical completion identity.
-- **REV-24 is open:** direct source-authoritative validation can accept null typed authority when local-sheet checking is disabled.
-- **REV-21 coverage is incomplete:** the explicit mismatched-authority and consistently paired permutation contracts are absent.
-- The complete R-A audit is not yet reproducible; the partial package contains only a conclusion sentence, not paths/commands/counts/allowed leaves.
-
-Compile-only run/job `31625763711 / 94211611771` remains authentic historical build evidence: Release/static/Ninja/PRE_TEST **118/118**, artifacts `9153147035 / 9153147459`, manifest **25/25**, five empty source-status snapshots, and `runtimeExecution=false`. It is not an R-A or M1 acceptance candidate.
+- Overall R-A remains **open / not runtime-accepted**.
+- Exact Code + Build source is `9d88d0e47cfc039e5399ebee334290b1eeae792b`. REV-21 contract completion and REV-22-through-REV-24 are **Code + Build complete / compile-valid**.
+- REV-21 now contains both required permutation-pair contracts.
+- REV-22 carries independent globally remapped boundary/feature/chart/output-face/hard-edge/provenance authority into the strict final merged-product oracle.
+- REV-23 uses the completion-owned canonical stitch constructor; the duplicate aggregate pipeline schema is absent and stale-kind/re-stitch contracts compile.
+- REV-24 requires non-null exact-matching typed source authority at direct validator entry and contains direct null/foreign-authority negatives.
+- Complete reproducible R-A inventory through REV-24 is generated and static-PASS: **17 paths, 38 probes, 164 matches, 22 allowed raw-projection leaves, 2 allowed face-count leaves, zero unexpected leaves**.
+- Fresh compile-only evidence is run/job `31634075824 / 94239861945` with artifacts `9156381103 / 9156381524`: Release/static/Ninja/PRE_TEST **118/118**, build exit `0`, self-excluding manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`.
+- No new semantic contract has executed yet. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority and regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 ## Standing product state
 

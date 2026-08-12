@@ -1,12 +1,26 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
-**Turn type:** Code + Build only  
-**Current status:** overall R-A remains rejected/open after independent review of `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; REV-18-through-REV-21 are retained only as bounded compile progress; REV-22-through-REV-24 and the missing REV-21 contracts are the next Code + Build work
-**Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
-**Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`  
-**Latest review-remediation implementation/compile source:** `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`
-**Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
+**Turn type:** Code + Build only
+**Current status:** REV-21 contract completion and REV-22-through-REV-24 are Code + Build complete / compile-valid at `9d88d0e47cfc039e5399ebee334290b1eeae792b`; the complete R-A inventory through REV-24 is reproducibly PASS; overall R-A remains open pending the separate immutable artifact-only runtime cadence gate
+**Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`
+**Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
+**Latest review-remediation implementation/compile source:** `9d88d0e47cfc039e5399ebee334290b1eeae792b`
+**Product gate after acceptance:** resume G4 topology-distinct completion and singularities
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0E. 2026-08-12 REV-21 coverage and REV-22 through REV-24 Code + Build closure
+
+Exact clean implementation/test source: `9d88d0e47cfc039e5399ebee334290b1eeae792b`. This closes the review findings at the Code + Build/static-contract boundary only; overall R-A is not runtime-accepted until the separate artifact-only cadence gate passes.
+
+- **REV-21 contract completion:** added the authority-only row-permutation mismatch negative and the consistently permuted source-matrix-plus-authority positive.
+- **REV-22:** the final aggregate oracle now receives independently retained/remapped boundary loops/edges, feature rails, hard-feature edges, vertex-chart authority, output-quad source-face authority, and provenance, with boundary/feature/local-sheet strict gates enabled. Boundary/feature tamper contracts and a valid boundary-bearing strict-oracle witness compile.
+- **REV-23:** deleted the aggregate pipeline's second stitch-key constructor. Post-remap identities are rebuilt through `pure_quad_detail::canonical_lineage_stitch_identity`, which derives boundary/interior kind from authoritative patch structure; stale-kind and post-publication generated-interior re-stitch contracts compile.
+- **REV-24:** direct `validate_source_authoritative_surface_mesh` requires non-null exact-matching `SourceTopologyRegions` at entry and sets `sourceAuthorityUsed` only after that proof. Direct null and same-extent foreign-authority negatives compile even with optional gates disabled.
+- **Complete closure inventory reproduced:** `.agents/Directional/R_A_Closure_Inventory.py --root .` generated `R_A_Closure_Inventory_Report.md` covering 17 affected paths and REV-01 through REV-24. Result: **38 probes / 164 probe matches**, raw projection leaves **22 allowed / 0 unexpected**, `complete_for_face_count` leaves **2 allowed / 0 unexpected**, final static inventory **PASS**.
+- **Fresh focused compile:** run/job `31634075824 / 94239861945` compiled and linked Release/static/Ninja/PRE_TEST **118/118** from exact source `9d88d0e47cfc039e5399ebee334290b1eeae792b`, exit `0`. Result artifact `9156381103`, SHA-256 `f75021d0e7dc3462fafd0460c4d93f51d508dfa8bed4621c1c641c758d94b8c3`; log artifact `9156381524`, SHA-256 `761562ef59092d163bf94b50e37ef94875f1e25da3f9b4da3eb7e9ccdcc915c2`.
+- Independent package inspection verified **26** regular files, self-excluding manifest **25/25**, zero manifest self references, five empty source-status snapshots, exact source archive, dependency revisions, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`. ccache recorded **84/108 hits (77.78%)** and pruned the branch to two compatible cache entries.
+
+The mandatory next cadence is artifact-only Test + Benchmark execution of this exact fresh package with no rebuild. Do not mark R-A complete from compile/static evidence alone.
 
 ## 0D. 2026-08-12 independent R-A closure review after REV-18 through REV-21 — rejected
 
@@ -128,12 +142,11 @@ Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Revie
 
 ### Required execution sequence
 
-1. Run one **Code + Build only** turn for REV-22, REV-23, REV-24, and the missing REV-21 permutation-pair contracts. Execute no generated runtime.
-2. Rerun the complete retained R-A closure inventory through REV-24. Record checked paths, exact commands/patterns, match counts, and every allowed leaf; a conclusion-only audit is a failure.
-3. Produce one fresh focused Release/static/Ninja/PRE_TEST package for the corrected exact source with clean provenance and a verified self-excluding manifest.
-4. Run a separate immutable artifact-only Test + Benchmark cadence turn against that fresh package. Do not reuse artifacts `9153147035 / 9153147459`.
-5. Mark R-A complete only if the static inventory and all focused semantic contracts pass.
-6. Continue R-B through R-G, then create and immutably validate one fresh full M1 package. No historical or partial package is an acceptance candidate.
+1. Preserve exact Code + Build source `9d88d0e47cfc039e5399ebee334290b1eeae792b` and focused artifacts `9156381103 / 9156381524`.
+2. Run a separate immutable artifact-only Test + Benchmark cadence turn against that package with **no rebuild**. Verify exact source, outer artifact digests, self-excluding **25/25** manifest, dependency revisions, command boundary, and five empty source-status snapshots before executing any packaged binary.
+3. Execute the focused REV-21-through-REV-24 semantic contracts plus adjacent retained R-A authority/rollback/optimizer contracts; a zero-selected filter is orchestration failure.
+4. Mark R-A complete only if the reproduced static inventory remains clean and every required focused runtime contract passes organically.
+5. Continue R-B through R-G, then create and immutably validate one fresh full M1 package. No historical or partial package is an acceptance candidate.
 
 ## 0. Retained M1 cutover requirements
 

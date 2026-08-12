@@ -11,12 +11,13 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 - [ ] **Complete the M1 single-authority cutover.**
   - [x] Preserve M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` as immutable runtime authority and preserve exact compile-only REV-18-through-REV-21 package evidence in `CHANGELOG.md`.
   - [x] Independently review exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`: **overall R-A rejected; do not mark complete**.
-  - [ ] R-A-REV-21 contract completion: add authority-only source-row permutation rejection and consistently permuted matrix-plus-authority acceptance.
-  - [ ] R-A-REV-22: make final merged-product validation strict and usable by carrying globally remapped boundary, feature, chart, output-face, hard-edge, and provenance authority; add boundary-bearing positive/tamper contracts.
-  - [ ] R-A-REV-23: rebuild aggregate stitch identities through the canonical completion constructor, derive kind from authoritative patch structure, and prove generated-interior lineages remain resolvable/re-stitchable.
-  - [ ] R-A-REV-24: require non-null exact-matching source authority at direct source-authoritative validator entry regardless of optional gates; add direct fail-closed contracts.
-  - [ ] Rerun the complete retained R-A inventory through REV-24 with checked paths, commands/patterns, match counts, and allowed leaves.
-  - [ ] Produce one fresh focused compile-only package, then run a separate immutable artifact-only cadence gate. Artifacts `9153147035 / 9153147459` are superseded as a runtime task.
+  - [x] R-A-REV-21 contract completion: authority-only source-row permutation rejects and consistently permuted matrix-plus-authority accepts at Code + Build source `9d88d0e47cfc039e5399ebee334290b1eeae792b`; runtime execution remains pending.
+  - [x] R-A-REV-22 Code + Build: final merged-product validation carries independent globally remapped boundary, feature, chart, output-face, hard-edge, and provenance authority with strict gates; boundary/feature tamper and strict-oracle positive contracts compile at `9d88d0e47cfc039e5399ebee334290b1eeae792b`.
+  - [x] R-A-REV-23 Code + Build: aggregate stitch identity is rebuilt through the completion-owned canonical constructor, stale kind is ignored, the duplicate pipeline schema is absent, and generated-interior re-stitch contracts compile at `9d88d0e47cfc039e5399ebee334290b1eeae792b`.
+  - [x] R-A-REV-24 Code + Build: direct source-authoritative validation requires non-null exact-matching `SourceTopologyRegions` before reporting authority use; null/foreign-authority negatives compile at `9d88d0e47cfc039e5399ebee334290b1eeae792b`.
+  - [x] Reproduce the complete retained R-A inventory through REV-24: `R_A_Closure_Inventory.py` generated `R_A_Closure_Inventory_Report.md` with 17 checked paths, 38 probes, 164 probe matches, 22/22 classified raw-projection leaves, 2/2 classified face-count leaves, zero unexpected leaves, and final static PASS.
+  - [x] Produce and verify one fresh focused compile-only package from `9d88d0e47cfc039e5399ebee334290b1eeae792b`: run/job `31634075824 / 94239861945`, artifacts `9156381103 / 9156381524`, Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`.
+  - [ ] Run the separate immutable artifact-only cadence gate on that exact fresh package; no rebuild or source changes.
   - [ ] Mark R-A complete only if the full static inventory and focused runtime contracts pass.
   - [ ] Complete R-B through R-G and produce one fresh full M1 package.
 - [ ] **Activate the retained full M1 Artifact-Only Test + Benchmark plan only for that fresh full package.**
