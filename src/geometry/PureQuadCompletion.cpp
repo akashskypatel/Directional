@@ -2082,15 +2082,16 @@ struct ConflictDiagnosticCornerKey {
 };
 
 std::array<PureQuadStitchIdentity, 4> exact_canonical_cycle(
-    const CompletedFaceOwnershipRecord &record, const PureQuadMesh &patch,
-    const bool authoritative) {
+    const CompletedFaceOwnershipRecord &record,
+    const std::vector<PureQuadStitchIdentity> &globalIdentities) {
   std::array<PureQuadStitchIdentity, 4> cycle;
   for (int corner = 0; corner < 4; ++corner) {
-    const int row = record.localRows[static_cast<std::size_t>(corner)];
-    if (row >= 0 && row < static_cast<int>(patch.vertices.size())) {
-      cycle[static_cast<std::size_t>(corner)] = authoritative
-          ? resolved_authoritative_identity(patch, row)
-          : resolved_stitch_identity(patch, row);
+    const int globalVertex =
+        record.globalVertices[static_cast<std::size_t>(corner)];
+    if (globalVertex >= 0 &&
+        globalVertex < static_cast<int>(globalIdentities.size())) {
+      cycle[static_cast<std::size_t>(corner)] =
+          globalIdentities[static_cast<std::size_t>(globalVertex)];
     }
   }
   const auto forward = pure_quad_detail::canonical_quad_cycle(cycle, false);
@@ -2100,7 +2101,8 @@ std::array<PureQuadStitchIdentity, 4> exact_canonical_cycle(
 
 void copy_conflict_corner_diagnostics(
     const CompletedFaceOwnershipRecord &record,
-    const PureQuadMesh &patch,
+    const std::vector<PureQuadStitchIdentity> &globalStitchIdentities,
+    const std::vector<PureQuadStitchIdentity> &globalAuthoritativeIdentities,
     std::array<int, 4> &kinds,
     std::array<std::uint64_t, 4> &identityHashes,
     std::array<std::uint64_t, 4> &authoritativeHashes,
@@ -2108,13 +2110,16 @@ void copy_conflict_corner_diagnostics(
     std::array<int, 4> &globalVertices) {
   std::array<ConflictDiagnosticCornerKey, 4> diagnosticCycle;
   for (int corner = 0; corner < 4; ++corner) {
-    const int row = record.localRows[static_cast<std::size_t>(corner)];
-    if (row < 0 || row >= static_cast<int>(patch.vertices.size())) {
+    const int globalVertex =
+        record.globalVertices[static_cast<std::size_t>(corner)];
+    if (globalVertex < 0 ||
+        globalVertex >= static_cast<int>(globalStitchIdentities.size()) ||
+        globalVertex >= static_cast<int>(globalAuthoritativeIdentities.size())) {
       continue;
     }
     diagnosticCycle[static_cast<std::size_t>(corner)] = {
-        resolved_stitch_identity(patch, row),
-        resolved_authoritative_identity(patch, row)};
+        globalStitchIdentities[static_cast<std::size_t>(globalVertex)],
+        globalAuthoritativeIdentities[static_cast<std::size_t>(globalVertex)]};
   }
   const auto forward =
       pure_quad_detail::canonical_quad_cycle(diagnosticCycle, false);
@@ -2125,33 +2130,37 @@ void copy_conflict_corner_diagnostics(
                           : forward.sourceIndices;
   for (int corner = 0; corner < 4; ++corner) {
     const int sourceIndex = order[static_cast<std::size_t>(corner)];
-    const int row = record.localRows[static_cast<std::size_t>(sourceIndex)];
-    if (row < 0 || row >= static_cast<int>(patch.vertices.size())) {
+    const int globalVertex =
+        record.globalVertices[static_cast<std::size_t>(sourceIndex)];
+    if (globalVertex < 0 ||
+        globalVertex >= static_cast<int>(globalStitchIdentities.size()) ||
+        globalVertex >= static_cast<int>(globalAuthoritativeIdentities.size())) {
       continue;
     }
-    const PureQuadStitchIdentity stitch =
-        resolved_stitch_identity(patch, row);
-    const PureQuadStitchIdentity authoritative =
-        resolved_authoritative_identity(patch, row);
+    const PureQuadStitchIdentity &stitch =
+        globalStitchIdentities[static_cast<std::size_t>(globalVertex)];
+    const PureQuadStitchIdentity &authoritative =
+        globalAuthoritativeIdentities[static_cast<std::size_t>(globalVertex)];
     kinds[static_cast<std::size_t>(corner)] = static_cast<int>(stitch.kind);
     identityHashes[static_cast<std::size_t>(corner)] = stitch.hash();
     authoritativeHashes[static_cast<std::size_t>(corner)] =
         authoritative.hash();
     localVertices[static_cast<std::size_t>(corner)] =
         record.localVertices[static_cast<std::size_t>(sourceIndex)];
-    globalVertices[static_cast<std::size_t>(corner)] =
-        record.globalVertices[static_cast<std::size_t>(sourceIndex)];
+    globalVertices[static_cast<std::size_t>(corner)] = globalVertex;
   }
 }
 
 SurfaceCellCompletedFaceOwnerIdentity exact_owner_identity(
-    const CompletedFaceOwnershipRecord &record, const PureQuadMesh &patch) {
+    const CompletedFaceOwnershipRecord &record, const PureQuadMesh &patch,
+    const std::vector<PureQuadStitchIdentity> &globalStitchIdentities,
+    const std::vector<PureQuadStitchIdentity> &globalAuthoritativeIdentities) {
   SurfaceCellCompletedFaceOwnerIdentity identity;
   identity.domain = patch.domainIdentity;
   identity.canonicalStitchCycle =
-      exact_canonical_cycle(record, patch, false);
+      exact_canonical_cycle(record, globalStitchIdentities);
   identity.canonicalAuthoritativeCycle =
-      exact_canonical_cycle(record, patch, true);
+      exact_canonical_cycle(record, globalAuthoritativeIdentities);
   identity.sourcePatch = patch.sourcePatch;
   identity.localQuad = record.localQuad;
   if (record.localQuad >= 0 &&
@@ -2172,14 +2181,20 @@ SurfaceCellCompletedFaceOwnerIdentity exact_owner_identity(
 SurfaceCellOwnershipConflict make_ownership_conflict(
     const CompletedFaceOwnershipRecord &firstRecord,
     const CompletedFaceOwnershipRecord &secondRecord,
-    const std::vector<PureQuadMesh> &patches) {
+    const std::vector<PureQuadMesh> &patches,
+    const std::vector<PureQuadStitchIdentity> &globalStitchIdentities,
+    const std::vector<PureQuadStitchIdentity> &globalAuthoritativeIdentities) {
   const PureQuadMesh &firstPatch =
       patches[static_cast<std::size_t>(firstRecord.patchIndex)];
   const PureQuadMesh &secondPatch =
       patches[static_cast<std::size_t>(secondRecord.patchIndex)];
   SurfaceCellOwnershipConflict conflict;
-  conflict.firstOwner = exact_owner_identity(firstRecord, firstPatch);
-  conflict.secondOwner = exact_owner_identity(secondRecord, secondPatch);
+  conflict.firstOwner = exact_owner_identity(
+      firstRecord, firstPatch, globalStitchIdentities,
+      globalAuthoritativeIdentities);
+  conflict.secondOwner = exact_owner_identity(
+      secondRecord, secondPatch, globalStitchIdentities,
+      globalAuthoritativeIdentities);
 
   const CompletedFaceOwnershipRecord *first = &firstRecord;
   const CompletedFaceOwnershipRecord *second = &secondRecord;
@@ -2244,13 +2259,13 @@ SurfaceCellOwnershipConflict make_ownership_conflict(
   conflict.firstSideEdgeCounts = firstMesh->sourceSideEdgeCounts;
   conflict.secondSideEdgeCounts = secondMesh->sourceSideEdgeCounts;
   copy_conflict_corner_diagnostics(
-      *first, *firstMesh, conflict.firstCornerIdentityKinds,
-      conflict.firstCornerIdentityHashes,
+      *first, globalStitchIdentities, globalAuthoritativeIdentities,
+      conflict.firstCornerIdentityKinds, conflict.firstCornerIdentityHashes,
       conflict.firstCornerAuthoritativeHashes, conflict.firstLocalVertices,
       conflict.firstGlobalVertices);
   copy_conflict_corner_diagnostics(
-      *second, *secondMesh, conflict.secondCornerIdentityKinds,
-      conflict.secondCornerIdentityHashes,
+      *second, globalStitchIdentities, globalAuthoritativeIdentities,
+      conflict.secondCornerIdentityKinds, conflict.secondCornerIdentityHashes,
       conflict.secondCornerAuthoritativeHashes, conflict.secondLocalVertices,
       conflict.secondGlobalVertices);
 
@@ -2666,19 +2681,40 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         owners.reserve(3);
         owners.push_back(firstOwner);
         owners.push_back(std::move(ownership));
-        for (std::size_t previous = 0; previous + 1 < owners.size();
-             ++previous) {
-          result.ownershipConflicts.push_back(make_ownership_conflict(
-              owners[previous], owners.back(), patches));
-        }
         canonicalQuadDuplicateOwners.emplace(canonical, std::move(owners));
       } else {
-        for (const CompletedFaceOwnershipRecord &previous :
-             duplicates->second) {
-          result.ownershipConflicts.push_back(make_ownership_conflict(
-              previous, ownership, patches));
-        }
         duplicates->second.push_back(std::move(ownership));
+      }
+    }
+  }
+
+  std::vector<PureQuadStitchIdentity> globalStitchIdentities;
+  std::vector<PureQuadStitchIdentity> globalAuthoritativeIdentities;
+  globalStitchIdentities.reserve(pendingVertices.size());
+  globalAuthoritativeIdentities.reserve(pendingVertices.size());
+  for (const PendingOutputVertex &pending : pendingVertices) {
+    globalStitchIdentities.push_back(pending.stitchIdentity);
+    const PureQuadStitchIdentity authoritativeIdentity =
+        canonical_typed_authority_identity(pending.stitchIdentity,
+                                           pending.typedAuthority);
+    if (!authoritativeIdentity.valid()) {
+      result.failure = "InvalidAuthoritativeStitchIdentity";
+      return result;
+    }
+    globalAuthoritativeIdentities.push_back(authoritativeIdentity);
+  }
+
+  // Conflict classification must observe the final owner-validated authority
+  // intersection for every stitched vertex. Building the inventory only after
+  // all patch occurrences have been consumed prevents an earlier per-patch
+  // certificate or stale cache from becoming diagnostic/ownership authority.
+  for (const auto &[canonical, owners] : canonicalQuadDuplicateOwners) {
+    (void)canonical;
+    for (std::size_t second = 1; second < owners.size(); ++second) {
+      for (std::size_t first = 0; first < second; ++first) {
+        result.ownershipConflicts.push_back(make_ownership_conflict(
+            owners[first], owners[second], patches, globalStitchIdentities,
+            globalAuthoritativeIdentities));
       }
     }
   }
@@ -2815,8 +2851,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     lineage.sourceCharts = pending.typedAuthority.sourceCharts;
     lineage.sourceSupport = pending.typedAuthority.sourceSupport;
     lineage.authoritativeIdentity =
-        canonical_typed_authority_identity(lineage.stitchIdentity,
-                                           pending.typedAuthority);
+        globalAuthoritativeIdentities[static_cast<std::size_t>(row)];
     if (!lineage.authoritativeIdentity.valid()) {
       result.failure = "MissingTypedStitchIdentity";
       return result;
