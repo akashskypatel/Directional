@@ -38,7 +38,10 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           exec > >(tee -a "$LOG") 2>&1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          base64 --decode .agents/Directional/turn-payloads/m1-ra-rev-03-06-docs.patch.gz.b64 | gzip -d > "$RUNNER_TEMP/docs.patch"
+          cat \
+            .agents/Directional/turn-payloads/m1-ra-rev-03-06-docs-a.patch \
+            .agents/Directional/turn-payloads/m1-ra-rev-03-06-docs-b.patch \
+            > "$RUNNER_TEMP/docs.patch"
           git apply --check "$RUNNER_TEMP/docs.patch"
           git apply "$RUNNER_TEMP/docs.patch"
           git diff --check
