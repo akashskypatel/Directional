@@ -37,29 +37,26 @@ Do not add:
 
 ## Mandatory next turn
 
-Run **M1 Single-Authority Cutover remediation — Code + Build only** under:
+Run a **targeted artifact-only Test + Benchmark verification of the exact R-A-REV-18-through-R-A-REV-21 partial Code + Build package**. This is the mandatory cadence gate before another Code + Build slice; it is not the retained full-M1 acceptance plan.
 
-`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`
-
-Repository: akashskypatel/Directional  
-Branch: agent/surface_cell_quad/p5-recover-bridge-healing  
-PR: #8 remains open, draft, and unmerged  
-Reviewed implementation/test source: `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`  
-Independent review boundary: `356a0bc2733af41e15fad056161e526865c147c5`  
-Review decision/planning commit: `49b94da971ff544ac77f9dd2fa394791a1b67435`
+Repository: akashskypatel/Directional
+Branch: agent/surface_cell_quad/p5-recover-bridge-healing
+PR: #8 remains open, draft, and unmerged
+Exact compile-valid source: `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`
+Compile run/job: `31625763711 / 94211611771`
+Result artifact: `9153147035`, SHA-256 `bbc07fad9a767dc77aff290c540659b4140aab414ddf1148dec1b637fc32af38`
+Log artifact: `9153147459`, SHA-256 `ad5984db04ab98a4bbcd058d58c83e1cdef2383890b8bcfab1c209e487b3889b`
 
 The next turn must:
 
-1. close R-A-REV-18 by publishing one checked global aggregate `SourceTopologyRegions`, validating every remapped lineage, rebuilding/removing vertex identity caches, and regenerating both face cycles;
-2. close R-A-REV-19 by staging every semantic/context product transactionally, exposing no consumable rejected context, and running actual final merged-product source-authoritative validation;
-3. close R-A-REV-21 by binding every affected authority product to the exact supplied source-face topology, with same-extent foreign-authority negatives and a consistent-permutation positive;
-4. rerun the complete retained R-A inventory through REV-21 and mark R-A complete only if every gate closes;
-5. complete R-B through R-G in the same vertical cutover;
-6. produce one fresh full Release/static/Ninja/PRE_TEST package with clean provenance and a verified self-excluding manifest.
+1. download and verify the exact result artifact without rebuilding or changing implementation/test/build source;
+2. verify exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`, the self-excluding **25/25** manifest, command boundary, dependency revisions, and all five empty source-status snapshots before executing any packaged binary;
+3. execute focused semantic contracts for REV-18 global aggregate ownership/cache rebuild, REV-19 transactional rollback/final merged oracle, REV-20 strict compatibility-path absence/missing authority, and REV-21 same-extent foreign-topology rejection plus consistent-topology positives;
+4. include adjacent retained completion/optimizer/pipeline authority contracts needed to detect regressions from these changes, following `tests/TESTING_STRATEGY.md` and the unit-testing module;
+5. classify every failure from runtime evidence; do not rebuild, weaken validation, restore raw mirrors/aliases/fallbacks, or alter fixtures to synthesize green output;
+6. if the exact package passes, return to the M1 Code + Build plan to rerun the complete retained R-A inventory before any R-A completion claim.
 
-Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input. Do not restore a raw mirror, compatibility identity, fallback, fixture exception, proxy oracle, or extent-only authority bypass.
-
-Do not execute or relabel partial artifacts `9149834162 / 9149834634`; their targeted runtime task is superseded by the rejected source review. The retained full artifact-only plan remains dormant until one fresh full R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during M1.
+Do not activate the retained full `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`; it remains dormant until one fresh full R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this verification.
 
 ## Current authority
 
@@ -73,18 +70,19 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 
 ### R-A closure status
 
-Review decision/planning commit: `49b94da971ff544ac77f9dd2fa394791a1b67435`.  
-Independent review boundary: branch head `356a0bc2733af41e15fad056161e526865c147c5`; exact reviewed implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`.
+Independent review decision/planning commit remains `49b94da971ff544ac77f9dd2fa394791a1b67435`; that review rejected source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`. Latest partial Code + Build source is `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`.
 
-- Overall R-A is **not complete**; the requested checkpoint was rejected.
-- R-A-REV-17 bounded owner-certificate/canonical-cache remediation is compile-valid and retained as progress, not independent acceptance.
-- R-A-REV-18 remains open: the aggregate publishes no global owner and leaves post-remap identity/face-cycle caches stale.
-- R-A-REV-19 remains open: aggregate publication is not transactional and cached component validation is not a final merged-product oracle.
-- R-A-REV-20 bounded compatibility-path removal is compile-valid and retained as progress, not independent acceptance.
-- R-A-REV-21 is open: affected boundaries accept a foreign same-face-count authority without exact source-topology binding.
-- REV-14-through-REV-16 remain historical bounded progress until the complete R-A inventory closes.
+- Overall R-A is **not complete** and has not been independently re-accepted.
+- R-A-REV-17 remains retained compile-valid owner-certificate/canonical-cache progress within the newer source.
+- R-A-REV-18 is **Code + Build complete / compile-valid**: global aggregate authority is published and post-remap identities/face cycles are rebuilt.
+- R-A-REV-19 is **Code + Build complete / compile-valid**: aggregate publication is staged transactionally and the actual final merged product receives source-authoritative validation.
+- R-A-REV-20 remains **Code + Build complete / compile-valid**: the named raw/legacy optimizer/verifier compatibility paths remain absent.
+- R-A-REV-21 is **Code + Build complete / compile-valid**: affected boundaries require exact source-face topology binding rather than same-extent completeness.
+- REV-14-through-REV-16 remain historical bounded progress until the complete R-A inventory and later acceptance close the combined gate.
 
-Compile-only evidence remains authentic: run/job `31616904715 / 94181880684`, Release/static/Ninja/PRE_TEST **118/118**, result/log artifacts `9149834162 / 9149834634`, verified self-excluding manifest **21/21**, five empty source-status snapshots, and `runtimeExecution=false`. It is not an R-A or M1 acceptance candidate.
+Partial Code + Build evidence: run/job `31625763711 / 94211611771`, Release/static/Ninja/PRE_TEST **118/118**, result/log artifacts `9153147035 / 9153147459`, self-excluding manifest **25/25**, five empty source-status snapshots, and `runtimeExecution=false`. This is not an R-A or M1 acceptance candidate.
+
+The reusable compile workflow is mandatory for future builds. Final cache inventory is bounded to two current `directional-ccache-*` entries and zero legacy `m1-ra-*` entries; the successful compile recorded **82.41%** ccache hits.
 
 M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. No runtime result or regression total changed; totals remain **34 events / 14 categories / 20 recurrences**.
 

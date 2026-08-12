@@ -1,12 +1,28 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** independent closure review rejects overall R-A at branch boundary `356a0bc2733af41e15fad056161e526865c147c5`; the bounded REV-17/REV-20 remediation is retained as compile-valid progress, REV-18/REV-19 remain unimplemented, and R-A-REV-21 is open before the complete R-A inventory, R-B through R-G, and one fresh full package
+**Current status:** overall R-A remains open; R-A-REV-18 through R-A-REV-21 are Code + Build complete / compile-valid at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`, with a focused artifact-only runtime cadence gate next before the complete R-A inventory, R-B through R-G, and one fresh full package
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Latest independent-review branch boundary:** `356a0bc2733af41e15fad056161e526865c147c5`  
-**Latest review-remediation implementation/compile source:** `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`
+**Latest review-remediation implementation/compile source:** `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0C. 2026-08-12 R-A-REV-18 through R-A-REV-21 partial Code + Build checkpoint
+
+Exact compile-valid source: `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`. Overall R-A remains open; this checkpoint is implementation/build evidence, not independent or runtime acceptance.
+
+- **REV-18:** disconnected aggregation constructs and publishes one checked global `SourceTopologyRegions`, remaps final lineage through that owner, rebuilds global stitch/authoritative identities, and regenerates canonical face-cycle hashes after remap.
+- **REV-19:** aggregate semantic/context publication is staged transactionally; rejected multi-component output exposes no consumable aggregate context; the actual final merged product is source-authoritatively validated against the global owner before commit.
+- **REV-20:** the previously removed raw optimizer/verifier mirrors and legacy compatibility branches remain absent under the widened static inventory.
+- **REV-21:** affected source-authority boundaries use exact source-face topology binding rather than face-count completeness; same-extent foreign topology fails closed and consistent topology bindings compile.
+- Static source audit closed REV-18-through-REV-21 at the Code + Build source/contract boundary. Contract sources were compiled, not executed.
+- Compile-only run/job `31625763711 / 94211611771` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9153147035`, SHA-256 `bbc07fad9a767dc77aff290c540659b4140aab414ddf1148dec1b637fc32af38`; log artifact `9153147459`, SHA-256 `ad5984db04ab98a4bbcd058d58c83e1cdef2383890b8bcfab1c209e487b3889b`.
+- Package verification: **26** regular files including `SHA256SUMS`, self-excluding manifest **25/25**, five empty source-status snapshots, exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
+- Reusable compiler cache restored compatible key `directional-ccache-Linux-gcc-13.3.0-release-v1-31625171464`; ccache recorded **89/108 hits (82.41%)**. Final branch cache inventory retains two current compatible caches and zero legacy `m1-ra-*` caches.
+- The first compile attempt exposed one real source error (`SurfaceCellRailKind::Feature` instead of `HardFeature`); commit `c936d56d3ad72afbc806ab7bcaf1b10ef38bae10` corrected only that enum reference, without a compatibility fallback. No generated runtime executed in either compile attempt.
+
+The mandatory next cadence is focused artifact-only Test + Benchmark verification of this exact partial package with no rebuild. The retained full-M1 artifact-only acceptance plan remains dormant until a fresh complete R-A-through-R-G package exists.
 
 ## 0B. 2026-08-12 independent R-A closure review after REV-17/REV-20 partial remediation — rejected
 
@@ -51,7 +67,7 @@ Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Revie
 
 ### R-A-REV-18 — global aggregate authority and derived identity closure
 
-**Status:** open; intentionally not implemented in the REV-17/REV-20 partial Code + Build turn.
+**Code + Build status:** complete / compile-valid at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; focused artifact-only runtime verification is pending.
 
 - Publish one checked global source-authority product for the original source mesh.
 - Remap all component lineage through that owner and validate the final global lineage.
@@ -60,7 +76,7 @@ Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Revie
 
 ### R-A-REV-19 — transactional aggregate publication and real post-merge oracle
 
-**Status:** open; intentionally not implemented in the REV-17/REV-20 partial Code + Build turn.
+**Code + Build status:** complete / compile-valid at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; focused artifact-only runtime verification is pending.
 
 - Stage labels, rails, lineages, patches, debug products, optimization, and validation state; commit only after all components and final validation succeed.
 - On rejection expose no consumable semantic context, including after a valid first component and malformed later component.
@@ -69,7 +85,7 @@ Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Revie
 
 ### R-A-REV-20 — remove or isolate remaining R-A compatibility paths
 
-**Current review status:** bounded compatibility-path removal is complete / compile-valid at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` and retained as progress; independent closure is deferred because the strict completeness predicate remains extent-only under R-A-REV-21.
+**Code + Build status:** complete / compile-valid at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; the named compatibility paths remain absent and REV-21 now enforces exact source-topology binding. Independent R-A acceptance remains pending.
 
 - Remove raw optimizer component/sheet mirrors and legacy point-cloud/feature-interval/basic-validator branches from the affected SurfaceCells path.
 - If generic non-SurfaceCells behavior must remain, move it behind a separately typed implementation that strict SurfaceCells wrappers cannot enter.
@@ -77,7 +93,7 @@ Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Revie
 
 ### R-A-REV-21 — bind source authority to the exact supplied source topology
 
-**Status:** open; discovered by the complete R-A inventory of source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`.
+**Code + Build status:** complete / compile-valid at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; focused artifact-only runtime verification is pending.
 
 - Replace face-count-only “complete authority” checks at every affected `(sourceFaces, SourceTopologyRegions)` boundary with an exact row-topology binding check.
 - For every source row, construct the checked `SourceFaceTopologyKey` from the supplied source matrix and require equality with `sourceAuthority.topology_for_row(row)`; reject malformed/repeated/out-of-extent vertices before semantic use.
@@ -86,11 +102,11 @@ Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Revie
 
 ### Required execution sequence
 
-1. Implement REV-18, REV-19, and REV-21 without restoring a raw mirror, compatibility identity, fixture exception, proxy oracle, or extent-only authority bypass.
-2. Rerun the complete R-A closure inventory. R-A may close only if every retained REV-01-through-REV-21 gate is statically clean and all required semantic contract sources compile.
-3. Complete R-B through R-G in the same vertical cutover.
+1. Preserve exact partial Code + Build source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` and artifacts `9153147035 / 9153147459`; run the focused artifact-only runtime cadence gate with no rebuild.
+2. If that exact package passes, return to Code + Build and rerun the complete retained REV-01-through-REV-21 R-A closure inventory. R-A may close only if every gate is statically clean and the required semantic contracts have passed their cadence evidence.
+3. Complete R-B through R-G in the same vertical cutover under the active plan.
 4. Produce one fresh full R-A-through-R-G Release/static/Ninja/PRE_TEST package with clean provenance and a verified self-excluding manifest.
-5. Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input in the Code + Build turn.
+5. Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input in any Code + Build turn.
 6. Activate immutable Test + Benchmark only for that fresh full package; no historical or partial package is an acceptance candidate.
 
 ## 0. Retained M1 cutover requirements

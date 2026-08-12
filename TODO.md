@@ -9,14 +9,15 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - Current closure-review boundary: exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5`.
+  - Current partial Code + Build source: `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; overall R-A remains open pending focused artifact-only runtime verification and the complete retained REV-01-through-REV-21 inventory.
   - [x] Preserve the REV-14-through-REV-16 Code + Build checkpoint as partial compile evidence only: run/job `31602025466 / 94131563590`, artifacts `9143819164 / 9143819888`, Release/static/Ninja/PRE_TEST **118/118**, manifest **21/21**, no generated runtime.
   - [x] R-A-REV-17 bounded remediation: owner-validated collision certificates, canonical-only derived identity, owned positive coverage, and fail-closed ownership negatives are compile-valid at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; retain as progress, not independent R-A acceptance.
   - [x] Review the R-A closure gate after REV-17/REV-20 source changes: **rejected** at branch boundary `356a0bc2733af41e15fad056161e526865c147c5`; the partial artifact runtime task is superseded by source findings and remains compile-only history.
-  - [ ] R-A-REV-18: publish one global aggregate source-authority product; validate every globally remapped lineage; rebuild/remove vertex identity caches and regenerate face cycles after remap.
-  - [ ] R-A-REV-19: make aggregate semantic publication transactional; clear every context payload/flag on rejection; validate the actual final merged product; expand REV-16 and second-component-failure counterfactuals.
-  - [x] R-A-REV-20 bounded remediation: the named SurfaceCells optimizer/verifier raw mirrors and point-cloud/legacy feature-interval/basic-validator compatibility paths are removed and missing-authority contracts compile at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; retain as progress, not independent R-A acceptance.
-  - [ ] R-A-REV-21: bind every affected `SourceTopologyRegions` product to the exact supplied source-face topology; reject a foreign same-face-count authority before completion, optimization, validation, or publication; compile consistent-permutation positive and wrong-topology zero-publication negatives.
+  - [x] R-A-REV-18 Code + Build: global aggregate source authority, final global lineage validation, rebuilt vertex authority/stitch identities, and regenerated face cycles compile at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; runtime verification remains pending.
+  - [x] R-A-REV-19 Code + Build: disconnected aggregation stages semantic publication transactionally, rolls rejected output back to zero consumable context, and validates the actual merged product against global source authority at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; runtime verification remains pending.
+  - [x] R-A-REV-20 Code + Build: the named SurfaceCells optimizer/verifier raw mirrors and point-cloud/legacy feature-interval/basic-validator compatibility paths remain absent under the REV-18-through-REV-21 static audit at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; retain as progress, not independent R-A acceptance.
+  - [x] R-A-REV-21 Code + Build: affected source-authority consumers bind `SourceTopologyRegions` to the exact supplied source-face topology and same-extent foreign authority fails closed; positive/negative contract sources compile at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; runtime verification remains pending.
+  - [ ] Run the mandatory focused artifact-only Test + Benchmark cadence gate on exact partial package `9153147035` / `9153147459` from source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; no rebuild.
   - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every retained REV-01-through-REV-21 gate is statically clean.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
