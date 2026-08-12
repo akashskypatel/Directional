@@ -44,6 +44,16 @@ jobs:
           exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           python3 .agents/Directional/turn-payloads/ra-rev22-f1-f3-rev23-f1/closeout.py
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md')
+          text = path.read_text(encoding='utf-8')
+          old = '**Latest independent-review verdict at source `9d88d0e...`:** **REV-21 contract completion and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A rejected/open.**  \n**Post-review remediation status:**'
+          new = '**Latest independent-review verdict at source `9d88d0e...`:** **REV-21 contract completion and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A rejected/open.**\n**Post-review remediation status:**'
+          if old not in text:
+              raise SystemExit('review verdict line-break normalization target missing')
+          path.write_text(text.replace(old, new, 1), encoding='utf-8')
+          PY
           git diff --check
           changed="$(git diff --name-only | sort)"
           expected="$(printf '%s\n' \
