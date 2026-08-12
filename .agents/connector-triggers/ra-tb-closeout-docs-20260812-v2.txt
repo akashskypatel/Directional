@@ -1,1 +1,0 @@
-Record the immutable R-A artifact-only T+B result from run/job 31652227682 / 94298883415 and set the next turn to bounded Code + Build remediation. Documentation/control-plane only; do not execute generated Directional runtime.
