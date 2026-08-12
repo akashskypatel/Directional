@@ -17,6 +17,25 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — R-A-REV-14 through R-A-REV-16 partial remediation
+
+- Closed `R-A-REV-14` for reviewed completion/assembly paths: collision publication now has one canonical post-intersection typed authority; derived `authoritativeIdentity` and canonical face-owner cycles are regenerated from that final authority. Compile-visible contracts cover overlapping-but-nonidentical compatible intersection publication and disjoint rejection.
+- Closed `R-A-REV-15` for reviewed component aggregation paths: region/sheet/chart/support remap domains and owner relations are built from published source topology/chart authority; sparse, out-of-domain, wrong-owner, and wrong-face typed authority rejects before output publication.
+- Closed `R-A-REV-16` at the Code + Build contract boundary: a production-owned pre-aggregation counterfactual exposes raw projection tamper to the real aggregation consumer and compares complete semantic/hash/downstream authority-validation output; malformed typed authority has a fail-closed zero-publication contract; the replacement audit classifies repository-wide affected reads/writes and checks the remap/collision/counterfactual bodies.
+
+### Validation — R-A-REV-14 through R-A-REV-16
+
+- Exact review-remediation source: `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` (`7 files changed, 911 insertions, 241 deletions`).
+- Compile-only run/job `31602025466 / 94131563590` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9143819164`, outer SHA-256 `e3213d8ed94121e734b69ed17f64501a3a059b64ccfa3cbb6be48a1a98c83e13`; log artifact `9143819888`, outer SHA-256 `c2d0cbc28a296590f22a343aed9173a3e363e1cdb5a53ee198ae4a8dc5e44aa6`.
+- Audit reported `R-A-REV-14 source/contract audit: closed`, `R-A-REV-15 source/contract audit: closed`, and `R-A-REV-16 counterfactual/read-write audit: closed`.
+- Independent result inspection verified exact source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`, **22** regular files including `SHA256SUMS`, a self-excluding recursive manifest **21/21**, zero manifest self references, all five source-status snapshots empty, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority and regression totals remain **34 events / 14 categories / 20 recurrences**.
+
+### Operational notes — R-A-REV-14 through R-A-REV-16
+
+- Initial run/job `31601748377 / 94130625219` stopped before source application, audit, or compile because the connector-created final source/audit transfer chunks lacked a trailing newline and therefore failed the pinned concatenated-payload digest. Log artifact `9143393404`, SHA-256 `7da2e3c7ab3222349084926aad29e1233506f3d401d4987a51a4fea9647d070f`. The transfer chunks were corrected and the successful retry above followed. This was orchestration-only: no product patch or generated runtime executed and no regression event was assigned.
+
+
 ### Review — complete R-A closure gate after REV-11 through REV-13
 
 - Reviewed PR #8 through branch head `344f996622606121a9567beaf1dad4001a5374f3`; exact implementation/test source remains `78056ba849fafad27eb55e8008fbc20a56300868`. Rejected R-A completion.

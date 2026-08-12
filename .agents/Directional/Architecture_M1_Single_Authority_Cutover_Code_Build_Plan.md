@@ -1,12 +1,29 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** complete R-A closure review rejected at branch head `344f996622606121a9567beaf1dad4001a5374f3`; R-A-REV-14 through R-A-REV-16 are open, followed by R-B through R-G and one fresh full self-verifying package
+**Current status:** R-A-REV-14 through R-A-REV-16 are compile-closed for reviewed paths at `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`; R-A remains open pending the complete inventory, followed by R-B through R-G and one fresh full self-verifying package
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Latest closure-review branch head:** `344f996622606121a9567beaf1dad4001a5374f3`
-**Latest review-remediation implementation/compile source:** `78056ba849fafad27eb55e8008fbc20a56300868`
+**Latest review-remediation implementation/compile source:** `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0AA. 2026-08-12 R-A-REV-14-through-16 review-remediation checkpoint
+
+This checkpoint closes REV-14 through REV-16 only for the reviewed Code + Build source/contract boundary. It does **not** close R-A, R-B through R-G, M1, or activate artifact-only runtime acceptance.
+
+- Exact implementation/test source: `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` (`7 files changed, 911 insertions, 241 deletions`).
+- REV-14: collision publication uses the canonical post-intersection typed certificate and regenerates derived identity/face ownership from that result; overlapping-compatible and disjoint-incompatible contracts are compile-visible.
+- REV-15: component remap domains and owner relations derive from published `SourceTopologyRegions`/chart authority rather than candidate maxima; invalid region/sheet/chart/support authority fails before publication.
+- REV-16: the production-owned counterfactual mutator runs before real aggregation; baseline versus raw-tampered semantic/hash/downstream validation output is compared; malformed typed authority has a zero-publication negative; the repository-wide audit classifies affected raw reads/writes and requires these semantic bodies.
+- Audit output: `R-A-REV-14 source/contract audit: closed`, `R-A-REV-15 source/contract audit: closed`, `R-A-REV-16 counterfactual/read-write audit: closed`.
+- Compile-only run/job `31602025466 / 94131563590` completed Release/static/Ninja/PRE_TEST **118/118**, build exit `0`.
+- Result artifact `9143819164`, outer SHA-256 `e3213d8ed94121e734b69ed17f64501a3a059b64ccfa3cbb6be48a1a98c83e13`; log artifact `9143819888`, outer SHA-256 `c2d0cbc28a296590f22a343aed9173a3e363e1cdb5a53ee198ae4a8dc5e44aa6`.
+- Independent package inspection verified exact source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`, **22** regular files including `SHA256SUMS`, self-excluding manifest **21/21**, zero manifest self-references, all five source-status snapshots empty, and the explicit Code + Build/no-runtime command boundary.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. New semantic contracts were compiled only.
+- Initial run/job `31601748377 / 94130625219` failed before source application because temporary transfer chunk newlines caused the pinned digest check to fail; log artifact `9143393404`, SHA-256 `7da2e3c7ab3222349084926aad29e1233506f3d401d4987a51a4fea9647d070f`. This was orchestration-only.
+
+**Decision:** rerun the complete R-A closure inventory next. Mark R-A complete only if every retained closure item is statically clean; then continue R-B through R-G and produce the single fresh full package required for M1 acceptance.
 
 ## 0A. 2026-08-12 complete R-A closure review — rejected
 
