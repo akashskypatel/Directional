@@ -105,7 +105,6 @@ SurfaceOptimizationConstraints make_final_constraints(
   SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = sourceVertices;
   constraints.sourceFaces = sourceFaces;
-  constraints.sourcePositions = sourceVertices;
   constraints.sourceNormals = Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
   constraints.sourceFieldX = Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
   constraints.sourceFieldY = Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
@@ -437,7 +436,6 @@ SurfaceOptimizationConstraints hard_rail_constraints(
   SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = fixture.vertices;
   constraints.sourceFaces = fixture.sourceFaces;
-  constraints.sourcePositions = fixture.vertices;
   constraints.sourceNormals =
       Eigen::MatrixXd::Zero(fixture.sourceFaces.rows(), 3);
   constraints.sourceFieldX =
@@ -767,7 +765,6 @@ TEST(SurfaceMeshOptimizerPhase22,
   SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = vertices;
   constraints.sourceFaces = square_triangles();
-  constraints.sourcePositions = vertices;
   constraints.vertexProvenance = provenance_for(
       vertices, constraints.sourceVertices, constraints.sourceFaces,
       {0, 0}, {0, 0});
@@ -970,7 +967,6 @@ TEST(SurfaceMeshOptimizerPhase22,
   SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = vertices;
   constraints.sourceFaces = sourceFaces;
-  constraints.sourcePositions = vertices;
   constraints.sourceNormals.resize(4, 3);
   constraints.sourceNormals << 0.0, 0.0, 1.0,
       0.0, 0.0, 1.0,
@@ -1465,8 +1461,6 @@ directional::geometry::SurfaceFeatureCurveInterval m1b_interval(
     const int sourceFace) {
   directional::geometry::SurfaceFeatureCurveInterval interval;
   interval.sourceFace = sourceFace;
-  interval.component = 7;
-  interval.sheet = 1;
   return interval;
 }
 
@@ -1582,8 +1576,6 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
   tamperedPoint.component = 101;
   tamperedPoint.sheet = 102;
   auto tamperedInterval = baselineInterval;
-  tamperedInterval.component = 201;
-  tamperedInterval.sheet = 202;
   EXPECT_EQ(baseline,
             directional::geometry::surface_optimization_rail_detail::
                 provenance_supports_interval_sheet(

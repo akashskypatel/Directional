@@ -274,6 +274,27 @@ std::vector<directional::geometry::PureQuadMesh> completed_cylinder_patches(
   return patches;
 }
 
+directional::geometry::PureQuadMesh completed_typed_single_quad(
+    const Eigen::MatrixXi &faces,
+    const directional::geometry::SourceTopologyRegions &sourceAuthority,
+    const int sourcePatch) {
+  auto typedPatch = patch({1, 1, 1, 1});
+  typedPatch.sourceFaces = {0};
+  assign_patch_boundary_authority(typedPatch, faces, sourceAuthority,
+                                  {0, 0, 0, 0});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = sourcePatch;
+  options.sourceFaces = &faces;
+  options.sourceAuthority = &sourceAuthority;
+  const auto completion =
+      directional::geometry::complete_pure_quad_patch(typedPatch, options);
+  if (!completion.success) {
+    throw std::runtime_error("Failed to construct typed single-quad fixture: " +
+                             completion.failure);
+  }
+  return completion.mesh;
+}
+
 CompletionFixture source_support_alias_patch() {
   CompletionFixture fixture;
   fixture.vertices.resize(4, 3);
@@ -1111,7 +1132,7 @@ TEST(PureQuadCompletionPhase18,
   ASSERT_TRUE(completion.success);
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {completion.mesh});
+      {completion.mesh}, 1.0e-9, &fixture.faces, &sourceAuthority);
   ASSERT_TRUE(assembly.success) << assembly.failure;
   EXPECT_EQ(1, assembly.connectedComponents);
   EXPECT_EQ(1, assembly.boundaryLoopCount);
@@ -1361,8 +1382,11 @@ TEST(PureQuadCompletionPhase18,
   const auto patches = completed_cylinder_patches(vertices, faces);
   ASSERT_EQ(8U, patches.size());
 
-  const auto assembly =
-      directional::geometry::stitch_pure_quad_patches(patches);
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
 
   ASSERT_TRUE(assembly.success) << assembly.failure;
   EXPECT_EQ(1, assembly.connectedComponents);
@@ -1382,40 +1406,34 @@ TEST(PureQuadCompletionPhase18,
 
 TEST(PureQuadCompletionPhase18,
      DuplicateStitchedQuadReportsBothAuthoritativeSourcePatches) {
-  directional::geometry::PureQuadCompletionOptions options;
-  options.sourcePatch = 41;
-  const auto first = directional::geometry::complete_pure_quad_patch(
-      patch({1, 1, 1, 1}), options);
-  ASSERT_TRUE(first.success);
-
-  directional::geometry::PureQuadMesh second = first.mesh;
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  auto first = completed_typed_single_quad(sourceFaces, sourceAuthority, 41);
+  auto second = first;
   second.sourcePatch = 73;
   for (auto &lineage : second.quadLineage) {
     lineage.sourcePatch = 73;
   }
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {first.mesh, second});
+      {first, second}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   EXPECT_FALSE(assembly.success);
   EXPECT_TRUE(assembly.failure.starts_with(
       "DuplicateStitchedQuad:firstPatch=41;firstLocalQuad=0;"
       "secondPatch=73;secondLocalQuad=0;globalVertices=0,1,2,3"));
-  EXPECT_NE(std::string::npos,
-            assembly.failure.find(";classification="));
+  EXPECT_NE(std::string::npos, assembly.failure.find(";classification="));
   EXPECT_TRUE(assembly.ownershipConflict.active());
 }
 
 TEST(PureQuadCompletionPhase18,
      CompletedFaceOwnershipCanonicalizesRotationAndReversal) {
-  directional::geometry::PureQuadCompletionOptions options;
-  options.sourcePatch = 41;
-  const auto completion = directional::geometry::complete_pure_quad_patch(
-      patch({1, 1, 1, 1}), options);
-  ASSERT_TRUE(completion.success);
-
-  auto first = completion.mesh;
-  auto second = completion.mesh;
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  auto first = completed_typed_single_quad(sourceFaces, sourceAuthority, 41);
+  auto second = first;
   first.sourcePatch = 41;
   second.sourcePatch = 73;
   assign_distinct_domain_identity(first, 1);
@@ -1430,7 +1448,7 @@ TEST(PureQuadCompletionPhase18,
   second.quads[0] = {2, 1, 0, 3};
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {first, second});
+      {first, second}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   EXPECT_FALSE(assembly.success);
   EXPECT_TRUE(assembly.mesh.vertices.empty());
@@ -1453,17 +1471,13 @@ TEST(PureQuadCompletionPhase18,
             assembly.failure.find(";firstCornerKinds=arrangement-node,"));
 }
 
-
 TEST(PureQuadCompletionPhase18,
      SameCornersWithEqualSourceSupportAndDistinctBoundariesAreTyped) {
-  directional::geometry::PureQuadCompletionOptions options;
-  options.sourcePatch = 101;
-  const auto completion = directional::geometry::complete_pure_quad_patch(
-      patch({1, 1, 1, 1}), options);
-  ASSERT_TRUE(completion.success);
-
-  auto first = completion.mesh;
-  auto second = completion.mesh;
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  auto first = completed_typed_single_quad(sourceFaces, sourceAuthority, 101);
+  auto second = first;
   first.sourcePatch = 101;
   second.sourcePatch = 202;
   assign_same_support_distinct_boundary_identity(first, 1);
@@ -1478,7 +1492,7 @@ TEST(PureQuadCompletionPhase18,
   }
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {second, first});
+      {second, first}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   EXPECT_FALSE(assembly.success);
   EXPECT_EQ(directional::geometry::SurfaceCellOwnershipConflictClass::
@@ -1495,16 +1509,14 @@ TEST(PureQuadCompletionPhase18,
 
 TEST(PureQuadCompletionPhase18,
      CompleteOwnershipInventoryReportsIndependentClaimsDeterministically) {
-  directional::geometry::PureQuadCompletionOptions options;
-  options.sourcePatch = 101;
-  const auto completion = directional::geometry::complete_pure_quad_patch(
-      patch({1, 1, 1, 1}), options);
-  ASSERT_TRUE(completion.success);
-
-  auto first = completion.mesh;
-  auto second = completion.mesh;
-  auto third = completion.mesh;
-  auto fourth = completion.mesh;
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  const auto base = completed_typed_single_quad(sourceFaces, sourceAuthority, 101);
+  auto first = base;
+  auto second = base;
+  auto third = base;
+  auto fourth = base;
   first.sourcePatch = 101;
   second.sourcePatch = 202;
   third.sourcePatch = 303;
@@ -1521,20 +1533,19 @@ TEST(PureQuadCompletionPhase18,
   for (auto *mesh : {&third, &fourth}) {
     ASSERT_EQ(mesh->boundaryNodeIdentities.size(),
               mesh->boundaryVertices.size());
-    for (int row = 0; row < static_cast<int>(mesh->vertexLineage.size());
-         ++row) {
+    for (int row = 0; row < static_cast<int>(mesh->vertexLineage.size()); ++row) {
       auto &exact = mesh->boundaryNodeIdentities[static_cast<std::size_t>(row)];
       exact.values.push_back(700 + row);
       auto &lineage = mesh->vertexLineage[static_cast<std::size_t>(row)];
       lineage.stitchIdentity.canonical = exact;
-      lineage.authoritativeIdentity = lineage.stitchIdentity;
+      lineage.authoritativeIdentity = {};
     }
   }
 
   const auto forward = directional::geometry::stitch_pure_quad_patches(
-      {first, second, third, fourth});
+      {first, second, third, fourth}, 1.0e-9, &sourceFaces, &sourceAuthority);
   const auto reordered = directional::geometry::stitch_pure_quad_patches(
-      {fourth, second, first, third});
+      {fourth, second, first, third}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   ASSERT_FALSE(forward.success);
   ASSERT_EQ(2U, forward.ownershipConflicts.size());
@@ -1552,14 +1563,11 @@ TEST(PureQuadCompletionPhase18,
 
 TEST(PureQuadCompletionPhase18,
      UnderQualifiedAuthoritativeIdentityFailsClosed) {
-  directional::geometry::PureQuadCompletionOptions options;
-  options.sourcePatch = 101;
-  const auto completion = directional::geometry::complete_pure_quad_patch(
-      patch({1, 1, 1, 1}), options);
-  ASSERT_TRUE(completion.success);
-
-  auto first = completion.mesh;
-  auto second = completion.mesh;
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  auto first = completed_typed_single_quad(sourceFaces, sourceAuthority, 101);
+  auto second = first;
   first.sourcePatch = 101;
   second.sourcePatch = 205;
   assign_distinct_domain_identity(first, 3);
@@ -1570,30 +1578,30 @@ TEST(PureQuadCompletionPhase18,
   for (auto &lineage : second.quadLineage) {
     lineage.sourcePatch = second.sourcePatch;
   }
-  for (int row = 0; row < static_cast<int>(second.vertexLineage.size()); ++row) {
-    auto &authoritative =
-        second.vertexLineage[static_cast<std::size_t>(row)]
-            .authoritativeIdentity;
-    authoritative.canonical.values.push_back(900 + row);
+  for (auto &lineage : second.vertexLineage) {
+    lineage.authoritativeIdentity =
+        directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+            lineage, sourceFaces, sourceAuthority);
+    ASSERT_TRUE(lineage.authoritativeIdentity.valid());
+    lineage.authoritativeIdentity.canonical.values.pop_back();
   }
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {first, second});
+      {first, second}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   EXPECT_FALSE(assembly.success);
-  EXPECT_EQ("MissingTypedStitchIdentity", assembly.failure);
+  EXPECT_EQ("InvalidAuthoritativeStitchIdentity", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
 }
 
 TEST(PureQuadCompletionPhase18,
      CompletionOwnershipClassificationIsPatchOrderInvariant) {
-  directional::geometry::PureQuadCompletionOptions options;
-  options.sourcePatch = 301;
-  const auto completion = directional::geometry::complete_pure_quad_patch(
-      patch({1, 1, 1, 1}), options);
-  ASSERT_TRUE(completion.success);
-
-  auto first = completion.mesh;
-  auto second = completion.mesh;
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  auto first = completed_typed_single_quad(sourceFaces, sourceAuthority, 301);
+  auto second = first;
   first.sourcePatch = 301;
   second.sourcePatch = 509;
   assign_distinct_domain_identity(first, 5);
@@ -1606,9 +1614,9 @@ TEST(PureQuadCompletionPhase18,
   }
 
   const auto forward = directional::geometry::stitch_pure_quad_patches(
-      {first, second});
+      {first, second}, 1.0e-9, &sourceFaces, &sourceAuthority);
   const auto reverse = directional::geometry::stitch_pure_quad_patches(
-      {second, first});
+      {second, first}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   EXPECT_FALSE(forward.success);
   EXPECT_FALSE(reverse.success);
@@ -1633,8 +1641,11 @@ TEST(PureQuadCompletionPhase18,
       static_cast<int>(std::distance(patches[1].vertices.begin(), shared));
   patches[1].vertexPositions(row, 0) += 0.25;
 
-  const auto assembly =
-      directional::geometry::stitch_pure_quad_patches(patches);
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
 
   EXPECT_FALSE(assembly.success);
   EXPECT_EQ("InconsistentSharedBoundaryPosition", assembly.failure);
@@ -1643,38 +1654,34 @@ TEST(PureQuadCompletionPhase18,
 
 TEST(PureQuadCompletionPhase18,
      CoincidentPositionsOnDistinctTypedSheetsDoNotMerge) {
-  Eigen::MatrixXi sourceFaces(1, 3);
-  sourceFaces << 0, 1, 2;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+                 3, 4, 5;
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, {7, 7}, {11, 19});
   auto firstPatch = patch({1, 1, 1, 1});
   auto secondPatch = firstPatch;
   firstPatch.sourceFaces = {0};
-  secondPatch.sourceFaces = {0};
-  const auto firstAuthority = test_source_authority(sourceFaces, {7}, {11});
-  const auto secondAuthority = test_source_authority(sourceFaces, {7}, {19});
-  assign_patch_boundary_authority(firstPatch, sourceFaces, firstAuthority,
+  secondPatch.sourceFaces = {1};
+  for (auto &point : secondPatch.boundaryProvenance) {
+    point.face = 1;
+  }
+  assign_patch_boundary_authority(firstPatch, sourceFaces, sourceAuthority,
                                   {0, 0, 0, 0});
-  assign_patch_boundary_authority(secondPatch, sourceFaces, secondAuthority,
-                                  {0, 0, 0, 0});
-  // Force assembly to use complete typed lineage rather than exact boundary IDs.
+  assign_patch_boundary_authority(secondPatch, sourceFaces, sourceAuthority,
+                                  {1, 1, 1, 1});
+  // Force assembly to use typed source authority rather than exact boundary IDs.
   firstPatch.boundaryNodeIdentities.clear();
   secondPatch.boundaryNodeIdentities.clear();
-  for (auto &point : firstPatch.boundaryProvenance) {
-    point.component = 101;
-    point.sheet = 102;
-  }
-  for (auto &point : secondPatch.boundaryProvenance) {
-    point.component = 101;
-    point.sheet = 102;
-  }
 
   directional::geometry::PureQuadCompletionOptions firstOptions;
   firstOptions.sourcePatch = 101;
   firstOptions.sourceFaces = &sourceFaces;
-  firstOptions.sourceAuthority = &firstAuthority;
+  firstOptions.sourceAuthority = &sourceAuthority;
   directional::geometry::PureQuadCompletionOptions secondOptions;
   secondOptions.sourcePatch = 205;
   secondOptions.sourceFaces = &sourceFaces;
-  secondOptions.sourceAuthority = &secondAuthority;
+  secondOptions.sourceAuthority = &sourceAuthority;
   const auto first = directional::geometry::complete_pure_quad_patch(
       firstPatch, firstOptions);
   const auto second = directional::geometry::complete_pure_quad_patch(
@@ -1683,7 +1690,7 @@ TEST(PureQuadCompletionPhase18,
   ASSERT_TRUE(second.success) << second.failure;
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {first.mesh, second.mesh});
+      {first.mesh, second.mesh}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   ASSERT_TRUE(assembly.success) << assembly.failure;
   EXPECT_EQ(8U, assembly.mesh.vertices.size());
@@ -1712,7 +1719,7 @@ TEST(PureQuadCompletionPhase18,
   ASSERT_TRUE(second.success) << second.failure;
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {first.mesh, second.mesh});
+      {first.mesh, second.mesh}, 1.0e-9, &fixture.faces, &sourceAuthority);
 
   ASSERT_TRUE(assembly.success) << assembly.failure;
   const int expected = static_cast<int>(first.mesh.vertices.size() +
@@ -1736,8 +1743,11 @@ TEST(PureQuadCompletionPhase18,
                !lineage.authoritativeIdentity.valid();
       }));
 
-  const auto assembly =
-      directional::geometry::stitch_pure_quad_patches({completion.mesh});
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {completion.mesh}, 1.0e-9, &sourceFaces, &sourceAuthority);
   EXPECT_FALSE(assembly.success);
   EXPECT_EQ("MissingTypedStitchIdentity", assembly.failure);
 }
@@ -1762,7 +1772,7 @@ TEST(PureQuadCompletionPhase18,
     EXPECT_TRUE(lineage.sourceSupport.has_value());
   }
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {completion.mesh});
+      {completion.mesh}, 1.0e-9, &fixture.faces, &sourceAuthority);
   EXPECT_TRUE(assembly.success) << assembly.failure;
 }
 
@@ -1773,8 +1783,11 @@ TEST(PureQuadCompletionPhase18,
   const auto patches = completed_cylinder_patches(vertices, faces, 4);
   ASSERT_EQ(4U, patches.size());
 
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      patches, 1.0e-9, &faces);
+      patches, 1.0e-9, &faces, &sourceAuthority);
 
   ASSERT_TRUE(assembly.success) << assembly.failure;
   EXPECT_GT(assembly.mergedBoundaryVertices, 0);
@@ -1787,6 +1800,9 @@ TEST(PureQuadCompletionPhase18,
   Eigen::MatrixXi faces;
   const auto sourcePatches = completed_cylinder_patches(vertices, faces, 4);
   ASSERT_EQ(4U, sourcePatches.size());
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
   auto first = sourcePatches[0];
   auto second = sourcePatches[1];
 
@@ -1812,11 +1828,30 @@ TEST(PureQuadCompletionPhase18,
           secondFound == second.vertices.end()) {
         continue;
       }
-      firstRow = static_cast<int>(
+      const int firstCandidate = static_cast<int>(
           std::distance(first.vertices.begin(), firstFound));
-      secondRow = static_cast<int>(
+      const int secondCandidate = static_cast<int>(
           std::distance(second.vertices.begin(), secondFound));
-      break;
+      const auto *support = std::get_if<directional::authority::SourceVertexSupport>(
+          &first.vertexLineage[static_cast<std::size_t>(firstCandidate)]
+               .sourceSupport.value());
+      if (support == nullptr) {
+        continue;
+      }
+      int incidentCount = 0;
+      for (int face = 0; face < faces.rows(); ++face) {
+        for (int corner = 0; corner < 3; ++corner) {
+          if (faces(face, corner) == static_cast<int>(support->vertex.index())) {
+            ++incidentCount;
+            break;
+          }
+        }
+      }
+      if (incidentCount >= 3) {
+        firstRow = firstCandidate;
+        secondRow = secondCandidate;
+        break;
+      }
     }
   }
   ASSERT_GE(firstRow, 0);
@@ -1827,32 +1862,36 @@ TEST(PureQuadCompletionPhase18,
       second.vertexLineage[static_cast<std::size_t>(secondRow)];
   ASSERT_EQ(firstLineage.stitchIdentity, secondLineage.stitchIdentity);
   ASSERT_EQ(firstLineage.sourceSupport, secondLineage.sourceSupport);
+  ASSERT_TRUE(firstLineage.sourceSupport.has_value());
 
-  const auto extraFirstRegion =
-      directional::authority::TopologyRegionId::from_index(91, 128);
-  const auto extraSecondRegion =
-      directional::authority::TopologyRegionId::from_index(92, 128);
-  const auto extraFirstSheet =
-      directional::authority::IsolationSheetId::from_index(93, 128);
-  const auto extraSecondSheet =
-      directional::authority::IsolationSheetId::from_index(94, 128);
-  const auto extraFirstChart =
-      directional::authority::FieldChartId::from_index(95, 128);
-  const auto extraSecondChart =
-      directional::authority::FieldChartId::from_index(96, 128);
-  ASSERT_TRUE(extraFirstRegion && extraSecondRegion && extraFirstSheet &&
-              extraSecondSheet && extraFirstChart && extraSecondChart);
-  ASSERT_FALSE(firstLineage.sourceCharts.empty());
-  ASSERT_FALSE(secondLineage.sourceCharts.empty());
+  std::vector<int> incidentFaces;
+  const auto *vertexSupport =
+      std::get_if<directional::authority::SourceVertexSupport>(
+          &firstLineage.sourceSupport.value());
+  ASSERT_NE(vertexSupport, nullptr);
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      if (faces(face, corner) ==
+          static_cast<int>(vertexSupport->vertex.index())) {
+        incidentFaces.push_back(face);
+        break;
+      }
+    }
+  }
+  ASSERT_GE(incidentFaces.size(), 3U);
 
-  firstLineage.sourceTopologyRegions.push_back(extraFirstRegion.value());
-  secondLineage.sourceTopologyRegions.push_back(extraSecondRegion.value());
-  firstLineage.sourceIsolationSheets.push_back(extraFirstSheet.value());
-  secondLineage.sourceIsolationSheets.push_back(extraSecondSheet.value());
-  firstLineage.sourceCharts.emplace_back(
-      extraFirstChart.value(), firstLineage.sourceCharts.front().face);
-  secondLineage.sourceCharts.emplace_back(
-      extraSecondChart.value(), secondLineage.sourceCharts.front().face);
+  const auto append_valid_chart = [&](auto &lineage, const int face) {
+    const auto chart = test_source_chart(faces, sourceAuthority, face);
+    if (std::find(lineage.sourceCharts.begin(), lineage.sourceCharts.end(),
+                  chart) == lineage.sourceCharts.end()) {
+      lineage.sourceCharts.push_back(chart);
+    }
+  };
+  append_valid_chart(firstLineage, incidentFaces[0]);
+  append_valid_chart(secondLineage, incidentFaces[1]);
+  if (firstLineage.sourceCharts == secondLineage.sourceCharts) {
+    append_valid_chart(secondLineage, incidentFaces[2]);
+  }
   firstLineage.authoritativeIdentity = {};
   secondLineage.authoritativeIdentity = {};
 
@@ -1877,19 +1916,20 @@ TEST(PureQuadCompletionPhase18,
   ASSERT_FALSE(expectedRegions.empty());
   ASSERT_FALSE(expectedSheets.empty());
   ASSERT_FALSE(expectedCharts.empty());
+  ASSERT_NE(firstLineage.sourceCharts, secondLineage.sourceCharts);
 
   const auto firstCandidateIdentity =
       directional::geometry::pure_quad_detail::canonical_authoritative_identity(
-          firstLineage);
+          firstLineage, faces, sourceAuthority);
   const auto secondCandidateIdentity =
       directional::geometry::pure_quad_detail::canonical_authoritative_identity(
-          secondLineage);
+          secondLineage, faces, sourceAuthority);
   ASSERT_TRUE(firstCandidateIdentity.valid());
   ASSERT_TRUE(secondCandidateIdentity.valid());
   ASSERT_NE(firstCandidateIdentity, secondCandidateIdentity);
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {first, second}, 1.0e-9, &faces);
+      {first, second}, 1.0e-9, &faces, &sourceAuthority);
   ASSERT_TRUE(assembly.success) << assembly.failure;
 
   const auto published = std::find_if(
@@ -1904,57 +1944,306 @@ TEST(PureQuadCompletionPhase18,
   EXPECT_EQ(firstLineage.sourceSupport, published->sourceSupport);
   EXPECT_EQ(
       directional::geometry::pure_quad_detail::canonical_authoritative_identity(
-          *published),
+          *published, faces, sourceAuthority),
       published->authoritativeIdentity);
   EXPECT_NE(firstCandidateIdentity, published->authoritativeIdentity);
   EXPECT_NE(secondCandidateIdentity, published->authoritativeIdentity);
 }
 
+TEST(PureQuadCompletionPhase18, MissingSourceAuthorityPublishesNothing) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  const auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, nullptr);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("MissingSourceAuthority", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+  EXPECT_TRUE(assembly.mesh.vertexLineage.empty());
+}
+
+TEST(PureQuadCompletionPhase18, UnownedRegionCertificatePublishesNothing) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
+  ASSERT_FALSE(patches.front().vertexLineage.empty());
+  const auto fake = directional::authority::TopologyRegionId::from_index(7, 8);
+  ASSERT_TRUE(fake);
+  patches.front().vertexLineage.front().sourceTopologyRegions = {fake.value()};
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("InvalidTypedStitchAuthority", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+}
+
+TEST(PureQuadCompletionPhase18, SparseOwnerCertificatePublishesNothing) {
+  CompletionFixture fixture = source_support_alias_patch();
+  const auto sourceAuthority =
+      test_source_authority(fixture.faces, {0, 0}, {0, 1});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 617;
+  options.sourceVertices = &fixture.vertices;
+  options.sourceFaces = &fixture.faces;
+  options.sourceAuthority = &sourceAuthority;
+  auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(completion.success) << completion.failure;
+  const auto lineageIt = std::find_if(
+      completion.mesh.vertexLineage.begin(),
+      completion.mesh.vertexLineage.end(), [](const auto &lineage) {
+        return lineage.sourceSupport.has_value() &&
+               std::holds_alternative<
+                   directional::authority::SourceVertexSupport>(
+                   lineage.sourceSupport.value());
+      });
+  ASSERT_NE(lineageIt, completion.mesh.vertexLineage.end());
+  auto &lineage = *lineageIt;
+  const auto secondFace = directional::authority::SourceFaceId::from_index(
+      1, static_cast<std::size_t>(fixture.faces.rows()));
+  ASSERT_TRUE(secondFace);
+  const auto secondChart = test_source_chart(fixture.faces, sourceAuthority, 1);
+  if (std::find(lineage.sourceCharts.begin(), lineage.sourceCharts.end(),
+                secondChart) == lineage.sourceCharts.end()) {
+    lineage.sourceCharts.push_back(secondChart);
+  }
+  const auto secondRegion = sourceAuthority.region_for_row(secondFace.value());
+  if (std::find(lineage.sourceTopologyRegions.begin(),
+                lineage.sourceTopologyRegions.end(),
+                secondRegion) == lineage.sourceTopologyRegions.end()) {
+    lineage.sourceTopologyRegions.push_back(secondRegion);
+  }
+  const auto secondSheet = sourceAuthority.sheet_for_row(secondFace.value());
+  if (std::find(lineage.sourceIsolationSheets.begin(),
+                lineage.sourceIsolationSheets.end(),
+                secondSheet) == lineage.sourceIsolationSheets.end()) {
+    lineage.sourceIsolationSheets.push_back(secondSheet);
+  }
+  lineage.authoritativeIdentity = {};
+  const auto completeIdentity =
+      directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+          lineage, fixture.faces, sourceAuthority);
+  ASSERT_TRUE(completeIdentity.valid());
+
+  const auto firstFace = directional::authority::SourceFaceId::from_index(
+      0, static_cast<std::size_t>(fixture.faces.rows()));
+  ASSERT_TRUE(firstFace);
+  lineage.sourceIsolationSheets = {
+      sourceAuthority.sheet_for_row(firstFace.value())};
+  EXPECT_FALSE(
+      directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+          lineage, fixture.faces, sourceAuthority)
+          .valid());
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {completion.mesh}, 1.0e-9, &fixture.faces, &sourceAuthority);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("InvalidTypedStitchAuthority", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+}
+
+TEST(PureQuadCompletionPhase18, WrongOwnerSheetCertificatePublishesNothing) {
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+                 3, 4, 5;
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, {7, 7}, {11, 19});
+  auto sourcePatch = patch({1, 1, 1, 1});
+  sourcePatch.sourceFaces = {0};
+  assign_patch_boundary_authority(sourcePatch, sourceFaces, sourceAuthority,
+                                  {0, 0, 0, 0});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 619;
+  options.sourceFaces = &sourceFaces;
+  options.sourceAuthority = &sourceAuthority;
+  auto completion = directional::geometry::complete_pure_quad_patch(
+      sourcePatch, options);
+  ASSERT_TRUE(completion.success) << completion.failure;
+  ASSERT_FALSE(completion.mesh.vertexLineage.empty());
+  const auto secondFace = directional::authority::SourceFaceId::from_index(
+      1, static_cast<std::size_t>(sourceFaces.rows()));
+  ASSERT_TRUE(secondFace);
+  completion.mesh.vertexLineage.front().sourceIsolationSheets = {
+      sourceAuthority.sheet_for_row(secondFace.value())};
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {completion.mesh}, 1.0e-9, &sourceFaces, &sourceAuthority);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("InvalidTypedStitchAuthority", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+}
+
+TEST(PureQuadCompletionPhase18, WrongFaceChartCertificatePublishesNothing) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
+  auto &lineage = patches.front().vertexLineage.front();
+  ASSERT_FALSE(lineage.sourceCharts.empty());
+  ASSERT_TRUE(lineage.sourceSupport.has_value());
+  const auto supportIncident = [&](const int face) {
+    if (const auto *vertex =
+            std::get_if<directional::authority::SourceVertexSupport>(
+                &lineage.sourceSupport.value())) {
+      return faces(face, 0) == static_cast<int>(vertex->vertex.index()) ||
+             faces(face, 1) == static_cast<int>(vertex->vertex.index()) ||
+             faces(face, 2) == static_cast<int>(vertex->vertex.index());
+    }
+    if (const auto *edge =
+            std::get_if<directional::authority::SourceEdgeSupport>(
+                &lineage.sourceSupport.value())) {
+      const int first = static_cast<int>(edge->edge.first().index());
+      const int second = static_cast<int>(edge->edge.second().index());
+      bool hasFirst = false;
+      bool hasSecond = false;
+      for (int corner = 0; corner < 3; ++corner) {
+        hasFirst = hasFirst || faces(face, corner) == first;
+        hasSecond = hasSecond || faces(face, corner) == second;
+      }
+      return hasFirst && hasSecond;
+    }
+    if (const auto *interior =
+            std::get_if<directional::authority::SourceFaceInteriorSupport>(
+                &lineage.sourceSupport.value())) {
+      return face == static_cast<int>(interior->face.index());
+    }
+    return false;
+  };
+  int wrongFace = -1;
+  for (int face = 0; face < faces.rows(); ++face) {
+    if (!supportIncident(face)) {
+      wrongFace = face;
+      break;
+    }
+  }
+  ASSERT_GE(wrongFace, 0);
+  const auto wrongFaceId = directional::authority::SourceFaceId::from_index(
+      wrongFace, static_cast<std::size_t>(faces.rows()));
+  ASSERT_TRUE(wrongFaceId);
+  lineage.sourceCharts.front().face = wrongFaceId.value();
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("InvalidTypedStitchAuthority", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+}
+
+TEST(PureQuadCompletionPhase18, ExactOnlyAuthoritativeAliasPublishesNothing) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
+  auto &lineage = patches.front().vertexLineage.front();
+  lineage.authoritativeIdentity = lineage.stitchIdentity;
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("InvalidAuthoritativeStitchIdentity", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+}
+
+TEST(PureQuadCompletionPhase18, StaleCanonicalAuthorityPublishesNothing) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
+  auto &lineage = patches.front().vertexLineage.front();
+  lineage.authoritativeIdentity =
+      directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+          lineage, faces, sourceAuthority);
+  ASSERT_TRUE(lineage.authoritativeIdentity.valid());
+  ASSERT_GT(lineage.authoritativeIdentity.canonical.values.size(), 1U);
+  lineage.authoritativeIdentity.canonical.values.pop_back();
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("InvalidAuthoritativeStitchIdentity", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
+}
+
 TEST(PureQuadCompletionPhase18,
      SameExactBoundaryKeyRejectsIncompatibleTypedLineage) {
-  Eigen::MatrixXi sourceFaces(1, 3);
-  sourceFaces << 0, 1, 2;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+                 3, 4, 5;
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, {7, 7}, {11, 19});
   auto firstPatch = patch({1, 1, 1, 1});
   auto secondPatch = firstPatch;
   firstPatch.sourceFaces = {0};
-  secondPatch.sourceFaces = {0};
-  const auto firstAuthority = test_source_authority(sourceFaces, {7}, {11});
-  const auto secondAuthority = test_source_authority(sourceFaces, {7}, {19});
-  assign_patch_boundary_authority(firstPatch, sourceFaces, firstAuthority,
+  secondPatch.sourceFaces = {1};
+  for (auto &point : secondPatch.boundaryProvenance) {
+    point.face = 1;
+  }
+  assign_patch_boundary_authority(firstPatch, sourceFaces, sourceAuthority,
                                   {0, 0, 0, 0});
-  assign_patch_boundary_authority(secondPatch, sourceFaces, secondAuthority,
-                                  {0, 0, 0, 0});
+  assign_patch_boundary_authority(secondPatch, sourceFaces, sourceAuthority,
+                                  {1, 1, 1, 1});
+  ASSERT_EQ(firstPatch.boundaryNodeIdentities,
+            secondPatch.boundaryNodeIdentities);
 
   directional::geometry::PureQuadCompletionOptions firstOptions;
   firstOptions.sourcePatch = 611;
   firstOptions.sourceFaces = &sourceFaces;
-  firstOptions.sourceAuthority = &firstAuthority;
+  firstOptions.sourceAuthority = &sourceAuthority;
   directional::geometry::PureQuadCompletionOptions secondOptions;
   secondOptions.sourcePatch = 613;
   secondOptions.sourceFaces = &sourceFaces;
-  secondOptions.sourceAuthority = &secondAuthority;
+  secondOptions.sourceAuthority = &sourceAuthority;
   const auto first = directional::geometry::complete_pure_quad_patch(
       firstPatch, firstOptions);
   const auto second = directional::geometry::complete_pure_quad_patch(
       secondPatch, secondOptions);
   ASSERT_TRUE(first.success) << first.failure;
   ASSERT_TRUE(second.success) << second.failure;
-  ASSERT_EQ(first.mesh.boundaryNodeIdentities,
-            second.mesh.boundaryNodeIdentities);
-  ASSERT_TRUE(std::equal(
-      first.mesh.vertexPositions.data(),
-      first.mesh.vertexPositions.data() + first.mesh.vertexPositions.size(),
-      second.mesh.vertexPositions.data()));
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {first.mesh, second.mesh}, 1.0e-9, &sourceFaces);
+      {first.mesh, second.mesh}, 1.0e-9, &sourceFaces, &sourceAuthority);
 
   EXPECT_FALSE(assembly.success);
   EXPECT_EQ("IncompatibleTypedStitchAuthority", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
 }
 
 TEST(PureQuadCompletionPhase18,
      MissingTypedStitchIdentityFailsClosedForGeneratedInterior) {
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 601;
   const auto completion = directional::geometry::complete_pure_quad_patch(
@@ -1962,9 +2251,11 @@ TEST(PureQuadCompletionPhase18,
   ASSERT_TRUE(completion.success) << completion.failure;
 
   const auto assembly = directional::geometry::stitch_pure_quad_patches(
-      {completion.mesh});
+      {completion.mesh}, 1.0e-9, &sourceFaces, &sourceAuthority);
   EXPECT_FALSE(assembly.success);
   EXPECT_EQ("MissingTypedStitchIdentity", assembly.failure);
+  EXPECT_TRUE(assembly.mesh.vertices.empty());
+  EXPECT_TRUE(assembly.mesh.quads.empty());
 }
 
 TEST(PureQuadCompletionPhase18,
@@ -1990,10 +2281,10 @@ TEST(PureQuadCompletionPhase18,
     lineage.sourcePoint.sheet = 904;
   }
 
-  const auto baselineAssembly =
-      directional::geometry::stitch_pure_quad_patches({completion.mesh});
-  const auto tamperedAssembly =
-      directional::geometry::stitch_pure_quad_patches({tampered});
+  const auto baselineAssembly = directional::geometry::stitch_pure_quad_patches(
+      {completion.mesh}, 1.0e-9, &fixture.faces, &sourceAuthority);
+  const auto tamperedAssembly = directional::geometry::stitch_pure_quad_patches(
+      {tampered}, 1.0e-9, &fixture.faces, &sourceAuthority);
   ASSERT_TRUE(baselineAssembly.success) << baselineAssembly.failure;
   ASSERT_TRUE(tamperedAssembly.success) << tamperedAssembly.failure;
   EXPECT_EQ(baselineAssembly.mesh.vertices, tamperedAssembly.mesh.vertices);
@@ -2007,11 +2298,14 @@ TEST(PureQuadCompletionPhase18, StitchingIsPatchOrderInvariant) {
   Eigen::MatrixXi faces;
   auto patches = completed_cylinder_patches(vertices, faces, 4);
   ASSERT_EQ(4U, patches.size());
-  const auto forward =
-      directional::geometry::stitch_pure_quad_patches(patches);
+  const auto sourceAuthority = test_source_authority(
+      faces, std::vector<int>(static_cast<std::size_t>(faces.rows()), 0),
+      std::vector<int>(static_cast<std::size_t>(faces.rows()), 0));
+  const auto forward = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
   std::reverse(patches.begin(), patches.end());
-  const auto reverse =
-      directional::geometry::stitch_pure_quad_patches(patches);
+  const auto reverse = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces, &sourceAuthority);
   ASSERT_TRUE(forward.success) << forward.failure;
   ASSERT_TRUE(reverse.success) << reverse.failure;
   EXPECT_EQ(forward.mesh.quads, reverse.mesh.quads);

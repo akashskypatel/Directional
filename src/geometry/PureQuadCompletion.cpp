@@ -1018,7 +1018,7 @@ bool validate_completion_domain_ownership(
       // Arrangement-node identity is an exact stitch key, never a substitute
       // for the independently reconstructed typed lineage authority.
       lineage.stitchIdentity = *exactBoundaryIdentity;
-      lineage.authoritativeIdentity = typedIdentity;
+      lineage.authoritativeIdentity = {};
     } else {
       if ((lineage.stitchIdentity.valid() &&
            lineage.stitchIdentity != typedIdentity) ||
@@ -1028,7 +1028,7 @@ bool validate_completion_domain_ownership(
         return false;
       }
       lineage.stitchIdentity = typedIdentity;
-      lineage.authoritativeIdentity = typedIdentity;
+      lineage.authoritativeIdentity = {};
     }
   }
 
@@ -1719,6 +1719,120 @@ typed_lineage_authority_certificate(const PureQuadVertexLineage &lineage) {
   return certificate;
 }
 
+bool source_support_is_incident_to_face(
+    const authority::SourceSupport &support, const int face,
+    const Eigen::MatrixXi &sourceFaces) {
+  if (face < 0 || face >= sourceFaces.rows() || sourceFaces.cols() != 3) {
+    return false;
+  }
+  if (const auto *faceSupport =
+          std::get_if<authority::SourceFaceInteriorSupport>(&support)) {
+    return static_cast<int>(faceSupport->face.index()) == face;
+  }
+  if (const auto *vertexSupport =
+          std::get_if<authority::SourceVertexSupport>(&support)) {
+    const int vertex = static_cast<int>(vertexSupport->vertex.index());
+    for (int corner = 0; corner < 3; ++corner) {
+      if (sourceFaces(face, corner) == vertex) {
+        return true;
+      }
+    }
+    return false;
+  }
+  if (const auto *edgeSupport =
+          std::get_if<authority::SourceEdgeSupport>(&support)) {
+    const int first = static_cast<int>(edgeSupport->edge.first().index());
+    const int second = static_cast<int>(edgeSupport->edge.second().index());
+    bool foundFirst = false;
+    bool foundSecond = false;
+    for (int corner = 0; corner < 3; ++corner) {
+      foundFirst = foundFirst || sourceFaces(face, corner) == first;
+      foundSecond = foundSecond || sourceFaces(face, corner) == second;
+    }
+    return foundFirst && foundSecond;
+  }
+  return false;
+}
+
+std::optional<PureQuadTypedAuthorityCertificate>
+owner_validated_typed_authority_certificate(
+    const PureQuadTypedAuthorityCertificate &certificate,
+    const Eigen::MatrixXi &sourceFaces,
+    const SourceTopologyRegions &sourceAuthority,
+    const SourceChartTransitionGraph &sourceTransitions) {
+  if (sourceFaces.cols() != 3 ||
+      !sourceAuthority.complete_for_face_count(
+          static_cast<std::size_t>(sourceFaces.rows())) ||
+      !sourceTransitions.available() || !certificate.sourceSupport.has_value() ||
+      certificate.sourceCharts.empty()) {
+    return std::nullopt;
+  }
+
+  std::vector<authority::TopologyRegionId> ownedRegions;
+  std::vector<authority::IsolationSheetId> ownedSheets;
+  ownedRegions.reserve(certificate.sourceCharts.size());
+  ownedSheets.reserve(certificate.sourceCharts.size());
+  for (const SourceProjectionChart &claimedChart : certificate.sourceCharts) {
+    const int face = static_cast<int>(claimedChart.face.index());
+    if (face < 0 || face >= sourceFaces.rows() ||
+        !source_support_is_incident_to_face(certificate.sourceSupport.value(),
+                                            face, sourceFaces)) {
+      return std::nullopt;
+    }
+    const auto canonicalChart = sourceTransitions.chart(face);
+    if (!canonicalChart.has_value() || canonicalChart.value() != claimedChart) {
+      return std::nullopt;
+    }
+    const auto row = authority::SourceFaceId::from_index(
+        face, sourceAuthority.face_count());
+    if (!row) {
+      return std::nullopt;
+    }
+    const authority::TopologyRegionId region =
+        sourceAuthority.region_for_row(row.value());
+    const authority::IsolationSheetId sheet =
+        sourceAuthority.sheet_for_row(row.value());
+    const SurfaceTopologyRegion &owner = sourceAuthority.region(region);
+    const SourceRegionFaceAuthority *member =
+        owner.find_face(sourceAuthority.topology_for_row(row.value()));
+    if (member == nullptr || member->sheet != sheet) {
+      return std::nullopt;
+    }
+    const auto chartRegion = sourceTransitions.topology_region(claimedChart);
+    const auto chartSheet = sourceTransitions.isolation_sheet(claimedChart);
+    if (!chartRegion.has_value() || !chartSheet.has_value() ||
+        chartRegion.value() != region || chartSheet.value() != sheet) {
+      return std::nullopt;
+    }
+    ownedRegions.push_back(region);
+    ownedSheets.push_back(sheet);
+  }
+  const auto normalize = [](auto &values) {
+    std::sort(values.begin(), values.end());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
+  };
+  normalize(ownedRegions);
+  normalize(ownedSheets);
+  if (ownedRegions != certificate.topologyRegions ||
+      ownedSheets != certificate.isolationSheets) {
+    return std::nullopt;
+  }
+  return certificate;
+}
+
+std::optional<PureQuadTypedAuthorityCertificate>
+owner_validated_typed_authority_certificate(
+    const PureQuadVertexLineage &lineage, const Eigen::MatrixXi &sourceFaces,
+    const SourceTopologyRegions &sourceAuthority,
+    const SourceChartTransitionGraph &sourceTransitions) {
+  const auto certificate = typed_lineage_authority_certificate(lineage);
+  if (!certificate.has_value()) {
+    return std::nullopt;
+  }
+  return owner_validated_typed_authority_certificate(
+      certificate.value(), sourceFaces, sourceAuthority, sourceTransitions);
+}
+
 std::optional<PureQuadTypedAuthorityCertificate>
 intersect_typed_authority_certificates(
     const PureQuadTypedAuthorityCertificate &first,
@@ -1900,7 +2014,8 @@ PureQuadStitchIdentity resolved_stitch_identity(
 }
 
 PureQuadStitchIdentity resolved_authoritative_identity(
-    const PureQuadMesh &patch, const int localRow) {
+    const PureQuadMesh &patch, const int localRow,
+    const PureQuadTypedAuthorityCertificate &certificate) {
   const int localVertex =
       patch.vertices[static_cast<std::size_t>(localRow)];
   const bool sharedBoundary =
@@ -1918,12 +2033,8 @@ PureQuadStitchIdentity resolved_authoritative_identity(
   if (!typed.valid()) {
     return {};
   }
-  const auto certificate = typed_lineage_authority_certificate(lineage);
-  if (!certificate.has_value()) {
-    return {};
-  }
   const PureQuadStitchIdentity canonicalAuthority =
-      canonical_typed_authority_identity(resolved, certificate.value());
+      canonical_typed_authority_identity(resolved, certificate);
   if (!canonicalAuthority.valid()) {
     return {};
   }
@@ -1931,8 +2042,7 @@ PureQuadStitchIdentity resolved_authoritative_identity(
   if (!authoritative.valid()) {
     return canonicalAuthority;
   }
-  if (authoritative == resolved || authoritative == typed ||
-      authoritative == canonicalAuthority) {
+  if (authoritative == canonicalAuthority) {
     return canonicalAuthority;
   }
   return {};
@@ -2242,8 +2352,13 @@ std::string ownership_conflict_failure(
 namespace pure_quad_detail {
 
 PureQuadStitchIdentity canonical_authoritative_identity(
-    const PureQuadVertexLineage &lineage) {
-  const auto certificate = typed_lineage_authority_certificate(lineage);
+    const PureQuadVertexLineage &lineage, const Eigen::MatrixXi &sourceFaces,
+    const SourceTopologyRegions &sourceAuthority,
+    const std::set<std::uint64_t> *sourceHardFeatureEdges) {
+  const SourceChartTransitionGraph sourceTransitions(
+      &sourceFaces, &sourceAuthority, sourceHardFeatureEdges);
+  const auto certificate = owner_validated_typed_authority_certificate(
+      lineage, sourceFaces, sourceAuthority, sourceTransitions);
   if (!certificate.has_value() || !lineage.stitchIdentity.valid()) {
     return {};
   }
@@ -2264,7 +2379,19 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     result.failure = "NoCompletedPatches";
     return result;
   }
-
+  if (sourceFaces == nullptr || sourceFaces->cols() != 3 ||
+      sourceAuthority == nullptr ||
+      !sourceAuthority->complete_for_face_count(
+          static_cast<std::size_t>(sourceFaces->rows()))) {
+    result.failure = "MissingSourceAuthority";
+    return result;
+  }
+  const SourceChartTransitionGraph sourceTransitions(
+      sourceFaces, sourceAuthority, sourceHardFeatureEdges);
+  if (!sourceTransitions.available()) {
+    result.failure = "InvalidSourceAuthority";
+    return result;
+  }
 
   std::vector<int> patchOrder(patches.size());
   std::iota(patchOrder.begin(), patchOrder.end(), 0);
@@ -2408,13 +2535,24 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           patch.vertexLineage[static_cast<std::size_t>(localRow)];
       const PureQuadStitchIdentity key = resolved_stitch_identity(
           patch, localRow, sharedBoundary, patchOwner);
-      const PureQuadStitchIdentity authoritativeKey =
-          resolved_authoritative_identity(patch, localRow);
-      const auto typedAuthority =
+      const auto rawTypedAuthority =
           typed_lineage_authority_certificate(incoming);
-      if (!key.valid() || !authoritativeKey.valid() ||
-          !typedAuthority.has_value()) {
+      if (!key.valid() || !rawTypedAuthority.has_value()) {
         result.failure = "MissingTypedStitchIdentity";
+        return result;
+      }
+      const auto typedAuthority = owner_validated_typed_authority_certificate(
+          rawTypedAuthority.value(), *sourceFaces, *sourceAuthority,
+          sourceTransitions);
+      if (!typedAuthority.has_value()) {
+        result.failure = "InvalidTypedStitchAuthority";
+        return result;
+      }
+      const PureQuadStitchIdentity authoritativeKey =
+          resolved_authoritative_identity(patch, localRow,
+                                          typedAuthority.value());
+      if (!authoritativeKey.valid()) {
+        result.failure = "InvalidAuthoritativeStitchIdentity";
         return result;
       }
       localRows.emplace(localVertex, localRow);
@@ -2446,7 +2584,15 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           result.failure = "IncompatibleTypedStitchAuthority";
           return result;
         }
-        stored.typedAuthority = compatibleAuthority.value();
+        const auto validatedIntersection =
+            owner_validated_typed_authority_certificate(
+                compatibleAuthority.value(), *sourceFaces, *sourceAuthority,
+                sourceTransitions);
+        if (!validatedIntersection.has_value()) {
+          result.failure = "InvalidTypedStitchAuthority";
+          return result;
+        }
+        stored.typedAuthority = validatedIntersection.value();
         if ((stored.position - position).norm() > positionTolerance) {
           result.failure = "InconsistentSharedBoundaryPosition";
           return result;
@@ -2558,25 +2704,17 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       static_cast<int>(pendingVertices.size()), 3);
   result.mesh.vertexProvenance.reserve(pendingVertices.size());
   result.mesh.vertexLineage.reserve(pendingVertices.size());
-  const bool sourceAuthorityAvailable =
-      sourceFaces != nullptr && sourceFaces->cols() == 3 &&
-      sourceAuthority != nullptr &&
-      sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(sourceFaces->rows()));
   const SurfacePointSourceSupportResolver sourceSupport(sourceFaces);
-  const SourceChartTransitionGraph sourceTransitions(
-      sourceFaces, sourceAuthority, sourceHardFeatureEdges);
   const auto canonicalSharedProvenance = [&](const PendingOutputVertex &pending) {
     const PureQuadMesh &fallbackPatch =
         patches[static_cast<std::size_t>(pending.provenancePatchIndex)];
     SurfacePoint selected = fallbackPatch.vertexProvenance[
         static_cast<std::size_t>(pending.provenanceLocalRow)];
-    if (!sourceAuthorityAvailable ||
-        pending.provenanceCandidates.size() < 2U) {
+    if (pending.provenanceCandidates.size() < 2U) {
       return selected;
     }
 
-    if (sourceTransitions.available()) {
+    {
       std::vector<const SurfacePoint *> candidates;
       candidates.reserve(pending.provenanceCandidates.size());
       SurfaceCellCanonicalIdentity commonEntity;
@@ -2588,7 +2726,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
             localRow >= static_cast<int>(
                 patches[static_cast<std::size_t>(patchIndex)]
                     .vertexProvenance.size())) {
-          return selected;
+          return SurfacePoint{};
         }
         const SurfacePoint &candidate =
             patches[static_cast<std::size_t>(patchIndex)]
@@ -2596,7 +2734,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         const auto entity = sourceTransitions.resolve_entity(candidate);
         if (!entity.has_value() || !entity->valid() ||
             (haveEntity && entity->canonical != commonEntity)) {
-          return selected;
+          return SurfacePoint{};
         }
         if (!haveEntity) {
           commonEntity = entity->canonical;
@@ -2605,12 +2743,12 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         candidates.push_back(&candidate);
       }
       if (!haveEntity || candidates.empty()) {
-        return selected;
+        return SurfacePoint{};
       }
       const SurfacePointSourceSupport firstSupport =
           sourceSupport.resolve(*candidates.front());
       if (!firstSupport.valid()) {
-        return selected;
+        return SurfacePoint{};
       }
       std::vector<int> compatibleFaces;
       for (const authority::SourceFaceId sourceFace :
@@ -2629,7 +2767,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         }
       }
       if (compatibleFaces.empty()) {
-        return selected;
+        return SurfacePoint{};
       }
       const auto faceKey = [&](const int face) {
         std::array<int, 3> vertices{{(*sourceFaces)(face, 0),
@@ -2647,122 +2785,20 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
       if (sourceTransitions.rebind(selected, selectedFace, canonical)) {
         return canonical;
       }
-      return selected;
+      return SurfacePoint{};
     }
 
-    SurfacePointSourceSupport commonSupport;
-    std::vector<authority::SourceFaceId> commonFaces;
-    bool initialized = false;
-    for (const auto &[patchIndex, localRow] :
-         pending.provenanceCandidates) {
-      if (patchIndex < 0 ||
-          patchIndex >= static_cast<int>(patches.size()) || localRow < 0 ||
-          localRow >= static_cast<int>(
-                          patches[static_cast<std::size_t>(patchIndex)]
-                              .vertexProvenance.size())) {
-        return selected;
-      }
-      const SurfacePoint &candidate =
-          patches[static_cast<std::size_t>(patchIndex)]
-              .vertexProvenance[static_cast<std::size_t>(localRow)];
-      const SurfacePointSourceSupport support =
-          sourceSupport.resolve(candidate);
-      if (!support.valid()) {
-        return selected;
-      }
-      if (!initialized) {
-        commonSupport = support;
-        commonFaces = support.incidentFaces;
-        initialized = true;
-      } else {
-        if (support.identity != commonSupport.identity) {
-          return selected;
-        }
-        std::vector<authority::SourceFaceId> intersection;
-        std::set_intersection(commonFaces.begin(), commonFaces.end(),
-                              support.incidentFaces.begin(),
-                              support.incidentFaces.end(),
-                              std::back_inserter(intersection));
-        commonFaces = std::move(intersection);
-      }
-    }
-    if (!initialized || commonFaces.empty()) {
-      return selected;
-    }
-    const authority::SourceFaceId selectedFaceId =
-        *std::min_element(commonFaces.begin(), commonFaces.end());
-    const int selectedFace = static_cast<int>(selectedFaceId.index());
-    if (selectedFace >= sourceFaces->rows()) {
-      return selected;
-    }
-
-    Eigen::Vector3d rebound = Eigen::Vector3d::Zero();
-    if (const auto *vertexSupport =
-            std::get_if<authority::SourceVertexSupport>(
-                &commonSupport.identity.value())) {
-      const int sourceVertex =
-          static_cast<int>(vertexSupport->vertex.index());
-      for (int corner = 0; corner < 3; ++corner) {
-        if ((*sourceFaces)(selectedFace, corner) == sourceVertex) {
-          rebound(corner) = 1.0;
-        }
-      }
-    } else if (const auto *edgeSupport =
-                   std::get_if<authority::SourceEdgeSupport>(
-                       &commonSupport.identity.value())) {
-      const int sourceEdgeFirst =
-          static_cast<int>(edgeSupport->edge.first().index());
-      const int sourceEdgeSecond =
-          static_cast<int>(edgeSupport->edge.second().index());
-      double firstWeight = 0.0;
-      double secondWeight = 0.0;
-      for (int corner = 0; corner < 3; ++corner) {
-        const int sourceVertex = (*sourceFaces)(selected.face, corner);
-        if (sourceVertex == sourceEdgeFirst) {
-          firstWeight += selected.barycentric(corner);
-        } else if (sourceVertex == sourceEdgeSecond) {
-          secondWeight += selected.barycentric(corner);
-        }
-      }
-      const double sum = firstWeight + secondWeight;
-      if (!(sum > 0.0)) {
-        return selected;
-      }
-      firstWeight /= sum;
-      secondWeight /= sum;
-      for (int corner = 0; corner < 3; ++corner) {
-        const int sourceVertex = (*sourceFaces)(selectedFace, corner);
-        if (sourceVertex == sourceEdgeFirst) {
-          rebound(corner) = firstWeight;
-        } else if (sourceVertex == sourceEdgeSecond) {
-          rebound(corner) = secondWeight;
-        }
-      }
-    } else {
-      if (selectedFace != selected.face) {
-        return selected;
-      }
-      rebound = selected.barycentric;
-    }
-    if (std::abs(rebound.sum() - 1.0) > 1.0e-8) {
-      return selected;
-    }
-    selected.face = selectedFace;
-    selected.barycentric = rebound;
-    selected.component = static_cast<int>(
-        sourceAuthority->component_for_row(selectedFaceId).index());
-    selected.sheet = static_cast<int>(
-        sourceAuthority->sheet_for_row(selectedFaceId).index());
-    return selected;
   };
   for (int row = 0; row < static_cast<int>(pendingVertices.size()); ++row) {
     const PendingOutputVertex &pending =
         pendingVertices[static_cast<std::size_t>(row)];
     result.mesh.vertexPositions.row(row) = pending.position;
-    const PureQuadMesh &provenancePatch =
-        patches[static_cast<std::size_t>(pending.provenancePatchIndex)];
     const SurfacePoint canonicalProvenance =
         canonicalSharedProvenance(pending);
+    if (!canonicalProvenance.valid()) {
+      result.failure = "IncompatibleSharedSourceProvenance";
+      return result;
+    }
     result.mesh.vertexProvenance.push_back(canonicalProvenance);
 
     const PureQuadMesh &lineagePatch =

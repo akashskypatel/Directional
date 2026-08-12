@@ -559,7 +559,9 @@ bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads);
  * become an alternate source of region, sheet, chart, or support authority.
  */
 PureQuadStitchIdentity canonical_authoritative_identity(
-    const PureQuadVertexLineage &lineage);
+    const PureQuadVertexLineage &lineage, const Eigen::MatrixXi &sourceFaces,
+    const SourceTopologyRegions &sourceAuthority,
+    const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr);
 
 } // namespace pure_quad_detail
 
@@ -601,9 +603,9 @@ PureQuadCompletionResult complete_pure_quad_patch(
 
 PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
-    const double positionTolerance = 1.0e-9,
-    const Eigen::MatrixXi *sourceFaces = nullptr,
-    const SourceTopologyRegions *sourceAuthority = nullptr,
+    const double positionTolerance,
+    const Eigen::MatrixXi *sourceFaces,
+    const SourceTopologyRegions *sourceAuthority,
     const std::set<std::uint64_t> *sourceHardFeatureEdges = nullptr);
 
 EndpointResolutionResult resolve_completion_endpoints(

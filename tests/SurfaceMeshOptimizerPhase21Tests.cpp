@@ -38,7 +38,6 @@ directional::geometry::SurfaceOptimizationConstraints make_constraints(
   directional::geometry::SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = sourceVertices;
   constraints.sourceFaces = sourceFaces;
-  constraints.sourcePositions = sourceVertices;
   constraints.sourceNormals =
       Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
   constraints.sourceFieldX =

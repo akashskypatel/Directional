@@ -95,8 +95,6 @@ struct SurfaceFeatureCurveInterval {
   int intervalId = -1;
   int order = 0;
   int sourceFace = -1;
-  int component = -1;
-  int sheet = -1;
   double parameterStart = 0.0;
   double parameterEnd = 1.0;
   bool curveClosed = false;
@@ -113,11 +111,9 @@ struct SurfaceFeatureSequenceKey {
 struct SurfaceOptimizationConstraints {
   Eigen::MatrixXd sourceVertices;
   Eigen::MatrixXi sourceFaces;
-  Eigen::MatrixXd sourcePositions;
   Eigen::MatrixXd sourceNormals;
   Eigen::MatrixXd sourceFieldX;
   Eigen::MatrixXd sourceFieldY;
-  Eigen::VectorXi sourceComponent;
   // Complete source authority for all semantic region/component/sheet queries.
   // The pipeline owns this product for the complete optimizer lifetime.
   const SourceTopologyRegions *sourceAuthority = nullptr;
@@ -133,7 +129,6 @@ struct SurfaceOptimizationConstraints {
   std::vector<int> fixedVertices;
   std::vector<int> featureVertices;
   std::vector<int> softFeatureVertices;
-  std::vector<std::pair<Eigen::RowVector3d, Eigen::RowVector3d>> featureIntervals;
   std::vector<SurfaceFeatureCurveInterval> featureCurveIntervals;
   Eigen::VectorXi featureCurveIds;
   std::vector<std::optional<authority::HardRailId>> featureRailIds;
@@ -333,11 +328,6 @@ Eigen::RowVector3d project_to_interval(const Eigen::RowVector3d &p,
                                               const Eigen::RowVector3d &a,
                                               const Eigen::RowVector3d &b,
                                               double *parameter = nullptr);
-
-Eigen::RowVector3d project_to_source(const Eigen::RowVector3d &p,
-                                            const Eigen::MatrixXd &source,
-                                            int *component,
-                                            const Eigen::VectorXi &components);
 
 struct SourceProjectionCache {
   explicit SourceProjectionCache(

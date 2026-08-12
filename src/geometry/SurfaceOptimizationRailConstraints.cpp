@@ -95,15 +95,15 @@ bool provenance_supports_interval_sheet(
   std::vector<SourceVertexId> supportVertices;
   for (int corner = 0; corner < 3; ++corner) {
     if (provenance.barycentric(corner) > 1.0e-8) {
-      const int legacySourceVertex = constraints.sourceFaces(
+      const int sourceVertexIndex = constraints.sourceFaces(
           static_cast<Eigen::Index>(
               (provenanceFace).index()),
           corner);
-      if (legacySourceVertex < 0) {
+      if (sourceVertexIndex < 0) {
         return false;
       }
       const auto sourceVertexResult = directional::authority::SourceVertexId::from_index(
-          legacySourceVertex, static_cast<std::size_t>(constraints.sourceVertices.rows()));
+          sourceVertexIndex, static_cast<std::size_t>(constraints.sourceVertices.rows()));
       if (!sourceVertexResult) {
         return false;
       }
@@ -133,7 +133,6 @@ void fill_surface_optimization_rail_constraints(
     const std::vector<SurfacePoint> &outputProvenance,
     SurfaceOptimizationConstraints &constraints) {
   constraints.featureCurveIntervals.clear();
-  constraints.featureIntervals.clear();
   constraints.featureVertices.clear();
   constraints.orderedFeatureVertices.clear();
   constraints.authoritativeBoundaryEdges.clear();
@@ -159,11 +158,6 @@ void fill_surface_optimization_rail_constraints(
       interval.railId = rail.id;
       interval.order = sampleIndex / 2;
       interval.sourceFace = start.sourceFace;
-      const auto [sourceComponent, sourceSheet] =
-          surface_optimization_rail_detail::source_face_numeric_scope(
-              constraints, start.sourceFace);
-      interval.component = sourceComponent;
-      interval.sheet = sourceSheet;
       interval.parameterStart = start.railParameter;
       interval.parameterEnd = end.railParameter;
       interval.curveClosed = rail.closed;

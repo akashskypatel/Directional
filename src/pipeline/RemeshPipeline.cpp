@@ -3687,7 +3687,6 @@ void fill_surface_cell_rail_constraints(
     const std::vector<geometry::SurfaceCellRail> &rails,
     geometry::SurfaceOptimizationConstraints &constraints) {
   constraints.featureCurveIntervals.clear();
-  constraints.featureIntervals.clear();
   constraints.featureVertices.clear();
   constraints.orderedFeatureVertices.clear();
   constraints.authoritativeBoundaryEdges.clear();
@@ -7656,7 +7655,6 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       geometry::SurfaceOptimizationConstraints constraints;
       constraints.sourceVertices = meshWhole.V;
       constraints.sourceFaces = meshWhole.F;
-      constraints.sourcePositions = meshWhole.V;
       constraints.sourceNormals = meshWhole.faceNormals;
       constraints.sourceFieldX = faceAxisX;
       constraints.sourceFieldY = faceAxisY;

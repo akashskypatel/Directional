@@ -1,2 +1,0 @@
-Trigger M1 partial Code+Build for R-A-REV-17 and R-A-REV-20.
-Runtime execution is prohibited; compile/link only.
