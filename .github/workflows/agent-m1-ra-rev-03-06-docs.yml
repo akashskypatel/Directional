@@ -44,6 +44,8 @@ jobs:
             > "$RUNNER_TEMP/docs.patch"
           git apply --check "$RUNNER_TEMP/docs.patch"
           git apply "$RUNNER_TEMP/docs.patch"
+          sed -i 's/^\(\*\*Latest implementation review baseline:\*\*.*\)  $/\1/' \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
           git diff --check
           changed="$(git diff --name-only | sort)"
           expected="$(printf '%s\n' \
