@@ -1,0 +1,144 @@
+name: Agent M1 R-A REV-21-24 Source Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1-ra-rev21-24-source-apply.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1-ra-rev21-24-source-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A-REV-21-through-REV-24-source-apply-and-static-inventory' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'turnBoundary=Code+Build-only' \
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+
+      - name: Apply verified source patch and reproduce full R-A inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-before.txt"
+          test ! -s "$RUNNER_TEMP/source-status-before.txt"
+
+          PART_DIR=.agents/Directional/turn-payloads/ra-rev21-24
+          expected_parts=(
+            '99531bfa9700c51d75739f977c655a7d6f20361e817e6eb600bf36994a1ba624 part-00.patch'
+            'e13f5888657c27ab3f668f9f17b4fedb128d1def224126425133905fd1449bbc part-01.patch'
+            '94fc263dac621038625c0ce1ff49313f2a6c06d869b36a8428c4bc0c380dc4e6 part-02.patch'
+            '2c94d787ebf9cd117353019ab76abc15ad7f6dc0ba4edff62b5e9aaa36a92ee8 part-03.patch'
+            '1fdd47ba4b5f1f281e74e44eec0244a2aadc2db2eeae850504f5d822119e3b5c part-04.patch'
+            '29be73d554277624b8050a17dde49403543729e953fa59a16342ccf7b4594a2a part-05.patch'
+            '4e4957739e46dfbc2142da13be7c645ba51de5d00055902ac726d66d3bfcbe5c part-06.patch'
+            'e03fde1e078998d83718eb5d35e26f80f34482c5a55049701ec2201754dbf3bb part-07.patch'
+          )
+          for item in "${expected_parts[@]}"; do
+            expected=${item%% *}
+            name=${item#* }
+            actual=$(sha256sum "$PART_DIR/$name" | awk '{print $1}')
+            printf 'payload=%s sha256=%s\n' "$name" "$actual"
+            test "$actual" = "$expected"
+          done
+
+          cat "$PART_DIR"/part-*.patch > "$RUNNER_TEMP/source.patch"
+          PATCH_SHA=$(sha256sum "$RUNNER_TEMP/source.patch" | awk '{print $1}')
+          echo "patch_sha256=$PATCH_SHA"
+          test "$PATCH_SHA" = '3c16ab9e73be95aeefb156cfd88db73f5a3ff38c9313ac72340b2033211fb611'
+          if grep -E '^\+\+\+ b/\.github/workflows/' "$RUNNER_TEMP/source.patch"; then
+            echo 'source patch illegally modifies workflow files'
+            exit 1
+          fi
+
+          git apply --check "$RUNNER_TEMP/source.patch"
+          git apply "$RUNNER_TEMP/source.patch"
+          python3 -m py_compile .agents/Directional/R_A_Closure_Inventory.py
+          python3 .agents/Directional/R_A_Closure_Inventory.py --root . --output .agents/Directional/R_A_Closure_Inventory_Report.md
+          python3 .agents/Directional/R_A_Closure_Inventory.py --root . --output "$RUNNER_TEMP/r-a-closure-inventory-second.md"
+          cmp .agents/Directional/R_A_Closure_Inventory_Report.md "$RUNNER_TEMP/r-a-closure-inventory-second.md"
+          git diff --check
+
+          expected_changed=$(printf '%s\n' \
+            .agents/Directional/R_A_Closure_Inventory.py \
+            .agents/Directional/R_A_Closure_Inventory_Report.md \
+            include/directional/geometry/PureQuadCompletion.h \
+            src/geometry/PureQuadCompletion.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            src/validation/SourceAuthoritativeMeshValidator.cpp \
+            tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp | sort)
+          changed=$(git status --porcelain=v1 | awk '{print $2}' | grep -v '^\.agents/Directional/turn-payloads/' | sort)
+          printf 'changed_outputs=\n%s\n' "$changed"
+          test "$changed" = "$expected_changed"
+
+          verify_blob() {
+            local expected=$1
+            local path=$2
+            local actual
+            actual=$(git hash-object "$path")
+            printf 'output_blob=%s expected=%s actual=%s\n' "$path" "$expected" "$actual"
+            test "$actual" = "$expected"
+          }
+          verify_blob 211d974acca9bb89e978c0eabb9362b93733934c include/directional/geometry/PureQuadCompletion.h
+          verify_blob 3f9dd62d21c2c35c6f68356c6ef7f31b36290a7a src/geometry/PureQuadCompletion.cpp
+          verify_blob e30ec5488666a3f09946939e44d444fa386d7887 src/pipeline/RemeshPipeline.cpp
+          verify_blob 84d0873585a5d80e73a367e8ffb3162a4820bbe5 src/validation/SourceAuthoritativeMeshValidator.cpp
+          verify_blob 39e5f0b42cd37658482176c7d666877501876f73 tests/SurfaceCellsPhase10Tests.cpp
+          verify_blob 91f05060dd1d07977fa48a77d08a9f24ea945b15 tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp
+          verify_blob 36d93fb2a660899577c5790dd9625ab144806422 .agents/Directional/R_A_Closure_Inventory.py
+          verify_blob ecdd13391775d30a74c3b6e7dc4b8d1d93fa35a1 .agents/Directional/R_A_Closure_Inventory_Report.md
+
+          tail -n 16 .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -E '^### R-A-REV-(21|22|23|24)$|^\- Final static inventory:' .agents/Directional/R_A_Closure_Inventory_Report.md
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add include/directional/geometry/PureQuadCompletion.h \
+            src/geometry/PureQuadCompletion.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            src/validation/SourceAuthoritativeMeshValidator.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp
+          git add -f .agents/Directional/R_A_Closure_Inventory.py \
+            .agents/Directional/R_A_Closure_Inventory_Report.md
+          git commit -m 'fix: close R-A REV-21 through REV-24 code contracts'
+          SOURCE_SHA=$(git rev-parse HEAD)
+          echo "implementation_source_sha=$SOURCE_SHA"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+          echo 'runtimeExecution=false'
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-rev21-24-source-apply-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
