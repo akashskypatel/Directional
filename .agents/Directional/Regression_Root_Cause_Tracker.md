@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-12 UTC** after the complete R-A closure-gate review of exact implementation `c62c99ffe5b7863820c91f4ff3a93645b22d3591` at branch head `f81f40524f9ee6978e4e298497d4d54580520cf3`.
+Last updated: **2026-08-12 UTC** after the complete R-A closure-gate review of exact implementation/test source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e` at branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`.
 
 ## Rules
 
@@ -295,12 +295,11 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 ### R-A compile checkpoints and closure-gate review
 
 - Earlier R-A reviews established the `RP-01 / RP-05` raw-mirror/read-back pattern and `RP-02` contract-coverage gap. Exact checkpoint history and artifacts remain in `CHANGELOG.md`.
-- Exact reviewed source `c62c99f...` retains substantial typed-authority corrections and compiled Release/static/Ninja/PRE_TEST **118/118** in run/job `31561686903 / 94005144300`. No generated runtime, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input executed.
-- Independent artifact inspection verified exact packaged source, matching outer result/log digests, five empty source-status snapshots, and a self-excluding manifest **22/22**. This resolves the R-A-REV-06 packaging pattern for the checkpoint, but artifact `9127976318` is partial and not an M1 acceptance candidate.
-- `R-A-REV-07`: exact boundary identity can bypass complete typed completion lineage. This is the `RP-01 / RP-05` compatibility-authority pattern.
-- `R-A-REV-08`: SurfaceCells optimization/validation can bypass typed authority, and the generic validator reads raw component/sheet labels. This is the `RP-01 / RP-05` read-back pattern.
-- `R-A-REV-09`: component aggregation derives typed sheet offsets from raw diagnostic/projection labels. This is the `RP-01 / RP-05` reverse-projection pattern.
-- `R-A-REV-10`: the focused script and test-name inventory miss REV-07 through REV-09. This is a `RP-02` audit/test-authority coverage gap.
+- Exact reviewed source `d8d648a...` retains the bounded REV-07-through-10 typed-authority corrections and compiled Release/static/Ninja/PRE_TEST **118/118** in run/job `31565756309 / 94017095695`. No generated runtime, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input executed.
+- Independent artifact inspection verified exact packaged source, matching outer result/log digests, five empty source-status snapshots, and a self-excluding manifest **20/20**. The package is partial and not an M1 acceptance candidate.
+- `R-A-REV-11`: exact stitch-key collisions validate typed authority only for presence and can merge incompatible typed lineage. This is an `RP-01 / RP-05` authority/identity collision pattern.
+- `R-A-REV-12`: component remap can silently lose typed chart/support authority and has only helper-proxy coverage rather than an end-to-end multi-component contract. This spans `RP-01` fail-open authority and `RP-02` proxy-test coverage.
+- `R-A-REV-13`: the claimed complete audit samples selected paths/substrings and does not detect REV-11 or REV-12. This is an `RP-02` audit-authority coverage gap.
 - These are static review findings, not stable runtime regression events. R-A remains a compile-valid partial implementation; M1l remains immutable runtime authority and totals remain **34 / 14 / 20**.
 
 ### Architecture redesign mapping
@@ -342,7 +341,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | ID | State |
 |---|---|
 | `AR-01` | final M1 cutover installs exhaustive `ProducerOutcome<SurfacePhaseFrontProduct>` |
-| `AR-02` | M1a through M1l **accepted**; complete R-A closure gate rejected with `R-A-REV-07` through `R-A-REV-10` open |
+| `AR-02` | M1a through M1l **accepted**; complete R-A closure gate rejected with `R-A-REV-11` through `R-A-REV-13` open |
 | `AR-03` | final cutover closes strong identity from producer through materializer, including exact/existing stitch-identity validation and no compatibility bypass |
 | `AR-04` | final cutover replaces remaining chart, support, route, periodic, rail, occurrence, quotient, and certificate numeric ownership |
 | `AR-05` | after cutover, numeric projection is permitted only at a direct Eigen/vector storage or derived export leaf; it is never semantic authority |
@@ -365,7 +364,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `TA-05` | **test authority resolved and preserved through M1l** |
 | `TA-06` | T1 mutation suite **29/29** accepted and preserved |
 | `TA-07` | exact package/discovery authority accepted and preserved |
-| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region + M1l cell topology-region authority accepted; R-A exact-only, alternate-validator, and multi-component raw-tamper contracts remain open |
+| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region + M1l cell topology-region authority accepted; R-A exact-key collision and end-to-end multi-component contracts remain open |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
 | `TA-11` | existing topology/lineage oracle foundation accepted; M3 network, M7 disposition, and T5 quality mutation evidence remain open |
@@ -375,4 +374,4 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
 
-The next turn is **Code + Build only**. Retain the valid typed-authority changes and verified R-A-REV-06 package rules; close `R-A-REV-07` through `R-A-REV-10`; rerun the full R-A closure inventory; finish R-B through R-G; and package the exact self-verifying full cutover. Execute no generated Directional binary. The retained artifact-only plan stays dormant until that fresh package exists. On M1 acceptance, resume the Pipeline B queue under revised M2-M8 ownership; Pipeline A remains unscheduled.
+The next turn is **Code + Build only**. Retain the valid typed-authority changes and verified package rules; close `R-A-REV-11` through `R-A-REV-13`; rerun the full R-A closure inventory; finish R-B through R-G; and package the exact self-verifying full cutover. Execute no generated Directional binary. The retained artifact-only plan stays dormant until that fresh package exists. On M1 acceptance, resume the Pipeline B queue under revised M2-M8 ownership; Pipeline A remains unscheduled.

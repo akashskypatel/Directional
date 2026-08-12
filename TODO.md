@@ -9,13 +9,11 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - Complete-gate review baseline: branch head `f81f40524f9ee6978e4e298497d4d54580520cf3`; latest review-remediation compile source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`. R-A remains open pending the complete closure inventory. Preserve the valid typed-authority changes and independently verified packaging rules; completed checkpoint history belongs in `CHANGELOG.md`.
-  - [x] R-A-REV-07: every published/stitch-authoritative completion vertex now requires complete typed topology-region, isolation-sheet, chart, and support lineage; exact-only/empty-source publication is removed, and exact boundary identity is accepted only after typed-lineage validation.
-  - [x] R-A-REV-08: SurfaceCells optimizer/verifier entry points now require complete typed source authority and fail closed when it is absent; the public bypass flag is removed and generic validation no longer uses raw component/sheet labels as sheet authority.
-  - [x] R-A-REV-09: multi-component typed isolation-sheet extents/offsets derive only from complete typed lineage; incomplete coverage fails closed, typed remap occurs first, and raw component/sheet labels are derived one-way afterward.
-  - [x] R-A-REV-10: the affected-path audit now covers public declarations/headers, completion and assembly paths, optimizer/verifier modes, component aggregation, and raw component/sheet reads; semantic contract bodies for REV-07 through REV-09 are compile-visible.
-  - Partial Code + Build checkpoint: source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`; run/job `31565756309 / 94017095695`; result/log artifacts `9129549875 / 9129550069`; Release/static/Ninja/PRE_TEST **118/118**; self-excluding manifest **20/20**; all five source-status snapshots empty; no generated Directional runtime executed.
-  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only if every gate item is statically clean.
+  - Latest complete-gate review: branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`; exact implementation/test source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`. R-A is **not complete**. Historical REV-01-through-10 checkpoints and compile artifacts remain in `CHANGELOG.md`.
+  - [ ] R-A-REV-11: store and validate typed-authority compatibility for every exact stitch-key collision; reject incompatible region/sheet/chart/support lineage and add compatible/incompatible collision contracts.
+  - [ ] R-A-REV-12: make component authority remap checked and fail closed, validate complete typed lineage after remap, and replace helper-only evidence with an end-to-end multi-component raw-tamper/malformed-remap contract.
+  - [ ] R-A-REV-13: replace the sampled REV-10 script with a complete affected-path/symbol/read inventory and semantic checks that detect REV-11 and REV-12.
+  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every gate item is statically clean.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
   - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.

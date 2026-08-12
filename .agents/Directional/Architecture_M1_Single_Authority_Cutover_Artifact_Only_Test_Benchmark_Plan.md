@@ -13,13 +13,13 @@
 
 This plan is retained as requested, but it is **not executable now**.
 
-Complete R-A closure review of exact compiled source `c62c99f...` verified the R-A-REV-06 package mechanics but rejected R-A completion on R-A-REV-07 through R-A-REV-10. Earlier focused REV-03/04/05 closure labels were bounded script/compile claims, not complete-gate evidence. No historical or partial artifact may be validated, relabeled, copied, repaired, or amended into M1 acceptance evidence.
+Complete R-A closure review through branch head `1c4f631...` verified the compile/package mechanics of exact implementation/test source `d8d648a...` but rejected R-A completion on R-A-REV-11 through R-A-REV-13. Historical finding and artifact identities remain in `CHANGELOG.md`. No historical or partial artifact may be validated, relabeled, copied, repaired, or amended into M1 acceptance evidence.
 
 Activate this plan only after a new Code + Build turn:
 
-1. closes R-A-REV-07 through R-A-REV-10 and passes the full R-A closure gate;
+1. closes R-A-REV-11 through R-A-REV-13 and passes the full R-A closure gate;
 2. completes R-B through R-G;
-3. repeats the verified R-A-REV-06 mechanics while packaging exact final source, compiled contracts, fixtures, expanded audit, logs, clean source provenance, and a checksum manifest that excludes itself and verifies before upload;
+3. repeats the verified packaging mechanics while packaging exact final source, compiled contracts, fixtures, expanded audit, logs, clean source provenance, and a checksum manifest that excludes itself and verifies before upload;
 4. records new immutable source/artifact IDs and digests, manifest count/digest, executable inventory, and command-boundary flags in this header and Sections 2, 3, 12, and 14.
 
 The replacement DESIGN.md is normative. M1 acceptance proves the single-authority contract only; it does not claim the later M3 curve network, M4 conformity flow, M7 graded disposition, or optional Pipeline A. A strict product fixture may close only on certified/D0-equivalent behavior. A degraded D1-D3 result, if disposition work appears early, is truthful characterization and cannot close an M1 preservation gate.
@@ -241,10 +241,11 @@ The activated audit must also fail on any reviewed R-A closure defect:
 - an occurrence lacks required typed topology-region, isolation-sheet, chart, or support authority after construction;
 - a fallback canonical/stitch/ownership identity can be built from raw component/sheet mirrors.
 - an exact boundary identity is accepted without separate complete typed topology-region/isolation-sheet/chart/support lineage and consistency validation;
+- an existing exact stitch key merges a candidate without validating its typed-authority compatibility against the stored candidate;
 - a standalone completion or SurfaceCells optimizer/verifier path publishes, succeeds, or validates without complete typed authority;
 - the generic validator reads raw projection component/sheet on a SurfaceCells path;
-- component aggregation derives typed sheet extent/offset or any typed owner from raw diagnostic/projection labels;
-- the audit omits affected declarations, headers, public modes, completion/assembly branches, or top-level component aggregation.
+- component aggregation derives typed sheet extent/offset or any typed owner from raw diagnostic/projection labels, silently loses authority during remap, or publishes without complete post-remap lineage validation;
+- the audit omits affected declarations, headers, public modes, completion/assembly branches, top-level component aggregation, exact-key collision compatibility, or end-to-end multi-component contracts.
 
 Derived integers are allowed only in one-way diagnostics/export after typed validation and must never be read back by production logic.
 
@@ -269,8 +270,8 @@ M1 is accepted only when all of the following hold:
 - every historical/deferred red case is executed and classified, with no unclassified regression;
 - no source attachment, topology-region/sheet/chart distinction, transport composition, certificate ownership/exact-once consumption, determinism, direct disposition, or no-fallback invariant regresses;
 - independent packaged-source audit finds no displaced representation or duplicate semantic authority;
-- the complete R-A gate is clean, including REV-07 through REV-10, with positive, missing-authority, distinct-sheet, exact-only, alternate-validator-path, raw-tamper, and multi-component-tamper contracts;
-- the verified R-A-REV-06 package rules are repeated by clean source provenance and exact preflight/postflight checksum verification;
+- the complete R-A gate is clean, including REV-11 through REV-13, with positive, missing-authority, distinct-sheet, exact-only, exact-key-collision, alternate-validator-path, raw-tamper, and end-to-end multi-component-tamper contracts;
+- the verified package rules are repeated by clean source provenance and exact preflight/postflight checksum verification;
 - all strict preservation fixtures reach certified/D0-equivalent behavior; no D1-D3 output closes a strict gate;
 - Bunny/Vase and strict-validator results are truthfully characterized;
 - no package mutation or rebuild occurred.

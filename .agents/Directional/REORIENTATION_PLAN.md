@@ -2,7 +2,7 @@
 
 **Status:** authoritative architecture-migration roadmap  
 **Normative design:** .agents/Directional/DESIGN.md, replacement supplied 2026-08-11  
-**Current reviewed source:** exact implementation `c62c99ffe5b7863820c91f4ff3a93645b22d3591` at closure-review branch head `f81f40524f9ee6978e4e298497d4d54580520cf3`
+**Current reviewed source:** exact implementation/test source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e` at closure-review branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`
 **Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap**  
 **Last updated:** 2026-08-12 UTC
 
@@ -66,7 +66,7 @@ The 2026-08-11 redesign retains prior M0-M2, maps prior M3 to M4, prior M4 to M5
 | Milestone | Contract | State |
 |---|---|---|
 | M0 | preserve immutable evidence | complete |
-| M1 | single-authority cutover | active; R-A closure gate rejected, R-A-REV-07 through R-A-REV-10 open |
+| M1 | single-authority cutover | active; R-A closure gate rejected, R-A-REV-11 through R-A-REV-13 open |
 | M2 | closed stage products and single writers | pending |
 | M3 | field-aligned curve network | pending |
 | M4 | global conformity plan | pending |
@@ -87,7 +87,7 @@ Rejected and partial package identities remain historical evidence in `CHANGELOG
 
 ### R-A closure review
 
-The working branch through `f81f405...` was reviewed against the complete R-A gate. Implementation/test source ends at exact compiled source `c62c99f...`. No generated runtime or discovery executed in the compile run or this Review.
+The working branch through `1c4f631...` was reviewed against the complete R-A gate. Implementation/test source ends at exact compiled source `d8d648a...`; later commits contain documentation and temporary workflow/payload cleanup only. No generated runtime or discovery executed in the compile run or this Review.
 
 Established:
 
@@ -98,29 +98,27 @@ Established:
 - SourceEntityId removal;
 - owning source-authority consumer APIs;
 - materializer API without parallel raw component/sheet arrays;
-- the exact earlier materializer and fallback-encoding corrections remain;
-- R-A-REV-06 packaging mechanics are independently verified: source snapshot exact, clean source-status snapshots, self-excluding manifest **22/22**, and authentic Release/static/Ninja/PRE_TEST compile **118/118**.
+- the earlier materializer, fallback-encoding, exact-only-publication, and strict optimizer/verifier corrections remain;
+- the latest checkpoint authentically compiles Release/static/Ninja/PRE_TEST **118/118** from exact source, with clean source provenance and a self-excluding manifest **20/20**.
 
 Not closed:
 
-- R-A-REV-07: exact boundary identities can publish and stitch when complete typed topology-region/sheet/chart/support lineage is absent;
-- R-A-REV-08: SurfaceCells optimization/validation retains an optional non-authoritative path whose generic validator reads raw component/sheet labels;
-- R-A-REV-09: multi-component aggregation derives typed sheet offsets from raw diagnostic/projection labels;
-- R-A-REV-10: the focused audit and compiled test-name inventory do not cover those paths or establish their semantic preconditions.
+- R-A-REV-11: an existing exact stitch key merges on matching position without validating incoming typed-authority compatibility;
+- R-A-REV-12: multi-component remap can publish incomplete typed chart/support lineage, and its current contract is a helper-only proxy rather than an end-to-end production merge;
+- R-A-REV-13: the claimed complete audit samples selected paths and substrings and does not detect REV-11 or REV-12.
 
-Artifact `9127976318` is verified partial compile/package evidence only. R-A is not an accepted migration and no partial artifact is eligible for artifact-only acceptance.
+R-A is not an accepted migration and no partial artifact is eligible for artifact-only acceptance. Exact checkpoint identities remain in `CHANGELOG.md` rather than this live roadmap.
 
 ## 6. M1 completion sequence
 
 The next Code + Build turn must:
 
-1. close R-A-REV-07 by requiring complete typed lineage even for an exact boundary identity and deleting empty-source/exact-only publication;
-2. close R-A-REV-08 by making typed source authority mandatory for SurfaceCells optimizer/verifier entry points and isolating any generic point-cloud API;
-3. close R-A-REV-09 by deriving component sheet extents/offsets from typed authority and adding multi-component raw-tamper invariance;
-4. close R-A-REV-10 with a complete affected-path audit and semantic contracts, then rerun and pass the full R-A closure inventory;
+1. close R-A-REV-11 with per-collision typed-authority compatibility validation and positive/negative exact-key contracts;
+2. close R-A-REV-12 with checked fail-closed component remap, post-remap lineage validation, and end-to-end multi-component contracts;
+3. close R-A-REV-13 with a complete failing affected-path/symbol/read audit that detects REV-11 and REV-12;
+4. rerun and pass the full R-A closure inventory;
 5. complete R-B through R-G under the active Code + Build plan;
-6. produce a fresh self-verifying full package using the verified R-A-REV-06 rules;
-7. compile and package without generated runtime.
+6. produce a fresh self-verifying full package using the verified packaging rules, without generated runtime.
 
 The resulting package is independently validated under the retained artifact-only plan. M1 closes only when static authority, focused contracts, entering semantic gates, direct product oracles, known-red classification, characterization, and immutable postflight all close.
 

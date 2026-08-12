@@ -1,83 +1,48 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** R-A-REV-01 through R-A-REV-10 are compile-closed for their reviewed paths at `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`; R-A remains open pending the complete closure inventory, R-B through R-G, and one fresh full self-verifying package
-**Original planning decision:** prior narrow M1m plan rejected and replaced  
+**Current status:** R-A closure rejected at branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`; R-A-REV-11 through R-A-REV-13 are open, followed by R-B through R-G and one fresh full self-verifying package
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
-**Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
-**Latest closure-review branch head:** `f81f40524f9ee6978e4e298497d4d54580520cf3`
-**Exact reviewed implementation source:** `c62c99ffe5b7863820c91f4ff3a93645b22d3591`
-**Latest review-remediation source:** `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`
+**Latest closure-review branch head:** `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`
+**Exact reviewed implementation source:** `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
 
-## 0AA. 2026-08-12 R-A-REV-07-through-10 review-remediation checkpoint
-
-This partial Code + Build checkpoint closes the four named findings for their reviewed paths without declaring R-A or M1 complete.
-
-### Changes
-
-- **R-A-REV-07:** completion no longer publishes exact-boundary stitch authority from an empty-source compatibility branch. `resolved_stitch_identity` requires valid separately derived typed lineage before considering an exact arrangement-boundary identity, and authoritative resolution no longer falls back to exact-only identity. Exact-only assembly rejects with `MissingTypedStitchIdentity`; typed positive and exact-only negative contracts are compile-visible.
-- **R-A-REV-08:** removed the public optional `requireSourceAuthoritativeValidation` bypass. SurfaceCells production uses dedicated source-authoritative optimizer/final-validator entry points that fail closed with `MissingSourceAuthority` on missing/incomplete authority. Generic validation is isolated for non-SurfaceCells use and no longer compares raw `SurfacePoint::component/sheet` as sheet authority.
-- **R-A-REV-09:** multi-component isolation-sheet extent/offset is computed from complete typed vertex lineage, not `sourceSurfaceLabels.localSheetByFace` or `SurfacePoint::sheet`. Incomplete typed coverage fails with `MissingTypedComponentIsolationSheetAuthority`; typed sheet remap precedes one-way raw projection/export. A compiled helper contract verifies raw-label tampering cannot change typed extent and missing typed support invalidates it.
-- **R-A-REV-10:** replaced the previous focused/name-only evidence with an affected-path audit that inventories public headers/declarations, completion/assembly, optimizer/verifier modes, generic validation boundaries, component aggregation, and raw component/sheet reads. The audit inspects semantic contract bodies and permits raw labels only in classified one-way assignment/export leaves.
-
-### Compile-only evidence
-
-- Exact implementation source: `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e` (`10 files changed, 421 insertions, 102 deletions`).
-- Run/job `31565756309 / 94017095695` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`.
-- Result artifact `9129549875`, outer SHA-256 `34f9d4a576ddfd79c2c35997ac95bdd91a0b549ac1bf519bc38a11d36d0559e5`; log artifact `9129550069`, outer SHA-256 `65fe62a061ab090f4929477997b28527d9511816e8c0518a136dac3604941bb0`.
-- Independent artifact inspection verified exact source `d8d648a...`, a self-excluding recursive manifest **20/20**, zero self references, and five empty source-status snapshots.
-- The source audit reports `R-A-REV-07 source/contract audit: closed`, `R-A-REV-08 source/contract audit: closed`, `R-A-REV-09 source/contract audit: closed`, and `R-A-REV-10 complete affected-path inventory: clean`.
-- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. Compiled contracts were not run.
-
-### Remaining gate
-
-This artifact is partial and ineligible for M1 acceptance. Before advancing the cutover, rerun the complete R-A closure inventory below over all affected producers/consumers. Only a statically clean complete inventory may mark R-A complete; R-B through R-G and one fresh full R-A-through-R-G package remain mandatory.
-
-## 0A. 2026-08-12 complete R-A closure-gate review — rejected
+## 0A. 2026-08-12 R-A-REV-07-through-10 closure review — rejected
 
 This section controls wherever it conflicts with older remediation text. Historical checkpoints remain in `CHANGELOG.md`; they are not live tasks here.
 
 ### Verified boundary and evidence
 
-- The Review inspected PR #8 through branch head `f81f40524f9ee6978e4e298497d4d54580520cf3`. No implementation or test source changed after `c62c99ffe5b7863820c91f4ff3a93645b22d3591`, so that commit is the exact reviewed source.
-- The packaged source snapshot from run/job `31561686903 / 94005144300` is byte-identical to a clean `c62c99f...` worktree. Release/static/Ninja/PRE_TEST compiled **118/118** with build exit `0`.
-- Result artifact `9127976318` and log artifact `9127976660` independently match outer SHA-256 values `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588` and `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
-- The result's self-excluding manifest verifies **22/22** and all five recorded source-status snapshots are empty. R-A-REV-06 is therefore verified for these packaging mechanics. Artifact `9127976318` remains a partial checkpoint, not an M1 acceptance candidate.
-- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. Compiled test source and test-name presence are not semantic acceptance.
-- The focused `m1-ra-rev-03-06-audit.py` checks selected blocks and names only. It does not inspect the generic validator header, the public optimizer bypass, exact-only boundary lineage, or top-level component aggregation; its printed REV-03/04/05 closure labels do not establish the complete gate.
+- The Review inspected PR #8 through branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`. Changes after `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e` are documentation and temporary workflow/payload cleanup only, so `d8d648a...` is the exact reviewed implementation/test source.
+- Run/job `31565756309 / 94017095695` authentically completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result/log artifacts `9129549875 / 9129550069` match outer SHA-256 values `34f9d4a576ddfd79c2c35997ac95bdd91a0b549ac1bf519bc38a11d36d0559e5` and `65fe62a061ab090f4929477997b28527d9511816e8c0518a136dac3604941bb0`.
+- Independent inspection verified the packaged source byte-for-byte against `d8d648a...`, the self-excluding manifest **20/20**, and all five empty source-status snapshots. The REV-07-through-10 focused assertions compile and their bounded script completes, but they do not satisfy the complete R-A gate.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. No runtime or stable regression total changed.
 
-### R-A-REV-07 — exact boundary identity bypasses complete typed lineage
+### R-A-REV-11 — exact stitch-key collisions do not validate typed-authority compatibility
 
-Evidence: `validate_completion_domain_ownership` publishes exact boundary identities and continues when `sourceFaces` is empty. `resolved_stitch_identity` returns an exact boundary identity before requiring the separately derived typed identity to be valid, and `resolved_authoritative_identity` can return that resolved identity when typed authority is absent. `PrebuiltBoundaryStitchIdentityMustMatchExactAuthority` positively completes a patch with no source faces or typed source authority.
+Evidence: `resolved_stitch_identity` requires each candidate to have nonempty typed lineage, but a shared boundary returns the exact arrangement identity as the registry key. `stitch_pure_quad_patches` computes `authoritativeKey` and checks only that it is valid; `PendingOutputVertex` does not retain it, and the existing-key path compares position only. Consequently, the same exact key and position can merge candidates with incompatible typed regions, sheets, charts, or support. Later provenance canonicalization falls back to one selected candidate when typed source entities disagree instead of rejecting the merge.
 
-Corrective measure: require complete typed topology-region, isolation-sheet, chart, and support lineage for every published completion vertex. An exact arrangement identity is a stitch key only after validation against that separate typed owner/lineage. Delete the empty-source compatibility publication, reject exact-only lineage with `MissingTypedStitchIdentity`, and convert standalone fixtures to typed positive or explicit missing-authority negative contracts.
+Corrective measure: retain a canonical typed-authority value or typed compatibility certificate beside every stitch-registry entry and validate every incoming candidate before merge. Distinct typed sheets or otherwise incompatible typed support/chart/region authority must fail closed with a dedicated typed failure. Add a positive compatible exact-key merge and a negative same-key/same-position incompatible-lineage contract that would fail if `authoritativeKey` were merely checked for presence.
 
-### R-A-REV-08 — optimizer/verifier retains a non-authoritative SurfaceCells path
+### R-A-REV-12 — multi-component remap can publish incomplete typed lineage and has only proxy coverage
 
-Evidence: `SurfaceOptimizationConstraints::requireSourceAuthoritativeValidation` defaults false; `source_authoritative_hard_invariants_valid` returns true immediately in that state; and final validation falls back to generic `MeshValidator`. Its `same_source_sheet` helper compares raw `SurfacePoint::component/sheet` to decide geometric T-junction compatibility. The optimizer also retains an explicitly named point-cloud fallback for legacy standalone fixtures.
+Evidence: the pre-remap extent helper checks nonempty region/sheet/chart/support, but the production remap silently keeps an unremapped chart on an out-of-domain face and can reset support to empty. It does not validate the fully remapped lineage before `merged.success = true`. The only REV-09 contract calls the extent helper on two hand-built lineage records; it does not exercise a disconnected multi-component input, production offsets/remap, output semantics, raw-label invariance, or post-remap failure.
 
-Corrective measure: make typed source authority mandatory for every SurfaceCells optimization and validation path. Missing authority must fail closed; generic point-cloud behavior, if retained for a non-SurfaceCells API, must be isolated so it cannot produce or validate SurfaceCells output. Remove raw provenance from sheet decisions and replace legacy fixtures with typed contracts or missing-authority negatives.
+Corrective measure: make every typed remap operation return a checked result, fail the component merge on any invalid region/sheet/chart/support mapping, and validate complete remapped lineage before publication. Add an end-to-end multi-component contract covering typed offsets and output semantics under raw-label tamper plus a malformed remap negative; helper-only evidence is insufficient.
 
-### R-A-REV-09 — component aggregation derives typed sheet offsets from raw projections
+### R-A-REV-13 — the claimed complete affected-path audit is incomplete
 
-Evidence: `remesh_surface_cell_components_from_cross_field` computes `localMaximumSheet` from `sourceSurfaceLabels.localSheetByFace` and remapped `SurfacePoint::sheet`, then uses the resulting `sheetOffset` to remap typed `IsolationSheetId` lineage. Raw diagnostic/projection labels therefore determine typed sheet identity in the production multi-component merge.
+Evidence: the shipped audit reads six implementation/header surfaces plus selected test blocks. It omits affected authority consumers such as `SourceAuthoritativeMeshValidator`, `SurfaceOptimizationRailConstraints`, arrangement/chart-transition ownership, and full materializer/lineage declarations. Its exact-boundary check proves only that typed authority is present before exact-key selection; it never proves cross-candidate compatibility. Its component check accepts the helper-only proxy, so it misses both REV-11 and REV-12 while printing `complete affected-path inventory: clean`.
 
-Corrective measure: compute component sheet extent from `SourceTopologyRegions` or complete typed lineage, fail on incomplete typed coverage, remap typed `IsolationSheetId` first, and derive raw projection/export sheet values one way afterward. Add a multi-component raw-label-tamper invariance contract over the merged typed lineage and output semantics.
-
-### R-A-REV-10 — the focused audit and compiled contracts cannot detect REV-07 through REV-09
-
-Evidence: the script scans only selected `.cpp` blocks and test-name strings. It misses `MeshValidator.h`, the public validation flag, the top-level component merge, and exact-only completion semantics. The new raw-tamper test covers one typed patch, while the prebuilt-boundary test depends positively on exact-only completion.
-
-Corrective measure: replace the focused script with a complete affected-path inventory covering declarations, headers, all completion/assembly paths, all optimizer/verifier modes, and component aggregation. Audit every raw component/sheet read and allow only one-way assignment/export leaves. Add semantic contracts for REV-07 through REV-09; name presence is not evidence.
+Corrective measure: replace path and substring sampling with a repository-wide affected-symbol/read inventory that fails on every unclassified producer, consumer, public mode, and top-level aggregation path. Require semantic-body checks for exact-key collision compatibility and real multi-component publication/failure contracts; audit output must not claim completeness when any required path or contract class is absent.
 
 ### Updated execution decision
 
 The next Code + Build continuation must:
 
-1. retain the valid R-A-REV-01-through-10 typed-authority work and verified packaging rules;
-2. rerun the complete R-A inventory below and call R-A complete only when every item is statically clean;
+1. retain the valid typed-authority work and verified packaging rules;
+2. close R-A-REV-11 through R-A-REV-13, then rerun the complete R-A inventory below and call R-A complete only when every item is statically clean;
 3. complete R-B through R-G in the same vertical cutover;
 4. produce one fresh full R-A-through-R-G self-verifying package without generated runtime execution, then hand only that package to the retained artifact-only plan.
 
@@ -88,103 +53,19 @@ Before work may be called R-A-complete, a complete static inventory and compiled
 - every affected occurrence and completion lineage carries required typed topology region, sheet, chart, and support;
 - no affected materializer, completion, patch, lineage, arrangement-ownership, verifier, optimizer, rail, or component-aggregation decision reads `SurfacePoint` component/sheet as authority;
 - no fallback canonical/stitch/ownership key stores raw component/sheet;
-- every exact boundary identity is validated against separate complete typed lineage; no exact-only or standalone compatibility publication survives;
+- every exact boundary identity is validated against separate complete typed lineage, and every collision validates typed-authority compatibility against the stored candidate; no exact-only or standalone compatibility publication survives;
 - every SurfaceCells optimizer/verifier entry point requires typed source authority and fails closed when it is missing;
-- multi-component sheet extents and offsets derive only from typed authority; raw labels are one-way diagnostic/export payload;
+- multi-component sheet extents and offsets derive only from typed authority; every remap is checked, complete remapped lineage is validated before publication, and raw labels are one-way diagnostic/export payload;
 - raw classifier arrays exist only at source-authority builder ingress, and `build_authoritative_phase_front_mesh` accepts no parallel raw authority;
-- the audit covers declarations, headers, implementation modes, and top-level aggregation, and classifies every raw component/sheet read;
-- compiled positive, missing-authority, distinct-sheet, exact-only, alternate-validator-path, raw-tamper, and multi-component-tamper contracts would fail if a bypass returned;
+- the audit covers declarations, headers, implementation modes, top-level aggregation, exact-key collision behavior, and post-remap publication, and classifies every raw component/sheet read;
+- compiled positive, missing-authority, distinct-sheet, exact-only, exact-key-collision, alternate-validator-path, raw-tamper, and end-to-end multi-component-tamper contracts would fail if a bypass returned;
 - the full package has clean source provenance and a self-excluding checksum manifest that verifies before upload.
 
-## 0. Independent review amendment — remediation required
+## 0. Retained M1 cutover requirements
 
-**Review date:** 2026-08-11 UTC  
-**Explicit review authority:** user-requested independent review  
-**Reviewed range:** `9192fd04a50e72c20a6e58c1c7e6b71ccfcbb31f` through `facdb346dc2dc417f6b1966c71ac9a048a57d8c5` (inclusive)  
-**Reviewed implementation:** `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`  
-**Review verdict:** **rejected as an M1-complete implementation; compile-valid partial cutover only**  
-**Next turn:** **M1 Single-Authority Cutover Remediation — Code + Build only**  
-**Runtime gate:** artifact `9105462679` is retained as historical compile evidence but is **not** an M1 acceptance candidate
+The corrected authority model and the R-A-through-R-G requirements below remain normative where the current Section 0A does not refine them. Historical review findings, rejected artifacts, and superseded task selection are retained in `CHANGELOG.md` and the retained independent-review report rather than repeated in this live plan.
 
-This amendment controls wherever it conflicts with the original plan below. The original requirements remain in force where this amendment does not replace them.
-
-The implementation correctly deleted `LegacyAuthorityAdapters`, installed checked `SemanticId::from_index`, replaced the named route mirrors, introduced typed region/cell/rail/occurrence/quotient references, published a variant outcome, and compiled all 121 approved build steps. Those changes must be retained.
-
-The implementation did not complete the promised vertical cutover. Raw source identity and scope still coexist with the new types and still participate in semantic decisions. The source-only audit was too narrow to detect those duplicates. Do not run the pending artifact-only acceptance plan against `9105462679`; first complete the remediation packages below and produce a new immutable compile artifact.
-
-### 0.1 Blocking review findings
-
-#### M1-R01 — source component, sheet, face, and support authority remains duplicated
-
-Confirmed affected contracts include:
-
-- `SourceChartTransitionGraph`, which still receives raw `vector<int>` component/sheet arrays;
-- `SourceEntityId`, which reconstructs raw kind/component/source-index/fan fields and a numeric canonical vector from typed `SourceSupport`;
-- `SurfaceCellOwnershipClassRecord` and `SurfaceCellDomainIdentity`, whose raw component/sheet fields participate in equality, ordering, and hashing;
-- arrangement arcs, occurrences, provenance, nodes, halfedges, cells, and private segment records, which retain raw source face/component/sheet ownership;
-- `PureQuadPatch` and `PureQuadVertexLineage`, which retain raw component/sheet authority beside typed regions, sheets, charts, and support;
-- `build_authoritative_phase_front_mesh`, which receives raw `sourceFaceComponents` and `sourceFaceSheets` beside `SourceTopologyRegions` and reads both as authority;
-- materializer occurrence/representative selection, which reads `SurfacePoint::{face,component,sheet}` after typed region/chart/support values already exist.
-
-This violates the one-owner rule, AR-03/AR-04/AR-05/AR-09, and Sections 1, 3, 4B, and 4D of this plan.
-
-#### M1-R02 — face-row handles and hashes still define semantic identity/order
-
-- `SourceProjectionChart` stores `SourceFaceId`, which is currently an Eigen face-row handle.
-- `SourceFaceInteriorSupport` also uses that row handle as its semantic identity.
-- `surface_topology_region_hash_impl` hashes region IDs and face-row IDs, and `build_uniform_phase_front_state` uses that hash to order region work.
-- `SourceChartTransition::structuralHash` hashes from/to face rows.
-- the new face-row permutation contract compares region hashes instead of a row-independent semantic snapshot.
-
-The current model therefore cannot satisfy the declared source-face-row permutation invariant. A diagnostic hash also participates in production ordering, directly violating Section 2.
-
-#### M1-R03 — published authority values remain mutable and incompletely validated
-
-- `SurfaceTopologyRegion`, `SourceTopologyRegions`, `SurfaceIsolationSeamTransportCertificate`, `SurfacePeriodicHolonomy`, and `SurfacePhaseFrontProduct` expose mutable public fields.
-- non-const `SurfacePhaseFrontResult::product()` permits mutation after publication.
-- `SourceTopologyRegions::complete_for_face_count` checks only vector length; it does not prove region-ID validity, exact face membership, or map/region bijection.
-- `SurfacePhaseFrontResult::produced` checks non-emptiness, not the complete product invariant.
-- `SurfaceIsolationSeamTransportCertificate::make` checks only distinct sheets and reciprocal turns. Owner membership, seam incidence, transition identity, face authority, canonical ordering, and sheet membership are deferred to a later consumer.
-- `SurfacePeriodicHolonomy` has no stored `PeriodicRelationId`; vector position remains its implicit owner.
-
-Tests mutate these published objects to manufacture malformed states. That proves the stated “malformed value is unrepresentable” and immutable-product requirements are not met.
-
-#### M1-R04 — checked ingress and numeric-leaf rules remain violated
-
-- `SurfaceOptimizationRailConstraints.cpp` constructs `SourceVertexId` with an `INT_MAX + 1` compatibility extent instead of the actual source-vertex container extent.
-- phase-chart construction explicitly preserves a raw `legacyFaceChart` BFS partition/numbering before converting it to `FieldChartId`.
-- `SemanticId::value()` remains as a compatibility alias, and a kernel test compares coincident raw values across domains.
-- numeric projections are stored in `SourceEntityId`/`SurfaceCellCanonicalIdentity`, compared in materializer representative keys, hashed for region/chart identity, and unpacked from `GridAutomorphism` into a second rotation/translation pair for validation.
-
-Private numeric scratch is permitted only while constructing a value and only when it cannot escape, become compatibility authority, or affect semantic equality/order/hash.
-
-#### M1-R05 — required tests are incomplete or proxy-only
-
-The packaged source declares all five required groups, but the required intent is not complete:
-
-- no `SourceFaceTopologyKey` canonicalization/degeneracy test exists;
-- compile-time domain separation covers selected pairs, not every semantic-ID domain;
-- `RepresentationHandlePerturbationDoesNotChangeCanonicalRoute` mutates an unrelated local vector that is never consumed by the route;
-- certificate coverage omits wrong-transition and wrong-face-key cases;
-- the topology-region group does not positively and negatively exercise periodic and bounded-disk region ownership;
-- `RequiredRegionReferencesCannotPublishMissingAuthority` checks only default constructibility and never attempts incomplete face-map publication;
-- typed-transport coverage omits segment-route authority, a positive source-boundary route contract, canonical reversal equivalence, and the declared nonzero-Z4 behavior;
-- support/chart coverage does not provide a genuinely close disconnected-sheet fixture, multiple orientation-chart identity, or row-permuted support/chart equality;
-- the face-row permutation test uses a structural hash as its oracle, which `TESTING_STRATEGY.md` explicitly disallows;
-- numerous accepted M1i–M1l semantic tests were removed; only representation/compatibility assertions may remain deleted. Any lost fail-closed or cross-region intent must be restored under the new contracts.
-
-#### M1-R06 — the static audit and completion report overstate closure
-
-The recorded audit checks a short banned-name list and then prints `static_cutover_audit=clean`. It does not inspect the duplicate fields and read-back paths above. Consequently these Code + Build report claims are not established:
-
-- “numeric projections remain representation leaves”;
-- “chart/source-support identity uses one typed contract”;
-- “topology-region authority is typed through occurrence consumers”;
-- “raw semantic mirror fields covered by the cutover are absent.”
-
-The compile/package identity, checksums, command boundary, and 121/121 build result remain valid evidence. The M1-complete status and next-turn selection do not.
-
-### 0.2 Corrected authority model
+### 0.1 Corrected authority model
 
 The remediation must distinguish a checked row locator from row-independent semantic identity.
 
@@ -235,7 +116,7 @@ Equivalent repository-conventional names are allowed. These rules are not:
 4. Raw classifier arrays are ingress data only. They are checked once while constructing the typed source-authority product and are not passed beside that product to later semantic consumers.
 5. A general geometric `SurfacePoint` may remain a projection payload, but its raw component/sheet fields are not read as authority in the affected producer, verifier, materializer, arrangement-ownership, completion, or lineage paths. Authoritative code carries typed region/chart/support separately and derives any export-only integers after validation.
 
-### 0.3 Mandatory remediation packages — one Code + Build turn
+### 0.2 Mandatory remediation packages — one Code + Build turn
 
 Complete these packages in order. The final pushed source and build artifact must contain all packages; no package may be deferred to another M1 slice.
 

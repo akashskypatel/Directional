@@ -11,7 +11,7 @@
 
 This report remains an immutable factual record of source `5b1c9b...`, compile `121/121`, artifact `9105462679`, and the recorded command boundary. Its original claims that the complete cutover closed and that artifact-only validation was next were rejected by the independent source review recorded in the live Code + Build plan.
 
-Subsequent checkpoint history is retained in `CHANGELOG.md`. The latest complete R-A review inspected exact compiled source `c62c99f...`, verified the R-A-REV-06 package mechanics, and rejected closure on R-A-REV-07 through R-A-REV-10. The live authority is the amended Code + Build plan. Do not execute or relabel artifact `9105462679` or any partial R-A artifact as an M1 acceptance candidate.
+Subsequent checkpoint history is retained in `CHANGELOG.md`. The latest complete R-A review inspected exact compiled source `d8d648a...`, verified its **118/118** compile and package mechanics, and rejected closure on R-A-REV-11 through R-A-REV-13. The live authority is the amended Code + Build plan. Do not execute or relabel artifact `9105462679` or any partial R-A artifact as an M1 acceptance candidate.
 
 ## Result
 
