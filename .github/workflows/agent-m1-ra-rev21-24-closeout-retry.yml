@@ -1,0 +1,93 @@
+name: Agent M1 R-A REV-21-24 Closeout Retry
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1-ra-rev21-24-closeout-retry.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1-ra-rev21-24-closeout-retry-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A REV-21 coverage and REV-22 through REV-24 durable closeout retry' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'reason=first closeout stopped at case-sensitive inventory summary grep' \
+            'controlPlaneOnly=true' \
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+
+      - name: Reuse closeout transformation and commit durable state
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          from pathlib import Path
+          workflow = Path('.github/workflows/agent-m1-ra-rev21-24-closeout.yml').read_text(encoding='utf-8').splitlines()
+          start = next(i for i, line in enumerate(workflow) if "python3 - <<'PY'" in line)
+          indent = len(workflow[start]) - len(workflow[start].lstrip(' '))
+          end = next(i for i in range(start + 1, len(workflow)) if workflow[i].strip() == 'PY')
+          script=[]
+          for line in workflow[start+1:end]:
+              script.append(line[indent:] if line.startswith(' ' * indent) else line)
+          Path('/tmp/closeout.py').write_text('\n'.join(script)+'\n', encoding='utf-8')
+          PY
+          python3 /tmp/closeout.py
+          git diff --check
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            TODO.md | sort)"
+          printf 'changed_documents=\n%s\n' "$changed"
+          test "$changed" = "$expected"
+          grep -q '38 probes' .agents/Directional/Future_Chat_Session_Handoff.md
+          grep -q 'Final static inventory: \*\*PASS\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add TODO.md
+          git add -f \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md
+          git commit -m "docs: close REV-21 through REV-24 Code Build checkpoint"
+          CLOSEOUT_SHA="$(git rev-parse HEAD)"
+          echo "closeout_sha=$CLOSEOUT_SHA"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+          echo 'runtimeExecution=false'
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-rev21-24-closeout-retry-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7

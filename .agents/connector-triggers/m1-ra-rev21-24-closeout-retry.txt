@@ -1,0 +1,1 @@
+Retry durable REV-21 through REV-24 closeout after correcting the inventory summary assertion. Documentation/control-plane only; runtime execution prohibited.
