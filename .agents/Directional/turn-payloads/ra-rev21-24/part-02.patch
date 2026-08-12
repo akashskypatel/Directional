@@ -1,0 +1,230 @@
++    std::set<std::pair<int, int>> authoritativeBoundaryEdges;
++    std::vector<std::vector<int>> authoritativeBoundaryLoops;
++    std::vector<std::vector<int>> authoritativeFeatureRails;
++    std::size_t expectedFeatureRailCount = 0U;
++    bool featureRailAuthorityProvided = false;
++  };
++
+   struct ComponentRun {
+     RemeshResult result;
++    ComponentFinalValidationAuthority finalValidationAuthority;
+     double wallSeconds = 0.0;
+   };
+ 
++  const auto captureFinalValidationAuthority =
++      [&](const geometry::FaceComponent &component, ComponentRun &run) {
++        if (!run.result.success ||
++            !run.result.surfaceCellContext.sourceTopologyRegions.has_value() ||
++            !run.result.surfaceCellContext.sourceTopologyRegions->matches_source_faces(
++                component.faces, component.originalVertices.size()) ||
++            run.result.outputVertexProvenance.size() !=
++                static_cast<std::size_t>(run.result.vertices.rows()) ||
++            run.result.outputVertexLineage.size() !=
++                static_cast<std::size_t>(run.result.vertices.rows())) {
++          return;
++        }
++
++        geometry::SurfaceOptimizationConstraints constraints;
++        constraints.sourceVertices = component.vertices;
++        constraints.sourceFaces = component.faces;
++        constraints.sourceAuthority =
++            &run.result.surfaceCellContext.sourceTopologyRegions.value();
++        constraints.sourceHardFeatureEdges = hard_feature_edge_keys_from_rails(
++            run.result.surfaceCellContext.authoritativeRails);
++        constraints.vertexProvenance = run.result.outputVertexProvenance;
++        constraints.outputQuadSourceFaces.assign(
++            static_cast<std::size_t>(run.result.faces.rows()), -1);
++        const bool chartAuthorityComplete =
++            project_surface_cell_vertex_chart_authority(
++                run.result.outputVertexLineage, run.result.vertices.rows(),
++                run.result.surfaceCellContext.authoritativeRails.size(),
++                constraints.vertexChartAuthority);
++        fill_surface_cell_rail_constraints(
++            run.result.surfaceCellContext.authoritativeRails,
++            run.result.vertices, run.result.outputVertexProvenance, constraints);
++
++        // The component strict path may replace rail-derived boundary loops with
++        // the completion-owned aggregate mesh loops. Preserve that authority
++        // before the counterfactual aggregation seam can mutate component data.
++        if (run.result.surfaceCellContext.completedPatches.size() == 1U) {
++          const geometry::PureQuadMesh &completed =
++              run.result.surfaceCellContext.completedPatches.front();
++          if (!completed.boundaryLoops.empty() &&
++              completed.vertexPositions.rows() == run.result.vertices.rows() &&
++              completed.quads.size() ==
++                  static_cast<std::size_t>(run.result.faces.rows())) {
++            constraints.authoritativeBoundaryEdges.clear();
++            constraints.authoritativeBoundaryLoops = completed.boundaryLoops;
++            constraints.authoritativeBoundaryLoop =
++                constraints.authoritativeBoundaryLoops.front();
++            for (const std::vector<int> &loop :
++                 constraints.authoritativeBoundaryLoops) {
++              for (std::size_t edge = 0; edge < loop.size(); ++edge) {
++                constraints.authoritativeBoundaryEdges.insert(std::minmax(
++                    loop[edge], loop[(edge + 1U) % loop.size()]));
++              }
++            }
++          }
++        }
++
++        if (!chartAuthorityComplete ||
++            !geometry::source_optimization_has_complete_authority(constraints)) {
++          return;
++        }
++        ComponentFinalValidationAuthority &authority =
++            run.finalValidationAuthority;
++        authority.authoritativeRails =
++            run.result.surfaceCellContext.authoritativeRails;
++        authority.vertexLineage = run.result.outputVertexLineage;
++        authority.outputQuadSourceFaces = constraints.outputQuadSourceFaces;
++        authority.authoritativeBoundaryEdges =
++            constraints.authoritativeBoundaryEdges;
++        authority.authoritativeBoundaryLoops =
++            constraints.authoritativeBoundaryLoops;
++        authority.authoritativeFeatureRails =
++            constraints.authoritativeFeatureRails;
++        authority.expectedFeatureRailCount =
++            constraints.requiredFeatureRailCount;
++        authority.featureRailAuthorityProvided =
++            constraints.featureRailAuthorityProvided;
++        authority.available = true;
++      };
++
+   auto runComponent = [&](const std::size_t componentIndex) {
+     const auto componentStart = Clock::now();
+     ComponentRun run;
+@@ -10075,6 +10150,7 @@
+ 
+       run.result = remesh_surface_cells_from_cross_field_impl(
+           componentMesh, componentCrossField, componentOptions);
++      captureFinalValidationAuthority(component, run);
+     } catch (const std::exception &) {
+       run.result.success = false;
+       run.result.diagnostics.remeshBackend =
+@@ -10323,6 +10399,16 @@
+       globalRowSheets(static_cast<std::size_t>(faces.rows()));
+   std::vector<geometry::SurfaceTopologyRegion> globalRegions;
+ 
++  std::set<std::pair<int, int>> globalValidationBoundaryEdges;
++  std::vector<std::vector<int>> globalValidationBoundaryLoops;
++  std::vector<std::vector<int>> globalValidationFeatureRails;
++  std::vector<validation::SourceVertexChartAuthority>
++      globalValidationVertexCharts;
++  std::vector<int> globalValidationOutputQuadSourceFaces;
++  std::set<std::uint64_t> globalValidationHardFeatureEdges;
++  std::size_t globalValidationExpectedFeatureRailCount = 0U;
++  bool globalValidationFeatureRailAuthorityProvided = true;
++
+   const auto reject_merge_authority =
+       [&](const std::size_t componentIndex, const std::string &reason) {
+         merged.success = false;
+@@ -10551,6 +10637,15 @@
+           index, "InvalidTypedComponentSourceAuthorityDomain");
+       return merged;
+     }
++    const ComponentFinalValidationAuthority &componentValidationAuthority =
++        runs[index].finalValidationAuthority;
++    if (!componentValidationAuthority.available ||
++        !same_surface_cell_rail_authority(
++            componentResult.surfaceCellContext.authoritativeRails,
++            componentValidationAuthority.authoritativeRails)) {
++      reject_merge_authority(index, "ChangedComponentValidationAuthority");
++      return merged;
++    }
+ 
+     const auto globalComponent = authority::SourceComponentId::from_index(
+         static_cast<std::int64_t>(index), components.size());
+@@ -10698,6 +10793,118 @@
+       }
+     }
+ 
++    if (componentValidationAuthority.vertexLineage.size() !=
++            static_cast<std::size_t>(componentResult.vertices.rows()) ||
++        componentValidationAuthority.outputQuadSourceFaces.size() !=
++            static_cast<std::size_t>(componentResult.faces.rows())) {
++      reject_merge_authority(index, "ChangedComponentValidationAuthority");
++      return merged;
++    }
++    const auto remapValidationOutputVertex = [&](const int localVertex)
++        -> std::optional<int> {
++      if (localVertex < 0 || localVertex >= componentResult.vertices.rows() ||
++          localVertex > std::numeric_limits<int>::max() - vertexOffset) {
++        return std::nullopt;
++      }
++      return localVertex + vertexOffset;
++    };
++    for (const auto &edge :
++         componentValidationAuthority.authoritativeBoundaryEdges) {
++      const auto first = remapValidationOutputVertex(edge.first);
++      const auto second = remapValidationOutputVertex(edge.second);
++      if (!first.has_value() || !second.has_value()) {
++        reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
++        return merged;
++      }
++      globalValidationBoundaryEdges.insert(std::minmax(*first, *second));
++    }
++    for (const std::vector<int> &localLoop :
++         componentValidationAuthority.authoritativeBoundaryLoops) {
++      std::vector<int> globalLoop;
++      globalLoop.reserve(localLoop.size());
++      for (const int localVertex : localLoop) {
++        const auto globalVertex = remapValidationOutputVertex(localVertex);
++        if (!globalVertex.has_value()) {
++          reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
++          return merged;
++        }
++        globalLoop.push_back(*globalVertex);
++      }
++      globalValidationBoundaryLoops.push_back(std::move(globalLoop));
++    }
++    for (const std::vector<int> &localRail :
++         componentValidationAuthority.authoritativeFeatureRails) {
++      std::vector<int> globalRail;
++      globalRail.reserve(localRail.size());
++      for (const int localVertex : localRail) {
++        const auto globalVertex = remapValidationOutputVertex(localVertex);
++        if (!globalVertex.has_value()) {
++          reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
++          return merged;
++        }
++        globalRail.push_back(*globalVertex);
++      }
++      globalValidationFeatureRails.push_back(std::move(globalRail));
++    }
++    if (componentValidationAuthority.expectedFeatureRailCount >
++        std::numeric_limits<std::size_t>::max() -
++            globalValidationExpectedFeatureRailCount) {
++      reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
++      return merged;
++    }
++    globalValidationExpectedFeatureRailCount +=
++        componentValidationAuthority.expectedFeatureRailCount;
++    globalValidationFeatureRailAuthorityProvided =
++        globalValidationFeatureRailAuthorityProvided &&
++        componentValidationAuthority.featureRailAuthorityProvided;
++    for (const int localSourceFace :
++         componentValidationAuthority.outputQuadSourceFaces) {
++      if (localSourceFace < 0) {
++        globalValidationOutputQuadSourceFaces.push_back(-1);
++        continue;
++      }
++      if (static_cast<std::size_t>(localSourceFace) >=
++          component.originalFaces.size()) {
++        reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
++        return merged;
++      }
++      globalValidationOutputQuadSourceFaces.push_back(
++          component.originalFaces[static_cast<std::size_t>(localSourceFace)]);
++    }
++    for (const geometry::SurfaceCellRail &rail :
++         componentValidationAuthority.authoritativeRails) {
++      if (rail.kind != geometry::SurfaceCellRailKind::HardFeature) continue;
++      const auto addHardFeatureEdge = [&](const int localFirst,
++                                          const int localSecond) -> bool {
++        if (localFirst < 0 || localSecond < 0 ||
++            static_cast<std::size_t>(localFirst) >=
++                component.originalVertices.size() ||
++            static_cast<std::size_t>(localSecond) >=
++                component.originalVertices.size()) {
++          return false;
++        }
