@@ -1,2 +1,3 @@
 Trigger durable closeout for the completed R-A-REV-17 / R-A-REV-20 partial Code + Build turn.
 Control-plane documentation only; generated runtime execution is prohibited.
+Retry: force-add tracked durable .agents documents after the initial staging-only failure.
