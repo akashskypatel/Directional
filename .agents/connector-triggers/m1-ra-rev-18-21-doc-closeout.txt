@@ -1,2 +1,0 @@
-Record the completed R-A-REV-18 through R-A-REV-21 partial Code + Build checkpoint and exact compile/cache evidence in durable status documents.
-Control-plane documentation only; runtime execution is prohibited.
