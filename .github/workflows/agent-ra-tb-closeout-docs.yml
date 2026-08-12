@@ -5,7 +5,7 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/ra-tb-closeout-docs-20260812-v2.txt
+      - .agents/connector-triggers/ra-tb-closeout-docs-20260812-v3.txt
 
 permissions:
   contents: write
@@ -51,14 +51,14 @@ jobs:
 
           changed="$(git status --porcelain=v1 | sed -E 's/^.. //' | sort)"
           expected="$(printf '%s\n' \
-            .agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md \
             .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
             .agents/Directional/CHANGELOG.md \
             .agents/Directional/Future_Chat_Session_Handoff.md \
             .agents/Directional/Regression_Root_Cause_Tracker.md \
             TODO.md | sort)"
-          printf 'changed_documents=\n%s\n' "$changed" | tee "$RUNNER_TEMP/changed-status.txt"
+          printf 'tracked_changed_documents=\n%s\n' "$changed" | tee "$RUNNER_TEMP/changed-status.txt"
           test "$changed" = "$expected"
+          test -f .agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md
           grep -q 'R-A NOT CLOSED' .agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md
           grep -q '61 passed / 26 failed' TODO.md
           grep -q 'R-A-TB-CB-01' .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
@@ -74,6 +74,15 @@ jobs:
             .agents/Directional/CHANGELOG.md \
             .agents/Directional/Future_Chat_Session_Handoff.md \
             .agents/Directional/Regression_Root_Cause_Tracker.md
+          staged="$(git diff --cached --name-only | sort)"
+          expected_staged="$(printf '%s\n' \
+            .agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            .agents/Directional/Regression_Root_Cause_Tracker.md \
+            TODO.md | sort)"
+          test "$staged" = "$expected_staged"
           git commit -m 'docs: record failed R-A artifact-only closeout gate'
           CLOSEOUT_SHA="$(git rev-parse HEAD)"
           printf 'closeout_sha=%s\n' "$CLOSEOUT_SHA" | tee "$RUNNER_TEMP/closeout-result.txt"
