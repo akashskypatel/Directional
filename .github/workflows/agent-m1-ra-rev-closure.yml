@@ -27,7 +27,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           : > "$LOG"
           {
-            echo "task=M1 R-A REV-01 REV-02 partial Code+Build"
+            echo "task=M1 R-A REV-01 REV-02 partial Code+Build compile correction"
             echo "event_sha=$GITHUB_SHA"
             echo "ref=$GITHUB_REF"
             date -u +"utc=%Y-%m-%dT%H:%M:%SZ"
@@ -40,7 +40,7 @@ jobs:
           fetch-depth: 2
           submodules: recursive
 
-      - name: Apply reviewed source cutover and push exact source
+      - name: Apply compile correction and push exact source
         shell: bash
         run: |
           set -euo pipefail
@@ -50,13 +50,13 @@ jobs:
           python3 .agents/Directional/turn-payloads/m1-ra-rev-closure.py
           git diff --check
           changed="$(git diff --name-only | sort)"
-          expected="$(printf '%s\n' src/geometry/PureQuadCompletion.cpp src/pipeline/RemeshPipeline.cpp | sort)"
+          expected="src/pipeline/RemeshPipeline.cpp"
           printf 'changed_files=\n%s\n' "$changed"
           test "$changed" = "$expected"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/geometry/PureQuadCompletion.cpp src/pipeline/RemeshPipeline.cpp
-          git commit -m "fix: close M1 R-A authority readbacks"
+          git add src/pipeline/RemeshPipeline.cpp
+          git commit -m "fix: complete M1 R-A typed sheet propagation"
           SOURCE_SHA="$(git rev-parse HEAD)"
           echo "SOURCE_SHA=$SOURCE_SHA" >> "$GITHUB_ENV"
           echo "source_sha=$SOURCE_SHA"
@@ -70,7 +70,7 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           exec > >(tee -a "$LOG") 2>&1
           test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
-          python3 -c "from pathlib import Path; p=Path('src/pipeline/RemeshPipeline.cpp').read_text(); assert '.point.sheet' not in p; assert 'authority::IsolationSheetId isolationSheet;' in p"
+          python3 -c "from pathlib import Path; p=Path('src/pipeline/RemeshPipeline.cpp').read_text(); assert '.point.sheet' not in p; assert 'authority::IsolationSheetId isolationSheet;' in p; assert 'insert(sheet);' not in p"
           python3 -c "from pathlib import Path; p=Path('src/geometry/PureQuadCompletion.cpp').read_text(); s=p.index('PureQuadStitchIdentity resolved_stitch_identity(\\n    const PureQuadMesh &patch, const int localRow,\\n'); e=p.index('PureQuadStitchIdentity resolved_stitch_identity(\\n    const PureQuadMesh &patch, const int localRow) {',s); b=p[s:e]; assert 'provenance.component' not in b and 'provenance.sheet' not in b; assert 'typed_lineage_stitch_identity' in p; assert 'MissingTypedStitchIdentity' in p"
           echo "focused_source_audit=clean"
 
