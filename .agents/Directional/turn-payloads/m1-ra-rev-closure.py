@@ -15,7 +15,7 @@ changelog = Path(".agents/Directional/CHANGELOG.md")
 replace_once(
     plan,
     "**Current status:** R-A implementation bebac907de814b07a55a770add4c897ab6d22ffd compiled successfully but independent review found two blocking raw-payload read-back paths; R-A closure plus R-B through R-G remain selected  ",
-    "**Current status:** R-A-REV-01 and R-A-REV-02 are compile-closed at source df386d1ad819879abbf9d7660c3d586778d7daee; R-B through R-G remain selected before any M1 runtime acceptance  ",
+    "**Current status:** R-A-REV-01 and R-A-REV-02 are compile-closed at source df386d1ad819879abbf9d7660c3d586778d7daee; R-B through R-G remain selected before any M1 runtime acceptance",
 )
 replace_once(
     plan,
