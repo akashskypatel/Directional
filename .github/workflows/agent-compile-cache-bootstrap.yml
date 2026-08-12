@@ -1,0 +1,25 @@
+name: Agent Compile Cache Bootstrap
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/compile-cache-bootstrap.txt
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: agent-compile-cache-bootstrap-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 47e3f75a3d0211132e5be8142b2f6af7827656e1
+      artifact_prefix: compile-cache-bootstrap
+      cache_epoch: v1
+      cache_keep: 2
