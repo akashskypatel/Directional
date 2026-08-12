@@ -21,18 +21,97 @@ jobs:
       - name: Checkout triggering commit
         uses: actions/checkout@v4
         with: {fetch-depth: 1}
-      - name: Apply and push bounded test patch
+      - name: Apply and push bounded test repair
         shell: bash
         run: |
           set -euo pipefail
           LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "exit_code=$rc"; echo "final_head=$(git rev-parse HEAD 2>/dev/null || true)"; git status --short 2>/dev/null || true; exit $rc' EXIT
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          PATCH=.agents/Directional/turn-payloads/m1-ra-a34.patch
-          echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          ! grep -E '^diff --git a/\.github/workflows/' "$PATCH"
-          git apply --recount --check "$PATCH"
-          git apply --recount "$PATCH"
+          python3 - <<'PY'
+          from pathlib import Path
+
+          def replace_once(text, old, new, label):
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f"{label}: expected one match, found {count}")
+              return text.replace(old, new, 1)
+
+          p19 = Path("tests/SurfaceMeshOptimizerPhase19Tests.cpp")
+          text = p19.read_text()
+          text = replace_once(
+              text,
+              "#include <directional/geometry/SurfaceMeshOptimizer.h>\n",
+              "#include <directional/geometry/SurfaceMeshOptimizer.h>\n#include <directional/geometry/SurfaceCellTracing.h>\n",
+              "phase19 include")
+          anchor = """Eigen::MatrixXi source_triangles() {
+            Eigen::MatrixXi f(2, 3);
+            f << 0, 1, 2,
+                 0, 2, 3;
+            return f;
+          }
+          """
+          helper = anchor + """
+          directional::geometry::SourceTopologyRegions test_source_authority(
+              const Eigen::MatrixXi &faces, const std::vector<int> &components,
+              const std::vector<int> &sheets) {
+            directional::geometry::SurfaceCellTracingOptions tracing;
+            tracing.sourceFaceComponents = components;
+            tracing.sourceFaceSheets = sheets;
+            auto authority = directional::geometry::surface_cell_tracing_detail::
+                build_source_topology_regions(faces, tracing);
+            if (!authority.has_value()) {
+              throw std::runtime_error("Failed to construct typed test source authority.");
+            }
+            return std::move(*authority);
+          }
+          """
+          text = replace_once(text, anchor, helper, "phase19 authority helper")
+          text = replace_once(
+              text,
+              "  c.sourceFaceComponent = {0, 0};\n  c.sourceFaceSheet = {2, 2};\n",
+              "  static const auto sourceAuthority =\n      test_source_authority(source_triangles(), {0, 0}, {2, 2});\n  c.sourceAuthority = &sourceAuthority;\n",
+              "phase19 default authority")
+          text = replace_once(
+              text,
+              "  constraints.sourceFaceSheet = {0, 0};\n",
+              "  const auto sourceAuthority =\n      test_source_authority(constraints.sourceFaces, {0, 0}, {0, 0});\n  constraints.sourceAuthority = &sourceAuthority;\n",
+              "phase19 unavailable sheet authority")
+          p19.write_text(text)
+
+          p20 = Path("tests/SurfaceMeshOptimizerPhase20Tests.cpp")
+          text = p20.read_text()
+          text = replace_once(
+              text,
+              "#include <directional/geometry/SurfaceMeshOptimizer.h>\n",
+              "#include <directional/geometry/SurfaceMeshOptimizer.h>\n#include <directional/geometry/SurfaceCellTracing.h>\n",
+              "phase20 include")
+          ns = "namespace {\n\n"
+          helper20 = """namespace {
+
+          directional::geometry::SourceTopologyRegions test_source_authority(
+              const Eigen::MatrixXi &faces, const std::vector<int> &components,
+              const std::vector<int> &sheets) {
+            directional::geometry::SurfaceCellTracingOptions tracing;
+            tracing.sourceFaceComponents = components;
+            tracing.sourceFaceSheets = sheets;
+            auto authority = directional::geometry::surface_cell_tracing_detail::
+                build_source_topology_regions(faces, tracing);
+            if (!authority.has_value()) {
+              throw std::runtime_error("Failed to construct typed test source authority.");
+            }
+            return std::move(*authority);
+          }
+
+          """
+          text = replace_once(text, ns, helper20, "phase20 authority helper")
+          text = replace_once(
+              text,
+              "  constraints.sourceFaceComponent = {0, 0};\n  constraints.sourceFaceSheet = {3, 3};\n",
+              "  const auto sourceAuthority =\n      test_source_authority(sourceFaces, {0, 0}, {3, 3});\n  constraints.sourceAuthority = &sourceAuthority;\n",
+              "phase20 barycentric authority")
+          p20.write_text(text)
+          PY
           git diff --check
           git add tests/SurfaceMeshOptimizerPhase19Tests.cpp tests/SurfaceMeshOptimizerPhase20Tests.cpp
           test "$(git diff --cached --name-only | wc -l)" -eq 2
