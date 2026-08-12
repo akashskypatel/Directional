@@ -1,1 +1,0 @@
-Apply the verified R-A-REV-21 through R-A-REV-24 source/test patch and reproduce the complete static R-A closure inventory through REV-24. Code + Build only; runtime execution prohibited.
