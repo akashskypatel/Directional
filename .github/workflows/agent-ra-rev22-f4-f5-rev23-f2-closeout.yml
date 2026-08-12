@@ -1,0 +1,96 @@
+name: Agent R-A REV-22 F4-F5 REV-23 F2 Closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-rev22-f4-f5-rev23-f2-closeout.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-ra-rev22-f4-f5-rev23-f2-closeout-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  closeout:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A REV-22-F4/F5 and REV-23-F2 durable Code+Build closeout' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'controlPlaneOnly=true' \
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+
+      - name: Update durable closeout state
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 .agents/Directional/turn-payloads/ra-rev22-f4-f5-rev23-f2-closeout/closeout.py
+          git diff --check
+
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            TODO.md | sort)"
+          printf 'changed_documents=\n%s\n' "$changed"
+          test "$changed" = "$expected"
+          grep -q '19 paths, 48 probes, 203 matches' .agents/Directional/Future_Chat_Session_Handoff.md
+          grep -q 'RA-REV-22-F4/F5 and RA-REV-23-F2 are now' .agents/Directional/Future_Chat_Session_Handoff.md
+          grep -q '9162042615 / 9162042971' TODO.md
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add TODO.md
+          git add -f \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md
+          git commit -m 'docs: close REV-22 F4 F5 and REV-23 F2 at Code Build'
+          CLOSEOUT_SHA="$(git rev-parse HEAD)"
+          printf 'closeout_sha=%s\n' "$CLOSEOUT_SHA" | tee "$RUNNER_TEMP/closeout-result.txt"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+          echo 'runtimeExecution=false'
+
+      - name: Upload closeout result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-rev22-f4-f5-rev23-f2-closeout-result-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/closeout-result.txt
+            ${{ runner.temp }}/source-status-final.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-rev22-f4-f5-rev23-f2-closeout-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
