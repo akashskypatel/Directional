@@ -1,11 +1,10 @@
 diff --git a/tests/SurfaceMeshOptimizerPhase19Tests.cpp b/tests/SurfaceMeshOptimizerPhase19Tests.cpp
 --- a/tests/SurfaceMeshOptimizerPhase19Tests.cpp
 +++ b/tests/SurfaceMeshOptimizerPhase19Tests.cpp
-@@
+@@ -1 +1,2 @@
  #include <directional/geometry/SurfaceMeshOptimizer.h>
 +#include <directional/geometry/SurfaceCellTracing.h>
-@@
- Eigen::MatrixXi source_triangles() {
+@@ -46,7 +47,21 @@ Eigen::MatrixXi source_triangles() {
    Eigen::MatrixXi f(2, 3);
    f << 0, 1, 2,
         0, 2, 3;
@@ -28,7 +27,7 @@ diff --git a/tests/SurfaceMeshOptimizerPhase19Tests.cpp b/tests/SurfaceMeshOptim
  
  directional::geometry::SurfaceOptimizationConstraints
  constraints_for_source_triangles() {
-@@
+@@ -64,8 +79,9 @@ constraints_for_source_triangles() {
    c.sourceFieldX.row(0) << 1.0, 0.0, 0.0;
    c.sourceFieldX.row(1) << 0.0, 1.0, 0.0;
    c.sourceFieldY.row(0) << 0.0, 1.0, 0.0;
@@ -38,8 +37,10 @@ diff --git a/tests/SurfaceMeshOptimizerPhase19Tests.cpp b/tests/SurfaceMeshOptim
 +  static const auto sourceAuthority =
 +      test_source_authority(source_triangles(), {0, 0}, {2, 2});
 +  c.sourceAuthority = &sourceAuthority;
-@@
- TEST(SurfaceMeshOptimizerPhase19,
+   c.localTargetSize.resize(2);
+   c.localTargetSize << 1.0, 0.5;
+   c.authoritativeBoundaryLoop = {0, 1, 2, 3};
+@@ -496,5 +512,7 @@ TEST(SurfaceMeshOptimizerPhase19,
       TriangleProjectionFailsClosedWhenRequiredSheetIsUnavailable) {
    auto constraints = constraints_for_source_triangles();
 -  constraints.sourceFaceSheet = {0, 0};
@@ -47,13 +48,14 @@ diff --git a/tests/SurfaceMeshOptimizerPhase19Tests.cpp b/tests/SurfaceMeshOptim
 +      test_source_authority(constraints.sourceFaces, {0, 0}, {0, 0});
 +  constraints.sourceAuthority = &sourceAuthority;
    constraints.vertexProvenance.resize(4);
- diff --git a/tests/SurfaceMeshOptimizerPhase20Tests.cpp b/tests/SurfaceMeshOptimizerPhase20Tests.cpp
+   for (auto &point : constraints.vertexProvenance) {
+diff --git a/tests/SurfaceMeshOptimizerPhase20Tests.cpp b/tests/SurfaceMeshOptimizerPhase20Tests.cpp
 --- a/tests/SurfaceMeshOptimizerPhase20Tests.cpp
 +++ b/tests/SurfaceMeshOptimizerPhase20Tests.cpp
-@@
+@@ -1 +1,2 @@
  #include <directional/geometry/SurfaceMeshOptimizer.h>
 +#include <directional/geometry/SurfaceCellTracing.h>
-@@
+@@ -12,2 +13,16 @@
  namespace {
 +
 +directional::geometry::SourceTopologyRegions test_source_authority(
@@ -71,7 +73,7 @@ diff --git a/tests/SurfaceMeshOptimizerPhase19Tests.cpp b/tests/SurfaceMeshOptim
 +}
  
  Eigen::MatrixXd derivative_vertices() {
-@@
+@@ -201,8 +216,9 @@ TEST(SurfaceMeshOptimizerPhase20,
    directional::geometry::SurfaceOptimizationConstraints constraints;
    constraints.sourceVertices = sourceVertices;
    constraints.sourceFaces = sourceFaces;
@@ -82,3 +84,4 @@ diff --git a/tests/SurfaceMeshOptimizerPhase19Tests.cpp b/tests/SurfaceMeshOptim
 +      test_source_authority(sourceFaces, {0, 0}, {3, 3});
 +  constraints.sourceAuthority = &sourceAuthority;
    constraints.sourceNormals.resize(4, 3);
+   constraints.sourceNormals << 0.0, 0.0, 1.0,
