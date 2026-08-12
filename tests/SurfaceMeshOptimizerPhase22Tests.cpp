@@ -1,10 +1,12 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
 #include <directional/validation/SourceAuthoritativeMeshValidator.h>
 
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <memory>
 #include <set>
 #include <type_traits>
 #include <vector>
@@ -13,6 +15,20 @@
 #include "TestAuthorityIds.h"
 
 namespace {
+
+const directional::geometry::SourceTopologyRegions *test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) throw std::runtime_error("Failed to construct typed test source authority.");
+  static std::vector<std::unique_ptr<directional::geometry::SourceTopologyRegions>> arena;
+  arena.push_back(std::make_unique<directional::geometry::SourceTopologyRegions>(std::move(*authority)));
+  return arena.back().get();
+}
 
 using directional::geometry::SurfaceOptimizationConstraints;
 using directional::geometry::SurfaceOptimizationResult;
@@ -76,8 +92,8 @@ SourceAuthoritativeMeshValidatorOptions make_options(
   SourceAuthoritativeMeshValidatorOptions options;
   options.sourceVertices = &sourceVertices;
   options.sourceFaces = &sourceFaces;
-  options.sourceFaceComponents = &components;
-  options.sourceFaceSheets = &sheets;
+  options.sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   options.vertexProvenance = &provenance;
   options.authoritativeBoundaryLoops = std::move(boundaryLoops);
   return options;
@@ -98,10 +114,9 @@ SurfaceOptimizationConstraints make_final_constraints(
     constraints.sourceFieldX.row(face) << 1.0, 0.0, 0.0;
     constraints.sourceFieldY.row(face) << 0.0, 1.0, 0.0;
   }
-  constraints.sourceFaceComponent.assign(
-      static_cast<std::size_t>(sourceFaces.rows()), 0);
-  constraints.sourceFaceSheet.assign(
-      static_cast<std::size_t>(sourceFaces.rows()), 0);
+  const std::vector<int> sourceComponents(static_cast<std::size_t>(sourceFaces.rows()), 0);
+  const std::vector<int> sourceSheets(static_cast<std::size_t>(sourceFaces.rows()), 0);
+  constraints.sourceAuthority = test_source_authority(sourceFaces, sourceComponents, sourceSheets);
   constraints.localTargetSize = Eigen::VectorXd::Ones(sourceVertices.rows());
   constraints.vertexProvenance = provenance;
   constraints.authoritativeBoundaryLoop = {0, 1, 2, 3};
@@ -164,8 +179,9 @@ directional::geometry::SourceProjectionChart source_chart(
     const int face, const Eigen::MatrixXi &sourceFaces,
     const std::vector<int> &components, const std::vector<int> &sheets,
     const std::set<std::uint64_t> *hardEdges = nullptr) {
+  const auto *sourceAuthority = test_source_authority(sourceFaces, components, sheets);
   directional::geometry::SourceChartTransitionGraph graph(
-      sourceFaces, components, sheets, hardEdges);
+      sourceFaces, *sourceAuthority, hardEdges);
   const auto chart = graph.chart(face);
   if (!chart.has_value()) {
     throw std::runtime_error("Invalid source-chart test authority.");
@@ -179,8 +195,9 @@ void remap_source_charts(
     const std::vector<int> &faceRemap, const Eigen::MatrixXi &sourceFaces,
     const std::vector<int> &components, const std::vector<int> &sheets,
     const std::set<std::uint64_t> *hardEdges = nullptr) {
+  const auto *sourceAuthority = test_source_authority(sourceFaces, components, sheets);
   directional::geometry::SourceChartTransitionGraph graph(
-      sourceFaces, components, sheets, hardEdges);
+      sourceFaces, *sourceAuthority, hardEdges);
   for (SourceVertexChartAuthority &vertexAuthority : authority) {
     for (auto &chart : vertexAuthority.sourceCharts) {
       const std::size_t oldFace = chart.face.index();
@@ -433,8 +450,8 @@ SurfaceOptimizationConstraints hard_rail_constraints(
     constraints.sourceFieldX.row(face) << 1.0, 0.0, 0.0;
     constraints.sourceFieldY.row(face) << 0.0, 1.0, 0.0;
   }
-  constraints.sourceFaceComponent = fixture.components;
-  constraints.sourceFaceSheet = fixture.sheets;
+  constraints.sourceAuthority = test_source_authority(
+      fixture.sourceFaces, fixture.components, fixture.sheets);
   constraints.sourceHardFeatureEdges = fixture.hardEdges;
   constraints.vertexProvenance = fixture.provenance;
   constraints.vertexChartAuthority = fixture.authority;
@@ -460,7 +477,7 @@ directional::validation::source_authoritative_detail::SourceChartCompatibility
 resolve_quad_chart(const HardRailValidationFixture &fixture, const int face) {
   const directional::validation::source_authoritative_detail::
       SourcePointLabelSupport support(
-          &fixture.sourceFaces, &fixture.components, &fixture.sheets,
+          &fixture.sourceFaces, test_source_authority(fixture.sourceFaces, fixture.components, fixture.sheets),
           &fixture.hardEdges);
   std::vector<const SurfacePoint *> points;
   std::vector<const SourceVertexChartAuthority *> authority;
@@ -782,7 +799,7 @@ TEST(SurfaceMeshOptimizerPhase22,
   const auto provenance = provenance_for(output, output, sourceFaces,
                                          components, sheets);
   SurfaceOptimizationConstraints boundaryConstraints;
-  boundaryConstraints.sourceFaceSheet = sheets;
+  boundaryConstraints.sourceAuthority = test_source_authority(sourceFaces, components, sheets);
   directional::geometry::fill_surface_optimization_rail_constraints(
       {boundary}, output, provenance, boundaryConstraints);
 
@@ -793,7 +810,7 @@ TEST(SurfaceMeshOptimizerPhase22,
   EXPECT_EQ(boundaryConstraints.authoritativeBoundaryEdges.size(), 4U);
 
   SurfaceOptimizationConstraints featureConstraints;
-  featureConstraints.sourceFaceSheet = sheets;
+  featureConstraints.sourceAuthority = test_source_authority(sourceFaces, components, sheets);
   directional::geometry::fill_surface_optimization_rail_constraints(
       {feature}, output, provenance, featureConstraints);
   EXPECT_TRUE(featureConstraints.featureRailAuthorityProvided);
@@ -890,13 +907,14 @@ TEST(SurfaceMeshOptimizerPhase22,
       0.0, 0.0, 1.0,
       1.0, 0.0, 0.0,
       1.0, 0.0, 0.0;
-  constraints.sourceFaceComponent = {0, 0, 1, 1};
-  constraints.sourceFaceSheet = {0, 0, 0, 0};
+  const std::vector<int> sourceComponents = {0, 0, 1, 1};
+  const std::vector<int> sourceSheets = {0, 0, 0, 0};
+  constraints.sourceAuthority = test_source_authority(sourceFaces, sourceComponents, sourceSheets);
 
   directional::geometry::SurfaceProjectionBvh bvh(vertices, sourceFaces);
   directional::geometry::SurfaceProjectionOptions projectionOptions;
-  projectionOptions.faceComponents = &constraints.sourceFaceComponent;
-  projectionOptions.faceSheets = &constraints.sourceFaceSheet;
+  projectionOptions.faceComponents = &sourceComponents;
+  projectionOptions.faceSheets = &sourceSheets;
   std::vector<SurfacePoint> provenance;
   provenance.reserve(8);
   for (int vertex = 0; vertex < vertices.rows(); ++vertex) {
@@ -1352,8 +1370,7 @@ make_m1b_sheet_constraints() {
   constraints.sourceFaces << 0, 1, 2,
       0, 2, 3,
       4, 5, 6;
-  constraints.sourceFaceComponent = {7, 7, 7};
-  constraints.sourceFaceSheet = {0, 1, 1};
+  constraints.sourceAuthority = test_source_authority(constraints.sourceFaces, {7, 7, 7}, {0, 1, 1});
   return constraints;
 }
 
@@ -1382,7 +1399,7 @@ directional::geometry::SurfaceFeatureCurveInterval m1b_interval(
 TEST(SurfaceOptimizationRailAuthorityMigration,
      SameSheetRailAssignmentRemainsAccepted) {
   auto constraints = make_m1b_sheet_constraints();
-  constraints.sourceFaceSheet = {0, 0, 1};
+  constraints.sourceAuthority = test_source_authority(constraints.sourceFaces, {7, 7, 7}, {0, 0, 1});
 
   directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(5));
   rail.curveId = 9;
@@ -1466,13 +1483,13 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
   const auto interval = m1b_interval(1);
 
   auto componentMismatch = make_m1b_sheet_constraints();
-  componentMismatch.sourceFaceComponent[1] = 8;
+  componentMismatch.sourceAuthority = test_source_authority(componentMismatch.sourceFaces, {7, 8, 7}, {0, 1, 1});
   EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
                    provenance_supports_interval_sheet(
                        point, interval, componentMismatch));
 
   auto sheetMismatch = make_m1b_sheet_constraints();
-  sheetMismatch.sourceFaceSheet[1] = 2;
+  sheetMismatch.sourceAuthority = test_source_authority(sheetMismatch.sourceFaces, {7, 7, 7}, {0, 2, 1});
   EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
                    provenance_supports_interval_sheet(point, interval,
                                                        sheetMismatch));
