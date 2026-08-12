@@ -1691,34 +1691,59 @@ std::int64_t stable_patch_owner(const PureQuadMesh &patch) {
   return static_cast<std::int64_t>(seed);
 }
 
+PureQuadStitchIdentity typed_lineage_stitch_identity(
+    const PureQuadVertexLineage &lineage, const bool sharedBoundary,
+    const std::int64_t patchOwner, const int localVertex) {
+  std::vector<authority::TopologyRegionId> topologyRegions =
+      lineage.sourceTopologyRegions;
+  std::vector<authority::IsolationSheetId> isolationSheets =
+      lineage.sourceIsolationSheets;
+  std::sort(topologyRegions.begin(), topologyRegions.end());
+  topologyRegions.erase(
+      std::unique(topologyRegions.begin(), topologyRegions.end()),
+      topologyRegions.end());
+  std::sort(isolationSheets.begin(), isolationSheets.end());
+  isolationSheets.erase(
+      std::unique(isolationSheets.begin(), isolationSheets.end()),
+      isolationSheets.end());
+  if (topologyRegions.empty() || isolationSheets.empty()) {
+    return {};
+  }
+
+  PureQuadStitchIdentity key;
+  key.kind = sharedBoundary
+                 ? PureQuadStitchIdentityKind::ArrangementBoundaryNode
+                 : PureQuadStitchIdentityKind::GeneratedPatchInterior;
+  key.canonical.valid = true;
+  key.canonical.values = sharedBoundary
+                             ? std::vector<std::int64_t>{localVertex}
+                             : std::vector<std::int64_t>{patchOwner, localVertex};
+  key.canonical.values.push_back(
+      static_cast<std::int64_t>(topologyRegions.size()));
+  for (const authority::TopologyRegionId region : topologyRegions) {
+    key.canonical.values.push_back(static_cast<std::int64_t>(region.index()));
+  }
+  key.canonical.values.push_back(
+      static_cast<std::int64_t>(isolationSheets.size()));
+  for (const authority::IsolationSheetId sheet : isolationSheets) {
+    key.canonical.values.push_back(static_cast<std::int64_t>(sheet.index()));
+  }
+  return key;
+}
+
 PureQuadStitchIdentity resolved_stitch_identity(
     const PureQuadMesh &patch, const int localRow,
     const bool sharedBoundary, const std::int64_t patchOwner) {
   const int localVertex =
       patch.vertices[static_cast<std::size_t>(localRow)];
-  const SurfacePoint &provenance =
-      patch.vertexProvenance[static_cast<std::size_t>(localRow)];
-  PureQuadStitchIdentity key =
-      patch.vertexLineage[static_cast<std::size_t>(localRow)].stitchIdentity;
-  if (!key.valid()) {
-    key.kind = sharedBoundary
-                   ? PureQuadStitchIdentityKind::ArrangementBoundaryNode
-                   : PureQuadStitchIdentityKind::GeneratedPatchInterior;
-    key.canonical.valid = true;
-    if (sharedBoundary) {
-      key.canonical.values = {localVertex, provenance.component,
-                              provenance.sheet};
-    } else {
-      key.canonical.values = {patchOwner, localVertex, provenance.component,
-                              provenance.sheet};
-    }
-  }
-  if (!sharedBoundary &&
-      key.kind != PureQuadStitchIdentityKind::GeneratedPatchInterior) {
-    key.kind = PureQuadStitchIdentityKind::GeneratedPatchInterior;
-    key.canonical.valid = true;
-    key.canonical.values = {patchOwner, localVertex, provenance.component,
-                            provenance.sheet};
+  const PureQuadVertexLineage &lineage =
+      patch.vertexLineage[static_cast<std::size_t>(localRow)];
+  PureQuadStitchIdentity key = lineage.stitchIdentity;
+  if (!key.valid() ||
+      (!sharedBoundary &&
+       key.kind != PureQuadStitchIdentityKind::GeneratedPatchInterior)) {
+    key = typed_lineage_stitch_identity(lineage, sharedBoundary, patchOwner,
+                                        localVertex);
   }
   return key;
 }
@@ -2197,6 +2222,10 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           patch.vertexLineage[static_cast<std::size_t>(localRow)];
       const PureQuadStitchIdentity key = resolved_stitch_identity(
           patch, localRow, sharedBoundary, patchOwner);
+      if (!key.valid()) {
+        result.failure = "MissingTypedStitchIdentity";
+        return result;
+      }
       localRows.emplace(localVertex, localRow);
 
       const Eigen::Vector3d position =

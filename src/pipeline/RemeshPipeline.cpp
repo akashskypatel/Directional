@@ -2231,11 +2231,12 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                    authority::SourceSupport sourceSupport,
                    geometry::SourceProjectionChart sourceChart,
                    geometry::LocalLatticeState latticeState,
-                   authority::TopologyRegionId region, int cornerIndex)
+                   authority::TopologyRegionId region,
+                   authority::IsolationSheetId sheet, int cornerIndex)
         : id(occurrenceId), point(std::move(sourcePoint)),
           support(std::move(sourceSupport)), chart(std::move(sourceChart)),
           lattice(std::move(latticeState)), topologyRegion(region),
-          corner(cornerIndex) {}
+          isolationSheet(sheet), corner(cornerIndex) {}
 
     authority::OccurrenceId id;
     geometry::SurfacePoint point;
@@ -2243,6 +2244,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
     geometry::SourceProjectionChart chart;
     geometry::LocalLatticeState lattice;
     authority::TopologyRegionId topologyRegion;
+    authority::IsolationSheetId isolationSheet;
     int corner = -1;
   };
   const int occurrenceCount = static_cast<int>(phaseFront.cells.size()) * 4;
@@ -2332,7 +2334,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           occurrenceId.value(), std::move(point),
           resolvedSupport.identity.value(),
           geometry::SourceProjectionChart(lattice.sourceChart.value(), *faceId),
-          lattice, cell.sourceTopologyRegion, corner);
+          lattice, cell.sourceTopologyRegion, typedSheet, corner);
     }
   }
   if (consumedTopologyRegions.size() != topologyRegionById.size()) {
@@ -2600,10 +2602,10 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
                       equivalence.isolationSeams.end()),
           equivalence.isolationSeams.end());
       const bool crossesSheets =
-          occurrences[static_cast<std::size_t>(firstFrom)].point.sheet !=
-              occurrences[static_cast<std::size_t>(secondTo)].point.sheet ||
-          occurrences[static_cast<std::size_t>(firstTo)].point.sheet !=
-              occurrences[static_cast<std::size_t>(secondFrom)].point.sheet;
+          occurrences[static_cast<std::size_t>(firstFrom)].isolationSheet !=
+              occurrences[static_cast<std::size_t>(secondTo)].isolationSheet ||
+          occurrences[static_cast<std::size_t>(firstTo)].isolationSheet !=
+              occurrences[static_cast<std::size_t>(secondFrom)].isolationSheet;
       if (crossesSheets && equivalence.isolationSeams.empty()) {
         result.failure = "MissingIsolationSeamEquivalenceAuthority";
         return result;
@@ -2728,15 +2730,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
         result.failure = "QuotientSourceSupportConflict";
         return result;
       }
-      const auto occurrenceFaceId = source_face_id(occurrence.point.face);
-      if (!occurrenceFaceId.has_value()) {
-        result.failure = "InvalidAuthoritativeIsolationSheet";
-        return result;
-      }
-      const authority::IsolationSheetId sheet =
-          phaseFront.sourceTopologyRegions.sheet_for_row(*occurrenceFaceId);
       domainStates.emplace_back(
-          occurrence.topologyRegion, sheet,
+          occurrence.topologyRegion, occurrence.isolationSheet,
           occurrence.lattice.latticeCoordinate.x(),
           occurrence.lattice.latticeCoordinate.y(),
           occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
@@ -2811,7 +2806,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       // representative. The face row is only a final lookup tie-break for an
       // already identical chart; it is never a merge or provenance policy.
       return std::tuple{
-          weightedVertices, occurrence.point.sheet,
+          weightedVertices, occurrence.isolationSheet,
           occurrence.chart.chart, occurrence.topologyRegion,
           occurrence.point.face};
     };
@@ -2838,13 +2833,7 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
       }
       charts.insert(occurrence.chart);
       topologyRegions.insert(occurrence.topologyRegion);
-      const auto occurrenceFaceId = source_face_id(occurrence.point.face);
-      if (!occurrenceFaceId.has_value()) {
-        result.failure = "InvalidAuthoritativeIsolationSheet";
-        return result;
-      }
-      isolationSheets.insert(
-          phaseFront.sourceTopologyRegions.sheet_for_row(*occurrenceFaceId));
+      isolationSheets.insert(occurrence.isolationSheet);
       const auto &memberEquivalences =
           occurrenceEquivalences[static_cast<std::size_t>(member)];
       equivalences.insert(equivalences.end(), memberEquivalences.begin(),
