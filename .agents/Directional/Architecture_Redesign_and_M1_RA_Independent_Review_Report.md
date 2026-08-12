@@ -11,6 +11,19 @@
 **Latest independent-review verdict at source `9d88d0e...`:** **REV-21 contract completion and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A rejected/open.**
 **Post-review remediation status:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `032d4cbae9e2de2767579934682e78754180338d`; this is not an independent re-review or runtime acceptance.**
 **Latest independent re-review verdict at source `032d4cbae9e2de2767579934682e78754180338d`:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are CLOSED at the Code + Build boundary. Three new follow-ups are opened (RA-REV-22-F4, RA-REV-22-F5, RA-REV-23-F2); all three must land in Code + Build before any Test + Benchmark turn, because R-A is one continuous checkpoint. Overall R-A remains rejected/open pending organic runtime execution.**
+**Post-re-review remediation status:** **RA-REV-22-F4/F5 and RA-REV-23-F2 are Code + Build remediated / compile-valid at `64fa65a9379ad0a246393371516de3a3a7146243` with widened static inventory PASS and a fresh compile package; this is implementation/build evidence, not a new independent review or runtime acceptance.**
+
+## Post-re-review remediation addendum — RA-REV-22-F4/F5 and RA-REV-23-F2
+
+This is a **Code + Build implementation-status addendum**, not an independent re-review. Exact implementation/test/audit source `64fa65a9379ad0a246393371516de3a3a7146243` resolves the three follow-ups specified below; the fresh package has compiled successfully but no semantic contract has executed.
+
+- **RA-REV-22-F4 remediated at Code + Build:** present-but-wrong remapped boundary content requires `ChangedBoundaryLoop`; present-but-wrong feature rail content preserves expected cardinality and requires `MissingFeatureRail`; a feature-bearing positive witness observes non-empty feature authority; final aggregate rejection diagnostics retain the complete source-authority validator issue list.
+- **RA-REV-22-F5 remediated at Code + Build:** the option-echo `EXPECT_TRUE` assertions identified by the re-review are absent. Falsifiable published-vs-oracle equality and input-derived semantic checks remain.
+- **RA-REV-23-F2 remediated at Code + Build:** pipeline stitch-kind audit is whole-statement and translation-unit-wide, recognizes fully qualified/wrapped/alias/stale-kind-copy forms and member writes, and its four independent evasion self-tests all pass.
+- **Static evidence:** regenerated inventory **19 paths / 48 probes / 203 matches**, with **22/0** raw-projection leaves, **2/0** face-count leaves, **2/0** pipeline `stitchIdentity` assignments, classifier self-test **4/4**, final static **PASS**.
+- **Compile evidence:** run/job `31649372167 / 94290107577`, exact source `64fa65a9379ad0a246393371516de3a3a7146243`, Release/static/Ninja/PRE_TEST **118/118**, build exit `0`; artifacts `9162042615 / 9162042971` with SHA-256 `c521a94e087f660cf93b6ebb9791ae1d0979a885e89eee621bc9c2fa6efe9322` / `58c64afba7d0c31ea83ac8922128c338694fbf5f0bc94150b94138d94bc6c0e8`; manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`.
+
+**Remaining gate:** the single immutable artifact-only Test + Benchmark turn must execute these new contracts together with the complete retained R-A set. Overall R-A remains rejected/open until that gate passes organically.
 
 ## Independent re-review addendum — RA-REV-22-F1/F2/F3 and RA-REV-23-F1 closure
 

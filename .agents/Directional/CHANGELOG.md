@@ -17,6 +17,19 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — RA-REV-22-F4/F5 and RA-REV-23-F2 post-re-review remediation
+
+- RA-REV-22-F4 adds final-oracle content-mismatch contracts for present remapped boundary and feature authority, a non-vacuous feature-bearing aggregate positive witness, and complete final-oracle issue-list diagnostics so preferred single-code reporting cannot mask the rejecting guard.
+- RA-REV-22-F5 removes the residual non-falsifiable usage-option assertions while retaining published-vs-oracle equality and input-derived semantic assertions.
+- RA-REV-23-F2 hardens the structural stitch-kind audit across all `src/pipeline` translation units, including wrapped/qualified/alias/stale-kind-copy/member-write forms, and adds a four-case classifier self-test.
+
+### Validation — RA-REV-22-F4/F5 and RA-REV-23-F2 Code + Build
+
+- Exact implementation/test/audit source: `64fa65a9379ad0a246393371516de3a3a7146243`. Regenerated complete R-A inventory: **19 paths / 48 probes / 203 matches**, **22/0** raw-projection leaves, **2/0** face-count leaves, **2/0** pipeline `stitchIdentity` assignments, stitch-kind self-test **4 passed / 0 failed**, final static **PASS**.
+- Focused compile run/job `31649372167 / 94290107577` completed Release/static/Ninja/PRE_TEST **118/118**, build exit `0`. Result artifact `9162042615`, SHA-256 `c521a94e087f660cf93b6ebb9791ae1d0979a885e89eee621bc9c2fa6efe9322`; log artifact `9162042971`, SHA-256 `58c64afba7d0c31ea83ac8922128c338694fbf5f0bc94150b94138d94bc6c0e8`.
+- Independent package inspection verified **26** regular files, recursive self-excluding manifest **25/25**, zero self references, five empty source-status snapshots, exact source archive/dependency revisions, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`. ccache recorded **95/108 hits (87.96%)** and the compatible cache lineage remains bounded to two entries.
+- This closes the three findings at the Code + Build/static-contract boundary only. Overall R-A remains open pending the single artifact-only gate over the complete R-A contract set.
+
 ### Validation — independent re-review of RA-REV-22-F1/F2/F3 and RA-REV-23-F1
 
 - Independent Review inspected exact implementation/test/audit source `032d4cbae9e2de2767579934682e78754180338d`; `git diff 032d4cba..HEAD -- src include tests` is empty. **Decision: all four findings CLOSED at the Code + Build boundary. Overall R-A remains rejected/open — every contract remains compiled-not-executed.**
