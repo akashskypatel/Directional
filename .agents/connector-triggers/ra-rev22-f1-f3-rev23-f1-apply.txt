@@ -1,0 +1,1 @@
+Apply the verified REV-22-F1/F2/F3 and REV-23-F1 Code + Build remediation patch. Source-only static inventory may run; generated Directional runtime execution is prohibited.
