@@ -17,6 +17,15 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Validation — independent re-review of RA-REV-22-F1/F2/F3 and RA-REV-23-F1
+
+- Independent Review inspected exact implementation/test/audit source `032d4cbae9e2de2767579934682e78754180338d`; `git diff 032d4cba..HEAD -- src include tests` is empty. **Decision: all four findings CLOSED at the Code + Build boundary. Overall R-A remains rejected/open — every contract remains compiled-not-executed.**
+- Exact-source claim verified rather than assumed: compile run `31644502450` has `head_sha` `30e16a7388d51db0224c450e9c3e4a57ac99053d`, but its trigger passes `source_sha: 032d4cba...` into `agent-compile-reusable.yml`, which checks out that ref and asserts `git rev-parse HEAD = inputs.source_sha` before archiving. The delta between the two commits is a connector trigger and the temporary workflow file only.
+- The complete R-A inventory was reproduced during the Review: byte-for-byte identical to the committed `R_A_Closure_Inventory_Report.md`, exit `0`, final static **PASS**.
+- Three new non-blocking follow-ups opened, all owned by Code + Build closeout step 2: **RA-REV-22-F4** (the aggregate oracle negatives `clear()` authority, so only presence guards are reached; `ChangedBoundaryLoop` and rail-content mismatch remain unexercised on the aggregate path), **RA-REV-22-F5** (`strictValidationUsed` / `featureRailAuthorityUsed` are echoes of literal caller options, so two `EXPECT_TRUE`s cannot fail), **RA-REV-23-F2** (the structural stitch-kind probe is line-oriented and enum-literal-only; verified misses include wrapped assignments, `directional::geometry::` qualification, aliases, and `= <expr>.kind` stale-kind copies — the original REV-23 defect form).
+- Durable-document trims: the prior review conclusion's amendments 1-2 named two tests renamed at `032d4cba...`, which would have produced a zero-selected filter; they are now marked superseded and rewritten to `ComponentBoundaryRailTamperRejectsAtAggregationSeam` / `ComponentFeatureRailTamperRejectsAtAggregationSeam`. Code + Build Plan section 0F said the new negatives "corrupt" the remapped authority; corrected to "clear".
+- A concrete five-step R-A closeout sequence is recorded in the independent-review report and `TODO.md`.
+
 ### Fixed — RA-REV-22-F1/F2/F3 and RA-REV-23-F1 post-review remediation
 
 - RA-REV-22-F1 adds final-oracle-only boundary and feature authority counterfactuals after global remap, preserves the concrete validator failure issue in diagnostics, asserts zero publication, and renames the earlier component mutation negatives to their actual aggregation-seam intent.

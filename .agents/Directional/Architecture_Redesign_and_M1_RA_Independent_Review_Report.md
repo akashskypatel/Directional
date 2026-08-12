@@ -10,6 +10,106 @@
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
 **Latest independent-review verdict at source `9d88d0e...`:** **REV-21 contract completion and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A rejected/open.**
 **Post-review remediation status:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `032d4cbae9e2de2767579934682e78754180338d`; this is not an independent re-review or runtime acceptance.**
+**Latest independent re-review verdict at source `032d4cbae9e2de2767579934682e78754180338d`:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are CLOSED at the Code + Build boundary. Three new non-blocking follow-ups are opened (RA-REV-22-F4, RA-REV-22-F5, RA-REV-23-F2). Overall R-A remains rejected/open pending organic runtime execution.**
+
+## Independent re-review addendum — RA-REV-22-F1/F2/F3 and RA-REV-23-F1 closure
+
+This Review inspected exact implementation/test/audit source `032d4cbae9e2de2767579934682e78754180338d`. `git diff 032d4cba..HEAD -- src include tests` is empty, so the branch head is a valid review proxy. This Review changed durable planning documents only; it executed no configure, compile, generated binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input. The only command executed was the source-only static audit `python3 .agents/Directional/R_A_Closure_Inventory.py --root .`.
+
+**Decision: the requested RA-REV-22-F1/F2/F3 and RA-REV-23-F1 checkpoint is CLOSED at the Code + Build boundary. Overall R-A is still not complete — no semantic contract has executed.**
+
+### Checkpoint decision
+
+| Checkpoint | Decision | Evidence-based reason |
+|---|---|---|
+| RA-REV-22-F1 | **closed at Code + Build** | two new counterfactuals reach the real final oracle non-vacuously, require the concrete validator issue, and assert zero publication; the pre-oracle tests are renamed to their actual seam intent |
+| RA-REV-22-F2 | **closed at Code + Build** | the literal-`true` aggregate assignments are gone; every published usage flag is copied from `finalAuthorityValidation`, and the positive witness cross-checks published-vs-oracle by equality |
+| RA-REV-22-F3 | **closed at Code + Build** | the typed oracle result and a `componentValidationReportsComplete` discriminator are published before the component-report gate; a direct counterexample compiles |
+| RA-REV-23-F1 | **closed at Code + Build** | the identifier-keyed probe is replaced by a structural kind-assignment probe plus an exhaustive `stitchIdentity` assignment classifier; inventory reproduces byte-for-byte and stays PASS |
+| Overall R-A | **rejected / open** | still only compile and static evidence; every contract above is compiled-not-executed |
+
+### Verified closures
+
+- **Exact source verified.** Compile run `31644502450` has `head_sha` `30e16a7388d51db0224c450e9c3e4a57ac99053d`, but the trigger workflow passes `source_sha: 032d4cbae9e2de2767579934682e78754180338d` into `agent-compile-reusable.yml`, which checks out that ref and asserts `git rev-parse HEAD = inputs.source_sha` (`:60`, `:190`) before archiving. `git diff 032d4cba..30e16a73 -- src include tests CMakeLists.txt .agents/Directional/R_A_Closure_Inventory.py` is empty. The recorded exact source is therefore accurate.
+- **Static inventory reproduced.** `python3 .agents/Directional/R_A_Closure_Inventory.py --root .` against the current tree is **byte-for-byte identical** to the committed `R_A_Closure_Inventory_Report.md` (zero diff lines), exit `0`: 19 paths, 42 probes, 186 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline `stitchIdentity` assignments, final static **PASS**.
+- **RA-REV-22-F1.** `remesh_surface_cell_components_from_cross_field_final_validation_counterfactual` (`RemeshPipeline.cpp:11687`) drives a mutator invoked at `:11521-11523`, after global authority remap and immediately before `validate_source_authoritative_surface_mesh` at `:11525-11528` — past the `same_surface_cell_rail_authority` seam guard. Both new negatives (`SurfaceCellsPhase10Tests.cpp:5453`, `:5504`) latch `reachedFinalOracleSeam` from the *pre-mutation* option state and `ASSERT_TRUE` it, so neither can pass vacuously. Both require `FinalMergedSourceAuthorityValidationFailed` plus the concrete issue and assert eight distinct zero-publication observables. `reject_merge_authority` (`:10418`) resets `merged.surfaceCellContext = SurfaceCellPipelineContext{}`, so `hasFinalSourceAuthorityValidationResult` is genuinely false on rejection. The expected issue codes are reachable: with authority cleared and `requireBoundaryAuthority` true, `MeshValidator.h:178` raises `MissingBoundaryAuthority` before any edge-level issue, and `SourceAuthoritativeMeshValidator.cpp:1132` raises `MissingFeatureRail` when `expectedFeatureRailCount` exceeds the supplied rails. The two pre-oracle tests are renamed `ComponentBoundaryRailTamperRejectsAtAggregationSeam` / `ComponentFeatureRailTamperRejectsAtAggregationSeam` (`:5363`, `:5407`) and the inventory probe at `R_A_Closure_Inventory.py:170-173` pins those names.
+- **RA-REV-22-F2.** `RemeshPipeline.cpp:11622-11644` sources every published flag from `finalAuthorityValidation`; the inventory carries both a present-probe on `finalAuthorityValidation\.(strict|provenance|boundary|featureRail)…` and an absent-probe on `aggregateValidationResult\.…\s*=\s*true` (`R_A_Closure_Inventory.py:178-185`). `DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches` (`:5228-5237`) now asserts published-equals-oracle by `EXPECT_EQ` for all five usage flags, which is falsifiable against a re-hardcoded literal.
+- **RA-REV-22-F3.** `RemeshPipeline.cpp:11563-11568` publishes `finalSourceAuthorityValidationResult`, `hasFinalSourceAuthorityValidationResult`, and `componentValidationReportsComplete` **before** the `allCompletedSurfaceCells && allHaveValidationResult && !firstValidationResult` gate at `:11618`. `FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing` (`:5555`) drops one component report, asserts the merge still succeeds, asserts `hasValidationResult == false` and `componentValidationReportsComplete == false`, and asserts the oracle result is present and accepted. "Oracle ran and passed" is now distinguishable from "oracle result unavailable".
+- **RA-REV-23-F1.** The name-keyed `rebuild_aggregate_stitch_identity` probe is gone. `classify_pipeline_stitch_identity_assignments` (`R_A_Closure_Inventory.py:312-357`) enumerates every `stitchIdentity = …;` in `RemeshPipeline.cpp` and fails the audit unless each one lies inside `rebuild_aggregate_output_identity_caches` and derives from `canonical_lineage_stitch_identity` — this does catch a *renamed* reintroduced duplicate builder that assigns stitch identities, which was F1's stated objection.
+
+### RA-REV-22-F4 — the aggregate oracle is proven only against *absent* boundary/feature authority
+
+**Evidence**
+
+- `FinalMergedOracleRejectsMissingRemappedBoundaryAuthority` calls `validationOptions.authoritativeBoundaryEdges.clear()` and `.authoritativeBoundaryLoops.clear()` (`SurfaceCellsPhase10Tests.cpp:5478-5480`); `FinalMergedOracleRejectsMissingRemappedFeatureAuthority` calls `validationOptions.authoritativeFeatureRails.clear()` (`:5530`). Both erase the whole authority set rather than corrupting one remapped entry.
+- Erasure reaches only the presence guards: `MeshValidator.h:178` (`requireAuthoritativeBoundary && authoritativeBoundary.empty()`) and `SourceAuthoritativeMeshValidator.cpp:1119`/`:1132` (`rails.size() != expectedFeatureRailCount`). The content comparisons — `actualLoops == expectedLoops` at `SourceAuthoritativeMeshValidator.cpp:1097-1101` yielding `ChangedBoundaryLoop` at `:1107`, and the per-rail `outputEdges.count(...)` check at `:1124-1130` — are never exercised on the aggregate path. `FinalMergedOracleRejectsPostComponentProvenanceTamper` (`:5665`) covers content mismatch for provenance only.
+- Consequence under this project's own rule that a negative proves only the guard it actually reaches: nothing yet proves the final oracle rejects a merged product that *disagrees with present* remapped boundary or feature authority. That is the central R-A post-merge semantic claim.
+- Secondary: the positive witness runs with no `userHardEdges`, so `expectedFeatureRailCount` is 0 and `featureRailsPassed` is vacuously true there; `EXPECT_TRUE(finalValidation.authoritativeFeatureRailsPassed)` (`:5243`) carries no rail evidence.
+- Secondary: `RemeshPipeline.cpp:11533-11545` selects the first issue whose code is in {`MissingBoundaryAuthority`, `ChangedBoundaryLoop`, `MissingFeatureRail`} rather than the first issue raised, so `surfaceCellFirstInvalidProducerValidationIssue` is a *preferred* code, not proof of which guard rejected first.
+
+**Corrective measures**
+
+1. Add a boundary content negative that keeps `authoritativeBoundaryLoops` non-empty and perturbs exactly one entry (replace one loop vertex, or drop one edge from one loop) and requires `ChangedBoundaryLoop` with zero publication.
+2. Add a feature content negative that keeps `authoritativeFeatureRails` non-empty and `expectedFeatureRailCount` consistent, but points one rail at a vertex pair absent from the merged output, and requires `MissingFeatureRail` with zero publication.
+3. Extend the positive witness (or add a second one) with `userHardEdges` set so `expectedFeatureRailCount > 0`, making `authoritativeFeatureRailsPassed` a real observation.
+4. Either record the full issue list in diagnostics or assert on `finalSourceAuthorityValidationResult.issues` in the negatives, so the preferred-code selection at `:11533-11545` cannot mask which guard rejected.
+5. Add inventory probes pinning the two new content negatives by name.
+
+### RA-REV-22-F5 — two published usage flags remain non-falsifiable
+
+**Evidence**
+
+- The pipeline no longer hardcodes the flags, but the values it copies are option echoes: `SourceAuthoritativeMeshValidator.cpp:1038-1040` sets `strictValidationUsed = requireBoundaryAuthority && requireFeatureRailAuthority && requireLocalSheetCompatibility`, `:1041` sets `provenanceValidationUsed = true` unconditionally, and `:1042` sets `featureRailAuthorityUsed = options.requireFeatureRailAuthority`. The aggregate caller sets all three options to literal `true` at `RemeshPipeline.cpp:11517-11519`.
+- Therefore `EXPECT_TRUE(finalValidation.strictValidationUsed)` (`SurfaceCellsPhase10Tests.cpp:5238`) and `EXPECT_TRUE(finalValidation.authoritativeFeatureRailsUsed)` (`:5241`) still cannot fail under any input — the exact two assertions RA-REV-22-F2 flagged.
+- The plumbing defect *is* fixed: the `EXPECT_EQ` published-vs-oracle cross-checks at `:5228-5237` are falsifiable, and `boundaryAuthorityUsed` (`SourceAuthoritativeMeshValidator.cpp:1044`, gated on `sourceTopology.boundaryLoopCount > 0`) is genuinely input-derived. This finding is precision, not a reopening.
+
+**Corrective measures**
+
+1. Either drop the two tautological `EXPECT_TRUE` assertions and rely on the `EXPECT_EQ` cross-checks plus `boundaryAuthorityUsed`, or
+2. set `strictValidationUsed` and `featureRailAuthorityUsed` at the point each gate actually executes, so a caller that supplies no rail authority cannot report strict/feature use.
+
+### RA-REV-23-F2 — the structural stitch-kind probe has demonstrable false negatives
+
+**Evidence**
+
+- `R_A_Closure_Inventory.py:197` matches `(?:\.|->)kind\s*=\s*(?:geometry::)?PureQuadStitchIdentityKind::`, and `matches_for` (`:254-261`) applies it **line by line**. Four evasions were verified directly against that regex:
+
+| Reintroduced form | Probe result |
+|---|---|
+| `identity.kind = directional::geometry::PureQuadStitchIdentityKind::ArrangementBoundaryNode;` | **MISS** — only a bare `geometry::` prefix is allowed |
+| `identity.kind =` newline `    geometry::PureQuadStitchIdentityKind::ArrangementBoundaryNode;` | **MISS** — line-oriented scan |
+| `identity.kind = lineage.stitchIdentity.kind;` | **MISS** — this is the exact original REV-23 defect (copying the pre-remap cached kind) |
+| `using K = geometry::PureQuadStitchIdentityKind; identity.kind = K::ArrangementBoundaryNode;` | **MISS** — alias |
+
+- The wrapped form is not hypothetical: `src/pipeline/RemeshPipeline.cpp:2685` already writes `equivalence.kind =` with the value on the next line, so the file's own clang-format style defeats the probe.
+- `classify_pipeline_stitch_identity_assignments` does not compensate: it scans only `src/pipeline/RemeshPipeline.cpp` (`:315`) and matches only `\bstitchIdentity\s*=` (`:318`), so member-level writes (`stitchIdentity.kind = …`, `stitchIdentity.canonical.values = …`) and a duplicate builder placed in any other `src/pipeline` translation unit are unclassified.
+- Net: F1's objection was "a renamed reintroduced duplicate builder would leave the probe green." The assignment classifier closes that for whole-identity assignments in `RemeshPipeline.cpp`, but a duplicate builder written in the file's prevailing wrapped style, or one that copies a stale cached kind, still leaves the audit green.
+
+**Corrective measures**
+
+1. Normalize whitespace across the whole file text before matching the kind probe, or match on a joined logical statement, so wrapped assignments are caught.
+2. Widen the qualification alternation to any `(?:\w+::)*` prefix, and forbid *any* assignment to a stitch-identity `kind` member, not only enum-literal right-hand sides — including `= <expr>.kind` copies.
+3. Extend `classify_pipeline_stitch_identity_assignments` to every translation unit under `src/pipeline/`, and to member-level writes matching `stitchIdentity\s*\.\s*\w+\s*=`.
+4. Add a self-test to the audit script that asserts each of the four evasion strings above is classified unexpected, so the probe's own coverage is proven rather than asserted.
+
+### Durable-document trims applied by this Review
+
+- The previous conclusion's amendment 1 named `MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication` and `MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication`. Those symbols no longer exist at `032d4cba...`. A next-turn filter built from that text would select zero tests, which this project classifies as orchestration failure. That amendment is rewritten below to the current names; the historical evidence line under RA-REV-22-F1 keeps the old names because it describes the reviewed state at `9d88d0e...`.
+- `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md` section 0F said the new negatives "corrupt that final remapped authority". They **clear** it. Corrected, because that distinction is precisely RA-REV-22-F4.
+- `Future_Chat_Session_Handoff.md` mandatory-next-turn text is replaced with the concrete closeout sequence below.
+- No other stale `.agents/` or `TODO.md` cross-reference was found: every referenced file resolves, and every test name pinned by an inventory probe exists in the current tree.
+
+### Concrete R-A closeout sequence
+
+Overall R-A is blocked only on runtime execution plus the three follow-ups above. Close it in this exact order; do not combine turn types.
+
+1. **Artifact-only Test + Benchmark turn (next).** Execute the immutable package `9160266493 / 9160266848` from exact source `032d4cbae9e2de2767579934682e78754180338d` with no rebuild. The required focused set is listed in the handoff. A zero-selected filter is orchestration failure. Classify every failure from immutable runtime evidence; do not weaken validation, restore fallbacks, or edit fixtures. This turn **cannot** close R-A on its own, because RA-REV-22-F4 leaves the aggregate content-mismatch contract unwritten.
+2. **Code + Build turn.** Implement RA-REV-22-F4 (both content negatives, the feature-bearing positive, issue-list assertions, and the two new inventory probes), RA-REV-22-F5, and RA-REV-23-F2 including the audit self-test. Regenerate the complete inventory; it must stay PASS under the widened probes.
+3. **Compile package.** One fresh focused Release/static/Ninja/PRE_TEST package from that exact source through `agent-compile-reusable.yml`, with manifest, source-status snapshots, and `runtimeExecution=false` verified.
+4. **Final artifact-only Test + Benchmark turn.** Execute the full R-A contract set — REV-21 permutation pair, REV-22 seam/oracle negatives and positives including the new content negatives, REV-23 canonical/re-stitch, REV-24 null/foreign authority, transactional rollback, and zero-publication contracts — from that package with no rebuild.
+5. **Mark R-A complete** only if step 4 passes organically *and* the regenerated static inventory is clean under the widened probes. Then proceed to R-B.
+
+If step 1 fails organically, steps 2-4 absorb the failure classification and the sequence restarts at step 2; R-A does not close on a partial pass.
 
 ## Post-review remediation addendum — RA-REV-22-F1/F2/F3 and RA-REV-23-F1
 
@@ -111,8 +211,8 @@ The requested REV-22-through-REV-24 checkpoint passes at the Code + Build bounda
 
 The authoritative next turn remains the **artifact-only Test + Benchmark cadence turn** against the exact fresh package, approved unchanged with two amendments:
 
-1. Expect `MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication` and `MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication` to reject at the seam guard rather than the final oracle. Classify that as expected-but-insufficient coverage, not as REV-22 closure evidence.
-2. Even if the focused runtime gate passes organically, R-A closes only after RA-REV-22-F1 is implemented and executed. RA-REV-22-F2, RA-REV-22-F3, and RA-REV-23-F1 are next Code + Build items and do not block R-A.
+1. **Superseded by the re-review addendum above.** Those two tests were renamed at `032d4cba...`; the current names are `ComponentBoundaryRailTamperRejectsAtAggregationSeam` and `ComponentFeatureRailTamperRejectsAtAggregationSeam`. They still reject at the seam guard by design and are classified as aggregation-seam coverage, not final-oracle coverage. Do not build a test filter from the old names — it would select zero tests.
+2. **Superseded by the re-review addendum above.** RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are now closed at Code + Build. The remaining R-A gate is the concrete closeout sequence in that addendum.
 
 M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. Regression totals remain **34 events / 14 categories / 20 recurrences**.
 
