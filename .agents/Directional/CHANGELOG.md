@@ -17,6 +17,16 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Validation — independent re-review of RA-REV-22-F4/F5 and RA-REV-23-F2
+
+- Independent Review inspected exact source `64fa65a9379ad0a246393371516de3a3a7146243`; the tree matches it exactly for `src`, `include`, `tests`, and the audit script. **Decision: all three follow-ups CLOSED at the Code + Build boundary. The R-A implementation is complete end to end and no finding blocks the Test + Benchmark gate. Overall R-A remains rejected/open — every contract is compiled-not-executed.**
+- Exact-source and package claims verified: compile run `31649372167` has `head_sha` `2c08580e…`, whose caller passes `source_sha: 64fa65a…` into `agent-compile-reusable.yml`, which asserts checkout equality before archiving; the implementation/test/build/audit delta between the two commits is empty. Package `9162042615 / 9162042971` is the correct runtime candidate.
+- Static inventory reproduced byte-for-byte, exit `0`: 19 paths, 48 probes, 203 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline `stitchIdentity` assignments, classifier self-test 4/4, final static **PASS**.
+- RA-REV-22-F4 verified substantive: both content negatives keep authority present — the boundary case rebuilds `authoritativeBoundaryEdges` from the mutated loops, the feature case preserves rail cardinality — so the presence guards cannot fire and rejection must come from the content comparisons the finding named as unexercised. Both assert the expected code within the full issue list, and all three new contracts assert their fixture preconditions.
+- RA-REV-23-F2 verified by direct interrogation beyond the committed self-test set: the classifier flags the realistic duplicate-builder form (`PureQuadStitchIdentity result; result.kind = cached.kind;`) while correctly leaving the legitimate `equivalence.kind`, `lineage.kind`, and `rail.kind` writes unflagged — discriminating, not degenerate.
+- Two deferred hygiene items opened, explicitly post-R-A backlog and not gating runtime: **RA-REV-23-F3** (the audit dispatches its stitch-kind classifier by probe-*name* string, so the report prints a `Pattern:` that never executed and a rename silently weakens the probe; the self-test also has no negative case), **RA-REV-22-F6** (`provenanceValidationUsed` / `sourceAuthorityUsed` `EXPECT_TRUE`s remain non-falsifiable given publication).
+- Control-plane cleanup confirmed: turn payloads, connector triggers, and all temporary `agent-ra-rev22-*` and restore workflows are absent from the tree.
+
 ### Fixed — RA-REV-22-F4/F5 and RA-REV-23-F2 post-re-review remediation
 
 - RA-REV-22-F4 adds final-oracle content-mismatch contracts for present remapped boundary and feature authority, a non-vacuous feature-bearing aggregate positive witness, and complete final-oracle issue-list diagnostics so preferred single-code reporting cannot mask the rejecting guard.

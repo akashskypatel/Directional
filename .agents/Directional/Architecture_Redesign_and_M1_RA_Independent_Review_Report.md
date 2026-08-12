@@ -12,6 +12,82 @@
 **Post-review remediation status:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `032d4cbae9e2de2767579934682e78754180338d`; this is not an independent re-review or runtime acceptance.**
 **Latest independent re-review verdict at source `032d4cbae9e2de2767579934682e78754180338d`:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are CLOSED at the Code + Build boundary. Three new follow-ups are opened (RA-REV-22-F4, RA-REV-22-F5, RA-REV-23-F2); all three must land in Code + Build before any Test + Benchmark turn, because R-A is one continuous checkpoint. Overall R-A remains rejected/open pending organic runtime execution.**
 **Post-re-review remediation status:** **RA-REV-22-F4/F5 and RA-REV-23-F2 are Code + Build remediated / compile-valid at `64fa65a9379ad0a246393371516de3a3a7146243` with widened static inventory PASS and a fresh compile package; this is implementation/build evidence, not a new independent review or runtime acceptance.**
+**Latest independent re-review verdict at source `64fa65a9379ad0a246393371516de3a3a7146243`:** **RA-REV-22-F4, RA-REV-22-F5, and RA-REV-23-F2 are CLOSED at the Code + Build boundary. The R-A contract set is complete; no finding blocks the Test + Benchmark gate. Two deferred hygiene items are recorded (RA-REV-23-F3, RA-REV-22-F6) and are explicitly post-R-A backlog. Overall R-A remains rejected/open pending organic runtime execution.**
+
+## Independent re-review addendum — RA-REV-22-F4/F5 and RA-REV-23-F2 closure
+
+This Review inspected exact implementation/test/audit source `64fa65a9379ad0a246393371516de3a3a7146243`. `git diff 64fa65a..HEAD -- src include tests .agents/Directional/R_A_Closure_Inventory.py` is empty, so the branch head is a valid review proxy. Documentation-only turn; the only command executed was the source-only static audit plus direct interrogation of the audit script's classifier functions. No configure, compile, generated binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input ran.
+
+**Decision: all three follow-ups are CLOSED at the Code + Build boundary. The R-A implementation is complete end to end. The single artifact-only Test + Benchmark gate is now unblocked and is the only remaining R-A action.**
+
+### Checkpoint decision
+
+| Checkpoint | Decision | Evidence-based reason |
+|---|---|---|
+| RA-REV-22-F4 | **closed at Code + Build** | both content negatives keep authority present and defeat the presence guard, so the oracle's content comparisons actually fire; the positive witness observes non-empty feature authority; all three assert their preconditions |
+| RA-REV-22-F5 | **closed at Code + Build** | both flagged option-echo `EXPECT_TRUE`s are removed from the positive and from the F3 contract; the falsifiable published-vs-oracle equalities remain |
+| RA-REV-23-F2 | **closed at Code + Build** | the classifier is whole-statement, translation-unit-wide, and verified *discriminating* — it flags the realistic reintroduction form and does not flag legitimate `.kind` writes |
+| Overall R-A | **rejected / open** | implementation complete, but still only compile and static evidence; every contract remains compiled-not-executed |
+
+### Verified closures
+
+- **Exact source and package.** The tree matches `64fa65a…` exactly for `src`, `include`, `tests`, and the audit script. Compile run `31649372167` has `head_sha` `2c08580e…`, whose caller passes `source_sha: 64fa65a9379ad0a246393371516de3a3a7146243` into `agent-compile-reusable.yml`, which checks out that ref and asserts equality before archiving; the delta between the two commits is empty for all implementation, test, build, and audit paths. Package `9162042615 / 9162042971` is the correct runtime candidate.
+- **Static inventory reproduced.** `python3 .agents/Directional/R_A_Closure_Inventory.py --root .` is **byte-for-byte identical** to the committed report (zero diff lines), exit `0`: 19 paths, 48 probes, 203 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline `stitchIdentity` assignments, classifier self-test 4/4, final static **PASS**.
+- **RA-REV-22-F4 — boundary content.** `FinalMergedOracleRejectsChangedRemappedBoundaryLoopContent` (`SurfaceCellsPhase10Tests.cpp:5552`) substitutes one vertex of aggregate loop 0 with a vertex drawn from loop 1 — a different component — guards that the substitute is not already present, and then **rebuilds `authoritativeBoundaryEdges` from the mutated loops**. That rebuild is what makes the test meaningful: the authority set stays non-empty, so `MeshValidator.h:178` does not fire, and rejection must come from the content path. The mutated loop contributes edges that do not exist in the merged output, so `MeshValidator.h:212-216` raises `ChangedBoundaryLoop`, and `SourceAuthoritativeMeshValidator.cpp:1097-1107` independently fails `actualLoops == expectedLoops`. Both preconditions are `ASSERT_TRUE`, so the test cannot pass vacuously.
+- **RA-REV-22-F4 — feature content.** `FinalMergedOracleRejectsChangedRemappedFeatureRailContent` (`:5608`) latches `reachedFinalOracleSeam` on `rails.size() == expectedFeatureRailCount`, then replaces one rail with a vertex pair spanning the two disconnected components. Cardinality is preserved, so the `:1119` count check still passes and rejection must come from the per-rail `outputEdges.count(...)` check at `:1124-1130` → `MissingFeatureRail`. This is the exact content guard the finding named as unexercised.
+- **RA-REV-22-F4 — diagnostics.** `RemeshDiagnostics.h:251` adds `surfaceCellFinalSourceAuthorityValidationIssues`, populated at `RemeshPipeline.cpp:11533-11539` *after* `reject_merge_authority` (which does not touch the vector) and only on the final-oracle rejection path; `merged` is default-constructed and no other site writes it, so other rejection reasons leave it empty. Both content negatives assert the expected code is present **in the full list**, so the preferred-code selection at `:11545-11557` can no longer stand in for guard evidence.
+- **RA-REV-22-F4 — feature-bearing positive.** `FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority` (`:5664`) reuses the counterfactual entry with a **read-only observer**, asserting `expectedFeatureRailCount > 0`, matching cardinality, and every rail of size ≥ 2 before accepting. `authoritativeFeatureRailsPassed` now carries real rail evidence rather than the vacuous `0 == 0`.
+- **RA-REV-22-F5.** `EXPECT_TRUE(finalValidation.strictValidationUsed)` and `EXPECT_TRUE(finalValidation.authoritativeFeatureRailsUsed)` are gone from the positive, and the matching `oracle.strictValidationUsed` / `oracle.featureRailAuthorityUsed` assertions are gone from the F3 contract. The five `EXPECT_EQ` published-vs-oracle cross-checks and the input-derived `boundaryAuthorityUsed` remain.
+- **RA-REV-23-F2 — verified by direct interrogation, not by reading the diff.** I called `_pipeline_stitch_kind_assignment_matches` on cases outside the committed self-test set:
+
+| Case | Result |
+|---|---|
+| `geometry::PureQuadStitchIdentity result;` + `result.kind = cached.kind;` — the realistic duplicate-builder reintroduction | **FLAGGED** |
+| `equivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;` (real code, `RemeshPipeline.cpp:2596`) | correctly not flagged |
+| `lineage.kind = geometry::PureQuadVertexLineageKind::SourceTriangle;` (real code, `:2859`) | correctly not flagged |
+| `rail.kind = ordered[...].kind;` (real code, `:3402`) | correctly not flagged |
+
+  The classifier is therefore discriminating, not degenerate: it catches the defect form while leaving the six legitimate `.kind` writes in `src/pipeline` unflagged, which the inventory confirms as 0 unexpected. Defense in depth is also real — `classify_pipeline_stitch_identity_assignments` now flags **every** `stitchIdentity.<member> =` write unconditionally and every whole `stitchIdentity =` assignment outside `rebuild_aggregate_output_identity_caches`, so any reintroduced builder must eventually surface at one of those writes.
+- **Control-plane cleanup.** `.agents/Directional/turn-payloads/`, `.agents/connector-triggers/`, and every temporary `agent-ra-rev22-*` / restore workflow are absent from the tree, per `CLEAN_UP_POLICY.md`.
+
+### RA-REV-23-F3 — deferred: the audit documents a pattern it does not execute
+
+**Not blocking. Post-R-A hardening backlog; do not gate the Test + Benchmark turn on it.**
+
+**Evidence**
+
+- `matches_for` dispatches to the structural classifier by **probe-name string equality** (`R_A_Closure_Inventory.py:279`, `if probe.name == "pipeline stitch-kind assignment is structurally absent"`). The declared `Probe.pattern` for that probe is never compiled or run.
+- `R_A_Closure_Inventory_Report.md:638` nevertheless prints `Pattern: stitchIdentity\s*(?:\.|->)\s*kind|(?:\w+::)*PureQuadStitchIdentityKind`. An independent auditor reproducing the audit from the report would validate a regex that did not execute — the same conclusion-only defect the REV-18-through-REV-21 review objected to, in a narrower form.
+- Renaming the probe silently reverts it to that weaker line-oriented regex with no failure, because the dispatch key is prose.
+- The self-test carries only positive cases (`:497-524`). 4/4 passing cannot distinguish a correct classifier from one that flags every `.kind =` write; I established discrimination separately, but the audit does not establish it about itself.
+- Residual classifier misses I probed and confirmed: `auto result = build_key(); result.kind = cached.kind;` and designated-initializer construction. Both are backstopped by the whole/member `stitchIdentity` assignment classifier and by the runtime `EXPECT_EQ(canonical_lineage_stitch_identity(patch, row), lineage.stitchIdentity)` contracts, so they are recorded for completeness rather than as exposure.
+
+**Corrective measures**
+
+1. Dispatch on an explicit `Probe` field (for example `classifier=_pipeline_stitch_kind_assignment_matches`) instead of the probe name, and render the executed classifier's identity in the report in place of a pattern that did not run.
+2. Add at least one negative self-test case — a legitimate non-stitch `.kind` write that must **not** be flagged — so the audit proves discrimination, not just detection.
+3. Optionally add the two residual forms above as self-test cases once measure 1 makes the classifier the documented contract.
+
+### RA-REV-22-F6 — deferred: two same-class option-echo assertions remain
+
+**Not blocking. Post-R-A hardening backlog.**
+
+**Evidence**
+
+- `EXPECT_TRUE(oracle.provenanceValidationUsed)` and `EXPECT_TRUE(oracle.sourceAuthorityUsed)` remain in the F3 contract (`SurfaceCellsPhase10Tests.cpp:5798-5799`) and the feature-bearing positive. `SourceAuthoritativeMeshValidator.cpp:1037` and `:1041` set both unconditionally immediately after the entry guard, and publication only occurs when the oracle accepted, so neither assertion can fail.
+- These are the same class as the two RA-REV-22-F5 removed; the finding named `:1041` explicitly. Severity is low — they are documentation assertions sitting beside falsifiable ones, not evidence substitutes.
+
+**Corrective measures**
+
+1. Drop both assertions, or take RA-REV-22-F5's second option and set `strictValidationUsed`, `provenanceValidationUsed`, and `featureRailAuthorityUsed` at the point each gate actually executes, which would make every usage flag falsifiable at once and close this class permanently.
+
+### Review conclusion
+
+The R-A implementation is complete. Every finding raised across REV-21 through RA-REV-23-F2 is closed at the Code + Build boundary, the widened static inventory is reproducibly PASS, and a verified exact-source compile package exists. **Nothing further is owed to R-A before runtime.**
+
+The only remaining R-A action is the single immutable artifact-only Test + Benchmark gate on package `9162042615 / 9162042971`, specified in the handoff. RA-REV-23-F3 and RA-REV-22-F6 are audit and test-hygiene items that do not affect any semantic contract and must not be used to defer that gate; schedule them with R-B or later.
+
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. Regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 ## Post-re-review remediation addendum — RA-REV-22-F4/F5 and RA-REV-23-F2
 
