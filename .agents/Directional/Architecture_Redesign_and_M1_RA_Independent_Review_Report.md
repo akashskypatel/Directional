@@ -6,7 +6,7 @@
 **Branch:** agent/surface_cell_quad/p5-recover-bridge-healing  
 **Current independent-review branch boundary:** 922c36b43b8d35af2d2ffdeccb8e0c2ef551c760  
 **Current reviewed implementation/test source:** 0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca  
-**Review decision/planning commit:** pending current review commit  
+**Review decision/planning commit:** e325991a9332fcfe522c26c1d55f249924f1a14c  
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
 **Current verdict:** **overall R-A is rejected; REV-18-through-REV-21 remain bounded compile-only progress; REV-22, REV-23, and REV-24 are open**
 
