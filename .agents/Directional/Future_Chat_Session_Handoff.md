@@ -37,26 +37,29 @@ Do not add:
 
 ## Mandatory next turn
 
-Run a **targeted artifact-only Test + Benchmark verification of the exact R-A-REV-17 / R-A-REV-20 partial Code + Build package**. This is the mandatory cadence gate before another Code + Build slice; it is not the retained full-M1 acceptance plan and must not be relabeled as M1 acceptance.
+Run **M1 Single-Authority Cutover remediation — Code + Build only** under:
+
+`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`
 
 Repository: akashskypatel/Directional  
 Branch: agent/surface_cell_quad/p5-recover-bridge-healing  
 PR: #8 remains open, draft, and unmerged  
-Exact compile-valid source: `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`
-Result artifact: `9149834162`, outer SHA-256 `c5055df51d9b94605c27817e596a04983bddb33956727a2c47c494d42a0b2ee2`
-Log artifact: `9149834634`, outer SHA-256 `04291253c21af768af9c35b61f12e327c0ec536642a2ddf8895781657b1261a7`
-Compile run/job: `31616904715 / 94181880684`
+Reviewed implementation/test source: `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`  
+Independent review boundary: `356a0bc2733af41e15fad056161e526865c147c5`  
+Review decision/planning commit: `49b94da971ff544ac77f9dd2fa394791a1b67435`
 
 The next turn must:
 
-1. download and verify the exact result artifact without rebuilding or changing implementation/test/build source;
-2. verify the packaged source SHA, self-excluding `SHA256SUMS` manifest, command boundary, and clean source-status records before executing any packaged binary;
-3. execute the focused semantic contracts that directly cover REV-17 source-owned stitch/collision authority and REV-20 strict optimizer/verifier missing-authority and compatibility-path removal;
-4. include adjacent retained completion/optimizer validation contracts needed to detect regressions caused by these changes, following `tests/TESTING_STRATEGY.md` and the unit-testing module;
-5. classify every failure from runtime evidence; do not weaken validators, restore raw mirrors/aliases/fallbacks, alter fixtures to synthesize green output, or rebuild the package;
-6. if the exact package passes its focused runtime gate, return the following turn to the M1 Code + Build plan for the still-open R-A-REV-18 and R-A-REV-19 tasks, then rerun the complete R-A inventory before any R-A completion claim.
+1. close R-A-REV-18 by publishing one checked global aggregate `SourceTopologyRegions`, validating every remapped lineage, rebuilding/removing vertex identity caches, and regenerating both face cycles;
+2. close R-A-REV-19 by staging every semantic/context product transactionally, exposing no consumable rejected context, and running actual final merged-product source-authoritative validation;
+3. close R-A-REV-21 by binding every affected authority product to the exact supplied source-face topology, with same-extent foreign-authority negatives and a consistent-permutation positive;
+4. rerun the complete retained R-A inventory through REV-21 and mark R-A complete only if every gate closes;
+5. complete R-B through R-G in the same vertical cutover;
+6. produce one fresh full Release/static/Ninja/PRE_TEST package with clean provenance and a verified self-excluding manifest.
 
-Do not activate the retained full `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`; that plan remains dormant until one fresh full R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this verification.
+Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input. Do not restore a raw mirror, compatibility identity, fallback, fixture exception, proxy oracle, or extent-only authority bypass.
+
+Do not execute or relabel partial artifacts `9149834162 / 9149834634`; their targeted runtime task is superseded by the rejected source review. The retained full artifact-only plan remains dormant until one fresh full R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during M1.
 
 ## Current authority
 
@@ -70,19 +73,20 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 
 ### R-A closure status
 
-Review decision/planning commit: `ab29756e206da3e7b7d6845cfb3f08f25125faa5`.  
-Independent review boundary: branch head `fd96852d19defe70effd0dc6fbbaf07db8378e55`; reviewed affected implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`.
+Review decision/planning commit: `49b94da971ff544ac77f9dd2fa394791a1b67435`.  
+Independent review boundary: branch head `356a0bc2733af41e15fad056161e526865c147c5`; exact reviewed implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`.
 
-- Overall R-A is **not complete**.
-- R-A-REV-17 is **Code + Build complete / compile-valid** at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; runtime semantic verification of the exact artifact is the mandatory next turn.
-- R-A-REV-20 is **Code + Build complete / compile-valid** at the same source; runtime semantic verification of the exact artifact is the mandatory next turn.
-- R-A-REV-18 remains open: global aggregate source-authority publication and post-remap derived-identity closure are not implemented by this partial turn.
-- R-A-REV-19 remains open: aggregate publication is not yet fully transactional and the real final merged-product oracle is not yet complete.
-- REV-14-through-REV-16 remain retained implementation progress only until the complete R-A closure inventory and later independent acceptance establish that their review findings are fully resolved.
+- Overall R-A is **not complete**; the requested checkpoint was rejected.
+- R-A-REV-17 bounded owner-certificate/canonical-cache remediation is compile-valid and retained as progress, not independent acceptance.
+- R-A-REV-18 remains open: the aggregate publishes no global owner and leaves post-remap identity/face-cycle caches stale.
+- R-A-REV-19 remains open: aggregate publication is not transactional and cached component validation is not a final merged-product oracle.
+- R-A-REV-20 bounded compatibility-path removal is compile-valid and retained as progress, not independent acceptance.
+- R-A-REV-21 is open: affected boundaries accept a foreign same-face-count authority without exact source-topology binding.
+- REV-14-through-REV-16 remain historical bounded progress until the complete R-A inventory closes.
 
-Partial Code + Build evidence: run/job `31616904715 / 94181880684`, Release/static/Ninja/PRE_TEST **118/118**, result/log artifacts `9149834162 / 9149834634`, verified self-excluding manifest **21/21**, five empty source-status snapshots, source audit reporting REV-17/REV-20 closed, and `runtimeExecution=false`. This is authentic partial build evidence only, not an M1 acceptance candidate.
+Compile-only evidence remains authentic: run/job `31616904715 / 94181880684`, Release/static/Ninja/PRE_TEST **118/118**, result/log artifacts `9149834162 / 9149834634`, verified self-excluding manifest **21/21**, five empty source-status snapshots, and `runtimeExecution=false`. It is not an R-A or M1 acceptance candidate.
 
-M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority; no runtime result or regression total changed in the completed Code + Build turn.
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. No runtime result or regression total changed; totals remain **34 events / 14 categories / 20 recurrences**.
 
 ## Standing product and regression state
 
@@ -98,6 +102,7 @@ M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authori
 
 - Compile success is build evidence, not runtime or semantic acceptance.
 - A generic geometry payload derived from typed authority becomes a duplicate semantic owner if production reads it back for equality, order, hashing, lookup, or ownership. Derived identity caches must be rebuilt after any authority remap or removed.
+- Matching container extent is not source ownership. Every paired source matrix and authority product must agree on exact checked row topology before semantic use.
 - A zero-selected test filter is orchestration failure, never a pass.
 - Preserve natural packaged file modes; do not chmod or repair immutable artifacts.
 - Do not answer a semantic failure by restoring a numeric mirror, adapter, alias, hash oracle, fallback, fixture exception, or weakened assertion.

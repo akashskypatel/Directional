@@ -4,17 +4,111 @@
 **Date:** 2026-08-12 UTC  
 **Repository:** akashskypatel/Directional  
 **Branch:** agent/surface_cell_quad/p5-recover-bridge-healing  
-**Current independent-review branch boundary:** fd96852d19defe70effd0dc6fbbaf07db8378e55  
-**Current reviewed implementation/test source:** cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e  
-**Review decision/planning commit:** ab29756e206da3e7b7d6845cfb3f08f25125faa5  
+**Current independent-review branch boundary:** 356a0bc2733af41e15fad056161e526865c147c5  
+**Current reviewed implementation/test source:** 1352f3d18eb3821ecda9d74ea5e439adb5bcb875  
+**Review decision/planning commit:** 49b94da971ff544ac77f9dd2fa394791a1b67435  
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
-**Current verdict:** **overall R-A and REV-14-through-REV-16 are rejected; R-A-REV-17 through R-A-REV-20 are open**
+**Current verdict:** **overall R-A is rejected; bounded REV-17/REV-20 progress is retained; REV-18, REV-19, and REV-21 are open**
 
-## Current-status addendum — 2026-08-12 UTC
+## Current-status addendum — R-A closure review after REV-17/REV-20 partial remediation
+
+The current review inspected exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5`. Six later commits modify durable documents only. Review decision/planning commit: `49b94da971ff544ac77f9dd2fa394791a1b67435`.
+
+**Decision: overall R-A is not complete. Do not mark the R-A checkpoint accepted.**
+
+### Checkpoint decision
+
+| Checkpoint | Decision | Evidence-based reason |
+|---|---|---|
+| Overall R-A | **rejected / open** | REV-18 and REV-19 are unimplemented; the complete inventory also found extent-only source-authority binding |
+| R-A-REV-17 | **retained bounded progress; not independently accepted** | owner/certificate/canonical-cache changes are present and compile-valid, but a foreign same-extent authority still passes and runtime contracts did not execute |
+| R-A-REV-18 | **open / not implemented** | aggregate publication still has no global owner and does not rebuild post-remap vertex/face identity caches |
+| R-A-REV-19 | **open / not implemented** | aggregate publication remains non-transactional and still substitutes cached component reports for final merged validation |
+| R-A-REV-20 | **retained bounded progress; not independently accepted** | named compatibility paths are removed/fail-closed for missing authority, but “complete authority” remains face-count-only and runtime contracts did not execute |
+| R-A-REV-21 | **open / new finding** | paired source geometry and authority are not proven to describe the same topology |
+
+### Review boundary and build evidence
+
+- The implementation delta from prior review head `7b10c1c3cde9769438991742594676ec75e4200a` to `1352f3...` changes 12 implementation/test files. `RemeshPipeline.cpp` has only two deletions; `SurfaceCellsPhase10Tests.cpp` is unchanged. This directly disproves a REV-18/REV-19 implementation claim.
+- Run/job `31616904715 / 94181880684` is successful. GitHub records result artifact `9149834162` with SHA-256 `c5055df51d9b94605c27817e596a04983bddb33956727a2c47c494d42a0b2ee2` and log artifact `9149834634` with SHA-256 `04291253c21af768af9c35b61f12e327c0ec536642a2ddf8895781657b1261a7`.
+- The retained package record establishes Release/static/Ninja/PRE_TEST **118/118**, self-excluding manifest **21/21**, clean source snapshots, and `runtimeExecution=false`. It is compile evidence, not semantic acceptance.
+- This Review changed durable documents only. It executed no configure, compile, generated binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input.
+
+### Retained REV-17 progress
+
+- `owner_validated_typed_authority_certificate` at `PureQuadCompletion.cpp:1757-1820` checks every claimed chart against the transition graph, support incidence, owning region, and owning sheet.
+- Certificate intersection is explicit at `1836-1859`; a present cached identity must equal the canonical full identity at `2016-2048`.
+- Stitching requires non-null source faces/authority at `2386-2408`, validates every input/intersection, and creates duplicate-face conflict diagnostics only from the final global authoritative-identity inventory at `2691-2733`.
+- The owned overlap contract and wrong-owner/sparse/wrong-sheet/wrong-face/exact-only/stale negatives are present in `PureQuadCompletionPhase18Tests.cpp:1797-2239`.
+
+These changes address the bounded REV-17 defects. They do not close R-A while REV-18/REV-19/REV-21 remain and no immutable runtime contract has run.
+
+### Retained REV-20 progress
+
+- The affected optimizer surface no longer contains `sourcePositions`, `constraints.sourceComponent`, `featureIntervals`, `legacyIndex`, the named standalone-fixture fallback, or the alternate basic-validator branch.
+- `source_optimization_has_complete_authority` now fails absent authority and invalid source shapes/indices at `SurfaceMeshOptimizer.cpp:1827-1846`; optimizer and final-validator entry points fail closed when that predicate is false.
+- The missing-authority optimizer/final-validator contract is present in `SurfaceMeshOptimizerPhase19Tests.cpp:109-137`.
+
+These changes address the named REV-20 compatibility paths. They do not establish exact owner binding, and the compiled contracts were not executed.
+
+### R-A-REV-18 — global aggregate owner and derived identity remain open
+
+**Evidence**
+
+- The aggregate span `RemeshPipeline.cpp:10004-10846` contains zero assignment to `merged.surfaceCellContext.sourceTopologyRegions`.
+- It remaps lineage authority at `10347-10475` but contains zero assignment to `stitchIdentity`, `authoritativeIdentity`, `canonicalStitchCycleHash`, or `canonicalAuthoritativeCycleHash`.
+- The REV-17/REV-20 delta changes only two unrelated lines in this file and no aggregation test.
+
+**Corrective measure**
+
+1. Build and publish one checked global source-authority product for the original source mesh.
+2. Validate every final global lineage against it.
+3. Recompute or remove vertex identity caches after remap and regenerate both face cycles from final identities.
+4. Compile colliding-local-domain, stale-cache, wrong-owner, and zero-publication contracts.
+
+### R-A-REV-19 — transactional publication and final merged oracle remain open
+
+**Evidence**
+
+- Labels are written at `RemeshPipeline.cpp:10272-10289` and rails are appended at `10295-10340` before lineage remap validation.
+- `reject_component_merge_authority` at `10227-10252` clears mesh/output lineage/completed patches only; it does not reset already written labels, rails, debug/context state, optimization, or validation.
+- The aggregate calls `accumulate_surface_validation_report` at `10759-10767` and publishes that cached result at `10832-10836`; it contains no call to the source-authoritative validator on the final merged product.
+- The existing zero-publication test asserts only the subset cleared by the rejection lambda.
+
+**Corrective measure**
+
+1. Stage every semantic/context product and commit only after all components, remaps, identity rebuilds, and final validation succeed.
+2. Make rejection expose one documented non-consumable empty semantic context, including failure in a later component after an earlier valid component.
+3. Run actual final source-authoritative validation against the global owner; retain component reports as diagnostics only.
+4. Expand the counterfactual snapshot to global owner, all remap domains, canonical identities, face cycles, complete rollback, and final validation.
+
+### R-A-REV-21 — source authority is bound by extent, not topology
+
+**Evidence**
+
+- `SourceTopologyRegions::complete_for_face_count` returns only `rowBindings_.size() == faceCount && !regions_.empty()` at `SourceTopologyRegions.h:139-140`.
+- Stitching at `PureQuadCompletion.cpp:2397-2405` and owner validation at `1763-1805` use that extent predicate. They validate claims within the supplied authority and incidence within the supplied face matrix, but never compare `sourceAuthority.topology_for_row(row)` with the checked topology key constructed from that matrix row.
+- `source_optimization_has_complete_authority` at `SurfaceMeshOptimizer.cpp:1827-1846` checks pointer, dimensions, row count, and vertex index bounds only.
+- Therefore an authority constructed for a different mesh with the same face count can be treated as complete: its owner relations validate tautologically while support/projection uses another mesh. Current negatives cover null/unowned fields, not this foreign-owner counterexample.
+
+**Corrective measure**
+
+1. Introduce one shared exact binding predicate for every affected `(sourceFaces, SourceTopologyRegions)` boundary.
+2. Construct the checked `SourceFaceTopologyKey` for every source row and require equality with `topology_for_row(row)`; reject repeated/invalid/out-of-extent source vertices.
+3. Apply it transitively to completion/stitching, `SourceChartTransitionGraph`, optimizer helpers/wrappers, source-authoritative validation, and pipeline ingress.
+4. Compile a same-face-count/wrong-topology negative, an authority-only row-permutation negative, and a consistently permuted matrix-plus-authority positive. Every negative must fail before semantic publication.
+
+### Review conclusion
+
+Return to Code + Build for REV-18, REV-19, and REV-21, then rerun the complete retained R-A inventory. The focused runtime turn for partial artifacts `9149834162 / 9149834634` is superseded because the package is source-incomplete and lacks the REV-21 counterexample. Continue R-B through R-G and create one fresh full package only after R-A closes.
+
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. Regression totals remain **34 events / 14 categories / 20 recurrences**.
+
+## Retained prior-review addendum — 2026-08-12 UTC
 
 This report retains the historical review of source `bebac907...` below. The current independent checkpoint review inspected exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` at branch authority `fd96852d19defe70effd0dc6fbbaf07db8378e55`. Later branch commits changed durable documentation and removed temporary workflow/payload files; the reviewed production and test blobs are unchanged from `cb848e4...`.
 
-**Current verdict:** **overall R-A and the requested REV-14-through-REV-16 review checkpoint are rejected.** The useful compile-only remediation remains historical partial evidence, but it does not establish the single-authority invariant.
+**Verdict at that prior boundary:** **overall R-A and the requested REV-14-through-REV-16 review checkpoint were rejected.** The useful compile-only remediation remains historical partial evidence, but it does not establish the single-authority invariant.
 
 ### Checkpoint decision
 
@@ -100,9 +194,9 @@ This report retains the historical review of source `bebac907...` below. The cur
 
 The reviewed source does correctly establish checked/private `SurfaceTopologyRegion` and `SourceTopologyRegions` construction, exact face coverage, builder-only raw classifier ingress, a phase-front materializer API that accepts the owning product rather than parallel raw arrays, independent local remap tables with region/sheet/chart/support relationship checks, and a real pre-aggregation raw-tamper seam. Those improvements remain valid implementation progress; they are insufficient for checkpoint closure.
 
-### Review conclusion
+### Prior review conclusion
 
-Do not mark overall R-A or REV-14-through-REV-16 independently accepted. Execute R-A-REV-17 through R-A-REV-20 in the next Code + Build turn, rerun the complete R-A inventory, and only then continue R-B through R-G and create a fresh full package.
+At that boundary, overall R-A and REV-14-through-REV-16 were not independently accepted, and REV-17 through REV-20 were assigned. The current-status addendum supersedes that task selection.
 
 ## 1. Review boundary and evidence
 
