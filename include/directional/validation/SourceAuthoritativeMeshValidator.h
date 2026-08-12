@@ -89,6 +89,10 @@ struct SourceAuthoritativeMeshValidationResult : MeshValidationResult {
   MeshTopologySummary sourceTopology;
   MeshTopologySummary outputTopology;
   bool sourceAuthorityUsed = false;
+  bool strictValidationUsed = false;
+  bool provenanceValidationUsed = false;
+  bool boundaryAuthorityUsed = false;
+  bool featureRailAuthorityUsed = false;
   bool provenanceCoverageComplete = false;
   bool localSheetCompatibilityPassed = false;
   bool orderedBoundaryCyclesPassed = false;

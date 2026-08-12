@@ -167,19 +167,35 @@ PROBES: tuple[Probe, ...] = (
           ("src/pipeline/RemeshPipeline.cpp",),
           r"finalAuthorityOptions\.requireBoundaryAuthority = true;|finalAuthorityOptions\.requireFeatureRailAuthority = true;|finalAuthorityOptions\.requireLocalSheetCompatibility = true;", "present",
           "The final oracle cannot weaken component strict gates to make aggregate output pass."),
-    Probe("REV-22", "boundary and feature authority tamper contracts exist",
+    Probe("REV-22", "component authority tamper contracts name the aggregation seam",
           ("tests/SurfaceCellsPhase10Tests.cpp",),
-          r"MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication|MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication", "present",
-          "Independent component authority tamper must reject with zero aggregate publication."),
+          r"ComponentBoundaryRailTamperRejectsAtAggregationSeam|ComponentFeatureRailTamperRejectsAtAggregationSeam", "present",
+          "Component capture-versus-mutation tests prove the pre-oracle seam guard and do not claim final-oracle coverage."),
+    Probe("REV-22", "final oracle boundary and feature authority negatives exist",
+          ("tests/SurfaceCellsPhase10Tests.cpp",),
+          r"FinalMergedOracleRejectsMissingRemappedBoundaryAuthority|FinalMergedOracleRejectsMissingRemappedFeatureAuthority", "present",
+          "Post-remap counterfactuals must pass component seam checks and make the final oracle reject missing boundary/feature authority with zero publication."),
+    Probe("REV-22", "aggregate validation flags are sourced from final oracle observables",
+          ("src/pipeline/RemeshPipeline.cpp",),
+          r"finalAuthorityValidation\.(?:strictValidationUsed|provenanceValidationUsed|boundaryAuthorityUsed|featureRailAuthorityUsed)", "present",
+          "Published strict/provenance/boundary/feature usage flags must be oracle evidence, not constants."),
+    Probe("REV-22", "aggregate validation flags are not hardcoded true",
+          ("src/pipeline/RemeshPipeline.cpp",),
+          r"aggregateValidationResult\.(?:strictValidationUsed|provenanceValidationUsed|authoritativeFeatureRailsUsed)\s*=\s*true", "absent",
+          "A hardcoded publication flag is a tautology and cannot establish validator execution."),
+    Probe("REV-22", "final oracle outcome is published independently of component reports",
+          ("include/directional/pipeline/RemeshPipeline.h", "src/pipeline/RemeshPipeline.cpp", "tests/SurfaceCellsPhase10Tests.cpp"),
+          r"hasFinalSourceAuthorityValidationResult|componentValidationReportsComplete|FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing", "present",
+          "Consumers must distinguish final oracle success from missing component-level aggregate reports."),
     Probe("REV-22", "valid boundary-bearing aggregate asserts strict final oracle evidence",
           ("tests/SurfaceCellsPhase10Tests.cpp",),
-          r"authoritativeBoundaryUsed|authoritativeFeatureRailsUsed|orderedBoundaryCyclesPassed|sourceAuthoritativeValidationUsed", "present",
-          "Positive coverage must prove the strict final merged-product validator actually ran."),
+          r"finalSourceAuthorityValidationResult|authoritativeBoundaryUsed|authoritativeFeatureRailsUsed|orderedBoundaryCyclesPassed|sourceAuthoritativeValidationUsed", "present",
+          "Positive coverage must prove the strict final merged-product validator actually ran and published its typed result."),
 
-    Probe("REV-23", "duplicate pipeline stitch-key constructor is deleted",
-          ("src/pipeline/RemeshPipeline.cpp",),
-          r"rebuild_aggregate_stitch_identity", "absent",
-          "The aggregate pipeline may not own a second incompatible stitch-key schema."),
+    Probe("REV-23", "pipeline stitch-kind assignment is structurally absent",
+          ("src/pipeline",),
+          r"(?:\.|->)kind\s*=\s*(?:geometry::)?PureQuadStitchIdentityKind::", "absent",
+          "The pipeline may not rebuild stitch schema by assigning a PureQuadStitchIdentityKind; kind is completion-owned."),
     Probe("REV-23", "completion-owned canonical stitch constructor is used",
           ("include/directional/geometry/PureQuadCompletion.h", "src/geometry/PureQuadCompletion.cpp", "src/pipeline/RemeshPipeline.cpp"),
           r"canonical_lineage_stitch_identity", "present",
@@ -200,6 +216,8 @@ PROBES: tuple[Probe, ...] = (
 )
 
 AFFECTED_R_A_PATHS: tuple[str, ...] = (
+    "include/directional/diagnostics/RemeshDiagnostics.h",
+    "include/directional/pipeline/RemeshPipeline.h",
     "include/directional/geometry/PureQuadCompletion.h",
     "include/directional/geometry/SourceChartTransitions.h",
     "include/directional/geometry/SourceTopologyRegions.h",
@@ -291,6 +309,54 @@ def classify_face_count_leaves(root: Path) -> tuple[list[tuple[str, int, str, st
     return allowed, unexpected
 
 
+def classify_pipeline_stitch_identity_assignments(
+    root: Path,
+) -> tuple[list[tuple[str, int, str, str]], list[tuple[str, int, str]]]:
+    rel = "src/pipeline/RemeshPipeline.cpp"
+    path = root / rel
+    text = path.read_text(encoding="utf-8")
+    assignment = re.compile(r"\bstitchIdentity\s*=\s*([^;]+);", re.MULTILINE)
+    allowed: list[tuple[str, int, str, str]] = []
+    unexpected: list[tuple[str, int, str]] = []
+    function_start = text.find("bool rebuild_aggregate_output_identity_caches(")
+    function_end = text.find("\n}\n", function_start)
+    if function_start < 0 or function_end < 0:
+        return allowed, [(rel, 0, "rebuild_aggregate_output_identity_caches function not found")]
+    function_text = text[function_start:function_end]
+    canonical_factory_present = "canonical_lineage_stitch_identity(" in function_text
+    canonical_map_populated = bool(re.search(
+        r"canonicalStitchByPatchVertex\s*\n?\s*\.emplace\([\s\S]{0,300}?lineage\.stitchIdentity\)",
+        function_text,
+    ))
+    for match in assignment.finditer(text):
+        line_no = text.count("\n", 0, match.start()) + 1
+        rhs = " ".join(match.group(1).split())
+        statement = " ".join(match.group(0).split())
+        if not (function_start <= match.start() <= function_end):
+            unexpected.append((rel, line_no, statement))
+            continue
+        if rhs == "stitch":
+            lookback = text[max(function_start, match.start() - 500):match.start()]
+            if "canonical_lineage_stitch_identity(" in lookback:
+                allowed.append((
+                    rel, line_no, statement,
+                    "direct assignment from the completion-owned canonical_lineage_stitch_identity result",
+                ))
+                continue
+        if rhs == "canonical->second" and canonical_factory_present and canonical_map_populated:
+            lookback = text[max(function_start, match.start() - 400):match.start()]
+            if "canonicalStitchByPatchVertex.find(" in lookback:
+                allowed.append((
+                    rel, line_no, statement,
+                    "assignment from a lookup map populated only by the completion-owned canonical stitch result",
+                ))
+                continue
+        unexpected.append((rel, line_no, statement))
+    if not allowed and not unexpected:
+        unexpected.append((rel, 0, "no stitchIdentity assignments found for structural classification"))
+    return allowed, unexpected
+
+
 def render(root: Path) -> tuple[str, bool]:
     lines: list[str] = []
     ok = True
@@ -364,6 +430,20 @@ def render(root: Path) -> tuple[str, bool]:
         ok = False
     lines.append("")
 
+    stitch_allowed, stitch_unexpected = classify_pipeline_stitch_identity_assignments(root)
+    lines.append("### Pipeline `stitchIdentity` assignment leaves")
+    lines.append("")
+    lines.append(f"- Match count: **{len(stitch_allowed) + len(stitch_unexpected)}**")
+    lines.append(f"- Allowed count: **{len(stitch_allowed)}**")
+    lines.append(f"- Unexpected count: **{len(stitch_unexpected)}**")
+    for rel, line_no, text, classification in stitch_allowed:
+        lines.append(f"- ALLOWED `{rel}:{line_no}` — {classification} — `{text}`")
+    for rel, line_no, text in stitch_unexpected:
+        lines.append(f"- UNEXPECTED `{rel}:{line_no}` — `{text}`")
+    if stitch_unexpected:
+        ok = False
+    lines.append("")
+
     lines.append("## Inventory summary")
     lines.append("")
     lines.append(f"- Probe count: **{len(PROBES)}**")
@@ -373,6 +453,8 @@ def render(root: Path) -> tuple[str, bool]:
     lines.append(f"- Unexpected raw-projection leaves: **{len(raw_unexpected)}**")
     lines.append(f"- Allowed face-count leaves: **{len(face_allowed)}**")
     lines.append(f"- Unexpected face-count leaves: **{len(face_unexpected)}**")
+    lines.append(f"- Allowed pipeline stitchIdentity assignments: **{len(stitch_allowed)}**")
+    lines.append(f"- Unexpected pipeline stitchIdentity assignments: **{len(stitch_unexpected)}**")
     lines.append(f"- Final static inventory: **{'PASS' if ok else 'FAIL'}**")
     lines.append("")
     lines.append(f"This {'PASS' if ok else 'FAIL'} is a static/compile-contract result only. R-A semantic acceptance requires the separately packaged artifact-only runtime turn on the fresh corrected compile package.")

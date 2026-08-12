@@ -1035,7 +1035,14 @@ validate_source_authoritative_surface_mesh(
     return result;
   }
   result.sourceAuthorityUsed = true;
+  result.strictValidationUsed =
+      options.requireBoundaryAuthority && options.requireFeatureRailAuthority &&
+      options.requireLocalSheetCompatibility;
+  result.provenanceValidationUsed = true;
+  result.featureRailAuthorityUsed = options.requireFeatureRailAuthority;
   result.sourceTopology = summarize_topology(*options.sourceFaces);
+  result.boundaryAuthorityUsed =
+      options.requireBoundaryAuthority && result.sourceTopology.boundaryLoopCount > 0;
   result.outputTopology = summarize_topology(faces);
 
   MeshValidatorOptions topologyOptions;

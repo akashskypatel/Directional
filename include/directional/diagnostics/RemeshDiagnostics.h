@@ -247,6 +247,7 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellPeriodicCutEdgeCount = 0U;
   std::string surfaceCellFirstInvalidProducerStage;
   std::string surfaceCellFirstInvalidProducerReason;
+  std::string surfaceCellFirstInvalidProducerValidationIssue;
   int surfaceCellFirstInvalidProducerCell = -1;
   int surfaceCellFirstInvalidProducerHalfedge = -1;
   int surfaceCellFirstInvalidProducerTwin = -1;

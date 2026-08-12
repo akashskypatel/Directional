@@ -4213,6 +4213,8 @@ void copy_surface_cell_stage_diagnostics(
       source.surfaceCellFirstInvalidProducerStage;
   target.surfaceCellFirstInvalidProducerReason =
       source.surfaceCellFirstInvalidProducerReason;
+  target.surfaceCellFirstInvalidProducerValidationIssue =
+      source.surfaceCellFirstInvalidProducerValidationIssue;
   target.surfaceCellFirstInvalidProducerCell =
       source.surfaceCellFirstInvalidProducerCell;
   target.surfaceCellFirstInvalidProducerHalfedge =
@@ -9604,6 +9606,8 @@ void accumulate_component_diagnostics(
         source.surfaceCellFirstInvalidProducerStage;
     target.surfaceCellFirstInvalidProducerReason =
         source.surfaceCellFirstInvalidProducerReason;
+    target.surfaceCellFirstInvalidProducerValidationIssue =
+        source.surfaceCellFirstInvalidProducerValidationIssue;
     target.surfaceCellFirstInvalidProducerCell =
         source.surfaceCellFirstInvalidProducerCell;
     target.surfaceCellFirstInvalidProducerHalfedge =
@@ -9981,7 +9985,9 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     const fields::CrossFieldResult &authoritativeCrossField,
     const RemeshOptions &options,
     const remesh_pipeline_detail::ComponentAggregationInputMutator
-        *beforeAggregation) {
+        *beforeAggregation,
+    const remesh_pipeline_detail::FinalAggregateValidationAuthorityMutator
+        *beforeFinalValidation) {
   using Clock = RemeshPipelineClock;
   const auto pipelineStart = Clock::now();
 
@@ -11514,6 +11520,9 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   finalAuthorityOptions.requireBoundaryAuthority = true;
   finalAuthorityOptions.requireFeatureRailAuthority = true;
   finalAuthorityOptions.requireLocalSheetCompatibility = true;
+  if (beforeFinalValidation != nullptr) {
+    (*beforeFinalValidation)(finalAuthorityOptions);
+  }
   const validation::SourceAuthoritativeMeshValidationResult
       finalAuthorityValidation =
           validation::validate_source_authoritative_surface_mesh(
@@ -11521,8 +11530,42 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   if (!finalAuthorityValidation.accepted) {
     reject_merge_authority(components.size(),
                            "FinalMergedSourceAuthorityValidationFailed");
+    if (!finalAuthorityValidation.issues.empty()) {
+      const validation::MeshValidationIssue *reportedIssue =
+          &finalAuthorityValidation.issues.front();
+      for (const validation::MeshValidationIssue &issue :
+           finalAuthorityValidation.issues) {
+        if (issue.code == validation::MeshValidationFailureCode::
+                              MissingBoundaryAuthority ||
+            issue.code == validation::MeshValidationFailureCode::
+                              ChangedBoundaryLoop ||
+            issue.code == validation::MeshValidationFailureCode::
+                              MissingFeatureRail) {
+          reportedIssue = &issue;
+          break;
+        }
+      }
+      merged.diagnostics.surfaceCellFirstInvalidProducerValidationIssue =
+          std::string(
+              validation::mesh_validation_failure_name(reportedIssue->code));
+      merged.diagnostics.surfaceCellFirstInvalidProducerFace =
+          reportedIssue->face;
+      merged.diagnostics.surfaceCellFirstInvalidProducerVertex =
+          reportedIssue->vertex;
+      merged.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+          reportedIssue->edgeFirst;
+      merged.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+          reportedIssue->edgeSecond;
+    }
     return merged;
   }
+
+  staged.surfaceCellContext.finalSourceAuthorityValidationResult =
+      finalAuthorityValidation;
+  staged.surfaceCellContext.hasFinalSourceAuthorityValidationResult = true;
+  staged.surfaceCellContext.componentValidationReportsComplete =
+      allCompletedSurfaceCells && allHaveValidationResult &&
+      !firstValidationResult;
 
   staged.surfaceCellContext.hasSourceSurfaceLabels =
       allHaveSourceLabels;
@@ -11576,16 +11619,18 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   }
   if (allCompletedSurfaceCells && allHaveValidationResult &&
       !firstValidationResult) {
-    aggregateValidationResult.strictValidationUsed = true;
-    aggregateValidationResult.provenanceValidationUsed = true;
+    aggregateValidationResult.strictValidationUsed =
+        finalAuthorityValidation.strictValidationUsed;
+    aggregateValidationResult.provenanceValidationUsed =
+        finalAuthorityValidation.provenanceValidationUsed;
     aggregateValidationResult.sourceAuthoritativeValidationUsed =
         finalAuthorityValidation.sourceAuthorityUsed;
     aggregateValidationResult.spatialAccelerationUsed =
         finalAuthorityValidation.spatialAccelerationUsed;
     aggregateValidationResult.authoritativeBoundaryUsed =
-        !globalValidationBoundaryEdges.empty() ||
-        !globalValidationBoundaryLoops.empty();
-    aggregateValidationResult.authoritativeFeatureRailsUsed = true;
+        finalAuthorityValidation.boundaryAuthorityUsed;
+    aggregateValidationResult.authoritativeFeatureRailsUsed =
+        finalAuthorityValidation.featureRailAuthorityUsed;
     aggregateValidationResult.authoritativeFeatureRailsPassed =
         finalAuthorityValidation.featureRailsPassed;
     aggregateValidationResult.localSheetCompatibilityPassed =
@@ -11621,7 +11666,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
     const fields::CrossFieldResult &authoritativeCrossField,
     const RemeshOptions &options) {
   return remesh_surface_cell_components_from_cross_field_aggregate_impl(
-      vertices, faces, authoritativeCrossField, options, nullptr);
+      vertices, faces, authoritativeCrossField, options, nullptr, nullptr);
 }
 
 } // namespace directional::pipeline
@@ -11634,7 +11679,19 @@ RemeshResult remesh_surface_cell_components_from_cross_field_counterfactual(
     const RemeshOptions &options,
     const ComponentAggregationInputMutator &beforeAggregation) {
   return remesh_surface_cell_components_from_cross_field_aggregate_impl(
-      vertices, faces, authoritativeCrossField, options, &beforeAggregation);
+      vertices, faces, authoritativeCrossField, options, &beforeAggregation,
+      nullptr);
+}
+
+RemeshResult
+remesh_surface_cell_components_from_cross_field_final_validation_counterfactual(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options,
+    const FinalAggregateValidationAuthorityMutator &beforeFinalValidation) {
+  return remesh_surface_cell_components_from_cross_field_aggregate_impl(
+      vertices, faces, authoritativeCrossField, options, nullptr,
+      &beforeFinalValidation);
 }
 
 } // namespace directional::pipeline::remesh_pipeline_detail

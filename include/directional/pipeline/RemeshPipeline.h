@@ -53,6 +53,7 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
 #include <directional/geometry/BoundedMeshPreconditioner.h>
+#include <directional/validation/SourceAuthoritativeMeshValidator.h>
 #include <directional/geometry/MeshComponents.h>
 #include <directional/geometry/SurfacePoint.h>
 #include <directional/fields/PCFaceTangentBundle.h>
@@ -499,6 +500,16 @@ struct SurfaceCellPipelineContext {
   geometry::SurfaceFinalValidationReport validationResult;
   bool hasValidationResult = false;
 
+  // Final disconnected-aggregate source-authoritative oracle evidence is
+  // independent of whether every component published a legacy aggregate
+  // validation report. This distinguishes "oracle ran and passed" from
+  // "oracle result unavailable" without fabricating incomplete aggregate
+  // quality metrics.
+  validation::SourceAuthoritativeMeshValidationResult
+      finalSourceAuthorityValidationResult;
+  bool hasFinalSourceAuthorityValidationResult = false;
+  bool componentValidationReportsComplete = false;
+
   std::vector<SurfaceCellContextProductDebug> debugProducts;
 };
 /**
@@ -911,6 +922,8 @@ namespace remesh_pipeline_detail {
 
 using ComponentAggregationInputMutator =
     std::function<void(std::size_t, RemeshResult &)>;
+using FinalAggregateValidationAuthorityMutator = std::function<void(
+    validation::SourceAuthoritativeMeshValidatorOptions &)>;
 
 /**
  * Counterfactual seam over the production disconnected-component aggregator.
@@ -923,6 +936,20 @@ RemeshResult remesh_surface_cell_components_from_cross_field_counterfactual(
     const fields::CrossFieldResult &authoritativeCrossField,
     const RemeshOptions &options,
     const ComponentAggregationInputMutator &beforeAggregation);
+
+/**
+ * Counterfactual seam immediately before the final disconnected-aggregate
+ * source-authoritative oracle. Component seam/capture checks have already
+ * passed, so this hook can prove the final oracle independently rejects
+ * missing or corrupted globally remapped authority. Production entry points
+ * never supply this mutator.
+ */
+RemeshResult
+remesh_surface_cell_components_from_cross_field_final_validation_counterfactual(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options,
+    const FinalAggregateValidationAuthorityMutator &beforeFinalValidation);
 
 } // namespace remesh_pipeline_detail
 
