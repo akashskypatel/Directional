@@ -1164,10 +1164,7 @@ TEST(SurfaceCellSourceSupportAndChartAuthority,
   const auto sourceRow = directional::authority::SourceFaceId::from_index(
       0, static_cast<std::size_t>(fixture.faces.rows()));
   ASSERT_TRUE(sourceRow.has_value());
-  const auto sourceAuthority =
-      test_source_authority(fixture.faces, {0, 0}, {0, 1});
-  EXPECT_EQ(sourceAuthority.face_authority(sourceRow.value()).topology,
-            face->face);
+  EXPECT_EQ(sourceRow.value(), face->face);
   EXPECT_NE(vertexSupport.identity, edgeSupport.identity);
   EXPECT_NE(vertexSupport.identity, faceSupport.identity);
   EXPECT_NE(edgeSupport.identity, faceSupport.identity);
@@ -1341,7 +1338,8 @@ TEST(PureQuadCompletionPhase18,
   EXPECT_TRUE(completion.failure.starts_with(
       "CompletionOwnershipComponentSheetMismatch:"));
   EXPECT_TRUE(completion.ownershipRejection.active);
-  EXPECT_EQ(1, completion.ownershipRejection.sourceSheet);
+  EXPECT_EQ("CompletionOwnershipComponentSheetMismatch",
+            completion.ownershipRejection.failure);
 }
 
 TEST(PureQuadCompletionPhase18,

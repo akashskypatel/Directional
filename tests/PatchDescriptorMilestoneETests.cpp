@@ -16,24 +16,12 @@ directional::geometry::SourceProjectionChart test_projection_chart(
     const int fieldChart, const int sourceFace) {
   const auto chart = directional::authority::FieldChartId::from_index(
       fieldChart, static_cast<std::size_t>(std::max(fieldChart + 1, 1)));
-  if (!chart || sourceFace < 0) {
+  const auto face = directional::authority::SourceFaceId::from_index(
+      sourceFace, static_cast<std::size_t>(std::max(sourceFace + 1, 1)));
+  if (!chart || !face) {
     throw std::runtime_error("Invalid test projection chart.");
   }
-  const std::size_t vertexExtent =
-      static_cast<std::size_t>(3 * sourceFace + 3);
-  std::array<directional::authority::SourceVertexId, 3> vertices{
-      directional::authority::SourceVertexId::from_index(
-          3 * sourceFace, vertexExtent).value(),
-      directional::authority::SourceVertexId::from_index(
-          3 * sourceFace + 1, vertexExtent).value(),
-      directional::authority::SourceVertexId::from_index(
-          3 * sourceFace + 2, vertexExtent).value()};
-  const auto topology =
-      directional::authority::SourceFaceTopologyKey::make(vertices);
-  if (!topology) {
-    throw std::runtime_error("Invalid test source-face topology key.");
-  }
-  return {chart.value(), topology.value()};
+  return {chart.value(), face.value()};
 }
 
 auto test_topology_region_id(const int value) {
