@@ -85,7 +85,7 @@ Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe
 | A5 OccurrenceComplex | explicit typed occurrences and relations | M5-M6 |
 | A6 QuotientComplex/materialization | verified exact-once relation consumption | M5-M6 |
 | A7 GeometryEmbedding | exact support, injectivity, and quality | M6, T5 |
-| A8 Verification | independent invariant and quality verification | M6-M7 |
+| A8 Verification | independent verification and disposition assignment | M6-M7 |
 | A9 Diagnostics/export | derived, non-authoritative, retained by policy | M8 |
 
 ## Testing roadmap
