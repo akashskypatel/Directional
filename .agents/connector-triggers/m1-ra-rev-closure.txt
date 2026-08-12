@@ -1,1 +1,1 @@
-trigger R-A review-closure durable record sync
+trigger corrected R-A review-closure durable record sync
