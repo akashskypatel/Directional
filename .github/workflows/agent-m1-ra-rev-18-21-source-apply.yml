@@ -1,0 +1,198 @@
+name: Agent M1 R-A REV-18-21 Source Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1-ra-rev-18-21-source-apply.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1-ra-rev-18-21-source-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=M1 R-A-REV-18 through R-A-REV-21 source application and static audit' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'turnBoundary=Code+Build-only' \
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+
+      - name: Apply exact source patch and audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          PAYLOAD=.agents/Directional/turn-payloads/m1-ra-rev-18-21.patch.gz.b64
+          test "$(sha256sum "$PAYLOAD" | cut -d' ' -f1)" = "a0fbabe08f05a3bde5050c93c5fe558f4b9be0f12fd8d308e6e7fd338a23e306"
+          base64 --decode "$PAYLOAD" | gzip -d > "$RUNNER_TEMP/rev18-21.patch"
+          test "$(sha256sum "$RUNNER_TEMP/rev18-21.patch" | cut -d' ' -f1)" = "ea484dba9eaa2fe7d8c4d788f40c541a32f4d6e424b358a2241fdf921622b9ce"
+          git apply --check "$RUNNER_TEMP/rev18-21.patch"
+          git apply "$RUNNER_TEMP/rev18-21.patch"
+          git diff --check
+
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' \
+            include/directional/geometry/SourceChartTransitions.h \
+            include/directional/geometry/SourceTopologyRegions.h \
+            include/directional/geometry/SurfaceMeshOptimizer.h \
+            include/directional/validation/SourceAuthoritativeMeshValidator.h \
+            src/geometry/PureQuadCompletion.cpp \
+            src/geometry/SurfaceArrangement.cpp \
+            src/geometry/SurfaceCellTracing.cpp \
+            src/geometry/SurfaceMeshOptimizer.cpp \
+            src/geometry/SurfaceOptimizationRailConstraints.cpp \
+            src/pipeline/RemeshPipeline.cpp \
+            src/validation/SourceAuthoritativeMeshValidator.cpp \
+            tests/PureQuadCompletionPhase18Tests.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            tests/SurfaceMeshOptimizerPhase19Tests.cpp | sort)"
+          printf 'changed_product_files=\n%s\n' "$changed"
+          test "$changed" = "$expected"
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          root = Path('.')
+          failures = []
+          def text(path):
+              return (root / path).read_text(encoding='utf-8')
+          def require(path, needles):
+              body = text(path)
+              for needle in needles:
+                  if needle not in body:
+                      failures.append(f'{path}: missing required fragment: {needle}')
+          def forbid(path, needles):
+              body = text(path)
+              for needle in needles:
+                  if needle in body:
+                      failures.append(f'{path}: forbidden fragment remains: {needle}')
+
+          # REV-21: exact source topology binding replaces extent-only semantic acceptance.
+          offenders = []
+          for base in ('include', 'src'):
+              for path in (root / base).rglob('*'):
+                  if not path.is_file() or path.suffix not in {'.h', '.hpp', '.cpp'}:
+                      continue
+                  if path.as_posix() == 'include/directional/geometry/SourceTopologyRegions.h':
+                      continue
+                  body = path.read_text(encoding='utf-8')
+                  if 'complete_for_face_count(' in body:
+                      offenders.append(path.as_posix())
+          if offenders:
+              failures.append('extent-only source-authority consumers remain: ' + ', '.join(sorted(offenders)))
+          require('include/directional/geometry/SourceTopologyRegions.h', ['matches_source_faces('])
+          for path in [
+              'include/directional/geometry/SourceChartTransitions.h',
+              'include/directional/geometry/SurfaceMeshOptimizer.h',
+              'include/directional/validation/SourceAuthoritativeMeshValidator.h',
+              'src/geometry/PureQuadCompletion.cpp',
+              'src/geometry/SurfaceArrangement.cpp',
+              'src/geometry/SurfaceCellTracing.cpp',
+              'src/geometry/SurfaceMeshOptimizer.cpp',
+              'src/geometry/SurfaceOptimizationRailConstraints.cpp',
+              'src/pipeline/RemeshPipeline.cpp',
+              'src/validation/SourceAuthoritativeMeshValidator.cpp',
+          ]:
+              require(path, ['matches_source_faces'])
+
+          # REV-18/19: one global owner, rebuilt derived identity, transactional publication,
+          # and a real post-merge source-authoritative validation pass.
+          require('src/pipeline/RemeshPipeline.cpp', [
+              'RemeshResult staged = merged;',
+              'globalSourceAuthority',
+              'SourceTopologyRegions::make',
+              'rebuild_aggregate_output_identity_caches',
+              'canonical_authoritative_identity',
+              'canonicalStitchCycleHash',
+              'canonicalAuthoritativeCycleHash',
+              'merged.surfaceCellContext = SurfaceCellPipelineContext{}',
+              'validate_source_authoritative_surface_mesh',
+              'FinalMergedSourceAuthorityValidationFailed',
+          ])
+          forbid('src/pipeline/RemeshPipeline.cpp', [
+              'merged.surfaceCellContext = failure.surfaceCellContext',
+          ])
+
+          # REV-20 remains closed: no displaced optimizer authority mirrors.
+          for path in [
+              'include/directional/geometry/SurfaceMeshOptimizer.h',
+              'src/geometry/SurfaceMeshOptimizer.cpp',
+              'src/geometry/SurfaceOptimizationRailConstraints.cpp',
+              'include/directional/validation/SourceAuthoritativeMeshValidator.h',
+              'src/validation/SourceAuthoritativeMeshValidator.cpp',
+          ]:
+              body = text(path)
+              for token in ('sourceComponents', 'sourceSheets', 'sourcePositions'):
+                  if re.search(r'\b' + re.escape(token) + r'\b', body):
+                      failures.append(f'{path}: displaced raw semantic mirror remains: {token}')
+
+          # Compile-contract source for each new review finding.
+          require('tests/SurfaceCellsPhase10Tests.cpp', [
+              'DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches',
+              'DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches',
+              'SecondComponentAuthorityFailurePublishesNoSemanticAggregateContext',
+              'FinalMergedOracleRejectsPostComponentProvenanceTamper',
+              'SameExtentForeignSourceTopologyDoesNotMatchPublishedAuthority',
+          ])
+          require('tests/SurfaceMeshOptimizerPhase19Tests.cpp', [
+              'SameExtentForeignSourceAuthorityFailsClosed',
+          ])
+          require('tests/PureQuadCompletionPhase18Tests.cpp', [
+              'SameExtentForeignSourceAuthorityRejectsStitchPublication',
+          ])
+
+          if failures:
+              print('R-A REV-18-21 source audit: FAILED')
+              for failure in failures:
+                  print(' -', failure)
+              raise SystemExit(1)
+          print('R-A REV-18-21 source audit: closed at static/compile-contract source boundary')
+          print('REV18: global aggregate owner and derived identity rebuild present')
+          print('REV19: staged publication, complete rollback shell, and final merged validator present')
+          print('REV20: named raw optimizer authority mirrors remain absent')
+          print('REV21: affected semantic consumers bind authority to exact source topology')
+          PY
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- $changed
+          git commit -m "fix: close R-A REV-18 through REV-21 code contracts"
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          echo "source_sha=$SOURCE_SHA"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+          echo 'runtimeExecution=false'
+          echo 'No generated Directional binary, test, benchmark, discovery command, ctest, CLI, fuzzer, help/version command, or custom input was executed.'
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-rev-18-21-source-apply-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
