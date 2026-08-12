@@ -1962,6 +1962,30 @@ PureQuadStitchIdentity typed_lineage_stitch_identity(
   return key;
 }
 
+} // namespace
+
+namespace pure_quad_detail {
+
+PureQuadStitchIdentity canonical_lineage_stitch_identity(
+    const PureQuadMesh &patch, const int localRow) {
+  if (localRow < 0 ||
+      localRow >= static_cast<int>(patch.vertices.size()) ||
+      localRow >= static_cast<int>(patch.vertexLineage.size())) {
+    return {};
+  }
+  const int localVertex = patch.vertices[static_cast<std::size_t>(localRow)];
+  const bool sharedBoundary =
+      std::find(patch.boundaryVertices.begin(), patch.boundaryVertices.end(),
+                localVertex) != patch.boundaryVertices.end();
+  return typed_lineage_stitch_identity(
+      patch.vertexLineage[static_cast<std::size_t>(localRow)], sharedBoundary,
+      stable_patch_owner(patch), localVertex);
+}
+
+} // namespace pure_quad_detail
+
+namespace {
+
 PureQuadStitchIdentity resolved_stitch_identity(
     const PureQuadMesh &patch, const int localRow,
     const bool sharedBoundary, const std::int64_t patchOwner) {

@@ -3666,6 +3666,102 @@ std::set<std::uint64_t> hard_feature_edge_keys_from_rails(
   return keys;
 }
 
+bool project_surface_cell_vertex_chart_authority(
+    const std::vector<geometry::PureQuadVertexLineage> &lineages,
+    const int outputVertexCount, const std::size_t railCount,
+    std::vector<validation::SourceVertexChartAuthority> &projected) {
+  if (outputVertexCount < 0 ||
+      lineages.size() != static_cast<std::size_t>(outputVertexCount)) {
+    projected.clear();
+    return false;
+  }
+  projected.assign(static_cast<std::size_t>(outputVertexCount), {});
+  bool valid = true;
+  for (const geometry::PureQuadVertexLineage &lineage : lineages) {
+    if (!valid || lineage.outputVertex < 0 ||
+        lineage.outputVertex >= outputVertexCount) {
+      valid = false;
+      break;
+    }
+    validation::SourceVertexChartAuthority &authority =
+        projected[static_cast<std::size_t>(lineage.outputVertex)];
+    if (authority.retained) {
+      valid = false;
+      break;
+    }
+    authority.retained = true;
+    authority.sourceCharts = lineage.sourceCharts;
+    std::sort(authority.sourceCharts.begin(), authority.sourceCharts.end());
+    authority.sourceCharts.erase(
+        std::unique(authority.sourceCharts.begin(), authority.sourceCharts.end()),
+        authority.sourceCharts.end());
+    if (authority.sourceCharts.empty()) {
+      valid = false;
+      break;
+    }
+    for (const geometry::PureQuadEquivalenceProvenance &equivalence :
+         lineage.equivalences) {
+      if (equivalence.kind != geometry::PureQuadEquivalenceKind::HardRail) {
+        continue;
+      }
+      if (!equivalence.railId.has_value() ||
+          equivalence.railId->index() >= railCount) {
+        valid = false;
+        break;
+      }
+      validation::SourceHardRailChartEquivalence entry;
+      entry.firstFrontEdge = equivalence.firstFrontEdge;
+      entry.secondFrontEdge = equivalence.secondFrontEdge;
+      entry.rail = equivalence.railId.value();
+      entry.route = equivalence.route;
+      authority.hardRailEquivalences.push_back(std::move(entry));
+    }
+    if (!valid) break;
+    std::sort(authority.hardRailEquivalences.begin(),
+              authority.hardRailEquivalences.end());
+    authority.hardRailEquivalences.erase(
+        std::unique(authority.hardRailEquivalences.begin(),
+                    authority.hardRailEquivalences.end()),
+        authority.hardRailEquivalences.end());
+  }
+  if (!valid ||
+      std::any_of(projected.begin(), projected.end(), [](const auto &authority) {
+        return !authority.retained || authority.sourceCharts.empty();
+      })) {
+    for (auto &authority : projected) authority.retained = false;
+    return false;
+  }
+  return true;
+}
+
+bool same_surface_cell_rail_authority(
+    const std::vector<geometry::SurfaceCellRail> &first,
+    const std::vector<geometry::SurfaceCellRail> &second) {
+  if (first.size() != second.size()) return false;
+  for (std::size_t railIndex = 0; railIndex < first.size(); ++railIndex) {
+    const geometry::SurfaceCellRail &a = first[railIndex];
+    const geometry::SurfaceCellRail &b = second[railIndex];
+    if (a.id != b.id || a.kind != b.kind || a.curveId != b.curveId ||
+        a.component != b.component || a.closed != b.closed ||
+        a.sourceVertices != b.sourceVertices || a.sourceEdges != b.sourceEdges ||
+        a.samples.size() != b.samples.size()) {
+      return false;
+    }
+    for (std::size_t sampleIndex = 0; sampleIndex < a.samples.size();
+         ++sampleIndex) {
+      const geometry::SurfaceCellRailSample &x = a.samples[sampleIndex];
+      const geometry::SurfaceCellRailSample &y = b.samples[sampleIndex];
+      if (x.sourceFace != y.sourceFace || x.sourceEdge != y.sourceEdge ||
+          x.parameter != y.parameter || x.railParameter != y.railParameter ||
+          !(x.barycentric.array() == y.barycentric.array()).all() ||
+          !(x.position.array() == y.position.array()).all()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 } // namespace directional::pipeline
 
 namespace directional::pipeline {
@@ -7728,72 +7824,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       }
       constraints.vertexProvenance = completedProvenance;
       if (useAuthoritativePhaseFront) {
-        constraints.vertexChartAuthority.resize(
-            static_cast<std::size_t>(completedVertices.rows()));
-        bool chartAuthorityProjectionValid =
-            completedVertexLineage.size() ==
-            constraints.vertexChartAuthority.size();
-        for (const geometry::PureQuadVertexLineage &lineage :
-             completedVertexLineage) {
-          if (!chartAuthorityProjectionValid || lineage.outputVertex < 0 ||
-              lineage.outputVertex >= completedVertices.rows()) {
-            chartAuthorityProjectionValid = false;
-            break;
-          }
-          validation::SourceVertexChartAuthority &authority =
-              constraints.vertexChartAuthority[static_cast<std::size_t>(
-                  lineage.outputVertex)];
-          if (authority.retained) {
-            chartAuthorityProjectionValid = false;
-            break;
-          }
-          authority.retained = true;
-          authority.sourceCharts = lineage.sourceCharts;
-          std::sort(authority.sourceCharts.begin(),
-                    authority.sourceCharts.end());
-          authority.sourceCharts.erase(
-              std::unique(authority.sourceCharts.begin(),
-                          authority.sourceCharts.end()),
-              authority.sourceCharts.end());
-          for (const geometry::PureQuadEquivalenceProvenance &equivalence :
-               lineage.equivalences) {
-            if (equivalence.kind !=
-                geometry::PureQuadEquivalenceKind::HardRail) {
-              continue;
-            }
-            validation::SourceHardRailChartEquivalence projected;
-            projected.firstFrontEdge = equivalence.firstFrontEdge;
-            projected.secondFrontEdge = equivalence.secondFrontEdge;
-            if (!equivalence.railId.has_value() ||
-                equivalence.railId->index() >= authoritativeRails.size()) {
-              chartAuthorityProjectionValid = false;
-              break;
-            }
-            projected.rail = equivalence.railId.value();
-            projected.route = equivalence.route;
-            authority.hardRailEquivalences.push_back(
-                std::move(projected));
-          }
-          std::sort(authority.hardRailEquivalences.begin(),
-                    authority.hardRailEquivalences.end());
-          authority.hardRailEquivalences.erase(
-              std::unique(authority.hardRailEquivalences.begin(),
-                          authority.hardRailEquivalences.end()),
-              authority.hardRailEquivalences.end());
-          chartAuthorityProjectionValid =
-              !authority.sourceCharts.empty();
-        }
-        if (!chartAuthorityProjectionValid ||
-            std::any_of(constraints.vertexChartAuthority.begin(),
-                        constraints.vertexChartAuthority.end(),
-                        [](const auto &authority) {
-                          return !authority.retained ||
-                                 authority.sourceCharts.empty();
-                        })) {
-          for (auto &authority : constraints.vertexChartAuthority) {
-            authority.retained = false;
-          }
-        }
+        project_surface_cell_vertex_chart_authority(
+            completedVertexLineage, completedVertices.rows(),
+            authoritativeRails.size(), constraints.vertexChartAuthority);
       }
       fill_surface_cell_rail_constraints(authoritativeRails, completedVertices,
                                          completedProvenance, constraints);
@@ -9755,74 +9788,6 @@ namespace directional::pipeline {
 
 namespace {
 
-std::optional<geometry::PureQuadStitchIdentity>
-rebuild_aggregate_stitch_identity(
-    const geometry::PureQuadVertexLineage &lineage) {
-  if (lineage.localVertex < 0 || lineage.sourceTopologyRegions.empty() ||
-      lineage.sourceIsolationSheets.empty()) {
-    return std::nullopt;
-  }
-
-  geometry::PureQuadStitchIdentity identity;
-  identity.kind = lineage.stitchIdentity.kind;
-  identity.canonical.valid = true;
-  switch (identity.kind) {
-  case geometry::PureQuadStitchIdentityKind::ArrangementBoundaryNode:
-    identity.canonical.values = {lineage.localVertex};
-    break;
-  case geometry::PureQuadStitchIdentityKind::GeneratedPatchInterior:
-    if (lineage.sourcePatch < 0) return std::nullopt;
-    identity.canonical.values = {lineage.sourcePatch, lineage.localVertex};
-    break;
-  default:
-    return std::nullopt;
-  }
-  identity.canonical.values.push_back(
-      static_cast<std::int64_t>(lineage.sourceTopologyRegions.size()));
-  for (const authority::TopologyRegionId region :
-       lineage.sourceTopologyRegions) {
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(region.index()));
-  }
-  identity.canonical.values.push_back(
-      static_cast<std::int64_t>(lineage.sourceIsolationSheets.size()));
-  for (const authority::IsolationSheetId sheet :
-       lineage.sourceIsolationSheets) {
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(sheet.index()));
-  }
-  identity.canonical.values.push_back(
-      static_cast<std::int64_t>(lineage.sourceCharts.size()));
-  for (const geometry::SourceProjectionChart &chart : lineage.sourceCharts) {
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(chart.chart.index()));
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(chart.face.index()));
-  }
-  if (!lineage.sourceSupport.has_value()) return std::nullopt;
-  const authority::SourceSupport &support = lineage.sourceSupport.value();
-  identity.canonical.values.push_back(
-      static_cast<std::int64_t>(authority::support_kind(support)));
-  if (const auto *vertex =
-          std::get_if<authority::SourceVertexSupport>(&support)) {
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(vertex->vertex.index()));
-  } else if (const auto *edge =
-                 std::get_if<authority::SourceEdgeSupport>(&support)) {
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(edge->edge.first().index()));
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(edge->edge.second().index()));
-  } else if (const auto *face =
-                 std::get_if<authority::SourceFaceInteriorSupport>(&support)) {
-    identity.canonical.values.push_back(
-        static_cast<std::int64_t>(face->face.index()));
-  } else {
-    return std::nullopt;
-  }
-  return identity;
-}
-
 std::array<geometry::PureQuadStitchIdentity, 4>
 canonical_aggregate_quad_cycle(
     const std::array<geometry::PureQuadStitchIdentity, 4> &cycle) {
@@ -9854,20 +9819,6 @@ std::uint64_t aggregate_stitch_cycle_hash(
   return seed;
 }
 
-bool rebuild_aggregate_vertex_identity(
-    geometry::PureQuadVertexLineage &lineage,
-    const Eigen::MatrixXi &sourceFaces,
-    const geometry::SourceTopologyRegions &sourceAuthority,
-    const std::set<std::uint64_t> *sourceHardFeatureEdges) {
-  const auto stitch = rebuild_aggregate_stitch_identity(lineage);
-  if (!stitch.has_value()) return false;
-  lineage.stitchIdentity = stitch.value();
-  lineage.authoritativeIdentity =
-      geometry::pure_quad_detail::canonical_authoritative_identity(
-          lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
-  return lineage.authoritativeIdentity.valid();
-}
-
 bool rebuild_aggregate_output_identity_caches(
     RemeshResult &result, const Eigen::MatrixXi &sourceFaces,
     const geometry::SourceTopologyRegions &sourceAuthority,
@@ -9876,8 +9827,85 @@ bool rebuild_aggregate_output_identity_caches(
           static_cast<std::size_t>(result.vertices.rows()) ||
       result.outputQuadLineage.size() !=
           static_cast<std::size_t>(result.faces.rows()) ||
-      result.faces.cols() < 4) {
+      result.faces.cols() < 4 ||
+      result.surfaceCellContext.completedPatches.empty()) {
     return false;
+  }
+
+  using PatchVertexKey = std::pair<int, int>;
+  std::map<PatchVertexKey, geometry::PureQuadStitchIdentity>
+      canonicalStitchByPatchVertex;
+
+  // Rebuild patch-local identity through the completion-owned canonical
+  // constructor first. The pipeline never interprets or preserves a cached
+  // stitch kind/schema of its own.
+  for (geometry::PureQuadMesh &patch :
+       result.surfaceCellContext.completedPatches) {
+    if (patch.sourcePatch < 0 ||
+        patch.vertexLineage.size() != patch.vertices.size() ||
+        patch.vertexProvenance.size() != patch.vertices.size() ||
+        patch.quadLineage.size() != patch.quads.size()) {
+      return false;
+    }
+    std::map<int, std::size_t> lineageByLocalVertex;
+    for (std::size_t row = 0; row < patch.vertexLineage.size(); ++row) {
+      geometry::PureQuadVertexLineage &lineage = patch.vertexLineage[row];
+      if (lineage.sourcePatch != patch.sourcePatch || lineage.localVertex < 0 ||
+          !lineageByLocalVertex.emplace(lineage.localVertex, row).second) {
+        return false;
+      }
+      const geometry::PureQuadStitchIdentity stitch =
+          geometry::pure_quad_detail::canonical_lineage_stitch_identity(
+              patch, static_cast<int>(row));
+      if (!stitch.valid()) return false;
+      lineage.stitchIdentity = stitch;
+      lineage.authoritativeIdentity =
+          geometry::pure_quad_detail::canonical_authoritative_identity(
+              lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
+      if (!lineage.authoritativeIdentity.valid() ||
+          !canonicalStitchByPatchVertex
+               .emplace(PatchVertexKey{lineage.sourcePatch,
+                                       lineage.localVertex},
+                        lineage.stitchIdentity)
+               .second) {
+        return false;
+      }
+      patch.vertexProvenance[row] = lineage.sourcePoint;
+    }
+
+    if (patch.boundaryNodeIdentities.size() != patch.boundaryVertices.size()) {
+      return false;
+    }
+    for (std::size_t boundary = 0; boundary < patch.boundaryVertices.size();
+         ++boundary) {
+      const auto row =
+          lineageByLocalVertex.find(patch.boundaryVertices[boundary]);
+      if (row == lineageByLocalVertex.end()) return false;
+      patch.boundaryNodeIdentities[boundary] =
+          patch.vertexLineage[row->second].stitchIdentity.canonical;
+    }
+
+    for (std::size_t quad = 0; quad < patch.quads.size(); ++quad) {
+      if (patch.quads[quad].size() != 4) return false;
+      std::array<geometry::PureQuadStitchIdentity, 4> stitchCycle{};
+      std::array<geometry::PureQuadStitchIdentity, 4> authoritativeCycle{};
+      for (int corner = 0; corner < 4; ++corner) {
+        const auto row = lineageByLocalVertex.find(
+            patch.quads[quad][static_cast<std::size_t>(corner)]);
+        if (row == lineageByLocalVertex.end()) return false;
+        const geometry::PureQuadVertexLineage &lineage =
+            patch.vertexLineage[row->second];
+        stitchCycle[static_cast<std::size_t>(corner)] = lineage.stitchIdentity;
+        authoritativeCycle[static_cast<std::size_t>(corner)] =
+            lineage.authoritativeIdentity;
+      }
+      patch.quadLineage[quad].canonicalStitchCycleHash =
+          aggregate_stitch_cycle_hash(
+              canonical_aggregate_quad_cycle(stitchCycle));
+      patch.quadLineage[quad].canonicalAuthoritativeCycleHash =
+          aggregate_stitch_cycle_hash(
+              canonical_aggregate_quad_cycle(authoritativeCycle));
+    }
   }
 
   std::vector<int> lineageByOutputVertex(
@@ -9885,11 +9913,18 @@ bool rebuild_aggregate_output_identity_caches(
   for (std::size_t row = 0; row < result.outputVertexLineage.size(); ++row) {
     geometry::PureQuadVertexLineage &lineage = result.outputVertexLineage[row];
     if (lineage.outputVertex < 0 || lineage.outputVertex >= result.vertices.rows() ||
-        lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] >= 0 ||
-        !rebuild_aggregate_vertex_identity(
-            lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges)) {
+        lineage.sourcePatch < 0 || lineage.localVertex < 0 ||
+        lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] >= 0) {
       return false;
     }
+    const auto canonical = canonicalStitchByPatchVertex.find(
+        PatchVertexKey{lineage.sourcePatch, lineage.localVertex});
+    if (canonical == canonicalStitchByPatchVertex.end()) return false;
+    lineage.stitchIdentity = canonical->second;
+    lineage.authoritativeIdentity =
+        geometry::pure_quad_detail::canonical_authoritative_identity(
+            lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
+    if (!lineage.authoritativeIdentity.valid()) return false;
     lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] =
         static_cast<int>(row);
   }
@@ -9935,58 +9970,6 @@ bool rebuild_aggregate_output_identity_caches(
         canonical_aggregate_quad_cycle(stitchCycle));
     lineage.canonicalAuthoritativeCycleHash = aggregate_stitch_cycle_hash(
         canonical_aggregate_quad_cycle(authoritativeCycle));
-  }
-
-  for (geometry::PureQuadMesh &patch :
-       result.surfaceCellContext.completedPatches) {
-    if (patch.vertexLineage.size() != patch.vertices.size() ||
-        patch.vertexProvenance.size() != patch.vertices.size() ||
-        patch.quadLineage.size() != patch.quads.size()) {
-      return false;
-    }
-    std::map<int, std::size_t> lineageByLocalVertex;
-    for (std::size_t row = 0; row < patch.vertexLineage.size(); ++row) {
-      geometry::PureQuadVertexLineage &lineage = patch.vertexLineage[row];
-      if (!lineageByLocalVertex.emplace(lineage.localVertex, row).second ||
-          !rebuild_aggregate_vertex_identity(
-              lineage, sourceFaces, sourceAuthority,
-              sourceHardFeatureEdges)) {
-        return false;
-      }
-      patch.vertexProvenance[row] = lineage.sourcePoint;
-    }
-    if (patch.boundaryNodeIdentities.size() != patch.boundaryVertices.size()) {
-      return false;
-    }
-    for (std::size_t boundary = 0; boundary < patch.boundaryVertices.size();
-         ++boundary) {
-      const auto row =
-          lineageByLocalVertex.find(patch.boundaryVertices[boundary]);
-      if (row == lineageByLocalVertex.end()) return false;
-      patch.boundaryNodeIdentities[boundary] =
-          patch.vertexLineage[row->second].stitchIdentity.canonical;
-    }
-    for (std::size_t quad = 0; quad < patch.quads.size(); ++quad) {
-      if (patch.quads[quad].size() != 4) return false;
-      std::array<geometry::PureQuadStitchIdentity, 4> stitchCycle{};
-      std::array<geometry::PureQuadStitchIdentity, 4> authoritativeCycle{};
-      for (int corner = 0; corner < 4; ++corner) {
-        const auto row = lineageByLocalVertex.find(
-            patch.quads[quad][static_cast<std::size_t>(corner)]);
-        if (row == lineageByLocalVertex.end()) return false;
-        const geometry::PureQuadVertexLineage &lineage =
-            patch.vertexLineage[row->second];
-        stitchCycle[static_cast<std::size_t>(corner)] = lineage.stitchIdentity;
-        authoritativeCycle[static_cast<std::size_t>(corner)] =
-            lineage.authoritativeIdentity;
-      }
-      patch.quadLineage[quad].canonicalStitchCycleHash =
-          aggregate_stitch_cycle_hash(
-              canonical_aggregate_quad_cycle(stitchCycle));
-      patch.quadLineage[quad].canonicalAuthoritativeCycleHash =
-          aggregate_stitch_cycle_hash(
-              canonical_aggregate_quad_cycle(authoritativeCycle));
-    }
   }
   return true;
 }
@@ -10046,10 +10029,102 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   const double absoluteTargetLength =
       derive_absolute_target_length(vertices, options);
 
+  struct ComponentFinalValidationAuthority {
+    bool available = false;
+    std::vector<geometry::SurfaceCellRail> authoritativeRails;
+    std::vector<geometry::PureQuadVertexLineage> vertexLineage;
+    std::vector<int> outputQuadSourceFaces;
+    std::set<std::pair<int, int>> authoritativeBoundaryEdges;
+    std::vector<std::vector<int>> authoritativeBoundaryLoops;
+    std::vector<std::vector<int>> authoritativeFeatureRails;
+    std::size_t expectedFeatureRailCount = 0U;
+    bool featureRailAuthorityProvided = false;
+  };
+
   struct ComponentRun {
     RemeshResult result;
+    ComponentFinalValidationAuthority finalValidationAuthority;
     double wallSeconds = 0.0;
   };
+
+  const auto captureFinalValidationAuthority =
+      [&](const geometry::FaceComponent &component, ComponentRun &run) {
+        if (!run.result.success ||
+            !run.result.surfaceCellContext.sourceTopologyRegions.has_value() ||
+            !run.result.surfaceCellContext.sourceTopologyRegions->matches_source_faces(
+                component.faces, component.originalVertices.size()) ||
+            run.result.outputVertexProvenance.size() !=
+                static_cast<std::size_t>(run.result.vertices.rows()) ||
+            run.result.outputVertexLineage.size() !=
+                static_cast<std::size_t>(run.result.vertices.rows())) {
+          return;
+        }
+
+        geometry::SurfaceOptimizationConstraints constraints;
+        constraints.sourceVertices = component.vertices;
+        constraints.sourceFaces = component.faces;
+        constraints.sourceAuthority =
+            &run.result.surfaceCellContext.sourceTopologyRegions.value();
+        constraints.sourceHardFeatureEdges = hard_feature_edge_keys_from_rails(
+            run.result.surfaceCellContext.authoritativeRails);
+        constraints.vertexProvenance = run.result.outputVertexProvenance;
+        constraints.outputQuadSourceFaces.assign(
+            static_cast<std::size_t>(run.result.faces.rows()), -1);
+        const bool chartAuthorityComplete =
+            project_surface_cell_vertex_chart_authority(
+                run.result.outputVertexLineage, run.result.vertices.rows(),
+                run.result.surfaceCellContext.authoritativeRails.size(),
+                constraints.vertexChartAuthority);
+        fill_surface_cell_rail_constraints(
+            run.result.surfaceCellContext.authoritativeRails,
+            run.result.vertices, run.result.outputVertexProvenance, constraints);
+
+        // The component strict path may replace rail-derived boundary loops with
+        // the completion-owned aggregate mesh loops. Preserve that authority
+        // before the counterfactual aggregation seam can mutate component data.
+        if (run.result.surfaceCellContext.completedPatches.size() == 1U) {
+          const geometry::PureQuadMesh &completed =
+              run.result.surfaceCellContext.completedPatches.front();
+          if (!completed.boundaryLoops.empty() &&
+              completed.vertexPositions.rows() == run.result.vertices.rows() &&
+              completed.quads.size() ==
+                  static_cast<std::size_t>(run.result.faces.rows())) {
+            constraints.authoritativeBoundaryEdges.clear();
+            constraints.authoritativeBoundaryLoops = completed.boundaryLoops;
+            constraints.authoritativeBoundaryLoop =
+                constraints.authoritativeBoundaryLoops.front();
+            for (const std::vector<int> &loop :
+                 constraints.authoritativeBoundaryLoops) {
+              for (std::size_t edge = 0; edge < loop.size(); ++edge) {
+                constraints.authoritativeBoundaryEdges.insert(std::minmax(
+                    loop[edge], loop[(edge + 1U) % loop.size()]));
+              }
+            }
+          }
+        }
+
+        if (!chartAuthorityComplete ||
+            !geometry::source_optimization_has_complete_authority(constraints)) {
+          return;
+        }
+        ComponentFinalValidationAuthority &authority =
+            run.finalValidationAuthority;
+        authority.authoritativeRails =
+            run.result.surfaceCellContext.authoritativeRails;
+        authority.vertexLineage = run.result.outputVertexLineage;
+        authority.outputQuadSourceFaces = constraints.outputQuadSourceFaces;
+        authority.authoritativeBoundaryEdges =
+            constraints.authoritativeBoundaryEdges;
+        authority.authoritativeBoundaryLoops =
+            constraints.authoritativeBoundaryLoops;
+        authority.authoritativeFeatureRails =
+            constraints.authoritativeFeatureRails;
+        authority.expectedFeatureRailCount =
+            constraints.requiredFeatureRailCount;
+        authority.featureRailAuthorityProvided =
+            constraints.featureRailAuthorityProvided;
+        authority.available = true;
+      };
 
   auto runComponent = [&](const std::size_t componentIndex) {
     const auto componentStart = Clock::now();
@@ -10075,6 +10150,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
 
       run.result = remesh_surface_cells_from_cross_field_impl(
           componentMesh, componentCrossField, componentOptions);
+      captureFinalValidationAuthority(component, run);
     } catch (const std::exception &) {
       run.result.success = false;
       run.result.diagnostics.remeshBackend =
@@ -10323,6 +10399,16 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
       globalRowSheets(static_cast<std::size_t>(faces.rows()));
   std::vector<geometry::SurfaceTopologyRegion> globalRegions;
 
+  std::set<std::pair<int, int>> globalValidationBoundaryEdges;
+  std::vector<std::vector<int>> globalValidationBoundaryLoops;
+  std::vector<std::vector<int>> globalValidationFeatureRails;
+  std::vector<validation::SourceVertexChartAuthority>
+      globalValidationVertexCharts;
+  std::vector<int> globalValidationOutputQuadSourceFaces;
+  std::set<std::uint64_t> globalValidationHardFeatureEdges;
+  std::size_t globalValidationExpectedFeatureRailCount = 0U;
+  bool globalValidationFeatureRailAuthorityProvided = true;
+
   const auto reject_merge_authority =
       [&](const std::size_t componentIndex, const std::string &reason) {
         merged.success = false;
@@ -10551,6 +10637,15 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
           index, "InvalidTypedComponentSourceAuthorityDomain");
       return merged;
     }
+    const ComponentFinalValidationAuthority &componentValidationAuthority =
+        runs[index].finalValidationAuthority;
+    if (!componentValidationAuthority.available ||
+        !same_surface_cell_rail_authority(
+            componentResult.surfaceCellContext.authoritativeRails,
+            componentValidationAuthority.authoritativeRails)) {
+      reject_merge_authority(index, "ChangedComponentValidationAuthority");
+      return merged;
+    }
 
     const auto globalComponent = authority::SourceComponentId::from_index(
         static_cast<std::int64_t>(index), components.size());
@@ -10695,6 +10790,118 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
         staged.surfaceCellContext.sourceSurfaceLabels.localSheetByFace[
             static_cast<std::size_t>(originalFace)] =
             static_cast<int>(mappedSheet->second.index());
+      }
+    }
+
+    if (componentValidationAuthority.vertexLineage.size() !=
+            static_cast<std::size_t>(componentResult.vertices.rows()) ||
+        componentValidationAuthority.outputQuadSourceFaces.size() !=
+            static_cast<std::size_t>(componentResult.faces.rows())) {
+      reject_merge_authority(index, "ChangedComponentValidationAuthority");
+      return merged;
+    }
+    const auto remapValidationOutputVertex = [&](const int localVertex)
+        -> std::optional<int> {
+      if (localVertex < 0 || localVertex >= componentResult.vertices.rows() ||
+          localVertex > std::numeric_limits<int>::max() - vertexOffset) {
+        return std::nullopt;
+      }
+      return localVertex + vertexOffset;
+    };
+    for (const auto &edge :
+         componentValidationAuthority.authoritativeBoundaryEdges) {
+      const auto first = remapValidationOutputVertex(edge.first);
+      const auto second = remapValidationOutputVertex(edge.second);
+      if (!first.has_value() || !second.has_value()) {
+        reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+        return merged;
+      }
+      globalValidationBoundaryEdges.insert(std::minmax(*first, *second));
+    }
+    for (const std::vector<int> &localLoop :
+         componentValidationAuthority.authoritativeBoundaryLoops) {
+      std::vector<int> globalLoop;
+      globalLoop.reserve(localLoop.size());
+      for (const int localVertex : localLoop) {
+        const auto globalVertex = remapValidationOutputVertex(localVertex);
+        if (!globalVertex.has_value()) {
+          reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+          return merged;
+        }
+        globalLoop.push_back(*globalVertex);
+      }
+      globalValidationBoundaryLoops.push_back(std::move(globalLoop));
+    }
+    for (const std::vector<int> &localRail :
+         componentValidationAuthority.authoritativeFeatureRails) {
+      std::vector<int> globalRail;
+      globalRail.reserve(localRail.size());
+      for (const int localVertex : localRail) {
+        const auto globalVertex = remapValidationOutputVertex(localVertex);
+        if (!globalVertex.has_value()) {
+          reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+          return merged;
+        }
+        globalRail.push_back(*globalVertex);
+      }
+      globalValidationFeatureRails.push_back(std::move(globalRail));
+    }
+    if (componentValidationAuthority.expectedFeatureRailCount >
+        std::numeric_limits<std::size_t>::max() -
+            globalValidationExpectedFeatureRailCount) {
+      reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+      return merged;
+    }
+    globalValidationExpectedFeatureRailCount +=
+        componentValidationAuthority.expectedFeatureRailCount;
+    globalValidationFeatureRailAuthorityProvided =
+        globalValidationFeatureRailAuthorityProvided &&
+        componentValidationAuthority.featureRailAuthorityProvided;
+    for (const int localSourceFace :
+         componentValidationAuthority.outputQuadSourceFaces) {
+      if (localSourceFace < 0) {
+        globalValidationOutputQuadSourceFaces.push_back(-1);
+        continue;
+      }
+      if (static_cast<std::size_t>(localSourceFace) >=
+          component.originalFaces.size()) {
+        reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+        return merged;
+      }
+      globalValidationOutputQuadSourceFaces.push_back(
+          component.originalFaces[static_cast<std::size_t>(localSourceFace)]);
+    }
+    for (const geometry::SurfaceCellRail &rail :
+         componentValidationAuthority.authoritativeRails) {
+      if (rail.kind != geometry::SurfaceCellRailKind::HardFeature) continue;
+      const auto addHardFeatureEdge = [&](const int localFirst,
+                                          const int localSecond) -> bool {
+        if (localFirst < 0 || localSecond < 0 ||
+            static_cast<std::size_t>(localFirst) >=
+                component.originalVertices.size() ||
+            static_cast<std::size_t>(localSecond) >=
+                component.originalVertices.size()) {
+          return false;
+        }
+        globalValidationHardFeatureEdges.insert(surface_cell_source_edge_key(
+            component.originalVertices[static_cast<std::size_t>(localFirst)],
+            component.originalVertices[static_cast<std::size_t>(localSecond)]));
+        return true;
+      };
+      for (std::size_t sourceVertex = 0;
+           sourceVertex + 1U < rail.sourceVertices.size(); ++sourceVertex) {
+        if (!addHardFeatureEdge(rail.sourceVertices[sourceVertex],
+                                rail.sourceVertices[sourceVertex + 1U])) {
+          reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+          return merged;
+        }
+      }
+      if (rail.closed && rail.sourceVertices.size() > 1U &&
+          rail.sourceVertices.front() != rail.sourceVertices.back() &&
+          !addHardFeatureEdge(rail.sourceVertices.back(),
+                              rail.sourceVertices.front())) {
+        reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+        return merged;
       }
     }
 
@@ -10883,6 +11090,34 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
                  !lineage.sourceCharts.empty() &&
                  lineage.sourceSupport.has_value();
         };
+
+    std::vector<geometry::PureQuadVertexLineage>
+        remappedValidationVertexLineage =
+            componentValidationAuthority.vertexLineage;
+    for (geometry::PureQuadVertexLineage &lineage :
+         remappedValidationVertexLineage) {
+      if (!remap_quotient_lineage_authority(lineage)) {
+        reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+        return merged;
+      }
+    }
+    std::vector<validation::SourceVertexChartAuthority>
+        remappedValidationVertexCharts;
+    const std::size_t globalRailExtent =
+        static_cast<std::size_t>(std::max(0, railOffset)) +
+        componentValidationAuthority.authoritativeRails.size();
+    if (!project_surface_cell_vertex_chart_authority(
+            remappedValidationVertexLineage, componentResult.vertices.rows(),
+            globalRailExtent, remappedValidationVertexCharts) ||
+        globalValidationVertexCharts.size() !=
+            static_cast<std::size_t>(vertexOffset)) {
+      reject_merge_authority(index, "InvalidFinalValidationAuthorityRemap");
+      return merged;
+    }
+    globalValidationVertexCharts.insert(
+        globalValidationVertexCharts.end(),
+        std::make_move_iterator(remappedValidationVertexCharts.begin()),
+        std::make_move_iterator(remappedValidationVertexCharts.end()));
 
     int localMaximumPatch = -1;
     std::vector<geometry::PureQuadVertexLineage> remappedOutputVertexLineage;
@@ -11237,19 +11472,18 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     return merged;
   }
 
-  std::set<std::uint64_t> globalHardFeatureEdges;
-  for (const geometry::SurfaceCellRail &rail :
-       staged.surfaceCellContext.authoritativeRails) {
-    if (rail.kind != geometry::SurfaceCellRailKind::HardFeature) continue;
-    for (const int sourceEdge : rail.sourceEdges) {
-      if (sourceEdge < 0 || sourceEdge >= sourceMesh.EV.rows()) continue;
-      globalHardFeatureEdges.insert(surface_cell_source_edge_key(
-          sourceMesh.EV(sourceEdge, 0), sourceMesh.EV(sourceEdge, 1)));
-    }
+  if (globalValidationVertexCharts.size() !=
+          static_cast<std::size_t>(staged.vertices.rows()) ||
+      globalValidationOutputQuadSourceFaces.size() !=
+          static_cast<std::size_t>(staged.faces.rows()) ||
+      !globalValidationFeatureRailAuthorityProvided) {
+    reject_merge_authority(components.size(),
+                           "InvalidFinalValidationAuthorityRemap");
+    return merged;
   }
   if (!rebuild_aggregate_output_identity_caches(
           staged, faces, globalSourceAuthority.value(),
-          &globalHardFeatureEdges)) {
+          &globalValidationHardFeatureEdges)) {
     reject_merge_authority(components.size(),
                            "InvalidGlobalDerivedIdentity");
     return merged;
@@ -11262,10 +11496,23 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   finalAuthorityOptions.sourceFaces = &faces;
   finalAuthorityOptions.sourceAuthority =
       &staged.surfaceCellContext.sourceTopologyRegions.value();
-  finalAuthorityOptions.vertexProvenance =
-      &staged.outputVertexProvenance;
-  finalAuthorityOptions.requireBoundaryAuthority = false;
-  finalAuthorityOptions.requireFeatureRailAuthority = false;
+  finalAuthorityOptions.vertexProvenance = &staged.outputVertexProvenance;
+  finalAuthorityOptions.vertexChartAuthority =
+      &globalValidationVertexCharts;
+  finalAuthorityOptions.outputQuadSourceFaces =
+      &globalValidationOutputQuadSourceFaces;
+  finalAuthorityOptions.sourceHardFeatureEdges =
+      globalValidationHardFeatureEdges;
+  finalAuthorityOptions.authoritativeBoundaryEdges =
+      globalValidationBoundaryEdges;
+  finalAuthorityOptions.authoritativeBoundaryLoops =
+      globalValidationBoundaryLoops;
+  finalAuthorityOptions.authoritativeFeatureRails =
+      globalValidationFeatureRails;
+  finalAuthorityOptions.expectedFeatureRailCount =
+      globalValidationExpectedFeatureRailCount;
+  finalAuthorityOptions.requireBoundaryAuthority = true;
+  finalAuthorityOptions.requireFeatureRailAuthority = true;
   finalAuthorityOptions.requireLocalSheetCompatibility = true;
   const validation::SourceAuthoritativeMeshValidationResult
       finalAuthorityValidation =
@@ -11335,6 +11582,12 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
         finalAuthorityValidation.sourceAuthorityUsed;
     aggregateValidationResult.spatialAccelerationUsed =
         finalAuthorityValidation.spatialAccelerationUsed;
+    aggregateValidationResult.authoritativeBoundaryUsed =
+        !globalValidationBoundaryEdges.empty() ||
+        !globalValidationBoundaryLoops.empty();
+    aggregateValidationResult.authoritativeFeatureRailsUsed = true;
+    aggregateValidationResult.authoritativeFeatureRailsPassed =
+        finalAuthorityValidation.featureRailsPassed;
     aggregateValidationResult.localSheetCompatibilityPassed =
         finalAuthorityValidation.localSheetCompatibilityPassed;
     aggregateValidationResult.orderedBoundaryCyclesPassed =

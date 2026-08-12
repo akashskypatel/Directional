@@ -93,6 +93,74 @@ TEST(SourceAuthoritativeMeshValidatorPhase22,
 }
 
 TEST(SourceAuthoritativeMeshValidatorPhase22,
+     MissingSourceAuthorityRejectsEvenWhenOptionalGatesAreDisabled) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3;
+  Eigen::MatrixXi quads(1, 4);
+  quads << 0, 1, 2, 3;
+  const std::vector<SurfacePoint> provenance = square_provenance(vertices);
+
+  directional::validation::SourceAuthoritativeMeshValidatorOptions options;
+  options.sourceVertices = &vertices;
+  options.sourceFaces = &sourceFaces;
+  options.vertexProvenance = &provenance;
+  options.requireBoundaryAuthority = false;
+  options.requireFeatureRailAuthority = false;
+  options.requireLocalSheetCompatibility = false;
+
+  const auto result =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          vertices, quads, options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_FALSE(result.sourceAuthorityUsed);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::MissingSourceAuthority));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
+     SameExtentForeignSourceAuthorityRejectsBeforeOptionalGates) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+      1.0, 0.0, 0.0,
+      1.0, 1.0, 0.0,
+      0.0, 1.0, 0.0;
+  Eigen::MatrixXi sourceFaces(2, 3);
+  sourceFaces << 0, 1, 2,
+      0, 2, 3;
+  Eigen::MatrixXi foreignFaces(2, 3);
+  foreignFaces << 0, 1, 3,
+      1, 2, 3;
+  Eigen::MatrixXi quads(1, 4);
+  quads << 0, 1, 2, 3;
+  const std::vector<SurfacePoint> provenance = square_provenance(vertices);
+  const auto foreignAuthority =
+      test_source_authority(foreignFaces, {0, 0}, {0, 0});
+  ASSERT_FALSE(foreignAuthority.matches_source_faces(
+      sourceFaces, static_cast<std::size_t>(vertices.rows())));
+
+  directional::validation::SourceAuthoritativeMeshValidatorOptions options;
+  options.sourceVertices = &vertices;
+  options.sourceFaces = &sourceFaces;
+  options.sourceAuthority = &foreignAuthority;
+  options.vertexProvenance = &provenance;
+  options.requireBoundaryAuthority = false;
+  options.requireFeatureRailAuthority = false;
+  options.requireLocalSheetCompatibility = false;
+
+  const auto result =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          vertices, quads, options);
+  EXPECT_FALSE(result.accepted);
+  EXPECT_FALSE(result.sourceAuthorityUsed);
+  EXPECT_TRUE(has_code(result, MeshValidationFailureCode::MissingSourceAuthority));
+}
+
+TEST(SourceAuthoritativeMeshValidatorPhase22,
      SourceOrientationRemainsAuthoritativeWhenSheetGateIsDisabled) {
   Eigen::MatrixXd vertices(4, 3);
   vertices << 0.0, 0.0, 0.0,

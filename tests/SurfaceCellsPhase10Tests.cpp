@@ -5216,22 +5216,48 @@ TEST(SurfaceCellAuthorityContractCutover,
     EXPECT_NE(0U, lineage.canonicalStitchCycleHash);
     EXPECT_NE(0U, lineage.canonicalAuthoritativeCycleHash);
   }
+  ASSERT_TRUE(result.surfaceCellContext.hasValidationResult);
+  const auto &finalValidation = result.surfaceCellContext.validationResult;
+  EXPECT_TRUE(finalValidation.strictValidationUsed);
+  EXPECT_TRUE(finalValidation.sourceAuthoritativeValidationUsed);
+  EXPECT_TRUE(finalValidation.authoritativeBoundaryUsed);
+  EXPECT_TRUE(finalValidation.authoritativeFeatureRailsUsed);
+  EXPECT_TRUE(finalValidation.authoritativeFeatureRailsPassed);
+  EXPECT_TRUE(finalValidation.orderedBoundaryCyclesPassed);
+  EXPECT_TRUE(finalValidation.localSheetCompatibilityPassed);
+  EXPECT_TRUE(finalValidation.strictValidationIssues.empty());
+
+  bool sawGeneratedInterior = false;
   for (const auto &patch : result.surfaceCellContext.completedPatches) {
     ASSERT_EQ(patch.boundaryVertices.size(),
               patch.boundaryNodeIdentities.size());
-    for (const auto &lineage : patch.vertexLineage) {
+    for (std::size_t row = 0; row < patch.vertexLineage.size(); ++row) {
+      const auto &lineage = patch.vertexLineage[row];
       ASSERT_TRUE(lineage.stitchIdentity.valid());
       ASSERT_TRUE(lineage.authoritativeIdentity.valid());
+      EXPECT_EQ(
+          directional::geometry::pure_quad_detail::canonical_lineage_stitch_identity(
+              patch, static_cast<int>(row)),
+          lineage.stitchIdentity);
       EXPECT_EQ(
           lineage.authoritativeIdentity,
           directional::geometry::pure_quad_detail::canonical_authoritative_identity(
               lineage, mesh.F, authority));
+      sawGeneratedInterior =
+          sawGeneratedInterior ||
+          lineage.stitchIdentity.kind ==
+              directional::geometry::PureQuadStitchIdentityKind::GeneratedPatchInterior;
     }
     for (const auto &lineage : patch.quadLineage) {
       EXPECT_NE(0U, lineage.canonicalStitchCycleHash);
       EXPECT_NE(0U, lineage.canonicalAuthoritativeCycleHash);
     }
   }
+  EXPECT_TRUE(sawGeneratedInterior)
+      << "fixture must exercise generated-interior canonical identity";
+  const auto restitched = directional::geometry::stitch_pure_quad_patches(
+      result.surfaceCellContext.completedPatches, 1.0e-9, &mesh.F, &authority);
+  EXPECT_TRUE(restitched.success) << restitched.failure;
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
@@ -5258,6 +5284,14 @@ TEST(SurfaceCellAuthorityContractCutover,
              directional::pipeline::RemeshResult &componentResult) {
             const auto makeStale = [staleToken](auto &lineage) {
               if (lineage.stitchIdentity.valid()) {
+                lineage.stitchIdentity.kind =
+                    lineage.stitchIdentity.kind ==
+                            directional::geometry::PureQuadStitchIdentityKind::
+                                ArrangementBoundaryNode
+                        ? directional::geometry::PureQuadStitchIdentityKind::
+                              GeneratedPatchInterior
+                        : directional::geometry::PureQuadStitchIdentityKind::
+                              ArrangementBoundaryNode;
                 lineage.stitchIdentity.canonical.valid = true;
                 lineage.stitchIdentity.canonical.values = {staleToken};
               }
@@ -5298,10 +5332,105 @@ TEST(SurfaceCellAuthorityContractCutover,
             lineage, mesh.F, authority));
   }
   for (const auto &patch : result.surfaceCellContext.completedPatches) {
+    for (std::size_t row = 0; row < patch.vertexLineage.size(); ++row) {
+      EXPECT_EQ(
+          directional::geometry::pure_quad_detail::canonical_lineage_stitch_identity(
+              patch, static_cast<int>(row)),
+          patch.vertexLineage[row].stitchIdentity);
+    }
     for (const auto &identity : patch.boundaryNodeIdentities) {
       EXPECT_NE((std::vector<std::int64_t>{staleToken}), identity.values);
     }
   }
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  bool mutated = false;
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&mutated](const std::size_t componentIndex,
+                     directional::pipeline::RemeshResult &componentResult) {
+            if (componentIndex != 1U) return;
+            auto &rails = componentResult.surfaceCellContext.authoritativeRails;
+            const auto boundary = std::find_if(
+                rails.begin(), rails.end(), [](const auto &rail) {
+                  return rail.kind ==
+                         directional::geometry::SurfaceCellRailKind::Boundary;
+                });
+            if (boundary == rails.end()) return;
+            rails.erase(boundary);
+            mutated = true;
+          });
+
+  ASSERT_TRUE(mutated) << "fixture must expose component boundary authority";
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("ChangedComponentValidationAuthority",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.featureMap.userHardEdges.insert({0, 2});
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  bool mutated = false;
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&mutated](const std::size_t componentIndex,
+                     directional::pipeline::RemeshResult &componentResult) {
+            if (componentIndex != 1U) return;
+            auto &rails = componentResult.surfaceCellContext.authoritativeRails;
+            const auto feature = std::find_if(
+                rails.begin(), rails.end(), [](const auto &rail) {
+                  return rail.kind ==
+                         directional::geometry::SurfaceCellRailKind::HardFeature;
+                });
+            if (feature == rails.end()) return;
+            rails.erase(feature);
+            mutated = true;
+          });
+
+  ASSERT_TRUE(mutated) << "fixture must expose hard-feature authority to tamper";
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("ChangedComponentValidationAuthority",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
@@ -5430,6 +5559,69 @@ TEST(SurfaceCellAuthorityContractCutover,
   directional::geometry::SourceChartTransitionGraph foreignTransitions(
       foreignFaces, authority);
   EXPECT_FALSE(foreignTransitions.available());
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     AuthorityOnlyFaceRowPermutationRejectsExactTopologyBinding) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh(false);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(mesh.F, options);
+  ASSERT_TRUE(authority.has_value());
+  ASSERT_TRUE(authority->matches_source_faces(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows())));
+
+  Eigen::MatrixXi permuted = mesh.F;
+  ASSERT_GE(permuted.rows(), 2);
+  permuted.row(0).swap(permuted.row(1));
+  EXPECT_FALSE(authority->matches_source_faces(
+      permuted, static_cast<std::size_t>(mesh.V.rows())));
+  directional::geometry::SourceChartTransitionGraph mismatched(
+      permuted, authority.value());
+  EXPECT_FALSE(mismatched.available());
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ConsistentlyPermutedSourceMatrixAndAuthorityPreserveSemanticTopology) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh(false);
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  const auto forwardAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(mesh.F, options);
+  ASSERT_TRUE(forwardAuthority.has_value());
+
+  Eigen::MatrixXi permuted = mesh.F;
+  ASSERT_GE(permuted.rows(), 4);
+  permuted.row(0).swap(permuted.row(3));
+  permuted.row(1).swap(permuted.row(2));
+  const auto permutedAuthority =
+      directional::geometry::surface_cell_tracing_detail::
+          build_source_topology_regions(permuted, options);
+  ASSERT_TRUE(permutedAuthority.has_value());
+  EXPECT_TRUE(permutedAuthority->matches_source_faces(
+      permuted, static_cast<std::size_t>(mesh.V.rows())));
+  EXPECT_FALSE(forwardAuthority->matches_source_faces(
+      permuted, static_cast<std::size_t>(mesh.V.rows())));
+
+  const auto snapshot = [](const auto &authority) {
+    std::multiset<std::tuple<std::uint64_t, int, int, std::size_t>> result;
+    for (const auto &region : authority.regions()) {
+      result.emplace(directional::geometry::surface_topology_region_hash(region),
+                     region.euler_characteristic(),
+                     region.boundary_loop_count(), region.faces().size());
+    }
+    return result;
+  };
+  EXPECT_EQ(snapshot(forwardAuthority.value()),
+            snapshot(permutedAuthority.value()));
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

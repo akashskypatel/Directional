@@ -558,6 +558,11 @@ bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads);
  * This is intentionally a one-way derivation.  The compact identity must not
  * become an alternate source of region, sheet, chart, or support authority.
  */
+/** Rebuild the compact stitch key from authoritative patch structure and
+ * final typed lineage authority. Stored stitch-kind/cache values are ignored. */
+PureQuadStitchIdentity canonical_lineage_stitch_identity(
+    const PureQuadMesh &patch, int localRow);
+
 PureQuadStitchIdentity canonical_authoritative_identity(
     const PureQuadVertexLineage &lineage, const Eigen::MatrixXi &sourceFaces,
     const SourceTopologyRegions &sourceAuthority,

@@ -1026,19 +1026,15 @@ validate_source_authoritative_surface_mesh(
   SourceAuthoritativeMeshValidationResult result;
   result.spatialAccelerationUsed = true;
   if (options.sourceVertices == nullptr || options.sourceFaces == nullptr ||
-      options.vertexProvenance == nullptr ||
-      options.sourceVertices->cols() != 3 || options.sourceFaces->cols() != 3) {
-    result.fail({MeshValidationFailureCode::MissingSourceAuthority});
-    return result;
-  }
-  result.sourceAuthorityUsed = true;
-  if (options.sourceAuthority != nullptr &&
+      options.sourceAuthority == nullptr || options.vertexProvenance == nullptr ||
+      options.sourceVertices->cols() != 3 || options.sourceFaces->cols() != 3 ||
       !options.sourceAuthority->matches_source_faces(
           *options.sourceFaces,
           static_cast<std::size_t>(options.sourceVertices->rows()))) {
     result.fail({MeshValidationFailureCode::MissingSourceAuthority});
     return result;
   }
+  result.sourceAuthorityUsed = true;
   result.sourceTopology = summarize_topology(*options.sourceFaces);
   result.outputTopology = summarize_topology(faces);
 
