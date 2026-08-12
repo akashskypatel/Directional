@@ -3,3 +3,4 @@ Runtime execution is prohibited.
 Retry after reusable workflow validation hardening.
 Validation-baseline retry.
 Caller-aligned retry.
+Full durable workflow bootstrap.
