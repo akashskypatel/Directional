@@ -32,8 +32,8 @@ jobs:
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
           test "$(sha256sum "$PATCH" | awk '{print $1}')" = "aea217a472ab8a9eaeb5f38977a20dd00676ca2df7925ff1d32143700dacc1a2"
           ! grep -E '^diff --git a/\.github/workflows/' "$PATCH"
-          git apply --check "$PATCH"
-          git apply "$PATCH"
+          git apply --recount --check "$PATCH"
+          git apply --recount "$PATCH"
           git diff --check
           git add tests/PatchDescriptorMilestoneETests.cpp tests/PureQuadCompletionPhase18Tests.cpp
           test "$(git diff --cached --name-only | wc -l)" -eq 2
