@@ -19,6 +19,6 @@ jobs:
   compile:
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 6019fc4300b2bc03e5896dbffb5d670e06d16938
+      source_sha: c45a634f0a9f003ba31bd92097c52d3bb4c4e7b3
       artifact_prefix: compile-cache-bootstrap
       cache_epoch: v1
