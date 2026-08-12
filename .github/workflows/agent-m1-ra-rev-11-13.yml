@@ -44,8 +44,22 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"
           exec > >(tee -a "$LOG") 2>&1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          base64 --decode .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.gz.b64 | gzip -d > "$RUNNER_TEMP/review.patch"
-          base64 --decode .agents/Directional/turn-payloads/m1-ra-rev-11-13-audit.py.gz.b64 | gzip -d > "$RUNNER_TEMP/source-audit.py"
+          cat \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part00 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part01 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part02 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03 \
+            > "$RUNNER_TEMP/review.patch.b64"
+          cat \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13-audit.part00 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13-audit.part01 \
+            > "$RUNNER_TEMP/source-audit.py.b64"
+          test "$(sha256sum "$RUNNER_TEMP/review.patch.b64" | cut -d' ' -f1)" = "e971051ed6c2feae6495682becc8b2cfc35a22f9946cebfb3cd829fd1472274b"
+          test "$(sha256sum "$RUNNER_TEMP/source-audit.py.b64" | cut -d' ' -f1)" = "58f9f2820a93404ad9fe0d4fc0fd4f1202b701eac4a6719ed98e538bb93f94a3"
+          base64 --decode "$RUNNER_TEMP/review.patch.b64" | gzip -d > "$RUNNER_TEMP/review.patch"
+          base64 --decode "$RUNNER_TEMP/source-audit.py.b64" | gzip -d > "$RUNNER_TEMP/source-audit.py"
+          test "$(sha256sum "$RUNNER_TEMP/review.patch" | cut -d' ' -f1)" = "a0d8d24f8e3243c9c21e2662434fdf6beacf01754fd74708d2a92ec43068e39b"
+          test "$(sha256sum "$RUNNER_TEMP/source-audit.py" | cut -d' ' -f1)" = "d1cc9f37a4972bf061de89f66392a1d1647ebf151fd5790078a33aa6ccaa0d27"
           git apply --check "$RUNNER_TEMP/review.patch"
           git apply "$RUNNER_TEMP/review.patch"
           python3 "$RUNNER_TEMP/source-audit.py" . | tee "$RUNNER_TEMP/source-audit.txt"
