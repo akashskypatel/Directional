@@ -63,7 +63,7 @@ jobs:
             "$PAYLOAD"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          printf '%s\n' "$changed" | xargs git add --
+          printf '%s\n' "$changed" | xargs git add -f --
           git commit -m "docs: record REV-17 and REV-20 partial checkpoint"
           DOC_SHA="$(git rev-parse HEAD)"
           echo "doc_sha=$DOC_SHA"
