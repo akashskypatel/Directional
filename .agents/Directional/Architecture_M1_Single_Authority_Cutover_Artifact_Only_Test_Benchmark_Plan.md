@@ -11,13 +11,13 @@
 
 ## 0. Activation amendment — 2026-08-12
 
-This plan is retained but **not executable now**. Complete R-A review through branch head `344f996...` verified the compile/package provenance of exact implementation/test source `78056ba...` and rejected closure on R-A-REV-14 through R-A-REV-16. Historical findings and partial artifacts remain in `CHANGELOG.md`; none may be reused or relabeled as M1 acceptance evidence.
+This plan is retained but **not executable now**. Independent review of exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` at branch authority `fd96852d19defe70effd0dc6fbbaf07db8378e55` rejected overall R-A and the REV-14-through-REV-16 checkpoint. Findings R-A-REV-17 through R-A-REV-20 are the active corrections. Historical compile packages remain in `CHANGELOG.md`; none may be reused or relabeled as M1 acceptance evidence.
 
 Activate this plan only after a new Code + Build turn:
 
-1. closes R-A-REV-14 through R-A-REV-16 and passes the complete R-A gate;
+1. closes R-A-REV-17 through R-A-REV-20 and passes the complete R-A inventory;
 2. completes R-B through R-G;
-3. produces one fresh exact-source package with compiled contracts, fixtures, a counterfactual expanded audit, logs, clean source provenance, and a self-excluding checksum manifest verified before upload;
+3. produces one fresh exact-source package with compiled semantic contracts, the complete counterfactual audit, final merged-authority validation, logs, clean source provenance, and a verified self-excluding checksum manifest;
 4. records the new immutable source/artifact IDs, digests, manifest authority, executable inventory, and command-boundary flags in this plan.
 
 The replacement `DESIGN.md` remains normative. M1 acceptance proves only the single-authority contract; strict product fixtures require D0-equivalent behavior.

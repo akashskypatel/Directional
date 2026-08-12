@@ -9,12 +9,13 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - Latest complete-gate review: PR #8 through branch head `344f996622606121a9567beaf1dad4001a5374f3`; latest review-remediation compile source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`. R-A is **not complete** until the complete closure inventory below is rerun and clean. Historical REV-01-through-16 checkpoints and exact artifacts remain in `CHANGELOG.md`.
-  - [x] R-A-REV-14: collision publication now emits one canonical post-intersection typed authority; derived authoritative identity and face-lineage ownership are recomputed from that final authority, with overlapping-compatible publication and disjoint-rejection contracts compiled.
-  - [x] R-A-REV-15: component region/sheet/chart/support remap now uses independent domains and owner relations derived from published source topology/chart authority; sparse, out-of-domain, wrong-owner, and wrong-face authority fails closed before publication.
-  - [x] R-A-REV-16: the production counterfactual seam mutates raw projection labels before real aggregation, compares full semantic/hash/downstream validation output, and pairs zero-publication malformed-authority coverage with a repository-wide classified read/write/remap-domain audit.
-  - Partial Code + Build checkpoint: source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`; run/job `31602025466 / 94131563590`; result/log artifacts `9143819164 / 9143819888`; Release/static/Ninja/PRE_TEST **118/118**; independently verified self-excluding manifest **21/21** and five empty source-status snapshots; semantic contracts compiled but not executed; no generated Directional runtime executed.
-  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every gate item is statically clean.
+  - Review boundary: exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` at branch authority `fd96852d19defe70effd0dc6fbbaf07db8378e55`.
+  - [x] Preserve the REV-14-through-REV-16 Code + Build checkpoint as partial compile evidence only: run/job `31602025466 / 94131563590`, artifacts `9143819164 / 9143819888`, Release/static/Ninja/PRE_TEST **118/118**, manifest **21/21**, no generated runtime.
+  - [ ] R-A-REV-17: require source-owned collision certificates; remove exact-only/partial identity aliases; replace fabricated collision fixtures with owned positive and wrong-owner/unowned/wrong-face/stale-identity zero-publication negatives.
+  - [ ] R-A-REV-18: publish one global aggregate source-authority product; validate every globally remapped lineage; rebuild/remove vertex identity caches and regenerate face cycles after remap.
+  - [ ] R-A-REV-19: make aggregate semantic publication transactional; clear every context payload/flag on rejection; validate the actual final merged product; expand REV-16 and second-component-failure counterfactuals.
+  - [ ] R-A-REV-20: delete or separately type/isolate affected optimizer/completion compatibility paths and raw mirrors; add missing-authority/alternate-validator contracts and a failing audit inventory.
+  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every gate is statically clean.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
   - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.
@@ -23,7 +24,7 @@ This is the single durable task index for the cross-field-aligned surface-cell q
   - [ ] Complete R-G expanded failing source audit.
 - [ ] **Produce one fresh full R-A-through-R-G Code + Build package.**
   - Compile/package only; execute no generated binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input.
-  - All historical and partial packages recorded in `CHANGELOG.md` are ineligible for M1 acceptance.
+  - Every historical/partial package recorded in `CHANGELOG.md` is ineligible for M1 acceptance.
 - [ ] **Activate and run the retained immutable M1 Artifact-Only Test + Benchmark plan only after the full package exists.**
 - [ ] **After M1 acceptance, resume Pipeline B product work under the revised M2-M8 architecture.** Pipeline A remains unscheduled.
 
@@ -102,6 +103,7 @@ Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe
 
 - .agents/Directional/DESIGN.md
 - .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
+- .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md
 - .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
 - .agents/Directional/Future_Chat_Session_Handoff.md
 - .agents/Directional/REORIENTATION_PLAN.md

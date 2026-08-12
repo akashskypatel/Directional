@@ -37,7 +37,7 @@ Do not add:
 
 ## Mandatory next turn
 
-Run **M1 Single-Authority Cutover continuation — Code + Build only** under:
+Run **M1 Single-Authority Cutover review remediation — Code + Build only** under:
 
 .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
 
@@ -46,14 +46,16 @@ Branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: #8 remains open, draft, and unmerged  
 Review policy after the later immutable Test + Benchmark turn: never
 
-R-A-REV-01 through R-A-REV-16 are compile-closed for their reviewed paths at latest review-remediation source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`, but R-A itself remains open. The next turn must:
+The independent review of exact source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` rejected overall R-A and the REV-14-through-REV-16 checkpoint. The next turn must:
 
-1. rerun the **complete R-A source inventory** across occurrence/materializer, completion/assembly and post-intersection collision publication, patch/lineage, arrangement ownership/chart transitions, public optimizer/verifier APIs, source-authoritative validation, rail consumers, generic validation boundaries, top-level component aggregation, independent remap domains/owner relations, pre-aggregation raw counterfactual behavior, and fail-closed zero-publication paths, and call R-A complete only if every closure item is statically clean;
-2. complete R-B through R-G in the same vertical cutover;
-3. produce one fresh full Release/static/Ninja/PRE_TEST package using the independently verified out-of-tree, clean-provenance, self-excluding-manifest rules;
-4. execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input; activate the artifact-only plan only after that fresh full package exists.
+1. close R-A-REV-17 by requiring owner-validated collision certificates and canonical-only derived identity;
+2. close R-A-REV-18 by publishing the global aggregate source-authority domain and rebuilding all identities/face cycles after remap;
+3. close R-A-REV-19 by making aggregate publication fully transactional and validating the final merged product with a counterfactual-complete oracle;
+4. close R-A-REV-20 by removing or isolating remaining affected optimizer/completion compatibility paths and raw mirrors;
+5. rerun the complete R-A source inventory and mark R-A complete only if every gate is statically clean;
+6. only then complete R-B through R-G and produce one fresh full Release/static/Ninja/PRE_TEST package with clean provenance and a verified self-excluding manifest.
 
-Do not validate, relabel, repair, or reuse any historical/partial package listed in `CHANGELOG.md`. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
+Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input. Do not activate, validate, relabel, repair, or reuse a historical/partial package. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
 
 ## Current authority
 
@@ -67,17 +69,17 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 
 ### R-A closure status
 
-Review boundary that introduced REV-14 through REV-16: PR #8 through `344f996622606121a9567beaf1dad4001a5374f3`. Latest review-remediation implementation/compile source: `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`. R-A-REV-14 through R-A-REV-16 are compile-closed for their reviewed paths:
+Review boundary: branch head `fd96852d19defe70effd0dc6fbbaf07db8378e55`; exact affected implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`.
 
-- `R-A-REV-14`: exact-key collision publication uses the final intersected typed certificate as the single authority; the derived authoritative identity and canonical face-owner cycles are regenerated from that result. Overlapping-compatible and disjoint-incompatible contracts are compile-visible.
-- `R-A-REV-15`: component aggregation builds independent region/sheet/chart/support remap domains from published source authority, validates ownership and face relations before staging output, and rejects invalid authority with zero publication.
-- `R-A-REV-16`: a narrow production-owned pre-aggregation counterfactual exposes raw-label tamper to the real consumer and compares complete semantic/hash/downstream authority-validation output; malformed typed authority rejects before publication; the repository-wide audit classifies affected raw component/sheet reads and checks the remap/collision/counterfactual bodies.
+- Overall R-A is **not complete**.
+- REV-14's canonical intersection implementation is retained, but its positive contract fabricates unowned IDs, stitching does not validate certificate ownership, and compatibility identity aliases remain.
+- REV-15's independent local remap tables are retained, but the aggregate publishes no global owning `SourceTopologyRegions`, does not rebuild derived identities/face cycles after remap, and does not provide complete rollback.
+- REV-16's pre-consumer tamper seam is retained, but its snapshot omits owner/cache consistency and compares cached per-component validation rather than validating the final merged product.
+- R-A-REV-17 through R-A-REV-20 are the active corrective tasks. Exact evidence and definitions of done are in the independent review report and active Code + Build plan.
 
-Compile-only run/job `31602025466 / 94131563590` completed Release/static/Ninja/PRE_TEST **118/118** from exact source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`. Result artifact `9143819164` has outer SHA-256 `e3213d8ed94121e734b69ed17f64501a3a059b64ccfa3cbb6be48a1a98c83e13`; log artifact `9143819888` has outer SHA-256 `c2d0cbc28a296590f22a343aed9173a3e363e1cdb5a53ee198ae4a8dc5e44aa6`. Independent inspection verified exact packaged source, a self-excluding manifest **21/21**, all five source-status snapshots empty, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
+The prior compile-only checkpoint remains authentic partial build evidence: run/job `31602025466 / 94131563590`, Release/static/Ninja/PRE_TEST **118/118**, artifacts `9143819164 / 9143819888`, verified manifest **21/21**, and no generated runtime. It is not an M1 acceptance candidate.
 
-Initial run/job `31601748377 / 94130625219` stopped before source application/audit/compile because the temporary final transfer chunks lacked a trailing newline and failed the pinned transfer digest. Log artifact `9143393404`, SHA-256 `7da2e3c7ab3222349084926aad29e1233506f3d401d4987a51a4fea9647d070f`. This was orchestration-only; no product patch or generated runtime executed.
-
-This remains a partial review-remediation checkpoint only. R-A is not complete until the complete closure inventory is rerun; R-B through R-G remain open; artifact `9143819164` is not an M1 acceptance candidate; M1l remains immutable runtime authority; no runtime/regression total changed.
+M1l remains immutable runtime authority; no runtime or regression total changed.
 
 ## Standing product and regression state
 
@@ -92,7 +94,7 @@ This remains a partial review-remediation checkpoint only. R-A is not complete u
 ## Resume-critical execution lessons
 
 - Compile success is build evidence, not runtime or semantic acceptance.
-- A generic geometry payload derived from typed authority becomes a duplicate semantic owner if production reads it back for equality, order, hashing, lookup, or ownership.
+- A generic geometry payload derived from typed authority becomes a duplicate semantic owner if production reads it back for equality, order, hashing, lookup, or ownership. Derived identity caches must be rebuilt after any authority remap or removed.
 - A zero-selected test filter is orchestration failure, never a pass.
 - Preserve natural packaged file modes; do not chmod or repair immutable artifacts.
 - Do not answer a semantic failure by restoring a numeric mirror, adapter, alias, hash oracle, fallback, fixture exception, or weakened assertion.
@@ -114,6 +116,7 @@ This remains a partial review-remediation checkpoint only. R-A is not complete u
 - TODO.md
 - .agents/Directional/DESIGN.md
 - .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
+- .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md
 - .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
 - .agents/Directional/REORIENTATION_PLAN.md
 - .agents/Directional/Regression_Root_Cause_Tracker.md

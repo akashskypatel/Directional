@@ -2,7 +2,7 @@
 
 **Status:** authoritative architecture-migration roadmap  
 **Normative design:** .agents/Directional/DESIGN.md, replacement supplied 2026-08-11  
-**Current reviewed source:** exact implementation/test source `78056ba849fafad27eb55e8008fbc20a56300868` at closure-review branch head `344f996622606121a9567beaf1dad4001a5374f3`
+**Current reviewed source:** exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` at independent-review branch boundary `fd96852d19defe70effd0dc6fbbaf07db8378e55`
 **Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap**  
 **Last updated:** 2026-08-12 UTC
 
@@ -66,7 +66,7 @@ The 2026-08-11 redesign retains prior M0-M2, maps prior M3 to M4, prior M4 to M5
 | Milestone | Contract | State |
 |---|---|---|
 | M0 | preserve immutable evidence | complete |
-| M1 | single-authority cutover | active; R-A closure gate rejected, R-A-REV-14 through R-A-REV-16 open |
+| M1 | single-authority cutover | active; overall R-A and REV-14-through-REV-16 review rejected; R-A-REV-17 through R-A-REV-20 open |
 | M2 | closed stage products and single writers | pending |
 | M3 | field-aligned curve network | pending |
 | M4 | global conformity plan | pending |
@@ -87,26 +87,30 @@ Rejected and partial package identities remain historical evidence in `CHANGELOG
 
 ### R-A closure review
 
-The working branch through `344f996...` was reviewed against the complete R-A gate. Exact implementation/test source `78056ba...` authentically compiles Release/static/Ninja/PRE_TEST **118/118** with clean source provenance and a self-excluding manifest **21/21**; no generated runtime or discovery executed.
+Independent review of exact implementation/test source `cb848e4...` at branch authority `fd96852...` rejected overall R-A and the REV-14-through-REV-16 checkpoint. Existing compile-only evidence is authentic partial build evidence, not semantic or runtime acceptance.
 
-The prior typed-authority progress remains substantial, but R-A is not closed:
+Retained progress includes the checked source-authority factory, builder-only raw classifier ingress, product-owned phase-front API, independent local region/sheet/chart/support remap tables, and a real pre-aggregation raw-tamper seam.
 
-- R-A-REV-14: collision publication combines the intersected typed certificate with a selected candidate's pre-intersection `authoritativeIdentity`;
-- R-A-REV-15: component region/sheet/chart remap validates IDs against self-created bounds instead of independent authority domains and ownership;
-- R-A-REV-16: the multi-component raw-tamper contract mutates only after aggregation, while the audit accepts substring and blanket-assignment proxies.
+The blocking remainder is:
 
-R-A is not an accepted migration and no partial artifact is eligible for artifact-only acceptance. Historical REV-01-through-13 details and exact checkpoint identities remain in `CHANGELOG.md`.
+- R-A-REV-17: collision certificates are not validated against their source owner; the positive fixture fabricates unowned IDs and compatibility identity aliases remain.
+- R-A-REV-18: global aggregation publishes remapped typed IDs without a global owning source-authority product and leaves derived vertex/face identity caches in their pre-remap local domain.
+- R-A-REV-19: aggregate publication is not transactional, rejection leaks context state, and REV-16 compares cached component validation rather than a final merged-product validation.
+- R-A-REV-20: affected standalone optimizer/completion compatibility paths and raw mirrors remain contrary to the complete R-A cutover.
+
+Exact evidence and corrective measures are retained in `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`; executable tasks are in the active Code + Build plan. Historical REV-01-through-16 and package identities remain in `CHANGELOG.md`.
 
 ## 6. M1 completion sequence
 
 The next Code + Build turn must:
 
-1. close R-A-REV-14 with one canonical post-intersection collision authority and an overlapping-compatible publication contract;
-2. close R-A-REV-15 with independently checked region/sheet/chart/support remap domains and ownership plus fail-closed negatives;
-3. close R-A-REV-16 with pre-aggregation raw tamper and a complete counterfactual affected-path/read/remap audit;
-4. rerun and pass the full R-A closure inventory;
-5. complete R-B through R-G under the active Code + Build plan;
-6. produce a fresh self-verifying full package using the verified packaging rules, without generated runtime.
+1. close R-A-REV-17 with source-owned collision certificates and canonical-only derived identity;
+2. close R-A-REV-18 with one published global aggregate authority plus post-remap identity/face-cycle regeneration;
+3. close R-A-REV-19 with transactional semantic publication, complete zero-publication rejection, and actual final merged-product validation;
+4. close R-A-REV-20 by deleting or isolating affected compatibility branches and raw mirrors;
+5. rerun and pass the full R-A closure inventory;
+6. complete R-B through R-G under the active Code + Build plan;
+7. produce a fresh self-verifying full package without generated runtime execution.
 
 The resulting package is independently validated under the retained artifact-only plan. M1 closes only when static authority, focused contracts, entering semantic gates, direct product oracles, known-red classification, characterization, and immutable postflight all close.
 

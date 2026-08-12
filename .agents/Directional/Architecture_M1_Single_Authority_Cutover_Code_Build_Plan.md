@@ -1,83 +1,62 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** R-A-REV-14 through R-A-REV-16 are compile-closed for reviewed paths at `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`; R-A remains open pending the complete inventory, followed by R-B through R-G and one fresh full self-verifying package
+**Current status:** independent review rejects overall R-A and the REV-14-through-REV-16 checkpoint; corrective findings R-A-REV-17 through R-A-REV-20 are open before the complete R-A inventory, R-B through R-G, and a fresh full package  
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
-**Latest closure-review branch head:** `344f996622606121a9567beaf1dad4001a5374f3`
-**Latest review-remediation implementation/compile source:** `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`
+**Latest independent-review branch boundary:** `fd96852d19defe70effd0dc6fbbaf07db8378e55`  
+**Latest review-remediation implementation/compile source:** `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`  
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
 
-## 0AA. 2026-08-12 R-A-REV-14-through-16 review-remediation checkpoint
+## 0A. 2026-08-12 independent review of overall R-A and REV-14-through-REV-16 — rejected
 
-This checkpoint closes REV-14 through REV-16 only for the reviewed Code + Build source/contract boundary. It does **not** close R-A, R-B through R-G, M1, or activate artifact-only runtime acceptance.
+Exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` was reviewed at branch authority `fd96852d19defe70effd0dc6fbbaf07db8378e55`. Later commits are durable-document and temporary-workflow cleanup only for the affected paths.
 
-- Exact implementation/test source: `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` (`7 files changed, 911 insertions, 241 deletions`).
-- REV-14: collision publication uses the canonical post-intersection typed certificate and regenerates derived identity/face ownership from that result; overlapping-compatible and disjoint-incompatible contracts are compile-visible.
-- REV-15: component remap domains and owner relations derive from published `SourceTopologyRegions`/chart authority rather than candidate maxima; invalid region/sheet/chart/support authority fails before publication.
-- REV-16: the production-owned counterfactual mutator runs before real aggregation; baseline versus raw-tampered semantic/hash/downstream validation output is compared; malformed typed authority has a zero-publication negative; the repository-wide audit classifies affected raw reads/writes and requires these semantic bodies.
-- Audit output: `R-A-REV-14 source/contract audit: closed`, `R-A-REV-15 source/contract audit: closed`, `R-A-REV-16 counterfactual/read-write audit: closed`.
-- Compile-only run/job `31602025466 / 94131563590` completed Release/static/Ninja/PRE_TEST **118/118**, build exit `0`.
-- Result artifact `9143819164`, outer SHA-256 `e3213d8ed94121e734b69ed17f64501a3a059b64ccfa3cbb6be48a1a98c83e13`; log artifact `9143819888`, outer SHA-256 `c2d0cbc28a296590f22a343aed9173a3e363e1cdb5a53ee198ae4a8dc5e44aa6`.
-- Independent package inspection verified exact source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`, **22** regular files including `SHA256SUMS`, self-excluding manifest **21/21**, zero manifest self-references, all five source-status snapshots empty, and the explicit Code + Build/no-runtime command boundary.
-- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. New semantic contracts were compiled only.
-- Initial run/job `31601748377 / 94130625219` failed before source application because temporary transfer chunk newlines caused the pinned digest check to fail; log artifact `9143393404`, SHA-256 `7da2e3c7ab3222349084926aad29e1233506f3d401d4987a51a4fea9647d070f`. This was orchestration-only.
+The prior compile-only package remains authentic partial build evidence: run/job `31602025466 / 94131563590`, Release/static/Ninja/PRE_TEST **118/118**, artifacts `9143819164 / 9143819888`, self-excluding manifest **21/21**, clean recorded source status, and no generated runtime. Compile authenticity does not close the semantic review.
 
-**Decision:** rerun the complete R-A closure inventory next. Mark R-A complete only if every retained closure item is statically clean; then continue R-B through R-G and produce the single fresh full package required for M1 acceptance.
+| Checkpoint | Review decision |
+|---|---|
+| overall R-A | **rejected / open** |
+| R-A-REV-14 | **implementation checkpoint retained; independent closure rejected** |
+| R-A-REV-15 | **implementation checkpoint retained; independent closure rejected** |
+| R-A-REV-16 | **pre-consumer seam retained; full audit/oracle closure rejected** |
 
-## 0A. 2026-08-12 complete R-A closure review — rejected
+Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. The next Code + Build turn owns these targeted corrections:
 
-R-A remains open. Review of PR #8 through branch head `344f996622606121a9567beaf1dad4001a5374f3` verified the compile provenance of exact implementation/test source `78056ba849fafad27eb55e8008fbc20a56300868`, but found three authority/contract defects that the shipped audit does not detect.
+### R-A-REV-17 — source-owned collision certificates
 
-### Verified evidence boundary
+- Require complete source topology/chart/support authority for semantic stitch publication.
+- Validate each incoming and intersected certificate against region-sheet, chart-face, and support-incidence ownership.
+- Remove acceptance of exact-only or partial-typed cached identities; derive an absent value or require exact canonical equality.
+- Replace fabricated ID fixtures with authority-owned overlap and add wrong-owner, unowned/sparse, wrong-face, exact-only, and stale-identity zero-publication negatives.
 
-- Run/job `31584657331 / 94075568409` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`.
-- Result/log artifacts `9136856592 / 9136857219` match outer SHA-256 values `f6bd76caf0cb1a78b0faaedb04feaf157850d1e11336919efbf5cf698a07ce6d` and `98353502b1cffa8f0f3e9233bddf8bf1c3d7909f48786e069bae1d3f5a4296f3`.
-- Independent inspection verified all **21/21** self-excluding manifest entries, all five empty source-status snapshots, and packaged source byte-for-byte equal to `78056ba...`.
-- The semantic contracts were compiled, not executed. No generated Directional runtime, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input ran.
-- This is authentic partial build evidence only. It is not an M1 acceptance candidate and does not establish R-A closure.
+### R-A-REV-18 — global aggregate authority and derived identity closure
 
-### R-A-REV-14 — collision publication retains pre-intersection identity authority
+- Publish one checked global source-authority product for the original source mesh.
+- Remap all component lineage through that owner and validate the final global lineage.
+- Recompute or remove `stitchIdentity`/`authoritativeIdentity` caches after remap and regenerate face-cycle hashes from final global identities.
+- Add a two-component colliding-local-domain contract plus stale-cache rejection.
 
-Evidence: every exact-key collision intersects `sourceTopologyRegions`, `sourceIsolationSheets`, `sourceCharts`, and `sourceSupport` into `PendingOutputVertex::typedAuthority`. Publication copies that intersection into the output lineage, but separately assigns `authoritativeIdentity` from one selected pre-intersection candidate. `authoritativeIdentity` is documented as strong source authority and remains semantic input to completion hashes and canonical authoritative face-owner cycles. Compatible candidates with overlapping but non-identical authority can therefore publish two disagreeing semantic owners. The positive REV-11 contract proves only that a cylinder assembly succeeds; it does not construct or inspect a non-identical compatible intersection.
+### R-A-REV-19 — transactional aggregate publication and real post-merge oracle
 
-Corrective measure: publish exactly one canonical authority result. Prefer removing the duplicate semantic identity; if it must remain, derive and validate it from the final intersected certificate and recompute dependent face-lineage ownership from that result. Add a same-exact-key/same-position/identical-support contract with overlapping but non-identical region, sheet, and chart sets; assert that every published authority field and semantic identity equals the common intersection. Retain the disjoint-authority rejection contract.
+- Stage labels, rails, lineages, patches, debug products, optimization, and validation state; commit only after all components and final validation succeed.
+- On rejection expose no consumable semantic context, including after a valid first component and malformed later component.
+- Validate the final merged/remapped product against the global authority rather than accumulating cached per-component reports.
+- Expand REV-16 snapshots/audit to include the global owner, canonical identities, face cycles, all remap domains, complete context rollback, and actual post-merge validation.
 
-### R-A-REV-15 — component remap checks IDs against self-created extents
+### R-A-REV-20 — remove or isolate remaining R-A compatibility paths
 
-Evidence: `remap_component_typed_lineage_authority` independently validates source face and support mappings, but topology-region, isolation-sheet, and field-chart IDs are offset and reconstructed with `from_index(global, global + 1)`. That bound is derived from the candidate value itself, so it cannot reject a sparse, out-of-domain, or wrongly owned local ID. Sheet/region/chart offsets are likewise advanced from observed lineage maxima rather than an independently validated local authority domain. The malformed REV-12 contract covers only an out-of-range chart face, not invalid region, sheet, chart ID, or owner relationships.
+- Remove raw optimizer component/sheet mirrors and legacy point-cloud/feature-interval/basic-validator branches from the affected SurfaceCells path.
+- If generic non-SurfaceCells behavior must remain, move it behind a separately typed implementation that strict SurfaceCells wrappers cannot enter.
+- Add missing-authority and alternate-validator-path contracts and make the audit fail on the named legacy branches or bypass calls.
 
-Corrective measure: remap through checked tables derived from the component's published source-topology/chart authority. Validate that every local region exists and owns the component, every sheet belongs to the referenced region/member, every chart exists and owns its mapped face, and every support is valid for that authority before staging publication. Do not validate an ID with a bound synthesized from that ID or derive offsets from unvalidated maxima. Add independent out-of-domain, sparse-ID, wrong-owner, and wrong-face contracts for region, sheet, chart, and support, and assert fail-closed zero publication.
+### Required execution sequence
 
-### R-A-REV-16 — audit and multi-component tamper contract are non-counterfactual
-
-Evidence: `ProductionMultiComponentMergePublishesCheckedTypedAuthorityUnderRawTamper` invokes production merge first, mutates raw projection fields only on the returned copy, then compares a snapshot made solely from untouched typed fields. It never exposes tampered raw labels to component aggregation or any downstream semantic consumer, so it would pass even if aggregation used raw labels. The audit accepts this body by substring presence and labels every member assignment as a one-way write without proving data flow; it also accepts the self-bounded remap patterns above. Its clean result is therefore not closure evidence.
-
-Corrective measure: place the raw-label mutation before the real aggregation consumer through a narrow production-owned aggregation seam, then compare the complete semantic output and downstream authority validation/hash for baseline versus tampered inputs. Make the contract fail if any raw field affects remap, ownership, ordering, hashing, or publication. Replace blanket substring/assignment acceptance with a complete scoped read/write inventory and explicit counterfactual checks for collision publication, independent remap domains, pre-consumer raw tamper, and fail-closed zero publication.
-
-### Updated execution decision
-
-The next Code + Build continuation must:
-
-1. close R-A-REV-14 through R-A-REV-16 with counterfactual compiled contracts;
-2. rerun the complete R-A inventory below and mark R-A complete only if every item is statically clean;
-3. complete R-B through R-G in the same vertical cutover;
-4. produce one fresh full R-A-through-R-G self-verifying package without generated runtime execution, then hand only that package to the retained artifact-only plan.
-
-### R-A closure gate
-
-Before work may be called R-A-complete, a complete static inventory and compiled contract review must demonstrate:
-
-- every affected occurrence and completion lineage carries required typed topology region, sheet, chart, and support;
-- no affected materializer, completion, patch, lineage, arrangement-ownership, verifier, optimizer, rail, or component-aggregation decision reads `SurfacePoint` component/sheet as authority;
-- no fallback canonical/stitch/ownership key stores raw component/sheet;
-- every exact boundary identity is validated against separate complete typed lineage, and every collision validates typed-authority compatibility against the stored candidate; no exact-only or standalone compatibility publication survives;
-- every SurfaceCells optimizer/verifier entry point requires typed source authority and fails closed when it is missing;
-- multi-component sheet extents and offsets derive only from typed authority; every remap is checked, complete remapped lineage is validated before publication, and raw labels are one-way diagnostic/export payload;
-- raw classifier arrays exist only at source-authority builder ingress, and `build_authoritative_phase_front_mesh` accepts no parallel raw authority;
-- the audit covers declarations, headers, implementation modes, top-level aggregation, exact-key collision behavior, and post-remap publication, and classifies every raw component/sheet read;
-- compiled positive, missing-authority, distinct-sheet, exact-only, exact-key-collision, alternate-validator-path, raw-tamper, and end-to-end multi-component-tamper contracts would fail if a bypass returned;
-- the full package has clean source provenance and a self-excluding checksum manifest that verifies before upload.
+1. Implement REV-17 through REV-20 without restoring a raw mirror, compatibility identity, fixture exception, or proxy oracle.
+2. Rerun the complete R-A closure inventory below. R-A may close only if every retained gate is statically clean and all required semantic contract sources compile.
+3. Complete R-B through R-G in the same vertical cutover.
+4. Produce one fresh full R-A-through-R-G Release/static/Ninja/PRE_TEST package with clean provenance and a verified self-excluding manifest.
+5. Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input in the Code + Build turn.
 
 ## 0. Retained M1 cutover requirements
 

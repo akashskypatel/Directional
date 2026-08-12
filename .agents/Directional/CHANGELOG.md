@@ -17,6 +17,16 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Review — overall R-A and R-A-REV-14 through R-A-REV-16
+
+- Independently reviewed exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` at branch authority `fd96852d19defe70effd0dc6fbbaf07db8378e55`; later affected production/test blobs are unchanged. Rejected overall R-A and the requested REV-14-through-REV-16 checkpoint.
+- Added `R-A-REV-17`: collision certificates are only checked for nonempty fields; the positive test fabricates unowned region/sheet/chart IDs, omits source authority, and compatibility identity aliases remain. Require source-owned certificates and canonical-only identity.
+- Added `R-A-REV-18`: disconnected aggregation remaps typed authority but publishes no global owning `SourceTopologyRegions` and does not rebuild authoritative/stitch caches or face-cycle hashes. Publish the owner, validate final lineage, and regenerate all derived identity.
+- Added `R-A-REV-19`: aggregation writes labels/rails before remap validation, rejection clears only a subset, and the REV-16 oracle compares cached component validation rather than actual post-merge validation. Make publication transactional and add complete final-product/zero-publication counterfactuals.
+- Added `R-A-REV-20`: the complete inventory still finds affected raw optimizer mirrors, legacy point-cloud/feature-interval fallbacks, and an alternate basic-validator branch. Remove them from the SurfaceCells boundary or isolate generic behavior behind a separately typed implementation.
+- This Review changed durable planning/review/status documents only. No production/test/build/workflow source was edited and no generated runtime, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input executed. M1l remains immutable runtime authority; totals remain **34 events / 14 categories / 20 recurrences**.
+
+
 ### Fixed — R-A-REV-14 through R-A-REV-16 partial remediation
 
 - Closed `R-A-REV-14` for reviewed completion/assembly paths: collision publication now has one canonical post-intersection typed authority; derived `authoritativeIdentity` and canonical face-owner cycles are regenerated from that final authority. Compile-visible contracts cover overlapping-but-nonidentical compatible intersection publication and disjoint rejection.
@@ -142,7 +152,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 - M1l `bd140cff...` remains the latest immutable runtime authority.
 - Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifacts `9125984929` / `9127976318` / `9129549875` are not M1 acceptance candidates.
-- R-A-REV-01 through R-A-REV-13 are historical bounded compile checkpoints. R-A-REV-14 through R-A-REV-16 are open; R-A is not complete, and R-B through R-G plus the fresh full package remain pending.
+- R-A-REV-01 through R-A-REV-16 are historical bounded compile checkpoints, not independent R-A acceptance. R-A-REV-17 through R-A-REV-20 are open; R-A is not complete, and R-B through R-G plus the fresh full package remain pending.
 - The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
 
 Historical review baseline: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. Current closure authority: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
