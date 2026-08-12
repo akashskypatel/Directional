@@ -8,8 +8,9 @@ std::pair<int, int> source_face_numeric_scope(
     const SurfaceOptimizationConstraints &constraints, const int face) {
   if (constraints.sourceAuthority == nullptr || face < 0 ||
       face >= constraints.sourceFaces.rows() ||
-      !constraints.sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(constraints.sourceFaces.rows()))) {
+      !constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
     return {-1, -1};
   }
   const auto row = authority::SourceFaceId::from_index(

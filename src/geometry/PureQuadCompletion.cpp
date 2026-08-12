@@ -1761,8 +1761,7 @@ owner_validated_typed_authority_certificate(
     const SourceTopologyRegions &sourceAuthority,
     const SourceChartTransitionGraph &sourceTransitions) {
   if (sourceFaces.cols() != 3 ||
-      !sourceAuthority.complete_for_face_count(
-          static_cast<std::size_t>(sourceFaces.rows())) ||
+      !sourceAuthority.matches_source_faces(sourceFaces) ||
       !sourceTransitions.available() || !certificate.sourceSupport.has_value() ||
       certificate.sourceCharts.empty()) {
     return std::nullopt;
@@ -2396,8 +2395,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
   }
   if (sourceFaces == nullptr || sourceFaces->cols() != 3 ||
       sourceAuthority == nullptr ||
-      !sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(sourceFaces->rows()))) {
+      !sourceAuthority->matches_source_faces(*sourceFaces)) {
     result.failure = "MissingSourceAuthority";
     return result;
   }

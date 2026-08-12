@@ -5162,6 +5162,276 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_TRUE(rejected.surfaceCellContext.completedPatches.empty());
 }
 
+
+TEST(SurfaceCellAuthorityContractCutover,
+     DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto result =
+      directional::pipeline::remesh_surface_cell_components_from_cross_field(
+          mesh.V, mesh.F, crossField, options);
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ':'
+      << result.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(result.surfaceCellContext.sourceTopologyRegions.has_value());
+  const auto &authority =
+      result.surfaceCellContext.sourceTopologyRegions.value();
+  EXPECT_TRUE(authority.matches_source_faces(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows())));
+
+  const auto row0 = directional::authority::SourceFaceId::from_index(
+      0, authority.face_count());
+  const auto row2 = directional::authority::SourceFaceId::from_index(
+      2, authority.face_count());
+  ASSERT_TRUE(row0);
+  ASSERT_TRUE(row2);
+  EXPECT_NE(authority.component_for_row(row0.value()),
+            authority.component_for_row(row2.value()));
+  EXPECT_NE(authority.region_for_row(row0.value()),
+            authority.region_for_row(row2.value()));
+  EXPECT_NE(authority.sheet_for_row(row0.value()),
+            authority.sheet_for_row(row2.value()));
+
+  for (const auto &lineage : result.outputVertexLineage) {
+    ASSERT_TRUE(lineage.stitchIdentity.valid());
+    ASSERT_TRUE(lineage.authoritativeIdentity.valid());
+    EXPECT_EQ(
+        lineage.authoritativeIdentity,
+        directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+            lineage, mesh.F, authority));
+  }
+  for (const auto &lineage : result.outputQuadLineage) {
+    EXPECT_NE(0U, lineage.canonicalStitchCycleHash);
+    EXPECT_NE(0U, lineage.canonicalAuthoritativeCycleHash);
+  }
+  for (const auto &patch : result.surfaceCellContext.completedPatches) {
+    ASSERT_EQ(patch.boundaryVertices.size(),
+              patch.boundaryNodeIdentities.size());
+    for (const auto &lineage : patch.vertexLineage) {
+      ASSERT_TRUE(lineage.stitchIdentity.valid());
+      ASSERT_TRUE(lineage.authoritativeIdentity.valid());
+      EXPECT_EQ(
+          lineage.authoritativeIdentity,
+          directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+              lineage, mesh.F, authority));
+    }
+    for (const auto &lineage : patch.quadLineage) {
+      EXPECT_NE(0U, lineage.canonicalStitchCycleHash);
+      EXPECT_NE(0U, lineage.canonicalAuthoritativeCycleHash);
+    }
+  }
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  constexpr std::int64_t staleToken = 0x5354414c45;
+  const auto result = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [staleToken](const std::size_t,
+             directional::pipeline::RemeshResult &componentResult) {
+            const auto makeStale = [staleToken](auto &lineage) {
+              if (lineage.stitchIdentity.valid()) {
+                lineage.stitchIdentity.canonical.valid = true;
+                lineage.stitchIdentity.canonical.values = {staleToken};
+              }
+              if (lineage.authoritativeIdentity.valid()) {
+                lineage.authoritativeIdentity.canonical.valid = true;
+                lineage.authoritativeIdentity.canonical.values = {staleToken};
+              }
+            };
+            for (auto &lineage : componentResult.outputVertexLineage) {
+              makeStale(lineage);
+            }
+            for (auto &patch :
+                 componentResult.surfaceCellContext.completedPatches) {
+              for (auto &lineage : patch.vertexLineage) {
+                makeStale(lineage);
+              }
+              for (auto &identity : patch.boundaryNodeIdentities) {
+                identity.valid = true;
+                identity.values = {staleToken};
+              }
+            }
+          });
+
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ':'
+      << result.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(result.surfaceCellContext.sourceTopologyRegions.has_value());
+  const auto &authority =
+      result.surfaceCellContext.sourceTopologyRegions.value();
+  for (const auto &lineage : result.outputVertexLineage) {
+    EXPECT_TRUE(lineage.stitchIdentity.valid());
+    EXPECT_TRUE(lineage.authoritativeIdentity.valid());
+    EXPECT_NE((std::vector<std::int64_t>{staleToken}),
+              lineage.stitchIdentity.canonical.values);
+    EXPECT_EQ(
+        lineage.authoritativeIdentity,
+        directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+            lineage, mesh.F, authority));
+  }
+  for (const auto &patch : result.surfaceCellContext.completedPatches) {
+    for (const auto &identity : patch.boundaryNodeIdentities) {
+      EXPECT_NE((std::vector<std::int64_t>{staleToken}), identity.values);
+    }
+  }
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     SecondComponentAuthorityFailurePublishesNoSemanticAggregateContext) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [](const std::size_t componentIndex,
+             directional::pipeline::RemeshResult &componentResult) {
+            if (componentIndex != 1U ||
+                componentResult.outputVertexLineage.empty()) {
+              return;
+            }
+            const auto unowned =
+                directional::authority::TopologyRegionId::from_index(99, 128);
+            if (!unowned) return;
+            componentResult.outputVertexLineage.front().sourceTopologyRegions =
+                {unowned.value()};
+          });
+
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_EQ(0, rejected.faces.rows());
+  EXPECT_TRUE(rejected.outputVertexProvenance.empty());
+  EXPECT_TRUE(rejected.outputVertexLineage.empty());
+  EXPECT_TRUE(rejected.outputQuadLineage.empty());
+  EXPECT_EQ(0, rejected.rawCrossField.size());
+  EXPECT_TRUE(rejected.surfaceCellContext.completedPatches.empty());
+  EXPECT_TRUE(rejected.surfaceCellContext.authoritativeRails.empty());
+  EXPECT_TRUE(rejected.surfaceCellContext.debugProducts.empty());
+  EXPECT_TRUE(rejected.surfaceCellContext.sourceSurfaceLabels.componentByFace.empty());
+  EXPECT_TRUE(rejected.surfaceCellContext.sourceSurfaceLabels.localSheetByFace.empty());
+  EXPECT_FALSE(rejected.surfaceCellContext.sourceTopologyRegions.has_value());
+  EXPECT_FALSE(rejected.surfaceCellContext.hasSourceMesh);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasCrossField);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasSourceSurfaceLabels);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasAuthoritativeRails);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasCompletedPatches);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasOptimizationResult);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     FinalMergedOracleRejectsPostComponentProvenanceTamper) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [](const std::size_t componentIndex,
+             directional::pipeline::RemeshResult &componentResult) {
+            if (componentIndex != 1U ||
+                componentResult.outputVertexProvenance.empty()) {
+              return;
+            }
+            auto &point = componentResult.outputVertexProvenance.front();
+            point.barycentric << 1.0, 0.0, 0.0;
+          });
+
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("FinalMergedSourceAuthorityValidationFailed",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_EQ(0, rejected.faces.rows());
+  EXPECT_FALSE(rejected.surfaceCellContext.sourceTopologyRegions.has_value());
+  EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     SameExtentForeignSourceTopologyDoesNotMatchPublishedAuthority) {
+  const directional::TriMesh mesh = make_square_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::geometry::SurfaceCellTracingOptions options;
+  options.sourceFaceComponents.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  options.sourceFaceSheets.assign(
+      static_cast<std::size_t>(mesh.F.rows()), 0);
+  const Eigen::VectorXd targetSize =
+      Eigen::VectorXd::Constant(mesh.V.rows(), 0.5);
+  const auto network = directional::geometry::build_surface_cell_network(
+      mesh.V, mesh.F, crossField, targetSize, options);
+  ASSERT_EQ(directional::geometry::SurfaceCellProducerDisposition::Produced,
+            network.phaseFront.disposition());
+  const auto &authority =
+      network.phaseFront.product().sourceTopologyRegions;
+  ASSERT_TRUE(authority.matches_source_faces(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows())));
+
+  Eigen::MatrixXi foreignFaces = mesh.F;
+  ASSERT_GE(foreignFaces.rows(), 1);
+  foreignFaces.row(0) << 0, 1, 3;
+  EXPECT_FALSE(authority.matches_source_faces(
+      foreignFaces, static_cast<std::size_t>(mesh.V.rows())));
+  directional::geometry::SourceChartTransitionGraph foreignTransitions(
+      foreignFaces, authority);
+  EXPECT_FALSE(foreignTransitions.available());
+}
+
 TEST(SurfaceCellAuthorityContractCutover,
      FaceRowPermutationPreservesSemanticRegionIdentity) {
   const directional::TriMesh forwardMesh = make_disconnected_square_pair_mesh(false);

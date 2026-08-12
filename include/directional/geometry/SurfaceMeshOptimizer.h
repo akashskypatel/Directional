@@ -357,8 +357,9 @@ struct SourceProjectionCache {
         static_cast<std::size_t>(constraints->sourceFaces.rows()), 1);
     const bool authorityComplete =
         constraints->sourceAuthority != nullptr &&
-        constraints->sourceAuthority->complete_for_face_count(
-            static_cast<std::size_t>(constraints->sourceFaces.rows()));
+        constraints->sourceAuthority->matches_source_faces(
+            constraints->sourceFaces,
+            static_cast<std::size_t>(constraints->sourceVertices.rows()));
     for (int face = 0; face < constraints->sourceFaces.rows(); ++face) {
       const auto row = authority::SourceFaceId::from_index(
           face, static_cast<std::size_t>(constraints->sourceFaces.rows()));

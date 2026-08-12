@@ -133,6 +133,25 @@ TEST(SurfaceMeshOptimizerPhase19, MissingSourceAuthorityFailsClosed) {
                 MissingSourceAuthority);
 }
 
+
+TEST(SurfaceMeshOptimizerPhase19, SameExtentForeignSourceAuthorityFailsClosed) {
+  const Eigen::MatrixXd source = plane_vertices();
+  auto constraints = constraints_for_plane(source);
+  constraints.sourceFaces.row(0) << 0, 1, 3;
+  constraints.sourceFaces.row(1) << 0, 3, 2;
+
+  EXPECT_FALSE(
+      directional::geometry::source_optimization_has_complete_authority(
+          constraints));
+  const auto result = directional::geometry::optimize_projected_surface_mesh(
+      source, one_quad(), constraints);
+  EXPECT_TRUE(result.rolledBackToInput);
+  ASSERT_FALSE(result.lastHardInvariantIssues.empty());
+  EXPECT_EQ(directional::validation::MeshValidationFailureCode::
+                MissingSourceAuthority,
+            result.lastHardInvariantIssues.front().code);
+}
+
 TEST(SurfaceMeshOptimizerPhase19, PlanarGridConvergesToSourceProjection) {
   const Eigen::MatrixXd source = plane_vertices(0.0);
   Eigen::MatrixXd initial = plane_vertices(0.2);

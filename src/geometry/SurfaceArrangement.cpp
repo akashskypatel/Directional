@@ -1757,8 +1757,7 @@ SurfaceCellComplex build_surface_cell_complex(
       build_source_boundary_topology(faces, edgeFaces);
 
   if (options.sourceAuthority == nullptr ||
-      !options.sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(faces.rows()))) {
+      !options.sourceAuthority->matches_source_faces(faces)) {
     complex.diagnostics.incidenceFailure =
         SurfaceArrangementIncidenceFailure::SourceTransitionUnavailable;
     complex.diagnostics.incidenceValid = false;

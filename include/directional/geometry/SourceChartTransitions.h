@@ -145,8 +145,7 @@ public:
 
   [[nodiscard]] bool available() const {
     return faces_ != nullptr && faces_->cols() == 3 && authority_ != nullptr &&
-           authority_->complete_for_face_count(
-               static_cast<std::size_t>(faces_->rows())) &&
+           authority_->matches_source_faces(*faces_) &&
            consistent_ && faceChartComponent_.size() ==
                               static_cast<std::size_t>(faces_->rows());
   }
@@ -544,8 +543,7 @@ private:
 
   void build() {
     if (faces_ == nullptr || faces_->cols() != 3 || authority_ == nullptr ||
-        !authority_->complete_for_face_count(
-            static_cast<std::size_t>(faces_->rows()))) {
+        !authority_->matches_source_faces(*faces_)) {
       return;
     }
 

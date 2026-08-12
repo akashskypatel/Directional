@@ -665,8 +665,9 @@ std::pair<int, int> source_face_numeric_scope(
     const SurfaceOptimizationConstraints &constraints, const int face) {
   if (constraints.sourceAuthority == nullptr || face < 0 ||
       face >= constraints.sourceFaces.rows() ||
-      !constraints.sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(constraints.sourceFaces.rows()))) {
+      !constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
     return {-1, -1};
   }
   const auto row = authority::SourceFaceId::from_index(
@@ -695,8 +696,9 @@ bool provenance_is_complete(
   const bool sourceAuthorityComplete =
       constraints.sourceFaces.rows() > 0 &&
       constraints.sourceAuthority != nullptr &&
-      constraints.sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(constraints.sourceFaces.rows()));
+      constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()));
   if (!sourceAuthorityComplete) return false;
   const auto [component, sheet] = source_face_numeric_scope(constraints, point.face);
   return component >= 0 && sheet >= 0;
@@ -1830,8 +1832,9 @@ bool source_optimization_has_complete_authority(
       constraints.sourceVertices.rows() <= 0 ||
       constraints.sourceVertices.cols() != 3 ||
       constraints.sourceFaces.rows() <= 0 || constraints.sourceFaces.cols() != 3 ||
-      !constraints.sourceAuthority->complete_for_face_count(
-          static_cast<std::size_t>(constraints.sourceFaces.rows()))) {
+      !constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
     return false;
   }
   for (int face = 0; face < constraints.sourceFaces.rows(); ++face) {

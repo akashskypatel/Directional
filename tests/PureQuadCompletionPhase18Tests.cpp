@@ -1404,6 +1404,24 @@ TEST(PureQuadCompletionPhase18,
 }
 
 
+
+TEST(PureQuadCompletionPhase18,
+     SameExtentForeignSourceAuthorityRejectsStitchPublication) {
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  const auto sourceAuthority = test_source_authority(sourceFaces, {0}, {0});
+  const auto completed =
+      completed_typed_single_quad(sourceFaces, sourceAuthority, 17);
+
+  Eigen::MatrixXi foreignFaces(1, 3);
+  foreignFaces << 0, 1, 3;
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {completed}, 1.0e-9, &foreignFaces, &sourceAuthority);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("MissingSourceAuthority", assembly.failure);
+}
+
 TEST(PureQuadCompletionPhase18,
      DuplicateStitchedQuadReportsBothAuthoritativeSourcePatches) {
   Eigen::MatrixXi sourceFaces(1, 3);

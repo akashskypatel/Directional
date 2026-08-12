@@ -344,8 +344,7 @@ struct SourcePointLabelSupport {
   [[nodiscard]] bool available() const {
     return sourceSupport.available() && transitionGraph.available() &&
            authority != nullptr && sourceFaces != nullptr &&
-           authority->complete_for_face_count(
-               static_cast<std::size_t>(sourceFaces->rows()));
+           authority->matches_source_faces(*sourceFaces);
   }
 
   [[nodiscard]] std::vector<authority::SourceFaceId>

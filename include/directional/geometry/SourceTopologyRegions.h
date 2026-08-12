@@ -139,6 +139,54 @@ public:
   [[nodiscard]] bool complete_for_face_count(std::size_t faceCount) const noexcept {
     return rowBindings_.size() == faceCount && !regions_.empty();
   }
+
+  /**
+   * Exact binding check between this authority product and a supplied source
+   * triangle matrix.  Face count alone is not sufficient authority: each row
+   * must reconstruct the same row-independent topology key owned at ingress.
+   * When sourceVertexCount is nonzero it is also the checked vertex-ID extent;
+   * callers without a vertex container may pass zero to infer the minimum
+   * extent from the matrix after rejecting negative/repeated vertices.
+   */
+  [[nodiscard]] bool matches_source_faces(
+      const Eigen::MatrixXi &sourceFaces,
+      std::size_t sourceVertexCount = 0U) const noexcept {
+    if (sourceFaces.cols() != 3 || sourceFaces.rows() <= 0 ||
+        !complete_for_face_count(
+            static_cast<std::size_t>(sourceFaces.rows()))) {
+      return false;
+    }
+    if (sourceVertexCount == 0U) {
+      int maximumVertex = -1;
+      for (int face = 0; face < sourceFaces.rows(); ++face) {
+        for (int corner = 0; corner < 3; ++corner) {
+          const int vertex = sourceFaces(face, corner);
+          if (vertex < 0) return false;
+          maximumVertex = std::max(maximumVertex, vertex);
+        }
+      }
+      if (maximumVertex < 0) return false;
+      sourceVertexCount = static_cast<std::size_t>(maximumVertex) + 1U;
+    }
+    for (int face = 0; face < sourceFaces.rows(); ++face) {
+      const auto first = authority::SourceVertexId::from_index(
+          sourceFaces(face, 0), sourceVertexCount);
+      const auto second = authority::SourceVertexId::from_index(
+          sourceFaces(face, 1), sourceVertexCount);
+      const auto third = authority::SourceVertexId::from_index(
+          sourceFaces(face, 2), sourceVertexCount);
+      if (!first || !second || !third) return false;
+      const auto topology = authority::SourceFaceTopologyKey::make(
+          {first.value(), second.value(), third.value()});
+      const auto row = authority::SourceFaceId::from_index(
+          face, static_cast<std::size_t>(sourceFaces.rows()));
+      if (!topology || !row ||
+          topology.value() != topology_for_row(row.value())) {
+        return false;
+      }
+    }
+    return true;
+  }
   [[nodiscard]] const std::vector<SurfaceTopologyRegion> &regions() const noexcept {
     return regions_;
   }

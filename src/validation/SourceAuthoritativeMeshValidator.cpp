@@ -1032,6 +1032,13 @@ validate_source_authoritative_surface_mesh(
     return result;
   }
   result.sourceAuthorityUsed = true;
+  if (options.sourceAuthority != nullptr &&
+      !options.sourceAuthority->matches_source_faces(
+          *options.sourceFaces,
+          static_cast<std::size_t>(options.sourceVertices->rows()))) {
+    result.fail({MeshValidationFailureCode::MissingSourceAuthority});
+    return result;
+  }
   result.sourceTopology = summarize_topology(*options.sourceFaces);
   result.outputTopology = summarize_topology(faces);
 
@@ -1183,8 +1190,9 @@ validate_source_authoritative_surface_mesh(
       result.fail({MeshValidationFailureCode::SourcePositionMismatch, vertex});
     }
     if (options.sourceAuthority != nullptr &&
-        options.sourceAuthority->complete_for_face_count(
-            static_cast<std::size_t>(options.sourceFaces->rows()))) {
+        options.sourceAuthority->matches_source_faces(
+            *options.sourceFaces,
+            static_cast<std::size_t>(options.sourceVertices->rows()))) {
       const auto sourceFaceId = authority::SourceFaceId::from_index(
           point.face, options.sourceAuthority->face_count());
       if (!sourceFaceId) {
@@ -1196,8 +1204,9 @@ validate_source_authoritative_surface_mesh(
   result.localSheetCompatibilityPassed = true;
   if (options.requireLocalSheetCompatibility &&
       (options.sourceAuthority == nullptr ||
-       !options.sourceAuthority->complete_for_face_count(
-           static_cast<std::size_t>(options.sourceFaces->rows())) ||
+       !options.sourceAuthority->matches_source_faces(
+           *options.sourceFaces,
+           static_cast<std::size_t>(options.sourceVertices->rows())) ||
        !chartAuthorityCardinalityValid)) {
     result.localSheetCompatibilityPassed = false;
     if (!chartAuthorityCardinalityValid) {

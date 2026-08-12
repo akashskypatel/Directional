@@ -423,12 +423,9 @@ bool orient_transition_into_face_from_edge(
 namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_authority_valid(const SurfaceCellTracingOptions &options,
-                            const int faceCount) {
-  if (options.sourceAuthority == nullptr) {
-    return true;
-  }
-  return options.sourceAuthority->complete_for_face_count(
-      static_cast<std::size_t>(std::max(0, faceCount)));
+                            const Eigen::MatrixXi &faces) {
+  return options.sourceAuthority == nullptr ||
+         options.sourceAuthority->matches_source_faces(faces);
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -2959,15 +2956,16 @@ std::uint64_t surface_topology_region_hash_impl(const SurfaceTopologyRegion &reg
 }
 
 bool source_edge_is_internal_isolation_seam(
-    const SurfaceCellTracingOptions &options, const int faceCount,
+    const SurfaceCellTracingOptions &options, const Eigen::MatrixXi &faces,
     const std::vector<authority::TopologyRegionId> &regionByFace,
     const int firstFace, const int secondFace, const std::uint64_t edgeKey) {
+  const int faceCount = faces.rows();
   if (faceCount <= 0 || firstFace < 0 || secondFace < 0 ||
       firstFace >= faceCount || secondFace >= faceCount ||
       static_cast<int>(regionByFace.size()) != faceCount ||
       regionByFace[static_cast<std::size_t>(firstFace)] !=
           regionByFace[static_cast<std::size_t>(secondFace)] ||
-      !source_authority_valid(options, faceCount) ||
+      !source_authority_valid(options, faces) ||
       !source_faces_share_component(options, firstFace, secondFace) ||
       source_faces_compatible(options, firstFace, secondFace) ||
       options.hardFeatureEdges.count(edgeKey) != 0U ||
@@ -3208,7 +3206,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
   }
   const int vertexCount = static_cast<int>(vertices.rows());
   if (!surface_cell_tracing_detail::source_authority_valid(
-          options, static_cast<int>(faces.rows()))) {
+          options, faces)) {
     throw std::invalid_argument(
         "source face component/sheet labels must cover every source face.");
   }
@@ -3853,7 +3851,7 @@ SurfaceTraceResult trace_surface_field(
     return result;
   }
   if (!surface_cell_tracing_detail::source_authority_valid(
-          options, static_cast<int>(faces.rows()))) {
+          options, faces)) {
     result.termination = TraceTerminationReason::FieldMetadata;
     return result;
   }
@@ -9439,7 +9437,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   SurfacePhaseFrontBuildState result;
   result.attempted = options.enableUniformPhaseFront;
   if (!result.attempted) return result;
-  if (!source_authority_valid(options, faces.rows())) {
+  if (!source_authority_valid(options, faces)) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(result.failure,
                             SurfacePhaseFrontFailureReason::InvalidInput);
@@ -9452,8 +9450,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
   const auto sourceEdgeFaces = edge_faces(faces);
   const auto sourceMatchingIndices = edge_matching_indices(sourceEdgeFaces);
 
-  if (!sourceAuthority.complete_for_face_count(
-          static_cast<std::size_t>(faces.rows())) ||
+  if (!sourceAuthority.matches_source_faces(
+          faces, static_cast<std::size_t>(vertices.rows())) ||
       (faces.rows() > 0 && sourceAuthority.regions().empty())) {
     result.disposition = SurfaceCellProducerDisposition::Rejected;
     set_phase_front_failure(result.failure,
