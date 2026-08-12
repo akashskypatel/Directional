@@ -1,2 +1,0 @@
-purpose=m1-ra-wip-a17
-workflow=agent-m1-ra-apply-wip-a0.yml

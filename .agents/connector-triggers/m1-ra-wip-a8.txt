@@ -1,3 +1,0 @@
-M1 R-A WIP A8 apply trigger
-workflow: .github/workflows/agent-m1-ra-apply-wip-a0.yml
-decoded patch sha256: a2663a34e16cf57737feb9a9785b835cdea83521025a3c04fce3720330124fff

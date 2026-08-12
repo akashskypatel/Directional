@@ -1,4 +1,0 @@
-purpose=m1-ra-compile-only
-source_sha=c51ead7ed9ed5270240b9e68b1a12169a531d343
-attempt=8
-cache=ccache-256M-rolling-pruned
