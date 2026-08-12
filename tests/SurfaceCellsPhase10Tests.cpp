@@ -15,6 +15,9 @@
 #include <filesystem>
 #include <fstream>
 #include <stdexcept>
+#include <sstream>
+#include <set>
+#include <string>
 #include <tuple>
 #include <type_traits>
 
@@ -4936,6 +4939,112 @@ TEST(SurfaceCellAuthorityContractCutover,
     EXPECT_EQ(edge.sourceTopologyRegion,
               phase_front_region(network.phaseFront, edge).id());
   }
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ProductionMultiComponentMergePublishesCheckedTypedAuthorityUnderRawTamper) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto result =
+      directional::pipeline::remesh_surface_cell_components_from_cross_field(
+          mesh.V, mesh.F, crossField, options);
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ":"
+      << result.diagnostics.terminalFailureStage << " producer="
+      << result.diagnostics.surfaceCellFirstInvalidProducerStage << "/"
+      << result.diagnostics.surfaceCellFirstInvalidProducerReason;
+  EXPECT_EQ(2U, result.diagnostics.componentCount);
+  ASSERT_EQ(static_cast<std::size_t>(result.vertices.rows()),
+            result.outputVertexLineage.size());
+  ASSERT_EQ(result.outputVertexProvenance.size(),
+            result.outputVertexLineage.size());
+
+  std::set<std::size_t> firstComponentSheets;
+  std::set<std::size_t> secondComponentSheets;
+  for (const auto &lineage : result.outputVertexLineage) {
+    ASSERT_FALSE(lineage.sourceTopologyRegions.empty());
+    ASSERT_FALSE(lineage.sourceIsolationSheets.empty());
+    ASSERT_FALSE(lineage.sourceCharts.empty());
+    ASSERT_TRUE(lineage.sourceSupport.has_value());
+    ASSERT_TRUE(lineage.sourcePoint.valid());
+    auto &sheets = lineage.sourcePoint.face < 2 ? firstComponentSheets
+                                                : secondComponentSheets;
+    for (const auto sheet : lineage.sourceIsolationSheets) {
+      sheets.insert(sheet.index());
+    }
+  }
+  ASSERT_FALSE(firstComponentSheets.empty());
+  ASSERT_FALSE(secondComponentSheets.empty());
+  EXPECT_LT(*firstComponentSheets.rbegin(), *secondComponentSheets.begin());
+
+  const auto typedSnapshot = [](const directional::pipeline::RemeshResult &value) {
+    std::vector<std::string> rows;
+    rows.reserve(value.outputVertexLineage.size());
+    for (const auto &lineage : value.outputVertexLineage) {
+      std::ostringstream row;
+      row << "R";
+      for (const auto region : lineage.sourceTopologyRegions) {
+        row << ':' << region.index();
+      }
+      row << "|S";
+      for (const auto sheet : lineage.sourceIsolationSheets) {
+        row << ':' << sheet.index();
+      }
+      row << "|C";
+      for (const auto &chart : lineage.sourceCharts) {
+        row << ':' << chart.chart.index() << '@' << chart.face.index();
+      }
+      row << "|P";
+      std::visit(
+          [&](const auto &support) {
+            using Support = std::decay_t<decltype(support)>;
+            if constexpr (std::is_same_v<
+                              Support,
+                              directional::authority::SourceVertexSupport>) {
+              row << "V" << support.vertex.index();
+            } else if constexpr (std::is_same_v<
+                                     Support,
+                                     directional::authority::SourceEdgeSupport>) {
+              row << "E" << support.edge.first().index() << ':'
+                  << support.edge.second().index();
+            } else {
+              row << "F" << support.face.index();
+            }
+          },
+          lineage.sourceSupport.value());
+      rows.push_back(row.str());
+    }
+    std::sort(rows.begin(), rows.end());
+    return rows;
+  };
+
+  const auto baseline = typedSnapshot(result);
+  auto tampered = result;
+  for (auto &point : tampered.outputVertexProvenance) {
+    point.component += 1000;
+    point.sheet += 2000;
+  }
+  for (auto &lineage : tampered.outputVertexLineage) {
+    lineage.sourcePoint.component += 3000;
+    lineage.sourcePoint.sheet += 4000;
+    lineage.featureInterval.start.component += 5000;
+    lineage.featureInterval.start.sheet += 6000;
+    lineage.featureInterval.end.component += 7000;
+    lineage.featureInterval.end.sheet += 8000;
+  }
+  EXPECT_EQ(baseline, typedSnapshot(tampered));
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

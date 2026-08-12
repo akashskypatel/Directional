@@ -1767,6 +1767,64 @@ TEST(PureQuadCompletionPhase18,
 }
 
 TEST(PureQuadCompletionPhase18,
+     CompatibleExactBoundaryKeyMergesWithTypedAuthorityCertificate) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  const auto patches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, patches.size());
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      patches, 1.0e-9, &faces);
+
+  ASSERT_TRUE(assembly.success) << assembly.failure;
+  EXPECT_GT(assembly.mergedBoundaryVertices, 0);
+  EXPECT_EQ(1, assembly.connectedComponents);
+}
+
+TEST(PureQuadCompletionPhase18,
+     SameExactBoundaryKeyRejectsIncompatibleTypedLineage) {
+  Eigen::MatrixXi sourceFaces(1, 3);
+  sourceFaces << 0, 1, 2;
+  auto firstPatch = patch({1, 1, 1, 1});
+  auto secondPatch = firstPatch;
+  firstPatch.sourceFaces = {0};
+  secondPatch.sourceFaces = {0};
+  const auto firstAuthority = test_source_authority(sourceFaces, {7}, {11});
+  const auto secondAuthority = test_source_authority(sourceFaces, {7}, {19});
+  assign_patch_boundary_authority(firstPatch, sourceFaces, firstAuthority,
+                                  {0, 0, 0, 0});
+  assign_patch_boundary_authority(secondPatch, sourceFaces, secondAuthority,
+                                  {0, 0, 0, 0});
+
+  directional::geometry::PureQuadCompletionOptions firstOptions;
+  firstOptions.sourcePatch = 611;
+  firstOptions.sourceFaces = &sourceFaces;
+  firstOptions.sourceAuthority = &firstAuthority;
+  directional::geometry::PureQuadCompletionOptions secondOptions;
+  secondOptions.sourcePatch = 613;
+  secondOptions.sourceFaces = &sourceFaces;
+  secondOptions.sourceAuthority = &secondAuthority;
+  const auto first = directional::geometry::complete_pure_quad_patch(
+      firstPatch, firstOptions);
+  const auto second = directional::geometry::complete_pure_quad_patch(
+      secondPatch, secondOptions);
+  ASSERT_TRUE(first.success) << first.failure;
+  ASSERT_TRUE(second.success) << second.failure;
+  ASSERT_EQ(first.mesh.boundaryNodeIdentities,
+            second.mesh.boundaryNodeIdentities);
+  ASSERT_TRUE(std::equal(
+      first.mesh.vertexPositions.data(),
+      first.mesh.vertexPositions.data() + first.mesh.vertexPositions.size(),
+      second.mesh.vertexPositions.data()));
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {first.mesh, second.mesh}, 1.0e-9, &sourceFaces);
+
+  EXPECT_FALSE(assembly.success);
+  EXPECT_EQ("IncompatibleTypedStitchAuthority", assembly.failure);
+}
+
+TEST(PureQuadCompletionPhase18,
      MissingTypedStitchIdentityFailsClosedForGeneratedInterior) {
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 601;

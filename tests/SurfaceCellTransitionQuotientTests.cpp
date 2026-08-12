@@ -1469,6 +1469,24 @@ TEST(SurfaceCellTransitionQuotient,
                    .has_value());
 }
 
+TEST(SurfaceCellTransitionQuotient,
+     MalformedComponentTypedAuthorityRemapFailsClosed) {
+  directional::geometry::FaceComponent component;
+  component.originalFaces = {5};
+  component.originalVertices = {2, 3, 4};
+
+  directional::geometry::PureQuadVertexLineage lineage;
+  lineage.sourceTopologyRegions = {test_topology_region_id(0)};
+  lineage.sourceIsolationSheets = {test_isolation_sheet_id(0)};
+  // Face 1 is outside the one-face component and must not survive as an
+  // unremapped local chart.
+  lineage.sourceCharts = {test_projection_chart(0, 1)};
+  lineage.sourceSupport = test_source_vertex_support(0);
+
+  EXPECT_FALSE(directional::pipeline::remap_component_typed_lineage_authority(
+      lineage, component, 8U, 8U, 3, 4, 5));
+}
+
 TEST(SurfaceCellTypedTransportAuthority,
      OutOfDomainSourceVertexIsRejectedAtIngress) {
   const auto &fixture = hard_rail_fixture();

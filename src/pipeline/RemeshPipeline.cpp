@@ -1,6 +1,8 @@
 #include <directional/pipeline/RemeshPipeline.h>
 #include <directional/geometry/GeneralGraphMatching.h>
 
+#include <iterator>
+
 namespace directional::pipeline {
 
 std::string remesh_backend_name(const RemeshBackend backend) {
@@ -8548,6 +8550,131 @@ std::optional<int> typed_component_isolation_sheet_extent(
   return maximumSheet >= 0 ? std::optional<int>(maximumSheet) : std::nullopt;
 }
 
+bool remap_component_typed_lineage_authority(
+    geometry::PureQuadVertexLineage &lineage,
+    const geometry::FaceComponent &component,
+    const std::size_t globalSourceVertexCount,
+    const std::size_t globalSourceFaceCount,
+    const int topologyRegionOffset, const int sheetOffset,
+    const int fieldChartOffset) {
+  if (lineage.sourceTopologyRegions.empty() ||
+      lineage.sourceIsolationSheets.empty() || lineage.sourceCharts.empty() ||
+      !lineage.sourceSupport.has_value() || topologyRegionOffset < 0 ||
+      sheetOffset < 0 || fieldChartOffset < 0) {
+    return false;
+  }
+
+  const auto offset_index = [](const std::size_t value, const int offset)
+      -> std::optional<int> {
+    if (value > static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
+        offset > std::numeric_limits<int>::max() -
+                     static_cast<int>(value)) {
+      return std::nullopt;
+    }
+    return static_cast<int>(value) + offset;
+  };
+
+  for (authority::TopologyRegionId &region : lineage.sourceTopologyRegions) {
+    const auto global = offset_index(region.index(), topologyRegionOffset);
+    if (!global.has_value()) return false;
+    const auto remapped = authority::TopologyRegionId::from_index(
+        *global, static_cast<std::size_t>(*global) + 1U);
+    if (!remapped) return false;
+    region = remapped.value();
+  }
+  for (authority::IsolationSheetId &sheet : lineage.sourceIsolationSheets) {
+    const auto global = offset_index(sheet.index(), sheetOffset);
+    if (!global.has_value()) return false;
+    const auto remapped = authority::IsolationSheetId::from_index(
+        *global, static_cast<std::size_t>(*global) + 1U);
+    if (!remapped) return false;
+    sheet = remapped.value();
+  }
+  for (geometry::SourceProjectionChart &chart : lineage.sourceCharts) {
+    if (chart.face.index() >= component.originalFaces.size()) return false;
+    const int globalFace = component.originalFaces[chart.face.index()];
+    if (globalFace < 0 ||
+        static_cast<std::size_t>(globalFace) >= globalSourceFaceCount) {
+      return false;
+    }
+    const auto globalChart = offset_index(chart.chart.index(), fieldChartOffset);
+    if (!globalChart.has_value()) return false;
+    const auto chartId = authority::FieldChartId::from_index(
+        *globalChart, static_cast<std::size_t>(*globalChart) + 1U);
+    const auto faceId = authority::SourceFaceId::from_index(
+        globalFace, globalSourceFaceCount);
+    if (!chartId || !faceId) return false;
+    chart = geometry::SourceProjectionChart(chartId.value(), faceId.value());
+  }
+
+  const auto remap_vertex = [&](const authority::SourceVertexId local)
+      -> std::optional<authority::SourceVertexId> {
+    if (local.index() >= component.originalVertices.size()) {
+      return std::nullopt;
+    }
+    const int globalVertex = component.originalVertices[local.index()];
+    if (globalVertex < 0 ||
+        static_cast<std::size_t>(globalVertex) >= globalSourceVertexCount) {
+      return std::nullopt;
+    }
+    const auto id = authority::SourceVertexId::from_index(
+        globalVertex, globalSourceVertexCount);
+    return id ? std::optional<authority::SourceVertexId>(id.value())
+              : std::nullopt;
+  };
+  const auto remap_face = [&](const authority::SourceFaceId local)
+      -> std::optional<authority::SourceFaceId> {
+    if (local.index() >= component.originalFaces.size()) {
+      return std::nullopt;
+    }
+    const int globalFace = component.originalFaces[local.index()];
+    if (globalFace < 0 ||
+        static_cast<std::size_t>(globalFace) >= globalSourceFaceCount) {
+      return std::nullopt;
+    }
+    const auto id = authority::SourceFaceId::from_index(
+        globalFace, globalSourceFaceCount);
+    return id ? std::optional<authority::SourceFaceId>(id.value())
+              : std::nullopt;
+  };
+
+  std::optional<authority::SourceSupport> remappedSupport;
+  if (const auto *vertex = std::get_if<authority::SourceVertexSupport>(
+          &lineage.sourceSupport.value())) {
+    const auto remapped = remap_vertex(vertex->vertex);
+    if (!remapped.has_value()) return false;
+    remappedSupport = authority::SourceVertexSupport{*remapped};
+  } else if (const auto *edge = std::get_if<authority::SourceEdgeSupport>(
+                 &lineage.sourceSupport.value())) {
+    const auto first = remap_vertex(edge->edge.first());
+    const auto second = remap_vertex(edge->edge.second());
+    if (!first.has_value() || !second.has_value()) return false;
+    const auto topology =
+        authority::SourceEdgeTopologyKey::make(*first, *second);
+    if (!topology) return false;
+    remappedSupport = authority::SourceEdgeSupport{topology.value()};
+  } else if (const auto *face =
+                 std::get_if<authority::SourceFaceInteriorSupport>(
+                     &lineage.sourceSupport.value())) {
+    const auto remapped = remap_face(face->face);
+    if (!remapped.has_value()) return false;
+    remappedSupport = authority::SourceFaceInteriorSupport{*remapped};
+  }
+  if (!remappedSupport.has_value()) return false;
+  lineage.sourceSupport = std::move(remappedSupport);
+
+  const auto normalize = [](auto &values) {
+    std::sort(values.begin(), values.end());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
+  };
+  normalize(lineage.sourceTopologyRegions);
+  normalize(lineage.sourceIsolationSheets);
+  normalize(lineage.sourceCharts);
+  return !lineage.sourceTopologyRegions.empty() &&
+         !lineage.sourceIsolationSheets.empty() &&
+         !lineage.sourceCharts.empty() && lineage.sourceSupport.has_value();
+}
+
 } // namespace directional::pipeline
 
 namespace directional::pipeline {
@@ -9900,34 +10027,40 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           componentResult.surfaceCellContext
               .embeddedArrangementStorageReleasedAfterArrangement;
     }
+    const auto reject_component_merge_authority =
+        [&](const std::string &reason) {
+          merged.success = false;
+          merged.vertices.resize(0, 3);
+          merged.faces.resize(0, 0);
+          merged.degrees.resize(0);
+          merged.outputVertexProvenance.clear();
+          merged.outputVertexLineage.clear();
+          merged.outputQuadLineage.clear();
+          merged.surfaceCellContext.completedPatches.clear();
+          merged.diagnostics.failedComponentIndex = index;
+          merged.diagnostics.failedComponentMinimumOriginalFace =
+              static_cast<std::size_t>(component.minimum_original_face());
+          merged.diagnostics.terminalFailureCode =
+              surface_cell_failure_code_name(
+                  SurfaceCellFailureCode::NotProductionReady);
+          merged.diagnostics.terminalFailureStage = "component-merge-authority";
+          merged.diagnostics.surfaceCellFirstInvalidProducerStage =
+              "component-merge-authority";
+          merged.diagnostics.surfaceCellFirstInvalidProducerReason = reason;
+          merged.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
+          merged.diagnostics.surfaceCellRemeshOccurred = false;
+          merged.diagnostics.componentMergeSeconds =
+              remesh_elapsed_seconds(mergeStart);
+          set_overall_pipeline_time(merged, pipelineStart);
+        };
+
     const std::optional<int> typedSheetExtent =
         typed_component_isolation_sheet_extent(
             componentResult.outputVertexLineage,
             componentResult.outputVertexProvenance.size());
     if (!typedSheetExtent.has_value()) {
-      merged.success = false;
-      merged.vertices.resize(0, 3);
-      merged.faces.resize(0, 0);
-      merged.degrees.resize(0);
-      merged.outputVertexProvenance.clear();
-      merged.outputVertexLineage.clear();
-      merged.outputQuadLineage.clear();
-      merged.diagnostics.failedComponentIndex = index;
-      merged.diagnostics.failedComponentMinimumOriginalFace =
-          static_cast<std::size_t>(component.minimum_original_face());
-      merged.diagnostics.terminalFailureCode =
-          surface_cell_failure_code_name(
-              SurfaceCellFailureCode::NotProductionReady);
-      merged.diagnostics.terminalFailureStage = "component-merge-authority";
-      merged.diagnostics.surfaceCellFirstInvalidProducerStage =
-          "component-merge-authority";
-      merged.diagnostics.surfaceCellFirstInvalidProducerReason =
-          "MissingTypedComponentIsolationSheetAuthority";
-      merged.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
-      merged.diagnostics.surfaceCellRemeshOccurred = false;
-      merged.diagnostics.componentMergeSeconds =
-          remesh_elapsed_seconds(mergeStart);
-      set_overall_pipeline_time(merged, pipelineStart);
+      reject_component_merge_authority(
+          "MissingTypedComponentIsolationSheetAuthority");
       return merged;
     }
 
@@ -10040,11 +10173,6 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           std::move(rail));
     }
 
-    append_matrix_rows(merged.vertices, componentResult.vertices);
-    append_polygon_faces(merged.faces, merged.degrees,
-                         componentResult.faces, componentResult.degrees,
-                         vertexOffset);
-
     const int localMaximumSheet = *typedSheetExtent;
     int localMaximumTopologyRegion = -1;
     int localMaximumFieldChart = -1;
@@ -10053,28 +10181,24 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
     int localMaximumOccurrence = -1;
     int localMaximumQuotientClass = -1;
 
-    for (std::size_t vertex = 0;
-         vertex < componentResult.outputVertexProvenance.size(); ++vertex) {
-      const geometry::PureQuadVertexLineage &lineage =
-          componentResult.outputVertexLineage[vertex];
-      const std::optional<authority::IsolationSheetId> projectionSheet =
-          lineage.sourceIsolationSheets.size() == 1U
-              ? std::optional<authority::IsolationSheetId>(
-                    lineage.sourceIsolationSheets.front())
-              : std::nullopt;
-      geometry::SurfacePoint provenance = remap_component_surface_point(
-          componentResult.outputVertexProvenance[vertex], component, index,
-          projectionSheet, sheetOffset);
-      merged.outputVertexProvenance.push_back(std::move(provenance));
-    }
-
     const auto remap_quotient_lineage_authority =
-        [&](geometry::PureQuadVertexLineage &lineage) {
+        [&](geometry::PureQuadVertexLineage &lineage) -> bool {
           const std::optional<authority::IsolationSheetId> projectionSheet =
               lineage.sourceIsolationSheets.size() == 1U
                   ? std::optional<authority::IsolationSheetId>(
                         lineage.sourceIsolationSheets.front())
                   : std::nullopt;
+          for (const authority::TopologyRegionId region :
+               lineage.sourceTopologyRegions) {
+            localMaximumTopologyRegion = std::max(
+                localMaximumTopologyRegion, static_cast<int>(region.index()));
+          }
+          for (const geometry::SourceProjectionChart &chart :
+               lineage.sourceCharts) {
+            localMaximumFieldChart = std::max(
+                localMaximumFieldChart, static_cast<int>(chart.chart.index()));
+          }
+
           lineage.sourcePoint = remap_component_surface_point(
               lineage.sourcePoint, component, index, projectionSheet,
               sheetOffset);
@@ -10084,59 +10208,34 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           lineage.featureInterval.end = remap_component_surface_point(
               lineage.featureInterval.end, component, index, projectionSheet,
               sheetOffset);
-          for (authority::TopologyRegionId &region :
-               lineage.sourceTopologyRegions) {
-            const int localRegion = static_cast<int>(region.index());
-            localMaximumTopologyRegion =
-                std::max(localMaximumTopologyRegion, localRegion);
-            const int globalRegion = localRegion + topologyRegionOffset;
-            const auto remapped = authority::TopologyRegionId::from_index(
-                globalRegion, static_cast<std::size_t>(globalRegion + 1));
-            if (remapped) region = remapped.value();
+          if (!remap_component_typed_lineage_authority(
+                  lineage, component, static_cast<std::size_t>(vertices.rows()),
+                  static_cast<std::size_t>(faces.rows()), topologyRegionOffset,
+                  sheetOffset, fieldChartOffset)) {
+            return false;
           }
-          for (authority::IsolationSheetId &sheet :
-               lineage.sourceIsolationSheets) {
-            const int globalSheet =
-                static_cast<int>(sheet.index()) + sheetOffset;
-            const auto remapped = authority::IsolationSheetId::from_index(
-                globalSheet, static_cast<std::size_t>(globalSheet + 1));
-            if (remapped) sheet = remapped.value();
+          if ((lineage.kind == geometry::PureQuadVertexLineageKind::SourceTriangle &&
+               !lineage.sourcePoint.valid()) ||
+              (lineage.kind ==
+                   geometry::PureQuadVertexLineageKind::OrderedFeatureInterval &&
+               !lineage.featureInterval.valid())) {
+            return false;
           }
-          for (geometry::SourceProjectionChart &chart :
-               lineage.sourceCharts) {
-            const int localChart = static_cast<int>(chart.chart.index());
-            const int localFace = static_cast<int>(chart.face.index());
-            localMaximumFieldChart =
-                std::max(localMaximumFieldChart, localChart);
-            if (localFace < 0 ||
-                localFace >= static_cast<int>(component.originalFaces.size())) {
-              continue;
-            }
-            const int globalFace = component.originalFaces[
-                static_cast<std::size_t>(localFace)];
-            const auto globalChartId = authority::FieldChartId::from_index(
-                localChart + fieldChartOffset,
-                static_cast<std::size_t>(localChart + fieldChartOffset + 1));
-            const auto globalFaceId = authority::SourceFaceId::from_index(
-                globalFace, static_cast<std::size_t>(globalFace + 1));
-            if (globalChartId && globalFaceId) {
-              chart = geometry::SourceProjectionChart(globalChartId.value(),
-                                                      globalFaceId.value());
-            }
-          }
+
           if (lineage.quotientClass.has_value()) {
             const int localClass =
                 static_cast<int>(lineage.quotientClass->index());
             localMaximumQuotientClass =
                 std::max(localMaximumQuotientClass, localClass);
+            if (localClass >
+                std::numeric_limits<int>::max() - quotientClassOffset) {
+              return false;
+            }
             const int globalClass = localClass + quotientClassOffset;
             const auto remapped = authority::QuotientClassId::from_index(
-                globalClass, static_cast<std::size_t>(globalClass + 1));
-            if (remapped) {
-              lineage.quotientClass = remapped.value();
-            } else {
-              lineage.quotientClass.reset();
-            }
+                globalClass, static_cast<std::size_t>(globalClass) + 1U);
+            if (!remapped) return false;
+            lineage.quotientClass = remapped.value();
           }
           for (authority::OccurrenceId &occurrence :
                lineage.sourceOccurrences) {
@@ -10144,207 +10243,285 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
                 static_cast<int>(occurrence.index());
             localMaximumOccurrence =
                 std::max(localMaximumOccurrence, localOccurrence);
+            if (localOccurrence >
+                std::numeric_limits<int>::max() - occurrenceOffset) {
+              return false;
+            }
             const int globalOccurrence = localOccurrence + occurrenceOffset;
             const auto remapped = authority::OccurrenceId::from_index(
                 globalOccurrence,
-                static_cast<std::size_t>(globalOccurrence + 1));
-            if (remapped) occurrence = remapped.value();
-          }
-          if (lineage.sourceSupport.has_value()) {
-            const auto remap_vertex_id = [&](const authority::SourceVertexId local)
-                -> std::optional<authority::SourceVertexId> {
-              if (local.index() >= component.originalVertices.size()) {
-                return std::nullopt;
-              }
-              const int globalVertex =
-                  component.originalVertices[local.index()];
-              const auto id = authority::SourceVertexId::from_index(
-                  globalVertex, static_cast<std::size_t>(globalVertex + 1));
-              return id ? std::optional(id.value()) : std::nullopt;
-            };
-            const auto remap_face_id = [&](const authority::SourceFaceId local)
-                -> std::optional<authority::SourceFaceId> {
-              if (local.index() >= component.originalFaces.size()) {
-                return std::nullopt;
-              }
-              const int globalFace = component.originalFaces[local.index()];
-              const auto id = authority::SourceFaceId::from_index(
-                  globalFace, static_cast<std::size_t>(globalFace + 1));
-              return id ? std::optional(id.value()) : std::nullopt;
-            };
-            std::optional<authority::SourceSupport> remappedSupport;
-            if (const auto *vertex = std::get_if<authority::SourceVertexSupport>(
-                    &lineage.sourceSupport.value())) {
-              const auto remapped = remap_vertex_id(vertex->vertex);
-              if (remapped) {
-                remappedSupport = authority::SourceVertexSupport{
-                    remapped.value()};
-              }
-            } else if (const auto *edge =
-                           std::get_if<authority::SourceEdgeSupport>(
-                               &lineage.sourceSupport.value())) {
-              const auto first = remap_vertex_id(edge->edge.first());
-              const auto second = remap_vertex_id(edge->edge.second());
-              if (first && second) {
-                const auto topology = authority::SourceEdgeTopologyKey::make(
-                    first.value(), second.value());
-                if (topology) {
-                  remappedSupport = authority::SourceEdgeSupport{
-                      topology.value()};
-                }
-              }
-            } else if (const auto *face =
-                           std::get_if<authority::SourceFaceInteriorSupport>(
-                               &lineage.sourceSupport.value())) {
-              const auto remapped = remap_face_id(face->face);
-              if (remapped) {
-                remappedSupport = authority::SourceFaceInteriorSupport{
-                    remapped.value()};
-              }
-            }
-            lineage.sourceSupport = std::move(remappedSupport);
+                static_cast<std::size_t>(globalOccurrence) + 1U);
+            if (!remapped) return false;
+            occurrence = remapped.value();
           }
           for (geometry::PureQuadEquivalenceProvenance &equivalence :
                lineage.equivalences) {
             if (equivalence.firstFrontEdge >= 0) {
               localMaximumFrontEdge = std::max(
                   localMaximumFrontEdge, equivalence.firstFrontEdge);
+              if (equivalence.firstFrontEdge >
+                  std::numeric_limits<int>::max() - frontEdgeOffset) {
+                return false;
+              }
               equivalence.firstFrontEdge += frontEdgeOffset;
             }
             if (equivalence.secondFrontEdge >= 0) {
               localMaximumFrontEdge = std::max(
                   localMaximumFrontEdge, equivalence.secondFrontEdge);
+              if (equivalence.secondFrontEdge >
+                  std::numeric_limits<int>::max() - frontEdgeOffset) {
+                return false;
+              }
               equivalence.secondFrontEdge += frontEdgeOffset;
             }
             if (equivalence.periodicRelation.has_value()) {
-              const int localRelation = static_cast<int>(
-                  equivalence.periodicRelation->index());
-              localMaximumPeriodicRelation = std::max(
-                  localMaximumPeriodicRelation, localRelation);
+              const int localRelation =
+                  static_cast<int>(equivalence.periodicRelation->index());
+              localMaximumPeriodicRelation =
+                  std::max(localMaximumPeriodicRelation, localRelation);
+              if (localRelation >
+                  std::numeric_limits<int>::max() - periodicRelationOffset) {
+                return false;
+              }
               const int globalRelation = localRelation + periodicRelationOffset;
               const auto relationId = authority::PeriodicRelationId::from_index(
-                  globalRelation, static_cast<std::size_t>(globalRelation + 1));
-              if (!relationId) {
-                equivalence.periodicRelation.reset();
-              } else {
-                equivalence.periodicRelation = relationId.value();
-              }
+                  globalRelation, static_cast<std::size_t>(globalRelation) + 1U);
+              if (!relationId) return false;
+              equivalence.periodicRelation = relationId.value();
             }
             if (equivalence.railId.has_value()) {
-              const int globalRail =
-                  static_cast<int>(equivalence.railId->index()) + railOffset;
-              equivalence.railId = authority::HardRailId::from_index(
-                  globalRail, static_cast<std::size_t>(globalRail + 1))
-                                       .value();
+              const int localRail =
+                  static_cast<int>(equivalence.railId->index());
+              if (localRail > std::numeric_limits<int>::max() - railOffset) {
+                return false;
+              }
+              const int globalRail = localRail + railOffset;
+              const auto railId = authority::HardRailId::from_index(
+                  globalRail, static_cast<std::size_t>(globalRail + 1));
+              if (!railId) return false;
+              equivalence.railId = railId.value();
             }
             const auto remappedRoute = remap_route(equivalence.route);
-            if (!remappedRoute) {
-              equivalence.route = authority::CanonicalRoute{};
-            } else {
-              equivalence.route = remappedRoute.value();
-            }
+            if (!remappedRoute) return false;
+            equivalence.route = remappedRoute.value();
             for (authority::SourceEdgeTopologyKey &topology :
                  equivalence.isolationSeams) {
-              const auto remappedTopology = remap_source_edge_topology(topology);
-              if (remappedTopology) topology = remappedTopology.value();
+              const auto remappedTopology =
+                  remap_source_edge_topology(topology);
+              if (!remappedTopology) return false;
+              topology = remappedTopology.value();
             }
           }
-          std::sort(lineage.sourceTopologyRegions.begin(),
-                    lineage.sourceTopologyRegions.end());
-          lineage.sourceTopologyRegions.erase(
-              std::unique(lineage.sourceTopologyRegions.begin(),
-                          lineage.sourceTopologyRegions.end()),
-              lineage.sourceTopologyRegions.end());
-          std::sort(lineage.sourceIsolationSheets.begin(),
-                    lineage.sourceIsolationSheets.end());
-          lineage.sourceIsolationSheets.erase(
-              std::unique(lineage.sourceIsolationSheets.begin(),
-                          lineage.sourceIsolationSheets.end()),
-              lineage.sourceIsolationSheets.end());
-          std::sort(lineage.sourceCharts.begin(), lineage.sourceCharts.end());
-          lineage.sourceCharts.erase(
-              std::unique(lineage.sourceCharts.begin(),
-                          lineage.sourceCharts.end()),
-              lineage.sourceCharts.end());
           std::sort(lineage.equivalences.begin(),
                     lineage.equivalences.end());
           lineage.equivalences.erase(
               std::unique(lineage.equivalences.begin(),
                           lineage.equivalences.end()),
               lineage.equivalences.end());
+          return !lineage.sourceTopologyRegions.empty() &&
+                 !lineage.sourceIsolationSheets.empty() &&
+                 !lineage.sourceCharts.empty() &&
+                 lineage.sourceSupport.has_value();
         };
 
+    std::vector<geometry::PureQuadVertexLineage> remappedOutputVertexLineage;
+    remappedOutputVertexLineage.reserve(
+        componentResult.outputVertexLineage.size());
     for (geometry::PureQuadVertexLineage lineage :
          componentResult.outputVertexLineage) {
+      if (lineage.outputVertex < 0 ||
+          lineage.outputVertex >
+              std::numeric_limits<int>::max() - vertexOffset) {
+        reject_component_merge_authority(
+            "InvalidTypedComponentAuthorityRemap");
+        return merged;
+      }
       lineage.outputVertex += vertexOffset;
       if (lineage.featureInterval.railId.has_value()) {
-        const int globalRail =
-            static_cast<int>(lineage.featureInterval.railId->index()) +
-            railOffset;
-        lineage.featureInterval.railId = authority::HardRailId::from_index(
-            globalRail, static_cast<std::size_t>(globalRail + 1))
-                                             .value();
+        const int localRail =
+            static_cast<int>(lineage.featureInterval.railId->index());
+        if (localRail > std::numeric_limits<int>::max() - railOffset) {
+          reject_component_merge_authority(
+              "InvalidTypedComponentAuthorityRemap");
+          return merged;
+        }
+        const int globalRail = localRail + railOffset;
+        const auto railId = authority::HardRailId::from_index(
+            globalRail, static_cast<std::size_t>(globalRail + 1));
+        if (!railId) {
+          reject_component_merge_authority(
+              "InvalidTypedComponentAuthorityRemap");
+          return merged;
+        }
+        lineage.featureInterval.railId = railId.value();
       }
       if (lineage.featureInterval.curveId >= 0) {
+        if (lineage.featureInterval.curveId >
+            std::numeric_limits<int>::max() - curveOffset) {
+          reject_component_merge_authority(
+              "InvalidTypedComponentAuthorityRemap");
+          return merged;
+        }
         lineage.featureInterval.curveId += curveOffset;
       }
-      remap_quotient_lineage_authority(lineage);
-      merged.outputVertexLineage.push_back(std::move(lineage));
+      if (!remap_quotient_lineage_authority(lineage)) {
+        reject_component_merge_authority(
+            "InvalidTypedComponentAuthorityRemap");
+        return merged;
+      }
+      remappedOutputVertexLineage.push_back(std::move(lineage));
     }
 
+    if (componentResult.outputVertexProvenance.size() !=
+        remappedOutputVertexLineage.size()) {
+      reject_component_merge_authority(
+          "InvalidTypedComponentAuthorityRemap");
+      return merged;
+    }
+    std::vector<geometry::SurfacePoint> remappedOutputVertexProvenance;
+    remappedOutputVertexProvenance.reserve(
+        componentResult.outputVertexProvenance.size());
+    for (std::size_t vertex = 0;
+         vertex < componentResult.outputVertexProvenance.size(); ++vertex) {
+      const geometry::PureQuadVertexLineage &localLineage =
+          componentResult.outputVertexLineage[vertex];
+      const std::optional<authority::IsolationSheetId> projectionSheet =
+          localLineage.sourceIsolationSheets.size() == 1U
+              ? std::optional<authority::IsolationSheetId>(
+                    localLineage.sourceIsolationSheets.front())
+              : std::nullopt;
+      geometry::SurfacePoint provenance = remap_component_surface_point(
+          componentResult.outputVertexProvenance[vertex], component, index,
+          projectionSheet, sheetOffset);
+      if (!provenance.valid()) {
+        reject_component_merge_authority(
+            "InvalidTypedComponentAuthorityRemap");
+        return merged;
+      }
+      remappedOutputVertexProvenance.push_back(std::move(provenance));
+    }
+
+    std::vector<geometry::PureQuadFaceLineage> remappedOutputQuadLineage;
+    remappedOutputQuadLineage.reserve(componentResult.outputQuadLineage.size());
     int localMaximumPatch = -1;
     for (geometry::PureQuadFaceLineage lineage :
          componentResult.outputQuadLineage) {
+      if (lineage.outputQuad < 0 ||
+          lineage.outputQuad >
+              std::numeric_limits<int>::max() - faceOffset) {
+        reject_component_merge_authority(
+            "InvalidTypedComponentAuthorityRemap");
+        return merged;
+      }
       lineage.outputQuad += faceOffset;
       if (lineage.sourcePatch >= 0) {
         localMaximumPatch = std::max(localMaximumPatch, lineage.sourcePatch);
+        if (lineage.sourcePatch >
+            std::numeric_limits<int>::max() - patchOffset) {
+          reject_component_merge_authority(
+              "InvalidTypedComponentAuthorityRemap");
+          return merged;
+        }
         lineage.sourcePatch += patchOffset;
       }
-      merged.outputQuadLineage.push_back(std::move(lineage));
+      remappedOutputQuadLineage.push_back(std::move(lineage));
     }
 
+    std::vector<geometry::PureQuadMesh> remappedCompletedPatches;
+    remappedCompletedPatches.reserve(
+        componentResult.surfaceCellContext.completedPatches.size());
     for (geometry::PureQuadMesh patch :
          componentResult.surfaceCellContext.completedPatches) {
       if (patch.sourcePatch >= 0) {
         localMaximumPatch = std::max(localMaximumPatch, patch.sourcePatch);
+        if (patch.sourcePatch >
+            std::numeric_limits<int>::max() - patchOffset) {
+          reject_component_merge_authority(
+              "InvalidTypedComponentAuthorityRemap");
+          return merged;
+        }
         patch.sourcePatch += patchOffset;
       }
-      for (geometry::PureQuadVertexLineage &lineage :
-           patch.vertexLineage) {
+      if (patch.vertexProvenance.size() != patch.vertexLineage.size()) {
+        reject_component_merge_authority(
+            "InvalidTypedComponentAuthorityRemap");
+        return merged;
+      }
+      for (geometry::PureQuadVertexLineage &lineage : patch.vertexLineage) {
         if (lineage.featureInterval.railId.has_value()) {
-          const int globalRail =
-              static_cast<int>(lineage.featureInterval.railId->index()) +
-              railOffset;
-          lineage.featureInterval.railId = authority::HardRailId::from_index(
-              globalRail, static_cast<std::size_t>(globalRail + 1))
-                                               .value();
+          const int localRail =
+              static_cast<int>(lineage.featureInterval.railId->index());
+          if (localRail > std::numeric_limits<int>::max() - railOffset) {
+            reject_component_merge_authority(
+                "InvalidTypedComponentAuthorityRemap");
+            return merged;
+          }
+          const int globalRail = localRail + railOffset;
+          const auto railId = authority::HardRailId::from_index(
+              globalRail, static_cast<std::size_t>(globalRail) + 1U);
+          if (!railId) {
+            reject_component_merge_authority(
+                "InvalidTypedComponentAuthorityRemap");
+            return merged;
+          }
+          lineage.featureInterval.railId = railId.value();
         }
         if (lineage.featureInterval.curveId >= 0) {
+          if (lineage.featureInterval.curveId >
+              std::numeric_limits<int>::max() - curveOffset) {
+            reject_component_merge_authority(
+                "InvalidTypedComponentAuthorityRemap");
+            return merged;
+          }
           lineage.featureInterval.curveId += curveOffset;
         }
-        remap_quotient_lineage_authority(lineage);
+        if (!remap_quotient_lineage_authority(lineage)) {
+          reject_component_merge_authority(
+              "InvalidTypedComponentAuthorityRemap");
+          return merged;
+        }
       }
-      if (patch.vertexProvenance.size() == patch.vertexLineage.size()) {
-        for (std::size_t vertex = 0; vertex < patch.vertexLineage.size();
-             ++vertex) {
-          patch.vertexProvenance[vertex] =
-              patch.vertexLineage[vertex].sourcePoint;
-        }
-      } else {
-        for (geometry::SurfacePoint &point : patch.vertexProvenance) {
-          point = remap_component_surface_point(
-              point, component, index, std::nullopt, sheetOffset);
-        }
+      for (std::size_t vertex = 0; vertex < patch.vertexLineage.size();
+           ++vertex) {
+        patch.vertexProvenance[vertex] = patch.vertexLineage[vertex].sourcePoint;
       }
       for (geometry::PureQuadFaceLineage &lineage : patch.quadLineage) {
         if (lineage.sourcePatch >= 0) {
-          localMaximumPatch = std::max(localMaximumPatch,
-                                       lineage.sourcePatch);
+          localMaximumPatch = std::max(localMaximumPatch, lineage.sourcePatch);
+          if (lineage.sourcePatch >
+              std::numeric_limits<int>::max() - patchOffset) {
+            reject_component_merge_authority(
+                "InvalidTypedComponentAuthorityRemap");
+            return merged;
+          }
           lineage.sourcePatch += patchOffset;
         }
       }
-      merged.surfaceCellContext.completedPatches.push_back(std::move(patch));
+      remappedCompletedPatches.push_back(std::move(patch));
     }
+
+    // Publish component geometry and semantic products only after every typed
+    // lineage remap above has succeeded. A malformed component therefore cannot
+    // leave a partially merged mesh or completion product behind.
+    append_matrix_rows(merged.vertices, componentResult.vertices);
+    append_polygon_faces(merged.faces, merged.degrees, componentResult.faces,
+                         componentResult.degrees, vertexOffset);
+    merged.outputVertexProvenance.insert(
+        merged.outputVertexProvenance.end(),
+        std::make_move_iterator(remappedOutputVertexProvenance.begin()),
+        std::make_move_iterator(remappedOutputVertexProvenance.end()));
+    merged.outputVertexLineage.insert(
+        merged.outputVertexLineage.end(),
+        std::make_move_iterator(remappedOutputVertexLineage.begin()),
+        std::make_move_iterator(remappedOutputVertexLineage.end()));
+    merged.outputQuadLineage.insert(
+        merged.outputQuadLineage.end(),
+        std::make_move_iterator(remappedOutputQuadLineage.begin()),
+        std::make_move_iterator(remappedOutputQuadLineage.end()));
+    merged.surfaceCellContext.completedPatches.insert(
+        merged.surfaceCellContext.completedPatches.end(),
+        std::make_move_iterator(remappedCompletedPatches.begin()),
+        std::make_move_iterator(remappedCompletedPatches.end()));
 
     for (const SurfaceCellContextProductDebug &product :
          componentResult.surfaceCellContext.debugProducts) {

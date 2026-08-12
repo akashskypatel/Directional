@@ -1689,6 +1689,62 @@ std::int64_t stable_patch_owner(const PureQuadMesh &patch) {
   return static_cast<std::int64_t>(seed);
 }
 
+struct PureQuadTypedAuthorityCertificate {
+  std::vector<authority::TopologyRegionId> topologyRegions;
+  std::vector<authority::IsolationSheetId> isolationSheets;
+  std::vector<SourceProjectionChart> sourceCharts;
+  std::optional<authority::SourceSupport> sourceSupport;
+};
+
+std::optional<PureQuadTypedAuthorityCertificate>
+typed_lineage_authority_certificate(const PureQuadVertexLineage &lineage) {
+  PureQuadTypedAuthorityCertificate certificate;
+  certificate.topologyRegions = lineage.sourceTopologyRegions;
+  certificate.isolationSheets = lineage.sourceIsolationSheets;
+  certificate.sourceCharts = lineage.sourceCharts;
+  certificate.sourceSupport = lineage.sourceSupport;
+  const auto normalize = [](auto &values) {
+    std::sort(values.begin(), values.end());
+    values.erase(std::unique(values.begin(), values.end()), values.end());
+  };
+  normalize(certificate.topologyRegions);
+  normalize(certificate.isolationSheets);
+  normalize(certificate.sourceCharts);
+  if (certificate.topologyRegions.empty() ||
+      certificate.isolationSheets.empty() ||
+      certificate.sourceCharts.empty() ||
+      !certificate.sourceSupport.has_value()) {
+    return std::nullopt;
+  }
+  return certificate;
+}
+
+std::optional<PureQuadTypedAuthorityCertificate>
+intersect_typed_authority_certificates(
+    const PureQuadTypedAuthorityCertificate &first,
+    const PureQuadTypedAuthorityCertificate &second) {
+  if (!first.sourceSupport.has_value() || !second.sourceSupport.has_value() ||
+      first.sourceSupport != second.sourceSupport) {
+    return std::nullopt;
+  }
+  PureQuadTypedAuthorityCertificate compatible;
+  compatible.sourceSupport = first.sourceSupport;
+  const auto intersect = [](const auto &lhs, const auto &rhs, auto &out) {
+    std::set_intersection(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(),
+                          std::back_inserter(out));
+  };
+  intersect(first.topologyRegions, second.topologyRegions,
+            compatible.topologyRegions);
+  intersect(first.isolationSheets, second.isolationSheets,
+            compatible.isolationSheets);
+  intersect(first.sourceCharts, second.sourceCharts, compatible.sourceCharts);
+  if (compatible.topologyRegions.empty() ||
+      compatible.isolationSheets.empty() || compatible.sourceCharts.empty()) {
+    return std::nullopt;
+  }
+  return compatible;
+}
+
 PureQuadStitchIdentity typed_lineage_stitch_identity(
     const PureQuadVertexLineage &lineage, const bool sharedBoundary,
     const std::int64_t patchOwner, const int localVertex) {
@@ -2163,6 +2219,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
   };
   struct PendingOutputVertex {
     Eigen::Vector3d position = Eigen::Vector3d::Zero();
+    PureQuadTypedAuthorityCertificate typedAuthority;
     int provenancePatchIndex = -1;
     int provenanceLocalRow = -1;
     int lineagePatchIndex = -1;
@@ -2265,7 +2322,10 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           patch, localRow, sharedBoundary, patchOwner);
       const PureQuadStitchIdentity authoritativeKey =
           resolved_authoritative_identity(patch, localRow);
-      if (!key.valid() || !authoritativeKey.valid()) {
+      const auto typedAuthority =
+          typed_lineage_authority_certificate(incoming);
+      if (!key.valid() || !authoritativeKey.valid() ||
+          !typedAuthority.has_value()) {
         result.failure = "MissingTypedStitchIdentity";
         return result;
       }
@@ -2280,6 +2340,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         vertexRows.emplace(key, globalRow);
         PendingOutputVertex pending;
         pending.position = position;
+        pending.typedAuthority = typedAuthority.value();
         pending.provenancePatchIndex = patchIndex;
         pending.provenanceLocalRow = localRow;
         pending.lineagePatchIndex = patchIndex;
@@ -2290,6 +2351,13 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         globalRow = existing->second;
         PendingOutputVertex &stored =
             pendingVertices[static_cast<std::size_t>(globalRow)];
+        const auto compatibleAuthority = intersect_typed_authority_certificates(
+            stored.typedAuthority, typedAuthority.value());
+        if (!compatibleAuthority.has_value()) {
+          result.failure = "IncompatibleTypedStitchAuthority";
+          return result;
+        }
+        stored.typedAuthority = compatibleAuthority.value();
         if ((stored.position - position).norm() > positionTolerance) {
           result.failure = "InconsistentSharedBoundaryPosition";
           return result;
@@ -2621,6 +2689,10 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     lineage.authoritativeIdentity =
         resolved_authoritative_identity(lineagePatch,
                                         pending.lineageLocalRow);
+    lineage.sourceTopologyRegions = pending.typedAuthority.topologyRegions;
+    lineage.sourceIsolationSheets = pending.typedAuthority.isolationSheets;
+    lineage.sourceCharts = pending.typedAuthority.sourceCharts;
+    lineage.sourceSupport = pending.typedAuthority.sourceSupport;
     lineage.outputVertex = row;
     lineage.sourcePatch = lineagePatch.sourcePatch;
     lineage.localVertex = lineagePatch.vertices[static_cast<std::size_t>(

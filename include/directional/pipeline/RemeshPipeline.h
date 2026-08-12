@@ -868,6 +868,12 @@ std::optional<int> typed_component_isolation_sheet_extent(
     const std::vector<geometry::PureQuadVertexLineage> &lineage,
     std::size_t expectedVertexCount);
 
+bool remap_component_typed_lineage_authority(
+    geometry::PureQuadVertexLineage &lineage,
+    const geometry::FaceComponent &component,
+    std::size_t globalSourceVertexCount, std::size_t globalSourceFaceCount,
+    int topologyRegionOffset, int sheetOffset, int fieldChartOffset);
+
 void append_polygon_faces(
     Eigen::MatrixXi &targetFaces, Eigen::VectorXi &targetDegrees,
     const Eigen::MatrixXi &sourceFaces, const Eigen::VectorXi &sourceDegrees,
