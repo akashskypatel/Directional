@@ -29,9 +29,9 @@ replace_once(
 )
 text = remesh.read_text(encoding="utf-8")
 point_sheet_reads = text.count(".point.sheet")
-if point_sheet_reads != 4:
+if point_sheet_reads != 5:
     raise SystemExit(
-        f"{remesh}: expected four reviewed occurrence point.sheet reads, found {point_sheet_reads}"
+        f"{remesh}: expected five reviewed occurrence point.sheet reads, found {point_sheet_reads}"
     )
 text = text.replace(".point.sheet", ".isolationSheet")
 remesh.write_text(text, encoding="utf-8")
