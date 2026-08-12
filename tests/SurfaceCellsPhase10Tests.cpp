@@ -5234,10 +5234,8 @@ TEST(SurfaceCellAuthorityContractCutover,
             finalValidation.authoritativeBoundaryUsed);
   EXPECT_EQ(finalSourceAuthorityValidation.featureRailAuthorityUsed,
             finalValidation.authoritativeFeatureRailsUsed);
-  EXPECT_TRUE(finalValidation.strictValidationUsed);
   EXPECT_TRUE(finalValidation.sourceAuthoritativeValidationUsed);
   EXPECT_TRUE(finalValidation.authoritativeBoundaryUsed);
-  EXPECT_TRUE(finalValidation.authoritativeFeatureRailsUsed);
   EXPECT_TRUE(finalValidation.authoritativeFeatureRailsPassed);
   EXPECT_TRUE(finalValidation.orderedBoundaryCyclesPassed);
   EXPECT_TRUE(finalValidation.localSheetCompatibilityPassed);
@@ -5552,6 +5550,210 @@ TEST(SurfaceCellAuthorityContractCutover,
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
+     FinalMergedOracleRejectsChangedRemappedBoundaryLoopContent) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  bool reachedFinalOracleSeam = false;
+  bool mutatedBoundaryContent = false;
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_final_validation_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&reachedFinalOracleSeam, &mutatedBoundaryContent](
+              directional::validation::SourceAuthoritativeMeshValidatorOptions
+                  &validationOptions) {
+            if (validationOptions.authoritativeBoundaryLoops.size() < 2U ||
+                validationOptions.authoritativeBoundaryLoops[0].size() < 3U ||
+                validationOptions.authoritativeBoundaryLoops[1].empty()) {
+              return;
+            }
+            auto &loop = validationOptions.authoritativeBoundaryLoops.front();
+            const int replacement =
+                validationOptions.authoritativeBoundaryLoops[1].front();
+            if (std::find(loop.begin(), loop.end(), replacement) != loop.end()) {
+              return;
+            }
+
+            reachedFinalOracleSeam =
+                !validationOptions.authoritativeBoundaryEdges.empty();
+            loop.front() = replacement;
+            validationOptions.authoritativeBoundaryEdges.clear();
+            for (const auto &boundaryLoop :
+                 validationOptions.authoritativeBoundaryLoops) {
+              for (std::size_t index = 0; index < boundaryLoop.size(); ++index) {
+                const int a = boundaryLoop[index];
+                const int b =
+                    boundaryLoop[(index + 1U) % boundaryLoop.size()];
+                validationOptions.authoritativeBoundaryEdges.insert(
+                    {std::min(a, b), std::max(a, b)});
+              }
+            }
+            mutatedBoundaryContent = true;
+          });
+
+  ASSERT_TRUE(reachedFinalOracleSeam)
+      << "fixture must carry present remapped boundary authority";
+  ASSERT_TRUE(mutatedBoundaryContent)
+      << "fixture must expose two disjoint aggregate boundary loops";
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("FinalMergedSourceAuthorityValidationFailed",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_EQ("ChangedBoundaryLoop",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerValidationIssue);
+  const auto &issues =
+      rejected.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;
+  EXPECT_NE(std::find(issues.begin(), issues.end(), "ChangedBoundaryLoop"),
+            issues.end());
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_EQ(0, rejected.faces.rows());
+  EXPECT_TRUE(rejected.outputVertexProvenance.empty());
+  EXPECT_TRUE(rejected.outputVertexLineage.empty());
+  EXPECT_TRUE(rejected.outputQuadLineage.empty());
+  EXPECT_FALSE(rejected.surfaceCellContext.sourceTopologyRegions.has_value());
+  EXPECT_FALSE(rejected.surfaceCellContext.hasCompletedPatches);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
+  EXPECT_FALSE(
+      rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     FinalMergedOracleRejectsChangedRemappedFeatureRailContent) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.featureMap.userHardEdges.insert({0, 2});
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  bool reachedFinalOracleSeam = false;
+  bool mutatedFeatureContent = false;
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_final_validation_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&reachedFinalOracleSeam, &mutatedFeatureContent](
+              directional::validation::SourceAuthoritativeMeshValidatorOptions
+                  &validationOptions) {
+            if (validationOptions.authoritativeFeatureRails.empty() ||
+                validationOptions.expectedFeatureRailCount == 0U ||
+                validationOptions.authoritativeBoundaryLoops.size() < 2U ||
+                validationOptions.authoritativeBoundaryLoops[0].empty() ||
+                validationOptions.authoritativeBoundaryLoops[1].empty()) {
+              return;
+            }
+            reachedFinalOracleSeam =
+                validationOptions.authoritativeFeatureRails.size() ==
+                validationOptions.expectedFeatureRailCount;
+            const int first =
+                validationOptions.authoritativeBoundaryLoops[0].front();
+            const int second =
+                validationOptions.authoritativeBoundaryLoops[1].front();
+            validationOptions.authoritativeFeatureRails.front() = {first, second};
+            mutatedFeatureContent = true;
+          });
+
+  ASSERT_TRUE(reachedFinalOracleSeam)
+      << "fixture must carry non-empty remapped feature authority";
+  ASSERT_TRUE(mutatedFeatureContent)
+      << "fixture must expose two disconnected boundary loops";
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("FinalMergedSourceAuthorityValidationFailed",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_EQ("MissingFeatureRail",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerValidationIssue);
+  const auto &issues =
+      rejected.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;
+  EXPECT_NE(std::find(issues.begin(), issues.end(), "MissingFeatureRail"),
+            issues.end());
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_EQ(0, rejected.faces.rows());
+  EXPECT_TRUE(rejected.outputVertexProvenance.empty());
+  EXPECT_TRUE(rejected.outputVertexLineage.empty());
+  EXPECT_TRUE(rejected.outputQuadLineage.empty());
+  EXPECT_FALSE(rejected.surfaceCellContext.sourceTopologyRegions.has_value());
+  EXPECT_FALSE(rejected.surfaceCellContext.hasCompletedPatches);
+  EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
+  EXPECT_FALSE(
+      rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.featureMap.userHardEdges.insert({0, 2});
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  bool observedNonEmptyFeatureAuthority = false;
+  const auto result = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_final_validation_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&observedNonEmptyFeatureAuthority](
+              directional::validation::SourceAuthoritativeMeshValidatorOptions
+                  &validationOptions) {
+            observedNonEmptyFeatureAuthority =
+                validationOptions.expectedFeatureRailCount > 0U &&
+                validationOptions.authoritativeFeatureRails.size() ==
+                    validationOptions.expectedFeatureRailCount &&
+                std::all_of(
+                    validationOptions.authoritativeFeatureRails.begin(),
+                    validationOptions.authoritativeFeatureRails.end(),
+                    [](const auto &rail) { return rail.size() >= 2U; });
+          });
+
+  ASSERT_TRUE(observedNonEmptyFeatureAuthority)
+      << "fixture must reach the final oracle with non-empty feature authority";
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ':'
+      << result.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(result.surfaceCellContext.hasFinalSourceAuthorityValidationResult);
+  const auto &oracle =
+      result.surfaceCellContext.finalSourceAuthorityValidationResult;
+  EXPECT_TRUE(oracle.accepted);
+  EXPECT_TRUE(oracle.sourceAuthorityUsed);
+  EXPECT_TRUE(oracle.boundaryAuthorityUsed);
+  EXPECT_TRUE(oracle.featureRailsPassed);
+  EXPECT_TRUE(oracle.orderedBoundaryCyclesPassed);
+  EXPECT_TRUE(oracle.localSheetCompatibilityPassed);
+  EXPECT_TRUE(oracle.issues.empty());
+  ASSERT_TRUE(result.surfaceCellContext.hasValidationResult);
+  EXPECT_TRUE(
+      result.surfaceCellContext.validationResult.authoritativeFeatureRailsPassed);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
      FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing) {
   const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
   const auto crossField =
@@ -5595,10 +5797,8 @@ TEST(SurfaceCellAuthorityContractCutover,
       result.surfaceCellContext.finalSourceAuthorityValidationResult;
   EXPECT_TRUE(oracle.accepted);
   EXPECT_TRUE(oracle.sourceAuthorityUsed);
-  EXPECT_TRUE(oracle.strictValidationUsed);
   EXPECT_TRUE(oracle.provenanceValidationUsed);
   EXPECT_TRUE(oracle.boundaryAuthorityUsed);
-  EXPECT_TRUE(oracle.featureRailAuthorityUsed);
   EXPECT_TRUE(oracle.orderedBoundaryCyclesPassed);
   EXPECT_TRUE(oracle.featureRailsPassed);
   EXPECT_TRUE(oracle.localSheetCompatibilityPassed);

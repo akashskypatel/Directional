@@ -248,6 +248,7 @@ struct RemeshDiagnostics {
   std::string surfaceCellFirstInvalidProducerStage;
   std::string surfaceCellFirstInvalidProducerReason;
   std::string surfaceCellFirstInvalidProducerValidationIssue;
+  std::vector<std::string> surfaceCellFinalSourceAuthorityValidationIssues;
   int surfaceCellFirstInvalidProducerCell = -1;
   int surfaceCellFirstInvalidProducerHalfedge = -1;
   int surfaceCellFirstInvalidProducerTwin = -1;

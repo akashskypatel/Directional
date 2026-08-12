@@ -11530,6 +11530,12 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   if (!finalAuthorityValidation.accepted) {
     reject_merge_authority(components.size(),
                            "FinalMergedSourceAuthorityValidationFailed");
+    merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues.clear();
+    for (const validation::MeshValidationIssue &issue :
+         finalAuthorityValidation.issues) {
+      merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues
+          .emplace_back(validation::mesh_validation_failure_name(issue.code));
+    }
     if (!finalAuthorityValidation.issues.empty()) {
       const validation::MeshValidationIssue *reportedIssue =
           &finalAuthorityValidation.issues.front();
