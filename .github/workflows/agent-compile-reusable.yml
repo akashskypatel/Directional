@@ -24,11 +24,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     env:
-      BUILD_DIR: ${{ runner.temp }}/directional-build
-      CCACHE_DIR: ${{ runner.temp }}/directional-ccache
       CCACHE_MAXSIZE: 256M
       CCACHE_COMPRESS: "true"
-      CCACHE_BASEDIR: ${{ github.workspace }}
       CCACHE_NOHASHDIR: "true"
 
     steps:
@@ -74,10 +71,13 @@ jobs:
           legacy_prefix="m1-ra-${RUNNER_OS}-gcc-${compiler_version}-release-ccache-v3-"
           echo "cache_prefix=$cache_prefix" >> "$GITHUB_OUTPUT"
           echo "legacy_prefix=$legacy_prefix" >> "$GITHUB_OUTPUT"
-          mkdir -p "$CCACHE_DIR"
-          ccache --set-config=max_size="$CCACHE_MAXSIZE"
-          ccache --set-config=compression=true
-          ccache --zero-stats
+          echo "BUILD_DIR=$RUNNER_TEMP/directional-build" >> "$GITHUB_ENV"
+          echo "CCACHE_DIR=$RUNNER_TEMP/directional-ccache" >> "$GITHUB_ENV"
+          echo "CCACHE_BASEDIR=$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/directional-ccache"
+          CCACHE_DIR="$RUNNER_TEMP/directional-ccache" ccache --set-config=max_size="$CCACHE_MAXSIZE"
+          CCACHE_DIR="$RUNNER_TEMP/directional-ccache" ccache --set-config=compression=true
+          CCACHE_DIR="$RUNNER_TEMP/directional-ccache" ccache --zero-stats
           git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-preconfigure.txt"
           test ! -s "$RUNNER_TEMP/source-status-preconfigure.txt"
 
