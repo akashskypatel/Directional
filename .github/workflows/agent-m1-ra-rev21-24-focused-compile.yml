@@ -1,0 +1,24 @@
+name: Agent M1 R-A REV-21-24 Focused Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1-ra-rev21-24-focused-compile.txt
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: agent-m1-ra-rev21-24-focused-compile-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 9d88d0e47cfc039e5399ebee334290b1eeae792b
+      artifact_prefix: m1-ra-rev21-24-focused-compile
+      cache_epoch: v1
