@@ -1,7 +1,7 @@
 diff --git a/tests/PatchDescriptorMilestoneETests.cpp b/tests/PatchDescriptorMilestoneETests.cpp
 --- a/tests/PatchDescriptorMilestoneETests.cpp
 +++ b/tests/PatchDescriptorMilestoneETests.cpp
-@@ -14,27 +14,14 @@ namespace {
+@@ -14,26 +14,14 @@ namespace {
  directional::geometry::SourceProjectionChart test_projection_chart(
      const int fieldChart, const int sourceFace) {
    const auto chart = directional::authority::FieldChartId::from_index(
@@ -34,7 +34,7 @@ diff --git a/tests/PatchDescriptorMilestoneETests.cpp b/tests/PatchDescriptorMil
 diff --git a/tests/PureQuadCompletionPhase18Tests.cpp b/tests/PureQuadCompletionPhase18Tests.cpp
 --- a/tests/PureQuadCompletionPhase18Tests.cpp
 +++ b/tests/PureQuadCompletionPhase18Tests.cpp
-@@ -1162,11 +1162,7 @@ TEST(PureQuadCompletionPhase18,
+@@ -1162,11 +1162,8 @@ TEST(PureQuadCompletionPhase18,
    const auto sourceRow = directional::authority::SourceFaceId::from_index(
        0, static_cast<std::size_t>(fixture.faces.rows()));
    ASSERT_TRUE(sourceRow.has_value());
