@@ -1,0 +1,1 @@
+Apply the independently specified RA-REV-22-F4, RA-REV-22-F5, and RA-REV-23-F2 Code + Build remediation. Source/test/audit edits and source-only inventory execution are allowed; generated Directional runtime execution is prohibited.
