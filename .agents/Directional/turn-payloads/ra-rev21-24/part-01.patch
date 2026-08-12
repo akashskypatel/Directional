@@ -1,0 +1,238 @@
+-  for (const authority::IsolationSheetId sheet :
+-       lineage.sourceIsolationSheets) {
+-    identity.canonical.values.push_back(
+-        static_cast<std::int64_t>(sheet.index()));
+-  }
+-  identity.canonical.values.push_back(
+-      static_cast<std::int64_t>(lineage.sourceCharts.size()));
+-  for (const geometry::SourceProjectionChart &chart : lineage.sourceCharts) {
+-    identity.canonical.values.push_back(
+-        static_cast<std::int64_t>(chart.chart.index()));
+-    identity.canonical.values.push_back(
+-        static_cast<std::int64_t>(chart.face.index()));
+-  }
+-  if (!lineage.sourceSupport.has_value()) return std::nullopt;
+-  const authority::SourceSupport &support = lineage.sourceSupport.value();
+-  identity.canonical.values.push_back(
+-      static_cast<std::int64_t>(authority::support_kind(support)));
+-  if (const auto *vertex =
+-          std::get_if<authority::SourceVertexSupport>(&support)) {
+-    identity.canonical.values.push_back(
+-        static_cast<std::int64_t>(vertex->vertex.index()));
+-  } else if (const auto *edge =
+-                 std::get_if<authority::SourceEdgeSupport>(&support)) {
+-    identity.canonical.values.push_back(
+-        static_cast<std::int64_t>(edge->edge.first().index()));
+-    identity.canonical.values.push_back(
+-        static_cast<std::int64_t>(edge->edge.second().index()));
+-  } else if (const auto *face =
+-                 std::get_if<authority::SourceFaceInteriorSupport>(&support)) {
+-    identity.canonical.values.push_back(
+-        static_cast<std::int64_t>(face->face.index()));
+-  } else {
+-    return std::nullopt;
+-  }
+-  return identity;
+-}
+-
+ std::array<geometry::PureQuadStitchIdentity, 4>
+ canonical_aggregate_quad_cycle(
+     const std::array<geometry::PureQuadStitchIdentity, 4> &cycle) {
+@@ -9854,20 +9819,6 @@
+   return seed;
+ }
+ 
+-bool rebuild_aggregate_vertex_identity(
+-    geometry::PureQuadVertexLineage &lineage,
+-    const Eigen::MatrixXi &sourceFaces,
+-    const geometry::SourceTopologyRegions &sourceAuthority,
+-    const std::set<std::uint64_t> *sourceHardFeatureEdges) {
+-  const auto stitch = rebuild_aggregate_stitch_identity(lineage);
+-  if (!stitch.has_value()) return false;
+-  lineage.stitchIdentity = stitch.value();
+-  lineage.authoritativeIdentity =
+-      geometry::pure_quad_detail::canonical_authoritative_identity(
+-          lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
+-  return lineage.authoritativeIdentity.valid();
+-}
+-
+ bool rebuild_aggregate_output_identity_caches(
+     RemeshResult &result, const Eigen::MatrixXi &sourceFaces,
+     const geometry::SourceTopologyRegions &sourceAuthority,
+@@ -9876,20 +9827,104 @@
+           static_cast<std::size_t>(result.vertices.rows()) ||
+       result.outputQuadLineage.size() !=
+           static_cast<std::size_t>(result.faces.rows()) ||
+-      result.faces.cols() < 4) {
++      result.faces.cols() < 4 ||
++      result.surfaceCellContext.completedPatches.empty()) {
+     return false;
+   }
+ 
++  using PatchVertexKey = std::pair<int, int>;
++  std::map<PatchVertexKey, geometry::PureQuadStitchIdentity>
++      canonicalStitchByPatchVertex;
++
++  // Rebuild patch-local identity through the completion-owned canonical
++  // constructor first. The pipeline never interprets or preserves a cached
++  // stitch kind/schema of its own.
++  for (geometry::PureQuadMesh &patch :
++       result.surfaceCellContext.completedPatches) {
++    if (patch.sourcePatch < 0 ||
++        patch.vertexLineage.size() != patch.vertices.size() ||
++        patch.vertexProvenance.size() != patch.vertices.size() ||
++        patch.quadLineage.size() != patch.quads.size()) {
++      return false;
++    }
++    std::map<int, std::size_t> lineageByLocalVertex;
++    for (std::size_t row = 0; row < patch.vertexLineage.size(); ++row) {
++      geometry::PureQuadVertexLineage &lineage = patch.vertexLineage[row];
++      if (lineage.sourcePatch != patch.sourcePatch || lineage.localVertex < 0 ||
++          !lineageByLocalVertex.emplace(lineage.localVertex, row).second) {
++        return false;
++      }
++      const geometry::PureQuadStitchIdentity stitch =
++          geometry::pure_quad_detail::canonical_lineage_stitch_identity(
++              patch, static_cast<int>(row));
++      if (!stitch.valid()) return false;
++      lineage.stitchIdentity = stitch;
++      lineage.authoritativeIdentity =
++          geometry::pure_quad_detail::canonical_authoritative_identity(
++              lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
++      if (!lineage.authoritativeIdentity.valid() ||
++          !canonicalStitchByPatchVertex
++               .emplace(PatchVertexKey{lineage.sourcePatch,
++                                       lineage.localVertex},
++                        lineage.stitchIdentity)
++               .second) {
++        return false;
++      }
++      patch.vertexProvenance[row] = lineage.sourcePoint;
++    }
++
++    if (patch.boundaryNodeIdentities.size() != patch.boundaryVertices.size()) {
++      return false;
++    }
++    for (std::size_t boundary = 0; boundary < patch.boundaryVertices.size();
++         ++boundary) {
++      const auto row =
++          lineageByLocalVertex.find(patch.boundaryVertices[boundary]);
++      if (row == lineageByLocalVertex.end()) return false;
++      patch.boundaryNodeIdentities[boundary] =
++          patch.vertexLineage[row->second].stitchIdentity.canonical;
++    }
++
++    for (std::size_t quad = 0; quad < patch.quads.size(); ++quad) {
++      if (patch.quads[quad].size() != 4) return false;
++      std::array<geometry::PureQuadStitchIdentity, 4> stitchCycle{};
++      std::array<geometry::PureQuadStitchIdentity, 4> authoritativeCycle{};
++      for (int corner = 0; corner < 4; ++corner) {
++        const auto row = lineageByLocalVertex.find(
++            patch.quads[quad][static_cast<std::size_t>(corner)]);
++        if (row == lineageByLocalVertex.end()) return false;
++        const geometry::PureQuadVertexLineage &lineage =
++            patch.vertexLineage[row->second];
++        stitchCycle[static_cast<std::size_t>(corner)] = lineage.stitchIdentity;
++        authoritativeCycle[static_cast<std::size_t>(corner)] =
++            lineage.authoritativeIdentity;
++      }
++      patch.quadLineage[quad].canonicalStitchCycleHash =
++          aggregate_stitch_cycle_hash(
++              canonical_aggregate_quad_cycle(stitchCycle));
++      patch.quadLineage[quad].canonicalAuthoritativeCycleHash =
++          aggregate_stitch_cycle_hash(
++              canonical_aggregate_quad_cycle(authoritativeCycle));
++    }
++  }
++
+   std::vector<int> lineageByOutputVertex(
+       static_cast<std::size_t>(result.vertices.rows()), -1);
+   for (std::size_t row = 0; row < result.outputVertexLineage.size(); ++row) {
+     geometry::PureQuadVertexLineage &lineage = result.outputVertexLineage[row];
+     if (lineage.outputVertex < 0 || lineage.outputVertex >= result.vertices.rows() ||
+-        lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] >= 0 ||
+-        !rebuild_aggregate_vertex_identity(
+-            lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges)) {
++        lineage.sourcePatch < 0 || lineage.localVertex < 0 ||
++        lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] >= 0) {
+       return false;
+     }
++    const auto canonical = canonicalStitchByPatchVertex.find(
++        PatchVertexKey{lineage.sourcePatch, lineage.localVertex});
++    if (canonical == canonicalStitchByPatchVertex.end()) return false;
++    lineage.stitchIdentity = canonical->second;
++    lineage.authoritativeIdentity =
++        geometry::pure_quad_detail::canonical_authoritative_identity(
++            lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
++    if (!lineage.authoritativeIdentity.valid()) return false;
+     lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] =
+         static_cast<int>(row);
+   }
+@@ -9936,58 +9971,6 @@
+     lineage.canonicalAuthoritativeCycleHash = aggregate_stitch_cycle_hash(
+         canonical_aggregate_quad_cycle(authoritativeCycle));
+   }
+-
+-  for (geometry::PureQuadMesh &patch :
+-       result.surfaceCellContext.completedPatches) {
+-    if (patch.vertexLineage.size() != patch.vertices.size() ||
+-        patch.vertexProvenance.size() != patch.vertices.size() ||
+-        patch.quadLineage.size() != patch.quads.size()) {
+-      return false;
+-    }
+-    std::map<int, std::size_t> lineageByLocalVertex;
+-    for (std::size_t row = 0; row < patch.vertexLineage.size(); ++row) {
+-      geometry::PureQuadVertexLineage &lineage = patch.vertexLineage[row];
+-      if (!lineageByLocalVertex.emplace(lineage.localVertex, row).second ||
+-          !rebuild_aggregate_vertex_identity(
+-              lineage, sourceFaces, sourceAuthority,
+-              sourceHardFeatureEdges)) {
+-        return false;
+-      }
+-      patch.vertexProvenance[row] = lineage.sourcePoint;
+-    }
+-    if (patch.boundaryNodeIdentities.size() != patch.boundaryVertices.size()) {
+-      return false;
+-    }
+-    for (std::size_t boundary = 0; boundary < patch.boundaryVertices.size();
+-         ++boundary) {
+-      const auto row =
+-          lineageByLocalVertex.find(patch.boundaryVertices[boundary]);
+-      if (row == lineageByLocalVertex.end()) return false;
+-      patch.boundaryNodeIdentities[boundary] =
+-          patch.vertexLineage[row->second].stitchIdentity.canonical;
+-    }
+-    for (std::size_t quad = 0; quad < patch.quads.size(); ++quad) {
+-      if (patch.quads[quad].size() != 4) return false;
+-      std::array<geometry::PureQuadStitchIdentity, 4> stitchCycle{};
+-      std::array<geometry::PureQuadStitchIdentity, 4> authoritativeCycle{};
+-      for (int corner = 0; corner < 4; ++corner) {
+-        const auto row = lineageByLocalVertex.find(
+-            patch.quads[quad][static_cast<std::size_t>(corner)]);
+-        if (row == lineageByLocalVertex.end()) return false;
+-        const geometry::PureQuadVertexLineage &lineage =
+-            patch.vertexLineage[row->second];
+-        stitchCycle[static_cast<std::size_t>(corner)] = lineage.stitchIdentity;
+-        authoritativeCycle[static_cast<std::size_t>(corner)] =
+-            lineage.authoritativeIdentity;
+-      }
+-      patch.quadLineage[quad].canonicalStitchCycleHash =
+-          aggregate_stitch_cycle_hash(
+-              canonical_aggregate_quad_cycle(stitchCycle));
+-      patch.quadLineage[quad].canonicalAuthoritativeCycleHash =
+-          aggregate_stitch_cycle_hash(
+-              canonical_aggregate_quad_cycle(authoritativeCycle));
+-    }
+-  }
+   return true;
+ }
+ 
+@@ -10046,11 +10029,103 @@
+   const double absoluteTargetLength =
+       derive_absolute_target_length(vertices, options);
+ 
++  struct ComponentFinalValidationAuthority {
++    bool available = false;
++    std::vector<geometry::SurfaceCellRail> authoritativeRails;
++    std::vector<geometry::PureQuadVertexLineage> vertexLineage;
++    std::vector<int> outputQuadSourceFaces;
