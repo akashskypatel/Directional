@@ -69,6 +69,7 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 
 ### R-A closure status
 
+Review decision/planning commit: `ab29756e206da3e7b7d6845cfb3f08f25125faa5`.  
 Review boundary: branch head `fd96852d19defe70effd0dc6fbbaf07db8378e55`; exact affected implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`.
 
 - Overall R-A is **not complete**.
