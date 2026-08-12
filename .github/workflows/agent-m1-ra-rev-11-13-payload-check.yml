@@ -1,0 +1,61 @@
+name: Agent M1 R-A REV-11-13 Payload Diagnostic
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m1-ra-rev-11-13-payload-check.txt]
+
+permissions:
+  contents: read
+
+jobs:
+  payload-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' "event_sha=$GITHUB_SHA" 'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact trigger source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Verify transfer chunks
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          sha256sum \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part00 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part01 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part02 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13-audit.part00 \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13-audit.part01
+          cat .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part0* > "$RUNNER_TEMP/patch.b64"
+          cat .agents/Directional/turn-payloads/m1-ra-rev-11-13-audit.part0* > "$RUNNER_TEMP/audit.b64"
+          sha256sum "$RUNNER_TEMP/patch.b64" "$RUNNER_TEMP/audit.b64"
+          base64 --decode "$RUNNER_TEMP/patch.b64" > "$RUNNER_TEMP/patch.gz"
+          base64 --decode "$RUNNER_TEMP/audit.b64" > "$RUNNER_TEMP/audit.gz"
+          sha256sum "$RUNNER_TEMP/patch.gz" "$RUNNER_TEMP/audit.gz"
+          gzip -t "$RUNNER_TEMP/patch.gz"; echo "patch_gzip=$?"
+          gzip -t "$RUNNER_TEMP/audit.gz"; echo "audit_gzip=$?"
+          gzip -dc "$RUNNER_TEMP/patch.gz" > "$RUNNER_TEMP/patch"
+          gzip -dc "$RUNNER_TEMP/audit.gz" > "$RUNNER_TEMP/audit.py"
+          sha256sum "$RUNNER_TEMP/patch" "$RUNNER_TEMP/audit.py"
+          echo 'runtimeExecution=false'
+          exit 0
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-rev-11-13-payload-diagnostic-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 1
