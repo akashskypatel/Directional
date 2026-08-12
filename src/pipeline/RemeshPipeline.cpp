@@ -911,8 +911,6 @@ namespace directional::pipeline {
 void hash_surface_point(std::uint64_t &seed,
                                const geometry::SurfacePoint &point) {
   hash_combine_i64(seed, point.face);
-  hash_combine_i64(seed, point.component);
-  hash_combine_i64(seed, point.sheet);
   hash_combine_double(seed, point.barycentric.x());
   hash_combine_double(seed, point.barycentric.y());
   hash_combine_double(seed, point.barycentric.z());
@@ -1619,6 +1617,11 @@ std::uint64_t hash_completion(const geometry::PureQuadMesh &mesh) {
   hash_combine_i64(seed, mesh.domainIdentity.boundaryHalfedgeCount);
   hash_combine_i64(seed, mesh.domainIdentity.sourceSupportCount);
   hash_vector(seed, mesh.vertices);
+  hash_combine_u64(seed, mesh.boundaryNodeIdentities.size());
+  for (const geometry::SurfaceCellCanonicalIdentity &identity :
+       mesh.boundaryNodeIdentities) {
+    hash_combine_u64(seed, identity.hash());
+  }
   hash_matrix(seed, mesh.vertexPositions);
   hash_combine_u64(seed, mesh.quads.size());
   for (const std::vector<int> &quad : mesh.quads) {

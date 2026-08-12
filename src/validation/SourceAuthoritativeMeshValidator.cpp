@@ -1189,22 +1189,6 @@ validate_source_authoritative_surface_mesh(
           point.face, options.sourceAuthority->face_count());
       if (!sourceFaceId) {
         result.fail({MeshValidationFailureCode::InvalidProvenance, vertex});
-      } else {
-        // component/sheet on SurfacePoint are representation projections only.
-        // Validate them against typed authority, but never use them to choose
-        // semantic connectivity or source-chart compatibility.
-        const int expectedComponent = static_cast<int>(
-            options.sourceAuthority->component_for_row(sourceFaceId.value())
-                .index());
-        const int expectedSheet = static_cast<int>(
-            options.sourceAuthority->sheet_for_row(sourceFaceId.value()).index());
-        if (point.component >= 0 && point.component != expectedComponent) {
-          result.fail({MeshValidationFailureCode::SourceComponentMismatch,
-                       vertex});
-        }
-        if (point.sheet >= 0 && point.sheet != expectedSheet) {
-          result.fail({MeshValidationFailureCode::SourceSheetMismatch, vertex});
-        }
       }
     }
   }

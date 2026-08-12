@@ -1,16 +1,8 @@
 #include <directional/geometry/SurfaceOptimizationRailConstraints.h>
-#include <limits>
 
 namespace directional::geometry::surface_optimization_rail_detail {
 
 namespace {
-
-// M1b preserves the legacy consumer's source-vertex truth table: this seam
-// previously rejected negative values but did not introduce a sourceVertices
-// row-bound check. Use the complete nonnegative legacy-int domain as the
-// compatibility extent; upstream topology validation remains authoritative.
-constexpr std::size_t legacy_source_vertex_extent =
-    static_cast<std::size_t>(std::numeric_limits<int>::max()) + 1U;
 
 std::pair<int, int> source_face_numeric_scope(
     const SurfaceOptimizationConstraints &constraints, const int face) {
@@ -61,21 +53,26 @@ bool provenance_supports_interval_sheet(
     const SurfaceOptimizationConstraints &constraints) {
   using authority::SourceFaceId;
   using authority::SourceVertexId;
-  if (provenance.component >= 0 && interval.component >= 0 &&
-      provenance.component != interval.component) {
-    return false;
-  }
-  if (provenance.sheet < 0 || interval.sheet < 0 ||
-      provenance.sheet == interval.sheet) {
-    return true;
-  }
   if (!provenance.valid() || provenance.face < 0 ||
       provenance.face >= constraints.sourceFaces.rows() ||
       interval.sourceFace < 0 ||
       interval.sourceFace >= constraints.sourceFaces.rows() ||
       constraints.sourceFaces.cols() != 3 ||
+      constraints.sourceVertices.rows() <= 0 ||
       !provenance.barycentric.allFinite()) {
     return false;
+  }
+  const auto [provenanceComponent, provenanceSheet] =
+      source_face_numeric_scope(constraints, provenance.face);
+  const auto [intervalComponent, intervalSheet] =
+      source_face_numeric_scope(constraints, interval.sourceFace);
+  if (provenanceComponent < 0 || provenanceSheet < 0 ||
+      intervalComponent < 0 || intervalSheet < 0 ||
+      provenanceComponent != intervalComponent) {
+    return false;
+  }
+  if (provenanceSheet == intervalSheet) {
+    return true;
   }
 
   const std::size_t sourceFaceExtent =
@@ -106,7 +103,7 @@ bool provenance_supports_interval_sheet(
         return false;
       }
       const auto sourceVertexResult = directional::authority::SourceVertexId::from_index(
-          legacySourceVertex, legacy_source_vertex_extent);
+          legacySourceVertex, static_cast<std::size_t>(constraints.sourceVertices.rows()));
       if (!sourceVertexResult) {
         return false;
       }
@@ -123,14 +120,6 @@ bool provenance_supports_interval_sheet(
     }
   }
 
-  const auto [intervalComponent, intervalSheet] =
-      source_face_numeric_scope(constraints, static_cast<int>(intervalFace.index()));
-  if (interval.component >= 0 && intervalComponent != interval.component) {
-    return false;
-  }
-  if (interval.sheet >= 0 && intervalSheet != interval.sheet) {
-    return false;
-  }
   return true;
 }
 
@@ -173,7 +162,7 @@ void fill_surface_optimization_rail_constraints(
       const auto [sourceComponent, sourceSheet] =
           surface_optimization_rail_detail::source_face_numeric_scope(
               constraints, start.sourceFace);
-      interval.component = sourceComponent >= 0 ? sourceComponent : rail.component;
+      interval.component = sourceComponent;
       interval.sheet = sourceSheet;
       interval.parameterStart = start.railParameter;
       interval.parameterEnd = end.railParameter;

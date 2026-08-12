@@ -1410,6 +1410,30 @@ TEST(SurfaceCellTypedTransportAuthority,
             invalid.error().code);
 }
 
+TEST(SurfaceCellTransitionQuotient,
+     MaterializedCompletionHashIgnoresRawProjectionLabels) {
+  const auto &fixture = split_isolation_fixture();
+  const auto materialized = materialize(fixture, fixture.network.phaseFront);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+
+  auto tampered = materialized.mesh;
+  for (auto &point : tampered.vertexProvenance) {
+    point.component = 401;
+    point.sheet = 402;
+  }
+  for (auto &lineage : tampered.vertexLineage) {
+    lineage.sourcePoint.component = 403;
+    lineage.sourcePoint.sheet = 404;
+    lineage.featureInterval.start.component = 405;
+    lineage.featureInterval.start.sheet = 406;
+    lineage.featureInterval.end.component = 407;
+    lineage.featureInterval.end.sheet = 408;
+  }
+
+  EXPECT_EQ(directional::pipeline::hash_completion(materialized.mesh),
+            directional::pipeline::hash_completion(tampered));
+}
+
 TEST(SurfaceCellTypedTransportAuthority,
      OutOfDomainSourceVertexIsRejectedAtIngress) {
   const auto &fixture = hard_rail_fixture();

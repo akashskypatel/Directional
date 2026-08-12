@@ -779,8 +779,9 @@ bool provenance_is_complete(
       constraints.sourceAuthority != nullptr &&
       constraints.sourceAuthority->complete_for_face_count(
           static_cast<std::size_t>(constraints.sourceFaces.rows()));
-  return !sourceAuthorityComplete ||
-         (point.component >= 0 && point.sheet >= 0);
+  if (!sourceAuthorityComplete) return true;
+  const auto [component, sheet] = source_face_numeric_scope(constraints, point.face);
+  return component >= 0 && sheet >= 0;
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -886,16 +887,8 @@ Eigen::MatrixXd project_vertices(
         i < static_cast<int>(constraints.vertexProvenance.size())
             ? constraints.vertexProvenance[static_cast<std::size_t>(i)]
             : SurfacePoint{};
-    const int requiredComponent =
-        i < static_cast<int>(constraints.vertexProvenance.size())
-            ? constraints.vertexProvenance[static_cast<std::size_t>(i)].component
-            : (constraints.sourceComponent.size() == vertices.rows()
-                   ? constraints.sourceComponent(i)
-                   : -1);
-    const int requiredSheet =
-        i < static_cast<int>(constraints.vertexProvenance.size())
-            ? constraints.vertexProvenance[static_cast<std::size_t>(i)].sheet
-            : -1;
+    const auto [requiredComponent, requiredSheet] =
+        source_face_numeric_scope(constraints, seed.face);
     const bool fixed = contains(constraints.fixedVertices, i);
     const bool feature = contains(constraints.featureVertices, i);
     const auto project_candidate = [&](const Eigen::RowVector3d &candidate) {
@@ -908,6 +901,13 @@ Eigen::MatrixXd project_vertices(
       }
       return nearest_source_point(candidate, constraints, requiredComponent,
                                   requiredSheet, cache);
+    };
+    const auto source_matches_required_scope = [&](const SurfacePoint &source) {
+      if (!source.valid()) return false;
+      const auto [component, sheet] =
+          source_face_numeric_scope(constraints, source.face);
+      return (requiredComponent < 0 || component == requiredComponent) &&
+             (requiredSheet < 0 || sheet == requiredSheet);
     };
     if (fixed) {
       Eigen::RowVector3d constrainedPoint = vertices.row(i);
@@ -929,12 +929,10 @@ Eigen::MatrixXd project_vertices(
       projectedProvenance[static_cast<std::size_t>(i)] = source;
       provenanceComplete =
           provenanceComplete && provenance_is_complete(source, constraints);
-      if (requiredComponent >= 0 &&
-          (!source.valid() || source.component != requiredComponent)) {
+      if (requiredComponent >= 0 && !source_matches_required_scope(source)) {
         componentOk = false;
       }
-      if (requiredSheet >= 0 &&
-          (!source.valid() || source.sheet != requiredSheet)) {
+      if (requiredSheet >= 0 && !source_matches_required_scope(source)) {
         sheetOk = false;
       }
       continue;
@@ -955,12 +953,10 @@ Eigen::MatrixXd project_vertices(
           projectedProvenance[static_cast<std::size_t>(i)];
       provenanceComplete =
           provenanceComplete && provenance_is_complete(source, constraints);
-      if (requiredComponent >= 0 &&
-          (!source.valid() || source.component != requiredComponent)) {
+      if (requiredComponent >= 0 && !source_matches_required_scope(source)) {
         componentOk = false;
       }
-      if (requiredSheet >= 0 &&
-          (!source.valid() || source.sheet != requiredSheet)) {
+      if (requiredSheet >= 0 && !source_matches_required_scope(source)) {
         sheetOk = false;
       }
     } else {
@@ -971,12 +967,10 @@ Eigen::MatrixXd project_vertices(
       projectedProvenance[static_cast<std::size_t>(i)] = source;
       provenanceComplete =
           provenanceComplete && provenance_is_complete(source, constraints);
-      if (requiredComponent >= 0 &&
-          (!source.valid() || source.component != requiredComponent)) {
+      if (requiredComponent >= 0 && !source_matches_required_scope(source)) {
         componentOk = false;
       }
-      if (requiredSheet >= 0 &&
-          (!source.valid() || source.sheet != requiredSheet)) {
+      if (requiredSheet >= 0 && !source_matches_required_scope(source)) {
         sheetOk = false;
       }
     }
@@ -1140,9 +1134,7 @@ std::pair<int, int> consistent_component_sheet(
             provenance[static_cast<std::size_t>(vertex)];
         const std::set<std::pair<int, int>> labels =
             labelSupport.supported_labels(point);
-        if (labels.empty() ||
-            (point.component >= 0 && point.sheet >= 0 &&
-             labels.count({point.component, point.sheet}) == 0U)) {
+        if (labels.empty()) {
           points.clear();
           break;
         }
@@ -1177,38 +1169,8 @@ std::pair<int, int> consistent_component_sheet(
     }
   }
 
-  constexpr int incompatibleLabel = std::numeric_limits<int>::max();
-  int component = -1;
-  int sheet = -1;
-  bool componentAssigned = false;
-  bool sheetAssigned = false;
-  for (int corner = 0; corner < 4; ++corner) {
-    const int vertex = quads(face, corner);
-    if (vertex < 0 || vertex >= static_cast<int>(provenance.size())) {
-      continue;
-    }
-    const SurfacePoint &point = provenance[static_cast<std::size_t>(vertex)];
-    if (!point.valid()) {
-      continue;
-    }
-    if (point.component >= 0 && component != incompatibleLabel) {
-      if (!componentAssigned) {
-        component = point.component;
-        componentAssigned = true;
-      } else if (point.component != component) {
-        component = incompatibleLabel;
-      }
-    }
-    if (point.sheet >= 0 && sheet != incompatibleLabel) {
-      if (!sheetAssigned) {
-        sheet = point.sheet;
-        sheetAssigned = true;
-      } else if (point.sheet != sheet) {
-        sheet = incompatibleLabel;
-      }
-    }
-  }
-  return {component, sheet};
+  return {std::numeric_limits<int>::max(),
+          std::numeric_limits<int>::max()};
 }
 
 } // namespace directional::geometry::surface_optimizer_detail
@@ -2103,8 +2065,8 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
     if (faceSourceVertex >= 0 && rawNormalLength > 1.0e-20) {
       const Eigen::RowVector3d faceNormal = rawNormal / rawNormalLength;
       const double eps = std::max(1.0e-8, options.finiteDifferenceStep);
-      const int requiredComponent = faceSource.component;
-      const int requiredSheet = faceSource.sheet;
+      const auto [requiredComponent, requiredSheet] =
+          source_face_numeric_scope(constraints, faceSource.face);
       for (int coordinate = 0; coordinate < 3; ++coordinate) {
         Eigen::RowVector3d plusPoint = vertices.row(faceSourceVertex);
         Eigen::RowVector3d minusPoint = vertices.row(faceSourceVertex);
@@ -2229,8 +2191,8 @@ SurfaceOptimizationGradient evaluate_surface_optimization_gradient_cached(
 
     if (faceSourceVertex >= 0) {
       const double eps = std::max(1.0e-8, options.finiteDifferenceStep);
-      const int requiredComponent = faceSource.component;
-      const int requiredSheet = faceSource.sheet;
+      const auto [requiredComponent, requiredSheet] =
+          source_face_numeric_scope(constraints, faceSource.face);
       const auto fieldEnergyForSource = [&](const SurfacePoint &source) {
         const LocalSourceCross cross =
             local_source_cross(constraints, source, face);
@@ -2755,8 +2717,8 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
           constraints, firstPoint, secondPoint, firstVertex, secondVertex,
           edge.norm(), options.targetSize);
       sizeRatios.push_back(edge.norm() / std::max(1.0e-12, target));
-      const int component = firstPoint.valid() ? firstPoint.component : -1;
-      const int sheet = firstPoint.valid() ? firstPoint.sheet : -1;
+      const auto [component, sheet] =
+          source_face_numeric_scope(constraints, firstPoint.face);
       const SurfacePoint edgeSource = nearest_source_point(
           0.5 * (first + second), constraints, component, sheet,
           &sourceProjection);
@@ -3050,8 +3012,8 @@ SurfaceOptimizationOverlay make_surface_optimization_overlay(
       overlay.sizeRatio(row) =
           (second - first).norm() / std::max(1.0e-12, target);
 
-      const int component = firstPoint.valid() ? firstPoint.component : -1;
-      const int sheet = firstPoint.valid() ? firstPoint.sheet : -1;
+      const auto [component, sheet] =
+          source_face_numeric_scope(constraints, firstPoint.face);
       const SurfacePoint edgeSource = nearest_source_point(
           0.5 * (first + second), constraints, component, sheet,
           &sourceProjection);

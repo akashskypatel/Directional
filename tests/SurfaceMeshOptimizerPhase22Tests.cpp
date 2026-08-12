@@ -678,15 +678,22 @@ TEST(SurfaceMeshOptimizerPhase22,
   EXPECT_TRUE(
       has_code(mixedResult, MeshValidationFailureCode::LocalSheetMismatch));
 
-  provenance[0].component = 1;
-  const auto wrongLabel =
+  provenance[0].component = 77;
+  provenance[0].sheet = 88;
+  const auto rawProjectionTampered =
       directional::validation::validate_source_authoritative_surface_mesh(
           mixed, one_quad(),
           make_options(source, sourceFaces, components, sheets, provenance,
                        {{0, 1, 2, 3}}));
-  EXPECT_FALSE(wrongLabel.accepted);
-  EXPECT_TRUE(has_code(wrongLabel,
-                       MeshValidationFailureCode::SourceComponentMismatch));
+  EXPECT_EQ(mixedResult.accepted, rawProjectionTampered.accepted);
+  EXPECT_EQ(mixedResult.localSheetCompatibilityPassed,
+            rawProjectionTampered.localSheetCompatibilityPassed);
+  EXPECT_TRUE(has_code(rawProjectionTampered,
+                       MeshValidationFailureCode::LocalSheetMismatch));
+  EXPECT_FALSE(has_code(rawProjectionTampered,
+                        MeshValidationFailureCode::SourceComponentMismatch));
+  EXPECT_FALSE(has_code(rawProjectionTampered,
+                        MeshValidationFailureCode::SourceSheetMismatch));
 }
 
 TEST(SurfaceMeshOptimizerPhase22,
@@ -1320,7 +1327,7 @@ TEST(SurfaceMeshOptimizerPhase22,
 }
 
 TEST(SurfaceMeshOptimizerPhase22,
-     HardRailChartAuthorityNeverMasksScalarProvenanceFailures) {
+     HardRailChartAuthorityIgnoresRawProjectionLabelsButNotGeometryFailures) {
   const auto expect_code = [](const auto &fixture,
                               const MeshValidationFailureCode code) {
     const auto result =
@@ -1339,13 +1346,19 @@ TEST(SurfaceMeshOptimizerPhase22,
   position.provenance[2].position.z() = 0.25;
   expect_code(position, MeshValidationFailureCode::SourcePositionMismatch);
 
-  HardRailValidationFixture component = make_hard_rail_validation_fixture();
-  component.provenance[2].component = 1;
-  expect_code(component, MeshValidationFailureCode::SourceComponentMismatch);
-
-  HardRailValidationFixture sheet = make_hard_rail_validation_fixture();
-  sheet.provenance[2].sheet = 0;
-  expect_code(sheet, MeshValidationFailureCode::SourceSheetMismatch);
+  HardRailValidationFixture rawProjection =
+      make_hard_rail_validation_fixture();
+  rawProjection.provenance[2].component = 91;
+  rawProjection.provenance[2].sheet = 92;
+  const auto rawProjectionResult =
+      directional::validation::validate_source_authoritative_surface_mesh(
+          rawProjection.vertices, rawProjection.quads,
+          hard_rail_options(rawProjection));
+  EXPECT_TRUE(rawProjectionResult.accepted);
+  EXPECT_FALSE(has_code(rawProjectionResult,
+                        MeshValidationFailureCode::SourceComponentMismatch));
+  EXPECT_FALSE(has_code(rawProjectionResult,
+                        MeshValidationFailureCode::SourceSheetMismatch));
 }
 
 namespace {
@@ -1366,6 +1379,7 @@ static_assert(!std::is_invocable_r_v<
 directional::geometry::SurfaceOptimizationConstraints
 make_m1b_sheet_constraints() {
   directional::geometry::SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices = Eigen::MatrixXd::Zero(7, 3);
   constraints.sourceFaces.resize(3, 3);
   constraints.sourceFaces << 0, 1, 2,
       0, 2, 3,
@@ -1451,7 +1465,7 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
 }
 
 TEST(SurfaceOptimizationRailAuthorityMigration,
-     InvalidLegacySourceFacesRemainRejected) {
+     InvalidSourceFaceLocatorsRemainRejected) {
   const auto constraints = make_m1b_sheet_constraints();
   const auto point = m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
 
@@ -1478,20 +1492,39 @@ TEST(SurfaceOptimizationRailAuthorityMigration,
 }
 
 TEST(SurfaceOptimizationRailAuthorityMigration,
-     SourceFaceComponentAndSheetAuthorityMismatchRemainRejected) {
+     TypedSourceComponentMismatchRemainsRejected) {
   const auto point = m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
   const auto interval = m1b_interval(1);
 
   auto componentMismatch = make_m1b_sheet_constraints();
-  componentMismatch.sourceAuthority = test_source_authority(componentMismatch.sourceFaces, {7, 8, 7}, {0, 1, 1});
+  componentMismatch.sourceAuthority = test_source_authority(
+      componentMismatch.sourceFaces, {7, 8, 7}, {0, 1, 1});
   EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
                    provenance_supports_interval_sheet(
                        point, interval, componentMismatch));
+}
 
-  auto sheetMismatch = make_m1b_sheet_constraints();
-  sheetMismatch.sourceAuthority = test_source_authority(sheetMismatch.sourceFaces, {7, 7, 7}, {0, 2, 1});
-  EXPECT_FALSE(directional::geometry::surface_optimization_rail_detail::
-                   provenance_supports_interval_sheet(point, interval,
-                                                       sheetMismatch));
+TEST(SurfaceOptimizationRailAuthorityMigration,
+     RawProjectionLabelsDoNotAffectTypedRailCompatibility) {
+  const auto constraints = make_m1b_sheet_constraints();
+  const auto baselinePoint =
+      m1b_provenance(Eigen::Vector3d(1.0, 0.0, 0.0));
+  const auto baselineInterval = m1b_interval(1);
+  const bool baseline =
+      directional::geometry::surface_optimization_rail_detail::
+          provenance_supports_interval_sheet(
+              baselinePoint, baselineInterval, constraints);
+  ASSERT_TRUE(baseline);
+
+  auto tamperedPoint = baselinePoint;
+  tamperedPoint.component = 101;
+  tamperedPoint.sheet = 102;
+  auto tamperedInterval = baselineInterval;
+  tamperedInterval.component = 201;
+  tamperedInterval.sheet = 202;
+  EXPECT_EQ(baseline,
+            directional::geometry::surface_optimization_rail_detail::
+                provenance_supports_interval_sheet(
+                    tamperedPoint, tamperedInterval, constraints));
 }
 

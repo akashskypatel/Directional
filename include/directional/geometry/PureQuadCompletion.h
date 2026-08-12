@@ -296,6 +296,9 @@ struct PureQuadMesh {
   std::vector<SurfacePoint> vertexProvenance;
   std::vector<std::vector<int>> quads;
   std::vector<int> boundaryVertices;
+  // Exact arrangement-boundary authority indexed with boundaryVertices.
+  // Compact lineage stitch keys are validated against this single owner.
+  std::vector<SurfaceCellCanonicalIdentity> boundaryNodeIdentities;
   std::vector<std::vector<int>> boundaryLoops;
   PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
   bool usesCenterFan = false;

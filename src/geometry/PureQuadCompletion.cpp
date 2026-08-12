@@ -330,6 +330,7 @@ namespace directional::geometry::pure_quad_detail {
 void initialize_boundary_embedding(const PureQuadPatch &patch,
                                    PureQuadMesh &mesh) {
   mesh.boundaryVertices = patch.boundaryVertices;
+  mesh.boundaryNodeIdentities = patch.boundaryNodeIdentities;
   mesh.vertices = patch.boundaryVertices;
   mesh.vertexProvenance.clear();
   mesh.vertexProvenance.reserve(mesh.vertices.size());
@@ -357,24 +358,8 @@ void initialize_boundary_embedding(const PureQuadPatch &patch,
         patch.boundaryNodeIdentities[static_cast<std::size_t>(i)].valid) {
       lineage.stitchIdentity.canonical =
           patch.boundaryNodeIdentities[static_cast<std::size_t>(i)];
-    } else {
-      // Compatibility path for standalone completion fixtures. Production
-      // descriptors always provide the exact arrangement-node identity.
-      lineage.stitchIdentity.canonical.valid = true;
-      lineage.stitchIdentity.canonical.values = {lineage.outputVertex};
-      if (!lineage.sourceTopologyRegions.empty()) {
-        lineage.stitchIdentity.canonical.values.push_back(
-            static_cast<std::int64_t>(
-                lineage.sourceTopologyRegions.front().index()));
-      }
-      if (!lineage.sourceCharts.empty()) {
-        lineage.stitchIdentity.canonical.values.push_back(
-            static_cast<std::int64_t>(lineage.sourceCharts.front().chart.index()));
-        lineage.stitchIdentity.canonical.values.push_back(
-            static_cast<std::int64_t>(lineage.sourceCharts.front().face.index()));
-      }
+      lineage.authoritativeIdentity = lineage.stitchIdentity;
     }
-    lineage.authoritativeIdentity = lineage.stitchIdentity;
     const std::optional<authority::HardRailId> rail =
         i < static_cast<int>(patch.boundaryRailIds.size())
             ? patch.boundaryRailIds[static_cast<std::size_t>(i)]
@@ -431,17 +416,6 @@ int append_embedded_vertex(
   }
   lineage.stitchIdentity.kind =
       PureQuadStitchIdentityKind::GeneratedPatchInterior;
-  lineage.stitchIdentity.canonical.valid = true;
-  lineage.stitchIdentity.canonical.values = {mesh.sourcePatch, vertex};
-  if (!lineage.sourceTopologyRegions.empty()) {
-    lineage.stitchIdentity.canonical.values.push_back(
-        static_cast<std::int64_t>(lineage.sourceTopologyRegions.front().index()));
-  }
-  if (!lineage.sourceIsolationSheets.empty()) {
-    lineage.stitchIdentity.canonical.values.push_back(
-        static_cast<std::int64_t>(lineage.sourceIsolationSheets.front().index()));
-  }
-  lineage.authoritativeIdentity = lineage.stitchIdentity;
   mesh.vertexLineage.push_back(std::move(lineage));
   return vertex;
 }
@@ -754,6 +728,12 @@ void set_completion_ownership_rejection(
   rejection->patchSourceFaces = patchSourceFaces;
 }
 
+std::int64_t stable_patch_owner(const PureQuadMesh &patch);
+
+PureQuadStitchIdentity typed_lineage_stitch_identity(
+    const PureQuadVertexLineage &lineage, const bool sharedBoundary,
+    std::int64_t patchOwner, int localVertex);
+
 bool validate_completion_domain_ownership(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const int completionVariant,
@@ -803,40 +783,24 @@ bool validate_completion_domain_ownership(
       failure = "CompletionOwnershipInvalidVertexOwner";
       return false;
     }
-    if (!lineage.stitchIdentity.valid()) {
-      failure = "CompletionOwnershipMissingStitchIdentity";
-      return false;
-    }
-    if (!lineage.authoritativeIdentity.valid()) {
-      lineage.authoritativeIdentity = lineage.stitchIdentity;
-    }
-
     const auto boundary = boundaryRows.find(localVertex);
     const bool boundaryVertex = boundary != boundaryRows.end();
-    if (boundaryVertex) {
-      const std::size_t boundaryIndex = boundary->second;
-      if (boundaryIndex < patch.boundaryNodeIdentities.size() &&
-          patch.boundaryNodeIdentities[boundaryIndex].valid) {
-        PureQuadStitchIdentity expected;
-        expected.kind = PureQuadStitchIdentityKind::ArrangementBoundaryNode;
-        expected.canonical = patch.boundaryNodeIdentities[boundaryIndex];
-        if (lineage.authoritativeIdentity != expected) {
-          failure = "CompletionOwnershipBoundaryIdentityMismatch";
-          return false;
-        }
-      } else if (lineage.authoritativeIdentity.kind !=
-                 PureQuadStitchIdentityKind::ArrangementBoundaryNode) {
-        // Standalone completion fixtures do not carry an arrangement. Their
-        // fallback identity remains valid only as an arrangement-node key.
-        failure = "CompletionOwnershipMissingBoundaryIdentity";
+    const std::size_t boundaryIndex =
+        boundaryVertex ? boundary->second : std::numeric_limits<std::size_t>::max();
+    std::optional<PureQuadStitchIdentity> exactBoundaryIdentity;
+    if (boundaryVertex && boundaryIndex < patch.boundaryNodeIdentities.size() &&
+        patch.boundaryNodeIdentities[boundaryIndex].valid) {
+      PureQuadStitchIdentity expected;
+      expected.kind = PureQuadStitchIdentityKind::ArrangementBoundaryNode;
+      expected.canonical = patch.boundaryNodeIdentities[boundaryIndex];
+      exactBoundaryIdentity = expected;
+      if ((lineage.stitchIdentity.valid() &&
+           lineage.stitchIdentity != expected) ||
+          (lineage.authoritativeIdentity.valid() &&
+           lineage.authoritativeIdentity != expected)) {
+        failure = "CompletionOwnershipBoundaryIdentityMismatch";
         return false;
       }
-    } else if (lineage.stitchIdentity.kind !=
-                   PureQuadStitchIdentityKind::GeneratedPatchInterior ||
-               lineage.authoritativeIdentity.kind !=
-                   PureQuadStitchIdentityKind::GeneratedPatchInterior) {
-      failure = "CompletionOwnershipInteriorNotPatchLocal";
-      return false;
     }
 
     SurfacePoint &provenance = mesh.vertexProvenance[row];
@@ -846,6 +810,13 @@ bool validate_completion_domain_ownership(
     }
     if (sourceFaces.empty()) {
       lineage.sourcePoint = provenance;
+      if (boundaryVertex && exactBoundaryIdentity.has_value()) {
+        lineage.stitchIdentity = *exactBoundaryIdentity;
+        lineage.authoritativeIdentity = *exactBoundaryIdentity;
+      } else {
+        lineage.stitchIdentity.canonical = {};
+        lineage.authoritativeIdentity = {};
+      }
       continue;
     }
 
@@ -1031,6 +1002,29 @@ bool validate_completion_domain_ownership(
         lineage.sourceCharts = {chart.value()};
       }
       lineage.sourceSupport = support.identity;
+    }
+
+    const PureQuadStitchIdentity typedIdentity =
+        typed_lineage_stitch_identity(lineage, boundaryVertex,
+                                      stable_patch_owner(mesh), localVertex);
+    if (boundaryVertex && exactBoundaryIdentity.has_value()) {
+      lineage.stitchIdentity = *exactBoundaryIdentity;
+      lineage.authoritativeIdentity =
+          typedIdentity.valid() ? typedIdentity : *exactBoundaryIdentity;
+    } else {
+      if (!typedIdentity.valid()) {
+        failure = "MissingTypedStitchIdentity";
+        return false;
+      }
+      if ((lineage.stitchIdentity.valid() &&
+           lineage.stitchIdentity != typedIdentity) ||
+          (lineage.authoritativeIdentity.valid() &&
+           lineage.authoritativeIdentity != typedIdentity)) {
+        failure = "CompletionOwnershipTypedIdentityMismatch";
+        return false;
+      }
+      lineage.stitchIdentity = typedIdentity;
+      lineage.authoritativeIdentity = typedIdentity;
     }
   }
 
@@ -1706,7 +1700,8 @@ PureQuadStitchIdentity typed_lineage_stitch_identity(
   isolationSheets.erase(
       std::unique(isolationSheets.begin(), isolationSheets.end()),
       isolationSheets.end());
-  if (topologyRegions.empty() || isolationSheets.empty()) {
+  if (topologyRegions.empty() || isolationSheets.empty() ||
+      lineage.sourceCharts.empty() || !lineage.sourceSupport.has_value()) {
     return {};
   }
 
@@ -1738,14 +1733,34 @@ PureQuadStitchIdentity resolved_stitch_identity(
       patch.vertices[static_cast<std::size_t>(localRow)];
   const PureQuadVertexLineage &lineage =
       patch.vertexLineage[static_cast<std::size_t>(localRow)];
-  PureQuadStitchIdentity key = lineage.stitchIdentity;
-  if (!key.valid() ||
-      (!sharedBoundary &&
-       key.kind != PureQuadStitchIdentityKind::GeneratedPatchInterior)) {
-    key = typed_lineage_stitch_identity(lineage, sharedBoundary, patchOwner,
-                                        localVertex);
+  const PureQuadStitchIdentity typed = typed_lineage_stitch_identity(
+      lineage, sharedBoundary, patchOwner, localVertex);
+
+  if (sharedBoundary) {
+    const auto boundary = std::find(
+        patch.boundaryVertices.begin(), patch.boundaryVertices.end(), localVertex);
+    if (boundary != patch.boundaryVertices.end()) {
+      const std::size_t boundaryIndex = static_cast<std::size_t>(
+          std::distance(patch.boundaryVertices.begin(), boundary));
+      if (boundaryIndex < patch.boundaryNodeIdentities.size() &&
+          patch.boundaryNodeIdentities[boundaryIndex].valid) {
+        PureQuadStitchIdentity exact;
+        exact.kind = PureQuadStitchIdentityKind::ArrangementBoundaryNode;
+        exact.canonical = patch.boundaryNodeIdentities[boundaryIndex];
+        if (lineage.stitchIdentity.valid() &&
+            lineage.stitchIdentity != exact) {
+          return {};
+        }
+        return exact;
+      }
+    }
   }
-  return key;
+
+  if (!typed.valid() ||
+      (lineage.stitchIdentity.valid() && lineage.stitchIdentity != typed)) {
+    return {};
+  }
+  return typed;
 }
 
 PureQuadStitchIdentity resolved_stitch_identity(
@@ -1761,11 +1776,29 @@ PureQuadStitchIdentity resolved_stitch_identity(
 
 PureQuadStitchIdentity resolved_authoritative_identity(
     const PureQuadMesh &patch, const int localRow) {
-  const PureQuadStitchIdentity &authoritative =
-      patch.vertexLineage[static_cast<std::size_t>(localRow)]
-          .authoritativeIdentity;
-  return authoritative.valid() ? authoritative
-                               : resolved_stitch_identity(patch, localRow);
+  const int localVertex =
+      patch.vertices[static_cast<std::size_t>(localRow)];
+  const bool sharedBoundary =
+      std::find(patch.boundaryVertices.begin(), patch.boundaryVertices.end(),
+                localVertex) != patch.boundaryVertices.end();
+  const std::int64_t patchOwner = stable_patch_owner(patch);
+  const PureQuadStitchIdentity resolved = resolved_stitch_identity(
+      patch, localRow, sharedBoundary, patchOwner);
+  if (!resolved.valid()) return {};
+
+  const PureQuadVertexLineage &lineage =
+      patch.vertexLineage[static_cast<std::size_t>(localRow)];
+  const PureQuadStitchIdentity typed = typed_lineage_stitch_identity(
+      lineage, sharedBoundary, patchOwner, localVertex);
+  const PureQuadStitchIdentity &authoritative = lineage.authoritativeIdentity;
+  if (!authoritative.valid()) {
+    return typed.valid() ? typed : resolved;
+  }
+  if (authoritative == resolved ||
+      (typed.valid() && authoritative == typed)) {
+    return typed.valid() ? typed : resolved;
+  }
+  return {};
 }
 
 CompletedFaceOwnershipRecord make_completed_face_ownership(
@@ -2222,7 +2255,9 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
           patch.vertexLineage[static_cast<std::size_t>(localRow)];
       const PureQuadStitchIdentity key = resolved_stitch_identity(
           patch, localRow, sharedBoundary, patchOwner);
-      if (!key.valid()) {
+      const PureQuadStitchIdentity authoritativeKey =
+          resolved_authoritative_identity(patch, localRow);
+      if (!key.valid() || !authoritativeKey.valid()) {
         result.failure = "MissingTypedStitchIdentity";
         return result;
       }
