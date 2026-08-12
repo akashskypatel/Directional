@@ -1,0 +1,79 @@
+--- a/.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
++++ b/.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
+@@ -1,14 +1,39 @@
+ # M1 Single-Authority Cutover — Code + Build Plan
+ 
+ **Turn type:** Code + Build only  
+-**Current status:** R-A closure gate rejected at working-branch implementation `5e023f1a8331c53182cfd296732c37cb7a889b88`; the exact R-A-REV-01 path is corrected and the exact R-A-REV-02 raw encoding is removed, but R-A-REV-03 through R-A-REV-06 remain open before R-B through R-G
++**Current status:** R-A-REV-01 through R-A-REV-06 are compile-closed for their reviewed paths at `c62c99ffe5b7863820c91f4ff3a93645b22d3591`; R-A itself remains open pending the complete closure inventory, R-B through R-G, and one fresh full self-verifying R-A-through-R-G package
+ **Original planning decision:** prior narrow M1m plan rejected and replaced  
+ **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
+ **Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
+-**Latest implementation review baseline:** `5e023f1a8331c53182cfd296732c37cb7a889b88`
++**Latest implementation review baseline:** `5e023f1a8331c53182cfd296732c37cb7a889b88`  
++**Latest review-remediation source:** `c62c99ffe5b7863820c91f4ff3a93645b22d3591`
+ **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
+ **Review policy after the following Test + Benchmark turn:** `never`
+ 
++## 0AA. 2026-08-12 R-A-REV-03-through-06 review-remediation checkpoint
++
++This checkpoint is additive to the closure-gate review below. It closes the four named review findings for the reviewed paths without declaring R-A or M1 complete.
++
++### Implemented closure
++
++- Core review-remediation commit `e33a3c6be1db9c3e6f773a8deb2bebd870099536` removes standalone/patch-local compatibility stitch synthesis, requires exact boundary or complete typed lineage authority, removes reviewed raw projection component/sheet decisions from validator/optimizer/rail/hash/materializer paths, and adds the required compiled contract inventory.
++- Linkage correction `c62c99ffe5b7863820c91f4ff3a93645b22d3591` moves the new typed stitch-helper forward declarations to the anonymous namespace that owns their definitions; it changes no semantic contract.
++- Focused static audit closes R-A-REV-03 and R-A-REV-04 and verifies the R-A-REV-05 contract source inventory. It is **not** the complete R-A closure inventory required by this plan.
++- R-A-REV-06 packaging mechanics are demonstrated by the successful partial checkpoint: out-of-tree build; clean source status before configure, after configure, after build, and at final packaging; manifest generated after payload writes while excluding itself; manifest verified before upload.
++
++### Compile/package evidence
++
++- Exact compiled source: `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
++- Release/static/Ninja/PRE_TEST compile-only run/job: `31561686903 / 94005144300`, **118/118**, build exit `0`.
++- Result artifact `9127976318`, outer SHA-256 `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588`.
++- Log artifact `9127976660`, outer SHA-256 `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
++- Independent result inspection verifies `metadata/source-commit.txt` equals the source above, all five recorded source-status snapshots are empty, and the self-excluding recursive `SHA256SUMS` passes **22/22**.
++- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. The R-A-REV-05 contracts are compile evidence only.
++
++### Scope boundary and next action
++
++Artifact `9127976318` is a partial review-remediation checkpoint, not an M1 acceptance candidate and not the required full R-A-through-R-G package. Before R-A may be called complete, rerun the complete closure inventory below. Then finish R-B through R-G in the same vertical cutover and produce one fresh full package that repeats the verified R-A-REV-06 packaging rules. Only that full package may be handed to the retained artifact-only plan.
++
+ ## 0A. 2026-08-12 R-A closure-gate review amendment
+ 
+ This amendment controls wherever it conflicts with the earlier remediation text below.
+--- a/.agents/Directional/CHANGELOG.md
++++ b/.agents/Directional/CHANGELOG.md
+@@ -19,11 +19,22 @@
+ 
+ ### Fixed
+ 
++- Closed `R-A-REV-03` for the reviewed completion/assembly paths: standalone and patch-local compatibility stitch synthesis is removed; exact boundary identities are validated; derived identities require complete typed topology-region/isolation-sheet/chart/support lineage; missing authority fails with `MissingTypedStitchIdentity`.
++- Closed `R-A-REV-04` for the reviewed validator/optimizer/rail/hash/materializer paths: raw `SurfacePoint` component/sheet labels no longer accept, reject, scope, order, merge, hash, or route those semantic decisions.
++- Closed `R-A-REV-05` at the Code + Build contract boundary: compiled sources now include exact/prebuilt identity mismatch, missing typed authority, distinct typed isolation-sheet, raw-projection-tamper, optimizer/rail tamper, and completion-hash tamper contracts. They were compiled but not executed.
++- Closed the `R-A-REV-06` packaging defect for the partial review-remediation checkpoint: build output is out of tree, source provenance snapshots are clean, `SHA256SUMS` excludes itself, and the manifest is verified before upload. This does not make the partial package an M1 acceptance candidate; the final full R-A-through-R-G package must repeat these rules.
++
+ - Closed `R-A-REV-01`: materializer occurrences now own typed `IsolationSheetId`; reviewed cross-sheet equivalence, quotient-state, representative-ordering, and sheet-aggregation decisions no longer read `SurfacePoint::sheet` semantically.
+ - Corrected the exact `R-A-REV-02` encoding: the fallback stitch-key builder no longer inserts raw provenance component/sheet and now has a typed topology-region/isolation-sheet derivation. Closure review subsequently found that prebuilt compatibility identities bypass this derivation, so fail-closed R-A completion remains open as `R-A-REV-03`.
+ 
+ ### Validation
+ 
++- Review-remediation source: core findings commit `e33a3c6be1db9c3e6f773a8deb2bebd870099536`; compile-corrected source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
++- Compile-only run/job `31561686903 / 94005144300` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9127976318`, outer SHA-256 `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588`; log artifact `9127976660`, outer SHA-256 `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
++- Focused source audit reports `R-A-REV-03 source audit: closed`, `R-A-REV-04 source audit: closed`, and `R-A-REV-05 compiled-contract inventory: present`. This is not the complete R-A closure inventory.
++- Independent result inspection verified exact source `c62c99f...`, all five source-status snapshots empty, a self-excluding recursive manifest **22/22**, and the packaged six compiled test/benchmark executables plus `libdirectional_core.a` / `libdirectional_pipeline.a`.
++- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority and regression totals remain **34 events / 14 categories / 20 recurrences**.
++
+ - Partial R-A review-closure source authority: `df386d1ad819879abbf9d7660c3d586778d7daee`.
+ - Compile-only run/job `31555887046 / 93988102158` completed Release/static/Ninja/PRE_TEST **118/118**. Result artifact `9125984929`, ZIP SHA-256 `23da519d16f59b3ba86d6defab185f51446700c6b6e405b88a5c735453ecdc81`; log artifact `9125985115`, ZIP SHA-256 `5a075c0ede75d79cb6b5ecc50d33c2e43a3f52d78b59bf5248bd33be14f7d051`.
+ - The focused source audit passed its two bounded textual checks, but did not cover compatibility identities or downstream validator/optimizer/rail read-backs and therefore did not establish the R-A closure gate. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input was executed.
+@@ -32,6 +43,9 @@
+ 
+ ### Operational notes
+ 
++- Initial R-A-REV-03-through-06 compile run/job `31559713594 / 93999361586` reached link step 112/118 and failed because the new `stable_patch_owner` / `typed_lineage_stitch_identity` calls were forward-declared in `pure_quad_detail` while their definitions remained in the translation unit's anonymous `directional::geometry` namespace. Log artifact `9127433279`, SHA-256 `703ad2c1042ded9210ab37393e8b63fcd16fc7ad20c7d263ec66518c2900956f`. Commit `c62c99f...` corrects only that linkage; no generated runtime executed and no stable product regression was assigned.
++- First retry run/job `31561631436 / 94004977538` stopped before source application/compile because the temporary linkage patch had an incorrect unified-diff hunk count. Log artifact `9127935690`, SHA-256 `595d140469768ecae959a3e5e2af5dc09eab3cee4daf3038bdf78901cdd2ddff`. The payload was corrected and retriggered; this was orchestration-only and did not change product/regression state.
++
+ - Initial partial-closure compile run/job `31555727064 / 93987628937` stopped at compile step 82/118 on one stale local `sheet` alias after the typed occurrence member was introduced. The correction was limited to that remaining aggregation read; no generated runtime executed and no stable product regression was assigned.
+ 
+ ### Changed
