@@ -9,29 +9,20 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - Current partial Code + Build source: `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; overall R-A remains open pending focused artifact-only runtime verification and the complete retained REV-01-through-REV-21 inventory.
-  - [x] Preserve the REV-14-through-REV-16 Code + Build checkpoint as partial compile evidence only: run/job `31602025466 / 94131563590`, artifacts `9143819164 / 9143819888`, Release/static/Ninja/PRE_TEST **118/118**, manifest **21/21**, no generated runtime.
-  - [x] R-A-REV-17 bounded remediation: owner-validated collision certificates, canonical-only derived identity, owned positive coverage, and fail-closed ownership negatives are compile-valid at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; retain as progress, not independent R-A acceptance.
-  - [x] Review the R-A closure gate after REV-17/REV-20 source changes: **rejected** at branch boundary `356a0bc2733af41e15fad056161e526865c147c5`; the partial artifact runtime task is superseded by source findings and remains compile-only history.
-  - [x] R-A-REV-18 Code + Build: global aggregate source authority, final global lineage validation, rebuilt vertex authority/stitch identities, and regenerated face cycles compile at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; runtime verification remains pending.
-  - [x] R-A-REV-19 Code + Build: disconnected aggregation stages semantic publication transactionally, rolls rejected output back to zero consumable context, and validates the actual merged product against global source authority at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; runtime verification remains pending.
-  - [x] R-A-REV-20 Code + Build: the named SurfaceCells optimizer/verifier raw mirrors and point-cloud/legacy feature-interval/basic-validator compatibility paths remain absent under the REV-18-through-REV-21 static audit at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; retain as progress, not independent R-A acceptance.
-  - [x] R-A-REV-21 Code + Build: affected source-authority consumers bind `SourceTopologyRegions` to the exact supplied source-face topology and same-extent foreign authority fails closed; positive/negative contract sources compile at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; runtime verification remains pending.
-  - [ ] Run the mandatory focused artifact-only Test + Benchmark cadence gate on exact partial package `9153147035` / `9153147459` from source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; no rebuild.
-  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every retained REV-01-through-REV-21 gate is statically clean.
-  - [ ] Complete R-B row-independent face/support/chart identity.
-  - [ ] Complete R-C immutable published products and typed certificate construction.
-  - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.
-  - [ ] Complete R-E typed semantic owners and lookups.
-  - [ ] Complete R-F intent-complete compiled contracts.
-  - [ ] Complete R-G expanded failing source audit.
-- [ ] **Produce one fresh full R-A-through-R-G Code + Build package.**
-  - Compile/package only; execute no generated binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input.
-  - Every historical/partial package recorded in `CHANGELOG.md` is ineligible for M1 acceptance.
-- [ ] **Activate and run the retained immutable M1 Artifact-Only Test + Benchmark plan only after the full package exists.**
+  - [x] Preserve M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` as immutable runtime authority and preserve exact compile-only REV-18-through-REV-21 package evidence in `CHANGELOG.md`.
+  - [x] Independently review exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`: **overall R-A rejected; do not mark complete**.
+  - [ ] R-A-REV-21 contract completion: add authority-only source-row permutation rejection and consistently permuted matrix-plus-authority acceptance.
+  - [ ] R-A-REV-22: make final merged-product validation strict and usable by carrying globally remapped boundary, feature, chart, output-face, hard-edge, and provenance authority; add boundary-bearing positive/tamper contracts.
+  - [ ] R-A-REV-23: rebuild aggregate stitch identities through the canonical completion constructor, derive kind from authoritative patch structure, and prove generated-interior lineages remain resolvable/re-stitchable.
+  - [ ] R-A-REV-24: require non-null exact-matching source authority at direct source-authoritative validator entry regardless of optional gates; add direct fail-closed contracts.
+  - [ ] Rerun the complete retained R-A inventory through REV-24 with checked paths, commands/patterns, match counts, and allowed leaves.
+  - [ ] Produce one fresh focused compile-only package, then run a separate immutable artifact-only cadence gate. Artifacts `9153147035 / 9153147459` are superseded as a runtime task.
+  - [ ] Mark R-A complete only if the full static inventory and focused runtime contracts pass.
+  - [ ] Complete R-B through R-G and produce one fresh full M1 package.
+- [ ] **Activate the retained full M1 Artifact-Only Test + Benchmark plan only for that fresh full package.**
 - [ ] **After M1 acceptance, resume Pipeline B product work under the revised M2-M8 architecture.** Pipeline A remains unscheduled.
 
-Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`. Draft PR #8 remains open, draft, and unmerged.
+Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`. Historical regression totals remain **34 events / 14 categories / 20 recurrences**. Draft PR #8 remains open, draft, and unmerged.
 
 ## Product and architecture roadmap
 

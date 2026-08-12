@@ -2,7 +2,7 @@
 
 **Status:** authoritative architecture-migration roadmap  
 **Normative design:** .agents/Directional/DESIGN.md, replacement supplied 2026-08-11  
-**Current reviewed source:** exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at independent-review branch boundary `356a0bc2733af41e15fad056161e526865c147c5`
+**Current reviewed source:** exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at independent-review branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
 **Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap**  
 **Last updated:** 2026-08-12 UTC
 
@@ -66,7 +66,7 @@ The 2026-08-11 redesign retains prior M0-M2, maps prior M3 to M4, prior M4 to M5
 | Milestone | Contract | State |
 |---|---|---|
 | M0 | preserve immutable evidence | complete |
-| M1 | single-authority cutover | active; overall R-A closure rejected; bounded REV-17/REV-20 progress retained; REV-18, REV-19, and REV-21 open |
+| M1 | single-authority cutover | active; overall R-A closure rejected; REV-18-through-REV-21 retained only as bounded compile progress; REV-22-through-REV-24 open |
 | M2 | closed stage products and single writers | pending |
 | M3 | field-aligned curve network | pending |
 | M4 | global conformity plan | pending |
@@ -81,41 +81,41 @@ Later milestones are complete vertical contracts driven by the active Pipeline B
 
 ### Immutable entering authority
 
-M1a-M1l and T1 were accepted under their retained immutable evidence. M1l source bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest runtime-accepted authority.
-
-Rejected and partial package identities remain historical evidence in `CHANGELOG.md`; none is an M1 acceptance candidate.
+M1a-M1l and T1 were accepted under retained immutable evidence. M1l source `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest runtime-accepted authority. Historical/partial package identities remain in `CHANGELOG.md`; none is an M1 acceptance candidate.
 
 ### R-A closure review
 
-Independent review of exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5` rejected overall R-A. Six later commits changed durable documents only.
+Independent Review of exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760` rejected overall R-A.
 
-Retained progress:
+Retained bounded progress:
 
-- REV-17 now requires source authority, validates incoming and intersected region/sheet/chart/support claims, rejects stale/partial aliases, and derives conflict diagnostics from final owner-validated intersections.
-- REV-20 removes the named optimizer/verifier raw mirrors, point-cloud and legacy feature-interval fallbacks, standalone projection fallback, and alternate basic-validator branch.
-- Compile-only run/job `31616904715 / 94181880684`, artifacts `9149834162 / 9149834634`, Release/static/Ninja/PRE_TEST **118/118**, manifest **21/21**, clean source snapshots, and `runtimeExecution=false` remain authentic partial build evidence.
+- one checked global aggregate `SourceTopologyRegions` is constructed and semantic publication is staged;
+- affected source-authority consumers now use exact row-topology binding;
+- the named optimizer/verifier raw/legacy compatibility branches remain absent;
+- compile run/job `31625763711 / 94211611771` and artifacts `9153147035 / 9153147459` are authentic Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, `runtimeExecution=false` evidence.
 
 Blocking remainder:
 
-- R-A-REV-18: global aggregation still publishes remapped typed IDs without a global owning `SourceTopologyRegions` and leaves vertex/face identity caches in the pre-remap local domain.
-- R-A-REV-19: aggregate semantic publication is still non-transactional and cached component validation still substitutes for actual final merged-product validation.
-- R-A-REV-21: affected boundaries treat a pointer plus matching face count as complete authority; they do not bind the authority's stored row topology to the exact supplied source-face matrix.
-- REV-17/REV-20 runtime semantics were not executed and are not independent acceptance.
+- **REV-21 contract completion:** required authority-only row-permutation rejection and consistently paired permutation acceptance are absent;
+- **REV-22:** aggregate final validation supplies no boundary/feature/chart authority, disables strict gates, and unconditionally rejects ordinary boundary outputs against an empty expected loop set;
+- **REV-23:** aggregate identity rebuilding copies stale kind and emits a stitch-key schema that differs from canonical completion construction;
+- **REV-24:** direct source-authoritative validation can accept null typed authority when local-sheet checking is disabled and can falsely report `sourceAuthorityUsed=true`;
+- no new semantic contract executed, and the packaged static audit has no reproducible path/count/allowed-leaf inventory.
 
-The partial artifact runtime task is superseded because the package lacks the REV-18/REV-19 implementation and the REV-21 counterexample contract. Exact evidence and corrective measures are retained in `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`; executable work is in the active Code + Build plan.
+The targeted runtime task for partial artifacts `9153147035 / 9153147459` is superseded. Exact evidence and corrections are retained in `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`; executable work is in the active Code + Build plan.
 
 ## 6. M1 completion sequence
 
 The next Code + Build turn must:
 
-1. close R-A-REV-18 with one published global aggregate authority plus post-remap identity/face-cycle regeneration;
-2. close R-A-REV-19 with transactional semantic publication, complete zero-publication rejection, and actual final merged-product validation;
-3. close R-A-REV-21 with exact source-matrix/authority topology binding and same-extent foreign-authority rejection;
-4. rerun and pass the complete retained R-A closure inventory through REV-21;
-5. complete R-B through R-G under the active Code + Build plan;
-6. produce a fresh self-verifying full package without generated runtime execution.
+1. close REV-22 with a strict, authority-complete final merged-product oracle and boundary-bearing positive/tamper contracts;
+2. close REV-23 with one canonical post-remap stitch-identity constructor plus stale-kind and generated-interior re-stitch contracts;
+3. close REV-24 with unconditional direct-validator source-authority binding and optional-gates-disabled negatives;
+4. complete the REV-21 permutation-pair test matrix;
+5. rerun the complete retained R-A inventory through REV-24 and record reproducible path/count/allowed-leaf evidence;
+6. produce a fresh focused compile-only package without generated runtime execution.
 
-The resulting full package is independently validated under the retained artifact-only plan. M1 closes only when static authority, focused contracts, entering semantic gates, direct product oracles, known-red classification, characterization, and immutable postflight all close.
+A separate immutable artifact-only cadence turn then decides R-A. Only after R-A passes may Code + Build continue R-B through R-G and create the fresh full package consumed by the retained M1 artifact-only plan.
 
 M1 must not implement M3 curve-network topology, M4 conformity flow, M7 degradation, or Pipeline A.
 
@@ -192,4 +192,4 @@ Stop and revise the owning plan if a change:
 
 ## 11. Resume rule
 
-Current exact action is the amended M1 Code + Build plan. The artifact-only plan remains dormant until a fresh full R-A-through-R-G package exists. After M1 acceptance, choose the smallest revised M2-M8 contract that owns the highest-prerequisite active Pipeline B product blocker.
+Current exact action is the amended M1 Code + Build plan for REV-22 through REV-24 plus the missing REV-21 contracts. Partial artifacts `9153147035 / 9153147459` are not executable acceptance candidates. The full artifact-only plan remains dormant until a fresh full R-A-through-R-G package exists. After M1 acceptance, choose the smallest revised M2-M8 contract that owns the highest-prerequisite active Pipeline B product blocker.

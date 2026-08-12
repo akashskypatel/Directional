@@ -1,14 +1,40 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** overall R-A remains open; R-A-REV-18 through R-A-REV-21 are Code + Build complete / compile-valid at `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`, with a focused artifact-only runtime cadence gate next before the complete R-A inventory, R-B through R-G, and one fresh full package
+**Current status:** overall R-A remains rejected/open after independent review of `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`; REV-18-through-REV-21 are retained only as bounded compile progress; REV-22-through-REV-24 and the missing REV-21 contracts are the next Code + Build work
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
-**Latest independent-review branch boundary:** `356a0bc2733af41e15fad056161e526865c147c5`  
+**Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`  
 **Latest review-remediation implementation/compile source:** `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
 
-## 0C. 2026-08-12 R-A-REV-18 through R-A-REV-21 partial Code + Build checkpoint
+## 0D. 2026-08-12 independent R-A closure review after REV-18 through REV-21 — rejected
+
+Exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` was reviewed at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`. The later branch delta is documentation-only. Overall R-A is **not complete**.
+
+| Checkpoint | Current status |
+|---|---|
+| R-A-REV-18 | bounded global-owner implementation progress; rejected because aggregate stitch caches are noncanonical |
+| R-A-REV-19 | bounded staged-publication progress; rejected because final merged validation is unusable/incomplete |
+| R-A-REV-20 | named optimizer compatibility removals retained; reopened at the direct validator null-authority boundary |
+| R-A-REV-21 | exact binding implementation retained; required permutation-pair contract matrix incomplete |
+| R-A-REV-22 | **open:** strict final merged-product oracle |
+| R-A-REV-23 | **open:** one canonical post-remap stitch-identity constructor |
+| R-A-REV-24 | **open:** unconditional source-authority requirement in the source-authoritative validator |
+
+Compile run/job `31625763711 / 94211611771` and artifacts `9153147035 / 9153147459` remain authentic compile-only history: Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, five empty status snapshots, and `runtimeExecution=false`. Semantic contracts did not execute. The packaged static audit records only a closure sentence, not the required checked-path/match-count/allowed-leaf inventory.
+
+The partial runtime task for those artifacts is superseded by source findings. Do not execute or relabel them as R-A/M1 acceptance evidence.
+
+### Required corrective package
+
+1. **REV-22:** carry globally remapped boundary, feature, chart, output-face, provenance, and hard-edge authority into the actual final validator; enable applicable strict gates and add boundary-bearing positive/tamper contracts.
+2. **REV-23:** remove the duplicate aggregate stitch schema; rebuild through the canonical completion constructor, derive kind from patch structure, and prove published interior lineages can be resolved/re-stitched.
+3. **REV-24:** require a non-null exact-matching `SourceTopologyRegions` at direct source-authoritative validator entry and add the optional-gates-disabled null-authority counterexample.
+4. **REV-21 completion:** add authority-only row-permutation rejection and consistently permuted matrix-plus-authority acceptance.
+5. Rerun the complete retained R-A inventory through REV-24 and package its reproducible audit evidence.
+
+## 0C. Retained 2026-08-12 R-A-REV-18 through R-A-REV-21 partial Code + Build checkpoint
 
 Exact compile-valid source: `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`. Overall R-A remains open; this checkpoint is implementation/build evidence, not independent or runtime acceptance.
 
@@ -102,12 +128,12 @@ Exact evidence is retained in `Architecture_Redesign_and_M1_RA_Independent_Revie
 
 ### Required execution sequence
 
-1. Preserve exact partial Code + Build source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` and artifacts `9153147035 / 9153147459`; run the focused artifact-only runtime cadence gate with no rebuild.
-2. If that exact package passes, return to Code + Build and rerun the complete retained REV-01-through-REV-21 R-A closure inventory. R-A may close only if every gate is statically clean and the required semantic contracts have passed their cadence evidence.
-3. Complete R-B through R-G in the same vertical cutover under the active plan.
-4. Produce one fresh full R-A-through-R-G Release/static/Ninja/PRE_TEST package with clean provenance and a verified self-excluding manifest.
-5. Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input in any Code + Build turn.
-6. Activate immutable Test + Benchmark only for that fresh full package; no historical or partial package is an acceptance candidate.
+1. Run one **Code + Build only** turn for REV-22, REV-23, REV-24, and the missing REV-21 permutation-pair contracts. Execute no generated runtime.
+2. Rerun the complete retained R-A closure inventory through REV-24. Record checked paths, exact commands/patterns, match counts, and every allowed leaf; a conclusion-only audit is a failure.
+3. Produce one fresh focused Release/static/Ninja/PRE_TEST package for the corrected exact source with clean provenance and a verified self-excluding manifest.
+4. Run a separate immutable artifact-only Test + Benchmark cadence turn against that fresh package. Do not reuse artifacts `9153147035 / 9153147459`.
+5. Mark R-A complete only if the static inventory and all focused semantic contracts pass.
+6. Continue R-B through R-G, then create and immutably validate one fresh full M1 package. No historical or partial package is an acceptance candidate.
 
 ## 0. Retained M1 cutover requirements
 

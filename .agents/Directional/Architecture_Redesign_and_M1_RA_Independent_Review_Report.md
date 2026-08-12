@@ -4,13 +4,94 @@
 **Date:** 2026-08-12 UTC  
 **Repository:** akashskypatel/Directional  
 **Branch:** agent/surface_cell_quad/p5-recover-bridge-healing  
-**Current independent-review branch boundary:** 356a0bc2733af41e15fad056161e526865c147c5  
-**Current reviewed implementation/test source:** 1352f3d18eb3821ecda9d74ea5e439adb5bcb875  
-**Review decision/planning commit:** 49b94da971ff544ac77f9dd2fa394791a1b67435  
+**Current independent-review branch boundary:** 922c36b43b8d35af2d2ffdeccb8e0c2ef551c760  
+**Current reviewed implementation/test source:** 0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca  
+**Review decision/planning commit:** pending current review commit  
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
-**Current verdict:** **overall R-A is rejected; bounded REV-17/REV-20 progress is retained; REV-18, REV-19, and REV-21 are open**
+**Current verdict:** **overall R-A is rejected; REV-18-through-REV-21 remain bounded compile-only progress; REV-22, REV-23, and REV-24 are open**
 
-## Current-status addendum — R-A closure review after REV-17/REV-20 partial remediation
+## Current-status addendum — R-A closure review after REV-18 through REV-21
+
+The current Review inspected exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`. The 13 later commits between that source and the review boundary change only four durable planning/status documents. No production, test, build, workflow, or fixture source was changed in this Review.
+
+**Decision: overall R-A is not complete. Do not mark the R-A checkpoint accepted.**
+
+### Checkpoint decision
+
+| Checkpoint | Decision | Evidence-based reason |
+|---|---|---|
+| Overall R-A | **rejected / open** | mandatory semantic contracts never executed, the complete inventory is not reproducibly recorded, and three source-level authority/oracle defects remain |
+| R-A-REV-18 | **bounded compile-only progress; not accepted** | a global owner is built, but aggregate identity rebuilding emits a noncanonical stitch schema and trusts stale cached kind |
+| R-A-REV-19 | **bounded compile-only progress; not accepted** | publication is staged, but the new final oracle rejects ordinary boundary meshes and omits strict boundary/feature/chart authority |
+| R-A-REV-20 | **reopened at validator boundary** | named optimizer compatibility branches remain absent, but the public source-authoritative validator can accept null typed authority when local-sheet checking is disabled |
+| R-A-REV-21 | **core binding present; contract incomplete** | exact row-topology matching is implemented, but the required authority-only row-permutation negative and consistently paired permutation positive are absent |
+| R-A-REV-22 | **open / new finding** | final aggregate validation is neither usable on boundary inputs nor authority-complete |
+| R-A-REV-23 | **open / new finding** | aggregate stitch-identity rebuilding diverges from the canonical completion contract |
+| R-A-REV-24 | **open / new finding** | source-authoritative validation retains a null-authority fail-open mode |
+
+### Review boundary and evidence
+
+- Compile run/job `31625763711 / 94211611771` succeeded. Independent artifact inspection verified exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`, result/log artifacts `9153147035 / 9153147459`, outer SHA-256 values `bbc07fad9a767dc77aff290c540659b4140aab414ddf1148dec1b637fc32af38` and `ad5984db04ab98a4bbcd058d58c83e1cdef2383890b8bcfab1c209e487b3889b`, **26** regular files, self-excluding manifest **25/25**, five empty source-status snapshots, and `runtimeExecution=false`.
+- Release/static/Ninja/PRE_TEST compiled and linked **118/118** targets. This proves buildability only; none of the new semantic contracts executed.
+- The packaged REV-18-through-REV-21 source-audit record is a conclusion-only summary. It records no checked-path inventory, commands, match counts, or allowed-leaf classification, so it cannot establish the required complete R-A inventory.
+- A direct review inventory confirmed zero affected `SourceEntityId`, `sourcePositions`, `constraints.sourceComponent`, `featureIntervals`, `legacyIndex`, or named standalone-fixture compatibility matches in `include/` and `src/`; `complete_for_face_count` remains only as the implementation detail used by `matches_source_faces`.
+- This Review executed no configure, compile, generated binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input.
+
+### R-A-REV-22 — final merged-product oracle is unusable and incomplete
+
+**Evidence**
+
+- `RemeshPipeline.cpp:11260-11274` constructs aggregate validator options without authoritative boundary loops/edges, feature rails, hard-feature edges, vertex chart authority, or output-quad face authority. It explicitly disables boundary and feature authority.
+- `SourceAuthoritativeMeshValidator.cpp:1076-1105` nevertheless always compares actual boundary cycles with supplied expected cycles. On any source with a boundary, the aggregate caller supplies an empty expected set, so a valid output receives `ChangedBoundaryLoop`. The compiled disconnected-aggregation positive cannot establish its asserted success until it actually runs.
+- Even for closed inputs, omitting hard-feature/chart/rail authority makes this call weaker than the component strict validator and therefore not the required post-merge semantic oracle.
+
+**Corrective measures**
+
+1. Stage and globally remap every validator authority input required by the component strict path: ordered boundary cycles/edges, hard-feature edges and rails, vertex chart authority, output-quad source-face authority, and provenance.
+2. Invoke the strict source-authoritative validator on the final staged mesh with applicable authority gates enabled. Do not derive expected authority from the output being checked.
+3. Add boundary-bearing disconnected positives, missing/tampered boundary and feature negatives, and an assertion that proves the final strict oracle executed and accepted the valid merged product.
+
+### R-A-REV-23 — aggregate stitch identities use a second incompatible schema
+
+**Evidence**
+
+- Canonical completion construction at `PureQuadCompletion.cpp:1924-1963` derives stitch kind from boundary/interior ownership and encodes only the exact local key plus normalized topology regions and isolation sheets. Chart/support authority is encoded separately by `canonical_typed_authority_identity`.
+- `RemeshPipeline.cpp:9758-9824` reimplements that builder, copies `lineage.stitchIdentity.kind` from the pre-remap cache, and appends source charts and support to the stitch key. This is a different schema and preserves stale kind authority.
+- `resolved_stitch_identity` at `PureQuadCompletion.cpp:1984-2001` recomputes the canonical completion key for generated interior vertices and rejects a cached key that differs. A published aggregate interior lineage rebuilt by the new helper is therefore not consumable by the canonical stitch path.
+- Added aggregate tests assert validity and compute authoritative identity from the already-mutated stitch key. The stale-cache test changes only canonical values, not kind, and no test re-stitches published aggregate patches.
+
+**Corrective measures**
+
+1. Delete the duplicate pipeline stitch-key constructor and expose/use one canonical completion-owned construction API.
+2. Derive boundary/interior kind from authoritative patch structure, not the old cache; normalize region/sheet authority once and keep chart/support only in the authoritative certificate identity.
+3. Add a stale-kind counterexample, exact equality with the canonical factory, and a post-publication re-stitch/resolve contract covering generated interior vertices.
+4. Regenerate boundary-node caches and face cycles only from those canonical rebuilt identities.
+
+### R-A-REV-24 — source-authoritative validator can accept missing typed authority
+
+**Evidence**
+
+- `SourceAuthoritativeMeshValidator.cpp:1028-1041` requires source vertices, faces, and provenance but not `sourceAuthority`; it sets `sourceAuthorityUsed=true` before proving a non-null matching authority.
+- Null authority is rejected later only when `requireLocalSheetCompatibility` is true at `1205-1217`. A caller that disables that option can traverse the otherwise valid geometry/provenance path with no typed owner while the result falsely reports that source authority was used.
+- Existing missing-authority tests exercise optimizer/final-wrapper predicates, not this direct public validator option combination.
+
+**Corrective measures**
+
+1. Require non-null `sourceAuthority` and exact `matches_source_faces` success at validator entry, independent of optional boundary/feature/local-sheet gates.
+2. Set `sourceAuthorityUsed` only after that proof succeeds.
+3. Add a direct null-authority negative with optional gates disabled, plus a same-extent foreign-authority direct negative; both must reject with `MissingSourceAuthority`.
+
+### R-A-REV-21 contract completion
+
+The exact `matches_source_faces` implementation and consumer migration are useful progress. Complete the prior test matrix: permute only source rows while retaining the original authority and require pre-publication rejection; then permute the source matrix and rebuild/pair its authority consistently and require the same semantic result. The existing row-permutation test builds two independently valid networks and does not exercise the mismatched-pair counterexample.
+
+### Review conclusion
+
+Return to Code + Build for REV-22 through REV-24 and the missing REV-21 contracts. Rerun the complete retained R-A inventory through REV-24 with reproducible checked paths, commands, counts, and allowed leaves; then build one fresh focused package. Only a later immutable Test + Benchmark turn may execute that package and close R-A. Partial artifacts `9153147035 / 9153147459` remain authentic compile history but are superseded as a runtime task and must not be executed or relabeled as acceptance evidence.
+
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. Regression totals remain **34 events / 14 categories / 20 recurrences**.
+
+## Retained prior-status addendum — R-A closure review after REV-17/REV-20 partial remediation
 
 The current review inspected exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5`. Six later commits modify durable documents only. Review decision/planning commit: `49b94da971ff544ac77f9dd2fa394791a1b67435`.
 

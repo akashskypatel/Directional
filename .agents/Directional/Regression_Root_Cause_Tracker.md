@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-12 UTC** after independent R-A closure review of exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5`.
+Last updated: **2026-08-12 UTC** after independent R-A closure review of exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch authority `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`.
 
 ## Rules
 
@@ -24,7 +24,7 @@ Last updated: **2026-08-12 UTC** after independent R-A closure review of exact i
 
 T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h artifact `9066967620` created no stable product regression event: its sole focused failure was classified as a test-authority witness defect while all entering product/preservation authority remained unchanged. Remediation artifact `9069186973` is now immutable accepted with focused **6/6**, required-green **187/187**, full entering preservation/direct-product authority, unchanged historical-red classes, and exact postflight. M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` is immutable accepted from artifact `9072101943`: focused **6/6**, required-green **193/193**, full entering preservation/direct-product authority, unchanged historical-red classes, bounded Bunny/Vase comparison, and exact postflight. No stable product regression event or recurrence is added. `PR8-R034 / G4-R007` remains active. M1j implementation `d5f681173600dc32dc7617de6105d9e584e593be` is immutable accepted from artifact `9076217893`: producer discovery **214**, focused **6/6**, required-green **199/199**, full entering preservation/direct-product authority, all eight historical-red classes unchanged, strict timing truthfully **0/10**, bounded Bunny/Vase comparison, and exact **67/67** postflight. No stable product regression event or recurrence is added. M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is immutable accepted from artifact `9079318682` and runtime evidence `9080245848`: producer **220**, focused **6/6**, required-green **205/205**, full entering preservation/direct-product authority, all eight historical-red classes unchanged, Bunny/Vase dispositions preserved, and exact **68/68** postflight. Strict timing sampled **10/10** but remains the existing nondeterministic microbenchmark classification. The local extraction/harness anomalies and first remote evidence-upload-path failure are infrastructure only. No stable product regression event or recurrence is added. M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` is immutable accepted from artifact `9083262395` and runtime evidence `9083913766`: producer **226**, focused **6/6**, required-green **211/211**, full M1k-M1b/validation/M1a/T1/direct-product preservation, all eight historical/deferred red classes unchanged, strict timing truthfully sampled **10/10** while remaining deferred, Bunny/Vase dispositions preserved, and exact **56/56** postflight. The local first-process Cylinder stall did not reproduce remotely and is execution-plane only. No stable product regression event or recurrence is added.
 
-Current static review note: no new stable runtime event or recurrence is assigned because no generated runtime executed. Bounded REV-17/REV-20 progress is retained. Open R-A-REV-18, R-A-REV-19, and R-A-REV-21 instantiate existing `RP-01` (unowned/duplicated authority), `RP-02` (proxy oracle/audit), `RP-05` (stale representation-dependent identity), and the existing `INCOMPLETE_TRANSACTIONAL_ROLLBACK` category. They remain migration blockers until the global owner, post-remap identities, transactional publication, final-product validator, and exact source-topology/authority binding are accepted.
+Current static review note: no new stable runtime event or recurrence is assigned because no generated runtime executed. REV-18-through-REV-21 remain bounded compile-only progress. REV-22 maps to `RP-02` (proxy/incomplete oracle), REV-23 maps to `RP-01 / RP-05` (duplicate owner and representation-dependent identity), REV-24 maps to `RP-01 / RP-02` (missing-owner bypass and missing counterexample), and the incomplete REV-21 permutation matrix remains `RP-02`. The existing `INCOMPLETE_TRANSACTIONAL_ROLLBACK` category is not incremented because staged rollback itself was not lost.
 
 | Cause category | Pattern | Events | Recurrences |
 |---|---|---:|---:|
@@ -294,7 +294,17 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 - After immutable acceptance, M1 closes and the primary queue returns to G4 production work. Remaining architecture work is introduced only as a complete vertical contract needed by an active production blocker, not as another representation-only campaign.
 - This strategy correction changes no historical regression count: totals remain **34 / 14 / 20**.
 
-### R-A compile checkpoints and closure-gate review
+### Current R-A closure review after REV-18 through REV-21
+
+- Exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` was reviewed at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`; later commits are documentation-only.
+- Compile run/job `31625763711 / 94211611771` and artifacts `9153147035 / 9153147459` are authentic partial evidence: Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, clean snapshots, and no generated runtime.
+- `R-A-REV-22 / RP-02`: final aggregate validation omits strict boundary/feature/chart authority and supplies an empty expected boundary set to an unconditional cycle comparison.
+- `R-A-REV-23 / RP-01 / RP-05`: aggregate rebuilding creates a second stitch-key schema, trusts cached kind, and does not prove generated-interior lineages remain consumable.
+- `R-A-REV-24 / RP-01 / RP-02`: direct source-authoritative validation can traverse with null typed authority when local-sheet checking is disabled while claiming authority was used.
+- `R-A-REV-21 / RP-02`: exact binding code is present, but the required mismatched-authority row-permutation negative and consistent-pair positive are absent.
+- These are static migration findings, not stable accepted-product regression events. Totals remain **34 / 14 / 20** and M1l remains immutable runtime authority.
+
+### Retained prior R-A compile checkpoints and closure-gate review
 
 - Historical REV-01-through-16 findings, remediations, and artifact identities remain in `CHANGELOG.md`.
 - Current review inspected exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch boundary `356a0bc2733af41e15fad056161e526865c147c5`. The six later commits are documentation-only.
@@ -343,7 +353,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | ID | State |
 |---|---|
 | `AR-01` | final M1 cutover installs exhaustive `ProducerOutcome<SurfacePhaseFrontProduct>` |
-| `AR-02` | M1a through M1l **accepted**; complete R-A closure rejected; bounded REV-17/REV-20 progress retained; REV-18, REV-19, and REV-21 open |
+| `AR-02` | M1a through M1l **accepted**; complete R-A closure rejected; REV-18-through-REV-21 bounded compile progress retained; REV-22-through-REV-24 open |
 | `AR-03` | final cutover closes strong identity from producer through materializer, including exact/existing stitch-identity validation and no compatibility bypass |
 | `AR-04` | final cutover replaces remaining chart, support, route, periodic, rail, occurrence, quotient, and certificate numeric ownership |
 | `AR-05` | after cutover, numeric projection is permitted only at a direct Eigen/vector storage or derived export leaf; it is never semantic authority |
@@ -366,7 +376,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `TA-05` | **test authority resolved and preserved through M1l** |
 | `TA-06` | T1 mutation suite **29/29** accepted and preserved |
 | `TA-07` | exact package/discovery authority accepted and preserved |
-| `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region + M1l cell topology-region authority accepted; REV-17/REV-20 compiled contracts retained; aggregate-owner/transactional/final-oracle and same-extent foreign-authority contracts remain open |
+| `TA-08` | M1a-M1l entering authority accepted; REV-18-through-REV-21 compiled contracts retained only as bounded progress; strict final-oracle, canonical aggregate-identity, direct missing-authority, and permutation-pair contracts remain open |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
 | `TA-11` | existing topology/lineage oracle foundation accepted; M3 network, M7 disposition, and T5 quality mutation evidence remain open |
@@ -376,4 +386,4 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
 
-The next turn is **Code + Build only**. Retain bounded REV-17/REV-20 progress and verified package rules; close R-A-REV-18, R-A-REV-19, and R-A-REV-21; rerun the complete retained R-A inventory; finish R-B through R-G; and package the exact self-verifying full cutover. Execute no generated Directional binary. The retained artifact-only plan stays dormant until that fresh package exists. On M1 acceptance, resume the Pipeline B queue under revised M2-M8 ownership; Pipeline A remains unscheduled.
+The next turn is **Code + Build only**: close REV-22 through REV-24 and the missing REV-21 permutation contracts, rerun the complete R-A inventory through REV-24 with reproducible audit counts, and package one fresh focused source. Execute no generated Directional binary. Artifacts `9153147035 / 9153147459` remain compile history and are not the next runtime task. The retained full artifact-only plan stays dormant until a fresh full R-A-through-R-G package exists.

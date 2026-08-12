@@ -17,6 +17,14 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Review — R-A closure after REV-18 through REV-21 rejected
+
+- Independent Review inspected exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`; later source changes are durable documentation only.
+- Overall R-A remains open. REV-18-through-REV-21 are retained as bounded compile progress, not acceptance. New findings are REV-22 (unusable/incomplete final merged oracle), REV-23 (noncanonical aggregate stitch-key rebuild), and REV-24 (direct validator null-authority bypass); the required REV-21 permutation-pair contract matrix is also incomplete.
+- Verified compile evidence remains authentic: run/job `31625763711 / 94211611771`, artifacts `9153147035 / 9153147459`, Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, five empty source-status snapshots, and `runtimeExecution=false`. No semantic contract executed.
+- The partial artifact-only runtime task is superseded. Corrective Code + Build must precede a fresh focused package and separate immutable runtime turn.
+- This Review changed durable documents only and ran no configure, compile, generated binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input. M1l remains immutable runtime authority; regression totals remain **34 / 14 / 20**.
+
 ### Added — durable reusable compile/cache workflow
 
 - Added `.github/workflows/agent-compile-reusable.yml` as the mandatory implementation for every build/compile task. It owns exact-source checkout, Release/static/Ninja/PRE_TEST configuration, compile-only boundaries, ccache restore/save/prune, evidence packaging, and compile-status propagation.
@@ -25,16 +33,16 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ### Fixed — R-A-REV-18 through R-A-REV-21 partial remediation
 
-- Closed REV-18 at the Code + Build boundary: disconnected aggregation constructs one checked global `SourceTopologyRegions`, remaps final lineage through it, and rebuilds stitch/authoritative vertex identity plus canonical face-cycle hashes after remap.
-- Closed REV-19 at the Code + Build boundary: aggregate semantic/context publication is staged until all components/remaps/final merged validation succeed; rejection exposes no consumable aggregate context; the real merged product is source-authoritatively validated before publication.
+- Implemented the bounded REV-18 Code + Build slice: disconnected aggregation constructs one checked global `SourceTopologyRegions`, remaps final lineage through it, and rebuilds stitch/authoritative vertex identity plus canonical face-cycle hashes after remap.
+- Implemented the bounded REV-19 Code + Build slice: aggregate semantic/context publication is staged until all components/remaps/final merged validation succeed; rejection exposes no consumable aggregate context; the real merged product is source-authoritatively validated before publication.
 - Revalidated REV-20 under the widened static inventory: displaced optimizer/verifier raw authority mirrors and legacy point-cloud/feature-interval/basic-validator branches remain absent.
-- Closed REV-21 at the Code + Build boundary: `SourceTopologyRegions::matches_source_faces` binds affected source-authority consumers to exact checked source-face topology and rejects same-extent foreign topology before semantic use.
+- Implemented the exact-binding portion of REV-21 at the Code + Build boundary: `SourceTopologyRegions::matches_source_faces` binds affected source-authority consumers to exact checked source-face topology and rejects same-extent foreign topology before semantic use.
 - Added compile-contract source for global-owner/cache rebuild, stale-cache rejection, second-component rollback, final merged provenance tamper, same-extent foreign topology, optimizer fail-closed authority, and stitch-publication rejection.
 
 ### Validation — R-A-REV-18 through R-A-REV-21
 
 - Exact compile-valid partial source: `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`. Product/test remediation was committed as `48acbda7d8b06c6a0009fa485d6859aed3a4ea50` across 14 files; compile follow-up `c936d56d3ad72afbc806ab7bcaf1b10ef38bae10` corrected one stale rail-kind enumerator only.
-- Static source audit reported `R-A REV-18-21 source audit: closed at static/compile-contract source boundary`; REV-20 raw mirrors remained absent and REV-21 extent-only affected consumers were removed.
+- The Code + Build source audit reported `R-A REV-18-21 source audit: closed at static/compile-contract source boundary`; the later independent Review found that conclusion insufficient because the package contains no checked-path, command, match-count, or allowed-leaf inventory.
 - Compile-only run/job `31625763711 / 94211611771` completed Release/static/Ninja/PRE_TEST **118/118**, build exit `0`. Result artifact `9153147035`, SHA-256 `bbc07fad9a767dc77aff290c540659b4140aab414ddf1148dec1b637fc32af38`; log artifact `9153147459`, SHA-256 `ad5984db04ab98a4bbcd058d58c83e1cdef2383890b8bcfab1c209e487b3889b`.
 - Independent artifact inspection verified exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca`, **26** regular files including `SHA256SUMS`, self-excluding manifest **25/25**, zero manifest self references, five empty source-status snapshots, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
 - Compatible ccache restore used prior key `directional-ccache-Linux-gcc-13.3.0-release-v1-31625171464`; final compile recorded **89/108 hits (82.41%)** and the reusable workflow pruned the lineage to the newest two entries.

@@ -11,13 +11,13 @@
 
 ## 0. Activation amendment — 2026-08-12
 
-This plan is retained but **not executable now**. Independent closure review of exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5` rejected overall R-A. The bounded REV-17/REV-20 changes are retained compile-valid progress; REV-18, REV-19, and REV-21 are open. Historical and partial compile packages remain in `CHANGELOG.md`; none may be executed, reused, or relabeled as M1 acceptance evidence.
+This retained full-M1 plan is **not executable now**. Independent review of exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760` rejected overall R-A and opened REV-22 through REV-24; the explicit REV-21 permutation-pair contracts are also incomplete. Partial artifacts `9153147035 / 9153147459` are authentic compile history but are superseded as a runtime task and may not be executed, reused, or relabeled as R-A/M1 acceptance evidence.
 
-Activate this plan only after a new Code + Build turn:
+Activate this plan only after new Code + Build work:
 
-1. closes R-A-REV-18, R-A-REV-19, and R-A-REV-21 and passes the complete retained R-A inventory through REV-21;
+1. closes the complete retained R-A inventory through REV-24 and records a reproducible checked-path/match-count/allowed-leaf audit;
 2. completes R-B through R-G;
-3. produces one fresh exact-source package with compiled semantic contracts, the complete counterfactual audit, final merged-authority validation, logs, clean source provenance, and a verified self-excluding checksum manifest;
+3. produces one fresh exact-source full-cutover package with compiled semantic contracts, final strict merged-authority validation, logs, clean source provenance, and a verified self-excluding checksum manifest;
 4. records the new immutable source/artifact IDs, digests, manifest authority, executable inventory, and command-boundary flags in this plan.
 
 The replacement `DESIGN.md` remains normative. M1 acceptance proves only the single-authority contract; strict product fixtures require D0-equivalent behavior.
