@@ -1,1 +1,1 @@
-Update durable status/planning/review-history documents for the completed RA-REV-22-F1/F2/F3 and RA-REV-23-F1 Code + Build remediation. Control-plane documentation only; runtime execution prohibited.
+Retry durable status/planning/review-history closeout for completed RA-REV-22-F1/F2/F3 and RA-REV-23-F1 Code + Build remediation using the staged closeout script. Control-plane documentation only; runtime execution prohibited.
