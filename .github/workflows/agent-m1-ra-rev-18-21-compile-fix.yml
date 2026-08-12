@@ -1,0 +1,79 @@
+name: Agent M1 R-A REV-18-21 Compile Fix
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m1-ra-rev-18-21-compile-fix.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1-ra-rev-18-21-compile-fix-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A-REV-18-21 compile defect correction' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+
+      - name: Correct enum spelling and publish
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('src/pipeline/RemeshPipeline.cpp')
+          body = path.read_text(encoding='utf-8')
+          old = 'geometry::SurfaceCellRailKind::Feature'
+          new = 'geometry::SurfaceCellRailKind::HardFeature'
+          if body.count(old) != 1:
+              raise SystemExit(f'expected exactly one stale enum reference, found {body.count(old)}')
+          path.write_text(body.replace(old, new), encoding='utf-8')
+          PY
+          git diff --check
+          changed="$(git diff --name-only)"
+          test "$changed" = "src/pipeline/RemeshPipeline.cpp"
+          grep -F 'geometry::SurfaceCellRailKind::HardFeature' src/pipeline/RemeshPipeline.cpp >/dev/null
+          ! grep -F 'geometry::SurfaceCellRailKind::Feature' src/pipeline/RemeshPipeline.cpp >/dev/null
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/pipeline/RemeshPipeline.cpp
+          git commit -m "fix: use hard-feature rail kind in aggregate authority rebuild"
+          FIX_SHA="$(git rev-parse HEAD)"
+          echo "fix_sha=$FIX_SHA"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+          echo 'runtimeExecution=false'
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-rev-18-21-compile-fix-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
