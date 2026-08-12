@@ -17,6 +17,25 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — R-A-REV-17 and R-A-REV-20 partial remediation
+
+- Closed `R-A-REV-17` at the Code + Build boundary: completion/assembly now requires complete source topology/chart/support authority, validates incoming and intersected typed certificates against their owning region/sheet/chart/support incidence, derives absent authoritative identity canonically, rejects any present stale/partial/exact-only alias, and publishes collision ownership diagnostics only from the final owner-validated stitched authority intersection.
+- Replaced fabricated collision authority with source-owned positive fixtures and fail-closed wrong-owner, sparse/unowned, wrong-sheet, wrong-face, exact-only, and stale-canonical zero-publication contracts.
+- Closed `R-A-REV-20` at the Code + Build boundary: removed affected SurfaceCells optimizer raw source component/position mirrors, legacy feature-interval and point-cloud fallbacks, standalone projection fallback, and the alternate basic-validator branch; optimization/final verification now require complete source authority and fail closed when it is absent or incomplete.
+- Migrated affected optimizer, rail, pipeline, benchmark, and completion/validation contract sources to the strict authority-owned API without reintroducing compatibility adapters or raw semantic mirrors.
+
+### Validation — R-A-REV-17 and R-A-REV-20 partial remediation
+
+- Exact compile-valid source: `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; final content delta from pre-turn head `7b10c1c3cde9769438991742594676ec75e4200a` is **12 implementation/test files**, 927 additions and 615 deletions.
+- Compile-only run/job `31616904715 / 94181880684` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9149834162`, outer SHA-256 `c5055df51d9b94605c27817e596a04983bddb33956727a2c47c494d42a0b2ee2`; log artifact `9149834634`, outer SHA-256 `04291253c21af768af9c35b61f12e327c0ec536642a2ddf8895781657b1261a7`.
+- The source audit reported `R-A REV-17/20 source audit: closed`, confirmed mandatory owner-validated stitch authority/canonical cache equality for REV-17, and found the named optimizer/verifier compatibility branches and raw mirrors absent for REV-20.
+- Independent artifact inspection verified exact packaged source, **22** regular files including `SHA256SUMS`, a self-excluding recursive manifest **21/21**, zero manifest self references, five empty source-status snapshots, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority; this partial package is not an M1 acceptance candidate.
+
+### Operational notes — R-A-REV-17 and R-A-REV-20
+
+- Initial compile-only run/job `31616096676 / 94179160869` exposed a genuine compile defect at `PureQuadCompletion.cpp`: three ownership-diagnostic helpers still called the pre-cutover two-argument authoritative-identity resolver after REV-17 made owner validation mandatory. The correction did not restore that compatibility signature; it defers duplicate-face conflict classification until all stitched occurrences have produced final owner-validated authority intersections and then uses those final global identities for ownership diagnostics and published lineage. No generated runtime executed in the failed compile attempt.
+
 ### Review — overall R-A and R-A-REV-14 through R-A-REV-16
 
 - Independently reviewed exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` at branch authority `fd96852d19defe70effd0dc6fbbaf07db8378e55`; later affected production/test blobs are unchanged. Rejected overall R-A and the requested REV-14-through-REV-16 checkpoint.

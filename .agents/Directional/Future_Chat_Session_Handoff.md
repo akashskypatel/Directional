@@ -37,25 +37,26 @@ Do not add:
 
 ## Mandatory next turn
 
-Run **M1 Single-Authority Cutover review remediation — Code + Build only** under:
-
-.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
+Run a **targeted artifact-only Test + Benchmark verification of the exact R-A-REV-17 / R-A-REV-20 partial Code + Build package**. This is the mandatory cadence gate before another Code + Build slice; it is not the retained full-M1 acceptance plan and must not be relabeled as M1 acceptance.
 
 Repository: akashskypatel/Directional  
 Branch: agent/surface_cell_quad/p5-recover-bridge-healing  
 PR: #8 remains open, draft, and unmerged  
-Review policy after the later immutable Test + Benchmark turn: never
+Exact compile-valid source: `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`
+Result artifact: `9149834162`, outer SHA-256 `c5055df51d9b94605c27817e596a04983bddb33956727a2c47c494d42a0b2ee2`
+Log artifact: `9149834634`, outer SHA-256 `04291253c21af768af9c35b61f12e327c0ec536642a2ddf8895781657b1261a7`
+Compile run/job: `31616904715 / 94181880684`
 
-The independent review of exact source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` rejected overall R-A and the REV-14-through-REV-16 checkpoint. The next turn must:
+The next turn must:
 
-1. close R-A-REV-17 by requiring owner-validated collision certificates and canonical-only derived identity;
-2. close R-A-REV-18 by publishing the global aggregate source-authority domain and rebuilding all identities/face cycles after remap;
-3. close R-A-REV-19 by making aggregate publication fully transactional and validating the final merged product with a counterfactual-complete oracle;
-4. close R-A-REV-20 by removing or isolating remaining affected optimizer/completion compatibility paths and raw mirrors;
-5. rerun the complete R-A source inventory and mark R-A complete only if every gate is statically clean;
-6. only then complete R-B through R-G and produce one fresh full Release/static/Ninja/PRE_TEST package with clean provenance and a verified self-excluding manifest.
+1. download and verify the exact result artifact without rebuilding or changing implementation/test/build source;
+2. verify the packaged source SHA, self-excluding `SHA256SUMS` manifest, command boundary, and clean source-status records before executing any packaged binary;
+3. execute the focused semantic contracts that directly cover REV-17 source-owned stitch/collision authority and REV-20 strict optimizer/verifier missing-authority and compatibility-path removal;
+4. include adjacent retained completion/optimizer validation contracts needed to detect regressions caused by these changes, following `tests/TESTING_STRATEGY.md` and the unit-testing module;
+5. classify every failure from runtime evidence; do not weaken validators, restore raw mirrors/aliases/fallbacks, alter fixtures to synthesize green output, or rebuild the package;
+6. if the exact package passes its focused runtime gate, return the following turn to the M1 Code + Build plan for the still-open R-A-REV-18 and R-A-REV-19 tasks, then rerun the complete R-A inventory before any R-A completion claim.
 
-Execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input. Do not activate, validate, relabel, repair, or reuse a historical/partial package. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
+Do not activate the retained full `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`; that plan remains dormant until one fresh full R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this verification.
 
 ## Current authority
 
@@ -70,17 +71,18 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 ### R-A closure status
 
 Review decision/planning commit: `ab29756e206da3e7b7d6845cfb3f08f25125faa5`.  
-Review boundary: branch head `fd96852d19defe70effd0dc6fbbaf07db8378e55`; exact affected implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`.
+Independent review boundary: branch head `fd96852d19defe70effd0dc6fbbaf07db8378e55`; reviewed affected implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e`.
 
 - Overall R-A is **not complete**.
-- REV-14's canonical intersection implementation is retained, but its positive contract fabricates unowned IDs, stitching does not validate certificate ownership, and compatibility identity aliases remain.
-- REV-15's independent local remap tables are retained, but the aggregate publishes no global owning `SourceTopologyRegions`, does not rebuild derived identities/face cycles after remap, and does not provide complete rollback.
-- REV-16's pre-consumer tamper seam is retained, but its snapshot omits owner/cache consistency and compares cached per-component validation rather than validating the final merged product.
-- R-A-REV-17 through R-A-REV-20 are the active corrective tasks. Exact evidence and definitions of done are in the independent review report and active Code + Build plan.
+- R-A-REV-17 is **Code + Build complete / compile-valid** at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; runtime semantic verification of the exact artifact is the mandatory next turn.
+- R-A-REV-20 is **Code + Build complete / compile-valid** at the same source; runtime semantic verification of the exact artifact is the mandatory next turn.
+- R-A-REV-18 remains open: global aggregate source-authority publication and post-remap derived-identity closure are not implemented by this partial turn.
+- R-A-REV-19 remains open: aggregate publication is not yet fully transactional and the real final merged-product oracle is not yet complete.
+- REV-14-through-REV-16 remain retained implementation progress only until the complete R-A closure inventory and later independent acceptance establish that their review findings are fully resolved.
 
-The prior compile-only checkpoint remains authentic partial build evidence: run/job `31602025466 / 94131563590`, Release/static/Ninja/PRE_TEST **118/118**, artifacts `9143819164 / 9143819888`, verified manifest **21/21**, and no generated runtime. It is not an M1 acceptance candidate.
+Partial Code + Build evidence: run/job `31616904715 / 94181880684`, Release/static/Ninja/PRE_TEST **118/118**, result/log artifacts `9149834162 / 9149834634`, verified self-excluding manifest **21/21**, five empty source-status snapshots, source audit reporting REV-17/REV-20 closed, and `runtimeExecution=false`. This is authentic partial build evidence only, not an M1 acceptance candidate.
 
-M1l remains immutable runtime authority; no runtime or regression total changed.
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority; no runtime result or regression total changed in the completed Code + Build turn.
 
 ## Standing product and regression state
 
