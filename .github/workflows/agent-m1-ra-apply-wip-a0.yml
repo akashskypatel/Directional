@@ -3,7 +3,7 @@ name: Agent M1 R-A Apply WIP
 on:
   push:
     branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
-    paths: [.agents/connector-triggers/m1-ra-wip-a33.txt]
+    paths: [.agents/connector-triggers/m1-ra-wip-a34.txt]
 
 permissions: {contents: write}
 concurrency: {group: agent-m1-ra-apply-wip, cancel-in-progress: false}
@@ -17,7 +17,7 @@ jobs:
         run: |
           set -euo pipefail
           LOG="$RUNNER_TEMP/activity.log"; : > "$LOG"
-          { echo "task=M1 R-A compile repair A33"; echo "ref=$GITHUB_REF"; echo "sha=$GITHUB_SHA"; date -u +"utc=%Y-%m-%dT%H:%M:%SZ"; } | tee -a "$LOG"
+          { echo "task=M1 R-A optimizer compile repair A34"; echo "ref=$GITHUB_REF"; echo "sha=$GITHUB_SHA"; date -u +"utc=%Y-%m-%dT%H:%M:%SZ"; } | tee -a "$LOG"
       - name: Checkout triggering commit
         uses: actions/checkout@v4
         with: {fetch-depth: 1}
@@ -28,25 +28,24 @@ jobs:
           LOG="$RUNNER_TEMP/activity.log"; exec > >(tee -a "$LOG") 2>&1
           trap 'rc=$?; echo "exit_code=$rc"; echo "final_head=$(git rev-parse HEAD 2>/dev/null || true)"; git status --short 2>/dev/null || true; exit $rc' EXIT
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          PATCH=.agents/Directional/turn-payloads/m1-ra-a33.patch
+          PATCH=.agents/Directional/turn-payloads/m1-ra-a34.patch
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "aea217a472ab8a9eaeb5f38977a20dd00676ca2df7925ff1d32143700dacc1a2"
           ! grep -E '^diff --git a/\.github/workflows/' "$PATCH"
           git apply --recount --check "$PATCH"
           git apply --recount "$PATCH"
           git diff --check
-          git add tests/PatchDescriptorMilestoneETests.cpp tests/PureQuadCompletionPhase18Tests.cpp
+          git add tests/SurfaceMeshOptimizerPhase19Tests.cpp tests/SurfaceMeshOptimizerPhase20Tests.cpp
           test "$(git diff --cached --name-only | wc -l)" -eq 2
           git config user.name directional-agent
           git config user.email directional-agent@users.noreply.github.com
-          git commit -m "fix(m1): repair remaining R-A completion test compile contracts"
+          git commit -m "fix(m1): migrate optimizer tests to typed source authority"
           git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
           echo "pushed_head=$(git rev-parse HEAD)"
       - name: Upload activity log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: "m1-ra-wip-a33-log-${{ github.run_id }}"
+          name: "m1-ra-wip-a34-log-${{ github.run_id }}"
           path: "${{ runner.temp }}/activity.log"
           if-no-files-found: error
           retention-days: 7
