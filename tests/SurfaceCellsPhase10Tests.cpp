@@ -4942,7 +4942,7 @@ TEST(SurfaceCellAuthorityContractCutover,
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
-     ProductionMultiComponentMergePublishesCheckedTypedAuthorityUnderRawTamper) {
+     ProductionAggregationCounterfactualIgnoresPreConsumerRawProjectionTamper) {
   const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
   const auto crossField =
       directional::pipeline::finalize_surface_cell_raw_cross_field(
@@ -4957,37 +4957,63 @@ TEST(SurfaceCellAuthorityContractCutover,
   options.maxComponentThreads = 2;
   options.lengthRatio = 0.2;
 
-  const auto result =
+  const auto baseline =
       directional::pipeline::remesh_surface_cell_components_from_cross_field(
           mesh.V, mesh.F, crossField, options);
-  ASSERT_TRUE(result.success)
-      << result.diagnostics.terminalFailureCode << ":"
-      << result.diagnostics.terminalFailureStage << " producer="
-      << result.diagnostics.surfaceCellFirstInvalidProducerStage << "/"
-      << result.diagnostics.surfaceCellFirstInvalidProducerReason;
-  EXPECT_EQ(2U, result.diagnostics.componentCount);
-  ASSERT_EQ(static_cast<std::size_t>(result.vertices.rows()),
-            result.outputVertexLineage.size());
-  ASSERT_EQ(result.outputVertexProvenance.size(),
-            result.outputVertexLineage.size());
+  const auto tampered = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [](const std::size_t componentIndex,
+             directional::pipeline::RemeshResult &componentResult) {
+            const int token = 10000 + static_cast<int>(componentIndex) * 1000;
+            for (auto &point : componentResult.outputVertexProvenance) {
+              point.component = token + 1;
+              point.sheet = token + 2;
+            }
+            for (auto &lineage : componentResult.outputVertexLineage) {
+              lineage.sourcePoint.component = token + 3;
+              lineage.sourcePoint.sheet = token + 4;
+              lineage.featureInterval.start.component = token + 5;
+              lineage.featureInterval.start.sheet = token + 6;
+              lineage.featureInterval.end.component = token + 7;
+              lineage.featureInterval.end.sheet = token + 8;
+            }
+            for (auto &patch : componentResult.surfaceCellContext.completedPatches) {
+              for (auto &point : patch.vertexProvenance) {
+                point.component = token + 9;
+                point.sheet = token + 10;
+              }
+              for (auto &lineage : patch.vertexLineage) {
+                lineage.sourcePoint.component = token + 11;
+                lineage.sourcePoint.sheet = token + 12;
+                lineage.featureInterval.start.component = token + 13;
+                lineage.featureInterval.start.sheet = token + 14;
+                lineage.featureInterval.end.component = token + 15;
+                lineage.featureInterval.end.sheet = token + 16;
+              }
+            }
+            for (int &component :
+                 componentResult.surfaceCellContext.sourceSurfaceLabels
+                     .componentByFace) {
+              component = token + 17;
+            }
+            for (int &sheet :
+                 componentResult.surfaceCellContext.sourceSurfaceLabels
+                     .localSheetByFace) {
+              sheet = token + 18;
+            }
+          });
 
-  std::set<std::size_t> firstComponentSheets;
-  std::set<std::size_t> secondComponentSheets;
-  for (const auto &lineage : result.outputVertexLineage) {
-    ASSERT_FALSE(lineage.sourceTopologyRegions.empty());
-    ASSERT_FALSE(lineage.sourceIsolationSheets.empty());
-    ASSERT_FALSE(lineage.sourceCharts.empty());
-    ASSERT_TRUE(lineage.sourceSupport.has_value());
-    ASSERT_TRUE(lineage.sourcePoint.valid());
-    auto &sheets = lineage.sourcePoint.face < 2 ? firstComponentSheets
-                                                : secondComponentSheets;
-    for (const auto sheet : lineage.sourceIsolationSheets) {
-      sheets.insert(sheet.index());
-    }
-  }
-  ASSERT_FALSE(firstComponentSheets.empty());
-  ASSERT_FALSE(secondComponentSheets.empty());
-  EXPECT_LT(*firstComponentSheets.rbegin(), *secondComponentSheets.begin());
+  ASSERT_TRUE(baseline.success)
+      << baseline.diagnostics.terminalFailureCode << ':'
+      << baseline.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(tampered.success)
+      << tampered.diagnostics.terminalFailureCode << ':'
+      << tampered.diagnostics.terminalFailureStage;
+  EXPECT_EQ(2U, baseline.diagnostics.componentCount);
+  EXPECT_EQ(baseline.vertices, tampered.vertices);
+  EXPECT_EQ(baseline.faces, tampered.faces);
+  EXPECT_EQ(baseline.degrees, tampered.degrees);
 
   const auto typedSnapshot = [](const directional::pipeline::RemeshResult &value) {
     std::vector<std::string> rows;
@@ -5029,22 +5055,111 @@ TEST(SurfaceCellAuthorityContractCutover,
     std::sort(rows.begin(), rows.end());
     return rows;
   };
+  EXPECT_EQ(typedSnapshot(baseline), typedSnapshot(tampered));
 
-  const auto baseline = typedSnapshot(result);
-  auto tampered = result;
-  for (auto &point : tampered.outputVertexProvenance) {
-    point.component += 1000;
-    point.sheet += 2000;
+  const auto completionHash = [](const directional::pipeline::RemeshResult &value) {
+    directional::geometry::PureQuadMesh semanticMesh;
+    semanticMesh.vertices.resize(static_cast<std::size_t>(value.vertices.rows()));
+    std::iota(semanticMesh.vertices.begin(), semanticMesh.vertices.end(), 0);
+    semanticMesh.vertexPositions = value.vertices;
+    semanticMesh.vertexProvenance = value.outputVertexProvenance;
+    semanticMesh.vertexLineage = value.outputVertexLineage;
+    semanticMesh.quadLineage = value.outputQuadLineage;
+    semanticMesh.quads.reserve(static_cast<std::size_t>(value.faces.rows()));
+    for (int face = 0; face < value.faces.rows(); ++face) {
+      const int degree = value.degrees.size() == value.faces.rows()
+                             ? value.degrees(face)
+                             : value.faces.cols();
+      std::vector<int> polygon;
+      polygon.reserve(static_cast<std::size_t>(std::max(0, degree)));
+      for (int corner = 0; corner < degree; ++corner) {
+        polygon.push_back(value.faces(face, corner));
+      }
+      semanticMesh.quads.push_back(std::move(polygon));
+    }
+    return directional::pipeline::hash_completion(semanticMesh);
+  };
+  EXPECT_EQ(completionHash(baseline), completionHash(tampered));
+
+  ASSERT_TRUE(baseline.surfaceCellContext.hasValidationResult);
+  ASSERT_TRUE(tampered.surfaceCellContext.hasValidationResult);
+  const auto &baselineValidation = baseline.surfaceCellContext.validationResult;
+  const auto &tamperedValidation = tampered.surfaceCellContext.validationResult;
+  EXPECT_EQ(baselineValidation.accepted, tamperedValidation.accepted);
+  EXPECT_EQ(baselineValidation.sourceAuthoritativeValidationUsed,
+            tamperedValidation.sourceAuthoritativeValidationUsed);
+  EXPECT_EQ(baselineValidation.provenanceValidationUsed,
+            tamperedValidation.provenanceValidationUsed);
+  EXPECT_EQ(baselineValidation.localSheetCompatibilityPassed,
+            tamperedValidation.localSheetCompatibilityPassed);
+  EXPECT_EQ(baselineValidation.connectedComponentMismatchCount,
+            tamperedValidation.connectedComponentMismatchCount);
+  EXPECT_EQ(baselineValidation.eulerCharacteristicMismatchCount,
+            tamperedValidation.eulerCharacteristicMismatchCount);
+  EXPECT_EQ(baselineValidation.boundaryCycleMismatchCount,
+            tamperedValidation.boundaryCycleMismatchCount);
+
+  std::set<std::size_t> firstComponentSheets;
+  std::set<std::size_t> secondComponentSheets;
+  for (const auto &lineage : baseline.outputVertexLineage) {
+    ASSERT_FALSE(lineage.sourceTopologyRegions.empty());
+    ASSERT_FALSE(lineage.sourceIsolationSheets.empty());
+    ASSERT_FALSE(lineage.sourceCharts.empty());
+    ASSERT_TRUE(lineage.sourceSupport.has_value());
+    auto &sheets = lineage.sourcePoint.face < 2 ? firstComponentSheets
+                                                : secondComponentSheets;
+    for (const auto sheet : lineage.sourceIsolationSheets) {
+      sheets.insert(sheet.index());
+    }
   }
-  for (auto &lineage : tampered.outputVertexLineage) {
-    lineage.sourcePoint.component += 3000;
-    lineage.sourcePoint.sheet += 4000;
-    lineage.featureInterval.start.component += 5000;
-    lineage.featureInterval.start.sheet += 6000;
-    lineage.featureInterval.end.component += 7000;
-    lineage.featureInterval.end.sheet += 8000;
-  }
-  EXPECT_EQ(baseline, typedSnapshot(tampered));
+  ASSERT_FALSE(firstComponentSheets.empty());
+  ASSERT_FALSE(secondComponentSheets.empty());
+  EXPECT_LT(*firstComponentSheets.rbegin(), *secondComponentSheets.begin());
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ProductionAggregationRejectsUnownedTypedRemapWithZeroPublication) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [](const std::size_t componentIndex,
+             directional::pipeline::RemeshResult &componentResult) {
+            if (componentIndex != 0U ||
+                componentResult.outputVertexLineage.empty()) {
+              return;
+            }
+            const auto unowned =
+                directional::authority::TopologyRegionId::from_index(99, 128);
+            if (!unowned) return;
+            componentResult.outputVertexLineage.front().sourceTopologyRegions =
+                {unowned.value()};
+          });
+
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("InvalidTypedComponentAuthorityRemap",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_EQ(0, rejected.faces.rows());
+  EXPECT_TRUE(rejected.outputVertexProvenance.empty());
+  EXPECT_TRUE(rejected.outputVertexLineage.empty());
+  EXPECT_TRUE(rejected.outputQuadLineage.empty());
+  EXPECT_TRUE(rejected.surfaceCellContext.completedPatches.empty());
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

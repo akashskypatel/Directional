@@ -1436,55 +1436,126 @@ TEST(SurfaceCellTransitionQuotient,
 
 
 TEST(SurfaceCellTransitionQuotient,
-     ComponentSheetExtentUsesOnlyCompleteTypedLineage) {
-  std::vector<directional::geometry::PureQuadVertexLineage> lineage(2);
-  for (std::size_t vertex = 0; vertex < lineage.size(); ++vertex) {
-    lineage[vertex].sourceTopologyRegions = {test_topology_region_id(0)};
-    lineage[vertex].sourceIsolationSheets = {
-        test_isolation_sheet_id(static_cast<int>(vertex) + 2)};
-    lineage[vertex].sourceCharts = {
-        test_projection_chart(static_cast<int>(vertex),
-                              static_cast<int>(vertex))};
-    lineage[vertex].sourceSupport =
-        test_source_vertex_support(static_cast<int>(vertex));
-    lineage[vertex].sourcePoint.sheet = 700 + static_cast<int>(vertex);
-    lineage[vertex].sourcePoint.component = 800 + static_cast<int>(vertex);
-  }
-  const auto baseline = directional::pipeline::
-      typed_component_isolation_sheet_extent(lineage, lineage.size());
-  ASSERT_TRUE(baseline.has_value());
-  EXPECT_EQ(3, *baseline);
+     ComponentTypedAuthorityDomainComesFromPublishedSourceAuthority) {
+  const auto &fixture = split_isolation_fixture();
+  const auto components = directional::geometry::compact_face_components(
+      fixture.mesh.V, fixture.mesh.F, nullptr);
+  ASSERT_EQ(1U, components.size());
+  const auto &sourceAuthority =
+      fixture.network.phaseFront.product().sourceTopologyRegions;
 
-  for (auto &vertex : lineage) {
-    vertex.sourcePoint.sheet += 10000;
-    vertex.sourcePoint.component += 10000;
-  }
-  const auto tampered = directional::pipeline::
-      typed_component_isolation_sheet_extent(lineage, lineage.size());
-  EXPECT_EQ(baseline, tampered);
+  const auto domain = directional::pipeline::
+      make_component_typed_authority_remap_domain(
+          components.front(), sourceAuthority, 7U, 11U, 13U);
+  ASSERT_TRUE(domain.has_value());
+  EXPECT_TRUE(domain->complete());
+  EXPECT_EQ(7U + sourceAuthority.regions().size(),
+            domain->nextTopologyRegion);
+  EXPECT_GT(domain->nextIsolationSheet, 11U);
+  EXPECT_GT(domain->nextFieldChart, 13U);
+  ASSERT_EQ(static_cast<std::size_t>(fixture.mesh.F.rows()),
+            domain->localChartsByFace.size());
 
-  lineage.front().sourceSupport.reset();
-  EXPECT_FALSE(directional::pipeline::typed_component_isolation_sheet_extent(
-                   lineage, lineage.size())
-                   .has_value());
+  const auto materialized = materialize(fixture, fixture.network.phaseFront);
+  ASSERT_TRUE(materialized.success) << materialized.failure;
+  ASSERT_FALSE(materialized.mesh.vertexLineage.empty());
+  auto lineage = materialized.mesh.vertexLineage.front();
+  ASSERT_TRUE(directional::pipeline::remap_component_typed_lineage_authority(
+      lineage, components.front(),
+      static_cast<std::size_t>(fixture.mesh.V.rows()),
+      static_cast<std::size_t>(fixture.mesh.F.rows()), domain.value()));
+  for (const auto region : lineage.sourceTopologyRegions) {
+    EXPECT_GE(region.index(), 7U);
+    EXPECT_LT(region.index(), domain->nextTopologyRegion);
+  }
+  for (const auto sheet : lineage.sourceIsolationSheets) {
+    EXPECT_GE(sheet.index(), 11U);
+    EXPECT_LT(sheet.index(), domain->nextIsolationSheet);
+  }
+  for (const auto &chart : lineage.sourceCharts) {
+    EXPECT_GE(chart.chart.index(), 13U);
+    EXPECT_LT(chart.chart.index(), domain->nextFieldChart);
+  }
 }
 
 TEST(SurfaceCellTransitionQuotient,
-     MalformedComponentTypedAuthorityRemapFailsClosed) {
-  directional::geometry::FaceComponent component;
-  component.originalFaces = {5};
-  component.originalVertices = {2, 3, 4};
+     ComponentTypedAuthorityRemapRejectsUnownedLocalIdsAndSupport) {
+  const auto &fixture = split_isolation_fixture();
+  const auto components = directional::geometry::compact_face_components(
+      fixture.mesh.V, fixture.mesh.F, nullptr);
+  ASSERT_EQ(1U, components.size());
+  const auto &sourceAuthority =
+      fixture.network.phaseFront.product().sourceTopologyRegions;
+  const auto domain = directional::pipeline::
+      make_component_typed_authority_remap_domain(
+          components.front(), sourceAuthority, 3U, 5U, 7U);
+  ASSERT_TRUE(domain.has_value());
 
-  directional::geometry::PureQuadVertexLineage lineage;
-  lineage.sourceTopologyRegions = {test_topology_region_id(0)};
-  lineage.sourceIsolationSheets = {test_isolation_sheet_id(0)};
-  // Face 1 is outside the one-face component and must not survive as an
-  // unremapped local chart.
-  lineage.sourceCharts = {test_projection_chart(0, 1)};
-  lineage.sourceSupport = test_source_vertex_support(0);
+  directional::geometry::PureQuadVertexLineage baseline;
+  baseline.sourceTopologyRegions = {domain->localRegionsByFace.front()};
+  baseline.sourceIsolationSheets = {domain->localSheetsByFace.front()};
+  baseline.sourceCharts = {domain->localChartsByFace.front()};
+  const auto faceZero = directional::authority::SourceFaceId::from_index(
+      0, static_cast<std::size_t>(fixture.mesh.F.rows()));
+  ASSERT_TRUE(faceZero);
+  baseline.sourceSupport =
+      directional::authority::SourceFaceInteriorSupport{faceZero.value()};
 
+  auto valid = baseline;
+  EXPECT_TRUE(directional::pipeline::remap_component_typed_lineage_authority(
+      valid, components.front(),
+      static_cast<std::size_t>(fixture.mesh.V.rows()),
+      static_cast<std::size_t>(fixture.mesh.F.rows()), domain.value()));
+
+  auto unownedRegion = baseline;
+  const auto sparseRegion = directional::authority::TopologyRegionId::from_index(
+      99, 128);
+  ASSERT_TRUE(sparseRegion);
+  unownedRegion.sourceTopologyRegions = {sparseRegion.value()};
   EXPECT_FALSE(directional::pipeline::remap_component_typed_lineage_authority(
-      lineage, component, 8U, 8U, 3, 4, 5));
+      unownedRegion, components.front(),
+      static_cast<std::size_t>(fixture.mesh.V.rows()),
+      static_cast<std::size_t>(fixture.mesh.F.rows()), domain.value()));
+
+  auto unownedSheet = baseline;
+  const auto sparseSheet = directional::authority::IsolationSheetId::from_index(
+      99, 128);
+  ASSERT_TRUE(sparseSheet);
+  unownedSheet.sourceIsolationSheets = {sparseSheet.value()};
+  EXPECT_FALSE(directional::pipeline::remap_component_typed_lineage_authority(
+      unownedSheet, components.front(),
+      static_cast<std::size_t>(fixture.mesh.V.rows()),
+      static_cast<std::size_t>(fixture.mesh.F.rows()), domain.value()));
+
+  auto wrongChart = baseline;
+  const auto sparseChart = directional::authority::FieldChartId::from_index(
+      99, 128);
+  ASSERT_TRUE(sparseChart);
+  wrongChart.sourceCharts = {directional::geometry::SourceProjectionChart(
+      sparseChart.value(), domain->localChartsByFace.front().face)};
+  EXPECT_FALSE(directional::pipeline::remap_component_typed_lineage_authority(
+      wrongChart, components.front(),
+      static_cast<std::size_t>(fixture.mesh.V.rows()),
+      static_cast<std::size_t>(fixture.mesh.F.rows()), domain.value()));
+
+  if (domain->localChartsByFace.size() > 1U) {
+    auto wrongFaceSupport = baseline;
+    wrongFaceSupport.sourceSupport =
+        directional::authority::SourceFaceInteriorSupport{
+            domain->localChartsByFace[1].face};
+    EXPECT_FALSE(
+        directional::pipeline::remap_component_typed_lineage_authority(
+            wrongFaceSupport, components.front(),
+            static_cast<std::size_t>(fixture.mesh.V.rows()),
+            static_cast<std::size_t>(fixture.mesh.F.rows()), domain.value()));
+  }
+
+  auto incomplete = baseline;
+  incomplete.sourceSupport.reset();
+  EXPECT_FALSE(directional::pipeline::remap_component_typed_lineage_authority(
+      incomplete, components.front(),
+      static_cast<std::size_t>(fixture.mesh.V.rows()),
+      static_cast<std::size_t>(fixture.mesh.F.rows()), domain.value()));
 }
 
 TEST(SurfaceCellTypedTransportAuthority,

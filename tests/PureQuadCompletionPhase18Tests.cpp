@@ -1782,6 +1782,135 @@ TEST(PureQuadCompletionPhase18,
 }
 
 TEST(PureQuadCompletionPhase18,
+     CompatibleCollisionPublishesOnlyPostIntersectionAuthority) {
+  Eigen::MatrixXd vertices;
+  Eigen::MatrixXi faces;
+  const auto sourcePatches = completed_cylinder_patches(vertices, faces, 4);
+  ASSERT_EQ(4U, sourcePatches.size());
+  auto first = sourcePatches[0];
+  auto second = sourcePatches[1];
+
+  int firstRow = -1;
+  int secondRow = -1;
+  for (std::size_t firstBoundary = 0;
+       firstBoundary < first.boundaryNodeIdentities.size() && firstRow < 0;
+       ++firstBoundary) {
+    for (std::size_t secondBoundary = 0;
+         secondBoundary < second.boundaryNodeIdentities.size();
+         ++secondBoundary) {
+      if (first.boundaryNodeIdentities[firstBoundary] !=
+          second.boundaryNodeIdentities[secondBoundary]) {
+        continue;
+      }
+      const int firstVertex = first.boundaryVertices[firstBoundary];
+      const int secondVertex = second.boundaryVertices[secondBoundary];
+      const auto firstFound =
+          std::find(first.vertices.begin(), first.vertices.end(), firstVertex);
+      const auto secondFound =
+          std::find(second.vertices.begin(), second.vertices.end(), secondVertex);
+      if (firstFound == first.vertices.end() ||
+          secondFound == second.vertices.end()) {
+        continue;
+      }
+      firstRow = static_cast<int>(
+          std::distance(first.vertices.begin(), firstFound));
+      secondRow = static_cast<int>(
+          std::distance(second.vertices.begin(), secondFound));
+      break;
+    }
+  }
+  ASSERT_GE(firstRow, 0);
+  ASSERT_GE(secondRow, 0);
+
+  auto &firstLineage = first.vertexLineage[static_cast<std::size_t>(firstRow)];
+  auto &secondLineage =
+      second.vertexLineage[static_cast<std::size_t>(secondRow)];
+  ASSERT_EQ(firstLineage.stitchIdentity, secondLineage.stitchIdentity);
+  ASSERT_EQ(firstLineage.sourceSupport, secondLineage.sourceSupport);
+
+  const auto extraFirstRegion =
+      directional::authority::TopologyRegionId::from_index(91, 128);
+  const auto extraSecondRegion =
+      directional::authority::TopologyRegionId::from_index(92, 128);
+  const auto extraFirstSheet =
+      directional::authority::IsolationSheetId::from_index(93, 128);
+  const auto extraSecondSheet =
+      directional::authority::IsolationSheetId::from_index(94, 128);
+  const auto extraFirstChart =
+      directional::authority::FieldChartId::from_index(95, 128);
+  const auto extraSecondChart =
+      directional::authority::FieldChartId::from_index(96, 128);
+  ASSERT_TRUE(extraFirstRegion && extraSecondRegion && extraFirstSheet &&
+              extraSecondSheet && extraFirstChart && extraSecondChart);
+  ASSERT_FALSE(firstLineage.sourceCharts.empty());
+  ASSERT_FALSE(secondLineage.sourceCharts.empty());
+
+  firstLineage.sourceTopologyRegions.push_back(extraFirstRegion.value());
+  secondLineage.sourceTopologyRegions.push_back(extraSecondRegion.value());
+  firstLineage.sourceIsolationSheets.push_back(extraFirstSheet.value());
+  secondLineage.sourceIsolationSheets.push_back(extraSecondSheet.value());
+  firstLineage.sourceCharts.emplace_back(
+      extraFirstChart.value(), firstLineage.sourceCharts.front().face);
+  secondLineage.sourceCharts.emplace_back(
+      extraSecondChart.value(), secondLineage.sourceCharts.front().face);
+  firstLineage.authoritativeIdentity = {};
+  secondLineage.authoritativeIdentity = {};
+
+  const auto intersect = [](const auto &left, const auto &right) {
+    using Value = typename std::decay_t<decltype(left)>::value_type;
+    std::vector<Value> lhs = left;
+    std::vector<Value> rhs = right;
+    std::sort(lhs.begin(), lhs.end());
+    std::sort(rhs.begin(), rhs.end());
+    std::vector<Value> common;
+    std::set_intersection(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(),
+                          std::back_inserter(common));
+    common.erase(std::unique(common.begin(), common.end()), common.end());
+    return common;
+  };
+  const auto expectedRegions = intersect(firstLineage.sourceTopologyRegions,
+                                         secondLineage.sourceTopologyRegions);
+  const auto expectedSheets = intersect(firstLineage.sourceIsolationSheets,
+                                        secondLineage.sourceIsolationSheets);
+  const auto expectedCharts =
+      intersect(firstLineage.sourceCharts, secondLineage.sourceCharts);
+  ASSERT_FALSE(expectedRegions.empty());
+  ASSERT_FALSE(expectedSheets.empty());
+  ASSERT_FALSE(expectedCharts.empty());
+
+  const auto firstCandidateIdentity =
+      directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+          firstLineage);
+  const auto secondCandidateIdentity =
+      directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+          secondLineage);
+  ASSERT_TRUE(firstCandidateIdentity.valid());
+  ASSERT_TRUE(secondCandidateIdentity.valid());
+  ASSERT_NE(firstCandidateIdentity, secondCandidateIdentity);
+
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {first, second}, 1.0e-9, &faces);
+  ASSERT_TRUE(assembly.success) << assembly.failure;
+
+  const auto published = std::find_if(
+      assembly.mesh.vertexLineage.begin(), assembly.mesh.vertexLineage.end(),
+      [&](const auto &lineage) {
+        return lineage.stitchIdentity == firstLineage.stitchIdentity;
+      });
+  ASSERT_NE(assembly.mesh.vertexLineage.end(), published);
+  EXPECT_EQ(expectedRegions, published->sourceTopologyRegions);
+  EXPECT_EQ(expectedSheets, published->sourceIsolationSheets);
+  EXPECT_EQ(expectedCharts, published->sourceCharts);
+  EXPECT_EQ(firstLineage.sourceSupport, published->sourceSupport);
+  EXPECT_EQ(
+      directional::geometry::pure_quad_detail::canonical_authoritative_identity(
+          *published),
+      published->authoritativeIdentity);
+  EXPECT_NE(firstCandidateIdentity, published->authoritativeIdentity);
+  EXPECT_NE(secondCandidateIdentity, published->authoritativeIdentity);
+}
+
+TEST(PureQuadCompletionPhase18,
      SameExactBoundaryKeyRejectsIncompatibleTypedLineage) {
   Eigen::MatrixXi sourceFaces(1, 3);
   sourceFaces << 0, 1, 2;

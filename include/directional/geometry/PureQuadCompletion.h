@@ -207,9 +207,10 @@ struct PureQuadVertexLineage {
   SurfacePoint sourcePoint;
   PureQuadFeatureIntervalLineage featureInterval;
   PureQuadStitchIdentity stitchIdentity;
-  // Strong source-authoritative identity used to verify that a compact stitch
-  // key did not merge distinct topology. Production completion initializes it
-  // from exact arrangement/source lineage before assembly.
+  // Derived canonical certificate cache for diagnostics/ownership-cycle
+  // comparison. The typed region/sheet/chart/support fields below remain the
+  // source authority; this value is recomputed from their final intersection
+  // at stitch publication and is never a source for reconstructing them.
   PureQuadStitchIdentity authoritativeIdentity;
   int sourcePatch = -1;
   int localVertex = -1;
@@ -549,6 +550,16 @@ std::set<std::pair<int, int>> boundary_edges(
     const std::vector<std::vector<int>> &quads);
 
 bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads);
+
+/**
+ * Derive the canonical strong authority identity from the lineage's published
+ * stitch key and complete typed region/sheet/chart/support authority.
+ *
+ * This is intentionally a one-way derivation.  The compact identity must not
+ * become an alternate source of region, sheet, chart, or support authority.
+ */
+PureQuadStitchIdentity canonical_authoritative_identity(
+    const PureQuadVertexLineage &lineage);
 
 } // namespace pure_quad_detail
 

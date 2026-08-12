@@ -23,6 +23,7 @@
 #include <limits>
 #include <map>
 #include <numeric>
+#include <optional>
 #include <set>
 #include <sstream>
 #include <stdexcept>
@@ -316,6 +317,11 @@ struct SurfaceCellPipelineContext {
 
   geometry::SourceSurfaceLabels sourceSurfaceLabels;
   bool hasSourceSurfaceLabels = false;
+
+  // Durable typed source-authority snapshot used by disconnected-component
+  // aggregation after the tracing network itself may have been released.
+  // Raw classifier arrays remain ingress/diagnostic payload only.
+  std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
 
   geometry::SurfaceCellNetwork traceNetwork;
   bool hasTraceNetwork = false;
@@ -861,18 +867,64 @@ fields::CrossFieldResult remap_surface_cell_cross_field_component(
 geometry::SurfacePoint remap_component_surface_point(
     geometry::SurfacePoint point, const geometry::FaceComponent &component,
     std::size_t componentIndex,
-    std::optional<authority::IsolationSheetId> typedLocalSheet,
-    int sheetOffset);
+    std::optional<authority::IsolationSheetId> typedGlobalSheet);
 
-std::optional<int> typed_component_isolation_sheet_extent(
-    const std::vector<geometry::PureQuadVertexLineage> &lineage,
-    std::size_t expectedVertexCount);
+struct ComponentTypedAuthorityRemapDomain {
+  std::map<authority::TopologyRegionId, authority::TopologyRegionId>
+      topologyRegions;
+  std::map<authority::IsolationSheetId, authority::IsolationSheetId>
+      isolationSheets;
+  std::map<authority::FieldChartId, authority::FieldChartId> fieldCharts;
+  std::set<std::pair<authority::TopologyRegionId,
+                     authority::IsolationSheetId>>
+      localRegionSheets;
+  std::vector<geometry::SourceProjectionChart> localChartsByFace;
+  std::vector<authority::TopologyRegionId> localRegionsByFace;
+  std::vector<authority::IsolationSheetId> localSheetsByFace;
+  std::size_t nextTopologyRegion = 0U;
+  std::size_t nextIsolationSheet = 0U;
+  std::size_t nextFieldChart = 0U;
+
+  [[nodiscard]] bool complete() const noexcept {
+    return !topologyRegions.empty() && !isolationSheets.empty() &&
+           !fieldCharts.empty() && !localRegionSheets.empty() &&
+           localChartsByFace.size() == localRegionsByFace.size() &&
+           localChartsByFace.size() == localSheetsByFace.size() &&
+           !localChartsByFace.empty();
+  }
+};
+
+std::optional<ComponentTypedAuthorityRemapDomain>
+make_component_typed_authority_remap_domain(
+    const geometry::FaceComponent &component,
+    const geometry::SourceTopologyRegions &sourceAuthority,
+    std::size_t topologyRegionBase, std::size_t isolationSheetBase,
+    std::size_t fieldChartBase);
 
 bool remap_component_typed_lineage_authority(
     geometry::PureQuadVertexLineage &lineage,
     const geometry::FaceComponent &component,
     std::size_t globalSourceVertexCount, std::size_t globalSourceFaceCount,
-    int topologyRegionOffset, int sheetOffset, int fieldChartOffset);
+    const ComponentTypedAuthorityRemapDomain &domain);
+
+namespace remesh_pipeline_detail {
+
+using ComponentAggregationInputMutator =
+    std::function<void(std::size_t, RemeshResult &)>;
+
+/**
+ * Counterfactual seam over the production disconnected-component aggregator.
+ * The mutator runs after each component has completed and before the first
+ * aggregation read. It exists to prove raw projection payload cannot alter
+ * typed remap/ownership/order/hash/publication semantics.
+ */
+RemeshResult remesh_surface_cell_components_from_cross_field_counterfactual(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options,
+    const ComponentAggregationInputMutator &beforeAggregation);
+
+} // namespace remesh_pipeline_detail
 
 void append_polygon_faces(
     Eigen::MatrixXi &targetFaces, Eigen::VectorXi &targetDegrees,

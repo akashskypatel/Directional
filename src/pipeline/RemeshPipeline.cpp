@@ -1,5 +1,6 @@
 #include <directional/pipeline/RemeshPipeline.h>
 #include <directional/geometry/GeneralGraphMatching.h>
+#include <directional/geometry/SourceChartTransitions.h>
 
 #include <iterator>
 
@@ -6107,6 +6108,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     result.diagnostics.surfaceCellPeriodicHolonomies.clear();
     result.diagnostics.surfaceCellPeriodicHolonomyAvailable = false;
     if (phaseFrontProduct != nullptr) {
+      // Preserve the independently validated typed source-authority domain for
+      // disconnected-component aggregation even when the heavyweight trace
+      // network is released later in this pipeline execution.
+      result.surfaceCellContext.sourceTopologyRegions =
+          phaseFrontProduct->sourceTopologyRegions;
       result.diagnostics.surfaceCellTopologyRegionCount =
           phaseFrontProduct->sourceTopologyRegions.regions().size();
       result.diagnostics.surfaceCellInternalIsolationSeamCount = 0U;
@@ -8508,8 +8514,7 @@ namespace directional::pipeline {
 geometry::SurfacePoint remap_component_surface_point(
     geometry::SurfacePoint point, const geometry::FaceComponent &component,
     const std::size_t componentIndex,
-    const std::optional<authority::IsolationSheetId> typedLocalSheet,
-    const int sheetOffset) {
+    const std::optional<authority::IsolationSheetId> typedGlobalSheet) {
   if (point.face >= 0 &&
       static_cast<std::size_t>(point.face) < component.originalFaces.size()) {
     point.face =
@@ -8518,8 +8523,8 @@ geometry::SurfacePoint remap_component_surface_point(
     point.face = -1;
   }
   point.component = static_cast<int>(componentIndex);
-  point.sheet = typedLocalSheet.has_value()
-                    ? static_cast<int>(typedLocalSheet->index()) + sheetOffset
+  point.sheet = typedGlobalSheet.has_value()
+                    ? static_cast<int>(typedGlobalSheet->index())
                     : -1;
   return point;
 }
@@ -8528,26 +8533,130 @@ geometry::SurfacePoint remap_component_surface_point(
 
 namespace directional::pipeline {
 
-std::optional<int> typed_component_isolation_sheet_extent(
-    const std::vector<geometry::PureQuadVertexLineage> &lineage,
-    const std::size_t expectedVertexCount) {
-  if (expectedVertexCount == 0U || lineage.size() != expectedVertexCount) {
+std::optional<ComponentTypedAuthorityRemapDomain>
+make_component_typed_authority_remap_domain(
+    const geometry::FaceComponent &component,
+    const geometry::SourceTopologyRegions &sourceAuthority,
+    const std::size_t topologyRegionBase,
+    const std::size_t isolationSheetBase,
+    const std::size_t fieldChartBase) {
+  const std::size_t localFaceCount =
+      static_cast<std::size_t>(component.faces.rows());
+  if (component.faces.cols() != 3 || localFaceCount == 0U ||
+      component.originalFaces.size() != localFaceCount ||
+      !sourceAuthority.complete_for_face_count(localFaceCount)) {
     return std::nullopt;
   }
-  int maximumSheet = -1;
-  for (const geometry::PureQuadVertexLineage &vertex : lineage) {
-    if (vertex.sourceTopologyRegions.empty() ||
-        vertex.sourceIsolationSheets.empty() || vertex.sourceCharts.empty() ||
-        !vertex.sourceSupport.has_value()) {
-      return std::nullopt;
-    }
-    for (const authority::IsolationSheetId sheet :
-         vertex.sourceIsolationSheets) {
-      maximumSheet =
-          std::max(maximumSheet, static_cast<int>(sheet.index()));
+
+  geometry::SourceChartTransitionGraph chartGraph(component.faces,
+                                                    sourceAuthority);
+  if (!chartGraph.available()) {
+    return std::nullopt;
+  }
+
+  ComponentTypedAuthorityRemapDomain domain;
+  std::vector<authority::TopologyRegionId> localRegions;
+  localRegions.reserve(sourceAuthority.regions().size());
+  std::vector<authority::IsolationSheetId> localSheets;
+  for (const geometry::SurfaceTopologyRegion &region :
+       sourceAuthority.regions()) {
+    localRegions.push_back(region.id());
+    for (const geometry::SourceRegionFaceAuthority &face : region.faces()) {
+      localSheets.push_back(face.sheet);
+      domain.localRegionSheets.emplace(region.id(), face.sheet);
     }
   }
-  return maximumSheet >= 0 ? std::optional<int>(maximumSheet) : std::nullopt;
+  std::sort(localRegions.begin(), localRegions.end());
+  localRegions.erase(std::unique(localRegions.begin(), localRegions.end()),
+                     localRegions.end());
+  std::sort(localSheets.begin(), localSheets.end());
+  localSheets.erase(std::unique(localSheets.begin(), localSheets.end()),
+                    localSheets.end());
+  if (localRegions.empty() || localSheets.empty()) {
+    return std::nullopt;
+  }
+
+  std::vector<authority::FieldChartId> localChartIds;
+  localChartIds.reserve(localFaceCount);
+  domain.localChartsByFace.reserve(localFaceCount);
+  domain.localRegionsByFace.reserve(localFaceCount);
+  domain.localSheetsByFace.reserve(localFaceCount);
+  for (std::size_t localFace = 0; localFace < localFaceCount; ++localFace) {
+    const auto row = authority::SourceFaceId::from_index(localFace,
+                                                         localFaceCount);
+    if (!row) return std::nullopt;
+    const auto chart = chartGraph.chart(static_cast<int>(localFace));
+    if (!chart.has_value() || chart->face != row.value()) {
+      return std::nullopt;
+    }
+    domain.localChartsByFace.push_back(chart.value());
+    domain.localRegionsByFace.push_back(
+        sourceAuthority.region_for_row(row.value()));
+    domain.localSheetsByFace.push_back(
+        sourceAuthority.sheet_for_row(row.value()));
+    localChartIds.push_back(chart->chart);
+  }
+  std::sort(localChartIds.begin(), localChartIds.end());
+  localChartIds.erase(
+      std::unique(localChartIds.begin(), localChartIds.end()),
+      localChartIds.end());
+  if (localChartIds.empty()) return std::nullopt;
+
+  const auto checked_extent = [](const std::size_t base,
+                                 const std::size_t count)
+      -> std::optional<std::size_t> {
+    constexpr std::size_t maxExtent =
+        static_cast<std::size_t>(std::numeric_limits<int>::max()) + 1U;
+    if (count == 0U || base > maxExtent || count > maxExtent - base) {
+      return std::nullopt;
+    }
+    return base + count;
+  };
+  const auto regionExtent = checked_extent(topologyRegionBase,
+                                           localRegions.size());
+  const auto sheetExtent = checked_extent(isolationSheetBase,
+                                          localSheets.size());
+  const auto chartExtent = checked_extent(fieldChartBase,
+                                          localChartIds.size());
+  if (!regionExtent.has_value() || !sheetExtent.has_value() ||
+      !chartExtent.has_value()) {
+    return std::nullopt;
+  }
+
+  for (std::size_t index = 0; index < localRegions.size(); ++index) {
+    const auto global = authority::TopologyRegionId::from_index(
+        topologyRegionBase + index, *regionExtent);
+    if (!global ||
+        !domain.topologyRegions.emplace(localRegions[index], global.value())
+             .second) {
+      return std::nullopt;
+    }
+  }
+  for (std::size_t index = 0; index < localSheets.size(); ++index) {
+    const auto global = authority::IsolationSheetId::from_index(
+        isolationSheetBase + index, *sheetExtent);
+    if (!global ||
+        !domain.isolationSheets.emplace(localSheets[index], global.value())
+             .second) {
+      return std::nullopt;
+    }
+  }
+  for (std::size_t index = 0; index < localChartIds.size(); ++index) {
+    const auto global = authority::FieldChartId::from_index(
+        fieldChartBase + index, *chartExtent);
+    if (!global ||
+        !domain.fieldCharts.emplace(localChartIds[index], global.value())
+             .second) {
+      return std::nullopt;
+    }
+  }
+  domain.nextTopologyRegion = *regionExtent;
+  domain.nextIsolationSheet = *sheetExtent;
+  domain.nextFieldChart = *chartExtent;
+  return domain.complete()
+             ? std::optional<ComponentTypedAuthorityRemapDomain>(
+                   std::move(domain))
+             : std::nullopt;
 }
 
 bool remap_component_typed_lineage_authority(
@@ -8555,56 +8664,138 @@ bool remap_component_typed_lineage_authority(
     const geometry::FaceComponent &component,
     const std::size_t globalSourceVertexCount,
     const std::size_t globalSourceFaceCount,
-    const int topologyRegionOffset, const int sheetOffset,
-    const int fieldChartOffset) {
+    const ComponentTypedAuthorityRemapDomain &domain) {
   if (lineage.sourceTopologyRegions.empty() ||
       lineage.sourceIsolationSheets.empty() || lineage.sourceCharts.empty() ||
-      !lineage.sourceSupport.has_value() || topologyRegionOffset < 0 ||
-      sheetOffset < 0 || fieldChartOffset < 0) {
+      !lineage.sourceSupport.has_value() || !domain.complete()) {
     return false;
   }
 
-  const auto offset_index = [](const std::size_t value, const int offset)
-      -> std::optional<int> {
-    if (value > static_cast<std::size_t>(std::numeric_limits<int>::max()) ||
-        offset > std::numeric_limits<int>::max() -
-                     static_cast<int>(value)) {
-      return std::nullopt;
+  for (const authority::TopologyRegionId region :
+       lineage.sourceTopologyRegions) {
+    if (domain.topologyRegions.find(region) == domain.topologyRegions.end()) {
+      return false;
     }
-    return static_cast<int>(value) + offset;
+  }
+  for (const authority::IsolationSheetId sheet :
+       lineage.sourceIsolationSheets) {
+    if (domain.isolationSheets.find(sheet) == domain.isolationSheets.end()) {
+      return false;
+    }
+  }
+  for (const geometry::SourceProjectionChart &chart : lineage.sourceCharts) {
+    if (chart.face.index() >= domain.localChartsByFace.size()) return false;
+    const std::size_t localFace = chart.face.index();
+    if (domain.localChartsByFace[localFace] != chart ||
+        domain.fieldCharts.find(chart.chart) == domain.fieldCharts.end()) {
+      return false;
+    }
+    const authority::TopologyRegionId expectedRegion =
+        domain.localRegionsByFace[localFace];
+    const authority::IsolationSheetId expectedSheet =
+        domain.localSheetsByFace[localFace];
+    if (std::find(lineage.sourceTopologyRegions.begin(),
+                  lineage.sourceTopologyRegions.end(), expectedRegion) ==
+            lineage.sourceTopologyRegions.end() ||
+        std::find(lineage.sourceIsolationSheets.begin(),
+                  lineage.sourceIsolationSheets.end(), expectedSheet) ==
+            lineage.sourceIsolationSheets.end()) {
+      return false;
+    }
+  }
+  const auto region_sheet_owned = [&](const authority::TopologyRegionId region,
+                                      const authority::IsolationSheetId sheet) {
+    return domain.localRegionSheets.count({region, sheet}) != 0U;
   };
+  if (std::any_of(
+          lineage.sourceTopologyRegions.begin(),
+          lineage.sourceTopologyRegions.end(), [&](const auto region) {
+            return std::none_of(lineage.sourceIsolationSheets.begin(),
+                                lineage.sourceIsolationSheets.end(),
+                                [&](const auto sheet) {
+                                  return region_sheet_owned(region, sheet);
+                                });
+          }) ||
+      std::any_of(
+          lineage.sourceIsolationSheets.begin(),
+          lineage.sourceIsolationSheets.end(), [&](const auto sheet) {
+            return std::none_of(lineage.sourceTopologyRegions.begin(),
+                                lineage.sourceTopologyRegions.end(),
+                                [&](const auto region) {
+                                  return region_sheet_owned(region, sheet);
+                                });
+          })) {
+    return false;
+  }
+
+  const auto support_has_chart_witness = [&]() {
+    const authority::SourceSupport &support = lineage.sourceSupport.value();
+    for (const geometry::SourceProjectionChart &chart : lineage.sourceCharts) {
+      const std::size_t localFace = chart.face.index();
+      if (localFace >= static_cast<std::size_t>(component.faces.rows())) {
+        continue;
+      }
+      if (const auto *face =
+              std::get_if<authority::SourceFaceInteriorSupport>(&support)) {
+        if (face->face == chart.face) return true;
+      } else if (const auto *vertex =
+                     std::get_if<authority::SourceVertexSupport>(&support)) {
+        if (vertex->vertex.index() >= component.originalVertices.size()) {
+          return false;
+        }
+        for (int corner = 0; corner < 3; ++corner) {
+          if (component.faces(static_cast<Eigen::Index>(localFace), corner) ==
+              static_cast<int>(vertex->vertex.index())) {
+            return true;
+          }
+        }
+      } else if (const auto *edge =
+                     std::get_if<authority::SourceEdgeSupport>(&support)) {
+        if (edge->edge.first().index() >= component.originalVertices.size() ||
+            edge->edge.second().index() >= component.originalVertices.size()) {
+          return false;
+        }
+        bool firstFound = false;
+        bool secondFound = false;
+        for (int corner = 0; corner < 3; ++corner) {
+          const int sourceVertex =
+              component.faces(static_cast<Eigen::Index>(localFace), corner);
+          firstFound = firstFound ||
+                       sourceVertex ==
+                           static_cast<int>(edge->edge.first().index());
+          secondFound = secondFound ||
+                        sourceVertex ==
+                            static_cast<int>(edge->edge.second().index());
+        }
+        if (firstFound && secondFound) return true;
+      }
+    }
+    return false;
+  };
+  if (!support_has_chart_witness()) return false;
 
   for (authority::TopologyRegionId &region : lineage.sourceTopologyRegions) {
-    const auto global = offset_index(region.index(), topologyRegionOffset);
-    if (!global.has_value()) return false;
-    const auto remapped = authority::TopologyRegionId::from_index(
-        *global, static_cast<std::size_t>(*global) + 1U);
-    if (!remapped) return false;
-    region = remapped.value();
+    const auto mapped = domain.topologyRegions.find(region);
+    if (mapped == domain.topologyRegions.end()) return false;
+    region = mapped->second;
   }
   for (authority::IsolationSheetId &sheet : lineage.sourceIsolationSheets) {
-    const auto global = offset_index(sheet.index(), sheetOffset);
-    if (!global.has_value()) return false;
-    const auto remapped = authority::IsolationSheetId::from_index(
-        *global, static_cast<std::size_t>(*global) + 1U);
-    if (!remapped) return false;
-    sheet = remapped.value();
+    const auto mapped = domain.isolationSheets.find(sheet);
+    if (mapped == domain.isolationSheets.end()) return false;
+    sheet = mapped->second;
   }
   for (geometry::SourceProjectionChart &chart : lineage.sourceCharts) {
-    if (chart.face.index() >= component.originalFaces.size()) return false;
-    const int globalFace = component.originalFaces[chart.face.index()];
+    const std::size_t localFace = chart.face.index();
+    const int globalFace = component.originalFaces[localFace];
     if (globalFace < 0 ||
         static_cast<std::size_t>(globalFace) >= globalSourceFaceCount) {
       return false;
     }
-    const auto globalChart = offset_index(chart.chart.index(), fieldChartOffset);
-    if (!globalChart.has_value()) return false;
-    const auto chartId = authority::FieldChartId::from_index(
-        *globalChart, static_cast<std::size_t>(*globalChart) + 1U);
+    const auto chartId = domain.fieldCharts.find(chart.chart);
     const auto faceId = authority::SourceFaceId::from_index(
         globalFace, globalSourceFaceCount);
-    if (!chartId || !faceId) return false;
-    chart = geometry::SourceProjectionChart(chartId.value(), faceId.value());
+    if (chartId == domain.fieldCharts.end() || !faceId) return false;
+    chart = geometry::SourceProjectionChart(chartId->second, faceId.value());
   }
 
   const auto remap_vertex = [&](const authority::SourceVertexId local)
@@ -9564,10 +9755,12 @@ void accumulate_component_diagnostics(
 
 namespace directional::pipeline {
 
-RemeshResult remesh_surface_cell_components_from_cross_field(
+RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const fields::CrossFieldResult &authoritativeCrossField,
-    const RemeshOptions &options) {
+    const RemeshOptions &options,
+    const remesh_pipeline_detail::ComponentAggregationInputMutator
+        *beforeAggregation) {
   using Clock = RemeshPipelineClock;
   const auto pipelineStart = Clock::now();
 
@@ -9719,6 +9912,12 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
   }
   const double parallelSeconds = remesh_elapsed_seconds(parallelStart);
 
+  if (beforeAggregation != nullptr) {
+    for (std::size_t index = 0; index < runs.size(); ++index) {
+      (*beforeAggregation)(index, runs[index].result);
+    }
+  }
+
   const auto mergeStart = Clock::now();
   RemeshResult merged;
   merged.success = true;
@@ -9818,12 +10017,12 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
   merged.surfaceCellContext.crossFieldHasSingularities =
       sourceCrossField.singularitiesComputed;
 
-  int sheetOffset = 0;
+  std::size_t nextIsolationSheet = 0U;
   int patchOffset = 0;
   int railOffset = 0;
   int curveOffset = 0;
-  int topologyRegionOffset = 0;
-  int fieldChartOffset = 0;
+  std::size_t nextTopologyRegion = 0U;
+  std::size_t nextFieldChart = 0U;
   int frontEdgeOffset = 0;
   int periodicRelationOffset = 0;
   int occurrenceOffset = 0;
@@ -10054,59 +10253,24 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           set_overall_pipeline_time(merged, pipelineStart);
         };
 
-    const std::optional<int> typedSheetExtent =
-        typed_component_isolation_sheet_extent(
-            componentResult.outputVertexLineage,
-            componentResult.outputVertexProvenance.size());
-    if (!typedSheetExtent.has_value()) {
+    if (!componentResult.surfaceCellContext.sourceTopologyRegions.has_value()) {
       reject_component_merge_authority(
-          "MissingTypedComponentIsolationSheetAuthority");
+          "MissingTypedComponentSourceAuthorityDomain");
+      return merged;
+    }
+    const auto typedAuthorityDomain = make_component_typed_authority_remap_domain(
+        component,
+        componentResult.surfaceCellContext.sourceTopologyRegions.value(),
+        nextTopologyRegion, nextIsolationSheet, nextFieldChart);
+    if (!typedAuthorityDomain.has_value()) {
+      reject_component_merge_authority(
+          "InvalidTypedComponentSourceAuthorityDomain");
       return merged;
     }
 
-    std::vector<int> typedSheetByLocalFace(component.originalFaces.size(), -1);
-    std::vector<unsigned char> typedSheetConflict(component.originalFaces.size(),
-                                                   0U);
-    const auto record_typed_face_sheet = [&](const int localFace,
-                                              const int localSheet) {
-      if (localFace < 0 ||
-          static_cast<std::size_t>(localFace) >= typedSheetByLocalFace.size()) {
-        return;
-      }
-      int &stored = typedSheetByLocalFace[static_cast<std::size_t>(localFace)];
-      if (stored < 0) {
-        stored = localSheet;
-      } else if (stored != localSheet) {
-        typedSheetConflict[static_cast<std::size_t>(localFace)] = 1U;
-        stored = -1;
-      }
-    };
-    for (const geometry::PureQuadVertexLineage &lineage :
-         componentResult.outputVertexLineage) {
-      if (lineage.sourceIsolationSheets.size() != 1U) {
-        continue;
-      }
-      const int localSheet =
-          static_cast<int>(lineage.sourceIsolationSheets.front().index());
-      record_typed_face_sheet(lineage.sourcePoint.face, localSheet);
-      for (const geometry::SourceProjectionChart &chart :
-           lineage.sourceCharts) {
-        record_typed_face_sheet(static_cast<int>(chart.face.index()),
-                                localSheet);
-      }
-    }
-
-    bool typedSourceLabelsComplete = true;
-    for (std::size_t localFace = 0; localFace < typedSheetByLocalFace.size();
-         ++localFace) {
-      typedSourceLabelsComplete =
-          typedSourceLabelsComplete && typedSheetByLocalFace[localFace] >= 0 &&
-          typedSheetConflict[localFace] == 0U;
-    }
     allHaveSourceLabels =
         allHaveSourceLabels &&
-        componentResult.surfaceCellContext.hasSourceSurfaceLabels &&
-        typedSourceLabelsComplete;
+        componentResult.surfaceCellContext.hasSourceSurfaceLabels;
     if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
       for (std::size_t localFace = 0;
            localFace < component.originalFaces.size(); ++localFace) {
@@ -10114,12 +10278,16 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
         merged.surfaceCellContext.sourceSurfaceLabels.componentByFace[
             static_cast<std::size_t>(originalFace)] =
             static_cast<int>(index);
-        const int typedLocalSheet = typedSheetByLocalFace[localFace];
+        const auto mappedSheet = typedAuthorityDomain->isolationSheets.find(
+            typedAuthorityDomain->localSheetsByFace[localFace]);
+        if (mappedSheet == typedAuthorityDomain->isolationSheets.end()) {
+          reject_component_merge_authority(
+              "InvalidTypedComponentSourceAuthorityDomain");
+          return merged;
+        }
         merged.surfaceCellContext.sourceSurfaceLabels.localSheetByFace[
             static_cast<std::size_t>(originalFace)] =
-            typedSheetConflict[localFace] == 0U && typedLocalSheet >= 0
-                ? typedLocalSheet + sheetOffset
-                : -1;
+            static_cast<int>(mappedSheet->second.index());
       }
     }
 
@@ -10173,9 +10341,6 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           std::move(rail));
     }
 
-    const int localMaximumSheet = *typedSheetExtent;
-    int localMaximumTopologyRegion = -1;
-    int localMaximumFieldChart = -1;
     int localMaximumFrontEdge = -1;
     int localMaximumPeriodicRelation = -1;
     int localMaximumOccurrence = -1;
@@ -10183,37 +10348,25 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
 
     const auto remap_quotient_lineage_authority =
         [&](geometry::PureQuadVertexLineage &lineage) -> bool {
+          if (!remap_component_typed_lineage_authority(
+                  lineage, component, static_cast<std::size_t>(vertices.rows()),
+                  static_cast<std::size_t>(faces.rows()),
+                  typedAuthorityDomain.value())) {
+            return false;
+          }
           const std::optional<authority::IsolationSheetId> projectionSheet =
               lineage.sourceIsolationSheets.size() == 1U
                   ? std::optional<authority::IsolationSheetId>(
                         lineage.sourceIsolationSheets.front())
                   : std::nullopt;
-          for (const authority::TopologyRegionId region :
-               lineage.sourceTopologyRegions) {
-            localMaximumTopologyRegion = std::max(
-                localMaximumTopologyRegion, static_cast<int>(region.index()));
-          }
-          for (const geometry::SourceProjectionChart &chart :
-               lineage.sourceCharts) {
-            localMaximumFieldChart = std::max(
-                localMaximumFieldChart, static_cast<int>(chart.chart.index()));
-          }
-
           lineage.sourcePoint = remap_component_surface_point(
-              lineage.sourcePoint, component, index, projectionSheet,
-              sheetOffset);
+              lineage.sourcePoint, component, index, projectionSheet);
           lineage.featureInterval.start = remap_component_surface_point(
-              lineage.featureInterval.start, component, index, projectionSheet,
-              sheetOffset);
+              lineage.featureInterval.start, component, index,
+              projectionSheet);
           lineage.featureInterval.end = remap_component_surface_point(
-              lineage.featureInterval.end, component, index, projectionSheet,
-              sheetOffset);
-          if (!remap_component_typed_lineage_authority(
-                  lineage, component, static_cast<std::size_t>(vertices.rows()),
-                  static_cast<std::size_t>(faces.rows()), topologyRegionOffset,
-                  sheetOffset, fieldChartOffset)) {
-            return false;
-          }
+              lineage.featureInterval.end, component, index,
+              projectionSheet);
           if ((lineage.kind == geometry::PureQuadVertexLineageKind::SourceTriangle &&
                !lineage.sourcePoint.valid()) ||
               (lineage.kind ==
@@ -10383,16 +10536,16 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
         componentResult.outputVertexProvenance.size());
     for (std::size_t vertex = 0;
          vertex < componentResult.outputVertexProvenance.size(); ++vertex) {
-      const geometry::PureQuadVertexLineage &localLineage =
-          componentResult.outputVertexLineage[vertex];
+      const geometry::PureQuadVertexLineage &remappedLineage =
+          remappedOutputVertexLineage[vertex];
       const std::optional<authority::IsolationSheetId> projectionSheet =
-          localLineage.sourceIsolationSheets.size() == 1U
+          remappedLineage.sourceIsolationSheets.size() == 1U
               ? std::optional<authority::IsolationSheetId>(
-                    localLineage.sourceIsolationSheets.front())
+                    remappedLineage.sourceIsolationSheets.front())
               : std::nullopt;
       geometry::SurfacePoint provenance = remap_component_surface_point(
           componentResult.outputVertexProvenance[vertex], component, index,
-          projectionSheet, sheetOffset);
+          projectionSheet);
       if (!provenance.valid()) {
         reject_component_merge_authority(
             "InvalidTypedComponentAuthorityRemap");
@@ -10616,12 +10769,12 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
       firstValidationResult = false;
     }
 
-    sheetOffset += localMaximumSheet + 1;
+    nextIsolationSheet = typedAuthorityDomain->nextIsolationSheet;
     patchOffset += localMaximumPatch + 1;
     railOffset += localMaximumRail + 1;
     curveOffset += localMaximumCurve + 1;
-    topologyRegionOffset += localMaximumTopologyRegion + 1;
-    fieldChartOffset += localMaximumFieldChart + 1;
+    nextTopologyRegion = typedAuthorityDomain->nextTopologyRegion;
+    nextFieldChart = typedAuthorityDomain->nextFieldChart;
     frontEdgeOffset += localMaximumFrontEdge + 1;
     periodicRelationOffset += localMaximumPeriodicRelation + 1;
     occurrenceOffset += localMaximumOccurrence + 1;
@@ -10696,6 +10849,31 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
 }
 
 } // namespace directional::pipeline
+
+namespace directional::pipeline {
+
+RemeshResult remesh_surface_cell_components_from_cross_field(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options) {
+  return remesh_surface_cell_components_from_cross_field_aggregate_impl(
+      vertices, faces, authoritativeCrossField, options, nullptr);
+}
+
+} // namespace directional::pipeline
+
+namespace directional::pipeline::remesh_pipeline_detail {
+
+RemeshResult remesh_surface_cell_components_from_cross_field_counterfactual(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const fields::CrossFieldResult &authoritativeCrossField,
+    const RemeshOptions &options,
+    const ComponentAggregationInputMutator &beforeAggregation) {
+  return remesh_surface_cell_components_from_cross_field_aggregate_impl(
+      vertices, faces, authoritativeCrossField, options, &beforeAggregation);
+}
+
+} // namespace directional::pipeline::remesh_pipeline_detail
 
 namespace directional::pipeline {
 

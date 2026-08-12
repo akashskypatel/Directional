@@ -1745,6 +1745,69 @@ intersect_typed_authority_certificates(
   return compatible;
 }
 
+PureQuadStitchIdentity canonical_typed_authority_identity(
+    const PureQuadStitchIdentity &stitchIdentity,
+    const PureQuadTypedAuthorityCertificate &certificate) {
+  if (!stitchIdentity.valid() || certificate.topologyRegions.empty() ||
+      certificate.isolationSheets.empty() || certificate.sourceCharts.empty() ||
+      !certificate.sourceSupport.has_value()) {
+    return {};
+  }
+
+  PureQuadStitchIdentity identity;
+  identity.kind = stitchIdentity.kind;
+  identity.canonical.valid = true;
+  auto &values = identity.canonical.values;
+  values.reserve(stitchIdentity.canonical.values.size() +
+                 certificate.topologyRegions.size() +
+                 certificate.isolationSheets.size() +
+                 2U * certificate.sourceCharts.size() + 16U);
+
+  // The exact stitch key establishes the collision domain; the remainder of
+  // the payload is the final, post-intersection typed authority certificate.
+  values.push_back(0x41555448); // "AUTH"
+  values.push_back(static_cast<std::int64_t>(stitchIdentity.kind));
+  values.push_back(
+      static_cast<std::int64_t>(stitchIdentity.canonical.values.size()));
+  values.insert(values.end(), stitchIdentity.canonical.values.begin(),
+                stitchIdentity.canonical.values.end());
+
+  values.push_back(static_cast<std::int64_t>(
+      certificate.topologyRegions.size()));
+  for (const authority::TopologyRegionId region :
+       certificate.topologyRegions) {
+    values.push_back(static_cast<std::int64_t>(region.index()));
+  }
+  values.push_back(static_cast<std::int64_t>(
+      certificate.isolationSheets.size()));
+  for (const authority::IsolationSheetId sheet :
+       certificate.isolationSheets) {
+    values.push_back(static_cast<std::int64_t>(sheet.index()));
+  }
+  values.push_back(static_cast<std::int64_t>(certificate.sourceCharts.size()));
+  for (const SourceProjectionChart &chart : certificate.sourceCharts) {
+    values.push_back(static_cast<std::int64_t>(chart.chart.index()));
+    values.push_back(static_cast<std::int64_t>(chart.face.index()));
+  }
+
+  const authority::SourceSupport &support = certificate.sourceSupport.value();
+  values.push_back(static_cast<std::int64_t>(authority::support_kind(support)));
+  if (const auto *vertex =
+          std::get_if<authority::SourceVertexSupport>(&support)) {
+    values.push_back(static_cast<std::int64_t>(vertex->vertex.index()));
+  } else if (const auto *edge =
+                 std::get_if<authority::SourceEdgeSupport>(&support)) {
+    values.push_back(static_cast<std::int64_t>(edge->edge.first().index()));
+    values.push_back(static_cast<std::int64_t>(edge->edge.second().index()));
+  } else if (const auto *face =
+                 std::get_if<authority::SourceFaceInteriorSupport>(&support)) {
+    values.push_back(static_cast<std::int64_t>(face->face.index()));
+  } else {
+    return {};
+  }
+  return identity;
+}
+
 PureQuadStitchIdentity typed_lineage_stitch_identity(
     const PureQuadVertexLineage &lineage, const bool sharedBoundary,
     const std::int64_t patchOwner, const int localVertex) {
@@ -1855,12 +1918,22 @@ PureQuadStitchIdentity resolved_authoritative_identity(
   if (!typed.valid()) {
     return {};
   }
+  const auto certificate = typed_lineage_authority_certificate(lineage);
+  if (!certificate.has_value()) {
+    return {};
+  }
+  const PureQuadStitchIdentity canonicalAuthority =
+      canonical_typed_authority_identity(resolved, certificate.value());
+  if (!canonicalAuthority.valid()) {
+    return {};
+  }
   const PureQuadStitchIdentity &authoritative = lineage.authoritativeIdentity;
   if (!authoritative.valid()) {
-    return typed;
+    return canonicalAuthority;
   }
-  if (authoritative == resolved || authoritative == typed) {
-    return typed;
+  if (authoritative == resolved || authoritative == typed ||
+      authoritative == canonicalAuthority) {
+    return canonicalAuthority;
   }
   return {};
 }
@@ -2166,6 +2239,20 @@ std::string ownership_conflict_failure(
 
 } // namespace
 
+namespace pure_quad_detail {
+
+PureQuadStitchIdentity canonical_authoritative_identity(
+    const PureQuadVertexLineage &lineage) {
+  const auto certificate = typed_lineage_authority_certificate(lineage);
+  if (!certificate.has_value() || !lineage.stitchIdentity.valid()) {
+    return {};
+  }
+  return canonical_typed_authority_identity(lineage.stitchIdentity,
+                                             certificate.value());
+}
+
+} // namespace pure_quad_detail
+
 PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
     const double positionTolerance,
@@ -2219,6 +2306,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
   };
   struct PendingOutputVertex {
     Eigen::Vector3d position = Eigen::Vector3d::Zero();
+    PureQuadStitchIdentity stitchIdentity;
     PureQuadTypedAuthorityCertificate typedAuthority;
     int provenancePatchIndex = -1;
     int provenanceLocalRow = -1;
@@ -2340,6 +2428,7 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         vertexRows.emplace(key, globalRow);
         PendingOutputVertex pending;
         pending.position = position;
+        pending.stitchIdentity = key;
         pending.typedAuthority = typedAuthority.value();
         pending.provenancePatchIndex = patchIndex;
         pending.provenanceLocalRow = localRow;
@@ -2684,15 +2773,18 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
     const SurfacePoint &lineageProvenance =
         lineagePatch.vertexProvenance[static_cast<std::size_t>(
             pending.lineageLocalRow)];
-    lineage.stitchIdentity =
-        resolved_stitch_identity(lineagePatch, pending.lineageLocalRow);
-    lineage.authoritativeIdentity =
-        resolved_authoritative_identity(lineagePatch,
-                                        pending.lineageLocalRow);
+    lineage.stitchIdentity = pending.stitchIdentity;
     lineage.sourceTopologyRegions = pending.typedAuthority.topologyRegions;
     lineage.sourceIsolationSheets = pending.typedAuthority.isolationSheets;
     lineage.sourceCharts = pending.typedAuthority.sourceCharts;
     lineage.sourceSupport = pending.typedAuthority.sourceSupport;
+    lineage.authoritativeIdentity =
+        canonical_typed_authority_identity(lineage.stitchIdentity,
+                                           pending.typedAuthority);
+    if (!lineage.authoritativeIdentity.valid()) {
+      result.failure = "MissingTypedStitchIdentity";
+      return result;
+    }
     lineage.outputVertex = row;
     lineage.sourcePatch = lineagePatch.sourcePatch;
     lineage.localVertex = lineagePatch.vertices[static_cast<std::size_t>(
@@ -2714,6 +2806,28 @@ PureQuadAssemblyResult stitch_pure_quad_patches(
         patches[static_cast<std::size_t>(pending.patchIndex)]
             .quadLineage[static_cast<std::size_t>(pending.localQuad)];
     lineage.outputQuad = outputQuad;
+    std::array<PureQuadStitchIdentity, 4> stitchCycle;
+    std::array<PureQuadStitchIdentity, 4> authoritativeCycle;
+    for (int corner = 0; corner < 4; ++corner) {
+      const int vertex = pending.globalVertices[static_cast<std::size_t>(corner)];
+      if (vertex < 0 ||
+          vertex >= static_cast<int>(result.mesh.vertexLineage.size())) {
+        result.failure = "UnknownPatchVertex";
+        return result;
+      }
+      const PureQuadVertexLineage &vertexLineage =
+          result.mesh.vertexLineage[static_cast<std::size_t>(vertex)];
+      stitchCycle[static_cast<std::size_t>(corner)] =
+          vertexLineage.stitchIdentity;
+      authoritativeCycle[static_cast<std::size_t>(corner)] =
+          vertexLineage.authoritativeIdentity;
+    }
+    lineage.canonicalStitchCycleHash = pure_quad_detail::stitch_cycle_hash(
+        pure_quad_detail::canonical_quad_cycle(stitchCycle, false).values);
+    lineage.canonicalAuthoritativeCycleHash =
+        pure_quad_detail::stitch_cycle_hash(
+            pure_quad_detail::canonical_quad_cycle(authoritativeCycle, false)
+                .values);
     result.mesh.quadLineage.push_back(std::move(lineage));
   }
 
