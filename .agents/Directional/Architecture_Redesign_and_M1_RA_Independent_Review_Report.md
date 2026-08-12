@@ -11,11 +11,11 @@
 
 ## Current-status addendum — 2026-08-12 UTC
 
-This report remains the historical independent review of source `bebac907...`; its evidence and original R-A-REV-01/02 findings are not rewritten.
+This report remains the historical independent review of source `bebac907...`; its evidence and original R-A-REV-01/02 findings are not rewritten. Later checkpoint history is retained in `CHANGELOG.md`, not duplicated here.
 
-Later commits `eca1ce1141e4cc8b492e4efbfd2227b0a001a76b` and `df386d1ad819879abbf9d7660c3d586778d7daee` correct the exact materializer read-backs and remove the exact raw component/sheet fallback encoding identified below. A closure-gate review of working-branch implementation `5e023f1a8331c53182cfd296732c37cb7a889b88` nevertheless leaves R-A open on R-A-REV-03 through R-A-REV-06: compatibility identities bypass typed fail-closed stitching, downstream validator/optimizer/rail decisions still read raw projection labels, required positive/tamper contracts are absent, and the partial compile package is not internally self-verifying.
+The complete closure-gate review through branch head `f81f405...` inspected exact compiled source `c62c99f...`, independently verified the R-A-REV-06 package mechanics, and still rejected R-A on R-A-REV-07 through R-A-REV-10: exact-only completion lineage, an optional non-authoritative SurfaceCells optimizer/verifier path, raw-driven typed sheet offsets during component aggregation, and incomplete audit/contracts.
 
-The active corrective measures and definition of done are in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`; exact later compile/package evidence is retained in `CHANGELOG.md`.
+The active evidence, corrective measures, and definition of done are in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
 
 ## 1. Review boundary and evidence
 
@@ -101,14 +101,6 @@ R-A items 1-6 and the API-removal portion of item 8 are substantially implemente
 - no new stable runtime regression is assigned because runtime was intentionally not executed;
 - M1l remains the latest immutable runtime authority.
 
-## 4. Required next sequence
+## 4. Historical next sequence — superseded
 
-The next Code + Build turn must:
-
-1. close R-A-REV-01 and R-A-REV-02 without restoring a raw mirror, adapter, hash oracle, fallback, or weakened test;
-2. complete R-B through R-G so M1 lands as the one vertical cutover required by DESIGN.md;
-3. compile/package only and produce a fresh immutable artifact with the expanded source audit;
-4. leave all generated runtime for the retained artifact-only plan;
-5. keep Pipeline B's later M3/M4/M7 algorithms out of M1; M1 establishes authority contracts only.
-
-Only the resulting full R-A-through-R-G package may activate the artifact-only Test + Benchmark plan.
+This review originally routed R-A-REV-01/02 remediation into the same full R-A-through-R-G Code + Build cutover. That task list is superseded and must not be executed from this report. Use the active Code + Build plan for the current REV-07-through-REV-10 corrective measures and closure gate.

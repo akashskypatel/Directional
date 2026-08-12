@@ -1,113 +1,76 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** R-A-REV-01 through R-A-REV-06 are compile-closed for their reviewed paths at `c62c99ffe5b7863820c91f4ff3a93645b22d3591`; R-A itself remains open pending the complete closure inventory, R-B through R-G, and one fresh full self-verifying R-A-through-R-G package
+**Current status:** complete R-A closure review rejected at exact compiled source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`; verified R-A-REV-06 packaging mechanics are retained, while R-A-REV-07 through R-A-REV-10 block closure
 **Original planning decision:** prior narrow M1m plan rejected and replaced  
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
-**Latest implementation review baseline:** `5e023f1a8331c53182cfd296732c37cb7a889b88`
-**Latest review-remediation source:** `c62c99ffe5b7863820c91f4ff3a93645b22d3591`
+**Latest closure-review branch head:** `f81f40524f9ee6978e4e298497d4d54580520cf3`
+**Exact reviewed implementation source:** `c62c99ffe5b7863820c91f4ff3a93645b22d3591`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
 
-## 0AA. 2026-08-12 R-A-REV-03-through-06 review-remediation checkpoint
+## 0A. 2026-08-12 complete R-A closure-gate review — rejected
 
-This checkpoint is additive to the closure-gate review below. It closes the four named review findings for the reviewed paths without declaring R-A or M1 complete.
+This section controls wherever it conflicts with older remediation text. Historical checkpoints remain in `CHANGELOG.md`; they are not live tasks here.
 
-### Implemented closure
+### Verified boundary and evidence
 
-- Core review-remediation commit `e33a3c6be1db9c3e6f773a8deb2bebd870099536` removes standalone/patch-local compatibility stitch synthesis, requires exact boundary or complete typed lineage authority, removes reviewed raw projection component/sheet decisions from validator/optimizer/rail/hash/materializer paths, and adds the required compiled contract inventory.
-- Linkage correction `c62c99ffe5b7863820c91f4ff3a93645b22d3591` moves the new typed stitch-helper forward declarations to the anonymous namespace that owns their definitions; it changes no semantic contract.
-- Focused static audit closes R-A-REV-03 and R-A-REV-04 and verifies the R-A-REV-05 contract source inventory. It is **not** the complete R-A closure inventory required by this plan.
-- R-A-REV-06 packaging mechanics are demonstrated by the successful partial checkpoint: out-of-tree build; clean source status before configure, after configure, after build, and at final packaging; manifest generated after payload writes while excluding itself; manifest verified before upload.
+- The Review inspected PR #8 through branch head `f81f40524f9ee6978e4e298497d4d54580520cf3`. No implementation or test source changed after `c62c99ffe5b7863820c91f4ff3a93645b22d3591`, so that commit is the exact reviewed source.
+- The packaged source snapshot from run/job `31561686903 / 94005144300` is byte-identical to a clean `c62c99f...` worktree. Release/static/Ninja/PRE_TEST compiled **118/118** with build exit `0`.
+- Result artifact `9127976318` and log artifact `9127976660` independently match outer SHA-256 values `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588` and `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
+- The result's self-excluding manifest verifies **22/22** and all five recorded source-status snapshots are empty. R-A-REV-06 is therefore verified for these packaging mechanics. Artifact `9127976318` remains a partial checkpoint, not an M1 acceptance candidate.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. Compiled test source and test-name presence are not semantic acceptance.
+- The focused `m1-ra-rev-03-06-audit.py` checks selected blocks and names only. It does not inspect the generic validator header, the public optimizer bypass, exact-only boundary lineage, or top-level component aggregation; its printed REV-03/04/05 closure labels do not establish the complete gate.
 
-### Compile/package evidence
+### R-A-REV-07 — exact boundary identity bypasses complete typed lineage
 
-- Exact compiled source: `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
-- Release/static/Ninja/PRE_TEST compile-only run/job: `31561686903 / 94005144300`, **118/118**, build exit `0`.
-- Result artifact `9127976318`, outer SHA-256 `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588`.
-- Log artifact `9127976660`, outer SHA-256 `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
-- Independent result inspection verifies `metadata/source-commit.txt` equals the source above, all five recorded source-status snapshots are empty, and the self-excluding recursive `SHA256SUMS` passes **22/22**.
-- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. The R-A-REV-05 contracts are compile evidence only.
+Evidence: `validate_completion_domain_ownership` publishes exact boundary identities and continues when `sourceFaces` is empty. `resolved_stitch_identity` returns an exact boundary identity before requiring the separately derived typed identity to be valid, and `resolved_authoritative_identity` can return that resolved identity when typed authority is absent. `PrebuiltBoundaryStitchIdentityMustMatchExactAuthority` positively completes a patch with no source faces or typed source authority.
 
-### Scope boundary and next action
+Corrective measure: require complete typed topology-region, isolation-sheet, chart, and support lineage for every published completion vertex. An exact arrangement identity is a stitch key only after validation against that separate typed owner/lineage. Delete the empty-source compatibility publication, reject exact-only lineage with `MissingTypedStitchIdentity`, and convert standalone fixtures to typed positive or explicit missing-authority negative contracts.
 
-Artifact `9127976318` is a partial review-remediation checkpoint, not an M1 acceptance candidate and not the required full R-A-through-R-G package. Before R-A may be called complete, rerun the complete closure inventory below. Then finish R-B through R-G in the same vertical cutover and produce one fresh full package that repeats the verified R-A-REV-06 packaging rules. Only that full package may be handed to the retained artifact-only plan.
+### R-A-REV-08 — optimizer/verifier retains a non-authoritative SurfaceCells path
 
-## 0A. 2026-08-12 R-A closure-gate review amendment
+Evidence: `SurfaceOptimizationConstraints::requireSourceAuthoritativeValidation` defaults false; `source_authoritative_hard_invariants_valid` returns true immediately in that state; and final validation falls back to generic `MeshValidator`. Its `same_source_sheet` helper compares raw `SurfacePoint::component/sheet` to decide geometric T-junction compatibility. The optimizer also retains an explicitly named point-cloud fallback for legacy standalone fixtures.
 
-This amendment controls wherever it conflicts with the earlier remediation text below.
+Corrective measure: make typed source authority mandatory for every SurfaceCells optimization and validation path. Missing authority must fail closed; generic point-cloud behavior, if retained for a non-SurfaceCells API, must be isolated so it cannot produce or validate SurfaceCells output. Remove raw provenance from sheet decisions and replace legacy fixtures with typed contracts or missing-authority negatives.
 
-The normative Pipeline B redesign and the one-vertical-cutover decision remain unchanged. Earlier checkpoint detail is retained in `CHANGELOG.md` and `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`; it is not live next-turn guidance here.
+### R-A-REV-09 — component aggregation derives typed sheet offsets from raw projections
 
-### Review boundary and verified changes
+Evidence: `remesh_surface_cell_components_from_cross_field` computes `localMaximumSheet` from `sourceSurfaceLabels.localSheetByFace` and remapped `SurfacePoint::sheet`, then uses the resulting `sheetOffset` to remap typed `IsolationSheetId` lineage. Raw diagnostic/projection labels therefore determine typed sheet identity in the production multi-component merge.
 
-This Review inspected the working branch through `5e023f1a8331c53182cfd296732c37cb7a889b88`. It did not edit or execute production, test, benchmark, validator, fixture, build, or workflow code.
+Corrective measure: compute component sheet extent from `SourceTopologyRegions` or complete typed lineage, fail on incomplete typed coverage, remap typed `IsolationSheetId` first, and derive raw projection/export sheet values one way afterward. Add a multi-component raw-label-tamper invariance contract over the merged typed lineage and output semantics.
 
-- `eca1ce1141e4cc8b492e4efbfd2227b0a001a76b` correctly carries typed `IsolationSheetId` through the reviewed materializer equivalence, quotient-state, representative-ordering, and sheet-aggregation paths. The exact R-A-REV-01 read-backs are removed.
-- `df386d1ad819879abbf9d7660c3d586778d7daee` removes raw provenance component/sheet from `resolved_stitch_identity`'s fallback encoding and adds a typed topology-region/isolation-sheet derivation.
-- Source `df386d1...` compiled Release/static/Ninja/PRE_TEST 118/118 in run/job `31555887046 / 93988102158`; no generated runtime, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input ran.
-- The downloaded result/log ZIP digests match artifacts `9125984929 / 9125985115`. The result's internal `SHA256SUMS` does not close: it includes its own empty-file digest and fails 1/7, while the six metadata entries pass. `source-status.txt` also records the untracked in-worktree build directory.
+### R-A-REV-10 — the focused audit and compiled contracts cannot detect REV-07 through REV-09
 
-The exact R-A-REV-02 raw encoding is gone, but the broader claim that missing typed stitch authority now fails closed is not established. R-A therefore remains open.
+Evidence: the script scans only selected `.cpp` blocks and test-name strings. It misses `MeshValidator.h`, the public validation flag, the top-level component merge, and exact-only completion semantics. The new raw-tamper test covers one typed patch, while the prebuilt-boundary test depends positively on exact-only completion.
 
-### R-A-REV-03 — prebuilt compatibility identities bypass typed fail-closed assembly
-
-Evidence:
-
-- `initialize_boundary_embedding` synthesizes a valid arrangement-boundary identity for standalone fixtures when no exact `boundaryNodeIdentities` entry exists; that compatibility identity need not contain typed isolation-sheet authority.
-- `append_embedded_vertex` likewise publishes a valid generated-interior identity before proving complete typed lineage.
-- `resolved_stitch_identity` trusts an already-valid identity and reaches `typed_lineage_stitch_identity` only when the prebuilt identity is invalid or the generated-interior kind mismatches.
-- `resolved_authoritative_identity` also returns any prebuilt valid authoritative identity without proving it matches the typed lineage.
-- `PureQuadCompletionPhase18.CoincidentPositionsOnDistinctSheetsDoNotMerge` supplies only raw `boundaryProvenance.component/sheet`, so it is a stale contract that the compile-only run never executed.
-
-Corrective measure: remove the compatibility synthesis. Require an exact validated arrangement-boundary identity or complete typed topology-region/isolation-sheet/chart/support lineage before assembly. Validate an existing identity against that lineage rather than accepting `valid()` alone. Missing typed authority must deterministically return `MissingTypedStitchIdentity`; standalone fixtures must construct typed authority or become negative fail-closed cases.
-
-### R-A-REV-04 — downstream verifier and optimizer decisions still read raw projection labels
-
-Evidence:
-
-- `SourceAuthoritativeMeshValidator.cpp` can reject on `SurfacePoint::component/sheet` mismatch even when `SourceTopologyRegions` is available.
-- `SurfaceMeshOptimizer.cpp` uses raw labels to define provenance completeness, projection scope, component/sheet preservation, and quad compatibility, including a full raw fallback.
-- `SurfaceOptimizationRailConstraints.cpp` compares provenance and interval component/sheet labels when deciding rail compatibility.
-- `SurfaceMeshOptimizerPhase22Tests.cpp` treats raw-label mutation as authoritative `SourceComponentMismatch` / `SourceSheetMismatch` evidence.
-
-Corrective measure: derive every affected decision from `SourceTopologyRegions`, typed `SourceSupport`, `SourceProjectionChart`, and typed vertex/rail authority. Make raw `SurfacePoint` component/sheet a one-way export projection only, delete legacy standalone/raw fallbacks, and replace raw-label mismatch tests with typed authority/support/chart tamper contracts.
-
-### R-A-REV-05 — required positive and tamper contracts are absent
-
-The two source fixes added no contract tests. No test names `MissingTypedStitchIdentity`, no test holds typed lineage constant while tampering raw projection labels, and the distinct-sheet completion fixture still depends on those raw labels.
-
-Corrective measure: compile contracts proving that raw projection tamper cannot change stitch/materialization results; coincident geometry remains distinct under different typed isolation sheets; missing typed region/sheet or exact boundary identity rejects with `MissingTypedStitchIdentity`; and materializer equivalence/ordering remains driven by typed sheet authority under controlled raw-projection tamper.
-
-### R-A-REV-06 — partial compile package is not self-verifying
-
-The 118/118 log is authentic compile evidence, but artifact `9125984929` is not an acceptance candidate: its recursive manifest fails its own check, its recorded source status contains the build directory, it contains no final executable/library closure, and its audit only covered the two named textual paths.
-
-Corrective measure: do not rerun or repair the partial artifact. The fresh full R-A-through-R-G package must build outside the source tree or capture clean source status before configure, generate `SHA256SUMS` after all payload writes while excluding the manifest itself, verify the manifest before upload, and include the complete source/audit/binary/fixture closure required below.
+Corrective measure: replace the focused script with a complete affected-path inventory covering declarations, headers, all completion/assembly paths, all optimizer/verifier modes, and component aggregation. Audit every raw component/sheet read and allow only one-way assignment/export leaves. Add semantic contracts for REV-07 through REV-09; name presence is not evidence.
 
 ### Updated execution decision
 
 The next Code + Build turn must:
 
-1. retain the exact R-A-REV-01 correction and the typed fallback work from R-A-REV-02;
-2. close R-A-REV-03 through R-A-REV-05 in production and compiled contracts;
-3. rerun the complete R-A source inventory and proceed to R-B through R-G only when the closure gate below is statically clean;
-4. satisfy R-A-REV-06 while packaging one fresh full R-A-through-R-G artifact without generated runtime execution;
-5. hand only that self-verifying full package to the retained artifact-only plan.
+1. retain the valid typed-authority work and the verified R-A-REV-06 packaging rules;
+2. close R-A-REV-07 through R-A-REV-10 without a legacy-fixture exception, raw mirror, or optional authority bypass;
+3. rerun the complete R-A inventory below and call R-A complete only when every item is statically clean;
+4. complete R-B through R-G in the same vertical cutover;
+5. produce one fresh full R-A-through-R-G self-verifying package without generated runtime execution, then hand only that package to the retained artifact-only plan.
 
 ### R-A closure gate
 
-Before work may be called R-A-complete, a static inventory must demonstrate:
+Before work may be called R-A-complete, a complete static inventory and compiled contract review must demonstrate:
 
-- every affected occurrence carries required typed topology region, sheet, chart, and support;
-- no affected materializer, completion, patch, lineage, arrangement-ownership, verifier, optimizer, or rail decision reads `SurfacePoint` component/sheet as authority;
+- every affected occurrence and completion lineage carries required typed topology region, sheet, chart, and support;
+- no affected materializer, completion, patch, lineage, arrangement-ownership, verifier, optimizer, rail, or component-aggregation decision reads `SurfacePoint` component/sheet as authority;
 - no fallback canonical/stitch/ownership key stores raw component/sheet;
-- every existing stitch/authoritative identity is either an exact validated boundary identity or is proved consistent with complete typed lineage; no standalone compatibility identity bypass remains;
-- raw classifier arrays exist only at the source-authority builder ingress;
-- `build_authoritative_phase_front_mesh` accepts no parallel raw authority;
-- the compiled contracts include positive, missing-authority, distinct-sheet, and raw-projection-tamper cases that would fail if any raw read-back or compatibility bypass returned;
-- the full package has clean source provenance and a checksum manifest that verifies before upload.
+- every exact boundary identity is validated against separate complete typed lineage; no exact-only or standalone compatibility publication survives;
+- every SurfaceCells optimizer/verifier entry point requires typed source authority and fails closed when it is missing;
+- multi-component sheet extents and offsets derive only from typed authority; raw labels are one-way diagnostic/export payload;
+- raw classifier arrays exist only at source-authority builder ingress, and `build_authoritative_phase_front_mesh` accepts no parallel raw authority;
+- the audit covers declarations, headers, implementation modes, and top-level aggregation, and classifies every raw component/sheet read;
+- compiled positive, missing-authority, distinct-sheet, exact-only, alternate-validator-path, raw-tamper, and multi-component-tamper contracts would fail if a bypass returned;
+- the full package has clean source provenance and a self-excluding checksum manifest that verifies before upload.
 
 ## 0. Independent review amendment — remediation required
 

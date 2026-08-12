@@ -46,17 +46,14 @@ Branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: #8 remains open, draft, and unmerged  
 Review policy after the later immutable Test + Benchmark turn: never
 
-R-A-REV-01 through R-A-REV-06 are compile-closed for their reviewed paths at review-remediation source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`, but R-A itself remains open. The next turn must:
+The complete R-A gate is rejected at exact compiled source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`. The next turn must:
 
-1. rerun the **complete R-A source inventory** across occurrence/materializer, completion, patch/lineage, arrangement ownership, validator, optimizer, and rail consumers and proceed only if the closure gate is statically clean;
-2. complete R-B row-independent face/support/chart identity;
-3. complete R-C immutable published products and typed certificate construction;
-4. complete R-D checked ingress and removal of compatibility/numeric read-back bridges;
-5. complete R-E typed semantic owners/lookups;
-6. complete R-F intent-complete compiled contracts and R-G expanded failing source audit;
-7. produce one fresh full R-A-through-R-G Release/static/Ninja/PRE_TEST package using the verified R-A-REV-06 rules: out-of-tree build, clean source provenance, manifest generated after all payload writes, `SHA256SUMS` excluded from itself, and manifest verification before upload;
-8. execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input;
-9. activate the artifact-only plan only after that fresh full package exists.
+1. close R-A-REV-07 through R-A-REV-10: exact-only completion, the optional non-authoritative optimizer/verifier path, raw-driven component sheet offsets, and incomplete audit/contracts;
+2. rerun the complete R-A inventory and call R-A complete only if every closure item is statically clean;
+3. complete R-B through R-G in the same vertical cutover;
+4. produce one fresh full Release/static/Ninja/PRE_TEST package using the independently verified R-A-REV-06 rules: out-of-tree build, clean source provenance, a self-excluding manifest generated after all payload writes, and manifest verification before upload;
+5. execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input;
+6. activate the artifact-only plan only after that fresh full package exists.
 
 Do not validate, relabel, repair, or reuse any historical/partial package listed in `CHANGELOG.md`, including partial review-remediation artifact `9127976318`. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
 
@@ -64,14 +61,7 @@ Do not validate, relabel, repair, or reuse any historical/partial package listed
 
 ### Normative architecture
 
-The supplied replacement .agents/Directional/DESIGN.md is authoritative byte-for-byte.
-
-- Pipeline B is the default and only scheduled path.
-- Pipeline A is optional and ineligible until Pipeline B is Certified on the complete representative matrix with stable calibrated quality gates.
-- revised milestones are M0-M8; M3 field-aligned curve network and M7 disposition are new.
-- strict fixtures require D0 Certified; D1-D3 are truthful degraded output and cannot close strict gates.
-
-Open design clarification/evidence items are tracked in TODO.md and REORIENTATION_PLAN.md. Do not silently edit the supplied design to resolve them.
+The supplied `.agents/Directional/DESIGN.md` remains byte-for-byte authoritative. Pipeline B is the only scheduled path; strict fixtures require D0. Open design clarification/evidence items remain in `TODO.md` and `REORIENTATION_PLAN.md`.
 
 ### Immutable runtime authority
 
@@ -79,18 +69,18 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 
 ### R-A closure status
 
-Review-remediation source `c62c99ffe5b7863820c91f4ff3a93645b22d3591` closes the six named review findings for their reviewed paths while preserving R-A as an open gate:
+Review boundary: PR #8 through `f81f40524f9ee6978e4e298497d4d54580520cf3`; exact implementation source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
 
-- R-A-REV-01: materializer occurrence sheet authority is typed; reviewed equivalence, quotient, ordering, and aggregation paths do not read raw `SurfacePoint::sheet`;
-- R-A-REV-02: raw provenance component/sheet is absent from the fallback stitch-key encoding;
-- R-A-REV-03: standalone/patch-local compatibility identity synthesis is removed, exact boundary identities are checked, and missing complete typed lineage fails with `MissingTypedStitchIdentity`;
-- R-A-REV-04: the reviewed validator, optimizer, rail-constraint, completion-hash, and materializer decisions no longer consume raw component/sheet projections as authority;
-- R-A-REV-05: positive/mismatch, missing-authority, distinct-typed-sheet, and raw-projection-tamper contracts are present in the compiled test sources; they were not executed in this Code + Build turn;
-- R-A-REV-06: partial-package packaging mechanics now build out of tree, record clean source status, exclude `SHA256SUMS` from its own manifest, and verify the manifest before upload.
+Independent inspection verified compile-only run/job `31561686903 / 94005144300` at **118/118**, exact packaged source, outer artifact digests, all five empty source-status snapshots, and a self-excluding manifest **22/22**. This verifies R-A-REV-06 packaging mechanics, not R-A acceptance. Artifact `9127976318` remains partial and ineligible.
 
-Compile-only run/job `31561686903 / 94005144300` completed Release/static/Ninja/PRE_TEST **118/118** from source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`. Result artifact `9127976318` has outer SHA-256 `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588`; log artifact `9127976660` has outer SHA-256 `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`. Independent inspection verified the result manifest **22/22**, with the manifest excluded from itself and all five recorded source-status snapshots empty. No generated Directional runtime ran.
+Live R-A blockers:
 
-This is a **partial review-remediation checkpoint only**. The complete R-A closure inventory has not yet been rerun, R-B through R-G remain open, artifact `9127976318` is not an M1 acceptance candidate, and the final full R-A-through-R-G package must repeat the verified R-A-REV-06 packaging rules. M1l remains immutable runtime authority and regression totals did not change.
+- R-A-REV-07: exact boundary identities can publish and stitch without complete typed lineage;
+- R-A-REV-08: SurfaceCells optimization/validation can bypass typed authority and generic validation reads raw component/sheet labels;
+- R-A-REV-09: multi-component aggregation derives typed sheet offsets from raw diagnostic/projection labels;
+- R-A-REV-10: the focused audit and name-only contract inventory do not cover those paths.
+
+The active Code + Build plan owns exact evidence, corrective measures, and the closure definition. M1l remains immutable runtime authority; no runtime or regression total changed.
 
 ## Standing product and regression state
 

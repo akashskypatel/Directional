@@ -17,6 +17,16 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Review — complete R-A closure gate
+
+- Reviewed PR #8 through branch head `f81f40524f9ee6978e4e298497d4d54580520cf3`; implementation/test source ends at exact compiled commit `c62c99ffe5b7863820c91f4ff3a93645b22d3591`. Rejected R-A completion.
+- Independently verified run/job `31561686903 / 94005144300`, Release/static/Ninja/PRE_TEST **118/118**, exact packaged source, matching result/log outer digests, all five empty source-status snapshots, and a self-excluding recursive manifest **22/22**. R-A-REV-06 packaging mechanics are verified, but partial artifact `9127976318` is not an M1 acceptance candidate.
+- Added `R-A-REV-07`: exact boundary identities can publish and stitch without complete typed topology-region/isolation-sheet/chart/support lineage. Require separate complete typed lineage, validate the exact identity against it, delete empty-source/exact-only publication, and update standalone fixtures.
+- Added `R-A-REV-08`: SurfaceCells optimization/validation can bypass typed source authority, while generic `MeshValidator` uses raw component/sheet labels. Make typed authority mandatory and fail closed; isolate any non-SurfaceCells point-cloud API and remove raw-label sheet decisions.
+- Added `R-A-REV-09`: multi-component aggregation derives typed sheet offsets from raw diagnostic/projection labels. Derive extents and offsets only from typed authority, remap typed sheet IDs first, and add merged raw-label-tamper invariance coverage.
+- Added `R-A-REV-10`: the focused audit scans selected blocks and test names but misses exact-only completion, the generic validator header/public bypass, and component aggregation. Replace it with a complete affected-path audit and semantic contracts for REV-07 through REV-09.
+- This Review changed documentation only and executed no generated Directional runtime. M1l remains immutable runtime authority; regression totals remain **34 events / 14 categories / 20 recurrences**.
+
 ### Fixed
 
 - Closed `R-A-REV-03` for the reviewed completion/assembly paths: standalone and patch-local compatibility stitch synthesis is removed; exact boundary identities are validated; derived identities require complete typed topology-region/isolation-sheet/chart/support lineage; missing authority fails with `MissingTypedStitchIdentity`.
@@ -73,10 +83,11 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 ### Known limitations
 
 - M1l `bd140cff...` remains the latest immutable runtime authority.
-- Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifact `9125984929` are not M1 acceptance candidates.
+- Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifacts `9125984929` / `9127976318` are not M1 acceptance candidates.
+- R-A remains open on `R-A-REV-07` through `R-A-REV-10`; R-B through R-G and the fresh full package remain pending.
 - The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
 
-Authoritative review: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`.
+Historical review baseline: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. Current closure authority: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
 
 ## [M1l] Phase-Front Cell Topology-Region Consumer — Immutable accepted
 

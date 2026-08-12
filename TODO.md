@@ -9,15 +9,12 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - R-A closure review baseline: working-branch implementation `5e023f1a8331c53182cfd296732c37cb7a889b88`; latest review-remediation compile source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`. R-A remains open pending the complete closure inventory and R-B through R-G.
-  - [x] Typed region/member authority, private checked factories, exact row coverage, builder-only raw classifier ingress, SourceEntityId removal, and owning-product materializer API.
-  - [x] R-A-REV-01 exact paths: materializer occurrences own typed `IsolationSheetId`; reviewed equivalence, quotient, representative, and aggregation decisions no longer read `SurfacePoint::sheet`.
-  - [x] R-A-REV-02 exact encoding: raw provenance component/sheet was removed from the fallback stitch key and a typed lineage derivation was added. Broader fail-closed closure is owned by R-A-REV-03.
-  - [x] R-A-REV-03: standalone/patch-local compatibility identity synthesis is removed; exact boundary identities are validated, complete typed lineage is required for derived identities, and missing typed authority rejects with `MissingTypedStitchIdentity`.
-  - [x] R-A-REV-04: reviewed source-authoritative validator, surface optimizer, rail constraints, completion hashing, and materializer decisions no longer use raw `SurfacePoint` component/sheet labels as semantic authority; raw labels are projection/export payload only in those paths.
-  - [x] R-A-REV-05: compiled contracts now cover exact/prebuilt identity mismatch, missing typed stitch authority, raw-projection tamper invariance, distinct typed isolation sheets, optimizer/rail raw-label tamper, and completion-hash raw-label invariance. These contracts were compiled only, not executed.
-  - [x] R-A-REV-06 packaging defect remediation: run `31561686903` built out of tree from `c62c99ffe5b7863820c91f4ff3a93645b22d3591`, recorded clean source-status snapshots, and verified a self-excluding `SHA256SUMS` manifest **22/22** before upload. Partial artifact `9127976318` remains ineligible for M1 acceptance; the final R-A-through-R-G package must repeat these rules.
-  - [ ] Re-run the complete R-A closure inventory before advancing the same vertical cutover.
+  - Complete-gate review baseline: branch head `f81f40524f9ee6978e4e298497d4d54580520cf3`; exact reviewed/compiled source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`. R-A is rejected. Preserve the valid typed-authority changes and the independently verified R-A-REV-06 packaging rules; completed checkpoint history belongs in `CHANGELOG.md`.
+  - [ ] R-A-REV-07: require complete typed topology-region, isolation-sheet, chart, and support lineage even when an exact boundary identity exists; remove exact-only/empty-source completion and update standalone fixtures.
+  - [ ] R-A-REV-08: make typed source authority mandatory for every SurfaceCells optimizer/verifier path; remove the false-success flag path and raw-label sheet decisions from generic validation.
+  - [ ] R-A-REV-09: derive multi-component typed sheet extents/offsets only from `SourceTopologyRegions` or complete typed lineage; make raw labels one-way export and add merged raw-tamper coverage.
+  - [ ] R-A-REV-10: replace the focused name/block script with a complete header/source/mode/aggregation audit and semantic contracts for REV-07 through REV-09.
+  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only if every gate item is statically clean.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
   - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.
