@@ -30,7 +30,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           PATCH=.agents/Directional/turn-payloads/m1-ra-a33.patch
           echo "patch_sha256=$(sha256sum "$PATCH" | awk '{print $1}')"
-          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "839e2aa136c956d9bf11183ef448f4f039483e8fc0df2bbc4200af87d2657a04"
+          test "$(sha256sum "$PATCH" | awk '{print $1}')" = "aea217a472ab8a9eaeb5f38977a20dd00676ca2df7925ff1d32143700dacc1a2"
           ! grep -E '^diff --git a/\.github/workflows/' "$PATCH"
           git apply --check "$PATCH"
           git apply "$PATCH"
