@@ -1,1 +1,0 @@
-Record the immutable failed R-A artifact-only T+B result and set the next turn to bounded Code + Build remediation. Documentation/control-plane only; no generated Directional runtime execution.
