@@ -12,7 +12,7 @@ permissions:
 concurrency: {group: agent-m1-ra-compile, cancel-in-progress: false}
 
 env:
-  SOURCE_SHA: c17da1be94802c9acd4cc7b7cc7ecdc246af6e86
+  SOURCE_SHA: 93f7a26013c026fe01ccf59a79591dd5c5e69208
   CCACHE_MAXSIZE: 256M
   CCACHE_COMPRESS: "true"
 
