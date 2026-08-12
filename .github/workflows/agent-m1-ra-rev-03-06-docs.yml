@@ -1,0 +1,71 @@
+name: Agent M1 R-A REV-03-06 Durable Records
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m1-ra-rev-03-06-docs.txt]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-m1-ra-rev-03-06-docs
+  cancel-in-progress: false
+
+jobs:
+  sync-records:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=M1 R-A-REV-03-through-06 durable record sync' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" | tee -a "$RUNNER_TEMP/activity.log"
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+      - name: Apply and publish durable record update
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          base64 --decode .agents/Directional/turn-payloads/m1-ra-rev-03-06-docs.patch.gz.b64 | gzip -d > "$RUNNER_TEMP/docs.patch"
+          git apply --check "$RUNNER_TEMP/docs.patch"
+          git apply "$RUNNER_TEMP/docs.patch"
+          git diff --check
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            TODO.md | sort)"
+          printf 'changed_files=\n%s\n' "$changed"
+          test "$changed" = "$expected"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add TODO.md
+          git add -f \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md
+          git commit -m "docs: record R-A REV-03 through REV-06 closure"
+          git push origin "HEAD:$GITHUB_REF"
+          echo "records_sha=$(git rev-parse HEAD)"
+          echo "runtimeExecution=false"
+      - name: Upload activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m1-ra-rev-03-06-docs-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
