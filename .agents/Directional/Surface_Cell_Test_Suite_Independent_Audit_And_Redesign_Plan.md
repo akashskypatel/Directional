@@ -6,9 +6,11 @@
 **Planning baseline:** `a3fba7dc83d9d5b77cdbd10794e3c460de526dbc`  
 **Repository:** `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8  
 **Decision:** **redesign required; the current suite is a contributing part of the recurring-regression system, but it is not the sole cause**  
-**Last updated:** 2026-08-10 UTC
+**Last updated:** 2026-08-12 UTC
 
 > **Durable evidence-retention note:** this document is normative audit/redesign authority, not per-turn evidence. Current Test + Benchmark artifacts/results are retained only in the single current turn report plus durable live trackers. The mandatory cleanup policy in `.agents/Directional/Future_Chat_Session_Handoff.md` requires every Test + Benchmark turn to clean superseded checked-in evidence at start and replace it with current evidence at closeout. Historical per-turn report filenames below are provenance tied to cited commits and need not exist at the current branch head.
+
+> **2026-08-11 architecture amendment:** The replacement `DESIGN.md` controls where this audit's earlier strict binary-outcome wording conflicts. Pipeline B is normative; Pipeline A is optional and unscheduled. The product now has verifier-assigned D0-D4 dispositions. Strict representative gates still require D0; D1-D3 require their own positive/tamper/metamorphic evidence and never count as strict success. New M3 owns `FieldAlignedCurveNetwork`; prior global-conformity M3 is revised M4; new M7 owns disposition and the declared degraded producer.
 
 ## 1. Scope and review boundary
 
@@ -28,7 +30,7 @@ The suite is not empty, trivial, or wholly mechanics-only. It has substantial lo
 
 It is nevertheless insufficient as proof of the intended product:
 
-1. the direct acceptance oracle stops at pipeline disposition and face degree;
+1. the direct acceptance oracle stops at pipeline disposition and face degree and cannot independently recompute the new D0-D4 tier;
 2. it does not independently verify field alignment, feature alignment, source approximation, topology, source lineage/certificates, manifold incidence, element quality, determinism, or work bounds;
 3. the richer prescribed field/topology fixtures are absent from the default direct acceptance matrix;
 4. quality metrics already computed by the benchmark path are reported but do not gate acceptance and partly reuse production validation machinery;
@@ -176,7 +178,11 @@ including its Test + Benchmark and testing-integrity rules.
 | QEx | Tests must cover imperfect parametrizations, foldovers, numerical cracks, nearly degenerate triangles, manifold/watertight connectivity, exact-predicate boundaries, and complete geometry/connectivity reference results. |
 | QuadWild | Representative testing must include noisy/self-intersecting/nonmanifold “in-the-wild” inputs, feature preservation, angle deviation, edge-length deviation, scaled Jacobian, irregular vertices, and large-corpus disposition. |
 | Instant Meshes | Field alignment, singularity counts, angle/area distributions, feature snapping, scale, and robustness across heterogeneous models are product evidence—not merely visual diagnostics. |
-| FlowRep | Parameter and field perturbations, global cycles/strands, systemic misalignment, and uneven sizing need robustness/metamorphic coverage. |
+| FlowRep | Parameter and field perturbations, global cycles/strands, systemic misalignment, and uneven sizing need robustness/metamorphic coverage; FlowRep is not a triangle-to-quad producer oracle. |
+| Combinatorial tracing and motorcycle decomposition | Port ownership, typed termination, non-crossing, crash order, disc-region completeness, and the combined-algorithm preconditions need direct positive/tamper/metamorphic evidence. |
+| QGP / minimum-deviation flow | Shared-rail positivity, feasibility, deterministic tie-breaking, solution validity, and polynomial work bounds need independent graph-level oracles. |
+| Integer coordinates / intrinsic support | Exact-support operations require round-trip, degeneracy, row-permutation, and differential-oracle tests without tolerance-derived semantic keys. |
+| Tutte and injective disk mappings | Fixed-boundary region embedding needs inversion/manifoldness evidence and later distortion/quality calibration. |
 | Thingi10K | A standard-model-only corpus creates false confidence; stratified triangle soups and real-world defects are required at non-blocking and nightly tiers. |
 | LLVM libFuzzer | Fuzz targets must be deterministic and fast, consume valid and invalid seed corpora, run with sanitizers, preserve minimized reproducers, and replay the committed corpus. |
 | RapidCheck / Geometry Central | Generated properties need seed replay and shrinking; useful geometry properties include representation round trips and differential agreement between independent implementations. |
@@ -438,13 +444,17 @@ Implemented the first independent oracle executable/library, topology/lineage/di
 - versioned ten-case fixture manifest;
 - prescribed topology/field cases in default direct authority;
 - independent oracle on every case;
-- direct failures classified by typed stage.
+- direct failures classified by typed stage;
+- every strict case declares expected D0; D1-D4 do not count as green;
+- separate induced D1-D3 cases prove truthful certificate and omitted/degraded-region behavior.
 
 ### T3 — property/metamorphic layer
 
 **Status:** pending.
 
 - row/vertex/order/orientation/scale/field relabeling properties;
+- curve-network port/trace/crash/decomposition and rail-flow properties;
+- disposition tier/degraded-set/omitted-set invariance;
 - seed recording and shrinking;
 - replay corpus.
 
@@ -462,6 +472,7 @@ Implemented the first independent oracle executable/library, topology/lineage/di
 
 - independent field/feature/geometric/quality metrics;
 - approved baselines/thresholds;
+- calibrated D0/D1 boundary with mutation sensitivity;
 - Bunny/Vase and prescribed cases promoted only when prerequisites are ready.
 
 ### T6 — hardening and default-on
@@ -526,14 +537,18 @@ Stop and redesign the test rather than weakening it if:
 
 Never use source-grid recovery, generic producer substitution, validator weakening, fixture-specific product branches, or synthetic output construction to close a strict direct SurfaceCells gate.
 
+The separately declared M7 degraded producer is not a generic substitution and must be tested as its own bounded product. It may emit D2 only, cannot recurse or mutate upstream authority, and cannot close a strict gate.
+
 ## 19. Current ordering relative to architecture migration
 
 Current ordering is:
 
 1. T0 complete;
 2. T1 independent oracle/package authority accepted;
-3. M1 bounded authority migration proceeds while preserving T1 on every immutable turn;
-4. T2–T6 expand representative semantic/corpus/fuzz/quality authority before later feature/default-on closure.
+3. M1 single-authority cutover closes while preserving T1;
+4. revised M3 curve-network and M4 conformity work add their own L0-L4 evidence when selected by the Pipeline B product queue;
+5. revised M7 cannot land until M6 verification exists and its D0-D4/degraded-producer evidence is complete;
+6. T2–T6 expand representative semantic/corpus/fuzz/quality authority before later feature/default-on closure.
 
 The live exact next turn is owned by `.agents/Directional/Future_Chat_Session_Handoff.md`, not this durable redesign document.
 

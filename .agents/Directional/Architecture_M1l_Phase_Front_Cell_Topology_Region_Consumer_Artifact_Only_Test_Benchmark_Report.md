@@ -1,5 +1,7 @@
 # M1l Phase-Front Cell Topology-Region Consumer — Artifact-Only Test + Benchmark Report
 
+> **2026-08-11 historical-status note:** M1l acceptance evidence remains immutable and authoritative. The report's final M1m next-turn instruction is historical and superseded by the amended M1 Single-Authority Cutover Code + Build Plan, the replacement DESIGN.md, and the live handoff.
+
 **Status:** immutable accepted  
 **Turn type:** Test + Benchmark only  
 **Review policy:** `never`  

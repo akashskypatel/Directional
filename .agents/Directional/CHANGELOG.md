@@ -17,7 +17,28 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
-No completed changes are currently recorded here. The active M1m Code + Build instructions remain in the handoff.
+### Changed
+
+- Replaced the normative architecture with the supplied Pipeline B-first `DESIGN.md`; Pipeline A is now optional future work gated on full Pipeline B Certified evidence.
+- Revised architecture numbering to M0-M8: new M3 field-aligned curve network and M7 graded disposition; former M3/M4/M5/M6 map to M4/M5/M6/M8.
+- Synchronized the M1 plans, roadmap, TODO, testing policy, test-redesign plan, regression tracker, historical-report status, and live handoff with the redesign.
+- Retained both M1 Code + Build and Artifact-Only Test + Benchmark plans. The artifact-only plan is dormant until a fresh full R-A-through-R-G package exists.
+
+### Review
+
+- Independently reviewed R-A source `bebac907de814b07a55a770add4c897ab6d22ffd`.
+- Verified compile-only evidence from run/job `31550744314 / 93972723960`, artifacts `9124167871 / 9124168143`, Release/static/Ninja/PRE_TEST **118/118**, with no generated runtime/discovery/test/benchmark execution.
+- Accepted as substantial compile-valid progress: typed source region/member authority, private checked factories, exact row coverage, builder-only raw classifier ingress, `SourceEntityId` removal, and materializer API removal of parallel raw arrays.
+- Rejected R-A closure on `R-A-REV-01` and `R-A-REV-02`: materializer sheet read-back and completion fallback identity still consume raw `SurfacePoint` component/sheet payload as semantic authority.
+- No new stable runtime regression event or recurrence was assigned; runtime was not executed and totals remain **34 events / 14 categories / 20 recurrences**.
+
+### Known limitations
+
+- M1l `bd140cff...` remains the latest immutable runtime authority.
+- Historical artifact `9105462679` and R-A compile artifact `9124167871` are not M1 acceptance candidates.
+- The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
+
+Authoritative review: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`.
 
 ## [M1l] Phase-Front Cell Topology-Region Consumer — Immutable accepted
 

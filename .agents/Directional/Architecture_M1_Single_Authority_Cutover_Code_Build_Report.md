@@ -1,11 +1,17 @@
 # M1 Single-Authority Cutover — Code + Build Report
 
-**Status:** Code + Build complete; immutable runtime acceptance pending  
+**Status:** historical compile/package evidence; independently rejected as M1-complete and not eligible for runtime acceptance  
 **Turn:** M1 Single-Authority Cutover — Code + Build  
 **Repository:** `akashskypatel/Directional`  
 **Branch:** `agent/surface_cell_quad/p5-recover-bridge-healing`  
 **Entering accepted implementation:** `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Final implementation:** `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`
+
+## 2026-08-12 status amendment
+
+This report remains an immutable factual record of source `5b1c9b...`, compile `121/121`, artifact `9105462679`, and the recorded command boundary. Its original claims that the complete cutover closed and that artifact-only validation was next were rejected by the independent source review recorded in the live Code + Build plan.
+
+The later R-A checkpoint `bebac907de814b07a55a770add4c897ab6d22ffd` compiled `118/118` in run/job `31550744314 / 93972723960`, but independent review also found two blocking raw-payload read-back paths. Current authority is `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md` plus the amended Code + Build plan. Do not execute or relabel artifact `9105462679` or R-A artifact `9124167871` as M1 acceptance candidates.
 
 ## Result
 
@@ -75,10 +81,12 @@ Authoritative package metadata records all of the following as false:
 
 No test total is claimed in this report. The next artifact-only turn must discover the packaged inventory independently.
 
-## Next turn
+## Historical next-turn instruction — superseded
 
 Run **M1 Single-Authority Cutover — Artifact-Only Test + Benchmark** using:
 
 `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`.
+
+The instruction below was the next step at report creation and is retained only as history. It must not be executed.
 
 Consume exact result artifact `9105462679` from source `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` without rebuilding or modifying the package. If every required semantic gate and the static cutover audit pass with no unclassified product regression, M1 closes and the primary queue returns directly to G4. No further M1 letter slice is selected.

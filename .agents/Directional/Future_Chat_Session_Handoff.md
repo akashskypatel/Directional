@@ -2,131 +2,136 @@
 
 ## Purpose
 
-This handoff is the concise resume document for future agents starting from a clean slate. Its purpose is to bring a new agent up to speed quickly on the **current ongoing work of the cross-field-aligned surface-cell paving pipeline implementation**, including the exact next turn, current authoritative state, live blockers, and the references required to continue correctly.
-
-It is not a changelog, task archive, evidence archive, transcript, or substitute for the project's design, architecture, policy, test, or per-turn authority documents.
+This file contains only durable operating policy, the exact next action, current immutable authority, and resume-critical blockers. Architecture belongs in DESIGN.md and REORIENTATION_PLAN.md; tasks belong in TODO.md; history belongs in CHANGELOG.md; evidence belongs in retained reports and trackers.
 
 ## DURABLE handoff policy — mandatory
 
-This section is durable and must remain in every future rewrite of this handoff unless the user explicitly changes it.
-
 ### Maintenance policy
 
-Update this handoff at the end of **every turn**. The update must keep current:
+At the end of every turn:
 
-1. **Next steps for the next turn** under the `turn-based-coding-agent` skill, including the exact turn type and the authoritative next plan/report needed to resume from a clean slate.
-2. **Quick references to important policies, skills, design, architecture, testing, task, and regression documents** required for the next agent to work correctly without duplicating their contents.
-
-Mandatory policy references:
-
-- `.agents/Directional/CLEAN_UP_POLICY.md` — stale-evidence cleanup lifecycle and cleanup verification.
-- `.agents/Directional/RETENTION_POLICY.md` — durable-document retention, handoff/changelog ownership, evidence retention, and destructive-mutation authorization.
-- `.agents/Directional/GitHub_Workflow_Policy.md` — GitHub Actions execution boundaries, artifact authority, workflow/trigger/payload lifecycle, failure handling, and workflow-specific hygiene.
-
-Mandatory skill/reference categories to keep discoverable from the handoff when relevant to the active work:
-
-- `turn-based-coding-agent` skill: `https://github.com/akashskypatel/turn-based-coding-agent-skill`.
-- `TODO.md` for the unified durable task index.
-- Current authoritative next-turn plan and current immutable report.
-- `.agents/Directional/DESIGN.md` and `.agents/Directional/REORIENTATION_PLAN.md`.
-- `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-- `tests/TESTING_STRATEGY.md`.
-- `.agents/Directional/CHANGELOG.md` for completed historical changes and immutable acceptance checkpoints.
+1. preserve this policy and both mandatory checklists;
+2. replace stale next-turn/status text instead of appending another narrative;
+3. keep only unresolved or immediately resume-critical facts;
+4. point to authoritative documents rather than duplicating their full contents;
+5. move completed history to CHANGELOG.md and exact evidence to the retained report/tracker;
+6. never treat a documentation/control-plane commit as implementation or runtime evidence.
 
 ### Anti-bloat policy
 
-Keep this handoff narrowly focused on what a new agent needs to resume the **current** work. Do **not** add information irrelevant to bringing the next agent up to speed.
+Do not add:
 
-Specifically, do not add:
-
-- diffs or long code/document excerpts;
-- duplicated information already documented in referenced policies, plans, reports, design/architecture documents, trackers, `TODO.md`, or the changelog;
-- verbose test or benchmark result details when a concise current-authority statement and report reference are sufficient;
-- generic procedural information already defined by the `turn-based-coding-agent` skill or dedicated policy documents;
-- transcripts, chronological play-by-play, tool-call history, or exhaustive descriptions of actions taken;
-- superseded milestone narratives, old artifact tables, historical acceptance logs, or other changelog material;
-- any other excessively verbose information that does not materially help a clean-slate agent execute the next turn correctly.
-
-Prefer concise current-state statements plus direct references to authoritative documents. Move completed historical change information to `CHANGELOG.md`, keep the actionable backlog in `TODO.md`, retain detailed evidence in the authoritative report/tracker where it belongs, and keep only unresolved or immediately resume-critical facts in this handoff.
+- transcripts, chronological play-by-play, tool-call history, or exhaustive action descriptions;
+- generic procedure already owned by the turn-based-coding-agent skill or policy files;
+- superseded milestone narratives or copied artifact tables;
+- implementation detail that does not change the next action.
 
 ## Mandatory start-of-turn checklist
 
-This is a DURABLE mandatory start-of-turn checklist that must be followed at the start of every turn. Do not delete this checklist.
-
-1. Review the `turn-based-coding-agent` skill if not already reviewed: `https://github.com/akashskypatel/turn-based-coding-agent-skill`.
-2. Fully review this handoff document.
-3. Review and strictly follow `.agents/Directional/RETENTION_POLICY.md` for the whole turn.
-4. Review and follow `.agents/Directional/GitHub_Workflow_Policy.md` for the whole turn when using GitHub Actions or temporary workflow/trigger/payload state.
-5. Review `TODO.md` and the design/architecture/testing documents relevant to the next step, especially `DESIGN.md` and `REORIENTATION_PLAN.md` for architecture migration work.
+1. Review the turn-based-coding-agent skill if not already reviewed.
+2. Fully review this handoff.
+3. Review and follow RETENTION_POLICY.md.
+4. Review and follow GitHub_Workflow_Policy.md before repository-side workflow/trigger/payload work.
+5. Review TODO.md, DESIGN.md, REORIENTATION_PLAN.md, the active M1 Code + Build plan, and the redesign/R-A review report.
+6. Confirm the current branch head and source authority before any write.
 
 ## Mandatory next turn
 
-Run **M1 Single-Authority Cutover — Artifact-Only Test + Benchmark** under:
+Run **M1 Single-Authority Cutover Closure — Code + Build only** under:
 
-`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`
+.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
 
-Repository: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`. Draft PR #8 stays open, draft, and unmerged. Exact packaged implementation is `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`; entering immutable comparison authority is M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`. Product gate **G4 topology-distinct completion and singularities** remains active but does not resume until M1 artifact-only acceptance. Review policy is `never`.
+Repository: akashskypatel/Directional  
+Branch: agent/surface_cell_quad/p5-recover-bridge-healing  
+PR: #8 remains open, draft, and unmerged  
+Review policy after the later immutable Test + Benchmark turn: never
 
-Consume exact Code + Build result artifact `9105462679` (`m1-single-authority-cutover-code-build-result-31501276992`, digest `sha256:f73f6e02ff7cb3254dce46694af460d3703c7869985bcb69648eb528db9c6ad2`) without rebuilding or modifying the package. Code + Build log artifact is `9105463175`. The recursive package manifest is **57/57** with SHA-256 `ebd5f1587feec0120260eacd127f45fcf66784f5effaf1a60703e7471f9454b4` and contains 27 fixture files.
+The turn must:
 
-The next turn must independently discover the packaged test inventory; run the five new cutover semantic contract groups, entering M1a–M1l preservation gates, route/transition counterexamples, T1, validation/compiled API/required-green producer coverage, and Plane/MultiFaceSeam/CloseSheets/Cylinder independent product oracles; execute and classify all historical/deferred reds; characterize strict-validator timing and bounded Bunny/Vase; repeat the packaged-source duplicate-authority audit; and close with immutable postflight. Do not predeclare a test total.
+1. close R-A-REV-01 by giving materializer occurrences required typed sheet/member authority and removing every semantic read of SurfacePoint component/sheet;
+2. close R-A-REV-02 by deriving completion/stitch/ownership identity from typed lineage authority and removing raw provenance component/sheet from semantic identity;
+3. complete R-B through R-G as the same vertical M1 cutover;
+4. compile/package Release/static/Ninja/PRE_TEST only;
+5. execute no generated Directional binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input;
+6. produce a new immutable full-cutover artifact and expanded source audit;
+7. update the dormant artifact-only plan with the new exact package authority.
 
-If all required semantic gates pass with no unclassified product regression and the static source audit remains clean, close M1 and return directly to G4. Do not open another M1 letter slice. If M1 fails, create one bounded Code + Build plan only for the proven semantic/source-authority defect; do not restore displaced raw mirrors/adapters.
+Do not validate, copy, relabel, or repair historical artifact 9105462679 or R-A compile artifact 9124167871. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
 
-Current Code + Build report:
-`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md`.
+## Current authority
 
-Authoritative next plan:
-`.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`.
+### Normative architecture
 
-## Current immutable authority
+The supplied replacement .agents/Directional/DESIGN.md is authoritative byte-for-byte.
 
-M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest immutable runtime-accepted authority until the next artifact-only turn completes. Its accepted runtime preserved the existing required-green semantic/product baselines, direct Plane/MultiFaceSeam/CloseSheets/Cylinder oracles, all historical/deferred red classifications, and exact postflight as recorded durably in `CHANGELOG.md`.
+- Pipeline B is the default and only scheduled path.
+- Pipeline A is optional and ineligible until Pipeline B is Certified on the complete representative matrix with stable calibrated quality gates.
+- revised milestones are M0-M8; M3 field-aligned curve network and M7 disposition are new.
+- strict fixtures require D0 Certified; D1-D3 are truthful degraded output and cannot close strict gates.
 
-The final M1 cutover implementation `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` is **compile-valid and packaged, not runtime-accepted yet**. Final package run/job `31501276992 / 93811595735` compiled **121/121** approved steps in Release/static/Ninja/PRE_TEST, with all generated-runtime/test/benchmark/discovery/ctest/CLI/fuzzer/custom-input flags false. The source-only cutover audit was clean for every displaced symbol and legacy domain-error term required by the plan. Exact evidence is retained in `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md` and external Actions artifacts `9105462679 / 9105463175`.
+Open design clarification/evidence items are tracked in TODO.md and Architecture_Redesign_and_M1_RA_Independent_Review_Report.md. Do not silently edit the supplied design to resolve them.
 
-Strict-validator timing remains the existing nondeterministic sub-millisecond ratio/microbenchmark defect. Bunny and Vase remain characterization/product gates rather than M1 success requirements unless the cutover introduces a required-invariant regression or unexplained semantic drift. Historical regression totals remain **34 events / 14 categories / 20 recurrences**, and `PR8-R034 / G4-R007` remains active.
+### Immutable runtime authority
 
-Repository-side Code + Build execution state is clean: consumed M1 cutover workflows were retired before their trigger markers/payloads, then consumed triggers/payloads were removed. Only the durable `.github/workflows/agent-source-snapshot.yml` remains. The packaged implementation commit remains separate from later documentation/cleanup commits; do not relabel later handoff/control-plane commits as build evidence.
+M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest immutable runtime-accepted authority. Its accepted evidence is retained in CHANGELOG.md and Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md.
 
-## Mandatory end-of-turn checklist
+### R-A compile checkpoint
 
-This is a DURABLE mandatory end-of-turn checklist that must be followed at the end of every turn. Do not delete this checklist.
+Reviewed source: bebac907de814b07a55a770add4c897ab6d22ffd  
+Compile run/job: 31550744314 / 93972723960  
+Result/log artifacts: 9124167871 / 9124168143  
+Compile: 118/118 Release/static/Ninja/PRE_TEST  
+Generated runtime/discovery/tests/benchmarks: none
 
-1. Review and apply `.agents/Directional/CLEAN_UP_POLICY.md`.
-2. Update `TODO.md` to reflect completed, active, newly unblocked, or newly deferred tasks.
-3. Update `.agents/Directional/CHANGELOG.md` when the turn creates a completed durable implementation/acceptance change; do not add empty or procedural-only entries.
-4. Update this handoff with the exact next turn and current resume-critical state while following the anti-bloat policy.
-5. Add the final summarized closing comment to the active pull request after all other branch/PR writes required by the turn.
+The checkpoint substantially implemented R-A items 1-6 and removed raw arrays from the materializer API. It is not R-A-complete because:
+
+- RemeshPipeline.cpp still reads SurfacePoint::sheet for cross-sheet equivalence and representative ordering;
+- PureQuadCompletion.cpp still encodes raw provenance component/sheet in fallback stitch identity.
+
+No runtime regression count changed because runtime was not executed.
 
 ## Standing product and regression state
 
-- Product gate **G4 topology-distinct completion and singularities** remains active; it becomes the primary queue again after immutable M1 cutover acceptance.
-- `PR8-R034 / G4-R007` / `G4-B001` remains the active direct-torus `LocalSheetMismatch` blocker.
-- `G4-B002` shared hard-rail scheduling, `G4-B003` nonzero periodic Z4 capability, and `G4-B004` positive multi-isolation witness remain unresolved.
-- M1a through M1l acceptance and the final cutover Code + Build do not claim G4 product completion.
+- M1 is active; the retained artifact-only plan is dormant.
+- PR8-R034 / G4-R007 / G4-B001 direct-torus LocalSheetMismatch remains active.
+- G4-B002 InvalidHardRailPairing is owned by revised M4.
+- G4-B003 nonzero periodic Z4 and G4-B004 positive multi-isolation evidence are owned by M5/M6 after M1.
+- Bunny/Vase remain later representative product/resource gates.
+- historical regression totals remain 34 events / 14 categories / 20 recurrences.
+- no Pipeline A work is scheduled.
 
 ## Resume-critical execution lessons
 
-- Validate exact artifact `9105462679` from implementation `5b1c9b...`; later documentation/cleanup commits are not runtime-evidence commits.
-- Preserve the artifact's natural executable mode bits during extraction. Do not `chmod` or repair the immutable package.
-- A zero-selected GoogleTest filter is an orchestration failure, never a semantic pass. Independently discover exact names before focused execution.
-- Do not answer a semantic failure by restoring a displaced numeric field/helper/alias. Classify representation changes versus invariant regressions under the next-turn plan.
-- Preserve test intent with distinct typed witnesses and semantic assertions; do not weaken fixtures, failures, product oracles, or known-red reporting.
-- One local first-process Cylinder stall in prior M1 evidence did not reproduce in immediate retry or authoritative remote runs. Do not add a product workaround without new reproducible product evidence.
+- Compile success is build evidence, not runtime or semantic acceptance.
+- A generic geometry payload derived from typed authority becomes a duplicate semantic owner if production reads it back for equality, order, hashing, lookup, or ownership.
+- A zero-selected test filter is orchestration failure, never a pass.
+- Preserve natural packaged file modes; do not chmod or repair immutable artifacts.
+- Do not answer a semantic failure by restoring a numeric mirror, adapter, alias, hash oracle, fallback, fixture exception, or weakened assertion.
+- Representation differences are classified by design/product invariants, not obsolete numbering, hashes, row order, or exact counts.
+- Pipeline B strict gates require D0; degradation is never a substitute for fixing a strict-path defect.
 
-Workflow-specific execution rules and lessons are maintained in `.agents/Directional/GitHub_Workflow_Policy.md`.
+## Mandatory end-of-turn checklist
+
+1. Review and apply CLEAN_UP_POLICY.md.
+2. Update TODO.md for completed, active, blocked, and newly discovered work.
+3. Update CHANGELOG.md only for completed durable changes or accepted evidence.
+4. Update the regression tracker only when a stable event/pattern/blocker changes.
+5. Replace this handoff's exact next action and current authority.
+6. Update the active PR description when its durable summary is stale.
+7. Add one final summarized PR #8 conversation comment after all other branch/PR writes.
 
 ## Core references
 
-- `TODO.md`;
-- `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md`;
-- `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`;
-- `.agents/Directional/CHANGELOG.md`;
-- `.agents/Directional/CLEAN_UP_POLICY.md`;
-- `.agents/Directional/RETENTION_POLICY.md`;
-- `.agents/Directional/GitHub_Workflow_Policy.md`;
-- `.agents/Directional/DESIGN.md`;
-- `.agents/Directional/REORIENTATION_PLAN.md`;
-- `.agents/Directional/Regression_Root_Cause_Tracker.md`;
-- `tests/TESTING_STRATEGY.md`.
+- TODO.md
+- .agents/Directional/DESIGN.md
+- .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md
+- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
+- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+- .agents/Directional/REORIENTATION_PLAN.md
+- .agents/Directional/Regression_Root_Cause_Tracker.md
+- .agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md
+- tests/TESTING_STRATEGY.md
+- .agents/Directional/CHANGELOG.md
+- .agents/Directional/CLEAN_UP_POLICY.md
+- .agents/Directional/RETENTION_POLICY.md
+- .agents/Directional/GitHub_Workflow_Policy.md

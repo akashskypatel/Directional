@@ -1,13 +1,30 @@
 # M1 Single-Authority Cutover — Artifact-Only Test + Benchmark Plan
 
-**Turn type:** Test + Benchmark only  
-**Validated source to consume:** `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`  
+**Turn type:** retained Test + Benchmark plan; currently dormant  
+**Validated source to consume:** the future full R-A-through-R-G cutover source; not `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` and not R-A checkpoint `bebac907de814b07a55a770add4c897ab6d22ffd`  
 **Entering immutable comparison authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
-**Code + Build result artifact:** `9105462679` — `m1-single-authority-cutover-code-build-result-31501276992`  
-**Code + Build result artifact digest:** `sha256:f73f6e02ff7cb3254dce46694af460d3703c7869985bcb69648eb528db9c6ad2`  
-**Code + Build log artifact:** `9105463175` — `m1-single-authority-cutover-code-build-log-31501276992`  
+**Code + Build result artifact:** pending full-cutover package  
+**Code + Build result artifact digest:** pending  
+**Code + Build log artifact:** pending  
 **Review policy:** `never`  
-**Product gate after M1 acceptance:** G4 topology-distinct completion and singularities
+**Product gate after M1 acceptance:** resume the Pipeline B product queue under the revised M2-M8 architecture; select the smallest owning milestone required by the active product blocker
+
+## 0. Activation amendment — 2026-08-12
+
+This plan is retained as requested, but it is **not executable now**.
+
+Independent review rejected the former full-cutover artifact `9105462679` and found that the later R-A compile checkpoint `9124167871` still reads raw `SurfacePoint::sheet` in materializer semantics and raw provenance component/sheet in fallback stitch identity. Neither artifact may be validated, relabeled, copied, or amended into M1 acceptance evidence.
+
+Activate this plan only after a new Code + Build turn:
+
+1. closes `R-A-REV-01` and `R-A-REV-02`;
+2. completes R-B through R-G;
+3. packages the exact final source, compiled contracts, fixtures, expanded audit, logs, and recursive checksums;
+4. records new immutable artifact IDs/digests, manifest count/digest, executable inventory, and command-boundary flags in this header and Sections 2, 3, 12, and 14.
+
+Until activation, every exact reference below to source `5b1c9b...`, artifact `9105462679`, manifest `57/57`, or its checksums is a **historical rejected-package template value**, not a command.
+
+The replacement DESIGN.md is normative. M1 acceptance proves the single-authority contract only; it does not claim the later M3 curve network, M4 conformity flow, M7 graded disposition, or optional Pipeline A. A strict product fixture may close only on certified/D0-equivalent behavior. A degraded D1-D3 result, if disposition work appears early, is truthful characterization and cannot close an M1 preservation gate.
 
 ## 1. Purpose and turn boundary
 
@@ -222,6 +239,15 @@ legacyValue
 
 Also inspect the affected authority structs for a typed ID/value stored beside a numeric mirror of the same semantic fact. A remaining duplicate semantic authority is an M1 failure, not follow-up work.
 
+The activated audit must also fail on either reviewed R-A defect:
+
+- any materializer equivalence, representative, ownership, or quotient decision reads `SurfacePoint::component` or `SurfacePoint::sheet`;
+- any patch/completion/assembly/lineage/verifier identity, equality, hash, order, or lookup key reads raw provenance component/sheet;
+- an occurrence lacks required typed topology-region, isolation-sheet, chart, or support authority after construction;
+- a fallback canonical/stitch/ownership identity can be built from raw component/sheet mirrors.
+
+Derived integers are allowed only in one-way diagnostics/export after typed validation and must never be read back by production logic.
+
 ## 12. Immutable postflight
 
 After all runtime execution:
@@ -243,6 +269,8 @@ M1 is accepted only when all of the following hold:
 - every historical/deferred red case is executed and classified, with no unclassified regression;
 - no source attachment, topology-region/sheet/chart distinction, transport composition, certificate ownership/exact-once consumption, determinism, direct disposition, or no-fallback invariant regresses;
 - independent packaged-source audit finds no displaced representation or duplicate semantic authority;
+- both `R-A-REV-01` and `R-A-REV-02` are absent from the exact packaged source and covered by positive/tamper contracts;
+- all strict preservation fixtures reach certified/D0-equivalent behavior; no D1-D3 output closes a strict gate;
 - Bunny/Vase and strict-validator results are truthfully characterized;
 - no package mutation or rebuild occurred.
 

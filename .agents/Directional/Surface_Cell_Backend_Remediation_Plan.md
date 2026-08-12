@@ -2,7 +2,7 @@
 
 **Status:** historical G4 remediation record; superseded for current action and
 test authority  
-**Current operational authority:** `TODO`, `MILESTONE_G_TODO.md`,
+**Current operational authority:** `TODO.md`,
 `.agents/Directional/Future_Chat_Session_Handoff.md`, and
 `.agents/Directional/REORIENTATION_PLAN.md`  
 **Current test redesign:**
@@ -22,6 +22,14 @@ but the complete direct semantic oracle, rich field/topology matrix,
 property/metamorphic generation, fuzz replay, quality gates, and immutable
 discovery controls remain open as `TA-01` through `TA-12`. The historical
 sequence below led into T1 and M1; current progress is owned by the live handoff.
+
+The 2026-08-11 replacement `DESIGN.md` also supersedes this document's old
+architecture numbering and binary-failure assumptions. Pipeline B is now the
+normative default, Pipeline A is optional and unscheduled, new M3 owns the
+field-aligned curve network, and the shared-rail schedule formerly associated
+with M3 is revised M4. Graded disposition is revised M7: D1-D3 are truthful
+degraded/partial products but can never close a strict fixture gate. The body
+below remains historical product-boundary rationale only.
 
 ## Historical blocker at this checkpoint
 
@@ -103,7 +111,7 @@ Their durable facts are retained in:
 - `.agents/Directional/PR_8_Regression_Audit_Inventory.md` for historical event evidence;
 - `.agents/Directional/Regression_Root_Cause_Tracker.md` for stable IDs and recurrence patterns;
 - this historical remediation record for the intended G4 correction;
-- current `TODO`, `MILESTONE_G_TODO.md`, handoff, reorientation plan, and current retained turn report for present authority;
+- current `TODO.md`, handoff, reorientation plan, and current retained turn report for present authority;
 - GitHub commit/workflow/artifact history for immutable machine evidence.
 
 The historical correction sequence was:

@@ -1,12 +1,76 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** independent review rejected implementation `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` as M1-complete; remediation Code + Build selected  
+**Current status:** R-A implementation bebac907de814b07a55a770add4c897ab6d22ffd compiled successfully but independent review found two blocking raw-payload read-back paths; R-A closure plus R-B through R-G remain selected  
 **Original planning decision:** prior narrow M1m plan rejected and replaced  
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0A. 2026-08-12 redesign and R-A checkpoint amendment
+
+This amendment controls wherever it conflicts with the earlier remediation text below.
+
+### Normative architecture
+
+The replacement DESIGN.md supplied with the 2026-08-11 independent review is now normative. Pipeline B is the default and only scheduled construction architecture. Pipeline A is optional future work and is ineligible until Pipeline B reaches Certified disposition on the complete representative matrix. The revised architecture milestones are M0-M8: new M3 owns the field-aligned curve network, prior M3 becomes M4 global conformity, prior M4 becomes M5 relations, prior M5 becomes M6 occurrence/embedding/verification, new M7 owns disposition, and prior M6 becomes M8 hardening.
+
+M1 remains the single-authority cutover. It must not implement or pre-empt the new M3 curve-network algorithm, M4 flow scheduler, or M7 degraded producer/disposition contract. It must leave contracts ready for those later milestones without adding speculative bridges.
+
+### R-A compile checkpoint
+
+| Evidence | Authority |
+|---|---|
+| Reviewed source | bebac907de814b07a55a770add4c897ab6d22ffd |
+| Final compile run/job | 31550744314 / 93972723960 |
+| Result artifact | 9124167871, m1-ra-compile-result-31550744314 |
+| Log artifact | 9124168143 |
+| Compile boundary | Release/static/Ninja/PRE_TEST, 118/118 |
+| Runtime boundary | no generated binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input executed |
+
+The implementation established the typed region/member authority, private checked factories, exact row-to-member coverage, builder-only raw classifier ingress, SourceEntityId removal, owning-product consumer APIs, and a materializer signature without parallel raw component/sheet arrays.
+
+The compile is valid evidence of buildability only. It is not runtime evidence and does not close R-A.
+
+### Blocking independent-review findings
+
+R-A-REV-01 — materializer raw sheet read-back:
+
+- OccurrenceData carries typed occurrence/support/chart/region but does not carry required typed IsolationSheetId.
+- RemeshPipeline.cpp compares SurfacePoint::sheet to decide cross-sheet equivalence and uses it in representative ordering.
+- Correction: carry typed member/sheet authority and use it for equivalence and ordering; generic SurfacePoint component/sheet may be one-way projection only.
+
+R-A-REV-02 — completion/lineage raw identity:
+
+- PureQuad patch/mesh/lineage retain SurfacePoint payload beside typed authority.
+- PureQuadCompletion.cpp fallback stitch identity encodes provenance.component and provenance.sheet into SurfaceCellCanonicalIdentity.
+- Correction: require or derive stitch/ownership identity exclusively from typed lineage authority; no affected production path may read raw component/sheet for equality, hashing, ordering, lookup, or ownership.
+
+The detailed evidence and redesign assessment are in Architecture_Redesign_and_M1_RA_Independent_Review_Report.md.
+
+### Updated execution decision
+
+The next Code + Build turn must:
+
+1. close both R-A review findings;
+2. finish R-B through R-G as the same vertical M1 cutover;
+3. compile/package the exact final source and expanded source audit without running generated runtime;
+4. produce a new full-cutover artifact; neither historical artifact 9105462679 nor R-A compile artifact 9124167871 may be relabeled as the acceptance candidate;
+5. hand only that full R-A-through-R-G package to the retained artifact-only plan.
+
+The earlier instruction to implement R-A through R-G in one completed M1 cutover remains the design-level definition of done. The R-A artifact is an intermediate compile checkpoint, not a new accepted migration slice.
+
+### R-A closure gate
+
+Before work may be called R-A-complete, a static inventory must demonstrate:
+
+- every affected occurrence carries required typed topology region, sheet, chart, and support;
+- no affected materializer, completion, patch, lineage, arrangement-ownership, or verifier decision reads SurfacePoint component/sheet as authority;
+- no fallback canonical/stitch/ownership key stores raw component/sheet;
+- raw classifier arrays exist only at the source-authority builder ingress;
+- build_authoritative_phase_front_mesh accepts no parallel raw authority;
+- the compiled contracts include positive and tamper cases that would fail if either raw read-back path returned.
 
 ## 0. Independent review amendment — remediation required
 

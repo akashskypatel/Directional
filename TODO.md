@@ -1,113 +1,111 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-11 UTC
+Last updated: 2026-08-12 UTC
 
 ## Purpose
 
-This is the single durable task index for the cross-field-aligned surface-cell paving pipeline. It consolidates the former root `TODO` and `MILESTONE_G_TODO.md` task tracking and includes the pending work defined by `.agents/Directional/REORIENTATION_PLAN.md`.
-
-Keep this file task-oriented. Exact current-turn instructions belong in `.agents/Directional/Future_Chat_Session_Handoff.md`; architecture ordering and invariants belong in `.agents/Directional/REORIENTATION_PLAN.md` and `DESIGN.md`; completed history belongs in `.agents/Directional/CHANGELOG.md`; exact runtime/build evidence belongs in the current retained report and regression trackers.
+This is the single durable task index for the cross-field-aligned surface-cell quadrangulation pipeline. Current-turn instructions belong in .agents/Directional/Future_Chat_Session_Handoff.md; normative architecture belongs in DESIGN.md; migration ordering belongs in REORIENTATION_PLAN.md; completed history belongs in CHANGELOG.md; exact evidence belongs in retained reports and trackers.
 
 ## Current focus
 
-- [x] **M1 single-authority cutover: Code + Build complete.**
-  - Final implementation: `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`.
-  - Final package run/job: `31501276992 / 93811595735`; result/log artifacts `9105462679 / 9105463175`.
-  - Release/static/Ninja/PRE_TEST compile completed **121/121**; generated runtime/test/benchmark/discovery/ctest/CLI/fuzzer/custom-input execution remained false.
-  - Static cutover audit is clean for the displaced symbols and legacy domain-error terminology required by the final-cutover plan.
-- [ ] **M1 single-authority cutover: immutable Artifact-Only Test + Benchmark acceptance.**
-  - Authoritative plan: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`.
-  - Consume exact artifact `9105462679` from implementation `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` without rebuilding or modifying the package.
-  - Independently discover the actual test inventory; require the five new semantic cutover groups, entering M1a–M1l preservation gates, direct-product oracles, historical/deferred-red classification, packaged-source duplicate-authority audit, bounded characterization, and immutable postflight.
-- [x] **M1l — Phase-Front Cell Topology-Region Consumer: immutable accepted.**
-  - Implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`; Code + Build artifacts `9083262395 / 9083262833`; immutable runtime `31444022339 / 93634344918`, evidence/log artifacts `9083913766 / 9083913939`.
-  - Producer **226**, M1l **6/6**, required-green **211/211**, full entering preservation/direct-product authority, unchanged known-red classes, and exact **56/56** postflight.
-- [ ] After immutable M1 acceptance, close M1 and return the primary queue to **G4 production work**. Do not select another authority-migration letter slice.
+- [ ] **Close M1 R-A and complete the single-authority cutover.**
+  - Reviewed source bebac907de814b07a55a770add4c897ab6d22ffd compiled 118/118 in run/job 31550744314 / 93972723960.
+  - Compile artifacts 9124167871 / 9124168143 are compile-only evidence, not runtime acceptance.
+  - [x] Typed region/member authority, private checked factories, exact row coverage, builder-only raw classifier ingress, SourceEntityId removal, and owning-product materializer API.
+  - [ ] R-A-REV-01: replace materializer reads of SurfacePoint::sheet with required typed occurrence sheet/member authority.
+  - [ ] R-A-REV-02: replace completion/stitch identity reads of raw provenance component/sheet with typed lineage authority.
+  - [ ] Complete R-B row-independent face/support/chart identity.
+  - [ ] Complete R-C immutable published products and typed certificate construction.
+  - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.
+  - [ ] Complete R-E typed semantic owners and lookups.
+  - [ ] Complete R-F intent-complete compiled contracts.
+  - [ ] Complete R-G expanded failing source audit.
+- [ ] **Produce one fresh full R-A-through-R-G Code + Build package.**
+  - Compile/package only; execute no generated binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input.
+  - Historical artifact 9105462679 and R-A artifact 9124167871 are ineligible for M1 acceptance.
+- [ ] **Activate and run the retained immutable M1 Artifact-Only Test + Benchmark plan only after the full package exists.**
+- [ ] **After M1 acceptance, resume Pipeline B product work under the revised M2-M8 architecture.** Pipeline A remains unscheduled.
 
-Current baseline: T1 and M1a-M1l are immutable accepted. The final M1 cutover is compile-valid and packaged but remains runtime-unaccepted until the next artifact-only turn. Product gate G4 remains active and independent of architecture-migration acceptance. Draft PR #8 remains open and unmerged.
+Current immutable runtime authority remains M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c. Draft PR #8 remains open, draft, and unmerged.
 
-## Product roadmap
+## Product and architecture roadmap
 
-- [x] **G0 — truthful authority baseline.**
-- [x] **G1 — uniform phase-front plane.**
-- [x] **G2 — cross-chart / close-sheet isolation.**
-- [x] **G3 — periodic closure / holonomy.**
-- [ ] **G4 — topology-distinct completion and singularities.**
-  - [ ] `G4-B001` / `PR8-R034` / `G4-R007`: resolve direct-torus final `LocalSheetMismatch` and reach strict-valid torus **3/3**.
-  - [ ] `G4-B002`: replace historical exact-torus `InvalidHardRailPairing` with one shared source-authoritative hard-rail schedule; architecture ownership is M3.
-  - [ ] `G4-B003`: support nonzero periodic Z4 production behavior with the completed M1 transport contract, the required M4 relation certificate, and independent product acceptance.
-  - [ ] `G4-B004`: establish a positive multi-isolation quotient witness with focused and representative certificate evidence.
-  - [ ] Return to prescribed-sphere singularity completion only when the active G4 prerequisite boundary permits it; prove the direct cause before elevating historical completion/simplification failures.
-- [ ] **G5 — adaptivity and hard features.**
-- [ ] **G6 — Bunny/Vase production success and representative performance.**
-- [ ] **G7 — hardening and default-on production readiness.**
+- [x] **M0 — preserve evidence.**
+- [ ] **M1 — single-authority contract cutover.** Current active gate.
+- [ ] **M2 — closed stage products and single writers.**
+- [ ] **M3 — field-aligned curve network.**
+  - Build FieldAlignedCurveNetwork from the field-transport atlas with typed singularity ports, branch-consistent non-crossing traces, typed termination events, and disc-region proofs.
+  - Prove the adapted combinatorial-tracing plus motorcycle-decomposition composition on supported inputs; do not treat the cited ingredients as a proof of the combined algorithm.
+  - Construct and independently verify the A1 field-quadrangulability certificate.
+- [ ] **M4 — global conformity plan.**
+  - Compute one strictly positive shared rail schedule with a deterministic polynomial graph/flow algorithm before regional production.
+  - Resolve G4-B002 exact-torus InvalidHardRailPairing without post-hoc local pairing.
+  - Infeasible subsets become typed D3 inputs; they do not hard-fail the run.
+- [ ] **M5 — certificate-carrying chart and quotient relations.**
+  - Retain selected relation paths, explicit owners, and independently verifiable certificates.
+  - Resolve nonzero periodic Z4 and positive multi-isolation quotient evidence where required by the product gate.
+- [ ] **M6 — occurrence, embedding, and independent verification.**
+  - Separate occurrence, quotient, embedding, and verifier products.
+  - Establish a correct-by-construction injective region-interior baseline and calibrated geometry/field/quality evidence.
+- [ ] **M7 — disposition and graded degradation.**
+  - Implement verifier-assigned D0 Certified, D1 QualityRelaxed, D2 LocallyDegraded, D3 Partial, and D4 DiagnosticOnly.
+  - Specify and prove the one declared degraded region producer; it must be bounded, non-recursive, pure-quad, manifold, and conform to the unmodified boundary plan.
+  - Strict fixture gates require D0; D1-D3 never close them.
+- [ ] **M8 — module boundaries and operational hardening.**
+- [ ] **Pipeline A — optional decomposed coordinate integration.**
+  - No implementation or scheduling until Pipeline B is Certified on the complete representative matrix with calibrated stable quality gates and evidence that integration would materially improve quality.
 
-## Architecture migration roadmap
+## Active product blockers
 
-- [x] **M0 — preserve immutable evidence.**
-- [ ] **M1 — single-authority contract cutover.**
-  - [x] M1a authority kernel.
-  - [x] M1b first source/provenance consumer.
-  - [x] M1c field-transition consumer.
-  - [x] M1d phase-front route identity consumer.
-  - [x] M1e segment route transport consumer.
-  - [x] M1f vertex continuation route transport consumer.
-  - [x] M1g periodic holonomy route transport consumer.
-  - [x] M1h phase-front field-chart consumer.
-  - [x] M1i phase-front cell source-scope consumer.
-  - [x] M1j phase-front edge source-scope consumer.
-  - [x] M1k phase-front edge topology-region consumer.
-  - [x] M1l phase-front cell topology-region consumer.
-  - [x] Final cutover implementation/build/package: replace remaining affected producer/storage/verifier/materializer contracts together and remove displaced forms.
-  - [ ] Final cutover immutable artifact-only acceptance.
-- [ ] **M2 — remaining closed stage products and single-writer scope.** When active product work reaches a producer outside the M1 cutover, replace its complete outcome/snapshot contract in that production turn; do not run another representation-only campaign.
-- [ ] **M3 — global conformity before regional production.** Compute one exact hard-rail breakpoint schedule and certificate before local regions commit cells; both sides consume the identical ordered schedule; remove post-hoc local pairing as authority.
-- [ ] **M4 — certificate-carrying chart and quotient relations.** Publish explicit directed occurrence/transport/quotient relations with verifiable certificates; validators verify rather than reconstruct them; close remaining global-local relation debt behind periodic/G4 capability.
-- [ ] **M5 — occurrence, embedding, and independent verification split.** Use explicit occurrences, exact source support, certificate-driven quotient materialization, and independently recomputed elementary source/output incidence.
-- [ ] **M6 — module boundaries and operational hardening.** Split oversized ownership modules and harden diagnostics/resource/CI after their product contracts are correct; do not defer deletion required by an earlier contract replacement.
+- [ ] G4-B001 / PR8-R034 / G4-R007: direct torus final LocalSheetMismatch; require strict-valid torus 3/3.
+- [ ] G4-B002: exact torus InvalidHardRailPairing; owned by revised M4.
+- [ ] G4-B003: nonzero periodic Z4 production capability; owned by M5 after M1.
+- [ ] G4-B004: positive multi-isolation quotient witness; owned by M5/M6.
+- [ ] Bunny/Vase representative production and resource acceptance remain later product gates.
+
+## Design clarification and evidence backlog
+
+- [ ] Correct DESIGN.md section 6.7 invariant 2: D1 is defined by missed quality gates and therefore requires a quality degradation record; QualityRelaxed cannot simultaneously mean all gates passed.
+- [ ] Validate the M3 Ray-Sokolov-style trace plus motorcycle-graph composition rather than assuming its guarantees transfer automatically.
+- [ ] Define the A1 quadrangulability certificate construction and independent tamper oracle.
+- [ ] Define the M7 degraded producer algorithm and its fixed-boundary completion proof.
+- [ ] Calibrate D0/D1 geometry, field alignment, approximation, element-quality, determinism, work, and resource thresholds.
 
 ## Required target-stage corrections
 
-These tasks mirror the target-stage corrections in `REORIENTATION_PLAN.md` and must remain represented here until their owning migration is complete.
-
-| Stage | Task | Owning migration |
+| Stage | Open contract | Owning milestone |
 |---|---|---|
-| A0 source authority | [ ] Establish one immutable source snapshot and tagged exact source support. | M1, M2, M5 |
-| A1 field transport | [ ] Complete typed chart, grid-automorphism, transition, and route authority. | M1 |
-| A2 topology plan | [ ] Establish one global topology plan with no downstream semantic reconstruction. | M2, M4 |
-| A3 conformity plan | [ ] Establish one verified shared hard-rail schedule before regional commits. | M3 |
-| A4 local construction | [ ] Make region authority immutable; aggregation may validate/remap representation only. | M2, M3 |
-| A5 occurrence complex | [ ] Publish explicit corner occurrences and directed-side relations. | M4, M5 |
-| A6 quotient/materialization | [ ] Use a verified relation registry with exact-once quotient consumption. | M4, M5 |
-| A7 embedding | [ ] Bind source geometry through one shared exact-support kernel. | M5 |
-| A8 verification | [ ] Independently verify certificates/incidence; verification must never repair topology. | M4, M5 |
-| A9 diagnostics/export | [ ] Keep diagnostics derived/non-authoritative with explicit retention semantics. | M2, M6 |
+| A0 SourceAuthoritySnapshot | one immutable exact-support/source-incidence authority | M1-M2 |
+| A1 FieldTransportAtlas | typed charts/transport plus quadrangulability certificate | M1, M3 |
+| A2a FieldAlignedCurveNetwork | non-crossing typed trace network and region proof | M3 |
+| A2b GlobalTopologyPlan | one immutable global topology plan | M2-M3 |
+| A3 GlobalConformityPlan | positive shared rail schedule and typed infeasible subset | M4 |
+| A4 RegionCellComplex | strict and separately declared degraded producers | M2, M4, M7 |
+| A5 OccurrenceComplex | explicit typed occurrences and relations | M5-M6 |
+| A6 QuotientComplex/materialization | verified exact-once relation consumption | M5-M6 |
+| A7 GeometryEmbedding | exact support, injectivity, and quality | M6, T5 |
+| A8 Verification | independent verification and disposition assignment | M6-M7 |
+| A9 Diagnostics/export | derived, non-authoritative, retained by policy | M8 |
 
 ## Testing roadmap
 
 - [x] **T0 — independent audit and authority separation.**
 - [x] **T1 — independent oracle/package foundation.**
-- [ ] **T2 — complete direct corpus and semantic manifest.** Package and gate the complete direct semantic corpus with explicit topology, boundary, feature, field-variation, matching/holonomy, singularity, scale, and expected-outcome metadata.
-- [ ] **T3 — property/metamorphic generation and shrinking.** Add deterministic generators, semantic metamorphic properties, seed replay, and shrinking/minimized reproducers.
-- [ ] **T4 — sanitizer fuzzing and minimized replay.** Add coverage-guided sanitizer fuzz targets with valid/invalid seed corpora and committed minimized replay cases.
-- [ ] **T5 — calibrated representative quality/corpus gates.** Gate independently measured topology, lineage, geometry, field/feature alignment, approximation, quality, determinism, and representative-corpus thresholds.
-- [ ] **T6 — CI, resource, and oracle-adequacy hardening.** Enforce immutable discovery/package manifests, resource/work bounds, repeated-process/state-reset behavior, oracle sensitivity, and tiered CI/corpus execution.
-
-## Deferred cross-cutting work
-
-- [ ] Replace or recalibrate the nondeterministic sub-millisecond strict-validator 5% timing gate with a stable performance test; do not use threshold/retry workarounds to manufacture a pass.
-- [ ] Resolve historical transition-quotient/completion failures only when they are proven relevant to the active product/architecture gate.
-- [ ] Complete prescribed-sphere production acceptance after prerequisite G4 authority is ready.
-- [ ] Complete fallback/recovery policy work after prerequisite direct-production gates; do not use recovery as a substitute for direct SurfaceCells correctness.
-- [ ] Complete optimization/performance work after correctness, authority, and representative product gates are established.
+- [ ] **T2 — complete direct corpus and semantic manifest.** Every strict representative case declares expected D0 or typed failure; no degraded tier counts as green.
+- [ ] **T3 — property/metamorphic generation and shrinking.** Include curve-network topology, rail-flow, relation, disposition, degraded/omitted set, and permutation properties.
+- [ ] **T4 — sanitizer fuzzing and minimized replay.**
+- [ ] **T5 — calibrated representative quality and disposition gates.**
+- [ ] **T6 — CI, resource, work-ledger, discovery, and oracle-adequacy hardening.**
 
 ## Authoritative references
 
-- `.agents/Directional/Future_Chat_Session_Handoff.md` — exact current turn and resume state.
-- `.agents/Directional/REORIENTATION_PLAN.md` — architecture migration order, dependencies, invariants, and stop conditions.
-- `.agents/Directional/DESIGN.md` — normative product/stage/domain architecture.
-- `.agents/Directional/Surface_Cell_Backend_Remediation_Plan.md` — historical G4 remediation record and preserved product-boundary rationale.
-- `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md` — T0-T6 test redesign authority.
-- `.agents/Directional/Regression_Root_Cause_Tracker.md` — stable regressions, recurring patterns, and blocker definitions.
-- `tests/TESTING_STRATEGY.md` — normative testing policy.
-- `.agents/Directional/CHANGELOG.md` — completed implementation and immutable-acceptance history.
+- .agents/Directional/DESIGN.md
+- .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md
+- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
+- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+- .agents/Directional/Future_Chat_Session_Handoff.md
+- .agents/Directional/REORIENTATION_PLAN.md
+- .agents/Directional/Regression_Root_Cause_Tracker.md
+- .agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md
+- tests/TESTING_STRATEGY.md
+- .agents/Directional/CHANGELOG.md

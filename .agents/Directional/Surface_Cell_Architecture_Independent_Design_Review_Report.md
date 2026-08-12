@@ -6,6 +6,8 @@
 **Decision:** **changes required before architecture expansion**  
 **Runtime decision:** preserve and execute the already compiled artifact-only checkpoint; a pass can resolve `G4-R007` behaviorally but cannot close the architectural findings below.
 
+> **2026-08-11 historical-status note:** This report remains authoritative evidence for AR-01 through AR-12 against reviewed source `6af23d9...`. Its former normative roadmap and immediate runtime instruction are superseded by the supplied replacement `DESIGN.md`, `REORIENTATION_PLAN.md`, and `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. The redesign makes Pipeline B normative, leaves Pipeline A optional, adds M3 curve-network and M7 disposition contracts, and maps former M3-M6 to M4/M5/M6/M8. Do not execute the historical artifact instruction in this report.
+
 ## Executive assessment
 
 The implementation has accumulated substantial correct domain knowledge—source-attached points, typed failure reasons, topology regions, local sheets, explicit holonomy data, seam certificates, direct cell materialization, and strong validation goals. The repeated regressions are not evidence that the underlying surface-cell idea is unsound.
@@ -280,4 +282,3 @@ After that checkpoint, the first mutating turn is M1 authority-kernel Code + Bui
 - Pietroni et al., [Reliable Feature-Line Driven Quad-Remeshing](https://www.quadmesh.cloud/) and [QuadWild](https://github.com/nicopietroni/quadwild).
 - Jakob et al., [Instant Field-Aligned Meshes](https://rgl.epfl.ch/publications/Jakob2015Instant).
 - Gori et al., [FlowRep](https://www.cs.ubc.ca/labs/imager/tr/2017/FlowRep/).
-

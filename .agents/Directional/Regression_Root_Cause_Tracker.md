@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-11 UTC** after immutable M1l cell topology-region acceptance from Code + Build artifacts `9083262395 / 9083262833` and runtime evidence `9083913766`, followed by the Review decision to finish M1 with one single-authority cutover.
+Last updated: **2026-08-12 UTC** after the Pipeline B/disposition redesign and independent review of R-A source `bebac907de814b07a55a770add4c897ab6d22ffd`.
 
 ## Rules
 
@@ -292,6 +292,28 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 - After immutable acceptance, M1 closes and the primary queue returns to G4 production work. Remaining architecture work is introduced only as a complete vertical contract needed by an active production blocker, not as another representation-only campaign.
 - This strategy correction changes no historical regression count: totals remain **34 / 14 / 20**.
 
+### R-A compile checkpoint and independent review
+
+- Reviewed source: `bebac907de814b07a55a770add4c897ab6d22ffd`.
+- Compile run/job `31550744314 / 93972723960`, result/log artifacts `9124167871 / 9124168143`, Release/static/Ninja/PRE_TEST **118/118**.
+- No generated runtime, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input executed.
+- R-A established typed region/member authority, private checked factories, exact row coverage, builder-only raw classifier ingress, `SourceEntityId` removal, and owning-product consumer APIs.
+- `R-A-REV-01`: materializer occurrences omit required typed sheet/member authority and read `SurfacePoint::sheet` for cross-sheet equivalence and representative ordering. This repeats the `RP-01` and `RP-05` source shape.
+- `R-A-REV-02`: completion fallback stitch identity encodes raw provenance component/sheet beside typed lineage authority. This repeats the `RP-01` and `RP-05` source shape.
+- These are review findings, not new stable runtime regression events: runtime was not executed and no previously accepted behavior was shown lost. Totals remain **34 / 14 / 20**.
+- R-A remains compile-valid partial implementation. M1l remains immutable runtime authority; neither artifact `9105462679` nor `9124167871` is an M1 acceptance candidate.
+
+### Architecture redesign mapping
+
+- Pipeline B is the normative default; Pipeline A is optional and unscheduled.
+- New M3 owns the field-aligned curve network.
+- Prior M3 becomes M4 global conformity; `G4-B002` is therefore M4-owned.
+- Prior M4 becomes M5 certificate-carrying relations.
+- Prior M5 becomes M6 occurrence/embedding/verification.
+- New M7 owns graded disposition and the declared degraded producer.
+- Prior M6 becomes M8 operational hardening.
+- Strict product gates require D0 Certified; D1-D3 are explicit product dispositions and never green substitutes.
+
 ## Current G4 stable-ID mapping
 
 | PR event | G4 ID | Category | Pattern | Status |
@@ -311,24 +333,24 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | ID | Blocker | Required gate |
 |---|---|---|
 | `G4-B001` | Direct torus final `LocalSheetMismatch`. | strict-valid torus 3/3 |
-| `G4-B002` | Exact Phase10 torus `InvalidHardRailPairing`. | shared source-authoritative rail schedule; M3 |
-| `G4-B003` | Nonzero periodic Z4 production capability. | final M1 cutover + representative product acceptance |
-| `G4-B004` | Positive multi-isolation quotient witness. | focused + representative certificate evidence |
+| `G4-B002` | Exact Phase10 torus `InvalidHardRailPairing`. | shared positive rail schedule; revised M4 |
+| `G4-B003` | Nonzero periodic Z4 production capability. | M5 relation certificate + representative product acceptance |
+| `G4-B004` | Positive multi-isolation quotient witness. | M5/M6 focused + representative certificate evidence |
 
 ## Architecture enforcement register
 
 | ID | State |
 |---|---|
 | `AR-01` | final M1 cutover installs exhaustive `ProducerOutcome<SurfacePhaseFrontProduct>` |
-| `AR-02` | M1a through M1l **accepted**; complete single-authority cutover is next |
-| `AR-03` | final cutover closes strong identity from producer through materializer |
+| `AR-02` | M1a through M1l **accepted**; R-A compile checkpoint is partial; full single-authority cutover remains next |
+| `AR-03` | final cutover closes strong identity from producer through materializer, including `R-A-REV-01/02` |
 | `AR-04` | final cutover replaces remaining chart, support, route, periodic, rail, occurrence, quotient, and certificate numeric ownership |
 | `AR-05` | after cutover, numeric projection is permitted only at a direct Eigen/vector storage or derived export leaf; it is never semantic authority |
 | `AR-06` | final cutover installs the complete typed isolation-seam transport certificate; later relation-registry work must be driven by a production blocker |
-| `AR-07` | global conformity becomes a complete production contract when G4 requires it |
+| `AR-07` | revised M4 publishes one deterministic positive global conformity/flow plan before regional commits |
 | `AR-08` | final cutover publishes one immutable producer-scoped phase-front product |
 | `AR-09` | final cutover replaces `SurfacePointSourceSupport` with the typed resolved support contract end to end |
-| `AR-10` | complete vertical product contracts now; module extraction only when justified by resumed production work |
+| `AR-10` | revised M3/M4/M5/M6/M7 contracts land vertically; module extraction/hardening closes in M8 |
 | `AR-11` | normative architecture/status separation maintained |
 | `AR-12` | T1 independent oracle/package accepted; T2–T6 expand authority |
 
@@ -336,7 +358,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 | ID | State |
 |---|---|
-| `TA-01` | topology/lineage/disposition accepted; geometry/field/quality later |
+| `TA-01` | topology/lineage partial authority accepted; revised D0-D4 disposition and geometry/field/quality remain later gates |
 | `TA-02` | T2 ten-case direct matrix pending |
 | `TA-03` | metric definitions/baselines pending |
 | `TA-04` | T3/T4 generation/shrinking/fuzz pending |
@@ -346,11 +368,11 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `TA-08` | M1a route algebra + M1c edge transport + M1d route identity + M1e segment-route + M1f continuation-route + M1g periodic-route + M1h field-chart + M1i/M1j source-scope + M1k edge topology-region + M1l cell topology-region authority accepted; full cutover behavior contracts next |
 | `TA-09` | coherent resource/work gate pending |
 | `TA-10` | T2 semantic fixture manifest pending |
-| `TA-11` | topology/lineage/disposition adequate; quality expansion later |
+| `TA-11` | existing topology/lineage oracle foundation accepted; M3 network, M7 disposition, and T5 quality mutation evidence remain open |
 | `TA-12` | `tests/TESTING_STRATEGY.md` normative only |
 
 ## Authoritative next step
 
 `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
 
-The next turn is **Code + Build only**. Execute the complete cutover in the named plan, delete displaced fields and the helper bridge, compile and package behavior-oriented contracts discovered from the completed implementation, and execute no generated Directional binary. The following immutable Test + Benchmark turn must preserve all entering M1l–M1b, validation, M1a, T1, direct-product, known-red, timing-classification, and postflight authority while accepting the new semantic contracts. On acceptance, close M1 and resume G4 production work.
+The next turn is **Code + Build only**. Close `R-A-REV-01/02`, finish R-B through R-G, delete displaced fields/read-back paths and helper bridges, compile/package the exact full cutover, and execute no generated Directional binary. The retained artifact-only plan stays dormant until that fresh package exists. On M1 acceptance, resume the Pipeline B queue under revised M2-M8 ownership; Pipeline A remains unscheduled.

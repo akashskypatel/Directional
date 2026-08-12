@@ -2,16 +2,21 @@
 
 **Status:** normative testing policy  
 **Scope:** direct source-authoritative surface-cell production and its stage contracts  
-**Status authority:** artifact IDs, run totals, active failures, and next-turn instructions belong in dated reports, `TODO`, `MILESTONE_G_TODO.md`, and the handoff—not this file.
+**Status authority:** artifact IDs, run totals, active failures, and next-turn instructions belong in dated reports, `TODO.md`, and the handoff—not this file.
 
 ## 1. Intended product
 
-Given an arbitrary supported source triangle mesh, a degree-four tangent directional field, exact source-feature constraints, and a target-size field, the production pipeline must return either:
+Given a supported source triangle mesh, a degree-four tangent directional field, exact source-feature constraints, and a target-size field, normative Pipeline B returns one verifier-assigned disposition:
 
-- a deterministic, source-attached, field-aligned, manifold pure-quad mesh satisfying every declared topology, lineage, geometry, quality, and resource contract; or
-- one truthful typed failure at the earliest invalid authority boundary.
+- D0 `Certified`: complete deterministic source-attached field-aligned manifold pure-quad output satisfying every structural and calibrated quality contract;
+- D1 `QualityRelaxed`: complete structurally valid pure-quad output with every missed calibrated quality gate named and measured;
+- D2 `LocallyDegraded`: complete structurally valid pure-quad output with every region built by the one declared degraded producer identified;
+- D3 `Partial`: a structurally valid pure-quad subset with every omitted region and typed cause identified;
+- D4 `DiagnosticOnly`: no mesh, reserved for the closed catastrophic set in `DESIGN.md`.
 
-Strict direct acceptance forbids fallback, source-grid recovery, generic-producer substitution after rejection, fixture-specific branches, predicted topology repair, and synthetic success.
+Strict direct fixture acceptance requires D0. D1-D3 are usable, truthfully labeled product outcomes and have their own tests, but never close a strict gate or become certified baselines. D4 conditions and non-catastrophic degradation triggers must not be conflated.
+
+Pipeline A is optional future work. It has no test or implementation obligation until Pipeline B is D0 on the full committed matrix with calibrated stable quality gates.
 
 ## 2. Testing integrity
 
@@ -53,7 +58,7 @@ Every case enters `remesh_from_raw_cross_field` with:
 - requested and executed backend `SurfaceCells`;
 - `SurfaceCellFallbackPolicy::Fail`;
 - source-grid recovery disabled;
-- no hidden fallback attempt or generic substitution;
+- no hidden fallback attempt or undeclared producer substitution;
 - production preprocessing and field extraction/generation as declared by the manifest;
 - all debug/intermediate retention settings excluded from semantic acceptance.
 
@@ -71,6 +76,8 @@ The committed smoke matrix is:
 10. vase with generated smooth field.
 
 Run all named cases within the tier's bounded budget; an earlier failure does not authorize omission of later fixtures. Known-red product cases remain discovered and reported explicitly. They are not disabled and are not counted as required-green proof until an immutable acceptance turn promotes them.
+
+The fixture manifest records its current expected strict disposition. A case expected to reach D0 fails its gate at D1-D4. Deliberate degradation fixtures are separate from the representative strict matrix.
 
 ## 5. Fixture and corpus authority
 
@@ -94,16 +101,17 @@ Invalid inputs must fail closed at a documented boundary. They must not be subst
 
 ### 6.1 Hard invariants
 
-For every successful direct result, an independently written test oracle recomputes or verifies:
+For every emitted D0-D3 mesh, an independently written test oracle recomputes or verifies:
 
 - non-empty degree-four faces and valid indices;
 - no degenerate/inverted/duplicate faces, T-junctions, nonmanifold edges, or self-intersections;
 - orientability, connected components, boundary loops, and Euler characteristic under the declared topology policy;
-- one accepted cell to one output quad;
+- one accepted cell to one output quad within the emitted set;
 - exact source support for every output vertex;
 - complete cell/edge/vertex lineage and certificate ownership;
-- exact-once consumption of owned topology regions, rails, isolation seams, singularity ports, and periodic/quotient relations;
-- requested/executed direct backend, no fallback/recovery/substitution, and truthful terminal state;
+- exact-once consumption of owned topology regions, rails, isolation seams, singularity ports, and periodic/quotient relations after explicit D3 omission bookkeeping;
+- requested/executed direct backend, no hidden substitution, and truthful recomputed disposition;
+- every degradation certificate matches an observable fact and every observable degradation has exactly one certificate;
 - deterministic canonical semantic identity;
 - finite global work and declared resource bounds.
 
@@ -134,20 +142,20 @@ The independent oracle must reject deliberate corruptions of:
 - source support, lineage, ownership, and certificate consumption;
 - field direction and feature correspondence;
 - geometry attachment, self-intersection, inversion, and element quality;
-- backend/fallback/recovery disposition;
+- backend/undeclared-substitution/disposition;
 - deterministic semantic identity.
 
 A production bug is not contained until the smallest relevant mutation/reproducer fails the oracle for the intended reason.
 
 ## 7. Producer and topology contracts
 
-The producer exposes exactly `NotApplicable`, `Produced`, or `Rejected`.
+Each strict producer exposes exactly `NotApplicable`, `Produced`, or `Rejected`.
 
 Required properties:
 
 - valid applicable regions may produce;
 - invalid applicable metadata rejects rather than becoming not applicable;
-- rejection is terminal and cannot trigger generic substitution;
+- rejection is terminal for that producer and cannot be softened internally;
 - produced payloads are non-empty and internally valid;
 - exhaustive dispatch is invariant to unrelated producer ordering;
 - source component, topology region, isolation sheet, and field chart remain distinct domains;
@@ -156,6 +164,8 @@ Required properties:
 - every recursive or combinatorial producer uses a shared global work ledger and monotone progress measure.
 
 State-machine tests cover every transition and impossible state. Repeated-call and alternating success/failure sequences prove reset and transactional behavior.
+
+Degradation is an orchestration/verifier concern, not a producer state. Only the disposition layer may invoke the separately named degraded producer after observing terminal strict rejection. That substitution is single-shot, bounded, non-recursive, cannot mutate upstream products, and is always recorded.
 
 ## 8. Transport, chart, rail, and quotient contracts
 
@@ -187,7 +197,9 @@ Properties include:
 - identical canonical breakpoints and side counts on both sides;
 - endpoint, feature, parity, and declared adaptivity constraints;
 - invariance under region order and permitted target-size representation changes;
-- typed rejection for independent insertion, deletion, reorder, wrong owner, or infeasible schedule;
+- typed rejection for independent insertion, deletion, reorder, or wrong owner;
+- typed subset-scoped infeasibility for an unschedulable rail subset, followed by truthful D3 omission rather than a run failure;
+- strictly positive rail lengths and deterministic canonical tie-breaking;
 - bounded solver/work behavior.
 
 ### 8.4 Occurrence quotient and materialization
@@ -205,6 +217,33 @@ Tests require:
 
 Intermediate-object retention, raw relation IDs, exact output row order, and predicted counts are diagnostics unless they are the explicit contract under test.
 
+### 8.5 Field-aligned curve network
+
+Pipeline B's `FieldAlignedCurveNetwork` tests require:
+
+- singularity port count/branch derived from field index and every port owned exactly once;
+- branch-consistent exact-support traces with typed start, crossing, crash, merge, boundary, feature, and singularity events;
+- no silent interior termination, geometric crossing, duplicate segment, or unowned mandatory topology;
+- motorcycle termination/decomposition producing complete disc regions on every supported positive fixture;
+- explicit counterexamples for limit cycles, near-coincident traces, non-disc regions, incompatible holonomy, and failed quadrangulability;
+- tracing-order, start-port, row, orientation, and scheduler metamorphic invariance;
+- independent verification of the field-quadrangulability certificate and region proofs.
+
+The combined tracing/decomposition algorithm requires direct evidence; tests may not assume that guarantees from separate cited algorithms compose automatically.
+
+### 8.6 Disposition and degradation
+
+Required properties:
+
+- D0-D4 are each reachable through a fixture or controlled fault injection with proved preconditions;
+- the verifier recomputes tier from the product and certificates rather than trusting a producer flag;
+- unrecorded degradation and fabricated degradation records both fail;
+- tier can only stay the same or decrease;
+- the degraded producer exactly conforms to the unmodified boundary plan, emits pure quads, remains manifold, and cannot mutate upstream products;
+- D3 omitted-region sets reconcile with rail/relation ownership and quotient consumption;
+- tier, degraded set, omitted set, and certificates are invariant under every permitted permutation;
+- strict representative gates accept D0 only.
+
 ## 9. Determinism and metamorphic properties
 
 At minimum, declare and test:
@@ -217,7 +256,8 @@ At minimum, declare and test:
 - rigid transform and uniform scaling with correspondingly transformed fields/targets/tolerances;
 - equivalent cross-field branch relabeling by quarter turns;
 - source triangulation changes that preserve the declared surface/field semantics;
-- fresh-process repetition and in-process success/failure sequences.
+- fresh-process repetition and in-process success/failure sequences;
+- disposition tier, degraded-region set, omitted-region set, and degradation certificates.
 
 Each relation states the output facts that must remain equal, may vary, and must change. Raw structural hashes are same-artifact diagnostics; only a validated canonical semantic digest may express invariant identity.
 
@@ -332,7 +372,10 @@ Stop and revise the plan if:
 - fuzzing lacks deterministic replay, minimization, bounds, or sanitizer configuration;
 - numeric quality limits lack definitions and approved baselines;
 - a known-red test is hidden, disabled, or counted as green;
-- an assertion, fixture, validator, lineage, failure, or no-fallback contract is weakened.
+- a D1-D3 result is counted as a strict fixture pass or certified baseline;
+- a degradation lacks a substantiated certificate, recurses, mutates upstream authority, or is chosen by the producer being degraded;
+- Pipeline A is scheduled before Pipeline B eligibility gates;
+- an assertion, fixture, validator, lineage, failure, strict-gate, or declared-degradation contract is weakened.
 
 ## 15. Authority
 
