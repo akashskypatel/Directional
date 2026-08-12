@@ -2736,7 +2736,8 @@ AuthoritativePhaseFrontMeshResult build_authoritative_phase_front_mesh(
           occurrence.lattice.latticeCoordinate.y(),
           occurrence.lattice.branchRotation, occurrence.lattice.scaleLevel,
           occurrence.chart.chart);
-      sheetsByTopologyRegion[occurrence.topologyRegion].insert(sheet);
+      sheetsByTopologyRegion[occurrence.topologyRegion].insert(
+          occurrence.isolationSheet);
     }
     for (const auto &[regionId, sheetSet] : sheetsByTopologyRegion) {
       const std::vector<authority::IsolationSheetId> sheets(
