@@ -8,12 +8,12 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 
 ## Current focus
 
-- [ ] **Close M1 R-A and complete the single-authority cutover.**
-  - Reviewed source bebac907de814b07a55a770add4c897ab6d22ffd compiled 118/118 in run/job 31550744314 / 93972723960.
-  - Compile artifacts 9124167871 / 9124168143 are compile-only evidence, not runtime acceptance.
+- [ ] **Complete the M1 single-authority cutover.**
+  - R-A review closure source `df386d1ad819879abbf9d7660c3d586778d7daee` compiled 118/118 in run/job `31555887046 / 93988102158`.
+  - Compile artifacts `9125984929 / 9125985115` are compile-only evidence, not runtime acceptance.
   - [x] Typed region/member authority, private checked factories, exact row coverage, builder-only raw classifier ingress, SourceEntityId removal, and owning-product materializer API.
-  - [ ] R-A-REV-01: replace materializer reads of SurfacePoint::sheet with required typed occurrence sheet/member authority.
-  - [ ] R-A-REV-02: replace completion/stitch identity reads of raw provenance component/sheet with typed lineage authority.
+  - [x] R-A-REV-01: materializer occurrences own typed `IsolationSheetId`; cross-sheet equivalence, quotient state, representative ordering, and sheet aggregation no longer read `SurfacePoint::sheet` semantically.
+  - [x] R-A-REV-02: completion/stitch fallback identity derives from typed lineage topology-region/isolation-sheet authority; raw provenance component/sheet is no longer a semantic stitch-identity source and missing typed fallback authority fails closed.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
   - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.
@@ -22,11 +22,11 @@ This is the single durable task index for the cross-field-aligned surface-cell q
   - [ ] Complete R-G expanded failing source audit.
 - [ ] **Produce one fresh full R-A-through-R-G Code + Build package.**
   - Compile/package only; execute no generated binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input.
-  - Historical artifact 9105462679 and R-A artifact 9124167871 are ineligible for M1 acceptance.
+  - Historical artifact `9105462679`, earlier R-A artifact `9124167871`, and partial R-A review-closure artifact `9125984929` are ineligible for M1 acceptance.
 - [ ] **Activate and run the retained immutable M1 Artifact-Only Test + Benchmark plan only after the full package exists.**
 - [ ] **After M1 acceptance, resume Pipeline B product work under the revised M2-M8 architecture.** Pipeline A remains unscheduled.
 
-Current immutable runtime authority remains M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c. Draft PR #8 remains open, draft, and unmerged.
+Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`. Draft PR #8 remains open, draft, and unmerged.
 
 ## Product and architecture roadmap
 
