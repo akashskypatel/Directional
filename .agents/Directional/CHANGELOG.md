@@ -17,6 +17,22 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed
+
+- Closed `R-A-REV-01`: materializer occurrences now own typed `IsolationSheetId`; reviewed cross-sheet equivalence, quotient-state, representative-ordering, and sheet-aggregation decisions no longer read `SurfacePoint::sheet` semantically.
+- Closed `R-A-REV-02`: completion fallback stitch identity derives from typed lineage topology-region/isolation-sheet authority rather than raw provenance component/sheet, and assembly fails closed with `MissingTypedStitchIdentity` when typed fallback authority is absent.
+
+### Validation
+
+- Partial R-A review-closure source authority: `df386d1ad819879abbf9d7660c3d586778d7daee`.
+- Compile-only run/job `31555887046 / 93988102158` completed Release/static/Ninja/PRE_TEST **118/118**. Result artifact `9125984929`, ZIP SHA-256 `23da519d16f59b3ba86d6defab185f51446700c6b6e405b88a5c735453ecdc81`; log artifact `9125985115`, ZIP SHA-256 `5a075c0ede75d79cb6b5ecc50d33c2e43a3f52d78b59bf5248bd33be14f7d051`.
+- Focused source audit passed for both R-A review findings. No generated Directional binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input was executed.
+- This is build evidence for the two review corrections only; R-B through R-G remain open, M1 is not runtime accepted, immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`, and runtime regression totals remain **34 events / 14 categories / 20 recurrences**.
+
+### Operational notes
+
+- Initial partial-closure compile run/job `31555727064 / 93987628937` stopped at compile step 82/118 on one stale local `sheet` alias after the typed occurrence member was introduced. The correction was limited to that remaining aggregation read; no generated runtime executed and no stable product regression was assigned.
+
 ### Changed
 
 - Replaced the normative architecture with the supplied Pipeline B-first `DESIGN.md`; Pipeline A is now optional future work gated on full Pipeline B Certified evidence.

@@ -1,7 +1,7 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** R-A implementation bebac907de814b07a55a770add4c897ab6d22ffd compiled successfully but independent review found two blocking raw-payload read-back paths; R-A closure plus R-B through R-G remain selected  
+**Current status:** R-A-REV-01 and R-A-REV-02 are compile-closed at source df386d1ad819879abbf9d7660c3d586778d7daee; R-B through R-G remain selected before any M1 runtime acceptance
 **Original planning decision:** prior narrow M1m plan rejected and replaced  
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
@@ -33,7 +33,26 @@ The implementation established the typed region/member authority, private checke
 
 The compile is valid evidence of buildability only. It is not runtime evidence and does not close R-A.
 
-### Blocking independent-review findings
+### R-A review-closure partial checkpoint
+
+The two independent-review findings were closed in a bounded partial Code + Build turn without advancing R-B through R-G.
+
+| Evidence | Authority |
+|---|---|
+| Source authority | df386d1ad819879abbf9d7660c3d586778d7daee |
+| Compile run/job | 31555887046 / 93988102158 |
+| Result artifact | 9125984929, sha256:23da519d16f59b3ba86d6defab185f51446700c6b6e405b88a5c735453ecdc81 |
+| Log artifact | 9125985115, sha256:5a075c0ede75d79cb6b5ecc50d33c2e43a3f52d78b59bf5248bd33be14f7d051 |
+| Compile boundary | Release/static/Ninja/PRE_TEST, 118/118 |
+| Runtime boundary | no generated binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input executed |
+
+R-A-REV-01 is compile-closed: materializer occurrences now carry typed IsolationSheetId and the reviewed cross-sheet equivalence, quotient-state, representative-ordering, and sheet-aggregation paths consume that member instead of SurfacePoint::sheet.
+
+R-A-REV-02 is compile-closed: completion fallback stitch identity is derived from typed lineage topology-region/isolation-sheet authority; raw provenance component/sheet no longer supplies semantic stitch identity, and missing typed fallback authority fails closed.
+
+This checkpoint is not a full R-A-through-R-G package and is not runtime acceptance. The expanded R-G audit remains required to establish the complete R-A closure gate across all affected consumers.
+
+### Blocking independent-review findings — closed for the reviewed R-A paths
 
 R-A-REV-01 — materializer raw sheet read-back:
 
@@ -53,10 +72,10 @@ The detailed evidence and redesign assessment are in Architecture_Redesign_and_M
 
 The next Code + Build turn must:
 
-1. close both R-A review findings;
+1. retain the compile-closed R-A-REV-01 and R-A-REV-02 corrections;
 2. finish R-B through R-G as the same vertical M1 cutover;
 3. compile/package the exact final source and expanded source audit without running generated runtime;
-4. produce a new full-cutover artifact; neither historical artifact 9105462679 nor R-A compile artifact 9124167871 may be relabeled as the acceptance candidate;
+4. produce a new full-cutover artifact; historical artifact 9105462679, R-A compile artifact 9124167871, and partial R-A review-closure artifact 9125984929 may not be relabeled as the acceptance candidate;
 5. hand only that full R-A-through-R-G package to the retained artifact-only plan.
 
 The earlier instruction to implement R-A through R-G in one completed M1 cutover remains the design-level definition of done. The R-A artifact is an intermediate compile checkpoint, not a new accepted migration slice.
