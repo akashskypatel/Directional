@@ -1,12 +1,26 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only
-**Current status:** RA-REV-22-F4/F5 and RA-REV-23-F2 are independently re-reviewed **CLOSED at the Code + Build boundary** at `64fa65a9379ad0a246393371516de3a3a7146243`; the R-A implementation is complete and nothing blocks the Test + Benchmark gate (RA-REV-23-F3 and RA-REV-22-F6 are deferred post-R-A hygiene); the widened complete R-A inventory is reproducibly PASS; a fresh exact-source compile package exists; overall R-A remains open pending the single immutable artifact-only Test + Benchmark gate
+**Current status:** R-A artifact-only Step 3 attempt 1 executed against exact source `64fa65a9379ad0a246393371516de3a3a7146243` and **FAILED organically** (run/job `31652227682 / 94298883415`); immutable preflight/static inventory/postflight passed and orchestration was clean; overall R-A remains open and the mandatory next turn is section 0I Code + Build runtime remediation before a fresh compile package and artifact-only retry
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`
 **Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
 **Latest review-remediation implementation/compile source:** `64fa65a9379ad0a246393371516de3a3a7146243`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0I. Post-runtime R-A remediation after artifact-only Step 3 attempt 1
+
+Artifact-only Test + Benchmark run/job `31652227682 / 94298883415` consumed exact source `64fa65a9379ad0a246393371516de3a3a7146243` package `9162042615` without rebuilding. Package preflight, the **19-path / 48-probe / 203-match** R-A inventory, and immutable postflight passed. Runtime selection was non-vacuous and orchestration-clean: **87 unique contracts, 61 passed / 26 failed**. R-A remains open.
+
+This is the **mandatory next Code + Build scope**. Do not mix runtime execution into it.
+
+1. **R-A-TB-CB-01 — carry source authority into aggregate optimization/final validation.** `source_optimization_has_complete_authority` correctly requires exact typed source ownership. The pipeline currently supplies `constraints.sourceAuthority` only from `phaseFrontProduct` while aggregate paths may have an authoritative global owner without that object, causing `optimization / MissingSourceAuthority` before component/final-oracle seams. Route the existing exact authoritative `SourceTopologyRegions` product into every SurfaceCells optimizer/final-validation consumer. Do not synthesize authority from maxima/raw labels, weaken exact binding, or restore a fallback.
+2. **R-A-TB-CB-02 — make aggregate final-oracle contracts reachable after CB-01.** Re-run source reasoning over the F1/F3/F4 component/final-oracle fixtures. The first runtime attempt showed boundary/feature seam preconditions false because execution stopped earlier. After authority transport is fixed, ensure the fixtures naturally produce required boundary/hard-feature authority; if a feature witness still has zero rails, fix its geometry/hard-edge setup rather than mutating expected authority after production. Preserve zero-publication assertions.
+3. **R-A-TB-CB-03 — completion owner-valid fixtures plus positive stitch closure.** Several Phase18 tests fail before their intended mutation because helpers no longer create valid source-support/chart/provenance ownership under strict authority. Repair those fixtures with real source vertices/faces and typed support/chart owner relations. Separately diagnose `CompatibleExactBoundaryKeyMergesWithTypedAuthorityCertificate` and `StitchingIsPatchOrderInvariant`, which reached stitch assembly and rejected with `IncompatibleTypedStitchAuthority`; correct canonical typed-authority behavior without aliases, fabricated IDs, raw mirrors, or pre-intersection identities.
+4. **R-A-TB-CB-04 — optimizer test-authority corrections.** `TriangleProjectionFailsClosedWhenRequiredSheetIsUnavailable` must mutate typed source owner/support authority, not raw `SurfacePoint.sheet`. `RailConstraintBuilderUsesOutputVertexSequencesForBoundaryAndFeatures` must supply the exact source vertex/face matrices required by its `sourceAuthority` binding. Preserve the production fail-closed source-scope check.
+5. **Revalidate static source and compile only.** Regenerate the complete retained R-A inventory; require widened static PASS. Produce one fresh exact-source Release/static/Ninja/PRE_TEST package through `agent-compile-reusable.yml`. Execute no generated binary, discovery, test, benchmark, CLI, fuzzer, help/version command, or custom input.
+
+The following turn retries the same artifact-only R-A semantic gate. A zero-selected filter is orchestration failure. Step 4 can close R-A only after an organic pass. No independent Review turn is requested before this remediation; the user has already confirmed the end-to-end R-A review.
 
 ## 0H. 2026-08-12 RA-REV-22-F4/F5 and RA-REV-23-F2 Code + Build remediation
 

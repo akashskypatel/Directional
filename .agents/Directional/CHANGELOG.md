@@ -17,6 +17,16 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Validation — R-A artifact-only closeout attempt 1 did not pass
+
+- Immutable T+B run/job `31652227682 / 94298883415` consumed exact source `64fa65a9379ad0a246393371516de3a3a7146243` compile artifact `9162042615` with no rebuild or source/test/fixture mutation. Outer digest, archive safety, **25/25** self-excluding manifest, five empty source-status snapshots, exact source/build authority, and the regenerated **19-path / 48-probe / 203-match** static R-A inventory all passed before runtime; postflight restored the same **25/25** checksums, package state, and executable hashes.
+- Independent discovery found **13** authority-kernel, **231** producer, **179** completion, and **84** validation tests. The R-A closeout selected **87 unique contracts**: **61 passed / 26 failed**, with zero zero-selected/orchestration failures. The three F4 contracts were also executed once as a direct first gate, producing 90 total executions / 29 failures including duplicates.
+- Strong typed leaf authority remained green: authority kernel **13/13**, isolation-seam authority **6/6**, source-authoritative validator **8/8**, rail-authority migration **7/7**, source-support/chart **1/1**. Aggregate cutover was **12/26**, retained completion authority **8/18**, and selected optimizer/final-validator authority **6/8**.
+- Primary production blocker: aggregate SurfaceCells optimization can enforce complete exact source authority after supplying `constraints.sourceAuthority` only through `phaseFrontProduct`, causing premature `optimization / MissingSourceAuthority` and preventing final-oracle counterfactuals from reaching their intended seam. Additional Code + Build work is required for strict completion fixture/assembly closure and two stale optimizer test assumptions. Exact classification is retained in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+- Runtime evidence artifacts: result `9163003523` SHA-256 `d87293c864c2e17495017567ff0abbe7a40888b7af2e3479306e2b12e2241d74`; log `9163003950` SHA-256 `6125912547d698c4cb24175692f876609372b86729aa122bd2923e6e14cc6d28`. The workflow intentionally propagated failure only after both artifacts were uploaded.
+- **R-A remains open.** No stable regression event/recurrence is added because `64fa65a9379ad0a246393371516de3a3a7146243` is not accepted runtime authority and no loss of M1l behavior has been established; totals remain **34 / 14 / 20**. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
+
+
 ### Validation — independent re-review of RA-REV-22-F4/F5 and RA-REV-23-F2
 
 - Independent Review inspected exact source `64fa65a9379ad0a246393371516de3a3a7146243`; the tree matches it exactly for `src`, `include`, `tests`, and the audit script. **Decision: all three follow-ups CLOSED at the Code + Build boundary. The R-A implementation is complete end to end and no finding blocks the Test + Benchmark gate. Overall R-A remains rejected/open — every contract is compiled-not-executed.**
