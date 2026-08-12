@@ -51,7 +51,12 @@ Then execute focused semantic contracts for:
 - REV-24 direct null and same-extent foreign source-authority rejection with optional gates disabled;
 - adjacent retained R-A transactional rollback, owner/certificate, optimizer/final-validator authority, and zero-publication contracts needed to detect regressions from this correction package.
 
-Classify every failure from immutable runtime evidence. Do not rebuild, weaken validation, restore aliases/fallbacks, or alter fixtures to synthesize green output. Mark R-A complete only if the full focused runtime gate passes organically; otherwise record precise corrective work for the next Code + Build turn.
+Classify every failure from immutable runtime evidence. Do not rebuild, weaken validation, restore aliases/fallbacks, or alter fixtures to synthesize green output.
+
+Two review amendments bind this turn:
+
+1. `MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication` and `MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication` reject at the `same_surface_cell_rail_authority` seam guard (`RemeshPipeline.cpp:10642-10648`), not at the final oracle. That is the expected result; record it as expected-but-insufficient coverage, never as REV-22 closure evidence.
+2. Even if the full focused runtime gate passes organically, **do not mark R-A complete** until review finding RA-REV-22-F1 is implemented and executed. Record precise corrective work for the next Code + Build turn.
 
 The retained full `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md` remains dormant until one fresh complete R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this cadence turn.
 
@@ -68,6 +73,8 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 ### R-A closure status
 
 - Overall R-A remains **open / not runtime-accepted**.
+- Independent review at branch boundary `db100d15b166a2ac19bf2bb45c829856b43bb5a9` **accepted REV-21 coverage and REV-22-through-REV-24 at the Code + Build boundary** and left overall R-A rejected. Its addendum in `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md` is the authoritative plan; findings RA-REV-22-F1 (blocking), RA-REV-22-F2, RA-REV-22-F3, and RA-REV-23-F1 are open in `TODO.md`.
+- The static inventory was independently reproduced during review: regenerating `R_A_Closure_Inventory_Report.md` from the current tree is byte-for-byte identical to the committed report.
 - Exact Code + Build source is `9d88d0e47cfc039e5399ebee334290b1eeae792b`. REV-21 contract completion and REV-22-through-REV-24 are **Code + Build complete / compile-valid**.
 - REV-21 now contains both required permutation-pair contracts.
 - REV-22 carries independent globally remapped boundary/feature/chart/output-face/hard-edge/provenance authority into the strict final merged-product oracle.
@@ -94,6 +101,8 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 - Derived identity caches must be rebuilt by the same canonical constructor used by their consumers; copied cache kind or a second schema is authority duplication.
 - Matching extent is not ownership; exact source-row topology pairing is required.
 - A zero-selected test filter is orchestration failure, never a pass.
+- A negative test proves only the guard it actually reaches. Check which guard rejects before crediting a contract to the intended validator.
+- An assertion on a hardcoded flag cannot fail. Published status flags must be derived from the validator that produced them.
 - Do not answer semantic failure by weakening validation, fixtures, lineage, or no-substitution contracts.
 
 ## Mandatory end-of-turn checklist

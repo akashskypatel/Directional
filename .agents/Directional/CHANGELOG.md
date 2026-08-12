@@ -17,6 +17,13 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Validation — independent review of REV-21 coverage and REV-22 through REV-24
+
+- Independent Review inspected exact implementation/test source `9d88d0e47cfc039e5399ebee334290b1eeae792b` at branch boundary `db100d15b166a2ac19bf2bb45c829856b43bb5a9`; the intervening commits are documentation, trigger, and workflow-removal only. **Decision: REV-21 coverage and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A remains rejected/open pending organic runtime acceptance.**
+- The complete R-A closure inventory was independently reproduced during the Review: regenerating it from the current tree is byte-for-byte identical to the committed `R_A_Closure_Inventory_Report.md`. This closes the prior review objection that the source-audit record was conclusion-only.
+- Open review findings recorded in `TODO.md`: RA-REV-22-F1 (blocking — aggregate boundary/feature negatives reject at the seam guard rather than the final oracle), RA-REV-22-F2, RA-REV-22-F3, RA-REV-23-F1.
+- Durable-document trims: `Architecture_M1l_..._Test_Benchmark_Report.md` section 12 superseded (it directed the next turn to a nonexistent `Architecture_M1m_*` plan); `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md` sections 4-6 marked retained history.
+
 ### Fixed — R-A-REV-21 coverage and R-A-REV-22 through R-A-REV-24
 
 - Closed the missing REV-21 Code + Build test intent with an authority-only source-row permutation mismatch negative and a consistently permuted source-matrix-plus-authority positive.

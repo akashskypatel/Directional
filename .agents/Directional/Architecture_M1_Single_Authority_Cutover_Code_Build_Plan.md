@@ -435,6 +435,8 @@ Equivalent names matching repository convention are acceptable. The ownership an
 
 ## 4. Required work packages within this one turn
 
+**Retained history — sections 4 through 6 are the original M1 cutover work packages and are historically complete.** Their file-level instructions describe work already performed; for example `include/directional/authority/LegacyAuthorityAdapters.h` is already deleted from the branch. Do not re-execute or re-plan from them. Section 0E is the current Code + Build authority and the current independent-review report owns the active next-turn plan.
+
 Complete the packages in order. Checkpoint commits are allowed for recovery, but the authoritative build/package must be produced from the final pushed tip containing every package.
 
 ### A. Replace adapter construction with checked ID construction

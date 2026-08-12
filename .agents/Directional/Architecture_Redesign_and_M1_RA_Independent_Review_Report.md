@@ -4,17 +4,107 @@
 **Date:** 2026-08-12 UTC  
 **Repository:** akashskypatel/Directional  
 **Branch:** agent/surface_cell_quad/p5-recover-bridge-healing  
-**Current independent-review branch boundary:** 922c36b43b8d35af2d2ffdeccb8e0c2ef551c760  
-**Current reviewed implementation/test source:** 0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca  
-**Review decision/planning commit:** e325991a9332fcfe522c26c1d55f249924f1a14c  
+**Current independent-review branch boundary:** db100d15b166a2ac19bf2bb45c829856b43bb5a9  
+**Current reviewed implementation/test source:** 9d88d0e47cfc039e5399ebee334290b1eeae792b  
+**Review decision/planning commit:** _recorded at push of this documentation-only commit_  
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
-**Current verdict:** **overall R-A is rejected; REV-18-through-REV-21 remain bounded compile-only progress; REV-22, REV-23, and REV-24 are open**
+**Current verdict:** **REV-21 contract completion and REV-22-through-REV-24 are accepted at the Code + Build boundary; overall R-A remains rejected/open because no semantic contract has executed and one REV-22 negative does not reach the final oracle**
 
-## Current-status addendum — R-A closure review after REV-18 through REV-21
+## Current-status addendum — R-A closure review after REV-21 coverage and REV-22 through REV-24
 
-The current Review inspected exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`. The 13 later commits between that source and the review boundary change only four durable planning/status documents. No production, test, build, workflow, or fixture source was changed in this Review.
+This Review inspected exact implementation/test source `9d88d0e47cfc039e5399ebee334290b1eeae792b` at branch boundary `db100d15b166a2ac19bf2bb45c829856b43bb5a9`. `git log --stat 9d88d0e4..db100d15` shows the 15 later commits touch only `.agents/` documents, `TODO.md`, connector triggers, and removed workflow YAML. **Zero implementation, test, fixture, or build source changed**, so the branch head is a valid review proxy for the compile-valid source. This Review changed durable planning documents only and executed no configure, compile, generated binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input.
 
-**Decision: overall R-A is not complete. Do not mark the R-A checkpoint accepted.**
+**Decision: the requested REV-22-through-REV-24 checkpoint is accepted at the Code + Build boundary. Overall R-A is not complete. Do not mark the R-A checkpoint accepted.**
+
+### Checkpoint decision
+
+| Checkpoint | Decision | Evidence-based reason |
+|---|---|---|
+| Overall R-A | **rejected / open** | no semantic contract has executed; only compile and static evidence exists, and RA-REV-22-F1 leaves the final-oracle boundary/feature gates unproven |
+| R-A-REV-21 | **accepted at Code + Build** | both required permutation-pair contracts are present and non-vacuous |
+| R-A-REV-22 | **accepted at Code + Build with one required follow-up contract** | the source defect is fully corrected, but two of three required negatives reject at the pre-oracle seam guard |
+| R-A-REV-23 | **accepted at Code + Build** | duplicate schema deleted; one canonical completion-owned constructor; kind derived from patch structure |
+| R-A-REV-24 | **accepted at Code + Build** | entry-level authority proof precedes `sourceAuthorityUsed`; both required direct negatives present |
+
+### Review boundary and evidence
+
+- Compile run/job `31634075824 / 94239861945`, result/log artifacts `9156381103 / 9156381524`, Release/static/Ninja/PRE_TEST **118/118**, build exit `0`, self-excluding manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`. This proves buildability only.
+- The complete R-A inventory was **independently reproduced during this Review**: `python3 .agents/Directional/R_A_Closure_Inventory.py --root .` against the current tree produced output **byte-for-byte identical** to the committed `R_A_Closure_Inventory_Report.md` (zero diff lines). Confirmed 17 affected paths, 38 probes, 164 probe matches, 22/22 allowed raw-projection leaves, 2/2 allowed face-count leaves, zero unexpected leaves, final static PASS. This closes the prior review's objection that the source-audit record was conclusion-only.
+
+### Verified closures
+
+- **REV-24.** `SourceAuthoritativeMeshValidator.cpp:1027-1037` requires non-null `sourceAuthority` and `matches_source_faces(*sourceFaces, sourceVertices->rows())` in the same entry guard as vertices/faces/provenance, and sets `sourceAuthorityUsed` only after it returns. The former `requireLocalSheetCompatibility`-gated null check is now an unreachable fallback rather than the sole owner. `SourceAuthoritativeMeshValidatorPhase22Tests.cpp:96` and `:124` supply the direct null and same-extent foreign negatives with all three optional gates disabled; the foreign case pre-asserts `matches_source_faces` is false so it cannot pass vacuously.
+- **REV-21.** `SourceTopologyRegions::matches_source_faces` (`SourceTopologyRegions.h:151-188`) reconstructs a `SourceFaceTopologyKey` per row and requires equality with `topology_for_row(row)`; `SourceFaceTopologyKey::make` (`AuthorityKernel.cpp:33-42`) sorts and rejects repeated vertices, so the key is genuinely row-order-independent. `SurfaceCellsPhase10Tests.cpp:5564` permutes only the matrix while retaining the original authority and requires both `matches_source_faces` and `SourceChartTransitionGraph::available()` to fail; `:5588` rebuilds paired authority, requires the pair to match, requires the stale authority to fail, and requires semantic region-snapshot equality.
+- **REV-23.** The duplicate pipeline constructor formerly at `RemeshPipeline.cpp:9758-9824` is deleted. `rebuild_aggregate_output_identity_caches` (`RemeshPipeline.cpp:9822-9942`) calls `pure_quad_detail::canonical_lineage_stitch_identity` and `canonical_authoritative_identity`. Verified single-source: the canonical constructor delegates to the same private `typed_lineage_stitch_identity` builder used by `resolved_stitch_identity`, derives kind from `patch.boundaryVertices` membership rather than the cached kind, and keeps chart/support out of the stitch key. Boundary-node caches and both face cycles are regenerated from the rebuilt identities. `SurfaceCellsPhase10Tests.cpp:5263` flips kind and injects a stale token into canonical values and boundary-node identities and requires the rebuild to overwrite all of them; `:5166` requires exact equality with the canonical factory, requires a generated-interior vertex to be exercised, and performs a post-publication `stitch_pure_quad_patches` re-stitch.
+- **REV-22 source defect.** `RemeshPipeline.cpp:11494-11523` stages and globally remaps boundary edges/loops, feature rails, hard-feature edges, vertex-chart authority, output-quad source faces, and provenance, and enables all three strict gates. Authority is captured pre-aggregation by `captureFinalValidationAuthority` (`:10050`) and protected against post-capture tamper by `same_surface_cell_rail_authority`, so it is not derived from the merged product under check. Published `validationResult` is overwritten with the oracle's outputs at `:11577-11599` instead of the accumulated component reports. The positive fixture `make_disconnected_square_pair_mesh` is two open unit squares, so it is genuinely boundary-bearing and directly exercises the original false-`ChangedBoundaryLoop` condition.
+
+### RA-REV-22-F1 — the two missing-authority negatives never reach the final oracle
+
+**Evidence**
+
+- `MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication` (`SurfaceCellsPhase10Tests.cpp:5347`) and `MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication` (`:5391`) erase a rail after capture and both assert `surfaceCellFirstInvalidProducerReason == "ChangedComponentValidationAuthority"`.
+- That reason is raised by the `same_surface_cell_rail_authority` seam guard at `RemeshPipeline.cpp:10642-10648`, which runs at component index 1 — roughly 870 lines before the final oracle call at `:11517`. The tests prove capture-versus-mutation consistency, not final-oracle enforcement.
+- `MeshValidationFailureCode::MissingBoundaryAuthority` and `MissingFeatureRail` are asserted only at component/optimizer level (`SurfaceCellsPhase10Tests.cpp:679`, `SurfaceMeshOptimizerPhase22Tests.cpp:603`), never on the aggregate path. Only `FinalMergedOracleRejectsPostComponentProvenanceTamper` reaches the oracle, and it tampers provenance rather than boundary or feature authority.
+
+**Corrective measures**
+
+1. Add an aggregate negative that corrupts or drops a remapped entry in `globalValidationBoundaryLoops`/`globalValidationBoundaryEdges` so the seam guard passes and the oracle rejects with `FinalMergedSourceAuthorityValidationFailed` carrying `MissingBoundaryAuthority` or `ChangedBoundaryLoop`.
+2. Add the equivalent negative for `globalValidationFeatureRails`/`expectedFeatureRailCount` requiring `MissingFeatureRail`. Assert zero aggregate publication in both.
+3. Rename the two existing tests to state what they prove, for example `ComponentValidationAuthorityTamperRejectsAtAggregationSeam`, so the names no longer imply oracle coverage.
+
+### RA-REV-22-F2 — three published validation flags are hardcoded
+
+**Evidence**
+
+- `RemeshPipeline.cpp:11579-11587` assigns `strictValidationUsed`, `provenanceValidationUsed`, and `authoritativeFeatureRailsUsed` literal `true` instead of sourcing them from `finalAuthorityValidation`.
+- `DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches` asserts `strictValidationUsed` and `authoritativeFeatureRailsUsed`; neither can fail under any input. The remaining assertions in that test are oracle-sourced and do carry evidence.
+
+**Corrective measures**
+
+1. Derive `strictValidationUsed` and `authoritativeFeatureRailsUsed` from oracle observables, or drop the two tautological assertions and rely on the oracle-sourced ones.
+
+### RA-REV-22-F3 — final-oracle evidence is discarded when a component report is missing
+
+**Evidence**
+
+- The publication block at `RemeshPipeline.cpp:11577` is gated on `allCompletedSurfaceCells && allHaveValidationResult && !firstValidationResult`. The oracle call at `:11517` is unconditional and still rejects the merge on failure, so the gate itself is not weakened, but a successful final-oracle result is dropped from the published context with no diagnostic when any component lacks a report.
+
+**Corrective measures**
+
+1. Publish the final-oracle outcome, or a typed record stating that the oracle passed while component reports were incomplete, independently of component-report availability so consumers can distinguish "oracle not run" from "oracle ran and passed".
+
+### RA-REV-23-F1 — the duplicate-schema probe is keyed to one identifier
+
+**Evidence**
+
+- The REV-23 probe "duplicate pipeline stitch-key constructor is deleted" matches the literal symbol `rebuild_aggregate_stitch_identity` with expectation `absent`. A renamed reintroduced duplicate builder would leave the probe green.
+
+**Corrective measures**
+
+1. Replace the name-specific probe with a structural one: require that `PureQuadStitchIdentityKind::` never appears as an assignment target under `src/pipeline/`, and that `stitchIdentity` assignments in `RemeshPipeline.cpp` occur only through `canonical_lineage_stitch_identity`.
+
+### Durable-document trims applied by this Review
+
+- `Architecture_M1l_..._Test_Benchmark_Report.md` section 12 directed the next turn to a nonexistent `Architecture_M1m_..._Code_Build_Plan.md`. It is now marked superseded and points at the authoritative plan.
+- `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md` sections 4 through 6 are now marked retained history, because their file-level instructions (for example deleting the already-absent `LegacyAuthorityAdapters.h`) read as active work.
+- All other `.agents/` and `TODO.md` cross-references resolve. `Architecture_M1_..._Artifact_Only_Test_Benchmark_Report.md` and `tests/fixtures/surface-cells/manifest.json` remain correctly phrased prospective deliverables of dormant plans; no action taken.
+
+### Review conclusion
+
+The requested REV-22-through-REV-24 checkpoint passes at the Code + Build boundary and is marked accepted there. Overall R-A stays open: the only evidence in existence is compile and static evidence, and compile success is not semantic acceptance.
+
+The authoritative next turn remains the **artifact-only Test + Benchmark cadence turn** against the exact fresh package, approved unchanged with two amendments:
+
+1. Expect `MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication` and `MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication` to reject at the seam guard rather than the final oracle. Classify that as expected-but-insufficient coverage, not as REV-22 closure evidence.
+2. Even if the focused runtime gate passes organically, R-A closes only after RA-REV-22-F1 is implemented and executed. RA-REV-22-F2, RA-REV-22-F3, and RA-REV-23-F1 are next Code + Build items and do not block R-A.
+
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. Regression totals remain **34 events / 14 categories / 20 recurrences**.
+
+## Retained prior-status addendum — R-A closure review after REV-18 through REV-21
+
+The prior Review inspected exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`. The 13 later commits between that source and the review boundary change only four durable planning/status documents. No production, test, build, workflow, or fixture source was changed in that Review.
+
+**Decision at that boundary: overall R-A was not complete.** The REV-22, REV-23, and REV-24 findings recorded below are superseded by the current addendum, which accepts them at the Code + Build boundary. Do not execute a task selection from this retained section.
 
 ### Checkpoint decision
 

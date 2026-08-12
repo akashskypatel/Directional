@@ -164,14 +164,10 @@ M1l is **immutable accepted**.
 
 No stable product regression event or recurrence is created. Historical totals remain **34 regression events / 14 categories / 20 recurrences**. `PR8-R034 / G4-R007` remains active. G4 product behavior is unchanged, and M1l architecture acceptance does not claim G4 completion.
 
-## 12. Next bounded architecture consumer
+## 12. Next bounded architecture consumer — superseded
 
-Accepted-source inspection selects the next bounded M1 consumer at:
+**Superseded. Do not execute a task selection from this section.** The M1m Isolation-Seam Certificate Topology-Region Consumer turn was never scheduled and no `Architecture_M1m_*_Code_Build_Plan.md` exists in this branch. The incremental M1 letter-slice sequence was replaced by the single broad R-A single-authority cutover.
 
-`SurfaceTopologyRegion::id / build_isolation_seam_transport_certificates -> SurfaceIsolationSeamTransportCertificate::sourceTopologyRegion -> still-raw materializer/hash compatibility consumers`.
+The authoritative plan is `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md` section 0E together with the current addendum of `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`.
 
-The next turn is **M1m Isolation-Seam Certificate Topology-Region Consumer — Code + Build only** under:
-
-`.agents/Directional/Architecture_M1m_Isolation_Seam_Certificate_Topology_Region_Consumer_Code_Build_Plan.md`.
-
-M1m must migrate only certificate-owned topology-region identity to checked `TopologyRegionId`, preserve global topology-region construction and all other raw compatibility schemas, add six production-path compile contracts, and execute no generated Directional binary, discovery/list command, test, benchmark, `ctest`, CLI/GUI/help/version command, fuzzer, or custom input.
+The runtime evidence in sections 1 through 11 above remains authentic immutable M1l acceptance history for implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`.
