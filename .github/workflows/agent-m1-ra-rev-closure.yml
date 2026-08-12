@@ -1,4 +1,4 @@
-name: Agent M1 R-A Review Closure Compile
+name: Agent M1 R-A Review Closure Records
 
 on:
   push:
@@ -7,224 +7,54 @@ on:
 
 permissions:
   contents: write
-  actions: write
-
-env:
-  CCACHE_MAXSIZE: 256M
 
 concurrency:
-  group: agent-m1-ra-rev-closure
+  group: agent-m1-ra-rev-closure-records
   cancel-in-progress: false
 
 jobs:
-  patch-and-compile:
+  patch-records:
     runs-on: ubuntu-latest
     steps:
-      - name: Initialize persistent activity log
+      - name: Initialize activity log
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          : > "$LOG"
-          {
-            echo "task=M1 R-A REV-01 REV-02 partial Code+Build compile correction"
-            echo "event_sha=$GITHUB_SHA"
-            echo "ref=$GITHUB_REF"
-            date -u +"utc=%Y-%m-%dT%H:%M:%SZ"
-          } | tee -a "$LOG"
+          : > "$RUNNER_TEMP/activity.log"
+          echo "task=R-A review-closure durable records" | tee -a "$RUNNER_TEMP/activity.log"
+          echo "event_sha=$GITHUB_SHA" | tee -a "$RUNNER_TEMP/activity.log"
 
-      - name: Checkout trigger authority
+      - name: Checkout exact trigger
         uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
           fetch-depth: 2
-          submodules: recursive
 
-      - name: Apply compile correction and push exact source
+      - name: Patch retained records and push
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           python3 .agents/Directional/turn-payloads/m1-ra-rev-closure.py
           git diff --check
           changed="$(git diff --name-only | sort)"
-          expected="src/pipeline/RemeshPipeline.cpp"
+          expected="$(printf '%s\n' .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md .agents/Directional/CHANGELOG.md | sort)"
           printf 'changed_files=\n%s\n' "$changed"
           test "$changed" = "$expected"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/pipeline/RemeshPipeline.cpp
-          git commit -m "fix: complete M1 R-A typed sheet propagation"
-          SOURCE_SHA="$(git rev-parse HEAD)"
-          echo "SOURCE_SHA=$SOURCE_SHA" >> "$GITHUB_ENV"
-          echo "source_sha=$SOURCE_SHA"
+          git add .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md .agents/Directional/CHANGELOG.md
+          git commit -m "docs: record M1 R-A review closure"
           git push origin "HEAD:$GITHUB_REF"
+          echo "records_commit=$(git rev-parse HEAD)"
           test -z "$(git status --porcelain=v1)"
 
-      - name: Verify focused source audit
-        shell: bash
-        run: |
-          set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
-          python3 -c "from pathlib import Path; p=Path('src/pipeline/RemeshPipeline.cpp').read_text(); assert '.point.sheet' not in p; assert 'authority::IsolationSheetId isolationSheet;' in p; assert 'insert(sheet);' not in p"
-          python3 -c "from pathlib import Path; p=Path('src/geometry/PureQuadCompletion.cpp').read_text(); s=p.index('PureQuadStitchIdentity resolved_stitch_identity(\\n    const PureQuadMesh &patch, const int localRow,\\n'); e=p.index('PureQuadStitchIdentity resolved_stitch_identity(\\n    const PureQuadMesh &patch, const int localRow) {',s); b=p[s:e]; assert 'provenance.component' not in b and 'provenance.sheet' not in b; assert 'typed_lineage_stitch_identity' in p; assert 'MissingTypedStitchIdentity' in p"
-          echo "focused_source_audit=clean"
-
-      - name: Install and configure ccache
-        shell: bash
-        run: |
-          set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          sudo apt-get update
-          sudo apt-get install -y ccache
-          export CCACHE_DIR="$RUNNER_TEMP/ccache"
-          mkdir -p "$CCACHE_DIR"
-          ccache --set-config=max_size="$CCACHE_MAXSIZE"
-          ccache --set-config=compression=true
-
-      - name: Compute cache key
-        id: cache-key
-        shell: bash
-        run: |
-          set -euo pipefail
-          compiler="$(c++ -dumpfullversion -dumpversion)"
-          prefix="m1-ra-${RUNNER_OS}-gcc-${compiler}-release-ccache-v2-"
-          echo "prefix=$prefix" >> "$GITHUB_OUTPUT"
-          echo "key=${prefix}${GITHUB_RUN_ID}" >> "$GITHUB_OUTPUT"
-
-      - name: Restore compatible compiler cache
-        id: cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ${{ runner.temp }}/ccache
-          key: ${{ steps.cache-key.outputs.key }}
-          restore-keys: |
-            ${{ steps.cache-key.outputs.prefix }}
-
-      - name: Configure Release static PRE_TEST
-        shell: bash
-        run: |
-          set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          export CCACHE_DIR="$RUNNER_TEMP/ccache"
-          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
-          echo "cache_hit=${{ steps.cache.outputs.cache-hit }}"
-          echo "cache_matched_key=${{ steps.cache.outputs.cache-matched-key }}"
-          ccache -s
-          cmake -S . -B build-m1-ra-rev -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-            -DBUILD_SHARED_LIBS=OFF \
-            -DDIRECTIONAL_BUILD_CLI=OFF \
-            -DDIRECTIONAL_BUILD_GUI=OFF \
-            -DDIRECTIONAL_BUILD_TESTS=ON \
-            -DDIRECTIONAL_BUILD_BENCHMARKS=ON \
-            -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
-            -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
-            -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
-            -DDIRECTIONAL_ENABLE_GMP=OFF \
-            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
-            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
-            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
-            -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST
-
-      - name: Compile and link affected targets only
-        shell: bash
-        run: |
-          set -uo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          export CCACHE_DIR="$RUNNER_TEMP/ccache"
-          set +e
-          cmake --build build-m1-ra-rev --target directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks -- -j2
-          rc=$?
-          set -e
-          echo "$rc" > "$RUNNER_TEMP/build-exit-code"
-          echo "build_exit=$rc"
-          ccache -s
-          echo "runtimeExecution=false"
-          echo "No generated Directional binary, test, benchmark, discovery/listing, ctest, CLI/help/version, fuzzer, or custom input was executed."
-          exit 0
-
-      - name: Save compiler cache
-        if: always() && steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ runner.temp }}/ccache
-          key: ${{ steps.cache-key.outputs.key }}
-
-      - name: Prune stale compatible caches
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-          CACHE_PREFIX: ${{ steps.cache-key.outputs.prefix }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          list="$RUNNER_TEMP/cache-list.tsv"
-          gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/caches?per_page=100" --jq '.actions_caches[] | [.id, .key, .last_accessed_at] | @tsv' > "$list"
-          mapfile -t stale < <(awk -F '\t' -v p="$CACHE_PREFIX" 'substr($2,1,length(p))==p {print $3"\t"$1"\t"$2}' "$list" | sort -r | tail -n +2)
-          for entry in "${stale[@]}"; do
-            IFS=$'\t' read -r accessed id key <<< "$entry"
-            echo "prune_cache id=$id key=$key last_accessed=$accessed"
-            gh api --method DELETE "/repos/$GITHUB_REPOSITORY/actions/caches/$id"
-          done
-          echo "cache_pruned=${#stale[@]}"
-          echo "cache_storage_cap_per_entry=$CCACHE_MAXSIZE"
-
-      - name: Propagate compile status
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          test -f "$RUNNER_TEMP/build-exit-code" || { echo "compile_status=missing"; exit 1; }
-          rc="$(cat "$RUNNER_TEMP/build-exit-code")"
-          echo "compile_status=$rc"
-          exit "$rc"
-
-      - name: Package compile evidence
-        if: success()
-        shell: bash
-        run: |
-          set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          OUT="$RUNNER_TEMP/result"
-          mkdir -p "$OUT/metadata"
-          git rev-parse HEAD > "$OUT/metadata/source-commit.txt"
-          git status --porcelain=v1 > "$OUT/metadata/source-status.txt"
-          git show --format=fuller --stat HEAD > "$OUT/metadata/source-commit-stat.txt"
-          git diff HEAD^ HEAD -- src/geometry/PureQuadCompletion.cpp src/pipeline/RemeshPipeline.cpp > "$OUT/metadata/source.patch"
-          cp build-m1-ra-rev/CMakeCache.txt "$OUT/metadata/CMakeCache.txt"
-          printf 'runtimeExecution=false\nsourceAudit=focused-R-A-REV-01-02\ncompilerCache=ccache\ncompilerCacheMaxSize=%s\n' "$CCACHE_MAXSIZE" > "$OUT/metadata/command-boundary.txt"
-          (cd "$OUT" && find . -type f -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
-          cat "$OUT/metadata/source-commit.txt"
-          cat "$OUT/metadata/command-boundary.txt"
-
-      - name: Upload compile result
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: m1-ra-rev-closure-compile-result-${{ github.run_id }}
-          path: ${{ runner.temp }}/result
-          if-no-files-found: error
-          retention-days: 7
-
-      - name: Upload persistent activity log
+      - name: Upload activity log
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: m1-ra-rev-closure-compile-log-${{ github.run_id }}
+          name: m1-ra-rev-closure-records-log-${{ github.run_id }}
           path: ${{ runner.temp }}/activity.log
           if-no-files-found: error
           retention-days: 7
