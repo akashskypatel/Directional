@@ -1,0 +1,114 @@
+name: Agent R-A REV-22 F4-F5 REV-23 F2 Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-rev22-f4-f5-rev23-f2-apply.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-ra-rev22-f4-f5-rev23-f2-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A REV-22-F4/F5 and REV-23-F2 source/test/audit remediation' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            'turn=Code+Build' \
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+
+      - name: Apply bounded remediation and regenerate static inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-before-apply.txt"
+          test ! -s "$RUNNER_TEMP/source-status-before-apply.txt"
+
+          base64 -d .agents/Directional/turn-payloads/ra-rev22-f4-f5-rev23-f2/apply.py.gz.b64 \
+            | gzip -d > "$RUNNER_TEMP/apply.py"
+          echo '22601253ccc1c3846a88783812e4e7335da8ed8a4d88f8ecad82b97f5acb913d  '"$RUNNER_TEMP/apply.py" | sha256sum -c -
+          python3 -m py_compile "$RUNNER_TEMP/apply.py"
+          python3 "$RUNNER_TEMP/apply.py"
+          git diff --check
+
+          python3 .agents/Directional/R_A_Closure_Inventory.py \
+            --root . --output .agents/Directional/R_A_Closure_Inventory_Report.md
+          python3 .agents/Directional/R_A_Closure_Inventory.py \
+            --root . --output "$RUNNER_TEMP/R_A_Closure_Inventory_Report.md"
+          cmp .agents/Directional/R_A_Closure_Inventory_Report.md \
+              "$RUNNER_TEMP/R_A_Closure_Inventory_Report.md"
+          grep -q 'Final static inventory: \*\*PASS\*\*' \
+            .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Stitch-kind classifier self-test failures: \*\*0\*\*' \
+            .agents/Directional/R_A_Closure_Inventory_Report.md
+
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' \
+            .agents/Directional/R_A_Closure_Inventory.py \
+            .agents/Directional/R_A_Closure_Inventory_Report.md \
+            include/directional/diagnostics/RemeshDiagnostics.h \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp | sort)"
+          printf 'changed_files=\n%s\n' "$changed"
+          test "$changed" = "$expected"
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f \
+            .agents/Directional/R_A_Closure_Inventory.py \
+            .agents/Directional/R_A_Closure_Inventory_Report.md
+          git add \
+            include/directional/diagnostics/RemeshDiagnostics.h \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp
+          git commit -m 'fix: close REV-22 F4 F5 and REV-23 F2 findings'
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          printf 'implementation_sha=%s\n' "$SOURCE_SHA" | tee "$RUNNER_TEMP/apply-result.txt"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+          echo 'runtimeExecution=false'
+
+      - name: Upload apply result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-rev22-f4-f5-rev23-f2-apply-result-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/apply-result.txt
+            ${{ runner.temp }}/R_A_Closure_Inventory_Report.md
+            ${{ runner.temp }}/source-status-before-apply.txt
+            ${{ runner.temp }}/source-status-final.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-rev22-f4-f5-rev23-f2-apply-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
