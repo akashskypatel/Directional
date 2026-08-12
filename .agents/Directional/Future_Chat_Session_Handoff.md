@@ -46,12 +46,13 @@ Branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: #8 remains open, draft, and unmerged  
 Review policy after the later immutable Test + Benchmark turn: never
 
-R-A-REV-01 through R-A-REV-13 are compile-closed for their reviewed paths at latest review-remediation source `78056ba849fafad27eb55e8008fbc20a56300868`, but R-A itself remains open. The next turn must:
+The complete R-A closure review through branch head `344f996622606121a9567beaf1dad4001a5374f3` rejected closure on R-A-REV-14 through R-A-REV-16. Exact compile source `78056ba849fafad27eb55e8008fbc20a56300868` remains partial build evidence only. The next turn must:
 
-1. rerun the **complete R-A source inventory** across occurrence/materializer, completion/assembly, patch/lineage, arrangement ownership/chart transitions, public optimizer/verifier APIs, source-authoritative validation, rail consumers, generic validation boundaries, top-level component aggregation, exact-key collision behavior, and post-remap publication, and call R-A complete only if every closure item is statically clean;
-2. complete R-B through R-G in the same vertical cutover;
-3. produce one fresh full Release/static/Ninja/PRE_TEST package using the independently verified out-of-tree, clean-provenance, self-excluding-manifest rules;
-4. execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input; activate the artifact-only plan only after that fresh full package exists.
+1. close REV-14 by publishing one canonical post-intersection collision authority and proving overlapping-compatible publication plus disjoint rejection;
+2. close REV-15 with independent region/sheet/chart/support remap domains, ownership validation, and fail-closed zero-publication contracts;
+3. close REV-16 with pre-aggregation raw tamper and a complete counterfactual audit, then rerun the **complete R-A source inventory** and call R-A complete only if every closure item is statically clean;
+4. complete R-B through R-G in the same vertical cutover and produce one fresh full Release/static/Ninja/PRE_TEST package using the verified packaging rules;
+5. execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input; activate the artifact-only plan only after that fresh full package exists.
 
 Do not validate, relabel, repair, or reuse any historical/partial package listed in `CHANGELOG.md`. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
 
@@ -67,15 +68,13 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 
 ### R-A closure status
 
-Review boundary that introduced REV-11 through REV-13: PR #8 through `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`. Latest review-remediation implementation/compile source: `78056ba849fafad27eb55e8008fbc20a56300868`. R-A-REV-11 through R-A-REV-13 are compile-closed for their reviewed paths:
+Review of PR #8 through `344f996...` independently verified exact source/package provenance for compile-only run/job `31584657331 / 94075568409`, including **118/118** compile/link steps, the **21/21** self-excluding manifest, and no generated runtime. That evidence is authentic but cannot close the semantic gate.
 
-- `R-A-REV-11`: exact stitch-registry entries retain a canonical typed-authority certificate; compatible candidates intersect region/sheet/chart authority under identical support, and incompatible exact-key collisions fail `IncompatibleTypedStitchAuthority` before position-based merge.
-- `R-A-REV-12`: every component region/sheet/chart/support remap is checked; invalid mapping fails component merge, complete remapped lineage is required before publication, and real production multi-component/raw-tamper plus malformed-remap semantic contracts are compile-visible.
-- `R-A-REV-13`: the replacement repository-wide affected-symbol/read audit includes source-authoritative validation, rail constraints, arrangement/chart ownership, materializer/lineage declarations, component aggregation, and semantic-body checks for REV-11/12. Its successful checkpoint reported REV-11 closed, REV-12 closed, and the repository-wide affected-symbol/read inventory clean.
+- `R-A-REV-14`: collision publication copies the intersected typed certificate but retains `authoritativeIdentity` from one pre-intersection candidate, leaving duplicate semantic authority that can disagree.
+- `R-A-REV-15`: region/sheet/chart IDs are validated with bounds synthesized from their own remapped values; no independent local domain or owner relation rejects sparse/out-of-domain authority.
+- `R-A-REV-16`: raw tamper occurs only after production aggregation and the audit accepts substring/blanket-assignment proxies, so neither is counterfactual closure evidence.
 
-Compile-only run/job `31584657331 / 94075568409` completed Release/static/Ninja/PRE_TEST **118/118** from exact source `78056ba849fafad27eb55e8008fbc20a56300868`. Result artifact `9136856592` has outer SHA-256 `f6bd76caf0cb1a78b0faaedb04feaf157850d1e11336919efbf5cf698a07ce6d`; log artifact `9136857219` has outer SHA-256 `98353502b1cffa8f0f3e9233bddf8bf1c3d7909f48786e069bae1d3f5a4296f3`. Independent inspection verified exact packaged source, a self-excluding manifest **21/21**, all five source-status snapshots empty, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
-
-This remains a partial review-remediation checkpoint only. R-A is not complete until the complete closure inventory is rerun; R-B through R-G remain open; artifact `9136856592` is not an M1 acceptance candidate; M1l remains immutable runtime authority; no runtime/regression total changed.
+R-A remains open; R-B through R-G remain open; partial artifact `9136856592` is not an M1 acceptance candidate; M1l remains immutable runtime authority; no runtime/regression total changed.
 
 ## Standing product and regression state
 

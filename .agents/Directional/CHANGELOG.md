@@ -17,11 +17,20 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
-### Fixed — R-A-REV-11 through R-A-REV-13
+### Review — complete R-A closure gate after REV-11 through REV-13
 
-- Closed `R-A-REV-11` for the reviewed completion/assembly paths: exact stitch-registry collisions retain and compare canonical typed topology-region/isolation-sheet/chart/support authority before positional merge; incompatible candidates fail `IncompatibleTypedStitchAuthority`, and publication retains only compatible common authority.
-- Closed `R-A-REV-12` for the reviewed multi-component aggregation path: all typed region/sheet/chart/support remaps are checked against actual source extents, invalid mapping fails the component merge, complete remapped lineage is required before publication, and raw component/sheet labels are projection/export only.
-- Closed `R-A-REV-13` at the Code + Build audit boundary: the replacement repository-wide affected-symbol/read inventory includes the previously omitted source-authoritative validator, rail constraints, arrangement/chart ownership, materializer/lineage declarations, and component aggregation, and it checks REV-11/12 semantic contract bodies rather than names alone.
+- Reviewed PR #8 through branch head `344f996622606121a9567beaf1dad4001a5374f3`; exact implementation/test source remains `78056ba849fafad27eb55e8008fbc20a56300868`. Rejected R-A completion.
+- Independently verified run/job `31584657331 / 94075568409`, Release/static/Ninja/PRE_TEST **118/118**, both outer artifact digests, exact packaged source, five empty source-status snapshots, and the self-excluding manifest **21/21**. This authentic partial compile package is not an M1 acceptance candidate; semantic contracts were compiled but not executed.
+- Added `R-A-REV-14`: collision publication copies the intersected typed certificate but retains `authoritativeIdentity` from one selected pre-intersection candidate. Publish one canonical authority and add an overlapping-compatible collision contract that inspects the emitted authority.
+- Added `R-A-REV-15`: component region/sheet/chart remap reconstructs IDs with bounds derived from the candidate values and advances offsets from observed maxima. Remap through independent authority domains/owners and add out-of-domain, sparse-ID, wrong-owner, and zero-publication contracts.
+- Added `R-A-REV-16`: the production raw-tamper contract mutates only after aggregation and compares untouched typed fields, while the audit accepts substring and blanket-assignment proxies. Move tamper before the consumer and require a complete counterfactual read/remap/collision audit.
+- This Review changed planning/status documents only and ran no generated Directional runtime. M1l remains immutable runtime authority; regression totals remain **34 events / 14 categories / 20 recurrences**.
+
+### Changed — R-A-REV-11 through R-A-REV-13 partial remediation
+
+- REV-11 added a per-key typed certificate, intersection, and incompatible-collision failure before positional merge. The later complete-gate review found that publication still retains a pre-intersection duplicate identity and records that remainder as REV-14.
+- REV-12 added checked return paths, staged publication, face/support remap checks, and multi-component/malformed contract source. The later review found self-bounded region/sheet/chart IDs and non-counterfactual raw tamper, recorded as REV-15 and REV-16.
+- REV-13 broadened the affected-symbol/read inventory and its required path list. Its successful Code + Build output is preserved below; the later review found that substring and blanket-assignment checks still miss the surviving defects.
 
 ### Validation — R-A-REV-11 through R-A-REV-13
 
@@ -114,7 +123,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 - M1l `bd140cff...` remains the latest immutable runtime authority.
 - Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifacts `9125984929` / `9127976318` / `9129549875` are not M1 acceptance candidates.
-- R-A-REV-01 through R-A-REV-13 are historical bounded compile-closed checkpoints for their reviewed paths. R-A is still not complete until the complete closure inventory is rerun clean; R-B through R-G and the fresh full package remain pending.
+- R-A-REV-01 through R-A-REV-13 are historical bounded compile checkpoints. R-A-REV-14 through R-A-REV-16 are open; R-A is not complete, and R-B through R-G plus the fresh full package remain pending.
 - The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
 
 Historical review baseline: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. Current closure authority: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.

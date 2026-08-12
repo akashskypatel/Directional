@@ -9,12 +9,11 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - Latest complete-gate review: branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`; latest review-remediation compile source `78056ba849fafad27eb55e8008fbc20a56300868`. R-A is **not complete** until the complete closure inventory below is rerun and clean. Historical REV-01-through-13 checkpoints and compile artifacts remain in `CHANGELOG.md`.
-  - [x] R-A-REV-11: exact stitch-key registry entries now retain canonical typed region/sheet/chart/support compatibility authority; every collision validates and intersects that authority before positional merge, with incompatible collisions rejecting as `IncompatibleTypedStitchAuthority`.
-  - [x] R-A-REV-12: component typed-lineage remap is checked and fail closed for region/sheet/chart/support mappings, complete remapped lineage is required before publication, and compile-visible real multi-component raw-tamper plus malformed-remap contracts cover the production path.
-  - [x] R-A-REV-13: the replacement audit inventories repository-wide affected authority symbols and classified component/sheet reads across required producers/consumers/public declarations, and semantically checks the REV-11 collision and REV-12 production-remap contracts.
-  - Partial Code + Build checkpoint: source `78056ba849fafad27eb55e8008fbc20a56300868`; run/job `31584657331 / 94075568409`; result/log artifacts `9136856592 / 9136857219`; Release/static/Ninja/PRE_TEST **118/118**; self-excluding manifest **21/21**; all five source-status snapshots empty; semantic contracts compiled but not executed; no generated Directional runtime executed.
-  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every gate item is statically clean.
+  - Latest complete-gate review: PR #8 through branch head `344f996622606121a9567beaf1dad4001a5374f3`; exact compiled implementation/test source `78056ba849fafad27eb55e8008fbc20a56300868`. Authentic compile/package evidence remains partial and R-A is **not complete**. Historical REV-01-through-13 checkpoints and exact artifacts remain in `CHANGELOG.md`.
+  - [ ] R-A-REV-14: make collision publication use one canonical post-intersection authority; remove or regenerate the selected candidate's duplicate `authoritativeIdentity`, and add an overlapping-but-non-identical compatible collision contract that inspects published authority.
+  - [ ] R-A-REV-15: remap region/sheet/chart/support through independently checked component authority domains and ownership maps; reject sparse, out-of-domain, wrong-owner, and wrong-face IDs before any publication.
+  - [ ] R-A-REV-16: replace the post-result raw-tamper snapshot and substring audit with a pre-aggregation counterfactual production contract plus complete scoped read/write and remap-domain checks.
+  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only after REV-14 through REV-16 and every gate item are statically clean.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
   - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.

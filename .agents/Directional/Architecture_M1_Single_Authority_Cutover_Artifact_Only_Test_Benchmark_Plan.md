@@ -11,18 +11,16 @@
 
 ## 0. Activation amendment — 2026-08-12
 
-This plan is retained as requested, but it is **not executable now**.
-
-Complete R-A closure review through branch head `1c4f631...` verified the compile/package mechanics of exact implementation/test source `d8d648a...` but rejected R-A completion on R-A-REV-11 through R-A-REV-13. Historical finding and artifact identities remain in `CHANGELOG.md`. No historical or partial artifact may be validated, relabeled, copied, repaired, or amended into M1 acceptance evidence.
+This plan is retained but **not executable now**. Complete R-A review through branch head `344f996...` verified the compile/package provenance of exact implementation/test source `78056ba...` and rejected closure on R-A-REV-14 through R-A-REV-16. Historical findings and partial artifacts remain in `CHANGELOG.md`; none may be reused or relabeled as M1 acceptance evidence.
 
 Activate this plan only after a new Code + Build turn:
 
-1. closes R-A-REV-11 through R-A-REV-13 and passes the full R-A closure gate;
+1. closes R-A-REV-14 through R-A-REV-16 and passes the complete R-A gate;
 2. completes R-B through R-G;
-3. repeats the verified packaging mechanics while packaging exact final source, compiled contracts, fixtures, expanded audit, logs, clean source provenance, and a checksum manifest that excludes itself and verifies before upload;
-4. records new immutable source/artifact IDs and digests, manifest count/digest, executable inventory, and command-boundary flags in this header and Sections 2, 3, 12, and 14.
+3. produces one fresh exact-source package with compiled contracts, fixtures, a counterfactual expanded audit, logs, clean source provenance, and a self-excluding checksum manifest verified before upload;
+4. records the new immutable source/artifact IDs, digests, manifest authority, executable inventory, and command-boundary flags in this plan.
 
-The replacement DESIGN.md is normative. M1 acceptance proves the single-authority contract only; it does not claim the later M3 curve network, M4 conformity flow, M7 graded disposition, or optional Pipeline A. A strict product fixture may close only on certified/D0-equivalent behavior. A degraded D1-D3 result, if disposition work appears early, is truthful characterization and cannot close an M1 preservation gate.
+The replacement `DESIGN.md` remains normative. M1 acceptance proves only the single-authority contract; strict product fixtures require D0-equivalent behavior.
 
 ## 1. Purpose and turn boundary
 
@@ -242,9 +240,12 @@ The activated audit must also fail on any reviewed R-A closure defect:
 - a fallback canonical/stitch/ownership identity can be built from raw component/sheet mirrors.
 - an exact boundary identity is accepted without separate complete typed topology-region/isolation-sheet/chart/support lineage and consistency validation;
 - an existing exact stitch key merges a candidate without validating its typed-authority compatibility against the stored candidate;
+- collision publication retains a pre-intersection semantic identity beside the final intersected typed certificate;
 - a standalone completion or SurfaceCells optimizer/verifier path publishes, succeeds, or validates without complete typed authority;
 - the generic validator reads raw projection component/sheet on a SurfaceCells path;
 - component aggregation derives typed sheet extent/offset or any typed owner from raw diagnostic/projection labels, silently loses authority during remap, or publishes without complete post-remap lineage validation;
+- component aggregation validates region/sheet/chart IDs against bounds synthesized from those IDs, derives offsets from unvalidated maxima, or omits independent owner/domain checks;
+- a raw-label tamper contract mutates only after the consumer or compares typed fields that the mutation never touched;
 - the audit omits affected declarations, headers, public modes, completion/assembly branches, top-level component aggregation, exact-key collision compatibility, or end-to-end multi-component contracts.
 
 Derived integers are allowed only in one-way diagnostics/export after typed validation and must never be read back by production logic.
@@ -270,7 +271,7 @@ M1 is accepted only when all of the following hold:
 - every historical/deferred red case is executed and classified, with no unclassified regression;
 - no source attachment, topology-region/sheet/chart distinction, transport composition, certificate ownership/exact-once consumption, determinism, direct disposition, or no-fallback invariant regresses;
 - independent packaged-source audit finds no displaced representation or duplicate semantic authority;
-- the complete R-A gate is clean, including REV-11 through REV-13, with positive, missing-authority, distinct-sheet, exact-only, exact-key-collision, alternate-validator-path, raw-tamper, and end-to-end multi-component-tamper contracts;
+- the complete R-A gate is clean, including REV-14 through REV-16, with positive, missing-authority, distinct-sheet, exact-only, post-intersection exact-key-collision, independent remap-domain, alternate-validator-path, pre-consumer raw-tamper, and end-to-end multi-component contracts;
 - the verified package rules are repeated by clean source provenance and exact preflight/postflight checksum verification;
 - all strict preservation fixtures reach certified/D0-equivalent behavior; no D1-D3 output closes a strict gate;
 - Bunny/Vase and strict-validator results are truthfully characterized;
