@@ -1,4 +1,5 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <algorithm>
 #include <array>
@@ -11,6 +12,20 @@
 #include "TestAuthorityIds.h"
 
 namespace {
+
+directional::geometry::SourceTopologyRegions test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  return std::move(*authority);
+}
 
 Eigen::MatrixXd derivative_vertices() {
   Eigen::MatrixXd vertices(4, 3);
@@ -202,8 +217,9 @@ TEST(SurfaceMeshOptimizerPhase20,
   constraints.sourceVertices = sourceVertices;
   constraints.sourceFaces = sourceFaces;
   constraints.sourcePositions = sourceVertices;
-  constraints.sourceFaceComponent = {0, 0};
-  constraints.sourceFaceSheet = {3, 3};
+  const auto sourceAuthority =
+      test_source_authority(sourceFaces, {0, 0}, {3, 3});
+  constraints.sourceAuthority = &sourceAuthority;
   constraints.sourceNormals.resize(4, 3);
   constraints.sourceNormals << 0.0, 0.0, 1.0,
       0.18, 0.0, 0.98,

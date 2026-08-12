@@ -1,4 +1,5 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <cmath>
 
@@ -50,6 +51,20 @@ Eigen::MatrixXi source_triangles() {
   return f;
 }
 
+directional::geometry::SourceTopologyRegions test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  return std::move(*authority);
+}
+
 directional::geometry::SurfaceOptimizationConstraints
 constraints_for_source_triangles() {
   auto c = constraints_for_plane(source_triangle_vertices());
@@ -64,8 +79,9 @@ constraints_for_source_triangles() {
   c.sourceFieldX.row(1) << 0.0, 1.0, 0.0;
   c.sourceFieldY.row(0) << 0.0, 1.0, 0.0;
   c.sourceFieldY.row(1) << -1.0, 0.0, 0.0;
-  c.sourceFaceComponent = {0, 0};
-  c.sourceFaceSheet = {2, 2};
+  static const auto sourceAuthority =
+      test_source_authority(source_triangles(), {0, 0}, {2, 2});
+  c.sourceAuthority = &sourceAuthority;
   c.localTargetSize.resize(2);
   c.localTargetSize << 1.0, 0.5;
   c.authoritativeBoundaryLoop = {0, 1, 2, 3};
@@ -496,7 +512,9 @@ TEST(SurfaceMeshOptimizerPhase19,
 TEST(SurfaceMeshOptimizerPhase19,
      TriangleProjectionFailsClosedWhenRequiredSheetIsUnavailable) {
   auto constraints = constraints_for_source_triangles();
-  constraints.sourceFaceSheet = {0, 0};
+  const auto sourceAuthority =
+      test_source_authority(constraints.sourceFaces, {0, 0}, {0, 0});
+  constraints.sourceAuthority = &sourceAuthority;
   constraints.vertexProvenance.resize(4);
   for (auto &point : constraints.vertexProvenance) {
     point.face = 0;
