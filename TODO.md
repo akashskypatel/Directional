@@ -9,10 +9,11 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - Latest complete-gate review: branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`; exact implementation/test source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`. R-A is **not complete**. Historical REV-01-through-10 checkpoints and compile artifacts remain in `CHANGELOG.md`.
-  - [ ] R-A-REV-11: store and validate typed-authority compatibility for every exact stitch-key collision; reject incompatible region/sheet/chart/support lineage and add compatible/incompatible collision contracts.
-  - [ ] R-A-REV-12: make component authority remap checked and fail closed, validate complete typed lineage after remap, and replace helper-only evidence with an end-to-end multi-component raw-tamper/malformed-remap contract.
-  - [ ] R-A-REV-13: replace the sampled REV-10 script with a complete affected-path/symbol/read inventory and semantic checks that detect REV-11 and REV-12.
+  - Latest complete-gate review: branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`; latest review-remediation compile source `78056ba849fafad27eb55e8008fbc20a56300868`. R-A is **not complete** until the complete closure inventory below is rerun and clean. Historical REV-01-through-13 checkpoints and compile artifacts remain in `CHANGELOG.md`.
+  - [x] R-A-REV-11: exact stitch-key registry entries now retain canonical typed region/sheet/chart/support compatibility authority; every collision validates and intersects that authority before positional merge, with incompatible collisions rejecting as `IncompatibleTypedStitchAuthority`.
+  - [x] R-A-REV-12: component typed-lineage remap is checked and fail closed for region/sheet/chart/support mappings, complete remapped lineage is required before publication, and compile-visible real multi-component raw-tamper plus malformed-remap contracts cover the production path.
+  - [x] R-A-REV-13: the replacement audit inventories repository-wide affected authority symbols and classified component/sheet reads across required producers/consumers/public declarations, and semantically checks the REV-11 collision and REV-12 production-remap contracts.
+  - Partial Code + Build checkpoint: source `78056ba849fafad27eb55e8008fbc20a56300868`; run/job `31584657331 / 94075568409`; result/log artifacts `9136856592 / 9136857219`; Release/static/Ninja/PRE_TEST **118/118**; self-excluding manifest **21/21**; all five source-status snapshots empty; semantic contracts compiled but not executed; no generated Directional runtime executed.
   - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every gate item is statically clean.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.

@@ -17,6 +17,24 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — R-A-REV-11 through R-A-REV-13
+
+- Closed `R-A-REV-11` for the reviewed completion/assembly paths: exact stitch-registry collisions retain and compare canonical typed topology-region/isolation-sheet/chart/support authority before positional merge; incompatible candidates fail `IncompatibleTypedStitchAuthority`, and publication retains only compatible common authority.
+- Closed `R-A-REV-12` for the reviewed multi-component aggregation path: all typed region/sheet/chart/support remaps are checked against actual source extents, invalid mapping fails the component merge, complete remapped lineage is required before publication, and raw component/sheet labels are projection/export only.
+- Closed `R-A-REV-13` at the Code + Build audit boundary: the replacement repository-wide affected-symbol/read inventory includes the previously omitted source-authoritative validator, rail constraints, arrangement/chart ownership, materializer/lineage declarations, and component aggregation, and it checks REV-11/12 semantic contract bodies rather than names alone.
+
+### Validation — R-A-REV-11 through R-A-REV-13
+
+- Exact review-remediation source: `78056ba849fafad27eb55e8008fbc20a56300868` (`6 files changed, 656 insertions, 216 deletions`).
+- Compile-only run/job `31584657331 / 94075568409` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9136856592`, outer SHA-256 `f6bd76caf0cb1a78b0faaedb04feaf157850d1e11336919efbf5cf698a07ce6d`; log artifact `9136857219`, outer SHA-256 `98353502b1cffa8f0f3e9233bddf8bf1c3d7909f48786e069bae1d3f5a4296f3`.
+- The repository-wide audit reported `R-A-REV-11 source/contract audit: closed`, `R-A-REV-12 source/contract audit: closed`, and `R-A-REV-13 repository-wide affected-symbol/read inventory: clean`.
+- Independent result inspection verified exact source, **22** regular files including `SHA256SUMS`, a self-excluding manifest **21/21**, zero manifest self references, all five source-status snapshots empty, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority and regression totals remain **34 events / 14 categories / 20 recurrences**.
+
+### Operational notes — R-A-REV-11 through R-A-REV-13
+
+- Main compile runs `31583568437` and `31584101692` stopped before source application because the temporary patch payload was corrupted/truncated in repository transfer. Diagnostic run `31584275615` isolated the bad final chunk. Repair run `31584429133` reconstructed and hash-verified the exact payload but stopped when the ignored `.agents` path was not force-staged; retry `31584506399` repaired the payload successfully. These were orchestration-only failures: no product source patch was applied by the failed main runs, no generated runtime executed, and no regression event was assigned.
+
 ### Review — complete R-A closure gate
 
 - Reviewed PR #8 through branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`; implementation/test source ends at exact compiled commit `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`. Rejected R-A completion.
@@ -96,7 +114,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 - M1l `bd140cff...` remains the latest immutable runtime authority.
 - Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifacts `9125984929` / `9127976318` / `9129549875` are not M1 acceptance candidates.
-- R-A-REV-01 through R-A-REV-10 remain historical bounded compile checkpoints; R-A is not complete because R-A-REV-11 through R-A-REV-13 are open. R-B through R-G and the fresh full package remain pending.
+- R-A-REV-01 through R-A-REV-13 are historical bounded compile-closed checkpoints for their reviewed paths. R-A is still not complete until the complete closure inventory is rerun clean; R-B through R-G and the fresh full package remain pending.
 - The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
 
 Historical review baseline: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. Current closure authority: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.

@@ -1,12 +1,50 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** R-A closure rejected at branch head `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`; R-A-REV-11 through R-A-REV-13 are open, followed by R-B through R-G and one fresh full self-verifying package
+**Current status:** R-A-REV-01 through R-A-REV-13 are compile-closed for their reviewed paths at `78056ba849fafad27eb55e8008fbc20a56300868`; R-A remains open pending the complete closure inventory, followed by R-B through R-G and one fresh full self-verifying package
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Latest closure-review branch head:** `1c4f631ff4d0565f520796fb8fbfab854d5b8ad1`
-**Exact reviewed implementation source:** `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`
+**Latest review-remediation implementation/compile source:** `78056ba849fafad27eb55e8008fbc20a56300868`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0AA. 2026-08-12 R-A-REV-11-through-13 review-remediation checkpoint
+
+This additive checkpoint closes the three findings introduced by Section 0A for their reviewed Code + Build paths. It does **not** declare the complete R-A gate accepted; the complete R-A inventory below must still be rerun before R-A may be marked complete.
+
+### R-A-REV-11 — exact-key collision authority compatibility
+
+- `stitch_pure_quad_patches` now retains a typed-authority certificate for each pending registry vertex, covering normalized topology regions, isolation sheets, source charts, and source support.
+- Every incoming exact-key collision derives complete typed authority and validates compatibility **before** positional merge. Source support must agree exactly; region/sheet/chart authority is intersected and an empty intersection fails closed as `IncompatibleTypedStitchAuthority`.
+- Publication uses the canonical/intersected certificate rather than selecting one disagreeing candidate.
+- Compile-visible semantic contracts cover a compatible exact-key merge and a same-key/same-position incompatible typed-lineage rejection.
+
+### R-A-REV-12 — checked multi-component typed remap and production contract
+
+- Component authority remap now returns a checked result and validates every topology-region, isolation-sheet, chart, and source-support mapping against the actual source extents. Invalid or overflowing mappings reject the component merge instead of resetting/skipping authority.
+- Remapped lineages and completed-patch provenance/lineage are staged and required complete before geometry/semantic publication. Raw `SurfacePoint` component/sheet values remain one-way projection/export payload derived after typed remap.
+- Compile-visible contracts include malformed typed-authority remap rejection and a real disconnected multi-component production path that checks typed sheet offset separation and typed semantic invariance under raw projection-label tamper.
+
+### R-A-REV-13 — repository-wide affected-symbol/read audit
+
+- The replacement audit scans production headers and implementations for the affected typed-authority symbols and explicitly requires completion, pipeline/materializer, `SourceAuthoritativeMeshValidator`, optimizer, rail constraints, arrangement/chart transitions, tracing, support, and source-topology paths.
+- Every affected `.component` / `.sheet` access is classified; unclassified access fails the audit.
+- Semantic-body checks verify the REV-11 collision certificate/ordering/failure/publication behavior and REV-12 checked production remap/staging/malformed/real multi-component contracts rather than accepting names alone.
+- Successful audit output: `R-A-REV-11 source/contract audit: closed`, `R-A-REV-12 source/contract audit: closed`, `R-A-REV-13 repository-wide affected-symbol/read inventory: clean`.
+
+### Compile-only evidence and scope
+
+- Exact implementation/compile source: `78056ba849fafad27eb55e8008fbc20a56300868` (`6 files changed, 656 insertions, 216 deletions`).
+- Run/job `31584657331 / 94075568409` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`.
+- Result artifact `9136856592`, outer SHA-256 `f6bd76caf0cb1a78b0faaedb04feaf157850d1e11336919efbf5cf698a07ce6d`; log artifact `9136857219`, outer SHA-256 `98353502b1cffa8f0f3e9233bddf8bf1c3d7909f48786e069bae1d3f5a4296f3`.
+- Independent inspection verified **22** regular files including `SHA256SUMS`, a self-excluding manifest **21/21**, zero manifest self references, all five source-status snapshots empty, exact source commit, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. The semantic contracts were compiled only.
+- Artifact `9136856592` is partial review-remediation evidence only and is not an M1 acceptance candidate. The final full R-A-through-R-G package must be freshly produced after R-A and R-B-through-R-G closure.
+- The initial two main compile attempts and the payload diagnostic/first repair attempt failed only in temporary payload transfer/orchestration before source application or compilation; they executed no generated runtime and do not alter regression state.
+
+### Next gate
+
+Rerun the complete R-A closure inventory below. Mark R-A complete only if every listed producer/consumer, collision, remap, raw-read, and compiled-contract item is statically clean. Then continue R-B through R-G in the same M1 vertical cutover.
 
 ## 0A. 2026-08-12 R-A-REV-07-through-10 closure review — rejected
 
