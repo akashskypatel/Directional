@@ -1,7 +1,7 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only
-**Current status:** RA-REV-22-F4/F5 and RA-REV-23-F2 are Code + Build remediated / compile-valid at `64fa65a9379ad0a246393371516de3a3a7146243`; the widened complete R-A inventory is reproducibly PASS; a fresh exact-source compile package exists; overall R-A remains open pending the single immutable artifact-only Test + Benchmark gate
+**Current status:** RA-REV-22-F4/F5 and RA-REV-23-F2 are independently re-reviewed **CLOSED at the Code + Build boundary** at `64fa65a9379ad0a246393371516de3a3a7146243`; the R-A implementation is complete and nothing blocks the Test + Benchmark gate (RA-REV-23-F3 and RA-REV-22-F6 are deferred post-R-A hygiene); the widened complete R-A inventory is reproducibly PASS; a fresh exact-source compile package exists; overall R-A remains open pending the single immutable artifact-only Test + Benchmark gate
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`
 **Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
 **Latest review-remediation implementation/compile source:** `64fa65a9379ad0a246393371516de3a3a7146243`
