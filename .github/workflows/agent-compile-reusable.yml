@@ -11,13 +11,7 @@ on:
         description: Space-separated CMake targets.
         required: false
         type: string
-        default: >-
-          directional_core directional_pipeline
-          directional_surface_cell_authority_kernel_tests
-          directional_surface_cell_producer_tests
-          directional_surface_cell_completion_tests
-          directional_surface_cell_validation_tests
-          directional_compiled_api_tests directional_benchmarks
+        default: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix:
         description: Prefix for result and log artifacts.
         required: false
@@ -31,12 +25,8 @@ on:
       cache_keep:
         description: Number of newest compatible compiler caches to retain.
         required: false
-        type: number
-        default: 2
-
-permissions:
-  contents: read
-  actions: write
+        type: string
+        default: "2"
 
 jobs:
   compile:
@@ -55,8 +45,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          : > "$LOG"
+          : > "$RUNNER_TEMP/activity.log"
           printf '%s\n' \
             "workflow=$GITHUB_WORKFLOW" \
             "run_id=$GITHUB_RUN_ID" \
@@ -65,7 +54,7 @@ jobs:
             "requested_source_sha=${{ inputs.source_sha }}" \
             "targets=${{ inputs.targets }}" \
             'turnBoundary=Code+Build-only' \
-            'runtimeExecution=false' | tee -a "$LOG"
+            'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
 
       - name: Checkout exact source and shallow submodules
         uses: actions/checkout@v4
@@ -79,8 +68,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
           test "$(git rev-parse HEAD)" = "${{ inputs.source_sha }}"
           command -v ccache >/dev/null 2>&1 || {
             sudo apt-get update
@@ -93,9 +81,9 @@ jobs:
           compiler_version="$(c++ -dumpfullversion -dumpversion)"
           cache_prefix="directional-ccache-${RUNNER_OS}-gcc-${compiler_version}-release-${{ inputs.cache_epoch }}-"
           legacy_prefix="m1-ra-${RUNNER_OS}-gcc-${compiler_version}-release-ccache-v3-"
-          printf 'compiler_version=%s\ncache_prefix=%s\nlegacy_prefix=%s\n' \
-            "$compiler_version" "$cache_prefix" "$legacy_prefix" >> "$GITHUB_OUTPUT"
-          printf 'CCACHE_DIR=%s\n' "$CCACHE_DIR" >> "$GITHUB_ENV"
+          echo "compiler_version=$compiler_version" >> "$GITHUB_OUTPUT"
+          echo "cache_prefix=$cache_prefix" >> "$GITHUB_OUTPUT"
+          echo "legacy_prefix=$legacy_prefix" >> "$GITHUB_OUTPUT"
           mkdir -p "$CCACHE_DIR"
           ccache --set-config=max_size="$CCACHE_MAXSIZE"
           ccache --set-config=compression=true
@@ -131,8 +119,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
           git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-before-configure.txt"
           test ! -s "$RUNNER_TEMP/source-status-before-configure.txt"
           rm -rf "$BUILD_DIR"
@@ -161,15 +148,14 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
           read -r -a TARGETS <<< "${{ inputs.targets }}"
           set +e
-          cmake --build "$BUILD_DIR" --target "${TARGETS[@]}" -- -j2 \
-            2>&1 | tee "$RUNNER_TEMP/build.log"
+          cmake --build "$BUILD_DIR" --target "${TARGETS[@]}" -- -j2 2>&1 | tee "$RUNNER_TEMP/build.log"
           rc=${PIPESTATUS[0]}
           set -e
           echo "$rc" > "$RUNNER_TEMP/build-exit-code"
+          echo "compile_exit=$rc" >> "$GITHUB_OUTPUT"
           echo "build_exit=$rc"
           git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-after-build.txt"
           ccache --show-stats | tee "$RUNNER_TEMP/ccache-stats.txt"
@@ -178,64 +164,40 @@ jobs:
           exit 0
 
       - name: Save compiler cache even after compile failure
-        if: always()
+        if: ${{ always() }}
         uses: actions/cache/save@v4
         with:
           path: ${{ runner.temp }}/directional-ccache
           key: ${{ steps.toolchain.outputs.cache_prefix }}${{ github.run_id }}
 
       - name: Prune compiler caches
-        if: always()
+        if: ${{ always() }}
         env:
           GH_TOKEN: ${{ github.token }}
           CACHE_PREFIX: ${{ steps.toolchain.outputs.cache_prefix }}
-          LEGACY_PREFIX: m1-ra-
           CACHE_KEEP: ${{ inputs.cache_keep }}
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
           OUT="$RUNNER_TEMP/cache-prune.txt"
           : > "$OUT"
-          gh api --method GET "repos/$GITHUB_REPOSITORY/actions/caches" \
-            -f ref="$GITHUB_REF" -f per_page=100 > "$RUNNER_TEMP/caches.json"
-          python3 - "$RUNNER_TEMP/caches.json" "$CACHE_PREFIX" "$LEGACY_PREFIX" "$CACHE_KEEP" > "$RUNNER_TEMP/cache-delete-ids.txt" <<'PY'
-          import json, sys
-          path, current_prefix, legacy_prefix, keep_text = sys.argv[1:]
-          keep = max(1, int(float(keep_text)))
-          data = json.load(open(path, encoding="utf-8"))
-          caches = data.get("actions_caches", [])
-          current = sorted(
-              (c for c in caches if c.get("key", "").startswith(current_prefix)),
-              key=lambda c: (c.get("created_at", ""), c.get("id", 0)),
-              reverse=True,
-          )
-          keep_ids = {c["id"] for c in current[:keep]}
-          for cache in caches:
-              key = cache.get("key", "")
-              cid = cache.get("id")
-              if cid is None:
-                  continue
-              if key.startswith(legacy_prefix) or (
-                  key.startswith(current_prefix) and cid not in keep_ids
-              ):
-                  print(f"{cid}\t{key}")
-          PY
-          while IFS=$'\t' read -r cache_id cache_key; do
-            test -n "${cache_id:-}" || continue
-            echo "prune_cache_id=$cache_id key=$cache_key" | tee -a "$OUT" "$LOG"
+          gh api --method GET "repos/$GITHUB_REPOSITORY/actions/caches" -f ref="$GITHUB_REF" -f per_page=100 > "$RUNNER_TEMP/caches.json"
+          current_ids="$(jq -r --arg p "$CACHE_PREFIX" --argjson keep "$CACHE_KEEP" '[.actions_caches[] | select(.key | startswith($p))] | sort_by(.created_at) | reverse | .[$keep:][]?.id' "$RUNNER_TEMP/caches.json")"
+          legacy_ids="$(jq -r '.actions_caches[] | select(.key | startswith("m1-ra-")) | .id' "$RUNNER_TEMP/caches.json")"
+          for cache_id in $legacy_ids $current_ids; do
+            test -n "$cache_id" || continue
+            cache_key="$(jq -r --argjson id "$cache_id" '.actions_caches[] | select(.id == $id) | .key' "$RUNNER_TEMP/caches.json")"
+            echo "prune_cache_id=$cache_id key=$cache_key" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
             gh api --method DELETE "repos/$GITHUB_REPOSITORY/actions/caches/$cache_id"
-          done < "$RUNNER_TEMP/cache-delete-ids.txt"
-          echo "cache_keep=$CACHE_KEEP prefix=$CACHE_PREFIX pruning=complete" | tee -a "$OUT" "$LOG"
+          done
+          echo "cache_keep=$CACHE_KEEP prefix=$CACHE_PREFIX pruning=complete" | tee -a "$OUT" "$RUNNER_TEMP/activity.log"
 
       - name: Package and self-verify compile evidence
-        if: always()
+        if: ${{ always() && steps.build.outputs.compile_exit == '0' }}
         shell: bash
         run: |
           set -euo pipefail
-          LOG="$RUNNER_TEMP/activity.log"
-          exec > >(tee -a "$LOG") 2>&1
-          test -f "$RUNNER_TEMP/build-exit-code"
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
           SOURCE_SHA="$(git rev-parse HEAD)"
           test "$SOURCE_SHA" = "${{ inputs.source_sha }}"
           git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
@@ -243,7 +205,7 @@ jobs:
           OUT="$RUNNER_TEMP/result"
           rm -rf "$OUT"
           mkdir -p "$OUT/metadata" "$OUT/source" "$OUT/bin" "$OUT/lib"
-          printf '%s\n' "$SOURCE_SHA" > "$OUT/metadata/source-commit.txt"
+          echo "$SOURCE_SHA" > "$OUT/metadata/source-commit.txt"
           git submodule status --recursive > "$OUT/metadata/dependency-revisions.txt"
           git archive --format=tar.gz -o "$OUT/source/source-$SOURCE_SHA.tar.gz" "$SOURCE_SHA"
           cp "$RUNNER_TEMP"/source-status-*.txt "$OUT/metadata/"
@@ -264,7 +226,7 @@ jobs:
             'semanticContracts=compiled-not-executed' \
             'manifestExcludesSelf=true' \
             'buildLocation=runner-temp-out-of-tree' > "$OUT/metadata/command-boundary.txt"
-          printf '%s\n' ${{ inputs.targets }} > "$OUT/metadata/compiled-targets.txt"
+          echo "${{ inputs.targets }}" | tr ' ' '\n' > "$OUT/metadata/compiled-targets.txt"
           copy_if_exists() { test ! -f "$1" || cp "$1" "$2/"; }
           copy_if_exists "$BUILD_DIR/directional_surface_cell_authority_kernel_tests" "$OUT/bin"
           copy_if_exists "$BUILD_DIR/directional_surface_cell_producer_tests" "$OUT/bin"
@@ -281,7 +243,7 @@ jobs:
           echo 'source_status_clean=pass'
 
       - name: Upload compile result
-        if: always() && steps.build.outcome == 'success'
+        if: ${{ always() && steps.build.outputs.compile_exit == '0' }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact_prefix }}-result-${{ github.run_id }}
@@ -290,7 +252,7 @@ jobs:
           retention-days: 7
 
       - name: Upload persistent activity log
-        if: always()
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.artifact_prefix }}-log-${{ github.run_id }}
@@ -299,7 +261,7 @@ jobs:
           retention-days: 7
 
       - name: Propagate compile status
-        if: always()
+        if: ${{ always() }}
         shell: bash
         run: |
           set -euo pipefail
