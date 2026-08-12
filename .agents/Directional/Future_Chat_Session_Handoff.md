@@ -25,34 +25,35 @@ Do not add transcripts, chronological tool history, copied artifact tables, supe
 
 ## Mandatory next turn
 
-Run **step 1 of the R-A closeout sequence**: one **artifact-only Test + Benchmark cadence turn** against the fresh RA-REV-22-F1/F2/F3 and RA-REV-23-F1 correction package. Do not rebuild or change implementation, test, benchmark, build, fixture, or inventory source.
+Run **step 1 of the R-A closeout sequence**: one **Code + Build turn** implementing RA-REV-22-F4, RA-REV-22-F5, and RA-REV-23-F2. **R-A is one continuous checkpoint and must be implemented all the way through before any Test + Benchmark turn is executed.**
 
-The independent re-review at `032d4cbae9e2de2767579934682e78754180338d` **closed** RA-REV-22-F1/F2/F3 and RA-REV-23-F1 at the Code + Build boundary and opened three non-blocking follow-ups (RA-REV-22-F4, RA-REV-22-F5, RA-REV-23-F2). **This turn cannot close overall R-A** — RA-REV-22-F4 leaves the aggregate content-mismatch contract unwritten. Full sequence and evidence: `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`, section "Concrete R-A closeout sequence"; task breakdown in `TODO.md`.
+The independent re-review at `032d4cbae9e2de2767579934682e78754180338d` **closed** RA-REV-22-F1/F2/F3 and RA-REV-23-F1 at the Code + Build boundary and opened these three follow-ups. Package `9160266493 / 9160266848` is **retained compile history only** and is **superseded as a runtime candidate** — do not execute it, and do not relabel it as acceptance evidence. Full sequence and evidence: `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`, section "Concrete R-A closeout sequence"; task breakdown in `TODO.md`; exact corrective specifications in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md` section 0G.
 
 Repository: `akashskypatel/Directional`
 Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 PR: #8 remains open, draft, and unmerged
-Exact compile-valid implementation/test source: `032d4cbae9e2de2767579934682e78754180338d`
-Compile run/job: `31644502450 / 94274781412`
-Result artifact: `9160266493`, SHA-256 `0980b3ca20c1e50be9323c99ecd3fca6d77f8df4655cd84eae9e0917d450ea11`
-Log artifact: `9160266848`, SHA-256 `145a614170bec6cd949e51b5113e78509480bffb01670ecbabba9687f89c045d`
+Exact source to build on: `032d4cbae9e2de2767579934682e78754180338d`
+Superseded compile history: run/job `31644502450 / 94274781412`, artifacts `9160266493 / 9160266848`
 
-Before executing any packaged binary, verify exact source, outer artifact digests, recursive self-excluding manifest **25/25**, five empty source-status snapshots, dependency revisions, Release/static/Ninja/PRE_TEST build exit `0`, and `runtimeExecution=false`. Extract the packaged source archive only for evidence inspection and verify `R_A_Closure_Inventory_Report.md` reports **19 paths, 42 probes, 186 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline stitchIdentity assignments, final static PASS**.
+This turn must not execute any generated binary, test, benchmark, `ctest`, discovery, CLI, fuzzer, or custom input. It ends with a regenerated complete R-A inventory that is still **PASS under the widened probes** and one fresh compile-only package.
 
-Then execute, without rebuilding:
+The Test + Benchmark turn comes only after that package exists. When it runs, it must execute the complete R-A contract set in one gate, without rebuilding:
 
 - `FinalMergedOracleRejectsMissingRemappedBoundaryAuthority` and `FinalMergedOracleRejectsMissingRemappedFeatureAuthority`; both must reach the final-oracle counterfactual seam, fail with the expected validator issue, and publish no aggregate semantics;
 - `FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing` and `DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches`, the positive aggregate contract that cross-checks published strict/provenance/boundary/feature flags against `finalSourceAuthorityValidationResult`;
 - `ComponentBoundaryRailTamperRejectsAtAggregationSeam` and `ComponentFeatureRailTamperRejectsAtAggregationSeam` — the renamed component tamper tests, classified only as seam-guard coverage. Do not use their pre-`032d4cba` names; a filter built from those selects zero tests;
+- the new RA-REV-22-F4 boundary and feature **content**-mismatch negatives and the feature-bearing positive witness added in step 1;
 - retained REV-21 permutation-pair, REV-23 canonical/re-stitch, REV-24 null/foreign-authority, transactional rollback, optimizer/final-validator authority, and zero-publication contracts needed to detect regressions.
+
+Before executing any packaged binary, verify exact source, outer artifact digests, recursive self-excluding manifest, five empty source-status snapshots, dependency revisions, Release/static/Ninja/PRE_TEST build exit `0`, and `runtimeExecution=false`. Extract the packaged source archive only for evidence inspection and verify the packaged `R_A_Closure_Inventory_Report.md` records the regenerated widened-probe counts and final static PASS.
 
 A zero-selected filter is orchestration failure. Classify every failure from immutable runtime evidence. Do not rebuild, weaken validation, restore aliases/fallbacks, or alter fixtures to synthesize green output.
 
-If `ComponentFeatureRailTamperRejectsAtAggregationSeam` or `FinalMergedOracleRejectsMissingRemappedFeatureAuthority` fails its `ASSERT_TRUE` fixture precondition, that is a fixture-adequacy failure (the `userHardEdges {0,2}` interior diagonal did not yield a hard-feature rail), not a contract failure. Classify it as such.
+If `ComponentFeatureRailTamperRejectsAtAggregationSeam` or `FinalMergedOracleRejectsMissingRemappedFeatureAuthority` fails its `ASSERT_TRUE` fixture precondition, that is a fixture-adequacy failure (the `userHardEdges {0,2}` interior diagonal did not yield a hard-feature rail), not a contract failure. Classify it as such and fix it in a Code + Build turn, never inside the Test + Benchmark turn.
 
-Do **not** mark overall R-A complete from this turn even if everything passes: RA-REV-22-F4, RA-REV-22-F5, and RA-REV-23-F2 must land in a Code + Build turn first, followed by a fresh package and a final artifact-only turn. See the closeout sequence in the independent-review report.
+Mark overall R-A complete only if that single gate passes organically **and** the regenerated static inventory is clean under the widened probes. R-A does not close on a partial pass; any organic failure returns to Code + Build and the sequence restarts at step 1.
 
-The retained full M1 artifact-only plan remains dormant until one fresh complete R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this cadence turn.
+The retained full M1 artifact-only plan remains dormant until one fresh complete R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this sequence.
 
 ## Current authority
 
@@ -68,7 +69,7 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 
 - Overall R-A remains **open / not runtime-accepted**.
 - The four follow-up findings from the `9d88d0e...` review are **Code + Build remediated at `032d4cbae9e2de2767579934682e78754180338d` and independently re-reviewed CLOSED at that boundary**. Still not runtime accepted.
-- Three new non-blocking follow-ups are open, all owned by closeout step 2: **RA-REV-22-F4** (aggregate oracle proven only against *absent* boundary/feature authority; no `ChangedBoundaryLoop`/rail content-mismatch negative), **RA-REV-22-F5** (`strictValidationUsed` and `authoritativeFeatureRailsUsed` remain option echoes, so two `EXPECT_TRUE`s cannot fail), **RA-REV-23-F2** (the structural stitch-kind probe misses wrapped assignments, `directional::geometry::` qualification, aliases, and `= <expr>.kind` stale-kind copies).
+- Three new follow-ups are open, all owned by closeout step 1 and all required before any Test + Benchmark turn: **RA-REV-22-F4** (aggregate oracle proven only against *absent* boundary/feature authority; no `ChangedBoundaryLoop`/rail content-mismatch negative), **RA-REV-22-F5** (`strictValidationUsed` and `authoritativeFeatureRailsUsed` remain option echoes, so two `EXPECT_TRUE`s cannot fail), **RA-REV-23-F2** (the structural stitch-kind probe misses wrapped assignments, `directional::geometry::` qualification, aliases, and `= <expr>.kind` stale-kind copies).
 - RA-REV-22-F1: post-remap boundary/feature authority counterfactuals target the final oracle; the older component tamper tests are explicitly aggregation-seam coverage.
 - RA-REV-22-F2: aggregate strict/provenance/boundary/feature usage flags are final-oracle-derived.
 - RA-REV-22-F3: the typed final-oracle result is published independently of component report completeness.

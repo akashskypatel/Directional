@@ -10,7 +10,7 @@
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
 **Latest independent-review verdict at source `9d88d0e...`:** **REV-21 contract completion and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A rejected/open.**
 **Post-review remediation status:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `032d4cbae9e2de2767579934682e78754180338d`; this is not an independent re-review or runtime acceptance.**
-**Latest independent re-review verdict at source `032d4cbae9e2de2767579934682e78754180338d`:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are CLOSED at the Code + Build boundary. Three new non-blocking follow-ups are opened (RA-REV-22-F4, RA-REV-22-F5, RA-REV-23-F2). Overall R-A remains rejected/open pending organic runtime execution.**
+**Latest independent re-review verdict at source `032d4cbae9e2de2767579934682e78754180338d`:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are CLOSED at the Code + Build boundary. Three new follow-ups are opened (RA-REV-22-F4, RA-REV-22-F5, RA-REV-23-F2); all three must land in Code + Build before any Test + Benchmark turn, because R-A is one continuous checkpoint. Overall R-A remains rejected/open pending organic runtime execution.**
 
 ## Independent re-review addendum — RA-REV-22-F1/F2/F3 and RA-REV-23-F1 closure
 
@@ -101,15 +101,16 @@ This Review inspected exact implementation/test/audit source `032d4cbae9e2de2767
 
 ### Concrete R-A closeout sequence
 
-Overall R-A is blocked only on runtime execution plus the three follow-ups above. Close it in this exact order; do not combine turn types.
+**R-A is one continuous checkpoint. It must be implemented all the way through before any Test + Benchmark turn is executed.** No intermediate runtime gate is run against a knowingly incomplete contract set: RA-REV-22-F4 leaves the aggregate content-mismatch contract unwritten, so executing the current package would produce a partial result that cannot close R-A and would invite treating a partial pass as progress. Close R-A in this exact order; do not combine turn types.
 
-1. **Artifact-only Test + Benchmark turn (next).** Execute the immutable package `9160266493 / 9160266848` from exact source `032d4cbae9e2de2767579934682e78754180338d` with no rebuild. The required focused set is listed in the handoff. A zero-selected filter is orchestration failure. Classify every failure from immutable runtime evidence; do not weaken validation, restore fallbacks, or edit fixtures. This turn **cannot** close R-A on its own, because RA-REV-22-F4 leaves the aggregate content-mismatch contract unwritten.
-2. **Code + Build turn.** Implement RA-REV-22-F4 (both content negatives, the feature-bearing positive, issue-list assertions, and the two new inventory probes), RA-REV-22-F5, and RA-REV-23-F2 including the audit self-test. Regenerate the complete inventory; it must stay PASS under the widened probes.
-3. **Compile package.** One fresh focused Release/static/Ninja/PRE_TEST package from that exact source through `agent-compile-reusable.yml`, with manifest, source-status snapshots, and `runtimeExecution=false` verified.
-4. **Final artifact-only Test + Benchmark turn.** Execute the full R-A contract set — REV-21 permutation pair, REV-22 seam/oracle negatives and positives including the new content negatives, REV-23 canonical/re-stitch, REV-24 null/foreign authority, transactional rollback, and zero-publication contracts — from that package with no rebuild.
-5. **Mark R-A complete** only if step 4 passes organically *and* the regenerated static inventory is clean under the widened probes. Then proceed to R-B.
+1. **Code + Build turn (next).** Implement RA-REV-22-F4 (both content negatives, the feature-bearing positive, issue-list assertions, and the new inventory probes), RA-REV-22-F5, and RA-REV-23-F2 including the audit self-test. Regenerate the complete inventory; it must stay PASS under the widened probes. Execute no generated binary, test, benchmark, `ctest`, discovery, CLI, fuzzer, or custom input in this turn.
+2. **Compile package.** One fresh focused Release/static/Ninja/PRE_TEST package from that exact source through `agent-compile-reusable.yml`, with manifest, five empty source-status snapshots, and `runtimeExecution=false` verified.
+3. **Single artifact-only Test + Benchmark turn.** Execute the complete R-A contract set in one gate, with no rebuild — REV-21 permutation pair, REV-22 seam guards, the oracle presence negatives, the new oracle content negatives, the feature-bearing positive, REV-23 canonical/re-stitch, REV-24 null/foreign authority, transactional rollback, and zero-publication contracts.
+4. **Mark R-A complete** only if step 3 passes organically *and* the regenerated static inventory is clean under the widened probes. Then proceed to R-B.
 
-If step 1 fails organically, steps 2-4 absorb the failure classification and the sequence restarts at step 2; R-A does not close on a partial pass.
+Package `9160266493 / 9160266848` is **retained compile history and superseded as a runtime candidate**. Do not execute it, and do not relabel it as R-A or M1 acceptance evidence.
+
+If step 3 fails organically, the sequence restarts at step 1 with the failure classification carried forward; R-A does not close on a partial pass. Fixture-adequacy failures are Code + Build work and never repaired inside the Test + Benchmark turn.
 
 ## Post-review remediation addendum — RA-REV-22-F1/F2/F3 and RA-REV-23-F1
 
