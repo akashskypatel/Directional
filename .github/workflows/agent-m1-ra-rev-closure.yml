@@ -44,7 +44,7 @@ jobs:
           test "$changed" = "$expected"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md .agents/Directional/CHANGELOG.md
+          git add -f .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md .agents/Directional/CHANGELOG.md
           git commit -m "docs: record M1 R-A review closure"
           git push origin "HEAD:$GITHUB_REF"
           echo "records_commit=$(git rev-parse HEAD)"
