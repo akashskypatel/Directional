@@ -1,0 +1,45 @@
+name: Agent M1 R-A REV-11-13 Payload Repair
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m1-ra-rev-11-13-payload-repair.txt]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact trigger source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+
+      - name: Reconstruct and publish exact patch chunk
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          cat \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03a \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03b \
+            .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03c \
+            > .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03
+          test "$(sha256sum .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03 | cut -d' ' -f1)" = "a5e71e12d6afddcb5c513936a9532cf25b94fed7d1c36c93cfe3b8a86e0323df"
+          cat .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part00 \
+              .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part01 \
+              .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part02 \
+              .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03 \
+              > "$RUNNER_TEMP/patch.b64"
+          test "$(sha256sum "$RUNNER_TEMP/patch.b64" | cut -d' ' -f1)" = "e971051ed6c2feae6495682becc8b2cfc35a22f9946cebfb3cd829fd1472274b"
+          base64 --decode "$RUNNER_TEMP/patch.b64" | gzip -dc > "$RUNNER_TEMP/patch"
+          test "$(sha256sum "$RUNNER_TEMP/patch" | cut -d' ' -f1)" = "a0d8d24f8e3243c9c21e2662434fdf6beacf01754fd74708d2a92ec43068e39b"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03
+          git commit -m "ci(agent): repair R-A REV-11-13 patch transfer"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo 'runtimeExecution=false'
