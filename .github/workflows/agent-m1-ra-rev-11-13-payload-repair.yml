@@ -39,7 +39,7 @@ jobs:
           test "$(sha256sum "$RUNNER_TEMP/patch" | cut -d' ' -f1)" = "a0d8d24f8e3243c9c21e2662434fdf6beacf01754fd74708d2a92ec43068e39b"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03
+          git add -f .agents/Directional/turn-payloads/m1-ra-rev-11-13.patch.part03
           git commit -m "ci(agent): repair R-A REV-11-13 patch transfer"
           git push origin "HEAD:${GITHUB_REF_NAME}"
           echo 'runtimeExecution=false'
