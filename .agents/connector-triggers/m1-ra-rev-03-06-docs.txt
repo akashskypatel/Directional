@@ -1,1 +1,1 @@
-sync R-A-REV-03 through R-A-REV-06 durable records
+sync retry R-A-REV-03 through R-A-REV-06 durable records
