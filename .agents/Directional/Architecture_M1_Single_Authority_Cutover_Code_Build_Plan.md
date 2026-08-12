@@ -1,13 +1,38 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** R-A closure gate rejected at working-branch implementation `5e023f1a8331c53182cfd296732c37cb7a889b88`; the exact R-A-REV-01 path is corrected and the exact R-A-REV-02 raw encoding is removed, but R-A-REV-03 through R-A-REV-06 remain open before R-B through R-G
+**Current status:** R-A-REV-01 through R-A-REV-06 are compile-closed for their reviewed paths at `c62c99ffe5b7863820c91f4ff3a93645b22d3591`; R-A itself remains open pending the complete closure inventory, R-B through R-G, and one fresh full self-verifying R-A-through-R-G package
 **Original planning decision:** prior narrow M1m plan rejected and replaced  
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
 **Latest implementation review baseline:** `5e023f1a8331c53182cfd296732c37cb7a889b88`
+**Latest review-remediation source:** `c62c99ffe5b7863820c91f4ff3a93645b22d3591`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0AA. 2026-08-12 R-A-REV-03-through-06 review-remediation checkpoint
+
+This checkpoint is additive to the closure-gate review below. It closes the four named review findings for the reviewed paths without declaring R-A or M1 complete.
+
+### Implemented closure
+
+- Core review-remediation commit `e33a3c6be1db9c3e6f773a8deb2bebd870099536` removes standalone/patch-local compatibility stitch synthesis, requires exact boundary or complete typed lineage authority, removes reviewed raw projection component/sheet decisions from validator/optimizer/rail/hash/materializer paths, and adds the required compiled contract inventory.
+- Linkage correction `c62c99ffe5b7863820c91f4ff3a93645b22d3591` moves the new typed stitch-helper forward declarations to the anonymous namespace that owns their definitions; it changes no semantic contract.
+- Focused static audit closes R-A-REV-03 and R-A-REV-04 and verifies the R-A-REV-05 contract source inventory. It is **not** the complete R-A closure inventory required by this plan.
+- R-A-REV-06 packaging mechanics are demonstrated by the successful partial checkpoint: out-of-tree build; clean source status before configure, after configure, after build, and at final packaging; manifest generated after payload writes while excluding itself; manifest verified before upload.
+
+### Compile/package evidence
+
+- Exact compiled source: `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
+- Release/static/Ninja/PRE_TEST compile-only run/job: `31561686903 / 94005144300`, **118/118**, build exit `0`.
+- Result artifact `9127976318`, outer SHA-256 `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588`.
+- Log artifact `9127976660`, outer SHA-256 `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
+- Independent result inspection verifies `metadata/source-commit.txt` equals the source above, all five recorded source-status snapshots are empty, and the self-excluding recursive `SHA256SUMS` passes **22/22**.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. The R-A-REV-05 contracts are compile evidence only.
+
+### Scope boundary and next action
+
+Artifact `9127976318` is a partial review-remediation checkpoint, not an M1 acceptance candidate and not the required full R-A-through-R-G package. Before R-A may be called complete, rerun the complete closure inventory below. Then finish R-B through R-G in the same vertical cutover and produce one fresh full package that repeats the verified R-A-REV-06 packaging rules. Only that full package may be handed to the retained artifact-only plan.
 
 ## 0A. 2026-08-12 R-A closure-gate review amendment
 

@@ -19,10 +19,21 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ### Fixed
 
+- Closed `R-A-REV-03` for the reviewed completion/assembly paths: standalone and patch-local compatibility stitch synthesis is removed; exact boundary identities are validated; derived identities require complete typed topology-region/isolation-sheet/chart/support lineage; missing authority fails with `MissingTypedStitchIdentity`.
+- Closed `R-A-REV-04` for the reviewed validator/optimizer/rail/hash/materializer paths: raw `SurfacePoint` component/sheet labels no longer accept, reject, scope, order, merge, hash, or route those semantic decisions.
+- Closed `R-A-REV-05` at the Code + Build contract boundary: compiled sources now include exact/prebuilt identity mismatch, missing typed authority, distinct typed isolation-sheet, raw-projection-tamper, optimizer/rail tamper, and completion-hash tamper contracts. They were compiled but not executed.
+- Closed the `R-A-REV-06` packaging defect for the partial review-remediation checkpoint: build output is out of tree, source provenance snapshots are clean, `SHA256SUMS` excludes itself, and the manifest is verified before upload. This does not make the partial package an M1 acceptance candidate; the final full R-A-through-R-G package must repeat these rules.
+
 - Closed `R-A-REV-01`: materializer occurrences now own typed `IsolationSheetId`; reviewed cross-sheet equivalence, quotient-state, representative-ordering, and sheet-aggregation decisions no longer read `SurfacePoint::sheet` semantically.
 - Corrected the exact `R-A-REV-02` encoding: the fallback stitch-key builder no longer inserts raw provenance component/sheet and now has a typed topology-region/isolation-sheet derivation. Closure review subsequently found that prebuilt compatibility identities bypass this derivation, so fail-closed R-A completion remains open as `R-A-REV-03`.
 
 ### Validation
+
+- Review-remediation source: core findings commit `e33a3c6be1db9c3e6f773a8deb2bebd870099536`; compile-corrected source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
+- Compile-only run/job `31561686903 / 94005144300` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9127976318`, outer SHA-256 `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588`; log artifact `9127976660`, outer SHA-256 `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
+- Focused source audit reports `R-A-REV-03 source audit: closed`, `R-A-REV-04 source audit: closed`, and `R-A-REV-05 compiled-contract inventory: present`. This is not the complete R-A closure inventory.
+- Independent result inspection verified exact source `c62c99f...`, all five source-status snapshots empty, a self-excluding recursive manifest **22/22**, and the packaged six compiled test/benchmark executables plus `libdirectional_core.a` / `libdirectional_pipeline.a`.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority and regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 - Partial R-A review-closure source authority: `df386d1ad819879abbf9d7660c3d586778d7daee`.
 - Compile-only run/job `31555887046 / 93988102158` completed Release/static/Ninja/PRE_TEST **118/118**. Result artifact `9125984929`, ZIP SHA-256 `23da519d16f59b3ba86d6defab185f51446700c6b6e405b88a5c735453ecdc81`; log artifact `9125985115`, ZIP SHA-256 `5a075c0ede75d79cb6b5ecc50d33c2e43a3f52d78b59bf5248bd33be14f7d051`.
@@ -31,6 +42,9 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 - M1 is not runtime accepted, immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`, and runtime regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 ### Operational notes
+
+- Initial R-A-REV-03-through-06 compile run/job `31559713594 / 93999361586` reached link step 112/118 and failed because the new `stable_patch_owner` / `typed_lineage_stitch_identity` calls were forward-declared in `pure_quad_detail` while their definitions remained in the translation unit's anonymous `directional::geometry` namespace. Log artifact `9127433279`, SHA-256 `703ad2c1042ded9210ab37393e8b63fcd16fc7ad20c7d263ec66518c2900956f`. Commit `c62c99f...` corrects only that linkage; no generated runtime executed and no stable product regression was assigned.
+- First retry run/job `31561631436 / 94004977538` stopped before source application/compile because the temporary linkage patch had an incorrect unified-diff hunk count. Log artifact `9127935690`, SHA-256 `595d140469768ecae959a3e5e2af5dc09eab3cee4daf3038bdf78901cdd2ddff`. The payload was corrected and retriggered; this was orchestration-only and did not change product/regression state.
 
 - Initial partial-closure compile run/job `31555727064 / 93987628937` stopped at compile step 82/118 on one stale local `sheet` alias after the typed occurrence member was introduced. The correction was limited to that remaining aggregation read; no generated runtime executed and no stable product regression was assigned.
 
