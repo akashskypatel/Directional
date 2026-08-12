@@ -122,7 +122,6 @@ SurfaceOptimizationConstraints make_final_constraints(
   constraints.authoritativeBoundaryLoop = {0, 1, 2, 3};
   constraints.authoritativeBoundaryLoops = {{0, 1, 2, 3}};
   constraints.authoritativeBoundaryEdges = {{0, 1}, {1, 2}, {2, 3}, {0, 3}};
-  constraints.requireSourceAuthoritativeValidation = true;
   return constraints;
 }
 
@@ -469,7 +468,6 @@ SurfaceOptimizationConstraints hard_rail_constraints(
     constraints.authoritativeBoundaryEdges.insert(
         {std::min(first, second), std::max(first, second)});
   }
-  constraints.requireSourceAuthoritativeValidation = true;
   return constraints;
 }
 
@@ -753,7 +751,6 @@ TEST(SurfaceMeshOptimizerPhase22,
       provenance_for(output, sourceVertices, sourceFaces, components, sheets);
   auto constraints = make_final_constraints(sourceVertices, sourceFaces,
                                              provenance);
-  constraints.requireSourceAuthoritativeValidation = true;
 
   EXPECT_FALSE(
       directional::geometry::source_authoritative_hard_invariants_valid(
@@ -761,6 +758,71 @@ TEST(SurfaceMeshOptimizerPhase22,
 }
 
 
+
+
+TEST(SurfaceMeshOptimizerPhase22,
+     SourceAuthoritativeEntryPointsFailClosedWithoutTypedAuthority) {
+  const Eigen::MatrixXd vertices = square_vertices();
+  const Eigen::MatrixXi quads = one_quad();
+  SurfaceOptimizationConstraints constraints;
+  constraints.sourceVertices = vertices;
+  constraints.sourceFaces = square_triangles();
+  constraints.sourcePositions = vertices;
+  constraints.vertexProvenance = provenance_for(
+      vertices, constraints.sourceVertices, constraints.sourceFaces,
+      {0, 0}, {0, 0});
+
+  const auto optimization =
+      directional::geometry::optimize_source_authoritative_surface_mesh(
+          vertices, quads, constraints);
+  EXPECT_TRUE(optimization.rolledBackToInput);
+  EXPECT_FALSE(optimization.projectionHasCompleteProvenance);
+  ASSERT_FALSE(optimization.lastHardInvariantIssues.empty());
+  EXPECT_EQ(MeshValidationFailureCode::MissingSourceAuthority,
+            optimization.lastHardInvariantIssues.front().code);
+
+  const auto validation =
+      directional::geometry::validate_source_authoritative_final_surface_mesh(
+          vertices, quads, constraints, optimization);
+  EXPECT_FALSE(validation.accepted);
+  ASSERT_FALSE(validation.strictValidationIssues.empty());
+  EXPECT_EQ(MeshValidationFailureCode::MissingSourceAuthority,
+            validation.strictValidationIssues.front().code);
+}
+
+TEST(SurfaceMeshOptimizerPhase22,
+     GenericMeshValidationIsInvariantToRawProjectionSheetLabels) {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0.0, 0.0, 0.0,
+      2.0, 0.0, 0.0,
+      0.0, 1.0, 0.0,
+      1.0, 0.0, 0.0;
+  Eigen::MatrixXi faces(1, 3);
+  faces << 0, 1, 2;
+  directional::validation::MeshValidatorOptions options;
+  options.requireVertexProvenanceForGeometry = true;
+  options.vertexProvenance.resize(4);
+  for (int vertex = 0; vertex < 4; ++vertex) {
+    auto &point = options.vertexProvenance[static_cast<std::size_t>(vertex)];
+    point.face = vertex == 3 ? 1 : 0;
+    point.component = 7;
+    point.sheet = 9;
+    point.barycentric << 1.0, 0.0, 0.0;
+    point.position = vertices.row(vertex).transpose();
+    point.squaredDistance = 0.0;
+  }
+  const auto baseline = directional::validation::MeshValidator::
+      validate_surface_mesh(vertices, faces, options);
+  options.vertexProvenance[3].component = 701;
+  options.vertexProvenance[3].sheet = 907;
+  const auto tampered = directional::validation::MeshValidator::
+      validate_surface_mesh(vertices, faces, options);
+  EXPECT_EQ(baseline.accepted, tampered.accepted);
+  ASSERT_EQ(baseline.issues.size(), tampered.issues.size());
+  for (std::size_t issue = 0; issue < baseline.issues.size(); ++issue) {
+    EXPECT_EQ(baseline.issues[issue].code, tampered.issues[issue].code);
+  }
+}
 
 TEST(SurfaceMeshOptimizerPhase22,
      RailConstraintBuilderUsesOutputVertexSequencesForBoundaryAndFeatures) {

@@ -1230,8 +1230,7 @@ SurfacePoint quad_reference_surface_point(
   }
   if (!chartFaces.empty()) {
     point = cache->project(centroid, chartFaces);
-  } else if (!authority.valid ||
-             constraints.requireSourceAuthoritativeValidation) {
+  } else if (!authority.valid || constraints.sourceAuthority != nullptr) {
     return {};
   } else {
     const auto [component, sheet] =
@@ -1907,14 +1906,23 @@ make_source_authoritative_validator_options(
 
 namespace directional::geometry {
 
+bool source_optimization_has_complete_authority(
+    const SurfaceOptimizationConstraints &constraints) {
+  return constraints.sourceAuthority != nullptr &&
+         constraints.sourceFaces.rows() > 0 &&
+         constraints.sourceAuthority->complete_for_face_count(
+             static_cast<std::size_t>(constraints.sourceFaces.rows()));
+}
+
+} // namespace directional::geometry
+
+namespace directional::geometry {
+
 bool source_authoritative_hard_invariants_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance,
     std::vector<validation::MeshValidationIssue> *issues) {
-  if (!constraints.requireSourceAuthoritativeValidation) {
-    return true;
-  }
   const auto validation = validation::validate_source_authoritative_surface_mesh(
       vertices, quads,
       make_source_authoritative_validator_options(constraints, provenance));
@@ -2432,6 +2440,7 @@ SurfaceOptimizationResult optimize_projected_surface_mesh(
         continue;
       }
       if (options.enforceSourceAuthoritativeHardInvariants &&
+          constraints.sourceAuthority != nullptr &&
           !source_authoritative_hard_invariants_valid(
               trial, quads, constraints, trialProvenance,
               &result.lastHardInvariantIssues)) {
@@ -2489,6 +2498,33 @@ SurfaceOptimizationResult optimize_projected_surface_mesh(
   result.projectionQueryCount = projectionCache.queryCount;
   result.finalEnergy = current;
   return result;
+}
+
+} // namespace directional::geometry
+
+namespace directional::geometry {
+
+SurfaceOptimizationResult optimize_source_authoritative_surface_mesh(
+    const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options) {
+  if (!source_optimization_has_complete_authority(constraints)) {
+    SurfaceOptimizationResult rejected;
+    rejected.vertices = initialVertices;
+    rejected.quads = quads;
+    rejected.vertexProvenance = constraints.vertexProvenance;
+    rejected.projectionStayedOnComponents = false;
+    rejected.projectionStayedOnSheets = false;
+    rejected.projectionHasCompleteProvenance = false;
+    rejected.rolledBackToInput = true;
+    rejected.lastHardInvariantIssues.push_back(
+        {validation::MeshValidationFailureCode::MissingSourceAuthority});
+    return rejected;
+  }
+  SurfaceOptimizationOptions strictOptions = options;
+  strictOptions.enforceSourceAuthoritativeHardInvariants = true;
+  return optimize_projected_surface_mesh(initialVertices, quads, constraints,
+                                         strictOptions);
 }
 
 } // namespace directional::geometry
@@ -2813,7 +2849,7 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
       constraints.featureRailAuthorityProvided;
   std::vector<validation::MeshValidationIssue> validationIssues;
   bool strictValidationAccepted = false;
-  if (constraints.requireSourceAuthoritativeValidation) {
+  if (constraints.sourceAuthority != nullptr) {
     const auto sourceValidation =
         validation::validate_source_authoritative_surface_mesh(
             vertices, quads,
@@ -2943,6 +2979,33 @@ SurfaceFinalValidationReport validate_final_surface_mesh(
       report.featureParametersOrdered && report.projectionStayedOnComponents &&
       (!options.enforceOptimizerTimeGate || report.optimizerTimeWithinGate);
   return report;
+}
+
+} // namespace directional::geometry
+
+namespace directional::geometry {
+
+SurfaceFinalValidationReport validate_source_authoritative_final_surface_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationResult &optimization,
+    const SurfaceOptimizationOptions &options,
+    const double optimizerSeconds, const double endToEndSeconds) {
+  if (!source_optimization_has_complete_authority(constraints)) {
+    SurfaceFinalValidationReport rejected;
+    rejected.strictValidationUsed = true;
+    rejected.provenanceValidationUsed = true;
+    rejected.sourceAuthoritativeValidationUsed = false;
+    rejected.localSheetCompatibilityPassed = false;
+    rejected.provenanceFailureCount = 1;
+    rejected.strictValidationIssues.push_back(
+        {validation::MeshValidationFailureCode::MissingSourceAuthority});
+    rejected.accepted = false;
+    return rejected;
+  }
+  return validate_final_surface_mesh(vertices, quads, constraints, optimization,
+                                     options, optimizerSeconds,
+                                     endToEndSeconds);
 }
 
 } // namespace directional::geometry

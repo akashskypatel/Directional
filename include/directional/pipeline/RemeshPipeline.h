@@ -860,7 +860,13 @@ fields::CrossFieldResult remap_surface_cell_cross_field_component(
 
 geometry::SurfacePoint remap_component_surface_point(
     geometry::SurfacePoint point, const geometry::FaceComponent &component,
-    const std::size_t componentIndex, const int sheetOffset);
+    std::size_t componentIndex,
+    std::optional<authority::IsolationSheetId> typedLocalSheet,
+    int sheetOffset);
+
+std::optional<int> typed_component_isolation_sheet_extent(
+    const std::vector<geometry::PureQuadVertexLineage> &lineage,
+    std::size_t expectedVertexCount);
 
 void append_polygon_faces(
     Eigen::MatrixXi &targetFaces, Eigen::VectorXi &targetDegrees,

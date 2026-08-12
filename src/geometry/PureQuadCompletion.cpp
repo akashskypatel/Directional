@@ -814,14 +814,12 @@ bool validate_completion_domain_ownership(
       return false;
     }
     if (sourceFaces.empty()) {
+      // Topology-only/local completion remains available to non-publishing
+      // callers, but exact arrangement identities are not semantic authority.
+      // Without typed source lineage this mesh must remain unstitchable.
       lineage.sourcePoint = provenance;
-      if (boundaryVertex && exactBoundaryIdentity.has_value()) {
-        lineage.stitchIdentity = *exactBoundaryIdentity;
-        lineage.authoritativeIdentity = *exactBoundaryIdentity;
-      } else {
-        lineage.stitchIdentity.canonical = {};
-        lineage.authoritativeIdentity = {};
-      }
+      lineage.stitchIdentity = {};
+      lineage.authoritativeIdentity = {};
       continue;
     }
 
@@ -1012,15 +1010,16 @@ bool validate_completion_domain_ownership(
     const PureQuadStitchIdentity typedIdentity =
         typed_lineage_stitch_identity(lineage, boundaryVertex,
                                       stable_patch_owner(mesh), localVertex);
+    if (!typedIdentity.valid()) {
+      failure = "MissingTypedStitchIdentity";
+      return false;
+    }
     if (boundaryVertex && exactBoundaryIdentity.has_value()) {
+      // Arrangement-node identity is an exact stitch key, never a substitute
+      // for the independently reconstructed typed lineage authority.
       lineage.stitchIdentity = *exactBoundaryIdentity;
-      lineage.authoritativeIdentity =
-          typedIdentity.valid() ? typedIdentity : *exactBoundaryIdentity;
+      lineage.authoritativeIdentity = typedIdentity;
     } else {
-      if (!typedIdentity.valid()) {
-        failure = "MissingTypedStitchIdentity";
-        return false;
-      }
       if ((lineage.stitchIdentity.valid() &&
            lineage.stitchIdentity != typedIdentity) ||
           (lineage.authoritativeIdentity.valid() &&
@@ -1740,6 +1739,9 @@ PureQuadStitchIdentity resolved_stitch_identity(
       patch.vertexLineage[static_cast<std::size_t>(localRow)];
   const PureQuadStitchIdentity typed = typed_lineage_stitch_identity(
       lineage, sharedBoundary, patchOwner, localVertex);
+  if (!typed.valid()) {
+    return {};
+  }
 
   if (sharedBoundary) {
     const auto boundary = std::find(
@@ -1761,8 +1763,7 @@ PureQuadStitchIdentity resolved_stitch_identity(
     }
   }
 
-  if (!typed.valid() ||
-      (lineage.stitchIdentity.valid() && lineage.stitchIdentity != typed)) {
+  if (lineage.stitchIdentity.valid() && lineage.stitchIdentity != typed) {
     return {};
   }
   return typed;
@@ -1795,13 +1796,15 @@ PureQuadStitchIdentity resolved_authoritative_identity(
       patch.vertexLineage[static_cast<std::size_t>(localRow)];
   const PureQuadStitchIdentity typed = typed_lineage_stitch_identity(
       lineage, sharedBoundary, patchOwner, localVertex);
+  if (!typed.valid()) {
+    return {};
+  }
   const PureQuadStitchIdentity &authoritative = lineage.authoritativeIdentity;
   if (!authoritative.valid()) {
-    return typed.valid() ? typed : resolved;
+    return typed;
   }
-  if (authoritative == resolved ||
-      (typed.valid() && authoritative == typed)) {
-    return typed.valid() ? typed : resolved;
+  if (authoritative == resolved || authoritative == typed) {
+    return typed;
   }
   return {};
 }

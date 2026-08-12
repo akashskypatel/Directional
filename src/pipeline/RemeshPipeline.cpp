@@ -7831,7 +7831,14 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           }
         }
       }
-      constraints.requireSourceAuthoritativeValidation = true;
+      if (!geometry::source_optimization_has_complete_authority(constraints)) {
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "optimization/source-authority";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
+            "MissingSourceAuthority";
+        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                                  "optimization");
+      }
       geometry::fill_required_singularity_valence_targets(
           meshWhole.V, meshWhole.F,
           result.surfaceCellContext.crossField.singularCycles,
@@ -7857,7 +7864,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
               optimizationOptions);
       completedCheckpoint.finalEnergy = completedCheckpoint.initialEnergy;
       const geometry::SurfaceFinalValidationReport completedValidation =
-          geometry::validate_final_surface_mesh(
+          geometry::validate_source_authoritative_final_surface_mesh(
               completedCheckpoint.vertices, completedCheckpoint.quads,
               constraints, completedCheckpoint, optimizationOptions, 0.0,
               std::numeric_limits<double>::infinity());
@@ -7904,10 +7911,9 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       }
 
       geometry::SurfaceOptimizationResult optimization =
-          geometry::optimize_projected_surface_mesh(completedVertices,
-                                                    completedQuads,
-                                                    constraints,
-                                                    optimizationOptions);
+          geometry::optimize_source_authoritative_surface_mesh(
+              completedVertices, completedQuads, constraints,
+              optimizationOptions);
       const auto optimizationEnd = Clock::now();
       const double optimizationSeconds =
           std::chrono::duration_cast<std::chrono::microseconds>(
@@ -7916,12 +7922,10 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
           1.0e6;
       const auto validationStart = Clock::now();
       geometry::SurfaceFinalValidationReport validation =
-          geometry::validate_final_surface_mesh(optimization.vertices,
-                                                optimization.quads,
-                                                constraints, optimization,
-                                                optimizationOptions,
-                                                optimizationSeconds,
-                                                std::numeric_limits<double>::infinity());
+          geometry::validate_source_authoritative_final_surface_mesh(
+              optimization.vertices, optimization.quads, constraints,
+              optimization, optimizationOptions, optimizationSeconds,
+              std::numeric_limits<double>::infinity());
       if (!validation.accepted) {
         geometry::SurfaceOptimizationResult recovered =
             completedCheckpoint;
@@ -8501,7 +8505,9 @@ namespace directional::pipeline {
 
 geometry::SurfacePoint remap_component_surface_point(
     geometry::SurfacePoint point, const geometry::FaceComponent &component,
-    const std::size_t componentIndex, const int sheetOffset) {
+    const std::size_t componentIndex,
+    const std::optional<authority::IsolationSheetId> typedLocalSheet,
+    const int sheetOffset) {
   if (point.face >= 0 &&
       static_cast<std::size_t>(point.face) < component.originalFaces.size()) {
     point.face =
@@ -8510,10 +8516,36 @@ geometry::SurfacePoint remap_component_surface_point(
     point.face = -1;
   }
   point.component = static_cast<int>(componentIndex);
-  if (point.sheet >= 0) {
-    point.sheet += sheetOffset;
-  }
+  point.sheet = typedLocalSheet.has_value()
+                    ? static_cast<int>(typedLocalSheet->index()) + sheetOffset
+                    : -1;
   return point;
+}
+
+} // namespace directional::pipeline
+
+namespace directional::pipeline {
+
+std::optional<int> typed_component_isolation_sheet_extent(
+    const std::vector<geometry::PureQuadVertexLineage> &lineage,
+    const std::size_t expectedVertexCount) {
+  if (expectedVertexCount == 0U || lineage.size() != expectedVertexCount) {
+    return std::nullopt;
+  }
+  int maximumSheet = -1;
+  for (const geometry::PureQuadVertexLineage &vertex : lineage) {
+    if (vertex.sourceTopologyRegions.empty() ||
+        vertex.sourceIsolationSheets.empty() || vertex.sourceCharts.empty() ||
+        !vertex.sourceSupport.has_value()) {
+      return std::nullopt;
+    }
+    for (const authority::IsolationSheetId sheet :
+         vertex.sourceIsolationSheets) {
+      maximumSheet =
+          std::max(maximumSheet, static_cast<int>(sheet.index()));
+    }
+  }
+  return maximumSheet >= 0 ? std::optional<int>(maximumSheet) : std::nullopt;
 }
 
 } // namespace directional::pipeline
@@ -9868,24 +9900,93 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           componentResult.surfaceCellContext
               .embeddedArrangementStorageReleasedAfterArrangement;
     }
+    const std::optional<int> typedSheetExtent =
+        typed_component_isolation_sheet_extent(
+            componentResult.outputVertexLineage,
+            componentResult.outputVertexProvenance.size());
+    if (!typedSheetExtent.has_value()) {
+      merged.success = false;
+      merged.vertices.resize(0, 3);
+      merged.faces.resize(0, 0);
+      merged.degrees.resize(0);
+      merged.outputVertexProvenance.clear();
+      merged.outputVertexLineage.clear();
+      merged.outputQuadLineage.clear();
+      merged.diagnostics.failedComponentIndex = index;
+      merged.diagnostics.failedComponentMinimumOriginalFace =
+          static_cast<std::size_t>(component.minimum_original_face());
+      merged.diagnostics.terminalFailureCode =
+          surface_cell_failure_code_name(
+              SurfaceCellFailureCode::NotProductionReady);
+      merged.diagnostics.terminalFailureStage = "component-merge-authority";
+      merged.diagnostics.surfaceCellFirstInvalidProducerStage =
+          "component-merge-authority";
+      merged.diagnostics.surfaceCellFirstInvalidProducerReason =
+          "MissingTypedComponentIsolationSheetAuthority";
+      merged.diagnostics.surfaceCellOutputOrigin = SurfaceCellOutputOrigin::None;
+      merged.diagnostics.surfaceCellRemeshOccurred = false;
+      merged.diagnostics.componentMergeSeconds =
+          remesh_elapsed_seconds(mergeStart);
+      set_overall_pipeline_time(merged, pipelineStart);
+      return merged;
+    }
+
+    std::vector<int> typedSheetByLocalFace(component.originalFaces.size(), -1);
+    std::vector<unsigned char> typedSheetConflict(component.originalFaces.size(),
+                                                   0U);
+    const auto record_typed_face_sheet = [&](const int localFace,
+                                              const int localSheet) {
+      if (localFace < 0 ||
+          static_cast<std::size_t>(localFace) >= typedSheetByLocalFace.size()) {
+        return;
+      }
+      int &stored = typedSheetByLocalFace[static_cast<std::size_t>(localFace)];
+      if (stored < 0) {
+        stored = localSheet;
+      } else if (stored != localSheet) {
+        typedSheetConflict[static_cast<std::size_t>(localFace)] = 1U;
+        stored = -1;
+      }
+    };
+    for (const geometry::PureQuadVertexLineage &lineage :
+         componentResult.outputVertexLineage) {
+      if (lineage.sourceIsolationSheets.size() != 1U) {
+        continue;
+      }
+      const int localSheet =
+          static_cast<int>(lineage.sourceIsolationSheets.front().index());
+      record_typed_face_sheet(lineage.sourcePoint.face, localSheet);
+      for (const geometry::SourceProjectionChart &chart :
+           lineage.sourceCharts) {
+        record_typed_face_sheet(static_cast<int>(chart.face.index()),
+                                localSheet);
+      }
+    }
+
+    bool typedSourceLabelsComplete = true;
+    for (std::size_t localFace = 0; localFace < typedSheetByLocalFace.size();
+         ++localFace) {
+      typedSourceLabelsComplete =
+          typedSourceLabelsComplete && typedSheetByLocalFace[localFace] >= 0 &&
+          typedSheetConflict[localFace] == 0U;
+    }
     allHaveSourceLabels =
         allHaveSourceLabels &&
-        componentResult.surfaceCellContext.hasSourceSurfaceLabels;
+        componentResult.surfaceCellContext.hasSourceSurfaceLabels &&
+        typedSourceLabelsComplete;
     if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
-      const auto &labels =
-          componentResult.surfaceCellContext.sourceSurfaceLabels;
       for (std::size_t localFace = 0;
            localFace < component.originalFaces.size(); ++localFace) {
         const int originalFace = component.originalFaces[localFace];
         merged.surfaceCellContext.sourceSurfaceLabels.componentByFace[
             static_cast<std::size_t>(originalFace)] =
             static_cast<int>(index);
-        if (localFace < labels.localSheetByFace.size() &&
-            labels.localSheetByFace[localFace] >= 0) {
-          merged.surfaceCellContext.sourceSurfaceLabels.localSheetByFace[
-              static_cast<std::size_t>(originalFace)] =
-              labels.localSheetByFace[localFace] + sheetOffset;
-        }
+        const int typedLocalSheet = typedSheetByLocalFace[localFace];
+        merged.surfaceCellContext.sourceSurfaceLabels.localSheetByFace[
+            static_cast<std::size_t>(originalFace)] =
+            typedSheetConflict[localFace] == 0U && typedLocalSheet >= 0
+                ? typedLocalSheet + sheetOffset
+                : -1;
       }
     }
 
@@ -9944,32 +10045,45 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
                          componentResult.faces, componentResult.degrees,
                          vertexOffset);
 
-    int localMaximumSheet = -1;
+    const int localMaximumSheet = *typedSheetExtent;
     int localMaximumTopologyRegion = -1;
     int localMaximumFieldChart = -1;
     int localMaximumFrontEdge = -1;
     int localMaximumPeriodicRelation = -1;
     int localMaximumOccurrence = -1;
     int localMaximumQuotientClass = -1;
-    if (componentResult.surfaceCellContext.hasSourceSurfaceLabels) {
-      for (const int sheet :
-           componentResult.surfaceCellContext.sourceSurfaceLabels
-               .localSheetByFace) {
-        localMaximumSheet = std::max(localMaximumSheet, sheet);
-      }
-    }
 
-    for (geometry::SurfacePoint provenance :
-         componentResult.outputVertexProvenance) {
-      provenance = remap_component_surface_point(
-          provenance, component, index, sheetOffset);
-      localMaximumSheet =
-          std::max(localMaximumSheet, provenance.sheet - sheetOffset);
+    for (std::size_t vertex = 0;
+         vertex < componentResult.outputVertexProvenance.size(); ++vertex) {
+      const geometry::PureQuadVertexLineage &lineage =
+          componentResult.outputVertexLineage[vertex];
+      const std::optional<authority::IsolationSheetId> projectionSheet =
+          lineage.sourceIsolationSheets.size() == 1U
+              ? std::optional<authority::IsolationSheetId>(
+                    lineage.sourceIsolationSheets.front())
+              : std::nullopt;
+      geometry::SurfacePoint provenance = remap_component_surface_point(
+          componentResult.outputVertexProvenance[vertex], component, index,
+          projectionSheet, sheetOffset);
       merged.outputVertexProvenance.push_back(std::move(provenance));
     }
 
     const auto remap_quotient_lineage_authority =
         [&](geometry::PureQuadVertexLineage &lineage) {
+          const std::optional<authority::IsolationSheetId> projectionSheet =
+              lineage.sourceIsolationSheets.size() == 1U
+                  ? std::optional<authority::IsolationSheetId>(
+                        lineage.sourceIsolationSheets.front())
+                  : std::nullopt;
+          lineage.sourcePoint = remap_component_surface_point(
+              lineage.sourcePoint, component, index, projectionSheet,
+              sheetOffset);
+          lineage.featureInterval.start = remap_component_surface_point(
+              lineage.featureInterval.start, component, index, projectionSheet,
+              sheetOffset);
+          lineage.featureInterval.end = remap_component_surface_point(
+              lineage.featureInterval.end, component, index, projectionSheet,
+              sheetOffset);
           for (authority::TopologyRegionId &region :
                lineage.sourceTopologyRegions) {
             const int localRegion = static_cast<int>(region.index());
@@ -10163,12 +10277,6 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
     for (geometry::PureQuadVertexLineage lineage :
          componentResult.outputVertexLineage) {
       lineage.outputVertex += vertexOffset;
-      lineage.sourcePoint = remap_component_surface_point(
-          lineage.sourcePoint, component, index, sheetOffset);
-      lineage.featureInterval.start = remap_component_surface_point(
-          lineage.featureInterval.start, component, index, sheetOffset);
-      lineage.featureInterval.end = remap_component_surface_point(
-          lineage.featureInterval.end, component, index, sheetOffset);
       if (lineage.featureInterval.railId.has_value()) {
         const int globalRail =
             static_cast<int>(lineage.featureInterval.railId->index()) +
@@ -10201,18 +10309,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
         localMaximumPatch = std::max(localMaximumPatch, patch.sourcePatch);
         patch.sourcePatch += patchOffset;
       }
-      for (geometry::SurfacePoint &point : patch.vertexProvenance) {
-        point = remap_component_surface_point(
-            point, component, index, sheetOffset);
-      }
       for (geometry::PureQuadVertexLineage &lineage :
            patch.vertexLineage) {
-        lineage.sourcePoint = remap_component_surface_point(
-            lineage.sourcePoint, component, index, sheetOffset);
-        lineage.featureInterval.start = remap_component_surface_point(
-            lineage.featureInterval.start, component, index, sheetOffset);
-        lineage.featureInterval.end = remap_component_surface_point(
-            lineage.featureInterval.end, component, index, sheetOffset);
         if (lineage.featureInterval.railId.has_value()) {
           const int globalRail =
               static_cast<int>(lineage.featureInterval.railId->index()) +
@@ -10225,6 +10323,18 @@ RemeshResult remesh_surface_cell_components_from_cross_field(
           lineage.featureInterval.curveId += curveOffset;
         }
         remap_quotient_lineage_authority(lineage);
+      }
+      if (patch.vertexProvenance.size() == patch.vertexLineage.size()) {
+        for (std::size_t vertex = 0; vertex < patch.vertexLineage.size();
+             ++vertex) {
+          patch.vertexProvenance[vertex] =
+              patch.vertexLineage[vertex].sourcePoint;
+        }
+      } else {
+        for (geometry::SurfacePoint &point : patch.vertexProvenance) {
+          point = remap_component_surface_point(
+              point, component, index, std::nullopt, sheetOffset);
+        }
       }
       for (geometry::PureQuadFaceLineage &lineage : patch.quadLineage) {
         if (lineage.sourcePatch >= 0) {

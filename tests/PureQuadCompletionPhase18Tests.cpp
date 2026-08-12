@@ -1722,20 +1722,48 @@ TEST(PureQuadCompletionPhase18,
 }
 
 TEST(PureQuadCompletionPhase18,
-     PrebuiltBoundaryStitchIdentityMustMatchExactAuthority) {
+     ExactBoundaryIdentityWithoutTypedLineageIsNotPublished) {
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 599;
   const auto completion = directional::geometry::complete_pure_quad_patch(
       patch({1, 1, 1, 1}), options);
   ASSERT_TRUE(completion.success) << completion.failure;
-  auto tampered = completion.mesh;
-  ASSERT_FALSE(tampered.vertexLineage.empty());
-  tampered.vertexLineage.front().stitchIdentity.canonical.values.push_back(42);
+  ASSERT_FALSE(completion.mesh.vertexLineage.empty());
+  EXPECT_TRUE(std::all_of(
+      completion.mesh.vertexLineage.begin(), completion.mesh.vertexLineage.end(),
+      [](const auto &lineage) {
+        return !lineage.stitchIdentity.valid() &&
+               !lineage.authoritativeIdentity.valid();
+      }));
 
   const auto assembly =
-      directional::geometry::stitch_pure_quad_patches({tampered});
+      directional::geometry::stitch_pure_quad_patches({completion.mesh});
   EXPECT_FALSE(assembly.success);
   EXPECT_EQ("MissingTypedStitchIdentity", assembly.failure);
+}
+
+TEST(PureQuadCompletionPhase18,
+     ExactBoundaryIdentityPublishesOnlyAfterTypedLineageValidation) {
+  const CompletionFixture fixture = generated_plane_patch();
+  const auto sourceAuthority = test_source_authority(
+      fixture.faces, {0, 0, 1}, {0, 0, 1});
+  directional::geometry::PureQuadCompletionOptions options;
+  options.sourcePatch = 600;
+  options.sourceFaces = &fixture.faces;
+  options.sourceAuthority = &sourceAuthority;
+  const auto completion = directional::geometry::complete_pure_quad_patch(
+      fixture.patch, options);
+  ASSERT_TRUE(completion.success) << completion.failure;
+  ASSERT_FALSE(completion.mesh.vertexLineage.empty());
+  for (const auto &lineage : completion.mesh.vertexLineage) {
+    EXPECT_FALSE(lineage.sourceTopologyRegions.empty());
+    EXPECT_FALSE(lineage.sourceIsolationSheets.empty());
+    EXPECT_FALSE(lineage.sourceCharts.empty());
+    EXPECT_TRUE(lineage.sourceSupport.has_value());
+  }
+  const auto assembly = directional::geometry::stitch_pure_quad_patches(
+      {completion.mesh});
+  EXPECT_TRUE(assembly.success) << assembly.failure;
 }
 
 TEST(PureQuadCompletionPhase18,

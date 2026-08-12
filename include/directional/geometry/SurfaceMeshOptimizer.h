@@ -152,7 +152,6 @@ struct SurfaceOptimizationConstraints {
   // that never configured feature-rail authority. An empty authoritative set
   // is still meaningful: it proves that no hard feature rails are expected.
   bool featureRailAuthorityProvided = false;
-  bool requireSourceAuthoritativeValidation = false;
   // Optional output-vertex valence contracts. Boundary targets override the
   // geometric boundary-corner inference used by P21. Required singularity
   // targets are authoritative and must match exactly when supplied.
@@ -820,6 +819,9 @@ make_source_authoritative_validator_options(
     const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance);
 
+bool source_optimization_has_complete_authority(
+    const SurfaceOptimizationConstraints &constraints);
+
 bool source_authoritative_hard_invariants_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
@@ -853,12 +855,28 @@ Eigen::MatrixXd finite_difference_surface_optimization_gradient(
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {});
 
+// Generic/non-SurfaceCells optimizer entry point. Production SurfaceCells
+// publication must use optimize_source_authoritative_surface_mesh().
 SurfaceOptimizationResult optimize_projected_surface_mesh(
     const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {});
 
+SurfaceOptimizationResult optimize_source_authoritative_surface_mesh(
+    const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options = {});
+
+// Generic/non-SurfaceCells validation entry point. Production SurfaceCells
+// publication must use validate_source_authoritative_final_surface_mesh().
 SurfaceFinalValidationReport validate_final_surface_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationResult &optimization,
+    const SurfaceOptimizationOptions &options = {},
+    const double optimizerSeconds = 0.0, const double endToEndSeconds = 1.0);
+
+SurfaceFinalValidationReport validate_source_authoritative_final_surface_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationResult &optimization,

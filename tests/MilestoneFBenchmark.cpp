@@ -182,7 +182,6 @@ Fixture make_grid_fixture(const int cells = 16) {
   }
   constraints.featureRailAuthorityProvided = true;
   constraints.requiredFeatureRailCount = 0;
-  constraints.requireSourceAuthoritativeValidation = true;
 
   directional::geometry::SurfaceProjectionBvh bvh(fixture.sourceVertices,
                                                     fixture.sourceFaces);

@@ -1434,6 +1434,41 @@ TEST(SurfaceCellTransitionQuotient,
             directional::pipeline::hash_completion(tampered));
 }
 
+
+TEST(SurfaceCellTransitionQuotient,
+     ComponentSheetExtentUsesOnlyCompleteTypedLineage) {
+  std::vector<directional::geometry::PureQuadVertexLineage> lineage(2);
+  for (std::size_t vertex = 0; vertex < lineage.size(); ++vertex) {
+    lineage[vertex].sourceTopologyRegions = {test_topology_region_id(0)};
+    lineage[vertex].sourceIsolationSheets = {
+        test_isolation_sheet_id(static_cast<int>(vertex) + 2)};
+    lineage[vertex].sourceCharts = {
+        test_projection_chart(static_cast<int>(vertex),
+                              static_cast<int>(vertex))};
+    lineage[vertex].sourceSupport =
+        test_source_vertex_support(static_cast<int>(vertex));
+    lineage[vertex].sourcePoint.sheet = 700 + static_cast<int>(vertex);
+    lineage[vertex].sourcePoint.component = 800 + static_cast<int>(vertex);
+  }
+  const auto baseline = directional::pipeline::
+      typed_component_isolation_sheet_extent(lineage, lineage.size());
+  ASSERT_TRUE(baseline.has_value());
+  EXPECT_EQ(3, *baseline);
+
+  for (auto &vertex : lineage) {
+    vertex.sourcePoint.sheet += 10000;
+    vertex.sourcePoint.component += 10000;
+  }
+  const auto tampered = directional::pipeline::
+      typed_component_isolation_sheet_extent(lineage, lineage.size());
+  EXPECT_EQ(baseline, tampered);
+
+  lineage.front().sourceSupport.reset();
+  EXPECT_FALSE(directional::pipeline::typed_component_isolation_sheet_extent(
+                   lineage, lineage.size())
+                   .has_value());
+}
+
 TEST(SurfaceCellTypedTransportAuthority,
      OutOfDomainSourceVertexIsRejectedAtIngress) {
   const auto &fixture = hard_rail_fixture();
