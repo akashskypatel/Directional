@@ -1,0 +1,1 @@
+Update durable R-A status after successful RA-REV-22-F4/F5 and RA-REV-23-F2 Code + Build remediation and exact-source compile. Control-plane documentation only; generated Directional runtime execution is prohibited.
