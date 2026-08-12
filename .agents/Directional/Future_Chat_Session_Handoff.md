@@ -46,16 +46,15 @@ Branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: #8 remains open, draft, and unmerged  
 Review policy after the later immutable Test + Benchmark turn: never
 
-The complete R-A gate is rejected at exact compiled source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`. The next turn must:
+R-A-REV-01 through R-A-REV-10 are compile-closed for their reviewed paths at latest review-remediation source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`, but R-A itself remains open. The next turn must:
 
-1. close R-A-REV-07 through R-A-REV-10: exact-only completion, the optional non-authoritative optimizer/verifier path, raw-driven component sheet offsets, and incomplete audit/contracts;
-2. rerun the complete R-A inventory and call R-A complete only if every closure item is statically clean;
-3. complete R-B through R-G in the same vertical cutover;
-4. produce one fresh full Release/static/Ninja/PRE_TEST package using the independently verified R-A-REV-06 rules: out-of-tree build, clean source provenance, a self-excluding manifest generated after all payload writes, and manifest verification before upload;
-5. execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input;
-6. activate the artifact-only plan only after that fresh full package exists.
+1. rerun the **complete R-A source inventory** across occurrence/materializer, completion/assembly, patch/lineage, arrangement ownership, public optimizer/verifier APIs, rail consumers, generic validation boundaries, and top-level component aggregation, and call R-A complete only if every closure item is statically clean;
+2. complete R-B through R-G in the same vertical cutover;
+3. produce one fresh full Release/static/Ninja/PRE_TEST package using the independently verified packaging rules: out-of-tree build, clean source provenance, a self-excluding manifest generated after all payload writes, and manifest verification before upload;
+4. execute no generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input;
+5. activate the artifact-only plan only after that fresh full package exists.
 
-Do not validate, relabel, repair, or reuse any historical/partial package listed in `CHANGELOG.md`, including partial review-remediation artifact `9127976318`. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
+Do not validate, relabel, repair, or reuse any historical/partial package listed in `CHANGELOG.md`, including partial review-remediation artifacts `9127976318` and `9129549875`. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
 
 ## Current authority
 
@@ -69,18 +68,18 @@ M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest i
 
 ### R-A closure status
 
-Review boundary: PR #8 through `f81f40524f9ee6978e4e298497d4d54580520cf3`; exact implementation source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
+Review boundary: PR #8 through `f81f40524f9ee6978e4e298497d4d54580520cf3`; latest review-remediation implementation source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`.
 
-Independent inspection verified compile-only run/job `31561686903 / 94005144300` at **118/118**, exact packaged source, outer artifact digests, all five empty source-status snapshots, and a self-excluding manifest **22/22**. This verifies R-A-REV-06 packaging mechanics, not R-A acceptance. Artifact `9127976318` remains partial and ineligible.
+R-A-REV-07 through R-A-REV-10 are compile-closed for their reviewed paths:
 
-Live R-A blockers:
+- R-A-REV-07: exact boundary identity no longer bypasses complete typed topology-region/isolation-sheet/chart/support lineage; empty-source completion does not publish stitch authority, and exact-only assembly fails `MissingTypedStitchIdentity`.
+- R-A-REV-08: SurfaceCells optimization/validation uses source-authoritative fail-closed entry points; the public optional-authority flag is removed, and generic `MeshValidator` no longer treats raw component/sheet labels as sheet authority.
+- R-A-REV-09: multi-component typed isolation-sheet extent/offset derives from complete typed lineage; incomplete coverage fails closed, typed remap is primary, and raw labels are one-way projection/export.
+- R-A-REV-10: the static audit inventories affected public headers/declarations, completion/assembly, optimizer/verifier modes, generic validation boundaries, component aggregation, and raw component/sheet reads; semantic REV-07-through-09 contract bodies are compile-visible rather than name-only checks.
 
-- R-A-REV-07: exact boundary identities can publish and stitch without complete typed lineage;
-- R-A-REV-08: SurfaceCells optimization/validation can bypass typed authority and generic validation reads raw component/sheet labels;
-- R-A-REV-09: multi-component aggregation derives typed sheet offsets from raw diagnostic/projection labels;
-- R-A-REV-10: the focused audit and name-only contract inventory do not cover those paths.
+Compile-only run/job `31565756309 / 94017095695` completed Release/static/Ninja/PRE_TEST **118/118** from exact source `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`. Result artifact `9129549875` has outer SHA-256 `34f9d4a576ddfd79c2c35997ac95bdd91a0b549ac1bf519bc38a11d36d0559e5`; log artifact `9129550069` has outer SHA-256 `65fe62a061ab090f4929477997b28527d9511816e8c0518a136dac3604941bb0`. Independent inspection verified the self-excluding manifest **20/20**, all five source-status snapshots empty, exact packaged source, and `runtimeExecution=false`. No compiled contract was executed.
 
-The active Code + Build plan owns exact evidence, corrective measures, and the closure definition. M1l remains immutable runtime authority; no runtime or regression total changed.
+This is a partial review-remediation checkpoint only. The complete R-A inventory has not yet been rerun, R-B through R-G remain open, artifact `9129549875` is not an M1 acceptance candidate, M1l remains immutable runtime authority, and no runtime/regression total changed.
 
 ## Standing product and regression state
 

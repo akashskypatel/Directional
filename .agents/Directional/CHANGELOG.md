@@ -29,6 +29,11 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ### Fixed
 
+- Closed `R-A-REV-07` for the reviewed completion/assembly paths: exact arrangement-boundary identity is no longer sufficient by itself; published/stitch-authoritative vertices require complete typed topology-region/isolation-sheet/chart/support lineage, empty-source completion does not publish identity authority, and exact-only assembly fails `MissingTypedStitchIdentity`.
+- Closed `R-A-REV-08` for SurfaceCells optimizer/verifier entry points: removed the optional source-authority flag, added fail-closed source-authoritative optimization/final-validation entry points, and removed raw component/sheet sheet-equivalence decisions from generic validation while retaining that generic API only for non-SurfaceCells use.
+- Closed `R-A-REV-09` for multi-component aggregation: typed isolation-sheet extents/offsets now derive from complete typed lineage, incomplete coverage fails closed, typed remap occurs before raw projection/export, and raw labels no longer determine typed sheet identity.
+- Closed `R-A-REV-10` at the Code + Build source/contract boundary: the audit inventories affected public headers/declarations, completion/assembly, optimizer/verifier modes, generic validation boundaries, top-level component aggregation, and raw component/sheet reads; compiled semantic contract bodies cover REV-07 through REV-09 and are not accepted merely by test-name presence.
+
 - Closed `R-A-REV-03` for the reviewed completion/assembly paths: standalone and patch-local compatibility stitch synthesis is removed; exact boundary identities are validated; derived identities require complete typed topology-region/isolation-sheet/chart/support lineage; missing authority fails with `MissingTypedStitchIdentity`.
 - Closed `R-A-REV-04` for the reviewed validator/optimizer/rail/hash/materializer paths: raw `SurfacePoint` component/sheet labels no longer accept, reject, scope, order, merge, hash, or route those semantic decisions.
 - Closed `R-A-REV-05` at the Code + Build contract boundary: compiled sources now include exact/prebuilt identity mismatch, missing typed authority, distinct typed isolation-sheet, raw-projection-tamper, optimizer/rail tamper, and completion-hash tamper contracts. They were compiled but not executed.
@@ -38,6 +43,12 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 - Corrected the exact `R-A-REV-02` encoding: the fallback stitch-key builder no longer inserts raw provenance component/sheet and now has a typed topology-region/isolation-sheet derivation. Closure review subsequently found that prebuilt compatibility identities bypass this derivation, so fail-closed R-A completion remains open as `R-A-REV-03`.
 
 ### Validation
+
+- R-A-REV-07-through-10 review-remediation source: `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e` (`10 files changed, 421 insertions, 102 deletions`).
+- Compile-only run/job `31565756309 / 94017095695` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9129549875`, outer SHA-256 `34f9d4a576ddfd79c2c35997ac95bdd91a0b549ac1bf519bc38a11d36d0559e5`; log artifact `9129550069`, outer SHA-256 `65fe62a061ab090f4929477997b28527d9511816e8c0518a136dac3604941bb0`.
+- Independent result inspection verified exact source `d8d648a...`, **21** regular files including `SHA256SUMS`, a self-excluding manifest **20/20**, zero manifest self references, and all five recorded source-status snapshots empty.
+- The complete affected-path audit for these findings reports REV-07, REV-08, and REV-09 source/contract closure and REV-10 inventory clean. Its raw-field inventory found only classified one-way assignment/export writes in the reviewed completion/component-remap blocks and no raw-field read in the generic validator cross-face check or typed component extent.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. The new semantic contracts were compiled only. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority and regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 - Review-remediation source: core findings commit `e33a3c6be1db9c3e6f773a8deb2bebd870099536`; compile-corrected source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`.
 - Compile-only run/job `31561686903 / 94005144300` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`. Result artifact `9127976318`, outer SHA-256 `f7bcf34579664f19cd5a73fd384b5ff020304c7b10a89c81ce35a89a92b38588`; log artifact `9127976660`, outer SHA-256 `3f4c5eef39aedbb06666edf3b09e5f2e5071209ba88a3d9ef0f9174083bd536a`.
@@ -52,6 +63,8 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 - M1 is not runtime accepted, immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`, and runtime regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 ### Operational notes
+
+- Initial R-A-REV-07-through-10 workflow run `31565569539` failed before job creation because a temporary embedded payload made the workflow YAML invalid. No source patch, compile, or generated runtime executed; the payload was moved to temporary repository files and the corrected workflow produced the successful compile checkpoint. This was orchestration-only and did not change regression state.
 
 - Initial R-A-REV-03-through-06 compile run/job `31559713594 / 93999361586` reached link step 112/118 and failed because the new `stable_patch_owner` / `typed_lineage_stitch_identity` calls were forward-declared in `pure_quad_detail` while their definitions remained in the translation unit's anonymous `directional::geometry` namespace. Log artifact `9127433279`, SHA-256 `703ad2c1042ded9210ab37393e8b63fcd16fc7ad20c7d263ec66518c2900956f`. Commit `c62c99f...` corrects only that linkage; no generated runtime executed and no stable product regression was assigned.
 - First retry run/job `31561631436 / 94004977538` stopped before source application/compile because the temporary linkage patch had an incorrect unified-diff hunk count. Log artifact `9127935690`, SHA-256 `595d140469768ecae959a3e5e2af5dc09eab3cee4daf3038bdf78901cdd2ddff`. The payload was corrected and retriggered; this was orchestration-only and did not change product/regression state.
@@ -83,8 +96,8 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 ### Known limitations
 
 - M1l `bd140cff...` remains the latest immutable runtime authority.
-- Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifacts `9125984929` / `9127976318` are not M1 acceptance candidates.
-- R-A remains open on `R-A-REV-07` through `R-A-REV-10`; R-B through R-G and the fresh full package remain pending.
+- Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifacts `9125984929` / `9127976318` / `9129549875` are not M1 acceptance candidates.
+- R-A-REV-01 through R-A-REV-10 are compile-closed for their reviewed paths, but R-A remains open pending the complete closure inventory; R-B through R-G and the fresh full package remain pending.
 - The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
 
 Historical review baseline: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. Current closure authority: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.

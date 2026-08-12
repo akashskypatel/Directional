@@ -1,14 +1,39 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only  
-**Current status:** complete R-A closure review rejected at exact compiled source `c62c99ffe5b7863820c91f4ff3a93645b22d3591`; verified R-A-REV-06 packaging mechanics are retained, while R-A-REV-07 through R-A-REV-10 block closure
+**Current status:** R-A-REV-01 through R-A-REV-10 are compile-closed for their reviewed paths at `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`; R-A remains open pending the complete closure inventory, R-B through R-G, and one fresh full self-verifying package
 **Original planning decision:** prior narrow M1m plan rejected and replaced  
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Review/planning baseline:** `fcba2fd9b8905802ca373e0cc88aeccbf38d608a`  
 **Latest closure-review branch head:** `f81f40524f9ee6978e4e298497d4d54580520cf3`
 **Exact reviewed implementation source:** `c62c99ffe5b7863820c91f4ff3a93645b22d3591`
+**Latest review-remediation source:** `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities  
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0AA. 2026-08-12 R-A-REV-07-through-10 review-remediation checkpoint
+
+This partial Code + Build checkpoint closes the four named findings for their reviewed paths without declaring R-A or M1 complete.
+
+### Changes
+
+- **R-A-REV-07:** completion no longer publishes exact-boundary stitch authority from an empty-source compatibility branch. `resolved_stitch_identity` requires valid separately derived typed lineage before considering an exact arrangement-boundary identity, and authoritative resolution no longer falls back to exact-only identity. Exact-only assembly rejects with `MissingTypedStitchIdentity`; typed positive and exact-only negative contracts are compile-visible.
+- **R-A-REV-08:** removed the public optional `requireSourceAuthoritativeValidation` bypass. SurfaceCells production uses dedicated source-authoritative optimizer/final-validator entry points that fail closed with `MissingSourceAuthority` on missing/incomplete authority. Generic validation is isolated for non-SurfaceCells use and no longer compares raw `SurfacePoint::component/sheet` as sheet authority.
+- **R-A-REV-09:** multi-component isolation-sheet extent/offset is computed from complete typed vertex lineage, not `sourceSurfaceLabels.localSheetByFace` or `SurfacePoint::sheet`. Incomplete typed coverage fails with `MissingTypedComponentIsolationSheetAuthority`; typed sheet remap precedes one-way raw projection/export. A compiled helper contract verifies raw-label tampering cannot change typed extent and missing typed support invalidates it.
+- **R-A-REV-10:** replaced the previous focused/name-only evidence with an affected-path audit that inventories public headers/declarations, completion/assembly, optimizer/verifier modes, generic validation boundaries, component aggregation, and raw component/sheet reads. The audit inspects semantic contract bodies and permits raw labels only in classified one-way assignment/export leaves.
+
+### Compile-only evidence
+
+- Exact implementation source: `d8d648a1521f2167320dbc372f1c5bcc9bedcf9e` (`10 files changed, 421 insertions, 102 deletions`).
+- Run/job `31565756309 / 94017095695` completed Release/static/Ninja/PRE_TEST **118/118** with build exit `0`.
+- Result artifact `9129549875`, outer SHA-256 `34f9d4a576ddfd79c2c35997ac95bdd91a0b549ac1bf519bc38a11d36d0559e5`; log artifact `9129550069`, outer SHA-256 `65fe62a061ab090f4929477997b28527d9511816e8c0518a136dac3604941bb0`.
+- Independent artifact inspection verified exact source `d8d648a...`, a self-excluding recursive manifest **20/20**, zero self references, and five empty source-status snapshots.
+- The source audit reports `R-A-REV-07 source/contract audit: closed`, `R-A-REV-08 source/contract audit: closed`, `R-A-REV-09 source/contract audit: closed`, and `R-A-REV-10 complete affected-path inventory: clean`.
+- No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, help/version command, or custom input executed. Compiled contracts were not run.
+
+### Remaining gate
+
+This artifact is partial and ineligible for M1 acceptance. Before advancing the cutover, rerun the complete R-A closure inventory below over all affected producers/consumers. Only a statically clean complete inventory may mark R-A complete; R-B through R-G and one fresh full R-A-through-R-G package remain mandatory.
 
 ## 0A. 2026-08-12 complete R-A closure-gate review — rejected
 
@@ -49,13 +74,12 @@ Corrective measure: replace the focused script with a complete affected-path inv
 
 ### Updated execution decision
 
-The next Code + Build turn must:
+The next Code + Build continuation must:
 
-1. retain the valid typed-authority work and the verified R-A-REV-06 packaging rules;
-2. close R-A-REV-07 through R-A-REV-10 without a legacy-fixture exception, raw mirror, or optional authority bypass;
-3. rerun the complete R-A inventory below and call R-A complete only when every item is statically clean;
-4. complete R-B through R-G in the same vertical cutover;
-5. produce one fresh full R-A-through-R-G self-verifying package without generated runtime execution, then hand only that package to the retained artifact-only plan.
+1. retain the valid R-A-REV-01-through-10 typed-authority work and verified packaging rules;
+2. rerun the complete R-A inventory below and call R-A complete only when every item is statically clean;
+3. complete R-B through R-G in the same vertical cutover;
+4. produce one fresh full R-A-through-R-G self-verifying package without generated runtime execution, then hand only that package to the retained artifact-only plan.
 
 ### R-A closure gate
 
