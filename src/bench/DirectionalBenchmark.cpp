@@ -1221,6 +1221,48 @@ void write_mesher_json(std::ostream &out, const MesherDiagnostics &diagnostics) 
 void write_remesh_diagnostics_json(std::ostream &out,
                                    const pipeline::RemeshResult &result) {
   const RemeshDiagnostics &diagnostics = result.diagnostics;
+  const geometry::SourceTopologyRegions *sourceAuthority =
+      result.surfaceCellContext.traceNetwork.sourceTopologyRegions.has_value()
+          ? &*result.surfaceCellContext.traceNetwork.sourceTopologyRegions
+          : nullptr;
+  const auto typed_sheet_index =
+      [](const std::optional<authority::IsolationSheetId> &sheet) {
+        return sheet.has_value() ? static_cast<int>(sheet->index()) : -1;
+      };
+  const auto source_component_for_region =
+      [&](const std::optional<authority::TopologyRegionId> &region) {
+        if (sourceAuthority == nullptr || !region.has_value() ||
+            region->index() >= sourceAuthority->regions().size()) {
+          return -1;
+        }
+        return static_cast<int>(sourceAuthority->region(*region).component().index());
+      };
+  const auto source_component_for_face = [&](const int sourceFace) {
+    if (sourceAuthority == nullptr || sourceFace < 0) return -1;
+    const auto row = authority::SourceFaceId::from_index(
+        sourceFace, sourceAuthority->face_count());
+    return row ? static_cast<int>(sourceAuthority->component_for_row(row.value()).index())
+               : -1;
+  };
+  const auto source_sheet_for_face = [&](const int sourceFace) {
+    if (sourceAuthority == nullptr || sourceFace < 0) return -1;
+    const auto row = authority::SourceFaceId::from_index(
+        sourceFace, sourceAuthority->face_count());
+    return row ? static_cast<int>(sourceAuthority->sheet_for_row(row.value()).index())
+               : -1;
+  };
+  const auto source_scope_for_faces = [&](const std::vector<int> &sourceFaces) {
+    if (sourceFaces.empty()) return std::pair<int, int>{-1, -1};
+    const int component = source_component_for_face(sourceFaces.front());
+    const int sheet = source_sheet_for_face(sourceFaces.front());
+    for (const int sourceFace : sourceFaces) {
+      if (source_component_for_face(sourceFace) != component ||
+          source_sheet_for_face(sourceFace) != sheet) {
+        return std::pair<int, int>{-1, -1};
+      }
+    }
+    return std::pair<int, int>{component, sheet};
+  };
   out << "{"
       << "\"overallPipelineSeconds\":" << diagnostics.overallPipelineSeconds
       << ","
@@ -1537,8 +1579,9 @@ void write_remesh_diagnostics_json(std::ostream &out,
           << "\"family\":" << halfedge.family << ","
           << "\"strand\":" << halfedge.strand << ","
           << "\"sourceFace\":" << halfedge.sourceFace << ","
-          << "\"sourceComponent\":" << halfedge.sourceComponent << ","
-          << "\"sourceSheet\":" << halfedge.sourceSheet << ","
+          << "\"sourceComponent\":"
+          << source_component_for_region(halfedge.sourceTopologyRegion) << ","
+          << "\"sourceSheet\":" << source_sheet_for_face(halfedge.sourceFace) << ","
           << "\"layoutSupport\":"
           << (halfedge.layoutSupport ? "true" : "false") << ","
           << "\"singularitySupport\":"
@@ -2192,9 +2235,9 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << "\"completionOwnershipSourceEdge\":["
       << ownershipSourceEdge[0] << "," << ownershipSourceEdge[1] << "],"
       << "\"completionOwnershipComponent\":"
-      << ownershipRejection.sourceComponent << ","
+      << source_component_for_face(ownershipRejection.storedFace) << ","
       << "\"completionOwnershipSheet\":"
-      << ownershipRejection.sourceSheet << ","
+      << source_sheet_for_face(ownershipRejection.storedFace) << ","
       << "\"completionOwnershipCandidateFaces\":[";
   for (std::size_t faceIndex = 0;
        faceIndex < ownershipRejection.candidateSupportedFaces.size();
@@ -2210,6 +2253,7 @@ void write_remesh_diagnostics_json(std::ostream &out,
   }
   const geometry::PureQuadEmbeddingFailure &embeddingFailure =
       result.surfaceCellContext.firstCompletionEmbeddingFailure;
+  const auto embeddingScope = source_scope_for_faces(embeddingFailure.sourceFaces);
   out << "],"
       << "\"completionEmbeddingFailureAvailable\":"
       << (embeddingFailure.active ? "true" : "false") << ","
@@ -2231,9 +2275,9 @@ void write_remesh_diagnostics_json(std::ostream &out,
       << embeddingFailure.localVertices[2] << ","
       << embeddingFailure.localVertices[3] << "],"
       << "\"completionEmbeddingComponent\":"
-      << embeddingFailure.sourceComponent << ","
+      << embeddingScope.first << ","
       << "\"completionEmbeddingSheet\":"
-      << embeddingFailure.sourceSheet << ","
+      << embeddingScope.second << ","
       << "\"completionEmbeddingSourceFaces\":[";
   for (std::size_t faceIndex = 0;
        faceIndex < embeddingFailure.sourceFaces.size(); ++faceIndex) {
@@ -2277,12 +2321,16 @@ void write_remesh_diagnostics_json(std::ostream &out,
     retainedFlowRepArcIds.insert(arcId);
     const geometry::FlowRepArc &arc = *foundArc->second;
     if (arc.startIntrinsicEndpointKeyValid) {
-      ++retainedFlowRepEndpointDegree[{arc.sourceComponent, arc.sourceSheet,
-                                      arc.startIntrinsicEndpointKey}];
+      ++retainedFlowRepEndpointDegree[{
+          source_component_for_region(arc.sourceTopologyRegion),
+          typed_sheet_index(arc.sourceIsolationSheet),
+          arc.startIntrinsicEndpointKey}];
     }
     if (arc.endIntrinsicEndpointKeyValid) {
-      ++retainedFlowRepEndpointDegree[{arc.sourceComponent, arc.sourceSheet,
-                                      arc.endIntrinsicEndpointKey}];
+      ++retainedFlowRepEndpointDegree[{
+          source_component_for_region(arc.sourceTopologyRegion),
+          typed_sheet_index(arc.sourceIsolationSheet),
+          arc.endIntrinsicEndpointKey}];
     }
   }
   const auto retained_endpoint_degree =
@@ -2295,7 +2343,8 @@ void write_remesh_diagnostics_json(std::ostream &out,
         const std::uint64_t key = start ? arc.startIntrinsicEndpointKey
                                         : arc.endIntrinsicEndpointKey;
         const auto found = retainedFlowRepEndpointDegree.find(
-            {arc.sourceComponent, arc.sourceSheet, key});
+            {source_component_for_region(arc.sourceTopologyRegion),
+             typed_sheet_index(arc.sourceIsolationSheet), key});
         return found == retainedFlowRepEndpointDegree.end() ? 0
                                                             : found->second;
       };
@@ -2535,8 +2584,9 @@ void write_remesh_diagnostics_json(std::ostream &out,
                 << "\"singularitySupport\":"
                 << (provenance.singularitySupport ? "true" : "false") << ","
                 << "\"sourceComponent\":"
-                << provenance.sourceComponent << ","
-                << "\"sourceSheet\":" << provenance.sourceSheet << ","
+                << source_component_for_region(provenance.sourceTopologyRegion) << ","
+                << "\"sourceSheet\":"
+                << source_sheet_for_face(provenance.sourceFace) << ","
                 << "\"sourceT0\":";
             write_json_number(out, provenance.sourceT0);
             out << ",\"sourceT1\":";
@@ -2593,8 +2643,10 @@ void write_remesh_diagnostics_json(std::ostream &out,
                                                        : "false")
           << ","
           << "\"sourceFace\":" << arrangementArc.sourceFace << ","
-          << "\"sourceComponent\":" << arrangementArc.sourceComponent << ","
-          << "\"sourceSheet\":" << arrangementArc.sourceSheet << ","
+          << "\"sourceComponent\":"
+          << source_component_for_region(arrangementArc.sourceTopologyRegion) << ","
+          << "\"sourceSheet\":"
+          << source_sheet_for_face(arrangementArc.sourceFace) << ","
           << "\"family\":" << arrangementArc.family << ","
           << "\"layoutSupport\":"
           << (arc.layoutSupport ? "true" : "false") << ","
