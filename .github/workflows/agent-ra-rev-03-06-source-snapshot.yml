@@ -1,0 +1,71 @@
+name: Agent R-A REV-03-06 Source Snapshot
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/ra-rev-03-06-source-snapshot.txt]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-ra-rev-03-06-source-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"
+          : > "$LOG"
+          {
+            echo "task=R-A-REV-03-through-06 source snapshot"
+            echo "event_sha=$GITHUB_SHA"
+            echo "ref=$GITHUB_REF"
+            date -u +"utc=%Y-%m-%dT%H:%M:%SZ"
+          } | tee -a "$LOG"
+
+      - name: Checkout exact trigger authority
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          submodules: false
+
+      - name: Package source snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          LOG="$RUNNER_TEMP/activity.log"
+          exec > >(tee -a "$LOG") 2>&1
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "source_sha=$(git rev-parse HEAD)"
+          git status --porcelain=v1
+          tar -czf "$RUNNER_TEMP/Directional-ra-rev-03-06-source.tar.gz" \
+            --exclude=.git \
+            --exclude='build*' \
+            CMakeLists.txt include src tests .agents/Directional TODO.md
+          sha256sum "$RUNNER_TEMP/Directional-ra-rev-03-06-source.tar.gz"
+          echo "runtimeExecution=false"
+          echo "No generated Directional binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input was executed."
+
+      - name: Upload source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-rev-03-06-source-${{ github.run_id }}
+          path: ${{ runner.temp }}/Directional-ra-rev-03-06-source.tar.gz
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-rev-03-06-source-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 1
