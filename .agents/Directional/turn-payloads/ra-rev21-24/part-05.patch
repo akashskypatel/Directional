@@ -1,0 +1,166 @@
+@@ -0,0 +1,398 @@
++#!/usr/bin/env python3
++"""Reproducible static R-A closure inventory through R-A-REV-24.
++
++This audit is intentionally source-only. It never executes a generated Directional
++binary. Runtime semantic acceptance remains a separate artifact-only turn.
++"""
++from __future__ import annotations
++
++import argparse
++import re
++import sys
++from dataclasses import dataclass
++from pathlib import Path
++from typing import Iterable, Sequence
++
++
++@dataclass(frozen=True)
++class Probe:
++    rev: str
++    name: str
++    paths: tuple[str, ...]
++    pattern: str
++    expectation: str  # absent | present
++    rationale: str
++    flags: int = 0
++
++
++ROOT_SCOPES = (
++    "include/directional",
++    "src",
++    "tests",
++    ".github/workflows/agent-compile-reusable.yml",
++)
++
++PROBES: tuple[Probe, ...] = (
++    Probe("REV-01", "materializer owns typed isolation-sheet state",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"authority::IsolationSheetId isolationSheet;", "present",
++          "OccurrenceData carries typed sheet authority instead of reading SurfacePoint::sheet as authority."),
++    Probe("REV-01", "materializer raw projection is not read for sheet/component decisions",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"occurrence\.point\.(?:component|sheet)|representativeOccurrence\.point\.(?:component|sheet)", "absent",
++          "The quotient/materializer semantic path must consume typed region/sheet/chart/support authority."),
++
++    Probe("REV-02", "completion stitch key has no raw provenance component/sheet encoding",
++          ("src/geometry/PureQuadCompletion.cpp",),
++          r"(?:stitchIdentity|canonical|identity).*provenance\.(?:component|sheet)|provenance\.(?:component|sheet).*(?:stitchIdentity|canonical|identity)", "absent",
++          "Raw SurfacePoint labels may not enter semantic stitch/ownership identity."),
++    Probe("REV-03", "typed stitch resolver rejects stale cached identity",
++          ("src/geometry/PureQuadCompletion.cpp",),
++          r"lineage\.stitchIdentity != typed", "present",
++          "A prebuilt compatibility identity cannot bypass typed fail-closed derivation."),
++    Probe("REV-03", "missing typed stitch authority is an explicit failure",
++          ("src/geometry/PureQuadCompletion.cpp", "tests/PureQuadCompletionPhase18Tests.cpp"),
++          r"MissingTypedStitchIdentity", "present",
++          "Exact geometry identity alone is insufficient for stitch publication."),
++
++    Probe("REV-04", "validator does not read raw SurfacePoint component/sheet",
++          ("src/validation/SourceAuthoritativeMeshValidator.cpp",),
++          r"\.(?:component|sheet)\b", "absent",
++          "Source-authoritative validation must use typed source authority, not generic projection labels."),
++    Probe("REV-04", "rail constraints do not read raw SurfacePoint component/sheet",
++          ("src/geometry/SurfaceOptimizationRailConstraints.cpp",),
++          r"\.(?:component|sheet)\b", "absent",
++          "Rail authority must not be scoped or accepted from generic projection labels."),
++
++    Probe("REV-05", "typed-authority contract coverage remains compiled",
++          ("tests/PureQuadCompletionPhase18Tests.cpp", "tests/SurfaceMeshOptimizerPhase19Tests.cpp", "tests/SurfaceCellsPhase10Tests.cpp"),
++          r"(?:MissingTypedStitchIdentity|MissingSourceAuthority|RawProjection|Stale|Distinct.*Sheet|Wrong.*Authority)", "present",
++          "Retained test sources must contain fail-closed typed-authority and tamper contracts."),
++    Probe("REV-06", "compile package manifest excludes and verifies itself",
++          (".github/workflows/agent-compile-reusable.yml",),
++          r"find \. -type f ! -name SHA256SUMS.*SHA256SUMS|sha256sum -c SHA256SUMS", "present",
++          "Compile evidence must remain internally self-verifying."),
++    Probe("REV-06", "compile package records clean source snapshots",
++          (".github/workflows/agent-compile-reusable.yml",),
++          r"source-status-(?:preconfigure|before-configure|after-configure|after-build|final)", "present",
++          "Build provenance requires clean source status before/after build/package steps."),
++
++    Probe("REV-07", "assembly validates owner-backed typed certificate",
++          ("src/geometry/PureQuadCompletion.cpp",),
++          r"owner_validated_typed_authority_certificate", "present",
++          "Published/stitch-authoritative vertices require complete owned region/sheet/chart/support authority."),
++    Probe("REV-08", "SurfaceCells optimizer has mandatory source-authority predicate",
++          ("src/geometry/SurfaceMeshOptimizer.cpp",),
++          r"source_optimization_has_complete_authority", "present",
++          "Strict optimizer/final validator entry points must fail closed without source authority."),
++    Probe("REV-09", "component remap domain is typed and owner-derived",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"ComponentTypedAuthorityRemapDomain|make_component_typed_authority_remap_domain", "present",
++          "Multi-component sheet/region/chart/support remapping must derive from typed owner domains."),
++    Probe("REV-10", "bounded legacy audit is superseded by this complete inventory",
++          (".agents/Directional/R_A_Closure_Inventory.py",),
++          r"R-A closure inventory through R-A-REV-24", "present",
++          "REV-10's sampled audit is not used as closure evidence; this reproducible inventory replaces it."),
++
++    Probe("REV-11", "collision certificates are intersected before publication",
++          ("src/geometry/PureQuadCompletion.cpp",),
++          r"intersect_typed_authority_certificate", "present",
++          "Same-key/same-position collision is not sufficient without compatible typed authority."),
++    Probe("REV-12", "aggregate remap is checked and final lineage is validated",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"remap_quotient_lineage_authority|validate_aggregate_lineage_authority", "present",
++          "Invalid chart/support/region/sheet remaps must reject before publication."),
++    Probe("REV-13", "complete affected surface list is explicitly audited",
++          (".agents/Directional/R_A_Closure_Inventory.py",),
++          r"AFFECTED_R_A_PATHS", "present",
++          "Closure evidence names the affected source/test/workflow surfaces instead of sampling a few blocks."),
++
++    Probe("REV-14", "post-intersection canonical authority identity is retained",
++          ("src/geometry/PureQuadCompletion.cpp",),
++          r"canonical_typed_authority_identity", "present",
++          "Collision publication derives one canonical authority identity from the final certificate."),
++    Probe("REV-15", "region/sheet/chart/support remap domain is not self-bounded",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"ComponentTypedAuthorityRemapDomain", "present",
++          "Remap domains are owned by published source topology/chart authority."),
++    Probe("REV-16", "counterfactual mutation seam occurs before aggregation",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"beforeAggregation", "present",
++          "Raw/tamper counterfactuals must reach the real aggregate consumer before publication."),
++    Probe("REV-17", "certificate claims are checked against source ownership",
++          ("src/geometry/PureQuadCompletion.cpp",),
++          r"owner_validated_typed_authority_certificate", "present",
++          "Collision certificates must be owned by exact source topology/chart/support authority."),
++
++    Probe("REV-18", "one global aggregate source owner is constructed",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"globalSourceAuthority", "present",
++          "Disconnected aggregation must publish lineage through one checked global SourceTopologyRegions owner."),
++    Probe("REV-18", "post-remap derived identity caches are rebuilt",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"rebuild_aggregate_output_identity_caches", "present",
++          "Stitch/authoritative identities and face cycles must be regenerated after global remap."),
++    Probe("REV-19", "aggregate publication is staged transactionally",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"RemeshResult staged = merged;", "present",
++          "Semantic context remains uncommitted until all remaps and final validation succeed."),
++    Probe("REV-19", "actual final merged mesh reaches source-authoritative validator",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"validate_source_authoritative_surface_mesh", "present",
++          "Cached component reports cannot substitute for the post-merge oracle."),
++
++    Probe("REV-20", "removed raw/legacy SurfaceCells compatibility paths stay absent",
++          ("include/directional/geometry/SurfaceMeshOptimizer.h", "src/geometry/SurfaceMeshOptimizer.cpp", "src/geometry/SurfaceOptimizationRailConstraints.cpp", "src/validation/SourceAuthoritativeMeshValidator.cpp", "src/pipeline/RemeshPipeline.cpp"),
++          r"sourcePositions|constraints\.sourceComponent|featureIntervals|legacyIndex|standaloneFixture", "absent",
++          "Named raw optimizer/verifier and legacy point-cloud/feature-interval/standalone compatibility authority must remain removed."),
++
++    Probe("REV-21", "exact source-row topology binding is used",
++          ("include/directional/geometry/SourceTopologyRegions.h", "src/geometry/PureQuadCompletion.cpp", "src/geometry/SurfaceMeshOptimizer.cpp", "src/validation/SourceAuthoritativeMeshValidator.cpp", "src/pipeline/RemeshPipeline.cpp"),
++          r"matches_source_faces", "present",
++          "Same face count is not source ownership; paired geometry and authority must match exact row topology."),
++    Probe("REV-21", "authority-only row permutation negative exists",
++          ("tests/SurfaceCellsPhase10Tests.cpp",),
++          r"AuthorityOnlyFaceRowPermutationRejectsExactTopologyBinding", "present",
++          "The mismatched-pair counterexample must retain old authority while permuting only the source matrix."),
++    Probe("REV-21", "consistent matrix-plus-authority permutation positive exists",
++          ("tests/SurfaceCellsPhase10Tests.cpp",),
++          r"ConsistentlyPermutedSourceMatrixAndAuthorityPreserveSemanticTopology", "present",
++          "A row permutation remains valid when source geometry and rebuilt authority are paired consistently."),
++
++    Probe("REV-22", "final aggregate carries independent strict validator authority",
++          ("src/pipeline/RemeshPipeline.cpp",),
++          r"ComponentFinalValidationAuthority|globalValidationBoundaryLoops|globalValidationFeatureRails|globalValidationVertexCharts|globalValidationOutputQuadSourceFaces|globalValidationHardFeatureEdges", "present",
++          "Boundary, feature, chart, output-face, hard-edge, and provenance authority must survive global remap into the final oracle."),
