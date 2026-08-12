@@ -37,7 +37,7 @@ Do not add:
 
 ## Mandatory next turn
 
-Run **M1 Single-Authority Cutover Closure — Code + Build only** under:
+Run **M1 Single-Authority Cutover continuation — Code + Build only** under:
 
 .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
 
@@ -46,17 +46,19 @@ Branch: agent/surface_cell_quad/p5-recover-bridge-healing
 PR: #8 remains open, draft, and unmerged  
 Review policy after the later immutable Test + Benchmark turn: never
 
-The turn must:
+R-A-REV-01 and R-A-REV-02 are compile-closed. The next turn must:
 
-1. close R-A-REV-01 by giving materializer occurrences required typed sheet/member authority and removing every semantic read of SurfacePoint component/sheet;
-2. close R-A-REV-02 by deriving completion/stitch/ownership identity from typed lineage authority and removing raw provenance component/sheet from semantic identity;
-3. complete R-B through R-G as the same vertical M1 cutover;
-4. compile/package Release/static/Ninja/PRE_TEST only;
-5. execute no generated Directional binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input;
-6. produce a new immutable full-cutover artifact and expanded source audit;
-7. update the dormant artifact-only plan with the new exact package authority.
+1. complete R-B row-independent face/support/chart identity;
+2. complete R-C immutable published products and typed certificate construction;
+3. complete R-D checked ingress and delete compatibility/numeric read-back bridges;
+4. complete R-E typed semantic owners and lookups;
+5. complete R-F intent-complete compiled contracts;
+6. complete R-G expanded failing source audit;
+7. compile/package one fresh full R-A-through-R-G Release/static/Ninja/PRE_TEST package only;
+8. execute no generated Directional binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input;
+9. update the dormant artifact-only plan with the new exact full-package authority only after that package exists.
 
-Do not validate, copy, relabel, or repair historical artifact 9105462679 or R-A compile artifact 9124167871. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
+Do not validate, copy, relabel, or repair historical artifact 9105462679, earlier R-A artifact 9124167871, or partial R-A review-closure artifact 9125984929. Do not implement M3 curve-network topology, M4 conformity flow, M7 disposition/degraded production, or Pipeline A during M1.
 
 ## Current authority
 
@@ -75,24 +77,24 @@ Open design clarification/evidence items are tracked in TODO.md and Architecture
 
 M1l implementation bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest immutable runtime-accepted authority. Its accepted evidence is retained in CHANGELOG.md and Architecture_M1l_Phase_Front_Cell_Topology_Region_Consumer_Artifact_Only_Test_Benchmark_Report.md.
 
-### R-A compile checkpoint
+### R-A review-closure compile checkpoint
 
-Reviewed source: bebac907de814b07a55a770add4c897ab6d22ffd  
-Compile run/job: 31550744314 / 93972723960  
-Result/log artifacts: 9124167871 / 9124168143  
+Source authority: df386d1ad819879abbf9d7660c3d586778d7daee  
+Compile run/job: 31555887046 / 93988102158  
+Result/log artifacts: 9125984929 / 9125985115  
+Result/log digests: sha256:23da519d16f59b3ba86d6defab185f51446700c6b6e405b88a5c735453ecdc81 / sha256:5a075c0ede75d79cb6b5ecc50d33c2e43a3f52d78b59bf5248bd33be14f7d051  
 Compile: 118/118 Release/static/Ninja/PRE_TEST  
 Generated runtime/discovery/tests/benchmarks: none
 
-The checkpoint substantially implemented R-A items 1-6 and removed raw arrays from the materializer API. It is not R-A-complete because:
+R-A-REV-01 is compile-closed: materializer occurrences carry typed IsolationSheetId, and cross-sheet equivalence, quotient state, representative ordering, and sheet aggregation consume that typed member rather than SurfacePoint::sheet.
 
-- RemeshPipeline.cpp still reads SurfacePoint::sheet for cross-sheet equivalence and representative ordering;
-- PureQuadCompletion.cpp still encodes raw provenance component/sheet in fallback stitch identity.
+R-A-REV-02 is compile-closed: fallback stitch identity is derived from typed lineage topology-region/isolation-sheet authority; raw provenance component/sheet no longer supplies semantic stitch identity, and missing typed fallback authority fails closed.
 
-No runtime regression count changed because runtime was not executed.
+This is a partial Code + Build checkpoint only. R-B through R-G remain open, M1 is not runtime accepted, and no runtime regression count changed because runtime was not executed.
 
 ## Standing product and regression state
 
-- M1 is active; the retained artifact-only plan is dormant.
+- M1 is active; the retained artifact-only plan is dormant until a fresh full R-A-through-R-G package exists.
 - PR8-R034 / G4-R007 / G4-B001 direct-torus LocalSheetMismatch remains active.
 - G4-B002 InvalidHardRailPairing is owned by revised M4.
 - G4-B003 nonzero periodic Z4 and G4-B004 positive multi-isolation evidence are owned by M5/M6 after M1.
