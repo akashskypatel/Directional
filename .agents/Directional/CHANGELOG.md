@@ -20,14 +20,15 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 ### Fixed
 
 - Closed `R-A-REV-01`: materializer occurrences now own typed `IsolationSheetId`; reviewed cross-sheet equivalence, quotient-state, representative-ordering, and sheet-aggregation decisions no longer read `SurfacePoint::sheet` semantically.
-- Closed `R-A-REV-02`: completion fallback stitch identity derives from typed lineage topology-region/isolation-sheet authority rather than raw provenance component/sheet, and assembly fails closed with `MissingTypedStitchIdentity` when typed fallback authority is absent.
+- Corrected the exact `R-A-REV-02` encoding: the fallback stitch-key builder no longer inserts raw provenance component/sheet and now has a typed topology-region/isolation-sheet derivation. Closure review subsequently found that prebuilt compatibility identities bypass this derivation, so fail-closed R-A completion remains open as `R-A-REV-03`.
 
 ### Validation
 
 - Partial R-A review-closure source authority: `df386d1ad819879abbf9d7660c3d586778d7daee`.
 - Compile-only run/job `31555887046 / 93988102158` completed Release/static/Ninja/PRE_TEST **118/118**. Result artifact `9125984929`, ZIP SHA-256 `23da519d16f59b3ba86d6defab185f51446700c6b6e405b88a5c735453ecdc81`; log artifact `9125985115`, ZIP SHA-256 `5a075c0ede75d79cb6b5ecc50d33c2e43a3f52d78b59bf5248bd33be14f7d051`.
-- Focused source audit passed for both R-A review findings. No generated Directional binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input was executed.
-- This is build evidence for the two review corrections only; R-B through R-G remain open, M1 is not runtime accepted, immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`, and runtime regression totals remain **34 events / 14 categories / 20 recurrences**.
+- The focused source audit passed its two bounded textual checks, but did not cover compatibility identities or downstream validator/optimizer/rail read-backs and therefore did not establish the R-A closure gate. No generated Directional binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input was executed.
+- Independent download verified both outer ZIP digests. The result's internal `SHA256SUMS` fails 1/7 because it records its own empty-file digest; the other six metadata entries pass. `metadata/source-status.txt` records `?? build-m1-ra-rev/`. The artifact remains partial compile evidence and is ineligible for acceptance.
+- M1 is not runtime accepted, immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`, and runtime regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 ### Operational notes
 
@@ -42,6 +43,13 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ### Review
 
+- Reviewed the working branch through implementation baseline `5e023f1a8331c53182cfd296732c37cb7a889b88` against the complete R-A closure gate and rejected R-A completion.
+- Verified the exact R-A-REV-01 materializer correction and the exact R-A-REV-02 raw fallback-encoding removal.
+- Added `R-A-REV-03`: standalone/patch-local valid identities bypass typed fail-closed stitch derivation and can omit typed isolation-sheet authority.
+- Added `R-A-REV-04`: source-authoritative validator, surface-optimizer, and rail-constraint decisions still read raw `SurfacePoint` component/sheet projections.
+- Added `R-A-REV-05`: required typed positive, distinct-sheet, missing-authority, and raw-projection-tamper contracts are absent; existing fixtures still treat raw labels as authority.
+- Added `R-A-REV-06`: the partial compile package is not internally self-verifying and does not have clean recorded source status.
+- This was a static/documentation Review. No generated project runtime was executed, so no stable runtime regression event or recurrence was assigned.
 - Independently reviewed R-A source `bebac907de814b07a55a770add4c897ab6d22ffd`.
 - Verified compile-only evidence from run/job `31550744314 / 93972723960`, artifacts `9124167871 / 9124168143`, Release/static/Ninja/PRE_TEST **118/118**, with no generated runtime/discovery/test/benchmark execution.
 - Accepted as substantial compile-valid progress: typed source region/member authority, private checked factories, exact row coverage, builder-only raw classifier ingress, `SourceEntityId` removal, and materializer API removal of parallel raw arrays.
@@ -51,7 +59,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 ### Known limitations
 
 - M1l `bd140cff...` remains the latest immutable runtime authority.
-- Historical artifact `9105462679` and R-A compile artifact `9124167871` are not M1 acceptance candidates.
+- Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifact `9125984929` are not M1 acceptance candidates.
 - The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
 
 Authoritative review: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`.

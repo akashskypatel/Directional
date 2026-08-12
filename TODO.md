@@ -9,11 +9,15 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - R-A review closure source `df386d1ad819879abbf9d7660c3d586778d7daee` compiled 118/118 in run/job `31555887046 / 93988102158`.
-  - Compile artifacts `9125984929 / 9125985115` are compile-only evidence, not runtime acceptance.
+  - R-A closure review baseline: working-branch implementation `5e023f1a8331c53182cfd296732c37cb7a889b88`. R-A remains open.
   - [x] Typed region/member authority, private checked factories, exact row coverage, builder-only raw classifier ingress, SourceEntityId removal, and owning-product materializer API.
-  - [x] R-A-REV-01: materializer occurrences own typed `IsolationSheetId`; cross-sheet equivalence, quotient state, representative ordering, and sheet aggregation no longer read `SurfacePoint::sheet` semantically.
-  - [x] R-A-REV-02: completion/stitch fallback identity derives from typed lineage topology-region/isolation-sheet authority; raw provenance component/sheet is no longer a semantic stitch-identity source and missing typed fallback authority fails closed.
+  - [x] R-A-REV-01 exact paths: materializer occurrences own typed `IsolationSheetId`; reviewed equivalence, quotient, representative, and aggregation decisions no longer read `SurfacePoint::sheet`.
+  - [x] R-A-REV-02 exact encoding: raw provenance component/sheet was removed from the fallback stitch key and a typed lineage derivation was added. Broader fail-closed closure is owned by R-A-REV-03.
+  - [ ] R-A-REV-03: delete prebuilt standalone/patch-local compatibility identities, validate exact identities against complete typed lineage, and reject missing authority with `MissingTypedStitchIdentity`.
+  - [ ] R-A-REV-04: remove raw `SurfacePoint` component/sheet decisions from the source-authoritative validator, surface optimizer, and rail constraints; raw labels become one-way export only.
+  - [ ] R-A-REV-05: add positive, distinct-typed-sheet, missing-authority, and raw-projection-tamper contracts; replace stale fixtures that use raw labels as authority.
+  - [ ] R-A-REV-06: make the next full package self-verifying with clean source provenance and a checksum manifest that excludes itself and passes before upload.
+  - [ ] Re-run the complete R-A closure inventory before advancing the same vertical cutover.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
   - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.
@@ -22,7 +26,7 @@ This is the single durable task index for the cross-field-aligned surface-cell q
   - [ ] Complete R-G expanded failing source audit.
 - [ ] **Produce one fresh full R-A-through-R-G Code + Build package.**
   - Compile/package only; execute no generated binary, discovery, test, benchmark, ctest, CLI, fuzzer, or custom input.
-  - Historical artifact `9105462679`, earlier R-A artifact `9124167871`, and partial R-A review-closure artifact `9125984929` are ineligible for M1 acceptance.
+  - All historical and partial packages recorded in `CHANGELOG.md` are ineligible for M1 acceptance.
 - [ ] **Activate and run the retained immutable M1 Artifact-Only Test + Benchmark plan only after the full package exists.**
 - [ ] **After M1 acceptance, resume Pipeline B product work under the revised M2-M8 architecture.** Pipeline A remains unscheduled.
 
@@ -100,7 +104,6 @@ Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe
 ## Authoritative references
 
 - .agents/Directional/DESIGN.md
-- .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md
 - .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
 - .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
 - .agents/Directional/Future_Chat_Session_Handoff.md

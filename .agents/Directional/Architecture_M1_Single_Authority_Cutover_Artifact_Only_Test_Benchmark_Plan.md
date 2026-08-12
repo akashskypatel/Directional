@@ -1,7 +1,7 @@
 # M1 Single-Authority Cutover — Artifact-Only Test + Benchmark Plan
 
 **Turn type:** retained Test + Benchmark plan; currently dormant  
-**Validated source to consume:** the future full R-A-through-R-G cutover source; not `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e` and not R-A checkpoint `bebac907de814b07a55a770add4c897ab6d22ffd`  
+**Validated source to consume:** the future full R-A-through-R-G cutover source; no historical or partial package recorded in `CHANGELOG.md`
 **Entering immutable comparison authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
 **Code + Build result artifact:** pending full-cutover package  
 **Code + Build result artifact digest:** pending  
@@ -13,16 +13,14 @@
 
 This plan is retained as requested, but it is **not executable now**.
 
-Independent review rejected the former full-cutover artifact `9105462679` and found that the later R-A compile checkpoint `9124167871` still reads raw `SurfacePoint::sheet` in materializer semantics and raw provenance component/sheet in fallback stitch identity. Neither artifact may be validated, relabeled, copied, or amended into M1 acceptance evidence.
+R-A closure review verified the exact R-A-REV-01 correction and removal of the exact R-A-REV-02 raw fallback encoding, but rejected R-A completion on R-A-REV-03 through R-A-REV-06. No historical or partial artifact may be validated, relabeled, copied, repaired, or amended into M1 acceptance evidence.
 
 Activate this plan only after a new Code + Build turn:
 
-1. closes `R-A-REV-01` and `R-A-REV-02`;
+1. passes the full R-A closure gate, including R-A-REV-03 through R-A-REV-05;
 2. completes R-B through R-G;
-3. packages the exact final source, compiled contracts, fixtures, expanded audit, logs, and recursive checksums;
-4. records new immutable artifact IDs/digests, manifest count/digest, executable inventory, and command-boundary flags in this header and Sections 2, 3, 12, and 14.
-
-Until activation, every exact reference below to source `5b1c9b...`, artifact `9105462679`, manifest `57/57`, or its checksums is a **historical rejected-package template value**, not a command.
+3. closes R-A-REV-06 by packaging exact final source, compiled contracts, fixtures, expanded audit, logs, clean source provenance, and a checksum manifest that excludes itself and verifies before upload;
+4. records new immutable source/artifact IDs and digests, manifest count/digest, executable inventory, and command-boundary flags in this header and Sections 2, 3, 12, and 14.
 
 The replacement DESIGN.md is normative. M1 acceptance proves the single-authority contract only; it does not claim the later M3 curve network, M4 conformity flow, M7 graded disposition, or optional Pipeline A. A strict product fixture may close only on certified/D0-equivalent behavior. A degraded D1-D3 result, if disposition work appears early, is truthful characterization and cannot close an M1 preservation gate.
 
@@ -36,16 +34,13 @@ Runtime execution is allowed only from the immutable packaged executables and pa
 
 ## 2. Immutable package authority
 
-Expected package facts from the Code + Build report:
+Expected package facts to copy exactly from the future Code + Build report when this plan is activated:
 
-- implementation commit: `5b1c9b314ae1ff2888abf1b81d716a44e63ea45e`;
-- immediate source parent: `1cb115500c629610d5ad7b2d73c58029beb94a7c`;
-- entering accepted M1l source: `bd140cff4572412e6f4ecd70a6ce0fe85310932c`;
-- recursive manifest entries: **57**;
-- recursive manifest SHA-256: `ebd5f1587feec0120260eacd127f45fcf66784f5effaf1a60703e7471f9454b4`;
-- fixture file count: **27**;
-- seven packaged test/benchmark executables and two static libraries;
-- all Code + Build command-boundary flags false.
+- implementation commit, immediate source parent, and entering accepted M1l source `bd140cff4572412e6f4ecd70a6ce0fe85310932c`;
+- result/log artifact IDs, outer digests, and retention metadata;
+- recursive manifest entry count and manifest digest; the manifest does not include itself and its complete verification passed before upload;
+- fixture file count, packaged executable/library inventory, source/archive/diff/audit closure, and clean pre-build source status;
+- every Code + Build command-boundary flag false.
 
 Treat the package metadata and checksums as the source of truth. Stop before runtime if these facts do not close exactly.
 
@@ -55,10 +50,10 @@ Extract the downloaded artifact into a fresh arbitrary directory using a method 
 
 Verify, in order:
 
-1. downloaded artifact identity/digest matches artifact `9105462679` and the recorded outer SHA-256;
-2. `SHA256SUMS` exists, has exactly 57 entries, has the recorded manifest digest, and `sha256sum -c SHA256SUMS` passes **57/57**;
+1. downloaded artifact identity/digest matches the newly activated artifact authority and recorded outer SHA-256;
+2. `SHA256SUMS` exists, excludes itself, has the newly recorded entry count and manifest digest, and `sha256sum -c SHA256SUMS` passes every entry;
 3. package contains no symlink or path escape and extraction did not rewrite packaged files;
-4. `metadata/build-authority.json` names exact implementation `5b1c9b...`, immediate parent `1cb115...`, entering M1l `bd140c...`, Release/Ninja/PRE_TEST, and fixture count 27;
+4. `metadata/build-authority.json` names the newly recorded exact implementation, immediate parent, entering M1l `bd140c...`, Release/Ninja/PRE_TEST, and fixture count;
 5. `metadata/command-boundary.txt` and JSON metadata record all of these as false: runtime, gtest-list, tests, benchmarks, ctest, CLI, fuzzer, custom input;
 6. `metadata/source-cutover-audit.txt` records `static_cutover_audit=clean`;
 7. `metadata/cutover-test-groups.txt` contains exactly the five required semantic contract groups listed below;
@@ -239,12 +234,15 @@ legacyValue
 
 Also inspect the affected authority structs for a typed ID/value stored beside a numeric mirror of the same semantic fact. A remaining duplicate semantic authority is an M1 failure, not follow-up work.
 
-The activated audit must also fail on either reviewed R-A defect:
+The activated audit must also fail on any reviewed R-A closure defect:
 
 - any materializer equivalence, representative, ownership, or quotient decision reads `SurfacePoint::component` or `SurfacePoint::sheet`;
 - any patch/completion/assembly/lineage/verifier identity, equality, hash, order, or lookup key reads raw provenance component/sheet;
 - an occurrence lacks required typed topology-region, isolation-sheet, chart, or support authority after construction;
 - a fallback canonical/stitch/ownership identity can be built from raw component/sheet mirrors.
+- an existing valid-looking stitch/authoritative identity is accepted without exact boundary authority or validation against complete typed lineage;
+- a standalone completion/optimizer compatibility path synthesizes semantic identity or scope without typed authority;
+- `SourceAuthoritativeMeshValidator`, `SurfaceMeshOptimizer`, or `SurfaceOptimizationRailConstraints` uses raw projection component/sheet to accept, reject, scope, order, merge, or route data.
 
 Derived integers are allowed only in one-way diagnostics/export after typed validation and must never be read back by production logic.
 
@@ -252,8 +250,8 @@ Derived integers are allowed only in one-way diagnostics/export after typed vali
 
 After all runtime execution:
 
-1. recompute every packaged checksum and require the same **57/57** result;
-2. recompute the manifest digest and require `ebd5f1587feec0120260eacd127f45fcf66784f5effaf1a60703e7471f9454b4`;
+1. recompute every packaged checksum and require the same complete result as preflight;
+2. recompute the manifest digest and require the newly activated recorded value;
 3. verify no package file was added, removed, rewritten, chmod-repaired, or symlinked;
 4. verify executable hashes equal preflight values;
 5. preserve raw discovery, focused, aggregate, product-oracle, characterization, resource, source-audit, and postflight logs as immutable evidence.
@@ -269,7 +267,8 @@ M1 is accepted only when all of the following hold:
 - every historical/deferred red case is executed and classified, with no unclassified regression;
 - no source attachment, topology-region/sheet/chart distinction, transport composition, certificate ownership/exact-once consumption, determinism, direct disposition, or no-fallback invariant regresses;
 - independent packaged-source audit finds no displaced representation or duplicate semantic authority;
-- both `R-A-REV-01` and `R-A-REV-02` are absent from the exact packaged source and covered by positive/tamper contracts;
+- every R-A-REV-01 through R-A-REV-05 closure condition is absent from the exact packaged source and covered by the required positive/missing-authority/distinct-sheet/raw-tamper contracts;
+- R-A-REV-06 is closed by clean source provenance and exact preflight/postflight checksum verification;
 - all strict preservation fixtures reach certified/D0-equivalent behavior; no D1-D3 output closes a strict gate;
 - Bunny/Vase and strict-validator results are truthfully characterized;
 - no package mutation or rebuild occurred.

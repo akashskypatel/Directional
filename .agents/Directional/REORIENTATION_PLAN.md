@@ -2,7 +2,7 @@
 
 **Status:** authoritative architecture-migration roadmap  
 **Normative design:** .agents/Directional/DESIGN.md, replacement supplied 2026-08-11  
-**Current reviewed source:** M1 R-A checkpoint bebac907de814b07a55a770add4c897ab6d22ffd  
+**Current reviewed source:** working-branch implementation `5e023f1a8331c53182cfd296732c37cb7a889b88`
 **Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap**  
 **Last updated:** 2026-08-12 UTC
 
@@ -15,7 +15,7 @@ This plan owns migration order, dependencies, stop conditions, and acceptance ga
 | Concern | Authority |
 |---|---|
 | Product, stages, domains, invariants, disposition | DESIGN.md |
-| Redesign and R-A findings | Architecture_Redesign_and_M1_RA_Independent_Review_Report.md |
+| Historical redesign and initial R-A findings | Architecture_Redesign_and_M1_RA_Independent_Review_Report.md |
 | Current implementation plan | Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md |
 | Dormant immutable validation plan | Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md |
 | Normative testing | tests/TESTING_STRATEGY.md |
@@ -66,7 +66,7 @@ The 2026-08-11 redesign retains prior M0-M2, maps prior M3 to M4, prior M4 to M5
 | Milestone | Contract | State |
 |---|---|---|
 | M0 | preserve immutable evidence | complete |
-| M1 | single-authority cutover | active; R-A compile checkpoint not closed |
+| M1 | single-authority cutover | active; R-A closure gate rejected, R-A-REV-03 through R-A-REV-06 open |
 | M2 | closed stage products and single writers | pending |
 | M3 | field-aligned curve network | pending |
 | M4 | global conformity plan | pending |
@@ -83,11 +83,11 @@ Later milestones are complete vertical contracts driven by the active Pipeline B
 
 M1a-M1l and T1 were accepted under their retained immutable evidence. M1l source bd140cff4572412e6f4ecd70a6ce0fe85310932c remains the latest runtime-accepted authority.
 
-The first purported full cutover source 5b1c9b314ae1ff2888abf1b81d716a44e63ea45e and artifact 9105462679 remain historical compile/package evidence but were independently rejected as M1-complete.
+Rejected and partial package identities remain historical evidence in `CHANGELOG.md`; none is an M1 acceptance candidate.
 
-### R-A checkpoint
+### R-A closure review
 
-Reviewed source bebac907de814b07a55a770add4c897ab6d22ffd compiled Release/static/Ninja/PRE_TEST 118/118 in run/job 31550744314 / 93972723960. Result/log artifacts are 9124167871 / 9124168143. No generated runtime or discovery executed.
+The working branch through implementation baseline `5e023f1...` was reviewed against the R-A closure gate. No generated runtime or discovery executed in either the implementation's compile run or this Review.
 
 Established:
 
@@ -97,26 +97,30 @@ Established:
 - builder-only raw classifier ingress;
 - SourceEntityId removal;
 - owning source-authority consumer APIs;
-- materializer API without parallel raw component/sheet arrays.
+- materializer API without parallel raw component/sheet arrays;
+- the exact R-A-REV-01 materializer sheet read-backs are removed;
+- the exact R-A-REV-02 raw component/sheet stitch-key encoding is replaced by a typed lineage derivation.
 
 Not closed:
 
-- R-A-REV-01: materializer still reads SurfacePoint::sheet for equivalence and representative ordering;
-- R-A-REV-02: completion fallback stitch identity still encodes raw provenance component/sheet.
+- R-A-REV-03: standalone/patch-local valid identities bypass the typed fail-closed derivation and can omit typed sheet authority;
+- R-A-REV-04: the source-authoritative validator, optimizer, and rail constraints still read raw projection component/sheet labels for semantic decisions;
+- R-A-REV-05: the required typed positive, missing-authority, distinct-sheet, and raw-tamper contracts are absent; existing fixtures still encode raw-label authority;
+- R-A-REV-06: the partial compile artifact's internal checksum manifest fails its own check and its source status includes the build directory.
 
-The R-A artifact is an intermediate compile checkpoint, not an accepted migration or an artifact-only candidate.
+The partial source compiled 118/118 and its outer artifact digests match, but that is compile evidence only. R-A is not an accepted migration and no partial artifact is eligible for artifact-only acceptance.
 
 ## 6. M1 completion sequence
 
 The next Code + Build turn must:
 
-1. remove both reviewed raw-payload read-back paths;
-2. complete R-B row-independent face/support/chart identity;
-3. complete R-C immutable products/certificates;
-4. complete R-D checked ingress and bridge deletion;
-5. complete R-E typed owners/lookups;
-6. complete R-F intent-complete compiled contracts;
-7. complete R-G exhaustive failing source audit;
+1. close R-A-REV-03 by requiring exact or complete typed stitch authority and deleting compatibility identity synthesis;
+2. close R-A-REV-04 by removing downstream raw projection read-back;
+3. close R-A-REV-05 with the required positive and tamper contracts;
+4. rerun and pass the full R-A closure inventory;
+5. complete R-B row-independent face/support/chart identity;
+6. complete R-C through R-G under the active Code + Build plan;
+7. close R-A-REV-06 in a fresh self-verifying package with clean source provenance;
 8. compile and package without generated runtime.
 
 The resulting package is independently validated under the retained artifact-only plan. M1 closes only when static authority, focused contracts, entering semantic gates, direct product oracles, known-red classification, characterization, and immutable postflight all close.

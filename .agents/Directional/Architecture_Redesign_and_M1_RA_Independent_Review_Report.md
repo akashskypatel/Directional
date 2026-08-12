@@ -9,6 +9,14 @@
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
 **Verdict:** **the redesign is a material improvement; R-A is compile-valid partial implementation, not closed or runtime-accepted**
 
+## Current-status addendum — 2026-08-12 UTC
+
+This report remains the historical independent review of source `bebac907...`; its evidence and original R-A-REV-01/02 findings are not rewritten.
+
+Later commits `eca1ce1141e4cc8b492e4efbfd2227b0a001a76b` and `df386d1ad819879abbf9d7660c3d586778d7daee` correct the exact materializer read-backs and remove the exact raw component/sheet fallback encoding identified below. A closure-gate review of working-branch implementation `5e023f1a8331c53182cfd296732c37cb7a889b88` nevertheless leaves R-A open on R-A-REV-03 through R-A-REV-06: compatibility identities bypass typed fail-closed stitching, downstream validator/optimizer/rail decisions still read raw projection labels, required positive/tamper contracts are absent, and the partial compile package is not internally self-verifying.
+
+The active corrective measures and definition of done are in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`; exact later compile/package evidence is retained in `CHANGELOG.md`.
+
 ## 1. Review boundary and evidence
 
 This review inspected the supplied redesign, its supporting review/context, the current durable architecture and test records, the R-A source, the final compile record, and the source delta between the downloaded review snapshot and the reviewed source.
