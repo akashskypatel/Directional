@@ -6,6 +6,17 @@
 #include <unordered_map>
 #include <unordered_set>
 
+namespace directional::geometry {
+namespace {
+
+std::int64_t stable_patch_owner(const PureQuadMesh &patch);
+PureQuadStitchIdentity typed_lineage_stitch_identity(
+    const PureQuadVertexLineage &lineage, bool sharedBoundary,
+    std::int64_t patchOwner, int localVertex);
+
+} // namespace
+} // namespace directional::geometry
+
 namespace directional::geometry::pure_quad_detail {
 
 int boundary_edge_count(const PureQuadPatch &patch) {
@@ -727,12 +738,6 @@ void set_completion_ownership_rejection(
   rejection->candidateSupportedFaces = support.incidentFaces;
   rejection->patchSourceFaces = patchSourceFaces;
 }
-
-std::int64_t stable_patch_owner(const PureQuadMesh &patch);
-
-PureQuadStitchIdentity typed_lineage_stitch_identity(
-    const PureQuadVertexLineage &lineage, const bool sharedBoundary,
-    std::int64_t patchOwner, int localVertex);
 
 bool validate_completion_domain_ownership(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
