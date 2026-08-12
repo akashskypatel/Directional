@@ -1,0 +1,143 @@
+from pathlib import Path
+
+SOURCE='032d4cbae9e2de2767579934682e78754180338d'
+RUN='31644502450'; JOB='94274781412'
+RESULT='9160266493'; RESULT_SHA='0980b3ca20c1e50be9323c99ecd3fca6d77f8df4655cd84eae9e0917d450ea11'
+LOG='9160266848'; LOG_SHA='145a614170bec6cd949e51b5113e78509480bffb01670ecbabba9687f89c045d'
+
+def load(path): return Path(path).read_text(encoding='utf-8')
+def save(path, text): Path(path).write_text(text if text.endswith('\n') else text+'\n', encoding='utf-8')
+def replace_once(text, old, new, label):
+    if old not in text: raise SystemExit(f'{label} target missing')
+    return text.replace(old, new, 1)
+
+path='TODO.md'; s=load(path)
+old='''  - [x] Reproduce the complete retained R-A inventory through REV-24: `R_A_Closure_Inventory.py` generated `R_A_Closure_Inventory_Report.md` with 17 checked paths, 38 probes, 164 probe matches, 22/22 classified raw-projection leaves, 2/2 classified face-count leaves, zero unexpected leaves, and final static PASS.
+  - [x] Produce and verify one fresh focused compile-only package from `9d88d0e47cfc039e5399ebee334290b1eeae792b`: run/job `31634075824 / 94239861945`, artifacts `9156381103 / 9156381524`, Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`.
+  - [ ] Run the separate immutable artifact-only cadence gate on that exact fresh package; no rebuild or source changes. Expect the two component boundary/feature tamper negatives to reject at the aggregation seam guard, not at the final oracle; that is expected-but-insufficient coverage, not REV-22 closure evidence.
+  - [ ] **RA-REV-22-F1 (blocking for R-A):** add aggregate negatives that corrupt the remapped `globalValidationBoundaryLoops`/`globalValidationBoundaryEdges` and `globalValidationFeatureRails`/`expectedFeatureRailCount` so the seam guard passes and the final oracle is the rejecting party with `MissingBoundaryAuthority`/`ChangedBoundaryLoop` and `MissingFeatureRail`; assert zero publication. Rename the two existing tests to name the seam guard they actually exercise.
+  - [ ] RA-REV-22-F2: derive `strictValidationUsed` and `authoritativeFeatureRailsUsed` at `RemeshPipeline.cpp:11579-11587` from final-oracle observables instead of literal `true`, or drop the two tautological assertions that depend on them.
+  - [ ] RA-REV-22-F3: publish the final-oracle outcome independently of `allHaveValidationResult` so a passing oracle is distinguishable from an oracle that never ran.
+  - [ ] RA-REV-23-F1: replace the name-keyed `rebuild_aggregate_stitch_identity` absence probe with a structural probe over `PureQuadStitchIdentityKind::` assignment and `stitchIdentity` assignment sites in `src/pipeline/`.
+  - [ ] Mark R-A complete only if the full static inventory and focused runtime contracts pass organically **and** RA-REV-22-F1 is implemented and executed.'''
+new=f'''  - [x] RA-REV-22-F1 Code + Build remediation at `{SOURCE}`: existing component authority-tamper tests are explicitly named as aggregation-seam guards; new post-remap final-oracle boundary and feature counterfactuals require `MissingBoundaryAuthority`/`MissingFeatureRail` and zero publication. Runtime execution remains pending.
+  - [x] RA-REV-22-F2 Code + Build remediation at `{SOURCE}`: strict/provenance/boundary/feature usage publication is derived from `SourceAuthoritativeMeshValidationResult` observables; the hardcoded aggregate flags are absent.
+  - [x] RA-REV-22-F3 Code + Build remediation at `{SOURCE}`: the typed final source-authority oracle result is published independently of component-report completeness, with an explicit `componentValidationReportsComplete` discriminator and compile-visible counterexample.
+  - [x] RA-REV-23-F1 Code + Build remediation at `{SOURCE}`: the R-A inventory structurally forbids pipeline stitch-kind assignment and classifies every `stitchIdentity` assignment; only two completion-canonical leaves are allowed.
+  - [x] Reproduce the complete retained R-A inventory through REV-24 after the findings: **19 affected paths, 42 probes, 186 probe matches, 22 allowed/0 unexpected raw-projection leaves, 2 allowed/0 unexpected face-count leaves, 2 allowed/0 unexpected pipeline `stitchIdentity` assignments, final static PASS**.
+  - [x] Produce and verify a fresh focused compile-only package from `{SOURCE}`: run/job `{RUN} / {JOB}`, artifacts `{RESULT} / {LOG}`, Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`. Prior package `9156381103 / 9156381524` is superseded as the runtime candidate.
+  - [ ] Run the separate immutable artifact-only cadence gate on exact package `{RESULT} / {LOG}` with no rebuild or source changes. Execute the new REV-22-F1 final-oracle boundary/feature negatives plus F2/F3 adjacent observability/publication contracts and retained REV-21-through-REV-24/R-A authority contracts.
+  - [ ] Mark R-A complete only if the regenerated static inventory remains clean and the focused runtime contracts, including the new RA-REV-22-F1 final-oracle negatives, pass organically.'''
+s=replace_once(s,old,new,'TODO findings block'); save(path,s)
+
+path='.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md'; s=load(path)
+s=replace_once(s,'**Current status:** REV-21 contract completion and REV-22-through-REV-24 are Code + Build complete / compile-valid at `9d88d0e47cfc039e5399ebee334290b1eeae792b`; the complete R-A inventory through REV-24 is reproducibly PASS; overall R-A remains open pending the separate immutable artifact-only runtime cadence gate',f'**Current status:** RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `{SOURCE}`; the widened complete R-A inventory is reproducibly PASS; overall R-A remains open pending separate immutable artifact-only execution of the new final-oracle contracts','plan status')
+s=replace_once(s,'**Latest review-remediation implementation/compile source:** `9d88d0e47cfc039e5399ebee334290b1eeae792b`',f'**Latest review-remediation implementation/compile source:** `{SOURCE}`','plan source')
+marker='## 0E. 2026-08-12 REV-21 coverage and REV-22 through REV-24 Code + Build closure\n'
+section=f'''## 0F. 2026-08-12 RA-REV-22-F1/F2/F3 and RA-REV-23-F1 Code + Build remediation
+
+Exact implementation/test/static-audit source: `{SOURCE}`. These are post-independent-review corrective changes. They are closed at the Code + Build/static-contract boundary only; they have not been independently runtime-accepted.
+
+- **RA-REV-22-F1:** added a final-validation-only counterfactual seam after global authority remap and before `validate_source_authoritative_surface_mesh`. Boundary and feature negatives now corrupt that final remapped authority, require the final oracle to reject with `FinalMergedSourceAuthorityValidationFailed` plus `MissingBoundaryAuthority`/`MissingFeatureRail`, and assert zero semantic publication. The pre-oracle component tamper tests were renamed to the aggregation-seam guard they actually prove.
+- **RA-REV-22-F2:** `SourceAuthoritativeMeshValidationResult` now exposes strict/provenance/boundary/feature-rail usage observables. Aggregate publication derives the corresponding flags from the actual final oracle result; the prior literal-`true` assignments are absent.
+- **RA-REV-22-F3:** `SurfaceCellPipelineContext` independently publishes the typed final source-authority oracle result and whether component validation reports are complete. A missing component report no longer makes a successful final-oracle execution observationally indistinguishable from an oracle that never ran.
+- **RA-REV-23-F1:** the retained inventory structurally forbids `PureQuadStitchIdentityKind::` assignment under `src/pipeline/` and classifies every `stitchIdentity` assignment in `RemeshPipeline.cpp`. Only the two leaves inside `rebuild_aggregate_output_identity_caches` that derive from `canonical_lineage_stitch_identity` are allowed.
+- **Complete inventory regenerated:** **19 paths / 42 probes / 186 matches**, raw projection **22 allowed / 0 unexpected**, face-count **2 / 0**, pipeline `stitchIdentity` assignments **2 / 0**, final static **PASS**.
+- **Fresh compile:** run/job `{RUN} / {JOB}` compiled exact source `{SOURCE}` through the mandatory reusable cached workflow. Release/static/Ninja/PRE_TEST **118/118**, exit `0`; result artifact `{RESULT}` SHA-256 `{RESULT_SHA}`; log artifact `{LOG}` SHA-256 `{LOG_SHA}`.
+- Package inspection: **26** regular files, self-excluding manifest **25/25**, zero self references, five empty source-status snapshots, exact source archive/dependency revisions, `semanticContracts=compiled-not-executed`, `runtimeExecution=false`. ccache recorded **87/108 hits (80.56%)** and the branch cache lineage is bounded to two compatible entries.
+
+The previous `9d88d0e...` package is superseded as a runtime candidate. Mandatory next cadence: immutable artifact-only execution of the new `{SOURCE}` package with no rebuild. Overall R-A remains open until those focused contracts pass organically.
+
+'''
+if marker not in s: raise SystemExit('plan section marker missing')
+s=s.replace(marker,section+marker,1); save(path,s)
+
+path='.agents/Directional/Future_Chat_Session_Handoff.md'; s=load(path)
+start=s.index('## Mandatory next turn\n'); end=s.index('\n## Current authority\n',start)
+next_turn=f'''## Mandatory next turn
+
+Run one **artifact-only Test + Benchmark cadence turn** against the fresh RA-REV-22-F1/F2/F3 and RA-REV-23-F1 correction package. Do not rebuild or change implementation, test, benchmark, build, fixture, or inventory source.
+
+Repository: `akashskypatel/Directional`
+Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
+PR: #8 remains open, draft, and unmerged
+Exact compile-valid implementation/test source: `{SOURCE}`
+Compile run/job: `{RUN} / {JOB}`
+Result artifact: `{RESULT}`, SHA-256 `{RESULT_SHA}`
+Log artifact: `{LOG}`, SHA-256 `{LOG_SHA}`
+
+Before executing any packaged binary, verify exact source, outer artifact digests, recursive self-excluding manifest **25/25**, five empty source-status snapshots, dependency revisions, Release/static/Ninja/PRE_TEST build exit `0`, and `runtimeExecution=false`. Extract the packaged source archive only for evidence inspection and verify `R_A_Closure_Inventory_Report.md` reports **19 paths, 42 probes, 186 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline stitchIdentity assignments, final static PASS**.
+
+Then execute, without rebuilding:
+
+- `FinalMergedOracleRejectsMissingRemappedBoundaryAuthority` and `FinalMergedOracleRejectsMissingRemappedFeatureAuthority`; both must reach the final-oracle counterfactual seam, fail with the expected validator issue, and publish no aggregate semantics;
+- `FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing` and the positive aggregate contract that cross-checks published strict/provenance/boundary/feature flags against `finalSourceAuthorityValidationResult`;
+- the renamed component aggregation-seam tamper tests, classified only as seam-guard coverage;
+- retained REV-21 permutation-pair, REV-23 canonical/re-stitch, REV-24 null/foreign-authority, transactional rollback, optimizer/final-validator authority, and zero-publication contracts needed to detect regressions.
+
+A zero-selected filter is orchestration failure. Classify every failure from immutable runtime evidence. Do not rebuild, weaken validation, restore aliases/fallbacks, or alter fixtures to synthesize green output. Mark overall R-A complete only if the full focused gate passes organically and the complete static inventory remains clean.
+
+The retained full M1 artifact-only plan remains dormant until one fresh complete R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this cadence turn.
+'''
+s=s[:start]+next_turn+s[end:]
+status_start=s.index('### R-A closure status\n'); status_end=s.index('\n## Standing product state\n',status_start)
+status=f'''### R-A closure status
+
+- Overall R-A remains **open / not runtime-accepted**.
+- The latest independent-review boundary remains `db100d15b166a2ac19bf2bb45c829856b43bb5a9` over source `9d88d0e...`; its four follow-up findings are now **Code + Build remediated** at exact source `{SOURCE}`, not independently/runtime accepted.
+- RA-REV-22-F1: post-remap boundary/feature authority counterfactuals target the final oracle; the older component tamper tests are explicitly aggregation-seam coverage.
+- RA-REV-22-F2: aggregate strict/provenance/boundary/feature usage flags are final-oracle-derived.
+- RA-REV-22-F3: the typed final-oracle result is published independently of component report completeness.
+- RA-REV-23-F1: structural inventory prohibits pipeline stitch-kind schema assignment and classifies every pipeline `stitchIdentity` write.
+- Complete R-A inventory is regenerated and static-PASS: **19 paths, 42 probes, 186 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline stitchIdentity assignments**.
+- Fresh compile evidence: run/job `{RUN} / {JOB}`, artifacts `{RESULT} / {LOG}`, exact source `{SOURCE}`, Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`.
+- No new semantic contract executed in this Code + Build turn. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority; regression totals remain **34 events / 14 categories / 20 recurrences**.
+'''
+s=s[:status_start]+status+s[status_end:]; save(path,s)
+
+path='.agents/Directional/CHANGELOG.md'; s=load(path)
+marker='## [Unreleased]\n\n'
+entry=f'''## [Unreleased]
+
+### Fixed — RA-REV-22-F1/F2/F3 and RA-REV-23-F1 post-review remediation
+
+- RA-REV-22-F1 adds final-oracle-only boundary and feature authority counterfactuals after global remap, preserves the concrete validator failure issue in diagnostics, asserts zero publication, and renames the earlier component mutation negatives to their actual aggregation-seam intent.
+- RA-REV-22-F2 publishes strict/provenance/boundary/feature-rail usage from `SourceAuthoritativeMeshValidationResult` rather than literal aggregate flags.
+- RA-REV-22-F3 independently retains the final typed source-authority oracle result plus a component-report-completeness discriminator.
+- RA-REV-23-F1 replaces the identifier-keyed duplicate-builder probe with structural stitch-kind and `stitchIdentity` assignment auditing.
+
+### Validation — RA-REV-22-F1/F2/F3 and RA-REV-23-F1
+
+- Exact implementation/test/audit source: `{SOURCE}`. Regenerated complete R-A inventory: **19 paths / 42 probes / 186 matches**, with **22/0** raw-projection leaves, **2/0** face-count leaves, **2/0** pipeline `stitchIdentity` assignments, final static **PASS**.
+- Focused compile run/job `{RUN} / {JOB}` completed Release/static/Ninja/PRE_TEST **118/118**, exit `0`. Result artifact `{RESULT}`, SHA-256 `{RESULT_SHA}`; log artifact `{LOG}`, SHA-256 `{LOG_SHA}`.
+- Independent package inspection verified **26** regular files, self-excluding manifest **25/25**, zero self references, five empty source-status snapshots, exact source archive/dependency revisions, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`. ccache recorded **87/108 hits (80.56%)**; two compatible caches remain.
+- The prior `9d88d0e...` compile package is superseded as the runtime candidate. Overall R-A remains open until the new focused artifact-only contracts execute and pass organically.
+
+'''
+if marker not in s: raise SystemExit('changelog marker missing')
+s=s.replace(marker,entry,1); save(path,s)
+
+path='.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md'; s=load(path)
+old='**Current verdict:** **REV-21 contract completion and REV-22-through-REV-24 are accepted at the Code + Build boundary; overall R-A remains rejected/open because no semantic contract has executed and one REV-22 negative does not reach the final oracle**'
+new=f'''**Latest independent-review verdict at source `9d88d0e...`:** **REV-21 contract completion and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A rejected/open.**  
+**Post-review remediation status:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `{SOURCE}`; this is not an independent re-review or runtime acceptance.**'''
+s=replace_once(s,old,new,'review header verdict')
+marker='## Current-status addendum — R-A closure review after REV-21 coverage and REV-22 through REV-24\n'
+section=f'''## Post-review remediation addendum — RA-REV-22-F1/F2/F3 and RA-REV-23-F1
+
+This addendum records corrective implementation performed after the independent review below. It does **not** rewrite the independent verdict or claim independent/runtime acceptance. Exact corrective source: `{SOURCE}`.
+
+| Finding | Post-review Code + Build status | Remaining gate |
+|---|---|---|
+| RA-REV-22-F1 | **remediated / compile-valid** — final-validation-only boundary and feature counterfactuals target the actual final oracle and require concrete validator issue plus zero publication; prior component tests renamed to aggregation-seam intent | execute both new final-oracle negatives from immutable artifact `{RESULT}` |
+| RA-REV-22-F2 | **remediated / compile-valid** — strict/provenance/boundary/feature usage is published from final-oracle result fields; hardcoded aggregate flags removed | execute positive aggregate oracle observability contract |
+| RA-REV-22-F3 | **remediated / compile-valid** — typed final-oracle result is retained independently of component-report completeness | execute missing-component-report publication contract |
+| RA-REV-23-F1 | **remediated / static-PASS** — structural audit forbids pipeline stitch-kind assignment and classifies every pipeline `stitchIdentity` assignment; two completion-canonical leaves allowed, zero unexpected | retain structural PASS during focused runtime package verification |
+
+The complete inventory was regenerated from `{SOURCE}`: **19 affected paths, 42 probes, 186 probe matches, 22 allowed/0 unexpected raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline `stitchIdentity` assignments, final static PASS**. Focused compile run/job `{RUN} / {JOB}` produced artifacts `{RESULT} / {LOG}` and compiled **118/118** with exit `0`; the package self-excluding manifest verifies **25/25**, all five source-status snapshots are empty, and `runtimeExecution=false`.
+
+Overall R-A remains open until the separate immutable artifact-only turn executes the new F1 final-oracle negatives and adjacent F2/F3 contracts organically. The prior package from `9d88d0e...` is superseded as a runtime candidate.
+
+'''
+if marker not in s: raise SystemExit('review addendum marker missing')
+s=s.replace(marker,section+marker,1); save(path,s)
