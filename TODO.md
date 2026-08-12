@@ -79,33 +79,15 @@ Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe
 | A0 SourceAuthoritySnapshot | one immutable exact-support/source-incidence authority | M1-M2 |
 | A1 FieldTransportAtlas | typed charts/transport plus quadrangulability certificate | M1, M3 |
 | A2a FieldAlignedCurveNetwork | non-crossing typed trace network and region proof | M3 |
-| A2b GlobalTopologyPlan | one immutable global topology plan | M2-M3 |
-| A3 GlobalConformityPlan | positive shared rail schedule and typed infeasible subset | M4 |
-| A4 RegionCellComplex | strict and separately declared degraded producers | M2, M4, M7 |
-| A5 OccurrenceComplex | explicit typed occurrences and relations | M5-M6 |
-| A6 QuotientComplex/materialization | verified exact-once relation consumption | M5-M6 |
-| A7 GeometryEmbedding | exact support, injectivity, and quality | M6, T5 |
-| A8 Verification | independent verification and disposition assignment | M6-M7 |
-| A9 Diagnostics/export | derived, non-authoritative, retained by policy | M8 |
+| A2b GlobalConformityPlan | shared rail counts and seam schedules | M4 |
+| A3 RegionQuadProduct | typed topology and embedding per region | M5-M6 |
+| A4 ConformingQuadMesh | globally stitched conforming mesh | M6 |
+| A5 VerificationReport | independent invariant and quality verification | M6-M7 |
+| A6 ProductDisposition | D0-D4 disposition and degradation record | M7 |
 
-## Testing roadmap
+## Durable scope constraints
 
-- [x] **T0 — independent audit and authority separation.**
-- [x] **T1 — independent oracle/package foundation.**
-- [ ] **T2 — complete direct corpus and semantic manifest.** Every strict representative case declares expected D0 or typed failure; no degraded tier counts as green.
-- [ ] **T3 — property/metamorphic generation and shrinking.** Include curve-network topology, rail-flow, relation, disposition, degraded/omitted set, and permutation properties.
-- [ ] **T4 — sanitizer fuzzing and minimized replay.**
-- [ ] **T5 — calibrated representative quality and disposition gates.**
-- [ ] **T6 — CI, resource, work-ledger, discovery, and oracle-adequacy hardening.**
-
-## Authoritative references
-
-- .agents/Directional/DESIGN.md
-- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
-- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
-- .agents/Directional/Future_Chat_Session_Handoff.md
-- .agents/Directional/REORIENTATION_PLAN.md
-- .agents/Directional/Regression_Root_Cause_Tracker.md
-- .agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md
-- tests/TESTING_STRATEGY.md
-- .agents/Directional/CHANGELOG.md
+- Pipeline B is the normative implementation path.
+- Pipeline A is optional, unscheduled future work only after Pipeline B Certification.
+- M1 is a contract cutover, not a topology-algorithm milestone.
+- Do not implement M3 curve-network topology, M4 global conformity, M7 degradation/disposition, or Pipeline A inside M1.
