@@ -11240,7 +11240,7 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   std::set<std::uint64_t> globalHardFeatureEdges;
   for (const geometry::SurfaceCellRail &rail :
        staged.surfaceCellContext.authoritativeRails) {
-    if (rail.kind != geometry::SurfaceCellRailKind::Feature) continue;
+    if (rail.kind != geometry::SurfaceCellRailKind::HardFeature) continue;
     for (const int sourceEdge : rail.sourceEdges) {
       if (sourceEdge < 0 || sourceEdge >= sourceMesh.EV.rows()) continue;
       globalHardFeatureEdges.insert(surface_cell_source_edge_key(
