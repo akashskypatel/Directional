@@ -25,40 +25,28 @@ Do not add transcripts, chronological tool history, copied artifact tables, supe
 
 ## Mandatory next turn
 
-Run one **artifact-only Test + Benchmark cadence turn** against the fresh REV-21-through-REV-24 focused compile package. Do not rebuild or change implementation, test, benchmark, build, fixture, or inventory source.
+Run one **artifact-only Test + Benchmark cadence turn** against the fresh RA-REV-22-F1/F2/F3 and RA-REV-23-F1 correction package. Do not rebuild or change implementation, test, benchmark, build, fixture, or inventory source.
 
 Repository: `akashskypatel/Directional`
 Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 PR: #8 remains open, draft, and unmerged
-Exact compile-valid implementation/test source: `9d88d0e47cfc039e5399ebee334290b1eeae792b`
-Compile run/job: `31634075824 / 94239861945`
-Result artifact: `9156381103`, SHA-256 `f75021d0e7dc3462fafd0460c4d93f51d508dfa8bed4621c1c641c758d94b8c3`
-Log artifact: `9156381524`, SHA-256 `761562ef59092d163bf94b50e37ef94875f1e25da3f9b4da3eb7e9ccdcc915c2`
+Exact compile-valid implementation/test source: `032d4cbae9e2de2767579934682e78754180338d`
+Compile run/job: `31644502450 / 94274781412`
+Result artifact: `9160266493`, SHA-256 `0980b3ca20c1e50be9323c99ecd3fca6d77f8df4655cd84eae9e0917d450ea11`
+Log artifact: `9160266848`, SHA-256 `145a614170bec6cd949e51b5113e78509480bffb01670ecbabba9687f89c045d`
 
-Before executing any packaged binary, verify:
+Before executing any packaged binary, verify exact source, outer artifact digests, recursive self-excluding manifest **25/25**, five empty source-status snapshots, dependency revisions, Release/static/Ninja/PRE_TEST build exit `0`, and `runtimeExecution=false`. Extract the packaged source archive only for evidence inspection and verify `R_A_Closure_Inventory_Report.md` reports **19 paths, 42 probes, 186 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline stitchIdentity assignments, final static PASS**.
 
-1. exact source `9d88d0e47cfc039e5399ebee334290b1eeae792b` and its packaged source archive;
-2. outer artifact digests and recursive self-excluding manifest **25/25** with zero self references;
-3. all five source-status snapshots are empty;
-4. dependency revisions, Release/static/Ninja/PRE_TEST build metadata, build exit `0`, and `runtimeExecution=false`;
-5. packaged `R_A_Closure_Inventory_Report.md` corresponds to source `9d88d0e47cfc039e5399ebee334290b1eeae792b` and reports 17 affected paths, 38 probes, 164 probe matches, 22/22 allowed raw-projection leaves, 2/2 allowed face-count leaves, zero unexpected leaves, and final static PASS.
+Then execute, without rebuilding:
 
-Then execute focused semantic contracts for:
+- `FinalMergedOracleRejectsMissingRemappedBoundaryAuthority` and `FinalMergedOracleRejectsMissingRemappedFeatureAuthority`; both must reach the final-oracle counterfactual seam, fail with the expected validator issue, and publish no aggregate semantics;
+- `FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing` and the positive aggregate contract that cross-checks published strict/provenance/boundary/feature flags against `finalSourceAuthorityValidationResult`;
+- the renamed component aggregation-seam tamper tests, classified only as seam-guard coverage;
+- retained REV-21 permutation-pair, REV-23 canonical/re-stitch, REV-24 null/foreign-authority, transactional rollback, optimizer/final-validator authority, and zero-publication contracts needed to detect regressions.
 
-- REV-21 authority-only row-permutation rejection and consistently paired matrix-plus-authority permutation acceptance;
-- REV-22 boundary-bearing final strict oracle plus missing/tampered boundary and feature authority rejection;
-- REV-23 canonical aggregate stitch identity, stale-kind rejection/rebuild, and generated-interior post-publication re-stitch;
-- REV-24 direct null and same-extent foreign source-authority rejection with optional gates disabled;
-- adjacent retained R-A transactional rollback, owner/certificate, optimizer/final-validator authority, and zero-publication contracts needed to detect regressions from this correction package.
+A zero-selected filter is orchestration failure. Classify every failure from immutable runtime evidence. Do not rebuild, weaken validation, restore aliases/fallbacks, or alter fixtures to synthesize green output. Mark overall R-A complete only if the full focused gate passes organically and the complete static inventory remains clean.
 
-Classify every failure from immutable runtime evidence. Do not rebuild, weaken validation, restore aliases/fallbacks, or alter fixtures to synthesize green output.
-
-Two review amendments bind this turn:
-
-1. `MissingComponentBoundaryAuthorityRejectsBeforeAggregatePublication` and `MissingComponentFeatureAuthorityRejectsBeforeAggregatePublication` reject at the `same_surface_cell_rail_authority` seam guard (`RemeshPipeline.cpp:10642-10648`), not at the final oracle. That is the expected result; record it as expected-but-insufficient coverage, never as REV-22 closure evidence.
-2. Even if the full focused runtime gate passes organically, **do not mark R-A complete** until review finding RA-REV-22-F1 is implemented and executed. Record precise corrective work for the next Code + Build turn.
-
-The retained full `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md` remains dormant until one fresh complete R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this cadence turn.
+The retained full M1 artifact-only plan remains dormant until one fresh complete R-A-through-R-G package exists. Do not implement M3, M4, M7, or Pipeline A during this cadence turn.
 
 ## Current authority
 
@@ -73,16 +61,14 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 ### R-A closure status
 
 - Overall R-A remains **open / not runtime-accepted**.
-- Independent review at branch boundary `db100d15b166a2ac19bf2bb45c829856b43bb5a9` **accepted REV-21 coverage and REV-22-through-REV-24 at the Code + Build boundary** and left overall R-A rejected. Its addendum in `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md` is the authoritative plan; findings RA-REV-22-F1 (blocking), RA-REV-22-F2, RA-REV-22-F3, and RA-REV-23-F1 are open in `TODO.md`.
-- The static inventory was independently reproduced during review: regenerating `R_A_Closure_Inventory_Report.md` from the current tree is byte-for-byte identical to the committed report.
-- Exact Code + Build source is `9d88d0e47cfc039e5399ebee334290b1eeae792b`. REV-21 contract completion and REV-22-through-REV-24 are **Code + Build complete / compile-valid**.
-- REV-21 now contains both required permutation-pair contracts.
-- REV-22 carries independent globally remapped boundary/feature/chart/output-face/hard-edge/provenance authority into the strict final merged-product oracle.
-- REV-23 uses the completion-owned canonical stitch constructor; the duplicate aggregate pipeline schema is absent and stale-kind/re-stitch contracts compile.
-- REV-24 requires non-null exact-matching typed source authority at direct validator entry and contains direct null/foreign-authority negatives.
-- Complete reproducible R-A inventory through REV-24 is generated and static-PASS: **17 paths, 38 probes, 164 matches, 22 allowed raw-projection leaves, 2 allowed face-count leaves, zero unexpected leaves**.
-- Fresh compile-only evidence is run/job `31634075824 / 94239861945` with artifacts `9156381103 / 9156381524`: Release/static/Ninja/PRE_TEST **118/118**, build exit `0`, self-excluding manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`.
-- No new semantic contract has executed yet. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority and regression totals remain **34 events / 14 categories / 20 recurrences**.
+- The latest independent-review boundary remains `db100d15b166a2ac19bf2bb45c829856b43bb5a9` over source `9d88d0e...`; its four follow-up findings are now **Code + Build remediated** at exact source `032d4cbae9e2de2767579934682e78754180338d`, not independently/runtime accepted.
+- RA-REV-22-F1: post-remap boundary/feature authority counterfactuals target the final oracle; the older component tamper tests are explicitly aggregation-seam coverage.
+- RA-REV-22-F2: aggregate strict/provenance/boundary/feature usage flags are final-oracle-derived.
+- RA-REV-22-F3: the typed final-oracle result is published independently of component report completeness.
+- RA-REV-23-F1: structural inventory prohibits pipeline stitch-kind schema assignment and classifies every pipeline `stitchIdentity` write.
+- Complete R-A inventory is regenerated and static-PASS: **19 paths, 42 probes, 186 matches, 22/0 raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline stitchIdentity assignments**.
+- Fresh compile evidence: run/job `31644502450 / 94274781412`, artifacts `9160266493 / 9160266848`, exact source `032d4cbae9e2de2767579934682e78754180338d`, Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`.
+- No new semantic contract executed in this Code + Build turn. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority; regression totals remain **34 events / 14 categories / 20 recurrences**.
 
 ## Standing product state
 

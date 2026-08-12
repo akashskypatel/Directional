@@ -1,12 +1,26 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only
-**Current status:** REV-21 contract completion and REV-22-through-REV-24 are Code + Build complete / compile-valid at `9d88d0e47cfc039e5399ebee334290b1eeae792b`; the complete R-A inventory through REV-24 is reproducibly PASS; overall R-A remains open pending the separate immutable artifact-only runtime cadence gate
+**Current status:** RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `032d4cbae9e2de2767579934682e78754180338d`; the widened complete R-A inventory is reproducibly PASS; overall R-A remains open pending separate immutable artifact-only execution of the new final-oracle contracts
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`
 **Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
-**Latest review-remediation implementation/compile source:** `9d88d0e47cfc039e5399ebee334290b1eeae792b`
+**Latest review-remediation implementation/compile source:** `032d4cbae9e2de2767579934682e78754180338d`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0F. 2026-08-12 RA-REV-22-F1/F2/F3 and RA-REV-23-F1 Code + Build remediation
+
+Exact implementation/test/static-audit source: `032d4cbae9e2de2767579934682e78754180338d`. These are post-independent-review corrective changes. They are closed at the Code + Build/static-contract boundary only; they have not been independently runtime-accepted.
+
+- **RA-REV-22-F1:** added a final-validation-only counterfactual seam after global authority remap and before `validate_source_authoritative_surface_mesh`. Boundary and feature negatives now corrupt that final remapped authority, require the final oracle to reject with `FinalMergedSourceAuthorityValidationFailed` plus `MissingBoundaryAuthority`/`MissingFeatureRail`, and assert zero semantic publication. The pre-oracle component tamper tests were renamed to the aggregation-seam guard they actually prove.
+- **RA-REV-22-F2:** `SourceAuthoritativeMeshValidationResult` now exposes strict/provenance/boundary/feature-rail usage observables. Aggregate publication derives the corresponding flags from the actual final oracle result; the prior literal-`true` assignments are absent.
+- **RA-REV-22-F3:** `SurfaceCellPipelineContext` independently publishes the typed final source-authority oracle result and whether component validation reports are complete. A missing component report no longer makes a successful final-oracle execution observationally indistinguishable from an oracle that never ran.
+- **RA-REV-23-F1:** the retained inventory structurally forbids `PureQuadStitchIdentityKind::` assignment under `src/pipeline/` and classifies every `stitchIdentity` assignment in `RemeshPipeline.cpp`. Only the two leaves inside `rebuild_aggregate_output_identity_caches` that derive from `canonical_lineage_stitch_identity` are allowed.
+- **Complete inventory regenerated:** **19 paths / 42 probes / 186 matches**, raw projection **22 allowed / 0 unexpected**, face-count **2 / 0**, pipeline `stitchIdentity` assignments **2 / 0**, final static **PASS**.
+- **Fresh compile:** run/job `31644502450 / 94274781412` compiled exact source `032d4cbae9e2de2767579934682e78754180338d` through the mandatory reusable cached workflow. Release/static/Ninja/PRE_TEST **118/118**, exit `0`; result artifact `9160266493` SHA-256 `0980b3ca20c1e50be9323c99ecd3fca6d77f8df4655cd84eae9e0917d450ea11`; log artifact `9160266848` SHA-256 `145a614170bec6cd949e51b5113e78509480bffb01670ecbabba9687f89c045d`.
+- Package inspection: **26** regular files, self-excluding manifest **25/25**, zero self references, five empty source-status snapshots, exact source archive/dependency revisions, `semanticContracts=compiled-not-executed`, `runtimeExecution=false`. ccache recorded **87/108 hits (80.56%)** and the branch cache lineage is bounded to two compatible entries.
+
+The previous `9d88d0e...` package is superseded as a runtime candidate. Mandatory next cadence: immutable artifact-only execution of the new `032d4cbae9e2de2767579934682e78754180338d` package with no rebuild. Overall R-A remains open until those focused contracts pass organically.
 
 ## 0E. 2026-08-12 REV-21 coverage and REV-22 through REV-24 Code + Build closure
 

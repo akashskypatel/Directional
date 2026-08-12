@@ -17,6 +17,20 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — RA-REV-22-F1/F2/F3 and RA-REV-23-F1 post-review remediation
+
+- RA-REV-22-F1 adds final-oracle-only boundary and feature authority counterfactuals after global remap, preserves the concrete validator failure issue in diagnostics, asserts zero publication, and renames the earlier component mutation negatives to their actual aggregation-seam intent.
+- RA-REV-22-F2 publishes strict/provenance/boundary/feature-rail usage from `SourceAuthoritativeMeshValidationResult` rather than literal aggregate flags.
+- RA-REV-22-F3 independently retains the final typed source-authority oracle result plus a component-report-completeness discriminator.
+- RA-REV-23-F1 replaces the identifier-keyed duplicate-builder probe with structural stitch-kind and `stitchIdentity` assignment auditing.
+
+### Validation — RA-REV-22-F1/F2/F3 and RA-REV-23-F1
+
+- Exact implementation/test/audit source: `032d4cbae9e2de2767579934682e78754180338d`. Regenerated complete R-A inventory: **19 paths / 42 probes / 186 matches**, with **22/0** raw-projection leaves, **2/0** face-count leaves, **2/0** pipeline `stitchIdentity` assignments, final static **PASS**.
+- Focused compile run/job `31644502450 / 94274781412` completed Release/static/Ninja/PRE_TEST **118/118**, exit `0`. Result artifact `9160266493`, SHA-256 `0980b3ca20c1e50be9323c99ecd3fca6d77f8df4655cd84eae9e0917d450ea11`; log artifact `9160266848`, SHA-256 `145a614170bec6cd949e51b5113e78509480bffb01670ecbabba9687f89c045d`.
+- Independent package inspection verified **26** regular files, self-excluding manifest **25/25**, zero self references, five empty source-status snapshots, exact source archive/dependency revisions, `semanticContracts=compiled-not-executed`, and `runtimeExecution=false`. ccache recorded **87/108 hits (80.56%)**; two compatible caches remain.
+- The prior `9d88d0e...` compile package is superseded as the runtime candidate. Overall R-A remains open until the new focused artifact-only contracts execute and pass organically.
+
 ### Validation — independent review of REV-21 coverage and REV-22 through REV-24
 
 - Independent Review inspected exact implementation/test source `9d88d0e47cfc039e5399ebee334290b1eeae792b` at branch boundary `db100d15b166a2ac19bf2bb45c829856b43bb5a9`; the intervening commits are documentation, trigger, and workflow-removal only. **Decision: REV-21 coverage and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A remains rejected/open pending organic runtime acceptance.**

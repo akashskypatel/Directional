@@ -8,7 +8,23 @@
 **Current reviewed implementation/test source:** 9d88d0e47cfc039e5399ebee334290b1eeae792b  
 **Review decision/planning commit:** _recorded at push of this documentation-only commit_  
 **Entering immutable runtime authority:** M1l bd140cff4572412e6f4ecd70a6ce0fe85310932c  
-**Current verdict:** **REV-21 contract completion and REV-22-through-REV-24 are accepted at the Code + Build boundary; overall R-A remains rejected/open because no semantic contract has executed and one REV-22 negative does not reach the final oracle**
+**Latest independent-review verdict at source `9d88d0e...`:** **REV-21 contract completion and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A rejected/open.**
+**Post-review remediation status:** **RA-REV-22-F1/F2/F3 and RA-REV-23-F1 are Code + Build remediated / compile-valid at `032d4cbae9e2de2767579934682e78754180338d`; this is not an independent re-review or runtime acceptance.**
+
+## Post-review remediation addendum — RA-REV-22-F1/F2/F3 and RA-REV-23-F1
+
+This addendum records corrective implementation performed after the independent review below. It does **not** rewrite the independent verdict or claim independent/runtime acceptance. Exact corrective source: `032d4cbae9e2de2767579934682e78754180338d`.
+
+| Finding | Post-review Code + Build status | Remaining gate |
+|---|---|---|
+| RA-REV-22-F1 | **remediated / compile-valid** — final-validation-only boundary and feature counterfactuals target the actual final oracle and require concrete validator issue plus zero publication; prior component tests renamed to aggregation-seam intent | execute both new final-oracle negatives from immutable artifact `9160266493` |
+| RA-REV-22-F2 | **remediated / compile-valid** — strict/provenance/boundary/feature usage is published from final-oracle result fields; hardcoded aggregate flags removed | execute positive aggregate oracle observability contract |
+| RA-REV-22-F3 | **remediated / compile-valid** — typed final-oracle result is retained independently of component-report completeness | execute missing-component-report publication contract |
+| RA-REV-23-F1 | **remediated / static-PASS** — structural audit forbids pipeline stitch-kind assignment and classifies every pipeline `stitchIdentity` assignment; two completion-canonical leaves allowed, zero unexpected | retain structural PASS during focused runtime package verification |
+
+The complete inventory was regenerated from `032d4cbae9e2de2767579934682e78754180338d`: **19 affected paths, 42 probes, 186 probe matches, 22 allowed/0 unexpected raw-projection leaves, 2/0 face-count leaves, 2/0 pipeline `stitchIdentity` assignments, final static PASS**. Focused compile run/job `31644502450 / 94274781412` produced artifacts `9160266493 / 9160266848` and compiled **118/118** with exit `0`; the package self-excluding manifest verifies **25/25**, all five source-status snapshots are empty, and `runtimeExecution=false`.
+
+Overall R-A remains open until the separate immutable artifact-only turn executes the new F1 final-oracle negatives and adjacent F2/F3 contracts organically. The prior package from `9d88d0e...` is superseded as a runtime candidate.
 
 ## Current-status addendum — R-A closure review after REV-21 coverage and REV-22 through REV-24
 
