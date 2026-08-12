@@ -9,14 +9,15 @@ This is the single durable task index for the cross-field-aligned surface-cell q
 ## Current focus
 
 - [ ] **Complete the M1 single-authority cutover.**
-  - Review boundary: exact implementation/test source `cb848e4dde30bcbe19dcd5d07a408edb2a47dd6e` at branch authority `fd96852d19defe70effd0dc6fbbaf07db8378e55`.
+  - Current closure-review boundary: exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5`.
   - [x] Preserve the REV-14-through-REV-16 Code + Build checkpoint as partial compile evidence only: run/job `31602025466 / 94131563590`, artifacts `9143819164 / 9143819888`, Release/static/Ninja/PRE_TEST **118/118**, manifest **21/21**, no generated runtime.
-  - [x] R-A-REV-17: source-owned collision certificates, canonical-only derived identity, owned positive coverage, and wrong-owner/unowned/wrong-face/exact-only/stale zero-publication contracts are implemented and compile-valid at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`.
-  - [ ] Verify the exact REV-17/REV-20 partial package artifact-only before the next Code + Build slice: result `9149834162` / log `9149834634`, outer SHA-256 `c5055df51d9b94605c27817e596a04983bddb33956727a2c47c494d42a0b2ee2` / `04291253c21af768af9c35b61f12e327c0ec536642a2ddf8895781657b1261a7`. This is a cadence gate, not M1 acceptance.
+  - [x] R-A-REV-17 bounded remediation: owner-validated collision certificates, canonical-only derived identity, owned positive coverage, and fail-closed ownership negatives are compile-valid at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; retain as progress, not independent R-A acceptance.
+  - [x] Review the R-A closure gate after REV-17/REV-20 source changes: **rejected** at branch boundary `356a0bc2733af41e15fad056161e526865c147c5`; the partial artifact runtime task is superseded by source findings and remains compile-only history.
   - [ ] R-A-REV-18: publish one global aggregate source-authority product; validate every globally remapped lineage; rebuild/remove vertex identity caches and regenerate face cycles after remap.
   - [ ] R-A-REV-19: make aggregate semantic publication transactional; clear every context payload/flag on rejection; validate the actual final merged product; expand REV-16 and second-component-failure counterfactuals.
-  - [x] R-A-REV-20: affected SurfaceCells optimizer/verifier raw mirrors and point-cloud/legacy feature-interval/basic-validator compatibility paths are removed or fail closed behind complete source authority; missing-authority contracts and the static inventory are compile-valid at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`.
-  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every gate is statically clean.
+  - [x] R-A-REV-20 bounded remediation: the named SurfaceCells optimizer/verifier raw mirrors and point-cloud/legacy feature-interval/basic-validator compatibility paths are removed and missing-authority contracts compile at `1352f3d18eb3821ecda9d74ea5e439adb5bcb875`; retain as progress, not independent R-A acceptance.
+  - [ ] R-A-REV-21: bind every affected `SourceTopologyRegions` product to the exact supplied source-face topology; reject a foreign same-face-count authority before completion, optimization, validation, or publication; compile consistent-permutation positive and wrong-topology zero-publication negatives.
+  - [ ] Re-run the complete R-A closure inventory and mark R-A complete only when every retained REV-01-through-REV-21 gate is statically clean.
   - [ ] Complete R-B row-independent face/support/chart identity.
   - [ ] Complete R-C immutable published products and typed certificate construction.
   - [ ] Complete R-D checked ingress and delete compatibility/numeric read-back bridges.

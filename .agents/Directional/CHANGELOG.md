@@ -17,6 +17,15 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Review — R-A closure after REV-17/REV-20 partial remediation
+
+- Independently reviewed exact implementation/test source `1352f3d18eb3821ecda9d74ea5e439adb5bcb875` at branch authority `356a0bc2733af41e15fad056161e526865c147c5`. Six later commits change durable documents only.
+- Rejected overall R-A. The implementation delta from the prior review contains substantive REV-17/REV-20 completion/optimizer changes but only two deletions in `RemeshPipeline.cpp`; REV-18 global aggregate authority and REV-19 transactional/final-oracle work are not implemented.
+- Retained the bounded REV-17 owner-validated certificate/canonical-cache changes and REV-20 removal of named optimizer/verifier compatibility paths as authentic compile-valid progress, not independent acceptance. Their semantic contracts were not executed.
+- Added `R-A-REV-21`: affected boundaries accept any `SourceTopologyRegions` with the same face count and never bind its stored row topology to the supplied source-face matrix. Require exact per-row topology binding and same-extent foreign-authority zero-publication contracts.
+- Superseded the targeted runtime turn for partial artifacts `9149834162 / 9149834634`; the package is known source-incomplete and remains compile-only history. No generated runtime, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input executed in this Review turn.
+- This Review changed durable planning/status documents only. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority; totals remain **34 events / 14 categories / 20 recurrences**.
+
 ### Fixed — R-A-REV-17 and R-A-REV-20 partial remediation
 
 - Closed `R-A-REV-17` at the Code + Build boundary: completion/assembly now requires complete source topology/chart/support authority, validates incoming and intersected typed certificates against their owning region/sheet/chart/support incidence, derives absent authoritative identity canonically, rejects any present stale/partial/exact-only alias, and publishes collision ownership diagnostics only from the final owner-validated stitched authority intersection.
@@ -170,8 +179,8 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 ### Known limitations
 
 - M1l `bd140cff...` remains the latest immutable runtime authority.
-- Historical artifact `9105462679`, R-A compile artifact `9124167871`, and partial closure artifacts `9125984929` / `9127976318` / `9129549875` are not M1 acceptance candidates.
-- R-A-REV-01 through R-A-REV-16 are historical bounded compile checkpoints, not independent R-A acceptance. R-A-REV-17 through R-A-REV-20 are open; R-A is not complete, and R-B through R-G plus the fresh full package remain pending.
+- Historical artifact `9105462679`, R-A compile artifact `9124167871`, earlier partial closure artifacts `9125984929` / `9127976318` / `9129549875`, and REV-17/REV-20 partial artifacts `9149834162 / 9149834634` are not M1 acceptance candidates.
+- R-A-REV-01 through R-A-REV-16 are historical bounded compile checkpoints, not independent R-A acceptance. Bounded REV-17/REV-20 progress is retained; REV-18, REV-19, and REV-21 are open. R-A is not complete, and R-B through R-G plus the fresh full package remain pending.
 - The supplied design retains five tracked clarification/evidence gates: D1 degradation-record wording, combined M3 tracing/decomposition proof, A1 quadrangulability certificate, M7 degraded producer proof, and calibrated D0/D1 quality thresholds.
 
 Historical review baseline: `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`. Current closure authority: `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
