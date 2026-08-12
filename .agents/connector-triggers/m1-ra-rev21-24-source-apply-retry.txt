@@ -1,1 +1,0 @@
-Retry the verified R-A-REV-21 through R-A-REV-24 source/test patch and complete static inventory after correcting ignored-file orchestration only. Code + Build only; runtime execution prohibited.
