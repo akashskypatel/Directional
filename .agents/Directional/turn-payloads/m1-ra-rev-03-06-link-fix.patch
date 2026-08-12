@@ -1,7 +1,7 @@
 diff --git a/src/geometry/PureQuadCompletion.cpp b/src/geometry/PureQuadCompletion.cpp
 --- a/src/geometry/PureQuadCompletion.cpp
 +++ b/src/geometry/PureQuadCompletion.cpp
-@@ -6,6 +6,16 @@
+@@ -6,6 +6,17 @@
  #include <unordered_map>
  #include <unordered_set>
  
@@ -19,7 +19,7 @@ diff --git a/src/geometry/PureQuadCompletion.cpp b/src/geometry/PureQuadCompleti
  namespace directional::geometry::pure_quad_detail {
  
  int boundary_edge_count(const PureQuadPatch &patch) {
-@@ -730,12 +740,6 @@ void set_completion_ownership_rejection(
+@@ -730,12 +741,6 @@ void set_completion_ownership_rejection(
    rejection->patchSourceFaces = patchSourceFaces;
  }
  
