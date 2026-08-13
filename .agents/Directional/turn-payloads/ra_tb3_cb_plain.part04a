@@ -1,0 +1,6 @@
++        failure.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst;
++    merged.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
++        failure.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond;
+     merged.diagnostics.surfaceCellOutputOrigin =
+         SurfaceCellOutputOrigin::None;
+     merged.diagnostics.surfaceCellRemeshOccurred = false;
