@@ -67,8 +67,17 @@ jobs:
           check_hash .agents/Directional/R_A_Closure_Inventory.py 8b4c46c8c9fa52e6be37dbcf4f7cf3637a94fe97
           check_hash .agents/Directional/R_A_Closure_Inventory_Report.md f39f251345ec88cdc26e5a40076a93d55e9804b7
 
-          base64 -d .agents/Directional/turn-payloads/ra-tb-cb-00-04/patch.diff.gz.b64 \
-            | gzip -dc > "$RUNNER_TEMP/remediation.patch"
+          PAYLOAD_DIR=.agents/Directional/turn-payloads/ra-tb-cb-00-04
+          test "$(sha256sum "$PAYLOAD_DIR/patch.part-00.b64" | awk '{print $1}')" = '983db80167a8c5a550b38f04d2bd4562bf2c00199f6eb9ce2d55ff901e623bf7'
+          test "$(sha256sum "$PAYLOAD_DIR/patch.part-01.b64" | awk '{print $1}')" = '0266d0dbb54b2c857389b8be089f333a462c2440c75e933172c84ea85f3af975'
+          test "$(sha256sum "$PAYLOAD_DIR/patch.part-02.b64" | awk '{print $1}')" = '7554d2359d0e4060d7aed71e282c6b86dcd246bab58aa725115c3326c09dc149'
+          test "$(sha256sum "$PAYLOAD_DIR/patch.part-03.b64" | awk '{print $1}')" = '5d49fad7db44e9b0c189a4f40f094df5604346f86edc138845838c498155c34b'
+          cat \
+            "$PAYLOAD_DIR/patch.part-00.b64" \
+            "$PAYLOAD_DIR/patch.part-01.b64" \
+            "$PAYLOAD_DIR/patch.part-02.b64" \
+            "$PAYLOAD_DIR/patch.part-03.b64" \
+            | base64 -d | gzip -dc > "$RUNNER_TEMP/remediation.patch"
           test "$(sha256sum "$RUNNER_TEMP/remediation.patch" | awk '{print $1}')" = \
             '2d38d0b9b33146c98737c99c312354fadd55d2ed94aef3e09e318a3f0eadbcb4'
           git apply --check "$RUNNER_TEMP/remediation.patch"
