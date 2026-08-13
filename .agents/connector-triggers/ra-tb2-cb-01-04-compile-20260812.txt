@@ -1,0 +1,3 @@
+purpose=compile-only verification for R-A-TB2-CB-01 through R-A-TB2-CB-04
+source_sha=f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae
+runtime_execution=false
