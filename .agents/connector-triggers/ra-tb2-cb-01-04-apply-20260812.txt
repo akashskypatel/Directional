@@ -1,0 +1,4 @@
+purpose=apply bounded R-A-TB2-CB-01 through R-A-TB2-CB-04 remediation
+base_sha=477e518a14232dd99f2136e0763114062194f336
+patch_sha256=ef95732543af60c3bc2c9e97db6d0d1e97a48f716fedfe76c70b851b9101ef1b
+runtime_execution=false
