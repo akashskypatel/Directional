@@ -1,0 +1,609 @@
+diff --git a/include/directional/diagnostics/RemeshDiagnostics.h b/include/directional/diagnostics/RemeshDiagnostics.h
+--- a/include/directional/diagnostics/RemeshDiagnostics.h
++++ b/include/directional/diagnostics/RemeshDiagnostics.h
+@@ -49,6 +49,12 @@ enum class SurfaceCellConsumptionKind {
+   Discontinuous
+ };
+ 
++enum class SurfaceCellFeatureOptionRemapIssue {
++  None,
++  UnassignedHardEdge,
++  UnassignedSoftEdge
++};
++
+ const char *surface_cell_consumption_kind_name(
+     const SurfaceCellConsumptionKind kind);
+@@ -252,6 +258,15 @@ struct RemeshDiagnostics {
+   int surfaceCellFirstInvalidProducerEdgeFirst = -1;
+   int surfaceCellFirstInvalidProducerEdgeSecond = -1;
+   std::size_t surfaceCellAggregateIdentityBoundaryCacheRebuildCount = 0U;
++  std::size_t surfaceCellUserHardFeatureEdgeRequestedCount = 0U;
++  std::size_t surfaceCellUserHardFeatureEdgeRemappedCount = 0U;
++  std::size_t surfaceCellUserHardFeatureEdgeUnassignedCount = 0U;
++  std::size_t surfaceCellUserSoftFeatureEdgeRequestedCount = 0U;
++  std::size_t surfaceCellUserSoftFeatureEdgeRemappedCount = 0U;
++  std::size_t surfaceCellUserSoftFeatureEdgeUnassignedCount = 0U;
++  SurfaceCellFeatureOptionRemapIssue surfaceCellFeatureOptionFirstIssue =
++      SurfaceCellFeatureOptionRemapIssue::None;
++  std::array<int, 2> surfaceCellFirstUnassignedFeatureEdge{{-1, -1}};
+   bool surfaceCellCompletionOwnershipRejectionAvailable = false;
+   std::string surfaceCellCompletionOwnershipFailure;
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -8555,31 +8555,111 @@ geometry::SurfacePoint remap_component_surface_point(
+   return point;
+ }
+ 
+-void remap_component_surface_cell_feature_options(
+-    const geometry::FaceComponent &component, RemeshOptions &options) {
+-  std::map<int, int> localVertexByOriginal;
+-  for (std::size_t localVertex = 0;
+-       localVertex < component.originalVertices.size(); ++localVertex) {
+-    localVertexByOriginal.emplace(
+-        component.originalVertices[localVertex],
+-        static_cast<int>(localVertex));
++struct ComponentFeatureOptionRemapPlan {
++  std::vector<std::set<std::pair<int, int>>> hardEdgesByComponent;
++  std::vector<std::set<std::pair<int, int>>> softEdgesByComponent;
++  std::size_t hardRequested = 0U;
++  std::size_t hardRemapped = 0U;
++  std::size_t hardUnassigned = 0U;
++  std::size_t softRequested = 0U;
++  std::size_t softRemapped = 0U;
++  std::size_t softUnassigned = 0U;
++  std::pair<int, int> firstUnassignedHard{-1, -1};
++  std::pair<int, int> firstUnassignedSoft{-1, -1};
++};
++
++ComponentFeatureOptionRemapPlan make_component_feature_option_remap_plan(
++    const std::vector<geometry::FaceComponent> &components,
++    const std::set<std::pair<int, int>> &globalHardEdges,
++    const std::set<std::pair<int, int>> &globalSoftEdges) {
++  ComponentFeatureOptionRemapPlan plan;
++  plan.hardEdgesByComponent.resize(components.size());
++  plan.softEdgesByComponent.resize(components.size());
++
++  std::vector<std::map<int, int>> localVertexByOriginal(components.size());
++  std::vector<std::set<std::pair<int, int>>> localSourceEdges(components.size());
++  for (std::size_t componentIndex = 0; componentIndex < components.size();
++       ++componentIndex) {
++    const geometry::FaceComponent &component = components[componentIndex];
++    for (std::size_t localVertex = 0;
++         localVertex < component.originalVertices.size(); ++localVertex) {
++      localVertexByOriginal[componentIndex].emplace(
++          component.originalVertices[localVertex],
++          static_cast<int>(localVertex));
++    }
++    for (int face = 0; face < component.faces.rows(); ++face) {
++      for (int corner = 0; corner < component.faces.cols(); ++corner) {
++        const int first = component.faces(face, corner);
++        const int second =
++            component.faces(face, (corner + 1) % component.faces.cols());
++        localSourceEdges[componentIndex].emplace(
++            std::min(first, second), std::max(first, second));
++      }
++    }
+   }
+ 
+-  const auto remapEdges = [&](const std::set<std::pair<int, int>> &globalEdges) {
+-    std::set<std::pair<int, int>> localEdges;
+-    for (const auto &[globalFirst, globalSecond] : globalEdges) {
+-      const auto first = localVertexByOriginal.find(globalFirst);
+-      const auto second = localVertexByOriginal.find(globalSecond);
+-      if (first == localVertexByOriginal.end() ||
+-          second == localVertexByOriginal.end()) {
+-        continue;
++  const auto remapEdges =
++      [&](const std::set<std::pair<int, int>> &globalEdges,
++          std::vector<std::set<std::pair<int, int>>> &edgesByComponent,
++          std::size_t &requested, std::size_t &remapped,
++          std::size_t &unassigned, std::pair<int, int> &firstUnassigned) {
++    std::set<std::pair<int, int>> canonicalRequests;
++    for (const auto &[first, second] : globalEdges) {
++      canonicalRequests.emplace(std::min(first, second),
++                                std::max(first, second));
++    }
++    requested = canonicalRequests.size();
++    for (const auto &[globalFirst, globalSecond] : canonicalRequests) {
++      std::size_t owner = std::numeric_limits<std::size_t>::max();
++      std::pair<int, int> localEdge{-1, -1};
++      bool ambiguous = false;
++      for (std::size_t componentIndex = 0; componentIndex < components.size();
++           ++componentIndex) {
++        const auto first =
++            localVertexByOriginal[componentIndex].find(globalFirst);
++        const auto second =
++            localVertexByOriginal[componentIndex].find(globalSecond);
++        if (first == localVertexByOriginal[componentIndex].end() ||
++            second == localVertexByOriginal[componentIndex].end()) {
++          continue;
++        }
++        const std::pair<int, int> candidate{
++            std::min(first->second, second->second),
++            std::max(first->second, second->second)};
++        if (localSourceEdges[componentIndex].find(candidate) ==
++            localSourceEdges[componentIndex].end()) {
++          continue;
++        }
++        if (owner != std::numeric_limits<std::size_t>::max()) {
++          ambiguous = true;
++          break;
++        }
++        owner = componentIndex;
++        localEdge = candidate;
+       }
+-      localEdges.emplace(std::min(first->second, second->second),
+-                         std::max(first->second, second->second));
++      if (ambiguous || owner == std::numeric_limits<std::size_t>::max()) {
++        ++unassigned;
++        if (firstUnassigned.first < 0) {
++          firstUnassigned = {globalFirst, globalSecond};
++        }
++        continue;
++      }
++      edgesByComponent[owner].insert(localEdge);
++      ++remapped;
+     }
+-    return localEdges;
+   };
+ 
+-  options.surfaceCells.featureMap.userHardEdges =
+-      remapEdges(options.surfaceCells.featureMap.userHardEdges);
+-  options.surfaceCells.featureMap.userSoftEdges =
+-      remapEdges(options.surfaceCells.featureMap.userSoftEdges);
++  remapEdges(globalHardEdges, plan.hardEdgesByComponent, plan.hardRequested,
++             plan.hardRemapped, plan.hardUnassigned,
++             plan.firstUnassignedHard);
++  remapEdges(globalSoftEdges, plan.softEdgesByComponent, plan.softRequested,
++             plan.softRemapped, plan.softUnassigned,
++             plan.firstUnassignedSoft);
++  return plan;
++}
++
++void apply_component_feature_option_remap(
++    const ComponentFeatureOptionRemapPlan &plan,
++    const std::size_t componentIndex, RemeshOptions &options) {
++  options.surfaceCells.featureMap.userHardEdges =
++      plan.hardEdgesByComponent[componentIndex];
++  options.surfaceCells.featureMap.userSoftEdges =
++      plan.softEdgesByComponent[componentIndex];
++}
++
++void publish_component_feature_option_remap_diagnostics(
++    RemeshDiagnostics &diagnostics,
++    const ComponentFeatureOptionRemapPlan &plan) {
++  diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount =
++      plan.hardRequested;
++  diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount =
++      plan.hardRemapped;
++  diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount =
++      plan.hardUnassigned;
++  diagnostics.surfaceCellUserSoftFeatureEdgeRequestedCount =
++      plan.softRequested;
++  diagnostics.surfaceCellUserSoftFeatureEdgeRemappedCount =
++      plan.softRemapped;
++  diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount =
++      plan.softUnassigned;
++  if (plan.hardUnassigned > 0U) {
++    diagnostics.surfaceCellFeatureOptionFirstIssue =
++        SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge;
++    diagnostics.surfaceCellFirstUnassignedFeatureEdge = {
++        plan.firstUnassignedHard.first, plan.firstUnassignedHard.second};
++  } else if (plan.softUnassigned > 0U) {
++    diagnostics.surfaceCellFeatureOptionFirstIssue =
++        SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge;
++    diagnostics.surfaceCellFirstUnassignedFeatureEdge = {
++        plan.firstUnassignedSoft.first, plan.firstUnassignedSoft.second};
++  }
+ }
+ 
+ } // namespace directional::pipeline
+@@ -10075,6 +10155,31 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
+     return result;
+   }
+ 
++  const ComponentFeatureOptionRemapPlan featureOptionRemap =
++      make_component_feature_option_remap_plan(
++          components, options.surfaceCells.featureMap.userHardEdges,
++          options.surfaceCells.featureMap.userSoftEdges);
++  if (featureOptionRemap.hardUnassigned > 0U) {
++    RemeshResult rejected;
++    rejected.success = false;
++    rejected.diagnostics.remeshBackend =
++        remesh_backend_name(RemeshBackend::SurfaceCells);
++    rejected.diagnostics.requestedBackend =
++        remesh_backend_name(RemeshBackend::SurfaceCells);
++    rejected.diagnostics.executedBackend =
++        remesh_backend_name(RemeshBackend::SurfaceCells);
++    rejected.diagnostics.surfaceCellFallbackPolicy =
++        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
++    rejected.diagnostics.componentSplitSeconds = splitSeconds;
++    rejected.diagnostics.componentCount = components.size();
++    publish_component_feature_option_remap_diagnostics(
++        rejected.diagnostics, featureOptionRemap);
++    rejected.diagnostics.terminalFailureCode =
++        surface_cell_failure_code_name(SurfaceCellFailureCode::NotProductionReady);
++    rejected.diagnostics.terminalFailureStage = "component-feature-remap";
++    rejected.diagnostics.surfaceCellFirstInvalidProducerStage =
++        "component-feature-remap";
++    rejected.diagnostics.surfaceCellFirstInvalidProducerReason =
++        "UnassignedUserHardFeatureEdge";
++    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
++        featureOptionRemap.firstUnassignedHard.first;
++    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
++        featureOptionRemap.firstUnassignedHard.second;
++    set_overall_pipeline_time(rejected, pipelineStart);
++    return rejected;
++  }
++
+   const unsigned int hardwareThreads =
+       std::max(1U, std::thread::hardware_concurrency());
+@@ -10238,8 +10343,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
+       componentOptions.mesherDataCallback = nullptr;
+       componentOptions.absoluteTargetLength = absoluteTargetLength;
+-      remap_component_surface_cell_feature_options(component,
+-                                                   componentOptions);
++      apply_component_feature_option_remap(featureOptionRemap, componentIndex,
++                                           componentOptions);
+       if (componentOptions.surfaceCells.injectFailureComponentIndex >= 0 &&
+           componentOptions.surfaceCells.injectFailureComponentIndex !=
+@@ -10352,6 +10457,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
+   merged.diagnostics.componentThreadsRequested = requestedThreads;
+   merged.diagnostics.componentThreadsUsed = workerCount;
+   merged.diagnostics.componentPeakConcurrentTasks = workerCount;
++  publish_component_feature_option_remap_diagnostics(
++      merged.diagnostics, featureOptionRemap);
+ 
+   std::size_t failedComponent = std::numeric_limits<std::size_t>::max();
+@@ -11845,6 +11952,31 @@ RemeshResult remesh_components_from_raw_cross_field(
+     return result;
+   }
+ 
++  const ComponentFeatureOptionRemapPlan featureOptionRemap =
++      make_component_feature_option_remap_plan(
++          components, options.surfaceCells.featureMap.userHardEdges,
++          options.surfaceCells.featureMap.userSoftEdges);
++  if (featureOptionRemap.hardUnassigned > 0U) {
++    RemeshResult rejected;
++    rejected.success = false;
++    rejected.diagnostics.remeshBackend = remesh_backend_name(options.backend);
++    rejected.diagnostics.requestedBackend = remesh_backend_name(options.backend);
++    rejected.diagnostics.executedBackend = remesh_backend_name(options.backend);
++    rejected.diagnostics.surfaceCellFallbackPolicy =
++        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
++    rejected.diagnostics.componentSplitSeconds = splitSeconds;
++    rejected.diagnostics.componentCount = components.size();
++    publish_component_feature_option_remap_diagnostics(
++        rejected.diagnostics, featureOptionRemap);
++    rejected.diagnostics.terminalFailureCode =
++        surface_cell_failure_code_name(SurfaceCellFailureCode::NotProductionReady);
++    rejected.diagnostics.terminalFailureStage = "component-feature-remap";
++    rejected.diagnostics.surfaceCellFirstInvalidProducerStage =
++        "component-feature-remap";
++    rejected.diagnostics.surfaceCellFirstInvalidProducerReason =
++        "UnassignedUserHardFeatureEdge";
++    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
++        featureOptionRemap.firstUnassignedHard.first;
++    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
++        featureOptionRemap.firstUnassignedHard.second;
++    set_overall_pipeline_time(rejected, pipelineStart);
++    return rejected;
++  }
++
+   const unsigned int hardwareThreads =
+       std::max(1U, std::thread::hardware_concurrency());
+@@ -11879,8 +12011,8 @@ RemeshResult remesh_components_from_raw_cross_field(
+       componentOptions.mesherDataCallback = nullptr;
+       componentOptions.absoluteTargetLength = absoluteTargetLength;
+-      remap_component_surface_cell_feature_options(component,
+-                                                   componentOptions);
++      apply_component_feature_option_remap(featureOptionRemap, componentIndex,
++                                           componentOptions);
+       const fields::CrossFieldResult crossField =
+           finalize_surface_cell_raw_cross_field(componentMesh, component.rawField);
+@@ -11943,6 +12075,8 @@ RemeshResult remesh_components_from_raw_cross_field(
+   merged.diagnostics.componentThreadsRequested = requestedThreads;
+   merged.diagnostics.componentThreadsUsed = workerCount;
+   merged.diagnostics.componentPeakConcurrentTasks = workerCount;
++  publish_component_feature_option_remap_diagnostics(
++      merged.diagnostics, featureOptionRemap);
+ 
+   for (std::size_t index = 0; index < components.size(); ++index) {
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -5162,28 +5162,24 @@ TEST(SurfaceCellAuthorityContractCutover,
+ 
+ 
+ TEST(SurfaceCellAuthorityContractCutover,
+-     PostMoveAggregateOptimizerUsesRetainedSourceAuthority) {
+-  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+-  const auto crossField =
+-      directional::pipeline::finalize_surface_cell_raw_cross_field(
+-          mesh, constant_xy_raw_field(mesh.F.rows()));
++     PostMoveSingleComponentOptimizerUsesRetainedSourceAuthority) {
++  const directional::TriMesh mesh = make_square_mesh();
+   directional::pipeline::RemeshOptions options;
+   options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+   options.surfaceCells.enabled = true;
+   options.surfaceCells.fallbackPolicy =
+       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+   options.surfaceCells.allowSourceGridRecovery = false;
+-  options.parallelizeComponents = true;
+-  options.maxComponentThreads = 2;
+   options.lengthRatio = 0.2;
+ 
+-  const auto result =
+-      directional::pipeline::remesh_surface_cell_components_from_cross_field(
+-          mesh.V, mesh.F, crossField, options);
++  const auto result = directional::pipeline::remesh_from_raw_cross_field(
++      mesh.V, mesh.F, constant_xy_raw_field(mesh.F.rows()), options);
+ 
+-  ASSERT_TRUE(result.success)
+-      << result.diagnostics.terminalFailureCode << ':'
+-      << result.diagnostics.terminalFailureStage;
+-  ASSERT_TRUE(result.surfaceCellContext.sourceTopologyRegions.has_value());
++  ASSERT_TRUE(result.surfaceCellContext.sourceTopologyRegions.has_value())
++      << result.diagnostics.terminalFailureCode << ':'
++      << result.diagnostics.terminalFailureStage << ':'
++      << result.diagnostics.surfaceCellFirstInvalidProducerReason;
+   EXPECT_TRUE(result.surfaceCellContext.sourceTopologyRegions->matches_source_faces(
+       mesh.F, static_cast<std::size_t>(mesh.V.rows())));
++  EXPECT_NE("MissingSourceAuthority",
++            result.diagnostics.surfaceCellFirstInvalidProducerReason);
+ }
+@@ -5208,10 +5204,11 @@ TEST(SurfaceCellAuthorityContractCutover,
+   const auto &authority =
+       result.surfaceCellContext.sourceTopologyRegions.value();
+   EXPECT_TRUE(authority.matches_source_faces(
+       mesh.F, static_cast<std::size_t>(mesh.V.rows())));
+-  EXPECT_GT(
++  EXPECT_EQ(
++      result.surfaceCellContext.completedPatches.size(),
+       result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount,
+-      0U)
+-      << "authoritative component patches must rebuild missing boundary identity caches";
++      )
++      << "every component-produced completion patch in this fixture enters "
++         "aggregation without the final-size boundary identity cache";
+@@ -5345,8 +5343,23 @@ TEST(SurfaceCellAuthorityContractCutover,
+           patch.vertexLineage[row].stitchIdentity);
+     }
+-    for (const auto &identity : patch.boundaryNodeIdentities) {
++    ASSERT_EQ(patch.boundaryVertices.size(),
++              patch.boundaryNodeIdentities.size());
++    for (std::size_t boundary = 0; boundary < patch.boundaryVertices.size();
++         ++boundary) {
++      const int localVertex = patch.boundaryVertices[boundary];
++      const auto lineage = std::find_if(
++          patch.vertexLineage.begin(), patch.vertexLineage.end(),
++          [localVertex](const auto &candidate) {
++            return candidate.localVertex == localVertex;
++          });
++      ASSERT_NE(patch.vertexLineage.end(), lineage);
++      const auto &identity = patch.boundaryNodeIdentities[boundary];
++      ASSERT_TRUE(identity.valid);
++      EXPECT_EQ(lineage->stitchIdentity.canonical, identity);
+       EXPECT_NE((std::vector<std::int64_t>{staleToken}), identity.values);
+     }
+   }
++  EXPECT_EQ(
++      0U,
++      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)
++      << "the stale-token fixture preserves cache cardinality, so canonical "
++         "refresh must not be misreported as a cardinality rebuild";
+ }
+@@ -5544,7 +5557,8 @@ TEST(SurfaceCellAuthorityContractCutover,
+   options.surfaceCells.allowSourceGridRecovery = false;
+   options.surfaceCells.featureMap.userHardEdges.insert({4, 6});
+   options.surfaceCells.featureMap.userSoftEdges.insert({6, 7});
++  options.surfaceCells.featureMap.userSoftEdges.insert({0, 4});
+   options.parallelizeComponents = true;
+   options.maxComponentThreads = 2;
+@@ -5591,7 +5605,52 @@ TEST(SurfaceCellAuthorityContractCutover,
+   EXPECT_FALSE(firstComponentSawForeignSoft);
+   EXPECT_TRUE(secondComponentSawOwnedHard);
+   EXPECT_TRUE(secondComponentSawOwnedSoft);
+-  (void)result;
++  EXPECT_EQ(1U,
++            result.diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount);
++  EXPECT_EQ(1U,
++            result.diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount);
++  EXPECT_EQ(0U,
++            result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);
++  EXPECT_EQ(2U,
++            result.diagnostics.surfaceCellUserSoftFeatureEdgeRequestedCount);
++  EXPECT_EQ(1U,
++            result.diagnostics.surfaceCellUserSoftFeatureEdgeRemappedCount);
++  EXPECT_EQ(1U,
++            result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);
++  EXPECT_EQ(result.diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount,
++            result.diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount +
++                result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);
++  EXPECT_EQ(result.diagnostics.surfaceCellUserSoftFeatureEdgeRequestedCount,
++            result.diagnostics.surfaceCellUserSoftFeatureEdgeRemappedCount +
++                result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);
++  EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge,
++            result.diagnostics.surfaceCellFeatureOptionFirstIssue);
++  EXPECT_EQ((std::array<int, 2>{{0, 4}}),
++            result.diagnostics.surfaceCellFirstUnassignedFeatureEdge);
++}
++
++TEST(SurfaceCellAuthorityContractCutover,
++     UnassignedUserHardFeatureEdgeFailsClosedBeforeComponentExecution) {
++  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
++  const auto crossField =
++      directional::pipeline::finalize_surface_cell_raw_cross_field(
++          mesh, constant_xy_raw_field(mesh.F.rows()));
++  directional::pipeline::RemeshOptions options;
++  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
++  options.surfaceCells.enabled = true;
++  options.surfaceCells.fallbackPolicy =
++      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
++  options.surfaceCells.allowSourceGridRecovery = false;
++  options.surfaceCells.featureMap.userHardEdges.insert({0, 4});
++  options.parallelizeComponents = true;
++  options.maxComponentThreads = 2;
++  options.lengthRatio = 0.2;
++
++  const auto rejected =
++      directional::pipeline::remesh_surface_cell_components_from_cross_field(
++          mesh.V, mesh.F, crossField, options);
++
++  EXPECT_FALSE(rejected.success);
++  EXPECT_EQ("component-feature-remap",
++            rejected.diagnostics.terminalFailureStage);
++  EXPECT_EQ("UnassignedUserHardFeatureEdge",
++            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
++  EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge,
++            rejected.diagnostics.surfaceCellFeatureOptionFirstIssue);
++  EXPECT_EQ((std::array<int, 2>{{0, 4}}),
++            rejected.diagnostics.surfaceCellFirstUnassignedFeatureEdge);
++  EXPECT_EQ(1U,
++            rejected.diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount);
++  EXPECT_EQ(0U,
++            rejected.diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount);
++  EXPECT_EQ(1U,
++            rejected.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);
++  EXPECT_EQ(0, rejected.vertices.rows());
++  EXPECT_FALSE(rejected.surfaceCellContext.sourceTopologyRegions.has_value());
+ }
+diff --git a/tests/PureQuadCompletionPhase18Tests.cpp b/tests/PureQuadCompletionPhase18Tests.cpp
+--- a/tests/PureQuadCompletionPhase18Tests.cpp
++++ b/tests/PureQuadCompletionPhase18Tests.cpp
+@@ -2265,6 +2265,61 @@ TEST(PureQuadCompletionPhase18,
+   EXPECT_TRUE(assembly.mesh.quads.empty());
+ }
+ 
++TEST(PureQuadCompletionPhase18,
++     SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility) {
++  Eigen::MatrixXi sourceFaces(2, 3);
++  sourceFaces << 0, 1, 2,
++                 0, 2, 3;
++  const auto sourceAuthority =
++      test_source_authority(sourceFaces, {7, 7}, {11, 11});
++  const auto row0 = directional::authority::SourceFaceId::from_index(
++      0, sourceAuthority.face_count());
++  const auto row1 = directional::authority::SourceFaceId::from_index(
++      1, sourceAuthority.face_count());
++  ASSERT_TRUE(row0);
++  ASSERT_TRUE(row1);
++  ASSERT_EQ(sourceAuthority.region_for_row(row0.value()),
++            sourceAuthority.region_for_row(row1.value()));
++  ASSERT_EQ(sourceAuthority.sheet_for_row(row0.value()),
++            sourceAuthority.sheet_for_row(row1.value()));
++
++  auto firstPatch = patch({1, 1, 1, 1});
++  auto secondPatch = firstPatch;
++  firstPatch.sourceFaces = {0};
++  secondPatch.sourceFaces = {1};
++  for (auto &point : secondPatch.boundaryProvenance) {
++    point.face = 1;
++  }
++  assign_patch_boundary_authority(firstPatch, sourceFaces, sourceAuthority,
++                                  {0, 0, 0, 0});
++  assign_patch_boundary_authority(secondPatch, sourceFaces, sourceAuthority,
++                                  {1, 1, 1, 1});
++  ASSERT_EQ(firstPatch.boundaryNodeIdentities,
++            secondPatch.boundaryNodeIdentities);
++
++  directional::geometry::PureQuadCompletionOptions firstOptions;
++  firstOptions.sourcePatch = 631;
++  firstOptions.sourceFaces = &sourceFaces;
++  firstOptions.sourceAuthority = &sourceAuthority;
++  directional::geometry::PureQuadCompletionOptions secondOptions;
++  secondOptions.sourcePatch = 633;
++  secondOptions.sourceFaces = &sourceFaces;
++  secondOptions.sourceAuthority = &sourceAuthority;
++  const auto first = directional::geometry::complete_pure_quad_patch(
++      firstPatch, firstOptions);
++  const auto second = directional::geometry::complete_pure_quad_patch(
++      secondPatch, secondOptions);
++  ASSERT_TRUE(first.success) << first.failure;
++  ASSERT_TRUE(second.success) << second.failure;
++  ASSERT_FALSE(first.mesh.vertexLineage.empty());
++  ASSERT_FALSE(second.mesh.vertexLineage.empty());
++  EXPECT_EQ(first.mesh.vertexLineage.front().sourceTopologyRegions,
++            second.mesh.vertexLineage.front().sourceTopologyRegions);
++  EXPECT_EQ(first.mesh.vertexLineage.front().sourceIsolationSheets,
++            second.mesh.vertexLineage.front().sourceIsolationSheets);
++  EXPECT_NE(first.mesh.vertexLineage.front().sourceSupport,
++            second.mesh.vertexLineage.front().sourceSupport);
++
++  const auto assembly = directional::geometry::stitch_pure_quad_patches(
++      {first.mesh, second.mesh}, 1.0e-9, &sourceFaces, &sourceAuthority);
++
++  EXPECT_FALSE(assembly.success);
++  EXPECT_EQ("IncompatibleTypedStitchAuthority", assembly.failure);
++  EXPECT_TRUE(assembly.mesh.vertices.empty());
++  EXPECT_TRUE(assembly.mesh.quads.empty());
++}
++
+ TEST(PureQuadCompletionPhase18,
+      MissingTypedStitchIdentityFailsClosedForGeneratedInterior) {
+diff --git a/.agents/Directional/R_A_Closure_Inventory.py b/.agents/Directional/R_A_Closure_Inventory.py
+--- a/.agents/Directional/R_A_Closure_Inventory.py
++++ b/.agents/Directional/R_A_Closure_Inventory.py
+@@ -90,9 +90,9 @@ PROBES: tuple[Probe, ...] = (
+           ("include/directional/geometry/SurfaceMeshOptimizer.h", "src/geometry/SurfaceMeshOptimizer.cpp", "src/geometry/SurfaceOptimizationRailConstraints.cpp", "src/validation/SourceAuthoritativeMeshValidator.cpp", "src/pipeline/RemeshPipeline.cpp"),
+           r"sourcePositions|constraints\.sourceComponent|featureIntervals|legacyIndex|standaloneFixture", "absent",
+           "Named raw optimizer/verifier and legacy point-cloud/feature-interval/standalone compatibility authority must remain removed."),
+-    Probe("REV-20", "post-move aggregate optimizer retains exact source authority",
++    Probe("REV-20", "post-move single-component optimizer retains exact source authority",
+           ("tests/SurfaceCellsPhase10Tests.cpp",),
+-          r"PostMoveAggregateOptimizerUsesRetainedSourceAuthority", "present",
+-          "Moving the trace network must not invalidate the exact typed source owner consumed later by optimization."),
++          r"PostMoveSingleComponentOptimizerUsesRetainedSourceAuthority", "present",
++          "Moving the trace network must not invalidate the exact typed source owner consumed later by optimization; this contract isolates that lifetime from aggregate merge success."),
+@@ -131,6 +131,22 @@ PROBES: tuple[Probe, ...] = (
+           ("tests/SurfaceCellsPhase10Tests.cpp",),
+           r"ComponentFeatureOptionsRemapOwnedEdgesWithoutCrossComponentLeakage", "present",
+           "An explicit edge owned by one disconnected source component must not appear as a same-numbered local feature tag in another component."),
++    Probe("REV-22", "component feature-option transport is conserved and typed",
++          ("include/directional/diagnostics/RemeshDiagnostics.h", "src/pipeline/RemeshPipeline.cpp", "tests/SurfaceCellsPhase10Tests.cpp"),
++          r"surfaceCellUserHardFeatureEdgeUnassignedCount|surfaceCellUserSoftFeatureEdgeUnassignedCount|SurfaceCellFeatureOptionRemapIssue", "present",
++          "Every canonical requested hard/soft source edge must be remapped exactly once or explicitly counted as unassigned; unassigned hard edges fail closed."),
++    Probe("REV-22", "unassigned user hard-feature edge fails before component execution",
++          ("tests/SurfaceCellsPhase10Tests.cpp",),
++          r"UnassignedUserHardFeatureEdgeFailsClosedBeforeComponentExecution", "present",
++          "A requested hard edge with no owning source component may not disappear silently."),
++    Probe("REV-18", "anti-stale aggregate boundary cache proves canonical publication",
++          ("tests/SurfaceCellsPhase10Tests.cpp",),
++          r"DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches", "present",
++          "The anti-stale contract requires valid boundary identities equal to completion-owned canonical lineage, not merely absence of a stale token."),
++    Probe("REV-11", "same region-sheet distinct support compatibility negative remains compiled",
++          ("tests/PureQuadCompletionPhase18Tests.cpp",),
++          r"SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility", "present",
++          "Typed stitch compatibility must reject genuinely different completed source supports even when region and isolation sheet agree."),
++    Probe("REV-11", "faces-only typed stitch discrimination reasons remain explicit",
++          ("tests/PureQuadCompletionPhase18Tests.cpp",),
++          r"CoincidentPositionsOnDistinctTypedSheetsDoNotMerge|WrongOwnerSheetCertificatePublishesNothing|SameExactBoundaryKeyRejectsIncompatibleTypedLineage|InvalidTypedStitchAuthority|IncompatibleTypedStitchAuthority", "present",
++          "The next immutable runtime report must record each retained faces-only contract's actual discrimination outcome or rejection reason."),
+diff --git a/.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md b/.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+--- a/.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
++++ b/.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+@@ -22,6 +22,18 @@ Activate this plan only after new Code + Build work:
+ 
+ The replacement `DESIGN.md` remains normative. M1 acceptance proves only the single-authority contract; strict product fixtures require D0-equivalent behavior.
+ 
++### R-A retry reason-capture amendment
++
++For the next immutable R-A retry, retain per-contract outcome evidence for the
++three faces-only completion/stitch discrimination contracts instead of
++reporting only the aggregate 18/18 completion count:
++
++- `CoincidentPositionsOnDistinctTypedSheetsDoNotMerge` is a successful
++  non-merge discrimination contract; record `success=true`, two connected
++  components, and `mergedBoundaryVertices=0` rather than inventing a failure
++  string.
++- `WrongOwnerSheetCertificatePublishesNothing` must pass specifically with
++  `failure=InvalidTypedStitchAuthority`.
++- `SameExactBoundaryKeyRejectsIncompatibleTypedLineage` must pass specifically
++  with `failure=IncompatibleTypedStitchAuthority`.
++
++Also execute and record
++`SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility`;
++its required rejection reason is `IncompatibleTypedStitchAuthority`.
++
+ ## 1. Purpose and turn boundary
