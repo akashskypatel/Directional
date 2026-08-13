@@ -1,0 +1,147 @@
+name: Agent R-A Retry 3 CB Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-tb3-cb-apply.txt
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: agent-ra-tb3-cb-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      TESTED_SOURCE: 555109796188b318c788ef5777f622705ee0aa94
+      PATCH_SHA256: f2ef11a6387a818b3faef8dff94ec592b724344edd4b6bb0ca31b6a6366c183b
+      PAYLOAD: .agents/Directional/turn-payloads/ra_tb3_cb_01_03.patch.zb64
+
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A-TB3-CB-01-through-CB-03 bounded source/test correction' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "tested_source=$TESTED_SOURCE" \
+            "patch_sha256=$PATCH_SHA256" \
+            'turnBoundary=Code+Build-only' \
+            'generatedRuntimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout trigger head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Verify base, apply patch, regenerate static inventory, and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          trap 'rc=$?; printf "step_exit=%s\n" "$rc"; git status --porcelain=v1 || true; exit "$rc"' EXIT
+
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git fetch --no-tags --depth=1 origin "$TESTED_SOURCE"
+
+          semantic_paths=(
+            src/pipeline/RemeshPipeline.cpp
+            tests/SurfaceCellsPhase10Tests.cpp
+            .agents/Directional/R_A_Closure_Inventory.py
+            .agents/Directional/R_A_Closure_Inventory_Report.md
+          )
+          git diff --quiet "$TESTED_SOURCE" -- "${semantic_paths[@]}"
+          printf 'semantic_base_matches_tested_source=PASS\n'
+
+          python3 - "$PAYLOAD" "$RUNNER_TEMP/ra-tb3-cb.patch" <<'PY'
+          import base64, pathlib, sys, zlib
+          payload = pathlib.Path(sys.argv[1]).read_text().strip()
+          decoded = zlib.decompress(base64.b64decode(payload))
+          pathlib.Path(sys.argv[2]).write_bytes(decoded)
+          print(f'decoded_patch_bytes={len(decoded)}')
+          PY
+          printf '%s  %s\n' "$PATCH_SHA256" "$RUNNER_TEMP/ra-tb3-cb.patch" | sha256sum -c -
+          if grep -q '^+++ b/.github/workflows/' "$RUNNER_TEMP/ra-tb3-cb.patch"; then
+            echo 'patch attempts to modify workflow files' >&2
+            exit 1
+          fi
+
+          git apply --check "$RUNNER_TEMP/ra-tb3-cb.patch"
+          git apply "$RUNNER_TEMP/ra-tb3-cb.patch"
+          git diff --check
+
+          mapfile -t changed < <(git diff --name-only | sort)
+          printf 'changed_paths_after_apply:\n%s\n' "${changed[*]}"
+          expected="$(printf '%s\n' "${semantic_paths[@]}" | sort)"
+          actual="$(printf '%s\n' "${changed[@]}")"
+          test "$actual" = "$expected"
+
+          python3 .agents/Directional/R_A_Closure_Inventory.py \
+            --root . --output "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md" \
+            | tee "$RUNNER_TEMP/R_A_Closure_Inventory.stdout.txt"
+          cmp .agents/Directional/R_A_Closure_Inventory_Report.md \
+              "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Affected path count: \*\*19\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Probe count: \*\*60\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Probe match count: \*\*270\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Unexpected raw-projection leaves: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Unexpected face-count leaves: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Unexpected pipeline stitchIdentity assignments: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Stitch-kind classifier self-test failures: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Final static inventory: \*\*PASS\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
+          printf 'static_inventory=19_paths_60_probes_270_matches_PASS\n'
+
+          git diff -- "${semantic_paths[@]}" > "$RUNNER_TEMP/applied-semantic.patch"
+          git status --porcelain=v1 > "$RUNNER_TEMP/status-before-commit.txt"
+
+          git config user.name 'Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add src/pipeline/RemeshPipeline.cpp tests/SurfaceCellsPhase10Tests.cpp
+          git add -f .agents/Directional/R_A_Closure_Inventory.py \
+                     .agents/Directional/R_A_Closure_Inventory_Report.md
+          test -z "$(git diff --name-only)"
+          git diff --cached --check
+          test "$(git diff --cached --name-only | sort)" = "$expected"
+          git commit -m 'fix: close R-A retry 3 CB findings'
+          implementation_sha="$(git rev-parse HEAD)"
+          printf 'implementation_sha=%s\n' "$implementation_sha" | tee "$RUNNER_TEMP/implementation.txt"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/status-after-push.txt"
+          test ! -s "$RUNNER_TEMP/status-after-push.txt"
+          printf 'generated_runtime_execution=false\n' > "$RUNNER_TEMP/command-boundary.txt"
+          printf 'tests_executed=false\nbenchmarks_executed=false\ndiscovery_executed=false\n' >> "$RUNNER_TEMP/command-boundary.txt"
+
+      - name: Upload apply result evidence
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-tb3-cb-apply-result-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/implementation.txt
+            ${{ runner.temp }}/applied-semantic.patch
+            ${{ runner.temp }}/R_A_Closure_Inventory_Report.regenerated.md
+            ${{ runner.temp }}/R_A_Closure_Inventory.stdout.txt
+            ${{ runner.temp }}/status-before-commit.txt
+            ${{ runner.temp }}/status-after-push.txt
+            ${{ runner.temp }}/command-boundary.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-tb3-cb-apply-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
