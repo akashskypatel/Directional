@@ -1,5 +1,0 @@
-purpose=apply bounded RA-CB-F1 through RA-CB-F5 remediation
-base_sha=1ef598e650651f4f52f6d5eb1d4606b17aa70c64
-payload_blob_sha=5af19b794f48cc71ee3c8ed7743c219705d3a4e9
-runtime_execution=false
-retry=4
