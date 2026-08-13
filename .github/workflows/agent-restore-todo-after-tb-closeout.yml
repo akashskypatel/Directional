@@ -1,0 +1,64 @@
+name: Agent Restore TODO After R-A T+B Closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/restore-todo-after-tb-closeout.txt
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' 'task=restore durable TODO after connector replacement error' 'controlPlaneOnly=true' 'runtimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 80
+          submodules: false
+      - name: Restore full TODO and apply one-line clarification
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          git fetch --depth=1 origin f4155094cba6c92efb81789d7a83217488cdb386
+          git show f4155094cba6c92efb81789d7a83217488cdb386:TODO.md > TODO.md
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('TODO.md')
+          s = p.read_text()
+          old = '**Independent end-to-end R-A Code + Build review**: contract set complete and runtime gate unblocked at `64fa65a9379ad0a246393371516de3a3a7146243`; deferred hygiene remains post-R-A backlog.'
+          new = '**Independent end-to-end R-A Code + Build review**: the contract set was accepted as structurally complete and the candidate was cleared to proceed to the runtime gate at `64fa65a9379ad0a246393371516de3a3a7146243`; deferred hygiene remains post-R-A backlog.'
+          if s.count(old) != 1:
+              raise SystemExit(f'expected exactly one wording anchor, got {s.count(old)}')
+          p.write_text(s.replace(old, new, 1))
+          PY
+          grep -q '^# Directional Surface-Cell TODO' TODO.md
+          grep -q '61 passed / 26 failed' TODO.md
+          grep -q 'candidate was cleared to proceed to the runtime gate' TODO.md
+          grep -q '^## Design clarification and evidence backlog' TODO.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add TODO.md
+          git commit -m 'fix: restore durable TODO after connector replacement error'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/status.txt"
+          test ! -s "$RUNNER_TEMP/status.txt"
+          echo 'runtimeExecution=false'
+      - name: Upload activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restore-todo-after-tb-closeout-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
