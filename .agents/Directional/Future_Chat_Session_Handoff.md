@@ -33,6 +33,8 @@ Rejected retry-3 candidate:
 
 Retry 3 immutable boundary is clean: package preflight PASS, regenerated static inventory **19 paths / 59 probes / 261 matches / PASS**, non-vacuous discovery, package postflight PASS, no rebuild/source/test/fixture mutation/package repair, `orchestration_failed=0`. Semantic result: **92 unique selected / 86 passed / 6 failed**. R-A remains open.
 
+The branch may contain later documentation-only commits. Exact implementation/runtime authority remains the compile-pinned source above until the next Code + Build turn changes production/test/audit code and creates a new package.
+
 ### Active failure clusters
 
 1. **R-A-TB3-CB-01 — test fixture:** `DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches` expected zero cardinality rebuilds but never populated a same-cardinality stale cache. Production correctly counted two missing-cardinality component patches. Build a genuine same-cardinality stale counterfactual; keep canonical/valid anti-stale assertions and the separate exact missing-cardinality positive.
