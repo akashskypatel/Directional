@@ -3734,6 +3734,179 @@ bool project_surface_cell_vertex_chart_authority(
   return true;
 }
 
+bool project_materialized_hard_feature_rails_from_lineage(
+    const std::vector<geometry::SurfaceCellRail> &rails,
+    const Eigen::MatrixXi &outputQuads,
+    const std::vector<geometry::PureQuadVertexLineage> &lineages,
+    geometry::SurfaceOptimizationConstraints &constraints) {
+  std::map<std::size_t, const geometry::SurfaceCellRail *> hardRails;
+  for (const geometry::SurfaceCellRail &rail : rails) {
+    if (rail.kind != geometry::SurfaceCellRailKind::HardFeature) continue;
+    if (!hardRails.emplace(rail.id.index(), &rail).second) return false;
+  }
+  constraints.requiredFeatureRailCount = hardRails.size();
+  constraints.authoritativeFeatureRails.clear();
+  constraints.missingFeatureRailIds.clear();
+  if (hardRails.empty()) return true;
+
+  if (outputQuads.rows() <= 0 || outputQuads.cols() < 2) return false;
+  std::set<std::pair<int, int>> outputEdges;
+  for (int face = 0; face < outputQuads.rows(); ++face) {
+    for (int corner = 0; corner < outputQuads.cols(); ++corner) {
+      const int first = outputQuads(face, corner);
+      const int second = outputQuads(face, (corner + 1) % outputQuads.cols());
+      if (first < 0 || second < 0 || first == second) return false;
+      outputEdges.insert(std::minmax(first, second));
+    }
+  }
+
+  using SegmentKey = std::tuple<std::size_t, int, int>;
+  std::map<SegmentKey, std::set<int>> verticesBySegment;
+  for (const geometry::PureQuadVertexLineage &lineage : lineages) {
+    if (lineage.outputVertex < 0 ||
+        static_cast<std::size_t>(lineage.outputVertex) >= lineages.size()) {
+      return false;
+    }
+    for (const geometry::PureQuadEquivalenceProvenance &equivalence :
+         lineage.equivalences) {
+      if (equivalence.kind != geometry::PureQuadEquivalenceKind::HardRail) {
+        continue;
+      }
+      if (!equivalence.railId.has_value() || equivalence.firstFrontEdge < 0 ||
+          equivalence.secondFrontEdge < 0 ||
+          equivalence.firstFrontEdge == equivalence.secondFrontEdge ||
+          hardRails.count(equivalence.railId->index()) == 0U) {
+        return false;
+      }
+      const auto frontEdges = std::minmax(equivalence.firstFrontEdge,
+                                          equivalence.secondFrontEdge);
+      verticesBySegment[{equivalence.railId->index(), frontEdges.first,
+                         frontEdges.second}]
+          .insert(lineage.outputVertex);
+    }
+  }
+
+  std::map<std::size_t, std::set<std::pair<int, int>>> segmentsByRail;
+  std::set<std::size_t> invalidRails;
+  for (const auto &[key, vertices] : verticesBySegment) {
+    const std::size_t rail = std::get<0>(key);
+    if (vertices.size() != 2U) {
+      invalidRails.insert(rail);
+      continue;
+    }
+    const auto first = vertices.begin();
+    auto second = first;
+    ++second;
+    const int a = *first;
+    const int b = *second;
+    const auto edge = std::minmax(a, b);
+    if (outputEdges.count(edge) == 0U) {
+      invalidRails.insert(rail);
+      continue;
+    }
+    segmentsByRail[rail].insert(edge);
+  }
+
+  const auto append_sequence = [&](const geometry::SurfaceCellRail &rail,
+                                   const std::set<std::pair<int, int>> &segments,
+                                   std::vector<int> &sequence) {
+    std::map<int, std::set<int>> adjacency;
+    for (const auto &[first, second] : segments) {
+      adjacency[first].insert(second);
+      adjacency[second].insert(first);
+    }
+    if (adjacency.empty() || std::any_of(
+                                 adjacency.begin(), adjacency.end(),
+                                 [](const auto &entry) {
+                                   return entry.second.empty() ||
+                                          entry.second.size() > 2U;
+                                 })) {
+      return false;
+    }
+
+    int start = -1;
+    if (rail.closed) {
+      if (adjacency.size() < 3U ||
+          std::any_of(adjacency.begin(), adjacency.end(),
+                      [](const auto &entry) {
+                        return entry.second.size() != 2U;
+                      })) {
+        return false;
+      }
+      start = adjacency.begin()->first;
+    } else {
+      std::vector<int> endpoints;
+      for (const auto &[vertex, neighbors] : adjacency) {
+        if (neighbors.size() == 1U) endpoints.push_back(vertex);
+      }
+      if (endpoints.size() != 2U) return false;
+      start = std::min(endpoints[0], endpoints[1]);
+    }
+
+    std::set<std::pair<int, int>> traversed;
+    int previous = -1;
+    int current = start;
+    while (true) {
+      sequence.push_back(current);
+      int next = -1;
+      for (const int neighbor : adjacency.at(current)) {
+        const auto edge = std::minmax(current, neighbor);
+        if (traversed.count(edge) == 0U && neighbor != previous) {
+          next = neighbor;
+          break;
+        }
+      }
+      if (next < 0) {
+        for (const int neighbor : adjacency.at(current)) {
+          const auto edge = std::minmax(current, neighbor);
+          if (traversed.count(edge) == 0U) {
+            next = neighbor;
+            break;
+          }
+        }
+      }
+      if (next < 0) break;
+      traversed.insert(std::minmax(current, next));
+      previous = current;
+      current = next;
+      if (rail.closed && current == start) {
+        sequence.push_back(start);
+        break;
+      }
+      if (sequence.size() > adjacency.size()) return false;
+    }
+    return traversed.size() == segments.size() &&
+           ((!rail.closed && sequence.size() == adjacency.size()) ||
+            (rail.closed && sequence.size() == adjacency.size() + 1U));
+  };
+
+  std::set<std::size_t> missing;
+  for (const auto &[railId, rail] : hardRails) {
+    const auto found = segmentsByRail.find(railId);
+    std::vector<int> sequence;
+    if (invalidRails.count(railId) != 0U || found == segmentsByRail.end() ||
+        !append_sequence(*rail, found->second, sequence)) {
+      missing.insert(railId);
+      continue;
+    }
+    constraints.authoritativeFeatureRails.push_back(std::move(sequence));
+  }
+  constraints.missingFeatureRailIds.clear();
+  for (const std::size_t railId : missing) {
+    constraints.missingFeatureRailIds.push_back(hardRails.at(railId)->id);
+  }
+  return true;
+}
+
+bool has_materialized_phase_front_lineage(
+    const std::vector<geometry::PureQuadVertexLineage> &lineages) {
+  return !lineages.empty() &&
+         std::all_of(lineages.begin(), lineages.end(), [](const auto &lineage) {
+           return lineage.quotientClass.has_value() &&
+                  !lineage.sourceOccurrences.empty();
+         });
+}
+
 bool same_surface_cell_rail_authority(
     const std::vector<geometry::SurfaceCellRail> &first,
     const std::vector<geometry::SurfaceCellRail> &second) {
@@ -7830,6 +8003,17 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       }
       fill_surface_cell_rail_constraints(authoritativeRails, completedVertices,
                                          completedProvenance, constraints);
+      if (useAuthoritativePhaseFront &&
+          !project_materialized_hard_feature_rails_from_lineage(
+              authoritativeRails, completedQuads, completedVertexLineage,
+              constraints)) {
+        result.diagnostics.surfaceCellFirstInvalidProducerStage =
+            "completion/feature-authority";
+        result.diagnostics.surfaceCellFirstInvalidProducerReason =
+            "InvalidMaterializedHardFeatureAuthority";
+        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
+                                  "completion");
+      }
       if ((result.surfaceCellContext.sourceGridRecoveryUsed ||
            useAuthoritativePhaseFront) &&
           !aggregateLineageMesh.boundaryLoops.empty()) {
@@ -7940,6 +8124,11 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
                 completedQuadLineage[static_cast<std::size_t>(issue.face)]
                     .sourcePatch;
           }
+        } else if (!completedValidation.authoritativeFeatureRailsPassed) {
+          result.diagnostics.surfaceCellFirstInvalidProducerReason =
+              "MissingFeatureRail";
+          result.diagnostics.surfaceCellFirstInvalidProducerValidationIssue =
+              "MissingFeatureRail";
         } else {
           result.diagnostics.surfaceCellFirstInvalidProducerReason =
               "AggregateCompletionValidationFailure";
@@ -10320,6 +10509,14 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
         fill_surface_cell_rail_constraints(
             run.result.surfaceCellContext.authoritativeRails,
             run.result.vertices, run.result.outputVertexProvenance, constraints);
+        if (has_materialized_phase_front_lineage(
+                run.result.outputVertexLineage) &&
+            !project_materialized_hard_feature_rails_from_lineage(
+                run.result.surfaceCellContext.authoritativeRails,
+                run.result.faces, run.result.outputVertexLineage,
+                constraints)) {
+          return;
+        }
 
         // The component strict path may replace rail-derived boundary loops with
         // the completion-owned aggregate mesh loops. Preserve that authority
@@ -10554,6 +10751,30 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
         failure.diagnostics.terminalFailureCode;
     merged.diagnostics.terminalFailureStage =
         failure.diagnostics.terminalFailureStage;
+    merged.diagnostics.surfaceCellFirstInvalidProducerStage =
+        failure.diagnostics.surfaceCellFirstInvalidProducerStage;
+    merged.diagnostics.surfaceCellFirstInvalidProducerReason =
+        failure.diagnostics.surfaceCellFirstInvalidProducerReason;
+    merged.diagnostics.surfaceCellFirstInvalidProducerValidationIssue =
+        failure.diagnostics.surfaceCellFirstInvalidProducerValidationIssue;
+    merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues =
+        failure.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;
+    merged.diagnostics.surfaceCellFirstInvalidProducerCell =
+        failure.diagnostics.surfaceCellFirstInvalidProducerCell;
+    merged.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
+        failure.diagnostics.surfaceCellFirstInvalidProducerHalfedge;
+    merged.diagnostics.surfaceCellFirstInvalidProducerTwin =
+        failure.diagnostics.surfaceCellFirstInvalidProducerTwin;
+    merged.diagnostics.surfaceCellFirstInvalidProducerNode =
+        failure.diagnostics.surfaceCellFirstInvalidProducerNode;
+    merged.diagnostics.surfaceCellFirstInvalidProducerFace =
+        failure.diagnostics.surfaceCellFirstInvalidProducerFace;
+    merged.diagnostics.surfaceCellFirstInvalidProducerVertex =
+        failure.diagnostics.surfaceCellFirstInvalidProducerVertex;
+    merged.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+        failure.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst;
+    merged.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+        failure.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond;
     merged.diagnostics.surfaceCellOutputOrigin =
         SurfaceCellOutputOrigin::None;
     merged.diagnostics.surfaceCellRemeshOccurred = false;

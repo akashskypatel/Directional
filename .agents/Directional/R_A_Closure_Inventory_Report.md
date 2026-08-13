@@ -213,12 +213,12 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **6**
 - Classification: Multi-component sheet/region/chart/support remapping must derive from typed owner domains.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:8706` — `std::optional<ComponentTypedAuthorityRemapDomain>`
-  - `src/pipeline/RemeshPipeline.cpp:8707` — `make_component_typed_authority_remap_domain(`
-  - `src/pipeline/RemeshPipeline.cpp:8728` — `ComponentTypedAuthorityRemapDomain domain;`
-  - `src/pipeline/RemeshPipeline.cpp:8828` — `? std::optional<ComponentTypedAuthorityRemapDomain>(`
-  - `src/pipeline/RemeshPipeline.cpp:8838` — `const ComponentTypedAuthorityRemapDomain &domain) {`
-  - `src/pipeline/RemeshPipeline.cpp:10877` — `const auto typedAuthorityDomain = make_component_typed_authority_remap_domain(`
+  - `src/pipeline/RemeshPipeline.cpp:8895` — `std::optional<ComponentTypedAuthorityRemapDomain>`
+  - `src/pipeline/RemeshPipeline.cpp:8896` — `make_component_typed_authority_remap_domain(`
+  - `src/pipeline/RemeshPipeline.cpp:8917` — `ComponentTypedAuthorityRemapDomain domain;`
+  - `src/pipeline/RemeshPipeline.cpp:9017` — `? std::optional<ComponentTypedAuthorityRemapDomain>(`
+  - `src/pipeline/RemeshPipeline.cpp:9027` — `const ComponentTypedAuthorityRemapDomain &domain) {`
+  - `src/pipeline/RemeshPipeline.cpp:11098` — `const auto typedAuthorityDomain = make_component_typed_authority_remap_domain(`
 
 ### R-A-REV-10
 
@@ -284,10 +284,10 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **4**
 - Classification: Invalid chart/support/region/sheet remaps must reject before publication.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:11209` — `const auto remap_quotient_lineage_authority =`
-  - `src/pipeline/RemeshPipeline.cpp:11345` — `if (!remap_quotient_lineage_authority(lineage)) {`
-  - `src/pipeline/RemeshPipeline.cpp:11419` — `if (!remap_quotient_lineage_authority(lineage)) {`
-  - `src/pipeline/RemeshPipeline.cpp:11539` — `if (!remap_quotient_lineage_authority(lineage)) {`
+  - `src/pipeline/RemeshPipeline.cpp:11430` — `const auto remap_quotient_lineage_authority =`
+  - `src/pipeline/RemeshPipeline.cpp:11566` — `if (!remap_quotient_lineage_authority(lineage)) {`
+  - `src/pipeline/RemeshPipeline.cpp:11640` — `if (!remap_quotient_lineage_authority(lineage)) {`
+  - `src/pipeline/RemeshPipeline.cpp:11760` — `if (!remap_quotient_lineage_authority(lineage)) {`
 
 ### R-A-REV-13
 
@@ -300,9 +300,9 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Classification: Closure evidence names the affected source/test/workflow surfaces instead of sampling a few blocks.
 - Matches:
   - `.agents/Directional/R_A_Closure_Inventory.py:115` — `r"AFFECTED_R_A_PATHS", "present",`
-  - `.agents/Directional/R_A_Closure_Inventory.py:286` — `AFFECTED_R_A_PATHS: tuple[str, ...] = (`
-  - `.agents/Directional/R_A_Closure_Inventory.py:599` — `for path in AFFECTED_R_A_PATHS:`
-  - `.agents/Directional/R_A_Closure_Inventory.py:694` — `lines.append(f"- Affected path count: **{len(AFFECTED_R_A_PATHS)}**")`
+  - `.agents/Directional/R_A_Closure_Inventory.py:290` — `AFFECTED_R_A_PATHS: tuple[str, ...] = (`
+  - `.agents/Directional/R_A_Closure_Inventory.py:603` — `for path in AFFECTED_R_A_PATHS:`
+  - `.agents/Directional/R_A_Closure_Inventory.py:698` — `lines.append(f"- Affected path count: **{len(AFFECTED_R_A_PATHS)}**")`
 
 ### R-A-REV-14
 
@@ -329,10 +329,10 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **4**
 - Classification: Remap domains are owned by published source topology/chart authority.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:8706` — `std::optional<ComponentTypedAuthorityRemapDomain>`
-  - `src/pipeline/RemeshPipeline.cpp:8728` — `ComponentTypedAuthorityRemapDomain domain;`
-  - `src/pipeline/RemeshPipeline.cpp:8828` — `? std::optional<ComponentTypedAuthorityRemapDomain>(`
-  - `src/pipeline/RemeshPipeline.cpp:8838` — `const ComponentTypedAuthorityRemapDomain &domain) {`
+  - `src/pipeline/RemeshPipeline.cpp:8895` — `std::optional<ComponentTypedAuthorityRemapDomain>`
+  - `src/pipeline/RemeshPipeline.cpp:8917` — `ComponentTypedAuthorityRemapDomain domain;`
+  - `src/pipeline/RemeshPipeline.cpp:9017` — `? std::optional<ComponentTypedAuthorityRemapDomain>(`
+  - `src/pipeline/RemeshPipeline.cpp:9027` — `const ComponentTypedAuthorityRemapDomain &domain) {`
 
 ### R-A-REV-16
 
@@ -344,11 +344,11 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **5**
 - Classification: Raw/tamper counterfactuals must reach the real aggregate consumer before publication.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:10190` — `*beforeAggregation,`
-  - `src/pipeline/RemeshPipeline.cpp:10473` — `if (beforeAggregation != nullptr) {`
-  - `src/pipeline/RemeshPipeline.cpp:10475` — `(*beforeAggregation)(index, runs[index].result);`
-  - `src/pipeline/RemeshPipeline.cpp:11941` — `const ComponentAggregationInputMutator &beforeAggregation) {`
-  - `src/pipeline/RemeshPipeline.cpp:11943` — `vertices, faces, authoritativeCrossField, options, &beforeAggregation,`
+  - `src/pipeline/RemeshPipeline.cpp:10379` — `*beforeAggregation,`
+  - `src/pipeline/RemeshPipeline.cpp:10670` — `if (beforeAggregation != nullptr) {`
+  - `src/pipeline/RemeshPipeline.cpp:10672` — `(*beforeAggregation)(index, runs[index].result);`
+  - `src/pipeline/RemeshPipeline.cpp:12162` — `const ComponentAggregationInputMutator &beforeAggregation) {`
+  - `src/pipeline/RemeshPipeline.cpp:12164` — `vertices, faces, authoritativeCrossField, options, &beforeAggregation,`
 
 ### R-A-REV-17
 
@@ -377,11 +377,11 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **5**
 - Classification: Disconnected aggregation must publish lineage through one checked global SourceTopologyRegions owner.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:11710` — `const auto globalSourceAuthority = geometry::SourceTopologyRegions::make(`
-  - `src/pipeline/RemeshPipeline.cpp:11713` — `if (!globalSourceAuthority.has_value() ||`
-  - `src/pipeline/RemeshPipeline.cpp:11714` — `!globalSourceAuthority->matches_source_faces(`
-  - `src/pipeline/RemeshPipeline.cpp:11732` — `staged, faces, globalSourceAuthority.value(),`
-  - `src/pipeline/RemeshPipeline.cpp:11753` — `globalSourceAuthority.value();`
+  - `src/pipeline/RemeshPipeline.cpp:11931` — `const auto globalSourceAuthority = geometry::SourceTopologyRegions::make(`
+  - `src/pipeline/RemeshPipeline.cpp:11934` — `if (!globalSourceAuthority.has_value() ||`
+  - `src/pipeline/RemeshPipeline.cpp:11935` — `!globalSourceAuthority->matches_source_faces(`
+  - `src/pipeline/RemeshPipeline.cpp:11953` — `staged, faces, globalSourceAuthority.value(),`
+  - `src/pipeline/RemeshPipeline.cpp:11974` — `globalSourceAuthority.value();`
 
 **post-remap derived identity caches are rebuilt** — PASS
 
@@ -391,8 +391,8 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **2**
 - Classification: Stitch/authoritative identities and face cycles must be regenerated after global remap.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:9974` — `AggregateIdentityRebuildResult rebuild_aggregate_output_identity_caches(`
-  - `src/pipeline/RemeshPipeline.cpp:11731` — `rebuild_aggregate_output_identity_caches(`
+  - `src/pipeline/RemeshPipeline.cpp:10163` — `AggregateIdentityRebuildResult rebuild_aggregate_output_identity_caches(`
+  - `src/pipeline/RemeshPipeline.cpp:11952` — `rebuild_aggregate_output_identity_caches(`
 
 **aggregate identity rebuild reports typed failing sub-invariant** — PASS
 
@@ -402,28 +402,29 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **7**
 - Classification: Aggregate derived-identity rejection must identify the failed canonical rebuild invariant instead of collapsing every defect to one generic bool.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:9964` — `struct AggregateIdentityRebuildResult {`
-  - `src/pipeline/RemeshPipeline.cpp:9974` — `AggregateIdentityRebuildResult rebuild_aggregate_output_identity_caches(`
-  - `src/pipeline/RemeshPipeline.cpp:9978` — `AggregateIdentityRebuildResult outcome;`
-  - `src/pipeline/RemeshPipeline.cpp:10013` — `return fail("AggregateIdentityInvalidPatchMetadata",`
-  - `src/pipeline/RemeshPipeline.cpp:11730` — `const AggregateIdentityRebuildResult aggregateIdentityRebuild =`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5409` — `AggregateIdentityRebuildReportsInvalidPatchMetadataSubInvariant) {`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5443` — `EXPECT_EQ("AggregateIdentityInvalidPatchMetadata",`
+  - `src/pipeline/RemeshPipeline.cpp:10153` — `struct AggregateIdentityRebuildResult {`
+  - `src/pipeline/RemeshPipeline.cpp:10163` — `AggregateIdentityRebuildResult rebuild_aggregate_output_identity_caches(`
+  - `src/pipeline/RemeshPipeline.cpp:10167` — `AggregateIdentityRebuildResult outcome;`
+  - `src/pipeline/RemeshPipeline.cpp:10202` — `return fail("AggregateIdentityInvalidPatchMetadata",`
+  - `src/pipeline/RemeshPipeline.cpp:11951` — `const AggregateIdentityRebuildResult aggregateIdentityRebuild =`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5412` — `AggregateIdentityRebuildReportsInvalidPatchMetadataSubInvariant) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5446` — `EXPECT_EQ("AggregateIdentityInvalidPatchMetadata",`
 
 **aggregate boundary identity cache is reconstructed from canonical lineage** — PASS
 
 - Checked paths: `include/directional/diagnostics/RemeshDiagnostics.h`, `src/pipeline/RemeshPipeline.cpp`, `tests/SurfaceCellsPhase10Tests.cpp`
 - Pattern: `surfaceCellAggregateIdentityBoundaryCacheRebuildCount|boundaryNodeIdentities\.assign`
 - Expectation: `present`
-- Match count: **6**
+- Match count: **7**
 - Classification: Missing or stale patch-local boundary identity cache is derived state and must be rebuilt from remapped completion-owned lineage.
 - Matches:
   - `include/directional/diagnostics/RemeshDiagnostics.h:266` — `std::size_t surfaceCellAggregateIdentityBoundaryCacheRebuildCount = 0U;`
-  - `src/pipeline/RemeshPipeline.cpp:10058` — `patch.boundaryNodeIdentities.assign(patch.boundaryVertices.size(), {});`
-  - `src/pipeline/RemeshPipeline.cpp:11734` — `staged.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount =`
-  - `src/pipeline/RemeshPipeline.cpp:11742` — `merged.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount =`
+  - `src/pipeline/RemeshPipeline.cpp:10247` — `patch.boundaryNodeIdentities.assign(patch.boundaryVertices.size(), {});`
+  - `src/pipeline/RemeshPipeline.cpp:11955` — `staged.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount =`
+  - `src/pipeline/RemeshPipeline.cpp:11963` — `merged.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount =`
   - `tests/SurfaceCellsPhase10Tests.cpp:5219` — `result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5403` — `result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5354` — `patch.boundaryNodeIdentities.assign(`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5406` — `result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)`
 
 **anti-stale aggregate boundary cache proves canonical publication** — PASS
 
@@ -445,7 +446,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: Semantic context remains uncommitted until all remaps and final validation succeed.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:10570` — `RemeshResult staged = merged;`
+  - `src/pipeline/RemeshPipeline.cpp:10791` — `RemeshResult staged = merged;`
 
 **actual final merged mesh reaches source-authoritative validator** — PASS
 
@@ -455,7 +456,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: Cached component reports cannot substitute for the post-merge oracle.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:11783` — `validation::validate_source_authoritative_surface_mesh(`
+  - `src/pipeline/RemeshPipeline.cpp:12004` — `validation::validate_source_authoritative_surface_mesh(`
 
 ### R-A-REV-20
 
@@ -506,10 +507,10 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
   - `src/validation/SourceAuthoritativeMeshValidator.cpp:1031` — `!options.sourceAuthority->matches_source_faces(`
   - `src/validation/SourceAuthoritativeMeshValidator.cpp:1196` — `options.sourceAuthority->matches_source_faces(`
   - `src/validation/SourceAuthoritativeMeshValidator.cpp:1210` — `!options.sourceAuthority->matches_source_faces(`
-  - `src/pipeline/RemeshPipeline.cpp:4428` — `sourceAuthority->matches_source_faces(sourceFaces)) {`
-  - `src/pipeline/RemeshPipeline.cpp:8717` — `!sourceAuthority.matches_source_faces(`
-  - `src/pipeline/RemeshPipeline.cpp:10296` — `!run.result.surfaceCellContext.sourceTopologyRegions->matches_source_faces(`
-  - `src/pipeline/RemeshPipeline.cpp:11714` — `!globalSourceAuthority->matches_source_faces(`
+  - `src/pipeline/RemeshPipeline.cpp:4601` — `sourceAuthority->matches_source_faces(sourceFaces)) {`
+  - `src/pipeline/RemeshPipeline.cpp:8906` — `!sourceAuthority.matches_source_faces(`
+  - `src/pipeline/RemeshPipeline.cpp:10485` — `!run.result.surfaceCellContext.sourceTopologyRegions->matches_source_faces(`
+  - `src/pipeline/RemeshPipeline.cpp:11935` — `!globalSourceAuthority->matches_source_faces(`
 
 **authority-only row permutation negative exists** — PASS
 
@@ -519,7 +520,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: The mismatched-pair counterexample must retain old authority while permuting only the source matrix.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:6155` — `AuthorityOnlyFaceRowPermutationRejectsExactTopologyBinding) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:6168` — `AuthorityOnlyFaceRowPermutationRejectsExactTopologyBinding) {`
 
 **consistent matrix-plus-authority permutation positive exists** — PASS
 
@@ -529,7 +530,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: A row permutation remains valid when source geometry and rebuilt authority are paired consistently.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:6179` — `ConsistentlyPermutedSourceMatrixAndAuthorityPreserveSemanticTopology) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:6192` — `ConsistentlyPermutedSourceMatrixAndAuthorityPreserveSemanticTopology) {`
 
 ### R-A-REV-22
 
@@ -541,31 +542,31 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **25**
 - Classification: Boundary, feature, chart, output-face, hard-edge, and provenance authority must survive global remap into the final oracle.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:10274` — `struct ComponentFinalValidationAuthority {`
-  - `src/pipeline/RemeshPipeline.cpp:10288` — `ComponentFinalValidationAuthority finalValidationAuthority;`
-  - `src/pipeline/RemeshPipeline.cpp:10352` — `ComponentFinalValidationAuthority &authority =`
-  - `src/pipeline/RemeshPipeline.cpp:10649` — `std::vector<std::vector<int>> globalValidationBoundaryLoops;`
-  - `src/pipeline/RemeshPipeline.cpp:10650` — `std::vector<std::vector<int>> globalValidationFeatureRails;`
-  - `src/pipeline/RemeshPipeline.cpp:10652` — `globalValidationVertexCharts;`
-  - `src/pipeline/RemeshPipeline.cpp:10653` — `std::vector<int> globalValidationOutputQuadSourceFaces;`
-  - `src/pipeline/RemeshPipeline.cpp:10654` — `std::set<std::uint64_t> globalValidationHardFeatureEdges;`
-  - `src/pipeline/RemeshPipeline.cpp:10886` — `const ComponentFinalValidationAuthority &componentValidationAuthority =`
-  - `src/pipeline/RemeshPipeline.cpp:11079` — `globalValidationBoundaryLoops.push_back(std::move(globalLoop));`
-  - `src/pipeline/RemeshPipeline.cpp:11093` — `globalValidationFeatureRails.push_back(std::move(globalRail));`
-  - `src/pipeline/RemeshPipeline.cpp:11109` — `globalValidationOutputQuadSourceFaces.push_back(-1);`
-  - `src/pipeline/RemeshPipeline.cpp:11117` — `globalValidationOutputQuadSourceFaces.push_back(`
-  - `src/pipeline/RemeshPipeline.cpp:11132` — `globalValidationHardFeatureEdges.insert(surface_cell_source_edge_key(`
-  - `src/pipeline/RemeshPipeline.cpp:11358` — `globalValidationVertexCharts.size() !=`
-  - `src/pipeline/RemeshPipeline.cpp:11363` — `globalValidationVertexCharts.insert(`
-  - `src/pipeline/RemeshPipeline.cpp:11364` — `globalValidationVertexCharts.end(),`
-  - `src/pipeline/RemeshPipeline.cpp:11721` — `if (globalValidationVertexCharts.size() !=`
-  - `src/pipeline/RemeshPipeline.cpp:11723` — `globalValidationOutputQuadSourceFaces.size() !=`
-  - `src/pipeline/RemeshPipeline.cpp:11733` — `&globalValidationHardFeatureEdges);`
-  - `src/pipeline/RemeshPipeline.cpp:11762` — `&globalValidationVertexCharts;`
-  - `src/pipeline/RemeshPipeline.cpp:11764` — `&globalValidationOutputQuadSourceFaces;`
-  - `src/pipeline/RemeshPipeline.cpp:11766` — `globalValidationHardFeatureEdges;`
-  - `src/pipeline/RemeshPipeline.cpp:11770` — `globalValidationBoundaryLoops;`
-  - `src/pipeline/RemeshPipeline.cpp:11772` — `globalValidationFeatureRails;`
+  - `src/pipeline/RemeshPipeline.cpp:10463` — `struct ComponentFinalValidationAuthority {`
+  - `src/pipeline/RemeshPipeline.cpp:10477` — `ComponentFinalValidationAuthority finalValidationAuthority;`
+  - `src/pipeline/RemeshPipeline.cpp:10549` — `ComponentFinalValidationAuthority &authority =`
+  - `src/pipeline/RemeshPipeline.cpp:10870` — `std::vector<std::vector<int>> globalValidationBoundaryLoops;`
+  - `src/pipeline/RemeshPipeline.cpp:10871` — `std::vector<std::vector<int>> globalValidationFeatureRails;`
+  - `src/pipeline/RemeshPipeline.cpp:10873` — `globalValidationVertexCharts;`
+  - `src/pipeline/RemeshPipeline.cpp:10874` — `std::vector<int> globalValidationOutputQuadSourceFaces;`
+  - `src/pipeline/RemeshPipeline.cpp:10875` — `std::set<std::uint64_t> globalValidationHardFeatureEdges;`
+  - `src/pipeline/RemeshPipeline.cpp:11107` — `const ComponentFinalValidationAuthority &componentValidationAuthority =`
+  - `src/pipeline/RemeshPipeline.cpp:11300` — `globalValidationBoundaryLoops.push_back(std::move(globalLoop));`
+  - `src/pipeline/RemeshPipeline.cpp:11314` — `globalValidationFeatureRails.push_back(std::move(globalRail));`
+  - `src/pipeline/RemeshPipeline.cpp:11330` — `globalValidationOutputQuadSourceFaces.push_back(-1);`
+  - `src/pipeline/RemeshPipeline.cpp:11338` — `globalValidationOutputQuadSourceFaces.push_back(`
+  - `src/pipeline/RemeshPipeline.cpp:11353` — `globalValidationHardFeatureEdges.insert(surface_cell_source_edge_key(`
+  - `src/pipeline/RemeshPipeline.cpp:11579` — `globalValidationVertexCharts.size() !=`
+  - `src/pipeline/RemeshPipeline.cpp:11584` — `globalValidationVertexCharts.insert(`
+  - `src/pipeline/RemeshPipeline.cpp:11585` — `globalValidationVertexCharts.end(),`
+  - `src/pipeline/RemeshPipeline.cpp:11942` — `if (globalValidationVertexCharts.size() !=`
+  - `src/pipeline/RemeshPipeline.cpp:11944` — `globalValidationOutputQuadSourceFaces.size() !=`
+  - `src/pipeline/RemeshPipeline.cpp:11954` — `&globalValidationHardFeatureEdges);`
+  - `src/pipeline/RemeshPipeline.cpp:11983` — `&globalValidationVertexCharts;`
+  - `src/pipeline/RemeshPipeline.cpp:11985` — `&globalValidationOutputQuadSourceFaces;`
+  - `src/pipeline/RemeshPipeline.cpp:11987` — `globalValidationHardFeatureEdges;`
+  - `src/pipeline/RemeshPipeline.cpp:11991` — `globalValidationBoundaryLoops;`
+  - `src/pipeline/RemeshPipeline.cpp:11993` — `globalValidationFeatureRails;`
 
 **final aggregate enables strict boundary/feature/local-sheet gates** — PASS
 
@@ -575,9 +576,24 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **3**
 - Classification: The final oracle cannot weaken component strict gates to make aggregate output pass.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:11775` — `finalAuthorityOptions.requireBoundaryAuthority = true;`
-  - `src/pipeline/RemeshPipeline.cpp:11776` — `finalAuthorityOptions.requireFeatureRailAuthority = true;`
-  - `src/pipeline/RemeshPipeline.cpp:11777` — `finalAuthorityOptions.requireLocalSheetCompatibility = true;`
+  - `src/pipeline/RemeshPipeline.cpp:11996` — `finalAuthorityOptions.requireBoundaryAuthority = true;`
+  - `src/pipeline/RemeshPipeline.cpp:11997` — `finalAuthorityOptions.requireFeatureRailAuthority = true;`
+  - `src/pipeline/RemeshPipeline.cpp:11998` — `finalAuthorityOptions.requireLocalSheetCompatibility = true;`
+
+**materialized hard-feature rail authority derives from exact quotient lineage** — PASS
+
+- Checked paths: `src/pipeline/RemeshPipeline.cpp`
+- Pattern: `project_materialized_hard_feature_rails_from_lineage|PureQuadEquivalenceKind::HardRail`
+- Expectation: `present`
+- Match count: **6**
+- Classification: Phase-front hard-feature output sequences must be reconstructed from exact materializer equivalence provenance and actual output edges rather than proximity alone.
+- Matches:
+  - `src/pipeline/RemeshPipeline.cpp:2636` — `equivalence.kind = geometry::PureQuadEquivalenceKind::HardRail;`
+  - `src/pipeline/RemeshPipeline.cpp:3704` — `if (equivalence.kind != geometry::PureQuadEquivalenceKind::HardRail) {`
+  - `src/pipeline/RemeshPipeline.cpp:3737` — `bool project_materialized_hard_feature_rails_from_lineage(`
+  - `src/pipeline/RemeshPipeline.cpp:3772` — `if (equivalence.kind != geometry::PureQuadEquivalenceKind::HardRail) {`
+  - `src/pipeline/RemeshPipeline.cpp:8007` — `!project_materialized_hard_feature_rails_from_lineage(`
+  - `src/pipeline/RemeshPipeline.cpp:10514` — `!project_materialized_hard_feature_rails_from_lineage(`
 
 **component authority tamper contracts name the aggregation seam** — PASS
 
@@ -587,8 +603,8 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **2**
 - Classification: Component capture-versus-mutation tests prove the pre-oracle seam guard and do not claim final-oracle coverage.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:5451` — `ComponentBoundaryRailTamperRejectsAtAggregationSeam) {`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5495` — `ComponentFeatureRailTamperRejectsAtAggregationSeam) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5454` — `ComponentBoundaryRailTamperRejectsAtAggregationSeam) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5498` — `ComponentFeatureRailTamperRejectsAtAggregationSeam) {`
 
 **component explicit feature options are remapped to compact ownership** — PASS
 
@@ -598,18 +614,18 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **12**
 - Classification: Global explicit feature-edge IDs must be filtered by component ownership and translated into compact component-local vertex IDs before execution.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:8575` — `ComponentFeatureOptionRemapPlan make_component_feature_option_remap_plan(`
-  - `src/pipeline/RemeshPipeline.cpp:8665` — `void apply_component_feature_option_remap(`
-  - `src/pipeline/RemeshPipeline.cpp:8668` — `options.surfaceCells.featureMap.userHardEdges =`
-  - `src/pipeline/RemeshPipeline.cpp:8670` — `options.surfaceCells.featureMap.userSoftEdges =`
-  - `src/pipeline/RemeshPipeline.cpp:10229` — `make_component_feature_option_remap_plan(`
-  - `src/pipeline/RemeshPipeline.cpp:10230` — `components, options.surfaceCells.featureMap.userHardEdges,`
-  - `src/pipeline/RemeshPipeline.cpp:10231` — `options.surfaceCells.featureMap.userSoftEdges);`
-  - `src/pipeline/RemeshPipeline.cpp:10387` — `apply_component_feature_option_remap(featureOptionRemap, componentIndex,`
-  - `src/pipeline/RemeshPipeline.cpp:11990` — `make_component_feature_option_remap_plan(`
-  - `src/pipeline/RemeshPipeline.cpp:11991` — `components, options.surfaceCells.featureMap.userHardEdges,`
-  - `src/pipeline/RemeshPipeline.cpp:11992` — `options.surfaceCells.featureMap.userSoftEdges);`
-  - `src/pipeline/RemeshPipeline.cpp:12050` — `apply_component_feature_option_remap(featureOptionRemap, componentIndex,`
+  - `src/pipeline/RemeshPipeline.cpp:8764` — `ComponentFeatureOptionRemapPlan make_component_feature_option_remap_plan(`
+  - `src/pipeline/RemeshPipeline.cpp:8854` — `void apply_component_feature_option_remap(`
+  - `src/pipeline/RemeshPipeline.cpp:8857` — `options.surfaceCells.featureMap.userHardEdges =`
+  - `src/pipeline/RemeshPipeline.cpp:8859` — `options.surfaceCells.featureMap.userSoftEdges =`
+  - `src/pipeline/RemeshPipeline.cpp:10418` — `make_component_feature_option_remap_plan(`
+  - `src/pipeline/RemeshPipeline.cpp:10419` — `components, options.surfaceCells.featureMap.userHardEdges,`
+  - `src/pipeline/RemeshPipeline.cpp:10420` — `options.surfaceCells.featureMap.userSoftEdges);`
+  - `src/pipeline/RemeshPipeline.cpp:10584` — `apply_component_feature_option_remap(featureOptionRemap, componentIndex,`
+  - `src/pipeline/RemeshPipeline.cpp:12211` — `make_component_feature_option_remap_plan(`
+  - `src/pipeline/RemeshPipeline.cpp:12212` — `components, options.surfaceCells.featureMap.userHardEdges,`
+  - `src/pipeline/RemeshPipeline.cpp:12213` — `options.surfaceCells.featureMap.userSoftEdges);`
+  - `src/pipeline/RemeshPipeline.cpp:12271` — `apply_component_feature_option_remap(featureOptionRemap, componentIndex,`
 
 **component feature-option no-leakage contract remains compiled** — PASS
 
@@ -619,7 +635,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: An explicit edge owned by one disconnected source component must not appear as a same-numbered local feature tag in another component.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:5540` — `ComponentFeatureOptionsRemapOwnedEdgesWithoutCrossComponentLeakage) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5543` — `ComponentFeatureOptionsRemapOwnedEdgesWithoutCrossComponentLeakage) {`
 
 **component feature-option transport is conserved and typed** — PASS
 
@@ -634,17 +650,17 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
   - `include/directional/diagnostics/RemeshDiagnostics.h:272` — `std::size_t surfaceCellUserSoftFeatureEdgeUnassignedCount = 0U;`
   - `include/directional/diagnostics/RemeshDiagnostics.h:273` — `SurfaceCellFeatureOptionRemapIssue surfaceCellFeatureOptionFirstIssue =`
   - `include/directional/diagnostics/RemeshDiagnostics.h:274` — `SurfaceCellFeatureOptionRemapIssue::None;`
-  - `src/pipeline/RemeshPipeline.cpp:8681` — `diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount =`
-  - `src/pipeline/RemeshPipeline.cpp:8687` — `diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount =`
-  - `src/pipeline/RemeshPipeline.cpp:8691` — `SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge;`
-  - `src/pipeline/RemeshPipeline.cpp:8696` — `SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge;`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5609` — `result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5615` — `result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5618` — `result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5621` — `result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5622` — `EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge,`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5654` — `EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge,`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5663` — `rejected.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);`
+  - `src/pipeline/RemeshPipeline.cpp:8870` — `diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount =`
+  - `src/pipeline/RemeshPipeline.cpp:8876` — `diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount =`
+  - `src/pipeline/RemeshPipeline.cpp:8880` — `SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge;`
+  - `src/pipeline/RemeshPipeline.cpp:8885` — `SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge;`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5612` — `result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5618` — `result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5621` — `result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5624` — `result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5625` — `EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge,`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5657` — `EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge,`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5666` — `rejected.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);`
 
 **unassigned user hard-feature edge fails before component execution** — PASS
 
@@ -654,7 +670,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: A requested hard edge with no owning source component may not disappear silently.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:5629` — `UnassignedUserHardFeatureEdgeFailsClosedBeforeComponentExecution) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5632` — `UnassignedUserHardFeatureEdgeFailsClosedBeforeComponentExecution) {`
 
 **final oracle boundary and feature authority negatives exist** — PASS
 
@@ -664,8 +680,8 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **2**
 - Classification: Post-remap counterfactuals must pass component seam checks and make the final oracle reject missing boundary/feature authority with zero publication.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:5669` — `FinalMergedOracleRejectsMissingRemappedBoundaryAuthority) {`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5720` — `FinalMergedOracleRejectsMissingRemappedFeatureAuthority) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5672` — `FinalMergedOracleRejectsMissingRemappedBoundaryAuthority) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5723` — `FinalMergedOracleRejectsMissingRemappedFeatureAuthority) {`
 
 **final oracle boundary content mismatch negative exists** — PASS
 
@@ -675,7 +691,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: Present remapped boundary authority must be content-checked and reject with ChangedBoundaryLoop rather than only proving the absence guard.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:5771` — `FinalMergedOracleRejectsChangedRemappedBoundaryLoopContent) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5774` — `FinalMergedOracleRejectsChangedRemappedBoundaryLoopContent) {`
 
 **final oracle feature content mismatch negative exists** — PASS
 
@@ -685,7 +701,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **1**
 - Classification: Present remapped feature authority with preserved cardinality must reject when a rail is absent from the merged output.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:5851` — `FinalMergedOracleRejectsChangedRemappedFeatureRailContent) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5854` — `FinalMergedOracleRejectsChangedRemappedFeatureRailContent) {`
 
 **feature-bearing final oracle positive is non-vacuous** — PASS
 
@@ -695,23 +711,25 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **3**
 - Classification: Positive aggregate coverage must observe a non-empty feature-rail authority set before accepting it.
 - Matches:
-  - `tests/SurfaceCellsPhase10Tests.cpp:5744` — `validationOptions.expectedFeatureRailCount > 0U &&`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5921` — `FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority) {`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5945` — `validationOptions.expectedFeatureRailCount > 0U &&`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5747` — `validationOptions.expectedFeatureRailCount > 0U &&`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5924` — `FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5948` — `validationOptions.expectedFeatureRailCount > 0U &&`
 
 **final oracle full issue list is retained in diagnostics** — PASS
 
 - Checked paths: `include/directional/diagnostics/RemeshDiagnostics.h`, `src/pipeline/RemeshPipeline.cpp`, `tests/SurfaceCellsPhase10Tests.cpp`
 - Pattern: `surfaceCellFinalSourceAuthorityValidationIssues`
 - Expectation: `present`
-- Match count: **5**
+- Match count: **7**
 - Classification: Content-mismatch negatives must prove the actual final-oracle issue list rather than relying only on preferred-code selection.
 - Matches:
   - `include/directional/diagnostics/RemeshDiagnostics.h:257` — `std::vector<std::string> surfaceCellFinalSourceAuthorityValidationIssues;`
-  - `src/pipeline/RemeshPipeline.cpp:11788` — `merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues.clear();`
-  - `src/pipeline/RemeshPipeline.cpp:11791` — `merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5835` — `rejected.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5905` — `rejected.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;`
+  - `src/pipeline/RemeshPipeline.cpp:10760` — `merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues =`
+  - `src/pipeline/RemeshPipeline.cpp:10761` — `failure.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;`
+  - `src/pipeline/RemeshPipeline.cpp:12009` — `merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues.clear();`
+  - `src/pipeline/RemeshPipeline.cpp:12012` — `merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5838` — `rejected.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5908` — `rejected.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;`
 
 **aggregate validation flags are sourced from final oracle observables** — PASS
 
@@ -721,10 +739,10 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **4**
 - Classification: Published strict/provenance/boundary/feature usage flags must be oracle evidence, not constants.
 - Matches:
-  - `src/pipeline/RemeshPipeline.cpp:11884` — `finalAuthorityValidation.strictValidationUsed;`
-  - `src/pipeline/RemeshPipeline.cpp:11886` — `finalAuthorityValidation.provenanceValidationUsed;`
-  - `src/pipeline/RemeshPipeline.cpp:11892` — `finalAuthorityValidation.boundaryAuthorityUsed;`
-  - `src/pipeline/RemeshPipeline.cpp:11894` — `finalAuthorityValidation.featureRailAuthorityUsed;`
+  - `src/pipeline/RemeshPipeline.cpp:12105` — `finalAuthorityValidation.strictValidationUsed;`
+  - `src/pipeline/RemeshPipeline.cpp:12107` — `finalAuthorityValidation.provenanceValidationUsed;`
+  - `src/pipeline/RemeshPipeline.cpp:12113` — `finalAuthorityValidation.boundaryAuthorityUsed;`
+  - `src/pipeline/RemeshPipeline.cpp:12115` — `finalAuthorityValidation.featureRailAuthorityUsed;`
 
 **aggregate validation flags are not hardcoded true** — PASS
 
@@ -752,18 +770,18 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Matches:
   - `include/directional/pipeline/RemeshPipeline.h:510` — `bool hasFinalSourceAuthorityValidationResult = false;`
   - `include/directional/pipeline/RemeshPipeline.h:511` — `bool componentValidationReportsComplete = false;`
-  - `src/pipeline/RemeshPipeline.cpp:11826` — `staged.surfaceCellContext.hasFinalSourceAuthorityValidationResult = true;`
-  - `src/pipeline/RemeshPipeline.cpp:11827` — `staged.surfaceCellContext.componentValidationReportsComplete =`
+  - `src/pipeline/RemeshPipeline.cpp:12047` — `staged.surfaceCellContext.hasFinalSourceAuthorityValidationResult = true;`
+  - `src/pipeline/RemeshPipeline.cpp:12048` — `staged.surfaceCellContext.componentValidationReportsComplete =`
   - `tests/SurfaceCellsPhase10Tests.cpp:5250` — `result.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
   - `tests/SurfaceCellsPhase10Tests.cpp:5251` — `EXPECT_TRUE(result.surfaceCellContext.componentValidationReportsComplete);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5716` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5767` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5847` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5917` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5959` — `ASSERT_TRUE(result.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5975` — `FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing) {`
-  - `tests/SurfaceCellsPhase10Tests.cpp:6011` — `EXPECT_FALSE(result.surfaceCellContext.componentValidationReportsComplete);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:6013` — `result.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5719` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5770` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5850` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5920` — `rejected.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5962` — `ASSERT_TRUE(result.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5978` — `FinalOracleOutcomePublishesWhenComponentValidationReportIsMissing) {`
+  - `tests/SurfaceCellsPhase10Tests.cpp:6014` — `EXPECT_FALSE(result.surfaceCellContext.componentValidationReportsComplete);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:6016` — `result.surfaceCellContext.hasFinalSourceAuthorityValidationResult);`
 
 **valid boundary-bearing aggregate asserts strict final oracle evidence** — PASS
 
@@ -782,10 +800,10 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
   - `tests/SurfaceCellsPhase10Tests.cpp:5266` — `EXPECT_TRUE(finalValidation.sourceAuthoritativeValidationUsed);`
   - `tests/SurfaceCellsPhase10Tests.cpp:5267` — `EXPECT_TRUE(finalValidation.authoritativeBoundaryUsed);`
   - `tests/SurfaceCellsPhase10Tests.cpp:5269` — `EXPECT_TRUE(finalValidation.orderedBoundaryCyclesPassed);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5961` — `result.surfaceCellContext.finalSourceAuthorityValidationResult;`
-  - `tests/SurfaceCellsPhase10Tests.cpp:5966` — `EXPECT_TRUE(oracle.orderedBoundaryCyclesPassed);`
-  - `tests/SurfaceCellsPhase10Tests.cpp:6015` — `result.surfaceCellContext.finalSourceAuthorityValidationResult;`
-  - `tests/SurfaceCellsPhase10Tests.cpp:6020` — `EXPECT_TRUE(oracle.orderedBoundaryCyclesPassed);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5964` — `result.surfaceCellContext.finalSourceAuthorityValidationResult;`
+  - `tests/SurfaceCellsPhase10Tests.cpp:5969` — `EXPECT_TRUE(oracle.orderedBoundaryCyclesPassed);`
+  - `tests/SurfaceCellsPhase10Tests.cpp:6018` — `result.surfaceCellContext.finalSourceAuthorityValidationResult;`
+  - `tests/SurfaceCellsPhase10Tests.cpp:6023` — `EXPECT_TRUE(oracle.orderedBoundaryCyclesPassed);`
 
 ### R-A-REV-23
 
@@ -805,9 +823,9 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **3**
 - Classification: The audit proves its own coverage against the four independently reviewed evasion forms.
 - Matches:
-  - `.agents/Directional/R_A_Closure_Inventory.py:265` — `r"self_test_pipeline_stitch_kind_classifier", "present",`
-  - `.agents/Directional/R_A_Closure_Inventory.py:556` — `def self_test_pipeline_stitch_kind_classifier() -> tuple[list[str], list[str]]:`
-  - `.agents/Directional/R_A_Closure_Inventory.py:676` — `self_test_pipeline_stitch_kind_classifier()`
+  - `.agents/Directional/R_A_Closure_Inventory.py:269` — `r"self_test_pipeline_stitch_kind_classifier", "present",`
+  - `.agents/Directional/R_A_Closure_Inventory.py:560` — `def self_test_pipeline_stitch_kind_classifier() -> tuple[list[str], list[str]]:`
+  - `.agents/Directional/R_A_Closure_Inventory.py:680` — `self_test_pipeline_stitch_kind_classifier()`
 
 **completion-owned canonical stitch constructor is used** — PASS
 
@@ -819,7 +837,7 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Matches:
   - `include/directional/geometry/PureQuadCompletion.h:563` — `PureQuadStitchIdentity canonical_lineage_stitch_identity(`
   - `src/geometry/PureQuadCompletion.cpp:2005` — `PureQuadStitchIdentity canonical_lineage_stitch_identity(`
-  - `src/pipeline/RemeshPipeline.cpp:10025` — `geometry::pure_quad_detail::canonical_lineage_stitch_identity(`
+  - `src/pipeline/RemeshPipeline.cpp:10214` — `geometry::pure_quad_detail::canonical_lineage_stitch_identity(`
 
 **stale-kind and post-publication re-stitch contracts exist** — PASS
 
@@ -869,10 +887,10 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Unexpected count: **0**
 - ALLOWED `src/pipeline/RemeshPipeline.cpp:1998` — one-way SurfacePoint geometry/export projection write — `point.component = static_cast<int>(`
 - ALLOWED `src/pipeline/RemeshPipeline.cpp:2000` — one-way SurfacePoint geometry/export projection write — `point.sheet = static_cast<int>(`
-- ALLOWED `src/pipeline/RemeshPipeline.cpp:5180` — one-way SurfacePoint geometry/export projection write — `point.component = static_cast<int>(`
-- ALLOWED `src/pipeline/RemeshPipeline.cpp:5182` — one-way SurfacePoint geometry/export projection write — `point.sheet = static_cast<int>(`
-- ALLOWED `src/pipeline/RemeshPipeline.cpp:8555` — one-way SurfacePoint geometry/export projection write — `point.component = static_cast<int>(componentIndex);`
-- ALLOWED `src/pipeline/RemeshPipeline.cpp:8556` — one-way SurfacePoint geometry/export projection write — `point.sheet = typedGlobalSheet.has_value()`
+- ALLOWED `src/pipeline/RemeshPipeline.cpp:5353` — one-way SurfacePoint geometry/export projection write — `point.component = static_cast<int>(`
+- ALLOWED `src/pipeline/RemeshPipeline.cpp:5355` — one-way SurfacePoint geometry/export projection write — `point.sheet = static_cast<int>(`
+- ALLOWED `src/pipeline/RemeshPipeline.cpp:8744` — one-way SurfacePoint geometry/export projection write — `point.component = static_cast<int>(componentIndex);`
+- ALLOWED `src/pipeline/RemeshPipeline.cpp:8745` — one-way SurfacePoint geometry/export projection write — `point.sheet = typedGlobalSheet.has_value()`
 - ALLOWED `src/geometry/PureQuadCompletion.cpp:237` — one-way SurfacePoint geometry/export projection write — `point.component = 0;`
 - ALLOWED `src/geometry/PureQuadCompletion.cpp:238` — one-way SurfacePoint geometry/export projection write — `point.sheet = 0;`
 - ALLOWED `src/geometry/PureQuadCompletion.cpp:278` — geometry-only averaging payload propagation; not stitch/owner/validator identity — `component = point.component;`
@@ -903,8 +921,8 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 - Match count: **2**
 - Allowed count: **2**
 - Unexpected count: **0**
-- ALLOWED `src/pipeline/RemeshPipeline.cpp:10031` — direct assignment from the completion-owned canonical_lineage_stitch_identity result — `stitchIdentity = stitch;`
-- ALLOWED `src/pipeline/RemeshPipeline.cpp:10120` — assignment from a lookup map populated only by the completion-owned canonical stitch result — `stitchIdentity = canonical->second;`
+- ALLOWED `src/pipeline/RemeshPipeline.cpp:10220` — direct assignment from the completion-owned canonical_lineage_stitch_identity result — `stitchIdentity = stitch;`
+- ALLOWED `src/pipeline/RemeshPipeline.cpp:10309` — assignment from a lookup map populated only by the completion-owned canonical stitch result — `stitchIdentity = canonical->second;`
 
 ### Pipeline stitch-kind classifier self-test
 
@@ -918,8 +936,8 @@ Scope: source-only Code + Build audit. No generated Directional binary, test, be
 
 ## Inventory summary
 
-- Probe count: **59**
-- Probe match count: **261**
+- Probe count: **60**
+- Probe match count: **270**
 - Affected path count: **19**
 - Allowed raw-projection leaves: **22**
 - Unexpected raw-projection leaves: **0**
