@@ -1,0 +1,154 @@
+name: Agent R-A Retry 3 Documentation Prune
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-tb3-doc-prune.txt
+
+permissions:
+  contents: write
+
+jobs:
+  prune:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 0
+
+      - name: Inventory and prune stale documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee "$RUNNER_TEMP/activity.log") 2>&1
+          BASE=d756b98f721d533cb447723a1cce8ba124c97c10
+          git merge-base --is-ancestor "$BASE" HEAD
+          git diff --exit-code "$BASE"..HEAD -- src include tests CMakeLists.txt cmake .agents/Directional/R_A_Closure_Inventory.py
+
+          cat > "$RUNNER_TEMP/at-risk-inventory.txt" <<'EOF'
+          Authorized prune scope after R-A retry 3:
+          - REORIENTATION_PLAN.md: replace stale current-source/status and obsolete R-A REV-22/23 completion sequence; preserve M2-M8 roadmap.
+          - CHANGELOG.md: retain all valid historical evidence; add retry-3 and pruning entry.
+          - Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md: delete obsolete early cutover report. Durable evidence destination: CHANGELOG.md; current R-A evidence destination: Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md; active execution destination: Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md.
+          User explicitly authorized pruning stale durable and non-durable documentation at end of this T+B turn.
+          EOF
+          cat "$RUNNER_TEMP/at-risk-inventory.txt"
+
+          test -f .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md
+          if grep -R -n --exclude='Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md' \
+              'Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md' \
+              TODO.md .agents/Directional tests/TESTING_STRATEGY.md; then
+            echo 'obsolete report still has live references' >&2
+            exit 1
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path = Path('.agents/Directional/REORIENTATION_PLAN.md')
+          text = path.read_text()
+          text = re.sub(
+              r'^\*\*Current reviewed source:\*\*.*$',
+              '**Current R-A tested source:** `555109796188b318c788ef5777f622705ee0aa94` — retry 3 immutable runtime evidence `31667380356 / 94344731465`',
+              text, count=1, flags=re.M)
+          text = re.sub(
+              r'^\*\*Decision:\*\*.*$',
+              '**Decision:** **R-A remains open after retry 3 (86/92); close the three bounded failure clusters in Code + Build, then retry immutably before continuing R-B through R-G.**',
+              text, count=1, flags=re.M)
+          text = re.sub(
+              r'^\*\*Last updated:\*\*.*$',
+              '**Last updated:** 2026-08-13 UTC',
+              text, count=1, flags=re.M)
+
+          replacement = '''## 5. Current M1 checkpoint
+
+### Immutable entering authority
+
+M1a-M1l and T1 remain accepted historical authority. M1l source `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest runtime-accepted implementation until a later checkpoint passes organically.
+
+### Active R-A evidence
+
+Artifact-only retry 3 tested exact source `555109796188b318c788ef5777f622705ee0aa94` from compile package `9167759672 / 9167759825`. Immutable preflight, regenerated static inventory (**19 paths / 59 probes / 261 matches / PASS**), non-vacuous discovery, and postflight all passed. Runtime run/job `31667380356 / 94344731465` selected **92 unique contracts: 86 passed / 6 failed**, with zero orchestration failures and no package/source/test/fixture mutation or repair.
+
+R-A therefore remains open. The six failures reduce to three bounded Code + Build clusters:
+
+1. a same-cardinality stale boundary-cache counterfactual that never actually populated same cardinality;
+2. feature-bearing component completion preventing four aggregate/final-oracle feature contracts from reaching their intended seams;
+3. a provenance counterfactual whose `(1,0,0)` mutation can be semantically neutral.
+
+Exact corrective requirements live in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`; exact runtime evidence lives in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+
+## 6. M1 completion sequence
+
+1. Execute `R-A-TB3-CB-01` through `R-A-TB3-CB-04` as Code + Build only and produce one fresh immutable compile package.
+2. Execute artifact-only R-A retry 4 against that exact package. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/postflight.
+3. After R-A closes, complete R-B through R-G in the same bounded cadence.
+4. Produce one fresh complete M1 package and execute the full M1 artifact-only acceptance/characterization gate.
+5. Only after M1 acceptance resume the default Pipeline B M2-M8 product roadmap.
+
+R-A work must not implement M3 curve-network topology, M4 conformity flow, M7 degradation, or Pipeline A.
+
+## 7. M2-M8 acceptance orientation'''
+          pattern = r'## 5\. Current M1 checkpoint.*?## 7\. M2-M8 acceptance orientation'
+          new_text, count = re.subn(pattern, replacement, text, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit(f'failed to replace REORIENTATION sections 5-6: count={count}')
+          path.write_text(new_text)
+
+          changelog = Path('.agents/Directional/CHANGELOG.md')
+          text = changelog.read_text()
+          marker = '## [Unreleased]\n'
+          if text.count(marker) != 1:
+              raise SystemExit('CHANGELOG Unreleased marker not unique')
+          entry = '''## [Unreleased]\n\n### Validation — R-A artifact-only retry 3\n\n- Exact tested source `555109796188b318c788ef5777f622705ee0aa94`, compile package `9167759672 / 9167759825`; runtime run/job `31667380356 / 94344731465`. Runtime result artifact `9168437730` SHA-256 `b0bf206ec0b93f7ae009ec4bf62c318ff3d2297b85af08c7bdafd83ce7e96ab5`; runtime log artifact `9168437907` SHA-256 `002785e52bf500489204e4c9c0616e3c91b6ac7d422056370596468da0d47919`.\n- Immutable preflight/static/postflight passed; packaged R-A inventory regenerated byte-for-byte at **19 paths / 59 probes / 261 matches / PASS**; discovery was non-vacuous; no rebuild/source/test/fixture mutation/package repair occurred. The broad gate selected **92 unique contracts: 86 passed / 6 failed**, `orchestration_failed=0`. R-A remains open and M1l remains runtime authority.\n- RA-CB-F1, F2/F3 completion-stitch discrimination, and F5 feature-option conservation are runtime-green. Remaining failures collapse to three next-CB clusters: same-cardinality stale-cache fixture accounting; feature-bearing component completion before aggregate/final-oracle feature authority; guaranteed-semantic provenance tamper.\n\n### Documentation — retry-3 stale-state pruning\n\n- With explicit user authorization, active R-A plans/status/handoff/review documents were rebased to retry-3 evidence and superseded chronological/current-state narratives were removed. Valid historical evidence remains in this changelog, the regression tracker/audit, the concise R-A attempt ledger, and the accepted M1l runtime report.\n- Removed the obsolete standalone `Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md`; its durable early-cutover compile/package evidence was already retained here, while current execution/evidence is owned by the active Code + Build plan and R-A T+B report.\n'''
+          changelog.write_text(text.replace(marker, entry, 1))
+          PY
+
+          rm .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md
+
+          git diff --check
+          git diff --name-only | sort > "$RUNNER_TEMP/changed-files.txt"
+          cat > "$RUNNER_TEMP/expected-files.txt" <<'EOF'
+          .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md
+          .agents/Directional/CHANGELOG.md
+          .agents/Directional/REORIENTATION_PLAN.md
+          EOF
+          sort -o "$RUNNER_TEMP/expected-files.txt" "$RUNNER_TEMP/expected-files.txt"
+          diff -u "$RUNNER_TEMP/expected-files.txt" "$RUNNER_TEMP/changed-files.txt"
+
+          grep -q '86 passed / 6 failed' .agents/Directional/REORIENTATION_PLAN.md
+          grep -q 'R-A-TB3-CB-01' .agents/Directional/REORIENTATION_PLAN.md
+          ! grep -q 'next Code + Build turn must:.*REV-22' .agents/Directional/REORIENTATION_PLAN.md
+          ! grep -R -n '59 probes / 245 matches' TODO.md .agents/Directional/Future_Chat_Session_Handoff.md \
+              .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+              .agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md \
+              .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md \
+              .agents/Directional/REORIENTATION_PLAN.md
+
+          git config user.name 'Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add -f .agents/Directional/REORIENTATION_PLAN.md .agents/Directional/CHANGELOG.md \
+              .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Report.md
+          git commit -m 'docs: prune stale M1 R-A evidence state'
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+
+      - name: Upload prune evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-tb3-doc-prune-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/at-risk-inventory.txt
+            ${{ runner.temp }}/changed-files.txt
+            ${{ runner.temp }}/source-status-final.txt
+            ${{ runner.temp }}/activity.log
+          if-no-files-found: warn
+          retention-days: 7
