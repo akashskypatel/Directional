@@ -1,0 +1,63 @@
++              constraints)) {
++        result.diagnostics.surfaceCellFirstInvalidProducerStage =
++            "completion/feature-authority";
++        result.diagnostics.surfaceCellFirstInvalidProducerReason =
++            "InvalidMaterializedHardFeatureAuthority";
++        return fail_surface_cells(SurfaceCellFailureCode::NotProductionReady,
++                                  "completion");
++      }
+       if ((result.surfaceCellContext.sourceGridRecoveryUsed ||
+            useAuthoritativePhaseFront) &&
+           !aggregateLineageMesh.boundaryLoops.empty()) {
+@@ -7940,6 +8124,11 @@
+                 completedQuadLineage[static_cast<std::size_t>(issue.face)]
+                     .sourcePatch;
+           }
++        } else if (!completedValidation.authoritativeFeatureRailsPassed) {
++          result.diagnostics.surfaceCellFirstInvalidProducerReason =
++              "MissingFeatureRail";
++          result.diagnostics.surfaceCellFirstInvalidProducerValidationIssue =
++              "MissingFeatureRail";
+         } else {
+           result.diagnostics.surfaceCellFirstInvalidProducerReason =
+               "AggregateCompletionValidationFailure";
+@@ -10320,6 +10509,14 @@
+         fill_surface_cell_rail_constraints(
+             run.result.surfaceCellContext.authoritativeRails,
+             run.result.vertices, run.result.outputVertexProvenance, constraints);
++        if (has_materialized_phase_front_lineage(
++                run.result.outputVertexLineage) &&
++            !project_materialized_hard_feature_rails_from_lineage(
++                run.result.surfaceCellContext.authoritativeRails,
++                run.result.faces, run.result.outputVertexLineage,
++                constraints)) {
++          return;
++        }
+ 
+         // The component strict path may replace rail-derived boundary loops with
+         // the completion-owned aggregate mesh loops. Preserve that authority
+@@ -10554,6 +10751,30 @@
+         failure.diagnostics.terminalFailureCode;
+     merged.diagnostics.terminalFailureStage =
+         failure.diagnostics.terminalFailureStage;
++    merged.diagnostics.surfaceCellFirstInvalidProducerStage =
++        failure.diagnostics.surfaceCellFirstInvalidProducerStage;
++    merged.diagnostics.surfaceCellFirstInvalidProducerReason =
++        failure.diagnostics.surfaceCellFirstInvalidProducerReason;
++    merged.diagnostics.surfaceCellFirstInvalidProducerValidationIssue =
++        failure.diagnostics.surfaceCellFirstInvalidProducerValidationIssue;
++    merged.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues =
++        failure.diagnostics.surfaceCellFinalSourceAuthorityValidationIssues;
++    merged.diagnostics.surfaceCellFirstInvalidProducerCell =
++        failure.diagnostics.surfaceCellFirstInvalidProducerCell;
++    merged.diagnostics.surfaceCellFirstInvalidProducerHalfedge =
++        failure.diagnostics.surfaceCellFirstInvalidProducerHalfedge;
++    merged.diagnostics.surfaceCellFirstInvalidProducerTwin =
++        failure.diagnostics.surfaceCellFirstInvalidProducerTwin;
++    merged.diagnostics.surfaceCellFirstInvalidProducerNode =
++        failure.diagnostics.surfaceCellFirstInvalidProducerNode;
++    merged.diagnostics.surfaceCellFirstInvalidProducerFace =
++        failure.diagnostics.surfaceCellFirstInvalidProducerFace;
++    merged.diagnostics.surfaceCellFirstInvalidProducerVertex =
++        failure.diagnostics.surfaceCellFirstInvalidProducerVertex;
++    merged.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
