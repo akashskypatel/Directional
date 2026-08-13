@@ -1,0 +1,7 @@
+--- a/.agents/Directional/R_A_Closure_Inventory.py
++++ b/.agents/Directional/R_A_Closure_Inventory.py
+@@ -195,6 +195,10 @@
+           ("src/pipeline/RemeshPipeline.cpp",),
+           r"finalAuthorityOptions\.requireBoundaryAuthority = true;|finalAuthorityOptions\.requireFeatureRailAuthority = true;|finalAuthorityOptions\.requireLocalSheetCompatibility = true;", "present",
+           "The final oracle cannot weaken component strict gates to make aggregate output pass."),
++    Probe("REV-22", "materialized hard-feature rail authority derives from exact quotient lineage",
