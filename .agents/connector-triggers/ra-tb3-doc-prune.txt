@@ -1,0 +1,4 @@
+purpose=authorized stale documentation pruning after R-A artifact-only retry 3
+runtime_run=31667380356
+runtime_result=86/92
+implementation_mutation=false
