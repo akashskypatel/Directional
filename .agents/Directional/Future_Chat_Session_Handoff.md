@@ -6,14 +6,12 @@ This file contains only durable operating policy, exact next action, current imm
 
 ## Mandatory start-of-turn checklist
 
-1. Review the turn-based-coding-agent skill and Code + Build boundary.
-2. Review this handoff, `TODO.md`, `RETENTION_POLICY.md`, `GitHub_Workflow_Policy.md`, and the active Code + Build plan.
-3. Confirm current branch head and compare it with the exact tested source before any implementation write.
-4. Review retry-3 failure evidence in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+1. Review the turn-based-coding-agent skill and **Test + Benchmark** boundary.
+2. Review this handoff, `TODO.md`, `RETENTION_POLICY.md`, `GitHub_Workflow_Policy.md`, and the reusable artifact-only R-A plan.
+3. Confirm current branch head and compare it with exact compile source `aa16449577c48bac72257b7b9915e2b70dad3b82`; post-compile durable-document changes must not be mistaken for runtime authority.
+4. Consume only the exact immutable compile package named below. Do not rebuild or repair it.
 
-## Mandatory next turn — Code + Build only
-
-Resolve `R-A-TB3-CB-01` through `R-A-TB3-CB-04` from `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
+## Mandatory next turn — immutable artifact-only R-A retry 4
 
 Repository: `akashskypatel/Directional`  
 Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`  
@@ -21,31 +19,48 @@ PR: #8 remains open, draft, and unmerged.
 
 Entering immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`.
 
-Rejected retry-3 candidate:
-- implementation commit `38d8d7d3e97f3b496e63979cb1348ed2cda304bc`;
-- exact compile/tested source `555109796188b318c788ef5777f622705ee0aa94`;
-- compile run/job `31665352874 / 94338607395`;
-- compile result `9167759672`, SHA-256 `96401aac27a3a231533a785d107cb023cf50a304d06e821585e7c44597c6beb6`;
-- compile log `9167759825`, SHA-256 `ed859f380103b183fda2241c71ff877fa0bbc3dc0c808f5c4f5f57290daadda8`;
-- runtime run/job `31667380356 / 94344731465`;
-- runtime result `9168437730`, SHA-256 `b0bf206ec0b93f7ae009ec4bf62c318ff3d2297b85af08c7bdafd83ce7e96ab5`;
-- runtime log `9168437907`, SHA-256 `002785e52bf500489204e4c9c0616e3c91b6ac7d422056370596468da0d47919`.
+### Fresh Code + Build candidate
 
-Retry 3 immutable boundary is clean: package preflight PASS, regenerated static inventory **19 paths / 59 probes / 261 matches / PASS**, non-vacuous discovery, package postflight PASS, no rebuild/source/test/fixture mutation/package repair, `orchestration_failed=0`. Semantic result: **92 unique selected / 86 passed / 6 failed**. R-A remains open.
+- semantic implementation commit: `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`;
+- exact clean compile source: `aa16449577c48bac72257b7b9915e2b70dad3b82`;
+- compile run/job: `31674780558 / 94366870676`;
+- compile result artifact: `9171125667`, SHA-256 `0190d60057001cc2fdcb56f64e436b7bf4670bb7a571c0ae0f3af8a296594a83`;
+- compile log artifact: `9171126075`, SHA-256 `bc54bd79251bc935a171d04cd81994f211096d060904341169ce6e5777442380`.
 
-Post-runtime branch changes are documentation/control-plane only relative to `555109796188b318c788ef5777f622705ee0aa94`; they do not supersede the exact tested implementation authority above. Resolve the current branch head at the start of the next turn rather than hard-coding a documentation head here.
+Code + Build evidence:
+- approved Release/static/Ninja/PRE_TEST targets compiled and linked **118/118**, build exit `0`;
+- regenerated R-A static inventory **19 affected paths / 60 probes / 270 matches / PASS**;
+- zero unexpected raw-projection leaves, face-count leaves, and pipeline `stitchIdentity` assignments; stitch-kind classifier self-tests PASS;
+- package contains **26 files**, recursive self-excluding manifest **25/25**, exact source archive, and five empty source-status snapshots;
+- `runtimeExecution=false`, `semanticContracts=compiled-not-executed`;
+- no generated test, benchmark, GTest discovery/listing, `ctest`, CLI, fuzzer, help/version command, or custom input executed in the Code + Build turn.
 
-### Active failure clusters
+### Code + Build corrections awaiting runtime proof
 
-1. **R-A-TB3-CB-01 — test fixture:** `DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches` expected zero cardinality rebuilds but never populated a same-cardinality stale cache. Production correctly counted two missing-cardinality component patches. Build a genuine same-cardinality stale counterfactual; keep canonical/valid anti-stale assertions and the separate exact missing-cardinality positive.
+1. **R-A-TB3-CB-01:** the stale boundary-cache counterfactual now constructs true same-cardinality stale cache state before requiring zero cardinality rebuilds; canonical/valid/non-stale publication checks and the separate missing-cardinality exact-count positive remain intact.
+2. **R-A-TB3-CB-02:** authoritative phase-front hard-feature output sequences are now projected from exact materializer `HardRail` equivalence lineage plus actual output mesh edges instead of geometric proximity. Geometric rail samples remain positional optimization data only. Malformed/missing exact rail authority remains fail-closed. Failed component aggregation preserves the inner typed producer reason/context, and completion validation can report `MissingFeatureRail` explicitly.
+3. **R-A-TB3-CB-03:** provenance tamper now changes `SurfacePoint.position` while preserving the valid barycentric certificate, proves the semantic certificate changed, and expects strict `SourcePositionMismatch` rejection.
+4. **R-A-TB3-CB-04:** static inventory and fresh compile package are complete as recorded above.
 
-2. **R-A-TB3-CB-02 — feature-bearing completion:** four feature aggregate/final-oracle contracts stop earlier at component `completion`. RA-CB-F5 global-to-component feature conservation is runtime-green. Preserve/propagate the exact component completion reason, establish supported-domain status of the internal hard-edge witness, and make only the justified production/fixture correction. Do not synthesize rails, substitute empty/boundary-only feature authority, or weaken completion/final validation.
+## Retry 4 execution requirements
 
-3. **R-A-TB3-CB-03 — test fixture:** provenance tamper `(1,0,0)` can be the already-valid source-corner certificate. Replace it with a guaranteed semantic mismatch and pre-assert that the certificate actually changed; require final-oracle fail-closed without validator weakening.
+Use `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`.
 
-4. **R-A-TB3-CB-04 — static/compile closure:** regenerate the complete R-A inventory and create one fresh exact-source compile package with approved targets only. **Do not execute generated tests or benchmarks in this Code + Build turn.**
+1. Download the exact result/log artifacts above and verify both outer SHA-256 digests.
+2. Before any packaged executable runs, verify archive safety, **25/25** manifest, source SHA, build exit, five clean source-status snapshots, command boundary, and regenerate/byte-compare the packaged R-A inventory at **19 / 60 / 270 / PASS**.
+3. Independently execute GTest discovery/listing for each packaged executable used by the gate. Every selected filter must select >0 tests; zero-selected is orchestration failure.
+4. Run the **complete continuous R-A semantic gate**, not only changed tests.
+5. Preserve the established F2 per-contract evidence:
+   - `CoincidentPositionsOnDistinctTypedSheetsDoNotMerge`: success, two connected components, zero merged boundary vertices;
+   - `WrongOwnerSheetCertificatePublishesNothing`: `InvalidTypedStitchAuthority`;
+   - `SameExactBoundaryKeyRejectsIncompatibleTypedLineage`: `IncompatibleTypedStitchAuthority`;
+   - `SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility`: `IncompatibleTypedStitchAuthority`.
+6. Explicitly include the CB-01 stale-cache contracts, all four feature-bearing aggregate/final-oracle contracts implicated by CB-02, and the CB-03 provenance counterfactual in evidence.
+7. Preserve result/log artifacts before propagating any semantic failure.
+8. Postflight must prove package path/type/mode/size state, manifest, executable hashes, and symlink state unchanged. No rebuild, source/test/fixture mutation, permission/content repair, or package repair.
+9. **Close R-A / Step 4 only if every unique R-A contract passes organically with preflight/static/discovery/postflight clean.** Any failure keeps R-A open, records the earliest actual seam and exact reason, and returns to another bounded Code + Build plan.
 
-The following turn is immutable artifact-only **R-A retry 4** against that fresh package. Zero-selected discovery is orchestration failure. R-A closes only on an organic all-pass plus clean preflight/static/postflight.
+No standalone full-M1 benchmark/representative characterization is activated by this package. That retained plan remains dormant until R-A through R-G produce one fresh complete M1 package.
 
 ## Current authority and stable backlog
 
@@ -53,7 +68,7 @@ The following turn is immutable artifact-only **R-A retry 4** against that fresh
 - Migration ordering: `.agents/Directional/REORIENTATION_PLAN.md`.
 - Historical regression totals: **34 events / 14 categories / 20 recurrences**.
 - Deferred post-R-A hygiene: `RA-REV-23-F3`, `RA-REV-22-F6`.
-- R-B through R-G remain blocked behind R-A; full M1 artifact-only acceptance remains dormant until a fresh complete package exists.
+- R-B through R-G remain blocked behind R-A.
 - Product blockers remain `G4-B001` through `G4-B004`; Bunny/Vase remain later representative gates.
 
 ## Resume-critical lessons
@@ -62,7 +77,7 @@ The following turn is immutable artifact-only **R-A retry 4** against that fresh
 - A negative proves only the guard it actually reaches.
 - Exact source-row topology pairing is authority; matching extent is not.
 - Derived caches may be reconstructed only from canonical authority; cache presence is not source authority.
-- Feature options entering compact components require explicit ownership/remap and conservation.
+- Materialized hard-feature membership is semantic lineage/mesh incidence, not geometric proximity.
 - A counterfactual mutation must be proven semantically different from its baseline.
 - Do not answer semantic failure by weakening validation, fixtures, authority, lineage, or no-substitution contracts.
 - A zero-selected filter is orchestration failure, never pass.
@@ -70,10 +85,10 @@ The following turn is immutable artifact-only **R-A retry 4** against that fresh
 ## Mandatory end-of-turn checklist
 
 1. Apply `CLEAN_UP_POLICY.md` and `RETENTION_POLICY.md`.
-2. Update `TODO.md` and active plan with exact completed/open scope.
+2. Update `TODO.md` and the R-A closeout report with exact retry-4 evidence.
 3. Update `CHANGELOG.md` only for durable completed changes/evidence.
 4. Update the regression tracker only if a stable accepted regression event/pattern changes.
-5. Replace this handoff with the exact next action and fresh package authority.
+5. Replace this handoff with the exact next action/package authority.
 6. Update PR #8 durable description if stale.
 7. Remove temporary workflows/markers/payloads in policy order.
 8. Add one final summarized PR #8 conversation comment **after every other branch/PR write**.
