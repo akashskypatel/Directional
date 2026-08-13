@@ -42,6 +42,8 @@ Use `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_
 
 If the gate passes organically with clean immutable pre/postflight and regenerated static inventory, record Step 4 / R-A closure. If any contract fails organically, keep R-A open, preserve the exact failure evidence, classify the earliest intended seam actually reached, and produce the next bounded Code + Build plan. No independent Review turn is requested before this retry.
 
+**Independent re-evaluation of CB-00 through CB-04 against retry-2 runtime evidence (head `9f27a7d`; implementation `a6723f34`, byte-identical to compile-pinned `f6514a0f` on all source/test/audit paths): CB-01, CB-03, CB-04 runtime-confirmed; CB-00 vindicated; CB-02 correctly deferred.** The 61/87 → 76/88 improvement carries no weakened strict check. **Land RA-CB-F1 before attempt 3** — `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` failed in retry 2 *even though CB-01 is correct*, because it gates on aggregate success and asserts on the merge-built global owner rather than the per-component copy it is named for; it is a probe-pinned contract now reporting an unrelated blocker. **Carry RA-CB-F2 into attempt 3**: record per-contract rejection reasons for the three faces-only completion negatives. **RA-CB-F3/F4/F5 must land before R-A closes** — chart-closure discrimination through the production path, a boundary-identity anti-stale assertion that an empty identity cannot satisfy, and conservation for component feature-edge remap, which currently drops unmatched user hard/soft edges silently.
+
 M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority until the retry is accepted. RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene.
 
 ## Current authority
