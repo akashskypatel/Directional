@@ -1,0 +1,25 @@
+name: Agent R-A TB CB00-04 Compile Verify
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-tb-cb-00-04-verify-20260812.txt
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: agent-ra-tb-cb-00-04-verify-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 871cfae1f3b672ad9e75235730747dcda8c910d1
+      artifact_prefix: ra-tb-cb-00-04-verify
+      cache_epoch: v1
+    secrets: inherit
