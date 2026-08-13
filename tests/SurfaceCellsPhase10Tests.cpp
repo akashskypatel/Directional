@@ -5164,6 +5164,34 @@ TEST(SurfaceCellAuthorityContractCutover,
 
 
 TEST(SurfaceCellAuthorityContractCutover,
+     PostMoveAggregateOptimizerUsesRetainedSourceAuthority) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto result =
+      directional::pipeline::remesh_surface_cell_components_from_cross_field(
+          mesh.V, mesh.F, crossField, options);
+
+  ASSERT_TRUE(result.success)
+      << result.diagnostics.terminalFailureCode << ':'
+      << result.diagnostics.terminalFailureStage;
+  ASSERT_TRUE(result.surfaceCellContext.sourceTopologyRegions.has_value());
+  EXPECT_TRUE(result.surfaceCellContext.sourceTopologyRegions->matches_source_faces(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows())));
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
      DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches) {
   const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
   const auto crossField =

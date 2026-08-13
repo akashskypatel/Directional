@@ -598,25 +598,31 @@ TEST(SurfaceMeshOptimizerPhase19,
 }
 
 TEST(SurfaceMeshOptimizerPhase19,
-     TriangleProjectionFailsClosedWhenRequiredSheetIsUnavailable) {
+     TriangleProjectionFailsClosedWhenTypedSourceAuthorityDoesNotMatchSourceFaces) {
   auto constraints = constraints_for_source_triangles();
-  const auto sourceAuthority =
-      test_source_authority(constraints.sourceFaces, {0, 0}, {0, 0});
-  constraints.sourceAuthority = &sourceAuthority;
-  constraints.vertexProvenance.resize(4);
-  for (auto &point : constraints.vertexProvenance) {
-    point.face = 0;
-    point.component = 0;
-    point.sheet = 9;
-    point.barycentric << 1.0, 0.0, 0.0;
-  }
+  Eigen::MatrixXi foreignFaces = constraints.sourceFaces;
+  ASSERT_GE(foreignFaces.rows(), 2);
+  const Eigen::RowVectorXi firstForeignRow = foreignFaces.row(0);
+  foreignFaces.row(0) = foreignFaces.row(1);
+  foreignFaces.row(1) = firstForeignRow;
+  const auto foreignAuthority =
+      test_source_authority(foreignFaces, {0, 0}, {0, 0});
+  ASSERT_FALSE(foreignAuthority.matches_source_faces(
+      constraints.sourceFaces,
+      static_cast<std::size_t>(constraints.sourceVertices.rows())));
+  constraints.sourceAuthority = &foreignAuthority;
 
   const auto result = directional::geometry::optimize_projected_surface_mesh(
       source_triangle_vertices(), one_quad(), constraints);
 
+  EXPECT_TRUE(result.rolledBackToInput);
   EXPECT_FALSE(result.projectionStayedOnSheets);
   EXPECT_FALSE(result.projectionHasCompleteProvenance);
   EXPECT_FALSE(result.sourceTriangleProjectionUsed);
+  ASSERT_FALSE(result.lastHardInvariantIssues.empty());
+  EXPECT_EQ(directional::validation::MeshValidationFailureCode::
+                MissingSourceAuthority,
+            result.lastHardInvariantIssues.front().code);
 }
 
 TEST(SurfaceMeshOptimizerPhase19,

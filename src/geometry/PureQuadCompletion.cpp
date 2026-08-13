@@ -996,13 +996,43 @@ bool validate_completion_domain_ownership(
         failure = "CompletionOwnershipInvalidPublishedFaceAuthority";
         return false;
       }
-      lineage.sourceTopologyRegions = {
-          sourceAuthority->region_for_row(selectedFaceId.value())};
-      lineage.sourceIsolationSheets = {
-          sourceAuthority->sheet_for_row(selectedFaceId.value())};
-      if (const auto chart = transitionGraph.chart(provenance.face);
-          chart.has_value()) {
-        lineage.sourceCharts = {chart.value()};
+      const authority::TopologyRegionId selectedRegion =
+          sourceAuthority->region_for_row(selectedFaceId.value());
+      const authority::IsolationSheetId selectedSheet =
+          sourceAuthority->sheet_for_row(selectedFaceId.value());
+      lineage.sourceTopologyRegions = {selectedRegion};
+      lineage.sourceIsolationSheets = {selectedSheet};
+      lineage.sourceCharts.clear();
+
+      // A boundary vertex/edge can be represented on multiple incident source
+      // faces.  Publish the complete chart closure for the selected typed
+      // region/sheet owner, not one patch-local face row.  Adjacent patches on
+      // the same owner then intersect on genuine source authority, while
+      // isolation-sheet/region boundaries remain disjoint.
+      for (const authority::SourceFaceId incidentFace : support.incidentFaces) {
+        if (sourceAuthority->region_for_row(incidentFace) != selectedRegion ||
+            sourceAuthority->sheet_for_row(incidentFace) != selectedSheet) {
+          continue;
+        }
+        const int candidateFace = static_cast<int>(incidentFace.index());
+        if (transitionAuthorityAvailable) {
+          SurfacePoint rebound;
+          if (!transitionGraph.rebind(provenance, candidateFace, rebound)) {
+            continue;
+          }
+        }
+        if (const auto chart = transitionGraph.chart(candidateFace);
+            chart.has_value()) {
+          lineage.sourceCharts.push_back(chart.value());
+        }
+      }
+      std::sort(lineage.sourceCharts.begin(), lineage.sourceCharts.end());
+      lineage.sourceCharts.erase(
+          std::unique(lineage.sourceCharts.begin(), lineage.sourceCharts.end()),
+          lineage.sourceCharts.end());
+      if (lineage.sourceCharts.empty()) {
+        failure = "CompletionOwnershipMissingPublishedSourceChart";
+        return false;
       }
       lineage.sourceSupport = support.identity;
     }
@@ -1544,7 +1574,7 @@ PureQuadCompletionResult complete_pure_quad_patch(
   mesh.sourcePatch = options.sourcePatch;
   mesh.sourceSideEdgeCounts = patch.sideEdgeCounts;
   pure_quad_detail::initialize_boundary_embedding(patch, mesh);
-  if ((options.sourceVertices == nullptr) != (options.sourceFaces == nullptr)) {
+  if (options.sourceVertices != nullptr && options.sourceFaces == nullptr) {
     result.failureReason = PureQuadPatchRejectReason::MissingBoundaryData;
     return result;
   }
@@ -1553,9 +1583,11 @@ PureQuadCompletionResult complete_pure_quad_patch(
   const SurfacePointSourceSupportResolver *sourceSupportResolver =
       options.sourceSupportResolver;
   std::vector<unsigned char> allowedFaces;
-  if (options.sourceVertices != nullptr && options.sourceFaces != nullptr) {
-    projection = std::make_unique<SurfaceProjectionBvh>(
-        *options.sourceVertices, *options.sourceFaces);
+  if (options.sourceFaces != nullptr) {
+    // Intrinsic vertex/edge/face support is a topological property of the
+    // source-face matrix.  It does not require source positions.  Generated
+    // geometry still needs the projection BVH below and therefore both source
+    // matrices.
     if (sourceSupportResolver == nullptr) {
       ownedSourceSupport = std::make_unique<SurfacePointSourceSupportResolver>(
           *options.sourceFaces);
@@ -1570,6 +1602,10 @@ PureQuadCompletionResult complete_pure_quad_patch(
         }
       }
     }
+  }
+  if (options.sourceVertices != nullptr && options.sourceFaces != nullptr) {
+    projection = std::make_unique<SurfaceProjectionBvh>(
+        *options.sourceVertices, *options.sourceFaces);
   }
   const std::vector<unsigned char> *allowedFacePtr =
       allowedFaces.empty() ? nullptr : &allowedFaces;

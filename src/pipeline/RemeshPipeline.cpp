@@ -6413,6 +6413,17 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     const std::uint64_t tracingHash = hash_trace_network(traceNetwork);
     result.surfaceCellContext.traceNetwork = std::move(traceNetwork);
     result.surfaceCellContext.hasTraceNetwork = true;
+    // phaseFrontProduct points into the moved-from local traceNetwork.  Do not
+    // dereference it after this ownership transfer: std::variant preserves the
+    // active alternative in a moved-from state, so the pointer can remain
+    // non-null while its typed source authority has been emptied.  The exact
+    // checked owner was retained above specifically for the remainder of this
+    // pipeline lifetime.
+    phaseFrontProduct = nullptr;
+    const geometry::SourceTopologyRegions *retainedSourceAuthority =
+        result.surfaceCellContext.sourceTopologyRegions.has_value()
+            ? &result.surfaceCellContext.sourceTopologyRegions.value()
+            : nullptr;
     const geometry::SurfaceCellNetwork &retainedTraceNetwork =
         result.surfaceCellContext.traceNetwork;
     const SurfaceCellObjectIdentity tracingIdentity = make_identity(
@@ -6620,9 +6631,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     std::vector<geometry::SurfaceArrangementArc> arrangementArcs =
         surface_arrangement_arcs_from_flow_rep(
             embeddingFlowRepArcs, embeddingSparseFlowRep, meshWhole.F,
-            phaseFrontProduct != nullptr
-                ? &phaseFrontProduct->sourceTopologyRegions
-                : nullptr,
+            retainedSourceAuthority,
             hardFeatureRailEdges.empty() ? nullptr : &hardFeatureRailEdges);
     if (!retainForExecution) {
       // Arrangement arcs are a compact projection of the retained FlowRep.
@@ -6670,10 +6679,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
     arrangementOptions.useAuthoritativeProposalCycles =
         useAuthoritativePhaseFront;
     arrangementOptions.hardFeatureEdges = hardFeatureRailEdges;
-    arrangementOptions.sourceAuthority =
-        phaseFrontProduct != nullptr
-            ? &phaseFrontProduct->sourceTopologyRegions
-            : nullptr;
+    arrangementOptions.sourceAuthority = retainedSourceAuthority;
     const std::vector<geometry::SurfaceArrangementArc> &arrangementInputArcs =
         retainForExecution
             ? result.surfaceCellContext.embeddedArrangementArcs
@@ -6914,10 +6920,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
         result.surfaceCellContext.crossField.singularCycles;
     completionOptions.descriptorOptions.singularIndices =
         result.surfaceCellContext.crossField.singularIndices;
-    completionOptions.sourceAuthority =
-        phaseFrontProduct != nullptr
-            ? &phaseFrontProduct->sourceTopologyRegions
-            : nullptr;
+    completionOptions.sourceAuthority = retainedSourceAuthority;
     completionOptions.sourceHardFeatureEdges = &hardFeatureRailEdges;
     geometry::SurfaceCellComplexCompletionResult completionResult;
     if (useAuthoritativePhaseFront) {
@@ -7349,9 +7352,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       const FieldAlignedSourceQuadRecoveryResult recovery =
           recover_unique_field_aligned_source_quads(
               meshWhole, result.surfaceCellContext.crossField,
-              phaseFrontProduct != nullptr
-                  ? &phaseFrontProduct->sourceTopologyRegions
-                  : nullptr,
+              retainedSourceAuthority,
               &hardFeatureRailEdges);
       if (recovery.success) {
         aggregateLineageMesh = recovery.mesh;
@@ -7755,10 +7756,7 @@ remesh_from_raw_cross_field_impl(const TriMesh &meshWhole,
       constraints.sourceNormals = meshWhole.faceNormals;
       constraints.sourceFieldX = faceAxisX;
       constraints.sourceFieldY = faceAxisY;
-      if (phaseFrontProduct != nullptr) {
-        constraints.sourceAuthority =
-            &phaseFrontProduct->sourceTopologyRegions;
-      }
+      constraints.sourceAuthority = retainedSourceAuthority;
       constraints.sourceHardFeatureEdges = hardFeatureRailEdges;
       constraints.outputQuadSourceFaces.assign(
           static_cast<std::size_t>(completedQuads.rows()), -1);

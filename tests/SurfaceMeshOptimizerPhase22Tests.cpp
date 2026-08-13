@@ -865,7 +865,10 @@ TEST(SurfaceMeshOptimizerPhase22,
   const auto provenance = provenance_for(output, output, sourceFaces,
                                          components, sheets);
   SurfaceOptimizationConstraints boundaryConstraints;
-  boundaryConstraints.sourceAuthority = test_source_authority(sourceFaces, components, sheets);
+  boundaryConstraints.sourceVertices = output;
+  boundaryConstraints.sourceFaces = sourceFaces;
+  boundaryConstraints.sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::geometry::fill_surface_optimization_rail_constraints(
       {boundary}, output, provenance, boundaryConstraints);
 
@@ -876,7 +879,10 @@ TEST(SurfaceMeshOptimizerPhase22,
   EXPECT_EQ(boundaryConstraints.authoritativeBoundaryEdges.size(), 4U);
 
   SurfaceOptimizationConstraints featureConstraints;
-  featureConstraints.sourceAuthority = test_source_authority(sourceFaces, components, sheets);
+  featureConstraints.sourceVertices = output;
+  featureConstraints.sourceFaces = sourceFaces;
+  featureConstraints.sourceAuthority =
+      test_source_authority(sourceFaces, components, sheets);
   directional::geometry::fill_surface_optimization_rail_constraints(
       {feature}, output, provenance, featureConstraints);
   EXPECT_TRUE(featureConstraints.featureRailAuthorityProvided);

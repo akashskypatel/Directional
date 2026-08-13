@@ -1724,6 +1724,7 @@ TEST(PureQuadCompletionPhase18,
       fixture.faces, {0, 0, 1}, {0, 0, 1});
   directional::geometry::PureQuadCompletionOptions firstOptions;
   firstOptions.sourcePatch = 301;
+  firstOptions.sourceVertices = &fixture.vertices;
   firstOptions.sourceFaces = &fixture.faces;
   firstOptions.sourceAuthority = &sourceAuthority;
   directional::geometry::PureQuadCompletionOptions secondOptions =
@@ -1777,6 +1778,7 @@ TEST(PureQuadCompletionPhase18,
       fixture.faces, {0, 0, 1}, {0, 0, 1});
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 600;
+  options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
   options.sourceAuthority = &sourceAuthority;
   const auto completion = directional::geometry::complete_pure_quad_patch(
@@ -1898,18 +1900,23 @@ TEST(PureQuadCompletionPhase18,
   }
   ASSERT_GE(incidentFaces.size(), 3U);
 
-  const auto append_valid_chart = [&](auto &lineage, const int face) {
-    const auto chart = test_source_chart(faces, sourceAuthority, face);
-    if (std::find(lineage.sourceCharts.begin(), lineage.sourceCharts.end(),
-                  chart) == lineage.sourceCharts.end()) {
-      lineage.sourceCharts.push_back(chart);
-    }
-  };
-  append_valid_chart(firstLineage, incidentFaces[0]);
-  append_valid_chart(secondLineage, incidentFaces[1]);
-  if (firstLineage.sourceCharts == secondLineage.sourceCharts) {
-    append_valid_chart(secondLineage, incidentFaces[2]);
-  }
+  // Start from owner-valid chart closures that overlap on one canonical
+  // source chart but are intentionally non-identical.  This exercises the
+  // post-intersection certificate rather than relying on whichever incident
+  // face each patch selected during completion.
+  const auto commonChart =
+      test_source_chart(faces, sourceAuthority, incidentFaces[0]);
+  const auto firstExtraChart =
+      test_source_chart(faces, sourceAuthority, incidentFaces[1]);
+  const auto secondExtraChart =
+      test_source_chart(faces, sourceAuthority, incidentFaces[2]);
+  ASSERT_NE(commonChart, firstExtraChart);
+  ASSERT_NE(commonChart, secondExtraChart);
+  ASSERT_NE(firstExtraChart, secondExtraChart);
+  firstLineage.sourceCharts = {commonChart, firstExtraChart};
+  secondLineage.sourceCharts = {commonChart, secondExtraChart};
+  std::sort(firstLineage.sourceCharts.begin(), firstLineage.sourceCharts.end());
+  std::sort(secondLineage.sourceCharts.begin(), secondLineage.sourceCharts.end());
   firstLineage.authoritativeIdentity = {};
   secondLineage.authoritativeIdentity = {};
 
@@ -2283,6 +2290,7 @@ TEST(PureQuadCompletionPhase18,
       fixture.faces, {0, 0, 1}, {0, 0, 1});
   directional::geometry::PureQuadCompletionOptions options;
   options.sourcePatch = 607;
+  options.sourceVertices = &fixture.vertices;
   options.sourceFaces = &fixture.faces;
   options.sourceAuthority = &sourceAuthority;
   const auto completion = directional::geometry::complete_pure_quad_patch(
