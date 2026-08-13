@@ -29,6 +29,14 @@ jobs:
           git status --porcelain=v1 | tee "$RUNNER_TEMP/status-before.txt"
           test ! -s "$RUNNER_TEMP/status-before.txt"
           python3 .agents/Directional/turn-payloads/ra-tb-retry-closeout/closeout.py
+          for path in \
+            .agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md \
+            .agents/Directional/CHANGELOG.md \
+            .agents/Directional/Future_Chat_Session_Handoff.md \
+            TODO.md; do
+            sed -i 's/[[:space:]]\+$//' "$path"
+          done
           git diff --check
           changed="$(git status --porcelain=v1 | sed -E 's/^.. //' | sort)"
           expected="$(printf '%s\n' \
