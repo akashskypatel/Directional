@@ -2,9 +2,9 @@
 
 **Status:** authoritative architecture-migration roadmap  
 **Normative design:** `.agents/Directional/DESIGN.md`  
-**Current R-A tested source:** `555109796188b318c788ef5777f622705ee0aa94`  
-**Latest R-A runtime:** `31667380356 / 94344731465` — **86/92 pass, 6 fail**  
-**Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap.**  
+**Current R-A compile candidate:** `aa16449577c48bac72257b7b9915e2b70dad3b82`
+**Latest R-A runtime:** retry 3 `31667380356 / 94344731465` — **86/92 pass, 6 fail**; retry 4 pending
+**Decision:** **R-A retry-3 remediation is compile-valid; execute immutable retry 4 before continuing R-B through R-G.**
 **Last updated:** 2026-08-13 UTC
 
 Repository authority: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8. Keep the PR open, draft, and unmerged until separately authorized.
@@ -54,18 +54,16 @@ M1a-M1l and T1 remain accepted historical authority. M1l source `bd140cff4572412
 
 Artifact-only retry 3 tested exact source `555109796188b318c788ef5777f622705ee0aa94` from compile package `9167759672 / 9167759825`. Immutable preflight, regenerated static inventory (**19 paths / 59 probes / 261 matches / PASS**), non-vacuous discovery, and postflight all passed. Runtime run/job `31667380356 / 94344731465` selected **92 unique contracts: 86 passed / 6 failed**, with zero orchestration failures and no package/source/test/fixture mutation or repair.
 
-R-A remains open. The six failures reduce to three bounded Code + Build clusters:
+R-A remains open. The three retry-3 failure clusters are now remediated at the Code + Build boundary: same-cardinality stale-cache fixture state is explicit; phase-front hard-feature output authority is projected from exact materializer `HardRail` lineage and mesh incidence instead of proximity; and the provenance negative now guarantees a semantic source-position mismatch. Semantic implementation is `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`.
 
-1. a same-cardinality stale boundary-cache counterfactual that never actually populated same cardinality;
-2. feature-bearing component completion preventing four aggregate/final-oracle feature contracts from reaching their intended seams;
-3. a provenance counterfactual whose `(1,0,0)` mutation can be semantically neutral.
+Fresh exact compile source `aa16449577c48bac72257b7b9915e2b70dad3b82` regenerated the R-A inventory at **19 paths / 60 probes / 270 matches / PASS** and compiled the approved targets **118/118** in run/job `31674780558 / 94366870676`. Immutable retry-4 package authority is result `9171125667` / log `9171126075`. No generated runtime executed during Code + Build.
 
-Exact corrective requirements live in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`; exact runtime evidence lives in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+The next decision is immutable artifact-only retry 4. Exact execution authority lives in the handoff and reusable R-A artifact-only plan; retry-3 runtime evidence remains in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## 5. M1 completion sequence
 
-1. Execute `R-A-TB3-CB-01` through `R-A-TB3-CB-04` as Code + Build only and produce one fresh immutable compile package.
-2. Execute artifact-only R-A retry 4 against that exact package. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/postflight.
+1. `R-A-TB3-CB-01` through `R-A-TB3-CB-04` are Code + Build complete at exact compile source `aa16449577c48bac72257b7b9915e2b70dad3b82`.
+2. Execute artifact-only R-A retry 4 against package `9171125667 / 9171126075`. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/postflight.
 3. After R-A closes, complete R-B through R-G in the same bounded cadence.
 4. Produce one fresh complete M1 package and execute the full M1 artifact-only acceptance/characterization gate.
 5. Only after M1 acceptance resume M2-M8.

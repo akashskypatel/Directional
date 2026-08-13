@@ -17,6 +17,19 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+
+### Fixed — R-A-TB3-CB-01 through R-A-TB3-CB-03 retry-3 remediation
+
+- Corrected the stale boundary-cache counterfactual so the zero-rebuild case now constructs genuine same-cardinality stale cache state before aggregate canonical refresh; the separate missing-cardinality exact rebuild-count positive remains intact.
+- Replaced phase-front hard-feature semantic reconstruction by rail-sample proximity with exact projection from materializer `HardRail` quotient-equivalence lineage plus actual output mesh edges. Geometric rail samples remain positional optimization data only; malformed/missing exact rail authority remains fail-closed. Failed component aggregation now retains the inner producer reason/context, and completion validation can report typed `MissingFeatureRail`.
+- Replaced the potentially neutral `(1,0,0)` provenance mutation with a guaranteed source-position certificate mismatch and a non-vacuous mutation precondition; strict validation remains unchanged and expects `SourcePositionMismatch`.
+
+### Validation — R-A-TB3-CB-04 fresh compile package
+
+- Semantic implementation commit `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`; exact clean compile source `aa16449577c48bac72257b7b9915e2b70dad3b82`. Regenerated R-A inventory: **19 affected paths / 60 probes / 270 matches / PASS**, with zero unexpected raw-projection, face-count, and pipeline `stitchIdentity` leaves and classifier self-test PASS.
+- Compile run/job `31674780558 / 94366870676` completed the approved Release/static/Ninja/PRE_TEST targets **118/118**, build exit `0`. Result artifact `9171125667` SHA-256 `0190d60057001cc2fdcb56f64e436b7bf4670bb7a571c0ae0f3af8a296594a83`; log artifact `9171126075` SHA-256 `bc54bd79251bc935a171d04cd81994f211096d060904341169ce6e5777442380`.
+- Package evidence is **26 files**, recursive self-excluding manifest **25/25**, exact source archive, five empty source-status snapshots, `runtimeExecution=false`, and `semanticContracts=compiled-not-executed`. No generated Directional test, benchmark, discovery/listing command, `ctest`, CLI, fuzzer, help/version command, or custom input executed. R-A remains open pending immutable artifact-only retry 4.
+
 ### Validation — R-A artifact-only retry 3
 
 - Exact tested source `555109796188b318c788ef5777f622705ee0aa94`, compile package `9167759672 / 9167759825`; runtime run/job `31667380356 / 94344731465`. Runtime result artifact `9168437730` SHA-256 `b0bf206ec0b93f7ae009ec4bf62c318ff3d2297b85af08c7bdafd83ce7e96ab5`; runtime log artifact `9168437907` SHA-256 `002785e52bf500489204e4c9c0616e3c91b6ac7d422056370596468da0d47919`.
