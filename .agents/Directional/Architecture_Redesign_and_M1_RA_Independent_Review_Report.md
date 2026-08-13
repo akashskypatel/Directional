@@ -14,6 +14,80 @@
 **Post-re-review remediation status:** **RA-REV-22-F4/F5 and RA-REV-23-F2 are Code + Build remediated / compile-valid at `64fa65a9379ad0a246393371516de3a3a7146243` with widened static inventory PASS and a fresh compile package; this is implementation/build evidence, not a new independent review or runtime acceptance.**
 **Latest independent re-review verdict at source `64fa65a9379ad0a246393371516de3a3a7146243`:** **RA-REV-22-F4, RA-REV-22-F5, and RA-REV-23-F2 are CLOSED at the Code + Build boundary. The R-A contract set is complete; no finding blocks the Test + Benchmark gate. Two deferred hygiene items are recorded (RA-REV-23-F3, RA-REV-22-F6) and are explicitly post-R-A backlog. Overall R-A remains rejected/open pending organic runtime execution.**
 
+## Independent review addendum — R-A-TB-CB-00 through CB-04 re-evaluated against retry-2 runtime evidence
+
+This Review re-baselined on branch head `9f27a7d`. The retry-2 remediation landed as `a6723f34707701fc1174c0889028327ff8666c9a`; `git diff a6723f34..HEAD -- src include tests .agents/Directional/R_A_Closure_Inventory.py` is empty, and the source pinned by the new compile package, `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae` ("chore: remove R-A retry2 apply payload", three commits later), is **byte-identical on all implementation, test, and audit paths**. So `R-A-TB2-CB-01` through `R-A-TB2-CB-04` at `f6514a0f` are exactly the `a6723f34` changes reviewed here, and the branch head is a valid review proxy for both. The static inventory at this head reproduces byte-for-byte at **54 probes / 226 matches / PASS**.
+
+This addendum covers the original CB-00 through CB-04 *as judged by retry-2 runtime evidence*, plus the TB2 remediation that now sits on top of CB-01. Documentation-only turn; the only command executed was the source-only static audit and direct inspection of the audit script's classifiers.
+
+**Decision: CB-01, CB-03, and CB-04 are now RUNTIME-CONFIRMED. CB-00's reasoning is runtime-vindicated. CB-02 is not yet provable and correctly deferred. Two findings from the previous review are resolved or escalated by the runtime evidence, and two new findings are opened against the retry-2 remediation. R-A remains open.**
+
+### Correction to my own reading
+
+On first pass I misread this report's structure and briefly concluded retry 2 had re-run the pre-fix package. That was wrong. Sections 1-7 are the retained attempt-1 record; the retry is section 8, and its 8.1 boundary correctly records exact source `92bf0ae`, package `9164349848 / 9164350085`, the **50-probe / 206-match** inventory, and 232 producer tests — all matching the CB package, not the old one. The retry is authentic.
+
+One real hazard remains from that structure: the document's top header block was overwritten with "Latest …" values while sections 1-2 still describe attempt 1, so the header sits directly above preflight text that verifies the *superseded* digest `c521a94e…` and source `64fa65a…`. Section 4 also repeats the attempt-1 Class A text verbatim, including the `phaseFrontProduct != nullptr` diagnosis this review already rejected and line numbers that no longer mean what they did. **Corrective measure:** scope each section's header to its own attempt and mark sections 1-7 explicitly retained/superseded, so a future turn cannot lift the stale Class A narrative as current.
+
+### Checkpoint re-evaluation
+
+| Item | Prior verdict | Verdict on runtime evidence |
+|---|---|---|
+| CB-00 | accepted (source inspection only) | **vindicated** — the symptom moved off `optimization / MissingSourceAuthority`, which the use-after-move reading predicted and the null-guard reading did not |
+| CB-01 | accepted by inspection | **runtime-confirmed** — the transport blocker is gone |
+| CB-02 | accepted, verification pending | **not yet provable; correctly deferred** — final-oracle contracts now fail downstream of a different blocker |
+| CB-03 | accepted, discrimination unproven | **runtime-confirmed** — 18/18 completion contracts pass, including both former `IncompatibleTypedStitchAuthority` positives |
+| CB-04 | accepted | **runtime-confirmed** — 2/2 direct, optimizer/final-validator set 8/8 |
+| Overall R-A | open | **open** — 76/88, twelve `SurfaceCellAuthorityContractCutover` failures remain |
+
+The gate moved from 61/87 to 76/88 with no weakening of any strict check I can find. Attempt 1's Classes B, C, and D are now closed by runtime; the residue is a single new blocker plus its downstream contracts.
+
+### Resolved and escalated prior findings
+
+- **RA-TB-F1 (my correction of the Class A root cause) is runtime-vindicated.** CB-01 was written to my reading, and `MissingSourceAuthority` at stage `optimization` disappeared. Had the original null-guard diagnosis been implemented instead, the branch added for a case that never fires would have changed nothing.
+- **RA-CB-F1 is escalated from "should fix" to "actively misleading."** `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` **failed** in retry 2 *even though CB-01 is correct*, exactly as predicted: it gates on aggregate `result.success` and asserts on the merge-built global owner from `RemeshPipeline.cpp:11497`, not the per-component `:6210` copy it is named for. It is now a red signal attributable to an unrelated blocker, on a contract pinned by an inventory probe. Fix it as previously specified — drive `remesh_from_raw_cross_field` on a single connected mesh — before the next retry, so its colour means something.
+- **RA-CB-F2 was not honored.** The retry did not record per-contract rejection reasons for the three faces-only completion negatives (`CoincidentPositionsOnDistinctTypedSheetsDoNotMerge`, `WrongOwnerSheetCertificatePublishesNothing`, `SameExactBoundaryKeyRejectsIncompatibleTypedLineage`). They are inside the 18/18 pass, but a pass does not establish that a negative rejected for its intended reason. Carry the requirement into the next retry.
+- **RA-CB-F3's trigger condition has fired.** Both `IncompatibleTypedStitchAuthority` positives are green, which is the case in which I said the production-path discrimination negative becomes required before R-A closes. Still unaddressed.
+
+### RA-CB-F4 — the boundary-identity cache relaxation is sound, but its anti-stale contract no longer proves what it reads
+
+**Non-blocking.**
+
+**Evidence**
+
+- `rebuild_aggregate_output_identity_caches` previously rejected when `patch.boundaryNodeIdentities.size() != patch.boundaryVertices.size()`. It now counts that case into `surfaceCellAggregateIdentityBoundaryCacheRebuildCount` and unconditionally executes `patch.boundaryNodeIdentities.assign(patch.boundaryVertices.size(), {})`.
+- The relaxation itself is **justified**: every entry is then refilled from `patch.vertexLineage[row->second].stitchIdentity.canonical`, with a fail-closed `AggregateIdentityInvalidPatchBoundaryVertex` when the local vertex is absent. Requiring a pre-existing cache of final extent demanded an input the authoritative materializer legitimately does not produce. It is also monitored — `EXPECT_GT(...BoundaryCacheRebuildCount, 0U)` proves the path is exercised — and pinned by a probe. The wider conversion of `return false` into typed `AggregateIdentity*` sub-invariants with patch/vertex/face indices is a real diagnostic improvement, and `AggregateIdentityRebuildReportsInvalidPatchMetadataSubInvariant` proves the reporting works.
+- The residue is in the REV-23 anti-stale contract. `DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches` (`SurfaceCellsPhase10Tests.cpp:5387-5389`) still asserts only `EXPECT_NE({staleToken}, identity.values)` on boundary node identities. Now that the cache is wiped and refilled unconditionally, that assertion is also satisfied by an **empty or invalid** identity. The contract reads as "stale caches are replaced by canonical ones" but now only proves "the stale token is absent."
+
+**Corrective measures**
+
+1. In that contract, additionally require each boundary identity to be valid and to equal the canonical of its corresponding lineage — the same equality already asserted for `vertexLineage`.
+2. Assert the boundary-cache rebuild count is consistent with the fixture rather than merely non-zero, so a future regression that wipes more caches than expected is visible.
+
+### RA-CB-F5 — component feature-edge remap can silently drop user authority
+
+**Non-blocking, but this is authority loss, not fixture noise.**
+
+**Evidence**
+
+- `remap_component_surface_cell_feature_options` (`RemeshPipeline.cpp:8562-8590`) maps each global user hard/soft edge into compact component-local indices and `continue`s — silently dropping the edge — when either endpoint is not in the component.
+- Dropping is correct for an edge belonging to a different component. It is **not** distinguishable from an edge that belongs to no component at all, one whose endpoints straddle two components, or one referencing a stale vertex id. In every such case a user-specified hard feature vanishes with no diagnostic and no failure.
+- `ComponentFeatureOptionsRemapOwnedEdgesWithoutCrossComponentLeakage` proves the two directions that matter for leakage — foreign edges do not appear, owned edges do — but nothing proves **conservation**: that the union of remapped edges across all components accounts for every global user edge.
+- This matters because hard-feature authority is exactly what the F4 feature contracts depend on. A silently dropped rail would present as a fixture-adequacy failure at the far end of the pipeline, which is the hardest failure mode to attribute correctly.
+
+**Corrective measures**
+
+1. Count dropped edges into a typed diagnostic and assert conservation: every global user hard/soft edge is either remapped into exactly one component or explicitly accounted as unassigned.
+2. Fail closed, or surface a typed reason, when a user-specified hard edge is assigned to no component — a user asked for a feature that the run will not honor.
+3. Extend the no-leakage contract with a conservation assertion over the union.
+
+### Review conclusion
+
+The remediation is converging on real defects and the runtime numbers reflect genuine progress, not weakened checks. The one relaxation in this change (boundary-cache extent) is justified, monitored, and paired with a complete authoritative refill.
+
+Before the next retry, land RA-CB-F1 so the CB-01 regression contract stops reporting an unrelated blocker. Carry RA-CB-F2 into the retry as a reporting requirement. RA-CB-F3, RA-CB-F4, and RA-CB-F5 must land before R-A is declared complete. Report-structure scoping (above) should be fixed when the T+B report is next touched, so the superseded Class A narrative cannot be re-adopted.
+
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. Regression totals remain **34 / 14 / 20**.
+
 ## Independent review addendum — R-A artifact-only Step 3 failure analysis
 
 This Review inspected the artifact-only Test + Benchmark report `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md` and the exact runtime candidate source `64fa65a9379ad0a246393371516de3a3a7146243` against which it ran. Documentation-only turn; no configure, compile, generated binary, discovery, test, benchmark, `ctest`, CLI, fuzzer, or custom input executed.
