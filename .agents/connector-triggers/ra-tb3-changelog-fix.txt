@@ -1,2 +1,0 @@
-purpose=correct stale R-A inventory count from 245 to packaged 261
-implementation_mutation=false
