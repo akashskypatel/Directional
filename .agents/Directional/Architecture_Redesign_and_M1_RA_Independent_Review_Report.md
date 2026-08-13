@@ -14,6 +14,48 @@
 **Post-re-review remediation status:** **RA-REV-22-F4/F5 and RA-REV-23-F2 are Code + Build remediated / compile-valid at `64fa65a9379ad0a246393371516de3a3a7146243` with widened static inventory PASS and a fresh compile package; this is implementation/build evidence, not a new independent review or runtime acceptance.**
 **Latest independent re-review verdict at source `64fa65a9379ad0a246393371516de3a3a7146243`:** **RA-REV-22-F4, RA-REV-22-F5, and RA-REV-23-F2 are CLOSED at the Code + Build boundary. The R-A contract set is complete; no finding blocks the Test + Benchmark gate. Two deferred hygiene items are recorded (RA-REV-23-F3, RA-REV-22-F6) and are explicitly post-R-A backlog. Overall R-A remains rejected/open pending organic runtime execution.**
 
+## Independent review addendum — RA-CB-F1 through RA-CB-F5 pre-runtime readiness
+
+Reviewed at implementation `38d8d7d3e97f3b496e63979cb1348ed2cda304bc`. The compile-pinned source `555109796188b318c788ef5777f622705ee0aa94` is **byte-identical** to it and to branch head `58e9150` across `src`, `include`, `tests`, `.github`, the audit script, and the audit report, so the head is a valid review proxy. Compile run `31665352874` (head_sha `610164ac`) passes `source_sha: 5551097961` into `agent-compile-reusable.yml`, which asserts checkout equality before archiving. Documentation-only turn; the only command executed was the source-only static audit.
+
+**Decision: RA-CB-F1 through RA-CB-F5 are all CLOSED at the Code + Build boundary. One durable-document defect must be corrected before the retry starts, because it would make preflight fail on a correct package.**
+
+### Verified closures
+
+| Finding | Verdict | Evidence |
+|---|---|---|
+| RA-CB-F1 | **closed** | replaced by `PostMoveSingleComponentOptimizerUsesRetainedSourceAuthority`, which drives `remesh_from_raw_cross_field` on `make_square_mesh()` — the non-aggregate entry, where the published optional **is** the `:6210` retained copy — and asserts `sourceTopologyRegions.has_value()` plus `surfaceCellFirstInvalidProducerReason != "MissingSourceAuthority"`. The old aggregate-gated name is gone from the tree and the inventory probe is repointed to the new one. Both corrective measures taken. |
+| RA-CB-F2 | **closed as a carry-forward** | the T+B plan now carries a per-contract reason-capture amendment. It is more careful than I asked: it records that `CoincidentPositionsOnDistinctTypedSheetsDoNotMerge` is a *successful non-merge* contract and must be evidenced as `success=true`, two components, `mergedBoundaryVertices=0` "rather than inventing a failure string", while `WrongOwnerSheetCertificatePublishesNothing` must carry `InvalidTypedStitchAuthority` and `SameExactBoundaryKeyRejectsIncompatibleTypedLineage` must carry `IncompatibleTypedStitchAuthority`. That distinction is correct and avoids fabricating a rejection reason for a contract that is not a rejection. |
+| RA-CB-F3 | **closed** | `SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility` pre-asserts the two source rows share region **and** sheet, drives both patches through `complete_pure_quad_patch` rather than hand-building lineages, pre-asserts equal published region/sheet with `EXPECT_NE` on `sourceSupport`, and requires the assembly to fail closed with `IncompatibleTypedStitchAuthority` publishing no vertices or quads. This is exactly the production-path discrimination negative the finding required, and it directly answers whether the CB-03 chart-closure broadening made compatibility vacuous. |
+| RA-CB-F4 | **closed** | both measures taken. The anti-stale contract now `ASSERT_EQ`s the boundary cache extent, `ASSERT_TRUE(identity.valid)`, and `EXPECT_EQ(lineage->stitchIdentity.canonical, identity)` per boundary node, so an empty identity can no longer satisfy it; and `EXPECT_GT(rebuildCount, 0U)` became `EXPECT_EQ(completedPatches.size(), rebuildCount)`, which is exact accounting rather than a presence check. |
+| RA-CB-F5 | **closed, and stronger than specified** | `make_component_feature_option_remap_plan` canonicalizes requests, resolves a **unique** owning component per edge, and — beyond what I asked — requires the candidate local edge to exist in that component's actual face edges rather than merely having both endpoints present, which closes a hole I had not identified. Multi-owner resolution is detected as `ambiguous` and counted unassigned. Requested/remapped/unassigned counts and the first unassigned edge are published as typed diagnostics, and an unassigned **hard** edge fails the run closed at stage `component-feature-remap` with `UnassignedUserHardFeatureEdge` and zero publication. Soft edges are recorded but non-fatal, which is the right asymmetry for advisory input. |
+
+The static inventory reproduces byte-for-byte from the current tree, exit `0`: **19 paths / 59 probes / 261 matches**, raw projection 22/0, face-count 2/0, pipeline `stitchIdentity` 2/0, classifier self-test 4/4, final static **PASS**.
+
+### RA-CB-F6 — the handoff's preflight requirement states an inventory match count the package cannot produce
+
+**Blocking for the retry as written. Documentation-only fix.**
+
+**Evidence**
+
+- `Future_Chat_Session_Handoff.md:39` instructs the T+B turn to verify "the regenerated R-A inventory is **19 paths / 59 probes / 245 matches**", and `:64` repeats **245** as the fresh static evidence.
+- The committed `R_A_Closure_Inventory_Report.md` records **261** probe matches, and my independent regeneration from the current tree is byte-identical to it at **261**. The same report at the compile-pinned source `5551097961` also records **261**.
+- The audit script, audit report, and every scanned path are identical between `5551097961` and the head, so the packaged inventory inside artifact `9167759672` will regenerate at **261**, not 245. Probe count (59) and path count (19) are correct; only the match count is wrong.
+- Consequence: a T+B turn following the handoff literally must treat a **correct** package as a preflight mismatch. That either stalls the retry or pressures the turn into waving through a documented discrepancy — the exact failure mode this project's preflight discipline exists to prevent.
+
+**Corrective measures**
+
+1. Correct both occurrences to **261** before the retry begins. This is a durable-document edit only; no source, package, or artifact is affected, and no recompile is required.
+2. In the retry report, record the regenerated counts verbatim from the packaged inventory rather than transcribing them from the handoff.
+
+### Readiness verdict
+
+The five findings are genuinely resolved, and two of them (F3, F5) are implemented more strictly than the corrective measures required. I found no weakened check introduced by this change: F5 *adds* a fail-closed, F4 *tightens* two assertions, F3 *adds* a negative, and F1 replaces a mislabeled contract with one that observes the intended object.
+
+**The candidate is ready for the artifact-only retry once RA-CB-F6 is corrected.** No source change is needed for that correction, so the existing package `9167759672 / 9167759825` from `5551097961` remains the valid runtime candidate. RA-REV-23-F3 and RA-REV-22-F6, and the T+B report-structure scoping item, remain post-R-A hygiene.
+
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority. Regression totals remain **34 / 14 / 20**.
+
 ## Independent review addendum — R-A-TB-CB-00 through CB-04 re-evaluated against retry-2 runtime evidence
 
 This Review re-baselined on branch head `9f27a7d`. The retry-2 remediation landed as `a6723f34707701fc1174c0889028327ff8666c9a`; `git diff a6723f34..HEAD -- src include tests .agents/Directional/R_A_Closure_Inventory.py` is empty, and the source pinned by the new compile package, `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae` ("chore: remove R-A retry2 apply payload", three commits later), is **byte-identical on all implementation, test, and audit paths**. So `R-A-TB2-CB-01` through `R-A-TB2-CB-04` at `f6514a0f` are exactly the `a6723f34` changes reviewed here, and the branch head is a valid review proxy for both. The static inventory at this head reproduces byte-for-byte at **54 probes / 226 matches / PASS**.
