@@ -1,0 +1,1 @@
+Restore TODO.md byte-for-byte from verified pre-error head f4155094cba6c92efb81789d7a83217488cdb386, then apply only the intended one-line runtime-gate wording clarification. Control-plane only; no generated runtime execution.
