@@ -17,6 +17,15 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Validation — R-A artifact-only retry 2 remains open at aggregate authority
+
+- Immutable run/job `31656958868 / 94313437913` consumed exact `92bf0ae2b10856162f175d02aeac318e126f9d22` package `9164349848 / 9164350085` with no rebuild/source/test/fixture/package mutation. Result `9164742196` SHA-256 `2260c0d672dd3a7836f8916648d02e51cd8e3c53b762f318a23b112d08871921`; log `9164742553` SHA-256 `6b07a47937736951b243465f3a4b5abc218d740c13dbb1eb101dcb3127d1066e`.
+- Exact artifact/log digests, archive safety, manifest **25/25**, five empty source-status snapshots, regenerated **19-path / 50-probe / 206-match** static inventory, non-vacuous discovery, and immutable postflight all passed. **88 unique contracts selected: 76 passed / 12 failed; zero orchestration failures.**
+- Completion remediation is runtime-green **18/18** and selected optimizer/final-validator authority is **8/8**. The remaining 12 failures are confined to aggregate authority contracts. Ordinary disconnected baselines now progress beyond the former optimization blocker and stop at `component-merge-authority`; the provenance-only counterfactual exposes `InvalidGlobalDerivedIdentity` before the final oracle. Explicit hard-feature aggregate tests additionally reveal that global user hard/soft edge options are copied unchanged into compact component-local meshes.
+- A preceding temporary orchestration run `31656834137 / 94313056707` stopped before any packaged binary executed because it matched stale inventory heading text. It is not semantic evidence.
+- R-A remains open; no stable regression accounting changes. Historical totals remain **34 / 14 / 20**, and M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
+
+
 ### Fixed — R-A-TB-CB-00 through R-A-TB-CB-04 runtime-gate remediation
 
 - Fixed the post-move source-authority lifetime defect by retiring the stale phase-front pointer after moving the trace network and routing all later aggregate optimizer/final-validation consumers through the retained pre-move `SourceTopologyRegions` owner. Strict exact-source binding remains fail-closed.

@@ -1,12 +1,25 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only
-**Current status:** R-A-TB-CB-00 through R-A-TB-CB-04 are **Code + Build complete / compile-valid** at `92bf0ae2b10856162f175d02aeac318e126f9d22` after the organic Step 3 failure; widened static inventory is PASS and fresh compile is 118/118; overall R-A remains open pending one immutable artifact-only semantic retry
+**Current status:** artifact-only R-A retry 2 against exact source `92bf0ae2b10856162f175d02aeac318e126f9d22` **FAILED organically** with 88 unique selected / 76 passed / 12 failed, immutable pre/postflight and static inventory PASS, zero orchestration failures; overall R-A remains open and returns to bounded section 0J Code + Build remediation
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`
 **Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
 **Latest review-remediation implementation/compile source:** `92bf0ae2b10856162f175d02aeac318e126f9d22`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities
 **Review policy after the following Test + Benchmark turn:** `never`
+
+## 0J. Post-runtime R-A remediation after artifact-only retry 2
+
+Artifact-only run/job `31656958868 / 94313437913` consumed exact source `92bf0ae2b10856162f175d02aeac318e126f9d22` compile package `9164349848 / 9164350085` without rebuild or mutation. Preflight, regenerated **19-path / 50-probe / 206-match** inventory, non-vacuous discovery, and immutable postflight passed. The continuous gate selected **88 unique contracts: 76 passed / 12 failed**, `orchestration_failed=0`. R-A remains open.
+
+1. **R-A-TB2-CB-01 — diagnose and repair aggregate derived identity before final validation.** Ordinary disconnected aggregate positives and the new post-move authority contract now reach `component-merge-authority` instead of the former `optimization / MissingSourceAuthority`. The provenance-only counterfactual reports `InvalidGlobalDerivedIdentity` before its final-oracle mutation can be judged. `rebuild_aggregate_output_identity_caches` runs before the final validator and consumes completed-patch/output lineages plus global typed source authority; the counterfactual changes only `outputVertexProvenance`, which the rebuild does not read. Treat this as a baseline aggregate derived-identity blocker. Replace the opaque bool-only failure with a typed/diagnostic sub-invariant outcome sufficient for a regression test to identify the failing condition, then repair the canonical remap/rebuild input. Do not bypass the rebuild, weaken `canonical_authoritative_identity`, copy cached kinds, or construct a pipeline-local identity schema.
+2. **R-A-TB2-CB-02 — make non-feature final-oracle contracts reachable after the identity repair.** The raw-projection counterfactual, global owner/cache rebuild positives, missing/remapped boundary authority negatives, missing component validation-report positive, and provenance-tamper negative must reach their intended aggregate/final-oracle seams naturally. Preserve exact issue-code and zero-publication assertions. Do not alter a fixture merely because an earlier production guard currently blocks it; first remove the proven baseline identity blocker.
+3. **R-A-TB2-CB-03 — remap explicit feature-map edge options per compact component.** In the component runner, `RemeshOptions componentOptions = options;` is passed to `componentMesh`, whose vertices are compact-local. No remap is applied to `surfaceCells.featureMap.userHardEdges` or `userSoftEdges`, whose IDs originate in the global source mesh. Build an explicit global/original-to-local vertex map for each `FaceComponent`; retain and canonicalize only explicit edges with both endpoints owned by that component; drop edges belonging to other components. Add coverage with a hard/soft edge owned only by the second disconnected component and a no-cross-component-leakage negative. Then require `ComponentFeatureRailTamperRejectsAtAggregationSeam` and the feature-bearing/missing/content final-oracle contracts to reach their intended seams. Do not synthesize rails or mutate expected final authority after production.
+4. **R-A-TB2-CB-04 — revalidate source and compile only.** Regenerate the complete R-A inventory and require PASS, then produce one fresh exact-source Release/static/Ninja/PRE_TEST package through `agent-compile-reusable.yml`. Execute no generated binary, discovery, test, benchmark, CLI, fuzzer, help/version command, or custom input.
+
+Runtime-confirmed closure that should remain stable: retained completion authority **18/18**; optimizer/final-validator authority **8/8**; authority kernel **13/13**; isolation-seam **6/6**; source-authoritative validator **8/8**; rail-authority migration **7/7**; source-support/chart **1/1**. The aggregate authority-contract suite is the remaining blocker at **15/27**.
+
+The following turn retries the same immutable R-A gate. R-A may close only after an organic pass with immutable pre/postflight and regenerated static inventory clean. No independent Review turn is requested.
 
 ## 0I. Post-runtime R-A remediation after artifact-only Step 3 attempt 1 — Code + Build complete
 

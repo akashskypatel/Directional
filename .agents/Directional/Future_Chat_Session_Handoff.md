@@ -25,25 +25,31 @@ Do not add transcripts, chronological tool history, copied artifact tables, supe
 
 ## Mandatory next turn
 
-Run one **immutable artifact-only R-A Test + Benchmark retry** against the fresh Code + Build package below. Do not rebuild, edit source/tests/fixtures, repair the package, or activate the dormant full-M1 plan.
+Run one **bounded Code + Build R-A remediation turn for artifact-only retry 2**. The exact immutable package from `92bf0ae2b10856162f175d02aeac318e126f9d22` passed preflight/static inventory/postflight but failed organically at the aggregate authority layer. Do not rerun the unchanged package and do not mark R-A complete.
 
-Repository: `akashskypatel/Directional`  
-Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`  
-PR: #8 remains open, draft, and unmerged  
-Exact candidate source: `92bf0ae2b10856162f175d02aeac318e126f9d22`  
-Compile run/job: `31655755100 / 94309741656`  
-Compile result artifact: `9164349848`, SHA-256 `499bb4b4b6bd33408284bb3985bb04f0bda7312834b462b806965f7799e45870`  
-Compile log artifact: `9164350085`, SHA-256 `a7fa938991c13d6a79cf4fdab85669d3e37e6eb625dc2541d8c8fdea2388938f`
+Repository: `akashskypatel/Directional`
+Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
+PR: #8 remains open, draft, and unmerged
+Failed candidate source: `92bf0ae2b10856162f175d02aeac318e126f9d22`
+Compile run/job: `31655755100 / 94309741656`
+T+B retry run/job: `31656958868 / 94313437913`
+T+B result artifact: `9164742196`, SHA-256 `2260c0d672dd3a7836f8916648d02e51cd8e3c53b762f318a23b112d08871921`
+T+B log artifact: `9164742553`, SHA-256 `6b07a47937736951b243465f3a4b5abc218d740c13dbb1eb101dcb3127d1066e`
 
-Pre-runtime requirements: verify the exact source commit, outer artifact digest, archive/path safety, self-excluding manifest **25/25**, dependency revisions, all five empty source-status snapshots, `runtimeExecution=false`, and the packaged **19-path / 50-probe / 206-match** R-A static inventory. A zero-selected filter is orchestration failure.
+Artifact-only retry 2 was immutable and orchestration-clean: exact result/log digests, archive safety, manifest **25/25**, five empty source-status snapshots, packaged **19-path / 50-probe / 206-match** static inventory, and postflight all passed. Discovery was non-vacuous (**13 authority-kernel / 232 producer / 179 completion / 84 validation**). Across **88 unique R-A contracts, 76 passed / 12 failed**, `orchestration_failed=0`, `rebuild=false`, `sourceMutation=false`, `packageRepair=false`.
 
-Execute the same continuous R-A closeout semantic gate that failed on attempt 1, including the F1/F3/F4 aggregate final-oracle contracts, complete `SurfaceCellAuthorityContractCutover.*` selection, retained completion authority contracts, source-authoritative validator contracts, optimizer/final-validator authority contracts, rail-authority migration, isolation-seam authority, source-support/chart authority, plus the new `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` and typed source-authority mismatch optimizer negative. Do not weaken filters or substitute proxy tests.
+Implement only the new retry-2 remediation section **0J** in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`:
 
-If every selected contract passes organically and immutable postflight remains clean, mark Step 3 and Step 4 / R-A complete. Any organic semantic failure returns to a bounded Code + Build turn with the exact failing contract and runtime evidence. **No independent Review turn is requested before this retry.**
+1. make the aggregate derived-identity rejection diagnostic at the failing sub-invariant, then repair that invariant rather than bypassing `rebuild_aggregate_output_identity_caches`. The post-move success contract and multiple disconnected baselines now reach `component-merge-authority`; the provenance-only counterfactual reports `InvalidGlobalDerivedIdentity` before the final oracle. Because that counterfactual mutates only `outputVertexProvenance`, while the derived-identity rebuild consumes completed-patch/output lineages and typed source authority, this is evidence of a baseline aggregate identity blocker rather than the provenance mutation itself;
+2. after the identity blocker is fixed, require the boundary final-oracle, missing-component-report, raw-projection counterfactual, and provenance-tamper contracts to reach their declared seams naturally. Do not weaken the final oracle or fabricate boundary authority;
+3. fix component feature-option ownership. The aggregate component runner copies `componentOptions = options` onto compact component-local meshes but does not remap `featureMap.userHardEdges` / `userSoftEdges` from original-global vertex IDs. Build an explicit original-to-local vertex map per component, retain only edges wholly owned by that component, and add no-cross-component-leakage coverage. Then revalidate the hard-feature tamper and feature-bearing final-oracle contracts;
+4. regenerate the complete R-A inventory and compile one fresh exact-source package through `agent-compile-reusable.yml`. Code + Build only; execute no generated binary/test/benchmark/discovery/CLI/fuzzer/custom input.
 
-`R-A-TB-CB-00` through `R-A-TB-CB-04` are Code + Build complete / compile-valid at `92bf0ae2b10856162f175d02aeac318e126f9d22`. CB-00 specifically did not fabricate the unavailable `surfaceCellTopologyRegionCount`: artifact `9163003950` contains no serialized/printed instance of that field; exact-source inspection confirmed the reviewed use-after-move mechanism instead.
+Completion authority is now **18/18**, optimizer/final-validator authority **8/8**, authority kernel **13/13**, isolation-seam authority **6/6**, source validator **8/8**, rail migration **7/7**, and source-support/chart **1/1**. Do not reopen CB-03/CB-04 unless new evidence directly implicates them.
 
-RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene and do not block this runtime retry. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority until the candidate is organically accepted.
+No independent Review turn is requested. After the fresh compile package, retry the same immutable R-A semantic gate. R-A closes only on an organic pass.
+
+RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
 
 ## Current authority
 
@@ -57,14 +63,15 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 
 ### R-A closure status
 
-- Overall R-A remains **open / runtime-pending** for candidate `92bf0ae2b10856162f175d02aeac318e126f9d22`; Code + Build does not establish semantic acceptance.
-- `R-A-TB-CB-00` through `R-A-TB-CB-04` are Code + Build complete / compile-valid. CB-00 could not read `surfaceCellTopologyRegionCount` because neither retained runtime artifact serializes it; exact source confirms the use-after-move mechanism and no value was invented.
-- CB-01 removes all five post-move `phaseFrontProduct->sourceTopologyRegions` reads, nulls the stale pointer, and routes consumers through the retained pre-move `surfaceCellContext.sourceTopologyRegions`; strict exact-source validation remains unchanged.
-- CB-03 separates source-face support authority from geometry projection and publishes owner-valid chart closure over support faces, while generated-interior fixtures now provide real source geometry.
-- CB-04 replaces the raw-sheet expectation with a typed exact-owner mismatch negative and completes the rail-builder source-scope fixture.
-- Static inventory at `92bf0ae2b10856162f175d02aeac318e126f9d22`: **19 paths / 50 probes / 206 matches**, raw projection **22/0**, face-count **2/0**, pipeline `stitchIdentity` assignments **2/0**, stitch-kind self-test **4/4**, final **PASS**.
-- Compile run/job `31655755100 / 94309741656`: Release/static/Ninja/PRE_TEST **118/118**, exit `0`; artifacts `9164349848 / 9164350085`; manifest **25/25**; five empty statuses; no generated runtime executed.
-- The mandatory next gate is the immutable artifact-only R-A semantic retry. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains runtime authority; historical regression totals remain **34 / 14 / 20**.
+- Overall R-A remains **open / runtime-rejected** for candidate `92bf0ae2b10856162f175d02aeac318e126f9d22` after artifact-only retry 2.
+- Retry 2 run/job `31656958868 / 94313437913` consumed compile artifacts `9164349848 / 9164350085` without rebuild or mutation. Preflight, **19 paths / 50 probes / 206 matches** static inventory, discovery, and immutable postflight passed; **88 unique selected, 76 passed / 12 failed**, zero orchestration failures.
+- CB-03 completion closure is runtime-confirmed for the retained set: **18/18** completion authority contracts passed, including both former positive stitch failures. CB-04 is runtime-confirmed for its focused authority set: **8/8** optimizer/final-validator contracts passed, including typed source mismatch and rail-builder exact-source scope.
+- The remaining aggregate suite is **15/27**. Multiple ordinary disconnected baselines and `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` now progress past the former optimization failure but stop at `component-merge-authority`. `FinalMergedOracleRejectsPostComponentProvenanceTamper` exposes `InvalidGlobalDerivedIdentity` before the intended final oracle; source analysis shows that rebuild does not consume the raw provenance vector being mutated, making the derived-identity gate the next baseline blocker.
+- The hard-feature aggregate fixture still stops at `completion`. Exact source shows component execution copies global feature-map edge options onto compact local meshes without an original-global to component-local edge remap; this must be corrected before feature-rail aggregate/oracle contracts can be credited.
+- Boundary/feature final-oracle counterfactuals remain uncredited because their seam callbacks were not reached. Do not alter their expected oracle semantics to make them green.
+- Result/log evidence: `9164742196` SHA-256 `2260c0d672dd3a7836f8916648d02e51cd8e3c53b762f318a23b112d08871921` / `9164742553` SHA-256 `6b07a47937736951b243465f3a4b5abc218d740c13dbb1eb101dcb3127d1066e`.
+- The first retry orchestration attempt `31656834137 / 94313056707` stopped before any packaged binary executed because its temporary preflight grepped obsolete inventory heading text; it is infrastructure-only evidence, not a semantic result.
+- No stable regression event/recurrence is added: `92bf0ae2b10856162f175d02aeac318e126f9d22` remains an unaccepted R-A candidate. Historical totals remain **34 / 14 / 20**; M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
 
 ## Standing product state
 
