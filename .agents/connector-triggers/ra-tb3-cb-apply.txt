@@ -1,5 +1,0 @@
-purpose=apply bounded R-A-TB3-CB-01 through CB-03 changes
-base_tested_source=555109796188b318c788ef5777f622705ee0aa94
-plain_patch_sha256=45e580253589442b19926d4a7db00d0dc5d216d8278d517c0f486477cf4aa434
-attempt=4
-generated_runtime_execution=false
