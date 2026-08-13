@@ -1,1 +1,0 @@
-Trigger corrected immutable artifact-only R-A Test + Benchmark retry against exact compile package 9164349848 / 9164350085 for source 92bf0ae2b10856162f175d02aeac318e126f9d22. This changes only temporary orchestration after a pre-runtime report-label mismatch; no rebuild, source/test/fixture mutation, package repair, or full-M1 plan activation.
