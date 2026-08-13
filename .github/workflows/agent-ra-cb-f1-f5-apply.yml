@@ -60,9 +60,18 @@ jobs:
             .agents/Directional/R_A_Closure_Inventory_Report.md \
             .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
 
-          base64 -d .agents/Directional/turn-payloads/ra-cb-f1-f5/patch.gz.b64 \
-            > "$RUNNER_TEMP/patch.gz"
-          gzip -dc "$RUNNER_TEMP/patch.gz" > "$RUNNER_TEMP/patch.diff"
+          cp .agents/Directional/turn-payloads/ra-cb-f1-f5/patch.diff \
+            "$RUNNER_TEMP/patch.diff"
+          python3 - "$RUNNER_TEMP/patch.diff" <<'PY'
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          text = path.read_text()
+          text = text.replace(
+              "      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount,\n      )\n",
+              "      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)\n")
+          path.write_text(text)
+          PY
           echo "$PATCH_SHA256  $RUNNER_TEMP/patch.diff" | sha256sum -c -
           if grep -Eq '^diff --git a/\.github/workflows/' "$RUNNER_TEMP/patch.diff"; then
             echo 'patch_contains_workflow_change=true'
