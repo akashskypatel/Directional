@@ -1,313 +1,131 @@
-# M1 Single-Authority Cutover — Artifact-Only Test + Benchmark Plan
+# M1 R-A — Immutable Artifact-Only Test + Benchmark Plan
 
-**Turn type:** retained Test + Benchmark plan; currently dormant  
-**Validated source to consume:** the future full R-A-through-R-G cutover source; no historical or partial package recorded in `CHANGELOG.md`
-**Entering immutable comparison authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`  
-**Code + Build result artifact:** pending full-cutover package  
-**Code + Build result artifact digest:** pending  
-**Code + Build log artifact:** pending  
-**Review policy:** `never`  
-**Product gate after M1 acceptance:** resume the Pipeline B product queue under the revised M2-M8 architecture; select the smallest owning milestone required by the active product blocker
+## Purpose
 
-## 0. Activation amendment — 2026-08-12
+This is the reusable execution authority for the **continuous R-A semantic gate**. It intentionally contains no current package SHA or artifact ID; the handoff supplies the fresh immutable package produced by the immediately preceding Code + Build turn.
 
-This retained full-M1 plan is **not executable now**. Independent review of exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760` rejected overall R-A and opened REV-22 through REV-24; the explicit REV-21 permutation-pair contracts are also incomplete. Partial artifacts `9153147035 / 9153147459` are authentic compile history but are superseded as a runtime task and may not be executed, reused, or relabeled as R-A/M1 acceptance evidence.
+The full M1 representative/benchmark characterization remains dormant until R-A through R-G are complete and one fresh complete M1 package exists.
 
-Activate this plan only after new Code + Build work:
+## Turn boundary
 
-1. closes the complete retained R-A inventory through REV-24 and records a reproducible checked-path/match-count/allowed-leaf audit;
-2. completes R-B through R-G;
-3. produces one fresh exact-source full-cutover package with compiled semantic contracts, final strict merged-authority validation, logs, clean source provenance, and a verified self-excluding checksum manifest;
-4. records the new immutable source/artifact IDs, digests, manifest authority, executable inventory, and command-boundary flags in this plan.
+This is an **artifact-only Test + Benchmark** turn.
 
-The replacement `DESIGN.md` remains normative. M1 acceptance proves only the single-authority contract; strict product fixtures require D0-equivalent behavior.
+Allowed:
+- download the exact compile result/log artifacts named by the handoff;
+- verify outer digests, archive safety, manifests, source/build metadata, and static audit;
+- execute GTest discovery/listing and the selected packaged semantic tests;
+- read packaged source only for evidence/classification;
+- write evidence reports and durable status after runtime is complete.
 
-### R-A retry reason-capture amendment
+Forbidden:
+- configure, compile, relink, or rebuild;
+- patch packaged source/tests/fixtures/manifests;
+- repair permissions/content or replace a packaged binary;
+- modify implementation/test/validator/build logic during the runtime portion;
+- treat compile success, zero-selected filters, or missing evidence as semantic acceptance.
 
-For the next immutable R-A retry, retain per-contract outcome evidence for the
-three faces-only completion/stitch discrimination contracts instead of
-reporting only the aggregate 18/18 completion count:
+If the package is invalid, classify infrastructure/package failure and stop. Do not repair it in this turn.
 
-- `CoincidentPositionsOnDistinctTypedSheetsDoNotMerge` is a successful
-  non-merge discrimination contract; record `success=true`, two connected
-  components, and `mergedBoundaryVertices=0` rather than inventing a failure
-  string.
-- `WrongOwnerSheetCertificatePublishesNothing` must pass specifically with
-  `failure=InvalidTypedStitchAuthority`.
-- `SameExactBoundaryKeyRejectsIncompatibleTypedLineage` must pass specifically
-  with `failure=IncompatibleTypedStitchAuthority`.
+## 1. Immutable package preflight
 
-Also execute and record
-`SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility`;
-its required rejection reason is `IncompatibleTypedStitchAuthority`.
+Before any packaged executable runs, require and record all of the following:
 
-## 1. Purpose and turn boundary
+1. exact result/log artifact IDs and outer SHA-256 match the handoff;
+2. ZIP paths are non-escaping and contain no symlinks;
+3. recursive `SHA256SUMS` exists, excludes itself, and verifies every listed entry;
+4. packaged source SHA equals the handoff authority and build exit is `0`;
+5. build metadata proves the approved Release/static/Ninja/PRE_TEST Code + Build boundary and records generated runtime as not executed during compilation;
+6. every packaged source-status snapshot required by the compile workflow is empty;
+7. the source archive is extracted to a separate evidence directory, never over the runtime package;
+8. `R_A_Closure_Inventory.py` is regenerated against that extracted source, byte-compared with the packaged report, and all required zero-unexpected/classifier-self-test gates pass;
+9. record package path/type/mode/size state and executable hashes for postflight.
 
-Validate the exact immutable package produced by the final M1 Code + Build turn. This turn decides whether the single-authority cutover preserves the required semantic/product invariants strongly enough to close M1.
+Any mismatch is infrastructure failure. Do not run semantic tests after a failed preflight.
 
-This is an **artifact-only** turn. Do not configure, compile, relink, regenerate code or discovery, patch packaged source, modify packaged fixtures/manifests, or edit implementation/test/benchmark/validator/build logic. If the package is invalid, report an infrastructure/package failure; do not rebuild it in this turn.
+## 2. Independent discovery
 
-Runtime execution is allowed only from the immutable packaged executables and packaged inputs after preflight authority succeeds.
+Independently execute `--gtest_list_tests` on every packaged executable used by the R-A gate. Record discovered counts.
 
-## 2. Immutable package authority
+For every selected filter:
+- list the filtered tests first;
+- require selected count > 0;
+- a zero-selected filter is **orchestration failure**, never pass/skip;
+- runtime execution must use the same immutable executable and filter that was listed.
 
-Expected package facts to copy exactly from the future Code + Build report when this plan is activated:
+## 3. Continuous R-A semantic selection
 
-- implementation commit, immediate source parent, and entering accepted M1l source `bd140cff4572412e6f4ecd70a6ce0fe85310932c`;
-- result/log artifact IDs, outer digests, and retention metadata;
-- recursive manifest entry count and manifest digest; the manifest does not include itself and its complete verification passed before upload;
-- fixture file count, packaged executable/library inventory, source/archive/diff/audit closure, and clean pre-build source status;
-- every Code + Build command-boundary flag false.
+Run the complete R-A semantic groups, not only the contracts changed in the preceding Code + Build turn:
 
-Treat the package metadata and checksums as the source of truth. Stop before runtime if these facts do not close exactly.
+- authority-kernel contracts;
+- `SurfaceCellAuthorityContractCutover.*`;
+- isolation-seam authority contracts;
+- retained completion/source-support/chart authority contracts;
+- source-authoritative validator contracts;
+- retained optimizer/final-validator authority contracts;
+- rail-authority migration contracts.
 
-## 3. Preflight — verify before any generated-binary execution
+Direct diagnostic groups may duplicate broad-gate tests, but the final acceptance count must deduplicate by full GTest identity.
 
-Extract the downloaded artifact into a fresh arbitrary directory using a method that preserves its natural executable mode bits. Do not `chmod`, repair, or mutate the package.
+### Required completion/stitch discrimination evidence
 
-Verify, in order:
+The following outcomes must be recorded per contract, not inferred from suite colour:
 
-1. downloaded artifact identity/digest matches the newly activated artifact authority and recorded outer SHA-256;
-2. `SHA256SUMS` exists, excludes itself, has the newly recorded entry count and manifest digest, and `sha256sum -c SHA256SUMS` passes every entry;
-3. package contains no symlink or path escape and extraction did not rewrite packaged files;
-4. `metadata/build-authority.json` names the newly recorded exact implementation, immediate parent, entering M1l `bd140c...`, Release/Ninja/PRE_TEST, and fixture count;
-5. `metadata/command-boundary.txt` and JSON metadata record all of these as false: runtime, gtest-list, tests, benchmarks, ctest, CLI, fuzzer, custom input;
-6. `metadata/source-cutover-audit.txt` records `static_cutover_audit=clean`;
-7. `metadata/cutover-test-groups.txt` contains exactly the five required semantic contract groups listed below;
-8. `metadata/cutover-test-source-locations.txt` contains at least one source location for each required group;
-9. the source archive, M1l-to-cutover patch, changed-path manifest, changed-source-blob manifest, fixture manifest, configure/build logs, and toolchain/submodule logs exist;
-10. record recursive package hash/state for immutable postflight comparison.
+- `CoincidentPositionsOnDistinctTypedSheetsDoNotMerge`: successful non-merge evidence — success true, two connected components, zero merged boundary vertices;
+- `WrongOwnerSheetCertificatePublishesNothing`: `InvalidTypedStitchAuthority`;
+- `SameExactBoundaryKeyRejectsIncompatibleTypedLineage`: `IncompatibleTypedStitchAuthority`;
+- `SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility`: `IncompatibleTypedStitchAuthority`.
 
-A preflight failure is not a product regression and does not authorize a rebuild.
+If any contract fails before its intended seam, classify the **earliest actual seam reached**. Do not credit a negative to a later validator it never reached.
 
-## 4. Independent test discovery
+## 4. Runtime evidence rules
 
-Only after preflight, discover the actual GoogleTest inventory from the packaged executables. Do not use a predeclared producer or total-test count as acceptance authority.
+For each group record:
+- independently selected count;
+- process exit code;
+- pass/fail status;
+- GTest XML and log;
+- timeout or orchestration failure separately from semantic failure.
 
-Record for every executable:
+Produce:
+- unique selected-test list;
+- unique failing-test list;
+- unique pass/fail totals;
+- exact failure messages for every failed test;
+- direct reason-capture evidence required above.
 
-- executable SHA-256;
-- exact `--gtest_list_tests` output;
-- discovered test count;
-- selected test names for each gate below.
+Do not convert an organic failure into a retry/threshold workaround within the same immutable package.
 
-A zero-selected filter is an orchestration failure, never a semantic pass.
+## 5. Immutable postflight
 
-The required M1 cutover groups are:
+After runtime, re-run the recursive package manifest and compare package path/type/mode/size state plus executable hashes to preflight. Require zero symlinks and no package repair/mutation.
 
-```text
-SurfaceCellAuthorityKernel
-SurfaceCellAuthorityContractCutover
-SurfaceCellIsolationSeamCertificateAuthority
-SurfaceCellTypedTransportAuthority
-SurfaceCellSourceSupportAndChartAuthority
-```
+Record at minimum:
+- `rebuild=false`;
+- `sourceMutation=false`;
+- `testMutation=false`;
+- `fixtureMutation=false`;
+- `packageRepair=false`;
+- orchestration-failure count;
+- semantic gate status.
 
-Use the independently discovered exact names rather than assuming a fixed count.
+Upload result and persistent log artifacts **before** propagating an organic semantic failure so failed gates retain immutable evidence.
 
-## 5. Focused M1 cutover gates
+## 6. Decision rule
 
-Run every discovered test belonging to each required cutover group by exact name before aggregate execution. Each must pass independently.
+R-A closes only when all of the following are true in the same immutable attempt:
 
-Required semantic intent:
+1. package preflight PASS;
+2. regenerated static inventory PASS and byte-identical to packaged authority;
+3. independent discovery is non-vacuous for every selected group;
+4. every unique R-A semantic contract passes organically;
+5. required per-contract reason evidence is established;
+6. postflight proves the package unchanged;
+7. no unresolved orchestration/infrastructure failure exists.
 
-### `SurfaceCellAuthorityKernel`
+If any semantic contract fails, preserve evidence, keep R-A open, classify the earliest failing invariant, and create the next bounded Code + Build plan. Do not mark Step 4 complete.
 
-- checked lower/upper valid construction boundaries;
-- negative and extent rejection with typed errors;
-- compile-time ID-domain separation represented by the compiled test contract;
-- canonical source-edge/source-face topology-key behavior and degeneracy rejection.
+## 7. Full M1 activation
 
-### `SurfaceCellAuthorityContractCutover`
+After R-A passes, complete R-B through R-G in Code + Build/Test + Benchmark cadence. Only then create a fresh full M1 package and a package-specific full-M1 acceptance plan covering representative fixtures, bounded quality/resource characterization, and the strict-validator timing characterization required by `DESIGN.md` and `tests/TESTING_STRATEGY.md`.
 
-- one complete typed face-to-topology-region product;
-- cell/edge/periodic/bounded-disk consumers reference the published region without conflicting component/sheet mirrors;
-- source-face row permutation preserves semantic region/certificate identity;
-- missing/unassigned authority fails before publication.
-
-### `SurfaceCellIsolationSeamCertificateAuthority`
-
-- valid reciprocal multi-sheet certificate materializes;
-- wrong owner/transition/face/sheet, duplicate key, and nonreciprocal transport fail in the intended typed categories;
-- exact-once certificate consumption remains observable.
-
-### `SurfaceCellTypedTransportAuthority`
-
-- segment, hard-rail, source-boundary, and periodic routes preserve typed step variants;
-- reversal/inversion preserves canonical route identity;
-- swapped topology/transition and invented boundary-transition inputs reject;
-- unsupported nonzero Z4 remains truthfully unsupported unless the existing production algorithm already supported it.
-
-### `SurfaceCellSourceSupportAndChartAuthority`
-
-- vertex/edge/face-interior support remain distinct typed variants;
-- close sheets and separate orientation charts remain distinct;
-- source-row permutation preserves semantic identity;
-- ambiguous/malformed support fails typed.
-
-Do not reinterpret representation-only differences as semantic failures when the asserted product invariant is preserved.
-
-## 6. Entering semantic-preservation gates
-
-After the new focused groups pass, execute the adapted entering authority/contract coverage and record exact discovered names/counts rather than importing historical totals.
-
-At minimum include:
-
-- all surviving M1a–M1l semantic authority groups;
-- M1d route counterexamples;
-- M1c transition counterexamples;
-- T1 independent oracle/package foundation tests;
-- source-authoritative validation executable;
-- completion executable coverage required by the M1 contracts;
-- compiled API coverage;
-- the required-green producer set, excluding only tests explicitly classified as historical/deferred red or characterization-only by the retained project records.
-
-Compare failures against the accepted M1l semantics, not against raw field layout, numeric ID values, source row numbering, structural hashes, or intermediate counts.
-
-## 7. Direct product oracle gates
-
-Run these direct `SurfaceCells` production fixtures using the packaged independent product oracle and the same direct/no-fallback semantics used by entering accepted authority:
-
-```text
-UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Plane
-UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/MultiFaceSeam
-UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/CloseSheets
-UniformPhaseFront/SurfaceCellDesignAcceptance.ProducesDirectSourceAuthoritativePureQuadOutput/Cylinder
-```
-
-Required classification:
-
-- source attachment must remain correct;
-- topology-region/sheet/chart separation must remain correct;
-- transport/certificate ownership and exact-once consumption must remain correct;
-- direct disposition and no-fallback behavior must remain truthful;
-- determinism must remain intact.
-
-A changed raw numbering, row order, diagnostic digest, or intermediate count is not by itself a regression.
-
-## 8. Historical/deferred red classification
-
-Execute and report the known historical/deferred red cases rather than hiding or excluding them from evidence:
-
-```text
-SurfaceCellTransitionQuotient.MultiIsolationMaterializationRetainsAllLocalSheets
-SurfaceCellTransitionQuotient.FullPeriodicRotationAndTranslationMaterialize
-SurfaceCellTransitionQuotient.TamperedFullPeriodicTransformIsRejected
-SurfaceCellTransitionQuotient.MultiplePeriodicRelationsSurviveRelationReorderingByExplicitOwner
-SurfaceCellTransitionQuotient.SwappedPeriodicRelationOwnersAreRejected
-SurfaceCellTransitionQuotient.MissingPeriodicRelationOwnerIsRejected
-SurfaceCellTransitionQuotient.QuotientLineageRetainsScalarPointAndCompleteSortedAuthority
-SurfaceCellsPhase10.ExactCommittedTorusDoesNotTreatIsolationSeamAsBoundedDiskBoundary
-```
-
-For each, classify current behavior as one of:
-
-- unchanged historical product limitation;
-- intentional representation change with preserved semantics;
-- earlier truthful typed rejection required by the new contract;
-- genuine product progress;
-- required-invariant regression;
-- unexplained semantic drift.
-
-Do not force the pre-cutover result if the new source model correctly rejects a previously reconstructible but invalid state.
-
-## 9. Strict-validator characterization
-
-The accepted M1l record identifies the sub-millisecond strict-validator ratio gate as nondeterministic. Characterize it in fresh processes without threshold/retry workarounds.
-
-Record individual samples, denominator/numerator timing, pass/fail distribution, and whether any observed change is plausibly attributable to the authority cutover. Do not use this microbenchmark alone to reject M1 when correctness is otherwise preserved unless a stable reproducible regression is established.
-
-## 10. Bounded Bunny/Vase characterization
-
-Run bounded representative characterization using the packaged fixtures and existing direct-product test configuration:
-
-- BunnyRandom: capture disposition, terminal stage/reason, trace/arrangement/completion counts, elapsed time, peak RSS, and deterministic semantic hashes available from the packaged diagnostics;
-- Vase: retain the existing bounded safety timeout policy and record whether it terminates, times out safely, or changes failure class.
-
-These are characterization/product-progress evidence. M1 acceptance does not require G6 success, but any new required-invariant regression or unexplained semantic drift blocks acceptance.
-
-## 11. Static source audit from the packaged source
-
-Without rebuilding, extract the packaged source archive into a separate analysis directory and independently repeat the source-only cutover audit over the packaged source.
-
-Require zero production/test-scope references to:
-
-```text
-LegacyAuthorityAdapters
-to_legacy_index
-legacy_phase_front_
-transitionSourceEdge
-transitionSourceEdges
-transitionSourceTopology
-sourceRouteEdges
-sourceRouteTopology
-sourceTopologyRegionByFace
-struct SourceChartId
-struct SurfaceCellSourceChart
-NegativeLegacyValue
-OutOfRangeLegacyValue
-legacyValue
-```
-
-Also inspect the affected authority structs for a typed ID/value stored beside a numeric mirror of the same semantic fact. A remaining duplicate semantic authority is an M1 failure, not follow-up work.
-
-The activated audit must also fail on any reviewed R-A closure defect:
-
-- any materializer equivalence, representative, ownership, or quotient decision reads `SurfacePoint::component` or `SurfacePoint::sheet`;
-- any patch/completion/assembly/lineage/verifier identity, equality, hash, order, or lookup key reads raw provenance component/sheet;
-- an occurrence lacks required typed topology-region, isolation-sheet, chart, or support authority after construction;
-- a fallback canonical/stitch/ownership identity can be built from raw component/sheet mirrors.
-- an exact boundary identity is accepted without separate complete typed topology-region/isolation-sheet/chart/support lineage and consistency validation;
-- an existing exact stitch key merges a candidate without validating its typed-authority compatibility against the stored candidate;
-- collision publication retains a pre-intersection semantic identity beside the final intersected typed certificate;
-- a standalone completion or SurfaceCells optimizer/verifier path publishes, succeeds, or validates without complete typed authority;
-- the generic validator reads raw projection component/sheet on a SurfaceCells path;
-- component aggregation derives typed sheet extent/offset or any typed owner from raw diagnostic/projection labels, silently loses authority during remap, or publishes without complete post-remap lineage validation;
-- component aggregation validates region/sheet/chart IDs against bounds synthesized from those IDs, derives offsets from unvalidated maxima, or omits independent owner/domain checks;
-- a raw-label tamper contract mutates only after the consumer or compares typed fields that the mutation never touched;
-- the audit omits affected declarations, headers, public modes, completion/assembly branches, top-level component aggregation, exact-key collision compatibility, or end-to-end multi-component contracts.
-
-Derived integers are allowed only in one-way diagnostics/export after typed validation and must never be read back by production logic.
-
-## 12. Immutable postflight
-
-After all runtime execution:
-
-1. recompute every packaged checksum and require the same complete result as preflight;
-2. recompute the manifest digest and require the newly activated recorded value;
-3. verify no package file was added, removed, rewritten, chmod-repaired, or symlinked;
-4. verify executable hashes equal preflight values;
-5. preserve raw discovery, focused, aggregate, product-oracle, characterization, resource, source-audit, and postflight logs as immutable evidence.
-
-## 13. Acceptance decision
-
-M1 is accepted only when all of the following hold:
-
-- immutable preflight and postflight close exactly;
-- all five new semantic cutover groups pass completely;
-- all entering required-green semantic authority, validation, T1, and compiled-API gates pass;
-- Plane, MultiFaceSeam, CloseSheets, and Cylinder have no required-invariant regression under the independent product oracle;
-- every historical/deferred red case is executed and classified, with no unclassified regression;
-- no source attachment, topology-region/sheet/chart distinction, transport composition, certificate ownership/exact-once consumption, determinism, direct disposition, or no-fallback invariant regresses;
-- independent packaged-source audit finds no displaced representation or duplicate semantic authority;
-- the complete R-A gate is clean, including REV-14 through REV-16, with positive, missing-authority, distinct-sheet, exact-only, post-intersection exact-key-collision, independent remap-domain, alternate-validator-path, pre-consumer raw-tamper, and end-to-end multi-component contracts;
-- the verified package rules are repeated by clean source provenance and exact preflight/postflight checksum verification;
-- all strict preservation fixtures reach certified/D0-equivalent behavior; no D1-D3 output closes a strict gate;
-- Bunny/Vase and strict-validator results are truthfully characterized;
-- no package mutation or rebuild occurred.
-
-If accepted, close **M1 single-authority cutover** in `TODO.md` and `CHANGELOG.md`, retain the new immutable Test + Benchmark report, and return the primary queue directly to **G4 topology-distinct completion and singularities**. Do not open another M1 letter slice.
-
-If rejected, produce one bounded Code + Build plan addressing only proven semantic/source-authority defects. Do not restore a deleted adapter/raw mirror merely to reproduce old representation.
-
-## 14. Required end-of-turn records
-
-The Test + Benchmark turn must produce:
-
-- the authoritative artifact-only report with exact run/job/artifact/log identities and discovered counts. **For the active R-A closeout cadence this is `.agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`**; the `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Report.md` name applies only when this retained full-M1 plan is itself activated, and no such file exists yet;
-- an updated `TODO.md`, `CHANGELOG.md`, regression tracker when a stable regression event actually exists, and live handoff;
-- exactly one authoritative next Code + Build plan. On acceptance that plan must target the highest-prerequisite active **G4** blocker supported by the runtime evidence;
-- repository-side stale per-turn cleanup under `CLEAN_UP_POLICY.md` and workflow/trigger/payload cleanup under `GitHub_Workflow_Policy.md`;
-- a final summarized PR #8 conversation comment as the last repository write.
-
-PR #8 remains open, draft, and unmerged throughout this validation turn.
+Do not reuse an R-A partial package as the full M1 acceptance candidate.
