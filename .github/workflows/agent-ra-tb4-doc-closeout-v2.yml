@@ -1,0 +1,109 @@
+name: Agent R-A Retry 4 Docs Closeout V2
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-tb4-doc-closeout-v2.txt
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      TESTED_SOURCE: aa16449577c48bac72257b7b9915e2b70dad3b82
+    steps:
+      - name: Checkout closeout head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Update durable retry-4 history
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin "$TESTED_SOURCE"
+          git diff --quiet "$TESTED_SOURCE" -- src include tests CMakeLists.txt cmake .agents/Directional/R_A_Closure_Inventory.py .agents/Directional/R_A_Closure_Inventory_Report.md
+          echo semantic_paths_match_tested_source=PASS
+          python3 <<'PY'
+          from pathlib import Path
+
+          changelog = Path('.agents/Directional/CHANGELOG.md')
+          text = changelog.read_text()
+          marker = '## [Unreleased]\n'
+          heading = '### Validation — R-A artifact-only retry 4'
+          entry = """
+
+          ### Validation — R-A artifact-only retry 4
+
+          - Exact source `aa16449577c48bac72257b7b9915e2b70dad3b82`, runtime run/job `31679754667 / 94382280555`. Result artifact `9173016395` SHA-256 `39f71abb285ac1e806f2fdaded58a3675d6491b3a8177999def697b9aa6678ac`; log artifact `9173016645` SHA-256 `9c1ff473c56cf867e3cd6f8600f888ba438955dfbb96bf3c1084578112ab2176`.
+          - Immutable preflight/static/discovery/postflight passed: **26-file** package, recursive self-excluding manifest **25/25**, five clean source-status snapshots, regenerated **19 paths / 60 probes / 270 matches / PASS** inventory, discovery **13 / 235 / 180 / 84**, unchanged package/executable state, and zero orchestration failures. No rebuild/source/test/fixture mutation or package repair occurred.
+          - Complete continuous gate selected **92 unique contracts: 88 passed / 4 failed**. Retry-3 stale-cache remediation is runtime-green **2/2**, provenance remediation is runtime-green **1/1**, F1/F2-F3/F5 remain green, and all broad groups except `SurfaceCellAuthorityContractCutover.*` pass fully. The remaining four feature aggregate/final-oracle contracts all stop earlier at component `completion`.
+          - Exact-source diagnosis shows the two-triangle-square hard diagonal creates one-triangle topology regions because hard features are region barriers; the bounded-disk phase-front producer declines regions with fewer than four boundary edges/vertices, so this witness never reaches the CB-02 post-materialization `HardRail` projection. A later generic completion rejection can erase stronger earlier producer context with an empty reason. R-A remains open; next scope is `R-A-TB4-CB-01` through `R-A-TB4-CB-04` and then immutable retry 5.
+          """
+          entry = '\n'.join(line[10:] if line.startswith('          ') else line for line in entry.splitlines()) + '\n'
+          if heading in text:
+              raise SystemExit('retry4 changelog entry already present')
+          if text.count(marker) != 1:
+              raise SystemExit('unexpected Unreleased marker count')
+          changelog.write_text(text.replace(marker, marker + entry, 1))
+
+          roadmap = Path('.agents/Directional/REORIENTATION_PLAN.md')
+          text = roadmap.read_text()
+          old_header = (
+              '**Current R-A compile candidate:** `aa16449577c48bac72257b7b9915e2b70dad3b82`\n'
+              '**Latest R-A runtime:** retry 3 `31667380356 / 94344731465` — **86/92 pass, 6 fail**; retry 4 pending\n'
+              '**Decision:** **R-A retry-3 remediation is compile-valid; execute immutable retry 4 before continuing R-B through R-G.**\n'
+          )
+          new_header = (
+              '**Current R-A tested source:** `aa16449577c48bac72257b7b9915e2b70dad3b82`\n'
+              '**Latest R-A runtime:** retry 4 `31679754667 / 94382280555` — **88/92 pass, 4 fail**\n'
+              '**Decision:** **R-A remains open; repair the remaining feature-bearing pre-aggregation seam, then execute immutable retry 5.**\n'
+          )
+          if old_header not in text:
+              raise SystemExit('roadmap header anchor missing')
+          text = text.replace(old_header, new_header, 1)
+
+          start = text.index('### Active R-A evidence\n')
+          end = text.index('\n## 5. M1 completion sequence', start)
+          replacement = """### Active R-A evidence
+
+          Artifact-only retry 4 tested exact source `aa16449577c48bac72257b7b9915e2b70dad3b82` from compile package `9171125667 / 9171126075`. Immutable preflight, regenerated static inventory (**19 paths / 60 probes / 270 matches / PASS**), non-vacuous discovery, and postflight all passed. Runtime run/job `31679754667 / 94382280555` selected **92 unique contracts: 88 passed / 4 failed**, with zero orchestration failures and no rebuild/source/test/fixture/package mutation or repair.
+
+          Retry 4 establishes the retry-3 same-cardinality stale-cache and guaranteed-provenance fixes as runtime-green. The remaining four failures are all feature-bearing aggregate/final-oracle contracts and still stop earlier at component `completion`.
+
+          Exact-source diagnosis narrows the blocker: hard-feature edges partition source topology regions, and the current two-triangle-square diagonal creates one-triangle regions. The bounded-disk phase-front producer declines regions with fewer than four boundary edges/vertices, so this witness never reaches the post-materialization exact `HardRail` lineage projection. A later generic completion failure can replace stronger producer context with an empty completion reason. The next Code + Build turn must preserve the earliest typed unsupported/failure authority and use a separate production-feasible non-empty internal hard-feature witness for aggregate/final-oracle contracts.
+
+          Exact runtime evidence and classification live in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`; executable next scope lives in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`.
+          """
+          replacement = '\n'.join(line[10:] if line.startswith('          ') else line for line in replacement.splitlines()) + '\n'
+          text = text[:start] + replacement + text[end:]
+
+          seq_start = text.index('## 5. M1 completion sequence\n')
+          seq_end = text.index('\nR-A work must not implement', seq_start)
+          seq = """## 5. M1 completion sequence
+
+          1. Execute `R-A-TB4-CB-01` through `R-A-TB4-CB-04`: preserve earliest typed hard-feature unsupported/failure diagnostics, retain the undersized two-triangle witness as fail-closed, establish a feasible internal hard-feature aggregate/final-oracle witness, preserve retry-4 green authority, and create a fresh immutable compile package.
+          2. Execute artifact-only R-A retry 5 against that fresh package. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/discovery/postflight.
+          3. After R-A closes, complete R-B through R-G in the same bounded cadence.
+          4. Produce one fresh complete M1 package and execute the full M1 artifact-only acceptance/characterization gate.
+          5. Only after M1 acceptance resume M2-M8.
+          """
+          seq = '\n'.join(line[10:] if line.startswith('          ') else line for line in seq.splitlines()) + '\n'
+          text = text[:seq_start] + seq + text[seq_end:]
+          roadmap.write_text(text)
+          PY
+          git diff --check
+          changed="$(git diff --name-only | sort)"
+          expected="$(printf '%s\n' .agents/Directional/CHANGELOG.md .agents/Directional/REORIENTATION_PLAN.md | sort)"
+          test "$changed" = "$expected"
+          git config user.name 'Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add -f .agents/Directional/CHANGELOG.md .agents/Directional/REORIENTATION_PLAN.md
+          git diff --cached --check
+          git commit -m 'docs: record R-A artifact-only retry 4'
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          test -z "$(git status --porcelain=v1)"
