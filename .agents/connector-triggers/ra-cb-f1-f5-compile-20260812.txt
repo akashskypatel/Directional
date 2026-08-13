@@ -1,0 +1,3 @@
+purpose=compile-only verification for RA-CB-F1 through RA-CB-F5
+source_sha=555109796188b318c788ef5777f622705ee0aa94
+runtime_execution=false
