@@ -1,0 +1,31 @@
++        }
++      }
++      if (next < 0) {
++        for (const int neighbor : adjacency.at(current)) {
++          const auto edge = std::minmax(current, neighbor);
++          if (traversed.count(edge) == 0U) {
++            next = neighbor;
++            break;
++          }
++        }
++      }
++      if (next < 0) break;
++      traversed.insert(std::minmax(current, next));
++      previous = current;
++      current = next;
++      if (rail.closed && current == start) {
++        sequence.push_back(start);
++        break;
++      }
++      if (sequence.size() > adjacency.size()) return false;
++    }
++    return traversed.size() == segments.size() &&
++           ((!rail.closed && sequence.size() == adjacency.size()) ||
++            (rail.closed && sequence.size() == adjacency.size() + 1U));
++  };
++
++  std::set<std::size_t> missing;
++  for (const auto &[railId, rail] : hardRails) {
++    const auto found = segmentsByRail.find(railId);
++    std::vector<int> sequence;
++    if (invalidRails.count(railId) != 0U || found == segmentsByRail.end() ||
