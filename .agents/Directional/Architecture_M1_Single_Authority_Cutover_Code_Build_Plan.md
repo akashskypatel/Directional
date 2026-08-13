@@ -2,106 +2,65 @@
 
 ## Status
 
-R-A remains **open** after immutable artifact-only retry 3. This file contains only the next executable Code + Build scope; superseded R-A implementation history is retained in `CHANGELOG.md` and the current T+B report.
+R-A remains **open**, but `R-A-TB3-CB-01` through `R-A-TB3-CB-04` are complete at the Code + Build boundary. Runtime acceptance is deliberately unclaimed until immutable artifact-only retry 4 executes the fresh package below.
 
-Entering runtime authority: M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`.
+Entering runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c`.
 
-Rejected retry-3 candidate:
-- implementation: `38d8d7d3e97f3b496e63979cb1348ed2cda304bc`
-- exact compile source: `555109796188b318c788ef5777f622705ee0aa94`
-- compile package: result `9167759672`, log `9167759825`
-- runtime run/job: `31667380356 / 94344731465`
-- result: **92 unique selected / 86 passed / 6 failed / 0 orchestration failures**
+Retry-3 runtime evidence remains the reason for this remediation:
+- tested source `555109796188b318c788ef5777f622705ee0aa94`;
+- runtime run/job `31667380356 / 94344731465`;
+- semantic result **92 unique selected / 86 passed / 6 failed / 0 orchestration failures**.
 
-## Turn boundary
+## Code + Build result
 
-This is a **Code + Build** plan. Source, tests, diagnostics, audit code, build configuration, and durable documentation may change only as required by the tasks below. Configuration/compile/link/static analysis are allowed. Generated Directional tests, benchmarks, GTest discovery/listing, `ctest`, CLI, fuzzer, help/version commands, and custom inputs are prohibited during this turn.
+Semantic implementation commit: `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`  
+Exact clean compile source: `aa16449577c48bac72257b7b9915e2b70dad3b82`  
+Static inventory: **19 affected paths / 60 probes / 270 matches / PASS**  
+Compile run/job: `31674780558 / 94366870676`  
+Compile result artifact: `9171125667`, SHA-256 `0190d60057001cc2fdcb56f64e436b7bf4670bb7a571c0ae0f3af8a296594a83`  
+Compile log artifact: `9171126075`, SHA-256 `bc54bd79251bc935a171d04cd81994f211096d060904341169ce6e5777442380`
 
-Do not answer a runtime failure by weakening validation, removing an invariant, fabricating authority, bypassing a producer, or making a counterfactual vacuous. Compile success is not semantic acceptance.
+The reusable compile workflow completed the approved Release/static/Ninja/PRE_TEST targets **118/118**, build exit `0`. The result package contains **26 files**, self-excluding recursive manifest **25/25**, exact source archive, and five empty source-status snapshots. Metadata records `runtimeExecution=false` and `semanticContracts=compiled-not-executed`. No generated Directional test, benchmark, discovery/listing command, `ctest`, CLI, fuzzer, help/version command, or custom input executed in this turn.
 
-## R-A-TB3-CB-01 — same-cardinality boundary-cache counterfactual
+## Completed scope
 
-### Runtime evidence
+### R-A-TB3-CB-01 — same-cardinality boundary-cache counterfactual
 
-`DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches` passed its strong canonical-publication checks but failed only this expectation: `surfaceCellAggregateIdentityBoundaryCacheRebuildCount == 0`, actual `2`.
+**Complete at Code + Build boundary.** The stale-cache counterfactual now explicitly allocates `boundaryNodeIdentities` to exactly `boundaryVertices.size()` before injecting stale valid identities. This makes the zero-rebuild assertion falsifiable for genuine same-cardinality stale content. The contract still requires every published boundary identity to be valid, equal to completion-owned canonical lineage, and free of the stale token. The independent missing-cardinality positive still requires rebuild count equal to completed-patch count. Production canonical cache rebuild logic was not weakened.
 
-The counterfactual mutator iterates existing `patch.boundaryNodeIdentities` and changes entries, but does not size the vector. Authoritative component materialization intentionally leaves this derived cache unpopulated. Production aggregate rebuild therefore sees two component patches whose cache extent differs from `boundaryVertices`, counts both, assigns the final extent, and rebuilds every identity from canonical lineage.
+### R-A-TB3-CB-02 — feature-bearing completion and final-oracle authority
 
-### Required correction
+**Complete at Code + Build boundary; runtime verification pending retry 4.** Source tracing established that the explicit hard feature already reaches authoritative phase-front materialization. The downstream defect was reconstructing output feature sequences geometrically from rail-sample proximity even though phase-front materialization already publishes exact `PureQuadEquivalenceKind::HardRail` quotient-equivalence provenance on the output relation.
 
-1. Make the test truly exercise **same-cardinality stale content**: before injecting stale tokens, explicitly size/populate each completed patch's boundary cache to `boundaryVertices.size()` using stale valid identities.
-2. Retain assertions that every published boundary identity is valid, equals its matching lineage canonical identity, and contains no stale token.
-3. Require rebuild count `0` only for this same-cardinality counterfactual.
-4. Keep the existing missing-cardinality positive requiring exact rebuild count equal to completed-patch count.
-5. Do not change `rebuild_aggregate_output_identity_caches` unless independent source analysis identifies a separate production defect.
+The production correction adds exact phase-front hard-feature projection:
 
-### Compile gate
+1. collect authoritative hard rails by typed rail identity;
+2. collect actual materialized output mesh edges;
+3. consume `HardRail` equivalence provenance from output vertex lineage;
+4. require each exact lineage segment to correspond to an actual output mesh edge;
+5. deterministically assemble each rail as an open path or closed cycle;
+6. keep malformed/missing relations typed and fail-closed;
+7. retain geometric rail samples only for positional optimization rather than semantic feature membership.
 
-The amended authority-contract test must compile in the packaged producer-test target.
+The aggregate final-validation authority path applies the same exact projection when materialized quotient lineage is present. Failed component aggregation now preserves the inner producer stage, reason, validation issue, and indexed context. Completion validation records typed `MissingFeatureRail` when authoritative feature-rail validation is the failing invariant. No rail is synthesized in a test callback and no ownership, source-support, completion, or final-validator requirement was relaxed.
 
-## R-A-TB3-CB-02 — feature-bearing completion before aggregate/final oracle
+### R-A-TB3-CB-03 — guaranteed semantic provenance tamper
 
-### Runtime evidence
+**Complete at Code + Build boundary.** The counterfactual no longer replaces barycentrics with `(1,0,0)`, which can be an unchanged valid source-corner certificate. It now preserves the baseline valid barycentric certificate and changes the source-attached `SurfacePoint.position`; a precondition asserts that the certificate actually changed. The expected strict validation issue is `SourcePositionMismatch`, with final-oracle fail-closed and zero semantic aggregate publication. Validator tolerances and coverage remain unchanged.
 
-Four failures share the same earliest seam:
+### R-A-TB3-CB-04 — static closure and fresh package
 
-- `ComponentFeatureRailTamperRejectsAtAggregationSeam` stops at `completion`, before its mutator can exercise aggregate authority.
-- `FinalMergedOracleRejectsMissingRemappedFeatureAuthority` never reaches the final-oracle callback.
-- `FinalMergedOracleRejectsChangedRemappedFeatureRailContent` never reaches the final-oracle callback.
-- `FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority` never observes non-empty feature authority at the final oracle.
+**Complete.** `R_A_Closure_Inventory.py` gained coverage for the exact materialized hard-feature lineage projection and regenerated its report at **19 / 60 / 270 / PASS**. Unexpected raw-projection leaves, face-count leaves, and pipeline `stitchIdentity` assignments remain zero; stitch-kind classifier self-tests pass. The exact compile source and package authority are recorded above.
 
-The RA-CB-F5 transport/conservation contracts themselves are runtime-green. The remaining issue is earlier feature-bearing **component completion**, not global-to-local option remap.
+## Mandatory next turn
 
-### Required analysis before editing
+Run immutable artifact-only **R-A retry 4** using `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md` against:
 
-1. Trace the exact component failure path from hard-feature option -> feature map -> authoritative rail -> completion options -> `complete_surface_cell_complex` -> fail-closed result.
-2. Preserve the component's exact completion failure reason when the outer aggregate rejects. If current outer diagnostics discard it, add the minimum typed diagnostic propagation needed for a future immutable T+B run to identify the actual completion invariant without inspecting mutable state.
-3. Determine from `DESIGN.md` and production source whether the current internal diagonal hard-edge fixture is within the supported R-A contract. Hard features are mandatory authority for Certified output; do not classify the entire feature path as optional.
+- exact source `aa16449577c48bac72257b7b9915e2b70dad3b82`;
+- result artifact `9171125667`, SHA-256 `0190d60057001cc2fdcb56f64e436b7bf4670bb7a571c0ae0f3af8a296594a83`;
+- log artifact `9171126075`, SHA-256 `bc54bd79251bc935a171d04cd81994f211096d060904341169ce6e5777442380`;
+- compile run/job `31674780558 / 94366870676`.
 
-### Required correction
+Retry 4 must use exact immutable preflight/postflight, byte-identical regenerated static inventory, non-vacuous independent discovery, the complete R-A semantic selection, retained F2 completion/stitch reason evidence, and the CB-01/02/03 affected contracts. No rebuild, source/test/fixture mutation, permission/content repair, or package repair is permitted.
 
-Choose only the branch supported by the analysis:
-
-**A. Supported input exposes a production defect:** repair completion so a valid internal hard feature survives naturally through completion and reaches aggregate/final validation. Preserve strict ownership, source support, canonical identity, rail authority, and no-substitution behavior.
-
-**B. Exact fixture is outside the current supported input contract:** document the precise unsupported condition, replace the aggregate/final-oracle witness only with a demonstrably production-feasible **non-empty internal hard feature**, and add/retain a separate fail-closed contract for the unsupported case. Boundary-only or empty feature authority is not an acceptable substitute.
-
-In either case the resulting compiled contracts must preserve these intended runtime outcomes:
-- component feature-rail tamper reaches aggregation and rejects as changed component validation authority;
-- missing remapped feature authority reaches the final oracle and rejects for missing feature rail authority;
-- changed feature-rail content reaches the final oracle and rejects for changed/missing feature authority as specified by the validator;
-- the positive reaches the final oracle with non-empty remapped feature authority and is accepted.
-
-Do not synthesize feature rails solely inside test callbacks, disable feature checks, or relax completion/validator invariants to make these tests green.
-
-## R-A-TB3-CB-03 — guaranteed semantic provenance tamper
-
-### Runtime evidence
-
-`FinalMergedOracleRejectsPostComponentProvenanceTamper` changed the first output provenance barycentric coordinate to `(1,0,0)`, yet the aggregate/final oracle accepted the mesh. The validator is source-authoritative: `(1,0,0)` is a valid certificate when the output point is exactly the corresponding source vertex, so the mutation is not guaranteed to change semantics.
-
-### Required correction
-
-1. Replace the counterfactual with a guaranteed semantic mutation while keeping otherwise valid authority intact. Preferred forms are:
-   - preserve the source face but set a finite barycentric certificate that is provably different from the baseline and reconstructs a different position; or
-   - mutate `SurfacePoint.position` while preserving the original valid barycentric certificate so the validator must report `SourcePositionMismatch`.
-2. Add a precondition proving the mutation changes the semantic provenance certificate for the selected vertex; never assume the first vertex is not already a source corner.
-3. Require final-oracle rejection and the intended typed validation issue, with zero semantic aggregate publication.
-4. Do not weaken provenance tolerances or validator coverage.
-
-## R-A-TB3-CB-04 — static closure and fresh immutable compile package
-
-After CB-01 through CB-03 are complete:
-
-1. update `R_A_Closure_Inventory.py` only if new/renamed semantic contracts require probe coverage;
-2. regenerate `R_A_Closure_Inventory_Report.md` from the exact source and require zero unexpected raw-projection, face-count, or pipeline stitch-identity leaves and classifier self-test PASS;
-3. compile/link the approved R-A targets through the durable reusable compile workflow;
-4. package exact source, binaries, build logs, five clean source-status snapshots, command-boundary metadata, and a self-excluding recursive SHA-256 manifest;
-5. record exact source SHA, run/job, artifact IDs and outer digests in `TODO.md` and the handoff;
-6. execute **no generated runtime** in this Code + Build turn.
-
-## Closure after this plan
-
-The following turn is immutable artifact-only **R-A retry 4**. It must re-run the complete semantic gate, including the F2 per-contract reason evidence, with non-vacuous independent discovery and immutable pre/postflight. R-A closes only on an organic all-pass. Otherwise preserve evidence and return to another bounded Code + Build plan.
-
-R-B through R-G remain blocked behind R-A. The full M1 artifact-only acceptance package remains dormant until R-A through R-G are complete.
+R-A closes only on an organic all-pass. Otherwise preserve exact evidence and return to another bounded Code + Build plan. R-B through R-G remain blocked behind R-A, and the full M1 artifact-only acceptance package remains dormant until R-A through R-G are complete.
