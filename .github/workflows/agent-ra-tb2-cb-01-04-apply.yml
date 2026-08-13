@@ -90,7 +90,8 @@ jobs:
           git add \
             include/directional/diagnostics/RemeshDiagnostics.h \
             src/pipeline/RemeshPipeline.cpp \
-            tests/SurfaceCellsPhase10Tests.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp
+          git add -f \
             .agents/Directional/R_A_Closure_Inventory.py \
             .agents/Directional/R_A_Closure_Inventory_Report.md
           git commit -m 'fix: remediate R-A retry2 aggregate authority blockers'
