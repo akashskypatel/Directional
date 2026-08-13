@@ -1,0 +1,20 @@
+name: Agent R-A Retry 3 CB Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-tb3-cb-compile.txt
+
+permissions:
+  contents: read
+  actions: write
+
+jobs:
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: aa16449577c48bac72257b7b9915e2b70dad3b82
+      artifact_prefix: ra-tb3-cb-compile
+      cache_epoch: v1
