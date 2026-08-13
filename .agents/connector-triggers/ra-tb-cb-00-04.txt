@@ -1,0 +1,1 @@
+Trigger R-A-TB-CB-00 through R-A-TB-CB-04 Code + Build remediation. Apply the pre-verified source/test/static-audit patch, regenerate the full R-A inventory, commit exact source, then compile/link approved targets through agent-compile-reusable.yml. No generated runtime execution.
