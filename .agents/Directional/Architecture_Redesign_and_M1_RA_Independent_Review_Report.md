@@ -8,6 +8,53 @@ This document retains only independent-review decisions that still constrain cur
 
 Overall R-A remains **open**. The latest immutable runtime evidence is retry 3 against exact source `555109796188b318c788ef5777f622705ee0aa94`: **92 unique selected / 86 passed / 6 failed / 0 orchestration failures**. This runtime result supersedes all earlier review-time statements that the candidate was merely “ready for retry.” M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
 
+## Independent verification of the retry-4 R-A-TB4-CB-01/CB-02 root-cause analysis
+
+Verified against exact tested source `aa16449577c48bac72257b7b9915e2b70dad3b82` (byte-identical to the branch head on `src`, `include`, `tests`). Documentation-only turn; no generated binary, test, benchmark, discovery, `ctest`, CLI, fuzzer, or custom input executed.
+
+**Verdict: the root-cause chain is CORRECT. Every link was independently confirmed in source, not accepted from the report. One material refinement is required to CB-02's acceptance criterion, and the same narrowing affects CB-01 measure 2.**
+
+### Chain confirmed link by link
+
+| Claim | Verification |
+|---|---|
+| Hard-feature edges are barriers in source-topology-region construction | **Confirmed.** `SurfaceCellTracing.cpp:2617-2619`: inside `build_source_topology_regions` (2539-2927), an edge present in `options.hardFeatureEdges` hits `continue` before the adjacency link is written, so the two incident faces are never joined into one region. |
+| The witness therefore yields one-triangle regions | **Confirmed.** `make_disconnected_square_pair_mesh` has faces `(0,1,2),(0,2,3)` and `(4,5,6),(4,6,7)`. The marked edge is the interior diagonal in both cases, so the affected square splits into two single-triangle regions with three edges and three vertices each. |
+| The bounded-disk producer declines regions with fewer than four boundary edges/vertices | **Confirmed.** `SurfaceCellTracing.cpp:8051-8053`: `if (boundaryEdgeKeys.size() < 4U \|\| boundaryAdjacency.size() < 4U) return result;` — the early return leaves the default `NotApplicable` disposition. Both conditions fail for a triangle. |
+| With no phase-front product, the CB-02 `HardRail` projection cannot run | **Confirmed.** `project_materialized_hard_feature_rails_from_lineage` is guarded by `useAuthoritativePhaseFront`, which is `phaseFrontProduct != nullptr`. |
+| A later generic completion rejection can overwrite earlier producer context with an empty reason | **Confirmed.** `RemeshPipeline.cpp:7904-7910`: the `else` branch assigns `surfaceCellFirstInvalidProducerStage = "completion"` and sets the reason to `completionResult.failure`, falling back to `outputLineageValidation.failure`, with **no guard preserving an already-set non-empty reason**. When both strings are empty the reason becomes `""`. This matches the observed stage `completion` with an empty first-invalid-producer reason exactly. |
+
+The analysis is also honest about what retry 4 disproved: the outer aggregate does copy inner component diagnostics, so the remaining loss is inside the component pipeline. That is consistent with the observed outer-empty reason.
+
+One detail the durable text under-describes: `ComponentFeatureRailTamperRejectsAtAggregationSeam` marks `{4, 6}` (the second square's diagonal) while the other three mark `{0, 2}`. The mechanism is identical, but the docs read as though a single edge is involved. Worth stating precisely so a future turn does not "fix" one component and expect all four contracts to move.
+
+### RA-TB4-F1 — CB-02's acceptance criterion names the wrong producer
+
+**Material. Correct before the Code + Build turn starts, or the new witness may be built against the wrong precondition.**
+
+**Evidence**
+
+- The phase-front producer chain at `SurfaceCellTracing.cpp:9549-9564` tries **three** producers in order per region: `build_uniform_phase_front_for_faces`, then `build_periodic_annulus_phase_front_for_faces` on `NotApplicable`, then `build_curved_bounded_disk_phase_front_for_faces` on `NotApplicable`. Only if all three decline does the region land on the `firstUnsupportedRegion` path (`:9576-9579`).
+- The analysis names only the third producer and its `< 4` extent rule. For this witness the conclusion still holds — all three decline and no product is created, which the runtime evidence independently establishes — but the `< 4` rule is merely the **last** of three declines, not the binding constraint.
+- For a **planar** witness the binding constraint is the **first** producer. `build_uniform_phase_front_for_faces` (from `:6024`) is gated on `build_planar_phase_frame` succeeding, and its own comment records that "Non-planar, non-rectangular, or globally non-uniform phase domains are outside this bounded producer." A hard diagonal fails there because a triangle is not rectangular — long before the bounded-disk extent rule is consulted.
+- Consequence for CB-02 as written: "regions … satisfy current phase-front bounded-disk preconditions" would steer the next turn toward giving each separated region four or more boundary edges. That is **necessary but not sufficient** and points at the wrong gate. A non-rectangular planar region with five boundary edges would still be declined by the uniform producer and would still fail. Conversely, a rectangular sub-region is produced by the uniform producer and never reaches the bounded-disk rule at all.
+
+**Corrective measures**
+
+1. Restate CB-02's criterion as: the hard-feature-separated regions must be **produced by whichever producer in the `:9549-9564` chain applies**, and for a planar witness that is the uniform producer's planar-and-rectangular domain — not the bounded-disk extent rule.
+2. Build the witness accordingly: split the square with an internal hard feature along a **mid-line of a sufficiently resolved grid** so that each separated region is itself rectangular. A diagonal can never satisfy this, at any resolution, because it yields triangles.
+3. Make the new contract assert that a phase-front product was actually **produced** — for example that the producer disposition is `Produced` and `useAuthoritativePhaseFront` held — rather than inferring it from downstream success. Otherwise a future regression that silently drops back to a non-materialized path would present as a different failure.
+
+### RA-TB4-F2 — CB-01 measure 2 inherits the same narrowing
+
+**Minor; fix alongside RA-TB4-F1.**
+
+CB-01 measure 2 requires a typed unsupported condition when a region is outside every producer's domain "because its bounded-disk boundary extent is below the supported minimum". Keying the typed condition on the bounded-disk extent would miss the larger class: any region all three producers decline, including non-rectangular regions with four or more boundary edges. Key it on the existing "no producer applicable" outcome — the `firstUnsupportedRegion` path at `:9576-9579` — so the typed unsupported condition covers every decline, and record which producers declined.
+
+### Assessment
+
+This is the strongest failure analysis produced in this sequence: it is source-grounded, correctly separates the unsupported witness from a production defect, and explicitly refuses the tempting shortcuts (boundary-only feature, callback-synthesized rails, validator weakening). The two findings above narrow the corrective criteria to the constraint that actually binds; neither disputes the diagnosis.
+
 ## Retained architectural/review decisions
 
 ### 1. Single-authority direction is accepted; closure requires runtime proof
