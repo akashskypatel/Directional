@@ -17,6 +17,21 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — R-A-TB-CB-00 through R-A-TB-CB-04 runtime-gate remediation
+
+- Fixed the post-move source-authority lifetime defect by retiring the stale phase-front pointer after moving the trace network and routing all later aggregate optimizer/final-validation consumers through the retained pre-move `SourceTopologyRegions` owner. Strict exact-source binding remains fail-closed.
+- Completion now separates source-face support authority from geometry projection, generated-interior fixtures carry real source geometry, and same-owner adjacent patches publish the owner-valid chart closure over their support faces instead of incompatible patch-local singleton charts.
+- Replaced the raw projection-sheet optimizer expectation with a typed source-authority/source-face mismatch negative and pinned it in the R-A audit; completed the rail-builder source matrices. Added a focused post-move retained-authority publication contract.
+- CB-00 evidence limitation is retained explicitly: runtime artifacts `9163003523 / 9163003950` do not serialize or print `surfaceCellTopologyRegionCount`, so no count was inferred or fabricated; exact-source lifetime analysis confirms the use-after-move mechanism.
+
+### Validation — R-A-TB-CB-00 through R-A-TB-CB-04 Code + Build
+
+- Exact source `92bf0ae2b10856162f175d02aeac318e126f9d22`. Regenerated R-A inventory: **19 paths / 50 probes / 206 matches**, raw projection **22/0**, face-count **2/0**, pipeline `stitchIdentity` assignments **2/0**, classifier self-test **4/4**, final static **PASS**.
+- Compile run/job `31655755100 / 94309741656` completed Release/static/Ninja/PRE_TEST **118/118**, exit `0`; ccache **102/108 hits (94.44%)**. Result `9164349848` SHA-256 `499bb4b4b6bd33408284bb3985bb04f0bda7312834b462b806965f7799e45870`; log `9164350085` SHA-256 `a7fa938991c13d6a79cf4fdab85669d3e37e6eb625dc2541d8c8fdea2388938f`; apply/static evidence `9164300537` SHA-256 `348f0c014ed115c143e2ac226151769f47cd0e42801705d3ceb196c467cdedb1`.
+- Independent package inspection verified **26** regular files, zero symlinks, recursive self-excluding manifest **25/25**, five empty source-status snapshots, exact source archive, `runtimeExecution=false`, and `semanticContracts=compiled-not-executed`.
+- A first control-plane attempt failed before source application because a single base64 payload was corrupted in transfer; the retry split it into four independently hashed chunks and reconstructed the exact pre-verified patch before apply. This was orchestration-only and executed no generated runtime.
+- Overall R-A remains open. The next cadence is the immutable artifact-only semantic retry; M1l remains runtime authority and regression totals stay **34 / 14 / 20**.
+
 ### Validation — independent review of the failed R-A artifact-only gate
 
 - Independent Review inspected `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md` and runtime candidate source `64fa65a9379ad0a246393371516de3a3a7146243`. **The gate result is accepted as authentic organic runtime evidence** — preflight/postflight, packaged inventory regeneration, non-vacuous discovery, `orchestration_failed=0`, and the 61/87 outcome all hold, and R-A correctly stays open.

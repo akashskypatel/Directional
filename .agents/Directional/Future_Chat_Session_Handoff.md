@@ -25,31 +25,26 @@ Do not add transcripts, chronological tool history, copied artifact tables, supe
 
 ## Mandatory next turn
 
-Run one **Code + Build R-A runtime-remediation turn**. Artifact-only Step 3 executed against exact package `9162042615 / 9162042971` and failed organically; do not mark R-A complete and do not rerun the same package unchanged.
+Run one **immutable artifact-only R-A Test + Benchmark retry** against the fresh Code + Build package below. Do not rebuild, edit source/tests/fixtures, repair the package, or activate the dormant full-M1 plan.
 
 Repository: `akashskypatel/Directional`  
 Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`  
 PR: #8 remains open, draft, and unmerged  
-Failed runtime candidate source: `64fa65a9379ad0a246393371516de3a3a7146243`  
-Compile run/job: `31649372167 / 94290107577`  
-Failed T+B run/job: `31652227682 / 94298883415`  
-T+B result artifact: `9163003523`, SHA-256 `d87293c864c2e17495017567ff0abbe7a40888b7af2e3479306e2b12e2241d74`  
-T+B log artifact: `9163003950`, SHA-256 `6125912547d698c4cb24175692f876609372b86729aa122bd2923e6e14cc6d28`
+Exact candidate source: `92bf0ae2b10856162f175d02aeac318e126f9d22`  
+Compile run/job: `31655755100 / 94309741656`  
+Compile result artifact: `9164349848`, SHA-256 `499bb4b4b6bd33408284bb3985bb04f0bda7312834b462b806965f7799e45870`  
+Compile log artifact: `9164350085`, SHA-256 `a7fa938991c13d6a79cf4fdab85669d3e37e6eb625dc2541d8c8fdea2388938f`
 
-The T+B package passed exact-source/digest/manifest/status/static-inventory preflight and immutable postflight. Discovery selected 13 authority-kernel, 231 producer, 179 completion, and 84 validation tests. Across 87 unique selected R-A contracts, **61 passed / 26 failed**, with zero orchestration failures. The full classification and raw-evidence map is `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+Pre-runtime requirements: verify the exact source commit, outer artifact digest, archive/path safety, self-excluding manifest **25/25**, dependency revisions, all five empty source-status snapshots, `runtimeExecution=false`, and the packaged **19-path / 50-probe / 206-match** R-A static inventory. A zero-selected filter is orchestration failure.
 
-Implement only section **0I** of `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`:
+Execute the same continuous R-A closeout semantic gate that failed on attempt 1, including the F1/F3/F4 aggregate final-oracle contracts, complete `SurfaceCellAuthorityContractCutover.*` selection, retained completion authority contracts, source-authoritative validator contracts, optimizer/final-validator authority contracts, rail-authority migration, isolation-seam authority, source-support/chart authority, plus the new `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` and typed source-authority mismatch optimizer negative. Do not weaken filters or substitute proxy tests.
 
-0. **first, confirm the mechanism from evidence already in hand.** Read `surfaceCellTopologyRegionCount` in runtime log artifact `9163003950`. It is recorded at `RemeshPipeline.cpp:6212`, before the move at `:6414`. Non-zero alongside `optimization / MissingSourceAuthority` confirms the use-after-move reading below; zero would confirm the superseded null-`phaseFrontProduct` reading;
-1. fix the **post-move read** of the phase-front source authority. `phaseFrontProduct` (`:6191-6192`) points into the local `traceNetwork`, unconditionally `std::move`d at `:6414`; it stays non-null and still reports Produced while `sourceTopologyRegions` is moved-from and empty. Replace the five post-move reads at `:6623`, `:6674`, `:6918`, `:7352`, `:7758` with the retained copy `result.surfaceCellContext.sourceTopologyRegions` (written at `:6206-6211` for exactly this lifetime reason), then null or re-derive the local pointer after `:6414`. **The null guard never fires — a null-case branch fixes nothing.** Keep `source_optimization_has_complete_authority` and `:7874-7880` unchanged; do not weaken exact source binding or restore raw/fallback authority. Add a regression contract asserting a successful run publishes `sourceTopologyRegions` satisfying `matches_source_faces` against the matrices given to the optimizer;
-2. after that wiring fix, repair aggregate final-oracle/feature fixtures only where their typed preconditions still fail naturally; never synthesize a green rail/loop authority;
-3. **re-triage the completion failures against the fixed pipeline before rebuilding any fixture** — several are plausibly downstream of the empty-owner defect. Then rebuild remaining fixtures with valid source geometry/support/chart/provenance authority and diagnose the two positive cylinder stitch failures that reached `IncompatibleTypedStitchAuthority` without restoring aliases or pre-intersection identity;
-4. replace the obsolete raw-sheet optimizer negative with a typed-authority mutation — **write the replacement first, require it to fail closed for the intended reason, then delete the old expectation in the same change; never delete first** — add an inventory probe pinning it by name, and complete the rail-builder fixture with exact source matrices;
-5. regenerate the full R-A inventory and produce one fresh exact-source compile package through the reusable compile workflow. **Do not execute generated tests/benchmarks in the Code + Build turn.**
+If every selected contract passes organically and immutable postflight remains clean, mark Step 3 and Step 4 / R-A complete. Any organic semantic failure returns to a bounded Code + Build turn with the exact failing contract and runtime evidence. **No independent Review turn is requested before this retry.**
 
-The following cadence is one immutable artifact-only retry of the same R-A semantic gate. Review is not requested; the user already confirmed the R-A implementation review end to end. R-A closes only after an organic runtime pass.
+`R-A-TB-CB-00` through `R-A-TB-CB-04` are Code + Build complete / compile-valid at `92bf0ae2b10856162f175d02aeac318e126f9d22`. CB-00 specifically did not fabricate the unavailable `surfaceCellTopologyRegionCount`: artifact `9163003950` contains no serialized/printed instance of that field; exact-source inspection confirmed the reviewed use-after-move mechanism instead.
 
-RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene and are not the cause of this runtime failure. The retained full-M1 artifact-only plan remains dormant until a fresh complete R-A-through-R-G package exists.
+RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene and do not block this runtime retry. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority until the candidate is organically accepted.
+
 ## Current authority
 
 ### Normative architecture
@@ -62,14 +57,15 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 
 ### R-A closure status
 
-- Overall R-A remains **open / runtime-rejected for candidate `64fa65a9379ad0a246393371516de3a3a7146243`**.
-- End-to-end Code + Build review remains complete; the failure is runtime evidence, not a new review request.
-- Artifact-only Step 3 attempt 1: run/job `31652227682 / 94298883415`, result/log artifacts `9163003523 / 9163003950`. Immutable preflight, packaged static inventory, and postflight all passed; no rebuild or source/test/fixture mutation occurred.
-- Runtime selection: **87 unique R-A contracts, 61 passed / 26 failed**, zero orchestration failures. Typed leaf authority remains strong (authority kernel 13/13, isolation seam 6/6, source-authoritative validator 8/8, rail-authority migration 7/7, source support/chart 1/1).
-- Primary production blocker (**root cause corrected by independent review finding RA-TB-F1**): a latent **use-after-move**. `phaseFrontProduct` points into the local `traceNetwork`, which is unconditionally `std::move`d at `RemeshPipeline.cpp:6414`; the pointer remains non-null and still reports Produced, but `sourceTopologyRegions` is moved-from and empty. Five post-move reads (`:6623`, `:6674`, `:6918`, `:7352`, `:7758`) consume that empty owner, and `:7758` yields the observed `optimization / MissingSourceAuthority`. The earlier "assigned only when `phaseFrontProduct != nullptr`" diagnosis is superseded — that guard never fires. The defect predates R-A and was benign only while typed authority was optional. The lifetime-safe owner already exists at `result.surfaceCellContext.sourceTopologyRegions` (`:6206-6211`).
-- Additional Code + Build blockers: owner-valid completion fixture closure plus two positive `IncompatibleTypedStitchAuthority` assemblies; one obsolete raw-sheet optimizer expectation; one rail-builder fixture missing exact source matrices.
-- No stable regression event/recurrence is added because the failed source is an unaccepted candidate and no loss of accepted M1l behavior has been established. Historical totals remain **34 / 14 / 20**.
-- M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
+- Overall R-A remains **open / runtime-pending** for candidate `92bf0ae2b10856162f175d02aeac318e126f9d22`; Code + Build does not establish semantic acceptance.
+- `R-A-TB-CB-00` through `R-A-TB-CB-04` are Code + Build complete / compile-valid. CB-00 could not read `surfaceCellTopologyRegionCount` because neither retained runtime artifact serializes it; exact source confirms the use-after-move mechanism and no value was invented.
+- CB-01 removes all five post-move `phaseFrontProduct->sourceTopologyRegions` reads, nulls the stale pointer, and routes consumers through the retained pre-move `surfaceCellContext.sourceTopologyRegions`; strict exact-source validation remains unchanged.
+- CB-03 separates source-face support authority from geometry projection and publishes owner-valid chart closure over support faces, while generated-interior fixtures now provide real source geometry.
+- CB-04 replaces the raw-sheet expectation with a typed exact-owner mismatch negative and completes the rail-builder source-scope fixture.
+- Static inventory at `92bf0ae2b10856162f175d02aeac318e126f9d22`: **19 paths / 50 probes / 206 matches**, raw projection **22/0**, face-count **2/0**, pipeline `stitchIdentity` assignments **2/0**, stitch-kind self-test **4/4**, final **PASS**.
+- Compile run/job `31655755100 / 94309741656`: Release/static/Ninja/PRE_TEST **118/118**, exit `0`; artifacts `9164349848 / 9164350085`; manifest **25/25**; five empty statuses; no generated runtime executed.
+- The mandatory next gate is the immutable artifact-only R-A semantic retry. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains runtime authority; historical regression totals remain **34 / 14 / 20**.
+
 ## Standing product state
 
 - M1 is active; R-B through R-G remain pending after R-A.
