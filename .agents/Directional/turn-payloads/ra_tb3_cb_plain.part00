@@ -1,0 +1,63 @@
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -3734,6 +3734,179 @@
+   return true;
+ }
+ 
++bool project_materialized_hard_feature_rails_from_lineage(
++    const std::vector<geometry::SurfaceCellRail> &rails,
++    const Eigen::MatrixXi &outputQuads,
++    const std::vector<geometry::PureQuadVertexLineage> &lineages,
++    geometry::SurfaceOptimizationConstraints &constraints) {
++  std::map<std::size_t, const geometry::SurfaceCellRail *> hardRails;
++  for (const geometry::SurfaceCellRail &rail : rails) {
++    if (rail.kind != geometry::SurfaceCellRailKind::HardFeature) continue;
++    if (!hardRails.emplace(rail.id.index(), &rail).second) return false;
++  }
++  constraints.requiredFeatureRailCount = hardRails.size();
++  constraints.authoritativeFeatureRails.clear();
++  constraints.missingFeatureRailIds.clear();
++  if (hardRails.empty()) return true;
++
++  if (outputQuads.rows() <= 0 || outputQuads.cols() < 2) return false;
++  std::set<std::pair<int, int>> outputEdges;
++  for (int face = 0; face < outputQuads.rows(); ++face) {
++    for (int corner = 0; corner < outputQuads.cols(); ++corner) {
++      const int first = outputQuads(face, corner);
++      const int second = outputQuads(face, (corner + 1) % outputQuads.cols());
++      if (first < 0 || second < 0 || first == second) return false;
++      outputEdges.insert(std::minmax(first, second));
++    }
++  }
++
++  using SegmentKey = std::tuple<std::size_t, int, int>;
++  std::map<SegmentKey, std::set<int>> verticesBySegment;
++  for (const geometry::PureQuadVertexLineage &lineage : lineages) {
++    if (lineage.outputVertex < 0 ||
++        static_cast<std::size_t>(lineage.outputVertex) >= lineages.size()) {
++      return false;
++    }
++    for (const geometry::PureQuadEquivalenceProvenance &equivalence :
++         lineage.equivalences) {
++      if (equivalence.kind != geometry::PureQuadEquivalenceKind::HardRail) {
++        continue;
++      }
++      if (!equivalence.railId.has_value() || equivalence.firstFrontEdge < 0 ||
++          equivalence.secondFrontEdge < 0 ||
++          equivalence.firstFrontEdge == equivalence.secondFrontEdge ||
++          hardRails.count(equivalence.railId->index()) == 0U) {
++        return false;
++      }
++      const auto frontEdges = std::minmax(equivalence.firstFrontEdge,
++                                          equivalence.secondFrontEdge);
++      verticesBySegment[{equivalence.railId->index(), frontEdges.first,
++                         frontEdges.second}]
++          .insert(lineage.outputVertex);
++    }
++  }
++
++  std::map<std::size_t, std::set<std::pair<int, int>>> segmentsByRail;
++  std::set<std::size_t> invalidRails;
++  for (const auto &[key, vertices] : verticesBySegment) {
++    const std::size_t rail = std::get<0>(key);
++    if (vertices.size() != 2U) {
