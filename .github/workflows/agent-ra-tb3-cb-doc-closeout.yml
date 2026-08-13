@@ -1,0 +1,140 @@
+name: Agent R-A Retry 3 CB Documentation Closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-tb3-cb-doc-closeout.txt
+
+permissions:
+  contents: write
+
+jobs:
+  docs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      COMPILE_SOURCE: aa16449577c48bac72257b7b9915e2b70dad3b82
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A retry3 Code+Build durable documentation closeout' \
+            "event_sha=$GITHUB_SHA" \
+            "compile_source=$COMPILE_SOURCE" \
+            'implementation_mutation=false' \
+            'generated_runtime_execution=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout closeout head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Update roadmap and changelog
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          git fetch --no-tags --depth=1 origin "$COMPILE_SOURCE"
+          git diff --quiet "$COMPILE_SOURCE" -- src include tests CMakeLists.txt cmake \
+            .agents/Directional/R_A_Closure_Inventory.py \
+            .agents/Directional/R_A_Closure_Inventory_Report.md
+          echo 'semantic_paths_match_compile_source=PASS'
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          changelog = Path('.agents/Directional/CHANGELOG.md')
+          text = changelog.read_text()
+          marker = '## [Unreleased]\n'
+          entry = '''
+
+### Fixed — R-A-TB3-CB-01 through R-A-TB3-CB-03 retry-3 remediation
+
+- Corrected the stale boundary-cache counterfactual so the zero-rebuild case now constructs genuine same-cardinality stale cache state before aggregate canonical refresh; the separate missing-cardinality exact rebuild-count positive remains intact.
+- Replaced phase-front hard-feature semantic reconstruction by rail-sample proximity with exact projection from materializer `HardRail` quotient-equivalence lineage plus actual output mesh edges. Geometric rail samples remain positional optimization data only; malformed/missing exact rail authority remains fail-closed. Failed component aggregation now retains the inner producer reason/context, and completion validation can report typed `MissingFeatureRail`.
+- Replaced the potentially neutral `(1,0,0)` provenance mutation with a guaranteed source-position certificate mismatch and a non-vacuous mutation precondition; strict validation remains unchanged and expects `SourcePositionMismatch`.
+
+### Validation — R-A-TB3-CB-04 fresh compile package
+
+- Semantic implementation commit `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`; exact clean compile source `aa16449577c48bac72257b7b9915e2b70dad3b82`. Regenerated R-A inventory: **19 affected paths / 60 probes / 270 matches / PASS**, with zero unexpected raw-projection, face-count, and pipeline `stitchIdentity` leaves and classifier self-test PASS.
+- Compile run/job `31674780558 / 94366870676` completed the approved Release/static/Ninja/PRE_TEST targets **118/118**, build exit `0`. Result artifact `9171125667` SHA-256 `0190d60057001cc2fdcb56f64e436b7bf4670bb7a571c0ae0f3af8a296594a83`; log artifact `9171126075` SHA-256 `bc54bd79251bc935a171d04cd81994f211096d060904341169ce6e5777442380`.
+- Package evidence is **26 files**, recursive self-excluding manifest **25/25**, exact source archive, five empty source-status snapshots, `runtimeExecution=false`, and `semanticContracts=compiled-not-executed`. No generated Directional test, benchmark, discovery/listing command, `ctest`, CLI, fuzzer, help/version command, or custom input executed. R-A remains open pending immutable artifact-only retry 4.
+'''
+          if '### Fixed — R-A-TB3-CB-01 through R-A-TB3-CB-03 retry-3 remediation' in text:
+              raise SystemExit('changelog entry already present')
+          if text.count(marker) != 1:
+              raise SystemExit('unexpected changelog Unreleased marker count')
+          changelog.write_text(text.replace(marker, marker + entry, 1))
+
+          roadmap = Path('.agents/Directional/REORIENTATION_PLAN.md')
+          text = roadmap.read_text()
+          old_header = '''**Current R-A tested source:** `555109796188b318c788ef5777f622705ee0aa94`  
+**Latest R-A runtime:** `31667380356 / 94344731465` — **86/92 pass, 6 fail**  
+**Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap.**  
+'''
+          new_header = '''**Current R-A compile candidate:** `aa16449577c48bac72257b7b9915e2b70dad3b82`  
+**Latest R-A runtime:** retry 3 `31667380356 / 94344731465` — **86/92 pass, 6 fail**; retry 4 pending  
+**Decision:** **R-A retry-3 remediation is compile-valid; execute immutable retry 4 before continuing R-B through R-G.**  
+'''
+          if old_header not in text:
+              raise SystemExit('roadmap header anchor not found')
+          text = text.replace(old_header, new_header, 1)
+
+          old_evidence = '''R-A remains open. The six failures reduce to three bounded Code + Build clusters:
+
+1. a same-cardinality stale boundary-cache counterfactual that never actually populated same cardinality;
+2. feature-bearing component completion preventing four aggregate/final-oracle feature contracts from reaching their intended seams;
+3. a provenance counterfactual whose `(1,0,0)` mutation can be semantically neutral.
+
+Exact corrective requirements live in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`; exact runtime evidence lives in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+'''
+          new_evidence = '''R-A remains open. The three retry-3 failure clusters are now remediated at the Code + Build boundary: same-cardinality stale-cache fixture state is explicit; phase-front hard-feature output authority is projected from exact materializer `HardRail` lineage and mesh incidence instead of proximity; and the provenance negative now guarantees a semantic source-position mismatch. Semantic implementation is `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`.
+
+Fresh exact compile source `aa16449577c48bac72257b7b9915e2b70dad3b82` regenerated the R-A inventory at **19 paths / 60 probes / 270 matches / PASS** and compiled the approved targets **118/118** in run/job `31674780558 / 94366870676`. Immutable retry-4 package authority is result `9171125667` / log `9171126075`. No generated runtime executed during Code + Build.
+
+The next decision is immutable artifact-only retry 4. Exact execution authority lives in the handoff and reusable R-A artifact-only plan; retry-3 runtime evidence remains in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+'''
+          if old_evidence not in text:
+              raise SystemExit('roadmap evidence anchor not found')
+          text = text.replace(old_evidence, new_evidence, 1)
+
+          old_sequence = '''1. Execute `R-A-TB3-CB-01` through `R-A-TB3-CB-04` as Code + Build only and produce one fresh immutable compile package.
+2. Execute artifact-only R-A retry 4 against that exact package. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/postflight.
+'''
+          new_sequence = '''1. `R-A-TB3-CB-01` through `R-A-TB3-CB-04` are Code + Build complete at exact compile source `aa16449577c48bac72257b7b9915e2b70dad3b82`.
+2. Execute artifact-only R-A retry 4 against package `9171125667 / 9171126075`. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/postflight.
+'''
+          if old_sequence not in text:
+              raise SystemExit('roadmap sequence anchor not found')
+          roadmap.write_text(text.replace(old_sequence, new_sequence, 1))
+          PY
+
+          git diff --check
+          test "$(git diff --name-only | sort)" = "$(printf '%s\n' .agents/Directional/CHANGELOG.md .agents/Directional/REORIENTATION_PLAN.md | sort)"
+          git config user.name 'Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add -f .agents/Directional/CHANGELOG.md .agents/Directional/REORIENTATION_PLAN.md
+          git diff --cached --check
+          git commit -m 'docs: record R-A retry3 CB compile candidate'
+          git rev-parse HEAD | tee "$RUNNER_TEMP/docs-commit.txt"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/status-final.txt"
+          test ! -s "$RUNNER_TEMP/status-final.txt"
+          echo 'generated_runtime_execution=false'
+
+      - name: Upload documentation closeout evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-tb3-cb-doc-closeout-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/activity.log
+            ${{ runner.temp }}/docs-commit.txt
+            ${{ runner.temp }}/status-final.txt
+          if-no-files-found: warn
+          retention-days: 7
