@@ -110,6 +110,7 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 - `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`
 - `.agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`
 - `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md`
+- `.agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`
 - `.agents/Directional/REORIENTATION_PLAN.md`
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - `.agents/Directional/CHANGELOG.md`

@@ -304,7 +304,7 @@ If rejected, produce one bounded Code + Build plan addressing only proven semant
 
 The Test + Benchmark turn must produce:
 
-- `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Report.md` with exact run/job/artifact/log identities and discovered counts;
+- the authoritative artifact-only report with exact run/job/artifact/log identities and discovered counts. **For the active R-A closeout cadence this is `.agents/Directional/Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`**; the `Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Report.md` name applies only when this retained full-M1 plan is itself activated, and no such file exists yet;
 - an updated `TODO.md`, `CHANGELOG.md`, regression tracker when a stable regression event actually exists, and live handoff;
 - exactly one authoritative next Code + Build plan. On acceptance that plan must target the highest-prerequisite active **G4** blocker supported by the runtime evidence;
 - repository-side stale per-turn cleanup under `CLEAN_UP_POLICY.md` and workflow/trigger/payload cleanup under `GitHub_Workflow_Policy.md`;

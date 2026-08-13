@@ -3,6 +3,15 @@
 Status: **repeated-pattern expansion complete from PR head
 `8ef353034641c3a068095334ceea5e6ddb0c39c1`**
 
+**Reference note.** The `Milestone_G_P5_*` and `Gate_*` per-turn Test + Benchmark
+reports cited below as first evidence were retired from the repository under
+`RETENTION_POLICY.md` and `CLEAN_UP_POLICY.md` after their durable facts were
+folded into this inventory and `Regression_Root_Cause_Tracker.md`. Those names
+are retained here as **historical provenance, not live file pointers** — the
+paired commit identity beside each one remains the authority. Do not treat an
+unresolved report name in this file as a broken reference, and do not delete the
+provenance to make the names resolve.
+
 Audited PR range:
 `d8b4dba98747d3adf0ca24002642bcad9e9847db..8ef353034641c3a068095334ceea5e6ddb0c39c1`
 
