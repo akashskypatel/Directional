@@ -1,0 +1,149 @@
+name: Agent RA-CB-F1-F5 Apply V2
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-cb-f1-f5-apply-v2-20260812.txt
+
+permissions:
+  contents: write
+
+concurrency:
+  group: agent-ra-cb-f1-f5-apply-v2-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "ref=$GITHUB_REF" \
+            'turnBoundary=Code+Build-only' \
+            'runtimeExecution=false' \
+            'task=apply RA-CB-F1 through RA-CB-F5 remediation' \
+            | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/surface_cell_quad/p5-recover-bridge-healing
+          fetch-depth: 0
+
+      - name: Verify payload, apply patch, and regenerate static inventory
+        shell: bash
+        env:
+          BASE_SHA: 1ef598e650651f4f52f6d5eb1d4606b17aa70c64
+          PATCH_BLOB_SHA: 5af19b794f48cc71ee3c8ed7743c219705d3a4e9
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          trap 'rc=$?; echo "exit_code=$rc"; git status --porcelain=v1 || true; exit $rc' EXIT
+          git merge-base --is-ancestor "$BASE_SHA" HEAD
+          git diff --exit-code "$BASE_SHA"..HEAD -- \
+            include/directional/diagnostics/RemeshDiagnostics.h \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            tests/PureQuadCompletionPhase18Tests.cpp \
+            .agents/Directional/R_A_Closure_Inventory.py \
+            .agents/Directional/R_A_Closure_Inventory_Report.md \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+
+          PAYLOAD=.agents/Directional/turn-payloads/ra-cb-f1-f5/patch.diff
+          test "$(git hash-object "$PAYLOAD")" = "$PATCH_BLOB_SHA"
+          cp "$PAYLOAD" "$RUNNER_TEMP/patch.diff"
+          python3 - "$RUNNER_TEMP/patch.diff" <<'PY'
+          from pathlib import Path
+          import sys
+          path = Path(sys.argv[1])
+          text = path.read_text()
+          text = text.replace(
+              "      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount,\n      )\n",
+              "      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)\n")
+          path.write_text(text)
+          PY
+          echo "payload_blob_sha=$PATCH_BLOB_SHA" | tee -a "$RUNNER_TEMP/activity.log"
+          echo "effective_patch_sha256=$(sha256sum "$RUNNER_TEMP/patch.diff" | cut -d' ' -f1)" | tee -a "$RUNNER_TEMP/activity.log"
+          if grep -Eq '^diff --git a/\.github/workflows/' "$RUNNER_TEMP/patch.diff"; then
+            echo 'patch_contains_workflow_change=true'
+            exit 1
+          fi
+          git apply --check --recount "$RUNNER_TEMP/patch.diff"
+          git apply --recount "$RUNNER_TEMP/patch.diff"
+          git diff --check
+
+          python3 -m py_compile .agents/Directional/R_A_Closure_Inventory.py
+          TERM=dumb python3 .agents/Directional/R_A_Closure_Inventory.py \
+            --root . --output .agents/Directional/R_A_Closure_Inventory_Report.md
+
+          git diff --name-only | sort > "$RUNNER_TEMP/changed-files.txt"
+          cat > "$RUNNER_TEMP/expected-files.txt" <<'EOF'
+          .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+          .agents/Directional/R_A_Closure_Inventory.py
+          .agents/Directional/R_A_Closure_Inventory_Report.md
+          include/directional/diagnostics/RemeshDiagnostics.h
+          src/pipeline/RemeshPipeline.cpp
+          tests/PureQuadCompletionPhase18Tests.cpp
+          tests/SurfaceCellsPhase10Tests.cpp
+          EOF
+          sort -o "$RUNNER_TEMP/expected-files.txt" "$RUNNER_TEMP/expected-files.txt"
+          diff -u "$RUNNER_TEMP/expected-files.txt" "$RUNNER_TEMP/changed-files.txt"
+
+          cp .agents/Directional/R_A_Closure_Inventory_Report.md "$RUNNER_TEMP/inventory.md"
+          tail -28 "$RUNNER_TEMP/inventory.md"
+          git status --porcelain=v1
+          git diff --stat
+
+          git config user.name 'Directional Agent'
+          git config user.email 'directional-agent@users.noreply.github.com'
+          git add \
+            include/directional/diagnostics/RemeshDiagnostics.h \
+            src/pipeline/RemeshPipeline.cpp \
+            tests/SurfaceCellsPhase10Tests.cpp \
+            tests/PureQuadCompletionPhase18Tests.cpp
+          git add -f \
+            .agents/Directional/R_A_Closure_Inventory.py \
+            .agents/Directional/R_A_Closure_Inventory_Report.md \
+            .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+          git commit -m 'fix: resolve RA-CB-F1 through RA-CB-F5'
+          SOURCE_SHA="$(git rev-parse HEAD)"
+          printf '%s\n' \
+            "implementation_commit=$SOURCE_SHA" \
+            'runtimeExecution=false' \
+            'staticInventory=PASS' \
+            > "$RUNNER_TEMP/result.txt"
+          git push origin HEAD:agent/surface_cell_quad/p5-recover-bridge-healing
+          git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-final.txt"
+          test ! -s "$RUNNER_TEMP/source-status-final.txt"
+
+      - name: Upload apply result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-cb-f1-f5-apply-v2-result-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/result.txt
+            ${{ runner.temp }}/changed-files.txt
+            ${{ runner.temp }}/inventory.md
+            ${{ runner.temp }}/source-status-final.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-cb-f1-f5-apply-v2-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
