@@ -1,1 +1,0 @@
-Retry R-A-TB-CB-00 through R-A-TB-CB-04 Code + Build remediation after diagnosing a control-plane payload-transfer CRC failure. The patch is now split into four independently hashed chunks, reconstructed and hash-verified before apply. Regenerate the R-A inventory and compile exact source only; no generated runtime execution.
