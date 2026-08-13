@@ -2,9 +2,9 @@
 
 **Status:** authoritative architecture-migration roadmap  
 **Normative design:** .agents/Directional/DESIGN.md, replacement supplied 2026-08-11  
-**Current reviewed source:** exact implementation/test source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at independent-review branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
-**Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap**  
-**Last updated:** 2026-08-12 UTC
+**Current R-A tested source:** `555109796188b318c788ef5777f622705ee0aa94` — retry 3 immutable runtime evidence `31667380356 / 94344731465`
+**Decision:** **R-A remains open after retry 3 (86/92); close the three bounded failure clusters in Code + Build, then retry immutably before continuing R-B through R-G.**
+**Last updated:** 2026-08-13 UTC
 
 Repository authority: akashskypatel/Directional, branch agent/surface_cell_quad/p5-recover-bridge-healing, draft PR #8. Keep the PR open, draft, and unmerged.
 
@@ -81,43 +81,29 @@ Later milestones are complete vertical contracts driven by the active Pipeline B
 
 ### Immutable entering authority
 
-M1a-M1l and T1 were accepted under retained immutable evidence. M1l source `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest runtime-accepted authority. Historical/partial package identities remain in `CHANGELOG.md`; none is an M1 acceptance candidate.
+M1a-M1l and T1 remain accepted historical authority. M1l source `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest runtime-accepted implementation until a later checkpoint passes organically.
 
-### R-A closure review
+### Active R-A evidence
 
-Independent Review of exact source `0580c5c8d7e4b12a41eefb0197f3660a0c7a8fca` at branch boundary `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760` rejected overall R-A.
+Artifact-only retry 3 tested exact source `555109796188b318c788ef5777f622705ee0aa94` from compile package `9167759672 / 9167759825`. Immutable preflight, regenerated static inventory (**19 paths / 59 probes / 261 matches / PASS**), non-vacuous discovery, and postflight all passed. Runtime run/job `31667380356 / 94344731465` selected **92 unique contracts: 86 passed / 6 failed**, with zero orchestration failures and no package/source/test/fixture mutation or repair.
 
-Retained bounded progress:
+R-A therefore remains open. The six failures reduce to three bounded Code + Build clusters:
 
-- one checked global aggregate `SourceTopologyRegions` is constructed and semantic publication is staged;
-- affected source-authority consumers now use exact row-topology binding;
-- the named optimizer/verifier raw/legacy compatibility branches remain absent;
-- compile run/job `31625763711 / 94211611771` and artifacts `9153147035 / 9153147459` are authentic Release/static/Ninja/PRE_TEST **118/118**, manifest **25/25**, `runtimeExecution=false` evidence.
+1. a same-cardinality stale boundary-cache counterfactual that never actually populated same cardinality;
+2. feature-bearing component completion preventing four aggregate/final-oracle feature contracts from reaching their intended seams;
+3. a provenance counterfactual whose `(1,0,0)` mutation can be semantically neutral.
 
-Blocking remainder:
-
-- **REV-21 contract completion:** required authority-only row-permutation rejection and consistently paired permutation acceptance are absent;
-- **REV-22:** aggregate final validation supplies no boundary/feature/chart authority, disables strict gates, and unconditionally rejects ordinary boundary outputs against an empty expected loop set;
-- **REV-23:** aggregate identity rebuilding copies stale kind and emits a stitch-key schema that differs from canonical completion construction;
-- **REV-24:** direct source-authoritative validation can accept null typed authority when local-sheet checking is disabled and can falsely report `sourceAuthorityUsed=true`;
-- no new semantic contract executed, and the packaged static audit has no reproducible path/count/allowed-leaf inventory.
-
-The targeted runtime task for partial artifacts `9153147035 / 9153147459` is superseded. Exact evidence and corrections are retained in `Architecture_Redesign_and_M1_RA_Independent_Review_Report.md`; executable work is in the active Code + Build plan.
+Exact corrective requirements live in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`; exact runtime evidence lives in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
 
 ## 6. M1 completion sequence
 
-The next Code + Build turn must:
+1. Execute `R-A-TB3-CB-01` through `R-A-TB3-CB-04` as Code + Build only and produce one fresh immutable compile package.
+2. Execute artifact-only R-A retry 4 against that exact package. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/postflight.
+3. After R-A closes, complete R-B through R-G in the same bounded cadence.
+4. Produce one fresh complete M1 package and execute the full M1 artifact-only acceptance/characterization gate.
+5. Only after M1 acceptance resume the default Pipeline B M2-M8 product roadmap.
 
-1. close REV-22 with a strict, authority-complete final merged-product oracle and boundary-bearing positive/tamper contracts;
-2. close REV-23 with one canonical post-remap stitch-identity constructor plus stale-kind and generated-interior re-stitch contracts;
-3. close REV-24 with unconditional direct-validator source-authority binding and optional-gates-disabled negatives;
-4. complete the REV-21 permutation-pair test matrix;
-5. rerun the complete retained R-A inventory through REV-24 and record reproducible path/count/allowed-leaf evidence;
-6. produce a fresh focused compile-only package without generated runtime execution.
-
-A separate immutable artifact-only cadence turn then decides R-A. Only after R-A passes may Code + Build continue R-B through R-G and create the fresh full package consumed by the retained M1 artifact-only plan.
-
-M1 must not implement M3 curve-network topology, M4 conformity flow, M7 degradation, or Pipeline A.
+R-A work must not implement M3 curve-network topology, M4 conformity flow, M7 degradation, or Pipeline A.
 
 ## 7. M2-M8 acceptance orientation
 
