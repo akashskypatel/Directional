@@ -1,6 +1,0 @@
-+          ("src/pipeline/RemeshPipeline.cpp",),
-+          r"project_materialized_hard_feature_rails_from_lineage|PureQuadEquivalenceKind::HardRail", "present",
-+          "Phase-front hard-feature output sequences must be reconstructed from exact materializer equivalence provenance and actual output edges rather than proximity alone."),
-     Probe("REV-22", "component authority tamper contracts name the aggregation seam",
-           ("tests/SurfaceCellsPhase10Tests.cpp",),
-           r"ComponentBoundaryRailTamperRejectsAtAggregationSeam|ComponentFeatureRailTamperRejectsAtAggregationSeam", "present",
