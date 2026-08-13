@@ -54,6 +54,30 @@ Aggregate/final validation must consume independently remapped source topology, 
 
 Retry 3 demonstrates this for provenance: forcing `(1,0,0)` on an output point can be the already-valid source-corner certificate. The replacement negative must prove its mutation changes the semantic provenance before expecting rejection.
 
+## Independent pre-runtime review of the retry-3 Code + Build remediation
+
+Reviewed at implementation `199b06f429d8004a5b51c89f94ae33748f4ec38c`, which is byte-identical on `src`, `include`, `tests`, and the audit script to the compile-pinned source `aa16449577c48bac72257b7b9915e2b70dad3b82` and to the branch head. Compile run `31674780558` passes `source_sha: aa16449577c4…` into `agent-compile-reusable.yml`, which asserts checkout equality before archiving. The static inventory reproduces byte-for-byte from the tree at **19 paths / 60 probes / 270 matches / PASS**.
+
+**Verdict: R-A-TB3-CB-01 through CB-04 are accepted at the Code + Build boundary. The candidate is ready for retry 4.** One documentation defect was found and corrected during this review (below); it required no source, package, or artifact change.
+
+### Verified
+
+- **CB-01** builds a genuine same-cardinality stale cache: the counterfactual first `assign`s `boundaryNodeIdentities` to `boundaryVertices.size()` and *then* injects valid stale-token identities, so rebuild count `0` is now a real observation rather than an artifact of a short cache. The canonical/valid/non-stale publication assertions and the separate missing-cardinality exact-count positive are both retained.
+- **CB-02** replaces geometric-proximity rail projection with lineage projection and is fail-closed in the right places. Output sequences are grouped by `(railId, front-edge pair)` from `HardRail` equivalence provenance; each segment must resolve to exactly two output vertices whose edge exists in the actual output mesh; adjacency is degree-checked, and the walk verifies full traversal plus the correct open/closed sequence length. Structural malformation returns false and fails the run with `InvalidMaterializedHardFeatureAuthority` at `completion/feature-authority`. Critically, a rail that cannot be projected is **not silently dropped**: it lands in `missingFeatureRailIds` while `requiredFeatureRailCount` still counts every hard rail, and that count reaches `validatorOptions.expectedFeatureRailCount` (`SurfaceMeshOptimizer.cpp:1816-1817`), so the mismatch surfaces as `MissingFeatureRail`.
+- **CB-03**'s expectation is reachable: `SourcePositionMismatch` exists (`MeshValidator.h:48`), is named (`MeshValidator.cpp:54-55`), and is emitted by the strict validator (`SourceAuthoritativeMeshValidator.cpp:1193`). The counterfactual now preserves the barycentric certificate, perturbs `SurfacePoint.position`, and `ASSERT`s the change before expecting rejection — which is exactly the "prove the mutation is not semantically neutral" requirement.
+- **CB-04**: every contract named for retry 4 in the handoff and `TODO.md` exists in `tests/`; the only unresolved names are validator failure codes, not test filters.
+
+### RA-TB3-F1 — a cited implementation commit did not exist (corrected here)
+
+The handoff, `TODO.md`, the Code + Build plan, `REORIENTATION_PLAN.md`, and `CHANGELOG.md` all recorded the semantic implementation commit as `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`. **That object does not exist** — it is absent locally and a targeted `git fetch origin <sha>` could not retrieve it. The actual implementation commit is `199b06f429d8004a5b51c89f94ae33748f4ec38c`.
+
+The gate itself was never at risk: the compile-pinned `aa16449577c4…` is correct and source-identical to the real implementation and to the head, so the package is built from the intended code. But the handoff's start-of-turn checklist directs the retry to confirm provenance before consuming the package, and one of the two cited commits was unverifiable. All five occurrences are corrected to `199b06f4…`.
+
+### Non-blocking notes for a later turn
+
+- CB-03 asserts the provenance mutation changed the position by more than `1e-12`, not that it exceeds the validator's position tolerance. The applied offset is ~0.573 on a unit-scale fixture, so it will hold comfortably; the assertion nonetheless documents "changed" rather than "changed enough to be rejected".
+- `project_materialized_hard_feature_rails_from_lineage` bounds-checks `lineage.outputVertex` against `lineages.size()` rather than the output vertex count. These are equal wherever the aggregate rebuild enforces one lineage per output vertex, so it is correct today, but it is the wrong bound if that invariant ever changes.
+
 ## Current bounded findings after retry 3
 
 These are runtime findings, not new independent-review verdicts:
