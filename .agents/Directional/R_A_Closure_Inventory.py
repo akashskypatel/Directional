@@ -132,6 +132,14 @@ PROBES: tuple[Probe, ...] = (
           ("src/pipeline/RemeshPipeline.cpp",),
           r"rebuild_aggregate_output_identity_caches", "present",
           "Stitch/authoritative identities and face cycles must be regenerated after global remap."),
+    Probe("REV-18", "aggregate identity rebuild reports typed failing sub-invariant",
+          ("src/pipeline/RemeshPipeline.cpp", "tests/SurfaceCellsPhase10Tests.cpp"),
+          r"AggregateIdentityRebuildResult|AggregateIdentityInvalidPatchMetadata|AggregateIdentityRebuildReportsInvalidPatchMetadataSubInvariant", "present",
+          "Aggregate derived-identity rejection must identify the failed canonical rebuild invariant instead of collapsing every defect to one generic bool."),
+    Probe("REV-18", "aggregate boundary identity cache is reconstructed from canonical lineage",
+          ("include/directional/diagnostics/RemeshDiagnostics.h", "src/pipeline/RemeshPipeline.cpp", "tests/SurfaceCellsPhase10Tests.cpp"),
+          r"surfaceCellAggregateIdentityBoundaryCacheRebuildCount|boundaryNodeIdentities\.assign", "present",
+          "Missing or stale patch-local boundary identity cache is derived state and must be rebuilt from remapped completion-owned lineage."),
     Probe("REV-19", "aggregate publication is staged transactionally",
           ("src/pipeline/RemeshPipeline.cpp",),
           r"RemeshResult staged = merged;", "present",
@@ -179,6 +187,14 @@ PROBES: tuple[Probe, ...] = (
           ("tests/SurfaceCellsPhase10Tests.cpp",),
           r"ComponentBoundaryRailTamperRejectsAtAggregationSeam|ComponentFeatureRailTamperRejectsAtAggregationSeam", "present",
           "Component capture-versus-mutation tests prove the pre-oracle seam guard and do not claim final-oracle coverage."),
+    Probe("REV-22", "component explicit feature options are remapped to compact ownership",
+          ("src/pipeline/RemeshPipeline.cpp",),
+          r"remap_component_surface_cell_feature_options|userHardEdges|userSoftEdges", "present",
+          "Global explicit feature-edge IDs must be filtered by component ownership and translated into compact component-local vertex IDs before execution."),
+    Probe("REV-22", "component feature-option no-leakage contract remains compiled",
+          ("tests/SurfaceCellsPhase10Tests.cpp",),
+          r"ComponentFeatureOptionsRemapOwnedEdgesWithoutCrossComponentLeakage", "present",
+          "An explicit edge owned by one disconnected source component must not appear as a same-numbered local feature tag in another component."),
     Probe("REV-22", "final oracle boundary and feature authority negatives exist",
           ("tests/SurfaceCellsPhase10Tests.cpp",),
           r"FinalMergedOracleRejectsMissingRemappedBoundaryAuthority|FinalMergedOracleRejectsMissingRemappedFeatureAuthority", "present",
@@ -455,7 +471,7 @@ def classify_pipeline_stitch_identity_assignments(
         canonical_map_populated = False
         if rel == "src/pipeline/RemeshPipeline.cpp":
             function_span = _function_span(
-                text, "bool rebuild_aggregate_output_identity_caches("
+                text, "AggregateIdentityRebuildResult rebuild_aggregate_output_identity_caches("
             )
             if function_span is not None:
                 function_text = text[function_span[0]:function_span[1]]

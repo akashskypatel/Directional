@@ -257,6 +257,7 @@ struct RemeshDiagnostics {
   int surfaceCellFirstInvalidProducerVertex = -1;
   int surfaceCellFirstInvalidProducerEdgeFirst = -1;
   int surfaceCellFirstInvalidProducerEdgeSecond = -1;
+  std::size_t surfaceCellAggregateIdentityBoundaryCacheRebuildCount = 0U;
   bool surfaceCellCompletionOwnershipRejectionAvailable = false;
   std::string surfaceCellCompletionOwnershipFailure;
   int surfaceCellCompletionOwnershipSourcePatch = -1;

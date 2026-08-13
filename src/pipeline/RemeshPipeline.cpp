@@ -8559,6 +8559,37 @@ geometry::SurfacePoint remap_component_surface_point(
   return point;
 }
 
+void remap_component_surface_cell_feature_options(
+    const geometry::FaceComponent &component, RemeshOptions &options) {
+  std::map<int, int> localVertexByOriginal;
+  for (std::size_t localVertex = 0;
+       localVertex < component.originalVertices.size(); ++localVertex) {
+    localVertexByOriginal.emplace(
+        component.originalVertices[localVertex],
+        static_cast<int>(localVertex));
+  }
+
+  const auto remapEdges = [&](const std::set<std::pair<int, int>> &globalEdges) {
+    std::set<std::pair<int, int>> localEdges;
+    for (const auto &[globalFirst, globalSecond] : globalEdges) {
+      const auto first = localVertexByOriginal.find(globalFirst);
+      const auto second = localVertexByOriginal.find(globalSecond);
+      if (first == localVertexByOriginal.end() ||
+          second == localVertexByOriginal.end()) {
+        continue;
+      }
+      localEdges.emplace(std::min(first->second, second->second),
+                         std::max(first->second, second->second));
+    }
+    return localEdges;
+  };
+
+  options.surfaceCells.featureMap.userHardEdges =
+      remapEdges(options.surfaceCells.featureMap.userHardEdges);
+  options.surfaceCells.featureMap.userSoftEdges =
+      remapEdges(options.surfaceCells.featureMap.userSoftEdges);
+}
+
 } // namespace directional::pipeline
 
 namespace directional::pipeline {
@@ -9821,17 +9852,37 @@ std::uint64_t aggregate_stitch_cycle_hash(
   return seed;
 }
 
-bool rebuild_aggregate_output_identity_caches(
+struct AggregateIdentityRebuildResult {
+  const char *failure = nullptr;
+  int patch = -1;
+  int vertex = -1;
+  int face = -1;
+  std::size_t boundaryCacheRebuildCount = 0U;
+
+  [[nodiscard]] bool success() const { return failure == nullptr; }
+};
+
+AggregateIdentityRebuildResult rebuild_aggregate_output_identity_caches(
     RemeshResult &result, const Eigen::MatrixXi &sourceFaces,
     const geometry::SourceTopologyRegions &sourceAuthority,
     const std::set<std::uint64_t> *sourceHardFeatureEdges) {
+  AggregateIdentityRebuildResult outcome;
+  const auto fail = [&](const char *failure, const int patch = -1,
+                        const int vertex = -1, const int face = -1) {
+    outcome.failure = failure;
+    outcome.patch = patch;
+    outcome.vertex = vertex;
+    outcome.face = face;
+    return outcome;
+  };
+
   if (result.outputVertexLineage.size() !=
           static_cast<std::size_t>(result.vertices.rows()) ||
       result.outputQuadLineage.size() !=
           static_cast<std::size_t>(result.faces.rows()) ||
       result.faces.cols() < 4 ||
       result.surfaceCellContext.completedPatches.empty()) {
-    return false;
+    return fail("AggregateIdentityInvalidAggregateExtent");
   }
 
   using PatchVertexKey = std::pair<int, int>;
@@ -9841,60 +9892,91 @@ bool rebuild_aggregate_output_identity_caches(
   // Rebuild patch-local identity through the completion-owned canonical
   // constructor first. The pipeline never interprets or preserves a cached
   // stitch kind/schema of its own.
-  for (geometry::PureQuadMesh &patch :
-       result.surfaceCellContext.completedPatches) {
+  for (std::size_t patchIndex = 0;
+       patchIndex < result.surfaceCellContext.completedPatches.size();
+       ++patchIndex) {
+    geometry::PureQuadMesh &patch =
+        result.surfaceCellContext.completedPatches[patchIndex];
     if (patch.sourcePatch < 0 ||
         patch.vertexLineage.size() != patch.vertices.size() ||
         patch.vertexProvenance.size() != patch.vertices.size() ||
         patch.quadLineage.size() != patch.quads.size()) {
-      return false;
+      return fail("AggregateIdentityInvalidPatchMetadata",
+                  static_cast<int>(patchIndex));
     }
     std::map<int, std::size_t> lineageByLocalVertex;
     for (std::size_t row = 0; row < patch.vertexLineage.size(); ++row) {
       geometry::PureQuadVertexLineage &lineage = patch.vertexLineage[row];
       if (lineage.sourcePatch != patch.sourcePatch || lineage.localVertex < 0 ||
           !lineageByLocalVertex.emplace(lineage.localVertex, row).second) {
-        return false;
+        return fail("AggregateIdentityInvalidPatchVertexLineage",
+                    static_cast<int>(patchIndex), lineage.localVertex);
       }
       const geometry::PureQuadStitchIdentity stitch =
           geometry::pure_quad_detail::canonical_lineage_stitch_identity(
               patch, static_cast<int>(row));
-      if (!stitch.valid()) return false;
+      if (!stitch.valid()) {
+        return fail("AggregateIdentityInvalidPatchStitchIdentity",
+                    static_cast<int>(patchIndex), lineage.localVertex);
+      }
       lineage.stitchIdentity = stitch;
       lineage.authoritativeIdentity =
           geometry::pure_quad_detail::canonical_authoritative_identity(
               lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
-      if (!lineage.authoritativeIdentity.valid() ||
-          !canonicalStitchByPatchVertex
+      if (!lineage.authoritativeIdentity.valid()) {
+        return fail("AggregateIdentityInvalidPatchSourceAuthority",
+                    static_cast<int>(patchIndex), lineage.localVertex);
+      }
+      if (!canonicalStitchByPatchVertex
                .emplace(PatchVertexKey{lineage.sourcePatch,
                                        lineage.localVertex},
                         lineage.stitchIdentity)
                .second) {
-        return false;
+        return fail("AggregateIdentityInvalidPatchVertexLineage",
+                    static_cast<int>(patchIndex), lineage.localVertex);
       }
       patch.vertexProvenance[row] = lineage.sourcePoint;
     }
 
+    // boundaryNodeIdentities is a derived cache. Authoritative phase-front
+    // materialization intentionally does not populate it, and stale component
+    // caches are not global authority. Reinitialize the cache from the
+    // remapped completion-owned lineages instead of requiring a preexisting
+    // local cache with the final extent.
     if (patch.boundaryNodeIdentities.size() != patch.boundaryVertices.size()) {
-      return false;
+      ++outcome.boundaryCacheRebuildCount;
     }
+    patch.boundaryNodeIdentities.assign(patch.boundaryVertices.size(), {});
     for (std::size_t boundary = 0; boundary < patch.boundaryVertices.size();
          ++boundary) {
       const auto row =
           lineageByLocalVertex.find(patch.boundaryVertices[boundary]);
-      if (row == lineageByLocalVertex.end()) return false;
+      if (row == lineageByLocalVertex.end()) {
+        return fail("AggregateIdentityInvalidPatchBoundaryVertex",
+                    static_cast<int>(patchIndex),
+                    patch.boundaryVertices[boundary]);
+      }
       patch.boundaryNodeIdentities[boundary] =
           patch.vertexLineage[row->second].stitchIdentity.canonical;
     }
 
     for (std::size_t quad = 0; quad < patch.quads.size(); ++quad) {
-      if (patch.quads[quad].size() != 4) return false;
+      if (patch.quads[quad].size() != 4) {
+        return fail("AggregateIdentityInvalidPatchQuad",
+                    static_cast<int>(patchIndex), -1,
+                    static_cast<int>(quad));
+      }
       std::array<geometry::PureQuadStitchIdentity, 4> stitchCycle{};
       std::array<geometry::PureQuadStitchIdentity, 4> authoritativeCycle{};
       for (int corner = 0; corner < 4; ++corner) {
         const auto row = lineageByLocalVertex.find(
             patch.quads[quad][static_cast<std::size_t>(corner)]);
-        if (row == lineageByLocalVertex.end()) return false;
+        if (row == lineageByLocalVertex.end()) {
+          return fail("AggregateIdentityInvalidPatchQuadVertex",
+                      static_cast<int>(patchIndex),
+                      patch.quads[quad][static_cast<std::size_t>(corner)],
+                      static_cast<int>(quad));
+        }
         const geometry::PureQuadVertexLineage &lineage =
             patch.vertexLineage[row->second];
         stitchCycle[static_cast<std::size_t>(corner)] = lineage.stitchIdentity;
@@ -9917,16 +9999,23 @@ bool rebuild_aggregate_output_identity_caches(
     if (lineage.outputVertex < 0 || lineage.outputVertex >= result.vertices.rows() ||
         lineage.sourcePatch < 0 || lineage.localVertex < 0 ||
         lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] >= 0) {
-      return false;
+      return fail("AggregateIdentityInvalidOutputVertexLineage",
+                  lineage.sourcePatch, lineage.outputVertex);
     }
     const auto canonical = canonicalStitchByPatchVertex.find(
         PatchVertexKey{lineage.sourcePatch, lineage.localVertex});
-    if (canonical == canonicalStitchByPatchVertex.end()) return false;
+    if (canonical == canonicalStitchByPatchVertex.end()) {
+      return fail("AggregateIdentityMissingOutputPatchVertex",
+                  lineage.sourcePatch, lineage.localVertex);
+    }
     lineage.stitchIdentity = canonical->second;
     lineage.authoritativeIdentity =
         geometry::pure_quad_detail::canonical_authoritative_identity(
             lineage, sourceFaces, sourceAuthority, sourceHardFeatureEdges);
-    if (!lineage.authoritativeIdentity.valid()) return false;
+    if (!lineage.authoritativeIdentity.valid()) {
+      return fail("AggregateIdentityInvalidOutputSourceAuthority",
+                  lineage.sourcePatch, lineage.outputVertex);
+    }
     lineageByOutputVertex[static_cast<std::size_t>(lineage.outputVertex)] =
         static_cast<int>(row);
   }
@@ -9937,7 +10026,8 @@ bool rebuild_aggregate_output_identity_caches(
     const int outputQuad = result.outputQuadLineage[row].outputQuad;
     if (outputQuad < 0 || outputQuad >= result.faces.rows() ||
         lineageByOutputQuad[static_cast<std::size_t>(outputQuad)] >= 0) {
-      return false;
+      return fail("AggregateIdentityInvalidOutputQuadLineage",
+                  -1, -1, outputQuad);
     }
     lineageByOutputQuad[static_cast<std::size_t>(outputQuad)] =
         static_cast<int>(row);
@@ -9947,18 +10037,23 @@ bool rebuild_aggregate_output_identity_caches(
     if ((result.degrees.size() == result.faces.rows() &&
          result.degrees(face) != 4) ||
         lineageByOutputQuad[static_cast<std::size_t>(face)] < 0) {
-      return false;
+      return fail("AggregateIdentityInvalidOutputQuad",
+                  -1, -1, face);
     }
     std::array<geometry::PureQuadStitchIdentity, 4> stitchCycle{};
     std::array<geometry::PureQuadStitchIdentity, 4> authoritativeCycle{};
     for (int corner = 0; corner < 4; ++corner) {
       const int outputVertex = result.faces(face, corner);
       if (outputVertex < 0 || outputVertex >= result.vertices.rows()) {
-        return false;
+        return fail("AggregateIdentityInvalidOutputVertex",
+                    -1, outputVertex, face);
       }
       const int lineageRow =
           lineageByOutputVertex[static_cast<std::size_t>(outputVertex)];
-      if (lineageRow < 0) return false;
+      if (lineageRow < 0) {
+        return fail("AggregateIdentityMissingOutputVertexLineage",
+                    -1, outputVertex, face);
+      }
       const geometry::PureQuadVertexLineage &lineage =
           result.outputVertexLineage[static_cast<std::size_t>(lineageRow)];
       stitchCycle[static_cast<std::size_t>(corner)] = lineage.stitchIdentity;
@@ -9973,7 +10068,7 @@ bool rebuild_aggregate_output_identity_caches(
     lineage.canonicalAuthoritativeCycleHash = aggregate_stitch_cycle_hash(
         canonical_aggregate_quad_cycle(authoritativeCycle));
   }
-  return true;
+  return outcome;
 }
 
 } // namespace
@@ -10146,6 +10241,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
       componentOptions.progress = nullptr;
       componentOptions.mesherDataCallback = nullptr;
       componentOptions.absoluteTargetLength = absoluteTargetLength;
+      remap_component_surface_cell_feature_options(component,
+                                                   componentOptions);
       if (componentOptions.surfaceCells.injectFailureComponentIndex >= 0 &&
           componentOptions.surfaceCells.injectFailureComponentIndex !=
               static_cast<int>(componentIndex)) {
@@ -11485,11 +11582,26 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
                            "InvalidFinalValidationAuthorityRemap");
     return merged;
   }
-  if (!rebuild_aggregate_output_identity_caches(
+  const AggregateIdentityRebuildResult aggregateIdentityRebuild =
+      rebuild_aggregate_output_identity_caches(
           staged, faces, globalSourceAuthority.value(),
-          &globalValidationHardFeatureEdges)) {
-    reject_merge_authority(components.size(),
-                           "InvalidGlobalDerivedIdentity");
+          &globalValidationHardFeatureEdges);
+  staged.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount =
+      aggregateIdentityRebuild.boundaryCacheRebuildCount;
+  if (!aggregateIdentityRebuild.success()) {
+    reject_merge_authority(
+        components.size(),
+        aggregateIdentityRebuild.failure != nullptr
+            ? aggregateIdentityRebuild.failure
+            : "AggregateIdentityUnknownFailure");
+    merged.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount =
+        aggregateIdentityRebuild.boundaryCacheRebuildCount;
+    merged.diagnostics.surfaceCellFirstInvalidProducerCell =
+        aggregateIdentityRebuild.patch;
+    merged.diagnostics.surfaceCellFirstInvalidProducerVertex =
+        aggregateIdentityRebuild.vertex;
+    merged.diagnostics.surfaceCellFirstInvalidProducerFace =
+        aggregateIdentityRebuild.face;
     return merged;
   }
   staged.surfaceCellContext.sourceTopologyRegions =
@@ -11759,6 +11871,8 @@ RemeshResult remesh_components_from_raw_cross_field(
       componentOptions.progress = nullptr;
       componentOptions.mesherDataCallback = nullptr;
       componentOptions.absoluteTargetLength = absoluteTargetLength;
+      remap_component_surface_cell_feature_options(component,
+                                                   componentOptions);
       const fields::CrossFieldResult crossField =
           finalize_surface_cell_raw_cross_field(componentMesh, component.rawField);
       run.result = remesh_surface_cells_from_cross_field_impl(

@@ -5218,6 +5218,10 @@ TEST(SurfaceCellAuthorityContractCutover,
       result.surfaceCellContext.sourceTopologyRegions.value();
   EXPECT_TRUE(authority.matches_source_faces(
       mesh.F, static_cast<std::size_t>(mesh.V.rows())));
+  EXPECT_GT(
+      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount,
+      0U)
+      << "authoritative component patches must rebuild missing boundary identity caches";
 
   const auto row0 = directional::authority::SourceFaceId::from_index(
       0, authority.face_count());
@@ -5387,6 +5391,48 @@ TEST(SurfaceCellAuthorityContractCutover,
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
+     AggregateIdentityRebuildReportsInvalidPatchMetadataSubInvariant) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  bool mutated = false;
+  const auto rejected = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&mutated](const std::size_t componentIndex,
+                     directional::pipeline::RemeshResult &componentResult) {
+            if (componentIndex != 1U ||
+                componentResult.surfaceCellContext.completedPatches.empty()) {
+              return;
+            }
+            componentResult.surfaceCellContext.completedPatches.front()
+                .sourcePatch = -1;
+            mutated = true;
+          });
+
+  ASSERT_TRUE(mutated) << "fixture must expose a completed component patch";
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-merge-authority",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("AggregateIdentityInvalidPatchMetadata",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_GE(rejected.diagnostics.surfaceCellFirstInvalidProducerCell, 0);
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
      ComponentBoundaryRailTamperRejectsAtAggregationSeam) {
   const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
   const auto crossField =
@@ -5442,7 +5488,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
   options.surfaceCells.allowSourceGridRecovery = false;
-  options.surfaceCells.featureMap.userHardEdges.insert({0, 2});
+  options.surfaceCells.featureMap.userHardEdges.insert({4, 6});
   options.parallelizeComponents = true;
   options.maxComponentThreads = 2;
   options.lengthRatio = 0.2;
@@ -5473,6 +5519,73 @@ TEST(SurfaceCellAuthorityContractCutover,
             rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
   EXPECT_EQ(0, rejected.vertices.rows());
   EXPECT_FALSE(rejected.surfaceCellContext.hasValidationResult);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     ComponentFeatureOptionsRemapOwnedEdgesWithoutCrossComponentLeakage) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.featureMap.userHardEdges.insert({4, 6});
+  options.surfaceCells.featureMap.userSoftEdges.insert({6, 7});
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  std::array<bool, 2> inspected{{false, false}};
+  bool firstComponentSawForeignHard = false;
+  bool firstComponentSawForeignSoft = false;
+  bool secondComponentSawOwnedHard = false;
+  bool secondComponentSawOwnedSoft = false;
+  const auto result = directional::pipeline::remesh_pipeline_detail::
+      remesh_surface_cell_components_from_cross_field_counterfactual(
+          mesh.V, mesh.F, crossField, options,
+          [&](const std::size_t componentIndex,
+              directional::pipeline::RemeshResult &componentResult) {
+            if (componentIndex >= inspected.size() ||
+                !componentResult.surfaceCellContext.hasFeatureMap) {
+              return;
+            }
+            inspected[componentIndex] = true;
+            const auto &featureMap =
+                componentResult.surfaceCellContext.featureMap;
+            const int localHard = featureMap.find_edge({0, 2});
+            const int localSoft = featureMap.find_edge({2, 3});
+            const bool hardTagged =
+                localHard >= 0 &&
+                featureMap.edges[static_cast<std::size_t>(localHard)]
+                    .userTagged &&
+                featureMap.edges[static_cast<std::size_t>(localHard)].edgeClass ==
+                    directional::geometry::AdaptiveFeatureClass::Hard;
+            const bool softTagged =
+                localSoft >= 0 &&
+                featureMap.edges[static_cast<std::size_t>(localSoft)]
+                    .userTagged &&
+                featureMap.edges[static_cast<std::size_t>(localSoft)].edgeClass ==
+                    directional::geometry::AdaptiveFeatureClass::Soft;
+            if (componentIndex == 0U) {
+              firstComponentSawForeignHard = hardTagged;
+              firstComponentSawForeignSoft = softTagged;
+            } else {
+              secondComponentSawOwnedHard = hardTagged;
+              secondComponentSawOwnedSoft = softTagged;
+            }
+          });
+
+  ASSERT_TRUE(inspected[0]);
+  ASSERT_TRUE(inspected[1]);
+  EXPECT_FALSE(firstComponentSawForeignHard);
+  EXPECT_FALSE(firstComponentSawForeignSoft);
+  EXPECT_TRUE(secondComponentSawOwnedHard);
+  EXPECT_TRUE(secondComponentSawOwnedSoft);
+  (void)result;
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
