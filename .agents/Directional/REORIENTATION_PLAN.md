@@ -1,83 +1,50 @@
 # Directional Surface-Cell Reorientation Plan
 
 **Status:** authoritative architecture-migration roadmap  
-**Normative design:** .agents/Directional/DESIGN.md, replacement supplied 2026-08-11  
-**Current R-A tested source:** `555109796188b318c788ef5777f622705ee0aa94` — retry 3 immutable runtime evidence `31667380356 / 94344731465`
-**Decision:** **R-A remains open after retry 3 (86/92); close the three bounded failure clusters in Code + Build, then retry immutably before continuing R-B through R-G.**
+**Normative design:** `.agents/Directional/DESIGN.md`  
+**Current R-A tested source:** `555109796188b318c788ef5777f622705ee0aa94`  
+**Latest R-A runtime:** `31667380356 / 94344731465` — **86/92 pass, 6 fail**  
+**Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap.**  
 **Last updated:** 2026-08-13 UTC
 
-Repository authority: akashskypatel/Directional, branch agent/surface_cell_quad/p5-recover-bridge-healing, draft PR #8. Keep the PR open, draft, and unmerged.
+Repository authority: `akashskypatel/Directional`, branch `agent/surface_cell_quad/p5-recover-bridge-healing`, draft PR #8. Keep the PR open, draft, and unmerged until separately authorized.
 
-## 1. Purpose and authority
+## 1. Migration objective
 
-This plan owns migration order, dependencies, stop conditions, and acceptance gates. It does not redefine the architecture.
+Replace representation-coupled surface-cell remeshing with the architecture defined in `DESIGN.md`: typed single-writer authority, closed stage products, field-aligned curve/network production, one global conformity plan, certificate-carrying quotient/embedding products, independent verification, and explicit disposition/degradation. Pipeline B is the scheduled product path. Pipeline A remains optional and unscheduled.
 
-| Concern | Authority |
-|---|---|
-| Product, stages, domains, invariants, disposition | DESIGN.md |
-| Historical redesign and initial R-A findings | Architecture_Redesign_and_M1_RA_Independent_Review_Report.md |
-| Current implementation plan | Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md |
-| Dormant immutable validation plan | Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md |
-| Normative testing | tests/TESTING_STRATEGY.md |
-| Current action/status | TODO.md and Future_Chat_Session_Handoff.md |
-| Stable defect patterns and blockers | Regression_Root_Cause_Tracker.md |
-| Completed history | CHANGELOG.md and retained historical reports |
+The migration is vertical. A milestone closes only when its relevant authority is produced, consumed, independently verified, and accepted on immutable runtime evidence. Lettered or representation-only slices are not substitutes for a complete milestone contract.
 
-If this roadmap conflicts with DESIGN.md, DESIGN.md wins and this roadmap must be corrected before implementation.
+## 2. Durable migration rules
 
-## 2. Pipeline decision
+1. **One semantic authority per fact.** Numeric projections, caches, hashes, source labels, and debug products are representations, not competing semantic owners.
+2. **Closed producer outcomes.** A producer publishes one complete immutable product or a typed rejection/not-applicable outcome. Partial rejected state is not consumable authority.
+3. **Consumers validate/remap; they do not reconstruct semantics.** Aggregation may change representation domains but must not invent source support, rails, chart relations, or identities.
+4. **Exact source ownership.** Matching matrix extent is insufficient; typed source authority must match source-face topology and ownership.
+5. **Canonical identity reconstruction.** Derived caches are rebuilt only from canonical completion-owned authority and remain fail-closed on invalid lineage.
+6. **Hard features and boundaries are mandatory topology authority.** They may not silently disappear during component remap, completion, aggregation, or validation.
+7. **Independent verification.** Final acceptance cannot derive expected semantic state from the output being validated.
+8. **Strict fixtures require Certified/D0.** Degraded dispositions cannot close strict product gates.
+9. **Immutable cadence.** Code + Build compiles/packages without generated runtime; Test + Benchmark consumes that exact package without rebuild or source/test/fixture/package mutation.
 
-### Pipeline B — normative default
+## 3. Milestone sequence
 
-Pipeline B contains no global coordinate integration or numeric factorization:
-
-1. A0 SourceAuthoritySnapshot;
-2. A1 FieldTransportAtlas, including field quadrangulability;
-3. A2a FieldAlignedCurveNetwork;
-4. A2b GlobalTopologyPlan;
-5. A3 GlobalConformityPlan through deterministic polynomial graph/flow work and strictly positive rail lengths;
-6. A4 direct per-region surface-cell construction;
-7. A5 occurrence publication;
-8. A6 quotient/materialization;
-9. A7 geometry embedding;
-10. A8 independent verification and disposition;
-11. A9 diagnostics/export.
-
-### Pipeline A — optional future
-
-Pipeline A may later replace A2a with one integer-free continuous global solve, isoline/motorcycle extraction, and per-region embedding. It is not implemented, not tested, not scheduled, and not an acceptance requirement. It becomes eligible only after Pipeline B is Certified on the complete representative matrix with stable calibrated quality gates and evidence that integration would materially improve output quality.
-
-## 3. Product disposition
-
-The verifier assigns:
-
-- D0 Certified: complete pure quad, all structural and calibrated quality gates;
-- D1 QualityRelaxed: complete pure quad, structural gates pass, named calibrated quality gate misses;
-- D2 LocallyDegraded: complete pure quad, named regions produced by the declared degraded producer;
-- D3 Partial: pure-quad subset, explicitly omitted regions;
-- D4 DiagnosticOnly: no mesh and typed failure/certificate evidence.
-
-Only the closed catastrophic set in DESIGN.md may produce D4. Degradation may occur only at A3/A4/A8 as designed, is bounded and non-recursive, never changes upstream authority, and never closes a strict gate.
-
-## 4. Revised migration sequence
-
-The 2026-08-11 redesign retains prior M0-M2, maps prior M3 to M4, prior M4 to M5, prior M5 to M6, and prior M6 to M8, and introduces M3 and M7.
-
-| Milestone | Contract | State |
+| Milestone | Purpose | State |
 |---|---|---|
-| M0 | preserve immutable evidence | complete |
-| M1 | single-authority cutover | active; overall R-A closure rejected; REV-18-through-REV-21 retained only as bounded compile progress; REV-22-through-REV-24 open |
+| M0 | preserve evidence and accepted baselines | complete |
+| M1 | single-authority contract cutover | **active** |
 | M2 | closed stage products and single writers | pending |
 | M3 | field-aligned curve network | pending |
 | M4 | global conformity plan | pending |
-| M5 | certificate-carrying chart and quotient relations | pending |
-| M6 | occurrence, embedding, independent verification | pending |
+| M5 | certificate-carrying chart/quotient relations | pending |
+| M6 | occurrence, embedding, and independent verification | pending |
 | M7 | disposition and graded degradation | pending |
 | M8 | module boundaries and operational hardening | pending |
+| Pipeline A | optional decomposed coordinate integration | unscheduled |
 
-Later milestones are complete vertical contracts driven by the active Pipeline B product need. They are not permission for representation-only letter slices or compatibility bridges.
+Later milestones must not be pulled into R-A remediation merely to make a local test pass.
 
-## 5. Current M1 checkpoint
+## 4. Current M1 checkpoint
 
 ### Immutable entering authority
 
@@ -87,7 +54,7 @@ M1a-M1l and T1 remain accepted historical authority. M1l source `bd140cff4572412
 
 Artifact-only retry 3 tested exact source `555109796188b318c788ef5777f622705ee0aa94` from compile package `9167759672 / 9167759825`. Immutable preflight, regenerated static inventory (**19 paths / 59 probes / 261 matches / PASS**), non-vacuous discovery, and postflight all passed. Runtime run/job `31667380356 / 94344731465` selected **92 unique contracts: 86 passed / 6 failed**, with zero orchestration failures and no package/source/test/fixture mutation or repair.
 
-R-A therefore remains open. The six failures reduce to three bounded Code + Build clusters:
+R-A remains open. The six failures reduce to three bounded Code + Build clusters:
 
 1. a same-cardinality stale boundary-cache counterfactual that never actually populated same cardinality;
 2. feature-bearing component completion preventing four aggregate/final-oracle feature contracts from reaching their intended seams;
@@ -95,87 +62,81 @@ R-A therefore remains open. The six failures reduce to three bounded Code + Buil
 
 Exact corrective requirements live in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`; exact runtime evidence lives in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
 
-## 6. M1 completion sequence
+## 5. M1 completion sequence
 
 1. Execute `R-A-TB3-CB-01` through `R-A-TB3-CB-04` as Code + Build only and produce one fresh immutable compile package.
 2. Execute artifact-only R-A retry 4 against that exact package. R-A closes only on an organic all-pass with clean immutable preflight/static inventory/postflight.
 3. After R-A closes, complete R-B through R-G in the same bounded cadence.
 4. Produce one fresh complete M1 package and execute the full M1 artifact-only acceptance/characterization gate.
-5. Only after M1 acceptance resume the default Pipeline B M2-M8 product roadmap.
+5. Only after M1 acceptance resume M2-M8.
 
 R-A work must not implement M3 curve-network topology, M4 conformity flow, M7 degradation, or Pipeline A.
 
-## 7. M2-M8 acceptance orientation
+## 6. M2 — closed products and single writers
 
-### M2 — closed products
+- Give each stage one immutable output type and one semantic writer.
+- Eliminate mutable cross-stage context as semantic authority.
+- Preserve typed rejection/not-applicable outcomes through consumers.
+- Acceptance requires consumers to depend only on declared products plus exact source inputs.
 
-Every applicable producer publishes one immutable exhaustive outcome. Rejected is terminal for that producer. Aggregators validate/remap representation only and never reconstruct semantics.
+## 7. M3 — field-aligned curve network
 
-### M3 — field-aligned curve network
+- Construct typed singularity ports from field index.
+- Treat source boundaries and hard features as mandatory graph edges.
+- Trace branch-consistent field-aligned curves intrinsically across source triangles.
+- Terminate only at typed network events; record intersections as explicit nodes.
+- Derive disc regions and independently establish the A1 field-quadrangulability certificate.
+- Validate the composed tracing/decomposition algorithm; do not assume guarantees transfer automatically from individual ingredients.
 
-Prove singularity-port ownership, branch-consistent non-crossing tracing, typed termination, complete mandatory topology, disc-region proofs, and permutation invariance. The adapted tracing plus motorcycle decomposition requires its own proof and corpus evidence. A1 quadrangulability needs a constructible certificate and tamper oracle.
+## 8. M4 — global conformity plan
 
-### M4 — global conformity
+- Compute one strictly positive shared rail schedule globally before regional production.
+- Use a deterministic polynomial graph/flow formulation for shared counts/constraints.
+- Resolve `G4-B002` exact-torus `InvalidHardRailPairing` without post-hoc local pairing.
+- Infeasible subsets become typed inputs to later disposition logic; they do not authorize ad-hoc local substitution.
 
-Publish one positive shared schedule before regional production. Use a deterministic polynomial graph/flow algorithm with explicit tie-breaking and work bounds. Infeasible rail subsets become typed subset-scoped D3 inputs. Resolve G4-B002 without post-hoc pairing.
+## 9. M5 — certificate-carrying chart and quotient relations
 
-### M5 — relations
+- Retain selected relation paths, explicit owners, and independently verifiable certificates.
+- Preserve nonzero periodic Z4 evidence where required.
+- Produce positive multi-isolation quotient evidence where required.
+- Separate certificate authority from compact numeric/index representations.
 
-Publish explicit relation owners and selected path certificates. Verify them independently. Resolve nonzero periodic Z4 and multi-isolation evidence without relation-vector position or verifier reconstruction.
+## 10. M6 — occurrence, embedding, and independent verification
 
-### M6 — occurrence, embedding, verification
+- Separate occurrence, quotient, embedding, and verifier products.
+- Establish a correct-by-construction injective region-interior baseline.
+- Verify geometry, field alignment, topology, and quality from independent source/product authority.
+- Do not make output hashes or emitted ordering the semantic oracle.
 
-Separate occurrences, quotient construction, materialization, geometry embedding, and elementary independent verification. Establish injective region interiors and calibrated geometry/field/quality evidence.
+## 11. M7 — disposition and graded degradation
 
-### M7 — disposition
+Implement verifier-assigned dispositions D0-D4:
+- D0 Certified;
+- D1 QualityRelaxed;
+- D2 LocallyDegraded;
+- D3 Partial;
+- D4 DiagnosticOnly.
 
-Introduce OutputDisposition, DegradationCertificate, omitted-region bookkeeping, verifier tier recomputation, and exactly one declared degraded producer as one vertical contract. Prove every tier, both directions of certificate matching, non-interference, determinism, and D0-only strict gates.
+Strict fixtures require D0. The one declared degraded producer must be bounded, non-recursive, pure-quad, manifold, and conform to the unmodified boundary plan. `DESIGN.md` section 6.7 must consistently require a quality-degradation record when D1 is caused by missed quality gates.
 
-### M8 — hardening
+## 12. M8 — module boundaries and operational hardening
 
-Enforce module dependency boundaries, diagnostic non-authority, resource/work accounting, packaging, CI, and removal of remaining tracked architecture debt.
+- Stabilize product/module APIs around the accepted authority graph.
+- Bound memory/runtime ownership and preserve deterministic scheduling-independent identity.
+- Keep diagnostics/evidence sufficient to classify the earliest failing producer/consumer seam.
+- Harden packaging, reproducibility, and representative acceptance matrices.
 
-## 8. Testing interlock
+## 13. Pipeline A activation rule
 
-Every migration preserves T1 and adds evidence at the correct layer:
+Do not schedule decomposed coordinate integration until Pipeline B is Certified on the complete representative matrix with calibrated stable quality gates and evidence that integration would materially improve quality. Pipeline A is not an escape hatch for unresolved Pipeline B authority/topology defects.
 
-- L0 schemas and invalid construction;
-- L1 positive/tamper stage contracts;
-- L2 metamorphic and generated properties;
-- L3 independent semantic oracle;
-- L4 full direct representative matrix;
-- L5 fuzz/sanitizer replay;
-- L6 calibrated quality/resource gates.
+## 14. Product blockers retained outside M1
 
-Pipeline B strict representative gates require D0. D1-D3 are separately tested truthful outputs, never green substitutes. Pipeline A cannot borrow Pipeline B acceptance if it is later adopted.
+- `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`.
+- `G4-B002`: exact torus `InvalidHardRailPairing`; owned by M4.
+- `G4-B003`: nonzero periodic Z4 capability; owned by M5.
+- `G4-B004`: positive multi-isolation quotient witness; owned by M5/M6.
+- Bunny/Vase representative production and resource acceptance remain later product gates.
 
-## 9. Design clarification gates
-
-Before the owning milestone closes:
-
-1. correct the DESIGN.md section 6.7 D1/degradation-record wording inconsistency;
-2. prove the M3 combined tracing/decomposition algorithm;
-3. define and verify A1 quadrangulability certificates;
-4. specify and prove the M7 degraded region producer;
-5. calibrate the D0/D1 quality boundary.
-
-The supplied DESIGN.md remains byte-for-byte normative until a separately reviewed correction is authorized.
-
-## 10. Stop conditions
-
-Stop and revise the owning plan if a change:
-
-- creates a second semantic owner or raw mirror;
-- reads a diagnostic/export encoding as authority;
-- uses a face row, vector position, hash, or execution order as semantic identity;
-- restores an adapter, alias, compatibility numbering, fallback, or reconstruction bridge;
-- allows a producer/verifier/aggregator to rewrite upstream meaning;
-- introduces a global solve into Pipeline B;
-- degrades outside A3/A4/A8, without a substantiated certificate, recursively, or to pass a strict gate;
-- schedules Pipeline A before its eligibility gates;
-- weakens a fixture, oracle, validator, lineage, failure, or no-substitution contract;
-- uses compile success as runtime or semantic acceptance.
-
-## 11. Resume rule
-
-Current exact action is the amended M1 Code + Build plan for REV-22 through REV-24 plus the missing REV-21 contracts. Partial artifacts `9153147035 / 9153147459` are not executable acceptance candidates. The full artifact-only plan remains dormant until a fresh full R-A-through-R-G package exists. After M1 acceptance, choose the smallest revised M2-M8 contract that owns the highest-prerequisite active Pipeline B product blocker.
+Historical regression totals remain **34 events / 14 categories / 20 recurrences**.
