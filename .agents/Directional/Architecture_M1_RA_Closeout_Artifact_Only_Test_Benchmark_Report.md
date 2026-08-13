@@ -142,7 +142,7 @@ The broad continuous gate selected **88 unique contracts: 76 passed / 12 failed*
 The 12 unique failures are all `SurfaceCellAuthorityContractCutover` contracts:
 
 - `ProductionAggregationCounterfactualIgnoresPreConsumerRawProjectionTamper`
-- `PostMoveAggregateOptimizerUsesRetainedSourceAuthority`
+- `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` (retained verbatim as attempt-2 evidence; renamed by RA-CB-F1 to `PostMoveSingleComponentOptimizerUsesRetainedSourceAuthority`, so do not build a test filter from this name)
 - `DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches`
 - `DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches`
 - `ComponentFeatureRailTamperRejectsAtAggregationSeam`
