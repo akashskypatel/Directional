@@ -20,36 +20,29 @@ Do not add transcripts, chronological tool history, copied artifact tables, supe
 
 1. Review the turn-based-coding-agent skill if not already reviewed.
 2. Fully review this handoff, `RETENTION_POLICY.md`, and `GitHub_Workflow_Policy.md`.
-3. Review `TODO.md`, `DESIGN.md`, `REORIENTATION_PLAN.md`, the active M1 Code + Build plan, and the current independent-review report.
+3. Review `TODO.md`, `DESIGN.md`, `REORIENTATION_PLAN.md`, the retained R-A artifact-only Test + Benchmark plan, and the current closeout report.
 4. Confirm the branch head and exact source authority before any write.
 
 ## Mandatory next turn
 
-Run one **bounded Code + Build R-A remediation turn for artifact-only retry 2**. The exact immutable package from `92bf0ae2b10856162f175d02aeac318e126f9d22` passed preflight/static inventory/postflight but failed organically at the aggregate authority layer. Do not rerun the unchanged package and do not mark R-A complete.
+Run one **immutable artifact-only R-A Test + Benchmark retry (attempt 3)** against the fresh Code + Build package. Do not rebuild, relink, patch packaged source, mutate tests/fixtures, repair permissions/content, or change repository implementation during this turn. A zero-selected filter is orchestration failure, never a pass.
 
 Repository: `akashskypatel/Directional`
 Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 PR: #8 remains open, draft, and unmerged
-Failed candidate source: `92bf0ae2b10856162f175d02aeac318e126f9d22`
-Compile run/job: `31655755100 / 94309741656`
-T+B retry run/job: `31656958868 / 94313437913`
-T+B result artifact: `9164742196`, SHA-256 `2260c0d672dd3a7836f8916648d02e51cd8e3c53b762f318a23b112d08871921`
-T+B log artifact: `9164742553`, SHA-256 `6b07a47937736951b243465f3a4b5abc218d740c13dbb1eb101dcb3127d1066e`
+Implementation commit: `a6723f34707701fc1174c0889028327ff8666c9a`
+Exact compile/evidence source: `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`
+Compile run/job: `31662246531 / 94329268203`
+Compile result artifact: `9166639250`, SHA-256 `ae09e4cca21232316e31cc7f40aa341fc28edb440bb5cf622554f476cc9815c4`
+Compile log artifact: `9166639427`, SHA-256 `5cd2f9f0aaab8ad143243ae273a6a7a10129ae9efd68d0aff45f7d38c1188d1c`
 
-Artifact-only retry 2 was immutable and orchestration-clean: exact result/log digests, archive safety, manifest **25/25**, five empty source-status snapshots, packaged **19-path / 50-probe / 206-match** static inventory, and postflight all passed. Discovery was non-vacuous (**13 authority-kernel / 232 producer / 179 completion / 84 validation**). Across **88 unique R-A contracts, 76 passed / 12 failed**, `orchestration_failed=0`, `rebuild=false`, `sourceMutation=false`, `packageRepair=false`.
+The package is compile-valid at the Code + Build boundary: Release/static/Ninja/PRE_TEST **118/118**, build exit `0`; **26** packaged files with recursive self-excluding manifest **25/25**; five source-status snapshots empty; `runtimeExecution=false`. The regenerated R-A inventory is **19 paths / 54 probes / 226 matches**, raw projection **22 allowed / 0 unexpected**, face-count **2 / 0**, pipeline `stitchIdentity` assignments **2 / 0**, classifier self-test **4/4**, final static **PASS**.
 
-Implement only the new retry-2 remediation section **0J** in `Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md`:
+Use `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md` as the execution authority and update `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md` with the exact immutable evidence. Re-run the complete R-A semantic gate, including non-vacuous independent discovery and the newly compiled aggregate identity/feature-option contracts. Preserve the package before and after runtime and prove no rebuild, source mutation, or package repair occurred.
 
-1. make the aggregate derived-identity rejection diagnostic at the failing sub-invariant, then repair that invariant rather than bypassing `rebuild_aggregate_output_identity_caches`. The post-move success contract and multiple disconnected baselines now reach `component-merge-authority`; the provenance-only counterfactual reports `InvalidGlobalDerivedIdentity` before the final oracle. Because that counterfactual mutates only `outputVertexProvenance`, while the derived-identity rebuild consumes completed-patch/output lineages and typed source authority, this is evidence of a baseline aggregate identity blocker rather than the provenance mutation itself;
-2. after the identity blocker is fixed, require the boundary final-oracle, missing-component-report, raw-projection counterfactual, and provenance-tamper contracts to reach their declared seams naturally. Do not weaken the final oracle or fabricate boundary authority;
-3. fix component feature-option ownership. The aggregate component runner copies `componentOptions = options` onto compact component-local meshes but does not remap `featureMap.userHardEdges` / `userSoftEdges` from original-global vertex IDs. Build an explicit original-to-local vertex map per component, retain only edges wholly owned by that component, and add no-cross-component-leakage coverage. Then revalidate the hard-feature tamper and feature-bearing final-oracle contracts;
-4. regenerate the complete R-A inventory and compile one fresh exact-source package through `agent-compile-reusable.yml`. Code + Build only; execute no generated binary/test/benchmark/discovery/CLI/fuzzer/custom input.
+If the gate passes organically with clean immutable pre/postflight and regenerated static inventory, record Step 4 / R-A closure. If any contract fails organically, keep R-A open, preserve the exact failure evidence, classify the earliest intended seam actually reached, and produce the next bounded Code + Build plan. No independent Review turn is requested before this retry.
 
-Completion authority is now **18/18**, optimizer/final-validator authority **8/8**, authority kernel **13/13**, isolation-seam authority **6/6**, source validator **8/8**, rail migration **7/7**, and source-support/chart **1/1**. Do not reopen CB-03/CB-04 unless new evidence directly implicates them.
-
-No independent Review turn is requested. After the fresh compile package, retry the same immutable R-A semantic gate. R-A closes only on an organic pass.
-
-RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene. M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
+M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority until the retry is accepted. RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene.
 
 ## Current authority
 
@@ -63,15 +56,12 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 
 ### R-A closure status
 
-- Overall R-A remains **open / runtime-rejected** for candidate `92bf0ae2b10856162f175d02aeac318e126f9d22` after artifact-only retry 2.
-- Retry 2 run/job `31656958868 / 94313437913` consumed compile artifacts `9164349848 / 9164350085` without rebuild or mutation. Preflight, **19 paths / 50 probes / 206 matches** static inventory, discovery, and immutable postflight passed; **88 unique selected, 76 passed / 12 failed**, zero orchestration failures.
-- CB-03 completion closure is runtime-confirmed for the retained set: **18/18** completion authority contracts passed, including both former positive stitch failures. CB-04 is runtime-confirmed for its focused authority set: **8/8** optimizer/final-validator contracts passed, including typed source mismatch and rail-builder exact-source scope.
-- The remaining aggregate suite is **15/27**. Multiple ordinary disconnected baselines and `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` now progress past the former optimization failure but stop at `component-merge-authority`. `FinalMergedOracleRejectsPostComponentProvenanceTamper` exposes `InvalidGlobalDerivedIdentity` before the intended final oracle; source analysis shows that rebuild does not consume the raw provenance vector being mutated, making the derived-identity gate the next baseline blocker.
-- The hard-feature aggregate fixture still stops at `completion`. Exact source shows component execution copies global feature-map edge options onto compact local meshes without an original-global to component-local edge remap; this must be corrected before feature-rail aggregate/oracle contracts can be credited.
-- Boundary/feature final-oracle counterfactuals remain uncredited because their seam callbacks were not reached. Do not alter their expected oracle semantics to make them green.
-- Result/log evidence: `9164742196` SHA-256 `2260c0d672dd3a7836f8916648d02e51cd8e3c53b762f318a23b112d08871921` / `9164742553` SHA-256 `6b07a47937736951b243465f3a4b5abc218d740c13dbb1eb101dcb3127d1066e`.
-- The first retry orchestration attempt `31656834137 / 94313056707` stopped before any packaged binary executed because its temporary preflight grepped obsolete inventory heading text; it is infrastructure-only evidence, not a semantic result.
-- No stable regression event/recurrence is added: `92bf0ae2b10856162f175d02aeac318e126f9d22` remains an unaccepted R-A candidate. Historical totals remain **34 / 14 / 20**; M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
+- Overall R-A remains **open / runtime-pending** for fresh candidate `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`. Compile success is not semantic acceptance.
+- Prior runtime candidate `92bf0ae2b10856162f175d02aeac318e126f9d22` remains rejected after retry 2 (**88 unique selected, 76 passed / 12 failed**); its exact failure evidence remains in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
+- Section 0J is Code + Build complete: aggregate identity rebuild now reports exact sub-invariants and reconstructs missing/stale boundary-node caches from remapped completion-owned lineage; component hard/soft feature options are remapped from original-global to compact-local ownership with cross-component edges discarded; final-oracle counterfactual expectations remain unchanged.
+- Fresh source/static evidence is **19 paths / 54 probes / 226 matches**, final static **PASS**. Fresh compile run/job `31662246531 / 94329268203` produced artifacts `9166639250 / 9166639427` with **118/118**, manifest **25/25**, five empty source-status snapshots, and no generated runtime execution.
+- Actual aggregate/final-oracle reachability and closure of the prior 12 semantic failures are intentionally unclaimed until the immutable Test + Benchmark retry executes this exact package.
+- No stable regression event/recurrence is added at this compile-only boundary. Historical totals remain **34 / 14 / 20**; M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
 
 ## Standing product state
 
@@ -95,6 +85,9 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 - Never delete an "obsolete" negative before its replacement exists and fails closed for the intended reason.
 - An assertion on a hardcoded flag cannot fail. Published status flags must be derived from the validator that produced them.
 - Do not answer semantic failure by weakening validation, fixtures, lineage, or no-substitution contracts.
+- A derived cache must be reconstructible from canonical authority; missing cache cardinality is not itself source authority and must not become a precondition for rebuilding that cache.
+- Global source vertex IDs must be explicitly remapped before feature options are passed into compact component-local meshes; ownership is not preserved by copying options.
+- In Actions, tracked `.agents` files can still match repository ignore rules; stage intentionally modified audit files with `git add -f` rather than mistaking an ignore refusal for a source defect.
 
 ## Mandatory end-of-turn checklist
 

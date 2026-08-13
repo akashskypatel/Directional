@@ -17,6 +17,20 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — R-A-TB2-CB-01 through R-A-TB2-CB-03 aggregate authority remediation
+
+- `rebuild_aggregate_output_identity_caches` now returns a structured aggregate-identity outcome with exact failing sub-invariant and patch/vertex/face context instead of collapsing every rejection into generic `InvalidGlobalDerivedIdentity`. The aggregate seam publishes that diagnostic while preserving fail-closed zero publication.
+- Missing or stale per-patch `boundaryNodeIdentities` cardinality is treated as derived cache state: the cache is cleared and rebuilt from remapped completion-owned canonical vertex lineage before validation. No rebuild bypass, stale kind copy, second identity schema, or raw positional authority was introduced. A compiled counterfactual pins `AggregateIdentityInvalidPatchMetadata`; the disconnected baseline pins a positive boundary-cache rebuild count.
+- SurfaceCells disconnected-component execution now remaps explicit `userHardEdges` / `userSoftEdges` from original-global vertices into each compact component-local vertex domain, retains only wholly owned edges, canonicalizes the local edge, and drops cross-component/non-owned edges. The hard-feature tamper fixture now targets an actually owned second-component edge, and a compiled hard/soft no-leakage contract observes the component-local options.
+
+### Validation — R-A-TB2-CB-01 through R-A-TB2-CB-04 Code + Build
+
+- Implementation commit `a6723f34707701fc1174c0889028327ff8666c9a`; exact clean compile source `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`. Regenerated R-A inventory: **19 paths / 54 probes / 226 matches**, raw projection **22/0**, face-count **2/0**, pipeline `stitchIdentity` assignments **2/0**, classifier self-test **4/4**, final static **PASS**.
+- Compile run/job `31662246531 / 94329268203` completed Release/static/Ninja/PRE_TEST **118/118**, build exit `0`. Result artifact `9166639250` SHA-256 `ae09e4cca21232316e31cc7f40aa341fc28edb440bb5cf622554f476cc9815c4`; log artifact `9166639427` SHA-256 `5cd2f9f0aaab8ad143243ae273a6a7a10129ae9efd68d0aff45f7d38c1188d1c`.
+- Independent package inspection verified **26** files, recursive self-excluding manifest **25/25**, five empty source-status snapshots, exact source archive, `runtimeExecution=false`, and `semanticContracts=compiled-not-executed`. No generated test, benchmark, discovery, CLI, fuzzer, help/version command, or custom input executed.
+- Apply run `31662072976` was infrastructure-only: the pre-verified patch and static inventory passed, but `git add` refused tracked `.agents` audit files because repository ignore rules apply to staging. The corrected retry `31662169584 / 94329031528` force-staged only those intentional audit files, reproduced the same **54 / 226** static PASS, committed the exact five-file source/test/audit change, and executed no generated runtime.
+- R-A remains open. The next cadence is the immutable artifact-only R-A Test + Benchmark retry against `9166639250 / 9166639427`; M1l remains runtime authority and regression totals stay **34 / 14 / 20**.
+
 ### Validation — R-A artifact-only retry 2 remains open at aggregate authority
 
 - Immutable run/job `31656958868 / 94313437913` consumed exact `92bf0ae2b10856162f175d02aeac318e126f9d22` package `9164349848 / 9164350085` with no rebuild/source/test/fixture/package mutation. Result `9164742196` SHA-256 `2260c0d672dd3a7836f8916648d02e51cd8e3c53b762f318a23b112d08871921`; log `9164742553` SHA-256 `6b07a47937736951b243465f3a4b5abc218d740c13dbb1eb101dcb3127d1066e`.

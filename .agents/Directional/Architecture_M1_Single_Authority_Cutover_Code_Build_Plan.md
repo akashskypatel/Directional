@@ -1,14 +1,16 @@
 # M1 Single-Authority Cutover — Code + Build Plan
 
 **Turn type:** Code + Build only
-**Current status:** artifact-only R-A retry 2 against exact source `92bf0ae2b10856162f175d02aeac318e126f9d22` **FAILED organically** with 88 unique selected / 76 passed / 12 failed, immutable pre/postflight and static inventory PASS, zero orchestration failures; overall R-A remains open and returns to bounded section 0J Code + Build remediation
+**Current status:** section 0J `R-A-TB2-CB-01` through `R-A-TB2-CB-04` are **Code + Build complete / compile-valid** at exact source `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`; no semantic contract executed; overall R-A remains open and the mandatory next cadence is one immutable artifact-only Test + Benchmark retry
 **Reviewed source authority:** M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c`
 **Latest independent-review branch boundary:** `922c36b43b8d35af2d2ffdeccb8e0c2ef551c760`
-**Latest review-remediation implementation/compile source:** `92bf0ae2b10856162f175d02aeac318e126f9d22`
+**Latest review-remediation implementation/compile source:** `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`
 **Product gate after acceptance:** resume G4 topology-distinct completion and singularities
 **Review policy after the following Test + Benchmark turn:** `never`
 
 ## 0J. Post-runtime R-A remediation after artifact-only retry 2
+
+**Code + Build status:** complete / compile-valid only. Implementation commit `a6723f34707701fc1174c0889028327ff8666c9a`; exact clean compile source `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`. Regenerated inventory **19 paths / 54 probes / 226 matches**, raw projection **22/0**, face-count **2/0**, pipeline `stitchIdentity` assignments **2/0**, classifier self-test **4/4**, final static **PASS**. Compile run/job `31662246531 / 94329268203` completed **118/118**, exit `0`; result `9166639250` SHA-256 `ae09e4cca21232316e31cc7f40aa341fc28edb440bb5cf622554f476cc9815c4`, log `9166639427` SHA-256 `5cd2f9f0aaab8ad143243ae273a6a7a10129ae9efd68d0aff45f7d38c1188d1c`; manifest **25/25**, five empty source-status snapshots, `runtimeExecution=false`. No test, benchmark, discovery command, CLI, fuzzer, or custom input executed. The next turn is the immutable artifact-only R-A semantic retry; the requirements below remain the preserved implementation contract and are not runtime acceptance claims.
 
 Artifact-only run/job `31656958868 / 94313437913` consumed exact source `92bf0ae2b10856162f175d02aeac318e126f9d22` compile package `9164349848 / 9164350085` without rebuild or mutation. Preflight, regenerated **19-path / 50-probe / 206-match** inventory, non-vacuous discovery, and immutable postflight passed. The continuous gate selected **88 unique contracts: 76 passed / 12 failed**, `orchestration_failed=0`. R-A remains open.
 
