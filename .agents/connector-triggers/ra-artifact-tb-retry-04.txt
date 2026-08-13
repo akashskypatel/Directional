@@ -1,0 +1,9 @@
+purpose=execute immutable artifact-only R-A retry 4
+source_sha=aa16449577c48bac72257b7b9915e2b70dad3b82
+result_artifact_id=9171125667
+log_artifact_id=9171126075
+rebuild=false
+sourceMutation=false
+testMutation=false
+fixtureMutation=false
+packageRepair=false
