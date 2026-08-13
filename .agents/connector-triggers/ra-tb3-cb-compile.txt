@@ -1,3 +1,0 @@
-purpose=compile R-A-TB3-CB-01 through CB-04 candidate
-source_sha=aa16449577c48bac72257b7b9915e2b70dad3b82
-runtime_execution=false
