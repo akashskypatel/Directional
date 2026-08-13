@@ -30,19 +30,19 @@ Run one **immutable artifact-only R-A Test + Benchmark retry (attempt 3)** again
 Repository: `akashskypatel/Directional`
 Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
 PR: #8 remains open, draft, and unmerged
-Implementation commit: `a6723f34707701fc1174c0889028327ff8666c9a`
-Exact compile/evidence source: `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`
-Compile run/job: `31662246531 / 94329268203`
-Compile result artifact: `9166639250`, SHA-256 `ae09e4cca21232316e31cc7f40aa341fc28edb440bb5cf622554f476cc9815c4`
-Compile log artifact: `9166639427`, SHA-256 `5cd2f9f0aaab8ad143243ae273a6a7a10129ae9efd68d0aff45f7d38c1188d1c`
+Implementation commit: `38d8d7d3e97f3b496e63979cb1348ed2cda304bc`
+Exact compile/evidence source: `555109796188b318c788ef5777f622705ee0aa94`
+Compile run/job: `31665352874 / 94338607395`
+Compile result artifact: `9167759672`, SHA-256 `96401aac27a3a231533a785d107cb023cf50a304d06e821585e7c44597c6beb6`
+Compile log artifact: `9167759825`, SHA-256 `ed859f380103b183fda2241c71ff877fa0bbc3dc0c808f5c4f5f57290daadda8`
 
-The package is compile-valid at the Code + Build boundary: Release/static/Ninja/PRE_TEST **118/118**, build exit `0`; **26** packaged files with recursive self-excluding manifest **25/25**; five source-status snapshots empty; `runtimeExecution=false`. The regenerated R-A inventory is **19 paths / 54 probes / 226 matches**, raw projection **22 allowed / 0 unexpected**, face-count **2 / 0**, pipeline `stitchIdentity` assignments **2 / 0**, classifier self-test **4/4**, final static **PASS**.
+The package is compile-valid at the Code + Build boundary: Release/static/Ninja/PRE_TEST **118/118**, build exit `0`; **26** packaged files with recursive self-excluding manifest **25/25**; five source-status snapshots empty; `runtimeExecution=false`. The regenerated R-A inventory is **19 paths / 59 probes / 245 matches**, raw projection **22 allowed / 0 unexpected**, face-count **2 / 0**, pipeline `stitchIdentity` assignments **2 / 0**, classifier self-test **4/4**, final static **PASS**.
 
 Use `.agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md` as the execution authority and update `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md` with the exact immutable evidence. Re-run the complete R-A semantic gate, including non-vacuous independent discovery and the newly compiled aggregate identity/feature-option contracts. Preserve the package before and after runtime and prove no rebuild, source mutation, or package repair occurred.
 
 If the gate passes organically with clean immutable pre/postflight and regenerated static inventory, record Step 4 / R-A closure. If any contract fails organically, keep R-A open, preserve the exact failure evidence, classify the earliest intended seam actually reached, and produce the next bounded Code + Build plan. No independent Review turn is requested before this retry.
 
-**Independent re-evaluation of CB-00 through CB-04 against retry-2 runtime evidence (head `9f27a7d`; implementation `a6723f34`, byte-identical to compile-pinned `f6514a0f` on all source/test/audit paths): CB-01, CB-03, CB-04 runtime-confirmed; CB-00 vindicated; CB-02 correctly deferred.** The 61/87 → 76/88 improvement carries no weakened strict check. **Land RA-CB-F1 before attempt 3** — `PostMoveAggregateOptimizerUsesRetainedSourceAuthority` failed in retry 2 *even though CB-01 is correct*, because it gates on aggregate success and asserts on the merge-built global owner rather than the per-component copy it is named for; it is a probe-pinned contract now reporting an unrelated blocker. **Carry RA-CB-F2 into attempt 3**: record per-contract rejection reasons for the three faces-only completion negatives. **RA-CB-F3/F4/F5 must land before R-A closes** — chart-closure discrimination through the production path, a boundary-identity anti-stale assertion that an empty identity cannot satisfy, and conservation for component feature-edge remap, which currently drops unmatched user hard/soft edges silently.
+**RA-CB-F1 through RA-CB-F5 are Code + Build complete at implementation `38d8d7d3e97f3b496e63979cb1348ed2cda304bc`.** The post-move lifetime contract is isolated from aggregate success; the retry plan carries exact completion/stitch discrimination reasons; a same-region/sheet different-support negative remains fail-closed; boundary-cache anti-stale coverage now proves valid canonical publication and exact rebuild accounting; component hard/soft edge transport is conserved with typed unassigned diagnostics and hard-edge fail-closed behavior. These semantic contracts are compiled, not executed.
 
 M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority until the retry is accepted. RA-REV-23-F3 and RA-REV-22-F6 remain post-R-A hygiene.
 
@@ -58,11 +58,11 @@ M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains the latest
 
 ### R-A closure status
 
-- Overall R-A remains **open / runtime-pending** for fresh candidate `f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae`. Compile success is not semantic acceptance.
+- Overall R-A remains **open / runtime-pending** for fresh candidate `555109796188b318c788ef5777f622705ee0aa94`. Compile success is not semantic acceptance.
 - Prior runtime candidate `92bf0ae2b10856162f175d02aeac318e126f9d22` remains rejected after retry 2 (**88 unique selected, 76 passed / 12 failed**); its exact failure evidence remains in `Architecture_M1_RA_Closeout_Artifact_Only_Test_Benchmark_Report.md`.
-- Section 0J is Code + Build complete: aggregate identity rebuild now reports exact sub-invariants and reconstructs missing/stale boundary-node caches from remapped completion-owned lineage; component hard/soft feature options are remapped from original-global to compact-local ownership with cross-component edges discarded; final-oracle counterfactual expectations remain unchanged.
-- Fresh source/static evidence is **19 paths / 54 probes / 226 matches**, final static **PASS**. Fresh compile run/job `31662246531 / 94329268203` produced artifacts `9166639250 / 9166639427` with **118/118**, manifest **25/25**, five empty source-status snapshots, and no generated runtime execution.
-- Actual aggregate/final-oracle reachability and closure of the prior 12 semantic failures are intentionally unclaimed until the immutable Test + Benchmark retry executes this exact package.
+- Section 0J plus RA-CB-F1 through RA-CB-F5 are Code + Build complete: aggregate identity rebuild remains canonical/fail-closed; retained source-authority lifetime is isolated from aggregate success; completion/stitch discrimination is explicitly reason-captured; anti-stale boundary-cache publication is falsifiable; and component hard/soft feature transport is conserved with typed unassigned accounting.
+- Fresh source/static evidence is **19 paths / 59 probes / 245 matches**, final static **PASS**. Fresh compile run/job `31665352874 / 94338607395` produced artifacts `9167759672 / 9167759825` with **118/118**, manifest **25/25**, five empty source-status snapshots, and no generated runtime execution.
+- Actual runtime acceptance of the RA-CB-F1/F3/F4/F5 semantic contracts, amended reason capture, aggregate/final-oracle reachability, and closure of prior retry-2 failures are intentionally unclaimed until immutable Test + Benchmark retry attempt 3 executes this exact package.
 - No stable regression event/recurrence is added at this compile-only boundary. Historical totals remain **34 / 14 / 20**; M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` remains immutable runtime authority.
 
 ## Standing product state

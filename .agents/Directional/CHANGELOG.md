@@ -17,6 +17,19 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ## [Unreleased]
 
+### Fixed — RA-CB-F1 through RA-CB-F5 independent-review remediation
+
+- Replaced the aggregate-coupled post-move source-authority probe with a single-connected-mesh contract that isolates the retained typed owner and rejects `MissingSourceAuthority` without requiring aggregate success.
+- Strengthened aggregate boundary-cache coverage so every published boundary identity must be valid and equal to completion-owned canonical lineage; exact rebuild accounting now distinguishes missing-cardinality reconstruction from canonical refresh.
+- Added a same-region/sheet, genuinely different completed-support stitch negative requiring `IncompatibleTypedStitchAuthority`; amended the artifact-only retry plan to retain exact per-contract completion/stitch discrimination outcomes.
+- Replaced silent component feature-edge dropping with canonical request accounting across actual component source edges. Hard/soft requests publish requested/remapped/unassigned counts and a typed first unassigned issue; an unassigned hard request fails closed before component execution while soft unassigned requests remain explicitly accounted.
+
+### Validation — RA-CB-F1 through RA-CB-F5 Code + Build
+
+- Implementation commit `38d8d7d3e97f3b496e63979cb1348ed2cda304bc`; exact clean compile source `555109796188b318c788ef5777f622705ee0aa94`. Regenerated R-A inventory: **19 paths / 59 probes / 245 matches**, raw projection **22/0**, face-count **2/0**, pipeline `stitchIdentity` assignments **2/0**, classifier self-test **4/4**, final static **PASS**.
+- Compile run/job `31665352874 / 94338607395` completed Release/static/Ninja/PRE_TEST **118/118**, build exit `0`. Result artifact `9167759672` SHA-256 `96401aac27a3a231533a785d107cb023cf50a304d06e821585e7c44597c6beb6`; log artifact `9167759825` SHA-256 `ed859f380103b183fda2241c71ff877fa0bbc3dc0c808f5c4f5f57290daadda8`. The package contains **26** files with recursive self-excluding manifest **25/25**, five empty source-status snapshots, and `runtimeExecution=false`.
+- No generated Directional binary, test, benchmark, discovery command, `ctest`, CLI, fuzzer, help/version command, or custom input executed. R-A remains open; the mandatory next cadence is immutable artifact-only retry attempt 3 against this package.
+
 ### Fixed — R-A-TB2-CB-01 through R-A-TB2-CB-03 aggregate authority remediation
 
 - `rebuild_aggregate_output_identity_caches` now returns a structured aggregate-identity outcome with exact failing sub-invariant and patch/vertex/face context instead of collapsing every rejection into generic `InvalidGlobalDerivedIdentity`. The aggregate seam publishes that diagnostic while preserving fail-closed zero publication.
