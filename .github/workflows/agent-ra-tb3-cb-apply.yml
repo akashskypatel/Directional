@@ -9,7 +9,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 concurrency:
   group: agent-ra-tb3-cb-apply-${{ github.ref }}
@@ -21,8 +20,7 @@ jobs:
     timeout-minutes: 20
     env:
       TESTED_SOURCE: 555109796188b318c788ef5777f622705ee0aa94
-      PATCH_SHA256: f2ef11a6387a818b3faef8dff94ec592b724344edd4b6bb0ca31b6a6366c183b
-      PAYLOAD_B64_SHA256: 373c334161ca2237cdda6276b9a7216c38fab43d7409d1319ba40c291c6f3048
+      PATCH_SHA256: 45e580253589442b19926d4a7db00d0dc5d216d8278d517c0f486477cf4aa434
 
     steps:
       - name: Initialize persistent activity log
@@ -36,7 +34,6 @@ jobs:
             "ref=$GITHUB_REF" \
             "tested_source=$TESTED_SOURCE" \
             "patch_sha256=$PATCH_SHA256" \
-            "payload_b64_sha256=$PAYLOAD_B64_SHA256" \
             'turnBoundary=Code+Build-only' \
             'generatedRuntimeExecution=false' | tee -a "$RUNNER_TEMP/activity.log"
 
@@ -62,86 +59,72 @@ jobs:
             .agents/Directional/R_A_Closure_Inventory_Report.md
           )
           git diff --quiet "$TESTED_SOURCE" -- "${semantic_paths[@]}"
-          printf 'semantic_base_matches_tested_source=PASS\n'
+          echo 'semantic_base_matches_tested_source=PASS'
 
           payload_parts=(
-            .agents/Directional/turn-payloads/ra_tb3_cb_patch.part00
-            .agents/Directional/turn-payloads/ra_tb3_cb_patch.part01
-            .agents/Directional/turn-payloads/ra_tb3_cb_patch.part02
-            .agents/Directional/turn-payloads/ra_tb3_cb_patch.part03
-            .agents/Directional/turn-payloads/ra_tb3_cb_patch.part04
-            .agents/Directional/turn-payloads/ra_tb3_cb_patch.part05
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part00
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part01
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part02a
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part02b
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part03
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part04a
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part04b
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part04c
+            .agents/Directional/turn-payloads/ra_tb3_cb_plain.part05
           )
           expected_part_hashes=(
-            9ab02abf608b24f8334a3383a487212e6917134a171287c8434d56933f75d7bd
-            bf459102525cad715e4ab04c0ba62b20db7549bac31a6d104bbed06bf79b3a1b
-            d299c6b5ee2fd3be845a117432b65361ba1e4097fb511bfe3abe8e6e8f5039e6
-            deedfd4a75540ba904af78e75b0147e52d044d16486172463358eb5518d88b10
-            c4334da0c43a9b4c6c2ba183c09ab27055c701f702724148a072c457a0ec38ac
-            eafe94702cd714656ec5a858ab6d2ce4e34416b9cc826d58ba00b1393dc32962
+            9a41ade8fa87f0beb4efb85ea13f41f8eadef56a9bd47ad81556a587181c5a8c
+            185ddab09a7c7ac0c4322f699cdcc3728845ebca841a77629bb19cbb50e606e6
+            f4413a077e7daea6194c173e6669e8f1c00122cc1cb839768728cd80a4c79670
+            82f2df6fb2d251d8033ced24ffa0a94f340a7078863ad74668c13c1caada316b
+            77e310b1c59d5994ce5bcaff292626541db3556b2305f4fa37ee484ec35ac3d5
+            23522886cbd1f0040fec2829061e96998b16a4b1826b81d2e48f34d643782174
+            aa3597703cbf3feacbe0d2537e81792bdfe29d9948297db25e1dc980284ee365
+            c159a953ffb008e96660f007bdd1c45cf04a277b4daf8589d5bb5a58c7142573
+            958389bd875ca09f120fdbfd1ce76ba76960724a23b1d6f9c7d0d00086d95b18
           )
           for index in "${!payload_parts[@]}"; do
             printf '%s  %s\n' "${expected_part_hashes[$index]}" "${payload_parts[$index]}" | sha256sum -c -
           done
-          cat "${payload_parts[@]}" > "$RUNNER_TEMP/ra-tb3-cb.b64"
-          printf '%s  %s\n' "$PAYLOAD_B64_SHA256" "$RUNNER_TEMP/ra-tb3-cb.b64" | sha256sum -c -
-          python3 - "$RUNNER_TEMP/ra-tb3-cb.b64" "$RUNNER_TEMP/ra-tb3-cb.patch" <<'PY'
-          import base64, pathlib, sys, zlib
-          payload = pathlib.Path(sys.argv[1]).read_text()
-          decoded = zlib.decompress(base64.b64decode(payload))
-          pathlib.Path(sys.argv[2]).write_bytes(decoded)
-          print(f'payload_chars={len(payload)} decoded_patch_bytes={len(decoded)}')
-          PY
+          cat "${payload_parts[@]}" > "$RUNNER_TEMP/ra-tb3-cb.patch"
           printf '%s  %s\n' "$PATCH_SHA256" "$RUNNER_TEMP/ra-tb3-cb.patch" | sha256sum -c -
-          if grep -q '^+++ b/.github/workflows/' "$RUNNER_TEMP/ra-tb3-cb.patch"; then
-            echo 'patch attempts to modify workflow files' >&2
-            exit 1
-          fi
+          ! grep -q '^+++ b/.github/workflows/' "$RUNNER_TEMP/ra-tb3-cb.patch"
 
           git apply --check "$RUNNER_TEMP/ra-tb3-cb.patch"
           git apply "$RUNNER_TEMP/ra-tb3-cb.patch"
           git diff --check
-
-          mapfile -t changed < <(git diff --name-only | sort)
-          expected="$(printf '%s\n' "${semantic_paths[@]}" | sort)"
-          actual="$(printf '%s\n' "${changed[@]}")"
-          printf 'changed_paths_after_apply:\n%s\n' "$actual"
-          test "$actual" = "$expected"
+          test "$(git diff --name-only | sort)" = "$(printf '%s\n' .agents/Directional/R_A_Closure_Inventory.py src/pipeline/RemeshPipeline.cpp tests/SurfaceCellsPhase10Tests.cpp | sort)"
 
           python3 .agents/Directional/R_A_Closure_Inventory.py \
-            --root . --output "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md" \
+            --root . --output .agents/Directional/R_A_Closure_Inventory_Report.md \
             | tee "$RUNNER_TEMP/R_A_Closure_Inventory.stdout.txt"
-          cmp .agents/Directional/R_A_Closure_Inventory_Report.md \
-              "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Affected path count: \*\*19\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Probe count: \*\*60\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Probe match count: \*\*270\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Unexpected raw-projection leaves: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Unexpected face-count leaves: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Unexpected pipeline stitchIdentity assignments: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Stitch-kind classifier self-test failures: \*\*0\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          grep -q 'Final static inventory: \*\*PASS\*\*' "$RUNNER_TEMP/R_A_Closure_Inventory_Report.regenerated.md"
-          printf 'static_inventory=19_paths_60_probes_270_matches_PASS\n'
+          grep -q 'Affected path count: \*\*19\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Probe count: \*\*60\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Probe match count: \*\*270\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Unexpected raw-projection leaves: \*\*0\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Unexpected face-count leaves: \*\*0\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Unexpected pipeline stitchIdentity assignments: \*\*0\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Stitch-kind classifier self-test failures: \*\*0\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          grep -q 'Final static inventory: \*\*PASS\*\*' .agents/Directional/R_A_Closure_Inventory_Report.md
+          echo 'static_inventory=19_paths_60_probes_270_matches_PASS'
+          git diff --check
+          test "$(git diff --name-only | sort)" = "$(printf '%s\n' "${semantic_paths[@]}" | sort)"
 
           git diff -- "${semantic_paths[@]}" > "$RUNNER_TEMP/applied-semantic.patch"
           git status --porcelain=v1 > "$RUNNER_TEMP/status-before-commit.txt"
-
           git config user.name 'Directional Agent'
           git config user.email 'directional-agent@users.noreply.github.com'
           git add src/pipeline/RemeshPipeline.cpp tests/SurfaceCellsPhase10Tests.cpp
-          git add -f .agents/Directional/R_A_Closure_Inventory.py \
-                     .agents/Directional/R_A_Closure_Inventory_Report.md
+          git add -f .agents/Directional/R_A_Closure_Inventory.py .agents/Directional/R_A_Closure_Inventory_Report.md
           test -z "$(git diff --name-only)"
           git diff --cached --check
-          test "$(git diff --cached --name-only | sort)" = "$expected"
+          test "$(git diff --cached --name-only | sort)" = "$(printf '%s\n' "${semantic_paths[@]}" | sort)"
           git commit -m 'fix: close R-A retry 3 CB findings'
-          implementation_sha="$(git rev-parse HEAD)"
-          printf 'implementation_sha=%s\n' "$implementation_sha" | tee "$RUNNER_TEMP/implementation.txt"
+          git rev-parse HEAD | tee "$RUNNER_TEMP/implementation.txt"
           git push origin "HEAD:${GITHUB_REF_NAME}"
           git status --porcelain=v1 | tee "$RUNNER_TEMP/status-after-push.txt"
           test ! -s "$RUNNER_TEMP/status-after-push.txt"
-          printf 'generated_runtime_execution=false\n' > "$RUNNER_TEMP/command-boundary.txt"
-          printf 'tests_executed=false\nbenchmarks_executed=false\ndiscovery_executed=false\n' >> "$RUNNER_TEMP/command-boundary.txt"
+          printf '%s\n' 'generated_runtime_execution=false' 'tests_executed=false' 'benchmarks_executed=false' 'discovery_executed=false' > "$RUNNER_TEMP/command-boundary.txt"
 
       - name: Upload apply result evidence
         if: success()
@@ -151,7 +134,6 @@ jobs:
           path: |
             ${{ runner.temp }}/implementation.txt
             ${{ runner.temp }}/applied-semantic.patch
-            ${{ runner.temp }}/R_A_Closure_Inventory_Report.regenerated.md
             ${{ runner.temp }}/R_A_Closure_Inventory.stdout.txt
             ${{ runner.temp }}/status-before-commit.txt
             ${{ runner.temp }}/status-after-push.txt
