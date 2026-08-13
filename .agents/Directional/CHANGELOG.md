@@ -18,6 +18,14 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 ## [Unreleased]
 
 
+### Validation — R-A artifact-only retry 4
+
+- Exact source `aa16449577c48bac72257b7b9915e2b70dad3b82`, runtime run/job `31679754667 / 94382280555`. Result artifact `9173016395` SHA-256 `39f71abb285ac1e806f2fdaded58a3675d6491b3a8177999def697b9aa6678ac`; log artifact `9173016645` SHA-256 `9c1ff473c56cf867e3cd6f8600f888ba438955dfbb96bf3c1084578112ab2176`.
+- Immutable preflight/static/discovery/postflight passed: **26-file** package, recursive self-excluding manifest **25/25**, five clean source-status snapshots, regenerated **19 paths / 60 probes / 270 matches / PASS** inventory, discovery **13 / 235 / 180 / 84**, unchanged package/executable state, and zero orchestration failures. No rebuild/source/test/fixture mutation or package repair occurred.
+- Complete continuous gate selected **92 unique contracts: 88 passed / 4 failed**. Retry-3 stale-cache remediation is runtime-green **2/2**, provenance remediation is runtime-green **1/1**, F1/F2-F3/F5 remain green, and all broad groups except `SurfaceCellAuthorityContractCutover.*` pass fully. The remaining four feature aggregate/final-oracle contracts all stop earlier at component `completion`.
+- Exact-source diagnosis shows the two-triangle-square hard diagonal creates one-triangle topology regions because hard features are region barriers; the bounded-disk phase-front producer declines regions with fewer than four boundary edges/vertices, so this witness never reaches the CB-02 post-materialization `HardRail` projection. A later generic completion rejection can erase stronger earlier producer context with an empty reason. R-A remains open; next scope is `R-A-TB4-CB-01` through `R-A-TB4-CB-04` and then immutable retry 5.
+
+
 ### Fixed — R-A-TB3-CB-01 through R-A-TB3-CB-03 retry-3 remediation
 
 - Corrected the stale boundary-cache counterfactual so the zero-rebuild case now constructs genuine same-cardinality stale cache state before aggregate canonical refresh; the separate missing-cardinality exact rebuild-count positive remains intact.
