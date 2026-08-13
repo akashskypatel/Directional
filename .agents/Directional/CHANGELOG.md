@@ -26,7 +26,7 @@ The format is inspired by [Keep a Changelog](https://keepachangelog.com/): entri
 
 ### Validation — R-A-TB3-CB-04 fresh compile package
 
-- Semantic implementation commit `199b5aa85d02d8ef085161e3cdfe49f043e15ee1`; exact clean compile source `aa16449577c48bac72257b7b9915e2b70dad3b82`. Regenerated R-A inventory: **19 affected paths / 60 probes / 270 matches / PASS**, with zero unexpected raw-projection, face-count, and pipeline `stitchIdentity` leaves and classifier self-test PASS.
+- Semantic implementation commit `199b06f429d8004a5b51c89f94ae33748f4ec38c`; exact clean compile source `aa16449577c48bac72257b7b9915e2b70dad3b82`. Regenerated R-A inventory: **19 affected paths / 60 probes / 270 matches / PASS**, with zero unexpected raw-projection, face-count, and pipeline `stitchIdentity` leaves and classifier self-test PASS.
 - Compile run/job `31674780558 / 94366870676` completed the approved Release/static/Ninja/PRE_TEST targets **118/118**, build exit `0`. Result artifact `9171125667` SHA-256 `0190d60057001cc2fdcb56f64e436b7bf4670bb7a571c0ae0f3af8a296594a83`; log artifact `9171126075` SHA-256 `bc54bd79251bc935a171d04cd81994f211096d060904341169ce6e5777442380`.
 - Package evidence is **26 files**, recursive self-excluding manifest **25/25**, exact source archive, five empty source-status snapshots, `runtimeExecution=false`, and `semanticContracts=compiled-not-executed`. No generated Directional test, benchmark, discovery/listing command, `ctest`, CLI, fuzzer, help/version command, or custom input executed. R-A remains open pending immutable artifact-only retry 4.
 
