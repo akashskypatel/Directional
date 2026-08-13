@@ -1,0 +1,358 @@
+name: Agent R-A Artifact T+B Retry 3
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/ra-artifact-tb-retry-03.txt
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: agent-ra-artifact-tb-retry-03-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  artifact-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      SOURCE_SHA: 555109796188b318c788ef5777f622705ee0aa94
+      COMPILE_RUN_ID: '31665352874'
+      RESULT_ARTIFACT_ID: '9167759672'
+      RESULT_ARTIFACT_SHA256: 96401aac27a3a231533a785d107cb023cf50a304d06e821585e7c44597c6beb6
+      LOG_ARTIFACT_ID: '9167759825'
+      LOG_ARTIFACT_SHA256: ed859f380103b183fda2241c71ff877fa0bbc3dc0c808f5c4f5f57290daadda8
+      PYTHONDONTWRITEBYTECODE: '1'
+
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          printf '%s\n' \
+            'task=R-A continuous closeout step 3 artifact-only Test+Benchmark retry 3' \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "source_sha=$SOURCE_SHA" \
+            "compile_run_id=$COMPILE_RUN_ID" \
+            "result_artifact_id=$RESULT_ARTIFACT_ID" \
+            "log_artifact_id=$LOG_ARTIFACT_ID" \
+            'rebuild=false' \
+            'sourceMutation=false' \
+            'testMutation=false' \
+            'fixtureMutation=false' \
+            'packageRepair=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Verify immutable package and execute continuous R-A gate
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          trap 'rc=$?; printf "step_exit=%s\n" "$rc"; exit "$rc"' EXIT
+
+          PKG="$RUNNER_TEMP/ra-package"
+          SRC="$RUNNER_TEMP/ra-source-evidence"
+          EVIDENCE="$RUNNER_TEMP/ra-tb-evidence"
+          ZIP="$RUNNER_TEMP/compile-result.zip"
+          COMPILE_LOG_ZIP="$RUNNER_TEMP/compile-log.zip"
+          mkdir -p "$PKG" "$SRC" "$EVIDENCE/tests" "$EVIDENCE/discovery"
+
+          printf 'runner=%s\n' "$(uname -a)"
+          printf 'python=%s\n' "$(python3 --version 2>&1)"
+          printf 'unzip=%s\n' "$(unzip -v | head -1)"
+
+          curl --fail --location --silent --show-error \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${RESULT_ARTIFACT_ID}/zip" \
+            -o "$ZIP"
+          printf '%s  %s\n' "$RESULT_ARTIFACT_SHA256" "$ZIP" | sha256sum -c -
+
+          curl --fail --location --silent --show-error \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${LOG_ARTIFACT_ID}/zip" \
+            -o "$COMPILE_LOG_ZIP"
+          printf '%s  %s\n' "$LOG_ARTIFACT_SHA256" "$COMPILE_LOG_ZIP" | sha256sum -c -
+
+          python3 - "$ZIP" <<'PY'
+          import pathlib, stat, sys, zipfile
+          path = pathlib.Path(sys.argv[1])
+          with zipfile.ZipFile(path) as zf:
+              for info in zf.infolist():
+                  p = pathlib.PurePosixPath(info.filename)
+                  if p.is_absolute() or '..' in p.parts:
+                      raise SystemExit(f'unsafe zip path: {info.filename}')
+                  mode = (info.external_attr >> 16) & 0xFFFF
+                  if stat.S_ISLNK(mode):
+                      raise SystemExit(f'symlink in artifact: {info.filename}')
+          print('zip_path_and_symlink_preflight=PASS')
+          PY
+
+          unzip -q "$ZIP" -d "$PKG"
+          cd "$PKG"
+          test "$(find . -type f | wc -l)" -eq 26
+          test "$(find . -type l | wc -l)" -eq 0
+          test -f SHA256SUMS
+          test "$(wc -l < SHA256SUMS)" -eq 25
+          ! grep -Eq '(^|[[:space:]])SHA256SUMS$' SHA256SUMS
+          sha256sum -c SHA256SUMS | tee "$EVIDENCE/preflight-manifest-check.txt"
+          test "$(cat metadata/source-commit.txt)" = "$SOURCE_SHA"
+          test "$(cat metadata/build-exit-code.txt)" = '0'
+          grep -q '^runtimeExecution=false$' metadata/command-boundary.txt
+          grep -q '^semanticContracts=compiled-not-executed$' metadata/command-boundary.txt
+          grep -q '^manifestExcludesSelf=true$' metadata/command-boundary.txt
+          grep -q 'CMAKE_BUILD_TYPE:STRING=Release' metadata/CMakeCache.txt
+          grep -q 'CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE:UNINITIALIZED=PRE_TEST' metadata/CMakeCache.txt
+          for status in \
+            metadata/source-status-preconfigure.txt \
+            metadata/source-status-before-configure.txt \
+            metadata/source-status-after-configure.txt \
+            metadata/source-status-after-build.txt \
+            metadata/source-status-final.txt; do
+            test -f "$status"
+            test ! -s "$status"
+          done
+          cp metadata/dependency-revisions.txt "$EVIDENCE/dependency-revisions.txt"
+          cp metadata/command-boundary.txt "$EVIDENCE/compile-command-boundary.txt"
+          cp metadata/source-commit.txt "$EVIDENCE/source-commit.txt"
+          cp metadata/build-exit-code.txt "$EVIDENCE/build-exit-code.txt"
+          find . -printf '%y %m %s %P\n' | sort > "$EVIDENCE/package-state-preflight.txt"
+          sha256sum bin/directional_surface_cell_authority_kernel_tests \
+                    bin/directional_surface_cell_producer_tests \
+                    bin/directional_surface_cell_completion_tests \
+                    bin/directional_surface_cell_validation_tests \
+                    > "$EVIDENCE/executable-sha256-preflight.txt"
+
+          tar -xzf "source/source-${SOURCE_SHA}.tar.gz" -C "$SRC"
+          python3 "$SRC/.agents/Directional/R_A_Closure_Inventory.py" \
+            --root "$SRC" --output "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md" \
+            | tee "$EVIDENCE/R_A_Closure_Inventory.stdout.txt"
+          cmp "$SRC/.agents/Directional/R_A_Closure_Inventory_Report.md" \
+              "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -E 'Affected path count:|Probe count:|Probe match count:|Allowed raw-projection leaves:|Unexpected raw-projection leaves:|Allowed face-count leaves:|Unexpected face-count leaves:|Allowed pipeline stitchIdentity assignments:|Unexpected pipeline stitchIdentity assignments:|Stitch-kind classifier self-test cases:|Stitch-kind classifier self-test failures:|Final static inventory:' \
+            "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md" \
+            | tee "$EVIDENCE/inventory-counts-verbatim.txt"
+          grep -q 'Probe count: \*\*59\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Probe match count: \*\*261\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Affected path count: \*\*19\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Allowed raw-projection leaves: \*\*22\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Unexpected raw-projection leaves: \*\*0\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Allowed face-count leaves: \*\*2\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Unexpected face-count leaves: \*\*0\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Allowed pipeline stitchIdentity assignments: \*\*2\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Unexpected pipeline stitchIdentity assignments: \*\*0\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Stitch-kind classifier self-test cases: \*\*4\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Stitch-kind classifier self-test failures: \*\*0\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          grep -q 'Final static inventory: \*\*PASS\*\*' "$EVIDENCE/R_A_Closure_Inventory_Report.regenerated.md"
+          printf 'artifact_preflight=PASS\nstatic_inventory=PASS\ncompile_log_digest=PASS\n' | tee "$EVIDENCE/preflight-summary.txt"
+
+          for exe in \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests; do
+            "bin/$exe" --gtest_list_tests > "$EVIDENCE/discovery/${exe}.txt" 2>&1
+            count="$(grep -Ec '^  [^ ]' "$EVIDENCE/discovery/${exe}.txt" || true)"
+            printf '%s discovered=%s\n' "$exe" "$count" | tee -a "$EVIDENCE/discovery-counts.txt"
+            test "$count" -gt 0
+          done
+
+          GATE_FAILED=0
+          ORCHESTRATION_FAILED=0
+          : > "$EVIDENCE/group-status.tsv"
+
+          run_group() {
+            name="$1"
+            exe="$2"
+            filter="$3"
+            list="$EVIDENCE/tests/${name}.list.txt"
+            log="$EVIDENCE/tests/${name}.log"
+            xml="$EVIDENCE/tests/${name}.xml"
+
+            set +e
+            "$exe" --gtest_filter="$filter" --gtest_list_tests > "$list" 2>&1
+            list_rc=$?
+            set -e
+            selected="$(grep -Ec '^  [^ ]' "$list" || true)"
+            if [ "$list_rc" -ne 0 ] || [ "$selected" -eq 0 ]; then
+              printf '%s\t%s\t%s\t%s\n' "$name" "$selected" "$list_rc" 'ORCHESTRATION_FAILURE' | tee -a "$EVIDENCE/group-status.tsv"
+              ORCHESTRATION_FAILED=1
+              GATE_FAILED=1
+              return 0
+            fi
+
+            set +e
+            timeout 120s "$exe" --gtest_filter="$filter" --gtest_output="xml:${xml}" > "$log" 2>&1
+            rc=$?
+            set -e
+            cat "$log"
+            if [ "$rc" -eq 0 ]; then
+              status=PASS
+            else
+              status=FAIL
+              GATE_FAILED=1
+            fi
+            printf '%s\t%s\t%s\t%s\n' "$name" "$selected" "$rc" "$status" | tee -a "$EVIDENCE/group-status.tsv"
+          }
+
+          PRODUCER="$PKG/bin/directional_surface_cell_producer_tests"
+          COMPLETION="$PKG/bin/directional_surface_cell_completion_tests"
+          VALIDATION="$PKG/bin/directional_surface_cell_validation_tests"
+          KERNEL="$PKG/bin/directional_surface_cell_authority_kernel_tests"
+
+          run_group f1_retained_authority_direct "$PRODUCER" 'SurfaceCellAuthorityContractCutover.PostMoveSingleComponentOptimizerUsesRetainedSourceAuthority'
+          run_group f2_completion_reason_capture "$COMPLETION" 'PureQuadCompletionPhase18.CoincidentPositionsOnDistinctTypedSheetsDoNotMerge:PureQuadCompletionPhase18.WrongOwnerSheetCertificatePublishesNothing:PureQuadCompletionPhase18.SameExactBoundaryKeyRejectsIncompatibleTypedLineage:PureQuadCompletionPhase18.SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility'
+          run_group f4_boundary_identity_direct "$PRODUCER" 'SurfaceCellAuthorityContractCutover.DisconnectedAggregationPublishesGlobalOwnerAndRebuildsIdentityCaches:SurfaceCellAuthorityContractCutover.DisconnectedAggregationDoesNotPublishStalePreRemapIdentityCaches'
+          run_group f5_feature_conservation_direct "$PRODUCER" 'SurfaceCellAuthorityContractCutover.ComponentFeatureOptionsRemapOwnedEdgesWithoutCrossComponentLeakage:SurfaceCellAuthorityContractCutover.UnassignedUserHardFeatureEdgeFailsClosedBeforeComponentExecution'
+
+          run_group authority_kernel "$KERNEL" '*'
+          run_group authority_contract_cutover "$PRODUCER" 'SurfaceCellAuthorityContractCutover.*'
+          run_group isolation_seam_authority "$PRODUCER" 'SurfaceCellIsolationSeamCertificateAuthority.*'
+          run_group completion_authority "$COMPLETION" 'PureQuadCompletionPhase18.SameExtentForeignSourceAuthorityRejectsStitchPublication:PureQuadCompletionPhase18.CoincidentPositionsOnDistinctTypedSheetsDoNotMerge:PureQuadCompletionPhase18.CoincidentGeneratedInteriorsRemainPatchLocal:PureQuadCompletionPhase18.ExactBoundaryIdentityWithoutTypedLineageIsNotPublished:PureQuadCompletionPhase18.ExactBoundaryIdentityPublishesOnlyAfterTypedLineageValidation:PureQuadCompletionPhase18.CompatibleExactBoundaryKeyMergesWithTypedAuthorityCertificate:PureQuadCompletionPhase18.CompatibleCollisionPublishesOnlyPostIntersectionAuthority:PureQuadCompletionPhase18.MissingSourceAuthorityPublishesNothing:PureQuadCompletionPhase18.UnownedRegionCertificatePublishesNothing:PureQuadCompletionPhase18.SparseOwnerCertificatePublishesNothing:PureQuadCompletionPhase18.WrongOwnerSheetCertificatePublishesNothing:PureQuadCompletionPhase18.WrongFaceChartCertificatePublishesNothing:PureQuadCompletionPhase18.ExactOnlyAuthoritativeAliasPublishesNothing:PureQuadCompletionPhase18.StaleCanonicalAuthorityPublishesNothing:PureQuadCompletionPhase18.SameExactBoundaryKeyRejectsIncompatibleTypedLineage:PureQuadCompletionPhase18.SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility:PureQuadCompletionPhase18.MissingTypedStitchIdentityFailsClosedForGeneratedInterior:PureQuadCompletionPhase18.RawProjectionTamperDoesNotChangeTypedStitchAssembly:PureQuadCompletionPhase18.StitchingIsPatchOrderInvariant'
+          run_group source_support_chart "$COMPLETION" 'SurfaceCellSourceSupportAndChartAuthority.*'
+          run_group source_validator "$VALIDATION" 'SourceAuthoritativeMeshValidatorPhase22.*'
+          run_group optimizer_authority "$VALIDATION" 'SurfaceMeshOptimizerPhase19.MissingSourceAuthorityFailsClosed:SurfaceMeshOptimizerPhase19.SameExtentForeignSourceAuthorityFailsClosed:SurfaceMeshOptimizerPhase19.FinalValidationUsesAuthorityOptions:SurfaceMeshOptimizerPhase19.TriangleProjectionFailsClosedWhenTypedSourceAuthorityDoesNotMatchSourceFaces:SurfaceMeshOptimizerPhase22.FinalReportUsesSourceAuthorityAndRejectsAnyStrictIssue:SurfaceMeshOptimizerPhase22.SourceAuthoritativeEntryPointsFailClosedWithoutTypedAuthority:SurfaceMeshOptimizerPhase22.GenericMeshValidationIsInvariantToRawProjectionSheetLabels:SurfaceMeshOptimizerPhase22.RailConstraintBuilderUsesOutputVertexSequencesForBoundaryAndFeatures'
+          run_group rail_authority "$VALIDATION" 'SurfaceOptimizationRailAuthorityMigration.*'
+
+          python3 - "$EVIDENCE" <<'PY'
+          import pathlib, sys, xml.etree.ElementTree as ET
+          root = pathlib.Path(sys.argv[1])
+          groups = [
+              'authority_kernel', 'authority_contract_cutover',
+              'isolation_seam_authority', 'completion_authority',
+              'source_support_chart', 'source_validator',
+              'optimizer_authority', 'rail_authority',
+          ]
+          seen = {}
+          failure_messages = {}
+          for group in groups:
+              xml_path = root / 'tests' / f'{group}.xml'
+              if not xml_path.exists():
+                  continue
+              tree = ET.parse(xml_path)
+              for case in tree.iter('testcase'):
+                  key = f"{case.attrib.get('classname','')}.{case.attrib.get('name','')}"
+                  failures = [child for child in case if child.tag in ('failure', 'error')]
+                  failed = bool(failures)
+                  if key in seen:
+                      raise SystemExit(f'duplicate broad-gate test identity: {key}')
+                  seen[key] = failed
+                  if failed:
+                      failure_messages[key] = '\n'.join(
+                          (child.attrib.get('message','') + '\n' + (child.text or '')).strip()
+                          for child in failures
+                      ).strip()
+          total = len(seen)
+          failed = sum(seen.values())
+          passed = total - failed
+          (root / 'unique-gate-summary.txt').write_text(
+              f'unique_selected={total}\npassed={passed}\nfailed={failed}\n'
+          )
+          (root / 'unique-selected-tests.txt').write_text(
+              '\n'.join(sorted(seen)) + ('\n' if seen else '')
+          )
+          (root / 'unique-failing-tests.txt').write_text(
+              '\n'.join(sorted(k for k, v in seen.items() if v)) +
+              ('\n' if failed else '')
+          )
+          with (root / 'unique-failure-details.txt').open('w') as out:
+              for key in sorted(failure_messages):
+                  out.write(f'===== {key} =====\n{failure_messages[key]}\n')
+          if total == 0:
+              raise SystemExit('zero unique selected tests')
+          PY
+
+          python3 - "$EVIDENCE/tests/f2_completion_reason_capture.xml" "$EVIDENCE/f2-reason-capture.tsv" <<'PY'
+          import pathlib, sys, xml.etree.ElementTree as ET
+          xml_path = pathlib.Path(sys.argv[1])
+          out_path = pathlib.Path(sys.argv[2])
+          expected = {
+              'PureQuadCompletionPhase18.CoincidentPositionsOnDistinctTypedSheetsDoNotMerge':
+                  'success=true connectedComponents=2 mergedBoundaryVertices=0',
+              'PureQuadCompletionPhase18.WrongOwnerSheetCertificatePublishesNothing':
+                  'failure=InvalidTypedStitchAuthority',
+              'PureQuadCompletionPhase18.SameExactBoundaryKeyRejectsIncompatibleTypedLineage':
+                  'failure=IncompatibleTypedStitchAuthority',
+              'PureQuadCompletionPhase18.SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility':
+                  'failure=IncompatibleTypedStitchAuthority',
+          }
+          rows = []
+          if not xml_path.exists():
+              rows.append('ORCHESTRATION_FAILURE\tmissing reason-capture XML\t')
+          else:
+              tree = ET.parse(xml_path)
+              seen = set()
+              for case in tree.iter('testcase'):
+                  key = f"{case.attrib.get('classname','')}.{case.attrib.get('name','')}"
+                  if key not in expected:
+                      continue
+                  seen.add(key)
+                  failed = any(child.tag in ('failure','error') for child in case)
+                  status = 'FAIL' if failed else 'PASS'
+                  confirmed = 'unconfirmed' if failed else expected[key]
+                  rows.append(f'{key}\t{status}\t{confirmed}')
+              for key in expected:
+                  if key not in seen:
+                      rows.append(f'{key}\tORCHESTRATION_FAILURE\tmissing testcase')
+          out_path.write_text('\n'.join(rows) + '\n')
+          print(out_path.read_text(), end='')
+          PY
+
+          cd "$PKG"
+          sha256sum -c SHA256SUMS | tee "$EVIDENCE/postflight-manifest-check.txt"
+          find . -printf '%y %m %s %P\n' | sort > "$EVIDENCE/package-state-postflight.txt"
+          cmp "$EVIDENCE/package-state-preflight.txt" "$EVIDENCE/package-state-postflight.txt"
+          sha256sum bin/directional_surface_cell_authority_kernel_tests \
+                    bin/directional_surface_cell_producer_tests \
+                    bin/directional_surface_cell_completion_tests \
+                    bin/directional_surface_cell_validation_tests \
+                    > "$EVIDENCE/executable-sha256-postflight.txt"
+          cmp "$EVIDENCE/executable-sha256-preflight.txt" "$EVIDENCE/executable-sha256-postflight.txt"
+          test "$(find . -type l | wc -l)" -eq 0
+          printf 'artifact_postflight=PASS\n' | tee "$EVIDENCE/postflight-summary.txt"
+
+          printf 'gate_failed=%s\norchestration_failed=%s\nrebuild=false\nsourceMutation=false\ntestMutation=false\nfixtureMutation=false\npackageRepair=false\n' \
+            "$GATE_FAILED" "$ORCHESTRATION_FAILED" | tee "$EVIDENCE/gate-status.txt"
+          cp "$RUNNER_TEMP/activity.log" "$EVIDENCE/activity-snapshot.txt"
+          printf '%s\n' "$GATE_FAILED" > "$RUNNER_TEMP/gate-exit.txt"
+
+      - name: Upload T+B evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-artifact-tb-retry-03-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/ra-tb-evidence
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ra-artifact-tb-retry-03-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Propagate R-A gate status
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -f "$RUNNER_TEMP/gate-exit.txt" ]; then
+            echo 'gate status missing: preflight or execution infrastructure failure'
+            exit 1
+          fi
+          gate="$(cat "$RUNNER_TEMP/gate-exit.txt")"
+          echo "gate_failed=$gate"
+          test "$gate" = '0'
