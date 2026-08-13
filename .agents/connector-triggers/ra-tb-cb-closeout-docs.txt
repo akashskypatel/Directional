@@ -1,1 +1,0 @@
-Record the completed R-A-TB-CB-00 through R-A-TB-CB-04 Code + Build boundary, exact source 92bf0ae2b10856162f175d02aeac318e126f9d22, widened static inventory, fresh compile package, and mandatory artifact-only R-A semantic retry. Documentation/control-plane only; no runtime execution.
