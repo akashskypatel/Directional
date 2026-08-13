@@ -1,0 +1,5 @@
+purpose=apply R-A-TB2-CB-01 through CB-04 documentation closeout
+compiled_source_sha=f6514a0f8496bd18aacfceb419e2e5ae5b3b6fae
+doc_base_sha=7acce62bea52d8970d2eb056f2df63f3962d3696
+patch_sha256=5efc248a3c3e67ba3f5f75ce7092de9573b4ee321363b7a19a6fc2750f9769d8
+runtime_execution=false
