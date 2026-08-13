@@ -72,9 +72,9 @@ jobs:
               '**Decision:** **close M1 as one vertical authority cutover, validate it immutably, then continue the default Pipeline B roadmap.**  \n'
           )
           new_header = (
-              '**Current R-A compile candidate:** `aa16449577c48bac72257b7b9915e2b70dad3b82`  \n'
-              '**Latest R-A runtime:** retry 3 `31667380356 / 94344731465` — **86/92 pass, 6 fail**; retry 4 pending  \n'
-              '**Decision:** **R-A retry-3 remediation is compile-valid; execute immutable retry 4 before continuing R-B through R-G.**  \n'
+              '**Current R-A compile candidate:** `aa16449577c48bac72257b7b9915e2b70dad3b82`\n'
+              '**Latest R-A runtime:** retry 3 `31667380356 / 94344731465` — **86/92 pass, 6 fail**; retry 4 pending\n'
+              '**Decision:** **R-A retry-3 remediation is compile-valid; execute immutable retry 4 before continuing R-B through R-G.**\n'
           )
           if old_header not in text:
               raise SystemExit('roadmap header anchor not found')
