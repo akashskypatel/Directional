@@ -1,3 +1,22 @@
+# Directional Surface-Cell TODO
+
+Last updated: 2026-08-12 UTC
+
+## Purpose
+
+This is the single durable task index for the cross-field-aligned surface-cell quadrangulation pipeline. Current-turn instructions belong in .agents/Directional/Future_Chat_Session_Handoff.md; normative architecture belongs in DESIGN.md; migration ordering belongs in REORIENTATION_PLAN.md; completed history belongs in CHANGELOG.md; exact evidence belongs in retained reports and trackers.
+
+## Current focus
+
+- [ ] **Complete the M1 single-authority cutover.**
+  - [x] Preserve M1l `bd140cff4572412e6f4ecd70a6ce0fe85310932c` as immutable runtime authority and preserve exact compile-only REV-18-through-REV-21 package evidence in `CHANGELOG.md`.
+  - [x] Independently review exact source `9d88d0e47cfc039e5399ebee334290b1eeae792b` at branch boundary `db100d15b166a2ac19bf2bb45c829856b43bb5a9`: **REV-21 coverage and REV-22-through-REV-24 accepted at the Code + Build boundary; overall R-A remains rejected/open**. Static inventory independently reproduced byte-for-byte during review.
+  - [x] R-A-REV-21 contract completion: authority-only source-row permutation rejects and consistently permuted matrix-plus-authority accepts at Code + Build source `9d88d0e47cfc039e5399ebee334290b1eeae792b`; runtime execution remains pending.
+  - [x] R-A-REV-22 Code + Build: final merged-product validation carries independent globally remapped boundary, feature, chart, output-face, hard-edge, and provenance authority with strict gates; boundary/feature tamper and strict-oracle positive contracts compile at `9d88d0e47cfc039e5399ebee334290b1eeae792b`.
+  - [x] R-A-REV-23 Code + Build: aggregate stitch identity is rebuilt through the completion-owned canonical constructor, stale kind is ignored, the duplicate pipeline schema is absent, and generated-interior re-stitch contracts compile at `9d88d0e47cfc039e5399ebee334290b1eeae792b`.
+  - [x] R-A-REV-24 Code + Build: direct source-authoritative validation requires non-null exact-matching `SourceTopologyRegions` before reporting authority use; null/foreign-authority negatives compile at `9d88d0e47cfc039e5399ebee334290b1eeae792b`.
+  - [x] RA-REV-22-F1 Code + Build remediation at `032d4cbae9e2de2767579934682e78754180338d`: existing component authority-tamper tests are explicitly named as aggregation-seam guards; new post-remap final-oracle boundary and feature counterfactuals require `MissingBoundaryAuthority`/`MissingFeatureRail` and zero publication. Runtime execution remains pending.
+  - [x] RA-REV-22-F2 Code + Build remediation at `032d4cbae9e2de2767579934682e78754180338d`: strict/provenance/boundary/feature usage publication is derived from `SourceAuthoritativeMeshValidationResult` observables; the hardcoded aggregate flags are absent.
   - [x] RA-REV-22-F3 Code + Build remediation at `032d4cbae9e2de2767579934682e78754180338d`: the typed final source-authority oracle result is published independently of component-report completeness, with an explicit `componentValidationReportsComplete` discriminator and compile-visible counterexample.
   - [x] RA-REV-23-F1 Code + Build remediation at `032d4cbae9e2de2767579934682e78754180338d`: the R-A inventory structurally forbids pipeline stitch-kind assignment and classifies every `stitchIdentity` assignment; only two completion-canonical leaves are allowed.
   - [x] Reproduce the complete retained R-A inventory through REV-24 after the findings: **19 affected paths, 42 probes, 186 probe matches, 22 allowed/0 unexpected raw-projection leaves, 2 allowed/0 unexpected face-count leaves, 2 allowed/0 unexpected pipeline `stitchIdentity` assignments, final static PASS**.
@@ -67,3 +86,43 @@ Current immutable runtime authority remains M1l `bd140cff4572412e6f4ecd70a6ce0fe
 - [ ] Validate the M3 Ray-Sokolov-style trace plus motorcycle-graph composition rather than assuming its guarantees transfer automatically.
 - [ ] Define the A1 quadrangulability certificate construction and independent tamper oracle.
 - [ ] Define the M7 degraded producer algorithm and its fixed-boundary completion proof.
+- [ ] Calibrate D0/D1 geometry, field alignment, approximation, element-quality, determinism, work, and resource thresholds.
+
+## Required target-stage corrections
+
+| Stage | Open contract | Owning milestone |
+|---|---|---|
+| A0 SourceAuthoritySnapshot | one immutable exact-support/source-incidence authority | M1-M2 |
+| A1 FieldTransportAtlas | typed charts/transport plus quadrangulability certificate | M1, M3 |
+| A2a FieldAlignedCurveNetwork | non-crossing typed trace network and region proof | M3 |
+| A2b GlobalTopologyPlan | one immutable global topology plan | M2-M3 |
+| A3 GlobalConformityPlan | positive shared rail schedule and typed infeasible subset | M4 |
+| A4 RegionCellComplex | strict and separately declared degraded producers | M2, M4, M7 |
+| A5 OccurrenceComplex | explicit typed occurrences and relations | M5-M6 |
+| A6 QuotientComplex/materialization | verified exact-once relation consumption | M5-M6 |
+| A7 GeometryEmbedding | exact support, injectivity, and quality | M6, T5 |
+| A8 Verification | independent verification and disposition assignment | M6-M7 |
+| A9 Diagnostics/export | derived, non-authoritative, retained by policy | M8 |
+
+## Testing roadmap
+
+- [x] **T0 — independent audit and authority separation.**
+- [x] **T1 — independent oracle/package foundation.**
+- [ ] **T2 — complete direct corpus and semantic manifest.** Every strict representative case declares expected D0 or typed failure; no degraded tier counts as green.
+- [ ] **T3 — property/metamorphic generation and shrinking.** Include curve-network topology, rail-flow, relation, disposition, degraded/omitted set, and permutation properties.
+- [ ] **T4 — sanitizer fuzzing and minimized replay.**
+- [ ] **T5 — calibrated representative quality and disposition gates.**
+- [ ] **T6 — CI, resource, work-ledger, discovery, and oracle-adequacy hardening.**
+
+## Authoritative references
+
+- .agents/Directional/DESIGN.md
+- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Code_Build_Plan.md
+- .agents/Directional/Architecture_Redesign_and_M1_RA_Independent_Review_Report.md
+- .agents/Directional/Architecture_M1_Single_Authority_Cutover_Artifact_Only_Test_Benchmark_Plan.md
+- .agents/Directional/Future_Chat_Session_Handoff.md
+- .agents/Directional/REORIENTATION_PLAN.md
+- .agents/Directional/Regression_Root_Cause_Tracker.md
+- .agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md
+- tests/TESTING_STRATEGY.md
+- .agents/Directional/CHANGELOG.md
