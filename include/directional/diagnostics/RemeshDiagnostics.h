@@ -58,6 +58,12 @@ enum class SurfaceCellConsumptionKind {
   Discontinuous
 };
 
+enum class SurfaceCellFeatureOptionRemapIssue {
+  None,
+  UnassignedHardEdge,
+  UnassignedSoftEdge
+};
+
 const char *surface_cell_consumption_kind_name(
     const SurfaceCellConsumptionKind kind);
 
@@ -258,6 +264,15 @@ struct RemeshDiagnostics {
   int surfaceCellFirstInvalidProducerEdgeFirst = -1;
   int surfaceCellFirstInvalidProducerEdgeSecond = -1;
   std::size_t surfaceCellAggregateIdentityBoundaryCacheRebuildCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeRequestedCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeRemappedCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeUnassignedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeRequestedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeRemappedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeUnassignedCount = 0U;
+  SurfaceCellFeatureOptionRemapIssue surfaceCellFeatureOptionFirstIssue =
+      SurfaceCellFeatureOptionRemapIssue::None;
+  std::array<int, 2> surfaceCellFirstUnassignedFeatureEdge{{-1, -1}};
   bool surfaceCellCompletionOwnershipRejectionAvailable = false;
   std::string surfaceCellCompletionOwnershipFailure;
   int surfaceCellCompletionOwnershipSourcePatch = -1;

@@ -22,6 +22,25 @@ Activate this plan only after new Code + Build work:
 
 The replacement `DESIGN.md` remains normative. M1 acceptance proves only the single-authority contract; strict product fixtures require D0-equivalent behavior.
 
+### R-A retry reason-capture amendment
+
+For the next immutable R-A retry, retain per-contract outcome evidence for the
+three faces-only completion/stitch discrimination contracts instead of
+reporting only the aggregate 18/18 completion count:
+
+- `CoincidentPositionsOnDistinctTypedSheetsDoNotMerge` is a successful
+  non-merge discrimination contract; record `success=true`, two connected
+  components, and `mergedBoundaryVertices=0` rather than inventing a failure
+  string.
+- `WrongOwnerSheetCertificatePublishesNothing` must pass specifically with
+  `failure=InvalidTypedStitchAuthority`.
+- `SameExactBoundaryKeyRejectsIncompatibleTypedLineage` must pass specifically
+  with `failure=IncompatibleTypedStitchAuthority`.
+
+Also execute and record
+`SameRegionSheetDifferentCompletedSupportsRejectTypedStitchCompatibility`;
+its required rejection reason is `IncompatibleTypedStitchAuthority`.
+
 ## 1. Purpose and turn boundary
 
 Validate the exact immutable package produced by the final M1 Code + Build turn. This turn decides whether the single-authority cutover preserves the required semantic/product invariants strongly enough to close M1.

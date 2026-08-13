@@ -5164,31 +5164,27 @@ TEST(SurfaceCellAuthorityContractCutover,
 
 
 TEST(SurfaceCellAuthorityContractCutover,
-     PostMoveAggregateOptimizerUsesRetainedSourceAuthority) {
-  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
-  const auto crossField =
-      directional::pipeline::finalize_surface_cell_raw_cross_field(
-          mesh, constant_xy_raw_field(mesh.F.rows()));
+     PostMoveSingleComponentOptimizerUsesRetainedSourceAuthority) {
+  const directional::TriMesh mesh = make_square_mesh();
   directional::pipeline::RemeshOptions options;
   options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
   options.surfaceCells.enabled = true;
   options.surfaceCells.fallbackPolicy =
       directional::pipeline::SurfaceCellFallbackPolicy::Fail;
   options.surfaceCells.allowSourceGridRecovery = false;
-  options.parallelizeComponents = true;
-  options.maxComponentThreads = 2;
   options.lengthRatio = 0.2;
 
-  const auto result =
-      directional::pipeline::remesh_surface_cell_components_from_cross_field(
-          mesh.V, mesh.F, crossField, options);
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.V, mesh.F, constant_xy_raw_field(mesh.F.rows()), options);
 
-  ASSERT_TRUE(result.success)
+  ASSERT_TRUE(result.surfaceCellContext.sourceTopologyRegions.has_value())
       << result.diagnostics.terminalFailureCode << ':'
-      << result.diagnostics.terminalFailureStage;
-  ASSERT_TRUE(result.surfaceCellContext.sourceTopologyRegions.has_value());
+      << result.diagnostics.terminalFailureStage << ':'
+      << result.diagnostics.surfaceCellFirstInvalidProducerReason;
   EXPECT_TRUE(result.surfaceCellContext.sourceTopologyRegions->matches_source_faces(
       mesh.F, static_cast<std::size_t>(mesh.V.rows())));
+  EXPECT_NE("MissingSourceAuthority",
+            result.diagnostics.surfaceCellFirstInvalidProducerReason);
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
@@ -5218,10 +5214,11 @@ TEST(SurfaceCellAuthorityContractCutover,
       result.surfaceCellContext.sourceTopologyRegions.value();
   EXPECT_TRUE(authority.matches_source_faces(
       mesh.F, static_cast<std::size_t>(mesh.V.rows())));
-  EXPECT_GT(
-      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount,
-      0U)
-      << "authoritative component patches must rebuild missing boundary identity caches";
+  EXPECT_EQ(
+      result.surfaceCellContext.completedPatches.size(),
+      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)
+      << "every component-produced completion patch in this fixture enters "
+         "aggregation without the final-size boundary identity cache";
 
   const auto row0 = directional::authority::SourceFaceId::from_index(
       0, authority.face_count());
@@ -5384,10 +5381,28 @@ TEST(SurfaceCellAuthorityContractCutover,
               patch, static_cast<int>(row)),
           patch.vertexLineage[row].stitchIdentity);
     }
-    for (const auto &identity : patch.boundaryNodeIdentities) {
+    ASSERT_EQ(patch.boundaryVertices.size(),
+              patch.boundaryNodeIdentities.size());
+    for (std::size_t boundary = 0; boundary < patch.boundaryVertices.size();
+         ++boundary) {
+      const int localVertex = patch.boundaryVertices[boundary];
+      const auto lineage = std::find_if(
+          patch.vertexLineage.begin(), patch.vertexLineage.end(),
+          [localVertex](const auto &candidate) {
+            return candidate.localVertex == localVertex;
+          });
+      ASSERT_NE(patch.vertexLineage.end(), lineage);
+      const auto &identity = patch.boundaryNodeIdentities[boundary];
+      ASSERT_TRUE(identity.valid);
+      EXPECT_EQ(lineage->stitchIdentity.canonical, identity);
       EXPECT_NE((std::vector<std::int64_t>{staleToken}), identity.values);
     }
   }
+  EXPECT_EQ(
+      0U,
+      result.diagnostics.surfaceCellAggregateIdentityBoundaryCacheRebuildCount)
+      << "the stale-token fixture preserves cache cardinality, so canonical "
+         "refresh must not be misreported as a cardinality rebuild";
 }
 
 TEST(SurfaceCellAuthorityContractCutover,
@@ -5535,6 +5550,7 @@ TEST(SurfaceCellAuthorityContractCutover,
   options.surfaceCells.allowSourceGridRecovery = false;
   options.surfaceCells.featureMap.userHardEdges.insert({4, 6});
   options.surfaceCells.featureMap.userSoftEdges.insert({6, 7});
+  options.surfaceCells.featureMap.userSoftEdges.insert({0, 4});
   options.parallelizeComponents = true;
   options.maxComponentThreads = 2;
   options.lengthRatio = 0.2;
@@ -5585,7 +5601,68 @@ TEST(SurfaceCellAuthorityContractCutover,
   EXPECT_FALSE(firstComponentSawForeignSoft);
   EXPECT_TRUE(secondComponentSawOwnedHard);
   EXPECT_TRUE(secondComponentSawOwnedSoft);
-  (void)result;
+  EXPECT_EQ(1U,
+            result.diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount);
+  EXPECT_EQ(1U,
+            result.diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount);
+  EXPECT_EQ(0U,
+            result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);
+  EXPECT_EQ(2U,
+            result.diagnostics.surfaceCellUserSoftFeatureEdgeRequestedCount);
+  EXPECT_EQ(1U,
+            result.diagnostics.surfaceCellUserSoftFeatureEdgeRemappedCount);
+  EXPECT_EQ(1U,
+            result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);
+  EXPECT_EQ(result.diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount,
+            result.diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount +
+                result.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);
+  EXPECT_EQ(result.diagnostics.surfaceCellUserSoftFeatureEdgeRequestedCount,
+            result.diagnostics.surfaceCellUserSoftFeatureEdgeRemappedCount +
+                result.diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount);
+  EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge,
+            result.diagnostics.surfaceCellFeatureOptionFirstIssue);
+  EXPECT_EQ((std::array<int, 2>{{0, 4}}),
+            result.diagnostics.surfaceCellFirstUnassignedFeatureEdge);
+}
+
+TEST(SurfaceCellAuthorityContractCutover,
+     UnassignedUserHardFeatureEdgeFailsClosedBeforeComponentExecution) {
+  const directional::TriMesh mesh = make_disconnected_square_pair_mesh();
+  const auto crossField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          mesh, constant_xy_raw_field(mesh.F.rows()));
+  directional::pipeline::RemeshOptions options;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.featureMap.userHardEdges.insert({0, 4});
+  options.parallelizeComponents = true;
+  options.maxComponentThreads = 2;
+  options.lengthRatio = 0.2;
+
+  const auto rejected =
+      directional::pipeline::remesh_surface_cell_components_from_cross_field(
+          mesh.V, mesh.F, crossField, options);
+
+  EXPECT_FALSE(rejected.success);
+  EXPECT_EQ("component-feature-remap",
+            rejected.diagnostics.terminalFailureStage);
+  EXPECT_EQ("UnassignedUserHardFeatureEdge",
+            rejected.diagnostics.surfaceCellFirstInvalidProducerReason);
+  EXPECT_EQ(directional::SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge,
+            rejected.diagnostics.surfaceCellFeatureOptionFirstIssue);
+  EXPECT_EQ((std::array<int, 2>{{0, 4}}),
+            rejected.diagnostics.surfaceCellFirstUnassignedFeatureEdge);
+  EXPECT_EQ(1U,
+            rejected.diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount);
+  EXPECT_EQ(0U,
+            rejected.diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount);
+  EXPECT_EQ(1U,
+            rejected.diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount);
+  EXPECT_EQ(0, rejected.vertices.rows());
+  EXPECT_FALSE(rejected.surfaceCellContext.sourceTopologyRegions.has_value());
 }
 
 TEST(SurfaceCellAuthorityContractCutover,

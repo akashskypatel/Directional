@@ -8559,35 +8559,144 @@ geometry::SurfacePoint remap_component_surface_point(
   return point;
 }
 
-void remap_component_surface_cell_feature_options(
-    const geometry::FaceComponent &component, RemeshOptions &options) {
-  std::map<int, int> localVertexByOriginal;
-  for (std::size_t localVertex = 0;
-       localVertex < component.originalVertices.size(); ++localVertex) {
-    localVertexByOriginal.emplace(
-        component.originalVertices[localVertex],
-        static_cast<int>(localVertex));
+struct ComponentFeatureOptionRemapPlan {
+  std::vector<std::set<std::pair<int, int>>> hardEdgesByComponent;
+  std::vector<std::set<std::pair<int, int>>> softEdgesByComponent;
+  std::size_t hardRequested = 0U;
+  std::size_t hardRemapped = 0U;
+  std::size_t hardUnassigned = 0U;
+  std::size_t softRequested = 0U;
+  std::size_t softRemapped = 0U;
+  std::size_t softUnassigned = 0U;
+  std::pair<int, int> firstUnassignedHard{-1, -1};
+  std::pair<int, int> firstUnassignedSoft{-1, -1};
+};
+
+ComponentFeatureOptionRemapPlan make_component_feature_option_remap_plan(
+    const std::vector<geometry::FaceComponent> &components,
+    const std::set<std::pair<int, int>> &globalHardEdges,
+    const std::set<std::pair<int, int>> &globalSoftEdges) {
+  ComponentFeatureOptionRemapPlan plan;
+  plan.hardEdgesByComponent.resize(components.size());
+  plan.softEdgesByComponent.resize(components.size());
+
+  std::vector<std::map<int, int>> localVertexByOriginal(components.size());
+  std::vector<std::set<std::pair<int, int>>> localSourceEdges(components.size());
+  for (std::size_t componentIndex = 0; componentIndex < components.size();
+       ++componentIndex) {
+    const geometry::FaceComponent &component = components[componentIndex];
+    for (std::size_t localVertex = 0;
+         localVertex < component.originalVertices.size(); ++localVertex) {
+      localVertexByOriginal[componentIndex].emplace(
+          component.originalVertices[localVertex],
+          static_cast<int>(localVertex));
+    }
+    for (int face = 0; face < component.faces.rows(); ++face) {
+      for (int corner = 0; corner < component.faces.cols(); ++corner) {
+        const int first = component.faces(face, corner);
+        const int second =
+            component.faces(face, (corner + 1) % component.faces.cols());
+        localSourceEdges[componentIndex].emplace(
+            std::min(first, second), std::max(first, second));
+      }
+    }
   }
 
-  const auto remapEdges = [&](const std::set<std::pair<int, int>> &globalEdges) {
-    std::set<std::pair<int, int>> localEdges;
-    for (const auto &[globalFirst, globalSecond] : globalEdges) {
-      const auto first = localVertexByOriginal.find(globalFirst);
-      const auto second = localVertexByOriginal.find(globalSecond);
-      if (first == localVertexByOriginal.end() ||
-          second == localVertexByOriginal.end()) {
+  const auto remapEdges =
+      [&](const std::set<std::pair<int, int>> &globalEdges,
+          std::vector<std::set<std::pair<int, int>>> &edgesByComponent,
+          std::size_t &requested, std::size_t &remapped,
+          std::size_t &unassigned, std::pair<int, int> &firstUnassigned) {
+    std::set<std::pair<int, int>> canonicalRequests;
+    for (const auto &[first, second] : globalEdges) {
+      canonicalRequests.emplace(std::min(first, second),
+                                std::max(first, second));
+    }
+    requested = canonicalRequests.size();
+    for (const auto &[globalFirst, globalSecond] : canonicalRequests) {
+      std::size_t owner = std::numeric_limits<std::size_t>::max();
+      std::pair<int, int> localEdge{-1, -1};
+      bool ambiguous = false;
+      for (std::size_t componentIndex = 0; componentIndex < components.size();
+           ++componentIndex) {
+        const auto first =
+            localVertexByOriginal[componentIndex].find(globalFirst);
+        const auto second =
+            localVertexByOriginal[componentIndex].find(globalSecond);
+        if (first == localVertexByOriginal[componentIndex].end() ||
+            second == localVertexByOriginal[componentIndex].end()) {
+          continue;
+        }
+        const std::pair<int, int> candidate{
+            std::min(first->second, second->second),
+            std::max(first->second, second->second)};
+        if (localSourceEdges[componentIndex].find(candidate) ==
+            localSourceEdges[componentIndex].end()) {
+          continue;
+        }
+        if (owner != std::numeric_limits<std::size_t>::max()) {
+          ambiguous = true;
+          break;
+        }
+        owner = componentIndex;
+        localEdge = candidate;
+      }
+      if (ambiguous || owner == std::numeric_limits<std::size_t>::max()) {
+        ++unassigned;
+        if (firstUnassigned.first < 0) {
+          firstUnassigned = {globalFirst, globalSecond};
+        }
         continue;
       }
-      localEdges.emplace(std::min(first->second, second->second),
-                         std::max(first->second, second->second));
+      edgesByComponent[owner].insert(localEdge);
+      ++remapped;
     }
-    return localEdges;
   };
 
+  remapEdges(globalHardEdges, plan.hardEdgesByComponent, plan.hardRequested,
+             plan.hardRemapped, plan.hardUnassigned,
+             plan.firstUnassignedHard);
+  remapEdges(globalSoftEdges, plan.softEdgesByComponent, plan.softRequested,
+             plan.softRemapped, plan.softUnassigned,
+             plan.firstUnassignedSoft);
+  return plan;
+}
+
+void apply_component_feature_option_remap(
+    const ComponentFeatureOptionRemapPlan &plan,
+    const std::size_t componentIndex, RemeshOptions &options) {
   options.surfaceCells.featureMap.userHardEdges =
-      remapEdges(options.surfaceCells.featureMap.userHardEdges);
+      plan.hardEdgesByComponent[componentIndex];
   options.surfaceCells.featureMap.userSoftEdges =
-      remapEdges(options.surfaceCells.featureMap.userSoftEdges);
+      plan.softEdgesByComponent[componentIndex];
+}
+
+void publish_component_feature_option_remap_diagnostics(
+    RemeshDiagnostics &diagnostics,
+    const ComponentFeatureOptionRemapPlan &plan) {
+  diagnostics.surfaceCellUserHardFeatureEdgeRequestedCount =
+      plan.hardRequested;
+  diagnostics.surfaceCellUserHardFeatureEdgeRemappedCount =
+      plan.hardRemapped;
+  diagnostics.surfaceCellUserHardFeatureEdgeUnassignedCount =
+      plan.hardUnassigned;
+  diagnostics.surfaceCellUserSoftFeatureEdgeRequestedCount =
+      plan.softRequested;
+  diagnostics.surfaceCellUserSoftFeatureEdgeRemappedCount =
+      plan.softRemapped;
+  diagnostics.surfaceCellUserSoftFeatureEdgeUnassignedCount =
+      plan.softUnassigned;
+  if (plan.hardUnassigned > 0U) {
+    diagnostics.surfaceCellFeatureOptionFirstIssue =
+        SurfaceCellFeatureOptionRemapIssue::UnassignedHardEdge;
+    diagnostics.surfaceCellFirstUnassignedFeatureEdge = {
+        plan.firstUnassignedHard.first, plan.firstUnassignedHard.second};
+  } else if (plan.softUnassigned > 0U) {
+    diagnostics.surfaceCellFeatureOptionFirstIssue =
+        SurfaceCellFeatureOptionRemapIssue::UnassignedSoftEdge;
+    diagnostics.surfaceCellFirstUnassignedFeatureEdge = {
+        plan.firstUnassignedSoft.first, plan.firstUnassignedSoft.second};
+  }
 }
 
 } // namespace directional::pipeline
@@ -10116,6 +10225,40 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
     return result;
   }
 
+  const ComponentFeatureOptionRemapPlan featureOptionRemap =
+      make_component_feature_option_remap_plan(
+          components, options.surfaceCells.featureMap.userHardEdges,
+          options.surfaceCells.featureMap.userSoftEdges);
+  if (featureOptionRemap.hardUnassigned > 0U) {
+    RemeshResult rejected;
+    rejected.success = false;
+    rejected.diagnostics.remeshBackend =
+        remesh_backend_name(RemeshBackend::SurfaceCells);
+    rejected.diagnostics.requestedBackend =
+        remesh_backend_name(RemeshBackend::SurfaceCells);
+    rejected.diagnostics.executedBackend =
+        remesh_backend_name(RemeshBackend::SurfaceCells);
+    rejected.diagnostics.surfaceCellFallbackPolicy =
+        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+    rejected.diagnostics.componentSplitSeconds = splitSeconds;
+    rejected.diagnostics.componentCount = components.size();
+    publish_component_feature_option_remap_diagnostics(
+        rejected.diagnostics, featureOptionRemap);
+    rejected.diagnostics.terminalFailureCode =
+        surface_cell_failure_code_name(SurfaceCellFailureCode::NotProductionReady);
+    rejected.diagnostics.terminalFailureStage = "component-feature-remap";
+    rejected.diagnostics.surfaceCellFirstInvalidProducerStage =
+        "component-feature-remap";
+    rejected.diagnostics.surfaceCellFirstInvalidProducerReason =
+        "UnassignedUserHardFeatureEdge";
+    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+        featureOptionRemap.firstUnassignedHard.first;
+    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+        featureOptionRemap.firstUnassignedHard.second;
+    set_overall_pipeline_time(rejected, pipelineStart);
+    return rejected;
+  }
+
   const unsigned int hardwareThreads =
       std::max(1U, std::thread::hardware_concurrency());
   const std::size_t requestedThreads =
@@ -10241,8 +10384,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
       componentOptions.progress = nullptr;
       componentOptions.mesherDataCallback = nullptr;
       componentOptions.absoluteTargetLength = absoluteTargetLength;
-      remap_component_surface_cell_feature_options(component,
-                                                   componentOptions);
+      apply_component_feature_option_remap(featureOptionRemap, componentIndex,
+                                           componentOptions);
       if (componentOptions.surfaceCells.injectFailureComponentIndex >= 0 &&
           componentOptions.surfaceCells.injectFailureComponentIndex !=
               static_cast<int>(componentIndex)) {
@@ -10349,6 +10492,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
   merged.diagnostics.componentThreadsRequested = requestedThreads;
   merged.diagnostics.componentThreadsUsed = workerCount;
   merged.diagnostics.componentPeakConcurrentTasks = workerCount;
+  publish_component_feature_option_remap_diagnostics(
+      merged.diagnostics, featureOptionRemap);
 
   std::size_t failedComponent = std::numeric_limits<std::size_t>::max();
   for (std::size_t index = 0; index < components.size(); ++index) {
@@ -11841,6 +11986,37 @@ RemeshResult remesh_components_from_raw_cross_field(
     return result;
   }
 
+  const ComponentFeatureOptionRemapPlan featureOptionRemap =
+      make_component_feature_option_remap_plan(
+          components, options.surfaceCells.featureMap.userHardEdges,
+          options.surfaceCells.featureMap.userSoftEdges);
+  if (featureOptionRemap.hardUnassigned > 0U) {
+    RemeshResult rejected;
+    rejected.success = false;
+    rejected.diagnostics.remeshBackend = remesh_backend_name(options.backend);
+    rejected.diagnostics.requestedBackend = remesh_backend_name(options.backend);
+    rejected.diagnostics.executedBackend = remesh_backend_name(options.backend);
+    rejected.diagnostics.surfaceCellFallbackPolicy =
+        surface_cell_fallback_policy_name(options.surfaceCells.fallbackPolicy);
+    rejected.diagnostics.componentSplitSeconds = splitSeconds;
+    rejected.diagnostics.componentCount = components.size();
+    publish_component_feature_option_remap_diagnostics(
+        rejected.diagnostics, featureOptionRemap);
+    rejected.diagnostics.terminalFailureCode =
+        surface_cell_failure_code_name(SurfaceCellFailureCode::NotProductionReady);
+    rejected.diagnostics.terminalFailureStage = "component-feature-remap";
+    rejected.diagnostics.surfaceCellFirstInvalidProducerStage =
+        "component-feature-remap";
+    rejected.diagnostics.surfaceCellFirstInvalidProducerReason =
+        "UnassignedUserHardFeatureEdge";
+    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeFirst =
+        featureOptionRemap.firstUnassignedHard.first;
+    rejected.diagnostics.surfaceCellFirstInvalidProducerEdgeSecond =
+        featureOptionRemap.firstUnassignedHard.second;
+    set_overall_pipeline_time(rejected, pipelineStart);
+    return rejected;
+  }
+
   const unsigned int hardwareThreads =
       std::max(1U, std::thread::hardware_concurrency());
   const std::size_t requestedThreads =
@@ -11871,8 +12047,8 @@ RemeshResult remesh_components_from_raw_cross_field(
       componentOptions.progress = nullptr;
       componentOptions.mesherDataCallback = nullptr;
       componentOptions.absoluteTargetLength = absoluteTargetLength;
-      remap_component_surface_cell_feature_options(component,
-                                                   componentOptions);
+      apply_component_feature_option_remap(featureOptionRemap, componentIndex,
+                                           componentOptions);
       const fields::CrossFieldResult crossField =
           finalize_surface_cell_raw_cross_field(componentMesh, component.rawField);
       run.result = remesh_surface_cells_from_cross_field_impl(
@@ -11935,6 +12111,8 @@ RemeshResult remesh_components_from_raw_cross_field(
   merged.diagnostics.componentThreadsRequested = requestedThreads;
   merged.diagnostics.componentThreadsUsed = workerCount;
   merged.diagnostics.componentPeakConcurrentTasks = workerCount;
+  publish_component_feature_option_remap_diagnostics(
+      merged.diagnostics, featureOptionRemap);
 
   for (std::size_t index = 0; index < components.size(); ++index) {
     const geometry::FaceComponent &component = components[index];
