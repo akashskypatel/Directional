@@ -33,7 +33,7 @@ Rejected retry-3 candidate:
 
 Retry 3 immutable boundary is clean: package preflight PASS, regenerated static inventory **19 paths / 59 probes / 261 matches / PASS**, non-vacuous discovery, package postflight PASS, no rebuild/source/test/fixture mutation/package repair, `orchestration_failed=0`. Semantic result: **92 unique selected / 86 passed / 6 failed**. R-A remains open.
 
-The branch may contain later documentation-only commits. Exact implementation/runtime authority remains the compile-pinned source above until the next Code + Build turn changes production/test/audit code and creates a new package.
+Post-runtime branch changes are documentation/control-plane only relative to `555109796188b318c788ef5777f622705ee0aa94`; they do not supersede the exact tested implementation authority above. Resolve the current branch head at the start of the next turn rather than hard-coding a documentation head here.
 
 ### Active failure clusters
 
