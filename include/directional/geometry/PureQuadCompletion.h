@@ -17,16 +17,24 @@
 #include <map>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <set>
 #include <string>
+#include <stdexcept>
 #include <tuple>
 #include <utility>
 #include <vector>
 
 #include <Eigen/Dense>
 
+#include <directional/authority/CanonicalRoute.h>
+
 #include <directional/meshing/PatchRegion.h>
 #include <directional/geometry/SurfacePoint.h>
+#include <directional/geometry/SurfacePointSupport.h>
+#include <directional/geometry/SourceTopologyRegions.h>
+#include <directional/geometry/SurfaceCellOwnership.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/validation/MeshValidator.h>
 
 namespace directional::geometry {
@@ -51,6 +59,47 @@ enum class PureQuadPatchRejectReason : int {
   RewriteValenceMismatch = 16,
 };
 
+inline const char *pure_quad_patch_reject_reason_name(
+    const PureQuadPatchRejectReason reason) {
+  switch (reason) {
+  case PureQuadPatchRejectReason::None:
+    return "none";
+  case PureQuadPatchRejectReason::NonDisk:
+    return "non-disk";
+  case PureQuadPatchRejectReason::BoundaryLoopCount:
+    return "boundary-loop-count";
+  case PureQuadPatchRejectReason::SideCountUnsupported:
+    return "side-count-unsupported";
+  case PureQuadPatchRejectReason::InvalidTurn:
+    return "invalid-turn";
+  case PureQuadPatchRejectReason::OddBoundary:
+    return "odd-boundary";
+  case PureQuadPatchRejectReason::HardFeatureCrossing:
+    return "hard-feature-crossing";
+  case PureQuadPatchRejectReason::SideInequality:
+    return "side-inequality";
+  case PureQuadPatchRejectReason::HexParity:
+    return "hex-parity";
+  case PureQuadPatchRejectReason::SingularityMismatch:
+    return "singularity-mismatch";
+  case PureQuadPatchRejectReason::MissingBoundaryData:
+    return "missing-boundary-data";
+  case PureQuadPatchRejectReason::UnsupportedSingularityCompletion:
+    return "unsupported-singularity-completion";
+  case PureQuadPatchRejectReason::SearchLimitExceeded:
+    return "search-limit-exceeded";
+  case PureQuadPatchRejectReason::TopologyValidationFailed:
+    return "topology-validation-failed";
+  case PureQuadPatchRejectReason::RewritePreconditionFailed:
+    return "rewrite-precondition-failed";
+  case PureQuadPatchRejectReason::RewriteFeatureViolation:
+    return "rewrite-feature-violation";
+  case PureQuadPatchRejectReason::RewriteValenceMismatch:
+    return "rewrite-valence-mismatch";
+  }
+  return "unknown";
+}
+
 enum class PureQuadCompletionBackend : int {
   ClosedForm = 0,
   TransitionTemplate = 1,
@@ -60,18 +109,137 @@ enum class PureQuadCompletionBackend : int {
   SourceGridRecovery = 5,
 };
 
+inline const char *pure_quad_completion_backend_name(
+    const PureQuadCompletionBackend backend) {
+  switch (backend) {
+  case PureQuadCompletionBackend::ClosedForm:
+    return "closed-form";
+  case PureQuadCompletionBackend::TransitionTemplate:
+    return "transition-template";
+  case PureQuadCompletionBackend::Pattern:
+    return "pattern";
+  case PureQuadCompletionBackend::BoundedCombinatorial:
+    return "bounded-combinatorial";
+  case PureQuadCompletionBackend::PoleTemplate:
+    return "pole-template";
+  case PureQuadCompletionBackend::SourceGridRecovery:
+    return "source-grid-recovery";
+  }
+  return "unknown";
+}
+
+enum class PureQuadEmbeddingFailureKind : int {
+  None = 0,
+  DuplicateMeshVertex = 1,
+  InvalidQuadCardinality = 2,
+  RepeatedQuadVertex = 3,
+  MissingVertexPosition = 4,
+  NonFinitePosition = 5,
+  DegenerateNormal = 6,
+  ZeroProjectedArea = 7,
+  BowTieIntersection = 8,
+};
+
+inline const char *pure_quad_embedding_failure_name(
+    const PureQuadEmbeddingFailureKind failure) {
+  switch (failure) {
+  case PureQuadEmbeddingFailureKind::None:
+    return "none";
+  case PureQuadEmbeddingFailureKind::DuplicateMeshVertex:
+    return "duplicate-mesh-vertex";
+  case PureQuadEmbeddingFailureKind::InvalidQuadCardinality:
+    return "invalid-quad-cardinality";
+  case PureQuadEmbeddingFailureKind::RepeatedQuadVertex:
+    return "repeated-quad-vertex";
+  case PureQuadEmbeddingFailureKind::MissingVertexPosition:
+    return "missing-vertex-position";
+  case PureQuadEmbeddingFailureKind::NonFinitePosition:
+    return "nonfinite-position";
+  case PureQuadEmbeddingFailureKind::DegenerateNormal:
+    return "degenerate-normal";
+  case PureQuadEmbeddingFailureKind::ZeroProjectedArea:
+    return "zero-projected-area";
+  case PureQuadEmbeddingFailureKind::BowTieIntersection:
+    return "bow-tie-intersection";
+  }
+  return "unknown";
+}
+
+struct PureQuadEmbeddingFailure {
+  bool active = false;
+  PureQuadEmbeddingFailureKind kind = PureQuadEmbeddingFailureKind::None;
+  int sourcePatch = -1;
+  PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
+  int completionVariant = 0;
+  int localQuad = -1;
+  std::array<int, 4> localVertices{{-1, -1, -1, -1}};
+  std::vector<int> sourceFaces;
+};
+
 enum class PureQuadVertexLineageKind : int { SourceTriangle = 0, OrderedFeatureInterval = 1 };
 
 struct PureQuadFeatureIntervalLineage {
-  int railId = -1; int curveId = -1; SurfacePoint start; SurfacePoint end; double parameter = 0.0;
-  [[nodiscard]] bool valid() const { return (railId >= 0 || curveId >= 0) && start.valid() && end.valid() && parameter >= 0.0 && parameter <= 1.0; }
+  std::optional<authority::HardRailId> railId; int curveId = -1; SurfacePoint start; SurfacePoint end; double parameter = 0.0;
+  [[nodiscard]] bool valid() const { return (railId.has_value() || curveId >= 0) && start.valid() && end.valid() && parameter >= 0.0 && parameter <= 1.0; }
 };
+
+enum class PureQuadEquivalenceKind : int {
+  OrdinaryFront = 0,
+  HardRail = 1,
+  PeriodicHolonomy = 2,
+};
+
+/** Exact relation that joined two source-corner occurrences. */
+struct PureQuadEquivalenceProvenance {
+  PureQuadEquivalenceKind kind = PureQuadEquivalenceKind::OrdinaryFront;
+  int firstFrontEdge = -1;
+  int secondFrontEdge = -1;
+  std::optional<authority::PeriodicRelationId> periodicRelation;
+  std::optional<authority::HardRailId> railId;
+  authority::GridAutomorphism action = authority::GridAutomorphism::identity();
+  authority::CanonicalRoute route;
+  std::vector<authority::SourceEdgeTopologyKey> isolationSeams;
+
+  auto operator<=>(const PureQuadEquivalenceProvenance &) const = default;
+};
+
 struct PureQuadVertexLineage {
-  int outputVertex = -1; PureQuadVertexLineageKind kind = PureQuadVertexLineageKind::SourceTriangle; SurfacePoint sourcePoint; PureQuadFeatureIntervalLineage featureInterval;
-  [[nodiscard]] bool valid() const { return outputVertex >= 0 && ((kind == PureQuadVertexLineageKind::SourceTriangle && sourcePoint.valid()) || (kind == PureQuadVertexLineageKind::OrderedFeatureInterval && featureInterval.valid())); }
+  int outputVertex = -1;
+  PureQuadVertexLineageKind kind = PureQuadVertexLineageKind::SourceTriangle;
+  SurfacePoint sourcePoint;
+  PureQuadFeatureIntervalLineage featureInterval;
+  PureQuadStitchIdentity stitchIdentity;
+  // Derived canonical certificate cache for diagnostics/ownership-cycle
+  // comparison. The typed region/sheet/chart/support fields below remain the
+  // source authority; this value is recomputed from their final intersection
+  // at stitch publication and is never a source for reconstructing them.
+  PureQuadStitchIdentity authoritativeIdentity;
+  int sourcePatch = -1;
+  int localVertex = -1;
+  /// Full retained authority for quotient-materialized vertices.
+  std::vector<authority::TopologyRegionId> sourceTopologyRegions;
+  std::vector<SourceProjectionChart> sourceCharts;
+  std::vector<authority::IsolationSheetId> sourceIsolationSheets;
+  std::optional<authority::SourceSupport> sourceSupport;
+  /// Canonical quotient owner when this vertex was materialized from phase-front occurrences.
+  std::optional<authority::QuotientClassId> quotientClass;
+  /// Exact typed source-corner occurrences consumed by quotient materialization.
+  std::vector<authority::OccurrenceId> sourceOccurrences;
+  std::vector<PureQuadEquivalenceProvenance> equivalences;
+  [[nodiscard]] bool valid() const {
+    return outputVertex >= 0 &&
+           ((kind == PureQuadVertexLineageKind::SourceTriangle &&
+             sourcePoint.valid()) ||
+            (kind == PureQuadVertexLineageKind::OrderedFeatureInterval &&
+             featureInterval.valid()));
+  }
 };
 struct PureQuadFaceLineage {
   int outputQuad = -1; int sourcePatch = -1; PureQuadCompletionBackend operation = PureQuadCompletionBackend::ClosedForm; int operationLocalQuad = -1;
+  int completionVariant = 0;
+  bool boundaryOnly = false;
+  std::uint64_t canonicalStitchCycleHash = 0U;
+  std::uint64_t canonicalAuthoritativeCycleHash = 0U;
   [[nodiscard]] bool valid() const { return outputQuad >= 0 && sourcePatch >= 0 && operationLocalQuad >= 0; }
 };
 struct PureQuadOutputLineageValidation { bool valid=false; bool allVerticesMapped=false; bool allQuadsMapped=false; bool solelyPairedSourceTriangleBoundaries=false; std::string failure; };
@@ -96,8 +264,12 @@ enum class TopologyTemplateKind : int {
 struct PureQuadPatch {
   std::vector<int> boundaryVertices;
   std::vector<SurfacePoint> boundaryProvenance;
-  std::vector<int> boundaryRailIds;
+  std::vector<std::optional<authority::HardRailId>> boundaryRailIds;
   std::vector<int> boundaryCurveIds;
+  std::vector<authority::TopologyRegionId> boundaryTopologyRegions;
+  std::vector<SourceProjectionChart> boundaryCharts;
+  std::vector<SurfaceCellCanonicalIdentity> boundaryNodeIdentities;
+  SurfaceCellDomainIdentity domainIdentity;
   std::vector<int> sideEdgeCounts;
   std::vector<int> turns;
   // Source triangles covered by this patch. Completion uses this set to
@@ -121,35 +293,177 @@ struct PureQuadPatchAdmissibility {
 
 struct PureQuadMesh {
   int sourcePatch = -1;
+  SurfaceCellDomainIdentity domainIdentity;
   std::vector<int> vertices;
   Eigen::MatrixXd vertexPositions;
   std::vector<SurfacePoint> vertexProvenance;
   std::vector<std::vector<int>> quads;
   std::vector<int> boundaryVertices;
+  // Exact arrangement-boundary authority indexed with boundaryVertices.
+  // Compact lineage stitch keys are validated against this single owner.
+  std::vector<SurfaceCellCanonicalIdentity> boundaryNodeIdentities;
   std::vector<std::vector<int>> boundaryLoops;
   PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
   bool usesCenterFan = false;
+  // Exact logical-side subdivision signature from the source patch. This is
+  // retained through completion so assembly conflicts can distinguish
+  // different boundary routes that happen to share the same four corners.
+  std::vector<int> sourceSideEdgeCounts;
   std::vector<PureQuadVertexLineage> vertexLineage;
   std::vector<PureQuadFaceLineage> quadLineage;
+};
+
+struct PureQuadCompletionOwnershipRejection {
+  bool active = false;
+  std::string failure;
+  int sourcePatch = -1;
+  int localVertex = -1;
+  bool boundaryVertex = false;
+  PureQuadCompletionBackend backend = PureQuadCompletionBackend::ClosedForm;
+  int completionVariant = 0;
+  int storedFace = -1;
+  Eigen::Vector3d barycentric = Eigen::Vector3d::Zero();
+  std::optional<authority::SourceSupport> sourceSupport;
+  std::vector<authority::SourceFaceId> candidateSupportedFaces;
+  std::vector<int> patchSourceFaces;
 };
 
 struct PureQuadCompletionOptions {
   int sourcePatch = -1;
   int maxBoundaryEdges = 128;
   bool allowBoundedCombinatorialFallback = true;
+  // Selects a deterministic alternative completion template. Variant zero is
+  // the historical template; higher values are used only by global ownership
+  // assignment when a distinct patch would otherwise emit the same face.
+  int completionVariant = 0;
   const Eigen::MatrixXd *sourceVertices = nullptr;
   const Eigen::MatrixXi *sourceFaces = nullptr;
-  const std::vector<int> *sourceFaceComponents = nullptr;
-  const std::vector<int> *sourceFaceSheets = nullptr;
+  const SurfacePointSourceSupportResolver *sourceSupportResolver = nullptr;
+  const SourceTopologyRegions *sourceAuthority = nullptr;
+  const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges = nullptr;
 };
 
-struct PureQuadCompletionResult {
-  bool success = false;
+struct PureQuadCompletionEvidence {
   PureQuadPatchAdmissibility admissibility;
-  PureQuadMesh mesh;
-  PureQuadPatchRejectReason failureReason = PureQuadPatchRejectReason::None;
   int exploredPatterns = 0;
 };
+
+struct PureQuadCompletionFailure {
+  PureQuadPatchRejectReason reason = PureQuadPatchRejectReason::None;
+  PureQuadCompletionOwnershipRejection ownershipRejection;
+  PureQuadEmbeddingFailure embeddingFailure;
+  std::string detail;
+};
+
+class PureQuadCompletionResult : public PureQuadCompletionEvidence {
+public:
+  using Product = PureQuadMesh;
+  using Failure = PureQuadCompletionFailure;
+  using Outcome = ProducerOutcome<Product, Failure>;
+
+  PureQuadCompletionResult() = default;
+  PureQuadCompletionResult(const PureQuadCompletionResult &) = default;
+  PureQuadCompletionResult(PureQuadCompletionResult &&) noexcept = default;
+  PureQuadCompletionResult &operator=(const PureQuadCompletionResult &) = default;
+  PureQuadCompletionResult &operator=(PureQuadCompletionResult &&) noexcept = default;
+
+  [[nodiscard]] static PureQuadCompletionResult produced(
+      PureQuadCompletionEvidence evidence, Product product) {
+    if (product.quads.empty()) {
+      throw std::invalid_argument(
+          "Produced pure-quad completion requires a nonempty mesh.");
+    }
+    return PureQuadCompletionResult(
+        std::move(evidence), Outcome{Produced<Product>{std::move(product)}});
+  }
+
+  [[nodiscard]] static PureQuadCompletionResult rejected(
+      PureQuadCompletionEvidence evidence, Failure failure) {
+    if (failure.reason == PureQuadPatchRejectReason::None) {
+      throw std::invalid_argument(
+          "Rejected pure-quad completion requires a typed failure.");
+    }
+    return PureQuadCompletionResult(
+        std::move(evidence), Outcome{Rejected<Failure>{std::move(failure)}});
+  }
+
+  [[nodiscard]] bool is_produced() const noexcept {
+    return std::holds_alternative<Produced<Product>>(outcome_);
+  }
+  [[nodiscard]] bool is_rejected() const noexcept {
+    return std::holds_alternative<Rejected<Failure>>(outcome_);
+  }
+  [[nodiscard]] bool is_not_applicable() const noexcept {
+    return std::holds_alternative<NotApplicable>(outcome_);
+  }
+  [[nodiscard]] const Product *produced_product() const noexcept {
+    const auto *produced = std::get_if<Produced<Product>>(&outcome_);
+    return produced == nullptr ? nullptr : &produced->product;
+  }
+  [[nodiscard]] Product &product() & {
+    return std::get<Produced<Product>>(outcome_).product;
+  }
+  [[nodiscard]] const Product &product() const & {
+    return std::get<Produced<Product>>(outcome_).product;
+  }
+  [[nodiscard]] Product &&product() && {
+    return std::move(std::get<Produced<Product>>(outcome_).product);
+  }
+  [[nodiscard]] const Failure *rejection() const noexcept {
+    const auto *rejected = std::get_if<Rejected<Failure>>(&outcome_);
+    return rejected == nullptr ? nullptr : &rejected->failure;
+  }
+  [[nodiscard]] const Outcome &outcome() const & noexcept { return outcome_; }
+  [[nodiscard]] Outcome &&outcome() && noexcept { return std::move(outcome_); }
+
+private:
+  PureQuadCompletionResult(PureQuadCompletionEvidence evidence, Outcome outcome)
+      : PureQuadCompletionEvidence(std::move(evidence)),
+        outcome_(std::move(outcome)) {}
+
+  Outcome outcome_{NotApplicable{}};
+};
+
+namespace pure_quad_detail {
+
+/**
+ * Close one retained vertex lineage against exact source authority.
+ *
+ * This is the single region/sheet/chart closure implementation shared by
+ * patch completion and authoritative phase-front completion. The caller
+ * supplies the already-resolved source support so generated patch interiors
+ * can retain their deliberate face-interior support semantics.
+ */
+bool close_completion_lineage_source_authority(
+    PureQuadVertexLineage &lineage,
+    const SurfacePointSourceSupport &support,
+    const Eigen::MatrixXi *sourceFaces,
+    const SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
+    std::string &failure);
+
+/**
+ * Validate and close a materialized authoritative phase-front mesh before it
+ * may be published as a successful completion result. This adapter performs
+ * only mesh/support checks and delegates chart closure to
+ * close_completion_lineage_source_authority().
+ */
+bool validate_materialized_completion_domain_ownership(
+    PureQuadMesh &mesh, const Eigen::MatrixXi &sourceFaces,
+    const SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges,
+    std::string &failure);
+
+bool validate_completion_domain_ownership(
+    const PureQuadPatch &patch, PureQuadMesh &mesh,
+    int completionVariant,
+    const SurfacePointSourceSupportResolver *sourceSupportResolver,
+    const Eigen::MatrixXi *sourceFaces,
+    const SourceTopologyRegions *sourceAuthority, std::string &failure,
+    PureQuadCompletionOwnershipRejection *ownershipRejection,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges);
+
+} // namespace pure_quad_detail
 
 struct PureQuadAssemblyResult {
   bool success = false;
@@ -158,6 +472,15 @@ struct PureQuadAssemblyResult {
   int connectedComponents = 0;
   int boundaryLoopCount = 0;
   int eulerCharacteristic = 0;
+  SurfaceCellOwnershipConflict ownershipConflict;
+  std::vector<SurfaceCellOwnershipConflict> ownershipConflicts;
+  // Deterministic capacity-based estimates of the transient stitching
+  // workspace. These exclude allocator bookkeeping but expose the dominant
+  // ownership registry and deferred-output payloads that are otherwise gone by
+  // the time pipeline-level memory diagnostics are recorded.
+  std::uint64_t estimatedOwnershipRegistryOwnedBytes = 0U;
+  std::uint64_t estimatedDeferredOutputOwnedBytes = 0U;
+  std::uint64_t estimatedWorkspaceOwnedBytes = 0U;
   std::string failure;
 };
 
@@ -296,8 +619,7 @@ SurfacePoint project_generated_point(
     const Eigen::Vector3d &target, const std::vector<SurfacePoint> &anchors,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets);
+    const SourceTopologyRegions *sourceAuthority);
 
 void initialize_boundary_embedding(const PureQuadPatch &patch,
                                           PureQuadMesh &mesh);
@@ -306,10 +628,9 @@ int append_embedded_vertex(
     PureQuadMesh &mesh, int &nextInterior,
     const Eigen::Vector3d &targetPosition,
     const std::vector<SurfacePoint> &anchors,
-    const SurfaceProjectionBvh *projection = nullptr,
-    const std::vector<unsigned char> *allowedFaces = nullptr,
-    const std::vector<int> *faceComponents = nullptr,
-    const std::vector<int> *faceSheets = nullptr);
+    const SurfaceProjectionBvh *projection,
+    const std::vector<unsigned char> *allowedFaces,
+    const SourceTopologyRegions *sourceAuthority);
 
 bool fill_positions(PureQuadMesh &mesh);
 
@@ -330,6 +651,23 @@ std::set<std::pair<int, int>> boundary_edges(
 
 bool quads_are_locally_valid(const std::vector<std::vector<int>> &quads);
 
+/**
+ * Derive the canonical strong authority identity from the lineage's published
+ * stitch key and complete typed region/sheet/chart/support authority.
+ *
+ * This is intentionally a one-way derivation.  The compact identity must not
+ * become an alternate source of region, sheet, chart, or support authority.
+ */
+/** Rebuild the compact stitch key from authoritative patch structure and
+ * final typed lineage authority. Stored stitch-kind/cache values are ignored. */
+PureQuadStitchIdentity canonical_lineage_stitch_identity(
+    const PureQuadMesh &patch, int localRow);
+
+PureQuadStitchIdentity canonical_authoritative_identity(
+    const PureQuadVertexLineage &lineage, const Eigen::MatrixXi &sourceFaces,
+    const SourceTopologyRegions &sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges);
+
 } // namespace pure_quad_detail
 
 PureQuadPatchAdmissibility
@@ -343,8 +681,7 @@ bool complete_rectangular_grid(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets);
+    const SourceTopologyRegions *sourceAuthority);
 
 bool complete_six_vertex_transition(const PureQuadPatch &patch,
                                            PureQuadMesh &mesh);
@@ -356,8 +693,7 @@ bool complete_singularity_pole(
     const PureQuadPatch &patch, PureQuadMesh &mesh,
     const SurfaceProjectionBvh *projection,
     const std::vector<unsigned char> *allowedFaces,
-    const std::vector<int> *faceComponents,
-    const std::vector<int> *faceSheets);
+    const SourceTopologyRegions *sourceAuthority);
 
 bool complete_pattern(const PureQuadPatch &patch, PureQuadMesh &mesh);
 
@@ -372,7 +708,10 @@ PureQuadCompletionResult complete_pure_quad_patch(
 
 PureQuadAssemblyResult stitch_pure_quad_patches(
     const std::vector<PureQuadMesh> &patches,
-    const double positionTolerance = 1.0e-9);
+    const double positionTolerance,
+    const Eigen::MatrixXi *sourceFaces,
+    const SourceTopologyRegions *sourceAuthority,
+    const std::set<authority::SourceEdgeTopologyKey> *sourceHardFeatureEdges);
 
 EndpointResolutionResult resolve_completion_endpoints(
     std::vector<CompletionEndpoint> endpoints);

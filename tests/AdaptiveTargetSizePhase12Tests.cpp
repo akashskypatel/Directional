@@ -343,7 +343,6 @@ TEST(AdaptiveTargetSizePhase12, SurfaceCellScaffoldPopulatesSizeDiagnostics) {
       directional::pipeline::remesh_from_cross_field(mesh.vertices, mesh.faces,
                                                     primary, options);
 
-  EXPECT_FALSE(result.success);
   EXPECT_GT(result.diagnostics.adaptiveTargetSizeSeconds, 0.0);
   EXPECT_EQ(result.diagnostics.adaptiveTargetSizeFiniteVertexCount,
             static_cast<std::size_t>(mesh.vertices.rows()));

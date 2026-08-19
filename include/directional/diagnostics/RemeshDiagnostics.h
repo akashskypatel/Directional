@@ -10,6 +10,7 @@
 #ifndef DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 #define DIRECTIONAL_DIAGNOSTICS_REMESH_DIAGNOSTICS_H
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -40,6 +41,7 @@ struct ComponentRemeshDiagnostics {
 enum class SurfaceCellOutputOrigin {
   None,
   CompletedSurfaceCells,
+  SourceGridRecovery,
   LegacyFallback,
   InputMeshFallback,
   Mixed
@@ -56,6 +58,12 @@ enum class SurfaceCellConsumptionKind {
   Discontinuous
 };
 
+enum class SurfaceCellFeatureOptionRemapIssue {
+  None,
+  UnassignedHardEdge,
+  UnassignedSoftEdge
+};
+
 const char *surface_cell_consumption_kind_name(
     const SurfaceCellConsumptionKind kind);
 
@@ -63,6 +71,28 @@ struct SurfaceCellObjectIdentity {
   std::string type;
   std::uint64_t structuralHash = 0U;
   std::size_t elementCount = 0;
+};
+
+struct SurfaceCellMemoryOwnershipEvent {
+  std::string stage;
+  std::string action;
+  std::uint64_t logicalPayloadBytes = 0U;
+  std::uint64_t retainedCapacityBytes = 0U;
+  std::uint64_t simultaneousOwnedBytes = 0U;
+};
+
+struct SurfaceCellPeriodicHolonomyDiagnostics {
+  int sourceComponent = -1;
+  int sourceTopologyRegion = -1;
+  int sourceSheet = -1;
+  std::vector<int> sourceIsolationSheets;
+  int quarterTurnRotation = 0;
+  int translationU = 0;
+  int translationV = 0;
+  std::vector<int> routeTransitionIndices;
+  std::vector<std::uint64_t> routeTopologyKeys;
+  std::vector<int> cutSourceEdges;
+  std::vector<std::uint64_t> cutSourceTopology;
 };
 
 struct SurfaceCellStageLineage {
@@ -114,6 +144,31 @@ struct RemeshDiagnostics {
   double surfaceCellCompletionSeconds = 0.0;
   double surfaceCellOptimizationSeconds = 0.0;
   double surfaceCellValidationSeconds = 0.0;
+  std::uint64_t surfaceCellTracingCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellTracingPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellFlowRepCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellFlowRepPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellArrangementCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellArrangementPeakOwnedBytes = 0U;
+  std::uint64_t surfaceCellSimplificationCurrentOwnedBytes = 0U;
+  std::uint64_t surfaceCellSimplificationPeakOwnedBytes = 0U;
+  std::size_t surfaceCellMaxSimultaneousLiveLargeStructures = 0;
+  bool surfaceCellTraceStorageReleasedAfterFlowRep = false;
+  bool surfaceCellFlowRepSelectionStorageReleasedAfterSelection = false;
+  bool surfaceCellEmbeddedArrangementStorageReleasedAfterArrangement = false;
+  std::uint64_t surfaceCellTracingLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellTracingRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellFlowRepLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellFlowRepRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellArrangementLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellArrangementRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellSimplificationLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellSimplificationRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellCompletionLogicalPayloadBytes = 0U;
+  std::uint64_t surfaceCellCompletionRetainedCapacityBytes = 0U;
+  std::uint64_t surfaceCellEstimatedPeakSimultaneousOwnedBytes = 0U;
+  std::vector<SurfaceCellMemoryOwnershipEvent>
+      surfaceCellMemoryOwnershipTimeline;
 
   std::size_t surfaceCellValidationFailures = 0;
   std::size_t surfaceCellProvenanceVertexCount = 0;
@@ -124,6 +179,120 @@ struct RemeshDiagnostics {
   std::size_t surfaceCellArrangementCellCount = 0;
   std::size_t surfaceCellSimplifiedCellCount = 0;
   std::size_t surfaceCellCompletedQuadCount = 0;
+  std::size_t surfaceCellCompletionOwnershipRepairAttempts = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralRepairAttempts = 0;
+  std::size_t surfaceCellCompletionOwnershipInsertedBoundaryVertices = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralCandidateBudget = 0;
+  std::size_t surfaceCellCompletionOwnershipStructuralCandidatesConsumed = 0;
+  std::size_t surfaceCellCompletionOwnershipVisitedStateCount = 0;
+  std::size_t surfaceCellCompletionOwnershipFullRecomputationPasses = 0;
+  std::size_t surfaceCellCompletionOwnershipIncrementalRecomputationPasses = 0;
+  std::size_t surfaceCellCompletionOwnershipPreConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipPostConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipRetainedConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipRemovedConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipIntroducedConflictCount = 0;
+  std::size_t surfaceCellCompletionOwnershipConflictComponentCount = 0;
+  std::size_t surfaceCellCompletionOwnershipIndependentComponentCount = 0;
+  std::size_t surfaceCellCompletionOwnershipReusedPatchCompletions = 0;
+  std::size_t surfaceCellCompletionOwnershipRecomputedPatchCompletions = 0;
+  std::uint64_t surfaceCellCompletionOwnershipPreConflictInventoryHash = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipPostConflictInventoryHash = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipConflictFrontierOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipProductCacheOwnedBytes = 0U;
+  std::size_t surfaceCellCompletionOwnershipCurrentLiveCandidateComplexes = 0;
+  std::size_t surfaceCellCompletionOwnershipPeakLiveCandidateComplexes = 0;
+  int surfaceCellCompletionOwnershipLastCandidateHalfedge = -1;
+  std::vector<int> surfaceCellCompletionOwnershipLastCandidateHalfedges;
+  std::vector<int> surfaceCellCompletionOwnershipLastAffectedPatches;
+  std::size_t surfaceCellCompletionOwnershipRouteCandidateCount = 0;
+  std::uint64_t surfaceCellCompletionOwnershipRollbackOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCandidateOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipDescriptorOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCompletedPatchOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipAssemblyOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipCurrentStructuralOwnedBytes = 0U;
+  std::uint64_t surfaceCellCompletionOwnershipPeakStructuralOwnedBytes = 0U;
+  std::string surfaceCellCompletionOwnershipStructuralExhaustionReason =
+      "none";
+  bool surfaceCellCompletionParityScopeFailureAvailable = false;
+  int surfaceCellCompletionParityOriginalCell = -1;
+  int surfaceCellCompletionParityReplacementCell = -1;
+  int surfaceCellCompletionParityHalfedge = -1;
+  int surfaceCellCompletionParityTwin = -1;
+  int surfaceCellCompletionParitySelectedComponent = -1;
+  int surfaceCellCompletionParitySelectedSheet = -1;
+  std::vector<int> surfaceCellCompletionParityAvailableComponents;
+  std::vector<int> surfaceCellCompletionParityAvailableSheets;
+  std::string surfaceCellCompletionParityMutationPhase;
+  std::string surfaceCellAuthoritativeProducerDisposition;
+  bool surfaceCellUniformPhaseFrontProducerDeclined = false;
+  bool surfaceCellPeriodicPhaseFrontProducerDeclined = false;
+  bool surfaceCellBoundedDiskPhaseFrontProducerDeclined = false;
+  std::size_t surfaceCellTopologyRegionCount = 0U;
+  std::size_t surfaceCellInternalIsolationSeamCount = 0U;
+  std::size_t surfaceCellConsumedTopologyRegionCount = 0U;
+  std::size_t surfaceCellConsumedInternalIsolationSeamCount = 0U;
+  std::size_t surfaceCellConsumedPeriodicHolonomyCount = 0U;
+  int surfaceCellMaterializedConnectedComponentCount = 0;
+  int surfaceCellMaterializedBoundaryLoopCount = 0;
+  int surfaceCellMaterializedEulerCharacteristic = 0;
+  std::vector<std::uint64_t> surfaceCellTopologyRegionHashes;
+  std::vector<int> surfaceCellTopologyRegionEulerCharacteristics;
+  std::vector<int> surfaceCellTopologyRegionBoundaryLoopCounts;
+  std::vector<std::size_t> surfaceCellTopologyRegionIsolationSheetCounts;
+  std::size_t surfaceCellBoundedDiskBoundaryPhaseCount = 0U;
+  std::size_t surfaceCellBoundedDiskBoundaryRunCount = 0U;
+  std::size_t surfaceCellPolygonalBoundedDiskBoundaryPhaseCount = 0U;
+  std::size_t surfaceCellBoundedDiskConstructedChartCount = 0U;
+  std::vector<std::uint64_t> surfaceCellBoundedDiskBoundaryPhaseHashes;
+  std::vector<SurfaceCellPeriodicHolonomyDiagnostics>
+      surfaceCellPeriodicHolonomies;
+  bool surfaceCellPeriodicHolonomyAvailable = false;
+  int surfaceCellPeriodicHolonomyQuarterTurnRotation = 0;
+  int surfaceCellPeriodicHolonomyTranslationU = 0;
+  int surfaceCellPeriodicHolonomyTranslationV = 0;
+  std::size_t surfaceCellPeriodicHolonomyRouteEdgeCount = 0U;
+  std::size_t surfaceCellPeriodicCutEdgeCount = 0U;
+  std::string surfaceCellFirstInvalidProducerStage;
+  std::string surfaceCellFirstInvalidProducerReason;
+  std::string surfaceCellFirstInvalidProducerValidationIssue;
+  std::vector<std::string> surfaceCellFinalSourceAuthorityValidationIssues;
+  int surfaceCellFirstInvalidProducerCell = -1;
+  int surfaceCellFirstInvalidProducerHalfedge = -1;
+  int surfaceCellFirstInvalidProducerTwin = -1;
+  int surfaceCellFirstInvalidProducerNode = -1;
+  int surfaceCellFirstInvalidProducerFace = -1;
+  int surfaceCellFirstInvalidProducerVertex = -1;
+  int surfaceCellFirstInvalidProducerEdgeFirst = -1;
+  int surfaceCellFirstInvalidProducerEdgeSecond = -1;
+  std::size_t surfaceCellAggregateIdentityBoundaryCacheRebuildCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeRequestedCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeRemappedCount = 0U;
+  std::size_t surfaceCellUserHardFeatureEdgeUnassignedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeRequestedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeRemappedCount = 0U;
+  std::size_t surfaceCellUserSoftFeatureEdgeUnassignedCount = 0U;
+  SurfaceCellFeatureOptionRemapIssue surfaceCellFeatureOptionFirstIssue =
+      SurfaceCellFeatureOptionRemapIssue::None;
+  std::array<int, 2> surfaceCellFirstUnassignedFeatureEdge{{-1, -1}};
+  bool surfaceCellCompletionOwnershipRejectionAvailable = false;
+  std::string surfaceCellCompletionOwnershipFailure;
+  int surfaceCellCompletionOwnershipSourcePatch = -1;
+  int surfaceCellCompletionOwnershipLocalVertex = -1;
+  bool surfaceCellCompletionOwnershipBoundaryVertex = false;
+  int surfaceCellCompletionOwnershipBackend = -1;
+  int surfaceCellCompletionOwnershipVariant = 0;
+  int surfaceCellCompletionOwnershipStoredFace = -1;
+  std::array<double, 3> surfaceCellCompletionOwnershipBarycentric{{0.0, 0.0,
+                                                                  0.0}};
+  int surfaceCellCompletionOwnershipEntityKind = 0;
+  int surfaceCellCompletionOwnershipSourceVertex = -1;
+  std::array<int, 2> surfaceCellCompletionOwnershipSourceEdge{{-1, -1}};
+  std::vector<int> surfaceCellCompletionOwnershipCandidateFaces;
+  std::vector<int> surfaceCellCompletionOwnershipPatchFaces;
+  int surfaceCellCompletionOwnershipComponent = -1;
+  int surfaceCellCompletionOwnershipSheet = -1;
   std::size_t surfaceCellOptimizationIterationCount = 0;
   bool surfaceCellValidationFailureCountAvailable = false;
   bool surfaceCellProvenanceVertexCountAvailable = false;
@@ -134,6 +303,9 @@ struct RemeshDiagnostics {
   bool surfaceCellArrangementCountAvailable = false;
   bool surfaceCellSimplifiedCountAvailable = false;
   bool surfaceCellCompletedQuadCountAvailable = false;
+  bool surfaceCellCompletionOwnershipRepairAttemptsAvailable = false;
+  bool surfaceCellCompletionOwnershipStructuralRepairAttemptsAvailable = false;
+  bool surfaceCellCompletionOwnershipStructuralLedgerAvailable = false;
   bool surfaceCellOptimizationIterationCountAvailable = false;
   std::vector<std::size_t> faceDegreeHistogram;
 

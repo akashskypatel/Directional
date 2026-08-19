@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <array>
+#include <compare>
 #include <cmath>
 #include <complex>
 #include <cstdint>
@@ -95,28 +96,33 @@ struct SurfaceFeatureCurveInterval {
   int intervalId = -1;
   int order = 0;
   int sourceFace = -1;
-  int component = -1;
-  int sheet = -1;
   double parameterStart = 0.0;
   double parameterEnd = 1.0;
   bool curveClosed = false;
-  int railId = -1;
+  std::optional<authority::HardRailId> railId;
+};
+
+struct SurfaceFeatureSequenceKey {
+  std::optional<authority::HardRailId> rail;
+  int curveId = -1;
+
+  auto operator<=>(const SurfaceFeatureSequenceKey &) const = default;
 };
 
 struct SurfaceOptimizationConstraints {
   Eigen::MatrixXd sourceVertices;
   Eigen::MatrixXi sourceFaces;
-  Eigen::MatrixXd sourcePositions;
   Eigen::MatrixXd sourceNormals;
   Eigen::MatrixXd sourceFieldX;
   Eigen::MatrixXd sourceFieldY;
-  Eigen::VectorXi sourceComponent;
-  std::vector<int> sourceFaceComponent;
-  std::vector<int> sourceFaceSheet;
+  // Complete source authority for all semantic region/component/sheet queries.
+  // The pipeline owns this product for the complete optimizer lifetime.
+  const SourceTopologyRegions *sourceAuthority = nullptr;
   // Authoritative source chart at each output quad center. Vertex provenance
   // is intentionally multi-chart on source vertices and edges, so it cannot
   // by itself select a stable orientation/field chart for the whole quad.
   std::vector<int> outputQuadSourceFaces;
+  std::set<authority::SourceEdgeTopologyKey> sourceHardFeatureEdges;
   bool constrainVerticesToProvenanceEntities = false;
   std::vector<std::vector<int>> sourceVertexFaces;
   std::map<std::pair<int, int>, std::vector<int>> sourceEdgeFaces;
@@ -124,25 +130,24 @@ struct SurfaceOptimizationConstraints {
   std::vector<int> fixedVertices;
   std::vector<int> featureVertices;
   std::vector<int> softFeatureVertices;
-  std::vector<std::pair<Eigen::RowVector3d, Eigen::RowVector3d>> featureIntervals;
   std::vector<SurfaceFeatureCurveInterval> featureCurveIntervals;
   Eigen::VectorXi featureCurveIds;
-  Eigen::VectorXi featureRailIds;
+  std::vector<std::optional<authority::HardRailId>> featureRailIds;
   Eigen::VectorXi featureIntervalIds;
   Eigen::VectorXd featureParameters;
   std::vector<int> orderedFeatureVertices;
   std::vector<SurfacePoint> vertexProvenance;
+  std::vector<validation::SourceVertexChartAuthority> vertexChartAuthority;
   std::set<std::pair<int, int>> authoritativeBoundaryEdges;
   std::vector<int> authoritativeBoundaryLoop;
   std::vector<std::vector<int>> authoritativeBoundaryLoops;
   std::vector<std::vector<int>> authoritativeFeatureRails;
   std::size_t requiredFeatureRailCount = 0;
-  std::vector<int> missingFeatureRailIds;
+  std::vector<authority::HardRailId> missingFeatureRailIds;
   // Distinguishes an explicitly supplied empty authority set from callers
   // that never configured feature-rail authority. An empty authoritative set
   // is still meaningful: it proves that no hard feature rails are expected.
   bool featureRailAuthorityProvided = false;
-  bool requireSourceAuthoritativeValidation = false;
   // Optional output-vertex valence contracts. Boundary targets override the
   // geometric boundary-corner inference used by P21. Required singularity
   // targets are authoritative and must match exactly when supplied.
@@ -282,7 +287,7 @@ struct SurfaceFinalValidationReport {
   // Retained for actionable production diagnostics; aggregate counters alone
   // cannot identify the offending output face, edge, or missing rail.
   std::vector<validation::MeshValidationIssue> strictValidationIssues;
-  std::vector<int> missingFeatureRailIds;
+  std::vector<authority::HardRailId> missingFeatureRailIds;
 };
 
 struct SurfaceOptimizationOverlay {
@@ -325,10 +330,43 @@ Eigen::RowVector3d project_to_interval(const Eigen::RowVector3d &p,
                                               const Eigen::RowVector3d &b,
                                               double *parameter = nullptr);
 
-Eigen::RowVector3d project_to_source(const Eigen::RowVector3d &p,
-                                            const Eigen::MatrixXd &source,
-                                            int *component,
-                                            const Eigen::VectorXi &components);
+struct SourceProjectionScope {
+  std::optional<authority::SourceComponentId> component;
+  std::optional<authority::IsolationSheetId> sheet;
+
+  [[nodiscard]] bool constrained() const noexcept {
+    return component.has_value() || sheet.has_value();
+  }
+
+  auto operator<=>(const SourceProjectionScope &) const = default;
+};
+
+[[nodiscard]] inline std::optional<SourceProjectionScope> source_face_scope(
+    const SurfaceOptimizationConstraints &constraints, const int face) {
+  if (constraints.sourceAuthority == nullptr || face < 0 ||
+      face >= constraints.sourceFaces.rows() ||
+      !constraints.sourceAuthority->matches_source_faces(
+          constraints.sourceFaces,
+          static_cast<std::size_t>(constraints.sourceVertices.rows()))) {
+    return std::nullopt;
+  }
+  const auto row = authority::SourceFaceId::from_index(
+      face, constraints.sourceAuthority->face_count());
+  if (!row) {
+    return std::nullopt;
+  }
+  return SourceProjectionScope{
+      constraints.sourceAuthority->component_for_row(row.value()),
+      constraints.sourceAuthority->sheet_for_row(row.value())};
+}
+
+[[nodiscard]] inline bool source_scope_matches(
+    const SourceProjectionScope &candidate,
+    const SourceProjectionScope &required) noexcept {
+  return (!required.component.has_value() ||
+          candidate.component == required.component) &&
+         (!required.sheet.has_value() || candidate.sheet == required.sheet);
+}
 
 struct SourceProjectionCache {
   explicit SourceProjectionCache(
@@ -343,40 +381,38 @@ struct SourceProjectionCache {
   }
 
   [[nodiscard]] const std::vector<unsigned char> *allowed_faces(
-      const int requiredComponent, const int requiredSheet) {
-    if (!bvh.has_value() ||
-        (requiredComponent < 0 && requiredSheet < 0)) {
+      const SourceProjectionScope &requiredScope) {
+    if (!bvh.has_value() || !requiredScope.constrained()) {
       return nullptr;
     }
-    const std::pair<int, int> key{requiredComponent, requiredSheet};
-    const auto existing = allowedFaceMasks.find(key);
+    const auto existing = allowedFaceMasks.find(requiredScope);
     if (existing != allowedFaceMasks.end()) {
       return &existing->second;
     }
 
     std::vector<unsigned char> mask(
         static_cast<std::size_t>(constraints->sourceFaces.rows()), 1);
-    const bool componentsComplete =
-        constraints->sourceFaceComponent.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows());
-    const bool sheetsComplete =
-        constraints->sourceFaceSheet.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows());
+    const bool authorityComplete =
+        constraints->sourceAuthority != nullptr &&
+        constraints->sourceAuthority->matches_source_faces(
+            constraints->sourceFaces,
+            static_cast<std::size_t>(constraints->sourceVertices.rows()));
     for (int face = 0; face < constraints->sourceFaces.rows(); ++face) {
-      if (requiredComponent >= 0 &&
-          (!componentsComplete ||
-           constraints->sourceFaceComponent[static_cast<std::size_t>(face)] !=
-               requiredComponent)) {
+      const auto row = authority::SourceFaceId::from_index(
+          face, static_cast<std::size_t>(constraints->sourceFaces.rows()));
+      if (!authorityComplete || !row) {
         mask[static_cast<std::size_t>(face)] = 0;
+        continue;
       }
-      if (requiredSheet >= 0 &&
-          (!sheetsComplete ||
-           constraints->sourceFaceSheet[static_cast<std::size_t>(face)] !=
-               requiredSheet)) {
+      const SourceProjectionScope candidate{
+          constraints->sourceAuthority->component_for_row(row.value()),
+          constraints->sourceAuthority->sheet_for_row(row.value())};
+      if (!source_scope_matches(candidate, requiredScope)) {
         mask[static_cast<std::size_t>(face)] = 0;
       }
     }
-    return &allowedFaceMasks.emplace(key, std::move(mask)).first->second;
+    return &allowedFaceMasks.emplace(requiredScope, std::move(mask))
+                .first->second;
   }
 
   [[nodiscard]] const std::vector<unsigned char> *allowed_faces(
@@ -402,23 +438,16 @@ struct SourceProjectionCache {
                 .first->second;
   }
 
-  [[nodiscard]] SurfacePoint project(const Eigen::RowVector3d &point,
-                                     const int requiredComponent = -1,
-                                     const int requiredSheet = -1) {
+  [[nodiscard]] SurfacePoint project(
+      const Eigen::RowVector3d &point,
+      const std::optional<SourceProjectionScope> &requiredScope = std::nullopt) {
     ++queryCount;
     if (!bvh.has_value()) {
       return {};
     }
     SurfaceProjectionOptions options;
-    options.allowedFaces = allowed_faces(requiredComponent, requiredSheet);
-    if (constraints->sourceFaceComponent.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceComponents = &constraints->sourceFaceComponent;
-    }
-    if (constraints->sourceFaceSheet.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceSheets = &constraints->sourceFaceSheet;
-    }
+    options.allowedFaces =
+        requiredScope.has_value() ? allowed_faces(*requiredScope) : nullptr;
     return bvh->project(point.transpose(), options);
   }
 
@@ -430,20 +459,12 @@ struct SourceProjectionCache {
     }
     SurfaceProjectionOptions options;
     options.allowedFaces = allowed_faces(requiredFaces);
-    if (constraints->sourceFaceComponent.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceComponents = &constraints->sourceFaceComponent;
-    }
-    if (constraints->sourceFaceSheet.size() ==
-        static_cast<std::size_t>(constraints->sourceFaces.rows())) {
-      options.faceSheets = &constraints->sourceFaceSheet;
-    }
     return bvh->project(point.transpose(), options);
   }
 
   const SurfaceOptimizationConstraints *constraints = nullptr;
   std::optional<SurfaceProjectionBvh> bvh;
-  std::map<std::pair<int, int>, std::vector<unsigned char>> allowedFaceMasks;
+  std::map<SourceProjectionScope, std::vector<unsigned char>> allowedFaceMasks;
   std::map<std::vector<int>, std::vector<unsigned char>> exactAllowedFaceMasks;
   std::size_t queryCount = 0;
 };
@@ -454,13 +475,13 @@ Eigen::RowVector3d source_point_position(
 
 SurfacePoint nearest_source_point(
     const Eigen::RowVector3d &p, const SurfaceOptimizationConstraints &constraints,
-    const int requiredComponent = -1, const int requiredSheet = -1,
+    const std::optional<SourceProjectionScope> &requiredScope = std::nullopt,
     SourceProjectionCache *projectionCache = nullptr);
 
 int feature_curve_for_vertex(const SurfaceOptimizationConstraints &constraints,
                                     const int vertex);
 
-int feature_sequence_for_vertex(
+SurfaceFeatureSequenceKey feature_sequence_for_vertex(
     const SurfaceOptimizationConstraints &constraints, const int vertex);
 
 int feature_interval_for_vertex(
@@ -568,8 +589,17 @@ double percentile(std::vector<double> values, const double p);
 double angle_degrees(const Eigen::RowVector3d &a,
                             const Eigen::RowVector3d &b);
 
+struct FaceChartAuthorityView {
+  bool valid = true;
+  std::vector<const validation::SourceVertexChartAuthority *> vertices;
+};
 
-std::pair<int, int> consistent_component_sheet(
+FaceChartAuthorityView quad_chart_authority(
+    const Eigen::MatrixXi &quads, const int face,
+    const SurfaceOptimizationConstraints &constraints,
+    const std::size_t provenanceCount);
+
+std::optional<SourceProjectionScope> consistent_source_scope(
     const Eigen::MatrixXi &quads, const int face,
     const std::vector<SurfacePoint> &provenance,
     const SurfaceOptimizationConstraints *constraints = nullptr);
@@ -588,11 +618,9 @@ std::vector<Eigen::Vector3d> triangle_sample_barycentrics();
 
 struct OutputProjectionCache {
   Eigen::MatrixXi triangles;
-  std::vector<int> faceComponents;
-  std::vector<int> faceSheets;
-  std::vector<std::set<std::pair<int, int>>> faceLabels;
+  std::vector<std::set<SourceProjectionScope>> faceScopes;
   std::optional<SurfaceProjectionBvh> bvh;
-  std::map<std::pair<int, int>, std::vector<unsigned char>> masks;
+  std::map<SourceProjectionScope, std::vector<unsigned char>> masks;
 
   OutputProjectionCache(const Eigen::MatrixXd &vertices,
                          const Eigen::MatrixXi &quads,
@@ -600,21 +628,20 @@ struct OutputProjectionCache {
                          const SurfaceOptimizationConstraints *constraints =
                              nullptr) {
     triangles.resize(2 * quads.rows(), 3);
-    faceComponents.resize(static_cast<std::size_t>(2 * quads.rows()), -1);
-    faceSheets.resize(static_cast<std::size_t>(2 * quads.rows()), -1);
-    faceLabels.resize(static_cast<std::size_t>(2 * quads.rows()));
+    faceScopes.resize(static_cast<std::size_t>(2 * quads.rows()));
     const validation::source_authoritative_detail::SourcePointLabelSupport
         labelSupport(
             constraints != nullptr ? &constraints->sourceFaces : nullptr,
-            constraints != nullptr ? &constraints->sourceFaceComponent : nullptr,
-            constraints != nullptr ? &constraints->sourceFaceSheet : nullptr);
+            constraints != nullptr ? constraints->sourceAuthority : nullptr,
+            constraints != nullptr ? &constraints->sourceHardFeatureEdges
+                                   : nullptr);
     for (int face = 0; face < quads.rows(); ++face) {
       triangles.row(2 * face) << quads(face, 0), quads(face, 1), quads(face, 2);
       triangles.row(2 * face + 1) << quads(face, 0), quads(face, 2), quads(face, 3);
-      const auto [component, sheet] =
-          consistent_component_sheet(quads, face, provenance, constraints);
-      std::set<std::pair<int, int>> labels;
-      if (labelSupport.available()) {
+      const auto fallbackScope =
+          consistent_source_scope(quads, face, provenance, constraints);
+      std::set<SourceProjectionScope> scopes;
+      if (constraints != nullptr && labelSupport.available()) {
         std::vector<const SurfacePoint *> points;
         points.reserve(4);
         for (int corner = 0; corner < 4; ++corner) {
@@ -625,68 +652,65 @@ struct OutputProjectionCache {
           }
           points.push_back(&provenance[static_cast<std::size_t>(vertex)]);
         }
-        labels = labelSupport.chart_labels(
-            labelSupport.compatible_chart_faces(points));
+        const FaceChartAuthorityView authority =
+            quad_chart_authority(quads, face, *constraints,
+                                 provenance.size());
+        if (authority.valid) {
+          const std::vector<int> chartFaces = labelSupport.compatible_chart_faces(
+              points, authority.vertices, &provenance,
+              &constraints->vertexChartAuthority);
+          for (const int sourceFace : chartFaces) {
+            const auto scope = source_face_scope(*constraints, sourceFace);
+            if (scope.has_value()) {
+              scopes.insert(*scope);
+            }
+          }
+        }
       }
-      if (labels.empty() && component >= 0 && sheet >= 0) {
-        labels.insert({component, sheet});
+      if (scopes.empty() && fallbackScope.has_value()) {
+        scopes.insert(*fallbackScope);
       }
-      faceComponents[static_cast<std::size_t>(2 * face)] = component;
-      faceComponents[static_cast<std::size_t>(2 * face + 1)] = component;
-      faceSheets[static_cast<std::size_t>(2 * face)] = sheet;
-      faceSheets[static_cast<std::size_t>(2 * face + 1)] = sheet;
-      faceLabels[static_cast<std::size_t>(2 * face)] = labels;
-      faceLabels[static_cast<std::size_t>(2 * face + 1)] = labels;
+      faceScopes[static_cast<std::size_t>(2 * face)] = scopes;
+      faceScopes[static_cast<std::size_t>(2 * face + 1)] = std::move(scopes);
     }
     if (vertices.rows() > 0 && triangles.rows() > 0) {
       bvh.emplace(vertices, triangles);
     }
   }
 
-  const std::vector<unsigned char> *allowed_faces(const int component,
-                                                   const int sheet) {
-    if (component < 0 && sheet < 0) {
+  const std::vector<unsigned char> *allowed_faces(
+      const SourceProjectionScope &requiredScope) {
+    if (!requiredScope.constrained()) {
       return nullptr;
     }
-    const std::pair<int, int> key{component, sheet};
-    const auto existing = masks.find(key);
+    const auto existing = masks.find(requiredScope);
     if (existing != masks.end()) {
       return &existing->second;
     }
-    std::vector<unsigned char> mask(static_cast<std::size_t>(triangles.rows()), 1);
+    std::vector<unsigned char> mask(
+        static_cast<std::size_t>(triangles.rows()), 1);
     for (int face = 0; face < triangles.rows(); ++face) {
-      const auto &labels = faceLabels[static_cast<std::size_t>(face)];
-      if (!labels.empty()) {
-        const bool supported = std::any_of(
-            labels.begin(), labels.end(), [&](const auto &label) {
-              return (component < 0 || label.first == component) &&
-                     (sheet < 0 || label.second == sheet);
-            });
-        if (!supported) {
-          mask[static_cast<std::size_t>(face)] = 0;
-        }
-      } else {
-        if (component >= 0 &&
-            faceComponents[static_cast<std::size_t>(face)] != component) {
-          mask[static_cast<std::size_t>(face)] = 0;
-        }
-        if (sheet >= 0 && faceSheets[static_cast<std::size_t>(face)] != sheet) {
-          mask[static_cast<std::size_t>(face)] = 0;
-        }
+      const auto &scopes = faceScopes[static_cast<std::size_t>(face)];
+      const bool supported = std::any_of(
+          scopes.begin(), scopes.end(), [&](const SourceProjectionScope &scope) {
+            return source_scope_matches(scope, requiredScope);
+          });
+      if (!supported) {
+        mask[static_cast<std::size_t>(face)] = 0;
       }
     }
-    return &masks.emplace(key, std::move(mask)).first->second;
+    return &masks.emplace(requiredScope, std::move(mask)).first->second;
   }
 
-  SurfacePoint project(const Eigen::RowVector3d &point, const int component,
-                       const int sheet) {
-    if (!bvh.has_value()) {
+  SurfacePoint project(
+      const Eigen::RowVector3d &point,
+      const std::optional<SourceProjectionScope> &requiredScope) {
+    if (!bvh.has_value() || !requiredScope.has_value() ||
+        !requiredScope->constrained()) {
       return {};
     }
     SurfaceProjectionOptions options;
-    options.allowedFaces = allowed_faces(component, sheet);
-    options.faceComponents = &faceComponents;
-    options.faceSheets = &faceSheets;
+    options.allowedFaces = allowed_faces(*requiredScope);
     return bvh->project(point.transpose(), options);
   }
 };
@@ -779,6 +803,9 @@ make_source_authoritative_validator_options(
     const SurfaceOptimizationConstraints &constraints,
     const std::vector<SurfacePoint> &provenance);
 
+bool source_optimization_has_complete_authority(
+    const SurfaceOptimizationConstraints &constraints);
+
 bool source_authoritative_hard_invariants_valid(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
@@ -812,12 +839,28 @@ Eigen::MatrixXd finite_difference_surface_optimization_gradient(
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {});
 
+// Generic/non-SurfaceCells optimizer entry point. Production SurfaceCells
+// publication must use optimize_source_authoritative_surface_mesh().
 SurfaceOptimizationResult optimize_projected_surface_mesh(
     const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationOptions &options = {});
 
+SurfaceOptimizationResult optimize_source_authoritative_surface_mesh(
+    const Eigen::MatrixXd &initialVertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationOptions &options = {});
+
+// Generic/non-SurfaceCells validation entry point. Production SurfaceCells
+// publication must use validate_source_authoritative_final_surface_mesh().
 SurfaceFinalValidationReport validate_final_surface_mesh(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
+    const SurfaceOptimizationConstraints &constraints,
+    const SurfaceOptimizationResult &optimization,
+    const SurfaceOptimizationOptions &options = {},
+    const double optimizerSeconds = 0.0, const double endToEndSeconds = 1.0);
+
+SurfaceFinalValidationReport validate_source_authoritative_final_surface_mesh(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &quads,
     const SurfaceOptimizationConstraints &constraints,
     const SurfaceOptimizationResult &optimization,

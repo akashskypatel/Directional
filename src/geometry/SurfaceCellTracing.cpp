@@ -1,9 +1,32 @@
 #include <directional/geometry/SurfaceCellTracing.h>
+#include <directional/geometry/SourceChartTransitions.h>
+
+#include <directional/authority/CanonicalRoute.h>
+#include <directional/authority/GridAutomorphism.h>
+#include <Eigen/SparseCholesky>
+
+#include <optional>
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-std::uint64_t edge_key(const int a, const int b) {
-  return relief_topology_detail::edge_key(a, b);
+std::size_t source_vertex_extent(const Eigen::MatrixXi &faces) {
+  int maximumVertex = -1;
+  for (int face = 0; face < faces.rows(); ++face) {
+    for (int corner = 0; corner < faces.cols(); ++corner) {
+      maximumVertex = std::max(maximumVertex, faces(face, corner));
+    }
+  }
+  return static_cast<std::size_t>(std::max(0, maximumVertex + 1));
+}
+
+authority::SourceEdgeTopologyKey edge_key(const int a, const int b,
+                                           const std::size_t vertexExtent) {
+  const auto key = authority::SourceEdgeTopologyKey::from_indices(
+      a, b, vertexExtent);
+  if (!key) {
+    throw std::invalid_argument("invalid source-edge topology key");
+  }
+  return key.value();
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -75,13 +98,57 @@ Eigen::RowVector3d project_tangent(const Eigen::RowVector3d &direction,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-std::map<std::uint64_t, std::array<int, 2>>
+std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>>
 edge_faces(const Eigen::MatrixXi &faces) {
-  std::map<std::uint64_t, std::array<int, 2>> result;
+  std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> result;
+  const std::size_t vertexExtent = source_vertex_extent(faces);
   for (int face = 0; face < faces.rows(); ++face) {
     for (int corner = 0; corner < 3; ++corner) {
-      const std::uint64_t key =
-          edge_key(faces(face, corner), faces(face, (corner + 1) % 3));
+      const auto key = edge_key(faces(face, corner),
+                                faces(face, (corner + 1) % 3),
+                                vertexExtent);
+      auto found = result.find(key);
+      if (found == result.end()) {
+        result.emplace(key, std::array<int, 2>{face, -1});
+      } else if (found->second[1] < 0) {
+        found->second[1] = face;
+      }
+    }
+  }
+  return result;
+}
+
+std::optional<int> source_face_row(const authority::SourceFaceId faceId,
+                                   const int faceCount) {
+  if (faceCount <= 0) return std::nullopt;
+  const std::size_t row = faceId.index();
+  if (row >= static_cast<std::size_t>(faceCount)) return std::nullopt;
+  return static_cast<int>(row);
+}
+
+std::optional<authority::SourceFaceId> source_face_id(const int row,
+                                                      const int faceCount) {
+  if (faceCount <= 0) return std::nullopt;
+  const auto id = authority::SourceFaceId::from_index(
+      row, static_cast<std::size_t>(faceCount));
+  return id ? std::optional<authority::SourceFaceId>(id.value()) : std::nullopt;
+}
+
+std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>>
+edge_faces(const Eigen::MatrixXi &faces,
+           const std::vector<authority::SourceFaceId> &activeFaces) {
+  std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> result;
+  const std::size_t vertexExtent = source_vertex_extent(faces);
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) {
+      continue;
+    }
+    const int face = *faceRow;
+    for (int corner = 0; corner < 3; ++corner) {
+      const auto key = edge_key(faces(face, corner),
+                                faces(face, (corner + 1) % 3),
+                                vertexExtent);
       auto found = result.find(key);
       if (found == result.end()) {
         result.emplace(key, std::array<int, 2>{face, -1});
@@ -97,9 +164,11 @@ edge_faces(const Eigen::MatrixXi &faces) {
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-std::map<std::uint64_t, int>
-edge_matching_indices(const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
-  std::map<std::uint64_t, int> indices;
+std::map<authority::SourceEdgeTopologyKey, int>
+edge_matching_indices(
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>>
+        &edgeFaces) {
+  std::map<authority::SourceEdgeTopologyKey, int> indices;
   int index = 0;
   for (const auto &[key, pair] : edgeFaces) {
     if (pair[0] >= 0 && pair[1] >= 0) {
@@ -109,25 +178,676 @@ edge_matching_indices(const std::map<std::uint64_t, std::array<int, 2>> &edgeFac
   return indices;
 }
 
+std::uint64_t isolation_seam_transport_certificate_hash(
+    const SurfaceIsolationSeamTransportCertificate &certificate) {
+  std::uint64_t hash = 1469598103934665603ULL;
+  const auto consume = [&](const std::uint64_t value) {
+    hash ^= value;
+    hash *= 1099511628211ULL;
+  };
+  consume(certificate.region().index());
+  consume(certificate.seam().first().index());
+  consume(certificate.seam().second().index());
+  consume(certificate.transition().index());
+  for (const authority::SourceVertexId vertex :
+       certificate.firstFace().vertices()) {
+    consume(vertex.index());
+  }
+  for (const authority::SourceVertexId vertex :
+       certificate.secondFace().vertices()) {
+    consume(vertex.index());
+  }
+  consume(certificate.firstSheet().index());
+  consume(certificate.secondSheet().index());
+  consume(certificate.forward().value());
+  consume(certificate.reverse().value());
+  return hash;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
+
+
+
+namespace directional::geometry::surface_cell_tracing_detail {
+
+namespace {
+
+using FieldAlignedCandidateResult =
+    std::variant<FieldAlignedCurveNetworkCandidate,
+                 FieldAlignedCurveNetworkError>;
+
+FieldAlignedCurveNetworkError field_aligned_error(
+    const FieldAlignedCurveNetworkErrorCode code,
+    std::optional<authority::SourceVertexId> sourceVertex = std::nullopt,
+    std::optional<authority::SourceEdgeTopologyKey> sourceEdge = std::nullopt,
+    std::optional<authority::HardRailId> rail = std::nullopt,
+    std::optional<authority::FieldSingularityId> singularity = std::nullopt) {
+  FieldAlignedCurveNetworkError error;
+  error.code = code;
+  error.sourceVertex = sourceVertex;
+  error.sourceEdge = std::move(sourceEdge);
+  error.rail = rail;
+  error.singularity = singularity;
+  return error;
+}
+
+template <typename Id>
+Id field_aligned_id(const std::size_t value, const std::size_t extent) {
+  return Id::from_index(static_cast<std::int64_t>(value), extent).value();
+}
+
+struct FieldAlignedRailSupport {
+  FieldAlignedRailSupport(authority::HardRailId railValue,
+                          const SurfaceCellRailKind kindValue)
+      : rail(railValue), kind(kindValue) {}
+  authority::HardRailId rail;
+  SurfaceCellRailKind kind = SurfaceCellRailKind::Boundary;
+};
+
+std::optional<authority::TopologyRegionId> singularity_region_from_source(
+    const Eigen::MatrixXi &sourceFaces,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldSingularityFact &singularity) {
+  std::set<authority::TopologyRegionId> regions;
+  std::optional<authority::SourceComponentId> component;
+  for (int face = 0; face < sourceFaces.rows(); ++face) {
+    bool incident = false;
+    for (int corner = 0; corner < 3; ++corner) {
+      incident = incident ||
+                 sourceFaces(face, corner) ==
+                     static_cast<int>(singularity.sourceVertex.index());
+    }
+    if (!incident) continue;
+    const auto sourceFace = authority::SourceFaceId::from_index(
+        face, static_cast<std::size_t>(sourceFaces.rows()));
+    if (!sourceFace) return std::nullopt;
+    const authority::SourceComponentId faceComponent =
+        sourceAuthority.component_for_row(sourceFace.value());
+    if (!component.has_value()) {
+      component = faceComponent;
+    } else if (*component != faceComponent) {
+      return std::nullopt;
+    }
+    regions.insert(sourceAuthority.region_for_row(sourceFace.value()));
+  }
+  if (!component.has_value() || *component != singularity.sourceComponent ||
+      regions.empty()) {
+    return std::nullopt;
+  }
+  if (singularity.topologyRegion.has_value()) {
+    return regions.count(*singularity.topologyRegion) == 1U
+               ? singularity.topologyRegion
+               : std::nullopt;
+  }
+  return regions.size() == 1U
+             ? std::optional<authority::TopologyRegionId>{*regions.begin()}
+             : std::nullopt;
+}
+
+FieldAlignedCandidateResult canonical_field_aligned_candidate(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails) {
+  if (sourceFaces.cols() != 3 || sourceFaces.rows() <= 0 ||
+      sourceVertexCount == 0U ||
+      !sourceAuthority.matches_source_faces(sourceFaces, sourceVertexCount)) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding);
+  }
+  if (!fieldTransportAtlas.matches_source_faces(
+          sourceFaces, sourceAuthority, sourceVertexCount) ||
+      !fieldTransportAtlas.quadrangulability().established()) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidAtlasBinding);
+  }
+
+  std::set<authority::HardRailId> railIds;
+  std::map<authority::SourceEdgeTopologyKey, FieldAlignedRailSupport>
+      supportByEdge;
+  for (const SurfaceCellRail &rail : authoritativeRails) {
+    if (!railIds.insert(rail.id).second) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::DuplicateRailId, std::nullopt,
+          std::nullopt, rail.id);
+    }
+    if (rail.sourceEdges.empty() ||
+        rail.sourceVertices.size() != rail.sourceEdges.size() + 1U) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
+          std::nullopt, std::nullopt, rail.id);
+    }
+    for (std::size_t interval = 0; interval < rail.sourceEdges.size();
+         ++interval) {
+      const auto key = authority::SourceEdgeTopologyKey::from_indices(
+          rail.sourceVertices[interval], rail.sourceVertices[interval + 1U],
+          sourceVertexCount);
+      if (!key) {
+        return field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
+            std::nullopt, std::nullopt, rail.id);
+      }
+      if (!supportByEdge
+               .emplace(key.value(), FieldAlignedRailSupport{rail.id, rail.kind})
+               .second) {
+        return field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::DuplicateMandatoryEdge,
+            std::nullopt, key.value(), rail.id);
+      }
+    }
+  }
+
+  std::map<authority::SourceEdgeTopologyKey,
+           const authority::FieldNonTraversableEdge *>
+      mandatoryByEdge;
+  for (const authority::FieldNonTraversableEdge &edge :
+       fieldTransportAtlas.nontraversable_edges()) {
+    if (edge.kind != authority::FieldTransportBarrierKind::SourceBoundary &&
+        edge.kind != authority::FieldTransportBarrierKind::HardFeature) {
+      continue;
+    }
+    mandatoryByEdge.emplace(edge.sourceEdge, &edge);
+  }
+  for (const auto &[sourceEdge, support] : supportByEdge) {
+    if (mandatoryByEdge.count(sourceEdge) == 0U) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::ForeignMandatoryEdge,
+          std::nullopt, sourceEdge, support.rail);
+    }
+  }
+  for (const auto &[sourceEdge, barrier] : mandatoryByEdge) {
+    (void)barrier;
+    if (supportByEdge.count(sourceEdge) == 0U) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::MissingMandatoryEdge,
+          std::nullopt, sourceEdge);
+    }
+  }
+
+  std::set<authority::SourceVertexId> nodeVertices;
+  std::map<authority::FieldSingularityId, authority::TopologyRegionId>
+      singularityRegions;
+  std::vector<const authority::FieldSingularityFact *> singularities;
+  singularities.reserve(fieldTransportAtlas.singularities().size());
+  std::size_t totalPortCount = 0U;
+  for (const authority::FieldSingularityFact &singularity :
+       fieldTransportAtlas.singularities()) {
+    if (singularity.sourceVertex.index() >= sourceVertexCount) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidSingularityBinding,
+          singularity.sourceVertex, std::nullopt, std::nullopt,
+          singularity.id);
+    }
+    const auto region = singularity_region_from_source(
+        sourceFaces, sourceAuthority, singularity);
+    const int expectedValence = 4 - singularity.indexNumerator;
+    if (!region.has_value() || expectedValence < 3 || expectedValence > 6 ||
+        !singularityRegions.emplace(singularity.id, *region).second) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidSingularityBinding,
+          singularity.sourceVertex, std::nullopt, std::nullopt,
+          singularity.id);
+    }
+    nodeVertices.insert(singularity.sourceVertex);
+    singularities.push_back(&singularity);
+    totalPortCount += static_cast<std::size_t>(expectedValence);
+  }
+  std::sort(singularities.begin(), singularities.end(),
+            [](const auto *lhs, const auto *rhs) {
+              return std::tie(lhs->sourceVertex, lhs->id) <
+                     std::tie(rhs->sourceVertex, rhs->id);
+            });
+
+  for (const auto &[sourceEdge, barrier] : mandatoryByEdge) {
+    nodeVertices.insert(sourceEdge.first());
+    nodeVertices.insert(sourceEdge.second());
+    const auto support = supportByEdge.find(sourceEdge);
+    if (support == supportByEdge.end()) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::MissingMandatoryEdge,
+          std::nullopt, sourceEdge);
+    }
+    const SurfaceCellRailKind expectedKind =
+        barrier->kind == authority::FieldTransportBarrierKind::SourceBoundary
+            ? SurfaceCellRailKind::Boundary
+            : SurfaceCellRailKind::HardFeature;
+    if (support->second.kind != expectedKind) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::MandatoryKindMismatch,
+          std::nullopt, sourceEdge, support->second.rail);
+    }
+  }
+
+  FieldAlignedCurveNetworkCandidate candidate;
+  candidate.nodes.reserve(nodeVertices.size());
+  std::map<authority::SourceVertexId, authority::NetworkNodeId> nodeByVertex;
+  std::size_t nodeIndex = 0U;
+  for (const authority::SourceVertexId vertex : nodeVertices) {
+    const authority::NetworkNodeId node = field_aligned_id<authority::NetworkNodeId>(
+        nodeIndex++, nodeVertices.size());
+    nodeByVertex.emplace(vertex, node);
+    candidate.nodes.emplace_back(node, vertex);
+  }
+
+  candidate.singularityPorts.reserve(totalPortCount);
+  std::size_t portIndex = 0U;
+  for (const authority::FieldSingularityFact *singularity : singularities) {
+    const int expectedValence = 4 - singularity->indexNumerator;
+    const auto region = singularityRegions.find(singularity->id);
+    const auto node = nodeByVertex.find(singularity->sourceVertex);
+    if (region == singularityRegions.end() || node == nodeByVertex.end()) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidSingularityBinding,
+          singularity->sourceVertex, std::nullopt, std::nullopt,
+          singularity->id);
+    }
+    for (int ordinal = 0; ordinal < expectedValence; ++ordinal) {
+      candidate.singularityPorts.emplace_back(
+          field_aligned_id<authority::SingularityPortId>(
+              portIndex++, totalPortCount),
+          singularity->id, node->second, singularity->sourceVertex,
+          singularity->sourceComponent, region->second,
+          singularity->indexNumerator, ordinal);
+    }
+  }
+
+  candidate.mandatoryEdges.reserve(mandatoryByEdge.size());
+  std::size_t edgeIndex = 0U;
+  for (const auto &[sourceEdge, barrier] : mandatoryByEdge) {
+    const auto support = supportByEdge.find(sourceEdge);
+    const auto firstNode = nodeByVertex.find(sourceEdge.first());
+    const auto secondNode = nodeByVertex.find(sourceEdge.second());
+    if (support == supportByEdge.end() || firstNode == nodeByVertex.end() ||
+        secondNode == nodeByVertex.end()) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::MandatoryOwnerMismatch,
+          std::nullopt, sourceEdge,
+          support == supportByEdge.end()
+              ? std::optional<authority::HardRailId>{}
+              : std::optional<authority::HardRailId>{support->second.rail});
+    }
+
+    std::vector<authority::TopologyRegionId> regions;
+    std::optional<authority::SourceComponentId> component;
+    const auto consume_face = [&](const std::optional<authority::SourceFaceId> face) {
+      if (!face.has_value() ||
+          face->index() >= static_cast<std::size_t>(sourceFaces.rows())) {
+        return !face.has_value();
+      }
+      const authority::SourceComponentId faceComponent =
+          sourceAuthority.component_for_row(*face);
+      if (!component.has_value()) {
+        component = faceComponent;
+      } else if (*component != faceComponent) {
+        return false;
+      }
+      regions.push_back(sourceAuthority.region_for_row(*face));
+      return true;
+    };
+    if (!consume_face(barrier->firstFace) || !consume_face(barrier->secondFace) ||
+        !component.has_value() || regions.empty()) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::MandatoryOwnerMismatch,
+          std::nullopt, sourceEdge, support->second.rail);
+    }
+    std::sort(regions.begin(), regions.end());
+    regions.erase(std::unique(regions.begin(), regions.end()), regions.end());
+
+    candidate.mandatoryEdges.emplace_back(
+        field_aligned_id<authority::NetworkEdgeId>(
+            edgeIndex++, mandatoryByEdge.size()),
+        support->second.rail, sourceEdge, support->second.kind,
+        firstNode->second, secondNode->second, *component, std::move(regions));
+  }
+  return candidate;
+}
+
+constexpr std::uint64_t kFieldAlignedFnvOffset = 1469598103934665603ULL;
+constexpr std::uint64_t kFieldAlignedFnvPrime = 1099511628211ULL;
+
+void field_aligned_hash_consume(std::uint64_t &hash,
+                                const std::uint64_t value) noexcept {
+  hash ^= value;
+  hash *= kFieldAlignedFnvPrime;
+}
+
+template <typename Id>
+void field_aligned_hash_id(std::uint64_t &hash, const Id id) noexcept {
+  field_aligned_hash_consume(
+      hash, static_cast<std::uint64_t>(Id::domain()));
+  field_aligned_hash_consume(hash, id.index());
+}
+
+std::uint64_t field_aligned_candidate_digest(
+    const FieldAlignedCurveNetworkCandidate &candidate,
+    const SourceTopologyRegions &sourceAuthority,
+    const std::uint64_t sourceDigest, const std::uint64_t atlasDigest) noexcept {
+  std::uint64_t hash = kFieldAlignedFnvOffset;
+  field_aligned_hash_consume(hash, sourceDigest);
+  field_aligned_hash_consume(hash, atlasDigest);
+  field_aligned_hash_consume(hash, candidate.nodes.size());
+  for (const FieldAlignedCurveNetworkNode &node : candidate.nodes) {
+    field_aligned_hash_id(hash, node.id);
+    field_aligned_hash_id(hash, node.sourceVertex);
+  }
+  field_aligned_hash_consume(hash, candidate.singularityPorts.size());
+  for (const FieldAlignedSingularityPort &port : candidate.singularityPorts) {
+    field_aligned_hash_id(hash, port.id);
+    field_aligned_hash_id(hash, port.singularity);
+    field_aligned_hash_id(hash, port.node);
+    field_aligned_hash_id(hash, port.sourceVertex);
+    field_aligned_hash_id(hash, port.sourceComponent);
+    field_aligned_hash_consume(
+        hash, surface_topology_region_hash(
+                  sourceAuthority.region(port.sourceTopologyRegion)));
+    field_aligned_hash_consume(
+        hash, static_cast<std::uint64_t>(static_cast<std::int64_t>(
+                  port.indexNumerator)));
+    field_aligned_hash_consume(hash, static_cast<std::uint64_t>(port.ordinal));
+  }
+  field_aligned_hash_consume(hash, candidate.mandatoryEdges.size());
+  for (const FieldAlignedMandatoryEdge &edge : candidate.mandatoryEdges) {
+    field_aligned_hash_id(hash, edge.id);
+    field_aligned_hash_id(hash, edge.rail);
+    field_aligned_hash_id(hash, edge.sourceEdge.first());
+    field_aligned_hash_id(hash, edge.sourceEdge.second());
+    field_aligned_hash_consume(hash, static_cast<std::uint64_t>(edge.kind));
+    field_aligned_hash_id(hash, edge.firstNode);
+    field_aligned_hash_id(hash, edge.secondNode);
+    field_aligned_hash_id(hash, edge.sourceComponent);
+    field_aligned_hash_consume(hash, edge.sourceTopologyRegions.size());
+    for (const authority::TopologyRegionId region : edge.sourceTopologyRegions) {
+      field_aligned_hash_consume(
+          hash, surface_topology_region_hash(sourceAuthority.region(region)));
+    }
+  }
+  return hash;
+}
+
+std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails,
+    FieldAlignedCurveNetworkCandidate candidate) {
+  const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
+      sourceFaces, sourceVertexCount, sourceAuthority, fieldTransportAtlas,
+      authoritativeRails);
+  if (const auto *error =
+          std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+    return *error;
+  }
+  const FieldAlignedCurveNetworkCandidate &expected =
+      std::get<FieldAlignedCurveNetworkCandidate>(canonical);
+
+  std::sort(candidate.nodes.begin(), candidate.nodes.end(),
+            [](const auto &lhs, const auto &rhs) {
+              return std::tie(lhs.sourceVertex, lhs.id) <
+                     std::tie(rhs.sourceVertex, rhs.id);
+            });
+  if (candidate.nodes != expected.nodes) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding);
+  }
+
+  if (candidate.singularityPorts.size() != expected.singularityPorts.size()) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidSingularityPortCount);
+  }
+  std::sort(candidate.singularityPorts.begin(), candidate.singularityPorts.end(),
+            [](const auto &lhs, const auto &rhs) {
+              return std::tie(lhs.sourceVertex, lhs.singularity, lhs.ordinal,
+                              lhs.id) <
+                     std::tie(rhs.sourceVertex, rhs.singularity, rhs.ordinal,
+                              rhs.id);
+            });
+  if (candidate.singularityPorts != expected.singularityPorts) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidSingularityPortOwnership);
+  }
+
+  std::set<authority::SourceEdgeTopologyKey> candidateEdges;
+  std::map<authority::SourceEdgeTopologyKey, const FieldAlignedMandatoryEdge *>
+      expectedByEdge;
+  for (const FieldAlignedMandatoryEdge &edge : expected.mandatoryEdges) {
+    expectedByEdge.emplace(edge.sourceEdge, &edge);
+  }
+  for (const FieldAlignedMandatoryEdge &edge : candidate.mandatoryEdges) {
+    if (!candidateEdges.insert(edge.sourceEdge).second) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::DuplicateMandatoryEdge,
+          std::nullopt, edge.sourceEdge, edge.rail);
+    }
+    if (expectedByEdge.count(edge.sourceEdge) == 0U) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::ForeignMandatoryEdge,
+          std::nullopt, edge.sourceEdge, edge.rail);
+    }
+  }
+  if (candidate.mandatoryEdges.size() < expected.mandatoryEdges.size()) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::MissingMandatoryEdge);
+  }
+  if (candidate.mandatoryEdges.size() > expected.mandatoryEdges.size()) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::DuplicateMandatoryEdge);
+  }
+  std::sort(candidate.mandatoryEdges.begin(), candidate.mandatoryEdges.end(),
+            [](const auto &lhs, const auto &rhs) {
+              return std::tie(lhs.sourceEdge, lhs.rail, lhs.id) <
+                     std::tie(rhs.sourceEdge, rhs.rail, rhs.id);
+            });
+  for (std::size_t index = 0; index < candidate.mandatoryEdges.size(); ++index) {
+    const FieldAlignedMandatoryEdge &actual = candidate.mandatoryEdges[index];
+    const FieldAlignedMandatoryEdge &wanted = expected.mandatoryEdges[index];
+    if (actual.sourceEdge != wanted.sourceEdge) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::ForeignMandatoryEdge,
+          std::nullopt, actual.sourceEdge, actual.rail);
+    }
+    if (actual.kind != wanted.kind) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::MandatoryKindMismatch,
+          std::nullopt, actual.sourceEdge, actual.rail);
+    }
+    if (actual != wanted) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::MandatoryOwnerMismatch,
+          std::nullopt, actual.sourceEdge, actual.rail);
+    }
+  }
+  return std::nullopt;
+}
+
+} // namespace
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
+namespace directional::geometry {
+
+FieldAlignedCurveNetworkBuildResult FieldAlignedCurveNetwork::make(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails) {
+  const auto canonical =
+      surface_cell_tracing_detail::canonical_field_aligned_candidate(
+          sourceFaces, sourceVertexCount, sourceAuthority, fieldTransportAtlas,
+          authoritativeRails);
+  if (const auto *error =
+          std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+    return FieldAlignedCurveNetworkBuildResult(*error);
+  }
+  return make_from_candidate(
+      sourceFaces, sourceVertexCount, sourceAuthority, fieldTransportAtlas,
+      authoritativeRails,
+      std::get<FieldAlignedCurveNetworkCandidate>(canonical));
+}
+
+FieldAlignedCurveNetworkBuildResult
+FieldAlignedCurveNetwork::make_from_candidate(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails,
+    FieldAlignedCurveNetworkCandidate candidate) {
+  const auto error = surface_cell_tracing_detail::validate_field_aligned_candidate(
+      sourceFaces, sourceVertexCount, sourceAuthority, fieldTransportAtlas,
+      authoritativeRails, candidate);
+  if (error.has_value()) return FieldAlignedCurveNetworkBuildResult(*error);
+
+  const auto canonical =
+      surface_cell_tracing_detail::canonical_field_aligned_candidate(
+          sourceFaces, sourceVertexCount, sourceAuthority, fieldTransportAtlas,
+          authoritativeRails);
+  if (const auto *canonicalError =
+          std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+    return FieldAlignedCurveNetworkBuildResult(*canonicalError);
+  }
+  FieldAlignedCurveNetworkCandidate published =
+      std::get<FieldAlignedCurveNetworkCandidate>(canonical);
+  const std::uint64_t sourceDigest =
+      fieldTransportAtlas.quadrangulability().source_digest();
+  const std::uint64_t atlasDigest =
+      authority::field_transport_atlas_hash(fieldTransportAtlas);
+  const std::uint64_t semanticDigest =
+      surface_cell_tracing_detail::field_aligned_candidate_digest(
+          published, sourceAuthority, sourceDigest, atlasDigest);
+  return FieldAlignedCurveNetworkBuildResult(FieldAlignedCurveNetwork(
+      std::move(published.nodes), std::move(published.singularityPorts),
+      std::move(published.mandatoryEdges), sourceDigest, atlasDigest,
+      semanticDigest));
+}
+
+const FieldAlignedMandatoryEdge *FieldAlignedCurveNetwork::find_mandatory_edge(
+    const authority::SourceEdgeTopologyKey &sourceEdge) const noexcept {
+  const auto found = std::lower_bound(
+      mandatoryEdges_.begin(), mandatoryEdges_.end(), sourceEdge,
+      [](const FieldAlignedMandatoryEdge &candidate,
+         const authority::SourceEdgeTopologyKey &key) {
+        return candidate.sourceEdge < key;
+      });
+  return found != mandatoryEdges_.end() && found->sourceEdge == sourceEdge
+             ? &*found
+             : nullptr;
+}
+
+bool FieldAlignedCurveNetwork::has_singularity(
+    const authority::SourceVertexId sourceVertex) const noexcept {
+  return std::any_of(
+      singularityPorts_.begin(), singularityPorts_.end(),
+      [&](const FieldAlignedSingularityPort &port) {
+        return port.sourceVertex == sourceVertex;
+      });
+}
+
+std::optional<int> FieldAlignedCurveNetwork::singularity_index_numerator(
+    const authority::SourceVertexId sourceVertex) const noexcept {
+  for (const FieldAlignedSingularityPort &port : singularityPorts_) {
+    if (port.sourceVertex == sourceVertex) return port.indexNumerator;
+  }
+  return std::nullopt;
+}
+
+std::size_t FieldAlignedCurveNetwork::singularity_port_count(
+    const authority::SourceVertexId sourceVertex) const noexcept {
+  return static_cast<std::size_t>(std::count_if(
+      singularityPorts_.begin(), singularityPorts_.end(),
+      [&](const FieldAlignedSingularityPort &port) {
+        return port.sourceVertex == sourceVertex;
+      }));
+}
+
+std::vector<authority::SourceVertexId>
+FieldAlignedCurveNetwork::singularity_vertices() const {
+  std::vector<authority::SourceVertexId> vertices;
+  for (const FieldAlignedSingularityPort &port : singularityPorts_) {
+    if (vertices.empty() || vertices.back() != port.sourceVertex) {
+      vertices.push_back(port.sourceVertex);
+    }
+  }
+  return vertices;
+}
+
+FieldAlignedCurveNetworkCandidate
+FieldAlignedCurveNetwork::validation_candidate() const {
+  return FieldAlignedCurveNetworkCandidate{nodes_, singularityPorts_,
+                                           mandatoryEdges_};
+}
+
+const char *field_aligned_curve_network_error_code_name(
+    const FieldAlignedCurveNetworkErrorCode code) noexcept {
+  switch (code) {
+  case FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding:
+    return "InvalidSourceBinding";
+  case FieldAlignedCurveNetworkErrorCode::InvalidAtlasBinding:
+    return "InvalidAtlasBinding";
+  case FieldAlignedCurveNetworkErrorCode::DuplicateRailId:
+    return "DuplicateRailId";
+  case FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry:
+    return "InvalidRailGeometry";
+  case FieldAlignedCurveNetworkErrorCode::MissingMandatoryEdge:
+    return "MissingMandatoryEdge";
+  case FieldAlignedCurveNetworkErrorCode::DuplicateMandatoryEdge:
+    return "DuplicateMandatoryEdge";
+  case FieldAlignedCurveNetworkErrorCode::ForeignMandatoryEdge:
+    return "ForeignMandatoryEdge";
+  case FieldAlignedCurveNetworkErrorCode::MandatoryKindMismatch:
+    return "MandatoryKindMismatch";
+  case FieldAlignedCurveNetworkErrorCode::MandatoryOwnerMismatch:
+    return "MandatoryOwnerMismatch";
+  case FieldAlignedCurveNetworkErrorCode::InvalidSingularityBinding:
+    return "InvalidSingularityBinding";
+  case FieldAlignedCurveNetworkErrorCode::InvalidSingularityPortCount:
+    return "InvalidSingularityPortCount";
+  case FieldAlignedCurveNetworkErrorCode::InvalidSingularityPortOwnership:
+    return "InvalidSingularityPortOwnership";
+  }
+  return "Unknown";
+}
+
+std::uint64_t field_aligned_curve_network_hash(
+    const FieldAlignedCurveNetwork &network) noexcept {
+  return network.semantic_digest();
+}
+
+} // namespace directional::geometry
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
 EdgeTransitionLookup edge_transition_lookup(
-    const std::vector<fields::CrossFieldEdgeTransition> &transitions) {
+    const std::vector<fields::CrossFieldEdgeTransition> &transitions,
+    const std::size_t vertexExtent) {
   EdgeTransitionLookup lookup;
   for (const fields::CrossFieldEdgeTransition &transition : transitions) {
     if (transition.sourceVertex0 < 0 || transition.sourceVertex1 < 0) {
       lookup.duplicate = true;
       continue;
     }
-    const std::uint64_t key =
-        edge_key(transition.sourceVertex0, transition.sourceVertex1);
+    const auto key = edge_key(transition.sourceVertex0,
+                              transition.sourceVertex1, vertexExtent);
     if (!lookup.byEdge.emplace(key, transition).second) {
       lookup.duplicate = true;
     }
   }
   return lookup;
+}
+
+EdgeTransitionLookup edge_transition_lookup(
+    const authority::FieldTransportAtlas &atlas) {
+  EdgeTransitionLookup lookup;
+  lookup.atlas = &atlas;
+  return lookup;
+}
+
+EdgeTransitionLookup authoritative_edge_transition_lookup(
+    const authority::FieldTransportAtlas *atlas,
+    const std::vector<fields::CrossFieldEdgeTransition> *transitions,
+    const std::size_t vertexExtent) {
+  if (atlas != nullptr) return edge_transition_lookup(*atlas);
+  return transitions != nullptr
+             ? edge_transition_lookup(*transitions, vertexExtent)
+             : EdgeTransitionLookup{};
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -137,6 +857,60 @@ namespace directional::geometry::surface_cell_tracing_detail {
 bool contains_vertex(const std::vector<int> &vertices,
                             const int vertex) {
   return std::find(vertices.begin(), vertices.end(), vertex) != vertices.end();
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
+namespace directional::geometry::surface_cell_tracing_detail {
+
+bool tracing_has_singularities(const SurfaceCellTracingOptions &options) {
+  return options.fieldAlignedNetwork != nullptr
+             ? !options.fieldAlignedNetwork->singularity_ports().empty()
+             : !options.singularityVertices.empty();
+}
+
+bool tracing_is_singularity_vertex(const SurfaceCellTracingOptions &options,
+                                   const Eigen::MatrixXi &faces,
+                                   const int vertex) {
+  if (options.fieldAlignedNetwork == nullptr) {
+    return contains_vertex(options.singularityVertices, vertex);
+  }
+  const auto typed = authority::SourceVertexId::from_index(
+      vertex, source_vertex_extent(faces));
+  return typed && options.fieldAlignedNetwork->has_singularity(typed.value());
+}
+
+std::optional<std::vector<std::pair<int, int>>> tracing_singularity_inputs(
+    const SurfaceCellTracingOptions &options, const Eigen::MatrixXi &faces) {
+  std::vector<std::pair<int, int>> result;
+  if (options.fieldAlignedNetwork != nullptr) {
+    for (const authority::SourceVertexId vertex :
+         options.fieldAlignedNetwork->singularity_vertices()) {
+      const auto index =
+          options.fieldAlignedNetwork->singularity_index_numerator(vertex);
+      if (!index.has_value() ||
+          options.fieldAlignedNetwork->singularity_port_count(vertex) !=
+              static_cast<std::size_t>(4 - *index)) {
+        return std::nullopt;
+      }
+      result.emplace_back(static_cast<int>(vertex.index()), *index);
+    }
+    return result;
+  }
+  // Legacy/focused-test ingress historically permits membership-only
+  // singularity vectors. Exact separatrix enumeration is enabled only when
+  // the parallel index vector is present.
+  if (options.singularityIndexNumerators.empty()) return result;
+  if (options.singularityIndexNumerators.size() !=
+      options.singularityVertices.size()) {
+    return std::nullopt;
+  }
+  for (std::size_t index = 0; index < options.singularityVertices.size();
+       ++index) {
+    result.emplace_back(options.singularityVertices[index],
+                        options.singularityIndexNumerators[index]);
+  }
+  return result;
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -200,14 +974,13 @@ double target_size_at_vertex(const Eigen::VectorXd &targetSize,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-void append_seed(std::vector<SurfaceTraceSeed> &seeds,
-                        std::set<std::tuple<int, std::int64_t, std::int64_t,
-                                                std::int64_t>> &seen,
-                        const SurfaceTracePoint &point,
-                        const SurfaceSeedProvenance provenance,
-                        const int sourceId) {
+bool initialize_seed(
+    const std::vector<SurfaceTraceSeed> &seeds,
+    std::set<std::tuple<int, std::int64_t, std::int64_t, std::int64_t>> &seen,
+    const SurfaceTracePoint &point, const SurfaceSeedProvenance provenance,
+    SurfaceTraceSeed &seed) {
   if (point.face < 0) {
-    return;
+    return false;
   }
   const auto key = std::make_tuple(
       point.face,
@@ -218,14 +991,39 @@ void append_seed(std::vector<SurfaceTraceSeed> &seeds,
       static_cast<std::int64_t>(
           std::llround(point.barycentric[2] * 1.0e15)));
   if (!seen.insert(key).second) {
-    return;
+    return false;
   }
-  SurfaceTraceSeed seed;
   seed.id = static_cast<int>(seeds.size());
   seed.point = point;
   seed.provenance = provenance;
+  return true;
+}
+
+void append_seed(std::vector<SurfaceTraceSeed> &seeds,
+                 std::set<std::tuple<int, std::int64_t, std::int64_t,
+                                     std::int64_t>> &seen,
+                 const SurfaceTracePoint &point,
+                 const SurfaceSeedProvenance provenance,
+                 const int sourceId) {
+  SurfaceTraceSeed seed;
+  if (!initialize_seed(seeds, seen, point, provenance, seed)) {
+    return;
+  }
   seed.sourceId = sourceId;
-  seeds.push_back(seed);
+  seeds.push_back(std::move(seed));
+}
+
+void append_hard_rail_seed(
+    std::vector<SurfaceTraceSeed> &seeds,
+    std::set<std::tuple<int, std::int64_t, std::int64_t, std::int64_t>> &seen,
+    const SurfaceTracePoint &point, const SurfaceSeedProvenance provenance,
+    const authority::HardRailId railId) {
+  SurfaceTraceSeed seed;
+  if (!initialize_seed(seeds, seen, point, provenance, seed)) {
+    return;
+  }
+  seed.hardRailId = railId;
+  seeds.push_back(std::move(seed));
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -310,35 +1108,60 @@ bool barycentric_derivative(const Eigen::MatrixXd &vertices,
   return dbary.allFinite() && dbary.squaredNorm() > 0.0;
 }
 
-} // namespace directional::geometry::surface_cell_tracing_detail
+/**
+ * Orient one matched cross-field family into the target face after an edge
+ * crossing. A 4-RoSy family contains both opposite rays; authoritative
+ * matching determines the family, while the trace orientation must choose
+ * the ray whose barycentric derivative moves away from the shared edge.
+ */
+bool orient_transition_into_face_from_edge(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const int targetFace, const int entryEdge,
+    BranchTransitionResult &transition) {
+  if (!transition.valid || targetFace < 0 || targetFace >= faces.rows() ||
+      entryEdge < 0 || entryEdge >= 3) {
+    return false;
+  }
+  Eigen::RowVector3d derivative;
+  if (!barycentric_derivative(vertices, faces, targetFace,
+                              transition.direction, derivative)) {
+    return false;
+  }
+  constexpr double entryTolerance = 1.0e-12;
+  if (derivative[entryEdge] > entryTolerance) {
+    return true;
+  }
+  if (derivative[entryEdge] >= -entryTolerance) {
+    return false;
+  }
 
-namespace directional::geometry::surface_cell_tracing_detail {
-
-bool source_label_arrays_enabled(
-    const SurfaceCellTracingOptions &options) {
-  return !options.sourceFaceComponents.empty() || !options.sourceFaceSheets.empty();
+  transition.direction *= -1.0;
+  transition.sign *= -1;
+  if (!barycentric_derivative(vertices, faces, targetFace,
+                              transition.direction, derivative) ||
+      derivative[entryEdge] <= entryTolerance) {
+    return false;
+  }
+  transition.turnAngle = std::acos(std::clamp(
+      transition.transportedInput.dot(transition.direction), -1.0, 1.0));
+  transition.valid = std::isfinite(transition.turnAngle) &&
+                     transition.direction.array().isFinite().all();
+  return transition.valid;
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
-                                      const int faceCount) {
-  if (!source_label_arrays_enabled(options)) {
-    return true;
+bool source_authority_valid(const SurfaceCellTracingOptions &options,
+                            const Eigen::MatrixXi &faces) {
+  if (options.sourceAuthority == nullptr) {
+    return options.fieldTransportAtlas == nullptr;
   }
-  if (static_cast<int>(options.sourceFaceComponents.size()) != faceCount ||
-      static_cast<int>(options.sourceFaceSheets.size()) != faceCount) {
-    return false;
-  }
-  for (int face = 0; face < faceCount; ++face) {
-    if (options.sourceFaceComponents[static_cast<std::size_t>(face)] < 0 ||
-        options.sourceFaceSheets[static_cast<std::size_t>(face)] < 0) {
-      return false;
-    }
-  }
-  return true;
+  return options.sourceAuthority->matches_source_faces(faces) &&
+         (options.fieldTransportAtlas == nullptr ||
+          options.fieldTransportAtlas->matches_source_faces(
+              faces, *options.sourceAuthority, source_vertex_extent(faces)));
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -346,21 +1169,79 @@ bool source_label_arrays_valid(const SurfaceCellTracingOptions &options,
 namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_faces_compatible(const SurfaceCellTracingOptions &options,
-                                    const int a, const int b) {
-  if (!source_label_arrays_enabled(options)) {
+                             const int a, const int b) {
+  if (options.sourceAuthority == nullptr) {
     return true;
   }
   if (a < 0 || b < 0 ||
-      a >= static_cast<int>(options.sourceFaceComponents.size()) ||
-      b >= static_cast<int>(options.sourceFaceComponents.size()) ||
-      a >= static_cast<int>(options.sourceFaceSheets.size()) ||
-      b >= static_cast<int>(options.sourceFaceSheets.size())) {
+      static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
+      static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
     return false;
   }
-  return options.sourceFaceComponents[static_cast<std::size_t>(a)] ==
-             options.sourceFaceComponents[static_cast<std::size_t>(b)] &&
-         options.sourceFaceSheets[static_cast<std::size_t>(a)] ==
-             options.sourceFaceSheets[static_cast<std::size_t>(b)];
+  const auto first = authority::SourceFaceId::from_index(
+      a, options.sourceAuthority->face_count());
+  const auto second = authority::SourceFaceId::from_index(
+      b, options.sourceAuthority->face_count());
+  return first && second &&
+         options.sourceAuthority->component_for_row(first.value()) ==
+             options.sourceAuthority->component_for_row(second.value()) &&
+         options.sourceAuthority->sheet_for_row(first.value()) ==
+             options.sourceAuthority->sheet_for_row(second.value());
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
+namespace directional::geometry::surface_cell_tracing_detail {
+
+bool source_edge_is_authoritative_local_boundary(
+    const SurfaceCellTracingOptions &options, const int faceCount,
+    const int localFace, const std::array<int, 2> &fullIncident,
+    const authority::SourceEdgeTopologyKey &edgeKey) {
+  if (faceCount <= 0 || localFace < 0 || localFace >= faceCount) {
+    return false;
+  }
+
+  int localIncidentCount = 0;
+  int incidentCount = 0;
+  int oppositeFace = -1;
+  for (const int incidentFace : fullIncident) {
+    if (incidentFace < 0) {
+      continue;
+    }
+    if (incidentFace >= faceCount) {
+      return false;
+    }
+    ++incidentCount;
+    if (incidentFace == localFace) {
+      ++localIncidentCount;
+      continue;
+    }
+    if (oppositeFace >= 0) {
+      return false;
+    }
+    oppositeFace = incidentFace;
+  }
+
+  if (localIncidentCount != 1) {
+    return false;
+  }
+  if (incidentCount == 1) {
+    return true;
+  }
+  if (incidentCount != 2 || oppositeFace < 0) {
+    return false;
+  }
+  if (options.hardFeatureEdges.count(edgeKey) != 0U) {
+    return true;
+  }
+  if (options.reliefBarriersEmbedded &&
+      options.reliefBarrierEdges.count(edgeKey) != 0U) {
+    return true;
+  }
+  // Local isolation-sheet disagreement alone is not a physical producer
+  // boundary. If both source faces are present across a non-hard manifold edge,
+  // producer topology remains connected through exact source adjacency.
+  return false;
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -369,16 +1250,21 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 bool source_faces_share_component(const SurfaceCellTracingOptions &options,
                                   const int a, const int b) {
-  if (!source_label_arrays_enabled(options)) {
+  if (options.sourceAuthority == nullptr) {
     return true;
   }
   if (a < 0 || b < 0 ||
-      a >= static_cast<int>(options.sourceFaceComponents.size()) ||
-      b >= static_cast<int>(options.sourceFaceComponents.size())) {
+      static_cast<std::size_t>(a) >= options.sourceAuthority->face_count() ||
+      static_cast<std::size_t>(b) >= options.sourceAuthority->face_count()) {
     return false;
   }
-  return options.sourceFaceComponents[static_cast<std::size_t>(a)] ==
-         options.sourceFaceComponents[static_cast<std::size_t>(b)];
+  const auto first = authority::SourceFaceId::from_index(
+      a, options.sourceAuthority->face_count());
+  const auto second = authority::SourceFaceId::from_index(
+      b, options.sourceAuthority->face_count());
+  return first && second &&
+         options.sourceAuthority->component_for_row(first.value()) ==
+             options.sourceAuthority->component_for_row(second.value());
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -386,14 +1272,15 @@ bool source_faces_share_component(const SurfaceCellTracingOptions &options,
 namespace directional::geometry::surface_cell_tracing_detail {
 
 int local_edge_for_key(const Eigen::MatrixXi &faces, const int face,
-                              const std::uint64_t key) {
+                       const authority::SourceEdgeTopologyKey &key) {
   if (face < 0 || face >= faces.rows()) {
     return -1;
   }
+  const std::size_t vertexExtent = source_vertex_extent(faces);
   for (int edge = 0; edge < 3; ++edge) {
     const int a = faces(face, (edge + 1) % 3);
     const int b = faces(face, (edge + 2) % 3);
-    if (edge_key(a, b) == key) {
+    if (edge_key(a, b, vertexExtent) == key) {
       return edge;
     }
   }
@@ -404,13 +1291,14 @@ int local_edge_for_key(const Eigen::MatrixXi &faces, const int face,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-std::uint64_t local_edge_key(const Eigen::MatrixXi &faces,
-                                    const int face, const int edge) {
+authority::SourceEdgeTopologyKey local_edge_key(const Eigen::MatrixXi &faces,
+                                                 const int face,
+                                                 const int edge) {
   if (face < 0 || face >= faces.rows() || edge < 0 || edge >= 3) {
-    return 0;
+    throw std::invalid_argument("invalid local source edge");
   }
   return edge_key(faces(face, (edge + 1) % 3),
-                  faces(face, (edge + 2) % 3));
+                  faces(face, (edge + 2) % 3), source_vertex_extent(faces));
 }
 
 } // namespace directional::geometry::surface_cell_tracing_detail
@@ -509,16 +1397,13 @@ RailIntervalBuildResult
 rail_interval_refs(
     const std::vector<SurfaceCellRail> &rails,
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &edgeFaces,
+    const FieldAlignedCurveNetwork *fieldAlignedNetwork) {
   RailIntervalBuildResult result;
-  std::set<int> railIds;
-  std::map<std::uint64_t, int> edgeOwners;
+  std::set<authority::HardRailId> railIds;
+  std::map<authority::SourceEdgeTopologyKey, authority::HardRailId> edgeOwners;
+  std::set<authority::NetworkEdgeId> matchedMandatoryEdges;
   for (const SurfaceCellRail &rail : rails) {
-    if (rail.id < 0) {
-      result.status = RailBuildStatus::InvalidRailId;
-      result.railId = rail.id;
-      return result;
-    }
     if (!railIds.insert(rail.id).second) {
       result.status = RailBuildStatus::DuplicateRailId;
       result.railId = rail.id;
@@ -618,13 +1503,19 @@ rail_interval_refs(
       previousEndPosition = b.position;
       previousEndParameter = b.railParameter;
 
-      const std::uint64_t key =
+      const authority::SourceEdgeTopologyKey key =
           local_edge_key(faces, a.sourceFace, a.sourceEdge);
-      if (key == 0) {
-        result.status = RailBuildStatus::InvalidSourceEdge;
-        result.railId = rail.id;
-        result.intervalIndex = interval;
-        return result;
+      if (fieldAlignedNetwork != nullptr) {
+        const FieldAlignedMandatoryEdge *mandatory =
+            fieldAlignedNetwork->find_mandatory_edge(key);
+        if (mandatory == nullptr || mandatory->rail != rail.id ||
+            mandatory->kind != rail.kind) {
+          result.status = RailBuildStatus::TypedAuthorityMismatch;
+          result.railId = rail.id;
+          result.intervalIndex = interval;
+          return result;
+        }
+        matchedMandatoryEdges.insert(mandatory->id);
       }
       const auto owner = edgeOwners.find(key);
       if (owner != edgeOwners.end()) {
@@ -635,8 +1526,7 @@ rail_interval_refs(
       }
       edgeOwners.emplace(key, rail.id);
 
-      SurfaceCellRailIntervalRef ref;
-      ref.railId = rail.id;
+      SurfaceCellRailIntervalRef ref(rail.id);
       ref.curveId = rail.curveId;
       ref.intervalIndex = interval;
       ref.sourceFace = a.sourceFace;
@@ -705,6 +1595,12 @@ rail_interval_refs(
         return result;
       }
     }
+  }
+  if (fieldAlignedNetwork != nullptr &&
+      matchedMandatoryEdges.size() !=
+          fieldAlignedNetwork->mandatory_edges().size()) {
+    result.status = RailBuildStatus::TypedAuthorityMismatch;
+    return result;
   }
   return result;
 }
@@ -893,6 +1789,110 @@ int normalized_branch(const int branch) {
   return ((branch % 4) + 4) % 4;
 }
 
+namespace {
+
+int translation_orientation_rank(
+    const authority::LatticeTranslation &translation) {
+  if (translation.x != 0) return translation.x > 0 ? 0 : 1;
+  if (translation.y != 0) return translation.y > 0 ? 0 : 1;
+  return 2;
+}
+
+auto periodic_relation_key(const SurfacePeriodicHolonomy &relation) {
+  return std::tuple{relation.sourceTopologyRegion(), relation.action(),
+                    relation.route(), relation.cutRoute()};
+}
+
+bool periodic_relation_shape_valid(const SurfacePeriodicHolonomy &relation) {
+  const bool nonzeroTranslation =
+      relation.action().shift.x != 0 || relation.action().shift.y != 0;
+  return nonzeroTranslation && !relation.route().empty() &&
+         !relation.cutRoute().empty();
+}
+
+} // namespace
+
+SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
+    SurfacePeriodicHolonomy relation) {
+  const authority::GridAutomorphism inverseAction = relation.action().inverse();
+  const auto action_key = [](const authority::GridAutomorphism &action) {
+    return std::tuple{translation_orientation_rank(action.shift),
+                      action.rotation.value(),
+                      std::abs(action.shift.x),
+                      std::abs(action.shift.y),
+                      action.shift.x, action.shift.y};
+  };
+  if (action_key(inverseAction) < action_key(relation.action())) {
+    const auto rebuilt = SurfacePeriodicHolonomy::make(
+        relation.id(), relation.sourceTopologyRegion(), inverseAction,
+        relation.route(), relation.cutRoute());
+    const auto *value = std::get_if<SurfacePeriodicHolonomy>(&rebuilt);
+    if (value != nullptr) relation = *value;
+  }
+  return relation;
+}
+
+SurfacePeriodicHolonomyInsertStatus insert_periodic_holonomy(
+    std::vector<SurfacePeriodicHolonomy> &relations,
+    SurfacePeriodicHolonomy relation) {
+  relation = canonicalize_periodic_holonomy(std::move(relation));
+  if (!periodic_relation_shape_valid(relation)) {
+    return SurfacePeriodicHolonomyInsertStatus::Incompatible;
+  }
+
+  for (const SurfacePeriodicHolonomy &existing : relations) {
+    if (periodic_relation_key(existing) == periodic_relation_key(relation)) {
+      return SurfacePeriodicHolonomyInsertStatus::Equivalent;
+    }
+    const bool sameScope =
+        existing.sourceTopologyRegion() == relation.sourceTopologyRegion();
+    if (!sameScope) continue;
+    if (existing.route() == relation.route() ||
+        existing.cutRoute() == relation.cutRoute()) {
+      return SurfacePeriodicHolonomyInsertStatus::Incompatible;
+    }
+
+    // This G4 slice intentionally does not guess a basis inside one source
+    // sheet. Distinct same-sheet cycles require a later topology-basis solver;
+    // retaining one by discovery order would be unsound. Multiple relations
+    // on distinct authoritative sheets/components remain valid and are kept.
+    return SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis;
+  }
+
+  // Allocate ownership from the occupied typed-ID set, not from relation
+  // vector position. Existing owners never change when storage is reordered or
+  // a later relation is inserted.
+  const std::size_t ownerExtent = relations.size() + 1U;
+  std::optional<authority::PeriodicRelationId> allocatedId;
+  for (std::size_t candidateIndex = 0; candidateIndex < ownerExtent;
+       ++candidateIndex) {
+    const auto candidate = authority::PeriodicRelationId::from_index(
+        static_cast<std::int64_t>(candidateIndex), ownerExtent);
+    if (!candidate) return SurfacePeriodicHolonomyInsertStatus::Incompatible;
+    const bool occupied = std::any_of(
+        relations.begin(), relations.end(), [&](const auto &existing) {
+          return existing.id() == candidate.value();
+        });
+    if (!occupied) {
+      allocatedId = candidate.value();
+      break;
+    }
+  }
+  if (!allocatedId.has_value()) {
+    return SurfacePeriodicHolonomyInsertStatus::Incompatible;
+  }
+  relation = relation.with_id(*allocatedId);
+  relations.push_back(std::move(relation));
+
+  // Storage order is deterministic only; semantic ownership is the typed ID.
+  std::sort(relations.begin(), relations.end(),
+            [](const SurfacePeriodicHolonomy &a,
+               const SurfacePeriodicHolonomy &b) {
+              return periodic_relation_key(a) < periodic_relation_key(b);
+            });
+  return SurfacePeriodicHolonomyInsertStatus::Inserted;
+}
+
 } // namespace directional::geometry::surface_cell_tracing_detail
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -961,9 +1961,9 @@ namespace directional::geometry::surface_cell_tracing_detail {
 BranchTransitionResult resolve_branch_transition(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
-    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
-    const std::map<std::uint64_t, int> &edgeMatchingIndices,
-    const EdgeTransitionLookup &transitionLookup, const std::uint64_t edgeKey,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &edgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &edgeMatchingIndices,
+    const EdgeTransitionLookup &transitionLookup, const authority::SourceEdgeTopologyKey &edgeKey,
     const int sourceFace, const int targetFace, const int sourceFamily,
     const int sourceSign, const Eigen::RowVector3d &sourceDirection,
     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
@@ -987,16 +1987,83 @@ BranchTransitionResult resolve_branch_transition(
 
   const int sourceBranch = branch_from_family_sign(sourceFamily, sourceSign);
   bool authoritativeMatching = false;
-  if (edgeTransitions != nullptr) {
+  std::optional<authority::QuarterTurn> authoritativeTransitionTransport;
+  if (transitionLookup.atlas != nullptr) {
+    const auto typedSourceFace = authority::SourceFaceId::from_index(
+        sourceFace, static_cast<std::size_t>(faces.rows()));
+    const auto typedTargetFace = authority::SourceFaceId::from_index(
+        targetFace, static_cast<std::size_t>(faces.rows()));
+    if (!typedSourceFace || !typedTargetFace) return result;
+    const auto transport = transitionLookup.atlas->transport(
+        edgeKey, typedSourceFace.value(), typedTargetFace.value());
+    if (!transport.has_value()) return result;
+    authoritativeTransitionTransport = transport->transport;
+    result.matching = transport->signedLift;
+    result.effort = transport->effort;
+    authoritativeMatching = true;
+  } else if (edgeTransitions != nullptr) {
     const auto found = transitionLookup.byEdge.find(edgeKey);
-    if (found == transitionLookup.byEdge.end() ||
-        !transition_faces_match(found->second, sourceFace, targetFace) ||
-        edge_key(found->second.sourceVertex0,
-                 found->second.sourceVertex1) != edgeKey) {
+    if (found == transitionLookup.byEdge.end()) {
       return result;
     }
+
+    const std::size_t sourceFaceExtent =
+        static_cast<std::size_t>(faces.rows());
+    const std::size_t sourceVertexExtent =
+        static_cast<std::size_t>(vertices.rows());
+    const auto sourceFaceResult = directional::authority::SourceFaceId::from_index(
+        sourceFace, sourceFaceExtent);
+    const auto targetFaceResult = directional::authority::SourceFaceId::from_index(
+        targetFace, sourceFaceExtent);
+    const auto firstFaceResult = directional::authority::SourceFaceId::from_index(
+        found->second.firstFace, sourceFaceExtent);
+    const auto secondFaceResult = directional::authority::SourceFaceId::from_index(
+        found->second.secondFace, sourceFaceExtent);
+    if (!sourceFaceResult || !targetFaceResult || !firstFaceResult ||
+        !secondFaceResult) {
+      return result;
+    }
+
+    const authority::SourceFaceId typedSourceFace = sourceFaceResult.value();
+    const authority::SourceFaceId typedTargetFace = targetFaceResult.value();
+    const authority::SourceFaceId typedFirstFace = firstFaceResult.value();
+    const authority::SourceFaceId typedSecondFace = secondFaceResult.value();
+    const bool forwardTraversal = typedFirstFace == typedSourceFace &&
+                                  typedSecondFace == typedTargetFace;
+    const bool reverseTraversal = typedFirstFace == typedTargetFace &&
+                                  typedSecondFace == typedSourceFace;
+    if (!forwardTraversal && !reverseTraversal) {
+      return result;
+    }
+
+    const auto firstVertexResult =
+        directional::authority::SourceVertexId::from_index(
+            found->second.sourceVertex0, sourceVertexExtent);
+    const auto secondVertexResult =
+        directional::authority::SourceVertexId::from_index(
+            found->second.sourceVertex1, sourceVertexExtent);
+    if (!firstVertexResult || !secondVertexResult) {
+      return result;
+    }
+    const auto sourceEdgeResult = authority::SourceEdgeTopologyKey::make(
+        firstVertexResult.value(), secondVertexResult.value());
+    if (!sourceEdgeResult) {
+      return result;
+    }
+    const authority::SourceEdgeTopologyKey sourceEdge = sourceEdgeResult.value();
+    if (edgeKey != sourceEdge) {
+      return result;
+    }
+
+    authority::QuarterTurn transport =
+        authority::QuarterTurn::from_integer(found->second.matching);
+    if (reverseTraversal) {
+      transport = transport.inverse();
+    }
+    authoritativeTransitionTransport = transport;
+
     result.matching = found->second.matching;
-    if (found->second.secondFace == sourceFace) {
+    if (reverseTraversal) {
       result.matching = -result.matching;
     }
     result.effort = found->second.effort;
@@ -1026,7 +2093,11 @@ BranchTransitionResult resolve_branch_transition(
   }
 
   int targetBranch = sourceBranch;
-  if (authoritativeMatching) {
+  if (authoritativeTransitionTransport.has_value()) {
+    targetBranch = normalized_branch(
+        sourceBranch +
+        static_cast<int>(authoritativeTransitionTransport->value()));
+  } else if (authoritativeMatching) {
     targetBranch = normalized_branch(sourceBranch + result.matching);
   } else {
     double bestTurn = std::numeric_limits<double>::infinity();
@@ -1119,11 +2190,11 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 std::map<int, std::vector<VertexPathStep>> vertex_face_adjacency(
     const int vertex,
-    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces) {
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &edgeFaces) {
   std::map<int, std::vector<VertexPathStep>> adjacency;
   for (const auto &[key, pair] : edgeFaces) {
-    const int a = static_cast<int>(key >> 32u);
-    const int b = static_cast<int>(key & 0xffffffffu);
+    const int a = static_cast<int>(key.first().index());
+    const int b = static_cast<int>(key.second().index());
     if ((a != vertex && b != vertex) || pair[0] < 0 || pair[1] < 0) {
       continue;
     }
@@ -1169,11 +2240,43 @@ bool continuation_is_better(const VertexContinuationResult &candidate,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
+bool continuation_source_edge_provenance(
+    const authority::SourceEdgeTopologyKey &edgeKey,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    int &sourceEdge) {
+  sourceEdge = -1;
+  const auto incidence = sourceEdgeFaces.find(edgeKey);
+  const auto compactIndex = sourceMatchingIndices.find(edgeKey);
+  if (incidence == sourceEdgeFaces.end() || incidence->second[0] < 0 ||
+      incidence->second[1] < 0 ||
+      compactIndex == sourceMatchingIndices.end() ||
+      compactIndex->second < 0) {
+    return false;
+  }
+  if (edgeTransitions != nullptr) {
+    const auto found = transitionLookup.byEdge.find(edgeKey);
+    if (found == transitionLookup.byEdge.end() || found->second.sourceEdge < 0 ||
+        !((found->second.sourceVertex0 == edgeKey.first().index() &&
+           found->second.sourceVertex1 == edgeKey.second().index()) ||
+          (found->second.sourceVertex0 == edgeKey.second().index() &&
+           found->second.sourceVertex1 == edgeKey.first().index())) ||
+        !transition_faces_match(found->second, incidence->second[0],
+                                incidence->second[1])) {
+      return false;
+    }
+  }
+  sourceEdge = compactIndex->second;
+  return true;
+}
+
 VertexContinuationResult resolve_vertex_continuation(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
-    const std::map<std::uint64_t, std::array<int, 2>> &edgeFaces,
-    const std::map<std::uint64_t, int> &edgeMatchingIndices,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &edgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &edgeMatchingIndices,
     const EdgeTransitionLookup &transitionLookup, const int currentFace,
     const int vertex, const int currentFamily, const int currentSign,
     const Eigen::RowVector3d &incomingDirection,
@@ -1190,8 +2293,8 @@ VertexContinuationResult resolve_vertex_continuation(
     int face = -1;
     int family = 0;
     int sign = 1;
-    int matching = 0;
     double effort = 0.0;
+    std::vector<authority::TransitionStep> routeSteps;
     Eigen::RowVector3d direction = Eigen::RowVector3d::Zero();
     Eigen::RowVector3d transportedIncoming = Eigen::RowVector3d::Zero();
     std::vector<int> faces;
@@ -1228,11 +2331,16 @@ VertexContinuationResult resolve_vertex_continuation(
     for (auto iterator = neighbors->second.rbegin();
          iterator != neighbors->second.rend(); ++iterator) {
       const VertexPathStep &step = *iterator;
+      if (!step.edgeKey.has_value()) {
+        metadataFailure = true;
+        continue;
+      }
       if (path.visited.count(step.face) != 0) {
         continue;
       }
-      if (options.hardFeatureEdges.count(step.edgeKey) != 0 ||
-          options.reliefBarrierEdges.count(step.edgeKey) != 0) {
+      if (options.hardFeatureEdges.count(*step.edgeKey) != 0 ||
+          (options.reliefBarriersEmbedded &&
+           options.reliefBarrierEdges.count(*step.edgeKey) != 0)) {
         featureBlocked = true;
         continue;
       }
@@ -1242,10 +2350,38 @@ VertexContinuationResult resolve_vertex_continuation(
       }
       const BranchTransitionResult transition = resolve_branch_transition(
           vertices, faces, faceAxisX, faceAxisY, edgeFaces,
-          edgeMatchingIndices, transitionLookup, step.edgeKey, path.face,
+          edgeMatchingIndices, transitionLookup, *step.edgeKey, path.face,
           step.face, path.family, path.sign, path.direction, edgeMatching,
           edgeEffort, edgeTransitions);
       if (!transition.valid) {
+        metadataFailure = true;
+        continue;
+      }
+
+      int sourceEdge = -1;
+      if (!continuation_source_edge_provenance(
+              *step.edgeKey, edgeFaces, edgeMatchingIndices, transitionLookup,
+              edgeTransitions, sourceEdge)) {
+        metadataFailure = true;
+        continue;
+      }
+      const authority::SourceEdgeTopologyKey &topology = *step.edgeKey;
+      const auto interiorTransition =
+          directional::authority::InteriorTransitionId::from_index(
+              sourceEdge, edgeMatchingIndices.size());
+      if (!interiorTransition) {
+        metadataFailure = true;
+        continue;
+      }
+      const auto typedStep = authority::TransitionStep::interior(
+          topology,
+          std::optional<authority::InteriorTransitionId>{
+              interiorTransition.value()},
+          authority::GridAutomorphism{
+              authority::QuarterTurn::from_integer(transition.matching),
+              authority::LatticeTranslation{0, 0}},
+          authority::Orientation::Forward);
+      if (!typedStep) {
         metadataFailure = true;
         continue;
       }
@@ -1254,7 +2390,7 @@ VertexContinuationResult resolve_vertex_continuation(
       next.face = step.face;
       next.family = transition.family;
       next.sign = transition.sign;
-      next.matching += transition.matching;
+      next.routeSteps.push_back(typedStep.value());
       next.effort += std::abs(transition.effort);
       next.direction = transition.direction;
       next.transportedIncoming = transport_direction_between_faces(
@@ -1273,7 +2409,16 @@ VertexContinuationResult resolve_vertex_continuation(
         candidate.face = next.face;
         candidate.family = next.family;
         candidate.sign = next.sign;
-        candidate.matching = next.matching;
+        const authority::CanonicalRoute typedRoute =
+            authority::CanonicalRoute::from_observed_steps(next.routeSteps);
+        authority::GridAutomorphism routeTransport =
+            authority::GridAutomorphism::identity();
+        for (const authority::TransitionStep &routeStep :
+             typedRoute.oriented_steps()) {
+          routeTransport = compose(routeStep.transport(), routeTransport);
+        }
+        candidate.matching =
+            static_cast<int>(routeTransport.rotation.value());
         candidate.matchingEffort = next.effort;
         candidate.turnAngle = std::acos(std::clamp(
             next.transportedIncoming.dot(next.direction), -1.0, 1.0));
@@ -1639,9 +2784,9 @@ SurfaceTracePoint vertex_point_in_face(const Eigen::MatrixXi &faces,
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
-std::set<std::uint64_t> combined_barrier_edges(
+std::set<authority::SourceEdgeTopologyKey> combined_barrier_edges(
     const SurfaceCellTracingOptions &options) {
-  std::set<std::uint64_t> barriers = options.hardFeatureEdges;
+  std::set<authority::SourceEdgeTopologyKey> barriers = options.hardFeatureEdges;
   if (options.reliefBarriersEmbedded) {
     barriers.insert(options.reliefBarrierEdges.begin(),
                     options.reliefBarrierEdges.end());
@@ -1749,7 +2894,7 @@ namespace directional::geometry::surface_cell_tracing_detail {
 
 SourceSurfaceLabels classify_source_surface_labels(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
-    const std::set<std::uint64_t> &barrierEdges,
+    const std::set<authority::SourceEdgeTopologyKey> &barrierEdges,
     const SourceSurfaceClassifierOptions &options) {
   if (vertices.cols() != 3 || faces.cols() != 3 ||
       !vertices.array().isFinite().all()) {
@@ -1770,7 +2915,7 @@ SourceSurfaceLabels classify_source_surface_labels(
     int secondFace = -1;
     int firstOrientation = 0;
   };
-  std::map<std::uint64_t, EdgeIncidence> edgeIncidence;
+  std::map<authority::SourceEdgeTopologyKey, EdgeIncidence> edgeIncidence;
   for (int face = 0; face < faceCount; ++face) {
     std::set<int> uniqueVertices;
     for (int corner = 0; corner < 3; ++corner) {
@@ -1785,7 +2930,7 @@ SourceSurfaceLabels classify_source_surface_labels(
         throw std::invalid_argument(
             "source-surface classification received an invalid index.");
       }
-      const std::uint64_t key = edge_key(vertex, next);
+      const authority::SourceEdgeTopologyKey key = edge_key(vertex, next, source_vertex_extent(faces));
       const int orientation = vertex < next ? 1 : -1;
       EdgeIncidence &incidence = edgeIncidence[key];
       if (incidence.firstFace < 0) {
@@ -1804,7 +2949,7 @@ SourceSurfaceLabels classify_source_surface_labels(
     }
   }
 
-  std::vector<std::vector<std::pair<int, std::uint64_t>>> adjacency(
+  std::vector<std::vector<std::pair<int, authority::SourceEdgeTopologyKey>>> adjacency(
       static_cast<std::size_t>(faceCount));
   for (const auto &[key, incidence] : edgeIncidence) {
     if (incidence.firstFace >= 0 && incidence.secondFace >= 0) {
@@ -1837,8 +2982,8 @@ SourceSurfaceLabels classify_source_surface_labels(
   }
   for (const auto &[key, incidence] : edgeIncidence) {
     (void)incidence;
-    const int a = static_cast<int>(key >> 32u);
-    const int b = static_cast<int>(key & 0xffffffffu);
+    const int a = static_cast<int>(key.first().index());
+    const int b = static_cast<int>(key.second().index());
     const double length = (row3(vertices, a) - row3(vertices, b)).norm();
     if (!(length > 0.0) || !std::isfinite(length)) {
       throw std::invalid_argument(
@@ -2044,6 +3189,838 @@ SourceSurfaceLabels classify_source_surface_labels(
 
 } // namespace directional::geometry::surface_cell_tracing_detail
 
+namespace directional::geometry {
+
+std::optional<SurfaceTopologyRegion> SurfaceTopologyRegion::make(
+    authority::TopologyRegionId id,
+    authority::SourceComponentId sourceComponent,
+    std::vector<SourceRegionFaceAuthority> faces,
+    std::vector<authority::SourceEdgeTopologyKey> boundaryEdges,
+    std::vector<authority::SourceEdgeTopologyKey> isolationSeams,
+    const int eulerCharacteristic, const int boundaryLoopCount) {
+  const auto facesSorted = std::is_sorted(
+      faces.begin(), faces.end(),
+      [](const SourceRegionFaceAuthority &a,
+         const SourceRegionFaceAuthority &b) { return a.topology < b.topology; });
+  const auto duplicateFace = std::adjacent_find(
+      faces.begin(), faces.end(),
+      [](const SourceRegionFaceAuthority &a,
+         const SourceRegionFaceAuthority &b) { return a.topology == b.topology; });
+  const auto sortedUnique = [](const auto &values) {
+    return std::is_sorted(values.begin(), values.end()) &&
+           std::adjacent_find(values.begin(), values.end()) == values.end();
+  };
+  if (faces.empty() || !facesSorted || duplicateFace != faces.end() ||
+      !sortedUnique(boundaryEdges) || !sortedUnique(isolationSeams) ||
+      boundaryLoopCount < 0) {
+    return std::nullopt;
+  }
+  for (const auto &edge : isolationSeams) {
+    if (std::binary_search(boundaryEdges.begin(), boundaryEdges.end(), edge)) {
+      return std::nullopt;
+    }
+  }
+  return SurfaceTopologyRegion(
+      id, sourceComponent, std::move(faces), std::move(boundaryEdges),
+      std::move(isolationSeams), eulerCharacteristic, boundaryLoopCount);
+}
+
+std::optional<SourceTopologyRegions> SourceTopologyRegions::make(
+    std::vector<authority::SourceFaceTopologyKey> rowTopology,
+    const std::vector<authority::SourceComponentId> &rowComponents,
+    const std::vector<authority::IsolationSheetId> &rowSheets,
+    std::vector<SurfaceTopologyRegion> regions) {
+  const std::size_t faceCount = rowTopology.size();
+  if (faceCount == 0U || regions.empty() || rowComponents.size() != faceCount ||
+      rowSheets.size() != faceCount) {
+    return std::nullopt;
+  }
+
+  const std::size_t regionExtent = regions.size();
+  for (std::size_t index = 0; index < regions.size(); ++index) {
+    const auto expected = authority::TopologyRegionId::from_index(
+        static_cast<std::int64_t>(index), regionExtent);
+    if (!expected || regions[index].id() != expected.value()) {
+      return std::nullopt;
+    }
+  }
+
+  std::vector<TopologyRow> topologyRows;
+  topologyRows.reserve(faceCount);
+  for (std::size_t rowIndex = 0; rowIndex < faceCount; ++rowIndex) {
+    const auto row = authority::SourceFaceId::from_index(
+        static_cast<std::int64_t>(rowIndex), faceCount);
+    if (!row) {
+      return std::nullopt;
+    }
+    topologyRows.emplace_back(rowTopology[rowIndex], row.value());
+  }
+  std::sort(topologyRows.begin(), topologyRows.end(),
+            [](const TopologyRow &a, const TopologyRow &b) {
+              return a.topology < b.topology;
+            });
+  if (std::adjacent_find(
+          topologyRows.begin(), topologyRows.end(),
+          [](const TopologyRow &a, const TopologyRow &b) {
+            return a.topology == b.topology;
+          }) != topologyRows.end()) {
+    return std::nullopt;
+  }
+
+  using ScratchBinding =
+      std::pair<authority::TopologyRegionId, std::size_t>;
+  std::vector<std::optional<ScratchBinding>> scratchBindings(faceCount);
+  for (const SurfaceTopologyRegion &region : regions) {
+    for (std::size_t memberIndex = 0; memberIndex < region.faces().size();
+         ++memberIndex) {
+      const SourceRegionFaceAuthority &member = region.faces()[memberIndex];
+      const auto found = std::lower_bound(
+          topologyRows.begin(), topologyRows.end(), member.topology,
+          [](const TopologyRow &entry,
+             const authority::SourceFaceTopologyKey &key) {
+            return entry.topology < key;
+          });
+      if (found == topologyRows.end() || found->topology != member.topology ||
+          scratchBindings[found->row.index()].has_value() ||
+          rowComponents[found->row.index()] != region.component() ||
+          rowSheets[found->row.index()] != member.sheet) {
+        return std::nullopt;
+      }
+      scratchBindings[found->row.index()] =
+          ScratchBinding{region.id(), memberIndex};
+    }
+  }
+
+  std::vector<RowBinding> rowBindings;
+  rowBindings.reserve(faceCount);
+  for (const auto &binding : scratchBindings) {
+    if (!binding.has_value()) {
+      return std::nullopt;
+    }
+    rowBindings.emplace_back(binding->first, binding->second);
+  }
+  return SourceTopologyRegions(std::move(regions), std::move(rowBindings),
+                               std::move(topologyRows));
+}
+
+namespace {
+
+bool face_contains_edge(const authority::SourceFaceTopologyKey &face,
+                        const authority::SourceEdgeTopologyKey &edge) {
+  const auto &vertices = face.vertices();
+  const auto contains = [&](authority::SourceVertexId vertex) {
+    return std::find(vertices.begin(), vertices.end(), vertex) != vertices.end();
+  };
+  return contains(edge.first()) && contains(edge.second());
+}
+
+const SurfaceTopologyRegion *find_region(
+    const SourceTopologyRegions &authority,
+    authority::TopologyRegionId id) noexcept {
+  if (id.index() >= authority.regions().size()) return nullptr;
+  const SurfaceTopologyRegion &region = authority.regions()[id.index()];
+  return region.id() == id ? &region : nullptr;
+}
+
+std::optional<authority::CellId> phase_front_cell_id_from_lattice(
+    const int u, const int v, const int gridU, const int gridV) {
+  if (u < 0 || v < 0 || gridU <= 0 || gridV <= 0 || u >= gridU ||
+      v >= gridV) {
+    return std::nullopt;
+  }
+  const std::size_t width = static_cast<std::size_t>(gridU);
+  const std::size_t height = static_cast<std::size_t>(gridV);
+  if (width > std::numeric_limits<std::size_t>::max() / height) {
+    return std::nullopt;
+  }
+  const std::size_t extent = width * height;
+  const std::size_t ordinal = static_cast<std::size_t>(v) * width +
+                              static_cast<std::size_t>(u);
+  if (ordinal > static_cast<std::size_t>(
+                    std::numeric_limits<std::int64_t>::max())) {
+    return std::nullopt;
+  }
+  const auto id = authority::CellId::from_index(
+      static_cast<std::int64_t>(ordinal), extent);
+  return id ? std::optional<authority::CellId>(id.value()) : std::nullopt;
+}
+
+std::optional<std::map<authority::CellId, std::size_t>>
+phase_front_cell_storage_index(
+    const std::vector<SurfacePhaseFrontCell> &cells) {
+  std::map<authority::CellId, std::size_t> indexById;
+  for (std::size_t index = 0; index < cells.size(); ++index) {
+    if (!indexById.emplace(cells[index].id, index).second) {
+      return std::nullopt;
+    }
+  }
+  return indexById;
+}
+
+} // namespace
+
+SurfaceIsolationSeamTransportCertificate::ConstructionResult
+SurfaceIsolationSeamTransportCertificate::make(
+    const SourceTopologyRegions &sourceAuthority,
+    authority::TopologyRegionId region,
+    authority::SourceEdgeTopologyKey seam,
+    authority::InteriorTransitionId transition,
+    authority::SourceFaceTopologyKey firstFace,
+    authority::SourceFaceTopologyKey secondFace,
+    authority::IsolationSheetId firstSheet,
+    authority::IsolationSheetId secondSheet,
+    authority::QuarterTurn forward, authority::QuarterTurn reverse) {
+  SurfaceIsolationSeamTransportCertificateError error;
+  error.region = region;
+  error.seam = seam;
+  error.transition = transition;
+  error.firstFace = firstFace;
+  error.secondFace = secondFace;
+  error.firstSheet = firstSheet;
+  error.secondSheet = secondSheet;
+
+  const SurfaceTopologyRegion *owner = find_region(sourceAuthority, region);
+  if (owner == nullptr) {
+    error.code = SurfaceIsolationSeamTransportCertificateErrorCode::UnknownRegion;
+    return error;
+  }
+  if (!std::binary_search(owner->isolation_seams().begin(),
+                          owner->isolation_seams().end(), seam)) {
+    error.code =
+        SurfaceIsolationSeamTransportCertificateErrorCode::SeamNotOwnedByRegion;
+    return error;
+  }
+  if (!(firstFace < secondFace)) {
+    error.code =
+        SurfaceIsolationSeamTransportCertificateErrorCode::NonCanonicalFaceOrder;
+    return error;
+  }
+  const SourceRegionFaceAuthority *first = owner->find_face(firstFace);
+  const SourceRegionFaceAuthority *second = owner->find_face(secondFace);
+  if (first == nullptr || second == nullptr) {
+    error.code =
+        SurfaceIsolationSeamTransportCertificateErrorCode::FaceNotOwnedByRegion;
+    return error;
+  }
+  if (!face_contains_edge(firstFace, seam) || !face_contains_edge(secondFace, seam)) {
+    error.code =
+        SurfaceIsolationSeamTransportCertificateErrorCode::SeamIncidenceMismatch;
+    return error;
+  }
+  if (first->sheet != firstSheet || second->sheet != secondSheet) {
+    error.code =
+        SurfaceIsolationSeamTransportCertificateErrorCode::SheetOwnershipMismatch;
+    return error;
+  }
+  if (firstSheet == secondSheet) {
+    error.code = SurfaceIsolationSeamTransportCertificateErrorCode::SameSheet;
+    return error;
+  }
+  if (compose(forward, reverse) != authority::QuarterTurn{}) {
+    error.code =
+        SurfaceIsolationSeamTransportCertificateErrorCode::NonReciprocalTransport;
+    return error;
+  }
+  return SurfaceIsolationSeamTransportCertificate(
+      region, seam, transition, firstFace, secondFace, firstSheet, secondSheet,
+      forward, reverse);
+}
+
+SurfacePeriodicHolonomy::ConstructionResult SurfacePeriodicHolonomy::make(
+    authority::PeriodicRelationId id,
+    authority::TopologyRegionId sourceTopologyRegion,
+    authority::GridAutomorphism action, authority::CanonicalRoute route,
+    authority::CanonicalRoute cutRoute) {
+  SurfacePeriodicHolonomyError error;
+  error.id = id;
+  error.region = sourceTopologyRegion;
+  if (action.shift.x == 0 && action.shift.y == 0) {
+    error.code = SurfacePeriodicHolonomyErrorCode::ZeroTranslation;
+    return error;
+  }
+  if (route.empty()) {
+    error.code = SurfacePeriodicHolonomyErrorCode::MissingRoute;
+    return error;
+  }
+  if (cutRoute.empty()) {
+    error.code = SurfacePeriodicHolonomyErrorCode::MissingCutRoute;
+    return error;
+  }
+  return SurfacePeriodicHolonomy(id, sourceTopologyRegion, action,
+                                 std::move(route), std::move(cutRoute));
+}
+
+SurfacePhaseFrontProduct::ConstructionResult SurfacePhaseFrontProduct::make(
+    int gridU, int gridV, SourceTopologyRegions sourceTopologyRegions,
+    std::vector<SurfaceIsolationSeamTransportCertificate>
+        isolationSeamTransportCertificates,
+    std::vector<SurfacePeriodicHolonomy> periodicHolonomies,
+    std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases,
+    std::vector<SurfaceFrontEdge> edges,
+    std::vector<SurfaceFrontEvent> events,
+    std::vector<SurfacePhaseFrontCell> cells) {
+  SurfacePhaseFrontProductError error;
+  if (sourceTopologyRegions.regions().empty() ||
+      sourceTopologyRegions.face_count() == 0U) {
+    error.code = SurfacePhaseFrontProductErrorCode::InvalidSourceAuthority;
+    return error;
+  }
+  if (cells.empty()) {
+    error.code = SurfacePhaseFrontProductErrorCode::EmptyCells;
+    return error;
+  }
+  if (edges.empty()) {
+    error.code = SurfacePhaseFrontProductErrorCode::EmptyEdges;
+    return error;
+  }
+
+  std::map<authority::CellId, const SurfacePhaseFrontCell *> cellById;
+  for (const SurfacePhaseFrontCell &cell : cells) {
+    if (!cellById.emplace(cell.id, &cell).second) {
+      error.code = SurfacePhaseFrontProductErrorCode::DuplicateCellId;
+      error.cell = cell.id;
+      return error;
+    }
+    if (find_region(sourceTopologyRegions, cell.sourceTopologyRegion) == nullptr) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidCellRegion;
+      error.cell = cell.id;
+      error.region = cell.sourceTopologyRegion;
+      return error;
+    }
+  }
+
+  std::map<authority::PeriodicRelationId, const SurfacePeriodicHolonomy *>
+      relationById;
+  for (const SurfacePeriodicHolonomy &relation : periodicHolonomies) {
+    if (!relationById.emplace(relation.id(), &relation).second) {
+      error.code = SurfacePhaseFrontProductErrorCode::DuplicatePeriodicRelationId;
+      error.periodicRelation = relation.id();
+      return error;
+    }
+    if (find_region(sourceTopologyRegions, relation.sourceTopologyRegion()) == nullptr) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidPeriodicRelationRegion;
+      error.periodicRelation = relation.id();
+      error.region = relation.sourceTopologyRegion();
+      return error;
+    }
+  }
+
+  for (std::size_t edgeIndex = 0; edgeIndex < edges.size(); ++edgeIndex) {
+    const SurfaceFrontEdge &edge = edges[edgeIndex];
+    const auto cellOwner = cellById.find(edge.filledCell);
+    if (cellOwner == cellById.end()) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidEdgeCell;
+      error.edge = static_cast<int>(edgeIndex);
+      error.cell = edge.filledCell;
+      return error;
+    }
+    if (cellOwner->second->sourceTopologyRegion != edge.sourceTopologyRegion ||
+        find_region(sourceTopologyRegions, edge.sourceTopologyRegion) == nullptr) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidEdgeRegion;
+      error.edge = static_cast<int>(edgeIndex);
+      error.region = edge.sourceTopologyRegion;
+      return error;
+    }
+    if (edge.oppositeEdge >= 0) {
+      if (edge.oppositeEdge >= static_cast<int>(edges.size()) ||
+          edges[static_cast<std::size_t>(edge.oppositeEdge)].oppositeEdge !=
+              static_cast<int>(edgeIndex)) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidOppositeEdge;
+        error.edge = static_cast<int>(edgeIndex);
+        return error;
+      }
+    }
+    if (edge.boundaryKind == SurfaceFrontBoundaryKind::PeriodicCut) {
+      if (!edge.periodicRelation.has_value()) {
+        error.code = SurfacePhaseFrontProductErrorCode::MissingPeriodicRelationOwner;
+        error.edge = static_cast<int>(edgeIndex);
+        return error;
+      }
+      const auto owner = relationById.find(*edge.periodicRelation);
+      if (owner == relationById.end() ||
+          owner->second->sourceTopologyRegion() != edge.sourceTopologyRegion) {
+        error.code = SurfacePhaseFrontProductErrorCode::InvalidPeriodicRelationOwner;
+        error.edge = static_cast<int>(edgeIndex);
+        error.periodicRelation = edge.periodicRelation;
+        return error;
+      }
+    } else if (edge.periodicRelation.has_value()) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidPeriodicRelationOwner;
+      error.edge = static_cast<int>(edgeIndex);
+      error.periodicRelation = edge.periodicRelation;
+      return error;
+    }
+  }
+
+  for (std::size_t eventIndex = 0; eventIndex < events.size(); ++eventIndex) {
+    const SurfaceFrontEvent &event = events[eventIndex];
+    if (event.firstEdge < 0 || event.firstEdge >= static_cast<int>(edges.size()) ||
+        event.secondEdge >= static_cast<int>(edges.size())) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidEventEdge;
+      error.event = static_cast<int>(eventIndex);
+      return error;
+    }
+  }
+
+  std::set<std::pair<authority::TopologyRegionId,
+                     authority::SourceEdgeTopologyKey>> certificateKeys;
+  for (const SurfaceIsolationSeamTransportCertificate &certificate :
+       isolationSeamTransportCertificates) {
+    const auto key = std::pair{certificate.region(), certificate.seam()};
+    if (!certificateKeys.insert(key).second) {
+      error.code = SurfacePhaseFrontProductErrorCode::DuplicateIsolationCertificate;
+      error.region = certificate.region();
+      return error;
+    }
+  }
+  std::set<std::pair<authority::TopologyRegionId,
+                     authority::SourceEdgeTopologyKey>> expectedCertificateKeys;
+  for (const SurfaceTopologyRegion &region : sourceTopologyRegions.regions()) {
+    for (const authority::SourceEdgeTopologyKey &seam : region.isolation_seams()) {
+      expectedCertificateKeys.emplace(region.id(), seam);
+    }
+  }
+  if (certificateKeys != expectedCertificateKeys) {
+    error.code = SurfacePhaseFrontProductErrorCode::IsolationCertificateBijectionMismatch;
+    return error;
+  }
+
+  std::set<authority::TopologyRegionId> boundedDiskRegions;
+  for (const SurfaceBoundedDiskBoundaryPhase &phase : boundedDiskBoundaryPhases) {
+    if (find_region(sourceTopologyRegions, phase.sourceTopologyRegion) == nullptr) {
+      error.code = SurfacePhaseFrontProductErrorCode::InvalidBoundedDiskRegion;
+      error.region = phase.sourceTopologyRegion;
+      return error;
+    }
+    if (!boundedDiskRegions.insert(phase.sourceTopologyRegion).second) {
+      error.code = SurfacePhaseFrontProductErrorCode::DuplicateBoundedDiskRegion;
+      error.region = phase.sourceTopologyRegion;
+      return error;
+    }
+  }
+
+  return SurfacePhaseFrontProduct(
+      gridU, gridV, std::move(sourceTopologyRegions),
+      std::move(isolationSeamTransportCertificates),
+      std::move(periodicHolonomies), std::move(boundedDiskBoundaryPhases),
+      std::move(edges), std::move(events), std::move(cells));
+}
+
+} // namespace directional::geometry
+
+namespace directional::geometry::surface_cell_tracing_detail {
+
+std::optional<SourceTopologyRegions> build_source_topology_regions(
+    const Eigen::MatrixXi &faces, const SurfaceCellTracingOptions &options) {
+  const int faceCount = static_cast<int>(faces.rows());
+  const bool rawLabelsEnabled = !options.sourceFaceComponents.empty() ||
+                                !options.sourceFaceSheets.empty();
+  const auto raw_labels_valid = [&]() {
+    if (!rawLabelsEnabled) return true;
+    if (static_cast<int>(options.sourceFaceComponents.size()) != faceCount ||
+        static_cast<int>(options.sourceFaceSheets.size()) != faceCount) {
+      return false;
+    }
+    for (int face = 0; face < faceCount; ++face) {
+      if (options.sourceFaceComponents[static_cast<std::size_t>(face)] < 0 ||
+          options.sourceFaceSheets[static_cast<std::size_t>(face)] < 0) {
+        return false;
+      }
+    }
+    return true;
+  };
+  const auto raw_component = [&](const int face) {
+    return face_label_or_default(options.sourceFaceComponents, face, 0);
+  };
+  const auto raw_sheet = [&](const int face) {
+    return face_label_or_default(options.sourceFaceSheets, face, 0);
+  };
+  const auto raw_share_component = [&](const int first, const int second) {
+    return raw_component(first) == raw_component(second);
+  };
+  const auto raw_compatible = [&](const int first, const int second) {
+    return raw_share_component(first, second) &&
+           raw_sheet(first) == raw_sheet(second);
+  };
+  if (faces.cols() != 3 || faceCount <= 0 || !raw_labels_valid()) {
+    return std::nullopt;
+  }
+
+  int maxVertex = -1;
+  for (int face = 0; face < faceCount; ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      maxVertex = std::max(maxVertex, faces(face, corner));
+    }
+  }
+  if (maxVertex < 0) {
+    return std::nullopt;
+  }
+  const std::size_t vertexExtent = static_cast<std::size_t>(maxVertex) + 1U;
+  int maxComponent = 0;
+  int maxSheet = 0;
+  for (int face = 0; face < faceCount; ++face) {
+    maxComponent = std::max(
+        maxComponent,
+        raw_component(face));
+    maxSheet = std::max(
+        maxSheet, raw_sheet(face));
+  }
+  const std::size_t componentExtent =
+      static_cast<std::size_t>(std::max(0, maxComponent)) + 1U;
+  const std::size_t sheetExtent =
+      static_cast<std::size_t>(std::max(0, maxSheet)) + 1U;
+
+  const auto fullIncident = edge_faces(faces);
+  std::vector<std::vector<std::pair<int, authority::SourceEdgeTopologyKey>>> adjacency(
+      static_cast<std::size_t>(faceCount));
+  for (const auto &[key, incident] : fullIncident) {
+    const int first = incident[0];
+    const int second = incident[1];
+    if (first < 0) {
+      return std::nullopt;
+    }
+    if (second < 0) {
+      continue;
+    }
+    if (first >= faceCount || second >= faceCount || first == second) {
+      return std::nullopt;
+    }
+    if (!raw_share_component(first, second)) {
+      continue;
+    }
+    if (options.hardFeatureEdges.count(key) != 0U) {
+      continue;
+    }
+    adjacency[static_cast<std::size_t>(first)].push_back({second, key});
+    adjacency[static_cast<std::size_t>(second)].push_back({first, key});
+  }
+  for (auto &neighbors : adjacency) {
+    std::sort(neighbors.begin(), neighbors.end());
+  }
+
+  struct ProvisionalRegion {
+    std::vector<int> faces;
+    std::vector<int> canonicalFaceTopology;
+  };
+  std::vector<ProvisionalRegion> provisional;
+  std::vector<bool> visited(static_cast<std::size_t>(faceCount), false);
+  const auto canonical_face = [&](const int face) {
+    std::array<int, 3> values{faces(face, 0), faces(face, 1), faces(face, 2)};
+    std::sort(values.begin(), values.end());
+    return values;
+  };
+  for (int seed = 0; seed < faceCount; ++seed) {
+    if (visited[static_cast<std::size_t>(seed)]) {
+      continue;
+    }
+    ProvisionalRegion region;
+    std::queue<int> queue;
+    queue.push(seed);
+    visited[static_cast<std::size_t>(seed)] = true;
+    while (!queue.empty()) {
+      const int face = queue.front();
+      queue.pop();
+      region.faces.push_back(face);
+      for (const auto &[neighbor, key] :
+           adjacency[static_cast<std::size_t>(face)]) {
+        (void)key;
+        if (!visited[static_cast<std::size_t>(neighbor)]) {
+          visited[static_cast<std::size_t>(neighbor)] = true;
+          queue.push(neighbor);
+        }
+      }
+    }
+    std::sort(region.faces.begin(), region.faces.end(),
+              [&](const int a, const int b) {
+                const auto ca = canonical_face(a);
+                const auto cb = canonical_face(b);
+                return ca != cb ? ca < cb : a < b;
+              });
+    for (const int face : region.faces) {
+      const auto key = canonical_face(face);
+      region.canonicalFaceTopology.insert(region.canonicalFaceTopology.end(),
+                                          key.begin(), key.end());
+    }
+    provisional.push_back(std::move(region));
+  }
+  std::sort(provisional.begin(), provisional.end(),
+            [](const ProvisionalRegion &a, const ProvisionalRegion &b) {
+              return a.canonicalFaceTopology < b.canonicalFaceTopology;
+            });
+
+  struct RegionScratch {
+    int id = -1;
+    int sourceComponent = -1;
+    int eulerCharacteristic = 0;
+    int boundaryLoopCount = 0;
+    std::vector<int> sourceFaces;
+    std::vector<int> sourceSheets;
+    std::vector<authority::SourceEdgeTopologyKey> boundaryEdges;
+    std::vector<authority::SourceEdgeTopologyKey> isolationSeams;
+  };
+
+  std::vector<int> scratchRegionByFace(static_cast<std::size_t>(faceCount), -1);
+  std::vector<RegionScratch> scratchRegions;
+  scratchRegions.reserve(provisional.size());
+  for (int regionId = 0; regionId < static_cast<int>(provisional.size());
+       ++regionId) {
+    const ProvisionalRegion &source =
+        provisional[static_cast<std::size_t>(regionId)];
+    if (source.faces.empty()) {
+      return std::nullopt;
+    }
+    RegionScratch region;
+    region.id = regionId;
+    region.sourceFaces = source.faces;
+    region.sourceComponent = raw_component(region.sourceFaces.front());
+    if (region.sourceComponent < 0) {
+      return std::nullopt;
+    }
+    region.sourceSheets.reserve(region.sourceFaces.size());
+    for (const int face : region.sourceFaces) {
+      scratchRegionByFace[static_cast<std::size_t>(face)] = regionId;
+      if (raw_component(face) !=
+          region.sourceComponent) {
+        return std::nullopt;
+      }
+      const int sheet = raw_sheet(face);
+      if (sheet < 0) {
+        return std::nullopt;
+      }
+      region.sourceSheets.push_back(sheet);
+    }
+    scratchRegions.push_back(std::move(region));
+  }
+
+  const auto scratch_internal_isolation_seam =
+      [&](const int firstFace, const int secondFace,
+          const authority::SourceEdgeTopologyKey &edgeKey) {
+        return firstFace >= 0 && secondFace >= 0 && firstFace < faceCount &&
+               secondFace < faceCount &&
+               scratchRegionByFace[static_cast<std::size_t>(firstFace)] >= 0 &&
+               scratchRegionByFace[static_cast<std::size_t>(firstFace)] ==
+                   scratchRegionByFace[static_cast<std::size_t>(secondFace)] &&
+               raw_labels_valid() &&
+               raw_share_component(firstFace, secondFace) &&
+               !raw_compatible(firstFace, secondFace) &&
+               options.hardFeatureEdges.count(edgeKey) == 0U &&
+               (!options.reliefBarriersEmbedded ||
+                options.reliefBarrierEdges.count(edgeKey) == 0U);
+      };
+
+  for (RegionScratch &region : scratchRegions) {
+    std::set<int> regionFaces(region.sourceFaces.begin(),
+                              region.sourceFaces.end());
+    std::set<int> regionVertices;
+    std::set<authority::SourceEdgeTopologyKey> regionEdges;
+    std::map<int, std::vector<int>> boundaryAdjacency;
+    for (const int face : region.sourceFaces) {
+      for (int corner = 0; corner < 3; ++corner) {
+        regionVertices.insert(faces(face, corner));
+        const int a = faces(face, corner);
+        const int b = faces(face, (corner + 1) % 3);
+        const authority::SourceEdgeTopologyKey key = edge_key(a, b, source_vertex_extent(faces));
+        regionEdges.insert(key);
+        const auto incident = fullIncident.find(key);
+        if (incident == fullIncident.end()) {
+          return std::nullopt;
+        }
+        const int first = incident->second[0];
+        const int second = incident->second[1];
+        const int opposite =
+            first == face ? second : (second == face ? first : -2);
+        if (opposite == -2) {
+          return std::nullopt;
+        }
+        if (opposite >= 0 && regionFaces.count(opposite) != 0U) {
+          if (face < opposite &&
+              scratch_internal_isolation_seam(face, opposite, key)) {
+            region.isolationSeams.push_back(key);
+          }
+          continue;
+        }
+        region.boundaryEdges.push_back(key);
+        boundaryAdjacency[a].push_back(b);
+        boundaryAdjacency[b].push_back(a);
+      }
+    }
+    std::sort(region.boundaryEdges.begin(), region.boundaryEdges.end());
+    region.boundaryEdges.erase(
+        std::unique(region.boundaryEdges.begin(), region.boundaryEdges.end()),
+        region.boundaryEdges.end());
+    std::sort(region.isolationSeams.begin(), region.isolationSeams.end());
+    region.isolationSeams.erase(
+        std::unique(region.isolationSeams.begin(), region.isolationSeams.end()),
+        region.isolationSeams.end());
+    region.eulerCharacteristic = static_cast<int>(regionVertices.size()) -
+                                 static_cast<int>(regionEdges.size()) +
+                                 static_cast<int>(region.sourceFaces.size());
+    std::set<int> unvisitedBoundary;
+    for (auto &[vertex, neighbors] : boundaryAdjacency) {
+      std::sort(neighbors.begin(), neighbors.end());
+      neighbors.erase(std::unique(neighbors.begin(), neighbors.end()),
+                      neighbors.end());
+      if (neighbors.size() != 2U) {
+        return std::nullopt;
+      }
+      unvisitedBoundary.insert(vertex);
+    }
+    while (!unvisitedBoundary.empty()) {
+      ++region.boundaryLoopCount;
+      std::vector<int> stack{*unvisitedBoundary.begin()};
+      while (!stack.empty()) {
+        const int vertex = stack.back();
+        stack.pop_back();
+        if (unvisitedBoundary.erase(vertex) == 0U) {
+          continue;
+        }
+        for (const int neighbor : boundaryAdjacency[vertex]) {
+          if (unvisitedBoundary.count(neighbor) != 0U) {
+            stack.push_back(neighbor);
+          }
+        }
+      }
+    }
+  }
+
+  const auto typed_face = [&](const int rawFace)
+      -> std::optional<authority::SourceFaceTopologyKey> {
+    if (rawFace < 0 || rawFace >= faceCount) {
+      return std::nullopt;
+    }
+    const auto a = authority::SourceVertexId::from_index(
+        faces(rawFace, 0), vertexExtent);
+    const auto b = authority::SourceVertexId::from_index(
+        faces(rawFace, 1), vertexExtent);
+    const auto c = authority::SourceVertexId::from_index(
+        faces(rawFace, 2), vertexExtent);
+    if (!a || !b || !c) {
+      return std::nullopt;
+    }
+    const auto key = authority::SourceFaceTopologyKey::make(
+        std::array<authority::SourceVertexId, 3>{a.value(), b.value(), c.value()});
+    return key ? std::optional<authority::SourceFaceTopologyKey>(key.value())
+               : std::nullopt;
+  };
+
+  std::vector<SurfaceTopologyRegion> publishedRegions;
+  publishedRegions.reserve(scratchRegions.size());
+  for (const RegionScratch &scratch : scratchRegions) {
+    const auto regionId = authority::TopologyRegionId::from_index(
+        scratch.id, scratchRegions.size());
+    const auto component = authority::SourceComponentId::from_index(
+        scratch.sourceComponent, componentExtent);
+    if (!regionId || !component ||
+        scratch.sourceFaces.size() != scratch.sourceSheets.size()) {
+      return std::nullopt;
+    }
+
+    std::vector<SourceRegionFaceAuthority> regionFaces;
+    regionFaces.reserve(scratch.sourceFaces.size());
+    for (std::size_t member = 0; member < scratch.sourceFaces.size(); ++member) {
+      const auto face = typed_face(scratch.sourceFaces[member]);
+      const auto sheet = authority::IsolationSheetId::from_index(
+          scratch.sourceSheets[member], sheetExtent);
+      if (!face || !sheet) {
+        return std::nullopt;
+      }
+      regionFaces.push_back(SourceRegionFaceAuthority{*face, sheet.value()});
+    }
+    std::sort(regionFaces.begin(), regionFaces.end(),
+              [](const SourceRegionFaceAuthority &a,
+                 const SourceRegionFaceAuthority &b) {
+                return a.topology < b.topology;
+              });
+
+    std::vector<authority::SourceEdgeTopologyKey> boundaryEdges =
+        scratch.boundaryEdges;
+    std::vector<authority::SourceEdgeTopologyKey> isolationSeams =
+        scratch.isolationSeams;
+    const auto region = SurfaceTopologyRegion::make(
+        regionId.value(), component.value(), std::move(regionFaces),
+        std::move(boundaryEdges), std::move(isolationSeams),
+        scratch.eulerCharacteristic, scratch.boundaryLoopCount);
+    if (!region) {
+      return std::nullopt;
+    }
+    publishedRegions.push_back(*region);
+  }
+  std::vector<authority::SourceFaceTopologyKey> rowTopology;
+  std::vector<authority::SourceComponentId> rowComponents;
+  std::vector<authority::IsolationSheetId> rowSheets;
+  rowTopology.reserve(static_cast<std::size_t>(faceCount));
+  rowComponents.reserve(static_cast<std::size_t>(faceCount));
+  rowSheets.reserve(static_cast<std::size_t>(faceCount));
+  for (int rawFace = 0; rawFace < faceCount; ++rawFace) {
+    const auto topology = typed_face(rawFace);
+    const auto component = authority::SourceComponentId::from_index(
+        raw_component(rawFace), componentExtent);
+    const auto sheet = authority::IsolationSheetId::from_index(
+        raw_sheet(rawFace), sheetExtent);
+    if (!topology || !component || !sheet) {
+      return std::nullopt;
+    }
+    rowTopology.push_back(*topology);
+    rowComponents.push_back(component.value());
+    rowSheets.push_back(sheet.value());
+  }
+  return SourceTopologyRegions::make(
+      std::move(rowTopology), rowComponents, rowSheets,
+      std::move(publishedRegions));
+}
+
+std::uint64_t surface_topology_region_hash_impl(const SurfaceTopologyRegion &region) {
+  std::uint64_t hash = 1469598103934665603ULL;
+  const auto consume = [&](const std::uint64_t value) {
+    hash ^= value;
+    hash *= 1099511628211ULL;
+  };
+  consume(region.id().index());
+  consume(region.component().index());
+  consume(static_cast<std::uint64_t>(region.euler_characteristic()));
+  consume(static_cast<std::uint64_t>(region.boundary_loop_count()));
+  for (const SourceRegionFaceAuthority &face : region.faces()) {
+    for (const authority::SourceVertexId vertex : face.topology.vertices()) {
+      consume(vertex.index());
+    }
+    consume(face.sheet.index());
+  }
+  for (const authority::SourceEdgeTopologyKey &edge :
+       region.boundary_edges()) {
+    consume(edge.first().index());
+    consume(edge.second().index());
+  }
+  for (const authority::SourceEdgeTopologyKey &edge :
+       region.isolation_seams()) {
+    consume(edge.first().index());
+    consume(edge.second().index());
+  }
+  return hash;
+}
+
+bool source_edge_is_internal_isolation_seam(
+    const SurfaceCellTracingOptions &options, const Eigen::MatrixXi &faces,
+    const std::vector<authority::TopologyRegionId> &regionByFace,
+    const int firstFace, const int secondFace, const authority::SourceEdgeTopologyKey &edgeKey) {
+  const int faceCount = faces.rows();
+  if (faceCount <= 0 || firstFace < 0 || secondFace < 0 ||
+      firstFace >= faceCount || secondFace >= faceCount ||
+      static_cast<int>(regionByFace.size()) != faceCount ||
+      regionByFace[static_cast<std::size_t>(firstFace)] !=
+          regionByFace[static_cast<std::size_t>(secondFace)] ||
+      !source_authority_valid(options, faces) ||
+      !source_faces_share_component(options, firstFace, secondFace) ||
+      source_faces_compatible(options, firstFace, secondFace) ||
+      options.hardFeatureEdges.count(edgeKey) != 0U ||
+      (options.reliefBarriersEmbedded &&
+       options.reliefBarrierEdges.count(edgeKey) != 0U)) {
+    return false;
+  }
+  return true;
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
 namespace directional::geometry::surface_cell_tracing_detail {
 
 bool trace_point_is_valid(const SurfaceTracePoint &point,
@@ -2061,7 +4038,7 @@ namespace directional::geometry::surface_cell_tracing_detail {
 IntrinsicSurfaceGraph build_intrinsic_surface_graph(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const SurfaceCellTracingOptions &options,
-    const std::set<std::uint64_t> &barrierEdges) {
+    const std::set<authority::SourceEdgeTopologyKey> &barrierEdges) {
   IntrinsicSurfaceGraph graph;
   graph.faceCount = static_cast<int>(faces.rows());
   graph.adjacency.resize(static_cast<std::size_t>(faces.rows() * 3));
@@ -2088,8 +4065,8 @@ IntrinsicSurfaceGraph build_intrinsic_surface_graph(
         !source_faces_share_component(options, pair[0], pair[1])) {
       continue;
     }
-    const int vertex0 = static_cast<int>(key >> 32u);
-    const int vertex1 = static_cast<int>(key & 0xffffffffu);
+    const int vertex0 = static_cast<int>(key.first().index());
+    const int vertex1 = static_cast<int>(key.second().index());
     for (const int vertex : {vertex0, vertex1}) {
       int firstCorner = -1;
       int secondCorner = -1;
@@ -2227,7 +4204,7 @@ namespace directional::geometry::surface_cell_tracing_detail {
 Eigen::VectorXd graph_distances_from_vertices(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
     const std::vector<int> &sourceVertices,
-    const std::set<std::uint64_t> &barrierEdges) {
+    const std::set<authority::SourceEdgeTopologyKey> &barrierEdges) {
   SurfaceCellTracingOptions options;
   const IntrinsicSurfaceGraph graph =
       build_intrinsic_surface_graph(vertices, faces, options, barrierEdges);
@@ -2271,13 +4248,13 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
     throw std::invalid_argument("surface seeds require a 3D triangle mesh.");
   }
   const int vertexCount = static_cast<int>(vertices.rows());
-  if (!surface_cell_tracing_detail::source_label_arrays_valid(
-          options, static_cast<int>(faces.rows()))) {
+  if (!surface_cell_tracing_detail::source_authority_valid(
+          options, faces)) {
     throw std::invalid_argument(
         "source face component/sheet labels must cover every source face.");
   }
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
-  const std::set<std::uint64_t> barrierEdges =
+  const std::set<authority::SourceEdgeTopologyKey> barrierEdges =
       surface_cell_tracing_detail::combined_barrier_edges(options);
   const auto incident =
       surface_cell_tracing_detail::incident_faces_by_vertex(vertexCount, faces);
@@ -2297,8 +4274,8 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
         SurfaceTracePoint point;
         point.face = sample.sourceFace;
         point.barycentric = sample.barycentric;
-        surface_cell_tracing_detail::append_seed(seeds, seen, point, provenance,
-                                                 rail.id);
+        surface_cell_tracing_detail::append_hard_rail_seed(
+            seeds, seen, point, provenance, rail.id);
         // A hard feature is embedded in both incident face charts. Seed both
         // sides so transverse field branches connect the rail to cells on each
         // side instead of depending on the arbitrary provenance face.
@@ -2309,7 +4286,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
           const int b =
               faces(sample.sourceFace, (sample.sourceEdge + 2) % 3);
           const auto found = edgeFaces.find(
-              surface_cell_tracing_detail::edge_key(a, b));
+              surface_cell_tracing_detail::edge_key(a, b, surface_cell_tracing_detail::source_vertex_extent(faces)));
           if (found != edgeFaces.end() && found->second[1] >= 0) {
             const int neighbor = found->second[0] == sample.sourceFace
                                      ? found->second[1]
@@ -2319,7 +4296,7 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
             opposite.barycentric =
                 surface_cell_tracing_detail::remap_barycentric_to_neighbor(
                     faces, sample.sourceFace, neighbor, sample.barycentric);
-            surface_cell_tracing_detail::append_seed(
+            surface_cell_tracing_detail::append_hard_rail_seed(
                 seeds, seen, opposite, provenance, rail.id);
           }
         }
@@ -2330,8 +4307,8 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
       if (pair[1] >= 0 && options.hardFeatureEdges.count(key) == 0) {
         continue;
       }
-      const int a = static_cast<int>(key >> 32u);
-      const int b = static_cast<int>(key & 0xffffffffu);
+      const int a = static_cast<int>(key.first().index());
+      const int b = static_cast<int>(key.second().index());
       const double h = 0.5 * (surface_cell_tracing_detail::target_size_at_vertex(
                                   targetSize, a, options.defaultTargetSize) +
                               surface_cell_tracing_detail::target_size_at_vertex(
@@ -2356,7 +4333,11 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
             seeds, seen, point,
             pair[1] < 0 ? SurfaceSeedProvenance::Boundary
                         : SurfaceSeedProvenance::Feature,
-            static_cast<int>(key & 0x7fffffff));
+            static_cast<int>((
+                (static_cast<std::uint64_t>(key.first().index()) *
+                 1099511628211ULL) ^
+                static_cast<std::uint64_t>(key.second().index())) &
+                0x7fffffffULL));
       }
     }
   }
@@ -2373,7 +4354,20 @@ std::vector<SurfaceTraceSeed> generate_deterministic_surface_seeds(
           provenance, vertex);
     }
   };
-  add_vertices(options.singularityVertices, SurfaceSeedProvenance::Singularity);
+  if (options.fieldAlignedNetwork != nullptr) {
+    for (const authority::SourceVertexId vertex :
+         options.fieldAlignedNetwork->singularity_vertices()) {
+      surface_cell_tracing_detail::append_seed(
+          seeds, seen,
+          surface_cell_tracing_detail::vertex_point(
+              static_cast<int>(vertex.index()), incident, faces),
+          SurfaceSeedProvenance::Singularity,
+          static_cast<int>(vertex.index()));
+    }
+  } else {
+    add_vertices(options.singularityVertices,
+                 SurfaceSeedProvenance::Singularity);
+  }
   add_vertices(options.reliefCriticalVertices,
                SurfaceSeedProvenance::ReliefCritical);
   add_vertices(options.reliefRootVertices, SurfaceSeedProvenance::ReliefCritical);
@@ -2525,7 +4519,9 @@ SurfaceTraceSegment reversed_trace_segment(SurfaceTraceSegment segment) {
   std::swap(segment.railT0, segment.railT1);
   segment.sign = -segment.sign;
   segment.railSideSign = -segment.railSideSign;
-  segment.matching = (4 - (segment.matching % 4) + 4) % 4;
+  segment.matching = static_cast<int>(
+      authority::QuarterTurn::from_integer(segment.matching).inverse().value());
+  segment.entryRoute = segment.entryRoute.reversed();
   return segment;
 }
 
@@ -2892,17 +4888,18 @@ SurfaceTraceResult trace_surface_field(
     throw std::invalid_argument("face axes must have shape (#F, 3).");
   }
   const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
-  const std::set<std::uint64_t> barrierEdges =
+  const std::set<authority::SourceEdgeTopologyKey> barrierEdges =
       surface_cell_tracing_detail::combined_barrier_edges(options);
   const auto edgeMatchingIndices =
       surface_cell_tracing_detail::edge_matching_indices(edgeFaces);
   const surface_cell_tracing_detail::EdgeTransitionLookup transitionLookup =
-      edgeTransitions != nullptr
-          ? surface_cell_tracing_detail::edge_transition_lookup(*edgeTransitions)
-          : surface_cell_tracing_detail::EdgeTransitionLookup{};
+      surface_cell_tracing_detail::authoritative_edge_transition_lookup(
+          options.fieldTransportAtlas, edgeTransitions,
+          surface_cell_tracing_detail::source_vertex_extent(faces));
   const surface_cell_tracing_detail::RailIntervalBuildResult railBuild =
       surface_cell_tracing_detail::rail_interval_refs(
-          options.authoritativeRails, vertices, faces, edgeFaces);
+          options.authoritativeRails, vertices, faces, edgeFaces,
+          options.fieldAlignedNetwork);
   SurfaceTraceResult result;
   if (railBuild.status != surface_cell_tracing_detail::RailBuildStatus::Valid) {
     result.termination = TraceTerminationReason::FieldMetadata;
@@ -2914,8 +4911,8 @@ SurfaceTraceResult trace_surface_field(
     result.termination = TraceTerminationReason::FieldMetadata;
     return result;
   }
-  if (!surface_cell_tracing_detail::source_label_arrays_valid(
-          options, static_cast<int>(faces.rows()))) {
+  if (!surface_cell_tracing_detail::source_authority_valid(
+          options, faces)) {
     result.termination = TraceTerminationReason::FieldMetadata;
     return result;
   }
@@ -2959,8 +4956,8 @@ SurfaceTraceResult trace_surface_field(
       surface_cell_tracing_detail::hit_vertex(current.barycentric);
   if (initialVertexCorner >= 0) {
     const int initialVertex = faces(current.face, initialVertexCorner);
-    if (surface_cell_tracing_detail::contains_vertex(
-            options.singularityVertices, initialVertex) &&
+    if (surface_cell_tracing_detail::tracing_is_singularity_vertex(
+            options, faces, initialVertex) &&
         seed.provenance != SurfaceSeedProvenance::Singularity) {
       result.termination = TraceTerminationReason::Singularity;
       return result;
@@ -3037,8 +5034,7 @@ SurfaceTraceResult trace_surface_field(
       }
       const int a = faces(current.face, (initialEdge + 1) % 3);
       const int b = faces(current.face, (initialEdge + 2) % 3);
-      const std::uint64_t key =
-          surface_cell_tracing_detail::edge_key(a, b);
+      const authority::SourceEdgeTopologyKey key = surface_cell_tracing_detail::edge_key(a, b, surface_cell_tracing_detail::source_vertex_extent(faces));
       const bool hardBarrier = options.hardFeatureEdges.count(key) != 0;
       const bool reliefBarrier =
           options.reliefBarriersEmbedded &&
@@ -3087,7 +5083,7 @@ SurfaceTraceResult trace_surface_field(
           result.termination = TraceTerminationReason::SourceSheet;
           return result;
         }
-        const surface_cell_tracing_detail::BranchTransitionResult transition =
+        surface_cell_tracing_detail::BranchTransitionResult transition =
             surface_cell_tracing_detail::resolve_branch_transition(
                 vertices, faces, faceAxisX, faceAxisY, edgeFaces,
                 edgeMatchingIndices, transitionLookup, key, current.face,
@@ -3097,6 +5093,18 @@ SurfaceTraceResult trace_surface_field(
           result.termination = TraceTerminationReason::FieldMetadata;
           return result;
         }
+        const int nextEntryEdge =
+            surface_cell_tracing_detail::local_edge_for_key(faces, nextFace,
+                                                            key);
+        if (nextEntryEdge < 0) {
+          result.termination = TraceTerminationReason::FieldMetadata;
+          return result;
+        }
+        if (!surface_cell_tracing_detail::orient_transition_into_face_from_edge(
+                vertices, faces, nextFace, nextEntryEdge, transition)) {
+          result.termination = TraceTerminationReason::Degenerate;
+          return result;
+        }
         current.barycentric =
             surface_cell_tracing_detail::remap_barycentric_to_neighbor(
                 faces, current.face, nextFace, current.barycentric);
@@ -3104,13 +5112,7 @@ SurfaceTraceResult trace_surface_field(
         currentFamily = transition.family;
         currentSign = transition.sign;
         direction = transition.direction;
-        entryEdge =
-            surface_cell_tracing_detail::local_edge_for_key(faces, nextFace,
-                                                            key);
-        if (entryEdge < 0) {
-          result.termination = TraceTerminationReason::FieldMetadata;
-          return result;
-        }
+        entryEdge = nextEntryEdge;
       }
     }
   }
@@ -3269,8 +5271,8 @@ SurfaceTraceResult trace_surface_field(
         surface_cell_tracing_detail::hit_vertex(nextBary);
     if (hitVertexCorner >= 0) {
       const int hitVertex = faces(current.face, hitVertexCorner);
-      if (surface_cell_tracing_detail::contains_vertex(
-              options.singularityVertices, hitVertex)) {
+      if (surface_cell_tracing_detail::tracing_is_singularity_vertex(
+              options, faces, hitVertex)) {
         result.termination = TraceTerminationReason::Singularity;
         return result;
       }
@@ -3355,7 +5357,7 @@ SurfaceTraceResult trace_surface_field(
 
     const int a = faces(current.face, (hitCorner + 1) % 3);
     const int b = faces(current.face, (hitCorner + 2) % 3);
-    const std::uint64_t key = surface_cell_tracing_detail::edge_key(a, b);
+    const authority::SourceEdgeTopologyKey key = surface_cell_tracing_detail::edge_key(a, b, surface_cell_tracing_detail::source_vertex_extent(faces));
     if (options.hardFeatureEdges.count(key) != 0) {
       const Eigen::RowVector3d edgeDirection =
           (surface_cell_tracing_detail::row3(vertices, b) -
@@ -3410,7 +5412,7 @@ SurfaceTraceResult trace_surface_field(
     nextPoint.barycentric =
         surface_cell_tracing_detail::remap_barycentric_to_neighbor(
             faces, current.face, nextFace, nextBary);
-    const surface_cell_tracing_detail::BranchTransitionResult transition =
+    surface_cell_tracing_detail::BranchTransitionResult transition =
         surface_cell_tracing_detail::resolve_branch_transition(
             vertices, faces, faceAxisX, faceAxisY, edgeFaces,
             edgeMatchingIndices, transitionLookup, key, current.face, nextFace,
@@ -3424,6 +5426,11 @@ SurfaceTraceResult trace_surface_field(
         surface_cell_tracing_detail::local_edge_for_key(faces, nextFace, key);
     if (nextEntryEdge < 0) {
       result.termination = TraceTerminationReason::FieldMetadata;
+      return result;
+    }
+    if (!surface_cell_tracing_detail::orient_transition_into_face_from_edge(
+            vertices, faces, nextFace, nextEntryEdge, transition)) {
+      result.termination = TraceTerminationReason::Degenerate;
       return result;
     }
     result.segments.back().matching = transition.matching;
@@ -3716,7 +5723,5648 @@ SurfaceCellProposal make_surface_cell_proposal(
 
 } // namespace directional::geometry
 
+namespace directional::geometry::surface_cell_tracing_detail {
+
+namespace {
+
+void set_phase_front_failure(
+    SurfacePhaseFrontFailure &failure,
+    const SurfacePhaseFrontFailureReason reason, const int cell = -1,
+    const int side = -1, const int face = -1, const int targetFace = -1,
+    const int sourceVertex = -1, const int sourceEdge = -1,
+    const int secondarySourceEdge = -1) {
+  if (failure.reason != SurfacePhaseFrontFailureReason::None) {
+    return;
+  }
+  failure.reason = reason;
+  failure.cell = cell;
+  failure.side = side;
+  failure.face = face;
+  failure.targetFace = targetFace;
+  failure.sourceVertex = sourceVertex;
+  failure.sourceEdge = sourceEdge;
+  failure.secondarySourceEdge = secondarySourceEdge;
+}
+
+struct UniformPhaseFrame {
+  Eigen::RowVector3d origin = Eigen::RowVector3d::Zero();
+  Eigen::RowVector3d axisU = Eigen::RowVector3d::Zero();
+  Eigen::RowVector3d axisV = Eigen::RowVector3d::Zero();
+  Eigen::RowVector3d normal = Eigen::RowVector3d::Zero();
+  double minU = 0.0;
+  double maxU = 0.0;
+  double minV = 0.0;
+  double maxV = 0.0;
+  /// Per-face local branch that represents the global +U lattice direction.
+  std::vector<int> faceBranchRotation;
+  /// Canonical full-source chart authority for each selected source face.
+  /// Field branch orientation remains separately owned by faceBranchRotation.
+  std::vector<std::optional<authority::FieldChartId>> faceChart;
+};
+
+bool phase_front_cells_have_field_chart_authority(
+    const std::vector<SurfacePhaseFrontCell> &cells) {
+  for (const SurfacePhaseFrontCell &cell : cells) {
+    for (const LocalLatticeState &state : cell.lattice) {
+      if (!state.sourceChart.has_value()) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+Eigen::Vector2d phase_uv(const UniformPhaseFrame &frame,
+                         const Eigen::RowVector3d &point) {
+  const Eigen::RowVector3d offset = point - frame.origin;
+  return {offset.dot(frame.axisU), offset.dot(frame.axisV)};
+}
+
+bool face_barycentric_from_uv(const Eigen::MatrixXd &vertices,
+                              const Eigen::MatrixXi &faces,
+                              const UniformPhaseFrame &frame, const int face,
+                              const Eigen::Vector2d &uv,
+                              Eigen::RowVector3d &barycentric) {
+  const Eigen::Vector2d a =
+      phase_uv(frame, row3(vertices, faces(face, 0)));
+  const Eigen::Vector2d b =
+      phase_uv(frame, row3(vertices, faces(face, 1)));
+  const Eigen::Vector2d c =
+      phase_uv(frame, row3(vertices, faces(face, 2)));
+  Eigen::Matrix2d matrix;
+  matrix.col(0) = b - a;
+  matrix.col(1) = c - a;
+  const double determinant = matrix.determinant();
+  if (!std::isfinite(determinant) || std::abs(determinant) <= 1.0e-18) {
+    return false;
+  }
+  const Eigen::Vector2d coordinates = matrix.inverse() * (uv - a);
+  if (!coordinates.allFinite()) {
+    return false;
+  }
+  barycentric << 1.0 - coordinates.x() - coordinates.y(), coordinates.x(),
+      coordinates.y();
+  return barycentric.allFinite();
+}
+
+bool point_on_source(const Eigen::MatrixXd &vertices,
+                     const Eigen::MatrixXi &faces,
+                     const UniformPhaseFrame &frame,
+                     const std::vector<authority::SourceFaceId> &activeFaces,
+                     const Eigen::Vector2d &uv, SurfaceTracePoint &point) {
+  constexpr double tolerance = 1.0e-10;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return false;
+    const int face = *faceRow;
+    Eigen::RowVector3d barycentric;
+    if (!face_barycentric_from_uv(vertices, faces, frame, face, uv,
+                                  barycentric) ||
+        barycentric.minCoeff() < -tolerance ||
+        barycentric.maxCoeff() > 1.0 + tolerance) {
+      continue;
+    }
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(barycentric[corner]) <= tolerance) {
+        barycentric[corner] = 0.0;
+      } else if (std::abs(barycentric[corner] - 1.0) <= tolerance) {
+        barycentric[corner] = 1.0;
+      }
+    }
+    const double sum = barycentric.sum();
+    if (!(std::abs(sum) > 1.0e-18)) {
+      continue;
+    }
+    barycentric /= sum;
+    point.face = face;
+    point.barycentric = barycentric;
+    return true;
+  }
+  return false;
+}
+
+bool source_edge_provenance(
+    const authority::SourceEdgeTopologyKey &edgeKey,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    int &sourceEdge);
+
+bool build_planar_phase_frame(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const std::vector<authority::SourceFaceId> &activeFaces,
+    const SourceTopologyRegions &sourceAuthority,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    const SurfaceCellTracingOptions *tracingOptions,
+    SurfacePhaseFrontFailure &failure, UniformPhaseFrame &frame) {
+  if (vertices.rows() < 3 || faces.rows() < 1 || faces.cols() != 3 ||
+      faceAxisX.rows() != faces.rows() || faceAxisY.rows() != faces.rows() ||
+      activeFaces.empty()) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidInput);
+    return false;
+  }
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    if (!source_face_row(faceId, faces.rows()).has_value()) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidInput);
+      return false;
+    }
+  }
+  const auto referenceRow = source_face_row(activeFaces.front(), faces.rows());
+  if (!referenceRow.has_value()) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InvalidInput);
+    return false;
+  }
+  const int referenceFace = *referenceRow;
+  frame.origin = row3(vertices, faces(referenceFace, 0));
+  frame.normal = face_normal(vertices, faces, referenceFace);
+  if (!(frame.normal.norm() > 0.0)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DegenerateReferenceFrame);
+    return false;
+  }
+  frame.axisU = project_tangent(faceAxisX.row(referenceFace), frame.normal);
+  frame.axisV = project_tangent(faceAxisY.row(referenceFace), frame.normal);
+  frame.axisV -= frame.axisV.dot(frame.axisU) * frame.axisU;
+  if (!(frame.axisU.norm() > 0.0) || !(frame.axisV.norm() > 0.0)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DegenerateReferenceFrame);
+    return false;
+  }
+  frame.axisU.normalize();
+  frame.axisV.normalize();
+  if (cross3(frame.axisU, frame.axisV).dot(frame.normal) < 0.0) {
+    frame.axisV *= -1.0;
+  }
+
+  std::set<int> activeVertices;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return false;
+    const int face = *faceRow;
+    for (int corner = 0; corner < 3; ++corner) {
+      activeVertices.insert(faces(face, corner));
+    }
+  }
+  double scale = 0.0;
+  for (const int vertex : activeVertices) {
+    scale = std::max(scale, (row3(vertices, vertex) - frame.origin).norm());
+  }
+  const double planeTolerance = std::max(1.0e-10, 1.0e-9 * scale);
+  for (const int vertex : activeVertices) {
+    if (std::abs((row3(vertices, vertex) - frame.origin).dot(frame.normal)) >
+        planeTolerance) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonPlanarSource, -1, -1, -1, -1, vertex);
+      return false;
+    }
+  }
+
+  SourceChartTransitionGraph canonicalSourceCharts(
+      &faces, &sourceAuthority,
+      tracingOptions != nullptr ? tracingOptions->hardFeatureEdges
+                                : empty_hard_feature_edges());
+  if (!canonicalSourceCharts.available()) {
+    set_phase_front_failure(
+        failure, SurfacePhaseFrontFailureReason::MissingFaceState);
+    return false;
+  }
+
+  frame.faceBranchRotation.assign(static_cast<std::size_t>(faces.rows()), -1);
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return false;
+    const int face = *faceRow;
+    const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
+    if (normal.dot(frame.normal) < 1.0 - 1.0e-8) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::InconsistentFaceOrientation, -1, -1, face);
+      return false;
+    }
+    int bestBranch = -1;
+    double bestAlignment = -std::numeric_limits<double>::infinity();
+    for (int branch = 0; branch < 4; ++branch) {
+      int family = 0;
+      int sign = 1;
+      family_sign_from_branch(branch, family, sign);
+      const Eigen::RowVector3d direction = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, face, family, sign), normal);
+      const double alignment = direction.dot(frame.axisU);
+      if (alignment > bestAlignment) {
+        bestAlignment = alignment;
+        bestBranch = branch;
+      }
+    }
+    if (bestBranch < 0 || bestAlignment < 1.0 - 1.0e-8) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::IncompatibleFaceBranch, -1, -1, face);
+      return false;
+    }
+    int vFamily = 0;
+    int vSign = 1;
+    family_sign_from_branch(normalized_branch(bestBranch + 1), vFamily, vSign);
+    const Eigen::RowVector3d localV = project_tangent(
+        axis_for_family(faceAxisX, faceAxisY, face, vFamily, vSign), normal);
+    if (localV.dot(frame.axisV) < 1.0 - 1.0e-8) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::IncompatibleSecondaryBranch, -1, -1, face);
+      return false;
+    }
+    frame.faceBranchRotation[static_cast<std::size_t>(face)] = bestBranch;
+  }
+
+  const auto incident = edge_faces(faces, activeFaces);
+  const auto &matchingIndices = sourceMatchingIndices;
+  // A prescribed raw field may intentionally omit precomputed matching and
+  // transition containers. Treat empty containers as absent metadata so the
+  // planar phase front can prove an exact physical zero-turn transport. Once
+  // any authoritative transition metadata is present, keep the strict
+  // fail-closed lookup and reciprocal validation below.
+  const bool hasEdgeTransitions =
+      edgeTransitions != nullptr && !edgeTransitions->empty();
+  const bool hasEdgeMatching =
+      edgeMatching != nullptr && edgeMatching->size() > 0;
+  const bool hasEdgeEffort = edgeEffort != nullptr && edgeEffort->size() > 0;
+  const auto *effectiveTransitions =
+      hasEdgeTransitions ? edgeTransitions : nullptr;
+  const auto *effectiveMatching = hasEdgeMatching ? edgeMatching : nullptr;
+  const auto *effectiveEffort = hasEdgeEffort ? edgeEffort : nullptr;
+  const EdgeTransitionLookup transitionLookup =
+      authoritative_edge_transition_lookup(
+          tracingOptions != nullptr ? tracingOptions->fieldTransportAtlas
+                                    : nullptr,
+          effectiveTransitions, source_vertex_extent(faces));
+  if (transitionLookup.duplicate) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::DuplicateTransitionMetadata);
+    return false;
+  }
+
+  for (const auto &[key, pair] : incident) {
+    if (pair[0] < 0 || pair[1] < 0) {
+      continue;
+    }
+    const int first = pair[0];
+    const int second = pair[1];
+    for (int globalBranch = 0; globalBranch < 2; ++globalBranch) {
+      const int sourceBranch = normalized_branch(
+          frame.faceBranchRotation[static_cast<std::size_t>(first)] +
+          globalBranch);
+      int sourceFamily = 0;
+      int sourceSign = 1;
+      family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+      const Eigen::RowVector3d sourceDirection = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, first, sourceFamily,
+                          sourceSign),
+          face_normal(vertices, faces, first));
+      const BranchTransitionResult forward = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, key, first, second, sourceFamily, sourceSign,
+          sourceDirection, effectiveMatching, effectiveEffort,
+          effectiveTransitions);
+      const int expectedTargetBranch = normalized_branch(
+          frame.faceBranchRotation[static_cast<std::size_t>(second)] +
+          globalBranch);
+      if (!forward.valid ||
+          branch_from_family_sign(forward.family, forward.sign) !=
+              expectedTargetBranch) {
+        int sourceEdge = -1;
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
+        const auto reason =
+            tracingOptions != nullptr &&
+                    !source_faces_compatible(*tracingOptions, first, second)
+                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
+                : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition;
+        set_phase_front_failure(failure, reason, -1, -1, first, second, -1, sourceEdge);
+        return false;
+      }
+
+      int targetFamily = 0;
+      int targetSign = 1;
+      family_sign_from_branch(expectedTargetBranch, targetFamily, targetSign);
+      const Eigen::RowVector3d targetDirection = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, second, targetFamily,
+                          targetSign),
+          face_normal(vertices, faces, second));
+      const BranchTransitionResult reverse = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, key, second, first, targetFamily, targetSign,
+          targetDirection, effectiveMatching, effectiveEffort,
+          effectiveTransitions);
+      if (!reverse.valid ||
+          branch_from_family_sign(reverse.family, reverse.sign) !=
+              sourceBranch ||
+          normalized_branch(forward.matching + reverse.matching) != 0) {
+        int sourceEdge = -1;
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
+        const auto reason =
+            tracingOptions != nullptr &&
+                    !source_faces_compatible(*tracingOptions, first, second)
+                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
+                : SurfacePhaseFrontFailureReason::NonReciprocalOrdinaryTransition;
+        set_phase_front_failure(failure, reason, -1, -1, first, second, -1, sourceEdge);
+        return false;
+      }
+    }
+  }
+
+  frame.faceChart.assign(static_cast<std::size_t>(faces.rows()), std::nullopt);
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return false;
+    const int face = *faceRow;
+    const auto canonicalChart = canonicalSourceCharts.chart(face);
+    if (!canonicalChart.has_value()) {
+      set_phase_front_failure(
+          failure, SurfacePhaseFrontFailureReason::MissingFaceState,
+          -1, -1, face);
+      return false;
+    }
+    frame.faceChart[static_cast<std::size_t>(face)] =
+        canonicalChart->chart;
+  }
+
+  frame.minU = frame.minV = std::numeric_limits<double>::infinity();
+  frame.maxU = frame.maxV = -std::numeric_limits<double>::infinity();
+  for (const int vertex : activeVertices) {
+    const Eigen::Vector2d uv = phase_uv(frame, row3(vertices, vertex));
+    frame.minU = std::min(frame.minU, uv.x());
+    frame.maxU = std::max(frame.maxU, uv.x());
+    frame.minV = std::min(frame.minV, uv.y());
+    frame.maxV = std::max(frame.maxV, uv.y());
+  }
+  const double width = frame.maxU - frame.minU;
+  const double height = frame.maxV - frame.minV;
+  if (!(width > planeTolerance) || !(height > planeTolerance)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain);
+    return false;
+  }
+
+  double projectedArea = 0.0;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return false;
+    const int face = *faceRow;
+    const Eigen::Vector2d a =
+        phase_uv(frame, row3(vertices, faces(face, 0)));
+    const Eigen::Vector2d b =
+        phase_uv(frame, row3(vertices, faces(face, 1)));
+    const Eigen::Vector2d c =
+        phase_uv(frame, row3(vertices, faces(face, 2)));
+    projectedArea += 0.5 * std::abs((b - a).x() * (c - a).y() -
+                                    (b - a).y() * (c - a).x());
+  }
+  if (std::abs(projectedArea - width * height) >
+      1.0e-8 * std::max(1.0, width * height)) {
+    set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain);
+    return false;
+  }
+
+  const double boundaryTolerance = 1.0e-8 * std::max(width, height);
+  for (const auto &[key, pair] : incident) {
+    if (pair[1] >= 0) {
+      continue;
+    }
+    const int face = pair[0];
+    int localEdge = -1;
+    for (int edge = 0; edge < 3; ++edge) {
+      if (local_edge_key(faces, face, edge) == key) {
+        localEdge = edge;
+        break;
+      }
+    }
+    if (localEdge < 0) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain, -1, -1, face);
+      return false;
+    }
+    const Eigen::Vector2d a = phase_uv(
+        frame, row3(vertices, faces(face, (localEdge + 1) % 3)));
+    const Eigen::Vector2d b = phase_uv(
+        frame, row3(vertices, faces(face, (localEdge + 2) % 3)));
+    const bool onU =
+        (std::abs(a.x() - frame.minU) <= boundaryTolerance &&
+         std::abs(b.x() - frame.minU) <= boundaryTolerance) ||
+        (std::abs(a.x() - frame.maxU) <= boundaryTolerance &&
+         std::abs(b.x() - frame.maxU) <= boundaryTolerance);
+    const bool onV =
+        (std::abs(a.y() - frame.minV) <= boundaryTolerance &&
+         std::abs(b.y() - frame.minV) <= boundaryTolerance) ||
+        (std::abs(a.y() - frame.maxV) <= boundaryTolerance &&
+         std::abs(b.y() - frame.maxV) <= boundaryTolerance);
+    if (!onU && !onV) {
+      set_phase_front_failure(failure, SurfacePhaseFrontFailureReason::NonRectangularDomain, -1, -1, face);
+      return false;
+    }
+  }
+  return true;
+}
+
+enum class OrderedVertexFanStatus : int {
+  Found = 0,
+  Disconnected = 1,
+  NonManifold = 2,
+  Ambiguous = 3,
+};
+
+struct OrderedVertexFanResult {
+  OrderedVertexFanStatus status = OrderedVertexFanStatus::Disconnected;
+  std::vector<VertexPathStep> steps;
+};
+
+int shared_transition_vertex(const Eigen::MatrixXi &faces,
+                             const SurfaceTraceSegment &previous,
+                             const SurfaceTraceSegment &current) {
+  constexpr double tolerance = 1.0e-10;
+  int previousVertex = -1;
+  int currentVertex = -1;
+  for (int corner = 0; corner < 3; ++corner) {
+    if (previous.endBarycentric[corner] >= 1.0 - tolerance) {
+      if (previousVertex >= 0) {
+        return -1;
+      }
+      previousVertex = faces(previous.face, corner);
+    }
+    if (current.startBarycentric[corner] >= 1.0 - tolerance) {
+      if (currentVertex >= 0) {
+        return -1;
+      }
+      currentVertex = faces(current.face, corner);
+    }
+  }
+  return previousVertex >= 0 && previousVertex == currentVertex
+             ? previousVertex
+             : -1;
+}
+
+int directed_face_side(const Eigen::MatrixXd &vertices,
+                       const Eigen::MatrixXi &faces, const int face,
+                       const int sourceVertex,
+                       const Eigen::RowVector3d &direction,
+                       const Eigen::RowVector3d &normal,
+                       const double tolerance) {
+  bool positive = false;
+  bool negative = false;
+  const Eigen::RowVector3d origin = row3(vertices, sourceVertex);
+  for (int corner = 0; corner < 3; ++corner) {
+    const int vertex = faces(face, corner);
+    if (vertex == sourceVertex) {
+      continue;
+    }
+    const double side = normal.dot(cross3(direction, row3(vertices, vertex) - origin));
+    positive = positive || side > tolerance;
+    negative = negative || side < -tolerance;
+  }
+  if (positive && negative) {
+    return 2;
+  }
+  if (positive) {
+    return 1;
+  }
+  if (negative) {
+    return -1;
+  }
+  return 0;
+}
+
+OrderedVertexFanResult ordered_vertex_fan_path(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &edgeFaces,
+    const int sourceVertex, const int sourceFace, const int targetFace,
+    const Eigen::RowVector3d &segmentDirection,
+    const Eigen::RowVector3d &sourceNormal) {
+  OrderedVertexFanResult result;
+  if (sourceVertex < 0 || sourceVertex >= vertices.rows() ||
+      sourceFace < 0 || sourceFace >= faces.rows() || targetFace < 0 ||
+      targetFace >= faces.rows() || sourceFace == targetFace ||
+      segmentDirection.squaredNorm() == 0.0 ||
+      sourceNormal.squaredNorm() == 0.0) {
+    return result;
+  }
+  const auto adjacency = vertex_face_adjacency(sourceVertex, edgeFaces);
+  const auto sourceFound = adjacency.find(sourceFace);
+  const auto targetFound = adjacency.find(targetFace);
+  if (sourceFound == adjacency.end() || targetFound == adjacency.end()) {
+    return result;
+  }
+  for (const auto &[face, neighbors] : adjacency) {
+    (void)face;
+    std::set<std::pair<int, std::optional<authority::SourceEdgeTopologyKey>>> unique;
+    for (const VertexPathStep &step : neighbors) {
+      unique.emplace(step.face, step.edgeKey);
+    }
+    if (unique.size() != neighbors.size() || neighbors.size() > 2U) {
+      result.status = OrderedVertexFanStatus::NonManifold;
+      return result;
+    }
+  }
+
+  std::vector<std::vector<VertexPathStep>> candidates;
+  for (const VertexPathStep &first : sourceFound->second) {
+    std::vector<VertexPathStep> path;
+    std::set<int> visited{sourceFace};
+    int previous = sourceFace;
+    VertexPathStep current = first;
+    bool valid = true;
+    while (true) {
+      if (!visited.insert(current.face).second) {
+        valid = false;
+        break;
+      }
+      path.push_back(current);
+      if (current.face == targetFace) {
+        break;
+      }
+      const auto found = adjacency.find(current.face);
+      if (found == adjacency.end()) {
+        valid = false;
+        break;
+      }
+      std::vector<VertexPathStep> forward;
+      for (const VertexPathStep &candidate : found->second) {
+        if (candidate.face != previous) {
+          forward.push_back(candidate);
+        }
+      }
+      if (forward.size() != 1U) {
+        valid = false;
+        break;
+      }
+      previous = current.face;
+      current = forward.front();
+    }
+    if (valid && !path.empty() && path.back().face == targetFace) {
+      candidates.push_back(std::move(path));
+    }
+  }
+  if (candidates.empty()) {
+    return result;
+  }
+
+  const double scale = std::max(1.0, segmentDirection.norm());
+  const double tolerance = 1.0e-12 * scale;
+  const int sourceSide = directed_face_side(
+      vertices, faces, sourceFace, sourceVertex, segmentDirection,
+      sourceNormal, tolerance);
+  const int targetSide = directed_face_side(
+      vertices, faces, targetFace, sourceVertex, segmentDirection,
+      sourceNormal, tolerance);
+  if (sourceSide == 2 || targetSide == 2 || sourceSide == 0 ||
+      targetSide == 0 || sourceSide != targetSide) {
+    result.status = OrderedVertexFanStatus::Ambiguous;
+    return result;
+  }
+
+  std::vector<std::vector<VertexPathStep>> sideCompatible;
+  for (const auto &path : candidates) {
+    bool compatible = true;
+    int face = sourceFace;
+    if (directed_face_side(vertices, faces, face, sourceVertex,
+                           segmentDirection, sourceNormal, tolerance) !=
+        sourceSide) {
+      compatible = false;
+    }
+    for (const VertexPathStep &step : path) {
+      const int side = directed_face_side(vertices, faces, step.face,
+                                          sourceVertex, segmentDirection,
+                                          sourceNormal, tolerance);
+      if (side == 2 || (side != 0 && side != sourceSide)) {
+        compatible = false;
+        break;
+      }
+      face = step.face;
+    }
+    if (compatible && face == targetFace) {
+      sideCompatible.push_back(path);
+    }
+  }
+  if (sideCompatible.size() != 1U) {
+    result.status = sideCompatible.empty() ? OrderedVertexFanStatus::Disconnected
+                                           : OrderedVertexFanStatus::Ambiguous;
+    return result;
+  }
+  result.status = OrderedVertexFanStatus::Found;
+  result.steps = std::move(sideCompatible.front());
+  return result;
+}
+
+bool source_edge_provenance(
+    const authority::SourceEdgeTopologyKey &edgeKey,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    int &sourceEdge) {
+  sourceEdge = -1;
+  const auto incidence = sourceEdgeFaces.find(edgeKey);
+  const auto compactIndex = sourceMatchingIndices.find(edgeKey);
+  if (incidence == sourceEdgeFaces.end() || incidence->second[0] < 0 ||
+      incidence->second[1] < 0 ||
+      compactIndex == sourceMatchingIndices.end() ||
+      compactIndex->second < 0) {
+    return false;
+  }
+  if (edgeTransitions != nullptr) {
+    const auto found = transitionLookup.byEdge.find(edgeKey);
+    if (found == transitionLookup.byEdge.end() || found->second.sourceEdge < 0 ||
+        !((found->second.sourceVertex0 == edgeKey.first().index() &&
+           found->second.sourceVertex1 == edgeKey.second().index()) ||
+          (found->second.sourceVertex0 == edgeKey.second().index() &&
+           found->second.sourceVertex1 == edgeKey.first().index())) ||
+        !transition_faces_match(found->second, incidence->second[0],
+                                incidence->second[1])) {
+      return false;
+    }
+  }
+  sourceEdge = compactIndex->second;
+  return true;
+}
+
+bool segment_on_source(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const UniformPhaseFrame &frame, const std::vector<authority::SourceFaceId> &activeFaces,
+    const Eigen::Vector2d &start,
+    const Eigen::Vector2d &end, const int globalBranch,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    const SurfaceCellTracingOptions &options, const int cellId,
+    const int sideId, SurfacePhaseFrontFailure &failure,
+    std::vector<SurfaceTraceSegment> &segments) {
+  struct Interval {
+    double begin = 0.0;
+    double end = 0.0;
+    int face = -1;
+  };
+  std::vector<double> breaks{0.0, 1.0};
+  std::vector<Interval> intervals;
+  constexpr double tolerance = 1.0e-12;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return false;
+    const int face = *faceRow;
+    Eigen::RowVector3d baryStart;
+    Eigen::RowVector3d baryEnd;
+    if (!face_barycentric_from_uv(vertices, faces, frame, face, start,
+                                  baryStart) ||
+        !face_barycentric_from_uv(vertices, faces, frame, face, end,
+                                  baryEnd)) {
+      continue;
+    }
+    double low = 0.0;
+    double high = 1.0;
+    for (int corner = 0; corner < 3; ++corner) {
+      const double value = baryStart[corner];
+      const double slope = baryEnd[corner] - value;
+      if (std::abs(slope) <= tolerance) {
+        if (value < -tolerance) {
+          low = 1.0;
+          high = 0.0;
+          break;
+        }
+        continue;
+      }
+      const double root = -value / slope;
+      if (slope > 0.0) {
+        low = std::max(low, root);
+      } else {
+        high = std::min(high, root);
+      }
+    }
+    low = std::clamp(low, 0.0, 1.0);
+    high = std::clamp(high, 0.0, 1.0);
+    if (high - low > tolerance) {
+      intervals.push_back({low, high, face});
+      breaks.push_back(low);
+      breaks.push_back(high);
+    }
+  }
+  std::sort(breaks.begin(), breaks.end());
+  breaks.erase(std::unique(breaks.begin(), breaks.end(), [](double a, double b) {
+                 return std::abs(a - b) <= 1.0e-11;
+               }),
+               breaks.end());
+  segments.clear();
+  for (std::size_t index = 0; index + 1U < breaks.size(); ++index) {
+    const double low = breaks[index];
+    const double high = breaks[index + 1U];
+    if (high - low <= tolerance) {
+      continue;
+    }
+    const double middle = 0.5 * (low + high);
+    int selectedFace = -1;
+    for (const Interval &interval : intervals) {
+      if (middle >= interval.begin - tolerance &&
+          middle <= interval.end + tolerance &&
+          (selectedFace < 0 || interval.face < selectedFace)) {
+        selectedFace = interval.face;
+      }
+    }
+    if (selectedFace < 0) {
+      set_phase_front_failure(failure,
+                              SurfacePhaseFrontFailureReason::MissingSegmentCoverage,
+                              cellId, sideId);
+      return false;
+    }
+    if (selectedFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
+        frame.faceBranchRotation[static_cast<std::size_t>(selectedFace)] < 0 ||
+        selectedFace >= static_cast<int>(frame.faceChart.size()) ||
+        !frame.faceChart[static_cast<std::size_t>(selectedFace)].has_value()) {
+      set_phase_front_failure(failure,
+                              SurfacePhaseFrontFailureReason::MissingFaceState,
+                              cellId, sideId, selectedFace);
+      return false;
+    }
+    const Eigen::Vector2d uv0 = start + low * (end - start);
+    const Eigen::Vector2d uv1 = start + high * (end - start);
+    Eigen::RowVector3d bary0;
+    Eigen::RowVector3d bary1;
+    if (!face_barycentric_from_uv(vertices, faces, frame, selectedFace, uv0,
+                                  bary0) ||
+        !face_barycentric_from_uv(vertices, faces, frame, selectedFace, uv1,
+                                  bary1)) {
+      set_phase_front_failure(failure,
+                              SurfacePhaseFrontFailureReason::PointProjectionFailure,
+                              cellId, sideId, selectedFace);
+      return false;
+    }
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(bary0[corner]) <= 1.0e-10) {
+        bary0[corner] = 0.0;
+      }
+      if (std::abs(bary1[corner]) <= 1.0e-10) {
+        bary1[corner] = 0.0;
+      }
+    }
+    bary0 /= bary0.sum();
+    bary1 /= bary1.sum();
+
+    const int localBranch = normalized_branch(
+        frame.faceBranchRotation[static_cast<std::size_t>(selectedFace)] +
+        globalBranch);
+    int family = 0;
+    int sign = 1;
+    family_sign_from_branch(localBranch, family, sign);
+    if (!segments.empty() && segments.back().face == selectedFace &&
+        segments.back().family == family && segments.back().sign == sign &&
+        (segments.back().endBarycentric - bary0).norm() <= 1.0e-10) {
+      segments.back().endBarycentric = bary1;
+      continue;
+    }
+    SurfaceTraceSegment segment;
+    segment.face = selectedFace;
+    segment.startBarycentric = bary0;
+    segment.endBarycentric = bary1;
+    segment.family = family;
+    segment.sign = sign;
+    segment.sourceChart =
+        frame.faceChart[static_cast<std::size_t>(selectedFace)];
+    segments.push_back(std::move(segment));
+  }
+  if (segments.empty()) {
+    set_phase_front_failure(failure,
+                            SurfacePhaseFrontFailureReason::MissingSegmentCoverage,
+                            cellId, sideId);
+    return false;
+  }
+
+  const auto incident = edge_faces(faces, activeFaces);
+  const auto &matchingIndices = sourceMatchingIndices;
+  const bool hasEdgeTransitions =
+      edgeTransitions != nullptr && !edgeTransitions->empty();
+  const bool hasEdgeMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
+  const bool hasEdgeEffort = edgeEffort != nullptr && edgeEffort->size() > 0;
+  const auto *effectiveTransitions = hasEdgeTransitions ? edgeTransitions : nullptr;
+  const auto *effectiveMatching = hasEdgeMatching ? edgeMatching : nullptr;
+  const auto *effectiveEffort = hasEdgeEffort ? edgeEffort : nullptr;
+  const EdgeTransitionLookup transitionLookup =
+      authoritative_edge_transition_lookup(
+          options.fieldTransportAtlas, effectiveTransitions,
+          source_vertex_extent(faces));
+  if (transitionLookup.duplicate) {
+    set_phase_front_failure(
+        failure, SurfacePhaseFrontFailureReason::DuplicateTransitionMetadata,
+        cellId, sideId);
+    return false;
+  }
+  const Eigen::RowVector3d segmentDirection =
+      (end.x() - start.x()) * frame.axisU +
+      (end.y() - start.y()) * frame.axisV;
+  for (std::size_t index = 1; index < segments.size(); ++index) {
+    SurfaceTraceSegment &previous = segments[index - 1U];
+    SurfaceTraceSegment &current = segments[index];
+    std::vector<VertexPathStep> route;
+    std::optional<authority::SourceEdgeTopologyKey> sharedKey;
+    int previousEdge = -1;
+    int currentEdge = -1;
+    for (int firstEdge = 0; firstEdge < 3 && previousEdge < 0; ++firstEdge) {
+      const authority::SourceEdgeTopologyKey firstKey = local_edge_key(faces, previous.face, firstEdge);
+      for (int secondEdge = 0; secondEdge < 3; ++secondEdge) {
+        if (firstKey == local_edge_key(faces, current.face, secondEdge)) {
+          sharedKey = firstKey;
+          previousEdge = firstEdge;
+          currentEdge = secondEdge;
+          route.push_back({current.face, *sharedKey});
+          break;
+        }
+      }
+    }
+
+    int sourceVertex = -1;
+    if (route.empty()) {
+      sourceVertex = shared_transition_vertex(faces, previous, current);
+      if (sourceVertex < 0) {
+        set_phase_front_failure(
+            failure,
+            SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment,
+            cellId, sideId, previous.face, current.face);
+        return false;
+      }
+      const OrderedVertexFanResult fan = ordered_vertex_fan_path(
+          vertices, faces, incident, sourceVertex, previous.face, current.face,
+          segmentDirection, frame.normal);
+      if (fan.status != OrderedVertexFanStatus::Found) {
+        const auto reason =
+            fan.status == OrderedVertexFanStatus::NonManifold
+                ? SurfacePhaseFrontFailureReason::NonManifoldVertexFan
+                : fan.status == OrderedVertexFanStatus::Ambiguous
+                      ? SurfacePhaseFrontFailureReason::AmbiguousVertexFan
+                      : SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment;
+        set_phase_front_failure(failure, reason, cellId, sideId, previous.face,
+                                current.face, sourceVertex);
+        return false;
+      }
+      route = fan.steps;
+      if (route.empty() || !route.front().edgeKey.has_value() ||
+          !route.back().edgeKey.has_value()) {
+        set_phase_front_failure(
+            failure, SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment,
+            cellId, sideId, previous.face, current.face, sourceVertex);
+        return false;
+      }
+      previousEdge = local_edge_for_key(faces, previous.face, *route.front().edgeKey);
+      currentEdge = local_edge_for_key(faces, current.face, *route.back().edgeKey);
+      if (previousEdge < 0 || currentEdge < 0) {
+        set_phase_front_failure(
+            failure,
+            SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment,
+            cellId, sideId, previous.face, current.face, sourceVertex);
+        return false;
+      }
+    }
+
+    int transitFace = previous.face;
+    int transitFamily = previous.family;
+    int transitSign = previous.sign;
+    Eigen::RowVector3d transitDirection = project_tangent(
+        axis_for_family(faceAxisX, faceAxisY, transitFace, transitFamily,
+                        transitSign),
+        face_normal(vertices, faces, transitFace));
+    double totalEffort = 0.0;
+    std::vector<int> sourceEdges;
+    std::vector<authority::TransitionStep> observedSteps;
+    sourceEdges.reserve(route.size());
+    observedSteps.reserve(route.size());
+    for (const VertexPathStep &step : route) {
+      if (!step.edgeKey.has_value()) {
+        set_phase_front_failure(
+            failure, SurfacePhaseFrontFailureReason::MissingTransitionProvenance,
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      }
+      const bool crossesIsolationSheet =
+          !source_faces_compatible(options, transitFace, step.face);
+      if (!source_faces_share_component(options, transitFace, step.face) ||
+          options.hardFeatureEdges.count(*step.edgeKey) != 0 ||
+          (options.reliefBarriersEmbedded &&
+           options.reliefBarrierEdges.count(*step.edgeKey) != 0)) {
+        set_phase_front_failure(
+            failure,
+            sourceVertex >= 0
+                ? SurfacePhaseFrontFailureReason::InvalidVertexFanTransition
+                : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition,
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      }
+      const BranchTransitionResult transition = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, *step.edgeKey, transitFace, step.face,
+          transitFamily, transitSign, transitDirection, effectiveMatching,
+          effectiveEffort, effectiveTransitions);
+      if (!transition.valid) {
+        set_phase_front_failure(
+            failure,
+            crossesIsolationSheet
+                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
+                : (sourceVertex >= 0
+                       ? SurfacePhaseFrontFailureReason::InvalidVertexFanTransition
+                       : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition),
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      }
+      int sourceEdge = -1;
+      if (!source_edge_provenance(
+              *step.edgeKey, sourceEdgeFaces, sourceMatchingIndices,
+              transitionLookup, effectiveTransitions, sourceEdge)) {
+        set_phase_front_failure(
+            failure,
+            crossesIsolationSheet
+                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
+                : SurfacePhaseFrontFailureReason::MissingTransitionProvenance,
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      }
+      const auto rejectStepAuthority = [&]() {
+        set_phase_front_failure(
+            failure,
+            crossesIsolationSheet
+                ? SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport
+                : SurfacePhaseFrontFailureReason::MissingTransitionProvenance,
+            cellId, sideId, transitFace, step.face, sourceVertex);
+        return false;
+      };
+      const authority::SourceEdgeTopologyKey &topology = *step.edgeKey;
+      const auto interiorTransition =
+          directional::authority::InteriorTransitionId::from_index(
+              sourceEdge, sourceMatchingIndices.size());
+      if (!interiorTransition) {
+        return rejectStepAuthority();
+      }
+      const auto typedStep = authority::TransitionStep::interior(
+          topology,
+          std::optional<authority::InteriorTransitionId>{
+              interiorTransition.value()},
+          authority::GridAutomorphism{
+              authority::QuarterTurn::from_integer(transition.matching),
+              authority::LatticeTranslation{0, 0}},
+          authority::Orientation::Forward);
+      if (!typedStep) {
+        return rejectStepAuthority();
+      }
+      sourceEdges.push_back(sourceEdge);
+      observedSteps.push_back(typedStep.value());
+      totalEffort += std::abs(transition.effort);
+      transitFace = step.face;
+      transitFamily = transition.family;
+      transitSign = transition.sign;
+      transitDirection = transition.direction;
+    }
+    if (transitFace != current.face || transitFamily != current.family ||
+        transitSign != current.sign) {
+      set_phase_front_failure(
+          failure,
+          sourceVertex >= 0
+              ? SurfacePhaseFrontFailureReason::VertexFanBranchMismatch
+              : SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition,
+          cellId, sideId, previous.face, current.face, sourceVertex,
+          sourceEdges.empty() ? -1 : sourceEdges.front(),
+          sourceEdges.empty() ? -1 : sourceEdges.back());
+      return false;
+    }
+    const authority::CanonicalRoute typedRoute =
+        authority::CanonicalRoute::from_observed_steps(std::move(observedSteps));
+    authority::GridAutomorphism routeTransport =
+        authority::GridAutomorphism::identity();
+    for (const authority::TransitionStep &step : typedRoute.oriented_steps()) {
+      routeTransport = compose(step.transport(), routeTransport);
+    }
+    previous.exitEdge = previousEdge;
+    current.entryEdge = currentEdge;
+    current.matching = static_cast<int>(routeTransport.rotation.value());
+    current.matchingEffort = totalEffort;
+    current.entryRoute = typedRoute;
+  }
+  return true;
+}
+
+
+std::array<Eigen::RowVector3d, 4> phase_front_corner_positions(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfacePhaseFrontCell &cell) {
+  std::array<Eigen::RowVector3d, 4> positions;
+  for (int corner = 0; corner < 4; ++corner) {
+    positions[static_cast<std::size_t>(corner)] = point_position(
+        vertices, faces, cell.corners[static_cast<std::size_t>(corner)]);
+  }
+  return positions;
+}
+
+Eigen::RowVector3d phase_front_loop_normal(
+    const std::array<Eigen::RowVector3d, 4> &positions) {
+  Eigen::RowVector3d normal = Eigen::RowVector3d::Zero();
+  for (int corner = 0; corner < 4; ++corner) {
+    normal += cross3(positions[static_cast<std::size_t>(corner)],
+                     positions[static_cast<std::size_t>((corner + 1) % 4)]);
+  }
+  return normal;
+}
+
+void reverse_phase_front_cell_cycle(SurfacePhaseFrontCell &cell) {
+  const SurfacePhaseFrontCell original = cell;
+  constexpr std::array<int, 4> reverseCorners{0, 3, 2, 1};
+  constexpr std::array<int, 4> reversePaths{3, 2, 1, 0};
+  for (int corner = 0; corner < 4; ++corner) {
+    cell.corners[static_cast<std::size_t>(corner)] =
+        original.corners[static_cast<std::size_t>(reverseCorners[corner])];
+    cell.lattice[static_cast<std::size_t>(corner)] =
+        original.lattice[static_cast<std::size_t>(reverseCorners[corner])];
+    cell.boundaryPaths[static_cast<std::size_t>(corner)] = reverse_trace_path(
+        original.boundaryPaths[static_cast<std::size_t>(reversePaths[corner])]);
+  }
+}
+
+std::size_t source_label_authority_extent(const std::vector<int> &labels) {
+  if (labels.empty()) {
+    return 1U;
+  }
+  int maximum = -1;
+  for (const int label : labels) {
+    if (label < 0) return 0U;
+    maximum = std::max(maximum, label);
+  }
+  return maximum >= 0 ? static_cast<std::size_t>(maximum) + 1U : 0U;
+}
+
+bool phase_front_cell_matches_region(
+    const SurfacePhaseFrontCell &cell,
+    const SourceTopologyRegions &sourceAuthority,
+    const SurfaceTopologyRegion &region) {
+  const auto consume_face = [&](const int face) {
+    const auto row = authority::SourceFaceId::from_index(
+        face, sourceAuthority.face_count());
+    return row.has_value() &&
+           sourceAuthority.region_for_row(row.value()) == region.id() &&
+           sourceAuthority.component_for_row(row.value()) ==
+               region.component();
+  };
+  for (const SurfaceTracePoint &corner : cell.corners) {
+    if (!consume_face(corner.face)) return false;
+  }
+  for (const auto &path : cell.boundaryPaths) {
+    if (path.empty()) return false;
+    for (const SurfaceTraceSegment &segment : path) {
+      if (!consume_face(segment.face)) return false;
+    }
+  }
+  return cell.sourceTopologyRegion == region.id();
+}
+
+SurfacePhaseFrontFailureReason assign_open_front_boundary_authority(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const SurfaceCellTracingOptions &options,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const std::vector<SurfaceTraceSegment> &path, SurfaceFrontEdge &edge) {
+  if (faces.cols() != 3 || path.empty() || !edge.route.empty()) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  const auto &incident = sourceEdgeFaces;
+  const auto &sourceEdgeIndices = sourceMatchingIndices;
+  const RailIntervalBuildResult railBuild =
+      rail_interval_refs(options.authoritativeRails, vertices, faces,
+                         sourceEdgeFaces, options.fieldAlignedNetwork);
+  if (railBuild.status != RailBuildStatus::Valid) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  std::optional<SurfaceFrontBoundaryKind> kind;
+  std::set<authority::SourceEdgeTopologyKey> seenTopology;
+  std::optional<authority::SourceEdgeTopologyKey> lastTopology;
+  std::optional<SurfaceFrontBoundaryKind> runKind;
+  std::optional<double> runStartParameter;
+  std::optional<double> runEndParameter;
+  std::vector<authority::TransitionStep> observedSteps;
+  std::optional<authority::HardRailId> railId;
+  constexpr double tolerance = 1.0e-9;
+
+  const auto canonical_retained_edge_parameter =
+      [&](const int supportedCorner, const int a, const int b,
+          const Eigen::RowVector3d &barycentric) -> std::optional<double> {
+    if (a == b || supportedCorner < 0 || supportedCorner >= 3) {
+      return std::nullopt;
+    }
+    const int aCorner = (supportedCorner + 1) % 3;
+    const int bCorner = (supportedCorner + 2) % 3;
+    const double aWeight = barycentric[aCorner];
+    const double bWeight = barycentric[bCorner];
+    const double totalWeight = aWeight + bWeight;
+    if (!std::isfinite(aWeight) || !std::isfinite(bWeight) ||
+        !std::isfinite(totalWeight) || std::abs(totalWeight) <= tolerance) {
+      return std::nullopt;
+    }
+    const double highWeight = a < b ? bWeight : aWeight;
+    const double parameter = highWeight / totalWeight;
+    if (!std::isfinite(parameter) || parameter < -tolerance ||
+        parameter > 1.0 + tolerance) {
+      return std::nullopt;
+    }
+    return std::clamp(parameter, 0.0, 1.0);
+  };
+
+  const auto publish_retained_edge_run = [&]() -> bool {
+    if (!lastTopology.has_value() || !runKind.has_value() ||
+        !runStartParameter.has_value() || !runEndParameter.has_value()) {
+      return false;
+    }
+    const double delta = *runEndParameter - *runStartParameter;
+    if (!std::isfinite(delta) || std::abs(delta) <= tolerance) {
+      return false;
+    }
+    const authority::Orientation runOrientation =
+        delta > 0.0 ? authority::Orientation::Forward
+                    : authority::Orientation::Reverse;
+    if (*runKind == SurfaceFrontBoundaryKind::GenuineSourceBoundary) {
+      observedSteps.push_back(authority::TransitionStep::boundary(
+          *lastTopology, authority::GridAutomorphism::identity(),
+          runOrientation));
+      return true;
+    }
+    const auto foundIndex = sourceEdgeIndices.find(*lastTopology);
+    if (foundIndex == sourceEdgeIndices.end()) {
+      return false;
+    }
+    const auto transition = authority::InteriorTransitionId::from_index(
+        foundIndex->second, sourceEdgeIndices.size());
+    if (!transition) {
+      return false;
+    }
+    const auto step = authority::TransitionStep::interior(
+        *lastTopology, transition.value(),
+        authority::GridAutomorphism::identity(), runOrientation);
+    if (!step) {
+      return false;
+    }
+    observedSteps.push_back(step.value());
+    return true;
+  };
+
+  for (const SurfaceTraceSegment &segment : path) {
+    if (segment.face < 0 || segment.face >= faces.rows() ||
+        !segment.startBarycentric.allFinite() ||
+        !segment.endBarycentric.allFinite()) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    int supportedCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(segment.startBarycentric[corner]) <= tolerance &&
+          std::abs(segment.endBarycentric[corner]) <= tolerance) {
+        if (supportedCorner >= 0) {
+          return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+        }
+        supportedCorner = corner;
+      }
+    }
+    if (supportedCorner < 0) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    const int a = faces(segment.face, (supportedCorner + 1) % 3);
+    const int b = faces(segment.face, (supportedCorner + 2) % 3);
+    const authority::SourceEdgeTopologyKey topology = edge_key(a, b, source_vertex_extent(faces));
+    const auto foundIncident = incident.find(topology);
+    const auto foundIndex = sourceEdgeIndices.find(topology);
+    if (foundIncident == incident.end() || foundIncident->second[0] < 0 ||
+        (foundIncident->second[0] != segment.face &&
+         foundIncident->second[1] != segment.face)) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    SurfaceFrontBoundaryKind segmentKind;
+    if (foundIncident->second[1] < 0) {
+      if (foundIndex != sourceEdgeIndices.end()) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      segmentKind = SurfaceFrontBoundaryKind::GenuineSourceBoundary;
+    } else if (options.hardFeatureEdges.count(topology) != 0U) {
+      if (foundIndex == sourceEdgeIndices.end()) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      const SurfaceCellRailIntervalSelection exactOwner =
+          find_rail_interval(railBuild.intervals, segment.face, supportedCorner);
+      if (exactOwner.interval == nullptr ||
+          (railId.has_value() && railId != exactOwner.interval->railId) ||
+          (segment.railId.has_value() &&
+           segment.railId != exactOwner.interval->railId)) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      segmentKind = SurfaceFrontBoundaryKind::HardRail;
+      railId = exactOwner.interval->railId;
+    } else if (options.reliefBarriersEmbedded &&
+               options.reliefBarrierEdges.count(topology) != 0U) {
+      if (foundIndex == sourceEdgeIndices.end()) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      segmentKind = SurfaceFrontBoundaryKind::EmbeddedReliefCut;
+    } else {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    if (kind.has_value() && *kind != segmentKind) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+    kind = segmentKind;
+
+    const auto startParameter = canonical_retained_edge_parameter(
+        supportedCorner, a, b, segment.startBarycentric);
+    const auto endParameter = canonical_retained_edge_parameter(
+        supportedCorner, a, b, segment.endBarycentric);
+    if (!startParameter.has_value() || !endParameter.has_value()) {
+      return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+    }
+
+    if (!lastTopology.has_value() || lastTopology.value() != topology) {
+      if (lastTopology.has_value() && !publish_retained_edge_run()) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      if (!seenTopology.insert(topology).second) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      lastTopology = topology;
+      runKind = segmentKind;
+      runStartParameter = *startParameter;
+      runEndParameter = *endParameter;
+    } else {
+      if (!runKind.has_value() || *runKind != segmentKind ||
+          !runEndParameter.has_value() ||
+          std::abs(*runEndParameter - *startParameter) > tolerance) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      runEndParameter = *endParameter;
+    }
+
+    if (segment.railId.has_value()) {
+      if (railId.has_value() && railId != segment.railId) {
+        return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+      }
+      railId = segment.railId;
+    }
+  }
+
+  if (!publish_retained_edge_run()) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  if (!kind.has_value() || observedSteps.empty()) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  const bool expectBoundary =
+      *kind == SurfaceFrontBoundaryKind::GenuineSourceBoundary;
+  if (std::any_of(observedSteps.begin(), observedSteps.end(),
+                  [&](const authority::TransitionStep &step) {
+                    return (step.kind() == authority::TransitionStepKind::Boundary) !=
+                           expectBoundary;
+                  })) {
+    return SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority;
+  }
+  edge.route =
+      authority::CanonicalRoute::from_observed_steps(std::move(observedSteps));
+  edge.boundaryKind = *kind;
+  edge.railId = railId;
+  if (*kind == SurfaceFrontBoundaryKind::EmbeddedReliefCut) {
+    return SurfacePhaseFrontFailureReason::UnsupportedEmbeddedReliefCut;
+  }
+  return SurfacePhaseFrontFailureReason::None;
+}
+
+bool orient_and_validate_phase_front_cell(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const UniformPhaseFrame &frame, const double target,
+    const SurfaceCellTracingOptions &options, const SurfaceTopologyRegion &region,
+    const SourceTopologyRegions &sourceAuthority, SurfacePhaseFrontCell &cell) {
+  if (!(target > 0.0) || !std::isfinite(target)) {
+    return false;
+  }
+  for (const SurfaceTracePoint &corner : cell.corners) {
+    if (!trace_point_is_valid(corner, faces)) {
+      return false;
+    }
+  }
+  const double pointTolerance = std::max(1.0e-12, 1.0e-9 * target);
+  auto positions = phase_front_corner_positions(vertices, faces, cell);
+  for (int first = 0; first < 4; ++first) {
+    for (int second = first + 1; second < 4; ++second) {
+      if ((positions[static_cast<std::size_t>(first)] -
+           positions[static_cast<std::size_t>(second)])
+              .norm() <= pointTolerance) {
+        return false;
+      }
+    }
+  }
+  if (validate_closed_boundary_paths(vertices, faces, cell.corners,
+                                     cell.boundaryPaths,
+                                     pointTolerance) !=
+      CellRejectionReason::Accepted) {
+    return false;
+  }
+  Eigen::RowVector3d loopNormal = phase_front_loop_normal(positions);
+  if (!loopNormal.allFinite() || loopNormal.squaredNorm() <= 1.0e-24) {
+    return false;
+  }
+  if (loopNormal.dot(frame.normal) < 0.0) {
+    reverse_phase_front_cell_cycle(cell);
+    positions = phase_front_corner_positions(vertices, faces, cell);
+    loopNormal = phase_front_loop_normal(positions);
+  }
+  if (loopNormal.dot(frame.normal) <= 0.0 ||
+      classify_quad_loop(positions, target, frame.normal, options) !=
+          CellRejectionReason::Accepted ||
+      validate_closed_boundary_paths(vertices, faces, cell.corners,
+                                     cell.boundaryPaths,
+                                     pointTolerance) !=
+          CellRejectionReason::Accepted) {
+    return false;
+  }
+  if (!phase_front_cell_matches_region(cell, sourceAuthority, region)) {
+    return false;
+  }
+  cell.orientationValidated = true;
+  return true;
+}
+
+} // namespace
+
+struct SurfacePhaseFrontBuildState {
+  SurfaceCellProducerDisposition disposition =
+      SurfaceCellProducerDisposition::NotApplicable;
+  bool attempted = false;
+  bool succeeded = false;
+  int gridU = 0;
+  int gridV = 0;
+  std::optional<SourceTopologyRegions> sourceTopologyRegions;
+  std::vector<SurfaceIsolationSeamTransportCertificate>
+      isolationSeamTransportCertificates;
+  std::vector<SurfacePeriodicHolonomy> periodicHolonomies;
+  std::vector<SurfaceBoundedDiskBoundaryPhase> boundedDiskBoundaryPhases;
+  SurfacePhaseFrontFailure failure;
+  std::vector<SurfaceFrontEdge> edges;
+  std::vector<SurfaceFrontEvent> events;
+  std::vector<SurfacePhaseFrontCell> cells;
+};
+
+SurfacePhaseFrontResult publish_phase_front_result(
+    SurfacePhaseFrontBuildState state) {
+  if (state.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+    return SurfacePhaseFrontResult::not_applicable();
+  }
+  if (state.disposition == SurfaceCellProducerDisposition::Rejected) {
+    if (state.failure.reason == SurfacePhaseFrontFailureReason::None) {
+      state.failure.reason = SurfacePhaseFrontFailureReason::InvalidFinalCellState;
+    }
+    return SurfacePhaseFrontResult::rejected(std::move(state.failure));
+  }
+  if (!state.succeeded || state.cells.empty() || state.edges.empty()) {
+    if (state.failure.reason == SurfacePhaseFrontFailureReason::None) {
+      state.failure.reason = SurfacePhaseFrontFailureReason::InvalidFinalCellState;
+    }
+    return SurfacePhaseFrontResult::rejected(std::move(state.failure));
+  }
+
+  if (!state.sourceTopologyRegions.has_value()) {
+    state.failure.reason = SurfacePhaseFrontFailureReason::InvalidTopologyRegion;
+    return SurfacePhaseFrontResult::rejected(std::move(state.failure));
+  }
+  auto product = SurfacePhaseFrontProduct::make(
+      state.gridU, state.gridV, std::move(*state.sourceTopologyRegions),
+      std::move(state.isolationSeamTransportCertificates),
+      std::move(state.periodicHolonomies),
+      std::move(state.boundedDiskBoundaryPhases), std::move(state.edges),
+      std::move(state.events), std::move(state.cells));
+  if (auto *value = std::get_if<SurfacePhaseFrontProduct>(&product)) {
+    return SurfacePhaseFrontResult::produced(std::move(*value));
+  }
+  state.failure.reason = SurfacePhaseFrontFailureReason::InvalidFinalCellState;
+  return SurfacePhaseFrontResult::rejected(std::move(state.failure));
+}
+
+SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
+    const SurfaceTopologyRegion &region,
+    const SourceTopologyRegions &sourceAuthority,
+    const SurfaceCellTracingOptions &options,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const Eigen::VectorXi *edgeMatching,
+    const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  SurfacePhaseFrontBuildState result;
+  result.attempted = options.enableUniformPhaseFront;
+  if (!result.attempted) {
+    return result;
+  }
+
+  // Applicability is decided before authoritative transition metadata is
+  // consumed. The bounded uniform producer currently covers planar,
+  // rectangular, globally phase-compatible domains without singularities.
+  // Unsupported topology is NotApplicable; malformed authoritative metadata
+  // on an applicable domain is Rejected and must remain fail-closed.
+  if (surface_cell_tracing_detail::tracing_has_singularities(options)) {
+    return result;
+  }
+  UniformPhaseFrame applicabilityFrame;
+  SurfacePhaseFrontFailure applicabilityFailure;
+  if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
+                                activeFaces, sourceAuthority, sourceEdgeFaces,
+                                sourceMatchingIndices, nullptr, nullptr,
+                                nullptr, &options, applicabilityFailure,
+                                applicabilityFrame)) {
+    switch (applicabilityFailure.reason) {
+    case SurfacePhaseFrontFailureReason::InvalidInput:
+    case SurfacePhaseFrontFailureReason::DegenerateReferenceFrame:
+    case SurfacePhaseFrontFailureReason::InconsistentFaceOrientation:
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      result.failure = applicabilityFailure;
+      break;
+    default:
+      // Non-planar, non-rectangular, or globally non-uniform phase domains are
+      // outside this bounded producer. A separately selected producer may run.
+      break;
+    }
+    return result;
+  }
+
+  result.disposition = SurfaceCellProducerDisposition::Rejected;
+  UniformPhaseFrame frame;
+  if (!build_planar_phase_frame(vertices, faces, faceAxisX, faceAxisY,
+                                activeFaces, sourceAuthority, sourceEdgeFaces,
+                                sourceMatchingIndices, edgeMatching, edgeEffort,
+                                edgeTransitions, &options, result.failure,
+                                frame)) {
+    return result;
+  }
+  double target = options.defaultTargetSize;
+  if (targetSize.size() > 0 && targetSize.allFinite() &&
+      targetSize.minCoeff() > 0.0) {
+    target = targetSize.mean();
+  }
+  if (!(target > 0.0) || !std::isfinite(target)) {
+    set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidTargetSize);
+    return result;
+  }
+  const double width = frame.maxU - frame.minU;
+  const double height = frame.maxV - frame.minV;
+  result.gridU = std::max(1, static_cast<int>(std::llround(width / target)));
+  result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
+  const double stepU = width / static_cast<double>(result.gridU);
+  const double stepV = height / static_cast<double>(result.gridV);
+  if (!(stepU > 0.0) || !(stepV > 0.0)) {
+    set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidGridStep);
+    return result;
+  }
+
+  const int nodeColumns = result.gridU + 1;
+  const int nodeRows = result.gridV + 1;
+  std::vector<SurfaceTracePoint> points(
+      static_cast<std::size_t>(nodeColumns * nodeRows));
+  const auto node_index = [nodeColumns](const int u, const int v) {
+    return v * nodeColumns + u;
+  };
+  for (int v = 0; v < nodeRows; ++v) {
+    for (int u = 0; u < nodeColumns; ++u) {
+      const Eigen::Vector2d uv(frame.minU + stepU * u,
+                               frame.minV + stepV * v);
+      if (!point_on_source(vertices, faces, frame, activeFaces, uv,
+                           points[static_cast<std::size_t>(node_index(u, v))])) {
+        set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::PointProjectionFailure);
+        return result;
+      }
+    }
+  }
+
+  struct EdgeOwner {
+    int edge = -1;
+  };
+  std::map<std::pair<int, int>, EdgeOwner> openEdges;
+  for (int v = 0; v < result.gridV; ++v) {
+    for (int u = 0; u < result.gridU; ++u) {
+      const std::array<int, 4> nodeIds{
+          node_index(u, v), node_index(u + 1, v),
+          node_index(u + 1, v + 1), node_index(u, v + 1)};
+      const std::array<Eigen::Vector2d, 4> uv{
+          Eigen::Vector2d(frame.minU + stepU * u, frame.minV + stepV * v),
+          Eigen::Vector2d(frame.minU + stepU * (u + 1),
+                          frame.minV + stepV * v),
+          Eigen::Vector2d(frame.minU + stepU * (u + 1),
+                          frame.minV + stepV * (v + 1)),
+          Eigen::Vector2d(frame.minU + stepU * u,
+                          frame.minV + stepV * (v + 1))};
+      const auto cellId = phase_front_cell_id_from_lattice(
+          u, v, result.gridU, result.gridV);
+      if (!cellId) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      SurfacePhaseFrontCell cell(region.id(), cellId.value());
+      for (int corner = 0; corner < 4; ++corner) {
+        cell.corners[static_cast<std::size_t>(corner)] =
+            points[static_cast<std::size_t>(nodeIds[corner])];
+        LocalLatticeState &state =
+            cell.lattice[static_cast<std::size_t>(corner)];
+        state.phase = uv[static_cast<std::size_t>(corner)] -
+                      Eigen::Vector2d(frame.minU, frame.minV);
+        const int sourceFace =
+            cell.corners[static_cast<std::size_t>(corner)].face;
+        if (sourceFace < 0 ||
+            sourceFace >= static_cast<int>(frame.faceBranchRotation.size()) ||
+            sourceFace >= static_cast<int>(frame.faceChart.size()) ||
+            !frame.faceChart[static_cast<std::size_t>(sourceFace)].has_value()) {
+          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::MissingFaceState, static_cast<int>(cell.id.index()), corner, sourceFace);
+          return result;
+        }
+        state.branchRotation =
+            frame.faceBranchRotation[static_cast<std::size_t>(sourceFace)];
+        state.sourceChart =
+            frame.faceChart[static_cast<std::size_t>(sourceFace)];
+      }
+      cell.lattice[0].latticeCoordinate = {u, v};
+      cell.lattice[1].latticeCoordinate = {u + 1, v};
+      cell.lattice[2].latticeCoordinate = {u + 1, v + 1};
+      cell.lattice[3].latticeCoordinate = {u, v + 1};
+      const std::array<int, 4> globalBranches{0, 1, 2, 3};
+      for (int side = 0; side < 4; ++side) {
+        if (!segment_on_source(
+                vertices, faces, frame, activeFaces, uv[side],
+                uv[(side + 1) % 4],
+                globalBranches[static_cast<std::size_t>(side)], faceAxisX,
+                faceAxisY, sourceEdgeFaces, sourceMatchingIndices,
+                edgeMatching, edgeEffort, edgeTransitions, options,
+                static_cast<int>(cell.id.index()), side, result.failure,
+                cell.boundaryPaths[static_cast<std::size_t>(side)])) {
+          return result;
+        }
+      }
+      if (!orient_and_validate_phase_front_cell(
+              vertices, faces, frame, std::min(stepU, stepV), options, region,
+              sourceAuthority, cell)) {
+        set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation, static_cast<int>(cell.id.index()));
+        return result;
+      }
+
+      for (int side = 0; side < 4; ++side) {
+        const auto &path = cell.boundaryPaths[static_cast<std::size_t>(side)];
+        SurfaceFrontEdge edge(region.id(), cell.id);
+        edge.from = cell.corners[static_cast<std::size_t>(side)];
+        edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
+        const authority::LatticeTranslation latticeDelta =
+            cell.lattice[static_cast<std::size_t>((side + 1) % 4)]
+                .latticeCoordinate -
+            cell.lattice[static_cast<std::size_t>(side)].latticeCoordinate;
+        if (latticeDelta == authority::LatticeTranslation{1, 0}) {
+          edge.family = 0;
+          edge.advanceSign = 1;
+        } else if (latticeDelta == authority::LatticeTranslation{0, 1}) {
+          edge.family = 1;
+          edge.advanceSign = 1;
+        } else if (latticeDelta == authority::LatticeTranslation{-1, 0}) {
+          edge.family = 0;
+          edge.advanceSign = -1;
+        } else if (latticeDelta == authority::LatticeTranslation{0, -1}) {
+          edge.family = 1;
+          edge.advanceSign = -1;
+        } else {
+          set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidLatticeEdge, static_cast<int>(cell.id.index()), side);
+          return result;
+        }
+        edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
+        edge.toLattice =
+            cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
+        edge.filledSide = side;
+        const int edgeId = static_cast<int>(result.edges.size());
+        result.edges.push_back(edge);
+        const authority::LatticeTranslation from =
+            edge.fromLattice.latticeCoordinate;
+        const authority::LatticeTranslation to =
+            edge.toLattice.latticeCoordinate;
+        const int fromNode = node_index(static_cast<int>(from.x),
+                                        static_cast<int>(from.y));
+        const int toNode = node_index(static_cast<int>(to.x),
+                                      static_cast<int>(to.y));
+        const auto key = std::minmax(fromNode, toNode);
+        const std::pair<int, int> canonical{key.first, key.second};
+        const auto found = openEdges.find(canonical);
+        if (found == openEdges.end()) {
+          openEdges.emplace(canonical, EdgeOwner{edgeId});
+        } else {
+          SurfaceFrontEdge &first =
+              result.edges[static_cast<std::size_t>(found->second.edge)];
+          SurfaceFrontEdge &second =
+              result.edges[static_cast<std::size_t>(edgeId)];
+          if (first.filledCell == second.filledCell ||
+              first.fromLattice.latticeCoordinate !=
+                  second.toLattice.latticeCoordinate ||
+              first.toLattice.latticeCoordinate !=
+                  second.fromLattice.latticeCoordinate ||
+              first.family != second.family ||
+              first.advanceSign == second.advanceSign ||
+              first.sourceTopologyRegion != second.sourceTopologyRegion) {
+            set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::FrontOwnershipConflict, static_cast<int>(cell.id.index()), side);
+            return result;
+          }
+          first.oppositeEdge = edgeId;
+          second.oppositeEdge = found->second.edge;
+          first.unfilledSide = 0;
+          second.unfilledSide = 0;
+          SurfaceFrontEvent event;
+          event.kind = SurfaceFrontEventKind::CompatibleFrontMerge;
+          event.firstEdge = found->second.edge;
+          event.secondEdge = edgeId;
+          result.events.push_back(event);
+          openEdges.erase(found);
+        }
+      }
+      result.cells.push_back(std::move(cell));
+    }
+  }
+  const auto cellIndexById = phase_front_cell_storage_index(result.cells);
+  if (!cellIndexById) {
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+    return result;
+  }
+  for (const auto &[key, owner] : openEdges) {
+    (void)key;
+    SurfaceFrontEdge &edge =
+        result.edges[static_cast<std::size_t>(owner.edge)];
+    const auto ownerCell = cellIndexById->find(edge.filledCell);
+    if (ownerCell == cellIndexById->end() ||
+        edge.filledSide < 0 || edge.filledSide >= 4) {
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+          static_cast<int>(edge.filledCell.index()), edge.filledSide);
+      return result;
+    }
+    const auto boundaryReason = assign_open_front_boundary_authority(
+        vertices, faces, options, sourceEdgeFaces, sourceMatchingIndices,
+        result.cells[ownerCell->second]
+            .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
+        edge);
+    if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
+      set_phase_front_failure(result.failure, boundaryReason,
+                              static_cast<int>(edge.filledCell.index()),
+                              edge.filledSide);
+      return result;
+    }
+    edge.exterior = true;
+    edge.unfilledSide = 0;
+    SurfaceFrontEvent event;
+    event.kind = SurfaceFrontEventKind::BoundaryTermination;
+    event.firstEdge = owner.edge;
+    result.events.push_back(event);
+  }
+  for (const SurfacePhaseFrontCell &cell : result.cells) {
+    if (!cell.orientationValidated ||
+        cell.sourceTopologyRegion != region.id()) {
+      set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState, static_cast<int>(cell.id.index()));
+      return result;
+    }
+  }
+  for (const SurfaceFrontEdge &edge : result.edges) {
+    const bool hasTwin = edge.oppositeEdge >= 0;
+    if (cellIndexById->find(edge.filledCell) == cellIndexById->end() || edge.unfilledSide != 0 ||
+        hasTwin == edge.exterior ||
+        (hasTwin && (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
+                     result.edges[static_cast<std::size_t>(edge.oppositeEdge)]
+                             .oppositeEdge !=
+                         static_cast<int>(&edge - result.edges.data())))) {
+      set_phase_front_failure(result.failure, SurfacePhaseFrontFailureReason::InvalidFinalEdgeState, -1, static_cast<int>(&edge - result.edges.data()));
+      return result;
+    }
+  }
+  result.succeeded =
+      !result.cells.empty() &&
+      result.cells.size() ==
+          static_cast<std::size_t>(result.gridU * result.gridV);
+  if (result.succeeded) {
+    result.disposition = SurfaceCellProducerDisposition::Produced;
+  } else {
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+  }
+  return result;
+}
+
+namespace {
+
+struct PeriodicChartTriangle {
+  explicit PeriodicChartTriangle(authority::SourceFaceId sourceFaceValue)
+      : sourceFace(sourceFaceValue) {}
+
+  authority::SourceFaceId sourceFace;
+  std::array<Eigen::Vector2d, 3> uv;
+  std::array<int, 3> vertices{{-1, -1, -1}};
+};
+
+std::array<int, 3> canonical_face_vertices(const Eigen::MatrixXi &faces,
+                                           const int face) {
+  std::array<int, 3> key{faces(face, 0), faces(face, 1), faces(face, 2)};
+  std::sort(key.begin(), key.end());
+  return key;
+}
+
+std::vector<int> canonical_cycle(const std::map<int, std::vector<int>> &adjacency) {
+  if (adjacency.size() < 3U) {
+    return {};
+  }
+  const int start = adjacency.begin()->first;
+  const auto found = adjacency.find(start);
+  if (found == adjacency.end() || found->second.size() != 2U) {
+    return {};
+  }
+  const auto walk = [&](const int first) {
+    std::vector<int> cycle;
+    cycle.reserve(adjacency.size());
+    int previous = start;
+    int current = first;
+    cycle.push_back(start);
+    while (current != start && cycle.size() <= adjacency.size()) {
+      cycle.push_back(current);
+      const auto neighbors = adjacency.find(current);
+      if (neighbors == adjacency.end() || neighbors->second.size() != 2U) {
+        return std::vector<int>{};
+      }
+      const int next = neighbors->second[0] == previous
+                           ? neighbors->second[1]
+                           : neighbors->second[0];
+      previous = current;
+      current = next;
+    }
+    if (current != start || cycle.size() != adjacency.size()) {
+      return std::vector<int>{};
+    }
+    return cycle;
+  };
+  std::vector<int> first = walk(found->second[0]);
+  std::vector<int> second = walk(found->second[1]);
+  if (first.empty()) return second;
+  if (second.empty()) return first;
+  return second < first ? second : first;
+}
+
+bool face_contains_only(const Eigen::MatrixXi &faces, const int face,
+                        const std::set<int> &vertices) {
+  for (int corner = 0; corner < 3; ++corner) {
+    if (vertices.count(faces(face, corner)) == 0U) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool chart_barycentric(const PeriodicChartTriangle &triangle,
+                       const Eigen::Vector2d &uv,
+                       Eigen::RowVector3d &barycentric) {
+  Eigen::Matrix2d matrix;
+  matrix.col(0) = triangle.uv[1] - triangle.uv[0];
+  matrix.col(1) = triangle.uv[2] - triangle.uv[0];
+  const double determinant = matrix.determinant();
+  if (!std::isfinite(determinant) || std::abs(determinant) <= 1.0e-18) {
+    return false;
+  }
+  const Eigen::Vector2d local = matrix.inverse() * (uv - triangle.uv[0]);
+  if (!local.allFinite()) {
+    return false;
+  }
+  barycentric << 1.0 - local.x() - local.y(), local.x(), local.y();
+  return barycentric.allFinite();
+}
+
+constexpr double kPeriodicChartCoverageTolerance = 1.0e-10;
+
+bool canonicalize_periodic_chart_barycentric(
+    Eigen::RowVector3d &barycentric) {
+  if (!barycentric.allFinite()) {
+    return false;
+  }
+  for (int coordinate = 0; coordinate < 3; ++coordinate) {
+    if (barycentric[coordinate] < -kPeriodicChartCoverageTolerance ||
+        barycentric[coordinate] > 1.0 + kPeriodicChartCoverageTolerance) {
+      return false;
+    }
+    if (std::abs(barycentric[coordinate]) <=
+        kPeriodicChartCoverageTolerance) {
+      barycentric[coordinate] = 0.0;
+    } else if (std::abs(barycentric[coordinate] - 1.0) <=
+               kPeriodicChartCoverageTolerance) {
+      barycentric[coordinate] = 1.0;
+    } else {
+      barycentric[coordinate] =
+          std::clamp(barycentric[coordinate], 0.0, 1.0);
+    }
+  }
+
+  int exactVertex = -1;
+  for (int coordinate = 0; coordinate < 3; ++coordinate) {
+    if (barycentric[coordinate] == 1.0) {
+      if (exactVertex >= 0) {
+        return false;
+      }
+      exactVertex = coordinate;
+    }
+  }
+  if (exactVertex >= 0) {
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      barycentric[coordinate] = coordinate == exactVertex ? 1.0 : 0.0;
+    }
+    return true;
+  }
+
+  const double sum = barycentric.sum();
+  if (!std::isfinite(sum) || sum <= 1.0e-18) {
+    return false;
+  }
+  barycentric /= sum;
+  for (int coordinate = 0; coordinate < 3; ++coordinate) {
+    if (std::abs(barycentric[coordinate]) <=
+        kPeriodicChartCoverageTolerance) {
+      barycentric[coordinate] = 0.0;
+    } else if (std::abs(barycentric[coordinate] - 1.0) <=
+               kPeriodicChartCoverageTolerance) {
+      for (int other = 0; other < 3; ++other) {
+        barycentric[other] = other == coordinate ? 1.0 : 0.0;
+      }
+      return true;
+    }
+  }
+  const double canonicalSum = barycentric.sum();
+  if (!std::isfinite(canonicalSum) || canonicalSum <= 1.0e-18) {
+    return false;
+  }
+  barycentric /= canonicalSum;
+  return barycentric.allFinite();
+}
+
+bool point_on_periodic_chart(const std::vector<PeriodicChartTriangle> &triangles,
+                             const Eigen::Vector2d &uv,
+                             const int sourceFaceCount,
+                             SurfaceTracePoint &point) {
+  constexpr double tolerance = kPeriodicChartCoverageTolerance;
+  bool found = false;
+  std::array<int, 3> bestKey{
+      std::numeric_limits<int>::max(), std::numeric_limits<int>::max(),
+      std::numeric_limits<int>::max()};
+  Eigen::RowVector3d bestBarycentric = Eigen::RowVector3d::Zero();
+  std::optional<authority::SourceFaceId> bestFace;
+  for (const PeriodicChartTriangle &triangle : triangles) {
+    Eigen::RowVector3d barycentric;
+    if (!chart_barycentric(triangle, uv, barycentric) ||
+        barycentric.minCoeff() < -tolerance ||
+        barycentric.maxCoeff() > 1.0 + tolerance) {
+      continue;
+    }
+    const std::array<int, 3> key = triangle.vertices;
+    if (!found || key < bestKey) {
+      found = true;
+      bestKey = key;
+      bestBarycentric = barycentric;
+      bestFace = triangle.sourceFace;
+    }
+  }
+  if (!found) {
+    return false;
+  }
+  if (!canonicalize_periodic_chart_barycentric(bestBarycentric)) {
+    return false;
+  }
+  const auto bestFaceRow = source_face_row(*bestFace, sourceFaceCount);
+  if (!bestFaceRow.has_value()) return false;
+  point.face = *bestFaceRow;
+  point.barycentric = bestBarycentric;
+  return true;
+}
+
+std::vector<SurfaceTraceSegment> periodic_chart_segment(
+    const std::vector<PeriodicChartTriangle> &triangles,
+    const SourceChartTransitionGraph &sourceCharts,
+    const int sourceFaceCount,
+    const Eigen::Vector2d &start, const Eigen::Vector2d &end,
+    const int family, const int sign,
+    const std::map<authority::SourceEdgeTopologyKey, int> &matchingIndices,
+    const EdgeTransitionLookup &transitionLookup,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  struct Interval {
+    double lo = 0.0;
+    double hi = 0.0;
+    const PeriodicChartTriangle *triangle = nullptr;
+  };
+  std::vector<Interval> intervals;
+  std::vector<double> breaks{0.0, 1.0};
+  constexpr double tolerance = kPeriodicChartCoverageTolerance;
+  for (const PeriodicChartTriangle &triangle : triangles) {
+    Eigen::RowVector3d b0;
+    Eigen::RowVector3d b1;
+    if (!chart_barycentric(triangle, start, b0) ||
+        !chart_barycentric(triangle, end, b1)) {
+      continue;
+    }
+    double lo = 0.0;
+    double hi = 1.0;
+    bool valid = true;
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      const double a = b0[coordinate];
+      const double d = b1[coordinate] - b0[coordinate];
+      if (std::abs(d) <= 1.0e-15) {
+        if (a < -tolerance) valid = false;
+        continue;
+      }
+
+      // Coverage may extend by tolerance so a segment exactly on a source
+      // triangle boundary remains owned.  Emitted geometry must not inherit
+      // that expansion: exact zero-barycentric crossings are the canonical
+      // chart breakpoints.
+      const double coverageBound = (-tolerance - a) / d;
+      if (d > 0.0) {
+        lo = std::max(lo, coverageBound);
+      } else {
+        hi = std::min(hi, coverageBound);
+      }
+      double exactBound = -a / d;
+      if (exactBound >= -tolerance && exactBound <= 1.0 + tolerance) {
+        exactBound = std::clamp(exactBound, 0.0, 1.0);
+        breaks.push_back(exactBound);
+      }
+    }
+    lo = std::clamp(lo, 0.0, 1.0);
+    hi = std::clamp(hi, 0.0, 1.0);
+    if (valid && hi - lo > 1.0e-12) {
+      intervals.push_back({lo, hi, &triangle});
+    }
+  }
+  std::sort(breaks.begin(), breaks.end());
+  breaks.erase(std::unique(breaks.begin(), breaks.end(), [](double a, double b) {
+                 return std::abs(a - b) <= 1.0e-10;
+               }),
+               breaks.end());
+  std::vector<SurfaceTraceSegment> path;
+  for (std::size_t index = 0; index + 1U < breaks.size(); ++index) {
+    const double lo = breaks[index];
+    const double hi = breaks[index + 1U];
+    if (hi - lo <= 1.0e-12) continue;
+    const double mid = 0.5 * (lo + hi);
+    const PeriodicChartTriangle *selected = nullptr;
+    for (const Interval &interval : intervals) {
+      if (mid < interval.lo - tolerance || mid > interval.hi + tolerance) {
+        continue;
+      }
+      if (selected == nullptr || interval.triangle->vertices < selected->vertices) {
+        selected = interval.triangle;
+      }
+    }
+    if (selected == nullptr) {
+      return {};
+    }
+    const Eigen::Vector2d uv0 = start + lo * (end - start);
+    const Eigen::Vector2d uv1 = start + hi * (end - start);
+    Eigen::RowVector3d bary0;
+    Eigen::RowVector3d bary1;
+    if (!chart_barycentric(*selected, uv0, bary0) ||
+        !chart_barycentric(*selected, uv1, bary1) ||
+        !canonicalize_periodic_chart_barycentric(bary0) ||
+        !canonicalize_periodic_chart_barycentric(bary1)) {
+      return {};
+    }
+    if ((bary1 - bary0).cwiseAbs().maxCoeff() <= 1.0e-12) {
+      continue;
+    }
+    const auto selectedFaceRow =
+        source_face_row(selected->sourceFace, sourceFaceCount);
+    if (!selectedFaceRow.has_value()) return {};
+    SurfaceTraceSegment segment;
+    segment.face = *selectedFaceRow;
+    segment.startBarycentric = bary0;
+    segment.endBarycentric = bary1;
+    segment.family = family;
+    segment.sign = sign;
+    const auto canonicalChart = sourceCharts.chart(segment.face);
+    if (!canonicalChart.has_value()) {
+      return {};
+    }
+    segment.sourceChart = canonicalChart->chart;
+    if (!path.empty() && path.back().face == segment.face) {
+      path.back().endBarycentric = segment.endBarycentric;
+      continue;
+    }
+    path.push_back(std::move(segment));
+  }
+  if (path.empty()) {
+    return {};
+  }
+  // Each chart segment is source-attached. Cross-face transition provenance
+  // is authoritative in the periodic holonomy route; individual side paths
+  // remain geometric subdivisions of that same cut-open chart.
+  (void)matchingIndices;
+  (void)transitionLookup;
+  (void)edgeTransitions;
+  return path;
+}
+
+std::vector<SurfaceTraceSegment> bounded_disk_chart_segment(
+    const std::vector<PeriodicChartTriangle> &triangles,
+    const SourceChartTransitionGraph &sourceCharts,
+    const int sourceFaceCount,
+    const Eigen::Vector2d &start, const Eigen::Vector2d &end,
+    const int globalBranch,
+    const std::vector<int> &faceBranchRotation) {
+  struct Interval {
+    double lo = 0.0;
+    double hi = 0.0;
+    const PeriodicChartTriangle *triangle = nullptr;
+  };
+  std::vector<Interval> intervals;
+  std::vector<double> breaks{0.0, 1.0};
+  constexpr double tolerance = kPeriodicChartCoverageTolerance;
+  for (const PeriodicChartTriangle &triangle : triangles) {
+    Eigen::RowVector3d b0;
+    Eigen::RowVector3d b1;
+    if (!chart_barycentric(triangle, start, b0) ||
+        !chart_barycentric(triangle, end, b1)) {
+      continue;
+    }
+    double lo = 0.0;
+    double hi = 1.0;
+    bool valid = true;
+    for (int coordinate = 0; coordinate < 3; ++coordinate) {
+      const double a = b0[coordinate];
+      const double d = b1[coordinate] - b0[coordinate];
+      if (std::abs(d) <= 1.0e-15) {
+        if (a < -tolerance) valid = false;
+        continue;
+      }
+      const double coverageBound = (-tolerance - a) / d;
+      if (d > 0.0) {
+        lo = std::max(lo, coverageBound);
+      } else {
+        hi = std::min(hi, coverageBound);
+      }
+      double exactBound = -a / d;
+      if (exactBound >= -tolerance && exactBound <= 1.0 + tolerance) {
+        exactBound = std::clamp(exactBound, 0.0, 1.0);
+        breaks.push_back(exactBound);
+      }
+    }
+    lo = std::clamp(lo, 0.0, 1.0);
+    hi = std::clamp(hi, 0.0, 1.0);
+    if (valid && hi - lo > 1.0e-12) {
+      intervals.push_back({lo, hi, &triangle});
+    }
+  }
+  std::sort(breaks.begin(), breaks.end());
+  breaks.erase(std::unique(breaks.begin(), breaks.end(), [](double a, double b) {
+                 return std::abs(a - b) <= 1.0e-10;
+               }),
+               breaks.end());
+
+  std::vector<SurfaceTraceSegment> path;
+  for (std::size_t index = 0; index + 1U < breaks.size(); ++index) {
+    const double lo = breaks[index];
+    const double hi = breaks[index + 1U];
+    if (hi - lo <= 1.0e-12) continue;
+    const double mid = 0.5 * (lo + hi);
+    const PeriodicChartTriangle *selected = nullptr;
+    for (const Interval &interval : intervals) {
+      if (mid < interval.lo - tolerance || mid > interval.hi + tolerance) {
+        continue;
+      }
+      if (selected == nullptr || interval.triangle->vertices < selected->vertices) {
+        selected = interval.triangle;
+      }
+    }
+    if (selected == nullptr) return {};
+    const auto selectedFaceRow =
+        source_face_row(selected->sourceFace, sourceFaceCount);
+    if (!selectedFaceRow.has_value() ||
+        *selectedFaceRow >= static_cast<int>(faceBranchRotation.size()) ||
+        faceBranchRotation[static_cast<std::size_t>(*selectedFaceRow)] < 0) {
+      return {};
+    }
+    const Eigen::Vector2d uv0 = start + lo * (end - start);
+    const Eigen::Vector2d uv1 = start + hi * (end - start);
+    Eigen::RowVector3d bary0;
+    Eigen::RowVector3d bary1;
+    if (!chart_barycentric(*selected, uv0, bary0) ||
+        !chart_barycentric(*selected, uv1, bary1) ||
+        !canonicalize_periodic_chart_barycentric(bary0) ||
+        !canonicalize_periodic_chart_barycentric(bary1)) {
+      return {};
+    }
+    if ((bary1 - bary0).cwiseAbs().maxCoeff() <= 1.0e-12) continue;
+
+    const int localBranch = normalized_branch(
+        faceBranchRotation[static_cast<std::size_t>(*selectedFaceRow)] +
+        globalBranch);
+    int family = 0;
+    int sign = 1;
+    family_sign_from_branch(localBranch, family, sign);
+
+    SurfaceTraceSegment segment;
+    segment.face = *selectedFaceRow;
+    segment.startBarycentric = bary0;
+    segment.endBarycentric = bary1;
+    segment.family = family;
+    segment.sign = sign;
+    const auto canonicalChart = sourceCharts.chart(segment.face);
+    if (!canonicalChart.has_value()) {
+      return {};
+    }
+    segment.sourceChart = canonicalChart->chart;
+    if (!path.empty() && path.back().face == segment.face &&
+        path.back().family == segment.family && path.back().sign == segment.sign &&
+        (path.back().endBarycentric - segment.startBarycentric).norm() <= 1.0e-10) {
+      path.back().endBarycentric = segment.endBarycentric;
+      continue;
+    }
+    path.push_back(std::move(segment));
+  }
+  return path;
+}
+
+} // namespace
+
+SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
+    const SurfaceTopologyRegion &region,
+    const SourceTopologyRegions &sourceAuthority,
+    const SurfaceCellTracingOptions &options,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  SurfacePhaseFrontBuildState result;
+  result.attempted = options.enableUniformPhaseFront;
+  if (!result.attempted ||
+      surface_cell_tracing_detail::tracing_has_singularities(options) ||
+      activeFaces.empty()) {
+    return result;
+  }
+  SourceChartTransitionGraph canonicalSourceCharts(
+      &faces, &sourceAuthority, options.hardFeatureEdges);
+  if (!canonicalSourceCharts.available()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+    return result;
+  }
+
+  std::set<int> activeVertices;
+  std::map<authority::SourceEdgeTopologyKey, std::vector<int>> edgeFaces;
+  std::map<authority::SourceEdgeTopologyKey, std::pair<int, int>> edgeVertices;
+  std::map<int, std::set<int>> vertexAdjacency;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+    const int face = *faceRow;
+    for (int corner = 0; corner < 3; ++corner) {
+      const int a = faces(face, corner);
+      const int b = faces(face, (corner + 1) % 3);
+      if (a < 0 || b < 0 || a >= vertices.rows() || b >= vertices.rows() || a == b) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidPeriodicTopology,
+                                -1, -1, face);
+        return result;
+      }
+      activeVertices.insert(a);
+      activeVertices.insert(b);
+      const authority::SourceEdgeTopologyKey key = edge_key(a, b, source_vertex_extent(faces));
+      edgeFaces[key].push_back(face);
+      edgeVertices[key] = {std::min(a, b), std::max(a, b)};
+      vertexAdjacency[a].insert(b);
+      vertexAdjacency[b].insert(a);
+    }
+  }
+  for (const auto &[key, incident] : edgeFaces) {
+    (void)key;
+    if (incident.empty() || incident.size() > 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+  }
+  const int euler = static_cast<int>(activeVertices.size()) -
+                    static_cast<int>(edgeFaces.size()) +
+                    static_cast<int>(activeFaces.size());
+  if (euler != 0) {
+    return result;
+  }
+
+  std::map<int, std::vector<int>> boundaryAdjacency;
+  for (const auto &[key, incident] : edgeFaces) {
+    if (incident.size() != 1U) continue;
+    const auto endpoints = edgeVertices[key];
+    boundaryAdjacency[endpoints.first].push_back(endpoints.second);
+    boundaryAdjacency[endpoints.second].push_back(endpoints.first);
+  }
+  for (auto &[vertex, neighbors] : boundaryAdjacency) {
+    (void)vertex;
+    std::sort(neighbors.begin(), neighbors.end());
+    neighbors.erase(std::unique(neighbors.begin(), neighbors.end()), neighbors.end());
+    if (neighbors.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+  }
+  std::vector<std::vector<int>> boundaryCycles;
+  std::set<int> remainingBoundary;
+  for (const auto &[vertex, neighbors] : boundaryAdjacency) {
+    (void)neighbors;
+    remainingBoundary.insert(vertex);
+  }
+  while (!remainingBoundary.empty()) {
+    const int seed = *remainingBoundary.begin();
+    std::map<int, std::vector<int>> component;
+    std::vector<int> stack{seed};
+    std::set<int> seen;
+    while (!stack.empty()) {
+      const int vertex = stack.back();
+      stack.pop_back();
+      if (!seen.insert(vertex).second) continue;
+      component[vertex] = boundaryAdjacency[vertex];
+      for (const int neighbor : boundaryAdjacency[vertex]) {
+        if (seen.count(neighbor) == 0U) stack.push_back(neighbor);
+      }
+    }
+    std::vector<int> cycle = canonical_cycle(component);
+    if (cycle.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+      return result;
+    }
+    for (const int vertex : cycle) remainingBoundary.erase(vertex);
+    boundaryCycles.push_back(std::move(cycle));
+  }
+  if (boundaryCycles.size() != 2U ||
+      boundaryCycles[0].size() != boundaryCycles[1].size()) {
+    return result;
+  }
+  std::sort(boundaryCycles.begin(), boundaryCycles.end());
+  const std::vector<int> &firstBoundary = boundaryCycles.front();
+  const std::set<int> secondBoundary(boundaryCycles.back().begin(),
+                                     boundaryCycles.back().end());
+  const int ringSize = static_cast<int>(firstBoundary.size());
+  if (ringSize < 3) return result;
+
+  std::map<int, int> distance;
+  std::queue<int> queue;
+  for (const int vertex : firstBoundary) {
+    distance[vertex] = 0;
+    queue.push(vertex);
+  }
+  while (!queue.empty()) {
+    const int vertex = queue.front();
+    queue.pop();
+    for (const int neighbor : vertexAdjacency[vertex]) {
+      if (distance.find(neighbor) == distance.end()) {
+        distance[neighbor] = distance[vertex] + 1;
+        queue.push(neighbor);
+      }
+    }
+  }
+  if (distance.size() != activeVertices.size()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+    return result;
+  }
+  int maxDistance = 0;
+  for (const auto &[vertex, value] : distance) {
+    (void)vertex;
+    maxDistance = std::max(maxDistance, value);
+  }
+  if (maxDistance < 1) return result;
+  for (const int vertex : secondBoundary) {
+    if (distance[vertex] != maxDistance) return result;
+  }
+
+  std::vector<std::vector<int>> rings(static_cast<std::size_t>(maxDistance + 1));
+  rings.front() = firstBoundary;
+  for (int layer = 1; layer <= maxDistance; ++layer) {
+    std::map<int, std::vector<int>> ringAdjacency;
+    for (const auto &[vertex, value] : distance) {
+      if (value != layer) continue;
+      for (const int neighbor : vertexAdjacency[vertex]) {
+        if (distance[neighbor] == layer) ringAdjacency[vertex].push_back(neighbor);
+      }
+      std::sort(ringAdjacency[vertex].begin(), ringAdjacency[vertex].end());
+    }
+    if (ringAdjacency.size() != static_cast<std::size_t>(ringSize)) return result;
+    std::vector<int> ring = canonical_cycle(ringAdjacency);
+    if (ring.size() != static_cast<std::size_t>(ringSize)) return result;
+    rings[static_cast<std::size_t>(layer)] = std::move(ring);
+  }
+
+  auto quad_faces = [&](const std::array<int, 4> &quad) {
+    std::set<int> quadVertices(quad.begin(), quad.end());
+    std::vector<authority::SourceFaceId> candidates;
+    for (const authority::SourceFaceId faceId : activeFaces) {
+      const auto faceRow = source_face_row(faceId, faces.rows());
+      if (!faceRow.has_value()) return std::vector<authority::SourceFaceId>{};
+      if (face_contains_only(faces, *faceRow, quadVertices)) {
+        candidates.push_back(faceId);
+      }
+    }
+    std::sort(candidates.begin(), candidates.end(),
+              [&](const authority::SourceFaceId a,
+                  const authority::SourceFaceId b) {
+                return sourceAuthority.topology_for_row(a) <
+                       sourceAuthority.topology_for_row(b);
+              });
+    return candidates;
+  };
+
+  // Adjacent graph-distance rings can admit more than one source-topologically
+  // valid bijection through a triangulated strip (for example, the two
+  // diagonals of the same logical strip). Source-face scheduling remains typed
+  // through candidate selection and field-transport traversal; row projection
+  // occurs only at direct matrix/vector call boundaries.
+  const auto incident = edge_faces(faces, activeFaces);
+  const auto &matchingIndices = sourceMatchingIndices;
+  const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
+  const EdgeTransitionLookup transitionLookup =
+      authoritative_edge_transition_lookup(
+          options.fieldTransportAtlas,
+          hasTransitions ? edgeTransitions : nullptr,
+          source_vertex_extent(faces));
+  if (transitionLookup.duplicate) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+
+  struct RingCandidateAuthority {
+    std::vector<int> vertices;
+    std::set<authority::SourceFaceId> stripFaces;
+    double score = std::numeric_limits<double>::infinity();
+    int seedBranch = -1;
+    bool branchAmbiguous = false;
+  };
+  struct DualNeighbor {
+    authority::SourceFaceId face;
+    authority::SourceEdgeTopologyKey edge;
+  };
+  const auto score_equal = [](const double a, const double b) {
+    if (!std::isfinite(a) || !std::isfinite(b)) return false;
+    const double scale = std::max({1.0, std::abs(a), std::abs(b)});
+    return std::abs(a - b) <=
+           256.0 * std::numeric_limits<double>::epsilon() * scale;
+  };
+  const auto edge_direction_in_face = [&](const int a, const int b,
+                                          const int face) {
+    return project_tangent(row3(vertices, b) - row3(vertices, a),
+                           face_normal(vertices, faces, face));
+  };
+  const auto score_ring_candidate = [&](RingCandidateAuthority &candidate,
+                                        const std::vector<int> &previous) {
+    std::map<authority::SourceFaceId, std::vector<DualNeighbor>> dual;
+    for (const authority::SourceFaceId face : candidate.stripFaces) {
+      dual[face] = {};
+    }
+    for (const auto &[key, pair] : incident) {
+      if (pair[0] < 0 || pair[1] < 0) continue;
+      const auto firstFace = source_face_id(pair[0], faces.rows());
+      const auto secondFace = source_face_id(pair[1], faces.rows());
+      if (!firstFace.has_value() || !secondFace.has_value()) return false;
+      if (candidate.stripFaces.count(*firstFace) == 0U ||
+          candidate.stripFaces.count(*secondFace) == 0U) {
+        continue;
+      }
+      dual[*firstFace].push_back(DualNeighbor{*secondFace, key});
+      dual[*secondFace].push_back(DualNeighbor{*firstFace, key});
+    }
+    if (dual.size() != candidate.stripFaces.size()) return false;
+    for (auto &[face, neighbors] : dual) {
+      (void)face;
+      std::sort(neighbors.begin(), neighbors.end(), [&](const DualNeighbor &a,
+                                                        const DualNeighbor &b) {
+        const auto &aKey = sourceAuthority.topology_for_row(a.face);
+        const auto &bKey = sourceAuthority.topology_for_row(b.face);
+        if (aKey != bKey) return aKey < bKey;
+        return a.edge < b.edge;
+      });
+    }
+    std::optional<authority::SourceFaceId> startFace;
+    for (const authority::SourceFaceId face : candidate.stripFaces) {
+      if (!startFace.has_value() ||
+          sourceAuthority.topology_for_row(face) <
+              sourceAuthority.topology_for_row(*startFace)) {
+        startFace = face;
+      }
+    }
+    if (!startFace.has_value()) return false;
+
+    std::array<double, 4> branchScores{
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity(),
+        std::numeric_limits<double>::infinity()};
+    for (int seedBranch = 0; seedBranch < 4; ++seedBranch) {
+      std::map<authority::SourceFaceId, int> branchByFace;
+      std::queue<authority::SourceFaceId> pending;
+      branchByFace[*startFace] = seedBranch;
+      pending.push(*startFace);
+      bool validBranch = true;
+      while (!pending.empty() && validBranch) {
+        const authority::SourceFaceId sourceFace = pending.front();
+        pending.pop();
+        const auto sourceFaceRow = source_face_row(sourceFace, faces.rows());
+        if (!sourceFaceRow.has_value()) {
+          validBranch = false;
+          break;
+        }
+        const int sourceBranch = branchByFace[sourceFace];
+        int sourceFamily = 0;
+        int sourceSign = 1;
+        family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+        const Eigen::RowVector3d sourceDirection = project_tangent(
+            axis_for_family(faceAxisX, faceAxisY, *sourceFaceRow, sourceFamily,
+                            sourceSign),
+            face_normal(vertices, faces, *sourceFaceRow));
+        if (sourceDirection.squaredNorm() == 0.0) {
+          validBranch = false;
+          break;
+        }
+        for (const DualNeighbor &neighbor : dual[sourceFace]) {
+          if (branchByFace.find(neighbor.face) != branchByFace.end()) {
+            continue; // Cycle closure is validated by periodic holonomy below.
+          }
+          const auto neighborRow = source_face_row(neighbor.face, faces.rows());
+          if (!neighborRow.has_value()) {
+            validBranch = false;
+            break;
+          }
+          const BranchTransitionResult forward = resolve_branch_transition(
+              vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+              transitionLookup, neighbor.edge, *sourceFaceRow, *neighborRow,
+              sourceFamily, sourceSign, sourceDirection, edgeMatching,
+              edgeEffort, hasTransitions ? edgeTransitions : nullptr);
+          if (!forward.valid) {
+            validBranch = false;
+            break;
+          }
+          const int targetBranch =
+              branch_from_family_sign(forward.family, forward.sign);
+          int targetFamily = 0;
+          int targetSign = 1;
+          family_sign_from_branch(targetBranch, targetFamily, targetSign);
+          const Eigen::RowVector3d targetDirection = project_tangent(
+              axis_for_family(faceAxisX, faceAxisY, *neighborRow, targetFamily,
+                              targetSign),
+              face_normal(vertices, faces, *neighborRow));
+          const BranchTransitionResult reverse = resolve_branch_transition(
+              vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+              transitionLookup, neighbor.edge, *neighborRow, *sourceFaceRow,
+              targetFamily, targetSign, targetDirection, edgeMatching,
+              edgeEffort, hasTransitions ? edgeTransitions : nullptr);
+          if (!reverse.valid ||
+              branch_from_family_sign(reverse.family, reverse.sign) !=
+                  sourceBranch ||
+              normalized_branch(forward.matching + reverse.matching) != 0) {
+            validBranch = false;
+            break;
+          }
+          branchByFace[neighbor.face] = targetBranch;
+          pending.push(neighbor.face);
+        }
+      }
+      if (!validBranch || branchByFace.size() != candidate.stripFaces.size()) {
+        continue;
+      }
+
+      double score = 0.0;
+      int observations = 0;
+      const auto accumulate_edge_score = [&](const int a, const int b,
+                                             const int branchOffset,
+                                             const bool oriented) {
+        const auto found = incident.find(edge_key(a, b, source_vertex_extent(faces)));
+        if (found == incident.end()) return false;
+        bool observed = false;
+        for (const int faceRow : found->second) {
+          if (faceRow < 0) continue;
+          const auto face = source_face_id(faceRow, faces.rows());
+          if (!face.has_value() || candidate.stripFaces.count(*face) == 0U) {
+            continue;
+          }
+          const auto branchFound = branchByFace.find(*face);
+          if (branchFound == branchByFace.end()) return false;
+          const int expectedBranch =
+              normalized_branch(branchFound->second + branchOffset);
+          int family = 0;
+          int sign = 1;
+          family_sign_from_branch(expectedBranch, family, sign);
+          const Eigen::RowVector3d fieldDirection = project_tangent(
+              axis_for_family(faceAxisX, faceAxisY, faceRow, family, sign),
+              face_normal(vertices, faces, faceRow));
+          const Eigen::RowVector3d edgeDirection =
+              edge_direction_in_face(a, b, faceRow);
+          if (fieldDirection.squaredNorm() == 0.0 ||
+              edgeDirection.squaredNorm() == 0.0) {
+            return false;
+          }
+          double cosine = fieldDirection.dot(edgeDirection);
+          if (!oriented) cosine = std::abs(cosine);
+          const double angle = std::acos(std::clamp(cosine, -1.0, 1.0));
+          if (!std::isfinite(angle)) return false;
+          score += angle * angle;
+          ++observations;
+          observed = true;
+        }
+        return observed;
+      };
+
+      for (int u = 0; u < ringSize && validBranch; ++u) {
+        const int next = (u + 1) % ringSize;
+        if (!accumulate_edge_score(
+                previous[static_cast<std::size_t>(u)],
+                candidate.vertices[static_cast<std::size_t>(u)], 0, true)) {
+          validBranch = false;
+          break;
+        }
+        if (!accumulate_edge_score(
+                previous[static_cast<std::size_t>(u)],
+                previous[static_cast<std::size_t>(next)], 1, false) ||
+            !accumulate_edge_score(
+                candidate.vertices[static_cast<std::size_t>(u)],
+                candidate.vertices[static_cast<std::size_t>(next)], 1, false)) {
+          validBranch = false;
+          break;
+        }
+      }
+      if (!validBranch || observations <= 0) continue;
+      branchScores[static_cast<std::size_t>(seedBranch)] =
+          score / static_cast<double>(observations);
+    }
+
+    double bestScore = std::numeric_limits<double>::infinity();
+    int bestBranch = -1;
+    bool ambiguousBranch = false;
+    for (int branch = 0; branch < 4; ++branch) {
+      const double score = branchScores[static_cast<std::size_t>(branch)];
+      if (!std::isfinite(score)) continue;
+      if (score < bestScore && !score_equal(score, bestScore)) {
+        bestScore = score;
+        bestBranch = branch;
+        ambiguousBranch = false;
+      } else if (score_equal(score, bestScore)) {
+        ambiguousBranch = true;
+      }
+    }
+    if (bestBranch < 0 || !std::isfinite(bestScore)) return false;
+    candidate.score = bestScore;
+    candidate.seedBranch = bestBranch;
+    candidate.branchAmbiguous = ambiguousBranch;
+    return true;
+  };
+
+  for (int layer = 1; layer <= maxDistance; ++layer) {
+    const std::vector<int> previous = rings[static_cast<std::size_t>(layer - 1)];
+    const std::vector<int> raw = rings[static_cast<std::size_t>(layer)];
+    std::map<std::vector<int>, std::set<authority::SourceFaceId>> topologyCandidates;
+    for (int direction : {1, -1}) {
+      for (int offset = 0; offset < ringSize; ++offset) {
+        std::vector<int> candidate(static_cast<std::size_t>(ringSize));
+        for (int u = 0; u < ringSize; ++u) {
+          const int index = (offset + direction * u) % ringSize;
+          candidate[static_cast<std::size_t>(u)] =
+              raw[static_cast<std::size_t>((index + ringSize) % ringSize)];
+        }
+        bool compatible = true;
+        std::set<authority::SourceFaceId> stripFaces;
+        for (int u = 0; u < ringSize && compatible; ++u) {
+          const int next = (u + 1) % ringSize;
+          if (edgeFaces.count(edge_key(previous[static_cast<std::size_t>(u)],
+                                       candidate[static_cast<std::size_t>(u)],
+                                       source_vertex_extent(faces))) == 0U) {
+            compatible = false;
+            break;
+          }
+          const std::array<int, 4> quad{
+              previous[static_cast<std::size_t>(u)],
+              previous[static_cast<std::size_t>(next)],
+              candidate[static_cast<std::size_t>(next)],
+              candidate[static_cast<std::size_t>(u)]};
+          const std::vector<authority::SourceFaceId> pair = quad_faces(quad);
+          if (pair.size() != 2U) {
+            compatible = false;
+            break;
+          }
+          stripFaces.insert(pair.begin(), pair.end());
+        }
+        if (compatible &&
+            stripFaces.size() == static_cast<std::size_t>(2 * ringSize)) {
+          topologyCandidates.emplace(std::move(candidate), std::move(stripFaces));
+        }
+      }
+    }
+    if (topologyCandidates.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence);
+      return result;
+    }
+
+    std::vector<RingCandidateAuthority> authoritativeCandidates;
+    authoritativeCandidates.reserve(topologyCandidates.size());
+    for (const auto &[candidateVertices, stripFaces] : topologyCandidates) {
+      RingCandidateAuthority candidate;
+      candidate.vertices = candidateVertices;
+      candidate.stripFaces = stripFaces;
+      if (score_ring_candidate(candidate, previous)) {
+        authoritativeCandidates.push_back(std::move(candidate));
+      }
+    }
+    if (authoritativeCandidates.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence);
+      return result;
+    }
+
+    double bestScore = std::numeric_limits<double>::infinity();
+    int bestCandidate = -1;
+    bool ambiguous = false;
+    for (int index = 0;
+         index < static_cast<int>(authoritativeCandidates.size()); ++index) {
+      const RingCandidateAuthority &candidate =
+          authoritativeCandidates[static_cast<std::size_t>(index)];
+      if (candidate.score < bestScore &&
+          !score_equal(candidate.score, bestScore)) {
+        bestScore = candidate.score;
+        bestCandidate = index;
+        ambiguous = candidate.branchAmbiguous;
+      } else if (score_equal(candidate.score, bestScore)) {
+        ambiguous = true;
+      }
+    }
+    if (bestCandidate < 0 || ambiguous) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence);
+      return result;
+    }
+    rings[static_cast<std::size_t>(layer)] =
+        authoritativeCandidates[static_cast<std::size_t>(bestCandidate)].vertices;
+  }
+
+  std::vector<double> s(static_cast<std::size_t>(ringSize + 1), 0.0);
+  for (int u = 0; u < ringSize; ++u) {
+    const int next = (u + 1) % ringSize;
+    double length = 0.0;
+    for (const auto &ring : rings) {
+      length += (row3(vertices, ring[static_cast<std::size_t>(next)]) -
+                 row3(vertices, ring[static_cast<std::size_t>(u)])).norm();
+    }
+    length /= static_cast<double>(rings.size());
+    if (!(length > 0.0) || !std::isfinite(length)) return result;
+    s[static_cast<std::size_t>(u + 1)] = s[static_cast<std::size_t>(u)] + length;
+  }
+  std::vector<double> t(rings.size(), 0.0);
+  for (int layer = 0; layer < maxDistance; ++layer) {
+    double length = 0.0;
+    for (int u = 0; u < ringSize; ++u) {
+      const int a = rings[static_cast<std::size_t>(layer)][static_cast<std::size_t>(u)];
+      const int b = rings[static_cast<std::size_t>(layer + 1)][static_cast<std::size_t>(u)];
+      if (edgeFaces.count(edge_key(a, b, source_vertex_extent(faces))) == 0U) return result;
+      length += (row3(vertices, b) - row3(vertices, a)).norm();
+    }
+    length /= static_cast<double>(ringSize);
+    if (!(length > 0.0) || !std::isfinite(length)) return result;
+    t[static_cast<std::size_t>(layer + 1)] =
+        t[static_cast<std::size_t>(layer)] + length;
+  }
+  const double period = s.back();
+  const double height = t.back();
+  double target = options.defaultTargetSize;
+  if (targetSize.size() > 0 && targetSize.allFinite() &&
+      targetSize.minCoeff() > 0.0) {
+    target = targetSize.mean();
+  }
+  if (!(period > 0.0) || !(height > 0.0) || !(target > 0.0) ||
+      !std::isfinite(target)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+    return result;
+  }
+
+  // Every canonical annulus strip boundary is a mandatory periodic lattice
+  // breakpoint.  Subdivide each strip independently from its intrinsic length
+  // and local target field so no accepted cell side bridges a source-ring
+  // corner merely because a globally uniform period/target count misses it.
+  std::vector<int> stripSubdivisions(static_cast<std::size_t>(ringSize), 1);
+  int periodicSubdivisionCount = 0;
+  for (int u = 0; u < ringSize; ++u) {
+    const int next = (u + 1) % ringSize;
+    const double stripLength =
+        s[static_cast<std::size_t>(u + 1)] - s[static_cast<std::size_t>(u)];
+    double localTargetSum = 0.0;
+    int localTargetSamples = 0;
+    for (const auto &ring : rings) {
+      const int a = ring[static_cast<std::size_t>(u)];
+      const int b = ring[static_cast<std::size_t>(next)];
+      for (const int vertex : {a, b}) {
+        const double sample = target_size_at_vertex(targetSize, vertex, target);
+        if (!(sample > 0.0) || !std::isfinite(sample)) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+          return result;
+        }
+        localTargetSum += sample;
+        ++localTargetSamples;
+      }
+    }
+    const double localTarget =
+        localTargetSum / static_cast<double>(localTargetSamples);
+    if (!(stripLength > 0.0) || !std::isfinite(stripLength) ||
+        !(localTarget > 0.0) || !std::isfinite(localTarget)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+      return result;
+    }
+    const double subdivisionRatio = stripLength / localTarget;
+    if (!std::isfinite(subdivisionRatio) ||
+        subdivisionRatio > static_cast<double>(std::numeric_limits<int>::max())) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+      return result;
+    }
+    const int subdivisions = std::max(
+        1, static_cast<int>(std::llround(subdivisionRatio)));
+    if (periodicSubdivisionCount >
+        std::numeric_limits<int>::max() - subdivisions) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+      return result;
+    }
+    stripSubdivisions[static_cast<std::size_t>(u)] = subdivisions;
+    periodicSubdivisionCount += subdivisions;
+  }
+  result.gridU = periodicSubdivisionCount;
+  result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
+
+  std::vector<double> periodicCoordinates;
+  periodicCoordinates.reserve(static_cast<std::size_t>(result.gridU + 1));
+  periodicCoordinates.push_back(0.0);
+  for (int u = 0; u < ringSize; ++u) {
+    const double stripStart = s[static_cast<std::size_t>(u)];
+    const double stripEnd = s[static_cast<std::size_t>(u + 1)];
+    const int subdivisions = stripSubdivisions[static_cast<std::size_t>(u)];
+    for (int division = 1; division <= subdivisions; ++division) {
+      const double coordinate =
+          division == subdivisions
+              ? stripEnd
+              : stripStart + (stripEnd - stripStart) *
+                                 (static_cast<double>(division) /
+                                  static_cast<double>(subdivisions));
+      if (!std::isfinite(coordinate) ||
+          coordinate <= periodicCoordinates.back()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+        return result;
+      }
+      periodicCoordinates.push_back(coordinate);
+    }
+  }
+  if (periodicCoordinates.size() !=
+          static_cast<std::size_t>(result.gridU + 1) ||
+      std::abs(periodicCoordinates.back() - period) >
+          1.0e-12 * std::max(1.0, period)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidPeriodicChart);
+    return result;
+  }
+
+  std::map<int, std::pair<int, int>> vertexChartIndex;
+  for (int layer = 0; layer <= maxDistance; ++layer) {
+    for (int u = 0; u < ringSize; ++u) {
+      vertexChartIndex[rings[static_cast<std::size_t>(layer)][static_cast<std::size_t>(u)]] = {u, layer};
+    }
+  }
+  std::vector<PeriodicChartTriangle> chartTriangles;
+  chartTriangles.reserve(activeFaces.size());
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return result;
+    const int face = *faceRow;
+    PeriodicChartTriangle triangle(faceId);
+    triangle.vertices = canonical_face_vertices(faces, face);
+    std::array<int, 3> columns{};
+    for (int corner = 0; corner < 3; ++corner) {
+      const int vertex = faces(face, corner);
+      const auto found = vertexChartIndex.find(vertex);
+      if (found == vertexChartIndex.end()) return result;
+      columns[static_cast<std::size_t>(corner)] = found->second.first;
+      triangle.uv[static_cast<std::size_t>(corner)] = {
+          s[static_cast<std::size_t>(found->second.first)],
+          t[static_cast<std::size_t>(found->second.second)]};
+    }
+    const int minColumn = *std::min_element(columns.begin(), columns.end());
+    const int maxColumn = *std::max_element(columns.begin(), columns.end());
+    if (minColumn == 0 && maxColumn == ringSize - 1) {
+      for (int corner = 0; corner < 3; ++corner) {
+        if (columns[static_cast<std::size_t>(corner)] == 0) {
+          triangle.uv[static_cast<std::size_t>(corner)].x() = period;
+        }
+      }
+    }
+    chartTriangles.push_back(std::move(triangle));
+  }
+  std::sort(chartTriangles.begin(), chartTriangles.end(),
+            [](const PeriodicChartTriangle &a, const PeriodicChartTriangle &b) {
+              return a.vertices < b.vertices;
+            });
+
+  // Derive one complete periodic source route from the first topological strip.
+  // Face-cycle ownership stays typed; only matrix/transition calls receive a
+  // checked row projection.
+  std::set<authority::SourceFaceId> firstStripFaces;
+  for (int u = 0; u < ringSize; ++u) {
+    const int next = (u + 1) % ringSize;
+    const std::array<int, 4> quad{
+        rings[0][static_cast<std::size_t>(u)],
+        rings[0][static_cast<std::size_t>(next)],
+        rings[1][static_cast<std::size_t>(next)],
+        rings[1][static_cast<std::size_t>(u)]};
+    const auto pair = quad_faces(quad);
+    firstStripFaces.insert(pair.begin(), pair.end());
+  }
+  std::map<authority::SourceFaceId, std::vector<authority::SourceFaceId>> dual;
+  for (const authority::SourceFaceId face : firstStripFaces) dual[face] = {};
+  for (const auto &[key, pair] : incident) {
+    (void)key;
+    if (pair[0] < 0 || pair[1] < 0) continue;
+    const auto firstFace = source_face_id(pair[0], faces.rows());
+    const auto secondFace = source_face_id(pair[1], faces.rows());
+    if (!firstFace.has_value() || !secondFace.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+    if (firstStripFaces.count(*firstFace) != 0U &&
+        firstStripFaces.count(*secondFace) != 0U) {
+      dual[*firstFace].push_back(*secondFace);
+      dual[*secondFace].push_back(*firstFace);
+    }
+  }
+  for (auto &[face, neighbors] : dual) {
+    (void)face;
+    std::sort(neighbors.begin(), neighbors.end(),
+              [&](const authority::SourceFaceId a,
+                  const authority::SourceFaceId b) {
+                return sourceAuthority.topology_for_row(a) <
+                       sourceAuthority.topology_for_row(b);
+              });
+    if (neighbors.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+  }
+  auto canonical_face_cycle = [&](const int firstNeighborIndex) {
+    std::optional<authority::SourceFaceId> startFace;
+    for (const auto &[face, neighbors] : dual) {
+      (void)neighbors;
+      if (!startFace.has_value() ||
+          sourceAuthority.topology_for_row(face) <
+              sourceAuthority.topology_for_row(*startFace)) {
+        startFace = face;
+      }
+    }
+    if (!startFace.has_value()) return std::vector<authority::SourceFaceId>{};
+    std::vector<authority::SourceFaceId> cycle;
+    cycle.reserve(dual.size());
+    cycle.push_back(*startFace);
+    authority::SourceFaceId previous = *startFace;
+    authority::SourceFaceId current =
+        dual[*startFace][static_cast<std::size_t>(firstNeighborIndex)];
+    while (current != *startFace && cycle.size() <= dual.size()) {
+      cycle.push_back(current);
+      const auto &neighbors = dual[current];
+      const authority::SourceFaceId next =
+          neighbors[0] == previous ? neighbors[1] : neighbors[0];
+      previous = current;
+      current = next;
+    }
+    if (current != *startFace || cycle.size() != dual.size()) {
+      return std::vector<authority::SourceFaceId>{};
+    }
+    return cycle;
+  };
+  std::vector<authority::SourceFaceId> faceCycleA = canonical_face_cycle(0);
+  std::vector<authority::SourceFaceId> faceCycleB = canonical_face_cycle(1);
+  auto face_cycle_key = [&](const std::vector<authority::SourceFaceId> &cycle) {
+    std::vector<authority::SourceFaceTopologyKey> key;
+    key.reserve(cycle.size());
+    for (const authority::SourceFaceId face : cycle) {
+      key.push_back(sourceAuthority.topology_for_row(face));
+    }
+    return key;
+  };
+  const std::vector<authority::SourceFaceId> faceCycle =
+      face_cycle_key(faceCycleB) < face_cycle_key(faceCycleA) ? faceCycleB
+                                                             : faceCycleA;
+  if (faceCycle.empty()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+  std::vector<authority::TransitionStep> observedSteps;
+  observedSteps.reserve(faceCycle.size());
+  for (std::size_t index = 0; index < faceCycle.size(); ++index) {
+    const auto sourceFaceRow = source_face_row(faceCycle[index], faces.rows());
+    const auto targetFaceRow = source_face_row(
+        faceCycle[(index + 1U) % faceCycle.size()], faces.rows());
+    if (!sourceFaceRow.has_value() || !targetFaceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+    const int sourceFace = *sourceFaceRow;
+    const int targetFace = *targetFaceRow;
+    std::optional<authority::SourceEdgeTopologyKey> sharedKey;
+    for (int a = 0; a < 3 && !sharedKey.has_value(); ++a) {
+      const authority::SourceEdgeTopologyKey key = local_edge_key(faces, sourceFace, a);
+      if (local_edge_for_key(faces, targetFace, key) >= 0) sharedKey = key;
+    }
+    if (!sharedKey.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace);
+      return result;
+    }
+    int sourceEdge = -1;
+    if (!source_edge_provenance(
+            *sharedKey, sourceEdgeFaces, sourceMatchingIndices,
+            transitionLookup, hasTransitions ? edgeTransitions : nullptr,
+            sourceEdge)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    int matching = 0;
+    if (hasTransitions) {
+      const auto found = transitionLookup.byEdge.find(*sharedKey);
+      if (found == transitionLookup.byEdge.end() ||
+          !transition_faces_match(found->second, sourceFace, targetFace)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                                -1, -1, sourceFace, targetFace, -1, sourceEdge);
+        return result;
+      }
+      matching = found->second.matching;
+      if (found->second.secondFace == sourceFace) matching = -matching;
+    } else if (edgeMatching != nullptr && edgeMatching->size() > 0) {
+      const auto matchingIndex = matchingIndices.find(*sharedKey);
+      if (matchingIndex == matchingIndices.end() ||
+          matchingIndex->second >= edgeMatching->size()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                                -1, -1, sourceFace, targetFace, -1, sourceEdge);
+        return result;
+      }
+      matching = (*edgeMatching)[matchingIndex->second];
+      const auto topology = incident.find(*sharedKey);
+      if (topology != incident.end() && topology->second[1] == sourceFace) matching = -matching;
+    }
+
+    const authority::SourceEdgeTopologyKey &topology = *sharedKey;
+    const auto interiorTransition =
+        directional::authority::InteriorTransitionId::from_index(
+            sourceEdge, sourceMatchingIndices.size());
+    if (!interiorTransition) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    const auto typedStep = authority::TransitionStep::interior(
+        topology,
+        std::optional<authority::InteriorTransitionId>{
+            interiorTransition.value()},
+        authority::GridAutomorphism{
+            authority::QuarterTurn::from_integer(matching),
+            authority::LatticeTranslation{0, 0}},
+        authority::Orientation::Forward);
+    if (!typedStep) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch,
+                              -1, -1, sourceFace, targetFace, -1, sourceEdge);
+      return result;
+    }
+    observedSteps.push_back(typedStep.value());
+  }
+  const authority::CanonicalRoute typedRoute =
+      authority::CanonicalRoute::from_observed_steps(std::move(observedSteps));
+  authority::GridAutomorphism routeTransport =
+      authority::GridAutomorphism::identity();
+  for (const authority::TransitionStep &step : typedRoute.oriented_steps()) {
+    routeTransport = compose(step.transport(), routeTransport);
+  }
+  if (routeTransport.rotation.value() != 0U) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+
+  result.disposition = SurfaceCellProducerDisposition::Rejected;
+  const authority::GridAutomorphism periodicAction{
+      authority::QuarterTurn{},
+      authority::LatticeTranslation{result.gridU, 0}};
+  std::vector<authority::TransitionStep> cutSteps;
+  cutSteps.reserve(static_cast<std::size_t>(maxDistance));
+  for (int layer = 0; layer < maxDistance; ++layer) {
+    const authority::SourceEdgeTopologyKey key = edge_key(
+        rings[static_cast<std::size_t>(layer)][0],
+        rings[static_cast<std::size_t>(layer + 1)][0],
+        source_vertex_extent(faces));
+    int sourceEdge = -1;
+    if (!source_edge_provenance(
+            key, sourceEdgeFaces, sourceMatchingIndices, transitionLookup,
+            hasTransitions ? edgeTransitions : nullptr, sourceEdge)) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+    const authority::SourceEdgeTopologyKey &topology = key;
+    const auto transition = authority::InteriorTransitionId::from_index(
+        sourceEdge, sourceMatchingIndices.size());
+    if (!transition) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+    const auto step = authority::TransitionStep::interior(
+        topology, transition.value(),
+        authority::GridAutomorphism::identity(),
+        authority::Orientation::Forward);
+    if (!step) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+      return result;
+    }
+    cutSteps.push_back(step.value());
+  }
+  const authority::CanonicalRoute cutRoute =
+      authority::CanonicalRoute::from_observed_steps(std::move(cutSteps));
+  const auto relationId = authority::PeriodicRelationId::from_index(0, 1);
+  if (!relationId) {
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidPeriodicTopology);
+    return result;
+  }
+  auto periodicConstruction = SurfacePeriodicHolonomy::make(
+      relationId.value(), region.id(), periodicAction, typedRoute, cutRoute);
+  auto *periodicValue =
+      std::get_if<SurfacePeriodicHolonomy>(&periodicConstruction);
+  if (periodicValue == nullptr) {
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch);
+    return result;
+  }
+  result.periodicHolonomies.push_back(
+      surface_cell_tracing_detail::canonicalize_periodic_holonomy(
+          std::move(*periodicValue)));
+  const SurfacePeriodicHolonomy &periodicHolonomy =
+      result.periodicHolonomies.back();
+
+  const double stepV = height / static_cast<double>(result.gridV);
+  const int columns = result.gridU + 1;
+  const int rows = result.gridV + 1;
+  std::vector<SurfaceTracePoint> points(static_cast<std::size_t>(columns * rows));
+  const auto node_index = [columns](int u, int v) { return v * columns + u; };
+  for (int v = 0; v < rows; ++v) {
+    for (int u = 0; u < columns; ++u) {
+      const Eigen::Vector2d uv(
+          periodicCoordinates[static_cast<std::size_t>(u)], stepV * v);
+      if (!point_on_periodic_chart(
+              chartTriangles, uv, faces.rows(),
+              points[static_cast<std::size_t>(node_index(u, v))])) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
+                                -1, -1, -1, -1, -1);
+        return result;
+      }
+    }
+  }
+
+  struct EdgeOwner { int edge = -1; };
+  std::map<std::pair<int, int>, EdgeOwner> openEdges;
+  const auto canonical_node = [&](const authority::LatticeTranslation coordinate) {
+    int u = static_cast<int>(coordinate.x);
+    if (u == result.gridU) u = 0;
+    return static_cast<int>(coordinate.y) * result.gridU + u;
+  };
+  for (int v = 0; v < result.gridV; ++v) {
+    for (int u = 0; u < result.gridU; ++u) {
+      const std::array<int, 4> nodeIds{
+          node_index(u, v), node_index(u + 1, v),
+          node_index(u + 1, v + 1), node_index(u, v + 1)};
+      const double u0 = periodicCoordinates[static_cast<std::size_t>(u)];
+      const double u1 = periodicCoordinates[static_cast<std::size_t>(u + 1)];
+      const std::array<Eigen::Vector2d, 4> uv{
+          Eigen::Vector2d(u0, stepV * v),
+          Eigen::Vector2d(u1, stepV * v),
+          Eigen::Vector2d(u1, stepV * (v + 1)),
+          Eigen::Vector2d(u0, stepV * (v + 1))};
+      const auto cellId = phase_front_cell_id_from_lattice(
+          u, v, result.gridU, result.gridV);
+      if (!cellId) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      SurfacePhaseFrontCell cell(region.id(), cellId.value());
+      for (int corner = 0; corner < 4; ++corner) {
+        cell.corners[static_cast<std::size_t>(corner)] =
+            points[static_cast<std::size_t>(nodeIds[corner])];
+        auto &state = cell.lattice[static_cast<std::size_t>(corner)];
+        state.phase = uv[static_cast<std::size_t>(corner)];
+        state.latticeCoordinate = {
+            corner == 1 || corner == 2 ? u + 1 : u,
+            corner >= 2 ? v + 1 : v};
+        const int canonicalFace =
+            cell.corners[static_cast<std::size_t>(corner)].face;
+        const auto canonicalChart =
+            canonicalSourceCharts.chart(canonicalFace);
+        if (!canonicalChart.has_value()) {
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
+              static_cast<int>(cell.id.index()), corner, canonicalFace);
+          return result;
+        }
+        state.sourceChart = canonicalChart->chart;
+      }
+      for (int side = 0; side < 4; ++side) {
+        const authority::LatticeTranslation delta =
+            cell.lattice[static_cast<std::size_t>((side + 1) % 4)].latticeCoordinate -
+            cell.lattice[static_cast<std::size_t>(side)].latticeCoordinate;
+        const int family = delta.x != 0 ? 0 : 1;
+        const int sign = (delta.x + delta.y) >= 0 ? 1 : -1;
+        cell.boundaryPaths[static_cast<std::size_t>(side)] = periodic_chart_segment(
+            chartTriangles, canonicalSourceCharts, faces.rows(),
+            uv[static_cast<std::size_t>(side)],
+            uv[static_cast<std::size_t>((side + 1) % 4)], family, sign,
+            matchingIndices, transitionLookup,
+            hasTransitions ? edgeTransitions : nullptr);
+        if (cell.boundaryPaths[static_cast<std::size_t>(side)].empty()) {
+          set_phase_front_failure(result.failure,
+                                  SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
+                                  static_cast<int>(cell.id.index()), side);
+          return result;
+        }
+      }
+      const double tolerance =
+          1.0e-7 * std::max({1.0, u1 - u0, stepV});
+      if (validate_closed_boundary_paths(vertices, faces, cell.corners,
+                                         cell.boundaryPaths, tolerance) !=
+          CellRejectionReason::Accepted) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidPeriodicChart,
+                                static_cast<int>(cell.id.index()));
+        return result;
+      }
+      std::array<Eigen::RowVector3d, 4> positions =
+          phase_front_corner_positions(vertices, faces, cell);
+      Eigen::RowVector3d loopNormal = phase_front_loop_normal(positions);
+      Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
+      for (const auto &corner : cell.corners) expectedNormal += face_normal(vertices, faces, corner.face);
+      if (!loopNormal.allFinite() || !expectedNormal.allFinite() ||
+          loopNormal.squaredNorm() <= 1.0e-24 || expectedNormal.squaredNorm() <= 1.0e-24) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidCellOrientation,
+                                static_cast<int>(cell.id.index()));
+        return result;
+      }
+      if (loopNormal.dot(expectedNormal) < 0.0) {
+        reverse_phase_front_cell_cycle(cell);
+        positions = phase_front_corner_positions(vertices, faces, cell);
+        loopNormal = phase_front_loop_normal(positions);
+      }
+      if (loopNormal.dot(expectedNormal) <= 0.0 ||
+          !phase_front_cell_matches_region(cell, sourceAuthority, region)) {
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidCellOrientation,
+                                static_cast<int>(cell.id.index()));
+        return result;
+      }
+      cell.orientationValidated = true;
+
+      for (int side = 0; side < 4; ++side) {
+        SurfaceFrontEdge edge(region.id(), cell.id);
+        edge.from = cell.corners[static_cast<std::size_t>(side)];
+        edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
+        edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
+        edge.toLattice = cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
+        const authority::LatticeTranslation delta =
+            edge.toLattice.latticeCoordinate - edge.fromLattice.latticeCoordinate;
+        edge.family = delta.x != 0 ? 0 : 1;
+        edge.advanceSign = (delta.x + delta.y) >= 0 ? 1 : -1;
+        edge.filledSide = side;
+        const int edgeId = static_cast<int>(result.edges.size());
+        result.edges.push_back(edge);
+        const int a = canonical_node(edge.fromLattice.latticeCoordinate);
+        const int b = canonical_node(edge.toLattice.latticeCoordinate);
+        const auto ordered = std::minmax(a, b);
+        const std::pair<int, int> key{ordered.first, ordered.second};
+        const auto found = openEdges.find(key);
+        if (found == openEdges.end()) {
+          openEdges.emplace(key, EdgeOwner{edgeId});
+        } else {
+          auto &first = result.edges[static_cast<std::size_t>(found->second.edge)];
+          auto &second = result.edges[static_cast<std::size_t>(edgeId)];
+          if (first.filledCell == second.filledCell || first.family != second.family ||
+              first.advanceSign == second.advanceSign) {
+            set_phase_front_failure(result.failure,
+                                    SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+                                    static_cast<int>(cell.id.index()), side);
+            return result;
+          }
+          first.oppositeEdge = edgeId;
+          second.oppositeEdge = found->second.edge;
+          first.unfilledSide = 0;
+          second.unfilledSide = 0;
+          const bool periodic =
+              first.fromLattice.latticeCoordinate.x !=
+                  second.toLattice.latticeCoordinate.x ||
+              first.toLattice.latticeCoordinate.x !=
+                  second.fromLattice.latticeCoordinate.x;
+          if (periodic) {
+            first.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
+            second.boundaryKind = SurfaceFrontBoundaryKind::PeriodicCut;
+            first.periodicRelation = periodicHolonomy.id();
+            second.periodicRelation = periodicHolonomy.id();
+            first.route = periodicHolonomy.cutRoute();
+            second.route = periodicHolonomy.cutRoute().reversed();
+          }
+          SurfaceFrontEvent event;
+          event.kind = periodic ? SurfaceFrontEventKind::PeriodicFrontMerge
+                                : SurfaceFrontEventKind::CompatibleFrontMerge;
+          event.firstEdge = found->second.edge;
+          event.secondEdge = edgeId;
+          result.events.push_back(event);
+          openEdges.erase(found);
+        }
+      }
+      result.cells.push_back(std::move(cell));
+    }
+  }
+  const auto cellIndexById = phase_front_cell_storage_index(result.cells);
+  if (!cellIndexById) {
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+    return result;
+  }
+  for (const auto &[key, owner] : openEdges) {
+    (void)key;
+    auto &edge = result.edges[static_cast<std::size_t>(owner.edge)];
+    if (edge.family != 0 ||
+        (edge.fromLattice.latticeCoordinate.y != 0 &&
+         edge.fromLattice.latticeCoordinate.y != result.gridV)) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+                              static_cast<int>(edge.filledCell.index()), owner.edge);
+      return result;
+    }
+    const auto ownerCell = cellIndexById->find(edge.filledCell);
+    if (ownerCell == cellIndexById->end() ||
+        edge.filledSide < 0 || edge.filledSide >= 4) {
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority,
+          static_cast<int>(edge.filledCell.index()), edge.filledSide);
+      return result;
+    }
+    const auto boundaryReason = assign_open_front_boundary_authority(
+        vertices, faces, options, sourceEdgeFaces, sourceMatchingIndices,
+        result.cells[ownerCell->second]
+            .boundaryPaths[static_cast<std::size_t>(edge.filledSide)],
+        edge);
+    if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
+      set_phase_front_failure(result.failure, boundaryReason,
+                              static_cast<int>(edge.filledCell.index()),
+                              edge.filledSide);
+      return result;
+    }
+    edge.exterior = true;
+    edge.unfilledSide = 0;
+    SurfaceFrontEvent event;
+    event.kind = SurfaceFrontEventKind::BoundaryTermination;
+    event.firstEdge = owner.edge;
+    result.events.push_back(event);
+  }
+  for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size()); ++edgeIndex) {
+    const auto &edge = result.edges[static_cast<std::size_t>(edgeIndex)];
+    const bool hasTwin = edge.oppositeEdge >= 0;
+    if (cellIndexById->find(edge.filledCell) == cellIndexById->end() || edge.unfilledSide != 0 || hasTwin == edge.exterior ||
+        (hasTwin && (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
+                     result.edges[static_cast<std::size_t>(edge.oppositeEdge)].oppositeEdge != edgeIndex))) {
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+                              -1, edgeIndex);
+      return result;
+    }
+  }
+  result.succeeded = !result.cells.empty() &&
+                     result.cells.size() == static_cast<std::size_t>(result.gridU * result.gridV);
+  if (!result.succeeded) {
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+    return result;
+  }
+  result.disposition = SurfaceCellProducerDisposition::Produced;
+  return result;
+}
+
+
+SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize, const std::vector<authority::SourceFaceId> &activeFaces,
+    const SurfaceTopologyRegion &region,
+    const SourceTopologyRegions &sourceAuthority,
+    const SurfaceCellTracingOptions &options,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  SurfacePhaseFrontBuildState result;
+  result.attempted = options.enableUniformPhaseFront;
+  if (!result.attempted ||
+      surface_cell_tracing_detail::tracing_has_singularities(options) ||
+      activeFaces.empty()) {
+    return result;
+  }
+  SourceChartTransitionGraph canonicalSourceCharts(
+      &faces, &sourceAuthority, options.hardFeatureEdges);
+  if (!canonicalSourceCharts.available()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::MissingFaceState);
+    return result;
+  }
+  if (vertices.rows() < 3 || faces.rows() < 1 || faces.cols() != 3 ||
+      faceAxisX.rows() != faces.rows() || faceAxisY.rows() != faces.rows()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidInput);
+    return result;
+  }
+
+  const auto incident = edge_faces(faces, activeFaces);
+  const auto &fullIncident = sourceEdgeFaces;
+  std::set<int> activeVertices;
+  std::map<int, std::set<int>> vertexAdjacency;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidInput);
+      return result;
+    }
+    const int face = *faceRow;
+    for (int corner = 0; corner < 3; ++corner) {
+      const int a = faces(face, corner);
+      const int b = faces(face, (corner + 1) % 3);
+      if (a < 0 || b < 0 || a >= vertices.rows() || b >= vertices.rows() ||
+          a == b) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+            -1, -1, face);
+        return result;
+      }
+      activeVertices.insert(a);
+      activeVertices.insert(b);
+      vertexAdjacency[a].insert(b);
+      vertexAdjacency[b].insert(a);
+    }
+  }
+  for (const auto &[key, pair] : incident) {
+    (void)key;
+    if (pair[0] < 0) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+      return result;
+    }
+  }
+
+  const int euler = static_cast<int>(activeVertices.size()) -
+                    static_cast<int>(incident.size()) +
+                    static_cast<int>(activeFaces.size());
+  if (euler != 1) {
+    return result;
+  }
+
+  // A disk producer owns only one connected sheet. Connectivity is proved on
+  // the source-face dual graph with typed face identity; row enumeration is
+  // projected only for direct matrix-edge lookup.
+  const std::set<authority::SourceFaceId> activeFaceSet(activeFaces.begin(),
+                                                        activeFaces.end());
+  std::set<authority::SourceFaceId> visitedFaces;
+  std::queue<authority::SourceFaceId> faceQueue;
+  faceQueue.push(activeFaces.front());
+  while (!faceQueue.empty()) {
+    const authority::SourceFaceId faceId = faceQueue.front();
+    faceQueue.pop();
+    if (!visitedFaces.insert(faceId).second) continue;
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+      return result;
+    }
+    for (int corner = 0; corner < 3; ++corner) {
+      const auto found = incident.find(local_edge_key(faces, *faceRow, corner));
+      if (found == incident.end()) continue;
+      for (const int adjacentRow : found->second) {
+        if (adjacentRow < 0 || adjacentRow == *faceRow) continue;
+        const auto adjacent = source_face_id(adjacentRow, faces.rows());
+        if (!adjacent.has_value()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+          return result;
+        }
+        if (activeFaceSet.count(*adjacent) != 0U &&
+            visitedFaces.count(*adjacent) == 0U) {
+          faceQueue.push(*adjacent);
+        }
+      }
+    }
+  }
+  if (visitedFaces.size() != activeFaceSet.size()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+    return result;
+  }
+
+  std::set<authority::SourceEdgeTopologyKey> boundaryEdgeKeys;
+  std::map<int, std::vector<int>> boundaryAdjacency;
+  std::map<authority::SourceEdgeTopologyKey, authority::SourceFaceId> boundaryFace;
+  for (const auto &[key, pair] : incident) {
+    if (pair[1] >= 0) continue;
+    const auto faceId = source_face_id(pair[0], faces.rows());
+    if (!faceId.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+      return result;
+    }
+    const int face = pair[0];
+    int localEdge = local_edge_for_key(faces, face, key);
+    if (localEdge < 0) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+          -1, -1, face);
+      return result;
+    }
+    const int a = faces(face, (localEdge + 1) % 3);
+    const int b = faces(face, (localEdge + 2) % 3);
+    boundaryEdgeKeys.insert(key);
+    boundaryAdjacency[a].push_back(b);
+    boundaryAdjacency[b].push_back(a);
+    boundaryFace.emplace(key, *faceId);
+
+    // A local sheet boundary must be a genuine source boundary or an
+    // authoritative hard-feature/source-sheet rail.  A hidden cut through an
+    // ordinary same-sheet source edge is not a bounded-disk chart boundary.
+    const auto full = fullIncident.find(key);
+    if (full == fullIncident.end()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+          -1, -1, face);
+      return result;
+    }
+    if (!source_edge_is_authoritative_local_boundary(
+            options, faces.rows(), face, full->second, key)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+          -1, -1, face);
+      return result;
+    }
+  }
+  if (boundaryEdgeKeys.size() < 4U || boundaryAdjacency.size() < 4U) {
+    return result;
+  }
+  for (auto &[vertex, neighbors] : boundaryAdjacency) {
+    (void)vertex;
+    std::sort(neighbors.begin(), neighbors.end());
+    neighbors.erase(std::unique(neighbors.begin(), neighbors.end()), neighbors.end());
+    if (neighbors.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology,
+          -1, -1, -1, -1, vertex);
+      return result;
+    }
+  }
+
+  const auto vertex_geometry_key = [&](const int vertex) {
+    return std::array<double, 3>{vertices(vertex, 0), vertices(vertex, 1),
+                                 vertices(vertex, 2)};
+  };
+  int boundaryStart = -1;
+  std::array<double, 3> startKey{
+      std::numeric_limits<double>::infinity(),
+      std::numeric_limits<double>::infinity(),
+      std::numeric_limits<double>::infinity()};
+  bool ambiguousStart = false;
+  for (const auto &[vertex, neighbors] : boundaryAdjacency) {
+    (void)neighbors;
+    const auto key = vertex_geometry_key(vertex);
+    if (key < startKey) {
+      startKey = key;
+      boundaryStart = vertex;
+      ambiguousStart = false;
+    } else if (key == startKey && vertex != boundaryStart) {
+      ambiguousStart = true;
+    }
+  }
+  if (boundaryStart < 0 || ambiguousStart) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+    return result;
+  }
+
+  const auto walk_boundary = [&](const int firstNeighbor) {
+    std::vector<int> cycle;
+    cycle.reserve(boundaryAdjacency.size());
+    cycle.push_back(boundaryStart);
+    int previous = boundaryStart;
+    int current = firstNeighbor;
+    while (current != boundaryStart && cycle.size() <= boundaryAdjacency.size()) {
+      cycle.push_back(current);
+      const auto found = boundaryAdjacency.find(current);
+      if (found == boundaryAdjacency.end() || found->second.size() != 2U) {
+        return std::vector<int>{};
+      }
+      const int next = found->second[0] == previous ? found->second[1]
+                                                    : found->second[0];
+      previous = current;
+      current = next;
+    }
+    if (current != boundaryStart || cycle.size() != boundaryAdjacency.size()) {
+      return std::vector<int>{};
+    }
+    return cycle;
+  };
+  const auto &startNeighbors = boundaryAdjacency[boundaryStart];
+  std::vector<int> cycleA = walk_boundary(startNeighbors[0]);
+  std::vector<int> cycleB = walk_boundary(startNeighbors[1]);
+  if (cycleA.empty() || cycleB.empty()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+    return result;
+  }
+  const auto follows_source_orientation = [&](const std::vector<int> &cycle) {
+    for (std::size_t index = 0; index < cycle.size(); ++index) {
+      const int a = cycle[index];
+      const int b = cycle[(index + 1U) % cycle.size()];
+      const authority::SourceEdgeTopologyKey key = edge_key(a, b, source_vertex_extent(faces));
+      const auto foundFace = boundaryFace.find(key);
+      if (foundFace == boundaryFace.end()) return false;
+      const auto faceRow = source_face_row(foundFace->second, faces.rows());
+      if (!faceRow.has_value()) return false;
+      const int face = *faceRow;
+      bool oriented = false;
+      for (int corner = 0; corner < 3; ++corner) {
+        if (faces(face, corner) == a && faces(face, (corner + 1) % 3) == b) {
+          oriented = true;
+          break;
+        }
+      }
+      if (!oriented) return false;
+    }
+    return true;
+  };
+  const bool orientedA = follows_source_orientation(cycleA);
+  const bool orientedB = follows_source_orientation(cycleB);
+  if (orientedA == orientedB) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+    return result;
+  }
+  std::vector<int> boundaryCycle = orientedA ? std::move(cycleA) : std::move(cycleB);
+  result.disposition = SurfaceCellProducerDisposition::Rejected;
+
+  // Establish one global 4-RoSy gauge by reciprocal source-edge transport.
+  // The root face is chosen by geometric triangle identity, never face-row ID.
+  const auto face_geometry_key = [&](const int face) {
+    std::array<std::array<double, 3>, 3> points{};
+    for (int corner = 0; corner < 3; ++corner) {
+      points[static_cast<std::size_t>(corner)] =
+          vertex_geometry_key(faces(face, corner));
+    }
+    std::sort(points.begin(), points.end());
+    return points;
+  };
+  std::optional<authority::SourceFaceId> rootFace;
+  std::array<std::array<double, 3>, 3> rootKey{};
+  bool ambiguousRoot = false;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+      return result;
+    }
+    const auto key = face_geometry_key(*faceRow);
+    if (!rootFace.has_value() || key < rootKey) {
+      rootFace = faceId;
+      rootKey = key;
+      ambiguousRoot = false;
+    } else if (key == rootKey && faceId != *rootFace) {
+      ambiguousRoot = true;
+    }
+  }
+  if (!rootFace.has_value() || ambiguousRoot) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology);
+    return result;
+  }
+
+  const auto &matchingIndices = sourceMatchingIndices;
+  const bool hasTransitions = edgeTransitions != nullptr && !edgeTransitions->empty();
+  const bool hasMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
+  const bool hasEffort = edgeEffort != nullptr && edgeEffort->size() > 0;
+  const auto *effectiveTransitions = hasTransitions ? edgeTransitions : nullptr;
+  const auto *effectiveMatching = hasMatching ? edgeMatching : nullptr;
+  const auto *effectiveEffort = hasEffort ? edgeEffort : nullptr;
+  const EdgeTransitionLookup transitionLookup =
+      authoritative_edge_transition_lookup(
+          options.fieldTransportAtlas,
+          hasTransitions ? edgeTransitions : nullptr,
+          source_vertex_extent(faces));
+  if (transitionLookup.duplicate) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport);
+    return result;
+  }
+
+  struct DualStep {
+    authority::SourceFaceId face;
+    authority::SourceEdgeTopologyKey edge;
+  };
+  std::map<authority::SourceFaceId, std::vector<DualStep>> dual;
+  for (const authority::SourceFaceId faceId : activeFaces) dual[faceId] = {};
+  for (const auto &[key, pair] : incident) {
+    if (pair[0] < 0 || pair[1] < 0) continue;
+    const auto firstFace = source_face_id(pair[0], faces.rows());
+    const auto secondFace = source_face_id(pair[1], faces.rows());
+    if (!firstFace.has_value() || !secondFace.has_value() ||
+        activeFaceSet.count(*firstFace) == 0U ||
+        activeFaceSet.count(*secondFace) == 0U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport);
+      return result;
+    }
+    dual[*firstFace].push_back(DualStep{*secondFace, key});
+    dual[*secondFace].push_back(DualStep{*firstFace, key});
+  }
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    auto &neighbors = dual[faceId];
+    std::sort(neighbors.begin(), neighbors.end(), [&](const DualStep &a,
+                                                      const DualStep &b) {
+      const auto aRow = source_face_row(a.face, faces.rows());
+      const auto bRow = source_face_row(b.face, faces.rows());
+      if (!aRow.has_value() || !bRow.has_value()) return a.face < b.face;
+      const auto ak = face_geometry_key(*aRow);
+      const auto bk = face_geometry_key(*bRow);
+      if (ak != bk) return ak < bk;
+      return a.edge < b.edge;
+    });
+  }
+
+  const auto rootFaceRow = source_face_row(*rootFace, faces.rows());
+  if (!rootFaceRow.has_value()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport);
+    return result;
+  }
+  std::vector<int> faceBranchRotation(static_cast<std::size_t>(faces.rows()), -1);
+  faceBranchRotation[static_cast<std::size_t>(*rootFaceRow)] = 0;
+  std::queue<authority::SourceFaceId> pending;
+  pending.push(*rootFace);
+  while (!pending.empty()) {
+    const authority::SourceFaceId sourceFace = pending.front();
+    pending.pop();
+    const auto sourceFaceRow = source_face_row(sourceFace, faces.rows());
+    if (!sourceFaceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport);
+      return result;
+    }
+    const int sourceBranch =
+        faceBranchRotation[static_cast<std::size_t>(*sourceFaceRow)];
+    int sourceFamily = 0;
+    int sourceSign = 1;
+    family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+    const Eigen::RowVector3d sourceDirection = project_tangent(
+        axis_for_family(faceAxisX, faceAxisY, *sourceFaceRow, sourceFamily,
+                        sourceSign),
+        face_normal(vertices, faces, *sourceFaceRow));
+    if (sourceDirection.squaredNorm() == 0.0) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
+          -1, -1, *sourceFaceRow);
+      return result;
+    }
+    for (const DualStep &neighbor : dual[sourceFace]) {
+      const auto neighborRow = source_face_row(neighbor.face, faces.rows());
+      if (!neighborRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport);
+        return result;
+      }
+      const BranchTransitionResult forward = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, neighbor.edge, *sourceFaceRow, *neighborRow,
+          sourceFamily, sourceSign, sourceDirection, effectiveMatching,
+          effectiveEffort, effectiveTransitions);
+      if (!forward.valid) {
+        int sourceEdge = -1;
+        source_edge_provenance(neighbor.edge, sourceEdgeFaces,
+                               sourceMatchingIndices, transitionLookup,
+                               effectiveTransitions, sourceEdge);
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
+            -1, -1, *sourceFaceRow, *neighborRow, -1, sourceEdge);
+        return result;
+      }
+      const int targetBranch =
+          branch_from_family_sign(forward.family, forward.sign);
+      int &stored = faceBranchRotation[static_cast<std::size_t>(*neighborRow)];
+      if (stored < 0) {
+        stored = targetBranch;
+        pending.push(neighbor.face);
+      } else if (stored != targetBranch) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
+            -1, -1, *sourceFaceRow, *neighborRow);
+        return result;
+      }
+    }
+  }
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport);
+      return result;
+    }
+    const int face = *faceRow;
+    if (faceBranchRotation[static_cast<std::size_t>(face)] < 0) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
+          -1, -1, face);
+      return result;
+    }
+  }
+
+  // Validate reciprocal transport for both lattice families on every interior
+  // source edge.  This proves the simply-connected chart has no hidden branch
+  // defect before boundary phase or parameterization is considered.
+  for (const auto &[key, pair] : incident) {
+    if (pair[0] < 0 || pair[1] < 0) continue;
+    for (const int globalBranch : {0, 1}) {
+      const int sourceBranch = normalized_branch(
+          faceBranchRotation[static_cast<std::size_t>(pair[0])] + globalBranch);
+      int sourceFamily = 0;
+      int sourceSign = 1;
+      family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+      const Eigen::RowVector3d sourceDirection = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, pair[0], sourceFamily,
+                          sourceSign),
+          face_normal(vertices, faces, pair[0]));
+      const BranchTransitionResult forward = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, key, pair[0], pair[1], sourceFamily, sourceSign,
+          sourceDirection, effectiveMatching, effectiveEffort,
+          effectiveTransitions);
+      const int expectedTargetBranch = normalized_branch(
+          faceBranchRotation[static_cast<std::size_t>(pair[1])] + globalBranch);
+      if (!forward.valid ||
+          branch_from_family_sign(forward.family, forward.sign) !=
+              expectedTargetBranch) {
+        int sourceEdge = -1;
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
+            -1, -1, pair[0], pair[1], -1, sourceEdge);
+        return result;
+      }
+      int targetFamily = 0;
+      int targetSign = 1;
+      family_sign_from_branch(expectedTargetBranch, targetFamily, targetSign);
+      const Eigen::RowVector3d targetDirection = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, pair[1], targetFamily,
+                          targetSign),
+          face_normal(vertices, faces, pair[1]));
+      const BranchTransitionResult reverse = resolve_branch_transition(
+          vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+          transitionLookup, key, pair[1], pair[0], targetFamily, targetSign,
+          targetDirection, effectiveMatching, effectiveEffort,
+          effectiveTransitions);
+      if (!reverse.valid ||
+          branch_from_family_sign(reverse.family, reverse.sign) != sourceBranch ||
+          normalized_branch(forward.matching + reverse.matching) != 0) {
+        int sourceEdge = -1;
+        source_edge_provenance(key, sourceEdgeFaces, sourceMatchingIndices,
+                               transitionLookup, effectiveTransitions,
+                               sourceEdge);
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport,
+            -1, -1, pair[0], pair[1], -1, sourceEdge);
+        return result;
+      }
+    }
+  }
+
+  std::vector<int> boundaryBranches(boundaryCycle.size(), -1);
+  constexpr double kBoundaryAlignment = 0.7;
+  for (std::size_t index = 0; index < boundaryCycle.size(); ++index) {
+    const int a = boundaryCycle[index];
+    const int b = boundaryCycle[(index + 1U) % boundaryCycle.size()];
+    const authority::SourceEdgeTopologyKey key = edge_key(a, b, source_vertex_extent(faces));
+    const auto foundFace = boundaryFace.find(key);
+    if (foundFace == boundaryFace.end()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+      return result;
+    }
+    const auto faceRow = source_face_row(foundFace->second, faces.rows());
+    if (!faceRow.has_value()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+      return result;
+    }
+    const int face = *faceRow;
+    const Eigen::RowVector3d edgeDirection = project_tangent(
+        row3(vertices, b) - row3(vertices, a), face_normal(vertices, faces, face));
+    if (edgeDirection.squaredNorm() == 0.0) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase,
+          -1, -1, face);
+      return result;
+    }
+    double bestAlignment = -std::numeric_limits<double>::infinity();
+    double secondAlignment = -std::numeric_limits<double>::infinity();
+    int bestGlobalBranch = -1;
+    for (int localBranch = 0; localBranch < 4; ++localBranch) {
+      int family = 0;
+      int sign = 1;
+      family_sign_from_branch(localBranch, family, sign);
+      const Eigen::RowVector3d fieldDirection = project_tangent(
+          axis_for_family(faceAxisX, faceAxisY, face, family, sign),
+          face_normal(vertices, faces, face));
+      if (fieldDirection.squaredNorm() == 0.0) continue;
+      const double alignment = fieldDirection.dot(edgeDirection);
+      if (alignment > bestAlignment) {
+        secondAlignment = bestAlignment;
+        bestAlignment = alignment;
+        bestGlobalBranch = normalized_branch(
+            localBranch - faceBranchRotation[static_cast<std::size_t>(face)]);
+      } else if (alignment > secondAlignment) {
+        secondAlignment = alignment;
+      }
+    }
+    const double ambiguityTolerance =
+        256.0 * std::numeric_limits<double>::epsilon() *
+        std::max(1.0, std::abs(bestAlignment));
+    if (bestGlobalBranch < 0 || bestAlignment < kBoundaryAlignment ||
+        std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase,
+          -1, -1, face);
+      return result;
+    }
+    boundaryBranches[index] = bestGlobalBranch;
+  }
+
+  const auto rebuild_run_starts = [&](const std::vector<int> &branches) {
+    std::vector<int> starts;
+    for (int index = 0; index < static_cast<int>(branches.size()); ++index) {
+      const int previous =
+          (index + static_cast<int>(branches.size()) - 1) %
+          static_cast<int>(branches.size());
+      if (branches[static_cast<std::size_t>(index)] !=
+          branches[static_cast<std::size_t>(previous)]) {
+        starts.push_back(index);
+      }
+    }
+    return starts;
+  };
+
+  std::vector<int> runStarts = rebuild_run_starts(boundaryBranches);
+  if (runStarts.empty()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+    return result;
+  }
+  int canonicalRun = -1;
+  std::array<double, 3> canonicalRunKey{
+      std::numeric_limits<double>::infinity(),
+      std::numeric_limits<double>::infinity(),
+      std::numeric_limits<double>::infinity()};
+  bool ambiguousRun = false;
+  for (const int start : runStarts) {
+    const auto key = vertex_geometry_key(
+        boundaryCycle[static_cast<std::size_t>(start)]);
+    if (key < canonicalRunKey) {
+      canonicalRunKey = key;
+      canonicalRun = start;
+      ambiguousRun = false;
+    } else if (key == canonicalRunKey && start != canonicalRun) {
+      ambiguousRun = true;
+    }
+  }
+  if (canonicalRun < 0 || ambiguousRun) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+    return result;
+  }
+  std::rotate(boundaryCycle.begin(),
+              boundaryCycle.begin() + canonicalRun, boundaryCycle.end());
+  std::rotate(boundaryBranches.begin(),
+              boundaryBranches.begin() + canonicalRun, boundaryBranches.end());
+  runStarts = rebuild_run_starts(boundaryBranches);
+  if (runStarts.empty() || runStarts.front() != 0) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+    return result;
+  }
+
+  SurfaceBoundedDiskBoundaryPhase boundaryPhase(region.id());
+  boundaryPhase.chartUBranch = boundaryBranches.front();
+  boundaryPhase.runs.reserve(runStarts.size());
+
+  double cumulativeBoundaryLength = 0.0;
+  for (int runIndex = 0; runIndex < static_cast<int>(runStarts.size());
+       ++runIndex) {
+    const int begin = runStarts[static_cast<std::size_t>(runIndex)];
+    const int end = runIndex + 1 < static_cast<int>(runStarts.size())
+                        ? runStarts[static_cast<std::size_t>(runIndex + 1)]
+                        : static_cast<int>(boundaryCycle.size());
+    if (end <= begin) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+      return result;
+    }
+
+    SurfaceBoundedDiskBoundaryRun run;
+    run.branch = boundaryBranches[static_cast<std::size_t>(begin)];
+    family_sign_from_branch(run.branch, run.family, run.sign);
+    run.startVertex = boundaryCycle[static_cast<std::size_t>(begin)];
+    run.cumulativeIntrinsicLength = cumulativeBoundaryLength;
+    for (int index = begin; index <= end; ++index) {
+      const int wrapped = index % static_cast<int>(boundaryCycle.size());
+      const int vertex = boundaryCycle[static_cast<std::size_t>(wrapped)];
+      if (run.sourceVertices.empty() || run.sourceVertices.back() != vertex) {
+        run.sourceVertices.push_back(vertex);
+      }
+      if (index == end) continue;
+      const int nextWrapped =
+          (wrapped + 1) % static_cast<int>(boundaryCycle.size());
+      const int a = boundaryCycle[static_cast<std::size_t>(wrapped)];
+      const int b = boundaryCycle[static_cast<std::size_t>(nextWrapped)];
+      const authority::SourceEdgeTopologyKey edgeTopology = edge_key(a, b, source_vertex_extent(faces));
+      const auto foundFace = boundaryFace.find(edgeTopology);
+      const auto foundFull = fullIncident.find(edgeTopology);
+      if (foundFace == boundaryFace.end() || foundFull == fullIncident.end()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+        return result;
+      }
+      const auto faceRow = source_face_row(foundFace->second, faces.rows());
+      if (!faceRow.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+        return result;
+      }
+      run.sourceFaces.push_back(*faceRow);
+      run.sourceEdgeTopology.push_back(edgeTopology);
+
+      const auto &fullPair = foundFull->second;
+      int fullCount = 0;
+      for (const int incidentFace : fullPair) {
+        if (incidentFace >= 0) ++fullCount;
+      }
+      SurfaceBoundedDiskBoundaryEdgeAuthority authority;
+      authority.sourceBoundary = fullCount == 1;
+      authority.hardFeature =
+          options.hardFeatureEdges.count(edgeTopology) != 0U;
+      authority.sourceSheet = false;
+      run.edgeAuthority.push_back(authority);
+
+      const double edgeLength = (row3(vertices, b) - row3(vertices, a)).norm();
+      if (!(edgeLength > 0.0) || !std::isfinite(edgeLength)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure,
+            SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase,
+            -1, -1, *faceRow);
+        return result;
+      }
+      run.intrinsicLength += edgeLength;
+    }
+    if (run.sourceVertices.size() < 2U || run.sourceFaces.empty() ||
+        run.sourceEdgeTopology.size() != run.sourceFaces.size() ||
+        run.edgeAuthority.size() != run.sourceFaces.size() ||
+        !(run.intrinsicLength > 0.0) || !std::isfinite(run.intrinsicLength)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase);
+      return result;
+    }
+    run.endVertex = run.sourceVertices.back();
+    cumulativeBoundaryLength += run.intrinsicLength;
+    boundaryPhase.runs.push_back(std::move(run));
+  }
+  boundaryPhase.totalIntrinsicLength = cumulativeBoundaryLength;
+
+  for (std::size_t runIndex = 0; runIndex < boundaryPhase.runs.size(); ++runIndex) {
+    auto &run = boundaryPhase.runs[runIndex];
+    const auto &next =
+        boundaryPhase.runs[(runIndex + 1U) % boundaryPhase.runs.size()];
+    const int delta = normalized_branch(next.branch - run.branch);
+    if (delta == 1) {
+      run.signedQuarterTurnToNext = 1;
+    } else if (delta == 3) {
+      run.signedQuarterTurnToNext = -1;
+    } else {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure,
+          SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryTurn,
+          -1, -1, -1, -1, run.endVertex);
+      return result;
+    }
+    boundaryPhase.signedQuarterTurnSum += run.signedQuarterTurnToNext;
+  }
+  if (boundaryPhase.signedQuarterTurnSum != 4) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure,
+        SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryIndex);
+    return result;
+  }
+  boundaryPhase.rectangular = boundaryPhase.runs.size() == 4U &&
+      std::all_of(boundaryPhase.runs.begin(), boundaryPhase.runs.end(),
+                  [](const SurfaceBoundedDiskBoundaryRun &run) {
+                    return run.signedQuarterTurnToNext == 1;
+                  });
+
+  // Canonical boundary identity is independent of source face-row enumeration.
+  // Raw source IDs remain provenance only; geometry and exact source-edge
+  // topology determine the stable run sequence already fixed above.
+  std::uint64_t boundaryHash = 1469598103934665603ULL;
+  const auto consume_boundary_hash = [&](const std::uint64_t value) {
+    boundaryHash ^= value;
+    boundaryHash *= 1099511628211ULL;
+  };
+  const auto consume_boundary_i64 = [&](const std::int64_t value) {
+    consume_boundary_hash(static_cast<std::uint64_t>(value));
+  };
+  consume_boundary_i64(static_cast<std::int64_t>(
+      boundaryPhase.sourceTopologyRegion.index()));
+  consume_boundary_i64(boundaryPhase.chartUBranch);
+  consume_boundary_i64(boundaryPhase.signedQuarterTurnSum);
+  consume_boundary_hash(boundaryPhase.runs.size());
+  for (const auto &run : boundaryPhase.runs) {
+    consume_boundary_i64(run.branch);
+    consume_boundary_i64(run.signedQuarterTurnToNext);
+    consume_boundary_i64(static_cast<std::int64_t>(
+        std::llround(run.intrinsicLength * 1.0e12)));
+    for (const int vertex : {run.startVertex, run.endVertex}) {
+      const auto key = vertex_geometry_key(vertex);
+      for (const double coordinate : key) {
+        consume_boundary_i64(static_cast<std::int64_t>(
+            std::llround(coordinate * 1.0e12)));
+      }
+    }
+    consume_boundary_hash(run.sourceEdgeTopology.size());
+    for (const authority::SourceEdgeTopologyKey &edgeTopology : run.sourceEdgeTopology) {
+      consume_boundary_i64(edgeTopology.first().index());
+      consume_boundary_i64(edgeTopology.second().index());
+    }
+    for (const auto &authority : run.edgeAuthority) {
+      consume_boundary_i64(authority.sourceBoundary ? 1 : 0);
+      consume_boundary_i64(authority.hardFeature ? 1 : 0);
+      consume_boundary_i64(authority.sourceSheet ? 1 : 0);
+    }
+  }
+  boundaryPhase.structuralHash = boundaryHash;
+  result.boundedDiskBoundaryPhases.push_back(std::move(boundaryPhase));
+  SurfaceBoundedDiskBoundaryPhase &phaseRecord =
+      result.boundedDiskBoundaryPhases.back();
+  const int chartUBranch = phaseRecord.chartUBranch;
+
+  std::map<int, Eigen::Vector2d> vertexUv;
+  double width = 0.0;
+  double height = 0.0;
+  double chartAreaScale = 1.0;
+  if (phaseRecord.rectangular) {
+    // Preserve the established four-run rectangle semantics exactly: opposite
+    // intrinsic side lengths are averaged before boundary parameterization.
+    width = 0.5 * (phaseRecord.runs[0].intrinsicLength +
+                   phaseRecord.runs[2].intrinsicLength);
+    height = 0.5 * (phaseRecord.runs[1].intrinsicLength +
+                    phaseRecord.runs[3].intrinsicLength);
+    if (!(width > 0.0) || !(height > 0.0) || !std::isfinite(width) ||
+        !std::isfinite(height)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+    const std::array<Eigen::Vector2d, 4> sideStart{
+        Eigen::Vector2d(0.0, 0.0), Eigen::Vector2d(width, 0.0),
+        Eigen::Vector2d(width, height), Eigen::Vector2d(0.0, height)};
+    const std::array<Eigen::Vector2d, 4> sideEnd{
+        Eigen::Vector2d(width, 0.0), Eigen::Vector2d(width, height),
+        Eigen::Vector2d(0.0, height), Eigen::Vector2d(0.0, 0.0)};
+    for (int side = 0; side < 4; ++side) {
+      auto &run = phaseRecord.runs[static_cast<std::size_t>(side)];
+      run.chartStart = sideStart[static_cast<std::size_t>(side)];
+      run.chartEnd = sideEnd[static_cast<std::size_t>(side)];
+      double cumulative = 0.0;
+      for (std::size_t index = 0; index < run.sourceVertices.size(); ++index) {
+        if (index > 0) {
+          cumulative +=
+              (row3(vertices, run.sourceVertices[index]) -
+               row3(vertices, run.sourceVertices[index - 1U]))
+                  .norm();
+        }
+        const double alpha = std::clamp(cumulative / run.intrinsicLength,
+                                        0.0, 1.0);
+        const Eigen::Vector2d uv = run.chartStart +
+                                   alpha * (run.chartEnd - run.chartStart);
+        const int vertex = run.sourceVertices[index];
+        const auto existing = vertexUv.find(vertex);
+        if (existing != vertexUv.end() &&
+            (existing->second - uv).norm() >
+                1.0e-10 * std::max({1.0, width, height})) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+              -1, -1, -1, -1, vertex);
+          return result;
+        }
+        vertexUv[vertex] = uv;
+      }
+    }
+    phaseRecord.polygonClosed = true;
+    chartAreaScale = std::max(1.0, width * height);
+  } else {
+    // Develop the source-attached run sequence into its intrinsic orthogonal
+    // polygon.  No run is inserted, deleted, split, merged, or length-corrected.
+    std::vector<Eigen::Vector2d> polygonCorners(
+        phaseRecord.runs.size() + 1U, Eigen::Vector2d::Zero());
+    const auto chart_direction = [&](const int branch) {
+      switch (normalized_branch(branch - chartUBranch)) {
+      case 0: return Eigen::Vector2d(1.0, 0.0);
+      case 1: return Eigen::Vector2d(0.0, 1.0);
+      case 2: return Eigen::Vector2d(-1.0, 0.0);
+      default: return Eigen::Vector2d(0.0, -1.0);
+      }
+    };
+    for (std::size_t runIndex = 0; runIndex < phaseRecord.runs.size(); ++runIndex) {
+      auto &run = phaseRecord.runs[runIndex];
+      run.chartStart = polygonCorners[runIndex];
+      run.chartEnd = run.chartStart +
+                     run.intrinsicLength * chart_direction(run.branch);
+      polygonCorners[runIndex + 1U] = run.chartEnd;
+    }
+    const double polygonTolerance =
+        1.0e-10 * std::max(1.0, phaseRecord.totalIntrinsicLength);
+    if ((polygonCorners.back() - polygonCorners.front()).norm() >
+        polygonTolerance) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+    polygonCorners.back() = polygonCorners.front();
+    phaseRecord.runs.back().chartEnd = polygonCorners.front();
+    phaseRecord.polygonClosed = true;
+
+    const auto cross2 = [](const Eigen::Vector2d &a,
+                           const Eigen::Vector2d &b) {
+      return a.x() * b.y() - a.y() * b.x();
+    };
+    double signedDoubleArea = 0.0;
+    Eigen::Vector2d minimum = polygonCorners.front();
+    Eigen::Vector2d maximum = polygonCorners.front();
+    for (std::size_t index = 0; index < phaseRecord.runs.size(); ++index) {
+      signedDoubleArea +=
+          cross2(polygonCorners[index], polygonCorners[index + 1U]);
+      minimum = minimum.cwiseMin(polygonCorners[index]);
+      maximum = maximum.cwiseMax(polygonCorners[index]);
+    }
+    width = maximum.x() - minimum.x();
+    height = maximum.y() - minimum.y();
+    chartAreaScale = std::max(1.0, width * height);
+    if (!(signedDoubleArea > 1.0e-14 * chartAreaScale) ||
+        !(width > 0.0) || !(height > 0.0) || !std::isfinite(width) ||
+        !std::isfinite(height)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+
+    const auto point_on_segment = [&](const Eigen::Vector2d &point,
+                                      const Eigen::Vector2d &a,
+                                      const Eigen::Vector2d &b) {
+      const Eigen::Vector2d ab = b - a;
+      const Eigen::Vector2d ap = point - a;
+      if (std::abs(cross2(ab, ap)) > polygonTolerance) return false;
+      return point.x() >= std::min(a.x(), b.x()) - polygonTolerance &&
+             point.x() <= std::max(a.x(), b.x()) + polygonTolerance &&
+             point.y() >= std::min(a.y(), b.y()) - polygonTolerance &&
+             point.y() <= std::max(a.y(), b.y()) + polygonTolerance;
+    };
+    const auto segments_intersect = [&](const Eigen::Vector2d &a,
+                                        const Eigen::Vector2d &b,
+                                        const Eigen::Vector2d &c,
+                                        const Eigen::Vector2d &d) {
+      const double abC = cross2(b - a, c - a);
+      const double abD = cross2(b - a, d - a);
+      const double cdA = cross2(d - c, a - c);
+      const double cdB = cross2(d - c, b - c);
+      if (((abC > polygonTolerance && abD < -polygonTolerance) ||
+           (abC < -polygonTolerance && abD > polygonTolerance)) &&
+          ((cdA > polygonTolerance && cdB < -polygonTolerance) ||
+           (cdA < -polygonTolerance && cdB > polygonTolerance))) {
+        return true;
+      }
+      return (std::abs(abC) <= polygonTolerance && point_on_segment(c, a, b)) ||
+             (std::abs(abD) <= polygonTolerance && point_on_segment(d, a, b)) ||
+             (std::abs(cdA) <= polygonTolerance && point_on_segment(a, c, d)) ||
+             (std::abs(cdB) <= polygonTolerance && point_on_segment(b, c, d));
+    };
+    for (std::size_t first = 0; first < phaseRecord.runs.size(); ++first) {
+      for (std::size_t second = first + 1U;
+           second < phaseRecord.runs.size(); ++second) {
+        const bool adjacent = second == first + 1U ||
+            (first == 0U && second + 1U == phaseRecord.runs.size());
+        if (adjacent) continue;
+        if (segments_intersect(polygonCorners[first], polygonCorners[first + 1U],
+                               polygonCorners[second],
+                               polygonCorners[second + 1U])) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+          return result;
+        }
+      }
+    }
+
+    const double uvTolerance =
+        1.0e-10 * std::max({1.0, width, height});
+    for (auto &run : phaseRecord.runs) {
+      double cumulative = 0.0;
+      for (std::size_t index = 0; index < run.sourceVertices.size(); ++index) {
+        if (index > 0) {
+          cumulative +=
+              (row3(vertices, run.sourceVertices[index]) -
+               row3(vertices, run.sourceVertices[index - 1U]))
+                  .norm();
+        }
+        const double alpha = std::clamp(cumulative / run.intrinsicLength,
+                                        0.0, 1.0);
+        const Eigen::Vector2d uv = run.chartStart +
+                                   alpha * (run.chartEnd - run.chartStart);
+        const int vertex = run.sourceVertices[index];
+        const auto existing = vertexUv.find(vertex);
+        if (existing != vertexUv.end() &&
+            (existing->second - uv).norm() > uvTolerance) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+              -1, -1, -1, -1, vertex);
+          return result;
+        }
+        vertexUv[vertex] = uv;
+      }
+    }
+  }
+
+  std::vector<int> interiorVertices;
+  for (const int vertex : activeVertices) {
+    if (boundaryAdjacency.count(vertex) == 0U) interiorVertices.push_back(vertex);
+  }
+  std::sort(interiorVertices.begin(), interiorVertices.end());
+  if (!interiorVertices.empty()) {
+    std::map<int, int> interiorIndex;
+    for (int row = 0; row < static_cast<int>(interiorVertices.size()); ++row) {
+      interiorIndex[interiorVertices[static_cast<std::size_t>(row)]] = row;
+    }
+    std::vector<Eigen::Triplet<double>> triplets;
+    Eigen::MatrixXd rhs =
+        Eigen::MatrixXd::Zero(static_cast<int>(interiorVertices.size()), 2);
+    for (int row = 0; row < static_cast<int>(interiorVertices.size()); ++row) {
+      const int vertex = interiorVertices[static_cast<std::size_t>(row)];
+      const auto adjacent = vertexAdjacency.find(vertex);
+      if (adjacent == vertexAdjacency.end() || adjacent->second.empty()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+            -1, -1, -1, -1, vertex);
+        return result;
+      }
+      double degree = 0.0;
+      for (const int neighbor : adjacent->second) {
+        if (activeVertices.count(neighbor) == 0U) continue;
+        degree += 1.0;
+        const auto interiorNeighbor = interiorIndex.find(neighbor);
+        if (interiorNeighbor != interiorIndex.end()) {
+          triplets.emplace_back(row, interiorNeighbor->second, -1.0);
+        } else {
+          const auto boundaryUv = vertexUv.find(neighbor);
+          if (boundaryUv == vertexUv.end()) {
+            result.disposition = SurfaceCellProducerDisposition::Rejected;
+            set_phase_front_failure(
+                result.failure,
+                SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+                -1, -1, -1, -1, neighbor);
+            return result;
+          }
+          rhs.row(row) += boundaryUv->second.transpose();
+        }
+      }
+      if (!(degree > 0.0)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+            -1, -1, -1, -1, vertex);
+        return result;
+      }
+      triplets.emplace_back(row, row, degree);
+    }
+    Eigen::SparseMatrix<double> laplacian(
+        static_cast<int>(interiorVertices.size()),
+        static_cast<int>(interiorVertices.size()));
+    laplacian.setFromTriplets(triplets.begin(), triplets.end());
+    Eigen::SimplicialLDLT<Eigen::SparseMatrix<double>> solver;
+    solver.compute(laplacian);
+    if (solver.info() != Eigen::Success) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+    const Eigen::MatrixXd solution = solver.solve(rhs);
+    if (solver.info() != Eigen::Success || !solution.allFinite()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+      return result;
+    }
+    for (int row = 0; row < static_cast<int>(interiorVertices.size()); ++row) {
+      vertexUv[interiorVertices[static_cast<std::size_t>(row)]] =
+          solution.row(row).transpose();
+    }
+  }
+  if (vertexUv.size() != activeVertices.size()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+    return result;
+  }
+
+  std::vector<PeriodicChartTriangle> chartTriangles;
+  chartTriangles.reserve(activeFaces.size());
+  const double chartAreaTolerance = 1.0e-14 * chartAreaScale;
+  for (const authority::SourceFaceId faceId : activeFaces) {
+    const auto faceRow = source_face_row(faceId, faces.rows());
+    if (!faceRow.has_value()) return result;
+    const int face = *faceRow;
+    PeriodicChartTriangle triangle(faceId);
+    triangle.vertices = canonical_face_vertices(faces, face);
+    for (int corner = 0; corner < 3; ++corner) {
+      const auto found = vertexUv.find(faces(face, corner));
+      if (found == vertexUv.end()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+            -1, -1, face);
+        return result;
+      }
+      triangle.uv[static_cast<std::size_t>(corner)] = found->second;
+    }
+    const Eigen::Vector2d ab = triangle.uv[1] - triangle.uv[0];
+    const Eigen::Vector2d ac = triangle.uv[2] - triangle.uv[0];
+    const double signedDoubleArea = ab.x() * ac.y() - ab.y() * ac.x();
+    if (!(signedDoubleArea > chartAreaTolerance) ||
+        !std::isfinite(signedDoubleArea)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+          -1, -1, face);
+      return result;
+    }
+    chartTriangles.push_back(std::move(triangle));
+  }
+  std::sort(chartTriangles.begin(), chartTriangles.end(),
+            [](const PeriodicChartTriangle &a, const PeriodicChartTriangle &b) {
+              return a.vertices < b.vertices;
+            });
+  phaseRecord.chartConstructed = true;
+
+  // Polygonal phase/chart authority is now explicit and validated.  Lattice
+  // clipping/pairing for a non-rectangular domain remains a distinct deeper
+  // front-construction contract; fail there rather than coercing the polygon
+  // back to a rectangle or emitting partial cells.
+  if (!phaseRecord.rectangular) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure,
+        SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing);
+    return result;
+  }
+
+  double target = options.defaultTargetSize;
+  if (targetSize.size() > 0 && targetSize.allFinite() &&
+      targetSize.minCoeff() > 0.0) {
+    target = targetSize.mean();
+  }
+  if (!(target > 0.0) || !std::isfinite(target)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidTargetSize);
+    return result;
+  }
+  result.gridU = std::max(1, static_cast<int>(std::llround(width / target)));
+  result.gridV = std::max(1, static_cast<int>(std::llround(height / target)));
+  const double stepU = width / static_cast<double>(result.gridU);
+  const double stepV = height / static_cast<double>(result.gridV);
+  if (!(stepU > 0.0) || !(stepV > 0.0)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidGridStep);
+    return result;
+  }
+
+  const int columns = result.gridU + 1;
+  const int rows = result.gridV + 1;
+  std::vector<SurfaceTracePoint> points(static_cast<std::size_t>(columns * rows));
+  const auto node_index = [columns](const int u, const int v) {
+    return v * columns + u;
+  };
+  for (int v = 0; v < rows; ++v) {
+    for (int u = 0; u < columns; ++u) {
+      const Eigen::Vector2d uv(stepU * u, stepV * v);
+      if (!point_on_periodic_chart(
+              chartTriangles, uv, faces.rows(),
+              points[static_cast<std::size_t>(node_index(u, v))])) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart);
+        return result;
+      }
+    }
+  }
+
+  struct EdgeOwner {
+    int edge = -1;
+  };
+  std::map<std::pair<int, int>, EdgeOwner> openEdges;
+  for (int v = 0; v < result.gridV; ++v) {
+    for (int u = 0; u < result.gridU; ++u) {
+      const std::array<int, 4> nodeIds{
+          node_index(u, v), node_index(u + 1, v),
+          node_index(u + 1, v + 1), node_index(u, v + 1)};
+      const std::array<Eigen::Vector2d, 4> uv{
+          Eigen::Vector2d(stepU * u, stepV * v),
+          Eigen::Vector2d(stepU * (u + 1), stepV * v),
+          Eigen::Vector2d(stepU * (u + 1), stepV * (v + 1)),
+          Eigen::Vector2d(stepU * u, stepV * (v + 1))};
+      const auto cellId = phase_front_cell_id_from_lattice(
+          u, v, result.gridU, result.gridV);
+      if (!cellId) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      SurfacePhaseFrontCell cell(region.id(), cellId.value());
+      for (int corner = 0; corner < 4; ++corner) {
+        cell.corners[static_cast<std::size_t>(corner)] =
+            points[static_cast<std::size_t>(nodeIds[corner])];
+        const int sourceFace = cell.corners[static_cast<std::size_t>(corner)].face;
+        if (sourceFace < 0 ||
+            sourceFace >= static_cast<int>(faceBranchRotation.size()) ||
+            faceBranchRotation[static_cast<std::size_t>(sourceFace)] < 0) {
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::MissingFaceState,
+              static_cast<int>(cell.id.index()), corner, sourceFace);
+          return result;
+        }
+        auto &state = cell.lattice[static_cast<std::size_t>(corner)];
+        state.phase = uv[static_cast<std::size_t>(corner)];
+        state.latticeCoordinate = {
+            corner == 1 || corner == 2 ? u + 1 : u,
+            corner >= 2 ? v + 1 : v};
+        state.branchRotation = normalized_branch(
+            faceBranchRotation[static_cast<std::size_t>(sourceFace)] +
+            chartUBranch);
+        const auto canonicalChart =
+            canonicalSourceCharts.chart(sourceFace);
+        if (!canonicalChart.has_value()) {
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::MissingFaceState,
+              static_cast<int>(cell.id.index()), corner, sourceFace);
+          return result;
+        }
+        state.sourceChart = canonicalChart->chart;
+      }
+      const std::array<int, 4> globalBranches{
+          chartUBranch, normalized_branch(chartUBranch + 1),
+          normalized_branch(chartUBranch + 2),
+          normalized_branch(chartUBranch + 3)};
+      for (int side = 0; side < 4; ++side) {
+        cell.boundaryPaths[static_cast<std::size_t>(side)] =
+            bounded_disk_chart_segment(
+                chartTriangles, canonicalSourceCharts, faces.rows(),
+                uv[static_cast<std::size_t>(side)],
+                uv[static_cast<std::size_t>((side + 1) % 4)],
+                globalBranches[static_cast<std::size_t>(side)],
+                faceBranchRotation);
+        if (cell.boundaryPaths[static_cast<std::size_t>(side)].empty()) {
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+              static_cast<int>(cell.id.index()), side);
+          return result;
+        }
+      }
+      const double pointTolerance =
+          1.0e-7 * std::max({1.0, stepU, stepV});
+      if (validate_closed_boundary_paths(vertices, faces, cell.corners,
+                                         cell.boundaryPaths, pointTolerance) !=
+          CellRejectionReason::Accepted) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart,
+            static_cast<int>(cell.id.index()));
+        return result;
+      }
+      auto positions = phase_front_corner_positions(vertices, faces, cell);
+      Eigen::RowVector3d loopNormal = phase_front_loop_normal(positions);
+      Eigen::RowVector3d expectedNormal = Eigen::RowVector3d::Zero();
+      for (const auto &corner : cell.corners) {
+        expectedNormal += face_normal(vertices, faces, corner.face);
+      }
+      if (!loopNormal.allFinite() || !expectedNormal.allFinite() ||
+          loopNormal.squaredNorm() <= 1.0e-24 ||
+          expectedNormal.squaredNorm() <= 1.0e-24) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation,
+            static_cast<int>(cell.id.index()));
+        return result;
+      }
+      if (loopNormal.dot(expectedNormal) < 0.0) {
+        reverse_phase_front_cell_cycle(cell);
+        positions = phase_front_corner_positions(vertices, faces, cell);
+        loopNormal = phase_front_loop_normal(positions);
+      }
+      if (loopNormal.dot(expectedNormal) <= 0.0 ||
+          !phase_front_cell_matches_region(cell, sourceAuthority, region)) {
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidCellOrientation,
+            static_cast<int>(cell.id.index()));
+        return result;
+      }
+      cell.orientationValidated = true;
+
+      for (int side = 0; side < 4; ++side) {
+        SurfaceFrontEdge edge(region.id(), cell.id);
+        edge.from = cell.corners[static_cast<std::size_t>(side)];
+        edge.to = cell.corners[static_cast<std::size_t>((side + 1) % 4)];
+        edge.fromLattice = cell.lattice[static_cast<std::size_t>(side)];
+        edge.toLattice = cell.lattice[static_cast<std::size_t>((side + 1) % 4)];
+        const authority::LatticeTranslation delta =
+            edge.toLattice.latticeCoordinate - edge.fromLattice.latticeCoordinate;
+        if (delta == authority::LatticeTranslation{1, 0}) {
+          edge.family = 0;
+          edge.advanceSign = 1;
+        } else if (delta == authority::LatticeTranslation{0, 1}) {
+          edge.family = 1;
+          edge.advanceSign = 1;
+        } else if (delta == authority::LatticeTranslation{-1, 0}) {
+          edge.family = 0;
+          edge.advanceSign = -1;
+        } else if (delta == authority::LatticeTranslation{0, -1}) {
+          edge.family = 1;
+          edge.advanceSign = -1;
+        } else {
+          set_phase_front_failure(
+              result.failure, SurfacePhaseFrontFailureReason::InvalidLatticeEdge,
+              static_cast<int>(cell.id.index()), side);
+          return result;
+        }
+        edge.filledSide = side;
+        const int edgeId = static_cast<int>(result.edges.size());
+        result.edges.push_back(edge);
+        const int a = node_index(
+            static_cast<int>(edge.fromLattice.latticeCoordinate.x),
+            static_cast<int>(edge.fromLattice.latticeCoordinate.y));
+        const int b = node_index(
+            static_cast<int>(edge.toLattice.latticeCoordinate.x),
+            static_cast<int>(edge.toLattice.latticeCoordinate.y));
+        const auto ordered = std::minmax(a, b);
+        const std::pair<int, int> key{ordered.first, ordered.second};
+        const auto found = openEdges.find(key);
+        if (found == openEdges.end()) {
+          openEdges.emplace(key, EdgeOwner{edgeId});
+        } else {
+          auto &first = result.edges[static_cast<std::size_t>(found->second.edge)];
+          auto &second = result.edges[static_cast<std::size_t>(edgeId)];
+          if (first.filledCell == second.filledCell ||
+              first.fromLattice.latticeCoordinate !=
+                  second.toLattice.latticeCoordinate ||
+              first.toLattice.latticeCoordinate !=
+                  second.fromLattice.latticeCoordinate ||
+              first.family != second.family ||
+              first.advanceSign == second.advanceSign ||
+              first.sourceTopologyRegion != second.sourceTopologyRegion) {
+            set_phase_front_failure(
+                result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
+                static_cast<int>(cell.id.index()), side);
+            return result;
+          }
+          first.oppositeEdge = edgeId;
+          second.oppositeEdge = found->second.edge;
+          first.unfilledSide = 0;
+          second.unfilledSide = 0;
+          SurfaceFrontEvent event;
+          event.kind = SurfaceFrontEventKind::CompatibleFrontMerge;
+          event.firstEdge = found->second.edge;
+          event.secondEdge = edgeId;
+          result.events.push_back(event);
+          openEdges.erase(found);
+        }
+      }
+      result.cells.push_back(std::move(cell));
+    }
+  }
+
+  const auto path_on_authoritative_boundary = [&](const auto &path) {
+    constexpr double tolerance = 1.0e-9;
+    for (const SurfaceTraceSegment &segment : path) {
+      bool supported = false;
+      for (int corner = 0; corner < 3; ++corner) {
+        if (std::abs(segment.startBarycentric[corner]) <= tolerance &&
+            std::abs(segment.endBarycentric[corner]) <= tolerance) {
+          const int a = faces(segment.face, (corner + 1) % 3);
+          const int b = faces(segment.face, (corner + 2) % 3);
+          if (boundaryEdgeKeys.count(edge_key(a, b, source_vertex_extent(faces))) != 0U) {
+            supported = true;
+            break;
+          }
+        }
+      }
+      if (!supported) return false;
+    }
+    return !path.empty();
+  };
+  const auto cellIndexById = phase_front_cell_storage_index(result.cells);
+  if (!cellIndexById) {
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+    return result;
+  }
+  for (const auto &[key, owner] : openEdges) {
+    (void)key;
+    auto &edge = result.edges[static_cast<std::size_t>(owner.edge)];
+    const authority::LatticeTranslation a =
+        edge.fromLattice.latticeCoordinate;
+    const authority::LatticeTranslation b = edge.toLattice.latticeCoordinate;
+    const bool onBoundary =
+        (a.x == 0 && b.x == 0) ||
+        (a.x == result.gridU && b.x == result.gridU) ||
+        (a.y == 0 && b.y == 0) ||
+        (a.y == result.gridV && b.y == result.gridV);
+    const auto ownerCell = cellIndexById->find(edge.filledCell);
+    if (!onBoundary || ownerCell == cellIndexById->end()) {
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
+          static_cast<int>(edge.filledCell.index()), owner.edge);
+      return result;
+    }
+    const auto &cell = result.cells[ownerCell->second];
+    int side = -1;
+    for (int candidate = 0; candidate < 4; ++candidate) {
+      const auto &from = cell.lattice[static_cast<std::size_t>(candidate)]
+                             .latticeCoordinate;
+      const auto &to = cell.lattice[static_cast<std::size_t>((candidate + 1) % 4)]
+                           .latticeCoordinate;
+      if (from == edge.fromLattice.latticeCoordinate &&
+          to == edge.toLattice.latticeCoordinate) {
+        side = candidate;
+        break;
+      }
+    }
+    if (side < 0 ||
+        !path_on_authoritative_boundary(
+            cell.boundaryPaths[static_cast<std::size_t>(side)])) {
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
+          static_cast<int>(edge.filledCell.index()), owner.edge);
+      return result;
+    }
+    const auto boundaryReason = assign_open_front_boundary_authority(
+        vertices, faces, options, sourceEdgeFaces, sourceMatchingIndices,
+        cell.boundaryPaths[static_cast<std::size_t>(side)], edge);
+    if (boundaryReason != SurfacePhaseFrontFailureReason::None) {
+      set_phase_front_failure(result.failure, boundaryReason,
+                              static_cast<int>(edge.filledCell.index()), side);
+      return result;
+    }
+    edge.exterior = true;
+    edge.unfilledSide = 0;
+    SurfaceFrontEvent event;
+    event.kind = SurfaceFrontEventKind::BoundaryTermination;
+    event.firstEdge = owner.edge;
+    result.events.push_back(event);
+  }
+
+  for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size()); ++edgeIndex) {
+    const auto &edge = result.edges[static_cast<std::size_t>(edgeIndex)];
+    const bool hasTwin = edge.oppositeEdge >= 0;
+    if (cellIndexById->find(edge.filledCell) == cellIndexById->end() || edge.unfilledSide != 0 ||
+        hasTwin == edge.exterior ||
+        (hasTwin &&
+         (edge.oppositeEdge >= static_cast<int>(result.edges.size()) ||
+          result.edges[static_cast<std::size_t>(edge.oppositeEdge)].oppositeEdge !=
+              edgeIndex))) {
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing,
+          -1, edgeIndex);
+      return result;
+    }
+  }
+  result.succeeded = !result.cells.empty() &&
+                     result.cells.size() ==
+                         static_cast<std::size_t>(result.gridU * result.gridV);
+  if (!result.succeeded) {
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+    return result;
+  }
+  result.disposition = SurfaceCellProducerDisposition::Produced;
+  return result;
+}
+
+bool build_isolation_seam_transport_certificates(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const SourceTopologyRegions &sourceAuthority,
+    const std::map<authority::SourceEdgeTopologyKey, std::array<int, 2>> &sourceEdgeFaces,
+    const std::map<authority::SourceEdgeTopologyKey, int> &sourceMatchingIndices,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
+    const authority::FieldTransportAtlas *fieldTransportAtlas,
+    std::vector<SurfaceIsolationSeamTransportCertificate> &certificates) {
+  certificates.clear();
+  if (faces.cols() != 3 || vertices.cols() != 3 ||
+      faceAxisX.rows() != faces.rows() || faceAxisX.cols() != 3 ||
+      faceAxisY.rows() != faces.rows() || faceAxisY.cols() != 3 ||
+      sourceAuthority.face_count() != static_cast<std::size_t>(faces.rows())) {
+    return false;
+  }
+
+  const auto &incident = sourceEdgeFaces;
+  const auto &matchingIndices = sourceMatchingIndices;
+  const bool hasTransitions =
+      edgeTransitions != nullptr && !edgeTransitions->empty();
+  const bool hasMatching = edgeMatching != nullptr && edgeMatching->size() > 0;
+  const bool hasEffort = edgeEffort != nullptr && edgeEffort->size() > 0;
+  const auto *effectiveTransitions = hasTransitions ? edgeTransitions : nullptr;
+  const auto *effectiveMatching = hasMatching ? edgeMatching : nullptr;
+  const auto *effectiveEffort = hasEffort ? edgeEffort : nullptr;
+  const EdgeTransitionLookup transitionLookup =
+      authoritative_edge_transition_lookup(
+          fieldTransportAtlas, effectiveTransitions,
+          source_vertex_extent(faces));
+  if (transitionLookup.duplicate) return false;
+
+  const auto &incidentByTopology = incident;
+  const auto &matchingIndexByTopology = matchingIndices;
+
+  const auto typed_row = [&](const int face)
+      -> std::optional<authority::SourceFaceId> {
+    const auto row =
+        authority::SourceFaceId::from_index(face, sourceAuthority.face_count());
+    return row ? std::optional<authority::SourceFaceId>(row.value())
+               : std::nullopt;
+  };
+
+  std::set<std::pair<authority::TopologyRegionId,
+                     authority::SourceEdgeTopologyKey>> seen;
+  for (const SurfaceTopologyRegion &region : sourceAuthority.regions()) {
+    for (const authority::SourceEdgeTopologyKey &seam :
+         region.isolation_seams()) {
+      const auto foundIncident = incidentByTopology.find(seam);
+      const auto foundIndex = matchingIndexByTopology.find(seam);
+      if (!seen.insert({region.id(), seam}).second ||
+          foundIncident == incidentByTopology.end() || foundIncident->second[0] < 0 ||
+          foundIncident->second[1] < 0 ||
+          foundIndex == matchingIndexByTopology.end() ||
+          foundIndex->second < 0) {
+        return false;
+      }
+      const auto transitionId = authority::InteriorTransitionId::from_index(
+          foundIndex->second, matchingIndices.size());
+      if (!transitionId) return false;
+
+      int firstFace = foundIncident->second[0];
+      int secondFace = foundIncident->second[1];
+      const auto firstRow = typed_row(firstFace);
+      const auto secondRow = typed_row(secondFace);
+      if (!firstRow || !secondRow || firstFace == secondFace ||
+          sourceAuthority.region_for_row(firstRow.value()) != region.id() ||
+          sourceAuthority.region_for_row(secondRow.value()) != region.id() ||
+          sourceAuthority.component_for_row(firstRow.value()) !=
+              region.component() ||
+          sourceAuthority.component_for_row(secondRow.value()) !=
+              region.component()) {
+        return false;
+      }
+
+      auto firstTopology = sourceAuthority.topology_for_row(firstRow.value());
+      auto secondTopology = sourceAuthority.topology_for_row(secondRow.value());
+      auto firstSheet = sourceAuthority.sheet_for_row(firstRow.value());
+      auto secondSheet = sourceAuthority.sheet_for_row(secondRow.value());
+      if (firstTopology == secondTopology || firstSheet == secondSheet) {
+        return false;
+      }
+      if (secondTopology < firstTopology) {
+        std::swap(firstFace, secondFace);
+        std::swap(firstTopology, secondTopology);
+        std::swap(firstSheet, secondSheet);
+      }
+      if (effectiveTransitions != nullptr) {
+        const auto transition = transitionLookup.byEdge.find(seam);
+        if (transition == transitionLookup.byEdge.end() ||
+            transition->second.sourceEdge < 0) {
+          return false;
+        }
+      }
+
+      std::optional<authority::QuarterTurn> forwardQuarterTurn;
+      std::optional<authority::QuarterTurn> reverseQuarterTurn;
+      for (int sourceBranch = 0; sourceBranch < 4; ++sourceBranch) {
+        int sourceFamily = 0;
+        int sourceSign = 1;
+        family_sign_from_branch(sourceBranch, sourceFamily, sourceSign);
+        const Eigen::RowVector3d sourceDirection = project_tangent(
+            axis_for_family(faceAxisX, faceAxisY, firstFace, sourceFamily,
+                            sourceSign),
+            face_normal(vertices, faces, firstFace));
+        const BranchTransitionResult forward = resolve_branch_transition(
+            vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+            transitionLookup, seam, firstFace, secondFace, sourceFamily,
+            sourceSign, sourceDirection, effectiveMatching, effectiveEffort,
+            effectiveTransitions);
+        if (!forward.valid) return false;
+        const int targetBranch =
+            branch_from_family_sign(forward.family, forward.sign);
+        const Eigen::RowVector3d targetDirection = project_tangent(
+            axis_for_family(faceAxisX, faceAxisY, secondFace, forward.family,
+                            forward.sign),
+            face_normal(vertices, faces, secondFace));
+        const BranchTransitionResult reverse = resolve_branch_transition(
+            vertices, faces, faceAxisX, faceAxisY, incident, matchingIndices,
+            transitionLookup, seam, secondFace, firstFace, forward.family,
+            forward.sign, targetDirection, effectiveMatching, effectiveEffort,
+            effectiveTransitions);
+        const authority::QuarterTurn candidateForward =
+            authority::QuarterTurn::from_integer(forward.matching);
+        const authority::QuarterTurn candidateReverse =
+            authority::QuarterTurn::from_integer(reverse.matching);
+        if (!reverse.valid ||
+            targetBranch != normalized_branch(
+                                sourceBranch +
+                                static_cast<int>(candidateForward.value())) ||
+            branch_from_family_sign(reverse.family, reverse.sign) != sourceBranch ||
+            candidateReverse != candidateForward.inverse() ||
+            (forwardQuarterTurn.has_value() &&
+             *forwardQuarterTurn != candidateForward) ||
+            (reverseQuarterTurn.has_value() &&
+             *reverseQuarterTurn != candidateReverse)) {
+          return false;
+        }
+        forwardQuarterTurn = candidateForward;
+        reverseQuarterTurn = candidateReverse;
+      }
+      if (!forwardQuarterTurn.has_value() || !reverseQuarterTurn.has_value()) {
+        return false;
+      }
+
+      const auto certificate = SurfaceIsolationSeamTransportCertificate::make(
+          sourceAuthority, region.id(), seam, transitionId.value(), firstTopology,
+          secondTopology, firstSheet, secondSheet, *forwardQuarterTurn,
+          *reverseQuarterTurn);
+      const auto *value =
+          std::get_if<SurfaceIsolationSeamTransportCertificate>(&certificate);
+      if (value == nullptr) return false;
+      certificates.push_back(*value);
+    }
+  }
+  std::sort(certificates.begin(), certificates.end());
+  return std::adjacent_find(
+             certificates.begin(), certificates.end(),
+             [](const auto &first, const auto &second) {
+               return first.region() == second.region() && first.seam() == second.seam();
+             }) == certificates.end();
+}
+
+
+
+SurfacePhaseFrontBuildState build_uniform_phase_front_state(
+    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+    const Eigen::VectorXd &targetSize,
+    const SourceTopologyRegions &sourceAuthority,
+    const SurfaceCellTracingOptions &options,
+    const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+  SurfacePhaseFrontBuildState result;
+  result.attempted = options.enableUniformPhaseFront;
+  if (!result.attempted) return result;
+  if (!source_authority_valid(options, faces)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidInput);
+    return result;
+  }
+
+  // All materializer-facing numeric routes share this single source-wide
+  // compact interior-transition domain. Regional producers retain their local
+  // incidence for traversal only; they never rebuild serialized indices.
+  const auto sourceEdgeFaces = edge_faces(faces);
+  const auto sourceMatchingIndices = edge_matching_indices(sourceEdgeFaces);
+
+  if (!sourceAuthority.matches_source_faces(
+          faces, static_cast<std::size_t>(vertices.rows())) ||
+      (faces.rows() > 0 && sourceAuthority.regions().empty())) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(result.failure,
+                            SurfacePhaseFrontFailureReason::InvalidTopologyRegion);
+    return result;
+  }
+  result.sourceTopologyRegions = sourceAuthority;
+
+  struct RegionWork {
+    const SurfaceTopologyRegion *region = nullptr;
+    std::vector<authority::SourceFaceId> sourceRows;
+    std::vector<int> canonicalVertices;
+  };
+  std::vector<RegionWork> regions;
+  regions.reserve(result.sourceTopologyRegions->regions().size());
+  for (const SurfaceTopologyRegion &region : result.sourceTopologyRegions->regions()) {
+    RegionWork work;
+    work.region = &region;
+    std::set<int> uniqueVertices;
+    work.sourceRows.reserve(region.faces().size());
+    for (const SourceRegionFaceAuthority &member : region.faces()) {
+      const auto faceId = result.sourceTopologyRegions->row_for_topology(member.topology);
+      if (!faceId.has_value()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(result.failure,
+                                SurfacePhaseFrontFailureReason::InvalidTopologyRegion);
+        return result;
+      }
+      work.sourceRows.push_back(*faceId);
+      const int face = static_cast<int>(faceId->index());
+      for (int corner = 0; corner < 3; ++corner) {
+        uniqueVertices.insert(faces(face, corner));
+      }
+    }
+    std::sort(work.sourceRows.begin(), work.sourceRows.end());
+    work.canonicalVertices.assign(uniqueVertices.begin(), uniqueVertices.end());
+    regions.push_back(std::move(work));
+  }
+  std::sort(regions.begin(), regions.end(), [](const RegionWork &a,
+                                                const RegionWork &b) {
+    // Producer scheduling is ordered directly by the typed canonical region
+    // authority. The numeric structural hash remains diagnostic-only and can
+    // no longer influence producer work order.
+    if (*a.region != *b.region) {
+      return *a.region < *b.region;
+    }
+    return a.canonicalVertices < b.canonicalVertices;
+  });
+
+  struct RegionBuild {
+    const RegionWork *work = nullptr;
+    SurfacePhaseFrontBuildState result;
+  };
+  std::vector<RegionBuild> regionBuilds;
+  regionBuilds.reserve(regions.size());
+  bool anyProduced = false;
+  int firstUnsupportedRegion = -1;
+
+  const auto validate_region_scope = [&](const SurfacePhaseFrontBuildState &local,
+                                         const SurfaceTopologyRegion &region) {
+    for (const auto &relation : local.periodicHolonomies) {
+      if (relation.sourceTopologyRegion() != region.id()) return false;
+    }
+    for (const auto &phase : local.boundedDiskBoundaryPhases) {
+      if (phase.sourceTopologyRegion != region.id()) return false;
+    }
+    for (const auto &cell : local.cells) {
+      if (cell.sourceTopologyRegion != region.id() ||
+          !phase_front_cell_matches_region(cell, sourceAuthority, region)) {
+        return false;
+      }
+    }
+    for (const auto &edge : local.edges) {
+      if (edge.sourceTopologyRegion != region.id()) return false;
+      const auto owner = std::find_if(
+          local.cells.begin(), local.cells.end(),
+          [&](const SurfacePhaseFrontCell &cell) {
+            return cell.id == edge.filledCell;
+          });
+      if (owner == local.cells.end() ||
+          owner->sourceTopologyRegion != edge.sourceTopologyRegion) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const auto retain_bounded_disk_boundary_phases =
+      [&](SurfacePhaseFrontBuildState &local) {
+        for (auto &phase : local.boundedDiskBoundaryPhases) {
+          result.boundedDiskBoundaryPhases.push_back(std::move(phase));
+        }
+        local.boundedDiskBoundaryPhases.clear();
+      };
+
+  for (const RegionWork &work : regions) {
+    const SurfaceTopologyRegion &region = *work.region;
+    SurfacePhaseFrontBuildState local = build_uniform_phase_front_for_faces(
+        vertices, faces, faceAxisX, faceAxisY, targetSize, work.sourceRows,
+        region, *result.sourceTopologyRegions, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+        edgeEffort, edgeTransitions);
+    if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+      local = build_periodic_annulus_phase_front_for_faces(
+          vertices, faces, faceAxisX, faceAxisY, targetSize, work.sourceRows,
+          region, *result.sourceTopologyRegions, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+          edgeEffort, edgeTransitions);
+    }
+    if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+      local = build_curved_bounded_disk_phase_front_for_faces(
+          vertices, faces, faceAxisX, faceAxisY, targetSize, work.sourceRows,
+          region, *result.sourceTopologyRegions, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+          edgeEffort, edgeTransitions);
+    }
+    if (!validate_region_scope(local, region)) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(result.failure,
+                              SurfacePhaseFrontFailureReason::InvalidTopologyRegion);
+      return result;
+    }
+    retain_bounded_disk_boundary_phases(local);
+    if (local.disposition == SurfaceCellProducerDisposition::Rejected) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      result.failure = local.failure;
+      return result;
+    }
+    if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+      if (firstUnsupportedRegion < 0) {
+        firstUnsupportedRegion = static_cast<int>(regionBuilds.size());
+      }
+    } else {
+      if (!local.succeeded || local.cells.empty() ||
+          !phase_front_cells_have_field_chart_authority(local.cells)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        result.failure = local.failure;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+        return result;
+      }
+      anyProduced = true;
+      result.gridU = std::max(result.gridU, local.gridU);
+      result.gridV = std::max(result.gridV, local.gridV);
+      for (SurfacePeriodicHolonomy relation : local.periodicHolonomies) {
+        const auto insertion = insert_periodic_holonomy(
+            result.periodicHolonomies, std::move(relation));
+        if (insertion == SurfacePeriodicHolonomyInsertStatus::AmbiguousBasis) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis);
+          return result;
+        }
+        if (insertion == SurfacePeriodicHolonomyInsertStatus::Incompatible) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation);
+          return result;
+        }
+      }
+    }
+    regionBuilds.push_back(RegionBuild{&work, std::move(local)});
+  }
+
+  if (firstUnsupportedRegion >= 0) {
+    // Reaching firstUnsupportedRegion means the uniform, periodic-annulus, and
+    // curved bounded-disk producers all returned NotApplicable for that exact
+    // topology region. Ordinary no-feature inputs retain the historical
+    // NotApplicable fallback when no authoritative region was produced. Once
+    // hard-feature authority is present, however, falling back would discard a
+    // mandatory topology barrier; publish the existing typed unsupported
+    // outcome instead.
+    if (!anyProduced && options.hardFeatureEdges.empty()) return result;
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    const SurfaceTopologyRegion &unsupported =
+        *regionBuilds[static_cast<std::size_t>(firstUnsupportedRegion)]
+             .work->region;
+    int canonicalFace = -1;
+    if (!unsupported.faces().empty()) {
+      const auto row = result.sourceTopologyRegions->row_for_topology(
+          unsupported.faces().front().topology);
+      if (row.has_value()) {
+        canonicalFace = static_cast<int>(row->index());
+      }
+    }
+    // Keep the established public reason while producer ownership is migrated
+    // from local isolation sheets to exact source-topological regions.
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::UnsupportedSourceSheetTopology,
+        -1, -1, canonicalFace);
+    return result;
+  }
+
+  const std::size_t finalCellExtent = std::accumulate(
+      regionBuilds.begin(), regionBuilds.end(), std::size_t{0},
+      [](const std::size_t count, const RegionBuild &build) {
+        return count + build.result.cells.size();
+      });
+  using FinalCellOwnerKey =
+      std::pair<authority::TopologyRegionId, authority::CellId>;
+  std::set<FinalCellOwnerKey> finalCellOwnerKeys;
+  for (const RegionBuild &build : regionBuilds) {
+    for (const SurfacePhaseFrontCell &cell : build.result.cells) {
+      if (!finalCellOwnerKeys.emplace(cell.sourceTopologyRegion, cell.id).second) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState,
+            static_cast<int>(cell.id.index()));
+        return result;
+      }
+    }
+  }
+  if (finalCellOwnerKeys.size() != finalCellExtent) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+    return result;
+  }
+  std::map<FinalCellOwnerKey, authority::CellId> finalCellIdByOwner;
+  std::size_t canonicalCellOrdinal = 0U;
+  for (const FinalCellOwnerKey &owner : finalCellOwnerKeys) {
+    const auto finalCellId = authority::CellId::from_index(
+        static_cast<std::int64_t>(canonicalCellOrdinal), finalCellExtent);
+    if (!finalCellId ||
+        !finalCellIdByOwner.emplace(owner, finalCellId.value()).second) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState);
+      return result;
+    }
+    ++canonicalCellOrdinal;
+  }
+  int edgeOffset = 0;
+  std::set<authority::TopologyRegionId> coveredRegions;
+  for (RegionBuild &build : regionBuilds) {
+    const SurfaceTopologyRegion &region = *build.work->region;
+    SurfacePhaseFrontBuildState &local = build.result;
+    bool localCoverage = false;
+    const authority::TopologyRegionId typedRegion = region.id();
+    std::map<authority::CellId, authority::CellId> finalCellByLocalOwner;
+    for (SurfacePhaseFrontCell &cell : local.cells) {
+      if (cell.sourceTopologyRegion != typedRegion ||
+          !phase_front_cell_matches_region(cell, sourceAuthority, region)) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+            static_cast<int>(cell.id.index()), -1, cell.corners.front().face);
+        return result;
+      }
+      localCoverage = true;
+      const auto finalCellId =
+          finalCellIdByOwner.find(FinalCellOwnerKey{typedRegion, cell.id});
+      if (finalCellId == finalCellIdByOwner.end() ||
+          !finalCellByLocalOwner.emplace(cell.id, finalCellId->second).second) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalCellState,
+            static_cast<int>(cell.id.index()));
+        return result;
+      }
+      cell.id = finalCellId->second;
+      result.cells.push_back(std::move(cell));
+    }
+    if (!localCoverage || !coveredRegions.insert(region.id()).second) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+          -1, -1, build.work->sourceRows.empty() ? -1 : static_cast<int>(build.work->sourceRows.front().index()));
+      return result;
+    }
+    for (SurfaceFrontEdge &edge : local.edges) {
+      if (edge.sourceTopologyRegion != typedRegion) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage,
+            -1, -1, build.work->sourceRows.empty() ? -1 : static_cast<int>(build.work->sourceRows.front().index()));
+        return result;
+      }
+      if (edge.boundaryKind == SurfaceFrontBoundaryKind::PeriodicCut) {
+        if (!edge.periodicRelation.has_value()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+              static_cast<int>(edge.filledCell.index()), edge.filledSide);
+          return result;
+        }
+        const auto localOwner = std::find_if(
+            local.periodicHolonomies.begin(), local.periodicHolonomies.end(),
+            [&](const SurfacePeriodicHolonomy &candidate) {
+              return candidate.id() == *edge.periodicRelation;
+            });
+        if (localOwner == local.periodicHolonomies.end()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+              static_cast<int>(edge.filledCell.index()), edge.filledSide);
+          return result;
+        }
+        const auto key = periodic_relation_key(*localOwner);
+        const auto owner = std::find_if(
+            result.periodicHolonomies.begin(),
+            result.periodicHolonomies.end(), [&](const auto &candidate) {
+              return periodic_relation_key(candidate) == key;
+            });
+        if (owner == result.periodicHolonomies.end()) {
+          result.disposition = SurfaceCellProducerDisposition::Rejected;
+          set_phase_front_failure(
+              result.failure,
+              SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing,
+              static_cast<int>(edge.filledCell.index()), edge.filledSide);
+          return result;
+        }
+        edge.periodicRelation = owner->id();
+      }
+      const auto finalFilledCell = finalCellByLocalOwner.find(edge.filledCell);
+      if (finalFilledCell == finalCellByLocalOwner.end()) {
+        result.disposition = SurfaceCellProducerDisposition::Rejected;
+        set_phase_front_failure(
+            result.failure, SurfacePhaseFrontFailureReason::InvalidFinalEdgeState,
+            static_cast<int>(edge.filledCell.index()), edge.filledSide);
+        return result;
+      }
+      edge.filledCell = finalFilledCell->second;
+      if (edge.oppositeEdge >= 0) edge.oppositeEdge += edgeOffset;
+      result.edges.push_back(std::move(edge));
+    }
+    for (SurfaceFrontEvent &event : local.events) {
+      if (event.firstEdge >= 0) event.firstEdge += edgeOffset;
+      if (event.secondEdge >= 0) event.secondEdge += edgeOffset;
+      result.events.push_back(std::move(event));
+    }
+    edgeOffset = static_cast<int>(result.edges.size());
+  }
+
+  if (coveredRegions.size() != result.sourceTopologyRegions->regions().size()) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    set_phase_front_failure(
+        result.failure, SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage);
+    return result;
+  }
+
+  // A hard feature separates producer charts, but it does not create an
+  // output boundary. Pair the two chart copies by exact source-simplex
+  // support and ordered rail topology; geometry is never a merge predicate.
+  struct HardRailPairKey {
+    authority::SourceComponentId component;
+    std::vector<std::int64_t> firstEndpoint;
+    std::vector<std::int64_t> secondEndpoint;
+    // CanonicalRoute::reversed() preserves canonical steps and flips only the
+    // route's canonical orientation. Group chart copies by canonical route
+    // content; orientation remains a per-edge invariant checked before
+    // oppositeEdge is published.
+    std::vector<authority::TransitionStep> routeSteps;
+    bool operator<(const HardRailPairKey &other) const {
+      return std::tie(component, firstEndpoint, secondEndpoint, routeSteps) <
+             std::tie(other.component, other.firstEndpoint,
+                      other.secondEndpoint, other.routeSteps);
+    }
+  };
+  const auto support_key = [&](const SurfaceTracePoint &point) {
+    std::vector<std::int64_t> key;
+    if (!trace_point_is_valid(point, faces)) return key;
+    constexpr double tolerance = 1.0e-9;
+    constexpr double scale = 1.0e12;
+    int vertexCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(point.barycentric[corner] - 1.0) <= tolerance) {
+        vertexCorner = corner;
+      }
+    }
+    if (vertexCorner >= 0) {
+      return std::vector<std::int64_t>{
+          0, faces(point.face, vertexCorner)};
+    }
+    int zeroCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (std::abs(point.barycentric[corner]) <= tolerance) {
+        if (zeroCorner >= 0) return std::vector<std::int64_t>{};
+        zeroCorner = corner;
+      }
+    }
+    if (zeroCorner >= 0) {
+      const int firstCorner = (zeroCorner + 1) % 3;
+      const int secondCorner = (zeroCorner + 2) % 3;
+      const int firstVertex = faces(point.face, firstCorner);
+      const int secondVertex = faces(point.face, secondCorner);
+      const int low = std::min(firstVertex, secondVertex);
+      const int high = std::max(firstVertex, secondVertex);
+      const double highWeight = firstVertex == high
+                                    ? point.barycentric[firstCorner]
+                                    : point.barycentric[secondCorner];
+      return std::vector<std::int64_t>{
+          1, low, high, static_cast<std::int64_t>(std::llround(
+                            std::clamp(highWeight, 0.0, 1.0) * scale))};
+    }
+    std::array<std::pair<int, double>, 3> weightedVertices;
+    for (int corner = 0; corner < 3; ++corner) {
+      weightedVertices[static_cast<std::size_t>(corner)] =
+          {faces(point.face, corner), point.barycentric[corner]};
+    }
+    std::sort(weightedVertices.begin(), weightedVertices.end());
+    key.push_back(2);
+    for (const auto &[vertex, weight] : weightedVertices) {
+      key.push_back(vertex);
+      key.push_back(static_cast<std::int64_t>(
+          std::llround(std::clamp(weight, 0.0, 1.0) * scale)));
+    }
+    return key;
+  };
+
+  const auto region_for_id = [&](const authority::TopologyRegionId id)
+      -> const SurfaceTopologyRegion * {
+    if (!result.sourceTopologyRegions.has_value() ||
+        id.index() >= result.sourceTopologyRegions->regions().size()) {
+      return nullptr;
+    }
+    return &result.sourceTopologyRegions->region(id);
+  };
+  std::map<HardRailPairKey, std::vector<int>> hardRailGroups;
+  for (int edgeIndex = 0; edgeIndex < static_cast<int>(result.edges.size());
+       ++edgeIndex) {
+    const SurfaceFrontEdge &edge =
+        result.edges[static_cast<std::size_t>(edgeIndex)];
+    if (edge.boundaryKind != SurfaceFrontBoundaryKind::HardRail) continue;
+    std::vector<std::int64_t> from = support_key(edge.from);
+    std::vector<std::int64_t> to = support_key(edge.to);
+    const SurfaceTopologyRegion *edgeRegion =
+        region_for_id(edge.sourceTopologyRegion);
+    if (edge.oppositeEdge >= 0 || !edge.exterior || from.empty() || to.empty() ||
+        edgeRegion == nullptr || edge.route.empty()) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+          static_cast<int>(edge.filledCell.index()), edge.filledSide);
+      return result;
+    }
+    if (to < from) std::swap(from, to);
+    hardRailGroups[{edgeRegion->component(), std::move(from),
+                    std::move(to), edge.route.steps()}]
+        .push_back(edgeIndex);
+  }
+  std::set<int> pairedHardEdges;
+  for (const auto &[key, pair] : hardRailGroups) {
+    (void)key;
+    if (pair.size() != 2U) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+          pair.empty() ? -1
+                        : static_cast<int>(
+                             result.edges[static_cast<std::size_t>(pair.front())]
+                                 .filledCell.index()),
+          pair.empty() ? -1
+                       : result.edges[static_cast<std::size_t>(pair.front())]
+                             .filledSide);
+      return result;
+    }
+    SurfaceFrontEdge &first =
+        result.edges[static_cast<std::size_t>(pair[0])];
+    SurfaceFrontEdge &second =
+        result.edges[static_cast<std::size_t>(pair[1])];
+    if (first.sourceTopologyRegion == second.sourceTopologyRegion ||
+        support_key(first.from) != support_key(second.to) ||
+        support_key(first.to) != support_key(second.from) ||
+        first.route != second.route.reversed() ||
+        (first.railId.has_value() && second.railId.has_value() &&
+         first.railId != second.railId) ||
+        first.family != second.family ||
+        first.advanceSign == second.advanceSign) {
+      result.disposition = SurfaceCellProducerDisposition::Rejected;
+      set_phase_front_failure(
+          result.failure, SurfacePhaseFrontFailureReason::InvalidHardRailPairing,
+          static_cast<int>(first.filledCell.index()), first.filledSide);
+      return result;
+    }
+    first.oppositeEdge = pair[1];
+    second.oppositeEdge = pair[0];
+    first.exterior = false;
+    second.exterior = false;
+    pairedHardEdges.insert(pair.begin(), pair.end());
+    result.events.push_back(
+        {SurfaceFrontEventKind::HardRailMerge, pair[0], pair[1]});
+  }
+  result.events.erase(
+      std::remove_if(result.events.begin(), result.events.end(),
+                     [&](const SurfaceFrontEvent &event) {
+                       return event.kind ==
+                                  SurfaceFrontEventKind::BoundaryTermination &&
+                              pairedHardEdges.count(event.firstEdge) != 0U;
+                     }),
+      result.events.end());
+
+  if (!build_isolation_seam_transport_certificates(
+          vertices, faces, faceAxisX, faceAxisY, *result.sourceTopologyRegions,
+          sourceEdgeFaces, sourceMatchingIndices, edgeMatching, edgeEffort,
+          edgeTransitions, options.fieldTransportAtlas,
+          result.isolationSeamTransportCertificates)) {
+    result.disposition = SurfaceCellProducerDisposition::Rejected;
+    result.succeeded = false;
+    result.cells.clear();
+    result.edges.clear();
+    result.events.clear();
+    result.periodicHolonomies.clear();
+    result.isolationSeamTransportCertificates.clear();
+    set_phase_front_failure(
+        result.failure,
+        SurfacePhaseFrontFailureReason::InvalidIsolationSeamTransportCertificate);
+    return result;
+  }
+
+  result.succeeded = !result.cells.empty();
+  if (result.succeeded) result.disposition = SurfaceCellProducerDisposition::Produced;
+  return result;
+}
+
+} // namespace directional::geometry::surface_cell_tracing_detail
+
 namespace directional::geometry {
+
+std::uint64_t surface_topology_region_hash(const SurfaceTopologyRegion &region) {
+  return surface_cell_tracing_detail::surface_topology_region_hash_impl(region);
+}
+
+const char *surface_cell_producer_disposition_name(
+    const SurfaceCellProducerDisposition disposition) {
+  switch (disposition) {
+  case SurfaceCellProducerDisposition::NotApplicable: return "NotApplicable";
+  case SurfaceCellProducerDisposition::Produced: return "Produced";
+  case SurfaceCellProducerDisposition::Rejected: return "Rejected";
+  }
+  return "Unknown";
+}
+
+const char *surface_phase_front_failure_reason_name(
+    const SurfacePhaseFrontFailureReason reason) {
+  switch (reason) {
+  case SurfacePhaseFrontFailureReason::None: return "None";
+  case SurfacePhaseFrontFailureReason::InvalidInput: return "InvalidInput";
+  case SurfacePhaseFrontFailureReason::DegenerateReferenceFrame: return "DegenerateReferenceFrame";
+  case SurfacePhaseFrontFailureReason::NonPlanarSource: return "NonPlanarSource";
+  case SurfacePhaseFrontFailureReason::InconsistentFaceOrientation: return "InconsistentFaceOrientation";
+  case SurfacePhaseFrontFailureReason::IncompatibleFaceBranch: return "IncompatibleFaceBranch";
+  case SurfacePhaseFrontFailureReason::IncompatibleSecondaryBranch: return "IncompatibleSecondaryBranch";
+  case SurfacePhaseFrontFailureReason::DuplicateTransitionMetadata: return "DuplicateTransitionMetadata";
+  case SurfacePhaseFrontFailureReason::InvalidOrdinaryTransition: return "InvalidOrdinaryTransition";
+  case SurfacePhaseFrontFailureReason::NonReciprocalOrdinaryTransition: return "NonReciprocalOrdinaryTransition";
+  case SurfacePhaseFrontFailureReason::NonRectangularDomain: return "NonRectangularDomain";
+  case SurfacePhaseFrontFailureReason::InvalidTargetSize: return "InvalidTargetSize";
+  case SurfacePhaseFrontFailureReason::InvalidGridStep: return "InvalidGridStep";
+  case SurfacePhaseFrontFailureReason::PointProjectionFailure: return "PointProjectionFailure";
+  case SurfacePhaseFrontFailureReason::MissingFaceState: return "MissingFaceState";
+  case SurfacePhaseFrontFailureReason::MissingSegmentCoverage: return "MissingSegmentCoverage";
+  case SurfacePhaseFrontFailureReason::DisconnectedSegmentAttachment: return "DisconnectedSegmentAttachment";
+  case SurfacePhaseFrontFailureReason::NonManifoldVertexFan: return "NonManifoldVertexFan";
+  case SurfacePhaseFrontFailureReason::AmbiguousVertexFan: return "AmbiguousVertexFan";
+  case SurfacePhaseFrontFailureReason::InvalidVertexFanTransition: return "InvalidVertexFanTransition";
+  case SurfacePhaseFrontFailureReason::VertexFanBranchMismatch: return "VertexFanBranchMismatch";
+  case SurfacePhaseFrontFailureReason::MissingTransitionProvenance: return "MissingTransitionProvenance";
+  case SurfacePhaseFrontFailureReason::InvalidCellOrientation: return "InvalidCellOrientation";
+  case SurfacePhaseFrontFailureReason::InvalidLatticeEdge: return "InvalidLatticeEdge";
+  case SurfacePhaseFrontFailureReason::FrontOwnershipConflict: return "FrontOwnershipConflict";
+  case SurfacePhaseFrontFailureReason::InvalidFinalCellState: return "InvalidFinalCellState";
+  case SurfacePhaseFrontFailureReason::InvalidFinalEdgeState: return "InvalidFinalEdgeState";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicTopology: return "InvalidPeriodicTopology";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicChart: return "InvalidPeriodicChart";
+  case SurfacePhaseFrontFailureReason::PeriodicHolonomyMismatch: return "PeriodicHolonomyMismatch";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicFrontPairing: return "InvalidPeriodicFrontPairing";
+  case SurfacePhaseFrontFailureReason::InvalidPeriodicRingCorrespondence: return "InvalidPeriodicRingCorrespondence";
+  case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRingCorrespondence: return "AmbiguousPeriodicRingCorrespondence";
+  case SurfacePhaseFrontFailureReason::AmbiguousPeriodicRelationBasis: return "AmbiguousPeriodicRelationBasis";
+  case SurfacePhaseFrontFailureReason::IncompatiblePeriodicRelation: return "IncompatiblePeriodicRelation";
+  case SurfacePhaseFrontFailureReason::UnsupportedSourceSheetTopology: return "UnsupportedSourceSheetTopology";
+  case SurfacePhaseFrontFailureReason::IncompleteSourceSheetCoverage: return "IncompleteSourceSheetCoverage";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskTopology: return "InvalidBoundedDiskTopology";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskTransport: return "InvalidBoundedDiskTransport";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryPhase: return "InvalidBoundedDiskBoundaryPhase";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskChart: return "InvalidBoundedDiskChart";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskFrontPairing: return "InvalidBoundedDiskFrontPairing";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryTurn: return "InvalidBoundedDiskBoundaryTurn";
+  case SurfacePhaseFrontFailureReason::InvalidBoundedDiskBoundaryIndex: return "InvalidBoundedDiskBoundaryIndex";
+  case SurfacePhaseFrontFailureReason::InvalidTopologyRegion: return "InvalidTopologyRegion";
+  case SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport: return "InvalidTopologyRegionTransport";
+  case SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority: return "InvalidFrontBoundaryAuthority";
+  case SurfacePhaseFrontFailureReason::UnsupportedEmbeddedReliefCut: return "UnsupportedEmbeddedReliefCut";
+  case SurfacePhaseFrontFailureReason::InvalidHardRailPairing: return "InvalidHardRailPairing";
+  case SurfacePhaseFrontFailureReason::InvalidIsolationSeamTransportCertificate: return "InvalidIsolationSeamTransportCertificate";
+  }
+  return "Unknown";
+}
 
 SurfaceCellNetwork build_surface_cell_network(
     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
@@ -3728,23 +11376,77 @@ SurfaceCellNetwork build_surface_cell_network(
     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
   SurfaceCellNetwork network;
   network.authoritativeRails = options.authoritativeRails;
-  network.sourceFaceComponents = options.sourceFaceComponents;
-  network.sourceFaceSheets = options.sourceFaceSheets;
   network.reliefRootVertices = options.reliefRootVertices;
   network.reliefRegionLabels = options.reliefRegionLabels;
   network.reliefBarrierEdges = options.reliefBarrierEdges;
+  if (options.sourceAuthority != nullptr &&
+      options.sourceAuthority->matches_source_faces(
+          faces, static_cast<std::size_t>(vertices.rows()))) {
+    network.sourceTopologyRegions = *options.sourceAuthority;
+  } else {
+    network.sourceTopologyRegions =
+        surface_cell_tracing_detail::build_source_topology_regions(faces,
+                                                                   options);
+  }
+  if (!network.sourceTopologyRegions.has_value()) {
+    SurfacePhaseFrontFailure failure;
+    failure.reason = SurfacePhaseFrontFailureReason::InvalidTopologyRegion;
+    network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+    return network;
+  }
+  if (options.fieldTransportAtlas != nullptr &&
+      !options.fieldTransportAtlas->matches_source_faces(
+          faces, *network.sourceTopologyRegions,
+          static_cast<std::size_t>(vertices.rows()))) {
+    SurfacePhaseFrontFailure failure;
+    failure.reason = SurfacePhaseFrontFailureReason::InvalidTopologyRegionTransport;
+    network.phaseFront = SurfacePhaseFrontResult::rejected(std::move(failure));
+    return network;
+  }
+  SurfaceCellTracingOptions authoritativeOptions = options;
+  authoritativeOptions.sourceFaceComponents.clear();
+  authoritativeOptions.sourceFaceSheets.clear();
+  authoritativeOptions.sourceAuthority = &*network.sourceTopologyRegions;
+  network.phaseFront = surface_cell_tracing_detail::publish_phase_front_result(
+      surface_cell_tracing_detail::build_uniform_phase_front_state(
+          vertices, faces, faceAxisX, faceAxisY, targetSize,
+          *network.sourceTopologyRegions, authoritativeOptions,
+          edgeMatching, edgeEffort, edgeTransitions));
+  if (network.phaseFront.is_produced()) {
+    const SurfacePhaseFrontProduct &phaseFront = network.phaseFront.product();
+    network.proposals.reserve(phaseFront.cells().size());
+    for (const SurfacePhaseFrontCell &cell : phaseFront.cells()) {
+      SurfaceCellProposal proposal;
+      // Phase-front cells are not seed-owned; never mirror CellId into seed provenance.
+      proposal.seedId = -1;
+      proposal.accepted = true;
+      proposal.rejection = CellRejectionReason::Accepted;
+      proposal.corners = cell.corners;
+      proposal.boundaryPaths = cell.boundaryPaths;
+      for (const auto &path : proposal.boundaryPaths) {
+        proposal.sides.insert(proposal.sides.end(), path.begin(), path.end());
+      }
+      network.proposals.push_back(std::move(proposal));
+    }
+    network.stats.attempted = static_cast<int>(network.proposals.size());
+    network.stats.accepted = static_cast<int>(network.proposals.size());
+    return network;
+  }
+  if (network.phaseFront.is_rejected()) {
+    return network;
+  }
   network.seeds =
-      generate_deterministic_surface_seeds(vertices, faces, targetSize, options);
+      generate_deterministic_surface_seeds(vertices, faces, targetSize, authoritativeOptions);
   for (const SurfaceTraceSeed &seed : network.seeds) {
     for (int family = 0; family < 2; ++family) {
       for (const int sign : {-1, 1}) {
         network.traces.push_back(trace_surface_field(
-            vertices, faces, faceAxisX, faceAxisY, seed, family, sign, options,
+            vertices, faces, faceAxisX, faceAxisY, seed, family, sign, authoritativeOptions,
             edgeMatching, edgeEffort, edgeTransitions));
       }
     }
     SurfaceCellProposal proposal = make_surface_cell_proposal(
-        vertices, faces, faceAxisX, faceAxisY, targetSize, seed, options,
+        vertices, faces, faceAxisX, faceAxisY, targetSize, seed, authoritativeOptions,
         edgeMatching, edgeEffort, edgeTransitions);
     ++network.stats.attempted;
     switch (proposal.rejection) {
@@ -3790,17 +11492,19 @@ SurfaceCellNetwork build_surface_cell_network(
   // they cannot express the 3/5-valent topology of nonzero cross-field
   // indices.  A branch is owned by the incident face wedge containing its
   // outgoing field ray; rays on shared wedge boundaries are canonicalized.
-  if (!options.singularityIndexNumerators.empty()) {
+  const auto authoritativeSingularities =
+      surface_cell_tracing_detail::tracing_singularity_inputs(options, faces);
+  if (!authoritativeSingularities.has_value()) {
+    network.singularSeparatrixStats.metadataValid = false;
+    network.singularSeparatrixStats.incompleteSingularities =
+        surface_cell_tracing_detail::tracing_has_singularities(options) ? 1 : 0;
+    return network;
+  }
+  if (!authoritativeSingularities->empty()) {
     SurfaceSingularitySeparatrixStats &stats =
         network.singularSeparatrixStats;
     stats.singularityCount =
-        static_cast<int>(options.singularityVertices.size());
-    if (options.singularityIndexNumerators.size() !=
-        options.singularityVertices.size()) {
-      stats.metadataValid = false;
-      stats.incompleteSingularities = stats.singularityCount;
-      return network;
-    }
+        static_cast<int>(authoritativeSingularities->size());
 
     struct Wedge {
       int face = -1;
@@ -3823,7 +11527,8 @@ SurfaceCellNetwork build_surface_cell_network(
     const auto edgeFaces = surface_cell_tracing_detail::edge_faces(faces);
     constexpr double pi = 3.141592653589793238462643383279502884;
     constexpr double angularTolerance = 1.0e-7;
-    const auto other_face = [&](const std::uint64_t edge, const int face) {
+    const auto other_face = [&](const authority::SourceEdgeTopologyKey &edge,
+                                const int face) {
       const auto found = edgeFaces.find(edge);
       if (found == edgeFaces.end()) {
         return -1;
@@ -3868,9 +11573,9 @@ SurfaceCellNetwork build_surface_cell_network(
     };
 
     for (std::size_t singularity = 0;
-         singularity < options.singularityVertices.size(); ++singularity) {
-      const int vertex = options.singularityVertices[singularity];
-      const int index = options.singularityIndexNumerators[singularity];
+         singularity < authoritativeSingularities->size(); ++singularity) {
+      const auto [vertex, index] =
+          (*authoritativeSingularities)[singularity];
       const int expectedValence = 4 - index;
       if (vertex < 0 || vertex >= vertices.rows() || expectedValence < 3 ||
           expectedValence > 6 ||
@@ -3902,7 +11607,8 @@ SurfaceCellNetwork build_surface_cell_network(
       bool closedOneRing = true;
       for (const auto &[face, wedge] : wedgeByFace) {
         const auto startEdge = surface_cell_tracing_detail::edge_key(
-            vertex, wedge.startNeighbor);
+            vertex, wedge.startNeighbor,
+            surface_cell_tracing_detail::source_vertex_extent(faces));
         const auto found = edgeFaces.find(startEdge);
         const bool boundary =
             found == edgeFaces.end() || found->second[1] < 0;
@@ -3927,7 +11633,8 @@ SurfaceCellNetwork build_surface_cell_network(
         offset += wedge.angle;
         ordered.push_back(wedge);
         face = other_face(surface_cell_tracing_detail::edge_key(
-                              vertex, wedge.endNeighbor),
+                              vertex, wedge.endNeighbor,
+                              surface_cell_tracing_detail::source_vertex_extent(faces)),
                           face);
       }
       if (ordered.size() != wedgeByFace.size() ||
@@ -4249,10 +11956,17 @@ SurfaceCellNetwork build_surface_cell_network(
   Eigen::MatrixXd faceAxisX;
   Eigen::MatrixXd faceAxisY;
   cross_field_axes(crossField, faceAxisX, faceAxisY);
+  if (options.fieldTransportAtlas != nullptr) {
+    return build_surface_cell_network(vertices, faces, faceAxisX, faceAxisY,
+                                      targetSize, options, nullptr, nullptr,
+                                      nullptr);
+  }
+  // Explicit legacy/test ingress. Production callers publish an atlas in the
+  // options above and never reconstruct branch authority from raw containers.
   return build_surface_cell_network(vertices, faces, faceAxisX, faceAxisY,
-                                     targetSize, options, &crossField.matching,
-                                     &crossField.effort,
-                                     &crossField.edgeTransitions);
+                                    targetSize, options, &crossField.matching,
+                                    &crossField.effort,
+                                    &crossField.edgeTransitions);
 }
 
 } // namespace directional::geometry

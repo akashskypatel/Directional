@@ -1,10 +1,29 @@
 #include <directional/geometry/SurfaceMeshOptimizer.h>
+#include <directional/geometry/SurfaceCellTracing.h>
 
 #include <cmath>
+#include <memory>
 
 #include <gtest/gtest.h>
 
 namespace {
+
+const directional::geometry::SourceTopologyRegions *test_source_authority(
+    const Eigen::MatrixXi &faces, const std::vector<int> &components,
+    const std::vector<int> &sheets) {
+  directional::geometry::SurfaceCellTracingOptions tracing;
+  tracing.sourceFaceComponents = components;
+  tracing.sourceFaceSheets = sheets;
+  auto authority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(faces, tracing);
+  if (!authority.has_value()) {
+    throw std::runtime_error("Failed to construct typed test source authority.");
+  }
+  static std::vector<std::unique_ptr<directional::geometry::SourceTopologyRegions>> arena;
+  arena.push_back(std::make_unique<directional::geometry::SourceTopologyRegions>(
+      std::move(*authority)));
+  return arena.back().get();
+}
 
 Eigen::MatrixXi one_quad() {
   Eigen::MatrixXi quads(1, 4);
@@ -19,7 +38,6 @@ directional::geometry::SurfaceOptimizationConstraints make_constraints(
   directional::geometry::SurfaceOptimizationConstraints constraints;
   constraints.sourceVertices = sourceVertices;
   constraints.sourceFaces = sourceFaces;
-  constraints.sourcePositions = sourceVertices;
   constraints.sourceNormals =
       Eigen::MatrixXd::Zero(sourceFaces.rows(), 3);
   constraints.sourceFieldX =
@@ -36,10 +54,12 @@ directional::geometry::SurfaceOptimizationConstraints make_constraints(
     constraints.sourceFieldX.row(face) = x;
     constraints.sourceFieldY.row(face) = normal.normalized().cross(x);
   }
-  constraints.sourceFaceComponent.assign(
+  const std::vector<int> sourceComponents(
       static_cast<std::size_t>(sourceFaces.rows()), 0);
-  constraints.sourceFaceSheet.assign(
+  const std::vector<int> sourceSheets(
       static_cast<std::size_t>(sourceFaces.rows()), 0);
+  constraints.sourceAuthority =
+      test_source_authority(sourceFaces, sourceComponents, sourceSheets);
   constraints.localTargetSize =
       Eigen::VectorXd::Ones(sourceVertices.rows());
   return constraints;
@@ -297,8 +317,8 @@ TEST(SurfaceMeshOptimizerPhase21,
 
   auto constraints = make_constraints(
       source, sourceFaces, Eigen::RowVector3d(0.0, 0.0, 1.0));
-  constraints.sourceFaceComponent = {0, 0, 1, 1};
-  constraints.sourceFaceSheet = {0, 0, 1, 1};
+  constraints.sourceAuthority =
+      test_source_authority(sourceFaces, {0, 0, 1, 1}, {0, 0, 1, 1});
 
   directional::geometry::SurfaceOptimizationResult optimization;
   optimization.vertices = source;
@@ -365,8 +385,8 @@ TEST(SurfaceMeshOptimizerPhase21,
       4, 7, 6;
   auto constraints = make_constraints(
       source, sourceFaces, Eigen::RowVector3d(0.0, 0.0, 1.0));
-  constraints.sourceFaceComponent = {0, 0, 0, 0};
-  constraints.sourceFaceSheet = {0, 0, 1, 1};
+  constraints.sourceAuthority =
+      test_source_authority(sourceFaces, {0, 0, 0, 0}, {0, 0, 1, 1});
 
   const Eigen::MatrixXd output = source.topRows(4);
   directional::geometry::SurfaceOptimizationResult optimization;
@@ -401,8 +421,8 @@ TEST(SurfaceMeshOptimizerPhase21,
       4, 7, 6;
   auto constraints = make_constraints(
       source, sourceFaces, Eigen::RowVector3d(0.0, 0.0, 1.0));
-  constraints.sourceFaceComponent = {0, 0, 0, 0};
-  constraints.sourceFaceSheet = {0, 0, 1, 1};
+  constraints.sourceAuthority =
+      test_source_authority(sourceFaces, {0, 0, 0, 0}, {0, 0, 1, 1});
 
   const Eigen::MatrixXd output = source.topRows(4);
   directional::geometry::SurfaceOptimizationResult optimization;

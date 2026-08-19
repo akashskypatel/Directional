@@ -1,0 +1,65 @@
+# Retention Policy
+
+## Purpose
+
+Define which project records are durable, which turn records may be retired, and the authorization required before durable information may be removed, weakened, consolidated, or replaced. This policy is maintained separately from `Future_Chat_Session_Handoff.md`.
+
+Repository cleanup mechanics are defined in `CLEAN_UP_POLICY.md`. GitHub Actions workflow and remote-artifact lifecycle rules are defined in `GitHub_Workflow_Policy.md`.
+
+## Durable project authority
+
+The following records are durable project authority and must be retained unless the user explicitly authorizes their removal or replacement:
+
+- `.agents/Directional/DESIGN.md`
+- `.agents/Directional/REORIENTATION_PLAN.md`
+- `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`
+- `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`
+- `.agents/Directional/GitHub_Workflow_Policy.md`
+- `.agents/Directional/CLEAN_UP_POLICY.md`
+- `.agents/Directional/RETENTION_POLICY.md`
+- `.agents/Directional/Regression_Root_Cause_Tracker.md`
+- `.agents/Directional/PR_8_Regression_Audit_Inventory.md`
+- `.agents/Directional/CHANGELOG.md`
+- `.agents/Directional/Future_Chat_Session_Handoff.md`
+- `TODO.md`
+- `tests/TESTING_STRATEGY.md`
+
+`TODO.md` is the single durable task index. The former root `TODO` and `MILESTONE_G_TODO.md` were explicitly authorized for consolidation into it; their actionable tasks and the pending tasks from `REORIENTATION_PLAN.md` must remain represented in `TODO.md` or their owning authoritative plan until completed.
+
+In addition to the durable set, retain only the current authoritative evidence/report and the single next-turn plan needed to resume work. Superseded per-turn Code + Build plans/reports, Test + Benchmark plans/reports, review plans/reports, evidence indexes, machine summaries, and temporary workflow payloads may be removed only after their necessary durable facts have been preserved according to this policy and `CLEAN_UP_POLICY.md`.
+
+## Handoff, TODO, and changelog ownership
+
+`.agents/Directional/CHANGELOG.md` is the durable historical record for completed changes and immutable acceptance checkpoints. `TODO.md` is the durable task index. Maintain both separately from the handoff.
+
+- `Future_Chat_Session_Handoff.md` contains the mandatory next action, current immutable authority, live blockers, resume-critical lessons, durable operating sections/checklists, and references needed by a new agent to continue correctly.
+- `TODO.md` contains active, pending, blocked, deferred, and completed task status needed to track the product, architecture, and testing roadmaps without duplicating detailed evidence.
+- Do not accumulate completed milestone narratives, old artifact tables, superseded turn summaries, historical acceptance logs, or task backlogs in the handoff merely as chronological history; however, this cleanup rule never authorizes removal of sections or content explicitly marked durable.
+- When a completed turn creates a durable implementation or acceptance change, add or update the corresponding newest-first entry in `CHANGELOG.md` using its documented style before removing non-durable historical detail from the handoff.
+- Update `TODO.md` as tasks are completed, selected, blocked, unblocked, or newly deferred; preserve references to the authoritative plan when detailed requirements live elsewhere.
+- Preserve exact implementation commits, artifact/run identities, stable regression IDs, failure classifications, and material operational lessons in the changelog when they cease to be resume-critical.
+- Keep unresolved or immediately actionable information in the handoff until it is no longer needed to resume the next turn correctly.
+- A changelog entry supplements authoritative per-turn reports; it does not replace the exact evidence report while that report is the current immutable authority.
+
+## Evidence retention
+
+- Raw machine-readable evidence that is still the sole authority for a claim is not stale and must be retained until its necessary facts have been folded into an appropriate durable/current record.
+- Never remove the current immutable source/package authority until its necessary facts are captured in the succeeding authoritative report and durable/live records.
+- External GitHub Actions artifact retention is governed by `GitHub_Workflow_Policy.md`; repository-side cleanup does not imply deletion of immutable external artifact history.
+
+## Durable-information mutation prohibition — user authorization required
+
+This policy is durable and must remain in force unless the user explicitly changes it.
+
+- Destructive edits to durable information are prohibited unless they are within the approved documentation scope of a Review turn explicitly authorized by the user, or the user explicitly authorizes the destructive edit and its scope. No other turn type—and no general instruction to update, clean, condense, reconcile, keep concise/current, remove stale evidence, or reduce file count—grants that authority.
+- A destructive edit includes deleting a durable document; removing findings, rationale, decisions, invariants, design or architecture detail, policies, acceptance criteria, historical evidence or provenance, stable IDs, artifact identities, failed-attempt lessons, unresolved blockers, or resume guidance; replacing detailed authority with a summary; weakening or obscuring prior meaning; or moving information without a durable, traceable replacement.
+- **Any section explicitly marked durable in any durable document is itself protected durable authority. Such a section must not be deleted, collapsed into another section, renamed away, replaced with a summary, or stripped of its durable meaning unless the user explicitly authorizes that destructive edit and its exact scope.** Additive/corrective edits are allowed only when the section remains present and its prior durable meaning is preserved.
+- Protected information includes design, architecture, policy, remediation and roadmaps, plans, audit/review findings, regression/root-cause history, testing strategy, workflow/process rules, TODO/handoff recovery state, and any other record whose purpose is durable project memory.
+- Routine stale per-turn evidence cleanup applies only to records expressly classified as temporary after all necessary facts have been preserved. It never authorizes destructive edits to protected durable information.
+- Never remove, weaken, consolidate, reinterpret, or replace a durable document or mandatory instruction merely to reduce file count.
+- Without the required authorization, edits must be additive or narrowly corrective and must preserve all prior durable meaning. If classification or authority is uncertain, stop and ask the user before editing.
+- Before an authorized destructive edit, inventory the information at risk, define the exact authorized scope, and verify the resulting diff against that scope.
+
+## Policy maintenance
+
+Policy content normally belongs in dedicated policy documents rather than being duplicated broadly. `Future_Chat_Session_Handoff.md` is an explicit exception for user-designated durable handoff sections, start/end checklists, resume-critical lessons, and resume-critical policy reminders. Moving policy text between dedicated durable documents is permitted only when the destination preserves the full durable meaning and provenance of the moved rule and no explicitly durable source section is deleted without authorization.

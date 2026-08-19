@@ -33,13 +33,13 @@ QuadMeshData remesh_with_field(const MeshData &mesh, const FieldData &field,
         mesh.vertices, mesh.faces, field.primary, field.secondary,
         pipelineOptions);
   }
-  if (!remesh.success) {
+  if (!remesh.is_produced()) {
     throw std::runtime_error(
         "Remeshing failed while assembling the output mesh.");
   }
 
   const cli::QuadMeshData quad = cli::quadrangulate_remeshed_mesh(
-      remesh.vertices, remesh.degrees, remesh.faces);
+      remesh.product().vertices, remesh.product().degrees, remesh.product().faces);
   return {quad.vertices, quad.faces};
 }
 

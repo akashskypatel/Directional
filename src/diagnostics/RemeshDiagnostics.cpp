@@ -9,6 +9,8 @@ const char *surface_cell_output_origin_name(
     return "None";
   case SurfaceCellOutputOrigin::CompletedSurfaceCells:
     return "CompletedSurfaceCells";
+  case SurfaceCellOutputOrigin::SourceGridRecovery:
+    return "SourceGridRecovery";
   case SurfaceCellOutputOrigin::LegacyFallback:
     return "LegacyFallback";
   case SurfaceCellOutputOrigin::InputMeshFallback:

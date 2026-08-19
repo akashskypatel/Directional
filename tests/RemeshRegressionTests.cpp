@@ -8,6 +8,7 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "BenchmarkCases.h"
+#include "TestFixturePaths.h"
 
 namespace {
 
@@ -74,52 +75,56 @@ double polygon_area(const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &face
 TEST(RemeshRegressionPhase00, SyntheticOutputSatisfiesStructuralInvariants) {
   const directional::pipeline::RemeshResult result = run_regression_remesh();
 
-  ASSERT_TRUE(result.success);
-  ASSERT_GT(result.vertices.rows(), 0);
-  ASSERT_GT(result.faces.rows(), 0);
-  ASSERT_EQ(result.degrees.size(), result.faces.rows());
-  EXPECT_TRUE(result.vertices.allFinite());
+  ASSERT_TRUE(result.is_produced());
+  ASSERT_GT(result.product().vertices.rows(), 0);
+  ASSERT_GT(result.product().faces.rows(), 0);
+  ASSERT_EQ(result.product().degrees.size(), result.product().faces.rows());
+  EXPECT_TRUE(result.product().vertices.allFinite());
 
-  for (int face = 0; face < result.faces.rows(); ++face) {
-    const int degree = result.degrees(face);
+  for (int face = 0; face < result.product().faces.rows(); ++face) {
+    const int degree = result.product().degrees(face);
     ASSERT_GE(degree, 3);
-    ASSERT_LE(degree, result.faces.cols());
+    ASSERT_LE(degree, result.product().faces.cols());
 
     for (int corner = 0; corner < degree; ++corner) {
-      const int vertex = result.faces(face, corner);
+      const int vertex = result.product().faces(face, corner);
       ASSERT_GE(vertex, 0);
-      ASSERT_LT(vertex, result.vertices.rows());
+      ASSERT_LT(vertex, result.product().vertices.rows());
 
-      const int nextVertex = result.faces(face, (corner + 1) % degree);
+      const int nextVertex = result.product().faces(face, (corner + 1) % degree);
       EXPECT_NE(vertex, nextVertex);
     }
 
-    EXPECT_GT(polygon_area(result.vertices, result.faces, result.degrees, face),
+    EXPECT_GT(polygon_area(result.product().vertices, result.product().faces, result.product().degrees, face),
               1.0e-14);
   }
 }
 
-TEST(RemeshRegressionPhase00, BunnyBenchmarkFixtureHasMatchingField) {
+TEST(RemeshRegressionPhase00, RandomBunnyBenchmarkFixtureHasUsableField) {
   const std::filesystem::path manifestPath =
-      std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR) /
-      "benchmarks/fixtures/repo_regressions.json";
+      directional::tests::benchmark_fixture_path(
+          "repo_regressions.json");
 
   const std::vector<directional::bench::BenchmarkCase> cases =
       directional::bench::load_benchmark_manifest(manifestPath);
   const auto bunny = std::find_if(
       cases.begin(), cases.end(),
       [](const directional::bench::BenchmarkCase &candidate) {
-        return candidate.name == "bunny1k_medium";
+        return candidate.name == "bunny_1k_random_medium";
       });
 
   ASSERT_NE(bunny, cases.end());
+  EXPECT_EQ(bunny->meshPath.filename(), "bunny_1k_random.obj");
+  EXPECT_EQ(bunny->generatedField, "smooth");
+
   const directional::bench::BenchmarkMesh mesh =
       directional::bench::load_benchmark_mesh(*bunny);
   ASSERT_GT(mesh.vertices.rows(), 0);
-  ASSERT_EQ(mesh.faces.rows(), 2090);
+  ASSERT_EQ(mesh.faces.rows(), 1000);
 
-  const directional::bench::BenchmarkField field =
-      directional::bench::load_benchmark_field(*bunny, mesh.faces.rows());
+  const directional::bench::BenchmarkField field = bunny->fieldPath.empty()
+      ? directional::bench::generate_benchmark_field(*bunny, mesh)
+      : directional::bench::load_benchmark_field(*bunny, mesh.faces.rows());
   ASSERT_TRUE(field.available);
   EXPECT_EQ(field.degree, 4);
   EXPECT_EQ(field.raw.rows(), mesh.faces.rows());

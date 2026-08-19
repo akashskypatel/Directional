@@ -70,16 +70,14 @@ TEST(MilestoneBClosure, MixedFeatureCurveIsSplitIntoContiguousRailRuns) {
   const auto result =
       directional::pipeline::build_authoritative_surface_cell_rails(source, map);
 
-  ASSERT_TRUE(result.success);
-  ASSERT_EQ(result.validationStatus,
-            directional::geometry::surface_cell_tracing_detail::RailBuildStatus::Valid);
-  ASSERT_EQ(result.rails.size(), 2U);
-  EXPECT_EQ(result.rails[0].sourceEdges, std::vector<int>({0}));
-  EXPECT_EQ(result.rails[1].sourceEdges, std::vector<int>({2}));
-  EXPECT_EQ(result.rails[0].sourceVertices, std::vector<int>({0, 1}));
-  EXPECT_EQ(result.rails[1].sourceVertices, std::vector<int>({4, 5}));
-  EXPECT_FALSE(result.rails[0].closed);
-  EXPECT_FALSE(result.rails[1].closed);
+  ASSERT_TRUE(result.is_produced());
+  ASSERT_EQ(result.product().rails.size(), 2U);
+  EXPECT_EQ(result.product().rails[0].sourceEdges, std::vector<int>({0}));
+  EXPECT_EQ(result.product().rails[1].sourceEdges, std::vector<int>({2}));
+  EXPECT_EQ(result.product().rails[0].sourceVertices, std::vector<int>({0, 1}));
+  EXPECT_EQ(result.product().rails[1].sourceVertices, std::vector<int>({4, 5}));
+  EXPECT_FALSE(result.product().rails[0].closed);
+  EXPECT_FALSE(result.product().rails[1].closed);
 }
 
 TEST(MilestoneBClosure, ContiguousHardCurveRemainsOneOrderedRail) {
@@ -92,12 +90,12 @@ TEST(MilestoneBClosure, ContiguousHardCurveRemainsOneOrderedRail) {
   const auto result =
       directional::pipeline::build_authoritative_surface_cell_rails(source, map);
 
-  ASSERT_TRUE(result.success);
-  ASSERT_EQ(result.rails.size(), 1U);
-  EXPECT_EQ(result.rails.front().sourceEdges, std::vector<int>({0, 1, 2}));
-  EXPECT_EQ(result.rails.front().sourceVertices,
+  ASSERT_TRUE(result.is_produced());
+  ASSERT_EQ(result.product().rails.size(), 1U);
+  EXPECT_EQ(result.product().rails.front().sourceEdges, std::vector<int>({0, 1, 2}));
+  EXPECT_EQ(result.product().rails.front().sourceVertices,
             std::vector<int>({0, 1, 4, 5}));
-  EXPECT_EQ(result.rails.front().samples.size(), 6U);
+  EXPECT_EQ(result.product().rails.front().samples.size(), 6U);
 }
 
 
@@ -137,16 +135,16 @@ TEST(MilestoneBClosure, ClosedRailUsesCanonicalCyclicVertexLoop) {
   const auto result =
       directional::pipeline::build_authoritative_surface_cell_rails(source, map);
 
-  ASSERT_TRUE(result.success);
-  ASSERT_EQ(result.rails.size(), 1U);
-  const auto &rail = result.rails.front();
+  ASSERT_TRUE(result.is_produced());
+  ASSERT_EQ(result.product().rails.size(), 1U);
+  const auto &rail = result.product().rails.front();
   EXPECT_TRUE(rail.closed);
   EXPECT_EQ(rail.sourceEdges, std::vector<int>({0, 1, 2, 3}));
   EXPECT_EQ(rail.sourceVertices, std::vector<int>({0, 1, 2, 3}));
   EXPECT_EQ(rail.samples.size(), 8U);
 
   directional::geometry::SurfaceOptimizationConstraints constraints;
-  directional::pipeline::fill_surface_cell_rail_constraints(result.rails,
+  directional::pipeline::fill_surface_cell_rail_constraints(result.product().rails,
                                                               constraints);
   EXPECT_EQ(constraints.authoritativeBoundaryEdges.size(), 4U);
   EXPECT_EQ(constraints.authoritativeBoundaryLoop,
@@ -158,9 +156,10 @@ TEST(MilestoneBClosure, ClosedRailUsesCanonicalCyclicVertexLoop) {
   const auto hardEdges =
       directional::pipeline::hard_feature_edge_keys_from_rails({hardRail});
   EXPECT_EQ(hardEdges.size(), 4U);
-  EXPECT_EQ(hardEdges.count(
-                directional::pipeline::surface_cell_source_edge_key(0, 0)),
-            0U);
+  EXPECT_THROW(
+      (void)directional::pipeline::surface_cell_source_edge_key(
+          0, 0, static_cast<std::size_t>(mesh.vertices.rows())),
+      std::invalid_argument);
 }
 
 TEST(MilestoneBClosure, InvalidCurveOrderingFailsBeforeTracing) {
@@ -174,7 +173,9 @@ TEST(MilestoneBClosure, InvalidCurveOrderingFailsBeforeTracing) {
   const auto result =
       directional::pipeline::build_authoritative_surface_cell_rails(source, map);
 
-  EXPECT_FALSE(result.success);
-  EXPECT_EQ(result.failedEdgeIndex, 0);
-  EXPECT_TRUE(result.rails.empty());
+  ASSERT_TRUE(result.is_rejected());
+  ASSERT_NE(result.rejection(), nullptr);
+  EXPECT_EQ(result.rejection()->failedEdgeIndex, 0);
+  EXPECT_EQ(result.rejection()->kind,
+            directional::pipeline::SurfaceCellRailBuildFailureKind::InvalidFeatureEdge);
 }

@@ -612,7 +612,7 @@ result = directional.remesh_from_cross_field(
     options,
 )
 
-print(result.success)
+print(result.is_produced)
 ```
 
 ## Recommended Workflows
