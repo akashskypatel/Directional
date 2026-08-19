@@ -1,0 +1,125 @@
+name: Agent Milestone G Checkpoint
+
+on:
+  push:
+    branches:
+      - surface_cell_quad
+    paths:
+      - .github/workflows/agent-source-snapshot.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Checkout shallow source and submodules
+        uses: actions/checkout@v4
+        with:
+          ref: surface_cell_quad
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Apply production fixes as separate commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "OpenAI Agent"
+          git config user.email "noreply@openai.com"
+          base64 --decode .github/agent-patches/0001-retain-partial-singularity-separatrices.patch.b64 > /tmp/0001.patch
+          base64 --decode .github/agent-patches/0002-balance-regular-disk-quadrangulation.patch.b64 > /tmp/0002.patch
+          git am /tmp/0001.patch
+          git am /tmp/0002.patch
+
+      - name: Add focused test target without changing the commit
+        shell: bash
+        run: |
+          cat >> CMakeLists.txt <<'CMAKE'
+
+          if(DIRECTIONAL_BUILD_TESTS)
+            add_executable(
+              directional_agent_surface_cell_tests
+              tests/FlowRepStrandsPhase15Tests.cpp
+              tests/PureQuadCompletionPhase18Tests.cpp)
+            target_link_libraries(
+              directional_agent_surface_cell_tests
+              PRIVATE Directional::directional GTest::gtest_main)
+            target_compile_features(
+              directional_agent_surface_cell_tests PRIVATE cxx_std_20)
+            target_compile_definitions(
+              directional_agent_surface_cell_tests
+              PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+          endif()
+          CMAKE
+
+      - name: Configure targeted build
+        shell: bash
+        run: |
+          set -o pipefail
+          cmake -S . -B build-agent -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_CXX_FLAGS_DEBUG="-O0 -g0" \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DBUILD_TUTORIALS=OFF \
+            -DBUILD_PYTHON=OFF \
+            -DDIRECTIONAL_BUILD_CLI=OFF \
+            -DDIRECTIONAL_BUILD_GUI=OFF \
+            -DDIRECTIONAL_BUILD_BENCHMARKS=OFF \
+            -DDIRECTIONAL_BUILD_TESTS=ON \
+            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_PARDISO=OFF \
+            -DDIRECTIONAL_ENABLE_CUDSS=OFF \
+            -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
+            2>&1 | tee configure.log
+
+      - name: Build focused and P27 tests
+        shell: bash
+        run: |
+          set -o pipefail
+          cmake --build build-agent --parallel 2 --target \
+            directional_agent_surface_cell_tests \
+            directional_milestone_g_p27_tests \
+            2>&1 | tee build.log
+
+      - name: Run FlowRep and completion tests
+        shell: bash
+        run: |
+          set -o pipefail
+          ./build-agent/directional_agent_surface_cell_tests \
+            --gtest_filter='FlowRepStrandsPhase15.*:PureQuadCompletionPhase18.*' \
+            2>&1 | tee focused-tests.log
+
+      - name: Run Milestone G P27 matrix
+        shell: bash
+        run: |
+          set -o pipefail
+          ./build-agent/directional_milestone_g_p27_tests \
+            2>&1 | tee p27-tests.log
+
+      - name: Publish validated checkpoint commits
+        shell: bash
+        run: |
+          set -euo pipefail
+          git checkout -- CMakeLists.txt
+          git rm \
+            .github/workflows/agent-source-snapshot.yml \
+            .github/agent-patches/0001-retain-partial-singularity-separatrices.patch.b64 \
+            .github/agent-patches/0002-balance-regular-disk-quadrangulation.patch.b64
+          git commit -m "Remove temporary Milestone G checkpoint workflow"
+          git push origin HEAD:surface_cell_quad
+
+      - name: Upload validation logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: milestone-g-checkpoint-validation
+          path: |
+            configure.log
+            build.log
+            focused-tests.log
+            p27-tests.log
+          if-no-files-found: ignore
+          retention-days: 7

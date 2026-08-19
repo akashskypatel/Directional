@@ -1,0 +1,263 @@
+name: Agent Reusable Recent Workflow Runs
+
+on:
+  workflow_call:
+    inputs:
+      per_page:
+        description: Number of workflow runs requested per API page (1-100).
+        required: false
+        type: number
+        default: 100
+      max_pages:
+        description: Maximum number of API pages to fetch.
+        required: false
+        type: number
+        default: 1
+      branch:
+        description: Optional branch filter passed to the GitHub Actions runs API.
+        required: false
+        type: string
+        default: ""
+      event:
+        description: Optional event filter passed to the GitHub Actions runs API.
+        required: false
+        type: string
+        default: ""
+      status:
+        description: Optional status or conclusion filter passed to the GitHub Actions runs API.
+        required: false
+        type: string
+        default: ""
+      created:
+        description: Optional created-date filter accepted by the GitHub Actions runs API.
+        required: false
+        type: string
+        default: ""
+      retention_days:
+        description: Artifact retention period in days.
+        required: false
+        type: number
+        default: 7
+    outputs:
+      artifact_name:
+        description: Name of the uploaded recent-workflow-runs artifact.
+        value: ${{ jobs.collect.outputs.artifact_name }}
+      fetched_run_count:
+        description: Number of workflow runs materialized into the artifact.
+        value: ${{ jobs.collect.outputs.fetched_run_count }}
+      attention_run_count:
+        description: Number of non-success, non-skipped, or still-active runs in the artifact.
+        value: ${{ jobs.collect.outputs.attention_run_count }}
+    secrets:
+      GH_TOKEN:
+        required: false
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  collect:
+    runs-on: ubuntu-24.04
+    outputs:
+      artifact_name: ${{ steps.meta.outputs.artifact_name }}
+      fetched_run_count: ${{ steps.meta.outputs.fetched_run_count }}
+      attention_run_count: ${{ steps.meta.outputs.attention_run_count }}
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-recent-workflow-runs.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Query recent workflow runs
+        id: query
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+          INPUT_PER_PAGE: ${{ inputs.per_page }}
+          INPUT_MAX_PAGES: ${{ inputs.max_pages }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+          INPUT_EVENT: ${{ inputs.event }}
+          INPUT_STATUS: ${{ inputs.status }}
+          INPUT_CREATED: ${{ inputs.created }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-recent-workflow-runs.log"
+          out="${RUNNER_TEMP}/agent-recent-workflow-runs"
+          pages="${RUNNER_TEMP}/agent-recent-workflow-runs-pages"
+          mkdir -p "$out" "$pages"
+
+          per_page="${INPUT_PER_PAGE}"
+          max_pages="${INPUT_MAX_PAGES}"
+          if ! [[ "$per_page" =~ ^[0-9]+$ ]] || (( per_page < 1 || per_page > 100 )); then
+            echo "invalid per_page=${per_page}; expected 1..100" | tee -a "$log"
+            exit 2
+          fi
+          if ! [[ "$max_pages" =~ ^[0-9]+$ ]] || (( max_pages < 1 || max_pages > 20 )); then
+            echo "invalid max_pages=${max_pages}; expected 1..20" | tee -a "$log"
+            exit 2
+          fi
+
+          echo "gh_version=$(gh --version | head -n1)" | tee -a "$log"
+          echo "jq_version=$(jq --version)" | tee -a "$log"
+          echo "api_endpoint=repos/${GITHUB_REPOSITORY}/actions/runs" | tee -a "$log"
+          echo "per_page=${per_page}; max_pages=${max_pages}" | tee -a "$log"
+
+          fetched_pages=0
+          for ((page = 1; page <= max_pages; ++page)); do
+            args=(
+              --method GET
+              -H "Accept: application/vnd.github+json"
+              -H "X-GitHub-Api-Version: 2022-11-28"
+              "repos/${GITHUB_REPOSITORY}/actions/runs"
+              -f "per_page=${per_page}"
+              -f "page=${page}"
+            )
+            [[ -n "${INPUT_BRANCH}" ]] && args+=(-f "branch=${INPUT_BRANCH}")
+            [[ -n "${INPUT_EVENT}" ]] && args+=(-f "event=${INPUT_EVENT}")
+            [[ -n "${INPUT_STATUS}" ]] && args+=(-f "status=${INPUT_STATUS}")
+            [[ -n "${INPUT_CREATED}" ]] && args+=(-f "created=${INPUT_CREATED}")
+
+            page_file="${pages}/page-${page}.json"
+            echo "fetching page=${page}" | tee -a "$log"
+            gh api "${args[@]}" > "$page_file"
+            count="$(jq '.workflow_runs | length' "$page_file")"
+            echo "page=${page}; workflow_runs=${count}" | tee -a "$log"
+            fetched_pages=$page
+            if (( count < per_page )); then
+              break
+            fi
+          done
+
+          jq -s '
+            {
+              api_total_count: ((map(.total_count) | max) // 0),
+              workflow_runs: ([.[].workflow_runs[]] | unique_by(.id) | sort_by(.created_at) | reverse)
+            }
+          ' "${pages}"/page-*.json > "${out}/workflow-runs.json"
+
+          jq '
+            {
+              api_total_count,
+              fetched_run_count: (.workflow_runs | length),
+              workflow_runs: [
+                .workflow_runs[] |
+                {
+                  id,
+                  name,
+                  display_title,
+                  path,
+                  workflow_id,
+                  run_number,
+                  run_attempt,
+                  event,
+                  status,
+                  conclusion,
+                  head_branch,
+                  head_sha,
+                  created_at,
+                  updated_at,
+                  run_started_at,
+                  html_url,
+                  actor: (.actor.login // null)
+                }
+              ]
+            }
+          ' "${out}/workflow-runs.json" > "${out}/workflow-runs-summary.json"
+
+          jq '
+            {
+              attention_run_count: ([
+                .workflow_runs[] |
+                select(.status != "completed" or ((.conclusion // "") != "success" and (.conclusion // "") != "skipped"))
+              ] | length),
+              workflow_runs: [
+                .workflow_runs[] |
+                select(.status != "completed" or ((.conclusion // "") != "success" and (.conclusion // "") != "skipped")) |
+                {
+                  id,
+                  name,
+                  display_title,
+                  path,
+                  event,
+                  status,
+                  conclusion,
+                  head_branch,
+                  head_sha,
+                  created_at,
+                  updated_at,
+                  html_url
+                }
+              ]
+            }
+          ' "${out}/workflow-runs.json" > "${out}/workflow-runs-attention.json"
+
+          jq -r '
+            ["id","name","event","status","conclusion","head_branch","head_sha","created_at","html_url"],
+            (.workflow_runs[] | [.id,.name,.event,.status,(.conclusion // ""),(.head_branch // ""),.head_sha,.created_at,.html_url]) |
+            @tsv
+          ' "${out}/workflow-runs-summary.json" > "${out}/workflow-runs-summary.tsv"
+
+          fetched_run_count="$(jq '.workflow_runs | length' "${out}/workflow-runs.json")"
+          attention_run_count="$(jq '.attention_run_count' "${out}/workflow-runs-attention.json")"
+          cat > "${out}/query-metadata.json" <<JSON
+          {
+            "repository": "${GITHUB_REPOSITORY}",
+            "api_endpoint": "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs",
+            "per_page": ${per_page},
+            "max_pages": ${max_pages},
+            "fetched_pages": ${fetched_pages},
+            "branch": $(jq -Rn --arg v "${INPUT_BRANCH}" '$v'),
+            "event": $(jq -Rn --arg v "${INPUT_EVENT}" '$v'),
+            "status": $(jq -Rn --arg v "${INPUT_STATUS}" '$v'),
+            "created": $(jq -Rn --arg v "${INPUT_CREATED}" '$v'),
+            "fetched_run_count": ${fetched_run_count},
+            "attention_run_count": ${attention_run_count},
+            "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          JSON
+
+          echo "fetched_run_count=${fetched_run_count}" >> "$GITHUB_OUTPUT"
+          echo "attention_run_count=${attention_run_count}" >> "$GITHUB_OUTPUT"
+          echo "fetched_run_count=${fetched_run_count}; attention_run_count=${attention_run_count}" | tee -a "$log"
+
+      - name: Publish workflow-run artifact metadata
+        id: meta
+        env:
+          FETCHED_RUN_COUNT: ${{ steps.query.outputs.fetched_run_count }}
+          ATTENTION_RUN_COUNT: ${{ steps.query.outputs.attention_run_count }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          artifact_name="agent-recent-workflow-runs-${GITHUB_RUN_ID}"
+          echo "artifact_name=${artifact_name}" >> "$GITHUB_OUTPUT"
+          echo "fetched_run_count=${FETCHED_RUN_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "attention_run_count=${ATTENTION_RUN_COUNT}" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=${artifact_name}" | tee -a "${RUNNER_TEMP}/agent-recent-workflow-runs.log"
+
+      - name: Upload recent workflow runs
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.artifact_name }}
+          path: ${{ runner.temp }}/agent-recent-workflow-runs
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-recent-workflow-runs-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-recent-workflow-runs.log
+          if-no-files-found: error
+          retention-days: ${{ inputs.retention_days }}
