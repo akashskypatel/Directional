@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-25 — Drive patch retirement no longer emits deterministic ownership 403s
+
+- Removed the permanent Google Drive `DELETE` request from `agent-google-drive-reusable.yml`. After a successful repository push the reusable now reads `capabilities.canTrash`; it issues only `files.update(..., trashed=true)` when that capability is true, otherwise it skips the known-failing mutation and reports owner-authorized retirement as still required.
+- Preserved the prior changed-path correction for newly created patch targets: the verifier combines tracked `git diff --name-only` paths with `git ls-files --others --exclude-standard`, so intended new files participate in exact-scope verification before `git add`. The failed CB2 closeout attempt proved the missing paths were two intentional new durable report/plan files, not generated junk; `.gitignore` therefore remains unchanged rather than hiding legitimate new patch targets.
+- This is control-plane/policy hardening only. CB2 semantic/build authority is unchanged and the exact next runtime turn remains artifact-only `M3-CP4c-0-TB-R2`.
+
 ## 2026-08-25 — M3-CP4c-0-CB2 verification-first build green
 
 CB2 is **COMPLETE / BUILD GREEN** at semantic source `390e65b373063c667e3c3f5e78b74ed9d859093b`. The required pre-edit audit found E1–E9 already implemented on the branch, so this turn made no duplicate production/test/fixture/selector change. E10 compiled all eight standard targets on `32909482352 / 98000623070` with `runtimeExecution=false`; immutable package `9586196535` (`9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`), manifest **27/27 PASS**. Required selector is **338 = 316 + 12 + 10**, SHA-256 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. T6/Q8, the prescribed sphere fixture, and `kBranchTopologyTolerance` remain unchanged. Exact next: artifact-only `M3-CP4c-0-TB-R2` on 338/338 plus binding Q8. Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **41**.
@@ -56,9 +62,9 @@ fixture, selector, or build-configuration change.**
 
 ## 2026-08-25 — ChatGPT Web patch transport moved to Google Drive File-ID workflow
 
-- Replaced repository-staged compressed/Base64 patch payloads and fragments with the standard transport: exact source snapshot -> locally generated/verified downloadable backup patch -> Google Drive `My Drive/Directional-CI` staging -> File-ID application by durable `agent-google-drive-reusable.yml` -> workflow deletes the Drive patch after successful push -> temporary caller/marker cleanup.
+- Replaced repository-staged compressed/Base64 patch payloads and fragments with the standard transport: exact source snapshot -> locally generated/verified downloadable backup patch -> Google Drive `My Drive/Directional-CI` staging -> File-ID application by durable `agent-google-drive-reusable.yml` -> post-push Drive retirement -> temporary caller/marker cleanup.
 - Preserved direct GitHub connector writes for genuinely minor changes within the observed per-write safety ceiling.
-- `agent-google-drive-reusable.yml` now verifies patch/base/diff-body/path authority, applies and pushes source/documentation patches, rejects workflow-file patch edits, and deletes the staged Drive file only after the repository push succeeds.
+- `agent-google-drive-reusable.yml` verifies patch/base/diff-body/path authority, applies and pushes source/documentation patches, rejects workflow-file patch edits, and performs post-push Drive retirement without a permanent-delete request.
 
 ## 2026-08-25 — M3-CP4c-0-TB complete / VALID RED after green 328 gate
 

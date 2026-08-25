@@ -129,7 +129,7 @@ For coherent code/documentation changes that are not a genuinely isolated minor 
 2. Materialize all final edits locally and generate one complete Git binary patch with exact base SHA, diff-body SHA-256, and intended-path metadata.
 3. Verify `git apply --check` against the exact base and `git diff --check`; emit the same patch as the mandatory user-visible work-preservation backup.
 4. Upload that patch once to `My Drive/Directional-CI` through the Google Drive connector and retain its File ID plus complete patch SHA-256.
-5. Use one minimal temporary caller/marker to invoke durable `agent-google-drive-reusable.yml`, which downloads by File ID, verifies/applies/commits/pushes, then deletes the Drive file after a successful push.
+5. Use one minimal temporary caller/marker to invoke durable `agent-google-drive-reusable.yml`, which downloads by File ID, verifies/applies/commits/pushes, then moves the Drive file to trash after a successful push when its authenticated Drive identity has `capabilities.canTrash`; otherwise it reports that owner-authorized Drive retirement is required without issuing a known-failing mutation.
 6. Retire the temporary caller first and batch-clean the remaining marker/control state. Patch bytes/fragments do not belong in the repository.
 
 Use individual `update_file`/`create_file` operations for a genuinely isolated small file when every individual content write is within the handoff's direct-write ceiling. Workflow YAML changes follow `GitHub_Workflow_Policy.md` and are not applied by the Drive patch workflow.
