@@ -159,12 +159,14 @@ std::optional<FieldBranchBoundaryPairing> build_boundary_pairing(
           sourceFace, std::nullopt, region};
       return std::nullopt;
     }
-    const double derivative = dbary[static_cast<std::size_t>(opposite[index])];
+    const FieldExactRational &derivative =
+        exactDirection[static_cast<std::size_t>(opposite[index])];
+    const FieldExactRational zero = FieldExactRational::from_integer(0);
     FieldBoundaryFlow flow = FieldBoundaryFlow::Tangent;
-    if (derivative > kBranchTopologyTolerance) {
+    if (derivative > zero) {
       flow = FieldBoundaryFlow::Inflow;
       pairing.incomingCarriers.push_back(*edge);
-    } else if (derivative < -kBranchTopologyTolerance) {
+    } else if (derivative < zero) {
       flow = FieldBoundaryFlow::Outflow;
       pairing.outgoingCarriers.push_back(*edge);
     }
@@ -172,6 +174,9 @@ std::optional<FieldBranchBoundaryPairing> build_boundary_pairing(
         FieldBranchBoundaryInterval{start, end, *edge, flow});
   }
   if (pairing.incomingCarriers.empty() || pairing.outgoingCarriers.empty()) {
+    // Unreachable from valid FieldBranchDirection authority: a nonzero exact
+    // triple summing to zero contains both signs. Unit falsifiers use a
+    // deliberately tampered direction and are not production coverage.
     error = FieldAtlasBuildError{
         FieldAtlasBuildErrorCode::InvalidBranchBoundaryFlow, std::nullopt,
         sourceFace, std::nullopt, region};
@@ -396,30 +401,28 @@ std::optional<std::vector<IncidentFanFace>> ordered_incident_fan(
   return ordered;
 }
 
-bool direction_in_incident_vertex_sector(const TriMesh &sourceMesh,
-                                         const IncidentFanFace &face,
-                                const SourceVertexId vertex,
-                                const Eigen::Vector3d &direction) {
-  const Eigen::Vector3d origin =
-      sourceMesh.V.row(static_cast<int>(vertex.index())).transpose();
-  const Eigen::Vector3d a =
-      sourceMesh.V.row(static_cast<int>(face.nextVertex.index())).transpose() -
-      origin;
-  const Eigen::Vector3d b =
-      sourceMesh.V.row(static_cast<int>(face.previousVertex.index())).transpose() -
-      origin;
-  const double aa = a.dot(a);
-  const double ab = a.dot(b);
-  const double bb = b.dot(b);
-  const double det = aa * bb - ab * ab;
-  if (!std::isfinite(det) || det <= kBranchTopologyTolerance) return false;
-  const double ar = a.dot(direction);
-  const double br = b.dot(direction);
-  const double alpha = (ar * bb - br * ab) / det;
-  const double beta = (br * aa - ar * ab) / det;
-  // Half-open at the fan rays: include the next-vertex ray, exclude previous.
-  return alpha > kBranchTopologyTolerance &&
-         beta >= -kBranchTopologyTolerance;
+bool direction_in_incident_vertex_sector(
+    const IncidentFanFace &face, const SourceVertexId vertex,
+    const FieldBranchDirection &direction) {
+  if (!direction.is_barycentric()) return false;
+  const auto &vertices = face.topology.vertices();
+  std::optional<std::size_t> vertexIndex;
+  std::optional<std::size_t> nextIndex;
+  std::optional<std::size_t> previousIndex;
+  for (std::size_t index = 0U; index < vertices.size(); ++index) {
+    if (vertices[index] == vertex) vertexIndex = index;
+    if (vertices[index] == face.nextVertex) nextIndex = index;
+    if (vertices[index] == face.previousVertex) previousIndex = index;
+  }
+  if (!vertexIndex.has_value() || !nextIndex.has_value() ||
+      !previousIndex.has_value()) {
+    return false;
+  }
+  const FieldExactRational zero = FieldExactRational::from_integer(0);
+  // Exact half-open fan partition: include the next-vertex ray and exclude the
+  // previous-vertex ray. Index by vertex identity because topology is canonical
+  // and need not preserve the source mesh row's corner order.
+  return direction[*nextIndex] > zero && direction[*previousIndex] >= zero;
 }
 
 std::optional<double> counter_clockwise_sector_angle(
@@ -541,10 +544,9 @@ build_singularity_attachments(
               singularity.topologyRegion};
           return std::nullopt;
         }
-        const Eigen::Vector3d &direction =
-            built.canonicalDirections[branchIndex];
         if (!direction_in_vertex_sector(sourceMesh, face.row,
-                                        singularity.sourceVertex, direction)) {
+                                        singularity.sourceVertex,
+                                        pairing.direction)) {
           continue;
         }
         if (!contains_edge(pairing.outgoingCarriers, *opposite)) {
@@ -1255,7 +1257,7 @@ std::uint64_t atlas_fact_digest(
 bool direction_in_vertex_sector(const TriMesh &sourceMesh,
                                 const SourceFaceId sourceFace,
                                 const SourceVertexId vertex,
-                                const Eigen::Vector3d &direction) {
+                                const FieldBranchDirection &direction) {
   if (sourceFace.index() >= static_cast<std::size_t>(sourceMesh.F.rows()) ||
       vertex.index() >= static_cast<std::size_t>(sourceMesh.V.rows())) {
     return false;
@@ -1280,8 +1282,8 @@ bool direction_in_vertex_sector(const TriMesh &sourceMesh,
       vertex, next.value(), previous.value()});
   if (!topology) return false;
   return direction_in_incident_vertex_sector(
-      sourceMesh, IncidentFanFace{sourceFace, topology.value(), next.value(),
-                                  previous.value()},
+      IncidentFanFace{sourceFace, topology.value(), next.value(),
+                      previous.value()},
       vertex, direction);
 }
 

@@ -428,6 +428,25 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 >
 > `VertexTransitSectorUnresolved`'s required loci are extended with **the set of admitted candidate
 > faces** (empty or ≥ 2), so "no face" and "many faces" are distinguishable without a rerun.
+>
+> **E6 bound, normative.** A2a keys cycle detection on the complete exact traversal state
+> `(sourceFace, branch, incoming carrier, FieldBoundaryPoint)` and applies the saturating step bound
+> `max(64, 8 × (sum of published frame branch counts) × (published transport count + 1))`.
+> Repeating the complete state is `TraceStateCycleDetected`; reaching the bound is
+> `TraceStepBudgetExhausted`. Both name the current face, branch, incoming carrier, exact entry
+> parameter, completed-step count, and bound. Neither rejection may publish a clean terminal point.
+>
+> | Code | Fires when | Required loci |
+> |---|---|---|
+> | `TraceStateCycleDetected` | the complete exact traversal state repeats | `sourceFace`, `branch`, incoming edge, exact parameter, completed-step count, bound |
+> | `TraceStepBudgetExhausted` | advancing would exceed the stated E6 bound | `sourceFace`, `branch`, incoming edge, exact parameter, completed-step count, bound |
+>
+> **E7 reachability annotations, normative.** `BranchContinuationNoOutflow`, the `|N| = 3` and
+> `|M| > 2` forms of `BranchContinuationMinimizerImpossible`, and A1's
+> `InvalidBranchBoundaryFlow` are unreachable from a valid nonzero exact barycentric direction:
+> `Σd = 0` forces at least one positive and one negative coordinate, hence `1 ≤ |N| ≤ 2` and
+> `|M| ≤ |N|`. Their focused falsifiers are unit-level checks over deliberately tampered directions;
+> they are not production-reachability evidence.
 
 ---
 

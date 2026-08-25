@@ -4,8 +4,10 @@
 #include <array>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <numbers>
 #include <map>
 #include <optional>
@@ -117,7 +119,7 @@ directional::authority::FieldExactRational exact_integer(const int value) {
 }
 
 directional::authority::FieldExactRational exact_ratio(
-    const int numerator, const int denominator) {
+    const std::int64_t numerator, const std::int64_t denominator) {
   return *directional::authority::FieldExactRational::from_ratio(
       numerator, denominator);
 }
@@ -2714,6 +2716,11 @@ std::string source_face_locus(const SourceFaceTopologyKey &face) {
          std::to_string(vertices[2].index());
 }
 
+std::string exact_rational_locus(
+    const directional::authority::FieldExactRational &value) {
+  return value.numerator_string() + "/" + value.denominator_string();
+}
+
 void append_atlas_error(std::ostringstream &stream,
                         const directional::authority::FieldAtlasBuildError &error) {
   stream << "fieldTransportAtlas=false"
@@ -2730,6 +2737,50 @@ void append_atlas_error(std::ostringstream &stream,
   }
   if (error.sourceEdge.has_value()) {
     stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
+  }
+  if (error.sourceFace.has_value()) {
+    stream << ";sourceFace=" << source_face_locus(*error.sourceFace);
+  }
+  if (error.relatedSourceFace.has_value()) {
+    stream << ";relatedSourceFace="
+           << source_face_locus(*error.relatedSourceFace);
+  }
+  if (error.branch.has_value()) {
+    stream << ";branch=" << error.branch->value();
+  }
+  if (error.relatedBranch.has_value()) {
+    stream << ";relatedBranch=" << error.relatedBranch->value();
+  }
+  if (error.parameter.has_value()) {
+    stream << ";parameter=" << exact_rational_locus(error.parameter->value);
+  }
+  if (!error.exactValues.empty()) {
+    stream << ";exactValues=[";
+    for (std::size_t index = 0U; index < error.exactValues.size(); ++index) {
+      if (index != 0U) stream << ',';
+      stream << exact_rational_locus(error.exactValues[index]);
+    }
+    stream << ']';
+  }
+  if (!error.publishedEdges.empty() ||
+      error.code == FieldAlignedCurveNetworkErrorCode::
+                        BranchContinuationOutsideOutflowSet) {
+    stream << ";publishedEdges=[";
+    for (std::size_t index = 0U; index < error.publishedEdges.size(); ++index) {
+      if (index != 0U) stream << ',';
+      stream << source_edge_locus(error.publishedEdges[index]);
+    }
+    stream << ']';
+  }
+  if (!error.publishedFaces.empty() ||
+      error.code ==
+          FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved) {
+    stream << ";publishedFaces=[";
+    for (std::size_t index = 0U; index < error.publishedFaces.size(); ++index) {
+      if (index != 0U) stream << ',';
+      stream << source_face_locus(error.publishedFaces[index]);
+    }
+    stream << ']';
   }
 }
 
@@ -2752,6 +2803,26 @@ void append_network_error(
   if (error.singularity.has_value()) {
     stream << ";singularity=" << error.singularity->index();
   }
+  if (error.traceSeedVertex.has_value()) {
+    stream << ";traceSeedVertex=" << error.traceSeedVertex->index();
+  }
+  if (error.traceSeedSingularity.has_value()) {
+    stream << ";traceSeedSingularity="
+           << error.traceSeedSingularity->index();
+  }
+  if (error.traceSteps.has_value()) {
+    stream << ";traceSteps=" << *error.traceSteps;
+  }
+  if (error.traceStepBudget.has_value()) {
+    stream << ";traceStepBudget=" << *error.traceStepBudget;
+  }
+}
+
+std::string network_error_locus(
+    const directional::geometry::FieldAlignedCurveNetworkError &error) {
+  std::ostringstream stream;
+  append_network_error(stream, error);
+  return stream.str();
 }
 
 void append_plan_error(std::ostringstream &stream,
@@ -3866,6 +3937,499 @@ TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {
   EXPECT_EQ(center, error.sourceVertex);
   EXPECT_EQ(frame.sourceFace, error.sourceFace);
   EXPECT_EQ(frame.branches.front().branch, error.branch);
+}
+
+TEST(ResolvedBranchCorrection,
+     NetworkDiagnosticsPublishEveryRequiredLocusLosslessly) {
+  using Error = directional::geometry::FieldAlignedCurveNetworkError;
+  const SourceFaceTopologyKey firstFace = topology_face(0, 1, 2, 4);
+  const SourceFaceTopologyKey secondFace = topology_face(0, 1, 3, 4);
+  const SourceEdgeTopologyKey edge = topology_edge(0, 1, 4);
+  const auto branch = directional::authority::FieldBranch::from_integer(1);
+  const auto relatedBranch =
+      directional::authority::FieldBranch::from_integer(3);
+  const auto parameter = directional::authority::ExactUnitParameter{
+      exact_ratio(1, 3)};
+
+  auto base_error = [&](const FieldAlignedCurveNetworkErrorCode code) {
+    Error error;
+    error.code = code;
+    error.sourceFace = firstFace;
+    error.branch = branch;
+    return error;
+  };
+  auto expect_tokens = [](const Error &error,
+                          const std::vector<std::string> &tokens) {
+    const std::string emitted = network_error_locus(error);
+    for (const std::string &token : tokens) {
+      EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+    }
+  };
+
+  expect_tokens(base_error(
+                    FieldAlignedCurveNetworkErrorCode::
+                        BranchDirectionNotBarycentric),
+                {"sourceFace=0-1-2", "branch=1"});
+
+  Error noOutflow = base_error(
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationNoOutflow);
+  noOutflow.sourceEdge = edge;
+  expect_tokens(noOutflow,
+                {"sourceFace=0-1-2", "branch=1", "sourceEdge=0-1"});
+
+  Error degenerate = base_error(
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationDegenerateEntry);
+  degenerate.sourceEdge = edge;
+  degenerate.parameter = parameter;
+  degenerate.exactValues = {exact_ratio(0, 1)};
+  expect_tokens(degenerate,
+                {"sourceFace=0-1-2", "branch=1", "sourceEdge=0-1",
+                 "parameter=1/3", "exactValues=[0/1]"});
+
+  Error minimizer = base_error(
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationMinimizerImpossible);
+  minimizer.exactValues = {exact_ratio(1, 2), exact_ratio(2, 3),
+                           exact_ratio(3, 4)};
+  expect_tokens(minimizer, {"sourceFace=0-1-2", "branch=1",
+                            "exactValues=[1/2,2/3,3/4]"});
+
+  Error outside = base_error(
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationOutsideOutflowSet);
+  outside.sourceEdge = edge;
+  expect_tokens(outside, {"sourceFace=0-1-2", "branch=1", "sourceEdge=0-1",
+                          "publishedEdges=[]"});
+
+  Error outOfRange = base_error(
+      FieldAlignedCurveNetworkErrorCode::BoundaryPointParameterOutOfRange);
+  outOfRange.sourceEdge = edge;
+  outOfRange.parameter = parameter;
+  expect_tokens(outOfRange, {"sourceEdge=0-1", "parameter=1/3"});
+
+  Error foreign = base_error(
+      FieldAlignedCurveNetworkErrorCode::BoundaryPointEdgeNotIncidentToFace);
+  foreign.sourceEdge = edge;
+  expect_tokens(foreign, {"sourceFace=0-1-2", "sourceEdge=0-1"});
+
+  Error sector = base_error(
+      FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
+  sector.sourceVertex = SourceVertexId::from_index(0, 4).value();
+  expect_tokens(sector, {"sourceVertex=0", "sourceFace=0-1-2", "branch=1",
+                         "publishedFaces=[]"});
+  sector.publishedFaces = {firstFace, secondFace};
+  expect_tokens(sector, {"publishedFaces=[0-1-2,0-1-3]"});
+
+  Error flow = base_error(
+      FieldAlignedCurveNetworkErrorCode::BranchTransportFlowDisagreement);
+  flow.sourceEdge = edge;
+  flow.relatedSourceFace = secondFace;
+  flow.relatedBranch = relatedBranch;
+  flow.exactValues = {exact_integer(-1), exact_integer(2), exact_integer(-1),
+                      exact_integer(1), exact_integer(-2), exact_integer(1)};
+  expect_tokens(flow,
+                {"sourceFace=0-1-2", "relatedSourceFace=0-1-3", "branch=1",
+                 "relatedBranch=3", "sourceEdge=0-1",
+                 "exactValues=[-1/1,2/1,-1/1,1/1,-2/1,1/1]"});
+
+  Error bounded = base_error(
+      FieldAlignedCurveNetworkErrorCode::TraceStepBudgetExhausted);
+  bounded.sourceEdge = edge;
+  bounded.parameter = parameter;
+  bounded.traceSteps = 64U;
+  bounded.traceStepBudget = 64U;
+  expect_tokens(bounded, {"sourceFace=0-1-2", "branch=1", "sourceEdge=0-1",
+                          "parameter=1/3", "traceSteps=64",
+                          "traceStepBudget=64"});
+
+  Error cycle = base_error(
+      FieldAlignedCurveNetworkErrorCode::TraceStateCycleDetected);
+  cycle.sourceEdge = edge;
+  cycle.parameter = parameter;
+  cycle.traceSteps = 7U;
+  cycle.traceStepBudget = 64U;
+  expect_tokens(cycle, {"sourceFace=0-1-2", "branch=1", "sourceEdge=0-1",
+                        "parameter=1/3", "traceSteps=7",
+                        "traceStepBudget=64"});
+}
+
+TEST(ResolvedBranchCorrection,
+     TraceSeedDiagnosticNeverBackfillsFailureLocus) {
+  directional::geometry::FieldAlignedCurveNetworkError error;
+  error.code =
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationDegenerateEntry;
+  error.sourceFace = topology_face(0, 1, 2);
+  error.branch = directional::authority::FieldBranch::from_integer(0);
+  error.sourceEdge = topology_edge(0, 1);
+  error.parameter =
+      directional::authority::ExactUnitParameter{exact_ratio(1, 2)};
+  const SourceVertexId seedVertex = SourceVertexId::from_index(2, 3).value();
+  const FieldSingularityId seedSingularity =
+      FieldSingularityId::from_index(0, 1).value();
+  directional::geometry::surface_cell_tracing_detail::
+      annotate_field_aligned_trace_seed(error, seedVertex, seedSingularity);
+
+  EXPECT_FALSE(error.sourceVertex.has_value());
+  EXPECT_FALSE(error.singularity.has_value());
+  const std::string emitted = network_error_locus(error);
+  EXPECT_EQ(std::string::npos, emitted.find(";sourceVertex=")) << emitted;
+  EXPECT_EQ(std::string::npos, emitted.find(";singularity=")) << emitted;
+  EXPECT_NE(std::string::npos, emitted.find(";traceSeedVertex=2")) << emitted;
+  EXPECT_NE(std::string::npos, emitted.find(";traceSeedSingularity=0"))
+      << emitted;
+}
+
+TEST(ResolvedBranchCorrection,
+     ExactFlowClassificationKeepsSubToleranceCarrier) {
+  const TriMesh mesh = make_square_mesh();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult field = make_zero_transport_field(mesh);
+  constexpr double epsilon = 5.0e-11;
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    field.primaryDirections.row(face) = Eigen::RowVector3d(epsilon, 1.0, 0.0);
+    field.secondaryDirections.row(face) =
+        Eigen::RowVector3d(-1.0, epsilon, 0.0);
+  }
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(atlasBuild);
+
+  bool observedBandCarrier = false;
+  const std::array<std::size_t, 3> opposite{{2U, 0U, 1U}};
+  for (const auto &frame : atlasBuild.value().branch_topology().frames()) {
+    for (const auto &pairing : frame.branches) {
+      ASSERT_FALSE(pairing.incomingCarriers.empty());
+      ASSERT_FALSE(pairing.outgoingCarriers.empty());
+      ASSERT_EQ(3U, pairing.intervals.size());
+      for (std::size_t interval = 0U; interval < 3U; ++interval) {
+        const auto &derivative = pairing.direction[opposite[interval]];
+        const long double magnitude = std::abs(derivative.to_double(18));
+        if (magnitude <= 0.0L || magnitude > 1.0e-10L) continue;
+        observedBandCarrier = true;
+        const auto &published = pairing.intervals[interval];
+        EXPECT_NE(directional::authority::FieldBoundaryFlow::Tangent,
+                  published.flow);
+        const auto &carriers =
+            derivative > exact_integer(0) ? pairing.incomingCarriers
+                                          : pairing.outgoingCarriers;
+        EXPECT_NE(carriers.end(),
+                  std::find(carriers.begin(), carriers.end(),
+                            published.sourceEdge));
+      }
+    }
+  }
+  EXPECT_TRUE(observedBandCarrier);
+}
+
+TEST(ResolvedBranchCorrection,
+     ExactVertexSectorRejectsToleranceBandAndSelectsUniqueFace) {
+  const TriMesh mesh = make_four_triangle_fan();
+  const SourceVertexId center = SourceVertexId::from_index(4, 5).value();
+  const auto epsilon = exact_ratio(1, 100000000000LL);
+
+  auto sector_direction = [&](const int row,
+                              const directional::authority::FieldExactRational
+                                  &nextValue,
+                              const directional::authority::FieldExactRational
+                                  &previousValue) {
+    const SourceFaceTopologyKey face = topology_face(
+        mesh.F(row, 0), mesh.F(row, 1), mesh.F(row, 2), 5U);
+    int corner = -1;
+    for (int c = 0; c < 3; ++c) {
+      if (mesh.F(row, c) == 4) corner = c;
+    }
+    EXPECT_GE(corner, 0);
+    const SourceVertexId next =
+        SourceVertexId::from_index(mesh.F(row, (corner + 1) % 3), 5).value();
+    const SourceVertexId previous =
+        SourceVertexId::from_index(mesh.F(row, (corner + 2) % 3), 5).value();
+    directional::authority::FieldBranchDirection result;
+    for (std::size_t index = 0U; index < 3U; ++index) {
+      if (face.vertices()[index] == next) result.barycentric[index] = nextValue;
+      if (face.vertices()[index] == previous) {
+        result.barycentric[index] = previousValue;
+      }
+      if (face.vertices()[index] == center) {
+        result.barycentric[index] = -nextValue - previousValue;
+      }
+    }
+    EXPECT_TRUE(result.is_barycentric());
+    return result;
+  };
+
+  std::array<directional::authority::FieldBranchDirection, 4> directions{
+      sector_direction(0, exact_integer(1), -epsilon),
+      sector_direction(1, epsilon, exact_integer(1)),
+      sector_direction(2, exact_integer(-1), exact_integer(0)),
+      sector_direction(3, exact_integer(-1), exact_integer(0))};
+  std::size_t admitted = 0U;
+  int admittedRow = -1;
+  for (int row = 0; row < 4; ++row) {
+    const auto face = SourceFaceId::from_index(row, 4).value();
+    if (directional::authority::direction_in_vertex_sector(
+            mesh, face, center, directions[static_cast<std::size_t>(row)])) {
+      ++admitted;
+      admittedRow = row;
+    }
+  }
+  EXPECT_EQ(1U, admitted);
+  ASSERT_EQ(1, admittedRow);
+
+  const SourceFaceTopologyKey admittedFace = topology_face(
+      mesh.F(admittedRow, 0), mesh.F(admittedRow, 1),
+      mesh.F(admittedRow, 2), 5U);
+  int centerCorner = -1;
+  for (int c = 0; c < 3; ++c) {
+    if (mesh.F(admittedRow, c) == 4) centerCorner = c;
+  }
+  ASSERT_GE(centerCorner, 0);
+  const SourceVertexId next = SourceVertexId::from_index(
+      mesh.F(admittedRow, (centerCorner + 1) % 3), 5).value();
+  const SourceVertexId previous = SourceVertexId::from_index(
+      mesh.F(admittedRow, (centerCorner + 2) % 3), 5).value();
+  const SourceEdgeTopologyKey outgoing =
+      SourceEdgeTopologyKey::make(next, previous).value();
+  const SourceEdgeTopologyKey entry =
+      SourceEdgeTopologyKey::make(center, next).value();
+  directional::authority::FieldBranchBoundaryPairing pairing;
+  pairing.branch = directional::authority::FieldBranch::from_integer(0);
+  pairing.direction = directions[static_cast<std::size_t>(admittedRow)];
+  pairing.outgoingCarriers = {outgoing};
+  const auto entryParameter =
+      entry.first() == center ? exact_integer(0) : exact_integer(1);
+  const auto result = directional::geometry::surface_cell_tracing_detail::
+      resolve_field_branch_continuation(
+          admittedFace, pairing,
+          directional::authority::FieldBoundaryPoint{
+              entry,
+              directional::authority::ExactUnitParameter{entryParameter}});
+  ASSERT_TRUE(std::holds_alternative<
+              directional::geometry::surface_cell_tracing_detail::
+                  FieldBranchContinuationDecision>(result));
+  const auto &decision = std::get<
+      directional::geometry::surface_cell_tracing_detail::
+          FieldBranchContinuationDecision>(result);
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                FieldBranchContinuationKind::EdgeExit,
+            decision.kind);
+}
+
+TEST(ResolvedBranchCorrection,
+     ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip) {
+  bool found = false;
+  TriMesh witness;
+  directional::authority::FieldBranchDirection witnessDirection;
+  long double recoveredBeta = 0.0L;
+  for (int baseExponent = 20; baseExponent <= 52 && !found; ++baseExponent) {
+    const double base = std::ldexp(1.0, baseExponent);
+    const double ulp =
+        std::nextafter(base, std::numeric_limits<double>::infinity()) - base;
+    for (int spacingFactor = 1; spacingFactor <= 64 && !found;
+         spacingFactor *= 2) {
+      const double spacing = ulp * static_cast<double>(spacingFactor);
+      for (int epsilonExponent = 20; epsilonExponent <= 52 && !found;
+           ++epsilonExponent) {
+        const auto epsilonRational =
+            exact_ratio(1, std::int64_t{1} << epsilonExponent);
+        directional::authority::FieldBranchDirection direction{
+            std::array<directional::authority::FieldExactRational, 3>{
+                -exact_integer(1) + epsilonRational, exact_integer(1),
+                -epsilonRational}};
+        Eigen::MatrixXd vertices(3, 3);
+        vertices << base, base, 0.0, base + spacing, base, 0.0, base,
+            base + spacing, 0.0;
+        Eigen::MatrixXi faces(1, 3);
+        faces << 0, 1, 2;
+        TriMesh mesh;
+        mesh.set_mesh(vertices, faces);
+        Eigen::Vector3d world = Eigen::Vector3d::Zero();
+        for (std::size_t index = 0U; index < 3U; ++index) {
+          world += static_cast<double>(direction[index].to_double(18)) *
+                   mesh.V.row(static_cast<int>(index)).transpose();
+        }
+        const Eigen::Vector3d a =
+            mesh.V.row(1).transpose() - mesh.V.row(0).transpose();
+        const Eigen::Vector3d b =
+            mesh.V.row(2).transpose() - mesh.V.row(0).transpose();
+        const double aa = a.dot(a);
+        const double ab = a.dot(b);
+        const double bb = b.dot(b);
+        const double det = aa * bb - ab * ab;
+        if (!std::isfinite(det) || det <= 1.0e-10) continue;
+        const double ar = a.dot(world);
+        const double br = b.dot(world);
+        const double beta = (br * aa - ar * ab) / det;
+        if (std::isfinite(beta) && beta > 0.0) {
+          found = true;
+          witness = std::move(mesh);
+          witnessDirection = std::move(direction);
+          recoveredBeta = beta;
+        }
+      }
+    }
+  }
+  ASSERT_TRUE(found);
+  EXPECT_GT(recoveredBeta, 0.0L);
+  const auto face = SourceFaceId::from_index(0, 1).value();
+  const auto vertex = SourceVertexId::from_index(0, 3).value();
+  EXPECT_FALSE(directional::authority::direction_in_vertex_sector(
+      witness, face, vertex, witnessDirection));
+}
+
+TEST(ResolvedBranchCorrection,
+     ExactVertexSectorPartitionsAcceptedInteriorFans) {
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const SourceVertexId center = SourceVertexId::from_index(4, 5).value();
+  const auto &topology = atlasBuild.value().branch_topology();
+
+  for (std::size_t branchValue = 0U; branchValue < 4U; ++branchValue) {
+    const auto branch = directional::authority::FieldBranch::from_integer(
+        static_cast<int>(branchValue));
+    std::size_t admitted = 0U;
+    for (int row = 0; row < mesh.F.rows(); ++row) {
+      const SourceFaceTopologyKey face = topology_face(
+          mesh.F(row, 0), mesh.F(row, 1), mesh.F(row, 2), 5U);
+      const auto *frame = topology.find_frame(face);
+      ASSERT_NE(nullptr, frame);
+      const auto pairing = std::find_if(
+          frame->branches.begin(), frame->branches.end(),
+          [&](const auto &candidate) { return candidate.branch == branch; });
+      ASSERT_NE(frame->branches.end(), pairing);
+      const auto faceId = SourceFaceId::from_index(row, 4).value();
+      if (directional::authority::direction_in_vertex_sector(
+              mesh, faceId, center, pairing->direction)) {
+        ++admitted;
+      }
+    }
+    EXPECT_EQ(1U, admitted) << "branch=" << branchValue;
+  }
+}
+
+TEST(ResolvedBranchCorrection,
+     SingleMinimizerVertexEndpointDispatchesVertexHit) {
+  const SourceFaceTopologyKey face = topology_face(0, 1, 2);
+  const auto pairing =
+      continuation_pairing({-1, 1, 0}, {topology_edge(1, 2)});
+  const auto result = directional::geometry::surface_cell_tracing_detail::
+      resolve_field_branch_continuation(
+          face, pairing, boundary_point(topology_edge(0, 1), 0, 1));
+  ASSERT_TRUE(std::holds_alternative<
+              directional::geometry::surface_cell_tracing_detail::
+                  FieldBranchContinuationDecision>(result));
+  const auto &decision = std::get<
+      directional::geometry::surface_cell_tracing_detail::
+          FieldBranchContinuationDecision>(result);
+  EXPECT_EQ(directional::geometry::surface_cell_tracing_detail::
+                FieldBranchContinuationKind::VertexHit,
+            decision.kind);
+  ASSERT_TRUE(decision.sourceVertex.has_value());
+  EXPECT_EQ(SourceVertexId::from_index(1, 3).value(), *decision.sourceVertex);
+}
+
+TEST(ResolvedBranchCorrection,
+     CrossEdgeFlowDisagreementNamesBothPublishedAuthorities) {
+  const SourceFaceTopologyKey sourceFace = topology_face(0, 1, 2, 4);
+  const SourceFaceTopologyKey targetFace = topology_face(0, 1, 3, 4);
+  const SourceEdgeTopologyKey carrier = topology_edge(0, 1, 4);
+  auto sourcePairing = continuation_pairing({-1, 2, -1}, {carrier});
+  auto targetPairing =
+      continuation_pairing({1, -2, 1}, {topology_edge(0, 3, 4)});
+  targetPairing.branch = directional::authority::FieldBranch::from_integer(2);
+  const auto error = directional::geometry::surface_cell_tracing_detail::
+      validate_field_branch_transport_flow(
+          sourceFace, sourcePairing, targetFace, targetPairing, carrier);
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::BranchTransportFlowDisagreement,
+            error->code);
+  EXPECT_EQ(sourceFace, error->sourceFace);
+  EXPECT_EQ(targetFace, error->relatedSourceFace);
+  EXPECT_EQ(sourcePairing.branch, error->branch);
+  EXPECT_EQ(targetPairing.branch, error->relatedBranch);
+  EXPECT_EQ(carrier, error->sourceEdge);
+  EXPECT_EQ(6U, error->exactValues.size());
+}
+
+TEST(ResolvedBranchCorrection,
+     TraceTraversalDistinguishesExactEntryPositionsAndFailsClosedOnBounds) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const SourceFaceTopologyKey face = topology_face(0, 1, 2);
+  const SourceEdgeTopologyKey edge = topology_edge(0, 1);
+  const auto branch = directional::authority::FieldBranch::from_integer(0);
+  const FieldAlignedTraceTraversalState first{
+      face, branch, edge, boundary_point(edge, 1, 3)};
+  const FieldAlignedTraceTraversalState second{
+      face, branch, edge, boundary_point(edge, 2, 3)};
+
+  FieldAlignedTraceTraversalGuard cycleGuard(3U);
+  EXPECT_EQ(FieldAlignedTraceTraversalStatus::Advanced,
+            cycleGuard.observe(first));
+  EXPECT_EQ(FieldAlignedTraceTraversalStatus::Advanced,
+            cycleGuard.observe(second));
+  const auto cycleStatus = cycleGuard.observe(first);
+  ASSERT_EQ(FieldAlignedTraceTraversalStatus::CycleDetected, cycleStatus);
+  const auto cycleError =
+      field_aligned_trace_traversal_error(cycleStatus, first, cycleGuard);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::TraceStateCycleDetected,
+            cycleError.code);
+  EXPECT_EQ(first.entryPoint.parameter, cycleError.parameter);
+
+  FieldAlignedTraceTraversalGuard boundGuard(1U);
+  EXPECT_EQ(FieldAlignedTraceTraversalStatus::Advanced,
+            boundGuard.observe(first));
+  const auto status = boundGuard.observe(second);
+  ASSERT_EQ(FieldAlignedTraceTraversalStatus::StepBudgetExhausted, status);
+  const auto error =
+      field_aligned_trace_traversal_error(status, second, boundGuard);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::TraceStepBudgetExhausted,
+            error.code);
+  EXPECT_EQ(second.entryPoint.parameter, error.parameter);
+  EXPECT_EQ(1U, error.traceSteps);
+  EXPECT_EQ(1U, error.traceStepBudget);
+}
+
+TEST(ResolvedBranchCorrection,
+     AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections) {
+  Cp3bEventFixture twoRing = build_cp3b_event_fixture();
+  ASSERT_TRUE(twoRing.network.has_value());
+
+  const TriMesh fanMesh = make_four_triangle_fan();
+  const auto fanAuthority = make_source_authority(fanMesh);
+  ASSERT_TRUE(fanAuthority.has_value());
+  const auto fanAtlas = directional::authority::FieldTransportAtlas::make(
+      fanMesh, *fanAuthority, {}, make_index_one_singularity_field(fanMesh));
+  ASSERT_TRUE(fanAtlas);
+  const auto fanNetwork = FieldAlignedCurveNetwork::make(
+      fanMesh, *fanAuthority, fanAtlas.value(),
+      rails_from_atlas(fanMesh, fanAtlas.value()));
+  if (!fanNetwork) {
+    EXPECT_NE(FieldAlignedCurveNetworkErrorCode::
+                  BranchContinuationDegenerateEntry,
+              fanNetwork.error().code);
+    EXPECT_NE(FieldAlignedCurveNetworkErrorCode::
+                  BranchContinuationOutsideOutflowSet,
+              fanNetwork.error().code);
+  }
+
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  const auto sphereNetwork = FieldAlignedCurveNetwork::make(
+      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails);
+  if (!sphereNetwork) {
+    EXPECT_NE(FieldAlignedCurveNetworkErrorCode::
+                  BranchContinuationDegenerateEntry,
+              sphereNetwork.error().code)
+        << network_error_locus(sphereNetwork.error());
+    EXPECT_NE(FieldAlignedCurveNetworkErrorCode::
+                  BranchContinuationOutsideOutflowSet,
+              sphereNetwork.error().code)
+        << network_error_locus(sphereNetwork.error());
+  }
 }
 
 TEST(GlobalTopologyPlan, SpherePrescribedWitnessStageReachabilityIsObservable) {

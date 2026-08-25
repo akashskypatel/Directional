@@ -137,6 +137,9 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   BoundaryPointParameterOutOfRange = 22,
   BoundaryPointEdgeNotIncidentToFace = 23,
   VertexTransitSectorUnresolved = 24,
+  BranchTransportFlowDisagreement = 25,
+  TraceStateCycleDetected = 26,
+  TraceStepBudgetExhausted = 27,
 };
 
 struct FieldAlignedCurveNetworkError {
@@ -147,10 +150,17 @@ struct FieldAlignedCurveNetworkError {
   std::optional<authority::HardRailId> rail;
   std::optional<authority::FieldSingularityId> singularity;
   std::optional<authority::SourceFaceTopologyKey> sourceFace;
+  std::optional<authority::SourceFaceTopologyKey> relatedSourceFace;
   std::optional<authority::FieldBranch> branch;
+  std::optional<authority::FieldBranch> relatedBranch;
   std::optional<authority::ExactUnitParameter> parameter;
   std::vector<authority::FieldExactRational> exactValues;
   std::vector<authority::SourceEdgeTopologyKey> publishedEdges;
+  std::vector<authority::SourceFaceTopologyKey> publishedFaces;
+  std::optional<authority::SourceVertexId> traceSeedVertex;
+  std::optional<authority::FieldSingularityId> traceSeedSingularity;
+  std::optional<std::size_t> traceSteps;
+  std::optional<std::size_t> traceStepBudget;
 
   auto operator<=>(const FieldAlignedCurveNetworkError &) const = default;
 };
@@ -510,6 +520,48 @@ struct FieldVertexTransitDecision {
 using FieldVertexTransitResult =
     std::variant<FieldVertexTransitDecision, FieldAlignedCurveNetworkError>;
 
+struct FieldAlignedTraceTraversalState {
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  authority::FieldBoundaryPoint entryPoint;
+
+  auto operator<=>(const FieldAlignedTraceTraversalState &) const = default;
+};
+
+enum class FieldAlignedTraceTraversalStatus : std::uint8_t {
+  Advanced = 0,
+  CycleDetected = 1,
+  StepBudgetExhausted = 2,
+};
+
+class FieldAlignedTraceTraversalGuard {
+public:
+  explicit FieldAlignedTraceTraversalGuard(std::size_t stepBudget)
+      : stepBudget_(stepBudget) {}
+
+  [[nodiscard]] FieldAlignedTraceTraversalStatus
+  observe(const FieldAlignedTraceTraversalState &state) {
+    if (visited_.find(state) != visited_.end()) {
+      return FieldAlignedTraceTraversalStatus::CycleDetected;
+    }
+    if (steps_ >= stepBudget_) {
+      return FieldAlignedTraceTraversalStatus::StepBudgetExhausted;
+    }
+    visited_.insert(state);
+    ++steps_;
+    return FieldAlignedTraceTraversalStatus::Advanced;
+  }
+
+  [[nodiscard]] std::size_t steps() const noexcept { return steps_; }
+  [[nodiscard]] std::size_t step_budget() const noexcept { return stepBudget_; }
+
+private:
+  std::size_t stepBudget_ = 0U;
+  std::size_t steps_ = 0U;
+  std::set<FieldAlignedTraceTraversalState> visited_;
+};
+
 [[nodiscard]] FieldBranchExitTimeOrdering compare_field_branch_exit_times(
     const authority::FieldExactRational &firstPosition,
     const authority::FieldExactRational &firstNegativeDirection,
@@ -529,6 +581,28 @@ using FieldVertexTransitResult =
     const authority::SourceFaceTopologyKey &currentFace,
     authority::FieldBranch currentBranch,
     authority::SourceVertexId sourceVertex);
+
+[[nodiscard]] std::size_t field_aligned_trace_step_budget(
+    const authority::FieldBranchTopology &topology) noexcept;
+
+[[nodiscard]] FieldAlignedCurveNetworkError
+field_aligned_trace_traversal_error(
+    FieldAlignedTraceTraversalStatus status,
+    const FieldAlignedTraceTraversalState &state,
+    const FieldAlignedTraceTraversalGuard &guard);
+
+[[nodiscard]] std::optional<FieldAlignedCurveNetworkError>
+validate_field_branch_transport_flow(
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const authority::FieldBranchBoundaryPairing &sourcePairing,
+    const authority::SourceFaceTopologyKey &targetFace,
+    const authority::FieldBranchBoundaryPairing &targetPairing,
+    const authority::SourceEdgeTopologyKey &carrier);
+
+void annotate_field_aligned_trace_seed(
+    FieldAlignedCurveNetworkError &error,
+    authority::SourceVertexId traceSeedVertex,
+    authority::FieldSingularityId traceSeedSingularity);
 
 [[nodiscard]] std::optional<FieldAlignedCurveNetworkError>
 append_field_aligned_singularity_termination(
