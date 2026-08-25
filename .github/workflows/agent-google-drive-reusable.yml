@@ -1,0 +1,43 @@
+name: Agent Google Drive Access
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test-drive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Authenticate to Google
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ vars.GOOGLE_PROJECT_ID }}
+          workload_identity_provider: ${{ vars.GOOGLE_PROVIDER }}
+          service_account: ${{ vars.GOOGLE_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/drive.readonly
+
+      - name: Download Drive file
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          FILE_ID: 18ANyK7VAnZ8Z38yIgJES4T1sp3yuEBq0
+        run: |
+          curl \
+            --fail-with-body \
+            --location \
+            --header "Authorization: Bearer ${ACCESS_TOKEN}" \
+            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?alt=media" \
+            --output directional-source-snapshot.zip
+
+      - name: Verify download
+        run: |
+          ls -lh directional-source-snapshot.zip
+          unzip -t directional-source-snapshot.zip
