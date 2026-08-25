@@ -1,4 +1,0 @@
-# M3-CP4c-0-CB2 interrupted-closeout temporary-state cleanup
-.agents/connector-triggers/source-snapshot/m3-cp4c0-cb2-closeout-fix-20260825.txt
-.agents/connector-triggers/cb2-closeout-workflow-validate-20260825.txt
-.agents/connector-triggers/cb2-closeout-docs-apply-20260825.txt

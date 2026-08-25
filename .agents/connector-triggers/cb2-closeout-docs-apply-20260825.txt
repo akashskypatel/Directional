@@ -1,3 +1,0 @@
-Purpose: apply verified CB2 closeout Drive-retirement policy patch.
-Patch SHA-256: 6e6443ea2012617596959786be07d85830ae4dd06257afeef359ed52f9ccece7
-Runtime execution: forbidden.
