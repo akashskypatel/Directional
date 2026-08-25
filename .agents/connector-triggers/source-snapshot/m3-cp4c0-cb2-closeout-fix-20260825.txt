@@ -1,0 +1,3 @@
+Purpose: exact source snapshot for interrupted M3-CP4c-0-CB2 closeout fixes.
+Requested base authority: 7c1e74f54dd780ee37f682f7a8b3d0327be3137f
+Runtime execution: forbidden.
