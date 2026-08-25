@@ -1,0 +1,5 @@
+purpose=M3-CP4c-0-CB2 compile-only verification
+semantic_source=390e65b373063c667e3c3f5e78b74ed9d859093b
+selector_count=338
+selector_sha256=d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116
+runtime_execution=false
