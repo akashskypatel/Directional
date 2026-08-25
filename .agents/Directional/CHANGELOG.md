@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-08-25 — M3-CP4c-0-CB2 verification-first build green
+
+CB2 is **COMPLETE / BUILD GREEN** at semantic source `390e65b373063c667e3c3f5e78b74ed9d859093b`. The required pre-edit audit found E1–E9 already implemented on the branch, so this turn made no duplicate production/test/fixture/selector change. E10 compiled all eight standard targets on `32909482352 / 98000623070` with `runtimeExecution=false`; immutable package `9586196535` (`9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`), manifest **27/27 PASS**. Required selector is **338 = 316 + 12 + 10**, SHA-256 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. T6/Q8, the prescribed sphere fixture, and `kBranchTopologyTolerance` remain unchanged. Exact next: artifact-only `M3-CP4c-0-TB-R2` on 338/338 plus binding Q8. Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **41**.
+
 ## 2026-08-25 — `M3-CP4c-0-TB-REVIEW-PLAN`: the T6/Q8 conflict adjudicated; five DEFN amendments
 
 **Independent review and planning only. No runtime, build, benchmark, product source, test source,

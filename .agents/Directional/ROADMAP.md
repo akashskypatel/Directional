@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-25 (CP4c-0 TB valid red: 328/328 semantic gate green, binding Q8 red; independent review closed, `M3-CP4c-0-CB2` next under measures E0–E10).
+**Status date:** 2026-08-25 (CP4c-0 CB2 BUILD GREEN at `390e65b373063c667e3c3f5e78b74ed9d859093b`; 338 selector frozen; exact next `M3-CP4c-0-TB-R2` artifact-only runtime plus binding Q8).
 
 ---
 
@@ -70,7 +70,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **328 = 316 + 12**, frozen by CB1 | **TB VALID RED, review closed** — 328/328 gate PASS; Q8 sphere stops at `BranchContinuationDegenerateEntry`; root cause is A1's tolerant sign decisions feeding A2a's exact consumer; next `M3-CP4c-0-CB2` under E0–E10 |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **CB2 BUILD GREEN / runtime pending** — E1–E9 verified implemented at `390e65b373063c667e3c3f5e78b74ed9d859093b`; exact next `M3-CP4c-0-TB-R2` re-proves 338/338 plus binding Q8 |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
@@ -114,8 +114,7 @@ fault, and neither is weakened.** A1 decides the **sign of a barycentric directi
 sign exactly on the same published datum. Where they disagree — the band `|d| ≤ 1e-10`, widened further
 by a lossy barycentric→world→barycentric round trip — A1 hands A2a a state A2a is correct to reject.
 The defect is in the CP4c-0 frozen definitions, which asserted that surviving tolerance was harmless;
-five amendments were issued. Exact next is **`M3-CP4c-0-CB2`**, measures **E0–E10**. After E2–E5, T6 is
-*provably unreachable* from any well-formed production state.
+five amendments were issued. **CB2 is now BUILD GREEN** at `390e65b373063c667e3c3f5e78b74ed9d859093b` after a verification-first audit found E1–E9 already present; the required selector is **338 = 316 + 12 + 10**. Exact next is **`M3-CP4c-0-TB-R2`**, artifact-only runtime. After E2–E5, T6 is *provably unreachable* from any well-formed production state.
 
 **No budget.** Attempt and diagnostic budgets and the `DG` turn type were abolished on 2026-08-25. Workflow is `CB → TB → (red) → REVIEW+PLAN → CB`; a red TB consumes nothing and mandatorily routes to review.
 

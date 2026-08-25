@@ -21,51 +21,34 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-CB2` — EXACT NEXT / Code + Build, measures E0–E10
+## Current focus — `M3-CP4c-0-TB-R2` — EXACT NEXT / artifact-only Test + Benchmark
 
-**`M3-CP4c-0-CB1` is COMPLETE / BUILD GREEN** at semantic source
-`e784e44ce86e458b250b04689288f5f365ca507b`; the exact-position/exact-continuation implementation
-compiled all eight standard targets and froze **328 = accepted 316 + 12**.
-
-**`M3-CP4c-0-TB` is COMPLETE / VALID RED.** Authoritative artifact-only run/job
-`32891161394 / 97943220460` consumed immutable package `9577900736`. The semantic gate is **328/328
-PASS** — accepted **316/316** and CP4c-0 **12/12** — but binding Q8 is RED: A2a rejects
-`BranchContinuationDegenerateEntry` at `sourceEdge=6-8` before publishing a
-`FieldAlignedCurveNetwork`. Required 24 traces, terminal `TraceIntersection`, and face `1-2-5` crossover
-therefore cannot be observed. Owning report:
-`Architecture_M3_CP4c0_Artifact_Only_Test_Benchmark_Report.md`. Every digest, both job ledgers, and the
-retry-0 characterization were re-verified against the GitHub API during review and **all matched**.
-
-The report's `sourceVertex=0` / `singularity=0` are the failing trace's **seed**, back-filled at
-`SurfaceCellTracing.cpp:818-819`; they do not locate the failure. Only `sourceEdge=6-8` is a genuine
-locus, and it alone cannot separate the three candidate routes. `sourceFace`, the branch, the exact entry
-parameter, and `t*` **were computed and discarded** by the witness diagnostic emitter — measure E1.
+`M3-CP4c-0-CB2` is **COMPLETE / BUILD GREEN** at semantic source `390e65b373063c667e3c3f5e78b74ed9d859093b`. Verification before
+implementation found E1–E9 already present on the branch; no duplicate source/test implementation was
+made. E10 compiled/linked all eight standard targets and packaged the exact source with
+`runtimeExecution=false`.
 
 - [x] `M3-CP4c-0-DEFN` — **COMPLETE.** Frozen definitions remain normative.
 - [x] `M3-CP4c-0-CB1` — **COMPLETE / BUILD GREEN.** No runtime in CB.
-- [x] `M3-CP4c-0-TB` — **COMPLETE / VALID RED.** 328/328 gate PASS; binding Q8 RED. Retry 0 was
-  infrastructure-only before any semantic identity; retry 1 is authoritative. No semantic retry.
-- [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** Adjudicated: the defect is neither T6 nor Q8, but the
-  frozen definitions. A1 decides the **sign of a barycentric direction coordinate** with a `double`
-  tolerance in three places and publishes those verdicts as topological ownership, while A2a decides the
-  same sign exactly. T6 correctly rejects a state A1 was incorrectly allowed to produce. Five DEFN
-  amendments issued; T6 and Q8 unchanged. Owning record:
-  `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`.
-- [ ] `M3-CP4c-0-CB2` — **EXACT NEXT.** Code + Build only, measures **E0–E10** (review §10). E1 publishes
-  loci that already exist and is what determines the failure route; E2/E3 exactify A1's flow
-  classification and vertex-sector rule and delete the lossy round trip; E4/E5 close the T1
-  exhaustiveness hole and the unasserted cross-edge flow invariant; E6 replaces the position-blind cycle
-  break. After E2–E5, T6 is provably unreachable from well-formed states (review §7). Compile only —
-  **execute nothing.**
+- [x] `M3-CP4c-0-TB` — **COMPLETE / VALID RED.** 328/328 gate PASS; binding Q8 RED.
+- [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** Root cause adjudicated; E0–E10 frozen; T6/Q8 unchanged.
+- [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** E1–E9 verified already implemented; E10 compile/package
+  verification green on run/job `32909482352 / 98000623070`. Package `9586196535` / `9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`; manifest **27/27 PASS**.
+- [ ] `M3-CP4c-0-TB-R2` — **EXACT NEXT.** Artifact-only runtime. Required selector **338 = 316 + 12 + 10**,
+  SHA-256 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Execute one identity per fresh process, then
+  binding Q8 only after a green 338 gate. No build/mutation/repair/performance benchmark.
 - [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
 - [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
 - [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
 
-**Standing prohibitions for CB2.** Do not retune, widen, narrow, or delete `kBranchTopologyTolerance`
-(every measure **removes** tolerance from topological decisions; none adds any). Do not weaken T6 or Q8.
-Do not edit the sphere fixture — §6 of the review establishes both fixture and oracle are valid. No
-sphere-specific branch/edge/face/vertex/index special case. Q8 is not creditable until E6 lands, because
-a position-blind truncation can alter the trace count and manufacture a terminus.
+**Frozen Q8:** accepted 316/316 with zero expectation edits; prescribed sphere publishes **24 traces**;
+at least one terminal `TraceIntersection`; face `1-2-5` / incoming `1-2` resolves to one of
+`{1-5, 2-5}` and flips across the frozen crossover; torus/mechanical remain unchanged. Q8 is not
+creditable unless E6 is present in the package. The CB2 audit confirms E6 is present; runtime still must
+prove Q8.
+
+If any accepted 316 identity is red, stop and route to review. Do not edit an accepted expectation. T6
+and Q8 may not be weakened; sphere fixture and `kBranchTopologyTolerance` remain frozen.
 
 ## After M3 exit
 
