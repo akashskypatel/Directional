@@ -7,7 +7,6 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
-#include <limits>
 #include <numbers>
 #include <map>
 #include <optional>
@@ -44,6 +43,7 @@ using directional::authority::HardRailId;
 using directional::authority::SingularityPortId;
 using directional::authority::SourceComponentId;
 using directional::authority::SourceEdgeTopologyKey;
+using directional::authority::SourceFaceId;
 using directional::authority::SourceFaceTopologyKey;
 using directional::authority::SourceVertexId;
 using directional::fields::CrossFieldEdgeTransition;
@@ -2738,6 +2738,21 @@ void append_atlas_error(std::ostringstream &stream,
   if (error.sourceEdge.has_value()) {
     stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
   }
+}
+
+void append_network_error(
+    std::ostringstream &stream,
+    const directional::geometry::FieldAlignedCurveNetworkError &error) {
+  stream << "fieldAlignedCurveNetwork=false"
+         << ";networkError="
+         << directional::geometry::field_aligned_curve_network_error_code_name(
+                error.code);
+  if (error.sourceVertex.has_value()) {
+    stream << ";sourceVertex=" << error.sourceVertex->index();
+  }
+  if (error.sourceEdge.has_value()) {
+    stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
+  }
   if (error.sourceFace.has_value()) {
     stream << ";sourceFace=" << source_face_locus(*error.sourceFace);
   }
@@ -2781,21 +2796,6 @@ void append_atlas_error(std::ostringstream &stream,
       stream << source_face_locus(error.publishedFaces[index]);
     }
     stream << ']';
-  }
-}
-
-void append_network_error(
-    std::ostringstream &stream,
-    const directional::geometry::FieldAlignedCurveNetworkError &error) {
-  stream << "fieldAlignedCurveNetwork=false"
-         << ";networkError="
-         << directional::geometry::field_aligned_curve_network_error_code_name(
-                error.code);
-  if (error.sourceVertex.has_value()) {
-    stream << ";sourceVertex=" << error.sourceVertex->index();
-  }
-  if (error.sourceEdge.has_value()) {
-    stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
   }
   if (error.rail.has_value()) {
     stream << ";rail=" << error.rail->index();
