@@ -28,16 +28,15 @@ jobs:
       - name: Download Drive file
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
-          FILE_ID: 18ANyK7VAnZ8Z38yIgJES4T1sp3yuEBq0
+          FILE_ID: ${{ vars.DRIVE_FILE_ID }}
         run: |
           curl \
             --fail-with-body \
             --location \
             --header "Authorization: Bearer ${ACCESS_TOKEN}" \
             "https://www.googleapis.com/drive/v3/files/${FILE_ID}?alt=media" \
-            --output directional-source-snapshot.zip
+            --output directional.patch
 
       - name: Verify download
         run: |
-          ls -lh directional-source-snapshot.zip
-          unzip -t directional-source-snapshot.zip
+          ls -lh directional.patch
