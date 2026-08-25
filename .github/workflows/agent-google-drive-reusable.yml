@@ -137,8 +137,8 @@ jobs:
           echo "applied_commit_sha=$commit_sha" >> "$GITHUB_OUTPUT"
           echo "applied_commit_sha=$commit_sha"
 
-      - name: Delete Drive patch after successful push
-        id: delete
+      - name: Move Drive patch to trash after successful push
+        id: trash
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
           FILE_ID: ${{ inputs.file_id }}
@@ -147,17 +147,20 @@ jobs:
           set -euo pipefail
           log="${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
           exec > >(tee -a "$log") 2>&1
-          trap 'status=$?; echo "drive_delete_exit=${status}"' EXIT
-          response="${RUNNER_TEMP}/drive-delete-response.json"
-          code="$(curl --silent --show-error --location -X DELETE \
+          trap 'status=$?; echo "drive_trash_exit=${status}"' EXIT
+          metadata="${RUNNER_TEMP}/drive-trash-metadata.json"
+          response="${RUNNER_TEMP}/drive-trash-response.json"
+          curl --fail-with-body --silent --show-error --location \
             -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-            -o "$response" -w '%{http_code}' \
-            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?supportsAllDrives=true")"
-          if [[ "$code" == 204 ]]; then
-            method=delete
-          elif [[ "$code" == 403 ]]; then
-            echo 'permanent delete denied; falling back to Drive trash'
-            cat "$response" || true
+            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?supportsAllDrives=true&fields=id,trashed,capabilities(canTrash)" \
+            -o "$metadata"
+          already_trashed="$(jq -r '.trashed // false' "$metadata")"
+          can_trash="$(jq -r '.capabilities.canTrash // false' "$metadata")"
+          if [[ "$already_trashed" == true ]]; then
+            trashed=true
+            retirement_required=false
+            reason=already-trashed
+          elif [[ "$can_trash" == true ]]; then
             curl --fail-with-body --silent --show-error --location -X PATCH \
               -H "Authorization: Bearer ${ACCESS_TOKEN}" \
               -H 'Content-Type: application/json' \
@@ -165,29 +168,38 @@ jobs:
               "https://www.googleapis.com/drive/v3/files/${FILE_ID}?supportsAllDrives=true&fields=id,trashed" \
               -o "$response"
             test "$(jq -r .trashed "$response")" = true
-            method=trash
+            trashed=true
+            retirement_required=false
+            reason=trashed-by-workflow
           else
-            echo "Drive delete failed with HTTP ${code}" >&2
-            cat "$response" >&2 || true
-            exit 22
+            echo 'Drive identity cannot trash this file; owner-authorized control-plane retirement is required'
+            trashed=false
+            retirement_required=true
+            reason=owner-cleanup-required
           fi
-          echo 'drive_file_deleted=true' >> "$GITHUB_OUTPUT"
-          echo "drive_delete_method=$method" >> "$GITHUB_OUTPUT"
-          echo 'drive_file_deleted=true'
-          echo "drive_delete_method=$method"
+          echo "drive_file_trashed=$trashed" >> "$GITHUB_OUTPUT"
+          echo "drive_file_retirement_required=$retirement_required" >> "$GITHUB_OUTPUT"
+          echo "drive_trash_reason=$reason" >> "$GITHUB_OUTPUT"
+          echo "drive_file_trashed=$trashed"
+          echo "drive_file_retirement_required=$retirement_required"
+          echo "drive_trash_reason=$reason"
 
       - name: Write result
         if: always()
         env:
           APPLIED_SHA: ${{ steps.apply.outputs.applied_commit_sha }}
-          DRIVE_DELETED: ${{ steps.delete.outputs.drive_file_deleted }}
+          DRIVE_TRASHED: ${{ steps.trash.outputs.drive_file_trashed }}
+          DRIVE_RETIREMENT_REQUIRED: ${{ steps.trash.outputs.drive_file_retirement_required }}
+          DRIVE_TRASH_REASON: ${{ steps.trash.outputs.drive_trash_reason }}
         shell: bash
         run: |
           set -euo pipefail
           out="${RUNNER_TEMP}/agent-google-drive-patch-result"; mkdir -p "$out"
           printf '%s\n' "event_sha=$GITHUB_SHA" "base_sha=${{ inputs.base_sha }}" \
             "file_id=${{ inputs.file_id }}" "patch_sha256=${{ inputs.patch_sha256 }}" \
-            "applied_commit_sha=${APPLIED_SHA:-unavailable}" "drive_file_deleted=${DRIVE_DELETED:-false}" \
+            "applied_commit_sha=${APPLIED_SHA:-unavailable}" "drive_file_trashed=${DRIVE_TRASHED:-false}" \
+            "drive_file_retirement_required=${DRIVE_RETIREMENT_REQUIRED:-false}" \
+            "drive_trash_reason=${DRIVE_TRASH_REASON:-unavailable}" \
             'runtimeExecution=false' "job_status=${{ job.status }}" \
             "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$out/result.env"
           cat "$out/result.env" | tee -a "${RUNNER_TEMP}/agent-google-drive-patch-apply.log"
