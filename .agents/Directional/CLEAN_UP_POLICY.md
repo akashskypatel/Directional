@@ -4,7 +4,17 @@
 
 Define the repository-side cleanup lifecycle for agent work without deleting or weakening durable project memory. This policy is maintained separately from `Future_Chat_Session_Handoff.md`.
 
-Retention and destructive-mutation rules are defined in `RETENTION_POLICY.md`. GitHub Actions workflow, trigger, payload, and remote-artifact lifecycle rules are defined in `GitHub_Workflow_Policy.md`.
+`[ChatGPT Web]` First, review tool use conservation policy for temporary file cleanup in [`TOOL_USE_CONSERVATION_POLICY.md](TOOL_USE_CONSERVATION_POLICY.md#9-temporary-file-inventory-and-batched-cleanup).
+
+Retention and destructive-mutation rules are defined in `RETENTION_POLICY.md`. 
+
+`[ChatGPT Web]` GitHub Actions workflow, trigger, Google Drive patch transport, and remote-artifact lifecycle rules are defined in `GitHub_Workflow_Policy.md`.
+
+## `[ChatGPT Web]` Temporary File Ledger
+
+Each turn must maintain a record of every temporary files created during the turn or files to be deleted at the end of the turn in `.agents/connector-triggers/turn-cleanup/manifest.txt`. \
+
+Each turn must end with executing `.github/workflows/agent-turn-cleanup.yml` to clean up temporary files using the temporary file ledger.
 
 ## Stale-evidence cleanup
 
@@ -28,6 +38,13 @@ After cleanup:
 - Historical filenames tied to cited commits may remain as provenance when explicitly identified as historical.
 - Verify that cleanup did not remove or weaken any durable document, policy, acceptance criterion, stable ID, artifact identity, unresolved blocker, failed-attempt lesson, or resume-critical state protected by `RETENTION_POLICY.md`.
 
+## `[ChatGPT Web]` Google Drive patch cleanup
+
+- Patch bytes are not staged in the repository. The standard non-minor transport is the raw verified patch in `My Drive/Directional-CI`, addressed by Google Drive File ID.
+- `.github/workflows/agent-google-drive-reusable.yml` must delete the staged Drive patch **only after** the patch commit pushes successfully. Successful cleanup evidence records `drive_file_deleted=true`.
+- If patch download, verification, apply, commit, or push fails, do not delete the Drive file automatically; preserve its File ID for the bounded retry/diagnostic decision. Delete it deliberately once it is no longer needed.
+- Repository cleanup still removes the temporary caller first and then the marker/other temporary control state. No patch Base64 payload or fragment files should exist to clean up under normal operation.
+
 ## Scope boundary
 
-Repository cleanup concerns checked-in stale documents, summaries, evidence, and temporary agent state. GitHub Actions workflows, connector trigger markers, payload/patch transfer files, generated repository artifacts, workflow cleanup ordering, and external Actions artifact retention are governed by `GitHub_Workflow_Policy.md`.
+Repository cleanup concerns checked-in stale documents, summaries, evidence, and temporary agent state. GitHub Actions workflows, connector trigger markers, generated repository artifacts, workflow cleanup ordering, Google Drive staging lifecycle, and external Actions artifact retention are governed by `GitHub_Workflow_Policy.md`.

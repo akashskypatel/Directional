@@ -36,6 +36,10 @@
 #include <directional/geometry/ReliefTopology.h>
 #include <directional/geometry/SourceTopologyRegions.h>
 
+namespace directional {
+class TriMesh;
+}
+
 namespace directional::geometry {
 
 enum class SurfaceSeedProvenance : int {
@@ -120,6 +124,19 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   InvalidSingularityBinding = 9,
   InvalidSingularityPortCount = 10,
   InvalidSingularityPortOwnership = 11,
+  InvalidCandidateTraceBinding = 12,
+  InvalidCandidateTraceTransport = 13,
+  InvalidNetworkEventBinding = 14,
+  InvalidNetworkEventIncidence = 15,
+  InvalidNetworkTerminalOwnership = 16,
+  BranchDirectionNotBarycentric = 17,
+  BranchContinuationNoOutflow = 18,
+  BranchContinuationDegenerateEntry = 19,
+  BranchContinuationMinimizerImpossible = 20,
+  BranchContinuationOutsideOutflowSet = 21,
+  BoundaryPointParameterOutOfRange = 22,
+  BoundaryPointEdgeNotIncidentToFace = 23,
+  VertexTransitSectorUnresolved = 24,
 };
 
 struct FieldAlignedCurveNetworkError {
@@ -129,6 +146,11 @@ struct FieldAlignedCurveNetworkError {
   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
   std::optional<authority::HardRailId> rail;
   std::optional<authority::FieldSingularityId> singularity;
+  std::optional<authority::SourceFaceTopologyKey> sourceFace;
+  std::optional<authority::FieldBranch> branch;
+  std::optional<authority::ExactUnitParameter> parameter;
+  std::vector<authority::FieldExactRational> exactValues;
+  std::vector<authority::SourceEdgeTopologyKey> publishedEdges;
 
   auto operator<=>(const FieldAlignedCurveNetworkError &) const = default;
 };
@@ -168,6 +190,120 @@ struct FieldAlignedSingularityPort {
   auto operator<=>(const FieldAlignedSingularityPort &) const = default;
 };
 
+struct FieldAlignedCandidateTraceTransition {
+  FieldAlignedCandidateTraceTransition(
+      authority::SourceEdgeTopologyKey sourceEdgeValue,
+      authority::SourceFaceTopologyKey fromFaceValue,
+      authority::SourceFaceTopologyKey toFaceValue,
+      authority::FieldDirectedBranchTransport directedValue)
+      : sourceEdge(std::move(sourceEdgeValue)),
+        fromFace(std::move(fromFaceValue)), toFace(std::move(toFaceValue)),
+        directed(std::move(directedValue)) {}
+
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::SourceFaceTopologyKey fromFace;
+  authority::SourceFaceTopologyKey toFace;
+  authority::FieldDirectedBranchTransport directed;
+
+  auto operator<=>(const FieldAlignedCandidateTraceTransition &) const = default;
+};
+
+struct FieldAlignedCandidateTraceSegment {
+  FieldAlignedCandidateTraceSegment(
+      authority::SourceFaceTopologyKey faceValue,
+      authority::FieldBranch branchValue,
+      authority::FieldBoundaryPoint entryPointValue,
+      std::optional<authority::SourceEdgeTopologyKey> incomingCarrierValue,
+      authority::SourceEdgeTopologyKey outgoingCarrierValue,
+      std::optional<FieldAlignedCandidateTraceTransition> entryTransportValue)
+      : sourceFace(std::move(faceValue)), branch(branchValue),
+        entryPoint(std::move(entryPointValue)),
+        incomingCarrier(std::move(incomingCarrierValue)),
+        outgoingCarrier(std::move(outgoingCarrierValue)),
+        entryTransport(std::move(entryTransportValue)) {}
+
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  authority::FieldBoundaryPoint entryPoint;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  authority::SourceEdgeTopologyKey outgoingCarrier;
+  std::optional<FieldAlignedCandidateTraceTransition> entryTransport;
+
+  auto operator<=>(const FieldAlignedCandidateTraceSegment &) const = default;
+};
+
+struct FieldAlignedCandidateTrace {
+  FieldAlignedCandidateTrace(
+      authority::TraceId traceId, authority::SingularityPortId portId,
+      authority::FieldSingularityId singularityId,
+      authority::SourceVertexId sourceVertexValue,
+      authority::SourceComponentId sourceComponentValue,
+      authority::TopologyRegionId sourceTopologyRegionValue)
+      : id(traceId), port(portId), singularity(singularityId),
+        sourceVertex(sourceVertexValue), sourceComponent(sourceComponentValue),
+        sourceTopologyRegion(sourceTopologyRegionValue) {}
+
+  authority::TraceId id;
+  authority::SingularityPortId port;
+  authority::FieldSingularityId singularity;
+  authority::SourceVertexId sourceVertex;
+  authority::SourceComponentId sourceComponent;
+  authority::TopologyRegionId sourceTopologyRegion;
+  std::vector<FieldAlignedCandidateTraceSegment> segments;
+  std::optional<authority::SourceEdgeTopologyKey> terminalBarrier;
+  std::optional<authority::FieldBoundaryPoint> terminalPoint;
+  std::optional<authority::FieldSingularityId> terminalSingularity;
+
+  auto operator<=>(const FieldAlignedCandidateTrace &) const = default;
+};
+
+enum class FieldAlignedNetworkEventKind : std::uint8_t {
+  SingularityPortOrigin = 0,
+  FirstContact = 1,
+  TraceIntersection = 2,
+  MandatoryBarrierTermination = 3,
+  SingularityTermination = 4,
+};
+
+enum class FieldAlignedTraceEventRole : std::uint8_t {
+  Interior = 0,
+  Origin = 1,
+  Terminal = 2,
+};
+
+struct FieldAlignedNetworkEventIncidence {
+  FieldAlignedNetworkEventIncidence(
+      authority::TraceId traceValue, authority::SingularityPortId sourcePortValue,
+      FieldAlignedTraceEventRole roleValue)
+      : trace(traceValue), sourcePort(sourcePortValue), role(roleValue) {}
+
+  authority::TraceId trace;
+  authority::SingularityPortId sourcePort;
+  FieldAlignedTraceEventRole role = FieldAlignedTraceEventRole::Interior;
+
+  auto operator<=>(const FieldAlignedNetworkEventIncidence &) const = default;
+};
+
+struct FieldAlignedNetworkEvent {
+  FieldAlignedNetworkEvent(
+      authority::NetworkNodeId nodeValue, FieldAlignedNetworkEventKind kindValue,
+      authority::SourceFaceTopologyKey sourceFaceValue,
+      std::optional<authority::SourceEdgeTopologyKey> sourceEdgeValue,
+      std::vector<FieldAlignedNetworkEventIncidence> incidencesValue)
+      : node(nodeValue), kind(kindValue), sourceFace(std::move(sourceFaceValue)),
+        sourceEdge(std::move(sourceEdgeValue)),
+        incidences(std::move(incidencesValue)) {}
+
+  authority::NetworkNodeId node;
+  FieldAlignedNetworkEventKind kind =
+      FieldAlignedNetworkEventKind::FirstContact;
+  authority::SourceFaceTopologyKey sourceFace;
+  std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
+  std::vector<FieldAlignedNetworkEventIncidence> incidences;
+
+  auto operator<=>(const FieldAlignedNetworkEvent &) const = default;
+};
+
 struct FieldAlignedMandatoryEdge {
   FieldAlignedMandatoryEdge(
       authority::NetworkEdgeId edgeId, authority::HardRailId railId,
@@ -202,24 +338,33 @@ struct FieldAlignedCurveNetworkCandidate {
   std::vector<FieldAlignedCurveNetworkNode> nodes;
   std::vector<FieldAlignedSingularityPort> singularityPorts;
   std::vector<FieldAlignedMandatoryEdge> mandatoryEdges;
+  std::vector<FieldAlignedCandidateTrace> candidateTraces;
+  std::vector<FieldAlignedNetworkEvent> events;
+  // Exact construction provenance. These bind validation snapshots to the
+  // source/atlas instances that produced them; they are intentionally not the
+  // network semantic identity.
+  std::uint64_t sourceDigest = 0U;
+  std::uint64_t atlasDigest = 0U;
 };
 
 class FieldAlignedCurveNetworkBuildResult;
 
 /**
- * Immutable A2a ownership skeleton. Construction is the only writer; CP2
- * publishes no traces, contact nodes, selected topology regions, or schedules.
+ * Immutable A2a ownership/tracing product. Construction is the only writer;
+ * CP3b extends accepted branch-consistent candidate traces with a typed
+ * first-contact/intersection/termination event graph. Global topology
+ * selection, region emission, and schedules remain later-stage authority.
  */
 class FieldAlignedCurveNetwork {
 public:
   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult make(
-      const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
+      const TriMesh &sourceMesh,
       const SourceTopologyRegions &sourceAuthority,
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails);
 
   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult make_from_candidate(
-      const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
+      const TriMesh &sourceMesh,
       const SourceTopologyRegions &sourceAuthority,
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails,
@@ -236,6 +381,14 @@ public:
   [[nodiscard]] const std::vector<FieldAlignedMandatoryEdge> &
   mandatory_edges() const noexcept {
     return mandatoryEdges_;
+  }
+  [[nodiscard]] const std::vector<FieldAlignedCandidateTrace> &
+  candidate_traces() const noexcept {
+    return candidateTraces_;
+  }
+  [[nodiscard]] const std::vector<FieldAlignedNetworkEvent> &events() const
+      noexcept {
+    return events_;
   }
 
   [[nodiscard]] const FieldAlignedMandatoryEdge *find_mandatory_edge(
@@ -267,15 +420,21 @@ private:
       std::vector<FieldAlignedCurveNetworkNode> nodes,
       std::vector<FieldAlignedSingularityPort> singularityPorts,
       std::vector<FieldAlignedMandatoryEdge> mandatoryEdges,
+      std::vector<FieldAlignedCandidateTrace> candidateTraces,
+      std::vector<FieldAlignedNetworkEvent> events,
       std::uint64_t sourceDigest, std::uint64_t atlasDigest,
       std::uint64_t semanticDigest)
       : nodes_(std::move(nodes)), singularityPorts_(std::move(singularityPorts)),
-        mandatoryEdges_(std::move(mandatoryEdges)), sourceDigest_(sourceDigest),
-        atlasDigest_(atlasDigest), semanticDigest_(semanticDigest) {}
+        mandatoryEdges_(std::move(mandatoryEdges)),
+        candidateTraces_(std::move(candidateTraces)), events_(std::move(events)),
+        sourceDigest_(sourceDigest), atlasDigest_(atlasDigest),
+        semanticDigest_(semanticDigest) {}
 
   std::vector<FieldAlignedCurveNetworkNode> nodes_;
   std::vector<FieldAlignedSingularityPort> singularityPorts_;
   std::vector<FieldAlignedMandatoryEdge> mandatoryEdges_;
+  std::vector<FieldAlignedCandidateTrace> candidateTraces_;
+  std::vector<FieldAlignedNetworkEvent> events_;
   std::uint64_t sourceDigest_ = 0U;
   std::uint64_t atlasDigest_ = 0U;
   std::uint64_t semanticDigest_ = 0U;
@@ -310,6 +469,73 @@ private:
     FieldAlignedCurveNetworkErrorCode code) noexcept;
 [[nodiscard]] std::uint64_t field_aligned_curve_network_hash(
     const FieldAlignedCurveNetwork &network) noexcept;
+
+namespace surface_cell_tracing_detail {
+
+enum class FieldBranchExitTimeOrdering : std::int8_t {
+  Less = -1,
+  Equal = 0,
+  Greater = 1,
+};
+
+enum class FieldBranchContinuationKind : std::uint8_t {
+  EdgeExit = 0,
+  VertexHit = 1,
+};
+
+struct FieldBranchContinuationDecision {
+  FieldBranchContinuationKind kind = FieldBranchContinuationKind::EdgeExit;
+  authority::FieldBoundaryPoint exitPoint;
+  authority::SourceEdgeTopologyKey outgoingCarrier;
+  std::optional<authority::SourceVertexId> sourceVertex;
+
+  auto operator<=>(const FieldBranchContinuationDecision &) const = default;
+};
+
+using FieldBranchContinuationResult =
+    std::variant<FieldBranchContinuationDecision, FieldAlignedCurveNetworkError>;
+
+struct FieldVertexTransitDecision {
+  FieldVertexTransitDecision(
+      authority::SourceFaceTopologyKey faceValue,
+      authority::FieldBranch branchValue)
+      : nextFace(std::move(faceValue)), nextBranch(branchValue) {}
+
+  authority::SourceFaceTopologyKey nextFace;
+  authority::FieldBranch nextBranch;
+
+  auto operator<=>(const FieldVertexTransitDecision &) const = default;
+};
+
+using FieldVertexTransitResult =
+    std::variant<FieldVertexTransitDecision, FieldAlignedCurveNetworkError>;
+
+[[nodiscard]] FieldBranchExitTimeOrdering compare_field_branch_exit_times(
+    const authority::FieldExactRational &firstPosition,
+    const authority::FieldExactRational &firstNegativeDirection,
+    const authority::FieldExactRational &secondPosition,
+    const authority::FieldExactRational &secondNegativeDirection);
+
+[[nodiscard]] FieldBranchContinuationResult resolve_field_branch_continuation(
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const authority::FieldBranchBoundaryPairing &pairing,
+    const authority::FieldBoundaryPoint &entryPoint);
+
+[[nodiscard]] FieldVertexTransitResult resolve_field_vertex_transit(
+    const TriMesh &sourceMesh,
+    const authority::FieldBranchTopology &topology,
+    authority::SourceComponentId sourceComponent,
+    authority::TopologyRegionId topologyRegion,
+    const authority::SourceFaceTopologyKey &currentFace,
+    authority::FieldBranch currentBranch,
+    authority::SourceVertexId sourceVertex);
+
+[[nodiscard]] std::optional<FieldAlignedCurveNetworkError>
+append_field_aligned_singularity_termination(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    const FieldAlignedCandidateTrace &trace);
+
+} // namespace surface_cell_tracing_detail
 
 struct SurfaceTraceSeed {
   int id = -1;

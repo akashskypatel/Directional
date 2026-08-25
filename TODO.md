@@ -1,61 +1,90 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-19 UTC
+Last updated: 2026-08-25 UTC
 
 ## Purpose
 
 This is the single durable **task index** — open and blocked work only. It is deliberately forward-looking.
 
-Completed milestone history lives in `M1_Closure_Record.md`; exact runtime evidence lives in `CHANGELOG.md` and `Regression_Root_Cause_Tracker.md`; normative architecture lives in `DESIGN.md`; migration ordering lives in `REORIENTATION_PLAN.md`. Do not re-accumulate per-checkpoint, per-retry, or per-partial narrative here.
+Closed milestone/checkpoint history lives in `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, and `M3_CP4ab_Closure_Record.md`. Exact runtime evidence lives in `CHANGELOG.md`, the current retained turn report, and `Regression_Root_Cause_Tracker.md`. Normative architecture lives in `DESIGN.md`; the checkpoint map to production-ready lives in `ROADMAP.md`; migration ordering lives in `REORIENTATION_PLAN.md`.
 
-## Current focus — `M3-CP2-TB` — EXACT NEXT / immutable Test + Benchmark
+**Do not re-accumulate per-checkpoint, per-retry, or per-partial narrative here.** A closed checkpoint gets one line in `ROADMAP.md` §1 and a closure record; it does not stay in this file.
 
-**CP1 remains the latest accepted runtime authority at 281/281. CP2 Code + Build is complete,
-but CP2 is NOT yet accepted.** Candidate `6b046e0ba924a8d9f2aee158c64fd7734ab9a3ff / 9375452692` is package 9, produced by
-`32279806492 / 96155630834` after green external pre-package `32279124852 / 96153441513`, all
-with `runtimeExecution=false`. M3 is **9/12**.
+## Turn workflow — changed 2026-08-25
 
-Exact next `M3-CP2-TB` consumes `9375452692` artifact-only at frozen **287/287**. No rebuild,
-relink, repair, source/test/fixture mutation, or generated discovery is allowed. Red stops for
-Review; package 10 / CP3a is blocked until accepted CP2. Stable totals remain **38 / 14 / 24**;
-produced-witness debt remains **5**.
+```
+CB  →  TB  →  green?  →  checkpoint CLOSES
+                ↓ red
+        REVIEW + PLAN  →  CB  →  …
+```
 
-## M3 — field-aligned curve network
+**Non-gating diagnostic identities** TB executes and reports them, the
+gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-- [x] `M3-CP0-CB` — census complete; `M3-CP0-TB` **OMITTED** by user-authorized cadence exception (not a pass, not acceptance).
-- [x] `M3-CP1-TB-R1` — package 5 immutable gate **258/281 FAIL**; A1 **3/6**, retained M2 **255/275**, M1 producer **118/138**.
-- [x] `M3-CP1-RUNTIME-REPLAN-R2` — independent A1 implementation review complete; F2/F3/F4 confirmed, F5 derivation required before mutation.
-- [x] `M3-CP1-A1-DERIVATION` — planning-only derivation complete; A1 retained; `turningLift ≡ signed matching sum (mod 4)` derived under the single cycle-row orientation; persistent A1 bypass rejected at CP1 acceptance.
-- [x] `M3-CP1-CB-R4` — user-authorized local cap **5 -> 6**; exact source `95006048225df765b5b9c31e235fed82330a1469`; external pre-package **91/91**, package 6 full closure **123/123**, `runtimeExecution=false`; package `9354456191`.
-- [x] `M3-CP1-TB-R2` — immutable package-6 gate **258/281 FAIL**; A1 **3/6**, retained M2 **255/275**, M1 producer **118/138**; package/source postflight immutable.
-- [x] `M3-CP1-A1-RESCOPE` — planning-only historical rescope. **SUPERSEDED/CORRECTED:** it omitted `indexMinFromZero` from the actual matching producer and its proposed A1 design removal is not authoritative.
-- [x] `M3-CP1-PLAN-AMEND` — review complete. The superseded per-turn plan was retired after CP1 acceptance; its durable result is preserved in `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`, the accepted CP1 TB report, and the current M3/CP2 plan: A1 retained, exact-zero `dual_cycles` curvature contamination identified, C1 bypass rejected, CP1 cap **6 -> 7**.
-- [x] `M3-CP1-CB-R5` — exact source `9f7e222bab6c930a12d1369fa2aee869f5c0dcff`; bounded two-file exact-zero support correction + strengthened existing square witness; external pre-package **91/91**; package 7 full closure **123/123**; `runtimeExecution=false`; immutable package `9366752046`.
-- [x] `M3-CP1-TB-R3` — **ACCEPTED.** Immutable `9f7e222bab6c930a12d1369fa2aee869f5c0dcff / 9366752046`; `32263614534 / 96102598799`; A1 **6/6** + retained M2 **275/275** = **281/281**; postflight immutable; no generated discovery or benchmark execution.
-- [x] `M3-POST-CP1-ALLOC-REPLAN` — cumulative ceiling **11 -> 12**; current **8/12**; remaining slots fixed one each to CP2, CP3a, CP3b, CP4; no automatic retry/package 13; `M3-FULL` remains omitted.
-- [x] `M3-CP2-CB` — exact source `6b046e0ba924a8d9f2aee158c64fd7734ab9a3ff`; pre-package `32279124852 / 96153441513` green; package 9 `9375452692` via `32279806492 / 96155630834` compile/package green; `runtimeExecution=false`; M3 **9/12**.
-- [ ] `M3-CP2-TB` — **EXACT NEXT.** Immutable package `9375452692`; accepted CP1 281 + CP2 6 = **287/287**; red stops for Review.
-- [ ] `M3-CP3a-CB` — branch-consistent combinatorial tracing from typed atlas/ports into candidate segments; no contact/intersection graph. **BLOCKED on accepted CP2.** → `M3-CP3a-TB`
-- [ ] `M3-CP3b-CB` — typed first-contact/intersection/termination incidence plus independent trace/event composition proof; no global topology selection. **BLOCKED on accepted CP3a.** → `M3-CP3b-TB`
-- [ ] `M3-CP4-CB` — derive/select network topology and publish `GlobalTopologyPlan` regions with mandatory-topology preservation and disc proof; stop before M4 rail scheduling. **BLOCKED on accepted CP3b.** → `M3-CP4-TB`, which is also the cumulative M3 exit gate.
-- [ ] M3 exit gate — ten criteria in the M3 plan section 2, subject to the accepted CP1 authority and post-CP1 allocation plan.
+## Current focus — `M3-CP4c-0-CB2` — EXACT NEXT / Code + Build, measures E0–E10
+
+**`M3-CP4c-0-CB1` is COMPLETE / BUILD GREEN** at semantic source
+`e784e44ce86e458b250b04689288f5f365ca507b`; the exact-position/exact-continuation implementation
+compiled all eight standard targets and froze **328 = accepted 316 + 12**.
+
+**`M3-CP4c-0-TB` is COMPLETE / VALID RED.** Authoritative artifact-only run/job
+`32891161394 / 97943220460` consumed immutable package `9577900736`. The semantic gate is **328/328
+PASS** — accepted **316/316** and CP4c-0 **12/12** — but binding Q8 is RED: A2a rejects
+`BranchContinuationDegenerateEntry` at `sourceEdge=6-8` before publishing a
+`FieldAlignedCurveNetwork`. Required 24 traces, terminal `TraceIntersection`, and face `1-2-5` crossover
+therefore cannot be observed. Owning report:
+`Architecture_M3_CP4c0_Artifact_Only_Test_Benchmark_Report.md`. Every digest, both job ledgers, and the
+retry-0 characterization were re-verified against the GitHub API during review and **all matched**.
+
+The report's `sourceVertex=0` / `singularity=0` are the failing trace's **seed**, back-filled at
+`SurfaceCellTracing.cpp:818-819`; they do not locate the failure. Only `sourceEdge=6-8` is a genuine
+locus, and it alone cannot separate the three candidate routes. `sourceFace`, the branch, the exact entry
+parameter, and `t*` **were computed and discarded** by the witness diagnostic emitter — measure E1.
+
+- [x] `M3-CP4c-0-DEFN` — **COMPLETE.** Frozen definitions remain normative.
+- [x] `M3-CP4c-0-CB1` — **COMPLETE / BUILD GREEN.** No runtime in CB.
+- [x] `M3-CP4c-0-TB` — **COMPLETE / VALID RED.** 328/328 gate PASS; binding Q8 RED. Retry 0 was
+  infrastructure-only before any semantic identity; retry 1 is authoritative. No semantic retry.
+- [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** Adjudicated: the defect is neither T6 nor Q8, but the
+  frozen definitions. A1 decides the **sign of a barycentric direction coordinate** with a `double`
+  tolerance in three places and publishes those verdicts as topological ownership, while A2a decides the
+  same sign exactly. T6 correctly rejects a state A1 was incorrectly allowed to produce. Five DEFN
+  amendments issued; T6 and Q8 unchanged. Owning record:
+  `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`.
+- [ ] `M3-CP4c-0-CB2` — **EXACT NEXT.** Code + Build only, measures **E0–E10** (review §10). E1 publishes
+  loci that already exist and is what determines the failure route; E2/E3 exactify A1's flow
+  classification and vertex-sector rule and delete the lossy round trip; E4/E5 close the T1
+  exhaustiveness hole and the unasserted cross-edge flow invariant; E6 replaces the position-blind cycle
+  break. After E2–E5, T6 is provably unreachable from well-formed states (review §7). Compile only —
+  **execute nothing.**
+- [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
+- [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
+- [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
+
+**Standing prohibitions for CB2.** Do not retune, widen, narrow, or delete `kBranchTopologyTolerance`
+(every measure **removes** tolerance from topological decisions; none adds any). Do not weaken T6 or Q8.
+Do not edit the sphere fixture — §6 of the review establishes both fixture and oracle are valid. No
+sphere-specific branch/edge/face/vertex/index special case. Q8 is not creditable until E6 lands, because
+a position-blind truncation can alter the trace count and manufacture a terminus.
+
+## After M3 exit
+
+`ROADMAP.md` §4 proposes the checkpoint decomposition for **M4–M8** — seventeen checkpoints plus five `-DEFN` planning turns to reach `M8-CP3`, the production-ready exit. That decomposition is a **proposal until each milestone's `-DEFN` turn freezes it**; gate arithmetic beyond 322 is deliberately not fixed.
 
 ## Carried forward from M2
 
-- [ ] **3 latent fixture-authority sites** — `PatchDescriptorMilestoneETests.cpp:1220`, `:1260`, `:1811`. Defaulted completion options asserting success, passing only because their complexes never reach boundary-ownership resolution; **none in the frozen selector**, so no gate protects them.
-- [ ] **Remove the `= {}` default** on the authority-consuming `complete_surface_cell_complex` overload (`PatchDescriptor.h:427`) so omission stops compiling — the class-closing fix, still unscheduled.
-- [ ] **Establish authority-carrying completion options as the local idiom.** `SurfaceCellComplexCompletionOptions` is 8/8 authority-unset across all tests; only 3 of `PatchDescriptorMilestoneE`'s contracts are gated, none of them completion tests.
+- [ ] **3 latent fixture-authority sites** — `PatchDescriptorMilestoneETests.cpp:1220`, `:1260`, `:1811`. Defaulted completion options assert success but pass only because their complexes never reach boundary-ownership resolution; none are in the frozen selector.
+- [ ] **Remove the `= {}` default** on the authority-consuming `complete_surface_cell_complex` overload (`PatchDescriptor.h:427`) so omission stops compiling.
+- [ ] **Establish authority-carrying completion options as the local idiom.** `SurfaceCellComplexCompletionOptions` remains authority-unset by default across the affected tests.
 
 ## Carried forward from M1
 
-Enforced as exit criteria of the milestones that can discharge them — not as task-list items, which have nothing enforcing them.
-
-**Produced-witness debt — `G4-B002` → revised M4 (3).** A 4th reopens section 14 scheduling.
+**Produced-witness debt — `G4-B002` → revised M4 (3).** A fourth reopens section 14 scheduling.
 - [ ] Re-prove `CandidateExtractionBaselineForCanonicalSourceScopeIdentityIsNonVacuous` on a produced closed complex.
 - [ ] Re-prove `PeriodicRelationOwnersSurviveContainerReorderingBeforeMaterialization` through the torus pipeline.
 - [ ] Re-prove `MissingPeriodicRelationOwnerIsRejected` on produced periodic authority.
 
-**Produced-witness debt — `G4-B003` → M5 (2).** A 3rd reopens M5 scheduling.
+**Produced-witness debt — `G4-B003` → M5 (2).** A third reopens M5 scheduling.
 - [ ] Re-prove `FullPeriodicRotationAndTranslationMaterialize` on produced nonzero-Z4 authority.
 - [ ] Re-prove `TamperedFullPeriodicTransformIsRejected` on produced nonzero-Z4 authority.
 
@@ -64,45 +93,55 @@ Enforced as exit criteria of the milestones that can discharge them — not as t
 
 ## Deferred hygiene
 
-Inherited baseline-red / non-gating fixtures, frozen in the M1 exclusion register. None may become required-green evidence before its precondition is independently established.
+- [ ] **Repair `.github/workflows/agent-turn-cleanup.yml` comment handling and trigger safety.** The workflow still deletes **all** PR conversation and inline review comments before its observer step, and creating `.agents/connector-triggers/turn-cleanup/manifest.txt` auto-triggers it. Run `32591251950 / 97075340976` demonstrated 27 conversation-comment deletions. User commit `c359ea925b04471500575a9dcc17bdc6e4bb52d1` explicitly superseded the old prohibition by requiring the manifest/workflow at every turn closeout. Until the workflow is repaired, preserve durable repository evidence before publishing the closeout manifest and treat PR comments as non-durable.
 
-- [ ] **WU2A-TB-CAND-01:** `PatchDescriptorMilestoneE.SuccessfulSideSubdivisionPreservesCanonicalDomainIdentity` — prove the ownership-registry precondition first.
-- [ ] **WU2B-TB-CAND-01:** hard-rail region-copy fixture — establish a valid front-boundary-authority precondition first.
-- [ ] **WU2B-TB-CAND-02:** permitted side-repair rollback fixture — establish its ownership-registry/domain-identity precondition; keep the rollback assertion strict.
-- [ ] **WU2B-TB-CAND-03:** authoritative-cell-scope subdivision fixture — reconcile against independently derived source-scope authority.
-- [ ] **WU2B-TB-CAND-04:** five simplification fixtures — require independently proven removable/protected/healing preconditions.
-- [ ] **WU2B-TB-CAND-05:** FlowRep mandatory-cycle witness — `selectionSucceeded=false` is non-evidence for the later cycle assertion.
-- [ ] **RA-REV-23-F3:** dispatch the stitch-kind audit through an explicit probe classifier field rather than probe-name text; add a negative self-test.
-- [ ] **RA-REV-22-F6:** remove non-falsifiable validation-used assertions, or set those fields where each gate actually executes.
-- [ ] **RA-TB6-H1:** repair repeated `TriMesh::set_mesh` / `DCEL::init` stale halfedge-twin reinitialization outside the R-A fixture path.
+Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion register. None may become required-green evidence before its precondition is independently established.
 
-## Product and architecture roadmap
+- [ ] `WU2A-TB-CAND-01`: successful-side-subdivision ownership-registry precondition.
+- [ ] `WU2B-TB-CAND-01`: hard-rail region-copy valid front-boundary-authority precondition.
+- [ ] `WU2B-TB-CAND-02`: side-repair rollback ownership-registry/domain-identity precondition.
+- [ ] `WU2B-TB-CAND-03`: authoritative-cell-scope subdivision source-scope reconciliation.
+- [ ] `WU2B-TB-CAND-04`: five simplification fixtures need independently proven removable/protected/healing preconditions.
+- [ ] `WU2B-TB-CAND-05`: FlowRep mandatory-cycle witness needs `selectionSucceeded=true` before later-cycle evidence is creditable.
+- [ ] `RA-REV-23-F3`: dispatch stitch-kind audit through an explicit classifier field rather than probe-name text; add a negative self-test.
+- [ ] `RA-REV-22-F6`: remove non-falsifiable validation-used assertions or set them where each gate actually executes.
+- [ ] `RA-TB6-H1`: repair repeated `TriMesh::set_mesh` / `DCEL::init` stale halfedge-twin reinitialization outside the R-A fixture path.
 
-- [x] **M0 — preserve evidence.**
-- [x] **M1 — single-authority contract cutover.** Closed by accepted `M1-FULL-TB` `32055365696 / 95464163035` at 234/234 and K=0.
-- [x] **M2 — closed stage products and single writers.** **CLOSED / ACCEPTED** by `M2-CP4-TB-R2` `32183306224 / 95861164621` on `9fda64e88ddc885ce993ff8da3ad6a51765724a4 / 9340456431` at **275/275 + K=0**.
-- [ ] **M3 — field-aligned curve network.** CP1 accepted; CP2 package 9 `6b046e0ba924a8d9f2aee158c64fd7734ab9a3ff / 9375452692` is frozen; current M3 **9/12**; exact next immutable `M3-CP2-TB` at **287/287**. CP3a package 10 is blocked until CP2 acceptance.
-- [ ] **M4 — global conformity plan.** One shared positive rail schedule before regional production. **Also discharges the 3 `G4-B002` produced-witness debts.**
-- [ ] **M5 — certificate-carrying chart and quotient relations.** **Also discharges the 2 `G4-B003` produced-witness debts.**
-- [ ] **M6 — occurrence, embedding, and independent verification.**
-- [ ] **M7 — disposition and graded degradation.** D0-D4, strict fixtures at D0. **Also discharges the M1 criterion-5 forward obligation:** re-express M1 criterion 5 in disposition terms and re-run the three named structural fixtures under verifier-assigned `Certified`.
-- [ ] **M8 — module boundaries and operational hardening.**
+## Milestone status
+
+Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
+
+- [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
+- [ ] **M3 — field-aligned curve network.** CP4ab accepted at **316/316**; CP4c split into **CP4c-1 (318)**, **CP4c-2 (321)**, **CP4c-3 (322)**.
+- [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
+- [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
+- [ ] **M6** occurrence, embedding, independent verification.
+- [ ] **M7** disposition and graded degradation — D0–D4 plus the M1 criterion-5 forward re-proof.
+- [ ] **M8** module boundaries and operational hardening — `M8-CP3` is the production-ready exit.
 - [ ] **Pipeline A.** Unscheduled until Pipeline B is Certified and evidence shows integration would materially improve quality.
 
 ## Active product blockers
 
-- [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; strict-valid torus must reach 3/3.
-- [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4. Scheduling reviewed and **confirmed deferred**, with the deferral priced (`REORIENTATION_PLAN.md` section 14).
-- [ ] `G4-B003`: nonzero periodic Z4 production; M5. Producer leg still open; algebra and materializer legs advanced by unit-2 Batch D.
+- [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
+- [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
+- [ ] `G4-B003`: nonzero periodic Z4 production; M5.
 - [ ] `G4-B004`: positive multi-isolation quotient witness; M5/M6.
-- [ ] Bunny/Vase representative production and resource acceptance — later product gates, explicitly **not** M1 exit criteria.
+- [ ] Bunny/Vase representative production and resource acceptance — later product gates.
 
 ## Design and calibration backlog
 
-- [ ] **Calibrate `T5` quality/resource thresholds** from measured baselines before any milestone asserts a quality gate. Not an M1 blocker; blocks the representative acceptance matrix.
+- [ ] Own the closed-rail cardinality contract once at the rail product boundary rather than re-guarding both closed representations at every consumer.
+- [ ] Calibrate `T5` quality/resource thresholds from measured baselines before any milestone asserts a quality gate.
 - [ ] Correct `DESIGN.md` section 6.7 invariant 2 so D1 `QualityRelaxed` consistently records missed quality gates.
 - [ ] Define the M7 degraded producer algorithm and its fixed-boundary completion proof.
+- [ ] **Audit every remaining `kBranchTopologyTolerance` comparison for dimensional coherence.**
+  `direction_in_incident_vertex_sector` compares a Gram **determinant** — an area-squared quantity — to
+  `1e-10`. After E2/E3 the surviving uses are admissibility guards only, but their scale is arbitrary and
+  mesh-size dependent. Not a CP4c-0 measure; do not fold it into CB2.
+- [ ] **Sweep for other tolerant-selector / exact-consumer seams.** CP4c-0 found the pattern three times
+  in one subsystem (flow classification, vertex sector, cross-edge flow). The same audit is owed wherever
+  an exact authority was introduced downstream of a `double` decision.
 
 ---
 
-Historical stable totals are **38 events / 14 categories / 24 recurrences**. Produced-witness debt remains **5**. PR #8 remains open, draft, and unmerged.
+Historical stable totals are **42 events / 14 categories / 28 recurrences**. Produced-witness debt remains **5**. M3 package count is **40**. PR #8 remains open, draft, and unmerged.

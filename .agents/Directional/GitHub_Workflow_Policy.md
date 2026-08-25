@@ -1,4 +1,4 @@
-# GitHub Workflow Policy
+# `[ChatGPT Web]` GitHub Workflow Policy
 
 ## Purpose
 
@@ -19,8 +19,9 @@ Every Test + Benchmark turn MUST categorize every observed regression in `.agent
 Github workflows may only be used for the following actions. Unauthorized use is explicitly DISALLOWED.
 
 - Run long running compile/build jobs that would take too long or too much resources to run in local container
-- Applying large base64 encoded patches to make batched changes that is not possible using Github connector API surface
-  - Using workflows to apply small changes to files that is easily done using Github connector API is **explicitly unauthorized**. Use Github connector API instead.
+- Applying a verified non-minor code/documentation patch staged externally in `My Drive/Directional-CI` and addressed by Google Drive File ID, using durable `agent-google-drive-reusable.yml`.
+  - Using workflows to apply small changes that are easily and safely done with the GitHub connector API is **explicitly unauthorized**. Keep direct write mode for genuinely minor changes within the observed connector write ceiling.
+  - Repository-staged Base64 patch payloads/fragments are no longer the standard patch transport and must not be created for new turns.
 - Generating repository code snapshot to download to local container
 - Querying the repository-wide GitHub Actions runs API and packaging the result for monitoring/error diagnosis when the connector cannot directly list `repos/<owner>/<repo>/actions/runs`.
 - Validating a GitHub Actions YAML draft against the current SchemaStore GitHub-workflow schema before publishing or updating `.github/workflows/**`.
@@ -32,6 +33,7 @@ Retain these durable workflows on the working branch:
 
 - `.github/workflows/agent-source-snapshot.yml` — historical/source-snapshot utility only; not an approved current compile/test entry point.
 - `.github/workflows/agent-compile-reusable.yml` — **mandatory reusable compile implementation for every build/compile task**.
+- `.github/workflows/agent-google-drive-reusable.yml` — mandatory reusable transport for non-minor source/documentation patches. It downloads the exact staged patch by Google Drive File ID, verifies full/diff-body hashes and base/touched-path authority, applies/commits/pushes it, and deletes the Drive file only after a successful push. It must reject patches that modify `.github/workflows/**`.
 - `.github/workflows/agent-run-observer-reusable.yml` — reusable run-ID observer for early PR-comment reporting and an optional temporary branch-file fallback.
 - `.github/workflows/agent-recent-workflow-runs-reusable.yml` — reusable authenticated Actions-run inventory. It queries `repos/${GITHUB_REPOSITORY}/actions/runs` with `GH_TOKEN` falling back to `github.token`, and uploads raw, summarized, attention-only, TSV, and query-metadata artifacts for connector-side monitoring and error diagnosis.
 - `.github/workflows/agent-workflow-schema-validator-reusable.yml` — mandatory reusable pre-publication GitHub-workflow schema validator. It validates YAML against SchemaStore's `github-workflow.json`, uploads a validation report and diagnostic log, and fails closed on schema or document validation errors.
@@ -56,6 +58,22 @@ Every agent workflow must:
 10. use indentation-safe YAML/shell construction;
 11. validate every new or modified GitHub workflow YAML against `.github/workflows/agent-workflow-schema-validator-reusable.yml` before it is treated as publishable workflow authority. Draft new workflows outside `.github/workflows/**` when practical, validate the draft first, then publish it. For an existing workflow that must be edited in place, validate the exact resulting file before triggering it. Schema validation complements but does not replace reusable-input and permission-ceiling checks.
 
+## `[ChatGPT Web]` Standard Google Drive patch transport
+
+For coherent source/code or documentation edits that are not a genuinely minor direct connector write, this is the required patch transport:
+
+1. Obtain and verify one exact source snapshot with `agent-source-snapshot.yml`.
+2. Edit only the local snapshot-derived tree. Generate one complete `git diff --binary --full-index --no-ext-diff` patch, including new/deleted/binary files as needed, with the retention-policy metadata header. Verify `git apply --check` against the exact base and `git diff --check`.
+3. Emit the exact patch as a user-visible downloadable chat/File-Library backup **before** remote orchestration.
+4. Upload those exact patch bytes with the Google Drive connector to `My Drive/Directional-CI`; retain the returned File ID and complete patch SHA-256. Do not create repository patch payloads, compressed Base64, or fragments.
+5. Install a minimal temporary caller whose workload uses `./.github/workflows/agent-google-drive-reusable.yml` and passes `file_id`, `patch_sha256`, `base_sha`, target branch, and commit message with `secrets: inherit`. Keep caller installation and its push marker in separate commits.
+6. The reusable must download by File ID, verify full patch SHA-256 and embedded `base_sha`/`diff_body_sha256`/`intended_paths`, prove no intended path changed between patch base and caller event SHA, run `git apply --check`, apply, run `git diff --check`, prove the actual changed-path set equals the intended set, commit, and push without force.
+7. Patch transport is forbidden from changing `.github/workflows/**` because workflows may not modify workflow files from inside Actions. Workflow-file edits remain direct GitHub connector writes within the safe content ceiling and must be schema-validated before execution.
+8. **Only after the patch commit pushes successfully**, the reusable must delete the staged Drive file by the same File ID using Google Drive API delete and report `drive_file_deleted=true`. If download/verification/apply/commit/push fails, preserve the Drive file for diagnosis/retry.
+9. After evidence and Drive deletion are verified, delete the temporary caller first, then remove the marker and remaining temporary repository control state. The repository should contain no patch-transfer payload/fragments.
+
+The chat/File-Library backup is durability/recovery material; Google Drive is transient remote transport; the pushed Git commit becomes repository authority.
+
 ## Run-ID observability
 
 The connector's commit-to-workflow discovery surface is not authoritative for push-triggered workflows: `fetch_commit_workflow_runs` currently filters to `pull_request` events. An empty result from that wrapper must **never** be interpreted as proof that a push workflow did not run.
@@ -79,10 +97,6 @@ Optional fallback channel:
 - If both channels are enabled, they run independently so failure of one does not suppress the other.
 - Any generated `.agents/workflow-observation/run-*.txt` file is temporary control state and must be removed after the run ID has been captured and the triggering workflow has been removed/disabled.
 
-The dual-channel mechanism was directly validated on PR #8 on 2026-08-17 with push run `32090111743`: PR comment `5322484018` exposed the run ID and URL, and bot commit `a61b23216737d7e3fe6d52940e90a541e22cd394` wrote the matching temporary branch file. An earlier independent-job validation run `32090044087` likewise produced PR comment `5322476695` and a matching branch observation file. Both temporary repository states were subsequently cleaned.
-
-After the repository fine-grained PAT secret was added, the same reusable observer was validated with `secrets: inherit` in push run `32090628202`. PR comment `5322544935` reported `run_id=32090628202` with `token_source=GH_TOKEN-secret`; the independent branch-file job wrote matching observation commit `8b0cb4d8979b989ee109becd24ae59738d3bf126` and the overall run concluded success. The temporary caller, marker, and observation file were then removed.
-
 ## Exact procedure for drafting, executing, observing, and deleting a temporary workflow
 
 Use this procedure for every agent-created GitHub Actions workflow whose run must be observed from the connector. The purpose is to make workflow execution deterministic and to prevent malformed callers, missed push runs, trigger races, permission failures, and cleanup debris. Do not improvise a different lifecycle unless the active task requires event semantics that cannot be represented by the standard push-marker pattern.
@@ -100,11 +114,11 @@ Before writing any workflow file:
    - the exact working branch;
    - the exact PR number when a PR exists;
    - whether branch-file observation is disabled (default) or explicitly justified;
-   - any payload/patch paths required by the task.
+   - the Google Drive File ID/hash for patch transport when applicable; repository patch/payload paths are not used for standard patch transport.
 4. Default to a narrowly scoped `push` trigger on the working branch plus the single unique marker path. Use another event only when the task specifically requires that event's semantics. An agent-controlled workflow must never use a broad branch-wide push trigger merely to make execution easier.
 5. Compute caller permissions as the **union of permissions required by every called reusable workflow**, not only the jobs expected to execute. Reusable workflows cannot elevate beyond the caller's permission ceiling, and GitHub validates nested job permissions before runtime conditions are evaluated.
 6. For the current observer reusable, caller permissions must include `contents: write`, `issues: write`, and `pull-requests: write`, even when `commit_run_file: false`. If the caller also invokes `agent-compile-reusable.yml` on a cache-write-capable event, include `actions: write` so the reusable compile workflow can refresh the compiler cache.
-7. Decide the exact source identity the workload will consume. For a normal push-marker caller, `${{ github.sha }}` is the marker-trigger commit. Any source, fixture, patch, or payload that the workload must see must already exist before the marker-trigger commit is created.
+7. Decide the exact source identity the workload will consume. For a normal push-marker caller, `${{ github.sha }}` is the marker-trigger commit. Repository source/fixtures required by the workload must already exist before the marker-trigger commit. A standard patch itself is external Drive state referenced by immutable File ID/hash inputs, not a repository payload.
 
 ### Phase 1 — draft the caller without triggering it
 
@@ -158,7 +172,7 @@ Apply these syntax rules before committing:
 
 ### Phase 2 — commit and verify caller installation
 
-1. Commit **only the caller and any payload/source files that must exist before execution**. Do not create or modify the marker path in this commit.
+1. Commit **only the caller and any repository source/control files that must exist before execution**. Do not stage patch bytes/fragments in the repository, and do not create or modify the marker path in this commit.
 2. Record the resulting caller-install commit SHA.
 3. Re-fetch the caller from the working branch and confirm all of the following exactly:
    - branch name in `on.push.branches` is correct;
@@ -170,7 +184,7 @@ Apply these syntax rules before committing:
    - caller permissions satisfy the union computed in Phase 0;
    - workload inputs and reusable path are correct;
    - no unintended broad trigger exists.
-4. Re-fetch any payload/source file required by the workload and verify it is present at branch authority before triggering.
+4. Re-fetch any repository source/control file required by the workload and verify it is present at branch authority before triggering. For Drive patch transport, verify the retained File ID and patch SHA-256 rather than a repository payload.
 5. Do **not** treat the caller-install commit as an execution attempt. The marker has not changed, so the workflow should not be considered triggered.
 
 ### Phase 3 — trigger exactly once
@@ -221,10 +235,10 @@ Do not use trial-and-error retries.
 Cleanup begins only after the run, logs/artifacts, and source identity have been verified and all durable facts required by the active turn have been preserved.
 
 1. Re-read the current working-branch head before cleanup. If a branch-file observer was enabled, account for any bot-authored observation commit before mutating files.
-2. Fetch the temporary caller, marker, payload, and observation files to obtain their current blob SHAs. Do not delete using stale SHAs.
+2. Fetch the temporary caller, marker, and observation/control files to obtain their current blob SHAs. Do not delete using stale SHAs. Standard patch bytes are external Drive state and are deleted by `agent-google-drive-reusable.yml` after successful push.
 3. **Delete the temporary workflow caller first.** Commit that deletion and verify the caller no longer exists on the working branch.
 4. Only after the caller deletion is branch authority, delete the marker file. Deleting the marker after the caller is gone prevents cleanup from triggering the temporary workflow again.
-5. Delete temporary payload/patch files only after all needed evidence has been captured and retention policy permits their removal.
+5. Verify `drive_file_deleted=true` for a successfully pushed Drive patch. If the workflow failed before push, retain the File ID until the retry/abandon decision is complete; if push succeeded but Drive deletion failed, perform explicit Drive cleanup and record that cleanup failure/recovery.
 6. Delete any `.agents/workflow-observation/run-<run-id>.txt` file created by the branch-file fallback.
 7. Re-inspect `.github/workflows/`, `.agents/connector-triggers/`, `.agents/workflow-observation/`, and `.agents/Directional/turn-payloads/` and verify there is no temporary state from the run. Only the durable workflows listed in this policy should remain unless another active turn has explicitly authorized temporary state.
 8. Do not delete remote Actions result/log artifacts that remain authoritative evidence unless retention policy explicitly authorizes it.
@@ -278,21 +292,21 @@ Do not partition, retry, or stitch continuation results merely to evade elapsed 
 
 Focused reproduction or diagnostic commands that are not themselves the complete acceptance/full-suite gate may use a justified bounded timeout. Any such timeout is reported as orchestration failure, never pass/skip, and cannot replace the required uninterrupted full-suite execution.
 
-## Trigger and payload lifecycle
+## Trigger and temporary control lifecycle
 
 When connector dispatch is unavailable:
 
 1. commit the temporary caller first, with one exact unique push-marker path and with that marker absent or unchanged in the caller-install commit;
-2. only after the caller commit is branch authority, create or modify the exact temporary text marker under `.agents/connector-triggers/` in a **separate later commit**. This is the proven P1 pattern: `ec64df6e7864aaa1ba4479b663d6e1a6113c6801` installed `.github/workflows/m2-cp1-tb-r1-closeout.yml`, then `1db6ef3a52b90b0185b61db3e1cac73956d205cd` created `.agents/connector-triggers/m2-cp1-tb-r1-closeout-20260817.txt` and triggered the workflow;
+2. only after the caller commit is branch authority, create or modify the exact temporary text marker under `.agents/connector-triggers/` in a **separate later commit**. This is the proven P1 pattern: first installed `.github/workflows/m2-cp1-tb-r1-closeout.yml`, then created `.agents/connector-triggers/m2-cp1-tb-r1-closeout-20260817.txt` and triggered the workflow;
 3. do not combine temporary-caller installation and first marker creation in one commit, and do not treat the caller-install commit itself as the push trigger;
 4. make compile callers invoke the durable reusable compile workflow and make turn-specific push callers invoke `agent-run-observer-reusable.yml` with PR-comment reporting enabled unless the active task has no PR;
 5. when repository secret `GH_TOKEN` is available, pass it to reusable workflows with `secrets: inherit`; use it for workflow-originated pushes that must remain eligible to trigger later push workflows;
 6. enable the branch-file observer only when a second/fallback observation channel is justified;
-7. create only required patch/payload files;
+7. for standard non-minor code/docs patch application, keep patch bytes in Google Drive and create no repository patch/payload files; only minimal caller/marker control files are permitted;
 8. trigger once unless a diagnosed retry is required;
 9. discover push runs from the observer comment/file; when direct repository-wide run listing is needed, call `agent-recent-workflow-runs-reusable.yml` and use its artifact rather than guessing from absent connector results; then verify exact run, source, result/log artifacts, and outputs;
-10. remove/disable the temporary caller before deleting its marker/payload and any generated workflow-observation file;
-11. verify final workflow, trigger, payload, and workflow-observation directories.
+10. remove/disable the temporary caller before deleting its marker and any generated workflow-observation/control file;
+11. verify final workflow, trigger, turn-payload, and workflow-observation directories, and verify the Drive patch was deleted after a successful push.
 
 Never leave turn-specific workflow/trigger/observation debris on the long-lived branch.
 

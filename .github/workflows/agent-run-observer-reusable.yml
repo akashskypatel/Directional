@@ -19,6 +19,11 @@ on:
         required: false
         type: string
         default: agent-workflow
+      trim_stale_comments:
+        description: Delete stale github-actions[bot] PR comments before posting the current run observation.
+        required: false
+        type: boolean
+        default: true
     secrets:
       GH_TOKEN:
         required: false
@@ -32,10 +37,53 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-run-observer-pr-comment.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "pr_number=${{ inputs.pr_number }}"
+            echo "label=${{ inputs.label }}"
+            echo "trim_stale_comments=${{ inputs.trim_stale_comments }}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Delete stale GitHub Actions bot PR comments
+        id: trim
+        if: ${{ inputs.trim_stale_comments }}
+        continue-on-error: true
+        uses: maheshrayas/action-pr-comment-delete@v3.0
+        with:
+          github_token: ${{ github.token }}
+          org: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          user: github-actions[bot]
+          issue: ${{ inputs.pr_number }}
+
+      - name: Record stale-comment trim outcome
+        if: always()
+        env:
+          TRIM_OUTCOME: ${{ steps.trim.outcome }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-run-observer-pr-comment.log"
+          {
+            echo "trim_outcome=${TRIM_OUTCOME:-skipped}"
+            echo "trim_target_user=github-actions[bot]"
+          } | tee -a "$log"
+
       - name: Report run ID on PR
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN || github.token }}
-          TOKEN_SOURCE: ${{ secrets.GH_TOKEN != '' && 'GH_TOKEN-secret' || 'github-token' }}
+          GH_TOKEN: ${{ github.token }}
+          TOKEN_SOURCE: github-token
           PR_NUMBER: ${{ inputs.pr_number }}
           REPORT_LABEL: ${{ inputs.label }}
           RUN_ID: ${{ github.run_id }}
@@ -45,9 +93,32 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          log="${RUNNER_TEMP}/agent-run-observer-pr-comment.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "pr_comment_exit=${status}"' EXIT
           gh api "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
             --method POST \
             --field "body=[agent-run] ${REPORT_LABEL}: run_id=${RUN_ID}; event=${EVENT_NAME}; event_sha=${EVENT_SHA}; url=${RUN_URL}; token_source=${TOKEN_SOURCE}"
+
+      - name: Record final PR observer status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/agent-run-observer-pr-comment.log"
+          {
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload PR observer diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-run-observer-pr-comment-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-run-observer-pr-comment.log
+          if-no-files-found: error
+          retention-days: 7
 
   branch-file:
     if: ${{ inputs.commit_run_file && inputs.report_branch != '' }}
@@ -55,6 +126,22 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-run-observer-branch-file.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "report_branch=${{ inputs.report_branch }}"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
       - name: Checkout exact event commit
         uses: actions/checkout@v4
         with:
@@ -74,6 +161,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          log="${RUNNER_TEMP}/agent-run-observer-branch-file.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "branch_file_exit=${status}"' EXIT
           remote_sha="$(git ls-remote origin "refs/heads/${REPORT_BRANCH}" | cut -f1)"
           test -n "$remote_sha"
           test "$remote_sha" = "$EVENT_SHA"
@@ -92,3 +182,25 @@ jobs:
           git add "$path"
           git commit -m "ci: report workflow run ${RUN_ID}"
           git push origin "HEAD:${REPORT_BRANCH}"
+
+      - name: Record final branch observer status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/agent-run-observer-branch-file.log"
+          {
+            echo "final_job_status=${{ job.status }}"
+            echo "final_sha=$(git rev-parse HEAD 2>/dev/null || echo unavailable)"
+            git status --short 2>&1 || true
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload branch observer diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-run-observer-branch-file-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-run-observer-branch-file.log
+          if-no-files-found: error
+          retention-days: 7

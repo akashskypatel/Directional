@@ -16,6 +16,7 @@ This file defines architecture and invariants only. It intentionally contains no
 |---|---|
 | Normative product and architecture | this `DESIGN.md` |
 | Current gate and next accepted action | `TODO.md` |
+| Checkpoint decomposition from the accepted gate to production-ready | `.agents/Directional/ROADMAP.md` |
 | Exact next-session instructions | `.agents/Directional/Future_Chat_Session_Handoff.md` |
 | Runtime, build, and benchmark evidence | dated plan/report documents |
 | Regression history and repeated patterns | `.agents/Directional/Regression_Root_Cause_Tracker.md` |

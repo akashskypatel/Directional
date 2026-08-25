@@ -9,7 +9,9 @@
 #include <numeric>
 #include <limits>
 #include <optional>
+#include <sstream>
 #include <set>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -17,14 +19,24 @@
 #include <Eigen/Geometry>
 
 #include <directional/authority/FieldTransportAtlas.h>
+#include <directional/core/CartesianField.h>
 #include <directional/core/TriMesh.h>
 #include <directional/fields/CrossField.h>
+#include <directional/fields/PCFaceTangentBundle.h>
 #include <directional/geometry/SurfaceCellTracing.h>
+
+#include "support/SkewSingularFieldWitness.h"
 
 namespace {
 
 using directional::TriMesh;
+using directional::authority::FieldAtlasBuildError;
 using directional::authority::FieldAtlasBuildErrorCode;
+using directional::authority::FieldBoundaryFlow;
+using directional::authority::FieldBranch;
+using directional::authority::FieldBranchBoundaryPairing;
+using directional::authority::FieldBranchTopology;
+using directional::authority::FieldBranchTransportAdjacency;
 using directional::authority::FieldComponentTopology;
 using directional::authority::FieldCycleId;
 using directional::authority::FieldCycleKind;
@@ -34,6 +46,7 @@ using directional::authority::FieldQuadrangulabilityWitness;
 using directional::authority::FieldQuadrangulabilityWitnessKind;
 using directional::authority::FieldSingularityFact;
 using directional::authority::FieldSingularityId;
+using directional::authority::FieldSingularityPortAttachment;
 using directional::authority::FieldTransportAdjacency;
 using directional::authority::FieldTransportAtlas;
 using directional::authority::FieldTransportBarrierKind;
@@ -47,6 +60,32 @@ using directional::fields::CrossFieldEdgeTransition;
 using directional::fields::CrossFieldResult;
 using directional::geometry::SourceTopologyRegions;
 using directional::geometry::SurfaceCellTracingOptions;
+using directional::test_support::IndependentEdgeMeasurement;
+using directional::test_support::independent_edge_measurement;
+using directional::test_support::independent_face_branches;
+using directional::test_support::independent_signed_angle;
+using directional::test_support::make_skew_four_triangle_fan;
+using directional::test_support::make_skew_index_one_singularity_field;
+
+std::string describe_field_atlas_build_error(const FieldAtlasBuildError &error) {
+  std::ostringstream out;
+  out << "code="
+      << directional::authority::field_atlas_build_error_code_name(error.code);
+  if (error.sourceEdge.has_value()) {
+    out << ";sourceEdge=(" << error.sourceEdge->first().index() << ","
+        << error.sourceEdge->second().index() << ")";
+  }
+  if (error.sourceFace.has_value()) {
+    out << ";sourceFace=" << error.sourceFace->index();
+  }
+  if (error.sourceVertex.has_value()) {
+    out << ";sourceVertex=" << error.sourceVertex->index();
+  }
+  if (error.topologyRegion.has_value()) {
+    out << ";topologyRegion=" << error.topologyRegion->index();
+  }
+  return out.str();
+}
 
 TriMesh make_square_mesh(const bool reverseFaceRows = false) {
   Eigen::MatrixXd vertices(4, 3);
@@ -281,6 +320,10 @@ IndependentOracleSummary independent_oracle(
 
 struct IndependentAtlasSnapshot {
   std::vector<FieldTransportAdjacency> adjacencies;
+  std::vector<directional::authority::FieldFaceBranchFrame> branchFrames;
+  std::vector<FieldBranchTransportAdjacency> branchTransports;
+  std::vector<FieldSingularityPortAttachment> singularityPortAttachments;
+  std::uint64_t branchTopologyDigest = 0U;
   std::vector<FieldNonTraversableEdge> nontraversableEdges;
   std::vector<FieldCycleWitness> cycles;
   std::vector<FieldSingularityFact> singularities;
@@ -293,7 +336,11 @@ struct IndependentAtlasSnapshot {
 
 IndependentAtlasSnapshot independent_snapshot(const FieldTransportAtlas &atlas) {
   return IndependentAtlasSnapshot{
-      atlas.adjacencies(), atlas.nontraversable_edges(), atlas.cycles(),
+      atlas.adjacencies(), atlas.branch_topology().frames(),
+      atlas.branch_topology().transports(),
+      atlas.branch_topology().singularity_port_attachments(),
+      atlas.branch_topology().semantic_digest(),
+      atlas.nontraversable_edges(), atlas.cycles(),
       atlas.singularities(), atlas.component_topology(),
       atlas.quadrangulability().witnesses(),
       atlas.quadrangulability().established(),
@@ -313,6 +360,17 @@ void independent_consume(std::uint64_t &hash,
 void independent_consume_signed(std::uint64_t &hash, const int value) {
   independent_consume(hash, static_cast<std::uint64_t>(
                                 static_cast<std::int64_t>(value)));
+}
+
+void independent_consume_exact(
+    std::uint64_t &hash,
+    const directional::authority::FieldExactRational &value) {
+  const std::string numerator = value.numerator_string();
+  const std::string denominator = value.denominator_string();
+  independent_consume(hash, numerator.size());
+  for (const unsigned char byte : numerator) independent_consume(hash, byte);
+  independent_consume(hash, denominator.size());
+  for (const unsigned char byte : denominator) independent_consume(hash, byte);
 }
 
 void independent_consume_face(std::uint64_t &hash,
@@ -399,11 +457,66 @@ int independent_signature_gcd(const std::vector<int> &signature) {
   return signature.empty() ? 1 : result;
 }
 
+std::uint64_t independent_branch_topology_digest(
+    const IndependentAtlasSnapshot &snapshot) {
+  std::uint64_t hash = kIndependentFnvOffset;
+  independent_consume(hash, snapshot.branchFrames.size());
+  for (const auto &frame : snapshot.branchFrames) {
+    independent_consume_face(hash, frame.sourceFace);
+    independent_consume(hash, frame.branches.size());
+    for (const FieldBranchBoundaryPairing &pairing : frame.branches) {
+      independent_consume(hash, pairing.branch.value());
+      for (const auto &coordinate : pairing.direction.barycentric) {
+        independent_consume_exact(hash, coordinate);
+      }
+      independent_consume(hash, pairing.intervals.size());
+      for (const auto &interval : pairing.intervals) {
+        independent_consume(hash, interval.startVertex.index());
+        independent_consume(hash, interval.endVertex.index());
+        independent_consume(hash, interval.sourceEdge.first().index());
+        independent_consume(hash, interval.sourceEdge.second().index());
+        independent_consume(hash, static_cast<std::uint64_t>(interval.flow));
+      }
+      independent_consume(hash, pairing.incomingCarriers.size());
+      for (const auto &edge : pairing.incomingCarriers) {
+        independent_consume(hash, edge.first().index());
+        independent_consume(hash, edge.second().index());
+      }
+      independent_consume(hash, pairing.outgoingCarriers.size());
+      for (const auto &edge : pairing.outgoingCarriers) {
+        independent_consume(hash, edge.first().index());
+        independent_consume(hash, edge.second().index());
+      }
+    }
+  }
+  independent_consume(hash, snapshot.branchTransports.size());
+  for (const auto &transport : snapshot.branchTransports) {
+    independent_consume(hash, transport.sourceEdge.first().index());
+    independent_consume(hash, transport.sourceEdge.second().index());
+    independent_consume_face(hash, transport.firstFace);
+    independent_consume_face(hash, transport.secondFace);
+    independent_consume(hash, transport.forward.value());
+    independent_consume(hash, transport.reverse.value());
+    independent_consume_signed(hash, transport.forwardLift);
+  }
+  independent_consume(hash, snapshot.singularityPortAttachments.size());
+  for (const auto &attachment : snapshot.singularityPortAttachments) {
+    independent_consume(hash, attachment.sourceVertex.index());
+    independent_consume_signed(hash, attachment.localSlot);
+    independent_consume_face(hash, attachment.startFace);
+    independent_consume(hash, attachment.branch.value());
+    independent_consume(hash, attachment.firstOutgoingCarrier.first().index());
+    independent_consume(hash, attachment.firstOutgoingCarrier.second().index());
+  }
+  return hash;
+}
+
 std::uint64_t independent_atlas_digest(
     const IndependentAtlasSnapshot &snapshot,
     const std::vector<SourceFaceTopologyKey> &rowTopology) {
   std::uint64_t hash = kIndependentFnvOffset;
   independent_consume(hash, snapshot.sourceDigest);
+  independent_consume(hash, snapshot.branchTopologyDigest);
 
   independent_consume(hash, snapshot.adjacencies.size());
   for (const FieldTransportAdjacency &adjacency : snapshot.adjacencies) {
@@ -518,104 +631,67 @@ std::uint64_t independent_atlas_digest(
   return hash;
 }
 
-std::array<Eigen::RowVector3d, 4> independent_face_branches(
-    const CrossFieldResult &field, const int face) {
-  const Eigen::RowVector3d first =
-      field.primaryDirections.row(face).normalized();
-  const Eigen::RowVector3d second =
-      field.secondaryDirections.row(face).normalized();
-  return {first, second, -first, -second};
-}
+std::optional<int> independent_face_gauge(
+    const TriMesh &mesh, const CrossFieldResult &field, const int face,
+    const SourceFaceTopologyKey &topology) {
+  constexpr double tolerance = 1.0e-10;
+  const auto &vertices = topology.vertices();
+  const Eigen::Vector3d p0 =
+      mesh.V.row(static_cast<int>(vertices[0].index())).transpose();
+  const Eigen::Vector3d p1 =
+      mesh.V.row(static_cast<int>(vertices[1].index())).transpose();
+  const Eigen::Vector3d p2 =
+      mesh.V.row(static_cast<int>(vertices[2].index())).transpose();
+  Eigen::Vector3d normal = (p1 - p0).cross(p2 - p0);
+  const double normalNorm = normal.norm();
+  if (!std::isfinite(normalNorm) || normalNorm <= tolerance) {
+    return std::nullopt;
+  }
+  normal /= normalNorm;
 
-struct IndependentEdgeMeasurement {
-  int matching = 0;
-  double effort = 0.0;
-};
+  const auto project = [&](const Eigen::Vector3d &direction)
+      -> std::optional<Eigen::Vector3d> {
+    Eigen::Vector3d tangent = direction - direction.dot(normal) * normal;
+    const double norm = tangent.norm();
+    if (!std::isfinite(norm) || norm <= tolerance) return std::nullopt;
+    tangent /= norm;
+    return tangent.allFinite() ? std::optional<Eigen::Vector3d>(tangent)
+                               : std::nullopt;
+  };
 
-double independent_signed_angle(const Eigen::Vector3d &from,
-                                const Eigen::Vector3d &to,
-                                const Eigen::Vector3d &normal) {
-  const Eigen::Vector3d a = from.normalized();
-  const Eigen::Vector3d b = to.normalized();
-  return std::atan2(normal.dot(a.cross(b)),
-                    std::clamp(a.dot(b), -1.0, 1.0));
-}
-
-IndependentEdgeMeasurement independent_edge_measurement(
-    const TriMesh &mesh, const CrossFieldResult &field, const int sourceFace,
-    const int targetFace, const SourceEdgeTopologyKey &edge) {
-  const auto sourceBranches = independent_face_branches(field, sourceFace);
-  const auto targetBranches = independent_face_branches(field, targetFace);
-  const Eigen::Vector3d sourceA =
-      (mesh.V.row(mesh.F(sourceFace, 1)) -
-       mesh.V.row(mesh.F(sourceFace, 0)))
-          .transpose();
-  const Eigen::Vector3d sourceB =
-      (mesh.V.row(mesh.F(sourceFace, 2)) -
-       mesh.V.row(mesh.F(sourceFace, 0)))
-          .transpose();
-  const Eigen::Vector3d targetA =
-      (mesh.V.row(mesh.F(targetFace, 1)) -
-       mesh.V.row(mesh.F(targetFace, 0)))
-          .transpose();
-  const Eigen::Vector3d targetB =
-      (mesh.V.row(mesh.F(targetFace, 2)) -
-       mesh.V.row(mesh.F(targetFace, 0)))
-          .transpose();
-  const Eigen::Vector3d sourceNormal = sourceA.cross(sourceB).normalized();
-  const Eigen::Vector3d targetNormal = targetA.cross(targetB).normalized();
-  Eigen::Vector3d axis =
-      (mesh.V.row(static_cast<int>(edge.second().index())) -
-       mesh.V.row(static_cast<int>(edge.first().index())))
-          .transpose();
-  axis.normalize();
-  const double connectionAngle = std::atan2(
-      axis.dot(sourceNormal.cross(targetNormal)),
-      sourceNormal.dot(targetNormal));
-  const Eigen::AngleAxisd connection(connectionAngle, axis);
-
-  std::array<Eigen::Vector3d, 4> transported;
-  for (int branch = 0; branch < 4; ++branch) {
-    transported[static_cast<std::size_t>(branch)] =
-        connection * sourceBranches[static_cast<std::size_t>(branch)].transpose();
+  const auto reference = project(p1 - p0);
+  const auto primary = project(field.primaryDirections.row(face).transpose());
+  const auto secondary =
+      project(field.secondaryDirections.row(face).transpose());
+  if (!reference.has_value() || !primary.has_value() ||
+      !secondary.has_value() ||
+      std::abs(primary->dot(*secondary)) > 1.0 - 1.0e-8) {
+    return std::nullopt;
   }
 
-  int principalBranch = 0;
-  double smallestRotation = std::numeric_limits<double>::infinity();
-  for (int branch = 0; branch < 4; ++branch) {
-    const double rotation = independent_signed_angle(
-        transported[0], targetBranches[static_cast<std::size_t>(branch)].transpose(),
-        targetNormal);
-    if (std::abs(rotation) < std::abs(smallestRotation)) {
-      smallestRotation = rotation;
-      principalBranch = branch;
+  const std::array<Eigen::Vector3d, 4> rawDirections{
+      *primary, *secondary, -*primary, -*secondary};
+  std::array<double, 4> angles{};
+  int gauge = 0;
+  double best = std::numeric_limits<double>::infinity();
+  for (int raw = 0; raw < 4; ++raw) {
+    double angle = independent_signed_angle(
+        *reference, rawDirections[static_cast<std::size_t>(raw)], normal);
+    if (angle < 0.0) angle += 2.0 * std::numbers::pi;
+    if (angle >= 2.0 * std::numbers::pi) angle -= 2.0 * std::numbers::pi;
+    angles[static_cast<std::size_t>(raw)] = angle;
+    if (angle < best) {
+      best = angle;
+      gauge = raw;
     }
   }
-
-  double freeRotation = 0.0;
-  for (int branch = 0; branch < 4; ++branch) {
-    freeRotation += independent_signed_angle(
-        transported[static_cast<std::size_t>(branch)],
-        targetBranches[static_cast<std::size_t>(branch)].transpose(),
-        targetNormal);
+  for (int raw = 0; raw < 4; ++raw) {
+    if (raw != gauge &&
+        std::abs(angles[static_cast<std::size_t>(raw)] - best) <= tolerance) {
+      return std::nullopt;
+    }
   }
-  const double effort = std::atan2(std::sin(freeRotation),
-                                   std::cos(freeRotation));
-
-  double selectedRotation = 0.0;
-  for (int branch = 0; branch < 4; ++branch) {
-    selectedRotation += independent_signed_angle(
-        transported[static_cast<std::size_t>(branch)],
-        targetBranches[static_cast<std::size_t>(
-            (branch + principalBranch) % 4)]
-            .transpose(),
-        targetNormal);
-  }
-  const int matching = static_cast<int>(
-      principalBranch -
-      std::llround((selectedRotation - effort) /
-                   (2.0 * std::numbers::pi)));
-  return IndependentEdgeMeasurement{matching, effort};
+  return gauge;
 }
 
 int independent_connection_matching(const TriMesh &mesh,
@@ -710,6 +786,132 @@ std::vector<std::pair<int, int>> independent_vertex_cycle(
     }
   }
   return result;
+}
+
+struct IndependentPortOrderKey {
+  std::size_t counterClockwiseFanSlot = 0U;
+  double sectorAngle = 0.0;
+};
+
+std::optional<IndependentPortOrderKey> independent_port_order_key(
+    const TriMesh &mesh, const CrossFieldResult &field,
+    const std::vector<SourceFaceTopologyKey> &rowTopology,
+    const SourceVertexId sourceVertex,
+    const FieldSingularityPortAttachment &attachment) {
+  constexpr double tolerance = 1.0e-10;
+  struct FanFace {
+    int row = -1;
+    SourceFaceTopologyKey topology;
+    SourceVertexId nextVertex;
+    SourceVertexId previousVertex;
+  };
+  std::vector<FanFace> incident;
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    int corner = -1;
+    for (int local = 0; local < 3; ++local) {
+      if (mesh.F(face, local) == static_cast<int>(sourceVertex.index())) {
+        corner = local;
+        break;
+      }
+    }
+    if (corner < 0) continue;
+    const auto next = SourceVertexId::from_index(
+        mesh.F(face, (corner + 1) % 3),
+        static_cast<std::size_t>(mesh.V.rows()));
+    const auto previous = SourceVertexId::from_index(
+        mesh.F(face, (corner + 2) % 3),
+        static_cast<std::size_t>(mesh.V.rows()));
+    if (!next || !previous || static_cast<std::size_t>(face) >= rowTopology.size()) {
+      return std::nullopt;
+    }
+    incident.push_back(
+        FanFace{face, rowTopology[static_cast<std::size_t>(face)], next.value(),
+                previous.value()});
+  }
+  if (incident.size() < 3U) return std::nullopt;
+  const auto start = std::min_element(
+      incident.begin(), incident.end(),
+      [](const FanFace &first, const FanFace &second) {
+        return first.topology < second.topology;
+      });
+  if (start == incident.end()) return std::nullopt;
+
+  // Walk directly counter-clockwise: cross the current previous-vertex ray
+  // into the face whose next-vertex ray is the same source edge.
+  std::vector<FanFace> counterClockwise;
+  counterClockwise.reserve(incident.size());
+  FanFace current = *start;
+  std::set<SourceFaceTopologyKey> used;
+  for (std::size_t step = 0U; step < incident.size(); ++step) {
+    if (!used.insert(current.topology).second) return std::nullopt;
+    counterClockwise.push_back(current);
+    const auto next = std::find_if(
+        incident.begin(), incident.end(), [&](const FanFace &candidate) {
+          return candidate.nextVertex == current.previousVertex;
+        });
+    if (next == incident.end()) return std::nullopt;
+    current = *next;
+  }
+  if (current.topology != counterClockwise.front().topology ||
+      used.size() != incident.size()) {
+    return std::nullopt;
+  }
+  const auto faceIt = std::find_if(
+      counterClockwise.begin(), counterClockwise.end(),
+      [&](const FanFace &candidate) {
+        return candidate.topology == attachment.startFace;
+      });
+  if (faceIt == counterClockwise.end()) return std::nullopt;
+  const auto gauge = independent_face_gauge(
+      mesh, field, faceIt->row, faceIt->topology);
+  if (!gauge.has_value()) return std::nullopt;
+  const auto raw = independent_face_branches(field, faceIt->row);
+  const std::size_t rawBranch = static_cast<std::size_t>(
+      ((*gauge + static_cast<int>(attachment.branch.value())) % 4 + 4) % 4);
+  Eigen::Vector3d direction = raw[rawBranch].transpose();
+
+  const Eigen::Vector3d origin =
+      mesh.V.row(static_cast<int>(sourceVertex.index())).transpose();
+  Eigen::Vector3d startRay =
+      mesh.V.row(static_cast<int>(faceIt->nextVertex.index())).transpose() -
+      origin;
+  Eigen::Vector3d endRay =
+      mesh.V.row(static_cast<int>(faceIt->previousVertex.index())).transpose() -
+      origin;
+  Eigen::Vector3d normal = startRay.cross(endRay);
+  const double normalNorm = normal.norm();
+  const double startNorm = startRay.norm();
+  const double endNorm = endRay.norm();
+  if (!std::isfinite(normalNorm) || !std::isfinite(startNorm) ||
+      !std::isfinite(endNorm) || normalNorm <= tolerance ||
+      startNorm <= tolerance || endNorm <= tolerance) {
+    return std::nullopt;
+  }
+  normal /= normalNorm;
+  startRay /= startNorm;
+  endRay /= endNorm;
+  direction -= direction.dot(normal) * normal;
+  const double directionNorm = direction.norm();
+  if (!std::isfinite(directionNorm) || directionNorm <= tolerance) {
+    return std::nullopt;
+  }
+  direction /= directionNorm;
+  auto positiveAngle = [&](const Eigen::Vector3d &from,
+                           const Eigen::Vector3d &to) {
+    double angle = independent_signed_angle(from, to, normal);
+    if (angle < 0.0) angle += 2.0 * std::numbers::pi;
+    return angle;
+  };
+  const double sector = positiveAngle(startRay, endRay);
+  const double angle = positiveAngle(startRay, direction);
+  if (!std::isfinite(sector) || !std::isfinite(angle) || sector <= tolerance ||
+      angle > sector + tolerance) {
+    return std::nullopt;
+  }
+  return IndependentPortOrderKey{
+      static_cast<std::size_t>(
+          std::distance(counterClockwise.begin(), faceIt)),
+      angle};
 }
 
 std::vector<IndependentCycleRow> independent_cycle_rows(const TriMesh &mesh) {
@@ -939,6 +1141,78 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     const std::set<SourceEdgeTopologyKey> &hardFeatureEdges,
     const IndependentAtlasSnapshot &snapshot) {
   const auto rowTopology = independent_row_topology(mesh, sourceAuthority);
+  if (snapshot.branchTopologyDigest !=
+      independent_branch_topology_digest(snapshot)) {
+    return FieldAtlasBuildErrorCode::CanonicalBindingMismatch;
+  }
+  if (snapshot.branchFrames.size() != rowTopology.size()) {
+    return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+  }
+  std::set<SourceFaceTopologyKey> frameFaces;
+  for (const auto &frame : snapshot.branchFrames) {
+    if (!frameFaces.insert(frame.sourceFace).second ||
+        frame.branches.size() != 4U) {
+      return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+    }
+    const auto &faceVertices = frame.sourceFace.vertices();
+    std::set<SourceEdgeTopologyKey> faceEdges;
+    for (int edge = 0; edge < 3; ++edge) {
+      const auto typed = SourceEdgeTopologyKey::make(
+          faceVertices[static_cast<std::size_t>(edge)],
+          faceVertices[static_cast<std::size_t>((edge + 1) % 3)]);
+      if (!typed) return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+      faceEdges.insert(typed.value());
+    }
+    for (std::size_t branch = 0; branch < 4U; ++branch) {
+      const FieldBranchBoundaryPairing &pairing = frame.branches[branch];
+      if (pairing.branch.value() != branch || pairing.intervals.size() != 3U ||
+          pairing.incomingCarriers.empty() || pairing.outgoingCarriers.empty()) {
+        return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+      }
+      std::set<SourceEdgeTopologyKey> seen;
+      for (const auto &interval : pairing.intervals) {
+        if (faceEdges.count(interval.sourceEdge) == 0U ||
+            !seen.insert(interval.sourceEdge).second) {
+          return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+        }
+        const bool listedIncoming =
+            std::find(pairing.incomingCarriers.begin(),
+                      pairing.incomingCarriers.end(), interval.sourceEdge) !=
+            pairing.incomingCarriers.end();
+        const bool listedOutgoing =
+            std::find(pairing.outgoingCarriers.begin(),
+                      pairing.outgoingCarriers.end(), interval.sourceEdge) !=
+            pairing.outgoingCarriers.end();
+        if ((interval.flow == FieldBoundaryFlow::Inflow &&
+             (!listedIncoming || listedOutgoing)) ||
+            (interval.flow == FieldBoundaryFlow::Outflow &&
+             (!listedOutgoing || listedIncoming)) ||
+            (interval.flow == FieldBoundaryFlow::Tangent &&
+             (listedIncoming || listedOutgoing))) {
+          return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+        }
+      }
+      if (seen != faceEdges) return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+      if (!pairing.direction.is_barycentric()) {
+        return FieldAtlasBuildErrorCode::BranchDirectionNotBarycentric;
+      }
+    }
+  }
+  if (frameFaces != std::set<SourceFaceTopologyKey>(rowTopology.begin(),
+                                                     rowTopology.end())) {
+    return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+  }
+  std::map<SourceEdgeTopologyKey, const FieldBranchTransportAdjacency *>
+      branchTransportByEdge;
+  for (const auto &transport : snapshot.branchTransports) {
+    if (transport.reverse != transport.forward.inverse() ||
+        QuarterTurn::from_integer(transport.forwardLift) != transport.forward ||
+        frameFaces.count(transport.firstFace) == 0U ||
+        frameFaces.count(transport.secondFace) == 0U ||
+        !branchTransportByEdge.emplace(transport.sourceEdge, &transport).second) {
+      return FieldAtlasBuildErrorCode::NonReciprocalAdjacency;
+    }
+  }
   if (snapshot.sourceDigest !=
       independent_source_digest(mesh, sourceAuthority)) {
     return FieldAtlasBuildErrorCode::CanonicalBindingMismatch;
@@ -960,13 +1234,17 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     return FieldAtlasBuildErrorCode::InvalidInput;
   }
   std::map<std::uint64_t, int> rawSingularities;
+  std::map<std::uint64_t, int> rawBoundarySingularities;
   for (Eigen::Index index = 0; index < field.singularCycles.size(); ++index) {
     const int vertex = field.singularCycles(index);
     const int numerator = field.singularIndices(index);
-    if (vertex < 0 || vertex >= mesh.V.rows() || numerator == 0 ||
-        !rawSingularities
-             .emplace(static_cast<std::uint64_t>(vertex), numerator)
-             .second) {
+    if (vertex < 0 || vertex >= mesh.V.rows() || numerator == 0) {
+      return FieldAtlasBuildErrorCode::SingularityMismatch;
+    }
+    std::map<std::uint64_t, int> &owner =
+        mesh.isBoundaryVertex(vertex) != 0 ? rawBoundarySingularities
+                                           : rawSingularities;
+    if (!owner.emplace(static_cast<std::uint64_t>(vertex), numerator).second) {
       return FieldAtlasBuildErrorCode::SingularityMismatch;
     }
   }
@@ -1047,13 +1325,51 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
         transition.secondFace != static_cast<int>(typed.secondFace.index()) ||
         transition.matching != typed.forwardLift ||
         transition.effort != typed.effort ||
-        sourceMeasurement.matching != transition.matching ||
         std::abs(sourceMeasurement.effort - transition.effort) >= 1.0e-6 ||
+        QuarterTurn::from_integer(sourceMeasurement.matching) !=
+            QuarterTurn::from_integer(transition.matching) ||
         QuarterTurn::from_integer(sourceMeasurement.matching) != typed.forward) {
       return FieldAtlasBuildErrorCode::NonReciprocalAdjacency;
     }
+
+    const auto branchFound = branchTransportByEdge.find(edge);
+    if (branchFound == branchTransportByEdge.end()) {
+      return FieldAtlasBuildErrorCode::MissingAdjacency;
+    }
+    const auto firstGauge = independent_face_gauge(
+        mesh, field, transition.firstFace,
+        rowTopology[static_cast<std::size_t>(transition.firstFace)]);
+    const auto secondGauge = independent_face_gauge(
+        mesh, field, transition.secondFace,
+        rowTopology[static_cast<std::size_t>(transition.secondFace)]);
+    if (!firstGauge.has_value() || !secondGauge.has_value()) {
+      return FieldAtlasBuildErrorCode::InvalidBranchTopology;
+    }
+    const int canonicalLift =
+        sourceMeasurement.matching + *firstGauge - *secondGauge;
+    const SourceFaceTopologyKey &firstTopology =
+        rowTopology[static_cast<std::size_t>(transition.firstFace)];
+    const SourceFaceTopologyKey &secondTopology =
+        rowTopology[static_cast<std::size_t>(transition.secondFace)];
+    const bool canonicalForward = firstTopology < secondTopology;
+    const QuarterTurn expectedForward = QuarterTurn::from_integer(
+        canonicalForward ? canonicalLift : -canonicalLift);
+    const double expectedEffort =
+        canonicalForward ? sourceMeasurement.effort : -sourceMeasurement.effort;
+    const FieldBranchTransportAdjacency &branch = *branchFound->second;
+    if (branch.firstFace !=
+            (canonicalForward ? firstTopology : secondTopology) ||
+        branch.secondFace !=
+            (canonicalForward ? secondTopology : firstTopology) ||
+        branch.forward != expectedForward ||
+        branch.reverse != expectedForward.inverse() ||
+        QuarterTurn::from_integer(branch.forwardLift) != expectedForward ||
+        std::abs(branch.effort - expectedEffort) >= 1.0e-6) {
+      return FieldAtlasBuildErrorCode::NonReciprocalAdjacency;
+    }
   }
-  if (adjacency.size() != traversableCount) {
+  if (adjacency.size() != traversableCount ||
+      branchTransportByEdge.size() != traversableCount) {
     return FieldAtlasBuildErrorCode::DuplicateAdjacency;
   }
   if (barriers.size() != barrierCount) {
@@ -1105,6 +1421,31 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
   if (!expectedCycleFacts.has_value() ||
       expectedCycleFacts->size() != snapshot.cycles.size()) {
     return FieldAtlasBuildErrorCode::IncompleteCycleBasis;
+  }
+  std::set<std::uint64_t> reconciledBoundarySingularities;
+  for (std::size_t loopIndex = 0; loopIndex < mesh.boundaryLoops.size();
+       ++loopIndex) {
+    const std::size_t cycleIndex = localCycles + loopIndex;
+    if (cycleIndex >= expectedCycleFacts->size() ||
+        (*expectedCycleFacts)[cycleIndex].kind != FieldCycleKind::BoundaryLoop) {
+      return FieldAtlasBuildErrorCode::IncompleteCycleBasis;
+    }
+    const int turningLift = (*expectedCycleFacts)[cycleIndex].turningLift;
+    for (const int vertex : mesh.boundaryLoops[loopIndex]) {
+      const auto supplied =
+          rawBoundarySingularities.find(static_cast<std::uint64_t>(vertex));
+      if (supplied == rawBoundarySingularities.end()) continue;
+      if (supplied->second != turningLift ||
+          !reconciledBoundarySingularities
+               .insert(static_cast<std::uint64_t>(vertex))
+               .second) {
+        return FieldAtlasBuildErrorCode::SingularityMismatch;
+      }
+    }
+  }
+  if (reconciledBoundarySingularities.size() !=
+      rawBoundarySingularities.size()) {
+    return FieldAtlasBuildErrorCode::SingularityMismatch;
   }
   std::vector<bool> matchedExpected(expectedCycleFacts->size(), false);
   std::size_t localCount = 0U;
@@ -1276,6 +1617,94 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     }
   }
 
+  std::map<FieldSingularityId, const FieldSingularityFact *> singularityById;
+  for (const FieldSingularityFact &singularity : snapshot.singularities) {
+    if (!singularityById.emplace(singularity.id, &singularity).second) {
+      return FieldAtlasBuildErrorCode::SingularityMismatch;
+    }
+  }
+  std::map<FieldSingularityId,
+           std::vector<const FieldSingularityPortAttachment *>>
+      attachmentsBySingularity;
+  for (const FieldSingularityPortAttachment &attachment :
+       snapshot.singularityPortAttachments) {
+    const auto owner = singularityById.find(attachment.singularity);
+    if (owner == singularityById.end() ||
+        !owner->second->topologyRegion.has_value() ||
+        attachment.sourceVertex != owner->second->sourceVertex ||
+        attachment.topologyRegion != *owner->second->topologyRegion ||
+        attachment.sourceComponent != owner->second->sourceComponent ||
+        attachment.sourceVertex.index() >=
+            static_cast<std::size_t>(mesh.V.rows()) ||
+        frameFaces.count(attachment.startFace) == 0U) {
+      return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+    }
+    attachmentsBySingularity[attachment.singularity].push_back(&attachment);
+    const auto &vertices = attachment.startFace.vertices();
+    if (std::find(vertices.begin(), vertices.end(), attachment.sourceVertex) ==
+        vertices.end()) {
+      return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+    }
+    const auto frame = std::find_if(
+        snapshot.branchFrames.begin(), snapshot.branchFrames.end(),
+        [&](const auto &candidate) {
+          return candidate.sourceFace == attachment.startFace;
+        });
+    if (frame == snapshot.branchFrames.end() ||
+        frame->topologyRegion != attachment.topologyRegion ||
+        frame->sourceComponent != attachment.sourceComponent ||
+        attachment.branch.value() >= frame->branches.size() ||
+        std::find(
+            frame->branches[attachment.branch.value()].outgoingCarriers.begin(),
+            frame->branches[attachment.branch.value()].outgoingCarriers.end(),
+            attachment.firstOutgoingCarrier) ==
+            frame->branches[attachment.branch.value()].outgoingCarriers.end()) {
+      return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+    }
+  }
+  for (const FieldSingularityFact &singularity : snapshot.singularities) {
+    const int expected = 4 - singularity.indexNumerator;
+    const auto found = attachmentsBySingularity.find(singularity.id);
+    if (expected <= 0 || expected > 4 ||
+        found == attachmentsBySingularity.end() ||
+        found->second.size() != static_cast<std::size_t>(expected)) {
+      return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+    }
+    std::vector<std::pair<IndependentPortOrderKey,
+                          const FieldSingularityPortAttachment *>>
+        ordered;
+    ordered.reserve(found->second.size());
+    for (const FieldSingularityPortAttachment *attachment : found->second) {
+      const auto key = independent_port_order_key(
+          mesh, field, rowTopology, singularity.sourceVertex, *attachment);
+      if (!key.has_value()) {
+        return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+      }
+      ordered.emplace_back(*key, attachment);
+    }
+    std::sort(ordered.begin(), ordered.end(), [](const auto &first,
+                                                  const auto &second) {
+      if (first.first.counterClockwiseFanSlot !=
+          second.first.counterClockwiseFanSlot) {
+        return first.first.counterClockwiseFanSlot <
+               second.first.counterClockwiseFanSlot;
+      }
+      return first.first.sectorAngle < second.first.sectorAngle;
+    });
+    for (std::size_t slot = 0; slot < ordered.size(); ++slot) {
+      if (ordered[slot].second->localSlot != static_cast<int>(slot)) {
+        return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+      }
+      if (slot > 0U &&
+          ordered[slot - 1U].first.counterClockwiseFanSlot ==
+              ordered[slot].first.counterClockwiseFanSlot &&
+          std::abs(ordered[slot - 1U].first.sectorAngle -
+                   ordered[slot].first.sectorAngle) <= 1.0e-10) {
+        return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+      }
+    }
+  }
+
   const FieldQuadrangulabilityWitness &witness = snapshot.witnesses.front();
   const auto expectedKind =
       topology.boundaryLoops == 0
@@ -1343,6 +1772,31 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
     return FieldAtlasBuildErrorCode::CanonicalBindingMismatch;
   }
   return std::nullopt;
+}
+
+CrossFieldResult gauge_relabel_field(const TriMesh &mesh,
+                                     const CrossFieldResult &baseline,
+                                     const std::vector<int> &shifts) {
+  CrossFieldResult result = baseline;
+  EXPECT_EQ(static_cast<std::size_t>(mesh.F.rows()), shifts.size());
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const Eigen::RowVector3d p = baseline.primaryDirections.row(face);
+    const Eigen::RowVector3d s = baseline.secondaryDirections.row(face);
+    const std::array<Eigen::RowVector3d, 4> branches{p, s, -p, -s};
+    const int shift = ((shifts[static_cast<std::size_t>(face)] % 4) + 4) % 4;
+    result.primaryDirections.row(face) = branches[static_cast<std::size_t>(shift)];
+    result.secondaryDirections.row(face) =
+        branches[static_cast<std::size_t>((shift + 1) % 4)];
+  }
+  for (CrossFieldEdgeTransition &transition : result.edgeTransitions) {
+    if (transition.firstFace < 0 || transition.secondFace < 0) continue;
+    transition.matching = baseline.edgeTransitions[static_cast<std::size_t>(
+                              transition.sourceEdge)].matching +
+                          shifts[static_cast<std::size_t>(transition.firstFace)] -
+                          shifts[static_cast<std::size_t>(transition.secondFace)];
+    result.matching(transition.sourceEdge) = transition.matching;
+  }
+  return result;
 }
 
 TEST(FieldTransportAtlas,
@@ -1692,6 +2146,298 @@ TEST(FieldTransportAtlas,
           .holonomySignatureDigest);
   EXPECT_EQ(FieldCycleKind::BoundaryLoop,
             relabeled.value().cycles().front().kind);
+}
+
+TEST(FieldTransportAtlas, PublishesCanonicalBranchFramesAndBoundaryPairings) {
+  const TriMesh mesh = make_skew_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult field;
+  ASSERT_NO_FATAL_FAILURE(make_skew_index_one_singularity_field(mesh, field));
+  auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(built)
+      << describe_field_atlas_build_error(built.error());
+  const FieldBranchTopology &topology = built.value().branch_topology();
+  ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()), topology.frames().size());
+  ASSERT_FALSE(topology.transports().empty());
+  bool sawDistinctCarriers = false;
+  for (const auto &frame : topology.frames()) {
+    ASSERT_EQ(4U, frame.branches.size());
+    for (std::size_t branch = 0; branch < frame.branches.size(); ++branch) {
+      const auto &pairing = frame.branches[branch];
+      EXPECT_EQ(branch, pairing.branch.value());
+      EXPECT_EQ(3U, pairing.intervals.size());
+      EXPECT_FALSE(pairing.incomingCarriers.empty());
+      EXPECT_FALSE(pairing.outgoingCarriers.empty());
+      sawDistinctCarriers = sawDistinctCarriers ||
+          pairing.incomingCarriers != pairing.outgoingCarriers;
+    }
+  }
+  EXPECT_TRUE(sawDistinctCarriers);
+  EXPECT_NE(0U, topology.semantic_digest());
+  EXPECT_FALSE(independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, independent_snapshot(built.value())));
+}
+
+TEST(FieldTransportAtlas, PublishesCheckedSingularityPortAttachments) {
+  const TriMesh mesh = make_skew_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult field;
+  ASSERT_NO_FATAL_FAILURE(make_skew_index_one_singularity_field(mesh, field));
+  auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(built)
+      << describe_field_atlas_build_error(built.error());
+  ASSERT_EQ(1U, built.value().singularities().size());
+  EXPECT_EQ(1, built.value().singularities().front().indexNumerator);
+  const auto &attachments =
+      built.value().branch_topology().singularity_port_attachments();
+  ASSERT_EQ(3U, attachments.size());
+  for (std::size_t slot = 0; slot < attachments.size(); ++slot) {
+    EXPECT_EQ(static_cast<int>(slot), attachments[slot].localSlot);
+    EXPECT_EQ(built.value().singularities().front().id,
+              attachments[slot].singularity);
+    EXPECT_EQ(built.value().singularities().front().sourceVertex,
+              attachments[slot].sourceVertex);
+    const auto *frame = built.value().branch_topology().find_frame(
+        attachments[slot].startFace);
+    ASSERT_NE(nullptr, frame);
+    ASSERT_LT(attachments[slot].branch.value(), frame->branches.size());
+    const auto &outgoing = frame->branches[attachments[slot].branch.value()]
+                               .outgoingCarriers;
+    EXPECT_NE(outgoing.end(),
+              std::find(outgoing.begin(), outgoing.end(),
+                        attachments[slot].firstOutgoingCarrier));
+  }
+
+  const auto rowTopology = independent_row_topology(mesh, *sourceAuthority);
+  std::optional<IndependentPortOrderKey> previousOrder;
+  for (const auto &attachment : attachments) {
+    const auto currentOrder = independent_port_order_key(
+        mesh, field, rowTopology, attachment.sourceVertex, attachment);
+    ASSERT_TRUE(currentOrder.has_value());
+    if (previousOrder.has_value()) {
+      EXPECT_TRUE(
+          previousOrder->counterClockwiseFanSlot <
+              currentOrder->counterClockwiseFanSlot ||
+          (previousOrder->counterClockwiseFanSlot ==
+               currentOrder->counterClockwiseFanSlot &&
+           previousOrder->sectorAngle < currentOrder->sectorAngle));
+    }
+    previousOrder = currentOrder;
+  }
+  bool sawBranchDisambiguatedRepresentative = false;
+  for (std::size_t first = 0; first < attachments.size(); ++first) {
+    for (std::size_t second = first + 1U; second < attachments.size(); ++second) {
+      sawBranchDisambiguatedRepresentative =
+          sawBranchDisambiguatedRepresentative ||
+          (attachments[first].startFace == attachments[second].startFace &&
+           attachments[first].firstOutgoingCarrier ==
+               attachments[second].firstOutgoingCarrier &&
+           attachments[first].branch != attachments[second].branch);
+    }
+  }
+  EXPECT_TRUE(sawBranchDisambiguatedRepresentative);
+
+  CrossFieldResult mismatchedBoundary = field;
+  bool mutatedBoundaryAlias = false;
+  for (Eigen::Index row = 0; row < mismatchedBoundary.singularCycles.size();
+       ++row) {
+    const int vertex = mismatchedBoundary.singularCycles(row);
+    ASSERT_GE(vertex, 0);
+    ASSERT_LT(vertex, mesh.V.rows());
+    if (mesh.isBoundaryVertex(vertex) == 0) continue;
+    ++mismatchedBoundary.singularIndices(row);
+    mutatedBoundaryAlias = true;
+    break;
+  }
+  ASSERT_TRUE(mutatedBoundaryAlias);
+  auto mismatched = FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, mismatchedBoundary);
+  ASSERT_FALSE(mismatched);
+  EXPECT_EQ(FieldAtlasBuildErrorCode::SingularityMismatch,
+            mismatched.error().code);
+}
+
+TEST(FieldTransportAtlas, BranchTopologyIsInvariantToEquivalentZ4Relabeling) {
+  const TriMesh mesh = make_skew_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult baselineField;
+  ASSERT_NO_FATAL_FAILURE(
+      make_skew_index_one_singularity_field(mesh, baselineField));
+  auto baseline =
+      FieldTransportAtlas::make(mesh, *sourceAuthority, {}, baselineField);
+  ASSERT_TRUE(baseline)
+      << describe_field_atlas_build_error(baseline.error());
+  EXPECT_FALSE(independent_validate_snapshot(
+      mesh, *sourceAuthority, baselineField, {},
+      independent_snapshot(baseline.value())));
+
+  const std::vector<int> shifts{0, 1, 3, 2};
+  CrossFieldResult relabeledField = gauge_relabel_field(mesh, baselineField, shifts);
+  bool rawChanged = false;
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    rawChanged = rawChanged ||
+        !baselineField.primaryDirections.row(face).isApprox(
+            relabeledField.primaryDirections.row(face));
+  }
+  EXPECT_TRUE(rawChanged);
+  bool matchingChanged = false;
+  for (const auto &transition : relabeledField.edgeTransitions) {
+    if (transition.secondFace < 0) continue;
+    const auto baselineTransition = std::find_if(
+        baselineField.edgeTransitions.begin(), baselineField.edgeTransitions.end(),
+        [&](const auto &candidate) {
+          return candidate.sourceEdge == transition.sourceEdge;
+        });
+    ASSERT_NE(baselineField.edgeTransitions.end(), baselineTransition);
+    matchingChanged = matchingChanged ||
+        transition.matching != baselineTransition->matching;
+  }
+  EXPECT_TRUE(matchingChanged);
+
+  auto relabeled =
+      FieldTransportAtlas::make(mesh, *sourceAuthority, {}, relabeledField);
+  ASSERT_TRUE(relabeled)
+      << describe_field_atlas_build_error(relabeled.error());
+  EXPECT_FALSE(independent_validate_snapshot(
+      mesh, *sourceAuthority, relabeledField, {},
+      independent_snapshot(relabeled.value())));
+  EXPECT_EQ(baseline.value().branch_topology().frames(),
+            relabeled.value().branch_topology().frames());
+  EXPECT_EQ(baseline.value().branch_topology().transports(),
+            relabeled.value().branch_topology().transports());
+  for (const auto &transport : relabeled.value().branch_topology().transports()) {
+    EXPECT_EQ(static_cast<int>(transport.forward.value()), transport.forwardLift);
+    EXPECT_GE(transport.forwardLift, 0);
+    EXPECT_LT(transport.forwardLift, 4);
+    EXPECT_EQ(transport.forward.inverse(), transport.reverse);
+    EXPECT_EQ(QuarterTurn::from_integer(-transport.forwardLift),
+              transport.reverse);
+  }
+  EXPECT_EQ(baseline.value().branch_topology().singularity_port_attachments(),
+            relabeled.value().branch_topology().singularity_port_attachments());
+  EXPECT_EQ(baseline.value().branch_topology().semantic_digest(),
+            relabeled.value().branch_topology().semantic_digest());
+  const bool sawNonzeroTransport = std::any_of(
+      relabeled.value().branch_topology().transports().begin(),
+      relabeled.value().branch_topology().transports().end(),
+      [](const auto &transport) { return transport.forward.value() != 0U; });
+  EXPECT_TRUE(sawNonzeroTransport);
+}
+
+TEST(FieldTransportAtlas, RejectsAmbiguousOrIncompleteBranchTopology) {
+  const TriMesh mesh = make_skew_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult field;
+  ASSERT_NO_FATAL_FAILURE(make_skew_index_one_singularity_field(mesh, field));
+  field.secondaryDirections.row(0) = field.primaryDirections.row(0);
+  auto ambiguous = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_FALSE(ambiguous);
+  EXPECT_EQ(FieldAtlasBuildErrorCode::AmbiguousBranchTopology,
+            ambiguous.error().code);
+
+  ASSERT_NO_FATAL_FAILURE(make_skew_index_one_singularity_field(mesh, field));
+  field.primaryDirections.row(0).setZero();
+  auto incomplete = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_FALSE(incomplete);
+  EXPECT_EQ(FieldAtlasBuildErrorCode::InvalidBranchTopology,
+            incomplete.error().code);
+}
+
+TEST(FieldTransportAtlas,
+     IndependentOracleRejectsBranchPairingOrPortAttachmentTamper) {
+  const TriMesh mesh = make_skew_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult field;
+  ASSERT_NO_FATAL_FAILURE(make_skew_index_one_singularity_field(mesh, field));
+  auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
+  ASSERT_TRUE(built)
+      << describe_field_atlas_build_error(built.error());
+  const IndependentAtlasSnapshot baseline = independent_snapshot(built.value());
+  ASSERT_FALSE(independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, baseline));
+
+  const auto rowTopology = independent_row_topology(mesh, *sourceAuthority);
+
+  IndependentAtlasSnapshot pairingTamper = baseline;
+  ASSERT_FALSE(pairingTamper.branchFrames.empty());
+  ASSERT_FALSE(pairingTamper.branchFrames.front().branches.empty());
+  ASSERT_FALSE(pairingTamper.branchFrames.front().branches.front().intervals.empty());
+  pairingTamper.branchFrames.front().branches.front().intervals.front().flow =
+      pairingTamper.branchFrames.front().branches.front().intervals.front().flow ==
+              FieldBoundaryFlow::Inflow
+          ? FieldBoundaryFlow::Outflow
+          : FieldBoundaryFlow::Inflow;
+  pairingTamper.branchTopologyDigest =
+      independent_branch_topology_digest(pairingTamper);
+  pairingTamper.atlasDigest =
+      independent_atlas_digest(pairingTamper, rowTopology);
+  const auto pairingRejection = independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, pairingTamper);
+  ASSERT_TRUE(pairingRejection.has_value());
+  EXPECT_EQ(FieldAtlasBuildErrorCode::InvalidBranchTopology,
+            *pairingRejection);
+
+  IndependentAtlasSnapshot attachmentTamper = baseline;
+  ASSERT_EQ(3U, attachmentTamper.singularityPortAttachments.size());
+  attachmentTamper.singularityPortAttachments.front().localSlot = 7;
+  attachmentTamper.branchTopologyDigest =
+      independent_branch_topology_digest(attachmentTamper);
+  attachmentTamper.atlasDigest =
+      independent_atlas_digest(attachmentTamper, rowTopology);
+  const auto attachmentRejection = independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, attachmentTamper);
+  ASSERT_TRUE(attachmentRejection.has_value());
+  EXPECT_EQ(FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment,
+            *attachmentRejection);
+
+  IndependentAtlasSnapshot duplicateIdentityTamper = baseline;
+  ASSERT_EQ(3U, duplicateIdentityTamper.singularityPortAttachments.size());
+  duplicateIdentityTamper.singularityPortAttachments[1].startFace =
+      duplicateIdentityTamper.singularityPortAttachments[0].startFace;
+  duplicateIdentityTamper.singularityPortAttachments[1].branch =
+      duplicateIdentityTamper.singularityPortAttachments[0].branch;
+  duplicateIdentityTamper.singularityPortAttachments[1].firstOutgoingCarrier =
+      duplicateIdentityTamper.singularityPortAttachments[0].firstOutgoingCarrier;
+  duplicateIdentityTamper.branchTopologyDigest =
+      independent_branch_topology_digest(duplicateIdentityTamper);
+  duplicateIdentityTamper.atlasDigest =
+      independent_atlas_digest(duplicateIdentityTamper, rowTopology);
+  const auto duplicateIdentityRejection = independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, duplicateIdentityTamper);
+  ASSERT_TRUE(duplicateIdentityRejection.has_value());
+  EXPECT_EQ(FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment,
+            *duplicateIdentityRejection);
+
+  IndependentAtlasSnapshot nonEquivalentLiftTamper = baseline;
+  ASSERT_FALSE(nonEquivalentLiftTamper.branchTransports.empty());
+  auto &nonEquivalent = nonEquivalentLiftTamper.branchTransports.front();
+  ++nonEquivalent.forwardLift;
+  nonEquivalent.forward = QuarterTurn::from_integer(nonEquivalent.forwardLift);
+  nonEquivalent.reverse = nonEquivalent.forward.inverse();
+  nonEquivalentLiftTamper.branchTopologyDigest =
+      independent_branch_topology_digest(nonEquivalentLiftTamper);
+  nonEquivalentLiftTamper.atlasDigest =
+      independent_atlas_digest(nonEquivalentLiftTamper, rowTopology);
+  const auto nonEquivalentLiftRejection = independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, nonEquivalentLiftTamper);
+  ASSERT_TRUE(nonEquivalentLiftRejection.has_value());
+  EXPECT_EQ(FieldAtlasBuildErrorCode::NonReciprocalAdjacency,
+            *nonEquivalentLiftRejection);
+
+  IndependentAtlasSnapshot equivalentLiftRepresentative = baseline;
+  ASSERT_FALSE(equivalentLiftRepresentative.branchTransports.empty());
+  equivalentLiftRepresentative.branchTransports.front().forwardLift += 4;
+  equivalentLiftRepresentative.branchTopologyDigest =
+      independent_branch_topology_digest(equivalentLiftRepresentative);
+  equivalentLiftRepresentative.atlasDigest =
+      independent_atlas_digest(equivalentLiftRepresentative, rowTopology);
+  EXPECT_FALSE(independent_validate_snapshot(
+      mesh, *sourceAuthority, field, {}, equivalentLiftRepresentative));
 }
 
 } // namespace

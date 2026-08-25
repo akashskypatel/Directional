@@ -15,14 +15,27 @@ The following records are durable project authority and must be retained unless 
 - `.agents/Directional/Surface_Cell_Architecture_Independent_Design_Review_Report.md`
 - `.agents/Directional/Surface_Cell_Test_Suite_Independent_Audit_And_Redesign_Plan.md`
 - `.agents/Directional/GitHub_Workflow_Policy.md`
+- `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md`
 - `.agents/Directional/CLEAN_UP_POLICY.md`
 - `.agents/Directional/RETENTION_POLICY.md`
 - `.agents/Directional/Regression_Root_Cause_Tracker.md`
 - `.agents/Directional/PR_8_Regression_Audit_Inventory.md`
+- `.agents/Directional/LESSONS.md`
+- `.agents/Directional/M1_Closure_Record.md`
+- `.agents/Directional/M2_Closure_Record.md`
+- `.agents/Directional/M3_CP2_Closure_Record.md`
+- `.agents/Directional/M3_CP2b_Closure_Record.md`
+- `.agents/Directional/M3_CP3_Closure_Record.md`
+- `.agents/Directional/Architecture_M3_CP4_DEFN_Frozen_Definitions.md`
 - `.agents/Directional/CHANGELOG.md`
 - `.agents/Directional/Future_Chat_Session_Handoff.md`
+- `.agents/Directional/AGENT_POLICY.md`
 - `TODO.md`
 - `tests/TESTING_STRATEGY.md`
+
+`.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md` is the durable operating authority for reducing connector/workflow/artifact/tool calls without weakening source identity, evidence, turn boundaries, or cleanup safety. It is a mandatory full read at the start of every turn.
+
+`.agents/Directional/LESSONS.md` is the single durable lessons record; the handoff's "Resume-critical lessons" section was moved there by explicit user authorization and now points to it. New lessons are added to `LESSONS.md` in the section that governs them, never appended to the handoff.
 
 `TODO.md` is the single durable task index. The former root `TODO` and `MILESTONE_G_TODO.md` were explicitly authorized for consolidation into it; their actionable tasks and the pending tasks from `REORIENTATION_PLAN.md` must remain represented in `TODO.md` or their owning authoritative plan until completed.
 
@@ -46,6 +59,53 @@ In addition to the durable set, retain only the current authoritative evidence/r
 - Raw machine-readable evidence that is still the sole authority for a claim is not stale and must be retained until its necessary facts have been folded into an appropriate durable/current record.
 - Never remove the current immutable source/package authority until its necessary facts are captured in the succeeding authoritative report and durable/live records.
 - External GitHub Actions artifact retention is governed by `GitHub_Workflow_Policy.md`; repository-side cleanup does not imply deletion of immutable external artifact history.
+
+## `[ChatGPT Web]` Downloadable work-preservation artifacts — mandatory durability barrier
+
+A local container, scratch filesystem, or `/mnt/data` path is **not durable project storage**. Whenever a turn produces a coherent repository-applicable work product that is not yet durably represented on the configured GitHub working branch, the exact produced bytes must cross a durable boundary before the turn proceeds into tool-heavy orchestration or risks interruption.
+
+### `[ChatGPT Web]` Mandatory emission rule
+
+1. After each coherent local editing unit that would require meaningful re-derivation if lost, and **before** the next tool-heavy remote phase (workflow installation/validation/execution, artifact orchestration, multi-step repository cleanup, or comparable work), emit the complete unapplied repository delta as a **user-visible downloadable file** that is uploaded to the conversation/File Library. Merely writing a file under `/mnt/data`, a local checkout, or another ephemeral path does not satisfy this rule.
+2. The default and preferred artifact is one self-contained UTF-8 **Git binary unified patch** with extension `.patch`. It must cover all intended added, modified, deleted, renamed, mode-changed, and binary repository files in that coherent work unit. Generate it with full Git blob indexes and binary support (equivalent to `git diff --binary --full-index --no-ext-diff`) against one exact recorded base commit.
+3. New/untracked files must be included. If the active local source is a snapshot without `.git`, create a temporary local Git baseline from the exact source bytes, overlay the intended work, stage the intended paths, and generate the patch from that temporary baseline. Do not omit new files merely because they were untracked in the scratch workspace.
+4. The patch must begin with comment metadata that `git apply` tolerates and that permits recovery without chat-history inference. At minimum record:
+   - `format=Directional-Work-Preservation-Patch-v1`;
+   - repository and configured working branch;
+   - exact `base_sha` from which the local work was derived;
+   - turn/work-unit identifier and UTC creation time;
+   - `state=prepared-unapplied` (or another exact state if the bytes have already partially landed remotely);
+   - SHA-256 of the **diff body** after the metadata header;
+   - intended changed-path count/list or a path-manifest line when practical;
+   - safe manual application commands.
+5. Name the artifact predictably so File Library search does not depend on remembered prose: `Directional__<TURN-ID>__base-<12SHA>__work-preservation.patch` (sanitize only characters that are unsafe in filenames).
+6. Before emission, verify the patch locally with `git apply --check` against the exact base bytes and run `git diff --check` (or an equivalent whitespace/error check) on the prepared work. Record the diff-body SHA-256 in the header. A patch that does not apply cleanly to its declared base is not a valid preservation artifact.
+7. If additional local edits materially change the unapplied work after emission, emit a new complete patch that supersedes the earlier one before entering another interruption-risk phase. The newest complete artifact is the recovery candidate; incremental fragments are not preferred.
+8. Do not include credentials, authenticated URLs, secrets, caches, build trees, generated packages, or unrelated scratch data. Preserve only the intended repository work product. If an essential local output truly cannot be represented by a Git binary patch, emit it as a separate archive **and** emit a small searchable text manifest naming the archive, its SHA-256, base/source authority, and restore instructions.
+
+### `[ChatGPT Web]` Google Drive transport staging
+
+After the user-visible backup exists and a non-minor patch is ready for remote application:
+
+1. Upload the **same verified patch bytes** with the Google Drive connector to `My Drive/Directional-CI`; do not re-encode, fragment, or stage the patch in the GitHub repository.
+2. Retain the returned Google Drive File ID and complete patch SHA-256 in turn-local execution evidence until the patch is either successfully applied and deleted or deliberately abandoned.
+3. Google Drive staging is transient transport, not durable project authority and not a replacement for the chat/File-Library work-preservation artifact.
+4. Invoke `.github/workflows/agent-google-drive-reusable.yml` by File ID. The workflow must verify the patch, base SHA, intended path set, `git apply --check`, and `git diff --check` before commit/push.
+5. After a successful push, that same workflow must delete the Drive patch and report `drive_file_deleted=true`. If download, verification, apply, commit, or push fails, the Drive file remains available for bounded diagnosis/retry.
+6. Never put credentials, OAuth tokens, authenticated Drive URLs, or service-account material in the patch or repository. The File ID itself is a transport handle and may be recorded in turn evidence.
+
+### `[ChatGPT Web]` Recovery and manual application contract
+
+A preservation patch is loss-prevention material, **not semantic/build/test acceptance authority**. On recovery:
+
+1. locate the newest matching `Directional__...__work-preservation.patch` in File Library;
+2. read and verify its metadata and diff-body SHA-256;
+3. resolve current GitHub branch authority before applying;
+4. if the branch is still at the recorded base (or the touched base blobs are unchanged), run `git apply --check <patch>` and then `git apply <patch>`; use `git apply --index <patch>` when staging the exact result is desired;
+5. if the branch advanced, do not blindly apply. Compare the touched paths/base blobs first. `git apply --3way <patch>` may be used only when its full-index blob authority is available and the resulting merge is reviewed; otherwise rebase/reconstruct the patch deliberately;
+6. after application, run `git diff --check`, inspect the resulting diff, and continue the normal turn-specific compile/test/review policy. Applying a preserved patch does not inherit any acceptance claim from the interrupted turn.
+
+The durability barrier is intentionally **earlier than final closeout**. Its purpose is to make completed local intellectual work recoverable even if tool-call exhaustion, context interruption, workflow troubleshooting, or another failure occurs before GitHub mutation succeeds. Once the same bytes are durably committed to the working branch, the downloadable patch remains recovery provenance but is no longer the authoritative repository state.
 
 ## Durable-information mutation prohibition — user authorization required
 

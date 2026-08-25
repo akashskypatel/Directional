@@ -43,6 +43,8 @@ enum class AuthorityDomain : std::uint8_t {
   Cell,
   Occurrence,
   QuotientClass,
+  NetworkRegion,
+  NetworkArc,
 };
 
 enum class DomainErrorCode : std::uint8_t {
@@ -127,6 +129,12 @@ struct NetworkNodeTag {
 };
 struct NetworkEdgeTag {
   static constexpr AuthorityDomain domain = AuthorityDomain::NetworkEdge;
+};
+struct NetworkRegionTag {
+  static constexpr AuthorityDomain domain = AuthorityDomain::NetworkRegion;
+};
+struct NetworkArcTag {
+  static constexpr AuthorityDomain domain = AuthorityDomain::NetworkArc;
 };
 struct SingularityPortTag {
   static constexpr AuthorityDomain domain = AuthorityDomain::SingularityPort;
@@ -215,6 +223,8 @@ using FieldCycleId = SemanticId<detail::FieldCycleTag>;
 using FieldSingularityId = SemanticId<detail::FieldSingularityTag>;
 using NetworkNodeId = SemanticId<detail::NetworkNodeTag>;
 using NetworkEdgeId = SemanticId<detail::NetworkEdgeTag>;
+using NetworkRegionId = SemanticId<detail::NetworkRegionTag>;
+using NetworkArcId = SemanticId<detail::NetworkArcTag>;
 using SingularityPortId = SemanticId<detail::SingularityPortTag>;
 using TraceId = SemanticId<detail::TraceTag>;
 using SourceVertexFanId = SemanticId<detail::SourceVertexFanTag>;

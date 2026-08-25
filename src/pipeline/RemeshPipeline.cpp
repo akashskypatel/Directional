@@ -6043,6 +6043,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     std::optional<geometry::SourceTopologyRegions> sourceTopologyRegionsProduct;
     std::optional<authority::FieldTransportAtlas> fieldTransportAtlasProduct;
     std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedNetworkProduct;
+    std::optional<geometry::GlobalTopologyPlan> globalTopologyPlanProduct;
     std::vector<geometry::PureQuadMesh> completedPatchesProduct;
     bool sourceGridRecoveryUsedProduct = false;
     Eigen::VectorXd sourceGridRecoveryTargetSizeProduct;
@@ -6585,7 +6586,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     fieldTransportAtlasProduct = std::move(atlasBuild.value());
     tracingOptions.fieldTransportAtlas = &*fieldTransportAtlasProduct;
     auto fieldAlignedBuild = geometry::FieldAlignedCurveNetwork::make(
-        meshWhole.F, static_cast<std::size_t>(meshWhole.V.rows()),
+        meshWhole,
         *sourceTopologyRegionsProduct, *fieldTransportAtlasProduct,
         authoritativeRails);
     if (!fieldAlignedBuild) {
@@ -6597,12 +6598,25 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     }
     fieldAlignedNetworkProduct = std::move(fieldAlignedBuild.value());
     tracingOptions.fieldAlignedNetwork = &*fieldAlignedNetworkProduct;
+    auto globalTopologyBuild = geometry::GlobalTopologyPlan::make(
+        meshWhole.F, static_cast<std::size_t>(meshWhole.V.rows()),
+        *sourceTopologyRegionsProduct, *fieldAlignedNetworkProduct);
+    if (!globalTopologyBuild) {
+      return fail_surface_cells(
+          SurfaceCellFailureCode::NotProductionReady,
+          std::string("global-topology-plan/") +
+              geometry::global_topology_plan_error_code_name(
+                  globalTopologyBuild.error().code));
+    }
+    globalTopologyPlanProduct = std::move(globalTopologyBuild.value());
     result.surfaceCellContext.productSnapshots.sourceTopologyRegions =
         sourceTopologyRegionsProduct;
     result.surfaceCellContext.productSnapshots.fieldTransportAtlas =
         fieldTransportAtlasProduct;
     result.surfaceCellContext.productSnapshots.fieldAlignedCurveNetwork =
         fieldAlignedNetworkProduct;
+    result.surfaceCellContext.productSnapshots.globalTopologyPlan =
+        globalTopologyPlanProduct;
     result.surfaceCellContext.fieldAlignedNetworkAuthorityUsed =
         tracingOptions.fieldAlignedNetwork != nullptr;
     result.surfaceCellContext.rawSingularityProjectionUsed =
@@ -6624,6 +6638,15 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             fieldAlignedNetworkProduct->nodes().size() +
                 fieldAlignedNetworkProduct->singularity_ports().size() +
                 fieldAlignedNetworkProduct->mandatory_edges().size()),
+        true);
+    record_surface_cell_context_product(
+        result.surfaceCellContext, "global-topology-plan",
+        make_identity(
+            "global-topology-plan",
+            geometry::global_topology_plan_hash(*globalTopologyPlanProduct),
+            globalTopologyPlanProduct->arcs().size() +
+                globalTopologyPlanProduct->regions().size() +
+                globalTopologyPlanProduct->rotation_system().size()),
         true);
     if (targetSize.targetSize.size() > 0) {
       tracingOptions.defaultTargetSize = targetSize.targetSize.mean();
@@ -8601,6 +8624,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           componentProducts->sourceTopologyRegions = sourceTopologyRegionsProduct;
           componentProducts->fieldTransportAtlas = fieldTransportAtlasProduct;
           componentProducts->fieldAlignedCurveNetwork = fieldAlignedNetworkProduct;
+          componentProducts->globalTopologyPlan = globalTopologyPlanProduct;
           componentProducts->authoritativeRails = authoritativeRails;
           componentProducts->sourceSurfaceLabels = sourceSurfaceLabels;
           componentProducts->completedPatches = completedPatchesProduct;

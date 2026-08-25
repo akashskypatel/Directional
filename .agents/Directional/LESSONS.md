@@ -1,0 +1,735 @@
+# Durable Lessons — DURABLE, DO NOT DELETE
+
+Consolidated operating lessons earned across M0-M3. Each was paid for with at least one failed
+attempt, gate, or milestone. This document is durable project authority under `RETENTION_POLICY.md`:
+lessons may be **corrected or extended**, but not deleted, weakened, or summarized away without
+explicit user authorization.
+
+**Reviewing this file is a mandatory start-of-turn step.** Before authoring a plan, a fixture, a
+gate criterion, or a corrective measure, read the section that governs it. Most repeat failures in
+this project were of a class already written down here.
+
+Provenance is kept where it carries the evidence. Where two lessons said the same thing they were
+merged; no distinct claim was dropped.
+
+**Cite lessons by section and short title, never by number.** Numbers shift whenever a lesson is
+inserted, so a numeric reference in another document silently rots into a pointer at the wrong
+lesson.
+
+---
+
+## 1. Evidence and acceptance
+
+### Structured diagnostic fields outrank grep over assertion prose
+
+A machine summary must not infer a typed first rejection by grepping an entire GoogleTest failure stream for enum names. Assertion output prints expected values before actual values, so the expected enum can be misclassified as the observed rejection. Prefer a structured product diagnostic or parse the explicit actual field; retain identity-scoped raw streams as final authority. A reporting-parser defect does not invalidate otherwise correct selector/process/package evidence, but it must be corrected before its classification field is used for planning.
+
+
+1. **Compile success is build evidence, never semantic acceptance.** Two independent corollaries,
+   both paid for: a compile-green package can be **contract-incomplete** (M3-CP1 package 1 passed
+   123/123 and had not implemented the frozen contract), and a compile-green package can be
+   **semantically wrong**. Re-run the closeout source audit before calling any package an
+   acceptance candidate; if the audit proves partial implementation, do not freeze a selector or
+   promote the artifact.
+2. **A zero-selected test filter is orchestration failure, never a pass.**
+3. **A compile-green package is not TB-runnable authority unless it contains every executable that
+   owns the frozen selector.** A missing owner binary is pre-semantic package closure, not a
+   partial pass.
+4. **Changed-block coverage is a candidate set, not required-green authority.** Before promoting a
+   red changed-block test into a gate, run that exact identity against the accepted predecessor. If
+   it is already red there, keep it visible as inherited/non-gating until its precondition is
+   independently repaired. Never manufacture a regression by changing the selector without a
+   differential.
+5. **Checkpoint-static scanners are immutable historical evidence, not current semantic truth.**
+   When accepted later work legitimately changes package layout, source-list indirection, or typed
+   representation counts, replay the scanner against its exact accepted source and reconcile the
+   delta with a fresh fail-closed audit. Do not weaken the historical baseline, and do not treat
+   name-only drift as a semantic regression.
+6. **An audit passing means the family was in scope, not that the family is closed.** Record
+   out-of-scope families as explicit decisions; otherwise a passing audit reads as proof of absence.
+7. **Never treat a documentation or control-plane commit as implementation, build, test, or runtime
+   evidence.** A **triggered** workflow is one step further from evidence than a completed one:
+   firing a gate proves only that it was fired. A checkpoint is closed by a recorded result — run
+   identity, artifact digests, per-group counts, immutability flags — never by the commit that
+   launched it. M3-CP2b was reported closed on exactly that basis, with the gate triggered and no
+   result in the repository; the claim was rejected, and the same checkpoint closed cleanly one turn
+   later once the result was supplied. Rejecting the first claim cost one turn; accepting it would
+   have put a fabricated acceptance into the durable record.
+8a. **Consolidation must not orphan a citation that another durable document calls binding.** CP4ab's
+    closure retired 34 per-turn documents; twelve normative attribution lines in the frozen-definitions
+    document and two in the M3 plan then pointed at files that no longer existed. The retirement was
+    *correct* — every amendment had inlined the content it froze — but a future agent following
+    "`X.md`, binding" would find nothing and could not tell "authority inlined here" from "authority
+    lost". Before retiring a cited document, either inline what is load-bearing **and annotate the
+    citation as retired provenance**, or keep the file. Do one or the other in the same turn that
+    retires it.
+8b. **A routing pointer is only as good as the section it names.** Four documents — the task index, the
+    handoff, the closing report, and the closure record — all routed the next checkpoint to "section
+    4A.3c". No such section had ever existed; the content lived under a differently-numbered heading and
+    was a scope statement rather than a decomposition. Nobody noticed because nobody had yet followed
+    the pointer. **Resolve every forward routing pointer at the turn that writes it**, not at the turn
+    that has to act on it.
+8c. **"Through the production entry path" is a claim about production code, not about a fixture.** Two
+    CP4c identities were named `…DerivesRegionsThroughProductionEntryPath` and planned as fixture work
+    for three checkpoints, while the product they assert on — `GlobalTopologyPlan` — was never
+    constructed by the pipeline at all. One grep would have shown it at any point. **When an identity
+    name asserts that production reaches a product, grep production for that product before sizing the
+    checkpoint.**
+8. **Consolidation follows verification; it never precedes it.** The per-turn reports a closure
+   record would retire are the very evidence that record must consolidate. Retiring them on an
+   unverified claim destroys the material and leaves nothing to reconstruct from. When a closure
+   claim cannot be verified, write no closure record, retire nothing, and say plainly what evidence
+   is missing and what would satisfy it.
+
+## 2. Fixtures and witnesses
+
+8d. **"The fixture exists" is not "the fixture reaches the stage you are asserting on."** CP4c named
+    two committed witnesses as verified, and what had actually been verified was that four files exist
+    and that one of them could be driven through a **legacy** product call. Neither had ever been
+    through A1, A2a, or A2b — the three stages its six identities assert on. Six identities were then
+    authored against them, and all six failed in fixture construction. **Before authoring an identity
+    against a witness, prove the witness reaches the product stage the identity reads, and record which
+    stage that is.** A `-DEFN` turn must state this for every witness it names.
+8e. **A rejection code shared by many conditions makes the next turn guesswork.**
+    `RegionCutComponentCountDeficit` is emitted at **18 distinct sites** for 18 different conditions,
+    four of them inside the single loop that rejected the torus. The evidence therefore localizes the
+    failure to an 18-way ambiguity, and no corrective measure can be chosen from it. This project froze
+    a rule against exactly this after CP4b emitted one code at seven sites; the rule was not applied to
+    code that already existed. **Splitting an overloaded code is a legitimate first corrective measure
+    on its own** — it changes no behaviour and it is what makes the next measurement mean something.
+
+9. **A fixture that satisfies a contract's precondition trivially cannot falsify it.** This class
+   has now cost four M3 checkpoints:
+   - **CP1** — A1's fixtures were entirely planar (`z = 0.0`), so a curvature-sensitive cycle
+     invariant was only ever evaluated at the degenerate `0 ≡ 0` point;
+   - **CP2** — `rails_from_atlas(...)` built one single-edge *open* rail per barrier, so
+     `|V| == |E|+1` held unconditionally and six identities passed a builder that rejected every
+     closed production rail;
+   - **CP2b** — the skew index-1 helper hard-coded an ordered face pair the mesh does not promise,
+     so three consecutive attempts died in fixture construction without ever reaching a semantic
+     seam;
+   - **CP3a** — the one-ring fan was reused on the strength of a previous green gate, but every edge
+     opposite its singular vertex is a boundary edge, so the required multi-face traversal was
+     unsatisfiable on that mesh **by construction**.
+
+   The corrected CP3a fixture is the pattern to copy: it **asserts its own precondition at runtime**
+   (every singular-fan opposite carrier must be interior) rather than trusting the author to have
+   picked a capable mesh.
+
+   Name the shape the production producer actually emits, and build the fixture in that shape.
+10. **A non-vacuity requirement is only as good as the check that the witness *can* satisfy it.**
+    The CP3a plan mandated "one candidate crossing more than one face" and reused a proven witness —
+    but never checked that the reused mesh could produce one. It could not: in a one-ring fan the
+    first outgoing carrier is by definition the edge opposite the singular vertex, and every such
+    edge is a boundary edge, so every candidate stops on its first step. When you write a non-vacuity
+    requirement, derive from the witness's own topology that it is **satisfiable**, not merely
+    desirable. Reusing a proven witness proves it was non-degenerate for *its* contract, not for the
+    next one.
+11. **Green identities on a degenerate witness are not evidence either.** Two of CP3a's six passed
+    only because nothing moved: the barrier-stop contract passed because every candidate stopped at a
+    barrier immediately, and the ordering-invariance contract passed over single-segment candidates.
+    A red diagnostic can make a checkpoint look partly proven when the passes sit on the same
+    degeneracy as the failures. Re-audit the passes whenever the failures are attributed to the
+    witness.
+12. **"Producer-equivalent setup" is the licence that defeats the check.** If a plan permits a
+   hand-assembled stand-in for producer output, that is the wording a future attempt will use to
+   rebuild the same vacuous fixture. Require derivation from real topology or from the accepted
+   producer.
+13. **A planar fixture is not automatically vacuous — name the precondition it exercises.** The
+    planar square has zero geometric field transport but nontrivial boundary-cycle aggregation, and
+    exposed stored-zero support/curvature inconsistency directly. Vacuity is a property of the
+    fixture against *this* invariant, not of the fixture alone.
+14. **Check the fixture's geometry and topology against the invariant's content.** Before crediting
+    or dismissing a fixture, name every quantity the invariant depends on and confirm which are
+    intentionally zero and which must be nonzero.
+15. **A producer's output shape is part of the convention a fixture must consume, not just its
+    values.** M3-CP2b derived matching, effort, and index correctly from the accepted producer and
+    still failed, because it hard-coded the *cardinality* of `singularCycles`. Deriving the numbers
+    is not enough if the fixture still dictates how many there will be, what domain they cover, or
+    how they are keyed.
+16. **A fixture must not restate a convention the repository already owns — it must consume it.**
+    Hard-coded expected matching, effort, face-pair order, orientation, or index is the fixture
+    asserting a convention it cannot enforce. Derive expected values from the accepted producer or
+    from the same signed authority the product uses, then assert the semantic property.
+17. **An acceptance fixture must establish its intended precondition independently before its
+    assertion becomes required-green evidence.** An inherited baseline-red supplemental test stays
+    visible but cannot be promoted by naming it part of a new gate.
+18. **A fixture that copies legacy raw IDs into typed fields cannot prove typed authority
+    independence.** Derive typed expected owners independently from canonical topology, or use
+    metamorphic renumbering.
+19. **One acceptance test must not require two mutually exclusive execution paths.** If a fast path
+    returns before a later fallback seam, prove each contract with a witness that actually reaches
+    its owning path.
+20. **Arrangement-local typed scope is not proof that a downstream API received independent source
+    authority.** When a seam consumes source authority explicitly, the fixture must construct and
+    pass that authority from source inputs; a valid ownership registry cannot substitute for a null
+    API authority pointer.
+21. **When semantic authority moves, counterfactual injection authority must move with it.** A seam
+    that mutates only a legacy diagnostic or shadow object after the production sidecar was captured
+    no longer proves the consumer contract. Migrate the seam to the declared product; never restore
+    reachability by reading the shadow back into production authority.
+22. **One member carrying two semantic domains is a single-authority violation even inside a
+    fixture.** When a helper populates two members from two inputs and the caller passes the same
+    input twice, the domains coincide by accident and stay invisible until another fixture separates
+    them. Name the domains and populate each explicitly.
+22h. **A stop that costs nothing is worth more than a fix that costs a gate.** CP4ab's CB-R8 stopped at
+    a binding precondition, wrote a hand derivation, and changed no byte — and it prevented a correction
+    that would have made the arithmetic green while leaving the structural defect in place. Three of this
+    checkpoint's stops did that. Write preconditions that can fire *before* mutation, and make the stop a
+    first-class outcome rather than a failure.
+22g. **A retained record can describe something that never happened.** CP3b's first-contact trim keeps
+    the contacting segment, and that segment's non-optional `outgoingCarrier` names the edge the trace
+    *would* have crossed had it continued — an edge it never reaches. Reading it as a real exit would
+    fabricate a separating cut where the product has only a slit. When a struct field is
+    non-optional but the situation it describes is conditional, find the companion field that says
+    whether it applies — here, `terminalBarrier`.
+22f. **A guard that runs earlier can silently shadow the guard a negative test targets.** CP4's B3 was
+    green, then red at a *different* code, because a later revision moved orbit resolution ahead of the
+    interior-singularity check. Both guards were correct; the ordering made one unreachable. When a
+    negative regresses to a different rejection code, suspect ordering before suspecting the contract —
+    and prefer moving the shadowed check earlier over weakening the test to accept whatever arrives.
+22e. **Converting a representation converts every consumer of it, or none.** CP4 moved region ownership
+    from whole source faces to face fragments and left the disc certificate and its oracle computing on
+    whole faces and whole edges — so the next gate failed one level down, at connectivity instead of
+    cardinality. Each partial conversion costs an attempt and looks like a new defect. When you change
+    what a thing *is*, enumerate every place that reads it and convert them in one package.
+22d. **Check that the product's representation can express the answer before debugging the algorithm
+    that computes it.** CP4 spent four turns failing to satisfy `cutComponents.size() == drafts.size()`
+    when whole-source-face ownership *cannot* express a face of the embedded graph at all: mandatory arcs
+    run along source edges but trace arcs cross face interiors, and a source face is atomic. On the
+    accepted witness the entire singular fan collapses into one cut component while the rotation walk
+    correctly reports one orbit per sector, so the equality was unsatisfiable rather than merely unmet.
+    When a condition fails identically on every attempt, ask whether the representation admits any
+    satisfying value before asking why this one does not.
+22c. **A total partition is not a correct partition.** A flood fill, a nearest-seed assignment, or any
+    "assign every leftover to something" rule always yields a complete, disjoint cover. Asserting
+    completeness and disjointness therefore tests the algorithm's shape, not its semantics. Assert the
+    *relation* that defines ownership — for a region, that the face is the one its boundary encloses.
+22b. **A witness proven adequate for one checkpoint's contract is not thereby adequate for the
+    next one's.** "It was green in the previous gate" says the mesh was capable of *that* contract.
+    CP3a's plan directed reuse of the accepted CP2b fan on exactly that reasoning; the fan could not
+    express multi-face traversal at all. Re-derive capability against the *new* contract before
+    reusing a witness, and encode the result as a runtime assertion inside the fixture.
+
+### A witness census is cheap; assuming a witness is capable is not
+
+Nine committed `.obj` witnesses, and their Euler characteristics and boundary-edge counts can be
+computed in seconds without building anything. Doing that once revealed that the two witnesses CP4c had
+been planning around for three checkpoints are **closed surfaces**, that every witness which had ever
+validated A2b is a **bounded disc**, and that a fourth committed witness was structurally guaranteed to
+satisfy the contract that was blocking the gate. **Compute the topology of every candidate witness
+before choosing one**, and record the census where the next planner will find it.
+
+### Poincare-Hopf is a planning tool, not just a theorem
+
+On a closed surface the singularity indices must sum to the Euler characteristic. A torus therefore
+admits a completely singularity-free field — and a network derived only from singularities, features,
+and boundaries is then **empty**, with no traces, no nodes, and nothing to seed region ownership from.
+Conversely, a closed genus-0 witness with declared index-1 singularities summing to 2 **cannot** have a
+barrier, so every trace must terminate by contact. **Before selecting a witness for a trace-behaviour
+contract, compute what the field's index budget forces it to produce.**
+
+### A relation that is a Cartesian product is not a function, and a consumer that needs a function will fail
+
+`FieldBranchBoundaryPairing.connections` pairs every inflow carrier with every outflow carrier. That is a
+faithful record of what the producer knows and a useless answer to what the consumer asks. A2a needs *the*
+continuation; the pairing offers *all* of them. **When a product publishes a relation, check the
+cardinality its consumer requires** — if the consumer demands uniqueness and the producer emits a
+product set, the seam is broken no matter how correct each side looks alone.
+
+### When the normative reference names two halves of a primitive, check that both were implemented
+
+`DESIGN.md` §4.5 requires inflow/outflow interval decomposition **and** barycentric positions propagating
+in arbitrary precision. The intervals were implemented; the positions were not. Without positions the
+pairing cannot be resolved, so the implementation substituted the Cartesian product — a silent
+substitution that survived every gate because the accepted witnesses never traversed an ambiguous face.
+**Enumerate a cited paper's required outputs as a checklist before accepting the stage that cites it.**
+
+### One missing datum can surface as several unrelated-looking defects
+
+The absent barycentric position produced two failures a year apart in this project's terms: the CP4ab
+barrier terminus that could not be located along its edge, and the CP4c interval pairing that cannot be
+resolved. They were diagnosed independently and are the same gap. **When a second defect traces back to
+an absent field you already noted once, stop treating them as separate and unify the fix.**
+
+### Floating-point inputs do not force a tolerance in the decision
+
+Every IEEE double is exactly a dyadic rational, so arithmetic on doubles can be made exact even when the
+doubles themselves came from geometry. The CP4c-0 continuation compares exit times by integer
+cross-multiplication rather than by dividing and testing against an epsilon, and the tie case becomes an
+**exact** predicate instead of a tolerance verdict. **Before accepting that a topological decision needs
+a tolerance, check whether the comparison can be restructured to be exact** — usually it can, by
+clearing denominators.
+
+### A discarded intermediate is a missing datum in disguise
+
+A1 computed the barycentric direction, used it to classify three edges, and threw it away. The classified
+edges were published; the vector was not. Every downstream consumer then had a *classification* where it
+needed a *function*, and the substitute was a Cartesian product. **When a stage computes a value to
+derive a published summary, ask whether a consumer needs the value itself** — the summary is lossy by
+construction.
+
+### Count the missing data before designing the fix
+
+The review that found the Cartesian-product defect named one missing datum, the entry position. The
+definition turn found two: the position *and* the discarded direction. A design built on the first alone
+would have shipped a position that still could not resolve anything. **Enumerate every input the rule
+needs and check each against what is actually published**, rather than stopping at the first gap.
+
+### Exactifying a consumer without exactifying its selectors moves the failure, it does not remove it
+
+CP4c-0 replaced a tolerant continuation rule with an exact one and the required gate went green — then
+the sphere failed at the new exact rule's fail-closed assertion. The exact rule was right; its **inputs**
+were still chosen by `double` comparisons against `1e-10`, in three separate places, and one of those
+comparisons decided *the very same sign* the exact rule was about to re-decide. A tolerant selector
+feeding an exact consumer is strictly worse than tolerant-everywhere: it converts a silent
+near-degeneracy into a hard rejection at a site that did not cause it. **When you make a decision exact,
+enumerate every upstream producer of its inputs and exactify the ones that decide the same predicate —
+in the same turn.**
+
+### If two tests answer the same question, prove they are the same expression before trusting either
+
+`direction_in_incident_vertex_sector`'s `alpha` and `beta` are not *approximations of* the barycentric
+direction coordinates `d[next]` and `d[prev]` — they **are** those coordinates, recovered by a Gram solve
+from a vector that was itself reconstructed from them. The sector rule and the exact continuation rule
+were therefore the same predicate at two precisions, and the frozen definition had recorded them as
+unrelated: one a "lawful deterministic convention", the other exact. **Reducing both tests to a single
+algebraic expression is what turned an undecidable three-way root-cause guess into a proof** — and it
+cost no runtime at all.
+
+### A half-open rule with a tolerance is not a partition
+
+`alpha > tol && beta >= -tol` looks like a half-open sector convention and reads like one. With
+`tol > 0` it is neither a partition nor a cover of the fan: it over-admits on one side and under-admits
+on the other, so a direction can be claimed by a face it exits, or by no face at all. Only `tol = 0`
+partitions. **The half-openness is doing the disambiguation work; the tolerance is doing damage.** They
+look alike in the source line and must not be conflated.
+
+### A required locus that is computed but not emitted has not been published
+
+CP4c-0's DEFN table required `BranchContinuationDegenerateEntry` to carry `sourceFace`, `branch`,
+incoming edge, and parameter. The implementation populated all four **correctly**. The witness diagnostic
+emitter printed four *other* fields and dropped them, so the one datum that discriminated between three
+candidate root causes was computed and thrown away — and a whole review turn could not name the failing
+route. **A diagnostic contract must bind the observable string, not the in-memory struct**, and its
+falsifier must assert the field appears in the emitted text.
+
+### Never back-fill a locus field from a seed identifier
+
+The failing trace reported `sourceVertex=0` because the caller filled the field in from the trace's seed
+port when the failure site left it unset. The failure was several steps away and had nothing to do with
+vertex 0. A locus field that silently falls back to *something else that is also a vertex* is worse than
+an absent field: absent is honest, and the reader would have looked elsewhere immediately. **Publish seed
+identity in separately named fields, and leave a locus unset when the site has none.**
+
+### A cycle guard chosen before positions existed is unsound once positions exist
+
+The trace loop breaks on a repeated `(face, branch, incoming edge)`, which was complete when a trace had
+no position — and became wrong the moment continuation depended on an exact entry parameter, because the
+same triple can legitimately recur at a different point. It then publishes the truncation as a clean
+terminus, silently corrupting exactly the counts an acceptance oracle checks. **When a new datum enters a
+state machine, re-derive every termination and de-duplication key against it**, and never let a
+resource-bound stop masquerade as a semantic terminus.
+
+## 3. Negatives and oracles
+
+23. **A negative test proves only the guard it actually reaches.** Check which guard rejected before
+    crediting the contract to the intended validator.
+24. **A strict mutation negative is evidence only when the intended seam is reached and the intended
+    mutation actually occurs.** `mutated=false` or an unreached callback is non-evidence.
+25. **A positive assertion over a compound builder proves nothing about which guard rejected.**
+    This is the mirror of the negative-test rule above, and CP2b paid for it: four identities
+    asserted only `ASSERT_TRUE(built)` on a valid witness, so a red run could not name the cause. The
+    product compounded it — `build_singularity_attachments` collapsed **14** distinct rejection sites
+    into one error code and discarded the locus fields its error type already carried. **Report the
+    error on every positive build assertion, and give each rejection site a distinguishable code.**
+    Diagnosability is a product property, not a test convenience: without it every subsequent run
+    costs an attempt and returns the same non-answer.
+26. **A negative is not credited while the valid baseline also fails.** A guard that rejects tampered
+    input has demonstrated nothing until a sound witness is shown to pass it — otherwise it may
+    simply be rejecting everything. Report such a negative as reached-and-passing, never as an
+    established contract.
+27. **A uniqueness key whose fields are functionally dependent is a one-field key wearing two.**
+    CP2b keyed singularity port representatives on `(startFace, firstOutgoingCarrier)`, but within a
+    vertex fan the face determines its opposite edge, so the pair carried exactly what `startFace`
+    carried alone — and any face whose incident sector exceeded the branch spacing produced a false
+    duplicate. Before trusting a composite key, check whether one field determines another in the
+    domain where the key is used; the discriminating field may already exist on the record and
+    simply be omitted.
+28. **A matching count is not a matching structure.** CP2b's port-class guard passed
+    `classes.size() == expected` and still rejected, because five incidences can form three classes
+    in more than one way. When a count check passes and a structural check then fails, publish the
+    structure before changing the rule — otherwise the "fix" may silence the guard over a partition
+    that is still wrong.
+29. **A test that asserts both invariance and raw equality is internally contradictory — check the
+    identity against itself before blaming either side.** CP2b's Z4-relabel identity required raw
+    matching to change, published transports to stay equal, and raw matching to equal the published
+    lift. The first two are the contract the identity is named for; the third could not hold and was
+    the defect. When a single identity fails, read all of its assertions together: the failing one may
+    be the one contradicted by the rest.
+30. **A canonicalized representative and a raw representative are different quantities — compare
+    them modulo the canonicalization, or not at all.** CP2b's published branch lift added a per-face
+    gauge, applied a canonical orientation, and reduced into `[0,3]`; the oracle compared it to raw
+    per-edge matching with integer `==`. They coincided on the baseline and diverged the moment a
+    gauge relabel was applied, which is precisely what the relabel existed to test.
+31. **Fixing an over-strict oracle means re-deriving, never relaxing.** A comparison loosened to
+    congruence can stop rejecting the tampered inputs the oracle exists to catch. Recompute the
+    canonical representative independently from source — never read the product's gauge — and pin the
+    result with a negative that a pure relaxation would fail: perturb by one unit and require
+    rejection, perturb by a full period and require acceptance.
+32. **When a guard rejects early, every check behind it is unproven — not passing.** CP2's rail
+    cardinality check fired before the mandatory-edge maps were built, so three cross-closure checks
+    had never executed on a closed rail. Before predicting a gate result from a fix, enumerate what
+    the failure was masking and say plainly whether those checks are proven or merely unreached.
+33. **A producer that forces a relation and an oracle that reads the forced value back are
+    self-consistent by construction.** The pair can violate independence even when the oracle appears
+    to recompute something. A final oracle must receive independent remapped authority; disabling
+    authority or deriving expected state from the output is not validation.
+34. **A semantic owner and an independent consistency checker are not duplicate authorities.** The
+    accepted producer owns the value; a read-only checker may independently derive a relation and
+    reject inconsistent publication. Duplication begins when **both** paths can publish or drive
+    semantic state.
+35. **Never delete an "obsolete" negative before its replacement exists and fails closed for the
+    intended reason.**
+36. **A test that permits both legacy and new outcomes while claiming a stricter invariant is a
+    compatibility test, not a migration test.** Tighten it before trusting it as a cutover gate.
+37. **A validator named source-authoritative must reject missing or mismatched typed source
+    authority independently of optional sub-gates.**
+38a. **A recompute-and-compare validator proves reproducibility, not correctness.**
+    `validate_field_aligned_candidate` rebuilds the canonical candidate from source authority and
+    compares it element-by-element to the submitted one. Any producer defect is reproduced identically
+    on both sides and passes. Such a validator is a strong tamper gate and **no evidence at all** about
+    semantics; do not count it toward a semantic acceptance argument.
+38c. **A boolean oracle converts a red into a search.** `independent_disc_proof_oracle` returns a bare
+    `bool` over five distinct clauses — an Euler identity, orbit construction, a fragment partition, a
+    region/orbit bijection, and a per-face fragment-count rule. When it returned false, nothing said
+    which. Give any independent oracle a typed failure reason **before** it is allowed to gate a
+    checkpoint; otherwise every red costs a diagnostic just to localize.
+38d. **A combinatorial face walk on a surface with boundary counts the capped surface's faces.** The
+    dart-orbit walk knows nothing about the source boundary, so it returns the faces of the graph
+    embedded in the closed surface obtained by capping each boundary component:
+    `V − E + F_all = χ(S) + b`, equivalently `V − E + F_interior = χ(S)`. An oracle that compares the
+    all-orbits count against `χ(S)` is wrong by exactly `b` on **every** bounded witness, forever, and
+    presents as a deep topological failure rather than an off-by-one.
+38b. **An oracle is blind to any defect its invariant is neutral under — say which defects those are
+    when you freeze it.** Publishing a missing 0-cell adds one node and one arc, so the global
+    cellularity identity `V_g − E_g + F_g` is unchanged and B4 cannot detect the omission. That
+    neutrality is why 304/304 accepted the defect. **For every oracle, record the transformation
+    group it cannot see**, and never argue "the independent oracle would have caught it" without
+    checking membership in that group.
+
+## 4. Single authority and representation
+
+38. **Adding a typed product does not complete a cutover if production immediately projects it back
+    into raw semantic arrays.** The product becomes authority only when production consumers read
+    the typed owner and the raw representation is reduced to a one-way legacy/test/diagnostic leaf.
+39. **A new stage must not re-derive a fact an accepted stage already owns.** Consume the owner's
+    value. A second derivation is a second authority, and when the two disagree the accepted owner
+    is right.
+40. **Raw row/index values may exist only at verified one-way container, serialization, or
+    diagnostic leaves.** Do not decode them back into semantic authority or reconstruct typed owners
+    from arithmetic. Matching extent is not ownership; exact source-row topology pairing is required.
+41. **Derived identity caches must be rebuilt by the same canonical constructor their consumers
+    use.** A copied cache kind or a second schema is authority duplication.
+42. **A legacy representation that aliases one fact across many keys must be collapsed at the
+    typing boundary, not carried through it.** `effort_to_indices` emits one singular entry **per
+    vertex**, and `vertex2cycle` maps every boundary vertex of a loop to one cycle row — so a single
+    boundary-loop index arrives as N vertex-keyed entries. A1 ingested all of them as distinct
+    singularity facts while **already** owning that index correctly as a typed `BoundaryLoop` cycle
+    witness: two owners of one quantity. A typing stage exists precisely to collapse aliased legacy
+    representation into one owner; passing it through verbatim is that stage failing its purpose.
+    When collapsing, **reconcile before discarding** — the dropped entries must be checked against
+    the surviving owner, or the filter is an unproven silent drop.
+43. **Two stages that validate the same quantity must share one admissible range.** CP2b's
+    `build_singularity_attachments` admitted singularity index numerator `[1, 3]` while accepted CP2
+    required `[-2, 1]` — disagreeing in both directions, so a valid index `-1` singularity was
+    accepted by one accepted stage and rejected by the other. Neither range was exercised, because
+    no fixture had ever carried a nonzero index. When a new stage re-validates an accepted stage's
+    input, adopt the accepted range; do not invent a third.
+44. **A representation with one writer and no enforcing reader is latent ambiguity.** The closed-rail
+    `|V|=|E|` form is canonicalized by the producer, but every consumer guards with
+    `closed && back() != front()` and so accepts both forms. That tolerance let a diverging consumer
+    stay invisible until production runtime.
+45. **When a typed migration turns a contract red, check whether the typed member means the same
+    thing as the raw one it replaced.** Reverting to the raw member to restore green undoes the
+    migration. The defect is usually that the typed member was populated from a different domain.
+46. **An abstraction name is not proof of generic authority.** Inspect every template parameter and
+    variant alternative before propagating a typed wrapper to a new domain — the accepted
+    `ProducerOutcome<T>` was product-generic but hard-coded one failure type. Generalize in place;
+    do not create a parallel wrapper.
+47. **When a cutover moves a guard earlier, the earlier guard inherits the later one's diagnostic
+    obligations.** Static closure cannot see this: an audit proved `K=0` while an accepted diagnostic
+    silently degraded to `-1`. Enumerate what the superseded site *published*, not only what it
+    *decided*.
+48. **Moving semantic rejection earlier does not authorize dropping stage-owned diagnostic
+    sub-invariants.** Preserve the same exact diagnostic owner/index or route through the canonical
+    seam; matching only the reason string is not equivalent accepted behavior.
+49. **When a product-shaped diagnostic mirror is relocated, migrate all literal build-contract
+    markers and typed consumers in the same cutover.** A stale CMake source marker or test access to
+    removed fields is build-contract drift, not justification for a compatibility alias.
+50. **A non-null pointer is not a live object.** After a container is moved from, pointers captured
+    into it can still dereference and report the same variant alternative while reading moved-from
+    state. Verify the mechanism, not just the symptom, before writing a corrective measure.
+51. **When a producer handles N sibling cases and one of them takes a shortcut, that one is the
+    defect — read the siblings before believing the shortcut is a design.**
+    `finalize_field_aligned_events` publishes a fresh 0-cell for the trace/trace contact case and for
+    the loop-closure case, and for the barrier-termination case alone substitutes an existing edge
+    endpoint. Two turns searched downstream for missing terminal authority; the mechanism was nine
+    lines above the shortcut and already called twice in the same function. **Enumerate a producer's
+    parallel cases side by side before concluding a fact is unpublishable.**
+52. **An under-constrained identity gets filled by an arbitrary representative, and the substitution
+    is invisible.** No accepted contract said which node a barrier termination binds to, so the
+    implementation bound it to `mandatory->firstNode`. It compiled, validated, digested, and passed
+    304/304. **When a contract pairs two facts (event kind and its edge) but never pins the third
+    (the node), assume the third is wrong until an assertion pins it.**
+54. **A consumer that rejects before its input is validated masks the real defect with a true
+    statement.** "χ ≠ 1" and "no orbit equals this boundary" were both true and both the wrong first
+    answer: χ is derived from `sourceFaces`, and orbit election is derived from the boundary walk, so
+    each rejected a defect in its own input before the check that owns that input ran. Order validation
+    by **ownership**, not by call convenience: structural inputs first, consumers second. Three
+    instances on record in one checkpoint.
+55. **When a comment states a precondition, check where that precondition is actually evaluated.**
+    `GlobalTopologyPlan.cpp:2373-2374` says the single boundary walk and no-pinch condition are why χ's
+    boundary terms cancel — and `validate_single_boundary_walk` ran *after* the code path that consumed
+    it. The code documented the ordering rule it violated. Grep for the named precondition's call site
+    whenever a comment justifies a simplification.
+56. **A Review that authorizes a change outside the checkpoint's frozen selector must name the identity
+    that will execute it.** The U-series edited two `FieldAlignedCurveNetwork.*` tests while the CP4ab
+    selector covers only `GlobalTopologyPlan.*`. Both changes compiled, both were reported delivered, and
+    neither ran — the diagnostic that was supposed to check them structurally could not reach them.
+    Compiled-but-unexecuted test authority is not evidence; it is debt wearing a green label. Check the
+    selector's reach at the moment you authorize the edit, not at acceptance.
+
+53. **A downstream stage that already models a case perfectly is evidence about ownership, not
+    reassurance.** A2b's edge-locus rotation requires exactly two mandatory rays at degree three and
+    orders all three darts strictly — written for a trace ending inside a mandatory edge, and never
+    once executed. **Dead code in a correct consumer means the producer is not publishing the case.**
+    Search for unreachable-but-correct downstream branches when localizing a missing fact.
+
+## 5. Cross-field, cycle, and orientation conventions
+
+These are A1/A2-specific and have been the single most expensive area in M3.
+
+51. **The signed `dual_cycles` row is the one orientation authority.** Order already-directed steps
+    without reversing semantic orientation; never mutate an expected lift to make a comparison pass.
+    Compare an exact index's `Z4` class to a signed matching composition only after proving both use
+    the same canonical semantic cycle support.
+52. **Transition orientation is mesh-owned.** `EF(edge,0) -> EF(edge,1)` is published by topology,
+    not chosen by the caller. Any code — product or fixture — that assumes a face-pair ordering has
+    made an assumption source does not promise. Locate the adjacency topologically, then read its
+    published direction.
+53. **Representation storage is not semantic cycle support.** Sparse-sparse aggregation retains
+    explicit algebraic zeros. Canonicalize exact-zero incidence before any iterator-based
+    curvature/support semantics, and keep downstream zero-skips defensive rather than letting
+    different consumers see different cycles. Representation validity is also not source-topology
+    validity: bind every published fact back to checked source authority.
+54. **Independent cycle verification must recreate the semantic basis from source authority**, not
+    merely recompute transport over product-published cycle support. A source-derived oracle owns its
+    own cycle support/orientation, curvature, matching/effort, and exact lift before comparing the
+    published witness.
+55. **A derivation is not closed merely because its algebra is internally consistent.** If a
+    fixed-orientation producer and an independently source-derived oracle both reject the same valid
+    baseline, reopen the mapping from mathematical symbols to repository edge, cycle, curvature,
+    index, matching, effort, and sparse-support conventions before any further semantic edit.
+56. **Exhausting a sign search does not prove the invariant false** — it proves the searched family
+    did not fix the implementation. Re-check the full producer equations, representation
+    normalization, and source-to-symbol mapping before changing architecture. *(This lesson is itself
+    a correction: a review once concluded from an exhausted search that the invariant was false in
+    general, having omitted `indexMinFromZero` from the matching producer. Both the original
+    derivation and its rescope were wrong.)*
+57. **A check that adjusts its own expected value until it agrees is not a check.** Searching over
+    sign conventions converts a falsifiable invariant into a tautology that fails only when every
+    candidate fails.
+58. **Never publish a guessed value as authority.** An expected lift that was searched or altered to
+    satisfy a composition and then hashed into a certificate makes the certificate attest to the
+    search's outcome rather than a derived fact.
+59. **Do not make a new invariant a hard precondition of an accepted path until the invariant and
+    its source mapping have a non-vacuous independent witness.** Once the architecture requires that
+    precondition, acceptance must restore the witness rather than bypass the gate. A hard gate
+    amplifies one stage-local bug into every downstream red.
+
+## 6. Gate and criterion authoring
+
+60. **Do not author a gate criterion in terms the gated milestone cannot express.** M1 criterion 5
+    demanded a disposition tier scheduled for M7, making M1 unclosable by construction. The error was
+    in the criterion, not the implementation that failed it.
+61. **Do not backfill a later architecture concept into an earlier gate by analogy.** If a criterion
+    names a product the frozen package does not expose, related evidence is not a substitute. Treat
+    the criterion as undecidable until an explicit mapping or authorized amendment exists.
+62. **A criterion applied to a set of fixtures or components must be stated per member, at that
+    member's own semantic stage.** A conjunction naming one stage's authority cannot apply to members
+    that never reach that stage. Before freezing a gate, check every named concept exists for every
+    named member.
+63. **A milestone-crossing obligation belongs to the milestone that can discharge it, as an exit
+    criterion** — not to a task list, which has nothing enforcing it. M4 owns the `G4-B002`
+    re-proofs, M5 the `G4-B003` re-proofs, M7 the criterion-5 disposition re-proof.
+64. **A frozen selector may not shrink to obtain green.** No identity may be removed, renamed, or
+    converted to non-gating evidence inside an acceptance attempt.
+64b. **A plan's prose obligation list and its frozen selector are two different artifacts, and only
+    the selector is enforced.** Reconcile them item-by-item *before* freezing. CP3b's six identities
+    all passed non-vacuously, yet two of its six written obligations — rotation-system/face-walk
+    consistency and crossing tamper — had no owning identity, so a green gate proved neither. Nothing
+    in a green result reports what the selector forgot to ask.
+64c. **Name a proof's construction, its rejection reasons, and its independent oracle before writing
+    code against it.** CP0 did this for the A1 certificate and CP1 went cleanly; nobody did it for
+    the per-region disc-topology proof, which is why CP4 needed a planning turn inserted ahead of it.
+    Naming a product whose definition does not yet exist is the criterion-5 shape.
+64d. **Check whether a blocker is actually on your path before treating it as a prerequisite.**
+    `G4-B001` looked like it blocked CP4c's torus witness because both say "torus". It fires at the
+    completion/materializer stage, downstream of everything M3 does. One tracker read settled it.
+    Locate a blocker's *owning seam*, not its subject matter.
+64p. **When you amend a definition, re-read the definitions it depends on.** CP4-DEFN's section 4.1 arc
+    definition — trace arcs subdivided at every event node, mandatory arcs never subdivided — was written
+    once and carried unchanged while sections 4.4 and 6 were amended three times underneath it. That
+    unexamined asymmetry was the defect three amendments later. An amendment changes the contract its
+    neighbours were written against; walk the dependency both ways before freezing it.
+64n. **Verify the formula using the same definition you are about to freeze.** CP4's Euler reduction was
+    validated four times computing `V_int` as *all vertices minus mesh-boundary vertices*, then frozen in
+    prose as *not an endpoint of a mandatory arc on the region's walk*. Those are different predicates;
+    they agree only under a condition nobody stated. The table passed, the rule shipped, and the gate
+    over-counted by exactly one. When a verification table and a rule text describe the same quantity,
+    write the rule first and compute the table **from the rule**, not from an intuition of it.
+64o. **A quantity that is off by exactly one on unrelated fixtures is one missing condition, not two
+    bugs.** CP4's `V_int` was `+1` on both a fifteen-face two-ring witness and a four-triangle fan.
+    Treat a constant offset across structurally different inputs as a *classification* defect and go
+    looking for the case the predicate forgot — not as two coincidences to debug separately.
+64m. **"The authority is missing" is a claim to test, not a conclusion to accept.** CP4ab stopped
+    correctly on the finding that no product orders two contacts along one carrier — and that finding
+    was true. But the *consumer* did not need an order: corner incidence turned out to be forced by
+    orbit-label chaining over data already published. Before scoping a reopen of an accepted product,
+    state exactly what predicate the consumer must answer and check whether the existing invariants
+    already determine it. Reopening an accepted stage is the most expensive move available; spend a
+    Review proving it is necessary first.
+64k. **A planning agent's formula is a fixture, and it needs a falsifying case before it is frozen.**
+    CP4's disc proof was frozen as `χ = F − E_int`, checked only against two triangles glued on an edge
+    — the one case where its error vanishes. It is wrong for any region containing an interior source
+    vertex, and on the accepted witness it returned **−5** against a true `χ = 1`, costing a full
+    acceptance attempt on a false rejection. Every lesson this project has about non-vacuous fixtures
+    applies to prescriptions too: before freezing a formula in a plan, compute it on a case that would
+    expose it if wrong, and put the table in the document.
+64l. **A compressed reduction hides its own preconditions.** `χ = F − E_int` is true for a tree of
+    discs and false otherwise; `χ = V_int − E_int + F` is true when the boundary is a single walk with
+    no pinch. Neither shortcut is wrong in itself — what is wrong is stating one without its
+    precondition, because the implementation then applies it where it does not hold. Write the
+    precondition next to the formula, in the plan and in the code comment.
+64j. **An oracle that consumes the published output and re-runs the published algorithm is a mirror,
+    not an oracle.** CP4's B4 read the published region partition, recomputed the same quantities with
+    the same model, and compared six certificate fields one by one — so it agreed with a wrong
+    implementation because both shared the defect. Independence must come from **re-deriving the
+    inputs**, or from a genuinely different derivation of the same fact, not from recomputing one
+    formula on one published output. Comparing a field forces both sides to compute it the same way.
+64h. **An implementation turn may localize a condition; it may not decide which corrective measure owns
+    it.** A routing table authored inside a diagnosability-only Code + Build turn sent
+    `RegionCutComponentCountDeficit` to K5 while the binding Review had already assigned that precondition
+    to K3. The next Code + Build correctly refused to proceed. Assigning corrective-measure ownership is a
+    planning act: any routing an implementation turn produces is a hypothesis for the next Review, never
+    a frozen input.
+64i. **When three attempts stop at the same seam, stop tuning and measure.** CP4b spent three acceptance
+    attempts and CP4ab spent a diagnostic and a Code + Build before anyone asked for the two integers
+    that decided the question. A diagnostic gate that returns a *code* but not the *numbers* has only
+    done half its job. Name the specific quantities the next decision depends on, and spend the gate on
+    those.
+64f. **A green gate certifies that the selected identities passed. It does not certify that they were
+    capable of failing.** M3 CP4a reached an immutable 310/310 while its region ownership was assigned
+    by container-order seeding, an arbitrary unclaimed-face fallback, and BFS nearest-seed-wins — three
+    prohibited moves — because `CoversEverySourceFaceExactlyOnce` asserted only that the partition was
+    total, which a flood fill guarantees by construction. The next checkpoint then spent three
+    acceptance attempts failing to preserve that manufactured partition. **For every assertion, ask
+    what input would make it fail.** If the implementation guarantees it structurally, it is a
+    postcondition restatement, not evidence.
+64g. **Two checkpoints where one depends on the other's correctness are one checkpoint.** Splitting
+    region derivation from the disc proof that adjudicates those regions put an accepted predecessor
+    between the halves, and the accepted-predecessor rule then obliged the second half to preserve the
+    first half's error. Before splitting, ask whether the second half could ever legitimately *reject*
+    what the first half produced. If it can, they are not independent domains.
+64e. **An enumerator with no producer proves nothing, and a gate will not notice.**
+    `FieldAlignedNetworkEventKind::SingularityTermination` has existed since CP3b, is required by an
+    acceptance criterion, and is emitted nowhere — a repository search finds only its declaration.
+    Declaring a case is not implementing it. When a criterion names a set of outcomes, check each one
+    has a producer *and* a witness that reaches it.
+
+## 7. Budget, attempts, and stop rules
+
+65. **A stop rule renegotiated every time it fires is not a stop rule.** M3's cumulative ceiling was
+    amended under pressure at each binding point (11, `5 -> 6`, `6 -> 7`, `11 -> 12`, a pending
+    `12 -> 13`), costing a turn per amendment and changing no decision. Tie the trigger to the
+    checkpoint that is actually failing, and make the consequence a mandatory review rather than a
+    request for more budget.
+66. **A cost model calibrated on cutovers does not transfer to new capability.** M1/M2 cost tracked
+    semantic domains re-typed, because the behaviour already existed. In M3-M8 a red checkpoint is
+    usually a design defect, and design defects do not cost a predictable number of attempts.
+67. **A budget is never permission to merge semantic domains.** Do not hide a shortfall by merging
+    checkpoints, moving acceptance work to a later milestone, or inventing an unapproved partial-CB
+    edge. A checkpoint is one surface only when it is one semantic domain — unit-3 Batch E grouped
+    five ID domains under one label and spent 4 of that unit's 6 attempts.
+68. **Every mandatory review must re-derive the failure from source**, not from the previous review's
+    text; **check the checkpoint's fixtures against the contract's non-trivial domain**; **state one
+    falsifiable prediction** the next attempt tests; and **enumerate the checks standing behind the
+    fix** that the failure has been masking.
+69. **Attempts spent on test scaffolding are still spent.** If consecutive attempts die before
+    reaching any semantic seam, the checkpoint has no evidence about its own product and the fixture
+    strategy — not the product — is what needs replanning. M3-CP2b spent its whole budget this way
+    and left its central design question unadjudicated. **The diagnostic gate (next-but-one below) exists to
+    stop this;** use it whenever a checkpoint introduces a new fixture.
+70. **An attempt is a CB -> TB pair, never either half.** The pair is the unit of evidence, because a
+    package that has not run against a gate has proven nothing and a gate result without its package
+    is not reproducible. Consumption happens when the pair completes; a package awaiting its TB, a
+    harness re-run, and a TB that yields no valid gate result all cost nothing. Hold at most one
+    un-submitted package per checkpoint — the pair definition must not become a way to accumulate
+    untested packages.
+71. **A package attempt must not be the first *execution* of a new fixture** — the counterpart of
+    the first-compile rule below, and the gap that cost M3-CP2b three attempts. Run a
+    **new-contract-only diagnostic gate** first: the checkpoint's own identities alone, never the
+    frozen predecessor selector, artifact-only, attempt-free, reporting the seam each red identity
+    reached. The same package may serve the DG and then its acceptance TB, so de-risking is free.
+    **A green DG is not acceptance** — the predecessor selector was never run, so predecessor safety
+    is unproven and no checkpoint may be advanced or closed on DG evidence.
+
+### A budget that a single red overrides is not a budget
+
+An attempt budget exists to give the implementing agent room to self-correct **before** an external
+reviewer intervenes. If one red already triggers a mandatory independent review, the budget grants no
+room and adds only ceremony — plus a reset ritual performed four times across CP4ab. Abolished
+2026-08-25. The workflow is `CB → TB → (red) → REVIEW+PLAN → CB`; a red TB consumes nothing.
+
+### A turn type that executes a subset of another turn's surface is not a different measurement
+
+`DG` was justified as measuring risk "without spending an attempt". Compared run-for-run, DG1's 316
+identities were a strict **subset** of TB-R1's 322 — identical selector SHAs, identical
+one-identity-per-fresh-process isolation, identical immutability flags, identical evidence shape. The
+only real differences were which identities ran and what the result was *labelled*. It also cost two
+turns and returned green about precisely the hazard that then materialised on the witnesses its
+selector could not contain. **Before adding a turn type, diff its actual execution surface against the
+one you already have.** If the diff is a label, you have added ceremony, not a control.
+
+### Non-gating identities are the honest form of "run it but do not count it"
+
+When a red is expected and informative, declare the identity **non-gating** with a written rationale and
+an owning corrective measure, and let the ordinary TB report it. Do not invent a turn type, a budget, or
+a reset window to hold that information.
+
+## 8. Build, package, and workflow mechanics
+
+72. **A package attempt must not be the first compile of new code.** A first-target preflight
+    *inside* the packaging workflow only shortens the failing package; it does not satisfy this rule.
+    Compile the exact changed owner target in a separate pre-package run on the same fixed semantic
+    source SHA first. That artifact is **mechanics evidence, not TB input** — its target set is
+    intentionally incomplete.
+73. **Pre-package and package compiles must name the same fixed semantic source SHA explicitly.**
+    Workflow caller/marker cleanup commits are control-plane history, not semantic source authority.
+    If product/test/build source changes after the green pre-package compile, invalidate the
+    preflight and do not package.
+74. **Connector-written control payloads are not byte authority until hashed.** Use exact
+    binary-safe Git blob transport and verify the frozen SHA-256 before execution. Bound checkout
+    history to the minimum needed for ancestry/source-drift checks, and remember `git diff
+    --name-only` omits untracked files unless they are intent-to-add or staged.
+75. **Workflow installation and trigger are two distinct commits.** The proven pattern is install the temporary workflow with a narrow
+    `.agents/connector-triggers/...txt` `paths` filter followed by create the matching marker, triggering the
+    already-present workflow. Do not combine first-time installation with marker creation, and do
+    not rely on the install commit as the trigger.
+76. **Materialize packaged source archives with their recorded path layout intact.** TB-R2 stripped one path component from an archive that already stored repository-root paths, flattening `benchmarks/fixtures/...` to `fixtures/...` and manufacturing 26 accepted-predecessor reds. Before a long artifact-only gate, inspect the archive root and verify one known compiled fixture path at the exact embedded source root. A missing-fixture predecessor red is harness evidence, never a semantic regression.
+77. **Reusable-workflow caller permissions are the union of every nested job, not only the path you expect to execute.** A reusable observer may contain a conditionally skipped branch-write job; GitHub still validates the caller permission ceiling against that transitive job graph. Before publishing a caller, inspect the reusable workflow's complete permissions and grant the narrow union required by all nested jobs. A permission-ceiling failure before generated runtime is orchestration-only evidence, never a diagnostic or acceptance result.
+
+### Trigger commits must descend from the installed caller
+
+When a temporary workflow caller is assembled with low-level Git objects, creating the commit object does not move the branch. A subsequent Contents-API marker write parents the **current branch head**, not the unattached caller commit. Therefore the safe order is: create caller tree/commit, fast-forward the working ref to the caller-install commit, verify that ref movement if needed, and only then create the separate trigger-marker commit. Marker-only commits made before the caller is on-ref cannot trigger that caller and should be treated as orchestration-only evidence, never as runtime attempts. TB-R4 exposed this control-plane ordering failure before any semantic runtime; the corrected installed caller was SchemaStore-validated and only then triggered.

@@ -2,17 +2,235 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-19 UTC** after runtime-free `M3-CP2-CB` package 9 on exact
-`6b046e0ba924a8d9f2aee158c64fd7734ab9a3ff / 9375452692`. Mandatory pre-package `32279124852 / 96153441513` and cumulative
-package `32279806492 / 96155630834` were compile/package evidence only with
-`runtimeExecution=false`; no generated runtime, test, benchmark, discovery, or custom mesh
-executed.
+Last updated: **2026-08-25 UTC** after `M3-CP4c-0-TB`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
 
-No runtime regression/candidate was observed, so stable accounting remains **38 events / 14
-categories / 24 recurrences** and produced-witness debt **5**. `PR8-R038 / M3-CP1-R001`
-remains resolved stable/recurrence and `M3-CP1-TB-CAND-01` resolved non-stable. CP1 remains
-the latest accepted runtime authority at **281/281**. CP2 package 9 is a candidate only; exact
-next `M3-CP2-TB` must pass **287/287** before CP2 acceptance or package 10 / CP3a.
+CP4c-0 authoritative TB `32891161394 / 97943220460` consumed package `9577900736`. Required semantic
+gate **328/328 PASS** = accepted **316/316** + CP4c-0 **12/12**, with all prohibited build/mutation flags
+false. Binding Q8 is **VALID RED** because prescribed sphere stops in A2a at
+`BranchContinuationDegenerateEntry`, `singularity=0`, `sourceVertex=0`, `sourceEdge=6-8`, before network
+publication. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **40**. Exact next is
+independent `M3-CP4c-0-TB-REVIEW-PLAN`.
+
+## M3-CP4c0-TB-CAND-01 — prescribed sphere reaches typed zero-time continuation rejection before Q8 network — ACTIVE / NON-STABLE / ROOT CAUSE ADJUDICATED, FIX PENDING
+
+- **Observed:** authoritative retry 1 `32891161394 / 97943220460` passes **328/328**, but binding Q8 is red. A2a rejects `BranchContinuationDegenerateEntry` at singularity 0 / source vertex 0 / edge 6-8. No network; trace count, terminal `TraceIntersection`, and face `1-2-5` crossover unavailable.
+- **Control:** accepted **316/316** and all 12 CP4c-0 identities pass; package/source/test/fixture/selector integrity unchanged; no configure/build/relink/repair.
+- **Root-cause status:** **ADJUDICATED 2026-08-25** by `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`. **Class:** ill-formed upstream state — A1 decides the sign of a barycentric direction coordinate with a `double` tolerance in three places and publishes those verdicts as topological ownership (carrier-set membership, vertex-sector membership); A2a re-decides the same sign exactly on A1's own published datum. T6 correctly rejects a state A1 was incorrectly allowed to produce. The seam is **proved algebraically, not conjectured**: in `direction_in_incident_vertex_sector`, `alpha = d[next]` and `beta = d[prev]` identically, so `alpha > tol && beta >= -tol` *is* the exact entry predicate at `tol = 1e-10`. Confidence **high**.
+- **Route still undetermined, deliberately:** three routes reach `t* = 0` (interior edge entry with cross-face flow disagreement; the same within-face at `|d| <= 1e-10`; vertex entry after a mis-selected sector transit). The discriminating datum — the exact entry parameter — was computed and dropped by the witness emitter. Measure **E1** decides it in one turn; measures **E2–E5** close all three regardless.
+- **Note on the published locus:** `singularity=0` / `sourceVertex=0` are the trace **seed**, back-filled at `SurfaceCellTracing.cpp:818-819`, not the failure site. The failure is provably not the trace's first step. Only `sourceEdge=6-8` is a genuine locus.
+- **Disposition:** `M3-CP4c-0-CB2`, Code + Build only, measures **E0–E10**. T6 and Q8 unchanged; no fixture edit; no tolerance retuned. Review §7 proves T6 becomes unreachable from well-formed states after E2–E5.
+- **Stable-count rationale:** CP4c-0 never accepted and no accepted 316 identity regressed; **+0 events / +0 recurrences**, totals **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0-TB-CAND-02 — retry-0 artifact transfer failed before immutable validation — RESOLVED INFRASTRUCTURE / NON-STABLE
+
+- **Observed:** run `32890863928` failed during artifact transfer before package verification and before any identity.
+- **Correction/evidence:** single plan-authorized diagnosed infrastructure retry `32891161394` used unchanged package/selector/commands and completed the full gate plus Q8.
+- **Stable-count rationale:** zero semantic identities in retry 0; **+0 events / +0 recurrences**.
+
+## M3-CP4c-TB-R1-CAND-01 — production closed-surface witnesses expose accepted scope gaps — ACTIVE / NON-STABLE / DEFERRED TO CP4c-2/3
+
+- **CP4c-1 evidence:** TB-R3 reproduces the prior torus/mechanical observations unchanged. Torus reaches A2a but publishes 0 traces / 0 events and A2b first rejects at `UncutFaceComponentOrbitSeedNotUnique`, `sourceFace=0-1-2`. Mechanical still fails A1 with `IncompleteCycleBasis` at source edge `0-3`; `fieldTransportAdjacencyExists=false` while `globalEF=1,158` and `localEF=1,158` are valid, with source boundary loops 0, genus 0, interior local vertices 152. The observed mechanical failure remains missing field-transport adjacency, not a negative `EF` row; the deeper adjacency-production cause is not yet adjudicated.
+- **Control:** TB-R3 keeps the complete accepted prefix **316/316 PASS** with zero orchestration errors. Neither observation is accepted-behavior loss.
+- **Disposition:** torus higher-genus region authority remains owned by blocked `M3-CP4c-2-DEFN`; mechanical closed-surface cycle-basis authority remains owned by blocked `M3-CP4c-3-DEFN`. Do not repair either inside the CP4c-1 review.
+- **Stable count:** +0 events, +0 recurrences; totals **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c-TB-R1-CAND-02 — terminal TraceIntersection non-vacuity blocked by Cartesian A1 continuation authority — SUPERSEDED BY CP4c0-TB-CAND-01 / NON-STABLE
+
+- **Observed:** C4/C5 remain red because the prescribed sphere reaches A1 and then A2a rejects `InvalidCandidateTraceTransport` at `singularity=0`, `sourceVertex=0`, `sourceEdge=1-2`; no network or terminal `TraceIntersection` is published. TB-R3 preserves the same required result **316/318** with the full accepted prefix **316/316 PASS**.
+- **Z1 runtime proof:** published branch-pairing authority is ambiguous on accepted witnesses, not only the sphere: two-ring `30/60 = 50%`, four-triangle fan `4/16 = 25%`, torus `288/576 = 50%`, prescribed sphere `384/768 = 50%`. The sphere failing face `1-2-5` has incoming `1-2`, outgoing `1-5,2-5`, multiplicity `2`.
+- **Z2 runtime proof:** the sphere failure site is exactly `field_aligned_outgoing_carrier` after **1 completed segment**, current face `1-2-5`, source edge `1-2`, with `fieldTransportAdjacencyExists=true`. The failure is therefore not next-face lookup or typed branch transport, and the start attachment/first transport path is viable.
+- **Root cause status:** **PROVEN production A1→A2a contract gap.** `FieldBranchBoundaryPairing.connections` is a Cartesian inflow × outflow relation while A2a requires one continuation; the trace state lacks the within-face position datum needed to resolve a 1-in/2-out face. TB-R3 confirms the independent TB-R2 review's source diagnosis and falsifies witness-side repair as the smallest correction.
+- **Disposition:** exact next `M3-CP4c-0-DEFN`, review/definition/planning only. Freeze one position/continuation authority and its accepted-prefix re-proof obligations before implementation. Do not resolve ambiguity inside A2a, invent identifier/order/magnitude tiebreaks, weaken C4/C5, or patch the sphere.
+- **Stable count:** +0 events, +0 recurrences; CP4c-1 has never been accepted and no accepted 316 identity regressed. Totals **42 / 14 / 28**, debt **5**.
+- **CP4c-0 re-proof:** CP4c-0 removes Cartesian `connections` authority and all 12 dedicated identities pass in TB `32891161394`. Sphere advances to a different first failure, `BranchContinuationDegenerateEntry` at edge `6-8`; active ownership moves to `M3-CP4c0-TB-CAND-01`.
+
+## M3-CP4c-1-TB-R3-CAND-01 — tar/grep preflight pipefail aborted before runtime — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** first TB-R3 orchestration run `32871811711` stopped during immutable-package preflight before the runtime step and executed **0 identities**.
+- **Root cause:** an early-exit `tar -tzf <archive> | grep -q <required-path>` pipeline ran under `set -o pipefail`. `grep -q` exited immediately after finding the required path, leaving `tar` to observe a broken pipe; the otherwise successful membership check therefore surfaced as a non-zero pipeline status.
+- **Correction/evidence:** replace the SIGPIPE-sensitive early-exit membership check with a preflight form that consumes/records the archive listing without making upstream success depend on `grep -q` closing the pipe. Corrected authoritative run `32872112507 / 97881418987` then completed all **323** planned processes with zero orchestration errors and exact pre/post integrity.
+- **Stable-count rationale:** pre-runtime control-plane defect only; no test identity executed in the invalid run and no semantic package changed. Adds **0 stable events / 0 recurrences**; totals remain **42 / 14 / 28**.
+
+## M3 CP4 historical regression/candidate consolidation — CLOSED / ARCHIVED
+
+- `M3-CP4ab-TB-R3` accepted the immutable cumulative gate **316/316** (`304/304` predecessor + `12/12` CP4ab), so `PR8-R042 / M3-CP4b-R001` is **RESOLVED STABLE**.
+- All CP4a/CP4b/CP4ab non-stable process, orchestration, diagnostic-reporting, test-authority, and architecture candidates formerly expanded above are closed historical context. Their material facts, exact run/package/artifact identities, dispositions, and stable-count rationales are preserved in the 2026-08-24 M3 CP4 historical-document consolidation entry and the preceding turn entries in `CHANGELOG.md`.
+- Historical candidate cleanup changes no stable accounting: **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **34**.
+- No current M3 CP4 regression candidate remains active. CP4c starts from accepted 316 authority and exact next remains `M3-CP4c-CB`.
+
+## M3-CP3b-TB-CAND-01 — remotely transported runtime draft was malformed YAML — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** first schema-validation control `32513439436` rejected the remotely transported CP3b TB runtime draft before the acceptance workload could run. No generated Directional semantic runtime or acceptance artifact was produced.
+- **Root cause:** control-plane transport did not preserve the intended workflow bytes, leaving malformed YAML; this is not package/source/test/fixture/selector authority.
+- **Correction/evidence:** replace the corrupted draft with a compact byte-preserving workflow and require independent SchemaStore validation before publication. Final compact workflow blob `7a604bedc113b5b1c2f89038a18e22cd26c9b34e` passed schema run `32515108310` and authoritative acceptance run `32515222447` later completed **304/304 GREEN**.
+- **Stable-count rationale:** pre-runtime orchestration only; acceptance attempt remained unconsumed until the valid 304 gate. Adds **0 stable events / 0 recurrences**; totals remain **41 / 14 / 27**.
+
+## M3-CP3b-TB-CAND-02 — large payload/repair transport failed byte identity — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** large runtime/repair-workflow payload transports did not reproduce the intended local bytes. Those controls were rejected before semantic runtime and were not accepted as workflow authority.
+- **Root cause:** payload-size/transport integrity on temporary orchestration, not a CP3b product or test defect.
+- **Correction/evidence:** author a smaller equivalent immutable-gate caller and transport it through Git blob creation; the resulting exact blob `7a604bedc113b5b1c2f89038a18e22cd26c9b34e` was reused unchanged for both validated payload and active runtime caller. Schema run `32515108310` and in-run validator `96875257718` passed before/with authoritative gate `32515222447 / 96875297990`.
+- **Stable-count rationale:** all affected controls were pre-runtime/attempt-free. Adds **0 stable events / 0 recurrences**; totals remain **41 / 14 / 27**.
+
+## M3-CP3b-TB-CAND-03 — closeout changed-path guard omitted a newly added untracked report — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** first acceptance-documentation closeout `32516236265 / 96878457696` successfully decoded and applied the frozen documentation patch, then stopped before commit because `git diff --name-only` does not report a newly added untracked acceptance report. The guard therefore saw only four of five intended paths.
+- **Root cause:** closeout changed-path oracle used a tracked-diff-only command before staging a new file. Semantic acceptance evidence was already complete and no generated Directional runtime executed in closeout.
+- **Correction/evidence:** make the new file visible to the changed-path oracle with `git add -N` before comparing the exact five-path set, while retaining the same frozen documentation content plus this orchestration record.
+- **Stable-count rationale:** documentation/control-plane only, post-acceptance; adds **0 stable events / 0 recurrences** and does not alter the accepted 304/304 gate. Totals remain **41 / 14 / 27**.
+
+## M3-CP3b-TB-CAND-04 — compressed closeout payload transport corrupted before patch application — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** corrected acceptance-documentation closeout `32518015056 / 96883932212` failed before `git apply` because the embedded base64/gzip patch transport was corrupted (`base64: invalid input`, gzip CRC and length errors). A first file-backed retry `32518441153 / 96885225368` reproduced the same truncation while decoding one large connector-created payload file. Neither produced a durable documentation commit or generated Directional runtime.
+- **Root cause:** the large single-object text transport path was not byte-preserving across connector/workflow publication; the failure is administrative transport, not semantic acceptance.
+- **Correction/evidence:** split the frozen compressed patch base64 into bounded deterministic chunks, concatenate them in lexical order, verify the concatenated base64 SHA-256 and decoded patch SHA-256, then apply the exact five-path patch. This removes the single-large-text transport assumption while preserving the locally verified documentation bytes.
+- **Stable-count rationale:** post-acceptance documentation/control-plane only; adds **0 stable events / 0 recurrences** and does not alter the accepted 304/304 gate. Totals remain **41 / 14 / 27**.
+
+## M3-CP3b-CB-CAND-01 — shrink-only vector resize required an unavailable default constructor — RESOLVED COMPILE-ONLY / NON-STABLE
+
+- **Observed:** first two-target compile `32507150872 / 96849810459` on initial CP3b source `233b8e83be338e9a590c4aa5dfb220e9aa2119f2` failed while compiling `SurfaceCellTracing.cpp`: `std::vector<FieldAlignedCandidateTraceSegment>::resize(...)` instantiated a default-construction path, but `FieldAlignedCandidateTraceSegment` intentionally has no default constructor. No immutable package or generated Directional runtime was produced.
+- **Root cause:** C++ container API misuse on a shrink-only operation, not an event-graph semantic defect.
+- **Correction/evidence:** replace shrink-only `resize(contactIndex+1)` with iterator `erase(begin+contactIndex+1,end)` inside the already-authorized source file. Correction `32507540808 / 96851028033` produced source `611b3f8f3926792baee9d1078d6677d22006a6c4`; corrected-source precompile `32507660499 / 96851404185` and package `32508124000 / 96852846743` are green.
+- **Stable-count rationale:** compile-time only; no accepted semantic behavior regressed and no generated runtime executed. Adds **0 stable events / 0 recurrences**; totals remain **41 / 14 / 27**.
+
+## M3-CP3b-CB-CAND-02 — broad compile-marker glob matched correction control — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** the first compile caller watched `m3-cp3b-cb-compile-*.txt`, which also matched the compile-correction marker. Run `32507540724` reached only its metadata resolver, failed there, and its compile job was **skipped**.
+- **Root cause:** temporary workflow path-filter namespace overlap.
+- **Correction/evidence:** narrow the compile caller to `m3-cp3b-cb-build-*.txt` and lock the corrected source. Authoritative precompile `32507660499` and package `32508124000` then ran through the corrected path.
+- **Stable-count rationale:** orchestration-only with no generated Directional compile/runtime in the accidental run. Adds **0 stable events / 0 recurrences**; totals remain **41 / 14 / 27**.
+
+## M3-CP3a-TB-CAND-01 — workflow registration/activation produced no observed TB runtime — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** an earlier validated TB caller installation/trigger control did not produce an observed `M3-CP3a-TB` runtime. No workload job, GTest result, or semantic artifact was accepted from that control.
+- **Classification/root cause:** orchestration/control-plane only. The exact registration/activation cause was not promoted into product/test authority because no generated Directional runtime executed and the final caller/trigger path superseded it.
+- **Correction/evidence:** corrected active caller commit `2bc3bf38f9ef24509b9296f6d7928e397007cecc` plus separate trigger `887b4ad191baf8b4bf9ad2877900d3c18d935df1` produced authoritative run `32485441510`.
+- **Stable-count rationale:** no accepted behavior loss and no semantic execution; adds **0 stable events / 0 recurrences**. Totals remain **41 / 14 / 27**.
+
+## M3-CP3a-TB-CAND-02 — caller permission ceiling rejected reusable observer write permission — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** an earlier TB caller granted `contents: read` while `agent-run-observer-reusable.yml` includes a `contents: write` job. The reusable-workflow permission ceiling was therefore invalid before acceptance runtime.
+- **Root cause:** workflow permission mismatch only; no package/source/test/fixture/selector semantic defect.
+- **Correction/evidence:** the caller was corrected to `contents: write`, exact corrected bytes were revalidated by schema run `32485281333`, and authoritative run `32485441510 / 96780835699` then completed **298/298 GREEN**. No generated Directional runtime occurred under the invalid caller.
+- **Stable-count rationale:** pre-runtime orchestration only; adds **0 stable events / 0 recurrences**. Totals remain **41 / 14 / 27**.
+
+## M3-CP3a-TB-CAND-03 — closeout stale-reference guard included temporary workflow control text — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** documentation closeout run/job `32493625886 / 96806875476` passed workflow schema validation but stopped before any durable documentation commit because its stale-reference census also scanned `.github/workflows/agent-m3-cp3a-tb-closeout.yml`. That temporary workflow intentionally listed the exact superseded per-turn filenames in its staged-path guard.
+- **Root cause:** the retained-document stale-reference oracle used a repository-wide text scan without excluding temporary workflow/payload control surfaces that are themselves scheduled for workflow-first cleanup. This is a closeout-oracle scope defect, not product/test authority.
+- **Correction/evidence:** retain the same byte-frozen documentation transform, but scope the stale-reference census to retained documentation/content and exclude `.github/workflows/` plus `.agents/Directional/turn-payloads/`; the exact transformed documentation diff remains hash-locked by the work-preservation artifact.
+- **Stable-count rationale:** documentation/control-plane only; no generated Directional runtime and no acceptance evidence changed. Adds **0 stable events / 0 recurrences**. Totals remain **41 / 14 / 27**.
+
+## M3-CP3a-TB-CAND-04 — closeout compressed payload corrupted in connector transport — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** closeout retry `32494245284 / 96808854595` passed schema validation but failed at `base64 -d ... | gzip -dc` with CRC/length errors before the documentation transform executed. No documentation commit was created.
+- **Root cause:** control-plane payload transport corruption/truncation for the single large compressed transform blob; package/source/test/fixture/selector authority was untouched.
+- **Correction/evidence:** transport the exact transform in independently bounded chunks, concatenate them only inside the closeout runner, and retain exact script SHA plus exact resulting documentation-diff SHA guards before commit.
+- **Stable-count rationale:** pre-transform closeout orchestration only; no generated Directional runtime and no accepted behavior loss; adds **0 stable events / 0 recurrences**. Totals remain **41 / 14 / 27**.
+
+## M3-CP3a-DG-CAND-01 — one-ring witness could not reach CP3a traversal seams — RESOLVED / TEST-AUTHORITY / NON-STABLE
+
+- **Original evidence:** first DG `32445011345 / 96662902496` on old package `9432965083` was 2/6; three reds were upstream non-vacuity failures because every singularity attachment's first outgoing carrier was an outer-boundary barrier, so no multi-face crossing or populated `entryTransport` existed.
+- **Root cause:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`; the reused one-ring skew fan was topologically incapable of satisfying CP3a's required multi-face traversal witness.
+- **Correction:** independent Review J1-J3 replaced the witness with a two-ring planar disc, derived matching/effort/index through `finalize_cross_field_result(...)`, and retained explicit `ASSERT_` non-vacuity for a multi-face trace with populated `entryTransport` plus a mandatory-barrier termination.
+- **Resolution evidence:** final DG `32463985548 / 96716645034` on exact source/package `558a35c67919d54899c53de11dc9c69b6dfc9519 / 9435408599` executes the same six identities exactly once and passes **6/6**. The traversal, typed transport composition, ordering, binding rejection, and barrier-stop contracts all reach and pass on the corrected witness.
+- **Stable-count rationale:** first-acceptance-only candidate; no accepted predecessor identity ran in either DG. Adds **0 stable events / 0 recurrences**; totals remain **41 / 14 / 27**.
+
+## M3-CP3a-DG-CAND-02 — network semantic digest mixed semantic identity with gauge-sensitive atlas provenance — RESOLVED / ARCHITECTURE-PRODUCT / NON-STABLE
+
+- **Original evidence:** first DG reached equivalent branch relabeling and showed equal `branch_topology().semantic_digest()` plus equal candidate traces but unequal enclosing network semantic digests, isolating the representation-dependent full atlas hash inside semantic identity.
+- **Root cause:** `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`; one digest was carrying two domains: gauge-invariant network semantics and representation-dependent atlas binding/provenance.
+- **Correction:** independent Review J4-J5 makes semantic identity consume `branch_topology().semantic_digest()` while retaining the full atlas hash separately for binding/provenance and preserving foreign/tampered-atlas rejection.
+- **Resolution evidence:** final DG `32463985548 / 96716645034` passes `CandidateTraceIsInvariantToEquivalentBranchRelabeling` and independently passes `CandidateTraceRejectsForeignPortOrAtlasBinding` in the same **6/6** exact gate, proving the semantic/provenance split did not delete the binding check.
+- **Stable-count rationale:** first-acceptance-only candidate; accepted predecessor not executed. Adds **0 stable events / 0 recurrences**; totals remain **41 / 14 / 27**.
+
+## PR8-R040 / M3-CP2b-R001 — singularity local ports inherit four-label representation identity — RESOLVED STABLE / RECURRENCE
+
+- **Original loss:** corrected immutable `M3-CP2b-TB` `32317745051 / 96274463944` was **285/292**. Two identities accepted green in CP2 were red: `FieldAlignedCurveNetwork.PublishesTypedSingularityPortsAndMandatoryGraph` and `FieldAlignedCurveNetwork.RejectsInvalidSingularityPortOwnershipOrCount`; four new CP2b identities also failed at baseline atlas construction.
+- **Primary category:** `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`; detection escape `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`.
+- **Root cause:** attempt 1 derived semantic local-port identity from four branch-label starts and representation-level tuple deduplication rather than canonical fan/transport equivalence.
+- **Correction:** R1 replaced that path with typed incident-fan incidences quotiented by reciprocal branch transport, requiring exactly `4-indexNumerator` semantic classes and topology-only representative/slot ordering.
+- **Resolution evidence:** authoritative `M3-CP2b-TB-R1` `32324880480 / 96294021816` restores accepted CP2 **6/6**, including both formerly red network identities. `FieldTransportAtlas.PublishesCheckedSingularityPortAttachments` is green and proves the skew index-1 path now publishes exactly three checked local attachments with contiguous slots. The remaining CP2b reds have different first-acceptance causes recorded below.
+- **Stable-count rationale:** this remains the same historical stable event/recurrence already counted at attempt 1. Resolution does not erase incidence. Historical totals remain **41 / 14 / 27**.
+
+## PR8-R041 / M3-CP2b-R002 — dependent port validation masks accepted singularity diagnostic — RESOLVED STABLE / RECURRENCE
+
+- **Original loss:** accepted CP1 A1 identity `FieldTransportAtlas.IndependentOracleRejectsCompleteTypedTamperMatrix` was red in corrected attempt-1 CP2b TB because a singularity tamper expected `SingularityMismatch` but dependent attachment validation returned `InvalidSingularityPortAttachment` first.
+- **Primary category:** `RP-03 / POLICY_STAGE_STATE_CONFLATION`; detection escape `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`.
+- **Root cause:** the expanded independent oracle validated dependent singularity-port attachments before reconstructing/validating the singularity facts on which those attachments depend.
+- **Correction:** R1 validates raw/published singularity facts first and only then validates dependent branch-topology attachments; dedicated branch/attachment tamper checks remain strict.
+- **Resolution evidence:** authoritative `M3-CP2b-TB-R1` restores accepted CP1 A1 **6/6**, including `IndependentOracleRejectsCompleteTypedTamperMatrix`, so the accepted `SingularityMismatch` diagnostic contract is restored.
+- **Stable-count rationale:** same historical stable event/recurrence; resolution does not decrement totals. Historical totals remain **41 / 14 / 27**.
+
+## M3-CP2b-TB-CAND-01 — first immutable caller materialized fixtures at wrong compiled source root — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** initial TB control `32317379701 / 96272468253` selected all 292 identities exactly once but additionally lost 26 M1 producer tests to fixture file-open/setup errors. The precompiled binaries embed the Code + Build workspace source root; the first caller extracted the embedded package source under runner temp instead.
+- **Correction/evidence:** control-only retry used the same package and exact selector and materialized the exact embedded source at the compiled workspace path. Authoritative retry `32317745051 / 96274463944` restores M1 producer **138/138**. No package/source/test/fixture/selector semantic mutation occurred.
+- **Stable-count rationale:** orchestration only, so **0 stable events / 0 recurrences**. The retry's final shell status-propagation step had an empty local exit-code read, but the runtime step returned failure and the complete result artifact unambiguously records the semantic 285/292 gate; no second runtime retry is needed.
+- **Disposition:** RESOLVED NON-STABLE.
+
+## M3-CP2b-TB-CAND-02 — new CP2b positives fail at baseline atlas construction — RESOLVED/SUPERSEDED SEMANTIC / NON-STABLE
+
+- **Original observation:** four first-runtime CP2b identities failed because attempt-1 index-1 `FieldTransportAtlas::make(...)` rejected before their intended positive/oracle assertions.
+- **Original root cause:** same singularity local-port representation-identity defect as stable `PR8-R040 / M3-CP2b-R001`.
+- **R1 resolution boundary:** `PublishesCheckedSingularityPortAttachments` is green and baseline atlas construction now succeeds through the three-port seam. The remaining three R1 reds do not share the original four-label cardinality cause; they are split into the two candidates below.
+- **Stable-count rationale:** first-acceptance CP2b contracts, so **0 stable events / 0 recurrences** independently.
+- **Disposition:** RESOLVED/SUPERSEDED NON-STABLE.
+
+## M3-CP2b-TB-R3-CAND-01 — local harness used Bash special `GROUPS` variable before runtime — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** the first local TB-R3 control passed immutable package/selector preflight, then the harness array name `GROUPS` resolved to Bash's special group-ID array. The first run specification became `0`; the control attempted the package `bin/` directory, produced no GTest JSON, and stopped before any generated Directional binary executed.
+- **Root cause:** local harness variable-name collision only; no package, source, test, fixture, selector, or expected-result semantic defect.
+- **Correction/evidence:** rename the harness array to `RUN_GROUPS`; corrected harness SHA-256 `93d197608efce08001d4ecf76991bd70c45299a9a2d265434e4d0d38a8446131`. The same immutable package then produced the valid **292/292 selected, 288/292** gate with accepted predecessor **287/287** and byte-identical postflight.
+- **Attempt/stable-count rationale:** the first control produced no valid semantic gate and executed no generated test binary, so it consumed **0 attempts** and adds **0 stable events / 0 recurrences**.
+- **Disposition:** RESOLVED ORCHESTRATION / NON-STABLE.
+
+## M3-CP2b-TB-R1-CAND-01 — equivalent Z4 relabel oracle conflates raw and canonical transport — RESOLVED / TEST-AUTHORITY / NON-STABLE
+
+- **R1 observation:** `BranchTopologyIsInvariantToEquivalentZ4Relabeling` reached its non-vacuous relabel setup. Raw directions and matching changed; canonical frames and singularity-port attachments remained equal; canonical branch transport equality failed and semantic digest changed from `10784329413325343822` to `1098805676228837734`.
+- **Primary category:** `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`.
+- **R1 root cause:** CP2b R1 published an unnormalized raw/gauge integer lift even after reducing semantic transport to `QuarterTurn`; equivalent Z4 gauges could therefore differ by `4*k` in equality/hash representation.
+- **R2 product change:** exact source `90c737e11c340061dd0167eaf59fec66afa0c8ba` preserves accepted CP1 raw adjacency lift semantics and changes only nested CP2b publication: topology-oriented lift is reduced to `QuarterTurn`, then `forwardLift` is the canonical `[0,3]` representative `static_cast<int>(forward.value())`.
+- **TB-R2 disposition:** **UNADJUDICATED.** Immutable TB-R2 `32331037070 / 96311550091` failed inside the old helper before relabeled atlas/transport equality or semantic digest.
+- **DG disposition:** **STILL UNADJUDICATED.** `M3-CP2b-DG` `32344594021 / 96350536107` again fails inside `make_skew_index_one_singularity_field(...)`, now at producer singularity-cardinality assertion line 1699, before the baseline atlas and relabel comparison. The R2 `[0,3]` product normalization therefore still has no runtime adjudication after the C1 fixture strategy.
+- **DG-R4 disposition:** **STILL UNADJUDICATED.** Final diagnostic `32380986195 / 96463857157` clears the producer-derived helper for every CP2b identity, but `BranchTopologyIsInvariantToEquivalentZ4Relabeling` fails its valid-baseline `FieldTransportAtlas::make(...)` before the relabeled atlas, transport equality, or semantic digest seam. Part D therefore retains CAND-01 and authorizes diagnostics rather than a semantic fix.
+- **TB-R3 disposition:** **STILL UNADJUDICATED.** Instrumented R5 runtime names the earlier baseline rejection as `DuplicateSingularityPortRepresentative` at edge `(0,1)`, face `0`, vertex `4`, region `0`. The relabeled atlas, branch-transport equality, and semantic-digest seam are still not reached, so the R2 `[0,3]` normalization remains neither accepted nor rejected by runtime.
+- **TB-R4 evidence:** the valid R6 gate finally reaches the equivalent-Z4 relabel seam. Baseline and relabeled `FieldTransportAtlas::make(...)` both succeed. The sole failure is `tests/FieldTransportAtlasTests.cpp:2290`, where `independent_validate_snapshot(... relabeledField ..., independent_snapshot(relabeled.value()))` returns an error although the test expects validity. Because the assertion is non-fatal, execution continues: branch frames compare equal, branch transports compare equal, every `forwardLift` is canonical `[0,3]` and reciprocal, singularity-port attachments compare equal, semantic digests compare equal, and nonzero transport is present. The R2 production normalization is therefore runtime-exercised; the remaining contradiction is narrowed to the independent-validator relabel seam and requires static Review classification before any correction.
+- **Part-G Review classification:** **TEST-AUTHORITY.** The identity simultaneously requires raw matching to change under gauge relabel, published branch transport to remain invariant, and raw matching to equal the canonical published lift. Those three requirements are contradictory. Product publication deliberately adds gauge, applies canonical topology orientation, and stores the unique `[0,3]` Z4 representative; all direct invariance assertions being green positively support that product contract. The independent validator's exact raw/canonical equality was the defect, not the product.
+- **CB-R7 correction:** semantic edit `9316cc5a7c323ba6cf5235a9f89fc32be3cf96f0`, fixed compile/package source `1d2417c90970db81f8b49dd6e0961868cac32369`, immutable package `9428451548`. Exactly `tests/FieldTransportAtlasTests.cpp` changed semantically. The oracle derives its own face gauge from mesh/field authority, applies its own canonical orientation, reduces through Z4, and corrects all three related comparisons together. Existing tamper rejections remain statically pinned; H4 requires `forwardLift +1` rejection and accepts `+4` as an equivalent representative. Product source remained frozen.
+- **TB-R5 resolution evidence:** immutable `32434684618 / 96633374819` executes the frozen 292-selector exactly once per identity and passes **292/292**: accepted predecessor **287/287**, CP2b **5/5**. `BranchTopologyIsInvariantToEquivalentZ4Relabeling` and `IndependentOracleRejectsBranchPairingOrPortAttachmentTamper` both pass; the non-degenerate 5-incidence/3-class partition remains unchanged; package and materialized source are byte-identical pre/post. Result/log `9430381177 / 9430381560` have SHA-256 `41292ffef7231ef7010bd416aa6b730fd6022694933bc0c4b538abadb64bf8be / a789a6567c865e119deef69c295894078ce2621f7972912666c726b1b6b886a4`. **Disposition: RESOLVED / TEST-AUTHORITY / NON-STABLE.**
+- **Stable-count rationale:** no accepted predecessor regression and the defect was in first-acceptance independent test authority; adds **0 stable events / 0 recurrences**. Historical totals remain **41 / 14 / 27**.
+
+## M3-CP2b-TB-R1-CAND-02 — duplicate singularity representative key omitted branch — RESOLVED / ARCHITECTURE-PRODUCT / NON-STABLE
+
+- **R1 observation:** `PublishesCanonicalBranchFramesAndBoundaryPairings` reached publication assertions but independent baseline validation rejected; `IndependentOracleRejectsBranchPairingOrPortAttachmentTamper` failed baseline validity before either intended tamper seam.
+- **Primary category:** `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`.
+- **R1 root cause:** the helper manually injected nonzero transition matching/effort into otherwise identical coplanar face directions, contradicting independent geometric reconstruction.
+- **R2 refinement:** non-degenerate directions were introduced, but the helper still assigned its nonzero closing seam using a hard-coded ordered face pair while verification used the signed cycle row. Mesh-owned `EF(edge,0) -> EF(edge,1)` orientation reversed that seam, so matching remained zero and the center index was not 1.
+- **Mandatory-review C1 correction:** CB-R3 exact source `c608f77588a43c388bed81295d6cde0977b1c8cd` stopped hand-authoring matching/effort/index. Accepted `finalize_cross_field_result(..., false, true)` derives them from authored non-degenerate directions; the helper independently checks each published transition against mesh orientation and reconstructs the signed center cycle.
+- **DG evidence:** attempt-free `32344594021 / 96350536107` executes all five CP2b identities exactly once on package `9395219896`. The helper reaches past every transition/matching assertion and past `orientedEffort ~= 2*pi` and `exactIndex ~= 1`, proving the R2 orientation failure is resolved. It then fails at line 1699 because `field.singularCycles.size()` is **5**, expected **1**. All five identities stop there before their intended semantic seams.
+- **Refined root cause:** the open four-triangle disk witness conflates “center cycle has index +1” with “producer emits exactly one singular vertex entry.” `dual_cycles(...)` maps boundary vertices to the aggregate boundary cycle, and `effort_to_indices(CartesianField&)` publishes each local vertex whose mapped cycle index is nonzero. The accepted producer therefore exposes boundary-cycle singular entries as well as the center. This is a witness-domain/cardinality assumption, not another transition convention defect.
+- **Architecture consequence:** `FieldTransportAtlas::make(...)` consumes every published singular entry as a `FieldSingularityFact`, while local port construction expects an ordered closed incident fan. Whether boundary singularities are valid CP2b inputs, require an architecture-owned filter/type, or make the open fan the wrong witness domain must be decided by rescope Review; deleting the size assertion is not authorized as a fixture-side filter.
+- **Rescope Review / R4 correction:** Part C of `Architecture_M3_CP2b_Witness_Rescope_Review_Plan.md` reclassified the active cause as architecture/product: A1 already owns boundary-loop index as a typed `BoundaryLoop` witness but also admitted aliased boundary-vertex entries as separate singularity facts, and CP2b's attachment valence range diverged from accepted CP2. CB-R4 exact source `93f55536727dbf76504aa29f7835edc8cebaee0c` implements reconcile-before-drop E1, accepted-range E2, derived interior fixture assertion E3, and reconciliation negative E4. Compile/package evidence is green/runtime-free; runtime adjudication is pending the second DG on package `9404970614`.
+- **DG-R4 evidence:** final attempt-free `32380986195 / 96463857157` executes all five CP2b identities once on package/source `9404970614 / 93f55536727dbf76504aa29f7835edc8cebaee0c`. Every identity clears the producer-derived helper, including the exact centre `+1` and exactly-one-interior-singularity checks. This runtime-discharges the remaining fixture-authority precondition. Four positive identities then fail only when the valid baseline calls `FieldTransportAtlas::make(...)`; the negative ambiguous/incomplete identity is reached-and-passing but is not credited while the valid baseline also fails.
+- **Semantic Review refinement:** Part D reclassifies the live blocker as **architecture/product diagnosability plus an unnamed valid-baseline rejection**, not fixture authority. The positives discard `FieldAtlasBuildError`, while the compound branch-frame/singularity-attachment builders collapse many guards into opaque codes and discard existing locus fields. F1/F2 instrumentation is required before a semantic cause may be asserted. Part E corrects the implementation surface to include the public enum header required by F2; no guard logic change is authorized.
+- **TB-R3 evidence:** valid immutable R5 gate is **288/292** with accepted predecessor **287/287**. All four positive identities report `DuplicateSingularityPortRepresentative; sourceEdge=(0,1); sourceFace=0; sourceVertex=4; topologyRegion=0`. Static ordering proves the class-count guard passed, one representative per class was elected, and the final cross-class uniqueness check found two representatives sharing the old `(startFace, firstOutgoingCarrier)` key.
+- **Semantic Review result:** Historical TB-R3 Review Part F (recorded in `CHANGELOG.md`) reproduces the collision from frozen geometry. Face 0's 115.647-degree sector contains two 90-degree-spaced rays; those incidences share `startFace` and carrier and differ only in `branch`. The old key is structurally rank-one and production-relevant at ordinary valence-3 `+1` cones.
+- **CB-R6 correction evidence:** exact source `9fdb928fe872190b27aa6022b43608eeccf329e4` preserves incidence generation and union-find equivalence, publishes every incidence/class/adjacency lift before later rejection, and widens representative identity/order to `(startFace, branch, firstOutgoingCarrier)`. G3 is discharged statically because the TB-R3 duplicate guard is cross-class by construction: it runs only after one representative per class is elected. Independent G4 coverage requires a legitimate pair sharing `(startFace, carrier)` while differing in branch and separately rejects an exact three-field duplicate. Mandatory pre-package and full package compiles are green; immutable package `9422702053` is runtime-free.
+- **TB-R4 resolution evidence:** immutable `32418067075 / 96583693356` publishes the predicted centre partition exactly: five incidences, three classes, with face-0 branch `2` / carrier `(0,1)` in class `0` and face-0 branch `3` / the same carrier in class `1`. All five emitted partition blocks agree. `PublishesCheckedSingularityPortAttachments` passes its legitimate same-face/same-carrier/different-branch representative proof and its exact three-field duplicate rejection in the same package. The corrected key is therefore runtime-proven without changing incidence generation or union-find equivalence.
+- **Disposition:** **RESOLVED / ARCHITECTURE-PRODUCT / NON-STABLE.** The runtime partition confirms the Review's Reading A and discharges the bounded R6 correction. This resolution does not imply CP2b acceptance because CAND-01 still leaves one frozen CP2b identity red.
+- **Stable-count rationale:** all five affected identities are new CP2b first-acceptance contracts and DG intentionally did not execute the accepted 287-selector, so this adds **0 stable events / 0 recurrences**. Historical totals remain **41 / 14 / 27**.
+
+## PR8-R039 / M3-CP2-R001 — closed authoritative rail cycle linearized as an open path — RESOLVED STABLE / RECURRENCE
+
+- **Observed loss:** original immutable CP2 TB `32289400790 / 96186521474` was **270/287**. All six CP2 contracts and all six CP1 A1 contracts passed, but 17 retained M1 producer identities that were green in accepted CP1 failed at `surface-cells/NotProductionReady:field-aligned-network/InvalidRailGeometry`.
+- **Primary category:** `RP-07 / CYCLIC_TOPOLOGY_LINEARIZATION`; detection escape `RP-02 / TEST_AUTHORITY_COVERAGE_GAP`.
+- **Root cause:** CP2 applied the open-path contract `|V|=|E|+1` and endpoint `sourceVertices[i+1]` to canonical closed rails published as `closed=true`, `|V|=|E|`; the final closed interval is the wraparound edge.
+- **Correction:** CP2-R1 exact source `5a284388d360efa4ce1bd37bc584165e1db0157b` preserves open-path cardinality, accepts canonical closed rails only at minimum three edges, uses modulo wraparound only for closed intervals, and strengthens the existing ordering identity with a real four-edge closed boundary plus exact mandatory-edge/kind cross-closure proof.
+- **Resolution evidence:** immutable `M3-CP2-TB-R1` `32300950126 / 96223162140` consumed package `9382182983` directly and passed **287/287**: CP2 **6/6**, CP1 A1 **6/6**, retained M2 **275/275**, M1 producer **138/138**, `failedIdentities=[]`. Result/log `9383055423 / 9383056029` have outer SHA-256 `9f1be41dacb8041ebb49468c6df2c3b44d35c026796ec94cca5caf86cb7dbf46 / 34b30b4ad63873e7144d31b595c09ba2201788057671e260ac4d30829003c48f`.
+- **F2 closed-rail cross-closure:** the strengthened positive identity explicitly proves no foreign mandatory edge, complete mandatory-edge coverage, and exact mandatory kind agreement. Runtime failing-diagnostic counts are `ForeignMandatoryEdge=0`, `MissingMandatoryEdge=0`, `MandatoryKindMismatch=0`, as expected for the green positive witness; those zero counts are not a substitute for the explicit assertions.
+- **Immutability:** package and materialized source were byte-identical after runtime; repository checkout, rebuild, relink, repair, source/test/fixture mutation, generated discovery, benchmark execution, package mutation, and materialized-source mutation were all false.
+- **Disposition:** **RESOLVED.** CP2-R1 attempt **1 of 3** succeeded; no retry or mandatory review is required. Resolution does not erase historical incidence, so totals remain **39 events / 14 categories / 25 recurrences** and produced-witness debt remains **5**.
 
 ## PR8-R038 / M3-CP1-R001 — explicit sparse-zero cycle support polluted curvature authority — RESOLVED STABLE / RECURRENCE
 
@@ -516,9 +734,9 @@ next `M3-CP2-TB` must pass **287/287** before CP2 acceptance or package 10 / CP3
 
 ## Historical PR-wide authority
 
-- **38 distinct regression events**;
+- **39 distinct regression events**;
 - **14 architectural categories**;
-- **24 recurrences**;
+- **25 recurrences**;
 - **115 regression-bearing result-document commits**.
 
 T1 artifacts `9040549377 / 9041289209`, accepted M1a artifact `9041930767`, accepted M1b artifact `9042940168`, accepted M1c artifact `9043971772`, accepted M1d artifact `9046308272`, accepted M1e artifact `9049125645`, and accepted M1f artifact `9050850344` create no new production regression event or recurrence. M1f runtime authority is accepted. Accepted M1g artifact `9053047653` likewise creates no stable product regression event or recurrence; M1g semantic acceptance is complete. M1h artifact `9066967620` created no stable product regression event: its sole focused failure was classified as a test-authority witness defect while all entering product/preservation authority remained unchanged. Remediation artifact `9069186973` is now immutable accepted with focused **6/6**, required-green **187/187**, full entering preservation/direct-product authority, unchanged historical-red classes, and exact postflight. M1i implementation `b037157921094604f1b0c17f9c8b7076c7604b3b` is immutable accepted from artifact `9072101943`: focused **6/6**, required-green **193/193**, full entering preservation/direct-product authority, unchanged historical-red classes, bounded Bunny/Vase comparison, and exact postflight. No stable product regression event or recurrence is added. `PR8-R034 / G4-R007` remains active. M1j implementation `d5f681173600dc32dc7617de6105d9e584e593be` is immutable accepted from artifact `9076217893`: producer discovery **214**, focused **6/6**, required-green **199/199**, full entering preservation/direct-product authority, all eight historical-red classes unchanged, strict timing truthfully **0/10**, bounded Bunny/Vase comparison, and exact **67/67** postflight. No stable product regression event or recurrence is added. M1k implementation `b9181364926cea840e9cb50da21fe721f33fd874` is immutable accepted from artifact `9079318682` and runtime evidence `9080245848`: producer **220**, focused **6/6**, required-green **205/205**, full entering preservation/direct-product authority, all eight historical-red classes unchanged, Bunny/Vase dispositions preserved, and exact **68/68** postflight. Strict timing sampled **10/10** but remains the existing nondeterministic microbenchmark classification. The local extraction/harness anomalies and first remote evidence-upload-path failure are infrastructure only. No stable product regression event or recurrence is added. M1l implementation `bd140cff4572412e6f4ecd70a6ce0fe85310932c` is immutable accepted from artifact `9083262395` and runtime evidence `9083913766`: producer **226**, focused **6/6**, required-green **211/211**, full M1k-M1b/validation/M1a/T1/direct-product preservation, all eight historical/deferred red classes unchanged, strict timing truthfully sampled **10/10** while remaining deferred, Bunny/Vase dispositions preserved, and exact **56/56** postflight. The local first-process Cylinder stall did not reproduce remotely and is execution-plane only. No stable product regression event or recurrence is added.
@@ -858,7 +1076,11 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 | PR event | M3 ID | Category | Pattern | Status |
 |---|---|---|---|---|
-| `PR8-R038` | `M3-CP1-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | **active** |
+| `PR8-R038` | `M3-CP1-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved |
+| `PR8-R039` | `M3-CP2-R001` | `CYCLIC_TOPOLOGY_LINEARIZATION` | `RP-07` | resolved |
+| `PR8-R040` | `M3-CP2b-R001` | `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | resolved |
+| `PR8-R041` | `M3-CP2b-R002` | `POLICY_STAGE_STATE_CONFLATION` | `RP-03` | resolved |
+| `PR8-R042` | `M3-CP4b-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved |
 
 ## Current G4 stable-ID mapping
 
@@ -919,8 +1141,8 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-`.agents/Directional/Architecture_M3_CP1_Runtime_Replan_Review_Report.md` and `.agents/Directional/Architecture_M3_CP1_Code_Build_Report.md`.
+Latest accepted runtime remains CP4ab **316/316**. Current CP4c-1 build authority is semantic source `2888dbdcf5aaf27fd629a5d29cbd57bc7d63e4f0`, immutable package `9553525746` (`44a2754c674b232b1327e4feef636d374d6fac0b5573212ec184eb7cf3ab35c8`).
 
-**M1 and M2 remain CLOSED / ACCEPTED. M3 CP1 remains runtime-rejected / NOT ACCEPTED.** R3 source `f6b46be6eaa3f73cb84c7e6c27b7328d22e5c667` is external owner-prepackage compile-green **91/91**, but CP1 is 4/4 and package 5 is not authorized. Exact next is **`M3-CP1-CB-R3-PACKAGE` pending explicit user authorization for local cap 4 -> 5**. CP2+ remain blocked.
+Authoritative `M3-CP4c-1-TB-R2` run/job `32851859581 / 97814494564` is **VALID RED 316/318**: accepted prefix 316/316 PASS, C4/C5 0/2, three non-gating diagnostics, 321 fresh processes, zero orchestration errors, every mutation/build flag false. Result/control artifacts are `9564681836 / 9564682452`, SHA-256 `2febb8c314323009853a5cbdcaa8cd1000692f886654da2fba7039173a987df0 / d990338a12c40770fe33a0ef66a55456d74430dadca153643867ffc62e0f44a7`. Stable totals remain **42 / 14 / 28**, debt **5**, M3 packages **38**.
 
-Stable totals are **38 / 14 / 24**; produced-witness debt remains **5**.
+Exact next is independent `M3-CP4c-1-TB-R2-REVIEW-PLAN`, review/planning only. No runtime retry, semantic mutation, or CB is authorized before review.

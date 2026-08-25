@@ -2,9 +2,29 @@
 
 ## Purpose — DURABLE, DO NOT DELETE
 
-This file contains durable operating policy, the exact next action, current immutable authority, standing product state, and resume-critical blockers/lessons required to continue safely. Architecture belongs in `DESIGN.md` and `REORIENTATION_PLAN.md`; tasks belong in `TODO.md`; completed history belongs in `CHANGELOG.md`; exact review/runtime evidence belongs in the retained independent-review/report documents and regression tracker.
+This file contains durable operating policy, the exact next action, current immutable authority, standing product state, and resume-critical blockers/lessons required to continue safely. Architecture belongs in `DESIGN.md` and `REORIENTATION_PLAN.md`; tasks belong in `TODO.md`; completed history belongs in `CHANGELOG.md`; current exact runtime evidence belongs in the retained latest report/closure records and regression tracker.
 
 This section is durable. It may be corrected or extended, but it must not be deleted, collapsed into another section, or replaced by a summary without explicit user authorization.
+
+All instructions and sections prefixed with `[ChatGPT Web]` are mandatory for all `ChatGPT Web` sessions and must be followed exactly as written.
+All non-`ChatGPT Web` agents, i.e. `ChatGPT Work`, `Codex`, `Claude`, etc., can safely ignore any instruction or section prefixed with `[ChatGPT Web]`.
+
+## `[ChatGPT Web]` Patch Application Strategy — DURABLE, DO NOT DELETE
+
+Historical Directional turns show a consistent empirical GitHub connector write limit of approximately 10 KB per individual write operation. Writes exceeding this size may be silently truncated without the connector returning an error. This is an observed connector behavior rather than a documented GitHub API limit.
+
+Keep direct connector writes for genuinely minor changes when every individual content write is `<=10 KB`. Direct write remains the preferred path for an isolated small document/control change; modified workflow YAML must still satisfy `GitHub_Workflow_Policy.md` schema-validation requirements before execution.
+
+For coherent code or documentation work that is not a genuinely minor direct write, use this standard transport and do not stage patch bytes, compressed Base64, or patch fragments in the repository:
+
+1. **Snapshot** — obtain one exact source snapshot with `.github/workflows/agent-source-snapshot.yml` and download/verify that immutable snapshot once.
+2. **Prepare + preserve locally** — edit the snapshot-derived source in the local container, generate one complete `git diff --binary --full-index --no-ext-diff` patch covering both source/code and documentation changes as applicable, verify `git apply --check` plus `git diff --check`, and emit that exact patch as a user-visible downloadable chat/File-Library backup under `RETENTION_POLICY.md`.
+3. **Stage externally** — upload the exact verified patch with the Google Drive connector to `My Drive/Directional-CI`. Record the returned Google Drive **File ID** and the complete patch SHA-256. Google Drive is transport staging only; the chat/File-Library patch remains the interruption-recovery copy.
+4. **Apply by File ID** — install only the minimal temporary caller/trigger control files required to invoke durable `.github/workflows/agent-google-drive-reusable.yml`. Pass the File ID, exact patch SHA-256, exact patch base SHA, target branch, and commit message. The reusable workflow must fetch the patch by File ID, verify full-patch and embedded diff-body hashes, verify the recorded base and that intended touched paths have not changed, run `git apply --check`, apply, run `git diff --check`, verify the exact changed-path set, commit, and push. Patch transport may not modify `.github/workflows/**`; workflow-file edits remain direct connector changes under the workflow policy.
+5. **Delete staged patch after success** — only after the patch commit has pushed successfully, `agent-google-drive-reusable.yml` must delete that Google Drive patch using the same File ID and report whether deletion succeeded. If application/push fails, retain the Drive file and File ID for diagnosis/retry instead of deleting the only remote transport copy.
+6. **Retire repository control state** — after result/log evidence and Drive deletion are verified, delete the temporary caller first, then retire its marker and any other temporary repository control files through the normal cleanup lifecycle. Do not leave turn-specific patch payloads or fragments under `.agents/Directional/turn-payloads/`.
+
+Before any remote application, resolve current branch authority. If the branch advanced after the patch base, the reusable workflow must fail closed when any intended path changed; reconstruct/rebase the patch deliberately rather than force-pushing or applying blindly.
 
 ## Durable handoff policy — DURABLE, DO NOT DELETE
 
@@ -16,182 +36,221 @@ At the end of every turn:
 4. never treat a documentation/control-plane commit as implementation, build, test, benchmark, or runtime evidence;
 5. preserve the mandatory start/end checklists and all other sections explicitly marked durable;
 6. preserve every section explicitly marked durable in **any** durable document. Durable sections must not be deleted, collapsed, renamed away, replaced by a summary, or stripped of durable meaning unless the user explicitly authorizes that destructive edit and its exact scope;
-7. perform work directly on the configured working branch. Do **not** create temporary, control, side, or staging branches unless doing so is absolutely necessary to circumvent a concrete procedural blocker that cannot safely be resolved on the working branch. If an exception is unavoidable, record the blocker and why the branch is necessary, keep it narrowly scoped, remove/reset it as soon as the blocker clears, return to the configured working branch, then proceed to the next turn;
+7. `[ChatGPT Web]` perform work directly on the configured working branch. Do **not** create temporary, control, side, or staging branches unless doing so is absolutely necessary to circumvent a concrete procedural blocker that cannot safely be resolved on the working branch. If an exception is unavoidable, record the blocker and why the branch is necessary, keep it narrowly scoped, remove/reset it as soon as the blocker clears, return to the configured working branch, then proceed to the next turn;
 8. every Test + Benchmark turn must categorize **every observed regression** in `.agents/Directional/Regression_Root_Cause_Tracker.md` and record root-cause analysis before the turn closes. If evidence does not justify a stable regression ID/count change, create or update a candidate/non-stable record and explicitly state why historical stable totals do or do not change, then proceed to the next turn;
-9. `.github/workflows/agent-compile-reusable.yml` owns one durable compiler-cache namespace/schema. Turn-specific callers must not invent cache epochs, cache namespaces, or unrelated per-turn compatibility keys. Restore must always use the durable compatible namespace so prior ccache entries are reusable across turns.
+9. `[ChatGPT Web]` `.github/workflows/agent-compile-reusable.yml` owns one durable compiler-cache namespace/schema. Turn-specific callers must not invent cache epochs, cache namespaces, or unrelated per-turn compatibility keys. Restore must always use the durable compatible namespace so prior ccache entries are reusable across turns.
 10. work units 2 and 3, plus the exact M1 full-authority partial edges tasklisted in `TODO.md`, have the user-authorized partial-CB cadence exception: only those exact `P-CB` → `P-CB` edges may omit an intervening TB. Every partial remains runtime-free and semantically unaccepted; the final packaging partial must advance to its TB before later milestone work starts.
+11. `[ChatGPT Web]` `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md` is durable operating authority and a mandatory full read at the start of every turn. Apply it before selecting repository-read, workflow-observation, artifact-download, multi-file-write, cleanup, or PR-comment strategies.
+12. `[ChatGPT Web]` `RETENTION_POLICY.md`'s **downloadable work-preservation durability barrier is mandatory**. Any coherent repository-applicable work that exists only in the local/container workspace must be emitted as a File-Library-backed downloadable `Directional__<TURN-ID>__base-<12SHA>__work-preservation.patch` before entering tool-heavy remote orchestration or another interruption-risk phase. A local `/mnt/data` file alone is not durable. The patch is recovery material, not semantic/build/test authority.
 
 Do not add transcripts, chronological tool history, copied superseded artifact tables, obsolete task selections, or generic procedure already owned by policy/skill files. Concision never authorizes deletion of durable information.
 
 ## Mandatory start-of-turn checklist — DURABLE, DO NOT DELETE
 
-1. Review the turn-based-coding-agent skill if not already reviewed for the current work session.
-2. Fully review this handoff, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`, and `GitHub_Workflow_Policy.md`.
-3. Review `TODO.md` (including exact completed/current partial-CB status), `DESIGN.md`, `REORIENTATION_PLAN.md`, `M1_Closure_Record.md`, `M2_Closure_Record.md`, the active next-turn plan, and `Regression_Root_Cause_Tracker.md`.
-4. Confirm the configured working branch, branch head, exact implementation/source authority, and requested turn type before any write.
-5. Verify every explicitly durable section required by the documents being touched is present before editing; do not proceed with a destructive rewrite if a durable section would be removed.
-6. For Code + Build workflow work, verify the reusable compile workflow still owns the durable cache namespace/schema and that the caller does not supply a per-turn cache epoch/key.
-7. Inspect `.github/workflows`, `.agents/connector-triggers`, and `.agents/Directional/turn-payloads` for stale temporary state without deleting durable workflows or records.
+1. `[ChatGPT Web]` Review the [turn-based-coding-agent](https://github.com/akashskypatel/turn-based-coding-agent-skill) skill if not already reviewed for the current work session.
+2. `[ChatGPT Web]` **Fully review `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md` at the start of every turn before choosing repository-access, workflow, monitoring, artifact, cleanup, or PR-comment operations. This is mandatory every turn and is not satisfied by having read it in a prior turn. Immediately after that read and before the first repository source/document inspection, explicitly choose one turn-local [`READ_MODE`](TOOL_USE_CONSERVATION_POLICY.md#2-start-of-turn-conservation-procedure) under policy Step 2. If the task/checklist already implies three or more repository documents/files, cross-file tracing, repository-wide search, iterative re-reading, or material uncertainty about crossing that threshold, `READ_MODE=snapshot` is mandatory. Do not perform starter connector reads first and decide later. If snapshot acquisition fails, follow Step 3's explicit fallback, record the blocker, and do not silently resume piecemeal range reads.**
+3. `[ChatGPT Web]` Maintain a record of every temporary files created during the turn or files to be deleted at the end of the turn in `.agents/connector-triggers/turn-cleanup/manifest.txt`. This file is used by `.github/workflows/agent-turn-cleanup.yml` to clean up temporary files at the end of the turn.
+4. Fully review this handoff, `RETENTION_POLICY.md`, and `CLEAN_UP_POLICY.md`.
+   - `[ChatGPT Web]` If the preceding turn was interrupted or reported prepared-but-unapplied local work, search File Library for the newest matching `Directional__...__work-preservation.patch` **before re-deriving that work**; verify its embedded base SHA and diff-body SHA-256, then reconcile it with current branch authority under `RETENTION_POLICY.md`.
+5. **Review `LESSONS.md` in full, and re-read the sections governing this turn's work before authoring any plan, fixture, gate criterion, or corrective measure.** This step is mandatory and is not satisfied by having read it in a prior turn.
+6. Review `TODO.md` (including exact completed/current partial-CB status), `DESIGN.md`, `REORIENTATION_PLAN.md`, `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, the active next-turn plan, and `Regression_Root_Cause_Tracker.md`.
+7. Confirm the configured working branch, branch head, exact implementation/source authority, and requested turn type before any write.
+8. Verify every explicitly durable section required by the documents being touched is present before editing; do not proceed with a destructive rewrite if a durable section would be removed.
+9. `[ChatGPT Web]` For Code + Build workflow work, verify the reusable compile workflow still owns the durable cache namespace/schema and that the caller does not supply a per-turn cache epoch/key.
+10. `[ChatGPT Web]` Inspect `.github/workflows`, `.agents/connector-triggers`, and `.agents/Directional/turn-payloads` for stale temporary state without deleting durable workflows or records.
 
-## Mandatory next turn — `M3-CP2-TB` (Test + Benchmark)
+## Turn workflow — DURABLE, DO NOT DELETE
 
-**M3 CP2 Code + Build is complete; package 9 is frozen, but CP2 is NOT yet accepted.**
-Exact semantic source/package candidate: `6b046e0ba924a8d9f2aee158c64fd7734ab9a3ff / 9375452692`. Mandatory external
-pre-package compile `32279124852 / 96153441513` was green on the literal source. Cumulative
-package 9 `32279806492 / 96155630834` compiled and packaged the identical source with
-`runtimeExecution=false`; package outer SHA-256 is `6f8865a3d3c28ea803a40cc9929f22de5a1d313f4810541f6474bbfba9b8ef79` and log artifact
-`9375453342` has outer SHA-256
-`d764d49de46c109061b3ad9f5e31aeb98293c7fee358ab2690e063a87a676f12`. Exact evidence is
-retained in `Architecture_M3_CP2_Code_Build_Report.md`.
+**Authorized by the user on 2026-08-25 and binding for all future work.**
 
-M3 consumption is **9/12**. Exact next is immutable `M3-CP2-TB`, consuming package
-`9375452692` without rebuild/relink/repair/source-test-fixture mutation or generated discovery.
-Frozen acceptance is accepted CP1 **281/281** + CP2 **6/6** = **287/287**. Any red stops for
-Review; package 10 / CP3a remains blocked until CP2 acceptance. Latest accepted runtime
-authority remains CP1 `9f7e222bab6c930a12d1369fa2aee869f5c0dcff / 9366752046` at **281/281**.
-No runtime executed in CP2 Code + Build, so stable accounting remains **38 / 14 / 24** and
-produced-witness debt **5**.
+```
+CB  →  TB  →  green?  →  checkpoint CLOSES
+                ↓ red
+        REVIEW + PLAN  →  CB  →  …
+```
 
-`tmp-lowlevel-test` was audited: tip `dd4141a5add457b6017e776acabe327674e56606` is an
-ancestor of the working branch with zero unique file differences. It is disposable residue;
-the available connector exposes no branch-delete operation.
+1. **`CB`** — Code + Build. Authors semantics, compiles, packages. Executes no Directional runtime.
+2. **`TB`** — artifact-only Test + Benchmark on the immutable package. Executes **the full current
+   gate**, one identity per fresh process, with every mutation flag false.
+3. **A green TB closes the checkpoint.** There is no separate acceptance ceremony.
+4. **A red TB mandatorily routes to `REVIEW + PLAN`.** No retry, no patch, and no further CB without
+   an intervening review.
+5. **A red TB is information, not a debit.** Nothing is consumed, nothing is reset.
 
-Repository: `akashskypatel/Directional`  
-Branch: `agent/surface_cell_quad/p5-recover-bridge-healing`  
-PR: #8 open, draft, unmerged
+**Non-gating diagnostic identities**: A checkpoint may declare
+identities that TB executes and reports but that are **excluded from the gate count**, each with a
+written rationale and an owning corrective measure. A non-gating identity may never be promoted to
+gating without a review recording why its precondition is now independently established.
+
+## Mandatory next turn — `M3-CP4c-0-CB2` — EXACT NEXT / Code + Build, measures E0–E10
+
+`M3-CP4c-0-TB-REVIEW-PLAN` is **COMPLETE**. Its record is
+`Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`, and it is the document to read first.
+
+**Read this before touching anything.** The adjudicated root cause is *not* T6 and *not* Q8; both are
+correct as frozen and **neither may be weakened**. A1 decides the **sign of a barycentric direction
+coordinate** with a `double` tolerance (`kBranchTopologyTolerance = 1e-10`) in three separate places and
+publishes those verdicts as topological ownership — carrier-set membership and vertex-sector membership
+— while A2a's exact continuation rule re-decides the same sign exactly, on A1's own published datum.
+Where they disagree, A1 hands A2a a state A2a is right to reject. The seam is proved algebraically in
+review §4: in `direction_in_incident_vertex_sector`, `alpha = d[next]` and `beta = d[prev]` identically,
+so `alpha > tol && beta >= -tol` **is** the exact entry predicate at `tol = 1e-10`.
+
+Five amendments were issued to `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`; that file now opens
+with an `AMENDED` banner and carries inline `SUPERSEDED` markers. **Read the banner before §4.**
+
+The corrective series is **E0–E10** in review §10. Order matters: **E1 first** — it publishes loci that
+already exist in the error struct and is what determines which of three candidate failure routes is
+real. E2/E3 exactify A1's flow classification and vertex-sector rule and delete
+`field_branch_world_direction`'s lossy round trip. E4/E5 close a T1 exhaustiveness hole and an entirely
+unasserted cross-edge flow invariant. E6 replaces a position-blind cycle break that can publish a
+spurious clean terminus. Review §7 proves that after E2–E5 T6 is **unreachable from any well-formed
+production state**; §11 records six falsifiable predictions the CB/TB pair must confirm or refute.
+
+**Standing prohibitions:** do not retune, widen, narrow, or delete `kBranchTopologyTolerance` — every
+measure removes tolerance from topological decisions and none adds any. Do not edit the sphere fixture;
+review §6 establishes fixture and oracle are both valid. No sphere-specific special case. Execute
+nothing in CB. **Q8 is not creditable until E6 is in the package.**
+
+E3's mandatory pre-check: it changes A1's `FieldSingularityPortAttachment` selection, which feeds the
+atlas digest (`FieldTransportAtlas.cpp:1124-1127`). Enumerate every accepted identity asserting an atlas
+digest and confirm each is relative, not an absolute constant. **An absolute-digest identity that must
+change is a finding for review, not a CB edit.**
+
+---
+
+### TB evidence this review adjudicated — retained
+
+`M3-CP4c-0-TB` is **COMPLETE / VALID RED**. Required semantic gate **328/328 PASS** but binding Q8 is
+red, so the checkpoint does not close. Every digest below, both job ledgers, and the retry-0
+characterization were re-verified against the GitHub API during review and **all matched exactly**.
+
+Authoritative evidence: source `e784e44ce86e458b250b04689288f5f365ca507b`; immutable package
+`9577900736` / `b9c597584177f31fd2d923b622a4b20fbb243c7bd007b37cced8ff128e349f31`; runtime run/job
+`32891161394 / 97943220460`; result artifact `9579600371` /
+`fe472587aba74c2face26a2f65c0706439232bec2e5cc594d81711a26773b399`; log artifact `9579600958` /
+`7ddfe4c8e48b1b618c7a60ad6cf900a767ff954309a1c3cc52a8896306d98039`. Accepted prefix **316/316**
+and CP4c-0 additions **12/12** pass.
+
+Q8 is red because the prescribed sphere reaches A1 but A2a rejects `BranchContinuationDegenerateEntry`
+at `sourceEdge=6-8`; no `FieldAlignedCurveNetwork` is published.
+
+**Do not read `sourceVertex=0` / `singularity=0` as a locus.** They are the failing trace's **seed**,
+back-filled at `SurfaceCellTracing.cpp:818-819` when the failure site leaves the field unset. The
+failure is provably **not** the trace's first step (the start entry point is incident to vertex 0, and
+edge `6-8` is not). Only `sourceEdge=6-8` is a genuine locus, and it alone cannot separate the three
+candidate routes — an interior edge entry with a cross-face flow disagreement, the same with a
+within-face tolerance disagreement, or a vertex entry after a mis-selected sector transit. The
+discriminating datum is the exact entry parameter, which **was computed and then discarded** by
+`append_network_error` in `tests/FieldAlignedCurveNetworkTests.cpp`. Measure E1 emits it.
+
+**Context Load Plan for the successor:**
+
+```yaml
+load_next:
+  - references/turns/CODE_BUILD.md
+conditional_modules:
+  - trigger: GitHub evidence/source inspection is required
+    path: modules/github-connector/MODULE.md
+  - trigger: authoring falsifying identities (measure E8)
+    path: modules/unit-testing/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md
+  - .agents/Directional/Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M3_CP4c0_Artifact_Only_Test_Benchmark_Report.md
+  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - TODO.md
+  - .agents/Directional/Future_Chat_Session_Handoff.md
+  - .agents/Directional/LESSONS.md
+source_of_record_for_the_measures:
+  - src/authority/FieldTransportAtlas.cpp        # S1 flow classification :162-170; S2 port sector :546; sector rule :399-423
+  - src/geometry/SurfaceCellTracing.cpp          # T6 :451-456; seed back-fill :818-819; T1 :482-493; transport :895-918; cycle guard :789-796, :905-911
+  - include/directional/authority/FieldTransportAtlas.h   # is_barycentric :438; sector decl :514
+  - tests/FieldAlignedCurveNetworkTests.cpp      # append_network_error — the dropped loci
+do_not_preload:
+  - sibling turn files
+  - historical CP4c reports
+  - CP4c-1 / CP4c-2 / CP4c-3 scope
+```
 
 ## Current authority
 
-### M3 CP2 package 9 immutable candidate — NOT YET ACCEPTED
+### CP4c-0 TB — COMPLETE / VALID RED
 
-Exact candidate `6b046e0ba924a8d9f2aee158c64fd7734ab9a3ff / 9375452692` is compile/package green through
-`32279806492 / 96155630834` after mandatory pre-package `32279124852 / 96153441513` on the
-identical source. M3 is **9/12**. CP2 still requires immutable **287/287** acceptance. Exact
-Code + Build evidence is in `Architecture_M3_CP2_Code_Build_Report.md`.
+- required gate **328/328 PASS** = accepted **316/316** + CP4c-0 **12/12**;
+- binding Q8 **RED** at `field-aligned-network/BranchContinuationDegenerateEntry`, edge 6-8; network not
+  published. (`singularity=0` / `sourceVertex=0` are the trace **seed**, not a locus — see above.)
+- prohibited build/mutation flags all false;
+- retry 0 `32890863928`: infrastructure-only before package verification/semantic runtime;
+- retry 1 `32891161394`: authoritative; no further semantic retry;
+- owning report: `Architecture_M3_CP4c0_Artifact_Only_Test_Benchmark_Report.md`;
+- adjudicated by `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`;
+- exact next: `M3-CP4c-0-CB2`, Code + Build only, measures **E0–E10**.
 
-### M3 CP1 accepted runtime authority
+### CP4c-0 CB1 provenance
 
-**Latest accepted semantic runtime authority is M3 CP1:** source/package
-`9f7e222bab6c930a12d1369fa2aee869f5c0dcff / 9366752046`, accepted by immutable TB-R3
-`32263614534 / 96102598799` at **281/281**. Result `9369359878` /
-`829f51e1510ba6aab2eb6f6eed716bd736dcd662b1932b05a6fe16d6223917fd`; log `9369360425` /
-`b624982cd6f5479cd167124c3897725533c6ce460fb6ce96751dfcfcfb18572c`. Frozen selectors are
-retained M2 **275** `67e5e323c8ee3bdea0b5a7117313c9d1586dee0b0ecaf3f6319cc572c474757b`, A1 **6**
-`bd00fc5d7840b398b76d834a65fbd30ed400c8ec4a1dab54eeeb554c8ae587ea`, combined **281**
-`c73403ab665770282a924dd4534ca261fbdb249d8b832d6644d6a868b452fa83`. Package and
-materialized source postflight were unchanged; `repositoryCheckout=false`,
-rebuild/relink/repair/mutation/discovery/benchmark flags all false. Exact evidence is retained
-in `Architecture_M3_CP1_Artifact_Only_Test_Benchmark_Report.md`.
+- semantic source `e784e44ce86e458b250b04689288f5f365ca507b`;
+- compile run/job `32886067534 / 97927044884`;
+- immutable package `9577900736`; all eight standard targets compiled/linked; `runtimeExecution=false`;
+- frozen selector **328 = 316 + 12**.
 
-`PR8-R038 / M3-CP1-R001` is resolved stable/recurrence and `M3-CP1-TB-CAND-01` is resolved
-non-stable. Historical stable totals remain **38 / 14 / 24** and produced-witness debt **5**.
+### Accepted runtime authority
 
-### M3 post-CP1 planning authority
-
-`Architecture_M3_Post_CP1_Allocation_And_CP2_Code_Build_Plan.md` is the active M3 planning
-overlay and the single next-turn plan. It supersedes stale post-CP1 package/status text in the
-older M3 plan and the M3-specific package/status text in `REORIENTATION_PLAN.md`. Necessary
-facts from superseded CP0/CP1 per-turn reports/plans are preserved in the durable changelog,
-regression tracker, this handoff, the current immutable CP1 report, and the active M3/CP2
-plan; those stale per-turn current-head files were retired under the retention/cleanup policy.
-
-### M3 CP1 package 6 runtime-rejected historical evidence
-
-At TB-R2, package 6 exact source/package
-`95006048225df765b5b9c31e235fed82330a1469 / 9354456191` failed immutable
-`M3-CP1-TB-R2` `32226787294 / 95987961593` at **258/281**: A1 **3/6**, retained M2
-**255/275**, M1 producer **118/138**. Result/log `9355788148 / 9355788629` SHA-256
-`0aa97b371e0081c094791ed568117685e1c8cfe79b8488fe8c0b28d3e6dd00b8 /
-9097f7f3859676c6130ab1dc1c8015beae909008af90c325cfcd673292b6040e`. Its earliest
-production rejection was `CycleTransportMismatch`. Package 6 is historical rejected runtime
-evidence, not a candidate for reuse or repair.
-
-### Normative architecture
-
-`.agents/Directional/DESIGN.md` remains authoritative. Pipeline B is the only scheduled product path. The "strict fixtures require D0" rule is enforceable from M7 onward, where dispositions are implemented; earlier milestones use the equivalent stated in their own gate. Open design/evidence items remain in `TODO.md` and `REORIENTATION_PLAN.md`.
-
-### Immutable runtime authority
-
-**Latest accepted semantic runtime authority is M3 CP1:** source/package
-`9f7e222bab6c930a12d1369fa2aee869f5c0dcff / 9366752046`, accepted by
-`M3-CP1-TB-R3` `32263614534 / 96102598799` at required-green **281/281**. Result
-`9369359878` / `829f51e1510ba6aab2eb6f6eed716bd736dcd662b1932b05a6fe16d6223917fd`; log
-`9369360425` / `b624982cd6f5479cd167124c3897725533c6ce460fb6ce96751dfcfcfb18572c`.
-Retained M2 remains **275/275** within this gate, while A1 is **6/6**. Combined selector
-SHA-256 is `c73403ab665770282a924dd4534ca261fbdb249d8b832d6644d6a868b452fa83`. Package and
-materialized packaged source were byte-identical before/after runtime, with no
-rebuild/relink/repair/source-test-fixture mutation, generated discovery, or benchmark
-execution.
-
-### Accepted M2 authority
-
-M2 closes the verified eight-product surface over typed closed outcomes with exactly one outcome authority per product. Product-shaped context observations are diagnostic-only; direct semantic context refs are zero; the CP3 forbidden-read family is zero. The accepted runtime gate preserves frozen M1 **234/234**, CP1 **5/5**, CP2 **34/34**, and CP4 **2/2**. This accepted source is retained inside the accepted M3 CP1 gate.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0's
+valid-red first-acceptance result does not supersede it because binding Q8 is red. Stable regression
+accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **40**.
 
 ## Standing product state
 
-- **M1 and M2 are complete. M3 CP1 is ACCEPTED.** Exact accepted source/package `9f7e222bab6c930a12d1369fa2aee869f5c0dcff / 9366752046` passed immutable TB-R3 `32263614534 / 96102598799` at **281/281**.
-- Latest accepted semantic runtime authority is M3 CP1 `9f7e222bab6c930a12d1369fa2aee869f5c0dcff / 9366752046`; retained M2 is preserved **275/275** inside the accepted gate.
-- `PR8-R038 / M3-CP1-R001` is **RESOLVED STABLE / RECURRENCE** and `M3-CP1-TB-CAND-01` is **RESOLVED NON-STABLE**. Historical totals remain **38 / 14 / 24**; produced-witness debt remains **5**.
-- `M3-CP2-CB` is compile/package green on `6b046e0ba924a8d9f2aee158c64fd7734ab9a3ff / 9375452692`. M3 is **9/12**; package 10 / CP3a is blocked until immutable CP2 acceptance. There is no automatic retry or package 13.
-- Exact next is immutable `M3-CP2-TB` on package `9375452692` at frozen **287/287**. CP3a/CP3b/CP4 remain blocked on accepted predecessors.
-- Existing G4/M7/deferred-hygiene/product-gate obligations retain their prior ownership; Pipeline A remains unscheduled.
+- M1 and M2 CLOSED / ACCEPTED; M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
+- CP4ab remains latest accepted runtime authority at **316/316**.
+- CP4c-0 CB1 complete/build green; CP4c-0 TB complete/valid red: 328/328 identities pass, Q8 sphere
+  reachability red at typed `BranchContinuationDegenerateEntry`.
+- CP4c-0 remains OPEN/runtime-unaccepted. Independent review is **closed**; root cause adjudicated as
+  A1's tolerant sign decisions feeding A2a's exact consumer. Corrective series **E0–E10** frozen for
+  `M3-CP4c-0-CB2`; the CP4c-0 DEFN carries five normative amendments. T6 and Q8 unchanged.
+- CP4c-1 remains OPEN/blocked; C4/C5 stay gating and 318 selector unchanged.
+- CP4c-2 and CP4c-3 remain blocked and require their own `-DEFN` turns.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **40**; `PR8-R042` remains resolved stable.
+- Red TB routes through review/planning; attempt/diagnostic budgets remain abolished.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
-- **Package ceilings are risk controls, not permission to merge semantic domains.** When the remaining independently testable domains exceed the accounting slots, preserve the architecture/cadence and make the smallest explicit allocation amendment; do not hide the conflict by merging checkpoints, moving acceptance work to a later milestone, or inventing an unapproved partial-CB edge.
-- **Adding a typed product does not complete a cutover if production immediately projects it back into raw semantic arrays.** The new product becomes authority only when production consumers read the typed owner and the raw representation is reduced to a one-way legacy/test/diagnostic leaf.
-- **A derivation is not closed merely because its algebra is internally consistent.** If a fixed-orientation producer and an independently source-derived oracle still reject the same valid baseline, reopen the mapping from mathematical symbols to repository edge, cycle, curvature, index, matching, effort, and sparse-support conventions before any further semantic edit.
-- **Independent cycle verification must recreate the semantic basis from source authority, not merely recompute transport over product-published cycle support.** A source-derived oracle owns its own cycle support/orientation, curvature, matching/effort, and exact lift before comparing the published witness.
-- **For A1, the signed `dual_cycles` row is the one orientation authority.** Order already-directed steps without reversing semantic orientation; never mutate the expected lift to make the comparison pass. The exact cycle index's `Z4` class is compared to the signed matching composition only after both are proven to use the same canonical semantic cycle support.
-- **Representation storage is not semantic cycle support.** Sparse-sparse aggregation may retain explicit algebraic zeros. Canonicalize exact-zero incidence before any iterator-based curvature/support semantics, and keep downstream zero-skips defensive rather than letting different consumers see different cycles.
-- **A1 cannot be bypassed in a CP1 acceptance package.** The hard gate amplifies an A1 bug, but `DESIGN.md` §7.5 requires A1 before topology planning. Restore retained predecessor green by making valid inputs satisfy A1, not by postponing the gate to CP2+.
-- **Exhausting a sign search does not by itself prove the invariant false.** It proves the searched sign family did not fix the implementation. Re-check the full producer equations, representation normalization, and source-to-symbol mapping before changing architecture.
-- **A semantic owner and an independent consistency checker are not duplicate authorities.** The accepted producer owns the exact index; a read-only checker may independently derive a relation and reject inconsistent publication without becoming a second writer. Authority duplication begins when both paths can publish/drive semantic state.
-- **A planar fixture is not automatically vacuous.** Name the exact precondition being exercised. The planar square has zero geometric field transport but nontrivial boundary-cycle aggregation and therefore exposes stored-zero support/curvature inconsistency directly.
-- **Check the fixture's geometry and topology against the invariant's content.** Before crediting or dismissing a fixture, name every quantity the invariant depends on and confirm which are intentionally zero/nonzero.
-- **A check that adjusts its own expected value until it agrees is not a check.** Searching over sign conventions converts a falsifiable invariant into a tautology that only fails when every candidate fails.
-- **Never publish a guessed value as authority.** If an expected lift is searched or altered to satisfy composition and then hashed into a certificate, the certificate attests to the search's outcome rather than a derived fact.
-- **A producer that forces a relation and an oracle that reads the forced value back are self-consistent by construction.** Rule 7 can be violated by the pair even when the oracle appears to recompute something; check both sides for independence.
-- **Do not make a new invariant a hard precondition of an accepted path until the invariant and its source mapping have a non-vacuous independent witness.** Once the architecture requires that precondition, acceptance must restore the witness rather than bypass the gate.
-- **Stage-local cycle algebra may compute A1 proof payload, but representation storage is not semantic support and representation validity is not source-topology validity.** Normalize explicit sparse zeros before support checks, bind every published fact back to checked source authority, and represent trivial relative-boundary regions directly when a generic local mesh container cannot express them. `PCFaceTangentBundle`/`dual_cycles` remains a valid non-owning computational ingredient for nontrivial regions.
-- **A package attempt must not be the first compile of new code.** M3-CP1 spent package allocations on ordinary test-compilation mistakes. A first-target preflight *inside* the packaging workflow only shortens the failing package; it does not satisfy this rule. Compile the exact changed owner target in a separate pre-package run on the same fixed semantic source SHA before an allocation-consuming package begins.
-- **A green pre-package compile artifact is mechanics evidence, not a TB package.** Its target set is intentionally incomplete. Only the later complete approved-target package may become immutable TB input.
-- **Pre-package and package compiles must name the same fixed semantic source SHA explicitly.** Workflow caller/marker cleanup commits are control-plane history, not semantic source authority; if product/test/build source changes after the green pre-package compile, invalidate the preflight and do not package.
-- **A compile-green package proves nothing about contract completeness.** M3-CP1 package 1 passed 123/123 and was still contract-incomplete. Re-run the closeout source audit before declaring any package an acceptance candidate.
-- **When a cutover moves a guard earlier, the earlier guard inherits the later one's diagnostic obligations.** CP4 correctly replaced a context-shadow read with a declared-product precheck, but the superseded site published a failing patch index the new site did not. Static closure cannot see this — the audit proved `K=0` while an accepted diagnostic silently degraded to `-1`. Enumerate what the superseded site *published*, not only what it *decided*.
-- Compile success is build evidence, not semantic acceptance.
-- **Compile-green is not checkpoint-complete when closeout source audit proves the frozen contract was only partially implemented.** Do not freeze a TB selector or promote the artifact; retain the compile evidence, close the gap within budget, or invoke the declared stop-and-replan rule.
-- **Arrangement-local typed scope is not proof that a downstream API received its independent source authority.** When a seam consumes `SourceTopologyRegions`/component-sheet authority explicitly, a fixture must construct and pass that authority from source inputs; a valid ownership registry cannot substitute for a null API authority pointer.
-- A validator named source-authoritative must reject missing or mismatched typed source authority independently of optional sub-gates.
-- A final oracle must receive independent remapped authority; disabling authority or deriving expected state from the output is not validation.
-- Derived identity caches must be rebuilt by the same canonical constructor used by their consumers; copied cache kind or a second schema is authority duplication.
-- Matching extent is not ownership; exact source-row topology pairing is required.
-- A zero-selected test filter is orchestration failure, never a pass.
-- **Changed-block coverage is a candidate set, not automatic required-green authority.** Before promoting a red changed-block test into a checkpoint gate, execute the exact identity against the accepted predecessor. If it is already red there, keep it visible as inherited/non-gating unless its precondition is independently repaired; never manufacture a regression by changing the selector without a differential.
-- A negative test proves only the guard it actually reaches. Check which guard rejects before crediting a contract to the intended validator.
-- A strict mutation negative is evidence only when the intended callback/seam is reached and the intended mutation actually occurs. `mutated=false` or an unreached callback is non-evidence.
-- A non-null pointer is not a live object. After a container is moved from, pointers captured into it can still dereference and report the same variant alternative while reading moved-from/empty state. Verify the mechanism, not just the symptom, before writing a corrective measure.
-- Never delete an "obsolete" negative before its replacement exists and fails closed for the intended reason.
-- A test that permits both legacy and new outcomes while claiming a stricter authority invariant is not a migration test; it is a compatibility test. Tighten it before trusting it as a cutover gate.
-- A fixture that copies legacy raw IDs into typed fields cannot prove typed authority independence; derive typed expected owners independently from canonical topology or use metamorphic renumbering.
-- Raw row/index values may exist only at verified one-way container, serialization, or diagnostic leaves. Do not decode them back into semantic authority or reconstruct typed owners from arithmetic.
-- **One member carrying two semantic domains is a single-authority violation, even inside a test fixture.** When a helper populates two members from two different inputs and the common caller passes the same input twice, the domains coincide by accident and the conflation stays invisible until some other fixture separates them. Name the domains and populate each explicitly.
-- **When a typed migration turns a contract red, check whether the typed member means the same thing as the raw one it replaced.** Reverting to the raw member to restore green undoes the migration. The defect is usually that the typed member was populated from a different domain, not that typing was wrong.
-- **An audit passing means the family was in scope, not that the family is closed.** Record out-of-scope projection families as explicit decisions; otherwise a passing audit is read as proof of absence.
-- An acceptance fixture must establish its intended precondition independently before its assertion can become required-green evidence; an inherited baseline-red supplemental test stays visible but cannot be promoted by naming it part of a new gate.
-- **One acceptance test must not require two mutually exclusive execution paths.** If a fast path returns before a later fallback seam, prove each real contract with a witness that actually reaches its owning path instead of weakening or conflating the assertions.
-- **Checkpoint-static scanners are immutable historical evidence, not automatically current semantic truth.** When accepted later work legitimately changes package layout, source-list indirection, or typed representation counts, replay the old scanner against its exact accepted source and reconcile the current delta with a fresh fail-closed audit rather than weakening the historical baseline or treating name-only drift as a semantic regression.
-- **Do not backfill a later architecture concept into an earlier gate by analogy.** If an exit criterion names verifier-assigned `Certified`/D0 but the frozen package exposes no disposition product, `Produced`, validator green, and exact counts are not substitutes. Treat the criterion as undecidable until an explicit mapping or authorized architecture amendment exists.
-- **A gate criterion applied to a set of fixtures or components must be stated per member, at that member's own semantic stage.** A conjunction naming one stage's authority cannot be applied to members that never reach that stage. M1 criterion 5 demanded producer disposition of a directly-constructed simplification witness that has no producer — the second unsatisfiable-by-construction defect in the same criterion. Before freezing a gate, check every named concept exists for every named member.
-- **Do not author a gate criterion in terms the gated milestone's implementation cannot express.** M1 criterion 5 demanded a disposition tier scheduled for M7, which made M1 unclosable by construction — the error was in writing the criterion, not in the implementation that failed it. When drafting an exit gate, check every named concept exists in the milestone being gated; state the milestone-available equivalent, and record the stronger later form as a forward obligation on the milestone that will own it.
-- **A milestone-crossing obligation belongs to the milestone that can discharge it, as an exit criterion.** This is the same rule as the produced-witness debt ledgers: M4 owns the `G4-B002` re-proofs, M5 the `G4-B003` re-proofs, and M7 the criterion-5 disposition re-proof.
-- **When semantic authority moves, counterfactual injection authority must move with it.** A test seam that mutates only a legacy diagnostic/shadow object after the production sidecar has been captured no longer proves the consumer contract. Migrate the seam to the declared product; never restore test reachability by reading the shadow back into production semantic authority.
-- **An abstraction name is not proof of generic authority.** Before propagating a typed wrapper to a new semantic domain, inspect every template parameter and variant alternative: the accepted `ProducerOutcome<T>` was product-generic but hard-coded `SurfacePhaseFrontFailure`. Generalize the existing authority in place when required; do not force a new domain into the old failure type and do not create a parallel wrapper.
-- **A compile-green package is not TB-runnable authority unless it contains every executable that owns the frozen selector.** Preflight completeness before discovery or test execution; a missing owner binary is pre-semantic package closure, never a partial pass.
-- **Connector-written control payloads are not byte authority until hashed.** For executable or document-transform payloads, use exact binary-safe Git blob transport and verify the frozen SHA-256 before execution; also bound checkout history to the minimum needed for ancestry/source-drift checks, and remember `git diff --name-only` omits untracked files unless they are intent-to-add/staged.
-- **For connector-driven push workflows, workflow installation and trigger are two distinct commits.** The proven P1 pattern is `ec64df6e7864aaa1ba4479b663d6e1a6113c6801`, which first installed the temporary workflow with a narrow `.agents/connector-triggers/...txt` `paths` filter, followed by `1db6ef3a52b90b0185b61db3e1cac73956d205cd`, which created the matching temporary text marker and triggered the already-present workflow. Use this two-commit sequence by default when connector dispatch is unavailable; do not combine first-time caller installation and marker creation in one commit, and do not rely on the workflow-install commit itself as the trigger.
-- **When a product-shaped diagnostic mirror is relocated, migrate all literal build-contract markers and typed consumers in the same cutover.** A stale CMake source marker or test access to removed open result fields is build-contract drift, not justification for a compatibility alias. Update the marker/consumer to the declared diagnostic or closed product API and keep semantic authority one-way.
-- **Moving semantic rejection earlier does not authorize dropping stage-owned diagnostic sub-invariants.** If an earlier declared-product guard subsumes a later canonical rebuild failure, preserve the same exact diagnostic owner/index or route through the canonical seam; matching only the reason string is not equivalent accepted behavior.
+**The lessons formerly listed here now live in `.agents/Directional/LESSONS.md`,** by explicit user
+authorization, deduplicated and organized into eight sections. That document is durable project
+authority: it may be corrected or extended, never deleted, weakened, or summarized away without
+explicit user authorization. This section remains durable and must continue to point to it.
+
+**Reading `LESSONS.md` is mandatory start-of-turn step 5.** Do not resume work from this handoff
+alone.
+
+Sections, so the right one can be found without reading the whole document:
+
+| Section                                            | Read it before                                                               |
+| -------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 1. Evidence and acceptance                         | promoting any artifact, selector, or audit result                            |
+| 2. Fixtures and witnesses                          | authoring or judging any fixture, helper, or witness                         |
+| 3. Negatives and oracles                           | authoring a negative, a tamper test, or an oracle                            |
+| 4. Single authority and representation             | adding a product, moving a guard, or typing a domain                         |
+| 5. Cross-field, cycle, and orientation conventions | **any A1/A2 matching, effort, index, cycle, or transition-orientation work** |
+| 6. Gate and criterion authoring                    | writing an exit criterion or freezing a gate                                 |
+| 7. Budget, attempts, and stop rules                | planning a checkpoint or running a mandatory review                          |
+| 8. Build, package, and workflow mechanics          | any Code + Build turn or connector workflow                                  |
+
+New lessons are added to `LESSONS.md` in the section that governs them, not appended here.
+
+**Standing note on repeat failures.** Section 2's opening lesson records that the same
+degenerate/unusable-fixture class has now cost **four consecutive M3 checkpoints** — CP1's planar
+`z = 0` A1 fixtures, CP2's single-edge open rails, CP2b's hard-coded face-pair orientation, and
+CP3a's one-ring fan, where every edge opposite the singular vertex is a boundary edge so the
+required multi-face traversal was unsatisfiable by construction. Section 5 records that transition
+orientation is mesh-owned. All were written down before the failure that repeated them. Reading the
+relevant section is the cheapest control this project has.
+
+CP3a broke the streak's shape: its fixture now **asserts its own precondition at runtime** — every
+singular-fan opposite carrier must be interior — so the next author cannot reintroduce the defect
+silently. CP3b then carried that habit forward unprompted and closed on attempt 1 with no diagnostic
+gate. Copy that pattern into CP4's witnesses.
 
 ## Mandatory end-of-turn checklist — DURABLE, DO NOT DELETE
 
@@ -199,6 +258,8 @@ M2 closes the verified eight-product surface over typed closed outcomes with exa
 2. For Code + Build turns, confirm `runtimeExecution=false`; for Test + Benchmark turns, confirm no rebuild/repair/source/test/fixture mutation occurred inside the immutable gate.
 3. For every Test + Benchmark turn, update `Regression_Root_Cause_Tracker.md` for every observed regression/candidate before advancing the handoff.
 4. Confirm exact source/package/run/artifact identities and stable regression totals are recorded in the owning durable report/tracker.
-5. Remove temporary workflows first, then trigger markers/payloads; retain durable workflows and retained evidence.
-6. Confirm the handoff names exactly one next turn and the task index agrees with it.
-7. Make the final repository write one summarized PR #8 conversation comment after all branch/PR-description writes.
+5. `[ChatGPT Web]` **Confirm no meaningful repository-applicable work remains only in the local/container filesystem.** For each coherent local work unit not yet durable on the working branch, emit or refresh the mandatory File-Library-backed `Directional__<TURN-ID>__base-<12SHA>__work-preservation.patch` and locally verify its declared base/hash/applicability **before** cleanup or final repository closeout. If all such bytes are already durably committed, no new preservation patch is required solely for duplication.
+6. `[ChatGPT Web]` Make sure `.agents/connector-triggers/turn-cleanup/manifest.txt` is up to date and make sure it does not include any durable files or any other files that need to be retained. Execute `.github/workflows/agent-turn-cleanup.yml` workflow to process the manifest and clean up the repository, and trimp historical PR comments.
+7. Confirm the handoff names exactly one next turn and the task index agrees with it.
+8. `[ChatGPT Web]` Make the final repository write one summarized PR #8 conversation comment after all branch/PR-description writes. No downloadable-artifact/tool emission may occur after that final comment.
+

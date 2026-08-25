@@ -1,0 +1,282 @@
+name: Agent Turn Temporary-State Cleanup
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/turn-cleanup/manifest.txt
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-turn-cleanup-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-turn-cleanup.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "pr_number=8"
+            echo "pr_comment_policy=delete-all-before-observer"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact cleanup trigger commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          token: ${{ github.token }}
+
+      - name: Validate durable workflow set and cleanup manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-turn-cleanup.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "validate_cleanup_exit=${status}"' EXIT
+          manifest='.agents/connector-triggers/turn-cleanup/manifest.txt'
+          test -f "$manifest"
+
+          expected="${RUNNER_TEMP}/expected-durable-workflows.txt"
+          actual="${RUNNER_TEMP}/actual-workflows.txt"
+          cat > "$expected" <<'EOF'
+          agent-compile-reusable.yml
+          agent-google-drive-reusable.yml
+          agent-recent-workflow-runs-reusable.yml
+          agent-run-observer-reusable.yml
+          agent-source-snapshot.yml
+          agent-turn-cleanup.yml
+          agent-workflow-schema-validator-reusable.yml
+          EOF
+          find .github/workflows -maxdepth 1 -type f -printf '%f\n' | LC_ALL=C sort > "$actual"
+          LC_ALL=C sort -o "$expected" "$expected"
+          echo 'durable workflow inventory:'
+          cat "$actual"
+          if ! diff -u "$expected" "$actual"; then
+            echo 'temporary or unexpected workflow remains; delete workflow callers through the connector before batch cleanup' >&2
+            exit 2
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path, PurePosixPath
+
+          manifest = Path('.agents/connector-triggers/turn-cleanup/manifest.txt')
+          allowed_prefixes = (
+              '.agents/connector-triggers/',
+              '.agents/workflow-observation/',
+              '.agents/Directional/turn-payloads/',
+          )
+          normalized = []
+          seen = set()
+          for raw in manifest.read_text(encoding='utf-8').splitlines():
+              line = raw.strip()
+              if not line or line.startswith('#'):
+                  continue
+              path = PurePosixPath(line)
+              if path.is_absolute() or '..' in path.parts:
+                  raise SystemExit(f'unsafe cleanup path: {line}')
+              value = path.as_posix()
+              if value.startswith('.github/workflows/'):
+                  raise SystemExit(f'workflow deletion is connector-only and workflow-first: {value}')
+              if not any(value.startswith(prefix) for prefix in allowed_prefixes):
+                  raise SystemExit(f'cleanup path outside allowed temporary prefixes: {value}')
+              if value == manifest.as_posix():
+                  continue
+              if value not in seen:
+                  normalized.append(value)
+                  seen.add(value)
+          out = Path('/tmp/agent-turn-cleanup-paths.txt')
+          out.write_text(''.join(f'{p}\n' for p in normalized), encoding='utf-8')
+          print(f'validated_cleanup_paths={len(normalized)}')
+          for value in normalized:
+              print(f'cleanup_path={value}')
+          PY
+
+      - name: Remove inventoried temporary state in one commit
+        id: cleanup
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-turn-cleanup.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "cleanup_commit_exit=${status}"' EXIT
+          manifest='.agents/connector-triggers/turn-cleanup/manifest.txt'
+          while IFS= read -r path; do
+            [[ -n "$path" ]] || continue
+            git rm -r --ignore-unmatch -- "$path"
+          done < /tmp/agent-turn-cleanup-paths.txt
+          git rm -- "$manifest"
+
+          remote_sha="$(git ls-remote origin "refs/heads/${GITHUB_REF_NAME}" | cut -f1)"
+          echo "remote_sha_before_push=${remote_sha}"
+          echo "event_sha=${GITHUB_SHA}"
+          test -n "$remote_sha"
+          test "$remote_sha" = "$GITHUB_SHA"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git status --short
+          git commit -m "cleanup: batch remove turn temporary state"
+          cleanup_sha="$(git rev-parse HEAD)"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "cleanup_sha=${cleanup_sha}" >> "$GITHUB_OUTPUT"
+          echo "cleanup_sha=${cleanup_sha}"
+
+      - name: Delete all PR conversation comments before observer
+        id: delete_issue_comments
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-turn-cleanup.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "delete_issue_comments_exit=${status}"' EXIT
+          ids="${RUNNER_TEMP}/pr-conversation-comment-ids.txt"
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" \
+            --jq '.[].id' > "$ids"
+          count="$(grep -c . "$ids" || true)"
+          echo "pr_conversation_comments_found=${count}"
+          while IFS= read -r id; do
+            [[ -n "$id" ]] || continue
+            echo "deleting_pr_conversation_comment_id=${id}"
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/issues/comments/${id}"
+          done < "$ids"
+          echo "deleted=${count}" >> "$GITHUB_OUTPUT"
+
+      - name: Delete all inline PR review comments before observer
+        id: delete_review_comments
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-turn-cleanup.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "delete_review_comments_exit=${status}"' EXIT
+          ids="${RUNNER_TEMP}/pr-review-comment-ids.txt"
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" \
+            --jq '.[].id' > "$ids"
+          count="$(grep -c . "$ids" || true)"
+          echo "pr_inline_review_comments_found=${count}"
+          while IFS= read -r id; do
+            [[ -n "$id" ]] || continue
+            echo "deleting_pr_inline_review_comment_id=${id}"
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/pulls/comments/${id}"
+          done < "$ids"
+          echo "deleted=${count}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify PR comments are empty before observer
+        id: verify_comments
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: 8
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-turn-cleanup.log"
+          exec > >(tee -a "$log") 2>&1
+          trap 'status=$?; echo "verify_pr_comments_exit=${status}"' EXIT
+          issue_count="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments?per_page=100" --jq '.[].id' | wc -l | tr -d ' ')"
+          review_count="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments?per_page=100" --jq '.[].id' | wc -l | tr -d ' ')"
+          echo "remaining_pr_conversation_comments_before_observer=${issue_count}"
+          echo "remaining_pr_inline_review_comments_before_observer=${review_count}"
+          echo "issue_count=${issue_count}" >> "$GITHUB_OUTPUT"
+          echo "review_count=${review_count}" >> "$GITHUB_OUTPUT"
+          if [[ "$issue_count" != "0" || "$review_count" != "0" ]]; then
+            echo "PR comments remain before cleanup observer publication" >&2
+            exit 2
+          fi
+
+      - name: Write cleanup result
+        if: always()
+        env:
+          CLEANUP_SHA: ${{ steps.cleanup.outputs.cleanup_sha }}
+          ISSUE_COMMENTS_DELETED: ${{ steps.delete_issue_comments.outputs.deleted }}
+          REVIEW_COMMENTS_DELETED: ${{ steps.delete_review_comments.outputs.deleted }}
+          REMAINING_ISSUE_COMMENTS: ${{ steps.verify_comments.outputs.issue_count }}
+          REMAINING_REVIEW_COMMENTS: ${{ steps.verify_comments.outputs.review_count }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-turn-cleanup.log"
+          out="${RUNNER_TEMP}/agent-turn-cleanup-result"
+          mkdir -p "$out"
+          paths_json='[]'
+          if [[ -f /tmp/agent-turn-cleanup-paths.txt ]]; then
+            paths_json="$(jq -Rsc 'split("\n") | map(select(length > 0))' /tmp/agent-turn-cleanup-paths.txt)"
+          fi
+          jq -n \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg event_sha "$GITHUB_SHA" \
+            --arg cleanup_sha "${CLEANUP_SHA:-}" \
+            --arg status "${{ job.status }}" \
+            --arg issue_comments_deleted "${ISSUE_COMMENTS_DELETED:-skipped}" \
+            --arg review_comments_deleted "${REVIEW_COMMENTS_DELETED:-skipped}" \
+            --arg remaining_issue_comments "${REMAINING_ISSUE_COMMENTS:-skipped}" \
+            --arg remaining_review_comments "${REMAINING_REVIEW_COMMENTS:-skipped}" \
+            --argjson removed_paths "$paths_json" \
+            '{repository:$repository,event_sha:$event_sha,cleanup_sha:$cleanup_sha,status:$status,removed_paths:$removed_paths,pr_number:8,pr_comment_policy:"delete-all-before-observer",pr_conversation_comments_deleted:$issue_comments_deleted,pr_inline_review_comments_deleted:$review_comments_deleted,remaining_pr_conversation_comments_before_observer:$remaining_issue_comments,remaining_pr_inline_review_comments_before_observer:$remaining_review_comments,runtimeExecution:false}' \
+            > "${out}/cleanup-result.json"
+          {
+            echo "final_job_status=${{ job.status }}"
+            echo "cleanup_sha=${CLEANUP_SHA:-unavailable}"
+            echo "pr_conversation_comments_deleted=${ISSUE_COMMENTS_DELETED:-skipped}"
+            echo "pr_inline_review_comments_deleted=${REVIEW_COMMENTS_DELETED:-skipped}"
+            echo "remaining_pr_conversation_comments_before_observer=${REMAINING_ISSUE_COMMENTS:-skipped}"
+            echo "remaining_pr_inline_review_comments_before_observer=${REMAINING_REVIEW_COMMENTS:-skipped}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload cleanup result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-turn-cleanup-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-turn-cleanup-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-turn-cleanup-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/agent-turn-cleanup.log
+          if-no-files-found: error
+          retention-days: 7
+
+  observe:
+    needs: cleanup
+    if: ${{ github.event_name == 'push' && needs.cleanup.result == 'success' }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: turn-cleanup
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit

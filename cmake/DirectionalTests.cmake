@@ -164,6 +164,24 @@ directional_require_default_packaged_test_contract(
   "tests/FieldAlignedCurveNetworkTests.cpp"
   "IsInvariantToRailAndSourceFaceOrdering")
 directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "PublishesRotationSystemConsistentWithNetworkEvents")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "CoversEverySourceFaceExactlyOnce")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "PreservesMandatoryBoundaryAndHardFeatureEdges")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "RejectsForeignNetworkBindingOrTamperedRegionOwnership")
+directional_require_default_packaged_test_contract(
+  "tests/FieldAlignedCurveNetworkTests.cpp"
+  "RegionAuthorityIsInvariantToEnumerationOrderAndBranchRelabeling")
+directional_require_default_packaged_test_contract(
   "tests/SurfaceCellREPackageTests.cpp"
   "ProductionConsumesTypedSkeletonWithoutRawSingularityProjection")
 
