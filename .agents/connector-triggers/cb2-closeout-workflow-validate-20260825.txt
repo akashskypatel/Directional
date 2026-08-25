@@ -1,0 +1,2 @@
+Purpose: schema-validate CB2 closeout Drive reusable retirement fix and its validation caller.
+Runtime execution: forbidden.
