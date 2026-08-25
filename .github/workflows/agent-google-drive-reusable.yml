@@ -124,7 +124,7 @@ jobs:
           git apply "$PATCH_PATH"
           git diff --check
           printf '%s\n' "${paths[@]}" | LC_ALL=C sort -u > "${RUNNER_TEMP}/expected.txt"
-          git diff --name-only | LC_ALL=C sort -u > "${RUNNER_TEMP}/actual.txt"
+          { git diff --name-only; git ls-files --others --exclude-standard; } | LC_ALL=C sort -u > "${RUNNER_TEMP}/actual.txt"
           diff -u "${RUNNER_TEMP}/expected.txt" "${RUNNER_TEMP}/actual.txt"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
