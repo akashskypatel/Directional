@@ -3630,3 +3630,4 @@ benchmarks/fixtures/*
 !benchmarks/fixtures/component_parallelism.json
 **/*.patch
 **/.obsidian/*
+**/.cache/*
