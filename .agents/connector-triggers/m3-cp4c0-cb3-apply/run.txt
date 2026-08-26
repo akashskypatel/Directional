@@ -1,4 +1,0 @@
-turn=M3-CP4c-0-CB3
-purpose=apply-validated-work-preservation-patch
-base_sha=75c94fdf8080d559cf6e46456b0eb64ed3ba650f
-patch_sha256=0a4299edeebcedf724413e1ef90f560b5f64afd1bba3958d1c1d93b1b50162c4
