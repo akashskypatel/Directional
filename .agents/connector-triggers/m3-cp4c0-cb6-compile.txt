@@ -1,3 +1,0 @@
-purpose=M3-CP4c-0-CB6 compile-only
-semantic_source_sha=8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6
-retry=0
