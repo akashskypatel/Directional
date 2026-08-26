@@ -82,53 +82,26 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-CB5` — EXACT NEXT / Code + Build, measures H0–H7 (diagnostic-only)
+## Mandatory next turn — `M3-CP4c-0-TB-R5` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R4-REVIEW-PLAN` is **COMPLETE**. Its record is
-`Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` — read it first.
+`M3-CP4c-0-CB5` is **COMPLETE / BUILD GREEN** at semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`. Immutable package `9601160869` has GitHub ZIP SHA-256 `143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb` and packaged source archive SHA-256 `f7f2e59cf9866beb8e784aeaefc2320cc2306a49ab1813133b7e343d5f3e35e3`. Authoritative compile-only run/job `32953176800 / 98129036272` compiled and linked all eight standard targets with clean source state, build/preflight exit 0, internal manifest verification PASS, and `runtimeExecution=false`. Compile log artifact `9601161248` has ZIP SHA-256 `7fab20369e529ea674a8c1fc9561753d935bce2d50297750d9007941fe788b91`.
 
-**Where CP4c-0 actually stands.** The frozen gate is **338/338 GREEN**, F3 2/2, G5 PASS. **Q8 became
-creditable for the first time and is RED at criterion 2**: the prescribed sphere publishes no network.
-Four programmes demonstrably worked this cycle — E2–E5 (degenerate-entry family gone, identity 338
-green), E1/F1–F3/G5 (the rejection is finally observable), F6 (all 338 ran), and E5 itself, whose
-`BranchTransportFlowDisagreement` is the code that typed this condition. The failure has moved from a
-symptom to a cause.
+CB5 implemented only the independently frozen diagnostic measures: **H1** adds one non-gating A1-only cross-face flow-agreement census; **H2** publishes the exact `signedLift` used by `BranchTransportFlowDisagreement`; **H3** publishes ordered trace-step history on tracing failure; **H4** records matching provenance below. **H5 was obeyed: no production tracing, transport, matching, tolerance, fixture, selector, or acceptance semantics changed.** No Directional binary was executed. The initial compile caller run `32953028850` failed at workflow startup before any job existed because its caller permission ceiling was too low; corrected run `32953176800` is the sole build authority.
 
-**The adjudicated state, decoded from the G5 payload.** Edge `6-8`, source face `6-8-9` branch `3`,
-target face `6-8-97` branch `1`. **Both faces classify the shared edge as `Outflow`**
-(`d_source[2] = −1.0035…`, `d_target[2] = −0.5770…`). A continuous direction cannot exit a shared edge
-from both sides. Magnitudes ~1.0 and ~0.58 put this three orders above any epsilon, so it is **not** a
-tolerance artifact. The physically correct target branch is **`3`** — two quarter-turns from the
-published `1`, i.e. the lift is off by a **full reversal**. The source face is a genuine `1×2`, so
-CP4c-0's min-ratio rule chose the exit edge correctly; the transport after it did not.
+**H4 matching provenance.** Two-ring computes matching via `finalize_cross_field_result(..., includeDiagnostics=true)` → `principal_matching` → `populate_cross_field_edge_transitions`. Sphere/torus load `.rawfield` vectors but compute matching at load through `finalize_surface_cell_raw_cross_field` → `principal_matching(rawField, false)` → `populate_cross_field_edge_transitions`. The fan is manually prescribed: `make_zero_transport_field` starts with zero matching/transitions and `make_index_one_singularity_field` mutates one singular-cycle edge. `populate_cross_field_edge_transitions` copies `CartesianField::matching(edge)` into `CrossFieldEdgeTransition::matching`. Thus H-B matching aliasing is live for two-ring/sphere/torus but not for the fan's manually prescribed transition.
 
-**Do not guess the mechanism, and do not apply the one-line fix that suggests itself.** The obvious
-hypothesis — per-face canonical-normal parity, mismatched on **86.8 %** of the sphere's interior edges —
-was formed, tested and **refuted** in review §5: the gauge is an index shift and cancels in the
-subtraction regardless of frame. Two supporting assumptions were also excluded (the
-`{primary, secondary, −primary, −secondary}` reconstruction matches the stored rawfield **exactly**; the
-stored ordering is `+90°` CCW about the mesh normal in **all 192** faces). Three candidates survive:
-matching sign/direction convention (fits an off-by-2 exactly, and edge `6-8` touches singular vertex 8);
-matching aliasing; or a wrong branch carried by A2a from an earlier step.
+### TB-R5 execution contract — H7
 
-**Measure H1 is the whole cycle**: a non-gating **cross-face flow-agreement census** over A1 authority
-alone — every interior edge × every branch, both directions, on two-ring / fan / sphere / torus,
-reporting each violation with the **published `signedLift`** and both exact `d[opp]` values. Its result
-selects among the three candidates by itself (review §6 has the decision table). **H5 makes "do not
-change production" an explicit measure**, because a sign flip applied on one failure site with the
-census unrun would be a fixture-shaped guess at global authority.
+1. Consume **only** immutable package `9601160869` / `143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb` from semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`. Verify the GitHub artifact digest, internal `SHA256SUMS`, `metadata/source-commit.txt`, empty packaged source-status files, `metadata/build-exit-code.txt=0`, and `metadata/command-boundary.txt` with `runtimeExecution=false`. Do not configure, compile, relink, patch, regenerate, or mutate source/tests/fixtures/selectors/package bytes.
+2. Verify the packaged selector `.agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt` is exactly 338 lines with SHA-256 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; first 316 lines `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first 328 lines `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`.
+3. Execute all **338 identities in exact selector order, one identity per fresh process**. Dispatch by suite to the packaged authority-kernel, producer, completion, or validation test binary according to `cmake/DirectionalTests.cmake`. Require exactly one selected test per process. Record ordinal, identity, target, exit code, elapsed time, and complete stdout/stderr. F6 **continue-and-observe** after the first red; preserve `first_red_ordinal` without changing credit.
+4. Execute F3's two required supplementals, each in its own fresh producer-test process: `ResolvedBranchCorrection.NetworkDiagnosticsContainNoControlCharactersForAnyCode` and `ResolvedBranchCorrection.TracingPathNeverPublishesSeedIdentityAsFailureLocus`. Both must pass before Q8 is creditable.
+5. Execute, separately and uncredited, `ResolvedBranchCorrection.PrescribedSphereA2aOutcomeIsAlwaysPublishedNonGating` (**G5**) and `ResolvedBranchCorrection.CrossFaceFlowAgreementCensusIsPublishedNonGating` (**H1**). H1 must publish all four witness summaries even at zero violations; preserve every violation line including edge, face keys, branches, `signedLift`, and exact `d[opp]` loci.
+6. Q8 is creditable only if package integrity is exact, **338/338** pass, and F3 is **2/2**. Evaluate all frozen Q8 criteria without altering expectations. **Expected outcome remains Q8 RED at criterion 2**, because CB5 intentionally changed no production semantics. A red Q8 is not a new regression unless the evidence shows a distinct condition.
+7. Classify H1 exactly from the independent review: violations only where lift is odd ⇒ **H-A**; sparse/singularity-clustered violations without parity pattern ⇒ **H-B**; ~50% or uniform violations ⇒ systematic index error not yet enumerated; zero violations ⇒ **H-C**, A1 sound and redirect to A2a. This classification and complete raw census are TB-R5's primary deliverable.
+8. Correct the prior postflight control defect: use `first_red_ordinal` consistently. Do **not** rerun TB-R4. A zero-selected identity, package mismatch, missing diagnostic output, or post-runtime evidence failure is orchestration/integrity failure, never semantic pass.
 
-**Durable caveat:** a green accepted **316** is **not** evidence that cross-face transport is correct —
-no accepted identity has ever asserted it, since E5 created that invariant in CB2. If the census returns
-violations at a material rate, some accepted traces may be wrong and were simply never checked. That
-would be a pre-existing defect newly detectable, not a CP4c-0 regression.
-
-**Q8 stays red until the mechanism is fixed. Do not plan the next TB as a Q8 close.**
-
-The postflight `first_red` naming failure is **control-plane only and post-semantic** — correct the
-variable naming in a successor workflow, and **do not rerun TB-R4 semantics for a green badge** (H6).
-
----
+**Stop after TB-R5 execution/review state is durably recorded.** If TB-R5 is red, the project workflow requires independent `REVIEW + PLAN` before any next Code + Build; CP4c-1/2/3 remain blocked.
 
 ### TB-R4 evidence this review adjudicated — retained
 
@@ -152,21 +125,22 @@ Static localization only: `SurfaceCellTracing.cpp:644-671`, `validate_field_bran
 
 ## Current authority
 
-### M3-CP4c-0 TB-R4 — COMPLETE / VALID SEMANTIC RED
+### M3-CP4c-0 CB5 — COMPLETE / BUILD GREEN; runtime not yet executed
 
-- semantic/package source: `de291a17d5e9bfb6f54918660320ecfa1d521be4`;
-- immutable package: `9591540182`, SHA-256 `8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`;
-- TB-R4 event/control SHA: `bb21207f288c631b1d4149b56b37e78080edade7`;
-- run/job: `32928381384 / 98055727654`;
-- gate: **338/338 PASS**; accepted prefix **316/316 PASS**; prior prefix **328/328 PASS**;
-- F3: **2/2 PASS**; G5: **PASS / non-gating**;
-- Q8: **CREDITABLE / RED**, `sphere_network_not_published`, G5 error `BranchTransportFlowDisagreement`;
-- immutable pre/post inventories equal; mutation/build flags false;
-- exact next: independent `M3-CP4c-0-TB-R4-REVIEW-PLAN`.
+- semantic source: `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`;
+- immutable package: `9601160869`, GitHub ZIP SHA-256 `143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb`;
+- packaged source archive SHA-256: `f7f2e59cf9866beb8e784aeaefc2320cc2306a49ab1813133b7e343d5f3e35e3`;
+- compile trigger/control SHA: `fc4892c89bc9bb4a0510bdd47187f4f0d3482c8e`;
+- authoritative run/job: `32953176800 / 98129036272`;
+- compile result/log artifacts: `9601160869` / `143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb` and `9601161248` / `7fab20369e529ea674a8c1fc9561753d935bce2d50297750d9007941fe788b91`;
+- eight standard targets compiled/linked; preflight/build exit 0; internal manifest PASS; packaged source status clean;
+- `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery process executed;
+- selector authority unchanged at 338 and H1 remains non-gating/uncredited;
+- exact next: artifact-only `M3-CP4c-0-TB-R5` under H7.
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains unaccepted because Q8 is red. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **43**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains unaccepted because no post-CB5 runtime has executed and Q8 was red in TB-R4. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **44**.
 
 ## Standing product state
 
@@ -174,11 +148,11 @@ Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 975308
 - CP4ab remains latest accepted runtime authority at **316/316**.
 - CP4c-0 remains OPEN/unaccepted despite a green 338 prerequisite gate because binding Q8 criterion 2 is red.
 - TB-R3 ordinals 333/334 and the live-failure-dependent supplemental defect are resolved non-stable by TB-R4.
-- `M3-CP4c0-TB-R4-CAND-01` is active/non-stable pending independent review of edge `6-8` reciprocal flow.
+- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable; independent review proved the symptom, reduced mechanism to H-A/H-B/H-C, and CB5 compiled the decisive H1 census without executing it.
 - `M3-CP4c0-TB-R4-CAND-02` is orchestration-only and resolved by preserved evidence; no semantic rerun.
 - CP4c-1 remains blocked; CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **43**.
-- Exact next is **`M3-CP4c-0-TB-R4-REVIEW-PLAN`**. No retry, repair, or later-checkpoint implementation first.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **44**.
+- Exact next is **`M3-CP4c-0-TB-R5`** on immutable CB5 package `9601160869`. Do not enter a later checkpoint or Code + Build first.
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
 **The lessons formerly listed here now live in `.agents/Directional/LESSONS.md`,** by explicit user
