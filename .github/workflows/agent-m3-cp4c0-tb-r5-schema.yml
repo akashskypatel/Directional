@@ -1,4 +1,5 @@
 name: M3 CP4c0 TB-R5 Workflow Schema Validation
+# registration-refresh: git-data-api after two contents-api marker pushes produced zero check runs
 
 on:
   push:
