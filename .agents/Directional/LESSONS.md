@@ -467,6 +467,41 @@ error from a local aliasing artifact from a caller-side bookkeeping bug — thre
 identical at one site and are completely different everywhere else. **Cheap global measurement before
 cheap global change.**
 
+### Read a witness by its construction, not by its name
+
+A census reported violations on four witnesses and a whole planning turn treated them as one population.
+One of them was a flat, constant field with a period jump *imposed* on a single edge — a field whose
+declared matching contradicts its own geometry, so a flow disagreement there is guaranteed by
+construction and says nothing about production. The witness's name gave no hint; only its builder did,
+and the builder was three call-hops away. **Before a witness's result becomes evidence, open the function
+that builds it.** A synthetic fixture can be perfectly valid for the identity it was written for and
+completely invalid as a population member for a different question.
+
+### A published sum tells you nothing about its terms
+
+`signedLift = matching + gauge_source − gauge_target`. A histogram over published lifts looked like
+strong evidence — one value dominated — and it supported a hypothesis that then failed. It could not have
+supported anything: a lift of 0 is consistent with matching 0 and equal gauges, with matching +1 and a
+gauge difference of −1, and with several other combinations. **When a diagnostic publishes a derived
+quantity, publish the terms it was derived from, or expect the derived quantity to be misread as
+evidence about them.**
+
+### A two-sided check double-counts, and the symmetry it produces looks like a finding
+
+A census that examines each edge from both incident faces reports every disagreement twice, and the
+reverse direction negates the lift — so the output shows a beautifully symmetric distribution of `+k` and
+`−k`. That symmetry is an artifact of the loop, not a property of the field, and the totals are twice the
+number of distinct problems. **Report distinct occurrences alongside directed ones**, so nobody has to
+notice the halving to read the number correctly.
+
+### An invariant that spans two stages is auditing both of them
+
+The cross-edge flow check was written as an output invariant on one stage. It is really a check that the
+*input field's* matching agrees with the *input field's* geometry, evaluated using that stage's
+composition. So when it fires, three different owners are implicated and the diagnostic names none of
+them. **State, for every cross-stage invariant, which inputs it also audits** — otherwise its first
+failure will be attributed to whichever stage happens to emit the error.
+
 ## 3. Negatives and oracles
 
 23. **A negative test proves only the guard it actually reaches.** Check which guard rejected before

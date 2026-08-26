@@ -82,13 +82,69 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R5-REVIEW-PLAN` — EXACT NEXT / independent review + plan
+## Mandatory next turn — `M3-CP4c-0-CB6` — EXACT NEXT / Code + Build, measures J0–J7 (diagnostic-only)
+
+`M3-CP4c-0-TB-R5-REVIEW-PLAN` is **COMPLETE**. Its record is
+`Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md` — read it first. (It is filed under that name
+because the *brief* occupies `…_TB_R5_Review_Plan_Independent_Review.md`; see measure J6.)
+
+**H1's mechanism is correct — its population is not.** The census was verified in source: it applies the
+published `signedLift` per Amendment 7 and reads `d[opp]` on each face's own canonical key. The
+violations it reports are real properties of the published authority. But two standing readings are
+**withdrawn**:
+
+1. **The four-triangle fan's 2 violations are a fixture artifact.** Its census field is
+   `make_index_one_singularity_field`, which leaves the direction vectors **globally constant** (+X/+Y on
+   every face) and merely *imposes* `matching = ±1` on one edge. For the violating edge `1-4` the
+   published lift is **exactly correct**: `matching(+1) + g_source(0) − g_target(1) = 0`. The
+   disagreement is forced by a matching that contradicts the geometry, not by any A1 defect — and one
+   edge × two directions predicts **exactly the 2 observed**. Both reported `−1/2` derivatives were
+   reproduced by hand. **The brief's use of the fan as evidence against H-B is withdrawn.**
+2. **The lift histogram carries no information about matching.** `signedLift = matching + g_src − g_tgt`
+   is a sum of three unobserved terms, so lift-0 dominance is consistent with almost any matching
+   distribution. The ±1/±2/±3 tail symmetry is imposed by the census's own **two-direction loop**, not by
+   the field, which also means every reported count is doubled. **Distinct disagreements: two-ring 2,
+   fan 1 (artifact), sphere 72, torus 120 — corrected population 388 directed / 194 distinct over three
+   legitimate witnesses.**
+
+**H-A and H-C remain excluded** (independently re-derived; H-A was this reviewer's own favoured candidate
+and the census killed it). **H-B is undecided and cannot be decided as currently instrumented.**
+
+**Measure J1 is the cycle's point:** publish, per violation, the three terms the lift is composed of —
+`matching`, `rawGauge[source]`, `rawGauge[target]` — plus singular-vertex incidence and distinct-pair
+counts. The review's §7 decision table then names the owner unambiguously: field matching (H-B), gauge
+composition (`build_branch_transports`), or flow classification (`build_boundary_pairing`). **J0 forbids
+any production semantics change**; the mechanism is still undetermined and a fix now would be a guess —
+a point already paid for this cycle when H-A survived a planning turn and died in one measurement.
+
+Also: **J2** quarantines the synthetic-field fan witness (do **not** "fix" the fan field — it is a
+legitimate combinatorial fixture; the census's *classification* is what is wrong); **J3** adds an
+independent matching-versus-geometry check; **J4** records matching provenance per witness; **J5** pins
+the staged control payload to LF so the self-hosted transport stops failing on line-ending normalization.
+
+**A contract reframing worth carrying:** E5's cross-edge invariant audits the field's **input matching**
+as much as A1's own composition. A witness whose matching is imposed rather than derived **will** trip it,
+correctly. Its firing is not by itself evidence of an A1 code defect.
+
+**Q8 stays red at criterion 2. Do not plan the next TB as a Q8 close** — third cycle running.
+
+---
+
+### TB-R5 evidence this review adjudicated — retained
+
+All artifact digests and all three selector hashes were verified during review (the latter recomputed
+locally), and the census's `pairsChecked = interiorEdges × 8` was re-derived from mesh topology for every
+witness. **All matched.**
 
 `M3-CP4c-0-TB-R5` is **COMPLETE / VALID SEMANTIC RED**. Sole semantic authority is hosted run/job `32994846466 / 98261255799`, control SHA `3f9864fddef696dc7d95084fdd41b680a78f5b37`, consuming only CB5 package `9601160869` (`143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb`) from semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`. Result `9616160533` has ZIP SHA-256 `1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8`; diagnostic `9616161522` has ZIP SHA-256 `7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`. The frozen selector is **338/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0 prefix **328/328 PASS**, F3 **2/2 PASS**, G5 **PASS / non-gating**, and the complete postflight package/source/fixture/selector/executable inventories are unchanged. No configure, compile, relink, repair, generated discovery, package mutation, fixture mutation, selector mutation, or performance benchmark occurred in TB-R5.
 
 **H1 is the decisive new evidence.** The non-gating A1-only census checked **4224** cross-face branch pairs and found **390 violations (9.23295%)**, classified `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`: two-ring `4/160` (2.5%, all lift 0); four-triangle fan `2/32` (6.25%, all lift 0); prescribed sphere `144/2304` (6.25%; lift counts `0:102, ±1:7 each, ±2:6 each, ±3:8 each`); torus `240/1728` (13.8889%; `0:184, ±1:11 each, ±2:11 each, ±3:6 each`). The edge `6-8` sphere failure is present in H1 exactly as source branch `3` → target branch `1`, `signedLift=2`, and G5 still rejects there after a seven-step published trace history.
 
-The frozen H1 branches now narrow the review: **H-A is excluded** because violations are not odd-lift-only and are dominated by lift 0; **H-C is excluded** because A1 has 390 census violations; the ~50%/uniform systematic-index branch is unsupported. **H-B matching aliasing remains plausible but is not established** because H1 does not itself prove singularity localization and violations exist even in the manually prescribed fan where computed matching aliasing was not live. The independent review must distinguish H-B from another sparse A1 inconsistency before authorizing a production change.
+**Adjudicated:** H-A and H-C are excluded, and the ~50%/uniform branch is unsupported — all three
+confirmed by independent re-derivation. **H-B remains undecided**, but the reasoning that appeared to
+weaken it is withdrawn: the fan's violations are a fixture artifact (see above), so they bear on nothing.
+The corrected population is **388 directed / 194 distinct** over three legitimate witnesses. Measure
+**J1** decides the owner in one run; no production change is authorized before it.
 
 Q8 is **CREDITABLE / RED at criterion 2**: criterion 1 accepted prefix PASS; criterion 2 sphere 24-trace network RED; criterion 3 terminal `TraceIntersection` NOT_EVALUABLE; criterion 4 frozen face `1-2-5` crossover PASS; criterion 5 torus/mechanical carried unchanged, not rerun. A red Q8 here was expected because CB5 changed no production semantics and is not a new stable regression. Stable accounting remains **42 / 14 / 28**, debt **5**, packages **44**.
 

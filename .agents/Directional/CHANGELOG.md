@@ -1,5 +1,54 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R5-REVIEW-PLAN`: the census is sound, its population is not; Amendment 8
+
+**Independent review and planning only. No runtime, build, benchmark, product source, test source,
+fixture, selector, or build-configuration change.** Evidence, source and fixtures were *read* and
+arithmetic performed on their contents; nothing was executed and nothing was modified.
+
+- **Evidence independently verified:** TB-R5 run `32994846466 / 98261255799`, control SHA `3f9864fd…`,
+  result `9616160533` / `1ecfd85f…`, diagnostic `9616161522` / `7cb10cae…`, CB5 package `9601160869`,
+  semantic source `cd2ffb74…`. All three selector hashes recomputed locally and unchanged. The census's
+  own coverage arithmetic (`pairsChecked = interiorEdges × 8`) was re-derived from mesh topology for all
+  four witnesses and is correct.
+- **H1's mechanism is correct**, verified in source: it iterates published `transports()`, applies
+  `directed->signedLift` through `sourceBranch.rotated(...)` (Amendment 7 compliant), and compares exact
+  `d[opp]` against exact zero on each face's own canonical key.
+- **H1's population is not.** The **four-triangle fan's 2 violations are a fixture artifact**, proved by
+  arithmetic. Its census field is `make_index_one_singularity_field`, which leaves the direction vectors
+  **globally constant** (+X/+Y on every face) and merely *imposes* `matching = ±1` on one edge. For the
+  violating edge `1-4` the published lift is **exactly correct** — `matching(+1) + g_source(0) −
+  g_target(1) = 0` — and the disagreement is forced by a matching that contradicts the geometry. One edge
+  × two directions predicts **exactly the 2 observed**; both reported `−1/2` derivatives were reproduced
+  by hand; and a counterfactual with the gauge correction absent would give **8**, not 2.
+- **The standing inference that the fan weakens H-B is withdrawn.** The fan's matching is not merely
+  "prescribed rather than computed" — it is prescribed **inconsistently with its geometry**, so it bears
+  on nothing about production.
+- **The lift histogram is uninformative about matching.** `signedLift = matching + g_src − g_tgt` is a
+  sum of three unobserved terms. Further, the ±1/±2/±3 tail symmetry is **imposed by the census's own
+  two-direction loop**, not by the field, so every count is doubled. **Distinct disagreements: two-ring
+  2, fan 1 (artifact), sphere 72, torus 120 — corrected population 388 directed / 194 distinct** over
+  three legitimate witnesses. The two-ring's field genuinely rotates 90° around its centre and is a
+  legitimate witness.
+- **H-A and H-C independently re-confirmed excluded**; the ~50 % uniform-index branch unsupported.
+  **H-B undecided and undecidable as currently instrumented.** (H-A was the TB-R4 reviewer's own favoured
+  candidate; the census falsified it — the discipline of measuring before fixing paid for itself.)
+- **Amendment 8** issued: the cross-edge flow invariant **audits A1's input matching** as much as its
+  composition; its firing implicates one of {input matching, gauge composition, flow classification} and
+  is **not by itself evidence of an A1 code defect**; a witness with imposed matching must be excluded
+  from or explicitly classified within any production-reasoning population; and a two-direction census
+  must publish distinct counts alongside directed ones.
+- Corrective series **J0–J7** frozen for **`M3-CP4c-0-CB6`**, Code + Build, **diagnostic-only**. **J1**
+  decomposes the lift into its three terms so the review's §7 decision table names the owner
+  unambiguously; **J2** quarantines the synthetic-field witness without editing it; **J3** adds an
+  independent matching-versus-geometry check; **J5** pins the staged control payload to LF so the
+  self-hosted transport stops failing on line-ending normalization; **J6** restores the brief/review
+  naming convention. **J0 forbids any production semantics change.**
+- **Q8 remains RED at criterion 2** and is expected to stay red — third cycle in which that must be said
+  explicitly.
+- Stable accounting unchanged at **42 / 14 / 28**; produced-witness debt **5**; M3 packages **44**.
+- Record: `Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md`.
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R5`: 338/F3 green; H1 proves sparse A1 disagreement; Q8 remains red
 
 Artifact-only TB-R5 is **COMPLETE / VALID SEMANTIC RED**. Sole semantic authority is hosted run/job `32994846466 / 98261255799`, control `3f9864fddef696dc7d95084fdd41b680a78f5b37`, consuming immutable CB5 package `9601160869` (`143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb`) at semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`. Result `9616160533` has ZIP SHA-256 `1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8`; diagnostic `9616161522` has `7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`.

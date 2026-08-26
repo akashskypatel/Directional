@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-26 (CP4c-0 TB-R4: frozen gate **338/338 GREEN**, F3 2/2, G5 PASS; **Q8 creditable for the first time and RED at criterion 2** — the sphere publishes no network, rejected `BranchTransportFlowDisagreement` at edge `6-8`. Independent review closed; exact next `M3-CP4c-0-CB5` under measures H0–H7, diagnostic-only).
+**Status date:** 2026-08-26 (CP4c-0 TB-R5: gate **338/338 GREEN**, F3 2/2, G5 PASS, H1 census PASS/non-gating at **390/4224**; Q8 still **RED at criterion 2**. Review corrected the census population — the fan's violations are a fixture artifact — and froze **J0–J7**, diagnostic-only; exact next `M3-CP4c-0-CB6`).
 
 ---
 
@@ -70,7 +70,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R4: gate 338/338 GREEN, Q8 creditable and RED at criterion 2** — accepted 316 and prior 328 prefixes green, F3 2/2, G5 PASS. The sphere publishes no network: A2a rejects `BranchTransportFlowDisagreement` at edge `6-8`, faces `6-8-9` branch 3 / `6-8-97` branch 1. Decoded: **both faces call the shared edge Outflow** (`−1.0035`, `−0.5770`) — impossible, and far above any tolerance; the correct target branch is `3`, two quarter-turns from the published `1`. Production defect in cross-face transport (A1) or in A2a's carried branch; **mechanism undetermined and deliberately not guessed**. Next `M3-CP4c-0-CB5` under H0–H7 — a **census**, not a correction |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R5: gate 338/338 GREEN, Q8 RED at criterion 2; H1 census delivered** — the sphere still publishes no network (`BranchTransportFlowDisagreement`, edge `6-8`). H1's A1-only census reports **390/4224**, but review corrected the population: the four-triangle fan's violations are a **fixture artifact** (its field keeps directions constant and *imposes* `matching=±1`, so the published lift is correct and the disagreement is forced), and every count is doubled by the census's two-direction loop. **H-A and H-C excluded; H-B undecided** — the lift is a sum of three unobserved terms, so no lift histogram can decide it. Next `M3-CP4c-0-CB6` under J0–J7 — **decompose the lift**, still not a correction |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
@@ -121,6 +121,29 @@ line-scoped wording never reached. Both are **class defects certified by instanc
 the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
 particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**CB5 → TB-R5 delivered the census, and `M3-CP4c-0-TB-R5-REVIEW-PLAN` closed on 2026-08-26**
+(`Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md`). H1 ran and reported **390 violations /
+4224 pairs**. Review verified the census's *mechanism* in source — it applies the published `signedLift`
+per Amendment 7 and reads the right coordinates — and then corrected its *population*:
+
+- **The four-triangle fan's violations are a fixture artifact.** Its field
+  (`make_index_one_singularity_field`) leaves the direction vectors globally constant and *imposes*
+  `matching = ±1` on one edge. For the violating edge the published lift is **exactly correct**
+  (`matching(+1) + g_source(0) − g_target(1) = 0`); the flow disagreement is forced by a matching that
+  contradicts the geometry. One edge × two directions predicts **exactly the 2 observed**, and both
+  reported `−1/2` derivatives were reproduced by hand. The brief's use of the fan as evidence against
+  H-B is therefore **withdrawn**.
+- **The lift histogram carries no information about matching.** `signedLift = matching + g_src − g_tgt`
+  is a sum of three unobserved terms, and the ±k tail symmetry is imposed by the census's own
+  two-direction loop. Distinct disagreements are half the reported counts: two-ring **2**, fan **1**
+  (artifact), sphere **72**, torus **120** — a corrected population of **388 directed / 194 distinct**
+  over three legitimate witnesses.
+
+**H-A and H-C remain excluded; H-B is undecided and cannot be decided as currently instrumented.** The
+next cycle adds one field: decompose the lift into `matching`, `rawGauge[source]`, `rawGauge[target]`.
+Each branch of the resulting decision table names a different owner — field matching, gauge composition,
+or flow classification. Measure **J1**; still **no production change authorized**.
 
 **CB4 → TB-R4 closed the test-side corrections, and `M3-CP4c-0-TB-R4-REVIEW-PLAN` closed on 2026-08-26**
 (`Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md`). **This is the first cycle in which

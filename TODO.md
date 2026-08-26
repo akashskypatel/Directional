@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R5-REVIEW-PLAN` — EXACT NEXT / independent review + plan
+## Current focus — `M3-CP4c-0-CB6` — EXACT NEXT / Code + Build, measures J0–J7 (diagnostic-only)
 
 `M3-CP4c-0-TB-R5` is **COMPLETE / VALID SEMANTIC RED** on the immutable CB5 package. Authoritative hosted run/job `32994846466 / 98261255799` consumed package `9601160869` from semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`; result artifact `9616160533` has ZIP SHA-256 `1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8`, and diagnostic artifact `9616161522` has ZIP SHA-256 `7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`. The frozen gate is **338/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0 prefix **328/328 PASS**, F3 is **2/2 PASS**, G5 is **PASS / non-gating**, and postflight package/source/fixture/selector/executable inventories are byte-identical.
 
@@ -42,14 +42,44 @@ H1 is **PASS / non-gating** and published the decisive A1-only census: **390 vio
 - [x] `M3-CP4c-0-TB-R4-REVIEW-PLAN` — COMPLETE. Symptom proved; mechanism reduced to H-A/H-B/H-C; H0–H7 frozen.
 - [x] `M3-CP4c-0-CB5` — **COMPLETE / BUILD GREEN.** H1 A1-only census identity, H2 published `signedLift`, H3 ordered trace-step history, H4 matching-provenance audit; H5 no-production-change boundary preserved. Package `9601160869`.
 - [x] `M3-CP4c-0-TB-R5` — **COMPLETE / VALID SEMANTIC RED.** Frozen 338/338, F3 2/2, G5 PASS/non-gating; H1 `390/4224`, `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`; Q8 CREDITABLE / RED at criterion 2.
-- [ ] `M3-CP4c-0-TB-R5-REVIEW-PLAN` — **EXACT NEXT.** Independent review/planning only. Localize the sparse H1 violations against matching/singularity authority, adjudicate H-B versus another sparse A1 inconsistency, freeze exactly one bounded successor, and execute no runtime/build or product/test/fixture/selector change in the review.
+- [x] `M3-CP4c-0-TB-R5-REVIEW-PLAN` — **COMPLETE.** H1's **mechanism is correct** (verified in source: it
+  applies the published `signedLift` per Amendment 7). Its **population is not**: the four-triangle fan's
+  2 violations are a **fixture artifact**, proved by arithmetic — `make_index_one_singularity_field`
+  leaves the field vectors globally constant and *imposes* `matching=±1` on one edge, so for edge `1-4`
+  the published `signedLift=0` is **exactly correct** (`+1 + 0 − 1 = 0`) and the disagreement is forced
+  by a matching that contradicts the geometry. One edge × two directions = **exactly the 2 observed**.
+  H-A and H-C independently re-confirmed excluded; **H-B undecided**, and the brief's fan-based clause
+  against it is **withdrawn**. Record:
+  `Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md`.
+- [ ] `M3-CP4c-0-CB6` — **EXACT NEXT.** Code + Build only, measures **J0–J7**, **diagnostic-only — no
+  production semantics change.** **J1 is the cycle's point:** decompose the published lift into
+  `matching`, `rawGauge[source]`, `rawGauge[target]` per violation, plus singular-vertex incidence and
+  distinct-pair counts — the review's §7 decision table then names the owner unambiguously. J2 quarantines
+  the synthetic-field fan witness; J3 adds an independent matching-versus-geometry check; J4 records
+  matching provenance per witness. Compile only — **execute nothing.**
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
 Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. H1 remains explicitly outside the 338 selector and has no credit. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **44**.
 
-**H1 disposition entering review.** H1 disproves an odd-lift-only transport-sign defect: the two-ring and fan violations are entirely `signedLift=0`, sphere has **102/144** at lift 0, and torus has **184/240** at lift 0; sphere and torus also contain symmetric violations at ±1, ±2 and ±3. H1 also disproves H-C because the census is not zero. The remaining evidence is sparse and witness-dependent, not ~50% uniform. The next review must therefore test whether matching aliasing/singularity authority explains the sparse pattern or whether a different A1 invariant is wrong; do not infer H-B merely from the classifier name.
+**H1 disposition after review — corrected.** H-A and H-C remain excluded. But two standing readings are
+now **withdrawn**:
+
+1. **The fan's 2 violations are an artifact, not signal.** Its field keeps the direction vectors globally
+   constant and imposes `matching=±1` on one edge; the published lift for that edge is *correct*
+   (`+1 + 0 − 1 = 0`) and the flow disagreement is forced by a matching that contradicts the geometry.
+   The brief's use of the fan as evidence weakening H-B does not hold.
+2. **The lift histogram carries no information about matching.** `signedLift = matching + g_src − g_tgt`
+   is a sum of three unobserved terms, so lift-0 dominance is consistent with almost any matching
+   distribution. The ±1/±2/±3 tail symmetry is imposed by the census's own two-direction loop, not by the
+   field — and every count is therefore doubled. **Distinct disagreements: two-ring 2, fan 1 (artifact),
+   sphere 72, torus 120. Corrected population 388 directed / 194 distinct over three legitimate
+   witnesses.**
+
+**Do not attempt a production fix until J1's decomposition fills in the review's §7 decision table** —
+each branch of it names a different owner (field matching, gauge composition, or flow classification).
+**Q8 stays red at criterion 2; do not plan the next TB as a Q8 close.**
 
 ## CP4c documentation — consolidated 2026-08-26
 

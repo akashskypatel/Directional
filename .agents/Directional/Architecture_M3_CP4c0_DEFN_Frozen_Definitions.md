@@ -38,13 +38,18 @@
 >    published `signedLift`. Production is compliant everywhere; the oracle that assumed otherwise was
 >    not. A required falsifier may also not assert the *existence* of a current production failure. See
 >    Amendment 7 at the end of §10.
+> 8. **§9, added 2026-08-26 after `M3-CP4c-0-TB-R5`** — **the cross-edge flow invariant audits the
+>    field's input matching, not only A1's composition.** `signedLift = matching + g_source − g_target`,
+>    so the invariant firing means one of {input matching, gauge composition, flow classification} is
+>    inconsistent — it does not by itself indict A1 code. A witness whose matching is *imposed* rather
+>    than derived from its directions **will** trip it, correctly. See Amendment 8 at the end of §10.
 >
 > **T6 and Q8 are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
 > unreachable* from any well-formed production state (review §7, Theorems 1–3).
 >
-> **Amendment history:** 1–5 issued after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`.
-> The next turn is **`M3-CP4c-0-CB4`**, measures **G0–G8**, in
-> `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` §11.
+> **Amendment history:** 1–5 issued after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`; 8 after `TB-R5`.
+> The next turn is **`M3-CP4c-0-CB6`**, measures **J0–J7**, in
+> `Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md` §10.
 
 ---
 
@@ -472,6 +477,34 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > output as an expectation and inverts the gate at the moment the defect is fixed. Prove such properties
 > on a **constructed** failure the test controls; where a production witness is also exercised, its
 > branch must be conditional.
+
+> **AMENDMENT 8 — the cross-edge flow invariant audits A1's INPUT as much as its composition**
+> (`Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md` §8). The A1-only census added by measure H1
+> reported 390 disagreements, and the four-triangle fan's contribution proved to be a **fixture
+> artifact**: its census field leaves the direction vectors globally constant and *imposes*
+> `matching = ±1` on one edge, so the published lift is correct (`+1 + 0 − 1 = 0`) and the disagreement is
+> forced by a matching that contradicts the geometry.
+>
+> **Normative consequences:**
+>
+> 1. The published lift is a **sum**: `signedLift = matching + rawGauge[source] − rawGauge[target]`. A
+>    lift value therefore carries **no information about matching on its own**, and no histogram over
+>    lifts may be used to reason about matching.
+> 2. Amendment 4's cross-edge flow agreement firing means **one of three things** is inconsistent — the
+>    input `matching`, the gauge composition, or the flow classification. **It is not by itself evidence
+>    of an A1 code defect**, and no production correction may be authorized from it until the lift is
+>    decomposed into its three terms and the owner identified.
+> 3. A witness whose `matching` is **imposed** rather than derived from its own direction vectors will
+>    trip this invariant correctly, and **must be excluded from — or explicitly classified within — any
+>    population used to reason about production authority.** Every census must record, per witness,
+>    whether its matching was imposed by the fixture or computed at load.
+> 4. Because this invariant audits an input, it belongs in A1's **admissibility** checks as well as at
+>    A2a's point of use: a field whose matching contradicts its geometry should be rejected where it
+>    enters, not three stages later.
+>
+> **Also:** a census that checks each edge in both directions double-counts every disagreement. Such a
+> census must publish the **distinct** `(edge, branch)` count alongside the directed count, so that no
+> reader has to infer the halving.
 
 > **AMENDMENT 6 — "observable" is defined by mechanism, and proved by class**
 > (`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` §9). Amendment 5 rule 2 required a
