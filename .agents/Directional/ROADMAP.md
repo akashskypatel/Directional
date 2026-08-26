@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-26 (CP4c-0 TB-R3 valid semantic red: 338 executed, 336 pass, reds at ordinals 333/334 — both test-side; independent review closed; exact next `M3-CP4c-0-CB4` under measures G0–G8).
+**Status date:** 2026-08-26 (CP4c-0 TB-R4: frozen gate **338/338 GREEN**, F3 2/2, G5 PASS; **Q8 creditable for the first time and RED at criterion 2** — the sphere publishes no network, rejected `BranchTransportFlowDisagreement` at edge `6-8`. Independent review closed; exact next `M3-CP4c-0-CB5` under measures H0–H7, diagnostic-only).
 
 ---
 
@@ -57,7 +57,7 @@ The one substantive gap is not a criterion but a *scope* of proof: all six are p
 witnesses** (the two-ring skew disc and the four-triangle fan), not on production-representative
 meshes, and — as the CP4c plan establishes — **A2b is not yet constructed by the production pipeline at
 all**. That is exactly and only what CP4c exists to close. See
-`Architecture_M3_CP4c_Code_Build_Plan.md` §0.
+`M3_CP4c_Consolidated_Record.md` §1.
 
 ---
 
@@ -70,7 +70,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R3 VALID SEMANTIC RED, 336/338, review closed** — all 338 executed under F6 continue-and-observe; accepted 316 and prior 328 prefixes green; reds at ordinals 333 (fixture builds a DCEL-invalid single-triangle mesh) and 334 (oracle assumed a portable branch label) — **both test-side, production correct at both sites**; identity 338 green confirms the degenerate-entry family is gone from the sphere; **the sphere still does not publish a network**, so Q8 is expected red next cycle; next `M3-CP4c-0-CB4` under G0–G8 |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R4: gate 338/338 GREEN, Q8 creditable and RED at criterion 2** — accepted 316 and prior 328 prefixes green, F3 2/2, G5 PASS. The sphere publishes no network: A2a rejects `BranchTransportFlowDisagreement` at edge `6-8`, faces `6-8-9` branch 3 / `6-8-97` branch 1. Decoded: **both faces call the shared edge Outflow** (`−1.0035`, `−0.5770`) — impossible, and far above any tolerance; the correct target branch is `3`, two quarter-turns from the published `1`. Production defect in cross-face transport (A1) or in A2a's carried branch; **mechanism undetermined and deliberately not guessed**. Next `M3-CP4c-0-CB5` under H0–H7 — a **census**, not a correction |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
@@ -121,6 +121,30 @@ line-scoped wording never reached. Both are **class defects certified by instanc
 the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
 particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**CB4 → TB-R4 closed the test-side corrections, and `M3-CP4c-0-TB-R4-REVIEW-PLAN` closed on 2026-08-26**
+(`Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md`). **This is the first cycle in which
+CP4c-0's real subject is on the table.** G1–G4/G6 are runtime-proved, the frozen gate is **338/338
+green**, and Q8 became creditable — and red at criterion 2.
+
+G5 published the sphere's rejection in full for the first time. Decoding the six exact rationals:
+**both faces classify the shared edge `6-8` as `Outflow`** (`d_source[2] = −1.0035…`,
+`d_target[2] = −0.5770…`). A continuous direction cannot exit a shared edge from both sides, and the
+magnitudes are three orders above any epsilon here, so this is **not** a tolerance artifact. The
+physically correct target branch is **`3`** — two quarter-turns from the published `1` — so the lift is
+off by a full reversal. The source face is a genuine `1×2`, meaning CP4c-0's min-ratio rule chose the
+exit edge correctly; the transport that follows it did not.
+
+The review **refused to guess the mechanism**. The obvious candidate — per-face canonical-normal parity,
+which is mismatched on 86.8 % of the sphere's interior edges — was tested and **refuted**: the gauge is
+an index shift and cancels in the subtraction regardless of frame. Two supporting assumptions were also
+excluded (the raw-array reconstruction matches the stored field exactly; the stored ordering is globally
+orientation-coherent). Three candidates survive — matching sign convention, matching aliasing, or a
+wrong branch carried by A2a — and a single **cross-face flow-agreement census** over A1 authority
+discriminates among all three. That census is measure **H1** and is the whole point of the next cycle.
+
+**Recorded caveat:** a green accepted 316 is **not** evidence that cross-face transport is correct — no
+accepted identity has ever asserted it, because E5 created that invariant in CB2.
 
 **CB3 → TB-R3 executed that correction, and `M3-CP4c-0-TB-R3-REVIEW-PLAN` closed on 2026-08-26**
 (`Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md`). F1/F2 are runtime-proved and F6

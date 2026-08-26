@@ -82,12 +82,63 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R4-REVIEW-PLAN` — EXACT NEXT / independent review + planning
+## Mandatory next turn — `M3-CP4c-0-CB5` — EXACT NEXT / Code + Build, measures H0–H7 (diagnostic-only)
+
+`M3-CP4c-0-TB-R4-REVIEW-PLAN` is **COMPLETE**. Its record is
+`Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` — read it first.
+
+**Where CP4c-0 actually stands.** The frozen gate is **338/338 GREEN**, F3 2/2, G5 PASS. **Q8 became
+creditable for the first time and is RED at criterion 2**: the prescribed sphere publishes no network.
+Four programmes demonstrably worked this cycle — E2–E5 (degenerate-entry family gone, identity 338
+green), E1/F1–F3/G5 (the rejection is finally observable), F6 (all 338 ran), and E5 itself, whose
+`BranchTransportFlowDisagreement` is the code that typed this condition. The failure has moved from a
+symptom to a cause.
+
+**The adjudicated state, decoded from the G5 payload.** Edge `6-8`, source face `6-8-9` branch `3`,
+target face `6-8-97` branch `1`. **Both faces classify the shared edge as `Outflow`**
+(`d_source[2] = −1.0035…`, `d_target[2] = −0.5770…`). A continuous direction cannot exit a shared edge
+from both sides. Magnitudes ~1.0 and ~0.58 put this three orders above any epsilon, so it is **not** a
+tolerance artifact. The physically correct target branch is **`3`** — two quarter-turns from the
+published `1`, i.e. the lift is off by a **full reversal**. The source face is a genuine `1×2`, so
+CP4c-0's min-ratio rule chose the exit edge correctly; the transport after it did not.
+
+**Do not guess the mechanism, and do not apply the one-line fix that suggests itself.** The obvious
+hypothesis — per-face canonical-normal parity, mismatched on **86.8 %** of the sphere's interior edges —
+was formed, tested and **refuted** in review §5: the gauge is an index shift and cancels in the
+subtraction regardless of frame. Two supporting assumptions were also excluded (the
+`{primary, secondary, −primary, −secondary}` reconstruction matches the stored rawfield **exactly**; the
+stored ordering is `+90°` CCW about the mesh normal in **all 192** faces). Three candidates survive:
+matching sign/direction convention (fits an off-by-2 exactly, and edge `6-8` touches singular vertex 8);
+matching aliasing; or a wrong branch carried by A2a from an earlier step.
+
+**Measure H1 is the whole cycle**: a non-gating **cross-face flow-agreement census** over A1 authority
+alone — every interior edge × every branch, both directions, on two-ring / fan / sphere / torus,
+reporting each violation with the **published `signedLift`** and both exact `d[opp]` values. Its result
+selects among the three candidates by itself (review §6 has the decision table). **H5 makes "do not
+change production" an explicit measure**, because a sign flip applied on one failure site with the
+census unrun would be a fixture-shaped guess at global authority.
+
+**Durable caveat:** a green accepted **316** is **not** evidence that cross-face transport is correct —
+no accepted identity has ever asserted it, since E5 created that invariant in CB2. If the census returns
+violations at a material rate, some accepted traces may be wrong and were simply never checked. That
+would be a pre-existing defect newly detectable, not a CP4c-0 regression.
+
+**Q8 stays red until the mechanism is fixed. Do not plan the next TB as a Q8 close.**
+
+The postflight `first_red` naming failure is **control-plane only and post-semantic** — correct the
+variable naming in a successor workflow, and **do not rerun TB-R4 semantics for a green badge** (H6).
+
+---
+
+### TB-R4 evidence this review adjudicated — retained
+
+All artifact digests and all three selector hashes were verified during review (the latter recomputed
+locally) and **all matched**.
 
 `M3-CP4c-0-TB-R4` is **COMPLETE / VALID SEMANTIC RED**. Durable evidence:
 
-- `.agents/Directional/Architecture_M3_CP4c0_Artifact_Only_Test_Benchmark_Report.md`
-- `.agents/Directional/Architecture_M3_CP4c0_TB_R4_Review_Plan.md`
+- `.agents/Directional/M3_CP4c_Consolidated_Record.md` §3 (full CP4c-0 turn ledger)
+- `.agents/Directional/Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md`
 
 **Immutable authority:** semantic source `de291a17d5e9bfb6f54918660320ecfa1d521be4`; package `9591540182` (`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`); TB-R4 event/control SHA `bb21207f288c631b1d4149b56b37e78080edade7`; run/job `32928381384 / 98055727654`; result `9592385698` (`6ffe56ef5a86bf44dfd2ea4e2f44514d71b6037cc5c34067aeda571a70260643`); diagnostic `9592386266` (`669e51f2d0c30573c751c43a4d49b737f8a4ddeba8be2236f9782c995f6ac3cb`).
 

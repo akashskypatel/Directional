@@ -5,9 +5,9 @@ Reviewer scope: inspect immutable evidence and source; amend frozen definitions;
 Code + Build plan. **No product source, test source, fixture, selector, build configuration, or runtime
 was modified or executed in this turn.**
 
-Governing brief: `Architecture_M3_CP4c0_TB_Review_Plan.md`.
+Governing brief: the CP4c-0 TB review brief, retired into `M3_CP4c_Consolidated_Record.md`.
 Frozen contract under review: `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`.
-Evidence under review: `Architecture_M3_CP4c0_Artifact_Only_Test_Benchmark_Report.md`.
+Evidence under review: the CP4c-0 TB report, retired into `M3_CP4c_Consolidated_Record.md` §3.
 
 ---
 

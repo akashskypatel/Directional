@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R4-REVIEW-PLAN` — EXACT NEXT / independent review + planning
+## Current focus — `M3-CP4c-0-CB5` — EXACT NEXT / Code + Build, measures H0–H7 (diagnostic-only)
 
 `M3-CP4c-0-TB-R4` is **COMPLETE / VALID SEMANTIC RED** on immutable CB4 package `9591540182` at semantic source `de291a17d5e9bfb6f54918660320ecfa1d521be4`. Authoritative run/job `32928381384 / 98055727654` executes the unchanged frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0 prefix **328/328 PASS**, F3 **2/2 PASS**, and G5 **PASS / non-gating**. Q8 is creditable and **RED at criterion 2**: the sphere reaches field-transport-atlas authority but A2a rejects `BranchTransportFlowDisagreement` at edge `6-8`, source face `6-8-9` branch `3`, related face `6-8-97` branch `1`; no field-aligned network is published. This is a new **non-stable candidate pending independent authority review**.
 
@@ -37,12 +37,51 @@ gate count excludes them, each carries a written rationale and an owning correct
 - [x] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — COMPLETE. Both reds test-side; Amendment 7; G0–G8.
 - [x] `M3-CP4c-0-CB4` — COMPLETE / BUILD GREEN. Package `9591540182`; test-side corrections only.
 - [x] `M3-CP4c-0-TB-R4` — COMPLETE / VALID SEMANTIC RED. **338/338 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating; Q8 CREDITABLE / RED because the sphere does not publish a network. Postflight summary-variable control bug occurred only after valid semantic/immutability evidence; no semantic rerun.
-- [ ] `M3-CP4c-0-TB-R4-REVIEW-PLAN` — **EXACT NEXT.** Independently reconstruct edge-`6-8` source/target pairing + signed-lift authority, classify why source branch `3` marks the carrier outgoing while transported target branch `1` does not mark it incoming, adjudicate `M3-CP4c0-TB-R4-CAND-01`, and freeze only the minimum justified successor measures. Review/planning only — execute nothing and mutate no product/test/fixture/selector/build logic.
+- [x] `M3-CP4c-0-TB-R4-REVIEW-PLAN` — **COMPLETE.** Decoded the G5 payload: **both faces classify the
+  shared edge `6-8` as `Outflow`** (`d_source[2] = −1.0035…`, `d_target[2] = −0.5770…`), which is
+  geometrically impossible; magnitudes are ~1.0 and ~0.58, so this is **not** a tolerance artifact. The
+  physically correct target branch is **`3`**, two quarter-turns from the published `1` — the lift is off
+  by 2, a full reversal. Classified as a **production semantic defect** in cross-face transport (A1) or
+  in the branch A2a carries into it. **Mechanism deliberately not guessed:** the obvious
+  canonical-normal-parity hypothesis was formed, tested and **refuted** (recorded in review §5 so it is
+  not re-derived). Three candidates survive with one decisive measurement. Record:
+  `Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md`.
+- [ ] `M3-CP4c-0-CB5` — **EXACT NEXT.** Code + Build only, measures **H0–H7**, **diagnostic-only — no
+  production semantics change (H5 makes that a measure, not a preference).** **H1 is the cycle's whole
+  point:** a non-gating cross-face flow-agreement **census** over A1 authority alone — every interior
+  edge × every branch, both directions, on two-ring / fan / sphere / torus — reporting violations with
+  the **published `signedLift`** and both exact `d[opp]` values. Its outcome selects among the three
+  candidates by itself. H2 adds the lift to the disagreement payload; H3 publishes the trace step
+  history; H4 records matching provenance. Compile only — **execute nothing.**
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **43**.
+Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` — all three **recomputed locally during review**. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **43**.
+
+**What TB-R4 proved, beyond the red.** Four programmes demonstrably worked: E2–E5 removed the
+degenerate-entry family (identity 338 green); E1/F1–F3/G5 made the sphere's rejection fully observable
+for the first time; F6 continue-and-observe produced a complete picture; and the failure moved from a
+symptom to a cause — `BranchTransportFlowDisagreement` is the code **E5 created** to type exactly this
+condition, which the first CP4c-0 review named as **route A** and found entirely unasserted.
+
+**Durable caveat, now recorded.** A green accepted **316** is **not** evidence that cross-face transport
+is correct: no accepted identity has ever asserted that invariant — E5 created it in CB2. If H1's census
+returns violations at a material rate, some accepted traces may be wrong and were simply never checked.
+That is a pre-existing defect newly detectable, not a CP4c-0 regression; size it with the census rather
+than assuming it away in either direction.
+
+**Do not plan CB5/TB-R5 as a Q8 close.** Q8 stays red until the mechanism is fixed.
+
+## CP4c documentation — consolidated 2026-08-26
+
+Twenty-four per-turn CP4c execution documents and superseded review briefs were retired into
+**`M3_CP4c_Consolidated_Record.md`** under explicit user authorization, preserving every evidence
+identifier. Thirty-three CP4c documents became twelve. Retained live: the CP4c-0 DEFN charter and frozen
+definitions, the five independent reviews (they carry Amendments 1–7 and measure series E/F/G/H), and
+all selector `.txt` authority files. A citation naming a retired document now points at the consolidated
+record — **retired provenance, not lost authority**. CP4c-0 and CP4c-1 remain **OPEN**; the record is
+historical and closes nothing.
 ## After M3 exit
 
 `ROADMAP.md` §4 proposes the checkpoint decomposition for **M4–M8** — seventeen checkpoints plus five `-DEFN` planning turns to reach `M8-CP3`, the production-ready exit. That decomposition is a **proposal until each milestone's `-DEFN` turn freezes it**; gate arithmetic beyond 322 is deliberately not fixed.

@@ -4,8 +4,8 @@ Turn: `M3-CP4c-0-TB-R2-REVIEW-PLAN`. Review and planning only.
 **No product source, test source, fixture, selector, build configuration, or runtime was modified or
 executed in this turn.**
 
-Evidence under review: `Architecture_M3_CP4c0_CB2_Code_Build_Report.md`,
-`Architecture_M3_CP4c0_CB2_Artifact_Only_Test_Benchmark_Report.md`.
+Evidence under review: the CB2 build and TB-R2 reports, retired into
+`M3_CP4c_Consolidated_Record.md` §3.
 Contract under review: `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` (as amended) and the **E0–E10**
 series in `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`.
 

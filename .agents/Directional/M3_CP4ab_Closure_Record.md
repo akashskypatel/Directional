@@ -73,7 +73,7 @@ self-contained. Two defects were introduced and are repaired at this review:
    file. Each is now annotated as retired-provenance; no amendment content changed.
 2. **Every current routing pointer named "section 4A.3c", which has never existed.** CP4c's content
    was the `#### M3-CP4c` subsection of §4A.3 — a scope statement, not a decomposition. Routing now
-   points at `Architecture_M3_CP4c_Code_Build_Plan.md`.
+   points at `M3_CP4c_Consolidated_Record.md`.
 
 ## 2. Accepted immutable authority
 
@@ -121,7 +121,7 @@ CP4c remains responsible for:
 - the six frozen C1–C6 identities;
 - the cumulative **322 = 316 + 6** M3 exit gate.
 
-CP4c's decomposition is `Architecture_M3_CP4c_Code_Build_Plan.md`.
+CP4c's decomposition is `M3_CP4c_Consolidated_Record.md`.
 
 ## 5. Regression closure
 

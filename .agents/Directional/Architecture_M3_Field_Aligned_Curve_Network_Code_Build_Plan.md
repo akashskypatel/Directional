@@ -467,7 +467,7 @@ B4. **Rescoped at DEFN.** `FieldTransportUnestablished` is a D4 disposition and 
 > **Superseded as routing, retained as scope.** This subsection states *what* CP4c must deliver. It is
 > **not** a task decomposition and was never numbered "4A.3c" — no such section has ever existed in this
 > document, though `TODO.md`, the handoff, the TB-R3 report, and the CP4ab closure record all pointed at
-> that name. The binding decomposition is **`Architecture_M3_CP4c_Code_Build_Plan.md`**, which also
+> that name. The binding decomposition is **`M3_CP4c_Consolidated_Record.md`**, which also
 > records the finding that resizes CP4c: **`GlobalTopologyPlan` is constructed nowhere in
 > `src/pipeline/RemeshPipeline.cpp`**, so C1/C2's "…ThroughProductionEntryPath" requires production
 > wiring before any witness can be written.

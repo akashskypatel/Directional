@@ -109,7 +109,7 @@ DG's *legitimate* residual value was running identities whose redness was expect
 
 ### 2.4 Where this must be propagated
 
-`Future_Chat_Session_Handoff.md` (durable policy), `Architecture_M3_CP4_DEFN_Frozen_Definitions.md` §10, `Architecture_M3_CP4c_Code_Build_Plan.md` §2, `Architecture_M3_Field_Aligned_Curve_Network_Code_Build_Plan.md` §4A.4, `REORIENTATION_PLAN.md`, `ROADMAP.md`, `TODO.md`, `LESSONS.md` §7. All are updated in this turn.
+`Future_Chat_Session_Handoff.md` (durable policy), `Architecture_M3_CP4_DEFN_Frozen_Definitions.md` §10, `M3_CP4c_Consolidated_Record.md` §2, `Architecture_M3_Field_Aligned_Curve_Network_Code_Build_Plan.md` §4A.4, `REORIENTATION_PLAN.md`, `ROADMAP.md`, `TODO.md`, `LESSONS.md` §7. All are updated in this turn.
 
 ---
 

@@ -1,5 +1,58 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R4-REVIEW-PLAN`: gate green, Q8 creditable and red; symptom proved, mechanism withheld; CP4c docs consolidated
+
+**Independent review and planning only. No runtime, build, benchmark, product source, test source,
+fixture, selector, or build-configuration change.** Committed fixtures were *read* and arithmetic was
+performed on their contents; nothing was executed and nothing was modified.
+
+- **Evidence independently verified:** TB-R4 run `32928381384 / 98055727654`, head SHA `bb21207f…`,
+  result `9592385698` / `6ffe56ef…`, diagnostic `9592386266` / `669e51f2…`, CB4 package `9591540182`,
+  semantic source `de291a17…`. All three selector hashes **recomputed locally** and unchanged.
+- **Four programmes demonstrably worked.** The frozen gate is **338/338 GREEN**, F3 **2/2**, G5 **PASS**,
+  and **Q8 became creditable for the first time**. E2–E5 removed the degenerate-entry family (identity
+  338 green); E1/F1–F3/G5 made the sphere's rejection observable; F6 continue-and-observe produced a
+  complete picture; and E5's `BranchTransportFlowDisagreement` typed the condition. **The failure moved
+  from a symptom to a cause** — and it is exactly **route A**, which the first CP4c-0 review named and
+  found entirely unasserted.
+- **Q8 RED at criterion 2**, as predicted (TB-R3 review P4). The sphere publishes no network.
+- **Symptom proved exactly.** Decoding the six exact rationals in the G5 payload: source face `6-8-9`
+  has `d[2] = −1.0035357904` for edge `6-8` ⇒ **Outflow**; target face `6-8-97` has
+  `d[2] = −0.5769964399` ⇒ **also Outflow**. Both triples sum to exactly zero. **A continuous direction
+  cannot exit a shared edge from both sides.** Magnitudes ~1.0 and ~0.58 are three orders above any
+  epsilon here, so the tolerance-band explanation is **excluded**. The physically correct target branch
+  is **`3`** (`d[2] = +0.5769964399`, Inflow) — the published lift is off by **2, a full reversal**.
+  The source face is a genuine `1×2`, so CP4c-0's min-ratio rule chose the exit edge correctly.
+- **Mechanism deliberately not guessed, and a tempting hypothesis refuted.** Per-face canonical-normal
+  parity was formed, tested and **refuted**: the two faces do have opposite canonical parity, and parity
+  mismatch covers **86.8 %** of the sphere's interior edges (torus 92.6 %, mechanical 90.2 %) — but the
+  gauge is an **index shift** and cancels in `matching + g_X − g_Y` regardless of frame. Two supporting
+  assumptions were also excluded: the `{primary, secondary, −primary, −secondary}` reconstruction
+  reproduces the stored rawfield ordering **exactly**, and `v1` is `+90°` CCW from `v0` about the mesh
+  normal in **all 192** faces. The refutation is recorded so it is not re-derived.
+- **Three candidates survive** — matching sign/direction convention (fits an off-by-2 exactly; edge
+  `6-8` touches singular vertex 8), matching aliasing (`DESIGN.md` §4.1), or a wrong branch carried by
+  A2a — **and one measurement separates all three**: a non-gating cross-face flow-agreement **census**
+  over A1 authority alone.
+- **Durable caveat recorded:** a green accepted **316** is **not** evidence that cross-face transport is
+  correct. No accepted identity asserts that invariant — E5 created it in CB2. If the census returns
+  violations at a material rate, some accepted traces may be wrong and were never checked: a
+  pre-existing defect newly detectable, not a CP4c-0 regression.
+- Corrective series **H0–H7** frozen for **`M3-CP4c-0-CB5`**, Code + Build, **diagnostic-only**. **H5
+  makes "do not change production" an explicit measure** — a sign flip on one failure site with the
+  census unrun would be a fixture-shaped guess at global authority. The `first_red` postflight defect is
+  control-plane only and must not trigger a semantic rerun (H6).
+- **CP4c documentation consolidated** under explicit user authorization: twenty-four per-turn execution
+  documents and superseded review briefs retired into **`M3_CP4c_Consolidated_Record.md`**, preserving
+  every evidence identifier — source SHAs, run/job IDs, package and artifact digests, selector hashes,
+  and gate results — for CP4c parent, CP4c-0 and CP4c-1. **33 CP4c documents → 12.** Retained live: the
+  CP4c-0 DEFN charter and frozen definitions, the five independent reviews (Amendments 1–7; series
+  E/F/G/H), and all selector `.txt` files. Every citation naming a retired document was repointed at the
+  consolidated record — **retired provenance, not lost authority**. CP4c-0 and CP4c-1 remain **OPEN**;
+  the record is historical and closes nothing.
+- Stable accounting unchanged at **42 / 14 / 28**; produced-witness debt **5**; M3 packages **43**.
+- Record: `Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md`.
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R4`: 338 gate green; creditable Q8 exposes sphere flow disagreement
 
 Artifact-only TB-R4 is **COMPLETE / VALID SEMANTIC RED** on run/job `32928381384 / 98055727654`, consuming immutable CB4 package `9591540182` (`8a93b553…c561f`) at semantic source `de291a17…`. The unchanged frozen selector is **338/338 PASS**, accepted **316/316 PASS**, prior CP4c-0 **328/328 PASS**, F3 **2/2 PASS**, and G5 **PASS / non-gating**. Ordinals 333/334 are green under the prescribed test-side corrections, closing the TB-R3 fixture/oracle candidates with no production change.
@@ -364,7 +417,7 @@ next planning turn.
 ### 2026-08-25 — `M3-CP4c-1-TB-R2` review: the branch pairing is a Cartesian product
 
 **Review + Plan only.** No product, test, fixture, selector, build, package, or runtime. Binding output:
-`Architecture_M3_CP4c1_TB_R2_Review_Plan.md`. Under the current workflow this red consumed nothing.
+`M3_CP4c_Consolidated_Record.md`. Under the current workflow this red consumed nothing.
 
 **Evidence independently verified** against the GitHub API: run `32851859581`, head `c13661c7…`, and both
 artifact digests exact. **VALID RED 316/318** — 321 fresh processes, accepted prefix **316/316 PASS**,
@@ -421,7 +474,7 @@ Exact next: `M3-CP4c-1-CB3`.
 ### 2026-08-25 — `M3-CP4c-1-TB` review: the crash-on-contact primitive has no witness
 
 **Review + Plan only.** No product, test, fixture, selector, build, package, or runtime. Binding output:
-`Architecture_M3_CP4c1_TB_Review_Plan.md`. Under the current workflow this red consumed nothing.
+`M3_CP4c_Consolidated_Record.md`. Under the current workflow this red consumed nothing.
 
 **Evidence independently verified** against the GitHub API: run `32800374361`, head `e678b98c…`, and all
 three artifact digests exact. **VALID RED 316/318** — 320 fresh processes, accepted prefix **316/316
@@ -484,7 +537,7 @@ prediction; mechanical confirms `IncompleteCycleBasis` with closed-surface facts
 genus 0, 152 interior local vertices. Stable accounting remains **42 / 14 / 28**, debt **5**.
 
 Exact next is `M3-CP4c-1-TB-REVIEW-PLAN`; no retry or patch before review. Report:
-`Architecture_M3_CP4c1_Artifact_Only_Test_Benchmark_Report.md`.
+`M3_CP4c_Consolidated_Record.md`.
 
 ### 2026-08-25 — `M3-CP4c-TB-R1` review: attempt budget and `DG` abolished; CP4c split
 
@@ -566,8 +619,8 @@ retained as non-authoritative process evidence and excluded from package account
 
 M3 packages **34 → 35**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**,
 CP4c acceptance **0/3**, diagnostics **0/2**. New exact records:
-`Architecture_M3_CP4c_CB1_Global_Topology_Plan_Code_Build_Report.md` and
-`Architecture_M3_CP4c_DG1_Artifact_Only_Diagnostic_Plan.md`. Exact next is split-ready
+`M3_CP4c_Consolidated_Record.md` and
+`M3_CP4c_Consolidated_Record.md`. Exact next is split-ready
 `M3-CP4c-DG1-DG-EXEC`, artifact-only 316 identities one process each, followed by mandatory DG-REV;
 diagnostic 1/2, no acceptance attempt, no configure/build/relink/repair/discovery/mutation.
 
@@ -612,7 +665,7 @@ that.
 satisfied by fixtures alone. Compounding it, `make_torus_pipeline_fixture()` — which DEFN §8.1 directs
 the implementer to copy — reads the **legacy** `productSnapshots.traceNetwork`, a different product.
 
-**New: `Architecture_M3_CP4c_Code_Build_Plan.md`**, binding, decomposing CP4c into four turns and work
+**New: `M3_CP4c_Consolidated_Record.md`**, binding, decomposing CP4c into four turns and work
 items W0–W9 without reopening the frozen `322 = 316 + C1–C6` gate or the DEFN §7.3 identity names:
 CB1 (wiring, W0–W5) → DG1 (W6, the accepted 316 surface unchanged against the wired package, pass
 condition 316/316) → CB2 (W7–W9, two witnesses and C1–C6) → TB (322). The diagnostic is allocated

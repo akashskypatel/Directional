@@ -4,8 +4,9 @@ Turn: `M3-CP4c-0-TB-R3-REVIEW-PLAN`. Review and planning only.
 **No product source, test source, fixture, selector, build configuration, or runtime was modified or
 executed in this turn.** Evidence was read; nothing was run.
 
-Brief: `Architecture_M3_CP4c0_TB_R3_Review_Plan.md`.
-Evidence: `Architecture_M3_CP4c0_CB3_Code_Build_Report.md`, TB-R3 run `32921851098 / 98036868098`.
+Brief: the TB-R3 review brief, retired into `M3_CP4c_Consolidated_Record.md`.
+Evidence: the CB3 build report (retired into `M3_CP4c_Consolidated_Record.md` §3) and TB-R3 run
+`32921851098 / 98036868098`.
 Contract: `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` (as amended, Amendments 1–6).
 
 ---

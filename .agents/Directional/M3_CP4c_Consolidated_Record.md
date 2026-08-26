@@ -1,0 +1,178 @@
+# M3 CP4c — Consolidated Historical Record
+
+**Purpose.** One durable record for the whole **CP4c family** — the CP4c parent turns and the CP4c-0 and
+CP4c-1 sub-checkpoints. It consolidates twenty-four per-turn execution documents and review briefs that
+were retired on 2026-08-26 under explicit user authorization, preserving **every** evidence identifier
+they carried.
+
+**Status:** CP4c-0 and CP4c-1 are **OPEN**. This is therefore a *historical* record, **not** a closure
+record. No checkpoint is closed by this document, and none may be.
+
+**What this document does not replace.** These remain live and normative:
+
+| Retained document | Why |
+|---|---|
+| `Architecture_M3_CP4c0_DEFN_Charter.md` | the CP4c-0 charter (D0–D5) |
+| `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` | **normative** for CP4c-0; carries Amendments 1–7 |
+| `Architecture_M3_CP4c_TB_R1_Independent_Review.md` | the CP4c split rationale; budget abolition |
+| `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md` | Amendments 1–5; measures E0–E10 |
+| `Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` | Amendment 6; measures F0–F8 |
+| `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` | Amendment 7; measures G0–G8 |
+| `Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` | **current**; measures H0–H7 |
+| `Architecture_M3_CP4c*_Required_Green_Selector.txt`, `..._Non_Gating_Diagnostic_Selector.txt` | selector authority |
+
+**Retired-provenance convention.** A citation elsewhere naming any document in §5's retirement list
+refers to material **inlined here**. It means *retired provenance*, never lost authority.
+
+---
+
+## 1. Why CP4c exists, and how it was split
+
+`DESIGN.md` §4.5 requires the inflow/outflow interval pairing to be **resolved**, with barycentric
+positions propagating in arbitrary precision. It was half-implemented: the pairing existed, the
+resolution did not.
+
+**CP4c was split on 2026-08-25** by `Architecture_M3_CP4c_TB_R1_Independent_Review.md` after TB-R1
+returned VALID RED 316/322. The finding that forced the split: CP4c's two committed witnesses are
+**closed surfaces** (torus χ = 0 genus 1; mechanical χ = 2), while every witness that had ever validated
+A2b is a **bounded disc** (χ = 1). Two of the three failure families were therefore **scope gaps in
+already-accepted authority**, not CP4c defects.
+
+| Checkpoint | Domain | Gate |
+|---|---|---|
+| **CP4c-0** | resolved interval pairing with propagated barycentric positions | **338** = 316 + 12 + 10 |
+| **CP4c-1** | diagnosability, witness observability, event non-vacuity | **318** = 316 + C4 + C5 |
+| **CP4c-2** | closed / higher-genus region authority in A2b | 321 (needs `-DEFN`) |
+| **CP4c-3** | closed-surface missing field-transport adjacency in A1 | 322 (needs `-DEFN`) |
+
+The same review **abolished the attempt budget, the diagnostic cap, and the `DG` turn type**, on the
+finding that `DG` executed a strict subset of `TB`'s runtime surface and so was not a different
+measurement. The workflow became `CB → TB → (red) → REVIEW + PLAN → CB`.
+
+### The measured diagnosis
+
+The TB-R3 census that justified CP4c-0's existence:
+
+| Witness | frames | pairings | `(in × out)` distribution | ambiguous | % |
+|---|---:|---:|---|---:|---:|
+| two-ring skew disc | 15 | 60 | `1×2:30, 2×1:30` | 30 | **50 %** |
+| four-triangle fan | 4 | 16 | `1×1:8, 1×2:4, 2×1:4` | 4 | **25 %** |
+| torus | 144 | 576 | `1×2:288, 2×1:288` | 288 | **50 %** |
+| prescribed sphere | 192 | 768 | `1×2:384, 2×1:384` | 384 | **50 %** |
+
+Exactly 50 % on every non-degenerate witness — the arithmetic signature of `dbary = {−u−v, u, v}`
+summing identically to zero, so a face is either `2×1` (resolvable) or `1×2` (ambiguous), with no third
+case. **Both accepted witnesses carry non-zero ambiguity: the defect was latent in accepted authority
+and never witness-specific.**
+
+Site pin (prescribed sphere): failure at `field_aligned_outgoing_carrier` after one completed segment,
+face `1-2-5`, incoming carrier `1-2`, outgoing carriers `{1-5, 2-5}`, multiplicity 2. The two carriers
+share vertex 5 — the geometry of the tie case.
+
+**The gap was two missing data:** the entry position on trace segments, and the barycentric direction,
+which A1 computed and then discarded.
+
+---
+
+## 2. CP4c parent turns — evidence
+
+| Turn | Semantic source | Run / job | Package | Result |
+|---|---|---|---|---|
+| **CB1** — A2b production wiring (W0–W5) | `428e0ecb6f769b501c99405ae2a90c24d5401cca` (control `a74217ac0cd258ef7acd1c3d1cc8185b0d41767e`) | `32770533316 / 97569642420` | `9531769503`; logs `9536072497` / `4c9545b9ccce2c80c61e644fc4fa6f21c58fc562192231cd6ecc4e617b1853d7`, `9536073130` / `0c4098cca5a9a7d2455eaa48a55c3142f02285604f32f82ca9a7852b9f032881` | BUILD GREEN |
+| **DG1** — artifact-only diagnostic (the last diagnostic turn this project ran) | `428e0ecb6f769b501c99405ae2a90c24d5401cca` | `32776212123 / 97587757347` | `9536499549`, ZIP `4c64c0c3ea872dbf889c4de398ed40f9e0193fce534ee6117348e3b7a5514660`; source archive `33e546764b3b3017fbb043cfd91a4366a3ae27244861ade457743fcf10cf49ac` | completed |
+| **CB2** — production witnesses (W7–W9) | `a5edb1a31c315d51df216f3bb51470989ff64e33` | `32784809188 / 97614400563`, `32784892656 / 97614667050`, `32785147649 / 97615440289` | `9541087171`, `9541087678` | BUILD GREEN |
+| **TB-R1** | `a5edb1a31c315d51df216f3bb51470989ff64e33` | `32791027809 / 97632461750` | `9541369624`, ZIP `bb636eac863475ce41c336713ce7344c11d4a4ed6cd85a6b04634d083a03a778`; source archive `03e7c09d45715de96f1c58ec6cf21b32ca1b542078cfe196ea359c98dea8de66` | **VALID RED 316/322** |
+
+CB1's wiring regressed nothing: the accepted 316 were green in the same immutable run.
+
+---
+
+## 3. CP4c-0 — the turn sequence
+
+**Frozen selector authority, unchanged since CB2 and re-verified at every subsequent turn:**
+
+- full **338**: `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`
+- accepted first-**316**: `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`
+- first-**328**: `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`
+
+| Turn | Semantic source | Package (ZIP SHA-256) | Run / job | Result |
+|---|---|---|---|---|
+| **DEFN** | — | — | — | Frozen definitions; D0–D5 answered |
+| **CB1** | `e784e44ce86e458b250b04689288f5f365ca507b` | `9577900736` (`b9c597584177f31fd2d923b622a4b20fbb243c7bd007b37cced8ff128e349f31`) | `32886067534 / 97927044884` | BUILD GREEN; selector frozen at 328 |
+| **TB** | `e784e44ce86e458b250b04689288f5f365ca507b` | `9577900736` | `32891161394 / 97943220460`; result `9579600371` / `fe472587aba74c2face26a2f65c0706439232bec2e5cc594d81711a26773b399`; log `9579600958` / `7ddfe4c8e48b1b618c7a60ad6cf900a767ff954309a1c3cc52a8896306d98039` | **328/328 PASS; Q8 RED** — sphere `BranchContinuationDegenerateEntry`, edge `6-8` |
+| **CB2** | `390e65b373063c667e3c3f5e78b74ed9d859093b` (control `bd4ddf26296c72f3796d6d3f5d1a26c244620a1e`) | `9586196535` (`9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`); log `9586197038` / `7c3e56dbdea97b318bbfe10f11c48679293838fcf1f6f94cd66793302f986e2b` | `32909482352 / 98031548435` | BUILD GREEN; selector re-frozen at **338**; manifest 27/27 |
+| **TB-R2** | `390e65b373063c667e3c3f5e78b74ed9d859093b` | `9586196535` | `32914546494 / 98015432540` (control `26c55d13b7449953f27a4e8bd36e3c5b474f00d9`); result `9587747391` / `89d72a42b07bb879f2ba35b18b3771359d522e3c0f444e33e79ce0214d8fc5a3`; log `9587747654` / `2b43c3bda84edffe7ea23cd9763fa3c96858285b785624102f202d4e72479dab` | **RED at ordinal 329** — `std::uint8_t` branch serialization; Q8 not run. Retry 0 `32914435964 / 98015089869` orchestration-only |
+| **CB3** | `b135e219ee9269a73eaee32992d80c3921318011` (control `950d158c333622f59ed9d26c53b2028706954275`) | `9589508430` (`7bb4bd1a40af68ffd1e2ce06001490d61504e6ed0300505646c0abce97693015`); log `9589508670` / `2c29c76b2b0ac9d700ca9f68ec671969d85065b210ec2eb59bb11ddd9293c92f`; source archive `1bcc6420190be927e5fca962ba5280bb2e340e892ce81a40fcb5a17a3d432681` | `32919909928 / 98031291970`, `98031548435` | BUILD GREEN; manifest 27/27 |
+| **TB-R3** | `b135e219ee9269a73eaee32992d80c3921318011` | `9589508430` | `32921851098 / 98036868098` (control `faf84aff4e7a64a3771e863199b82bd00425c318`); result `9590143527` / `af4f5b28e509623af1fc93d55c4b766479362915e8517c741db4ae718d216604`; log `9590143871` / `ec9c29b7534053b023c8b6ba60fafb4c9d791e719caea3c37c3e2f742b08f5b7` | **336/338**; reds at ordinals 333, 334 (both test-side); F3 2/2; Q8 not run |
+| **CB4** | `de291a17d5e9bfb6f54918660320ecfa1d521be4` (initial `76c38686f6f79617477dd39b5f70e330143ed47f`; control `baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe`) | `9591540182` (`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`); source archive `6077902a83b88d1ef839ab6d2bc285050f0c059511a71c9125b0324383d69a32` | `32926004147 / 98048909565` | BUILD GREEN; test-side corrections only |
+| **TB-R4** | `de291a17d5e9bfb6f54918660320ecfa1d521be4` | `9591540182` | `32928381384 / 98055727654` (control `bb21207f288c631b1d4149b56b37e78080edade7`); result `9592385698` / `6ffe56ef5a86bf44dfd2ea4e2f44514d71b6037cc5c34067aeda571a70260643`; log `9592386266` / `669e51f2d0c30573c751c43a4d49b737f8a4ddeba8be2236f9782c995f6ac3cb` | **338/338 PASS**, F3 2/2, G5 PASS; **Q8 creditable, RED at criterion 2** |
+
+### The corrective arc, in one paragraph each
+
+- **TB → review (E0–E10, Amendments 1–5).** Root cause: A1 decided the **sign of a barycentric
+  direction coordinate** with a `double` tolerance in three places and published those verdicts as
+  topological ownership, while A2a's new rule re-decided the same sign exactly on A1's own datum. T6 and
+  Q8 were both correct and unamended; the states reaching T6 stopped being produced.
+- **TB-R2 → review (F0–F8, Amendment 6).** Ordinal 329 was **solely** a `std::uint8_t` stream-insertion
+  defect at two call sites, and it exposed a contract gap: "observable" had constrained the *value* and
+  not the *mechanism*. A second defect of the same shape (≈15 surviving trace-seed back-fills) was found.
+  Both were **class defects certified by instance falsifiers**.
+- **TB-R3 → review (G0–G8, Amendment 7).** Both reds test-side. Ordinal 333 built a **single-triangle**
+  mesh, which `DCEL::check_consistency`'s `checkPureBoundary` always rejects. Ordinal 334 iterated a
+  numeric `FieldBranch` across faces — but branch numbering is **gauged per face**, so the same label is
+  a different physical direction on each. Production was correct at both sites.
+- **TB-R4 → review (H0–H7).** Gate green, Q8 creditable and **red at criterion 2**. G5 published the
+  sphere's rejection for the first time: `BranchTransportFlowDisagreement`, edge `6-8`, source face
+  `6-8-9` branch `3`, related face `6-8-97` branch `1`. **Both faces classify the shared edge as
+  Outflow** (`−1.0035…`, `−0.5770…`), which is geometrically impossible; the physically correct target
+  branch is `3`, two quarter-turns from the published `1`. Mechanism undetermined; a census is frozen to
+  decide it.
+
+---
+
+## 4. CP4c-1 — evidence (OPEN, blocked on CP4c-0)
+
+| Turn | Semantic source | Run / job | Package | Result |
+|---|---|---|---|---|
+| **CB** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32867889140`; jobs `97867532883`, `97867597370`, `97867694421`, `97868351487` — all PASS | `9570940997` (`23876c55e51b94ca3a1e5bcfb727a4c0cebce3294fcd2fbda21336b57ae1de16`) | BUILD GREEN |
+| **TB / TB-R2** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32872112507 / 97881418987`; result `9572545977` | `9570940997` | **VALID RED 316/318** |
+
+Selectors: required 318 `2f2c24acab0e891273c170c82cdc31b6afa3ae4d43e93c95dbdf6d90a88f45bc`; accepted 316-prefix
+`601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; non-gating 5
+`9f4f287e074d66da9d69c16e22320ed6fe161b6b09de4dc7dd0618741c7fb130`.
+
+C4/C5 remain the only required blockers and **stay gating** — demotion to non-gating was considered and
+rejected. They cannot pass until CP4c-0 lands. Next turn is `M3-CP4c-1-CB3` under measures Z0–Z5, whose
+root-cause record (the Cartesian-product defect) is inlined in
+`Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`.
+
+---
+
+## 5. Documents retired into this record — 2026-08-26
+
+Retired under explicit user authorization ("consolidate CP4c docs"). Every evidence identifier each
+carried is inlined above. **CP4c parent:** `..._CB1_Global_Topology_Plan_Code_Build_Report`,
+`..._CB2_Production_Witness_Code_Build_Report`, `..._DG1_Artifact_Only_Diagnostic_Plan`,
+`..._DG1_Artifact_Only_Diagnostic_Execution_Report`,
+`..._DG1_Artifact_Only_Diagnostic_Independent_Review_Record`,
+`..._TB_R1_Artifact_Only_Test_Benchmark_Report`, `..._Code_Build_Plan` (already marked SUPERSEDED).
+**CP4c-0:** `..._Artifact_Only_Test_Benchmark_Report`, `..._CB2_Code_Build_Report`,
+`..._CB2_Artifact_Only_Test_Benchmark_Plan`, `..._CB2_Artifact_Only_Test_Benchmark_Report`,
+`..._CB3_Code_Build_Report`, `..._CB3_Artifact_Only_Test_Benchmark_Plan`, `..._CB4_Code_Build_Report`,
+`..._CB4_Artifact_Only_Test_Benchmark_Plan`, and the four superseded review briefs `..._TB_Review_Plan`,
+`..._TB_R3_Review_Plan`, `..._TB_R4_Review_Plan`. **CP4c-1:** `..._Code_Build_Report`,
+`..._Artifact_Only_Test_Benchmark_Plan`, `..._Artifact_Only_Test_Benchmark_Report`,
+`..._TB_Review_Plan`, `..._TB_R2_Review_Plan`.
+
+Each review brief was **answered in full** by the independent review that succeeded it; those reviews
+restate every question in their `R`-sections and are retained.
+
+---
+
+## 6. Standing accounting
+
+Stable regression accounting has held at **42 events / 14 categories / 28 recurrences** across the
+entire CP4c family, because **CP4c has never been accepted** and the accepted 316 prefix has stayed
+green in every run that executed it. Produced-witness debt remains **5**. Latest accepted runtime
+authority remains **CP4ab 316/316**, source/package
+`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`.

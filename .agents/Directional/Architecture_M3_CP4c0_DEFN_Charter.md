@@ -91,7 +91,7 @@ The definition turn must state the exact predicate each consumer needs before de
 
 Before `M3-CP4c-0-DEFN` may freeze an answer, consume:
 
-1. the binding `Architecture_M3_CP4c1_TB_R2_Review_Plan.md`;
+1. the binding CP4c Code + Build plan, retired into `M3_CP4c_Consolidated_Record.md`;
 2. the exact CB3 source audit for Z0;
 3. the TB-R3 non-gating branch-pairing census, including per-witness `(incoming,outgoing)` distributions;
 4. the TB-R3 prescribed-sphere site pin, completed-segment count, current face, carrier sets, multiplicity, and branch-transport-adjacency observation;

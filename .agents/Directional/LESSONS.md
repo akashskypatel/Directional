@@ -433,6 +433,40 @@ determinant test meant to reject bad ones. Construction throws, so the screen ne
 failure time was the tell: nothing had been searched yet. **Order validity checks before construction,
 not after** — and when a search loop dies instantly, suspect the first candidate rather than the search.
 
+### Test your own hypothesis before you write it into the record
+
+A per-face-normal parity mismatch looked like an obvious cause: the two faces sharing the failing edge
+genuinely have opposite canonical parity, and the statistic is spectacular — 86.8 % of that mesh's
+interior edges. It is still wrong. The quantity in question is an **index shift**, and it cancels in the
+subtraction regardless of which frame chose it. The compelling statistic was measuring something real
+and irrelevant. **A number that supports a hypothesis is not the same as a mechanism that produces the
+symptom** — derive the mechanism end to end, or say you have not.
+
+### Record the refutation, not just the conclusion
+
+The refuted hypothesis above is the most attractive wrong answer available for this defect, and the
+supporting statistics make it look conclusive. Writing only "cause undetermined" would guarantee the
+next agent re-derives it and spends the same effort. **A review that eliminates a candidate should say
+which candidate, on what evidence, and why the attractive-looking statistic does not carry** — an
+exclusion is a durable result, not an absence of one.
+
+### An invariant nothing ever asserted is not an invariant that held
+
+A cross-edge flow-agreement check was added late, and it immediately rejected a production witness. The
+tempting reading is "the new check is too strict". The correct reading is that nothing had ever compared
+the two sides of an edge, so a reversed transported branch produced a wrong-but-plausible trace and no
+identity could notice. **A long-green accepted suite is evidence about what was checked, not about what
+was true** — when a new invariant fires, first ask how long it could have been failing unobserved.
+
+### When one failure site suggests a one-line global fix, that is the moment to measure
+
+The failing edge implied an off-by-two in a transport lift, and a sign flip would plausibly fix it. It
+would also silently rewrite every trace in the project on the strength of a single observation. A census
+over all edges and all branches costs one diagnostic identity and distinguishes a global convention
+error from a local aliasing artifact from a caller-side bookkeeping bug — three fixes that look
+identical at one site and are completely different everywhere else. **Cheap global measurement before
+cheap global change.**
+
 ## 3. Negatives and oracles
 
 23. **A negative test proves only the guard it actually reaches.** Check which guard rejected before
