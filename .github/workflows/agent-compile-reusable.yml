@@ -17,7 +17,7 @@ on:
 
 jobs:
   compile:
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     timeout-minutes: 90
     concurrency:
       group: directional-compile-cache-${{ github.repository_id }}-${{ github.ref }}

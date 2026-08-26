@@ -31,7 +31,7 @@ on:
 jobs:
   pr-comment:
     if: ${{ inputs.pr_number > 0 }}
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     permissions:
       contents: read
       issues: write
@@ -122,7 +122,7 @@ jobs:
 
   branch-file:
     if: ${{ inputs.commit_run_file && inputs.report_branch != '' }}
-    runs-on: ubuntu-24.04
+    runs-on: self-hosted
     permissions:
       contents: write
     steps:
