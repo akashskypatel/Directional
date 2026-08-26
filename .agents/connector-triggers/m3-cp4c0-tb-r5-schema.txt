@@ -2,5 +2,5 @@ M3-CP4c-0-TB-R5 schema validation trigger
 draft_blob=c251efc206326a496c3eaa5a2dc8163e040b0d7f
 schema_blob=6bf81ec25d24e550e746790276bea4c203a24a42
 payload_sha256=3e2f58bd79d12bb0abad572d0a52874c56e8688deb0b97f647f239c7bf6a4b05
-retry=3;reason=git-data-registration-refresh-installed-before-marker
+retry=4;reason=self-hosted-runner-migration-complete
 runtimeExecution=false
