@@ -1,5 +1,53 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R6-REVIEW-PLAN`: root cause identified — near-tangency, not an A1 defect; Amendment 9
+
+**Independent review and planning only. No runtime, build, benchmark, product source, test source,
+fixture, selector, or build-configuration change.** Evidence, source and fixtures were *read* and
+arithmetic performed on their contents; nothing was executed and nothing was modified.
+
+- **Evidence independently verified:** TB-R6 run `33006282429 / 98300813772`, control SHA `a9ae3075…`,
+  result `9620769314` / `fe6a7317…`, diagnostic `9620770049` / `ce87da5a…`, CB6 package `9619352525`,
+  semantic source `8b8d1897…`. All three selector hashes recomputed locally. **Both TB-R5-review
+  predictions confirmed to the digit**: the fan artifact at 2 directed / 1 distinct, and the corrected
+  legitimate population at 388 / 194.
+- **Root cause identified: a near-tangency discretization phenomenon.** The review reproduced the
+  sphere's census from the committed `.obj` and `.rawfield` alone — no product code — and obtained
+  **exactly 144 directed disagreements**, matching runtime. Tangency ratio `min(|d_opp| / max|d|)`:
+  disagreeing **median 0.0218, max 0.2004** (n=144); agreeing **median 0.9233** (n=1008). A 42×
+  separation. The direction runs nearly parallel to the shared edge; the field's rotation across it
+  (≈ 23°) flips the small perpendicular component; **both faces correctly compute "outflow"**.
+- **Every published term at the live locus is correct**, each independently verified: `matching = 0` is
+  geometrically right (nearest target raw index **23.7°**, next **66.3°** — not aliasing);
+  `0 + 1 − 3 ≡ 2` reproduces the published lift; both gauges map to raw index 0; both `dbary` triples
+  reproduce **to 10 decimal places**; all 288 interior edges are normal adjacency, none folded.
+  **There is nothing in A1 to fix.**
+- **`Amendment 4` / measure `E5` is the defect.** It asserts a **continuum** property that a
+  piecewise-constant field does not satisfy near edge tangency. **Amendment 9** corrects it:
+  `BranchTransportFlowDisagreement` is a **typed grazing observation**, not an invariant violation; no
+  production correction may be authorized from it; **no tolerance may be used to classify grazing** (the
+  distributions overlap); and every cross-stage invariant on discrete data must state its discretization
+  assumptions.
+- **The substantive open question is a model gap:** `DESIGN.md` §4.5 does not define what a trace does at
+  an edge the neighbouring face's direction also exits. Four candidate models are framed and **none
+  chosen** — that is a `-DEFN` obligation.
+- **Three prior readings withdrawn.** The live locus does **not** indict `build_branch_transports`
+  (its composition is arithmetically correct); there are **not two classes** (the unequal-gauge and
+  equal-gauge/lift-0 populations are one phenomenon — the "lowest common invariant" the TB report asked
+  for); and **J3's 524/524 does not exclude H-B**, because `independent_edge_measurement` re-implements
+  **principal matching**, the algorithm H-B suspects. H-B is excluded, but by direct measurement.
+- **Reviewer errors owned:** the TB-R4 "geometrically impossible" claim and its magnitude-versus-ratio
+  reasoning; the J3 specification, which named principal matching as its own oracle; and the TB-R5
+  decision-table rows that attached owners to one geometric regime.
+- Corrective series **K0–K7** frozen for **`M3-CP4c-0-CB7`**, **diagnostic-only**, followed by
+  **`M3-CP4c-0-DEFN-2`**. K1 establishes the tangency separation at runtime; K2 measures each candidate
+  model's cost; K3 retires J3's aliasing claim and adds a holonomy oracle; K4 strips the misleading owner
+  labels; K6 fixes the staged-payload transport, which has cost two consecutive cycles.
+- **Q8 remains RED at criterion 2** — fourth consecutive cycle, but for the first time the reason is a
+  known contract gap rather than an unknown defect.
+- Stable accounting unchanged at **42 / 14 / 28**; produced-witness debt **5**; M3 packages **45**.
+- Record: `Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md`.
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R6`: 338/338 green; J3 clears legitimate matching; Q8 remains semantic red
 
 `M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED**. Artifact-only Test + Benchmark; no configure, compile, relink, repair, generated discovery, performance benchmark, or source/test/fixture/selector/package mutation.

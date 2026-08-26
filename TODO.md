@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R6-REVIEW-PLAN` — EXACT NEXT / independent review + planning
+## Current focus — `M3-CP4c-0-CB7` — EXACT NEXT / Code + Build, measures K0–K7 (diagnostic-only)
 
 `M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED** on authoritative artifact-only run/job `33006282429 / 98300813772`, control `a9ae307590b0cc23080452c4a5013674efc48fc2`, consuming only CB6 package `9619352525`. Result artifact `9620769314` has ZIP SHA-256 `fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic artifact `9620770049` has ZIP SHA-256 `ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`.
 
@@ -45,14 +45,45 @@ Frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/
 - [x] `M3-CP4c-0-TB-R5-REVIEW-PLAN` — COMPLETE. Amendment 8; J0–J7 frozen.
 - [x] `M3-CP4c-0-CB6` — COMPLETE / BUILD GREEN. Package `9619352525`.
 - [x] `M3-CP4c-0-TB-R6` — **COMPLETE / VALID SEMANTIC RED.** 338/338; F3 2/2; J3 legitimate 524/524 geometry agreement; Q8 RED criterion 2.
-- [ ] `M3-CP4c-0-TB-R6-REVIEW-PLAN` — **EXACT NEXT.** Review `Architecture_M3_CP4c0_TB_R6_Review_Plan.md`; no runtime/build/mutation. Adjudicate live-Q8 gauge composition versus the equal-gauge residual and freeze exactly one bounded successor.
+- [x] `M3-CP4c-0-TB-R6-REVIEW-PLAN` — **COMPLETE.** Root cause **identified**: the disagreements are a
+  **near-tangency discretization phenomenon**, and **Amendment 4 / measure E5's invariant is too strong**
+  for a piecewise-constant field. Reproduced the sphere census from the committed fixture alone —
+  **exactly 144 directed**, matching runtime — and measured the tangency ratio: disagreeing median
+  **0.0218** vs agreeing **0.9233**, every disagreement ≤ **0.2004**. At the live locus **every published
+  term is independently verified correct** (matching 0 right with a 42° margin; `0 + 1 − 3 ≡ 2`
+  reproduces the lift; both `dbary` triples match to 10 dp; mesh adjacency sound). **One class, not
+  two.** Amendment 9 issued. Record:
+  `Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md`.
+- [ ] `M3-CP4c-0-CB7` — **EXACT NEXT.** Code + Build only, measures **K0–K7**, **diagnostic-only — there
+  is nothing in A1 to fix.** K1 publishes the tangency decomposition at runtime; K2 measures what each
+  §6 model option would cost on the sphere; K3 retires J3's aliasing claim and adds a holonomy oracle;
+  K4 removes the misleading owner labels from H1's classifier; K6 fixes the staged-payload transport
+  (second cycle lost to it). Compile only — **execute nothing.**
+- [ ] `M3-CP4c-0-DEFN-2` — **NEW, follows CB7/TB-R7.** Closes the `DESIGN.md` §4.5 gap: what a trace does
+  at an edge the neighbouring face's direction also exits. Amends Q8 **only if** the chosen model makes
+  24 traces unreachable, and only with reasons recorded. **This is a definition turn, not a patch.**
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
 Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **45**.
 
-**TB-R6 disposition.** H-B field-matching/edge-aliasing is weakened to exclusion on the current legitimate witnesses by J3's 524/524 geometry agreement. The live Q8 locus selects the unequal-gauge A1-composition row; the larger equal-gauge/lift-0 residual selects the boundary-pairing row. Do not patch either until the mandatory review proves whether they share one lower invariant and freezes one successor.
+**TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
+
+1. **The live locus does not indict `build_branch_transports`.** Its lift composes correctly
+   (`0 + 1 − 3 ≡ 2`), its matching is geometrically right (nearest target raw index at 23.7°, next at
+   66.3°), both gauges are right, and both published `dbary` triples reproduce from the fixture to 10
+   decimal places. The decision-table row it satisfied is withdrawn as a diagnosis.
+2. **There are not two classes.** The unequal-gauge (86/43) and equal-gauge/lift-0 (254/127) populations
+   are the same **near-tangency** phenomenon seen through different bookkeeping.
+3. **J3's 524/524 does not exclude H-B.** `independent_edge_measurement` re-implements **principal
+   matching** — the algorithm H-B suspects — so it is an implementation cross-check, not an aliasing
+   test. (H-B *is* excluded, but by direct measurement at the live locus, not by J3.)
+
+**Root cause:** Amendment 4 / measure E5 asserts a **continuum** property that a piecewise-constant field
+does not satisfy near edge tangency. The real gap is that **`DESIGN.md` §4.5 does not define what a trace
+does at a grazing edge** — a `-DEFN` question, not a patch. **No production change is authorized; there
+is nothing in A1 to fix.** Q8 stays red until the model question is settled.
 
 ## CP4c documentation — consolidated 2026-08-26
 

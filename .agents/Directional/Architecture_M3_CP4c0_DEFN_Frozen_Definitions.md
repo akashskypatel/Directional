@@ -43,11 +43,18 @@
 >    so the invariant firing means one of {input matching, gauge composition, flow classification} is
 >    inconsistent — it does not by itself indict A1 code. A witness whose matching is *imposed* rather
 >    than derived from its directions **will** trip it, correctly. See Amendment 8 at the end of §10.
+> 9. **§9 + `DESIGN.md` §4.5, added 2026-08-26 after `M3-CP4c-0-TB-R6`** — **Amendment 4's cross-edge
+>    flow invariant is a CONTINUUM statement and is unsound for a piecewise-constant field near edge
+>    tangency.** Measured: 144 of 1152 directed sphere pairs violate it, every one near-tangent
+>    (ratio median 0.0218 vs 0.9233 for satisfying pairs), while every published term at the live locus
+>    is independently verified correct. `BranchTransportFlowDisagreement` is a **typed grazing
+>    observation**, not an A1 defect, and `DESIGN.md` §4.5 does not define a grazing continuation. See
+>    Amendment 9 at the end of §10.
 >
 > **T6 and Q8 are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
 > unreachable* from any well-formed production state (review §7, Theorems 1–3).
 >
-> **Amendment history:** 1–5 issued after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`; 8 after `TB-R5`.
+> **Amendment history:** 1–5 after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`; 8 after `TB-R5`; 9 after `TB-R6`.
 > The next turn is **`M3-CP4c-0-CB6`**, measures **J0–J7**, in
 > `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` §10.
 
@@ -505,6 +512,36 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > **Also:** a census that checks each edge in both directions double-counts every disagreement. Such a
 > census must publish the **distinct** `(edge, branch)` count alongside the directed count, so that no
 > reader has to infer the halving.
+
+> **AMENDMENT 9 — the cross-edge flow invariant does not hold for a piecewise-constant field near edge
+> tangency** (`Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md` §8). Amendment 4 required that an
+> edge outflowing in `X` for branch `b` inflow in `Y` for the transported branch. On the prescribed
+> sphere **144 of 1152 directed source-outflow pairs violate it**, and an independent reproduction from
+> the committed fixture — matching the runtime figure exactly — shows every one is a **near-tangency**
+> configuration: tangency ratio `min(|d_opp| / max|d|)` median **0.0218** for disagreeing pairs against
+> **0.9233** for satisfying pairs. At the live locus every published term (matching, both raw gauges, the
+> lift composition, both barycentric directions) is **independently verified correct**.
+>
+> **Normative consequences:**
+>
+> 1. **`BranchTransportFlowDisagreement` is not an invariant violation.** It is a **typed observation
+>    that the discrete field grazes the shared edge**. It must not be read as an A1 defect, and no
+>    production correction to matching, gauge composition, or flow classification may be authorized from
+>    it. Amendment 4 is corrected accordingly.
+> 2. **`DESIGN.md` §4.5's tracing model is incomplete.** It does not define the continuation of a trace
+>    reaching an edge that the neighbouring face's direction also exits. Closing that gap is a **`-DEFN`
+>    obligation**, not a patch, and it must be closed before CP4c-0 can publish a sphere network.
+> 3. **No tolerance may be introduced to classify grazing.** The tangency distributions overlap, so any
+>    cutoff would be a tolerance deciding topological ownership — forbidden by `DESIGN.md` §6.3 and
+>    already removed twice at cost. Grazing must be decided by an **exact predicate** on published
+>    authority, or by an admissibility precondition that is itself exactly stated.
+> 4. **A cross-stage invariant asserted on a discrete field must state its discretization assumptions.**
+>    Amendment 4 did not, and asserted a continuum property. Every future invariant of this shape must
+>    record whether it holds for piecewise-constant data and in what regime it degrades.
+>
+> **Amendment 8 stands and is reinforced.** It established that this check audits inputs as well as
+> composition; Amendment 9 adds that it also audits the **discretization**, and that this third failure
+> mode is the dominant one.
 
 > **AMENDMENT 6 — "observable" is defined by mechanism, and proved by class**
 > (`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` §9). Amendment 5 rule 2 required a

@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-26 (CP4c-0 TB-R6: gate **338/338 GREEN**, F3 2/2, H1/J3 diagnostics complete; J3 legitimate **524/524** geometry agreement, live edge `6-8` localizes to unequal-gauge A1 composition; Q8 remains **RED at criterion 2**; exact next independent `M3-CP4c-0-TB-R6-REVIEW-PLAN`).
+**Status date:** 2026-08-26 (CP4c-0 TB-R6: gate **338/338 GREEN**, Q8 still **RED at criterion 2**. Independent review **identified the root cause** — the cross-edge flow disagreements are a **near-tangency discretization phenomenon**, and Amendment 4's invariant is unsound for a piecewise-constant field. Nothing in A1 is defective. Exact next `M3-CP4c-0-CB7` under **K0–K7**, diagnostic-only, then **`M3-CP4c-0-DEFN-2`** to close the `DESIGN.md` §4.5 grazing gap).
 
 ---
 
@@ -70,7 +70,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R6: gate 338/338 GREEN, Q8 RED criterion 2; J1/J3 localize live edge `6-8` to unequal-gauge A1 composition** — legitimate H1 388 directed / 194 distinct; J3 matching-vs-geometry 524/524; separate equal-gauge residual 254/127 awaits independent review. Exact next `M3-CP4c-0-TB-R6-REVIEW-PLAN` |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R6: gate 338/338 GREEN, Q8 RED criterion 2 — root cause IDENTIFIED.** The cross-edge flow disagreements are a **near-tangency discretization phenomenon**: reproduced independently from the fixture (exactly **144 directed**, matching runtime), tangency ratio median **0.0218** disagreeing vs **0.9233** agreeing. At the live locus **every published term verifies correct**. **Amendment 4 / measure E5 is unsound for a piecewise-constant field** (Amendment 9), and `DESIGN.md` §4.5 does not define a grazing continuation. Next `M3-CP4c-0-CB7` (K0–K7, diagnostic-only) then **`M3-CP4c-0-DEFN-2`** |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
@@ -121,6 +121,32 @@ line-scoped wording never reached. Both are **class defects certified by instanc
 the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
 particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**CB6 → TB-R6 delivered the decomposition, and `M3-CP4c-0-TB-R6-REVIEW-PLAN` closed on 2026-08-26**
+(`Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md`). **This cycle identified the root cause**,
+and it is a contract/model gap rather than an implementation defect.
+
+The review reproduced the sphere's census from the committed `.obj` and `.rawfield` alone — no product
+code — and obtained **exactly 144 directed disagreements**, matching the runtime figure. That
+reproduction also explains them: the **tangency ratio** `min(|d_opp| / max|d|)` has median **0.0218**
+across all 144 disagreeing pairs and **0.9233** across the 1008 agreeing ones, a 42× separation, with
+every disagreement at or below **0.2004**. The direction is nearly parallel to the shared edge, the
+field's own rotation across that edge (≈ 23°) flips the small perpendicular component, and **both faces
+correctly compute "outflow"**.
+
+At the live locus every published term is independently verified correct: `matching = 0` is
+geometrically right with a wide margin (nearest target raw index **23.7°**, next **66.3°**);
+`0 + 1 − 3 ≡ 2` reproduces the published lift; both gauges map to raw index 0; both `dbary` triples
+match to **10 decimal places**; and all 288 interior edges are normal adjacency with no folding.
+
+**So `Amendment 4` / measure `E5` is the defect** — it asserts a *continuum* property that a
+piecewise-constant field does not satisfy near tangency. **Amendment 9** corrects it:
+`BranchTransportFlowDisagreement` is a **typed grazing observation**, not an A1 defect; no tolerance may
+be used to classify grazing; and **`DESIGN.md` §4.5 does not define what a trace does at a grazing
+edge** — the substantive gap, and a `-DEFN` obligation. Three prior readings are withdrawn: the live
+locus does not indict `build_branch_transports`; the two decision-table classes are one phenomenon; and
+J3's 524/524 does not exclude H-B, because `independent_edge_measurement` re-implements principal
+matching, the algorithm H-B suspects.
 
 **CB5 → TB-R5 delivered the census, and `M3-CP4c-0-TB-R5-REVIEW-PLAN` closed on 2026-08-26**
 (`Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md`). H1 ran and reported **390 violations /

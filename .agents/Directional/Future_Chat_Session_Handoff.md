@@ -82,7 +82,59 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R6-REVIEW-PLAN` — EXACT NEXT / independent review + planning
+## Mandatory next turn — `M3-CP4c-0-CB7` — EXACT NEXT / Code + Build, measures K0–K7 (diagnostic-only)
+
+`M3-CP4c-0-TB-R6-REVIEW-PLAN` is **COMPLETE**. Its record is
+`Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md` — read it first.
+
+**The root cause is identified, and it is a contract/model gap, not an implementation defect.**
+
+The review reproduced the sphere's census from the committed `.obj` and `.rawfield` alone — no product
+code — and obtained **exactly 144 directed disagreements**, matching the runtime figure. The cause is
+**near-tangency**: the tangency ratio `min(|d_opp| / max|d|)` has median **0.0218** across the 144
+disagreeing pairs and **0.9233** across the 1008 agreeing ones, with every disagreement at or below
+**0.2004**. The direction runs nearly parallel to the shared edge; the field's own rotation across that
+edge (≈ 23°) flips the small perpendicular component; **both faces then correctly compute "outflow"**.
+
+**At the live locus every published term is independently verified correct** — `matching = 0` is
+geometrically right (nearest target raw index **23.7°**, next **66.3°**); `0 + 1 − 3 ≡ 2` reproduces the
+published `signedLift = 2`; both gauges map their semantic branch to raw index 0; both published `dbary`
+triples reproduce to **10 decimal places**; and all 288 interior edges are normal adjacency, none folded.
+**There is nothing in A1 to fix.**
+
+**Three standing readings are withdrawn.** (1) The live locus does **not** indict
+`build_branch_transports` — its composition is arithmetically correct. (2) There are **not two classes**;
+the unequal-gauge and equal-gauge/lift-0 populations are one near-tangency phenomenon — that is the
+"lowest common invariant" the TB report asked for. (3) J3's **524/524 does not exclude H-B**:
+`independent_edge_measurement` re-implements **principal matching**, the algorithm H-B suspects, so it is
+an implementation cross-check, not an aliasing test. (H-B *is* excluded — by direct measurement at the
+live locus, not by J3.)
+
+**Amendment 9** corrects the contract: `BranchTransportFlowDisagreement` is a **typed grazing
+observation**, not an invariant violation; **no tolerance may be introduced to classify grazing** (the
+distributions overlap — a cutoff would be tolerance-as-ownership, forbidden by `DESIGN.md` §6.3 and
+already removed twice at cost); and **`DESIGN.md` §4.5 does not define what a trace does at an edge the
+neighbouring face's direction also exits.** That gap is the substantive open question.
+
+**Measures K0–K7 are diagnostic and definitional.** K1 establishes the tangency separation at runtime so
+it is not review-only; K2 measures what each candidate tracing model would cost on the sphere; K3 retires
+J3's aliasing claim and adds a **holonomy** oracle that principal matching cannot alias past; K4 strips
+the misleading owner labels from H1's classifier (they routed the last report to a wrong conclusion); K6
+fixes the staged-payload transport, which has now cost two consecutive cycles (line endings, then
+`zipfile.extractall` dropping mode bits).
+
+**K7 freezes the ordering: measure, then define, then implement.** After CB7/TB-R7, the next turn is
+**`M3-CP4c-0-DEFN-2`**, a definition turn that closes the §4.5 grazing gap on K2's evidence and amends Q8
+**only if** the chosen model makes 24 traces unreachable, with reasons recorded. **Do not plan the next
+cycle as a fix, and do not plan it as a Q8 close.**
+
+---
+
+### TB-R6 evidence this review adjudicated — retained
+
+All artifact digests and all three selector hashes were verified during review (the latter recomputed
+locally). Both TB-R5-review predictions — the fan artifact at 2 directed / 1 distinct, and the corrected
+population of 388/194 — were **confirmed to the digit**.
 
 `M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED**. Authoritative artifact-only control/run/job `a9ae307590b0cc23080452c4a5013674efc48fc2 / 33006282429 / 98300813772` consumed only CB6 package `9619352525` from semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Result artifact `9620769314` has ZIP SHA-256 `fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic artifact `9620770049` has ZIP SHA-256 `ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`.
 

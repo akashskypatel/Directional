@@ -502,6 +502,49 @@ composition. So when it fires, three different owners are implicated and the dia
 them. **State, for every cross-stage invariant, which inputs it also audits** — otherwise its first
 failure will be attributed to whichever stage happens to emit the error.
 
+### A continuum invariant is not automatically true of a discrete field
+
+"A direction leaving one face through a shared edge must enter the neighbouring face through it" is
+obviously true of a continuous field, and it was frozen as an invariant on that basis. It is false for a
+**piecewise-constant** field near edge tangency: the perpendicular component at the edge is small, the
+field's own rotation across the edge is larger, and both faces then correctly report outflow. Six percent
+of ordinary edge/branch pairs on a well-formed sphere fall in that regime. **When freezing an invariant
+over discretized data, state which regime it holds in** — and expect the first witness that violates it
+to be right.
+
+### Near-tangency is a ratio, and an absolute magnitude says nothing about it
+
+A quantity was judged "three orders of magnitude above any epsilon" and therefore not a tangency effect.
+The same quantity was the **smallest of its face's three coordinates** — a fifth of the largest. Distance
+from a tolerance measures numerical safety; distance from tangency measures geometry, and the two are
+unrelated. **When excluding a geometric regime, compute the geometric ratio, not the distance from an
+epsilon.**
+
+### Do not specify the suspect as its own oracle
+
+An independent check was commissioned to test whether principal matching aliases field topology. Its
+implementation computes the nearest branch by absolute rotation — which is principal matching. It
+therefore reports near-perfect agreement and cannot detect the failure it was built to find. The
+specification asked for "find which target index the source direction actually maps to," and that phrase
+*is* the algorithm under suspicion. **When commissioning an oracle for algorithm A, write down what A
+does first, and check the oracle is not a paraphrase of it.**
+
+### A classifier that names an owner will route the next turn, right or wrong
+
+A census emitted class labels of the form "this bucket means `functionX` is at fault". The buckets were
+real; the attributions were not, and the next report duly concluded that `functionX` was the owner. A
+label that names a component is a routing decision embedded in a diagnostic. **Emit the measured
+partition, not the inferred owner** — let the review do the attribution, where it can be argued and
+challenged.
+
+### Reproducing a runtime number from the fixture is the strongest check available
+
+A census reported 144 disagreements. Recomputing them from the committed mesh and field alone — no
+product code — produced exactly 144, which simultaneously validated the census, validated the
+reproduction, and made the explanatory statistic trustworthy enough to overturn a frozen invariant on.
+**Where a diagnostic's inputs are committed data, re-derive its headline number independently before
+building any conclusion on it.**
+
 ## 3. Negatives and oracles
 
 23. **A negative test proves only the guard it actually reaches.** Check which guard rejected before
