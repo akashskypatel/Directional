@@ -21,63 +21,45 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-CB4` — EXACT NEXT / Code + Build, measures G0–G8 (test-side only)
+## Current focus — `M3-CP4c-0-TB-R4` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R3` is **COMPLETE / VALID SEMANTIC RED** on immutable package `9589508430` at semantic
-source `b135e219ee9269a73eaee32992d80c3921318011`. Authoritative run/job `32921851098 / 98036868098`
-executed all **338** frozen identities: **336/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0
-prefix **328/328 PASS**. Ordinal **333** is the first red; ordinal **334** is a later non-crediting red;
-ordinals 335–338 pass non-crediting. Supplemental F3 is **2/2 PASS**. Q8 was not creditable and was not run.
-Every immutable-gate mutation/build flag remained false.
+`M3-CP4c-0-CB4` is **COMPLETE / BUILD GREEN** at semantic source
+`de291a17d5e9bfb6f54918660320ecfa1d521be4`. Authoritative compile run/job
+`32926004147 / 98048909565` produced immutable package `9591540182`
+(`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`), internal manifest
+**27/27 PASS**, with `runtimeExecution=false`. The independent TB-R3 adjudication was followed exactly:
+CB4 changed test/oracle/diagnostic code only; **no production source changed**.
 
 - [x] `M3-CP4c-0-DEFN` — **COMPLETE.** Frozen definitions remain normative.
 - [x] `M3-CP4c-0-CB1` — **COMPLETE / BUILD GREEN.** No runtime in CB.
 - [x] `M3-CP4c-0-TB` — **COMPLETE / VALID RED.** 328/328 gate PASS; binding Q8 RED.
-- [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** Root cause adjudicated; E0–E10 frozen; T6/Q8 unchanged.
+- [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** E0–E10 frozen; T6/Q8 unchanged.
 - [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** Package `9586196535`.
-- [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** 1–328 PASS; ordinal 329 RED; Q8 not run.
+- [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** First red 329; Q8 not run.
 - [x] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **COMPLETE.** Amendment 6; F0–F8 frozen.
-- [x] `M3-CP4c-0-CB3` — **COMPLETE / BUILD GREEN.** Package `9589508430`; frozen selector unchanged.
-- [x] `M3-CP4c-0-TB-R3` — **COMPLETE / VALID SEMANTIC RED.** 338 executed, 336 PASS; first red
-  `333 / ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip`; later non-crediting red
-  `334 / ExactVertexSectorPartitionsAcceptedInteriorFans`; identity 338 non-crediting green; F3 supplemental
-  **2/2 PASS**; Q8 **NOT RUN**.
-- [x] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — **COMPLETE.** Both reds are **test-side; production is correct at
-  both sites and no production measure is authorized.** Ordinal 333 throws
-  `compute_edge_quantities(): DCEL consistency check failed` **before the predicate runs** — the fixture
-  builds a **single-triangle** mesh and `checkPureBoundary` rejects any face with no interior edge, so
-  every candidate is invalid regardless of coordinates (0 ms failure confirms it). Ordinal 334 is an
-  **oracle defect originating in this reviewer's E8 spec**: `FieldBranch` is **gauged per face**, so
-  iterating one numeric label across four faces compares four different physical directions — the gauge
-  model derived from source reproduces the observed `0, 1, 0, 3` exactly. **Amendment 7** issued;
-  measures **G0–G8** frozen. Record:
-  `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md`.
-- [ ] `M3-CP4c-0-CB4` — **EXACT NEXT.** Code + Build only, measures **G0–G8**, **test-side only — no
-  production source change is authorized.** G1 gives ordinal 333 a DCEL-valid witness and screens before
-  `set_mesh`; G2 rebuilds ordinal 334's oracle on the published `signedLift`; G3 adds an independent
-  local-holonomy check so G2 is not circular; **G4 de-encodes the supplemental falsifier that currently
-  asserts the sphere fails**; **G5 adds a non-gating identity publishing the sphere's A2a outcome.**
-  Compile only — **execute nothing.**
+- [x] `M3-CP4c-0-CB3` — **COMPLETE / BUILD GREEN.** Package `9589508430`.
+- [x] `M3-CP4c-0-TB-R3` — **COMPLETE / VALID SEMANTIC RED.** 338 executed, 336 PASS; reds 333/334;
+  F3 supplemental **2/2 PASS**; Q8 not run.
+- [x] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — **COMPLETE.** Both reds adjudicated **test-side**; Amendment 7;
+  no production measure authorized; G0–G8 frozen.
+- [x] `M3-CP4c-0-CB4` — **COMPLETE / BUILD GREEN.** G1 gives ordinal 333 a DCEL-valid witness;
+  G2 rebuilds ordinal 334 on published `signedLift`; G3 adds local-holonomy coverage; G4 de-encodes the
+  seed-provenance falsifier; G5 adds an always-publishing non-gating sphere A2a diagnostic; G6 records
+  the per-face gauge premise; G7 records semantic/control/package/selector authority; G8 freezes TB-R4.
+- [ ] `M3-CP4c-0-TB-R4` — **EXACT NEXT.** Consume package `9591540182` only. Execute the unchanged
+  **338** selector in exact order/fresh processes with F6 continue-and-observe, then the two F3
+  supplementals, then G5 non-gating diagnostic. Q8 is creditable only after exact integrity + 338/338 +
+  F3 2/2. **P4 predicts Q8 RED** because TB-R3 proved the sphere still did not publish a network; preserve
+  G5's rejection/outcome and route a red Q8 to review rather than repairing inside TB.
 - [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
 - [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
 - [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
 
-Frozen selector authority is unchanged: full 338 `d588cae0…`, first-316 `601ce2b6…`, first-328
-`cf93622e…` — all three **recomputed locally during review** and matching. **Identity 338 green is not a
-Q8 substitute.** Q8 remains verbatim frozen and unconsumed; latest accepted runtime remains CP4ab
-**316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **42**.
-
-**Two results from TB-R3 that outrank the two red identities.**
-
-1. **F6 worked.** Continue-and-observe executed all 338 despite a red at 333. That is the only reason
-   334's red, 335–338's greens, and identity 338's pass are known at all. One cosmetic red no longer
-   costs a cycle.
-2. **The prescribed sphere still does not publish a network.** The supplemental falsifier
-   `TracingPathNeverPublishesSeedIdentityAsFailureLocus` contains `ASSERT_FALSE(networkBuild)` and it
-   **passed** — direct runtime proof. So **Q8 is expected to fail next cycle even at 338/338**, and that
-   assertion will invert the moment CP4c-0 succeeds (measure G4). Identity 338's pass does confirm
-   E2–E5 removed the `BranchContinuationDegenerateEntry` family from the sphere — real progress — but
-   the current rejection code is still **unpublished by anything in the gate** (measure G5).
+Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`;
+accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`;
+first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`.
+Q8 remains verbatim frozen and unconsumed. Latest accepted runtime remains CP4ab **316/316**. Stable
+accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **43**.
 
 ## After M3 exit
 

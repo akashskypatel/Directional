@@ -1,5 +1,30 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-CB4`: test-side oracle correction build green
+
+`M3-CP4c-0-CB4` is **COMPLETE / BUILD GREEN** at semantic source
+`de291a17d5e9bfb6f54918660320ecfa1d521be4`. The TB-R3 independent review's G0–G8 series was implemented
+**test-side only**: ordinal 333 now constructs a DCEL-valid two-triangle witness and screens before
+`set_mesh`; ordinal 334 carries branches through published `signedLift` with the per-face gauge premise
+recorded; a local-holonomy identity covers the independent gauge invariant; the seed-provenance falsifier
+uses a constructed failure and makes the live sphere conditional; and G5 adds an always-publishing
+non-gating sphere A2a diagnostic (`credit=none`, owning measure G5). No `src/` or `include/` file changed;
+T6, Q8, accepted expectations, sphere fixture, tolerance, E2–E6, and the frozen 338 selector remain unchanged.
+
+The first compile-only attempt `32925647275 / 98047893444` exposed two invalid `DomainResult<T>` dereferences
+inside the new fan helper; commit `de291a17…` changed only `*edge` to `edge.value()`. Authoritative run/job
+`32926004147 / 98048909565` then compiled all eight standard targets green with `runtimeExecution=false`.
+Immutable package `9591540182` has ZIP SHA-256
+`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`, internal manifest **27/27 PASS**,
+and embedded source SHA-256 `6077902a83b88d1ef839ab6d2bc285050f0c059511a71c9125b0324383d69a32`.
+Compile event/control SHA is `baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe`. Selector hashes were
+recomputed unchanged: 338 `d588cae0…a8116`, first-316 `601ce2b6…0193c`, first-328 `cf93622e…3600`.
+Stable accounting remains **42 / 14 / 28**, debt **5**; M3 packages advance to **43**.
+
+Exact next: artifact-only **`M3-CP4c-0-TB-R4`** on package `9591540182`: unchanged 338/fresh-process census
+with F6 continuation, F3 supplemental 2/2, then G5 non-gating publication. Q8 is creditable only after those
+gates and is **expected RED by P4**; preserve G5's rejection/outcome and route a red Q8 to review.
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R3-REVIEW-PLAN`: both reds are test-side; Amendment 7; the sphere still does not publish
 
 **Independent review and planning only. No runtime, build, benchmark, product source, test source,
