@@ -1,0 +1,31 @@
+name: M3 CP4c0 TB-R3 Closeout Apply
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m3-cp4c0-tb-r3-closeout-apply/run.txt]
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+concurrency:
+  group: m3-cp4c0-tb-r3-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c0-tb-r3-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1MP0LrBRY5B9alL0JQcai2guJV3xUpv4B
+      patch_sha256: a884ad56c3f443aa0451a5c66849d05a666ac3eae45dfb63fa541ffab69be1bf
+      base_sha: 62f24e5609b8c0ed3e4d0c9a900fac3bf2f14080
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: docs: record M3 CP4c0 TB-R3 red and plan review
+    secrets: inherit
