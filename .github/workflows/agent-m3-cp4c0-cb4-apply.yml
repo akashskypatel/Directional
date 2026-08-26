@@ -23,9 +23,9 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 169NWAuxq9zCKAcS_fOHCN3wq9eWwmZVH
-      patch_sha256: 9df5c4bad67c008115a2c910e333c44f287c1488285d1a274b44e648eba4304a
-      base_sha: 62a66ccf170dafd7c561e0048ef72630f6df32c7
+      file_id: 1m7mfMb5J4VBTN6wlPBEP2lh0glJhob9X
+      patch_sha256: 3c34124db2e432f1c37bca7f18ff53ab0b4797fac491a885d2566f2f7d77b76e
+      base_sha: 76c38686f6f79617477dd39b5f70e330143ed47f
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "test: repair M3 CP4c0 CB4 review oracles"
+      commit_message: "test: fix CB4 DomainResult access"
     secrets: inherit
