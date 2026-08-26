@@ -1,0 +1,3 @@
+agent-source-snapshot trigger
+semantic_source_sha=b5e4d29ea8bdbd0578b017400b11766b0b54b85e
+purpose=start_session
