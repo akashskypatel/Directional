@@ -2,5 +2,5 @@ Purpose: apply Google Drive connector patch-deletion policy update.
 Drive File ID: 1ssxWHVbQVAwel-vtFn1TvHX5q-Q_MoEO
 Patch SHA-256: 042887b33a89564f7ba87cb6aec3f2db8d6d85a8c75b0cee18e64f269ab2fbb8
 Base SHA: d76ba3fa4492c0364177a7811c9f726b4ea1025a
-Retry: 1
-Reason: retry 0 created zero jobs because the caller omitted actions: read required by the schema-validation reusable; patch bytes and semantic inputs are unchanged.
+Retry: 2
+Reason: retries 0-1 created zero jobs because the caller YAML was invalid; retry 2 quotes the colon-bearing commit_message scalar. Patch bytes and semantic inputs are unchanged.
