@@ -1,0 +1,2 @@
+migrate all GitHub Actions concrete jobs to runs-on: self-hosted
+trigger_after=ceb2a7665374fba76b2383bbfcd8f30b3c78295f
