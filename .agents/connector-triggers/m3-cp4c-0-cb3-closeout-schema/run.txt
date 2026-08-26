@@ -1,5 +1,0 @@
-turn=M3-CP4c-0-CB3
-purpose=validate-closeout-drive-apply-caller
-semantic_source_sha=b135e219ee9269a73eaee32992d80c3921318011
-patch_base_sha=86b31cef98e756ecf410efe6a3c35a65975feae6
-retry=1
