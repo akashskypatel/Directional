@@ -155,6 +155,16 @@ Q8 is creditable only when package integrity is exact, the 338 gate is **338/338
 
 **Accounting after CB5:** stable regressions remain **42 / 14 / 28**, produced-witness debt **5**, M3 packages **44**. Latest accepted runtime remains CP4ab 316/316. Exact next: `M3-CP4c-0-TB-R5`; CP4c-1/2/3 remain blocked.
 
+### CB6 retained Code + Build report and TB-R6 plan
+
+**Build evidence.** CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6` implements the independent TB-R5 review's diagnostic-only J0–J7 series. J1 extends H1 with declared `matching`, `rawGaugeSource`, `rawGaugeTarget`, published `signedLift`, singular incidence, distinct-pair counts, and matching histograms; J2 explicitly classifies the fan as an excluded fixture artifact; J3 adds the tracing-independent matching-versus-geometry census; J4 records matching provenance; J5 adds `.gitattributes` payload line-ending protection; J6 restores the brief/review naming convention; J7 creates the frozen TB-R6 plan. J0 forbids and CB6 makes **no production semantic change**. The 338/316/328 selector authorities remain unchanged.
+
+Authoritative compile-only run/job `33002848081 / 98288918300` checked out exact semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, configured Release/static/PRE_TEST out of tree, and compiled/linked the eight standard targets. Preflight and build exit `0`; all packaged source-status snapshots are empty; `runtimeExecution=false`; no Directional test or benchmark executed. Result/package artifact `9619352525` has GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672` and packaged source archive SHA-256 `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`; compile-log artifact `9619353059` has ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`.
+
+**TB-R6 / J7 authority.** `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Plan.md` consumes only package `9619352525`. It re-proves immutable package/source/selector/fixture identity; runs the unchanged 338 gate in exact order, F3, G5, decomposed H1, and J3; conditionally runs Q8 only after exact package integrity + 338/338 + F3 2/2. H1/J3 remain uncredited diagnostics. The fan is excluded from legitimate population totals. The cycle's deliverable is the J1/J3 owner decision table; **Q8 is expected to remain RED at criterion 2** because CB6 contains no production fix.
+
+**Accounting after CB6:** stable regressions remain **42 / 14 / 28**, produced-witness debt **5**, M3 packages **45**. Latest accepted runtime remains CP4ab 316/316. Exact next: `M3-CP4c-0-TB-R6`; CP4c-1/2/3 remain blocked.
+
 ---
 
 ## 4. CP4c-1 — evidence (OPEN, blocked on CP4c-0)

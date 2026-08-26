@@ -21,11 +21,11 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-CB6` — EXACT NEXT / Code + Build, measures J0–J7 (diagnostic-only)
+## Current focus — `M3-CP4c-0-TB-R6` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R5` is **COMPLETE / VALID SEMANTIC RED** on the immutable CB5 package. Authoritative hosted run/job `32994846466 / 98261255799` consumed package `9601160869` from semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`; result artifact `9616160533` has ZIP SHA-256 `1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8`, and diagnostic artifact `9616161522` has ZIP SHA-256 `7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`. The frozen gate is **338/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0 prefix **328/328 PASS**, F3 is **2/2 PASS**, G5 is **PASS / non-gating**, and postflight package/source/fixture/selector/executable inventories are byte-identical.
+`M3-CP4c-0-CB6` is **COMPLETE / BUILD GREEN** at semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Authoritative compile-only run/job `33002848081 / 98288918300` produced immutable package artifact `9619352525` with GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672` and packaged source archive SHA-256 `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`; compile-log artifact `9619353059` has ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`. Preflight and build both exited `0`, all eight standard targets compiled/linked, every packaged source-status snapshot is empty, and the package explicitly records `runtimeExecution=false` / `turnBoundary=Code+Build-only`. No Directional test, benchmark, or generated runtime executed.
 
-H1 is **PASS / non-gating** and published the decisive A1-only census: **390 violations / 4224 checked pairs = 9.23295%**, classified `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`. By witness: two-ring **4/160 (2.5%)**, four-triangle fan **2/32 (6.25%)**, prescribed sphere **144/2304 (6.25%)**, torus **240/1728 (13.8889%)**. Most sphere/torus violations have `signedLift=0`, and violations also occur at even and odd nonzero lifts. Therefore the frozen **H-A odd-lift-only** hypothesis and **H-C zero-census/A2a-only** hypothesis are excluded; the ~50% uniform-index-error branch is unsupported. H-B matching aliasing remains plausible but is **not proved** by H1 because the census alone does not establish singularity localization. Q8 is creditable and remains **RED at criterion 2** because the prescribed sphere still does not publish its required 24-trace network.
+CB6 implements only the review-authorized diagnostic J-series: J1 decomposes H1 violations into `matching`, source/target raw gauges, published lift, singular incidence, and distinct counts; J2 explicitly classifies the synthetic four-triangle fan as excluded fixture artifact; J3 adds the independent matching-versus-geometry census; J4 publishes matching provenance; J5 pins staged payload bytes against line-ending conversion; J6 restores brief/review naming; J7 freezes the successor TB-R6 plan. **J0's no-production-semantics-change boundary is preserved.** Frozen selector authority remains unchanged.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -42,44 +42,16 @@ H1 is **PASS / non-gating** and published the decisive A1-only census: **390 vio
 - [x] `M3-CP4c-0-TB-R4-REVIEW-PLAN` — COMPLETE. Symptom proved; mechanism reduced to H-A/H-B/H-C; H0–H7 frozen.
 - [x] `M3-CP4c-0-CB5` — **COMPLETE / BUILD GREEN.** H1 A1-only census identity, H2 published `signedLift`, H3 ordered trace-step history, H4 matching-provenance audit; H5 no-production-change boundary preserved. Package `9601160869`.
 - [x] `M3-CP4c-0-TB-R5` — **COMPLETE / VALID SEMANTIC RED.** Frozen 338/338, F3 2/2, G5 PASS/non-gating; H1 `390/4224`, `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`; Q8 CREDITABLE / RED at criterion 2.
-- [x] `M3-CP4c-0-TB-R5-REVIEW-PLAN` — **COMPLETE.** H1's **mechanism is correct** (verified in source: it
-  applies the published `signedLift` per Amendment 7). Its **population is not**: the four-triangle fan's
-  2 violations are a **fixture artifact**, proved by arithmetic — `make_index_one_singularity_field`
-  leaves the field vectors globally constant and *imposes* `matching=±1` on one edge, so for edge `1-4`
-  the published `signedLift=0` is **exactly correct** (`+1 + 0 − 1 = 0`) and the disagreement is forced
-  by a matching that contradicts the geometry. One edge × two directions = **exactly the 2 observed**.
-  H-A and H-C independently re-confirmed excluded; **H-B undecided**, and the brief's fan-based clause
-  against it is **withdrawn**. Record:
-  `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md`.
-- [ ] `M3-CP4c-0-CB6` — **EXACT NEXT.** Code + Build only, measures **J0–J7**, **diagnostic-only — no
-  production semantics change.** **J1 is the cycle's point:** decompose the published lift into
-  `matching`, `rawGauge[source]`, `rawGauge[target]` per violation, plus singular-vertex incidence and
-  distinct-pair counts — the review's §7 decision table then names the owner unambiguously. J2 quarantines
-  the synthetic-field fan witness; J3 adds an independent matching-versus-geometry check; J4 records
-  matching provenance per witness. Compile only — **execute nothing.**
+- [x] `M3-CP4c-0-TB-R5-REVIEW-PLAN` — **COMPLETE.** H1 mechanism valid; fan contribution proved fixture artifact; H-A/H-C excluded; H-B undecided; Amendment 8; J0–J7 frozen. Record: `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md`.
+- [x] `M3-CP4c-0-CB6` — **COMPLETE / BUILD GREEN.** Diagnostic-only J0–J7; semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`; package `9619352525` (`b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`); compile-only run/job `33002848081 / 98288918300`.
+- [ ] `M3-CP4c-0-TB-R6` — **EXACT NEXT.** Consume only CB6 package `9619352525`; execute unchanged 338 gate, F3, G5, decomposed H1, and J3; Q8 is conditional and **expected to remain RED at criterion 2**. Fill the frozen J1/J3 owner decision table. No rebuild or repair.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. H1 remains explicitly outside the 338 selector and has no credit. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **44**.
+Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. H1 and J3 remain explicitly outside the 338 selector and have no credit. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **45**.
 
-**H1 disposition after review — corrected.** H-A and H-C remain excluded. But two standing readings are
-now **withdrawn**:
-
-1. **The fan's 2 violations are an artifact, not signal.** Its field keeps the direction vectors globally
-   constant and imposes `matching=±1` on one edge; the published lift for that edge is *correct*
-   (`+1 + 0 − 1 = 0`) and the flow disagreement is forced by a matching that contradicts the geometry.
-   The brief's use of the fan as evidence weakening H-B does not hold.
-2. **The lift histogram carries no information about matching.** `signedLift = matching + g_src − g_tgt`
-   is a sum of three unobserved terms, so lift-0 dominance is consistent with almost any matching
-   distribution. The ±1/±2/±3 tail symmetry is imposed by the census's own two-direction loop, not by the
-   field — and every count is therefore doubled. **Distinct disagreements: two-ring 2, fan 1 (artifact),
-   sphere 72, torus 120. Corrected population 388 directed / 194 distinct over three legitimate
-   witnesses.**
-
-**Do not attempt a production fix until J1's decomposition fills in the review's §7 decision table** —
-each branch of it names a different owner (field matching, gauge composition, or flow classification).
-**Q8 stays red at criterion 2; do not plan the next TB as a Q8 close.**
+**H1 disposition after review — corrected and still unresolved pending TB-R6.** H-A and H-C remain excluded. The fan's 2 directed / 1 distinct disagreement is an excluded fixture artifact, and the lift histogram alone is uninformative about matching. Corrected legitimate population prediction is **388 directed / 194 distinct** across two-ring + prescribed sphere + torus. **Do not attempt a production fix until TB-R6's J1 decomposition and J3 geometry audit fill the frozen decision table with one evidence-supported owner.**
 
 ## CP4c documentation — consolidated 2026-08-26
 
@@ -167,4 +139,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Historical stable totals are **42 events / 14 categories / 28 recurrences**. Produced-witness debt remains **5**. M3 package count is **44**. PR #8 remains open, draft, and unmerged.
+Historical stable totals are **42 events / 14 categories / 28 recurrences**. Produced-witness debt remains **5**. M3 package count is **45**. PR #8 remains open, draft, and unmerged.

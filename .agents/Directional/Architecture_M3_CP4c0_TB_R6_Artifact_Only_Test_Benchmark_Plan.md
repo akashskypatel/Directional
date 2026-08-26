@@ -1,12 +1,21 @@
 # M3-CP4c-0-TB-R6 — Artifact-Only Test + Benchmark Plan
 
-**Status:** EXACT NEXT after `M3-CP4c-0-CB6` closes BUILD GREEN.
+**Status:** EXACT NEXT. `M3-CP4c-0-CB6` is COMPLETE / BUILD GREEN.
 **Turn boundary:** Test + Benchmark only; immutable artifact execution, no rebuild and no repair.
 **Purpose:** execute the J-series diagnostics that decompose the H1 lift and independently audit declared matching against geometry. This turn is **not** a Q8-closure attempt; Q8 is expected to remain red at criterion 2 unless the diagnostic evidence itself contradicts the current state.
 
 ## 1. Frozen authority and prohibited actions
 
-Consume only the immutable CB6 package recorded by the CB6 closeout. Before any generated Directional binary runs, verify:
+Frozen CB6 authority:
+
+- semantic source: `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`;
+- authoritative compile-only run/job: `33002848081 / 98288918300`;
+- immutable result/package artifact: `9619352525`;
+- package GitHub ZIP SHA-256: `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`;
+- packaged source archive SHA-256: `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`;
+- compile-log artifact: `9619353059` / `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`.
+
+Consume **only** package `9619352525`. Before any generated Directional binary runs, verify:
 
 1. package outer SHA-256 and recursive `SHA256SUMS`;
 2. exact packaged semantic source SHA;

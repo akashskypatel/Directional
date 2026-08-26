@@ -82,115 +82,34 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-CB6` — EXACT NEXT / Code + Build, measures J0–J7 (diagnostic-only)
+## Mandatory next turn — `M3-CP4c-0-TB-R6` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R5-REVIEW-PLAN` is **COMPLETE**. Its record is
-`Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` — read it first. The brief is
-`Architecture_M3_CP4c0_TB_R5_Review_Plan.md`; J6 restores the normal brief/review naming convention.
+`M3-CP4c-0-CB6` is **COMPLETE / BUILD GREEN**. Semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6` implements the review-authorized J0–J7 diagnostic-only series and no production semantics change. Authoritative compile-only run/job `33002848081 / 98288918300` produced immutable package `9619352525` with GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`; its packaged source archive hashes to `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`. Compile-log artifact `9619353059` has ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`. Preflight/build exit `0`; all eight standard targets compiled and linked; every packaged source-status snapshot is empty; `runtimeExecution=false`; no Directional runtime/test/benchmark executed.
 
-**H1's mechanism is correct — its population is not.** The census was verified in source: it applies the
-published `signedLift` per Amendment 7 and reads `d[opp]` on each face's own canonical key. The
-violations it reports are real properties of the published authority. But two standing readings are
-**withdrawn**:
+Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Plan.md` first and consume **only** package `9619352525`. TB-R6 must verify package/source/selector/fixture identity before runtime, execute the unchanged 338 selector in exact order with one fresh process per identity, then F3, G5, decomposed H1, J3, and conditional Q8 exactly as frozen. H1/J3 are non-gating diagnostics. The four-triangle fan remains emitted but excluded from production-reasoning totals. Q8 is **expected to remain RED at criterion 2** because J0 prohibited a production fix. The turn's deliverable is the frozen J1/J3 decision table naming exactly one owner or another bounded diagnostic if ambiguity remains.
 
-1. **The four-triangle fan's 2 violations are a fixture artifact.** Its census field is
-   `make_index_one_singularity_field`, which leaves the direction vectors **globally constant** (+X/+Y on
-   every face) and merely *imposes* `matching = ±1` on one edge. For the violating edge `1-4` the
-   published lift is **exactly correct**: `matching(+1) + g_source(0) − g_target(1) = 0`. The
-   disagreement is forced by a matching that contradicts the geometry, not by any A1 defect — and one
-   edge × two directions predicts **exactly the 2 observed**. Both reported `−1/2` derivatives were
-   reproduced by hand. **The brief's use of the fan as evidence against H-B is withdrawn.**
-2. **The lift histogram carries no information about matching.** `signedLift = matching + g_src − g_tgt`
-   is a sum of three unobserved terms, so lift-0 dominance is consistent with almost any matching
-   distribution. The ±1/±2/±3 tail symmetry is imposed by the census's own **two-direction loop**, not by
-   the field, which also means every reported count is doubled. **Distinct disagreements: two-ring 2,
-   fan 1 (artifact), sphere 72, torus 120 — corrected population 388 directed / 194 distinct over three
-   legitimate witnesses.**
-
-**H-A and H-C remain excluded** (independently re-derived; H-A was this reviewer's own favoured candidate
-and the census killed it). **H-B is undecided and cannot be decided as currently instrumented.**
-
-**Measure J1 is the cycle's point:** publish, per violation, the three terms the lift is composed of —
-`matching`, `rawGauge[source]`, `rawGauge[target]` — plus singular-vertex incidence and distinct-pair
-counts. The review's §7 decision table then names the owner unambiguously: field matching (H-B), gauge
-composition (`build_branch_transports`), or flow classification (`build_boundary_pairing`). **J0 forbids
-any production semantics change**; the mechanism is still undetermined and a fix now would be a guess —
-a point already paid for this cycle when H-A survived a planning turn and died in one measurement.
-
-Also: **J2** quarantines the synthetic-field fan witness (do **not** "fix" the fan field — it is a
-legitimate combinatorial fixture; the census's *classification* is what is wrong); **J3** adds an
-independent matching-versus-geometry check; **J4** records matching provenance per witness; **J5** pins
-the staged control payload to LF so the self-hosted transport stops failing on line-ending normalization.
-
-**A contract reframing worth carrying:** E5's cross-edge invariant audits the field's **input matching**
-as much as A1's own composition. A witness whose matching is imposed rather than derived **will** trip it,
-correctly. Its firing is not by itself evidence of an A1 code defect.
-
-**Q8 stays red at criterion 2. Do not plan the next TB as a Q8 close** — third cycle running.
-
----
-
-### TB-R5 evidence this review adjudicated — retained
-
-All artifact digests and all three selector hashes were verified during review (the latter recomputed
-locally), and the census's `pairsChecked = interiorEdges × 8` was re-derived from mesh topology for every
-witness. **All matched.**
-
-`M3-CP4c-0-TB-R5` is **COMPLETE / VALID SEMANTIC RED**. Sole semantic authority is hosted run/job `32994846466 / 98261255799`, control SHA `3f9864fddef696dc7d95084fdd41b680a78f5b37`, consuming only CB5 package `9601160869` (`143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb`) from semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`. Result `9616160533` has ZIP SHA-256 `1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8`; diagnostic `9616161522` has ZIP SHA-256 `7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`. The frozen selector is **338/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0 prefix **328/328 PASS**, F3 **2/2 PASS**, G5 **PASS / non-gating**, and the complete postflight package/source/fixture/selector/executable inventories are unchanged. No configure, compile, relink, repair, generated discovery, package mutation, fixture mutation, selector mutation, or performance benchmark occurred in TB-R5.
-
-**H1 is the decisive new evidence.** The non-gating A1-only census checked **4224** cross-face branch pairs and found **390 violations (9.23295%)**, classified `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`: two-ring `4/160` (2.5%, all lift 0); four-triangle fan `2/32` (6.25%, all lift 0); prescribed sphere `144/2304` (6.25%; lift counts `0:102, ±1:7 each, ±2:6 each, ±3:8 each`); torus `240/1728` (13.8889%; `0:184, ±1:11 each, ±2:11 each, ±3:6 each`). The edge `6-8` sphere failure is present in H1 exactly as source branch `3` → target branch `1`, `signedLift=2`, and G5 still rejects there after a seven-step published trace history.
-
-**Adjudicated:** H-A and H-C are excluded, and the ~50%/uniform branch is unsupported — all three
-confirmed by independent re-derivation. **H-B remains undecided**, but the reasoning that appeared to
-weaken it is withdrawn: the fan's violations are a fixture artifact (see above), so they bear on nothing.
-The corrected population is **388 directed / 194 distinct** over three legitimate witnesses. Measure
-**J1** decides the owner in one run; no production change is authorized before it.
-
-Q8 is **CREDITABLE / RED at criterion 2**: criterion 1 accepted prefix PASS; criterion 2 sphere 24-trace network RED; criterion 3 terminal `TraceIntersection` NOT_EVALUABLE; criterion 4 frozen face `1-2-5` crossover PASS; criterion 5 torus/mechanical carried unchanged, not rerun. A red Q8 here was expected because CB5 changed no production semantics and is not a new stable regression. Stable accounting remains **42 / 14 / 28**, debt **5**, packages **44**.
-
-### `M3-CP4c-0-TB-R5-REVIEW-PLAN` boundary
-
-Independent review/planning only. Execute **no Directional runtime, build, benchmark, product/test/fixture/selector/tolerance/build-configuration mutation, and no Q8 retry**. Use the complete H1 raw census and H4 matching provenance to: (1) map violations to singularity/matching authority, including representative lift-0 loci and sphere edge `6-8`; (2) explain why the manually prescribed fan has lift-0 disagreements despite H-B computed-matching aliasing being absent there; (3) distinguish matching aliasing from any other sparse A1 flow-pairing defect; (4) state the owning invariant; and (5) freeze **exactly one** bounded successor CB measure series. Do not enter CP4c-1/2/3.
-
-**Orchestration-only detour, non-authoritative:** during the GitHub-hosted Actions outage, temporary self-hosted attempts `32993852779` and `32994482392` failed at control-payload SHA verification before executing the immutable TB script; no Directional binary ran in either attempt. After hosted runners were restored, `32994846466` completed successfully and is the sole TB-R5 semantic authority.
-
-### TB-R4 evidence this review adjudicated — retained
-
-All artifact digests and all three selector hashes were verified during review (the latter recomputed
-locally) and **all matched**.
-
-`M3-CP4c-0-TB-R4` is **COMPLETE / VALID SEMANTIC RED**. Durable evidence:
-
-- `.agents/Directional/M3_CP4c_Consolidated_Record.md` §3 (full CP4c-0 turn ledger)
-- `.agents/Directional/Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md`
-
-**Immutable authority:** semantic source `de291a17d5e9bfb6f54918660320ecfa1d521be4`; package `9591540182` (`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`); TB-R4 event/control SHA `bb21207f288c631b1d4149b56b37e78080edade7`; run/job `32928381384 / 98055727654`; result `9592385698` (`6ffe56ef5a86bf44dfd2ea4e2f44514d71b6037cc5c34067aeda571a70260643`); diagnostic `9592386266` (`669e51f2d0c30573c751c43a4d49b737f8a4ddeba8be2236f9782c995f6ac3cb`).
-
-The frozen selector is **338/338 PASS**, accepted **316/316 PASS**, prior CP4c-0 **328/328 PASS**, F3 **2/2 PASS**, and G5 **PASS / non-gating**. Q8 is **CREDITABLE / RED at criterion 2**. G5 publishes `BranchTransportFlowDisagreement` at edge `6-8`, source face `6-8-9` branch `3`, related face `6-8-97` branch `1`, trace seed `0/0`.
-
-Static localization only: `SurfaceCellTracing.cpp:644-671`, `validate_field_branch_transport_flow`, emits when the shared carrier is source-outgoing but not target-incoming. **Do not classify this as production fault before review.** The review must reconstruct edge-`6-8` pairing/transport authority, account for Amendment-7 per-face gauge and `signedLift`, and decide the owning category/invariant.
-
-**Postflight control note:** after all 341 planned semantic processes and post-runtime integrity inventories, reporting referenced unset `first_red` instead of persisted `first_red_ordinal`, making the workflow badge red. Pre/post inventories compare identical and manifest-post is 27/27. This is resolved orchestration-only; **do not rerun TB-R4 semantics merely for a green badge**.
-
-**Review boundary:** review/planning only. Execute no Directional runtime/build/benchmark; mutate no product, test, fixture, selector, tolerance, or build logic; do not retry Q8 or enter CP4c-1/2/3. Produce `.agents/Directional/Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` and name exactly one successor.
+**Turn boundary:** artifact-only Test + Benchmark. Do not configure, compile, link, rebuild, repair, edit source/tests/fixtures/selectors, weaken T6/Q8, retune `kBranchTopologyTolerance`, or enter CP4c-1/2/3.
 
 ## Current authority
 
-### M3-CP4c-0 TB-R5 — COMPLETE / VALID SEMANTIC RED
+### M3-CP4c-0 CB6 — COMPLETE / BUILD GREEN
 
-- semantic source: `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`;
-- immutable package: `9601160869`, GitHub ZIP SHA-256 `143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb`;
-- hosted TB control/run/job: `3f9864fddef696dc7d95084fdd41b680a78f5b37 / 32994846466 / 98261255799`;
-- result/log artifacts: `9616160533` / `1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8` and `9616161522` / `7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`;
-- gate **338/338 PASS**, accepted **316/316 PASS**, first-328 **328/328 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating;
-- H1 PASS/non-gating: **390/4224**, `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`; H-A/H-C excluded, H-B not yet proved;
-- Q8 **CREDITABLE / RED at criterion 2**; sphere still publishes `BranchTransportFlowDisagreement` at edge `6-8`, branch `3 → 1`, `signedLift=2`;
-- postflight package/source/fixture/selector/executable inventories byte-identical; orchestration errors `0`; fresh processes `342`;
-- exact next: independent `M3-CP4c-0-TB-R5-REVIEW-PLAN`.
+- semantic source: `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`;
+- authoritative compile-only run/job: `33002848081 / 98288918300`;
+- immutable package: `9619352525`, GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`;
+- packaged source archive SHA-256: `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`;
+- compile log artifact: `9619353059`, ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`;
+- preflight/build exit `0`; all eight standard targets compiled/linked; all packaged source-status snapshots empty; `runtimeExecution=false`;
+- J0–J7 are diagnostic-only; no production branch choice, transport equation, matching computation, tolerance, fixture, selector, or acceptance expectation changed;
+- exact next: artifact-only `M3-CP4c-0-TB-R6`.
+
+### Latest CP4c-0 runtime evidence — TB-R5 COMPLETE / VALID SEMANTIC RED
+
+TB-R5 remains the latest executed CP4c-0 runtime evidence: frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/328 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating; H1 reported 390 directed disagreements but independent review corrected the legitimate population to **388 directed / 194 distinct**, excluding the fan's fixture artifact. Q8 remains **CREDITABLE / RED at criterion 2**. H-A/H-C are excluded; H-B remains undecided pending CB6's J1/J3 diagnostics in TB-R6.
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. TB-R5 proves the current CP4c-0 prerequisite gate is green but Q8 remains red, so CP4c-0 is still unaccepted. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **44**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. TB-R5 proves the current CP4c-0 prerequisite gate is green but Q8 remains red, so CP4c-0 is still unaccepted. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **45**.
 
 ## Standing product state
 
@@ -200,8 +119,8 @@ Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 975308
 - `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable but is now narrowed by H1: H-A and H-C are excluded; H-B matching aliasing remains plausible but unproved, and another sparse A1 inconsistency remains possible.
 - The two self-hosted TB-R5 attempts are orchestration-only pre-runtime failures and are not semantic authorities.
 - CP4c-1 remains blocked; CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **44**.
-- Exact next is **`M3-CP4c-0-TB-R5-REVIEW-PLAN`**, review/planning only. Do not enter Code + Build or a later checkpoint first.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **45**.
+- Exact next is **`M3-CP4c-0-TB-R6`**, artifact-only Test + Benchmark. Do not enter CP4c-1/2/3 or a repair turn first.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

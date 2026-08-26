@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-CB6`: J-series diagnostics implemented; compile-only BUILD GREEN
+
+`M3-CP4c-0-CB6` is **COMPLETE / BUILD GREEN**. This was Code + Build only; no Directional runtime, GoogleTest identity, semantic benchmark, or performance benchmark executed.
+
+- Semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6` implements only review-authorized **J0–J7** diagnostics/hygiene. J1 decomposes H1 disagreements into declared matching + source/target raw gauges + published lift and records singular incidence/distinct counts; J2 explicitly excludes the synthetic fan from production-reasoning totals without editing its field; J3 adds an independent matching-versus-geometry census; J4 publishes matching provenance; J5 pins staged payload bytes against line-ending normalization; J6 restores review naming; J7 freezes TB-R6. **J0's no-production-semantics-change rule is preserved.**
+- Authoritative compile-only run/job `33002848081 / 98288918300` compiled and linked all eight standard targets from exact source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Preflight and build exit codes are `0`; every packaged source-status snapshot is empty; the package records `runtimeExecution=false` and `turnBoundary=Code+Build-only`.
+- Immutable result/package artifact `9619352525` has GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`. Its packaged source archive has SHA-256 `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`. Compile-log artifact `9619353059` has ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`.
+- Frozen selector hashes are unchanged: 338 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`, first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`, first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`.
+- Stable regression accounting remains **42 / 14 / 28**; produced-witness debt **5**; M3 packages **45**. Latest accepted runtime remains CP4ab **316/316**.
+- **Exact next:** artifact-only `M3-CP4c-0-TB-R6` on package `9619352525`. Its purpose is to fill the frozen J1/J3 owner decision table; Q8 is expected to remain red at criterion 2.
+
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R5-REVIEW-PLAN`: the census is sound, its population is not; Amendment 8
 
 **Independent review and planning only. No runtime, build, benchmark, product source, test source,
