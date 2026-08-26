@@ -2,7 +2,8 @@ M3-CP4c-0-TB-R5 artifact-only runtime trigger
 validated_schema_run=32990711623
 validated_schema_head=2fc87141cafca497588dcdaadfceb05e5db2282d
 workflow_publish_commit=5713bca15753c023645f44d2cc9c7bf20778394c
+active_hosted_restore_commit=b4f88332708a7b02a0a3cab723fde79b34ef7aa9
 immutable_package_artifact=9601160869
 semantic_source=cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e
-retry=1;prior_run=32993852779;reason=self-hosted-core-autocrlf-byte-integrity-failure;lf_fix=f832c4938e3f1337326255720d2e43345715f2ee
+retry=2;prior_runs=32993852779,32994482392;reason=github-hosted-runner-restored-after-self-hosted-byte-integrity-failures
 runtimeExecution=true
