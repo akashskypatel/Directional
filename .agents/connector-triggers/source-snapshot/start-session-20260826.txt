@@ -1,0 +1,3 @@
+source_sha=63a2bd3dfc94e2a718d1909da0ce70741aacf7c0
+caller=.github/workflows/agent-start-session-source-snapshot-20260826.yml
+purpose=start-session
