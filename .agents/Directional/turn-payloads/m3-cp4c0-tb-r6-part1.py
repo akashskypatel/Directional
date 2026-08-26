@@ -19,7 +19,7 @@ def run1(identity,target,stem):
   return dict(identity=identity,target=target,exit_code=p.returncode,selected=sel,failures=fail,errors=err,elapsed_ms=ms,status=status,log=p.stdout or '')
 try:
   with z.open('wb') as f: subprocess.run(['gh','api','--method','GET',f'repos/{repo}/actions/artifacts/{AID}/zip'],stdout=f,check=True)
-  assert sha(z)==ZSHA; zipfile.ZipFile(z).extractall(pkg)
+  assert sha(z)==ZSHA; subprocess.run(['unzip','-q',str(z),'-d',str(pkg)],check=True)
   ok=0
   for line in (pkg/'SHA256SUMS').read_text().splitlines():
     h,rel=line.split('  ',1); assert sha(pkg/rel)==h; ok+=1
