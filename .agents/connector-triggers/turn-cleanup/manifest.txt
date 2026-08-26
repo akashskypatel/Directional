@@ -1,0 +1,6 @@
+# M3-CP4c-0-TB-R3 temporary non-workflow state
+.agents/connector-triggers/m3-cp4c0-tb-r3-schema.txt
+.agents/connector-triggers/m3-cp4c0-tb-r3.txt
+.agents/connector-triggers/m3-cp4c0-tb-r3-closeout-apply
+.agents/connector-triggers/source-snapshot
+.agents/Directional/turn-payloads/m3-cp4c0-tb-r3
