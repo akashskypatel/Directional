@@ -1,0 +1,30 @@
+name: Drive Patch Deletion Policy Apply
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/drive-delete-policy-apply.txt]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-drive-delete-policy-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1ssxWHVbQVAwel-vtFn1TvHX5q-Q_MoEO
+      patch_sha256: 042887b33a89564f7ba87cb6aec3f2db8d6d85a8c75b0cee18e64f269ab2fbb8
+      base_sha: d76ba3fa4492c0364177a7811c9f726b4ea1025a
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: docs: require Drive connector patch deletion
+    secrets: inherit
