@@ -16,16 +16,16 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c0-cb4-apply
+      label: m3-cp4c0-cb4-closeout-apply
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1m7mfMb5J4VBTN6wlPBEP2lh0glJhob9X
-      patch_sha256: 3c34124db2e432f1c37bca7f18ff53ab0b4797fac491a885d2566f2f7d77b76e
-      base_sha: 76c38686f6f79617477dd39b5f70e330143ed47f
+      file_id: 150GSVvTBLlUuu4TSZMRSI5Kb-yWQuOzW
+      patch_sha256: e710c05f9a3563b0454952ac2c46b984bb31c5440d827feccacd879325bd899d
+      base_sha: baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "test: fix CB4 DomainResult access"
+      commit_message: "docs: close out M3 CP4c0 CB4"
     secrets: inherit
