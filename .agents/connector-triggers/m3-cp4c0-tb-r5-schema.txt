@@ -1,6 +1,6 @@
 M3-CP4c-0-TB-R5 schema validation trigger
-draft_blob=c251efc206326a496c3eaa5a2dc8163e040b0d7f
-schema_blob=6bf81ec25d24e550e746790276bea4c203a24a42
-payload_sha256=3e2f58bd79d12bb0abad572d0a52874c56e8688deb0b97f647f239c7bf6a4b05
-retry=4;reason=self-hosted-runner-migration-complete
+purpose=validate-closeout-drive-caller
+closeout_draft=.agents/Directional/turn-payloads/agent-m3-cp4c0-tb-r5-closeout-drive.yml
+patch_sha256=62f3a808e7e6a0bc3e65467ef4e8ebb216cd72be6325452fb7b06e2b3fc3f7d2
+base_sha=3f9864fddef696dc7d95084fdd41b680a78f5b37
 runtimeExecution=false
