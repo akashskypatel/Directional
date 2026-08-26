@@ -64,10 +64,10 @@ jobs:
           set -euo pipefail
           p1='.agents/Directional/turn-payloads/m3-cp4c0-tb-r6-part1.py'
           p2='.agents/Directional/turn-payloads/m3-cp4c0-tb-r6-part2.py'
-          test "$(sha256sum "$p1" | awk '{print $1}')" = '7323e4ed47e5b4509eaf534239678d5c071437a2ec7cf0ceac2de95694bd6d84'
+          test "$(sha256sum "$p1" | awk '{print $1}')" = '1fa8abf6fc2f328781fd76894bdc74bf5242f2aa670289a0affd8ad7fdaeaa3b'
           test "$(sha256sum "$p2" | awk '{print $1}')" = '6bd49f4c69a0584cae48f21f62047655ed8ec9edf956524e75c112d69dd37bb6'
           cat "$p1" "$p2" > "${RUNNER_TEMP}/m3-cp4c0-tb-r6.py"
-          test "$(sha256sum "${RUNNER_TEMP}/m3-cp4c0-tb-r6.py" | awk '{print $1}')" = '49a3a7dd8612ad98668c7378aea66039e15f31ff0c7c3a6b0628a0caf22fe34b'
+          test "$(sha256sum "${RUNNER_TEMP}/m3-cp4c0-tb-r6.py" | awk '{print $1}')" = 'bb8dd60d8c1f54b8948cdd752268f1f0a6e15595411fff4e5912e7d4ca3b7b10'
           python3 -m py_compile "${RUNNER_TEMP}/m3-cp4c0-tb-r6.py"
 
       - name: Execute immutable artifact-only TB-R6 gate
