@@ -3444,7 +3444,7 @@ std::string cp4c_holonomy_census(
                     << metadata.name << ";vertex=" << vertex;
       continue;
     }
-    const auto walk = walk_complete_vertex_fan(mesh, topology, *sourceVertex);
+    const auto walk = walk_complete_vertex_fan(mesh, topology, sourceVertex.value());
     if (!walk.has_value()) continue;
     ++completeFans;
     const int observed = composed_fan_lift(*walk);
