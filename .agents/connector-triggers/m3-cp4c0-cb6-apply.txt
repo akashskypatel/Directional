@@ -1,4 +1,3 @@
-purpose=M3-CP4c-0-CB6 patch apply
-base_sha=048104e567e0b708b0241f85bcfb755c7b35c2fb
-retry=1
-staged_file_id=15oXVD4W-yxhg81HSB6y6ae4VOcLmhxy3
+purpose=M3-CP4c-0-CB6 closeout documentation apply
+base_sha=8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6
+phase=closeout
