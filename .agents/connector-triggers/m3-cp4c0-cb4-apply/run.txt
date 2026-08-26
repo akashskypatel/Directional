@@ -1,3 +1,3 @@
-apply M3-CP4c-0-CB4 fix1 patch
-base=76c38686f6f79617477dd39b5f70e330143ed47f
-sha256=3c34124db2e432f1c37bca7f18ff53ab0b4797fac491a885d2566f2f7d77b76e
+apply M3-CP4c-0-CB4 closeout docs patch
+base=baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe
+sha256=e710c05f9a3563b0454952ac2c46b984bb31c5440d827feccacd879325bd899d
