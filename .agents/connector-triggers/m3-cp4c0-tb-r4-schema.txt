@@ -1,1 +1,1 @@
-validate M3-CP4c-0-TB-R4 closeout apply caller
+revalidate M3-CP4c-0-TB-R4 closeout apply caller after YAML scalar fix
