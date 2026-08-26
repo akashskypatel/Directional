@@ -33,9 +33,9 @@ jobs:
       source_ref: ${{ github.sha }}
     secrets: inherit
 
-  validate-tb:
+  validate-apply:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .github/workflows/agent-m3-cp4c0-tb-r4.yml
+      workflow_path: .github/workflows/agent-m3-cp4c0-tb-r4-closeout-apply.yml
       source_ref: ${{ github.sha }}
     secrets: inherit
