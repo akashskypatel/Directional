@@ -1,6 +1,0 @@
-turn=M3-CP4c-0-TB-R3
-purpose=apply-closeout-documentation
-schema_run_id=32922836433
-patch_base_sha=62f24e5609b8c0ed3e4d0c9a900fac3bf2f14080
-patch_sha256=a884ad56c3f443aa0451a5c66849d05a666ac3eae45dfb63fa541ffab69be1bf
-file_id=1MP0LrBRY5B9alL0JQcai2guJV3xUpv4B

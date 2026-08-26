@@ -1,4 +1,0 @@
-turn=M3-CP4c-0-TB-R3
-purpose=validate-corrected-closeout-apply
-closeout_workflow_fix_sha=0d599f5d9c7435189a6dcbc5c6b08adcd1b7a03c
-closeout_patch_sha256=a884ad56c3f443aa0451a5c66849d05a666ac3eae45dfb63fa541ffab69be1bf

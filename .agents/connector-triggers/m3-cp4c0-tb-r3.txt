@@ -1,6 +1,0 @@
-turn=M3-CP4c-0-TB-R3
-purpose=execute-artifact-only-frozen-gate
-package_artifact_id=9589508430
-semantic_source_sha=b135e219ee9269a73eaee32992d80c3921318011
-selector_sha256=d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116
-schema_run=32921817616

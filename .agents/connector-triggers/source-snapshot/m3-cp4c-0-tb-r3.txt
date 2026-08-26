@@ -1,4 +1,0 @@
-turn=M3-CP4c-0-TB-R3
-purpose=start-of-turn exact repository snapshot
-initial_head=21ed9702a23974695ca9d9983366a9bd514828a8
-read_mode=snapshot
