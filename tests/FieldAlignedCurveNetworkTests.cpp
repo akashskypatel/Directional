@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <numbers>
 #include <map>
 #include <optional>
@@ -2725,6 +2726,93 @@ std::string branch_locus(const directional::authority::FieldBranch branch) {
   return std::to_string(static_cast<unsigned int>(branch.value()));
 }
 
+struct VertexFanTransportStep {
+  int faceRow = -1;
+  SourceFaceTopologyKey sourceFace;
+  int signedLiftToNext = 0;
+};
+
+std::optional<std::vector<VertexFanTransportStep>> walk_complete_vertex_fan(
+    const TriMesh &mesh,
+    const directional::authority::FieldBranchTopology &topology,
+    const SourceVertexId sourceVertex) {
+  std::vector<int> incidentRows;
+  for (int row = 0; row < mesh.F.rows(); ++row) {
+    for (int corner = 0; corner < 3; ++corner) {
+      if (mesh.F(row, corner) ==
+          static_cast<int>(sourceVertex.index())) {
+        incidentRows.push_back(row);
+        break;
+      }
+    }
+  }
+  if (incidentRows.size() < 2U) return std::nullopt;
+
+  const int startRow = incidentRows.front();
+  int currentRow = startRow;
+  std::set<int> visited;
+  std::vector<VertexFanTransportStep> walk;
+  walk.reserve(incidentRows.size());
+
+  for (std::size_t step = 0U; step < incidentRows.size(); ++step) {
+    if (!visited.insert(currentRow).second) return std::nullopt;
+
+    int sourceCorner = -1;
+    for (int corner = 0; corner < 3; ++corner) {
+      if (mesh.F(currentRow, corner) ==
+          static_cast<int>(sourceVertex.index())) {
+        sourceCorner = corner;
+        break;
+      }
+    }
+    if (sourceCorner < 0) return std::nullopt;
+
+    // Following the predecessor edge walks the oriented fan consistently with
+    // the source-face winding rather than relying on face-row numbering.
+    const int nextVertex = mesh.F(currentRow, (sourceCorner + 2) % 3);
+    const auto edge = SourceEdgeTopologyKey::from_indices(
+        static_cast<int>(sourceVertex.index()), nextVertex,
+        static_cast<std::size_t>(mesh.V.rows()));
+    if (!edge.has_value()) return std::nullopt;
+    const int edgeRow = source_edge_index(mesh, *edge);
+    if (edgeRow < 0 || mesh.EF(edgeRow, 0) < 0 || mesh.EF(edgeRow, 1) < 0) {
+      return std::nullopt;
+    }
+    const int nextRow = mesh.EF(edgeRow, 0) == currentRow
+                            ? mesh.EF(edgeRow, 1)
+                            : mesh.EF(edgeRow, 0);
+    if (nextRow < 0) return std::nullopt;
+
+    const SourceFaceTopologyKey currentFace = topology_face(
+        mesh.F(currentRow, 0), mesh.F(currentRow, 1), mesh.F(currentRow, 2),
+        static_cast<std::size_t>(mesh.V.rows()));
+    const SourceFaceTopologyKey nextFace = topology_face(
+        mesh.F(nextRow, 0), mesh.F(nextRow, 1), mesh.F(nextRow, 2),
+        static_cast<std::size_t>(mesh.V.rows()));
+    const auto directed = topology.transport(*edge, currentFace, nextFace);
+    if (!directed.has_value()) return std::nullopt;
+
+    walk.push_back(
+        VertexFanTransportStep{currentRow, currentFace, directed->signedLift});
+    currentRow = nextRow;
+  }
+
+  if (currentRow != startRow || visited.size() != incidentRows.size()) {
+    return std::nullopt;
+  }
+  return walk;
+}
+
+int normalized_quarter_turn(const int lift) {
+  return ((lift % 4) + 4) % 4;
+}
+
+int composed_fan_lift(const std::vector<VertexFanTransportStep> &walk) {
+  int lift = 0;
+  for (const auto &step : walk) lift += step.signedLiftToNext;
+  return normalized_quarter_turn(lift);
+}
+
 void append_atlas_error(std::ostringstream &stream,
                         const directional::authority::FieldAtlasBuildError &error) {
   stream << "fieldTransportAtlas=false"
@@ -4165,6 +4253,40 @@ TEST(ResolvedBranchCorrection,
 
 TEST(ResolvedBranchCorrection,
      TracingPathNeverPublishesSeedIdentityAsFailureLocus) {
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+
+  const SourceFaceTopologyKey constructedFace = topology_face(0, 1, 2);
+  const SourceVertexId seedVertex = SourceVertexId::from_index(2, 3).value();
+  const FieldSingularityId seedSingularity =
+      FieldSingularityId::from_index(0, 1).value();
+  const auto sourceComponent = SourceComponentId::from_index(0, 1).value();
+  const auto topologyRegion = TopologyRegionId::from_index(0, 1).value();
+  FieldAlignedCurveNetworkCandidate candidate;
+  FieldAlignedCandidateTrace trace(
+      TraceId::from_index(0, 1).value(),
+      SingularityPortId::from_index(0, 1).value(), seedSingularity, seedVertex,
+      sourceComponent, topologyRegion);
+  trace.segments.emplace_back(
+      constructedFace, directional::authority::FieldBranch::from_integer(0),
+      boundary_point(topology_edge(0, 2), 1, 2), std::nullopt,
+      topology_edge(0, 1), std::nullopt);
+
+  const auto constructedError =
+      directional::geometry::surface_cell_tracing_detail::
+          append_field_aligned_singularity_termination(candidate, trace);
+  ASSERT_TRUE(constructedError.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+            constructedError->code);
+  ASSERT_EQ(std::optional{seedVertex}, constructedError->traceSeedVertex);
+  ASSERT_EQ(std::optional{seedSingularity},
+            constructedError->traceSeedSingularity);
+  EXPECT_FALSE(constructedError->sourceVertex.has_value())
+      << network_error_locus(*constructedError);
+  EXPECT_FALSE(constructedError->singularity.has_value())
+      << network_error_locus(*constructedError);
+
   const Cp4cReachabilityObservation sphere =
       observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
   ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
@@ -4172,22 +4294,69 @@ TEST(ResolvedBranchCorrection,
 
   const auto networkBuild = FieldAlignedCurveNetwork::make(
       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails);
-  ASSERT_FALSE(networkBuild);
-  const auto &error = networkBuild.error();
-  ASSERT_NE(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
-            error.code)
-      << network_error_locus(error);
-  ASSERT_TRUE(error.traceSeedVertex.has_value()) << network_error_locus(error);
-  ASSERT_TRUE(error.traceSeedSingularity.has_value())
-      << network_error_locus(error);
-  if (error.sourceVertex.has_value()) {
-    EXPECT_NE(*error.traceSeedVertex, *error.sourceVertex)
+  if (!networkBuild) {
+    const auto &error = networkBuild.error();
+    ASSERT_NE(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+              error.code)
         << network_error_locus(error);
-  }
-  if (error.singularity.has_value()) {
-    EXPECT_NE(*error.traceSeedSingularity, *error.singularity)
+    ASSERT_TRUE(error.traceSeedVertex.has_value()) << network_error_locus(error);
+    ASSERT_TRUE(error.traceSeedSingularity.has_value())
         << network_error_locus(error);
+    if (error.sourceVertex.has_value()) {
+      EXPECT_NE(*error.traceSeedVertex, *error.sourceVertex)
+          << network_error_locus(error);
+    }
+    if (error.singularity.has_value()) {
+      EXPECT_NE(*error.traceSeedSingularity, *error.singularity)
+          << network_error_locus(error);
+    }
   }
+}
+
+
+TEST(ResolvedBranchCorrection,
+     PrescribedSphereA2aOutcomeIsAlwaysPublishedNonGating) {
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+
+  std::ostringstream report;
+  report << "m3Cp4c0G5"
+         << ";credit=none"
+         << ";owningMeasure=G5"
+         << ";reachability={" << sphere.report << '}';
+
+  if (!sphere.sourceAuthority.has_value() || !sphere.atlas.has_value()) {
+    report << ";fieldAlignedCurveNetwork=unavailable";
+  } else {
+    const auto networkBuild = FieldAlignedCurveNetwork::make(
+        sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails);
+    if (!networkBuild) {
+      report << ';' << network_error_locus(networkBuild.error());
+    } else {
+      std::array<std::size_t, 5> terminalEventsByKind{};
+      for (const auto &event : networkBuild.value().events()) {
+        const bool hasTerminal = std::any_of(
+            event.incidences.begin(), event.incidences.end(),
+            [](const auto &incidence) {
+              return incidence.role ==
+                     directional::geometry::FieldAlignedTraceEventRole::Terminal;
+            });
+        if (hasTerminal) {
+          ++terminalEventsByKind[static_cast<std::size_t>(event.kind)];
+        }
+      }
+      report << ";fieldAlignedCurveNetwork=true"
+             << ";traceCount=" << networkBuild.value().candidate_traces().size()
+             << ";terminalEventSummary={"
+             << "SingularityPortOrigin=" << terminalEventsByKind[0] << ','
+             << "FirstContact=" << terminalEventsByKind[1] << ','
+             << "TraceIntersection=" << terminalEventsByKind[2] << ','
+             << "MandatoryBarrierTermination=" << terminalEventsByKind[3] << ','
+             << "SingularityTermination=" << terminalEventsByKind[4] << '}';
+    }
+  }
+
+  std::cout << report.str() << '\n';
 }
 
 TEST(ResolvedBranchCorrection,
@@ -4339,6 +4508,14 @@ TEST(ResolvedBranchCorrection,
     for (int spacingFactor = 1; spacingFactor <= 64 && !found;
          spacingFactor *= 2) {
       const double spacing = ulp * static_cast<double>(spacingFactor);
+      const Eigen::Vector3d a(spacing, 0.0, 0.0);
+      const Eigen::Vector3d b(0.0, spacing, 0.0);
+      const double aa = a.dot(a);
+      const double ab = a.dot(b);
+      const double bb = b.dot(b);
+      const double det = aa * bb - ab * ab;
+      if (!std::isfinite(det) || det <= 1.0e-10) continue;
+
       for (int epsilonExponent = 20; epsilonExponent <= 52 && !found;
            ++epsilonExponent) {
         const auto epsilonRational =
@@ -4347,27 +4524,23 @@ TEST(ResolvedBranchCorrection,
             std::array<directional::authority::FieldExactRational, 3>{
                 -exact_integer(1) + epsilonRational, exact_integer(1),
                 -epsilonRational}};
-        Eigen::MatrixXd vertices(3, 3);
-        vertices << base, base, 0.0, base + spacing, base, 0.0, base,
-            base + spacing, 0.0;
-        Eigen::MatrixXi faces(1, 3);
-        faces << 0, 1, 2;
+
+        Eigen::MatrixXd vertices(4, 3);
+        vertices << base, base, 0.0,
+                    base + spacing, base, 0.0,
+                    base, base + spacing, 0.0,
+                    base + spacing, base + spacing, 0.0;
+        Eigen::MatrixXi faces(2, 3);
+        faces << 0, 1, 2,
+                 1, 0, 3;
         TriMesh mesh;
         mesh.set_mesh(vertices, faces);
+
         Eigen::Vector3d world = Eigen::Vector3d::Zero();
         for (std::size_t index = 0U; index < 3U; ++index) {
           world += static_cast<double>(direction[index].to_double(18)) *
                    mesh.V.row(static_cast<int>(index)).transpose();
         }
-        const Eigen::Vector3d a =
-            mesh.V.row(1).transpose() - mesh.V.row(0).transpose();
-        const Eigen::Vector3d b =
-            mesh.V.row(2).transpose() - mesh.V.row(0).transpose();
-        const double aa = a.dot(a);
-        const double ab = a.dot(b);
-        const double bb = b.dot(b);
-        const double det = aa * bb - ab * ab;
-        if (!std::isfinite(det) || det <= 1.0e-10) continue;
         const double ar = a.dot(world);
         const double br = b.dot(world);
         const double beta = (br * aa - ar * ab) / det;
@@ -4382,8 +4555,8 @@ TEST(ResolvedBranchCorrection,
   }
   ASSERT_TRUE(found);
   EXPECT_GT(recoveredBeta, 0.0L);
-  const auto face = SourceFaceId::from_index(0, 1).value();
-  const auto vertex = SourceVertexId::from_index(0, 3).value();
+  const auto face = SourceFaceId::from_index(0, 2).value();
+  const auto vertex = SourceVertexId::from_index(0, 4).value();
   EXPECT_FALSE(directional::authority::direction_in_vertex_sector(
       witness, face, vertex, witnessDirection));
 }
@@ -4398,27 +4571,68 @@ TEST(ResolvedBranchCorrection,
   ASSERT_TRUE(atlasBuild);
   const SourceVertexId center = SourceVertexId::from_index(4, 5).value();
   const auto &topology = atlasBuild.value().branch_topology();
+  const auto fanWalk = walk_complete_vertex_fan(mesh, topology, center);
+  ASSERT_TRUE(fanWalk.has_value());
+  ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()), fanWalk->size());
 
+  // FieldBranch is a per-face gauged label: carry each start branch through the
+  // published signedLift rather than reusing its numeric value on every face.
   for (std::size_t branchValue = 0U; branchValue < 4U; ++branchValue) {
-    const auto branch = directional::authority::FieldBranch::from_integer(
+    const auto startBranch = directional::authority::FieldBranch::from_integer(
         static_cast<int>(branchValue));
+    auto currentBranch = startBranch;
     std::size_t admitted = 0U;
-    for (int row = 0; row < mesh.F.rows(); ++row) {
-      const SourceFaceTopologyKey face = topology_face(
-          mesh.F(row, 0), mesh.F(row, 1), mesh.F(row, 2), 5U);
-      const auto *frame = topology.find_frame(face);
+    for (const auto &step : *fanWalk) {
+      const auto *frame = topology.find_frame(step.sourceFace);
       ASSERT_NE(nullptr, frame);
       const auto pairing = std::find_if(
           frame->branches.begin(), frame->branches.end(),
-          [&](const auto &candidate) { return candidate.branch == branch; });
+          [&](const auto &candidate) {
+            return candidate.branch == currentBranch;
+          });
       ASSERT_NE(frame->branches.end(), pairing);
-      const auto faceId = SourceFaceId::from_index(row, 4).value();
+      const auto faceId = SourceFaceId::from_index(
+          step.faceRow, static_cast<std::size_t>(mesh.F.rows())).value();
       if (directional::authority::direction_in_vertex_sector(
               mesh, faceId, center, pairing->direction)) {
         ++admitted;
       }
+      currentBranch = currentBranch.rotated(step.signedLiftToNext);
     }
     EXPECT_EQ(1U, admitted) << "branch=" << branchValue;
+    EXPECT_EQ(startBranch, currentBranch)
+        << "regular fan transport must close after one complete circuit";
+  }
+}
+
+TEST(ResolvedBranchCorrection,
+     FieldBranchTransportLocalHolonomyMatchesVertexIndex) {
+  const TriMesh fanMesh = make_four_triangle_fan();
+  const auto fanAuthority = make_source_authority(fanMesh);
+  ASSERT_TRUE(fanAuthority.has_value());
+  const auto fanAtlasBuild = directional::authority::FieldTransportAtlas::make(
+      fanMesh, *fanAuthority, {}, make_zero_transport_field(fanMesh));
+  ASSERT_TRUE(fanAtlasBuild);
+  const SourceVertexId fanCenter = SourceVertexId::from_index(4, 5).value();
+  const auto fanWalk = walk_complete_vertex_fan(
+      fanMesh, fanAtlasBuild.value().branch_topology(), fanCenter);
+  ASSERT_TRUE(fanWalk.has_value());
+  EXPECT_EQ(0, composed_fan_lift(*fanWalk));
+
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  ASSERT_EQ(8U, sphere.atlas->singularities().size()) << sphere.report;
+  for (const auto &singularity : sphere.atlas->singularities()) {
+    ASSERT_EQ(1, singularity.indexNumerator);
+    const auto walk = walk_complete_vertex_fan(
+        sphere.mesh, sphere.atlas->branch_topology(),
+        singularity.sourceVertex);
+    ASSERT_TRUE(walk.has_value())
+        << "sourceVertex=" << singularity.sourceVertex.index();
+    EXPECT_EQ(normalized_quarter_turn(singularity.indexNumerator),
+              composed_fan_lift(*walk))
+        << "sourceVertex=" << singularity.sourceVertex.index();
   }
 }
 
