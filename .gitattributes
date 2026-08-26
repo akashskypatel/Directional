@@ -1,0 +1,4 @@
+# Keep CI control files byte-stable across hosted and self-hosted runners.
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
