@@ -1,4 +1,0 @@
-.agents/Directional/turn-payloads/m3-cp4c0-tb-r2/execute.sh
-.agents/Directional/turn-payloads/m3-cp4c0-tb-r2/lib.sh
-.agents/connector-triggers/m3-cp4c0-tb-r2.txt
-.agents/connector-triggers/m3-cp4c0-tb-r2-closeout-apply.txt

@@ -1,6 +1,0 @@
-Purpose: apply verified M3-CP4c-0-TB-R2 six-document closeout patch.
-Drive File ID: 1SBGGO-gOFHuFx_hdUPE6P4Y9mfXBnXQz
-Patch SHA-256: 6f84cf5e9e82f954661a204573d825b82f733a50f06d4be39a4337b78cd2de09
-Base SHA: 26c55d13b7449953f27a4e8bd36e3c5b474f00d9
-Retry: 1
-Reason: retry 0 had invalid temporary caller YAML only; no patch-apply job existed or ran.

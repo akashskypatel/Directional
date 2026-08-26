@@ -1,6 +1,0 @@
-Purpose: execute M3-CP4c-0-TB-R2 once against immutable artifact 9586196535.
-Evidence source: 390e65b373063c667e3c3f5e78b74ed9d859093b
-Frozen gate: 338 identities
-Q8: frozen; execute only after a green 338 gate
-Retry: 1
-Reason: retry0 stopped after identity 1 because the orchestration helper returned the final bookkeeping predicate status; retry1 adds an explicit successful return with no package, selector, fixture, expectation, or semantic change.
