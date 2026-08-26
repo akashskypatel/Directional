@@ -1,0 +1,47 @@
+name: Agent M3 CP4c0 TB-R7 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0-tb-r7-closeout-drive.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: agent-m3-cp4c0-tb-r7-closeout-drive
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c0-tb-r7-closeout-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c0-tb-r7-closeout-drive.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply-patch:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1HzEyR7AnbyNPbUlh4Sm2sBg3zAJGiAGw
+      patch_sha256: 8465d7e8cd8fe7a982869072a8c9e9d4855c574fde7a5c9ff326bca61a95172f
+      base_sha: 55ad4c52cdb1c11f4ea54c8a8f76875407a5ee50
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3 CP4c-0 TB-R7"
+    secrets: inherit
