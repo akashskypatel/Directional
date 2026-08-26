@@ -5,11 +5,11 @@ on:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/workflow-triggers/m3-cp4c0-cb5-compile.txt
+      - .agents/connector-triggers/m3-cp4c0-cb5-compile.txt
 
 permissions:
   actions: write
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
