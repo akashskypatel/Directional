@@ -1,0 +1,4 @@
+# M3-CP4c-0-CB6 turn temporary state
+.agents/connector-triggers/m3-cp4c0-cb6-apply.txt
+.agents/connector-triggers/m3-cp4c0-cb6-compile.txt
+.agents/connector-triggers/source-snapshot/start-session-20260826-1137.txt
