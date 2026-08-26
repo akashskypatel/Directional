@@ -41,4 +41,3 @@ jobs:
       source_sha: 6341b13c708f98208eece40dcccea5806a97b0c7
       targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix: m3-cp4c0-cb7-compile
-    secrets: inherit
