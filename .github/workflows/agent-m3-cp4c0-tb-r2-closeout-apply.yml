@@ -1,0 +1,31 @@
+name: M3 CP4c0 TB-R2 Closeout Apply
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m3-cp4c0-tb-r2-closeout-apply.txt]
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c0-tb-r2-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1SBGGO-gOFHuFx_hdUPE6P4Y9mfXBnXQz
+      patch_sha256: 6f84cf5e9e82f954661a204573d825b82f733a50f06d4be39a4337b78cd2de09
+      base_sha: 26c55d13b7449953f27a4e8bd36e3c5b474f00d9
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: docs: close M3-CP4c-0 TB-R2
+    secrets: inherit
