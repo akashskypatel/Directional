@@ -129,8 +129,9 @@ For coherent code/documentation changes that are not a genuinely isolated minor 
 2. Materialize all final edits locally and generate one complete Git binary patch with exact base SHA, diff-body SHA-256, and intended-path metadata.
 3. Verify `git apply --check` against the exact base and `git diff --check`; emit the same patch as the mandatory user-visible work-preservation backup.
 4. Upload that patch once to `My Drive/Directional-CI` through the Google Drive connector and retain its File ID plus complete patch SHA-256.
-5. Use one minimal temporary caller/marker to invoke durable `agent-google-drive-reusable.yml`, which downloads by File ID, verifies/applies/commits/pushes, then moves the Drive file to trash after a successful push when its authenticated Drive identity has `capabilities.canTrash`; otherwise it reports that owner-authorized Drive retirement is required without issuing a known-failing mutation.
-6. Retire the temporary caller first and batch-clean the remaining marker/control state. Patch bytes/fragments do not belong in the repository.
+5. Use one minimal temporary caller/marker to invoke durable `agent-google-drive-reusable.yml`, which downloads by File ID, verifies/applies/commits/pushes, then may move the Drive file to trash after a successful push when its authenticated Drive identity has `capabilities.canTrash`; otherwise it reports that owner-authorized Drive retirement is required without issuing a known-failing mutation.
+6. After the successful push and required evidence are verified, use the **user-authorized Google Drive connector** as the owner-side cleanup plane. If the staged patch remains addressable, permanently delete that exact File ID/URL with one `delete_file` call. Do not spend workflow retries on a service-account `DELETE` that lacks ownership permission. If workflow-side trash already made the file inaccessible to the connector, accept the recorded `drive_file_trashed=true` result rather than adding search/retry calls solely to locate a trashed object.
+7. Retire the temporary caller first and batch-clean the remaining marker/control state. Patch bytes/fragments do not belong in the repository.
 
 Use individual `update_file`/`create_file` operations for a genuinely isolated small file when every individual content write is within the handoff's direct-write ceiling. Workflow YAML changes follow `GitHub_Workflow_Policy.md` and are not applied by the Drive patch workflow.
 
@@ -184,18 +185,19 @@ Do not discover and delete temporary repository files one at a time at turn clos
 ### During the turn
 
 1. Maintain one authoritative temporary-file inventory for the turn.
-2. Add every temporary repository marker, caller, observation file, or generated control file when it is created. Standard patch bytes live in Google Drive, not the repository; record their File ID separately until deletion is verified.
+2. Add every temporary repository marker, caller, observation file, or generated control file when it is created. Standard patch bytes live in Google Drive, not the repository; record their File ID separately until owner-side connector deletion or workflow-side trash is verified.
 3. Classify temporary workflow callers separately because workflow-first deletion rules apply.
 4. Prefer a simple manifest under the approved cleanup trigger namespace when the durable cleanup workflow will consume it.
 
 ### At cleanup
 
 1. Verify all required evidence has been captured first.
-2. Delete/disable temporary workflow callers **first**, as required by `GitHub_Workflow_Policy.md`.
-3. Then invoke the durable `.github/workflows/agent-turn-cleanup.yml` once with the manifest of remaining temporary non-workflow files.
-4. The cleanup workflow should validate every manifest path, reject protected/durable/workflow paths, remove all authorized temporary files in one commit, and report what it removed.
-5. Verify the temporary directories once after cleanup instead of issuing one existence check per deleted path.
-6. Preserve remote immutable Actions artifacts unless retention policy authorizes deletion.
+2. Retire the staged Google Drive patch according to `GitHub_Workflow_Policy.md`: use the user-authorized Google Drive connector `delete_file` when the file remains addressable after a successful push; otherwise retain verified workflow-side `drive_file_trashed=true` evidence.
+3. Delete/disable temporary workflow callers **first**, as required by `GitHub_Workflow_Policy.md`.
+4. Then invoke the durable `.github/workflows/agent-turn-cleanup.yml` once with the manifest of remaining temporary non-workflow files.
+5. The cleanup workflow should validate every manifest path, reject protected/durable/workflow paths, remove all authorized temporary files in one commit, and report what it removed.
+6. Verify the temporary directories once after cleanup instead of issuing one existence check per deleted path.
+7. Preserve remote immutable Actions artifacts unless retention policy authorizes deletion.
 
 **Never** use the batch cleanup manifest to bypass workflow-first deletion or to remove durable records.
 

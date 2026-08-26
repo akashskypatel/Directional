@@ -41,8 +41,10 @@ After cleanup:
 ## `[ChatGPT Web]` Google Drive patch cleanup
 
 - Patch bytes are not staged in the repository. The standard non-minor transport is the raw verified patch in `My Drive/Directional-CI`, addressed by Google Drive File ID.
-- `.github/workflows/agent-google-drive-reusable.yml` must delete the staged Drive patch **only after** the patch commit pushes successfully. Successful cleanup evidence records `drive_file_deleted=true`.
-- If patch download, verification, apply, commit, or push fails, do not delete the Drive file automatically; preserve its File ID for the bounded retry/diagnostic decision. Delete it deliberately once it is no longer needed.
+- `.github/workflows/agent-google-drive-reusable.yml` must never issue a permanent Drive `DELETE`. Only after the patch commit pushes successfully, it may move the staged file to trash when its workflow identity has `capabilities.canTrash`; otherwise it reports `drive_file_retirement_required=true` without issuing a known-failing mutation.
+- After the successful patch commit and required result/log evidence are verified, the ChatGPT control plane performs final staging cleanup with the **user-authorized Google Drive connector**. If the patch is still addressable, call the connector's permanent `delete_file` action for that exact Drive File ID/URL and require a successful deletion result. This is the standard owner-side retirement path for `drive_file_retirement_required=true` and for any staged patch that remains visible after workflow-side cleanup.
+- If workflow-side trash already made the file inaccessible to the user connector, `drive_file_trashed=true` is sufficient cleanup evidence; do not add search/retry calls solely to rediscover an inaccessible trashed object.
+- If patch download, verification, apply, commit, or push fails, preserve the Drive file and its File ID for the bounded retry/diagnostic decision. Do not perform connector deletion until the failed attempt is adjudicated and the file is no longer needed.
 - Repository cleanup still removes the temporary caller first and then the marker/other temporary control state. No patch Base64 payload or fragment files should exist to clean up under normal operation.
 
 ## Scope boundary
