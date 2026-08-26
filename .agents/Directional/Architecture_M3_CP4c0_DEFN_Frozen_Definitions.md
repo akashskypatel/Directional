@@ -51,12 +51,22 @@
 >    observation**, not an A1 defect, and `DESIGN.md` §4.5 does not define a grazing continuation. See
 >    Amendment 9 at the end of §10.
 >
-> **T6 and Q8 are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
-> unreachable* from any well-formed production state (review §7, Theorems 1–3).
+> 10. **§4.4 + `DESIGN.md` §4.5, added 2026-08-26 after `M3-CP4c-0-DEFN-2`** — **the gap Amendment 9
+>     opened is closed. Grazing is a classified continuation, not a rejection.** A carrier's relation to
+>     the face a trace is about to enter is a three-way classification read from that face's published
+>     `direction`; `Outflow` on both sides means the trace **transits along the edge** to the endpoint
+>     both faces drive the parameter toward, then re-enters the existing T2/T3 vertex dispatch.
+>     `BranchTransportFlowDisagreement` is retired from production emission. See Amendment 10 at the end
+>     of §10, and `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` for the full contract.
 >
-> **Amendment history:** 1–5 after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`; 8 after `TB-R5`; 9 after `TB-R6`.
-> The next turn is **`M3-CP4c-0-CB6`**, measures **J0–J7**, in
-> `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` §10.
+> **T6 and Q8 are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
+> unreachable* from any well-formed production state (review §7, Theorems 1–3); Amendment 10 preserves
+> that unreachability rather than relying on it.
+>
+> **Amendment history:** 1–5 after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`; 8 after `TB-R5`;
+> 9 after `TB-R6`; 10 after `DEFN-2`.
+> The next turn is **`M3-CP4c-0-CB8`**, measures **L0–L9**, in
+> `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` §10.
 
 ---
 
@@ -550,6 +560,59 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > **Amendment 8 stands and is reinforced.** It established that this check audits inputs as well as
 > composition; Amendment 9 adds that it also audits the **discretization**, and that this third failure
 > mode is the dominant one.
+
+> **AMENDMENT 10 — grazing is a classified continuation, not a rejection; the gap Amendment 9 opened is
+> closed** (`Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` §5). Amendment 9 declared
+> `DESIGN.md` §4.5 incomplete and made closing it a `-DEFN` obligation. `M3-CP4c-0-DEFN-2` discharges
+> that obligation and freezes the rule.
+>
+> **The carrier's relation to the face a trace is about to enter is a three-way classification**, read
+> from the exact sign of that face's published `direction` at the coordinate opposite the carrier —
+> never by carrier-set membership, which cannot separate `Tangent` from `Outflow`:
+>
+> | Relation | Continuation |
+> |---|---|
+> | `Inflow` (`d_Y[opp] > 0`) | ordinary cross-edge continuation, unchanged |
+> | `Tangent` (`d_Y[opp] == 0`) | enter `Y`; **Amendment 3 already governs** — the trace travels along the edge and exits at a vertex |
+> | `Outflow` (`d_Y[opp] < 0`) | **grazing edge transit** — do not enter `Y`; transit along the edge to one endpoint vertex |
+>
+> **The transit target is an exact sign predicate on already-published authority.** With `e` canonical
+> (`first() < second()`) and `β` the index of `e.second()` in each face's sorted key vertices, let
+> `r_X = d_X[β_X]` and `r_Y = d_Y[β_Y]`. These are exactly the rates at which each face drives the
+> published `FieldBoundaryPoint` parameter, because `field_boundary_point_from_barycentric`
+> (`SurfaceCellTracing.cpp:283-285`) builds that parameter as the barycentric coordinate of
+> `e.second()`. Both positive selects `e.second()` (parameter exactly `1`); both negative selects
+> `e.first()` (parameter exactly `0`); anything else is the typed rejection
+> `BranchGrazingSlideDirectionAmbiguous`. The endpoint is then dispatched by the **existing** vertex
+> rule — T3 `SingularityTermination` if it carries a `FieldSingularityFact`, otherwise T2 re-emission.
+>
+> **Normative consequences:**
+>
+> 1. **`BranchTransportFlowDisagreement` is retired from production emission.** Enum value 25 is retained
+>    and never reused. Grazing is a continuation, so there is nothing left for it to reject.
+> 2. **This is the unique continuous extension of Amendment 3**, proved in DEFN-2 §5.4: at
+>    `d_Y[opp] = 0` exactly, Amendment 3 already selects `e.second()` iff `r_Y > 0` — the same expression
+>    on the same index. A rule that terminated on grazing would be discontinuous across a measure-zero
+>    configuration, which is the defect class Amendment 9 exists to prevent.
+> 3. **The transit is one hop, never a traversal mode.** `d_X` and `d_Y` are constant per face, so the
+>    grazing predicate and both rates are constant along the whole edge; the slide is monotone and
+>    reaches an endpoint in a single step. No edge-following state is added.
+> 4. **A1 is not touched.** Every datum the rule reads is already published. `branch_topology_digest`
+>    does not move, and the grazing relation is **derived on demand and never stored** — storing it would
+>    create a second authority for a fact `direction` already determines.
+> 5. **T6 stays frozen and stays unreachable.** Grazing is classified at the outgoing side before any
+>    entry point is set on an outflow edge of the entry face, so no well-formed state reaches `t* = 0`.
+> 6. **A hard rail still wins.** If the grazing edge is a mandatory edge the trace terminates on first
+>    contact at the point it met the edge, and is never slid along it.
+> 7. **No new `FieldAlignedNetworkEventKind`.** A transit is not a network 0-cell, so CP3b's terminal-kind
+>    exhaustivity assumption is untouched.
+>
+> **Measured, and reproduced independently from the committed fixtures alone:** the prescribed sphere has
+> **72** grazing configurations on **72 distinct** edges (one per edge), the torus **120**; **zero** sign
+> disagreements and **zero** zero-rates in all 192. The eight sphere singularities are the corners of an
+> inscribed cube, each with exactly **3** grazing edges, and the grazing edges lie along the field's
+> separatrix corridors — grazing is what the interesting part of the network looks like on this witness,
+> not an exceptional pathology.
 
 > **AMENDMENT 6 — "observable" is defined by mechanism, and proved by class**
 > (`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` §9). Amendment 5 rule 2 required a

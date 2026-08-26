@@ -529,6 +529,44 @@ specification asked for "find which target index the source direction actually m
 *is* the algorithm under suspicion. **When commissioning an oracle for algorithm A, write down what A
 does first, and check the oracle is not a paraphrase of it.**
 
+### A discrete model must be continuous across its own exact cases
+
+The tracing model already defined what happens when a face's direction is **exactly** tangent to the
+edge a trace is on: the trace travels along that edge and exits at a vertex. When the near-tangent case
+had to be defined, one candidate was to terminate the trace instead. That candidate is wrong on
+structure alone, before any measurement: it makes a topological outcome flip across a measure-zero
+configuration, which is the same defect class as a tolerance deciding ownership even when no tolerance
+appears. **Before choosing a rule for a neighbourhood, find the exact case at its centre and check the
+candidate agrees with it in the limit.** The correct rule turned out to select the same endpoint by the
+same expression the exact case already used.
+
+### A diagnostic that reimplements a retired rule measures the retired rule
+
+A non-gating census walked traces with its own carrier-resolution loop instead of calling the
+production continuation. That loop was the Cartesian carrier lookup the design had **deleted** one
+checkpoint earlier: it carries no position, so it resolved nothing on the first ambiguous face and
+stopped. Every trace reported one traversed edge and zero observations — a null result that was then
+recorded as a limitation of the *design options under evaluation*. **A census must either call the
+production entry point or state in its own published output which rule it implements.** A null result
+from a diagnostic is not evidence about the product until the diagnostic's rule has been identified.
+
+### A high-incidence "violation" that clusters on the structures the stage exists to find is not noise
+
+An invariant fired on 6-14% of edge/branch pairs and was read for several turns as a defect to localize.
+Mapping where those edges actually were settled it: they lay in narrow corridors along the field's
+separatrices — the very curves the stage is built to trace. **Plot the violations against the geometry
+before deciding they are damage.** A violation distribution that traces the answer is telling you the
+invariant is wrong, not that the input is.
+
+### The exact quantity a rule needs is often already the published one
+
+A rule that had to pick a direction along a shared edge looked like it needed the metric, an unfolding,
+and a convex combination of the two faces' vector fields. It needed one published barycentric
+coordinate, because the code that builds the boundary-point parameter builds it as exactly that
+coordinate — so its rate of change *is* the rate the parameter moves. **Read the publication convention
+of the datum you must produce before importing geometry to produce it.** Importing a metric into a
+combinatorial rule also imports an exactness problem that the published form does not have.
+
 ### A classifier that names an owner will route the next turn, right or wrong
 
 A census emitted class labels of the form "this bucket means `functionX` is at fault". The buckets were

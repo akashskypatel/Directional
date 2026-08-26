@@ -202,6 +202,56 @@ Authoritative compile-only run/job `33018117005 / 98341565781` checked out exact
 
 ---
 
+### DEFN-2 — the `DESIGN.md` §4.5 grazing gap, closed
+
+**Turn boundary.** Independent definition/review/planning only. No Directional runtime, build,
+benchmark, or product/test/fixture/selector/build-configuration change. Committed fixtures and source
+were read and arithmetic performed on their contents.
+
+**Chosen model — grazing edge transit.** A carrier's relation to the face a trace is about to enter is a
+three-way classification read from that face's published `direction` at the coordinate opposite the
+carrier (`> 0` `Inflow`, `== 0` `Tangent`, `< 0` `Outflow`), never from carrier-set membership, which
+cannot separate `Tangent` from `Outflow`. `Outflow` on both sides is grazing: the trace neither crosses
+nor stops, but transits along the edge to the endpoint both faces drive the published parameter toward —
+the common sign of `d[index of edge.second()]` in each face — and re-enters the existing T2/T3 vertex
+dispatch. `BranchTransportFlowDisagreement` is retired from production emission (enum value 25 retained,
+never reused); the ambiguous case becomes `BranchGrazingSlideDirectionAmbiguous`.
+
+**Why, and why not the other three.** The rule is the **unique continuous extension of Amendment 3**:
+at exact tangency the frozen rule already slides along the edge and selects the same endpoint by the
+same expression, so a grazing terminus would be discontinuous across a measure-zero configuration — and
+would additionally forfeit Q8 criterion 2, because the grazing edges lie in corridors along the field's
+own separatrices. A refinement precondition would reject every non-degenerate witness the project owns,
+two of them already accepted, and is aimed at mesh quality where the phenomenon is field-driven. A
+general edge-following mode is unnecessary: the directions are constant per face, so the grazing
+predicate and both parameter rates are constant along the whole edge and the transit completes in one
+hop. **K2 contributed nothing** — it walks traces with the retired Cartesian carrier lookup, carries no
+position, and stops on the first `1x2` face (`M3-CP4c0-DEFN2-CAND-01`, test-side, owned by measure L8).
+
+**Evidence, re-derived from the committed fixtures alone.** Sphere **72** grazing configurations on
+**72 distinct** edges (histogram `{1: 72}`), torus **120** of 864 `(edge, branch)` pairs; ratio median
+`0.021788` / max `0.200424` and `0.074604` / `0.102869`, matching TB-R7's runtime K1 figures to six
+decimal places by a route sharing no code with the product. **Slide-direction ambiguity: 0 of 192.** The
+eight sphere singularities are exactly the corners of an inscribed cube, `(±1, ±1, ±1)/sqrt(3)`, with
+**3** grazing edges each. The live locus `6-8` transits to **vertex 8, a singularity**, terminating by
+**T3 `SingularityTermination`**.
+
+**Contract impact.** A1 is untouched and `branch_topology_digest` does not move; the grazing relation is
+derived on demand and never stored. T6 stays frozen and unreachable. No new `FieldAlignedNetworkEventKind`,
+so CP3b's terminal-kind exhaustivity assumption is untouched. `FieldAlignedCandidateTraceSegment` gains
+one optional `edgeTransitExit`. Because the current build already rejects grazing and TB-R7 re-proved the
+accepted prefix at 316/316 with that rejection live, **no accepted trace crosses a grazing edge**, so no
+accepted trace can change.
+
+**Q8 is not amended.** Criterion 3 (`TraceIntersection`) is predicted unsatisfiable on the prescribed
+sphere because a cube-corner separatrix network pairs singularities and never self-contacts; the
+response is pre-committed and the question is re-homed to CP4c-1.
+
+**Accounting after DEFN-2:** stable regressions remain **42 / 14 / 28**, produced-witness debt **5**, M3
+packages **46**. Latest accepted runtime remains CP4ab 316/316. Exact next: **`M3-CP4c-0-CB8`**, Code +
+Build only under measures **L0-L9**; CP4c-1/2/3 remain blocked.
+
+
 ## 4. CP4c-1 — evidence (OPEN, blocked on CP4c-0)
 
 | Turn | Semantic source | Run / job | Package | Result |

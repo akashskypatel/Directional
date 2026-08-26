@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-26 (CP4c-0 TB-R6: gate **338/338 GREEN**, Q8 still **RED at criterion 2**. Independent review **identified the root cause** — the cross-edge flow disagreements are a **near-tangency discretization phenomenon**, and Amendment 4's invariant is unsound for a piecewise-constant field. Nothing in A1 is defective. Exact next `M3-CP4c-0-CB7` under **K0–K7**, diagnostic-only, then **`M3-CP4c-0-DEFN-2`** to close the `DESIGN.md` §4.5 grazing gap).
+**Status date:** 2026-08-26 (CP4c-0 DEFN-2: the `DESIGN.md` §4.5 grazing gap is **closed**. Chosen model is **grazing edge transit** — a carrier that is an outflow carrier on both sides is not crossed and not stopped on; the trace transits along it to the endpoint both faces drive the published parameter toward and re-enters the existing vertex dispatch. Decided on a continuity proof against Amendment 3, not on cost data. `BranchTransportFlowDisagreement` is retired from production emission; A1 is untouched; Q8 is not amended. Exact next `M3-CP4c-0-CB8` under **L0–L9**, Code + Build only).
 
 ---
 
@@ -70,8 +70,8 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R6: gate 338/338 GREEN, Q8 RED criterion 2 — root cause IDENTIFIED.** The cross-edge flow disagreements are a **near-tangency discretization phenomenon**: reproduced independently from the fixture (exactly **144 directed**, matching runtime), tangency ratio median **0.0218** disagreeing vs **0.9233** agreeing. At the live locus **every published term verifies correct**. **Amendment 4 / measure E5 is unsound for a piecewise-constant field** (Amendment 9), and `DESIGN.md` §4.5 does not define a grazing continuation. Next `M3-CP4c-0-CB7` (K0–K7, diagnostic-only) then **`M3-CP4c-0-DEFN-2`** |
-| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2; CB8 recomputes as `338 + n` | **DEFN-2: the §4.5 grazing gap is CLOSED.** Model frozen in `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` and Amendment 10: **grazing edge transit**, chosen as the unique continuous extension of Amendment 3 rather than on K2 cost data (K2 walked the retired Cartesian rule and is void). Re-derived from the fixtures alone: sphere **72** grazing configs on **72 distinct** edges, torus **120**, **0/192** slide ambiguities; the eight singularities are cube corners and the live locus `6-8` transits to **vertex 8, a singularity**. Next `M3-CP4c-0-CB8` (L0–L9, Code + Build only), then `M3-CP4c-0-TB-R8` |
+| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5. **Also owns re-homed Q8 criterion 3**: trace/trace contact needs a witness whose separatrices do *not* pair singularities, which the cube-field sphere is not |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
 
@@ -121,6 +121,34 @@ line-scoped wording never reached. Both are **class defects certified by instanc
 the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
 particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**CB7 → TB-R7 → `M3-CP4c-0-DEFN-2` closed the model gap on 2026-08-26**
+(`Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`). TB-R7 held the gate at **338/338** with the
+accepted prefix at **316/316**, reproduced K1's near-tangency separation, and found **176/176 complete
+vertex fans with zero holonomy mismatches** — so no period or transport defect exists to chase, and the
+evidence pointed at the tracing model. K2, which was to have measured continuation cost, published
+nothing usable: it walks traces with the **retired Cartesian carrier lookup**, carries no position, and
+stops on the first `1×2` face, which on a 50%-`1×2` witness is step one for all 24 traces
+(`M3-CP4c0-DEFN2-CAND-01`, test-side, owned by measure L8).
+
+DEFN-2 therefore decided on **structure**. The tracing model already defines the exactly-tangent case —
+Amendment 3 has the trace travel along the edge and exit at a vertex — so any rule for the near-tangent
+neighbourhood must agree with it in the limit. **Grazing edge transit does, by the same expression on
+the same index; a grazing terminus does not**, and would additionally forfeit the checkpoint, because
+the grazing edges turn out to lie in corridors along the field's own separatrices. A refinement
+precondition would reject every non-degenerate witness the project owns, two of them already accepted. A
+general edge-following mode is unnecessary: the directions are constant per face, so the transit
+completes in one hop.
+
+The evidence was re-derived from the committed fixtures alone, with no product code: **72** grazing
+configurations on **72 distinct** sphere edges and **120** on the torus, matching TB-R7's runtime
+figures to six decimal places, with **zero** slide-direction ambiguities in 192 configurations. The
+eight sphere singularities are exactly the corners of an inscribed cube, each with three grazing edges,
+and the live locus `6-8` transits to **vertex 8 — itself a singularity** — so the blocked trace
+terminates lawfully by `SingularityTermination`. A1 is untouched, T6 stays unreachable, and no new
+event kind is added. Q8 is **not** amended; its criterion 3 is predicted unsatisfiable on this witness
+for a reason that is a property of the field, and is re-homed to CP4c-1 with the response
+pre-committed. Exact next is **`M3-CP4c-0-CB8`** under **L0–L9**, Code + Build only.
 
 **CB6 → TB-R6 delivered the decomposition, and `M3-CP4c-0-TB-R6-REVIEW-PLAN` closed on 2026-08-26**
 (`Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md`). **This cycle identified the root cause**,
