@@ -21,53 +21,37 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-CB3` — EXACT NEXT / Code + Build, measures F0–F8
+## Current focus — `M3-CP4c-0-TB-R3` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R2` is **COMPLETE / VALID SEMANTIC RED** against immutable CB2 package `9586196535`.
-Authoritative retry 1 `32914546494 / 98015432540` re-proved the accepted **316/316** prefix and the prior
-CP4c-0 prefix **328/328**, then failed at ordinal **329**:
-`ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The emitted diagnostic
-writes `FieldBranch::value()` (`std::uint8_t`) as a control character, so numeric tokens such as
-`branch=1` / `relatedBranch=3` are absent. Package/source/test/fixture/selector integrity remained exact;
-Q8 was **NOT RUN** because the 338 gate was red.
+`M3-CP4c-0-CB3` is **COMPLETE / BUILD GREEN** at semantic source
+`b135e219ee9269a73eaee32992d80c3921318011`. The class-level diagnostic correction compiled first through
+the changed-owner producer target and then through all eight standard targets. Authoritative compile run
+`32919909928`, event/control SHA `950d158c333622f59ed9d26c53b2028706954275`, package `9589508430`
+(`7bb4bd1a40af68ffd1e2ce06001490d61504e6ed0300505646c0abce97693015`), internal manifest **27/27 PASS**,
+`runtimeExecution=false`.
 
 - [x] `M3-CP4c-0-DEFN` — **COMPLETE.** Frozen definitions remain normative.
 - [x] `M3-CP4c-0-CB1` — **COMPLETE / BUILD GREEN.** No runtime in CB.
 - [x] `M3-CP4c-0-TB` — **COMPLETE / VALID RED.** 328/328 gate PASS; binding Q8 RED.
 - [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** Root cause adjudicated; E0–E10 frozen; T6/Q8 unchanged.
-- [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** Package `9586196535` / `9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`; manifest **27/27 PASS**.
-- [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** Required gate stopped at **328 PASS / 329 EXECUTED**; ordinal 329 is the first red. Result artifact `9587747391`; Q8 not run. Retry 0 `32914435964` was orchestration-only and is non-semantic.
-- [x] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **COMPLETE.** Identity 329 is **solely** the `std::uint8_t`
-  formatting defect, at exactly two call sites, established by exhaustive token audit — and it **does**
-  expose a broader frozen gap: Amendment 5 required a property of the *value* and never constrained the
-  *mechanism*, so the one locus bypassing the `*_locus` formatter convention was unconstrained. A second
-  defect of the same shape was found: ~15 surviving trace-seed back-fills that E1c's line-scoped wording
-  never reached. CB2's E1–E9 claim independently re-verified and **accurate**. Amendment 6 issued;
-  measures **F0–F8** frozen. Record:
-  `Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md`.
-- [ ] `M3-CP4c-0-CB3` — **EXACT NEXT.** Code + Build only, measures **F0–F8**. F1 routes `branch` through a
-  named `branch_locus` formatter (**not** an inline cast); F2 applies E1c to the class across ~15 sites;
-  F3 adds the two **class** falsifiers that would have caught both defects; F6 changes the TB runner to
-  continue past a red and report the remaining identities as non-crediting observations. E2–E6 are
-  verified correct and are **not** in scope. Compile only — **execute nothing.**
+- [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** Package `9586196535`.
+- [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** 1–328 PASS; ordinal 329 RED; Q8 not run.
+- [x] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **COMPLETE.** Amendment 6; F0–F8 frozen.
+- [x] `M3-CP4c-0-CB3` — **COMPLETE / BUILD GREEN.** F1 named `branch_locus`; F2 site-sourced tracing loci;
+  F3 two class falsifiers compiled; F4/F5 emitter/ordering audit; F6 continuation policy authored; F7 semantic/control
+  SHA provenance; F8 eight-target package. Frozen selector remains **338**, hashes unchanged.
+- [ ] `M3-CP4c-0-TB-R3` — **EXACT NEXT.** Artifact-only package `9589508430`. Execute all 338 required
+  identities in fresh processes; after the first semantic red continue the remaining required identities as non-crediting
+  observations while the gate remains fail-closed. Execute the two CB3 F3 class falsifiers separately (2/2 expected).
+  Q8 is creditable only after 338/338 and both supplemental falsifiers are green. No rebuild, repair, mutation, or performance benchmark.
 - [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
 - [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
 - [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
 
-**Frozen Q8 remains unchanged and unconsumed:** accepted 316/316 with zero expectation edits; prescribed
-sphere publishes **24 traces**; at least one terminal `TraceIntersection`; face `1-2-5` / incoming `1-2`
-resolves to one of `{1-5, 2-5}` and flips across the frozen crossover; torus/mechanical remain unchanged.
-Q8 is not creditable unless E6 is present and the full 338 gate is green. TB-R2 proved E6 present but the
-gate stopped at ordinal 329, so Q8 correctly did not run.
-
-**Identity 338 is not a Q8 substitute.** `AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections`
-uses `if (!sphereNetwork) { EXPECT_NE(...) }`, so it is green whenever the sphere fails with any *other*
-code. Only Q8 proves the network publishes. Review §7 audits identities 330–337 statically and predicts
-all eight green after F1; **338 and Q8 remain the open questions**, and review §8 P4/P5 enumerate the
-expected outcomes of each so a red 338 is not mistaken for a repeat of the CP4c-0 TB failure.
-
-Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **41**. Latest
-accepted runtime remains CP4ab **316/316**.
+Frozen selector authority is unchanged: full 338 `d588cae0…`, first-316 `601ce2b6…`, first-328
+`cf93622e…`. **Identity 338 green is not a Q8 substitute.** Q8 remains verbatim frozen and unconsumed;
+latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness
+debt **5**, M3 package count advances to **42** for the new immutable CB3 package.
 
 ## After M3 exit
 

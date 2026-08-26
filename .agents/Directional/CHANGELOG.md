@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-CB3`: diagnostic class correction build green
+
+`M3-CP4c-0-CB3` is **COMPLETE / BUILD GREEN** at semantic source `b135e219ee9269a73eaee32992d80c3921318011`. F1 routes branch diagnostics through named `branch_locus`; F2 removes downstream trace-seed back-fill from failure loci while preserving legitimate port-local binding loci; F3 compiles two class falsifiers; F4/F5 audit emitter formatting/order; F6 freezes continue-and-observe semantics after a required red; F7 records semantic and control SHA; F8 compiles the producer target and all eight standard targets. Authoritative compile run `32919909928`, event/control SHA `950d158c333622f59ed9d26c53b2028706954275`, package `9589508430` (`7bb4bd1a40af68ffd1e2ce06001490d61504e6ed0300505646c0abce97693015`), manifest **27/27 PASS**, `runtimeExecution=false`. Frozen 338 selector and hashes are unchanged (`d588cae0…`, first-316 `601ce2b6…`, first-328 `cf93622e…`). Q8 remains verbatim frozen and unconsumed; identity 338 is not a Q8 substitute. Exact next: artifact-only `M3-CP4c-0-TB-R3` using package `9589508430`.
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R2-REVIEW-PLAN`: identity 329 adjudicated; Amendment 6; a second class defect found
 
 **Independent review and planning only. No runtime, build, benchmark, product source, test source,
