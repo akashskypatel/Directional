@@ -38,9 +38,9 @@ jobs:
     if: ${{ needs.validate-caller.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1G3DcXU4cMtOaNUZ4yUa-5RAhrfIkBscz
-      patch_sha256: 138823dcb0370e3a6c59f71b4c8969a7fef160587226e4e2488f64ecd23cbac3
-      base_sha: 6341b13c708f98208eece40dcccea5806a97b0c7
+      file_id: 1i4yODW71ZI72IjDzqpVcYyHsNkmJIXci
+      patch_sha256: b08c1dcc0df0219b976324117f2a10d467c25d6f91ba0979a9c97d9a61b90dfd
+      base_sha: 077462da156c3e2dfbbc6867fc10d3e4442d853c
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "test(M3): fix CP4c0 CB7 DomainResult access"
+      commit_message: "docs: close M3 CP4c0 CB7 and freeze TB-R7"
     secrets: inherit
