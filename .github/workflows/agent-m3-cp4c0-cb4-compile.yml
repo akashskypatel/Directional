@@ -23,7 +23,7 @@ jobs:
   compile:
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 76c38686f6f79617477dd39b5f70e330143ed47f
+      source_sha: de291a17d5e9bfb6f54918660320ecfa1d521be4
       targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix: m3-cp4c0-cb4
     secrets: inherit
