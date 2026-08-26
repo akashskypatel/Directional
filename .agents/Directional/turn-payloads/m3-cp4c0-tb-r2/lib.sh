@@ -78,4 +78,5 @@ run_identity() {
   [[ "$ordinal" -le 316 ]] && prefix316_passed=$((prefix316_passed+1))
   [[ "$ordinal" -le 328 ]] && prefix328_passed=$((prefix328_passed+1))
   [[ "$ordinal" -ge 329 ]] && correction10_passed=$((correction10_passed+1))
+  return 0
 }
