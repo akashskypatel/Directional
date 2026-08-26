@@ -1,2 +1,0 @@
-M3-CP4c-0-TB-R6 start-of-turn source snapshot
-source_ref=8a5284332a2e42fbd5a46048523e8d207a4f80f5

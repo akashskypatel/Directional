@@ -1,5 +1,0 @@
-M3-CP4c-0-TB-R6 closeout patch trigger
-caller_install_commit=b89902659cea86a90fef143d5acca24cd4b5711b
-patch_file_id=1Y8vbVC3COeCDeTe7D0IvyP62wkb_4Xbx
-patch_sha256=2ee3b354ab99bc7a4580ad135281cc4de0a6e62f9fedf21747c2875138ad791a
-base_sha=86d8b15c4e14d85723ad81280334bc8ccbc703c2

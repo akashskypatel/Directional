@@ -1,6 +1,0 @@
-# M3-CP4c-0-TB-R6 temporary state
-.agents/connector-triggers/source-snapshot/m3-cp4c0-tb-r6-start.txt
-.agents/connector-triggers/m3-cp4c0-tb-r6/run.txt
-.agents/connector-triggers/m3-cp4c0-tb-r6-closeout-apply.txt
-.agents/Directional/turn-payloads/m3-cp4c0-tb-r6-part1.py
-.agents/Directional/turn-payloads/m3-cp4c0-tb-r6-part2.py
