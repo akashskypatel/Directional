@@ -38,9 +38,9 @@ jobs:
     if: ${{ needs.validate-caller.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1m3Div_R91RU2RDZSYR8kktwRy0q-As8y
-      patch_sha256: c7bb2429d7c07179ecf99e884432a917108c4dab520ce3dbb098be2360a7e59d
-      base_sha: 63a2bd3dfc94e2a718d1909da0ce70741aacf7c0
+      file_id: 1G3DcXU4cMtOaNUZ4yUa-5RAhrfIkBscz
+      patch_sha256: 5ed3a4b1f564a51b517772b95b83b1e67a2cf800d361b46d77a332b23c1ad187
+      base_sha: 6341b13c708f98208eece40dcccea5806a97b0c7
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "test(M3): add CP4c0 CB7 grazing diagnostics"
+      commit_message: "test(M3): fix CP4c0 CB7 DomainResult access"
     secrets: inherit
