@@ -1,3 +1,0 @@
-apply M3-CP4c-0-CB4 closeout docs patch
-base=baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe
-sha256=e710c05f9a3563b0454952ac2c46b984bb31c5440d827feccacd879325bd899d
