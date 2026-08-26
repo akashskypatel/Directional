@@ -137,6 +137,10 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   BoundaryPointParameterOutOfRange = 22,
   BoundaryPointEdgeNotIncidentToFace = 23,
   VertexTransitSectorUnresolved = 24,
+  // Diagnostic observation for the piecewise-constant face-field regime.
+  // The continuum cross-edge flow-agreement statement degrades at exact
+  // edge-grazing configurations; this code is therefore not evidence of an
+  // A1 matching/gauge defect and must never be thresholded into ownership.
   BranchTransportFlowDisagreement = 25,
   TraceStateCycleDetected = 26,
   TraceStepBudgetExhausted = 27,

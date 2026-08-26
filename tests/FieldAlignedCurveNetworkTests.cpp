@@ -2853,6 +2853,14 @@ struct Cp4cCensusWitnessMetadata {
   std::string classification;
 };
 
+struct Cp4cTangencySample {
+  directional::authority::FieldExactRational sourceRatio;
+  directional::authority::FieldExactRational targetRatio;
+  directional::authority::FieldExactRational transportAngleProxy;
+  int sourceOppositeRank = 0;
+  int targetOppositeRank = 0;
+};
+
 struct Cp4cFlowAgreementViolation {
   SourceEdgeTopologyKey sourceEdge;
   SourceFaceTopologyKey sourceFace;
@@ -2866,7 +2874,78 @@ struct Cp4cFlowAgreementViolation {
   bool singularVertexIncident = false;
   directional::authority::FieldExactRational sourceDerivative;
   directional::authority::FieldExactRational targetDerivative;
+  Cp4cTangencySample tangency;
 };
+
+directional::authority::FieldExactRational cp4c_exact_abs(
+    const directional::authority::FieldExactRational &value) {
+  const auto zero = directional::authority::FieldExactRational::from_integer(0);
+  return value < zero ? -value : value;
+}
+
+std::optional<directional::authority::FieldExactRational> cp4c_tangency_ratio(
+    const directional::authority::FieldBranchDirection &direction,
+    const std::size_t opposite) {
+  auto maximum = cp4c_exact_abs(direction.barycentric[0]);
+  for (std::size_t index = 1U; index < direction.barycentric.size(); ++index) {
+    maximum = std::max(maximum, cp4c_exact_abs(direction.barycentric[index]));
+  }
+  if (maximum.is_zero()) return std::nullopt;
+  return cp4c_exact_abs(direction.barycentric[opposite]) / maximum;
+}
+
+int cp4c_opposite_rank(
+    const directional::authority::FieldBranchDirection &direction,
+    const std::size_t opposite) {
+  const auto magnitude = cp4c_exact_abs(direction.barycentric[opposite]);
+  int less = 0;
+  for (std::size_t index = 0U; index < direction.barycentric.size(); ++index) {
+    if (index != opposite && cp4c_exact_abs(direction.barycentric[index]) < magnitude) {
+      ++less;
+    }
+  }
+  return std::min(less, 2);
+}
+
+const char *cp4c_rank_locus(const int rank) {
+  switch (rank) {
+  case 0:
+    return "smallest";
+  case 1:
+    return "middle";
+  case 2:
+    return "largest";
+  default:
+    return "invalid";
+  }
+}
+
+std::optional<directional::authority::FieldExactRational>
+cp4c_transport_angle_proxy(
+    const TriMesh &mesh, const CrossFieldResult &field, const int sourceRow,
+    const int targetRow, const SourceEdgeTopologyKey &edge) {
+  // K1 is diagnostic only.  Preserve the independent unfolded-edge effort as
+  // its exact IEEE-754 dyadic value; it is an angle proxy, not a topology
+  // predicate and must never be thresholded to decide ownership.
+  const auto measured = directional::test_support::independent_edge_measurement(
+      mesh, field, sourceRow, targetRow, edge);
+  return directional::authority::FieldExactRational::from_double_exact(
+      measured.effort);
+}
+
+std::string cp4c_tangency_sample_locus(const Cp4cTangencySample &sample) {
+  const auto minRatio = std::min(sample.sourceRatio, sample.targetRatio);
+  std::ostringstream stream;
+  stream << "{sourceRatio=" << exact_rational_locus(sample.sourceRatio)
+         << ",targetRatio=" << exact_rational_locus(sample.targetRatio)
+         << ",minRatio=" << exact_rational_locus(minRatio)
+         << ",transportAngleProxy="
+         << exact_rational_locus(sample.transportAngleProxy)
+         << ",sourceOppositeRank=" << cp4c_rank_locus(sample.sourceOppositeRank)
+         << ",targetOppositeRank=" << cp4c_rank_locus(sample.targetOppositeRank)
+         << '}';
+  return stream.str();
+}
 
 const directional::authority::FieldBranchBoundaryPairing *
 find_cp4c_branch_pairing(
@@ -2904,6 +2983,8 @@ std::string cp4c_flow_agreement_census(
   std::set<std::tuple<SourceEdgeTopologyKey, unsigned int>> distinctViolations;
   std::map<int, std::size_t> matchingHistogram;
   std::size_t singularIncidentViolations = 0U;
+  std::vector<Cp4cTangencySample> disagreeingTangency;
+  std::vector<Cp4cTangencySample> agreeingTangency;
   const auto zero = directional::authority::FieldExactRational::from_integer(0);
 
   for (const auto &adjacency : topology.transports()) {
@@ -2936,6 +3017,32 @@ std::string cp4c_flow_agreement_census(
                       << ";targetFace=" << source_face_locus(targetFace);
         continue;
       }
+      int sourceRow = -1;
+      int targetRow = -1;
+      if (rawAdjacency->firstFaceTopology == sourceFace &&
+          rawAdjacency->secondFaceTopology == targetFace) {
+        sourceRow = static_cast<int>(rawAdjacency->firstFace.index());
+        targetRow = static_cast<int>(rawAdjacency->secondFace.index());
+      } else if (rawAdjacency->secondFaceTopology == sourceFace &&
+                 rawAdjacency->firstFaceTopology == targetFace) {
+        sourceRow = static_cast<int>(rawAdjacency->secondFace.index());
+        targetRow = static_cast<int>(rawAdjacency->firstFace.index());
+      }
+      if (sourceRow < 0 || targetRow < 0) {
+        ADD_FAILURE() << "K1 could not resolve face rows for witness="
+                      << metadata.name
+                      << ";edge=" << source_edge_locus(adjacency.sourceEdge);
+        continue;
+      }
+      const auto transportAngleProxy = cp4c_transport_angle_proxy(
+          mesh, field, sourceRow, targetRow, adjacency.sourceEdge);
+      if (!transportAngleProxy.has_value()) {
+        ADD_FAILURE() << "K1 could not serialize transport angle proxy for witness="
+                      << metadata.name
+                      << ";edge=" << source_edge_locus(adjacency.sourceEdge);
+        continue;
+      }
+
       const auto z4 = [](const int value) { return ((value % 4) + 4) % 4; };
       const int recomposedLift = liftTerms->matching +
                                  liftTerms->sourceRawGauge -
@@ -2985,9 +3092,23 @@ std::string cp4c_flow_agreement_census(
             sourcePairing->direction.barycentric[*sourceOpposite];
         const auto &targetDerivative =
             targetPairing->direction.barycentric[*targetOpposite];
+        const auto sourceRatio =
+            cp4c_tangency_ratio(sourcePairing->direction, *sourceOpposite);
+        const auto targetRatio =
+            cp4c_tangency_ratio(targetPairing->direction, *targetOpposite);
+        if (!sourceRatio.has_value() || !targetRatio.has_value()) {
+          ADD_FAILURE() << "K1 invalid tangency ratio for witness=" << metadata.name
+                        << ";edge=" << source_edge_locus(adjacency.sourceEdge);
+          continue;
+        }
+        const Cp4cTangencySample tangency{
+            *sourceRatio, *targetRatio, *transportAngleProxy,
+            cp4c_opposite_rank(sourcePairing->direction, *sourceOpposite),
+            cp4c_opposite_rank(targetPairing->direction, *targetOpposite)};
         const bool sourceOutflow = sourceDerivative < zero;
         const bool targetInflow = targetDerivative > zero;
         if (sourceOutflow && !targetInflow) {
+          disagreeingTangency.push_back(tangency);
           const bool singularIncident =
               cp4c_edge_incident_to_declared_singularity(adjacency.sourceEdge,
                                                           field);
@@ -3001,7 +3122,9 @@ std::string cp4c_flow_agreement_census(
               adjacency.sourceEdge, sourceFace, targetFace, sourceBranch,
               targetBranch, liftTerms->matching, liftTerms->sourceRawGauge,
               liftTerms->targetRawGauge, directed->signedLift,
-              singularIncident, sourceDerivative, targetDerivative});
+              singularIncident, sourceDerivative, targetDerivative, tangency});
+        } else {
+          agreeingTangency.push_back(tangency);
         }
       }
     }
@@ -3037,8 +3160,21 @@ std::string cp4c_flow_agreement_census(
     report << matching << ':' << count;
   }
   if (firstHistogram) report << "none";
-  report << "};status="
-         << (violations.empty() ? "zero-violations" : "violations-present");
+  report << "};discretizationAssumption=piecewise-constant-face-field"
+         << ";flowAgreementInterpretation=continuum-invariant-degrades-at-grazing"
+         << ";disagreementClass=piecewise-constant-grazing-observation"
+         << ";disagreeingTangencyDistribution=[";
+  for (std::size_t index = 0U; index < disagreeingTangency.size(); ++index) {
+    if (index != 0U) report << ',';
+    report << cp4c_tangency_sample_locus(disagreeingTangency[index]);
+  }
+  report << "];agreeingTangencyDistribution=[";
+  for (std::size_t index = 0U; index < agreeingTangency.size(); ++index) {
+    if (index != 0U) report << ',';
+    report << cp4c_tangency_sample_locus(agreeingTangency[index]);
+  }
+  report << "];status="
+         << (violations.empty() ? "zero-observations" : "grazing-observations-present");
   for (std::size_t index = 0U; index < violations.size(); ++index) {
     const auto &violation = violations[index];
     report << ";violation[" << index << "]={edge="
@@ -3055,6 +3191,8 @@ std::string cp4c_flow_agreement_census(
            << (violation.singularVertexIncident ? "true" : "false")
            << ",sourceD=" << exact_rational_locus(violation.sourceDerivative)
            << ",targetD=" << exact_rational_locus(violation.targetDerivative)
+           << ",classification=piecewise-constant-grazing-observation"
+           << ",tangency=" << cp4c_tangency_sample_locus(violation.tangency)
            << '}';
   }
   return report.str();
@@ -3109,6 +3247,8 @@ std::string cp4c_matching_geometry_census(
   report << "m3Cp4c0J3"
          << ";credit=none"
          << ";owningMeasure=J3"
+         << ";oracleKind=principal-matching-implementation-cross-check"
+         << ";canDetectMatchingAliasing=false"
          << ";witness=" << metadata.name
          << ";matchingProvenance=" << metadata.matchingProvenance
          << ";matchingCodePath=" << metadata.matchingCodePath
@@ -3279,6 +3419,65 @@ int composed_fan_lift(const std::vector<VertexFanTransportStep> &walk) {
   int lift = 0;
   for (const auto &step : walk) lift += step.signedLiftToNext;
   return normalized_quarter_turn(lift);
+}
+
+std::string cp4c_holonomy_census(
+    const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+    const directional::authority::FieldTransportAtlas &atlas) {
+  std::map<std::size_t, int> declaredIndexByVertex;
+  for (const auto &singularity : atlas.singularities()) {
+    declaredIndexByVertex[singularity.sourceVertex.index()] =
+        normalized_quarter_turn(singularity.indexNumerator);
+  }
+
+  std::size_t interiorVertices = 0U;
+  std::size_t completeFans = 0U;
+  std::vector<std::tuple<std::size_t, int, int>> mismatches;
+  const auto &topology = atlas.branch_topology();
+  for (int vertex = 0; vertex < mesh.V.rows(); ++vertex) {
+    if (mesh.isBoundaryVertex(vertex) != 0) continue;
+    ++interiorVertices;
+    const auto sourceVertex = SourceVertexId::from_index(
+        vertex, static_cast<std::size_t>(mesh.V.rows()));
+    if (!sourceVertex.has_value()) {
+      ADD_FAILURE() << "K3 could not construct source vertex for witness="
+                    << metadata.name << ";vertex=" << vertex;
+      continue;
+    }
+    const auto walk = walk_complete_vertex_fan(mesh, topology, *sourceVertex);
+    if (!walk.has_value()) continue;
+    ++completeFans;
+    const int observed = composed_fan_lift(*walk);
+    const auto declared = declaredIndexByVertex.find(
+        static_cast<std::size_t>(vertex));
+    const int expected = declared == declaredIndexByVertex.end() ? 0 : declared->second;
+    if (observed != expected) {
+      mismatches.emplace_back(static_cast<std::size_t>(vertex), expected, observed);
+    }
+  }
+
+  EXPECT_EQ(interiorVertices, completeFans)
+      << "K3 holonomy oracle requires one complete intrinsic fan per interior vertex"
+      << ";witness=" << metadata.name;
+
+  std::ostringstream report;
+  report << "m3Cp4c0K3Holonomy"
+         << ";credit=none"
+         << ";owningMeasure=K3"
+         << ";oracleKind=vertex-fan-holonomy"
+         << ";usesPrincipalMatchingMinimizer=false"
+         << ";witness=" << metadata.name
+         << ";population=" << metadata.population
+         << ";interiorVertices=" << interiorVertices
+         << ";completeFans=" << completeFans
+         << ";mismatches=" << mismatches.size();
+  for (std::size_t index = 0U; index < mismatches.size(); ++index) {
+    const auto &[vertex, expected, observed] = mismatches[index];
+    report << ";mismatch[" << index << "]={sourceVertex=" << vertex
+           << ",declaredIndexNumeratorZ4=" << expected
+           << ",composedFanLiftZ4=" << observed << '}';
+  }
+  return report.str();
 }
 
 void append_atlas_error(std::ostringstream &stream,
@@ -3819,6 +4018,146 @@ cp4c_diagnose_candidate_trace_failure(
     }
   }
   return std::nullopt;
+}
+
+struct Cp4cGrazingTraceCost {
+  directional::authority::FieldSingularityId singularity;
+  SourceVertexId sourceVertex;
+  int localSlot = 0;
+  std::size_t traversedEdges = 0U;
+  std::optional<std::size_t> firstGrazingStep;
+  std::size_t grazingEdgeCount = 0U;
+  std::size_t maxConsecutiveGrazingCrossings = 0U;
+};
+
+std::string cp4c_sphere_grazing_cost_census(
+    const directional::authority::FieldTransportAtlas &atlas) {
+  const auto &topology = atlas.branch_topology();
+  std::vector<Cp4cGrazingTraceCost> costs;
+  costs.reserve(topology.singularity_port_attachments().size());
+  std::size_t tracesReachingGrazing = 0U;
+
+  for (const auto &attachment : topology.singularity_port_attachments()) {
+    Cp4cGrazingTraceCost cost{attachment.singularity, attachment.sourceVertex,
+                             attachment.localSlot};
+    SourceFaceTopologyKey currentFace = attachment.startFace;
+    auto currentBranch = attachment.branch;
+    std::optional<SourceEdgeTopologyKey> incomingCarrier;
+    std::set<std::tuple<SourceFaceTopologyKey, directional::authority::FieldBranch,
+                        std::optional<SourceEdgeTopologyKey>>>
+        visited;
+    std::size_t consecutiveGrazing = 0U;
+
+    while (visited.insert(
+               std::make_tuple(currentFace, currentBranch, incomingCarrier))
+               .second) {
+      const auto *frame = topology.find_frame(currentFace);
+      if (frame == nullptr) break;
+      const auto *pairing = cp4c_find_branch_pairing(*frame, currentBranch);
+      if (pairing == nullptr) break;
+
+      std::optional<SourceEdgeTopologyKey> outgoingCarrier;
+      if (!incomingCarrier.has_value()) {
+        if (std::find(pairing->outgoingCarriers.begin(),
+                      pairing->outgoingCarriers.end(),
+                      attachment.firstOutgoingCarrier) !=
+            pairing->outgoingCarriers.end()) {
+          outgoingCarrier = attachment.firstOutgoingCarrier;
+        }
+      } else {
+        const auto outgoing =
+            cp4c_distinct_outgoing_carriers(*pairing, *incomingCarrier);
+        if (outgoing.size() == 1U) outgoingCarrier = *outgoing.begin();
+      }
+      if (!outgoingCarrier.has_value()) break;
+
+      std::optional<SourceFaceTopologyKey> nextFace;
+      for (const auto &transport : topology.transports()) {
+        if (transport.sourceEdge != *outgoingCarrier) continue;
+        if (transport.firstFace == currentFace) {
+          nextFace = transport.secondFace;
+        } else if (transport.secondFace == currentFace) {
+          nextFace = transport.firstFace;
+        }
+        if (nextFace.has_value()) break;
+      }
+      if (!nextFace.has_value()) break;
+      const auto directed =
+          topology.transport(*outgoingCarrier, currentFace, *nextFace);
+      if (!directed.has_value()) break;
+      const auto nextBranch = currentBranch.rotated(directed->signedLift);
+      const auto *targetFrame = topology.find_frame(*nextFace);
+      if (targetFrame == nullptr) break;
+      const auto *targetPairing =
+          cp4c_find_branch_pairing(*targetFrame, nextBranch);
+      if (targetPairing == nullptr) break;
+
+      ++cost.traversedEdges;
+      const auto flowObservation =
+          directional::geometry::surface_cell_tracing_detail::
+              validate_field_branch_transport_flow(
+                  currentFace, *pairing, *nextFace, *targetPairing,
+                  *outgoingCarrier, directed->signedLift);
+      if (flowObservation.has_value() &&
+          flowObservation->code !=
+              FieldAlignedCurveNetworkErrorCode::BranchTransportFlowDisagreement) {
+        break;
+      }
+      const bool grazing =
+          flowObservation.has_value() &&
+          flowObservation->code ==
+              FieldAlignedCurveNetworkErrorCode::BranchTransportFlowDisagreement;
+      if (grazing) {
+        if (!cost.firstGrazingStep.has_value()) {
+          cost.firstGrazingStep = cost.traversedEdges;
+        }
+        ++cost.grazingEdgeCount;
+        ++consecutiveGrazing;
+        cost.maxConsecutiveGrazingCrossings =
+            std::max(cost.maxConsecutiveGrazingCrossings, consecutiveGrazing);
+      } else {
+        consecutiveGrazing = 0U;
+      }
+
+      // Counterfactual diagnostic only: continue through the published A1
+      // transport after a grazing observation so DEFN-2 can measure how much
+      // edge-following state a tangential-continuation model may need.  This
+      // does not change production continuation semantics.
+      incomingCarrier = *outgoingCarrier;
+      currentFace = *nextFace;
+      currentBranch = nextBranch;
+    }
+
+    if (cost.firstGrazingStep.has_value()) ++tracesReachingGrazing;
+    costs.push_back(cost);
+  }
+
+  std::ostringstream report;
+  report << "m3Cp4c0K2"
+         << ";credit=none"
+         << ";owningMeasure=K2"
+         << ";modelChoice=none-diagnostic-counterfactual-only"
+         << ";traceCount=" << costs.size()
+         << ";tracesReachingGrazing=" << tracesReachingGrazing
+         << ";continuationProxy=published-cross-face-transport-after-observation";
+  for (std::size_t index = 0U; index < costs.size(); ++index) {
+    const auto &cost = costs[index];
+    report << ";trace[" << index << "]={singularity="
+           << cost.singularity.index()
+           << ",sourceVertex=" << cost.sourceVertex.index()
+           << ",localSlot=" << cost.localSlot
+           << ",traversedEdges=" << cost.traversedEdges
+           << ",firstGrazingStep=";
+    if (cost.firstGrazingStep.has_value()) {
+      report << *cost.firstGrazingStep;
+    } else {
+      report << "none";
+    }
+    report << ",grazingEdgeCount=" << cost.grazingEdgeCount
+           << ",maxConsecutiveGrazingCrossings="
+           << cost.maxConsecutiveGrazingCrossings << '}';
+  }
+  return report.str();
 }
 
 std::string cp4c_edge_list_locus(
@@ -4823,6 +5162,25 @@ TEST(ResolvedBranchCorrection,
         std::cout << cp4c_matching_geometry_census(metadata, mesh, field)
                   << '\n';
       });
+}
+
+TEST(ResolvedBranchCorrection,
+     VertexFanHolonomyCensusIsPublishedNonGating) {
+  for_each_cp4c_census_witness(
+      [](const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+         const CrossFieldResult &,
+         const directional::authority::FieldTransportAtlas &atlas) {
+        if (metadata.population != "included") return;
+        std::cout << cp4c_holonomy_census(metadata, mesh, atlas) << '\n';
+      });
+}
+
+TEST(ResolvedBranchCorrection,
+     PrescribedSphereGrazingCostCensusIsPublishedNonGating) {
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  std::cout << cp4c_sphere_grazing_cost_census(*sphere.atlas) << '\n';
 }
 
 TEST(ResolvedBranchCorrection,

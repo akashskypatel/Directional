@@ -539,6 +539,14 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 >    Amendment 4 did not, and asserted a continuum property. Every future invariant of this shape must
 >    record whether it holds for piecewise-constant data and in what regime it degrades.
 >
+> **K5 discretization annotation.** The current `BranchTransportFlowDisagreement` check is evaluated on
+> a **piecewise-constant per-face field**. Its cross-edge source-outflow/target-inflow statement is a
+> continuum expectation that is informative away from grazing but is **not a rejection invariant at an
+> exact grazing locus**. The result is observational only in that regime; no tolerance or rank cutoff may
+> convert it into an ownership decision. No other current CP4c-0 cross-stage check asserts this same
+> continuum flow-continuity property. Any future check that does must publish its discretization regime
+> and degradation regime beside the diagnostic.
+>
 > **Amendment 8 stands and is reinforced.** It established that this check audits inputs as well as
 > composition; Amendment 9 adds that it also audits the **discretization**, and that this third failure
 > mode is the dominant one.

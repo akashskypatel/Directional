@@ -281,7 +281,7 @@ A cache hit is only a performance optimization. Exact source SHA, toolchain, con
 
 ## Test + Benchmark boundary
 
-Artifact-only Test + Benchmark turns must verify the declared immutable package before execution, extract it without repairing permissions/content, and execute only packaged binaries/inputs.
+Artifact-only Test + Benchmark turns must verify the declared immutable package before execution, extract it without repairing permissions/content, and execute only packaged binaries/inputs. Extraction must preserve archived executable mode bits (for example, ordinary `unzip`/`tar`); Python `zipfile.extractall` is prohibited for executable payloads unless the payload format explicitly restores and verifies those archived modes. A missing executable mode is an orchestration failure, not permission to `chmod` or otherwise repair the immutable package. Every artifact-only TB plan must repeat this extraction requirement in its preflight.
 
 They must not configure, compile, relink, regenerate discovery/code, patch packaged source, or alter fixtures/manifests. A zero-selected filter is orchestration failure, never a pass.
 
