@@ -74,45 +74,61 @@ jobs:
           exec > >(tee -a "$log") 2>&1
           trap 'status=$?; echo "download_verify_exit=${status}"' EXIT
           patch="${RUNNER_TEMP}/directional.patch"
-          operation="${RUNNER_TEMP}/drive-download-operation.json"
-          curl --fail-with-body --silent --show-error --location --request POST \
+          fetch_method=files.get
+          set +e
+          curl --fail-with-body --silent --show-error --location --max-time 120 \
             -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-            -H 'Content-Length: 0' \
-            -H 'Accept: application/json' \
-            "https://www.googleapis.com/drive/v3/files/${FILE_ID}/download" \
-            -o "$operation"
-          if ! jq -e '.done == true' "$operation" >/dev/null; then
-            operation_name="$(jq -r '.name // empty' "$operation")"
-            test -n "$operation_name"
-            case "$operation_name" in
-              operations/*) operation_path="$operation_name" ;;
-              *) operation_path="operations/${operation_name}" ;;
-            esac
-            delay=1
-            for attempt in 1 2 3 4 5 6; do
-              sleep "$delay"
-              curl --fail-with-body --silent --show-error --location \
-                -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-                -H 'Accept: application/json' \
-                "https://www.googleapis.com/drive/v3/${operation_path}?alt=json" \
-                -o "$operation"
-              if jq -e '.done == true' "$operation" >/dev/null; then
-                break
-              fi
-              delay=$((delay * 2))
-            done
-          fi
-          jq -e '.done == true' "$operation" >/dev/null
-          if jq -e '.error != null' "$operation" >/dev/null; then
-            cat "$operation" >&2
-            exit 1
-          fi
-          download_uri="$(jq -r '.response.downloadUri // empty' "$operation")"
-          test -n "$download_uri"
-          curl --fail-with-body --silent --show-error --location \
-            -H "Authorization: Bearer ${ACCESS_TOKEN}" \
-            "$download_uri" \
+            "https://www.googleapis.com/drive/v3/files/${FILE_ID}?alt=media&supportsAllDrives=true" \
             -o "$patch"
+          get_status=$?
+          set -e
+          if [[ "$get_status" -eq 28 ]]; then
+            echo 'files.get exceeded 120 seconds; falling back to files.download'
+            fetch_method=files.download
+            rm -f "$patch"
+            operation="${RUNNER_TEMP}/drive-download-operation.json"
+            curl --fail-with-body --silent --show-error --location --request POST \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+              -H 'Content-Length: 0' \
+              -H 'Accept: application/json' \
+              "https://www.googleapis.com/drive/v3/files/${FILE_ID}/download" \
+              -o "$operation"
+            if ! jq -e '.done == true' "$operation" >/dev/null; then
+              operation_name="$(jq -r '.name // empty' "$operation")"
+              test -n "$operation_name"
+              case "$operation_name" in
+                operations/*) operation_path="$operation_name" ;;
+                *) operation_path="operations/${operation_name}" ;;
+              esac
+              delay=1
+              for attempt in 1 2 3 4 5 6; do
+                sleep "$delay"
+                curl --fail-with-body --silent --show-error --location \
+                  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+                  -H 'Accept: application/json' \
+                  "https://www.googleapis.com/drive/v3/${operation_path}?alt=json" \
+                  -o "$operation"
+                if jq -e '.done == true' "$operation" >/dev/null; then
+                  break
+                fi
+                delay=$((delay * 2))
+              done
+            fi
+            jq -e '.done == true' "$operation" >/dev/null
+            if jq -e '.error != null' "$operation" >/dev/null; then
+              cat "$operation" >&2
+              exit 1
+            fi
+            download_uri="$(jq -r '.response.downloadUri // empty' "$operation")"
+            test -n "$download_uri"
+            curl --fail-with-body --silent --show-error --location \
+              -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+              "$download_uri" \
+              -o "$patch"
+          elif [[ "$get_status" -ne 0 ]]; then
+            echo "files.get failed with curl status ${get_status}; fallback is reserved for the 120-second timeout" >&2
+            exit "$get_status"
+          fi
           actual="$(sha256sum "$patch" | awk '{print $1}')"
           test "$actual" = "$EXPECTED_PATCH_SHA256"
           base="$(sed -n 's/^# base_sha=//p' "$patch" | head -1)"
@@ -124,7 +140,7 @@ jobs:
           test -n "$first"
           tail -n "+${first}" "$patch" > "${RUNNER_TEMP}/patch.body"
           test "$(sha256sum "${RUNNER_TEMP}/patch.body" | awk '{print $1}')" = "$body_sha"
-          printf '%s\n' "file_id=$FILE_ID" "patch_sha256=$actual" "base_sha=$base" "diff_body_sha256=$body_sha"
+          printf '%s\n' "file_id=$FILE_ID" "drive_fetch_method=$fetch_method" "patch_sha256=$actual" "base_sha=$base" "diff_body_sha256=$body_sha"
           echo "patch_path=$patch" >> "$GITHUB_OUTPUT"
           echo "intended=$intended" >> "$GITHUB_OUTPUT"
 
