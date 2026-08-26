@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-26 (CP4c-0 TB-R2 valid semantic red at ordinal 329 of 338; independent review closed; exact next `M3-CP4c-0-CB3` under measures F0–F8).
+**Status date:** 2026-08-26 (CP4c-0 TB-R3 valid semantic red: 338 executed, 336 pass, reds at ordinals 333/334 — both test-side; independent review closed; exact next `M3-CP4c-0-CB4` under measures G0–G8).
 
 ---
 
@@ -70,7 +70,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R2 VALID SEMANTIC RED at ordinal 329/338, review closed** — accepted 316 and prior 328 prefixes both re-proved green; first red is the `std::uint8_t` diagnostic-formatting defect; Q8 correctly not run; next `M3-CP4c-0-CB3` under F0–F8 |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R3 VALID SEMANTIC RED, 336/338, review closed** — all 338 executed under F6 continue-and-observe; accepted 316 and prior 328 prefixes green; reds at ordinals 333 (fixture builds a DCEL-invalid single-triangle mesh) and 334 (oracle assumed a portable branch label) — **both test-side, production correct at both sites**; identity 338 green confirms the degenerate-entry family is gone from the sphere; **the sphere still does not publish a network**, so Q8 is expected red next cycle; next `M3-CP4c-0-CB4` under G0–G8 |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
@@ -121,6 +121,30 @@ line-scoped wording never reached. Both are **class defects certified by instanc
 the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
 particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**CB3 → TB-R3 executed that correction, and `M3-CP4c-0-TB-R3-REVIEW-PLAN` closed on 2026-08-26**
+(`Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md`). F1/F2 are runtime-proved and F6
+worked — all 338 identities executed despite an early red, which is why this cycle returned a complete
+picture rather than one bit. Two identities are red and **both are test-side**:
+
+- **ordinal 333** throws `compute_edge_quantities(): DCEL consistency check failed` before the predicate
+  under test runs. The fixture builds a **single-triangle** mesh, and `DCEL::check_consistency`'s
+  `checkPureBoundary` rejects any face with no interior edge — so every candidate is invalid regardless
+  of coordinates. The near-degenerate coordinate search is a red herring;
+- **ordinal 334** is an oracle defect **originating in the reviewer's own E8 specification**.
+  `FieldBranch` is **gauged per face** by `build_face_branch_frame`, so iterating one numeric label
+  across four faces compares four different physical directions. The gauge model derived from source
+  reproduces the observed `0, 1, 0, 3` admitted-face counts exactly.
+
+**Production is correct at both sites** — `build_branch_transports` already corrects every lift by the
+per-face gauge difference, and all three cross-face branch steps in production use it. **Amendment 7**
+records that `FieldBranch` is not a portable identifier, and that a required falsifier may not assert
+that a witness *fails*.
+
+**The finding that outranks both reds:** the supplemental falsifier's passing `ASSERT_FALSE(networkBuild)`
+proves **the prescribed sphere still does not publish a network**. Q8 is therefore expected to fail next
+cycle even at 338/338, and nothing in the gate currently publishes the sphere's rejection code.
+Measures **G4** and **G5** address both. Exact next is **`M3-CP4c-0-CB4`** under **G0–G8**, test-side only.
 
 **`M3-CP4c-0-TB-REVIEW-PLAN` closed that adjudication on 2026-08-25**
 (`Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`). Verdict: **neither T6 nor Q8 is at

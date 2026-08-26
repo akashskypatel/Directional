@@ -82,7 +82,60 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R3-REVIEW-PLAN` — EXACT NEXT / independent Review + Plan
+## Mandatory next turn — `M3-CP4c-0-CB4` — EXACT NEXT / Code + Build, measures G0–G8 (test-side only)
+
+`M3-CP4c-0-TB-R3-REVIEW-PLAN` is **COMPLETE**. Its record is
+`Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` and it is the document to read first.
+
+**Adjudication — both reds are test-side. No production source change is authorized.** The TB-R3 turn's
+two premises were both correct; review confirmed each against primary evidence and sharpened them:
+
+- **Ordinal 333** throws `compute_edge_quantities(): DCEL consistency check failed` at **0 ms**, before
+  the predicate under test ever runs. The sharper truth is that the near-degenerate coordinate search is
+  a **red herring**: the fixture builds a **single-triangle** mesh, and `DCEL::check_consistency`'s
+  `checkPureBoundary` (`DCEL.h:1546-1565`) rejects any face with no interior edge — so **every**
+  candidate is invalid regardless of coordinates. Changing `base`/`spacing`/`epsilon` would fix nothing;
+  the witness needs an interior edge (≥ 2 triangles) and the determinant screen must run **before**
+  `set_mesh`.
+- **Ordinal 334** is an oracle defect **originating in the reviewer's own E8 specification**.
+  `build_face_branch_frame` assigns each face a **gauge** against that face's canonical reference edge
+  and canonical-order normal, so semantic branch `s` means `raw[(gauge+s) mod 4]` — **the same numeric
+  `FieldBranch` is a different physical direction on different faces.** The gauge model derived from
+  source reproduces the observed admitted counts `0, 1, 0, 3` exactly, including the one fan face whose
+  canonical normal is anti-parallel to mesh orientation.
+
+**Production is correct at both sites, and the source proves it:** `build_branch_transports`
+(`FieldTransportAtlas.cpp:305-320`) already corrects every lift by `rawGauge[first] − rawGauge[second]`,
+and all three cross-face branch steps in production rotate by that corrected `signedLift`. **Amendment 7**
+records that `FieldBranch` is not a portable identifier and that a required falsifier may not assert that
+a witness *fails*.
+
+**Read this before planning CB4 — it changes what "success" means next cycle.** The supplemental
+falsifier `TracingPathNeverPublishesSeedIdentityAsFailureLocus` contains `ASSERT_FALSE(networkBuild)` and
+it **passed**, which is direct runtime proof that **the prescribed sphere still does not publish a
+network**. So fixing 333 and 334 turns the gate green and then **Q8 still fails**. Do not plan CB4 as
+"fix two tests and CP4c-0 closes". Measure **G4** de-encodes that assertion before it inverts at the
+moment CP4c-0 succeeds; measure **G5** adds a non-gating identity that publishes the sphere's A2a
+rejection code, which **nothing in the gate currently does** — the third consecutive cycle in which the
+sphere's decisive datum was computed and not published.
+
+**F6 worked.** Continue-and-observe executed all 338 despite the red at 333, which is the only reason
+334's red and identity 338's pass are known. Keep it in the successor TB plan.
+
+**Identity 338 passed** (non-crediting): E2–E5 genuinely removed the `BranchContinuationDegenerateEntry`
+family from the sphere. It is **not** gate credit and **not** Q8 — it only rules out two codes.
+
+Measures **G0–G8** are in review §11. **Standing prohibitions:** no production source change; no weakening
+of T6, Q8, accepted expectations, or the sphere fixture; no `kBranchTopologyTolerance` retune; no selector
+reorder or shrink; do not catch the ordinal-333 exception or add a tolerance.
+
+---
+
+### TB-R3 evidence this review adjudicated — retained
+
+All artifact digests, the three selector hashes (**recomputed locally**), and the semantic-source ancestry
+were verified during review and **all matched**; the four audited files are byte-identical to the packaged
+source.
 
 `M3-CP4c-0-TB-R3` is **COMPLETE / VALID SEMANTIC RED** on immutable CB3 package `9589508430`.
 Authoritative run/job `32921851098 / 98036868098` executed all 338 frozen identities in exact order and
@@ -101,10 +154,11 @@ The two reds are presently **non-stable candidates pending independent adjudicat
 2. ordinal 334 appears to compare the same numeric `FieldBranch` label across independently face-canonical
    gauges as though that integer were one global physical direction.
 
-Do **not** repair either candidate in the review turn. Independently verify those premises, adjudicate the
-previous review's falsified P2 prediction, preserve the non-crediting meaning of identity 338, and freeze one
-smallest successor Code + Build plan. Production mutation is prohibited unless review independently proves a
-product defect. Q8 remains verbatim frozen and unconsumed.
+Both premises were **confirmed** by review and neither is a production defect; see the adjudication above.
+The previous review's P2 prediction (330–337 all green) was **falsified** at 333 and 334 and is owned in
+review §5 — both misses share one root: auditing what an identity asserts without auditing the authority
+it consumes to reach the assertion. The accepted prefixes are unaffected, and the runtime confirms it
+(`prefix316_passed=316`, `prefix328_passed=328` in the same run). Q8 remains verbatim frozen and unconsumed.
 
 Authoritative successor plan:
 `.agents/Directional/Architecture_M3_CP4c0_TB_R3_Review_Plan.md`.

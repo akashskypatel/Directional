@@ -33,11 +33,18 @@
 >    mechanism**: formatted through a named `*_locus` helper, printable ASCII only (no NUL), parseable,
 >    and site-sourced across *every* emission site. Every diagnostic requirement must be falsified by a
 >    **class** identity, not an instance one. See Amendment 6 at the end of §10.
+> 7. **§9 + §4.4, added 2026-08-26 after `M3-CP4c-0-TB-R3`** — **`FieldBranch` is a per-face gauged
+>    label, not a portable direction identifier.** Cross-face branch comparison is valid only through the
+>    published `signedLift`. Production is compliant everywhere; the oracle that assumed otherwise was
+>    not. A required falsifier may also not assert the *existence* of a current production failure. See
+>    Amendment 7 at the end of §10.
 >
 > **T6 and Q8 are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
 > unreachable* from any well-formed production state (review §7, Theorems 1–3).
 >
-> The next turn is **`M3-CP4c-0-CB2`**, measures **E0–E10**, in the review document §10.
+> **Amendment history:** 1–5 issued after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`.
+> The next turn is **`M3-CP4c-0-CB4`**, measures **G0–G8**, in
+> `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` §11.
 
 ---
 
@@ -432,6 +439,39 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 >
 > `VertexTransitSectorUnresolved`'s required loci are extended with **the set of admitted candidate
 > faces** (empty or ≥ 2), so "no face" and "many faces" are distinguishable without a rerun.
+
+> **AMENDMENT 7 — `FieldBranch` is per-face gauged; and a falsifier may not assert that a witness fails**
+> (`Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` §9). `M3-CP4c-0-TB-R3` failed at
+> ordinal 334 because a fan-partition oracle iterated a numeric branch label across four faces. It is
+> **not** portable.
+>
+> `build_face_branch_frame` assigns each face a `gauge` by choosing, among
+> `{primary, secondary, −primary, −secondary}`, the raw direction with the smallest positive oriented
+> angle from that face's **canonical reference edge** (`v0→v1` of its canonical topology key), measured
+> about a normal computed from the **canonical vertex order** — which need not agree with mesh
+> orientation. Semantic branch `s` denotes `raw[(gauge + s) mod 4]`.
+>
+> **Normative consequences:**
+>
+> 1. The same numeric `FieldBranch` on two faces is **not** the same physical direction in general.
+> 2. The only sanctioned cross-face relation is `FieldBranchTransportAdjacency::signedLift`, which
+>    `build_branch_transports` (`FieldTransportAtlas.cpp:305-320`) has already corrected by
+>    `rawGauge[first] − rawGauge[second]`. **Production is compliant at every site** — the trace loop,
+>    `resolve_field_vertex_transit`, and the singularity fan partition all rotate by that lift.
+> 3. **Any test, oracle, or diagnostic that compares, aggregates, or iterates a branch label across more
+>    than one face without applying that lift is ill-formed**, whether or not it currently passes.
+>    Ordinal 334 is the worked example: it observed `0, 1, 0, 3` admitted faces where a genuine partition
+>    gives `1, 1, 1, 1`, and its branch-1 pass was coincidence.
+> 4. A cross-face oracle built on the published lift must be paired with an **independent** check on the
+>    gauge correction, so it is not merely consistent with the mechanism under test. The sanctioned check
+>    is local holonomy: composed `signedLift` around a complete vertex fan `≡ 0 (mod 4)` at a regular
+>    vertex, `≡ index (mod 4)` at a singularity.
+>
+> **Added to this section's proof rules:** a required falsifier **may not assert the existence of a
+> current production failure**. `ASSERT_FALSE(networkBuild)` on the prescribed sphere encodes current
+> output as an expectation and inverts the gate at the moment the defect is fixed. Prove such properties
+> on a **constructed** failure the test controls; where a production witness is also exercised, its
+> branch must be conditional.
 
 > **AMENDMENT 6 — "observable" is defined by mechanism, and proved by class**
 > (`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` §9). Amendment 5 rule 2 required a

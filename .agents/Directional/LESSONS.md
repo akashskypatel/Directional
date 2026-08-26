@@ -389,6 +389,50 @@ the search skip invalid candidates at the construction boundary. An exception be
 fixture evidence, not product evidence.** A deterministic capable witness is better than a search whose
 invalid prefix can abort the falsifier.
 
+### A test that asserts a witness currently fails will invert the day you fix it
+
+A mandatory falsifier was written against the prescribed sphere's live tracing failure and contains
+`ASSERT_FALSE(networkBuild)`. It passes today. It will go **red at exactly the moment the checkpoint
+succeeds**, blocking acceptance for the opposite of the right reason — and in the meantime its passing is
+the only place in the entire gate that records the far more important fact that the sphere still does not
+publish. **Prove a property on a constructed failure whose existence the test controls.** If a production
+witness is also exercised, make that branch conditional, so the test cannot become an assertion that the
+product stays broken.
+
+### A numeric label is only portable if something says it is
+
+Branch indices `0..3` look like a global naming of four field directions, and an oracle was written that
+iterated one label across four faces of a vertex fan. They are not global: each face assigns its own
+**gauge** relative to its own canonical reference edge, so the same integer denotes a different physical
+direction on each face. The strongest evidence was sitting in production the whole time — the transport
+builder explicitly corrects each lift by the two faces' gauge difference, and code does not correct for
+something that does not vary. **Before comparing a typed label across two owners, find the code that
+translates between them; if a translation exists, the label is local and your comparison needs it.**
+
+### An oracle built on the mechanism it tests is not yet a test
+
+The corrected fan-partition oracle must walk the fan applying the published transport lift — which is
+exactly what production does. That makes it consistent with production by construction, including if
+production's gauge correction is wrong. The repair is not to avoid the published authority but to pair it
+with an **independent** invariant the same defect would break: composed lift around a closed vertex fan
+must be `≡ 0 (mod 4)` at a regular vertex and `≡ index` at a singularity. **When a test necessarily
+consumes the authority under test, add a second check that closes a loop rather than following a path.**
+
+### Predicting a test's result means predicting its whole precondition chain
+
+A review predicted eight identities green and two went red. One threw before its assertion ever ran,
+because its fixture built a mesh the DCEL rejects by construction; the other asserted on authority whose
+semantics the review had never read. In both cases the `EXPECT` lines were audited and the path to them
+was not. **A prediction about an identity is a prediction about fixture construction, authority
+semantics, and assertion — in that order.** Both misses were one `grep` away.
+
+### Screen a candidate before you construct it
+
+The failing fixture called `TriMesh::set_mesh` on every candidate and only afterwards applied the
+determinant test meant to reject bad ones. Construction throws, so the screen never ran. The 0 ms
+failure time was the tell: nothing had been searched yet. **Order validity checks before construction,
+not after** — and when a search loop dies instantly, suspect the first candidate rather than the search.
+
 ## 3. Negatives and oracles
 
 23. **A negative test proves only the guard it actually reaches.** Check which guard rejected before

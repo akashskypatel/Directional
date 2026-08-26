@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R3-REVIEW-PLAN` — EXACT NEXT / independent Review + Plan
+## Current focus — `M3-CP4c-0-CB4` — EXACT NEXT / Code + Build, measures G0–G8 (test-side only)
 
 `M3-CP4c-0-TB-R3` is **COMPLETE / VALID SEMANTIC RED** on immutable package `9589508430` at semantic
 source `b135e219ee9269a73eaee32992d80c3921318011`. Authoritative run/job `32921851098 / 98036868098`
@@ -42,18 +42,42 @@ Every immutable-gate mutation/build flag remained false.
   `333 / ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip`; later non-crediting red
   `334 / ExactVertexSectorPartitionsAcceptedInteriorFans`; identity 338 non-crediting green; F3 supplemental
   **2/2 PASS**; Q8 **NOT RUN**.
-- [ ] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — **EXACT NEXT.** Independently adjudicate ordinal 333's
-  pre-predicate `TriMesh`/DCEL fixture setup and ordinal 334's face-canonical branch/gauge oracle. Reconcile the
-  prior review's falsified P2 prediction, preserve identity 338 as non-crediting evidence only, and freeze one
-  smallest successor Code + Build plan. **Review/planning only; no runtime/build/product/test/fixture mutation.**
+- [x] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — **COMPLETE.** Both reds are **test-side; production is correct at
+  both sites and no production measure is authorized.** Ordinal 333 throws
+  `compute_edge_quantities(): DCEL consistency check failed` **before the predicate runs** — the fixture
+  builds a **single-triangle** mesh and `checkPureBoundary` rejects any face with no interior edge, so
+  every candidate is invalid regardless of coordinates (0 ms failure confirms it). Ordinal 334 is an
+  **oracle defect originating in this reviewer's E8 spec**: `FieldBranch` is **gauged per face**, so
+  iterating one numeric label across four faces compares four different physical directions — the gauge
+  model derived from source reproduces the observed `0, 1, 0, 3` exactly. **Amendment 7** issued;
+  measures **G0–G8** frozen. Record:
+  `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md`.
+- [ ] `M3-CP4c-0-CB4` — **EXACT NEXT.** Code + Build only, measures **G0–G8**, **test-side only — no
+  production source change is authorized.** G1 gives ordinal 333 a DCEL-valid witness and screens before
+  `set_mesh`; G2 rebuilds ordinal 334's oracle on the published `signedLift`; G3 adds an independent
+  local-holonomy check so G2 is not circular; **G4 de-encodes the supplemental falsifier that currently
+  asserts the sphere fails**; **G5 adds a non-gating identity publishing the sphere's A2a outcome.**
+  Compile only — **execute nothing.**
 - [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
 - [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
 - [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
 
 Frozen selector authority is unchanged: full 338 `d588cae0…`, first-316 `601ce2b6…`, first-328
-`cf93622e…`. **Identity 338 green is not a Q8 substitute.** Q8 remains verbatim frozen and unconsumed;
-latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness
-debt **5**, M3 packages **42**.
+`cf93622e…` — all three **recomputed locally during review** and matching. **Identity 338 green is not a
+Q8 substitute.** Q8 remains verbatim frozen and unconsumed; latest accepted runtime remains CP4ab
+**316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **42**.
+
+**Two results from TB-R3 that outrank the two red identities.**
+
+1. **F6 worked.** Continue-and-observe executed all 338 despite a red at 333. That is the only reason
+   334's red, 335–338's greens, and identity 338's pass are known at all. One cosmetic red no longer
+   costs a cycle.
+2. **The prescribed sphere still does not publish a network.** The supplemental falsifier
+   `TracingPathNeverPublishesSeedIdentityAsFailureLocus` contains `ASSERT_FALSE(networkBuild)` and it
+   **passed** — direct runtime proof. So **Q8 is expected to fail next cycle even at 338/338**, and that
+   assertion will invert the moment CP4c-0 succeeds (measure G4). Identity 338's pass does confirm
+   E2–E5 removed the `BranchContinuationDegenerateEntry` family from the sphere — real progress — but
+   the current rejection code is still **unpublished by anything in the gate** (measure G5).
 
 ## After M3 exit
 
