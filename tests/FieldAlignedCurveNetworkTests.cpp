@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <limits>
 #include <numbers>
 #include <map>
 #include <optional>
@@ -33,6 +34,7 @@
 #include <directional/pipeline/RemeshPipeline.h>
 
 #include "TestFixturePaths.h"
+#include "support/SkewSingularFieldWitness.h"
 
 
 namespace {
@@ -2730,13 +2732,138 @@ std::string signed_lift_locus(const int signedLift) {
   return std::to_string(signedLift);
 }
 
+std::optional<int> cp4c_raw_face_gauge(
+    const TriMesh &mesh, const CrossFieldResult &field, const int face,
+    const SourceFaceTopologyKey &topology) {
+  constexpr double tolerance = 1.0e-10;
+  const auto &vertices = topology.vertices();
+  const Eigen::Vector3d p0 =
+      mesh.V.row(static_cast<int>(vertices[0].index())).transpose();
+  const Eigen::Vector3d p1 =
+      mesh.V.row(static_cast<int>(vertices[1].index())).transpose();
+  const Eigen::Vector3d p2 =
+      mesh.V.row(static_cast<int>(vertices[2].index())).transpose();
+  Eigen::Vector3d normal = (p1 - p0).cross(p2 - p0);
+  const double normalNorm = normal.norm();
+  if (!std::isfinite(normalNorm) || normalNorm <= tolerance) {
+    return std::nullopt;
+  }
+  normal /= normalNorm;
+
+  const auto project = [&](const Eigen::Vector3d &direction)
+      -> std::optional<Eigen::Vector3d> {
+    Eigen::Vector3d tangent = direction - direction.dot(normal) * normal;
+    const double norm = tangent.norm();
+    if (!std::isfinite(norm) || norm <= tolerance) return std::nullopt;
+    tangent /= norm;
+    return tangent.allFinite() ? std::optional<Eigen::Vector3d>(tangent)
+                               : std::nullopt;
+  };
+
+  const auto reference = project(p1 - p0);
+  const auto primary = project(field.primaryDirections.row(face).transpose());
+  const auto secondary =
+      project(field.secondaryDirections.row(face).transpose());
+  if (!reference.has_value() || !primary.has_value() ||
+      !secondary.has_value() ||
+      std::abs(primary->dot(*secondary)) > 1.0 - 1.0e-8) {
+    return std::nullopt;
+  }
+
+  const std::array<Eigen::Vector3d, 4> rawDirections{
+      *primary, *secondary, -*primary, -*secondary};
+  std::array<double, 4> angles{};
+  int gauge = 0;
+  double best = std::numeric_limits<double>::infinity();
+  for (int raw = 0; raw < 4; ++raw) {
+    double angle = directional::test_support::independent_signed_angle(
+        *reference, rawDirections[static_cast<std::size_t>(raw)], normal);
+    if (angle < 0.0) angle += 2.0 * std::numbers::pi;
+    if (angle >= 2.0 * std::numbers::pi) angle -= 2.0 * std::numbers::pi;
+    angles[static_cast<std::size_t>(raw)] = angle;
+    if (angle < best) {
+      best = angle;
+      gauge = raw;
+    }
+  }
+  for (int raw = 0; raw < 4; ++raw) {
+    if (raw != gauge &&
+        std::abs(angles[static_cast<std::size_t>(raw)] - best) <= tolerance) {
+      return std::nullopt;
+    }
+  }
+  return gauge;
+}
+
+struct Cp4cLiftTerms {
+  int matching = 0;
+  int sourceRawGauge = 0;
+  int targetRawGauge = 0;
+};
+
+std::optional<Cp4cLiftTerms> cp4c_lift_terms(
+    const TriMesh &mesh, const CrossFieldResult &field,
+    const directional::authority::FieldTransportAdjacency &adjacency,
+    const SourceFaceTopologyKey &sourceFace,
+    const SourceFaceTopologyKey &targetFace) {
+  int matching = 0;
+  int sourceRow = -1;
+  int targetRow = -1;
+  if (adjacency.firstFaceTopology == sourceFace &&
+      adjacency.secondFaceTopology == targetFace) {
+    matching = adjacency.forwardLift;
+    sourceRow = static_cast<int>(adjacency.firstFace.index());
+    targetRow = static_cast<int>(adjacency.secondFace.index());
+  } else if (adjacency.secondFaceTopology == sourceFace &&
+             adjacency.firstFaceTopology == targetFace) {
+    matching = -adjacency.forwardLift;
+    sourceRow = static_cast<int>(adjacency.secondFace.index());
+    targetRow = static_cast<int>(adjacency.firstFace.index());
+  } else {
+    return std::nullopt;
+  }
+  const auto sourceGauge =
+      cp4c_raw_face_gauge(mesh, field, sourceRow, sourceFace);
+  const auto targetGauge =
+      cp4c_raw_face_gauge(mesh, field, targetRow, targetFace);
+  if (!sourceGauge.has_value() || !targetGauge.has_value()) {
+    return std::nullopt;
+  }
+  return Cp4cLiftTerms{matching, *sourceGauge, *targetGauge};
+}
+
+bool cp4c_edge_incident_to_declared_singularity(
+    const SourceEdgeTopologyKey &edge, const CrossFieldResult &field) {
+  for (Eigen::Index row = 0; row < field.singularCycles.size(); ++row) {
+    const int vertex = field.singularCycles(row);
+    if (vertex < 0) continue;
+    if (edge.first().index() == static_cast<std::size_t>(vertex) ||
+        edge.second().index() == static_cast<std::size_t>(vertex)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+struct Cp4cCensusWitnessMetadata {
+  std::string name;
+  std::string matchingProvenance;
+  std::string matchingCodePath;
+  std::string population;
+  std::string classification;
+};
+
 struct Cp4cFlowAgreementViolation {
   SourceEdgeTopologyKey sourceEdge;
   SourceFaceTopologyKey sourceFace;
   SourceFaceTopologyKey targetFace;
   directional::authority::FieldBranch sourceBranch;
   directional::authority::FieldBranch targetBranch;
+  int matching = 0;
+  int sourceRawGauge = 0;
+  int targetRawGauge = 0;
   int signedLift = 0;
+  bool singularVertexIncident = false;
   directional::authority::FieldExactRational sourceDerivative;
   directional::authority::FieldExactRational targetDerivative;
 };
@@ -2763,7 +2890,8 @@ std::optional<std::size_t> cp4c_opposite_coordinate(
 }
 
 std::string cp4c_flow_agreement_census(
-    const std::string &witness, const TriMesh &mesh,
+    const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+    const CrossFieldResult &field,
     const directional::authority::FieldTransportAtlas &atlas) {
   const auto &topology = atlas.branch_topology();
   std::size_t interiorEdgeCount = 0U;
@@ -2773,9 +2901,18 @@ std::string cp4c_flow_agreement_census(
 
   std::size_t pairsChecked = 0U;
   std::vector<Cp4cFlowAgreementViolation> violations;
+  std::set<std::tuple<SourceEdgeTopologyKey, unsigned int>> distinctViolations;
+  std::map<int, std::size_t> matchingHistogram;
+  std::size_t singularIncidentViolations = 0U;
   const auto zero = directional::authority::FieldExactRational::from_integer(0);
 
   for (const auto &adjacency : topology.transports()) {
+    const auto *rawAdjacency = atlas.find_adjacency(adjacency.sourceEdge);
+    if (rawAdjacency == nullptr) {
+      ADD_FAILURE() << "H1 missing raw A1 adjacency for witness=" << metadata.name
+                    << ";edge=" << source_edge_locus(adjacency.sourceEdge);
+      continue;
+    }
     for (int direction = 0; direction < 2; ++direction) {
       const auto &sourceFace =
           direction == 0 ? adjacency.firstFace : adjacency.secondFace;
@@ -2784,14 +2921,34 @@ std::string cp4c_flow_agreement_census(
       const auto directed =
           topology.transport(adjacency.sourceEdge, sourceFace, targetFace);
       if (!directed.has_value()) {
-        ADD_FAILURE() << "H1 missing directed A1 transport for witness=" << witness
+        ADD_FAILURE() << "H1 missing directed A1 transport for witness="
+                      << metadata.name
                       << ";edge=" << source_edge_locus(adjacency.sourceEdge);
         continue;
       }
+      const auto liftTerms =
+          cp4c_lift_terms(mesh, field, *rawAdjacency, sourceFace, targetFace);
+      if (!liftTerms.has_value()) {
+        ADD_FAILURE() << "H1 could not decompose lift for witness="
+                      << metadata.name
+                      << ";edge=" << source_edge_locus(adjacency.sourceEdge)
+                      << ";sourceFace=" << source_face_locus(sourceFace)
+                      << ";targetFace=" << source_face_locus(targetFace);
+        continue;
+      }
+      const auto z4 = [](const int value) { return ((value % 4) + 4) % 4; };
+      const int recomposedLift = liftTerms->matching +
+                                 liftTerms->sourceRawGauge -
+                                 liftTerms->targetRawGauge;
+      EXPECT_EQ(z4(recomposedLift), z4(directed->signedLift))
+          << "J1 independently re-derived gauge terms must reproduce A1's "
+             "published Z4 lift"
+          << ";witness=" << metadata.name
+          << ";edge=" << source_edge_locus(adjacency.sourceEdge);
       const auto *sourceFrame = topology.find_frame(sourceFace);
       const auto *targetFrame = topology.find_frame(targetFace);
       if (sourceFrame == nullptr || targetFrame == nullptr) {
-        ADD_FAILURE() << "H1 missing A1 frame for witness=" << witness
+        ADD_FAILURE() << "H1 missing A1 frame for witness=" << metadata.name
                       << ";edge=" << source_edge_locus(adjacency.sourceEdge);
         continue;
       }
@@ -2800,7 +2957,8 @@ std::string cp4c_flow_agreement_census(
       const auto targetOpposite =
           cp4c_opposite_coordinate(targetFace, adjacency.sourceEdge);
       if (!sourceOpposite.has_value() || !targetOpposite.has_value()) {
-        ADD_FAILURE() << "H1 invalid edge/face incidence for witness=" << witness
+        ADD_FAILURE() << "H1 invalid edge/face incidence for witness="
+                      << metadata.name
                       << ";edge=" << source_edge_locus(adjacency.sourceEdge);
         continue;
       }
@@ -2814,7 +2972,8 @@ std::string cp4c_flow_agreement_census(
         const auto *targetPairing =
             find_cp4c_branch_pairing(*targetFrame, targetBranch);
         if (sourcePairing == nullptr || targetPairing == nullptr) {
-          ADD_FAILURE() << "H1 missing A1 branch pairing for witness=" << witness
+          ADD_FAILURE() << "H1 missing A1 branch pairing for witness="
+                        << metadata.name
                         << ";edge=" << source_edge_locus(adjacency.sourceEdge)
                         << ";sourceBranch=" << branch_locus(sourceBranch)
                         << ";targetBranch=" << branch_locus(targetBranch);
@@ -2829,10 +2988,20 @@ std::string cp4c_flow_agreement_census(
         const bool sourceOutflow = sourceDerivative < zero;
         const bool targetInflow = targetDerivative > zero;
         if (sourceOutflow && !targetInflow) {
+          const bool singularIncident =
+              cp4c_edge_incident_to_declared_singularity(adjacency.sourceEdge,
+                                                          field);
+          const auto canonicalBranch =
+              sourceFace == adjacency.firstFace ? sourceBranch : targetBranch;
+          distinctViolations.emplace(adjacency.sourceEdge,
+                                     canonicalBranch.value());
+          ++matchingHistogram[liftTerms->matching];
+          singularIncidentViolations += singularIncident ? 1U : 0U;
           violations.push_back(Cp4cFlowAgreementViolation{
               adjacency.sourceEdge, sourceFace, targetFace, sourceBranch,
-              targetBranch, directed->signedLift, sourceDerivative,
-              targetDerivative});
+              targetBranch, liftTerms->matching, liftTerms->sourceRawGauge,
+              liftTerms->targetRawGauge, directed->signedLift,
+              singularIncident, sourceDerivative, targetDerivative});
         }
       }
     }
@@ -2841,20 +3010,34 @@ std::string cp4c_flow_agreement_census(
   const std::size_t expectedPairs = interiorEdgeCount * 8U;
   EXPECT_EQ(expectedPairs, pairsChecked)
       << "H1 must cover every interior edge x four branches x both directions"
-      << ";witness=" << witness;
+      << ";witness=" << metadata.name;
   EXPECT_EQ(interiorEdgeCount, topology.transports().size())
       << "H1 A1 transport inventory must cover every interior edge"
-      << ";witness=" << witness;
+      << ";witness=" << metadata.name;
 
   std::ostringstream report;
   report << "m3Cp4c0H1"
          << ";credit=none"
          << ";owningMeasure=H1"
-         << ";witness=" << witness
+         << ";witness=" << metadata.name
+         << ";matchingProvenance=" << metadata.matchingProvenance
+         << ";matchingCodePath=" << metadata.matchingCodePath
+         << ";population=" << metadata.population
+         << ";classification=" << metadata.classification
          << ";pairsChecked=" << pairsChecked
          << ";violations=" << violations.size()
+         << ";distinctDisagreements=" << distinctViolations.size()
+         << ";singularIncidentViolations=" << singularIncidentViolations
          << ";violationRate=" << violations.size() << '/' << pairsChecked
-         << ";status="
+         << ";matchingHistogram={";
+  bool firstHistogram = true;
+  for (const auto &[matching, count] : matchingHistogram) {
+    if (!firstHistogram) report << ',';
+    firstHistogram = false;
+    report << matching << ':' << count;
+  }
+  if (firstHistogram) report << "none";
+  report << "};status="
          << (violations.empty() ? "zero-violations" : "violations-present");
   for (std::size_t index = 0U; index < violations.size(); ++index) {
     const auto &violation = violations[index];
@@ -2864,12 +3047,151 @@ std::string cp4c_flow_agreement_census(
            << ",targetFace=" << source_face_locus(violation.targetFace)
            << ",sourceBranch=" << branch_locus(violation.sourceBranch)
            << ",targetBranch=" << branch_locus(violation.targetBranch)
+           << ",matching=" << violation.matching
+           << ",rawGaugeSource=" << violation.sourceRawGauge
+           << ",rawGaugeTarget=" << violation.targetRawGauge
            << ",signedLift=" << signed_lift_locus(violation.signedLift)
+           << ",singularVertexIncident="
+           << (violation.singularVertexIncident ? "true" : "false")
            << ",sourceD=" << exact_rational_locus(violation.sourceDerivative)
            << ",targetD=" << exact_rational_locus(violation.targetDerivative)
            << '}';
   }
   return report.str();
+}
+
+std::string cp4c_matching_geometry_census(
+    const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+    const CrossFieldResult &field) {
+  std::size_t edgesChecked = 0U;
+  std::size_t agreementCount = 0U;
+  struct Disagreement {
+    SourceEdgeTopologyKey edge;
+    int firstFace = -1;
+    int secondFace = -1;
+    int declaredMatching = 0;
+    int geometryMatching = 0;
+  };
+  std::vector<Disagreement> disagreements;
+  const auto rawIndex = [](const int value) { return ((value % 4) + 4) % 4; };
+
+  for (const auto &transition : field.edgeTransitions) {
+    if (transition.firstFace < 0 || transition.secondFace < 0) continue;
+    if (transition.sourceEdge < 0 || transition.sourceEdge >= mesh.EV.rows()) {
+      ADD_FAILURE() << "J3 invalid transition edge for witness=" << metadata.name;
+      continue;
+    }
+    const SourceEdgeTopologyKey edge = edge_key(mesh, transition.sourceEdge);
+    const auto measured = directional::test_support::independent_edge_measurement(
+        mesh, field, transition.firstFace, transition.secondFace, edge);
+    ++edgesChecked;
+    if (rawIndex(transition.matching) == rawIndex(measured.matching)) {
+      ++agreementCount;
+      continue;
+    }
+    disagreements.push_back(Disagreement{edge, transition.firstFace,
+                                         transition.secondFace,
+                                         transition.matching,
+                                         measured.matching});
+  }
+
+  std::size_t expectedInteriorEdges = 0U;
+  for (int edge = 0; edge < mesh.EF.rows(); ++edge) {
+    if (mesh.EF(edge, 0) >= 0 && mesh.EF(edge, 1) >= 0) {
+      ++expectedInteriorEdges;
+    }
+  }
+  EXPECT_EQ(expectedInteriorEdges, edgesChecked)
+      << "J3 must independently measure every interior transition"
+      << ";witness=" << metadata.name;
+
+  std::ostringstream report;
+  report << "m3Cp4c0J3"
+         << ";credit=none"
+         << ";owningMeasure=J3"
+         << ";witness=" << metadata.name
+         << ";matchingProvenance=" << metadata.matchingProvenance
+         << ";matchingCodePath=" << metadata.matchingCodePath
+         << ";population=" << metadata.population
+         << ";classification=" << metadata.classification
+         << ";edgesChecked=" << edgesChecked
+         << ";agreements=" << agreementCount
+         << ";disagreements=" << disagreements.size()
+         << ";agreementRate=" << agreementCount << '/' << edgesChecked;
+  for (std::size_t index = 0U; index < disagreements.size(); ++index) {
+    const auto &disagreement = disagreements[index];
+    report << ";disagreement[" << index << "]={edge="
+           << source_edge_locus(disagreement.edge)
+           << ",firstFaceRow=" << disagreement.firstFace
+           << ",secondFaceRow=" << disagreement.secondFace
+           << ",sourceRawIndex=0"
+           << ",declaredRawTarget=" << rawIndex(disagreement.declaredMatching)
+           << ",geometryRawTarget=" << rawIndex(disagreement.geometryMatching)
+           << ",declaredMatching=" << disagreement.declaredMatching
+           << ",geometryMatching=" << disagreement.geometryMatching << '}';
+  }
+  return report.str();
+}
+
+template <typename Callback>
+void for_each_cp4c_census_witness(Callback &&callback) {
+  {
+    const TriMesh mesh = make_cp3a_two_ring_skew_disc();
+    const auto sourceAuthority = make_source_authority(mesh);
+    ASSERT_TRUE(sourceAuthority.has_value());
+    CrossFieldResult field;
+    make_cp3a_two_ring_index_one_field(mesh, field);
+    const auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {}, field);
+    ASSERT_TRUE(atlas);
+    callback(Cp4cCensusWitnessMetadata{
+                 "two-ring", "computed",
+                 "finalize_cross_field_result->principal_matching->"
+                 "populate_cross_field_edge_transitions",
+                 "included", "production-reasoning"},
+             mesh, field, atlas.value());
+  }
+
+  {
+    const TriMesh mesh = make_four_triangle_fan();
+    const auto sourceAuthority = make_source_authority(mesh);
+    ASSERT_TRUE(sourceAuthority.has_value());
+    const CrossFieldResult field = make_index_one_singularity_field(mesh);
+    const auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {}, field);
+    ASSERT_TRUE(atlas);
+    callback(Cp4cCensusWitnessMetadata{
+                 "four-triangle-fan", "fixture-imposed",
+                 "make_index_one_singularity_field->manual-edge-transition-"
+                 "overwrite",
+                 "excluded", "fixture-artifact-imposed-matching-contradicts-"
+                 "geometry"},
+             mesh, field, atlas.value());
+  }
+
+  for (const std::string fixtureStem : {std::string("sphere_prescribed"),
+                                        std::string("torus")}) {
+    TriMesh mesh;
+    const auto meshPath = directional::tests::benchmark_fixture_path(
+        "milestone-g/" + fixtureStem + ".obj");
+    const auto fieldPath = directional::tests::benchmark_fixture_path(
+        "milestone-g/" + fixtureStem + ".rawfield");
+    ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh)) << fixtureStem;
+    const Eigen::MatrixXd raw = read_cp4c_rawfield(fieldPath, mesh.F.rows());
+    const CrossFieldResult field =
+        directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
+    const auto sourceAuthority = make_source_authority(mesh);
+    ASSERT_TRUE(sourceAuthority.has_value()) << fixtureStem;
+    const auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {}, field);
+    ASSERT_TRUE(atlas) << fixtureStem;
+    callback(Cp4cCensusWitnessMetadata{
+                 fixtureStem, "computed-at-load",
+                 "finalize_surface_cell_raw_cross_field->principal_matching->"
+                 "populate_cross_field_edge_transitions",
+                 "included", "production-reasoning"},
+             mesh, field, atlas.value());
+  }
 }
 
 struct VertexFanTransportStep {
@@ -4483,50 +4805,24 @@ TEST(ResolvedBranchCorrection,
 
 TEST(ResolvedBranchCorrection,
      CrossFaceFlowAgreementCensusIsPublishedNonGating) {
-  {
-    const TriMesh mesh = make_cp3a_two_ring_skew_disc();
-    const auto sourceAuthority = make_source_authority(mesh);
-    ASSERT_TRUE(sourceAuthority.has_value());
-    CrossFieldResult field;
-    make_cp3a_two_ring_index_one_field(mesh, field);
-    const auto atlas = directional::authority::FieldTransportAtlas::make(
-        mesh, *sourceAuthority, {}, field);
-    ASSERT_TRUE(atlas);
-    std::cout << cp4c_flow_agreement_census("two-ring", mesh, atlas.value())
-              << '\n';
-  }
+  for_each_cp4c_census_witness(
+      [](const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+         const CrossFieldResult &field,
+         const directional::authority::FieldTransportAtlas &atlas) {
+        std::cout << cp4c_flow_agreement_census(metadata, mesh, field, atlas)
+                  << '\n';
+      });
+}
 
-  {
-    const TriMesh mesh = make_four_triangle_fan();
-    const auto sourceAuthority = make_source_authority(mesh);
-    ASSERT_TRUE(sourceAuthority.has_value());
-    const auto atlas = directional::authority::FieldTransportAtlas::make(
-        mesh, *sourceAuthority, {}, make_index_one_singularity_field(mesh));
-    ASSERT_TRUE(atlas);
-    std::cout << cp4c_flow_agreement_census("four-triangle-fan", mesh,
-                                            atlas.value())
-              << '\n';
-  }
-
-  for (const std::string fixtureStem : {std::string("sphere_prescribed"),
-                                        std::string("torus")}) {
-    TriMesh mesh;
-    const auto meshPath = directional::tests::benchmark_fixture_path(
-        "milestone-g/" + fixtureStem + ".obj");
-    const auto fieldPath = directional::tests::benchmark_fixture_path(
-        "milestone-g/" + fixtureStem + ".rawfield");
-    ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh)) << fixtureStem;
-    const Eigen::MatrixXd raw = read_cp4c_rawfield(fieldPath, mesh.F.rows());
-    const CrossFieldResult field =
-        directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
-    const auto sourceAuthority = make_source_authority(mesh);
-    ASSERT_TRUE(sourceAuthority.has_value()) << fixtureStem;
-    const auto atlas = directional::authority::FieldTransportAtlas::make(
-        mesh, *sourceAuthority, {}, field);
-    ASSERT_TRUE(atlas) << fixtureStem;
-    std::cout << cp4c_flow_agreement_census(fixtureStem, mesh, atlas.value())
-              << '\n';
-  }
+TEST(ResolvedBranchCorrection,
+     MatchingVersusGeometryCensusIsPublishedNonGating) {
+  for_each_cp4c_census_witness(
+      [](const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+         const CrossFieldResult &field,
+         const directional::authority::FieldTransportAtlas &) {
+        std::cout << cp4c_matching_geometry_census(metadata, mesh, field)
+                  << '\n';
+      });
 }
 
 TEST(ResolvedBranchCorrection,

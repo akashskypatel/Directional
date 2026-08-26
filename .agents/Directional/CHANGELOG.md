@@ -47,7 +47,7 @@ arithmetic performed on their contents; nothing was executed and nothing was mod
 - **Q8 remains RED at criterion 2** and is expected to stay red — third cycle in which that must be said
   explicitly.
 - Stable accounting unchanged at **42 / 14 / 28**; produced-witness debt **5**; M3 packages **44**.
-- Record: `Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md`.
+- Record: `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md`.
 
 ## 2026-08-26 — `M3-CP4c-0-TB-R5`: 338/F3 green; H1 proves sparse A1 disagreement; Q8 remains red
 

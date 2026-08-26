@@ -50,7 +50,7 @@ H1 is **PASS / non-gating** and published the decisive A1-only census: **390 vio
   by a matching that contradicts the geometry. One edge × two directions = **exactly the 2 observed**.
   H-A and H-C independently re-confirmed excluded; **H-B undecided**, and the brief's fan-based clause
   against it is **withdrawn**. Record:
-  `Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md`.
+  `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md`.
 - [ ] `M3-CP4c-0-CB6` — **EXACT NEXT.** Code + Build only, measures **J0–J7**, **diagnostic-only — no
   production semantics change.** **J1 is the cycle's point:** decompose the published lift into
   `matching`, `rawGauge[source]`, `rawGauge[target]` per violation, plus singular-vertex incidence and

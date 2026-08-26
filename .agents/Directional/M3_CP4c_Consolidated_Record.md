@@ -20,7 +20,8 @@ record. No checkpoint is closed by this document, and none may be.
 | `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` | Amendment 7; measures G0–G8 |
 | `Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` | measures H0–H7 that prescribed CB5/TB-R5 |
 | `Architecture_M3_CP4c0_TB_R5_Artifact_Only_Test_Benchmark_Report.md` | current immutable TB-R5 evidence |
-| `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` | exact-next independent review brief |
+| `Architecture_M3_CP4c0_TB_R5_Review_Plan.md` | independent review brief |
+| `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` | completed independent review record; J0–J7 authority |
 | `Architecture_M3_CP4c*_Required_Green_Selector.txt`, `..._Non_Gating_Diagnostic_Selector.txt` | selector authority |
 
 **Retired-provenance convention.** A citation elsewhere naming any document in §5's retirement list

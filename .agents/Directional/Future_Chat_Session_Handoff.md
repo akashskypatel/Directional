@@ -85,8 +85,8 @@ gating without a review recording why its precondition is now independently esta
 ## Mandatory next turn — `M3-CP4c-0-CB6` — EXACT NEXT / Code + Build, measures J0–J7 (diagnostic-only)
 
 `M3-CP4c-0-TB-R5-REVIEW-PLAN` is **COMPLETE**. Its record is
-`Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md` — read it first. (It is filed under that name
-because the *brief* occupies `…_TB_R5_Review_Plan_Independent_Review.md`; see measure J6.)
+`Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` — read it first. The brief is
+`Architecture_M3_CP4c0_TB_R5_Review_Plan.md`; J6 restores the normal brief/review naming convention.
 
 **H1's mechanism is correct — its population is not.** The census was verified in source: it applies the
 published `signedLift` per Amendment 7 and reads `d[opp]` on each face's own canonical key. The

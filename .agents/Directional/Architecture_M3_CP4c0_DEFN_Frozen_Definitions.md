@@ -49,7 +49,7 @@
 >
 > **Amendment history:** 1–5 issued after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`; 8 after `TB-R5`.
 > The next turn is **`M3-CP4c-0-CB6`**, measures **J0–J7**, in
-> `Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md` §10.
+> `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` §10.
 
 ---
 
@@ -479,7 +479,7 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > branch must be conditional.
 
 > **AMENDMENT 8 — the cross-edge flow invariant audits A1's INPUT as much as its composition**
-> (`Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md` §8). The A1-only census added by measure H1
+> (`Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` §8). The A1-only census added by measure H1
 > reported 390 disagreements, and the four-triangle fan's contribution proved to be a **fixture
 > artifact**: its census field leaves the direction vectors globally constant and *imposes*
 > `matching = ±1` on one edge, so the published lift is correct (`+1 + 0 − 1 = 0`) and the disagreement is

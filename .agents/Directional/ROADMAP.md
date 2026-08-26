@@ -123,7 +123,7 @@ particular are exactly as amended. **Amendment 6** now defines "observable" by m
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
 
 **CB5 → TB-R5 delivered the census, and `M3-CP4c-0-TB-R5-REVIEW-PLAN` closed on 2026-08-26**
-(`Architecture_M3_CP4c0_TB_R5_Independent_Review_Record.md`). H1 ran and reported **390 violations /
+(`Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md`). H1 ran and reported **390 violations /
 4224 pairs**. Review verified the census's *mechanism* in source — it applies the published `signedLift`
 per Amendment 7 and reads the right coordinates — and then corrected its *population*:
 
