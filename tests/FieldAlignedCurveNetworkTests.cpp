@@ -2774,7 +2774,7 @@ std::optional<std::vector<VertexFanTransportStep>> walk_complete_vertex_fan(
         static_cast<int>(sourceVertex.index()), nextVertex,
         static_cast<std::size_t>(mesh.V.rows()));
     if (!edge.has_value()) return std::nullopt;
-    const int edgeRow = source_edge_index(mesh, *edge);
+    const int edgeRow = source_edge_index(mesh, edge.value());
     if (edgeRow < 0 || mesh.EF(edgeRow, 0) < 0 || mesh.EF(edgeRow, 1) < 0) {
       return std::nullopt;
     }
@@ -2789,7 +2789,7 @@ std::optional<std::vector<VertexFanTransportStep>> walk_complete_vertex_fan(
     const SourceFaceTopologyKey nextFace = topology_face(
         mesh.F(nextRow, 0), mesh.F(nextRow, 1), mesh.F(nextRow, 2),
         static_cast<std::size_t>(mesh.V.rows()));
-    const auto directed = topology.transport(*edge, currentFace, nextFace);
+    const auto directed = topology.transport(edge.value(), currentFace, nextFace);
     if (!directed.has_value()) return std::nullopt;
 
     walk.push_back(
