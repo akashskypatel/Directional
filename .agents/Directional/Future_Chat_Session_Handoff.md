@@ -82,51 +82,17 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-CB7` — EXACT NEXT / Code + Build, measures K0–K7 (diagnostic-only)
+## Mandatory next turn — `M3-CP4c-0-TB-R7` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R6-REVIEW-PLAN` is **COMPLETE**. Its record is
-`Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md` — read it first.
+`M3-CP4c-0-CB7` is **COMPLETE / BUILD GREEN**. Final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c` contains only the independent-review-authorized K0–K7 diagnostic/contract-control series. There is **no production semantic change**: no fixture or selector edit, no tolerance retune, no tangency threshold, and no T6/Q8 weakening.
 
-**The root cause is identified, and it is a contract/model gap, not an implementation defect.**
+Authoritative compile-only run/job `33018117005 / 98341565781` checked out exact source `077462da156c3e2dfbbc6867fc10d3e4442d853c` and compiled/linked all eight standard targets. Preflight/build exit `0`; all packaged source-status snapshots are empty; `runtimeExecution=false`; no Directional test, benchmark, generated discovery command, CLI, fuzzer, or custom input executed. Immutable package `9625495708` has GitHub ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a` and packaged source archive SHA-256 `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`; compile-log artifact `9625496280` has ZIP SHA-256 `e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`.
 
-The review reproduced the sphere's census from the committed `.obj` and `.rawfield` alone — no product
-code — and obtained **exactly 144 directed disagreements**, matching the runtime figure. The cause is
-**near-tangency**: the tangency ratio `min(|d_opp| / max|d|)` has median **0.0218** across the 144
-disagreeing pairs and **0.9233** across the 1008 agreeing ones, with every disagreement at or below
-**0.2004**. The direction runs nearly parallel to the shared edge; the field's own rotation across that
-edge (≈ 23°) flips the small perpendicular component; **both faces then correctly compute "outflow"**.
+A first compile-only attempt on source `6341b13c708f98208eece40dcccea5806a97b0c7` found one bounded diagnostic API misuse in the new K3 holonomy census: `DomainResult<SourceVertexId>` was dereferenced even though it exposes `.value()`. The one-line correction is the sole repair between that source and final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`. It changes no diagnostic contract or product semantics.
 
-**At the live locus every published term is independently verified correct** — `matching = 0` is
-geometrically right (nearest target raw index **23.7°**, next **66.3°**); `0 + 1 − 3 ≡ 2` reproduces the
-published `signedLift = 2`; both gauges map their semantic branch to raw index 0; both published `dbary`
-triples reproduce to **10 decimal places**; and all 288 interior edges are normal adjacency, none folded.
-**There is nothing in A1 to fix.**
+Read `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Plan.md` first and consume **only** package `9625495708`. Extract artifacts mode-preservingly; do not use Python `zipfile.extractall` for executable payloads and do not repair mode bits. Re-prove package/source integrity and the unchanged 338/316/328 selector hashes before runtime. Execute the frozen 338 gate in exact order, F3, G5, K1/H1, K2, J3/K3 holonomy, and conditional Q8 exactly as specified. K1–K3 are non-gating diagnostics. **Q8 is expected to remain RED at criterion 2.**
 
-**Three standing readings are withdrawn.** (1) The live locus does **not** indict
-`build_branch_transports` — its composition is arithmetically correct. (2) There are **not two classes**;
-the unequal-gauge and equal-gauge/lift-0 populations are one near-tangency phenomenon — that is the
-"lowest common invariant" the TB report asked for. (3) J3's **524/524 does not exclude H-B**:
-`independent_edge_measurement` re-implements **principal matching**, the algorithm H-B suspects, so it is
-an implementation cross-check, not an aliasing test. (H-B *is* excluded — by direct measurement at the
-live locus, not by J3.)
-
-**Amendment 9** corrects the contract: `BranchTransportFlowDisagreement` is a **typed grazing
-observation**, not an invariant violation; **no tolerance may be introduced to classify grazing** (the
-distributions overlap — a cutoff would be tolerance-as-ownership, forbidden by `DESIGN.md` §6.3 and
-already removed twice at cost); and **`DESIGN.md` §4.5 does not define what a trace does at an edge the
-neighbouring face's direction also exits.** That gap is the substantive open question.
-
-**Measures K0–K7 are diagnostic and definitional.** K1 establishes the tangency separation at runtime so
-it is not review-only; K2 measures what each candidate tracing model would cost on the sphere; K3 retires
-J3's aliasing claim and adds a **holonomy** oracle that principal matching cannot alias past; K4 strips
-the misleading owner labels from H1's classifier (they routed the last report to a wrong conclusion); K6
-fixes the staged-payload transport, which has now cost two consecutive cycles (line endings, then
-`zipfile.extractall` dropping mode bits).
-
-**K7 freezes the ordering: measure, then define, then implement.** After CB7/TB-R7, the next turn is
-**`M3-CP4c-0-DEFN-2`**, a definition turn that closes the §4.5 grazing gap on K2's evidence and amends Q8
-**only if** the chosen model makes 24 traces unreachable, with reasons recorded. **Do not plan the next
-cycle as a fix, and do not plan it as a Q8 close.**
+**K7 remains binding:** after a valid TB-R7, the successor is `M3-CP4c-0-DEFN-2`, which closes the `DESIGN.md` §4.5 grazing model gap from measured evidence. Do not jump to a production-fix CB or enter CP4c-1/2/3.
 
 ---
 
@@ -145,6 +111,16 @@ Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Report.md` and `A
 **Turn boundary:** independent review + planning only. Execute no Directional runtime, test, benchmark, configure, compile, relink, repair, or generated discovery; mutate no product/test/fixture/selector/tolerance/build configuration; do not enter CP4c-1/2/3.
 
 ## Current authority
+
+### M3-CP4c-0 CB7 — current build authority
+
+- semantic source / immutable package: `077462da156c3e2dfbbc6867fc10d3e4442d853c / 9625495708`;
+- package ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a`; source archive `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`;
+- authoritative compile-only run/job: `33018117005 / 98341565781`;
+- compile log `9625496280 / e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`;
+- eight standard targets compiled/linked; preflight/build exit 0; all source-status snapshots empty;
+- `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
+- K0–K7 diagnostic/contract-control only; no production semantics/fixture/selector/tolerance/T6/Q8 change.
 
 ### M3-CP4c-0 TB-R6 — COMPLETE / VALID SEMANTIC RED
 
@@ -165,18 +141,18 @@ CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains unaccepted because binding Q8 criterion 2 is red. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **45**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains unaccepted because binding Q8 criterion 2 is red. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **46**.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
 - CP4ab remains latest accepted runtime authority at 316/316.
-- CP4c-0 remains OPEN/unaccepted: TB-R6 gate 338/338 and F3 2/2 are green, but Q8 criterion 2 remains red.
-- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable. H-A/H-C remain excluded; J3 excludes current legitimate matching-aliasing as the live mechanism; edge `6-8` now localizes to unequal-gauge A1 composition, while a separate equal-gauge flow-classification residual remains for review.
+- CP4c-0 remains OPEN/unaccepted: CB7 is BUILD GREEN, but the binding Q8 criterion 2 remains red until the frozen TB-R7 evidence and subsequent DEFN-2 resolve the grazing model question.
+- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable. The TB-R6 independent review supersedes the earlier owner split: the legitimate H1 disagreements form one near-tangency discretization phenomenon; K1–K3 in TB-R7 measure that regime without assigning a production owner.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable; it executed no Directional runtime.
 - CP4c-1 remains blocked; CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **45**.
-- Exact next is **`M3-CP4c-0-TB-R6-REVIEW-PLAN`**. Do not implement a correction before that review.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **46**.
+- Exact next is **`M3-CP4c-0-TB-R7`** on immutable package `9625495708`. After a valid TB-R7, proceed to `M3-CP4c-0-DEFN-2`; do not jump to a production correction.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

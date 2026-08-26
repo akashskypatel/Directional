@@ -1,20 +1,21 @@
 # M3-CP4c-0-TB-R7 — Artifact-Only Test + Benchmark Plan
 
-**Status:** FROZEN BY `M3-CP4c-0-CB7`; execute only after the CB7 compile-only package is verified.
+**Status:** EXACT NEXT. `M3-CP4c-0-CB7` is COMPLETE / BUILD GREEN.
 **Turn boundary:** Test + Benchmark only; immutable artifact execution, no rebuild and no repair.
 **Purpose:** measure K1–K3 from the TB-R6 independent review, confirm K4/K5 diagnostic interpretation, and deliver evidence for `M3-CP4c-0-DEFN-2`. This is **not** a Q8-closure attempt. Q8 is expected to remain red at criterion 2 because CB7 changes no production semantics.
 
 ## 1. Frozen authority and prohibited actions
 
-Before TB-R7 execution, copy the exact successful CB7 compile authority from the CB7 closeout report into the execution record:
+Frozen CB7 authority:
 
-- semantic source SHA;
-- authoritative compile-only run/job;
-- immutable result/package artifact ID and GitHub ZIP SHA-256;
-- packaged source-archive SHA-256;
-- compile-log artifact ID and SHA-256.
+- semantic source: `077462da156c3e2dfbbc6867fc10d3e4442d853c`;
+- authoritative compile-only run/job: `33018117005 / 98341565781`;
+- immutable result/package artifact: `9625495708`;
+- package GitHub ZIP SHA-256: `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a`;
+- packaged source archive SHA-256: `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`;
+- compile-log artifact: `9625496280` / `e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`.
 
-Consume **only** that immutable CB7 package. Before any generated Directional binary runs, verify:
+Consume **only** package `9625495708`. Before any generated Directional binary runs, verify:
 
 1. package outer SHA-256 and recursive `SHA256SUMS`;
 2. exact packaged semantic source SHA;

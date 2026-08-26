@@ -173,7 +173,19 @@ Authoritative compile-only run/job `33002848081 / 98288918300` checked out exact
 
 A first control `33006048971 / 98300014224` is resolved orchestration-only: Python ZIP extraction lost executable modes and the first binary launch failed before Directional runtime. The semantic retry used ordinary `unzip` without package repair.
 
-**Accounting after TB-R6:** stable regressions **42 / 14 / 28**, debt **5**, packages **45**, latest accepted CP4ab 316/316. Exact next is independent `M3-CP4c-0-TB-R6-REVIEW-PLAN` under `Architecture_M3_CP4c0_TB_R6_Review_Plan.md`; CP4c-1/2/3 remain blocked.
+**Accounting after TB-R6:** stable regressions **42 / 14 / 28**, debt **5**, packages **45**, latest accepted CP4ab 316/316. The subsequent independent review identifies the disagreements as a near-tangency discretization phenomenon and freezes diagnostic-only K0–K7 for CB7; CP4c-1/2/3 remain blocked.
+
+### CB7 retained Code + Build report and TB-R7 plan
+
+**Build evidence.** CB7 final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c` implements only review-authorized K0–K7 diagnostics and contract/control-plane hygiene. K1 publishes exact per-face tangency ratios, lossless dyadic angle proxy serialization and opposite-coordinate ranks for both disagreement and agreement distributions; K2 publishes prescribed-sphere grazing continuation-cost evidence; K3 correctly relabels J3 as a principal-matching implementation cross-check and adds independent vertex-fan holonomy; K4 removes misleading owner labels; K5 records the piecewise-constant discretization assumption; K6 requires mode-preserving TB extraction; K7 freezes TB-R7 → `M3-CP4c-0-DEFN-2`. CB7 makes **no production semantic change** and does not edit the fixture, selector, tolerances, T6, or Q8.
+
+A first compile-only attempt on source `6341b13c708f98208eece40dcccea5806a97b0c7` exposed one test-diagnostic API misuse in K3 (`DomainResult<SourceVertexId>` dereferenced instead of using `.value()`). The bounded one-line repair produced final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c` without changing diagnostic meaning.
+
+Authoritative compile-only run/job `33018117005 / 98341565781` checked out exact semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`, configured Release/static/PRE_TEST out of tree, and compiled/linked the eight standard targets. Preflight and full build exit `0`; every packaged source-status snapshot is empty; `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed. Result/package artifact `9625495708` has GitHub ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a` and packaged source archive SHA-256 `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`; compile-log artifact `9625496280` has ZIP SHA-256 `e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`.
+
+**TB-R7 / K7 authority.** `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Plan.md` consumes only package `9625495708`. It requires mode-preserving extraction and immutable package/source/selector verification, then runs the unchanged 338 gate, F3, G5, K1/H1, K2, J3/K3 holonomy, and conditional Q8. K1–K3 are non-gating diagnostics. **Q8 is expected to remain RED at criterion 2** because CB7 contains no production fix. After a valid TB-R7, the frozen successor is `M3-CP4c-0-DEFN-2`.
+
+**Accounting after CB7:** stable regressions remain **42 / 14 / 28**, produced-witness debt **5**, M3 packages **46**. Latest accepted runtime remains CP4ab 316/316. Exact next: `M3-CP4c-0-TB-R7`; CP4c-1/2/3 remain blocked.
 
 ---
 

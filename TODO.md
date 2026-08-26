@@ -21,11 +21,13 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-CB7` — EXACT NEXT / Code + Build, measures K0–K7 (diagnostic-only)
+## Current focus — `M3-CP4c-0-TB-R7` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED** on authoritative artifact-only run/job `33006282429 / 98300813772`, control `a9ae307590b0cc23080452c4a5013674efc48fc2`, consuming only CB6 package `9619352525`. Result artifact `9620769314` has ZIP SHA-256 `fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic artifact `9620770049` has ZIP SHA-256 `ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`.
+`M3-CP4c-0-CB7` is **COMPLETE / BUILD GREEN**. Final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c` contains only the review-authorized K0–K7 diagnostic/contract-control series; it makes **no production semantic change**. Authoritative compile-only run/job `33018117005 / 98341565781` compiled and linked all eight standard targets. Preflight/build exit `0`; all packaged source-status snapshots are empty; `runtimeExecution=false`. Immutable package `9625495708` has ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a`; packaged source archive `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`; compile log `9625496280` / `e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`.
 
-Frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/328 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating. H1/J1 reproduces the corrected legitimate population exactly: **388 directed / 194 distinct** disagreements after excluding the fan's 2/1 fixture artifact. J3 independently finds **524/524 legitimate interior transitions agree with geometry**; its only mismatch is the excluded fan edge `1-4`. The live Q8 edge `6-8` is `matching=0`, raw gauges `1 → 3`, `signedLift=2`, so the frozen table points directly at **A1 gauge composition in `build_branch_transports`** rather than field-matching aliasing. A separate **254 directed / 127 distinct** legitimate class has `matching=0`, equal gauges, lift 0 and points at **A1 flow classification / direction publication in `build_boundary_pairing`**. Q8 is CREDITABLE / RED at criterion 2 as expected.
+The first compile-only attempt on semantic source `6341b13c708f98208eece40dcccea5806a97b0c7` exposed one bounded test-diagnostic API misuse (`DomainResult` dereferenced instead of `.value()`). The one-line repair produced `077462da156c3e2dfbbc6867fc10d3e4442d853c` and the authoritative green compile above. No runtime was executed during either compile attempt.
+
+Read `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Plan.md` and consume **only** package `9625495708`. TB-R7 must use mode-preserving extraction, re-prove the unchanged 338 selector and package identity, then execute the frozen 338 gate, F3, G5, K1/H1, K2, J3/K3 holonomy, and conditional Q8 exactly as specified. K1–K3 remain diagnostic/non-gating. Q8 is **expected to remain RED at criterion 2** because CB7 changes no production semantics. After a valid TB-R7, the frozen successor is **`M3-CP4c-0-DEFN-2`**; do not enter CP4c-1/2/3.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -54,19 +56,16 @@ Frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/
   reproduces the lift; both `dbary` triples match to 10 dp; mesh adjacency sound). **One class, not
   two.** Amendment 9 issued. Record:
   `Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md`.
-- [ ] `M3-CP4c-0-CB7` — **EXACT NEXT.** Code + Build only, measures **K0–K7**, **diagnostic-only — there
-  is nothing in A1 to fix.** K1 publishes the tangency decomposition at runtime; K2 measures what each
-  §6 model option would cost on the sphere; K3 retires J3's aliasing claim and adds a holonomy oracle;
-  K4 removes the misleading owner labels from H1's classifier; K6 fixes the staged-payload transport
-  (second cycle lost to it). Compile only — **execute nothing.**
-- [ ] `M3-CP4c-0-DEFN-2` — **NEW, follows CB7/TB-R7.** Closes the `DESIGN.md` §4.5 gap: what a trace does
+- [x] `M3-CP4c-0-CB7` — **COMPLETE / BUILD GREEN.** Semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`; package `9625495708`. K0–K7 diagnostic/contract-control only; no production semantics; all eight standard targets compiled/linked; `runtimeExecution=false`.
+- [ ] `M3-CP4c-0-TB-R7` — **EXACT NEXT.** Artifact-only execution from package `9625495708` under the frozen TB-R7 plan; no rebuild or repair.
+- [ ] `M3-CP4c-0-DEFN-2` — **follows valid TB-R7.** Closes the `DESIGN.md` §4.5 gap: what a trace does
   at an edge the neighbouring face's direction also exits. Amends Q8 **only if** the chosen model makes
   24 traces unreachable, and only with reasons recorded. **This is a definition turn, not a patch.**
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **45**.
+Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **46**.
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

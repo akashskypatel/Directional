@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-CB7`: K-series grazing diagnostics implemented; compile-only BUILD GREEN
+
+`M3-CP4c-0-CB7` is **COMPLETE / BUILD GREEN**. This was Code + Build only; no Directional runtime, GoogleTest identity, semantic benchmark, performance benchmark, generated discovery command, CLI, or fuzzer executed.
+
+- Final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c` implements only review-authorized **K0–K7** diagnostic/contract-control work: K1 publishes exact per-face tangency ratios, dyadic angle proxy and opposite-coordinate rank distributions; K2 publishes the prescribed-sphere grazing continuation-cost census; K3 relabels J3 as a principal-matching implementation cross-check and adds the independent vertex-fan holonomy census; K4 removes owner labels from H1's grazing classification; K5 records the piecewise-constant discretization assumption; K6 freezes mode-preserving artifact extraction; K7 freezes TB-R7 → `M3-CP4c-0-DEFN-2`. **No production semantics, fixture, selector, tolerance, T6, or Q8 contract was changed.**
+- One compile-only diagnostic implementation defect was found on source `6341b13c708f98208eece40dcccea5806a97b0c7`: `DomainResult<SourceVertexId>` was dereferenced with `*sourceVertex` even though the wrapper exposes `.value()`. The bounded one-line repair produced final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`; no diagnostic meaning changed.
+- Authoritative compile-only run/job `33018117005 / 98341565781` compiled and linked all eight standard targets from exact source `077462da156c3e2dfbbc6867fc10d3e4442d853c`. Preflight and full build exit codes are `0`; every packaged source-status snapshot is empty; the package records `runtimeExecution=false` and `turnBoundary=Code+Build-only`.
+- Immutable result/package artifact `9625495708` has GitHub ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a`. Its packaged source archive has SHA-256 `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`. Compile-log artifact `9625496280` has ZIP SHA-256 `e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`.
+- Frozen selector hashes are unchanged: 338 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`, first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`, first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`.
+- Stable regression accounting remains **42 / 14 / 28**; produced-witness debt **5**; M3 packages **46**. Latest accepted runtime remains CP4ab **316/316**.
+- **Exact next:** artifact-only `M3-CP4c-0-TB-R7` on package `9625495708`. Q8 is still expected to remain red at criterion 2; after a valid TB-R7, the frozen successor is `M3-CP4c-0-DEFN-2`.
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R6-REVIEW-PLAN`: root cause identified — near-tangency, not an A1 defect; Amendment 9
 
 **Independent review and planning only. No runtime, build, benchmark, product source, test source,
