@@ -1,0 +1,39 @@
+name: M3 CP4c0 TB-R5 Closeout Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0-tb-r5-closeout-drive.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c0-tb-r5-closeout-drive-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c0-tb-r5-closeout-drive
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 10rjE3IxIPUkTciqbMTzCVo3adUfjGapJ
+      patch_sha256: 62f3a808e7e6a0bc3e65467ef4e8ebb216cd72be6325452fb7b06e2b3fc3f7d2
+      base_sha: 3f9864fddef696dc7d95084fdd41b680a78f5b37
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close out M3-CP4c-0-TB-R5"
+      retention_days: 7
+    secrets: inherit
