@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R6`: 338/338 green; J3 clears legitimate matching; Q8 remains semantic red
+
+`M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED**. Artifact-only Test + Benchmark; no configure, compile, relink, repair, generated discovery, performance benchmark, or source/test/fixture/selector/package mutation.
+
+- Sole semantic run/job `33006282429 / 98300813772`, control `a9ae307590b0cc23080452c4a5013674efc48fc2`, consumed immutable CB6 package `9619352525` at semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Result `9620769314 / fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic `9620770049 / ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`; postflight PASS.
+- Frozen selector **338/338 PASS**, accepted **316/316**, first-328 **328/328**, F3 **2/2**. G5/H1/J3 PASS/non-gating. Q8 is CREDITABLE / RED at criterion 2; sphere still rejects `BranchTransportFlowDisagreement` at edge `6-8`, branch `3→1`, lift 2.
+- H1/J1 reproduces corrected legitimate population **388 directed / 194 distinct**, excluding the fan's 2/1 fixture artifact. Legitimate decomposition: matching-nonzero 48/24; matching-zero unequal-gauge 86/43; matching-zero equal-gauge lift-zero 254/127.
+- J3 independently proves **524/524 legitimate interior transitions agree with geometry**; only the excluded fan edge `1-4` disagrees. Thus current legitimate H-B matching aliasing is not supported. Live edge `6-8` has `matching=0`, raw gauges `1→3`, lift 2, selecting the frozen A1 gauge-composition row; the 254/127 equal-gauge residual selects the boundary-pairing flow-classification row.
+- First control attempt `33006048971 / 98300014224` is resolved orchestration/non-stable: Python ZIP extraction lost executable modes and the first binary launch failed before Directional runtime. Retry changed only extraction to ordinary `unzip`; no chmod/package repair.
+- Stable regressions remain **42 / 14 / 28**, debt **5**, M3 packages **45**. Exact next: independent `M3-CP4c-0-TB-R6-REVIEW-PLAN`; no production correction before review.
+
 ## 2026-08-26 — `M3-CP4c-0-CB6`: J-series diagnostics implemented; compile-only BUILD GREEN
 
 `M3-CP4c-0-CB6` is **COMPLETE / BUILD GREEN**. This was Code + Build only; no Directional runtime, GoogleTest identity, semantic benchmark, or performance benchmark executed.

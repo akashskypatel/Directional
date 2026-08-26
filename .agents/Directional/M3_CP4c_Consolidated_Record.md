@@ -165,6 +165,16 @@ Authoritative compile-only run/job `33002848081 / 98288918300` checked out exact
 
 **Accounting after CB6:** stable regressions remain **42 / 14 / 28**, produced-witness debt **5**, M3 packages **45**. Latest accepted runtime remains CP4ab 316/316. Exact next: `M3-CP4c-0-TB-R6`; CP4c-1/2/3 remain blocked.
 
+### TB-R6 retained artifact-only Test + Benchmark report and review handoff
+
+**Runtime evidence.** TB-R6 authoritative control/run/job `a9ae307590b0cc23080452c4a5013674efc48fc2 / 33006282429 / 98300813772` consumed only CB6 package `9619352525` at semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Result artifact `9620769314` / `fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic `9620770049` / `ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`. Frozen gate 338/338, accepted prefix 316/316, first-328 328/328, F3 2/2; G5/H1/J3 PASS non-gating. Q8 is creditable and RED at criterion 2. Postflight PASS; all mutation/build flags false.
+
+**J1/H1 + J3 decision evidence.** H1 reproduces the reviewed legitimate population exactly: **388 directed / 194 distinct**, excluding fan 2/1. Legitimate decomposition: matching-nonzero 48/24, matching-zero unequal-gauge 86/43, matching-zero equal-gauge lift-zero 254/127. J3 independently checks **524 legitimate interior transitions and finds 524/524 agreement with geometry**; the only J3 mismatch is the excluded fan edge `1-4`. The live Q8 edge `6-8` is `matching=0`, raw gauges `1→3`, `signedLift=2`, so the frozen table points at **A1 gauge composition in `build_branch_transports`** rather than matching aliasing. The equal-gauge 254/127 residual separately points at **A1 flow classification / direction publication in `build_boundary_pairing`** and remains for independent adjudication.
+
+A first control `33006048971 / 98300014224` is resolved orchestration-only: Python ZIP extraction lost executable modes and the first binary launch failed before Directional runtime. The semantic retry used ordinary `unzip` without package repair.
+
+**Accounting after TB-R6:** stable regressions **42 / 14 / 28**, debt **5**, packages **45**, latest accepted CP4ab 316/316. Exact next is independent `M3-CP4c-0-TB-R6-REVIEW-PLAN` under `Architecture_M3_CP4c0_TB_R6_Review_Plan.md`; CP4c-1/2/3 remain blocked.
+
 ---
 
 ## 4. CP4c-1 — evidence (OPEN, blocked on CP4c-0)

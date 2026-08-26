@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-26 (CP4c-0 TB-R5: gate **338/338 GREEN**, F3 2/2, G5 PASS, H1 census PASS/non-gating at **390/4224**; Q8 still **RED at criterion 2**. Review corrected the census population — the fan's violations are a fixture artifact — and froze **J0–J7**, diagnostic-only; exact next `M3-CP4c-0-CB6`).
+**Status date:** 2026-08-26 (CP4c-0 TB-R6: gate **338/338 GREEN**, F3 2/2, H1/J3 diagnostics complete; J3 legitimate **524/524** geometry agreement, live edge `6-8` localizes to unequal-gauge A1 composition; Q8 remains **RED at criterion 2**; exact next independent `M3-CP4c-0-TB-R6-REVIEW-PLAN`).
 
 ---
 
@@ -70,7 +70,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R5: gate 338/338 GREEN, Q8 RED at criterion 2; H1 census delivered** — the sphere still publishes no network (`BranchTransportFlowDisagreement`, edge `6-8`). H1's A1-only census reports **390/4224**, but review corrected the population: the four-triangle fan's violations are a **fixture artifact** (its field keeps directions constant and *imposes* `matching=±1`, so the published lift is correct and the disagreement is forced), and every count is doubled by the census's two-direction loop. **H-A and H-C excluded; H-B undecided** — the lift is a sum of three unobserved terms, so no lift histogram can decide it. Next `M3-CP4c-0-CB6` under J0–J7 — **decompose the lift**, still not a correction |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R6: gate 338/338 GREEN, Q8 RED criterion 2; J1/J3 localize live edge `6-8` to unequal-gauge A1 composition** — legitimate H1 388 directed / 194 distinct; J3 matching-vs-geometry 524/524; separate equal-gauge residual 254/127 awaits independent review. Exact next `M3-CP4c-0-TB-R6-REVIEW-PLAN` |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |

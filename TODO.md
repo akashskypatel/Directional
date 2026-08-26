@@ -21,11 +21,11 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R6` — EXACT NEXT / artifact-only Test + Benchmark
+## Current focus — `M3-CP4c-0-TB-R6-REVIEW-PLAN` — EXACT NEXT / independent review + planning
 
-`M3-CP4c-0-CB6` is **COMPLETE / BUILD GREEN** at semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Authoritative compile-only run/job `33002848081 / 98288918300` produced immutable package artifact `9619352525` with GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672` and packaged source archive SHA-256 `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`; compile-log artifact `9619353059` has ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`. Preflight and build both exited `0`, all eight standard targets compiled/linked, every packaged source-status snapshot is empty, and the package explicitly records `runtimeExecution=false` / `turnBoundary=Code+Build-only`. No Directional test, benchmark, or generated runtime executed.
+`M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED** on authoritative artifact-only run/job `33006282429 / 98300813772`, control `a9ae307590b0cc23080452c4a5013674efc48fc2`, consuming only CB6 package `9619352525`. Result artifact `9620769314` has ZIP SHA-256 `fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic artifact `9620770049` has ZIP SHA-256 `ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`.
 
-CB6 implements only the review-authorized diagnostic J-series: J1 decomposes H1 violations into `matching`, source/target raw gauges, published lift, singular incidence, and distinct counts; J2 explicitly classifies the synthetic four-triangle fan as excluded fixture artifact; J3 adds the independent matching-versus-geometry census; J4 publishes matching provenance; J5 pins staged payload bytes against line-ending conversion; J6 restores brief/review naming; J7 freezes the successor TB-R6 plan. **J0's no-production-semantics-change boundary is preserved.** Frozen selector authority remains unchanged.
+Frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/328 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating. H1/J1 reproduces the corrected legitimate population exactly: **388 directed / 194 distinct** disagreements after excluding the fan's 2/1 fixture artifact. J3 independently finds **524/524 legitimate interior transitions agree with geometry**; its only mismatch is the excluded fan edge `1-4`. The live Q8 edge `6-8` is `matching=0`, raw gauges `1 → 3`, `signedLift=2`, so the frozen table points directly at **A1 gauge composition in `build_branch_transports`** rather than field-matching aliasing. A separate **254 directed / 127 distinct** legitimate class has `matching=0`, equal gauges, lift 0 and points at **A1 flow classification / direction publication in `build_boundary_pairing`**. Q8 is CREDITABLE / RED at criterion 2 as expected.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -38,20 +38,21 @@ CB6 implements only the review-authorized diagnostic J-series: J1 decomposes H1 
 - [x] `M3-CP4c-0-TB-R3` — COMPLETE / VALID SEMANTIC RED. 336/338; F3 2/2.
 - [x] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — COMPLETE. Both reds test-side; Amendment 7; G0–G8.
 - [x] `M3-CP4c-0-CB4` — COMPLETE / BUILD GREEN. Package `9591540182`; test-side corrections only.
-- [x] `M3-CP4c-0-TB-R4` — COMPLETE / VALID SEMANTIC RED. **338/338 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating; Q8 CREDITABLE / RED because the sphere does not publish a network.
-- [x] `M3-CP4c-0-TB-R4-REVIEW-PLAN` — COMPLETE. Symptom proved; mechanism reduced to H-A/H-B/H-C; H0–H7 frozen.
-- [x] `M3-CP4c-0-CB5` — **COMPLETE / BUILD GREEN.** H1 A1-only census identity, H2 published `signedLift`, H3 ordered trace-step history, H4 matching-provenance audit; H5 no-production-change boundary preserved. Package `9601160869`.
-- [x] `M3-CP4c-0-TB-R5` — **COMPLETE / VALID SEMANTIC RED.** Frozen 338/338, F3 2/2, G5 PASS/non-gating; H1 `390/4224`, `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`; Q8 CREDITABLE / RED at criterion 2.
-- [x] `M3-CP4c-0-TB-R5-REVIEW-PLAN` — **COMPLETE.** H1 mechanism valid; fan contribution proved fixture artifact; H-A/H-C excluded; H-B undecided; Amendment 8; J0–J7 frozen. Record: `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md`.
-- [x] `M3-CP4c-0-CB6` — **COMPLETE / BUILD GREEN.** Diagnostic-only J0–J7; semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`; package `9619352525` (`b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`); compile-only run/job `33002848081 / 98288918300`.
-- [ ] `M3-CP4c-0-TB-R6` — **EXACT NEXT.** Consume only CB6 package `9619352525`; execute unchanged 338 gate, F3, G5, decomposed H1, and J3; Q8 is conditional and **expected to remain RED at criterion 2**. Fill the frozen J1/J3 owner decision table. No rebuild or repair.
+- [x] `M3-CP4c-0-TB-R4` — COMPLETE / VALID SEMANTIC RED. 338/338; Q8 RED criterion 2.
+- [x] `M3-CP4c-0-TB-R4-REVIEW-PLAN` — COMPLETE. H0–H7 frozen.
+- [x] `M3-CP4c-0-CB5` — COMPLETE / BUILD GREEN. Package `9601160869`.
+- [x] `M3-CP4c-0-TB-R5` — COMPLETE / VALID SEMANTIC RED. 338/338; H1 delivered.
+- [x] `M3-CP4c-0-TB-R5-REVIEW-PLAN` — COMPLETE. Amendment 8; J0–J7 frozen.
+- [x] `M3-CP4c-0-CB6` — COMPLETE / BUILD GREEN. Package `9619352525`.
+- [x] `M3-CP4c-0-TB-R6` — **COMPLETE / VALID SEMANTIC RED.** 338/338; F3 2/2; J3 legitimate 524/524 geometry agreement; Q8 RED criterion 2.
+- [ ] `M3-CP4c-0-TB-R6-REVIEW-PLAN` — **EXACT NEXT.** Review `Architecture_M3_CP4c0_TB_R6_Review_Plan.md`; no runtime/build/mutation. Adjudicate live-Q8 gauge composition versus the equal-gauge residual and freeze exactly one bounded successor.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. H1 and J3 remain explicitly outside the 338 selector and have no credit. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **45**.
+Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **45**.
 
-**H1 disposition after review — corrected and still unresolved pending TB-R6.** H-A and H-C remain excluded. The fan's 2 directed / 1 distinct disagreement is an excluded fixture artifact, and the lift histogram alone is uninformative about matching. Corrected legitimate population prediction is **388 directed / 194 distinct** across two-ring + prescribed sphere + torus. **Do not attempt a production fix until TB-R6's J1 decomposition and J3 geometry audit fill the frozen decision table with one evidence-supported owner.**
+**TB-R6 disposition.** H-B field-matching/edge-aliasing is weakened to exclusion on the current legitimate witnesses by J3's 524/524 geometry agreement. The live Q8 locus selects the unequal-gauge A1-composition row; the larger equal-gauge/lift-0 residual selects the boundary-pairing row. Do not patch either until the mandatory review proves whether they share one lower invariant and freezes one successor.
 
 ## CP4c documentation — consolidated 2026-08-26
 

@@ -82,45 +82,49 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R6` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-0-TB-R6-REVIEW-PLAN` — EXACT NEXT / independent review + planning
 
-`M3-CP4c-0-CB6` is **COMPLETE / BUILD GREEN**. Semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6` implements the review-authorized J0–J7 diagnostic-only series and no production semantics change. Authoritative compile-only run/job `33002848081 / 98288918300` produced immutable package `9619352525` with GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`; its packaged source archive hashes to `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`. Compile-log artifact `9619353059` has ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`. Preflight/build exit `0`; all eight standard targets compiled and linked; every packaged source-status snapshot is empty; `runtimeExecution=false`; no Directional runtime/test/benchmark executed.
+`M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED**. Authoritative artifact-only control/run/job `a9ae307590b0cc23080452c4a5013674efc48fc2 / 33006282429 / 98300813772` consumed only CB6 package `9619352525` from semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Result artifact `9620769314` has ZIP SHA-256 `fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic artifact `9620770049` has ZIP SHA-256 `ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`.
 
-Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Plan.md` first and consume **only** package `9619352525`. TB-R6 must verify package/source/selector/fixture identity before runtime, execute the unchanged 338 selector in exact order with one fresh process per identity, then F3, G5, decomposed H1, J3, and conditional Q8 exactly as frozen. H1/J3 are non-gating diagnostics. The four-triangle fan remains emitted but excluded from production-reasoning totals. Q8 is **expected to remain RED at criterion 2** because J0 prohibited a production fix. The turn's deliverable is the frozen J1/J3 decision table naming exactly one owner or another bounded diagnostic if ambiguity remains.
+Frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/328 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating. H1/J1 reports the predicted **388 directed / 194 distinct legitimate disagreements** and separately excludes the fan's 2/1 fixture artifact. J3 is **524/524 agreement on legitimate interior transitions**; its only mismatch is the excluded fan edge. At the live sphere edge `6-8`, H1 reports `matching=0`, raw gauges `1 → 3`, `signedLift=2`, while J3 confirms declared matching agrees with geometry. Under the frozen decision table this points to **A1 gauge composition in `build_branch_transports`** as the live-Q8 owner. A separate **254 directed / 127 distinct** equal-gauge/lift-0 residual points at **A1 flow classification / direction publication in `build_boundary_pairing`**. Q8 remains **CREDITABLE / RED at criterion 2**.
 
-**Turn boundary:** artifact-only Test + Benchmark. Do not configure, compile, link, rebuild, repair, edit source/tests/fixtures/selectors, weaken T6/Q8, retune `kBranchTopologyTolerance`, or enter CP4c-1/2/3.
+Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c0_TB_R6_Review_Plan.md`. The review must re-derive the A1 composition contract, adjudicate whether the unequal-gauge live-Q8 class and equal-gauge residual share one lower invariant, close H-B precisely, and freeze exactly one bounded successor. If the owner cannot be proven statically, freeze another diagnostic-only CB rather than guessing a production fix.
+
+**Turn boundary:** independent review + planning only. Execute no Directional runtime, test, benchmark, configure, compile, relink, repair, or generated discovery; mutate no product/test/fixture/selector/tolerance/build configuration; do not enter CP4c-1/2/3.
 
 ## Current authority
 
-### M3-CP4c-0 CB6 — COMPLETE / BUILD GREEN
+### M3-CP4c-0 TB-R6 — COMPLETE / VALID SEMANTIC RED
 
-- semantic source: `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`;
-- authoritative compile-only run/job: `33002848081 / 98288918300`;
-- immutable package: `9619352525`, GitHub ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`;
-- packaged source archive SHA-256: `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`;
-- compile log artifact: `9619353059`, ZIP SHA-256 `1b2a0ffc9889305ca6a2efa847a2442c941583df01ad94c4c12226aea47be4c4`;
-- preflight/build exit `0`; all eight standard targets compiled/linked; all packaged source-status snapshots empty; `runtimeExecution=false`;
-- J0–J7 are diagnostic-only; no production branch choice, transport equation, matching computation, tolerance, fixture, selector, or acceptance expectation changed;
-- exact next: artifact-only `M3-CP4c-0-TB-R6`.
+- semantic source / immutable package: `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6 / 9619352525`;
+- package ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`; source archive `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`;
+- authoritative control/run/job: `a9ae307590b0cc23080452c4a5013674efc48fc2 / 33006282429 / 98300813772`;
+- result `9620769314 / fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`;
+- diagnostic `9620770049 / ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`;
+- gate 338/338; accepted 316/316; first-328 328/328; F3 2/2; G5/H1/J3 PASS non-gating; Q8 creditable RED criterion 2; postflight PASS;
+- H1 legitimate 388 directed / 194 distinct; J3 legitimate 524/524 geometry agreement; fan excluded 2/1 H1 and 1 J3 mismatch;
+- no configure/compile/relink/repair/generated discovery/performance benchmark and no package/source/test/fixture/selector mutation.
 
-### Latest CP4c-0 runtime evidence — TB-R5 COMPLETE / VALID SEMANTIC RED
+A prior control run `33006048971 / 98300014224` is resolved orchestration-only evidence: Python ZIP extraction lost executable modes and the first binary launch failed with `PermissionError` before any Directional binary executed. The authoritative retry used normal `unzip` without package repair.
 
-TB-R5 remains the latest executed CP4c-0 runtime evidence: frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/328 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating; H1 reported 390 directed disagreements but independent review corrected the legitimate population to **388 directed / 194 distinct**, excluding the fan's fixture artifact. Q8 remains **CREDITABLE / RED at criterion 2**. H-A/H-C are excluded; H-B remains undecided pending CB6's J1/J3 diagnostics in TB-R6.
+### M3-CP4c-0 CB6 — retained build authority
+
+CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run/job `33002848081 / 98288918300`, package `9619352525`, compile log `9619353059`. All eight standard targets compiled/linked with build/preflight exit 0, empty source-status snapshots, and `runtimeExecution=false`.
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. TB-R5 proves the current CP4c-0 prerequisite gate is green but Q8 remains red, so CP4c-0 is still unaccepted. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **45**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains unaccepted because binding Q8 criterion 2 is red. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **45**.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
-- CP4ab remains latest accepted runtime authority at **316/316**.
-- CP4c-0 remains OPEN/unaccepted: TB-R5 gate 338/338 and F3 2/2 are green, but binding Q8 criterion 2 remains red.
-- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable but is now narrowed by H1: H-A and H-C are excluded; H-B matching aliasing remains plausible but unproved, and another sparse A1 inconsistency remains possible.
-- The two self-hosted TB-R5 attempts are orchestration-only pre-runtime failures and are not semantic authorities.
+- CP4ab remains latest accepted runtime authority at 316/316.
+- CP4c-0 remains OPEN/unaccepted: TB-R6 gate 338/338 and F3 2/2 are green, but Q8 criterion 2 remains red.
+- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable. H-A/H-C remain excluded; J3 excludes current legitimate matching-aliasing as the live mechanism; edge `6-8` now localizes to unequal-gauge A1 composition, while a separate equal-gauge flow-classification residual remains for review.
+- `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable; it executed no Directional runtime.
 - CP4c-1 remains blocked; CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **45**.
-- Exact next is **`M3-CP4c-0-TB-R6`**, artifact-only Test + Benchmark. Do not enter CP4c-1/2/3 or a repair turn first.
+- Exact next is **`M3-CP4c-0-TB-R6-REVIEW-PLAN`**. Do not implement a correction before that review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

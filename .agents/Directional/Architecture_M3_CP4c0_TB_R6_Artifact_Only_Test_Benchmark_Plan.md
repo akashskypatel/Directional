@@ -1,6 +1,6 @@
 # M3-CP4c-0-TB-R6 — Artifact-Only Test + Benchmark Plan
 
-**Status:** EXACT NEXT. `M3-CP4c-0-CB6` is COMPLETE / BUILD GREEN.
+**Status:** COMPLETE / VALID SEMANTIC RED. Executed by `33006282429 / 98300813772`; report: `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Report.md`.
 **Turn boundary:** Test + Benchmark only; immutable artifact execution, no rebuild and no repair.
 **Purpose:** execute the J-series diagnostics that decompose the H1 lift and independently audit declared matching against geometry. This turn is **not** a Q8-closure attempt; Q8 is expected to remain red at criterion 2 unless the diagnostic evidence itself contradicts the current state.
 
