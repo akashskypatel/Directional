@@ -1,0 +1,3 @@
+purpose=source-snapshot
+semantic_source_sha=3e8723100ea2423c1f422099782338caf32d86f1
+requested_at=2026-08-26T18:37:00Z
