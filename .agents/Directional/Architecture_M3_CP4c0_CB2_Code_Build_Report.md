@@ -3,6 +3,7 @@
 **Status:** COMPLETE / BUILD GREEN
 **Turn boundary:** Code + Build only; no Directional runtime execution
 **Evidence / semantic source:** `390e65b373063c667e3c3f5e78b74ed9d859093b`
+**Workflow event/control SHA:** `bd4ddf26296c72f3796d6d3f5d1a26c244620a1e` — control-plane trigger authority, distinct from the semantic source above.
 **Exact next:** `M3-CP4c-0-TB-R2`
 
 ## Verification-first result

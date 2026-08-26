@@ -2721,6 +2721,10 @@ std::string exact_rational_locus(
   return value.numerator_string() + "/" + value.denominator_string();
 }
 
+std::string branch_locus(const directional::authority::FieldBranch branch) {
+  return std::to_string(static_cast<unsigned int>(branch.value()));
+}
+
 void append_atlas_error(std::ostringstream &stream,
                         const directional::authority::FieldAtlasBuildError &error) {
   stream << "fieldTransportAtlas=false"
@@ -2761,10 +2765,10 @@ void append_network_error(
            << source_face_locus(*error.relatedSourceFace);
   }
   if (error.branch.has_value()) {
-    stream << ";branch=" << error.branch->value();
+    stream << ";branch=" << branch_locus(*error.branch);
   }
   if (error.relatedBranch.has_value()) {
-    stream << ";relatedBranch=" << error.relatedBranch->value();
+    stream << ";relatedBranch=" << branch_locus(*error.relatedBranch);
   }
   if (error.parameter.has_value()) {
     stream << ";parameter=" << exact_rational_locus(error.parameter->value);
@@ -4075,6 +4079,115 @@ TEST(ResolvedBranchCorrection,
   EXPECT_NE(std::string::npos, emitted.find(";traceSeedVertex=2")) << emitted;
   EXPECT_NE(std::string::npos, emitted.find(";traceSeedSingularity=0"))
       << emitted;
+}
+
+TEST(ResolvedBranchCorrection,
+     NetworkDiagnosticsContainNoControlCharactersForAnyCode) {
+  using Error = directional::geometry::FieldAlignedCurveNetworkError;
+  const std::array<FieldAlignedCurveNetworkErrorCode, 28> codes{{
+      FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding,
+      FieldAlignedCurveNetworkErrorCode::InvalidAtlasBinding,
+      FieldAlignedCurveNetworkErrorCode::DuplicateRailId,
+      FieldAlignedCurveNetworkErrorCode::InvalidRailGeometry,
+      FieldAlignedCurveNetworkErrorCode::MissingMandatoryEdge,
+      FieldAlignedCurveNetworkErrorCode::DuplicateMandatoryEdge,
+      FieldAlignedCurveNetworkErrorCode::ForeignMandatoryEdge,
+      FieldAlignedCurveNetworkErrorCode::MandatoryKindMismatch,
+      FieldAlignedCurveNetworkErrorCode::MandatoryOwnerMismatch,
+      FieldAlignedCurveNetworkErrorCode::InvalidSingularityBinding,
+      FieldAlignedCurveNetworkErrorCode::InvalidSingularityPortCount,
+      FieldAlignedCurveNetworkErrorCode::InvalidSingularityPortOwnership,
+      FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+      FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+      FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventBinding,
+      FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventIncidence,
+      FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+      FieldAlignedCurveNetworkErrorCode::BranchDirectionNotBarycentric,
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationNoOutflow,
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationDegenerateEntry,
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationMinimizerImpossible,
+      FieldAlignedCurveNetworkErrorCode::BranchContinuationOutsideOutflowSet,
+      FieldAlignedCurveNetworkErrorCode::BoundaryPointParameterOutOfRange,
+      FieldAlignedCurveNetworkErrorCode::BoundaryPointEdgeNotIncidentToFace,
+      FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved,
+      FieldAlignedCurveNetworkErrorCode::BranchTransportFlowDisagreement,
+      FieldAlignedCurveNetworkErrorCode::TraceStateCycleDetected,
+      FieldAlignedCurveNetworkErrorCode::TraceStepBudgetExhausted,
+  }};
+  const SourceFaceTopologyKey firstFace = topology_face(0, 1, 2, 4);
+  const SourceFaceTopologyKey secondFace = topology_face(0, 1, 3, 4);
+  const SourceEdgeTopologyKey edge = topology_edge(0, 1, 4);
+  const SourceVertexId sourceVertex = SourceVertexId::from_index(0, 4).value();
+  const SourceVertexId seedVertex = SourceVertexId::from_index(2, 4).value();
+  const HardRailId rail = HardRailId::from_index(0, 1).value();
+  const FieldSingularityId singularity =
+      FieldSingularityId::from_index(0, 2).value();
+  const FieldSingularityId seedSingularity =
+      FieldSingularityId::from_index(1, 2).value();
+
+  for (const FieldAlignedCurveNetworkErrorCode code : codes) {
+    Error error;
+    error.code = code;
+    error.sourceVertex = sourceVertex;
+    error.sourceEdge = edge;
+    error.sourceFace = firstFace;
+    error.relatedSourceFace = secondFace;
+    error.branch = directional::authority::FieldBranch::from_integer(0);
+    error.relatedBranch = directional::authority::FieldBranch::from_integer(0);
+    error.parameter =
+        directional::authority::ExactUnitParameter{exact_ratio(1, 3)};
+    error.exactValues = {exact_ratio(-1, 2), exact_ratio(2, 3)};
+    error.publishedEdges = {edge};
+    error.publishedFaces = {firstFace, secondFace};
+    error.rail = rail;
+    error.singularity = singularity;
+    error.traceSeedVertex = seedVertex;
+    error.traceSeedSingularity = seedSingularity;
+    error.traceSteps = 7U;
+    error.traceStepBudget = 64U;
+
+    const std::string emitted = network_error_locus(error);
+    const auto control = std::find_if(
+        emitted.begin(), emitted.end(), [](const char value) {
+          const auto byte = static_cast<unsigned char>(value);
+          return byte < 0x20U || byte > 0x7eU;
+        });
+    EXPECT_TRUE(control == emitted.end())
+        << "code="
+        << directional::geometry::field_aligned_curve_network_error_code_name(
+               code)
+        << ";byte="
+        << (control == emitted.end()
+                ? -1
+                : static_cast<int>(static_cast<unsigned char>(*control)));
+  }
+}
+
+TEST(ResolvedBranchCorrection,
+     TracingPathNeverPublishesSeedIdentityAsFailureLocus) {
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+
+  const auto networkBuild = FieldAlignedCurveNetwork::make(
+      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails);
+  ASSERT_FALSE(networkBuild);
+  const auto &error = networkBuild.error();
+  ASSERT_NE(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+            error.code)
+      << network_error_locus(error);
+  ASSERT_TRUE(error.traceSeedVertex.has_value()) << network_error_locus(error);
+  ASSERT_TRUE(error.traceSeedSingularity.has_value())
+      << network_error_locus(error);
+  if (error.sourceVertex.has_value()) {
+    EXPECT_NE(*error.traceSeedVertex, *error.sourceVertex)
+        << network_error_locus(error);
+  }
+  if (error.singularity.has_value()) {
+    EXPECT_NE(*error.traceSeedSingularity, *error.singularity)
+        << network_error_locus(error);
+  }
 }
 
 TEST(ResolvedBranchCorrection,

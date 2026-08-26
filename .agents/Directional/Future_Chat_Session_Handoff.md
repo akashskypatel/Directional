@@ -174,16 +174,17 @@ torus 0 traces; mechanical A1 failure unchanged. E6 is present, but Q8 remains b
 
 ```yaml
 load_next:
-  - references/turns/REVIEW-PLAN.md
+  - references/turns/CB.md
 conditional_modules:
-  - trigger: GitHub artifact/workflow evidence is required
+  - trigger: implementation design or corrective planning is required
+    path: modules/engineering-guidelines/MODULE.md
+  - trigger: unit-test source is designed or changed
+    path: modules/unit-testing/MODULE.md
+  - trigger: GitHub connector, workflow, or artifact work is required
     path: modules/github-connector/MODULE.md
 deep_references:
-  - .agents/Directional/Architecture_M3_CP4c0_CB2_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0_CB2_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md
-  - .agents/Directional/Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
+  - .agents/Directional/Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md
+  - .agents/Directional/LESSONS.md
   - TODO.md
   - .agents/Directional/Future_Chat_Session_Handoff.md
 do_not_preload:
