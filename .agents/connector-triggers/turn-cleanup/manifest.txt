@@ -1,0 +1,4 @@
+# M3-CP4c-0-CB5 temporary state
+.agents/connector-triggers/m3-cp4c0-cb5-closeout-apply.txt
+.agents/connector-triggers/m3-cp4c0-cb5-compile.txt
+.agents/connector-triggers/source-snapshot
