@@ -1,144 +1,150 @@
 # M3-CP4c-0 Artifact-Only Test + Benchmark Report
 
-- Phase: `M3-CP4c-0`
+- Phase: `M3-CP4c-0-TB-R3`
 - Working branch: `agent/surface_cell_quad/p5-recover-bridge-healing`
-- Execution mode: granular Test + Benchmark (`TB-EXEC` → `TB-REVIEW` → `TB-PLAN`)
-- Validated source commit: `e784e44ce86e458b250b04689288f5f365ca507b`
-- Immutable build artifact: `9577900736`
-- Immutable package SHA-256: `b9c597584177f31fd2d923b622a4b20fbb243c7bd007b37cced8ff128e349f31`
-- Environment: GitHub Actions `ubuntu-24.04`; artifact-only execution; no configure/build/relink/repair
-- Status: **COMPLETE / VALID RED — required 328/328 gate GREEN, binding Q8 sphere reachability RED**
+- Execution mode: artifact-only Test + Benchmark; no configure/build/relink/repair
+- Semantic/package source: `b135e219ee9269a73eaee32992d80c3921318011`
+- Runtime event/control SHA: `faf84aff4e7a64a3771e863199b82bd00425c318`
+- Immutable build artifact: `9589508430`
+- Immutable package SHA-256: `7bb4bd1a40af68ffd1e2ce06001490d61504e6ed0300505646c0abce97693015`
+- Authoritative workflow run / Test + Benchmark job: `32921851098 / 98036868098`
+- Result artifact: `9590143527`, SHA-256 `af4f5b28e509623af1fc93d55c4b766479362915e8517c741db4ae718d216604`
+- Diagnostic-log artifact: `9590143871`, SHA-256 `ec9c29b7534053b023c8b6ba60fafb4c9d791e719caea3c37c3e2f742b08f5b7`
+- Status: **COMPLETE / VALID SEMANTIC RED — 336/338 PASS; supplemental F3 2/2 PASS; Q8 NOT RUN**
 
-## Plan Execution
+## Plan execution and immutable preflight
 
-The frozen selector contained exactly **328 unique required identities**: accepted predecessor identities
-1–316 followed by the 12 CP4c-0 falsifying/rejection identities. Selector SHA-256:
-`cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`; first-316 prefix SHA-256:
-`601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`.
+TB-R3 consumed **only** CB3 package `9589508430`. Preflight re-hashed the package, verified all **27/27**
+internal manifest entries, verified package source `b135e219ee9269a73eaee32992d80c3921318011`, and verified the
+frozen selector and both retained prefixes:
 
-Authoritative semantic execution is retry 1:
+- required selector: **338 unique identities**, SHA-256
+  `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`;
+- first 316: `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`;
+- first 328: `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`.
 
-- workflow run: `32891161394`;
-- schema-validation job: `97943166744` — PASS;
-- Test + Benchmark job: `97943220460`;
-- event/control SHA: `9779f2233eafc716ae4dd7e0dce0c484fe7b68a9`;
-- result artifact: `9579600371`, SHA-256 `fe472587aba74c2face26a2f65c0706439232bec2e5cc594d81711a26773b399`;
-- diagnostic-log artifact: `9579600958`, SHA-256 `7ddfe4c8e48b1b618c7a60ad6cf900a767ff954309a1c3cc52a8896306d98039`.
+The caller itself was SchemaStore-validated before runtime in run `32921817616`; the in-run schema job
+`98036828551` was also green. Every required identity ran alone in a fresh process and in frozen order.
+CB3's F6 continuation rule was honored: after the first semantic red, the runner executed the remaining
+required identities as **non-crediting observations** instead of stopping the census.
 
-Retry 0, run `32890863928` at event SHA `2ceb90e4d09d935051c5d120a2c6b3894ce6784c`, is an
-**infrastructure-only failed transfer**. It stopped before immutable-package verification and before any
-semantic identity executed. The frozen plan permitted one diagnosed infrastructure retry with the same
-package, selector, and commands; retry 1 is that retry. Retry 0 contributes zero semantic evidence.
+## Integrity / artifact-only boundary
 
-No semantic retry is authorized after retry 1. The workload completed the frozen execution step and
-uploaded result evidence successfully; the workflow failed only at the deliberate final fail-closed check
-because Q8 was red.
+Pre/post package inventories, runtime-input inventories, selector hashes, and source status are identical.
+The following all remained false: `packageMutation`, `sourceMutation`, `testMutation`, `fixtureMutation`,
+`selectorMutation`, `configure`, `compile`, `relink`, `repair`, `generatedDiscovery`, and
+`performanceBenchmark`. No build package was created by TB-R3.
 
-## Integrity / Artifact-Only Boundary
+## Frozen 338 gate
 
-Preflight passed against package SHA-256 `b9c597584177f31fd2d923b622a4b20fbb243c7bd007b37cced8ff128e349f31`,
-source `e784e44ce86e458b250b04689288f5f365ca507b`, and the selector hash above. Pre/post package and
-runtime-input inventories are identical, selector pre/post hashes are identical, and source status remained
-clean. Every prohibited mutation/build flag is false: `packageMutation`, `sourceMutation`, `testMutation`,
-`fixtureMutation`, `selectorMutation`, `configure`, `compile`, `relink`, `repair`, `generatedDiscovery`,
-and `performanceBenchmark`.
-
-## Tests Executed / Results
-
-The required semantic gate ran in declared order, one identity per fresh process.
-
-- Required / executed / passed: **328 / 328 / 328**
-- Failed: **0**
+- Required / executed / passed: **338 / 338 / 336**
 - Accepted predecessor prefix: **316/316 PASS**
-- CP4c-0 additions: **12/12 PASS**
-- First semantic gate failure: none
+- Prior CP4c-0 prefix: **328/328 PASS**
+- Correction tail 329–338: **8/10 PASS**
+- First semantic red: ordinal **333**,
+  `ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip`
+- Additional non-crediting semantic red: ordinal **334**,
+  `ResolvedBranchCorrection.ExactVertexSectorPartitionsAcceptedInteriorFans`
+- Ordinals 335–338: PASS as non-crediting observations
+- Identity 338, `AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections`: **PASS / NON-CREDITING**
 
-D3's accepted-prefix non-regression obligation is therefore re-proved by runtime: no previously accepted
-identity regressed under the exact-position/exact-continuation implementation.
+The correction tail was therefore:
 
-## Binding Q8 Observation — VALID RED
+| Ordinal | Result | Credit | Identity |
+| ---: | --- | --- | --- |
+| 329 | PASS | crediting | `NetworkDiagnosticsPublishEveryRequiredLocusLosslessly` |
+| 330 | PASS | crediting | `NetworkErrorsPublishExactEntryAndTrueFailureLocus` |
+| 331 | PASS | crediting | correction identity |
+| 332 | PASS | crediting | correction identity |
+| 333 | RED | first / crediting red | `ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` |
+| 334 | RED | non-crediting | `ExactVertexSectorPartitionsAcceptedInteriorFans` |
+| 335–338 | PASS | non-crediting | remaining frozen correction identities |
 
-The frozen plan required the prescribed sphere, after a green 328 gate, to publish exactly **24 traces**,
-at least one terminal `TraceIntersection`, and resolve face `1-2-5` / incoming `1-2` to one of
-`{1-5, 2-5}` with the frozen crossover flip.
+A non-crediting green after ordinal 333 does not repair the frozen gate. The gate is **SEMANTIC RED**.
 
-That observation is **RED** before those values exist. The prescribed sphere reaches source topology and
-A1, but A2a rejects:
+## Supplemental F3 falsifiers
 
-- `failedStage=field-aligned-network`;
-- `networkError=BranchContinuationDegenerateEntry`;
-- `sourceVertex=0`; `sourceEdge=6-8`; `singularity=0`;
-- `fieldAlignedCurveNetwork=false`; `globalTopologyPlanSnapshot=no`.
+Both class falsifiers added by CB3 ran separately in fresh processes and are green:
 
-Preceding topology diagnostics remain coherent: `sourceEuler=2`, `sourceBoundaryLoopCount=0`,
-`sourceGenus=0`, `interiorLocalVertices=98`, `sourceTopologyRegions=true`,
-`sourceTopologyRegionCount=1`, and `fieldTransportAtlas=true`.
+1. `ResolvedBranchCorrection.NetworkDiagnosticsContainNoControlCharactersForAnyCode` — PASS;
+2. `ResolvedBranchCorrection.TracingPathNeverPublishesSeedIdentityAsFailureLocus` — PASS.
 
-Because no network is published, Q8 records `trace_count=none`, `terminal_trace_intersections=none`, and
-`face_1_2_5_incoming_1_2_crossover=NOT_OBSERVED`. This is a binding stop condition, not a skipped test and
-not permission to weaken the Q8 oracle.
+This is **2/2 PASS**, but supplemental checks do not change frozen-selector arithmetic and cannot override a
+red required identity.
 
-## Benchmarks Executed
+## Q8
 
-None. CP4c-0 has no performance benchmark criterion and `performanceBenchmark=false` remained frozen.
+Q8 was **not creditable and was not run**. The binding authorization condition is exact package integrity
+plus **338/338** plus supplemental **2/2**. TB-R3 satisfied integrity and the supplementals but not 338/338.
+Identity 338's non-crediting green is useful diagnostic evidence that the previous accepted-witness rejection
+codes are absent under the CB3 package, but it is explicitly **not a Q8 substitute** and does not publish the
+required sphere network, trace count, terminal intersection, or face-crossover observation.
 
-## TB-REVIEW Findings
+Q8 remains frozen and unconsumed.
 
-### Finding 1 — the frozen 328 semantic gate is trustworthy and green
+## TB-REVIEW findings for independent adjudication
 
-- Acceptance criterion: accepted 316 unchanged and all 12 CP4c-0 identities green.
-- Actual result: **328/328 PASS**.
-- Classification: valid tests; no accepted regression.
-- Confidence: high.
-- Consequence: the previous Cartesian `connections` gap is no longer the current first sphere failure;
-  CP4c-0's dedicated exact-continuation falsifiers are green.
+### Candidate 1 — ordinal 333 appears to fail in witness construction before the product predicate
 
-### Finding 2 — binding prescribed-sphere Q8 is valid red
+Runtime throws `compute_edge_quantities(): DCEL consistency check failed` from the test body. Static review
+of the immutable package source shows the falsifier's search loop constructs a near-degenerate one-triangle
+`TriMesh` and calls `mesh.set_mesh(vertices, faces)` **before** computing the determinant/admissibility check
+that would reject such a candidate. A rejected search candidate can therefore throw from DCEL setup before
+`direction_in_vertex_sector` is reached.
 
-- Acceptance criterion: A2a publishes the prescribed sphere network with 24 traces, terminal
-  `TraceIntersection` reachability, and the frozen crossover observation.
-- Actual result: A2a rejects `BranchContinuationDegenerateEntry` at singularity 0 / source vertex 0 /
-  edge 6-8 before publishing a network.
-- Classification: **unresolved production-integration versus frozen-contract conflict**; not infrastructure
-  and not presently justified as an invalid fixture or incorrect expectation.
-- Contract tension: frozen T6 requires exact `t*=0` to fail closed as `BranchContinuationDegenerateEntry`,
-  while frozen Q8 requires the prescribed sphere to traverse A2a.
-- Plausible static seam requiring independent adjudication: A1's established regular-vertex sector
-  membership uses its existing half-open tolerance-based sector rule, while A2a's new exit/minimizer
-  decisions are exact. A2a re-enters exact continuation after start, edge transport, and T2 regular-vertex
-  transit. This is **not a proven root cause**.
-- Evidence gap: runtime does not publish the failing source face, branch, exact entry parameter, exact
-  minimizer set, or predecessor transition that produced the zero-time continuation.
-- Confidence: high that Q8 is genuinely red; insufficient for a final root-cause class.
+Classification for this TB: **test fixture/search-harness candidate, high confidence; non-stable; independent
+review required**. The runtime does not establish a production semantic failure because the intended product
+predicate may never execute. The review must define a deterministic capable lossy-roundtrip witness or an
+admissible search construction without weakening the expectation.
 
-## Regression / Candidate Accounting
+### Candidate 2 — ordinal 334 appears to use a face-local branch label as a global direction identity
 
-- `M3-CP4c0-TB-CAND-01` — **ACTIVE / NON-STABLE / PENDING INDEPENDENT REVIEW**: sphere blocked by
-  `BranchContinuationDegenerateEntry` after the 328 gate is green.
-- `M3-CP4c0-TB-CAND-02` — **RESOLVED INFRASTRUCTURE / NON-STABLE**: retry-0 artifact transfer failed
-  before package verification and before any semantic identity.
-- Prior `M3-CP4c-TB-R1-CAND-02` is superseded as the active failure site: CP4c-0 removed Cartesian
-  continuation authority and all 12 new identities pass, while the sphere now reaches the typed zero-time
-  rejection above.
+Runtime reports that the same numeric branch label is admitted by 0, 0, 1, and 3 faces rather than exactly one
+for every branch. Static review shows `build_face_branch_frame` chooses a per-face canonical gauge from each
+face's canonical topology reference edge. A semantic `FieldBranch` value is interpreted relative to that
+face-local gauge. Consequently, reusing the same integer branch value independently in all four face frames
+is not generally the same physical/world direction around the fan.
 
-Stable accounting remains **42 events / 14 categories / 28 recurrences** because CP4c-0 has never been
-accepted and all accepted 316 identities remain green. Produced-witness debt remains **5**. M3 package
-count remains **40**; TB consumed the existing immutable CB package and created no build package.
+Classification for this TB: **test-oracle/authority candidate, high confidence; non-stable; independent review
+required**. The prior review's hand calculation treated branch `+X` as identical across all face-canonical
+frames; TB-R3 falsifies that assumption. The review must decide whether the valid oracle transports branch
+authority across the fan or compares each face frame's published physical/exact direction. Production mutation
+is not authorized unless independent source evidence proves a product defect.
 
-## Phase Status / TB-PLAN
+### CB3 diagnostic corrections are runtime-reproved
 
-**Complete / valid red.** The required gate is green, but binding Q8 is red, so `M3-CP4c-0` does not
-close and does not become accepted runtime authority. Latest accepted runtime remains CP4ab **316/316**.
+Ordinal 329 PASS plus `NetworkDiagnosticsContainNoControlCharactersForAnyCode` PASS re-proves the F1 decimal,
+lossless branch-locus formatter. Ordinal 330 PASS plus `TracingPathNeverPublishesSeedIdentityAsFailureLocus`
+PASS re-proves F2's site-sourced failure-locus correction. Prior tracker candidates
+`M3-CP4c0-TB-R2-CAND-01` and `M3-CP4c0-TB-R2-CAND-03` are therefore resolved non-stable.
 
-Status: **`proposed_pending_review`**. Exact next is independent
-**`M3-CP4c-0-TB-REVIEW-PLAN`**, review/planning only, using
-`Architecture_M3_CP4c0_TB_Review_Plan.md`. No semantic rerun, Code + Build, fixture edit, expectation
-edit, or implementation change is authorized before review adjudicates the T6/Q8 conflict.
+## Regression / candidate accounting
 
-## Live Handoff
+TB-R3 adds two **non-stable candidates**, not stable regressions:
 
-- Evidence commit: `e784e44ce86e458b250b04689288f5f365ca507b`
-- Runtime control SHA: `9779f2233eafc716ae4dd7e0dce0c484fe7b68a9`
-- Runtime result artifact: `9579600371`
-- Next canonical turn: independent Review
-- Exact next state: `M3-CP4c-0-TB-REVIEW-PLAN`
+- `M3-CP4c0-TB-R3-CAND-01` — ordinal-333 fixture/search setup throws before the intended predicate;
+- `M3-CP4c0-TB-R3-CAND-02` — ordinal-334 oracle conflates face-local branch labels with global direction.
+
+The accepted **316/316** prefix remains green, CP4c-0 has never been accepted, and no accepted behavior is
+shown to have regressed. Stable accounting remains **42 events / 14 categories / 28 recurrences**; produced-
+witness debt remains **5**. M3 package count remains **42** because TB-R3 consumed the existing CB3 package.
+
+`M3-CP4c0-TB-CAND-01` receives only a partial non-crediting re-proof: identity 338 passes, but Q8 remains
+blocked and unconsumed. It is not accepted closure evidence.
+
+## Operational note — start-of-turn read-mode gate
+
+The ChatGPT Web start-of-turn procedure requires choosing `READ_MODE` before any repository source/document
+inspection. This turn performed initial direct handoff/policy reads before explicitly recording the choice,
+then stopped piecemeal inspection and switched immediately to mandatory `READ_MODE=snapshot`. The exact
+snapshot was then acquired and all subsequent static source analysis used that verified local materialization.
+This is a control-plane process miss only; it did not change package, source, fixture, selector, runtime commands,
+or semantic evidence. It must not be normalized as the preferred procedure for a later turn.
+
+## Phase status / exact next
+
+**M3-CP4c-0-TB-R3 is complete / valid semantic red.** CP4c-0 remains OPEN and unaccepted; latest accepted
+runtime remains CP4ab **316/316**. Under the mandatory turn workflow, a red TB routes to independent
+**`M3-CP4c-0-TB-R3-REVIEW-PLAN`**. Review/planning only is authorized next. No retry, Code + Build,
+fixture edit, test-oracle edit, tolerance change, Q8 execution, or production mutation is authorized before
+that independent adjudication.

@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-25 UTC
+Last updated: 2026-08-26 UTC
 
 ## Purpose
 
@@ -21,14 +21,14 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R3` — EXACT NEXT / artifact-only Test + Benchmark
+## Current focus — `M3-CP4c-0-TB-R3-REVIEW-PLAN` — EXACT NEXT / independent Review + Plan
 
-`M3-CP4c-0-CB3` is **COMPLETE / BUILD GREEN** at semantic source
-`b135e219ee9269a73eaee32992d80c3921318011`. The class-level diagnostic correction compiled first through
-the changed-owner producer target and then through all eight standard targets. Authoritative compile run
-`32919909928`, event/control SHA `950d158c333622f59ed9d26c53b2028706954275`, package `9589508430`
-(`7bb4bd1a40af68ffd1e2ce06001490d61504e6ed0300505646c0abce97693015`), internal manifest **27/27 PASS**,
-`runtimeExecution=false`.
+`M3-CP4c-0-TB-R3` is **COMPLETE / VALID SEMANTIC RED** on immutable package `9589508430` at semantic
+source `b135e219ee9269a73eaee32992d80c3921318011`. Authoritative run/job `32921851098 / 98036868098`
+executed all **338** frozen identities: **336/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0
+prefix **328/328 PASS**. Ordinal **333** is the first red; ordinal **334** is a later non-crediting red;
+ordinals 335–338 pass non-crediting. Supplemental F3 is **2/2 PASS**. Q8 was not creditable and was not run.
+Every immutable-gate mutation/build flag remained false.
 
 - [x] `M3-CP4c-0-DEFN` — **COMPLETE.** Frozen definitions remain normative.
 - [x] `M3-CP4c-0-CB1` — **COMPLETE / BUILD GREEN.** No runtime in CB.
@@ -37,13 +37,15 @@ the changed-owner producer target and then through all eight standard targets. A
 - [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** Package `9586196535`.
 - [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** 1–328 PASS; ordinal 329 RED; Q8 not run.
 - [x] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **COMPLETE.** Amendment 6; F0–F8 frozen.
-- [x] `M3-CP4c-0-CB3` — **COMPLETE / BUILD GREEN.** F1 named `branch_locus`; F2 site-sourced tracing loci;
-  F3 two class falsifiers compiled; F4/F5 emitter/ordering audit; F6 continuation policy authored; F7 semantic/control
-  SHA provenance; F8 eight-target package. Frozen selector remains **338**, hashes unchanged.
-- [ ] `M3-CP4c-0-TB-R3` — **EXACT NEXT.** Artifact-only package `9589508430`. Execute all 338 required
-  identities in fresh processes; after the first semantic red continue the remaining required identities as non-crediting
-  observations while the gate remains fail-closed. Execute the two CB3 F3 class falsifiers separately (2/2 expected).
-  Q8 is creditable only after 338/338 and both supplemental falsifiers are green. No rebuild, repair, mutation, or performance benchmark.
+- [x] `M3-CP4c-0-CB3` — **COMPLETE / BUILD GREEN.** Package `9589508430`; frozen selector unchanged.
+- [x] `M3-CP4c-0-TB-R3` — **COMPLETE / VALID SEMANTIC RED.** 338 executed, 336 PASS; first red
+  `333 / ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip`; later non-crediting red
+  `334 / ExactVertexSectorPartitionsAcceptedInteriorFans`; identity 338 non-crediting green; F3 supplemental
+  **2/2 PASS**; Q8 **NOT RUN**.
+- [ ] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — **EXACT NEXT.** Independently adjudicate ordinal 333's
+  pre-predicate `TriMesh`/DCEL fixture setup and ordinal 334's face-canonical branch/gauge oracle. Reconcile the
+  prior review's falsified P2 prediction, preserve identity 338 as non-crediting evidence only, and freeze one
+  smallest successor Code + Build plan. **Review/planning only; no runtime/build/product/test/fixture mutation.**
 - [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
 - [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
 - [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
@@ -51,7 +53,7 @@ the changed-owner producer target and then through all eight standard targets. A
 Frozen selector authority is unchanged: full 338 `d588cae0…`, first-316 `601ce2b6…`, first-328
 `cf93622e…`. **Identity 338 green is not a Q8 substitute.** Q8 remains verbatim frozen and unconsumed;
 latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness
-debt **5**, M3 package count advances to **42** for the new immutable CB3 package.
+debt **5**, M3 packages **42**.
 
 ## After M3 exit
 
@@ -130,4 +132,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Historical stable totals are **42 events / 14 categories / 28 recurrences**. Produced-witness debt remains **5**. M3 package count is **40**. PR #8 remains open, draft, and unmerged.
+Historical stable totals are **42 events / 14 categories / 28 recurrences**. Produced-witness debt remains **5**. M3 package count is **42**. PR #8 remains open, draft, and unmerged.

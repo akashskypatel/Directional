@@ -379,6 +379,16 @@ it converts an implementation turn into a no-op with a green label. Re-deriving 
 source plus a hash comparison proving the audited tree was byte-identical to the packaged source.
 **Cheap to check, unbounded to assume.**
 
+### A search candidate that throws during fixture construction has not falsified the product
+
+A witness-search test built a near-degenerate one-triangle mesh and called `TriMesh::set_mesh` before
+checking whether the candidate geometry satisfied the determinant/admissibility condition that made it
+usable. DCEL setup threw first. The test was red, but the intended product predicate had not executed.
+**Establish candidate geometric/topological admissibility before constructing a strict mesh object, or make
+the search skip invalid candidates at the construction boundary. An exception before the predicate is
+fixture evidence, not product evidence.** A deterministic capable witness is better than a search whose
+invalid prefix can abort the falsifier.
+
 ## 3. Negatives and oracles
 
 23. **A negative test proves only the guard it actually reaches.** Check which guard rejected before
@@ -595,6 +605,15 @@ These are A1/A2-specific and have been the single most expensive area in M3.
     its source mapping have a non-vacuous independent witness.** Once the architecture requires that
     precondition, acceptance must restore the witness rather than bypass the gate. A hard gate
     amplifies one stage-local bug into every downstream red.
+
+### A `FieldBranch` integer is face-gauge-local, not a global direction label
+
+A fan-partition oracle reused branch values `0..3` independently in every face frame and expected each
+integer to denote one fixed physical direction across the fan. But each face's branch frame chooses its own
+canonical gauge from mesh-owned topology. The same numeric semantic branch can therefore resolve to different
+world/exact directions in independently canonicalized frames. **Cross-face oracles must transport branch
+authority through the published transition or compare the published physical/exact directions under each
+face gauge. Never equate branch integers across distinct frames merely because their stored values match.**
 
 ## 6. Gate and criterion authoring
 

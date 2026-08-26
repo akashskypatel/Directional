@@ -2,24 +2,41 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-26 UTC** after `M3-CP4c-0-TB-R2`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
+Last updated: **2026-08-26 UTC** after `M3-CP4c-0-TB-R3`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
 
-Authoritative TB-R2 retry 1 `32914546494 / 98015432540` consumed immutable CB2 package `9586196535`.
-The accepted **316/316** prefix and prior CP4c-0 **328/328** prefix are green. Ordinal **329**,
-`ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`, is the first semantic
-red; identities 330–338 and Q8 were not executed. All artifact/source/test/fixture/selector mutation flags
-remain false. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **41**. Exact next is
-independent `M3-CP4c-0-TB-R2-REVIEW-PLAN`.
+Authoritative TB-R3 `32921851098 / 98036868098` consumed immutable CB3 package `9589508430`. All **338**
+required identities executed in fresh processes: accepted **316/316** and prior CP4c-0 **328/328** are green;
+ordinal **333** is the first semantic red, ordinal **334** is a later non-crediting red, and ordinals 335–338
+pass non-crediting. Both supplemental F3 falsifiers pass **2/2**. Q8 is not creditable and was not run. All
+artifact/source/test/fixture/selector mutation and build flags remain false. Stable accounting remains
+**42 / 14 / 28**, debt **5**, M3 packages **42**. Exact next is independent
+`M3-CP4c-0-TB-R3-REVIEW-PLAN`.
 
-## M3-CP4c0-TB-R2-CAND-03 — trace-seed identity still back-filled into failure-locus fields — ACTIVE / NON-STABLE / FOUND IN REVIEW
+## M3-CP4c0-TB-R3-CAND-01 — lossy-roundtrip falsifier throws during near-degenerate TriMesh setup — ACTIVE / NON-STABLE / PENDING INDEPENDENT REVIEW
+
+- **Observed:** ordinal 333, `ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip`, throws `compute_edge_quantities(): DCEL consistency check failed` from the test body.
+- **Static localization:** the test's candidate-search loop constructs a near-degenerate one-triangle `TriMesh` and calls `mesh.set_mesh(vertices, faces)` before computing the determinant/admissibility test that would reject a bad candidate. The first rejected candidate can therefore fail fixture/DCEL construction before `direction_in_vertex_sector` is reached.
+- **Classification:** high-confidence **test fixture/search-harness candidate**, not current proof of a production semantic regression. The intended predicate may never execute.
+- **Required adjudication:** independently verify the call ordering and freeze a deterministic capable lossy-roundtrip witness or admissible candidate construction that reaches the predicate without weakening its expectation. Do not treat arbitrary exception suppression as a fix.
+- **Stable-count rationale:** CP4c-0 has never been accepted; accepted 316/316 remains green. **+0 events / +0 recurrences**; totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0-TB-R3-CAND-02 — fan-partition falsifier treats face-canonical branch labels as global direction identity — ACTIVE / NON-STABLE / PENDING INDEPENDENT REVIEW
+
+- **Observed:** ordinal 334, `ResolvedBranchCorrection.ExactVertexSectorPartitionsAcceptedInteriorFans`, reports admitted-face counts 0 for branch 0, 1 for branch 1, 0 for branch 2, and 3 for branch 3 instead of exactly one each.
+- **Static localization:** `build_face_branch_frame` chooses a per-face canonical gauge from that face's canonical topology reference edge. A numeric `FieldBranch` label is interpreted relative to this face-local gauge. Reusing the same integer branch label in independently gauged frames is therefore not automatically one physical/world direction around the fan.
+- **Classification:** high-confidence **test-oracle/authority candidate**. The prior review's hand oracle assumed one cross-face `+X` meaning without proving gauge equivalence.
+- **Required adjudication:** decide whether the valid fan oracle transports branch authority between faces or compares each face frame's published physical/exact direction. Do not mutate product semantics unless independent source evidence establishes a product defect.
+- **Stable-count rationale:** CP4c-0 remains unaccepted and accepted 316/316 is green. **+0 events / +0 recurrences**; totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0-TB-R2-CAND-03 — trace-seed identity still back-filled into failure-locus fields — RESOLVED BY TB-R3 / NON-STABLE
 
 - **Observed:** static finding of `M3-CP4c-0-TB-R2-REVIEW-PLAN`, not a runtime failure. Measure E1c named a single line (`SurfaceCellTracing.cpp:818-819`); CB honoured it exactly, and `annotate_field_aligned_trace_seed` is clean. Roughly **fifteen** other emission sites in the same file still write the trace seed into the `sourceVertex` locus via the legacy `field_aligned_error(code, port.sourceVertex, ...)` / `trace.sourceVertex` pattern: `:914`, `:926`, `:978`, `:986`, `:1000`, and `:690`, `:709`, `:1150`, `:1183`, `:1218`, `:1258`, `:1268`, `:1298`, `:1305`.
 - **Scope precision:** sites whose failure genuinely *is* at the port (`InvalidCandidateTraceBinding`) publish a legitimate locus and are not defects. Sites with a downstream failure site — `InvalidCandidateTraceTransport` naming `decision.outgoingCarrier` in `currentFace`, and `InvalidNetworkTerminalOwnership` in `append_field_aligned_singularity_termination` — are back-fills and violate Amendment 5 rule 1 / Amendment 6 rule 4.
 - **Classification:** **diagnostic-authority defect in the frozen measure series, not in the implementation.** E1c named an instance where it should have named a class; identity 330 is likewise an instance falsifier over one hand-constructed error, so it passes while the real sites keep back-filling. This is the same pattern that made TB-R1's `sourceVertex=0` misleading and cost a review turn.
-- **Disposition:** measure **F2** (fix the class, record each site's disposition including those deliberately left) and **F3** (`TracingPathNeverPublishesSeedIdentityAsFailureLocus`, a class falsifier that reverting F2 must turn red).
+- **Disposition:** **RESOLVED BY TB-R3.** CB3 F2 repaired the failure-site class and TB-R3 ordinal 330 passed; the supplemental `TracingPathNeverPublishesSeedIdentityAsFailureLocus` class falsifier also passed. The result is runtime re-proof of the correction, not a new stable event.
 - **Stable-count rationale:** no runtime regression observed; CP4c-0 has never been accepted and the accepted 316 prefix is green. **+0 events / +0 recurrences**, totals **42 / 14 / 28**, debt **5**.
 
-## M3-CP4c0-TB-R2-CAND-01 — branch locus diagnostic serializes uint8 as control character — ACTIVE / NON-STABLE / ROOT CAUSE ADJUDICATED, FIX PENDING
+## M3-CP4c0-TB-R2-CAND-01 — branch locus diagnostic serializes uint8 as control character — RESOLVED BY TB-R3 / NON-STABLE
 
 - **Observed:** authoritative retry 1 passes identities 1–328, then ordinal 329 fails every expected numeric branch token in `NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`; emitted strings contain a raw control character after `branch=` / `relatedBranch=` instead of `1` / `3`.
 - **Immediate source evidence:** `FieldBranch::value()` returns `std::uint8_t`; test/witness helper `append_network_error` inserts that value directly into `std::ostringstream`. The stream therefore selects character insertion. The typed `FieldAlignedCurveNetworkError.branch` / `relatedBranch` fields remain populated; serialization loses their decimal representation.
@@ -27,7 +44,7 @@ independent `M3-CP4c-0-TB-R2-REVIEW-PLAN`.
 - **Adjudicated 2026-08-26** by `Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md`. **Scope: solely this defect, at exactly two call sites** (`tests/FieldAlignedCurveNetworkTests.cpp:2764`, `:2767`), established by exhaustive audit of every token identity 329 asserts against the emitter and the GMP exact-rational backend — `sourceFace`/`sourceEdge`/`publishedFaces`/`publishedEdges` use `index()` (`std::size_t`), `parameter`/`exactValues` use canonical `numerator/denominator` strings, and `traceSteps`/`traceStepBudget` are `std::optional<std::size_t>`. A repository-wide sweep confirms these are the **only** two stream insertions of a narrow-integer accessor; `GridAutomorphism::value()` is never streamed. **Confidence: high.**
 - **Broader gap, also adjudicated:** DEFN §10 Amendment 5 required a property of the emitted *value* and never constrained the *mechanism*, so the one locus bypassing the `*_locus` formatter convention was unconstrained — while the correct idiom already existed at `FieldTransportAtlas.cpp:673`. **Amendment 6** now defines observability by mechanism and requires **class** falsifiers.
 - **Unrecorded hazard now recorded:** `FieldBranch::from_integer(0)` emits **NUL**; `branch` precedes `parameter` in the emitter's field order; and `parameter` is the datum that discriminates the sphere's failure route. At any C-string boundary that NUL truncates exactly what E1 exists to publish. `std::string` is NUL-safe, which is the only reason identity 329 caught this rather than a log silently losing it.
-- **Disposition:** `M3-CP4c-0-CB3`, Code + Build only, measures **F0–F8**. Fix via a named `branch_locus` formatter, not an inline cast (Amendment 6 rule 1). Q8 remains unconsumed.
+- **Disposition:** **RESOLVED BY TB-R3.** CB3 introduced the named `branch_locus` formatter. TB-R3 ordinal 329 passed and the supplemental `NetworkDiagnosticsContainNoControlCharactersForAnyCode` class falsifier passed, re-proving decimal/lossless serialization across the diagnostic code class. Q8 remains unconsumed for unrelated gate reasons.
 - **Stable-count rationale:** CP4c-0 has never been accepted and accepted 316 is green; **+0 events / +0 recurrences**, totals remain **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c0-TB-R2-CAND-02 — runner helper returned bookkeeping predicate status after identity 1 — RESOLVED ORCHESTRATION / NON-STABLE
@@ -37,14 +54,14 @@ independent `M3-CP4c-0-TB-R2-REVIEW-PLAN`.
 - **Correction/evidence:** add only `return 0` after successful bookkeeping. Retry 1 reused the exact package, selector, fixtures, expectations, and semantic source and reached the deterministic ordinal-329 semantic red.
 - **Stable-count rationale:** temporary orchestration only; **+0 events / +0 recurrences**.
 
-## M3-CP4c0-TB-CAND-01 — prescribed sphere reaches typed zero-time continuation rejection before Q8 network — FIX IMPLEMENTED / RE-PROOF BLOCKED BY TB-R2 / NON-STABLE
+## M3-CP4c0-TB-CAND-01 — prescribed sphere reaches typed zero-time continuation rejection before Q8 network — FIX IMPLEMENTED / NON-CREDITING 338 RE-PROOF GREEN / Q8 BLOCKED BY TB-R3 GATE RED / NON-STABLE
 
 - **Observed:** authoritative retry 1 `32891161394 / 97943220460` passes **328/328**, but binding Q8 is red. A2a rejects `BranchContinuationDegenerateEntry` at singularity 0 / source vertex 0 / edge 6-8. No network; trace count, terminal `TraceIntersection`, and face `1-2-5` crossover unavailable.
 - **Control:** accepted **316/316** and all 12 CP4c-0 identities pass; package/source/test/fixture/selector integrity unchanged; no configure/build/relink/repair.
 - **Root-cause status:** **ADJUDICATED 2026-08-25** by `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`. **Class:** ill-formed upstream state — A1 decides the sign of a barycentric direction coordinate with a `double` tolerance in three places and publishes those verdicts as topological ownership (carrier-set membership, vertex-sector membership); A2a re-decides the same sign exactly on A1's own published datum. T6 correctly rejects a state A1 was incorrectly allowed to produce. The seam is **proved algebraically, not conjectured**: in `direction_in_incident_vertex_sector`, `alpha = d[next]` and `beta = d[prev]` identically, so `alpha > tol && beta >= -tol` *is* the exact entry predicate at `tol = 1e-10`. Confidence **high**.
 - **Route still undetermined, deliberately:** three routes reach `t* = 0` (interior edge entry with cross-face flow disagreement; the same within-face at `|d| <= 1e-10`; vertex entry after a mis-selected sector transit). The discriminating datum — the exact entry parameter — was computed and dropped by the witness emitter. Measure **E1** decides it in one turn; measures **E2–E5** close all three regardless.
 - **Note on the published locus:** `singularity=0` / `sourceVertex=0` are the trace **seed**, back-filled at `SurfaceCellTracing.cpp:818-819`, not the failure site. The failure is provably not the trace's first step. Only `sourceEdge=6-8` is a genuine locus.
-- **Disposition:** CB2 implemented E0–E10 and TB-R2 re-proved identities 1–328 green, but ordinal 329 failed before Q8 authorization. The sphere/Q8 re-proof is therefore still blocked; do not infer closure from the green 328 prefix.
+- **Disposition:** CB2/CB3 implemented the correction series. TB-R3 identity 338 passes as a **non-crediting observation**, excluding the prior `BranchContinuationDegenerateEntry` / outside-outflow rejection pair on the accepted witnesses under package `9589508430`. Because ordinals 333/334 leave the frozen 338 gate red, Q8 is still unauthorized and unrun. This is partial diagnostic re-proof only; do not infer sphere-network publication or CP4c-0 closure.
 - **Stable-count rationale:** CP4c-0 never accepted and no accepted 316 identity regressed; **+0 events / +0 recurrences**, totals **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c0-TB-CAND-02 — retry-0 artifact transfer failed before immutable validation — RESOLVED INFRASTRUCTURE / NON-STABLE
