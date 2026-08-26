@@ -1,4 +1,0 @@
-# M3-CP4c-0-CB3 final temporary-state cleanup
-.agents/connector-triggers/source-snapshot/20260825T1810-0700.txt
-.agents/Directional/turn-payloads/m3-cp4c0-cb3/
-.agents/Directional/turn-payloads/m3-cp4c-0-cb3/
