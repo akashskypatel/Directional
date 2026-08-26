@@ -4,4 +4,5 @@ validated_schema_head=2fc87141cafca497588dcdaadfceb05e5db2282d
 workflow_publish_commit=5713bca15753c023645f44d2cc9c7bf20778394c
 immutable_package_artifact=9601160869
 semantic_source=cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e
+retry=1;prior_run=32993852779;reason=self-hosted-core-autocrlf-byte-integrity-failure;lf_fix=f832c4938e3f1337326255720d2e43345715f2ee
 runtimeExecution=true
