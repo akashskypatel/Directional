@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   cleanup:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     steps:
       - name: Initialize diagnostic log
         shell: bash

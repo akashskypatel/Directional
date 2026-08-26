@@ -38,7 +38,7 @@ permissions:
 
 jobs:
   validate:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     outputs:
       valid: ${{ steps.result.outputs.valid }}
       artifact_name: ${{ steps.result.outputs.artifact_name }}

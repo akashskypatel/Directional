@@ -28,7 +28,7 @@ jobs:
     secrets: inherit
 
   test-benchmark:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     steps:
       - name: Initialize persistent activity log
         shell: bash

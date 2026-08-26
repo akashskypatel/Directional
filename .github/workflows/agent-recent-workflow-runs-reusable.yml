@@ -58,7 +58,7 @@ permissions:
 
 jobs:
   collect:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     outputs:
       artifact_name: ${{ steps.meta.outputs.artifact_name }}
       fetched_run_count: ${{ steps.meta.outputs.fetched_run_count }}

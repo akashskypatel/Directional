@@ -67,7 +67,7 @@ jobs:
     secrets: inherit
 
   snapshot:
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04
     outputs:
       snapshot_sha: ${{ steps.metadata.outputs.snapshot_sha }}
       artifact_name: ${{ steps.metadata.outputs.artifact_name }}
