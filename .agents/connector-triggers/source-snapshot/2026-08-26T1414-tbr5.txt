@@ -1,4 +1,0 @@
-M3-CP4c-0-TB-R5 source snapshot
-purpose=artifact-only TB-R5 planning/orchestration authority
-pre_trigger_head=3975356a59501974b07988437e5877488bcc1a07
-runtimeExecution=false
