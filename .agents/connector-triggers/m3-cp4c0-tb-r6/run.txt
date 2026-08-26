@@ -1,5 +1,7 @@
 M3-CP4c-0-TB-R6 artifact-only runtime trigger
 caller_install_commit=38bc347a92e9dd274b3cbd1909106cce9975a24c
+active_control_fix_commit=05d405baf9c671f2288d836307ed82fd465578f6
 immutable_package_artifact=9619352525
 semantic_source=8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6
+retry=1;prior_run=33006048971;reason=orchestration-only-python-zipfile-did-not-preserve-executable-mode;fix=use-unzip-without-permission-repair
 runtimeExecution=true
