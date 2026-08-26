@@ -137,13 +137,12 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   BoundaryPointParameterOutOfRange = 22,
   BoundaryPointEdgeNotIncidentToFace = 23,
   VertexTransitSectorUnresolved = 24,
-  // Diagnostic observation for the piecewise-constant face-field regime.
-  // The continuum cross-edge flow-agreement statement degrades at exact
-  // edge-grazing configurations; this code is therefore not evidence of an
-  // A1 matching/gauge defect and must never be thresholded into ownership.
+  // Retired production rejection. Grazing is now a classified continuation
+  // and this value is retained only for stable historical diagnostics.
   BranchTransportFlowDisagreement = 25,
   TraceStateCycleDetected = 26,
   TraceStepBudgetExhausted = 27,
+  BranchGrazingSlideDirectionAmbiguous = 28,
 };
 
 struct FieldAlignedTraceStepDiagnostic {
@@ -253,6 +252,7 @@ struct FieldAlignedCandidateTraceSegment {
   std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
   authority::SourceEdgeTopologyKey outgoingCarrier;
   std::optional<FieldAlignedCandidateTraceTransition> entryTransport;
+  std::optional<authority::FieldBoundaryPoint> edgeTransitExit;
 
   auto operator<=>(const FieldAlignedCandidateTraceSegment &) const = default;
 };
@@ -506,6 +506,18 @@ enum class FieldBranchExitTimeOrdering : std::int8_t {
 enum class FieldBranchContinuationKind : std::uint8_t {
   EdgeExit = 0,
   VertexHit = 1,
+  EdgeTransit = 2,
+};
+
+enum class FieldBranchEdgeFlowRelation : std::uint8_t {
+  Inflow = 0,
+  Tangent = 1,
+  Outflow = 2,
+};
+
+enum class FieldVertexArrivalMode : std::uint8_t {
+  FaceInterior = 0,
+  EdgeTransit = 1,
 };
 
 struct FieldBranchContinuationDecision {
@@ -588,6 +600,21 @@ private:
     const authority::FieldBranchBoundaryPairing &pairing,
     const authority::FieldBoundaryPoint &entryPoint);
 
+[[nodiscard]] FieldBranchEdgeFlowRelation classify_field_branch_transport_flow(
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const authority::FieldBranchBoundaryPairing &sourcePairing,
+    const authority::SourceFaceTopologyKey &targetFace,
+    const authority::FieldBranchBoundaryPairing &targetPairing,
+    const authority::SourceEdgeTopologyKey &carrier);
+
+[[nodiscard]] FieldBranchContinuationResult resolve_field_branch_grazing_transit(
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const authority::FieldBranchBoundaryPairing &sourcePairing,
+    const authority::SourceFaceTopologyKey &targetFace,
+    const authority::FieldBranchBoundaryPairing &targetPairing,
+    const authority::SourceEdgeTopologyKey &carrier, int signedLift,
+    const authority::ExactUnitParameter &entryParameter);
+
 [[nodiscard]] FieldVertexTransitResult resolve_field_vertex_transit(
     const TriMesh &sourceMesh,
     const authority::FieldBranchTopology &topology,
@@ -595,7 +622,8 @@ private:
     authority::TopologyRegionId topologyRegion,
     const authority::SourceFaceTopologyKey &currentFace,
     authority::FieldBranch currentBranch,
-    authority::SourceVertexId sourceVertex);
+    authority::SourceVertexId sourceVertex,
+    FieldVertexArrivalMode arrivalMode = FieldVertexArrivalMode::FaceInterior);
 
 [[nodiscard]] std::size_t field_aligned_trace_step_budget(
     const authority::FieldBranchTopology &topology) noexcept;
@@ -605,14 +633,6 @@ field_aligned_trace_traversal_error(
     FieldAlignedTraceTraversalStatus status,
     const FieldAlignedTraceTraversalState &state,
     const FieldAlignedTraceTraversalGuard &guard);
-
-[[nodiscard]] std::optional<FieldAlignedCurveNetworkError>
-validate_field_branch_transport_flow(
-    const authority::SourceFaceTopologyKey &sourceFace,
-    const authority::FieldBranchBoundaryPairing &sourcePairing,
-    const authority::SourceFaceTopologyKey &targetFace,
-    const authority::FieldBranchBoundaryPairing &targetPairing,
-    const authority::SourceEdgeTopologyKey &carrier, int signedLift);
 
 void annotate_field_aligned_trace_seed(
     FieldAlignedCurveNetworkError &error,
