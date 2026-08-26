@@ -27,5 +27,5 @@ jobs:
       patch_sha256: 042887b33a89564f7ba87cb6aec3f2db8d6d85a8c75b0cee18e64f269ab2fbb8
       base_sha: d76ba3fa4492c0364177a7811c9f726b4ea1025a
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: require Drive connector patch deletion
+      commit_message: "docs: require Drive connector patch deletion"
     secrets: inherit
