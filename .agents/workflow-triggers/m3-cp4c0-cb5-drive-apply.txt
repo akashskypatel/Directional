@@ -1,4 +1,0 @@
-turn=M3-CP4c-0-CB5
-purpose=drive-apply
-caller_install_sha=aafacbedc3627b6b794e9b09cc0c162fb1baa054
-patch_sha256=a7362316ccac8464d757c222e4b5fb1bdbcaaf8b0fa33e8bec10f36efe547c3d
