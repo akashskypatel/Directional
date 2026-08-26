@@ -21,46 +21,28 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R4` — EXACT NEXT / artifact-only Test + Benchmark
+## Current focus — `M3-CP4c-0-TB-R4-REVIEW-PLAN` — EXACT NEXT / independent review + planning
 
-`M3-CP4c-0-CB4` is **COMPLETE / BUILD GREEN** at semantic source
-`de291a17d5e9bfb6f54918660320ecfa1d521be4`. Authoritative compile run/job
-`32926004147 / 98048909565` produced immutable package `9591540182`
-(`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`), internal manifest
-**27/27 PASS**, with `runtimeExecution=false`. The independent TB-R3 adjudication was followed exactly:
-CB4 changed test/oracle/diagnostic code only; **no production source changed**.
+`M3-CP4c-0-TB-R4` is **COMPLETE / VALID SEMANTIC RED** on immutable CB4 package `9591540182` at semantic source `de291a17d5e9bfb6f54918660320ecfa1d521be4`. Authoritative run/job `32928381384 / 98055727654` executes the unchanged frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, prior CP4c-0 prefix **328/328 PASS**, F3 **2/2 PASS**, and G5 **PASS / non-gating**. Q8 is creditable and **RED at criterion 2**: the sphere reaches field-transport-atlas authority but A2a rejects `BranchTransportFlowDisagreement` at edge `6-8`, source face `6-8-9` branch `3`, related face `6-8-97` branch `1`; no field-aligned network is published. This is a new **non-stable candidate pending independent authority review**.
 
-- [x] `M3-CP4c-0-DEFN` — **COMPLETE.** Frozen definitions remain normative.
-- [x] `M3-CP4c-0-CB1` — **COMPLETE / BUILD GREEN.** No runtime in CB.
-- [x] `M3-CP4c-0-TB` — **COMPLETE / VALID RED.** 328/328 gate PASS; binding Q8 RED.
-- [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** E0–E10 frozen; T6/Q8 unchanged.
-- [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** Package `9586196535`.
-- [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** First red 329; Q8 not run.
-- [x] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **COMPLETE.** Amendment 6; F0–F8 frozen.
-- [x] `M3-CP4c-0-CB3` — **COMPLETE / BUILD GREEN.** Package `9589508430`.
-- [x] `M3-CP4c-0-TB-R3` — **COMPLETE / VALID SEMANTIC RED.** 338 executed, 336 PASS; reds 333/334;
-  F3 supplemental **2/2 PASS**; Q8 not run.
-- [x] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — **COMPLETE.** Both reds adjudicated **test-side**; Amendment 7;
-  no production measure authorized; G0–G8 frozen.
-- [x] `M3-CP4c-0-CB4` — **COMPLETE / BUILD GREEN.** G1 gives ordinal 333 a DCEL-valid witness;
-  G2 rebuilds ordinal 334 on published `signedLift`; G3 adds local-holonomy coverage; G4 de-encodes the
-  seed-provenance falsifier; G5 adds an always-publishing non-gating sphere A2a diagnostic; G6 records
-  the per-face gauge premise; G7 records semantic/control/package/selector authority; G8 freezes TB-R4.
-- [ ] `M3-CP4c-0-TB-R4` — **EXACT NEXT.** Consume package `9591540182` only. Execute the unchanged
-  **338** selector in exact order/fresh processes with F6 continue-and-observe, then the two F3
-  supplementals, then G5 non-gating diagnostic. Q8 is creditable only after exact integrity + 338/338 +
-  F3 2/2. **P4 predicts Q8 RED** because TB-R3 proved the sphere still did not publish a network; preserve
-  G5's rejection/outcome and route a red Q8 to review rather than repairing inside TB.
-- [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
-- [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
-- [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
+- [x] `M3-CP4c-0-DEFN` — COMPLETE.
+- [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
+- [x] `M3-CP4c-0-TB` — COMPLETE / VALID RED.
+- [x] `M3-CP4c-0-TB-REVIEW-PLAN` — COMPLETE.
+- [x] `M3-CP4c-0-CB2` — COMPLETE / BUILD GREEN. Package `9586196535`.
+- [x] `M3-CP4c-0-TB-R2` — COMPLETE / VALID SEMANTIC RED.
+- [x] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — COMPLETE.
+- [x] `M3-CP4c-0-CB3` — COMPLETE / BUILD GREEN. Package `9589508430`.
+- [x] `M3-CP4c-0-TB-R3` — COMPLETE / VALID SEMANTIC RED. 336/338; F3 2/2.
+- [x] `M3-CP4c-0-TB-R3-REVIEW-PLAN` — COMPLETE. Both reds test-side; Amendment 7; G0–G8.
+- [x] `M3-CP4c-0-CB4` — COMPLETE / BUILD GREEN. Package `9591540182`; test-side corrections only.
+- [x] `M3-CP4c-0-TB-R4` — COMPLETE / VALID SEMANTIC RED. **338/338 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating; Q8 CREDITABLE / RED because the sphere does not publish a network. Postflight summary-variable control bug occurred only after valid semantic/immutability evidence; no semantic rerun.
+- [ ] `M3-CP4c-0-TB-R4-REVIEW-PLAN` — **EXACT NEXT.** Independently reconstruct edge-`6-8` source/target pairing + signed-lift authority, classify why source branch `3` marks the carrier outgoing while transported target branch `1` does not mark it incoming, adjudicate `M3-CP4c0-TB-R4-CAND-01`, and freeze only the minimum justified successor measures. Review/planning only — execute nothing and mutate no product/test/fixture/selector/build logic.
+- [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
+- [ ] `M3-CP4c-2-DEFN` — BLOCKED.
+- [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`;
-accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`;
-first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`.
-Q8 remains verbatim frozen and unconsumed. Latest accepted runtime remains CP4ab **316/316**. Stable
-accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **43**.
-
+Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **43**.
 ## After M3 exit
 
 `ROADMAP.md` §4 proposes the checkpoint decomposition for **M4–M8** — seventeen checkpoints plus five `-DEFN` planning turns to reach `M8-CP3`, the production-ready exit. That decomposition is a **proposal until each milestone's `-DEFN` turn freezes it**; gate arithmetic beyond 322 is deliberately not fixed.

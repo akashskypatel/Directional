@@ -2,17 +2,28 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-26 UTC** after `M3-CP4c-0-TB-R3`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
+Last updated: **2026-08-26 UTC** after `M3-CP4c-0-TB-R4`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
 
-Authoritative TB-R3 `32921851098 / 98036868098` consumed immutable CB3 package `9589508430`. All **338**
-required identities executed in fresh processes: accepted **316/316** and prior CP4c-0 **328/328** are green;
-ordinal **333** is the first semantic red, ordinal **334** is a later non-crediting red, and ordinals 335–338
-pass non-crediting. Both supplemental F3 falsifiers pass **2/2**. Q8 is not creditable and was not run. All
-artifact/source/test/fixture/selector mutation and build flags remain false. Stable accounting remains
-**42 / 14 / 28**, debt **5**, M3 packages **42**. Exact next is independent
-`M3-CP4c-0-TB-R3-REVIEW-PLAN`.
+Authoritative TB-R4 `32928381384 / 98055727654` consumed immutable CB4 package `9591540182`. The unchanged frozen selector is **338/338 PASS**, accepted **316/316 PASS**, prior CP4c-0 **328/328 PASS**, F3 **2/2 PASS**, and G5 **PASS / non-gating**. Q8 is creditable and **RED at criterion 2** because the prescribed sphere rejects A2a with `BranchTransportFlowDisagreement` at edge `6-8`, source face `6-8-9` branch `3`, related face `6-8-97` branch `1`. Post-runtime inventories are identical; a later reporting-shell variable mismatch made the workflow job red without invalidating semantic/integrity evidence. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **43**. Exact next is independent `M3-CP4c-0-TB-R4-REVIEW-PLAN`.
 
-## M3-CP4c0-TB-R3-CAND-03 — required supplemental falsifier asserts that the prescribed sphere fails — ACTIVE / NON-STABLE / FOUND IN REVIEW
+## M3-CP4c0-TB-R4-CAND-01 — prescribed sphere A2a rejects reciprocal branch flow at edge 6-8 — ACTIVE / NON-STABLE / PENDING INDEPENDENT REVIEW
+
+- **Observed:** creditable Q8 after exact package integrity, frozen **338/338 PASS**, and F3 **2/2 PASS**. G5 publishes `fieldAlignedCurveNetwork=false;networkError=BranchTransportFlowDisagreement;sourceEdge=6-8;sourceFace=6-8-9;relatedSourceFace=6-8-97;branch=3;relatedBranch=1;traceSeedVertex=0;traceSeedSingularity=0` plus six exact source/target direction values.
+- **Q8 impact:** criterion 2 is binding red because the sphere does not publish the required 24-trace network. P4 predicted Q8 would remain red; G5 supplies the concrete cause.
+- **Static localization:** `src/geometry/SurfaceCellTracing.cpp:644-671`, `validate_field_branch_transport_flow`, rejects when the shared carrier is source-outgoing but not target-incoming.
+- **Classification:** semantic candidate requiring independent authority review. Do not infer production defect from the error code alone.
+- **Required adjudication:** reconstruct edge-`6-8` pairing + signed-lift authority, account for Amendment-7 gauge, determine why source outgoing is not target incoming, and identify the owning invariant before authorizing correction.
+- **Stable-count rationale:** accepted **316/316** remains green and CP4c-0 has never been accepted; **+0 events / +0 recurrences**.
+
+## M3-CP4c0-TB-R4-CAND-02 — postflight summary references `first_red` instead of persisted `first_red_ordinal` — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** after all 341 planned semantic processes and post-runtime inventories, final reporting failed under `set -u` with `first_red: unbound variable`; persisted state was `first_red_ordinal=0`.
+- **Evidence validity:** result artifact preserves gate/F3/G5/Q8 state, manifest-post, and pre/post inventories; all compare identical and manifest remains **27/27 PASS**.
+- **Classification:** orchestration/reporting-control defect only; it altered no semantic command or authoritative bytes.
+- **Disposition:** resolved for TB-R4 by preserved evidence; **no semantic rerun**. Successor control may use `first_red_ordinal` consistently.
+- **Stable-count rationale:** control-plane only; **+0 events / +0 recurrences**.
+
+## M3-CP4c0-TB-R3-CAND-03 — required supplemental falsifier asserts that the prescribed sphere fails — RESOLVED BY TB-R4 / NON-STABLE
 
 - **Observed:** static + runtime finding of `M3-CP4c-0-TB-R3-REVIEW-PLAN`. The mandatory supplemental falsifier `ResolvedBranchCorrection.TracingPathNeverPublishesSeedIdentityAsFailureLocus` contains `ASSERT_FALSE(networkBuild)` on the prescribed sphere and **passed** in run `32921851098`.
 - **Two consequences.** (1) A passing `ASSERT_FALSE` is direct runtime proof that **the prescribed sphere still does not publish a `FieldAlignedCurveNetwork`**, so **Q8 is expected to fail on the next TB even at 338/338**. Neither the TB-R3 report nor its review brief surfaces this, and planning the successor as "fix the two reds and Q8 closes" would be wrong. (2) The assertion **encodes current production output as an expectation** and will invert — going red — at exactly the moment CP4c-0 succeeds, blocking acceptance for the wrong reason.
@@ -20,8 +31,9 @@ artifact/source/test/fixture/selector mutation and build flags remain false. Sta
 - **Related gap:** nothing in the frozen 338 gate or either supplemental publishes the sphere's *current* rejection code. It is known only by exclusion — not `BranchContinuationDegenerateEntry`, not `BranchContinuationOutsideOutflowSet` (identity 338), not `InvalidCandidateTraceBinding` (supplemental). This is the **third consecutive cycle** in which the sphere's decisive datum was computed at runtime and not published.
 - **Disposition:** measures **G4** (de-encode the assertion; prove the property on a constructed failure, make any sphere branch conditional) and **G5** (add a non-gating identity that always publishes the sphere's A2a outcome and locus). G4 must land in CB4, before the sphere is fixed.
 - **Stable-count rationale:** no accepted identity regressed; CP4c-0 has never been accepted. **+0 events / +0 recurrences**, totals **42 / 14 / 28**, debt **5**.
+- **TB-R4 resolution evidence:** F3 remains **2/2 PASS** after G4 moved the seed-provenance proof onto a constructed failure, while G5 independently publishes the live sphere outcome without asserting that the sphere must fail. The diagnostic/oracle defect is closed. The live sphere failure is tracked separately as `M3-CP4c0-TB-R4-CAND-01`.
 
-## M3-CP4c0-TB-R3-CAND-01 — lossy-roundtrip falsifier builds a DCEL-invalid single-triangle mesh — ACTIVE / NON-STABLE / ROOT CAUSE ADJUDICATED, TEST-SIDE FIX PENDING
+## M3-CP4c0-TB-R3-CAND-01 — lossy-roundtrip falsifier builds a DCEL-invalid single-triangle mesh — RESOLVED BY TB-R4 / NON-STABLE
 
 - **Observed:** ordinal 333, `ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip`, throws `compute_edge_quantities(): DCEL consistency check failed` from the test body.
 - **Static localization:** the test's candidate-search loop constructs a near-degenerate one-triangle `TriMesh` and calls `mesh.set_mesh(vertices, faces)` before computing the determinant/admissibility test that would reject a bad candidate. The first rejected candidate can therefore fail fixture/DCEL construction before `direction_in_vertex_sector` is reached.
@@ -32,8 +44,9 @@ artifact/source/test/fixture/selector mutation and build flags remain false. Sta
 - **Sharper than the original premise:** the near-degenerate coordinate family is a **red herring**. The fixture builds a **single-triangle** mesh, whose one face has all three halfedges on the boundary, so **every** candidate is DCEL-invalid regardless of `base`, `spacing`, or `epsilon` — confirmed by the 0 ms failure on the first candidate. The determinant screen runs *after* `set_mesh`, so it never gets the chance to reject anything.
 - **Classification:** test fixture/harness defect. **Not production** — `direction_in_vertex_sector` was never reached, so this identity currently provides **no evidence either way** about the lossy-round-trip property it exists to falsify. That property remains unproven, not disproven. **Confidence: high.**
 - **Disposition:** measure **G1** — DCEL-valid witness (≥ 2 triangles sharing an interior edge), screen the determinant **before** `set_mesh`, preserve the `EXPECT_FALSE` falsification, prefer deterministic construction over search. Do not catch the exception, weaken the expectation, or add a tolerance.
+- **TB-R4 resolution evidence:** ordinal 333 is **PASS** with G1's DCEL-valid two-triangle witness and pre-construction determinant screen. The intended exact lossy-roundtrip predicate is reached and satisfied; no production change was required.
 
-## M3-CP4c0-TB-R3-CAND-02 — fan-partition falsifier treats face-gauged branch labels as a global direction identity — ACTIVE / NON-STABLE / ROOT CAUSE ADJUDICATED, TEST-SIDE FIX PENDING
+## M3-CP4c0-TB-R3-CAND-02 — fan-partition falsifier treats face-gauged branch labels as a global direction identity — RESOLVED BY TB-R4 / NON-STABLE
 
 - **Observed:** ordinal 334, `ResolvedBranchCorrection.ExactVertexSectorPartitionsAcceptedInteriorFans`, reports admitted-face counts 0 for branch 0, 1 for branch 1, 0 for branch 2, and 3 for branch 3 instead of exactly one each.
 - **Static localization:** `build_face_branch_frame` chooses a per-face canonical gauge from that face's canonical topology reference edge. A numeric `FieldBranch` label is interpreted relative to this face-local gauge. Reusing the same integer branch label in independently gauged frames is therefore not automatically one physical/world direction around the fan.
@@ -45,6 +58,7 @@ artifact/source/test/fixture/selector mutation and build flags remain false. Sta
 - **Classification:** oracle defect, **originating in this reviewer's E8 specification**, which said "for every `(vertex, branch)` fan, assert the exact predicate admits exactly one face" and thereby assumed a numeric branch names one physical direction across faces. It does not. **Not production. Confidence: high.**
 - **Production is correct:** `build_branch_transports` (`FieldTransportAtlas.cpp:305-320`) already corrects every lift by `rawGauge[first] − rawGauge[second]`, and the trace loop, `resolve_field_vertex_transit`, and the singularity fan partition all rotate by that corrected `signedLift`. The gauge correction existing at all is source-level proof that branch labels are per-face.
 - **Disposition:** measures **G2** (rebuild the oracle to walk the fan through the published `signedLift`), **G3** (independent local-holonomy check so G2 is not circular: composed lift `≡ 0 mod 4` at a regular vertex, `≡ index` at a singularity), **G6** (comment recording why the naive per-branch loop was wrong). **Amendment 7** freezes the rule. Do not special-case the fan and do not mutate production to satisfy an oracle.
+- **TB-R4 resolution evidence:** ordinal 334 is **PASS** after G2 transports through published `signedLift`; G3 local-holonomy coverage is also green. The per-face-gauge oracle defect is closed without production mutation.
 
 ## M3-CP4c0-TB-R2-CAND-03 — trace-seed identity still back-filled into failure-locus fields — RESOLVED BY TB-R3 / NON-STABLE
 

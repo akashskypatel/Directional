@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R4`: 338 gate green; creditable Q8 exposes sphere flow disagreement
+
+Artifact-only TB-R4 is **COMPLETE / VALID SEMANTIC RED** on run/job `32928381384 / 98055727654`, consuming immutable CB4 package `9591540182` (`8a93b553…c561f`) at semantic source `de291a17…`. The unchanged frozen selector is **338/338 PASS**, accepted **316/316 PASS**, prior CP4c-0 **328/328 PASS**, F3 **2/2 PASS**, and G5 **PASS / non-gating**. Ordinals 333/334 are green under the prescribed test-side corrections, closing the TB-R3 fixture/oracle candidates with no production change.
+
+Q8 is creditable and **RED at criterion 2**. G5 publishes the prescribed sphere's exact A2a outcome: `BranchTransportFlowDisagreement` on edge `6-8`, source face `6-8-9` branch `3`, related face `6-8-97` branch `1`, trace seed vertex/singularity `0/0`. This confirms P4's predicted remaining Q8 red while replacing the prior observability gap with a concrete non-stable semantic candidate for independent review.
+
+Result `9592385698` has SHA-256 `6ffe56ef…60643`; diagnostic `9592386266` has `669e51f2…ac3cb`. A postflight reporting shell used `first_red` instead of persisted `first_red_ordinal` after semantic execution and integrity inventories, so the workflow badge is red; preserved pre/post inventories compare equal and manifest-post is 27/27. The control failure is orchestration-only and does not authorize semantic rerun. Stable accounting remains **42 / 14 / 28**, debt **5**, packages **43**. Exact next: independent **`M3-CP4c-0-TB-R4-REVIEW-PLAN`**; no corrective CB before adjudication.
+
 ## 2026-08-26 — `M3-CP4c-0-CB4`: test-side oracle correction build green
 
 `M3-CP4c-0-CB4` is **COMPLETE / BUILD GREEN** at semantic source

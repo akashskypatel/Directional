@@ -82,97 +82,52 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R4` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-0-TB-R4-REVIEW-PLAN` — EXACT NEXT / independent review + planning
 
-`M3-CP4c-0-CB4` is **COMPLETE / BUILD GREEN**. Its durable report and successor plan are:
+`M3-CP4c-0-TB-R4` is **COMPLETE / VALID SEMANTIC RED**. Durable evidence:
 
-- `.agents/Directional/Architecture_M3_CP4c0_CB4_Code_Build_Report.md`
-- `.agents/Directional/Architecture_M3_CP4c0_CB4_Artifact_Only_Test_Benchmark_Plan.md`
+- `.agents/Directional/Architecture_M3_CP4c0_Artifact_Only_Test_Benchmark_Report.md`
+- `.agents/Directional/Architecture_M3_CP4c0_TB_R4_Review_Plan.md`
 
-**Immutable CB4 authority:** semantic source `de291a17d5e9bfb6f54918660320ecfa1d521be4`; compile event/control
-SHA `baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe`; run/job `32926004147 / 98048909565`; package
-`9591540182`, ZIP SHA-256 `8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`;
-internal manifest **27/27 PASS**; embedded source SHA-256 `6077902a83b88d1ef839ab6d2bc285050f0c059511a71c9125b0324383d69a32`;
-`runtimeExecution=false` and all source-status records clean.
+**Immutable authority:** semantic source `de291a17d5e9bfb6f54918660320ecfa1d521be4`; package `9591540182` (`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`); TB-R4 event/control SHA `bb21207f288c631b1d4149b56b37e78080edade7`; run/job `32928381384 / 98055727654`; result `9592385698` (`6ffe56ef5a86bf44dfd2ea4e2f44514d71b6037cc5c34067aeda571a70260643`); diagnostic `9592386266` (`669e51f2d0c30573c751c43a4d49b737f8a4ddeba8be2236f9782c995f6ac3cb`).
 
-CB4 implemented G1–G6 **test-side only**. No `src/` or `include/` source changed. Ordinal 333 now uses a
-DCEL-valid two-triangle witness and screens before `set_mesh`; ordinal 334 transports branch labels through
-published `signedLift`; local-holonomy coverage was added; the seed-provenance falsifier no longer asserts
-that the sphere fails; and G5 adds
-`ResolvedBranchCorrection.PrescribedSphereA2aOutcomeIsAlwaysPublishedNonGating`, which always publishes
-sphere A2a rejection loci or success trace/event counts with `credit=none;owningMeasure=G5`.
+The frozen selector is **338/338 PASS**, accepted **316/316 PASS**, prior CP4c-0 **328/328 PASS**, F3 **2/2 PASS**, and G5 **PASS / non-gating**. Q8 is **CREDITABLE / RED at criterion 2**. G5 publishes `BranchTransportFlowDisagreement` at edge `6-8`, source face `6-8-9` branch `3`, related face `6-8-97` branch `1`, trace seed `0/0`.
 
-The frozen selector remains **338** and byte-for-byte unchanged: full `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`;
-first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328
-`cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. T6, Q8, accepted expectations,
-the prescribed-sphere fixture, `kBranchTopologyTolerance`, and E2–E6 semantics are unchanged.
+Static localization only: `SurfaceCellTracing.cpp:644-671`, `validate_field_branch_transport_flow`, emits when the shared carrier is source-outgoing but not target-incoming. **Do not classify this as production fault before review.** The review must reconstruct edge-`6-8` pairing/transport authority, account for Amendment-7 per-face gauge and `signedLift`, and decide the owning category/invariant.
 
-**TB-R4 execution order is binding:** verify immutable package/integrity first; run all 338 selector identities
-in exact order and fresh processes while retaining F6 continue-and-observe after a first red; then run the two
-F3 supplementals separately; then run the G5 diagnostic regardless of prior semantic red. Q8 is creditable
-only at exact integrity + **338/338** + F3 **2/2**. The G5 identity never contributes gate credit.
+**Postflight control note:** after all 341 planned semantic processes and post-runtime integrity inventories, reporting referenced unset `first_red` instead of persisted `first_red_ordinal`, making the workflow badge red. Pre/post inventories compare identical and manifest-post is 27/27. This is resolved orchestration-only; **do not rerun TB-R4 semantics merely for a green badge**.
 
-**P4 remains explicit:** Q8 is expected to fail because TB-R3 proved the prescribed sphere still did not
-publish a network. If the 338/F3 precondition is green and Q8 is red, preserve the exact Q8 failure together
-with G5's A2a outcome/rejection code and route to independent REVIEW + PLAN. A predicted red is evidence,
-not authorization to repair inside TB. If the gate or F3 is red, Q8 is NOT CREDITABLE / NOT RUN, but G5 still
-runs for observability.
-
-**Context Load Plan for the successor:**
-
-```yaml
-load_next:
-  - references/turns/TB-EXEC.md
-  - references/turns/TB-REV.md
-conditional_modules:
-  - trigger: GitHub connector or artifact evidence inspection is required
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M3_CP4c0_CB4_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c0_CB4_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md
-  - .agents/Directional/Regression_Root_Cause_Tracker.md
-  - .agents/Directional/LESSONS.md
-  - TODO.md
-  - .agents/Directional/Future_Chat_Session_Handoff.md
-do_not_preload:
-  - CP4c-1 / CP4c-2 / CP4c-3 implementation scope
-  - any corrective CB implementation before TB-R4 evidence is independently reviewed
-  - unrelated historical milestone reports
-```
+**Review boundary:** review/planning only. Execute no Directional runtime/build/benchmark; mutate no product, test, fixture, selector, tolerance, or build logic; do not retry Q8 or enter CP4c-1/2/3. Produce `.agents/Directional/Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` and name exactly one successor.
 
 ## Current authority
 
-### M3-CP4c-0 CB4 — COMPLETE / BUILD GREEN; TB-R4 pending
+### M3-CP4c-0 TB-R4 — COMPLETE / VALID SEMANTIC RED
 
-- semantic source: `de291a17d5e9bfb6f54918660320ecfa1d521be4`;
-- compile event/control SHA: `baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe`;
-- authoritative compile run/job: `32926004147 / 98048909565`;
-- immutable package: `9591540182`, SHA-256 `8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`, manifest **27/27 PASS**;
-- source archive SHA-256: `6077902a83b88d1ef839ab6d2bc285050f0c059511a71c9125b0324383d69a32`;
-- frozen selector: **338**, hashes `d588cae0… / 601ce2b6… / cf93622e…`;
-- CB4 runtime: **none**; `runtimeExecution=false`;
-- exact next: `M3-CP4c-0-TB-R4` on package `9591540182` only.
+- semantic/package source: `de291a17d5e9bfb6f54918660320ecfa1d521be4`;
+- immutable package: `9591540182`, SHA-256 `8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`;
+- TB-R4 event/control SHA: `bb21207f288c631b1d4149b56b37e78080edade7`;
+- run/job: `32928381384 / 98055727654`;
+- gate: **338/338 PASS**; accepted prefix **316/316 PASS**; prior prefix **328/328 PASS**;
+- F3: **2/2 PASS**; G5: **PASS / non-gating**;
+- Q8: **CREDITABLE / RED**, `sphere_network_not_published`, G5 error `BranchTransportFlowDisagreement`;
+- immutable pre/post inventories equal; mutation/build flags false;
+- exact next: independent `M3-CP4c-0-TB-R4-REVIEW-PLAN`.
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains
-unaccepted until TB-R4 proves its frozen requirements. Stable regression accounting remains **42 / 14 / 28**,
-produced-witness debt **5**, M3 package count **43**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains unaccepted because Q8 is red. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **43**.
 
 ## Standing product state
 
-- M1 and M2 CLOSED / ACCEPTED; M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
+- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
 - CP4ab remains latest accepted runtime authority at **316/316**.
-- CP4c-0 remains **OPEN / unaccepted**. CB4 package `9591540182` is build-green; no CB4 runtime exists yet.
-- TB-R3's 333/334 reds were independently adjudicated test-side; CB4 contains only the authorized test/oracle/diagnostic corrections.
-- G5 is permanently non-gating for this plan and must always publish the prescribed sphere A2a outcome.
-- Q8 is frozen and unconsumed; P4 predicts it remains red after a green 338/F3 precondition.
-- CP4c-1 remains OPEN/blocked; C4/C5 stay gating and its 318 selector is unchanged.
-- CP4c-2 and CP4c-3 remain blocked and require their own `-DEFN` turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **43**; `PR8-R042` remains resolved stable.
-- Exact next is **`M3-CP4c-0-TB-R4`**. No retry, repair, later-checkpoint implementation, or Q8 execution outside the frozen TB-R4 conditions.
-
+- CP4c-0 remains OPEN/unaccepted despite a green 338 prerequisite gate because binding Q8 criterion 2 is red.
+- TB-R3 ordinals 333/334 and the live-failure-dependent supplemental defect are resolved non-stable by TB-R4.
+- `M3-CP4c0-TB-R4-CAND-01` is active/non-stable pending independent review of edge `6-8` reciprocal flow.
+- `M3-CP4c0-TB-R4-CAND-02` is orchestration-only and resolved by preserved evidence; no semantic rerun.
+- CP4c-1 remains blocked; CP4c-2/3 remain blocked for their own definition turns.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **43**.
+- Exact next is **`M3-CP4c-0-TB-R4-REVIEW-PLAN`**. No retry, repair, or later-checkpoint implementation first.
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
 **The lessons formerly listed here now live in `.agents/Directional/LESSONS.md`,** by explicit user
