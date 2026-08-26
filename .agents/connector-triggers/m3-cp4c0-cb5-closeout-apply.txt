@@ -1,4 +1,5 @@
 M3-CP4c-0-CB5 closeout documentation apply trigger
 base_sha=faa73b95b64d0f20fb5d01a4522b67288cec4c02
-patch_sha256=88c820f65e4b588247092d4d1f231fbbd04e46b0e333e3f56bbbc2872c2ab7b6
+patch_sha256=c8e944196c3ddcf48ad05872eeba5b73a917a8d00b7fa72cf253c15852d67103
+retry=1
 runtimeExecution=false
