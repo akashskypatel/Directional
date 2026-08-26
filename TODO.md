@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R2-REVIEW-PLAN` — EXACT NEXT / independent Review + Plan
+## Current focus — `M3-CP4c-0-CB3` — EXACT NEXT / Code + Build, measures F0–F8
 
 `M3-CP4c-0-TB-R2` is **COMPLETE / VALID SEMANTIC RED** against immutable CB2 package `9586196535`.
 Authoritative retry 1 `32914546494 / 98015432540` re-proved the accepted **316/316** prefix and the prior
@@ -37,7 +37,19 @@ Q8 was **NOT RUN** because the 338 gate was red.
 - [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** Root cause adjudicated; E0–E10 frozen; T6/Q8 unchanged.
 - [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** Package `9586196535` / `9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`; manifest **27/27 PASS**.
 - [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** Required gate stopped at **328 PASS / 329 EXECUTED**; ordinal 329 is the first red. Result artifact `9587747391`; Q8 not run. Retry 0 `32914435964` was orchestration-only and is non-semantic.
-- [ ] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **EXACT NEXT.** Independent review/planning only. Adjudicate the E1 diagnostic-serialization red, preserve all runtime evidence, and prescribe the smallest corrective CB. Do not repair in review and do not consume Q8.
+- [x] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **COMPLETE.** Identity 329 is **solely** the `std::uint8_t`
+  formatting defect, at exactly two call sites, established by exhaustive token audit — and it **does**
+  expose a broader frozen gap: Amendment 5 required a property of the *value* and never constrained the
+  *mechanism*, so the one locus bypassing the `*_locus` formatter convention was unconstrained. A second
+  defect of the same shape was found: ~15 surviving trace-seed back-fills that E1c's line-scoped wording
+  never reached. CB2's E1–E9 claim independently re-verified and **accurate**. Amendment 6 issued;
+  measures **F0–F8** frozen. Record:
+  `Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md`.
+- [ ] `M3-CP4c-0-CB3` — **EXACT NEXT.** Code + Build only, measures **F0–F8**. F1 routes `branch` through a
+  named `branch_locus` formatter (**not** an inline cast); F2 applies E1c to the class across ~15 sites;
+  F3 adds the two **class** falsifiers that would have caught both defects; F6 changes the TB runner to
+  continue past a red and report the remaining identities as non-crediting observations. E2–E6 are
+  verified correct and are **not** in scope. Compile only — **execute nothing.**
 - [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
 - [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
 - [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
@@ -47,6 +59,12 @@ sphere publishes **24 traces**; at least one terminal `TraceIntersection`; face 
 resolves to one of `{1-5, 2-5}` and flips across the frozen crossover; torus/mechanical remain unchanged.
 Q8 is not creditable unless E6 is present and the full 338 gate is green. TB-R2 proved E6 present but the
 gate stopped at ordinal 329, so Q8 correctly did not run.
+
+**Identity 338 is not a Q8 substitute.** `AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections`
+uses `if (!sphereNetwork) { EXPECT_NE(...) }`, so it is green whenever the sphere fails with any *other*
+code. Only Q8 proves the network publishes. Review §7 audits identities 330–337 statically and predicts
+all eight green after F1; **338 and Q8 remain the open questions**, and review §8 P4/P5 enumerate the
+expected outcomes of each so a red 338 is not mistaken for a repeat of the CP4c-0 TB failure.
 
 Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **41**. Latest
 accepted runtime remains CP4ab **316/316**.

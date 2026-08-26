@@ -331,6 +331,54 @@ terminus, silently corrupting exactly the counts an acceptance oracle checks. **
 state machine, re-derive every termination and de-duplication key against it**, and never let a
 resource-bound stop masquerade as a semantic terminus.
 
+### An instance falsifier certifies an instance
+
+Two defects surfaced in one cycle, and both had a green-looking guard pointed straight at them. A
+diagnostic identity built one error object by hand and asserted its tokens — so it certified that *one*
+object, while ~15 real emission sites kept back-filling a locus field from the trace seed. A corrective
+measure named two line numbers — so the fix landed on those two lines and the same defect survived
+everywhere else in the file. **When the defect is "every site that does X", a falsifier over one site and
+a measure over one line are both the wrong shape.** Write the identity to quantify over all codes and all
+emission sites, and write the measure to name the class, then enumerate the sites as evidence that the
+class was swept — not as the definition of the work.
+
+### A narrow integer type is character-valued at a stream boundary
+
+`FieldBranch::value()` returns `std::uint8_t`, so `stream << branch->value()` wrote a control character
+instead of a digit, and a required diagnostic token silently vanished. No compiler warning, no type error,
+and a `std::string`-based assertion is the only reason it was caught at all. The project had already met
+this exact hazard and already solved it one file away — `static_cast<int>(incidence.branch.value())` — but
+nothing made the convention enforceable, so the next emitter re-introduced it. **Route every diagnostic
+value through a named formatter that returns a string; a convention that lives only in the memory of
+whoever wrote the last call site is not a convention.**
+
+### A NUL in a diagnostic truncates everything after it, and field order decides what you lose
+
+The zero-valued branch emitted a NUL byte. `std::string` carries it harmlessly, but every C-string
+boundary downstream — log file, `c_str()`, artifact writer — truncates there. The field emitted just after
+it was the exact datum the diagnostic had been added to publish. So a formatting defect in one field could
+have silently deleted the answer to the question the whole measure existed to answer, and the test suite
+would still have looked green if it had happened to assert only on earlier fields. **A diagnostic contract
+must constrain the byte content of the whole emitted string, not just the presence of each token.**
+
+### Ordering a gate so the cheapest check gates the most informative one wastes whole cycles
+
+Ten new identities ran in selector order, stop-at-first-red. The two-character formatting defect sat at
+ordinal 329; the identity that answered the checkpoint's actual question sat at 338. One cosmetic defect
+therefore cost a full build-and-run cycle and returned zero semantic information. The fix is not to
+reorder the selector — that changes its hash and invites gaming the stop rule. **When each identity runs
+in a fresh process there is no contamination risk in continuing past a red: execute the remainder and
+report them as observations that confer no credit.** The gate stays exactly as strict; the turn stops
+being uninformative.
+
+### Verify a "already implemented, nothing to do" claim against the artifact, not the report
+
+A build turn reported that eight of its nine measures were already present and that it had only packaged
+the result. That claim was true — but it is exactly the claim that costs the most if it is wrong, because
+it converts an implementation turn into a no-op with a green label. Re-deriving it took one pass over the
+source plus a hash comparison proving the audited tree was byte-identical to the packaged source.
+**Cheap to check, unbounded to assume.**
+
 ## 3. Negatives and oracles
 
 23. **A negative test proves only the guard it actually reaches.** Check which guard rejected before

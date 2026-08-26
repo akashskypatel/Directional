@@ -29,6 +29,10 @@
 > 5. **§10** — locus fields are populated only from the failure site (never back-filled from a trace
 >    seed), every required locus must be **observable in the emitted diagnostic**, and
 >    `BranchTransportFlowDisagreement` is added.
+> 6. **§10 again, added 2026-08-26 after `M3-CP4c-0-TB-R2`** — **"observable" is now defined by
+>    mechanism**: formatted through a named `*_locus` helper, printable ASCII only (no NUL), parseable,
+>    and site-sourced across *every* emission site. Every diagnostic requirement must be falsified by a
+>    **class** identity, not an instance one. See Amendment 6 at the end of §10.
 >
 > **T6 and Q8 are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
 > unreachable* from any well-formed production state (review §7, Theorems 1–3).
@@ -428,6 +432,39 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 >
 > `VertexTransitSectorUnresolved`'s required loci are extended with **the set of admitted candidate
 > faces** (empty or ≥ 2), so "no face" and "many faces" are distinguishable without a rerun.
+
+> **AMENDMENT 6 — "observable" is defined by mechanism, and proved by class**
+> (`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` §9). Amendment 5 rule 2 required a
+> locus to be "observable in the witness diagnostic string" and left *observable* undefined. Under that
+> wording `branch=\x01` qualified — the byte is in the string — and `M3-CP4c-0-TB-R2` failed at ordinal
+> 329 because `FieldBranch::value()` returns `std::uint8_t`, which stream insertion writes as a
+> **character**. The typed authority was correct throughout; only the serialization boundary lost it.
+> Amendment 5 constrained the *value* and said nothing about the *mechanism*, so the one locus that
+> bypassed the `*_locus` formatter convention was unconstrained. **This replaces Amendment 5 rule 2.**
+>
+> A locus token is **observable** if and only if all four hold:
+>
+> 1. **Formatted, not inserted.** It is produced by a named `*_locus` formatter returning `std::string`.
+>    Raw stream insertion of a typed authority's accessor is prohibited — that is precisely how a narrow
+>    integer type becomes character-valued. The correct idiom already existed at
+>    `FieldTransportAtlas.cpp:673`; nothing made it enforceable.
+> 2. **Printable.** The complete emitted diagnostic contains only printable ASCII plus field separators.
+>    **No control character, and in particular no NUL.** `FieldBranch::from_integer(0)` emits NUL;
+>    `branch` is emitted *before* `parameter`; and `parameter` is the datum that discriminates the
+>    sphere's failure route — so a NUL there truncates exactly what Amendment 5 exists to publish at any
+>    C-string boundary.
+> 3. **Parseable.** Each token round-trips: the emitted text uniquely determines the value.
+> 4. **Site-sourced.** Amendment 5 rule 1, with its scope corrected: **every** locus field on **every**
+>    error emitted anywhere in the tracing path is populated only from the failure site. Where a failure
+>    genuinely occurs at the port, the port vertex is a legitimate `sourceVertex`; where the failure has
+>    its own downstream site, the seed may not be substituted for it. Seed identity appears only under
+>    `traceSeedVertex` / `traceSeedSingularity`.
+>
+> **And a rule about proof, which is the lesson of that turn:** every diagnostic-contract requirement must
+> be falsified by a **class** identity quantifying over all codes and all emission sites, never by an
+> instance identity over one hand-constructed error. Both defects found in `M3-CP4c-0-TB-R2` — the
+> `std::uint8_t` formatting defect and ~15 surviving trace-seed back-fills that E1c's line-scoped wording
+> never reached — were class defects that instance falsifiers passed over.
 >
 > **E6 bound, normative.** A2a keys cycle detection on the complete exact traversal state
 > `(sourceFace, branch, incoming carrier, FieldBoundaryPoint)` and applies the saturating step bound

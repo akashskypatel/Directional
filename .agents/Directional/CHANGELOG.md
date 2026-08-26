@@ -1,5 +1,64 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R2-REVIEW-PLAN`: identity 329 adjudicated; Amendment 6; a second class defect found
+
+**Independent review and planning only. No runtime, build, benchmark, product source, test source,
+fixture, selector, or build-configuration change.**
+
+- **Evidence re-verified independently** against the GitHub API and git, not taken from the reports:
+  TB-R2 run `32914546494` head SHA `26c55d13…`, result `9587747391` / `89d72a42…`, log `9587747654` /
+  `2b43c3bd…`, CB2 package `9586196535` / `9f748561…`, CB2 log `9586197038` / `7c3e56db…`. Selector
+  (**338**, `d588cae0…`) and the 316-prefix (`601ce2b6…`) recomputed locally; the 316-prefix is
+  **byte-identical to the accepted authority**. All matched. The four audited files are **byte-identical
+  (SHA-256) to the packaged semantic source `390e65b3…`**, so the source findings below are findings
+  about the immutable package, not about later drift.
+- **Two structural checks no prior turn had made.** The always-red probe
+  `GlobalTopologyPlan.SpherePrescribedWitnessStageReachabilityIsObservable` is confirmed **absent** from
+  the 338 selector, so the gate is achievable. And CB2's compile run reports `head_sha = bd4ddf26…` —
+  the *control* commit, twelve minutes after semantic source `390e65b3…`; reconcilable, but CB2 is the
+  only report in the sequence that omits its control SHA (measure F7).
+- **CB2's E1–E9 verification claim was independently re-verified and is accurate.** Each of the nine was
+  checked against the packaged source rather than accepted on assertion. E2 and E3 are implemented
+  exactly as the previous amendments specified, including vertex-identity indexing; the lossy
+  `field_branch_world_direction` round trip is absent from the entire tree; exactly one sector rule
+  survives with two production callers. **E2–E6 are correct and are not in the successor's scope.**
+- **Identity 329's cause is solely the `std::uint8_t` defect, at exactly two call sites.** Established by
+  exhaustive audit of every token the identity asserts: face/edge/published-set loci use `index()`
+  (`std::size_t`); `parameter`/`exactValues` use canonical GMP `numerator/denominator` strings;
+  `traceSteps`/`traceStepBudget` are `std::optional<std::size_t>`; the empty-set special cases are
+  present. Only `branch=` and `relatedBranch=` can fail. A repository-wide sweep confirms those are the
+  **only** two stream insertions of a narrow-integer accessor, and `GridAutomorphism::value()` — the
+  codebase's only other `std::uint8_t` accessor — is never streamed.
+- **It also exposes a real frozen gap, and the gap is the reviewer's.** Amendment 5 required a property
+  of the emitted *value* and never constrained the *mechanism*, so the one locus bypassing the `*_locus`
+  formatter convention was unconstrained — while the correct idiom already existed in the same
+  subsystem at `FieldTransportAtlas.cpp:673`. **Amendment 6** now defines observability by mechanism:
+  formatted through a named helper, printable ASCII only, parseable, and site-sourced at every emission
+  site.
+- **A hazard recorded for the first time.** `FieldBranch::from_integer(0)` emits **NUL**; `branch` is
+  emitted *before* `parameter`; and `parameter` is the single datum that discriminates the sphere's
+  failure route. At any C-string boundary that NUL truncates exactly what measure E1 exists to publish.
+  `std::string` is NUL-safe, which is the only reason identity 329 caught this instead of a log silently
+  losing it — luck of field ordering, not design.
+- **A second defect of the same shape found.** Measure E1c named *one line*; CB honoured it exactly, and
+  ~15 other emission sites in `SurfaceCellTracing.cpp` still back-fill `error.sourceVertex` from the
+  trace seed — the pattern that made TB-R1's `sourceVertex=0` misleading. **Both defects in this cycle
+  are class defects certified by instance falsifiers.** Amendment 6 now requires class falsifiers.
+- **Identities 330–337 statically audited and predicted green** after the fix; identity **334** verified
+  by exact hand computation (the fan's field directions sit at sector *bisectors*, all coordinates
+  exactly ±1/2, no rounding participates). Recorded alongside it: 334 therefore does **not** exercise the
+  hard case its name implies — a direction on or near a fan ray, where the faces sharing that ray round
+  their own directions independently. That residual is unproven in either direction and is explicitly
+  out of the successor's scope.
+- **Identity 338 is not a Q8 substitute** — it forbids two codes under `if (!sphereNetwork)`, so it is
+  green whenever the sphere fails with any other code. **338 and Q8 remain the open questions.**
+- Corrective series **F0–F8** frozen for **`M3-CP4c-0-CB3`**, including **F6**: on a semantic red the TB
+  runner continues executing the remaining required identities and reports them as non-crediting
+  observations. Each identity already runs in a fresh process, so a two-character formatting defect at
+  ordinal 329 should never again hide the results of nine identities including 338.
+- Stable accounting unchanged at **42 / 14 / 28**; produced-witness debt **5**; M3 packages **41**.
+- Record: `Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md`.
+
 ## 2026-08-26 — M3-CP4c-0-TB-R2 valid red at correction identity 329
 
 - Authoritative artifact-only retry 1 `32914546494 / 98015432540` consumed immutable CB2 source/package `390e65b373063c667e3c3f5e78b74ed9d859093b / 9586196535` and the frozen 338 selector.

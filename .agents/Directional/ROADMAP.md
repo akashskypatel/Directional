@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-25 (CP4c-0 CB2 BUILD GREEN at `390e65b373063c667e3c3f5e78b74ed9d859093b`; 338 selector frozen; exact next `M3-CP4c-0-TB-R2` artifact-only runtime plus binding Q8).
+**Status date:** 2026-08-26 (CP4c-0 TB-R2 valid semantic red at ordinal 329 of 338; independent review closed; exact next `M3-CP4c-0-CB3` under measures F0–F8).
 
 ---
 
@@ -70,7 +70,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **CB2 BUILD GREEN / runtime pending** — E1–E9 verified implemented at `390e65b373063c667e3c3f5e78b74ed9d859093b`; exact next `M3-CP4c-0-TB-R2` re-proves 338/338 plus binding Q8 |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2 | **TB-R2 VALID SEMANTIC RED at ordinal 329/338, review closed** — accepted 316 and prior 328 prefixes both re-proved green; first red is the `std::uint8_t` diagnostic-formatting defect; Q8 correctly not run; next `M3-CP4c-0-CB3` under F0–F8 |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
@@ -105,6 +105,22 @@ until CP4c-0 lands.
 CP4c-0's artifact-only TB proves the exact-continuation focused gate **328/328**, but frozen Q8 is red:
 the prescribed sphere reaches A1 then A2a rejects `BranchContinuationDegenerateEntry` before network
 publication. CP4c-0 remains unaccepted and CP4c-1 blocked.
+
+**CB2 → TB-R2 executed that correction, and `M3-CP4c-0-TB-R2-REVIEW-PLAN` closed on 2026-08-26**
+(`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md`). CB2 is build green at
+`390e65b373063c667e3c3f5e78b74ed9d859093b` / package `9586196535` with the selector re-frozen at
+**338 = 316 + 12 + 10**. TB-R2 re-proved the accepted **316/316** and the prior **328/328** prefix, then
+failed at ordinal **329** on the first E1 correction identity: `FieldBranch::value()` returns
+`std::uint8_t`, which stream insertion writes as a **character**, so `branch=1` emitted as `\x01`. Q8 was
+correctly **NOT RUN**.
+
+Review verdict: the failure is **solely** that formatting defect at two call sites — and it exposes a real
+frozen gap, because Amendment 5 required a property of the emitted *value* and never constrained the
+*mechanism*. A second defect of the same shape was found: ~15 trace-seed back-fills that E1c's
+line-scoped wording never reached. Both are **class defects certified by instance falsifiers**, which is
+the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
+particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
+**`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
 
 **`M3-CP4c-0-TB-REVIEW-PLAN` closed that adjudication on 2026-08-25**
 (`Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`). Verdict: **neither T6 nor Q8 is at

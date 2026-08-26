@@ -82,7 +82,49 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R2-REVIEW-PLAN` — EXACT NEXT / independent Review + Plan
+## Mandatory next turn — `M3-CP4c-0-CB3` — EXACT NEXT / Code + Build, measures F0–F8
+
+`M3-CP4c-0-TB-R2-REVIEW-PLAN` is **COMPLETE**. Its record is
+`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` and it is the document to read first.
+
+**Adjudication.** Identity 329's failure is **solely** the `std::uint8_t` formatting defect, at exactly
+two call sites (`tests/FieldAlignedCurveNetworkTests.cpp:2764` and `:2767`) — established by exhaustive
+audit of every token the identity asserts, against the packaged source. It **also** exposes a real gap in
+the frozen contract: Amendment 5 required a property of the emitted *value* and never constrained the
+*mechanism*, so the one locus that bypassed the `*_locus` formatter convention was unconstrained. The
+correct idiom already existed at `FieldTransportAtlas.cpp:673`; nothing made it enforceable.
+
+**A second defect of the same shape was found.** E1c named *one line* instead of a class, so roughly
+fifteen emission sites in `SurfaceCellTracing.cpp` still back-fill `error.sourceVertex` from the trace
+seed — the exact pattern that made TB-R1's `sourceVertex=0` misleading. **Both defects are class defects
+that instance falsifiers passed over.** That is the lesson of the cycle and it drives measure F3.
+
+**Hazard to know before touching the emitter:** `FieldBranch::from_integer(0)` emits **NUL**, `branch` is
+emitted *before* `parameter`, and `parameter` is the sphere's discriminating datum. At any C-string
+boundary a NUL truncates exactly what E1 exists to publish. Fix with a named formatter, not an inline cast.
+
+**CB2's E1–E9 claim was independently re-verified and is accurate** — E2 and E3 are implemented exactly as
+amended, including vertex-identity indexing, and the audited working tree is byte-identical to the
+packaged semantic source. **E2–E6 are correct and are NOT in CB3's scope.**
+
+Measures **F0–F8** are in review §10. F1 fixes the two sites through a `branch_locus` formatter; F2 applies
+E1c to the class; F3 adds the two class falsifiers; F6 changes the TB runner to continue past a red and
+report the remaining identities as non-crediting observations — each identity already runs in a fresh
+process, so a two-character defect at ordinal 329 should never again hide the results of nine identities
+including **338**. Review §7 predicts 330–337 green after F1 (334 verified by exact hand computation);
+§8 P4/P5 pre-authorize the disposition of a red 338 so it is not mistaken for a repeat.
+
+**Standing prohibitions:** do not weaken T6, Q8, any accepted expectation, or the sphere fixture; do not
+retune `kBranchTopologyTolerance`; do not reorder the selector or emitter fields; do not change E2–E6
+semantics. **Identity 338 green is not a Q8 substitute** — it only forbids two codes, it does not prove the
+network publishes.
+
+---
+
+### TB-R2 evidence this review adjudicated — retained
+
+Every digest below, the selector hash, the 316-prefix hash, and the semantic-source ancestry were
+re-verified against the GitHub API and git during review, and **all matched exactly**.
 
 `M3-CP4c-0-TB-R2` is **COMPLETE / VALID SEMANTIC RED**. Authoritative retry 1 used immutable CB2
 semantic source/package `390e65b373063c667e3c3f5e78b74ed9d859093b / 9586196535` with the frozen
@@ -112,13 +154,17 @@ and identity 1 passed, then the temporary shell helper returned the status of a 
 Retry 1 changed only that helper's return status and is the sole diagnosed orchestration retry. Do not rerun
 the deterministic semantic red.
 
-The exact next turn is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**, review/planning only. It must:
+All five review obligations above are **discharged** in
+`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md`: evidence independently verified (§1),
+the `std::uint8_t`-versus-broader-gap question answered as **both**, with the broader gap the more
+important (§3, §4), the accepted 316 / prior 328 proofs and the T6/Q8 contract preserved untouched, and
+measures **F0–F8** frozen (§10). No runtime, build, or source mutation occurred in review.
 
-1. independently verify the ordinal-329 runtime and immutable evidence;
-2. adjudicate whether the defect is solely the `std::uint8_t` diagnostic formatting boundary or reveals a broader E1 diagnostic-authority gap;
-3. preserve the accepted 316 and prior 328 runtime proofs and unchanged T6/Q8 contract;
-4. prescribe the smallest corrective Code + Build turn if warranted;
-5. not run Q8, tests, benchmarks, or generated binaries and not edit product/test/fixture/selector source during review.
+Two structural checks no prior turn had made, now recorded: the always-red probe
+`GlobalTopologyPlan.SpherePrescribedWitnessStageReachabilityIsObservable` is confirmed **absent** from the
+338 selector, so the gate is achievable; and CB2's compile run reports `head_sha = bd4ddf26…`, which is
+the **control/trigger** commit twelve minutes after semantic source `390e65b3…` — reconcilable, but CB2 is
+the only report in this sequence that omits its control SHA (measure F7).
 
 **Q8 remains verbatim frozen and unconsumed:** 316/316 accepted green; sphere 24 traces; at least one
 terminal `TraceIntersection`; face `1-2-5` / incoming `1-2` flips between `{1-5,2-5}` across the crossover;
@@ -171,7 +217,7 @@ remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **41**.
 - CP4c-1 remains OPEN/blocked; C4/C5 stay gating and its 318 selector is unchanged.
 - CP4c-2 and CP4c-3 remain blocked and require their own `-DEFN` turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **41**; `PR8-R042` remains resolved stable.
-- Exact next is independent `M3-CP4c-0-TB-R2-REVIEW-PLAN`; no corrective CB or semantic rerun may precede it.
+- Review is **closed**; exact next is `M3-CP4c-0-CB3`, Code + Build only, measures **F0–F8**. No semantic rerun of TB-R2.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
