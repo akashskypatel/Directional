@@ -13,8 +13,6 @@ permissions:
   issues: write
   pull-requests: write
 
-auto-cancel-in-progress: false
-
 jobs:
   observe:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
