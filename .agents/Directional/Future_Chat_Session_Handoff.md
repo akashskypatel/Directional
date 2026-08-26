@@ -82,99 +82,96 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R2` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-0-TB-R2-REVIEW-PLAN` — EXACT NEXT / independent Review + Plan
 
-`M3-CP4c-0-CB2` is **COMPLETE / BUILD GREEN** at semantic source `390e65b373063c667e3c3f5e78b74ed9d859093b`. The turn began with the
-required implementation audit: **E1–E9 were already present on the branch**, so no duplicate source/test
-rewrite was made. E10 compiled and packaged the existing corrective implementation only.
+`M3-CP4c-0-TB-R2` is **COMPLETE / VALID SEMANTIC RED**. Authoritative retry 1 used immutable CB2
+semantic source/package `390e65b373063c667e3c3f5e78b74ed9d859093b / 9586196535` with the frozen
+338 selector. Run/job `32914546494 / 98015432540` passed identities **1–328** exactly — accepted
+**316/316** plus the prior CP4c-0 12 — and then failed at ordinal **329**,
+`ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`.
 
-Immutable CB2 authority:
+Authoritative TB-R2 evidence:
 
-- semantic/evidence source `390e65b373063c667e3c3f5e78b74ed9d859093b`;
-- compile run/job `32909482352 / 98000623070`;
-- immutable package `9586196535` / `9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`;
-- package manifest **27/27 PASS**;
-- selector **338 = accepted 316 + prior CP4c-0 12 + correction 10**;
-- selector SHA-256 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`;
-- accepted 316-prefix SHA-256 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`;
-- prior 328-prefix SHA-256 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`;
-- `runtimeExecution=false`; no Directional runtime, test, benchmark, discovery, or custom input executed.
+- event/control SHA `26c55d13b7449953f27a4e8bd36e3c5b474f00d9`;
+- result artifact `9587747391`, SHA-256 `89d72a42b07bb879f2ba35b18b3771359d522e3c0f444e33e79ce0214d8fc5a3`;
+- diagnostic artifact `9587747654`, SHA-256 `2b43c3bda84edffe7ea23cd9763fa3c96858285b785624102f202d4e72479dab`;
+- gate result: `executed=329`, `passed=328`, `prefix316_passed=316`, `prefix328_passed=328`;
+- first failure: `failure_ordinal=329`, `failure_kind=test-failure`;
+- E6 present; Q8 **NOT RUN** because the full 338 gate was not green;
+- all source/package/test/fixture/selector/build mutation flags false; pre/post inventories identical.
 
-The mandatory E3 digest-risk precheck found only relative/self-consistent accepted atlas-digest assertions;
-no absolute digest expectation required or authorized an edit. T6 and Q8 remain unchanged. The prescribed
-sphere fixture is unchanged. `kBranchTopologyTolerance` was not retuned, widened, narrowed, or deleted.
+The immediate evidence is narrow: `FieldBranch::value()` returns `std::uint8_t`, while the test/witness
+helper `append_network_error` streams that byte directly into `std::ostringstream`. Values 1/3 are emitted
+as control characters instead of decimal text, so required E1 tokens such as `branch=1` and
+`relatedBranch=3` are absent. Typed branch authority in the error object is still populated. Treat this as
+**test/diagnostic-observability candidate evidence**, not as authorization to repair or as proof of a
+production regression; independent review owns final adjudication.
 
-Successor plan:
-`.agents/Directional/Architecture_M3_CP4c0_CB2_Artifact_Only_Test_Benchmark_Plan.md`.
-Execute the **338/338** required gate one identity per fresh process from the immutable package, then Q8
-only if that gate is green. Q8 is not creditable unless E6 is in the package; the CB2 source audit confirms
-E6 is present, but runtime credit belongs only to `M3-CP4c-0-TB-R2`.
+Retry 0 `32914435964 / 98015089869` is orchestration-only/non-semantic: package/selector preflight passed
+and identity 1 passed, then the temporary shell helper returned the status of a false bookkeeping predicate.
+Retry 1 changed only that helper's return status and is the sole diagnosed orchestration retry. Do not rerun
+the deterministic semantic red.
 
-**Q8 remains verbatim frozen:**
+The exact next turn is independent **`M3-CP4c-0-TB-R2-REVIEW-PLAN`**, review/planning only. It must:
 
-1. Accepted **316/316** green, zero expectation edits.
-2. The prescribed sphere reaches A2a and publishes a network — **24 traces**, from 8 index-1 singularities × 3 ports.
-3. At least one sphere trace terminates on a trace/trace contact, producing a terminal `TraceIntersection` — which unblocks CP4c-1's C4/C5.
-4. Face `1-2-5` with incoming `1-2` resolves to exactly one of `{1-5, 2-5}`, and the exit edge **flips** when the entry parameter is moved across the crossover.
-5. The torus still publishes 0 traces; the mechanical still fails A1. Unchanged — they are not in scope.
+1. independently verify the ordinal-329 runtime and immutable evidence;
+2. adjudicate whether the defect is solely the `std::uint8_t` diagnostic formatting boundary or reveals a broader E1 diagnostic-authority gap;
+3. preserve the accepted 316 and prior 328 runtime proofs and unchanged T6/Q8 contract;
+4. prescribe the smallest corrective Code + Build turn if warranted;
+5. not run Q8, tests, benchmarks, or generated binaries and not edit product/test/fixture/selector source during review.
 
-If the 338 gate or Q8 is red, preserve evidence and route to independent review + plan. Do not repair,
-weaken an expectation, retune a tolerance, or mutate the fixture inside TB.
+**Q8 remains verbatim frozen and unconsumed:** 316/316 accepted green; sphere 24 traces; at least one
+terminal `TraceIntersection`; face `1-2-5` / incoming `1-2` flips between `{1-5,2-5}` across the crossover;
+torus 0 traces; mechanical A1 failure unchanged. E6 is present, but Q8 remains blocked until 338/338 is green.
 
 **Context Load Plan for the successor:**
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/REVIEW-PLAN.md
 conditional_modules:
   - trigger: GitHub artifact/workflow evidence is required
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M3_CP4c0_CB2_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M3_CP4c0_CB2_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c0_CB2_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt
+  - .agents/Directional/Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md
   - .agents/Directional/Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md
   - .agents/Directional/Regression_Root_Cause_Tracker.md
   - TODO.md
   - .agents/Directional/Future_Chat_Session_Handoff.md
 do_not_preload:
-  - sibling turn files
-  - product source unless TB evidence requires later review
-  - historical CP4c reports
   - CP4c-1 / CP4c-2 / CP4c-3 implementation scope
+  - unrelated historical milestone reports
 ```
 
 ## Current authority
 
-### CP4c-0 CB2 — COMPLETE / BUILD GREEN
+### M3-CP4c-0 TB-R2 — COMPLETE / VALID SEMANTIC RED
 
-- verification-first audit: E1–E9 already present at `390e65b373063c667e3c3f5e78b74ed9d859093b`; no duplicate implementation edits;
-- all eight standard targets compile/link green on `32909482352 / 98000623070`;
-- immutable package `9586196535` / `9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`; manifest **27/27 PASS**;
-- required selector **338** with hashes frozen above;
-- no runtime executed; CP4c-0 remains runtime-unaccepted pending `M3-CP4c-0-TB-R2`.
-
-### Prior CP4c-0 TB — COMPLETE / VALID RED
-
-Prior runtime remains `32891161394 / 97943220460`: required **328/328 PASS**, binding Q8 RED before
-network publication at `BranchContinuationDegenerateEntry`. The independent review adjudicated A1's
-tolerance-based sign decisions feeding A2a's exact consumer and froze E0–E10. CB2 compile evidence does
-not supersede or reinterpret that runtime result.
+- immutable semantic source/package: `390e65b373063c667e3c3f5e78b74ed9d859093b / 9586196535`;
+- required prefix through identity 328: **328/328 PASS**, including accepted **316/316**;
+- identity 329: **RED** at `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`;
+- identities 330–338: not executed after first deterministic semantic red;
+- Q8: **NOT RUN**;
+- exact integrity/mutation boundary: PASS / unchanged.
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. Stable regression
-accounting remains **42 / 14 / 28**, produced-witness debt **5**. M3 package count is now **41**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 is not
+accepted because TB-R2 did not produce a green 338 gate and Q8 did not run. Stable regression accounting
+remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **41**.
 
 ## Standing product state
 
 - M1 and M2 CLOSED / ACCEPTED; M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
 - CP4ab remains latest accepted runtime authority at **316/316**.
-- CP4c-0 CB2 is complete/build green; CP4c-0 remains OPEN/runtime-unaccepted until the 338 gate and Q8 pass.
+- CP4c-0 CB2 remains build-green; TB-R2 is valid red at correction identity 329, so CP4c-0 remains OPEN/unaccepted.
+- Q8 is frozen and unconsumed; no sphere/torus/mechanical Q8 credit was taken in TB-R2.
 - CP4c-1 remains OPEN/blocked; C4/C5 stay gating and its 318 selector is unchanged.
 - CP4c-2 and CP4c-3 remain blocked and require their own `-DEFN` turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **41**; `PR8-R042` remains resolved stable.
-- Red TB routes through independent review/planning; attempt/diagnostic budgets remain abolished.
+- Exact next is independent `M3-CP4c-0-TB-R2-REVIEW-PLAN`; no corrective CB or semantic rerun may precede it.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

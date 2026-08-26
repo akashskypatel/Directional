@@ -2,23 +2,38 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-25 UTC** after `M3-CP4c-0-TB`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
+Last updated: **2026-08-26 UTC** after `M3-CP4c-0-TB-R2`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
 
-CP4c-0 authoritative TB `32891161394 / 97943220460` consumed package `9577900736`. Required semantic
-gate **328/328 PASS** = accepted **316/316** + CP4c-0 **12/12**, with all prohibited build/mutation flags
-false. Binding Q8 is **VALID RED** because prescribed sphere stops in A2a at
-`BranchContinuationDegenerateEntry`, `singularity=0`, `sourceVertex=0`, `sourceEdge=6-8`, before network
-publication. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **40**. Exact next is
-independent `M3-CP4c-0-TB-REVIEW-PLAN`.
+Authoritative TB-R2 retry 1 `32914546494 / 98015432540` consumed immutable CB2 package `9586196535`.
+The accepted **316/316** prefix and prior CP4c-0 **328/328** prefix are green. Ordinal **329**,
+`ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`, is the first semantic
+red; identities 330–338 and Q8 were not executed. All artifact/source/test/fixture/selector mutation flags
+remain false. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **41**. Exact next is
+independent `M3-CP4c-0-TB-R2-REVIEW-PLAN`.
 
-## M3-CP4c0-TB-CAND-01 — prescribed sphere reaches typed zero-time continuation rejection before Q8 network — ACTIVE / NON-STABLE / ROOT CAUSE ADJUDICATED, FIX PENDING
+## M3-CP4c0-TB-R2-CAND-01 — branch locus diagnostic serializes uint8 as control character — ACTIVE / NON-STABLE / PENDING INDEPENDENT REVIEW
+
+- **Observed:** authoritative retry 1 passes identities 1–328, then ordinal 329 fails every expected numeric branch token in `NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`; emitted strings contain a raw control character after `branch=` / `relatedBranch=` instead of `1` / `3`.
+- **Immediate source evidence:** `FieldBranch::value()` returns `std::uint8_t`; test/witness helper `append_network_error` inserts that value directly into `std::ostringstream`. The stream therefore selects character insertion. The typed `FieldAlignedCurveNetworkError.branch` / `relatedBranch` fields remain populated; serialization loses their decimal representation.
+- **Classification:** high-confidence **test/diagnostic-observability candidate** affecting E1 runtime proof. It is not currently evidence of accepted production-authority loss because the accepted 316 prefix and the prior 328 prefix are green and the failure is in the witness serializer used by the correction test.
+- **Disposition:** independent `M3-CP4c-0-TB-R2-REVIEW-PLAN` must adjudicate scope before any correction. No test edit or rerun is authorized in TB; Q8 remains unconsumed.
+- **Stable-count rationale:** CP4c-0 has never been accepted and accepted 316 is green; **+0 events / +0 recurrences**, totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0-TB-R2-CAND-02 — runner helper returned bookkeeping predicate status after identity 1 — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** retry 0 `32914435964 / 98015089869` passed immutable preflight and identity 1, then stopped as `ORCHESTRATION_FAIL / incomplete-gate` with no semantic red and Q8 not run.
+- **Root cause:** the temporary `run_identity` shell helper had no explicit successful return; for ordinals below 329 its final `[[ ordinal -ge 329 ]] && ...` expression returned false, which the caller interpreted as a gate stop.
+- **Correction/evidence:** add only `return 0` after successful bookkeeping. Retry 1 reused the exact package, selector, fixtures, expectations, and semantic source and reached the deterministic ordinal-329 semantic red.
+- **Stable-count rationale:** temporary orchestration only; **+0 events / +0 recurrences**.
+
+## M3-CP4c0-TB-CAND-01 — prescribed sphere reaches typed zero-time continuation rejection before Q8 network — FIX IMPLEMENTED / RE-PROOF BLOCKED BY TB-R2 / NON-STABLE
 
 - **Observed:** authoritative retry 1 `32891161394 / 97943220460` passes **328/328**, but binding Q8 is red. A2a rejects `BranchContinuationDegenerateEntry` at singularity 0 / source vertex 0 / edge 6-8. No network; trace count, terminal `TraceIntersection`, and face `1-2-5` crossover unavailable.
 - **Control:** accepted **316/316** and all 12 CP4c-0 identities pass; package/source/test/fixture/selector integrity unchanged; no configure/build/relink/repair.
 - **Root-cause status:** **ADJUDICATED 2026-08-25** by `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`. **Class:** ill-formed upstream state — A1 decides the sign of a barycentric direction coordinate with a `double` tolerance in three places and publishes those verdicts as topological ownership (carrier-set membership, vertex-sector membership); A2a re-decides the same sign exactly on A1's own published datum. T6 correctly rejects a state A1 was incorrectly allowed to produce. The seam is **proved algebraically, not conjectured**: in `direction_in_incident_vertex_sector`, `alpha = d[next]` and `beta = d[prev]` identically, so `alpha > tol && beta >= -tol` *is* the exact entry predicate at `tol = 1e-10`. Confidence **high**.
 - **Route still undetermined, deliberately:** three routes reach `t* = 0` (interior edge entry with cross-face flow disagreement; the same within-face at `|d| <= 1e-10`; vertex entry after a mis-selected sector transit). The discriminating datum — the exact entry parameter — was computed and dropped by the witness emitter. Measure **E1** decides it in one turn; measures **E2–E5** close all three regardless.
 - **Note on the published locus:** `singularity=0` / `sourceVertex=0` are the trace **seed**, back-filled at `SurfaceCellTracing.cpp:818-819`, not the failure site. The failure is provably not the trace's first step. Only `sourceEdge=6-8` is a genuine locus.
-- **Disposition:** `M3-CP4c-0-CB2`, Code + Build only, measures **E0–E10**. T6 and Q8 unchanged; no fixture edit; no tolerance retuned. Review §7 proves T6 becomes unreachable from well-formed states after E2–E5.
+- **Disposition:** CB2 implemented E0–E10 and TB-R2 re-proved identities 1–328 green, but ordinal 329 failed before Q8 authorization. The sphere/Q8 re-proof is therefore still blocked; do not infer closure from the green 328 prefix.
 - **Stable-count rationale:** CP4c-0 never accepted and no accepted 316 identity regressed; **+0 events / +0 recurrences**, totals **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c0-TB-CAND-02 — retry-0 artifact transfer failed before immutable validation — RESOLVED INFRASTRUCTURE / NON-STABLE

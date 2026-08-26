@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-08-26 — M3-CP4c-0-TB-R2 valid red at correction identity 329
+
+- Authoritative artifact-only retry 1 `32914546494 / 98015432540` consumed immutable CB2 source/package `390e65b373063c667e3c3f5e78b74ed9d859093b / 9586196535` and the frozen 338 selector.
+- Identities **1–328 PASS**: accepted predecessor **316/316** and prior CP4c-0 **328/328** are re-proved. Ordinal **329**, `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`, is the first semantic red; execution stopped there and identities 330–338 received no credit.
+- Immediate evidence: `FieldBranch::value()` returns `std::uint8_t`; the test/witness `append_network_error` helper streams that byte directly, producing control characters instead of decimal `branch=1` / `relatedBranch=3` tokens. The typed error fields remain populated. This is recorded as a non-stable test/diagnostic-observability candidate pending independent review, not repaired inside TB.
+- Q8 **NOT RUN** because the complete 338 gate was not green, even though E6 was verified present. Package/source/test/fixture/selector pre/post inventories are identical and all build/mutation flags are false.
+- Result artifact `9587747391` SHA-256 `89d72a42b07bb879f2ba35b18b3771359d522e3c0f444e33e79ce0214d8fc5a3`; log artifact `9587747654` SHA-256 `2b43c3bda84edffe7ea23cd9763fa3c96858285b785624102f202d4e72479dab`.
+- Retry 0 `32914435964 / 98015089869` was orchestration-only: identity 1 passed, then a temporary shell helper returned its bookkeeping predicate status. Retry 1 changed only that helper return and is the sole diagnosed retry; no semantic rerun follows the deterministic red.
+- Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **41**. Latest accepted runtime remains CP4ab **316/316**. Exact next: independent `M3-CP4c-0-TB-R2-REVIEW-PLAN`.
+
 ## 2026-08-25 — Drive patch retirement no longer emits deterministic ownership 403s
 
 - Removed the permanent Google Drive `DELETE` request from `agent-google-drive-reusable.yml`. After a successful repository push the reusable now reads `capabilities.canTrash`; it issues only `files.update(..., trashed=true)` when that capability is true, otherwise it skips the known-failing mutation and reports owner-authorized retirement as still required.

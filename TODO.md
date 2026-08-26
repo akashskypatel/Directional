@@ -21,34 +21,35 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R2` — EXACT NEXT / artifact-only Test + Benchmark
+## Current focus — `M3-CP4c-0-TB-R2-REVIEW-PLAN` — EXACT NEXT / independent Review + Plan
 
-`M3-CP4c-0-CB2` is **COMPLETE / BUILD GREEN** at semantic source `390e65b373063c667e3c3f5e78b74ed9d859093b`. Verification before
-implementation found E1–E9 already present on the branch; no duplicate source/test implementation was
-made. E10 compiled/linked all eight standard targets and packaged the exact source with
-`runtimeExecution=false`.
+`M3-CP4c-0-TB-R2` is **COMPLETE / VALID SEMANTIC RED** against immutable CB2 package `9586196535`.
+Authoritative retry 1 `32914546494 / 98015432540` re-proved the accepted **316/316** prefix and the prior
+CP4c-0 prefix **328/328**, then failed at ordinal **329**:
+`ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`. The emitted diagnostic
+writes `FieldBranch::value()` (`std::uint8_t`) as a control character, so numeric tokens such as
+`branch=1` / `relatedBranch=3` are absent. Package/source/test/fixture/selector integrity remained exact;
+Q8 was **NOT RUN** because the 338 gate was red.
 
 - [x] `M3-CP4c-0-DEFN` — **COMPLETE.** Frozen definitions remain normative.
 - [x] `M3-CP4c-0-CB1` — **COMPLETE / BUILD GREEN.** No runtime in CB.
 - [x] `M3-CP4c-0-TB` — **COMPLETE / VALID RED.** 328/328 gate PASS; binding Q8 RED.
 - [x] `M3-CP4c-0-TB-REVIEW-PLAN` — **COMPLETE.** Root cause adjudicated; E0–E10 frozen; T6/Q8 unchanged.
-- [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** E1–E9 verified already implemented; E10 compile/package
-  verification green on run/job `32909482352 / 98000623070`. Package `9586196535` / `9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`; manifest **27/27 PASS**.
-- [ ] `M3-CP4c-0-TB-R2` — **EXACT NEXT.** Artifact-only runtime. Required selector **338 = 316 + 12 + 10**,
-  SHA-256 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Execute one identity per fresh process, then
-  binding Q8 only after a green 338 gate. No build/mutation/repair/performance benchmark.
+- [x] `M3-CP4c-0-CB2` — **COMPLETE / BUILD GREEN.** Package `9586196535` / `9f74856149909bc1fbcaffe638fd64b4719cddcb8ed8d92972dd52289362003f`; manifest **27/27 PASS**.
+- [x] `M3-CP4c-0-TB-R2` — **COMPLETE / VALID SEMANTIC RED.** Required gate stopped at **328 PASS / 329 EXECUTED**; ordinal 329 is the first red. Result artifact `9587747391`; Q8 not run. Retry 0 `32914435964` was orchestration-only and is non-semantic.
+- [ ] `M3-CP4c-0-TB-R2-REVIEW-PLAN` — **EXACT NEXT.** Independent review/planning only. Adjudicate the E1 diagnostic-serialization red, preserve all runtime evidence, and prescribe the smallest corrective CB. Do not repair in review and do not consume Q8.
 - [ ] `M3-CP4c-1` — **OPEN, blocked on CP4c-0.** C4/C5 stay gating; 318 selector untouched.
 - [ ] `M3-CP4c-2-DEFN` — **BLOCKED.** Owns `DESIGN.md` §7.2 index-free closed-surface seam gap.
 - [ ] `M3-CP4c-3-DEFN` — **BLOCKED.** Owns mechanical missing-adjacency localization.
 
-**Frozen Q8:** accepted 316/316 with zero expectation edits; prescribed sphere publishes **24 traces**;
-at least one terminal `TraceIntersection`; face `1-2-5` / incoming `1-2` resolves to one of
-`{1-5, 2-5}` and flips across the frozen crossover; torus/mechanical remain unchanged. Q8 is not
-creditable unless E6 is present in the package. The CB2 audit confirms E6 is present; runtime still must
-prove Q8.
+**Frozen Q8 remains unchanged and unconsumed:** accepted 316/316 with zero expectation edits; prescribed
+sphere publishes **24 traces**; at least one terminal `TraceIntersection`; face `1-2-5` / incoming `1-2`
+resolves to one of `{1-5, 2-5}` and flips across the frozen crossover; torus/mechanical remain unchanged.
+Q8 is not creditable unless E6 is present and the full 338 gate is green. TB-R2 proved E6 present but the
+gate stopped at ordinal 329, so Q8 correctly did not run.
 
-If any accepted 316 identity is red, stop and route to review. Do not edit an accepted expectation. T6
-and Q8 may not be weakened; sphere fixture and `kBranchTopologyTolerance` remain frozen.
+Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **41**. Latest
+accepted runtime remains CP4ab **316/316**.
 
 ## After M3 exit
 
