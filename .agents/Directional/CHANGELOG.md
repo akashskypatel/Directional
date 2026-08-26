@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R5`: 338/F3 green; H1 proves sparse A1 disagreement; Q8 remains red
+
+Artifact-only TB-R5 is **COMPLETE / VALID SEMANTIC RED**. Sole semantic authority is hosted run/job `32994846466 / 98261255799`, control `3f9864fddef696dc7d95084fdd41b680a78f5b37`, consuming immutable CB5 package `9601160869` (`143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb`) at semantic source `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e`. Result `9616160533` has ZIP SHA-256 `1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8`; diagnostic `9616161522` has `7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`.
+
+- Frozen selector **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/328 PASS**, `first_red_ordinal=0`; F3 **2/2 PASS**; G5 PASS/non-gating.
+- H1 PASS/non-gating: **390/4224** A1-only cross-face pair disagreements (**9.23295%**), classifier `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`. Witnesses: two-ring `4/160` (2.5%, all lift 0), fan `2/32` (6.25%, all lift 0), sphere `144/2304` (6.25%; lift 0 dominates 102), torus `240/1728` (13.8889%; lift 0 dominates 184). Sphere/torus also have symmetric ±1, ±2 and ±3 violations.
+- **H-A excluded:** disagreements are not odd-lift-only and are mostly `signedLift=0`. **H-C excluded:** A1 census is not zero. The ~50%/uniform systematic-index branch is unsupported. H-B matching aliasing remains plausible but is **not yet proved**, especially because the manually prescribed fan has two lift-0 disagreements despite computed matching aliasing not being live there.
+- G5 still publishes the sphere `BranchTransportFlowDisagreement` at edge `6-8`, source face `6-8-9` branch 3 → target `6-8-97` branch 1, `signedLift=2`; H3 now preserves the seven ordered trace steps leading there.
+- Q8 is **CREDITABLE / RED at criterion 2**; criterion 1 PASS, criterion 3 NOT_EVALUABLE, criterion 4 PASS, criterion 5 carried unchanged/not rerun. This is the expected persistence of the same CP4c-0 candidate after a diagnostic-only CB5, not a new stable regression.
+- Postflight package/source/fixture/selector/producer-executable inventories are byte-identical and manifest-post is 27/27. No configure, compile, relink, repair, generated discovery, package/fixture/selector mutation, or performance benchmark occurred. Fresh semantic processes: **342**.
+- GitHub-hosted Actions outage caused delayed control triggers. Owner-authorized self-hosted attempts `32993852779` and `32994482392` failed before runtime at immutable payload SHA verification because checkout line-ending normalization changed shell bytes. They are orchestration-only; hosted `32994846466` is the sole TB-R5 authority.
+- Stable accounting unchanged at **42 / 14 / 28**; produced-witness debt **5**; M3 packages **44**. Exact next: independent **`M3-CP4c-0-TB-R5-REVIEW-PLAN`**, review/planning only.
+
+
 ## 2026-08-26 — `M3-CP4c-0-TB-R4-REVIEW-PLAN`: gate green, Q8 creditable and red; symptom proved, mechanism withheld; CP4c docs consolidated
 
 **Independent review and planning only. No runtime, build, benchmark, product source, test source,

@@ -18,7 +18,9 @@ record. No checkpoint is closed by this document, and none may be.
 | `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md` | Amendments 1–5; measures E0–E10 |
 | `Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` | Amendment 6; measures F0–F8 |
 | `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` | Amendment 7; measures G0–G8 |
-| `Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` | **current**; measures H0–H7 |
+| `Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` | measures H0–H7 that prescribed CB5/TB-R5 |
+| `Architecture_M3_CP4c0_TB_R5_Artifact_Only_Test_Benchmark_Report.md` | current immutable TB-R5 evidence |
+| `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` | exact-next independent review brief |
 | `Architecture_M3_CP4c*_Required_Green_Selector.txt`, `..._Non_Gating_Diagnostic_Selector.txt` | selector authority |
 
 **Retired-provenance convention.** A citation elsewhere naming any document in §5's retirement list
@@ -107,6 +109,15 @@ CB1's wiring regressed nothing: the accepted 316 were green in the same immutabl
 | **CB4** | `de291a17d5e9bfb6f54918660320ecfa1d521be4` (initial `76c38686f6f79617477dd39b5f70e330143ed47f`; control `baf7ed2ea9381ad47b3ae807d00d61bee0f0dcfe`) | `9591540182` (`8a93b553df337bc8ad952e6a5b348a3eaac8b2304b50c1402f5184a8ce4c561f`); source archive `6077902a83b88d1ef839ab6d2bc285050f0c059511a71c9125b0324383d69a32` | `32926004147 / 98048909565` | BUILD GREEN; test-side corrections only |
 | **TB-R4** | `de291a17d5e9bfb6f54918660320ecfa1d521be4` | `9591540182` | `32928381384 / 98055727654` (control `bb21207f288c631b1d4149b56b37e78080edade7`); result `9592385698` / `6ffe56ef5a86bf44dfd2ea4e2f44514d71b6037cc5c34067aeda571a70260643`; log `9592386266` / `669e51f2d0c30573c751c43a4d49b737f8a4ddeba8be2236f9782c995f6ac3cb` | **338/338 PASS**, F3 2/2, G5 PASS; **Q8 creditable, RED at criterion 2** |
 | **CB5** | `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e` (control `fc4892c89bc9bb4a0510bdd47187f4f0d3482c8e`) | `9601160869` (`143cab907b4086a3f3bfc6f29dfdbb103919c9429698b0cce0757ae16f36cefb`); source archive `f7f2e59cf9866beb8e784aeaefc2320cc2306a49ab1813133b7e343d5f3e35e3`; log `9601161248` / `7fab20369e529ea674a8c1fc9561753d935bce2d50297750d9007941fe788b91` | `32953176800 / 98129036272` | **BUILD GREEN**; H1–H3 diagnostic-only; H4 source-audited; H5 no production change; `runtimeExecution=false` |
+| **TB-R5** | `cd2ffb74fc0a5680e55ad63ba2bd3fc6b75e456e` | package `9601160869`; result `9616160533` (`1ecfd85f06b40466f0e8193d1603950cd93b120723568024a1b50595e9902ad8`); log `9616161522` (`7cb10caee2f1e861368da3098e320f10bee3b13d51439bc868e1e3c60aa14b0e`) | `32994846466 / 98261255799` (control `3f9864fddef696dc7d95084fdd41b680a78f5b37`) | **VALID SEMANTIC RED**; 338/338, F3 2/2, G5 PASS; H1 `390/4224` `H-B_OR_OTHER_SPARSE_REVIEW_REQUIRED`; Q8 creditable RED criterion 2 |
+
+### TB-R5 retained result and H1 disposition
+
+TB-R5 executed **342 fresh processes** on the immutable CB5 package: 338 gate identities, F3's two required supplementals, G5 and H1. The gate is 338/338 with `first_red_ordinal=0`; F3 is 2/2; package manifest remains 27/27 and all pre/post byte inventories match. G5 still reaches `BranchTransportFlowDisagreement` at sphere edge `6-8` (`6-8-9` branch 3 → `6-8-97` branch 1, `signedLift=2`) after a seven-step published trace history.
+
+H1 checked **4224** A1-only cross-face branch pairs and found **390 (9.23295%)** disagreements: two-ring `4/160`, fan `2/32`, sphere `144/2304`, torus `240/1728`. Lift 0 dominates (`4/4`, `2/2`, `102/144`, `184/240` respectively), while sphere/torus also contain symmetric ±1/±2/±3 violations. This **excludes H-A** (odd-lift-only) and **H-C** (zero A1 violations), and does not match the review's ~50% systematic-index branch. It does **not** prove H-B: the manually prescribed fan also has lift-0 disagreements although computed matching aliasing is not live there. Exact next is independent TB-R5 review/planning to localize the sparse pattern and freeze one bounded successor. Stable accounting remains `42 / 14 / 28`; debt 5; packages 44.
+
+During a GitHub-hosted Actions outage, self-hosted runs `32993852779` and `32994482392` failed before runtime at immutable control-payload hash verification because checkout line-ending conversion changed the staged shell bytes. They are orchestration-only and carry no semantic result. Hosted run `32994846466` is the sole TB-R5 authority.
 
 ### The corrective arc, in one paragraph each
 
