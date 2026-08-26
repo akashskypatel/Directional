@@ -647,7 +647,7 @@ validate_field_branch_transport_flow(
     const authority::FieldBranchBoundaryPairing &sourcePairing,
     const authority::SourceFaceTopologyKey &targetFace,
     const authority::FieldBranchBoundaryPairing &targetPairing,
-    const authority::SourceEdgeTopologyKey &carrier) {
+    const authority::SourceEdgeTopologyKey &carrier, const int signedLift) {
   if (std::find(sourcePairing.outgoingCarriers.begin(),
                 sourcePairing.outgoingCarriers.end(), carrier) ==
           sourcePairing.outgoingCarriers.end() ||
@@ -661,6 +661,7 @@ validate_field_branch_transport_flow(
       sourceFace, sourcePairing.branch, carrier);
   error.relatedSourceFace = targetFace;
   error.relatedBranch = targetPairing.branch;
+  error.signedLift = signedLift;
   error.exactValues.reserve(6U);
   error.exactValues.insert(error.exactValues.end(),
                            sourcePairing.direction.barycentric.begin(),
@@ -677,6 +678,25 @@ void annotate_field_aligned_trace_seed(
     const authority::FieldSingularityId traceSeedSingularity) {
   error.traceSeedVertex = traceSeedVertex;
   error.traceSeedSingularity = traceSeedSingularity;
+}
+
+void annotate_field_aligned_trace_history(
+    FieldAlignedCurveNetworkError &error,
+    const FieldAlignedCandidateTrace &trace,
+    const FieldAlignedTraceTraversalState &state) {
+  error.traceHistory.clear();
+  error.traceHistory.reserve(trace.segments.size() + 1U);
+  for (const FieldAlignedCandidateTraceSegment &segment : trace.segments) {
+    error.traceHistory.push_back(FieldAlignedTraceStepDiagnostic{
+        segment.sourceFace, segment.branch, segment.incomingCarrier,
+        segment.entryPoint.parameter});
+  }
+  const FieldAlignedTraceStepDiagnostic current{
+      state.sourceFace, state.branch, state.incomingCarrier,
+      state.entryPoint.parameter};
+  if (error.traceHistory.empty() || error.traceHistory.back() != current) {
+    error.traceHistory.push_back(current);
+  }
 }
 
 FieldAlignedCurveNetworkError trace_scoped_field_aligned_error(
@@ -896,51 +916,53 @@ FieldAlignedCandidateTraceResult canonical_field_aligned_traces(
     while (true) {
       const FieldAlignedTraceTraversalState state{
           currentFace, currentBranch, incomingCarrier, *currentEntryPoint};
+      const auto traceError = [&](FieldAlignedCurveNetworkError error) {
+        annotate_field_aligned_trace_seed(error, port.sourceVertex,
+                                          port.singularity);
+        annotate_field_aligned_trace_history(error, trace, state);
+        return error;
+      };
       const FieldAlignedTraceTraversalStatus traversalStatus =
           traversalGuard.observe(state);
       if (traversalStatus != FieldAlignedTraceTraversalStatus::Advanced) {
         FieldAlignedCurveNetworkError error =
             field_aligned_trace_traversal_error(traversalStatus, state,
                                                 traversalGuard);
-        annotate_field_aligned_trace_seed(error, port.sourceVertex,
-                                          port.singularity);
-        return error;
+        return traceError(std::move(error));
       }
 
       const authority::FieldFaceBranchFrame *frame =
           topology.find_frame(currentFace);
       if (frame == nullptr || frame->sourceComponent != trace.sourceComponent ||
           frame->topologyRegion != trace.sourceTopologyRegion) {
-        return field_aligned_error(
+        return traceError(field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
-            port.sourceVertex, std::nullopt, std::nullopt, port.singularity);
+            port.sourceVertex, std::nullopt, std::nullopt, port.singularity));
       }
       const authority::FieldBranchBoundaryPairing *pairing =
           field_aligned_branch_pairing(*frame, currentBranch);
       if (pairing == nullptr) {
-        return trace_scoped_field_aligned_error(
+        return traceError(trace_scoped_field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
             port.sourceVertex, port.singularity, std::nullopt, std::nullopt,
-            currentFace, currentBranch);
+            currentFace, currentBranch));
       }
 
       auto continuation = resolve_field_branch_continuation(
           currentFace, *pairing, *currentEntryPoint);
       if (auto *error =
               std::get_if<FieldAlignedCurveNetworkError>(&continuation)) {
-        annotate_field_aligned_trace_seed(*error, port.sourceVertex,
-                                          port.singularity);
-        return *error;
+        return traceError(std::move(*error));
       }
       const FieldBranchContinuationDecision decision =
           std::get<FieldBranchContinuationDecision>(continuation);
 
       if (!incomingCarrier.has_value() && trace.segments.empty() &&
           decision.outgoingCarrier != attachment->firstOutgoingCarrier) {
-        return trace_scoped_field_aligned_error(
+        return traceError(trace_scoped_field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
             port.sourceVertex, port.singularity, std::nullopt,
-            decision.outgoingCarrier, currentFace, currentBranch);
+            decision.outgoingCarrier, currentFace, currentBranch));
       }
 
       trace.segments.emplace_back(
@@ -949,10 +971,10 @@ FieldAlignedCandidateTraceResult canonical_field_aligned_traces(
 
       if (decision.kind == FieldBranchContinuationKind::VertexHit) {
         if (!decision.sourceVertex.has_value()) {
-          return trace_scoped_field_aligned_error(
+          return traceError(trace_scoped_field_aligned_error(
               FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
               port.sourceVertex, port.singularity, std::nullopt,
-              decision.outgoingCarrier, currentFace, currentBranch);
+              decision.outgoingCarrier, currentFace, currentBranch));
         }
         trace.terminalPoint = decision.exitPoint;
         const authority::FieldSingularityFact *terminalSingularity =
@@ -969,20 +991,18 @@ FieldAlignedCandidateTraceResult canonical_field_aligned_traces(
             trace.sourceTopologyRegion, currentFace, currentBranch,
             *decision.sourceVertex);
         if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
-          annotate_field_aligned_trace_seed(*error, port.sourceVertex,
-                                            port.singularity);
-          return *error;
+          return traceError(std::move(*error));
         }
         const FieldVertexTransitDecision vertexTransit =
             std::get<FieldVertexTransitDecision>(transit);
         const auto nextEntryPoint = field_boundary_point_at_vertex(
             vertexTransit.nextFace, *decision.sourceVertex);
         if (!nextEntryPoint.has_value()) {
-          return trace_scoped_field_aligned_error(
+          return traceError(trace_scoped_field_aligned_error(
               FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
               port.sourceVertex, port.singularity, decision.sourceVertex,
               decision.outgoingCarrier, vertexTransit.nextFace,
-              vertexTransit.nextBranch);
+              vertexTransit.nextBranch));
         }
         currentFace = vertexTransit.nextFace;
         currentBranch = vertexTransit.nextBranch;
@@ -1002,18 +1022,18 @@ FieldAlignedCandidateTraceResult canonical_field_aligned_traces(
       const auto nextFace =
           field_aligned_next_face(topology, decision.outgoingCarrier, currentFace);
       if (!nextFace.has_value()) {
-        return trace_scoped_field_aligned_error(
+        return traceError(trace_scoped_field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
             port.sourceVertex, port.singularity, std::nullopt,
-            decision.outgoingCarrier, currentFace, currentBranch);
+            decision.outgoingCarrier, currentFace, currentBranch));
       }
       const auto directed = topology.transport(
           decision.outgoingCarrier, currentFace, *nextFace);
       if (!directed.has_value()) {
-        return trace_scoped_field_aligned_error(
+        return traceError(trace_scoped_field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
             port.sourceVertex, port.singularity, std::nullopt,
-            decision.outgoingCarrier, currentFace, currentBranch);
+            decision.outgoingCarrier, currentFace, currentBranch));
       }
       const authority::FieldBranch nextBranch =
           currentBranch.rotated(directed->signedLift);
@@ -1024,17 +1044,15 @@ FieldAlignedCandidateTraceResult canonical_field_aligned_traces(
               ? nullptr
               : field_aligned_branch_pairing(*nextFrame, nextBranch);
       if (nextPairing == nullptr) {
-        return trace_scoped_field_aligned_error(
+        return traceError(trace_scoped_field_aligned_error(
             FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
             port.sourceVertex, port.singularity, std::nullopt,
-            decision.outgoingCarrier, *nextFace, nextBranch);
+            decision.outgoingCarrier, *nextFace, nextBranch));
       }
       if (auto flowError = validate_field_branch_transport_flow(
               currentFace, *pairing, *nextFace, *nextPairing,
-              decision.outgoingCarrier)) {
-        annotate_field_aligned_trace_seed(*flowError, port.sourceVertex,
-                                          port.singularity);
-        return *flowError;
+              decision.outgoingCarrier, directed->signedLift)) {
+        return traceError(std::move(*flowError));
       }
 
       entryTransport.emplace(decision.outgoingCarrier, currentFace, *nextFace,

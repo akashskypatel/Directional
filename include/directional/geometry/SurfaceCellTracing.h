@@ -142,6 +142,15 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   TraceStepBudgetExhausted = 27,
 };
 
+struct FieldAlignedTraceStepDiagnostic {
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  authority::ExactUnitParameter entryParameter;
+
+  auto operator<=>(const FieldAlignedTraceStepDiagnostic &) const = default;
+};
+
 struct FieldAlignedCurveNetworkError {
   FieldAlignedCurveNetworkErrorCode code =
       FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding;
@@ -153,12 +162,14 @@ struct FieldAlignedCurveNetworkError {
   std::optional<authority::SourceFaceTopologyKey> relatedSourceFace;
   std::optional<authority::FieldBranch> branch;
   std::optional<authority::FieldBranch> relatedBranch;
+  std::optional<int> signedLift;
   std::optional<authority::ExactUnitParameter> parameter;
   std::vector<authority::FieldExactRational> exactValues;
   std::vector<authority::SourceEdgeTopologyKey> publishedEdges;
   std::vector<authority::SourceFaceTopologyKey> publishedFaces;
   std::optional<authority::SourceVertexId> traceSeedVertex;
   std::optional<authority::FieldSingularityId> traceSeedSingularity;
+  std::vector<FieldAlignedTraceStepDiagnostic> traceHistory;
   std::optional<std::size_t> traceSteps;
   std::optional<std::size_t> traceStepBudget;
 
@@ -597,7 +608,7 @@ validate_field_branch_transport_flow(
     const authority::FieldBranchBoundaryPairing &sourcePairing,
     const authority::SourceFaceTopologyKey &targetFace,
     const authority::FieldBranchBoundaryPairing &targetPairing,
-    const authority::SourceEdgeTopologyKey &carrier);
+    const authority::SourceEdgeTopologyKey &carrier, int signedLift);
 
 void annotate_field_aligned_trace_seed(
     FieldAlignedCurveNetworkError &error,

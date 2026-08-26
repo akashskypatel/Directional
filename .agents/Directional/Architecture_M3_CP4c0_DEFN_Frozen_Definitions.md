@@ -435,7 +435,7 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 >
 > | Code | Fires when | Required loci |
 > |---|---|---|
-> | `BranchTransportFlowDisagreement` | Amendment 4 — carrier is outflow in `X` but not inflow in `Y` | both `sourceFace`s, both branches, the shared edge, both exact derivatives |
+> | `BranchTransportFlowDisagreement` | Amendment 4 — carrier is outflow in `X` but not inflow in `Y` | both `sourceFace`s, both branches, published `signedLift` actually used, the shared edge, both exact derivatives |
 >
 > `VertexTransitSectorUnresolved`'s required loci are extended with **the set of admitted candidate
 > faces** (empty or ≥ 2), so "no face" and "many faces" are distinguishable without a rerun.

@@ -2726,6 +2726,152 @@ std::string branch_locus(const directional::authority::FieldBranch branch) {
   return std::to_string(static_cast<unsigned int>(branch.value()));
 }
 
+std::string signed_lift_locus(const int signedLift) {
+  return std::to_string(signedLift);
+}
+
+struct Cp4cFlowAgreementViolation {
+  SourceEdgeTopologyKey sourceEdge;
+  SourceFaceTopologyKey sourceFace;
+  SourceFaceTopologyKey targetFace;
+  directional::authority::FieldBranch sourceBranch;
+  directional::authority::FieldBranch targetBranch;
+  int signedLift = 0;
+  directional::authority::FieldExactRational sourceDerivative;
+  directional::authority::FieldExactRational targetDerivative;
+};
+
+const directional::authority::FieldBranchBoundaryPairing *
+find_cp4c_branch_pairing(
+    const directional::authority::FieldFaceBranchFrame &frame,
+    const directional::authority::FieldBranch branch) {
+  const auto found = std::find_if(
+      frame.branches.begin(), frame.branches.end(),
+      [&](const auto &pairing) { return pairing.branch == branch; });
+  return found == frame.branches.end() ? nullptr : &*found;
+}
+
+std::optional<std::size_t> cp4c_opposite_coordinate(
+    const SourceFaceTopologyKey &face, const SourceEdgeTopologyKey &edge) {
+  const auto &vertices = face.vertices();
+  for (std::size_t index = 0U; index < vertices.size(); ++index) {
+    if (vertices[index] != edge.first() && vertices[index] != edge.second()) {
+      return index;
+    }
+  }
+  return std::nullopt;
+}
+
+std::string cp4c_flow_agreement_census(
+    const std::string &witness, const TriMesh &mesh,
+    const directional::authority::FieldTransportAtlas &atlas) {
+  const auto &topology = atlas.branch_topology();
+  std::size_t interiorEdgeCount = 0U;
+  for (int edge = 0; edge < mesh.EF.rows(); ++edge) {
+    if (mesh.EF(edge, 0) >= 0 && mesh.EF(edge, 1) >= 0) ++interiorEdgeCount;
+  }
+
+  std::size_t pairsChecked = 0U;
+  std::vector<Cp4cFlowAgreementViolation> violations;
+  const auto zero = directional::authority::FieldExactRational::from_integer(0);
+
+  for (const auto &adjacency : topology.transports()) {
+    for (int direction = 0; direction < 2; ++direction) {
+      const auto &sourceFace =
+          direction == 0 ? adjacency.firstFace : adjacency.secondFace;
+      const auto &targetFace =
+          direction == 0 ? adjacency.secondFace : adjacency.firstFace;
+      const auto directed =
+          topology.transport(adjacency.sourceEdge, sourceFace, targetFace);
+      if (!directed.has_value()) {
+        ADD_FAILURE() << "H1 missing directed A1 transport for witness=" << witness
+                      << ";edge=" << source_edge_locus(adjacency.sourceEdge);
+        continue;
+      }
+      const auto *sourceFrame = topology.find_frame(sourceFace);
+      const auto *targetFrame = topology.find_frame(targetFace);
+      if (sourceFrame == nullptr || targetFrame == nullptr) {
+        ADD_FAILURE() << "H1 missing A1 frame for witness=" << witness
+                      << ";edge=" << source_edge_locus(adjacency.sourceEdge);
+        continue;
+      }
+      const auto sourceOpposite =
+          cp4c_opposite_coordinate(sourceFace, adjacency.sourceEdge);
+      const auto targetOpposite =
+          cp4c_opposite_coordinate(targetFace, adjacency.sourceEdge);
+      if (!sourceOpposite.has_value() || !targetOpposite.has_value()) {
+        ADD_FAILURE() << "H1 invalid edge/face incidence for witness=" << witness
+                      << ";edge=" << source_edge_locus(adjacency.sourceEdge);
+        continue;
+      }
+
+      for (int branchIndex = 0; branchIndex < 4; ++branchIndex) {
+        const auto sourceBranch =
+            directional::authority::FieldBranch::from_integer(branchIndex);
+        const auto targetBranch = sourceBranch.rotated(directed->signedLift);
+        const auto *sourcePairing =
+            find_cp4c_branch_pairing(*sourceFrame, sourceBranch);
+        const auto *targetPairing =
+            find_cp4c_branch_pairing(*targetFrame, targetBranch);
+        if (sourcePairing == nullptr || targetPairing == nullptr) {
+          ADD_FAILURE() << "H1 missing A1 branch pairing for witness=" << witness
+                        << ";edge=" << source_edge_locus(adjacency.sourceEdge)
+                        << ";sourceBranch=" << branch_locus(sourceBranch)
+                        << ";targetBranch=" << branch_locus(targetBranch);
+          continue;
+        }
+
+        ++pairsChecked;
+        const auto &sourceDerivative =
+            sourcePairing->direction.barycentric[*sourceOpposite];
+        const auto &targetDerivative =
+            targetPairing->direction.barycentric[*targetOpposite];
+        const bool sourceOutflow = sourceDerivative < zero;
+        const bool targetInflow = targetDerivative > zero;
+        if (sourceOutflow && !targetInflow) {
+          violations.push_back(Cp4cFlowAgreementViolation{
+              adjacency.sourceEdge, sourceFace, targetFace, sourceBranch,
+              targetBranch, directed->signedLift, sourceDerivative,
+              targetDerivative});
+        }
+      }
+    }
+  }
+
+  const std::size_t expectedPairs = interiorEdgeCount * 8U;
+  EXPECT_EQ(expectedPairs, pairsChecked)
+      << "H1 must cover every interior edge x four branches x both directions"
+      << ";witness=" << witness;
+  EXPECT_EQ(interiorEdgeCount, topology.transports().size())
+      << "H1 A1 transport inventory must cover every interior edge"
+      << ";witness=" << witness;
+
+  std::ostringstream report;
+  report << "m3Cp4c0H1"
+         << ";credit=none"
+         << ";owningMeasure=H1"
+         << ";witness=" << witness
+         << ";pairsChecked=" << pairsChecked
+         << ";violations=" << violations.size()
+         << ";violationRate=" << violations.size() << '/' << pairsChecked
+         << ";status="
+         << (violations.empty() ? "zero-violations" : "violations-present");
+  for (std::size_t index = 0U; index < violations.size(); ++index) {
+    const auto &violation = violations[index];
+    report << ";violation[" << index << "]={edge="
+           << source_edge_locus(violation.sourceEdge)
+           << ",sourceFace=" << source_face_locus(violation.sourceFace)
+           << ",targetFace=" << source_face_locus(violation.targetFace)
+           << ",sourceBranch=" << branch_locus(violation.sourceBranch)
+           << ",targetBranch=" << branch_locus(violation.targetBranch)
+           << ",signedLift=" << signed_lift_locus(violation.signedLift)
+           << ",sourceD=" << exact_rational_locus(violation.sourceDerivative)
+           << ",targetD=" << exact_rational_locus(violation.targetDerivative)
+           << '}';
+  }
+  return report.str();
+}
+
 struct VertexFanTransportStep {
   int faceRow = -1;
   SourceFaceTopologyKey sourceFace;
@@ -2858,6 +3004,9 @@ void append_network_error(
   if (error.relatedBranch.has_value()) {
     stream << ";relatedBranch=" << branch_locus(*error.relatedBranch);
   }
+  if (error.signedLift.has_value()) {
+    stream << ";signedLift=" << signed_lift_locus(*error.signedLift);
+  }
   if (error.parameter.has_value()) {
     stream << ";parameter=" << exact_rational_locus(error.parameter->value);
   }
@@ -2901,6 +3050,24 @@ void append_network_error(
   if (error.traceSeedSingularity.has_value()) {
     stream << ";traceSeedSingularity="
            << error.traceSeedSingularity->index();
+  }
+  if (!error.traceHistory.empty()) {
+    stream << ";traceHistory=[";
+    for (std::size_t index = 0U; index < error.traceHistory.size(); ++index) {
+      if (index != 0U) stream << ',';
+      const auto &step = error.traceHistory[index];
+      stream << "{sourceFace=" << source_face_locus(step.sourceFace)
+             << ",branch=" << branch_locus(step.branch)
+             << ",incomingCarrier=";
+      if (step.incomingCarrier.has_value()) {
+        stream << source_edge_locus(*step.incomingCarrier);
+      } else {
+        stream << "none";
+      }
+      stream << ",entryParameter="
+             << exact_rational_locus(step.entryParameter.value) << '}';
+    }
+    stream << ']';
   }
   if (error.traceSteps.has_value()) {
     stream << ";traceSteps=" << *error.traceSteps;
@@ -4315,6 +4482,54 @@ TEST(ResolvedBranchCorrection,
 
 
 TEST(ResolvedBranchCorrection,
+     CrossFaceFlowAgreementCensusIsPublishedNonGating) {
+  {
+    const TriMesh mesh = make_cp3a_two_ring_skew_disc();
+    const auto sourceAuthority = make_source_authority(mesh);
+    ASSERT_TRUE(sourceAuthority.has_value());
+    CrossFieldResult field;
+    make_cp3a_two_ring_index_one_field(mesh, field);
+    const auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {}, field);
+    ASSERT_TRUE(atlas);
+    std::cout << cp4c_flow_agreement_census("two-ring", mesh, atlas.value())
+              << '\n';
+  }
+
+  {
+    const TriMesh mesh = make_four_triangle_fan();
+    const auto sourceAuthority = make_source_authority(mesh);
+    ASSERT_TRUE(sourceAuthority.has_value());
+    const auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {}, make_index_one_singularity_field(mesh));
+    ASSERT_TRUE(atlas);
+    std::cout << cp4c_flow_agreement_census("four-triangle-fan", mesh,
+                                            atlas.value())
+              << '\n';
+  }
+
+  for (const std::string fixtureStem : {std::string("sphere_prescribed"),
+                                        std::string("torus")}) {
+    TriMesh mesh;
+    const auto meshPath = directional::tests::benchmark_fixture_path(
+        "milestone-g/" + fixtureStem + ".obj");
+    const auto fieldPath = directional::tests::benchmark_fixture_path(
+        "milestone-g/" + fixtureStem + ".rawfield");
+    ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh)) << fixtureStem;
+    const Eigen::MatrixXd raw = read_cp4c_rawfield(fieldPath, mesh.F.rows());
+    const CrossFieldResult field =
+        directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
+    const auto sourceAuthority = make_source_authority(mesh);
+    ASSERT_TRUE(sourceAuthority.has_value()) << fixtureStem;
+    const auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *sourceAuthority, {}, field);
+    ASSERT_TRUE(atlas) << fixtureStem;
+    std::cout << cp4c_flow_agreement_census(fixtureStem, mesh, atlas.value())
+              << '\n';
+  }
+}
+
+TEST(ResolvedBranchCorrection,
      PrescribedSphereA2aOutcomeIsAlwaysPublishedNonGating) {
   const Cp4cReachabilityObservation sphere =
       observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
@@ -4668,7 +4883,7 @@ TEST(ResolvedBranchCorrection,
   targetPairing.branch = directional::authority::FieldBranch::from_integer(2);
   const auto error = directional::geometry::surface_cell_tracing_detail::
       validate_field_branch_transport_flow(
-          sourceFace, sourcePairing, targetFace, targetPairing, carrier);
+          sourceFace, sourcePairing, targetFace, targetPairing, carrier, 2);
   ASSERT_TRUE(error.has_value());
   EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::BranchTransportFlowDisagreement,
             error->code);
@@ -4676,6 +4891,7 @@ TEST(ResolvedBranchCorrection,
   EXPECT_EQ(targetFace, error->relatedSourceFace);
   EXPECT_EQ(sourcePairing.branch, error->branch);
   EXPECT_EQ(targetPairing.branch, error->relatedBranch);
+  EXPECT_EQ(2, error->signedLift);
   EXPECT_EQ(carrier, error->sourceEdge);
   EXPECT_EQ(6U, error->exactValues.size());
 }
