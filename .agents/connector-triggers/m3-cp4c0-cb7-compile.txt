@@ -1,4 +1,4 @@
 turn=M3-CP4c-0-CB7
 source_sha=6341b13c708f98208eece40dcccea5806a97b0c7
-artifact_prefix=m3-cp4c0-cb7-compile
-attempt=2
+artifact_prefix=m3-cp4c0-cb7
+attempt=3
