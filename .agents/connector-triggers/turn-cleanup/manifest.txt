@@ -1,0 +1,5 @@
+# M3-CP4c-0-CB4 temporary control state
+.agents/connector-triggers/m3-cp4c0-cb4-apply/run.txt
+.agents/connector-triggers/m3-cp4c0-cb4-compile.txt
+.agents/connector-triggers/m3-cp4c0-cb4-schema.txt
+.agents/connector-triggers/source-snapshot/m3-cp4c0-cb4.txt
