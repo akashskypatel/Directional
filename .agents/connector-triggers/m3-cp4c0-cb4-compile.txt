@@ -1,0 +1,3 @@
+M3-CP4c-0-CB4 compile all eight standard targets
+semantic_source=76c38686f6f79617477dd39b5f70e330143ed47f
+runtimeExecution=false
