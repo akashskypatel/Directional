@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-26 — `M3-CP4c-0-TB-R7`: artifact-only evidence valid; near-tangency reproduced; DEFN-2 next
+
+`M3-CP4c-0-TB-R7` is **COMPLETE / VALID SEMANTIC RED**. Authoritative control/run/job `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0 / 33019554121 / 98346293968` consumed only CB7 package `9625495708`. Result artifact `9626003625` hashes to `61994abc1e67fc55bc1d48d38a521598b6b56e458972d948ebcae112fa27eaaa`; diagnostic log `9626004016` hashes to `9f6307b90b93ba557af7643c5a2d4a021969708b2a77e74fc546ae4f263e441c`.
+
+- K6 preflight used ordinary `unzip`/`tar`, preserved all six executable modes at `0755`, attempted no permission repair, and re-verified all 27 package hashes, exact semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`, the three frozen selector hashes, and sphere fixture identity.
+- Frozen gate **338/338 PASS**, accepted **316/316**, first-328 **328/328**, F3 **2/2**; 345 fresh processes; zero orchestration errors; postflight immutable.
+- K1 reproduces the near-tangency regime. Sphere: 144/2304 disagreements, median min-ratio `0.021788`, max `0.200424`, agreeing median `0.915773`; all legitimate disagreements on sphere/two-ring/torus have both opposite coordinates ranked smallest. No material falsification of the independent-review prediction occurred.
+- K2 is non-decisive: **0/24** traces reach a grazing observation, every trace reports one traversed edge, and no consecutive grazing evidence exists. This misses P3 but is a diagnostic limitation, not a product regression, and provides no basis to choose among the four frozen grazing models.
+- J3 is correctly relabeled as a principal-matching implementation cross-check and remains legitimate **524/524**. Independent K3 vertex-fan holonomy covers **176/176 complete fans with 0 mismatches**.
+- G5 remains the same sphere `BranchTransportFlowDisagreement`; Q8 is **CREDITABLE / RED at criterion 2**; criterion 3 not evaluable, criterion 4 pass, criterion 5 carried unchanged.
+- Stable accounting remains **42 / 14 / 28**, debt **5**, packages **46**. Exact next is definition-only **`M3-CP4c-0-DEFN-2`**; no production fix or CP4c-1/2/3 entry is authorized.
+
 ## 2026-08-26 — `M3-CP4c-0-CB7`: K-series grazing diagnostics implemented; compile-only BUILD GREEN
 
 `M3-CP4c-0-CB7` is **COMPLETE / BUILD GREEN**. This was Code + Build only; no Directional runtime, GoogleTest identity, semantic benchmark, performance benchmark, generated discovery command, CLI, or fuzzer executed.

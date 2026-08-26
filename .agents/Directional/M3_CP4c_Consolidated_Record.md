@@ -187,6 +187,19 @@ Authoritative compile-only run/job `33018117005 / 98341565781` checked out exact
 
 **Accounting after CB7:** stable regressions remain **42 / 14 / 28**, produced-witness debt **5**, M3 packages **46**. Latest accepted runtime remains CP4ab 316/316. Exact next: `M3-CP4c-0-TB-R7`; CP4c-1/2/3 remain blocked.
 
+
+### TB-R7 retained artifact-only report and DEFN-2 disposition
+
+**Authority.** Artifact-only TB-R7 control/run/job `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0 / 33019554121 / 98346293968` consumed only CB7 package `9625495708` at semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`. Result artifact `9626003625` / `61994abc1e67fc55bc1d48d38a521598b6b56e458972d948ebcae112fa27eaaa`; diagnostic log `9626004016` / `9f6307b90b93ba557af7643c5a2d4a021969708b2a77e74fc546ae4f263e441c`. K6 mode-preserving extraction passed without permission repair; all six executables remained `0755`; package/source/fixture/selector inventories were immutable.
+
+**Gate/Q8.** Frozen gate 338/338, accepted 316/316, first-328 328/328, F3 2/2, 345 fresh processes, zero orchestration errors. G5 is unchanged. Q8 is creditable and RED at criterion 2; criterion 3 not evaluable; criterion 4 pass; criterion 5 carried unchanged.
+
+**K1/J3/K3.** K1 reproduces the legitimate near-tangency separation: sphere 144/2304 disagreements with median min-ratio `0.021788`, max `0.200424`, agreeing median `0.915773`; two-ring and torus show the same rank-smallest grazing regime. J3 is explicitly only a principal-matching implementation cross-check and remains legitimate 524/524. Independent K3 holonomy covers 176/176 complete vertex fans with 0 mismatches. These satisfy the corrected definition-gap decision row.
+
+**K2 limitation.** The continuation-cost proxy reaches grazing on 0/24 traces; every trace reports one traversed edge, no first-grazing step, and no consecutive grazing crossings. P3 is therefore not observed. This is retained as a diagnostic limitation/non-stable observation, not a product regression. The proxy provides no cost discrimination among the four frozen grazing models and selects none.
+
+**Accounting after TB-R7:** stable regressions remain **42 / 14 / 28**, produced-witness debt **5**, M3 packages **46**. Latest accepted runtime remains CP4ab 316/316. Exact next: definition-only `M3-CP4c-0-DEFN-2`; CP4c-1/2/3 remain blocked.
+
 ---
 
 ## 4. CP4c-1 — evidence (OPEN, blocked on CP4c-0)

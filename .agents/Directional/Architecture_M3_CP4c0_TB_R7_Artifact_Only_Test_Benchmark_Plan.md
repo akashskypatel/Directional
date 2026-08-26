@@ -1,8 +1,10 @@
 # M3-CP4c-0-TB-R7 — Artifact-Only Test + Benchmark Plan
 
-**Status:** EXACT NEXT. `M3-CP4c-0-CB7` is COMPLETE / BUILD GREEN.
+**Status:** COMPLETE / VALID SEMANTIC RED. Execution record: `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Report.md`.
 **Turn boundary:** Test + Benchmark only; immutable artifact execution, no rebuild and no repair.
 **Purpose:** measure K1–K3 from the TB-R6 independent review, confirm K4/K5 diagnostic interpretation, and deliver evidence for `M3-CP4c-0-DEFN-2`. This is **not** a Q8-closure attempt. Q8 is expected to remain red at criterion 2 because CB7 changes no production semantics.
+
+Authoritative TB-R7 control/run/job `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0 / 33019554121 / 98346293968` consumed only package `9625495708`. Result `9626003625 / 61994abc1e67fc55bc1d48d38a521598b6b56e458972d948ebcae112fa27eaaa`; diagnostic log `9626004016 / 9f6307b90b93ba557af7643c5a2d4a021969708b2a77e74fc546ae4f263e441c`. Frozen gate 338/338, F3 2/2, K1 near-tangency separation reproduced, J3 legitimate 524/524, K3 complete fans 176/176 with zero mismatches, and Q8 is creditable RED criterion 2. K2 reached grazing on 0/24 traces and is retained as a non-decisive diagnostic limitation. Exact next is `M3-CP4c-0-DEFN-2`.
 
 ## 1. Frozen authority and prohibited actions
 

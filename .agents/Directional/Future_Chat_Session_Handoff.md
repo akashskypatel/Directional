@@ -82,17 +82,13 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R7` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-0-DEFN-2` — EXACT NEXT / Definition only
 
-`M3-CP4c-0-CB7` is **COMPLETE / BUILD GREEN**. Final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c` contains only the independent-review-authorized K0–K7 diagnostic/contract-control series. There is **no production semantic change**: no fixture or selector edit, no tolerance retune, no tangency threshold, and no T6/Q8 weakening.
+`M3-CP4c-0-TB-R7` is **COMPLETE / VALID SEMANTIC RED**. Authoritative control/run/job `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0 / 33019554121 / 98346293968` consumed only CB7 package `9625495708`. Result `9626003625 / 61994abc1e67fc55bc1d48d38a521598b6b56e458972d948ebcae112fa27eaaa`; diagnostic log `9626004016 / 9f6307b90b93ba557af7643c5a2d4a021969708b2a77e74fc546ae4f263e441c`.
 
-Authoritative compile-only run/job `33018117005 / 98341565781` checked out exact source `077462da156c3e2dfbbc6867fc10d3e4442d853c` and compiled/linked all eight standard targets. Preflight/build exit `0`; all packaged source-status snapshots are empty; `runtimeExecution=false`; no Directional test, benchmark, generated discovery command, CLI, fuzzer, or custom input executed. Immutable package `9625495708` has GitHub ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a` and packaged source archive SHA-256 `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`; compile-log artifact `9625496280` has ZIP SHA-256 `e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`.
+Frozen gate **338/338 PASS**, accepted prefix **316/316**, first-328 **328/328**, F3 **2/2**. K1 materially reproduces the near-tangency separation; J3 remains legitimate **524/524** as an explicitly limited principal-matching implementation cross-check; independent K3 holonomy covers **176/176 complete vertex fans with zero mismatches**. K2 reaches grazing on **0/24** traces and is retained as a non-decisive diagnostic limitation: it cannot compare trace-level costs among the four frozen model options and authorizes no model choice or repair. G5 is unchanged and Q8 remains **CREDITABLE / RED at criterion 2**. Postflight is immutable and no configure/compile/relink/repair/generated discovery/performance benchmark occurred.
 
-A first compile-only attempt on source `6341b13c708f98208eece40dcccea5806a97b0c7` found one bounded diagnostic API misuse in the new K3 holonomy census: `DomainResult<SourceVertexId>` was dereferenced even though it exposes `.value()`. The one-line correction is the sole repair between that source and final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`. It changes no diagnostic contract or product semantics.
-
-Read `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Plan.md` first and consume **only** package `9625495708`. Extract artifacts mode-preservingly; do not use Python `zipfile.extractall` for executable payloads and do not repair mode bits. Re-prove package/source integrity and the unchanged 338/316/328 selector hashes before runtime. Execute the frozen 338 gate in exact order, F3, G5, K1/H1, K2, J3/K3 holonomy, and conditional Q8 exactly as specified. K1–K3 are non-gating diagnostics. **Q8 is expected to remain RED at criterion 2.**
-
-**K7 remains binding:** after a valid TB-R7, the successor is `M3-CP4c-0-DEFN-2`, which closes the `DESIGN.md` §4.5 grazing model gap from measured evidence. Do not jump to a production-fix CB or enter CP4c-1/2/3.
+Read `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Report.md` first. `M3-CP4c-0-DEFN-2` must close the `DESIGN.md` §4.5 gap for an edge where the neighbouring face's direction also exits. Compare the frozen options — tangential continuation, typed grazing terminus, refinement precondition, exact-arithmetic joint-face reformulation — and choose/define the contract with reasons. Amend Q8 only if the chosen model makes the required 24 traces unreachable, and record why. **This is a definition turn, not a production patch.** Do not enter CP4c-1/2/3.
 
 ---
 
@@ -111,6 +107,16 @@ Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Report.md` and `A
 **Turn boundary:** independent review + planning only. Execute no Directional runtime, test, benchmark, configure, compile, relink, repair, or generated discovery; mutate no product/test/fixture/selector/tolerance/build configuration; do not enter CP4c-1/2/3.
 
 ## Current authority
+
+### M3-CP4c-0 TB-R7 — COMPLETE / VALID SEMANTIC RED
+
+- CB7 semantic source/package: `077462da156c3e2dfbbc6867fc10d3e4442d853c / 9625495708`;
+- authoritative control/run/job: `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0 / 33019554121 / 98346293968`;
+- result `9626003625 / 61994abc1e67fc55bc1d48d38a521598b6b56e458972d948ebcae112fa27eaaa`;
+- diagnostic log `9626004016 / 9f6307b90b93ba557af7643c5a2d4a021969708b2a77e74fc546ae4f263e441c`;
+- mode-preserving extraction, 338/338 gate, 316/316 accepted prefix, 328/328 prior prefix, F3 2/2, postflight PASS;
+- K1 near-tangency separation reproduced; K2 0/24 reaches grazing and is non-decisive; J3 legitimate 524/524; K3 176/176 complete fans / 0 mismatches;
+- Q8 creditable RED criterion 2; no build/repair/mutation; exact next `M3-CP4c-0-DEFN-2`.
 
 ### M3-CP4c-0 CB7 — current build authority
 
@@ -147,12 +153,12 @@ Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 975308
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
 - CP4ab remains latest accepted runtime authority at 316/316.
-- CP4c-0 remains OPEN/unaccepted: CB7 is BUILD GREEN, but the binding Q8 criterion 2 remains red until the frozen TB-R7 evidence and subsequent DEFN-2 resolve the grazing model question.
-- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable. The TB-R6 independent review supersedes the earlier owner split: the legitimate H1 disagreements form one near-tangency discretization phenomenon; K1–K3 in TB-R7 measure that regime without assigning a production owner.
+- CP4c-0 remains OPEN/unaccepted: TB-R7 is valid and the binding Q8 criterion 2 remains red; `M3-CP4c-0-DEFN-2` must now define the grazing model before any production change is considered.
+- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable. TB-R7 confirms the near-tangency regime and finds no K3 holonomy defect. K2 is non-decisive (0/24 reaches grazing), so model selection remains a `DEFN-2` obligation rather than a production-owner assignment.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable; it executed no Directional runtime.
 - CP4c-1 remains blocked; CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **46**.
-- Exact next is **`M3-CP4c-0-TB-R7`** on immutable package `9625495708`. After a valid TB-R7, proceed to `M3-CP4c-0-DEFN-2`; do not jump to a production correction.
+- Exact next is **`M3-CP4c-0-DEFN-2`**. Definition only: close `DESIGN.md` §4.5 from TB-R7 evidence; do not jump to a production correction or CP4c-1/2/3.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

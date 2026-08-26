@@ -2,9 +2,9 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-26 UTC** after `M3-CP4c-0-TB-R6`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
+Last updated: **2026-08-26 UTC** after `M3-CP4c-0-TB-R7`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
 
-TB-R6 is **COMPLETE / VALID SEMANTIC RED** on run/job `33006282429 / 98300813772`, control `a9ae307590b0cc23080452c4a5013674efc48fc2`, consuming immutable package `9619352525` at semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Frozen gate **338/338 PASS**, accepted **316/316**, first-328 **328/328**, F3 **2/2**, G5/H1/J3 PASS non-gating. H1 legitimate population is **388 directed / 194 distinct**; J3 is **524/524 geometry agreement** on legitimate transitions. Live edge `6-8` is matching 0, raw gauges 1→3, lift 2; Q8 remains creditable RED criterion 2. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **45**. Exact next is independent `M3-CP4c-0-TB-R6-REVIEW-PLAN`.
+TB-R7 is **COMPLETE / VALID SEMANTIC RED** on run/job `33019554121 / 98346293968`, control `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0`, consuming immutable CB7 package `9625495708` at semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`. Frozen gate **338/338 PASS**, accepted **316/316**, first-328 **328/328**, F3 **2/2**. K1 reproduces the near-tangency regime; J3 legitimate **524/524**; K3 **176/176 complete fans / 0 mismatches**. K2 reaches grazing on **0/24** traces and is retained as a non-decisive diagnostic limitation. Q8 remains creditable RED criterion 2. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **46**. Exact next is definition-only `M3-CP4c-0-DEFN-2`.
 
 ## M3-CP4c0-TB-R4-CAND-01 — prescribed sphere A2a rejects reciprocal branch flow at edge 6-8 — ACTIVE / NON-STABLE / **ROOT CAUSE IDENTIFIED: near-tangency; the invariant is too strong, A1 is correct**
 
@@ -51,6 +51,11 @@ TB-R6 is **COMPLETE / VALID SEMANTIC RED** on run/job `33006282429 / 98300813772
 - **The real open question** is a tracing-model gap: **`DESIGN.md` §4.5 does not define what a trace does at an edge the neighbouring face's direction also exits.** Candidate models (tangential continuation, typed grazing terminus, refinement precondition, joint two-face continuation) are framed but **not chosen** — that is a `-DEFN` obligation and needs K2's cost measurement.
 - **Disposition:** `M3-CP4c-0-CB7`, measures **K0–K7**, **diagnostic-only — no production change authorized**; then **`M3-CP4c-0-DEFN-2`** to close the §4.5 gap. **No tolerance may be introduced to classify grazing** (Amendment 9 clause 3).
 - **Stable-count rationale:** accepted 316 green, CP4c-0 never accepted. **+0 events / +0 recurrences**, totals **42 / 14 / 28**, debt **5**.
+
+
+- **TB-R7 K1/K3 disposition:** authoritative `33019554121 / 98346293968` reproduces the near-tangency separation and independently finds **176/176 complete vertex fans / 0 holonomy mismatches**. J3 remains legitimate **524/524** as the explicitly limited principal-matching implementation cross-check. The corrected decision table therefore supports a tracing-model definition gap rather than a period/holonomy production defect.
+- **TB-R7 K2 limitation:** the grazing continuation-cost proxy reports **0/24** traces reaching grazing, one traversed edge for every trace, no first-grazing step, and zero consecutive grazing crossings. Review prediction P3 is **not observed**. Because the proxy never reaches the later known G5 grazing locus, it supplies no cost comparison among the four frozen `DEFN-2` models and selects none. Classification: **diagnostic limitation / NON-STABLE; +0 events / +0 recurrences**.
+- **Disposition after TB-R7:** exact next `M3-CP4c-0-DEFN-2`, definition only. No production patch, tangency tolerance, or CP4c-1/2/3 entry is authorized.
 
 ## M3-CP4c0-TB-R6-CAND-01 — Python ZIP extraction lost executable mode before runtime — RESOLVED ORCHESTRATION / NON-STABLE
 

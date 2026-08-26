@@ -21,13 +21,13 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R7` — EXACT NEXT / artifact-only Test + Benchmark
+## Current focus — `M3-CP4c-0-DEFN-2` — EXACT NEXT / Definition only
 
-`M3-CP4c-0-CB7` is **COMPLETE / BUILD GREEN**. Final semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c` contains only the review-authorized K0–K7 diagnostic/contract-control series; it makes **no production semantic change**. Authoritative compile-only run/job `33018117005 / 98341565781` compiled and linked all eight standard targets. Preflight/build exit `0`; all packaged source-status snapshots are empty; `runtimeExecution=false`. Immutable package `9625495708` has ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a`; packaged source archive `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`; compile log `9625496280` / `e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`.
+`M3-CP4c-0-TB-R7` is **COMPLETE / VALID SEMANTIC RED**. Authoritative control/run/job `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0 / 33019554121 / 98346293968` consumed only CB7 package `9625495708`. Result `9626003625 / 61994abc1e67fc55bc1d48d38a521598b6b56e458972d948ebcae112fa27eaaa`; diagnostic log `9626004016 / 9f6307b90b93ba557af7643c5a2d4a021969708b2a77e74fc546ae4f263e441c`. Frozen gate is 338/338, accepted 316/316, first-328 328/328, F3 2/2; postflight immutable.
 
-The first compile-only attempt on semantic source `6341b13c708f98208eece40dcccea5806a97b0c7` exposed one bounded test-diagnostic API misuse (`DomainResult` dereferenced instead of `.value()`). The one-line repair produced `077462da156c3e2dfbbc6867fc10d3e4442d853c` and the authoritative green compile above. No runtime was executed during either compile attempt.
+K1 reproduces the legitimate near-tangency separation; J3 remains legitimate 524/524 as a principal-matching implementation cross-check; independent K3 holonomy covers 176/176 complete fans with zero mismatches. K2 reaches grazing on 0/24 traces and is non-decisive: P3 was not observed and the proxy supplies no trace-level cost discrimination among the four frozen grazing models. Q8 remains **CREDITABLE / RED at criterion 2**.
 
-Read `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Plan.md` and consume **only** package `9625495708`. TB-R7 must use mode-preserving extraction, re-prove the unchanged 338 selector and package identity, then execute the frozen 338 gate, F3, G5, K1/H1, K2, J3/K3 holonomy, and conditional Q8 exactly as specified. K1–K3 remain diagnostic/non-gating. Q8 is **expected to remain RED at criterion 2** because CB7 changes no production semantics. After a valid TB-R7, the frozen successor is **`M3-CP4c-0-DEFN-2`**; do not enter CP4c-1/2/3.
+Read `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Report.md`. `M3-CP4c-0-DEFN-2` must close the `DESIGN.md` §4.5 contract for an edge where the neighbouring face's direction also exits. Compare the four frozen options — tangential continuation, typed grazing terminus, refinement precondition, exact-arithmetic joint-face reformulation — and define the chosen model with reasons. Amend Q8 only if that model makes 24 traces unreachable. **Definition only; no production patch and no CP4c-1/2/3.**
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -57,8 +57,8 @@ Read `Architecture_M3_CP4c0_TB_R7_Artifact_Only_Test_Benchmark_Plan.md` and cons
   two.** Amendment 9 issued. Record:
   `Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md`.
 - [x] `M3-CP4c-0-CB7` — **COMPLETE / BUILD GREEN.** Semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`; package `9625495708`. K0–K7 diagnostic/contract-control only; no production semantics; all eight standard targets compiled/linked; `runtimeExecution=false`.
-- [ ] `M3-CP4c-0-TB-R7` — **EXACT NEXT.** Artifact-only execution from package `9625495708` under the frozen TB-R7 plan; no rebuild or repair.
-- [ ] `M3-CP4c-0-DEFN-2` — **follows valid TB-R7.** Closes the `DESIGN.md` §4.5 gap: what a trace does
+- [x] `M3-CP4c-0-TB-R7` — **COMPLETE / VALID SEMANTIC RED.** 338/338; F3 2/2; K1 near-tangency reproduced; K2 0/24 reaches grazing (non-decisive); J3 524/524 legitimate; K3 176/176 / 0 mismatches; Q8 RED criterion 2.
+- [ ] `M3-CP4c-0-DEFN-2` — **EXACT NEXT.** Closes the `DESIGN.md` §4.5 gap: what a trace does
   at an edge the neighbouring face's direction also exits. Amends Q8 **only if** the chosen model makes
   24 traces unreachable, and only with reasons recorded. **This is a definition turn, not a patch.**
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0.
