@@ -34,9 +34,9 @@ jobs:
       source_ref: ${{ github.sha }}
     secrets: inherit
 
-  validate-tb-draft:
+  validate-closeout-drive-draft:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .agents/Directional/turn-payloads/agent-m3-cp4c0-tb-r5.yml
+      workflow_path: .agents/Directional/turn-payloads/agent-m3-cp4c0-tb-r5-closeout-drive.yml
       source_ref: ${{ github.sha }}
     secrets: inherit
