@@ -1,0 +1,2 @@
+validate=.github/workflows/agent-compile-reusable.yml
+workflow_sha=b79e6fe25b625663b7c50c0493705cb9e999ab33
