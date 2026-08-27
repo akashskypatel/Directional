@@ -78,10 +78,10 @@ jobs:
           log="${RUNNER_TEMP}/m3-cp4c0-tb-r9-activity.log"
           exec > >(tee -a "$log") 2>&1
           payload='.agents/Directional/turn-payloads/m3-cp4c0-tb-r9.py'
-          expected='44770e3f5fef07eae12942ea4dbbc6d3a1a2b04061a50760fc99fbb645f02717'
-          test "$(sha256sum "$payload" | awk '{print $1}')" = "$expected"
+          expected_blob='af9d1c0adb713b6b154d96d5a5fb2c825bbf5981'
+          test "$(git hash-object "$payload")" = "$expected_blob"
           cp "$payload" "${RUNNER_TEMP}/m3-cp4c0-tb-r9.py"
-          test "$(sha256sum "${RUNNER_TEMP}/m3-cp4c0-tb-r9.py" | awk '{print $1}')" = "$expected"
+          test "$(git hash-object "${RUNNER_TEMP}/m3-cp4c0-tb-r9.py")" = "$expected_blob"
           python3 -m py_compile "${RUNNER_TEMP}/m3-cp4c0-tb-r9.py"
 
       - name: Execute immutable artifact-only TB-R9 plan
