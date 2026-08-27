@@ -1,0 +1,4 @@
+# M3-CP4c-0-CB8 closeout temporary-state cleanup
+.agents/connector-triggers/compile/M3-CP4c-0-CB8.txt
+.agents/connector-triggers/google-drive/M3-CP4c-0-CB8.txt
+.agents/connector-triggers/source-snapshot/334abf964375d176974d06d734221beabcea0830.txt
