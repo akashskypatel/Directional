@@ -1,7 +1,0 @@
-# M3-CP4c-0b-TB-S1-EXEC closeout temporary state
-.agents/connector-triggers/m3-cp4c0b-tb-s1-exec/run.txt
-.agents/connector-triggers/source-snapshot/m3-cp4c0b-tb-s1-exec-20260827.txt
-.agents/connector-triggers/m3-cp4c0b-tb-s1-closeout/run.txt
-.agents/Directional/turn-payloads/m3-cp4c0b-tb-s1-common.py
-.agents/Directional/turn-payloads/tb_s1_common.py
-.agents/Directional/turn-payloads/m3-cp4c0b-tb-s1-exec.py
