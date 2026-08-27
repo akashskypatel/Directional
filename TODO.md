@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0` CLOSED / ACCEPTED; `M3-CP4c-0b-CB1` is next eligible but not automatic
+## Current focus — `M3-CP4c-0` CLOSED / ACCEPTED; `M3-CP4c-0b-CB1` authorized but stopped at frozen P0.3
 
 **CP4c-0 has been split.** It was carrying two unrelated obligations under one gate: *how a trace continues* and *how a trace stops*. After CB-R10/TB-R10 and CB-R11/TB-R11 resolved both test-side TB-R9 candidates, the user explicitly authorized a fresh compile and complete frozen-gate re-proof. Fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed` compiled all eight standard targets; artifact-only run/job `33079817998 / 98543736213` returned **346/346 PASS**, first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 PASS, zero timeouts/exceptions, and immutable postflight PASS. CP4c-0 is therefore **CLOSED / ACCEPTED**. The termination half remains separately frozen under CP4c-0b.
 
@@ -35,11 +35,11 @@ gate count excludes them, each carries a written rationale and an owning correct
 
 **`M3-CP4c-0-TB-R9` final authority** — **COMPLETE / GATE GREEN 346/346** on fresh GMP package `9649395432`, authoritative run/job `33079817998 / 98543736213`. The unchanged selector, accepted first-316 and first-328 remain **346 identities / 316/316 / 328/328**; Q8 criteria 1/4/5 PASS; zero timeouts or escaping C++ exceptions; immutable postflight PASS. The original `344/346` run remains historical valid RED evidence, and both non-stable test-side candidates are resolved.
 
-**`M3-CP4c-0b-CB1`** — **NEXT ELIGIBLE, NOT AUTOMATICALLY AUTHORIZED** now that CP4c-0 has whole-gate acceptance; **do not enter it automatically from this closeout**. Code + Build only, runtime forbidden, measures **P0–P9**. Contact predicate in exact barycentric arithmetic; arrival priority `ArcLengthFiltered` with a **computed** forward error bound (a literal epsilon anywhere in that path is a stop condition); inconclusive comparisons and exact ties resolve to **mutual termination**, which is canonical and needs no arbitrary tie-break; global priority queue rather than sequential tracing; contact node plus `TraceIntersection` event; N1/N2/N4 demoted to backstops that must not fire.
+**`M3-CP4c-0b-CB1`** — **AUTHORIZED / STOPPED AT BINDING P0.3 BEFORE IMPLEMENTATION.** Static preflight on 2026-08-27 proved accepted CP3b already produces `FieldAlignedNetworkEventKind::TraceIntersection` (closure record + three production emission sites), while frozen P0.3 requires it to be declared and produced by nothing. The frozen plan says any P0 failure stops and returns to review. No P1-P9 product/test/build/runtime work was performed. **Exact next: independent review / plan correction for P0.3; CB1 resumes only after that review.**
 
 **Alternative priority metrics are retained for future performance/quality comparison** (`StepCount`, `BarycentricTime`, `TraceSeniority`) but are reachable **only** from a diagnostic entry point the production pipeline never calls, with an identity asserting production cannot select a non-default value. A production-reachable priority argument is a second writer of network topology and a stop condition.
 
-**Exact-backend build policy:** the durable compile workflow now ensures `libgmp-dev` is installed, configures `DIRECTIONAL_ENABLE_GMP=ON` with `GMP_ROOT=/usr`, verifies CMake discovery, and verifies both gmpxx and gmp on generated link lines. Artifact-only TB callers that execute the dynamically linked binaries must likewise provide the GMP runtime libraries. **CB1 must still record the exact backend in package evidence** so CB/TB cost profiles cannot silently differ.
+**Exact-backend build policy:** `.agents/Directional/GMP_COMPILE_POLICY.md` is durable repository-wide authority by explicit user instruction. **Every future compile must link GMP/GMPXX; fallback exact arithmetic is not authoritative compile evidence.** The durable ChatGPT Web compile workflow already ensures `libgmp-dev` is installed, configures `DIRECTIONAL_ENABLE_GMP=ON` with `GMP_ROOT=/usr`, verifies CMake discovery, verifies both `gmpxx` and `gmp` on generated link lines, and records `exactArithmeticBackend=GMP`. Artifact-only TB callers that execute dynamically linked binaries must provide the GMP runtime libraries.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -94,13 +94,14 @@ gate count excludes them, each carries a written rationale and an owning correct
 - [x] `M3-CP4c-0-TB-R11` — **COMPLETE / FOCUSED PASS.** Artifact-only run/job `33077761701 / 98536455697`; `ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance` selected exactly once and PASS in 39 ms; immutable postflight PASS. This resolves `M3-CP4c0-TB-R9-CAND-02`.
 - [x] `M3-CP4c0-TB-R9-CAND-02` — **RESOLVED / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION.** The old positive control was exactly degenerate; the corrected witness proves a positive exact `1/4` edge exit while preserving the oversized-magnitude fail-closed case.
 - [x] `M3-CP4c-0-TB-R9-REPROOF` — **COMPLETE / GATE GREEN 346/346 / CP4c-0 CLOSED / ACCEPTED.** Fresh compile run/job `33079499974 / 98542697746`, package `9649395432`; artifact-only TB run/job `33079817998 / 98543736213`; Q8 1/4/5 PASS; immutable pre/postflight PASS.
-- [ ] `M3-CP4c-0b-CB1` — **NEXT ELIGIBLE / NOT AUTOMATICALLY AUTHORIZED.** Code + Build only, runtime forbidden, measures **P0–P9**.
+- [ ] `M3-CP4c-0b-CB1` — **AUTHORIZED / BLOCKED AT FROZEN P0.3 BEFORE IMPLEMENTATION.** Exact next is independent review / plan correction; P1-P9 remain untouched.
+- [ ] `M3-CP4c-0b-P0.3-REVIEW-PLAN` — **NEXT / INDEPENDENT REVIEW BOUNDARY.** Reconcile frozen P0.3 with accepted CP3b `TraceIntersection` production; no product/test/build/runtime mutation in the review.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0b. It **no longer owns** re-homed Q8 criterion 3, which
   belongs to CP4c-0b along with criterion 2.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **51**. Both TB-R9 non-stable candidates are resolved and pass in the complete frozen-gate context; CP4c-0 is **CLOSED / ACCEPTED**. **No further turn is authorized automatically by this closeout.**
+Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **51**. Both TB-R9 non-stable candidates are resolved and pass in the complete frozen-gate context; CP4c-0 is **CLOSED / ACCEPTED**. **The only authorized successor from the failed P0 preflight is the independent P0.3 review/plan boundary; do not resume CB1 implementation before it.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

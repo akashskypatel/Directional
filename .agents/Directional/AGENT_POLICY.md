@@ -2,6 +2,10 @@
 
 This policy does not apply to `ChatGPT Web` sessions.
 
+## Universal compile requirement
+
+The exemptions below do **not** exempt local agents from `.agents/Directional/GMP_COMPILE_POLICY.md`. GMP/GMPXX linkage is mandatory for every future Directional compile in every execution environment. A fallback exact-arithmetic build is not authoritative compile evidence.
+
 ## Local Agents
 
 Local agents are exmpt from following the following policies and can safly ignore any instructions related to them:

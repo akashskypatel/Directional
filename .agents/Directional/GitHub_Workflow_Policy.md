@@ -40,6 +40,10 @@ Retain these durable workflows on the working branch:
 
 Any workflow that compiles Directional must call `agent-compile-reusable.yml`. Do not duplicate its checkout, configure, compile, ccache, cache-pruning, packaging, or compile-evidence logic in a turn-specific workflow. A temporary caller may provide the exact source SHA, approved targets, artifact prefix, narrowly scoped trigger, and a separate call to `agent-run-observer-reusable.yml` for run observability. **A caller must not provide or invent a cache epoch, cache namespace, cache compatibility key, or per-turn cache lineage.** The reusable compile workflow alone owns cache compatibility/versioning.
 
+## Mandatory GMP compile backend
+
+`.agents/Directional/GMP_COMPILE_POLICY.md` is binding on every compile. For ChatGPT Web, `agent-compile-reusable.yml` is the mandatory implementation authority: it must provision GMP, configure `DIRECTIONAL_ENABLE_GMP=ON`, verify CMake discovery, verify both `gmpxx` and `gmp` on an authoritative generated link command, and package `exactArithmeticBackend=GMP` evidence. A missing GMP dependency, a disabled GMP option, failed link verification, or fallback `BigInteger`/`ExactNumber` selection is a **compile failure**, not a supported fallback. Turn-specific callers may not expose or supply an option that weakens this requirement.
+
 Turn-specific callers, trigger markers, patch/payload files, generated workflow-observation files, and generated repository artifacts are temporary and must be removed after their result/log artifacts and exact source authority are verified.
 
 ## Mandatory workflow contract
@@ -264,7 +268,7 @@ All compile/build execution must use `.github/workflows/agent-compile-reusable.y
 The reusable compile workflow owns compiler caching. This policy is durable. Required rules:
 
 - Use `ccache`; do not cache an opaque CMake/Ninja build tree.
-- The durable cache compatibility key is owned by `agent-compile-reusable.yml` and is derived only from stable compatibility facts: runner OS, compiler/toolchain version, build mode/configuration family, and an explicit **workflow-owned schema version**. The current key is `directional-ccache-<OS>-gcc-<compiler-version>-release-static-pretest-v1`.
+- The durable cache compatibility key is owned by `agent-compile-reusable.yml` and is derived only from stable compatibility facts: runner OS, compiler/toolchain version, build mode/configuration family, and an explicit **workflow-owned schema version**. The current key is `directional-ccache-<OS>-gcc-<compiler-version>-release-static-gmp-pretest-v2`.
 - **Use exactly that fixed compatibility key for both restore and save. Do not append `github.run_id`, a turn name, source SHA, timestamp, retry number, or any other per-run/per-turn suffix.** Turn-specific workflows/callers cannot override the cache key or schema version.
 - GitHub cache entries are immutable after creation. On trusted cache-write events, restore the fixed key first, finish compilation, then refresh that same key by deleting its existing branch/ref-scoped cache entry and saving the updated ccache directory under the identical key. Serialize compile-cache refreshes for a branch/ref so overlapping runs cannot race the delete/save sequence.
 - Cache-write behavior is restricted to trusted events such as `push`, `workflow_dispatch`, `repository_dispatch`, and `schedule`. Other event types are restore-only and must not attempt a cache delete/save when their token is not cache-write capable.

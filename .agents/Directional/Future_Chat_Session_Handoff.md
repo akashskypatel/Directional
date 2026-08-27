@@ -53,6 +53,7 @@ Do not add transcripts, chronological tool history, copied superseded artifact t
 4. Fully review this handoff, `RETENTION_POLICY.md`, and `CLEAN_UP_POLICY.md`.
    - `[ChatGPT Web]` If the preceding turn was interrupted or reported prepared-but-unapplied local work, search File Library for the newest matching `Directional__...__work-preservation.patch` **before re-deriving that work**; verify its embedded base SHA and diff-body SHA-256, then reconcile it with current branch authority under `RETENTION_POLICY.md`.
 5. **Review `LESSONS.md` in full, and re-read the sections governing this turn's work before authoring any plan, fixture, gate criterion, or corrective measure.** This step is mandatory and is not satisfied by having read it in a prior turn.
+   - Before every Code + Build turn, also review `.agents/Directional/GMP_COMPILE_POLICY.md`. GMP/GMPXX linkage is mandatory for every future compile; fallback exact arithmetic is not authoritative build evidence.
 6. Review `TODO.md` (including exact completed/current partial-CB status), `DESIGN.md`, `REORIENTATION_PLAN.md`, `M1_Closure_Record.md`, `M2_Closure_Record.md`, `M3_CP2_Closure_Record.md`, `M3_CP2b_Closure_Record.md`, `M3_CP3_Closure_Record.md`, the active next-turn plan, and `Regression_Root_Cause_Tracker.md`.
 7. Confirm the configured working branch, branch head, exact implementation/source authority, and requested turn type before any write.
 8. Verify every explicitly durable section required by the documents being touched is present before editing; do not proceed with a destructive rewrite if a durable section would be removed.
@@ -82,7 +83,7 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Current continuation boundary — CP4c-0 accepted; no automatic next turn authorized
+## Current continuation boundary — CP4c-0 accepted; CP4c-0b CB1 stopped at frozen P0.3; independent review required
 
 The user explicitly authorized a fresh compile and complete whole-gate TB-R9 re-proof after the CB-R10 and CB-R11 test-side corrections. That requested sequence is complete. `M3-CP4c-0` is now **CLOSED / ACCEPTED** on the unchanged frozen 346-identity gate. The earlier `M3-CP4c-0-TB-R9-REVIEW-PLAN` remains **skipped/not completed**; do not retroactively mark it complete.
 
@@ -111,24 +112,28 @@ Fresh immutable GMP package `9649395432` from semantic source `7bbc0480d9ab59543
 
 The original TB-R9 run `33048964354 / 98439563813` remains historical valid RED **344/346** evidence. Its two failures became `CAND-01/02`, were corrected by CB-R10/CB-R11 and focused-reproved by TB-R10/TB-R11, and now pass in the complete frozen gate. Stable totals did not change.
 
-### `M3-CP4c-0b-CB1` - blocked from automatic entry, measures **P0-P9**
+### `M3-CP4c-0b-CB1` — AUTHORIZED, PRE-IMPLEMENTATION STOP AT P0.3
 
-Code + Build only; runtime forbidden; compile all eight standard targets.
+The user explicitly authorized CB1 on 2026-08-27. The required static P0 preflight was then performed against the exact source snapshot for semantic authority `49831e30433d72504a69b5a8c817aa6fa00f953c` (snapshot event SHA `a850b99e7d6b8d8053fee98fefba1e0bcca37704`). **P0.3 is false as written, so the frozen plan requires an immediate stop and return to independent review before any P1-P9 implementation.**
 
-- **Contact predicate (fixed, not a choice).** Proper transversal crossing of two segments in one face, exact rational barycentric arithmetic, same class as the continuation rule - **no new number type and no tolerance**. Tested against every segment already laid in that face by any trace **including the trace itself**. Shared singularity origins are excluded; endpoint touches and collinear overlaps are **typed observations, not contacts** (measured incidence on the sphere: zero).
-- **Arrival priority: `ArcLengthFiltered`**, frozen as the production default. Double arc length with a **computed** forward error bound carried alongside the value. A literal epsilon anywhere in that path is a stop condition. Conclusive when `|L1 - L2| > B1 + B2`; **inconclusive or exactly tied arrivals both terminate at the crossing point**, which is canonical and needs no arbitrary tie-break.
-- **Why ties matter more than they look:** the sphere's singularities are the eight corners of an inscribed cube, so exact ties are *systematic* on symmetric input, not rare. Arbitrary tie-breaks - port ID (vertex-numbering dependent), lexicographic world coordinates (frame dependent), branch index (meaningless across faces per Amendment 7), typed rejection (rejects symmetric models) - are all explicitly rejected.
-- **Simultaneity:** global priority queue over pending arrivals. **Sequential tracing is not acceptable as the production algorithm** - it is `TraceSeniority` under another name.
-- **Contact terminus:** the crossing point becomes a `NetworkNodeId` carrying a `TraceIntersection` event, crashing trace incident as `Terminal`, struck trace as `Interior`. **The struck trace is not split.** `FieldAlignedCandidateTrace` gains `terminalContact`, and exactly one of the three terminal kinds must be set on every completed trace.
-- **N1/N2/N4 are demoted to backstops that must not fire.** An identity asserts this per witness. N1's allowance is calibrated on one witness and would trip on a mesh where a legitimate separatrix winds several times; it retires only when an identity proves no witness reaches it.
+The contradiction is source- and closure-proven, not interpretive:
+
+- frozen P0.3 requires `FieldAlignedNetworkEventKind::TraceIntersection` to be declared but produced by nothing;
+- accepted `M3_CP3_Closure_Record.md` §3 explicitly states CP3b delivered typed `TraceIntersection` events and that crossings become graph nodes at declaration time;
+- current production `src/geometry/SurfaceCellTracing.cpp` emits `TraceIntersection` at three sites in `finalize_field_aligned_events`; and
+- accepted CP3b tests positively require `TraceIntersection` production.
+
+P0.1, P0.2, P0.4, and P0.5 are otherwise statically supported: CP4c-0 is accepted 346/346; `FieldAlignedCandidateTrace` still has only `terminalSingularity`/`terminalBarrier` and no contact datum; N1/N2/N4 remain present; and the durable compile workflow is GMP-backed. No product, test, fixture, selector, build, package, or runtime mutation was made after the P0.3 stop.
+
+**Exact next turn: independent review / plan correction for CP4c-0b P0.3.** The review must reconcile the frozen precondition with accepted CP3b authority and determine the minimal corrected baseline before CB1 may resume. Do not silently reinterpret or edit P0.3 inside a Code + Build turn.
 
 ### Alternatives harness - required, and constrained
 
 `FieldTraceArrivalPriority { ArcLengthFiltered, StepCount, BarycentricTime, TraceSeniority }` exists so performance and quality can be compared on future inputs. **`ArcLengthFiltered` is the only value the production entry path can produce.** The production path takes no priority argument; alternatives are reachable only from a separately named diagnostic entry point the pipeline never calls; an identity asserts production yields the default's result; and the selected priority is bound into the semantic digest. **A production-reachable priority argument is a second writer of network topology and a stop condition.** Changing the default is a plan update consuming a render comparison, not a code change.
 
-### Operator prerequisite - outside the turn
+### Mandatory exact-backend compile policy
 
-**The durable compile workflow now provisions and verifies GMP on Linux.** It ensures `libgmp-dev` is installed, configures `DIRECTIONAL_ENABLE_GMP=ON` with `GMP_ROOT=/usr`, verifies CMake discovery, and verifies both gmpxx and gmp on generated link lines. Artifact-only TB callers executing the dynamically linked package must provide the GMP runtime libraries. **CB1 must record the exact backend in package evidence** because it changes the cost profile of every P7 measurement and must not silently differ between CB and TB.
+`.agents/Directional/GMP_COMPILE_POLICY.md` is now durable repository-wide authority by explicit user instruction: **GMP/GMPXX linkage is mandatory for every future compile in every environment.** The durable ChatGPT Web compile workflow already provisions `libgmp-dev`, configures `DIRECTIONAL_ENABLE_GMP=ON` with `GMP_ROOT=/usr`, verifies CMake discovery, verifies both `gmpxx` and `gmp` on a generated link line, and records `exactArithmeticBackend=GMP`. Artifact-only TB callers executing dynamically linked packages must provide the GMP runtime libraries. Fallback exact arithmetic is not acceptable build/package authority.
 
 ### Falsifiable predictions for `M3-CP4c-0b-TB`
 
@@ -199,14 +204,14 @@ Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `3
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
 - **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
 - Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. `M3-CP4c-0b-DEFN` is complete; `M3-CP4c-0b-CB1` under **P0–P9 is next eligible but must not start automatically**.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. The user authorized `M3-CP4c-0b-CB1`, but its frozen P0 preflight stopped at **P0.3** because accepted CP3b already produces `TraceIntersection`; CB1 may not proceed to P1-P9 until independent review corrects/reconciles that precondition.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **51**.
-- **No automatic next turn is authorized.** `M3-CP4c-0b-CB1` is merely the next eligible turn; wait for explicit user instruction.
+- **Exact next turn is independent review / plan correction for CP4c-0b P0.3.** Stop completely at that boundary; do not perform CB1 P1-P9 implementation until the review returns corrected authority.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
