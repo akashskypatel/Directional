@@ -1,0 +1,6 @@
+# M3-CP4c-0b-CB1-S2-S6 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m3-cp4c0b-cb1-s2s6-20260827-1107.txt
+.agents/connector-triggers/m3-cp4c0b-cb1-s2s6-apply/run.txt
+.agents/connector-triggers/m3-cp4c0b-cb1-s2s6-precompile/run.txt
+.agents/connector-triggers/m3-cp4c0b-cb1-s2s6-package/run.txt
+.agents/connector-triggers/m3-cp4c0b-cb1-s2s6-closeout-apply/run.txt
