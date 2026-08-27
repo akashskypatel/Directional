@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-08-27 — `M3-CP4c-0-CB8`: frozen grazing-edge transit implemented; compile-only BUILD GREEN
+
+`M3-CP4c-0-CB8` is **COMPLETE / BUILD GREEN**. Code + Build only; no Directional runtime, GoogleTest identity, semantic benchmark, performance benchmark, generated discovery, CLI, fuzzer, or custom input executed.
+
+- Semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5` implements only frozen DEFN-2 L0–L9: exact target-face `Inflow/Tangent/Outflow` classification, one-hop grazing edge transit, typed ambiguous-slide failure, `FaceInterior`/`EdgeTransit` arrival mode, scale/arrival invariance coverage, non-gating multiplicity census, exact `edgeTransitExit`, bounded selector migration, and corrected K2 production continuation walk. L9 prohibitions are preserved.
+- Authoritative compile-only run `33025705457`: preflight job `98366398970` and full package job `98367264215` both succeeded. All eight standard targets compiled/linked; preflight/build exit 0; source-status snapshots empty; `runtimeExecution=false`.
+- Immutable package `9628445643` / `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; packaged semantic-source archive `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`; compile log `9628446136` / `562bb275fccb61629a3a60bfd1f71c3cb8332a239674dab660ebcd1626f33d27`.
+- CP4c-0 required-green selector is now **343** / `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`. Accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and prior first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` are preserved. One retired flow-rejection identity was reauthored and five new L2/L3/L4/L6 identities added; the old 338 full-file hash is therefore not claimed preserved.
+- No CB8 runtime semantics or Q8 criterion are claimed. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, debt **5**, packages **47**.
+- **Exact next:** artifact-only `M3-CP4c-0-TB-R8` on package `9628445643` under `Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md`.
+
 ## 2026-08-26 — `M3-CP4c-0-DEFN-2`: the `DESIGN.md` §4.5 grazing gap is closed; grazing edge transit frozen
 
 `M3-CP4c-0-DEFN-2` is **COMPLETE**. Independent definition/review/planning only: no Directional runtime, build, benchmark, configure, compile, relink, generated discovery, or product/test/fixture/selector/build-configuration change. Committed fixtures and source were read and arithmetic was performed on their contents; nothing was executed and no product artefact was modified.

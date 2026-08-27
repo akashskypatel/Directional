@@ -82,21 +82,40 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-CB8` — EXACT NEXT / Code + Build only, runtime forbidden
+## Mandatory next turn — `M3-CP4c-0-TB-R8` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-DEFN-2` is **COMPLETE**. It closed the `DESIGN.md` §4.5 grazing gap opened by Amendment 9. The frozen contract is `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`; it is carried into `DESIGN.md` §4.5 and into **Amendment 10** of `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`.
+`M3-CP4c-0-CB8` is **COMPLETE / BUILD GREEN**. Exact semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5` implements only frozen DEFN-2 L0–L9 grazing-edge transit. Compile run `33025705457` completed both preflight job `98366398970` and full package job `98367264215` successfully; all eight standard targets compiled/linked, preflight/build exit codes are 0, source-status snapshots are empty, and package metadata records `runtimeExecution=false`. Immutable package `9628445643` hashes to `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; its semantic-source archive hashes to `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`.
 
-**Chosen model — grazing edge transit.** A carrier's relation to the face a trace is about to enter is a **three-way classification** read from that face's published `direction` at the coordinate opposite the carrier: `> 0` `Inflow`, `== 0` `Tangent`, `< 0` `Outflow`. It is **never** read from carrier-set membership, which cannot separate `Tangent` from `Outflow` — that conflation is why the exactly-tangent case is currently mis-rejected too. `Outflow` on both sides is grazing: the trace does **not** enter the face and does **not** stop. It transits along the edge to the endpoint both faces drive the published parameter toward — the common sign of `d[index of edge.second()]` in each face, an exact predicate — then re-enters the **existing** T2/T3 vertex dispatch. `BranchTransportFlowDisagreement` is retired from production emission (enum value 25 retained, never reused); the ambiguous case is the new typed rejection `BranchGrazingSlideDirectionAmbiguous`.
+The CP4c-0 required-green selector is now **343** identities / `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`. Accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and prior first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` are unchanged. The old 338 full-file hash is not claimed preserved because L7 deliberately reauthored the retired flow-rejection identity.
 
-**Why this model and not the other three.** It is the **unique continuous extension of Amendment 3**: at exact tangency the frozen rule already slides along the edge to a vertex, and DEFN-2 §5.4 proves it selects the same endpoint by the same expression. A grazing terminus would be discontinuous across a measure-zero configuration and would forfeit Q8 criterion 2. A refinement precondition would reject every non-degenerate witness the project owns, including two already accepted. A general edge-following mode is unnecessary because the direction is constant per face, so the transit provably completes in **one hop**. K2 supplied no cost data and could not: it walked traces with the **retired Cartesian carrier lookup** and died on the first `1×2` face — which is why all 24 traces reported `traversedEdges=1`. That is a test-side defect (`M3-CP4c0-DEFN2-CAND-01`, non-stable), owned by measure L8.
+**TB-R8 authority:** `Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md`. Consume package `9628445643` only. Execute the 343 ordered gate, F3, non-gating L2/L5/K2/G5/J3/K3 diagnostics, frozen Q8, and immutable postflight. No configure, compile, relink, regeneration, permission repair, product/test/fixture/selector/build mutation, or CP4c-1/2/3 entry. A valid red routes to independent Review + Plan.
 
-**A1 is not touched by CB8.** Every datum the rule reads is already published; `branch_topology_digest` does not move; the grazing relation is derived on demand and never stored. T6 stays frozen and stays unreachable.
+**Q8 remains unamended.** DEFN-2 predicts criterion 2 should become green at 24 sphere traces and criterion 3 may remain red because the prescribed cube-field sphere pairs singularities instead of producing trace/trace contact. If criterion 2 passes and criterion 3 is red, do not weaken/relabel/add a CP4c-0 witness; independent Review + Plan must adjudicate/re-home criterion 3 to CP4c-1.
 
-**Q8 is NOT amended.** Criterion 2 (24 traces) is expected to pass. Criterion 3 (`TraceIntersection`) is predicted **not** satisfiable on the prescribed sphere: its eight singularities are the corners of an inscribed cube, so the separatrix network is expected to be the cube's edge graph — 12 singularity-to-singularity separatrices with no trace/trace contact. DEFN-2 §9.3 pre-commits the response: do not weaken criterion 3, do not relabel a singularity termination as a contact, do not add a witness to CP4c-0; conclude that criterion 3 is mis-assigned and re-home it to CP4c-1, which needs a witness whose separatrices do not pair singularities.
+### Context Load Plan — successor
 
-Read `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` first. `M3-CP4c-0-CB8` executes **L0–L9** (§10): L0 preconditions, L1 classifier, L2 transit rule + non-gating census, L3 dispatch and the `FaceInterior`/`EdgeTransit` arrival mode, L4 scale-invariance and arrival-symmetry identities, L5 non-merging measurement, L6 the `edgeTransitExit` record, L7 accepted-prefix migration, L8 the corrected K2, L9 prohibitions. Compile all eight standard targets and package; **execute nothing**. Then `M3-CP4c-0-TB-R8` on `338 + n`.
-
-**Turn boundary for CB8:** Code + Build only. No runtime, test, benchmark, or generated discovery. No A1 change of any kind, no new `FieldAlignedNetworkEventKind`, no A2b change, no `k >= 2` terminus ordering, no torus/mechanical work, no change to the CP4c-1 318 selector, no new tolerance, and no threshold or magnitude test in the classifier or the slide predicate. Do not enter CP4c-1/2/3.
+```yaml
+load_next:
+  - references/turns/TB-EXEC.md
+conditional_modules:
+  - trigger: GitHub Actions/artifact execution and evidence collection
+    path: modules/github-connector/MODULE.md
+deep_references:
+  - turn-based-coding-agent/references/core/turn-boundaries.md
+  - turn-based-coding-agent/references/core/evidence.md
+  - turn-based-coding-agent/references/github-connector-workflows/WORKFLOW_POLICY.md
+project_authority:
+  - .agents/Directional/Future_Chat_Session_Handoff.md
+  - .agents/Directional/Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md
+  - .agents/Directional/Architecture_M3_CP4c0_CB8_Code_Build_Report.md
+  - .agents/Directional/Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md
+  - .agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt
+do_not_preload:
+  - sibling turn files
+  - unrelated historical reports
+  - research/provenance/examples
+```
 
 ---
 
@@ -130,6 +149,18 @@ Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Report.md` and `A
 
 ## Current authority
 
+### M3-CP4c-0 CB8 — current build authority
+
+- semantic source / immutable package: `19ba8e9c5e58f9c33c14b309841165d3f0401db5 / 9628445643`;
+- package ZIP SHA-256 `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; source archive `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`;
+- authoritative compile-only run/jobs: `33025705457 / 98366398970 / 98367264215`;
+- compile log `9628446136 / 562bb275fccb61629a3a60bfd1f71c3cb8332a239674dab660ebcd1626f33d27`; preflight result `9628386576 / a9b66f29f9bb23927df9614066d43c7edaaeb70e5d1a01fd0551154d9a79778c`; preflight log `9628386953 / fb4ec9a4c041632cf7a3f5f14f0db9482b5c9c55b2c217654f42725c9872df90`;
+- all eight standard targets compiled/linked; preflight/build exit 0; all source-status snapshots empty; recursive package hashes verified;
+- `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
+- L0–L9 only; no A1/A2b/T6/CP4c-1 selector/tolerance/threshold/magnitude change;
+- CP4c-0 selector **343** / `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`; first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` preserved;
+- exact next: artifact-only `M3-CP4c-0-TB-R8` on package `9628445643`.
+
 ### M3-CP4c-0 TB-R7 — COMPLETE / VALID SEMANTIC RED
 
 - CB7 semantic source/package: `077462da156c3e2dfbbc6867fc10d3e4442d853c / 9625495708`;
@@ -140,7 +171,7 @@ Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Report.md` and `A
 - K1 near-tangency separation reproduced; K2 0/24 reaches grazing and is non-decisive; J3 legitimate 524/524; K3 176/176 complete fans / 0 mismatches;
 - Q8 creditable RED criterion 2; no build/repair/mutation; exact next `M3-CP4c-0-DEFN-2`.
 
-### M3-CP4c-0 CB7 — current build authority
+### M3-CP4c-0 CB7 — retained build authority
 
 - semantic source / immutable package: `077462da156c3e2dfbbc6867fc10d3e4442d853c / 9625495708`;
 - package ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a`; source archive `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`;
@@ -169,20 +200,20 @@ CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CP4c-0 remains unaccepted because binding Q8 criterion 2 is red. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **46**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. CB8 runtime semantics are not yet accepted; CP4c-0 remains OPEN pending TB-R8. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **47**.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
 - CP4ab remains latest accepted runtime authority at 316/316.
-- CP4c-0 remains OPEN/unaccepted: TB-R7 is valid and binding Q8 criterion 2 remains red. **`M3-CP4c-0-DEFN-2` is complete and the grazing model is frozen** (`Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`, Amendment 10, `DESIGN.md` §4.5). CB8 is now authorized to change production semantics, bounded strictly to that contract.
+- CP4c-0 remains OPEN/unaccepted: **CB8 is COMPLETE / BUILD GREEN**, but its runtime semantics have not yet been validated. `M3-CP4c-0-DEFN-2` remains the frozen grazing contract; exact next is artifact-only TB-R8.
 - `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable. The near-tangency regime is now **explained and defined** rather than under diagnosis; it is closable by CB8's L2 census.
 - **`M3-CP4c0-DEFN2-CAND-01` — new, non-stable, test-side.** `cp4c_sphere_grazing_cost_census` walks traces with the retired Cartesian carrier lookup and stops on the first `1x2` face, which is why K2 reported `traversedEdges=1` and `0/24` reaching grazing. No product impact. Owned by measure L8.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable; it executed no Directional runtime.
 - CP4c-1 remains blocked, and now also owns re-homed Q8 criterion 3 (§9.3 of DEFN-2): trace/trace contact needs a witness whose separatrices do **not** pair singularities. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **46** — unchanged by DEFN-2, which executed nothing.
-- Frozen CP4c-0 gate remains **338** with SHA-256 `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; CB8 recomputes it as `338 + n` and freezes the count in its report. The CP4c-1 **318** selector is unchanged.
-- Exact next is **`M3-CP4c-0-CB8`**. Code + Build only, runtime forbidden, measures L0–L9.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **47**. CB8 added one immutable compile package and executed no runtime.
+- Frozen CP4c-0 gate is now **343** with SHA-256 `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`; accepted first-316 and prior first-328 hashes remain unchanged. The CP4c-1 **318** selector is unchanged.
+- Exact next is **`M3-CP4c-0-TB-R8`**. Artifact-only Test + Benchmark on package `9628445643`; valid red routes to independent Review + Plan.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

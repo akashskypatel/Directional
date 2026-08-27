@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-26 UTC
+Last updated: 2026-08-27 UTC
 
 ## Purpose
 
@@ -21,17 +21,15 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-CB8` — EXACT NEXT / Code + Build only, runtime forbidden
+## Current focus — `M3-CP4c-0-TB-R8` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-DEFN-2` is **COMPLETE**. `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` closes the `DESIGN.md` §4.5 grazing gap and freezes the rule; `DESIGN.md` §4.5 and Amendment 10 of `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` carry it.
+`M3-CP4c-0-CB8` is **COMPLETE / BUILD GREEN**. Semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5` implemented only frozen DEFN-2 L0–L9 grazing-edge transit and compiled all eight standard targets. Immutable package `9628445643` has ZIP SHA-256 `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; packaged source archive SHA-256 `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`. Compile run/jobs `33025705457 / 98366398970 / 98367264215` are green with preflight/build exit 0, empty source-status snapshots, and `runtimeExecution=false`.
 
-**Chosen model: grazing edge transit.** A carrier's relation to the face a trace is about to enter is a three-way classification read from that face's published `direction` (`Inflow` / `Tangent` / `Outflow`), never from carrier-set membership. `Outflow` on both sides means the trace does not enter and does not stop: it transits along the edge to the endpoint both faces drive the parameter toward — an exact sign predicate on `d[index of edge.second()]` in each face — then re-enters the existing T2/T3 vertex dispatch. It is the unique continuous extension of Amendment 3's exactly-tangent case, it is one hop rather than an edge-following mode, and it touches A1 not at all. `BranchTransportFlowDisagreement` is retired from production emission.
+The CP4c-0 required-green selector is now **343** identities with SHA-256 `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`. Accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and prior first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` remain unchanged. CB8 runtime semantics are **not yet accepted**; latest accepted runtime remains CP4ab 316/316.
 
-Re-derived from the committed fixtures alone: sphere **72** grazing configurations on **72 distinct** edges, torus **120**, with **zero** sign disagreements and **zero** zero-rates in all 192. The eight sphere singularities are the corners of an inscribed cube with **3** grazing edges each; the live locus `6-8` transits to **vertex 8, a singularity**, terminating by T3.
+**Exact next:** execute `Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md` against package `9628445643` only. No configure/build/relink/repair or product/test/fixture/selector/build mutation. TB-R8 must run the 343 gate, F3, L2/L5/K2/G5/J3/K3 diagnostics, frozen Q8, and immutable postflight. A valid red routes to independent Review + Plan. Do not enter CP4c-1/2/3 from TB.
 
-Read `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` first. `M3-CP4c-0-CB8` executes **L0–L9**: L0 preconditions, L1 classifier, L2 transit rule + census, L3 dispatch and arrival mode, L4 invariance identities, L5 non-merging measurement, L6 transit record, L7 migration, L8 corrected K2, L9 prohibitions. Compile all eight standard targets and package; **execute nothing**. Then `M3-CP4c-0-TB-R8` on `338 + n`.
-
-**Q8 is not amended.** Criterion 3 (`TraceIntersection`) is predicted **not** satisfiable on the prescribed sphere because its separatrices pair singularities; §9.3 pre-commits the response and re-homes that question to CP4c-1.
+**Q8 remains unamended.** DEFN-2 predicts criterion 2 (24 sphere traces) should pass and criterion 3 (`TraceIntersection`) may remain red because the prescribed sphere separatrices pair singularities. If that occurs, do not weaken the criterion or add a CP4c-0 witness; independent Review + Plan must adjudicate/re-home it to CP4c-1.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -67,14 +65,14 @@ Read `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` first. `M3-CP4c-0-CB8`
   continuity proof against Amendment 3 rather than on K2 cost data — K2 measured the retired Cartesian
   rule and is void. Q8 **not amended**; criterion 3 re-homed to CP4c-1 with reasons.
   `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`; Amendment 10; `DESIGN.md` §4.5.
-- [ ] `M3-CP4c-0-CB8` — **EXACT NEXT.** Code + Build only, runtime forbidden. Measures **L0–L9**.
-  Gate becomes `338 + n`, frozen in the CB8 report. Then `M3-CP4c-0-TB-R8`.
+- [x] `M3-CP4c-0-CB8` — **COMPLETE / BUILD GREEN.** Semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`; package `9628445643`. L0–L9 only; 343 required-green identities; all eight standard targets compiled/linked; `runtimeExecution=false`.
+- [ ] `M3-CP4c-0-TB-R8` — **EXACT NEXT.** Artifact-only Test + Benchmark on package `9628445643` under `Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md`.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0. Also owns re-homed Q8 criterion 3 (trace/trace contact
   needs a witness whose separatrices do **not** pair singularities — not the cube-field sphere).
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen selector authority remains **338** `d588cae09067de6914aa1cb917716b11bae01e9f3b45910dbe0faa7d0c7a8116`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **46**.
+Frozen CP4c-0 selector authority is now **343** `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **47**.
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
