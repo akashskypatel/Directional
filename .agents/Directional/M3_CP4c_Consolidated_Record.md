@@ -327,6 +327,32 @@ Two candidate stopping rules were excluded **by measurement**, and both are reco
 
 ---
 
+### CP4c-0 closure chain — CB-R10 / TB-R10, CB-R11 / TB-R11, and TB-R9 acceptance
+
+Between CB9 and CP4c-0's acceptance the user explicitly skipped `M3-CP4c-0-TB-R9-REVIEW-PLAN` and authorized two bounded corrective cycles for the two non-stable TB-R9 candidates, then a fresh compile and complete frozen-gate re-proof.
+
+**CB-R10 / TB-R10 — focused GMP portability.** Corrected semantic source `30ef2792e2915e0016dfd11f5fa2b3727e5503c0`; compile run/job `33067140968 / 98499967674`; immutable package `9644214591`, ZIP SHA-256 `b9e7729fb557eddc203e38a1c11564bab3ad180982e10740d4374fe06748a390`. GMP `libgmp-dev 2:6.3.0+dfsg-2ubuntu6.1`; CMake resolved `libgmpxx.so` and `libgmp.so`; generated test linkage carries both. All eight standard targets compiled and linked; preflight and build exit `0`; source-status snapshots empty. **No GMP, exact-number, continuation, selector, fixture or production semantics changed.**
+
+**CB-R11 / TB-R11 — focused `M3-CP4c0-TB-R9-CAND-02`.** Semantic source `267272d22f7de67ce7d8e368a53cc78a37ca3e8f`; compile run/job `33077493539 / 98535503386`; immutable GMP package `9648550565`, ZIP SHA-256 `1f0275e96fa75b7fc6fb447eaffb79b414c94230823da7897a4f2d91df33615c`; compile log `9648551415` / `c7e4c83c6727117af6cdfc5874762d70dc4a8633cfe7e241e1e36ec001a83e2b`. The positive control was **structurally degenerate** before magnitude-policy behaviour could be demonstrated; **no product or GMP arithmetic defect was found**, and the oversized exact-magnitude fail-closed case is unchanged.
+
+**TB-R9 final — CP4c-0 ACCEPTED.** Fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`; artifact-only run/job `33079817998 / 98543736213`; **346/346 PASS**, first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 PASS, zero timeouts, zero escaping C++ exceptions, immutable postflight PASS. The earlier `344/346` run remains historical valid RED evidence and both non-stable test-side candidates are resolved. **`Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md` is retained as CP4c-0's closure evidence.**
+
+### CP4c-0b — CB1 S1, TB-S1-EXEC, CB1 S2–S6, and DG
+
+**CB1 P0 preflight — stopped at P0.3.** Source-inspection authority: semantic head `49831e30433d72504a69b5a8c817aa6fa00f953c`; verified source-snapshot event SHA `a850b99e7d6b8d8053fee98fefba1e0bcca37704`, run `33084860326`, source artifact `9651687435`. No runtime. P0.1/P0.2/P0.4/P0.5 supported; **P0.3 false**. Adjudicated in full by `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md`, which supersedes P0–P9 with S0–S8.
+
+**CB1 S1 — build green, runtime-free.** Semantic/evidence source `4bb467806df99c70889394a323c17c13bc185ca3`; work-preservation patch diff-body SHA-256 `05f6bcfaa65da104daaffa92ca06d97f03c34c150f12e956c3478ddfb122833f`; apply run/job `33092961074 / 98590434004`; apply result `9655159304` / `7c56e84ab41398a567ccfb0f27c70a0b107e7ddd3234949f7ee056458c4de0f9`; apply log `9655160089` / `95c753aaf46a4facade10889aa4569a87daf4e78754483e8823a01069cefbc42`; authoritative compile run `33093440552`, pre-package job `98592131066`. S0.7 satisfied by a GMP compile with `DIRECTIONAL_ENABLE_GMP=ON` and `exactArithmeticBackend=GMP`. S1 adds diagnostic observation only and changes no production contact, node, event, trace or termination decision.
+
+**TB-S1-EXEC — execution green.** Immutable package `9655632444` / `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`; run/job `33097182476 / 98605092984`; raw result `9656967036` / `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4`; TB diagnostic log `9656967437` / `667b9c54ad24e9e33855d3fd47a322593c4522bde4984177dfa593a1df7f6bb8`; schema-validation artifact `9656857388` / `3b12cceafeb6cfb3ada110d7dfed7e0700c7694cb97dc0e7e27b490bb843b670`; observer log `9656859884` / `b988cfce44017606058458fc563a256f985c89066f20b18b4d402490ce20ba3d`. **346/346 PASS** on the unchanged frozen selector; the separate S1 identity selected exactly once and PASS with zero gate credit; zero escaping exceptions; immutable postflight PASS.
+
+**S1 census result, and the caveat that later mattered.** Two-ring and torus reached with **zero shared-face contacts** and `requiresReview=0`; the excluded fan remained excluded; `sphere_prescribed` was explicitly `status=unreached` at `TraceCombinatorialRecurrenceExceeded` (65 steps, budget 9216, visits 3, allowance 2). Two-ring `nodeCount=9`, torus `nodeCount=0`. **Those node figures were measured under `rails_from_atlas`**, which `M3-CP4c-0b-DG-REV` later established is a different rail authority from the production pipeline's `authoritativeRails` — the cause of the DG red. The S1 census did not publish the rail authority alongside the figure; measure **T3** requires that it now does.
+
+**CB1 S2–S6 — build green** at semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`. The S1 review record authorized S2–S6 exactly as frozen and explicitly authorized re-authoring `DeclaresTraceIntersectionsAsTypedNetworkEvents` and `IndependentCompositionOracleValidatesTraceEventGraph` for the site-A vocabulary split; any other accepted expectation edit is a stop.
+
+**DG — valid semantic red 6/7.** Immutable package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`; corrected run/job `33120730355 / 98686699036`; result `9666352028` / `286f738f02315d72dea7cc03bed61bc12ef6b5345ddf15264a898b5bfa45db72`. A first control run `33120437486` / job `98685729035` executed **zero** Directional identities — a temporary-harness `tar | grep` pipeline under `set -o pipefail` misclassified a closed-pipe write as a missing fixture; recorded as `M3-CP4c0b-DG-CAND-01`, **RESOLVED ORCHESTRATION / NON-STABLE**, corrected in the harness only with no semantic byte changed. Six of seven new identities passed; the sole red is `TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit`, adjudicated by `Architecture_M3_CP4c0b_DG_Independent_Review_Record.md`.
+
+---
+
 ## 3b. The independent review arc — one digest per retired review
 
 Seven independent reviews took CP4c from a frozen-but-unexecutable plan to a root cause and a frozen contract. Each is retired here; its **normative output** lives in the frozen-definition documents, its **lessons** in `LESSONS.md`, and its **evidence identities** in §2–§3 above. What follows preserves each one's finding, the amendment it produced, and the reviewer errors it owned.
@@ -485,6 +511,12 @@ identities** are in §2–§3. What remained unique to the reviews — the findi
 and the refutations and reversals — is preserved in §3b, including the withdrawn-prediction table, which
 exists specifically so the cost of each estimation error stays visible.
 
+### 2026-08-27 — third consolidation (`M3-CP4c-0b-DG-REV`)
+
+Retired after inlining every evidence identity into §3 above: `Architecture_M3_CP4c0_TB_R10_Focused_GMP_Portability_Verification_Report.md`, `Architecture_M3_CP4c0_TB_R11_Focused_CAND02_Verification_Report.md`, `Architecture_M3_CP4c0b_CB1_P0_Preflight_Record.md`, `Architecture_M3_CP4c0b_CB1_S1_Code_Build_Report.md`, `Architecture_M3_CP4c0b_TB_S1_EXEC_Artifact_Only_Test_Benchmark_Report.md`.
+
+The P0 preflight record is fully quoted and adjudicated by `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md`; the S1 build and execution reports are fully consumed by `Architecture_M3_CP4c0b_TB_S1_Review_Record.md`, which remains **live authority** because it is the document that authorizes the two accepted re-authorings measure T5 depends on.
+
 ### Retained, and why
 
 | Document | Why it is retained |
@@ -496,6 +528,13 @@ exists specifically so the cost of each estimation error stays visible.
 | `Architecture_M3_CP4c0_Required_Green_Selector.txt` | Live gate authority — 346. |
 | `Architecture_M3_CP4c1_Required_Green_Selector.txt`, `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` | Live gate authority for CP4c-1, which is open. |
 | `Architecture_M3_CP4c_Required_Green_Selector.txt` | Parent CP4c 322 selector; the record of which identities constitute C1–C6, needed by the still-unopened CP4c-2 and CP4c-3. |
+| `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md` | **Normative.** Withdraws P0.3, names the six defects in the accepted contact mechanism, and supersedes P0–P9 with S0–S8. |
+| `Architecture_M3_CP4c0b_TB_S1_Review_Record.md` | **Live authority.** It is the only document authorizing the two accepted re-authorings that measure T5 must honour. |
+| `Architecture_M3_CP4c0b_CB1_S2_S6_Code_Build_Report.md` | Current build authority for package `9664890562`. |
+| `Architecture_M3_CP4c0b_DG_Artifact_Only_Test_Benchmark_Report.md` | Current runtime authority for the red under review. |
+| `Architecture_M3_CP4c0b_DG_Independent_Review_Record.md` | **Current plan.** Adjudicates `DG-CAND-02` and freezes measures T0–T7. |
+| `Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md` | **CP4c-0's closure evidence** — the 346/346 acceptance run. Retained until a dedicated CP4c-0 closure record exists. |
+| `Architecture_M3_CP4c0b_Required_Green_Selector.txt`, `..._Diagnostic_Gate_Selector.txt`, `..._Non_Gating_Diagnostic_Selector.txt` | Live CP4c-0b gate authority — 353 / 7 / non-gating. |
 | `M3_CP4c_Consolidated_Record.md` | This record. |
 
 ---

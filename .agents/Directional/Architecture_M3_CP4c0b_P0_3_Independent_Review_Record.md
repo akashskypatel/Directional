@@ -3,7 +3,7 @@
 **Turn:** `M3-CP4c-0b-P0.3-REVIEW-PLAN`
 **Type:** Independent review / planning only — no product, test, fixture, selector, build, package, or runtime mutation. Source was read and reasoned over; nothing was executed and nothing was modified.
 **Trigger:** `M3-CP4c-0b-CB1` stopped at binding precondition **P0.3** before any implementation.
-**Source inspected:** semantic head `49831e30433d72504a69b5a8c817aa6fa00f953c`; preflight record `Architecture_M3_CP4c0b_CB1_P0_Preflight_Record.md`.
+**Source inspected:** semantic head `49831e30433d72504a69b5a8c817aa6fa00f953c`; preflight record `Architecture_M3_CP4c0b_CB1_P0_Preflight_Record.md`, retired into `M3_CP4c_Consolidated_Record.md` §3 on 2026-08-27 with its identities inlined.
 **Incoming accepted authority:** **M3-CP4c-0 CLOSED / ACCEPTED 346/346**, GMP package `9649395432`, run/job `33079817998 / 98543736213`.
 
 ---

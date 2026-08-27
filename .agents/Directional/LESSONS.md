@@ -697,6 +697,37 @@ benchmark, and returned a static contradiction with its evidence. That cost one 
 implementation built on a false premise. **Write preconditions that can fail, and treat a failure as the
 successful outcome it is.**
 
+### A measured number is a property of the measurement, not only of the subject
+
+A census reported `nodeCount = 0` for a witness. The figure was correct — under the rail authority the
+census happened to use. A later identity imported it in good faith and asserted it against the same
+witness built under a *different* rail authority, where the correct answer is non-zero. Nothing in the
+census output named the authority, so there was no way to notice. **Publish the inputs that determine a
+figure alongside the figure**, and require any identity citing a census number to assert the authority
+it was measured under.
+
+### Two names for a witness are two witnesses until proven otherwise
+
+`rails_from_atlas(mesh, atlas)` and the production pipeline's `authoritativeRails` both produce "the
+torus network". They are different objects with different mandatory edges and different node sets.
+Before comparing a figure across turns, confirm the two constructions match — a shared witness *name*
+guarantees nothing.
+
+### Assert the relation the contract owns, not a total that happens to match
+
+An identity asserted "zero nodes" to express "this witness produces no contact". The witness has
+structural nodes for lawful reasons that predate the checkpoint entirely, so the assertion failed for a
+reason the contract does not own. The correct assertion is relational — *no node has contact
+provenance* — which is both true and strictly stronger, and which cannot be satisfied by a coincidence
+of counts.
+
+### A red that admits two readings deserves a third
+
+A diagnostic report framed its single failure as either an over-specified identity or a real contract
+breach, and correctly declined to choose. The actual cause was neither: a correct figure compared across
+a boundary that no document had ever named. **When both available readings require someone to be wrong,
+look for the reading in which everyone was right about a different thing.**
+
 ### A classifier that names an owner will route the next turn, right or wrong
 
 A census emitted class labels of the form "this bucket means `functionX` is at fault". The buckets were

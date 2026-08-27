@@ -83,31 +83,46 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-DG-REV` — independent evidence review / planning only
+## Mandatory next turn — `M3-CP4c-0b-CB2` under measures **T0-T7**
 
-`M3-CP4c-0b-DG` is **COMPLETE / VALID SEMANTIC RED 6/7** on immutable GMP package `9664890562` from semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`. The authoritative corrected run/job is `33120730355 / 98686699036`; all seven new identities selected exactly once, six passed, zero escaping C++ exceptions occurred, no repository timeout/build/repair/mutation occurred, and immutable byte-and-mode postflight passed. The sole red is `TraceTerminationCorrection.TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit`: the torus has zero candidate traces and no reported event assertion failure, but `torus.network->nodes().empty()` is false at `FieldAlignedCurveNetworkTests.cpp:6952`.
+`M3-CP4c-0b-DG` returned **VALID SEMANTIC RED 6/7** and `M3-CP4c-0b-DG-REV` has adjudicated it. Read `Architecture_M3_CP4c0b_DG_Independent_Review_Record.md` first.
 
-The earlier run/job `33120437486 / 98685729035` is retained only as a resolved orchestration control: `tar -tzf | grep -q` under `pipefail` aborted fixture preflight before any Directional process ran. No semantic/package/test/fixture/selector bytes changed for the corrected run. The full frozen **353-identity acceptance TB has NOT run**.
+### The red, and what it actually is
 
-**Exact next:** independent **`M3-CP4c-0b-DG-REV`**, evidence review/planning only. Adjudicate `M3-CP4c0b-DG-CAND-02`: determine whether the new torus zero-node assertion over-specifies the frozen zero-trace/contact contract or whether the node delta is a real S2-S6 product-contract breach. Do not edit production/test/benchmark/build logic, compile, rerun DG, or execute the full 353 gate in the review turn.
+`TraceTerminationCorrection.TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit` failed at `tests/FieldAlignedCurveNetworkTests.cpp:6952` because `torus.network->nodes().empty()` was **false**. The preceding zero-candidate-trace and following zero-event assertions both **passed** — so the observed state is **zero traces, zero events, at least one node**, which is the signature of a **structural** node, not an allocated one.
 
-### Context Load Plan
+**`M3-CP4c0b-DG-CAND-02` resolves as a test-side over-specification. No S2-S6 contract breach is established.**
 
-```yaml
-load_next:
-  - references/turns/TB-REVIEW.md
-conditional_modules:
-  - trigger: github_connector or GitHub Actions/artifact work
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M3_CP4c0b_DG_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0b_CB1_S2_S6_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md
-do_not_preload:
-  - sibling turn files
-  - implementation-planning modules
-  - research/provenance/examples
-```
+### Root cause — a rail-authority divergence nothing had named
+
+Network nodes are built **before** tracing, from singularity vertices and mandatory-edge endpoints (`src/geometry/SurfaceCellTracing.cpp:3046-3110`), and the diff from the S1 source `4bb46780...` to the S2-S6 source `737f93be...` **does not touch that block**. The apparent delta comes from comparing two different constructions of "the torus network":
+
+| | construction | rail authority | node count |
+|---|---|---|---:|
+| S1 census | `diagnose_field_aligned_contact_census(..., rails_from_atlas(mesh, atlas))` — `tests:5516` | atlas-derived | **0** |
+| DG identity | `observe_cp4c_witness("torus", ...)`, `observation.rails = products.authoritativeRails` — `tests:3782` | pipeline authoritative | **non-zero** |
+
+Different rails give different mandatory edges, hence different `nodeVertices`, hence different node sets. **Both figures are correct; they answer different questions.**
+
+Supporting computation, from the committed fixture with no product code: the torus has **0 singularities** and **0 boundary vertices**, while the same per-vertex fan-holonomy method reproduces the prescribed sphere's **8** singularities exactly — which validates the method. So every torus node is a mandatory-edge endpoint and depends entirely on which rails were supplied. Corroborating: with zero singularity ports the new integrated path allocates **no** node, since `field_aligned_publish_origin_events` iterates `candidateTraces` and every other allocator requires a trace.
+
+### Measures **T0-T7**
+
+- **T0** — corrected binding preconditions. **T0.4 is the sharp one:** the S1 census must still use `rails_from_atlas` and `observe_cp4c_witness` must still use `products.authoritativeRails`. **If they now agree, this plan is stale and the delta has another cause.**
+- **T1 — the discriminating measurement, and nothing may precede it.** Non-gating, changes no production behaviour. For **both** rail authorities and every witness reaching A2a, publish: mandatory-edge count and each edge's `SurfaceCellRailKind`; singularity count and vertices; `nodeVertices.size()` and `nodes().size()`; **per-node provenance** (`singularity` / `mandatory-edge-endpoint` / `contact`); trace count, event count and event-kind histogram; and whether `observe_cp4c_witness(w)` and `build_cp4c_production_fixture(w)` produce identical networks. **Its decision table is binding and can route back to review** — a pipeline-torus node with `contact` provenance, or with no lawful provenance, is a real S2-S6 defect and T2 would be wrong.
+- **T2 — correct the identity, only after T1 confirms.** Delete `EXPECT_TRUE(torus.network->nodes().empty());`. **Keep** the zero-trace and zero-event assertions, both of which passed and are genuine contract. **Add**: no node has contact provenance; no trace carries `terminalContact`; the histogram has zero `TraceIntersection` and zero `SingularityPortJunction`. Rename the identity to state the contract rather than a count, and record the rename in the CB report. The identity has never been accepted, so this is an in-flight correction.
+- **T3 — make the census self-describing.** Every census line must emit `railAuthority=atlas-derived|pipeline-authoritative`, plus `mandatoryEdgeCount` and `singularityCount` alongside `nodeCount`, and an identity must assert that any figure an identity cites was compared against a network built under the same authority. Same family as Amendment 6: **a published number must carry the authority that produced it.**
+- **T4** — re-run the DG seven; **7/7** required. Re-freeze the DG selector if T2's rename changes a name.
+- **T5** — then, and only then, the full **353**. This is the **first** measurement of S2-S6 against accepted authority. Required: accepted **316/316**, CP4c-0 **346/346**, full **353/353**. The S1 review authorized exactly two accepted re-authorings (`DeclaresTraceIntersectionsAsTypedNetworkEvents`, `IndependentCompositionOracleValidatesTraceEventGraph`); **any other accepted expectation edit is a stop**.
+- **T6/T7** — prohibitions, and what the CB2 report must state: the rail authority behind every figure, the T1 row taken with its numbers, the before/after identity text and rename, the DG selector hash after any rename, and `exactArithmeticBackend=GMP` with the eight compiled targets.
+
+### What is not established
+
+S2-S6's effect on **accepted authority is unmeasured** — only the seven never-accepted identities have run, and the six passes are not a substitute for the 353 gate. `PrescribedSpherePublishesTwentyFourTracesAndCorrectedContactEvents` passing is the first live evidence that S5's relocation works and that Q8 criteria 2 and 3 are reachable, but it is one identity on one witness.
+
+### Turn boundary
+
+Code + Build only. GMP/GMPXX linkage mandatory per `GMP_COMPILE_POLICY.md`. No runtime, test, benchmark or generated discovery in CB2. **No editing the failing identity before T1 returns.** No A1 change, no tolerance or literal epsilon in the contact predicate or priority comparison, no production-reachable priority argument, no change to the CP4c-1 **318** selector.
 
 ## Current authority
 
