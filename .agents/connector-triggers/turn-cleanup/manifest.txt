@@ -1,3 +1,0 @@
-# Session-start temporary-state cleanup
-.agents/connector-triggers/source-snapshot/session-start-20260827-0734.txt
-.agents/connector-triggers/source-snapshot/tb-r9-rerun.txt

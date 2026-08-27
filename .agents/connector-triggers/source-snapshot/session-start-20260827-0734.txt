@@ -1,3 +1,0 @@
-purpose=start-session exact source snapshot for current handoff/TODO authority
-semantic_source_sha=993369845aa97547da654868eebb077702989f49
-runtimeExecution=false
