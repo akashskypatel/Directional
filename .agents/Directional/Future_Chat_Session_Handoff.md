@@ -83,48 +83,71 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-CB1`, RESUMED under measures **S0-S8**
+## Mandatory next turn — `M3-CP4c-0b-TB-S1-EXEC` — artifact-only census execution
 
-`M3-CP4c-0b-CB1` stopped at binding precondition **P0.3** before any implementation, and **the stop was correct** — it spent no build, no runtime and no product change discovering a false premise that had survived four documents and one accepted checkpoint. `M3-CP4c-0b-P0.3-REVIEW-PLAN` has adjudicated it. Read `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md` first, then Amendment **A1** at the head of `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`.
+`M3-CP4c-0b-CB1-S1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Independent review corrected P0.3 and required the S1 census before any semantic contact correction. The census implementation is diagnostic-only at semantic/evidence source `4bb467806df99c70889394a323c17c13bc185ca3`; S2–S6 were not entered. Full Code+Build evidence and the executable TB plan are in `Architecture_M3_CP4c0b_CB1_S1_Code_Build_Report.md`.
 
-### What P0.3 got wrong, and it is not narrow
+### Immutable TB authority
 
-P0.3 required `FieldAlignedNetworkEventKind::TraceIntersection` to be declared and produced by nothing. **It has been produced since CP3b.** More than that: **A2a already implements crash-on-contact.** `finalize_field_aligned_events` truncates a trace at its first contact with an earlier trace, allocates a contact node, and emits `FirstContact` + `TraceIntersection`. The DEFN's §2 ("A2a does not implement crash-on-contact") and §7 ("`TraceIntersection` becomes producible for the first time") are **withdrawn as false**.
+- semantic/evidence source: `4bb467806df99c70889394a323c17c13bc185ca3`;
+- successful GMP Code+Build run: `33093440552`;
+- pre-package compile job/result: `98592131066 / 9655528709`, artifact SHA-256 `cf179bae7d1897f66b286e5688afb8540760d289ecca6de598fdb1d0638ef3f6`;
+- eight-target package job/result: `98593728046 / 9655632444`, artifact SHA-256 `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`;
+- package compile log: `9655633229`, SHA-256 `ad36b3523bd3843b3618bee8ff71aa4789be6381554d8e089d1f4469d44e4b9e`;
+- `exactArithmeticBackend=GMP`; GMP/GMPXX linkage mandatory; `runtimeExecution=false`.
 
-**CP4c-0b is a correction and relocation of accepted authority, not a greenfield addition**, and its re-proof surface is materially larger than §7 estimated.
+### TB-S1-EXEC plan
 
-### The six defects, each verified from source
+1. Consume **only** package `9655632444` from source `4bb467...`. Preserve executable modes during extraction. Verify package `SHA256SUMS`, source commit, `exactArithmeticBackend=GMP`, and `runtimeExecution=false` before execution.
+2. Do not configure, compile, relink, repair, regenerate discovery, or mutate source/test/fixture/selector/package bytes.
+3. Execute the unchanged gating selector `.agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt`, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`: **346 identities**, one identity per fresh process, all mutation flags false.
+4. Execute separately the **non-gating** selector `.agents/Directional/Architecture_M3_CP4c0b_Non_Gating_Diagnostic_Selector.txt`, identity `ResolvedBranchCorrection.ContactPredicateCensusIsPublishedNonGating`. It contributes zero gate credit.
+5. Preserve every `m3Cp4c0bS1` line. For each included witness report `status`, current shared-face contact count, proper/non-proper/unevaluated counts, `requiresReview`, site A/B/C split, node count/source vertices, prior terminal kinds, and event histogram. The four-triangle fan is an excluded fixture artifact and must remain labeled as such.
+6. The prescribed sphere may report `status=unreached` because N1 returns before post-hoc finalization; record that explicitly and never translate it into a zero-contact claim.
+7. Postflight re-hash the immutable package and compare to preflight.
 
-1. **The contact predicate is "the two segments are in the same face."** `field_aligned_first_trace_contact` (`src/geometry/SurfaceCellTracing.cpp:1278-1307`) contains one geometric test — `if (segment.sourceFace != existingSegment.sourceFace) continue;` — and everything after it returns a contact. Two traces on parallel, non-crossing, arbitrarily distant paths through one triangle are declared in contact and the later one is truncated.
-2. **Priority is trace index order** (`existingIndex < traceIndex`). That is `TraceSeniority`, the metric §4.2 ranks worst and §5 forbids as the production algorithm. It is the shipped behaviour.
-3. **The contact node is placed at the face's lowest-numbered vertex** (`field_aligned_append_contact_node`, `:1310-1318`, uses `sourceFace.vertices().front()`), unrelated to where the traces meet.
-4. **The pass runs after tracing completes** (`canonical_field_aligned_candidate`, `:1804-1817`, returns the tracing error before reaching finalize). **It is therefore unreachable for any trace that never finishes** — exactly why the prescribed sphere circulates and why TB-R8 ran 853 s. No predicate correction alone can reach Q8 criterion 2. `DESIGN.md` §4.6 also disclaims this shape: the guarantee is *"structural rather than a post-hoc repair."*
-5. **`TraceIntersection` is overloaded across three meanings** — origin junction (`:1391`), crash-on-contact (`:1433`), self-closure on a revisited face (`:1512`). `LESSONS.md` §2 records what an overloaded code costs.
-6. **Truncation erases a legitimate terminus** — `terminalBarrier`, `terminalPoint` and `terminalSingularity` are all reset, so a trace that reached a singularity loses that fact if any lower-indexed trace shares one of its faces.
+### Decision / stop rules
 
-### Measures **S0-S8** supersede P0-P9
+- Any gating result other than **346/346**, any timeout/escaping exception, or any package mutation is RED and routes to review/planning.
+- If any **reached included accepted witness** (`two-ring`, `sphere_prescribed`, `torus`) reports `nonProperCrossingCount > 0`, `unevaluatedCrossingCount > 0`, or `requiresReview=1`, stop at independent `M3-CP4c-0b-S1-REVIEW-PLAN`; correcting the predicate would change accepted authority, so S2–S6 remain prohibited.
+- An expected sphere `status=unreached` at N1 is evidence about the current post-hoc mechanism, not permission to infer a contact census. A different/unexpected diagnostic error routes to review.
+- If the 346 gate is green and every reached included witness has `requiresReview=0`, the next state is evidence-only `M3-CP4c-0b-TB-S1-REV`. TB-REV may plan the successor but may not edit, compile, or run new validation.
 
-- **S0** — corrected binding preconditions. S0.3 now asserts the *true* state: three emission sites, and `field_aligned_first_trace_contact` still gating on face equality alone. S0.4/S0.5 pin the node placement and the finalize-after-tracing ordering.
-- **S1 — the contact census, and nothing may precede it.** Non-gating, changes no production behaviour. Per witness: every contact the current shared-face predicate fires; whether each of those pairs **properly crosses** under an exact barycentric orientation test computed in the census only; the terminal kind each truncated trace held **before** truncation; node count, every contact node's `sourceVertex`, and the event-kind histogram; and the split across the three sites. **If any current contact is not a proper crossing on an accepted witness, correcting the predicate changes accepted authority — that is a plan decision, not a CB decision. Stop and return to review with the census.**
-- **S2** — split the overloaded event vocabulary into origin junction / trace contact / self-closure. Retire no enum value and never reuse one. Adding kinds re-opens CP3b's terminal-kind exhaustivity assumption exactly as DEFN-1 §6.4 warned; every accepted identity asserting exhaustivity must be re-read and named in the CB report.
-- **S3** — replace the shared-face test with the exact proper-crossing predicate. Keep the existing shared-singularity-origin exclusion at `:1296-1301`. Demote `field_aligned_common_carrier` to the diagnostic label it already is.
-- **S4** — `ArcLengthFiltered` with the **computed** forward error bound; mutual termination on tie or inconclusive. **Remove the `existingIndex < traceIndex` bound** — seniority must not survive as a tiebreak.
-- **S5** — **relocate contact detection into the trace loop.** This is the change that fixes the sphere; defect 4 proves the post-hoc pass never can.
-- **S6** — publish the contact's exact position on `terminalContact`; do **not** give `NetworkNodeId` positional meaning. Assert exactly one terminal kind per completed trace.
-- **S7** — re-run accepted **316** and CP4c-0's **346**; name every re-authored identity. An accepted expectation edit is a stop unless S1 predicted it and the plan authorised it.
-- **S8** — prohibitions as frozen, plus: no reuse of a retired enum value, no surviving seniority tiebreak, no positional `NetworkNodeId`.
+### Context Load Plan
 
-### Q8 criterion 3 must be re-stated
-
-As frozen it reads "at least one terminal `TraceIntersection`". Sites B and C already produce `Terminal` incidences, so on current code the criterion could be reported satisfied by a shared-face truncation that is not a crossing at all. It must require **a contact produced by the corrected predicate on the prescribed sphere**. That names the outcome the criterion always meant; it is a clarification, not a weakening.
-
-### Turn boundary
-
-Code + Build only. GMP linkage mandatory per `GMP_COMPILE_POLICY.md`; the package must record `exactArithmeticBackend=GMP`. No runtime, test, benchmark or generated discovery. No A1 change, no tolerance or literal epsilon in the contact predicate or the priority comparison, no production-reachable priority argument, no length-based termination, no change to the CP4c-1 **318** selector.
+```yaml
+load_next:
+  - references/turns/TB-EXEC.md
+conditional_modules:
+  - trigger: github_connector or GitHub Actions/artifact work
+    path: modules/github-connector/MODULE.md
+deep_references:
+  - .agents/Directional/Architecture_M3_CP4c0b_CB1_S1_Code_Build_Report.md
+  - .agents/Directional/Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md
+  - .agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt
+  - .agents/Directional/Architecture_M3_CP4c0b_Non_Gating_Diagnostic_Selector.txt
+do_not_preload:
+  - sibling turn files
+  - implementation-planning modules
+  - research/provenance/examples
+```
 
 ## Current authority
 
-### M3-CP4c-0 CB8 — current build authority
+### M3-CP4c-0b CB1-S1 — current build authority
+
+- semantic/evidence source: `4bb467806df99c70889394a323c17c13bc185ca3`;
+- S1 is **diagnostic-only**: exact proper-crossing observation and contact census, with no production contact/event/node/trace/termination semantic change;
+- first patch-transport run `33091855034` failed before commit because patch metadata used comma-delimited `intended_paths` while the durable apply workflow requires semicolons; corrected bytes preserved the identical diff body;
+- corrected apply run/job `33092961074 / 98590434004` succeeded; result/log artifacts `9655159304 / 9655160089`; Drive staging retired after successful push;
+- first compile-caller run `33093222009` was `startup_failure` before jobs because the caller omitted the reusable observer's required `contents: write` permission union; no build/runtime evidence came from it;
+- authoritative compile run `33093440552`: GMP pre-package job `98592131066` succeeded for `directional_surface_cell_producer_tests`, then GMP package job `98593728046` succeeded for all eight standard targets on the **same** semantic SHA;
+- immutable package `9655632444`, GitHub artifact SHA-256 `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`; compile log `9655633229 / ad36b3523bd3843b3618bee8ff71aa4789be6381554d8e089d1f4469d44e4b9e`;
+- pre-package result/log `9655528709 / 9655529401`, SHA-256 `cf179bae7d1897f66b286e5688afb8540760d289ecca6de598fdb1d0638ef3f6 / 68fa64caa92340251eeeed77236aaf90ff895a7202c253c0ab6f44d9308d6609`;
+- `exactArithmeticBackend=GMP`; all source-status checks clean; `runtimeExecution=false`; no Directional binary/test/benchmark/discovery/CLI/fuzzer/custom input executed;
+- exact next: artifact-only `M3-CP4c-0b-TB-S1-EXEC` on package `9655632444`.
+
+### M3-CP4c-0 CB8 — retained build authority
 
 - semantic source / immutable package: `19ba8e9c5e58f9c33c14b309841165d3f0401db5 / 9628445643`;
 - package ZIP SHA-256 `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; source archive `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`;
@@ -175,21 +198,21 @@ CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run
 
 ### Accepted runtime authority
 
-Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`, on fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`. Result artifact `9649625534` has GitHub ZIP SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; diagnostic artifact `9649626115` has SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **51**.
+Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`, on fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`. Result artifact `9649625534` has GitHub ZIP SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; diagnostic artifact `9649626115` has SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **52** after the S1 GMP package.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
 - **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
 - Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. The user authorized `M3-CP4c-0b-CB1`, but its frozen P0 preflight stopped at **P0.3** because accepted CP3b already produces `TraceIntersection`; CB1 may not proceed to P1-P9 until independent review corrects/reconciles that precondition.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. Independent P0.3 review is complete; `M3-CP4c-0b-CB1-S1` is build-green on semantic source `4bb467...` and has added only the mandatory non-gating contact census. S2–S6 remain blocked pending artifact-only census execution and review.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **51**.
-- **Exact next turn is independent review / plan correction for CP4c-0b P0.3.** Stop completely at that boundary; do not perform CB1 P1-P9 implementation until the review returns corrected authority.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **52**.
+- **Exact next turn is artifact-only `M3-CP4c-0b-TB-S1-EXEC` on immutable GMP package `9655632444`.** Do not implement S2–S6 before the census is executed and reviewed.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
