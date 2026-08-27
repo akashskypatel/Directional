@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-27 UTC** after the fresh compile and complete `M3-CP4c-0-TB-R9` whole-gate re-proof. Latest accepted runtime is CP4c-0 **346/346** on run/job `33079817998 / 98543736213`, consuming fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`. Both original TB-R9 RED identities are resolved non-stable test-side defects and now pass in the complete frozen gate. CP4c-0 is **CLOSED / ACCEPTED**. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **51**.
+Last updated: **2026-08-27 UTC** after `M3-CP4c-0b-DG`. Latest accepted runtime remains CP4c-0 **346/346** on run/job `33079817998 / 98543736213`. CP4c-0b S2-S6 is build-green at semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`; its attempt-free seven-identity DG is **VALID SEMANTIC RED 6/7** on corrected run/job `33120730355 / 98686699036`, immutable package `9664890562`. The full 353 acceptance gate has not run. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **53**.
 
 TB-R8 is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE** on run/job `33028238313 / 98374531360`, control `078aac03923c0badc42d150397065fe5b33212c6`, consuming immutable CB8 package `9628445643` at semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`. P1 completed **342/343** identities: 341 pass, ordinal 338 red after 853.437 s with `gcd(): while running too long!`, ordinal 343 incomplete at explicit user cancellation. First-316 and first-328 remain green. No acceptance credit; P2-P8 were not reached. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **47**. Its termination candidate later transferred to CP4c-0b after CB9 bounded the cost path.
 
@@ -26,6 +26,24 @@ TB-R8 is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE** on run
 - **Focused runtime proof:** artifact-only TB-R11 run/job `33077761701 / 98536455697` consumed only package `9648550565`; the identity selected exactly once and passed (`exit=0`, `failures=0`, `errors=0`, 39 ms harness elapsed); package preflight/postflight immutable PASS; no configure/compile/relink/repair/generated discovery/performance benchmark occurred. Result artifact `9648618375` / `469cab3ee5a541a5faa29fcdac2a6ff213ca202c8ff38522e131b0a9a4ba6113`; log artifact `9648618836` / `c15831693911134a4ab3eba6fa8060af8b95e85eac679d5374c632fcecdc908d`.
 - **Disposition:** resolved as a test-side fixture/precondition defect. The skipped TB-R9 review remains skipped/not completed. The later whole-gate TB-R9 re-proof `33079817998 / 98543736213` passed **346/346**, including this corrected identity; CP4c-0 is therefore closed/accepted. This candidate remains non-stable and adds no regression event.
 - **Stable-count rationale:** no accepted-green identity regressed; **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0b-DG-CAND-01 — tar/grep pipefail aborts source-archive fixture preflight before runtime — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** first DG control run/job `33120437486 / 98685729035` reached package-manifest verification but executed **0/7** Directional identities and reported orchestration failure.
+- **Root cause:** the temporary harness used `tar -tzf "$source_archive" | grep -Fxq ...` under `set -o pipefail`. `grep` exited after finding the fixture, closed the pipe, and `tar` reported a write error; the harness then misclassified a present fixture as missing.
+- **Correction:** orchestration only. The corrected payload materializes the tar listing before running the fixture lookup, is hash-pinned by the caller, and was triggered separately. No production/test/fixture/selector/package byte changed.
+- **Proof:** result/log artifacts `9666237104 / 9666237713`, SHA-256 `d1b4c27a4bf74ab5bf9133cf66242f6136456f18c175ca61688afbc7682d5aee / e8754b6774c0bdcebc6a10678d207f5bd50089686d9aa99fb05d855148d0779c`; corrected run `33120730355` executed all seven identities exactly once.
+- **Disposition:** resolved orchestration-only control failure; no semantic evidence from the zero-runtime run.
+- **Stable-count rationale:** **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0b-DG-CAND-02 — new torus contract identity equates zero trace publication with zero network nodes — OPEN / NON-STABLE / TEST-AUTHORITY CONTRACT-SURFACE
+
+- **Observed:** authoritative corrected DG run/job `33120730355 / 98686699036` is **6/7 PASS**. `TraceTerminationCorrection.TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit` is the only red. `candidate_traces().empty()` passes; `torus.network->nodes().empty()` fails at `tests/FieldAlignedCurveNetworkTests.cpp:6952`; no separate failure is reported for the following zero-event assertion.
+- **Runtime validity:** every DG identity selected exactly once; zero escaping C++ exceptions; no timeout/configure/compile/relink/repair/discovery/mutation; immutable postflight PASS. Result/log artifacts `9666352028 / 9666352544`, SHA-256 `286f738f02315d72dea7cc03bed61bc12ef6b5345ddf15264a898b5bfa45db72 / 651e9cb9fc78d109d725fdf725fd26b72c450f6bba44fd77e638780c0df2712e`.
+- **Static localization:** candidate construction publishes network nodes from source singularity vertices and mandatory-edge endpoints before candidate tracing, so zero candidate traces/events do not mechanically imply zero network nodes.
+- **Authority tension:** the frozen CP4c-0b definitions do not state a general torus zero-node invariant, but the earlier S1 census did record torus `A/B/C=0/0/0`, zero contacts, `nodeCount=0`, and no events. That node delta must be adjudicated rather than dismissed.
+- **Required adjudication:** independent `M3-CP4c-0b-DG-REV` must decide whether the new assertion over-specifies the frozen zero-trace/contact contract or whether the changed node publication is a real S2-S6 product-contract breach. No product/test correction or full 353 TB is authorized before review.
+- **Stable-count rationale:** these seven new identities have never been accepted and the predecessor 346 was not executed by DG; no accepted-green regression is established. **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c0b-P03-CAND-01 — the accepted trace-contact mechanism is defective in six respects — ACTIVE / PRODUCT SEMANTICS / PRE-EXISTING
 

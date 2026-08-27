@@ -83,25 +83,25 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-DG` — artifact-only new-contract diagnostic gate
+## Mandatory next turn — `M3-CP4c-0b-DG-REV` — independent evidence review / planning only
 
-`M3-CP4c-0b-CB1-S2-S6` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`. Frozen S2-S6 landed atomically after the TB-S1 review-authorized site-A migration. The accepted predecessor selector remains byte-exact **346** / `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; exactly seven new CP4c-0b contracts extend it to **353** / `91371d5ab637447c31c0d25e829be0d58fa61f17245e69bd231dcaec94f21efb`. The new-contract-only DG selector is **7** / `14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724`.
+`M3-CP4c-0b-DG` is **COMPLETE / VALID SEMANTIC RED 6/7** on immutable GMP package `9664890562` from semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`. The authoritative corrected run/job is `33120730355 / 98686699036`; all seven new identities selected exactly once, six passed, zero escaping C++ exceptions occurred, no repository timeout/build/repair/mutation occurred, and immutable byte-and-mode postflight passed. The sole red is `TraceTerminationCorrection.TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit`: the torus has zero candidate traces and no reported event assertion failure, but `torus.network->nodes().empty()` is false at `FieldAlignedCurveNetworkTests.cpp:6952`.
 
-Authoritative GitHub Actions GMP/GMPXX compilation is green. Changed-owner precompile run/job `33116158072 / 98671267836` compiled `directional_surface_cell_producer_tests`; final package run/job `33116774891 / 98673348923` compiled all eight standard targets on the same semantic SHA. Immutable package `9664890562` has GitHub ZIP SHA-256 `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`; package manifest is 28/28, source status is clean, executable modes are preserved, and `runtimeExecution=false`. No Directional binary/test/benchmark/runtime ran in CB. Durable record: `Architecture_M3_CP4c0b_CB1_S2_S6_Code_Build_Report.md`.
+The earlier run/job `33120437486 / 98685729035` is retained only as a resolved orchestration control: `tar -tzf | grep -q` under `pipefail` aborted fixture preflight before any Directional process ran. No semantic/package/test/fixture/selector bytes changed for the corrected run. The full frozen **353-identity acceptance TB has NOT run**.
 
-**Exact next:** artifact-only **`M3-CP4c-0b-DG`** on immutable package `9664890562`, with **only** the seven new CP4c-0b identities. Do not rebuild, configure, relink, repair, mutate the package/source/tests/fixtures/selectors, or execute the frozen 346 predecessor as part of DG. DG consumes no acceptance attempt. If all seven are green, route the same package to the full 353-identity acceptance TB. If any DG identity is red or orchestration validity fails, stop for independent review/planning and do not run the full acceptance TB.
+**Exact next:** independent **`M3-CP4c-0b-DG-REV`**, evidence review/planning only. Adjudicate `M3-CP4c0b-DG-CAND-02`: determine whether the new torus zero-node assertion over-specifies the frozen zero-trace/contact contract or whether the node delta is a real S2-S6 product-contract breach. Do not edit production/test/benchmark/build logic, compile, rerun DG, or execute the full 353 gate in the review turn.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/TB-REVIEW.md
 conditional_modules:
   - trigger: github_connector or GitHub Actions/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M3_CP4c0b_DG_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M3_CP4c0b_CB1_S2_S6_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0b_TB_S1_Review_Record.md
   - .agents/Directional/Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md
 do_not_preload:
   - sibling turn files
@@ -110,6 +110,17 @@ do_not_preload:
 ```
 
 ## Current authority
+
+### M3-CP4c-0b DG — current runtime evidence
+
+- status: **COMPLETE / VALID SEMANTIC RED 6/7**; authoritative corrected run/job `33120730355 / 98686699036`;
+- immutable authority: semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`, package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`, seven-identity selector `14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724`;
+- ledger: **7 executed / 6 PASS / 1 RED**, every identity selected exactly once, zero escaping exceptions, no timeout/build/repair/mutation, immutable postflight PASS;
+- sole red: `TraceTerminationCorrection.TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit`; zero candidate traces passed, `torus.network->nodes().empty()` failed at line 6952, no separate zero-event failure reported;
+- result/log: `9666352028 / 286f738f02315d72dea7cc03bed61bc12ef6b5345ddf15264a898b5bfa45db72`; `9666352544 / 651e9cb9fc78d109d725fdf725fd26b72c450f6bba44fd77e638780c0df2712e`;
+- first run `33120437486 / 98685729035` is resolved orchestration-only, zero Directional identities executed; no semantic bytes changed by the harness correction;
+- full 353 acceptance TB **NOT RUN**; stable accounting **42 / 14 / 28**, debt **5**, packages **53**;
+- exact next: **`M3-CP4c-0b-DG-REV`**, independent evidence review/planning only.
 
 ### M3-CP4c-0b CB1-S2-S6 — current build authority
 
@@ -121,7 +132,7 @@ do_not_preload:
 - authoritative eight-target GMP package run/job `33116774891 / 98673348923`; immutable package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`; compile log `9664890910 / a528e66fc88191ad5e030f1821e8029871719514895041568bfea5b352e7fcf0`; manifest 28/28;
 - all source-status snapshots clean; `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
 - stable accounting **42 / 14 / 28**, debt **5**, M3 packages **53**;
-- exact next: artifact-only, attempt-free **`M3-CP4c-0b-DG`** on package `9664890562`, seven new identities only.
+- DG is now valid semantic red **6/7**; the full 353 gate is blocked. Exact next: independent **`M3-CP4c-0b-DG-REV`**.
 
 ### M3-CP4c-0b TB-S1-REV — current review authority
 
@@ -216,14 +227,14 @@ Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `3
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
 - **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
 - Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. S2-S6 are now build-green on semantic source `737f93be...`; the full required-green selector is frozen at 353 = byte-exact predecessor 346 + seven new contracts. Runtime acceptance has not begun; exact next is the seven-identity artifact-only DG on immutable package `9664890562`.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. S2-S6 are build-green on semantic source `737f93be...`; DG is a **valid semantic red 6/7** on package `9664890562`. The sole red is the new torus zero-node assertion; the full 353 acceptance gate has not run and is blocked pending independent DG review.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **53**.
-- **Exact next turn is `M3-CP4c-0b-DG`, artifact-only / attempt-free.** Execute only the seven new contracts from immutable package `9664890562`; green DG routes that same package to the full 353 acceptance TB, red DG stops for independent review.
+- **Exact next turn is `M3-CP4c-0b-DG-REV`, independent evidence review/planning only.** No DG rerun, full 353 TB, compile, or product/test correction is authorized before review adjudicates `M3-CP4c0b-DG-CAND-02`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
