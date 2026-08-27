@@ -93,7 +93,8 @@ for f in "$pkg"/metadata/source-status-*.txt; do [[ ! -s "$f" ]] || fail_orchest
 
 source_archive="$pkg/source/source-${SEMANTIC_SOURCE}.tar.gz"
 [[ -f "$source_archive" ]] || fail_orchestration "packaged source archive missing"
-tar -tzf "$source_archive" | grep -Fxq 'benchmarks/fixtures/milestone-g/sphere_prescribed.obj' || fail_orchestration "known packaged fixture path missing"
+tar -tzf "$source_archive" > "$out/source-archive-list.txt" || fail_orchestration "packaged source archive listing failed"
+grep -Fxq 'benchmarks/fixtures/milestone-g/sphere_prescribed.obj' "$out/source-archive-list.txt" || fail_orchestration "known packaged fixture path missing"
 
 find "$pkg" -type f -print0 | sort -z | xargs -0 sha256sum > "$out/package-before.sha256"
 find "$pkg" -printf '%m %P\n' | sort > "$out/package-before.modes"
