@@ -83,66 +83,44 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Current continuation boundary — CP4c-0 accepted; CP4c-0b CB1 stopped at frozen P0.3; independent review required
+## Mandatory next turn — `M3-CP4c-0b-CB1`, RESUMED under measures **S0-S8**
 
-The user explicitly authorized a fresh compile and complete whole-gate TB-R9 re-proof after the CB-R10 and CB-R11 test-side corrections. That requested sequence is complete. `M3-CP4c-0` is now **CLOSED / ACCEPTED** on the unchanged frozen 346-identity gate. The earlier `M3-CP4c-0-TB-R9-REVIEW-PLAN` remains **skipped/not completed**; do not retroactively mark it complete.
+`M3-CP4c-0b-CB1` stopped at binding precondition **P0.3** before any implementation, and **the stop was correct** — it spent no build, no runtime and no product change discovering a false premise that had survived four documents and one accepted checkpoint. `M3-CP4c-0b-P0.3-REVIEW-PLAN` has adjudicated it. Read `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md` first, then Amendment **A1** at the head of `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`.
 
-**Resume authorities:**
+### What P0.3 got wrong, and it is not narrow
 
-- final TB-R9 report: `.agents/Directional/Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md`;
-- regression authority: `.agents/Directional/Regression_Root_Cause_Tracker.md` — both `M3-CP4c0-TB-R9-CAND-01/02` are resolved/non-stable/test-side;
-- fresh semantic source/package: `7bbc0480d9ab5954329b940992ef41a9223102ed / 9649395432`;
-- fresh compile run/job: `33079499974 / 98542697746`;
-- accepted whole-gate TB-R9 run/job: `33079817998 / 98543736213`;
-- result/log artifacts: `9649625534 / 6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`, `9649626115 / 3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`.
+P0.3 required `FieldAlignedNetworkEventKind::TraceIntersection` to be declared and produced by nothing. **It has been produced since CP3b.** More than that: **A2a already implements crash-on-contact.** `finalize_field_aligned_events` truncates a trace at its first contact with an earlier trace, allocates a contact node, and emits `FirstContact` + `TraceIntersection`. The DEFN's §2 ("A2a does not implement crash-on-contact") and §7 ("`TraceIntersection` becomes producible for the first time") are **withdrawn as false**.
 
-The fresh compile built all eight standard targets with GMP and no runtime execution. TB-R9 then executed the complete unchanged selector and returned **346/346 PASS**, accepted first-316 **316/316**, first-328 **328/328**, Q8 criteria **1/4/5 PASS**, zero timeout, zero escaping C++ exception, zero orchestration error, and immutable postflight PASS. Both formerly RED identities pass in their frozen whole-gate context.
+**CP4c-0b is a correction and relocation of accepted authority, not a greenfield addition**, and its re-proof surface is materially larger than §7 estimated.
 
-| | **CP4c-0** - continuation | **CP4c-0b** - termination |
-|---|---|---|
-| owns | exact minimum-ratio continuation, `FieldBoundaryPoint`, grazing classification and edge transit, vertex dispatch, the CB9 cost guards | trace/trace contact, arrival priority, the contact node and event, retirement of the CB9 stand-in guards |
-| gate | **346**, `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, **346/346 ACCEPTED** | frozen by `M3-CP4c-0b-CB1` as `346 + n` |
-| Q8 | criteria **1, 4, 5 PASS** | criteria **2** and **3** |
+### The six defects, each verified from source
 
-**Amendment 11** moves Q8 criteria 2 and 3 to CP4c-0b **together and unweakened**. CP4c-0 has now closed on its own evidence. `ResolvedBranchCorrection.GrazingTraceSegmentsPublishExactEndpointSupport`, made non-gating by CB9's N7, becomes gating again in CP4c-0b's selector rather than being a permanent exemption.
+1. **The contact predicate is "the two segments are in the same face."** `field_aligned_first_trace_contact` (`src/geometry/SurfaceCellTracing.cpp:1278-1307`) contains one geometric test — `if (segment.sourceFace != existingSegment.sourceFace) continue;` — and everything after it returns a contact. Two traces on parallel, non-crossing, arbitrarily distant paths through one triangle are declared in contact and the later one is truncated.
+2. **Priority is trace index order** (`existingIndex < traceIndex`). That is `TraceSeniority`, the metric §4.2 ranks worst and §5 forbids as the production algorithm. It is the shipped behaviour.
+3. **The contact node is placed at the face's lowest-numbered vertex** (`field_aligned_append_contact_node`, `:1310-1318`, uses `sourceFace.vertices().front()`), unrelated to where the traces meet.
+4. **The pass runs after tracing completes** (`canonical_field_aligned_candidate`, `:1804-1817`, returns the tracing error before reaching finalize). **It is therefore unreachable for any trace that never finishes** — exactly why the prescribed sphere circulates and why TB-R8 ran 853 s. No predicate correction alone can reach Q8 criterion 2. `DESIGN.md` §4.6 also disclaims this shape: the guarantee is *"structural rather than a post-hoc repair."*
+5. **`TraceIntersection` is overloaded across three meanings** — origin junction (`:1391`), crash-on-contact (`:1433`), self-closure on a revisited face (`:1512`). `LESSONS.md` §2 records what an overloaded code costs.
+6. **Truncation erases a legitimate terminus** — `terminalBarrier`, `terminalPoint` and `terminalSingularity` are all reset, so a trace that reached a singularity loses that fact if any lower-indexed trace shares one of its faces.
 
-### `M3-CP4c-0-TB-R9` — FINAL / GATE GREEN 346/346 / ACCEPTED
+### Measures **S0-S8** supersede P0-P9
 
-Fresh immutable GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed` was compiled in run/job `33079499974 / 98542697746`; package SHA-256 `557207bf8f668884295258690e3bd31485cbd7709f0be47aa98daea0c53b3e2e`. Artifact-only re-proof run/job `33079817998 / 98543736213` executed all 346 frozen identities with **346 PASS / 0 RED / 0 skipped**, Q8 criteria 1/4/5 PASS, and immutable pre/postflight PASS. Latest accepted runtime authority is this run.
+- **S0** — corrected binding preconditions. S0.3 now asserts the *true* state: three emission sites, and `field_aligned_first_trace_contact` still gating on face equality alone. S0.4/S0.5 pin the node placement and the finalize-after-tracing ordering.
+- **S1 — the contact census, and nothing may precede it.** Non-gating, changes no production behaviour. Per witness: every contact the current shared-face predicate fires; whether each of those pairs **properly crosses** under an exact barycentric orientation test computed in the census only; the terminal kind each truncated trace held **before** truncation; node count, every contact node's `sourceVertex`, and the event-kind histogram; and the split across the three sites. **If any current contact is not a proper crossing on an accepted witness, correcting the predicate changes accepted authority — that is a plan decision, not a CB decision. Stop and return to review with the census.**
+- **S2** — split the overloaded event vocabulary into origin junction / trace contact / self-closure. Retire no enum value and never reuse one. Adding kinds re-opens CP3b's terminal-kind exhaustivity assumption exactly as DEFN-1 §6.4 warned; every accepted identity asserting exhaustivity must be re-read and named in the CB report.
+- **S3** — replace the shared-face test with the exact proper-crossing predicate. Keep the existing shared-singularity-origin exclusion at `:1296-1301`. Demote `field_aligned_common_carrier` to the diagnostic label it already is.
+- **S4** — `ArcLengthFiltered` with the **computed** forward error bound; mutual termination on tie or inconclusive. **Remove the `existingIndex < traceIndex` bound** — seniority must not survive as a tiebreak.
+- **S5** — **relocate contact detection into the trace loop.** This is the change that fixes the sphere; defect 4 proves the post-hoc pass never can.
+- **S6** — publish the contact's exact position on `terminalContact`; do **not** give `NetworkNodeId` positional meaning. Assert exactly one terminal kind per completed trace.
+- **S7** — re-run accepted **316** and CP4c-0's **346**; name every re-authored identity. An accepted expectation edit is a stop unless S1 predicted it and the plan authorised it.
+- **S8** — prohibitions as frozen, plus: no reuse of a retired enum value, no surviving seniority tiebreak, no positional `NetworkNodeId`.
 
-The original TB-R9 run `33048964354 / 98439563813` remains historical valid RED **344/346** evidence. Its two failures became `CAND-01/02`, were corrected by CB-R10/CB-R11 and focused-reproved by TB-R10/TB-R11, and now pass in the complete frozen gate. Stable totals did not change.
+### Q8 criterion 3 must be re-stated
 
-### `M3-CP4c-0b-CB1` — AUTHORIZED, PRE-IMPLEMENTATION STOP AT P0.3
+As frozen it reads "at least one terminal `TraceIntersection`". Sites B and C already produce `Terminal` incidences, so on current code the criterion could be reported satisfied by a shared-face truncation that is not a crossing at all. It must require **a contact produced by the corrected predicate on the prescribed sphere**. That names the outcome the criterion always meant; it is a clarification, not a weakening.
 
-The user explicitly authorized CB1 on 2026-08-27. The required static P0 preflight was then performed against the exact source snapshot for semantic authority `49831e30433d72504a69b5a8c817aa6fa00f953c` (snapshot event SHA `a850b99e7d6b8d8053fee98fefba1e0bcca37704`). **P0.3 is false as written, so the frozen plan requires an immediate stop and return to independent review before any P1-P9 implementation.**
+### Turn boundary
 
-The contradiction is source- and closure-proven, not interpretive:
-
-- frozen P0.3 requires `FieldAlignedNetworkEventKind::TraceIntersection` to be declared but produced by nothing;
-- accepted `M3_CP3_Closure_Record.md` §3 explicitly states CP3b delivered typed `TraceIntersection` events and that crossings become graph nodes at declaration time;
-- current production `src/geometry/SurfaceCellTracing.cpp` emits `TraceIntersection` at three sites in `finalize_field_aligned_events`; and
-- accepted CP3b tests positively require `TraceIntersection` production.
-
-P0.1, P0.2, P0.4, and P0.5 are otherwise statically supported: CP4c-0 is accepted 346/346; `FieldAlignedCandidateTrace` still has only `terminalSingularity`/`terminalBarrier` and no contact datum; N1/N2/N4 remain present; and the durable compile workflow is GMP-backed. No product, test, fixture, selector, build, package, or runtime mutation was made after the P0.3 stop.
-
-**Exact next turn: independent review / plan correction for CP4c-0b P0.3.** The review must reconcile the frozen precondition with accepted CP3b authority and determine the minimal corrected baseline before CB1 may resume. Do not silently reinterpret or edit P0.3 inside a Code + Build turn.
-
-### Alternatives harness - required, and constrained
-
-`FieldTraceArrivalPriority { ArcLengthFiltered, StepCount, BarycentricTime, TraceSeniority }` exists so performance and quality can be compared on future inputs. **`ArcLengthFiltered` is the only value the production entry path can produce.** The production path takes no priority argument; alternatives are reachable only from a separately named diagnostic entry point the pipeline never calls; an identity asserts production yields the default's result; and the selected priority is bound into the semantic digest. **A production-reachable priority argument is a second writer of network topology and a stop condition.** Changing the default is a plan update consuming a render comparison, not a code change.
-
-### Mandatory exact-backend compile policy
-
-`.agents/Directional/GMP_COMPILE_POLICY.md` is now durable repository-wide authority by explicit user instruction: **GMP/GMPXX linkage is mandatory for every future compile in every environment.** The durable ChatGPT Web compile workflow already provisions `libgmp-dev`, configures `DIRECTIONAL_ENABLE_GMP=ON` with `GMP_ROOT=/usr`, verifies CMake discovery, verifies both `gmpxx` and `gmp` on a generated link line, and records `exactArithmeticBackend=GMP`. Artifact-only TB callers executing dynamically linked packages must provide the GMP runtime libraries. Fallback exact arithmetic is not acceptable build/package authority.
-
-### Falsifiable predictions for `M3-CP4c-0b-TB`
-
-1. Accepted **316/316** and CP4c-0 **346/346**, zero expectation edits.
-2. The sphere publishes **24 traces** - Q8 criterion 2.
-3. At least one terminal `TraceIntersection` - Q8 criterion 3. All six circulating traces have a crossing available at **step 0**.
-4. **42 of 48 candidate ports still terminate at a singularity**; only the 6 circulating ones acquire a contact terminus.
-5. **N1, N2 and N4 do not fire on any witness.** This is the one that matters - a guard firing after crash-on-contact exists means the termination contract is incomplete, and the turn returns to review rather than the allowance being raised.
-6. Two-ring and fan acquire **no** contact terminus and their digests stay byte-identical.
+Code + Build only. GMP linkage mandatory per `GMP_COMPILE_POLICY.md`; the package must record `exactArithmeticBackend=GMP`. No runtime, test, benchmark or generated discovery. No A1 change, no tolerance or literal epsilon in the contact predicate or the priority comparison, no production-reachable priority argument, no length-based termination, no change to the CP4c-1 **318** selector.
 
 ## Current authority
 

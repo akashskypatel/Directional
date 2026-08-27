@@ -6,6 +6,37 @@
 **Origin:** `M3-CP4c-0-TB-R8-REVIEW-PLAN` + `M3-CP4c-0-CB9` §7 — the dependency inversion, resolved here by splitting the checkpoint rather than by reordering or re-scoping alone.
 **Incoming accepted authority:** M3-CP4ab **316/316**. CP4c-0 gate **346**, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`.
 
+> ## AMENDED 2026-08-27 — read this before §2, §3, §7 and §10
+>
+> **AMENDMENT A1 — crash-on-contact already exists, defectively, in accepted authority.**
+> `M3-CP4c-0b-CB1` stopped at binding precondition **P0.3**, and the stop was correct.
+> §2's statement that A2a does not implement crash-on-contact, §7's statement that `TraceIntersection`
+> becomes producible for the first time, and **P0.3** itself are **withdrawn as false**.
+> `finalize_field_aligned_events` has produced `TraceIntersection` since CP3b at three sites
+> (`src/geometry/SurfaceCellTracing.cpp:1391`, `:1433`, `:1512`) and truncates a trace at its first
+> contact with an earlier one.
+>
+> **Six defects, each verified from source:** the contact predicate is *"the two segments are in the
+> same face"* with no crossing test (`:1278-1307`); priority is trace index order, which is the
+> `TraceSeniority` metric §4.2 ranks worst; the contact node is placed at the face's lowest-numbered
+> vertex rather than at the contact (`:1310-1318`); the pass runs **after** tracing completes
+> (`:1804-1817`) and is therefore unreachable for a trace that never finishes, which is why the
+> prescribed sphere circulates; `TraceIntersection` is overloaded across origin junction,
+> crash-on-contact and self-closure; and truncation **erases** a legitimate `terminalSingularity` or
+> `terminalBarrier`.
+>
+> **CP4c-0b is a correction and relocation of accepted authority, not a greenfield addition.** §7's
+> re-proof matrix is superseded by `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md` §5, and
+> measures **P0–P9** are superseded by **S0–S8** in §6 of that record. **Q8 criterion 3 must be
+> re-stated to require a contact produced by the corrected predicate on the prescribed sphere**, since
+> a *terminal* `TraceIntersection` is already producible by the defect.
+>
+> **No semantic change may precede measure S1**, the contact census, which decides whether correcting
+> the predicate changes accepted authority.
+>
+> §3.2's predicate, §4's priority decision, §5's simultaneity requirement and §6's guard demotion all
+> stand unchanged — they are now corrections of shipped behaviour rather than additions.
+
 ---
 
 ## 0. What this checkpoint is, and what CP4c-0 keeps

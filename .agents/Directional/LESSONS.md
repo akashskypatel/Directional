@@ -660,6 +660,43 @@ exist; one was exhibited with an exactly contracting first-return map. The concl
 for a completely different reason. **When a design leans on a citation for a guarantee, restate the
 citation's preconditions in the design's own terms and check each one.**
 
+### An absence is only evidence when the search space was bounded first
+
+A frozen precondition asserted that an event kind was "declared but produced by nothing". It had been
+produced since three checkpoints earlier, at three sites, in the same file. The claim was written after
+auditing one function, and it is a claim about the whole codebase. **Before asserting that something is
+never produced, search for it and record the search.** One grep would have falsified this before it
+propagated through four documents and shaped a checkpoint's entire scope.
+
+### A true fact about one enum value is not a fact about its neighbour
+
+`SingularityTermination` genuinely was declared and produced by nothing; that was measured and recorded.
+The same sentence shape was then carried onto `TraceIntersection`, which had never been unproduced, and
+survived every later document because each inherited it from the previous one rather than from source.
+**Re-derive an inherited claim from source at least once before making it a binding precondition.**
+
+### When a mechanism seems missing, check the next stage before concluding it does not exist
+
+Crash-on-contact was looked for in the tracing loop, where a termination mechanism would naturally live,
+and was not there. It was one function further down the same file, in the finalize pass that runs after
+tracing. **Absence at the stage you expected is not absence.** Widen the search to the neighbouring
+stages of the same product before concluding a capability is unimplemented.
+
+### A mechanism at the wrong stage is worse than one that is absent
+
+The contact pass, the contact node, the event kinds and the incidence roles all existed, were accepted,
+and were cited in a closure record — and none of it could ever terminate a circulating trace, because it
+ran only after every trace had finished building. Its existence actively suppressed the search for why
+traces did not terminate. **When a capability is present but the behaviour it should produce is not,
+check what stage it runs at before assuming the implementation is merely incomplete.**
+
+### A binding precondition that fails is the plan working, not the turn failing
+
+A Code + Build turn stopped at a frozen precondition, performed no implementation, compile, test or
+benchmark, and returned a static contradiction with its evidence. That cost one cheap turn and saved an
+implementation built on a false premise. **Write preconditions that can fail, and treat a failure as the
+successful outcome it is.**
+
 ### A classifier that names an owner will route the next turn, right or wrong
 
 A census emitted class labels of the form "this bucket means `functionX` is at fault". The buckets were
