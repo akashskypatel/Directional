@@ -569,6 +569,52 @@ coordinate — so its rate of change *is* the rate the parameter moves. **Read t
 of the datum you must produce before importing geometry to produce it.** Importing a metric into a
 combinatorial rule also imports an exactness problem that the published form does not have.
 
+### A guard that cannot fire is not a guard, and a budget is not a bound
+
+A trace step budget authorised 1,775,616 steps on a witness whose exact arithmetic could not survive
+205. It had never fired, was never going to, and had been read as protection for several turns. **Check
+every bound against the cost of reaching it, not only against the semantics of the thing it bounds.** The
+repair was to derive the budget from the guard that actually binds, so the two cannot drift apart again.
+
+### Fixing a false positive can create a false negative in the same predicate
+
+A cycle guard keyed on face, branch and incoming carrier once rejected a trace that legitimately
+re-entered a face at a different position, so the exact position was added to its state. That was
+correct, and it made the guard structurally blind to a circulation whose position drifts every lap -
+which is every real limit cycle. **When a discriminator is weakened to admit a legitimate case, ask what
+illegitimate case it now admits, and cover that beside the original rather than by re-tightening.**
+
+### A runaway guard written as a magic constant will fire on correct work
+
+A hand-rolled bignum capped Euclid's loop at 10,000 iterations. That is a fine tripwire for a
+non-decreasing loop and a landmine for a large but entirely valid operand - and when it fired it threw
+`std::runtime_error` out of a closed producer, surfacing as a test-body failure with no locus at all.
+**Bound a loop by its own worst case computed from its inputs** (Lame's bound for Euclid, the digit count
+for a trim, the range width for a binary search), so the guard can only fire on a real fault.
+
+### A closed producer must be closed against its dependencies' failure modes
+
+The product contract says every producer outcome is a typed value. The exact-arithmetic backend reports
+its guards by throwing. Nothing reconciled the two until an exception escaped and left the producer with
+no outcome to report. **Where a dependency signals failure by a mechanism your contract does not admit,
+convert it at the boundary** - and make the conversion a backstop behind a policy that fires first, not
+the policy itself.
+
+### Removing a blocker exposes everything it was masking
+
+A rejection that fired at the first grazing edge was aborting the sphere network - and was incidentally
+stopping every trace before any could circulate. Retiring it was right, and it immediately surfaced a
+latent non-termination that had never been reachable before. **When a stage's first rejection is
+removed, expect the second defect to arrive in the very next run**, and budget a turn for it rather than
+reading it as a regression in the fix.
+
+### Do not predict a global property from a local resolution
+
+A definition turn resolved one blocked locus, observed that the witness's singularities sat at the
+corners of a cube, and predicted that every separatrix therefore ran corner to corner. Measured: 42 of 48
+did and 6 wound forever. **Symmetry of the singularity set does not constrain the trajectories between
+them.** The reproduction that settled it cost one script and was available at prediction time.
+
 ### A classifier that names an owner will route the next turn, right or wrong
 
 A census emitted class labels of the form "this bucket means `functionX` is at fault". The buckets were

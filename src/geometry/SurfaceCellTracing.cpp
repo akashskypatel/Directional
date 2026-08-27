@@ -8,6 +8,7 @@
 
 #include <bit>
 #include <cassert>
+#include <exception>
 #include <optional>
 
 namespace directional::geometry::surface_cell_tracing_detail {
@@ -381,6 +382,18 @@ FieldBranchContinuationResult resolve_field_branch_continuation(
         sourceFace, pairing.branch, entryPoint.edge, std::nullopt,
         entryPoint.parameter);
   }
+  // Deterministic magnitude policy, checked before any exact arithmetic runs on
+  // the entry value. Declining to answer is the fail-closed outcome; a
+  // magnitude never decides a topological question and never selects an
+  // approximate path.
+  if (entryPoint.parameter.value.magnitude_bits() >
+      kFieldExactContinuationMagnitudeBits) {
+    return continuation_error(
+        FieldAlignedCurveNetworkErrorCode::
+            BranchContinuationExactMagnitudeExceeded,
+        sourceFace, pairing.branch, entryPoint.edge, std::nullopt,
+        entryPoint.parameter);
+  }
   const auto entryBarycentric =
       field_boundary_point_barycentric(sourceFace, entryPoint);
   if (!entryBarycentric.has_value()) {
@@ -633,37 +646,46 @@ std::size_t field_aligned_trace_step_budget(
     }
     branchStates += frame.branches.size();
   }
-  if (topology.transports().size() ==
-      std::numeric_limits<std::size_t>::max()) {
+  // One (face, branch) state can be entered through any of the face's three
+  // edges or at any of its three vertices, so a trace has exactly six
+  // position-free entry modes per branch state. Multiplying by the guard's
+  // per-state visit allowance gives the largest step count the recurrence guard
+  // can permit, which makes the budget a provable envelope rather than an
+  // independent policy: it can never fire before the recurrence guard does.
+  //
+  // The previous expression multiplied by the transport count as well, which on
+  // the prescribed sphere produced 1,775,616 steps. Exact continuation values
+  // grow with every step, so that budget could never be reached - the arithmetic
+  // became unaffordable first - and the guard was inert.
+  constexpr std::size_t kEntryModesPerBranchState = 6U;
+  constexpr std::size_t kStatesPerStep =
+      kEntryModesPerBranchState * kFieldAlignedTraceMaxCombinatorialVisits;
+  if (branchStates > std::numeric_limits<std::size_t>::max() / kStatesPerStep) {
     return std::numeric_limits<std::size_t>::max();
   }
-  const std::size_t transportStates = topology.transports().size() + 1U;
-  constexpr std::size_t kPositionHeadroom = 8U;
-  if (branchStates != 0U &&
-      transportStates > std::numeric_limits<std::size_t>::max() /
-                            branchStates) {
-    return std::numeric_limits<std::size_t>::max();
-  }
-  const std::size_t combined = branchStates * transportStates;
-  if (combined > std::numeric_limits<std::size_t>::max() /
-                     kPositionHeadroom) {
-    return std::numeric_limits<std::size_t>::max();
-  }
-  return std::max<std::size_t>(64U, combined * kPositionHeadroom);
+  return std::max<std::size_t>(64U, branchStates * kStatesPerStep);
 }
 
 FieldAlignedCurveNetworkError field_aligned_trace_traversal_error(
     const FieldAlignedTraceTraversalStatus status,
     const FieldAlignedTraceTraversalState &state,
     const FieldAlignedTraceTraversalGuard &guard) {
+  FieldAlignedCurveNetworkErrorCode code =
+      FieldAlignedCurveNetworkErrorCode::TraceStepBudgetExhausted;
+  if (status == FieldAlignedTraceTraversalStatus::CycleDetected) {
+    code = FieldAlignedCurveNetworkErrorCode::TraceStateCycleDetected;
+  } else if (status ==
+             FieldAlignedTraceTraversalStatus::CombinatorialRecurrenceExceeded) {
+    code = FieldAlignedCurveNetworkErrorCode::TraceCombinatorialRecurrenceExceeded;
+  }
   FieldAlignedCurveNetworkError error = continuation_error(
-      status == FieldAlignedTraceTraversalStatus::CycleDetected
-          ? FieldAlignedCurveNetworkErrorCode::TraceStateCycleDetected
-          : FieldAlignedCurveNetworkErrorCode::TraceStepBudgetExhausted,
-      state.sourceFace, state.branch, state.incomingCarrier, std::nullopt,
+      code, state.sourceFace, state.branch, state.incomingCarrier, std::nullopt,
       state.entryPoint.parameter);
   error.traceSteps = guard.steps();
   error.traceStepBudget = guard.step_budget();
+  error.traceCombinatorialVisits = guard.combinatorial_recurrence();
+  error.traceCombinatorialVisitAllowance =
+      FieldAlignedTraceTraversalGuard::combinatorial_visit_allowance();
   return error;
 }
 
@@ -2140,16 +2162,30 @@ FieldAlignedCurveNetworkBuildResult FieldAlignedCurveNetwork::make(
     const SourceTopologyRegions &sourceAuthority,
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails) {
-  const auto canonical =
-      surface_cell_tracing_detail::canonical_field_aligned_candidate(
-          sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails);
-  if (const auto *error =
-          std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
-    return FieldAlignedCurveNetworkBuildResult(*error);
+  // A2a is a closed producer (DESIGN.md 6.5): every outcome is a typed value.
+  // The exact-rational backend signals its own runaway guards by throwing, and
+  // an exception escaping here would leave the producer with no outcome at all.
+  // The magnitude and recurrence guards are the primary policy and are expected
+  // to fire first; this converts anything that still escapes into the same
+  // typed rejection rather than into an abort.
+  try {
+    const auto canonical =
+        surface_cell_tracing_detail::canonical_field_aligned_candidate(
+            sourceMesh, sourceAuthority, fieldTransportAtlas,
+            authoritativeRails);
+    if (const auto *error =
+            std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+      return FieldAlignedCurveNetworkBuildResult(*error);
+    }
+    return make_from_candidate(
+        sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
+        std::get<FieldAlignedCurveNetworkCandidate>(canonical));
+  } catch (const std::exception &) {
+    FieldAlignedCurveNetworkError error;
+    error.code = FieldAlignedCurveNetworkErrorCode::
+        BranchContinuationExactMagnitudeExceeded;
+    return FieldAlignedCurveNetworkBuildResult(error);
   }
-  return make_from_candidate(
-      sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
-      std::get<FieldAlignedCurveNetworkCandidate>(canonical));
 }
 
 FieldAlignedCurveNetworkBuildResult
@@ -2307,6 +2343,11 @@ const char *field_aligned_curve_network_error_code_name(
     return "TraceStepBudgetExhausted";
   case FieldAlignedCurveNetworkErrorCode::BranchGrazingSlideDirectionAmbiguous:
     return "BranchGrazingSlideDirectionAmbiguous";
+  case FieldAlignedCurveNetworkErrorCode::TraceCombinatorialRecurrenceExceeded:
+    return "TraceCombinatorialRecurrenceExceeded";
+  case FieldAlignedCurveNetworkErrorCode::
+      BranchContinuationExactMagnitudeExceeded:
+    return "BranchContinuationExactMagnitudeExceeded";
   }
   return "Unknown";
 }

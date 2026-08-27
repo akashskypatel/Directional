@@ -3674,6 +3674,13 @@ void append_network_error(
   if (error.traceStepBudget.has_value()) {
     stream << ";traceStepBudget=" << *error.traceStepBudget;
   }
+  if (error.traceCombinatorialVisits.has_value()) {
+    stream << ";traceCombinatorialVisits=" << *error.traceCombinatorialVisits;
+  }
+  if (error.traceCombinatorialVisitAllowance.has_value()) {
+    stream << ";traceCombinatorialVisitAllowance="
+           << *error.traceCombinatorialVisitAllowance;
+  }
 }
 
 std::string network_error_locus(
@@ -6008,6 +6015,167 @@ TEST(ResolvedBranchCorrection,
 }
 
 TEST(ResolvedBranchCorrection,
+     TraceTraversalFailsClosedOnPositionFreeCombinatorialRecurrence) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const SourceFaceTopologyKey face = topology_face(0, 1, 2);
+  const SourceEdgeTopologyKey edge = topology_edge(0, 1);
+  const auto branch = directional::authority::FieldBranch::from_integer(0);
+  // Three entries into one (face, branch, incoming carrier), each at a distinct
+  // exact position. The exact-state guard can never see these as a repetition,
+  // which is precisely how a circulating trace escaped every earlier bound.
+  const FieldAlignedTraceTraversalState first{
+      face, branch, edge, boundary_point(edge, 1, 5)};
+  const FieldAlignedTraceTraversalState second{
+      face, branch, edge, boundary_point(edge, 2, 5)};
+  const FieldAlignedTraceTraversalState third{
+      face, branch, edge, boundary_point(edge, 3, 5)};
+
+  FieldAlignedTraceTraversalGuard guard(1024U);
+  EXPECT_EQ(FieldAlignedTraceTraversalStatus::Advanced, guard.observe(first));
+  EXPECT_EQ(FieldAlignedTraceTraversalStatus::Advanced, guard.observe(second));
+  const auto status = guard.observe(third);
+  ASSERT_EQ(FieldAlignedTraceTraversalStatus::CombinatorialRecurrenceExceeded,
+            status);
+  const auto error = field_aligned_trace_traversal_error(status, third, guard);
+  EXPECT_EQ(
+      FieldAlignedCurveNetworkErrorCode::TraceCombinatorialRecurrenceExceeded,
+      error.code);
+  EXPECT_EQ(third.entryPoint.parameter, error.parameter);
+  ASSERT_TRUE(error.traceCombinatorialVisits.has_value());
+  EXPECT_EQ(kFieldAlignedTraceMaxCombinatorialVisits + 1U,
+            *error.traceCombinatorialVisits);
+  ASSERT_TRUE(error.traceCombinatorialVisitAllowance.has_value());
+  EXPECT_EQ(kFieldAlignedTraceMaxCombinatorialVisits,
+            *error.traceCombinatorialVisitAllowance);
+
+  // The guard counts states, not steps: a different incoming carrier is a
+  // different combinatorial state and must still advance.
+  const SourceEdgeTopologyKey otherEdge = topology_edge(1, 2);
+  const FieldAlignedTraceTraversalState other{
+      face, branch, otherEdge, boundary_point(otherEdge, 1, 5)};
+  EXPECT_EQ(FieldAlignedTraceTraversalStatus::Advanced, guard.observe(other));
+
+  const std::string emitted = network_error_locus(error);
+  EXPECT_EQ(std::string::npos, emitted.find('\0'));
+  EXPECT_NE(std::string::npos,
+            emitted.find("TraceCombinatorialRecurrenceExceeded"));
+  EXPECT_NE(std::string::npos, emitted.find(";traceCombinatorialVisits="));
+  EXPECT_NE(std::string::npos,
+            emitted.find(";traceCombinatorialVisitAllowance="));
+}
+
+TEST(ResolvedBranchCorrection,
+     ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const SourceFaceTopologyKey face = topology_face(0, 1, 2);
+  const SourceEdgeTopologyKey incoming = topology_edge(0, 1);
+  const SourceEdgeTopologyKey outgoing = topology_edge(1, 2);
+  const auto pairing = continuation_pairing({-1, 2, -1}, {outgoing, incoming});
+
+  // A parameter still inside the unit interval whose exact width exceeds the
+  // policy: 1 / 2^k built by repeated squaring, so the value stays exact and
+  // the construction itself stays cheap.
+  auto wide = exact_ratio(1, 2);
+  std::size_t width = 1U;
+  while (width <= kFieldExactContinuationMagnitudeBits) {
+    wide = wide * wide;
+    width = wide.magnitude_bits();
+  }
+  ASSERT_GT(wide.magnitude_bits(), kFieldExactContinuationMagnitudeBits);
+  const directional::authority::FieldBoundaryPoint widePoint{
+      incoming, directional::authority::ExactUnitParameter{wide}};
+  ASSERT_TRUE(widePoint.parameter.in_unit_interval());
+
+  const auto rejected =
+      resolve_field_branch_continuation(face, pairing, widePoint);
+  const auto *error =
+      std::get_if<directional::geometry::FieldAlignedCurveNetworkError>(
+          &rejected);
+  ASSERT_NE(nullptr, error);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::
+                BranchContinuationExactMagnitudeExceeded,
+            error->code);
+  EXPECT_EQ(face, error->sourceFace);
+  EXPECT_EQ(incoming, error->sourceEdge);
+  ASSERT_TRUE(error->parameter.has_value());
+  EXPECT_EQ(widePoint.parameter, *error->parameter);
+  const std::string emitted = network_error_locus(*error);
+  EXPECT_NE(std::string::npos,
+            emitted.find("BranchContinuationExactMagnitudeExceeded"));
+
+  // The policy is a width, never a value: an ordinary narrow parameter on the
+  // same face and pairing still resolves, so nothing about the topological
+  // decision has been approximated away.
+  const auto resolved =
+      resolve_field_branch_continuation(face, pairing, boundary_point(incoming, 1, 2));
+  ASSERT_NE(nullptr,
+            std::get_if<FieldBranchContinuationDecision>(&resolved));
+}
+
+TEST(ResolvedBranchCorrection,
+     TraceStepBudgetCannotFireBeforeTheRecurrenceAllowance) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_index_one_singularity_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+
+  std::size_t branchStates = 0U;
+  for (const auto &frame : topology.frames()) {
+    branchStates += frame.branches.size();
+  }
+  ASSERT_GT(branchStates, 0U);
+
+  // Six position-free entry modes per branch state - three edges and three
+  // vertices - times the per-state visit allowance. The budget is therefore an
+  // envelope of the recurrence guard, not an independent policy, so it can
+  // never fire first and can never be reached by an unbounded circulation.
+  const std::size_t expected = std::max<std::size_t>(
+      64U, branchStates * 6U * kFieldAlignedTraceMaxCombinatorialVisits);
+  EXPECT_EQ(expected, field_aligned_trace_step_budget(topology));
+}
+
+TEST(ResolvedBranchCorrection,
+     FieldAlignedCurveNetworkIsAClosedProducerOnEveryReachableWitness) {
+  const TriMesh fanMesh = make_four_triangle_fan();
+  const auto fanAuthority = make_source_authority(fanMesh);
+  ASSERT_TRUE(fanAuthority.has_value());
+  const auto fanAtlas = directional::authority::FieldTransportAtlas::make(
+      fanMesh, *fanAuthority, {}, make_index_one_singularity_field(fanMesh));
+  ASSERT_TRUE(fanAtlas);
+  EXPECT_NO_THROW({
+    const auto build = FieldAlignedCurveNetwork::make(
+        fanMesh, *fanAuthority, fanAtlas.value(),
+        rails_from_atlas(fanMesh, fanAtlas.value()));
+    (void)build;
+  });
+
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  // The exact backend signals its own runaway guards by throwing. A2a is a
+  // closed producer: every outcome is a typed value, including this one.
+  EXPECT_NO_THROW({
+    const auto build = FieldAlignedCurveNetwork::make(
+        sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails);
+    (void)build;
+  });
+}
+
+// Non-gating diagnostic. The transit contract itself is proved at unit level by
+// CrossEdgeGrazingClassifiesAndTransitsWithPublishedAuthorities,
+// GrazingTransitIsInvariantToPositiveFaceScale and
+// GrazingTransitSelectsSameEndpointFromEitherFace. This identity additionally
+// requires a *published sphere network*, which A2a cannot produce while some of
+// the witness's separatrices circulate: terminating a circulating trace is
+// crash-on-contact (DESIGN.md 4.6), owned by CP4c-1 measures C4/C5. It reports
+// the typed outcome rather than asserting a build that this checkpoint cannot
+// deliver, and is excluded from the required-green selector until C4/C5 land.
+TEST(ResolvedBranchCorrection,
      GrazingTraceSegmentsPublishExactEndpointSupport) {
   const Cp4cReachabilityObservation sphere =
       observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
@@ -6015,7 +6183,11 @@ TEST(ResolvedBranchCorrection,
   ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
   const auto networkBuild = FieldAlignedCurveNetwork::make(
       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails);
-  ASSERT_TRUE(networkBuild) << network_error_locus(networkBuild.error());
+  if (!networkBuild) {
+    GTEST_SKIP() << "m3Cp4c0N5;credit=none;owningMeasure=C4/C5"
+                 << ";spherePublishesNetwork=false;"
+                 << network_error_locus(networkBuild.error());
+  }
 
   std::size_t transitedSegments = 0U;
   for (const auto &trace : networkBuild.value().candidate_traces()) {

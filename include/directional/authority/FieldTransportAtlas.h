@@ -343,6 +343,22 @@ public:
     return enumber_den(value_).to_string();
   }
 
+  /**
+   * @brief Deterministic bit-width of the widest of numerator and denominator.
+   *
+   * Exact continuation recomputes every parameter from the published direction,
+   * so a value's width grows with the number of steps a trace has taken. This
+   * measure lets a consumer bound the cost of exact arithmetic deterministically
+   * instead of discovering the cost as an unbounded run time. It is a size, not
+   * a numeric value: it never participates in a topological decision and it is
+   * never compared against another rational.
+   */
+  [[nodiscard]] std::size_t magnitude_bits() const noexcept {
+    const std::size_t numeratorBits = enumber_num(value_).magnitude_bits();
+    const std::size_t denominatorBits = enumber_den(value_).magnitude_bits();
+    return numeratorBits > denominatorBits ? numeratorBits : denominatorBits;
+  }
+
   friend FieldExactRational operator+(const FieldExactRational &a,
                                       const FieldExactRational &b) {
     return FieldExactRational(a.value_ + b.value_);

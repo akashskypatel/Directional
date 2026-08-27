@@ -82,38 +82,50 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R8-REVIEW-PLAN` — EXACT NEXT / independent review only
+## Mandatory next turn — `M3-CP4c-0-TB-R9` — EXACT NEXT / artifact-only Test + Benchmark
 
-TB-R8 run/job `33028238313 / 98374531360` is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE** against immutable CB8 package `9628445643` / semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`.
+`M3-CP4c-0-TB-R8` was **INCOMPLETE / BLOCKED** (run/job `33028238313 / 98374531360`, CB8 package `9628445643`, source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`). Ordinal 338 failed after **853.437 s** with `gcd(): while running too long!`; ordinal 343 never returned before cancellation. It has been adjudicated **and corrected in one turn at explicit user instruction**: `Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md`, measures **N0-N7**. Read that record first.
 
-P0 passed. P1 completed **342/343** fresh identities: **341 PASS, 1 RED, 1 incomplete**. Accepted first-316 and prior first-328 are still **316/316** and **328/328** green. Ordinal 338 `ResolvedBranchCorrection.AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections` ran **853.437 s** and failed with `gcd(): while running too long!`; the last atlas locus was singularity 7 / fan 3→0 / edge `(43,49)` / lift `-1`. Ordinals 339-342 passed. Ordinal 343 `ResolvedBranchCorrection.GrazingTraceSegmentsPublishExactEndpointSupport` never returned before the user cancelled the stalled job. P2-P8 and final immutable postflight did not run; no acceptance is claimed.
+### Root cause - three compounding defects, not a packaging flaw
 
-Raw evidence: partial result artifact `9629797616` / `50462c5023a5cab817859eefb00b3f523e6cfe1e6d601188cd7c1e14a149c287`; diagnostic artifact `9629798008` / `217523d273a844c6f3c8f8a3e4c6d0314352d7620c8af24760b239a4d989977a`.
+1. **Six of the prescribed sphere's separatrices circulate forever**, lapping a closed 32-state circuit and drifting in exact position every lap. CB8's grazing transit correctly retired `BranchTransportFlowDisagreement`, which had been aborting the network at the first grazing edge and *incidentally* stopping every trace before any could circulate.
+2. **Neither existing guard could see it.** The cycle guard keys on `FieldAlignedTraceTraversalState`, which contains the exact entry position - never equal across laps. The step budget was `8 x branchStates x (transports+1)` = **1,775,616** on the sphere, a count the arithmetic could never survive long enough to reach. A guard that cannot fire is not a guard.
+3. **Exact values grow ~1.12 base-1e9 limbs per step without bound, and the fallback bignum answers by throwing.** At step ~205 (~233 limbs) Euclid passed its fixed 10,000-iteration cap and raised `std::runtime_error` out of a closed producer. Division there binary-searches each quotient digit recomputing `dividend - divisor*mid` each probe, so cost scales near the **fourth power** of the final width - hence 853 s for ~205 steps.
 
-**Binding user stop:** do not re-run TB-R8 until a deterministic product-level guard for infinite or unreasonably long-running loops is implemented and compile-green. Do not substitute workflow/job/test timeouts.
+### What landed (implemented, compiled per translation unit, nothing executed)
 
-Static review anchor: `BigInteger::gcd` has a 10,000-iteration emergency guard, while `FieldAlignedTraceTraversalGuard` has cycle detection plus a sphere step budget of **1,775,616** and includes the exact boundary point in the recurrence key. The exact source of non-progress/operand growth is not yet proved and must be independently reviewed before changing guard semantics.
+- **N1 - position-free combinatorial recurrence guard.** Counts entries into `(sourceFace, branch, incomingCarrier)` with the exact position removed; allowance **2**, calibrated against a measured terminating maximum of **1** (42/42 traces). New typed rejection `TraceCombinatorialRecurrenceExceeded` (29) publishing `traceCombinatorialVisits` and `traceCombinatorialVisitAllowance`. The exact-state and budget tests still run first and keep their verdicts unchanged.
+- **N2 - deterministic exact-magnitude policy**, `kFieldExactContinuationMagnitudeBits = 4096`, checked on the entry parameter before any exact arithmetic. New typed rejection `BranchContinuationExactMagnitudeExceeded` (30). Not a tolerance: the producer declines to answer, never answers approximately. `magnitude_bits()` exists on both `EInt` backends so the policy means the same in a GMP build.
+- **N3 - the bignum's three fixed `10000` caps replaced by bounds derived from the algorithms' own worst cases** (Lame for `gcd`, digit count for `trim`, range width for the quotient-digit search), so they can only fire on a real implementation fault, never on a large legitimate operand.
+- **N4 - step budget becomes a provable envelope of N1**: `max(64, branchStates x 6 x allowance)` - six position-free entry modes per branch state (three edges, three vertices). Sphere: 1,775,616 -> **9,216**.
+- **N5 - `FieldAlignedCurveNetwork::make` is closed against any escaping exception**, converting it to the same typed rejection. A2a is a closed producer (`DESIGN.md` 6.5) including against its dependencies' failure modes.
+- **N6 - four falsifying identities.** N7 - `GrazingTraceSegmentsPublishExactEndpointSupport` becomes non-gating (it requires a published sphere network, which CP4c-0 cannot deliver); its transit contract is still proved at unit level by three gating identities.
 
-Authoritative review input: `.agents/Directional/Architecture_M3_CP4c0_TB_R8_Test_Benchmark_Report.md` and `.agents/Directional/Architecture_M3_CP4c0_TB_R8_Review_Plan.md`.
+**Simulated on the same reproduction:** 42/42 legitimate traces unchanged with the same terminal singularities; 6/6 runaways stopped at step 65; worst exact width **19,460 bits -> 2,684 bits**.
 
-No runtime, compile, product/test/fixture/selector mutation, tolerance change, or CP4c-1/2/3 work is authorized in the next turn. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **47**. Latest accepted runtime remains CP4ab **316/316**.
+**Selector is now 346** with SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a` (343 - 1 + 4). Accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` are **byte-identical**, recomputed.
 
-Context Load Plan:
+**The binding user stop rule is discharged**: a deterministic product-level guard for infinite and unreasonably long-running loops has landed and compiles. No workflow or test timeout was used.
 
-```yaml
-load_next:
-  - references/turns/REVIEW.md
-conditional_modules:
-  - trigger: implementation/corrective planning is required
-    path: modules/engineering-guidelines/MODULE.md
-  - trigger: GitHub source/PR evidence is needed
-    path: modules/github-connector/MODULE.md
-deep_references:
-  - .agents/Directional/Architecture_M3_CP4c0_TB_R8_Review_Plan.md
-do_not_preload:
-  - TB-EXEC
-  - runtime artifacts beyond the two cited TB-R8 artifacts unless a review question requires them
-```
+### What TB-R9 must prove, and where it must stop
+
+1. accepted prefix **316/316**, hashes byte-identical - **a red here stops everything**; N1 is the only change that could reject an accepted trace, and if it does the allowance is mis-calibrated and must be re-measured, never quietly raised;
+2. first-328 **328/328**; full gate **346/346**;
+3. **no process exceeds a small multiple of its historical time** - the sphere network must return a typed outcome in seconds; a minutes-long identity means N1/N2 did not bind and the review resumes;
+4. **no `C++ exception with description` anywhere in the log** - N5 makes that a product invariant;
+5. publish, non-gating, the sphere's per-trace terminal kind, step count and maximum exact width. Prediction over the 48-candidate superset: **42 terminating at singularities, 6 stopped by N1 at step 65, maximum width 2,684 bits**. A materially different split is evidence about the matching reconstruction and routes to review.
+
+Stop rather than adjusting in place if an accepted identity goes red, N1 fires on a trace that also terminates, a magnitude rejection appears on a terminating trace, or any result would require raising an allowance, widening the magnitude policy, restoring a fixed iteration cap, or adding a timeout.
+
+### Then `M3-CP4c-0-DEFN-3` - required, and it is the real blocker
+
+What would terminate those six traces is **crash-on-contact**, which `DESIGN.md` 4.6 makes structural - *"the architecture does not contain a 'detect and repair limit cycles' step because it does not create them"* - and which **A2a does not implement**. It is measures **C4/C5**, which belong to **CP4c-1**, which is **blocked on CP4c-0**. That is a dependency inversion, and it means **Q8 criterion 2 (a published 24-trace sphere network) is not reachable within CP4c-0 as currently scoped.**
+
+DEFN-3 must choose, with reasons, between **reordering** C4/C5 ahead of CP4c-0 acceptance and **re-scoping** the 24-trace network to CP4c-1. **Do not start another CB cycle aimed at Q8 criterion 2 before that decision** - no continuation-side measure can reach it. N1 remains until crash-on-contact lands, and retiring it requires an identity proving no witness reaches it.
+
+### Withdrawn prediction
+
+`Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` **§9.2's cube-graph prediction is WITHDRAWN.** It predicted every sphere trace terminating at a singularity; measured, **42 of 48 candidate ports do and 6 circulate**. A cube-symmetric singularity set does not force every separatrix to run corner-to-corner. §9.3's pre-committed Q8-criterion-3 response is unaffected and still stands.
 
 ## Current authority
 
@@ -172,16 +184,17 @@ Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 975308
 
 ## Standing product state
 
-- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted.
-- CP4ab remains latest accepted runtime authority at 316/316.
-- CP4c-0 remains OPEN/unaccepted: **CB8 is COMPLETE / BUILD GREEN**, but its runtime semantics have not yet been validated. `M3-CP4c-0-DEFN-2` remains the frozen grazing contract; exact next is artifact-only TB-R8.
-- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable. The near-tangency regime is now **explained and defined** rather than under diagnosis; it is closable by CB8's L2 census.
-- **`M3-CP4c0-DEFN2-CAND-01` — new, non-stable, test-side.** `cp4c_sphere_grazing_cost_census` walks traces with the retired Cartesian carrier lookup and stops on the first `1x2` face, which is why K2 reported `traversedEdges=1` and `0/24` reaching grazing. No product impact. Owned by measure L8.
-- `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable; it executed no Directional runtime.
-- CP4c-1 remains blocked, and now also owns re-homed Q8 criterion 3 (§9.3 of DEFN-2): trace/trace contact needs a witness whose separatrices do **not** pair singularities. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **47**. CB8 added one immutable compile package and executed no runtime.
-- Frozen CP4c-0 gate is now **343** with SHA-256 `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`; accepted first-316 and prior first-328 hashes remain unchanged. The CP4c-1 **318** selector is unchanged.
-- Exact next is **`M3-CP4c-0-TB-R8-REVIEW-PLAN`**. Independent review only; no TB-R8 retry until a deterministic product termination guard is implemented and compiled.
+- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted. CP4ab remains latest accepted runtime authority at **316/316**.
+- CP4c-0 remains OPEN/unaccepted. DEFN-2 froze the grazing model; CB8 implemented it; TB-R8 was blocked by non-terminating traces; **CB9 has landed the deterministic guards** and the source now compiles. No CP4c-0 runtime has been accepted.
+- **`M3-CP4c0-TB-R8-CAND-01` — new, ACTIVE, product semantics.** Six prescribed-sphere separatrices circulate with no product-level termination guarantee. Guarded by N1/N2/N4/N5; **not resolved** until crash-on-contact (C4/C5) lands. Accepted 316 green and CP4c-0 never accepted, so **+0 events / +0 recurrences**.
+- **Q8 criterion 2 is not reachable within CP4c-0 as currently scoped** — it depends on crash-on-contact, assigned to CP4c-1, which is blocked on CP4c-0. `M3-CP4c-0-DEFN-3` must resolve the inversion.
+- `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
+- `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable; the near-tangency regime is explained and defined, closable by the L2 census.
+- `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
+- CP4c-1 remains blocked, and owns both re-homed Q8 criterion 3 and the C4/C5 crash-on-contact decision from DEFN-3. CP4c-2/3 remain blocked for their own definition turns.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **47**.
+- Frozen CP4c-0 gate is now **346**, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 and first-328 prefix hashes unchanged. The CP4c-1 **318** selector is unchanged.
+- Exact next is **`M3-CP4c-0-TB-R9`**, then **`M3-CP4c-0-DEFN-3`**.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

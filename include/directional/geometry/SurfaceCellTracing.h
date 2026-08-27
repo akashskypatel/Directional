@@ -143,6 +143,15 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   TraceStateCycleDetected = 26,
   TraceStepBudgetExhausted = 27,
   BranchGrazingSlideDirectionAmbiguous = 28,
+  // A trace re-entered a position-free (face, branch, incoming carrier) state
+  // more times than a terminating trace ever needs. Until crash-on-contact
+  // (DESIGN.md 4.6) is produced by A2a, this is the sound combinatorial
+  // stand-in for it: it is exact, position-free, and never a tolerance.
+  TraceCombinatorialRecurrenceExceeded = 29,
+  // An exact continuation value grew past the deterministic magnitude policy.
+  // Independent backstop for a circulation that never repeats a combinatorial
+  // state; it declines to answer rather than answering approximately.
+  BranchContinuationExactMagnitudeExceeded = 30,
 };
 
 struct FieldAlignedTraceStepDiagnostic {
@@ -175,6 +184,8 @@ struct FieldAlignedCurveNetworkError {
   std::vector<FieldAlignedTraceStepDiagnostic> traceHistory;
   std::optional<std::size_t> traceSteps;
   std::optional<std::size_t> traceStepBudget;
+  std::optional<std::size_t> traceCombinatorialVisits;
+  std::optional<std::size_t> traceCombinatorialVisitAllowance;
 
   auto operator<=>(const FieldAlignedCurveNetworkError &) const = default;
 };
@@ -560,7 +571,30 @@ enum class FieldAlignedTraceTraversalStatus : std::uint8_t {
   Advanced = 0,
   CycleDetected = 1,
   StepBudgetExhausted = 2,
+  CombinatorialRecurrenceExceeded = 3,
 };
+
+/// Position-free traversal state: the combinatorial identity of a trace step
+/// with the exact entry position deliberately removed.
+struct FieldAlignedTraceCombinatorialState {
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+
+  auto operator<=>(const FieldAlignedTraceCombinatorialState &) const = default;
+};
+
+/**
+ * @brief How many times one position-free state may be entered by one trace.
+ *
+ * Measured on the prescribed sphere from the committed fixture: every trace that
+ * terminates at a singularity enters each `(face, branch, incoming carrier)`
+ * exactly **once**, while every circulating trace re-enters its whole circuit
+ * indefinitely. The allowance is set to twice the observed terminating maximum
+ * so a legitimate trace keeps headroom, and any circulation is still caught
+ * within two laps.
+ */
+inline constexpr std::size_t kFieldAlignedTraceMaxCombinatorialVisits = 2U;
 
 class FieldAlignedTraceTraversalGuard {
 public:
@@ -575,6 +609,17 @@ public:
     if (steps_ >= stepBudget_) {
       return FieldAlignedTraceTraversalStatus::StepBudgetExhausted;
     }
+    // The exact-state test above cannot see a circulation whose position drifts
+    // every lap, and such a trace never repeats a full state. The position-free
+    // counter below closes exactly that gap.
+    const FieldAlignedTraceCombinatorialState combinatorial{
+        state.sourceFace, state.branch, state.incomingCarrier};
+    std::size_t &visits = combinatorialVisits_[combinatorial];
+    if (visits >= kFieldAlignedTraceMaxCombinatorialVisits) {
+      combinatorialRecurrence_ = visits + 1U;
+      return FieldAlignedTraceTraversalStatus::CombinatorialRecurrenceExceeded;
+    }
+    ++visits;
     visited_.insert(state);
     ++steps_;
     return FieldAlignedTraceTraversalStatus::Advanced;
@@ -582,12 +627,37 @@ public:
 
   [[nodiscard]] std::size_t steps() const noexcept { return steps_; }
   [[nodiscard]] std::size_t step_budget() const noexcept { return stepBudget_; }
+  [[nodiscard]] std::size_t combinatorial_recurrence() const noexcept {
+    return combinatorialRecurrence_;
+  }
+  [[nodiscard]] static std::size_t combinatorial_visit_allowance() noexcept {
+    return kFieldAlignedTraceMaxCombinatorialVisits;
+  }
 
 private:
   std::size_t stepBudget_ = 0U;
   std::size_t steps_ = 0U;
+  std::size_t combinatorialRecurrence_ = 0U;
   std::set<FieldAlignedTraceTraversalState> visited_;
+  std::map<FieldAlignedTraceCombinatorialState, std::size_t> combinatorialVisits_;
 };
+
+/**
+ * @brief Deterministic magnitude policy for exact continuation values.
+ *
+ * Exact continuation recomputes each parameter from the published direction, so
+ * a value's width grows with the number of steps a trace has taken. Measured on
+ * the prescribed sphere from the committed fixture, every trace that terminates
+ * at a singularity stays under 1500 bits; a circulating trace passes that within
+ * a few laps and keeps growing linearly. The bound is set well above the
+ * terminating maximum so it never binds on legitimate work, and well below the
+ * width at which exact arithmetic stops being affordable.
+ *
+ * Exceeding it is a typed rejection, never a fallback to inexact arithmetic: the
+ * producer declines to answer rather than answering approximately, so no
+ * topological outcome is ever decided by a magnitude.
+ */
+inline constexpr std::size_t kFieldExactContinuationMagnitudeBits = 4096U;
 
 [[nodiscard]] FieldBranchExitTimeOrdering compare_field_branch_exit_times(
     const authority::FieldExactRational &firstPosition,

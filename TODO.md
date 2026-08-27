@@ -21,17 +21,19 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R8-REVIEW-PLAN` — EXACT NEXT / independent review only
+## Current focus — `M3-CP4c-0-TB-R9` — EXACT NEXT / artifact-only Test + Benchmark
 
-`M3-CP4c-0-TB-R8` is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE**. Run/job `33028238313 / 98374531360` consumed immutable CB8 package `9628445643` from semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`. P0 passed and P1 completed 342/343 fresh selector processes: **341 PASS, 1 RED, 1 incomplete**. Accepted first-316 and prior first-328 remain **316/316** and **328/328** green.
+`M3-CP4c-0-TB-R8` was **INCOMPLETE / BLOCKED** and has been adjudicated and corrected in one turn at explicit user instruction: `Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md` (`M3-CP4c-0-TB-R8-REVIEW-PLAN` + `M3-CP4c-0-CB9`, measures **N0–N7**).
 
-Ordinal 338, `ResolvedBranchCorrection.AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections`, failed after **853.437 s** with `gcd(): while running too long!`. The only later missing selector was ordinal 343, `ResolvedBranchCorrection.GrazingTraceSegmentsPublishExactEndpointSupport`, which did not return before explicit user cancellation. P2-P8 and final postflight were not reached, so TB-R8 receives **no acceptance credit** and CB8 runtime semantics remain unaccepted.
+**Root cause, three compounding defects.** (1) Six of the prescribed sphere's separatrices **circulate forever** in a closed 32-state circuit — CB8's grazing transit removed `BranchTransportFlowDisagreement`, which had been aborting the network at the first grazing edge and incidentally stopping every trace before any could circulate. (2) **Neither guard could see it**: the cycle guard keys on a state containing the exact position, which drifts every lap, and the step budget authorised 1,775,616 steps the arithmetic could never survive. (3) Exact values grow ~1.12 limbs/step without bound, and the fallback bignum answers by **throwing** — at step ~205 `gcd` passed its fixed 10,000-iteration cap and raised `std::runtime_error` out of a closed producer. `gcd(): while running too long!` was the third symptom, not the fault.
 
-The current source already has two nominal guards, but neither is a sufficient practical policy for this path: `BigInteger::gcd` throws only after 10,000 Euclidean iterations, while `FieldAlignedTraceTraversalGuard` gives the prescribed sphere a structural budget of **1,775,616** steps and keys recurrence on a state containing the exact boundary point. The termination/progress invariant must be reviewed before changing constants.
+**Implemented and compiled.** N1 position-free combinatorial recurrence guard (allowance **2**, calibrated against a measured terminating maximum of **1**); N2 deterministic exact-magnitude policy (**4096 bits**, 2.8× the measured legitimate maximum, a backstop that never binds); N3 the bignum's three fixed `10000` caps replaced by bounds derived from the algorithms' own worst cases; N4 step budget becomes a provable envelope of N1 (`6 × branchStates × allowance`, 1,775,616 → 9,216 on the sphere); N5 `FieldAlignedCurveNetwork::make` is closed against any escaping exception; N6 four falsifying identities; N7 `GrazingTraceSegmentsPublishExactEndpointSupport` becomes non-gating.
 
-**Binding user stop rule:** do **not** re-run TB-R8 until a deterministic product-level guard for infinite or unreasonably long-running loops has landed and compiled. A workflow/test timeout is not an acceptable substitute.
+**Simulated result:** 42/42 legitimate traces unchanged; 6/6 runaways stopped at step 65 with `TraceCombinatorialRecurrenceExceeded`; worst exact width 19,460 bits → **2,684 bits**.
 
-**Exact next:** independent `M3-CP4c-0-TB-R8-REVIEW-PLAN` using `Architecture_M3_CP4c0_TB_R8_Review_Plan.md`. Review/planning only: no runtime, compile, source/test/fixture/selector mutation, tolerance change, or CP4c-1/2/3 entry.
+**Blocker that CP4c-0 cannot clear.** What would terminate those six is **crash-on-contact**, which `DESIGN.md` §4.6 makes structural and which A2a does not implement. It is measures **C4/C5** in **CP4c-1**, which is blocked on CP4c-0 — a dependency inversion. **Q8 criterion 2 is not reachable within CP4c-0 as scoped.** `M3-CP4c-0-DEFN-3` must decide reorder-versus-rescope before any further CB cycle aimed at criterion 2.
+
+**DEFN-2 §9.2's cube-graph prediction is WITHDRAWN** — 42 of 48 candidate traces terminate at singularities, 6 circulate. §9.3's Q8 criterion 3 response is unaffected.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -69,13 +71,22 @@ The current source already has two nominal guards, but neither is a sufficient p
   `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`; Amendment 10; `DESIGN.md` §4.5.
 - [x] `M3-CP4c-0-CB8` — **COMPLETE / BUILD GREEN.** Semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`; package `9628445643`. L0–L9 only; 343 required-green identities; all eight standard targets compiled/linked; `runtimeExecution=false`.
 - [x] `M3-CP4c-0-TB-R8` — **INCOMPLETE / BLOCKED.** 342/343 completed; ordinal 338 RED after 853.437 s with `gcd(): while running too long!`; ordinal 343 incomplete at user cancellation; no acceptance credit.
-- [ ] `M3-CP4c-0-TB-R8-REVIEW-PLAN` — **EXACT NEXT.** Independent review of tracing/exact-arithmetic progress guards. No TB-R8 retry until a deterministic product guard is implemented and compiled.
+- [x] `M3-CP4c-0-TB-R8-REVIEW-PLAN` + `M3-CP4c-0-CB9` — **COMPLETE.** Combined at user instruction.
+  Root cause: non-terminating traces + two inert guards + an exact backend that throws out of a closed
+  producer. Measures **N0–N7** implemented and compiled per translation unit; nothing executed.
+  Deterministic product-level guard has landed, so the binding stop rule is discharged.
+- [ ] `M3-CP4c-0-TB-R9` — **EXACT NEXT.** Artifact-only Test + Benchmark on a fresh package, gate **346**.
+  Stop conditions in the CB9 record §8: any accepted red, any minutes-long identity, or any
+  `C++ exception with description` in the log stops the turn.
+- [ ] `M3-CP4c-0-DEFN-3` — **REQUIRED before any further CB aimed at Q8 criterion 2.** Decides whether
+  C4/C5 crash-on-contact is reordered ahead of CP4c-0 acceptance or the 24-trace network is re-scoped
+  to CP4c-1.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0. Also owns re-homed Q8 criterion 3 (trace/trace contact
   needs a witness whose separatrices do **not** pair singularities — not the cube-field sphere).
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen CP4c-0 selector authority is now **343** `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **47**.
+Frozen CP4c-0 selector authority is now **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **47**.
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

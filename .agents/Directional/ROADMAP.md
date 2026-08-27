@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-26 (CP4c-0 DEFN-2: the `DESIGN.md` §4.5 grazing gap is **closed**. Chosen model is **grazing edge transit** — a carrier that is an outflow carrier on both sides is not crossed and not stopped on; the trace transits along it to the endpoint both faces drive the published parameter toward and re-enters the existing vertex dispatch. Decided on a continuity proof against Amendment 3, not on cost data. `BranchTransportFlowDisagreement` is retired from production emission; A1 is untouched; Q8 is not amended. Exact next `M3-CP4c-0-CB8` under **L0–L9**, Code + Build only).
+**Status date:** 2026-08-27 (CP4c-0 TB-R8 blocked by **non-terminating traces**: six prescribed-sphere separatrices circulate in a closed 32-state circuit, the cycle guard was blind to them because its state carries the drifting exact position, the step budget authorised 1,775,616 steps the arithmetic could never survive, and the fallback bignum threw `gcd(): while running too long!` out of a closed producer after 853 s. **CB9 measures N0-N7 landed deterministic guards and compile.** The remaining blocker is architectural: **crash-on-contact is not implemented**, so Q8 criterion 2 is unreachable within CP4c-0 as scoped. Exact next `M3-CP4c-0-TB-R9` on the **346** selector, then **`M3-CP4c-0-DEFN-3`** to resolve the C4/C5 dependency inversion).
 
 ---
 
@@ -70,8 +70,8 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **338 = 316 + 12 + 10**, frozen by CB2; CB8 recomputes as `338 + n` | **DEFN-2: the §4.5 grazing gap is CLOSED.** Model frozen in `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` and Amendment 10: **grazing edge transit**, chosen as the unique continuous extension of Amendment 3 rather than on K2 cost data (K2 walked the retired Cartesian rule and is void). Re-derived from the fixtures alone: sphere **72** grazing configs on **72 distinct** edges, torus **120**, **0/192** slide ambiguities; the eight singularities are cube corners and the live locus `6-8` transits to **vertex 8, a singularity**. Next `M3-CP4c-0-CB8` (L0–L9, Code + Build only), then `M3-CP4c-0-TB-R8` |
-| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0** — TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5. **Also owns re-homed Q8 criterion 3**: trace/trace contact needs a witness whose separatrices do *not* pair singularities, which the cube-field sphere is not |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **346**, frozen by CB9 (`20d3b0b1...`) | **TB-R8 BLOCKED, CB9 corrective landed.** Grazing transit works; what does not is **termination**. Six sphere separatrices circulate, and `DESIGN.md` §4.6's structural answer - crash-on-contact - **is not implemented by A2a**. N1-N5 add deterministic position-free recurrence, exact-magnitude, envelope-budget and closed-producer guards; 42/42 legitimate traces unchanged, 6/6 runaways stopped at step 65, worst exact width 19,460 -> 2,684 bits. **Q8 criterion 2 is unreachable within CP4c-0 as scoped.** Next `M3-CP4c-0-TB-R9`, then **`M3-CP4c-0-DEFN-3`** |
+| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity; **and C4/C5 crash-on-contact, on which CP4c-0's own termination depends** | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0 — and CP4c-0 is now blocked on C4/C5.** `M3-CP4c-0-DEFN-3` must resolve the inversion. TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5. **Also owns re-homed Q8 criterion 3**: trace/trace contact needs a witness whose separatrices do *not* pair singularities, which the cube-field sphere is not |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
 
@@ -121,6 +121,35 @@ line-scoped wording never reached. Both are **class defects certified by instanc
 the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
 particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**CB8 → TB-R8 → `M3-CP4c-0-CB9` exposed and guarded non-termination on 2026-08-27**
+(`Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md`). CB8 implemented DEFN-2's grazing
+transit faithfully. TB-R8 then ran for 853 seconds on one identity and died with
+`gcd(): while running too long!` — and the interesting part is what that turned out to mean.
+
+Retiring `BranchTransportFlowDisagreement` was correct, but it had been aborting the sphere network at
+the first grazing edge, which *incidentally* stopped every trace before any of them could go anywhere.
+With it gone, six of the sphere's separatrices were free to do what the field actually makes them do:
+lap a closed 32-face circuit forever. Neither guard noticed. The cycle guard keys on a state that
+carries the exact entry position, which drifts every lap, so it is structurally blind to circulation —
+the position was added to fix a false positive and created a false negative in the same predicate. The
+step budget authorised 1,775,616 steps against an arithmetic that could not survive 205, so it was not a
+bound at all. What actually stopped the run was the fallback bignum's fixed 10,000-iteration `gcd` cap,
+throwing `std::runtime_error` out of a closed producer.
+
+CB9's measures N0–N7 landed the guards: a **position-free** combinatorial recurrence bound calibrated
+against measurement (every terminating trace enters each `(face, branch, carrier)` exactly once; the
+allowance is two), a deterministic exact-magnitude policy that declines to answer rather than answering
+approximately, iteration bounds derived from the algorithms' own worst cases instead of magic constants,
+a step budget that is now provably an envelope of the recurrence guard, and a producer that stays closed
+against its dependencies' failure modes. 42/42 legitimate traces are unchanged; the six runaways stop at
+step 65; the worst exact width falls from 19,460 bits to 2,684.
+
+**The remaining blocker is architectural, and it is not in CP4c-0.** `DESIGN.md` §4.6 says limit cycles
+do not exist because crash-on-contact removes them structurally. A2a does not implement crash-on-contact
+— it is C4/C5, in CP4c-1, which is blocked on CP4c-0. So CP4c-0's Q8 criterion 2 depends on a capability
+assigned to its own successor. `M3-CP4c-0-DEFN-3` must choose between reordering C4/C5 and re-scoping
+the 24-trace network, and no further CB cycle aimed at criterion 2 should start before it does.
 
 **CB7 → TB-R7 → `M3-CP4c-0-DEFN-2` closed the model gap on 2026-08-26**
 (`Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`). TB-R7 held the gate at **338/338** with the
