@@ -21,14 +21,14 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0` CLOSED / ACCEPTED; TB-S1-REV GREEN; `M3-CP4c-0b-CB1-S2-S6` is next
+## Current focus — `M3-CP4c-0` CLOSED / ACCEPTED; `M3-CP4c-0b-CB1-S2-S6` BUILD GREEN; DG is next
 
 **CP4c-0 has been split.** It was carrying two unrelated obligations under one gate: *how a trace continues* and *how a trace stops*. After CB-R10/TB-R10 and CB-R11/TB-R11 resolved both test-side TB-R9 candidates, the user explicitly authorized a fresh compile and complete frozen-gate re-proof. Fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed` compiled all eight standard targets; artifact-only run/job `33079817998 / 98543736213` returned **346/346 PASS**, first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 PASS, zero timeouts/exceptions, and immutable postflight PASS. CP4c-0 is therefore **CLOSED / ACCEPTED**. The termination half remains separately frozen under CP4c-0b.
 
 | | **CP4c-0** — continuation | **CP4c-0b** — termination |
 |---|---|---|
 | owns | exact minimum-ratio continuation, `FieldBoundaryPoint`, grazing classification and edge transit, vertex dispatch, deterministic cost guards | trace/trace contact, arrival priority, contact node and event, retirement of the CB9 stand-in guards |
-| gate | **346**, `20d3b0b1...`, **346/346 ACCEPTED** | frozen by `M3-CP4c-0b-CB1` as `346 + n` |
+| gate | **346**, `20d3b0b1...`, **346/346 ACCEPTED** | **353 = 346 + 7**, full `91371d5a...21efb`; DG-only 7 `14570409...c5724` |
 | Q8 | criteria **1, 4, 5** | criteria **2** and **3** |
 
 **Q8 criteria 2 and 3 move together, and are not weakened** (Amendment 11). They are one piece of work: the six circulating traces are simultaneously what blocks criterion 2 and what satisfies criterion 3. **CP4c-0 closes on its own evidence** rather than being held hostage — nothing green stays in limbo.
@@ -43,7 +43,7 @@ The exact S1 census records every current shared-face contact, the trace/segment
 
 **`M3-CP4c-0b-TB-S1-REV` is COMPLETE / REVIEW GREEN.** Independent review of the raw result artifact confirms the S1 return-to-review stop did not fire: the reached included witnesses have **site B = 0**, so no current selected product contact is non-proper or unevaluated. This is bounded evidence that S3 removes no current site-B contact on those witnesses; it is **not** a live proper-crossing positive, because the sphere remains unreached before finalization. S1 also positively predicts the accepted S2 migration: the two-ring has **site A = 1** and its sole `TraceIntersection` is the overloaded singularity junction. The review therefore authorizes S2-S6 exactly as frozen, explicitly authorizes re-authoring `DeclaresTraceIntersectionsAsTypedNetworkEvents` and `IndependentCompositionOracleValidatesTraceEventGraph` for the site-A vocabulary split, and requires any unrelated predecessor expectation edit to stop. Record: `Architecture_M3_CP4c0b_TB_S1_Review_Record.md`.
 
-**No S2–S6 semantic correction has begun. Exact next is `M3-CP4c-0b-CB1-S2-S6`.** It is one complete runtime-free Code + Build continuation, not a new partial-CB exception: implement S2-S6 atomically, do the mandatory GMP changed-owner pre-package compile and eight-target package compile on the same semantic SHA, then route the immutable package first to an attempt-free new-contract-only `M3-CP4c-0b-DG` before the full `346 + n` acceptance TB.
+**S2–S6 are implemented and build-green at `737f93be10a73db950e2a7f823b96ffb0d59cf4d`. Exact next is `M3-CP4c-0b-DG`.** The immutable GMP package is `9664890562`. DG is attempt-free and executes only the seven new CP4c-0b identities; a green DG routes that same package to the full 353 acceptance TB, while any DG red stops for independent review/planning.
 
 **Alternative priority metrics are retained for future performance/quality comparison** (`StepCount`, `BarycentricTime`, `TraceSeniority`) but are reachable **only** from a diagnostic entry point the production pipeline never calls, with an identity asserting production cannot select a non-default value. A production-reachable priority argument is a second writer of network topology and a stop condition.
 
@@ -106,13 +106,15 @@ The exact S1 census records every current shared-face contact, the trace/segment
 - [x] `M3-CP4c-0b-CB1-S1` — **COMPLETE / BUILD GREEN / NON-GATING CENSUS ONLY.** Semantic source `4bb467806df99c70889394a323c17c13bc185ca3`; GMP precompile + eight-target package run `33093440552`; package artifact `9655632444`, SHA-256 `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`; `runtimeExecution=false`. S2–S6 not entered.
 - [x] `M3-CP4c-0b-TB-S1-EXEC` — **COMPLETE / EXECUTION GREEN.** Run/job `33097182476 / 98605092984`; unchanged gate **346/346 PASS**; non-gating S1 identity PASS with zero gate credit; no reached included witness required independent review; immutable postflight PASS.
 - [x] `M3-CP4c-0b-TB-S1-REV` — **COMPLETE / REVIEW GREEN.** Raw artifact `9656967036` independently re-read; site-B contact set is empty on reached included witnesses, sphere remains correctly unreached at N1, and no S1 stop condition fired. Review authorizes frozen S2-S6 and records the site-A predecessor migration.
-- [ ] `M3-CP4c-0b-CB1-S2-S6` — **NEXT / CODE + BUILD ONLY.** Complete S2-S6 atomically, runtime-free, GMP-backed; one final package only after integrated semantics, then new-contract-only DG before full acceptance TB.
+- [x] `M3-CP4c-0b-CB1-S2-S6` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`; GMP changed-owner precompile `33116158072 / 98671267836`; authoritative eight-target package `9664890562` from `33116774891 / 98673348923`; selectors frozen at predecessor 346 + new 7 = full 353; no Directional runtime.
+- [ ] `M3-CP4c-0b-DG` — **NEXT / ARTIFACT-ONLY / ATTEMPT-FREE.** Consume package `9664890562` without rebuild and run only the seven identities in `Architecture_M3_CP4c0b_Diagnostic_Gate_Selector.txt`. GREEN routes the same package to full 353 acceptance TB; RED stops for independent review/planning.
+- [ ] `M3-CP4c-0b-TB` — **BLOCKED ON GREEN DG.** Full 353 required-green acceptance TB on the same immutable package; do not start before DG is green.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0b. It **no longer owns** re-homed Q8 criterion 3, which
   belongs to CP4c-0b along with criterion 2.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **52** after the new S1 GMP package. Both TB-R9 non-stable candidates remain resolved; CP4c-0 is **CLOSED / ACCEPTED**. **TB-S1-REV is complete; exact next is runtime-free `M3-CP4c-0b-CB1-S2-S6`, followed by the new-contract-only DG and then the full `346 + n` acceptance TB if DG is green.**
+Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **53** after the S2-S6 GMP package. Both TB-R9 non-stable candidates remain resolved; CP4c-0 is **CLOSED / ACCEPTED**. **CB1-S2-S6 is build-green; exact next is artifact-only `M3-CP4c-0b-DG` on the seven new identities from package `9664890562`, followed by the full 353 acceptance TB on that same package only if DG is green.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
@@ -217,4 +219,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Historical stable totals are **42 events / 14 categories / 28 recurrences**. Produced-witness debt remains **5**. M3 package count is **45**. PR #8 remains open, draft, and unmerged.
+Historical stable totals are **42 events / 14 categories / 28 recurrences**. Produced-witness debt remains **5**. M3 package count is **53**. PR #8 remains open, draft, and unmerged.

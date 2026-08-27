@@ -83,29 +83,26 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-CB1-S2-S6` — Code + Build only
+## Mandatory next turn — `M3-CP4c-0b-DG` — artifact-only new-contract diagnostic gate
 
-`M3-CP4c-0b-TB-S1-REV` is **COMPLETE / REVIEW GREEN**. Review independently re-hashed and read TB-S1 raw result artifact `9656967036` (`dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4`) and upheld the execution report. The reached included witnesses have **site B = 0**: two-ring `A/B/C=1/0/0`, torus `0/0/0`; the excluded fan is `1/0/0`. Therefore no current selected product contact is non-proper or unevaluated and the P0.3 S1 stop is not triggered. `sphere_prescribed` remains explicitly **unreached** at N1 (`65 / 9216 / 3 / 2`); no sphere contact count is inferred.
+`M3-CP4c-0b-CB1-S2-S6` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`. Frozen S2-S6 landed atomically after the TB-S1 review-authorized site-A migration. The accepted predecessor selector remains byte-exact **346** / `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; exactly seven new CP4c-0b contracts extend it to **353** / `91371d5ab637447c31c0d25e829be0d58fa61f17245e69bd231dcaec94f21efb`. The new-contract-only DG selector is **7** / `14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724`.
 
-The review's key distinction is binding: zero site-B contacts prove **S3 cannot remove a currently selected contact on the reached included predecessor witnesses**, but they do not constitute a live positive test of the proper-crossing predicate. The sphere remains the non-trivial contact-domain witness, supported by the frozen independent measurement that all six circulating traces have proper crossings and a first available crossing at own step 0.
+Authoritative GitHub Actions GMP/GMPXX compilation is green. Changed-owner precompile run/job `33116158072 / 98671267836` compiled `directional_surface_cell_producer_tests`; final package run/job `33116774891 / 98673348923` compiled all eight standard targets on the same semantic SHA. Immutable package `9664890562` has GitHub ZIP SHA-256 `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`; package manifest is 28/28, source status is clean, executable modes are preserved, and `runtimeExecution=false`. No Directional binary/test/benchmark/runtime ran in CB. Durable record: `Architecture_M3_CP4c0b_CB1_S2_S6_Code_Build_Report.md`.
 
-S1 also positively predicts S2's accepted migration: the two-ring has **site A = 1** and its sole current `TraceIntersection` is the overloaded singularity-origin junction. Re-authoring `FieldAlignedCurveNetwork.DeclaresTraceIntersectionsAsTypedNetworkEvents` and `FieldAlignedCurveNetwork.IndependentCompositionOracleValidatesTraceEventGraph` for that site-A vocabulary split is explicitly authorized; any unrelated predecessor expectation edit is a stop. Durable review record: `Architecture_M3_CP4c0b_TB_S1_Review_Record.md`.
-
-**Exact next:** complete frozen **S2-S6 atomically** in one runtime-free Code + Build continuation. This is not a new partial-CB cadence edge. Use mandatory GMP/GMPXX, compile the exact changed-owner target in a separate pre-package run, then compile/package all eight standard targets on the same semantic SHA. Do not execute Directional runtime. Freeze the CP4c-0b gate as predecessor `346 + n` from the actual new identities. The immutable package then goes first to attempt-free **`M3-CP4c-0b-DG`** containing only the newly authored CP4c-0b identities; only a green DG advances that same package to the full acceptance TB.
+**Exact next:** artifact-only **`M3-CP4c-0b-DG`** on immutable package `9664890562`, with **only** the seven new CP4c-0b identities. Do not rebuild, configure, relink, repair, mutate the package/source/tests/fixtures/selectors, or execute the frozen 346 predecessor as part of DG. DG consumes no acceptance attempt. If all seven are green, route the same package to the full 353-identity acceptance TB. If any DG identity is red or orchestration validity fails, stop for independent review/planning and do not run the full acceptance TB.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/CB.md
+  - references/turns/TB-EXEC.md
 conditional_modules:
   - trigger: github_connector or GitHub Actions/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M3_CP4c0b_CB1_S2_S6_Code_Build_Report.md
   - .agents/Directional/Architecture_M3_CP4c0b_TB_S1_Review_Record.md
-  - .agents/Directional/Architecture_M3_CP4c0b_TB_S1_EXEC_Artifact_Only_Test_Benchmark_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0b_CB1_S1_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md
+  - .agents/Directional/Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md
 do_not_preload:
   - sibling turn files
   - implementation-planning modules
@@ -113,6 +110,18 @@ do_not_preload:
 ```
 
 ## Current authority
+
+### M3-CP4c-0b CB1-S2-S6 — current build authority
+
+- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**; semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`;
+- semantics: exact proper-crossing/contact classification, disjoint site vocabulary, fixed `ArcLengthFiltered` production priority with computed error bounds and no seniority fallback, globally ordered contact resolution, and exact durable `terminalContact`;
+- selectors: predecessor **346** / `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; new-contract DG **7** / `14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724`; full **353** / `91371d5ab637447c31c0d25e829be0d58fa61f17245e69bd231dcaec94f21efb`; first 346 are byte-exact predecessor and last seven are byte-exact DG;
+- Drive apply run/job `33115797114 / 98670027134`; applied semantic commit `737f93be10a73db950e2a7f823b96ffb0d59cf4d`; result/log `9664432556 / 9664432987`;
+- changed-owner GMP precompile run/job `33116158072 / 98671267836`; result/log `9664729779 / 9664730426`; manifest 23/23;
+- authoritative eight-target GMP package run/job `33116774891 / 98673348923`; immutable package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`; compile log `9664890910 / a528e66fc88191ad5e030f1821e8029871719514895041568bfea5b352e7fcf0`; manifest 28/28;
+- all source-status snapshots clean; `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
+- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **53**;
+- exact next: artifact-only, attempt-free **`M3-CP4c-0b-DG`** on package `9664890562`, seven new identities only.
 
 ### M3-CP4c-0b TB-S1-REV — current review authority
 
@@ -200,21 +209,21 @@ CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run
 
 ### Accepted runtime authority
 
-Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`, on fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`. Result artifact `9649625534` has GitHub ZIP SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; diagnostic artifact `9649626115` has SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **52** after the S1 GMP package.
+Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`, on fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`. Result artifact `9649625534` has GitHub ZIP SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; diagnostic artifact `9649626115` has SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **53** after the S2-S6 GMP package.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
 - **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
 - Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. Independent P0.3 review is complete; `M3-CP4c-0b-CB1-S1` is build-green on semantic source `4bb467...`, and TB-S1-EXEC has now re-proved 346/346 plus the non-gating census. TB-S1-REV is complete and authorizes frozen S2–S6 under its recorded migration boundary.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. S2-S6 are now build-green on semantic source `737f93be...`; the full required-green selector is frozen at 353 = byte-exact predecessor 346 + seven new contracts. Runtime acceptance has not begun; exact next is the seven-identity artifact-only DG on immutable package `9664890562`.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **52**.
-- **Exact next turn is `M3-CP4c-0b-CB1-S2-S6`, Code + Build only.** Complete the frozen correction runtime-free, then DG the new contracts before the full acceptance TB.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **53**.
+- **Exact next turn is `M3-CP4c-0b-DG`, artifact-only / attempt-free.** Execute only the seven new contracts from immutable package `9664890562`; green DG routes that same package to the full 353 acceptance TB, red DG stops for independent review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
