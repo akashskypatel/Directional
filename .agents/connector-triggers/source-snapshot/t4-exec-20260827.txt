@@ -1,0 +1,5 @@
+purpose=M3-CP4c-0b-DG-T4-EXEC start-of-turn source snapshot
+semantic_source=b2629040450c12507367c232f68a4d972b46450f
+branch_head_before_trigger=356b5ee777a22eeb3354b83442bab490dfe8c1b6
+read_mode=snapshot
+retry=0
