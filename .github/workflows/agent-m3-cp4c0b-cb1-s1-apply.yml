@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1rp0dZu9HbcQTWmkVOLfNcnaUAj4F7dLQ
-      patch_sha256: b3220b4516b961cb91511617d930fd7bdda91d89deceb98cf814907e1ddf7cde
+      patch_sha256: f8362c974edd497db83caa6861b777b83d4db1066b7edaf6dcb992c59d6edecf
       base_sha: d8a331182f1aa3aeb74d3f2ec78352b677417860
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: 'test: add CP4c0b S1 non-gating contact census'
