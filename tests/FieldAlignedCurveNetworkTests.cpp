@@ -1349,9 +1349,13 @@ TEST(FieldAlignedCurveNetwork, DeclaresTraceIntersectionsAsTypedNetworkEvents) {
   ASSERT_TRUE(fixture.network.has_value());
   const FieldAlignedCurveNetwork &network = *fixture.network;
 
-  const auto intersection = std::find_if(
+  // M3-CP4c-0b S2 re-authors this accepted site-A identity: a multi-port
+  // singularity is a junction, not a trace/trace crossing. The historical
+  // identity name is retained so the frozen predecessor selector remains the
+  // same 346 identities.
+  const auto junction = std::find_if(
       network.events().begin(), network.events().end(), [&](const auto &event) {
-        if (event.kind != FieldAlignedNetworkEventKind::TraceIntersection ||
+        if (event.kind != FieldAlignedNetworkEventKind::SingularityPortJunction ||
             event.incidences.size() < 2U) {
           return false;
         }
@@ -1362,14 +1366,22 @@ TEST(FieldAlignedCurveNetwork, DeclaresTraceIntersectionsAsTypedNetworkEvents) {
                sourceNode->sourceVertex ==
                    network.singularity_ports().front().sourceVertex;
       });
-  ASSERT_NE(network.events().end(), intersection)
-      << "multi-port singularity must be an explicit exact trace junction";
+  ASSERT_NE(network.events().end(), junction)
+      << "multi-port singularity must publish SingularityPortJunction";
   std::set<directional::authority::TraceId> incident;
-  for (const auto &incidence : intersection->incidences) {
+  for (const auto &incidence : junction->incidences) {
     incident.insert(incidence.trace);
   }
-  EXPECT_EQ(intersection->incidences.size(), incident.size());
+  EXPECT_EQ(junction->incidences.size(), incident.size());
   EXPECT_GE(incident.size(), 2U);
+  EXPECT_EQ(network.events().end(),
+            std::find_if(network.events().begin(), network.events().end(),
+                         [&](const auto &event) {
+                           return event.kind ==
+                                      FieldAlignedNetworkEventKind::TraceIntersection &&
+                                  event.node == junction->node;
+                         }))
+      << "site A must not retain the overloaded TraceIntersection vocabulary";
 }
 
 TEST(FieldAlignedCurveNetwork, ConsumesEachSingularityPortExactlyOnceInEventGraph) {
@@ -1403,8 +1415,9 @@ TEST(FieldAlignedCurveNetwork,
 
   ASSERT_NE(nullptr,
             find_first_event(network, FieldAlignedNetworkEventKind::FirstContact));
-  ASSERT_NE(nullptr, find_first_event(
-                         network, FieldAlignedNetworkEventKind::TraceIntersection));
+  ASSERT_NE(nullptr,
+            find_first_event(network,
+                             FieldAlignedNetworkEventKind::SingularityPortJunction));
   EXPECT_TRUE(independent_trace_event_composition_oracle(network));
 }
 
@@ -5478,6 +5491,10 @@ const char *field_aligned_event_kind_name(
     return "MandatoryBarrierTermination";
   case Kind::SingularityTermination:
     return "SingularityTermination";
+  case Kind::SingularityPortJunction:
+    return "SingularityPortJunction";
+  case Kind::TraceSelfClosure:
+    return "TraceSelfClosure";
   }
   return "unknown";
 }
@@ -6680,6 +6697,273 @@ TEST(FieldAlignedCurveNetwork,
       << terminal_kind_contributors(
              contributors,
              FieldAlignedNetworkEventKind::MandatoryBarrierTermination);
+}
+
+TEST(TraceTerminationCorrection,
+     ExactBarycentricPredicateSeparatesCrossingTouchAndOverlap) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  using Rational = directional::authority::FieldExactRational;
+  const auto point = [](const Rational &a, const Rational &b,
+                        const Rational &c) {
+    return std::array<Rational, 3>{a, b, c};
+  };
+
+  // Proper crossing in the affine (b0,b1) chart.  The exact intersection is
+  // (1/4,1/4,1/2).
+  const auto proper = classify_field_aligned_barycentric_contact(
+      point(exact_integer(0), exact_ratio(1, 2), exact_ratio(1, 2)),
+      point(exact_ratio(1, 2), exact_integer(0), exact_ratio(1, 2)),
+      point(exact_integer(0), exact_integer(0), exact_integer(1)),
+      point(exact_ratio(1, 2), exact_ratio(1, 2), exact_integer(0)));
+  ASSERT_EQ(FieldAlignedSegmentContactKind::ProperCrossing, proper.kind);
+  ASSERT_TRUE(proper.barycentric.has_value());
+  EXPECT_EQ(exact_ratio(1, 4), (*proper.barycentric)[0]);
+  EXPECT_EQ(exact_ratio(1, 4), (*proper.barycentric)[1]);
+  EXPECT_EQ(exact_ratio(1, 2), (*proper.barycentric)[2]);
+
+  // A shared singularity origin is an endpoint touch, not crash-on-contact.
+  const auto sharedOrigin = classify_field_aligned_barycentric_contact(
+      point(exact_integer(0), exact_integer(0), exact_integer(1)),
+      point(exact_ratio(1, 2), exact_integer(0), exact_ratio(1, 2)),
+      point(exact_integer(0), exact_integer(0), exact_integer(1)),
+      point(exact_integer(0), exact_ratio(1, 2), exact_ratio(1, 2)));
+  EXPECT_EQ(FieldAlignedSegmentContactKind::EndpointTouch, sharedOrigin.kind);
+  ASSERT_TRUE(sharedOrigin.barycentric.has_value());
+  EXPECT_EQ(point(exact_integer(0), exact_integer(0), exact_integer(1)),
+            *sharedOrigin.barycentric);
+
+  const auto overlap = classify_field_aligned_barycentric_contact(
+      point(exact_integer(0), exact_integer(0), exact_integer(1)),
+      point(exact_ratio(1, 2), exact_ratio(1, 2), exact_integer(0)),
+      point(exact_ratio(1, 4), exact_ratio(1, 4), exact_ratio(1, 2)),
+      point(exact_ratio(1, 2), exact_ratio(1, 2), exact_integer(0)));
+  EXPECT_EQ(FieldAlignedSegmentContactKind::CollinearOverlap, overlap.kind);
+  EXPECT_TRUE(overlap.barycentric.has_value());
+}
+
+TEST(TraceTerminationCorrection,
+     ArrivalFilterAndTiePolicyHaveNoSeniorityFallback) {
+  using namespace directional::geometry::surface_cell_tracing_detail;
+  EXPECT_EQ(directional::geometry::FieldTraceArrivalPriority::ArcLengthFiltered,
+            field_aligned_production_arrival_priority());
+
+  const TriMesh measureMesh = make_square_mesh();
+  const auto measureFace = topology_face(0, 1, 2, 4U);
+  const std::array<directional::authority::FieldExactRational, 3> vertex0{
+      exact_integer(1), exact_integer(0), exact_integer(0)};
+  const std::array<directional::authority::FieldExactRational, 3> vertex1{
+      exact_integer(0), exact_integer(1), exact_integer(0)};
+  const std::array<directional::authority::FieldExactRational, 3> vertex2{
+      exact_integer(0), exact_integer(0), exact_integer(1)};
+  const auto unitMeasure = field_aligned_filtered_arrival_measure(
+      measureMesh, measureFace, vertex0, vertex1);
+  const auto diagonalMeasure = field_aligned_filtered_arrival_measure(
+      measureMesh, measureFace, vertex0, vertex2);
+  ASSERT_TRUE(unitMeasure.has_value());
+  ASSERT_TRUE(diagonalMeasure.has_value());
+  EXPECT_TRUE(std::isfinite(unitMeasure->value));
+  EXPECT_TRUE(std::isfinite(unitMeasure->bound));
+  EXPECT_GT(unitMeasure->bound, 0.0);
+  EXPECT_EQ(1U, unitMeasure->segmentCount);
+  EXPECT_EQ(FieldAlignedArrivalOrdering::Earlier,
+            field_aligned_compare_arrivals(*unitMeasure, *diagonalMeasure));
+  EXPECT_EQ(FieldAlignedArrivalOrdering::Inconclusive,
+            field_aligned_compare_arrivals(*unitMeasure, *unitMeasure));
+
+  const FieldAlignedArrivalMeasure early{1.0, 0.01, 2U};
+  const FieldAlignedArrivalMeasure late{2.0, 0.01, 2U};
+  EXPECT_EQ(FieldAlignedArrivalOrdering::Earlier,
+            field_aligned_compare_arrivals(early, late));
+  EXPECT_EQ(FieldAlignedArrivalOrdering::Later,
+            field_aligned_compare_arrivals(late, early));
+
+  const FieldAlignedArrivalMeasure overlappingFirst{1.0, 0.2, 3U};
+  const FieldAlignedArrivalMeasure overlappingSecond{1.1, 0.2, 7U};
+  EXPECT_EQ(FieldAlignedArrivalOrdering::Inconclusive,
+            field_aligned_compare_arrivals(overlappingFirst,
+                                           overlappingSecond));
+  const auto mutual = field_aligned_contact_termination_decision(
+      FieldAlignedArrivalOrdering::Inconclusive, false);
+  EXPECT_TRUE(mutual.terminateFirst);
+  EXPECT_TRUE(mutual.terminateSecond);
+
+  const auto firstWins = field_aligned_contact_termination_decision(
+      FieldAlignedArrivalOrdering::Earlier, false);
+  EXPECT_FALSE(firstWins.terminateFirst);
+  EXPECT_TRUE(firstWins.terminateSecond);
+  const auto secondWins = field_aligned_contact_termination_decision(
+      FieldAlignedArrivalOrdering::Later, false);
+  EXPECT_TRUE(secondWins.terminateFirst);
+  EXPECT_FALSE(secondWins.terminateSecond);
+}
+
+TEST(TraceTerminationCorrection,
+     ProductionPriorityIsFixedAndAlternativesRemainDiagnosticOnly) {
+  using Atlas = directional::authority::FieldTransportAtlas;
+  using NetworkFactory = directional::geometry::FieldAlignedCurveNetworkBuildResult (*)(
+      const TriMesh &, const SourceTopologyRegions &, const Atlas &,
+      const std::vector<SurfaceCellRail> &);
+  static_assert(std::is_same_v<decltype(&FieldAlignedCurveNetwork::make),
+                               NetworkFactory>);
+  static_assert(static_cast<std::uint8_t>(
+                    directional::geometry::FieldTraceArrivalPriority::
+                        ArcLengthFiltered) == 0U);
+  static_assert(static_cast<std::uint8_t>(
+                    directional::geometry::FieldTraceArrivalPriority::StepCount) ==
+                1U);
+  static_assert(static_cast<std::uint8_t>(
+                    directional::geometry::FieldTraceArrivalPriority::
+                        BarycentricTime) == 2U);
+  static_assert(static_cast<std::uint8_t>(
+                    directional::geometry::FieldTraceArrivalPriority::
+                        TraceSeniority) == 3U);
+
+  Cp3bEventFixture fixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  EXPECT_EQ(directional::geometry::FieldTraceArrivalPriority::ArcLengthFiltered,
+            fixture.network->arrival_priority());
+
+  auto diagnostic = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails,
+      directional::geometry::FieldTraceArrivalPriority::StepCount);
+  ASSERT_TRUE(diagnostic);
+  EXPECT_EQ(directional::geometry::FieldTraceArrivalPriority::StepCount,
+            diagnostic.value().arrival_priority());
+}
+
+TEST(TraceTerminationCorrection,
+     SiteVocabularyIsDisjointAndTwoRingGainsNoContactTerminus) {
+  using Kind = directional::geometry::FieldAlignedNetworkEventKind;
+  static_assert(static_cast<std::uint8_t>(Kind::SingularityPortOrigin) == 0U);
+  static_assert(static_cast<std::uint8_t>(Kind::FirstContact) == 1U);
+  static_assert(static_cast<std::uint8_t>(Kind::TraceIntersection) == 2U);
+  static_assert(static_cast<std::uint8_t>(Kind::MandatoryBarrierTermination) ==
+                3U);
+  static_assert(static_cast<std::uint8_t>(Kind::SingularityTermination) == 4U);
+  static_assert(static_cast<std::uint8_t>(Kind::SingularityPortJunction) == 5U);
+  static_assert(static_cast<std::uint8_t>(Kind::TraceSelfClosure) == 6U);
+
+  Cp3bEventFixture fixture = build_cp3b_event_fixture();
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto &network = *fixture.network;
+  EXPECT_EQ(9U, network.nodes().size());
+  EXPECT_EQ(1U, static_cast<std::size_t>(std::count_if(
+                    network.events().begin(), network.events().end(),
+                    [](const auto &event) {
+                      return event.kind == Kind::SingularityPortJunction;
+                    })));
+  EXPECT_EQ(0U, static_cast<std::size_t>(std::count_if(
+                    network.events().begin(), network.events().end(),
+                    [](const auto &event) {
+                      return event.kind == Kind::TraceIntersection;
+                    })));
+  EXPECT_EQ(0U, static_cast<std::size_t>(std::count_if(
+                    network.events().begin(), network.events().end(),
+                    [](const auto &event) {
+                      return event.kind == Kind::TraceSelfClosure;
+                    })));
+  for (const auto &trace : network.candidate_traces()) {
+    EXPECT_FALSE(trace.terminalContact.has_value());
+  }
+}
+
+TEST(TraceTerminationCorrection,
+     PrescribedSpherePublishesTwentyFourTracesAndCorrectedContactEvents) {
+  using Kind = directional::geometry::FieldAlignedNetworkEventKind;
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+  const FieldAlignedCurveNetwork &network = *sphere.network;
+  ASSERT_EQ(24U, network.candidate_traces().size()) << sphere.report;
+
+  std::size_t contactTermini = 0U;
+  for (const auto &trace : network.candidate_traces()) {
+    const std::size_t terminalKinds =
+        static_cast<std::size_t>(trace.terminalSingularity.has_value()) +
+        static_cast<std::size_t>(trace.terminalBarrier.has_value()) +
+        static_cast<std::size_t>(trace.terminalContact.has_value());
+    EXPECT_EQ(1U, terminalKinds) << "trace=" << trace.id.index();
+    if (!trace.terminalContact.has_value()) continue;
+    ++contactTermini;
+    const auto &contact = *trace.terminalContact;
+    const auto struck = std::find_if(
+        network.candidate_traces().begin(), network.candidate_traces().end(),
+        [&](const auto &candidate) { return candidate.id == contact.struckTrace; });
+    ASSERT_NE(network.candidate_traces().end(), struck);
+    EXPECT_LT(contact.struckSegmentIndex, struck->segments.size());
+    EXPECT_EQ(exact_integer(1), contact.barycentric[0] + contact.barycentric[1] +
+                                    contact.barycentric[2]);
+  }
+  EXPECT_GT(contactTermini, 0U) << sphere.report;
+
+  std::size_t correctedIntersections = 0U;
+  bool hasMutualTermination = false;
+  for (const auto &event : network.events()) {
+    if (event.kind != Kind::TraceIntersection) continue;
+    ++correctedIntersections;
+    const std::size_t terminals = static_cast<std::size_t>(std::count_if(
+        event.incidences.begin(), event.incidences.end(), [](const auto &incidence) {
+          return incidence.role ==
+                 directional::geometry::FieldAlignedTraceEventRole::Terminal;
+        }));
+    hasMutualTermination = hasMutualTermination || terminals == 2U;
+  }
+  EXPECT_GT(correctedIntersections, 0U) << sphere.report;
+  EXPECT_TRUE(hasMutualTermination)
+      << "symmetric/inconclusive same-point arrival must terminate both traces";
+}
+
+TEST(TraceTerminationCorrection,
+     TerminalContactTamperIsRejectedAtExactLocusBinding) {
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+
+  auto tampered = sphere.network->validation_candidate();
+  auto trace = std::find_if(tampered.candidateTraces.begin(),
+                            tampered.candidateTraces.end(), [](const auto &value) {
+                              return value.terminalContact.has_value();
+                            });
+  ASSERT_NE(tampered.candidateTraces.end(), trace);
+  trace->terminalContact->barycentric[0] =
+      trace->terminalContact->barycentric[0] + exact_integer(1);
+  auto rejected = FieldAlignedCurveNetwork::make_from_candidate(
+      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
+      std::move(tampered));
+  ASSERT_FALSE(rejected);
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+            rejected.error().code);
+}
+
+TEST(TraceTerminationCorrection,
+     TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit) {
+  const Cp4cReachabilityObservation torus =
+      observe_cp4c_witness("torus", "torus");
+  ASSERT_TRUE(torus.sourceAuthority.has_value()) << torus.report;
+  ASSERT_TRUE(torus.atlas.has_value()) << torus.report;
+  ASSERT_TRUE(torus.network.has_value()) << torus.report;
+  EXPECT_TRUE(torus.network->candidate_traces().empty());
+  EXPECT_TRUE(torus.network->nodes().empty());
+  EXPECT_TRUE(torus.network->events().empty());
+
+  // The four-triangle fan remains a structural/excluded witness: exercise the
+  // producer without granting it CP4c-0b acceptance credit.
+  const TriMesh fan = make_four_triangle_fan();
+  const auto authority = make_source_authority(fan);
+  ASSERT_TRUE(authority.has_value());
+  const auto atlas = directional::authority::FieldTransportAtlas::make(
+      fan, *authority, {}, make_index_one_singularity_field(fan));
+  ASSERT_TRUE(atlas);
+  const auto fanBuild = FieldAlignedCurveNetwork::make(
+      fan, *authority, atlas.value(), rails_from_atlas(fan, atlas.value()));
+  (void)fanBuild;
+  SUCCEED() << "fan executed only as an excluded non-creditable structural witness";
 }
 
 TEST(GlobalTopologyPlan,

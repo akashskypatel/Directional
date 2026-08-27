@@ -268,6 +268,15 @@ struct FieldAlignedCandidateTraceSegment {
   auto operator<=>(const FieldAlignedCandidateTraceSegment &) const = default;
 };
 
+struct FieldAlignedTerminalContact {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::array<authority::FieldExactRational, 3> barycentric{};
+  authority::TraceId struckTrace;
+  std::size_t struckSegmentIndex = 0U;
+
+  auto operator<=>(const FieldAlignedTerminalContact &) const = default;
+};
+
 struct FieldAlignedCandidateTrace {
   FieldAlignedCandidateTrace(
       authority::TraceId traceId, authority::SingularityPortId portId,
@@ -289,8 +298,16 @@ struct FieldAlignedCandidateTrace {
   std::optional<authority::SourceEdgeTopologyKey> terminalBarrier;
   std::optional<authority::FieldBoundaryPoint> terminalPoint;
   std::optional<authority::FieldSingularityId> terminalSingularity;
+  std::optional<FieldAlignedTerminalContact> terminalContact;
 
   auto operator<=>(const FieldAlignedCandidateTrace &) const = default;
+};
+
+enum class FieldTraceArrivalPriority : std::uint8_t {
+  ArcLengthFiltered = 0,
+  StepCount = 1,
+  BarycentricTime = 2,
+  TraceSeniority = 3,
 };
 
 enum class FieldAlignedNetworkEventKind : std::uint8_t {
@@ -299,6 +316,8 @@ enum class FieldAlignedNetworkEventKind : std::uint8_t {
   TraceIntersection = 2,
   MandatoryBarrierTermination = 3,
   SingularityTermination = 4,
+  SingularityPortJunction = 5,
+  TraceSelfClosure = 6,
 };
 
 enum class FieldAlignedTraceEventRole : std::uint8_t {
@@ -376,6 +395,8 @@ struct FieldAlignedCurveNetworkCandidate {
   std::vector<FieldAlignedMandatoryEdge> mandatoryEdges;
   std::vector<FieldAlignedCandidateTrace> candidateTraces;
   std::vector<FieldAlignedNetworkEvent> events;
+  FieldTraceArrivalPriority arrivalPriority =
+      FieldTraceArrivalPriority::ArcLengthFiltered;
   // Exact construction provenance. These bind validation snapshots to the
   // source/atlas instances that produced them; they are intentionally not the
   // network semantic identity.
@@ -406,6 +427,16 @@ public:
       const std::vector<SurfaceCellRail> &authoritativeRails,
       FieldAlignedCurveNetworkCandidate candidate);
 
+  // Diagnostic/offline comparison surface only. Production `make` has no
+  // priority parameter and always selects ArcLengthFiltered.
+  [[nodiscard]] static FieldAlignedCurveNetworkBuildResult
+  diagnose_with_arrival_priority(
+      const TriMesh &sourceMesh,
+      const SourceTopologyRegions &sourceAuthority,
+      const authority::FieldTransportAtlas &fieldTransportAtlas,
+      const std::vector<SurfaceCellRail> &authoritativeRails,
+      FieldTraceArrivalPriority priority);
+
   [[nodiscard]] const std::vector<FieldAlignedCurveNetworkNode> &nodes() const
       noexcept {
     return nodes_;
@@ -425,6 +456,9 @@ public:
   [[nodiscard]] const std::vector<FieldAlignedNetworkEvent> &events() const
       noexcept {
     return events_;
+  }
+  [[nodiscard]] FieldTraceArrivalPriority arrival_priority() const noexcept {
+    return arrivalPriority_;
   }
 
   [[nodiscard]] const FieldAlignedMandatoryEdge *find_mandatory_edge(
@@ -458,12 +492,14 @@ private:
       std::vector<FieldAlignedMandatoryEdge> mandatoryEdges,
       std::vector<FieldAlignedCandidateTrace> candidateTraces,
       std::vector<FieldAlignedNetworkEvent> events,
+      FieldTraceArrivalPriority arrivalPriority,
       std::uint64_t sourceDigest, std::uint64_t atlasDigest,
       std::uint64_t semanticDigest)
       : nodes_(std::move(nodes)), singularityPorts_(std::move(singularityPorts)),
         mandatoryEdges_(std::move(mandatoryEdges)),
         candidateTraces_(std::move(candidateTraces)), events_(std::move(events)),
-        sourceDigest_(sourceDigest), atlasDigest_(atlasDigest),
+        arrivalPriority_(arrivalPriority), sourceDigest_(sourceDigest),
+        atlasDigest_(atlasDigest),
         semanticDigest_(semanticDigest) {}
 
   std::vector<FieldAlignedCurveNetworkNode> nodes_;
@@ -471,6 +507,8 @@ private:
   std::vector<FieldAlignedMandatoryEdge> mandatoryEdges_;
   std::vector<FieldAlignedCandidateTrace> candidateTraces_;
   std::vector<FieldAlignedNetworkEvent> events_;
+  FieldTraceArrivalPriority arrivalPriority_ =
+      FieldTraceArrivalPriority::ArcLengthFiltered;
   std::uint64_t sourceDigest_ = 0U;
   std::uint64_t atlasDigest_ = 0U;
   std::uint64_t semanticDigest_ = 0U;
@@ -507,6 +545,82 @@ private:
     const FieldAlignedCurveNetwork &network) noexcept;
 
 namespace surface_cell_tracing_detail {
+
+struct FieldAlignedArrivalMeasure {
+  double value = 0.0;
+  double bound = 0.0;
+  std::size_t segmentCount = 0U;
+
+  auto operator<=>(const FieldAlignedArrivalMeasure &) const = default;
+};
+
+enum class FieldAlignedArrivalOrdering : std::int8_t {
+  Earlier = -1,
+  Inconclusive = 0,
+  Later = 1,
+};
+
+struct FieldAlignedContactTerminationDecision {
+  bool terminateFirst = false;
+  bool terminateSecond = false;
+
+  auto operator<=>(const FieldAlignedContactTerminationDecision &) const = default;
+};
+
+[[nodiscard]] constexpr FieldAlignedContactTerminationDecision
+field_aligned_contact_termination_decision(
+    const FieldAlignedArrivalOrdering ordering,
+    const bool selfContact) noexcept {
+  if (selfContact) return {true, false};
+  if (ordering == FieldAlignedArrivalOrdering::Earlier) return {false, true};
+  if (ordering == FieldAlignedArrivalOrdering::Later) return {true, false};
+  return {true, true};
+}
+
+enum class FieldAlignedSegmentContactKind : std::uint8_t {
+  Disjoint = 0,
+  ProperCrossing = 1,
+  EndpointTouch = 2,
+  CollinearOverlap = 3,
+  Unevaluated = 4,
+};
+
+struct FieldAlignedSegmentContactClassification {
+  FieldAlignedSegmentContactKind kind = FieldAlignedSegmentContactKind::Disjoint;
+  std::optional<std::array<authority::FieldExactRational, 3>> barycentric;
+};
+
+[[nodiscard]] constexpr FieldTraceArrivalPriority
+field_aligned_production_arrival_priority() noexcept {
+  return FieldTraceArrivalPriority::ArcLengthFiltered;
+}
+
+[[nodiscard]] FieldAlignedArrivalOrdering field_aligned_compare_arrivals(
+    const FieldAlignedArrivalMeasure &first,
+    const FieldAlignedArrivalMeasure &second) noexcept;
+
+// Diagnostic contract surface for the production filtered arc-length measure.
+// The returned bound is computed from conversion/operation rounding; callers do
+// not supply a tolerance.
+[[nodiscard]] std::optional<FieldAlignedArrivalMeasure>
+field_aligned_filtered_arrival_measure(
+    const TriMesh &sourceMesh,
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const std::array<authority::FieldExactRational, 3> &first,
+    const std::array<authority::FieldExactRational, 3> &second);
+
+[[nodiscard]] FieldAlignedSegmentContactClassification
+classify_field_aligned_barycentric_contact(
+    const std::array<authority::FieldExactRational, 3> &firstEntry,
+    const std::array<authority::FieldExactRational, 3> &firstExit,
+    const std::array<authority::FieldExactRational, 3> &secondEntry,
+    const std::array<authority::FieldExactRational, 3> &secondExit);
+
+[[nodiscard]] FieldAlignedSegmentContactClassification
+classify_field_aligned_segment_contact(
+    const authority::FieldBranchTopology &topology,
+    const FieldAlignedCandidateTraceSegment &first,
+    const FieldAlignedCandidateTraceSegment &second);
 
 // M3-CP4c-0b S1 diagnostic-only census. These observations are populated by
 // the canonical A2a construction path without changing any production contact,

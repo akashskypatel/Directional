@@ -8,8 +8,11 @@
 
 #include <bit>
 #include <cassert>
+#include <cmath>
 #include <exception>
+#include <limits>
 #include <optional>
+#include <queue>
 
 namespace directional::geometry::surface_cell_tracing_detail {
 
@@ -859,6 +862,129 @@ append_field_aligned_singularity_termination(
   return std::nullopt;
 }
 
+FieldAlignedArrivalOrdering field_aligned_compare_arrivals(
+    const FieldAlignedArrivalMeasure &first,
+    const FieldAlignedArrivalMeasure &second) noexcept {
+  const double firstUpper = first.value + first.bound;
+  const double firstLower = first.value - first.bound;
+  const double secondUpper = second.value + second.bound;
+  const double secondLower = second.value - second.bound;
+  if (firstUpper < secondLower) return FieldAlignedArrivalOrdering::Earlier;
+  if (secondUpper < firstLower) return FieldAlignedArrivalOrdering::Later;
+  return FieldAlignedArrivalOrdering::Inconclusive;
+}
+
+FieldAlignedSegmentContactClassification
+classify_field_aligned_barycentric_contact(
+    const std::array<authority::FieldExactRational, 3> &firstEntry,
+    const std::array<authority::FieldExactRational, 3> &firstExit,
+    const std::array<authority::FieldExactRational, 3> &secondEntry,
+    const std::array<authority::FieldExactRational, 3> &secondExit) {
+  FieldAlignedSegmentContactClassification result;
+  const auto orient = [](
+                          const std::array<authority::FieldExactRational, 3> &a,
+                          const std::array<authority::FieldExactRational, 3> &b,
+                          const std::array<authority::FieldExactRational, 3> &c) {
+    return (b[0] - a[0]) * (c[1] - a[1]) -
+           (b[1] - a[1]) * (c[0] - a[0]);
+  };
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto abFirst = orient(firstEntry, firstExit, secondEntry);
+  const auto abSecond = orient(firstEntry, firstExit, secondExit);
+  const auto cdFirst = orient(secondEntry, secondExit, firstEntry);
+  const auto cdSecond = orient(secondEntry, secondExit, firstExit);
+
+  const bool abOpposite = abFirst != zero && abSecond != zero &&
+                          ((abFirst < zero) != (abSecond < zero));
+  const bool cdOpposite = cdFirst != zero && cdSecond != zero &&
+                          ((cdFirst < zero) != (cdSecond < zero));
+  if (abOpposite && cdOpposite) {
+    const auto firstDx = firstExit[0] - firstEntry[0];
+    const auto firstDy = firstExit[1] - firstEntry[1];
+    const auto secondDx = secondExit[0] - secondEntry[0];
+    const auto secondDy = secondExit[1] - secondEntry[1];
+    const auto denominator = firstDx * secondDy - firstDy * secondDx;
+    if (denominator == zero) {
+      result.kind = FieldAlignedSegmentContactKind::Unevaluated;
+      return result;
+    }
+    const auto offsetX = secondEntry[0] - firstEntry[0];
+    const auto offsetY = secondEntry[1] - firstEntry[1];
+    const auto t = (offsetX * secondDy - offsetY * secondDx) / denominator;
+    std::array<authority::FieldExactRational, 3> point{
+        authority::FieldExactRational::from_integer(0),
+        authority::FieldExactRational::from_integer(0),
+        authority::FieldExactRational::from_integer(0)};
+    for (std::size_t coordinate = 0U; coordinate < point.size(); ++coordinate) {
+      point[coordinate] = firstEntry[coordinate] +
+                          t * (firstExit[coordinate] - firstEntry[coordinate]);
+    }
+    result.kind = FieldAlignedSegmentContactKind::ProperCrossing;
+    result.barycentric = std::move(point);
+    return result;
+  }
+
+  const auto between = [](const authority::FieldExactRational &first,
+                          const authority::FieldExactRational &second,
+                          const authority::FieldExactRational &value) {
+    return (first <= value && value <= second) ||
+           (second <= value && value <= first);
+  };
+  const auto onSegment = [&](
+                             const std::array<authority::FieldExactRational, 3> &a,
+                             const std::array<authority::FieldExactRational, 3> &b,
+                             const std::array<authority::FieldExactRational, 3> &point) {
+    if (orient(a, b, point) != zero) return false;
+    for (std::size_t coordinate = 0U; coordinate < point.size(); ++coordinate) {
+      if (!between(a[coordinate], b[coordinate], point[coordinate])) return false;
+    }
+    return true;
+  };
+
+  const bool allCollinear = abFirst == zero && abSecond == zero &&
+                            cdFirst == zero && cdSecond == zero;
+  if (allCollinear) {
+    std::vector<std::array<authority::FieldExactRational, 3>> overlapPoints;
+    const auto consider = [&](
+                              const std::array<authority::FieldExactRational, 3> &point) {
+      if (!onSegment(firstEntry, firstExit, point) ||
+          !onSegment(secondEntry, secondExit, point)) {
+        return;
+      }
+      if (std::find(overlapPoints.begin(), overlapPoints.end(), point) ==
+          overlapPoints.end()) {
+        overlapPoints.push_back(point);
+      }
+    };
+    consider(firstEntry);
+    consider(firstExit);
+    consider(secondEntry);
+    consider(secondExit);
+    if (overlapPoints.empty()) return result;
+    result.barycentric = overlapPoints.front();
+    result.kind = overlapPoints.size() == 1U
+                      ? FieldAlignedSegmentContactKind::EndpointTouch
+                      : FieldAlignedSegmentContactKind::CollinearOverlap;
+    return result;
+  }
+
+  const auto publishEndpointTouch = [&](
+                                        const std::array<authority::FieldExactRational, 3> &point) {
+    result.kind = FieldAlignedSegmentContactKind::EndpointTouch;
+    result.barycentric = point;
+  };
+  if (onSegment(firstEntry, firstExit, secondEntry)) {
+    publishEndpointTouch(secondEntry);
+  } else if (onSegment(firstEntry, firstExit, secondExit)) {
+    publishEndpointTouch(secondExit);
+  } else if (onSegment(secondEntry, secondExit, firstEntry)) {
+    publishEndpointTouch(firstEntry);
+  } else if (onSegment(secondEntry, secondExit, firstExit)) {
+    publishEndpointTouch(firstExit);
+  }
+  return result;
+}
+
 namespace {
 
 using FieldAlignedCandidateResult =
@@ -942,7 +1068,7 @@ std::optional<authority::SourceFaceTopologyKey> field_aligned_next_face(
   return result;
 }
 
-FieldAlignedCandidateTraceResult canonical_field_aligned_traces(
+FieldAlignedCandidateTraceResult legacy_canonical_field_aligned_traces(
     const TriMesh &sourceMesh,
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<FieldAlignedSingularityPort> &ports,
@@ -1390,8 +1516,1143 @@ std::optional<authority::NetworkNodeId> field_aligned_append_contact_node(
   const auto node = authority::NetworkNodeId::from_index(
       static_cast<std::int64_t>(nodeIndex), nodeIndex + 1U);
   if (!node) return std::nullopt;
+  // `sourceVertex` remains source-topology provenance only. Exact contact
+  // position lives on FieldAlignedCandidateTrace::terminalContact and neither
+  // NetworkNodeId nor this provenance field acquires positional meaning.
   candidate.nodes.emplace_back(node.value(), sourceFace.vertices().front());
   return node.value();
+}
+
+
+struct FieldAlignedFilteredScalar {
+  double value = 0.0;
+  double bound = 0.0;
+};
+
+double field_aligned_rounding_bound(const double value) noexcept {
+  if (!std::isfinite(value)) return std::numeric_limits<double>::infinity();
+  const double up = std::nextafter(value, std::numeric_limits<double>::infinity());
+  const double down = std::nextafter(value, -std::numeric_limits<double>::infinity());
+  return std::max(std::abs(up - value), std::abs(value - down));
+}
+
+FieldAlignedFilteredScalar field_aligned_filtered_add(
+    const FieldAlignedFilteredScalar first,
+    const FieldAlignedFilteredScalar second) noexcept {
+  const double value = first.value + second.value;
+  return {value, first.bound + second.bound + field_aligned_rounding_bound(value)};
+}
+
+FieldAlignedFilteredScalar field_aligned_filtered_subtract(
+    const FieldAlignedFilteredScalar first,
+    const FieldAlignedFilteredScalar second) noexcept {
+  const double value = first.value - second.value;
+  return {value, first.bound + second.bound + field_aligned_rounding_bound(value)};
+}
+
+FieldAlignedFilteredScalar field_aligned_filtered_multiply(
+    const FieldAlignedFilteredScalar first,
+    const FieldAlignedFilteredScalar second) noexcept {
+  const double value = first.value * second.value;
+  const double propagated = std::abs(first.value) * second.bound +
+                            std::abs(second.value) * first.bound +
+                            first.bound * second.bound;
+  return {value, propagated + field_aligned_rounding_bound(value)};
+}
+
+FieldAlignedFilteredScalar field_aligned_filtered_sqrt(
+    const FieldAlignedFilteredScalar input) noexcept {
+  if (input.value < 0.0 || !std::isfinite(input.value) ||
+      !std::isfinite(input.bound)) {
+    return {std::numeric_limits<double>::infinity(),
+            std::numeric_limits<double>::infinity()};
+  }
+  const double value = std::sqrt(input.value);
+  const double lower = std::sqrt(std::max(0.0, input.value - input.bound));
+  const double upper = std::sqrt(std::max(0.0, input.value + input.bound));
+  const double propagated = std::max(value - lower, upper - value);
+  return {value, propagated + field_aligned_rounding_bound(value)};
+}
+
+FieldAlignedFilteredScalar field_aligned_filtered_exact(
+    const authority::FieldExactRational &value) noexcept {
+  const double converted = static_cast<double>(
+      value.to_double(std::numeric_limits<double>::max_digits10));
+  return {converted, field_aligned_rounding_bound(converted)};
+}
+
+std::optional<authority::FieldBoundaryPoint> field_aligned_segment_exit_point(
+    const authority::FieldBranchTopology &topology,
+    const FieldAlignedCandidateTraceSegment &segment) {
+  const authority::FieldFaceBranchFrame *frame =
+      topology.find_frame(segment.sourceFace);
+  const authority::FieldBranchBoundaryPairing *pairing =
+      frame == nullptr ? nullptr
+                       : field_aligned_branch_pairing(*frame, segment.branch);
+  if (pairing == nullptr) return std::nullopt;
+  FieldBranchContinuationResult continuation =
+      resolve_field_branch_continuation(segment.sourceFace, *pairing,
+                                        segment.entryPoint);
+  const auto *decision = std::get_if<FieldBranchContinuationDecision>(&continuation);
+  return decision == nullptr
+             ? std::optional<authority::FieldBoundaryPoint>{}
+             : std::optional<authority::FieldBoundaryPoint>{decision->exitPoint};
+}
+
+FieldAlignedSegmentContactClassification
+classify_field_aligned_segment_contact_with_second_exit(
+    const authority::FieldBranchTopology &topology,
+    const FieldAlignedCandidateTraceSegment &first,
+    const FieldAlignedCandidateTraceSegment &second,
+    const std::optional<std::array<authority::FieldExactRational, 3>>
+        &secondExitOverride = std::nullopt) {
+  FieldAlignedSegmentContactClassification result;
+  if (first.sourceFace != second.sourceFace) return result;
+
+  const auto firstEntry =
+      field_boundary_point_barycentric(first.sourceFace, first.entryPoint);
+  const auto secondEntry =
+      field_boundary_point_barycentric(second.sourceFace, second.entryPoint);
+  const auto firstExitPoint = field_aligned_segment_exit_point(topology, first);
+  const auto secondExitPoint = secondExitOverride.has_value()
+                                   ? std::optional<authority::FieldBoundaryPoint>{}
+                                   : field_aligned_segment_exit_point(topology, second);
+  if (!firstEntry.has_value() || !secondEntry.has_value() ||
+      !firstExitPoint.has_value() ||
+      (!secondExitOverride.has_value() && !secondExitPoint.has_value())) {
+    result.kind = FieldAlignedSegmentContactKind::Unevaluated;
+    return result;
+  }
+  const auto firstExit =
+      field_boundary_point_barycentric(first.sourceFace, *firstExitPoint);
+  const auto secondExit = secondExitOverride.has_value()
+                              ? secondExitOverride
+                              : field_boundary_point_barycentric(
+                                    second.sourceFace, *secondExitPoint);
+  if (!firstExit.has_value() || !secondExit.has_value()) {
+    result.kind = FieldAlignedSegmentContactKind::Unevaluated;
+    return result;
+  }
+  return classify_field_aligned_barycentric_contact(
+      *firstEntry, *firstExit, *secondEntry, *secondExit);
+}
+
+FieldAlignedSegmentContactClassification
+classify_field_aligned_segment_contact_impl(
+    const authority::FieldBranchTopology &topology,
+    const FieldAlignedCandidateTraceSegment &first,
+    const FieldAlignedCandidateTraceSegment &second) {
+  return classify_field_aligned_segment_contact_with_second_exit(
+      topology, first, second);
+}
+
+std::optional<std::array<FieldAlignedFilteredScalar, 3>>
+field_aligned_filtered_position(
+    const TriMesh &sourceMesh,
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const std::array<authority::FieldExactRational, 3> &barycentric) {
+  std::array<FieldAlignedFilteredScalar, 3> position{};
+  const auto &vertices = sourceFace.vertices();
+  for (std::size_t axis = 0U; axis < 3U; ++axis) {
+    FieldAlignedFilteredScalar coordinate{};
+    for (std::size_t corner = 0U; corner < 3U; ++corner) {
+      const std::size_t row = vertices[corner].index();
+      if (row >= static_cast<std::size_t>(sourceMesh.V.rows())) return std::nullopt;
+      const FieldAlignedFilteredScalar weight =
+          field_aligned_filtered_exact(barycentric[corner]);
+      const FieldAlignedFilteredScalar source{
+          sourceMesh.V(static_cast<int>(row), static_cast<int>(axis)), 0.0};
+      coordinate = field_aligned_filtered_add(
+          coordinate, field_aligned_filtered_multiply(weight, source));
+    }
+    position[axis] = coordinate;
+  }
+  return position;
+}
+
+std::optional<FieldAlignedFilteredScalar> field_aligned_filtered_length(
+    const TriMesh &sourceMesh,
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const std::array<authority::FieldExactRational, 3> &first,
+    const std::array<authority::FieldExactRational, 3> &second) {
+  const auto firstPosition =
+      field_aligned_filtered_position(sourceMesh, sourceFace, first);
+  const auto secondPosition =
+      field_aligned_filtered_position(sourceMesh, sourceFace, second);
+  if (!firstPosition.has_value() || !secondPosition.has_value()) return std::nullopt;
+  FieldAlignedFilteredScalar squared{};
+  for (std::size_t axis = 0U; axis < 3U; ++axis) {
+    const auto difference = field_aligned_filtered_subtract(
+        (*secondPosition)[axis], (*firstPosition)[axis]);
+    squared = field_aligned_filtered_add(
+        squared, field_aligned_filtered_multiply(difference, difference));
+  }
+  return field_aligned_filtered_sqrt(squared);
+}
+
+FieldAlignedArrivalMeasure field_aligned_arrival_advance(
+    const FieldAlignedArrivalMeasure start,
+    const FieldAlignedFilteredScalar length) noexcept {
+  const double value = start.value + length.value;
+  return FieldAlignedArrivalMeasure{
+      value, start.bound + length.bound + field_aligned_rounding_bound(value),
+      start.segmentCount + 1U};
+}
+
+std::optional<FieldAlignedArrivalMeasure> field_aligned_arrival_at_barycentric(
+    const TriMesh &sourceMesh,
+    const FieldAlignedCandidateTraceSegment &segment,
+    const FieldAlignedArrivalMeasure start,
+    const std::array<authority::FieldExactRational, 3> &point) {
+  const auto entry =
+      field_boundary_point_barycentric(segment.sourceFace, segment.entryPoint);
+  if (!entry.has_value()) return std::nullopt;
+  const auto length = field_aligned_filtered_length(
+      sourceMesh, segment.sourceFace, *entry, point);
+  return length.has_value()
+             ? std::optional<FieldAlignedArrivalMeasure>{
+                   field_aligned_arrival_advance(start, *length)}
+             : std::nullopt;
+}
+
+enum class FieldAlignedProposalDisposition : std::uint8_t {
+  Advance = 0,
+  TerminalSingularity = 1,
+  TerminalBarrier = 2,
+};
+
+struct FieldAlignedTraceProposal {
+  explicit FieldAlignedTraceProposal(FieldAlignedCandidateTraceSegment value)
+      : segment(std::move(value)) {}
+
+  FieldAlignedCandidateTraceSegment segment;
+  FieldAlignedProposalDisposition disposition =
+      FieldAlignedProposalDisposition::Advance;
+  std::optional<authority::SourceFaceTopologyKey> nextFace;
+  std::optional<authority::FieldBranch> nextBranch;
+  std::optional<authority::FieldBoundaryPoint> nextEntryPoint;
+  std::optional<authority::SourceEdgeTopologyKey> nextIncomingCarrier;
+  std::optional<FieldAlignedCandidateTraceTransition> nextEntryTransport;
+  std::optional<authority::FieldSingularityId> terminalSingularity;
+  std::optional<authority::SourceEdgeTopologyKey> terminalBarrier;
+  std::optional<authority::FieldBoundaryPoint> terminalPoint;
+  FieldAlignedArrivalMeasure endArrival;
+};
+
+struct FieldAlignedTraceRuntime {
+  FieldAlignedTraceRuntime(
+      const authority::SourceFaceTopologyKey &face,
+      const authority::FieldBranch branch,
+      const authority::FieldBoundaryPoint &entry,
+      const std::size_t stepBudget)
+      : currentFace(face), currentBranch(branch), currentEntryPoint(entry),
+        traversalGuard(stepBudget) {}
+
+  authority::SourceFaceTopologyKey currentFace;
+  authority::FieldBranch currentBranch;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  std::optional<FieldAlignedCandidateTraceTransition> entryTransport;
+  authority::FieldBoundaryPoint currentEntryPoint;
+  FieldAlignedTraceTraversalGuard traversalGuard;
+  FieldAlignedArrivalMeasure arrival;
+  bool active = true;
+  std::optional<FieldAlignedTraceProposal> proposal;
+  std::vector<FieldAlignedArrivalMeasure> segmentStarts;
+};
+
+using FieldAlignedTraceProposalResult =
+    std::variant<FieldAlignedTraceProposal, FieldAlignedCurveNetworkError>;
+
+FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+    const TriMesh &sourceMesh,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::map<authority::SourceEdgeTopologyKey,
+                   const authority::FieldNonTraversableEdge *> &mandatoryByEdge,
+    FieldAlignedCandidateTrace &trace,
+    FieldAlignedTraceRuntime &runtime) {
+  const authority::FieldBranchTopology &topology =
+      fieldTransportAtlas.branch_topology();
+  const FieldAlignedTraceTraversalState state{
+      runtime.currentFace, runtime.currentBranch, runtime.incomingCarrier,
+      runtime.currentEntryPoint};
+  const auto traceError = [&](FieldAlignedCurveNetworkError error) {
+    annotate_field_aligned_trace_seed(error, trace.sourceVertex, trace.singularity);
+    annotate_field_aligned_trace_history(error, trace, state);
+    return error;
+  };
+  const FieldAlignedTraceTraversalStatus traversalStatus =
+      runtime.traversalGuard.observe(state);
+  if (traversalStatus != FieldAlignedTraceTraversalStatus::Advanced) {
+    return traceError(field_aligned_trace_traversal_error(
+        traversalStatus, state, runtime.traversalGuard));
+  }
+
+  const authority::FieldFaceBranchFrame *frame =
+      topology.find_frame(runtime.currentFace);
+  if (frame == nullptr || frame->sourceComponent != trace.sourceComponent ||
+      frame->topologyRegion != trace.sourceTopologyRegion) {
+    return traceError(field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+        trace.sourceVertex, std::nullopt, std::nullopt, trace.singularity));
+  }
+  const authority::FieldBranchBoundaryPairing *pairing =
+      field_aligned_branch_pairing(*frame, runtime.currentBranch);
+  if (pairing == nullptr) {
+    return traceError(trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+        trace.sourceVertex, trace.singularity, std::nullopt, std::nullopt,
+        runtime.currentFace, runtime.currentBranch));
+  }
+
+  auto continuation = resolve_field_branch_continuation(
+      runtime.currentFace, *pairing, runtime.currentEntryPoint);
+  if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&continuation)) {
+    return traceError(std::move(*error));
+  }
+  const FieldBranchContinuationDecision decision =
+      std::get<FieldBranchContinuationDecision>(continuation);
+
+  FieldAlignedCandidateTraceSegment segment(
+      runtime.currentFace, runtime.currentBranch, runtime.currentEntryPoint,
+      runtime.incomingCarrier, decision.outgoingCarrier, runtime.entryTransport);
+  FieldAlignedTraceProposal proposal(std::move(segment));
+
+  const auto entryBarycentric = field_boundary_point_barycentric(
+      runtime.currentFace, runtime.currentEntryPoint);
+  const auto exitBarycentric = field_boundary_point_barycentric(
+      runtime.currentFace, decision.exitPoint);
+  if (!entryBarycentric.has_value() || !exitBarycentric.has_value()) {
+    return traceError(trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+  }
+  auto segmentLength = field_aligned_filtered_length(
+      sourceMesh, runtime.currentFace, *entryBarycentric, *exitBarycentric);
+  if (!segmentLength.has_value()) {
+    return traceError(trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+  }
+
+  if (decision.kind == FieldBranchContinuationKind::VertexHit) {
+    if (!decision.sourceVertex.has_value()) {
+      return traceError(trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, std::nullopt,
+          decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+    }
+    proposal.terminalPoint = decision.exitPoint;
+    const authority::FieldSingularityFact *terminalSingularity =
+        field_aligned_singularity_at(
+            fieldTransportAtlas, *decision.sourceVertex, trace.sourceComponent,
+            trace.sourceTopologyRegion);
+    if (terminalSingularity != nullptr) {
+      proposal.disposition = FieldAlignedProposalDisposition::TerminalSingularity;
+      proposal.terminalSingularity = terminalSingularity->id;
+      proposal.endArrival =
+          field_aligned_arrival_advance(runtime.arrival, *segmentLength);
+      return proposal;
+    }
+
+    auto transit = resolve_field_vertex_transit(
+        sourceMesh, topology, trace.sourceComponent, trace.sourceTopologyRegion,
+        runtime.currentFace, runtime.currentBranch, *decision.sourceVertex);
+    if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
+      return traceError(std::move(*error));
+    }
+    const FieldVertexTransitDecision vertexTransit =
+        std::get<FieldVertexTransitDecision>(transit);
+    const auto nextEntryPoint = field_boundary_point_at_vertex(
+        vertexTransit.nextFace, *decision.sourceVertex);
+    if (!nextEntryPoint.has_value()) {
+      return traceError(trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, decision.sourceVertex,
+          decision.outgoingCarrier, vertexTransit.nextFace,
+          vertexTransit.nextBranch));
+    }
+    proposal.nextFace = vertexTransit.nextFace;
+    proposal.nextBranch = vertexTransit.nextBranch;
+    proposal.nextEntryPoint = *nextEntryPoint;
+    proposal.endArrival =
+        field_aligned_arrival_advance(runtime.arrival, *segmentLength);
+    return proposal;
+  }
+
+  if (mandatoryByEdge.count(decision.outgoingCarrier) != 0U) {
+    proposal.disposition = FieldAlignedProposalDisposition::TerminalBarrier;
+    proposal.terminalBarrier = decision.outgoingCarrier;
+    proposal.terminalPoint = decision.exitPoint;
+    proposal.endArrival =
+        field_aligned_arrival_advance(runtime.arrival, *segmentLength);
+    return proposal;
+  }
+
+  const auto nextFace =
+      field_aligned_next_face(topology, decision.outgoingCarrier,
+                              runtime.currentFace);
+  if (!nextFace.has_value()) {
+    return traceError(trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+  }
+  const auto directed = topology.transport(decision.outgoingCarrier,
+                                           runtime.currentFace, *nextFace);
+  if (!directed.has_value()) {
+    return traceError(trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+  }
+  const authority::FieldBranch nextBranch =
+      runtime.currentBranch.rotated(directed->signedLift);
+  const authority::FieldFaceBranchFrame *nextFrame = topology.find_frame(*nextFace);
+  const authority::FieldBranchBoundaryPairing *nextPairing =
+      nextFrame == nullptr ? nullptr
+                           : field_aligned_branch_pairing(*nextFrame, nextBranch);
+  if (nextPairing == nullptr) {
+    return traceError(trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        decision.outgoingCarrier, *nextFace, nextBranch));
+  }
+  const FieldBranchEdgeFlowRelation targetFlow =
+      classify_field_branch_transport_flow(
+          runtime.currentFace, *pairing, *nextFace, *nextPairing,
+          decision.outgoingCarrier);
+  if (targetFlow == FieldBranchEdgeFlowRelation::Outflow) {
+    auto transit = resolve_field_branch_grazing_transit(
+        runtime.currentFace, *pairing, *nextFace, *nextPairing,
+        decision.outgoingCarrier, directed->signedLift,
+        decision.exitPoint.parameter);
+    if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
+      return traceError(std::move(*error));
+    }
+    const FieldBranchContinuationDecision edgeTransit =
+        std::get<FieldBranchContinuationDecision>(transit);
+    if (edgeTransit.kind != FieldBranchContinuationKind::EdgeTransit ||
+        !edgeTransit.sourceVertex.has_value()) {
+      return traceError(trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, std::nullopt,
+          decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+    }
+    proposal.segment.edgeTransitExit = edgeTransit.exitPoint;
+    proposal.terminalPoint = edgeTransit.exitPoint;
+    const auto transitExitBarycentric = field_boundary_point_barycentric(
+        runtime.currentFace, edgeTransit.exitPoint);
+    if (!transitExitBarycentric.has_value()) {
+      return traceError(trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, edgeTransit.sourceVertex,
+          decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+    }
+    const auto transitLength = field_aligned_filtered_length(
+        sourceMesh, runtime.currentFace, *exitBarycentric,
+        *transitExitBarycentric);
+    if (!transitLength.has_value()) {
+      return traceError(trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, edgeTransit.sourceVertex,
+          decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+    }
+    segmentLength = field_aligned_filtered_add(*segmentLength, *transitLength);
+
+    const authority::FieldSingularityFact *terminalSingularity =
+        field_aligned_singularity_at(
+            fieldTransportAtlas, *edgeTransit.sourceVertex,
+            trace.sourceComponent, trace.sourceTopologyRegion);
+    if (terminalSingularity != nullptr) {
+      proposal.disposition = FieldAlignedProposalDisposition::TerminalSingularity;
+      proposal.terminalSingularity = terminalSingularity->id;
+      proposal.endArrival =
+          field_aligned_arrival_advance(runtime.arrival, *segmentLength);
+      return proposal;
+    }
+
+    auto vertexTransit = resolve_field_vertex_transit(
+        sourceMesh, topology, trace.sourceComponent, trace.sourceTopologyRegion,
+        runtime.currentFace, runtime.currentBranch, *edgeTransit.sourceVertex,
+        FieldVertexArrivalMode::EdgeTransit);
+    if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&vertexTransit)) {
+      return traceError(std::move(*error));
+    }
+    const FieldVertexTransitDecision next =
+        std::get<FieldVertexTransitDecision>(vertexTransit);
+    const auto nextEntryPoint =
+        field_boundary_point_at_vertex(next.nextFace, *edgeTransit.sourceVertex);
+    if (!nextEntryPoint.has_value()) {
+      return traceError(trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, edgeTransit.sourceVertex,
+          decision.outgoingCarrier, next.nextFace, next.nextBranch));
+    }
+    proposal.nextFace = next.nextFace;
+    proposal.nextBranch = next.nextBranch;
+    proposal.nextEntryPoint = *nextEntryPoint;
+    proposal.endArrival =
+        field_aligned_arrival_advance(runtime.arrival, *segmentLength);
+    return proposal;
+  }
+
+  proposal.nextFace = *nextFace;
+  proposal.nextBranch = nextBranch;
+  proposal.nextEntryPoint = decision.exitPoint;
+  proposal.nextIncomingCarrier = decision.outgoingCarrier;
+  proposal.nextEntryTransport.emplace(
+      decision.outgoingCarrier, runtime.currentFace, *nextFace, *directed);
+  proposal.endArrival =
+      field_aligned_arrival_advance(runtime.arrival, *segmentLength);
+  return proposal;
+}
+
+void field_aligned_publish_origin_events(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    const std::vector<FieldAlignedTraceRuntime> &runtimes) {
+  std::map<authority::NetworkNodeId, std::vector<std::size_t>> tracesByNode;
+  for (std::size_t traceIndex = 0U;
+       traceIndex < candidate.candidateTraces.size(); ++traceIndex) {
+    const auto *port = field_aligned_port_for_trace(
+        candidate, candidate.candidateTraces[traceIndex]);
+    if (port != nullptr) tracesByNode[port->node].push_back(traceIndex);
+  }
+  for (const auto &[node, traceIndices] : tracesByNode) {
+    if (traceIndices.empty()) continue;
+    const FieldAlignedCandidateTrace &firstTrace =
+        candidate.candidateTraces[traceIndices.front()];
+    const FieldAlignedSingularityPort *firstPort =
+        field_aligned_port_for_trace(candidate, firstTrace);
+    if (firstPort == nullptr) continue;
+    authority::SourceFaceTopologyKey sourceFace =
+        runtimes[traceIndices.front()].currentFace;
+    std::vector<FieldAlignedNetworkEventIncidence> origins;
+    std::vector<FieldAlignedNetworkEventIncidence> junction;
+    origins.reserve(traceIndices.size());
+    junction.reserve(traceIndices.size());
+    for (const std::size_t traceIndex : traceIndices) {
+      sourceFace = std::min(sourceFace, runtimes[traceIndex].currentFace);
+      const auto &trace = candidate.candidateTraces[traceIndex];
+      origins.emplace_back(trace.id, trace.port, FieldAlignedTraceEventRole::Origin);
+      junction.emplace_back(trace.id, trace.port,
+                            FieldAlignedTraceEventRole::Interior);
+    }
+    candidate.events.emplace_back(
+        node, FieldAlignedNetworkEventKind::SingularityPortOrigin, sourceFace,
+        std::nullopt, std::move(origins));
+    if (traceIndices.size() > 1U) {
+      candidate.events.emplace_back(
+          node, FieldAlignedNetworkEventKind::SingularityPortJunction,
+          sourceFace, std::nullopt, std::move(junction));
+    }
+  }
+}
+
+std::optional<FieldAlignedCurveNetworkError>
+field_aligned_publish_barrier_termination(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    const FieldAlignedCandidateTrace &trace) {
+  if (!trace.terminalBarrier.has_value() || !trace.terminalPoint.has_value() ||
+      trace.segments.empty()) {
+    return trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+        trace.sourceVertex, trace.singularity);
+  }
+  const auto mandatory = std::find_if(
+      candidate.mandatoryEdges.begin(), candidate.mandatoryEdges.end(),
+      [&](const FieldAlignedMandatoryEdge &edge) {
+        return edge.sourceEdge == *trace.terminalBarrier;
+      });
+  if (mandatory == candidate.mandatoryEdges.end()) {
+    return trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        trace.terminalBarrier, trace.segments.back().sourceFace,
+        trace.segments.back().branch);
+  }
+  const authority::SourceFaceTopologyKey sourceFace =
+      trace.segments.back().sourceFace;
+  const auto terminalNode =
+      field_aligned_append_contact_node(candidate, sourceFace);
+  if (!terminalNode.has_value()) {
+    return trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventBinding,
+        trace.sourceVertex, trace.singularity, std::nullopt,
+        trace.terminalBarrier, sourceFace, trace.segments.back().branch);
+  }
+  candidate.events.emplace_back(
+      *terminalNode, FieldAlignedNetworkEventKind::FirstContact, sourceFace,
+      trace.terminalBarrier,
+      std::vector<FieldAlignedNetworkEventIncidence>{
+          FieldAlignedNetworkEventIncidence(
+              trace.id, trace.port, FieldAlignedTraceEventRole::Interior)});
+  candidate.events.emplace_back(
+      *terminalNode, FieldAlignedNetworkEventKind::MandatoryBarrierTermination,
+      sourceFace, trace.terminalBarrier,
+      std::vector<FieldAlignedNetworkEventIncidence>{
+          FieldAlignedNetworkEventIncidence(
+              trace.id, trace.port, FieldAlignedTraceEventRole::Terminal)});
+  return std::nullopt;
+}
+
+FieldAlignedArrivalOrdering field_aligned_compare_priority_arrivals(
+    const FieldTraceArrivalPriority priority,
+    const FieldAlignedArrivalMeasure &first,
+    const FieldAlignedArrivalMeasure &second,
+    const std::size_t firstTraceIndex,
+    const std::size_t secondTraceIndex) noexcept {
+  switch (priority) {
+  case FieldTraceArrivalPriority::ArcLengthFiltered:
+    return field_aligned_compare_arrivals(first, second);
+  case FieldTraceArrivalPriority::StepCount:
+    if (first.segmentCount < second.segmentCount)
+      return FieldAlignedArrivalOrdering::Earlier;
+    if (first.segmentCount > second.segmentCount)
+      return FieldAlignedArrivalOrdering::Later;
+    return FieldAlignedArrivalOrdering::Inconclusive;
+  case FieldTraceArrivalPriority::BarycentricTime:
+    if (first.value < second.value) return FieldAlignedArrivalOrdering::Earlier;
+    if (first.value > second.value) return FieldAlignedArrivalOrdering::Later;
+    return FieldAlignedArrivalOrdering::Inconclusive;
+  case FieldTraceArrivalPriority::TraceSeniority:
+    if (firstTraceIndex < secondTraceIndex)
+      return FieldAlignedArrivalOrdering::Earlier;
+    if (firstTraceIndex > secondTraceIndex)
+      return FieldAlignedArrivalOrdering::Later;
+    return FieldAlignedArrivalOrdering::Inconclusive;
+  }
+  return FieldAlignedArrivalOrdering::Inconclusive;
+}
+
+double field_aligned_priority_key(
+    const FieldTraceArrivalPriority priority,
+    const FieldAlignedArrivalMeasure &arrival,
+    const std::size_t traceIndex) noexcept {
+  switch (priority) {
+  case FieldTraceArrivalPriority::ArcLengthFiltered:
+  case FieldTraceArrivalPriority::BarycentricTime:
+    return arrival.value;
+  case FieldTraceArrivalPriority::StepCount:
+    return static_cast<double>(arrival.segmentCount);
+  case FieldTraceArrivalPriority::TraceSeniority:
+    return static_cast<double>(traceIndex);
+  }
+  return arrival.value;
+}
+
+enum class FieldAlignedQueueEventKind : std::uint8_t {
+  Contact = 0,
+  SegmentEnd = 1,
+};
+
+struct FieldAlignedQueueEvent {
+  explicit FieldAlignedQueueEvent(
+      const authority::SourceFaceTopologyKey &face)
+      : sourceFace(face) {}
+
+  FieldAlignedQueueEventKind kind = FieldAlignedQueueEventKind::SegmentEnd;
+  double key = 0.0;
+  std::size_t firstTrace = 0U;
+  std::size_t secondTrace = 0U;
+  std::size_t secondSegment = 0U;
+  bool secondIsProposal = false;
+  FieldAlignedArrivalOrdering ordering =
+      FieldAlignedArrivalOrdering::Inconclusive;
+  authority::SourceFaceTopologyKey sourceFace;
+  std::array<authority::FieldExactRational, 3> barycentric{};
+};
+
+struct FieldAlignedQueueEventLaterFirst {
+  bool operator()(const FieldAlignedQueueEvent &first,
+                  const FieldAlignedQueueEvent &second) const noexcept {
+    if (first.key != second.key) return first.key > second.key;
+    if (first.kind != second.kind) return first.kind > second.kind;
+    if (first.sourceFace != second.sourceFace)
+      return first.sourceFace > second.sourceFace;
+    if (first.firstTrace != second.firstTrace)
+      return first.firstTrace > second.firstTrace;
+    if (first.secondTrace != second.secondTrace)
+      return first.secondTrace > second.secondTrace;
+    return first.secondSegment > second.secondSegment;
+  }
+};
+
+void field_aligned_commit_current_proposal(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    std::vector<FieldAlignedTraceRuntime> &runtimes,
+    const std::size_t traceIndex) {
+  FieldAlignedCandidateTrace &trace = candidate.candidateTraces[traceIndex];
+  FieldAlignedTraceRuntime &runtime = runtimes[traceIndex];
+  runtime.segmentStarts.push_back(runtime.arrival);
+  trace.segments.push_back(runtime.proposal->segment);
+}
+
+std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    std::vector<FieldAlignedTraceRuntime> &runtimes,
+    const FieldAlignedQueueEvent &event) {
+  const std::size_t firstIndex = event.firstTrace;
+  const std::size_t secondIndex = event.secondTrace;
+  FieldAlignedCandidateTrace &firstTrace = candidate.candidateTraces[firstIndex];
+  FieldAlignedCandidateTrace &secondTrace = candidate.candidateTraces[secondIndex];
+  FieldAlignedTraceRuntime &firstRuntime = runtimes[firstIndex];
+  FieldAlignedTraceRuntime &secondRuntime = runtimes[secondIndex];
+  const std::size_t firstPendingSegmentIndex = firstTrace.segments.size();
+  const std::size_t secondPendingSegmentIndex = secondTrace.segments.size();
+
+  const bool selfContact = firstIndex == secondIndex;
+  const FieldAlignedContactTerminationDecision termination =
+      field_aligned_contact_termination_decision(event.ordering, selfContact);
+  const bool terminateFirst = termination.terminateFirst;
+  const bool terminateSecond = termination.terminateSecond;
+
+  if (terminateFirst && firstRuntime.active) {
+    if (!firstRuntime.proposal.has_value()) {
+      return trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+          firstTrace.sourceVertex, firstTrace.singularity);
+    }
+    const std::size_t struckSegment =
+        event.secondIsProposal ? secondPendingSegmentIndex : event.secondSegment;
+    field_aligned_commit_current_proposal(candidate, runtimes, firstIndex);
+    firstTrace.terminalBarrier.reset();
+    firstTrace.terminalPoint.reset();
+    firstTrace.terminalSingularity.reset();
+    firstTrace.terminalContact = FieldAlignedTerminalContact{
+        event.sourceFace, event.barycentric, secondTrace.id, struckSegment};
+    firstRuntime.active = false;
+    firstRuntime.proposal.reset();
+  }
+
+  if (!selfContact && terminateSecond && secondRuntime.active) {
+    if (event.secondIsProposal) {
+      if (!secondRuntime.proposal.has_value()) {
+        return trace_scoped_field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+            secondTrace.sourceVertex, secondTrace.singularity);
+      }
+      const std::size_t struckSegment = firstPendingSegmentIndex;
+      field_aligned_commit_current_proposal(candidate, runtimes, secondIndex);
+      secondTrace.terminalBarrier.reset();
+      secondTrace.terminalPoint.reset();
+      secondTrace.terminalSingularity.reset();
+      secondTrace.terminalContact = FieldAlignedTerminalContact{
+          event.sourceFace, event.barycentric, firstTrace.id, struckSegment};
+      secondRuntime.active = false;
+      secondRuntime.proposal.reset();
+    } else {
+      // The wall segment may have been committed while its trace is still
+      // live. An inconclusive filtered comparison at the same exact crossing
+      // is the frozen symmetric case: both traces terminate there. Because no
+      // terminal event is published until a trace retires, an active wall can
+      // be shortened back to the struck segment without undoing published
+      // topology. A retired wall would require retroactive event repair and is
+      // therefore a typed fail-closed outcome.
+      if (!secondRuntime.active || event.secondSegment >= secondTrace.segments.size()) {
+        return trace_scoped_field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+            secondTrace.sourceVertex, secondTrace.singularity, std::nullopt,
+            std::nullopt, event.sourceFace);
+      }
+      const std::size_t retainedSegmentCount = event.secondSegment + 1U;
+      secondTrace.segments.erase(
+          secondTrace.segments.begin() +
+              static_cast<std::ptrdiff_t>(retainedSegmentCount),
+          secondTrace.segments.end());
+      secondRuntime.segmentStarts.erase(
+          secondRuntime.segmentStarts.begin() +
+              static_cast<std::ptrdiff_t>(retainedSegmentCount),
+          secondRuntime.segmentStarts.end());
+      secondTrace.terminalBarrier.reset();
+      secondTrace.terminalPoint.reset();
+      secondTrace.terminalSingularity.reset();
+      secondTrace.terminalContact = FieldAlignedTerminalContact{
+          event.sourceFace, event.barycentric, firstTrace.id,
+          firstPendingSegmentIndex};
+      secondRuntime.active = false;
+      secondRuntime.proposal.reset();
+    }
+  }
+
+  const auto contactNode =
+      field_aligned_append_contact_node(candidate, event.sourceFace);
+  if (!contactNode.has_value()) {
+    return trace_scoped_field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventBinding,
+        firstTrace.sourceVertex, firstTrace.singularity, std::nullopt,
+        std::nullopt, event.sourceFace);
+  }
+
+  const auto sourceEdge = [&]()
+      -> std::optional<authority::SourceEdgeTopologyKey> {
+    const FieldAlignedCandidateTraceSegment *firstSegment = nullptr;
+    const FieldAlignedCandidateTraceSegment *secondSegment = nullptr;
+    if (terminateFirst && !firstTrace.segments.empty()) {
+      firstSegment = &firstTrace.segments.back();
+    } else if (firstRuntime.proposal.has_value()) {
+      firstSegment = &firstRuntime.proposal->segment;
+    }
+    if (selfContact || !event.secondIsProposal) {
+      if (event.secondSegment < secondTrace.segments.size())
+        secondSegment = &secondTrace.segments[event.secondSegment];
+    } else if (terminateSecond && !secondTrace.segments.empty()) {
+      secondSegment = &secondTrace.segments.back();
+    } else if (secondRuntime.proposal.has_value()) {
+      secondSegment = &secondRuntime.proposal->segment;
+    }
+    return firstSegment != nullptr && secondSegment != nullptr
+               ? field_aligned_common_carrier(*firstSegment, *secondSegment)
+               : std::optional<authority::SourceEdgeTopologyKey>{};
+  }();
+
+  std::vector<FieldAlignedNetworkEventIncidence> firstContact;
+  std::vector<FieldAlignedNetworkEventIncidence> terminal;
+  if (selfContact) {
+    firstContact.emplace_back(firstTrace.id, firstTrace.port,
+                              FieldAlignedTraceEventRole::Interior);
+    terminal.emplace_back(firstTrace.id, firstTrace.port,
+                          FieldAlignedTraceEventRole::Terminal);
+  } else {
+    firstContact.emplace_back(firstTrace.id, firstTrace.port,
+                              FieldAlignedTraceEventRole::Interior);
+    firstContact.emplace_back(secondTrace.id, secondTrace.port,
+                              FieldAlignedTraceEventRole::Interior);
+    terminal.emplace_back(firstTrace.id, firstTrace.port,
+                          terminateFirst ? FieldAlignedTraceEventRole::Terminal
+                                         : FieldAlignedTraceEventRole::Interior);
+    terminal.emplace_back(secondTrace.id, secondTrace.port,
+                          terminateSecond ? FieldAlignedTraceEventRole::Terminal
+                                          : FieldAlignedTraceEventRole::Interior);
+  }
+  candidate.events.emplace_back(
+      *contactNode, FieldAlignedNetworkEventKind::FirstContact,
+      event.sourceFace, sourceEdge, std::move(firstContact));
+  candidate.events.emplace_back(
+      *contactNode,
+      selfContact ? FieldAlignedNetworkEventKind::TraceSelfClosure
+                  : FieldAlignedNetworkEventKind::TraceIntersection,
+      event.sourceFace, sourceEdge, std::move(terminal));
+  return std::nullopt;
+}
+
+std::optional<FieldAlignedCurveNetworkError>
+canonical_field_aligned_traces_and_events(
+    const TriMesh &sourceMesh,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::map<authority::SourceEdgeTopologyKey,
+                   const authority::FieldNonTraversableEdge *> &mandatoryByEdge,
+    FieldAlignedCurveNetworkCandidate &candidate,
+    const FieldTraceArrivalPriority priority) {
+  const authority::FieldBranchTopology &topology =
+      fieldTransportAtlas.branch_topology();
+  candidate.arrivalPriority = priority;
+  candidate.candidateTraces.clear();
+  candidate.candidateTraces.reserve(candidate.singularityPorts.size());
+  std::vector<FieldAlignedTraceRuntime> runtimes;
+  runtimes.reserve(candidate.singularityPorts.size());
+
+  for (std::size_t traceIndex = 0U;
+       traceIndex < candidate.singularityPorts.size(); ++traceIndex) {
+    const FieldAlignedSingularityPort &port = candidate.singularityPorts[traceIndex];
+    const authority::FieldSingularityPortAttachment *attachment = nullptr;
+    for (const authority::FieldSingularityPortAttachment &candidateAttachment :
+         topology.singularity_port_attachments()) {
+      if (candidateAttachment.singularity != port.singularity ||
+          candidateAttachment.localSlot != port.ordinal) {
+        continue;
+      }
+      if (attachment != nullptr) {
+        return field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+            port.sourceVertex, std::nullopt, std::nullopt, port.singularity);
+      }
+      attachment = &candidateAttachment;
+    }
+    if (attachment == nullptr || attachment->sourceVertex != port.sourceVertex ||
+        attachment->sourceComponent != port.sourceComponent ||
+        attachment->topologyRegion != port.sourceTopologyRegion) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+          port.sourceVertex, std::nullopt, std::nullopt, port.singularity);
+    }
+    const auto entry =
+        field_boundary_point_at_vertex(attachment->startFace, port.sourceVertex);
+    if (!entry.has_value()) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+          port.sourceVertex, std::nullopt, std::nullopt, port.singularity);
+    }
+    candidate.candidateTraces.emplace_back(
+        field_aligned_id<authority::TraceId>(
+            traceIndex, candidate.singularityPorts.size()),
+        port.id, port.singularity, port.sourceVertex, port.sourceComponent,
+        port.sourceTopologyRegion);
+    runtimes.emplace_back(attachment->startFace, attachment->branch, *entry,
+                          field_aligned_trace_step_budget(topology));
+  }
+
+  const auto ensure_proposal = [&](const std::size_t traceIndex)
+      -> std::optional<FieldAlignedCurveNetworkError> {
+    FieldAlignedTraceRuntime &runtime = runtimes[traceIndex];
+    if (!runtime.active || runtime.proposal.has_value()) return std::nullopt;
+    auto proposed = field_aligned_next_trace_proposal(
+        sourceMesh, fieldTransportAtlas, mandatoryByEdge,
+        candidate.candidateTraces[traceIndex], runtime);
+    if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&proposed)) {
+      return *error;
+    }
+    runtime.proposal =
+        std::get<FieldAlignedTraceProposal>(std::move(proposed));
+    return std::nullopt;
+  };
+
+  for (std::size_t traceIndex = 0U; traceIndex < runtimes.size(); ++traceIndex) {
+    if (const auto error = ensure_proposal(traceIndex); error.has_value()) {
+      return *error;
+    }
+  }
+  field_aligned_publish_origin_events(candidate, runtimes);
+
+  while (std::any_of(runtimes.begin(), runtimes.end(),
+                     [](const auto &runtime) { return runtime.active; })) {
+    for (std::size_t traceIndex = 0U; traceIndex < runtimes.size(); ++traceIndex) {
+      if (const auto error = ensure_proposal(traceIndex); error.has_value()) {
+        return *error;
+      }
+    }
+
+    std::priority_queue<FieldAlignedQueueEvent,
+                        std::vector<FieldAlignedQueueEvent>,
+                        FieldAlignedQueueEventLaterFirst>
+        queue;
+
+    for (std::size_t traceIndex = 0U; traceIndex < runtimes.size(); ++traceIndex) {
+      const auto &runtime = runtimes[traceIndex];
+      if (!runtime.active || !runtime.proposal.has_value()) continue;
+      FieldAlignedQueueEvent event(runtime.proposal->segment.sourceFace);
+      event.kind = FieldAlignedQueueEventKind::SegmentEnd;
+      event.key = field_aligned_priority_key(
+          priority, runtime.proposal->endArrival, traceIndex);
+      event.firstTrace = traceIndex;
+      event.sourceFace = runtime.proposal->segment.sourceFace;
+      queue.push(std::move(event));
+    }
+
+    // Contacts between simultaneously pending segments. This is what makes
+    // equal-arrival crossings symmetric rather than dependent on queue order.
+    for (std::size_t firstIndex = 0U; firstIndex < runtimes.size(); ++firstIndex) {
+      const auto &firstRuntime = runtimes[firstIndex];
+      if (!firstRuntime.active || !firstRuntime.proposal.has_value()) continue;
+      const auto &firstTrace = candidate.candidateTraces[firstIndex];
+      for (std::size_t secondIndex = firstIndex + 1U;
+           secondIndex < runtimes.size(); ++secondIndex) {
+        const auto &secondRuntime = runtimes[secondIndex];
+        if (!secondRuntime.active || !secondRuntime.proposal.has_value()) continue;
+        const auto &secondTrace = candidate.candidateTraces[secondIndex];
+        if (firstTrace.segments.empty() && secondTrace.segments.empty() &&
+            firstTrace.singularity == secondTrace.singularity &&
+            firstTrace.sourceVertex == secondTrace.sourceVertex) {
+          continue;
+        }
+        const auto contact = classify_field_aligned_segment_contact_impl(
+            topology, firstRuntime.proposal->segment,
+            secondRuntime.proposal->segment);
+        if (contact.kind != FieldAlignedSegmentContactKind::ProperCrossing ||
+            !contact.barycentric.has_value()) {
+          continue;
+        }
+        const auto firstArrival = field_aligned_arrival_at_barycentric(
+            sourceMesh, firstRuntime.proposal->segment, firstRuntime.arrival,
+            *contact.barycentric);
+        const auto secondArrival = field_aligned_arrival_at_barycentric(
+            sourceMesh, secondRuntime.proposal->segment, secondRuntime.arrival,
+            *contact.barycentric);
+        if (!firstArrival.has_value() || !secondArrival.has_value()) continue;
+        FieldAlignedQueueEvent event(firstRuntime.proposal->segment.sourceFace);
+        event.kind = FieldAlignedQueueEventKind::Contact;
+        event.firstTrace = firstIndex;
+        event.secondTrace = secondIndex;
+        event.secondSegment = secondTrace.segments.size();
+        event.secondIsProposal = true;
+        event.ordering = field_aligned_compare_priority_arrivals(
+            priority, *firstArrival, *secondArrival, firstIndex, secondIndex);
+        const double firstKey =
+            field_aligned_priority_key(priority, *firstArrival, firstIndex);
+        const double secondKey =
+            field_aligned_priority_key(priority, *secondArrival, secondIndex);
+        // A conclusive crash happens when the later trace arrives. An
+        // inconclusive same-point comparison is the frozen symmetric case, so
+        // schedule it before either containing segment can advance past the
+        // crossing.
+        event.key =
+            event.ordering == FieldAlignedArrivalOrdering::Inconclusive
+                ? std::min(firstKey, secondKey)
+                : std::max(firstKey, secondKey);
+        event.sourceFace = firstRuntime.proposal->segment.sourceFace;
+        event.barycentric = *contact.barycentric;
+        queue.push(std::move(event));
+      }
+    }
+
+    // Contacts with walls already laid, including the trace's own earlier
+    // segments. Only a wall that is conclusively earlier can crash the pending
+    // trace; an equal/inconclusive same-point encounter cannot be resolved by
+    // seniority and therefore fails closed if the other trace has already been
+    // retired.
+    for (std::size_t movingIndex = 0U; movingIndex < runtimes.size(); ++movingIndex) {
+      const auto &movingRuntime = runtimes[movingIndex];
+      if (!movingRuntime.active || !movingRuntime.proposal.has_value()) continue;
+      const auto &movingTrace = candidate.candidateTraces[movingIndex];
+      for (std::size_t wallIndex = 0U; wallIndex < runtimes.size(); ++wallIndex) {
+        const auto &wallRuntime = runtimes[wallIndex];
+        const auto &wallTrace = candidate.candidateTraces[wallIndex];
+        for (std::size_t wallSegmentIndex = 0U;
+             wallSegmentIndex < wallTrace.segments.size(); ++wallSegmentIndex) {
+          if (wallSegmentIndex >= wallRuntime.segmentStarts.size()) continue;
+          if (movingTrace.segments.empty() && wallSegmentIndex == 0U &&
+              movingTrace.singularity == wallTrace.singularity &&
+              movingTrace.sourceVertex == wallTrace.sourceVertex) {
+            continue;
+          }
+          const std::optional<std::array<authority::FieldExactRational, 3>>
+              wallTerminalContact =
+                  wallTrace.terminalContact.has_value() &&
+                          wallSegmentIndex + 1U == wallTrace.segments.size()
+                      ? std::optional<std::array<authority::FieldExactRational, 3>>{
+                            wallTrace.terminalContact->barycentric}
+                      : std::nullopt;
+          const auto contact =
+              classify_field_aligned_segment_contact_with_second_exit(
+                  topology, movingRuntime.proposal->segment,
+                  wallTrace.segments[wallSegmentIndex], wallTerminalContact);
+          if (contact.kind != FieldAlignedSegmentContactKind::ProperCrossing ||
+              !contact.barycentric.has_value()) {
+            continue;
+          }
+          const auto movingArrival = field_aligned_arrival_at_barycentric(
+              sourceMesh, movingRuntime.proposal->segment, movingRuntime.arrival,
+              *contact.barycentric);
+          const auto wallArrival = field_aligned_arrival_at_barycentric(
+              sourceMesh, wallTrace.segments[wallSegmentIndex],
+              wallRuntime.segmentStarts[wallSegmentIndex], *contact.barycentric);
+          if (!movingArrival.has_value() || !wallArrival.has_value()) continue;
+          const auto ordering = field_aligned_compare_priority_arrivals(
+              priority, *movingArrival, *wallArrival, movingIndex, wallIndex);
+          if (ordering == FieldAlignedArrivalOrdering::Earlier) continue;
+          if (ordering == FieldAlignedArrivalOrdering::Inconclusive &&
+              !wallRuntime.active) {
+            return trace_scoped_field_aligned_error(
+                FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+                movingTrace.sourceVertex, movingTrace.singularity,
+                std::nullopt, std::nullopt,
+                movingRuntime.proposal->segment.sourceFace);
+          }
+          FieldAlignedQueueEvent event(movingRuntime.proposal->segment.sourceFace);
+          event.kind = FieldAlignedQueueEventKind::Contact;
+          event.firstTrace = movingIndex;
+          event.secondTrace = wallIndex;
+          event.secondSegment = wallSegmentIndex;
+          event.secondIsProposal = false;
+          // `Later` means the moving trace crashes. For a self-contact the
+          // later segment is necessarily the pending segment.
+          event.ordering = ordering;
+          event.key = std::max(
+              field_aligned_priority_key(priority, *movingArrival, movingIndex),
+              field_aligned_priority_key(priority, *wallArrival, wallIndex));
+          event.sourceFace = movingRuntime.proposal->segment.sourceFace;
+          event.barycentric = *contact.barycentric;
+          queue.push(std::move(event));
+        }
+      }
+    }
+
+    if (queue.empty()) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership);
+    }
+    const FieldAlignedQueueEvent event = queue.top();
+    queue.pop();
+
+    if (event.kind == FieldAlignedQueueEventKind::Contact) {
+      if (const auto error =
+              field_aligned_publish_contact(candidate, runtimes, event);
+          error.has_value()) {
+        return *error;
+      }
+      continue;
+    }
+
+    const std::size_t traceIndex = event.firstTrace;
+    FieldAlignedTraceRuntime &runtime = runtimes[traceIndex];
+    if (!runtime.active || !runtime.proposal.has_value()) continue;
+    FieldAlignedCandidateTrace &trace = candidate.candidateTraces[traceIndex];
+    const FieldAlignedTraceProposal proposal = *runtime.proposal;
+    field_aligned_commit_current_proposal(candidate, runtimes, traceIndex);
+    runtime.arrival = proposal.endArrival;
+    runtime.proposal.reset();
+
+    if (proposal.disposition == FieldAlignedProposalDisposition::TerminalSingularity) {
+      trace.terminalPoint = proposal.terminalPoint;
+      trace.terminalSingularity = proposal.terminalSingularity;
+      trace.terminalBarrier.reset();
+      trace.terminalContact.reset();
+      runtime.active = false;
+      if (const auto error = append_field_aligned_singularity_termination(
+              candidate, trace);
+          error.has_value()) {
+        return *error;
+      }
+      continue;
+    }
+    if (proposal.disposition == FieldAlignedProposalDisposition::TerminalBarrier) {
+      trace.terminalPoint = proposal.terminalPoint;
+      trace.terminalBarrier = proposal.terminalBarrier;
+      trace.terminalSingularity.reset();
+      trace.terminalContact.reset();
+      runtime.active = false;
+      if (const auto error =
+              field_aligned_publish_barrier_termination(candidate, trace);
+          error.has_value()) {
+        return *error;
+      }
+      continue;
+    }
+
+    if (!proposal.nextFace.has_value() || !proposal.nextBranch.has_value() ||
+        !proposal.nextEntryPoint.has_value()) {
+      return trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+          trace.sourceVertex, trace.singularity, std::nullopt, std::nullopt,
+          trace.segments.back().sourceFace, trace.segments.back().branch);
+    }
+    runtime.currentFace = *proposal.nextFace;
+    runtime.currentBranch = *proposal.nextBranch;
+    runtime.currentEntryPoint = *proposal.nextEntryPoint;
+    runtime.incomingCarrier = proposal.nextIncomingCarrier;
+    runtime.entryTransport = proposal.nextEntryTransport;
+  }
+
+  for (const FieldAlignedCandidateTrace &trace : candidate.candidateTraces) {
+    const std::size_t terminalKinds =
+        static_cast<std::size_t>(trace.terminalSingularity.has_value()) +
+        static_cast<std::size_t>(trace.terminalBarrier.has_value()) +
+        static_cast<std::size_t>(trace.terminalContact.has_value());
+    if (trace.segments.empty() || terminalKinds != 1U) {
+      return trace_scoped_field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+          trace.sourceVertex, trace.singularity);
+    }
+  }
+
+  std::sort(candidate.nodes.begin(), candidate.nodes.end(),
+            [](const auto &lhs, const auto &rhs) {
+              return std::tie(lhs.sourceVertex, lhs.id) <
+                     std::tie(rhs.sourceVertex, rhs.id);
+            });
+  field_aligned_sort_events(candidate.events);
+  return std::nullopt;
 }
 
 std::optional<FieldAlignedCurveNetworkError> finalize_field_aligned_events(
@@ -1694,7 +2955,9 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
     const SourceTopologyRegions &sourceAuthority,
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails,
-    FieldAlignedContactCensus *contactCensus = nullptr) {
+    FieldAlignedContactCensus *contactCensus = nullptr,
+    const FieldTraceArrivalPriority priority =
+        FieldTraceArrivalPriority::ArcLengthFiltered) {
   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
   const std::size_t sourceVertexCount =
       static_cast<std::size_t>(sourceMesh.V.rows());
@@ -1918,20 +3181,33 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
         firstNode->second, secondNode->second, *component, std::move(regions));
   }
 
-  const FieldAlignedCandidateTraceResult traceResult =
-      canonical_field_aligned_traces(sourceMesh, fieldTransportAtlas,
-                                     candidate.singularityPorts,
-                                     mandatoryByEdge);
-  if (const auto *error =
-          std::get_if<FieldAlignedCurveNetworkError>(&traceResult)) {
-    return *error;
+  if (contactCensus != nullptr) {
+    // S1 remains a frozen observation of the predecessor mechanism. It is a
+    // diagnostic-only authority and must not feed the corrected production
+    // topology after S2-S6.
+    const FieldAlignedCandidateTraceResult traceResult =
+        legacy_canonical_field_aligned_traces(
+            sourceMesh, fieldTransportAtlas, candidate.singularityPorts,
+            mandatoryByEdge);
+    if (const auto *error =
+            std::get_if<FieldAlignedCurveNetworkError>(&traceResult)) {
+      return *error;
+    }
+    candidate.candidateTraces =
+        std::get<std::vector<FieldAlignedCandidateTrace>>(traceResult);
+    if (const auto eventError = finalize_field_aligned_events(
+            fieldTransportAtlas.branch_topology(), candidate, contactCensus);
+        eventError.has_value()) {
+      return *eventError;
+    }
+    return candidate;
   }
-  candidate.candidateTraces =
-      std::get<std::vector<FieldAlignedCandidateTrace>>(traceResult);
-  if (const auto eventError = finalize_field_aligned_events(
-          fieldTransportAtlas.branch_topology(), candidate, contactCensus);
-      eventError.has_value()) {
-    return *eventError;
+
+  if (const auto tracingError = canonical_field_aligned_traces_and_events(
+          sourceMesh, fieldTransportAtlas, mandatoryByEdge, candidate,
+          priority);
+      tracingError.has_value()) {
+    return *tracingError;
   }
   return candidate;
 }
@@ -1998,6 +3274,7 @@ std::uint64_t field_aligned_candidate_digest(
   std::uint64_t hash = kFieldAlignedFnvOffset;
   field_aligned_hash_consume(hash, sourceDigest);
   field_aligned_hash_consume(hash, branchTopologyDigest);
+  field_aligned_hash_consume(hash, static_cast<std::uint64_t>(candidate.arrivalPriority));
   field_aligned_hash_consume(hash, candidate.nodes.size());
   for (const FieldAlignedCurveNetworkNode &node : candidate.nodes) {
     field_aligned_hash_id(hash, node.id);
@@ -2084,6 +3361,16 @@ std::uint64_t field_aligned_candidate_digest(
     field_aligned_hash_consume(hash, trace.terminalSingularity.has_value());
     if (trace.terminalSingularity.has_value()) {
       field_aligned_hash_id(hash, *trace.terminalSingularity);
+    }
+    field_aligned_hash_consume(hash, trace.terminalContact.has_value());
+    if (trace.terminalContact.has_value()) {
+      const FieldAlignedTerminalContact &contact = *trace.terminalContact;
+      field_aligned_hash_face(hash, contact.sourceFace);
+      for (const authority::FieldExactRational &coordinate : contact.barycentric) {
+        field_aligned_hash_exact(hash, coordinate);
+      }
+      field_aligned_hash_id(hash, contact.struckTrace);
+      field_aligned_hash_consume(hash, contact.struckSegmentIndex);
     }
   }
   field_aligned_hash_consume(hash, candidate.events.size());
@@ -2208,6 +3495,11 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
     }
   }
 
+  if (candidate.arrivalPriority != expected.arrivalPriority) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
+  }
+
   if (candidate.candidateTraces.size() != expected.candidateTraces.size()) {
     return field_aligned_error(
         FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
@@ -2242,6 +3534,11 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
           FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
           actual.sourceVertex, sourceEdge, std::nullopt, actual.singularity);
     }
+    if (actual.terminalContact != wanted.terminalContact) {
+      return field_aligned_error(
+          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
+          actual.sourceVertex, std::nullopt, std::nullopt, actual.singularity);
+    }
   }
 
   if (candidate.events.size() != expected.events.size()) {
@@ -2269,6 +3566,25 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
 }
 
 } // namespace
+
+std::optional<FieldAlignedArrivalMeasure>
+field_aligned_filtered_arrival_measure(
+    const TriMesh &sourceMesh,
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const std::array<authority::FieldExactRational, 3> &first,
+    const std::array<authority::FieldExactRational, 3> &second) {
+  const auto length =
+      field_aligned_filtered_length(sourceMesh, sourceFace, first, second);
+  if (!length.has_value()) return std::nullopt;
+  return field_aligned_arrival_advance(FieldAlignedArrivalMeasure{}, *length);
+}
+
+FieldAlignedSegmentContactClassification classify_field_aligned_segment_contact(
+    const authority::FieldBranchTopology &topology,
+    const FieldAlignedCandidateTraceSegment &first,
+    const FieldAlignedCandidateTraceSegment &second) {
+  return classify_field_aligned_segment_contact_impl(topology, first, second);
+}
 
 FieldAlignedContactCensusResult diagnose_field_aligned_contact_census(
     const TriMesh &sourceMesh,
@@ -2329,6 +3645,46 @@ FieldAlignedCurveNetworkBuildResult FieldAlignedCurveNetwork::make(
 }
 
 FieldAlignedCurveNetworkBuildResult
+FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+    const TriMesh &sourceMesh,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails,
+    const FieldTraceArrivalPriority priority) {
+  try {
+    const auto canonical =
+        surface_cell_tracing_detail::canonical_field_aligned_candidate(
+            sourceMesh, sourceAuthority, fieldTransportAtlas,
+            authoritativeRails, nullptr, priority);
+    if (const auto *error =
+            std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+      return FieldAlignedCurveNetworkBuildResult(*error);
+    }
+    FieldAlignedCurveNetworkCandidate published =
+        std::get<FieldAlignedCurveNetworkCandidate>(canonical);
+    const std::uint64_t sourceDigest =
+        fieldTransportAtlas.quadrangulability().source_digest();
+    const std::uint64_t atlasDigest =
+        authority::field_transport_atlas_hash(fieldTransportAtlas);
+    const std::uint64_t branchTopologyDigest =
+        fieldTransportAtlas.branch_topology().semantic_digest();
+    const std::uint64_t semanticDigest =
+        surface_cell_tracing_detail::field_aligned_candidate_digest(
+            published, sourceAuthority, sourceDigest, branchTopologyDigest);
+    return FieldAlignedCurveNetworkBuildResult(FieldAlignedCurveNetwork(
+        std::move(published.nodes), std::move(published.singularityPorts),
+        std::move(published.mandatoryEdges),
+        std::move(published.candidateTraces), std::move(published.events),
+        published.arrivalPriority, sourceDigest, atlasDigest, semanticDigest));
+  } catch (const std::exception &) {
+    FieldAlignedCurveNetworkError error;
+    error.code = FieldAlignedCurveNetworkErrorCode::
+        BranchContinuationExactMagnitudeExceeded;
+    return FieldAlignedCurveNetworkBuildResult(error);
+  }
+}
+
+FieldAlignedCurveNetworkBuildResult
 FieldAlignedCurveNetwork::make_from_candidate(
     const TriMesh &sourceMesh,
     const SourceTopologyRegions &sourceAuthority,
@@ -2362,7 +3718,7 @@ FieldAlignedCurveNetwork::make_from_candidate(
       std::move(published.nodes), std::move(published.singularityPorts),
       std::move(published.mandatoryEdges),
       std::move(published.candidateTraces), std::move(published.events),
-      sourceDigest, atlasDigest, semanticDigest));
+      published.arrivalPriority, sourceDigest, atlasDigest, semanticDigest));
 }
 
 const FieldAlignedMandatoryEdge *FieldAlignedCurveNetwork::find_mandatory_edge(
@@ -2419,7 +3775,7 @@ FieldAlignedCurveNetworkCandidate
 FieldAlignedCurveNetwork::validation_candidate() const {
   return FieldAlignedCurveNetworkCandidate{
       nodes_, singularityPorts_, mandatoryEdges_, candidateTraces_, events_,
-      sourceDigest_, atlasDigest_};
+      arrivalPriority_, sourceDigest_, atlasDigest_};
 }
 
 const char *field_aligned_curve_network_error_code_name(
