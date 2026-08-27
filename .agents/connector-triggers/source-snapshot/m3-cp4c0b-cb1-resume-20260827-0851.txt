@@ -1,0 +1,5 @@
+turn=M3-CP4c-0b-CB1
+purpose=resume after completed M3-CP4c-0b-P0.3-REVIEW-PLAN
+semantic_source_sha=9e5b551a39d907ebeac733768ef27523002c5490
+read_mode=snapshot
+runtimeExecution=false
