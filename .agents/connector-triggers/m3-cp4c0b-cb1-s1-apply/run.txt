@@ -1,6 +1,0 @@
-turn=M3-CP4c-0b-CB1
-measure=S1
-purpose=apply verified non-gating contact census patch R1
-base_sha=d8a331182f1aa3aeb74d3f2ec78352b677417860
-patch_sha256=f8362c974edd497db83caa6861b777b83d4db1066b7edaf6dcb992c59d6edecf
-runtimeExecution=false
