@@ -1,0 +1,3 @@
+# M3-CP4c-0b-TB-S1-REV closeout temporary-state cleanup
+.agents/connector-triggers/source-snapshot/m3-cp4c0b-tb-s1-rev-20260828.txt
+.agents/connector-triggers/m3-cp4c0b-tb-s1-rev-closeout-apply/run.txt
