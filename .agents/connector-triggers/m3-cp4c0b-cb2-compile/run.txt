@@ -1,0 +1,6 @@
+purpose=M3-CP4c-0b-CB2 GMP compile-only verification
+semantic_source=b2629040450c12507367c232f68a4d972b46450f
+changed_owner_target=directional_surface_cell_producer_tests
+full_target_count=8
+runtime_execution=false
+retry=0
