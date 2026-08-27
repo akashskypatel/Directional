@@ -82,70 +82,38 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R8` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-0-TB-R8-REVIEW-PLAN` — EXACT NEXT / independent review only
 
-`M3-CP4c-0-CB8` is **COMPLETE / BUILD GREEN**. Exact semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5` implements only frozen DEFN-2 L0–L9 grazing-edge transit. Compile run `33025705457` completed both preflight job `98366398970` and full package job `98367264215` successfully; all eight standard targets compiled/linked, preflight/build exit codes are 0, source-status snapshots are empty, and package metadata records `runtimeExecution=false`. Immutable package `9628445643` hashes to `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; its semantic-source archive hashes to `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`.
+TB-R8 run/job `33028238313 / 98374531360` is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE** against immutable CB8 package `9628445643` / semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`.
 
-The CP4c-0 required-green selector is now **343** identities / `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`. Accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and prior first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` are unchanged. The old 338 full-file hash is not claimed preserved because L7 deliberately reauthored the retired flow-rejection identity.
+P0 passed. P1 completed **342/343** fresh identities: **341 PASS, 1 RED, 1 incomplete**. Accepted first-316 and prior first-328 are still **316/316** and **328/328** green. Ordinal 338 `ResolvedBranchCorrection.AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections` ran **853.437 s** and failed with `gcd(): while running too long!`; the last atlas locus was singularity 7 / fan 3→0 / edge `(43,49)` / lift `-1`. Ordinals 339-342 passed. Ordinal 343 `ResolvedBranchCorrection.GrazingTraceSegmentsPublishExactEndpointSupport` never returned before the user cancelled the stalled job. P2-P8 and final immutable postflight did not run; no acceptance is claimed.
 
-**TB-R8 authority:** `Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md`. Consume package `9628445643` only. Execute the 343 ordered gate, F3, non-gating L2/L5/K2/G5/J3/K3 diagnostics, frozen Q8, and immutable postflight. No configure, compile, relink, regeneration, permission repair, product/test/fixture/selector/build mutation, or CP4c-1/2/3 entry. A valid red routes to independent Review + Plan.
+Raw evidence: partial result artifact `9629797616` / `50462c5023a5cab817859eefb00b3f523e6cfe1e6d601188cd7c1e14a149c287`; diagnostic artifact `9629798008` / `217523d273a844c6f3c8f8a3e4c6d0314352d7620c8af24760b239a4d989977a`.
 
-**Q8 remains unamended.** DEFN-2 predicts criterion 2 should become green at 24 sphere traces and criterion 3 may remain red because the prescribed cube-field sphere pairs singularities instead of producing trace/trace contact. If criterion 2 passes and criterion 3 is red, do not weaken/relabel/add a CP4c-0 witness; independent Review + Plan must adjudicate/re-home criterion 3 to CP4c-1.
+**Binding user stop:** do not re-run TB-R8 until a deterministic product-level guard for infinite or unreasonably long-running loops is implemented and compile-green. Do not substitute workflow/job/test timeouts.
 
-### Context Load Plan — successor
+Static review anchor: `BigInteger::gcd` has a 10,000-iteration emergency guard, while `FieldAlignedTraceTraversalGuard` has cycle detection plus a sphere step budget of **1,775,616** and includes the exact boundary point in the recurrence key. The exact source of non-progress/operand growth is not yet proved and must be independently reviewed before changing guard semantics.
+
+Authoritative review input: `.agents/Directional/Architecture_M3_CP4c0_TB_R8_Test_Benchmark_Report.md` and `.agents/Directional/Architecture_M3_CP4c0_TB_R8_Review_Plan.md`.
+
+No runtime, compile, product/test/fixture/selector mutation, tolerance change, or CP4c-1/2/3 work is authorized in the next turn. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **47**. Latest accepted runtime remains CP4ab **316/316**.
+
+Context Load Plan:
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/REVIEW.md
 conditional_modules:
-  - trigger: GitHub Actions/artifact execution and evidence collection
+  - trigger: implementation/corrective planning is required
+    path: modules/engineering-guidelines/MODULE.md
+  - trigger: GitHub source/PR evidence is needed
     path: modules/github-connector/MODULE.md
 deep_references:
-  - turn-based-coding-agent/references/core/turn-boundaries.md
-  - turn-based-coding-agent/references/core/evidence.md
-  - turn-based-coding-agent/references/github-connector-workflows/WORKFLOW_POLICY.md
-project_authority:
-  - .agents/Directional/Future_Chat_Session_Handoff.md
-  - .agents/Directional/Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md
-  - .agents/Directional/Architecture_M3_CP4c0_CB8_Code_Build_Report.md
-  - .agents/Directional/Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md
-  - .agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt
+  - .agents/Directional/Architecture_M3_CP4c0_TB_R8_Review_Plan.md
 do_not_preload:
-  - sibling turn files
-  - unrelated historical reports
-  - research/provenance/examples
+  - TB-EXEC
+  - runtime artifacts beyond the two cited TB-R8 artifacts unless a review question requires them
 ```
-
----
-
-### DEFN-2 evidence, independently re-derived — retained
-
-Re-derived from `benchmarks/fixtures/milestone-g/sphere_prescribed.{obj,rawfield,fieldmeta.json}` and `torus.{obj,rawfield}` alone. No Directional binary, build, or test was executed.
-
-- prescribed sphere: **72** grazing configurations on **72 distinct** edges (histogram `{1: 72}`); ratio median `0.021788`, max `0.200424`; non-grazing median `0.923319`
-- torus: **120** grazing configurations of 864 `(edge, branch)` pairs; ratio median `0.074604`, max `0.102869`
-- both distinct counts and both extremes match TB-R7's runtime K1 figures to six decimal places, by a route sharing no code with the product
-- **slide-direction ambiguity: 0 of 192** — zero sign disagreements, zero zero-rates, on both witnesses
-- the eight sphere singularities are exactly the corners of an inscribed cube, `(±1, ±1, ±1)/sqrt(3)`, with **3** grazing edges each and 24 grazing edges incident to a singularity
-- live locus `6-8`: source `(6,8,9)` `d = [-4.0035, +5.0071, -1.0035]`, target `(6,8,97)` `d = [-3.2247, +3.8017, -0.5770]`; both parameter rates positive; transit to **vertex 8, which is a singularity**; terminates by **T3 `SingularityTermination`**
-- the two-ring and four-triangle-fan witnesses are constructed in test support rather than in fixture files and **could not be measured here**; measure L2 must settle them, and the fan is the one place an ambiguous slide could plausibly appear
-
----
-
-### TB-R6 evidence this review adjudicated — retained
-
-All artifact digests and all three selector hashes were verified during review (the latter recomputed
-locally). Both TB-R5-review predictions — the fan artifact at 2 directed / 1 distinct, and the corrected
-population of 388/194 — were **confirmed to the digit**.
-
-`M3-CP4c-0-TB-R6` is **COMPLETE / VALID SEMANTIC RED**. Authoritative artifact-only control/run/job `a9ae307590b0cc23080452c4a5013674efc48fc2 / 33006282429 / 98300813772` consumed only CB6 package `9619352525` from semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`. Result artifact `9620769314` has ZIP SHA-256 `fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`; diagnostic artifact `9620770049` has ZIP SHA-256 `ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`.
-
-Frozen gate **338/338 PASS**, accepted prefix **316/316 PASS**, first-328 **328/328 PASS**, F3 **2/2 PASS**, G5 PASS/non-gating. H1/J1 reports the predicted **388 directed / 194 distinct legitimate disagreements** and separately excludes the fan's 2/1 fixture artifact. J3 is **524/524 agreement on legitimate interior transitions**; its only mismatch is the excluded fan edge. At the live sphere edge `6-8`, H1 reports `matching=0`, raw gauges `1 → 3`, `signedLift=2`, while J3 confirms declared matching agrees with geometry. Under the frozen decision table this points to **A1 gauge composition in `build_branch_transports`** as the live-Q8 owner. A separate **254 directed / 127 distinct** equal-gauge/lift-0 residual points at **A1 flow classification / direction publication in `build_boundary_pairing`**. Q8 remains **CREDITABLE / RED at criterion 2**.
-
-Read `Architecture_M3_CP4c0_TB_R6_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c0_TB_R6_Review_Plan.md`. The review must re-derive the A1 composition contract, adjudicate whether the unequal-gauge live-Q8 class and equal-gauge residual share one lower invariant, close H-B precisely, and freeze exactly one bounded successor. If the owner cannot be proven statically, freeze another diagnostic-only CB rather than guessing a production fix.
-
-**Turn boundary:** independent review + planning only. Execute no Directional runtime, test, benchmark, configure, compile, relink, repair, or generated discovery; mutate no product/test/fixture/selector/tolerance/build configuration; do not enter CP4c-1/2/3.
 
 ## Current authority
 
@@ -213,7 +181,7 @@ Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 975308
 - CP4c-1 remains blocked, and now also owns re-homed Q8 criterion 3 (§9.3 of DEFN-2): trace/trace contact needs a witness whose separatrices do **not** pair singularities. CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **47**. CB8 added one immutable compile package and executed no runtime.
 - Frozen CP4c-0 gate is now **343** with SHA-256 `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`; accepted first-316 and prior first-328 hashes remain unchanged. The CP4c-1 **318** selector is unchanged.
-- Exact next is **`M3-CP4c-0-TB-R8`**. Artifact-only Test + Benchmark on package `9628445643`; valid red routes to independent Review + Plan.
+- Exact next is **`M3-CP4c-0-TB-R8-REVIEW-PLAN`**. Independent review only; no TB-R8 retry until a deterministic product termination guard is implemented and compiled.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

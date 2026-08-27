@@ -21,15 +21,17 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R8` — EXACT NEXT / artifact-only Test + Benchmark
+## Current focus — `M3-CP4c-0-TB-R8-REVIEW-PLAN` — EXACT NEXT / independent review only
 
-`M3-CP4c-0-CB8` is **COMPLETE / BUILD GREEN**. Semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5` implemented only frozen DEFN-2 L0–L9 grazing-edge transit and compiled all eight standard targets. Immutable package `9628445643` has ZIP SHA-256 `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; packaged source archive SHA-256 `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`. Compile run/jobs `33025705457 / 98366398970 / 98367264215` are green with preflight/build exit 0, empty source-status snapshots, and `runtimeExecution=false`.
+`M3-CP4c-0-TB-R8` is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE**. Run/job `33028238313 / 98374531360` consumed immutable CB8 package `9628445643` from semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`. P0 passed and P1 completed 342/343 fresh selector processes: **341 PASS, 1 RED, 1 incomplete**. Accepted first-316 and prior first-328 remain **316/316** and **328/328** green.
 
-The CP4c-0 required-green selector is now **343** identities with SHA-256 `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`. Accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and prior first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` remain unchanged. CB8 runtime semantics are **not yet accepted**; latest accepted runtime remains CP4ab 316/316.
+Ordinal 338, `ResolvedBranchCorrection.AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections`, failed after **853.437 s** with `gcd(): while running too long!`. The only later missing selector was ordinal 343, `ResolvedBranchCorrection.GrazingTraceSegmentsPublishExactEndpointSupport`, which did not return before explicit user cancellation. P2-P8 and final postflight were not reached, so TB-R8 receives **no acceptance credit** and CB8 runtime semantics remain unaccepted.
 
-**Exact next:** execute `Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md` against package `9628445643` only. No configure/build/relink/repair or product/test/fixture/selector/build mutation. TB-R8 must run the 343 gate, F3, L2/L5/K2/G5/J3/K3 diagnostics, frozen Q8, and immutable postflight. A valid red routes to independent Review + Plan. Do not enter CP4c-1/2/3 from TB.
+The current source already has two nominal guards, but neither is a sufficient practical policy for this path: `BigInteger::gcd` throws only after 10,000 Euclidean iterations, while `FieldAlignedTraceTraversalGuard` gives the prescribed sphere a structural budget of **1,775,616** steps and keys recurrence on a state containing the exact boundary point. The termination/progress invariant must be reviewed before changing constants.
 
-**Q8 remains unamended.** DEFN-2 predicts criterion 2 (24 sphere traces) should pass and criterion 3 (`TraceIntersection`) may remain red because the prescribed sphere separatrices pair singularities. If that occurs, do not weaken the criterion or add a CP4c-0 witness; independent Review + Plan must adjudicate/re-home it to CP4c-1.
+**Binding user stop rule:** do **not** re-run TB-R8 until a deterministic product-level guard for infinite or unreasonably long-running loops has landed and compiled. A workflow/test timeout is not an acceptable substitute.
+
+**Exact next:** independent `M3-CP4c-0-TB-R8-REVIEW-PLAN` using `Architecture_M3_CP4c0_TB_R8_Review_Plan.md`. Review/planning only: no runtime, compile, source/test/fixture/selector mutation, tolerance change, or CP4c-1/2/3 entry.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -66,7 +68,8 @@ The CP4c-0 required-green selector is now **343** identities with SHA-256 `63ca1
   rule and is void. Q8 **not amended**; criterion 3 re-homed to CP4c-1 with reasons.
   `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`; Amendment 10; `DESIGN.md` §4.5.
 - [x] `M3-CP4c-0-CB8` — **COMPLETE / BUILD GREEN.** Semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`; package `9628445643`. L0–L9 only; 343 required-green identities; all eight standard targets compiled/linked; `runtimeExecution=false`.
-- [ ] `M3-CP4c-0-TB-R8` — **EXACT NEXT.** Artifact-only Test + Benchmark on package `9628445643` under `Architecture_M3_CP4c0_TB_R8_Artifact_Only_Test_Benchmark_Plan.md`.
+- [x] `M3-CP4c-0-TB-R8` — **INCOMPLETE / BLOCKED.** 342/343 completed; ordinal 338 RED after 853.437 s with `gcd(): while running too long!`; ordinal 343 incomplete at user cancellation; no acceptance credit.
+- [ ] `M3-CP4c-0-TB-R8-REVIEW-PLAN` — **EXACT NEXT.** Independent review of tracing/exact-arithmetic progress guards. No TB-R8 retry until a deterministic product guard is implemented and compiled.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0. Also owns re-homed Q8 criterion 3 (trace/trace contact
   needs a witness whose separatrices do **not** pair singularities — not the cube-field sphere).
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.

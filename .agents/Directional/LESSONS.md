@@ -211,6 +211,8 @@ A machine summary must not infer a typed first rejection by grepping an entire G
     express multi-face traversal at all. Re-derive capability against the *new* contract before
     reusing a witness, and encode the result as a runtime assertion inside the fixture.
 
+23. **A loop guard is not effective merely because one exists; its bound must terminate expensive work before the process becomes operationally stuck.** TB-R8 already had two nominal guards: exact tracing tracks visited states and a structural step budget, and `BigInteger::gcd` throws after 10,000 Euclidean iterations. Yet the prescribed sphere received a trace budget of **1,775,616** states, one identity spent 853 s before the GCD backstop fired, and the next sphere identity still had to be cancelled. For geometry with exact arithmetic, guard the semantic progress/cycle at the owning algorithm with a deterministic, practically bounded finite-work contract. Keep low-level arithmetic guards as backstops; do not substitute CI/test wall-clock timeouts for a product termination invariant.
+
 ### A witness census is cheap; assuming a witness is capable is not
 
 Nine committed `.obj` witnesses, and their Euler characteristics and boundary-edge counts can be
