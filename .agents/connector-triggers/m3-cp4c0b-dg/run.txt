@@ -1,5 +1,0 @@
-purpose=M3-CP4c-0b-DG seven-new-contract artifact-only gate
-package_artifact_id=9664890562
-semantic_source=737f93be10a73db950e2a7f823b96ffb0d59cf4d
-selector_sha256=14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724
-retry=1

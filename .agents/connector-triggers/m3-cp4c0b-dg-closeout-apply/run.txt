@@ -1,4 +1,0 @@
-purpose=M3-CP4c-0b-DG closeout documentation Drive apply
-base_sha=167f995b8f6de43811be4032c9eb7c1848387ac8
-patch_sha256=85522f421439aa037b5228a75749b860f8d38f5c8d11112624feb52945495d13
-retry=0

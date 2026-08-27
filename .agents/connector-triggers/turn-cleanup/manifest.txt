@@ -1,5 +1,0 @@
-# M3-CP4c-0b-DG closeout temporary-state manifest
-.agents/connector-triggers/source-snapshot/m3-cp4c0b-dg-20260827.txt
-.agents/Directional/turn-payloads/m3-cp4c0b-dg-exec.sh
-.agents/connector-triggers/m3-cp4c0b-dg/run.txt
-.agents/connector-triggers/m3-cp4c0b-dg-closeout-apply/run.txt
