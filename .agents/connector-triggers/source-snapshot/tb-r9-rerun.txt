@@ -1,0 +1,3 @@
+purpose=M3-CP4c-0 TB-R9 whole-gate re-proof after CAND-01/CAND-02 fixes
+semantic_source_sha=7bbc0480d9ab5954329b940992ef41a9223102ed
+runtimeExecution=false
