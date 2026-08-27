@@ -1,0 +1,151 @@
+name: M3 CP4c0b TB S1 EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0b-tb-s1-exec/run.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c0b-tb-s1-exec-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      report_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_run_file: false
+      label: m3-cp4c0b-tb-s1-exec
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c0b-tb-s1-exec.yml
+      retention_days: 7
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize TB diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c0b-tb-s1-exec.log"
+          : > "$log"
+          mkdir -p "${RUNNER_TEMP}/m3-cp4c0b-tb-s1-result"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "ref=${GITHUB_REF}"
+            echo "turn=M3-CP4c-0b-TB-S1-EXEC"
+            echo "turnBoundary=Test+Benchmark/TB-EXEC"
+            echo "runtimeExecution=true"
+            echo "packageArtifactId=9655632444"
+            echo "packageSource=4bb467806df99c70889394a323c17c13bc185ca3"
+            echo "packageSha256=c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f"
+            echo "repositoryTimeoutConfigured=false"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact control payload
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Verify immutable execution payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c0b-tb-s1-exec.log"
+          exec > >(tee -a "$log") 2>&1
+          sha256sum .agents/Directional/turn-payloads/tb_s1_common.py
+          sha256sum .agents/Directional/turn-payloads/m3-cp4c0b-tb-s1-exec.py
+          test "$(sha256sum .agents/Directional/turn-payloads/tb_s1_common.py | cut -d' ' -f1)" = "c2858475f04eb5e13100e9ecd5b90ff15c2d0cdde3a4e00bd0abe82a50c94c25"
+          test "$(sha256sum .agents/Directional/turn-payloads/m3-cp4c0b-tb-s1-exec.py | cut -d' ' -f1)" = "544c3c10a975aa49a73abe3ace90f684ae6ef1e74488727cf7f6133b41909efb"
+          test -f .agents/connector-triggers/m3-cp4c0b-tb-s1-exec/run.txt
+          grep -Fx 'package_artifact_id=9655632444' .agents/connector-triggers/m3-cp4c0b-tb-s1-exec/run.txt
+          grep -Fx 'package_source=4bb467806df99c70889394a323c17c13bc185ca3' .agents/connector-triggers/m3-cp4c0b-tb-s1-exec/run.txt
+          grep -Fx 'runtimeExecution=true' .agents/connector-triggers/m3-cp4c0b-tb-s1-exec/run.txt
+          python3 --version
+          gh --version | head -n 1
+          unzip -v | head -n 2
+
+      - name: Provision GMP runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c0b-tb-s1-exec.log"
+          exec > >(tee -a "$log") 2>&1
+          sudo apt-get update
+          sudo apt-get install -y libgmp-dev
+          dpkg-query -W -f='${Package} ${Version}\n' libgmp-dev libgmp10 libgmpxx4ldbl
+          ldconfig -p | grep -E 'libgmp(xx)?\.so'
+
+      - name: Execute artifact-only TB plan
+        id: run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c0b-tb-s1-exec.log"
+          set +e
+          python3 .agents/Directional/turn-payloads/m3-cp4c0b-tb-s1-exec.py 2>&1 | tee -a "$log"
+          status=${PIPESTATUS[0]}
+          set -e
+          echo "exit=${status}" >> "$GITHUB_OUTPUT"
+          echo "tb_execution_exit=${status}" | tee -a "$log"
+
+      - name: Record final TB workflow status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m3-cp4c0b-tb-s1-exec.log"
+          {
+            echo "runner_exit=${{ steps.run.outputs.exit }}"
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload raw TB result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c0b-tb-s1-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c0b-tb-s1-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload TB diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c0b-tb-s1-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c0b-tb-s1-exec.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Fail when TB execution is red
+        if: always() && steps.run.outputs.exit != '0'
+        shell: bash
+        run: |
+          echo "M3-CP4c-0b-TB-S1-EXEC returned nonzero: ${{ steps.run.outputs.exit }}" >&2
+          exit 1
