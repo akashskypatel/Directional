@@ -2541,8 +2541,24 @@ TEST(GlobalTopologyPlan, UnestablishedFieldTransportCannotProduceATopologyPlan) 
 
 namespace {
 
+enum class Cp4cRailAuthority {
+  AtlasDerived,
+  PipelineAuthoritative,
+};
+
+const char *cp4c_rail_authority_name(const Cp4cRailAuthority authority) {
+  switch (authority) {
+  case Cp4cRailAuthority::AtlasDerived:
+    return "atlas-derived";
+  case Cp4cRailAuthority::PipelineAuthoritative:
+    return "pipeline-authoritative";
+  }
+  return "unknown";
+}
+
 struct Cp4cProductionFixture {
   TriMesh mesh;
+  Cp4cRailAuthority railAuthority = Cp4cRailAuthority::PipelineAuthoritative;
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
   std::optional<FieldAlignedCurveNetwork> network;
@@ -2712,6 +2728,7 @@ void append_cp4c_atlas_failure_diagnosis(
 
 struct Cp4cReachabilityObservation {
   TriMesh mesh;
+  Cp4cRailAuthority railAuthority = Cp4cRailAuthority::PipelineAuthoritative;
   std::vector<SurfaceCellRail> rails;
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
@@ -3750,6 +3767,8 @@ Cp4cReachabilityObservation observe_cp4c_witness(
 
   std::ostringstream report;
   report << fixtureName
+         << ";railAuthority="
+         << cp4c_rail_authority_name(observation.railAuthority)
          << ";pipelineFailure=" << result.diagnostics.terminalFailureCode
          << ";pipelineFailureStage=" << result.diagnostics.terminalFailureStage
          << ";sourceTopologyRegionsSnapshot="
@@ -5506,6 +5525,8 @@ std::string cp4c0b_contact_census_report(
   report << "m3Cp4c0bS1"
          << ";credit=none"
          << ";owningMeasure=S1"
+         << ";railAuthority="
+         << cp4c_rail_authority_name(Cp4cRailAuthority::AtlasDerived)
          << ";witness=" << metadata.name
          << ";population=" << metadata.population
          << ";classification=" << metadata.classification;
@@ -5515,6 +5536,8 @@ std::string cp4c0b_contact_census_report(
     return report.str() + ";status=source-authority-unavailable";
   }
   const auto rails = rails_from_atlas(mesh, atlas);
+  report << ";mandatoryEdgeCount=" << rails.size()
+         << ";singularityCount=" << atlas.singularities().size();
   const auto result =
       directional::geometry::surface_cell_tracing_detail::
           diagnose_field_aligned_contact_census(
@@ -6941,15 +6964,73 @@ TEST(TraceTerminationCorrection,
             rejected.error().code);
 }
 
+enum class Cp4cNodeProvenance : unsigned int {
+  Singularity = 1U << 0U,
+  MandatoryEdgeEndpoint = 1U << 1U,
+  Contact = 1U << 2U,
+};
+
+unsigned int cp4c_node_provenance(
+    const FieldAlignedCurveNetwork &network,
+    const directional::authority::NetworkNodeId node) {
+  unsigned int provenance = 0U;
+  if (std::any_of(network.singularity_ports().begin(),
+                  network.singularity_ports().end(),
+                  [&](const auto &port) { return port.node == node; })) {
+    provenance |= static_cast<unsigned int>(Cp4cNodeProvenance::Singularity);
+  }
+  if (std::any_of(network.mandatory_edges().begin(),
+                  network.mandatory_edges().end(),
+                  [&](const auto &edge) {
+                    return edge.firstNode == node || edge.secondNode == node;
+                  })) {
+    provenance |=
+        static_cast<unsigned int>(Cp4cNodeProvenance::MandatoryEdgeEndpoint);
+  }
+  if (provenance == 0U) {
+    provenance = static_cast<unsigned int>(Cp4cNodeProvenance::Contact);
+  }
+  return provenance;
+}
+
+bool cp4c_has_node_provenance(const unsigned int provenance,
+                              const Cp4cNodeProvenance value) {
+  return (provenance & static_cast<unsigned int>(value)) != 0U;
+}
+
 TEST(TraceTerminationCorrection,
-     TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit) {
+     TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded) {
   const Cp4cReachabilityObservation torus =
       observe_cp4c_witness("torus", "torus");
   ASSERT_TRUE(torus.sourceAuthority.has_value()) << torus.report;
   ASSERT_TRUE(torus.atlas.has_value()) << torus.report;
   ASSERT_TRUE(torus.network.has_value()) << torus.report;
+  EXPECT_EQ(Cp4cRailAuthority::PipelineAuthoritative, torus.railAuthority);
   EXPECT_TRUE(torus.network->candidate_traces().empty());
-  EXPECT_TRUE(torus.network->nodes().empty());
+  ASSERT_FALSE(torus.network->nodes().empty());
+  for (const auto &node : torus.network->nodes()) {
+    const unsigned int provenance =
+        cp4c_node_provenance(*torus.network, node.id);
+    EXPECT_TRUE(cp4c_has_node_provenance(
+        provenance, Cp4cNodeProvenance::MandatoryEdgeEndpoint));
+    EXPECT_FALSE(
+        cp4c_has_node_provenance(provenance, Cp4cNodeProvenance::Contact));
+  }
+  for (const auto &trace : torus.network->candidate_traces()) {
+    EXPECT_FALSE(trace.terminalContact.has_value());
+  }
+
+  std::map<directional::geometry::FieldAlignedNetworkEventKind, std::size_t>
+      eventKindHistogram;
+  for (const auto &event : torus.network->events()) {
+    ++eventKindHistogram[event.kind];
+  }
+  EXPECT_EQ(0U,
+            eventKindHistogram[directional::geometry::
+                                   FieldAlignedNetworkEventKind::TraceIntersection]);
+  EXPECT_EQ(0U, eventKindHistogram[directional::geometry::
+                                      FieldAlignedNetworkEventKind::
+                                          SingularityPortJunction]);
   EXPECT_TRUE(torus.network->events().empty());
 
   // The four-triangle fan remains a structural/excluded witness: exercise the
