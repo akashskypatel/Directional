@@ -8,6 +8,18 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-27 — `M3-CP4c-0-TB-R9`: GMP artifact-only re-proof is VALID RED 344/346; independent review required
+
+`M3-CP4c-0-TB-R9` executed the frozen 346-identity CP4c-0 gate from immutable GMP package `9634245265` (source `66325345567106fe7de8560ee2aee5f07ca665de`, package SHA-256 `4ef834465ee8db3110f40f7882cde4a39f94821b6bc0daba3ae0b0e04d7e5629`). Authoritative run/job `33048964354 / 98439563813`; result artifact `9636849182` SHA-256 `b485c1cfe5f929600bae382b1a01954b319dd4d1904e1dd1675cb2ad02771c57`; diagnostic artifact `9636849748` SHA-256 `9a23f1e9f8de5bb36086ed2ea1e20900cbb9cf53a940bc7c336a4ab2516d4023`.
+
+- Frozen result: **344/346 PASS**, accepted first-316 **316/316**, first-328 **328/328**, Q8 criteria **1/4/5 PASS**, zero timeouts, zero escaping C++ exceptions, zero orchestration errors, immutable postflight PASS.
+- The former TB-R8 pathological identity now passes in **102 ms** under CB9's deterministic cost guard.
+- Ordinal 333 is recorded as `M3-CP4c0-TB-R9-CAND-01`, a non-stable **test-side GMP portability** candidate: its `to_double(18)` witness search depends on legacy decimal-digit truncation, whereas GMP uses `get_d()` and ignores the digit argument, so the test fails `found` before exercising production behavior.
+- Ordinal 344 is recorded as `M3-CP4c0-TB-R9-CAND-02`, a non-stable **test-side fixture/precondition** candidate: the supposed narrow positive control has an exact zero-time exit, for which production correctly returns `BranchContinuationDegenerateEntry`.
+- A preliminary control run `33048777701` failed only temporary payload digest verification before runtime; it is orchestration-only and carries no semantic credit.
+- CP4c-0 remains **OPEN** because the full frozen gate is red despite its owned Q8 criteria being green. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **48**.
+- **Exact next:** independent `M3-CP4c-0-TB-R9-REVIEW-PLAN` only. No rerun, correction, or automatic CP4c-0b-CB1 entry before that review freezes the smallest corrective scope.
+
 ## 2026-08-27 — CP4c documentation consolidation: 28 documents to 9, no durable information removed
 
 Documentation only. No product, test, fixture, selector, build-configuration, runtime or gate change; the CP4c-0 selector remains **346** with SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`.

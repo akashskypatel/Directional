@@ -2,9 +2,23 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-27 UTC** after interrupted `M3-CP4c-0-TB-R8`. Latest accepted runtime remains M3 CP4ab **316/316** (`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`).
+Last updated: **2026-08-27 UTC** after `M3-CP4c-0-TB-R9`. Latest accepted runtime remains M3 CP4ab **316/316**. TB-R9 is **VALID RED 344/346** on GMP package `9634245265`, with accepted prefixes 316/316 and 328/328 green, Q8 criteria 1/4/5 PASS, zero timeouts, zero escaping C++ exceptions, and immutable postflight PASS. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **48**.
 
 TB-R8 is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE** on run/job `33028238313 / 98374531360`, control `078aac03923c0badc42d150397065fe5b33212c6`, consuming immutable CB8 package `9628445643` at semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`. P1 completed **342/343** identities: 341 pass, ordinal 338 red after 853.437 s with `gcd(): while running too long!`, ordinal 343 incomplete at explicit user cancellation. First-316 and first-328 remain green. No acceptance credit; P2-P8 were not reached. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **47**. Exact next is independent `M3-CP4c-0-TB-R8-REVIEW-PLAN`; no TB-R8 retry before a deterministic product termination guard lands and compiles.
+
+## M3-CP4c0-TB-R9-CAND-01 — GMP backend invalidates legacy digit-limited lossy-round-trip test precondition — ACTIVE / NON-STABLE / TEST-SIDE GMP PORTABILITY
+
+- **Observed:** TB-R9 ordinal 333 `ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` fails at `ASSERT_TRUE(found)` before the production vertex-sector predicate is exercised.
+- **Root cause:** the test searches for a witness by calling `ENumber::to_double(18)` and relies on the legacy backend's explicit 18-decimal-digit render/parse truncation. The GMP backend implements `to_double(int)` as `mpq_class::get_d()` and ignores `maxDigits`; the backend-specific witness search can therefore fail to find a lossy round trip.
+- **Classification:** test-side GMP portability/precondition candidate, not evidence that the production predicate regressed. Independent review must freeze a backend-independent construction/assertion of the intended lossy witness before authorizing test mutation.
+- **Stable-count rationale:** accepted CP4ab prefix remains 316/316 and CP4c-0 has never been accepted; **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0-TB-R9-CAND-02 — exact-magnitude positive-control fixture enters zero-time continuation — ACTIVE / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION
+
+- **Observed:** TB-R9 ordinal 344 `ResolvedBranchCorrection.ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance` proves the oversized exact-width rejection, then its supposed narrow positive control expects a decision but receives an error.
+- **Root cause:** the positive-control `boundary_point(incoming, 1, 2)` reaches an exact winning exit time of zero. `resolve_field_branch_continuation` is contractually required to return typed `BranchContinuationDegenerateEntry` for `time == 0`; production is therefore failing closed as designed.
+- **Classification:** test-side fixture/precondition candidate. Independent review must freeze a genuinely narrow ordinary boundary parameter with positive exact exit time, or prove a product-contract defect before any other correction.
+- **Stable-count rationale:** no accepted-green identity regressed; **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c0-TB-R8-CAND-01 — grazing-edge tracing enters pathological exact-arithmetic work; practical termination guard is insufficient — ACTIVE / NON-STABLE / PRODUCTION PERFORMANCE-TERMINATION
 

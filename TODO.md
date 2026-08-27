@@ -21,9 +21,9 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0-TB-R9` then `M3-CP4c-0b-CB1` — checkpoint SPLIT
+## Current focus — `M3-CP4c-0-TB-R9-REVIEW-PLAN` — independent review required
 
-**CP4c-0 has been split.** It was carrying two unrelated obligations under one gate: *how a trace continues* and *how a trace stops*. The first is finished and proved; the second was never scoped and is what blocked TB-R8. `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md` freezes the split and the termination contract.
+**CP4c-0 has been split.** It was carrying two unrelated obligations under one gate: *how a trace continues* and *how a trace stops*. The continuation implementation and its Q8-owned criteria are green in TB-R9, but the full 346 gate is not yet accepted because two test-side candidates require independent review; the termination half is separately frozen under CP4c-0b. `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md` freezes the split and the termination contract.
 
 | | **CP4c-0** — continuation | **CP4c-0b** — termination |
 |---|---|---|
@@ -33,9 +33,9 @@ gate count excludes them, each carries a written rationale and an owning correct
 
 **Q8 criteria 2 and 3 move together, and are not weakened** (Amendment 11). They are one piece of work: the six circulating traces are simultaneously what blocks criterion 2 and what satisfies criterion 3. **CP4c-0 closes on its own evidence** rather than being held hostage — nothing green stays in limbo.
 
-**`M3-CP4c-0-TB-R9`** — artifact-only Test + Benchmark on a fresh package, gate **346**, against Q8 criteria 1, 4 and 5. Stop conditions in `Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md` §8: any accepted red, any minutes-long identity, or any `C++ exception with description` in the log stops the turn.
+**`M3-CP4c-0-TB-R9`** — **COMPLETE / VALID SEMANTIC RED 344/346** on GMP package `9634245265`, authoritative run/job `33048964354 / 98439563813`. Accepted first-316 and first-328 remain **316/316** and **328/328**; Q8 criteria 1/4/5 are PASS; no timeout or escaping C++ exception occurred. The two reds are test-side candidates requiring independent review, so CP4c-0 is not accepted.
 
-**`M3-CP4c-0b-CB1`** — Code + Build only, runtime forbidden, measures **P0–P9**. Contact predicate in exact barycentric arithmetic; arrival priority `ArcLengthFiltered` with a **computed** forward error bound (a literal epsilon anywhere in that path is a stop condition); inconclusive comparisons and exact ties resolve to **mutual termination**, which is canonical and needs no arbitrary tie-break; global priority queue rather than sequential tracing; contact node plus `TraceIntersection` event; N1/N2/N4 demoted to backstops that must not fire.
+**`M3-CP4c-0b-CB1`** — remains the next CB target after the required TB-R9 independent review; **do not enter it automatically from this closeout**. Code + Build only, runtime forbidden, measures **P0–P9**. Contact predicate in exact barycentric arithmetic; arrival priority `ArcLengthFiltered` with a **computed** forward error bound (a literal epsilon anywhere in that path is a stop condition); inconclusive comparisons and exact ties resolve to **mutual termination**, which is canonical and needs no arbitrary tie-break; global priority queue rather than sequential tracing; contact node plus `TraceIntersection` event; N1/N2/N4 demoted to backstops that must not fire.
 
 **Alternative priority metrics are retained for future performance/quality comparison** (`StepCount`, `BarycentricTime`, `TraceSeniority`) but are reachable **only** from a diagnostic entry point the production pipeline never calls, with an identity asserting production cannot select a non-default value. A production-reachable priority argument is a second writer of network topology and a stop condition.
 
@@ -86,15 +86,15 @@ gate count excludes them, each carries a written rationale and an owning correct
   inconclusive or tied arrivals, and the constrained alternatives harness. Amendment 11 moves Q8
   criteria 2 and 3 to CP4c-0b; `DESIGN.md` §4.6's termination guarantee is amended to name its
   condition. Record: `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`.
-- [ ] `M3-CP4c-0-TB-R9` — **EXACT NEXT.** Artifact-only Test + Benchmark, gate **346**, Q8 criteria
-  1/4/5. Closes CP4c-0. Independent of CB1 and does not block it.
-- [ ] `M3-CP4c-0b-CB1` — **NEXT CB TARGET.** Code + Build only, runtime forbidden, measures **P0–P9**.
+- [x] `M3-CP4c-0-TB-R9` — COMPLETE / VALID SEMANTIC RED **344/346** on GMP package `9634245265`; accepted prefixes 316/316 and 328/328 remain green; Q8 1/4/5 PASS; two test-side candidates remain.
+- [ ] `M3-CP4c-0-TB-R9-REVIEW-PLAN` — **EXACT NEXT.** Independent Review + Plan only. Adjudicate the GMP lossy-round-trip precondition and the zero-time positive-control fixture; freeze the smallest correction before any CB or rerun.
+- [ ] `M3-CP4c-0b-CB1` — **NEXT CB TARGET AFTER REVIEW.** Code + Build only, runtime forbidden, measures **P0–P9**; do not start automatically.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0b. It **no longer owns** re-homed Q8 criterion 3, which
   belongs to CP4c-0b along with criterion 2.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen CP4c-0 selector authority is now **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **47**.
+Frozen CP4c-0 selector authority is now **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **48**. TB-R9 does not close CP4c-0; exact next is independent `M3-CP4c-0-TB-R9-REVIEW-PLAN`.
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

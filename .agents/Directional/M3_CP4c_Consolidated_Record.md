@@ -480,3 +480,16 @@ entire CP4c family, because **CP4c has never been accepted** and the accepted 31
 green in every run that executed it. Produced-witness debt remains **5**. Latest accepted runtime
 authority remains **CP4ab 316/316**, source/package
 `157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`.
+
+## 2026-08-27 — TB-R9 GMP artifact-only re-proof and mandatory review boundary
+
+TB-R9 consumes GMP-linked package `9634245265` from source `66325345567106fe7de8560ee2aee5f07ca665de`; package ZIP SHA-256 `4ef834465ee8db3110f40f7882cde4a39f94821b6bc0daba3ae0b0e04d7e5629`. Authoritative run/job `33048964354 / 98439563813`; result artifact `9636849182` / `b485c1cfe5f929600bae382b1a01954b319dd4d1904e1dd1675cb2ad02771c57`; log artifact `9636849748` / `9a23f1e9f8de5bb36086ed2ea1e20900cbb9cf53a940bc7c336a4ab2516d4023`.
+
+The frozen CP4c-0 selector is **346** (`20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`). Runtime completed **344/346 PASS**: accepted first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 all PASS, zero timeout, zero escaping C++ exception, zero orchestration error, immutable postflight PASS. The TB-R8 pathological identity now returns PASS in **102 ms**.
+
+Two RED identities remain and are deliberately **not** repaired in TB:
+
+1. ordinal 333 `ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip`: the test's `to_double(18)` witness search relies on legacy digit-limited decimal truncation, while GMP's implementation is `get_d()` and ignores `maxDigits`; candidate `M3-CP4c0-TB-R9-CAND-01`, test-side GMP portability;
+2. ordinal 344 `ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance`: the narrow positive-control fixture reaches an exact zero-time exit and correctly receives `BranchContinuationDegenerateEntry`; candidate `M3-CP4c0-TB-R9-CAND-02`, test-side fixture/precondition.
+
+Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **48**. CP4c-0 remains OPEN and receives no acceptance credit. Exact next is independent `M3-CP4c-0-TB-R9-REVIEW-PLAN`; no runtime, compile, mutation, rerun, or automatic CP4c-0b-CB1 entry is authorized in that review.
