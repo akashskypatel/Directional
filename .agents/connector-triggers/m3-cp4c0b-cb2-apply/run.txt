@@ -1,5 +1,5 @@
-purpose=M3-CP4c-0b-CB2 apply verified rail-authority correction patch
-patch_file_id=1OL72pzYZvpBrBqn0lngRqZgKztV1jTN5
-patch_sha256=c297a55afb1b04c9fb2b854b91f8aa4883c6ec8a3e33a22d5655998115713be9
-base_sha=48352cb2cb88a16d4a66104eadcc9b700f3e449f
-retry=0
+purpose=M3-CP4c-0b-CB2 apply verified closeout documentation patch
+patch_file_id=1Cuwtna6Rb7exbtwJE_p6NAc2zHdzmeWx
+patch_sha256=fdbb1c979af2f9fb54da9b23fdb8c38522f451b11ddcf4e2079ba539e20fa269
+base_sha=b2629040450c12507367c232f68a4d972b46450f
+retry=1
