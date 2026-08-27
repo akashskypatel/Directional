@@ -1,3 +1,0 @@
-turn=M3-CP4c-0-CB-R10
-requested_base=f02aa3bb49fc23fad0af55480bb282f3e5de7a04
-purpose=exact source snapshot for GMP defect correction

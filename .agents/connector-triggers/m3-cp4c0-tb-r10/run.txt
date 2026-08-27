@@ -1,7 +1,0 @@
-turn=M3-CP4c-0-TB-R10
-purpose=focused artifact-only verification of GMP portability correction
-package_artifact_id=9644214591
-package_sha256=b9e7729fb557eddc203e38a1c11564bab3ad180982e10740d4374fe06748a390
-package_source=30ef2792e2915e0016dfd11f5fa2b3727e5503c0
-identity=ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip
-attempt=1

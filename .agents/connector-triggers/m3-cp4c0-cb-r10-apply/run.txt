@@ -1,6 +1,0 @@
-turn=M3-CP4c-0-CB-R10
-purpose=apply GMP-independent lossy vertex-sector witness test correction
-patch_file_id=12fPnYe49D1cLwy9BcW1iTeVczzDBGwyb
-patch_sha256=a8445a3ba1cd79c0e44f8462918ba61fbc42cd21dcc7f7313ff89ce5a6c315f3
-base_sha=eac5c736bf54fb5b2e1065e0071fb63d7fdc9f3f
-attempt=1

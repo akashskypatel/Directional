@@ -1,6 +1,0 @@
-turn=M3-CP4c-0-CB-R10-TB-R10-CLOSEOUT
-purpose=apply durable CB-R10/TB-R10 closeout documentation
-patch_file_id=1mdqukH7gK3-PuEjm7myPcdWUHoE1y3NQ
-patch_sha256=9671d4a41ee82e7e73f4e6f5b4d533ecc1df6d16573aa328d831201a56857f44
-base_sha=eac5c736bf54fb5b2e1065e0071fb63d7fdc9f3f
-attempt=1

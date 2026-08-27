@@ -1,5 +1,0 @@
-turn=M3-CP4c-0-CB-R10
-purpose=compile GMP portability test correction
-source_sha=30ef2792e2915e0016dfd11f5fa2b3727e5503c0
-runtimeExecution=false
-attempt=1
