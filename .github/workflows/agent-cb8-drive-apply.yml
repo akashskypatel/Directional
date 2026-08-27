@@ -1,4 +1,4 @@
-name: Agent M3 CP4c-0 CB8 Drive Apply
+name: Agent M3 CP4c-0 CB8 Closeout Drive Apply
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
     with:
       pr_number: 8
       commit_run_file: false
-      label: m3-cp4c0-cb8-drive-apply
+      label: m3-cp4c0-cb8-closeout-drive-apply
       trim_stale_comments: true
     secrets: inherit
 
@@ -35,9 +35,9 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1R2EzIWqfSdHhJd7jUbzVebGvRd4U7hqc
-      patch_sha256: 3b19aa80fcc3d06e1cf4cbf59d34e53a29a409557249094c941a1da0d8639eaf
-      base_sha: 334abf964375d176974d06d734221beabcea0830
+      file_id: 1PP3VOCwloArjAuLPtil31gEQNXkwyqpc
+      patch_sha256: a1585447ade1e88d54dab2a552d6384a030ca8c4ba91a169d9054814bc2c1722
+      base_sha: 8abb7a37267ac20c6576160fd0984208af6914fa
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M3-CP4c-0-CB8: implement grazing edge transit'
+      commit_message: 'docs: close M3-CP4c-0-CB8 build turn'
     secrets: inherit
