@@ -5,8 +5,7 @@ CP4c-1 sub-checkpoints. It consolidates twenty-four per-turn execution documents
 were retired on 2026-08-26 under explicit user authorization, preserving **every** evidence identifier
 they carried.
 
-**Status:** CP4c-0 and CP4c-1 are **OPEN**. This is therefore a *historical* record, **not** a closure
-record. No checkpoint is closed by this document, and none may be.
+**Status:** CP4c-0 is **CLOSED / ACCEPTED** and CP4c-1 remains **OPEN**. This remains primarily a historical record; CP4c-0 closure authority is the retained `Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md`, not this consolidated record.
 
 **What this document does not replace.** These remain live and normative:
 
@@ -19,7 +18,7 @@ record. No checkpoint is closed by this document, and none may be.
 | `Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` | Amendment 6; measures F0–F8 |
 | `Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` | Amendment 7; measures G0–G8 |
 | `Architecture_M3_CP4c0_TB_R4_Review_Plan_Independent_Review.md` | measures H0–H7 that prescribed CB5/TB-R5 |
-| `Architecture_M3_CP4c0_TB_R5_Artifact_Only_Test_Benchmark_Report.md` | current immutable TB-R5 evidence |
+| `Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md` | current CP4c-0 acceptance and immutable TB-R9 evidence |
 | `Architecture_M3_CP4c0_TB_R5_Review_Plan.md` | independent review brief |
 | `Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` | completed independent review record; J0–J7 authority |
 | `Architecture_M3_CP4c*_Required_Green_Selector.txt`, `..._Non_Gating_Diagnostic_Selector.txt` | selector authority |
@@ -29,6 +28,14 @@ refers to material **inlined here**. It means *retired provenance*, never lost a
 
 ---
 
+## 0. Current addendum — complete TB-R9 whole-gate re-proof closes CP4c-0
+
+After CB-R10/TB-R10 and CB-R11/TB-R11 individually resolved the two non-stable test-side TB-R9 candidates, the user explicitly authorized a fresh compile and complete frozen TB-R9 re-proof. Semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed` compiled all eight standard targets with GMP in run/job `33079499974 / 98542697746`; immutable package `9649395432` has ZIP SHA-256 `557207bf8f668884295258690e3bd31485cbd7709f0be47aa98daea0c53b3e2e`, build/preflight exit 0, and `runtimeExecution=false`. This advances the M3 package count to **51**.
+
+Artifact-only TB-R9 re-proof run/job `33079817998 / 98543736213` preserved the exact 346-line selector SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a` and returned **346/346 PASS**: first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 PASS, zero timeouts, zero escaping C++ exceptions, zero orchestration errors, and immutable package postflight PASS. Result artifact `9649625534` / `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; diagnostic artifact `9649626115` / `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`.
+
+Disposition: the original 344/346 TB-R9 execution remains valid historical RED evidence, but both corrected identities now pass in their frozen whole-gate context and no further RED was exposed. **CP4c-0 is CLOSED / ACCEPTED.** Stable accounting remains **42 / 14 / 28**, debt **5**. The skipped `M3-CP4c-0-TB-R9-REVIEW-PLAN` remains skipped/not completed historically. `M3-CP4c-0b-CB1` is next eligible but not automatically authorized.
+
 ## 0. Current addendum — CB-R11 / focused TB-R11 CAND-02 fixture correction
 
 On 2026-08-27 the user authorized `CB-R11 → TB-R11` to diagnose and correct the remaining `M3-CP4c0-TB-R9-CAND-02`. Independent diagnosis confirmed production was correct: incoming edge `(0,1)` at parameter `1/2` gives barycentrics `[1/2,1/2,0]`; the old direction `{-1,2,-1}` made coordinate 2 an outflow minimizer with exact exit time zero, so typed `BranchContinuationDegenerateEntry` was mandatory.
@@ -37,7 +44,7 @@ CB-R11 changed only `tests/FieldAlignedCurveNetworkTests.cpp`. Direction `{-2,1,
 
 Focused artifact-only TB-R11 run/job `33077761701 / 98536455697` consumed only that package. `ResolvedBranchCorrection.ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance` selected exactly once and passed (`exit=0`, failures/errors 0, 39 ms harness elapsed); package preflight/postflight hashes matched. Result artifact `9648618375` / `469cab3ee5a541a5faa29fcdac2a6ff213ca202c8ff38522e131b0a9a4ba6113`; log artifact `9648618836` / `c15831693911134a4ab3eba6fa8060af8b95e85eac679d5374c632fcecdc908d`.
 
-Disposition: `CAND-02` is **RESOLVED / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION**. Together with R10, both TB-R9 RED identities are individually resolved. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 package count **50**. CP4c-0 nevertheless remains OPEN because the last whole frozen 346 run is still TB-R9 at 344/346; focused corrective runs do not constitute whole-gate acceptance. No successor or CP4c-0b entry is authorized automatically.
+Disposition: `CAND-02` is **RESOLVED / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION**. Together with R10, both TB-R9 RED identities are individually resolved. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 package count **50**. At the end of focused TB-R11, CP4c-0 still remained OPEN because focused corrective runs alone did not constitute whole-gate acceptance. The later complete TB-R9 re-proof recorded above supplied that acceptance evidence.
 
 ## 0. Current addendum — CB-R10 / focused TB-R10 GMP-portability correction
 
@@ -47,7 +54,7 @@ CB-R10 changed only `tests/FieldAlignedCurveNetworkTests.cpp`: the lossy-round-t
 
 Focused artifact-only TB-R10 run/job `33067370314 / 98500728780` consumed only that package. `ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` selected exactly once and passed with no timeout/failure/error; package preflight/postflight immutability matched. Result artifact `9644274456` has SHA-256 `4d80bc1ca8e9d0f624e709eb7c467e5b1c2c880d6a1619f1f8ced95151305693`; log artifact `9644274922` has SHA-256 `2c8922ccf03e356db0e78fbe07a4a22bb99019009e4e40669f58bba16fcdd122`.
 
-Disposition: `CAND-01` is resolved/non-stable/test-side GMP portability. `CAND-02` remains active/non-stable/test-side fixture-precondition. CP4c-0 remains OPEN and the frozen 346 gate is not claimed green. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 package count **49**. No CP4c-0b implementation turn is authorized automatically.
+Disposition at the end of TB-R10: `CAND-01` was resolved/non-stable/test-side GMP portability while `CAND-02` still remained active. CB-R11/TB-R11 subsequently resolved CAND-02, and the complete TB-R9 re-proof recorded above later closed CP4c-0. Stable accounting remained unchanged.
 
 ## 1. Why CP4c exists, and how it was split
 

@@ -21,21 +21,21 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0` remains OPEN pending whole-gate re-proof; both TB-R9 test-side candidates are resolved
+## Current focus — `M3-CP4c-0` CLOSED / ACCEPTED; `M3-CP4c-0b-CB1` is next eligible but not automatic
 
-**CP4c-0 has been split.** It was carrying two unrelated obligations under one gate: *how a trace continues* and *how a trace stops*. The continuation implementation and its Q8-owned criteria are green. After TB-R9, the user explicitly skipped `M3-CP4c-0-TB-R9-REVIEW-PLAN`, then authorized bounded corrective CB/TB turns for both test-side candidates. CB-R10/TB-R10 resolved the GMP-portability candidate; CB-R11/TB-R11 resolved the zero-time positive-control fixture candidate. The last whole frozen 346 run remains TB-R9 at 344/346, so CP4c-0 is still OPEN until that gate is re-proved on a corrected package. The termination half remains separately frozen under CP4c-0b.
+**CP4c-0 has been split.** It was carrying two unrelated obligations under one gate: *how a trace continues* and *how a trace stops*. After CB-R10/TB-R10 and CB-R11/TB-R11 resolved both test-side TB-R9 candidates, the user explicitly authorized a fresh compile and complete frozen-gate re-proof. Fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed` compiled all eight standard targets; artifact-only run/job `33079817998 / 98543736213` returned **346/346 PASS**, first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 PASS, zero timeouts/exceptions, and immutable postflight PASS. CP4c-0 is therefore **CLOSED / ACCEPTED**. The termination half remains separately frozen under CP4c-0b.
 
 | | **CP4c-0** — continuation | **CP4c-0b** — termination |
 |---|---|---|
 | owns | exact minimum-ratio continuation, `FieldBoundaryPoint`, grazing classification and edge transit, vertex dispatch, deterministic cost guards | trace/trace contact, arrival priority, contact node and event, retirement of the CB9 stand-in guards |
-| gate | **346**, `20d3b0b1...`, unchanged | frozen by `M3-CP4c-0b-CB1` as `346 + n` |
+| gate | **346**, `20d3b0b1...`, **346/346 ACCEPTED** | frozen by `M3-CP4c-0b-CB1` as `346 + n` |
 | Q8 | criteria **1, 4, 5** | criteria **2** and **3** |
 
 **Q8 criteria 2 and 3 move together, and are not weakened** (Amendment 11). They are one piece of work: the six circulating traces are simultaneously what blocks criterion 2 and what satisfies criterion 3. **CP4c-0 closes on its own evidence** rather than being held hostage — nothing green stays in limbo.
 
-**`M3-CP4c-0-TB-R9`** — **COMPLETE / VALID SEMANTIC RED 344/346** on GMP package `9634245265`, authoritative run/job `33048964354 / 98439563813`. Accepted first-316 and first-328 remain **316/316** and **328/328**; Q8 criteria 1/4/5 are PASS; no timeout or escaping C++ exception occurred. Its two RED identities were non-stable test-side preconditions and are now individually resolved by CB-R10/TB-R10 and CB-R11/TB-R11. That focused corrective evidence does not retroactively make TB-R9 green; CP4c-0 still requires a whole frozen-gate re-proof before acceptance.
+**`M3-CP4c-0-TB-R9` final authority** — **COMPLETE / GATE GREEN 346/346** on fresh GMP package `9649395432`, authoritative run/job `33079817998 / 98543736213`. The unchanged selector, accepted first-316 and first-328 remain **346 identities / 316/316 / 328/328**; Q8 criteria 1/4/5 PASS; zero timeouts or escaping C++ exceptions; immutable postflight PASS. The original `344/346` run remains historical valid RED evidence, and both non-stable test-side candidates are resolved.
 
-**`M3-CP4c-0b-CB1`** — remains blocked from automatic entry until CP4c-0 receives whole-gate acceptance; **do not enter it automatically from this closeout**. Code + Build only, runtime forbidden, measures **P0–P9**. Contact predicate in exact barycentric arithmetic; arrival priority `ArcLengthFiltered` with a **computed** forward error bound (a literal epsilon anywhere in that path is a stop condition); inconclusive comparisons and exact ties resolve to **mutual termination**, which is canonical and needs no arbitrary tie-break; global priority queue rather than sequential tracing; contact node plus `TraceIntersection` event; N1/N2/N4 demoted to backstops that must not fire.
+**`M3-CP4c-0b-CB1`** — **NEXT ELIGIBLE, NOT AUTOMATICALLY AUTHORIZED** now that CP4c-0 has whole-gate acceptance; **do not enter it automatically from this closeout**. Code + Build only, runtime forbidden, measures **P0–P9**. Contact predicate in exact barycentric arithmetic; arrival priority `ArcLengthFiltered` with a **computed** forward error bound (a literal epsilon anywhere in that path is a stop condition); inconclusive comparisons and exact ties resolve to **mutual termination**, which is canonical and needs no arbitrary tie-break; global priority queue rather than sequential tracing; contact node plus `TraceIntersection` event; N1/N2/N4 demoted to backstops that must not fire.
 
 **Alternative priority metrics are retained for future performance/quality comparison** (`StepCount`, `BarycentricTime`, `TraceSeniority`) but are reachable **only** from a diagnostic entry point the production pipeline never calls, with an identity asserting production cannot select a non-default value. A production-reachable priority argument is a second writer of network topology and a stop condition.
 
@@ -86,20 +86,21 @@ gate count excludes them, each carries a written rationale and an owning correct
   inconclusive or tied arrivals, and the constrained alternatives harness. Amendment 11 moves Q8
   criteria 2 and 3 to CP4c-0b; `DESIGN.md` §4.6's termination guarantee is amended to name its
   condition. Record: `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`.
-- [x] `M3-CP4c-0-TB-R9` — COMPLETE / VALID SEMANTIC RED **344/346** on GMP package `9634245265`; accepted prefixes 316/316 and 328/328 remain green; Q8 1/4/5 PASS; two non-stable test-side candidates recorded.
+- [x] `M3-CP4c-0-TB-R9` — initial execution COMPLETE / VALID SEMANTIC RED **344/346** on GMP package `9634245265`; historical evidence retained. Final whole-gate re-proof is recorded below.
 - [ ] `M3-CP4c-0-TB-R9-REVIEW-PLAN` — **SKIPPED BY EXPLICIT USER INSTRUCTION; NOT COMPLETED.** Its bypass does not grant acceptance or adjudicate `CAND-02`.
 - [x] `M3-CP4c-0-CB-R10` — **COMPLETE / BUILD GREEN.** Test-only GMP-portability correction at semantic source `30ef2792e2915e0016dfd11f5fa2b3727e5503c0`; compile run/job `33067140968 / 98499967674`; immutable GMP package `9644214591`, SHA-256 `b9e7729fb557eddc203e38a1c11564bab3ad180982e10740d4374fe06748a390`; all eight standard targets compile/link; `runtimeExecution=false`.
 - [x] `M3-CP4c-0-TB-R10` — **COMPLETE / FOCUSED PASS.** Artifact-only run/job `33067370314 / 98500728780`; `ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` selected exactly once and PASS in 5 ms; immutable postflight PASS. This resolves `M3-CP4c0-TB-R9-CAND-01` only.
 - [x] `M3-CP4c-0-CB-R11` — **COMPLETE / BUILD GREEN.** Test-only CAND-02 fixture correction at semantic source `267272d22f7de67ce7d8e368a53cc78a37ca3e8f`; compile run/job `33077493539 / 98535503386`; immutable GMP package `9648550565`, SHA-256 `1f0275e96fa75b7fc6fb447eaffb79b414c94230823da7897a4f2d91df33615c`; all eight standard targets compile/link; `runtimeExecution=false`.
 - [x] `M3-CP4c-0-TB-R11` — **COMPLETE / FOCUSED PASS.** Artifact-only run/job `33077761701 / 98536455697`; `ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance` selected exactly once and PASS in 39 ms; immutable postflight PASS. This resolves `M3-CP4c0-TB-R9-CAND-02`.
 - [x] `M3-CP4c0-TB-R9-CAND-02` — **RESOLVED / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION.** The old positive control was exactly degenerate; the corrected witness proves a positive exact `1/4` edge exit while preserving the oversized-magnitude fail-closed case.
-- [ ] `M3-CP4c-0b-CB1` — **BLOCKED FROM AUTOMATIC ENTRY.** Code + Build only, runtime forbidden, measures **P0–P9**; do not start automatically while CP4c-0 remains open.
+- [x] `M3-CP4c-0-TB-R9-REPROOF` — **COMPLETE / GATE GREEN 346/346 / CP4c-0 CLOSED / ACCEPTED.** Fresh compile run/job `33079499974 / 98542697746`, package `9649395432`; artifact-only TB run/job `33079817998 / 98543736213`; Q8 1/4/5 PASS; immutable pre/postflight PASS.
+- [ ] `M3-CP4c-0b-CB1` — **NEXT ELIGIBLE / NOT AUTOMATICALLY AUTHORIZED.** Code + Build only, runtime forbidden, measures **P0–P9**.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0b. It **no longer owns** re-homed Q8 criterion 3, which
   belongs to CP4c-0b along with criterion 2.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime remains CP4ab **316/316**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **50**. Both TB-R9 non-stable candidates are individually resolved, but the last whole frozen-gate result remains TB-R9 **344/346**; CP4c-0 therefore remains OPEN pending whole-gate re-proof. **No further turn is authorized automatically by this closeout.**
+Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **51**. Both TB-R9 non-stable candidates are resolved and pass in the complete frozen-gate context; CP4c-0 is **CLOSED / ACCEPTED**. **No further turn is authorized automatically by this closeout.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

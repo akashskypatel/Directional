@@ -8,6 +8,17 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-27 — complete `M3-CP4c-0-TB-R9` re-proof GREEN 346/346; CP4c-0 CLOSED / ACCEPTED
+
+At explicit user instruction, the branch was freshly recompiled after both TB-R9 test-side fixes and the **complete unchanged frozen 346-identity TB-R9 gate** was rerun artifact-only.
+
+- **Fresh compile authority:** semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`; run/job `33079499974 / 98542697746`; immutable GMP package `9649395432`, ZIP SHA-256 `557207bf8f668884295258690e3bd31485cbd7709f0be47aa98daea0c53b3e2e`; source archive `f58cfdc0d1886af11328f9b7dfaab8be1bd92d0220549a97d5954944ff7ac68f`; compile log `9649395842 / 45c6c92fc92a6085780bd0b2f56e7ffb80bc3a4ecf8f2cda4744caf8de151179`. All eight standard targets compiled/linked, GMP/gmpxx verified, build/preflight exit 0, `runtimeExecution=false`.
+- **Frozen test authority unchanged:** selector remains 346 lines at SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. TB made no source/test/fixture/selector mutation and no configure/build/relink/repair.
+- **Whole-gate authority:** artifact-only run/job `33079817998 / 98543736213` returned **346/346 PASS**, first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 PASS, zero timeouts, zero escaping C++ exceptions, zero orchestration errors, immutable pre/postflight PASS. Result `9649625534 / 6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; log `9649626115 / 3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`.
+- **Candidate closure:** both formerly RED identities now pass in the complete frozen gate. CAND-01 remains resolved/non-stable/test-side GMP portability; CAND-02 remains resolved/non-stable/test-side fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
+- **Acceptance/accounting:** **CP4c-0 CLOSED / ACCEPTED**. Stable totals remain **42 / 14 / 28**, debt **5**; fresh package advances M3 packages to **51**. Latest accepted runtime is this TB-R9 re-proof **346/346**.
+- **Boundary:** `M3-CP4c-0b-CB1` is next eligible under frozen P0–P9 but is **not automatically authorized** by this closeout.
+
 ## 2026-08-27 — `M3-CP4c-0-CB-R11` + `M3-CP4c-0-TB-R11`: CAND-02 fixture defect corrected and focused re-proof PASS
 
 The remaining TB-R9 candidate was diagnosed as test-side. On face `(0,1,2)`, the old positive control entered on `(0,1)` at parameter `1/2`, hence barycentrics `[1/2,1/2,0]`; direction `{-1,2,-1}` treated the already-zero third coordinate as outflow, giving exact winning exit time zero. Production correctly returned `BranchContinuationDegenerateEntry`.
