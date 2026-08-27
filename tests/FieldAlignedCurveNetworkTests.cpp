@@ -5432,6 +5432,162 @@ TEST(ResolvedBranchCorrection,
 }
 
 
+const char *cp4c0b_contact_census_terminal_kind_name(
+    const directional::geometry::surface_cell_tracing_detail::
+        FieldAlignedContactCensusPriorTerminalKind kind) {
+  using Kind = directional::geometry::surface_cell_tracing_detail::
+      FieldAlignedContactCensusPriorTerminalKind;
+  switch (kind) {
+  case Kind::None:
+    return "none";
+  case Kind::Singularity:
+    return "terminalSingularity";
+  case Kind::Barrier:
+    return "terminalBarrier";
+  }
+  return "unknown";
+}
+
+const char *cp4c0b_contact_census_site_name(
+    const directional::geometry::surface_cell_tracing_detail::
+        FieldAlignedContactCensusSite site) {
+  using Site = directional::geometry::surface_cell_tracing_detail::
+      FieldAlignedContactCensusSite;
+  switch (site) {
+  case Site::SingularityJunction:
+    return "A";
+  case Site::SharedFaceTraceContact:
+    return "B";
+  case Site::SelfClosure:
+    return "C";
+  }
+  return "unknown";
+}
+
+const char *field_aligned_event_kind_name(
+    const directional::geometry::FieldAlignedNetworkEventKind kind) {
+  using Kind = directional::geometry::FieldAlignedNetworkEventKind;
+  switch (kind) {
+  case Kind::SingularityPortOrigin:
+    return "SingularityPortOrigin";
+  case Kind::FirstContact:
+    return "FirstContact";
+  case Kind::TraceIntersection:
+    return "TraceIntersection";
+  case Kind::MandatoryBarrierTermination:
+    return "MandatoryBarrierTermination";
+  case Kind::SingularityTermination:
+    return "SingularityTermination";
+  }
+  return "unknown";
+}
+
+std::string cp4c0b_contact_census_report(
+    const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+    const directional::authority::FieldTransportAtlas &atlas) {
+  std::ostringstream report;
+  report << "m3Cp4c0bS1"
+         << ";credit=none"
+         << ";owningMeasure=S1"
+         << ";witness=" << metadata.name
+         << ";population=" << metadata.population
+         << ";classification=" << metadata.classification;
+
+  const auto sourceAuthority = make_source_authority(mesh);
+  if (!sourceAuthority.has_value()) {
+    return report.str() + ";status=source-authority-unavailable";
+  }
+  const auto rails = rails_from_atlas(mesh, atlas);
+  const auto result =
+      directional::geometry::surface_cell_tracing_detail::
+          diagnose_field_aligned_contact_census(
+              mesh, *sourceAuthority, atlas, rails);
+  if (const auto *error =
+          std::get_if<directional::geometry::FieldAlignedCurveNetworkError>(
+              &result)) {
+    report << ";status=unreached;";
+    append_network_error(report, *error);
+    return report.str();
+  }
+
+  const auto &census =
+      std::get<directional::geometry::surface_cell_tracing_detail::
+                   FieldAlignedContactCensus>(result);
+  std::size_t nonProper = 0U;
+  std::size_t unevaluated = 0U;
+  for (const auto &contact : census.sharedFaceContacts) {
+    if (!contact.properCrossing.has_value()) {
+      ++unevaluated;
+    } else if (!*contact.properCrossing) {
+      ++nonProper;
+    }
+  }
+
+  report << ";status=reached"
+         << ";sharedFaceContactCount=" << census.sharedFaceContacts.size()
+         << ";properCrossingCount="
+         << (census.sharedFaceContacts.size() - nonProper - unevaluated)
+         << ";nonProperCrossingCount=" << nonProper
+         << ";unevaluatedCrossingCount=" << unevaluated
+         << ";requiresReview=" << ((nonProper != 0U || unevaluated != 0U) ? 1 : 0)
+         << ";siteCounts={A=" << census.siteA << ",B=" << census.siteB
+         << ",C=" << census.siteC << '}'
+         << ";nodeCount=" << census.nodeCount;
+
+  for (std::size_t index = 0U; index < census.sharedFaceContacts.size(); ++index) {
+    const auto &contact = census.sharedFaceContacts[index];
+    report << ";contact[" << index << "]={trace=" << contact.trace.index()
+           << ",segment=" << contact.segmentIndex
+           << ",existingTrace=" << contact.existingTrace.index()
+           << ",existingSegment=" << contact.existingSegmentIndex
+           << ",face=" << source_face_locus(contact.sourceFace)
+           << ",sharedCarrier=";
+    if (contact.sharedCarrier.has_value()) {
+      report << source_edge_locus(*contact.sharedCarrier);
+    } else {
+      report << "none";
+    }
+    report << ",properCrossing=";
+    if (contact.properCrossing.has_value()) {
+      report << (*contact.properCrossing ? "true" : "false");
+    } else {
+      report << "unevaluated";
+    }
+    report << ",priorTerminalKind="
+           << cp4c0b_contact_census_terminal_kind_name(
+                  contact.priorTerminalKind)
+           << '}';
+  }
+
+  for (std::size_t index = 0U; index < census.contactNodes.size(); ++index) {
+    const auto &node = census.contactNodes[index];
+    report << ";contactNode[" << index << "]={site="
+           << cp4c0b_contact_census_site_name(node.site)
+           << ",node=" << node.node.index()
+           << ",sourceVertex=" << node.sourceVertex.index() << '}';
+  }
+
+  report << ";eventKindHistogram={";
+  bool first = true;
+  for (const auto &[kind, count] : census.eventKindHistogram) {
+    if (!first) report << ',';
+    first = false;
+    report << field_aligned_event_kind_name(kind) << '=' << count;
+  }
+  report << '}';
+  return report.str();
+}
+
+TEST(ResolvedBranchCorrection,
+     ContactPredicateCensusIsPublishedNonGating) {
+  for_each_cp4c_census_witness(
+      [](const Cp4cCensusWitnessMetadata &metadata, const TriMesh &mesh,
+         const CrossFieldResult &,
+         const directional::authority::FieldTransportAtlas &atlas) {
+        std::cout << cp4c0b_contact_census_report(metadata, mesh, atlas) << '\n';
+      });
+}
+
 TEST(ResolvedBranchCorrection,
      CrossFaceFlowAgreementCensusIsPublishedNonGating) {
   for_each_cp4c_census_witness(

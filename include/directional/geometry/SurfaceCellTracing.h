@@ -508,6 +508,60 @@ private:
 
 namespace surface_cell_tracing_detail {
 
+// M3-CP4c-0b S1 diagnostic-only census. These observations are populated by
+// the canonical A2a construction path without changing any production contact,
+// event, node, trace, or termination decision.
+enum class FieldAlignedContactCensusSite : std::uint8_t {
+  SingularityJunction = 0,
+  SharedFaceTraceContact = 1,
+  SelfClosure = 2,
+};
+
+enum class FieldAlignedContactCensusPriorTerminalKind : std::uint8_t {
+  None = 0,
+  Singularity = 1,
+  Barrier = 2,
+};
+
+struct FieldAlignedContactCensusObservation {
+  authority::TraceId trace;
+  std::size_t segmentIndex = 0U;
+  authority::TraceId existingTrace;
+  std::size_t existingSegmentIndex = 0U;
+  authority::SourceFaceTopologyKey sourceFace;
+  std::optional<authority::SourceEdgeTopologyKey> sharedCarrier;
+  std::optional<bool> properCrossing;
+  FieldAlignedContactCensusPriorTerminalKind priorTerminalKind =
+      FieldAlignedContactCensusPriorTerminalKind::None;
+};
+
+struct FieldAlignedContactCensusNode {
+  authority::NetworkNodeId node;
+  authority::SourceVertexId sourceVertex;
+  FieldAlignedContactCensusSite site =
+      FieldAlignedContactCensusSite::SharedFaceTraceContact;
+};
+
+struct FieldAlignedContactCensus {
+  std::vector<FieldAlignedContactCensusObservation> sharedFaceContacts;
+  std::vector<FieldAlignedContactCensusNode> contactNodes;
+  std::map<FieldAlignedNetworkEventKind, std::size_t> eventKindHistogram;
+  std::size_t nodeCount = 0U;
+  std::size_t siteA = 0U;
+  std::size_t siteB = 0U;
+  std::size_t siteC = 0U;
+};
+
+using FieldAlignedContactCensusResult =
+    std::variant<FieldAlignedContactCensus, FieldAlignedCurveNetworkError>;
+
+[[nodiscard]] FieldAlignedContactCensusResult
+diagnose_field_aligned_contact_census(
+    const TriMesh &sourceMesh,
+    const SourceTopologyRegions &sourceAuthority,
+    const authority::FieldTransportAtlas &fieldTransportAtlas,
+    const std::vector<SurfaceCellRail> &authoritativeRails);
+
 enum class FieldBranchExitTimeOrdering : std::int8_t {
   Less = -1,
   Equal = 0,
