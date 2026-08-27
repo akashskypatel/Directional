@@ -1,7 +1,0 @@
-turn=M3-CP4c-0-TB-R9
-package_artifact_id=9634245265
-package_source=66325345567106fe7de8560ee2aee5f07ca665de
-selector_count=346
-selector_sha256=20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a
-exact_arithmetic_backend=GMP
-attempt=2

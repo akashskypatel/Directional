@@ -1,4 +1,0 @@
-# M3-CP4c-0-TB-R9 closeout temporary-state cleanup
-.agents/connector-triggers/m3-cp4c0-tb-r9/run.txt
-.agents/Directional/turn-payloads/m3-cp4c0-tb-r9.py
-.agents/connector-triggers/m3-cp4c0-tb-r9-closeout-drive/run.txt
