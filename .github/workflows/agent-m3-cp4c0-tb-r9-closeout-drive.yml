@@ -43,6 +43,6 @@ jobs:
       patch_sha256: 04e3ffe106ed8541d4932777f86aaa1a80d81de813c0b2e1b91211f3d54e2780
       base_sha: 66325345567106fe7de8560ee2aee5f07ca665de
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close M3 CP4c-0 TB-R9
+      commit_message: "docs: close M3 CP4c-0 TB-R9"
       retention_days: 7
     secrets: inherit
