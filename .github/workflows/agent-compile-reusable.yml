@@ -26,6 +26,7 @@ jobs:
       CCACHE_MAXSIZE: 256M
       CCACHE_COMPRESS: "true"
       CCACHE_NOHASHDIR: "true"
+      GMP_ROOT: /usr
 
     steps:
       - name: Initialize persistent activity log
@@ -64,6 +65,8 @@ jobs:
           set -euo pipefail
           exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
           test "$(git rev-parse HEAD)" = "${{ inputs.source_sha }}"
+          dpkg -s libgmp-dev >/dev/null 2>&1 || { sudo apt-get update; sudo apt-get install -y libgmp-dev; }
+          dpkg-query -W -f='libgmp-dev=${Version}\n' libgmp-dev
           ccache_tool_root="$RUNNER_TEMP/directional-ccache-tool"
           ccache_tool_dir="$ccache_tool_root/bin"
           ccache_tool_lib_dir="$ccache_tool_root/lib"
@@ -109,7 +112,7 @@ jobs:
           c++ --version
           ccache --version
           compiler_version="$(c++ -dumpfullversion -dumpversion)"
-          cache_key="directional-ccache-${RUNNER_OS}-gcc-${compiler_version}-release-static-pretest-v1"
+          cache_key="directional-ccache-${RUNNER_OS}-gcc-${compiler_version}-release-static-gmp-pretest-v2"
           echo "cache_key=$cache_key" >> "$GITHUB_OUTPUT"
           echo "BUILD_DIR=$RUNNER_TEMP/directional-build" >> "$GITHUB_ENV"
           echo "CCACHE_DIR=$RUNNER_TEMP/directional-ccache" >> "$GITHUB_ENV"
@@ -203,12 +206,20 @@ jobs:
             -DDIRECTIONAL_BUILD_HISTORICAL_TESTS=OFF \
             -DDIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS=OFF \
             -DDIRECTIONAL_BUILD_OPTIONAL_GUIDANCE_TESTS=OFF \
-            -DDIRECTIONAL_ENABLE_GMP=OFF \
+            -DDIRECTIONAL_ENABLE_GMP=ON \
+            -DGMP_ROOT="$GMP_ROOT" \
             -DDIRECTIONAL_ENABLE_PARDISO=OFF \
             -DDIRECTIONAL_ENABLE_SUITESPARSE=OFF \
             -DDIRECTIONAL_ENABLE_CUDSS=OFF \
             -DCMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE=PRE_TEST \
             2>&1 | tee "$RUNNER_TEMP/configure.log"
+          grep -q '^DIRECTIONAL_ENABLE_GMP:BOOL=ON$' "$BUILD_DIR/CMakeCache.txt"
+          grep -q 'GMP found for Directional core' "$RUNNER_TEMP/configure.log"
+          {
+            grep -E '^(GMP_ROOT|GMP_INCLUDE_DIRS|GMP_LIBRARIES|GMPXX_LIBRARIES):' "$BUILD_DIR/CMakeCache.txt"
+            ninja -C "$BUILD_DIR" -t commands directional_surface_cell_authority_kernel_tests | grep -E 'gmpxx.*gmp|gmp.*gmpxx' | tail -n 1
+          } | tee "$RUNNER_TEMP/gmp-evidence.txt"
+          grep -qi gmpxx "$RUNNER_TEMP/gmp-evidence.txt"
           git status --porcelain=v1 | tee "$RUNNER_TEMP/source-status-after-configure.txt"
           test ! -s "$RUNNER_TEMP/source-status-after-configure.txt"
 
@@ -337,10 +348,12 @@ jobs:
           cp "$RUNNER_TEMP/ccache-stats.txt" "$OUT/metadata/ccache-stats.txt"
           cp "$RUNNER_TEMP/cache-restore.txt" "$OUT/metadata/cache-restore.txt"
           cp "$RUNNER_TEMP/cache-prune.txt" "$OUT/metadata/cache-prune.txt"
+          cp "$RUNNER_TEMP/gmp-evidence.txt" "$OUT/metadata/gmp-evidence.txt"
           cp "$BUILD_DIR/CMakeCache.txt" "$OUT/metadata/CMakeCache.txt"
           printf '%s\n' \
             'runtimeExecution=false' \
             'turnBoundary=Code+Build-only' \
+            'exactArithmeticBackend=GMP' \
             'preflightCompile=true' \
             'cachePolicy=compiler-cache-fixed-key-refresh' \
             'cacheMaxSize=256M' \
