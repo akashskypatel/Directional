@@ -1,0 +1,4 @@
+purpose=M3-CP4c-0b-CB1-S2-S6 Drive patch apply
+base_sha=f9507c7979e03fa0ebd115b12b964163d3aaf4fc
+patch_sha256=317d6db583f6e30dc5f63cb5f3fa744ffef31bb6abd02700620b2958d37e8609
+retry=0
