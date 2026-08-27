@@ -84,18 +84,19 @@ gating without a review recording why its precondition is now independently esta
 
 ## Current continuation boundary — no automatic next turn authorized
 
-The user explicitly skipped `M3-CP4c-0-TB-R9-REVIEW-PLAN` and authorized a bounded `M3-CP4c-0-CB-R10` → `M3-CP4c-0-TB-R10` sequence for the GMP-portability defect only. That sequence is now complete. **Do not mark the skipped review complete and do not infer authorization to fix the unrelated remaining candidate or enter CP4c-0b.**
+The user explicitly authorized `M3-CP4c-0-CB-R11` followed by `M3-CP4c-0-TB-R11` to diagnose, correct, and test the remaining TB-R9 `CAND-02`. That sequence is complete. The earlier `M3-CP4c-0-TB-R9-REVIEW-PLAN` remains **skipped/not completed**; do not retroactively mark it complete.
 
 **Resume authorities:**
 
-- focused corrective report: `.agents/Directional/Architecture_M3_CP4c0_TB_R10_Focused_GMP_Portability_Verification_Report.md`;
-- regression authority: `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c0-TB-R9-CAND-01/02`;
-- CB-R10 semantic source/package: `30ef2792e2915e0016dfd11f5fa2b3727e5503c0 / 9644214591`;
-- TB-R10 focused run/job: `33067370314 / 98500728780`.
+- focused corrective report: `.agents/Directional/Architecture_M3_CP4c0_TB_R11_Focused_CAND02_Verification_Report.md`;
+- regression authority: `.agents/Directional/Regression_Root_Cause_Tracker.md` — both `M3-CP4c0-TB-R9-CAND-01/02` are resolved/non-stable/test-side;
+- CB-R11 semantic source/package: `267272d22f7de67ce7d8e368a53cc78a37ca3e8f / 9648550565`;
+- CB-R11 compile run/job: `33077493539 / 98535503386`;
+- TB-R11 focused run/job: `33077761701 / 98536455697`.
 
-`M3-CP4c-0` remains **OPEN**. `CAND-01` is resolved as a non-stable test-side GMP portability defect; `CAND-02` remains **ACTIVE / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION**. The latest accepted runtime remains CP4ab 316/316. Focused TB-R10 is not whole-gate acceptance authority.
+`M3-CP4c-0` remains **OPEN pending whole-gate re-proof**. CB-R11 changed only the positive-control fixture in `tests/FieldAlignedCurveNetworkTests.cpp`: direction `{-1,2,-1}` was structurally degenerate because incoming edge `(0,1)` has barycentric coordinate 2 exactly zero and the old direction made that coordinate outflow. The corrected direction `{-2,1,1}` gives a positive exact `1/4` exit onto `(1,2)`, which the test now asserts explicitly; the oversized exact-magnitude rejection remains unchanged. Focused TB-R11 selected that identity exactly once and passed.
 
-CP4c-0 was split from CP4c-0b: continuation remains under the frozen 346 gate; termination remains separately owned by CP4c-0b. No CP4c-0b implementation turn is authorized automatically while CP4c-0 remains open.
+Both TB-R9 RED identities are now individually resolved, but focused TB-R10/TB-R11 are corrective evidence only. The last whole frozen 346 run remains TB-R9 at **344/346**, so neither those focused runs nor this closeout constitutes CP4c-0 acceptance. Latest accepted runtime remains CP4ab **316/316**. A future whole-gate re-proof is required before CP4c-0 can close, and no such successor or CP4c-0b implementation turn is authorized automatically.
 
 | | **CP4c-0** - continuation | **CP4c-0b** - termination |
 |---|---|---|

@@ -29,6 +29,16 @@ refers to material **inlined here**. It means *retired provenance*, never lost a
 
 ---
 
+## 0. Current addendum — CB-R11 / focused TB-R11 CAND-02 fixture correction
+
+On 2026-08-27 the user authorized `CB-R11 → TB-R11` to diagnose and correct the remaining `M3-CP4c0-TB-R9-CAND-02`. Independent diagnosis confirmed production was correct: incoming edge `(0,1)` at parameter `1/2` gives barycentrics `[1/2,1/2,0]`; the old direction `{-1,2,-1}` made coordinate 2 an outflow minimizer with exact exit time zero, so typed `BranchContinuationDegenerateEntry` was mandatory.
+
+CB-R11 changed only `tests/FieldAlignedCurveNetworkTests.cpp`. Direction `{-2,1,1}` makes coordinate 0 the sole outflow and gives exact exit time `1/4`; the positive control now asserts `EdgeExit`, outgoing `(1,2)`, and exact exit point `boundary_point(outgoing,1,4)`. The oversized exact-magnitude rejection is untouched. Semantic source `267272d22f7de67ce7d8e368a53cc78a37ca3e8f` compiled all eight standard targets in run/job `33077493539 / 98535503386`; GMP package `9648550565` has ZIP SHA-256 `1f0275e96fa75b7fc6fb447eaffb79b414c94230823da7897a4f2d91df33615c`; build/preflight exit 0 and `runtimeExecution=false`.
+
+Focused artifact-only TB-R11 run/job `33077761701 / 98536455697` consumed only that package. `ResolvedBranchCorrection.ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance` selected exactly once and passed (`exit=0`, failures/errors 0, 39 ms harness elapsed); package preflight/postflight hashes matched. Result artifact `9648618375` / `469cab3ee5a541a5faa29fcdac2a6ff213ca202c8ff38522e131b0a9a4ba6113`; log artifact `9648618836` / `c15831693911134a4ab3eba6fa8060af8b95e85eac679d5374c632fcecdc908d`.
+
+Disposition: `CAND-02` is **RESOLVED / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION**. Together with R10, both TB-R9 RED identities are individually resolved. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 package count **50**. CP4c-0 nevertheless remains OPEN because the last whole frozen 346 run is still TB-R9 at 344/346; focused corrective runs do not constitute whole-gate acceptance. No successor or CP4c-0b entry is authorized automatically.
+
 ## 0. Current addendum — CB-R10 / focused TB-R10 GMP-portability correction
 
 On 2026-08-27 the user explicitly **skipped, without completing**, `M3-CP4c-0-TB-R9-REVIEW-PLAN` and authorized a bounded `CB-R10 → TB-R10` sequence for the GMP-related `M3-CP4c0-TB-R9-CAND-01` only. This is an operator override of the normal red→review cadence; it does not retroactively create an independent review and it does not adjudicate `CAND-02`.

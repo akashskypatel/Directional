@@ -8,6 +8,16 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-27 — `M3-CP4c-0-CB-R11` + `M3-CP4c-0-TB-R11`: CAND-02 fixture defect corrected and focused re-proof PASS
+
+The remaining TB-R9 candidate was diagnosed as test-side. On face `(0,1,2)`, the old positive control entered on `(0,1)` at parameter `1/2`, hence barycentrics `[1/2,1/2,0]`; direction `{-1,2,-1}` treated the already-zero third coordinate as outflow, giving exact winning exit time zero. Production correctly returned `BranchContinuationDegenerateEntry`.
+
+- **CB-R11 correction:** only `tests/FieldAlignedCurveNetworkTests.cpp` changed. The positive-control direction is now `{-2,1,1}`, producing a positive exact `1/4` exit through `(1,2)`. The test explicitly asserts `EdgeExit`, outgoing `(1,2)`, and exact exit point `1/4`. The oversized exact-magnitude rejection remains unchanged; no production or GMP arithmetic semantics changed.
+- **Build authority:** semantic source `267272d22f7de67ce7d8e368a53cc78a37ca3e8f`; compile run/job `33077493539 / 98535503386`; immutable GMP package `9648550565`, ZIP SHA-256 `1f0275e96fa75b7fc6fb447eaffb79b414c94230823da7897a4f2d91df33615c`; log `9648551415 / c7e4c83c6727117af6cdfc5874762d70dc4a8633cfe7e241e1e36ec001a83e2b`. All eight standard targets compiled/linked, preflight/build exit 0, gmpxx/gmp verified, clean source, `runtimeExecution=false`.
+- **Focused TB-R11:** artifact-only run/job `33077761701 / 98536455697` consumed only package `9648550565`. The repaired identity selected **1/1 PASS**, exit 0, failures/errors 0, 39 ms harness elapsed; immutable package preflight/postflight PASS; no configure/compile/relink/repair/generated discovery/performance benchmark. Result `9648618375 / 469cab3ee5a541a5faa29fcdac2a6ff213ca202c8ff38522e131b0a9a4ba6113`; log `9648618836 / c15831693911134a4ab3eba6fa8060af8b95e85eac679d5374c632fcecdc908d`.
+- **Disposition:** `M3-CP4c0-TB-R9-CAND-02` is **RESOLVED / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION**. Both TB-R9 candidates are now individually resolved. Stable totals remain **42 / 14 / 28**, debt **5**; M3 packages become **50**.
+- **Boundary:** the last whole frozen 346 gate remains TB-R9 at **344/346**. Focused TB-R10/TB-R11 do not retroactively accept it; CP4c-0 remains OPEN pending whole-gate re-proof. No successor or CP4c-0b-CB1 entry is authorized automatically.
+
 ## 2026-08-27 — `M3-CP4c-0-CB-R10` + `M3-CP4c-0-TB-R10`: GMP portability defect corrected and focused re-proof PASS
 
 At explicit user instruction, `M3-CP4c-0-TB-R9-REVIEW-PLAN` was **skipped, not completed**, and the turn proceeded directly to a bounded correction of `M3-CP4c0-TB-R9-CAND-01` only. The unrelated zero-time fixture candidate `CAND-02` was left unchanged.
