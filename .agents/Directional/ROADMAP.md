@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-27 (CP4c-0 TB-R8 blocked by **non-terminating traces**: six prescribed-sphere separatrices circulate in a closed 32-state circuit, the cycle guard was blind to them because its state carries the drifting exact position, the step budget authorised 1,775,616 steps the arithmetic could never survive, and the fallback bignum threw `gcd(): while running too long!` out of a closed producer after 853 s. **CB9 measures N0-N7 landed deterministic guards and compile.** The remaining blocker is architectural: **crash-on-contact is not implemented**, so Q8 criterion 2 is unreachable within CP4c-0 as scoped. Exact next `M3-CP4c-0-TB-R9` on the **346** selector, then **`M3-CP4c-0-DEFN-3`** to resolve the C4/C5 dependency inversion).
+**Status date:** 2026-08-27 (**CP4c-0 is split.** It was carrying two unrelated obligations under one gate - how a trace *continues* and how a trace *stops*. Continuation is finished and proved and closes at gate **346** on Q8 criteria 1/4/5. Termination becomes **`M3-CP4c-0b`**, which owns trace/trace contact and Q8 criteria 2 and 3, with the contact predicate, the `ArcLengthFiltered` arrival priority and mutual termination on tied arrivals all frozen. `DESIGN.md` §4.6's termination guarantee is amended to name its condition. Exact next `M3-CP4c-0-TB-R9`, then `M3-CP4c-0b-CB1` under **P0-P9**).
 
 ---
 
@@ -70,8 +70,9 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
-| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) | **346**, frozen by CB9 (`20d3b0b1...`) | **TB-R8 BLOCKED, CB9 corrective landed.** Grazing transit works; what does not is **termination**. Six sphere separatrices circulate, and `DESIGN.md` §4.6's structural answer - crash-on-contact - **is not implemented by A2a**. N1-N5 add deterministic position-free recurrence, exact-magnitude, envelope-budget and closed-producer guards; 42/42 legitimate traces unchanged, 6/6 runaways stopped at step 65, worst exact width 19,460 -> 2,684 bits. **Q8 criterion 2 is unreachable within CP4c-0 as scoped.** Next `M3-CP4c-0-TB-R9`, then **`M3-CP4c-0-DEFN-3`** |
-| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity; **and C4/C5 crash-on-contact, on which CP4c-0's own termination depends** | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0 — and CP4c-0 is now blocked on C4/C5.** `M3-CP4c-0-DEFN-3` must resolve the inversion. TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5. **Also owns re-homed Q8 criterion 3**: trace/trace contact needs a witness whose separatrices do *not* pair singularities, which the cube-field sphere is not |
+| **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **Contract complete.** DEFN froze the continuation rule, DEFN-2 the grazing model, CB8 implemented it, CB9 landed deterministic cost guards. Closes on a green `M3-CP4c-0-TB-R9` against Q8 criteria **1, 4, 5** |
+| **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **`346 + n`**, frozen by `M3-CP4c-0b-CB1` | **OPEN. DEFN complete.** Owns Q8 criteria **2** and **3**, moved together and unweakened by Amendment 11. Contact predicate is exact barycentric crossing with no tolerance; priority is `ArcLengthFiltered` with a computed error bound; tied or inconclusive arrivals both terminate at the crossing point, which is canonical. Alternatives harness retained but unreachable from production. Next `M3-CP4c-0b-CB1` under **P0-P9** |
+| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0b.** The dependency inversion is resolved by the split: CP4c-0b owns trace termination and Q8 criteria 2/3, so CP4c-1 no longer owns re-homed criterion 3. TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
 
@@ -121,6 +122,31 @@ line-scoped wording never reached. Both are **class defects certified by instanc
 the lesson of the cycle. E1–E9 were independently re-verified as correctly implemented; E2 and E3 in
 particular are exactly as amended. **Amendment 6** now defines "observable" by mechanism. Exact next is
 **`M3-CP4c-0-CB3`** under measures **F0–F8**. Identity **338** and **Q8** remain the open questions.
+
+**`M3-CP4c-0b-DEFN` split the checkpoint on 2026-08-27**
+(`Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`). The inversion CB9 identified —
+CP4c-0 blocked on a capability assigned to its successor — is resolved neither by reordering nor by
+re-scoping, but by recognising that CP4c-0 had been carrying two unrelated obligations under one gate.
+Continuation is finished and closes on its own 346 identities. Termination becomes its own checkpoint,
+and Q8 criteria 2 and 3 move to it **together**, because the six circulating traces are simultaneously
+what blocks the 24-trace network and what would satisfy the trace-intersection criterion.
+
+The termination contract is frozen from measurement rather than from the citation. Self-contact cannot
+be the rule: the field is one constant vector per `(face, branch)`, so a trace's repeat visits lay
+**parallel** segments — measured, 2,548 co-face pairs with zero crossings. A mesh-derived length budget
+cannot be the rule either: the longest correctly terminating trace and one lap of a never-terminating
+trace measure **the same length to four decimal places**, so length carries no information about
+termination, and a truncated trace leaves an arc that bounds no region. What does work is contact with
+the **perpendicular** branch family, which crosses every circulating trace at step 0.
+
+The one genuine choice — arrival priority — is frozen as `ArcLengthFiltered`: double arc length with a
+*computed* forward error bound rather than a tuned epsilon. Exact comparison is excluded on complexity,
+since comparing sums of *k* radicals is exponential in *k*. Ties turn out to need no arbitrary rule at
+all: same-time-different-point events are independent, and same-time-same-point means both traces
+terminate there. That matters because the sphere's singularities are cube corners, so exact ties are
+*systematic* on symmetric input — precisely the inputs used to judge quality. Alternative priorities are
+kept for future comparison but are unreachable from the production path, so the knob cannot become a
+second authority.
 
 **CB8 → TB-R8 → `M3-CP4c-0-CB9` exposed and guarded non-termination on 2026-08-27**
 (`Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md`). CB8 implemented DEFN-2's grazing

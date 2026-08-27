@@ -59,14 +59,23 @@
 >     `BranchTransportFlowDisagreement` is retired from production emission. See Amendment 10 at the end
 >     of §10, and `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` for the full contract.
 >
-> **T6 and Q8 are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
+> 11. **§11 / Q8, added 2026-08-27 after `M3-CP4c-0b-DEFN`** — **Q8 is split with the checkpoint.**
+>     Criteria **1, 4 and 5** remain binding on CP4c-0 and are unchanged. Criteria **2** (the prescribed
+>     sphere publishes a 24-trace network) and **3** (at least one terminal `TraceIntersection`) **move
+>     together to `M3-CP4c-0b`**, because they are one piece of work: the circulating traces are
+>     simultaneously what blocks 2 and what satisfies 3. Neither is weakened, relabelled, or satisfiable
+>     by anything other than the outcome it names. CP4c-0 closes on its own 346 identities and criteria
+>     1, 4, 5. See `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`.
+>
+> **T6 and the remaining Q8 criteria are NOT amended.** Both are correct as frozen. After the amendments, T6 is *provably
 > unreachable* from any well-formed production state (review §7, Theorems 1–3); Amendment 10 preserves
 > that unreachability rather than relying on it.
 >
 > **Amendment history:** 1–5 after `M3-CP4c-0-TB`; 6 after `TB-R2`; 7 after `TB-R3`; 8 after `TB-R5`;
-> 9 after `TB-R6`; 10 after `DEFN-2`.
-> The next turn is **`M3-CP4c-0-CB8`**, measures **L0–L9**, in
-> `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` §10.
+> 9 after `TB-R6`; 10 after `DEFN-2`; 11 after `CP4c-0b-DEFN`.
+> The next turn is **`M3-CP4c-0-TB-R9`** on the 346 selector, which closes CP4c-0 against criteria
+> 1, 4 and 5. Trace termination is `M3-CP4c-0b`, measures **P0–P9**, in
+> `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md` §10.
 
 ---
 

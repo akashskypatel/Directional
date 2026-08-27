@@ -615,6 +615,51 @@ corners of a cube, and predicted that every separatrix therefore ran corner to c
 did and 6 wound forever. **Symmetry of the singularity set does not constrain the trajectories between
 them.** The reproduction that settled it cost one script and was available at prediction time.
 
+### When a checkpoint blocks on its own successor, look for two obligations under one gate
+
+A checkpoint could not close because it needed a capability assigned to the checkpoint after it. The
+instinct is to reorder or to re-scope; both preserve the mistake. The real cause was that the checkpoint
+had been carrying two unrelated obligations - how a thing continues and how it stops - under a single
+gate, and only one of them had ever been defined. **Splitting the checkpoint let the finished half close
+on its own evidence and gave the undefined half a definition turn of its own.** When a dependency
+inversion appears, check whether the gate is actually two gates before rearranging the schedule.
+
+### A stopping rule must be validated against the traces that need stopping, not the ones that don't
+
+Two plausible termination rules - self-contact, and a length budget derived from the mesh - were both
+excluded by measuring them against the actual runaway traces. Self-contact never fires, structurally,
+because the field is one constant vector per cell so repeat visits lay parallel segments. A length
+budget cannot separate the populations at all: the longest correctly terminating trace and one lap of a
+never-terminating trace were the same length to four decimal places. **Both would have looked reasonable
+in review and failed in production.** Measure a candidate rule against the failing case before adopting
+it.
+
+### Exact ties are systematic on the inputs you use to judge quality
+
+A tie-break looks like a rare fallback until you notice that symmetric models produce *exact* ties by
+construction - and symmetric models are exactly what gets rendered to judge whether a partition looks
+right. An arbitrary tie-break therefore decides the whole result on the nicest inputs. The way out was
+to find the case that needs no arbitrary rule: simultaneous arrivals at *different* points are
+independent and their order cannot matter, and simultaneous arrivals at the *same* point mean both
+parties stop there. **Before picking a tie-break, check whether the tie has a canonical answer.**
+
+### A bound derived from the computation is not a tolerance; a chosen constant is
+
+Where exact comparison is infeasible, a floating-point comparison plus a *computed* forward error bound
+is defensible: it decides only whether the order is knowable, and the unknowable case gets a canonical
+answer. The same code with a hand-picked epsilon is the tolerance-as-ownership-key defect all over
+again. The distinguishing test is whether the number is derived from the operands at run time or written
+in the source, and whether the inconclusive branch has an answer that needed no choice.
+
+### A guarantee inherited from a citation inherits its assumptions
+
+The architecture claimed traces cannot fail to terminate, citing a result about motorcycles walking the
+edges of an existing quad mesh - a finite graph where every step consumes an edge. One stage earlier,
+tracing a field with exact positions in cell interiors, the state space is continuous and limit cycles
+exist; one was exhibited with an exactly contracting first-return map. The conclusion still held, but
+for a completely different reason. **When a design leans on a citation for a guarantee, restate the
+citation's preconditions in the design's own terms and check each one.**
+
 ### A classifier that names an owner will route the next turn, right or wrong
 
 A census emitted class labels of the form "this bucket means `functionX` is at fault". The buckets were
