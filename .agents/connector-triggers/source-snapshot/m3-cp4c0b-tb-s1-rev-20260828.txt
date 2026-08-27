@@ -1,4 +1,0 @@
-turn=M3-CP4c-0b-TB-S1-REV
-semantic_source=d59e29b8cc2423ce465b96edd4af0592d56d399d
-read_mode=snapshot
-runtimeExecution=false
