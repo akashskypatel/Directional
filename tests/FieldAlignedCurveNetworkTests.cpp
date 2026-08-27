@@ -6064,7 +6064,11 @@ TEST(ResolvedBranchCorrection,
   const SourceFaceTopologyKey face = topology_face(0, 1, 2);
   const SourceEdgeTopologyKey incoming = topology_edge(0, 1);
   const SourceEdgeTopologyKey outgoing = topology_edge(1, 2);
-  const auto pairing = continuation_pairing({-1, 2, -1}, {outgoing, incoming});
+  // Keep the positive control geometrically non-degenerate: on incoming
+  // edge (0,1), barycentric coordinate 2 is exactly zero.  The former
+  // {-1,2,-1} witness therefore made that zero coordinate an outflow
+  // minimizer and correctly produced a zero-time degenerate entry.
+  const auto pairing = continuation_pairing({-2, 1, 1}, {outgoing, incoming});
 
   // A parameter still inside the unit interval whose exact width exceeds the
   // policy: 1 / 2^k built by repeated squaring, so the value stays exact and
@@ -6100,10 +6104,15 @@ TEST(ResolvedBranchCorrection,
   // The policy is a width, never a value: an ordinary narrow parameter on the
   // same face and pairing still resolves, so nothing about the topological
   // decision has been approximated away.
+  const auto narrowPoint = boundary_point(incoming, 1, 2);
   const auto resolved =
-      resolve_field_branch_continuation(face, pairing, boundary_point(incoming, 1, 2));
-  ASSERT_NE(nullptr,
-            std::get_if<FieldBranchContinuationDecision>(&resolved));
+      resolve_field_branch_continuation(face, pairing, narrowPoint);
+  const auto *decision =
+      std::get_if<FieldBranchContinuationDecision>(&resolved);
+  ASSERT_NE(nullptr, decision);
+  EXPECT_EQ(FieldBranchContinuationKind::EdgeExit, decision->kind);
+  EXPECT_EQ(outgoing, decision->outgoingCarrier);
+  EXPECT_EQ(boundary_point(outgoing, 1, 4), decision->exitPoint);
 }
 
 TEST(ResolvedBranchCorrection,
