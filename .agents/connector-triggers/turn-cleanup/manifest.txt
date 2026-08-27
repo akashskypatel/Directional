@@ -1,0 +1,6 @@
+# M3-CP4c-0 CB-R10 / TB-R10 closeout temporary-state inventory
+.agents/connector-triggers/source-snapshot/cb-r10.txt
+.agents/connector-triggers/m3-cp4c0-cb-r10-apply/run.txt
+.agents/connector-triggers/m3-cp4c0-cb-r10-compile/run.txt
+.agents/connector-triggers/m3-cp4c0-tb-r10/run.txt
+.agents/connector-triggers/m3-cp4c0-r10-closeout/run.txt
