@@ -8,6 +8,17 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-27 — `M3-CP4c-0b-TB-S1-REV`: S1 stop discharged; S2-S6 authorized with a bounded migration surface
+
+Evidence review and successor planning only. No Directional runtime, build, benchmark, package creation, product/test/fixture/selector/build-configuration semantic change, or acceptance attempt. Durable record: `Architecture_M3_CP4c0b_TB_S1_Review_Record.md`.
+
+- Raw TB-S1 result artifact `9656967036` was independently re-hashed as `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4` and re-read. It confirms package source `4bb467806df99c70889394a323c17c13bc185ca3`, GMP, **346/346 PASS**, S1 selected exactly once/PASS with zero gate credit, no mutation/rebuild/repair, and immutable postflight PASS.
+- **S1's mandatory non-proper-contact stop does not fire.** Reached included witnesses have site B = 0: two-ring `A/B/C=1/0/0`, torus `0/0/0`; the excluded fan is `1/0/0`. Thus S3 removes no currently selected site-B contact on reached accepted authority. The zero denominator is not misreported as a live proper-crossing proof.
+- **Sphere remains explicitly unreached, not zero-contact.** N1 reports 65 steps, budget 9216, visits 3, allowance 2. The non-trivial proper-contact basis remains the frozen independent sphere measurement: every one of the six circulating traces has many proper crossings and a first available crossing at own step 0.
+- **S2's predecessor change is positively predicted by S1.** Two-ring site A = 1 and its sole `TraceIntersection` is the overloaded singularity junction. `DeclaresTraceIntersectionsAsTypedNetworkEvents` and `IndependentCompositionOracleValidatesTraceEventGraph` are explicitly authorized for site-A vocabulary re-authoring. Any unrelated accepted expectation edit remains a stop.
+- `M3-CP4c0b-P03-CAND-01` remains ACTIVE; S1 discharges only its routing/re-proof-risk measure, not D1-D6. No new candidate/regression. Stable totals remain **42 / 14 / 28**, debt **5**, M3 packages **52**.
+- **Exact next: `M3-CP4c-0b-CB1-S2-S6`**, one complete runtime-free GMP Code + Build continuation implementing the already frozen S2-S6 semantics atomically. The resulting immutable package first runs new-contract-only attempt-free `M3-CP4c-0b-DG`; only a green DG advances the same package to the full `346 + n` acceptance TB.
+
 ## 2026-08-27 — `M3-CP4c-0b-P0.3-REVIEW-PLAN`: P0.3 withdrawn as false; crash-on-contact already exists, defectively
 
 Independent review and planning only. No Directional runtime, build, benchmark, or product/test/fixture/selector/build-configuration change. Record: `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md`; Amendment **A1** at the head of the CP4c-0b frozen definitions.
