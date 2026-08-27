@@ -28,5 +28,5 @@ jobs:
   validate:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .github/workflows/agent-compile-reusable.yml
+      workflow_path: .agents/Directional/turn-payloads/gmp-compile/gmp-compile-verify.yml
     secrets: inherit
