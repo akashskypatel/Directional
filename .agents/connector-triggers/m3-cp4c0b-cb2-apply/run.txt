@@ -1,5 +1,0 @@
-purpose=M3-CP4c-0b-CB2 apply verified closeout documentation patch
-patch_file_id=1Cuwtna6Rb7exbtwJE_p6NAc2zHdzmeWx
-patch_sha256=fdbb1c979af2f9fb54da9b23fdb8c38522f451b11ddcf4e2079ba539e20fa269
-base_sha=b2629040450c12507367c232f68a4d972b46450f
-retry=1

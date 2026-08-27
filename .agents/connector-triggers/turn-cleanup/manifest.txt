@@ -1,4 +1,0 @@
-# M3-CP4c-0b-CB2 temporary non-workflow state
-.agents/connector-triggers/m3-cp4c0b-cb2-apply/run.txt
-.agents/connector-triggers/m3-cp4c0b-cb2-compile/run.txt
-.agents/connector-triggers/source-snapshot/start-session-20260827T2300Z.txt
