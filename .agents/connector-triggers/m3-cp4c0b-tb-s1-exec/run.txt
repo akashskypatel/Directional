@@ -1,0 +1,5 @@
+purpose=M3-CP4c-0b-TB-S1-EXEC artifact-only census
+package_artifact_id=9655632444
+package_source=4bb467806df99c70889394a323c17c13bc185ca3
+runtimeExecution=true
+retry=0
