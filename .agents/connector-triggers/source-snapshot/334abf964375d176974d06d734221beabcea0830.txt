@@ -1,2 +1,0 @@
-semantic_source_sha=334abf964375d176974d06d734221beabcea0830
-purpose=start-session source snapshot
