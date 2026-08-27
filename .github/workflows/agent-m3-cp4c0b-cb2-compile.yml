@@ -1,0 +1,52 @@
+name: Agent M3 CP4c-0b CB2 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0b-cb2-compile/run.txt
+
+permissions:
+  actions: write
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c0b-cb2-compile
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c0b-cb2-compile
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c0b-cb2-compile.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  changed-owner:
+    needs: validate
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: b2629040450c12507367c232f68a4d972b46450f
+      targets: directional_surface_cell_producer_tests
+      artifact_prefix: m3-cp4c0b-cb2-changed-owner
+    secrets: inherit
+
+  package:
+    needs: changed-owner
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: b2629040450c12507367c232f68a4d972b46450f
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c0b-cb2-package
+    secrets: inherit
