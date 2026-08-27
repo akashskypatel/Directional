@@ -1,0 +1,2 @@
+purpose=M3-CP4c-0-TB-R8 start-of-turn exact snapshot
+requested_head=3fb60ff1615e14df7084f6324ef9b46931748232
