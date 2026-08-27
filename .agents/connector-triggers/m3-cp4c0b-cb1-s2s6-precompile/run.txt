@@ -1,0 +1,4 @@
+purpose=M3-CP4c-0b-CB1-S2-S6 changed-owner GMP precompile
+semantic_source=737f93be10a73db950e2a7f823b96ffb0d59cf4d
+targets=directional_surface_cell_producer_tests
+retry=0
