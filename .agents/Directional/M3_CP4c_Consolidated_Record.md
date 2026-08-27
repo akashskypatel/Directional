@@ -252,6 +252,147 @@ packages **46**. Latest accepted runtime remains CP4ab 316/316. Exact next: **`M
 Build only under measures **L0-L9**; CP4c-1/2/3 remain blocked.
 
 
+### CB8 retained Code + Build report
+
+**Build evidence.** CB8 implemented only frozen DEFN-2 measures **L0–L9** and compiled the exact pushed semantic source. Code + Build only; no Directional runtime, test, benchmark, generated discovery, CLI, fuzzer, or custom-input execution.
+
+- semantic source: `19ba8e9c5e58f9c33c14b309841165d3f0401db5`
+- compile caller install commit `dc36d0fff98936280da51bc02522954a1a33c204`; trigger commit `8abb7a37267ac20c6576160fd0984208af6914fa`
+- authoritative compile run `33025705457`; preflight job `98366398970`; full package job `98367264215`
+- immutable result/package artifact `9628445643`; package ZIP SHA-256 `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`
+- packaged semantic-source archive SHA-256 `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`
+- compile diagnostic artifact `9628446136` / `562bb275fccb61629a3a60bfd1f71c3cb8332a239674dab660ebcd1626f33d27`
+- package metadata: `preflight-exit-code=0`, `build-exit-code=0`, `runtimeExecution=false`, `turnBoundary=Code+Build-only`, empty final source-status snapshots, recursive `SHA256SUMS` verified clean
+- all eight standard targets compiled and linked; frozen selector **343** with SHA-256 `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`
+
+### TB-R8 retained artifact-only report — INCOMPLETE / BLOCKED
+
+**Authority.** Run/job `33028238313 / 98374531360`, consuming only CB8 package `9628445643`. Environment GitHub Actions `ubuntu-24.04`; ordinary `unzip` + `tar`; no package repair. Partial result artifact `9629797616` / `50462c5023a5cab817859eefb00b3f523e6cfe1e6d601188cd7c1e14a149c287`.
+
+- P0 immutable-package preflight completed before any test process.
+- P1 completed **342/343** fresh selector processes before the user cancelled the workflow; **1 missing** (ordinal 343).
+- Accepted prefix **316/316 PASS**; prior first-328 **328/328 PASS**.
+- **Ordinal 338**, `ResolvedBranchCorrection.AcceptedWitnessesNeverPublishDegenerateOrOutsideOutflowRejections`, ran **853.437 s** and failed with an uncaught `C++ exception with description "gcd(): while running too long! "`.
+- **Ordinal 343**, `ResolvedBranchCorrection.GrazingTraceSegmentsPublishExactEndpointSupport`, did not return before cancellation; the payload runs selector order synchronously, so the workflow was inside that process.
+- P2–P8 and final postflight were never reached; **no acceptance credit**, and CB8 runtime semantics remain unaccepted.
+
+### CB9 — the corrective, and the three defects it closed
+
+Adjudicated and corrected in one turn at explicit user instruction; the full record is retained as
+`Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md`. Summary of what it established, because it is the evidence CP4c-0b's definition consumes:
+
+1. **Six of the prescribed sphere's separatrices circulate forever**, lapping a closed 32-state circuit. The first-return map is exactly affine and contracting, `a = 0.9999999999999996` constant across every lap, exact fixed point `p* ≈ 0.970180376877834` inside the interval — an attracting limit cycle approached asymptotically and never reached.
+2. **Neither existing guard could see it.** The cycle guard keys on a state containing the exact position, which drifts every lap; the step budget authorised **1,775,616** steps the arithmetic could never survive.
+3. **Exact values grow ~1.12 base-1e9 limbs per step and the fallback bignum answers by throwing.** At ~step 205 Euclid passed its fixed 10,000-iteration cap. `gcd(): while running too long!` was the third symptom, not the fault.
+
+Measures **N0–N7** landed: position-free combinatorial recurrence guard (allowance 2 against a measured terminating maximum of 1), deterministic exact-magnitude policy (4096 bits), bignum iteration caps replaced by bounds derived from the algorithms' own worst cases, step budget reduced to a provable envelope of the recurrence guard (1,775,616 → 9,216), a producer closed against escaping exceptions, four falsifying identities, and one identity demoted to non-gating. Selector **343 → 346**, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 and first-328 prefix hashes byte-identical.
+
+### CP4c-0b — the split, and the termination contract
+
+`M3-CP4c-0b-DEFN` split the checkpoint rather than reorder or re-scope it, on the finding that CP4c-0 had been carrying two unrelated obligations under one gate. **CP4c-0** keeps continuation and closes at gate **346** on Q8 criteria 1, 4 and 5. **CP4c-0b** owns trace/trace contact, arrival priority, the contact node and event, and retirement of the CB9 stand-in guards, together with Q8 criteria **2** and **3** (Amendment 11, moved together and unweakened). Full contract:
+`Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`.
+
+Two candidate stopping rules were excluded **by measurement**, and both are recorded so neither is re-proposed:
+
+- **Self-contact never fires.** 2,548 co-face segment pairs over 420 steps: zero proper crossings, zero endpoint touches, zero collinear overlaps. Structural, because A1 publishes one constant direction per `(face, branch)` so repeat visits lay **parallel** segments, and the circuit is 32 distinct faces each on a single branch.
+- **A mesh-derived length budget cannot separate the populations.** Longest correctly terminating trace **5.0175**; one lap of a never-terminating trace **5.0175** — separation ratio **1.000**, zero margin. Bounding boxes are also not rotation-invariant, arc length is not exactly comparable, and a truncated trace leaves an arc that bounds no region.
+- **What does work:** contact with the **perpendicular** branch family, available to every circulating trace at its own **step 0**, always on pairs `(0,1)`, `(0,3)`, `(1,2)`, `(2,3)` and never `(0,2)`/`(1,3)`.
+
+---
+
+## 3b. The independent review arc — one digest per retired review
+
+Seven independent reviews took CP4c from a frozen-but-unexecutable plan to a root cause and a frozen contract. Each is retired here; its **normative output** lives in the frozen-definition documents, its **lessons** in `LESSONS.md`, and its **evidence identities** in §2–§3 above. What follows preserves each one's finding, the amendment it produced, and the reviewer errors it owned.
+
+### CP4c parent — `TB-R1-INDEPENDENT-REVIEW`
+
+Evidence: run/job `32791027809 / 97632461750`, CB2 package `9541369624`, source `a5edb1a31c315d51df216f3bb51470989ff64e33`. Result reviewed: **VALID RED 316/322**, accepted prefix 316/316, CP4c C1–C6 **0/6**.
+
+| # | Subject | Disposition |
+|---|---|---|
+| D1 | Does DG execute a different runtime surface than TB? | **No** — DG's surface is a strict subset of TB's under identical rules. The distinction was pure budget bookkeeping. |
+| D2 | Attempt budget and the DG turn type | **Both abolished.** The workflow becomes `CB → TB → (red) → REVIEW+PLAN → CB`. |
+| D3 | C1 / C3 / C6 — torus | **Frozen-definition scope gap in accepted A2b authority**, not a witness defect. A2b assumes every trace arc separates its two sides — a genus-0, bounded-surface assumption. The torus is closed, χ = 0, genus 1. |
+| D4 | C2 — mechanical | **Accepted A1 authority fails on a surface class it has never been driven with**: `FieldTransportAtlas::make` rejects `IncompleteCycleBasis`, upstream of A2a entirely. Not CP4c scope. |
+| D5 | C4 / C5 | **Authored against a witness that provably cannot satisfy them**, and the proof was already in the durable record before CB2 ran. |
+| D6 | CP4c as frozen | **Not executable.** The frozen `322 = 316 + C1–C6` is reopened and CP4c is split. |
+| D7 | Blame | The plan, not CB2. CB2 implemented §7.1 correctly, including reading the new `globalTopologyPlan` slot rather than the legacy `traceNetwork`. |
+
+Stable accounting unchanged at 42 / 14 / 28; the six reds are first-acceptance candidates, not regressions. All 316 accepted identities were green **in the same immutable run** — the strongest available evidence that CB1's production wiring regressed nothing. **This review produced the CP4c-0/1/2/3 decomposition now owned by `ROADMAP.md` §3.**
+
+### `M3-CP4c-0-DEFN-Charter` — D0–D5, discharged
+
+The charter posed six questions and forbade any implementation until they were frozen. Each is answered in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` §0 and the section it names: **D0** exact position authority → `FieldBoundaryPoint`, §3; **D1** within-face continuation → exact minimum-ratio exit, §4; **D2** A1 contract shape → `connections` deleted, direction published, §5; **D3** accepted-prefix re-proof → §6; **D4** witness-stage capability → §7; **D5** terminus-datum unification → unified, §8. Its stop conditions did not fire, which is what authorized the DEFN to freeze. The charter is discharged and retired.
+
+### `TB-REVIEW-PLAN` — Amendments 1–5, measures E0–E10
+
+The 328 gate went green but the sphere was rejected at **T6** (`t* = 0`, `BranchContinuationDegenerateEntry`, `sourceEdge=6-8`). Found **five defects in the frozen DEFN**: the surviving `kBranchTopologyTolerance` decides carrier-set membership and is therefore a tolerance-derived ownership key; the vertex-sector predicate is neither a partition nor a cover at `tol > 0`; T1 was not exhaustive for an exit parameter of exactly 0 or 1; cross-edge flow agreement was never asserted; and locus fields were being back-filled from trace seeds. All five are **Amendments 1–5**, stated in full in the frozen-definitions §10. Also proved Theorems 1–3, that T6 is unreachable from any well-formed production state after the amendments.
+
+### `TB-R2-REVIEW-PLAN` — Amendment 6, measures F0–F8
+
+Two class defects that instance falsifiers had passed over: a `std::uint8_t` returned by value was **character-streamed** at a diagnostic boundary, and roughly fifteen trace-seed back-fills survived because Amendment 5's wording was line-scoped. **Amendment 6** redefines "observable" by *mechanism* — formatted through a named `*_locus` helper, printable ASCII only, parseable, site-sourced at every emission site — and requires every diagnostic contract to be falsified by a **class** identity quantifying over all codes and sites, never an instance one.
+
+### `TB-R3-REVIEW-PLAN` — Amendment 7, measures G0–G8
+
+Two test-side reds, and the discovery of the **per-face gauge**: `build_face_branch_frame` assigns each face a gauge against its canonical reference edge, so `FieldBranch` is a per-face *label*, not a portable direction identifier, and cross-face comparison is valid only through the published `signedLift = matching + g_source − g_target`. Production was compliant everywhere; the oracle that assumed otherwise was not. **Amendment 7** also forbids a required falsifier from asserting the *existence* of a current production failure.
+
+**Reviewer error owned:** the review predicted identities 330–337 would all be green; **333 and 334 went red**. The cause was auditing the assertions without auditing the preconditions and authority the identity consumes.
+
+### `TB-R4-REVIEW-PLAN` — measures H0–H7
+
+G5 published the live rejection and the review framed three candidate mechanisms — matching sign convention, matching aliasing, and A2a carrying the wrong branch — then prescribed the H1 cross-face flow-agreement census to discriminate them. It also **formed and then refuted** the canonical-normal-parity hypothesis before publishing: the two faces do have opposite canonical parity, and parity mismatch covers 86.8 % of the sphere's interior edges, but the gauge is an index shift into a per-face array and **cancels** in `matching + g_X − g_Y` regardless of frame.
+
+**Reviewer errors owned, both corrected at TB-R6:** the claim that both faces calling a shared edge `Outflow` is *"geometrically impossible for a single continuous direction"*, and the argument that `|d| = 1.0035` being "three orders of magnitude above any epsilon" excluded near-tangency. Tangency is a **ratio**, and 1.0035 is the *smallest* of `{4.00, 5.01, 1.00}`.
+
+### `TB-R5-REVIEW-PLAN` — Amendment 8, measures J0–J7
+
+H1's census delivered 390 disagreements. The review proved the **four-triangle fan's two violations are a fixture artifact**: its census field leaves the direction vectors globally constant and merely *imposes* `matching = ±1` on one edge, so the published lift is exactly correct and the disagreement is forced by a matching that contradicts the geometry. Corrected population: **388 directed / 194 distinct** over three legitimate witnesses. Also established that **the lift histogram is uninformative about matching** — `signedLift` is a sum of three unobserved terms — and that the census's two-direction loop imposes the ±k tail symmetry and doubles every count. **Amendment 8**: the cross-edge flow invariant audits the field's **input matching** as much as A1's composition, so a witness with imposed matching will trip it correctly and its firing does not by itself indict A1 code.
+
+**Reversal recorded:** the review began asserting that A1 published a wrong lift on the fan assuming `matching ≡ 0`, checked the fixture, found `make_index_one_singularity_field` imposes `matching = ±1`, and reversed the conclusion to "fixture artifact" before publishing.
+
+### `TB-R6-INDEPENDENT-REVIEW-RECORD` — Amendment 9, measures K0–K7 — **root cause**
+
+The cycle that identified the root cause, and it is a contract gap rather than an implementation defect. The census was reproduced from the committed `.obj` and `.rawfield` alone — no product code — yielding **exactly 144 directed disagreements**, matching runtime. The **tangency ratio** `min(|d_opp| / max|d|)` has median **0.0218** across the 144 disagreeing pairs against **0.9233** across the 1008 agreeing ones: a 42× separation, overlapping at the bottom, so a geometric regime rather than a threshold. **Every published term at the live locus verifies correct** — matching 0 is geometrically right with a 42° margin, `0 + 1 − 3 ≡ 2` reproduces the published lift, both gauges map their semantic branch to raw index 0, both `dbary` triples reproduce to 10 decimal places, and all 288 interior edges are normal adjacency with none folded.
+
+**Three standing readings withdrawn.** The live locus does not indict `build_branch_transports`. There are not two classes — the unequal-gauge and equal-gauge/lift-0 populations are one near-tangency phenomenon. And **J3's 524/524 does not exclude H-B**: `independent_edge_measurement` re-implements **principal matching**, the algorithm H-B suspects, so it is an implementation cross-check and not an aliasing test. H-B is excluded, but by direct measurement at the live locus, not on J3's authority.
+
+**Amendment 9**: Amendment 4 / measure E5's cross-edge flow invariant is a **continuum** statement and is unsound for a piecewise-constant field near edge tangency. `BranchTransportFlowDisagreement` becomes a typed grazing observation, `DESIGN.md` §4.5 is declared incomplete, no tolerance may classify grazing, and every cross-stage invariant asserted on discrete data must state its discretization assumptions.
+
+**Reviewer errors owned:** the TB-R4 impossibility and magnitude-versus-ratio claims above, and the **J3 specification**, which said "find which target raw index the source direction actually maps to" — that *is* principal matching, so the suspect was named as its own oracle.
+
+### Withdrawn predictions, kept as a record of what estimation cost
+
+| Prediction | Turn | Outcome |
+|---|---|---|
+| Identities 330–337 all green | TB-R3 review | **Falsified** — 333 and 334 red |
+| Canonical-normal parity explains the disagreements | TB-R4 review | **Refuted before publication**; the gauge cancels in the lift |
+| The fan's violations indict A1 | TB-R5 review | **Reversed before publication**; fixture-imposed matching |
+| Near-tangency excluded because `\|d\|` is far above any epsilon | TB-R4 review | **Falsified at TB-R6**; tangency is a ratio |
+| Decision-table rows assigning owners to the disagreement classes | TB-R5 review | **Withdrawn at TB-R6**; one geometric regime, no owner |
+| K2 would discriminate the four grazing models | TB-R6 review | **Void** — K2 walked the retired Cartesian rule |
+| The sphere's separatrix network is the cube's edge graph, all 24 traces terminating at singularities | DEFN-2 §9.2 | **Falsified at CB9** — 42 of 48 terminate, 6 circulate |
+
+---
+
+## 3c. Where CP4c information now lives
+
+| Information | Authoritative location |
+|---|---|
+| Continuation contract, Amendments 1–11 | `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` |
+| Grazing classification and edge transit | `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` |
+| Trace termination, contact predicate, arrival priority | `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md` |
+| Non-terminating traces, the CB9 guards, the measured evidence | `Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md` |
+| Normative architecture, incl. the §4.5 grazing paragraph and the §4.6 termination condition | `DESIGN.md` |
+| Checkpoint decomposition and gates | `ROADMAP.md` |
+| Current gate, next action, task status | `TODO.md` |
+| Exact next-turn instructions and current immutable authority | `Future_Chat_Session_Handoff.md` |
+| Completed history, newest first | `CHANGELOG.md` |
+| Regression and candidate root-cause history | `Regression_Root_Cause_Tracker.md` |
+| Durable lessons | `LESSONS.md` |
+| Per-turn evidence identities for every retired CP4c document | **this record**, §2–§3 |
+
+---
+
 ## 4. CP4c-1 — evidence (OPEN, blocked on CP4c-0)
 
 | Turn | Semantic source | Run / job | Package | Result |
@@ -270,10 +411,16 @@ root-cause record (the Cartesian-product defect) is inlined in
 
 ---
 
-## 5. Documents retired into this record — 2026-08-26
+## 5. Documents retired into this record
 
-Retired under explicit user authorization ("consolidate CP4c docs"). Every evidence identifier each
-carried is inlined above. **CP4c parent:** `..._CB1_Global_Topology_Plan_Code_Build_Report`,
+Retired under explicit user authorization. Every evidence identifier, finding, amendment, reviewer
+error and disposition each carried is inlined in §1–§3c above. **No amendment, lesson, stable ID,
+artifact identity, unresolved blocker or acceptance criterion was removed** — each now has exactly one
+authoritative home, listed in §3c.
+
+### 2026-08-26 — first consolidation ("consolidate CP4c docs")
+
+**CP4c parent:** `..._CB1_Global_Topology_Plan_Code_Build_Report`,
 `..._CB2_Production_Witness_Code_Build_Report`, `..._DG1_Artifact_Only_Diagnostic_Plan`,
 `..._DG1_Artifact_Only_Diagnostic_Execution_Report`,
 `..._DG1_Artifact_Only_Diagnostic_Independent_Review_Record`,
@@ -281,13 +428,48 @@ carried is inlined above. **CP4c parent:** `..._CB1_Global_Topology_Plan_Code_Bu
 **CP4c-0:** `..._Artifact_Only_Test_Benchmark_Report`, `..._CB2_Code_Build_Report`,
 `..._CB2_Artifact_Only_Test_Benchmark_Plan`, `..._CB2_Artifact_Only_Test_Benchmark_Report`,
 `..._CB3_Code_Build_Report`, `..._CB3_Artifact_Only_Test_Benchmark_Plan`, `..._CB4_Code_Build_Report`,
-`..._CB4_Artifact_Only_Test_Benchmark_Plan`, and the four superseded review briefs `..._TB_Review_Plan`,
+`..._CB4_Artifact_Only_Test_Benchmark_Plan`, and the superseded review briefs `..._TB_Review_Plan`,
 `..._TB_R3_Review_Plan`, `..._TB_R4_Review_Plan`. **CP4c-1:** `..._Code_Build_Report`,
 `..._Artifact_Only_Test_Benchmark_Plan`, `..._Artifact_Only_Test_Benchmark_Report`,
 `..._TB_Review_Plan`, `..._TB_R2_Review_Plan`.
 
-Each review brief was **answered in full** by the independent review that succeeded it; those reviews
-restate every question in their `R`-sections and are retained.
+### 2026-08-27 — second consolidation ("consolidate and cleanup CP4c historical docs")
+
+**Tier 1 — per-turn evidence, identities inlined in §3 (11 documents).**
+`Architecture_M3_CP4c0_CB8_Code_Build_Report.md`,
+`..._TB_R5_Artifact_Only_Test_Benchmark_Report.md`, `..._TB_R5_Review_Plan.md`,
+`..._TB_R6_Artifact_Only_Test_Benchmark_Plan.md`, `..._TB_R6_Artifact_Only_Test_Benchmark_Report.md`,
+`..._TB_R6_Review_Plan.md`, `..._TB_R7_Artifact_Only_Test_Benchmark_Plan.md`,
+`..._TB_R7_Artifact_Only_Test_Benchmark_Report.md`,
+`..._TB_R8_Artifact_Only_Test_Benchmark_Plan.md`, `..._TB_R8_Review_Plan.md`,
+`..._TB_R8_Test_Benchmark_Report.md`.
+
+**Tier 2 — independent reviews and the discharged charter, digested in §3b (8 documents).**
+`Architecture_M3_CP4c_TB_R1_Independent_Review.md`, `Architecture_M3_CP4c0_DEFN_Charter.md`,
+`..._TB_Review_Plan_Independent_Review.md`, `..._TB_R2_Review_Plan_Independent_Review.md`,
+`..._TB_R3_Review_Plan_Independent_Review.md`, `..._TB_R4_Review_Plan_Independent_Review.md`,
+`..._TB_R5_Review_Plan_Independent_Review.md`, `..._TB_R6_Independent_Review_Record.md`.
+
+**Why Tier 2 could be retired.** Each review's **normative output** is an amendment, and Amendments
+1–11 are stated in full in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` §10 — that document, not
+the review, is the amendment's authoritative home, so retaining both was duplication. Each review's
+**durable lessons** were moved to `LESSONS.md` in the turn that produced them. Each review's **evidence
+identities** are in §2–§3. What remained unique to the reviews — the finding, the reviewer errors owned,
+and the refutations and reversals — is preserved in §3b, including the withdrawn-prediction table, which
+exists specifically so the cost of each estimation error stays visible.
+
+### Retained, and why
+
+| Document | Why it is retained |
+|---|---|
+| `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` | **Normative.** The continuation contract and Amendments 1–11. |
+| `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md` | **Normative.** The grazing classification and edge-transit contract. |
+| `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md` | **Normative and current.** The termination contract and the CP4c-0b plan. |
+| `Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md` | **Current authority.** The measured evidence CP4c-0b's definition consumes, and the only record of the CB9 corrective. |
+| `Architecture_M3_CP4c0_Required_Green_Selector.txt` | Live gate authority — 346. |
+| `Architecture_M3_CP4c1_Required_Green_Selector.txt`, `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` | Live gate authority for CP4c-1, which is open. |
+| `Architecture_M3_CP4c_Required_Green_Selector.txt` | Parent CP4c 322 selector; the record of which identities constitute C1–C6, needed by the still-unopened CP4c-2 and CP4c-3. |
+| `M3_CP4c_Consolidated_Record.md` | This record. |
 
 ---
 

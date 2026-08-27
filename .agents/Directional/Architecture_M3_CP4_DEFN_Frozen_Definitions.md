@@ -817,7 +817,7 @@ Record this reasoning in the CP4c report so the question is not re-litigated.
 > `CB → TB → (red) → REVIEW+PLAN → CB`; a red TB consumes nothing and mandatorily routes to review. The
 > text below is retained as historical context only and must not be treated as live procedure. See
 > `Future_Chat_Session_Handoff.md` "Turn workflow" and
-> `Architecture_M3_CP4c_TB_R1_Independent_Review.md` §1–§2.
+> `M3_CP4c_Consolidated_Record.md` §3b (retired CP4c parent TB-R1 review).
 
 Each of CP4a, CP4b, CP4c holds its own **3-attempt budget** (one attempt = one complete
 Code + Build → immutable TB pair) with its own mandatory-review ratchet and its own cap of 2

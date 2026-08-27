@@ -1,5 +1,28 @@
 # Changelog
 
+> **Provenance note — CP4c document names.** Entries dated on or before **2026-08-27** cite CP4c
+> per-turn plans, reports and independent reviews by their original filenames. Those documents were
+> retired into `M3_CP4c_Consolidated_Record.md` on 2026-08-26 and 2026-08-27 under explicit user
+> authorization; the filenames below are retained as **historical provenance tied to the cited runs and
+> commits**, per `CLEAN_UP_POLICY.md`. Every evidence identity, amendment, finding, reviewer error and
+> disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
+> §3c for where each class of information now lives, and §5 for the exact retirement inventory.
+
+## 2026-08-27 — CP4c documentation consolidation: 28 documents to 9, no durable information removed
+
+Documentation only. No product, test, fixture, selector, build-configuration, runtime or gate change; the CP4c-0 selector remains **346** with SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`.
+
+Performed under explicit user authorization ("consolidate and cleanup CP4c historical docs and make sure information is deduplicated and retained in appropriate locations"), following `RETENTION_POLICY.md`'s required order: inventory the information at risk, define the exact authorized scope, verify the resulting diff against it.
+
+- **19 documents retired into `M3_CP4c_Consolidated_Record.md`.** Tier 1 — 11 per-turn plans and reports (CB8, TB-R5/R6/R7/R8), whose evidence identities are now inlined in §3: package artifacts, ZIP and source-archive SHA-256s, run/job IDs, gate counts, and the exact TB-R8 failure (ordinal 338 at **853.437 s**, ordinal 343 incomplete, **342/343** completed, accepted prefix **316/316**). Tier 2 — the 7 independent reviews and the discharged D0–D5 DEFN charter, digested in a new **§3b** that preserves each review's finding, the amendment it produced, and the reviewer errors it owned.
+- **The deduplication that made Tier 2 retirable:** each review's normative output is an amendment, and Amendments 1–11 are stated in full in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` §10 — that document, not the review, is their authoritative home, so retaining both was duplication. Lessons had already moved to `LESSONS.md`; evidence identities are in §2–§3.
+- **New §3b also carries a withdrawn-prediction table** — seven estimation errors across the arc, each with the turn that made it and the turn that falsified it — so the cost of each stays visible rather than being lost with the document that owned it.
+- **New §3c maps every class of CP4c information to its single authoritative location**, matching `DESIGN.md` §1's authority table.
+- **§5 rewritten** as a two-date retirement inventory with an explicit "retained, and why" table for the 9 surviving documents.
+- **All inbound references repaired.** Live documents (`TODO.md`, `ROADMAP.md`, `Regression_Root_Cause_Tracker.md`, both frozen-definition records, the CP4c CB plan) now point at `M3_CP4c_Consolidated_Record.md` §3b. The CP4c-0 frozen definitions' amendment header, which had pointed at the retired review for the full amendment text, now correctly points at its own §10. `CHANGELOG.md` gained a provenance note identifying pre-2026-08-27 CP4c filenames as historical, which `CLEAN_UP_POLICY.md` permits.
+- **Retained:** the three frozen-definition contracts (continuation, grazing, termination), the CB9 corrective record as current authority, all four selectors including the parent CP4c 322 selector that records which identities constitute C1–C6, and this consolidated record.
+- **Verified after the edit:** every document in `RETENTION_POLICY.md`'s durable set is present; all seven `DURABLE, DO NOT DELETE` sections in the handoff are intact; no amendment, lesson, stable regression ID, artifact identity, unresolved blocker or acceptance criterion was removed.
+
 ## 2026-08-27 — `M3-CP4c-0b-DEFN`: checkpoint split; trace termination frozen; CP4c-0 freed to close
 
 Independent definition/review/planning only. No Directional runtime, build, benchmark, or product/test/fixture/selector/build-configuration change. Record: `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`.

@@ -67,7 +67,7 @@ gate count excludes them, each carries a written rationale and an owning correct
   term is independently verified correct** (matching 0 right with a 42° margin; `0 + 1 − 3 ≡ 2`
   reproduces the lift; both `dbary` triples match to 10 dp; mesh adjacency sound). **One class, not
   two.** Amendment 9 issued. Record:
-  `Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md`.
+  `M3_CP4c_Consolidated_Record.md` §3b (retired TB-R6 review).
 - [x] `M3-CP4c-0-CB7` — **COMPLETE / BUILD GREEN.** Semantic source `077462da156c3e2dfbbc6867fc10d3e4442d853c`; package `9625495708`. K0–K7 diagnostic/contract-control only; no production semantics; all eight standard targets compiled/linked; `runtimeExecution=false`.
 - [x] `M3-CP4c-0-TB-R7` — **COMPLETE / VALID SEMANTIC RED.** 338/338; F3 2/2; K1 near-tangency reproduced; K2 0/24 reaches grazing (non-decisive); J3 524/524 legitimate; K3 176/176 / 0 mismatches; Q8 RED criterion 2.
 - [x] `M3-CP4c-0-DEFN-2` — **COMPLETE.** Closed the `DESIGN.md` §4.5 gap. Chose **grazing edge

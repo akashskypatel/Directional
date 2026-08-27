@@ -197,6 +197,7 @@ Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 975308
 - CP4c-1 is now blocked on **CP4c-0b** rather than CP4c-0, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **47**.
 - CP4c-0 gate **346**, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 and first-328 prefix hashes unchanged. CP4c-1's **318** selector unchanged.
+- **CP4c documentation was consolidated on 2026-08-27**: 28 CP4c documents reduced to 9, with 19 retired into `M3_CP4c_Consolidated_Record.md` (§3 evidence identities, §3b the review arc and withdrawn predictions, §3c where each class of information now lives, §5 the retirement inventory). Amendments 1–11 remain in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` §10, which is their authoritative home. No gate, selector, product or durable record changed.
 - Exact next is **`M3-CP4c-0-TB-R9`**, then **`M3-CP4c-0b-CB1`**. The two are independent.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE

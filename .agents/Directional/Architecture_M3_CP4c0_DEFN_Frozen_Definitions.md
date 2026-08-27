@@ -2,7 +2,7 @@
 
 **Turn:** `M3-CP4c-0-DEFN`
 **Type:** Independent definition / review / planning only — no product, test, fixture, selector, build, package, or runtime mutation
-**Charter:** `Architecture_M3_CP4c0_DEFN_Charter.md` (D0–D5)
+**Charter:** D0–D5, discharged; retired into `M3_CP4c_Consolidated_Record.md` §3b
 **Status:** **FROZEN.** §3–§10 are normative for `M3-CP4c-0` and may change only by an explicit plan update.
 **Incoming accepted authority:** M3-CP4ab **316/316**, source/package `157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`
 
@@ -12,8 +12,9 @@
 > sphere was rejected at **T6** (`t* = 0`, `BranchContinuationDegenerateEntry`, `sourceEdge=6-8`).
 > `M3-CP4c-0-TB-REVIEW-PLAN` adjudicated that failure and found **five defects in this document**.
 >
-> **Five amendments are normative and supersede the text they name.** They are stated in full in
-> **`Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md` §9**:
+> **Five amendments are normative and supersede the text they name. They are stated in full at the end
+> of §10 of this document**, which is their authoritative home; the review that produced them is retired
+> into `M3_CP4c_Consolidated_Record.md` §3b.
 >
 > 1. **§4.3** — the claim that the surviving `kBranchTopologyTolerance` is harmless is **retracted**. It
 >    decides carrier-set membership, which is an ownership key, which `DESIGN.md` §6.3 forbids. Every
@@ -472,7 +473,7 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > faces** (empty or ≥ 2), so "no face" and "many faces" are distinguishable without a rerun.
 
 > **AMENDMENT 7 — `FieldBranch` is per-face gauged; and a falsifier may not assert that a witness fails**
-> (`Architecture_M3_CP4c0_TB_R3_Review_Plan_Independent_Review.md` §9). `M3-CP4c-0-TB-R3` failed at
+> (`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R3 review)). `M3-CP4c-0-TB-R3` failed at
 > ordinal 334 because a fan-partition oracle iterated a numeric branch label across four faces. It is
 > **not** portable.
 >
@@ -505,7 +506,7 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > branch must be conditional.
 
 > **AMENDMENT 8 — the cross-edge flow invariant audits A1's INPUT as much as its composition**
-> (`Architecture_M3_CP4c0_TB_R5_Review_Plan_Independent_Review.md` §8). The A1-only census added by measure H1
+> (`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R5 review)). The A1-only census added by measure H1
 > reported 390 disagreements, and the four-triangle fan's contribution proved to be a **fixture
 > artifact**: its census field leaves the direction vectors globally constant and *imposes*
 > `matching = ±1` on one edge, so the published lift is correct (`+1 + 0 − 1 = 0`) and the disagreement is
@@ -533,7 +534,7 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > reader has to infer the halving.
 
 > **AMENDMENT 9 — the cross-edge flow invariant does not hold for a piecewise-constant field near edge
-> tangency** (`Architecture_M3_CP4c0_TB_R6_Independent_Review_Record.md` §8). Amendment 4 required that an
+> tangency** (`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R6 review)). Amendment 4 required that an
 > edge outflowing in `X` for branch `b` inflow in `Y` for the transported branch. On the prescribed
 > sphere **144 of 1152 directed source-outflow pairs violate it**, and an independent reproduction from
 > the committed fixture — matching the runtime figure exactly — shows every one is a **near-tangency**
@@ -624,7 +625,7 @@ Every rejection names its locus. `LESSONS.md` §2 records what an overloaded cod
 > not an exceptional pathology.
 
 > **AMENDMENT 6 — "observable" is defined by mechanism, and proved by class**
-> (`Architecture_M3_CP4c0_TB_R2_Review_Plan_Independent_Review.md` §9). Amendment 5 rule 2 required a
+> (`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R2 review)). Amendment 5 rule 2 required a
 > locus to be "observable in the witness diagnostic string" and left *observable* undefined. Under that
 > wording `branch=\x01` qualified — the byte is in the string — and `M3-CP4c-0-TB-R2` failed at ordinal
 > 329 because `FieldBranch::value()` returns `std::uint8_t`, which stream insertion writes as a
