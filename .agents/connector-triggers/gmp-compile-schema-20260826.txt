@@ -1,2 +1,0 @@
-validate=.agents/Directional/turn-payloads/gmp-compile/gmp-compile-verify.yml
-workflow_sha=d317b83cff6b32b94a24c1119cff065bfc57cdde
