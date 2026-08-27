@@ -1,2 +1,0 @@
-# M3-CP4c-0b-CB1 temporary state
-.agents/connector-triggers/source-snapshot/m3-cp4c0b-cb1-20260827.txt
