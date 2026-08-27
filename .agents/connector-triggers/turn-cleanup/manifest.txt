@@ -1,0 +1,5 @@
+# M3-CP4c-0-TB-R8 interrupted-turn cleanup
+.agents/connector-triggers/source-snapshot/3fb60ff1615e14df7084f6324ef9b46931748232.txt
+.agents/connector-triggers/m3-cp4c0-tb-r8/run.txt
+.agents/connector-triggers/google-drive/M3-CP4c-0-TB-R8-closeout.txt
+.agents/Directional/turn-payloads/m3-cp4c0-tb-r8.py
