@@ -1,4 +1,0 @@
-turn=M3-CP4c-0-CB-R11
-purpose=Diagnose and fix CAND-02, then package exact source for separate TB-R11
-semantic_base=b6b6dd475b6eade9b264bef5fb9b979dbee28da8
-runtimeExecution=false

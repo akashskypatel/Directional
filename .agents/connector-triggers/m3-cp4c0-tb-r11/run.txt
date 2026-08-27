@@ -1,5 +1,0 @@
-turn=M3-CP4c-0-TB-R11
-operation=artifact-only-focused-cand02
-source_sha=267272d22f7de67ce7d8e368a53cc78a37ca3e8f
-package_artifact_id=9648550565
-package_sha256=1f0275e96fa75b7fc6fb447eaffb79b414c94230823da7897a4f2d91df33615c

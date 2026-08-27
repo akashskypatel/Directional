@@ -1,5 +1,0 @@
-turn=M3-CP4c-0-CB-R11
-operation=apply-drive-patch
-base_sha=191d960545aa62cbd34f3a327dec9da9b2bbeafc
-patch_sha256=e537dfb994b02afdd2bc9a58d90f06b46c891aa36d32eb9996a35cfc2dfa6fc6
-runtimeExecution=false
