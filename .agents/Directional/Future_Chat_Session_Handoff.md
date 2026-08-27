@@ -83,49 +83,26 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-TB-S1-EXEC` — artifact-only census execution
+## Mandatory next turn — `M3-CP4c-0b-TB-S1-REV` — evidence review only
 
-`M3-CP4c-0b-CB1-S1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Independent review corrected P0.3 and required the S1 census before any semantic contact correction. The census implementation is diagnostic-only at semantic/evidence source `4bb467806df99c70889394a323c17c13bc185ca3`; S2–S6 were not entered. Full Code+Build evidence and the executable TB plan are in `Architecture_M3_CP4c0b_CB1_S1_Code_Build_Report.md`.
+`M3-CP4c-0b-TB-S1-EXEC` is **COMPLETE / EXECUTION GREEN** on immutable GMP package `9655632444` from semantic/evidence source `4bb467806df99c70889394a323c17c13bc185ca3`. Run/job `33097182476 / 98605092984` executed the unchanged frozen selector **346/346 PASS**, one identity per fresh process, with zero escaping C++ exceptions, no repository timeout, no mutation, and immutable postflight PASS. Raw result/log artifacts are `9656967036 / 9656967437` with SHA-256 `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4 / 667b9c54ad24e9e33855d3fd47a322593c4522bde4984177dfa593a1df7f6bb8`.
 
-### Immutable TB authority
+The separate non-gating S1 identity selected exactly once and PASS. `two-ring` and `torus` reached the census with **0 shared-face contacts, 0 non-proper, 0 unevaluated, `requiresReview=0`**. The four-triangle fan remained explicitly excluded and also reported no shared-face contacts. `sphere_prescribed` remained **unreached** at the expected N1 `TraceCombinatorialRecurrenceExceeded` (`traceSteps=65`, budget `9216`, visits `3`, allowance `2`); do not translate that into a zero-contact claim. No reached included witness triggered the independent-review stop rule.
 
-- semantic/evidence source: `4bb467806df99c70889394a323c17c13bc185ca3`;
-- successful GMP Code+Build run: `33093440552`;
-- pre-package compile job/result: `98592131066 / 9655528709`, artifact SHA-256 `cf179bae7d1897f66b286e5688afb8540760d289ecca6de598fdb1d0638ef3f6`;
-- eight-target package job/result: `98593728046 / 9655632444`, artifact SHA-256 `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`;
-- package compile log: `9655633229`, SHA-256 `ad36b3523bd3843b3618bee8ff71aa4789be6381554d8e089d1f4469d44e4b9e`;
-- `exactArithmeticBackend=GMP`; GMP/GMPXX linkage mandatory; `runtimeExecution=false`.
-
-### TB-S1-EXEC plan
-
-1. Consume **only** package `9655632444` from source `4bb467...`. Preserve executable modes during extraction. Verify package `SHA256SUMS`, source commit, `exactArithmeticBackend=GMP`, and `runtimeExecution=false` before execution.
-2. Do not configure, compile, relink, repair, regenerate discovery, or mutate source/test/fixture/selector/package bytes.
-3. Execute the unchanged gating selector `.agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt`, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`: **346 identities**, one identity per fresh process, all mutation flags false.
-4. Execute separately the **non-gating** selector `.agents/Directional/Architecture_M3_CP4c0b_Non_Gating_Diagnostic_Selector.txt`, identity `ResolvedBranchCorrection.ContactPredicateCensusIsPublishedNonGating`. It contributes zero gate credit.
-5. Preserve every `m3Cp4c0bS1` line. For each included witness report `status`, current shared-face contact count, proper/non-proper/unevaluated counts, `requiresReview`, site A/B/C split, node count/source vertices, prior terminal kinds, and event histogram. The four-triangle fan is an excluded fixture artifact and must remain labeled as such.
-6. The prescribed sphere may report `status=unreached` because N1 returns before post-hoc finalization; record that explicitly and never translate it into a zero-contact claim.
-7. Postflight re-hash the immutable package and compare to preflight.
-
-### Decision / stop rules
-
-- Any gating result other than **346/346**, any timeout/escaping exception, or any package mutation is RED and routes to review/planning.
-- If any **reached included accepted witness** (`two-ring`, `sphere_prescribed`, `torus`) reports `nonProperCrossingCount > 0`, `unevaluatedCrossingCount > 0`, or `requiresReview=1`, stop at independent `M3-CP4c-0b-S1-REVIEW-PLAN`; correcting the predicate would change accepted authority, so S2–S6 remain prohibited.
-- An expected sphere `status=unreached` at N1 is evidence about the current post-hoc mechanism, not permission to infer a contact census. A different/unexpected diagnostic error routes to review.
-- If the 346 gate is green and every reached included witness has `requiresReview=0`, the next state is evidence-only `M3-CP4c-0b-TB-S1-REV`. TB-REV may plan the successor but may not edit, compile, or run new validation.
+Exact evidence is retained in `Architecture_M3_CP4c0b_TB_S1_EXEC_Artifact_Only_Test_Benchmark_Report.md`. **Do not interpret the census, amend the plan, implement S2-S6, compile, or execute new validation in this turn.** TB-S1-REV is evidence review only and may plan the successor under the existing review rules.
 
 ### Context Load Plan
 
 ```yaml
 load_next:
-  - references/turns/TB-EXEC.md
+  - references/turns/TB-REVIEW.md
 conditional_modules:
   - trigger: github_connector or GitHub Actions/artifact work
     path: modules/github-connector/MODULE.md
 deep_references:
+  - .agents/Directional/Architecture_M3_CP4c0b_TB_S1_EXEC_Artifact_Only_Test_Benchmark_Report.md
   - .agents/Directional/Architecture_M3_CP4c0b_CB1_S1_Code_Build_Report.md
   - .agents/Directional/Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md
-  - .agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt
-  - .agents/Directional/Architecture_M3_CP4c0b_Non_Gating_Diagnostic_Selector.txt
 do_not_preload:
   - sibling turn files
   - implementation-planning modules
@@ -133,6 +110,17 @@ do_not_preload:
 ```
 
 ## Current authority
+
+### M3-CP4c-0b TB-S1-EXEC — current runtime evidence
+
+- semantic/evidence source / immutable GMP package: `4bb467806df99c70889394a323c17c13bc185ca3 / 9655632444`;
+- artifact-only run/job: `33097182476 / 98605092984`;
+- frozen gate: **346/346 PASS**, selector SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, one identity per fresh process;
+- non-gating S1 identity: PASS, zero gate credit; reached included witnesses had zero non-proper/unevaluated contacts and `requiresReview=0`; prescribed sphere was unreached at expected N1 `TraceCombinatorialRecurrenceExceeded` and has no contact-count claim;
+- raw result/log: `9656967036 / 9656967437`, SHA-256 `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4 / 667b9c54ad24e9e33855d3fd47a322593c4522bde4984177dfa593a1df7f6bb8`;
+- no configure/compile/relink/repair/generated discovery, no mutation, no repository timeout, zero escaping C++ exceptions, immutable postflight PASS;
+- stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **52**; no new regression/candidate observed;
+- exact next: evidence-only `M3-CP4c-0b-TB-S1-REV`; S2-S6 remain blocked.
 
 ### M3-CP4c-0b CB1-S1 — current build authority
 
@@ -145,7 +133,7 @@ do_not_preload:
 - immutable package `9655632444`, GitHub artifact SHA-256 `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`; compile log `9655633229 / ad36b3523bd3843b3618bee8ff71aa4789be6381554d8e089d1f4469d44e4b9e`;
 - pre-package result/log `9655528709 / 9655529401`, SHA-256 `cf179bae7d1897f66b286e5688afb8540760d289ecca6de598fdb1d0638ef3f6 / 68fa64caa92340251eeeed77236aaf90ff895a7202c253c0ab6f44d9308d6609`;
 - `exactArithmeticBackend=GMP`; all source-status checks clean; `runtimeExecution=false`; no Directional binary/test/benchmark/discovery/CLI/fuzzer/custom input executed;
-- exact next: artifact-only `M3-CP4c-0b-TB-S1-EXEC` on package `9655632444`.
+- TB-S1 execution is now complete; retained build authority remains package `9655632444`, while exact next is evidence-only `M3-CP4c-0b-TB-S1-REV`.
 
 ### M3-CP4c-0 CB8 — retained build authority
 
@@ -205,14 +193,14 @@ Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `3
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
 - **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
 - Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. Independent P0.3 review is complete; `M3-CP4c-0b-CB1-S1` is build-green on semantic source `4bb467...` and has added only the mandatory non-gating contact census. S2–S6 remain blocked pending artifact-only census execution and review.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. Independent P0.3 review is complete; `M3-CP4c-0b-CB1-S1` is build-green on semantic source `4bb467...`, and TB-S1-EXEC has now re-proved 346/346 plus the non-gating census. S2–S6 remain blocked pending TB-S1-REV.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **52**.
-- **Exact next turn is artifact-only `M3-CP4c-0b-TB-S1-EXEC` on immutable GMP package `9655632444`.** Do not implement S2–S6 before the census is executed and reviewed.
+- **Exact next turn is evidence-only `M3-CP4c-0b-TB-S1-REV`.** Do not implement S2–S6 before the census evidence is reviewed.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
