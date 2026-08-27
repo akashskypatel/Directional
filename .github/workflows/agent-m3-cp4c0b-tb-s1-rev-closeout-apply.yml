@@ -1,0 +1,43 @@
+name: Agent M3 CP4c-0b TB-S1 Review Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0b-tb-s1-rev-closeout-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c0b-tb-s1-rev-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c0b-tb-s1-rev-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1q8fywT4RzcqCs1LDXThrlb9uyWxRm2OD
+      patch_sha256: ffead4ac5647050b1c3c67201244b78772f0db38318825370def786a0ad9300d
+      base_sha: b24f958359f648654c9fda2ee91147fd52293616
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close CP4c-0b TB-S1 review'
+    secrets: inherit
