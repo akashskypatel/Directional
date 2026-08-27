@@ -1,0 +1,133 @@
+name: Agent M3 CP4c-0b Diagnostic Gate
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0b-dg/run.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c0b-dg
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c0b-dg
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c0b-dg.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  execute:
+    needs: validate
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c0b-dg.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "runtimeExecution=true"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Freeze execution payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c0b-dg.log"
+          src=".agents/Directional/turn-payloads/m3-cp4c0b-dg-exec.sh"
+          test -f "$src"
+          actual_sha="$(sha256sum "$src" | awk '{print $1}')"
+          actual_blob="$(git hash-object "$src")"
+          test "$actual_sha" = "cb24c37090dd89b4396aadb21a57f9a26106cc77a2328c5744e38b51c67d872f"
+          test "$actual_blob" = "8cc9cf5ed8a4c2ec81fd375ae1ef8e313e01c1d0"
+          cp "$src" "${RUNNER_TEMP}/m3-cp4c0b-dg-exec.sh"
+          printf 'payload_sha256=%s\npayload_git_blob=%s\n' "$actual_sha" "$actual_blob" | tee -a "$log"
+
+      - name: Provision GMP runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c0b-dg.log"
+          sudo apt-get update 2>&1 | tee -a "$log"
+          sudo apt-get install -y libgmp-dev 2>&1 | tee -a "$log"
+
+      - name: Execute seven new-contract identities
+        id: execute
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_ARTIFACT_ID: "9664890562"
+          PACKAGE_SHA256: 94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273
+          SEMANTIC_SOURCE: 737f93be10a73db950e2a7f823b96ffb0d59cf4d
+          SELECTOR_SHA256: 14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724
+          ACTIVITY_LOG: ${{ runner.temp }}/m3-cp4c0b-dg.log
+        shell: bash
+        run: bash "${RUNNER_TEMP}/m3-cp4c0b-dg-exec.sh"
+
+      - name: Upload DG result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c0b-dg-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c0b-dg-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Record final source status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          log="${RUNNER_TEMP}/m3-cp4c0b-dg.log"
+          {
+            echo "execute_outcome=${{ steps.execute.outcome }}"
+            echo "final_job_status=${{ job.status }}"
+            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Upload DG diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c0b-dg-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c0b-dg.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Propagate DG status
+        if: always() && steps.execute.outcome != 'success'
+        shell: bash
+        run: exit 1
