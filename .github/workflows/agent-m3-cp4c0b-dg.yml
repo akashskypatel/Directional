@@ -71,8 +71,8 @@ jobs:
           test -f "$src"
           actual_sha="$(sha256sum "$src" | awk '{print $1}')"
           actual_blob="$(git hash-object "$src")"
-          test "$actual_sha" = "cb24c37090dd89b4396aadb21a57f9a26106cc77a2328c5744e38b51c67d872f"
-          test "$actual_blob" = "8cc9cf5ed8a4c2ec81fd375ae1ef8e313e01c1d0"
+          test "$actual_sha" = "9d0817cd6d69ac0b158fd8b70837602795e8fe40b0f1de962295406a98797844"
+          test "$actual_blob" = "e1e8301c48f5b2c5b885c4e0e29b4b7804c967c0"
           cp "$src" "${RUNNER_TEMP}/m3-cp4c0b-dg-exec.sh"
           printf 'payload_sha256=%s\npayload_git_blob=%s\n' "$actual_sha" "$actual_blob" | tee -a "$log"
 
