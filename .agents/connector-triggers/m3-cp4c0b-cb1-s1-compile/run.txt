@@ -1,6 +1,6 @@
 turn=M3-CP4c-0b-CB1
 measure=S1
-purpose=GMP Code+Build precompile then eight-target package compile
+purpose=GMP Code+Build precompile then eight-target package compile retry after caller permission correction
 source_sha=4bb467806df99c70889394a323c17c13bc185ca3
 exactArithmeticBackend=GMP
 runtimeExecution=false
