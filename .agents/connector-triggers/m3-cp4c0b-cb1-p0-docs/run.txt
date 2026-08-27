@@ -1,4 +1,0 @@
-purpose=apply M3-CP4c-0b-CB1 P0 stop record and durable GMP compile policy
-base_sha=cf2c68a59f2030b41d5f9601d6956ece9eb8a459
-retry=0
-runtimeExecution=false
