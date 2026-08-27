@@ -83,50 +83,53 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-CB2` under measures **T0-T7**
+## Mandatory next turn — `M3-CP4c-0b-DG-T4-EXEC`
 
-`M3-CP4c-0b-DG` returned **VALID SEMANTIC RED 6/7** and `M3-CP4c-0b-DG-REV` has adjudicated it. Read `Architecture_M3_CP4c0b_DG_Independent_Review_Record.md` first.
+`M3-CP4c-0b-CB2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The independent T1 decision table selected row 1: atlas-derived torus rails produce 0 mandatory edges / 0 singularities / 0 nodes / 0 traces / 0 events; pipeline-authoritative rails produce 48 `HardFeature` mandatory edges / 0 singularities / 48 lawful structural endpoint nodes / 0 traces / 0 events, with zero contact provenance. `M3-CP4c0b-DG-CAND-02` is resolved **TEST-SIDE OVER-SPECIFICATION / NON-STABLE**.
 
-### The red, and what it actually is
+T2/T3 changed only `tests/FieldAlignedCurveNetworkTests.cpp` plus the two CP4c-0b selectors. The never-accepted torus identity is now `TraceTerminationCorrection.TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded`; it asserts zero traces, zero events, no contact-provenance node, no `terminalContact`, and zero `TraceIntersection` / `SingularityPortJunction` events. Census figures now state `railAuthority`, `mandatoryEdgeCount`, and `singularityCount`.
 
-`TraceTerminationCorrection.TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit` failed at `tests/FieldAlignedCurveNetworkTests.cpp:6952` because `torus.network->nodes().empty()` was **false**. The preceding zero-candidate-trace and following zero-event assertions both **passed** — so the observed state is **zero traces, zero events, at least one node**, which is the signature of a **structural** node, not an allocated one.
+Authoritative semantic/build authority:
 
-**`M3-CP4c0b-DG-CAND-02` resolves as a test-side over-specification. No S2-S6 contract breach is established.**
+- semantic source: `b2629040450c12507367c232f68a4d972b46450f`
+- T4 DG selector: **7** / `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`
+- full required-green selector: **353** / `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`
+- compile-only run: `33126178643`
+- changed-owner job: `98704812754` — PASS
+- eight-target GMP package job: `98705144144` — PASS
+- immutable package: `9668492827` / `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`
+- compile log: `9668493344` / `f596c69c6bbdbe21d00cdbfd92d5a708480236971ba065ebc74c4d40fad5de4a`
+- package manifest: **28/28 PASS**; exact source `b2629040...`; source status clean; executables `0755`
+- `runtimeExecution=false`; `turnBoundary=Code+Build-only`; `exactArithmeticBackend=GMP`; both `libgmpxx` and `libgmp` are on generated link lines
+- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **54**
 
-### Root cause — a rail-authority divergence nothing had named
+### T4 execution boundary
 
-Network nodes are built **before** tracing, from singularity vertices and mandatory-edge endpoints (`src/geometry/SurfaceCellTracing.cpp:3046-3110`), and the diff from the S1 source `4bb46780...` to the S2-S6 source `737f93be...` **does not touch that block**. The apparent delta comes from comparing two different constructions of "the torus network":
+`M3-CP4c-0b-DG-T4-EXEC` is artifact-only. Consume immutable package `9668492827`; do **not** configure, compile, relink, repair, mutate package/source/test/fixture/selector bytes, or perform generated discovery. Provide the GMP runtime libraries required by the packaged binaries.
 
-| | construction | rail authority | node count |
-|---|---|---|---:|
-| S1 census | `diagnose_field_aligned_contact_census(..., rails_from_atlas(mesh, atlas))` — `tests:5516` | atlas-derived | **0** |
-| DG identity | `observe_cp4c_witness("torus", ...)`, `observation.rails = products.authoritativeRails` — `tests:3782` | pipeline authoritative | **non-zero** |
+Execute only the seven identities from `Architecture_M3_CP4c0b_Diagnostic_Gate_Selector.txt`, one identity per fresh process. Required result: **7/7 PASS**, each selected exactly once, zero escaping exceptions, no repository timeout, and immutable byte-and-mode pre/postflight PASS.
 
-Different rails give different mandatory edges, hence different `nodeVertices`, hence different node sets. **Both figures are correct; they answer different questions.**
+- T4 RED: stop before T5 and route to `M3-CP4c-0b-DG-T4-REV`.
+- T4 GREEN: advance only to `M3-CP4c-0b-DG-T4-REV`; the review must close before T5 begins.
+- T5 remains blocked and is the first accepted-authority measurement of S2-S6: 316/316 accepted, 346/346 CP4c-0, and 353/353 full required-green on the same immutable package.
 
-Supporting computation, from the committed fixture with no product code: the torus has **0 singularities** and **0 boundary vertices**, while the same per-vertex fan-holonomy method reproduces the prescribed sphere's **8** singularities exactly — which validates the method. So every torus node is a mandatory-edge endpoint and depends entirely on which rails were supplied. Corroborating: with zero singularity ports the new integrated path allocates **no** node, since `field_aligned_publish_origin_events` iterates `candidateTraces` and every other allocator requires a trace.
-
-### Measures **T0-T7**
-
-- **T0** — corrected binding preconditions. **T0.4 is the sharp one:** the S1 census must still use `rails_from_atlas` and `observe_cp4c_witness` must still use `products.authoritativeRails`. **If they now agree, this plan is stale and the delta has another cause.**
-- **T1 — the discriminating measurement, and nothing may precede it.** Non-gating, changes no production behaviour. For **both** rail authorities and every witness reaching A2a, publish: mandatory-edge count and each edge's `SurfaceCellRailKind`; singularity count and vertices; `nodeVertices.size()` and `nodes().size()`; **per-node provenance** (`singularity` / `mandatory-edge-endpoint` / `contact`); trace count, event count and event-kind histogram; and whether `observe_cp4c_witness(w)` and `build_cp4c_production_fixture(w)` produce identical networks. **Its decision table is binding and can route back to review** — a pipeline-torus node with `contact` provenance, or with no lawful provenance, is a real S2-S6 defect and T2 would be wrong.
-- **T2 — correct the identity, only after T1 confirms.** Delete `EXPECT_TRUE(torus.network->nodes().empty());`. **Keep** the zero-trace and zero-event assertions, both of which passed and are genuine contract. **Add**: no node has contact provenance; no trace carries `terminalContact`; the histogram has zero `TraceIntersection` and zero `SingularityPortJunction`. Rename the identity to state the contract rather than a count, and record the rename in the CB report. The identity has never been accepted, so this is an in-flight correction.
-- **T3 — make the census self-describing.** Every census line must emit `railAuthority=atlas-derived|pipeline-authoritative`, plus `mandatoryEdgeCount` and `singularityCount` alongside `nodeCount`, and an identity must assert that any figure an identity cites was compared against a network built under the same authority. Same family as Amendment 6: **a published number must carry the authority that produced it.**
-- **T4** — re-run the DG seven; **7/7** required. Re-freeze the DG selector if T2's rename changes a name.
-- **T5** — then, and only then, the full **353**. This is the **first** measurement of S2-S6 against accepted authority. Required: accepted **316/316**, CP4c-0 **346/346**, full **353/353**. The S1 review authorized exactly two accepted re-authorings (`DeclaresTraceIntersectionsAsTypedNetworkEvents`, `IndependentCompositionOracleValidatesTraceEventGraph`); **any other accepted expectation edit is a stop**.
-- **T6/T7** — prohibitions, and what the CB2 report must state: the rail authority behind every figure, the T1 row taken with its numbers, the before/after identity text and rename, the DG selector hash after any rename, and `exactArithmeticBackend=GMP` with the eight compiled targets.
-
-### What is not established
-
-S2-S6's effect on **accepted authority is unmeasured** — only the seven never-accepted identities have run, and the six passes are not a substitute for the 353 gate. `PrescribedSpherePublishesTwentyFourTracesAndCorrectedContactEvents` passing is the first live evidence that S5's relocation works and that Q8 criteria 2 and 3 are reachable, but it is one identity on one witness.
-
-### Turn boundary
-
-Code + Build only. GMP/GMPXX linkage mandatory per `GMP_COMPILE_POLICY.md`. No runtime, test, benchmark or generated discovery in CB2. **No editing the failing identity before T1 returns.** No A1 change, no tolerance or literal epsilon in the contact predicate or priority comparison, no production-reachable priority argument, no change to the CP4c-1 **318** selector.
+No CP4c-0b acceptance is claimed by CB2.
 
 ## Current authority
 
-### M3-CP4c-0b DG — current runtime evidence
+### M3-CP4c-0b CB2 — current build authority
+
+- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
+- semantic source: `b2629040450c12507367c232f68a4d972b46450f`;
+- semantic changes: test/diagnostic-contract only; production `src/` and `include/` unchanged;
+- T1 torus: atlas-derived `0 rails / 0 singularities / 0 nodes / 0 traces / 0 events`; pipeline-authoritative `48 HardFeature rails / 0 singularities / 48 structural endpoint nodes / 0 traces / 0 events`, zero contact provenance;
+- candidate `M3-CP4c0b-DG-CAND-02`: **RESOLVED / NON-STABLE / TEST-SIDE**, +0 stable events / +0 recurrences;
+- selectors: seven `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`; full 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
+- compile run/jobs `33126178643 / 98704812754 / 98705144144` all green;
+- immutable GMP package `9668492827` / `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`; 28/28 manifest PASS; `runtimeExecution=false`;
+- exact next: artifact-only `M3-CP4c-0b-DG-T4-EXEC`.
+
+### M3-CP4c-0b DG — retained pre-CB2 runtime evidence
 
 - status: **COMPLETE / VALID SEMANTIC RED 6/7**; authoritative corrected run/job `33120730355 / 98686699036`;
 - immutable authority: semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`, package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`, seven-identity selector `14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724`;
@@ -135,9 +138,9 @@ Code + Build only. GMP/GMPXX linkage mandatory per `GMP_COMPILE_POLICY.md`. No r
 - result/log: `9666352028 / 286f738f02315d72dea7cc03bed61bc12ef6b5345ddf15264a898b5bfa45db72`; `9666352544 / 651e9cb9fc78d109d725fdf725fd26b72c450f6bba44fd77e638780c0df2712e`;
 - first run `33120437486 / 98685729035` is resolved orchestration-only, zero Directional identities executed; no semantic bytes changed by the harness correction;
 - full 353 acceptance TB **NOT RUN**; stable accounting **42 / 14 / 28**, debt **5**, packages **53**;
-- exact next: **`M3-CP4c-0b-DG-REV`**, independent evidence review/planning only.
+- successor status: independent DG review and CB2 are complete; retained only as pre-CB2 runtime evidence.
 
-### M3-CP4c-0b CB1-S2-S6 — current build authority
+### M3-CP4c-0b CB1-S2-S6 — retained predecessor build authority
 
 - status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**; semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`;
 - semantics: exact proper-crossing/contact classification, disjoint site vocabulary, fixed `ArcLengthFiltered` production priority with computed error bounds and no seniority fallback, globally ordered contact resolution, and exact durable `terminalContact`;
@@ -147,9 +150,9 @@ Code + Build only. GMP/GMPXX linkage mandatory per `GMP_COMPILE_POLICY.md`. No r
 - authoritative eight-target GMP package run/job `33116774891 / 98673348923`; immutable package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`; compile log `9664890910 / a528e66fc88191ad5e030f1821e8029871719514895041568bfea5b352e7fcf0`; manifest 28/28;
 - all source-status snapshots clean; `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
 - stable accounting **42 / 14 / 28**, debt **5**, M3 packages **53**;
-- DG is now valid semantic red **6/7**; the full 353 gate is blocked. Exact next: independent **`M3-CP4c-0b-DG-REV`**.
+- retained predecessor package only; CB2 now supersedes build authority with package `9668492827`.
 
-### M3-CP4c-0b TB-S1-REV — current review authority
+### M3-CP4c-0b TB-S1-REV — retained predecessor review evidence
 
 - status: **COMPLETE / REVIEW GREEN**; no runtime/build/package/acceptance attempt;
 - raw S1 artifact independently verified: `9656967036` / `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4`;
@@ -157,10 +160,10 @@ Code + Build only. GMP/GMPXX linkage mandatory per `GMP_COMPILE_POLICY.md`. No r
 - sphere: **unreached at N1**, exactly as P0.3 predicted; no zero-contact inference;
 - site-A migration: two-ring `A/B/C=1/0/0`, its sole `TraceIntersection` is the overloaded origin junction; two named CP3b identities are authorized for S2 re-authoring;
 - S2-S6 semantics remain exactly the P0.3/frozen contract; no predicate widening, tolerance, seniority fallback, post-hoc truncation, enum-value reuse, or multiple terminal kinds;
-- exact next: **`M3-CP4c-0b-CB1-S2-S6`**, runtime-free complete Code + Build; then new-contract-only DG, then full acceptance TB on the same package if DG is green;
+- successor status: CB1-S2-S6, DG, independent DG review, and CB2 are complete; retained as predecessor review evidence;
 - stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **52**.
 
-### M3-CP4c-0b TB-S1-EXEC — current runtime evidence
+### M3-CP4c-0b TB-S1-EXEC — retained predecessor runtime evidence
 
 - semantic/evidence source / immutable GMP package: `4bb467806df99c70889394a323c17c13bc185ca3 / 9655632444`;
 - artifact-only run/job: `33097182476 / 98605092984`;
@@ -169,9 +172,9 @@ Code + Build only. GMP/GMPXX linkage mandatory per `GMP_COMPILE_POLICY.md`. No r
 - raw result/log: `9656967036 / 9656967437`, SHA-256 `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4 / 667b9c54ad24e9e33855d3fd47a322593c4522bde4984177dfa593a1df7f6bb8`;
 - no configure/compile/relink/repair/generated discovery, no mutation, no repository timeout, zero escaping C++ exceptions, immutable postflight PASS;
 - stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **52**; no new regression/candidate observed;
-- TB-S1-REV has now reviewed this evidence; exact next is runtime-free `M3-CP4c-0b-CB1-S2-S6`.
+- successor status: TB-S1-REV and all later CB1/DG/CB2 work are complete; retained as predecessor runtime evidence.
 
-### M3-CP4c-0b CB1-S1 — current build authority
+### M3-CP4c-0b CB1-S1 — retained predecessor build authority
 
 - semantic/evidence source: `4bb467806df99c70889394a323c17c13bc185ca3`;
 - S1 is **diagnostic-only**: exact proper-crossing observation and contact census, with no production contact/event/node/trace/termination semantic change;
@@ -182,7 +185,7 @@ Code + Build only. GMP/GMPXX linkage mandatory per `GMP_COMPILE_POLICY.md`. No r
 - immutable package `9655632444`, GitHub artifact SHA-256 `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`; compile log `9655633229 / ad36b3523bd3843b3618bee8ff71aa4789be6381554d8e089d1f4469d44e4b9e`;
 - pre-package result/log `9655528709 / 9655529401`, SHA-256 `cf179bae7d1897f66b286e5688afb8540760d289ecca6de598fdb1d0638ef3f6 / 68fa64caa92340251eeeed77236aaf90ff895a7202c253c0ab6f44d9308d6609`;
 - `exactArithmeticBackend=GMP`; all source-status checks clean; `runtimeExecution=false`; no Directional binary/test/benchmark/discovery/CLI/fuzzer/custom input executed;
-- TB-S1 execution is now complete; retained build authority remains package `9655632444`, while TB-S1-REV is now complete and exact next is `M3-CP4c-0b-CB1-S2-S6`.
+- successor status: S1 execution/review and later CB1/DG/CB2 work are complete; retained only as predecessor build evidence.
 
 ### M3-CP4c-0 CB8 — retained build authority
 
@@ -235,21 +238,32 @@ CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run
 
 ### Accepted runtime authority
 
-Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`, on fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`. Result artifact `9649625534` has GitHub ZIP SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; diagnostic artifact `9649626115` has SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **53** after the S2-S6 GMP package.
+Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`, on fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed`. Result artifact `9649625534` has GitHub ZIP SHA-256 `6cd4e3c21dc46fd7e0d6df2209ee5a382531d768f50ae52d190302e05bec02af`; diagnostic artifact `9649626115` has SHA-256 `3ba381cd12ec1188bd9ae36020d35bdaa458271ea2c7b1163aac31a9a474d7f9`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**. M3 package count is now **54** after the CB2 GMP package; accepted runtime authority itself is unchanged.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
 - **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
 - Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. S2-S6 are build-green on semantic source `737f93be...`; DG is a **valid semantic red 6/7** on package `9664890562`. The sole red is the new torus zero-node assertion; the full 353 acceptance gate has not run and is blocked pending independent DG review.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. CB2 is BUILD GREEN at semantic source `b2629040...` on GMP package `9668492827`; the prior torus zero-node red is resolved test-side/non-stable. T4 DG has not run; full 353 acceptance remains unmeasured and blocked on green T4 plus review.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **53**.
-- **Exact next turn is `M3-CP4c-0b-DG-REV`, independent evidence review/planning only.** No DG rerun, full 353 TB, compile, or product/test correction is authorized before review adjudicates `M3-CP4c0b-DG-CAND-02`.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **54**.
+- **Exact next turn is `M3-CP4c-0b-DG-T4-EXEC`, artifact-only.** Consume package `9668492827`; execute seven re-frozen identities only; stop before T5 unless T4 is green and its DG review is complete.
+
+## Context Load Plan
+
+`load_next`: turn-based-coding-agent `references/turns/TB-EXEC.md` (DG-EXEC uses the artifact-only runtime boundary).
+
+Minimum successor context after the mandatory durable policy/start checklist:
+
+1. `.agents/Directional/Architecture_M3_CP4c0b_CB2_Code_Build_Report.md`
+2. `.agents/Directional/Architecture_M3_CP4c0b_Diagnostic_Gate_Selector.txt`
+3. immutable package `9668492827` metadata from CB2; do not rebuild
+4. only if T4 is red, the resulting T4 execution artifact for `M3-CP4c-0b-DG-T4-REV`
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
