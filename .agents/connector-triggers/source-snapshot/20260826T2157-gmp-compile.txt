@@ -1,0 +1,2 @@
+source_authority=89e3fae7871f7f248ed37dbb00d0b6eaf8ce6717
+purpose=inspect compile workflows and CMake GMP integration
