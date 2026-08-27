@@ -1,0 +1,3 @@
+turn=M3-CP4c-0b-CB1-S2-S6
+requested_base=3d2ed653c9ab06f6168db63e5b1206cbfaf1cc95
+purpose=exact source snapshot for bounded runtime-free S2-S6 code+build turn
