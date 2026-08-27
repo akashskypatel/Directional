@@ -8,6 +8,16 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-27 — `M3-CP4c-0-CB-R10` + `M3-CP4c-0-TB-R10`: GMP portability defect corrected and focused re-proof PASS
+
+At explicit user instruction, `M3-CP4c-0-TB-R9-REVIEW-PLAN` was **skipped, not completed**, and the turn proceeded directly to a bounded correction of `M3-CP4c0-TB-R9-CAND-01` only. The unrelated zero-time fixture candidate `CAND-02` was left unchanged.
+
+- **CB-R10 correction:** only `tests/FieldAlignedCurveNetworkTests.cpp` changed. The `ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` test no longer depends on backend-specific `ENumber::to_double(18)` behavior; it constructs the intended exact `1/7` witness and performs an explicitly lossy numerator/denominator-to-double round trip inside the test before exercising the unchanged production exact predicate. No GMP/product arithmetic semantics changed.
+- **Build authority:** semantic source `30ef2792e2915e0016dfd11f5fa2b3727e5503c0`; compile run/job `33067140968 / 98499967674`; immutable GMP package `9644214591`, ZIP SHA-256 `b9e7729fb557eddc203e38a1c11564bab3ad180982e10740d4374fe06748a390`; log `9644214963 / d88c8ff55082db4c27d377688af5400d08f40b329ec305b6538aacc1899201c2`. All eight standard targets compiled/linked, preflight/build exit 0, GMP 6.3.0 and both gmpxx/gmp link libraries verified, all source-status snapshots empty, `runtimeExecution=false`.
+- **Focused TB-R10:** artifact-only run/job `33067370314 / 98500728780` consumed only package `9644214591`. The exact repaired identity selected **1/1 PASS**, exit 0, failures/errors 0, 5 ms harness elapsed; immutable package preflight/postflight PASS; no configure/compile/relink/repair/generated discovery/performance benchmark. Result `9644274456 / 4d80bc1ca8e9d0f624e709eb7c467e5b1c2c880d6a1619f1f8ced95151305693`; log `9644274922 / 2c8922ccf03e356db0e78fbe07a4a22bb99019009e4e40669f58bba16fcdd122`.
+- **Disposition:** `M3-CP4c0-TB-R9-CAND-01` is **RESOLVED / NON-STABLE / TEST-SIDE GMP PORTABILITY**. Stable totals remain **42 / 14 / 28**, debt **5**; M3 packages become **49**.
+- **Boundary:** focused TB-R10 is corrective evidence, not the full frozen 346-gate acceptance run. `M3-CP4c0-TB-R9-CAND-02` remains active and CP4c-0 remains OPEN. No further turn, including CP4c-0b-CB1, is authorized automatically by this closeout.
+
 ## 2026-08-27 — `M3-CP4c-0-TB-R9`: GMP artifact-only re-proof is VALID RED 344/346; independent review required
 
 `M3-CP4c-0-TB-R9` executed the frozen 346-identity CP4c-0 gate from immutable GMP package `9634245265` (source `66325345567106fe7de8560ee2aee5f07ca665de`, package SHA-256 `4ef834465ee8db3110f40f7882cde4a39f94821b6bc0daba3ae0b0e04d7e5629`). Authoritative run/job `33048964354 / 98439563813`; result artifact `9636849182` SHA-256 `b485c1cfe5f929600bae382b1a01954b319dd4d1904e1dd1675cb2ad02771c57`; diagnostic artifact `9636849748` SHA-256 `9a23f1e9f8de5bb36086ed2ea1e20900cbb9cf53a940bc7c336a4ab2516d4023`.

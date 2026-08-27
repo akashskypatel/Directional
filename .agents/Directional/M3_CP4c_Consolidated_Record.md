@@ -29,6 +29,16 @@ refers to material **inlined here**. It means *retired provenance*, never lost a
 
 ---
 
+## 0. Current addendum — CB-R10 / focused TB-R10 GMP-portability correction
+
+On 2026-08-27 the user explicitly **skipped, without completing**, `M3-CP4c-0-TB-R9-REVIEW-PLAN` and authorized a bounded `CB-R10 → TB-R10` sequence for the GMP-related `M3-CP4c0-TB-R9-CAND-01` only. This is an operator override of the normal red→review cadence; it does not retroactively create an independent review and it does not adjudicate `CAND-02`.
+
+CB-R10 changed only `tests/FieldAlignedCurveNetworkTests.cpp`: the lossy-round-trip regression now constructs an exact `1/7` witness and performs its deliberate lossy conversion explicitly in test code, rather than relying on legacy `to_double(18)` decimal truncation that GMP does not implement. Semantic source `30ef2792e2915e0016dfd11f5fa2b3727e5503c0` compiled all eight standard targets in run/job `33067140968 / 98499967674`; GMP package `9644214591` has ZIP SHA-256 `b9e7729fb557eddc203e38a1c11564bab3ad180982e10740d4374fe06748a390`, with build/preflight exit 0 and `runtimeExecution=false`.
+
+Focused artifact-only TB-R10 run/job `33067370314 / 98500728780` consumed only that package. `ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` selected exactly once and passed with no timeout/failure/error; package preflight/postflight immutability matched. Result artifact `9644274456` has SHA-256 `4d80bc1ca8e9d0f624e709eb7c467e5b1c2c880d6a1619f1f8ced95151305693`; log artifact `9644274922` has SHA-256 `2c8922ccf03e356db0e78fbe07a4a22bb99019009e4e40669f58bba16fcdd122`.
+
+Disposition: `CAND-01` is resolved/non-stable/test-side GMP portability. `CAND-02` remains active/non-stable/test-side fixture-precondition. CP4c-0 remains OPEN and the frozen 346 gate is not claimed green. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 package count **49**. No CP4c-0b implementation turn is authorized automatically.
+
 ## 1. Why CP4c exists, and how it was split
 
 `DESIGN.md` §4.5 requires the inflow/outflow interval pairing to be **resolved**, with barycentric

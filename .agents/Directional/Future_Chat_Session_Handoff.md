@@ -82,19 +82,20 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0-TB-R9-REVIEW-PLAN` — independent Review + Plan only
+## Current continuation boundary — no automatic next turn authorized
 
-**Context Load Plan**
+The user explicitly skipped `M3-CP4c-0-TB-R9-REVIEW-PLAN` and authorized a bounded `M3-CP4c-0-CB-R10` → `M3-CP4c-0-TB-R10` sequence for the GMP-portability defect only. That sequence is now complete. **Do not mark the skipped review complete and do not infer authorization to fix the unrelated remaining candidate or enter CP4c-0b.**
 
-- `load_next`: `turn-based-coding-agent/references/turns/REVIEW.md`
-- current evidence: `.agents/Directional/Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md`
-- regression authority: `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c0-TB-R9-CAND-01/02`
-- corrective predecessor authority if needed: `.agents/Directional/Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md`
-- no runtime/build/mutation context is authorized for the review.
+**Resume authorities:**
 
-`M3-CP4c-0` has been **split** by `M3-CP4c-0b-DEFN`. The successor review should begin from the TB-R9 report and the two tracker candidates; consult the CB9 corrective record for the guard contract and the CP4c-0b frozen definitions only as needed to preserve the checkpoint boundary.
+- focused corrective report: `.agents/Directional/Architecture_M3_CP4c0_TB_R10_Focused_GMP_Portability_Verification_Report.md`;
+- regression authority: `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c0-TB-R9-CAND-01/02`;
+- CB-R10 semantic source/package: `30ef2792e2915e0016dfd11f5fa2b3727e5503c0 / 9644214591`;
+- TB-R10 focused run/job: `33067370314 / 98500728780`.
 
-CP4c-0 was carrying two unrelated obligations under one gate: **how a trace continues** and **how a trace stops**. The continuation implementation and Q8 criteria 1/4/5 are green, but TB-R9 leaves the 346 gate open on two test-side candidates pending independent review. The separately scoped termination obligation is owned by CP4c-0b.
+`M3-CP4c-0` remains **OPEN**. `CAND-01` is resolved as a non-stable test-side GMP portability defect; `CAND-02` remains **ACTIVE / NON-STABLE / TEST-SIDE FIXTURE-PRECONDITION**. The latest accepted runtime remains CP4ab 316/316. Focused TB-R10 is not whole-gate acceptance authority.
+
+CP4c-0 was split from CP4c-0b: continuation remains under the frozen 346 gate; termination remains separately owned by CP4c-0b. No CP4c-0b implementation turn is authorized automatically while CP4c-0 remains open.
 
 | | **CP4c-0** - continuation | **CP4c-0b** - termination |
 |---|---|---|
@@ -110,11 +111,25 @@ CP4c-0 was carrying two unrelated obligations under one gate: **how a trace cont
 
 Authoritative GMP artifact-only run/job `33048964354 / 98439563813` consumed package `9634245265` from source `66325345567106fe7de8560ee2aee5f07ca665de`. The accepted first-316 and first-328 prefixes remain **316/316** and **328/328**; Q8 criteria **1, 4, 5 all PASS**; no process hit the 60 s bound; no `C++ exception with description` escaped; postflight immutability PASS. The former TB-R8 pathological identity now passes in **102 ms**.
 
-Two frozen-gate identities are RED and currently localize to test-side preconditions: ordinal 333 `ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` assumes legacy decimal-digit truncation from `to_double(18)`, while GMP uses `get_d()` and ignores that digit parameter; ordinal 344 `ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance` uses a supposed narrow positive control that reaches an exact zero-time exit and correctly receives `BranchContinuationDegenerateEntry`. These are `M3-CP4c0-TB-R9-CAND-01/02`; stable totals do not change. **CP4c-0 remains OPEN and receives no acceptance credit.**
+Two frozen-gate identities were RED and localized to test-side preconditions: ordinal 333 `ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` depended on legacy decimal-digit truncation from `to_double(18)`, while GMP uses `get_d()`; ordinal 344 `ExactContinuationMagnitudePolicyFailsClosedWithoutTolerance` uses a supposed narrow positive control that reaches an exact zero-time exit and correctly receives `BranchContinuationDegenerateEntry`. These became `M3-CP4c0-TB-R9-CAND-01/02`; stable totals did not change. **CP4c-0 remains OPEN and receives no acceptance credit.**
 
-Exact next is independent **`M3-CP4c-0-TB-R9-REVIEW-PLAN`**. Adjudicate those two classifications and freeze the smallest corrective test/fixture scope if they survive. No runtime, compile, implementation/test/fixture/selector mutation, TB-R9 rerun, or automatic entry into CP4c-0b-CB1 is permitted in that Review turn.
+The user then explicitly skipped the prescribed TB-R9 independent review and authorized only the GMP-related correction plus its focused test. That bypass is recorded as an operator decision, not as review completion.
 
-### `M3-CP4c-0b-CB1` - next CB target after the TB-R9 review, measures **P0-P9**
+### `M3-CP4c-0-CB-R10` — COMPLETE / BUILD GREEN
+
+- test-only semantic source `30ef2792e2915e0016dfd11f5fa2b3727e5503c0`; only `tests/FieldAlignedCurveNetworkTests.cpp` changed;
+- compile run/job `33067140968 / 98499967674` using the durable reusable compile workflow;
+- immutable package `9644214591`, ZIP SHA-256 `b9e7729fb557eddc203e38a1c11564bab3ad180982e10740d4374fe06748a390`; compile log `9644214963 / d88c8ff55082db4c27d377688af5400d08f40b329ec305b6538aacc1899201c2`;
+- GMP 6.3.0 found and both `libgmpxx` and `libgmp` present in the generated link command;
+- all eight standard targets compiled/linked, preflight/build exit 0, clean source, `runtimeExecution=false`.
+
+### `M3-CP4c-0-TB-R10` — COMPLETE / FOCUSED GMP PORTABILITY PASS
+
+Artifact-only run/job `33067370314 / 98500728780` consumed only CB-R10 package `9644214591`. `ResolvedBranchCorrection.ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip` selected exactly once and passed (`exit=0`, failures/errors 0, 5 ms harness elapsed). Package preflight and postflight hash inventories matched; no configure, compile, relink, repair, generated discovery, or performance benchmark occurred. Result `9644274456 / 4d80bc1ca8e9d0f624e709eb7c467e5b1c2c880d6a1619f1f8ced95151305693`; log `9644274922 / 2c8922ccf03e356db0e78fbe07a4a22bb99019009e4e40669f58bba16fcdd122`.
+
+This resolves `M3-CP4c0-TB-R9-CAND-01` only. `CAND-02` remains active; the full 346 gate has not been rerun and is not accepted.
+
+### `M3-CP4c-0b-CB1` - blocked from automatic entry, measures **P0-P9**
 
 Code + Build only; runtime forbidden; compile all eight standard targets.
 
@@ -131,7 +146,7 @@ Code + Build only; runtime forbidden; compile all eight standard targets.
 
 ### Operator prerequisite - outside the turn
 
-**GMP is linkable in the current CMake configuration but is not fetched automatically on Linux.** It must be installed and its library root passed to CMake for link discovery. It makes every exact path substantially cheaper and would have prevented TB-R8's 853-second failure. **CB1 must record which backend the package was built against** (GMP or the fallback `BigInteger`), because it changes the cost profile of every P7 measurement and must not silently differ between CB and TB.
+**The durable compile workflow now provisions and verifies GMP on Linux.** It ensures `libgmp-dev` is installed, configures `DIRECTIONAL_ENABLE_GMP=ON` with `GMP_ROOT=/usr`, verifies CMake discovery, and verifies both gmpxx and gmp on generated link lines. Artifact-only TB callers executing the dynamically linked package must provide the GMP runtime libraries. **CB1 must record the exact backend in package evidence** because it changes the cost profile of every P7 measurement and must not silently differ between CB and TB.
 
 ### Falsifiable predictions for `M3-CP4c-0b-TB`
 
@@ -195,22 +210,22 @@ CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run
 
 ### Accepted runtime authority
 
-Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. TB-R9 is valid semantic evidence but not acceptance authority: **344/346** on GMP package `9634245265`; CP4c-0 remains OPEN pending independent review and correction/re-proof. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **48**.
+Latest accepted runtime remains CP4ab **316/316**, run/job `32758293793 / 97530833220`. TB-R9 remains valid semantic evidence but not acceptance authority: **344/346** on GMP package `9634245265`. CB-R10/TB-R10 resolve only its GMP-portability `CAND-01`; `CAND-02` remains active, so CP4c-0 remains OPEN. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 package count **49**.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab accepted. CP4ab remains latest accepted runtime authority at **316/316**.
-- **CP4c-0 is scoped to continuation only and remains OPEN.** TB-R9 produced **344/346 VALID RED** while Q8 criteria 1/4/5 all passed. The two reds are non-stable test-side candidates pending mandatory independent review; no acceptance credit is granted until the frozen 346 gate is green.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. `M3-CP4c-0b-DEFN` is complete; `M3-CP4c-0b-CB1` under **P0–P9** remains the next CB target **after** the TB-R9 independent-review boundary and must not start automatically from this closeout.
+- **CP4c-0 is scoped to continuation only and remains OPEN.** TB-R9 produced **344/346 VALID RED** while Q8 criteria 1/4/5 all passed. CB-R10/TB-R10 resolved `CAND-01` as a test-side GMP-portability defect; `CAND-02` remains active. No acceptance credit is granted until the frozen 346 gate is green.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. `M3-CP4c-0b-DEFN` is complete; `M3-CP4c-0b-CB1` under **P0–P9** must not start automatically while CP4c-0 remains open.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains active/non-stable; the near-tangency regime is explained and defined, closable by the L2 census.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 is now blocked on **CP4c-0b** rather than CP4c-0, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **48**.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **49**.
 - CP4c-0 gate **346**, SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 and first-328 prefix hashes unchanged. CP4c-1's **318** selector unchanged.
 - **CP4c documentation was consolidated on 2026-08-27**: 28 CP4c documents reduced to 9, with 19 retired into `M3_CP4c_Consolidated_Record.md` (§3 evidence identities, §3b the review arc and withdrawn predictions, §3c where each class of information now lives, §5 the retirement inventory). Amendments 1–11 remain in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md` §10, which is their authoritative home. No gate, selector, product or durable record changed.
-- Exact next is **`M3-CP4c-0-TB-R9-REVIEW-PLAN`** only. Do not enter `M3-CP4c-0b-CB1` automatically.
+- **No automatic next turn is authorized.** The skipped TB-R9 review remains skipped/not completed; `CAND-02` is the remaining CP4c-0 blocker. Do not enter `M3-CP4c-0b-CB1` automatically.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
