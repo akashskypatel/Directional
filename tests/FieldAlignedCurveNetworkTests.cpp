@@ -5667,68 +5667,62 @@ TEST(ResolvedBranchCorrection,
 
 TEST(ResolvedBranchCorrection,
      ExactVertexSectorUsesPublishedDirectionAcrossLossyRoundTrip) {
-  bool found = false;
+  const double base = std::ldexp(1.0, 20);
+  const double spacing =
+      std::nextafter(base, std::numeric_limits<double>::infinity()) - base;
+  const auto epsilonRational = exact_ratio(1, 7);
+  directional::authority::FieldBranchDirection direction{
+      std::array<directional::authority::FieldExactRational, 3>{
+          -exact_integer(1) + epsilonRational, exact_integer(1),
+          -epsilonRational}};
+
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << base, base, 0.0, base + spacing, base, 0.0, base,
+      base + spacing, 0.0, base + spacing, base + spacing, 0.0;
+  Eigen::MatrixXi faces(2, 3);
+  faces << 0, 1, 2, 1, 0, 3;
   TriMesh witness;
-  directional::authority::FieldBranchDirection witnessDirection;
-  long double recoveredBeta = 0.0L;
-  for (int baseExponent = 20; baseExponent <= 52 && !found; ++baseExponent) {
-    const double base = std::ldexp(1.0, baseExponent);
-    const double ulp =
-        std::nextafter(base, std::numeric_limits<double>::infinity()) - base;
-    for (int spacingFactor = 1; spacingFactor <= 64 && !found;
-         spacingFactor *= 2) {
-      const double spacing = ulp * static_cast<double>(spacingFactor);
-      const Eigen::Vector3d a(spacing, 0.0, 0.0);
-      const Eigen::Vector3d b(0.0, spacing, 0.0);
-      const double aa = a.dot(a);
-      const double ab = a.dot(b);
-      const double bb = b.dot(b);
-      const double det = aa * bb - ab * ab;
-      if (!std::isfinite(det) || det <= 1.0e-10) continue;
+  witness.set_mesh(vertices, faces);
 
-      for (int epsilonExponent = 20; epsilonExponent <= 52 && !found;
-           ++epsilonExponent) {
-        const auto epsilonRational =
-            exact_ratio(1, std::int64_t{1} << epsilonExponent);
-        directional::authority::FieldBranchDirection direction{
-            std::array<directional::authority::FieldExactRational, 3>{
-                -exact_integer(1) + epsilonRational, exact_integer(1),
-                -epsilonRational}};
+  // Construct the deliberately lossy world-space round trip from the exact
+  // numerator and denominator. Do not route this premise through
+  // ENumber::to_double(maxDigits): the GMP backend is free to use its native
+  // conversion and must not determine whether this test has a witness.
+  const auto lossyDouble =
+      [](const directional::authority::FieldExactRational &value) {
+        return std::stod(value.numerator_string()) /
+               std::stod(value.denominator_string());
+      };
+  const double lossyEpsilon = lossyDouble(epsilonRational);
+  const auto recoveredEpsilon =
+      directional::authority::FieldExactRational::from_double_exact(
+          lossyEpsilon);
+  ASSERT_TRUE(recoveredEpsilon.has_value());
+  EXPECT_NE(epsilonRational, *recoveredEpsilon);
 
-        Eigen::MatrixXd vertices(4, 3);
-        vertices << base, base, 0.0,
-                    base + spacing, base, 0.0,
-                    base, base + spacing, 0.0,
-                    base + spacing, base + spacing, 0.0;
-        Eigen::MatrixXi faces(2, 3);
-        faces << 0, 1, 2,
-                 1, 0, 3;
-        TriMesh mesh;
-        mesh.set_mesh(vertices, faces);
-
-        Eigen::Vector3d world = Eigen::Vector3d::Zero();
-        for (std::size_t index = 0U; index < 3U; ++index) {
-          world += static_cast<double>(direction[index].to_double(18)) *
-                   mesh.V.row(static_cast<int>(index)).transpose();
-        }
-        const double ar = a.dot(world);
-        const double br = b.dot(world);
-        const double beta = (br * aa - ar * ab) / det;
-        if (std::isfinite(beta) && beta > 0.0) {
-          found = true;
-          witness = std::move(mesh);
-          witnessDirection = std::move(direction);
-          recoveredBeta = beta;
-        }
-      }
-    }
+  Eigen::Vector3d world = Eigen::Vector3d::Zero();
+  for (std::size_t index = 0U; index < 3U; ++index) {
+    world += lossyDouble(direction[index]) *
+             witness.V.row(static_cast<int>(index)).transpose();
   }
-  ASSERT_TRUE(found);
-  EXPECT_GT(recoveredBeta, 0.0L);
+  const Eigen::Vector3d a(spacing, 0.0, 0.0);
+  const Eigen::Vector3d b(0.0, spacing, 0.0);
+  const double aa = a.dot(a);
+  const double ab = a.dot(b);
+  const double bb = b.dot(b);
+  const double det = aa * bb - ab * ab;
+  ASSERT_TRUE(std::isfinite(det));
+  ASSERT_GT(det, 0.0);
+  const double ar = a.dot(world);
+  const double br = b.dot(world);
+  const double recoveredBeta = (br * aa - ar * ab) / det;
+  ASSERT_TRUE(std::isfinite(recoveredBeta));
+  EXPECT_GT(recoveredBeta, 0.0);
+
   const auto face = SourceFaceId::from_index(0, 2).value();
   const auto vertex = SourceVertexId::from_index(0, 4).value();
   EXPECT_FALSE(directional::authority::direction_in_vertex_sector(
-      witness, face, vertex, witnessDirection));
+      witness, face, vertex, direction));
 }
 
 TEST(ResolvedBranchCorrection,
