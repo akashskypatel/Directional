@@ -1,0 +1,4 @@
+turn=M3-CP4c-1-CB4
+purpose=apply verified test-side patch
+base_sha=2a3ecde39518d0b8fa822209d4cbf03a0689153b
+retry=0
