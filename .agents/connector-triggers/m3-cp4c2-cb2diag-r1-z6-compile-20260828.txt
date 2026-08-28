@@ -1,0 +1,5 @@
+turn=M3-CP4c-2-CB2-DIAG-R1
+purpose=compile exact Z6-corrected semantic source
+source_sha=c552a5a4a318063cde2564c40773ec7edaf064f6
+runtimeExecution=false
+retry=0
