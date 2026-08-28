@@ -1,0 +1,3 @@
+turn=M3-CP4c-0b-TB-T5
+purpose=freeze exact branch snapshot for T5 durable closeout
+base_sha=d8cb3d990bef1c01c2f27b6dd71d6f4520c18d4d
