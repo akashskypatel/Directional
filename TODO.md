@@ -21,46 +21,35 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-CB2-DIAG-R1` — diagnostic correction, under measures **Z0–Z9**
+## Current focus — `M3-CP4c-2-TB-X2-R3-EXEC` — corrected artifact-only diagnostic retry
 
-**`M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` is COMPLETE / REVIEW GREEN.** Record:
-`Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md`. The R2 control stop is **upheld** and its
-Finding 1 **confirmed**: the frozen `48/48` torus theorem remains product-authoritative and R2's mismatch is a
-diagnostic-authority defect, not product evidence. `CB2-DIAG-R1` is **AUTHORIZED with amendments**.
+**`M3-CP4c-2-CB2-DIAG-R1` is COMPLETE / BUILD GREEN / RUNTIME-FREE.** Final semantic/test source
+`c552a5a4a318063cde2564c40773ec7edaf064f6` changes only `tests/FieldAlignedCurveNetworkTests.cpp` under the independent review's Z0-Z9 authority.
+It uses explicit per-witness rail authority, one named `sourceEdgeBarrier` Euler complex, fail-closed
+`oracleSelfConsistent`, and mandatory D1 witness order **torus -> prescribed sphere -> two-ring**. No product,
+`SurfaceCutGraph`, fixture-result, selector, acceptance, or build-configuration semantics changed.
 
-**The finding that matters most is not the torus control.** R2 recorded a second defect and correctly declined
-to adjudicate it; this review does. **D1's prescribed-sphere publication is internally self-contradictory, by
-exactly 4.** It reports all 18 complement components as discs *and* `18 − 30 + 18 = 6` against source `χ=2`. If
-every component is a disc the embedding is cellular by definition and `E − V` must equal `F − χ = 16`; it
-reports 12. At least one of the disc verdicts, the counts, or the face count is false — they cannot all hold.
-**This blocks Y5 independently of the torus**, and it bears directly on Branch A. New tracker record
-`M3-CP4c2-TB-X2-R2-CAND-02`.
+Final GMP compile run/job `33220315294 / 99012815358` passed all eight required targets. Immutable package `9704935112` has
+provider digest `sha256:dcb96ce4e37b2bc58ef69f2146723624575c32c090429ba00e6612b07938133f`; compile log artifact `9704935373` has digest `sha256:1fc2250c00dd57e8cbd6385bde11857bc92126dfddfdf969ba188a67709651c0`; packaged source archive
+SHA-256 is `e533669daa7ac0219bc6ca6bd7d72db2901af32937848c3f37f02b772345ae02`. Package manifest and clean source-status evidence are green, both gmpxx/gmp are linked,
+and `runtimeExecution=false`.
 
-**The oracle inherited the error it was built to detect.** The X2 plan required independence from
-`SurfaceCutGraph`, which D1 satisfied — it never calls the producer — but not independence from the *counting
-convention*, which is the actual suspect. `F` counts source-face components separated by whole barrier edges
-while `V`/`E` count the network's abstract graph, whose arcs cross face interiors. Two complexes; Euler's
-identity does not hold between them.
+**Exact next is artifact-only `M3-CP4c-2-TB-X2-R3-EXEC`** using
+`Architecture_M3_CP4c2_TB_X2_R3_Artifact_Only_Test_Benchmark_Plan.md`. The binding order is:
 
-**The normative complex is now settled: the source-mesh barrier complex** — `E = |B|`, `V =` source vertices
-incident to `B`, `F =` components of source faces after removing `B`. Three reasons: it is what A2b actually
-consumes at `GlobalTopologyPlan.cpp:1694`; the frozen DEFN §5.2 already committed to source-edge-only cuts; and
-in it `V − E + F = χ` is a genuine identity rather than a coincidence.
+1. execute D1 once and require the **first** publication to be the torus control derived from
+   `pipeline-authoritative` rails with `barrierV=48`, `barrierE=48`, source `chi=0`, non-cellular;
+2. require `oracleSelfConsistent=true` on torus, prescribed sphere, and two-ring under the single barrier complex;
+3. **only if 1-2 pass**, execute D2 once for prescribed-sphere localization;
+4. stop on any control/self-consistency failure. Do not run D2 after such a failure.
 
-**Third recurrence of the rail-authority divergence** (`rails_from_atlas` vs pipeline `authoritativeRails`) —
-after the CP4c-0b DG review and CB2's T1/T3. **Z4** fixes it structurally: one named rail accessor with an
-explicit authority argument and **no default**, plus `railAuthority=` on every diagnostic record.
+Then `M3-CP4c-2-TB-X2-R3-REV` reviews the preserved evidence only. `M3-CP4c2-TB-X2-R2-CAND-01` and
+`...CAND-02` remain active until corrected runtime proves their closure conditions; `M3-CP4c2-TB-X2-CAND-04`
+remains active/unlocalized until D2 evidence justifies a disposition. Stable accounting remains **42 / 14 / 28**,
+produced-witness debt **5**, M3 packages **60**.
 
-**The two-ring's `networkOnlyCellular=true` is uninformative, not corroborating** — under a defective
-convention an agreeing result is a coincidence, and it has 3 traces against the sphere's 24. **Z7** requires it
-re-derived, not carried forward.
-
-**Z3 is the single most valuable line in the correction:** a mandatory self-consistency assertion, all-discs ⟺
-`V−E+F==χ`, failing closed. It would have caught this automatically instead of leaving it to a reader.
-
-`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Do not run 355/357/358, do
-not execute D2 from the invalid package, do not start frozen `CB3`, do not touch production `src/`/`include/`
-or `SurfaceCutGraph`, and do not touch mechanical/C2 or CP4c-3.
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Do not run selector
+355/357/358, cumulative gate, CB3, mechanical/C2, or CP4c-3 in R3 EXEC.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R2` control stop (retained for provenance)
 
@@ -199,12 +188,12 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-2-CB2-DIAG` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Source `232ac459b13657529e064272a75c5583770a5963`; D1 independent network-complement oracle and D2 exact 419/437/474 localization added as non-gating diagnostics only. GMP compile run/job `33212932401 / 98990159075` PASS; immutable package `9702321260` / `05237f10…2035`; no Directional runtime; selectors unchanged. Report: `Architecture_M3_CP4c2_CB2_DIAG_Code_Build_Report.md`.
 - [x] `M3-CP4c-2-TB-X2-R2` — **COMPLETE / PLANNED CONTROL STOP / NO Y5 BRANCH.** Run/job `33215632118 / 98998526420`; D1 ran once and published all three Y1 records; Y4 failed on the torus control (`V/E=0/0`, required `48/48`); D2 correctly skipped.
 - [x] `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` — **COMPLETE / REVIEW GREEN.** Upheld the stop and confirmed the `48/48` theorem is untouched. **Adjudicated the second defect R2 declined to judge: D1's sphere publication is self-contradictory by exactly 4** — all 18 components discs requires `E − V = 16`, reported 12 (`M3-CP4c2-TB-X2-R2-CAND-02`). Settled the normative complex as the source-mesh barrier complex; authorized `CB2-DIAG-R1` with amendments under **Z0–Z9**. Record: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md`.
-- [ ] `M3-CP4c-2-CB2-DIAG-R1` — **NEXT / CODE + BUILD / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.** Under **Z0–Z9**: Z1 production rail authority for loaded witnesses; Z2 one named complex for every count; **Z3 mandatory self-consistency assertion (all-discs ⟺ `V−E+F==χ`), failing closed**; Z4 one rail accessor with an explicit authority argument and no default; Z5 no encoded answers; Z7 re-derive the two-ring. `src/`, `include/`, `SurfaceCutGraph`, and all selectors frozen.
-- [ ] `M3-CP4c-2-TB-X2-R3` — **BLOCKED ON CB2-DIAG-R1.** Z6 ordering is binding: reproduce the torus control from authority, then pass Z3 on all three witnesses, and only then execute D2 and attempt Y5.
-- [ ] `M3-CP4c-2-TB-X2-R2` (superseded row) — **ARTIFACT-ONLY DIAGNOSTIC EXEC+REVIEW / GATE BLOCKED.** Consume immutable package `9702321260` from source `232ac459b13657529e064272a75c5583770a5963` without rebuild. EXEC runs D1 and D2 separately and preserves complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications; REVIEW adjudicates Y1–Y4 and selects exactly one frozen Y5 corrective branch or stops. **No selector is selected and `TB-GATE-EXEC` is not authorized.** Plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
+- [x] `M3-CP4c-2-CB2-DIAG-R1` — **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.** Final source `c552a5a4a318063cde2564c40773ec7edaf064f6`; GMP compile run/job `33220315294 / 99012815358`; immutable package `9704935112`. Z1-Z7/Z9 are compiled; Z6 orders D1 torus -> prescribed sphere -> two-ring. Runtime closure conditions remain deferred to R3. Report: `Architecture_M3_CP4c2_CB2_DIAG_R1_Code_Build_Report.md`.
+- [ ] `M3-CP4c-2-TB-X2-R3` — **NEXT / ARTIFACT-ONLY.** Consume package `9704935112`. Z6 ordering is binding: reproduce the torus 48/48 control from production authority, pass Z3 on all three witnesses, and only then execute D2 and attempt Y5. Plan: `Architecture_M3_CP4c2_TB_X2_R3_Artifact_Only_Test_Benchmark_Plan.md`.
+- [x] `M3-CP4c-2-TB-X2-R2` (superseded row) — **COMPLETE / ARTIFACT-ONLY DIAGNOSTIC CONTROL STOP / GATE BLOCKED.** Consume immutable package `9702321260` from source `232ac459b13657529e064272a75c5583770a5963` without rebuild. EXEC runs D1 and D2 separately and preserves complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications; REVIEW adjudicates Y1–Y4 and selects exactly one frozen Y5 corrective branch or stops. **No selector is selected and `TB-GATE-EXEC` is not authorized.** Plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **59**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2-CB2-DIAG` is build-green at source `232ac459b13657529e064272a75c5583770a5963`, but TB-X2-R2 stopped on an invalid torus control and a self-contradictory sphere publication; CP4c-2 remains runtime-unaccepted and no cumulative gate is selected. **Exact next is `M3-CP4c-2-CB2-DIAG-R1`, test/diagnostic source only, runtime-free, under measures Z0–Z9; no cumulative gate runtime is authorized.**
+Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **60**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; corrected diagnostic build authority is `c552a5a4a318063cde2564c40773ec7edaf064f6` / immutable GMP package `9704935112`. **Exact next is artifact-only `M3-CP4c-2-TB-X2-R3-EXEC`; no cumulative gate runtime is authorized.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
@@ -277,7 +266,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. CP4c-2 CB2-DIAG is build-green/runtime-free at `232ac459b13657529e064272a75c5583770a5963` with immutable GMP package `9702321260`; no 357/358 gate is selected; exact next is `M3-CP4c-2-CB2-DIAG-R1` under measures Z0–Z9; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. CP4c-2 corrected diagnostic build is green/runtime-free at `c552a5a4a318063cde2564c40773ec7edaf064f6` with immutable GMP package `9704935112`; no 357/358 gate is selected; exact next is artifact-only `M3-CP4c-2-TB-X2-R3-EXEC`; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.

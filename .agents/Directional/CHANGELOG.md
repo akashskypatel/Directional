@@ -9,6 +9,19 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-CB2-DIAG-R1`: one Euler complex, explicit rail authority, Z6 torus-first order compile green
+
+Code + Build only. **No Directional runtime, test, or benchmark executed.** The independent R2 review authorized a bounded test/diagnostic correction under Z0-Z9; final semantic/test source `c552a5a4a318063cde2564c40773ec7edaf064f6` changes only `tests/FieldAlignedCurveNetworkTests.cpp`.
+
+- D1 now declares rail authority explicitly: torus and prescribed sphere use production `pipeline-authoritative` rails; constructed two-ring uses `atlas-derived` rails. One no-default authority path is published as `railAuthority=` with `mandatoryRailCount=`.
+- D1 now counts one named `sourceEdgeBarrier` complex: `E=|B|`, `V=` unique source vertices incident to `B`, `F=` source-face components after removing barrier-edge adjacency. It publishes definitions plus mandatory/incoming/outgoing carrier provenance.
+- Mandatory Z3 self-consistency is fail-closed: each witness publishes/asserts `oracleSelfConsistent`, requiring all-discs iff `barrierV-barrierE+barrierF == sourceChi`.
+- Z5 is preserved: no 48/48, sphere outcome, branch result, or witness-name expected-value table is encoded.
+- Static closeout review caught one Z6 ordering defect in the first compile-valid R1 revision: sphere still preceded torus. A surgical test-only patch reordered D1 to **torus -> prescribed sphere -> two-ring**. Apply run/job `33220234369 / 99012579536` passed; result/log artifacts `9704883058 / 9704883330` with digests `81854c89ba1c037af380a14b8db91c4d32ff6b752b1ac6491d1eb7b6811ee3db / af74e95c9e0c97045b014d57a62ba6678bcd991414d5db542fdde203e037c12a`. The transient Drive staging file was retired after push.
+- Final authoritative compile run/job `33220315294 / 99012815358` is **PASS** on `c552a5a4a318063cde2564c40773ec7edaf064f6`. Immutable package `9704935112` / `sha256:dcb96ce4e37b2bc58ef69f2146723624575c32c090429ba00e6612b07938133f`; compile log `9704935373` / `sha256:1fc2250c00dd57e8cbd6385bde11857bc92126dfddfdf969ba188a67709651c0`; packaged source archive `e533669daa7ac0219bc6ca6bd7d72db2901af32937848c3f37f02b772345ae02`. All eight standard targets compiled, package manifest verified, source-status snapshots empty, both gmpxx/gmp linked, and `runtimeExecution=false`.
+- No runtime candidate is closed by this build. CAND-01 and CAND-02 remain active until corrected D1 runtime satisfies their closure conditions; CAND-04 remains active/unlocalized until authorized D2 evidence. Stable accounting remains **42 / 14 / 28**, debt **5**; M3 packages advance to **60**.
+- Exact next: artifact-only `M3-CP4c-2-TB-X2-R3-EXEC` on package `9704935112` under `Architecture_M3_CP4c2_TB_X2_R3_Artifact_Only_Test_Benchmark_Plan.md`, followed by evidence-only `TB-X2-R3-REV`. D1 must pass torus 48/48 first and Z3 on all three before D2 may run. Selector 355/357/358 and cumulative gate remain forbidden.
+
 ## 2026-08-28 — `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN`: the oracle inherited the error it was built to detect
 
 Independent review and planning only. No Directional runtime, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md`. `selected_r2_branch` and `selected_gate` both remain **NONE**.

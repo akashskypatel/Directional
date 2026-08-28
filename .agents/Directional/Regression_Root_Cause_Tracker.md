@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-R2`. Artifact-only run/job `33215632118 / 98998526420` stopped on the plan's fixed Y4 torus control: D1 published `V=0, E=0, chi=0, non-cellular`, not frozen/product `V=48, E=48, chi=0, non-cellular`. D2 was correctly skipped, `selected_r2_branch=NONE`, and `selected_gate=NONE`. `M3-CP4c2-TB-X2-R2-CAND-01` records the diagnostic rail-authority/fixture mismatch as non-stable. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **59**.
+Last updated: **2026-08-28 UTC** after `M3-CP4c-2-CB2-DIAG-R1`. The bounded test-only correction is compile-green at semantic/test source `c552a5a4a318063cde2564c40773ec7edaf064f6`, run/job `33220315294 / 99012815358`, immutable GMP package `9704935112`. No corrected D1/D2 runtime executed, so CAND-01/CAND-02/CAND-04 remain active pending `TB-X2-R3`; no stable event/recurrence is added or resolved by compile evidence. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **60**.
 
 
 
@@ -18,6 +18,8 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-R2`. Artifact-only run/j
 - **Owning correction:** `M3-CP4c-2-CB2-DIAG-R1` measures **Z2** (one named complex — the source-mesh barrier complex, `E=|B|`, `V=` source vertices incident to `B`, `F=` components after removing `B`), **Z3** (a mandatory self-consistency assertion: all-discs ⟺ `V−E+F==χ`, failing closed), and **Z7** (re-derive the two-ring rather than carry it forward). Record: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md` §3, §5.
 - **Closure condition:** the corrected oracle publishes self-consistent terms on all three witnesses under one named complex, with `oracleSelfConsistent=true`. Not closed by any product change.
 - **Stable-count rationale:** test-authority defect in a non-gating diagnostic; no accepted-green identity regressed and CP4c-2 has no accepted runtime authority. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
+- **CB2-DIAG-R1 compile status:** source `c552a5a4a318063cde2564c40773ec7edaf064f6` replaces the mixed-complex diagnostic with one named `sourceEdgeBarrier` complex, publishes barrier definitions/provenance, and asserts `oracleSelfConsistent` per witness. Final compile package `9704935112` is green/runtime-free. **Candidate remains ACTIVE** because its closure condition is runtime evidence that all three corrected D1 witnesses are self-consistent; Code + Build cannot supply that evidence. Stable totals unchanged.
+
 
 ## M3-CP4c2-TB-X2-R2-CAND-01 — D1 torus control reconstructs atlas-barrier rails instead of product-authoritative rails — **ACTIVE / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE**
 
@@ -49,6 +51,8 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-R2`. Artifact-only run/j
 - **Why it was invisible until the torus:** on the closed prescribed sphere and on the two-ring the two rail authorities agree, which is why the sphere's 24 traces / 56 events match production exactly. The substitution is detectable only on the one witness whose rails originate in the feature map.
 - **Third recurrence of one confusion.** The same `rails_from_atlas` versus pipeline `authoritativeRails` divergence was adjudicated in the CP4c-0b DG review and again in CB2's T1/T3 labelling. Measure **Z4** therefore requires a structural fix — one named rail accessor taking an explicit authority argument with **no default**, and `railAuthority=` published on every diagnostic record — rather than repairing this call site alone.
 - **Owning correction:** `M3-CP4c-2-CB2-DIAG-R1` measures **Z1** and **Z4**; closure requires the torus control to reproduce `48/48` **from authority**, never from an encoded constant (**Z5**).
+- **CB2-DIAG-R1 compile status:** source `c552a5a4a318063cde2564c40773ec7edaf064f6` gives torus and prescribed sphere explicit `PipelineAuthoritative` rail construction, two-ring explicit `AtlasDerived` authority, and orders D1 torus first. Final compile package `9704935112` is green/runtime-free. **Candidate remains ACTIVE** until R3 D1 actually reproduces the frozen 48/48 torus control; no compile result may close it. Stable totals unchanged.
+
 
 ## M3-CP4c2-TB-X2-CAND-01 — reusable observer permission ceiling caused startup failure — RESOLVED ORCHESTRATION / NON-STABLE
 
@@ -110,6 +114,7 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-R2`. Artifact-only run/j
 - **Stable-count rationale:** CP4c-2 has never been accepted at runtime and this product is new in the unaccepted
   checkpoint. The finding is material but non-stable: **+0 events / +0 recurrences**. Totals remain
   **42 / 14 / 28**, debt **5**.
+- **CB2-DIAG-R1 status:** D2 compiles against corrected source `c552a5a4a318063cde2564c40773ec7edaf064f6` but has not executed. **Candidate remains ACTIVE / UNLOCALIZED**; R3 may run D2 only after the torus and all-three-witness self-consistency stop gates pass. No product root cause or stable recurrence is inferred from compilation.
 
 
 ## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
