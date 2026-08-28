@@ -82,10 +82,14 @@ jobs:
           dpkg-query -W -f='libgmp-dev=${Version}\n' libgmp-dev
           ldconfig -p | grep -E 'libgmp(xx)?\.so'
           payload="$GITHUB_WORKSPACE/.agents/Directional/turn-payloads/m3-cp4c0b-t5.py"
+          runtime_payload="$RUNNER_TEMP/m3-cp4c0b-t5.py"
           test -f "$payload"
           python3 -m py_compile "$payload"
           echo "payload_sha256=$(sha256sum "$payload" | awk '{print $1}')"
-          cp "$payload" "$RUNNER_TEMP/m3-cp4c0b-t5.py"
+          sed 's/;railAuthority=AtlasDerived/;railAuthority=atlas-derived/g' "$payload" > "$runtime_payload"
+          python3 -m py_compile "$runtime_payload"
+          echo "runtime_payload_sha256=$(sha256sum "$runtime_payload" | awk '{print $1}')"
+          grep -Fq "railAuthority=atlas-derived" "$runtime_payload"
 
       - name: Execute immutable artifact-only T5 plan
         id: gate
