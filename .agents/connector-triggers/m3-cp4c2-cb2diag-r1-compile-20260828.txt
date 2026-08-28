@@ -1,3 +1,4 @@
 purpose=M3-CP4c-2-CB2-DIAG-R1 exact compile
 source_sha=0bf55f9620e9f7fedeba237a38d26ae4a819ccf5
-retry=0
+retry=1
+reason=corrected caller permission ceiling after startup_failure
