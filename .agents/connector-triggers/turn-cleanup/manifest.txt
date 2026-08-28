@@ -1,3 +1,0 @@
-# M3-CP4c-1-CB4 residual temporary payloads
-.agents/Directional/turn-payloads/m3-cp4c1-cb4-apply.yml
-.agents/Directional/turn-payloads/m3-cp4c1-cb4-compile.yml
