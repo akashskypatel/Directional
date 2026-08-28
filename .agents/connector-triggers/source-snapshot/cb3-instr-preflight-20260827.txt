@@ -1,3 +1,0 @@
-requested_source_sha=14f672721cf84ea7f9f958f9dc465b651c8ede7a
-turn=M3-CP4c-0b-CB3-INSTR
-purpose=mandatory READ_MODE=snapshot authority

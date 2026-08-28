@@ -1,5 +1,0 @@
-turn=M3-CP4c-0b-CB3-INSTR
-purpose=apply preserved CB3 closeout documentation patch from Google Drive
-patch_sha256=7fae50c21de83bafe67c5a140ab9066588da55243b37d06a639cf2fd20a67960
-base_sha=eb627c822899f628ce732f0a756d77976af698c4
-retry=1

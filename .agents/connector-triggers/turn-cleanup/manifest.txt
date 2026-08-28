@@ -1,8 +1,0 @@
-# M3-CP4c-0b-CB3-INSTR temporary-state cleanup
-.agents/connector-triggers/m3-cp4c0b-cb3-instr-apply/
-.agents/connector-triggers/m3-cp4c0b-cb3-instr-compile/
-.agents/connector-triggers/m3-cp4c0b-cb3-schema-validate/
-.agents/connector-triggers/source-snapshot/cb3-instr-preflight-20260827.txt
-.agents/Directional/turn-payloads/m3-cp4c0b-cb3-instr-apply.yml
-.agents/Directional/turn-payloads/m3-cp4c0b-cb3-instr-compile.yml
-.agents/Directional/turn-payloads/m3-cp4c0b-cb3-schema-validate.yml
