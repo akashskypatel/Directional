@@ -8,6 +8,10 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-28 — `M3-CP4c-0b-CB3-INSTR`: bounded non-gating observability build green
+
+CB3-INSTR is **COMPLETE / BUILD GREEN / RUNTIME-FREE** under independent-review measures V0-V7. Exact source `93059089881c8715a168a61968a8d6874ee1a670` changes only `tests/FieldAlignedCurveNetworkTests.cpp` and the CP4c-0b non-gating selector; `src/`, `include/`, fixtures, accepted identities, and the frozen 353 selector are unchanged. V1 selects the existing sphere A2a census; V2 adds a fan termination/guard census; V3 adds a two-ring FirstContact↔MandatoryBarrierTermination pairing census. Required selector remains 353 / `51ff96d7…ac6a5` with first-346 `20d3b0b1…3e46a`; non-gating selector is 4 / `d4224002…d9ad`. Authoritative compile run `33133572290`, jobs `98728445391 / 98728639650`, produced immutable GMP package `9671190795` (`2901926c86a467160bae11aa4aac422d86fb9b275feff974c1645dd03b9a05c1`), internal manifest 28/28 PASS, clean source status, GMP/GMPXX link evidence, `runtimeExecution=false`. Stable accounting stays **42 / 14 / 28**, debt **5**, M3 packages **55**. Exact next: artifact-only `M3-CP4c-0b-TB-T5`; `T5-CAND-01` remains active until U3/U4 are actually published.
+
 ## 2026-08-28 — `M3-CP4c-0b-TB-T5-PREFLIGHT-REV`: U3/U4 found unsatisfiable, a bounded instrumentation CB authorized
 
 Independent review and planning only. No Directional runtime, build, benchmark, or product/test/fixture/selector/build-configuration change. Record: `Architecture_M3_CP4c0b_TB_T5_Preflight_Independent_Review_Record.md`.

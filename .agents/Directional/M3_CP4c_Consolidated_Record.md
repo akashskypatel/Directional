@@ -388,6 +388,8 @@ A first control run `33120437486` / job `98685729035` executed **zero** Directio
 
 **Still unmeasured after T4:** S2–S6's effect on **accepted authority**. Measures **U0–U7** in `Architecture_M3_CP4c0b_DG_T4_Independent_Review_Record.md` §5 bind the T5 turn.
 
+**T5 preflight and CB3-INSTR.** The first T5 attempt stopped correctly before runtime at **0/353** because U3/U4 named evidence package `9668492827` could not publish while U7 prohibited instrumentation/build inside T5. Independent `M3-CP4c-0b-TB-T5-PREFLIGHT-REV` upheld the blocker and authorized test/non-gating-only CB3-INSTR under V0-V7. CB3 source `93059089881c8715a168a61968a8d6874ee1a670` changes only `tests/FieldAlignedCurveNetworkTests.cpp` plus the non-gating selector; `src/`/`include/` and the 353 selector remain unchanged. Compile run `33133572290` is green on changed-owner job `98728445391` and eight-target job `98728639650`; immutable GMP package `9671190795` has ZIP SHA-256 `2901926c86a467160bae11aa4aac422d86fb9b275feff974c1645dd03b9a05c1`, 28/28 manifest PASS, clean source status and `runtimeExecution=false`. Required 353 remains `51ff96d7…ac6a5`; first-346 `20d3b0b1…3e46a`; non-gating is now four identities / `d4224002…d9ad`. M3 packages are **55**. Exact next is artifact-only T5 on this package; no acceptance credit is claimed by CB3.
+
 ---
 
 ## 3b. The independent review arc — one digest per retired review
