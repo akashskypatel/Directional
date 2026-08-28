@@ -1,4 +1,0 @@
-turn=M3-CP4c-2-CB2-DIAG-R1
-purpose=apply verified durable closeout documentation and R3 plan
-patch_base=15558811183be8d6c9cdf6fa3e70cfdc0b9e5b01
-retry=0
