@@ -1,7 +1,0 @@
-turn=M3-CP4c-1-CB3
-operation=compile
-source_sha=66a065b5e07910568a317e24f0fc6b93d890d104
-selector_sha256=e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa
-runtimeExecution=false
-retry=1
-reason=caller-permission-ceiling-corrected
