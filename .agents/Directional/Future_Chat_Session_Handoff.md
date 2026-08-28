@@ -83,317 +83,80 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-1-TB-R5` — immutable artifact-only 355 gate
+## Mandatory next turn — `M3-CP4c-2-DEFN` — definition-only closed/higher-genus A2b authority
 
-`M3-CP4c-1-CB4` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-SIDE ONLY**. Read
-`Architecture_M3_CP4c1_CB4_Code_Build_Report.md` and then
-`Architecture_M3_CP4c1_CB4_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c-1` is **CLOSED / ACCEPTED**. Authoritative artifact-only TB-R5 run/job
+`33161644741 / 98817323175` consumed immutable CB4 GMP package `9675666067` from semantic/test source
+`b1ce8ad65952bd2bd76238f6dfc55523f6a24747` and returned **355/355 PASS**. Prefixes 316/346/353, C4 ordinal
+354, and C5 ordinal 355 all pass in the same immutable run. All 355 identities selected exactly once; zero C++
+exceptions escaped; package/source preflight and postflight passed.
 
-Exact semantic/test source is `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. W1 removed the invalid
-witness-productivity precondition; W2 replaced the terminal-kind cardinality with non-vacuity; W4 was not used
-because no frozen allowed vocabulary was independently established. **W5 is complete:** both inverted
-sphere-failure diagnostics were **retired**, with per-identity surviving-cover rationale in the CB4 report. W5b's
-three historical report-only publishers remain untouched. `src/` and `include/` are unchanged.
+W3 is fully discharged. The corrected C5 reaches and passes both named-kind checks, and the observed union is
+exactly `{TraceIntersection(2), MandatoryBarrierTermination(3), SingularityTermination(4)}` with contributors
+prescribed sphere / two-ring / prescribed sphere. Torus contributes zero terminal kinds. Mechanical remains
+upstream at `field-transport-atlas/IncompleteCycleBasis`. The explicit two-ring report identity passes; three
+historical diagnostics remain report-only with zero gate credit; both W5-retired inverted diagnostics are absent.
+`M3-CP4c1-TB-R4-CAND-03` is **RESOLVED / TB CONFIRMED / TEST-SIDE / NON-STABLE**.
 
-The cumulative required selector is still **355** /
-`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`; prefixes 316/346/353 are unchanged;
-C4/C5 remain ordinals 354/355 and gating. The non-gating selector is now **3** /
-`537a8010033452a16be5f6a80926ea61c065f7f7f443b5b2950f73c8b8ffcd6a`.
+Result/log artifacts are `9681960334 / 9681960615`, digests
+`b8be035ed728b5d6f8efe65e260f9557a9aa8cad0e82b94d11107aab44187a5d /
+55ad320aaf810bb5b02fbfccdd7662f4a47333586bdb30397d624d701710439b`. Stable accounting remains
+**42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**.
 
-Authoritative compile run/job `33145657048 / 98766007030` is PASS after a startup-only permission-ceiling first
-attempt executed zero compile/runtime. Schema validation job `98765978208` passed before the retry compile.
-Immutable eight-target GMP package `9675666067` has ZIP digest
-`63b66788e724f7f22acc5f3bd204a1eb666a779ced96d1373f320e00cd45ec17`, internal manifest 28/28, packaged source
-archive `baead768e6f05acc7b09177a1571139262a514056cfc4fa281b8933135b6fc84`, clean source status, and
-`runtimeExecution=false`. No Directional binary executed. M3 packages are now **57**.
-
-**TB-R5 must not rebuild or repair.** It consumes package `9675666067`, executes the frozen 355 selector one
-identity per fresh process, executes the three remaining selector diagnostics with zero gate credit, and executes
-`ResolvedBranchCorrection.TwoRingContactPairingCensusIsPublishedNonGating` once as an additional W3 report-only
-identity. W3 requires the two named-kind checks in corrected C5 (current packaged-source `EXPECT_EQ`s around
-lines 6345 and 6350) to be reported individually as reached/passed and requires the observed terminal-kind
-union/contributor map to be published.
-
-Falsifiable expected authority remains review §8: **355/355**, union exactly
-`{TraceIntersection(2), MandatoryBarrierTermination(3), SingularityTermination(4)}`, contributors sphere /
-two-ring / sphere, torus zero, mechanical A1 `IncompleteCycleBasis`, prefixes 316/346/353 green, C4 PASS.
-**Any semantic deviation routes back to independent review, not to an in-TB correction or deterministic retry.**
-`M3-CP4c1-TB-R4-CAND-03` has both CB4 dispositions complete but remains confirmation-pending until TB-R5 proves
-neither retired diagnostic survives as an unexplained red. Stable accounting stays **42 / 14 / 28**, debt **5**.
-CP4c-2/3 remain blocked.
-
-### Superseded — the TB-R4 red as reported (retained for provenance)
-
-`M3-CP4c-1-TB-R4` is **COMPLETE / VALID SEMANTIC RED 354/355 / CHECKPOINT OPEN**. Authoritative
-artifact-only run/job `33141046678 / 98751794167` consumed immutable CB3 GMP package `9673249952`
-from semantic source `66a065b5e07910568a317e24f0fc6b93d890d104`. Accepted predecessor authority is green
-**353/353** in the same run, C4 ordinal 354 passed, and C5 ordinal 355 alone is red. All required
-identities selected exactly once; zero escaping C++ exceptions; immutable pre/postflight PASS.
-
-C5 has two preserved failures. At `tests/FieldAlignedCurveNetworkTests.cpp:4713` its helper rejects the
-pipeline-authoritative torus because that current A2a network has zero candidate traces/events. At `:6701`
-C5 expects exactly two produced terminal-event kinds but observes three. The failure proves the two named
-required contributors are present (`TraceIntersection=prescribed sphere`,
-`MandatoryBarrierTermination=two-ring`); the sphere also publishes terminal kind `4 =
-SingularityTermination`.
-
-`M3-CP4c1-TB-R4-CAND-01` was **ACTIVE / REVIEW REQUIRED** at the close of TB-R4 and is now **RESOLVED /
-TEST-SIDE OVER-SPECIFICATION / NON-STABLE** by the review above. The TB turn was right to refuse to
-pre-classify it.
-
-The five historical CP4c-1 diagnostics all selected exactly once and returned trustworthy report-only
-reds with zero gate credit. The first three intentionally publish their observation via `FAIL()`; the
-last two carry stale sphere-failure preconditions now invalidated by accepted CP4c-0/0b behavior.
-
-That review is now complete; the authorized correction is the three test-side edits named above, and no
-product correction or CP4c-2/3 work is authorized. Exact next is **`M3-CP4c-1-CB4`**, then
-`M3-CP4c-1-TB-R5` on the full 355 gate.
-
-Accepted runtime authority remains CP4c-0b T5 **353/353**. Stable accounting remains **42 / 14 / 28**,
-produced-witness debt **5**, M3 packages **56**.
+The next turn is **definition-only** `M3-CP4c-2-DEFN`. It must settle the architecture gap already identified in
+`ROADMAP.md`: on a closed index-free surface, singularity/feature/boundary seeds can all be absent, so the current
+§4.6 network can be empty and A2b has no seam/cut graph from which region ownership can start. Do not author
+product/test/fixture/selector code, compile, or execute runtime in the DEFN turn. The historical parent allocation
+is C1/C3/C6; rebased trajectory arithmetic is **358 = accepted 355 + C1 + C3 + C6**, but the definition turn owns
+whether/how that successor selector is frozen. CP4c-3 remains blocked.
 
 ## Current authority
 
-### M3-CP4c-1 CB4 — current build authority
+### M3-CP4c-1 TB-R5 — accepted runtime authority
 
-- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-SIDE ONLY**;
-- exact evidence source: `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`;
-- required selector: **355** / `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`; prefixes 353 / `51ff96d7…ac6a5`, 346 / `20d3b0b1…3e46a`, 316 / `601ce2b6…0193c`; C4/C5 remain ordinals 354/355;
-- non-gating selector: **3** / `537a8010033452a16be5f6a80926ea61c065f7f7f443b5b2950f73c8b8ffcd6a`; both inverted W5 diagnostics retired; W5b publishers unchanged;
-- product `src/`/`include/`: unchanged;
-- first compile-control run `33144909546`: startup-only permission-ceiling failure, zero compile/runtime;
-- authoritative retry: run `33145657048`, schema job `98765978208` PASS, compile job `98766007030` PASS;
-- immutable GMP package/result `9675666067` / `63b66788…45ec17`; compile log `9675666340` / `58279155…070c2`;
-- all eight standard targets compile/link; internal manifest 28/28; packaged source archive `baead768e…b6fc84`; source clean; GMP/GMPXX linked; `runtimeExecution=false`;
-- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **57**;
-- exact successor: artifact-only `M3-CP4c-1-TB-R5` under the CB4 TB plan.
+- status: **COMPLETE / GATE GREEN 355/355 / CP4c-1 CLOSED / ACCEPTED**;
+- run/job: `33161644741 / 98817323175`;
+- semantic/test source: `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`;
+- immutable GMP package: `9675666067` / `63b66788…45ec17`;
+- required selector: **355** / `e9d88f11…5afeaa`; prefixes 316/346/353 all green; C4/C5 green;
+- W3 exact terminal-kind union/contributors: kinds 2/3/4, sphere/two-ring/sphere; torus none; mechanical `IncompleteCycleBasis`;
+- three historical diagnostics report-only; explicit two-ring report PASS; W5-retired identities absent;
+- immutable package/source postflight PASS; configure/compile/relink/repair/discovery/mutation all false;
+- result/log: `9681960334 / 9681960615`, digests `b8be035e…7a5d / 55ad320a…439b`;
+- retained report: `Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`;
+- closure authority: `M3_CP4c1_Closure_Record.md`.
 
-### M3-CP4c-1 TB-R4 — current checkpoint runtime result
+### Accepted predecessor and build provenance
 
-- status: **COMPLETE / VALID SEMANTIC RED 354/355 / CHECKPOINT OPEN**;
-- run/job: `33141046678 / 98751794167`;
-- immutable GMP package: `9673249952` / `17a3f8da…42d2ea`, semantic source `66a065b5…d104`;
-- result/log artifacts: `9674006723 / 9674006927`, digests `d8c02733…a514 / 19e9a039…c5c8`;
-- accepted predecessor prefixes: **316/316, 346/346, 353/353 PASS**;
-- C4 ordinal 354: PASS; C5 ordinal 355: RED; full gate **354/355**;
-- all 355 selected exactly once; zero escaping C++ exceptions; immutable pre/postflight PASS;
-- five non-gating diagnostics: 5/5 trustworthy report-only red, zero gate credit;
-- `M3-CP4c1-TB-R4-CAND-01`: **RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE** by the independent review;
-- `M3-CP4c1-TB-R4-CAND-03`: CB4 disposition complete / TB confirmation pending;
-- stable accounting **42 / 14 / 28**, debt **5**;
-- successor status: CB4 is now build-green; exact next is artifact-only TB-R5.
-
-### M3-CP4c-1 CB3 — retained prior build authority
-
-- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
-- exact evidence source: `66a065b5e07910568a317e24f0fc6b93d890d104`;
-- selector apply run/job: `33138991496 / 98745369305`; applied selector commit `a12a171e347d0c1c7cd88df604e907a603223d58`;
-- cumulative required selector: **355** / `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`;
-- accepted prefixes: 353 / `51ff96d7…ac6a5`, 346 / `20d3b0b1…3e46a`, 316 / `601ce2b6…0193c`;
-- C4/C5 are ordinals 354/355 and remain gating; no test body, fixture, accepted expectation, or product semantic changed;
-- non-gating selector unchanged: 5 / `9f4f287e…fb130`;
-- authoritative compile run/job: `33139188595 / 98746005796` — PASS;
-- immutable GMP package/result artifact: `9673249952` / `17a3f8da…42d2ea`; compile log `9673250286` / `cffa6fc4…df32b9`;
-- all eight standard targets compile/link; internal manifest 28/28; packaged source archive `3ba7e745…70c628`; source status clean; `runtimeExecution=false`;
-- first compile caller `33139114617` was startup-only permission-ceiling failure, zero compile/runtime; corrected control plane only;
-- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**;
-- TB-R4 executed and returned 354/355; its review is complete and adjudicated both C5 clauses test-side; exact successor is `M3-CP4c-1-CB4` under W0-W7.
-
-### M3-CP4c-0b T5 — accepted runtime authority
-
-- status: **COMPLETE / GATE GREEN 353/353 / CP4c-0b CLOSED / ACCEPTED**;
-- run/job: `33136084757 / 98736295227`;
-- semantic/test source / immutable GMP package: `93059089881c8715a168a61968a8d6874ee1a670 / 9671190795`;
-- package SHA-256: `2901926c86a467160bae11aa4aac422d86fb9b275feff974c1645dd03b9a05c1`;
-- accepted prefixes: 316/316 and 346/346; full gate 353/353; watched ordinals 7/9/12/13 all PASS;
-- non-gating U3/U4: 4/4 PASS, zero gate credit; predictions met; sphere 24 traces;
-- immutable postflight PASS; no configure/compile/relink/repair/discovery/mutation; no escaping C++ exception;
-- result/log `9672113006 / 9672113408`, digests `7f582a03…c1af53 / 91754edb…1aea458`;
-- exact successor: `M3-CP4c-1-CB3` under Z0-Z5.
-
-### M3-CP4c-0b CB3-INSTR — current build authority
-
-- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
-- exact source: `93059089881c8715a168a61968a8d6874ee1a670`;
-- compile run/jobs: `33133572290 / 98728445391 / 98728639650` — PASS;
-- immutable GMP package: `9671190795` / `2901926c86a467160bae11aa4aac422d86fb9b275feff974c1645dd03b9a05c1`; package log `9671190999` / `abea08419e8604a86e8866a00725ba84944c96221e79dfca34ef4195781894de`;
-- internal manifest 28/28 PASS; source status clean; six executables mode 0755; two static libraries 0644; `runtimeExecution=false`; GMP/GMPXX linked;
-- required selector unchanged 353 / `51ff96d7…ac6a5`; first-346 `20d3b0b1…3e46a`; non-gating selector 4 / `d4224002…d9ad`;
-- changes limited to `tests/FieldAlignedCurveNetworkTests.cpp` and the non-gating selector; `src/` and `include/` unchanged;
-- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **55**;
-- exact successor: artifact-only `M3-CP4c-0b-TB-T5`.
-
-### M3-CP4c-0b TB-T5 preflight — retained blocker authority
-
-- status: **BLOCKED / PRE-GATE OBSERVABILITY GAP / 353 NOT RUN**;
-- immutable package/source and selector hashes pass U0 static checks; package manifest 28/28;
-- Directional runtime and gate identities executed: **0**;
-- blocker: U3 requires pre-gate fan/two-ring telemetry absent from compiled package `9668492827`, while U7 forbids adding instrumentation/compiling inside T5;
-- U4 also lacks a dedicated compiled per-witness N1/N2/N4 silence census; not weakened into inference;
-- exact source-snapshot audit: `33130565916 / 98718854457`, artifact `9670081197` / `58403bc8052a87f6359d809872a6e7ea7e61e3807b6dca104f38983e3023a284`;
-- stable accounting unchanged **42 / 14 / 28**, debt **5**; blocker was upheld by independent review and discharged as a package-capability blocker by CB3-INSTR; T5 execution itself remains pending.
-
-### M3-CP4c-0b DG-T4 — current runtime authority
-
-- status: **COMPLETE / EXECUTION GREEN 7/7**;
-- semantic source / immutable GMP package: `b2629040450c12507367c232f68a4d972b46450f / 9668492827`; package ZIP `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`;
-- selector: seven / `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`; full 353 remains `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
-- run/job: `33128261911 / 98711506300`;
-- result/log artifacts: `9669229181 / 364d5d546bca4c664be67e52b336a48cbc1f49b6bd672371ea6351e396dcc84c`; `9669229414 / 39c7530a70650702f4345fea9de558ea6139fecd715f8d9b504ef945a94447ef`;
-- every identity selected exactly once and PASS; zero-selected 0; zero escaping C++ exceptions; no repository timeout;
-- no configure/compile/relink/repair/generated discovery and no package/source/test/fixture/selector mutation; immutable byte-and-mode postflight PASS;
-- no regression/candidate observed; stable accounting **42 / 14 / 28**, debt **5**;
-- successor status: T4 and its reviews are complete; CB3-INSTR supersedes CB2 only as build authority. T4 remains the current runtime authority until T5 runs.
-
-### M3-CP4c-0b CB2 — retained prior build authority
-
-- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
-- semantic source: `b2629040450c12507367c232f68a4d972b46450f`;
-- semantic changes: test/diagnostic-contract only; production `src/` and `include/` unchanged;
-- T1 torus: atlas-derived `0 rails / 0 singularities / 0 nodes / 0 traces / 0 events`; pipeline-authoritative `48 HardFeature rails / 0 singularities / 48 structural endpoint nodes / 0 traces / 0 events`, zero contact provenance;
-- candidate `M3-CP4c0b-DG-CAND-02`: **RESOLVED / NON-STABLE / TEST-SIDE**, +0 stable events / +0 recurrences;
-- selectors: seven `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`; full 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
-- compile run/jobs `33126178643 / 98704812754 / 98705144144` all green;
-- immutable GMP package `9668492827` / `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`; 28/28 manifest PASS; `runtimeExecution=false`;
-- successor status: T4 execution is green 7/7; retained as current build authority.
-
-### M3-CP4c-0b DG — retained pre-CB2 runtime evidence
-
-- status: **COMPLETE / VALID SEMANTIC RED 6/7**; authoritative corrected run/job `33120730355 / 98686699036`;
-- immutable authority: semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`, package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`, seven-identity selector `14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724`;
-- ledger: **7 executed / 6 PASS / 1 RED**, every identity selected exactly once, zero escaping exceptions, no timeout/build/repair/mutation, immutable postflight PASS;
-- sole red: `TraceTerminationCorrection.TorusRemainsZeroTraceAndFanRemainsExcludedFromCredit`; zero candidate traces passed, `torus.network->nodes().empty()` failed at line 6952, no separate zero-event failure reported;
-- result/log: `9666352028 / 286f738f02315d72dea7cc03bed61bc12ef6b5345ddf15264a898b5bfa45db72`; `9666352544 / 651e9cb9fc78d109d725fdf725fd26b72c450f6bba44fd77e638780c0df2712e`;
-- first run `33120437486 / 98685729035` is resolved orchestration-only, zero Directional identities executed; no semantic bytes changed by the harness correction;
-- full 353 acceptance TB **NOT RUN**; stable accounting **42 / 14 / 28**, debt **5**, packages **53**;
-- successor status: independent DG review and CB2 are complete; retained only as pre-CB2 runtime evidence.
-
-### M3-CP4c-0b CB1-S2-S6 — retained predecessor build authority
-
-- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**; semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`;
-- semantics: exact proper-crossing/contact classification, disjoint site vocabulary, fixed `ArcLengthFiltered` production priority with computed error bounds and no seniority fallback, globally ordered contact resolution, and exact durable `terminalContact`;
-- selectors: predecessor **346** / `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; new-contract DG **7** / `14570409facfb9c9072375cae3ad4319e383386380ee1060d4af75c6e61c5724`; full **353** / `91371d5ab637447c31c0d25e829be0d58fa61f17245e69bd231dcaec94f21efb`; first 346 are byte-exact predecessor and last seven are byte-exact DG;
-- Drive apply run/job `33115797114 / 98670027134`; applied semantic commit `737f93be10a73db950e2a7f823b96ffb0d59cf4d`; result/log `9664432556 / 9664432987`;
-- changed-owner GMP precompile run/job `33116158072 / 98671267836`; result/log `9664729779 / 9664730426`; manifest 23/23;
-- authoritative eight-target GMP package run/job `33116774891 / 98673348923`; immutable package `9664890562` / `94beb349763ff261d603839176a458d1f69e976192aafcd0c69d2617abd88273`; compile log `9664890910 / a528e66fc88191ad5e030f1821e8029871719514895041568bfea5b352e7fcf0`; manifest 28/28;
-- all source-status snapshots clean; `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
-- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **53**;
-- retained predecessor package only; CB2 now supersedes build authority with package `9668492827`.
-
-### M3-CP4c-0b TB-S1-REV — retained predecessor review evidence
-
-- status: **COMPLETE / REVIEW GREEN**; no runtime/build/package/acceptance attempt;
-- raw S1 artifact independently verified: `9656967036` / `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4`;
-- reached included site-B contact count: **0** on two-ring and torus; no non-proper/unevaluated selected contact; S1 stop not triggered;
-- sphere: **unreached at N1**, exactly as P0.3 predicted; no zero-contact inference;
-- site-A migration: two-ring `A/B/C=1/0/0`, its sole `TraceIntersection` is the overloaded origin junction; two named CP3b identities are authorized for S2 re-authoring;
-- S2-S6 semantics remain exactly the P0.3/frozen contract; no predicate widening, tolerance, seniority fallback, post-hoc truncation, enum-value reuse, or multiple terminal kinds;
-- successor status: CB1-S2-S6, DG, independent DG review, and CB2 are complete; retained as predecessor review evidence;
-- stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **52**.
-
-### M3-CP4c-0b TB-S1-EXEC — retained predecessor runtime evidence
-
-- semantic/evidence source / immutable GMP package: `4bb467806df99c70889394a323c17c13bc185ca3 / 9655632444`;
-- artifact-only run/job: `33097182476 / 98605092984`;
-- frozen gate: **346/346 PASS**, selector SHA-256 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, one identity per fresh process;
-- non-gating S1 identity: PASS, zero gate credit; reached included witnesses had zero non-proper/unevaluated contacts and `requiresReview=0`; prescribed sphere was unreached at expected N1 `TraceCombinatorialRecurrenceExceeded` and has no contact-count claim;
-- raw result/log: `9656967036 / 9656967437`, SHA-256 `dd1f8aa8f2346612beb445d7e5d6a8768a438e36c543e0b4d407b444523d85a4 / 667b9c54ad24e9e33855d3fd47a322593c4522bde4984177dfa593a1df7f6bb8`;
-- no configure/compile/relink/repair/generated discovery, no mutation, no repository timeout, zero escaping C++ exceptions, immutable postflight PASS;
-- stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **52**; no new regression/candidate observed;
-- successor status: TB-S1-REV and all later CB1/DG/CB2 work are complete; retained as predecessor runtime evidence.
-
-### M3-CP4c-0b CB1-S1 — retained predecessor build authority
-
-- semantic/evidence source: `4bb467806df99c70889394a323c17c13bc185ca3`;
-- S1 is **diagnostic-only**: exact proper-crossing observation and contact census, with no production contact/event/node/trace/termination semantic change;
-- first patch-transport run `33091855034` failed before commit because patch metadata used comma-delimited `intended_paths` while the durable apply workflow requires semicolons; corrected bytes preserved the identical diff body;
-- corrected apply run/job `33092961074 / 98590434004` succeeded; result/log artifacts `9655159304 / 9655160089`; Drive staging retired after successful push;
-- first compile-caller run `33093222009` was `startup_failure` before jobs because the caller omitted the reusable observer's required `contents: write` permission union; no build/runtime evidence came from it;
-- authoritative compile run `33093440552`: GMP pre-package job `98592131066` succeeded for `directional_surface_cell_producer_tests`, then GMP package job `98593728046` succeeded for all eight standard targets on the **same** semantic SHA;
-- immutable package `9655632444`, GitHub artifact SHA-256 `c22e9b020e533ca8fc558bcafc3e138a062702a59bee68a097958b432d70bc5f`; compile log `9655633229 / ad36b3523bd3843b3618bee8ff71aa4789be6381554d8e089d1f4469d44e4b9e`;
-- pre-package result/log `9655528709 / 9655529401`, SHA-256 `cf179bae7d1897f66b286e5688afb8540760d289ecca6de598fdb1d0638ef3f6 / 68fa64caa92340251eeeed77236aaf90ff895a7202c253c0ab6f44d9308d6609`;
-- `exactArithmeticBackend=GMP`; all source-status checks clean; `runtimeExecution=false`; no Directional binary/test/benchmark/discovery/CLI/fuzzer/custom input executed;
-- successor status: S1 execution/review and later CB1/DG/CB2 work are complete; retained only as predecessor build evidence.
-
-### M3-CP4c-0 CB8 — retained build authority
-
-- semantic source / immutable package: `19ba8e9c5e58f9c33c14b309841165d3f0401db5 / 9628445643`;
-- package ZIP SHA-256 `869e06a3524ecdb7fd901e2583d5ba5c60309cce3085e2e1996a37ddd780bce6`; source archive `98e7db71647a54f41edfd93aea56ef7f50e014989bbc3c617edc179791380d5d`;
-- authoritative compile-only run/jobs: `33025705457 / 98366398970 / 98367264215`;
-- compile log `9628446136 / 562bb275fccb61629a3a60bfd1f71c3cb8332a239674dab660ebcd1626f33d27`; preflight result `9628386576 / a9b66f29f9bb23927df9614066d43c7edaaeb70e5d1a01fd0551154d9a79778c`; preflight log `9628386953 / fb4ec9a4c041632cf7a3f5f14f0db9482b5c9c55b2c217654f42725c9872df90`;
-- all eight standard targets compiled/linked; preflight/build exit 0; all source-status snapshots empty; recursive package hashes verified;
-- `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
-- L0–L9 only; no A1/A2b/T6/CP4c-1 selector/tolerance/threshold/magnitude change;
-- CP4c-0 selector **343** / `63ca177e8c0f22a83085cfb1028915b444db67bf2bb3da79555e4a3033a74d09`; first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600` preserved;
-- exact next: artifact-only `M3-CP4c-0-TB-R8` on package `9628445643`.
-
-### M3-CP4c-0 TB-R7 — COMPLETE / VALID SEMANTIC RED
-
-- CB7 semantic source/package: `077462da156c3e2dfbbc6867fc10d3e4442d853c / 9625495708`;
-- authoritative control/run/job: `3d1ef24d6bcccb7e4e821d713a21860bc0598bd0 / 33019554121 / 98346293968`;
-- result `9626003625 / 61994abc1e67fc55bc1d48d38a521598b6b56e458972d948ebcae112fa27eaaa`;
-- diagnostic log `9626004016 / 9f6307b90b93ba557af7643c5a2d4a021969708b2a77e74fc546ae4f263e441c`;
-- mode-preserving extraction, 338/338 gate, 316/316 accepted prefix, 328/328 prior prefix, F3 2/2, postflight PASS;
-- K1 near-tangency separation reproduced; K2 0/24 reaches grazing and is non-decisive; J3 legitimate 524/524; K3 176/176 complete fans / 0 mismatches;
-- Q8 creditable RED criterion 2; no build/repair/mutation; exact next `M3-CP4c-0-DEFN-2`.
-
-### M3-CP4c-0 CB7 — retained build authority
-
-- semantic source / immutable package: `077462da156c3e2dfbbc6867fc10d3e4442d853c / 9625495708`;
-- package ZIP SHA-256 `dc07d4288b9a529ca71c06f96e0277b168d2e5a28c5a9eeba3fdf7341a33237a`; source archive `6ecafbc5a5904568780e6518f39b9d4b1336c94e08a53f7fc0c31d8926e26344`;
-- authoritative compile-only run/job: `33018117005 / 98341565781`;
-- compile log `9625496280 / e42240c280738fd70e8eddc09bc9899537cac53f477e3d3f88d26f6b4a0a978f`;
-- eight standard targets compiled/linked; preflight/build exit 0; all source-status snapshots empty;
-- `runtimeExecution=false`; no Directional runtime/test/benchmark/discovery/CLI/fuzzer/custom input executed;
-- K0–K7 diagnostic/contract-control only; no production semantics/fixture/selector/tolerance/T6/Q8 change.
-
-### M3-CP4c-0 TB-R6 — COMPLETE / VALID SEMANTIC RED
-
-- semantic source / immutable package: `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6 / 9619352525`;
-- package ZIP SHA-256 `b45306c3c5b3b9ff094131be8073aed5c6180533fdbe0b04f220ca929b4dd672`; source archive `308e02580033b5a319e08d7916afc921693d2b15f645813c2cdbaed336320093`;
-- authoritative control/run/job: `a9ae307590b0cc23080452c4a5013674efc48fc2 / 33006282429 / 98300813772`;
-- result `9620769314 / fe6a73175399b764f7cbb3ea2963a8deb40d6d0b5afcc3e9a603102ee4936684`;
-- diagnostic `9620770049 / ce87da5a919e31f7e36a8d904dfaad7c7d9c92b9bebf36a494de096e7cb691cb`;
-- gate 338/338; accepted 316/316; first-328 328/328; F3 2/2; G5/H1/J3 PASS non-gating; Q8 creditable RED criterion 2; postflight PASS;
-- H1 legitimate 388 directed / 194 distinct; J3 legitimate 524/524 geometry agreement; fan excluded 2/1 H1 and 1 J3 mismatch;
-- no configure/compile/relink/repair/generated discovery/performance benchmark and no package/source/test/fixture/selector mutation.
-
-A prior control run `33006048971 / 98300014224` is resolved orchestration-only evidence: Python ZIP extraction lost executable modes and the first binary launch failed with `PermissionError` before any Directional binary executed. The authoritative retry used normal `unzip` without package repair.
-
-### M3-CP4c-0 CB6 — retained build authority
-
-CB6 semantic source `8b8d189758d55d9f93ae595fbbe5d9fde0b4aee6`, compile-only run/job `33002848081 / 98288918300`, package `9619352525`, compile log `9619353059`. All eight standard targets compiled/linked with build/preflight exit 0, empty source-status snapshots, and `runtimeExecution=false`.
-
-### Accepted runtime authority
-
-Latest accepted runtime is CP4c-0b T5 **353/353**, run/job `33136084757 / 98736295227`, on immutable GMP package `9671190795` from semantic/test source `93059089881c8715a168a61968a8d6874ee1a670`. Result/log artifacts `9672113006 / 9672113408` have digests `7f582a03a3e1cd63d988d1db249b71bfc44d68e76507c3cacbec043179c1af53 / 91754edb40c3889111b5947aa4451875781d5b5232d060db87a6263be1aea458`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **55**.
+CP4c-0b remains accepted at 353/353 (`33136084757 / 98736295227`), and CB4 remains the exact build provenance
+for the package TB-R5 consumed (`33145657048 / 98766007030`, source `b1ce8ad65952…a24747`, package
+`9675666067`). No later documentation/control commit changes semantic or build evidence provenance.
 
 ## Standing product state
 
-- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
-- **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
-- Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is CLOSED / ACCEPTED at 353/353.** T5 run/job `33136084757 / 98736295227` passes accepted prefixes 316/316 and 346/346, watched ordinals 7/9/12/13, U3/U4, and immutable postflight on package `9671190795`. Q8 criteria 2 and 3 are accepted.
-- **`M3-CP4c0-TB-R8-CAND-01` is RESOLVED / NON-STABLE / PRODUCTION PERFORMANCE-TERMINATION.** CB9 bounded the six circulating prescribed-sphere separatrices; CP4c-0b then supplied structural crash-on-contact termination, and accepted T5 proves the sphere publishes 24 traces with U3/U4 and the full 353 gate green.
-- `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
-- `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
-- `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
-- CP4c-1 is **OPEN / TB-R5 READY**; CB4 corrected the reviewed test-side C5 over-specification at source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747` and produced immutable GMP package `9675666067` without runtime. The frozen 355 selector is unchanged; W5 retired both inverted diagnostics; three report-only publishers remain non-gating. CP4c-2/3 remain blocked for their own definition turns.
+- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and **CP4c-1 are CLOSED / ACCEPTED**.
+- Current accepted runtime is CP4c-1 TB-R5 **355/355** on package `9675666067` / source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`.
+- CP4c-1 C4/C5 are accepted at ordinals 354/355; exact 353/346/316 predecessor prefixes remain green.
+- `M3-CP4c1-TB-R4-CAND-01` is resolved test-side over-specification/non-stable; `CAND-03` is resolved TB-confirmed test-side inverted-precondition/non-stable.
+- `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable and owned by its previously recorded future measure; no CP4c-1 result changes it.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **57**.
-- **Exact next turn is artifact-only `M3-CP4c-1-TB-R5`.**
+- **Exact next turn is definition-only `M3-CP4c-2-DEFN`.** CP4c-3 remains blocked.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/TB.md`.
+`load_next`: turn-based-coding-agent `references/turns/REVIEW.md` (planning/definition-only boundary).
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c1_CB4_Code_Build_Report.md` — exact CB4 semantic/build authority and W5 dispositions.
-2. `.agents/Directional/Architecture_M3_CP4c1_CB4_Artifact_Only_Test_Benchmark_Plan.md` — executable TB-R5 plan, W3 proof requirements, and stop/rerun rules.
-3. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` and `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` — frozen 355 required gate and three report-only diagnostics.
-4. `.agents/Directional/Architecture_M3_CP4c1_TB_R4_Independent_Review_Record.md` §§7-10 — W0-W7 authority and falsifiable §8 prediction.
-5. `.agents/Directional/Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md` — accepted 353/353 predecessor runtime authority.
-6. `TODO.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`, `.agents/Directional/CHANGELOG.md`, and `.agents/Directional/ROADMAP.md` — task state, candidate authority, evidence summary, and trajectory.
+1. `.agents/Directional/M3_CP4c1_Closure_Record.md` — accepted 355/355 authority and exact successor boundary.
+2. `.agents/Directional/Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md` — immutable acceptance evidence and W3/W5 disposition.
+3. `.agents/Directional/ROADMAP.md` §3 — CP4c-2 domain, closed/higher-genus seam/cut-graph authority gap, and prospective 358 arithmetic.
+4. `.agents/Directional/Architecture_M3_CP4c_Required_Green_Selector.txt` — parent C1–C6 identity allocation; use for definition only, not as an already-frozen successor selector.
+5. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` — exact accepted 355 predecessor order/hash.
+6. `DESIGN.md` §§4.6, 7.2, and 14 M3 plus `M3_CP4c_Consolidated_Record.md` §4 — normative architecture and historical split evidence.
+7. `TODO.md`, `Regression_Root_Cause_Tracker.md`, and `.agents/Directional/CHANGELOG.md` — current task/accounting/history.
+
+`M3-CP4c-2-DEFN` is planning only: no implementation/test/fixture/selector mutation, compile, or runtime.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

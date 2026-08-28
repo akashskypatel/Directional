@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-28 (**CP4c-0b CLOSED / ACCEPTED; CP4c-1 TB-R4 VALID RED 354/355.** Accepted runtime remains T5 `33136084757 / 98736295227` at **353/353**. TB-R4 run/job `33141046678 / 98751794167` re-proved that 353/353 prefix, passed C4, and returned C5 red on immutable GMP package `9673249952`. Exact next is mandatory `M3-CP4c-1-TB-R4-REVIEW-PLAN`.)
+**Status date:** 2026-08-28 (**CP4c-1 CLOSED / ACCEPTED at 355/355.** Authoritative TB-R5 run/job `33161644741 / 98817323175` consumed immutable GMP package `9675666067`; W3 prediction and immutable postflight passed. Exact next is definition-only `M3-CP4c-2-DEFN`.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 3 checkpoints remaining** | CP4c-0b **353/353**, `M3_CP4c0b_Closure_Record.md` |
+| M3 | **in progress — 2 checkpoints remaining** | CP4c-1 **355/355**, `M3_CP4c1_Closure_Record.md` |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -32,7 +32,7 @@ returned VALID RED 316/322. Its two committed witnesses are **closed surfaces** 
 mechanical χ = 2 sphere — while every witness that has ever validated A2b is a **bounded disc**, χ = 1.
 Two of the three failure families are therefore scope gaps in *accepted* authority, not CP4c defects.
 
-Cumulative gate has grown 304 → 316 and reaches 322 across four checkpoints — `M3-CP4c-0` was inserted on 2026-08-25 as a blocking predecessor to CP4c-1.
+Cumulative accepted authority has grown 304 → 316 → 346 → 353 → **355** through CP4c-1. The remaining parent identities C1/C3/C6 and C2 are allocated to CP4c-2 and CP4c-3 respectively; their successor cumulative selectors are not frozen until their definition turns.
 
 ---
 
@@ -45,13 +45,14 @@ owns it:
 |---|---|---|
 | singularity ports derived from field index, owned exactly once | A1 / A2a | accepted at CP1/CP3 |
 | traces branch-consistent and provably non-crossing | A2a | accepted at CP3a/CP3b |
-| every trace terminates at a typed network event; no silent interior termination representable | A2a | accepted at CP3b; **completed** by CP4ab's terminal 0-cell correction; CP4c-1 C5 re-proof is currently RED pending mandatory review |
+| every trace terminates at a typed network event; no silent interior termination representable | A2a | **accepted / re-proved at CP4c-1**: TB-R5 355/355, C5 PASS with exact W3 kind-union evidence |
 | every emitted region carries a disc-topology proof | A2b | **accepted at CP4ab** (B1, B4) |
 | network selection preserves mandatory topology under tamper | A2b | accepted at CP4ab (A4, A5) |
 | tracing-order and start-port permutation invariance | A2b | accepted at CP4ab (A6) |
 
 **Verdict: the trajectory is correct and the milestone is nearly discharged.** Every M3 criterion has
-an owning identity and five of six are green under a cumulative immutable gate.
+an owning identity and all six are green under the cumulative immutable 355 gate. M3 remains open only for the
+production-representative closed-surface scope owned by CP4c-2/3.
 
 The one substantive gap is not a criterion but a *scope* of proof: all six are proven on **development
 witnesses** (the two-ring skew disc and the four-triangle fan), not on production-representative
@@ -72,9 +73,9 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 |---|---|---|---|
 | **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **Contract complete.** DEFN froze the continuation rule, DEFN-2 the grazing model, CB8 implemented it, CB9 landed deterministic cost guards. Closes on a green `M3-CP4c-0-TB-R9` against Q8 criteria **1, 4, 5** |
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
-| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **OPEN / VALID RED 354/355.** TB-R4 `33141046678 / 98751794167` re-proved accepted 353/353 and C4 PASS; C5 alone is RED. `M3-CP4c1-TB-R4-CAND-01` requires mandatory review before any retry/correction. |
-| **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
+| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
+| **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **358 = accepted 355 + C1 + C3 + C6** (prospective; DEFN must freeze) | **NEXT:** `M3-CP4c-2-DEFN` |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **359 = prospective 358 + C2** | needs `M3-CP4c-3-DEFN` after CP4c-2 |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval
@@ -101,7 +102,7 @@ this project will run), `CB2` (W7–W9), `TB-R1` (VALID RED 316/322).
 
 CP4c-1's historical TB-R3 is **VALID RED 316/318** with the accepted 316 green in the same run. C4/C5 remain the only
 checkpoint-local required identities and **stay gating**; demotion to non-gating was considered and rejected. CP4c-0 and
-CP4c-0b are accepted; CB3 rebased the gate to 355 and TB-R4 returned **354/355** with C5 alone red. The exact next turn is the mandatory `M3-CP4c-1-TB-R4-REVIEW-PLAN`; CP4c-2/3 remain blocked.
+CP4c-0b are accepted; CB3 rebased the gate to 355, the mandatory review identified C5 test over-specification, CB4 corrected only that test authority, and TB-R5 returned **355/355** with the exact W3 prediction. CP4c-1 is therefore closed; exact next is `M3-CP4c-2-DEFN`.
 
 CP4c-0's artifact-only TB proves the exact-continuation focused gate **328/328**, but frozen Q8 is red:
 the prescribed sphere reaches A1 then A2a rejects `BranchContinuationDegenerateEntry` before network
@@ -410,8 +411,8 @@ From `DESIGN.md` §2.1, unchanged and not restated in full: a run is production-
 acceptance conditions hold on the full witness set with no degraded result closing a strict gate, under
 the §10.1 determinism requirements, with the §15 stop conditions never triggered.
 
-Operationally, that is `M8-CP3`. The path is: **CP4c-0 → CP4c-1 → CP4c-2 → CP4c-3 → M4 (4 checkpoints) → M5 (3)
-→ M6 (3) → M7 (3) → M8 (3)**, plus two CP4c `-DEFN` turns and five milestone `-DEFN` turns. Nineteen
+Operationally, that is `M8-CP3`. The remaining path is: **CP4c-2 → CP4c-3 → M4 (4 checkpoints) → M5 (3)
+→ M6 (3) → M7 (3) → M8 (3)**, plus two CP4c `-DEFN` turns and five milestone `-DEFN` turns. Eighteen
 checkpoints remain.
 
 This decomposition is a **proposal until each milestone's `-DEFN` turn freezes it.** Gate arithmetic

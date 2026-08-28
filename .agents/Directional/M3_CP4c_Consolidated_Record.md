@@ -1,11 +1,9 @@
 # M3 CP4c — Consolidated Historical Record
 
 **Purpose.** One durable record for the whole **CP4c family** — the CP4c parent turns and the CP4c-0 and
-CP4c-1 sub-checkpoints. It consolidates twenty-four per-turn execution documents and review briefs that
-were retired on 2026-08-26 under explicit user authorization, preserving **every** evidence identifier
-they carried.
+CP4c-1 sub-checkpoints. It consolidates superseded per-turn execution documents and review briefs retired under project retention policy, preserving the evidence identities and dispositions needed after those transient records are removed.
 
-**Status:** CP4c-0 and CP4c-0b are **CLOSED / ACCEPTED**; CP4c-1 remains **OPEN** after TB-R4 VALID RED 354/355. This remains primarily a historical record; CP4c-0 closure authority is the retained `Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md`, not this consolidated record.
+**Status:** CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**. CP4c-1 closure authority is `M3_CP4c1_Closure_Record.md` with immutable TB-R5 evidence in `Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`. Exact next is definition-only `M3-CP4c-2-DEFN`.
 
 **What this document does not replace.** These remain live and normative:
 
@@ -71,9 +69,9 @@ already-accepted authority**, not CP4c defects.
 | Checkpoint | Domain | Gate |
 |---|---|---|
 | **CP4c-0** | resolved interval pairing with propagated barycentric positions | **338** = 316 + 12 + 10 |
-| **CP4c-1** | diagnosability, witness observability, event non-vacuity | **318** = 316 + C4 + C5 |
-| **CP4c-2** | closed / higher-genus region authority in A2b | 321 (needs `-DEFN`) |
-| **CP4c-3** | closed-surface missing field-transport adjacency in A1 | 322 (needs `-DEFN`) |
+| **CP4c-1** | diagnosability, witness observability, event non-vacuity | **355** = accepted 353 + C4 + C5 — **CLOSED / ACCEPTED** |
+| **CP4c-2** | closed / higher-genus region authority in A2b | prospective **358 = 355 + C1 + C3 + C6** (needs `-DEFN`) |
+| **CP4c-3** | closed-surface missing field-transport adjacency in A1 | prospective **359 = 358 + C2** (needs `-DEFN`) |
 
 The same review **abolished the attempt budget, the diagnostic cap, and the `DG` turn type**, on the
 finding that `DG` executed a strict subset of `TB`'s runtime surface and so was not a different
@@ -485,56 +483,46 @@ The cycle that identified the root cause, and it is a contract gap rather than a
 
 ---
 
-## 4. CP4c-1 — evidence (OPEN / TB READY after CB3 cumulative rebase)
+## 4. CP4c-1 — evidence (CLOSED / ACCEPTED)
 
-| Turn | Semantic source | Run / job | Package | Result |
+| Turn | Semantic source | Run / job | Package / evidence | Result |
 |---|---|---|---|---|
-| **CB (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32867889140`; jobs `97867532883`, `97867597370`, `97867694421`, `97868351487` — all PASS | `9570940997` (`23876c55e51b94ca3a1e5bcfb727a4c0cebce3294fcd2fbda21336b57ae1de16`) | BUILD GREEN |
-| **TB / TB-R3 (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32872112507 / 97881418987`; result `9572545977` | `9570940997` | **VALID RED 316/318** |
-| **CB3 cumulative rebase** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33139188595 / 98746005796` | `9673249952` / `17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`; log `9673250286` / `cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9` | **BUILD GREEN / RUNTIME-FREE** |
-| **TB-R4 (current)** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33141046678 / 98751794167` | consumes `9673249952`; result/log `9674006723 / 9674006927` | **VALID SEMANTIC RED 354/355; 353/353 predecessor + C4 green, C5 red** |
+| **CB (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32867889140`; jobs `97867532883`, `97867597370`, `97867694421`, `97868351487` | `9570940997` | BUILD GREEN |
+| **TB / TB-R3 (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32872112507 / 97881418987` | result `9572545977` | VALID RED 316/318 |
+| **CB3 cumulative rebase** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33139188595 / 98746005796` | GMP package `9673249952` | BUILD GREEN / RUNTIME-FREE |
+| **TB-R4** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33141046678 / 98751794167` | result/log `9674006723 / 9674006927` | VALID RED 354/355; C5 only |
+| **CB4 test-authority correction** | `b1ce8ad65952bd2bd76238f6dfc55523f6a24747` | `33145657048 / 98766007030` | GMP package `9675666067` / `63b66788…45ec17` | BUILD GREEN / RUNTIME-FREE |
+| **TB-R5 acceptance** | `b1ce8ad65952bd2bd76238f6dfc55523f6a24747` | `33161644741 / 98817323175` | result/log `9681960334 / 9681960615` | **355/355 PASS / CLOSED / ACCEPTED** |
 
-Historical checkpoint-local selector was 318 /
-`2f2c24acab0e891273c170c82cdc31b6afa3ae4d43e93c95dbdf6d90a88f45bc`, with accepted 316 prefix
-`601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`. Historical/current
-non-gating selector remains 5 /
-`9f4f287e074d66da9d69c16e22320ed6fe161b6b09de4dc7dd0618741c7fb130`.
-
-After CP4c-0 and CP4c-0b acceptance, CB3 froze the cumulative required selector at **355** /
-`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`. Its first **353** lines are
-byte-exact accepted CP4c-0b authority `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
-the first 346 and first 316 retain their accepted hashes. C4/C5 are exactly ordinals 354/355 and remain
-gating:
+The cumulative required selector is **355** / `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`.
+Its first 353 lines are byte-exact accepted CP4c-0b authority `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
+first-346 and first-316 retain `20d3b0b1…3e46a` and `601ce2b6…0193c`. C4/C5 are ordinals 354/355 and
+remain part of accepted authority:
 
 1. `FieldAlignedCurveNetwork.RejectsTamperedTraceIntersectionCrossing`
 2. `FieldAlignedCurveNetwork.EveryTraceTerminatesAtATypedEventKindThatIsActuallyProduced`
 
-CB3 changed no product implementation, test body, fixture, accepted expectation, or non-gating selector.
-All eight standard targets compiled/linked with GMP/GMPXX, package manifest 28/28, clean source status,
-and `runtimeExecution=false`. A first compile caller `33139114617` failed at workflow startup because its
-permission ceiling was below the reusable observer graph; only the caller permission changed before the
-authoritative compile.
+TB-R4 re-proved 353/353 and C4, then exposed two C5 test-authority over-specifications: a helper incorrectly
+required every supplied witness to produce a trace, and a fatal `size()==2` assertion forbade the lawful
+`SingularityTermination` kind while masking the two actual named-kind membership checks. Independent review
+classified both as test-side; CB4 corrected only those assertions, left `src/`/`include/` frozen, preserved the
+355 required selector, and retired two non-gating diagnostics that inverted accepted sphere behavior.
 
-TB-R4 executed the frozen 355 in order, one identity per fresh process. Accepted authority re-proved
-**353/353**, C4 ordinal 354 passed, and C5 ordinal 355 alone returned red for a full **354/355**.
-Every required identity selected exactly once, zero C++ exceptions escaped, and immutable pre/postflight
-passed. The five historical diagnostics all selected once and returned trustworthy report-only reds with
-zero gate credit.
+TB-R5 then supplied the decisive immutable authority. The full gate is **355/355**, all required identities selected
+exactly once, zero C++ exceptions escaped, and pre/postflight is immutable. W3 proves the named checks execute and
+pass and observes exactly `{TraceIntersection(2), MandatoryBarrierTermination(3), SingularityTermination(4)}` with
+contributors sphere / two-ring / sphere; torus contributes no kinds and mechanical remains at
+`IncompleteCycleBasis`. The three surviving diagnostics remain report-only; the explicit two-ring report passes;
+the two W5-retired identities are absent.
 
-C5's preserved failures are: (1) its helper requires non-empty candidate traces from every supplied
-witness, while the pipeline-authoritative torus currently publishes a zero-trace/zero-event A2a network;
-and (2) the terminal-kind union has cardinality **3**, not 2, even though both named required contributors
-are present. The sphere supplies terminal kinds `2,4`, and enum authority maps `4` to
-`SingularityTermination`. `M3-CP4c1-TB-R4-CAND-01` is **ACTIVE / REVIEW REQUIRED / NON-STABLE** because
-the frozen completion criterion and the plan phrase “exactly the required terminal event-kind set” admit
-an authority question that TB is not allowed to adjudicate.
+`M3-CP4c1-TB-R4-CAND-01` is **RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE** and
+`M3-CP4c1-TB-R4-CAND-03` is **RESOLVED / TB CONFIRMED / TEST-SIDE INVERTED PRECONDITION / NON-STABLE**.
+No accepted-green identity regressed, so stable accounting remains **42 / 14 / 28**, debt **5**, packages **57**.
 
-C4/C5 remain gating. **No retry or correction is authorized before review.** Stable accounting remains
-**42 / 14 / 28**, debt **5**, packages **56**. CP4c-2/3 are not entered. Exact next is mandatory
-**`M3-CP4c-1-TB-R4-REVIEW-PLAN`**.
-
-Root-cause history for the Cartesian-product continuation defect and Z0-Z5 measurements remains in this
-record and `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`; CB3 does not re-litigate it.
+**CP4c-1 is CLOSED / ACCEPTED.** Retained exact authority is `M3_CP4c1_Closure_Record.md` plus
+`Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`. Exact next is definition-only
+`M3-CP4c-2-DEFN`; the parent C1/C3/C6 allocation rebases prospectively to **358 = 355 + 3**, but that successor
+selector is not frozen until its definition turn.
 
 ---
 
@@ -595,6 +583,23 @@ The P0 preflight record is fully quoted and adjudicated by `Architecture_M3_CP4c
 
 Retired after inlining every durable fact into §3 above: `Architecture_M3_CP4c0b_TB_S1_Review_Record.md` (its census table, the fan's load-bearing `nodes = 8`, and the two authorized accepted re-authorings are reproduced verbatim), `Architecture_M3_CP4c0b_CB1_S2_S6_Code_Build_Report.md` (superseded by the CB2 package), and `Architecture_M3_CP4c0b_DG_Artifact_Only_Test_Benchmark_Report.md` (its 6/7 red is superseded by T4's 7/7; its `DG-CAND-01` orchestration record and every artifact identity are inlined).
 
+### 2026-08-28 — fifth consolidation (`M3-CP4c-1-TB-R5` closure)
+
+After the 355/355 acceptance run and after folding all necessary facts into §4, the durable changelog, tracker,
+closure record, and retained TB-R5 report, the following superseded CP4c-1 per-turn records were retired under
+`RETENTION_POLICY.md` / `CLEAN_UP_POLICY.md`:
+
+- `Architecture_M3_CP4c1_CB3_Code_Build_Report.md`
+- `Architecture_M3_CP4c1_CB3_Artifact_Only_Test_Benchmark_Plan.md`
+- `Architecture_M3_CP4c1_TB_R4_Artifact_Only_Test_Benchmark_Report.md`
+- `Architecture_M3_CP4c1_TB_R4_Independent_Review_Record.md`
+- `Architecture_M3_CP4c1_CB4_Code_Build_Report.md`
+- `Architecture_M3_CP4c1_CB4_Artifact_Only_Test_Benchmark_Plan.md`
+
+Their evidence identities, C5 diagnosis, W0-W7 dispositions, compile/package authority, selector hashes, and
+candidate outcomes are preserved above. The current immutable TB-R5 report is retained because it is the exact
+acceptance evidence; `M3_CP4c1_Closure_Record.md` is the checkpoint closure pointer.
+
 ### Retained, and why
 
 | Document | Why it is retained |
@@ -604,24 +609,26 @@ Retired after inlining every durable fact into §3 above: `Architecture_M3_CP4c0
 | `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md` | **Normative and current.** The termination contract and the CP4c-0b plan. |
 | `Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md` | **Current authority.** The measured evidence CP4c-0b's definition consumes, and the only record of the CB9 corrective. |
 | `Architecture_M3_CP4c0_Required_Green_Selector.txt` | Live gate authority — 346. |
-| `Architecture_M3_CP4c1_Required_Green_Selector.txt`, `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` | Live gate authority for CP4c-1, which is open. |
-| `Architecture_M3_CP4c_Required_Green_Selector.txt` | Parent CP4c 322 selector; the record of which identities constitute C1–C6, needed by the still-unopened CP4c-2 and CP4c-3. |
+| `Architecture_M3_CP4c1_Required_Green_Selector.txt`, `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` | Accepted CP4c-1 selector authority and exact 355 predecessor for the CP4c-2 definition/rebase. |
+| `Architecture_M3_CP4c_Required_Green_Selector.txt` | Parent CP4c selector; authoritative record of which identities constitute C1–C6, needed by CP4c-2/3 definition turns. |
 | `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md` | **Normative.** Withdraws P0.3, names the six defects in the accepted contact mechanism, and supersedes P0–P9 with S0–S8. |
 | `Architecture_M3_CP4c0b_TB_S1_Review_Record.md` | **Live authority.** It is the only document authorizing the two accepted re-authorings that measure T5 must honour. |
 | `Architecture_M3_CP4c0b_DG_Independent_Review_Record.md` | Adjudicates `DG-CAND-02` and freezes T0–T7; superseded as *current plan* by the T4 review but retained as the rail-authority analysis. |
 | `Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md` | **CP4c-0's closure evidence** — the 346/346 acceptance run. Retained until a dedicated CP4c-0 closure record exists. |
 | `Architecture_M3_CP4c0b_Required_Green_Selector.txt`, `..._Diagnostic_Gate_Selector.txt`, `..._Non_Gating_Diagnostic_Selector.txt` | Live CP4c-0b gate authority — 353 / 7 / non-gating. |
+| `Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md` | **Current CP4c-1 immutable acceptance evidence** — 355/355. |
+| `M3_CP4c1_Closure_Record.md` | **CP4c-1 closure authority and successor pointer.** |
 | `M3_CP4c_Consolidated_Record.md` | This record. |
 
 ---
 
 ## 6. Standing accounting
 
-Stable regression accounting has held at **42 events / 14 categories / 28 recurrences** across the
-entire CP4c family, because **CP4c has never been accepted** and the accepted 316 prefix has stayed
-green in every run that executed it. Produced-witness debt remains **5**. Latest accepted runtime
-authority remains **CP4ab 316/316**, source/package
-`157bf784a9cdd2765018206ae0ac26729ed7a584 / 9527801615`.
+Stable regression accounting remains **42 events / 14 categories / 28 recurrences** across the CP4c family.
+Produced-witness debt remains **5**. M3 packages remain **57**. Current accepted runtime authority is CP4c-1
+TB-R5 **355/355**, run/job `33161644741 / 98817323175`, on immutable GMP package `9675666067` from
+semantic/test source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. CP4c-0, CP4c-0b, and CP4c-1 are closed/accepted.
+Exact next is definition-only `M3-CP4c-2-DEFN`.
 
 ## 2026-08-27 — TB-R9 GMP artifact-only re-proof and mandatory review boundary
 

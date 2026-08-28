@@ -9,6 +9,32 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — M3-CP4c-1 TB-R5 — 355/355 green, checkpoint closed / accepted
+
+`M3-CP4c-1-TB-R5` is **COMPLETE / GATE GREEN 355/355 / CHECKPOINT CLOSED / ACCEPTED**. Authoritative
+artifact-only run/job `33161644741 / 98817323175` consumed immutable CB4 GMP package `9675666067`
+(`63b66788e724f7f22acc5f3bd204a1eb666a779ced96d1373f320e00cd45ec17`) from semantic/test source
+`b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Prefixes 316/346/353 all passed, C4 ordinal 354 passed, C5
+ordinal 355 passed, all 355 selected exactly once, and zero C++ exceptions escaped.
+
+W3's previously masked `TraceIntersection` and `MandatoryBarrierTermination` membership checks executed and
+passed. The observed union exactly matched the independent review prediction:
+`{TraceIntersection(2), MandatoryBarrierTermination(3), SingularityTermination(4)}`, contributed by prescribed
+sphere / two-ring / prescribed sphere; torus contributed zero kinds and mechanical remained at
+`IncompleteCycleBasis`. The explicit two-ring report identity passed. The three frozen historical diagnostics
+remained intentional report-only reds with zero gate credit, and both W5-retired inverted diagnostics were absent,
+resolving `M3-CP4c1-TB-R4-CAND-03` as non-stable test-side inverted-precondition evidence.
+
+Immutable package/source postflight passed with configure/compile/relink/repair/discovery/mutation all false.
+Result/log artifacts are `9681960334 / 9681960615`, digests
+`b8be035ed728b5d6f8efe65e260f9557a9aa8cad0e82b94d11107aab44187a5d /
+55ad320aaf810bb5b02fbfccdd7662f4a47333586bdb30397d624d701710439b`. Stable accounting stays
+**42 / 14 / 28**, debt **5**, M3 packages **57**. Closure authority:
+`M3_CP4c1_Closure_Record.md`; retained immutable report:
+`Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`. Exact next: definition-only
+`M3-CP4c-2-DEFN`; no CP4c-2 implementation/runtime is authorized by this closeout.
+
+
 ## 2026-08-28 — M3-CP4c-1 CB4 — reviewed C5 test-side correction compiled green
 
 `M3-CP4c-1-CB4` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic/test source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Under W0-W7, C5 no longer requires every witness to produce a trace and no longer freezes the produced terminal-kind union to cardinality two; it retains the per-trace terminal contract, non-vacuity, and both named-kind membership checks. W4 was not used because no independent frozen allowed terminal vocabulary was established. Both mandatory W5 sphere-failure diagnostics were retired with surviving-cover rationale; W5b's three report-only publishers remain. `src/` and `include/` are unchanged.
