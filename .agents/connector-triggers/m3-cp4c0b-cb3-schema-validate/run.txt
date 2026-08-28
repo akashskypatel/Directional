@@ -1,3 +1,3 @@
 turn=M3-CP4c-0b-CB3-INSTR
-purpose=validate compile caller draft before workload publication
-retry=2
+purpose=validate CB3 closeout apply draft before workload publication
+retry=3
