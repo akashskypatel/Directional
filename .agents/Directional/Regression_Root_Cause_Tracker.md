@@ -68,6 +68,22 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-REV`. Review of authorit
   **42 / 14 / 28**, debt **5**.
 
 
+## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation created root `dummy` during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
+
+- **Observed:** after semantic review documentation and temporary-state cleanup were already complete, a mistaken
+  connector mutation intended to update PR metadata instead invoked the repository file-update action on path
+  `dummy`, creating a one-byte root file in commit `b08a56b64fe7012c7b88928fc08550a5e43fe011`.
+- **Containment/correction:** the file was identified immediately from the connector result and deleted in the next
+  repository mutation, commit `36c5ddb62d89824b9ec500bd6f33694dc8bd06a0`. It never entered semantic source,
+  build/package authority, runtime evidence, selectors, fixtures, or accepted product state.
+- **Recurrence note:** this repeats the control-plane anti-pattern already recorded by
+  `M3-CP4ab-CB-R1-CAND-03`: mutating connector actions must never be used with placeholder/probe arguments. The
+  incident is retained here because the mandatory TB regression-documentation gate requires every observed
+  orchestration candidate to be categorized before closeout.
+- **Stable-count rationale:** control-plane only and removed before turn closeout; **+0 events / +0 recurrences**.
+  Totals remain **42 / 14 / 28**, debt **5**, M3 packages **58**.
+
+
 ## M3-CP4c1-TB-R4-CAND-01 — C5 rejects current terminal-event witness union at two preconditions — **RESOLVED** / TEST-SIDE OVER-SPECIFICATION / NON-STABLE
 
 - **Observed:** authoritative artifact-only TB-R4 run/job `33141046678 / 98751794167` is **354/355 PASS**. Accepted predecessor authority is green **353/353** in the same immutable run, C4 is PASS, and C5 `FieldAlignedCurveNetwork.EveryTraceTerminatesAtATypedEventKindThatIsActuallyProduced` alone is RED. Exactly one test was selected for every required identity; zero escaping C++ exceptions; immutable pre/postflight PASS.
