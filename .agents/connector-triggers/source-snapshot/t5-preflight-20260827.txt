@@ -1,0 +1,4 @@
+turn=M3-CP4c-0b-TB-T5
+read_mode=snapshot
+pre_trigger_head=63533f8bc0f2c33affba630248ae73b4e449128c
+purpose=materialize exact repository-read authority before T5 pre-gate U3/U4 observability audit
