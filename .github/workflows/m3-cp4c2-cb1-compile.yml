@@ -33,7 +33,7 @@ jobs:
     needs: validate
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 8cf1ab3127748a32cb3cd13d5f79913774431d0e
+      source_sha: a43ed377a44279e3caba7f115a3c31d1a4d60574
       targets: directional_surface_cell_producer_tests
       artifact_prefix: m3-cp4c2-cb1-precompile
     secrets: inherit
@@ -42,7 +42,7 @@ jobs:
     needs: changed-owner
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 8cf1ab3127748a32cb3cd13d5f79913774431d0e
+      source_sha: a43ed377a44279e3caba7f115a3c31d1a4d60574
       targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
       artifact_prefix: m3-cp4c2-cb1-package
     secrets: inherit
