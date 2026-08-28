@@ -1,0 +1,4 @@
+# M3-CP4c-0b-DG-T4-EXEC temporary-state cleanup
+.agents/connector-triggers/source-snapshot/t4-exec-20260827.txt
+.agents/connector-triggers/m3-cp4c0b-dg-t4-exec/run.txt
+.agents/connector-triggers/m3-cp4c0b-dg-t4-closeout-apply/run.txt
