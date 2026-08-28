@@ -111,7 +111,9 @@ individually — "C5 green" alone is not an acceptable report for this identity.
 **The correction, in three edits.** Delete the witness productivity precondition at `:4713` — a zero-trace
 witness must pass vacuously and silently, with no weaker assert, skip, or torus-by-name special case. Replace
 `:6701` with `ASSERT_FALSE(producedTerminalKinds.empty())`, keeping the diagnostic `<<` chain; **do not change 2
-to 3**, which repeats the defect one value later. Correct the two inverted non-gating diagnostics that still
+to 3**, which repeats the defect one value later. **W5 is mandatory, not discretionary**
+(`M3-CP4c1-TB-R4-CAND-03`): re-author or retire — naming which, per identity — the two inverted non-gating
+diagnostics that still
 assert the sphere network fails to build. `src/` and `include/` are **frozen**; the 355 selector hash
 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` and the 316/346/353 prefixes must be
 byte-identical afterward; C5 stays at ordinal 355 and is never demoted, renamed, or moved to the non-gating

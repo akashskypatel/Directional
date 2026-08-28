@@ -205,11 +205,24 @@ is permitted to grow this CB beyond its bound.
   required set" without freezing a count. **If the allowed set cannot be established from frozen authority,
   do not invent it** — implement W2 alone and record why. Deriving the allowed set from what this run happened
   to produce would reproduce the original defect exactly.
-- **W5 — the inverted diagnostics.** Correct `BranchBoundaryPairingContinuationIsUnique` and
-  `PrescribedSphereCandidateTraceTransportFailureSiteIsObservable` so they assert the current accepted reality
-  — the sphere network **is** produced — or retire them with a written rationale. They stay non-gating either
-  way; **they may not be added to the 355.** The three `…StageReachabilityIsObservable` publishers may be
-  migrated to the pass-and-publish idiom if it is mechanical; if it is not, leave them and say so.
+- **W5 — the inverted diagnostics. MANDATORY; not discretionary.** `M3-CP4c1-TB-R4-CAND-03` owns this and CB4
+  must close it. Two non-gating identities assert that sphere network construction **fails**:
+  `FieldAlignedCurveNetwork.BranchBoundaryPairingContinuationIsUnique` and
+  `FieldAlignedCurveNetwork.PrescribedSphereCandidateTraceTransportFailureSiteIsObservable`, the latter
+  asserting `sphere.network.has_value() == false`. Accepted authority now produces that network, so both are
+  **inverted**: their red no longer carries the information they were written to carry, and the next reader
+  will reasonably misread it as a product failure. For **each** of the two, CB4 must do one of exactly two
+  things and **name which, per identity, in its report**: (a) re-author it to assert the current accepted
+  reality — the sphere network *is* produced — preserving whatever residual invariant it was really testing;
+  or (b) retire it, with a written rationale saying what invariant is lost and which surviving identity, if
+  any, now covers it. **Deferring is not a third option**, and "it is non-gating" is not a reason to defer: a
+  permanently-red diagnostic that asserts the opposite of accepted authority is worse than no diagnostic. They
+  stay non-gating either way and **may not be added to the 355**.
+- **W5b — the three report-only publishers. OPTIONAL.** The three `…StageReachabilityIsObservable` identities
+  unconditionally `FAIL()` in order to publish a report. That predates the CB3-INSTR observability work, which
+  established the correct idiom — publish to stdout from a non-gating identity that passes. Migrate them only
+  if it is mechanical; if it is not, leave them untouched and say so in one line. **This is the only
+  discretionary item in W0–W7, and it may not be used to justify deferring W5.**
 - **W6 — accounting.** Record `M3-CP4c1-TB-R4-CAND-01` as **RESOLVED / TEST-SIDE OVER-SPECIFICATION /
   NON-STABLE**, `+0` events and `+0` recurrences, citing this review. `CAND-02` remains resolved
   process-order/non-stable. Totals stay **42 / 14 / 28**, debt **5**; increment the M3 package count. Produce
