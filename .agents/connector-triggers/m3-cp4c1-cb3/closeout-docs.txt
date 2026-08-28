@@ -1,6 +1,0 @@
-turn=M3-CP4c-1-CB3
-operation=closeout-docs
-base_sha=f5560985f0713b28a5c25727a5f5883013ef853c
-patch_sha256=d5783c780cedded01517ce2d074d5775d035afbc451a2841dd054aad10d85a44
-retry=1
-runtimeExecution=false
