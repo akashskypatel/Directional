@@ -83,7 +83,41 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-1-TB-R4-REVIEW-PLAN` — independent review + planning
+## Mandatory next turn — `M3-CP4c-1-CB4` — bounded test-side correction of C5, measures **W0-W7**
+
+`M3-CP4c-1-TB-R4-REVIEW-PLAN` is **COMPLETE / REVIEW GREEN**. Read
+`Architecture_M3_CP4c1_TB_R4_Independent_Review_Record.md` first. **Both C5 clauses are test-side. The product
+satisfies the frozen C5 contract on every witness that produced a trace**, and `M3-CP4c1-TB-R4-CAND-01` is
+**RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE**.
+
+**The authority tension is adjudicated: plan line 131 is normative.** C5 requires that every trace terminate at
+an actually produced typed kind with both named kinds non-vacuously represented — a *property*, with no
+cardinality. Line 101's "exactly the required terminal event-kind set" is a TB reporting instruction and cannot
+enlarge a frozen definition; "including" is membership language. Decisively, the failing assertion's own message
+says the union "must be **non-vacuous**" — non-emptiness, not two — and a two-cardinality reading goes red
+*because* a trace correctly terminated at a singularity, re-freezing the exact gap `LESSONS.md` **64e** was
+written to prevent (`SingularityTermination` declared since CP3b and emitted nowhere; it now has a producer).
+
+**Clause 1 is a recurrence of `M3-CP4c0b-DG-CAND-02`** — the same torus witness over-specified one checkpoint
+later, in the opposite direction. C5 demands non-empty torus candidate traces while accepted identity
+`TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded` — green in the same run — requires zero. When an
+accepted identity and a never-accepted one conflict on the same witness, the never-accepted one yields.
+
+**What the fatal abort hid, and W3 exists to expose.** `ASSERT_EQ` at `:6701` returned from the test body before
+lines **6712** and **6717**, so the two named-kind checks that carry line 131's actual requirement **have never
+executed on any run**. They are unproven, not passed. Predicted green, but the successor TB must report them
+individually — "C5 green" alone is not an acceptable report for this identity.
+
+**The correction, in three edits.** Delete the witness productivity precondition at `:4713` — a zero-trace
+witness must pass vacuously and silently, with no weaker assert, skip, or torus-by-name special case. Replace
+`:6701` with `ASSERT_FALSE(producedTerminalKinds.empty())`, keeping the diagnostic `<<` chain; **do not change 2
+to 3**, which repeats the defect one value later. Correct the two inverted non-gating diagnostics that still
+assert the sphere network fails to build. `src/` and `include/` are **frozen**; the 355 selector hash
+`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` and the 316/346/353 prefixes must be
+byte-identical afterward; C5 stays at ordinal 355 and is never demoted, renamed, or moved to the non-gating
+selector. Full measures W0-W7 and the falsifiable §8 prediction are in the review record.
+
+### Superseded — the TB-R4 red as reported (retained for provenance)
 
 `M3-CP4c-1-TB-R4` is **COMPLETE / VALID SEMANTIC RED 354/355 / CHECKPOINT OPEN**. Authoritative
 artifact-only run/job `33141046678 / 98751794167` consumed immutable CB3 GMP package `9673249952`
@@ -98,19 +132,17 @@ required contributors are present (`TraceIntersection=prescribed sphere`,
 `MandatoryBarrierTermination=two-ring`); the sphere also publishes terminal kind `4 =
 SingularityTermination`.
 
-`M3-CP4c1-TB-R4-CAND-01` is **ACTIVE / REVIEW REQUIRED / NON-STABLE**. Review must re-derive whether
-the frozen C5 contract actually requires every witness to be individually non-vacuous and whether
-“exactly the required terminal event-kind set” forbids additional lawful typed terminal kinds. Do not
-pre-classify this as product or test authority from the TB alone.
+`M3-CP4c1-TB-R4-CAND-01` was **ACTIVE / REVIEW REQUIRED** at the close of TB-R4 and is now **RESOLVED /
+TEST-SIDE OVER-SPECIFICATION / NON-STABLE** by the review above. The TB turn was right to refuse to
+pre-classify it.
 
 The five historical CP4c-1 diagnostics all selected exactly once and returned trustworthy report-only
 reds with zero gate credit. The first three intentionally publish their observation via `FAIL()`; the
 last two carry stale sphere-failure preconditions now invalidated by accepted CP4c-0/0b behavior.
 
-**No retry, C5 demotion, expectation/fixture edit, product correction, or CP4c-2/3 work is authorized
-before the mandatory review.** Exact next is **`M3-CP4c-1-TB-R4-REVIEW-PLAN`**. The review must
-re-derive C5 from source and frozen authority, adjudicate `CAND-01`, state one falsifiable successor
-prediction, and enumerate checks masked by any authorized correction.
+That review is now complete; the authorized correction is the three test-side edits named above, and no
+product correction or CP4c-2/3 work is authorized. Exact next is **`M3-CP4c-1-CB4`**, then
+`M3-CP4c-1-TB-R5` on the full 355 gate.
 
 Accepted runtime authority remains CP4c-0b T5 **353/353**. Stable accounting remains **42 / 14 / 28**,
 produced-witness debt **5**, M3 packages **56**.
@@ -129,7 +161,7 @@ produced-witness debt **5**, M3 packages **56**.
 - five non-gating diagnostics: 5/5 trustworthy report-only red, zero gate credit;
 - active semantic candidate: `M3-CP4c1-TB-R4-CAND-01` — review required;
 - stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**;
-- exact successor: mandatory `M3-CP4c-1-TB-R4-REVIEW-PLAN`.
+- exact successor: `M3-CP4c-1-CB4`, test-side only under W0-W7; the mandatory review is complete.
 
 ### M3-CP4c-1 CB3 — current build authority
 
@@ -145,7 +177,7 @@ produced-witness debt **5**, M3 packages **56**.
 - all eight standard targets compile/link; internal manifest 28/28; packaged source archive `3ba7e745…70c628`; source status clean; `runtimeExecution=false`;
 - first compile caller `33139114617` was startup-only permission-ceiling failure, zero compile/runtime; corrected control plane only;
 - stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**;
-- TB-R4 executed and returned 354/355; exact successor is mandatory `M3-CP4c-1-TB-R4-REVIEW-PLAN`.
+- TB-R4 executed and returned 354/355; its review is complete and adjudicated both C5 clauses test-side; exact successor is `M3-CP4c-1-CB4` under W0-W7.
 
 ### M3-CP4c-0b T5 — accepted runtime authority
 

@@ -8,6 +8,20 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-28 — `M3-CP4c-1-TB-R4-REVIEW-PLAN`: both C5 clauses are test-side; line 131 is normative
+
+Independent review and planning only. No Directional runtime, build, benchmark, or product/test/fixture/selector/build-configuration change. Record: `Architecture_M3_CP4c1_TB_R4_Independent_Review_Record.md`.
+
+- **`M3-CP4c1-TB-R4-CAND-01` is RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE.** Both C5 failures are test authority. A bounded test-side correction, `M3-CP4c-1-CB4`, is **AUTHORIZED** under measures **W0–W7**. `+0` events / `+0` recurrences; totals remain **42 / 14 / 28**, debt **5**, M3 packages **56**.
+- **The authority tension is adjudicated: plan line 131 is normative.** C5 requires that every trace terminate at an actually produced typed kind with both named kinds non-vacuously represented — a property, with no cardinality. Line 101's "exactly the required terminal event-kind set" is a TB reporting instruction and cannot enlarge a frozen definition; "including" is membership language, not exhaustion.
+- **The failing assertion contradicts its own message.** `ASSERT_EQ(2U, producedTerminalKinds.size()) << "terminal-kind witness union must be non-vacuous; …"` — non-vacuous is non-emptiness, not two. The two checks that carry the real requirement sit at lines 6712 and 6717 and, because the assert is fatal, **have never executed on any run**. Measure W3 requires the successor TB to report them individually rather than promote them silently to "passed".
+- **A two-cardinality reading forbids correct behavior.** `SingularityTermination` is a frozen terminal kind; under `size()==2`, C5 goes red *because* a trace correctly terminated at a singularity. The third kind is the repair of the exact gap lesson **64e** names — declared since CP3b, emitted nowhere — finally reaching a producer and a witness.
+- **Clause 1 is a recurrence of `M3-CP4c0b-DG-CAND-02`.** The pipeline-authoritative torus was over-specified as *empty* one checkpoint ago and as *non-empty* now, while accepted identity `TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded` — green in the same run — requires zero traces. Line 131 is universally quantified over produced traces, so a zero-trace witness satisfies it vacuously.
+- **The product passed the part that matters.** The run produced exactly two assertion failures, so every per-trace assertion held: on two-ring and the prescribed sphere, every produced trace terminated at exactly one typed terminal event whose kind was actually published.
+- **Falsifiable prediction issued:** C5 green, gate 355/355, union exactly `{TraceIntersection, MandatoryBarrierTermination, SingularityTermination}`, torus contributing zero kinds, lines 6712/6717 executing and passing. Any deviation is new product evidence and routes back to review, not to another correction.
+- Two of the five non-gating diagnostics have **inverted**: they assert the sphere network fails to build, which accepted authority now contradicts. W5 corrects or retires them.
+- Lessons **64s**, **64t**, **64u** added; lesson labels de-duplicated after a collision.
+
 ## 2026-08-28 — `M3-CP4c-1-TB-R4`: accepted 353 prefix green, C4 pass, C5 semantic red
 
 **Test + Benchmark / COMPLETE / VALID SEMANTIC RED 354/355.** Artifact-only run/job
@@ -92,7 +106,7 @@ Independent review and planning only. No Directional runtime, build, benchmark, 
 - **The risk ranking inverts: ordinal 12 now outranks ordinal 13.** `PublishesTypedFirstContactAndTerminationEvents` requires a `FirstContact` event paired at the identical node, face and edge to every `MandatoryBarrierTermination` (lines 1333–1341). **Nothing in the DG seven asserts that pairing**, and it is exactly what S5's relocation of the termination stage could break. Both remain STOP on red.
 - **Withdrawn: "mutual termination is the least-exercised path."** DG#5 line 6939 does not merely permit it on the sphere — it *requires* it, and T4 measured it green. Ordinal 13's predicted green at 8 is instead re-grounded on the census being an in-band observer of the producer's own candidate, so S1's fan count of 8 was the producer's own.
 - **Option B — amending U3/U4 down to what the frozen package can answer — was considered and rejected**, on the cost asymmetry once ordinal 12 is priced in, and because narrowing a frozen measure under gate pressure is the habit `LESSONS.md` §6 exists to prevent.
-- Lessons **64h** and **64i** added: write a measure from the selector rather than the design intent, and a `(void)`-discarded build is not an observation.
+- Lessons **64q** and **64r** added: write a measure from the selector rather than the design intent, and a `(void)`-discarded build is not an observation. (Labelled `64h`/`64i` when first written; relabelled on 2026-08-28 to resolve a collision with the pre-existing lessons of those names.)
 - Stable accounting unchanged: **42 / 14 / 28**, debt **5**, M3 packages **54**.
 
 ## 2026-08-28 — `M3-CP4c-0b-TB-T5`: pre-gate observability gap, 353 not run

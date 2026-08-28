@@ -1098,14 +1098,34 @@ face gauge. Never equate branch integers across distinct frames merely because t
     acceptance criterion, and is emitted nowhere — a repository search finds only its declaration.
     Declaring a case is not implementing it. When a criterion names a set of outcomes, check each one
     has a producer *and* a witness that reaches it.
-64h. **Write a measure from the selector, not from the design intent.** CP4c-0b's U3 and U4 asked for a
+64q. **Write a measure from the selector, not from the design intent.** CP4c-0b's U3 and U4 asked for a
     fan and two-ring terminus census and a guard-silence census that *no selected identity produces*.
     The capability existed — the production census channel is threaded through the producer itself —
     but six of the seven `...IsPublishedNonGating` census identities were in no selector, and the two
     identities in the gate that build the fan discard the result. The measure was written from what the
     code could in principle observe rather than from what the frozen selector actually runs. Before
     freezing a measure, name the identity that will emit each item and confirm it is *selected*.
-64i. **A `(void)`-discarded build is not an observation, and a smoke test that cannot fail is not
+64s. **An assertion whose failure message contradicts its own predicate is the message telling the
+    truth.** CP4c-1's C5 read `ASSERT_EQ(2U, producedTerminalKinds.size()) << "terminal-kind witness
+    union must be non-vacuous; …"`. Non-vacuous means non-empty; the code demanded exactly two. The two
+    checks that actually carried the requirement sat on the next lines and — because `ASSERT_EQ` is
+    fatal — **never executed on any run**. When a red's message and predicate disagree, read the message
+    as the author's intent, then check what the fatal abort prevented from running: a correction that
+    only fixes the predicate silently promotes never-executed assertions to "passed".
+64t. **Freezing a cardinality freezes the incompleteness you happened to have that day.** C5 fixed the
+    terminal-kind union at two while `SingularityTermination` had a declaration and no producer — the
+    exact gap lesson **64e** names. The day the producer landed, a correct implementation turned the
+    identity red *because* a trace correctly terminated at a singularity. Assert the property the
+    contract states — non-vacuity, and subset-of-the-allowed-vocabulary — never a count, and never a
+    count derived from what the current run happens to produce.
+64u. **A witness over-specified once will be over-specified again, in the opposite direction.** The
+    pipeline-authoritative torus was asserted *empty* in CP4c-0b (`DG-CAND-02`, resolved test-side) and
+    *non-empty* one checkpoint later in CP4c-1's C5 — while an accepted identity green in the same run
+    required zero. A universally-quantified contract is satisfied vacuously by a witness that produces
+    nothing; adding a productivity precondition is additive over-specification every time. When a
+    candidate resolves as test-side over-specification, grep the next checkpoint's new identities for
+    the same witness before freezing them.
+64r. **A `(void)`-discarded build is not an observation, and a smoke test that cannot fail is not
     coverage.** `FieldAlignedCurveNetworkIsAClosedProducerOnEveryReachableWitness` and DG#7 both build
     the four-triangle fan and both drop the result on the floor; one then calls `SUCCEED()`
     unconditionally. Each is lawful for its own narrow purpose — no-throw closure, and exercising an
