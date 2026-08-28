@@ -8,6 +8,15 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+
+## 2026-08-28 — M3-CP4c-1 CB4 — reviewed C5 test-side correction compiled green
+
+`M3-CP4c-1-CB4` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic/test source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Under W0-W7, C5 no longer requires every witness to produce a trace and no longer freezes the produced terminal-kind union to cardinality two; it retains the per-trace terminal contract, non-vacuity, and both named-kind membership checks. W4 was not used because no independent frozen allowed terminal vocabulary was established. Both mandatory W5 sphere-failure diagnostics were retired with surviving-cover rationale; W5b's three report-only publishers remain. `src/` and `include/` are unchanged.
+
+Frozen required authority is unchanged: **355** identities / `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with byte-identical 316/346/353 prefixes and C4/C5 at ordinals 354/355. The non-gating selector is now **3** / `537a8010033452a16be5f6a80926ea61c065f7f7f443b5b2950f73c8b8ffcd6a`.
+
+Authoritative compile run/job `33145657048 / 98766007030` PASS after a startup-only first attempt `33144909546` exposed a caller permission-ceiling error before compile. Schema validation job `98765978208` PASS. Immutable eight-target GMP package `9675666067` has ZIP digest `63b66788e724f7f22acc5f3bd204a1eb666a779ced96d1373f320e00cd45ec17`, manifest **28/28**, source archive `baead768e6f05acc7b09177a1571139262a514056cfc4fa281b8933135b6fc84`, clean source status, and `runtimeExecution=false`; no test or benchmark ran. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **57**. Exact next: immutable artifact-only `M3-CP4c-1-TB-R5`; any deviation from the independent review's §8 prediction routes back to review.
+
 ## 2026-08-28 — `M3-CP4c-1-TB-R4-REVIEW-PLAN`: both C5 clauses are test-side; line 131 is normative
 
 Independent review and planning only. No Directional runtime, build, benchmark, or product/test/fixture/selector/build-configuration change. Record: `Architecture_M3_CP4c1_TB_R4_Independent_Review_Record.md`.

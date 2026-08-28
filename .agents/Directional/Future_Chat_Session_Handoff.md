@@ -83,41 +83,44 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-1-CB4` — bounded test-side correction of C5, measures **W0-W7**
+## Mandatory next turn — `M3-CP4c-1-TB-R5` — immutable artifact-only 355 gate
 
-`M3-CP4c-1-TB-R4-REVIEW-PLAN` is **COMPLETE / REVIEW GREEN**. Read
-`Architecture_M3_CP4c1_TB_R4_Independent_Review_Record.md` first. **Both C5 clauses are test-side. The product
-satisfies the frozen C5 contract on every witness that produced a trace**, and `M3-CP4c1-TB-R4-CAND-01` is
-**RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE**.
+`M3-CP4c-1-CB4` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-SIDE ONLY**. Read
+`Architecture_M3_CP4c1_CB4_Code_Build_Report.md` and then
+`Architecture_M3_CP4c1_CB4_Artifact_Only_Test_Benchmark_Plan.md`.
 
-**The authority tension is adjudicated: plan line 131 is normative.** C5 requires that every trace terminate at
-an actually produced typed kind with both named kinds non-vacuously represented — a *property*, with no
-cardinality. Line 101's "exactly the required terminal event-kind set" is a TB reporting instruction and cannot
-enlarge a frozen definition; "including" is membership language. Decisively, the failing assertion's own message
-says the union "must be **non-vacuous**" — non-emptiness, not two — and a two-cardinality reading goes red
-*because* a trace correctly terminated at a singularity, re-freezing the exact gap `LESSONS.md` **64e** was
-written to prevent (`SingularityTermination` declared since CP3b and emitted nowhere; it now has a producer).
+Exact semantic/test source is `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. W1 removed the invalid
+witness-productivity precondition; W2 replaced the terminal-kind cardinality with non-vacuity; W4 was not used
+because no frozen allowed vocabulary was independently established. **W5 is complete:** both inverted
+sphere-failure diagnostics were **retired**, with per-identity surviving-cover rationale in the CB4 report. W5b's
+three historical report-only publishers remain untouched. `src/` and `include/` are unchanged.
 
-**Clause 1 is a recurrence of `M3-CP4c0b-DG-CAND-02`** — the same torus witness over-specified one checkpoint
-later, in the opposite direction. C5 demands non-empty torus candidate traces while accepted identity
-`TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded` — green in the same run — requires zero. When an
-accepted identity and a never-accepted one conflict on the same witness, the never-accepted one yields.
+The cumulative required selector is still **355** /
+`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`; prefixes 316/346/353 are unchanged;
+C4/C5 remain ordinals 354/355 and gating. The non-gating selector is now **3** /
+`537a8010033452a16be5f6a80926ea61c065f7f7f443b5b2950f73c8b8ffcd6a`.
 
-**What the fatal abort hid, and W3 exists to expose.** `ASSERT_EQ` at `:6701` returned from the test body before
-lines **6712** and **6717**, so the two named-kind checks that carry line 131's actual requirement **have never
-executed on any run**. They are unproven, not passed. Predicted green, but the successor TB must report them
-individually — "C5 green" alone is not an acceptable report for this identity.
+Authoritative compile run/job `33145657048 / 98766007030` is PASS after a startup-only permission-ceiling first
+attempt executed zero compile/runtime. Schema validation job `98765978208` passed before the retry compile.
+Immutable eight-target GMP package `9675666067` has ZIP digest
+`63b66788e724f7f22acc5f3bd204a1eb666a779ced96d1373f320e00cd45ec17`, internal manifest 28/28, packaged source
+archive `baead768e6f05acc7b09177a1571139262a514056cfc4fa281b8933135b6fc84`, clean source status, and
+`runtimeExecution=false`. No Directional binary executed. M3 packages are now **57**.
 
-**The correction, in three edits.** Delete the witness productivity precondition at `:4713` — a zero-trace
-witness must pass vacuously and silently, with no weaker assert, skip, or torus-by-name special case. Replace
-`:6701` with `ASSERT_FALSE(producedTerminalKinds.empty())`, keeping the diagnostic `<<` chain; **do not change 2
-to 3**, which repeats the defect one value later. **W5 is mandatory, not discretionary**
-(`M3-CP4c1-TB-R4-CAND-03`): re-author or retire — naming which, per identity — the two inverted non-gating
-diagnostics that still
-assert the sphere network fails to build. `src/` and `include/` are **frozen**; the 355 selector hash
-`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` and the 316/346/353 prefixes must be
-byte-identical afterward; C5 stays at ordinal 355 and is never demoted, renamed, or moved to the non-gating
-selector. Full measures W0-W7 and the falsifiable §8 prediction are in the review record.
+**TB-R5 must not rebuild or repair.** It consumes package `9675666067`, executes the frozen 355 selector one
+identity per fresh process, executes the three remaining selector diagnostics with zero gate credit, and executes
+`ResolvedBranchCorrection.TwoRingContactPairingCensusIsPublishedNonGating` once as an additional W3 report-only
+identity. W3 requires the two named-kind checks in corrected C5 (current packaged-source `EXPECT_EQ`s around
+lines 6345 and 6350) to be reported individually as reached/passed and requires the observed terminal-kind
+union/contributor map to be published.
+
+Falsifiable expected authority remains review §8: **355/355**, union exactly
+`{TraceIntersection(2), MandatoryBarrierTermination(3), SingularityTermination(4)}`, contributors sphere /
+two-ring / sphere, torus zero, mechanical A1 `IncompleteCycleBasis`, prefixes 316/346/353 green, C4 PASS.
+**Any semantic deviation routes back to independent review, not to an in-TB correction or deterministic retry.**
+`M3-CP4c1-TB-R4-CAND-03` has both CB4 dispositions complete but remains confirmation-pending until TB-R5 proves
+neither retired diagnostic survives as an unexplained red. Stable accounting stays **42 / 14 / 28**, debt **5**.
+CP4c-2/3 remain blocked.
 
 ### Superseded — the TB-R4 red as reported (retained for provenance)
 
@@ -151,6 +154,20 @@ produced-witness debt **5**, M3 packages **56**.
 
 ## Current authority
 
+### M3-CP4c-1 CB4 — current build authority
+
+- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-SIDE ONLY**;
+- exact evidence source: `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`;
+- required selector: **355** / `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`; prefixes 353 / `51ff96d7…ac6a5`, 346 / `20d3b0b1…3e46a`, 316 / `601ce2b6…0193c`; C4/C5 remain ordinals 354/355;
+- non-gating selector: **3** / `537a8010033452a16be5f6a80926ea61c065f7f7f443b5b2950f73c8b8ffcd6a`; both inverted W5 diagnostics retired; W5b publishers unchanged;
+- product `src/`/`include/`: unchanged;
+- first compile-control run `33144909546`: startup-only permission-ceiling failure, zero compile/runtime;
+- authoritative retry: run `33145657048`, schema job `98765978208` PASS, compile job `98766007030` PASS;
+- immutable GMP package/result `9675666067` / `63b66788…45ec17`; compile log `9675666340` / `58279155…070c2`;
+- all eight standard targets compile/link; internal manifest 28/28; packaged source archive `baead768e…b6fc84`; source clean; GMP/GMPXX linked; `runtimeExecution=false`;
+- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **57**;
+- exact successor: artifact-only `M3-CP4c-1-TB-R5` under the CB4 TB plan.
+
 ### M3-CP4c-1 TB-R4 — current checkpoint runtime result
 
 - status: **COMPLETE / VALID SEMANTIC RED 354/355 / CHECKPOINT OPEN**;
@@ -161,11 +178,12 @@ produced-witness debt **5**, M3 packages **56**.
 - C4 ordinal 354: PASS; C5 ordinal 355: RED; full gate **354/355**;
 - all 355 selected exactly once; zero escaping C++ exceptions; immutable pre/postflight PASS;
 - five non-gating diagnostics: 5/5 trustworthy report-only red, zero gate credit;
-- active semantic candidate: `M3-CP4c1-TB-R4-CAND-01` — review required;
-- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**;
-- exact successor: `M3-CP4c-1-CB4`, test-side only under W0-W7; the mandatory review is complete.
+- `M3-CP4c1-TB-R4-CAND-01`: **RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE** by the independent review;
+- `M3-CP4c1-TB-R4-CAND-03`: CB4 disposition complete / TB confirmation pending;
+- stable accounting **42 / 14 / 28**, debt **5**;
+- successor status: CB4 is now build-green; exact next is artifact-only TB-R5.
 
-### M3-CP4c-1 CB3 — current build authority
+### M3-CP4c-1 CB3 — retained prior build authority
 
 - status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
 - exact evidence source: `66a065b5e07910568a317e24f0fc6b93d890d104`;
@@ -360,9 +378,9 @@ Latest accepted runtime is CP4c-0b T5 **353/353**, run/job `33136084757 / 987362
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
-- CP4c-1 is **OPEN / TB READY**; CB3 froze the cumulative 355 selector and compiled it successfully. It no longer owns re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**.
-- **Exact next turn is artifact-only `M3-CP4c-1-TB-R4`.**
+- CP4c-1 is **OPEN / TB-R5 READY**; CB4 corrected the reviewed test-side C5 over-specification at source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747` and produced immutable GMP package `9675666067` without runtime. The frozen 355 selector is unchanged; W5 retired both inverted diagnostics; three report-only publishers remain non-gating. CP4c-2/3 remain blocked for their own definition turns.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **57**.
+- **Exact next turn is artifact-only `M3-CP4c-1-TB-R5`.**
 
 ## Context Load Plan
 
@@ -370,11 +388,12 @@ Latest accepted runtime is CP4c-0b T5 **353/353**, run/job `33136084757 / 987362
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c1_CB3_Code_Build_Report.md` — exact CB3 semantic/build authority.
-2. `.agents/Directional/Architecture_M3_CP4c1_CB3_Artifact_Only_Test_Benchmark_Plan.md` — executable TB-R4 plan and stop rules.
-3. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` and `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` — frozen 355 required gate and five report-only diagnostics.
-4. `.agents/Directional/Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md` — accepted 353/353 predecessor runtime authority.
-5. `.agents/Directional/M3_CP4c_Consolidated_Record.md` §4, `TODO.md`, `.agents/Directional/ROADMAP.md`, and `.agents/Directional/Regression_Root_Cause_Tracker.md` — checkpoint history, task state, trajectory, and candidate authority.
+1. `.agents/Directional/Architecture_M3_CP4c1_CB4_Code_Build_Report.md` — exact CB4 semantic/build authority and W5 dispositions.
+2. `.agents/Directional/Architecture_M3_CP4c1_CB4_Artifact_Only_Test_Benchmark_Plan.md` — executable TB-R5 plan, W3 proof requirements, and stop/rerun rules.
+3. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` and `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` — frozen 355 required gate and three report-only diagnostics.
+4. `.agents/Directional/Architecture_M3_CP4c1_TB_R4_Independent_Review_Record.md` §§7-10 — W0-W7 authority and falsifiable §8 prediction.
+5. `.agents/Directional/Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md` — accepted 353/353 predecessor runtime authority.
+6. `TODO.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`, `.agents/Directional/CHANGELOG.md`, and `.agents/Directional/ROADMAP.md` — task state, candidate authority, evidence summary, and trajectory.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
