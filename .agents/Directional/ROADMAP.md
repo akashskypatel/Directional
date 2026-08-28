@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-27 (**CP4c-0 is split.** It was carrying two unrelated obligations under one gate - how a trace *continues* and how a trace *stops*. Continuation is finished and proved and closes at gate **346** on Q8 criteria 1/4/5. Termination becomes **`M3-CP4c-0b`**, which owns trace/trace contact and Q8 criteria 2 and 3, with the contact predicate, the `ArcLengthFiltered` arrival priority and mutual termination on tied arrivals all frozen. `DESIGN.md` §4.6's termination guarantee is amended to name its condition. Exact next `M3-CP4c-0-TB-R9`, then `M3-CP4c-0b-CB1` under **P0-P9**).
+**Status date:** 2026-08-28 (**CP4c-0b CLOSED / ACCEPTED.** Artifact-only T5 run/job `33136084757 / 98736295227` passed the frozen 353 gate **353/353**, including predecessor prefixes 316/316 and 346/346, with U3/U4 green and immutable postflight PASS. Exact next is `M3-CP4c-1-CB3` under Z0-Z5.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 4 checkpoints remaining** | CP4ab **316/316**, `157bf784… / 9527801615` |
+| M3 | **in progress — 3 checkpoints remaining** | CP4c-0b **353/353**, `M3_CP4c0b_Closure_Record.md` |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -71,8 +71,8 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | Checkpoint | Domain | Gate | State |
 |---|---|---|---|
 | **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **Contract complete.** DEFN froze the continuation rule, DEFN-2 the grazing model, CB8 implemented it, CB9 landed deterministic cost guards. Closes on a green `M3-CP4c-0-TB-R9` against Q8 criteria **1, 4, 5** |
-| **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **`346 + n`**, frozen by `M3-CP4c-0b-CB1` | **OPEN. DEFN complete.** Owns Q8 criteria **2** and **3**, moved together and unweakened by Amendment 11. Contact predicate is exact barycentric crossing with no tolerance; priority is `ArcLengthFiltered` with a computed error bound; tied or inconclusive arrivals both terminate at the crossing point, which is canonical. Alternatives harness retained but unreachable from production. Next `M3-CP4c-0b-CB1` under **P0-P9** |
-| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **318 = 316 + C4 + C5** | **OPEN, blocked on CP4c-0b.** The dependency inversion is resolved by the split: CP4c-0b owns trace termination and Q8 criteria 2/3, so CP4c-1 no longer owns re-homed criterion 3. TB-R2 VALID RED 316/318; next `M3-CP4c-1-CB3` under Z0–Z5 |
+| **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
+| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5** (exact order/hash to be frozen by CB3) | **OPEN / UNBLOCKED.** Historical TB-R2 was 316/318; C4/C5 remain gating. CP4c-0b now owns and has accepted Q8 criteria 2/3. Next `M3-CP4c-1-CB3` under Z0–Z5. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
 

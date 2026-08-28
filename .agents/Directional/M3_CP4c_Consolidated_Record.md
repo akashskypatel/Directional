@@ -485,7 +485,7 @@ The cycle that identified the root cause, and it is a contract gap rather than a
 
 ---
 
-## 4. CP4c-1 — evidence (OPEN, blocked on CP4c-0)
+## 4. CP4c-1 — evidence (OPEN / UNBLOCKED after CP4c-0b acceptance)
 
 | Turn | Semantic source | Run / job | Package | Result |
 |---|---|---|---|---|
@@ -496,8 +496,10 @@ Selectors: required 318 `2f2c24acab0e891273c170c82cdc31b6afa3ae4d43e93c95dbdf6d9
 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; non-gating 5
 `9f4f287e074d66da9d69c16e22320ed6fe161b6b09de4dc7dd0618741c7fb130`.
 
-C4/C5 remain the only required blockers and **stay gating** — demotion to non-gating was considered and
-rejected. They cannot pass until CP4c-0 lands. Next turn is `M3-CP4c-1-CB3` under measures Z0–Z5, whose
+C4/C5 remain the only checkpoint-local required blockers and **stay gating** — demotion to non-gating was considered and
+rejected. CP4c-0 and CP4c-0b are now accepted, so CP4c-1 is unblocked. The accepted 353 and historical 318
+selectors have exactly two non-overlapping CP4c-1 required identities (C4/C5), giving a 355-identity set union;
+the successor CB owns the exact cumulative order/hash. Next turn is `M3-CP4c-1-CB3` under measures Z0–Z5, whose
 root-cause record (the Cartesian-product defect) is inlined in
 `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`.
 
