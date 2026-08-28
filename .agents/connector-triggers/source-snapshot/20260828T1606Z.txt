@@ -1,2 +1,0 @@
-requested_semantic_source_sha=601618fb1e39ba16739ae6b428b5aa40e013b783
-purpose=start-of-turn exact source snapshot
