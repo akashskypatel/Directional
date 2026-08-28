@@ -1,0 +1,6 @@
+# M3-CP4c-1-TB-R5 residual temporary state
+.agents/connector-triggers/m3-cp4c1-tb-r5/run.txt
+.agents/connector-triggers/source-snapshot/M3-CP4c-1-TB-R5-4ec9947a.txt
+.agents/connector-triggers/m3-cp4c1-tb-r5-closeout/apply.txt
+.agents/Directional/turn-payloads/m3_cp4c1_tb_r5.py
+.agents/Directional/turn-payloads/m3_cp4c1_tb_r5_lib.py
