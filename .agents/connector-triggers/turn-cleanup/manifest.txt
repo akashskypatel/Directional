@@ -1,5 +1,0 @@
-# M3-CP4c-1-TB-R4 closeout cleanup
-.agents/connector-triggers/m3-cp4c1-tb-r4/run.txt
-.agents/Directional/turn-payloads/m3-cp4c1-tb-r4.py
-.agents/connector-triggers/source-snapshot/M3-CP4c-1-TB-R4-7dd3d392.txt
-.agents/connector-triggers/m3-cp4c1-tb-r4-closeout-docs/apply.txt
