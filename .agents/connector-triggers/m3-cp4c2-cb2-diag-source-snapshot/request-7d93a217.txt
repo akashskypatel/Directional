@@ -1,0 +1,4 @@
+turn=M3-CP4c-2-CB2-DIAG
+source_sha=7d93a21706f630fce55cee4ef1cbfdac24f7bd61
+pr=8
+purpose=exact-source-snapshot
