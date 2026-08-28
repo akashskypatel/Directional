@@ -83,29 +83,45 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-DG-T4-REV`
+## Mandatory next turn — `M3-CP4c-0b-TB-T5` — the full 353 gate, measures **U0-U7**
 
-`M3-CP4c-0b-DG-T4-EXEC` is **COMPLETE / EXECUTION GREEN 7/7**. The artifact-only gate consumed immutable GMP package `9668492827` from semantic source `b2629040450c12507367c232f68a4d972b46450f` and the re-frozen seven-identity selector `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`.
+`M3-CP4c-0b-DG-T4-EXEC` is **EXECUTION GREEN 7/7** and `M3-CP4c-0b-DG-T4-REV` has verified it and authorizes T5. Read `Architecture_M3_CP4c0b_DG_T4_Independent_Review_Record.md` first.
 
-Authoritative T4 evidence:
+### Independently re-verified in that review
 
-- workflow run / execute job: `33128261911 / 98711506300`
-- result artifact: `9669229181` / `364d5d546bca4c664be67e52b336a48cbc1f49b6bd672371ea6351e396dcc84c`
-- diagnostic log artifact: `9669229414` / `39c7530a70650702f4345fea9de558ea6139fecd715f8d9b504ef945a94447ef`
-- result: **7 required / 7 executed / 7 PASS / 0 RED**, each selected exactly once; `zeroSelected=0`; zero escaping C++ exceptions
-- no repository timeout; no configure/compile/relink/repair/generated discovery
-- no package/source/test/fixture/selector mutation; package and materialized-source byte-and-mode postflight **PASS**
-- downloaded result/log artifacts independently re-hashed after completion; result pre/post inventories independently compare equal
-- corrected torus identity `TraceTerminationCorrection.TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded` PASS
-- no regression/candidate observed; stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **54**
+DG selector **7** / `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`; full selector **353** / `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`; every accepted identity present in the 353; all seven DG identities inside it; and — stronger than the T4 report claimed — **the first 346 lines of the 353 selector hash exactly to the accepted CP4c-0 selector** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`. The accepted prefix is preserved **in order**, so `first_red_ordinal` stays directly comparable with every prior CP4c-0 run. **U0.2 requires verifying both hashes, not just the full one.**
 
-### T4 review boundary
+T1 closed the DG review's one flagged inference: pipeline-authoritative torus rails give **48 `HardFeature` mandatory edges / 0 singularities / 48 structural endpoint nodes / 0 traces / 0 events, zero contact provenance**. First decision row. T2 and T3 were checked line-by-line against the DG review's specification with **no shortfall**.
 
-`M3-CP4c-0b-DG-T4-REV` is independent evidence review only. It must inspect the T4 result/log and decide whether this green diagnostic gate clears the route to T5. Do **not** execute new runtime validation, change production/test/fixture/selector/build logic, compile, relink, or repair in the review.
+### What T4 does not establish — and it is the whole of T5
 
-The full 353-identity T5 acceptance suite remains **BLOCKED / NOT RUN**. T5 is the first accepted-authority measurement of S2-S6 and, if later authorized, must still require accepted 316/316, CP4c-0 346/346, and full required-green 353/353 on immutable package `9668492827`.
+The seven DG identities have **never been accepted** and are a strict subset of the 353. **Not one accepted identity has executed against S2-S6**, which changed the contact predicate, the arrival priority, the event vocabulary, the terminal datum, and the *stage* at which termination is decided.
 
-No CP4c-0b acceptance is claimed by the green T4 diagnostic gate alone.
+Four accepted identities, all inside the **316** prefix, have expectations that are functions of exactly what changed:
+
+| ordinal | identity | witness | mechanism | edit authorized? |
+|---:|---|---|---|---|
+| **7** | `DeclaresTraceIntersectionsAsTypedNetworkEvents` | two-ring | S2 renames its site-A `TraceIntersection` to `SingularityPortJunction` | **YES** (S1 review) |
+| **9** | `IndependentCompositionOracleValidatesTraceEventGraph` | two-ring | same site-A dependency | **YES** (S1 review) |
+| **12** | `PublishesTypedFirstContactAndTerminationEvents` | two-ring | barrier-termination and `FirstContact` contract | **NO — STOP** |
+| **13** | `PublishesTypedSingularityPortsAndMandatoryGraph` | **four-triangle fan** | `EXPECT_EQ(8U, nodes().size())` decomposes as `5 structural + 3 barrier-terminating traces` | **NO — STOP** |
+
+**Ordinal 13 sits in a trap that must not be repeated: excluded from reasoning is not excluded from the gate.** The fan was correctly excluded from the S1 census's legitimate reasoning and from CP4c-0b acceptance credit — and it is nonetheless accepted authority whose absolute node count is a direct function of the termination semantics this checkpoint rewrote. Nothing in S1, the seven DG identities, or T4 has validated it under the new mechanism.
+
+**Prediction: ordinal 13 green at 8.** S1 measured the fan at `A/B/C = 1/0/0`, zero shared-face contacts, `nodes = 8`, under `rails_from_atlas` — the same authority ordinal 13 uses, so the comparison is legitimate. A proper crossing is a strict subset of a shared face, so zero shared-face contacts implies zero proper crossings and S3 removes nothing. **The residual risk is S5's relocation, not S3's predicate:** a symmetric fan can produce simultaneous barrier arrivals, and the mutual-termination tie policy is the least-exercised path in the checkpoint.
+
+### Measures **U0-U7**
+
+- **U0** — preconditions: package `9668492827` / `e0661e66…dce0b8` from source `b2629040450c12507367c232f68a4d972b46450f`, manifest 28/28; **both** selector hashes including the 346-prefix; `exactArithmeticBackend=GMP` with the runner supplying the GMP runtime.
+- **U1** — the ordered **353** gate, one identity per fresh process, continue through reds preserving `first_red_ordinal`. Report accepted **316/316**, CP4c-0 **346/346**, full **353/353** separately.
+- **U2** — report ordinals **7, 9, 12, 13** individually **whether or not the gate is green**. Reds at 7/9 in the authorized site-A way: re-author exactly those two and name them. **A red at 12 or 13, or at any other accepted identity: STOP, do not edit, return to review with the full failure text.**
+- **U3** — fan and two-ring terminus census, non-gating, **published even if green**: per-trace terminal kind with the exactly-one assertion; the barrier-terminating trace count that is ordinal 13's second term; node count with per-node provenance in T3 format including `railAuthority`; event-kind histogram; and **whether any arrival comparison was inconclusive and whether the mutual-termination tie policy fired**. Predicted: fan 8 nodes / 3 barrier terminations, two-ring 9 / 3, zero contact termini, **zero mutual terminations**. A mutual termination on either witness is material new evidence and must be reported prominently.
+- **U4** — guard-silence census: whether **N1**, **N2** or **N4** fired on any witness reaching A2a. **Predicted: none, including the sphere.** A guard firing after S5's relocation is a **stop**, and the response is never to widen the allowance.
+- **U5** — per-identity elapsed time with any outlier flagged; **no process may run for minutes**; zero escaping `C++ exception with description`; immutable postflight with every mutation flag false.
+- **U6** — categorize every regression/candidate in the tracker before closeout, or state why **42 / 14 / 28** is unchanged.
+- **U7** — prohibited: any configure/compile/relink/repair/generated discovery; any source/test/fixture/selector/package mutation; **editing any accepted identity except ordinals 7 and 9 in exactly the authorized way**; widening any guard allowance, magnitude policy or error bound; adding a timeout; entering CP4c-1/2/3.
+
+**CP4c-0b closes** on a green U1 with U3/U4's predictions met and U5 clean. **Anything less routes to independent review, not to a retry.**
 
 ## Current authority
 

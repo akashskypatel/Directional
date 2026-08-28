@@ -728,6 +728,35 @@ breach, and correctly declined to choose. The actual cause was neither: a correc
 a boundary that no document had ever named. **When both available readings require someone to be wrong,
 look for the reading in which everyone was right about a different thing.**
 
+### Excluded from reasoning is not excluded from the gate
+
+A witness was excluded from a census's legitimate reasoning and from a checkpoint's acceptance credit,
+correctly and repeatedly, because its matching is fixture-imposed and contradicts its geometry. It is
+nonetheless **accepted authority** carrying an absolute assertion whose value is a direct function of the
+semantics that checkpoint was rewriting — and nothing in the checkpoint's evidence chain ever tested it,
+precisely *because* it had been excluded from a different question. **When a witness is excluded from a
+question, write down in the same place that it remains binding on the gate.**
+
+### An absolute count is a hidden function of the semantics that produce it
+
+`EXPECT_EQ(8U, network.nodes().size())` reads as a structural constant and decomposes as
+`5 structural nodes + one terminal 0-cell per barrier-terminating trace`. Only its own comment made that
+findable. **Before changing a stage's semantics, grep the accepted suite for absolute counts and
+decompose every one of them** into the parts the change can move.
+
+### A green subset gate measures the subset, and nothing beneath it
+
+Seven never-accepted identities passing is real evidence about those seven and no evidence whatever
+about the 346 accepted identities they sit on top of. **State what a gate does not cover in the same
+breath as its result**, every time, or the greenness gets read as coverage it never had.
+
+### When a review flags an inference as unmeasured, the next turn must close it in writing
+
+A review deliberately marked one link in its argument as inferred rather than measured, and named the
+measure that would settle it. The next turn measured it and the caveat was withdrawn explicitly. An
+unmeasured inference that is never revisited quietly becomes an assumption — this project has paid four
+documents' worth for exactly that failure once already.
+
 ### A classifier that names an owner will route the next turn, right or wrong
 
 A census emitted class labels of the form "this bucket means `functionX` is at fault". The buckets were

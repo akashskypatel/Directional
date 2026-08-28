@@ -3,7 +3,7 @@
 **Turn:** `M3-CP4c-0b-DG-REV`
 **Type:** Independent review / planning only — no product, test, fixture, selector, build, package, or runtime mutation. Source and committed fixtures were read and arithmetic was performed on their contents; nothing was executed and nothing was modified.
 **Evidence under review:** `M3-CP4c-0b-DG`, **VALID SEMANTIC RED 6/7**, run/job `33120730355 / 98686699036`, immutable GMP package `9664890562`, semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`; result `9666352028`, diagnostic log `9666352544`.
-**Prior evidence consumed:** `Architecture_M3_CP4c0b_TB_S1_Review_Record.md`, `Architecture_M3_CP4c0b_DG_Artifact_Only_Test_Benchmark_Report.md`.
+**Prior evidence consumed:** `M3_CP4c_Consolidated_Record.md` §3 (retired S1 review), `M3_CP4c_Consolidated_Record.md` §3 (retired first DG report).
 **Incoming accepted authority:** M3-CP4c-0 **346/346 ACCEPTED**; M3-CP4ab **316/316** beneath it.
 
 ---
