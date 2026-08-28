@@ -1,0 +1,7 @@
+purpose=M3-CP4c-0b-DG-T4-EXEC artifact-only seven-identity diagnostic gate
+package_artifact_id=9668492827
+package_sha256=e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8
+semantic_source=b2629040450c12507367c232f68a4d972b46450f
+selector_sha256=d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c
+caller_install_sha=e8f9ea0aea41a83ca6169a1b8cace884aa333749
+retry=0
