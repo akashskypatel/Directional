@@ -35,10 +35,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1vve3wotop_70OwHiJBeLrGMsN9GnRYm7
-      patch_sha256: 71ca44d90231be3c278c238d6a73d9ba5ae9890afb025b79bacfe6be052713b0
-      base_sha: da2d913772f3c1206a170e03625be2e8a4c7cbd6
+      file_id: 1vg4GwO1uztiL9HUMmqOoEJCOHLD4ys99
+      patch_sha256: d39bbfd82ee462bd47d8f9601f844edb050e496216a57d8512f7b179292bb2b1
+      base_sha: a43ed377a44279e3caba7f115a3c31d1a4d60574
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'M3-CP4c-2-CB1: add certified surface cut graph authority'
+      commit_message: 'M3-CP4c-2-CB1: fix independent complement test compilation'
       retention_days: 14
     secrets: inherit
