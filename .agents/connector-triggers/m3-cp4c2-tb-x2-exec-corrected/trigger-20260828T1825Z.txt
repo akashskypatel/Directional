@@ -1,0 +1,6 @@
+M3-CP4c-2-TB-X2-EXEC
+workflow=.github/workflows/m3-cp4c2-tb-x2-exec-corrected.yml
+artifact_id=9696201700
+semantic_source=93d9d49f052fa481bd3a8ad8c9bf31eccda7705c
+identity=GlobalTopologyPlan.Cp4c2PrescribedSphereCellularityScopeDecisionIsObservable
+source_materialization=/home/runner/work/Directional/Directional
