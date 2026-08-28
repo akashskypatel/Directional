@@ -21,28 +21,15 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0b-TB-T5` — the full 353 gate, under measures **U0–U7**
+## Current focus — `M3-CP4c-0b-TB-T5` PRE-GATE BLOCKED; independent `M3-CP4c-0b-TB-T5-PREFLIGHT-REV` is next
 
-**CP4c-0 is CLOSED / ACCEPTED at 346/346.** CP4c-0b owns trace termination and Q8 criteria 2 and 3.
+`M3-CP4c-0b-DG-T4-REV` is **COMPLETE / REVIEW GREEN** and authorized T5 under U0-U7. T5 nevertheless stopped correctly **before runtime** because U3 requires a before-gate fan/two-ring terminus census that immutable package `9668492827` cannot fully publish, while U7 forbids adding the missing instrumentation or compiling inside T5.
 
-**`M3-CP4c-0b-DG-T4-EXEC` is EXECUTION GREEN 7/7** on immutable GMP package `9668492827` from semantic source `b2629040450c12507367c232f68a4d972b46450f`, run/job `33128261911 / 98711506300`. **`M3-CP4c-0b-DG-T4-REV` has verified it and authorizes T5.** Record: `Architecture_M3_CP4c0b_DG_T4_Independent_Review_Record.md`.
+Static U0 checks pass: package `9668492827` / `e0661e66…dce0b8`, semantic source `b2629040...`, 28/28 manifest, full 353 selector `51ff96d7…ac6a5`, first-346 prefix `20d3b0b1…3e46a`, GMP boundary. Gate execution: **0/353**. No Directional runtime, compile, relink, repair, discovery, source/test/fixture/selector/package mutation, timeout, or guard widening occurred.
 
-**Independently re-verified in that review:** DG selector **7** / `d28bbeeb…e245c`; full selector **353** / `51ff96d7…ac6a5`; every accepted identity present in the 353; all seven DG identities inside it; and — stronger than the report claimed — **the first 346 lines of the 353 selector hash exactly to the accepted CP4c-0 selector** `20d3b0b1…3e46a`, so the accepted prefix is preserved *in order* and `first_red_ordinal` stays comparable with every prior CP4c-0 run.
+Blocking record: `Architecture_M3_CP4c0b_TB_T5_Preflight_Blocker_Report.md`. Exact source-snapshot audit: `33130565916 / 98718854457`, artifact `9670081197` / `58403bc8…3023a284`. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **54**.
 
-**T1 closed the one open inference.** The DG review flagged that "every pipeline-torus node is a mandatory-edge endpoint" was inferred, not measured. Measured: atlas-derived rails give 0/0/0/0/0; pipeline-authoritative rails give **48 `HardFeature` mandatory edges / 0 singularities / 48 structural endpoint nodes / 0 traces / 0 events, zero contact provenance**. First decision row; `M3-CP4c0b-DG-CAND-02` is **RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE**. T2 and T3 were verified line-by-line against the DG review's specification with no shortfall.
-
-**What T4 does NOT establish, and it is the whole of T5.** The seven DG identities have **never been accepted** and are a strict subset of the 353. **Not one accepted identity has executed against S2–S6.** The review maps the exposure to **four accepted identities inside the 316 prefix**:
-
-| ordinal | identity | witness | at risk because | edit authorized? |
-|---:|---|---|---|---|
-| **7** | `DeclaresTraceIntersectionsAsTypedNetworkEvents` | two-ring | S2 renames its site-A `TraceIntersection` | **YES** |
-| **9** | `IndependentCompositionOracleValidatesTraceEventGraph` | two-ring | same site-A dependency | **YES** |
-| **12** | `PublishesTypedFirstContactAndTerminationEvents` | two-ring | barrier-termination contract | **NO — stop** |
-| **13** | `PublishesTypedSingularityPortsAndMandatoryGraph` | **four-triangle fan** | `EXPECT_EQ(8U, nodes().size())` is `5 structural + 3 barrier-terminating traces` — a direct function of the termination semantics S2–S6 rewrote | **NO — stop** |
-
-**Ordinal 13 is the one to watch, and it sits in a trap worth naming: excluded from reasoning is not excluded from the gate.** The fan was correctly excluded from the S1 census's legitimate reasoning and from CP4c-0b credit — and it remains accepted authority whose absolute node count depends on exactly what changed. Predicted green at 8 (S1 measured the fan at zero shared-face contacts under the same `rails_from_atlas` authority, and proper-crossing is a strict subset of shared-face, so S3 removes nothing). **The residual risk is S5's relocation, not S3's predicate** — a symmetric fan can produce simultaneous barrier arrivals, and the mutual-termination tie policy is the least-exercised path in the checkpoint. **U3 measures it rather than letting the gate discover it.**
-
-**Also unmeasured:** CP4ab digests and A2b (`nodes().size() == plan.rotation_system().size()` ties node count straight into the rotation system); the sphere at 353-identity scale; and **N1/N2/N4 guard silence** — the DEFN requires an identity proving the CB9 stand-ins do not fire, and it is **not among the seven**.
+**Exact next is independent `M3-CP4c-0b-TB-T5-PREFLIGHT-REV`.** It must adjudicate whether a narrow instrumentation-only Code+Build package is required to make U3/U4 observable before any later T5 run. Full 353 acceptance remains **BLOCKED / NOT RUN**.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -106,14 +93,14 @@ gate count excludes them, each carries a written rationale and an owning correct
 - [x] `M3-CP4c-0b-DG-REV` — **COMPLETE / INDEPENDENT REVIEW.** `CAND-02` adjudicated test-side over-specification conditional on T1; T0-T7 frozen.
 - [x] `M3-CP4c-0b-CB2` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** T1 selected review row 1; T2/T3 corrected only the never-accepted torus contract and census authority labeling. Semantic source `b2629040450c12507367c232f68a4d972b46450f`; GMP compile run `33126178643`; package `9668492827` / `e0661e66...dce0b8`; 28/28 manifest PASS; no Directional runtime.
 - [x] `M3-CP4c-0b-DG-T4-EXEC` — **COMPLETE / EXECUTION GREEN 7/7.** Run/job `33128261911 / 98711506300`; result/log `9669229181 / 9669229414`; all seven selected exactly once and PASS; zero exceptions/timeouts/build/repair/discovery/mutation; immutable byte-and-mode postflight PASS.
-- [ ] `M3-CP4c-0b-DG-T4-REV` — **NEXT / INDEPENDENT REVIEW.** Review T4 execution evidence before any T5 acceptance run; no new runtime in this review.
-- [ ] `M3-CP4c-0b-TB` — **T5 / BLOCKED ON T4 REVIEW.** Full 353 required-green acceptance TB on immutable package `9668492827`, selector `51ff96d7...ac6a5`; require accepted 316/316, CP4c-0 346/346, full 353/353.
+- [x] `M3-CP4c-0b-DG-T4-REV` — **COMPLETE / INDEPENDENT REVIEW GREEN.** T4 verified; U0-U7 issued; T5 authorized subject to their exact pre-gate constraints.
+- [ ] `M3-CP4c-0b-TB-T5` — **PRE-GATE BLOCKED / 353 NOT RUN.** U0 static authority passes, but immutable package `9668492827` cannot publish U3/U4's required pre-gate census and U7 forbids adding instrumentation/compiling inside this turn. Route to independent preflight review; no retry.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0b. It **no longer owns** re-homed Q8 criterion 3, which
   belongs to CP4c-0b along with criterion 2.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **54** after the CB2 GMP package. Both TB-R9 non-stable candidates remain resolved; CP4c-0 is **CLOSED / ACCEPTED**. **CB2 is build-green at `b2629040...`; T4 DG is execution-green 7/7 on package `9668492827`. Exact next is independent `M3-CP4c-0b-DG-T4-REV`. The full 353 acceptance TB remains blocked on that review.**
+Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **54** after the CB2 GMP package. Both TB-R9 non-stable candidates remain resolved; CP4c-0 is **CLOSED / ACCEPTED**. **CB2 is build-green at `b2629040...`; T4 DG is execution-green 7/7 and T4 review is complete. T5 stopped before runtime on the U3/U4 immutable-package observability gap. Exact next is independent `M3-CP4c-0b-TB-T5-PREFLIGHT-REV`; full 353 acceptance remains blocked/not run.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

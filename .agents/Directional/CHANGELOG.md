@@ -8,6 +8,10 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-28 — `M3-CP4c-0b-TB-T5`: pre-gate observability gap, 353 not run
+
+T5 is **BLOCKED / PRE-GATE OBSERVABILITY GAP / 353 NOT RUN**. U0 static authority is valid on immutable GMP package `9668492827` and full selector `51ff96d7…ac6a5`, including exact first-346 prefix `20d3b0b1…3e46a`, but U3 requires a before-gate fan/two-ring terminus census that the immutable package cannot fully publish. Its compiled census surfaces omit required per-trace terminus/barrier and arrival-comparison/mutual-tie telemetry, and U4 lacks a dedicated per-witness N1/N2/N4 silence publisher. U7 forbids adding instrumentation or compiling inside T5, so the only valid action was to fail closed before runtime: **0/353 identities executed**, no compile/relink/repair/discovery/mutation/timeout/guard widening. Exact source-snapshot audit `33130565916 / 98718854457`, artifact `9670081197` (`58403bc8…3023a284`). Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **54**. `T5-CAND-01` is active evidence-capability/non-stable; the cleanup-trigger race `T5-CAND-02` is resolved orchestration/non-stable. Exact next: independent `M3-CP4c-0b-TB-T5-PREFLIGHT-REV`.
+
 ## 2026-08-28 — `M3-CP4c-0b-DG-T4-REV`: T4 verified, T5 authorized, and the accepted-authority risk mapped
 
 Independent review and planning only. No Directional runtime, build, benchmark, or product/test/fixture/selector/build-configuration change. Record: `Architecture_M3_CP4c0b_DG_T4_Independent_Review_Record.md`.

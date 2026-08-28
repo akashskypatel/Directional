@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-27 UTC** after `M3-CP4c-0b-DG`. Latest accepted runtime remains CP4c-0 **346/346** on run/job `33079817998 / 98543736213`. CP4c-0b S2-S6 is build-green at semantic source `737f93be10a73db950e2a7f823b96ffb0d59cf4d`; its attempt-free seven-identity DG is **VALID SEMANTIC RED 6/7** on corrected run/job `33120730355 / 98686699036`, immutable package `9664890562`. The full 353 acceptance gate has not run. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **53**.
+Last updated: **2026-08-28 UTC** after `M3-CP4c-0b-TB-T5` preflight. Latest accepted runtime remains CP4c-0 **346/346** on run/job `33079817998 / 98543736213`; T4 DG is green **7/7** on immutable GMP package `9668492827`, and its independent review is complete. T5 then stopped **before runtime / 0 of 353 executed** because U3/U4 require pre-gate telemetry that the immutable CB2 package cannot fully publish while U7 forbids adding instrumentation/compiling in T5. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **54**.
 
 TB-R8 is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE** on run/job `33028238313 / 98374531360`, control `078aac03923c0badc42d150397065fe5b33212c6`, consuming immutable CB8 package `9628445643` at semantic source `19ba8e9c5e58f9c33c14b309841165d3f0401db5`. P1 completed **342/343** identities: 341 pass, ordinal 338 red after 853.437 s with `gcd(): while running too long!`, ordinal 343 incomplete at explicit user cancellation. First-316 and first-328 remain green. No acceptance credit; P2-P8 were not reached. Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **47**. Its termination candidate later transferred to CP4c-0b after CB9 bounded the cost path.
 
@@ -58,6 +58,21 @@ TB-R8 is **INCOMPLETE / BLOCKED BY VALID PRODUCTION TERMINATION FAILURE** on run
 - **RESOLVED 2026-08-28** by `M3-CP4c-0b-CB2` + `M3-CP4c-0b-DG-T4`. T1 returned the **first decision row**: atlas-derived rails give 0 mandatory edges / 0 singularities / 0 nodes / 0 traces / 0 events; pipeline-authoritative rails give **48 `HardFeature` mandatory edges / 0 singularities / 48 structural endpoint nodes / 0 traces / 0 events**, every node a mandatory-edge endpoint with **zero contact provenance**. No second rail-authority divergence was found. The DG review's one flagged inference is therefore **measured, and its caveat is withdrawn**. T2's corrected identity and T3's self-describing census were verified line-by-line against the review specification with no shortfall, and `M3-CP4c-0b-DG-T4-EXEC` returned **7/7** on package `9668492827`.
 - **Residual, tracked under `M3-CP4c0b-P03-CAND-01`, not here:** S2-S6 remain **unmeasured against accepted authority**. The four accepted identities in the blast radius are ordinals **7**, **9** (authorized to change) and **12**, **13** (**not authorized**), the last being the four-triangle fan's absolute `EXPECT_EQ(8U, nodes().size())`, which decomposes as 5 structural nodes plus one terminal 0-cell per barrier-terminating trace.
 - **Stable-count rationale:** only the seven never-accepted new identities ran; no accepted-green predecessor regression is established. **+0 events / +0 recurrences**, totals **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0b-T5-CAND-01 — immutable CB2 package cannot publish the U3/U4 pre-gate evidence contract — ACTIVE / EVIDENCE-CAPABILITY / NON-STABLE
+
+- **Observed:** `M3-CP4c-0b-TB-T5` stopped before the first gate identity. U0 static package/selector authority passes, but U3 requires a before-gate fan/two-ring census containing every trace terminus, barrier-termination count, all-node provenance with `railAuthority`, event histogram, arrival-comparison inconclusive status, and mutual-tie firing. Package `9668492827` has only partial compiled publishers; `FieldAlignedContactCensus` and `cp4c0b_contact_census_report` do not expose the complete contract. U4 likewise has no dedicated per-witness N1/N2/N4 silence publisher.
+- **Binding conflict:** U3 says measure before gate. U7 prohibits source/test/fixture/selector/package mutation, compile/relink/repair, or replacement package inside T5. Running 353 first and inferring missing fields would weaken the independent review and is forbidden.
+- **Classification:** evidence-capability/pre-gate observability blocker, **not** evidence of a product regression. No Directional runtime executed and accepted authority remains unmeasured.
+- **Owning adjudication:** independent `M3-CP4c-0b-TB-T5-PREFLIGHT-REV` must decide whether to authorize a narrow instrumentation-only Code+Build package before any T5 retry.
+- **Stable-count rationale:** +0 events / +0 recurrences. Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c0b-T5-CAND-02 — cleanup manifest trigger raced the source-snapshot marker — RESOLVED / ORCHESTRATION / NON-STABLE
+
+- **Observed:** creating the required cleanup manifest triggered durable cleanup run `33130560363` at event SHA `28f02117f2162418a90a843a83edcd7f4b5c268d`; the subsequent source-snapshot marker advanced the branch to `640a35ae08a3a624ac3799b42c9ddf6c31300be0`.
+- **Fail-safe:** cleanup compared remote head against its event SHA and stopped before commit/push because they differed. PR-comment deletion was skipped; `runtimeExecution=false`.
+- **Classification:** orchestration/process-control only. The final cleanup is triggered only after all temporary paths and all other branch writes are complete.
+- **Stable-count rationale:** +0 events / +0 recurrences. Totals remain **42 / 14 / 28**.
 
 ## M3-CP4c0b-P03-CAND-01 — the accepted trace-contact mechanism is defective in six respects — ACTIVE / PRODUCT SEMANTICS / PRE-EXISTING
 
