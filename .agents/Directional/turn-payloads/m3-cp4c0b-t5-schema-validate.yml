@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/m3-cp4c0b-t5-schema-validate/run.txt
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
