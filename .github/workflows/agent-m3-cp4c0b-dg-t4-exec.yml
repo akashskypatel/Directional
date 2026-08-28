@@ -1,0 +1,179 @@
+name: Agent M3 CP4c-0b DG T4 Exec
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0b-dg-t4-exec/run.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c0b-dg-t4-exec
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c0b-dg-t4-exec
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c0b-dg-t4-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  execute:
+    needs: validate
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/m3-cp4c0b-dg-t4-exec.log"
+          : > "$log"
+          echo "T4_LOG=$log" >> "$GITHUB_ENV"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" \
+            'turn=M3-CP4c-0b-DG-T4-EXEC' \
+            'runtimeExecution=true' \
+            'artifactOnly=true' \
+            'repositoryTimeoutConfigured=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Provide GMP runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$T4_LOG") 2>&1
+          dpkg -s libgmp-dev >/dev/null 2>&1 || { sudo apt-get update; sudo apt-get install -y libgmp-dev; }
+          dpkg-query -W -f='libgmp-dev=${Version}\n' libgmp-dev
+
+      - name: Verify immutable package and execute seven identities
+        id: gate
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACKAGE_ID: '9668492827'
+          PACKAGE_SHA: e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8
+          SOURCE_SHA: b2629040450c12507367c232f68a4d972b46450f
+          SELECTOR_SHA: d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$T4_LOG") 2>&1
+          out="$RUNNER_TEMP/t4-result"; pkg="$RUNNER_TEMP/t4-package"; zip="$RUNNER_TEMP/t4-package.zip"
+          rm -rf "$out" "$pkg"; mkdir -p "$out/raw" "$pkg" "$GITHUB_WORKSPACE"
+          curl --fail-with-body --silent --show-error --location \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$PACKAGE_ID/zip" -o "$zip"
+          test "$(sha256sum "$zip" | awk '{print $1}')" = "$PACKAGE_SHA"
+          unzip -q "$zip" -d "$pkg"
+          test "$(cat "$pkg/metadata/source-commit.txt")" = "$SOURCE_SHA"
+          (cd "$pkg" && sha256sum -c SHA256SUMS) | tee "$out/package-manifest-check.txt"
+          grep -Fxq 'runtimeExecution=false' "$pkg/metadata/command-boundary.txt"
+          grep -Fxq 'exactArithmeticBackend=GMP' "$pkg/metadata/command-boundary.txt"
+          test "$(stat -c '%a' "$pkg/bin/directional_surface_cell_producer_tests")" = 755
+
+          snapshot_bytes() { local root=$1 dest=$2; (cd "$root" && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum) > "$dest"; }
+          snapshot_modes() { local root=$1 dest=$2; (cd "$root" && find . -mindepth 1 -printf '%m\t%y\t%p\n' | LC_ALL=C sort) > "$dest"; }
+          snapshot_bytes "$pkg" "$out/package-before.sha256"; snapshot_modes "$pkg" "$out/package-before.modes"
+
+          source_archive="$pkg/source/source-$SOURCE_SHA.tar.gz"
+          tar -tzf "$source_archive" > "$out/source-archive-list.txt"
+          grep -Fxq 'benchmarks/fixtures/milestone-g/sphere_prescribed.obj' "$out/source-archive-list.txt"
+          grep -Fxq 'benchmarks/fixtures/milestone-g/torus.obj' "$out/source-archive-list.txt"
+          tar -xzf "$source_archive" -C "$GITHUB_WORKSPACE"
+          selector="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M3_CP4c0b_Diagnostic_Gate_Selector.txt"
+          test "$(sha256sum "$selector" | awk '{print $1}')" = "$SELECTOR_SHA"
+          test "$(grep -c . "$selector")" -eq 7
+          cp "$selector" "$out/selector.txt"
+          snapshot_bytes "$GITHUB_WORKSPACE" "$out/source-before.sha256"; snapshot_modes "$GITHUB_WORKSPACE" "$out/source-before.modes"
+
+          bin="$pkg/bin/directional_surface_cell_producer_tests"
+          : > "$out/case-ledger.tsv"
+          executed=0; passed=0; failed=0; zero_selected=0; cpp_exception_seen=false
+          while IFS= read -r identity; do
+            [[ -n "$identity" ]] || continue
+            executed=$((executed + 1)); raw="$out/raw/$(printf '%02d' "$executed")-$identity.log"
+            set +e
+            "$bin" --gtest_color=no --gtest_filter="$identity" 2>&1 | tee "$raw"
+            rc=${PIPESTATUS[0]}
+            set -e
+            selected="$(grep -F -c "[ RUN      ] $identity" "$raw" || true)"
+            [[ "$selected" -eq 0 ]] && zero_selected=$((zero_selected + 1))
+            if grep -Fq 'C++ exception' "$raw"; then cpp_exception_seen=true; fi
+            status=RED
+            if [[ "$rc" -eq 0 && "$selected" -eq 1 ]]; then status=PASS; passed=$((passed + 1)); else failed=$((failed + 1)); fi
+            printf '%s\t%s\t%s\t%s\n' "$identity" "$rc" "$selected" "$status" | tee -a "$out/case-ledger.tsv"
+          done < "$selector"
+
+          snapshot_bytes "$pkg" "$out/package-after.sha256"; snapshot_modes "$pkg" "$out/package-after.modes"
+          snapshot_bytes "$GITHUB_WORKSPACE" "$out/source-after.sha256"; snapshot_modes "$GITHUB_WORKSPACE" "$out/source-after.modes"
+          postflight=PASS
+          diff -u "$out/package-before.sha256" "$out/package-after.sha256" || postflight=FAIL
+          diff -u "$out/package-before.modes" "$out/package-after.modes" || postflight=FAIL
+          diff -u "$out/source-before.sha256" "$out/source-after.sha256" || postflight=FAIL
+          diff -u "$out/source-before.modes" "$out/source-after.modes" || postflight=FAIL
+          cases="$(jq -Rn '[inputs | split("\t") | {identity:.[0],exitCode:(.[1]|tonumber),selected:(.[2]|tonumber),status:.[3]}]' < "$out/case-ledger.tsv")"
+          execution_status=PASS; gate_rc=0
+          if [[ "$zero_selected" -ne 0 || "$postflight" != PASS ]]; then execution_status=ORCHESTRATION_FAILURE; gate_rc=2
+          elif [[ "$failed" -ne 0 || "$cpp_exception_seen" == true ]]; then execution_status=SEMANTIC_RED; gate_rc=1
+          fi
+          jq -n --arg status "$execution_status" --arg source "$SOURCE_SHA" --arg pkgsha "$PACKAGE_SHA" --arg selsha "$SELECTOR_SHA" \
+            --arg post "$postflight" --argjson executed "$executed" --argjson passed "$passed" --argjson failed "$failed" \
+            --argjson zero "$zero_selected" --argjson cpp "$cpp_exception_seen" --argjson cases "$cases" \
+            '{turn:"M3-CP4c-0b-DG-T4-EXEC",executionStatus:$status,semanticSource:$source,packageArtifactId:9668492827,packageSha256:$pkgsha,selectorSha256:$selsha,required:7,executed:$executed,passed:$passed,failed:$failed,zeroSelected:$zero,cppExceptionSeen:$cpp,repositoryTimeoutConfigured:false,configureOccurred:false,compileOccurred:false,relinkOccurred:false,repairOccurred:false,generatedDiscoveryOccurred:false,packageSourceTestFixtureSelectorMutation:($post!="PASS"),postflight:$post,cases:$cases}' > "$out/result.json"
+          cat "$out/result.json"
+          echo "$gate_rc" > "$out/gate-exit-code.txt"
+          echo "execution_status=$execution_status executed=$executed passed=$passed failed=$failed zeroSelected=$zero_selected postflight=$postflight"
+          exit "$gate_rc"
+
+      - name: Upload T4 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c0b-dg-t4-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/t4-result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Record final status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          printf '%s\n' "gate_outcome=${{ steps.gate.outcome }}" "final_sha=$GITHUB_SHA" "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$T4_LOG"
+
+      - name: Upload persistent diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c0b-dg-t4-log-${{ github.run_id }}
+          path: ${{ env.T4_LOG }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Propagate T4 status
+        if: always()
+        shell: bash
+        run: |
+          test -f "$RUNNER_TEMP/t4-result/gate-exit-code.txt" || exit 2
+          exit "$(cat "$RUNNER_TEMP/t4-result/gate-exit-code.txt")"
