@@ -1,4 +1,0 @@
-turn=M3-CP4c-1-CB3
-operation=apply-selector
-base_sha=b12fee5d962d64f3db7acb9c62a28f9b285fa8ab
-patch_sha256=9644f2a7eca6c03a5a48531237c89594ede69c8a9aba794bcf9e6285b8fb471f
