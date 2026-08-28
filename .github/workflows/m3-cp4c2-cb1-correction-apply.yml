@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c2-cb1-correction-apply
+      label: m3-cp4c2-cb1-compile-fix-apply
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
@@ -33,10 +33,10 @@ jobs:
     needs: validate
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 19eUFieM9mp7xNGCkDAHrHVNUnPhoFnzO
-      patch_sha256: e54fdc67e548328287614a46c86458180a3d1e6701a52d16754b9c1550c952b1
-      base_sha: 906a76c686b6d5ce27e4c58611a1b5d5d3a8b2c0
+      file_id: 1H8wJjc-a9L7fC1mYm0D2GBhwWLJaes1F
+      patch_sha256: f780eb4ed6695c614869e2fdacdfeb3256d3323f0e2f902eff8eaa330c253cb7
+      base_sha: 8cf1ab3127748a32cb3cd13d5f79913774431d0e
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-2-CB1: add falsifiable complement measurement and conditional gates"
+      commit_message: "M3-CP4c-2-CB1: thread cut bindings through region pinch validation"
       retention_days: 7
     secrets: inherit
