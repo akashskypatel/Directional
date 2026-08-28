@@ -1,0 +1,28 @@
+name: Agent M3 CP4c-0b T5 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c0b-t5-closeout-apply/run.txt
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: agent-m3-cp4c0b-t5-closeout-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1x64GG2ZRLlP8iGG-rB1vwempYPxKqE_L
+      patch_sha256: f047bace63aa4032b483680dbb95e2028f051737978ba27ca59af8e35e1f380e
+      base_sha: cf95435fe74b903f185a655bab15df42b2abf346
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs(agent): close M3 CP4c-0b after T5 green"
+      retention_days: 14
+    secrets: inherit
