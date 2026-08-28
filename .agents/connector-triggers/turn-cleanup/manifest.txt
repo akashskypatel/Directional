@@ -1,4 +1,0 @@
-# M3-CP4c-2-TB-X2-R2 temporary-state cleanup
-.agents/connector-triggers/m3-cp4c2-tb-x2-r2-source-snapshot/request-62603fca.txt
-.agents/connector-triggers/m3-cp4c2-tb-x2-r2-exec/request-9702321260.txt
-.agents/connector-triggers/m3-cp4c2-tb-x2-r2-closeout-apply/request-1LDUxy5s.txt
