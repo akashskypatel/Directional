@@ -4415,6 +4415,194 @@ const Cp4cProductionFixture &cp4c_mechanical_fixture() {
   return fixture;
 }
 
+struct IndependentComplementComponentTopology {
+  std::size_t faceCount = 0U;
+  std::size_t vertexCount = 0U;
+  std::size_t edgeCount = 0U;
+  std::size_t boundaryWalkCount = 0U;
+  int eulerCharacteristic = 0;
+  bool boundaryCyclesValid = false;
+
+  bool proves_disc_topology() const noexcept {
+    return boundaryCyclesValid && boundaryWalkCount == 1U &&
+           eulerCharacteristic == 1;
+  }
+};
+
+std::vector<IndependentComplementComponentTopology>
+independent_network_complement_topology(
+    const TriMesh &mesh, const FieldAlignedCurveNetwork &network) {
+  using Edge = SourceEdgeTopologyKey;
+  const std::size_t faceCount = static_cast<std::size_t>(mesh.F.rows());
+  const std::size_t vertexCount = static_cast<std::size_t>(mesh.V.rows());
+
+  std::set<Edge> barriers;
+  for (const auto &edge : network.mandatory_edges()) {
+    barriers.insert(edge.sourceEdge);
+  }
+  for (const auto &trace : network.candidate_traces()) {
+    for (const auto &segment : trace.segments) {
+      barriers.insert(segment.outgoingCarrier);
+      if (segment.incomingCarrier.has_value()) {
+        barriers.insert(*segment.incomingCarrier);
+      }
+    }
+  }
+
+  std::vector<std::array<Edge, 3>> faceEdges(faceCount);
+  std::map<Edge, std::vector<std::size_t>> incidentFaces;
+  for (std::size_t face = 0U; face < faceCount; ++face) {
+    for (int corner = 0; corner < 3; ++corner) {
+      const int next = (corner + 1) % 3;
+      const auto edge = SourceEdgeTopologyKey::from_indices(
+          mesh.F(static_cast<int>(face), corner),
+          mesh.F(static_cast<int>(face), next), vertexCount);
+      if (!edge.has_value()) return {};
+      faceEdges[face][static_cast<std::size_t>(corner)] = *edge;
+      incidentFaces[*edge].push_back(face);
+    }
+  }
+  for (auto &[edge, incident] : incidentFaces) {
+    (void)edge;
+    std::sort(incident.begin(), incident.end());
+    incident.erase(std::unique(incident.begin(), incident.end()), incident.end());
+    if (incident.empty() || incident.size() > 2U) return {};
+  }
+
+  std::vector<bool> visited(faceCount, false);
+  std::vector<std::vector<std::size_t>> components;
+  for (std::size_t seed = 0U; seed < faceCount; ++seed) {
+    if (visited[seed]) continue;
+    std::vector<std::size_t> component;
+    std::vector<std::size_t> stack{seed};
+    visited[seed] = true;
+    while (!stack.empty()) {
+      const std::size_t face = stack.back();
+      stack.pop_back();
+      component.push_back(face);
+      for (const auto &edge : faceEdges[face]) {
+        if (barriers.count(edge) != 0U) continue;
+        const auto &incident = incidentFaces.at(edge);
+        if (incident.size() != 2U) continue;
+        const std::size_t next = incident[0] == face ? incident[1] : incident[0];
+        if (!visited[next]) {
+          visited[next] = true;
+          stack.push_back(next);
+        }
+      }
+    }
+    std::sort(component.begin(), component.end());
+    components.push_back(std::move(component));
+  }
+
+  std::vector<IndependentComplementComponentTopology> result;
+  result.reserve(components.size());
+  for (const auto &component : components) {
+    std::set<std::size_t> members(component.begin(), component.end());
+    using Corner = std::pair<std::size_t, int>;
+    std::map<Corner, std::size_t> cornerIndex;
+    std::vector<Corner> corners;
+    for (const std::size_t face : component) {
+      for (int corner = 0; corner < 3; ++corner) {
+        const Corner key{face, mesh.F(static_cast<int>(face), corner)};
+        cornerIndex.emplace(key, corners.size());
+        corners.push_back(key);
+      }
+    }
+
+    std::vector<std::size_t> parent(corners.size());
+    for (std::size_t index = 0U; index < parent.size(); ++index) {
+      parent[index] = index;
+    }
+    const auto root = [&](const auto &self, std::size_t value) -> std::size_t {
+      return parent[value] == value ? value : self(self, parent[value]);
+    };
+    const auto unite = [&](std::size_t first, std::size_t second) {
+      first = root(root, first);
+      second = root(root, second);
+      if (first == second) return;
+      if (first < second) parent[second] = first;
+      else parent[first] = second;
+    };
+
+    std::size_t gluedEdges = 0U;
+    for (const auto &[edge, incident] : incidentFaces) {
+      if (barriers.count(edge) != 0U || incident.size() != 2U ||
+          members.count(incident[0]) == 0U ||
+          members.count(incident[1]) == 0U) {
+        continue;
+      }
+      ++gluedEdges;
+      for (const auto vertex : {edge.first(), edge.second()}) {
+        unite(cornerIndex.at(Corner{incident[0], static_cast<int>(vertex.index())}),
+              cornerIndex.at(Corner{incident[1], static_cast<int>(vertex.index())}));
+      }
+    }
+
+    std::set<std::size_t> roots;
+    for (std::size_t index = 0U; index < corners.size(); ++index) {
+      roots.insert(root(root, index));
+    }
+
+    std::map<std::size_t, std::multiset<std::size_t>> boundaryAdjacency;
+    std::size_t boundaryEdgeCopies = 0U;
+    for (const std::size_t face : component) {
+      for (const auto &edge : faceEdges[face]) {
+        const auto &incident = incidentFaces.at(edge);
+        const bool glued = barriers.count(edge) == 0U && incident.size() == 2U &&
+                           members.count(incident[0]) != 0U &&
+                           members.count(incident[1]) != 0U;
+        if (glued) continue;
+        const std::size_t first = root(
+            root, cornerIndex.at(Corner{face, static_cast<int>(edge.first().index())}));
+        const std::size_t second = root(
+            root, cornerIndex.at(Corner{face, static_cast<int>(edge.second().index())}));
+        if (first == second) return {};
+        boundaryAdjacency[first].insert(second);
+        boundaryAdjacency[second].insert(first);
+        ++boundaryEdgeCopies;
+      }
+    }
+
+    bool boundaryCyclesValid = boundaryEdgeCopies != 0U;
+    for (const auto &[vertex, adjacent] : boundaryAdjacency) {
+      (void)vertex;
+      if (adjacent.size() != 2U) boundaryCyclesValid = false;
+    }
+    std::size_t boundaryWalkCount = 0U;
+    if (boundaryCyclesValid) {
+      std::set<std::size_t> boundaryVisited;
+      for (const auto &[start, adjacent] : boundaryAdjacency) {
+        (void)adjacent;
+        if (boundaryVisited.count(start) != 0U) continue;
+        ++boundaryWalkCount;
+        std::vector<std::size_t> stack{start};
+        while (!stack.empty()) {
+          const std::size_t current = stack.back();
+          stack.pop_back();
+          if (!boundaryVisited.insert(current).second) continue;
+          for (const std::size_t next : boundaryAdjacency.at(current)) {
+            if (boundaryVisited.count(next) == 0U) stack.push_back(next);
+          }
+        }
+      }
+    }
+
+    IndependentComplementComponentTopology topology;
+    topology.faceCount = component.size();
+    topology.vertexCount = roots.size();
+    topology.edgeCount = 3U * component.size() - gluedEdges;
+    topology.boundaryWalkCount = boundaryWalkCount;
+    topology.eulerCharacteristic =
+        static_cast<int>(topology.vertexCount) -
+        static_cast<int>(topology.edgeCount) +
+        static_cast<int>(topology.faceCount);
+    topology.boundaryCyclesValid = boundaryCyclesValid;
+    result.push_back(topology);
+  }
+  return result;
+}
+
 bool region_boundary_uses_nontrivial_cycle(
     const directional::geometry::GlobalTopologyPlan &plan,
     const directional::geometry::GlobalTopologyRegion &region) {
@@ -4692,6 +4880,24 @@ TEST(GlobalTopologyPlan, TorusWitnessDerivesRegionsThroughProductionEntryPath) {
   EXPECT_EQ(48U, networkVertices);
   EXPECT_EQ(48U, networkEdges);
   EXPECT_EQ(0, impliedCellularFaces);
+
+  const auto preCutComponents =
+      independent_network_complement_topology(fixture.mesh, *fixture.network);
+  ASSERT_FALSE(preCutComponents.empty())
+      << "the torus pre-cut network must have a measurable complement";
+  std::size_t nonDiscComponentCount = 0U;
+  for (const auto &component : preCutComponents) {
+    if (component.proves_disc_topology()) continue;
+    ++nonDiscComponentCount;
+    EXPECT_TRUE(component.boundaryCyclesValid);
+    EXPECT_EQ(0, component.eulerCharacteristic)
+        << "every non-disc torus complementary component is predicted to be an annulus";
+    EXPECT_EQ(2U, component.boundaryWalkCount)
+        << "an annulus must have exactly two boundary cycles";
+  }
+  ASSERT_GT(nonDiscComponentCount, 0U)
+      << "prediction 2 requires at least one non-disc torus component";
+
   ASSERT_GE(fixture.cutGraph->cut_edges().size(), 2U)
       << "a genus-1 closed surface requires at least two independent cuts";
 
@@ -4700,7 +4906,20 @@ TEST(GlobalTopologyPlan, TorusWitnessDerivesRegionsThroughProductionEntryPath) {
             << ";networkE=" << networkEdges
             << ";sourceChi=" << fixture.mesh.eulerChar
             << ";impliedCellularF=" << impliedCellularFaces
-            << ";cutEdgeCount=" << fixture.cutGraph->cut_edges().size()
+            << ";preCutComponentCount=" << preCutComponents.size()
+            << ";preCutNonDiscComponentCount=" << nonDiscComponentCount;
+  for (std::size_t index = 0U; index < preCutComponents.size(); ++index) {
+    const auto &component = preCutComponents[index];
+    std::cout << ";preCutComponent[" << index << "]={chi="
+              << component.eulerCharacteristic
+              << ",boundaryWalkCount=" << component.boundaryWalkCount
+              << ",boundaryCyclesValid="
+              << (component.boundaryCyclesValid ? 1 : 0)
+              << ",V=" << component.vertexCount
+              << ",E=" << component.edgeCount
+              << ",F=" << component.faceCount << '}';
+  }
+  std::cout << ";cutEdgeCount=" << fixture.cutGraph->cut_edges().size()
             << ";torusRegionCount=" << fixture.plan->regions().size() << '\n';
 }
 
