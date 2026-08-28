@@ -1993,10 +1993,11 @@ std::optional<GlobalTopologyPlanError> validate_single_boundary_walk(
 std::optional<GlobalTopologyPlanError> validate_no_region_fragment_pinch(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,
+    const CutNodeBindings &cutNodes,
     const std::vector<GlobalTopologyNodeRotation> &rotations,
     const FaceWalkResult &walk, const GlobalTopologyRegion &region,
     const std::size_t owningOrbit) {
-  const NodeLocusResult locusBuild = build_node_loci(network);
+  const NodeLocusResult locusBuild = build_node_loci(network, cutNodes);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&locusBuild)) {
     return *failure;
   }
@@ -2564,6 +2565,12 @@ RegionCertificatesBuildResult build_region_certificates(
   }
   const auto &fragmentCorners =
       std::get<FragmentCornerIncidence>(cornerBuild);
+  const CutNodeBindingResult cutNodeBuild =
+      build_cut_node_bindings(network, cutGraph);
+  if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&cutNodeBuild)) {
+    return *failure;
+  }
+  const auto &cutNodes = std::get<CutNodeBindings>(cutNodeBuild);
   std::vector<GlobalTopologyRegionDiscCertificate> certificates;
   certificates.reserve(regions.size());
   for (const auto &region : regions) {
@@ -2585,7 +2592,7 @@ RegionCertificatesBuildResult build_region_certificates(
       return failure;
     }
     if (const auto pinch = validate_no_region_fragment_pinch(
-            topology, network, rotations, walk, region, *orbit);
+            topology, network, cutNodes, rotations, walk, region, *orbit);
         pinch.has_value()) {
       return *pinch;
     }
