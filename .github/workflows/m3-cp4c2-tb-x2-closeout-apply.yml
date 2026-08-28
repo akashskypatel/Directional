@@ -30,8 +30,8 @@ jobs:
     needs: validate
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1IpQseAVAoEXArSlSz9dwgHwcMadXeY4v
-      patch_sha256: 58e5b5862e0d6fd6abee6410b68552842b4da5d5329e35672af6b9f08bfef815
+      file_id: 1nnD0lT0EsreKNdi1hDjbViwNl5p9Q62p
+      patch_sha256: b74fb51d502c9d44704cb74c53b64eb99725fc2c6fcc0d590fbefbeba833c38e
       base_sha: 2887c242701db03eb655d9032c3248a7cde35b1b
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M3-CP4c-2-TB-X2: preserve raw execution evidence"
