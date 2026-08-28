@@ -1,0 +1,3 @@
+turn=M3-CP4c-1-TB-R4
+source_sha=7dd3d392243993403d98b8610a8a9d2f14cfed42
+purpose=late policy-compliance snapshot and closeout source
