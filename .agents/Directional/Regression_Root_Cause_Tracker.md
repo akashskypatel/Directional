@@ -68,18 +68,22 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-REV`. Review of authorit
   **42 / 14 / 28**, debt **5**.
 
 
-## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation created root `dummy` during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
+## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
 
-- **Observed:** after semantic review documentation and temporary-state cleanup were already complete, a mistaken
-  connector mutation intended to update PR metadata instead invoked the repository file-update action on path
-  `dummy`, creating a one-byte root file in commit `b08a56b64fe7012c7b88928fc08550a5e43fe011`.
-- **Containment/correction:** the file was identified immediately from the connector result and deleted in the next
-  repository mutation, commit `36c5ddb62d89824b9ec500bd6f33694dc8bd06a0`. It never entered semantic source,
-  build/package authority, runtime evidence, selectors, fixtures, or accepted product state.
-- **Recurrence note:** this repeats the control-plane anti-pattern already recorded by
-  `M3-CP4ab-CB-R1-CAND-03`: mutating connector actions must never be used with placeholder/probe arguments. The
-  incident is retained here because the mandatory TB regression-documentation gate requires every observed
-  orchestration candidate to be categorized before closeout.
+- **Observed occurrence 1:** after semantic review documentation and temporary-state cleanup were already complete,
+  a mistaken connector mutation intended to update PR metadata instead invoked the repository file-update action on
+  path `dummy`, creating a one-byte root file in commit `b08a56b64fe7012c7b88928fc08550a5e43fe011`. It was
+  deleted immediately in commit `36c5ddb62d89824b9ec500bd6f33694dc8bd06a0`.
+- **Observed occurrence 2:** during the same final PR-closeout phase, the same wrong mutating action was invoked again
+  with placeholder path `DO_NOT_USE`, creating an empty root file in commit
+  `bdfa4a00a6c090f8e59672e4e0f5541327393e6e`; it was identified and deleted immediately in commit
+  `34b0f5d17e027b17ef5d0541f84046645ed354dd`.
+- **Containment/correction:** both placeholders existed only as control-plane debris and were removed before final
+  turn closeout. Neither entered semantic source, build/package authority, runtime evidence, selectors, fixtures, or
+  accepted product state.
+- **Recurrence note:** both occurrences repeat the control-plane anti-pattern already recorded by
+  `M3-CP4ab-CB-R1-CAND-03`: mutating connector actions must never be used with placeholder/probe arguments. This
+  second same-turn occurrence strengthens the procedural lesson but does not change product-regression accounting.
 - **Stable-count rationale:** control-plane only and removed before turn closeout; **+0 events / +0 recurrences**.
   Totals remain **42 / 14 / 28**, debt **5**, M3 packages **58**.
 
