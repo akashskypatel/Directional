@@ -9,6 +9,19 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-TB-X2-PLAN`: the oracle may not be the mechanism under test
+
+Planning-only. No Directional runtime, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_TB_X2_Plan.md`. `selected_gate` remains **NONE**; both frozen candidates remain byte-frozen (**357** `b896d0db…64dc70`, **358** `6eda3aad…b64fbe62`).
+
+- **The structural cause of the unusable X2 is named.** `observe_cp4c_witness` calls `SurfaceCutGraph::make` first and gates every downstream publication behind it, so a failing A2a′ yields one error code and nothing else. And `networkAlreadyCellular` was defined as `cutGraph.cut_edges().empty()` — a restatement of the producer's own decision rather than a measurement of the network's complement, i.e. an oracle built on the mechanism it tests. **The successor's oracle may not call, link against, or reuse any part of `SurfaceCutGraph`.**
+- **A deliberate asymmetry is recorded so it is not read as a contradiction.** DEFN measure X3 told the *producer* to reuse A2b's component traversal rather than duplicate it; this plan tells the *oracle* to implement its own. Divergence is the risk in the first case; independence is the requirement in the second.
+- **Localization is decidable without a product change.** `CellularityNotEstablished` returns from three reachable sites — `SurfaceCutGraph.cpp:419`, `:437`, and `:474`, the last with **no locus attached**. If the independent oracle finds every component is a disc, then `alreadyCellular` is true, the cut set is empty, 419 and 437 are unreachable by construction, and the failure is **necessarily 474**.
+- **A leading hypothesis for 474, issued as refutable rather than as a finding.** `V` and `E` are counted in the network's abstract graph, whose arcs cross face interiors, while `F` counts source-face components separated by `network_barriers` — **whole source edges**. Different complexes, so `V − E + F == χ` is not an identity between them. The defect is invisible on the torus, which has zero traces and therefore no coarsening; the prescribed sphere, with 24 traces, is the first witness with traces to reach A2a′. **The witness the design reasoned about is not the witness that exercises the code** — the same shape as the ordinal-13 trap and the C5 torus recurrence.
+- **A standing prohibition on the tempting repair.** `proves_cellularity()` must not be relaxed to get past 474: the certificate condition is correct, and if the counts do not satisfy it the counts are wrong. Widening it would convert an accounting defect into a silently-wrong certificate and destroy the only guarantee A2a′ exists to provide.
+- **The post-certificate A2b observation is scheduled conditionally, and honestly.** It is reachable only once a certified cut graph exists, so the plan sets three branches with actions fixed in advance and **prohibits a test-only injection path** into A2b or any weakening of `make_from_candidate`, which is a tamper-rejection path. If the observation is unreachable, it must be reported unreachable — an honestly unreachable measurement is worth more than a reachable fiction.
+- **Sequencing that may not be collapsed:** `CB2-DIAG` → `TB-X2-R2` → `CB3` → `TB-X2-R3` → `TB-GATE-EXEC`, under measures **Y0–Y9**, with five falsifiable predictions. Prediction 1 — that the sphere network is already cellular — carries the frozen decision and is the same proposition as DEFN prediction 5, still unadjudicated.
+- Stable accounting unchanged: **42 / 14 / 28**, debt **5**, M3 packages **58**.
+
 ## 2026-08-28 — `M3-CP4c-2-TB-X2-REV`: evidence fits neither frozen branch; gate remains unselected
 
 Review-only. No Directional runtime, compile, benchmark, package regeneration, source/test/fixture/selector/build
