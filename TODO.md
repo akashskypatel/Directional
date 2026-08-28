@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-CB1` — cut-graph authority for A2b, under measures **X0–X9**
+## Current focus — `M3-CP4c-2` — cut-graph authority for A2b, under measures **X0–X9**
 
 **`M3-CP4c-2-DEFN` is COMPLETE / DEFINITION-ONLY.** Record:
 `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`. CP4c-1's closure was independently re-verified first: all
@@ -54,8 +54,7 @@ CP4c-0/0b dependency inversion. **The gate is 357 or 358 and X2 decides which; i
 produces a plan — so both would pass vacuously. C1 is the non-vacuity anchor; a green C6 over zero regions is
 a red result.
 
-**Exact next is `M3-CP4c-2-CB1`** under X0–X9. Accepted runtime authority remains CP4c-1 TB-R5 **355/355**.
-Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**.
+**CB1 and `M3-CP4c-2-TB-X2-EXEC` are complete. Exact next is `M3-CP4c-2-TB-X2-REV`**; it reviews only the preserved X2 evidence and chooses between the already-frozen 357/358 branches. Accepted runtime authority remains CP4c-1 TB-R5 **355/355**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **58**.
 
 ## Superseded focus — `M3-CP4c-1` closure (retained for provenance)
 
@@ -157,10 +156,10 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-1-TB-R5` — **COMPLETE / GATE GREEN 355/355 / CP4c-1 CLOSED / ACCEPTED.** Run/job `33161644741 / 98817323175`; prefixes 316/346/353 PASS; C4/C5 PASS; W3 exact union/contributor prediction met; three historical diagnostics report-only; explicit two-ring report PASS; W5-retired identities absent; immutable postflight PASS. Report: `Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`; closure: `M3_CP4c1_Closure_Record.md`.
 - [x] `M3-CP4c-2-DEFN` — **COMPLETE / DEFINITION-ONLY.** Froze the `SurfaceCutGraph` (A2a′) contract and **Amendment 12** to `DESIGN.md` §7.2/§4.6. Proved from measured data that the torus network (`V=48, E=48, χ=0`) cannot bound discs, and that no disjoint union of closed curves can ever cut a torus — so `UncutFaceComponentOrbitSeedNotUnique` is correct behaviour reporting a missing input. Scoped CP4c-2 to **C1 + C6**; **C3 deferred pending measure X2**. Gate is **357 or 358**, not frozen. Measures **X0–X9**. Record: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`.
 - [x] `M3-CP4c-2-CB1` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Final semantic/test source `93d9d49f052fa481bd3a8ad8c9bf31eccda7705c`; compile run `33196876096`; changed-owner job `98936191472` PASS; full eight-target GMP package job `98936799976` PASS; immutable package `9696201700` / `af3ebe2e…7c8097`; source archive `8694f0fb…321687`; `runtimeExecution=false`. Both X2-conditioned gates are frozen: 357 / `b896d0db…64dc70`, 358 / `6eda3aad…4fbe62`; non-gating X2 selector 1 / `88af227b…dafc8`. Report: `Architecture_M3_CP4c2_CB1_Code_Build_Report.md`.
-- [ ] `M3-CP4c-2-TB` — **READY / ARTIFACT-ONLY / SPLIT EXEC+REV.** Exact next is `M3-CP4c-2-TB-X2-EXEC`: consume immutable package `9696201700`, execute only the frozen one-identity X2 diagnostic, then `TB-X2-REV` selects frozen gate 357 or 358; only afterward may `TB-GATE-EXEC` run the chosen full gate and `TB-GATE-REV` adjudicate acceptance. CP4c-2 closes only with §8 predictions 1–4 met and X7 reporting a non-zero torus region count — **a green C6 over zero regions is a red result.** Plan: `Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md`.
+- [ ] `M3-CP4c-2-TB` — **IN PROGRESS / ARTIFACT-ONLY / SPLIT EXEC+REV.** `TB-X2-EXEC` is COMPLETE on run/job `33199227974 / 98944212158`, result/log `9697052371 / 9697052810`; exactly one frozen X2 identity ran, immutable pre/postflight passed, and the raw `m3Cp4c2X2` publication is preserved in `Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md`. **Exact next is `M3-CP4c-2-TB-X2-REV`**; it alone selects frozen gate 357 or 358. Only afterward may `TB-GATE-EXEC` run the chosen full gate and `TB-GATE-REV` adjudicate acceptance. CP4c-2 closes only with §8 predictions 1–4 met and X7 reporting a non-zero torus region count — **a green C6 over zero regions is a red result.**
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **58**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2-CB1` is build-green but not runtime-accepted. **Exact next is `M3-CP4c-2-TB-X2-EXEC` on immutable package `9696201700`.**
+Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **58**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2-CB1` is build-green and X2 report-only execution is preserved, but CP4c-2 remains runtime-unaccepted. **Exact next is `M3-CP4c-2-TB-X2-REV` over run/job `33199227974 / 98944212158`; no cumulative gate runtime is authorized yet.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
@@ -233,7 +232,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. Exact next is `M3-CP4c-2-CB1` under measures X0–X9; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. CP4c-2 CB1 and X2 EXEC are complete; exact next is `M3-CP4c-2-TB-X2-REV`; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.

@@ -83,7 +83,7 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-CB1` — cut-graph authority for A2b, measures **X0-X9**
+## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
 `M3-CP4c-2-DEFN` is **COMPLETE / DEFINITION-ONLY**. Read
 `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` in full before writing any code; §5 is the frozen contract,
@@ -139,12 +139,9 @@ Result/log artifacts are `9681960334 / 9681960615`, digests
 55ad320aaf810bb5b02fbfccdd7662f4a47333586bdb30397d624d701710439b`. Stable accounting remains
 **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**.
 
-The next turn is **definition-only** `M3-CP4c-2-DEFN`. It must settle the architecture gap already identified in
-`ROADMAP.md`: on a closed index-free surface, singularity/feature/boundary seeds can all be absent, so the current
-§4.6 network can be empty and A2b has no seam/cut graph from which region ownership can start. Do not author
-product/test/fixture/selector code, compile, or execute runtime in the DEFN turn. The historical parent allocation
-is C1/C3/C6; rebased trajectory arithmetic is **358 = accepted 355 + C1 + C3 + C6**, but the definition turn owns
-whether/how that successor selector is frozen. CP4c-3 remains blocked.
+`M3-CP4c-2-DEFN` and CB1 are complete. The frozen architecture gap is the closed-surface A2b seam/cut-graph
+precondition described above; current work is the X2 scope decision over already-preserved artifact-only evidence.
+CP4c-3 remains blocked until CP4c-2 closure.
 
 ## Current authority
 
@@ -171,6 +168,25 @@ whether/how that successor selector is frozen. CP4c-3 remains blocked.
 
 CB1 supplies compiled evidence only. It does **not** choose the 357/358 runtime gate and does not accept CP4c-2.
 
+### M3-CP4c-2 TB-X2-EXEC — raw runtime evidence, branch decision pending
+
+- status: **COMPLETE / RAW EVIDENCE PRESERVED / NO GATE DECISION**;
+- authoritative run/job: `33199227974 / 98944212158`;
+- immutable GMP package/source: `9696201700` /
+  `93d9d49f052fa481bd3a8ad8c9bf31eccda7705c`;
+- selected X2 identities: **1**, report publications: **1**, process exit: **1** as permitted for this report-only diagnostic;
+- immutable preflight/postflight: PASS; configure/compile/relink/repair/generated-discovery/mutation all false;
+- result/log artifacts: `9697052371 / 9697052810`;
+- result/log digests:
+  `524534f76d99500c91e921d81d9d38bc6f8607f379500cd976d0c9fa8600f22b /
+  916fa2478d9bd3fc5ba42e3dd670c7373ed3e26a6fcc721a733063da42161719`;
+- raw publication is retained verbatim in
+  `Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md`;
+- two preceding orchestration-only controls are recorded/resolved in the regression tracker; stable totals stay
+  **42 / 14 / 28**.
+
+This EXEC subturn does not interpret the X2 publication and does not choose 357 versus 358.
+
 ### Accepted runtime predecessor
 
 `M3-CP4c-1-TB-R5` remains the current accepted runtime authority at **355/355**, run/job
@@ -181,31 +197,31 @@ CB1 supplies compiled evidence only. It does **not** choose the 357/358 runtime 
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
 - CP4c-2 DEFN is complete and CB1 is **build-green / runtime-unaccepted**.
-- The new A2a′ `SurfaceCutGraph` product is compiled into package `9696201700`; runtime validation has not begun.
+- The new A2a′ `SurfaceCutGraph` product is compiled into package `9696201700`; the report-only X2 runtime has executed, while the cumulative CP4c-2 gate has not begun.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**.
 - M3 packages are **58**.
-- **Exact next turn is `M3-CP4c-2-TB-X2-EXEC`.** It executes only the frozen report-only X2 diagnostic from
-  immutable package `9696201700`. No full 357/358 gate is authorized until `TB-X2-REV` selects the frozen branch.
+- **Exact next turn is `M3-CP4c-2-TB-X2-REV`.** It reviews only the preserved X2 evidence and selects one of the two already-frozen 357/358 branches. No cumulative gate runtime is authorized before that review.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/TB-EXEC.md`.
+`load_next`: turn-based-coding-agent `references/turns/TB-REVIEW.md`.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md` — exact immutable
-   execution/review sequence and stop rules.
-2. `.agents/Directional/Architecture_M3_CP4c2_CB1_Code_Build_Report.md` — exact source/package/build authority.
-3. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — X2 scope decision and §8 predictions.
-4. `.agents/Directional/Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — the **only** selector
-   authorized for the exact next EXEC subturn.
-5. immutable package artifact `9696201700` — download once, verify, execute artifact-only.
-6. `TODO.md`, `Regression_Root_Cause_Tracker.md`, and `.agents/Directional/CHANGELOG.md` — state/accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md` — authoritative raw X2
+   execution evidence and orchestration deviations.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md` — frozen two-branch
+   X2 review rule and stop conditions.
+3. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §6.3/§7 X2 authority and §8
+   predictions.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — resolved orchestration candidates and active
+   review-owned X2 candidate.
+5. `TODO.md` and `.agents/Directional/CHANGELOG.md` — current state/accounting.
 
-Do not preload production source for TB-X2-EXEC beyond the packaged source needed for immutable selector/source
-verification. Do not compile, repair, regenerate, mutate selectors/tests/fixtures, or execute the full gate in
-TB-X2-EXEC. After raw X2 evidence is preserved, exact next is `M3-CP4c-2-TB-X2-REV`.
+`TB-X2-REV` is evidence-only: execute no new Directional runtime, compile, rebuild, repair, selector/test/fixture
+mutation, or exploratory command. It must choose only between the two already-frozen branches when the evidence
+supports one; if neither frozen branch fits, stop and route to planning/review rather than inventing a third gate.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

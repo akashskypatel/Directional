@@ -2,7 +2,46 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-28 UTC** after `M3-CP4c-1-TB-R5`. CP4c-1 is **CLOSED / ACCEPTED** on authoritative artifact-only run/job `33161644741 / 98817323175`: full gate **355/355**, accepted prefixes 316/346/353 green, C4/C5 green, W3 prediction met, and immutable postflight PASS on GMP package `9675666067`. `M3-CP4c1-TB-R4-CAND-03` is now resolved by TB confirmation. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **57**.
+Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-EXEC`. The authoritative report-only X2 execution is run/job `33199227974 / 98944212158` on immutable GMP package `9696201700`; raw evidence is preserved without a 357/358 branch decision. Two preceding harness/control failures are resolved orchestration/non-stable candidates. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **58**.
+
+
+
+## M3-CP4c2-TB-X2-CAND-01 — reusable observer permission ceiling caused startup failure — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** push run `33198406913` ended `startup_failure` with zero instantiated jobs and zero Directional runtime.
+- **Root cause:** the caller granted only `contents: read`, while the referenced reusable observer contains a nested
+  branch-file job requesting `contents: write`; GitHub validates the reusable permission ceiling statically even when
+  `commit_run_file=false` skips that job.
+- **Correction/evidence:** the corrected caller granted the static union required by the reusable graph. Observer and
+  schema-validation jobs both passed in authoritative run `33199227974`.
+- **Stable-count rationale:** workflow startup failed before semantic execution; **+0 events / +0 recurrences**.
+  Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c2-TB-X2-CAND-02 — immutable package source materialized outside compiled fixture root — RESOLVED ORCHESTRATION / NON-STABLE
+
+- **Observed:** run/job `33198586715 / 98942044412` verified package/selector integrity and selected the frozen X2
+  identity exactly once, but its sole publication was `m3Cp4c2X2;prescribed sphere:fixture-load-failed`.
+- **Root cause:** the package source archive was extracted under runner temp. The precompiled producer-test binary
+  embeds fixture root `/home/runner/work/Directional/Directional`, the already-documented
+  `M2-CP2-TB-CAND-01` / `M3-CP2b-TB-CAND-01` orchestration class.
+- **Correction/evidence:** unchanged package `9696201700` and unchanged one-identity selector were used in run/job
+  `33199227974 / 98944212158`, with the exact embedded source archive materialized at the compiled fixture root.
+  Pre/postflight passed with every mutation flag false and the X2 publication was produced.
+- **Stable-count rationale:** runtime-environment/harness only; no product/test/fixture/selector/package semantic
+  mutation and no accepted behavior loss. **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c2-TB-X2-CAND-03 — report-only prescribed-sphere X2 publishes `CellularityNotEstablished` — ACTIVE / REVIEW-OWNED / NON-STABLE
+
+- **Observed raw evidence:** authoritative run/job `33199227974 / 98944212158` selected the frozen report-only X2
+  identity exactly once, process exit `1`, and published exactly one `m3Cp4c2X2` record. The complete raw record is
+  retained in `Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md`; it reports
+  `pipelineFailureStage=surface-cut-graph/CellularityNotEstablished`, `sourceEuler=2`,
+  `sourceBoundaryLoopCount=0`, `sourceGenus=0`, `networkTraceCount=24`, and `networkEventCount=56`.
+- **Boundary:** `TB-X2-EXEC` is evidence-only and may not interpret this publication or choose 357 versus 358.
+  `M3-CP4c-2-TB-X2-REV` owns comparison against the two frozen DEFN branches.
+- **Stable-count rationale:** the identity is explicitly non-gating/report-only and CP4c-2 has no accepted runtime
+  authority yet. No stable accepted-green regression is established by EXEC alone; **+0 events / +0 recurrences**
+  pending review. Totals remain **42 / 14 / 28**, debt **5**.
 
 
 ## M3-CP4c1-TB-R4-CAND-01 — C5 rejects current terminal-event witness union at two preconditions — **RESOLVED** / TEST-SIDE OVER-SPECIFICATION / NON-STABLE

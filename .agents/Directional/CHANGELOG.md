@@ -9,6 +9,29 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-TB-X2-EXEC`: frozen report-only X2 evidence preserved
+
+Artifact-only X2 execution is complete on immutable GMP package `9696201700` from semantic/test source
+`93d9d49f052fa481bd3a8ad8c9bf31eccda7705c`. Authoritative run/job `33199227974 / 98944212158` verified
+the package manifest, frozen selector identities/hashes, GMP provenance, compiled fixture source root, and
+pre/post byte-mode inventories. Exactly one frozen X2 identity executed; no C1/C3/C6 or cumulative gate identity
+ran. Configure, compile, relink, repair, generated discovery, and mutation were all false.
+
+The report-only process exited 1 and published exactly one raw `m3Cp4c2X2` record. The complete publication is
+retained verbatim in `Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md`; this EXEC turn makes no
+357/358 branch decision. Result/log artifacts are `9697052371 / 9697052810`, digests
+`524534f76d99500c91e921d81d9d38bc6f8607f379500cd976d0c9fa8600f22b /
+916fa2478d9bd3fc5ba42e3dd670c7373ed3e26a6fcc721a733063da42161719`.
+
+Two preceding controls were non-semantic orchestration failures: `33198406913` failed at startup because the
+reusable observer's static permission union was not granted, and `33198586715 / 98942044412` materialized
+packaged source outside the absolute fixture root embedded in the binary, yielding only `fixture-load-failed`.
+Both are resolved/non-stable in the regression tracker. Stable accounting remains **42 / 14 / 28**, debt **5**,
+M3 packages **58**.
+
+Exact next is **`M3-CP4c-2-TB-X2-REV`**, evidence review only. No cumulative 357/358 gate runtime has started.
+
+
 ## 2026-08-28 — `M3-CP4c-2-CB1`: certified A2a′ cut-graph authority compiled green
 
 `M3-CP4c-2-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic/test source
