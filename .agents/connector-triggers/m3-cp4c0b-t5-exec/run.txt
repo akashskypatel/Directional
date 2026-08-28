@@ -1,5 +1,0 @@
-turn=M3-CP4c-0b-TB-T5
-purpose=execute immutable CB3 package under U0-U7 plus enriched non-gating census
-package_id=9671190795
-required_selector_sha256=51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5
-retry=1

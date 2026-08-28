@@ -1,8 +1,0 @@
-# M3-CP4c-0b-TB-T5 final temporary-state cleanup
-.agents/connector-triggers/source-snapshot/t5-closeout-20260828.txt
-.agents/connector-triggers/m3-cp4c0b-t5-schema-validate
-.agents/connector-triggers/m3-cp4c0b-t5-exec
-.agents/connector-triggers/m3-cp4c0b-t5-closeout-apply
-.agents/Directional/turn-payloads/m3-cp4c0b-t5.py
-.agents/Directional/turn-payloads/m3-cp4c0b-t5-exec.yml
-.agents/Directional/turn-payloads/m3-cp4c0b-t5-schema-validate.yml
