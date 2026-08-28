@@ -1,0 +1,2 @@
+# M3-CP4c-0b TB-T5 temporary-state cleanup manifest
+.agents/connector-triggers/source-snapshot/t5-preflight-20260827.txt
