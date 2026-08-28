@@ -1,5 +1,5 @@
 turn=M3-CP4c-0b-CB3-INSTR
-purpose=apply preserved test-side/non-gating observability patch from Google Drive
-patch_sha256=5350cfeaeaaf5e4a6a7f26a6d7c3745867347c23116a2ef594e9fdc26f07f5e5
-base_sha=7fa64825cbf61c3e787075e9e5f5a44c96787426
-retry=0
+purpose=apply preserved CB3 closeout documentation patch from Google Drive
+patch_sha256=7fae50c21de83bafe67c5a140ab9066588da55243b37d06a639cf2fd20a67960
+base_sha=eb627c822899f628ce732f0a756d77976af698c4
+retry=1
