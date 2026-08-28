@@ -1,4 +1,0 @@
-turn=M3-CP4c-2-CB2-DIAG-R1
-purpose=materialize exact closeout source for durable documentation patch
-source_sha=15558811183be8d6c9cdf6fa3e70cfdc0b9e5b01
-retry=0
