@@ -9,6 +9,35 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-CB1`: certified A2a′ cut-graph authority compiled green
+
+`M3-CP4c-2-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic/test source
+`93d9d49f052fa481bd3a8ad8c9bf31eccda7705c`. The turn implemented `SurfaceCutGraph` between A2a and A2b,
+made `GlobalTopologyPlan` consume its certified source-edge cuts, shared the complementary-face partition
+traversal, updated `RemeshPipeline`, applied Amendment 12 to `DESIGN.md`, and authored X1/X2/X5/X6/X7
+checkpoint observations including the independent annulus measurement required by prediction 2. No post-region
+repair/re-cut, geometry insertion, tolerance-based topology decision, or `GlobalTopologyPlan` dependency was
+added to A2a′.
+
+Both X2-conditioned successor selectors are frozen without manufacturing a Code+Build runtime conclusion:
+**357** / `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` and **358** /
+`6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62`; the X2 report-only selector is
+**1** / `88af227b7c7ca78d2a6247624b3a5f860026cf50fd3c2bd6a215756b086dafc8`. Accepted 355 and its 316/346/353
+prefix hashes remain unchanged.
+
+Final compile run `33196876096` is green: changed-owner job `98936191472` and eight-target package job
+`98936799976` both PASS. Immutable GMP package `9696201700` has artifact digest
+`af3ebe2efaab66fed70de8d954cb5615abd9428f401ea974dffe1e14577c8097`, source archive
+`8694f0fb85d101e3c5862e5a6a8a8a3ed241c723fd229eb44f83844b30321687`, clean source-status snapshots,
+verified manifest, gmpxx/gmp linkage, and `runtimeExecution=false`. Two compile-only defects were corrected
+during the turn; no Directional runtime was executed. Stable accounting stays **42 / 14 / 28**, debt **5**;
+the immutable package advances M3 packages to **58**.
+
+Exact next is artifact-only **`M3-CP4c-2-TB-X2-EXEC`**, followed by X2 review and then the selected 357/358
+gate execution/review. Report: `Architecture_M3_CP4c2_CB1_Code_Build_Report.md`; plan:
+`Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md`.
+
+
 ## 2026-08-28 — `M3-CP4c-2-DEFN`: the torus network provably cannot bound discs; `SurfaceCutGraph` frozen
 
 Definition-only. No Directional runtime, build, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`.

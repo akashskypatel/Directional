@@ -148,52 +148,64 @@ whether/how that successor selector is frozen. CP4c-3 remains blocked.
 
 ## Current authority
 
-### M3-CP4c-1 TB-R5 — accepted runtime authority
+### M3-CP4c-2 CB1 — current build authority, runtime unaccepted
 
-- status: **COMPLETE / GATE GREEN 355/355 / CP4c-1 CLOSED / ACCEPTED**;
-- run/job: `33161644741 / 98817323175`;
-- semantic/test source: `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`;
-- immutable GMP package: `9675666067` / `63b66788…45ec17`;
-- required selector: **355** / `e9d88f11…5afeaa`; prefixes 316/346/353 all green; C4/C5 green;
-- W3 exact terminal-kind union/contributors: kinds 2/3/4, sphere/two-ring/sphere; torus none; mechanical `IncompleteCycleBasis`;
-- three historical diagnostics report-only; explicit two-ring report PASS; W5-retired identities absent;
-- immutable package/source postflight PASS; configure/compile/relink/repair/discovery/mutation all false;
-- result/log: `9681960334 / 9681960615`, digests `b8be035e…7a5d / 55ad320a…439b`;
-- retained report: `Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`;
-- closure authority: `M3_CP4c1_Closure_Record.md`.
+- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
+- semantic/test source: `93d9d49f052fa481bd3a8ad8c9bf31eccda7705c`;
+- compile run: `33196876096`;
+- changed-owner precompile job: `98936191472` — PASS;
+- immutable full-package job: `98936799976` — PASS;
+- immutable GMP package: `9696201700` /
+  `af3ebe2efaab66fed70de8d954cb5615abd9428f401ea974dffe1e14577c8097`;
+- packaged source archive:
+  `8694f0fb85d101e3c5862e5a6a8a8a3ed241c723fd229eb44f83844b30321687`;
+- compile result/log artifacts:
+  precompile `9696170230 / 9696170581`, package `9696201700 / 9696202046`;
+- exact arithmetic backend: GMP; gmpxx and gmp linked; build/preflight exit 0; all source-status snapshots empty;
+- package manifest verified; all eight required targets present; `runtimeExecution=false`;
+- accepted predecessor selector 355 and prefixes 316/346/353 unchanged;
+- frozen X2 candidates: 357 / `b896d0db…64dc70`, 358 / `6eda3aad…4fbe62`;
+- frozen X2 report-only selector: 1 / `88af227b…dafc8`;
+- report: `Architecture_M3_CP4c2_CB1_Code_Build_Report.md`;
+- TB plan: `Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md`.
 
-### Accepted predecessor and build provenance
+CB1 supplies compiled evidence only. It does **not** choose the 357/358 runtime gate and does not accept CP4c-2.
 
-CP4c-0b remains accepted at 353/353 (`33136084757 / 98736295227`), and CB4 remains the exact build provenance
-for the package TB-R5 consumed (`33145657048 / 98766007030`, source `b1ce8ad65952…a24747`, package
-`9675666067`). No later documentation/control commit changes semantic or build evidence provenance.
+### Accepted runtime predecessor
+
+`M3-CP4c-1-TB-R5` remains the current accepted runtime authority at **355/355**, run/job
+`33161644741 / 98817323175`, immutable GMP package `9675666067`, semantic/test source
+`b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. No CP4c-2 build result changes that accepted runtime authority.
 
 ## Standing product state
 
-- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and **CP4c-1 are CLOSED / ACCEPTED**.
-- Current accepted runtime is CP4c-1 TB-R5 **355/355** on package `9675666067` / source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`.
-- CP4c-1 C4/C5 are accepted at ordinals 354/355; exact 353/346/316 predecessor prefixes remain green.
-- `M3-CP4c1-TB-R4-CAND-01` is resolved test-side over-specification/non-stable; `CAND-03` is resolved TB-confirmed test-side inverted-precondition/non-stable.
-- `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable and owned by its previously recorded future measure; no CP4c-1 result changes it.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **57**.
-- **Exact next turn is `M3-CP4c-2-CB1`, Code + Build, runtime-free, under measures X0-X9.** CP4c-3 remains blocked.
+- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
+- CP4c-2 DEFN is complete and CB1 is **build-green / runtime-unaccepted**.
+- The new A2a′ `SurfaceCutGraph` product is compiled into package `9696201700`; runtime validation has not begun.
+- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**.
+- M3 packages are **58**.
+- **Exact next turn is `M3-CP4c-2-TB-X2-EXEC`.** It executes only the frozen report-only X2 diagnostic from
+  immutable package `9696201700`. No full 357/358 gate is authorized until `TB-X2-REV` selects the frozen branch.
+- CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/CB.md`. `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5.
+`load_next`: turn-based-coding-agent `references/turns/TB-EXEC.md`.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — **the frozen contract.** §5 the product, §7 measures X0-X9, §8 predictions, §4 Amendment 12.
-2. `src/geometry/GlobalTopologyPlan.cpp:1694-1746` — the complementary-component traversal to **reuse, not duplicate**, and the exact `UncutFaceComponentOrbitSeedNotUnique` site.
-3. `DESIGN.md` §§4.6 and 7.2 — the text Amendment 12 replaces; read before editing.
-4. `tests/FieldAlignedCurveNetworkTests.cpp` — `expect_cp4c_plan_disc_proofs` for the existing region-certificate shape (`boundaryWalkCount`, `sourceFacesConnected`, `eulerCharacteristic`, `proves_disc_topology`) that the cellularity certificate must mirror.
-5. `.agents/Directional/Architecture_M3_CP4c_Required_Green_Selector.txt` lines 317-322 — the exact C1-C6 allocation; C1/C6 are in scope, C3 pends X2, C2 is CP4c-3.
-6. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` — the accepted 355 predecessor order/hash that X0 must re-verify unchanged.
-7. `.agents/Directional/M3_CP4c1_Closure_Record.md` — accepted 355/355 authority, for provenance only.
-8. `TODO.md`, `Regression_Root_Cause_Tracker.md`, `.agents/Directional/CHANGELOG.md` — current task/accounting/history.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md` — exact immutable
+   execution/review sequence and stop rules.
+2. `.agents/Directional/Architecture_M3_CP4c2_CB1_Code_Build_Report.md` — exact source/package/build authority.
+3. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — X2 scope decision and §8 predictions.
+4. `.agents/Directional/Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — the **only** selector
+   authorized for the exact next EXEC subturn.
+5. immutable package artifact `9696201700` — download once, verify, execute artifact-only.
+6. `TODO.md`, `Regression_Root_Cause_Tracker.md`, and `.agents/Directional/CHANGELOG.md` — state/accounting.
 
-`M3-CP4c-2-DEFN` is planning only: no implementation/test/fixture/selector mutation, compile, or runtime.
+Do not preload production source for TB-X2-EXEC beyond the packaged source needed for immutable selector/source
+verification. Do not compile, repair, regenerate, mutate selectors/tests/fixtures, or execute the full gate in
+TB-X2-EXEC. After raw X2 evidence is preserved, exact next is `M3-CP4c-2-TB-X2-REV`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
