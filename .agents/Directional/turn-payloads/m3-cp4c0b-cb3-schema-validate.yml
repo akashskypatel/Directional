@@ -38,3 +38,10 @@ jobs:
       workflow_path: .agents/Directional/turn-payloads/m3-cp4c0b-cb3-instr-apply.yml
       retention_days: 7
     secrets: inherit
+
+  validate-compile-draft:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/m3-cp4c0b-cb3-instr-compile.yml
+      retention_days: 7
+    secrets: inherit
