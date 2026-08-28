@@ -1,2 +1,4 @@
 # M3-CP4c-0b TB-T5 temporary-state cleanup manifest
+# Finalized after all branch writes; this update intentionally triggers cleanup.
 .agents/connector-triggers/source-snapshot/t5-preflight-20260827.txt
+.agents/connector-triggers/m3-cp4c0b-t5-preflight-closeout-apply/run.txt
