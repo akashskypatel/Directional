@@ -7,6 +7,18 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-R2`. Artifact-only run/j
 
 
 
+## M3-CP4c2-TB-X2-R2-CAND-02 — D1 oracle computes Euler terms in two different complexes; sphere publication is self-contradictory — ACTIVE / TEST-AUTHORITY / MIXED-COMPLEX ACCOUNTING / NON-STABLE
+
+- **Observed:** in TB-X2-R2 run/job `33215632118 / 98998526420`, D1's prescribed-sphere record publishes **all 18** complement components as discs (each `χ=1`, one boundary cycle) **and** global terms `V=18`, `E=30`, `F=18` giving `18 − 30 + 18 = 6` against source `χ=2`.
+- **Why this is a contradiction, not a discrepancy:** if every component of the complement of an embedded graph is an open disc, the embedding is cellular by definition and `V − E + F = χ` is an identity, requiring `E − V = F − χ = 18 − 2 = **16**`. The publication reports `E − V = **12**`. **The deficit is exactly 4.** At least one of the disc verdicts, the vertex/edge counts, or the face count is false; they cannot all hold.
+- **Independent of CAND-01.** This blocker stands even if the torus rail authority is fixed, and it bears directly on Y5 Branch A, whose whole content is the proposition D1 was built to establish.
+- **Leading root cause, to be confirmed not assumed:** `F` counts source-face components separated by **whole source barrier edges**, while `V` and `E` appear to count the **network's abstract graph**, whose arcs cross face interiors. Two complexes, so Euler's identity does not hold between them. Because barriers cut along whole edges, the barrier partition over-cuts relative to the traces, and over-cutting a disc yields two discs — which is why the contradiction surfaces as a surplus rather than a failed disc test.
+- **The oracle inherited the error it was built to detect.** `Architecture_M3_CP4c2_TB_X2_Plan.md` required independence from `SurfaceCutGraph`, which D1 satisfied — it never calls the producer — but not independence from the *counting convention*, which is the actual suspect. Plan §2's "state what was counted" requirement was insufficient.
+- **The two-ring's passing result is uninformative**, not corroborating: under a defective convention an agreeing result is a coincidence, and the two-ring has 3 traces against the sphere's 24, exactly where the coarsening effect would be smallest.
+- **Owning correction:** `M3-CP4c-2-CB2-DIAG-R1` measures **Z2** (one named complex — the source-mesh barrier complex, `E=|B|`, `V=` source vertices incident to `B`, `F=` components after removing `B`), **Z3** (a mandatory self-consistency assertion: all-discs ⟺ `V−E+F==χ`, failing closed), and **Z7** (re-derive the two-ring rather than carry it forward). Record: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md` §3, §5.
+- **Closure condition:** the corrected oracle publishes self-consistent terms on all three witnesses under one named complex, with `oracleSelfConsistent=true`. Not closed by any product change.
+- **Stable-count rationale:** test-authority defect in a non-gating diagnostic; no accepted-green identity regressed and CP4c-2 has no accepted runtime authority. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
+
 ## M3-CP4c2-TB-X2-R2-CAND-01 — D1 torus control reconstructs atlas-barrier rails instead of product-authoritative rails — **ACTIVE / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE**
 
 - **Observed:** artifact-only R2 run/job `33215632118 / 98998526420` verified immutable package `9702321260`,
@@ -33,6 +45,10 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-R2`. Artifact-only run/j
 - **Stable-count rationale:** CP4c-2 is unaccepted, the failure is in new report-only diagnostic authority, and no
   accepted-green product behavior was lost. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**,
   debt **5**, M3 packages **59**.
+- **Review adjudication — CONFIRMED.** `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` upheld the control stop and confirmed the frozen `48/48` torus theorem remains product-authoritative: D1 never tested it, so nothing about it is in doubt. Record: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md` §2.
+- **Why it was invisible until the torus:** on the closed prescribed sphere and on the two-ring the two rail authorities agree, which is why the sphere's 24 traces / 56 events match production exactly. The substitution is detectable only on the one witness whose rails originate in the feature map.
+- **Third recurrence of one confusion.** The same `rails_from_atlas` versus pipeline `authoritativeRails` divergence was adjudicated in the CP4c-0b DG review and again in CB2's T1/T3 labelling. Measure **Z4** therefore requires a structural fix — one named rail accessor taking an explicit authority argument with **no default**, and `railAuthority=` published on every diagnostic record — rather than repairing this call site alone.
+- **Owning correction:** `M3-CP4c-2-CB2-DIAG-R1` measures **Z1** and **Z4**; closure requires the torus control to reproduce `48/48` **from authority**, never from an encoded constant (**Z5**).
 
 ## M3-CP4c2-TB-X2-CAND-01 — reusable observer permission ceiling caused startup failure — RESOLVED ORCHESTRATION / NON-STABLE
 

@@ -83,7 +83,60 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` — re-adjudicate the invalid Y4 control
+## Mandatory next turn — `M3-CP4c-2-CB2-DIAG-R1` — diagnostic correction, measures **Z0-Z9**
+
+`M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` is **COMPLETE / REVIEW GREEN**. Read
+`Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md` in full: §2 Finding A, §3 Finding B, §5 the
+normative complex, §6 the item-by-item adjudication of the proposal, §7 measures Z0-Z9, §8 predictions.
+
+**The R2 control stop is upheld and Finding 1 confirmed.** The frozen `48/48` torus theorem remains
+product-authoritative; D1 never tested it, so nothing about it is in doubt. `CB2-DIAG-R1` is **AUTHORIZED with
+amendments**.
+
+**The finding that matters most is not the torus control.** R2 recorded a second defect and correctly declined
+to adjudicate it. **D1's prescribed-sphere publication is internally self-contradictory, by exactly 4.** It
+reports all 18 complement components as discs *and* `18 - 30 + 18 = 6` against source `chi=2`. If every
+component is a disc the embedding is cellular by definition, so `E - V` must equal `F - chi = 16`; it reports
+12. At least one of the disc verdicts, the counts, or the face count is false. **This blocks Y5 independently
+of the torus and bears directly on Branch A.** Tracked as `M3-CP4c2-TB-X2-R2-CAND-02`.
+
+**The oracle inherited the error it was built to detect.** The X2 plan required independence from
+`SurfaceCutGraph`, which D1 satisfied — it never calls the producer — but not independence from the *counting
+convention*, which is the actual suspect. `F` counts source-face components separated by whole barrier edges,
+while `V` and `E` count the network's abstract graph whose arcs cross face interiors. Two complexes; Euler's
+identity does not hold between them. Because barriers cut along whole edges the partition over-cuts, and
+over-cutting a disc yields two discs — which is why the contradiction appears as a surplus rather than a failed
+disc test.
+
+**The normative complex is settled here: the source-mesh barrier complex.** `E = |B|`, `V =` source vertices
+incident to `B`, `F =` components of source faces after removing `B`. Three reasons: it is what A2b actually
+consumes at `GlobalTopologyPlan.cpp:1694-1704`; the frozen DEFN §5.2 already committed to source-edge-only
+cuts; and in it `V - E + F = chi` is a genuine identity rather than a coincidence.
+
+**Third recurrence of the rail-authority divergence.** `rails_from_atlas` versus pipeline `authoritativeRails`
+was adjudicated in the CP4c-0b DG review, again in CB2's T1/T3 labelling, and now here. **Z4** fixes it
+structurally — one named rail accessor taking an explicit authority argument with **no default**, and
+`railAuthority=` published on every diagnostic record — rather than repairing this one call site.
+
+**The two-ring's `networkOnlyCellular=true` is uninformative, not corroborating.** Under a defective convention
+an agreeing result is a coincidence, and the two-ring has 3 traces against the sphere's 24 — exactly where the
+coarsening effect would be smallest. **Z7** requires it re-derived, not carried forward.
+
+**Z3 is the single most valuable line in this correction:** a mandatory per-witness self-consistency assertion,
+*all components are discs* iff `V - E + F == chi_source`, failing closed with `oracleSelfConsistent=false`. It
+would have caught Finding B automatically instead of leaving it to a human reader.
+
+**Z5 — do not encode the answers.** Neither `48/48` nor any sphere outcome may be written in as a constant,
+special case, expected-value table, or witness-name branch. If the corrected oracle reproduces `48/48` only
+because it was told to, the correction has failed.
+
+**Z6 retry ordering is binding:** reproduce the torus control from the corrected authority, then pass Z3 on
+**all three** witnesses, and only then execute D2 and attempt Y5. A failure at either step is a stop.
+
+`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. `src/`, `include/`,
+`SurfaceCutGraph`, and selectors 355/357/358 are frozen.
+
+### Superseded — the R2 control stop as reported (retained for provenance)
 
 `M3-CP4c-2-TB-X2-R2` is **COMPLETE / PLANNED CONTROL STOP / NO Y5 BRANCH**. Artifact-only run/job
 `33215632118 / 98998526420` consumed immutable CB2-DIAG package `9702321260` from source
@@ -111,10 +164,9 @@ Result/log artifacts are `9703233161 / 9703233545`, digests
 X2 CAND-04 remains active/unlocalized because D2 never ran. Stable accounting remains **42 / 14 / 28**, debt
 **5**, packages **59**.
 
-**Exact next:** independent, runtime-free `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN`, governed by
-`Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md`. It must re-adjudicate X1 rail/count provenance and
-D1's global Euler authority. A bounded test-only `CB2-DIAG-R1` is only a conditional proposal pending that
-review. **Do not start frozen product CB3, rerun D1/D2, or run 355/357/358 during the review.**
+At the close of R2 the next turn was the independent review named above; **that review is complete** and has
+authorized the bounded test-only `CB2-DIAG-R1` with amendments under Z0-Z9. **Do not start frozen product CB3,
+rerun D1/D2 from the invalid package, or run 355/357/358.**
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
@@ -293,14 +345,15 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
   remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…b64fbe62`.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**;
   M3 packages **59**.
-- **Exact next canonical turn is `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN`.** It is independent review/planning only and
-  may not execute runtime, compile, mutate test/product source, start CB3, or run 355/357/358.
+- **Exact next canonical turn is `M3-CP4c-2-CB2-DIAG-R1`**, Code + Build, runtime-free, test/diagnostic source
+  only under measures Z0-Z9. It may not touch `src/`, `include/`, `SurfaceCutGraph`, or any selector, may not
+  start CB3, and may not run 355/357/358.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/REVIEW.md`
+- turn-based-coding-agent `references/turns/CB.md`; `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5
 
 `conditional_modules`:
 - unit-test review -> `modules/unit-testing/MODULE.md`
@@ -309,14 +362,16 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md` — exact next-turn authority; read in full.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Report.md` — raw R2 evidence and reviewed stop.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md` — binding Y1-Y5/Y4 stop rules.
-4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §2/§3/X1 product torus 48/48 authority.
-5. `tests/FieldAlignedCurveNetworkTests.cpp` plus pre-A2a rail-building owners in `src/pipeline/RemeshPipeline.cpp` — compare D1 fixture authority with production; no edits in Review.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R2 CAND-01 plus old X2 CAND-03/CAND-04.
-7. `.agents/Directional/LESSONS.md` fixture/witness, oracle, and authority sections.
-8. `TODO.md` / `CHANGELOG.md` — current state and durable accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md` — **the authorizing record**; §5 the normative complex, §7 measures Z0-Z9, §8 predictions.
+2. `tests/FieldAlignedCurveNetworkTests.cpp::cp4c_network_only_fixture` — the `rails_from_atlas` call Z1 replaces, and the D1 counting Z2 rewrites.
+3. `src/pipeline/RemeshPipeline.cpp` — `AdaptiveFeatureMapBuilder::build(...)` and `build_authoritative_surface_cell_rails(...)`, the production rail authority Z1 must use.
+4. `src/geometry/GlobalTopologyPlan.cpp:1694-1704` — the barrier partition that defines the normative complex; the oracle must count in the same one.
+5. `src/geometry/SurfaceCutGraph.cpp:109-120, 444-476` — `network_barriers` and the producer's mixed counts, for comparison only; **the oracle may not call it and this turn may not edit it.**
+6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §2/X1 the 48/48 authority, §5.2 the source-edge-only cut commitment, X6 idempotence.
+7. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Report.md` — raw R2 evidence.
+8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R2 CAND-01/CAND-02 plus X2 CAND-03/CAND-04.
+9. `.agents/Directional/LESSONS.md` fixture/witness, oracle, and authority sections.
+10. `TODO.md` / `CHANGELOG.md` — current state and durable accounting.
 
 Do not preload unrelated historical reports. Do not execute runtime, compile, CB3, or cumulative 355/357/358 gate work in the review.
 
