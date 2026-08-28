@@ -6998,6 +6998,261 @@ bool cp4c_has_node_provenance(const unsigned int provenance,
   return (provenance & static_cast<unsigned int>(value)) != 0U;
 }
 
+const char *cp4c_event_role_name(const FieldAlignedTraceEventRole role) {
+  switch (role) {
+  case FieldAlignedTraceEventRole::Interior:
+    return "Interior";
+  case FieldAlignedTraceEventRole::Origin:
+    return "Origin";
+  case FieldAlignedTraceEventRole::Terminal:
+    return "Terminal";
+  }
+  return "unknown";
+}
+
+void append_cp4c0b_terminus_observation(
+    std::ostringstream &report, const FieldAlignedCurveNetwork &network) {
+  std::size_t barrierTerminatingTraces = 0U;
+  std::size_t contactTerminatingTraces = 0U;
+  std::size_t singularityTerminatingTraces = 0U;
+  std::size_t exactlyOneTerminalKind = 0U;
+
+  report << ";traceCount=" << network.candidate_traces().size();
+  for (std::size_t index = 0U; index < network.candidate_traces().size(); ++index) {
+    const auto &trace = network.candidate_traces()[index];
+    const std::size_t terminalKindCount =
+        static_cast<std::size_t>(trace.terminalSingularity.has_value()) +
+        static_cast<std::size_t>(trace.terminalBarrier.has_value()) +
+        static_cast<std::size_t>(trace.terminalContact.has_value());
+    exactlyOneTerminalKind += static_cast<std::size_t>(terminalKindCount == 1U);
+    barrierTerminatingTraces +=
+        static_cast<std::size_t>(trace.terminalBarrier.has_value());
+    contactTerminatingTraces +=
+        static_cast<std::size_t>(trace.terminalContact.has_value());
+    singularityTerminatingTraces +=
+        static_cast<std::size_t>(trace.terminalSingularity.has_value());
+
+    report << ";trace[" << index << "]={id=" << trace.id.index()
+           << ",terminalKindCount=" << terminalKindCount << ",terminalKind=";
+    if (terminalKindCount != 1U) {
+      report << "none-or-multiple";
+    } else if (trace.terminalSingularity.has_value()) {
+      report << "terminalSingularity";
+    } else if (trace.terminalBarrier.has_value()) {
+      report << "terminalBarrier";
+    } else {
+      report << "terminalContact";
+    }
+    report << '}';
+  }
+  report << ";terminalKindsExactlyOne=" << exactlyOneTerminalKind << '/'
+         << network.candidate_traces().size()
+         << ";barrierTerminatingTraceCount=" << barrierTerminatingTraces
+         << ";contactTerminatingTraceCount=" << contactTerminatingTraces
+         << ";singularityTerminatingTraceCount=" << singularityTerminatingTraces;
+
+  report << ";nodeCount=" << network.nodes().size();
+  for (std::size_t index = 0U; index < network.nodes().size(); ++index) {
+    const auto &node = network.nodes()[index];
+    const unsigned int provenance = cp4c_node_provenance(network, node.id);
+    report << ";node[" << index << "]={id=" << node.id.index()
+           << ",provenanceMask=" << provenance
+           << ",singularity="
+           << (cp4c_has_node_provenance(provenance,
+                                        Cp4cNodeProvenance::Singularity)
+                   ? 1
+                   : 0)
+           << ",mandatoryEdgeEndpoint="
+           << (cp4c_has_node_provenance(
+                   provenance, Cp4cNodeProvenance::MandatoryEdgeEndpoint)
+                   ? 1
+                   : 0)
+           << ",contact="
+           << (cp4c_has_node_provenance(provenance, Cp4cNodeProvenance::Contact)
+                   ? 1
+                   : 0)
+           << '}';
+  }
+
+  std::map<FieldAlignedNetworkEventKind, std::size_t> eventKindHistogram;
+  std::size_t mutualTerminationEvents = 0U;
+  for (const auto &event : network.events()) {
+    ++eventKindHistogram[event.kind];
+    const std::size_t terminalIncidences = static_cast<std::size_t>(std::count_if(
+        event.incidences.begin(), event.incidences.end(), [](const auto &incidence) {
+          return incidence.role == FieldAlignedTraceEventRole::Terminal;
+        }));
+    mutualTerminationEvents += static_cast<std::size_t>(terminalIncidences == 2U);
+  }
+  report << ";eventKindHistogram={";
+  bool firstKind = true;
+  for (const auto &[kind, count] : eventKindHistogram) {
+    if (!firstKind) report << ',';
+    firstKind = false;
+    report << field_aligned_event_kind_name(kind) << '=' << count;
+  }
+  report << '}';
+  report << ";mutualTerminationEventCount=" << mutualTerminationEvents
+         << ";arrivalComparisonInconclusiveObserved="
+         << (mutualTerminationEvents != 0U ? 1 : 0)
+         << ";arrivalObservationBasis=two-terminal-non-self-contact-event";
+}
+
+void append_cp4c0b_guard_observation(
+    std::ostringstream &report,
+    const std::optional<FieldAlignedCurveNetworkErrorCode> errorCode) {
+  report << ";guardFired={N1="
+         << (errorCode == FieldAlignedCurveNetworkErrorCode::
+                              TraceCombinatorialRecurrenceExceeded
+                 ? 1
+                 : 0)
+         << ",N2="
+         << (errorCode == FieldAlignedCurveNetworkErrorCode::
+                              BranchContinuationExactMagnitudeExceeded
+                 ? 1
+                 : 0)
+         << ",N4="
+         << (errorCode == FieldAlignedCurveNetworkErrorCode::
+                              TraceStepBudgetExhausted
+                 ? 1
+                 : 0)
+         << '}';
+}
+
+TEST(ResolvedBranchCorrection,
+     FourTriangleFanTerminationCensusIsPublishedNonGating) {
+  std::ostringstream report;
+  report << "m3Cp4c0bV2"
+         << ";credit=none"
+         << ";owningMeasure=V2"
+         << ";witness=four-triangle-fan"
+         << ";railAuthority="
+         << cp4c_rail_authority_name(Cp4cRailAuthority::AtlasDerived);
+
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  if (!sourceAuthority.has_value()) {
+    report << ";status=source-authority-unavailable";
+    std::cout << report.str() << '\n';
+    return;
+  }
+  const CrossFieldResult field = make_index_one_singularity_field(mesh);
+  const auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, field);
+  if (!atlas) {
+    report << ";status=atlas-unavailable";
+    std::cout << report.str() << '\n';
+    return;
+  }
+  const auto rails = rails_from_atlas(mesh, atlas.value());
+  report << ";mandatoryEdgeCount=" << rails.size()
+         << ";singularityCount=" << atlas.value().singularities().size();
+
+  const auto networkBuild =
+      FieldAlignedCurveNetwork::make(mesh, *sourceAuthority, atlas.value(), rails);
+  if (!networkBuild) {
+    report << ";status=unreached";
+    append_cp4c0b_guard_observation(report, networkBuild.error().code);
+    report << ';';
+    append_network_error(report, networkBuild.error());
+    std::cout << report.str() << '\n';
+    return;
+  }
+
+  report << ";status=reached";
+  append_cp4c0b_guard_observation(report, std::nullopt);
+  append_cp4c0b_terminus_observation(report, networkBuild.value());
+  std::cout << report.str() << '\n';
+}
+
+TEST(ResolvedBranchCorrection,
+     TwoRingContactPairingCensusIsPublishedNonGating) {
+  std::ostringstream report;
+  report << "m3Cp4c0bV3"
+         << ";credit=none"
+         << ";owningMeasure=V3"
+         << ";witness=two-ring"
+         << ";railAuthority="
+         << cp4c_rail_authority_name(Cp4cRailAuthority::AtlasDerived);
+
+  const TriMesh mesh = make_cp3a_two_ring_skew_disc();
+  const auto sourceAuthority = make_source_authority(mesh);
+  if (!sourceAuthority.has_value()) {
+    report << ";status=source-authority-unavailable";
+    std::cout << report.str() << '\n';
+    return;
+  }
+  CrossFieldResult field;
+  make_cp3a_two_ring_index_one_field(mesh, field);
+  const auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, field);
+  if (!atlas) {
+    report << ";status=atlas-unavailable";
+    std::cout << report.str() << '\n';
+    return;
+  }
+  const auto rails = rails_from_atlas(mesh, atlas.value());
+  report << ";mandatoryEdgeCount=" << rails.size()
+         << ";singularityCount=" << atlas.value().singularities().size();
+
+  const auto networkBuild =
+      FieldAlignedCurveNetwork::make(mesh, *sourceAuthority, atlas.value(), rails);
+  if (!networkBuild) {
+    report << ";status=unreached";
+    append_cp4c0b_guard_observation(report, networkBuild.error().code);
+    report << ';';
+    append_network_error(report, networkBuild.error());
+    std::cout << report.str() << '\n';
+    return;
+  }
+
+  const auto &network = networkBuild.value();
+  report << ";status=reached";
+  append_cp4c0b_guard_observation(report, std::nullopt);
+  append_cp4c0b_terminus_observation(report, network);
+
+  std::size_t barrierEventIndex = 0U;
+  for (std::size_t eventIndex = 0U; eventIndex < network.events().size();
+       ++eventIndex) {
+    const auto &event = network.events()[eventIndex];
+    report << ";event[" << eventIndex << "]={kind="
+           << field_aligned_event_kind_name(event.kind)
+           << ",node=" << event.node.index()
+           << ",sourceFace=" << source_face_locus(event.sourceFace)
+           << ",sourceEdge=";
+    if (event.sourceEdge.has_value()) {
+      report << source_edge_locus(*event.sourceEdge);
+    } else {
+      report << "none";
+    }
+    report << ",incidences=[";
+    for (std::size_t incidenceIndex = 0U;
+         incidenceIndex < event.incidences.size(); ++incidenceIndex) {
+      if (incidenceIndex != 0U) report << ',';
+      const auto &incidence = event.incidences[incidenceIndex];
+      report << "{trace=" << incidence.trace.index()
+             << ",sourcePort=" << incidence.sourcePort.index()
+             << ",role=" << cp4c_event_role_name(incidence.role) << '}';
+    }
+    report << "]}";
+
+    if (event.kind != FieldAlignedNetworkEventKind::MandatoryBarrierTermination)
+      continue;
+    const bool hasPairedFirstContact = std::any_of(
+        network.events().begin(), network.events().end(), [&](const auto &candidate) {
+          return candidate.kind == FieldAlignedNetworkEventKind::FirstContact &&
+                 candidate.node == event.node &&
+                 candidate.sourceFace == event.sourceFace &&
+                 candidate.sourceEdge == event.sourceEdge;
+        });
+    report << ";barrierPairing[" << barrierEventIndex++ << "]={event="
+           << eventIndex << ",pairedFirstContact="
+           << (hasPairedFirstContact ? 1 : 0) << '}';
+  }
+  report << ";barrierTerminationEventCount=" << barrierEventIndex;
+  std::cout << report.str() << '\n';
+}
+
 TEST(TraceTerminationCorrection,
      TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded) {
   const Cp4cReachabilityObservation torus =
