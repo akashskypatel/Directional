@@ -21,25 +21,28 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-1-CB3` — diagnosability / witness observability under Z0-Z5
+## Current focus — `M3-CP4c-1-TB-R4` — artifact-only 355-identity acceptance
 
-`M3-CP4c-0b` is **CLOSED / ACCEPTED**. Authoritative artifact-only T5 run/job
-`33136084757 / 98736295227` consumed immutable GMP package `9671190795` from source
-`93059089881c8715a168a61968a8d6874ee1a670` and passed **353/353**, with accepted prefixes
-**316/316** and **346/346**, `zeroSelected=0`, zero escaping C++ exceptions, and immutable postflight PASS.
+`M3-CP4c-1-CB3` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The cumulative required selector is now
+**355** identities with SHA-256 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`.
+Its first 353 lines are byte-exact accepted CP4c-0b authority
+`51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`; first 346 and 316 also retain
+their accepted hashes. C4/C5 are ordinals 354/355 and remain gating. The five historical CP4c-1 diagnostics
+remain non-gating at `9f4f287e074d66da9d69c16e22320ed6fe161b6b09de4dc7dd0618741c7fb130`.
 
-The four non-gating U3/U4 identities also passed with zero gate credit. Fan: nodes 8, barrier traces 3,
-contact termini 0, mutual terminations 0, inconclusive comparisons 0, N1/N2/N4 all silent. Two-ring: nodes 9,
-barrier traces/events 3, FirstContact pairing 3/3, contact termini 0, mutual terminations 0, inconclusive
-comparisons 0, N1/N2/N4 all silent. The prescribed sphere publishes 24 traces. `T5-CAND-01`, the S2-S6
-accepted-authority exposure `P03-CAND-01`, and the transferred circulating-trace candidate are resolved without
-a stable-count change.
+Exact compiled evidence source is `66a065b5e07910568a317e24f0fc6b93d890d104`. Authoritative compile
+run/job `33139188595 / 98746005796` produced immutable GMP package/result artifact `9673249952`
+(`sha256:17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`); compile log `9673250286`
+(`sha256:cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9`). All eight standard
+targets compile/link, internal manifest 28/28, source status is clean, GMP/GMPXX linkage is present, and
+`runtimeExecution=false`. No product/test body/fixture/accepted expectation changed.
 
-Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **55**.
+Accepted runtime authority remains CP4c-0b T5 **353/353** until the next TB. Stable accounting remains
+**42 / 14 / 28**, produced-witness debt **5**, M3 packages **56**.
 
-**Exact next is `M3-CP4c-1-CB3` under Z0-Z5.** CP4c-1 is now unblocked. Its historical checkpoint-local
-318 selector contributes two C4/C5 identities not present in the accepted 353; the successor CB must preserve
-accepted authority while freezing its cumulative selector. Do not enter CP4c-2/3.
+**Exact next is artifact-only `M3-CP4c-1-TB-R4`.** Execute immutable package `9673249952`; require
+353/353 accepted-prefix green plus C4/C5 green for **355/355**; run the five diagnostics separately with
+zero gate credit; preserve immutable pre/postflight. Do not compile, repair, re-author C4/C5, or enter CP4c-2/3.
 
 - [x] `M3-CP4c-0-DEFN` — COMPLETE.
 - [x] `M3-CP4c-0-CB1` — COMPLETE / BUILD GREEN.
@@ -108,11 +111,12 @@ accepted authority while freezing its cumulative selector. Do not enter CP4c-2/3
 - [x] `M3-CP4c-0b-TB-T5-PREFLIGHT-REV` — **COMPLETE / REVIEW GREEN.** Upheld the blocker and authorized a bounded instrumentation CB under **V0-V7**. Two additive findings: both 353 identities that build the fan discard the result (`(void)build`, lines 6348 and 7044), and **six of the seven non-gating census identities are compiled but selected by nothing** — so part of the gap is selector-side and costs no code. Risk ranking inverted to ordinal 12 first; `T5-CAND-01` adjudicated. Record: `Architecture_M3_CP4c0b_TB_T5_Preflight_Independent_Review_Record.md`.
 - [x] `M3-CP4c-0b-CB3-INSTR` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Source `93059089881c8715a168a61968a8d6874ee1a670`; compile `33133572290`; immutable GMP package `9671190795` / `2901926c…5c1`; required selector unchanged 353 / `51ff96d7…ac6a5`; non-gating selector 4 / `d4224002…d9ad`; no `src/`/`include/` or accepted-identity change.
 - [x] `M3-CP4c-0b-TB-T5` (retry) — **COMPLETE / GATE GREEN 353/353 / CP4c-0b CLOSED / ACCEPTED.** Authoritative run/job `33136084757 / 98736295227`; accepted prefixes 316/316 and 346/346; four non-gating U3/U4 identities PASS with zero credit; immutable postflight PASS. Report: `Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md`.
-- [ ] `M3-CP4c-1-CB3` — **NEXT / CODE + BUILD under Z0-Z5.** CP4c-1 is unblocked by CP4c-0b closure. C4/C5 remain gating; rebase the checkpoint on current accepted authority without reopening re-homed Q8 criterion 3.
+- [x] `M3-CP4c-1-CB3` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Cumulative required selector 355 / `e9d88f11…fb5afeaa`; accepted 353 is the exact ordered prefix; C4/C5 ordinals 354/355; source `66a065b5e07910568a317e24f0fc6b93d890d104`; compile `33139188595 / 98746005796`; GMP package `9673249952`; no Directional runtime.
+- [ ] `M3-CP4c-1-TB-R4` — **NEXT / ARTIFACT-ONLY TEST + BENCHMARK.** Execute package `9673249952`; required 355 expected green; five non-gating diagnostics report-only; no build/relink/repair/mutation.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Accepted runtime authority is now `M3-CP4c-0b-TB-T5`: **353/353**, run/job `33136084757 / 98736295227`, required selector `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`, with accepted first-346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a` and first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **55**. `M3-CP4c-0` and `M3-CP4c-0b` are **CLOSED / ACCEPTED**. **Exact next is `M3-CP4c-1-CB3` under Z0-Z5.**
+Accepted runtime authority remains `M3-CP4c-0b-TB-T5`: **353/353**, run/job `33136084757 / 98736295227`, required selector `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`, with accepted first-346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a` and first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`. Current build authority is CP4c-1 CB3 source/package `66a065b5e07910568a317e24f0fc6b93d890d104 / 9673249952` with cumulative 355 selector `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **56**. `M3-CP4c-0` and `M3-CP4c-0b` are **CLOSED / ACCEPTED**. **Exact next is artifact-only `M3-CP4c-1-TB-R4`.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
@@ -185,7 +189,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab accepted at **316/316**; CP4c split into **CP4c-1 (318)**, **CP4c-2 (321)**, **CP4c-3 (322)**.
+- [ ] **M3 — field-aligned curve network.** CP4ab accepted at **316/316**; CP4c-0/0b advanced accepted authority to **353/353**; current CP4c-1 cumulative gate is **355 = 353 + C4/C5**; CP4c-2/3 remain blocked for definition.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.

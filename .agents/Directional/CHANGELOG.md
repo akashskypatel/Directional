@@ -8,6 +8,29 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-28 — `M3-CP4c-1-CB3`: cumulative 355 selector frozen, GMP compile green
+
+**Code + Build / COMPLETE / RUNTIME-FREE.** CP4c-1 was rebased onto accepted CP4c-0b authority without
+re-authoring C4/C5. The required selector is now **355** /
+`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`: first 353 are byte-exact
+accepted CP4c-0b selector `51ff96d7…ac6a5`, first 346 `20d3b0b1…3e46a`, first 316 `601ce2b6…0193c`,
+and ordinals 354/355 are C4/C5. The five-identity non-gating selector remains unchanged
+`9f4f287e…fb130`. No product implementation, test body, fixture, accepted expectation, or Q8 ownership changed.
+
+Selector apply run/job `33138991496 / 98745369305` produced applied commit
+`a12a171e347d0c1c7cd88df604e907a603223d58`. Exact compiled evidence source is
+`66a065b5e07910568a317e24f0fc6b93d890d104`. Authoritative compile run/job
+`33139188595 / 98746005796` passed all eight standard targets with GMP/GMPXX linkage, 28/28 internal
+manifest, clean source status, and `runtimeExecution=false`. Immutable package/result artifact
+`9673249952` has GitHub digest `17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`;
+compile log `9673250286` has digest `cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9`.
+
+Control-plane only: first compile caller `33139114617` ended in startup failure because its permission
+ceiling was below the reusable observer graph; zero compile/runtime occurred. The caller permission alone
+was corrected before the authoritative run. Stable accounting remains **42 / 14 / 28**, debt **5**,
+M3 packages **56**. Accepted runtime remains CP4c-0b T5 353/353. **Exact next: artifact-only
+`M3-CP4c-1-TB-R4` against package `9673249952`; required gate 355, five diagnostics zero-credit.**
+
 ## 2026-08-28 — `M3-CP4c-0b-TB-T5`: 353/353 green, CP4c-0b closed / accepted
 
 Authoritative artifact-only retry run/job `33136084757 / 98736295227` consumed immutable GMP package

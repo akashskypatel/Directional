@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-28 (**CP4c-0b CLOSED / ACCEPTED.** Artifact-only T5 run/job `33136084757 / 98736295227` passed the frozen 353 gate **353/353**, including predecessor prefixes 316/316 and 346/346, with U3/U4 green and immutable postflight PASS. Exact next is `M3-CP4c-1-CB3` under Z0-Z5.)
+**Status date:** 2026-08-28 (**CP4c-0b CLOSED / ACCEPTED; CP4c-1 CB3 BUILD GREEN.** Accepted runtime remains T5 `33136084757 / 98736295227` at **353/353**. CB3 froze cumulative CP4c-1 gate **355** / `e9d88f11…fb5afeaa` and compiled exact source `66a065b5…d104` into GMP package `9673249952`. Exact next is artifact-only `M3-CP4c-1-TB-R4`.)
 
 ---
 
@@ -72,7 +72,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 |---|---|---|---|
 | **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **Contract complete.** DEFN froze the continuation rule, DEFN-2 the grazing model, CB8 implemented it, CB9 landed deterministic cost guards. Closes on a green `M3-CP4c-0-TB-R9` against Q8 criteria **1, 4, 5** |
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
-| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5** (exact order/hash to be frozen by CB3) | **OPEN / UNBLOCKED.** Historical TB-R2 was 316/318; C4/C5 remain gating. CP4c-0b now owns and has accepted Q8 criteria 2/3. Next `M3-CP4c-1-CB3` under Z0–Z5. |
+| **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **OPEN / TB READY.** CB3 is build green on `66a065b5…d104` / GMP package `9673249952`; accepted 353 is the exact ordered prefix and C4/C5 remain gating. Next artifact-only `M3-CP4c-1-TB-R4`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **321 = 318 + C1 + C3 + C6** | needs `M3-CP4c-2-DEFN` first |
 | **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **322 = 321 + C2** | needs `M3-CP4c-3-DEFN` first |
 
@@ -99,9 +99,9 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 Historical CP4c turns, retained for provenance: `CB1` (wiring, W0–W5), `DG1` (the last diagnostic turn
 this project will run), `CB2` (W7–W9), `TB-R1` (VALID RED 316/322).
 
-CP4c-1's TB-R2 is **VALID RED 316/318** with the accepted 316 green in the same run. C4/C5 remain the only
-required blockers and **stay gating**; demotion to non-gating was considered and rejected. They cannot pass
-until CP4c-0 lands.
+CP4c-1's historical TB-R3 is **VALID RED 316/318** with the accepted 316 green in the same run. C4/C5 remain the only
+checkpoint-local required identities and **stay gating**; demotion to non-gating was considered and rejected. CP4c-0 and
+CP4c-0b have now landed and are accepted, so CB3 rebased the gate to 355 and the next artifact-only TB can adjudicate them.
 
 CP4c-0's artifact-only TB proves the exact-continuation focused gate **328/328**, but frozen Q8 is red:
 the prescribed sphere reaches A1 then A2a rejects `BranchContinuationDegenerateEntry` before network

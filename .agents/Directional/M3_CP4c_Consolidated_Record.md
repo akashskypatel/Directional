@@ -485,23 +485,43 @@ The cycle that identified the root cause, and it is a contract gap rather than a
 
 ---
 
-## 4. CP4c-1 — evidence (OPEN / UNBLOCKED after CP4c-0b acceptance)
+## 4. CP4c-1 — evidence (OPEN / TB READY after CB3 cumulative rebase)
 
 | Turn | Semantic source | Run / job | Package | Result |
 |---|---|---|---|---|
-| **CB** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32867889140`; jobs `97867532883`, `97867597370`, `97867694421`, `97868351487` — all PASS | `9570940997` (`23876c55e51b94ca3a1e5bcfb727a4c0cebce3294fcd2fbda21336b57ae1de16`) | BUILD GREEN |
-| **TB / TB-R2** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32872112507 / 97881418987`; result `9572545977` | `9570940997` | **VALID RED 316/318** |
+| **CB (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32867889140`; jobs `97867532883`, `97867597370`, `97867694421`, `97868351487` — all PASS | `9570940997` (`23876c55e51b94ca3a1e5bcfb727a4c0cebce3294fcd2fbda21336b57ae1de16`) | BUILD GREEN |
+| **TB / TB-R3 (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32872112507 / 97881418987`; result `9572545977` | `9570940997` | **VALID RED 316/318** |
+| **CB3 cumulative rebase (current)** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33139188595 / 98746005796` | `9673249952` / `17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`; log `9673250286` / `cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9` | **BUILD GREEN / RUNTIME-FREE** |
 
-Selectors: required 318 `2f2c24acab0e891273c170c82cdc31b6afa3ae4d43e93c95dbdf6d90a88f45bc`; accepted 316-prefix
-`601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; non-gating 5
+Historical checkpoint-local selector was 318 /
+`2f2c24acab0e891273c170c82cdc31b6afa3ae4d43e93c95dbdf6d90a88f45bc`, with accepted 316 prefix
+`601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`. Historical/current
+non-gating selector remains 5 /
 `9f4f287e074d66da9d69c16e22320ed6fe161b6b09de4dc7dd0618741c7fb130`.
 
-C4/C5 remain the only checkpoint-local required blockers and **stay gating** — demotion to non-gating was considered and
-rejected. CP4c-0 and CP4c-0b are now accepted, so CP4c-1 is unblocked. The accepted 353 and historical 318
-selectors have exactly two non-overlapping CP4c-1 required identities (C4/C5), giving a 355-identity set union;
-the successor CB owns the exact cumulative order/hash. Next turn is `M3-CP4c-1-CB3` under measures Z0–Z5, whose
-root-cause record (the Cartesian-product defect) is inlined in
-`Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`.
+After CP4c-0 and CP4c-0b acceptance, CB3 froze the cumulative required selector at **355** /
+`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`. Its first **353** lines are
+byte-exact accepted CP4c-0b authority `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
+the first 346 and first 316 retain their accepted hashes. C4/C5 are exactly ordinals 354/355 and remain
+gating:
+
+1. `FieldAlignedCurveNetwork.RejectsTamperedTraceIntersectionCrossing`
+2. `FieldAlignedCurveNetwork.EveryTraceTerminatesAtATypedEventKindThatIsActuallyProduced`
+
+CB3 changed no product implementation, test body, fixture, accepted expectation, or non-gating selector.
+All eight standard targets compiled/linked with GMP/GMPXX, package manifest 28/28, clean source status,
+and `runtimeExecution=false`. A first compile caller `33139114617` failed at workflow startup because its
+permission ceiling was below the reusable observer graph; only the caller permission changed before the
+authoritative compile.
+
+C4/C5 remain the only checkpoint-local required blockers and **stay gating**. The accepted 353 predecessor
+is now their frozen ordered prefix. Exact next is artifact-only **`M3-CP4c-1-TB-R4`** against package
+`9673249952`, requiring 353/353 accepted-prefix green plus C4/C5 green for **355/355**. The five diagnostics
+remain report-only with zero gate credit. Stable accounting remains **42 / 14 / 28**, debt **5**, packages
+**56**. CP4c-2/3 are not entered.
+
+Root-cause history for the Cartesian-product continuation defect and Z0-Z5 measurements remains in this
+record and `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`; CB3 does not re-litigate it.
 
 ---
 

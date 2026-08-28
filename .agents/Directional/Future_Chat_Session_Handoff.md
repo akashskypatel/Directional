@@ -83,27 +83,53 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-1-CB3` — Code + Build under **Z0-Z5**
+## Mandatory next turn — `M3-CP4c-1-TB-R4` — artifact-only Test + Benchmark
 
-`M3-CP4c-0b` is **CLOSED / ACCEPTED**. Read `M3_CP4c0b_Closure_Record.md`,
-`Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md`, then
-`M3_CP4c_Consolidated_Record.md` §4 for CP4c-1's retained evidence and Z0-Z5 successor boundary.
+`M3-CP4c-1-CB3` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The cumulative CP4c-1 required
+selector is now frozen at **355** identities: the accepted CP4c-0b 353-line selector is the exact
+ordered prefix, followed only by C4 and C5.
 
-**Accepted authority:** T5 run/job `33136084757 / 98736295227` on immutable GMP package `9671190795`
-from semantic/test source `93059089881c8715a168a61968a8d6874ee1a670`; required 353 selector
-`51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`; accepted prefixes 316/316 and
-346/346; full gate 353/353; U3/U4 PASS; immutable postflight PASS; zero escaping C++ exceptions.
-Result/log artifacts `9672113006 / 9672113408` with digests `7f582a03…c1af53 / 91754edb…1aea458`.
+**CB3 evidence authority:** exact compiled source `66a065b5e07910568a317e24f0fc6b93d890d104`;
+compile run/job `33139188595 / 98746005796`; immutable GMP package artifact `9673249952`,
+GitHub digest `sha256:17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`;
+persistent log artifact `9673250286`, digest
+`sha256:cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9`.
+All eight standard targets compiled/linked, internal manifest 28/28, source status clean,
+GMP/GMPXX linkage present, and `runtimeExecution=false`.
 
-CP4c-1 is now **OPEN / UNBLOCKED**. Its historical 318 selector is the accepted-316 prefix plus C4/C5;
-C4/C5 are the only two identities in that selector absent from the accepted 353, so the set union is 355.
-The successor CB must preserve current accepted authority and deliberately freeze the cumulative selector/order/hash;
-this closeout does not author that selector. Re-homed Q8 criterion 3 remains owned and accepted by CP4c-0b.
-Do not enter CP4c-2/3.
+**Gate authority:** full 355 selector
+`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`;
+first 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
+first 346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`;
+first 316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`.
+C4/C5 are ordinals 354/355 and remain gating. The historical five-identity non-gating selector remains
+`9f4f287e074d66da9d69c16e22320ed6fe161b6b09de4dc7dd0618741c7fb130` and grants zero gate credit.
 
-Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **55**.
+Accepted runtime authority remains CP4c-0b T5 **353/353** until TB-R4 executes. TB-R4 must consume
+package `9673249952` artifact-only, re-prove the accepted 353/353 prefix, execute C4/C5 without
+re-authoring, report the five non-gating diagnostics separately, and preserve immutable pre/postflight.
+Expected required result is **355/355**; any semantic red leaves CP4c-1 open. Do not enter CP4c-2/3
+before CP4c-1 is adjudicated.
+
+Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **56**.
 
 ## Current authority
+
+### M3-CP4c-1 CB3 — current build authority
+
+- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
+- exact evidence source: `66a065b5e07910568a317e24f0fc6b93d890d104`;
+- selector apply run/job: `33138991496 / 98745369305`; applied selector commit `a12a171e347d0c1c7cd88df604e907a603223d58`;
+- cumulative required selector: **355** / `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`;
+- accepted prefixes: 353 / `51ff96d7…ac6a5`, 346 / `20d3b0b1…3e46a`, 316 / `601ce2b6…0193c`;
+- C4/C5 are ordinals 354/355 and remain gating; no test body, fixture, accepted expectation, or product semantic changed;
+- non-gating selector unchanged: 5 / `9f4f287e…fb130`;
+- authoritative compile run/job: `33139188595 / 98746005796` — PASS;
+- immutable GMP package/result artifact: `9673249952` / `17a3f8da…42d2ea`; compile log `9673250286` / `cffa6fc4…df32b9`;
+- all eight standard targets compile/link; internal manifest 28/28; packaged source archive `3ba7e745…70c628`; source status clean; `runtimeExecution=false`;
+- first compile caller `33139114617` was startup-only permission-ceiling failure, zero compile/runtime; corrected control plane only;
+- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**;
+- exact successor: artifact-only `M3-CP4c-1-TB-R4`.
 
 ### M3-CP4c-0b T5 — accepted runtime authority
 
@@ -284,21 +310,21 @@ Latest accepted runtime is CP4c-0b T5 **353/353**, run/job `33136084757 / 987362
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
-- CP4c-1 is **OPEN / UNBLOCKED**; exact next is `M3-CP4c-1-CB3` under Z0-Z5. It no longer owns re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
-- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **55**.
-- **Exact next turn is `M3-CP4c-1-CB3` under Z0-Z5.**
+- CP4c-1 is **OPEN / TB READY**; CB3 froze the cumulative 355 selector and compiled it successfully. It no longer owns re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
+- Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**.
+- **Exact next turn is artifact-only `M3-CP4c-1-TB-R4`.**
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/CB.md`.
+`load_next`: turn-based-coding-agent `references/turns/TB.md`.
 
-Minimum successor context after the mandatory durable policy/start checklist and `GMP_COMPILE_POLICY.md`:
+Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/M3_CP4c0b_Closure_Record.md` — accepted predecessor authority and exact successor.
-2. `.agents/Directional/Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md` — final 353/353 and U3/U4 evidence.
-3. `.agents/Directional/M3_CP4c_Consolidated_Record.md` §4 — CP4c-1 historical CB/TB evidence, C4/C5 blockers, and Z0-Z5 successor boundary.
-4. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` and `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` — historical checkpoint-local selectors; compare against accepted CP4c-0b 353 before authoring the cumulative successor selector.
-5. `TODO.md`, `ROADMAP.md`, and `Regression_Root_Cause_Tracker.md` — current task/gate/candidate authority.
+1. `.agents/Directional/Architecture_M3_CP4c1_CB3_Code_Build_Report.md` — exact CB3 semantic/build authority.
+2. `.agents/Directional/Architecture_M3_CP4c1_CB3_Artifact_Only_Test_Benchmark_Plan.md` — executable TB-R4 plan and stop rules.
+3. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` and `Architecture_M3_CP4c1_Non_Gating_Diagnostic_Selector.txt` — frozen 355 required gate and five report-only diagnostics.
+4. `.agents/Directional/Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md` — accepted 353/353 predecessor runtime authority.
+5. `.agents/Directional/M3_CP4c_Consolidated_Record.md` §4, `TODO.md`, `.agents/Directional/ROADMAP.md`, and `.agents/Directional/Regression_Root_Cause_Tracker.md` — checkpoint history, task state, trajectory, and candidate authority.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
