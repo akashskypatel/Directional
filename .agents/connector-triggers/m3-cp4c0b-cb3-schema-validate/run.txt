@@ -1,0 +1,3 @@
+turn=M3-CP4c-0b-CB3-INSTR
+purpose=validate temporary caller drafts before workload publication
+retry=0
