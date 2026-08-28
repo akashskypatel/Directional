@@ -1,0 +1,5 @@
+turn=M3-CP4c-2-TB-X2-R2
+subturn=TB-X2-R2-EXEC
+source_sha=62603fca675a8add645b9935dcfb7e34908ba0a1
+pr=8
+purpose=exact-source-snapshot
