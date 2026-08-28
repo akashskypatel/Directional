@@ -4449,7 +4449,7 @@ independent_network_complement_topology(
     }
   }
 
-  std::vector<std::array<Edge, 3>> faceEdges(faceCount);
+  std::vector<std::vector<Edge>> faceEdges(faceCount);
   std::map<Edge, std::vector<std::size_t>> incidentFaces;
   for (std::size_t face = 0U; face < faceCount; ++face) {
     for (int corner = 0; corner < 3; ++corner) {
@@ -4458,8 +4458,8 @@ independent_network_complement_topology(
           mesh.F(static_cast<int>(face), corner),
           mesh.F(static_cast<int>(face), next), vertexCount);
       if (!edge.has_value()) return {};
-      faceEdges[face][static_cast<std::size_t>(corner)] = *edge;
-      incidentFaces[*edge].push_back(face);
+      faceEdges[face].push_back(edge.value());
+      incidentFaces[edge.value()].push_back(face);
     }
   }
   for (auto &[edge, incident] : incidentFaces) {
