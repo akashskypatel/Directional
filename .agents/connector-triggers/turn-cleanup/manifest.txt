@@ -1,0 +1,5 @@
+# M3-CP4c-2-CB2-DIAG temporary repository state
+.agents/connector-triggers/m3-cp4c2-cb2-diag-source-snapshot
+.agents/connector-triggers/m3-cp4c2-cb2-diag-source-apply
+.agents/connector-triggers/m3-cp4c2-cb2-diag-compile
+.agents/connector-triggers/m3-cp4c2-cb2-diag-closeout-apply
