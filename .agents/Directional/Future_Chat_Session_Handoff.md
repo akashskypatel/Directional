@@ -83,27 +83,38 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R2` — artifact-only D1/D2 execution and Y1-Y5 review
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` — re-adjudicate the invalid Y4 control
 
-`M3-CP4c-2-CB2-DIAG` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The authoritative source evidence commit is `232ac459b13657529e064272a75c5583770a5963`. It changes only `tests/FieldAlignedCurveNetworkTests.cpp` and adds the two non-gating diagnostics specified by the frozen `Architecture_M3_CP4c2_TB_X2_Plan.md`:
+`M3-CP4c-2-TB-X2-R2` is **COMPLETE / PLANNED CONTROL STOP / NO Y5 BRANCH**. Artifact-only run/job
+`33215632118 / 98998526420` consumed immutable CB2-DIAG package `9702321260` from source
+`232ac459b13657529e064272a75c5583770a5963`. Exact package/source/GMP/target/selector preflight and postflight
+passed; runtime metadata records no rebuild, relink, fixture mutation, generated discovery, or benchmark.
 
-1. `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable` — independent exact network-complement arrangement for prescribed sphere, torus, and two-ring. D1 has **zero `SurfaceCutGraph` calls/reuse** and publishes `m3Cp4c2Y1` with source/network counts and per-component disc evidence.
-2. `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable` — prescribed-sphere D2. It independently computes D1 first, test-side re-derives the current producer accounting, publishes the 419/437/474 site and all `V/E/F/chi` terms as `m3Cp4c2Y2`, then compares that localization with the actual product error/locus.
+D1 ran exactly once and published the prescribed-sphere, torus, and two-ring Y1 records with
+`surfaceCutGraphCalls=0`. The fixed Y4 torus control then failed: D1 reported `networkV=0`, `networkE=0`,
+`sourceChi=0`, non-cellular; frozen X1/Y4 requires `V=48`, `E=48`, `chi=0`, non-cellular. The R2 plan therefore
+required STOP and D2 was correctly skipped. Y2/Y3 are unavailable, `selected_r2_branch=NONE`,
+`selected_gate=NONE`, and cumulative gate runtime is still forbidden.
 
-Authoritative compile run/job is `33212932401 / 98990159075`. Immutable artifact-only runtime package is `9702321260` / `sha256:05237f108a65c73df81b6b125d6fcecad10ad9b5af4104ecce3c6bb9f6642035`; compile log artifact `9702321551` / `sha256:236458a4146ebec93638065a0f55500e8bb77dbf216d1d7b942f667be4070ab3`; packaged source archive SHA-256 `986db8b91d06eab4284f3a0e49c1d8c9ad2676df61fdfdd4a94e56ba34a5644f`. The eight required targets compiled/link successfully with GMP/GMPXX, package manifest verified, all source-status snapshots are empty, and metadata states `runtimeExecution=false`, `turnBoundary=Code+Build-only`, `exactArithmeticBackend=GMP`.
+Static evidence gives the review its first concrete question: D1's `cp4c_network_only_fixture` uses
+`rails_from_atlas`, while production builds feature-map-derived `authoritativeRails`, and the prior product
+observer consumes those product rails. Frozen DEFN §2/X1 explicitly records the production torus's 48
+`HardFeature` mandatory edges / 48 structural nodes. The D1 torus therefore did not instantiate the same rail
+witness whose count it was required to reproduce. Raw sphere D1 additionally reports 18 individually disc
+components but global `V/E/F=18/30/18`, `chi=6` versus source `2`; independent review must decide whether those
+terms belong to one Euler complex.
 
-**The exact next subturn is `M3-CP4c-2-TB-X2-R2-EXEC`.** Read `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md` in full and consume artifact `9702321260` without rebuild, configure, relink, fixture mutation, or generated discovery. Preflight must reproduce the exact source/GMP/target/selector identities before executing any binary.
+Result/log artifacts are `9703233161 / 9703233545`, digests
+`6b13e0bcddc3ffeba93077b6b1115bc8a400b9b9a6051d83df01ac11bec191f7 /
+19975ef0fc0e154e02326827287fd60a3a7813b10cda1fe20840e60a072d3c1b`. Tracker candidate
+`M3-CP4c2-TB-X2-R2-CAND-01` is **ACTIVE / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE**; prior
+X2 CAND-04 remains active/unlocalized because D2 never ran. Stable accounting remains **42 / 14 / 28**, debt
+**5**, packages **59**.
 
-Execute exactly two fresh processes, in order:
-
-- `--gtest_filter=GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable`
-- `--gtest_filter=GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable`
-
-Preserve complete stdout/stderr and the full `m3Cp4c2Y1` / `m3Cp4c2Y2` records. The torus control is fixed: `networkV=48`, `networkE=48`, `sourceChi=0`, `networkOnlyCellular=false`; any control mismatch is a hard stop. D2 must report `localizationConsistent=true` or R2 stops as evidence conflict.
-
-After EXEC, `TB-X2-R2-REVIEW` performs no new runtime. It must adjudicate Y1 independent cellularity, Y2 exact 419/437/474 site, Y3 the unit-mismatch/coarsening hypothesis from actual numbers, Y4 the torus control, and Y5 exactly one already-frozen corrective branch (or `NONE` with an explicit blocker). **Do not invent a fourth branch.**
-
-`selected_gate=NONE` and `gate_execution_authorized=false` throughout R2. Do not run selector 355/357/358, the cumulative suite, mechanical/C2, CP4c-3, or post-certificate A2b here. Corrective `CB3` begins only after R2 review selects Y5, and is outside this turn.
+**Exact next:** independent, runtime-free `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN`, governed by
+`Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md`. It must re-adjudicate X1 rail/count provenance and
+D1's global Euler authority. A bounded test-only `CB2-DIAG-R1` is only a conditional proposal pending that
+review. **Do not start frozen product CB3, rerun D1/D2, or run 355/357/358 during the review.**
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
@@ -168,6 +179,22 @@ CP4c-3 remains blocked until CP4c-2 closure.
 
 ## Current authority
 
+### M3-CP4c-2 TB-X2-R2 — current runtime evidence, control-invalid
+
+- status: **COMPLETE / PLANNED Y4 CONTROL STOP / NO BRANCH SELECTED**;
+- evidence source/package: `232ac459b13657529e064272a75c5583770a5963 / 9702321260`;
+- runtime run/job: `33215632118 / 98998526420`;
+- result/log artifacts: `9703233161 / 9703233545`;
+- result/log digests: `6b13e0bcddc3ffeba93077b6b1115bc8a400b9b9a6051d83df01ac11bec191f7 /
+  19975ef0fc0e154e02326827287fd60a3a7813b10cda1fe20840e60a072d3c1b`;
+- D1: one selected process, exit 0, three Y1 publications, zero `SurfaceCutGraph` calls;
+- Y4: **FAIL** — torus `V/E=0/0`, required `48/48`; source chi 0 and non-cellular agree only qualitatively;
+- D2/Y2/Y3: **NOT RUN / UNAVAILABLE** under the binding stop rule;
+- Y5: `selected_r2_branch=NONE`;
+- gate: `selected_gate=NONE`, `gate_execution_authorized=false`;
+- report: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Report.md`;
+- next review plan: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md`.
+
 ### M3-CP4c-2 CB2-DIAG — current build authority, runtime unaccepted
 
 - status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
@@ -186,7 +213,7 @@ CP4c-3 remains blocked until CP4c-2 closure.
 - report: `Architecture_M3_CP4c2_CB2_DIAG_Code_Build_Report.md`;
 - exact TB plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB2-DIAG supplies compiled diagnostic authority only. Runtime interpretation begins only in artifact-only `TB-X2-R2`.
+CB2-DIAG supplies compiled diagnostic authority only. The R2 runtime interpretation and control stop are recorded in the current subsection above.
 
 
 ### M3-CP4c-2 CB1 — preceding build authority, runtime unaccepted
@@ -257,34 +284,41 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN, CB1, old X2 EXEC+REV+PLAN, and CB2-DIAG are complete. CB2-DIAG is **build-green / runtime-unaccepted** at `232ac459b13657529e064272a75c5583770a5963`.
-- Current immutable diagnostic package is `9702321260`; no runtime binary from that package has executed yet.
+- CP4c-2 DEFN, CB1, old X2 EXEC+REV+PLAN, CB2-DIAG, and TB-X2-R2 are complete. R2 is **control-invalid** and
+  produced no Y5 corrective branch.
 - Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**.
-- `selected_gate=NONE`; cumulative CP4c-2 gate runtime has not begun. Frozen candidates remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…4fbe62`.
-- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**.
-- M3 packages are **59**.
-- **Exact next canonical turn is `M3-CP4c-2-TB-X2-R2`; exact next subturn is `M3-CP4c-2-TB-X2-R2-EXEC`.** It is artifact-only and may not rebuild or mutate implementation/test/fixture/build logic.
+- Current CP4c-2 runtime evidence is R2 run/job `33215632118 / 98998526420`, artifacts `9703233161 / 9703233545`;
+  it is diagnostic evidence only, not checkpoint acceptance.
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; cumulative CP4c-2 gate runtime has not begun. Frozen candidates
+  remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…b64fbe62`.
+- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**;
+  M3 packages **59**.
+- **Exact next canonical turn is `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN`.** It is independent review/planning only and
+  may not execute runtime, compile, mutate test/product source, start CB3, or run 355/357/358.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TB-EXEC.md`
+- turn-based-coding-agent `references/turns/REVIEW.md`
 
 `conditional_modules`:
-- GitHub connector/Actions artifact work -> `modules/github-connector/MODULE.md`
+- unit-test review -> `modules/unit-testing/MODULE.md`
+- implementation/corrective planning -> `modules/engineering-guidelines/MODULE.md`
+- GitHub source/evidence inspection -> `modules/github-connector/MODULE.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md` — **execution authority for the exact next subturn**; read in full.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Plan.md` — frozen Y0-Y9 decision logic; especially Y1-Y5 and the no-injection/no-gate sequencing rules.
-3. `.agents/Directional/Architecture_M3_CP4c2_CB2_DIAG_Code_Build_Report.md` — exact source/package/GMP/selector provenance and new diagnostic identities.
-4. Immutable compile artifact `9702321260` from run/job `33212932401 / 98990159075` — source `232ac459b13657529e064272a75c5583770a5963`; **download/verify once, do not rebuild**.
-5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Review_Record.md` — why the prior X2 could not choose a branch.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — CAND-03 resolved measurement defect and active CAND-04 prescribed-sphere product failure; update only if R2 runtime evidence justifies classification/count changes.
-7. `TODO.md` and `.agents/Directional/CHANGELOG.md` — current state/accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md` — exact next-turn authority; read in full.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Report.md` — raw R2 evidence and reviewed stop.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md` — binding Y1-Y5/Y4 stop rules.
+4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §2/§3/X1 product torus 48/48 authority.
+5. `tests/FieldAlignedCurveNetworkTests.cpp` plus pre-A2a rail-building owners in `src/pipeline/RemeshPipeline.cpp` — compare D1 fixture authority with production; no edits in Review.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R2 CAND-01 plus old X2 CAND-03/CAND-04.
+7. `.agents/Directional/LESSONS.md` fixture/witness, oracle, and authority sections.
+8. `TODO.md` / `CHANGELOG.md` — current state and durable accounting.
 
-Do not preload sibling turn files or unrelated historical reports. Do not execute cumulative 355/357/358 runtime, corrective CB3, or CP4c-3 from the EXEC subturn.
+Do not preload unrelated historical reports. Do not execute runtime, compile, CB3, or cumulative 355/357/358 gate work in the review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

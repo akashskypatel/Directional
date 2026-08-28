@@ -2,9 +2,37 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-REV`. Review of authoritative report-only X2 run/job `33199227974 / 98944212158` found that the evidence fits **neither** frozen 357/358 branch: the diagnostic never independently measured network-only cellularity and never reached post-certificate A2b behavior. No gate is selected and cumulative gate runtime remains blocked. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **58**.
+Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-R2`. Artifact-only run/job `33215632118 / 98998526420` stopped on the plan's fixed Y4 torus control: D1 published `V=0, E=0, chi=0, non-cellular`, not frozen/product `V=48, E=48, chi=0, non-cellular`. D2 was correctly skipped, `selected_r2_branch=NONE`, and `selected_gate=NONE`. `M3-CP4c2-TB-X2-R2-CAND-01` records the diagnostic rail-authority/fixture mismatch as non-stable. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **59**.
 
 
+
+
+## M3-CP4c2-TB-X2-R2-CAND-01 — D1 torus control reconstructs atlas-barrier rails instead of product-authoritative rails — **ACTIVE / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE**
+
+- **Observed:** artifact-only R2 run/job `33215632118 / 98998526420` verified immutable package `9702321260`,
+  executed D1 exactly once, and published all three Y1 records. The fixed torus control then reported
+  `networkV=0`, `networkE=0`, `sourceChi=0`, `networkOnlyCellular=false` instead of the frozen/product theorem's
+  `V=48`, `E=48`, `chi=0`, non-cellular. The plan required STOP; D2 was not executed.
+- **Root cause:** `cp4c_network_only_fixture(...)` reconstructs D1 rails via test helper
+  `rails_from_atlas(mesh, atlas)`. Production constructs an `AdaptiveFeatureMap` and then calls
+  `build_authoritative_surface_cell_rails(...)`; the prior product observer explicitly consumes
+  `products.authoritativeRails`. DEFN §2/X1 records the production torus as 48 `HardFeature` mandatory edges /
+  48 structural nodes. D1 therefore attached the production witness name and frozen expected counts to a
+  differently produced rail/network authority without proving equivalence.
+- **Secondary review gap:** prescribed-sphere D1 reports all 18 complementary components as discs but combines
+  `networkV=18`, `networkE=30`, `networkF=18` into `networkChi=6` against source `chi=2`. R2 does not adjudicate
+  whether those V/E/F terms belong to one Euler complex because Y4 already invalidated the oracle/control. The
+  next independent review must settle that count authority before a test correction.
+- **Impact:** Y1 is raw/control-invalid evidence only; Y2/Y3 are unavailable; Y5 is `NONE`. No Branch A/B/C,
+  product correction, or cumulative gate is authorized. Existing X2 CAND-04 remains active/unlocalized.
+- **Correction ownership:** `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` must re-adjudicate X1 rail provenance and the D1
+  Euler complex. Only if it confirms a diagnostic-authority defect may it authorize bounded test-only
+  `M3-CP4c-2-CB2-DIAG-R1`; frozen product `CB3` remains reserved for a valid Y5 branch.
+- **Recurrence/pattern:** `RP-02` / durable fixture-witness lesson — two differently produced objects are two
+  witnesses until equivalence is proven; a census must name the authority it counts.
+- **Stable-count rationale:** CP4c-2 is unaccepted, the failure is in new report-only diagnostic authority, and no
+  accepted-green product behavior was lost. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**,
+  debt **5**, M3 packages **59**.
 
 ## M3-CP4c2-TB-X2-CAND-01 — reusable observer permission ceiling caused startup failure — RESOLVED ORCHESTRATION / NON-STABLE
 

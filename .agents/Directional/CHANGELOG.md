@@ -9,6 +9,32 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-TB-X2-R2`: planned Y4 control stop; diagnostic witness authority is invalid
+
+Artifact-only Test + Benchmark run/job `33215632118 / 98998526420` consumed immutable GMP package
+`9702321260` from semantic/test source `232ac459b13657529e064272a75c5583770a5963`. Package/source/GMP/selector
+preflight passed. D1 executed exactly once and produced exactly three `m3Cp4c2Y1` records; no rebuild, relink,
+fixture mutation, generated discovery, or benchmark occurred.
+
+- Prescribed sphere raw D1: source `chi=2`; network `V/E/F=18/30/18`, reported `chi=6`; 24 traces / 56 events;
+  all 18 complement components individually reported disc topology. This is retained as raw control-invalid
+  evidence, not a Y5 conclusion.
+- Torus fixed control: source `chi=0`, non-cellular, but network `V/E=0/0` rather than required `48/48`.
+  **Y4 FAIL / required STOP.**
+- Two-ring raw control: network `V/E/F=9/11/3`, `chi=1`, three disc components, cellular.
+- D2 was correctly skipped after Y4 failed; therefore Y2/Y3 are unavailable and
+  `selected_r2_branch=NONE`. `selected_gate=NONE`; no cumulative gate runtime occurred.
+- Static review identifies the torus mismatch as test authority: D1 uses `rails_from_atlas`, while production and
+  frozen X1 use feature-map-derived `authoritativeRails`. New non-stable candidate
+  `M3-CP4c2-TB-X2-R2-CAND-01` records the structurally invalid control fixture. The sphere's global Euler terms
+  also require independent authority review before any correction.
+- Result/log artifacts: `9703233161 / 9703233545`, digests
+  `6b13e0bcddc3ffeba93077b6b1115bc8a400b9b9a6051d83df01ac11bec191f7 /
+  19975ef0fc0e154e02326827287fd60a3a7813b10cda1fe20840e60a072d3c1b`.
+- Stable accounting stays **42 / 14 / 28**, debt **5**, M3 packages **59**. Existing X2 CAND-04 remains
+  active/unlocalized because D2 did not run.
+- Exact next: runtime-free `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN`; no CB3 or 355/357/358 gate is authorized.
+
 ## 2026-08-28 — `M3-CP4c-2-CB2-DIAG`: independent cellularity/localization diagnostics compile green
 
 Code + Build only. **No Directional runtime, test, or benchmark executed.** Source evidence `232ac459b13657529e064272a75c5583770a5963` changes only `tests/FieldAlignedCurveNetworkTests.cpp` (+1,396 / -0) and adds the two non-gating D1/D2 identities required by `Architecture_M3_CP4c2_TB_X2_Plan.md`.

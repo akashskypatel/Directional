@@ -21,22 +21,40 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R2` — artifact-only cellularity/localization diagnostics, measures **Y0-Y5**
+## Current focus — `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` — Y4 control invalid; independent authority review required
 
-**`M3-CP4c-2-CB2-DIAG` is COMPLETE / BUILD GREEN / RUNTIME-FREE.** Source evidence commit `232ac459b13657529e064272a75c5583770a5963` changes only `tests/FieldAlignedCurveNetworkTests.cpp` and adds the two report-only diagnostic identities required by the frozen X2 plan:
+**`M3-CP4c-2-TB-X2-R2` is COMPLETE / PLANNED CONTROL STOP / NO Y5 BRANCH.** Artifact-only run/job
+`33215632118 / 98998526420` consumed immutable CB2-DIAG package `9702321260` from source
+`232ac459b13657529e064272a75c5583770a5963`. Package/source/GMP/selector preflight passed; D1 executed exactly
+once and published all three required `m3Cp4c2Y1` records. No build, relink, fixture mutation, generated discovery,
+or benchmark occurred.
 
-- `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable` — D1 independent exact network-complement oracle for prescribed sphere, torus, and two-ring; no `SurfaceCutGraph` call/reuse and no `cut_edges().empty()` cellularity definition.
-- `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable` — D2 prescribed-sphere producer-accounting re-derivation and exact 419/437/474 localization comparison.
+Y4 failed exactly at its fixed control: D1's torus reported `networkV=0`, `networkE=0`, `sourceChi=0`,
+`networkOnlyCellular=false`, not the required product theorem `V=48`, `E=48`, `chi=0`, non-cellular. D2 was
+therefore correctly skipped. Y2/Y3 are unavailable and Y5 is `selected_r2_branch=NONE`.
 
-Authoritative GMP compile run/job: `33212932401 / 98990159075`. Immutable package `9702321260` (`sha256:05237f108a65c73df81b6b125d6fcecad10ad9b5af4104ecce3c6bb9f6642035`), compile log `9702321551`, packaged source archive `986db8b91d06eab4284f3a0e49c1d8c9ad2676df61fdfdd4a94e56ba34a5644f`. All eight required targets linked, preflight/full build exit `0`, manifest verified, source-status snapshots empty, and `runtimeExecution=false` / `exactArithmeticBackend=GMP`. **No test or benchmark executed in CB2-DIAG.** M3 package count is now **59**.
+Static review identifies a high-confidence test-authority mismatch: D1 reconstructs rails with
+`rails_from_atlas(...)`, while the frozen/product torus uses pipeline `authoritativeRails` produced from the
+feature map. The raw prescribed-sphere D1 publication also reports all 18 complement components as discs while
+its global terms give `18 - 30 + 18 = 6` against source `chi=2`; that aggregate authority must be independently
+reviewed before it can drive a branch.
 
-**Exact next:** `M3-CP4c-2-TB-X2-R2`, beginning with artifact-only `TB-X2-R2-EXEC` against package `9702321260`. Execute the two identities separately, preserve complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications, then review Y1-Y4 and select exactly one already-frozen Y5 corrective branch or stop on insufficient/inconsistent evidence. The torus control must remain `V=48`, `E=48`, `chi=0`, non-cellular.
+Result/log artifacts: `9703233161 / 9703233545`, digests
+`6b13e0bcddc3ffeba93077b6b1115bc8a400b9b9a6051d83df01ac11bec191f7 /
+19975ef0fc0e154e02326827287fd60a3a7813b10cda1fe20840e60a072d3c1b`.
 
-The leading site-474 unit-mismatch/coarsening explanation remains a **hypothesis**, not a finding, until R2 compares the independent arrangement `F` against the producer's whole-carrier-edge component `F` and the full `V/E/chi` terms.
+New tracker record `M3-CP4c2-TB-X2-R2-CAND-01` is **ACTIVE / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE /
+NON-STABLE**. Prior X2 CAND-04 remains active/unlocalized because D2 never ran. Stable accounting remains
+**42 / 14 / 28**, produced-witness debt **5**, M3 packages **59**.
 
-`selected_gate=NONE`; `gate_execution_authorized=false`. Selector 355 and prefixes 316/346/353 remain unchanged. Frozen candidates remain byte-identical: 357 `b896d0db…64dc70`, 358 `6eda3aad…b64fbe62`. **Do not run 355/357/358, do not rebuild, do not author CB3, and do not execute cumulative gate runtime during R2-EXEC.**
+**Exact next:** independent, runtime-free `M3-CP4c-2-TB-X2-R2-REVIEW-PLAN` under
+`Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md`. It must re-adjudicate the frozen 48/48 rail
+provenance and D1's global Euler count authority before authorizing any diagnostic correction. A conditional
+`CB2-DIAG-R1` test-only correction is proposed but **not authorized** until that review accepts it.
 
-Frozen sequence remains: `TB-X2-R2` -> `CB3` -> `TB-X2-R3` -> `TB-GATE-EXEC`. Accepted runtime authority remains CP4c-1 TB-R5 **355/355**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**.
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Do not run 355/357/358,
+do not execute D2 from the invalid package, do not start frozen product `CB3`, and do not touch mechanical/C2 or
+CP4c-3.
 
 ## Superseded focus — `M3-CP4c-1` closure (retained for provenance)
 
