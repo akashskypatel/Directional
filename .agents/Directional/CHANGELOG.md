@@ -9,6 +9,18 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-CB2-DIAG`: independent cellularity/localization diagnostics compile green
+
+Code + Build only. **No Directional runtime, test, or benchmark executed.** Source evidence `232ac459b13657529e064272a75c5583770a5963` changes only `tests/FieldAlignedCurveNetworkTests.cpp` (+1,396 / -0) and adds the two non-gating D1/D2 identities required by `Architecture_M3_CP4c2_TB_X2_Plan.md`.
+
+- D1 `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable` independently constructs the exact network complement for prescribed sphere, torus, and two-ring, publishing source/network `V/E/F/chi`, per-component boundary/Euler/disc evidence, and `networkOnlyCellular`. Its oracle has zero `SurfaceCutGraph` calls/reuse and does not define cellularity from the product's cut set.
+- D2 `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable` test-side re-derives current producer accounting to distinguish sites 419/437/474 and publishes its terms beside the independent oracle and actual product error/locus. During review its added-vertex accounting was corrected to match production's cut-endpoint-only rule; no product behavior changed.
+- Source patch apply: run/job `33212827595 / 98989820033`, exact preserved patch SHA-256 `377328dc7e82c5e60e12a1b9b0f566d1bd21d3db6b7a07cb6c1b431926afce9f`.
+- Authoritative GMP compile: run/job `33212932401 / 98990159075` — PASS. Immutable result artifact `9702321260` / `sha256:05237f108a65c73df81b6b125d6fcecad10ad9b5af4104ecce3c6bb9f6642035`; diagnostic log `9702321551` / `sha256:236458a4146ebec93638065a0f55500e8bb77dbf216d1d7b942f667be4070ab3`; packaged source archive `986db8b91d06eab4284f3a0e49c1d8c9ad2676df61fdfdd4a94e56ba34a5644f`. All eight required targets present, manifest verified, preflight/full build exit `0`, all source-status snapshots empty, both gmpxx/gmp linked, `runtimeExecution=false`, `exactArithmeticBackend=GMP`.
+- Accepted selector 355/prefixes 316/346/353 and frozen candidates 357/358 remain byte-identical. `selected_gate=NONE`; cumulative gate runtime remains blocked.
+- Stable accounting unchanged **42 / 14 / 28**, debt **5**; M3 packages **59**.
+- Exact next: artifact-only `M3-CP4c-2-TB-X2-R2`, beginning with `TB-X2-R2-EXEC` against artifact `9702321260`. It publishes Y1/Y2, adjudicates Y3/Y4, and selects exactly one frozen Y5 corrective branch or stops; it does **not** run 355/357/358 or authorize the cumulative gate.
+
 ## 2026-08-28 — `M3-CP4c-2-TB-X2-PLAN`: the oracle may not be the mechanism under test
 
 Planning-only. No Directional runtime, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_TB_X2_Plan.md`. `selected_gate` remains **NONE**; both frozen candidates remain byte-frozen (**357** `b896d0db…64dc70`, **358** `6eda3aad…b64fbe62`).

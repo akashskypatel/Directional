@@ -83,52 +83,27 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-CB2-DIAG` — independent cellularity oracle, measures **Y0-Y9**
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R2` — artifact-only D1/D2 execution and Y1-Y5 review
 
-`M3-CP4c-2-TB-X2-PLAN` is **COMPLETE / PLANNING-ONLY**. Read `Architecture_M3_CP4c2_TB_X2_Plan.md` in full:
-§2-§5 are the three deliverables, §6 the measures, §7 the turn sequencing, §8 the falsifiable predictions.
+`M3-CP4c-2-CB2-DIAG` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The authoritative source evidence commit is `232ac459b13657529e064272a75c5583770a5963`. It changes only `tests/FieldAlignedCurveNetworkTests.cpp` and adds the two non-gating diagnostics specified by the frozen `Architecture_M3_CP4c2_TB_X2_Plan.md`:
 
-**Why X2 was unusable, structurally.** `observe_cp4c_witness` calls `SurfaceCutGraph::make` first and gates
-every downstream publication behind it, so when A2a' fails the identity emits one error code and returns.
-And `networkAlreadyCellular` was defined as `cutGraph.cut_edges().empty()` — a restatement of the producer's
-own decision, not a measurement of the network's complement. **The successor's oracle may not call, link
-against, or reuse any part of `SurfaceCutGraph`**, and cellularity may never be defined as `cut_edges().empty()`.
+1. `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable` — independent exact network-complement arrangement for prescribed sphere, torus, and two-ring. D1 has **zero `SurfaceCutGraph` calls/reuse** and publishes `m3Cp4c2Y1` with source/network counts and per-component disc evidence.
+2. `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable` — prescribed-sphere D2. It independently computes D1 first, test-side re-derives the current producer accounting, publishes the 419/437/474 site and all `V/E/F/chi` terms as `m3Cp4c2Y2`, then compares that localization with the actual product error/locus.
 
-**Deliberate asymmetry with DEFN X3.** X3 told the *producer* to reuse A2b's component traversal rather than
-duplicate it, because a second implementation risks divergence. This plan tells the *oracle* to implement its
-own, because independence is the entire point. If those read as contradictory, the oracle rule governs.
+Authoritative compile run/job is `33212932401 / 98990159075`. Immutable artifact-only runtime package is `9702321260` / `sha256:05237f108a65c73df81b6b125d6fcecad10ad9b5af4104ecce3c6bb9f6642035`; compile log artifact `9702321551` / `sha256:236458a4146ebec93638065a0f55500e8bb77dbf216d1d7b942f667be4070ab3`; packaged source archive SHA-256 `986db8b91d06eab4284f3a0e49c1d8c9ad2676df61fdfdd4a94e56ba34a5644f`. The eight required targets compiled/link successfully with GMP/GMPXX, package manifest verified, all source-status snapshots are empty, and metadata states `runtimeExecution=false`, `turnBoundary=Code+Build-only`, `exactArithmeticBackend=GMP`.
 
-**Localization is decidable now, without a product change.** `CellularityNotEstablished` returns from three
-reachable sites: `SurfaceCutGraph.cpp:419` (non-disc component, no cuts found), `:437` (still non-disc after
-cutting), `:474` (global certificate, **no locus attached**). If the oracle finds every component is a disc,
-`alreadyCellular` is true, the cut set is empty, 419/437 are unreachable by construction, and **the failure is
-necessarily 474**.
+**The exact next subturn is `M3-CP4c-2-TB-X2-R2-EXEC`.** Read `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md` in full and consume artifact `9702321260` without rebuild, configure, relink, fixture mutation, or generated discovery. Preflight must reproduce the exact source/GMP/target/selector identities before executing any binary.
 
-**Leading hypothesis for 474 — a unit mismatch, to be adjudicated, not assumed.** `V` and `E` are counted in
-the network's abstract graph, whose arcs cross face interiors; `F` counts source-face components separated by
-`network_barriers`, which are **whole source edges**. Those are different complexes, so `V - E + F == chi` is
-not an identity between them. It stays invisible on the torus, which has zero traces and therefore no
-coarsening — and the prescribed sphere, with 24 traces, is the first witness with traces to reach A2a'. Same
-shape as the ordinal-13 trap: **the witness the design reasoned about is not the witness that exercises the
-code.** §4 of the plan names the numbers that confirm or refute it.
+Execute exactly two fresh processes, in order:
 
-**Do not relax `proves_cellularity()` to get past 474.** The certificate condition is correct. If the counts
-do not satisfy it, **the counts are wrong — fix the counts.** Widening it would convert a real accounting
-defect into a silently-wrong certificate and destroy the only guarantee A2a' exists to provide.
+- `--gtest_filter=GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable`
+- `--gtest_filter=GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable`
 
-**Sequencing, and it may not be collapsed.** `CB2-DIAG` (oracle + localization, non-gating) -> `TB-X2-R2`
-(publish Y1-Y4, select a branch under Y5) -> `CB3` (corrective for that branch) -> `TB-X2-R3` (post-certificate
-A2b, frozen decision) -> `TB-GATE-EXEC`. Steps 1-2 may not be merged; step 3 may not begin before Y5 names a
-branch.
+Preserve complete stdout/stderr and the full `m3Cp4c2Y1` / `m3Cp4c2Y2` records. The torus control is fixed: `networkV=48`, `networkE=48`, `sourceChi=0`, `networkOnlyCellular=false`; any control mismatch is a hard stop. D2 must report `localizationConsistent=true` or R2 stops as evidence conflict.
 
-**A test-only injection path into A2b is prohibited**, and `make_from_candidate` may not be weakened to permit
-one — it is a tamper-rejection path and must stay one. If the post-certificate observation is unreachable,
-**report it unreachable and stop**; an honestly unreachable measurement is worth more than a reachable fiction.
+After EXEC, `TB-X2-R2-REVIEW` performs no new runtime. It must adjudicate Y1 independent cellularity, Y2 exact 419/437/474 site, Y3 the unit-mismatch/coarsening hypothesis from actual numbers, Y4 the torus control, and Y5 exactly one already-frozen corrective branch (or `NONE` with an explicit blocker). **Do not invent a fourth branch.**
 
-`selected_gate` remains **NONE** and `TB-GATE-EXEC` remains **not authorized**. Both frozen candidates remain
-byte-frozen: **357** `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`, **358**
-`6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62`. Neither may be edited and a third may not
-be invented.
+`selected_gate=NONE` and `gate_execution_authorized=false` throughout R2. Do not run selector 355/357/358, the cumulative suite, mechanical/C2, CP4c-3, or post-certificate A2b here. Corrective `CB3` begins only after R2 review selects Y5, and is outside this turn.
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
@@ -193,7 +168,28 @@ CP4c-3 remains blocked until CP4c-2 closure.
 
 ## Current authority
 
-### M3-CP4c-2 CB1 — current build authority, runtime unaccepted
+### M3-CP4c-2 CB2-DIAG — current build authority, runtime unaccepted
+
+- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
+- semantic/test source: `232ac459b13657529e064272a75c5583770a5963`;
+- source apply run/job: `33212827595 / 98989820033`;
+- authoritative GMP compile run/job: `33212932401 / 98990159075`;
+- immutable package: `9702321260` / `sha256:05237f108a65c73df81b6b125d6fcecad10ad9b5af4104ecce3c6bb9f6642035`;
+- compile log artifact: `9702321551` / `sha256:236458a4146ebec93638065a0f55500e8bb77dbf216d1d7b942f667be4070ab3`;
+- packaged source archive: `986db8b91d06eab4284f3a0e49c1d8c9ad2676df61fdfdd4a94e56ba34a5644f`;
+- exact arithmetic backend: GMP with both gmpxx and gmp linked; preflight/full build exit `0`; package manifest verified; source-status snapshots empty; `runtimeExecution=false`;
+- changed source: only `tests/FieldAlignedCurveNetworkTests.cpp`, +1,396 / -0;
+- D1 identity: `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable`;
+- D2 identity: `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable`;
+- selector hashes unchanged: accepted 355 and prefixes 316/346/353; frozen 357 `b896d0db…64dc70`, frozen 358 `6eda3aad…4fbe62`;
+- `selected_gate=NONE`; no runtime evidence from CB2-DIAG;
+- report: `Architecture_M3_CP4c2_CB2_DIAG_Code_Build_Report.md`;
+- exact TB plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
+
+CB2-DIAG supplies compiled diagnostic authority only. Runtime interpretation begins only in artifact-only `TB-X2-R2`.
+
+
+### M3-CP4c-2 CB1 — preceding build authority, runtime unaccepted
 
 - status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
 - semantic/test source: `93d9d49f052fa481bd3a8ad8c9bf31eccda7705c`;
@@ -261,39 +257,34 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN is complete and CB1 is **build-green / runtime-unaccepted**.
-- The new A2a′ `SurfaceCutGraph` product is compiled into package `9696201700`; X2 EXEC+REV are complete, while the cumulative CP4c-2 gate has not begun.
-- X2 review selected **no** gate because the evidence fits neither frozen 357/358 branch.
+- CP4c-2 DEFN, CB1, old X2 EXEC+REV+PLAN, and CB2-DIAG are complete. CB2-DIAG is **build-green / runtime-unaccepted** at `232ac459b13657529e064272a75c5583770a5963`.
+- Current immutable diagnostic package is `9702321260`; no runtime binary from that package has executed yet.
+- Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**.
+- `selected_gate=NONE`; cumulative CP4c-2 gate runtime has not begun. Frozen candidates remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…4fbe62`.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**.
-- M3 packages are **58**.
-- **Exact next turn is `M3-CP4c-2-CB2-DIAG`, Code + Build, runtime-free, under measures Y0-Y9.** No selector choice or cumulative gate runtime is authorized before the plan's sequence completes.
+- M3 packages are **59**.
+- **Exact next canonical turn is `M3-CP4c-2-TB-X2-R2`; exact next subturn is `M3-CP4c-2-TB-X2-R2-EXEC`.** It is artifact-only and may not rebuild or mutate implementation/test/fixture/build logic.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/CB.md`. `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5.
+`load_next`:
+- turn-based-coding-agent `references/turns/TB-EXEC.md`
+
+`conditional_modules`:
+- GitHub connector/Actions artifact work -> `modules/github-connector/MODULE.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Plan.md` — **the frozen plan.** §2 D1 oracle, §3 D2
-   localization, §4 the hypothesis and how to refute it, §5 D3 and its branch tree, §6 measures Y0-Y9,
-   §7 sequencing.
-2. `src/geometry/SurfaceCutGraph.cpp` — lines **109-120** (`network_barriers`, the whole-source-edge
-   coarsening), **396-427** (site 419), **429-442** (site 437), **444-476** (the counts and site 474),
-   **481-487** (`proves_cellularity`).
-3. `tests/FieldAlignedCurveNetworkTests.cpp::observe_cp4c_witness` — the gating defect the oracle must not
-   reproduce.
-4. `.agents/Directional/Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md` — frozen two-branch
-   decision rule and stop condition; do not edit it to manufacture a branch.
-5. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §5 the A2a' contract, §6.3 the
-   357/358 trigger, X1 the torus control, X6 idempotence.
-6. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Review_Record.md` — the authoritative stop and its reasons.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md` — resolved CAND-03 measurement defect and active
-   CAND-04 unlocalized product failure.
-8. `TODO.md` and `.agents/Directional/CHANGELOG.md` — current state/accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md` — **execution authority for the exact next subturn**; read in full.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Plan.md` — frozen Y0-Y9 decision logic; especially Y1-Y5 and the no-injection/no-gate sequencing rules.
+3. `.agents/Directional/Architecture_M3_CP4c2_CB2_DIAG_Code_Build_Report.md` — exact source/package/GMP/selector provenance and new diagnostic identities.
+4. Immutable compile artifact `9702321260` from run/job `33212932401 / 98990159075` — source `232ac459b13657529e064272a75c5583770a5963`; **download/verify once, do not rebuild**.
+5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Review_Record.md` — why the prior X2 could not choose a branch.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — CAND-03 resolved measurement defect and active CAND-04 prescribed-sphere product failure; update only if R2 runtime evidence justifies classification/count changes.
+7. `TODO.md` and `.agents/Directional/CHANGELOG.md` — current state/accounting.
 
-Do not execute new runtime, choose 357/358, or author corrective code before the planning turn settles the bounded
-measurement/localization work required by the review.
+Do not preload sibling turn files or unrelated historical reports. Do not execute cumulative 355/357/358 runtime, corrective CB3, or CP4c-3 from the EXEC subturn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

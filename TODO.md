@@ -21,52 +21,22 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-CB2-DIAG` — independent cellularity oracle, under measures **Y0–Y9**
+## Current focus — `M3-CP4c-2-TB-X2-R2` — artifact-only cellularity/localization diagnostics, measures **Y0-Y5**
 
-**`M3-CP4c-2-DEFN` is COMPLETE / DEFINITION-ONLY.** Record:
-`Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`. CP4c-1's closure was independently re-verified first: all
-four selector hashes recomputed identical, `src/`/`include/` frozen across CB4, and W1/W2/W5 confirmed in
-source. **The closure claim is upheld.**
+**`M3-CP4c-2-CB2-DIAG` is COMPLETE / BUILD GREEN / RUNTIME-FREE.** Source evidence commit `232ac459b13657529e064272a75c5583770a5963` changes only `tests/FieldAlignedCurveNetworkTests.cpp` and adds the two report-only diagnostic identities required by the frozen X2 plan:
 
-**The decision.** CP4c-2 introduces one new authority, **`SurfaceCutGraph` (stage A2a′)**, produced after A2a
-and consumed by A2b, whose sole obligation is to guarantee the curve network's complement is a disjoint union
-of open discs. **`DESIGN.md` §7.2 is amended (Amendment 12)**: its claim that region-disc topology "holds by
-construction" is provably false on closed surfaces, and its stop condition, read literally, forbids the only
-viable fix.
+- `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable` — D1 independent exact network-complement oracle for prescribed sphere, torus, and two-ring; no `SurfaceCutGraph` call/reuse and no `cut_edges().empty()` cellularity definition.
+- `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable` — D2 prescribed-sphere producer-accounting re-derivation and exact 419/437/474 localization comparison.
 
-**The theorem, from already-measured data.** For a cellular embedding on the torus, `F = E − V + χ = E − V`.
-The torus network has `V = 48`, `E = 48`, `χ = 0`, so `F = 0` — impossible, since the complement is non-empty.
-At least one component is not a disc. More generally **no disjoint union of closed curves can ever be a cut
-graph of the torus**, so this is not a defect of the committed fixture and cannot be fixed by choosing better
-feature curves. `UncutFaceComponentOrbitSeedNotUnique` at `GlobalTopologyPlan.cpp:1741` is **correct
-behaviour** reporting a missing input — there is no bug at that line.
+Authoritative GMP compile run/job: `33212932401 / 98990159075`. Immutable package `9702321260` (`sha256:05237f108a65c73df81b6b125d6fcecad10ad9b5af4104ecce3c6bb9f6642035`), compile log `9702321551`, packaged source archive `986db8b91d06eab4284f3a0e49c1d8c9ad2676df61fdfdd4a94e56ba34a5644f`. All eight required targets linked, preflight/full build exit `0`, manifest verified, source-status snapshots empty, and `runtimeExecution=false` / `exactArithmeticBackend=GMP`. **No test or benchmark executed in CB2-DIAG.** M3 package count is now **59**.
 
-**The boundary the implementation agent must not cross:** establishing a precondition before a product is
-derived is not repairing that product afterward. If the cut decision can be made without ever looking at a
-produced `GlobalTopologyPlan` region, it is a precondition; if it needs to see one, it is a repair and a stop.
+**Exact next:** `M3-CP4c-2-TB-X2-R2`, beginning with artifact-only `TB-X2-R2-EXEC` against package `9702321260`. Execute the two identities separately, preserve complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications, then review Y1-Y4 and select exactly one already-frozen Y5 corrective branch or stop on insufficient/inconsistent evidence. The torus control must remain `V=48`, `E=48`, `chi=0`, non-cellular.
 
-**Scope.** CP4c-2 owns **C1** (torus regions) and **C6** (disc proof + mandatory preservation). **C3 is
-deferred pending measure X2**, because the sphere's `RotationSystemInconsistent` is a *different* failure —
-`χ=2`, 24 traces, 56 events, a different code, and unmeasured. Designing for it unmeasured would repeat the
-CP4c-0/0b dependency inversion. **The gate is 357 or 358 and X2 decides which; it is not frozen here.**
+The leading site-474 unit-mismatch/coarsening explanation remains a **hypothesis**, not a finding, until R2 compares the independent arrangement `F` against the producer's whole-carrier-edge component `F` and the full `V/E/chi` terms.
 
-**Vacuity trap, closed by X7:** C3 and C6 are quantified over "produced witnesses", and today no witness
-produces a plan — so both would pass vacuously. C1 is the non-vacuity anchor; a green C6 over zero regions is
-a red result.
+`selected_gate=NONE`; `gate_execution_authorized=false`. Selector 355 and prefixes 316/346/353 remain unchanged. Frozen candidates remain byte-identical: 357 `b896d0db…64dc70`, 358 `6eda3aad…b64fbe62`. **Do not run 355/357/358, do not rebuild, do not author CB3, and do not execute cumulative gate runtime during R2-EXEC.**
 
-**CB1, `M3-CP4c-2-TB-X2-EXEC`, `M3-CP4c-2-TB-X2-REV`, and `M3-CP4c-2-TB-X2-PLAN` are complete.** The review found the X2 evidence fits **neither** frozen branch; the plan says why and what replaces it. Record: `Architecture_M3_CP4c2_TB_X2_Plan.md`.
-
-**Structural cause of the wasted X2:** `observe_cp4c_witness` calls `SurfaceCutGraph::make` first and gates every downstream publication behind it, so when A2a′ fails the identity publishes one error code and returns. Worse, `networkAlreadyCellular` was defined as `cutGraph.cut_edges().empty()` — a restatement of the producer's own decision, not a measurement. **The successor's cellularity oracle may not call `SurfaceCutGraph` at all.**
-
-**Localization is decidable without a product change.** `CellularityNotEstablished` is returned from three reachable sites — `SurfaceCutGraph.cpp:419` (non-disc component, no cuts found), `:437` (still non-disc after cutting), `:474` (global certificate, **no locus attached**). If the independent oracle finds every component is a disc, then `alreadyCellular` is true, the cut set is empty, 419/437 are unreachable by construction, and **the failure is necessarily 474**.
-
-**Leading hypothesis for 474 — a unit mismatch, to be confirmed or refuted, not assumed.** `V` and `E` are counted in the network's abstract graph whose arcs cross face interiors, while `F` counts source-face components separated by `network_barriers`, which are **whole source edges**. Different complexes, so `V − E + F == χ` is not an identity. It stays invisible on the torus, which has zero traces and therefore no coarsening — and the prescribed sphere, with 24 traces, is the first witness with traces to reach A2a′. Same shape as the ordinal-13 trap: **the witness the design reasoned about is not the witness that exercises the code.**
-
-**Do not relax `proves_cellularity()` to get past 474.** The certificate condition is correct; if the counts do not satisfy it, the counts are wrong. Fix the counts.
-
-**Sequencing (Y0–Y9):** `M3-CP4c-2-CB2-DIAG` (oracle + localization as non-gating diagnostics) → `TB-X2-R2` (publish, select branch) → `CB3` (corrective) → `TB-X2-R3` (post-certificate A2b, frozen decision) → `TB-GATE-EXEC`. Steps 1–2 may not be merged. **A test-only injection path into A2b is prohibited**; if D3 is unreachable, report it unreachable and stop.
-
-`selected_gate=NONE`; cumulative gate runtime remains blocked; both frozen candidates remain byte-frozen — 357 `b896d0db…64dc70`, 358 `6eda3aad…b64fbe62`. **Exact next is `M3-CP4c-2-CB2-DIAG`.** Accepted runtime authority remains CP4c-1 TB-R5 **355/355**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **58**.
+Frozen sequence remains: `TB-X2-R2` -> `CB3` -> `TB-X2-R3` -> `TB-GATE-EXEC`. Accepted runtime authority remains CP4c-1 TB-R5 **355/355**. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**.
 
 ## Superseded focus — `M3-CP4c-1` closure (retained for provenance)
 
@@ -169,11 +139,11 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-2-DEFN` — **COMPLETE / DEFINITION-ONLY.** Froze the `SurfaceCutGraph` (A2a′) contract and **Amendment 12** to `DESIGN.md` §7.2/§4.6. Proved from measured data that the torus network (`V=48, E=48, χ=0`) cannot bound discs, and that no disjoint union of closed curves can ever cut a torus — so `UncutFaceComponentOrbitSeedNotUnique` is correct behaviour reporting a missing input. Scoped CP4c-2 to **C1 + C6**; **C3 deferred pending measure X2**. Gate is **357 or 358**, not frozen. Measures **X0–X9**. Record: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`.
 - [x] `M3-CP4c-2-CB1` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Final semantic/test source `93d9d49f052fa481bd3a8ad8c9bf31eccda7705c`; compile run `33196876096`; changed-owner job `98936191472` PASS; full eight-target GMP package job `98936799976` PASS; immutable package `9696201700` / `af3ebe2e…7c8097`; source archive `8694f0fb…321687`; `runtimeExecution=false`. Both X2-conditioned gates are frozen: 357 / `b896d0db…64dc70`, 358 / `6eda3aad…4fbe62`; non-gating X2 selector 1 / `88af227b…dafc8`. Report: `Architecture_M3_CP4c2_CB1_Code_Build_Report.md`.
 - [x] `M3-CP4c-2-TB-X2-PLAN` — **COMPLETE / PLANNING-ONLY.** Specified the three deliverables — independent network-only cellularity oracle, exact 419/437/474 localization, post-certificate A2b observation — with the branch tree, measures **Y0–Y9**, and five falsifiable predictions. Record: `Architecture_M3_CP4c2_TB_X2_Plan.md`.
-- [ ] `M3-CP4c-2-CB2-DIAG` — **NEXT / CODE + BUILD / RUNTIME-FREE.** Implement the D1 oracle and D2 localization as **non-gating** diagnostics under Y0–Y9. **The oracle may not call `SurfaceCutGraph`**; cellularity may not be defined as `cut_edges().empty()`. No production accept/reject change; no relaxation of `proves_cellularity()`.
-- [ ] `M3-CP4c-2-TB` — **IN PROGRESS / X2 EXEC+REV COMPLETE / GATE BLOCKED.** `TB-X2-EXEC` is COMPLETE on run/job `33199227974 / 98944212158`, result/log `9697052371 / 9697052810`; exactly one frozen X2 identity ran and immutable pre/postflight passed. `TB-X2-REV` is also COMPLETE: `Architecture_M3_CP4c2_TB_X2_Review_Record.md` finds the evidence fits neither frozen branch because the diagnostic did not independently establish network-only cellularity and returned from `SurfaceCutGraph::CellularityNotEstablished` before it could observe post-certificate `GlobalTopologyPlan` behavior. **No selector is selected and `TB-GATE-EXEC` is not authorized.** `TB-X2-PLAN` is now also COMPLETE (`Architecture_M3_CP4c2_TB_X2_Plan.md`): it localizes the diagnostic's structural defect, shows site 474 is decidable without a product change, states the coarsening hypothesis for it, and sequences the replacement as **CB2-DIAG → TB-X2-R2 → CB3 → TB-X2-R3 → TB-GATE-EXEC** under measures **Y0–Y9**. **Exact next is `M3-CP4c-2-CB2-DIAG`.** CP4c-2 still closes only with a subsequently supported frozen gate and §8 predictions 1–4 plus X7 non-vacuity — **a green C6 over zero regions is a red result.**
+- [x] `M3-CP4c-2-CB2-DIAG` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Source `232ac459b13657529e064272a75c5583770a5963`; D1 independent network-complement oracle and D2 exact 419/437/474 localization added as non-gating diagnostics only. GMP compile run/job `33212932401 / 98990159075` PASS; immutable package `9702321260` / `05237f10…2035`; no Directional runtime; selectors unchanged. Report: `Architecture_M3_CP4c2_CB2_DIAG_Code_Build_Report.md`.
+- [ ] `M3-CP4c-2-TB-X2-R2` — **NEXT / ARTIFACT-ONLY DIAGNOSTIC EXEC+REVIEW / GATE BLOCKED.** Consume immutable package `9702321260` from source `232ac459b13657529e064272a75c5583770a5963` without rebuild. EXEC runs D1 and D2 separately and preserves complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications; REVIEW adjudicates Y1–Y4 and selects exactly one frozen Y5 corrective branch or stops. **No selector is selected and `TB-GATE-EXEC` is not authorized.** Plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **58**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2-CB1` is build-green and X2 EXEC+REV are complete, but CP4c-2 remains runtime-unaccepted. The review selected **no** gate because the evidence fits neither frozen branch, and the plan replacing X2 is frozen. **Exact next is `M3-CP4c-2-CB2-DIAG` under measures Y0–Y9; no cumulative gate runtime is authorized.**
+Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **59**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2-CB2-DIAG` is build-green/runtime-free at source `232ac459b13657529e064272a75c5583770a5963`; CP4c-2 remains runtime-unaccepted and no cumulative gate is selected. **Exact next is artifact-only `M3-CP4c-2-TB-X2-R2`; no rebuild or cumulative gate runtime is authorized.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
@@ -246,7 +216,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. CP4c-2 CB1 and X2 EXEC+REV are complete; no 357/358 gate is selected; exact next is `M3-CP4c-2-TB-X2-PLAN`; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. CP4c-2 CB2-DIAG is build-green/runtime-free at `232ac459b13657529e064272a75c5583770a5963` with immutable GMP package `9702321260`; no 357/358 gate is selected; exact next is `M3-CP4c-2-TB-X2-R2`; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
