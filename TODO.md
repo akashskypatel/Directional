@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-27 UTC
+Last updated: 2026-08-28 UTC
 
 ## Purpose
 
@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-0` CLOSED / ACCEPTED; `M3-CP4c-0b-CB2` BUILD GREEN / RUNTIME-FREE; T4 DG execution is next
+## Current focus — `M3-CP4c-0` CLOSED / ACCEPTED; `M3-CP4c-0b-DG-T4-EXEC` GREEN 7/7; T4 independent review is next
 
 **CP4c-0 has been split.** It was carrying two unrelated obligations under one gate: *how a trace continues* and *how a trace stops*. After CB-R10/TB-R10 and CB-R11/TB-R11 resolved both test-side TB-R9 candidates, the user explicitly authorized a fresh compile and complete frozen-gate re-proof. Fresh GMP package `9649395432` from semantic source `7bbc0480d9ab5954329b940992ef41a9223102ed` compiled all eight standard targets; artifact-only run/job `33079817998 / 98543736213` returned **346/346 PASS**, first-316 **316/316**, first-328 **328/328**, Q8 criteria 1/4/5 PASS, zero timeouts/exceptions, and immutable postflight PASS. CP4c-0 is therefore **CLOSED / ACCEPTED**. The termination half remains separately frozen under CP4c-0b.
 
@@ -49,7 +49,9 @@ T2 renamed the never-accepted torus identity to `TraceTerminationCorrection.Toru
 
 CB2 semantic source `b2629040450c12507367c232f68a4d972b46450f` is BUILD GREEN on compile-only run `33126178643`: changed-owner job `98704812754` passed and eight-target package job `98705144144` passed with GMP/GMPXX. Immutable package `9668492827` has SHA-256 `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`, 28/28 manifest PASS, clean source status, executable modes preserved, and `runtimeExecution=false`. M3 packages are now **54**.
 
-**Exact next is T4 `M3-CP4c-0b-DG-T4-EXEC`** on package `9668492827`, seven identities only, with **7/7 required**. Full T5 353 acceptance remains blocked until T4 is green and reviewed; S2–S6's effect on accepted authority remains unmeasured until T5.
+**T4 `M3-CP4c-0b-DG-T4-EXEC` is COMPLETE / EXECUTION GREEN 7/7.** Authoritative run/job `33128261911 / 98711506300` consumed immutable package `9668492827`; every re-frozen identity selected exactly once and passed, zero escaping exceptions, no repository timeout/build/repair/discovery/mutation, immutable package/source byte-and-mode postflight PASS. Result/log artifacts: `9669229181 / 9669229414`, ZIP SHA-256 `364d5d546bca4c664be67e52b336a48cbc1f49b6bd672371ea6351e396dcc84c / 39c7530a70650702f4345fea9de558ea6139fecd715f8d9b504ef945a94447ef`.
+
+**Exact next is independent `M3-CP4c-0b-DG-T4-REV`.** Full T5 353 acceptance remains blocked until that review closes; S2–S6's effect on accepted authority remains unmeasured until T5.
 
 **Alternative priority metrics are retained for future performance/quality comparison** (`StepCount`, `BarycentricTime`, `TraceSeniority`) but are reachable **only** from a diagnostic entry point the production pipeline never calls, with an identity asserting production cannot select a non-default value. A production-reachable priority argument is a second writer of network topology and a stop condition.
 
@@ -116,15 +118,15 @@ CB2 semantic source `b2629040450c12507367c232f68a4d972b46450f` is BUILD GREEN on
 - [x] `M3-CP4c-0b-DG` — **COMPLETE / VALID SEMANTIC RED 6/7.** Corrected run/job `33120730355 / 98686699036`; immutable package `9664890562`; all seven selected once; sole red was the torus zero-node assertion; postflight PASS; full 353 gate not run. Earlier `33120437486 / 98685729035` was resolved orchestration-only and executed zero Directional identities.
 - [x] `M3-CP4c-0b-DG-REV` — **COMPLETE / INDEPENDENT REVIEW.** `CAND-02` adjudicated test-side over-specification conditional on T1; T0-T7 frozen.
 - [x] `M3-CP4c-0b-CB2` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** T1 selected review row 1; T2/T3 corrected only the never-accepted torus contract and census authority labeling. Semantic source `b2629040450c12507367c232f68a4d972b46450f`; GMP compile run `33126178643`; package `9668492827` / `e0661e66...dce0b8`; 28/28 manifest PASS; no Directional runtime.
-- [ ] `M3-CP4c-0b-DG-T4-EXEC` — **NEXT / ARTIFACT-ONLY.** Consume package `9668492827`; execute only seven identities from selector `d28bbeeb...e245c`; require 7/7, immutable pre/postflight, zero mutation/rebuild/repair.
-- [ ] `M3-CP4c-0b-DG-T4-REV` — **BLOCKED ON T4 EXEC.** Review T4 execution evidence before any T5 acceptance run.
-- [ ] `M3-CP4c-0b-TB` — **T5 / BLOCKED ON GREEN T4 + REVIEW.** Full 353 required-green acceptance TB on immutable package `9668492827`, selector `51ff96d7...ac6a5`; require accepted 316/316, CP4c-0 346/346, full 353/353.
+- [x] `M3-CP4c-0b-DG-T4-EXEC` — **COMPLETE / EXECUTION GREEN 7/7.** Run/job `33128261911 / 98711506300`; result/log `9669229181 / 9669229414`; all seven selected exactly once and PASS; zero exceptions/timeouts/build/repair/discovery/mutation; immutable byte-and-mode postflight PASS.
+- [ ] `M3-CP4c-0b-DG-T4-REV` — **NEXT / INDEPENDENT REVIEW.** Review T4 execution evidence before any T5 acceptance run; no new runtime in this review.
+- [ ] `M3-CP4c-0b-TB` — **T5 / BLOCKED ON T4 REVIEW.** Full 353 required-green acceptance TB on immutable package `9668492827`, selector `51ff96d7...ac6a5`; require accepted 316/316, CP4c-0 346/346, full 353/353.
 - [ ] `M3-CP4c-1` — OPEN, blocked on CP4c-0b. It **no longer owns** re-homed Q8 criterion 3, which
   belongs to CP4c-0b along with criterion 2.
 - [ ] `M3-CP4c-2-DEFN` — BLOCKED.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED.
 
-Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **54** after the CB2 GMP package. Both TB-R9 non-stable candidates remain resolved; CP4c-0 is **CLOSED / ACCEPTED**. **CB2 is build-green at `b2629040...`; exact next is artifact-only `M3-CP4c-0b-DG-T4-EXEC` on package `9668492827`. The full 353 acceptance TB remains blocked on green T4 plus DG review.**
+Frozen CP4c-0 selector authority remains **346** `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; accepted first-316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`; first-328 `cf93622ea8807b26037d2fb6305adf721a23724bc519886c455e98c49c5f3600`. Latest accepted runtime is TB-R9 re-proof **346/346**, run/job `33079817998 / 98543736213`. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **54** after the CB2 GMP package. Both TB-R9 non-stable candidates remain resolved; CP4c-0 is **CLOSED / ACCEPTED**. **CB2 is build-green at `b2629040...`; T4 DG is execution-green 7/7 on package `9668492827`. Exact next is independent `M3-CP4c-0b-DG-T4-REV`. The full 353 acceptance TB remains blocked on that review.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

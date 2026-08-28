@@ -83,39 +83,43 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-DG-T4-EXEC`
+## Mandatory next turn — `M3-CP4c-0b-DG-T4-REV`
 
-`M3-CP4c-0b-CB2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The independent T1 decision table selected row 1: atlas-derived torus rails produce 0 mandatory edges / 0 singularities / 0 nodes / 0 traces / 0 events; pipeline-authoritative rails produce 48 `HardFeature` mandatory edges / 0 singularities / 48 lawful structural endpoint nodes / 0 traces / 0 events, with zero contact provenance. `M3-CP4c0b-DG-CAND-02` is resolved **TEST-SIDE OVER-SPECIFICATION / NON-STABLE**.
+`M3-CP4c-0b-DG-T4-EXEC` is **COMPLETE / EXECUTION GREEN 7/7**. The artifact-only gate consumed immutable GMP package `9668492827` from semantic source `b2629040450c12507367c232f68a4d972b46450f` and the re-frozen seven-identity selector `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`.
 
-T2/T3 changed only `tests/FieldAlignedCurveNetworkTests.cpp` plus the two CP4c-0b selectors. The never-accepted torus identity is now `TraceTerminationCorrection.TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded`; it asserts zero traces, zero events, no contact-provenance node, no `terminalContact`, and zero `TraceIntersection` / `SingularityPortJunction` events. Census figures now state `railAuthority`, `mandatoryEdgeCount`, and `singularityCount`.
+Authoritative T4 evidence:
 
-Authoritative semantic/build authority:
+- workflow run / execute job: `33128261911 / 98711506300`
+- result artifact: `9669229181` / `364d5d546bca4c664be67e52b336a48cbc1f49b6bd672371ea6351e396dcc84c`
+- diagnostic log artifact: `9669229414` / `39c7530a70650702f4345fea9de558ea6139fecd715f8d9b504ef945a94447ef`
+- result: **7 required / 7 executed / 7 PASS / 0 RED**, each selected exactly once; `zeroSelected=0`; zero escaping C++ exceptions
+- no repository timeout; no configure/compile/relink/repair/generated discovery
+- no package/source/test/fixture/selector mutation; package and materialized-source byte-and-mode postflight **PASS**
+- downloaded result/log artifacts independently re-hashed after completion; result pre/post inventories independently compare equal
+- corrected torus identity `TraceTerminationCorrection.TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded` PASS
+- no regression/candidate observed; stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **54**
 
-- semantic source: `b2629040450c12507367c232f68a4d972b46450f`
-- T4 DG selector: **7** / `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`
-- full required-green selector: **353** / `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`
-- compile-only run: `33126178643`
-- changed-owner job: `98704812754` — PASS
-- eight-target GMP package job: `98705144144` — PASS
-- immutable package: `9668492827` / `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`
-- compile log: `9668493344` / `f596c69c6bbdbe21d00cdbfd92d5a708480236971ba065ebc74c4d40fad5de4a`
-- package manifest: **28/28 PASS**; exact source `b2629040...`; source status clean; executables `0755`
-- `runtimeExecution=false`; `turnBoundary=Code+Build-only`; `exactArithmeticBackend=GMP`; both `libgmpxx` and `libgmp` are on generated link lines
-- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **54**
+### T4 review boundary
 
-### T4 execution boundary
+`M3-CP4c-0b-DG-T4-REV` is independent evidence review only. It must inspect the T4 result/log and decide whether this green diagnostic gate clears the route to T5. Do **not** execute new runtime validation, change production/test/fixture/selector/build logic, compile, relink, or repair in the review.
 
-`M3-CP4c-0b-DG-T4-EXEC` is artifact-only. Consume immutable package `9668492827`; do **not** configure, compile, relink, repair, mutate package/source/test/fixture/selector bytes, or perform generated discovery. Provide the GMP runtime libraries required by the packaged binaries.
+The full 353-identity T5 acceptance suite remains **BLOCKED / NOT RUN**. T5 is the first accepted-authority measurement of S2-S6 and, if later authorized, must still require accepted 316/316, CP4c-0 346/346, and full required-green 353/353 on immutable package `9668492827`.
 
-Execute only the seven identities from `Architecture_M3_CP4c0b_Diagnostic_Gate_Selector.txt`, one identity per fresh process. Required result: **7/7 PASS**, each selected exactly once, zero escaping exceptions, no repository timeout, and immutable byte-and-mode pre/postflight PASS.
-
-- T4 RED: stop before T5 and route to `M3-CP4c-0b-DG-T4-REV`.
-- T4 GREEN: advance only to `M3-CP4c-0b-DG-T4-REV`; the review must close before T5 begins.
-- T5 remains blocked and is the first accepted-authority measurement of S2-S6: 316/316 accepted, 346/346 CP4c-0, and 353/353 full required-green on the same immutable package.
-
-No CP4c-0b acceptance is claimed by CB2.
+No CP4c-0b acceptance is claimed by the green T4 diagnostic gate alone.
 
 ## Current authority
+
+### M3-CP4c-0b DG-T4 — current runtime authority
+
+- status: **COMPLETE / EXECUTION GREEN 7/7**;
+- semantic source / immutable GMP package: `b2629040450c12507367c232f68a4d972b46450f / 9668492827`; package ZIP `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`;
+- selector: seven / `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`; full 353 remains `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
+- run/job: `33128261911 / 98711506300`;
+- result/log artifacts: `9669229181 / 364d5d546bca4c664be67e52b336a48cbc1f49b6bd672371ea6351e396dcc84c`; `9669229414 / 39c7530a70650702f4345fea9de558ea6139fecd715f8d9b504ef945a94447ef`;
+- every identity selected exactly once and PASS; zero-selected 0; zero escaping C++ exceptions; no repository timeout;
+- no configure/compile/relink/repair/generated discovery and no package/source/test/fixture/selector mutation; immutable byte-and-mode postflight PASS;
+- no regression/candidate observed; stable accounting **42 / 14 / 28**, debt **5**, M3 packages **54**;
+- exact next: independent `M3-CP4c-0b-DG-T4-REV`; T5 remains blocked/not run.
 
 ### M3-CP4c-0b CB2 — current build authority
 
@@ -127,7 +131,7 @@ No CP4c-0b acceptance is claimed by CB2.
 - selectors: seven `d28bbeeb74ed8e07810b06d870bdaf470bab1f294bbfe810deaa4f63276e245c`; full 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
 - compile run/jobs `33126178643 / 98704812754 / 98705144144` all green;
 - immutable GMP package `9668492827` / `e0661e66cfc12ce8945962a18b8a8f6fc8aa5a1213b3ad4d2409054573dce0b8`; 28/28 manifest PASS; `runtimeExecution=false`;
-- exact next: artifact-only `M3-CP4c-0b-DG-T4-EXEC`.
+- successor status: T4 execution is green 7/7; retained as current build authority.
 
 ### M3-CP4c-0b DG — retained pre-CB2 runtime evidence
 
@@ -245,25 +249,25 @@ Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `3
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, and **CP4c-0 are accepted**.
 - **CP4c-0 is CLOSED / ACCEPTED at 346/346.** The unchanged selector SHA-256 is `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; first-316 and first-328 prefixes remain 316/316 and 328/328. Q8 criteria 1/4/5 are PASS.
 - Both TB-R9 candidates are **RESOLVED / NON-STABLE / TEST-SIDE**. CAND-01 is GMP-portability; CAND-02 is fixture-precondition. The skipped TB-R9 review remains skipped/not completed historically.
-- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. CB2 is BUILD GREEN at semantic source `b2629040...` on GMP package `9668492827`; the prior torus zero-node red is resolved test-side/non-stable. T4 DG has not run; full 353 acceptance remains unmeasured and blocked on green T4 plus review.
+- **`M3-CP4c-0b` is OPEN** and owns trace termination plus Q8 criteria 2 and 3. CB2 is BUILD GREEN at semantic source `b2629040...` on GMP package `9668492827`; the prior torus zero-node red is resolved test-side/non-stable. T4 DG is **GREEN 7/7** on run/job `33128261911 / 98711506300`; full 353 acceptance remains unmeasured and blocked on T4 independent review.
 - **`M3-CP4c0-TB-R8-CAND-01` transfers to CP4c-0b.** Six prescribed-sphere separatrices circulate; the CB9 guards bound the cost but do not make them terminate. It is resolved by a green CP4c-0b prediction 5, not before.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable — the K2 grazing-cost census walks traces with the retired Cartesian carrier lookup; owned by measure L8, no product impact.
 - `M3-CP4c0-TB-R4-CAND-01` remains a historical/non-stable near-tangency diagnostic; the production grazing model was subsequently defined under DEFN-2.
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **54**.
-- **Exact next turn is `M3-CP4c-0b-DG-T4-EXEC`, artifact-only.** Consume package `9668492827`; execute seven re-frozen identities only; stop before T5 unless T4 is green and its DG review is complete.
+- **Exact next turn is `M3-CP4c-0b-DG-T4-REV`, independent review only.** Consume the preserved T4 result/log evidence; do not execute T5 or any new runtime in the review.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/TB-EXEC.md` (DG-EXEC uses the artifact-only runtime boundary).
+`load_next`: turn-based-coding-agent `references/turns/TB-REVIEW.md`.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c0b_CB2_Code_Build_Report.md`
-2. `.agents/Directional/Architecture_M3_CP4c0b_Diagnostic_Gate_Selector.txt`
-3. immutable package `9668492827` metadata from CB2; do not rebuild
-4. only if T4 is red, the resulting T4 execution artifact for `M3-CP4c-0b-DG-T4-REV`
+1. `.agents/Directional/Architecture_M3_CP4c0b_DG_T4_EXEC_Artifact_Only_Test_Benchmark_Report.md`
+2. T4 result artifact `9669229181` and diagnostic log artifact `9669229414`
+3. `.agents/Directional/Architecture_M3_CP4c0b_CB2_Code_Build_Report.md` only for immutable package provenance if needed
+4. `.agents/Directional/Architecture_M3_CP4c0b_Diagnostic_Gate_Selector.txt` only to verify the seven frozen identities
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
