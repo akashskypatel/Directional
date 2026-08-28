@@ -1,0 +1,7 @@
+turn=M3-CP4c-1-TB-R5
+operation=artifact-only-test-benchmark
+package_artifact_id=9675666067
+package_sha256=63b66788e724f7f22acc5f3bd204a1eb666a779ced96d1373f320e00cd45ec17
+semantic_source=b1ce8ad65952bd2bd76238f6dfc55523f6a24747
+required_selector_sha256=e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa
+runtimeExecution=true
