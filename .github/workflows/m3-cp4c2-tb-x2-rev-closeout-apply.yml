@@ -42,5 +42,5 @@ jobs:
       patch_sha256: 8ef9d9fd1f491812174d681c3636c9ef6cef061b98a4192f20a6e4cc61679452
       base_sha: 661a4501ea0b3b3de39c5a8747044a252e370709
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: M3-CP4c-2-TB-X2-REV: record evidence review and stop decision
+      commit_message: "M3-CP4c-2-TB-X2-REV: record evidence review and stop decision"
     secrets: inherit
