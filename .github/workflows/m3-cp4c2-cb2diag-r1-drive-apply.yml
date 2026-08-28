@@ -1,0 +1,47 @@
+name: M3 CP4c-2 CB2-DIAG-R1 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-cb2diag-r1-drive-apply-20260828.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c2-cb2diag-r1-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-cb2diag-r1-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c2-cb2diag-r1-drive-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1nhRYoWacvXOOh1VBzMv9qetTq9Tio-F2
+      patch_sha256: f9b60270c394991f772ff29a55e55b396fd7a7961735cc3838ce356077fe3c03
+      base_sha: 27cbba169c161aa52f570c22f819a3a3266b470b
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "test: correct CP4c-2 diagnostic authority"
+      retention_days: 14
+    secrets: inherit
