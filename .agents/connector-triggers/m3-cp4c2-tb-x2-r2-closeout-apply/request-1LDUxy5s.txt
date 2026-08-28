@@ -1,0 +1,7 @@
+turn=M3-CP4c-2-TB-X2-R2
+subturn=TB-X2-R2-CLOSEOUT
+base_sha=410ace0522804f9d4eb622ff9b488235ce2699f7
+patch_sha256=b84670c629e5cdf64b2cd0d9ce9840b9f6f096260783ea1db2b661d88406d3b8
+drive_file_id=1LDUxy5sNhb9tPkLekRzuppNbLlzgEy6s
+pr=8
+purpose=verified-closeout-doc-patch
