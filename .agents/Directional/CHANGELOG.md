@@ -9,6 +9,22 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-DEFN`: the torus network provably cannot bound discs; `SurfaceCutGraph` frozen
+
+Definition-only. No Directional runtime, build, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`.
+
+- **CP4c-1's closure was independently re-verified first**, from the repository rather than the report: the 355 selector `e9d88f11…5afeaa` and all three accepted prefixes (`601ce2b6…`, `20d3b0b1…`, `51ff96d7…`) recomputed identical; the 3-entry non-gating selector `537a8010…ffcd6a` confirmed with both W5-retired identities absent; `src/` and `include/` unchanged across CB4 with `tests/FieldAlignedCurveNetworkTests.cpp` the only code file touched; W1's precondition deleted cleanly, W2's `ASSERT_FALSE(producedTerminalKinds.empty())` in place with both named checks surviving. **The closure claim is upheld.**
+- **A theorem, not a conjecture.** For a cellular embedding, `F = E − V + χ`. The measured torus network has `V = 48`, `E = 48`, and `χ = 0`, giving `F = 0` — impossible, since the complement is non-empty. At least one complementary component is not a disc. Generalized: a disjoint union of closed curves always has `E = V`, so **no disjoint union of closed curves can ever be a cut graph of the torus**. The gap is architectural, not a property of the committed fixture, and cannot be fixed by choosing better feature curves.
+- **`UncutFaceComponentOrbitSeedNotUnique` at `GlobalTopologyPlan.cpp:1741` is correct behaviour.** A cylindrical component touches labeled faces on both boundary circles, collects two seeds, and fails. The producer is reporting a missing input; there is no bug at that line.
+- **`DESIGN.md` §7.2 is defective and is amended (Amendment 12).** Its claim that invariant 7 — every region has disc topology — "holds by construction" is provably false on closed surfaces; termination-on-contact makes traces well-defined but says nothing about whether the graph is a cut graph. Step 8, "extract the faces of the embedded graph", is undefined for a non-cellular embedding. §4.6's motorcycle-graph decomposition guarantee is amended to name its condition: it applies only when the field has a singularity or the surface has a boundary.
+- **The decision: one new authority, `SurfaceCutGraph` (stage A2a′)**, produced after A2a and consumed by A2b, guaranteeing the complement is a disjoint union of open discs — source-edge cuts only, cellularity certificate, mandatory preservation, exact and deterministic, idempotent on already-cellular input, fail-closed.
+- **The stop condition is narrowed to its intent, not waived.** Repairing, collapsing, re-cutting, or re-typing a region *after* derivation remains a stop. Supplying cuts as a typed input *before* derivation, from a separate single-writer authority, is permitted. The operative test: if the cut decision can be made without looking at a produced `GlobalTopologyPlan` region it is a precondition; if it needs to see one it is a repair.
+- **Scope: C1 + C6. C3 deferred pending measure X2.** The sphere's `RotationSystemInconsistent` is a different failure — `χ=2`, 24 traces, 56 events, a different code, unmeasured — and designing for it unmeasured would repeat the CP4c-0/0b dependency inversion. **The gate is 357 or 358 and is deliberately not frozen**; X2 decides it.
+- **A vacuity trap is closed.** C3 and C6 are quantified over "produced witnesses" and no witness currently produces a plan, so both would pass vacuously — the same defect class as CP4c-1's C5. C1 is the non-vacuity anchor and X7 makes it reportable: a green C6 over zero regions is a red result.
+- Measures **X0–X9** issued, with five falsifiable predictions including the deliberately-uncertain one that the sphere is already cellular.
+- Defect recorded and repaired: the tracker's `CAND-03` entry cited the CB4 report, retired in the fifth consolidation; the citation now names the consolidated record.
+- Stable accounting unchanged: **42 / 14 / 28**, debt **5**, M3 packages **57**.
+
 ## 2026-08-28 — M3-CP4c-1 TB-R5 — 355/355 green, checkpoint closed / accepted
 
 `M3-CP4c-1-TB-R5` is **COMPLETE / GATE GREEN 355/355 / CHECKPOINT CLOSED / ACCEPTED**. Authoritative

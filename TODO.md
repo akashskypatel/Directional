@@ -21,7 +21,43 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-DEFN` — closed / higher-genus A2b authority definition
+## Current focus — `M3-CP4c-2-CB1` — cut-graph authority for A2b, under measures **X0–X9**
+
+**`M3-CP4c-2-DEFN` is COMPLETE / DEFINITION-ONLY.** Record:
+`Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`. CP4c-1's closure was independently re-verified first: all
+four selector hashes recomputed identical, `src/`/`include/` frozen across CB4, and W1/W2/W5 confirmed in
+source. **The closure claim is upheld.**
+
+**The decision.** CP4c-2 introduces one new authority, **`SurfaceCutGraph` (stage A2a′)**, produced after A2a
+and consumed by A2b, whose sole obligation is to guarantee the curve network's complement is a disjoint union
+of open discs. **`DESIGN.md` §7.2 is amended (Amendment 12)**: its claim that region-disc topology "holds by
+construction" is provably false on closed surfaces, and its stop condition, read literally, forbids the only
+viable fix.
+
+**The theorem, from already-measured data.** For a cellular embedding on the torus, `F = E − V + χ = E − V`.
+The torus network has `V = 48`, `E = 48`, `χ = 0`, so `F = 0` — impossible, since the complement is non-empty.
+At least one component is not a disc. More generally **no disjoint union of closed curves can ever be a cut
+graph of the torus**, so this is not a defect of the committed fixture and cannot be fixed by choosing better
+feature curves. `UncutFaceComponentOrbitSeedNotUnique` at `GlobalTopologyPlan.cpp:1741` is **correct
+behaviour** reporting a missing input — there is no bug at that line.
+
+**The boundary the implementation agent must not cross:** establishing a precondition before a product is
+derived is not repairing that product afterward. If the cut decision can be made without ever looking at a
+produced `GlobalTopologyPlan` region, it is a precondition; if it needs to see one, it is a repair and a stop.
+
+**Scope.** CP4c-2 owns **C1** (torus regions) and **C6** (disc proof + mandatory preservation). **C3 is
+deferred pending measure X2**, because the sphere's `RotationSystemInconsistent` is a *different* failure —
+`χ=2`, 24 traces, 56 events, a different code, and unmeasured. Designing for it unmeasured would repeat the
+CP4c-0/0b dependency inversion. **The gate is 357 or 358 and X2 decides which; it is not frozen here.**
+
+**Vacuity trap, closed by X7:** C3 and C6 are quantified over "produced witnesses", and today no witness
+produces a plan — so both would pass vacuously. C1 is the non-vacuity anchor; a green C6 over zero regions is
+a red result.
+
+**Exact next is `M3-CP4c-2-CB1`** under X0–X9. Accepted runtime authority remains CP4c-1 TB-R5 **355/355**.
+Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**.
+
+## Superseded focus — `M3-CP4c-1` closure (retained for provenance)
 
 **`M3-CP4c-1` is CLOSED / ACCEPTED.** Artifact-only TB-R5 run/job `33161644741 / 98817323175`
 consumed immutable CB4 GMP package `9675666067` from semantic/test source
@@ -41,7 +77,7 @@ Accepted runtime authority is now CP4c-1 TB-R5 **355/355**. Result/log artifacts
 55ad320aaf810bb5b02fbfccdd7662f4a47333586bdb30397d624d701710439b`. Stable accounting remains
 **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**.
 
-**Exact next is definition-only `M3-CP4c-2-DEFN`.** CP4c-2 owns the closed/higher-genus A2b authority gap:
+At CP4c-1 closure the next turn was definition-only `M3-CP4c-2-DEFN`, **now complete**. CP4c-2 owns the closed/higher-genus A2b authority gap:
 a closed index-free surface can have no singularity/feature/boundary seeds, so the current architecture has no
 seam/cut graph from which region ownership can start. The DEFN turn must settle that contract before any product,
 test, fixture, selector, compile, or runtime work. Rebased trajectory arithmetic is **358 = accepted 355 + C1 +
@@ -119,10 +155,12 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-1-TB-R4-REVIEW-PLAN` — **COMPLETE / REVIEW GREEN.** C5's red is test-side in both clauses; the product meets the frozen contract on every witness that produced a trace. Plan line 131 adjudicated normative over line 101; `M3-CP4c1-TB-R4-CAND-01` **RESOLVED / TEST-SIDE OVER-SPECIFICATION / NON-STABLE**. Clause 1 identified as a recurrence of `M3-CP4c0b-DG-CAND-02`. Measures **W0–W7** issued. Historical review facts are consolidated in `M3_CP4c_Consolidated_Record.md` §4/§5.
 - [x] `M3-CP4c-1-CB4` — **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-SIDE ONLY.** Semantic/test source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`; W1/W2 corrected C5 in place; W4 not used; both mandatory W5 inverted diagnostics retired with surviving-cover rationale; W5b publishers unchanged. Required selector remains 355 / `e9d88f11…5afeaa`; non-gating selector is 3 / `537a8010…ffcd6a`; `src/`/`include/` unchanged. Compile run/job `33145657048 / 98766007030` PASS; immutable GMP package `9675666067` / `63b66788…45ec17`; manifest 28/28; `runtimeExecution=false`; no Directional runtime.
 - [x] `M3-CP4c-1-TB-R5` — **COMPLETE / GATE GREEN 355/355 / CP4c-1 CLOSED / ACCEPTED.** Run/job `33161644741 / 98817323175`; prefixes 316/346/353 PASS; C4/C5 PASS; W3 exact union/contributor prediction met; three historical diagnostics report-only; explicit two-ring report PASS; W5-retired identities absent; immutable postflight PASS. Report: `Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`; closure: `M3_CP4c1_Closure_Record.md`.
-- [ ] `M3-CP4c-2-DEFN` — **NEXT / DEFINITION-ONLY.** Settle closed/higher-genus A2b seam/cut-graph and region-seed authority before implementation; prospective cumulative arithmetic 358 = accepted 355 + C1 + C3 + C6, not yet frozen.
+- [x] `M3-CP4c-2-DEFN` — **COMPLETE / DEFINITION-ONLY.** Froze the `SurfaceCutGraph` (A2a′) contract and **Amendment 12** to `DESIGN.md` §7.2/§4.6. Proved from measured data that the torus network (`V=48, E=48, χ=0`) cannot bound discs, and that no disjoint union of closed curves can ever cut a torus — so `UncutFaceComponentOrbitSeedNotUnique` is correct behaviour reporting a missing input. Scoped CP4c-2 to **C1 + C6**; **C3 deferred pending measure X2**. Gate is **357 or 358**, not frozen. Measures **X0–X9**. Record: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`.
+- [ ] `M3-CP4c-2-CB1` — **NEXT / CODE + BUILD / RUNTIME-FREE.** Implement `SurfaceCutGraph` under **X0–X9**: single writer, source-edge cuts only, cellularity certificate, mandatory preservation, exact/deterministic, idempotent on already-cellular input, fail-closed. **It may not read a `GlobalTopologyPlan`.** No non-disc repair, collapse, or re-cut inside A2b. Accepted ordinals 1–355 and all four selector hashes unchanged.
+- [ ] `M3-CP4c-2-TB` — **BLOCKED ON CB1.** Full gate at 357 or 358 per X2. Closes CP4c-2 only with §8 predictions 1–4 met and X7 reporting a non-zero torus region count — **a green C6 over zero regions is a red result.**
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. **Exact next is definition-only `M3-CP4c-2-DEFN`.**
+Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. **Exact next is `M3-CP4c-2-CB1` under measures X0–X9.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
@@ -195,7 +233,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. Exact next is definition-only `M3-CP4c-2-DEFN`; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; current accepted authority is **355/355**. Exact next is `M3-CP4c-2-CB1` under measures X0–X9; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.

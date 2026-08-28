@@ -83,7 +83,43 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-DEFN` — definition-only closed/higher-genus A2b authority
+## Mandatory next turn — `M3-CP4c-2-CB1` — cut-graph authority for A2b, measures **X0-X9**
+
+`M3-CP4c-2-DEFN` is **COMPLETE / DEFINITION-ONLY**. Read
+`Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` in full before writing any code; §5 is the frozen contract,
+§7 the measures, §8 the falsifiable predictions.
+
+**CP4c-1's closure was independently re-verified before the definition was written** — all four selector hashes
+recomputed identical, `src/` and `include/` frozen across CB4, W1/W2/W5 confirmed in source. The claim is upheld.
+
+**The decision.** One new authority, **`SurfaceCutGraph` (stage A2a′)**, produced after A2a and consumed by
+A2b, guaranteeing the curve network's complement is a disjoint union of open discs. **`DESIGN.md` §7.2 and
+§4.6 are amended (Amendment 12).**
+
+**Why, provably.** For a cellular embedding on the torus, `F = E − V + χ = E − V`. The measured torus network
+has `V = 48`, `E = 48`, `χ = 0`, so `F = 0` — impossible, since the complement is non-empty. At least one
+component is not a disc. Generalized: a disjoint union of closed curves always has `E = V`, so **no disjoint
+union of closed curves can ever be a cut graph of the torus** — this is not a defect of the committed fixture
+and cannot be fixed by choosing better feature curves. `UncutFaceComponentOrbitSeedNotUnique` at
+`GlobalTopologyPlan.cpp:1741` is **correct behaviour reporting a missing input; there is no bug at that line.**
+
+**The one boundary that must not be crossed.** §7.2's stop condition forbids *repairing* a produced region.
+It does not forbid a separate earlier authority *supplying cuts as an input*. The test: if the cut decision can
+be made without ever looking at a produced `GlobalTopologyPlan` region, it is a precondition and is permitted;
+if it needs to see one, it is a repair and is a **stop**. A2a′ may not read a `GlobalTopologyPlan`.
+
+**Scope.** CP4c-2 owns **C1** and **C6**. **C3 is deferred pending measure X2**: the sphere's
+`RotationSystemInconsistent` is a different failure — `χ=2`, 24 traces, 56 events, a different code, and
+unmeasured — and designing for it unmeasured would repeat the CP4c-0/0b dependency inversion. **The gate is
+357 or 358; X2 decides, and this document does not freeze it.**
+
+**Vacuity trap.** C3 and C6 are quantified over "produced witnesses", and today no witness produces a plan, so
+both would pass vacuously. C1 is the non-vacuity anchor; **a green C6 over zero regions is a red result** (X7).
+
+**Out of scope:** the mechanical witness and its A1 `IncompleteCycleBasis`, C2, CP4c-3, seam quality, and the
+alternatives harness.
+
+### Predecessor authority — `M3-CP4c-1`, CLOSED / ACCEPTED
 
 `M3-CP4c-1` is **CLOSED / ACCEPTED**. Authoritative artifact-only TB-R5 run/job
 `33161644741 / 98817323175` consumed immutable CB4 GMP package `9675666067` from semantic/test source
@@ -140,21 +176,22 @@ for the package TB-R5 consumed (`33145657048 / 98766007030`, source `b1ce8ad6595
 - `M3-CP4c1-TB-R4-CAND-01` is resolved test-side over-specification/non-stable; `CAND-03` is resolved TB-confirmed test-side inverted-precondition/non-stable.
 - `M3-CP4c0-DEFN2-CAND-01` remains open/non-stable and owned by its previously recorded future measure; no CP4c-1 result changes it.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **57**.
-- **Exact next turn is definition-only `M3-CP4c-2-DEFN`.** CP4c-3 remains blocked.
+- **Exact next turn is `M3-CP4c-2-CB1`, Code + Build, runtime-free, under measures X0-X9.** CP4c-3 remains blocked.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/REVIEW.md` (planning/definition-only boundary).
+`load_next`: turn-based-coding-agent `references/turns/CB.md`. `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/M3_CP4c1_Closure_Record.md` — accepted 355/355 authority and exact successor boundary.
-2. `.agents/Directional/Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md` — immutable acceptance evidence and W3/W5 disposition.
-3. `.agents/Directional/ROADMAP.md` §3 — CP4c-2 domain, closed/higher-genus seam/cut-graph authority gap, and prospective 358 arithmetic.
-4. `.agents/Directional/Architecture_M3_CP4c_Required_Green_Selector.txt` — parent C1–C6 identity allocation; use for definition only, not as an already-frozen successor selector.
-5. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` — exact accepted 355 predecessor order/hash.
-6. `DESIGN.md` §§4.6, 7.2, and 14 M3 plus `M3_CP4c_Consolidated_Record.md` §4 — normative architecture and historical split evidence.
-7. `TODO.md`, `Regression_Root_Cause_Tracker.md`, and `.agents/Directional/CHANGELOG.md` — current task/accounting/history.
+1. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — **the frozen contract.** §5 the product, §7 measures X0-X9, §8 predictions, §4 Amendment 12.
+2. `src/geometry/GlobalTopologyPlan.cpp:1694-1746` — the complementary-component traversal to **reuse, not duplicate**, and the exact `UncutFaceComponentOrbitSeedNotUnique` site.
+3. `DESIGN.md` §§4.6 and 7.2 — the text Amendment 12 replaces; read before editing.
+4. `tests/FieldAlignedCurveNetworkTests.cpp` — `expect_cp4c_plan_disc_proofs` for the existing region-certificate shape (`boundaryWalkCount`, `sourceFacesConnected`, `eulerCharacteristic`, `proves_disc_topology`) that the cellularity certificate must mirror.
+5. `.agents/Directional/Architecture_M3_CP4c_Required_Green_Selector.txt` lines 317-322 — the exact C1-C6 allocation; C1/C6 are in scope, C3 pends X2, C2 is CP4c-3.
+6. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` — the accepted 355 predecessor order/hash that X0 must re-verify unchanged.
+7. `.agents/Directional/M3_CP4c1_Closure_Record.md` — accepted 355/355 authority, for provenance only.
+8. `TODO.md`, `Regression_Root_Cause_Tracker.md`, `.agents/Directional/CHANGELOG.md` — current task/accounting/history.
 
 `M3-CP4c-2-DEFN` is planning only: no implementation/test/fixture/selector mutation, compile, or runtime.
 
