@@ -1,0 +1,169 @@
+name: M3 CP4c2 TB X2 EXEC v2
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-tb-x2-exec-v2/**
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c2-tb-x2-exec-v2.yml
+    secrets: inherit
+
+  x2:
+    needs: validate
+    runs-on: ubuntu-24.04
+    env:
+      ARTIFACT_ID: "9696201700"
+      ARTIFACT_SHA256: af3ebe2efaab66fed70de8d954cb5615abd9428f401ea974dffe1e14577c8097
+      SOURCE_SHA: 93d9d49f052fa481bd3a8ad8c9bf31eccda7705c
+      SOURCE_ARCHIVE_SHA256: 8694f0fb85d101e3c5862e5a6a8a8a3ed241c723fd229eb44f83844b30321687
+      ACCEPTED_355_SHA256: e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa
+      PREFIX_316_SHA256: 601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c
+      PREFIX_346_SHA256: 20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a
+      PREFIX_353_SHA256: 51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5
+      CANDIDATE_357_SHA256: b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70
+      CANDIDATE_358_SHA256: 6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62
+      X2_SELECTOR_SHA256: 88af227b7c7ca78d2a6247624b3a5f860026cf50fd3c2bd6a215756b086dafc8
+      X2_IDENTITY: GlobalTopologyPlan.Cp4c2PrescribedSphereCellularityScopeDecisionIsObservable
+
+    steps:
+      - name: Initialize persistent evidence log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/activity.log"
+          mkdir -p "$RUNNER_TEMP/x2-result"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "ref=$GITHUB_REF" \
+            "artifact_id=$ARTIFACT_ID" \
+            "semantic_source=$SOURCE_SHA" \
+            'canonicalTurn=Test+Benchmark' \
+            'subturn=M3-CP4c-2-TB-X2-EXEC' \
+            'configureOccurred=false' \
+            'compileOccurred=false' \
+            'relinkOccurred=false' \
+            'repairOccurred=false' \
+            'generatedDiscoveryOccurred=false' | tee -a "$RUNNER_TEMP/activity.log"
+
+      - name: Immutable package preflight
+        id: preflight
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          ZIP="$RUNNER_TEMP/package.zip"
+          PKG="$RUNNER_TEMP/package"
+          SRC="$RUNNER_TEMP/source"
+          RESULT="$RUNNER_TEMP/x2-result"
+          mkdir -p "$PKG" "$SRC"
+          gh api --method GET "repos/$GITHUB_REPOSITORY/actions/artifacts/$ARTIFACT_ID/zip" > "$ZIP"
+          test "$(sha256sum "$ZIP" | awk '{print $1}')" = "$ARTIFACT_SHA256"
+          unzip -q "$ZIP" -d "$PKG"
+          (cd "$PKG" && sha256sum -c SHA256SUMS)
+          test "$(tr -d '\r\n' < "$PKG/metadata/source-commit.txt")" = "$SOURCE_SHA"
+          test "$(tr -d '\r\n' < "$PKG/metadata/build-exit-code.txt")" = 0
+          test "$(tr -d '\r\n' < "$PKG/metadata/preflight-exit-code.txt")" = 0
+          for f in source-status-preconfigure.txt source-status-before-configure.txt source-status-after-configure.txt source-status-after-build.txt source-status-final.txt; do test ! -s "$PKG/metadata/$f"; done
+          grep -Fxq 'runtimeExecution=false' "$PKG/metadata/command-boundary.txt"
+          grep -Fxq 'turnBoundary=Code+Build-only' "$PKG/metadata/command-boundary.txt"
+          grep -Fxq 'exactArithmeticBackend=GMP' "$PKG/metadata/command-boundary.txt"
+          grep -qi gmpxx "$PKG/metadata/gmp-evidence.txt"
+          grep -qi gmp "$PKG/metadata/gmp-evidence.txt"
+          for exe in directional_benchmarks directional_compiled_api_tests directional_surface_cell_authority_kernel_tests directional_surface_cell_completion_tests directional_surface_cell_producer_tests directional_surface_cell_validation_tests; do test -f "$PKG/bin/$exe"; test "$(stat -c %a "$PKG/bin/$exe")" = 755; done
+          for lib in libdirectional_core.a libdirectional_pipeline.a; do test -f "$PKG/lib/$lib"; test "$(stat -c %a "$PKG/lib/$lib")" = 644; done
+          SOURCE_ARCHIVE="$PKG/source/source-$SOURCE_SHA.tar.gz"
+          test "$(sha256sum "$SOURCE_ARCHIVE" | awk '{print $1}')" = "$SOURCE_ARCHIVE_SHA256"
+          tar -xzf "$SOURCE_ARCHIVE" -C "$SRC"
+          ACCEPTED="$SRC/.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt"
+          S357="$SRC/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_357.txt"
+          S358="$SRC/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_358.txt"
+          X2SEL="$SRC/.agents/Directional/Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt"
+          test "$(wc -l < "$ACCEPTED")" -eq 355
+          test "$(sha256sum "$ACCEPTED" | awk '{print $1}')" = "$ACCEPTED_355_SHA256"
+          test "$(head -n 316 "$ACCEPTED" | sha256sum | awk '{print $1}')" = "$PREFIX_316_SHA256"
+          test "$(head -n 346 "$ACCEPTED" | sha256sum | awk '{print $1}')" = "$PREFIX_346_SHA256"
+          test "$(head -n 353 "$ACCEPTED" | sha256sum | awk '{print $1}')" = "$PREFIX_353_SHA256"
+          test "$(wc -l < "$S357")" -eq 357
+          test "$(sha256sum "$S357" | awk '{print $1}')" = "$CANDIDATE_357_SHA256"
+          test "$(wc -l < "$S358")" -eq 358
+          test "$(sha256sum "$S358" | awk '{print $1}')" = "$CANDIDATE_358_SHA256"
+          test "$(wc -l < "$X2SEL")" -eq 1
+          test "$(sha256sum "$X2SEL" | awk '{print $1}')" = "$X2_SELECTOR_SHA256"
+          test "$(tr -d '\r\n' < "$X2SEL")" = "$X2_IDENTITY"
+          inventory() { local root="$1" out="$2"; : > "$out"; while IFS= read -r -d '' file; do rel="${file#$root/}"; printf '%s\t%s\t%s\t%s\n' "$rel" "$(stat -c %a "$file")" "$(stat -c %s "$file")" "$(sha256sum "$file" | awk '{print $1}')" >> "$out"; done < <(find "$root" -type f -print0 | sort -z); }
+          inventory "$PKG" "$RESULT/package-inventory-before.tsv"
+          inventory "$SRC" "$RESULT/source-inventory-before.tsv"
+          cp "$PKG/SHA256SUMS" "$RESULT/package-SHA256SUMS.txt"
+          cp "$PKG/metadata/command-boundary.txt" "$RESULT/package-command-boundary.txt"
+          cp "$PKG/metadata/gmp-evidence.txt" "$RESULT/package-gmp-evidence.txt"
+          printf '%s\n' "artifact_sha256=$ARTIFACT_SHA256" "source_archive_sha256=$SOURCE_ARCHIVE_SHA256" 'package_manifest=verified' 'selectors=verified' 'selected_identity_count=1' 'preflight=PASS' | tee "$RESULT/preflight.txt"
+
+      - name: Execute frozen X2 identity only
+        id: x2
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          PKG="$RUNNER_TEMP/package"
+          RESULT="$RUNNER_TEMP/x2-result"
+          mkdir -p "$RUNNER_TEMP/x2-runtime"
+          cd "$RUNNER_TEMP/x2-runtime"
+          set +e
+          "$PKG/bin/directional_surface_cell_producer_tests" --gtest_color=no --gtest_filter="$X2_IDENTITY" > >(tee "$RESULT/x2-stdout.txt") 2> >(tee "$RESULT/x2-stderr.txt" >&2)
+          rc=$?
+          set -e
+          printf '%s\n' "$rc" > "$RESULT/x2-exit-code.txt"
+          run_count="$(grep -Fxc "[ RUN      ] $X2_IDENTITY" "$RESULT/x2-stdout.txt" || true)"
+          report_count="$(grep -c '^m3Cp4c2X2;' "$RESULT/x2-stdout.txt" || true)"
+          printf '%s\n' "identity=$X2_IDENTITY" "selected_run_count=$run_count" "report_count=$report_count" "process_exit=$rc" | tee "$RESULT/x2-execution-metadata.txt"
+          test "$run_count" -eq 1
+          test "$report_count" -eq 1
+          grep '^m3Cp4c2X2;' "$RESULT/x2-stdout.txt" > "$RESULT/x2-report.txt"
+
+      - name: Immutable postflight
+        if: always() && steps.preflight.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/activity.log") 2>&1
+          PKG="$RUNNER_TEMP/package"
+          SRC="$RUNNER_TEMP/source"
+          RESULT="$RUNNER_TEMP/x2-result"
+          inventory() { local root="$1" out="$2"; : > "$out"; while IFS= read -r -d '' file; do rel="${file#$root/}"; printf '%s\t%s\t%s\t%s\n' "$rel" "$(stat -c %a "$file")" "$(stat -c %s "$file")" "$(sha256sum "$file" | awk '{print $1}')" >> "$out"; done < <(find "$root" -type f -print0 | sort -z); }
+          inventory "$PKG" "$RESULT/package-inventory-after.tsv"
+          inventory "$SRC" "$RESULT/source-inventory-after.tsv"
+          cmp "$RESULT/package-inventory-before.tsv" "$RESULT/package-inventory-after.tsv"
+          cmp "$RESULT/source-inventory-before.tsv" "$RESULT/source-inventory-after.tsv"
+          printf '%s\n' 'configureOccurred=false' 'compileOccurred=false' 'relinkOccurred=false' 'repairOccurred=false' 'generatedDiscoveryOccurred=false' 'mutationOccurred=false' 'postflight=PASS' | tee "$RESULT/postflight.txt"
+
+      - name: Upload X2 raw result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c2-tb-x2-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/x2-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload X2 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c2-tb-x2-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/activity.log
+          if-no-files-found: error
+          retention-days: 7
