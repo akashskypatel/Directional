@@ -9,6 +9,32 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-28 — `M3-CP4c-2-TB-X2-REV`: evidence fits neither frozen branch; gate remains unselected
+
+Review-only. No Directional runtime, compile, benchmark, package regeneration, source/test/fixture/selector/build
+logic mutation, or corrective implementation design occurred. Record:
+`Architecture_M3_CP4c2_TB_X2_Review_Record.md`.
+
+Authoritative X2 evidence remains run/job `33199227974 / 98944212158` on immutable GMP package `9696201700`.
+The execution evidence is trustworthy, but it is insufficient for the frozen binary scope decision. Static
+re-derivation shows `observe_cp4c_witness` calls `SurfaceCutGraph::make` before publishing the fields intended to
+measure network cellularity; on the observed `CellularityNotEstablished` failure it returns immediately. The
+field named `networkAlreadyCellular` is emitted only after a successful cut graph and is merely an empty-cut-set
+check, not an independent network-only `V/E/F/χ` certificate. The same early return prevents observation of
+whether `RotationSystemInconsistent` persists or disappears after a certified embedding is supplied. The report
+also publishes only the shared cut-graph error code, not enough localization to distinguish its multiple product
+return sites.
+
+Therefore **357 is not established and 358 is not established**. `selected_gate=NONE` and cumulative
+`TB-GATE-EXEC` is blocked by the frozen stop rule. `M3-CP4c2-TB-X2-CAND-03` is resolved as a
+**test-authority / measurement-incomplete / non-stable** defect. New `M3-CP4c2-TB-X2-CAND-04` retains the real
+but currently unlocalized product evidence that the valid prescribed sphere reaches A2a′ and
+`SurfaceCutGraph` fails `CellularityNotEstablished`. Stable accounting remains **42 / 14 / 28**, debt **5**,
+M3 packages **58**.
+
+Exact next: **`M3-CP4c-2-TB-X2-PLAN`**. No selector choice or cumulative gate runtime is authorized first.
+
+
 ## 2026-08-28 — `M3-CP4c-2-TB-X2-EXEC`: frozen report-only X2 evidence preserved
 
 Artifact-only X2 execution is complete on immutable GMP package `9696201700` from semantic/test source

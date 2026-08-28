@@ -139,8 +139,9 @@ Result/log artifacts are `9681960334 / 9681960615`, digests
 55ad320aaf810bb5b02fbfccdd7662f4a47333586bdb30397d624d701710439b`. Stable accounting remains
 **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**.
 
-`M3-CP4c-2-DEFN` and CB1 are complete. The frozen architecture gap is the closed-surface A2b seam/cut-graph
-precondition described above; current work is the X2 scope decision over already-preserved artifact-only evidence.
+`M3-CP4c-2-DEFN`, CB1, TB-X2-EXEC, and TB-X2-REV are complete. The X2 review did **not** choose a gate: the
+preserved evidence fits neither frozen branch because network-only cellularity was not independently measured and
+the observation stopped at `SurfaceCutGraph::CellularityNotEstablished` before post-certificate A2b behavior.
 CP4c-3 remains blocked until CP4c-2 closure.
 
 ## Current authority
@@ -168,7 +169,7 @@ CP4c-3 remains blocked until CP4c-2 closure.
 
 CB1 supplies compiled evidence only. It does **not** choose the 357/358 runtime gate and does not accept CP4c-2.
 
-### M3-CP4c-2 TB-X2-EXEC — raw runtime evidence, branch decision pending
+### M3-CP4c-2 TB-X2-EXEC — raw runtime evidence (reviewed below)
 
 - status: **COMPLETE / RAW EVIDENCE PRESERVED / NO GATE DECISION**;
 - authoritative run/job: `33199227974 / 98944212158`;
@@ -187,6 +188,23 @@ CB1 supplies compiled evidence only. It does **not** choose the 357/358 runtime 
 
 This EXEC subturn does not interpret the X2 publication and does not choose 357 versus 358.
 
+### M3-CP4c-2 TB-X2-REV — evidence fits neither frozen branch
+
+- status: **COMPLETE / STOP / NO GATE SELECTED**;
+- review record: `Architecture_M3_CP4c2_TB_X2_Review_Record.md`;
+- frozen 357 predicate: **NOT ESTABLISHED** — no independent network-only cellularity proof and no
+  post-certificate `RotationSystemInconsistent` observation;
+- frozen 358 predicate: **NOT ESTABLISHED** — `CellularityNotEstablished` was observed, but causality and
+  post-certificate disappearance of `RotationSystemInconsistent` were not measured;
+- static re-derivation: the X2 observer emits `networkAlreadyCellular` only after successful cut-graph creation,
+  defines it as an empty cut set, and returns before `GlobalTopologyPlan::make` when cut-graph production fails;
+- exact-site requirement: unmet by the current publication because multiple product return sites share
+  `CellularityNotEstablished` and the report does not serialize enough localization to distinguish them;
+- `selected_gate=NONE`; `M3-CP4c-2-TB-GATE-EXEC` is **not authorized**;
+- `M3-CP4c2-TB-X2-CAND-03` is resolved test-authority/measurement-incomplete/non-stable;
+- `M3-CP4c2-TB-X2-CAND-04` tracks the real but unlocalized prescribed-sphere `SurfaceCutGraph` product failure;
+- stable accounting remains **42 / 14 / 28**, debt **5**, packages **58**.
+
 ### Accepted runtime predecessor
 
 `M3-CP4c-1-TB-R5` remains the current accepted runtime authority at **355/355**, run/job
@@ -197,31 +215,32 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
 - CP4c-2 DEFN is complete and CB1 is **build-green / runtime-unaccepted**.
-- The new A2a′ `SurfaceCutGraph` product is compiled into package `9696201700`; the report-only X2 runtime has executed, while the cumulative CP4c-2 gate has not begun.
+- The new A2a′ `SurfaceCutGraph` product is compiled into package `9696201700`; X2 EXEC+REV are complete, while the cumulative CP4c-2 gate has not begun.
+- X2 review selected **no** gate because the evidence fits neither frozen 357/358 branch.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**.
 - M3 packages are **58**.
-- **Exact next turn is `M3-CP4c-2-TB-X2-REV`.** It reviews only the preserved X2 evidence and selects one of the two already-frozen 357/358 branches. No cumulative gate runtime is authorized before that review.
+- **Exact next turn is `M3-CP4c-2-TB-X2-PLAN`.** It must plan how to close the frozen X2 evidence gaps before any selector choice or cumulative gate runtime.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/TB-REVIEW.md`.
+`load_next`: turn-based-coding-agent `references/turns/TB-PLAN.md`.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md` — authoritative raw X2
-   execution evidence and orchestration deviations.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md` — frozen two-branch
-   X2 review rule and stop conditions.
-3. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §6.3/§7 X2 authority and §8
-   predictions.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — resolved orchestration candidates and active
-   review-owned X2 candidate.
-5. `TODO.md` and `.agents/Directional/CHANGELOG.md` — current state/accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Review_Record.md` — authoritative review finding:
+   neither frozen branch is established and no gate is selected.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md` — immutable raw X2
+   publication and exact runtime provenance.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_Artifact_Only_Test_Benchmark_Plan.md` — frozen two-branch
+   decision rule and stop condition; do not edit it to manufacture a branch.
+4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §6.3/§7 X2 measurement authority.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — resolved CAND-03 measurement defect and active
+   CAND-04 unlocalized product failure.
+6. `TODO.md` and `.agents/Directional/CHANGELOG.md` — current state/accounting.
 
-`TB-X2-REV` is evidence-only: execute no new Directional runtime, compile, rebuild, repair, selector/test/fixture
-mutation, or exploratory command. It must choose only between the two already-frozen branches when the evidence
-supports one; if neither frozen branch fits, stop and route to planning/review rather than inventing a third gate.
+Do not execute new runtime, choose 357/358, or author corrective code before the planning turn settles the bounded
+measurement/localization work required by the review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

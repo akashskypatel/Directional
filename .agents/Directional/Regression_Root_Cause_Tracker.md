@@ -2,7 +2,7 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-EXEC`. The authoritative report-only X2 execution is run/job `33199227974 / 98944212158` on immutable GMP package `9696201700`; raw evidence is preserved without a 357/358 branch decision. Two preceding harness/control failures are resolved orchestration/non-stable candidates. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **58**.
+Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-REV`. Review of authoritative report-only X2 run/job `33199227974 / 98944212158` found that the evidence fits **neither** frozen 357/358 branch: the diagnostic never independently measured network-only cellularity and never reached post-certificate A2b behavior. No gate is selected and cumulative gate runtime remains blocked. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **58**.
 
 
 
@@ -30,18 +30,42 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-TB-X2-EXEC`. The authoritative
 - **Stable-count rationale:** runtime-environment/harness only; no product/test/fixture/selector/package semantic
   mutation and no accepted behavior loss. **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
 
-## M3-CP4c2-TB-X2-CAND-03 — report-only prescribed-sphere X2 publishes `CellularityNotEstablished` — ACTIVE / REVIEW-OWNED / NON-STABLE
+## M3-CP4c2-TB-X2-CAND-03 — X2 cannot adjudicate its frozen 357/358 rule when cut-graph production fails — **RESOLVED / TEST-AUTHORITY MEASUREMENT-INCOMPLETE / NON-STABLE**
 
-- **Observed raw evidence:** authoritative run/job `33199227974 / 98944212158` selected the frozen report-only X2
-  identity exactly once, process exit `1`, and published exactly one `m3Cp4c2X2` record. The complete raw record is
-  retained in `Architecture_M3_CP4c2_TB_X2_EXEC_Artifact_Only_Evidence.md`; it reports
-  `pipelineFailureStage=surface-cut-graph/CellularityNotEstablished`, `sourceEuler=2`,
-  `sourceBoundaryLoopCount=0`, `sourceGenus=0`, `networkTraceCount=24`, and `networkEventCount=56`.
-- **Boundary:** `TB-X2-EXEC` is evidence-only and may not interpret this publication or choose 357 versus 358.
-  `M3-CP4c-2-TB-X2-REV` owns comparison against the two frozen DEFN branches.
-- **Stable-count rationale:** the identity is explicitly non-gating/report-only and CP4c-2 has no accepted runtime
-  authority yet. No stable accepted-green regression is established by EXEC alone; **+0 events / +0 recurrences**
-  pending review. Totals remain **42 / 14 / 28**, debt **5**.
+- **Observed:** authoritative report-only run/job `33199227974 / 98944212158` reaches a valid prescribed-sphere
+  network (24 traces / 56 events) and then publishes `surface-cut-graph/CellularityNotEstablished`.
+- **Review re-derivation:** `observe_cp4c_witness` calls `SurfaceCutGraph::make` before it emits
+  `networkAlreadyCellular` or any `V/E/F/χ` cellularity fields. On cut-graph failure it returns immediately. The
+  field named `networkAlreadyCellular` is itself only `cutGraph.cut_edges().empty()` after successful construction,
+  not an independent network-only complement certificate. `GlobalTopologyPlan::make` is likewise after successful
+  cut-graph construction, so this path cannot observe whether `RotationSystemInconsistent` persists or disappears
+  once a certified embedding is supplied.
+- **Exact-site gap:** the X2 report serializes only the shared code `CellularityNotEstablished`. Source contains
+  multiple return sites for that code, including tree-cotree cut selection, final component disc recertification,
+  and final global cellularity certification. Optional `sourceFace` localization is not serialized.
+- **Adjudication:** record `Architecture_M3_CP4c2_TB_X2_Review_Record.md`. The evidence establishes neither the
+  frozen 357 predicate nor the frozen 358 predicate. `selected_gate=NONE`; full gate execution is forbidden by the
+  frozen TB plan. The diagnostic is therefore measurement-incomplete for its stated decision purpose.
+- **Stable-count rationale:** this is a report-only, not-yet-accepted CP4c-2 diagnostic/test-authority defect, not a
+  loss of accepted-green behavior. **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c2-TB-X2-CAND-04 — prescribed sphere reaches A2a′ then `SurfaceCutGraph` fails `CellularityNotEstablished` — **ACTIVE / PRODUCT FAILURE CANDIDATE / UNLOCALIZED / NON-STABLE**
+
+- **Observed:** the same authoritative X2 run proves source topology, `FieldTransportAtlas`, and
+  `FieldAlignedCurveNetwork` all succeed for the prescribed sphere; the network has 24 traces / 56 events. The next
+  producer, `SurfaceCutGraph`, fails closed with `CellularityNotEstablished`, so no certified cut graph or
+  `GlobalTopologyPlan` is produced.
+- **What is established:** this is not the earlier fixture-root orchestration failure and not an A1/A2a reachability
+  failure. It is real product-path evidence at the new A2a′ authority.
+- **What is not established:** the raw diagnostic does not distinguish the multiple
+  `CellularityNotEstablished` return paths or publish the failing component/source face/certificate condition. It
+  therefore does not justify a specific implementation root cause, and it does not prove whether the sphere's old
+  `RotationSystemInconsistent` was caused by non-cellularity.
+- **Ownership:** `M3-CP4c-2-TB-X2-PLAN` must plan the missing measurement/localization before any corrective CB or
+  gate selection. No implementation correction is authorized by this review record alone.
+- **Stable-count rationale:** CP4c-2 has never been accepted at runtime and this product is new in the unaccepted
+  checkpoint. The finding is material but non-stable: **+0 events / +0 recurrences**. Totals remain
+  **42 / 14 / 28**, debt **5**.
 
 
 ## M3-CP4c1-TB-R4-CAND-01 — C5 rejects current terminal-event witness union at two preconditions — **RESOLVED** / TEST-SIDE OVER-SPECIFICATION / NON-STABLE
