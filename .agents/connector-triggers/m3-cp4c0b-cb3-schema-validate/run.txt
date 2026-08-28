@@ -1,3 +1,3 @@
 turn=M3-CP4c-0b-CB3-INSTR
-purpose=validate extended schema-validator draft before active caller update
-retry=1
+purpose=validate compile caller draft before workload publication
+retry=2
