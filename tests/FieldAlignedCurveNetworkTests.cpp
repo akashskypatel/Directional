@@ -5935,9 +5935,9 @@ TEST(GlobalTopologyPlan,
      Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable) {
   const std::array<std::tuple<const char *, const char *, Cp4cRailAuthority>, 3>
       witnesses{{
+          {"torus", "torus", Cp4cRailAuthority::PipelineAuthoritative},
           {"sphere_prescribed", "prescribed-sphere",
            Cp4cRailAuthority::PipelineAuthoritative},
-          {"torus", "torus", Cp4cRailAuthority::PipelineAuthoritative},
           {"two-ring", "two-ring", Cp4cRailAuthority::AtlasDerived},
       }};
   for (const auto &[fixtureStem, witnessName, railAuthority] : witnesses) {
