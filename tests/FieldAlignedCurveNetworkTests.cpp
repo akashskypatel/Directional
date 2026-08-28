@@ -2704,6 +2704,50 @@ directional::pipeline::RemeshOptions cp4c_remesh_options() {
   return options;
 }
 
+struct Cp4cRailAuthorityBuild {
+  std::vector<SurfaceCellRail> rails;
+  directional::authority::FieldTransportAtlas atlas;
+};
+
+std::optional<Cp4cRailAuthorityBuild> cp4c_build_rail_authority(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
+    const CrossFieldResult &field, const Cp4cRailAuthority authority,
+    std::string &error) {
+  if (authority == Cp4cRailAuthority::AtlasDerived) {
+    auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, sourceAuthority, {}, field);
+    if (!atlas) {
+      error = "field-transport-atlas-unavailable";
+      return std::nullopt;
+    }
+    auto rails = rails_from_atlas(mesh, atlas.value());
+    return Cp4cRailAuthorityBuild{std::move(rails), std::move(atlas.value())};
+  }
+
+  const auto options = cp4c_remesh_options();
+  const auto featureMap = directional::geometry::AdaptiveFeatureMapBuilder::build(
+      mesh.V, mesh.F,
+      options.featureAlign ? options.featureMap : options.surfaceCells.featureMap);
+  const auto railBuild =
+      directional::pipeline::build_authoritative_surface_cell_rails(mesh,
+                                                                     featureMap);
+  if (railBuild.is_rejected() || railBuild.produced_product() == nullptr) {
+    error = "pipeline-authoritative-rails-unavailable";
+    return std::nullopt;
+  }
+  std::vector<SurfaceCellRail> rails = railBuild.produced_product()->rails;
+  const auto hardFeatureRailEdges =
+      directional::pipeline::hard_feature_edge_keys_from_rails(
+          rails, static_cast<std::size_t>(mesh.V.rows()));
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, sourceAuthority, hardFeatureRailEdges, field);
+  if (!atlas) {
+    error = "field-transport-atlas-unavailable";
+    return std::nullopt;
+  }
+  return Cp4cRailAuthorityBuild{std::move(rails), std::move(atlas.value())};
+}
+
 
 void append_cp4c_terminal_event_report(
     std::ostringstream &report, const FieldAlignedCurveNetwork &network) {
@@ -4429,6 +4473,33 @@ struct IndependentComplementComponentTopology {
   }
 };
 
+struct Cp4cSourceEdgeBarrierAccounting {
+  std::set<SourceEdgeTopologyKey> mandatoryRailEdges;
+  std::set<SourceEdgeTopologyKey> traceIncomingCarriers;
+  std::set<SourceEdgeTopologyKey> traceOutgoingCarriers;
+  std::set<SourceEdgeTopologyKey> barriers;
+};
+
+Cp4cSourceEdgeBarrierAccounting cp4c_source_edge_barrier_accounting(
+    const FieldAlignedCurveNetwork &network) {
+  Cp4cSourceEdgeBarrierAccounting accounting;
+  for (const auto &edge : network.mandatory_edges()) {
+    accounting.mandatoryRailEdges.insert(edge.sourceEdge);
+    accounting.barriers.insert(edge.sourceEdge);
+  }
+  for (const auto &trace : network.candidate_traces()) {
+    for (const auto &segment : trace.segments) {
+      accounting.traceOutgoingCarriers.insert(segment.outgoingCarrier);
+      accounting.barriers.insert(segment.outgoingCarrier);
+      if (segment.incomingCarrier.has_value()) {
+        accounting.traceIncomingCarriers.insert(*segment.incomingCarrier);
+        accounting.barriers.insert(*segment.incomingCarrier);
+      }
+    }
+  }
+  return accounting;
+}
+
 std::vector<IndependentComplementComponentTopology>
 independent_network_complement_topology(
     const TriMesh &mesh, const FieldAlignedCurveNetwork &network) {
@@ -4436,18 +4507,8 @@ independent_network_complement_topology(
   const std::size_t faceCount = static_cast<std::size_t>(mesh.F.rows());
   const std::size_t vertexCount = static_cast<std::size_t>(mesh.V.rows());
 
-  std::set<Edge> barriers;
-  for (const auto &edge : network.mandatory_edges()) {
-    barriers.insert(edge.sourceEdge);
-  }
-  for (const auto &trace : network.candidate_traces()) {
-    for (const auto &segment : trace.segments) {
-      barriers.insert(segment.outgoingCarrier);
-      if (segment.incomingCarrier.has_value()) {
-        barriers.insert(*segment.incomingCarrier);
-      }
-    }
-  }
+  const auto barrierAccounting = cp4c_source_edge_barrier_accounting(network);
+  const auto &barriers = barrierAccounting.barriers;
 
   std::vector<std::vector<Edge>> faceEdges(faceCount);
   std::map<Edge, std::vector<std::size_t>> incidentFaces;
@@ -4608,6 +4669,7 @@ using Cp4cOraclePoint = std::array<Cp4cOracleRational, 3>;
 
 struct Cp4cNetworkOnlyFixture {
   TriMesh mesh;
+  Cp4cRailAuthority railAuthority = Cp4cRailAuthority::AtlasDerived;
   std::vector<SurfaceCellRail> rails;
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
@@ -4625,33 +4687,18 @@ struct Cp4cNetworkEdgeAccounting {
   }
 };
 
-struct Cp4cNetworkOnlyComponentTopology {
-  std::size_t fragmentCount = 0U;
-  std::size_t vertexCount = 0U;
-  std::size_t edgeCount = 0U;
-  std::size_t boundaryCycleCount = 0U;
-  int eulerCharacteristic = 0;
-  bool boundaryCyclesValid = false;
-  SourceFaceTopologyKey representativeSourceFace;
-
-  Cp4cNetworkOnlyComponentTopology(
-      const SourceFaceTopologyKey &representative)
-      : representativeSourceFace(representative) {}
-
-  [[nodiscard]] bool proves_disc_topology() const noexcept {
-    return eulerCharacteristic == 1 && boundaryCyclesValid &&
-           boundaryCycleCount == 1U;
-  }
-};
-
 struct Cp4cNetworkOnlyCellularityOracle {
   std::size_t sourceVertexCount = 0U;
   std::size_t sourceEdgeCount = 0U;
   std::size_t sourceFaceCount = 0U;
   int sourceEulerCharacteristic = 0;
-  std::size_t networkVertexCount = 0U;
-  Cp4cNetworkEdgeAccounting networkEdges;
-  std::vector<Cp4cNetworkOnlyComponentTopology> components;
+  std::size_t barrierVertexCount = 0U;
+  std::size_t barrierEdgeCount = 0U;
+  Cp4cSourceEdgeBarrierAccounting barrierAccounting;
+  std::vector<IndependentComplementComponentTopology> components;
+  bool everyComponentDisc = false;
+  bool eulerIdentityMatches = false;
+  bool oracleSelfConsistent = false;
   bool networkOnlyCellular = false;
 };
 
@@ -4884,7 +4931,7 @@ bool cp4c_oracle_angle_less(const Cp4cOraclePoint &origin,
   return firstLength < secondLength;
 }
 
-std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
+[[maybe_unused]] std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
     const TriMesh &mesh, const FieldAlignedCurveNetwork &network) {
   using ContactKind =
       directional::geometry::surface_cell_tracing_detail::
@@ -5161,12 +5208,7 @@ std::optional<Cp4cNetworkOnlyCellularityOracle>
 cp4c_independent_network_only_cellularity(
     const TriMesh &mesh, const FieldAlignedCurveNetwork &network) {
   const auto sourceTopology = independent_source_topology(mesh);
-  const auto fragmentBuild = cp4c_oracle_fragments(mesh, network);
-  if (!sourceTopology.has_value() || !fragmentBuild.has_value() ||
-      fragmentBuild->empty()) {
-    return std::nullopt;
-  }
-  const auto &fragments = *fragmentBuild;
+  if (!sourceTopology.has_value()) return std::nullopt;
 
   Cp4cNetworkOnlyCellularityOracle oracle;
   oracle.sourceVertexCount = static_cast<std::size_t>(mesh.V.rows());
@@ -5176,189 +5218,36 @@ cp4c_independent_network_only_cellularity(
       static_cast<int>(oracle.sourceVertexCount) -
       static_cast<int>(oracle.sourceEdgeCount) +
       static_cast<int>(oracle.sourceFaceCount);
-  oracle.networkVertexCount = network.nodes().size();
-  oracle.networkEdges = cp4c_oracle_network_edge_accounting(network);
 
-  std::vector<std::size_t> fragmentParent(fragments.size());
-  for (std::size_t index = 0U; index < fragmentParent.size(); ++index) {
-    fragmentParent[index] = index;
+  oracle.barrierAccounting = cp4c_source_edge_barrier_accounting(network);
+  oracle.barrierEdgeCount = oracle.barrierAccounting.barriers.size();
+  std::set<SourceVertexId> barrierVertices;
+  for (const auto &edge : oracle.barrierAccounting.barriers) {
+    barrierVertices.insert(edge.first());
+    barrierVertices.insert(edge.second());
   }
-  const auto fragment_root = [&](const auto &self,
-                                 std::size_t value) -> std::size_t {
-    return fragmentParent[value] == value
-               ? value
-               : self(self, fragmentParent[value]);
-  };
-  const auto unite_fragments = [&](std::size_t first, std::size_t second) {
-    first = fragment_root(fragment_root, first);
-    second = fragment_root(fragment_root, second);
-    if (first == second) return;
-    if (first < second) fragmentParent[second] = first;
-    else fragmentParent[first] = second;
-  };
+  oracle.barrierVertexCount = barrierVertices.size();
+  oracle.components = independent_network_complement_topology(mesh, network);
+  if (oracle.components.empty()) return std::nullopt;
 
-  std::vector<std::size_t> cornerOffsets(fragments.size() + 1U, 0U);
-  for (std::size_t fragment = 0U; fragment < fragments.size(); ++fragment) {
-    cornerOffsets[fragment + 1U] =
-        cornerOffsets[fragment] + fragments[fragment].vertices.size();
-  }
-  std::vector<std::size_t> cornerParent(cornerOffsets.back());
-  for (std::size_t index = 0U; index < cornerParent.size(); ++index) {
-    cornerParent[index] = index;
-  }
-  const auto corner_root = [&](const auto &self,
-                               std::size_t value) -> std::size_t {
-    return cornerParent[value] == value ? value : self(self, cornerParent[value]);
-  };
-  const auto unite_corners = [&](std::size_t first, std::size_t second) {
-    first = corner_root(corner_root, first);
-    second = corner_root(corner_root, second);
-    if (first == second) return;
-    if (first < second) cornerParent[second] = first;
-    else cornerParent[first] = second;
-  };
-
-  std::map<Cp4cOracleSeamKey, std::vector<Cp4cOracleSeamIncidence>> seams;
-  for (std::size_t fragment = 0U; fragment < fragments.size(); ++fragment) {
-    const auto &cell = fragments[fragment];
-    for (std::size_t edgeIndex = 0U; edgeIndex < cell.edges.size(); ++edgeIndex) {
-      const auto &edge = cell.edges[edgeIndex];
-      if (!edge.sourceEdge.has_value() || edge.networkBarrier) continue;
-      const std::size_t next = (edgeIndex + 1U) % cell.vertices.size();
-      const auto firstParameter = cp4c_oracle_edge_parameter(
-          cell.sourceFace, *edge.sourceEdge, cell.vertices[edgeIndex]);
-      const auto secondParameter = cp4c_oracle_edge_parameter(
-          cell.sourceFace, *edge.sourceEdge, cell.vertices[next]);
-      if (!firstParameter.has_value() || !secondParameter.has_value() ||
-          *firstParameter == *secondParameter) {
-        return std::nullopt;
-      }
-      const bool firstIsLow = *firstParameter < *secondParameter;
-      const Cp4cOracleSeamKey key{
-          *edge.sourceEdge,
-          firstIsLow ? *firstParameter : *secondParameter,
-          firstIsLow ? *secondParameter : *firstParameter};
-      seams[key].push_back(Cp4cOracleSeamIncidence{
-          fragment, edgeIndex,
-          cornerOffsets[fragment] + (firstIsLow ? edgeIndex : next),
-          cornerOffsets[fragment] + (firstIsLow ? next : edgeIndex)});
-    }
-  }
-
-  std::set<std::pair<std::size_t, std::size_t>> gluedEdges;
-  std::size_t gluePairCount = 0U;
-  for (const auto &[key, incidences] : seams) {
-    const auto sourceIncident = sourceTopology->incidentFaces.find(key.edge);
-    if (sourceIncident == sourceTopology->incidentFaces.end()) return std::nullopt;
-    if (incidences.size() == 1U) {
-      if (sourceIncident->second.size() == 2U) return std::nullopt;
-      continue;
-    }
-    if (incidences.size() != 2U || sourceIncident->second.size() != 2U) {
-      return std::nullopt;
-    }
-    const auto &first = incidences[0];
-    const auto &second = incidences[1];
-    unite_fragments(first.fragment, second.fragment);
-    unite_corners(first.lowCorner, second.lowCorner);
-    unite_corners(first.highCorner, second.highCorner);
-    gluedEdges.emplace(first.fragment, first.edge);
-    gluedEdges.emplace(second.fragment, second.edge);
-    ++gluePairCount;
-  }
-  (void)gluePairCount;
-
-  std::map<std::size_t, std::vector<std::size_t>> fragmentsByComponent;
-  for (std::size_t fragment = 0U; fragment < fragments.size(); ++fragment) {
-    fragmentsByComponent[fragment_root(fragment_root, fragment)].push_back(fragment);
-  }
-
-  for (const auto &[root, members] : fragmentsByComponent) {
-    (void)root;
-    const auto representative = std::min_element(
-        members.begin(), members.end(), [&](const std::size_t lhs,
-                                           const std::size_t rhs) {
-          return fragments[lhs].sourceFace < fragments[rhs].sourceFace;
-        });
-    if (representative == members.end()) return std::nullopt;
-    Cp4cNetworkOnlyComponentTopology topology(
-        fragments[*representative].sourceFace);
-    topology.fragmentCount = members.size();
-
-    std::set<std::size_t> vertices;
-    std::size_t edgeCopies = 0U;
-    std::size_t gluedCopies = 0U;
-    std::map<std::size_t, std::multiset<std::size_t>> boundaryAdjacency;
-    for (const std::size_t fragment : members) {
-      const auto &cell = fragments[fragment];
-      edgeCopies += cell.edges.size();
-      for (std::size_t corner = 0U; corner < cell.vertices.size(); ++corner) {
-        vertices.insert(corner_root(corner_root, cornerOffsets[fragment] + corner));
-      }
-      for (std::size_t edge = 0U; edge < cell.edges.size(); ++edge) {
-        if (gluedEdges.count({fragment, edge}) != 0U) {
-          ++gluedCopies;
-          continue;
-        }
-        const std::size_t next = (edge + 1U) % cell.vertices.size();
-        const std::size_t first =
-            corner_root(corner_root, cornerOffsets[fragment] + edge);
-        const std::size_t second =
-            corner_root(corner_root, cornerOffsets[fragment] + next);
-        boundaryAdjacency[first].insert(second);
-        boundaryAdjacency[second].insert(first);
-      }
-    }
-    if ((gluedCopies % 2U) != 0U) return std::nullopt;
-    topology.vertexCount = vertices.size();
-    topology.edgeCount = edgeCopies - gluedCopies / 2U;
-    topology.eulerCharacteristic =
-        static_cast<int>(topology.vertexCount) -
-        static_cast<int>(topology.edgeCount) +
-        static_cast<int>(topology.fragmentCount);
-
-    topology.boundaryCyclesValid = !boundaryAdjacency.empty();
-    for (const auto &[vertex, adjacent] : boundaryAdjacency) {
-      (void)vertex;
-      if (adjacent.size() != 2U) topology.boundaryCyclesValid = false;
-    }
-    if (topology.boundaryCyclesValid) {
-      std::set<std::size_t> visited;
-      for (const auto &[start, adjacent] : boundaryAdjacency) {
-        (void)adjacent;
-        if (visited.count(start) != 0U) continue;
-        ++topology.boundaryCycleCount;
-        std::vector<std::size_t> stack{start};
-        while (!stack.empty()) {
-          const std::size_t current = stack.back();
-          stack.pop_back();
-          if (!visited.insert(current).second) continue;
-          for (const std::size_t next : boundaryAdjacency.at(current)) {
-            if (visited.count(next) == 0U) stack.push_back(next);
-          }
-        }
-      }
-    }
-    oracle.components.push_back(std::move(topology));
-  }
-
-  std::sort(oracle.components.begin(), oracle.components.end(),
-            [](const auto &lhs, const auto &rhs) {
-              return lhs.representativeSourceFace < rhs.representativeSourceFace;
-            });
-  const bool everyComponentDisc = std::all_of(
+  oracle.everyComponentDisc = std::all_of(
       oracle.components.begin(), oracle.components.end(),
       [](const auto &component) { return component.proves_disc_topology(); });
-  const int networkEuler =
-      static_cast<int>(oracle.networkVertexCount) -
-      static_cast<int>(oracle.networkEdges.total()) +
+  const int barrierEuler =
+      static_cast<int>(oracle.barrierVertexCount) -
+      static_cast<int>(oracle.barrierEdgeCount) +
       static_cast<int>(oracle.components.size());
+  oracle.eulerIdentityMatches =
+      barrierEuler == oracle.sourceEulerCharacteristic;
+  oracle.oracleSelfConsistent =
+      oracle.everyComponentDisc == oracle.eulerIdentityMatches;
   oracle.networkOnlyCellular =
-      everyComponentDisc && networkEuler == oracle.sourceEulerCharacteristic;
+      oracle.everyComponentDisc && oracle.eulerIdentityMatches;
   return oracle;
 }
 
-Cp4cNetworkOnlyFixture cp4c_network_only_fixture(const std::string &fixtureStem) {
+Cp4cNetworkOnlyFixture cp4c_network_only_fixture(
+    const std::string &fixtureStem, const Cp4cRailAuthority railAuthority) {
   Cp4cNetworkOnlyFixture fixture;
   CrossFieldResult field;
   if (fixtureStem == "two-ring") {
@@ -5384,14 +5273,13 @@ Cp4cNetworkOnlyFixture cp4c_network_only_fixture(const std::string &fixtureStem)
     fixture.error = "source-authority-unavailable";
     return fixture;
   }
-  auto atlas = directional::authority::FieldTransportAtlas::make(
-      fixture.mesh, *fixture.sourceAuthority, {}, field);
-  if (!atlas) {
-    fixture.error = "field-transport-atlas-unavailable";
-    return fixture;
-  }
-  fixture.atlas = std::move(atlas.value());
-  fixture.rails = rails_from_atlas(fixture.mesh, *fixture.atlas);
+  fixture.railAuthority = railAuthority;
+  auto authorityBuild = cp4c_build_rail_authority(
+      fixture.mesh, *fixture.sourceAuthority, field, railAuthority,
+      fixture.error);
+  if (!authorityBuild.has_value()) return fixture;
+  fixture.rails = std::move(authorityBuild->rails);
+  fixture.atlas = std::move(authorityBuild->atlas);
   auto network = FieldAlignedCurveNetwork::make(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails);
   if (!network) {
@@ -5406,21 +5294,24 @@ Cp4cNetworkOnlyFixture cp4c_network_only_fixture(const std::string &fixtureStem)
 std::string cp4c_network_only_oracle_report(
     const std::string &witness, const Cp4cNetworkOnlyFixture &fixture,
     const Cp4cNetworkOnlyCellularityOracle &oracle) {
-  std::size_t discCount = 0U;
-  for (const auto &component : oracle.components) {
-    if (component.proves_disc_topology()) ++discCount;
-  }
+  const std::size_t discCount = static_cast<std::size_t>(std::count_if(
+      oracle.components.begin(), oracle.components.end(),
+      [](const auto &component) { return component.proves_disc_topology(); }));
   const std::size_t nonDiscCount = oracle.components.size() - discCount;
-  const int networkEuler =
-      static_cast<int>(oracle.networkVertexCount) -
-      static_cast<int>(oracle.networkEdges.total()) +
+  const int barrierEuler =
+      static_cast<int>(oracle.barrierVertexCount) -
+      static_cast<int>(oracle.barrierEdgeCount) +
       static_cast<int>(oracle.components.size());
 
   std::ostringstream report;
   report << "m3Cp4c2Y1"
          << ";witness=" << witness
-         << ";oracleKind=independent-network-complement-arrangement"
+         << ";oracleKind=independent-source-edge-barrier-complex"
+         << ";complex=sourceEdgeBarrier"
          << ";surfaceCutGraphCalls=0"
+         << ";railAuthority="
+         << cp4c_rail_authority_name(fixture.railAuthority)
+         << ";mandatoryRailCount=" << fixture.rails.size()
          << ";sourceV=" << oracle.sourceVertexCount
          << ";sourceVDefinition=unique-source-mesh-vertices"
          << ";sourceE=" << oracle.sourceEdgeCount
@@ -5428,19 +5319,29 @@ std::string cp4c_network_only_oracle_report(
          << ";sourceF=" << oracle.sourceFaceCount
          << ";sourceFDefinition=source-triangle-count"
          << ";sourceChi=" << oracle.sourceEulerCharacteristic
-         << ";networkV=" << oracle.networkVertexCount
-         << ";networkVDefinition=published-embedded-network-nodes-only-no-unused-source-vertices"
-         << ";networkE=" << oracle.networkEdges.total()
-         << ";networkEDefinition=mandatory-network-arcs-plus-event-splits-plus-trace-node-intervals"
-         << ";networkEParts={mandatoryBase="
-         << oracle.networkEdges.mandatoryBaseEdges
-         << ",mandatorySplits=" << oracle.networkEdges.mandatorySplitEdges
-         << ",trace=" << oracle.networkEdges.traceEdges << '}'
-         << ";networkF=" << oracle.components.size()
-         << ";networkFDefinition=connected-components-of-the-exact-per-triangle-network-complement-glued-only-across-unblocked-source-edge-intervals"
-         << ";networkChi=" << networkEuler
+         << ";barrierV=" << oracle.barrierVertexCount
+         << ";barrierVDefinition=unique-source-vertices-incident-to-source-edge-barriers"
+         << ";barrierE=" << oracle.barrierEdgeCount
+         << ";barrierEDefinition=unique-source-edge-barriers"
+         << ";barrierF=" << oracle.components.size()
+         << ";barrierFDefinition=source-face-components-after-removing-barrier-edge-adjacencies"
+         << ";barrierCount=" << oracle.barrierAccounting.barriers.size()
+         << ";barrierProvenance={mandatoryRails="
+         << oracle.barrierAccounting.mandatoryRailEdges.size()
+         << ",traceIncomingCarriers="
+         << oracle.barrierAccounting.traceIncomingCarriers.size()
+         << ",traceOutgoingCarriers="
+         << oracle.barrierAccounting.traceOutgoingCarriers.size()
+         << ",unique=" << oracle.barrierAccounting.barriers.size() << '}'
+         << ";barrierChi=" << barrierEuler
          << ";discComponents=" << discCount
          << ";nonDiscComponents=" << nonDiscCount
+         << ";everyComponentDisc="
+         << (oracle.everyComponentDisc ? "true" : "false")
+         << ";eulerIdentityMatches="
+         << (oracle.eulerIdentityMatches ? "true" : "false")
+         << ";oracleSelfConsistent="
+         << (oracle.oracleSelfConsistent ? "true" : "false")
          << ";networkOnlyCellular="
          << (oracle.networkOnlyCellular ? "true" : "false")
          << ";networkTraceCount=" << fixture.network->candidate_traces().size()
@@ -5449,19 +5350,14 @@ std::string cp4c_network_only_oracle_report(
     const auto &component = oracle.components[index];
     report << ";component[" << index << "]={chi="
            << component.eulerCharacteristic
-           << ",boundaryCycles=" << component.boundaryCycleCount
+           << ",boundaryCycles=" << component.boundaryWalkCount
            << ",boundaryCyclesValid="
            << (component.boundaryCyclesValid ? "true" : "false")
            << ",disc="
            << (component.proves_disc_topology() ? "true" : "false")
            << ",V=" << component.vertexCount
            << ",E=" << component.edgeCount
-           << ",F=" << component.fragmentCount;
-    if (!component.proves_disc_topology()) {
-      report << ",representativeSourceFace="
-             << source_face_locus(component.representativeSourceFace);
-    }
-    report << '}';
+           << ",F=" << component.faceCount << '}';
   }
   return report.str();
 }
@@ -5487,23 +5383,6 @@ struct Cp4cProducerRederivation {
   std::string localizedSite = "none";
   std::optional<SourceFaceTopologyKey> errorSourceFace;
 };
-
-std::set<SourceEdgeTopologyKey> cp4c_producer_barriers(
-    const FieldAlignedCurveNetwork &network) {
-  std::set<SourceEdgeTopologyKey> barriers;
-  for (const auto &edge : network.mandatory_edges()) {
-    barriers.insert(edge.sourceEdge);
-  }
-  for (const auto &trace : network.candidate_traces()) {
-    for (const auto &segment : trace.segments) {
-      barriers.insert(segment.outgoingCarrier);
-      if (segment.incomingCarrier.has_value()) {
-        barriers.insert(*segment.incomingCarrier);
-      }
-    }
-  }
-  return barriers;
-}
 
 std::vector<std::vector<SourceFaceTopologyKey>>
 cp4c_producer_face_components(
@@ -5712,7 +5591,7 @@ std::optional<Cp4cProducerRederivation> cp4c_producer_rederivation(
       static_cast<int>(topology->incidentFaces.size()) +
       static_cast<int>(mesh.F.rows());
 
-  auto barriers = cp4c_producer_barriers(network);
+  auto barriers = cp4c_source_edge_barrier_accounting(network).barriers;
   const auto initialComponents =
       cp4c_producer_face_components(*topology, barriers);
   if (initialComponents.empty()) return std::nullopt;
@@ -6054,29 +5933,33 @@ TEST(GlobalTopologyPlan, Cp4c2PrescribedSphereCellularityScopeDecisionIsObservab
 
 TEST(GlobalTopologyPlan,
      Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable) {
-  const std::array<std::pair<const char *, const char *>, 3> witnesses{{
-      {"sphere_prescribed", "prescribed-sphere"},
-      {"torus", "torus"},
-      {"two-ring", "two-ring"},
-  }};
-  for (const auto &[fixtureStem, witnessName] : witnesses) {
+  const std::array<std::tuple<const char *, const char *, Cp4cRailAuthority>, 3>
+      witnesses{{
+          {"sphere_prescribed", "prescribed-sphere",
+           Cp4cRailAuthority::PipelineAuthoritative},
+          {"torus", "torus", Cp4cRailAuthority::PipelineAuthoritative},
+          {"two-ring", "two-ring", Cp4cRailAuthority::AtlasDerived},
+      }};
+  for (const auto &[fixtureStem, witnessName, railAuthority] : witnesses) {
     const Cp4cNetworkOnlyFixture fixture =
-        cp4c_network_only_fixture(fixtureStem);
+        cp4c_network_only_fixture(fixtureStem, railAuthority);
     ASSERT_TRUE(fixture.network.has_value())
         << "witness=" << witnessName << ";error=" << fixture.error;
     const auto oracle = cp4c_independent_network_only_cellularity(
         fixture.mesh, *fixture.network);
     ASSERT_TRUE(oracle.has_value())
         << "witness=" << witnessName
-        << ";oracle=independent-network-complement-arrangement";
-    std::cout << cp4c_network_only_oracle_report(witnessName, fixture, *oracle)
-              << '\n';
+        << ";oracle=independent-source-edge-barrier-complex";
+    const std::string report =
+        cp4c_network_only_oracle_report(witnessName, fixture, *oracle);
+    std::cout << report << '\n';
+    ASSERT_TRUE(oracle->oracleSelfConsistent) << report;
   }
 }
 
 TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
-  const Cp4cNetworkOnlyFixture fixture =
-      cp4c_network_only_fixture("sphere_prescribed");
+  const Cp4cNetworkOnlyFixture fixture = cp4c_network_only_fixture(
+      "sphere_prescribed", Cp4cRailAuthority::PipelineAuthoritative);
   ASSERT_TRUE(fixture.sourceAuthority.has_value()) << fixture.error;
   ASSERT_TRUE(fixture.atlas.has_value()) << fixture.error;
   ASSERT_TRUE(fixture.network.has_value()) << fixture.error;
@@ -6093,10 +5976,12 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
       [](const auto &component) { return component.proves_disc_topology(); }));
   const std::size_t oracleNonDiscCount =
       oracle->components.size() - oracleDiscCount;
-  const int oracleNetworkEuler =
-      static_cast<int>(oracle->networkVertexCount) -
-      static_cast<int>(oracle->networkEdges.total()) +
+  const int oracleBarrierEuler =
+      static_cast<int>(oracle->barrierVertexCount) -
+      static_cast<int>(oracle->barrierEdgeCount) +
       static_cast<int>(oracle->components.size());
+  ASSERT_TRUE(oracle->oracleSelfConsistent)
+      << cp4c_network_only_oracle_report("prescribed-sphere", fixture, *oracle);
 
   const std::size_t producerInitialDiscCount =
       static_cast<std::size_t>(std::count_if(
@@ -6146,13 +6031,27 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
   std::ostringstream report;
   report << "m3Cp4c2Y2"
          << ";witness=prescribed-sphere"
-         << ";oracleV=" << oracle->networkVertexCount
-         << ";oracleE=" << oracle->networkEdges.total()
+         << ";oracleComplex=sourceEdgeBarrier"
+         << ";railAuthority="
+         << cp4c_rail_authority_name(fixture.railAuthority)
+         << ";mandatoryRailCount=" << fixture.rails.size()
+         << ";oracleV=" << oracle->barrierVertexCount
+         << ";oracleE=" << oracle->barrierEdgeCount
          << ";oracleF=" << oracle->components.size()
-         << ";oracleChi=" << oracleNetworkEuler
+         << ";oracleChi=" << oracleBarrierEuler
          << ";oracleSourceChi=" << oracle->sourceEulerCharacteristic
+         << ";oracleBarrierCount=" << oracle->barrierAccounting.barriers.size()
+         << ";oracleBarrierProvenance={mandatoryRails="
+         << oracle->barrierAccounting.mandatoryRailEdges.size()
+         << ",traceIncomingCarriers="
+         << oracle->barrierAccounting.traceIncomingCarriers.size()
+         << ",traceOutgoingCarriers="
+         << oracle->barrierAccounting.traceOutgoingCarriers.size()
+         << ",unique=" << oracle->barrierAccounting.barriers.size() << '}'
          << ";oracleDiscComponents=" << oracleDiscCount
          << ";oracleNonDiscComponents=" << oracleNonDiscCount
+         << ";oracleSelfConsistent="
+         << (oracle->oracleSelfConsistent ? "true" : "false")
          << ";oracleNetworkOnlyCellular="
          << (oracle->networkOnlyCellular ? "true" : "false")
          << ";producerRederivationSite=" << producer->localizedSite
