@@ -1,3 +1,0 @@
-turn=M3-CP4c-0b-TB-T5
-purpose=freeze control/source snapshot before artifact-only T5 execution
-base_sha=e468c28fae37042c5fb30517b40c54930935d13d

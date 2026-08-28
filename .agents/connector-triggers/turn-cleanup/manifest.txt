@@ -1,7 +1,0 @@
-# M3-CP4c-0b-TB-T5 temporary state
-.agents/connector-triggers/source-snapshot/t5-exec-20260828.txt
-.agents/connector-triggers/m3-cp4c0b-t5-schema-validate
-.agents/connector-triggers/m3-cp4c0b-t5-exec
-.agents/Directional/turn-payloads/m3-cp4c0b-t5.py
-.agents/Directional/turn-payloads/m3-cp4c0b-t5-schema-validate.yml
-.agents/Directional/turn-payloads/m3-cp4c0b-t5-exec.yml
