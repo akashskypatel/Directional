@@ -1,0 +1,7 @@
+turn=M3-CP4c-2-TB-X2-R2
+subturn=TB-X2-R2-EXEC
+artifact_id=9702321260
+artifact_digest=05237f108a65c73df81b6b125d6fcecad10ad9b5af4104ecce3c6bb9f6642035
+source_sha=232ac459b13657529e064272a75c5583770a5963
+pr=8
+purpose=artifact-only-d1-d2
