@@ -1098,6 +1098,20 @@ face gauge. Never equate branch integers across distinct frames merely because t
     acceptance criterion, and is emitted nowhere — a repository search finds only its declaration.
     Declaring a case is not implementing it. When a criterion names a set of outcomes, check each one
     has a producer *and* a witness that reaches it.
+64h. **Write a measure from the selector, not from the design intent.** CP4c-0b's U3 and U4 asked for a
+    fan and two-ring terminus census and a guard-silence census that *no selected identity produces*.
+    The capability existed — the production census channel is threaded through the producer itself —
+    but six of the seven `...IsPublishedNonGating` census identities were in no selector, and the two
+    identities in the gate that build the fan discard the result. The measure was written from what the
+    code could in principle observe rather than from what the frozen selector actually runs. Before
+    freezing a measure, name the identity that will emit each item and confirm it is *selected*.
+64i. **A `(void)`-discarded build is not an observation, and a smoke test that cannot fail is not
+    coverage.** `FieldAlignedCurveNetworkIsAClosedProducerOnEveryReachableWitness` and DG#7 both build
+    the four-triangle fan and both drop the result on the floor; one then calls `SUCCEED()`
+    unconditionally. Each is lawful for its own narrow purpose — no-throw closure, and exercising an
+    excluded witness without granting credit — but together they created the appearance that the fan was
+    covered by the gate twice over when it was covered zero times. When auditing coverage, grep for what
+    an identity *asserts about the result*, not for whether it constructs the product.
 
 ## 7. Budget, attempts, and stop rules
 

@@ -83,9 +83,19 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-0b-TB-T5-PREFLIGHT-REV` — independent pre-gate evidence review
+## Mandatory next turn — `M3-CP4c-0b-CB3-INSTR` — bounded instrumentation, measures **V0-V7**
 
-`M3-CP4c-0b-DG-T4-REV` is complete and correctly authorized T5 under U0-U7, but `M3-CP4c-0b-TB-T5` is now **BLOCKED / PRE-GATE OBSERVABILITY GAP / 353 NOT RUN**. Record: `Architecture_M3_CP4c0b_TB_T5_Preflight_Blocker_Report.md`.
+`M3-CP4c-0b-TB-T5-PREFLIGHT-REV` is **REVIEW GREEN** and authorizes exactly one runtime-free instrumentation Code + Build before T5. Read `Architecture_M3_CP4c0b_TB_T5_Preflight_Independent_Review_Record.md` first, then the T4 review below.
+
+**Why T5 does not run next.** U3 and U4 were issued unsatisfiable. Both identities in the 353 that build the four-triangle fan — accepted `FieldAlignedCurveNetworkIsAClosedProducerOnEveryReachableWitness` (line 6348) and DG#7 `TorusPublishesNoTraceAndNoContactNodeAndFanRemainsExcluded` (line 7044) — discard the build with `(void)` and succeed unconditionally, so a fan build that failed closed on `N1`/`N2`/`N4` would pass both. Six of the seven `...IsPublishedNonGating` census identities are in no selector at all. The production observation channel already exists (`contactCensus` threaded through the producer, `SurfaceCellTracing.cpp:2890`), so **no production change is needed or authorized** — the gap is selector-side and test-side.
+
+**Hard boundary.** The 353 selector `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5` must not change by one byte; all new observability is non-gating; `src/` and `include/` are frozen; ordinals 7 and 9 are re-authored in T5, not in CB3. Measures **V0-V7** are in §8 of the preflight record.
+
+**Revised risk ranking, and a withdrawn claim.** Ordinal **12** now outranks ordinal 13: it requires a `FirstContact` event paired at the identical node/face/edge to every `MandatoryBarrierTermination` (lines 1333-1341), and **nothing in the DG seven asserts that pairing** — it is exactly what S5's relocation of the termination stage could break. The T4 review's claim that mutual termination is "the least-exercised path" is **withdrawn**: DG#5 line 6939 *requires* mutual termination on the sphere and T4 measured it green. Ordinal 13's predicted green at 8 now rests on stronger evidence — the census is an in-band observer on the producer's own candidate, so S1's fan count of 8 was the producer's own.
+
+**Part of the gap costs no code.** The six unselected census identities are compiled into package `9668492827` — they live in the same translation unit and target as the one selected census — so adding them to the **non-gating** selector is a control-plane document change, not a code change. `PrescribedSphereA2aOutcomeIsAlwaysPublishedNonGating` already computes the terminal-event-by-kind histogram that is ordinal 13's second term. V1 therefore requires selecting what already exists **before** authoring anything new, and the run must report zero-selected count: a non-zero zero-selected is a stop, since it would mean an identity is not in the binary after all. Select deliberately, not wholesale — `PrescribedSphereGrazingCostCensusIsPublishedNonGating` walks traces with the retired Cartesian carrier lookup under open candidate `M3-CP4c0-DEFN2-CAND-01`.
+
+**The preflight blocker turn was right and is upheld.** `Architecture_M3_CP4c0b_TB_T5_Preflight_Blocker_Report.md` independently reached the same core conclusion — U3 is a before-gate measure, the package cannot publish it, U7 forbids fixing it inside T5, therefore fail closed at 0/353. Its framing that **U3 was introduced by the T4 review after the package had already been built** is adopted. The review adds the two findings above, which the blocker's audit did not reach.
 
 U0 static authority is intact: immutable GMP package `9668492827` / `e0661e66…dce0b8`, semantic source `b2629040...`, manifest 28/28, full 353 selector `51ff96d7…ac6a5`, and exact first-346 prefix `20d3b0b1…3e46a`. No Directional binary or gate identity ran in the T5 turn.
 
@@ -93,7 +103,7 @@ The blocker is U3's ordering plus U7's immutability rule. U3 requires a **before
 
 Exact source-snapshot authority for the pre-gate audit is run/job `33130565916 / 98718854457`, artifact `9670081197` / `58403bc8…3023a284`, source archive `a82a2882…52f849`, with local `SHA256SUMS` verification. A stale cleanup run `33130560363` was safely rejected by the branch-head guard after the branch advanced; it made no repository or runtime change.
 
-Stable product accounting remains **42 / 14 / 28**, debt **5**, M3 packages **54**. New `M3-CP4c0b-T5-CAND-01` is active evidence-capability/non-stable; `M3-CP4c0b-T5-CAND-02` is resolved orchestration/non-stable. `M3-CP4c0b-P03-CAND-01` remains active because accepted authority is still unmeasured.
+Stable product accounting remains **42 / 14 / 28**, debt **5**, M3 packages **54**. `M3-CP4c0b-T5-CAND-01` is **adjudicated by the preflight review: real, evidence-capability, non-stable, and owned by CB3-INSTR measures V1-V3** — it stays ACTIVE until CB3 lands and is closed by a T5 retry that publishes U3/U4, not by any product change. `M3-CP4c0b-T5-CAND-02` is resolved orchestration/non-stable. `M3-CP4c0b-P03-CAND-01` remains active because accepted authority is still unmeasured.
 
 **The review boundary is strict:** `M3-CP4c-0b-TB-T5-PREFLIGHT-REV` must adjudicate whether to authorize a narrow instrumentation-only Code+Build package that can satisfy U3/U4 before a later T5 execution. It must not execute 353, weaken U3/U4, widen guards, or claim CP4c-0b acceptance.
 
@@ -120,7 +130,7 @@ Stable product accounting remains **42 / 14 / 28**, debt **5**, M3 packages **54
 - every identity selected exactly once and PASS; zero-selected 0; zero escaping C++ exceptions; no repository timeout;
 - no configure/compile/relink/repair/generated discovery and no package/source/test/fixture/selector mutation; immutable byte-and-mode postflight PASS;
 - no regression/candidate observed; stable accounting **42 / 14 / 28**, debt **5**, M3 packages **54**;
-- successor status: T4 independent review is complete; T5 preflight is blocked before runtime on the U3/U4 observability gap; retained as current runtime authority.
+- successor status: `M3-CP4c-0b-DG-T4-REV` and `M3-CP4c-0b-TB-T5-PREFLIGHT-REV` are both complete; retained as current runtime authority. Exact next is `M3-CP4c-0b-CB3-INSTR`; T5 does not run on this package.
 
 ### M3-CP4c-0b CB2 — current build authority
 
@@ -257,19 +267,19 @@ Latest accepted runtime is the whole-gate TB-R9 re-proof **346/346**, run/job `3
 - `M3-CP4c0-TB-R6-CAND-01` is resolved orchestration/non-stable.
 - CP4c-1 remains blocked on **CP4c-0b**, and **no longer owns** re-homed Q8 criterion 3. CP4c-2/3 remain blocked for their own definition turns.
 - Stable accounting **42 / 14 / 28**, debt **5**, M3 packages **54**.
-- **Exact next turn is `M3-CP4c-0b-TB-T5-PREFLIGHT-REV`, independent review only.** Adjudicate the immutable-package U3/U4 observability conflict; do not execute the 353 gate or new runtime in the review.
+- **Exact next turn is `M3-CP4c-0b-CB3-INSTR`, Code + Build, runtime-free, under measures V0-V7.** Test-side and non-gating-selector-side only; the 353 selector must not change; T5 follows on the CB3 package.
 
 ## Context Load Plan
 
-`load_next`: turn-based-coding-agent `references/turns/TB-REVIEW.md`.
+`load_next`: turn-based-coding-agent `references/turns/CB.md`.
 
-Minimum successor context after the mandatory durable policy/start checklist:
+Minimum successor context after the mandatory durable policy/start checklist, plus `GMP_COMPILE_POLICY.md` per start-checklist step 5:
 
-1. `.agents/Directional/Architecture_M3_CP4c0b_TB_T5_Preflight_Blocker_Report.md`
-2. `.agents/Directional/Architecture_M3_CP4c0b_DG_T4_Independent_Review_Record.md`
-3. `.agents/Directional/Architecture_M3_CP4c0b_DG_T4_EXEC_Artifact_Only_Test_Benchmark_Report.md`
-4. `.agents/Directional/Architecture_M3_CP4c0b_CB2_Code_Build_Report.md` only for immutable package provenance
-5. `.agents/Directional/Architecture_M3_CP4c0b_Required_Green_Selector.txt` only to verify U0 selector authority
+1. `.agents/Directional/Architecture_M3_CP4c0b_TB_T5_Preflight_Independent_Review_Record.md` — measures V0-V7 and the exact boundary
+2. `tests/FieldAlignedCurveNetworkTests.cpp` at lines 3385-3443 (census witness set), 5521-5726 (census reporters and the seven non-gating identities), 6341-6366 and 7002-7048 (the two `(void)` fan discards), 6967-6998 (`cp4c_node_provenance`), 1281-1343 (two-ring fixture and ordinal 12)
+3. `.agents/Directional/Architecture_M3_CP4c0b_Non_Gating_Diagnostic_Selector.txt` — the file CB3 extends
+4. `.agents/Directional/Architecture_M3_CP4c0b_Required_Green_Selector.txt` — read only to re-hash; it must not be edited
+5. `.agents/Directional/Architecture_M3_CP4c0b_CB2_Code_Build_Report.md` only for package provenance if needed
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
