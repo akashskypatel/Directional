@@ -1,3 +1,0 @@
-# M3-CP4c-1-CB4 temporary state
-.agents/connector-triggers/m3-cp4c1-cb4
-.agents/connector-triggers/source-snapshot/M3-CP4c-1-CB4-fbb10bf4.txt
