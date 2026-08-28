@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/m3-cp4c2-cb2diag-r1-compile-20260828.txt
 
 permissions:
-  contents: read
+  contents: write
   actions: write
   issues: write
   pull-requests: write
