@@ -5,7 +5,7 @@ CP4c-1 sub-checkpoints. It consolidates twenty-four per-turn execution documents
 were retired on 2026-08-26 under explicit user authorization, preserving **every** evidence identifier
 they carried.
 
-**Status:** CP4c-0 is **CLOSED / ACCEPTED** and CP4c-1 remains **OPEN**. This remains primarily a historical record; CP4c-0 closure authority is the retained `Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md`, not this consolidated record.
+**Status:** CP4c-0 and CP4c-0b are **CLOSED / ACCEPTED**; CP4c-1 remains **OPEN** after TB-R4 VALID RED 354/355. This remains primarily a historical record; CP4c-0 closure authority is the retained `Architecture_M3_CP4c0_TB_R9_Artifact_Only_Test_Benchmark_Report.md`, not this consolidated record.
 
 **What this document does not replace.** These remain live and normative:
 
@@ -491,7 +491,8 @@ The cycle that identified the root cause, and it is a contract gap rather than a
 |---|---|---|---|---|
 | **CB (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32867889140`; jobs `97867532883`, `97867597370`, `97867694421`, `97868351487` — all PASS | `9570940997` (`23876c55e51b94ca3a1e5bcfb727a4c0cebce3294fcd2fbda21336b57ae1de16`) | BUILD GREEN |
 | **TB / TB-R3 (historical)** | `51f510861a02377d1f45607908191f2fdebdcd33` | `32872112507 / 97881418987`; result `9572545977` | `9570940997` | **VALID RED 316/318** |
-| **CB3 cumulative rebase (current)** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33139188595 / 98746005796` | `9673249952` / `17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`; log `9673250286` / `cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9` | **BUILD GREEN / RUNTIME-FREE** |
+| **CB3 cumulative rebase** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33139188595 / 98746005796` | `9673249952` / `17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`; log `9673250286` / `cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9` | **BUILD GREEN / RUNTIME-FREE** |
+| **TB-R4 (current)** | `66a065b5e07910568a317e24f0fc6b93d890d104` | `33141046678 / 98751794167` | consumes `9673249952`; result/log `9674006723 / 9674006927` | **VALID SEMANTIC RED 354/355; 353/353 predecessor + C4 green, C5 red** |
 
 Historical checkpoint-local selector was 318 /
 `2f2c24acab0e891273c170c82cdc31b6afa3ae4d43e93c95dbdf6d90a88f45bc`, with accepted 316 prefix
@@ -514,11 +515,23 @@ and `runtimeExecution=false`. A first compile caller `33139114617` failed at wor
 permission ceiling was below the reusable observer graph; only the caller permission changed before the
 authoritative compile.
 
-C4/C5 remain the only checkpoint-local required blockers and **stay gating**. The accepted 353 predecessor
-is now their frozen ordered prefix. Exact next is artifact-only **`M3-CP4c-1-TB-R4`** against package
-`9673249952`, requiring 353/353 accepted-prefix green plus C4/C5 green for **355/355**. The five diagnostics
-remain report-only with zero gate credit. Stable accounting remains **42 / 14 / 28**, debt **5**, packages
-**56**. CP4c-2/3 are not entered.
+TB-R4 executed the frozen 355 in order, one identity per fresh process. Accepted authority re-proved
+**353/353**, C4 ordinal 354 passed, and C5 ordinal 355 alone returned red for a full **354/355**.
+Every required identity selected exactly once, zero C++ exceptions escaped, and immutable pre/postflight
+passed. The five historical diagnostics all selected once and returned trustworthy report-only reds with
+zero gate credit.
+
+C5's preserved failures are: (1) its helper requires non-empty candidate traces from every supplied
+witness, while the pipeline-authoritative torus currently publishes a zero-trace/zero-event A2a network;
+and (2) the terminal-kind union has cardinality **3**, not 2, even though both named required contributors
+are present. The sphere supplies terminal kinds `2,4`, and enum authority maps `4` to
+`SingularityTermination`. `M3-CP4c1-TB-R4-CAND-01` is **ACTIVE / REVIEW REQUIRED / NON-STABLE** because
+the frozen completion criterion and the plan phrase “exactly the required terminal event-kind set” admit
+an authority question that TB is not allowed to adjudicate.
+
+C4/C5 remain gating. **No retry or correction is authorized before review.** Stable accounting remains
+**42 / 14 / 28**, debt **5**, packages **56**. CP4c-2/3 are not entered. Exact next is mandatory
+**`M3-CP4c-1-TB-R4-REVIEW-PLAN`**.
 
 Root-cause history for the Cartesian-product continuation defect and Z0-Z5 measurements remains in this
 record and `Architecture_M3_CP4c0_TB_Review_Plan_Independent_Review.md`; CB3 does not re-litigate it.

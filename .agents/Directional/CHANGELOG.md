@@ -8,6 +8,32 @@
 > disposition they carried is preserved in that record — §2–§3 for evidence, §3b for the review arc,
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
+## 2026-08-28 — `M3-CP4c-1-TB-R4`: accepted 353 prefix green, C4 pass, C5 semantic red
+
+**Test + Benchmark / COMPLETE / VALID SEMANTIC RED 354/355.** Artifact-only run/job
+`33141046678 / 98751794167` consumed immutable GMP package `9673249952` from semantic source
+`66a065b5e07910568a317e24f0fc6b93d890d104`. Accepted prefixes re-proved **316/316, 346/346,
+353/353**. C4 ordinal 354 passed; C5 ordinal 355 alone returned red. All 355 required identities
+selected exactly once, zero escaping C++ exceptions, and immutable pre/postflight passed. Result/log
+artifacts `9674006723 / 9674006927`, digests `d8c02733475e93f10b0868507e0ce2d4398b93d24bdec6a5076febbd6fd0a514 /
+19e9a0398bc400dfaf16f4601d181389940c2de8438240b7cb3a5e25c0aec5c8`.
+
+C5 fails two clauses: its helper requires the zero-trace pipeline torus to have non-empty candidate
+traces, and its terminal-kind union expects 2 while observing 3. Both named required kinds are present;
+the sphere additionally publishes kind 4 (`SingularityTermination`). `M3-CP4c1-TB-R4-CAND-01` is
+**ACTIVE / REVIEW REQUIRED / NON-STABLE** because frozen authority contains an interpretive tension over
+whether “exactly the required terminal event-kind set” forbids that additional lawful typed kind.
+The five historical diagnostics all returned trustworthy report-only reds with zero gate credit.
+
+A process-order miss in this ChatGPT Web turn is separately recorded as resolved
+`M3-CP4c1-TB-R4-CAND-02`: initial repository inspection preceded the mandatory per-turn snapshot/read-mode
+gate. The turn switched to snapshot mode during closeout; source-snapshot run `33141471428` / artifact
+`9674093771` captured control head `7e5d30854e0d776bae5bad282c5aad1a45bbae45`. It does not alter the
+immutable TB evidence.
+
+Stable accounting remains **42 / 14 / 28**, debt **5**, M3 packages **56**. CP4c-1 stays open.
+**Exact next: mandatory `M3-CP4c-1-TB-R4-REVIEW-PLAN`; no retry or correction first.**
+
 ## 2026-08-28 — `M3-CP4c-1-CB3`: cumulative 355 selector frozen, GMP compile green
 
 **Code + Build / COMPLETE / RUNTIME-FREE.** CP4c-1 was rebased onto accepted CP4c-0b authority without

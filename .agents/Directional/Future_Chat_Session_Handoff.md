@@ -83,37 +83,53 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-1-TB-R4` — artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-1-TB-R4-REVIEW-PLAN` — independent review + planning
 
-`M3-CP4c-1-CB3` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The cumulative CP4c-1 required
-selector is now frozen at **355** identities: the accepted CP4c-0b 353-line selector is the exact
-ordered prefix, followed only by C4 and C5.
+`M3-CP4c-1-TB-R4` is **COMPLETE / VALID SEMANTIC RED 354/355 / CHECKPOINT OPEN**. Authoritative
+artifact-only run/job `33141046678 / 98751794167` consumed immutable CB3 GMP package `9673249952`
+from semantic source `66a065b5e07910568a317e24f0fc6b93d890d104`. Accepted predecessor authority is green
+**353/353** in the same run, C4 ordinal 354 passed, and C5 ordinal 355 alone is red. All required
+identities selected exactly once; zero escaping C++ exceptions; immutable pre/postflight PASS.
 
-**CB3 evidence authority:** exact compiled source `66a065b5e07910568a317e24f0fc6b93d890d104`;
-compile run/job `33139188595 / 98746005796`; immutable GMP package artifact `9673249952`,
-GitHub digest `sha256:17a3f8da793fc20562e5ec2f0ab441d39f795dd146171e989fb952e6f942d2ea`;
-persistent log artifact `9673250286`, digest
-`sha256:cffa6fc4a72c0d60fa2199131cdd6073c7a8c7f15482a0e48af98cb3dadf32b9`.
-All eight standard targets compiled/linked, internal manifest 28/28, source status clean,
-GMP/GMPXX linkage present, and `runtimeExecution=false`.
+C5 has two preserved failures. At `tests/FieldAlignedCurveNetworkTests.cpp:4713` its helper rejects the
+pipeline-authoritative torus because that current A2a network has zero candidate traces/events. At `:6701`
+C5 expects exactly two produced terminal-event kinds but observes three. The failure proves the two named
+required contributors are present (`TraceIntersection=prescribed sphere`,
+`MandatoryBarrierTermination=two-ring`); the sphere also publishes terminal kind `4 =
+SingularityTermination`.
 
-**Gate authority:** full 355 selector
-`e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`;
-first 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`;
-first 346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`;
-first 316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`.
-C4/C5 are ordinals 354/355 and remain gating. The historical five-identity non-gating selector remains
-`9f4f287e074d66da9d69c16e22320ed6fe161b6b09de4dc7dd0618741c7fb130` and grants zero gate credit.
+`M3-CP4c1-TB-R4-CAND-01` is **ACTIVE / REVIEW REQUIRED / NON-STABLE**. Review must re-derive whether
+the frozen C5 contract actually requires every witness to be individually non-vacuous and whether
+“exactly the required terminal event-kind set” forbids additional lawful typed terminal kinds. Do not
+pre-classify this as product or test authority from the TB alone.
 
-Accepted runtime authority remains CP4c-0b T5 **353/353** until TB-R4 executes. TB-R4 must consume
-package `9673249952` artifact-only, re-prove the accepted 353/353 prefix, execute C4/C5 without
-re-authoring, report the five non-gating diagnostics separately, and preserve immutable pre/postflight.
-Expected required result is **355/355**; any semantic red leaves CP4c-1 open. Do not enter CP4c-2/3
-before CP4c-1 is adjudicated.
+The five historical CP4c-1 diagnostics all selected exactly once and returned trustworthy report-only
+reds with zero gate credit. The first three intentionally publish their observation via `FAIL()`; the
+last two carry stale sphere-failure preconditions now invalidated by accepted CP4c-0/0b behavior.
 
-Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **56**.
+**No retry, C5 demotion, expectation/fixture edit, product correction, or CP4c-2/3 work is authorized
+before the mandatory review.** Exact next is **`M3-CP4c-1-TB-R4-REVIEW-PLAN`**. The review must
+re-derive C5 from source and frozen authority, adjudicate `CAND-01`, state one falsifiable successor
+prediction, and enumerate checks masked by any authorized correction.
+
+Accepted runtime authority remains CP4c-0b T5 **353/353**. Stable accounting remains **42 / 14 / 28**,
+produced-witness debt **5**, M3 packages **56**.
 
 ## Current authority
+
+### M3-CP4c-1 TB-R4 — current checkpoint runtime result
+
+- status: **COMPLETE / VALID SEMANTIC RED 354/355 / CHECKPOINT OPEN**;
+- run/job: `33141046678 / 98751794167`;
+- immutable GMP package: `9673249952` / `17a3f8da…42d2ea`, semantic source `66a065b5…d104`;
+- result/log artifacts: `9674006723 / 9674006927`, digests `d8c02733…a514 / 19e9a039…c5c8`;
+- accepted predecessor prefixes: **316/316, 346/346, 353/353 PASS**;
+- C4 ordinal 354: PASS; C5 ordinal 355: RED; full gate **354/355**;
+- all 355 selected exactly once; zero escaping C++ exceptions; immutable pre/postflight PASS;
+- five non-gating diagnostics: 5/5 trustworthy report-only red, zero gate credit;
+- active semantic candidate: `M3-CP4c1-TB-R4-CAND-01` — review required;
+- stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**;
+- exact successor: mandatory `M3-CP4c-1-TB-R4-REVIEW-PLAN`.
 
 ### M3-CP4c-1 CB3 — current build authority
 
@@ -129,7 +145,7 @@ Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 pack
 - all eight standard targets compile/link; internal manifest 28/28; packaged source archive `3ba7e745…70c628`; source status clean; `runtimeExecution=false`;
 - first compile caller `33139114617` was startup-only permission-ceiling failure, zero compile/runtime; corrected control plane only;
 - stable accounting **42 / 14 / 28**, debt **5**, M3 packages **56**;
-- exact successor: artifact-only `M3-CP4c-1-TB-R4`.
+- TB-R4 executed and returned 354/355; exact successor is mandatory `M3-CP4c-1-TB-R4-REVIEW-PLAN`.
 
 ### M3-CP4c-0b T5 — accepted runtime authority
 
