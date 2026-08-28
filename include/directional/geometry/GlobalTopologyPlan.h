@@ -20,12 +20,14 @@
 #include <directional/authority/AuthorityIds.h>
 #include <directional/geometry/SourceTopologyRegions.h>
 #include <directional/geometry/SurfaceCellTracing.h>
+#include <directional/geometry/SurfaceCutGraph.h>
 
 namespace directional::geometry {
 
 enum class GlobalTopologyArcKind : std::uint8_t {
   Mandatory = 0,
   Trace = 1,
+  Cut = 2,
 };
 
 struct GlobalTopologyOrientedArc {
@@ -43,6 +45,7 @@ struct GlobalTopologyArc {
   authority::NetworkNodeId secondNode;
   std::optional<authority::NetworkEdgeId> mandatoryEdge;
   std::optional<authority::TraceId> trace;
+  std::optional<authority::SourceEdgeTopologyKey> cutEdge;
   std::size_t firstSegment = 0U;
   std::size_t onePastLastSegment = 0U;
   std::vector<authority::SourceFaceTopologyKey> sourceFaces;
@@ -144,6 +147,7 @@ enum class GlobalTopologyPlanErrorCode : std::uint8_t {
   SourceFaceFragmentOrbitHasNoRegionDraft = 35,
   RegionSourceFaceOwningFragmentMissing = 36,
   RegionInteriorVertexCornerOwnerMissing = 37,
+  InvalidCutGraphBinding = 38,
 };
 
 struct GlobalTopologyPlanError {
@@ -179,6 +183,7 @@ struct GlobalTopologyPlanCandidate {
   std::vector<GlobalTopologyRegionDiscCertificate> regionCertificates;
   std::uint64_t sourceDigest = 0U;
   std::uint64_t networkDigest = 0U;
+  std::uint64_t cutGraphDigest = 0U;
 };
 
 class GlobalTopologyPlanBuildResult;
@@ -193,12 +198,14 @@ public:
   [[nodiscard]] static GlobalTopologyPlanBuildResult make(
       const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
       const SourceTopologyRegions &sourceAuthority,
-      const FieldAlignedCurveNetwork &network);
+      const FieldAlignedCurveNetwork &network,
+      const SurfaceCutGraph &cutGraph);
 
   [[nodiscard]] static GlobalTopologyPlanBuildResult make_from_candidate(
       const Eigen::MatrixXi &sourceFaces, std::size_t sourceVertexCount,
       const SourceTopologyRegions &sourceAuthority,
       const FieldAlignedCurveNetwork &network,
+      const SurfaceCutGraph &cutGraph,
       GlobalTopologyPlanCandidate candidate);
 
   [[nodiscard]] const std::vector<GlobalTopologyArc> &arcs() const noexcept {
@@ -231,6 +238,9 @@ public:
   [[nodiscard]] std::uint64_t network_digest() const noexcept {
     return networkDigest_;
   }
+  [[nodiscard]] std::uint64_t cut_graph_digest() const noexcept {
+    return cutGraphDigest_;
+  }
   [[nodiscard]] std::uint64_t semantic_digest() const noexcept {
     return semanticDigest_;
   }
@@ -244,12 +254,14 @@ private:
                      std::vector<GlobalTopologyRegionDiscCertificate> regionCertificates,
                      std::uint64_t sourceDigest,
                      std::uint64_t networkDigest,
+                     std::uint64_t cutGraphDigest,
                      std::uint64_t semanticDigest)
       : arcs_(std::move(arcs)), rotations_(std::move(rotations)),
         regions_(std::move(regions)),
         regionCertificates_(std::move(regionCertificates)),
         sourceDigest_(sourceDigest),
-        networkDigest_(networkDigest), semanticDigest_(semanticDigest) {}
+        networkDigest_(networkDigest), cutGraphDigest_(cutGraphDigest),
+        semanticDigest_(semanticDigest) {}
 
   std::vector<GlobalTopologyArc> arcs_;
   std::vector<GlobalTopologyNodeRotation> rotations_;
@@ -257,6 +269,7 @@ private:
   std::vector<GlobalTopologyRegionDiscCertificate> regionCertificates_;
   std::uint64_t sourceDigest_ = 0U;
   std::uint64_t networkDigest_ = 0U;
+  std::uint64_t cutGraphDigest_ = 0U;
   std::uint64_t semanticDigest_ = 0U;
 };
 

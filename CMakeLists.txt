@@ -162,6 +162,7 @@ add_library(
   src/geometry/FaceCurvature.cpp
   src/geometry/FlowRepStrands.cpp
   src/geometry/GlobalTopologyPlan.cpp
+  src/geometry/SurfaceCutGraph.cpp
   src/geometry/GeneralGraphMatching.cpp
   src/geometry/MeshComponents.cpp
   src/geometry/MeshTopology.cpp

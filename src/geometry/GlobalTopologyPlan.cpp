@@ -6,6 +6,8 @@
 
 #include <directional/geometry/GlobalTopologyPlan.h>
 
+#include "SourceFaceComponentPartition.h"
+
 #include <algorithm>
 #include <array>
 #include <cstdint>
@@ -292,15 +294,72 @@ struct ArcDraft {
   authority::NetworkNodeId secondNode;
   std::optional<authority::NetworkEdgeId> mandatoryEdge;
   std::optional<authority::TraceId> trace;
+  std::optional<authority::SourceEdgeTopologyKey> cutEdge;
   std::size_t firstSegment = 0U;
   std::size_t onePastLastSegment = 0U;
   std::vector<authority::SourceFaceTopologyKey> sourceFaces;
 };
 
+struct CutNodeBindings {
+  std::map<authority::SourceVertexId, authority::NetworkNodeId> nodeByVertex;
+  std::map<authority::NetworkNodeId, authority::SourceVertexId> syntheticVertices;
+  std::size_t combinedNodeExtent = 0U;
+};
+
+using CutNodeBindingResult =
+    std::variant<CutNodeBindings, GlobalTopologyPlanError>;
+
+CutNodeBindingResult build_cut_node_bindings(
+    const FieldAlignedCurveNetwork &network, const SurfaceCutGraph &cutGraph) {
+  std::map<authority::SourceVertexId, std::set<authority::NetworkNodeId>> candidates;
+  for (const auto &mandatory : network.mandatory_edges()) {
+    candidates[mandatory.sourceEdge.first()].insert(mandatory.firstNode);
+    candidates[mandatory.sourceEdge.second()].insert(mandatory.secondNode);
+  }
+  for (const auto &port : network.singularity_ports()) {
+    candidates[port.sourceVertex].insert(port.node);
+  }
+
+  CutNodeBindings result;
+  for (const auto &[vertex, nodes] : candidates) {
+    if (nodes.size() != 1U) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+      failure.sourceVertex = vertex;
+      return failure;
+    }
+    result.nodeByVertex.emplace(vertex, *nodes.begin());
+  }
+
+  std::set<authority::SourceVertexId> cutVertices;
+  for (const auto &edge : cutGraph.cut_edges()) {
+    cutVertices.insert(edge.first());
+    cutVertices.insert(edge.second());
+  }
+  std::size_t nextIndex = network.nodes().size();
+  const std::size_t extent = network.nodes().size() +
+      static_cast<std::size_t>(std::count_if(
+          cutVertices.begin(), cutVertices.end(), [&](const auto vertex) {
+            return result.nodeByVertex.count(vertex) == 0U;
+          }));
+  for (const auto vertex : cutVertices) {
+    if (result.nodeByVertex.count(vertex) != 0U) continue;
+    const auto id = authority::NetworkNodeId::from_index(
+        static_cast<std::int64_t>(nextIndex++), extent);
+    if (!id) return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+    result.nodeByVertex.emplace(vertex, id.value());
+    result.syntheticVertices.emplace(id.value(), vertex);
+  }
+  result.combinedNodeExtent = extent;
+  return result;
+}
+
 using ArcBuildResult =
     std::variant<std::vector<GlobalTopologyArc>, GlobalTopologyPlanError>;
 
-ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network) {
+ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
+                          const SurfaceCutGraph &cutGraph,
+                          const CutNodeBindings &cutNodes) {
   struct TerminalBarrierCut {
     authority::TraceId trace;
     authority::NetworkNodeId node;
@@ -355,7 +414,7 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network) {
 
   std::vector<ArcDraft> drafts;
   drafts.reserve(network.mandatory_edges().size() + terminalCutsByEdge.size() +
-                 network.candidate_traces().size());
+                 network.candidate_traces().size() + cutGraph.cut_edges().size());
   std::set<authority::SourceEdgeTopologyKey> consumedTerminalEdges;
   for (const auto &edge : network.mandatory_edges()) {
     const auto cuts = terminalCutsByEdge.find(edge.sourceEdge);
@@ -471,12 +530,30 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network) {
     }
   }
 
+  for (const auto &cutEdge : cutGraph.cut_edges()) {
+    const auto first = cutNodes.nodeByVertex.find(cutEdge.first());
+    const auto second = cutNodes.nodeByVertex.find(cutEdge.second());
+    if (first == cutNodes.nodeByVertex.end() ||
+        second == cutNodes.nodeByVertex.end() || first->second == second->second) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+      failure.sourceEdge = cutEdge;
+      return failure;
+    }
+    ArcDraft draft(first->second, second->second);
+    draft.kind = GlobalTopologyArcKind::Cut;
+    draft.cutEdge = cutEdge;
+    drafts.push_back(std::move(draft));
+  }
+
   std::sort(drafts.begin(), drafts.end(), [](const ArcDraft &lhs,
                                              const ArcDraft &rhs) {
-    return std::tie(lhs.kind, lhs.mandatoryEdge, lhs.trace, lhs.firstSegment,
-                    lhs.onePastLastSegment, lhs.firstNode, lhs.secondNode) <
-           std::tie(rhs.kind, rhs.mandatoryEdge, rhs.trace, rhs.firstSegment,
-                    rhs.onePastLastSegment, rhs.firstNode, rhs.secondNode);
+    return std::tie(lhs.kind, lhs.mandatoryEdge, lhs.trace, lhs.cutEdge,
+                    lhs.firstSegment, lhs.onePastLastSegment, lhs.firstNode,
+                    lhs.secondNode) <
+           std::tie(rhs.kind, rhs.mandatoryEdge, rhs.trace, rhs.cutEdge,
+                    rhs.firstSegment, rhs.onePastLastSegment, rhs.firstNode,
+                    rhs.secondNode);
   });
 
   std::vector<GlobalTopologyArc> arcs;
@@ -486,7 +563,7 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network) {
     arcs.push_back(GlobalTopologyArc{
         make_id<authority::NetworkArcId>(index, drafts.size()), draft.kind,
         draft.firstNode, draft.secondNode, draft.mandatoryEdge, draft.trace,
-        draft.firstSegment, draft.onePastLastSegment,
+        draft.cutEdge, draft.firstSegment, draft.onePastLastSegment,
         std::move(draft.sourceFaces)});
   }
   return arcs;
@@ -501,9 +578,13 @@ using NodeLocusResult =
     std::variant<std::map<authority::NetworkNodeId, NodeLocus>,
                  GlobalTopologyPlanError>;
 
-NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network) {
+NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
+                                 const CutNodeBindings &cutNodes) {
   std::map<authority::NetworkNodeId, NodeLocus> loci;
   for (const auto &node : network.nodes()) loci.emplace(node.id, NodeLocus{});
+  for (const auto &[node, vertex] : cutNodes.syntheticVertices) {
+    loci.emplace(node, NodeLocus{vertex, std::nullopt});
+  }
 
   const auto set_vertex = [&](const authority::NetworkNodeId node,
                               const authority::SourceVertexId vertex)
@@ -760,8 +841,9 @@ using RotationBuildResult =
 RotationBuildResult build_rotation_system(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,
+    const CutNodeBindings &cutNodes,
     const std::vector<GlobalTopologyArc> &arcs) {
-  const NodeLocusResult locusResult = build_node_loci(network);
+  const NodeLocusResult locusResult = build_node_loci(network, cutNodes);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&locusResult)) {
     return *failure;
   }
@@ -771,7 +853,10 @@ RotationBuildResult build_rotation_system(
   std::map<authority::NetworkNodeId,
            std::vector<GlobalTopologyOrientedArc>>
       incidences;
-  for (const auto &node : network.nodes()) incidences[node.id];
+  for (const auto &[node, locus] : loci) {
+    (void)locus;
+    incidences[node];
+  }
   for (const auto &arc : arcs) {
     incidences[arc.firstNode].push_back(
         GlobalTopologyOrientedArc{arc.id, authority::Orientation::Forward});
@@ -817,20 +902,30 @@ RotationBuildResult build_rotation_system(
         key.trace = arc.trace;
         key.arc = arc.id;
         key.orientation = incidence.orientation;
-        if (arc.kind == GlobalTopologyArcKind::Mandatory) {
-          if (!arc.mandatoryEdge.has_value()) {
-            return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+        if (arc.kind == GlobalTopologyArcKind::Mandatory ||
+            arc.kind == GlobalTopologyArcKind::Cut) {
+          std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
+          if (arc.kind == GlobalTopologyArcKind::Mandatory) {
+            if (!arc.mandatoryEdge.has_value()) {
+              return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            }
+            const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
+            if (mandatory == nullptr) {
+              return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            }
+            sourceEdge = mandatory->sourceEdge;
+          } else {
+            sourceEdge = arc.cutEdge;
           }
-          const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
-          if (mandatory == nullptr) {
-            return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          if (!sourceEdge.has_value()) {
+            return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
           }
-          const auto slot = slots->edgeSlots.find(mandatory->sourceEdge);
+          const auto slot = slots->edgeSlots.find(*sourceEdge);
           if (slot == slots->edgeSlots.end()) {
             GlobalTopologyPlanError result =
                 error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
             result.sourceVertex = locusIt->second.vertex;
-            result.sourceEdge = mandatory->sourceEdge;
+            result.sourceEdge = *sourceEdge;
             return result;
           }
           key.primary = 2U * slot->second;
@@ -1426,12 +1521,15 @@ RegionBuildResult build_regions(
     const SourceTopologyIndex &topology,
     const SourceTopologyRegions &sourceAuthority,
     const FieldAlignedCurveNetwork &network,
+    const SurfaceCutGraph &cutGraph,
     const std::vector<GlobalTopologyArc> &arcs,
     const FaceWalkResult &walk, FragmentDiagnosticEvidence *diagnostics) {
   (void)sourceAuthority;
 
   std::set<std::size_t> exteriorOrbits;
   std::set<authority::SourceEdgeTopologyKey> mandatoryEdges;
+  const std::set<authority::SourceEdgeTopologyKey> cutEdges(
+      cutGraph.cut_edges().begin(), cutGraph.cut_edges().end());
   std::map<authority::SourceFaceTopologyKey, std::set<std::size_t>>
       fragmentOrbits;
   std::map<authority::SourceFaceTopologyKey, std::size_t> tracePieceCount;
@@ -1491,6 +1589,48 @@ RegionBuildResult build_regions(
         edgeOrbitEvidence[std::make_pair(faceKey, mandatory.sourceEdge)]
             .insert(interiorOrbit);
       }
+    }
+  }
+
+  // A2a' cuts are ordinary embedded source-edge barriers. Unlike source
+  // boundaries both darts own interior regions; unlike mandatory rails they
+  // carry no FieldAlignedCurveNetwork edge identity.
+  for (const auto &cutEdge : cutGraph.cut_edges()) {
+    const auto incident = topology.incidentFaces.find(cutEdge);
+    if (incident == topology.incidentFaces.end() || incident->second.size() != 2U) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+      failure.sourceEdge = cutEdge;
+      return failure;
+    }
+    std::vector<std::size_t> arcIndices;
+    for (std::size_t index = 0U; index < arcs.size(); ++index) {
+      if (arcs[index].kind == GlobalTopologyArcKind::Cut &&
+          arcs[index].cutEdge == cutEdge) {
+        arcIndices.push_back(index);
+      }
+    }
+    if (arcIndices.size() != 1U) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+      failure.sourceEdge = cutEdge;
+      return failure;
+    }
+    const GlobalTopologyArc &arc = arcs[arcIndices.front()];
+    for (const auto &faceKey : incident->second) {
+      const auto face = topology.faces.find(faceKey);
+      if (face == topology.faces.end()) {
+        return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+      }
+      const bool forward = face_orients_edge_forward(face->second, cutEdge);
+      const std::size_t interiorDart =
+          2U * arc.id.index() + (forward ? 0U : 1U);
+      if (interiorDart >= walk.orbitByDart.size()) {
+        return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+      }
+      const std::size_t interiorOrbit = walk.orbitByDart[interiorDart];
+      fragmentOrbits[faceKey].insert(interiorOrbit);
+      edgeOrbitEvidence[std::make_pair(faceKey, cutEdge)].insert(interiorOrbit);
     }
   }
 
@@ -1676,36 +1816,15 @@ RegionBuildResult build_regions(
     unlabeledIndex.emplace(faceKey, unlabeledFaces.size());
     unlabeledFaces.push_back(faceKey);
   }
-  std::vector<std::size_t> parent(unlabeledFaces.size());
-  for (std::size_t index = 0U; index < parent.size(); ++index) parent[index] = index;
-  const auto findRoot = [&](const auto &self, const std::size_t index) -> std::size_t {
-    return parent[index] == index ? index : self(self, parent[index]);
-  };
-  const auto unite = [&](const std::size_t first, const std::size_t second) {
-    const std::size_t firstRoot = findRoot(findRoot, first);
-    const std::size_t secondRoot = findRoot(findRoot, second);
-    if (firstRoot == secondRoot) return;
-    if (firstRoot < secondRoot) {
-      parent[secondRoot] = firstRoot;
-    } else {
-      parent[firstRoot] = secondRoot;
-    }
-  };
-  for (const auto &[edge, incident] : topology.incidentFaces) {
-    if (incident.size() != 2U || mandatoryEdges.count(edge) != 0U ||
-        traceTouchedEdges.count(edge) != 0U) {
-      continue;
-    }
-    const auto first = unlabeledIndex.find(incident[0]);
-    const auto second = unlabeledIndex.find(incident[1]);
-    if (first != unlabeledIndex.end() && second != unlabeledIndex.end()) {
-      unite(first->second, second->second);
-    }
-  }
+  std::set<authority::SourceEdgeTopologyKey> componentBarriers = mandatoryEdges;
+  componentBarriers.insert(traceTouchedEdges.begin(), traceTouchedEdges.end());
+  componentBarriers.insert(cutEdges.begin(), cutEdges.end());
+  const auto componentPartition = detail::build_source_face_component_partition(
+      unlabeledFaces, topology.incidentFaces, componentBarriers);
 
   std::map<std::size_t, std::set<std::size_t>> seedOrbits;
   for (const auto &[edge, incident] : topology.incidentFaces) {
-    if (incident.size() != 2U || mandatoryEdges.count(edge) != 0U ||
+    if (incident.size() != 2U || mandatoryEdges.count(edge) != 0U || cutEdges.count(edge) != 0U ||
         traceTouchedEdges.count(edge) != 0U) {
       continue;
     }
@@ -1728,14 +1847,22 @@ RegionBuildResult build_regions(
         }
       }
       if (seed.has_value()) {
-        seedOrbits[findRoot(findRoot, unlabeled->second)].insert(*seed);
+        const auto component = componentPartition.componentByFace.find(incident[side]);
+        if (component == componentPartition.componentByFace.end()) {
+          return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+        }
+        seedOrbits[component->second].insert(*seed);
       }
     }
   }
 
   for (std::size_t index = 0U; index < unlabeledFaces.size(); ++index) {
-    const std::size_t root = findRoot(findRoot, index);
-    const auto seeds = seedOrbits.find(root);
+    const auto component =
+        componentPartition.componentByFace.find(unlabeledFaces[index]);
+    if (component == componentPartition.componentByFace.end()) {
+      return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
+    }
+    const auto seeds = seedOrbits.find(component->second);
     if (seeds == seedOrbits.end() || seeds->second.size() != 1U) {
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::UncutFaceComponentOrbitSeedNotUnique);
@@ -2106,6 +2233,7 @@ void emit_fragment_euler_diagnostics(
 RegionCertificateBuildResult build_region_certificate(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,
+    const SurfaceCutGraph &cutGraph,
     const std::vector<GlobalTopologyArc> &arcs,
     const GlobalTopologyRegion &region, const std::size_t owningOrbit,
     const std::map<authority::NetworkArcId, const GlobalTopologyArc *> &arcById,
@@ -2138,8 +2266,11 @@ RegionCertificateBuildResult build_region_certificate(
   for (const auto &mandatory : network.mandatory_edges()) {
     mandatoryEdges.insert(mandatory.sourceEdge);
   }
+  const std::set<authority::SourceEdgeTopologyKey> cutEdges(
+      cutGraph.cut_edges().begin(), cutGraph.cut_edges().end());
   for (const auto &[edge, incident] : topology.incidentFaces) {
-    if (incident.size() != 2U || mandatoryEdges.count(edge) != 0U) {
+    if (incident.size() != 2U || mandatoryEdges.count(edge) != 0U ||
+        cutEdges.count(edge) != 0U) {
       continue;
     }
     const FragmentKey first{incident[0], owningOrbit};
@@ -2223,6 +2354,10 @@ RegionCertificateBuildResult build_region_certificate(
       };
       addSourceEndpoint(found->second->firstNode);
       addSourceEndpoint(found->second->secondNode);
+    }
+    if (found->second->cutEdge.has_value()) {
+      boundaryVertices.insert(found->second->cutEdge->first());
+      boundaryVertices.insert(found->second->cutEdge->second());
     }
     if (found->second->trace.has_value()) {
       boundaryTraces.insert(*found->second->trace);
@@ -2402,6 +2537,7 @@ using RegionCertificatesBuildResult =
 RegionCertificatesBuildResult build_region_certificates(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,
+    const SurfaceCutGraph &cutGraph,
     const std::vector<GlobalTopologyNodeRotation> &rotations,
     const std::vector<GlobalTopologyArc> &arcs,
     const std::vector<GlobalTopologyRegion> &regions,
@@ -2454,7 +2590,7 @@ RegionCertificatesBuildResult build_region_certificates(
       return *pinch;
     }
     const auto built = build_region_certificate(
-        topology, network, arcs, region, *orbit, arcById,
+        topology, network, cutGraph, arcs, region, *orbit, arcById,
         std::get<std::vector<authority::FieldSingularityId>>(singularities),
         fragmentCorners, diagnostics);
     if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&built)) {
@@ -2498,6 +2634,7 @@ std::uint64_t candidate_semantic_digest(
     const FieldAlignedCurveNetwork &network) noexcept {
   std::uint64_t hash = kFnvOffset;
   hash_consume(hash, candidate.sourceDigest);
+  hash_consume(hash, candidate.cutGraphDigest);
   // Deliberately consume only the gauge-invariant network identity. The exact
   // network/atlas provenance lives in candidate.networkDigest instead.
   hash_consume(hash, network.semantic_digest());
@@ -2511,6 +2648,8 @@ std::uint64_t candidate_semantic_digest(
     if (arc.mandatoryEdge.has_value()) hash_id(hash, *arc.mandatoryEdge);
     hash_consume(hash, arc.trace.has_value());
     if (arc.trace.has_value()) hash_id(hash, *arc.trace);
+    hash_consume(hash, arc.cutEdge.has_value());
+    if (arc.cutEdge.has_value()) hash_edge(hash, *arc.cutEdge);
     hash_consume(hash, arc.firstSegment);
     hash_consume(hash, arc.onePastLastSegment);
     hash_consume(hash, arc.sourceFaces.size());
@@ -2561,20 +2700,32 @@ using CandidateBuildResult =
 CandidateBuildResult canonical_candidate(
     const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
     const SourceTopologyRegions &sourceAuthority,
-    const FieldAlignedCurveNetwork &network) {
+    const FieldAlignedCurveNetwork &network,
+    const SurfaceCutGraph &cutGraph) {
   const auto topology =
       build_source_index(sourceFaces, sourceVertexCount, sourceAuthority);
   if (!topology.has_value() || network.source_digest() == 0U) {
     return error(GlobalTopologyPlanErrorCode::InvalidSourceBinding);
   }
+  if (!cutGraph.certificate().proves_cellularity() ||
+      cutGraph.source_digest() != network.source_digest() ||
+      cutGraph.network_digest() != network.semantic_digest()) {
+    return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+  }
+  const CutNodeBindingResult cutNodeBuild =
+      build_cut_node_bindings(network, cutGraph);
+  if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&cutNodeBuild)) {
+    return *failure;
+  }
+  const auto &cutNodes = std::get<CutNodeBindings>(cutNodeBuild);
 
-  const ArcBuildResult arcBuild = build_arcs(network);
+  const ArcBuildResult arcBuild = build_arcs(network, cutGraph, cutNodes);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&arcBuild)) {
     return *failure;
   }
   const auto &arcs = std::get<std::vector<GlobalTopologyArc>>(arcBuild);
   const RotationBuildResult rotationBuild =
-      build_rotation_system(*topology, network, arcs);
+      build_rotation_system(*topology, network, cutNodes, arcs);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&rotationBuild)) {
     return *failure;
@@ -2589,7 +2740,7 @@ CandidateBuildResult canonical_candidate(
   FragmentDiagnosticEvidence *diagnostics =
       fragment_diagnostics_enabled() ? &diagnosticEvidence : nullptr;
   const RegionBuildResult regionBuild =
-      build_regions(*topology, sourceAuthority, network, arcs,
+      build_regions(*topology, sourceAuthority, network, cutGraph, arcs,
                     std::get<FaceWalkResult>(faceWalk), diagnostics);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&regionBuild)) {
     return *failure;
@@ -2600,8 +2751,8 @@ CandidateBuildResult canonical_candidate(
   candidate.rotations = rotations;
   candidate.regions = std::get<std::vector<GlobalTopologyRegion>>(regionBuild);
   const RegionCertificatesBuildResult certificateBuild =
-      build_region_certificates(*topology, network, candidate.rotations, candidate.arcs,
-                                candidate.regions, diagnostics);
+      build_region_certificates(*topology, network, cutGraph, candidate.rotations,
+                                candidate.arcs, candidate.regions, diagnostics);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
     return *failure;
@@ -2610,6 +2761,7 @@ CandidateBuildResult canonical_candidate(
       std::get<std::vector<GlobalTopologyRegionDiscCertificate>>(certificateBuild);
   candidate.sourceDigest = network.source_digest();
   candidate.networkDigest = network_binding_digest(network);
+  candidate.cutGraphDigest = cutGraph.semantic_digest();
   canonicalize_candidate(candidate);
   return candidate;
 }
@@ -2618,6 +2770,7 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
     const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
     const SourceTopologyRegions &sourceAuthority,
     const FieldAlignedCurveNetwork &network,
+    const SurfaceCutGraph &cutGraph,
     GlobalTopologyPlanCandidate &candidate) {
   const auto topology =
       build_source_index(sourceFaces, sourceVertexCount, sourceAuthority);
@@ -2626,6 +2779,10 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
   }
   if (candidate.networkDigest != network_binding_digest(network)) {
     return error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+  }
+  if (candidate.cutGraphDigest != cutGraph.semantic_digest() ||
+      !cutGraph.certificate().proves_cellularity()) {
+    return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
   }
   canonicalize_candidate(candidate);
 
@@ -2684,7 +2841,7 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
   }
 
   const CandidateBuildResult canonical = canonical_candidate(
-      sourceFaces, sourceVertexCount, sourceAuthority, network);
+      sourceFaces, sourceVertexCount, sourceAuthority, network, cutGraph);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&canonical)) {
     return *failure;
   }
@@ -2748,8 +2905,8 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
   }
 
   const RegionCertificatesBuildResult certificateBuild =
-      build_region_certificates(*topology, network, candidate.rotations, candidate.arcs,
-                                candidate.regions, nullptr);
+      build_region_certificates(*topology, network, cutGraph, candidate.rotations,
+                                candidate.arcs, candidate.regions, nullptr);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
     return *failure;
@@ -2894,26 +3051,27 @@ namespace directional::geometry {
 GlobalTopologyPlanBuildResult GlobalTopologyPlan::make(
     const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
     const SourceTopologyRegions &sourceAuthority,
-    const FieldAlignedCurveNetwork &network) {
+    const FieldAlignedCurveNetwork &network,
+    const SurfaceCutGraph &cutGraph) {
   const auto canonical = global_topology_plan_detail::canonical_candidate(
-      sourceFaces, sourceVertexCount, sourceAuthority, network);
+      sourceFaces, sourceVertexCount, sourceAuthority, network, cutGraph);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&canonical)) {
     return GlobalTopologyPlanBuildResult(*failure);
   }
   return make_from_candidate(
-      sourceFaces, sourceVertexCount, sourceAuthority, network,
+      sourceFaces, sourceVertexCount, sourceAuthority, network, cutGraph,
       std::get<GlobalTopologyPlanCandidate>(canonical));
 }
 
 GlobalTopologyPlanBuildResult GlobalTopologyPlan::make_from_candidate(
     const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
     const SourceTopologyRegions &sourceAuthority,
-    const FieldAlignedCurveNetwork &network,
+    const FieldAlignedCurveNetwork &network, const SurfaceCutGraph &cutGraph,
     GlobalTopologyPlanCandidate candidate) {
   if (const auto failure =
           global_topology_plan_detail::validate_candidate_structure(
-              sourceFaces, sourceVertexCount, sourceAuthority, network,
+              sourceFaces, sourceVertexCount, sourceAuthority, network, cutGraph,
               candidate);
       failure.has_value()) {
     return GlobalTopologyPlanBuildResult(*failure);
@@ -2923,7 +3081,8 @@ GlobalTopologyPlanBuildResult GlobalTopologyPlan::make_from_candidate(
   return GlobalTopologyPlanBuildResult(GlobalTopologyPlan(
       std::move(candidate.arcs), std::move(candidate.rotations),
       std::move(candidate.regions), std::move(candidate.regionCertificates),
-      candidate.sourceDigest, candidate.networkDigest, semanticDigest));
+      candidate.sourceDigest, candidate.networkDigest, candidate.cutGraphDigest,
+      semanticDigest));
 }
 
 const GlobalTopologyArc *
@@ -2960,7 +3119,7 @@ GlobalTopologyPlan::find_region_certificate(
 GlobalTopologyPlanCandidate GlobalTopologyPlan::validation_candidate() const {
   return GlobalTopologyPlanCandidate{arcs_, rotations_, regions_,
                                      regionCertificates_, sourceDigest_,
-                                     networkDigest_};
+                                     networkDigest_, cutGraphDigest_};
 }
 
 const char *global_topology_plan_error_code_name(
@@ -3042,6 +3201,8 @@ const char *global_topology_plan_error_code_name(
     return "MandatoryEdgeTerminalOrderUnresolved";
   case GlobalTopologyPlanErrorCode::RegionOwnedBoundaryEdgeMissingFromWalk:
     return "RegionOwnedBoundaryEdgeMissingFromWalk";
+  case GlobalTopologyPlanErrorCode::InvalidCutGraphBinding:
+    return "InvalidCutGraphBinding";
   }
   return "Unknown";
 }

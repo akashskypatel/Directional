@@ -6043,6 +6043,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     std::optional<geometry::SourceTopologyRegions> sourceTopologyRegionsProduct;
     std::optional<authority::FieldTransportAtlas> fieldTransportAtlasProduct;
     std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedNetworkProduct;
+    std::optional<geometry::SurfaceCutGraph> surfaceCutGraphProduct;
     std::optional<geometry::GlobalTopologyPlan> globalTopologyPlanProduct;
     std::vector<geometry::PureQuadMesh> completedPatchesProduct;
     bool sourceGridRecoveryUsedProduct = false;
@@ -6598,9 +6599,22 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     }
     fieldAlignedNetworkProduct = std::move(fieldAlignedBuild.value());
     tracingOptions.fieldAlignedNetwork = &*fieldAlignedNetworkProduct;
+    auto surfaceCutGraphBuild = geometry::SurfaceCutGraph::make(
+        meshWhole.F, static_cast<std::size_t>(meshWhole.V.rows()),
+        *sourceTopologyRegionsProduct, *fieldTransportAtlasProduct,
+        *fieldAlignedNetworkProduct);
+    if (!surfaceCutGraphBuild) {
+      return fail_surface_cells(
+          SurfaceCellFailureCode::NotProductionReady,
+          std::string("surface-cut-graph/") +
+              geometry::surface_cut_graph_error_code_name(
+                  surfaceCutGraphBuild.error().code));
+    }
+    surfaceCutGraphProduct = std::move(surfaceCutGraphBuild.value());
     auto globalTopologyBuild = geometry::GlobalTopologyPlan::make(
         meshWhole.F, static_cast<std::size_t>(meshWhole.V.rows()),
-        *sourceTopologyRegionsProduct, *fieldAlignedNetworkProduct);
+        *sourceTopologyRegionsProduct, *fieldAlignedNetworkProduct,
+        *surfaceCutGraphProduct);
     if (!globalTopologyBuild) {
       return fail_surface_cells(
           SurfaceCellFailureCode::NotProductionReady,
@@ -6615,6 +6629,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         fieldTransportAtlasProduct;
     result.surfaceCellContext.productSnapshots.fieldAlignedCurveNetwork =
         fieldAlignedNetworkProduct;
+    result.surfaceCellContext.productSnapshots.surfaceCutGraph =
+        surfaceCutGraphProduct;
     result.surfaceCellContext.productSnapshots.globalTopologyPlan =
         globalTopologyPlanProduct;
     result.surfaceCellContext.fieldAlignedNetworkAuthorityUsed =
@@ -6638,6 +6654,14 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             fieldAlignedNetworkProduct->nodes().size() +
                 fieldAlignedNetworkProduct->singularity_ports().size() +
                 fieldAlignedNetworkProduct->mandatory_edges().size()),
+        true);
+    record_surface_cell_context_product(
+        result.surfaceCellContext, "surface-cut-graph",
+        make_identity(
+            "surface-cut-graph",
+            geometry::surface_cut_graph_hash(*surfaceCutGraphProduct),
+            surfaceCutGraphProduct->cut_edges().size() +
+                surfaceCutGraphProduct->certificate().components.size()),
         true);
     record_surface_cell_context_product(
         result.surfaceCellContext, "global-topology-plan",
@@ -8624,6 +8648,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           componentProducts->sourceTopologyRegions = sourceTopologyRegionsProduct;
           componentProducts->fieldTransportAtlas = fieldTransportAtlasProduct;
           componentProducts->fieldAlignedCurveNetwork = fieldAlignedNetworkProduct;
+          componentProducts->surfaceCutGraph = surfaceCutGraphProduct;
           componentProducts->globalTopologyPlan = globalTopologyPlanProduct;
           componentProducts->authoritativeRails = authoritativeRails;
           componentProducts->sourceSurfaceLabels = sourceSurfaceLabels;

@@ -46,6 +46,7 @@
 #include <directional/geometry/AdaptiveTargetSize.h>
 #include <directional/geometry/FlowRepStrands.h>
 #include <directional/geometry/GlobalTopologyPlan.h>
+#include <directional/geometry/SurfaceCutGraph.h>
 #include <directional/geometry/PatchDescriptor.h>
 #include <directional/geometry/PureQuadCompletion.h>
 #include <directional/geometry/ReliefTopology.h>
@@ -305,6 +306,7 @@ struct SurfaceCellDiagnosticProductSnapshots {
 
   std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;
   std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedCurveNetwork;
+  std::optional<geometry::SurfaceCutGraph> surfaceCutGraph;
   std::optional<geometry::GlobalTopologyPlan> globalTopologyPlan;
 
   std::vector<geometry::SurfaceCellRail> authoritativeRails;
@@ -1165,6 +1167,7 @@ struct SurfaceCellComponentStageProducts {
   std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
   std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;
   std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedCurveNetwork;
+  std::optional<geometry::SurfaceCutGraph> surfaceCutGraph;
   std::optional<geometry::GlobalTopologyPlan> globalTopologyPlan;
   std::vector<geometry::SurfaceCellRail> authoritativeRails;
   std::optional<geometry::SourceSurfaceLabels> sourceSurfaceLabels;

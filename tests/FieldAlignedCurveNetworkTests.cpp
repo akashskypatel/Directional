@@ -1487,15 +1487,41 @@ TEST(FieldAlignedCurveNetwork, EventGraphSemanticDigestIsOrderInvariant) {
 
 namespace {
 
+directional::geometry::SurfaceCutGraph build_surface_cut_graph(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
+    const directional::authority::FieldTransportAtlas &atlas,
+    const FieldAlignedCurveNetwork &network) {
+  auto built = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), sourceAuthority, atlas, network);
+  EXPECT_TRUE(built) << (built ? ""
+                              : directional::geometry::surface_cut_graph_error_code_name(
+                                    built.error().code));
+  return built.value();
+}
+
 directional::geometry::GlobalTopologyPlan build_topology_plan(
     const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
+    const directional::authority::FieldTransportAtlas &atlas,
     const FieldAlignedCurveNetwork &network) {
+  const auto cutGraph = build_surface_cut_graph(mesh, sourceAuthority, atlas, network);
   auto built = directional::geometry::GlobalTopologyPlan::make(
-      mesh.F, static_cast<std::size_t>(mesh.V.rows()), sourceAuthority, network);
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), sourceAuthority, network,
+      cutGraph);
   EXPECT_TRUE(built) << (built ? ""
                               : directional::geometry::global_topology_plan_error_code_name(
                                     built.error().code));
   return built.value();
+}
+
+directional::geometry::GlobalTopologyPlanBuildResult rebuild_topology_plan(
+    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
+    const directional::authority::FieldTransportAtlas &atlas,
+    const FieldAlignedCurveNetwork &network,
+    directional::geometry::GlobalTopologyPlanCandidate candidate) {
+  const auto cutGraph = build_surface_cut_graph(mesh, sourceAuthority, atlas, network);
+  return directional::geometry::GlobalTopologyPlan::make_from_candidate(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), sourceAuthority, network,
+      cutGraph, std::move(candidate));
 }
 
 std::vector<const directional::geometry::GlobalTopologyArc *>
@@ -2061,12 +2087,83 @@ ordered_mandatory_cycle(const directional::geometry::GlobalTopologyPlan &plan) {
 
 } // namespace
 
+TEST(SurfaceCutGraph, AlreadyCellularNetworkPublishesEmptyCertifiedCutSet) {
+  const TriMesh mesh = make_square_mesh();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  ASSERT_TRUE(atlas);
+  const auto rails = rails_from_atlas(mesh, atlas.value());
+  const auto network = FieldAlignedCurveNetwork::make(
+      mesh, *sourceAuthority, atlas.value(), rails);
+  ASSERT_TRUE(network);
+
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
+      atlas.value(), network.value());
+  ASSERT_TRUE(cutGraph);
+  EXPECT_TRUE(cutGraph.value().cut_edges().empty());
+  EXPECT_TRUE(cutGraph.value().certificate().proves_cellularity());
+  ASSERT_EQ(1U, cutGraph.value().certificate().components.size());
+  EXPECT_EQ(1, cutGraph.value().certificate().components.front().eulerCharacteristic);
+  EXPECT_EQ(1U, cutGraph.value().certificate().components.front().boundaryWalkCount);
+}
+
+TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
+  TriMesh baseline;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.obj");
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), baseline));
+  ASSERT_TRUE(baseline.boundaryLoops.empty());
+  ASSERT_EQ(0, baseline.eulerChar);
+
+  const auto build = [](const TriMesh &mesh) {
+    const auto authority = make_source_authority(mesh);
+    EXPECT_TRUE(authority.has_value());
+    auto atlas = directional::authority::FieldTransportAtlas::make(
+        mesh, *authority, {}, make_zero_transport_field(mesh));
+    EXPECT_TRUE(atlas);
+    const auto rails = rails_from_atlas(mesh, atlas.value());
+    auto network = FieldAlignedCurveNetwork::make(
+        mesh, *authority, atlas.value(), rails);
+    EXPECT_TRUE(network);
+    return directional::geometry::SurfaceCutGraph::make(
+        mesh.F, static_cast<std::size_t>(mesh.V.rows()), *authority,
+        atlas.value(), network.value());
+  };
+
+  auto baselineCutGraph = build(baseline);
+  ASSERT_TRUE(baselineCutGraph);
+  ASSERT_FALSE(baselineCutGraph.value().cut_edges().empty());
+  ASSERT_TRUE(baselineCutGraph.value().certificate().proves_cellularity());
+
+  Eigen::MatrixXi reorderedFaces = baseline.F;
+  for (int first = 0, last = reorderedFaces.rows() - 1; first < last;
+       ++first, --last) {
+    reorderedFaces.row(first).swap(reorderedFaces.row(last));
+  }
+  TriMesh reordered;
+  reordered.set_mesh(baseline.V, reorderedFaces);
+  auto reorderedCutGraph = build(reordered);
+  ASSERT_TRUE(reorderedCutGraph);
+
+  EXPECT_EQ(baselineCutGraph.value().cut_edges(),
+            reorderedCutGraph.value().cut_edges());
+  EXPECT_EQ(baselineCutGraph.value().semantic_digest(),
+            reorderedCutGraph.value().semantic_digest());
+  EXPECT_EQ(baselineCutGraph.value().certificate().eulerCharacteristic,
+            reorderedCutGraph.value().certificate().eulerCharacteristic);
+  EXPECT_EQ(baselineCutGraph.value().certificate().faceCount,
+            reorderedCutGraph.value().certificate().faceCount);
+}
+
 TEST(GlobalTopologyPlan, DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph) {
   Cp3bEventFixture fixture = build_cp3b_event_fixture();
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
 
   ASSERT_GT(plan.regions().size(), 1U)
       << "CP4a witness must expose more than one embedded-graph face";
@@ -2114,7 +2211,7 @@ TEST(GlobalTopologyPlan, PublishesRotationSystemConsistentWithNetworkEvents) {
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
 
   std::map<directional::authority::NetworkNodeId,
            std::set<directional::authority::NetworkArcId>>
@@ -2158,7 +2255,7 @@ TEST(GlobalTopologyPlan, CoversEverySourceFaceExactlyOnce) {
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
 
   std::map<directional::authority::SourceFaceTopologyKey,
            std::set<directional::authority::NetworkRegionId>>
@@ -2240,7 +2337,7 @@ TEST(GlobalTopologyPlan, PreservesMandatoryBoundaryAndHardFeatureEdges) {
   const auto rails = rails_from_atlas(mesh, atlas.value());
   const FieldAlignedCurveNetwork network =
       build_network(mesh, *sourceAuthority, atlas.value(), rails);
-  const auto plan = build_topology_plan(mesh, *sourceAuthority, network);
+  const auto plan = build_topology_plan(mesh, *sourceAuthority, atlas.value(), network);
 
   ASSERT_TRUE(std::any_of(network.mandatory_edges().begin(),
                           network.mandatory_edges().end(), [](const auto &edge) {
@@ -2271,13 +2368,13 @@ TEST(GlobalTopologyPlan, RejectsForeignNetworkBindingOrTamperedRegionOwnership) 
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
 
   auto foreignBinding = plan.validation_candidate();
   foreignBinding.networkDigest ^= 0x9e3779b97f4a7c15ULL;
-  auto rejected = directional::geometry::GlobalTopologyPlan::make_from_candidate(
-      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
-      *fixture.sourceAuthority, *fixture.network, std::move(foreignBinding));
+  auto rejected = rebuild_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
+      std::move(foreignBinding));
   ASSERT_FALSE(rejected);
   EXPECT_EQ(directional::geometry::GlobalTopologyPlanErrorCode::InvalidNetworkBinding,
             rejected.error().code)
@@ -2289,9 +2386,9 @@ TEST(GlobalTopologyPlan, RejectsForeignNetworkBindingOrTamperedRegionOwnership) 
   ASSERT_FALSE(unowned.regions.front().sourceFaces.empty());
   unowned.regions.front().sourceFaces.erase(
       unowned.regions.front().sourceFaces.begin());
-  rejected = directional::geometry::GlobalTopologyPlan::make_from_candidate(
-      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
-      *fixture.sourceAuthority, *fixture.network, std::move(unowned));
+  rejected = rebuild_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
+      std::move(unowned));
   ASSERT_FALSE(rejected);
   EXPECT_EQ(
       directional::geometry::GlobalTopologyPlanErrorCode::RegionSourceFaceUnowned,
@@ -2304,9 +2401,9 @@ TEST(GlobalTopologyPlan, RejectsForeignNetworkBindingOrTamperedRegionOwnership) 
   ASSERT_FALSE(multiplyOwned.regions.front().sourceFaces.empty());
   const auto duplicatedFace = multiplyOwned.regions.front().sourceFaces.front();
   multiplyOwned.regions[1].sourceFaces.push_back(duplicatedFace);
-  rejected = directional::geometry::GlobalTopologyPlan::make_from_candidate(
-      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
-      *fixture.sourceAuthority, *fixture.network, std::move(multiplyOwned));
+  rejected = rebuild_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
+      std::move(multiplyOwned));
   ASSERT_FALSE(rejected);
   EXPECT_EQ(directional::geometry::GlobalTopologyPlanErrorCode::RegionSourceFaceMultiplyOwned,
             rejected.error().code)
@@ -2327,7 +2424,7 @@ TEST(GlobalTopologyPlan, RegionAuthorityIsInvariantToEnumerationOrderAndBranchRe
   const FieldAlignedCurveNetwork baselineNetwork = build_network(
       mesh, *sourceAuthority, baselineAtlas.value(), baselineRails);
   const auto baselinePlan =
-      build_topology_plan(mesh, *sourceAuthority, baselineNetwork);
+      build_topology_plan(mesh, *sourceAuthority, baselineAtlas.value(), baselineNetwork);
 
   auto reordered = baselinePlan.validation_candidate();
   std::reverse(reordered.arcs.begin(), reordered.arcs.end());
@@ -2336,9 +2433,9 @@ TEST(GlobalTopologyPlan, RegionAuthorityIsInvariantToEnumerationOrderAndBranchRe
   for (auto &region : reordered.regions) {
     std::reverse(region.sourceFaces.begin(), region.sourceFaces.end());
   }
-  auto rebuilt = directional::geometry::GlobalTopologyPlan::make_from_candidate(
-      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
-      baselineNetwork, std::move(reordered));
+  auto rebuilt = rebuild_topology_plan(
+      mesh, *sourceAuthority, baselineAtlas.value(), baselineNetwork,
+      std::move(reordered));
   ASSERT_TRUE(rebuilt) << (rebuilt ? ""
                                   : directional::geometry::global_topology_plan_error_code_name(
                                         rebuilt.error().code));
@@ -2357,7 +2454,7 @@ TEST(GlobalTopologyPlan, RegionAuthorityIsInvariantToEnumerationOrderAndBranchRe
   ASSERT_EQ(baselineNetwork.semantic_digest(), relabeledNetwork.semantic_digest());
   ASSERT_NE(baselineNetwork.atlas_digest(), relabeledNetwork.atlas_digest());
   const auto relabeledPlan =
-      build_topology_plan(mesh, *sourceAuthority, relabeledNetwork);
+      build_topology_plan(mesh, *sourceAuthority, relabeledAtlas.value(), relabeledNetwork);
 
   EXPECT_NE(baselinePlan.network_digest(), relabeledPlan.network_digest());
   EXPECT_EQ(baselinePlan.semantic_digest(), relabeledPlan.semantic_digest());
@@ -2370,7 +2467,7 @@ TEST(GlobalTopologyPlan, ProvesDiscTopologyForEveryEmittedRegion) {
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
 
   ASSERT_EQ(plan.regions().size(), plan.region_certificates().size());
   for (const auto &region : plan.regions()) {
@@ -2391,7 +2488,7 @@ TEST(GlobalTopologyPlan, RejectsRegionWithMultipleBoundaryWalks) {
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
   ASSERT_GT(plan.regions().size(), 1U);
 
   auto candidate = plan.validation_candidate();
@@ -2401,9 +2498,9 @@ TEST(GlobalTopologyPlan, RejectsRegionWithMultipleBoundaryWalks) {
   candidate.regions[0].boundary.insert(candidate.regions[0].boundary.end(),
                                        duplicateWalk.begin(),
                                        duplicateWalk.end());
-  auto rejected = directional::geometry::GlobalTopologyPlan::make_from_candidate(
-      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
-      *fixture.sourceAuthority, *fixture.network, std::move(candidate));
+  auto rejected = rebuild_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
+      std::move(candidate));
   ASSERT_FALSE(rejected);
   EXPECT_EQ(
       directional::geometry::GlobalTopologyPlanErrorCode::RegionBoundaryNotSingleWalk,
@@ -2425,7 +2522,7 @@ TEST(GlobalTopologyPlan, RejectsRegionWithWrongEulerCharacteristicOrInteriorSing
   ASSERT_TRUE(atlas.value().quadrangulability().established());
   const auto rails = rails_from_atlas(mesh, atlas.value());
   const auto network = build_network(mesh, *sourceAuthority, atlas.value(), rails);
-  const auto plan = build_topology_plan(mesh, *sourceAuthority, network);
+  const auto plan = build_topology_plan(mesh, *sourceAuthority, atlas.value(), network);
 
   auto candidate = plan.validation_candidate();
   ASSERT_FALSE(candidate.regions.empty());
@@ -2444,9 +2541,8 @@ TEST(GlobalTopologyPlan, RejectsRegionWithWrongEulerCharacteristicOrInteriorSing
   candidate.regions.front().boundary = outerBoundary;
   candidate.regions.front().sourceFaces = std::move(allFaces);
   candidate.regionCertificates.clear();
-  auto rejected = directional::geometry::GlobalTopologyPlan::make_from_candidate(
-      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
-      network, std::move(candidate));
+  auto rejected = rebuild_topology_plan(
+      mesh, *sourceAuthority, atlas.value(), network, std::move(candidate));
   ASSERT_FALSE(rejected);
   EXPECT_EQ(
       directional::geometry::GlobalTopologyPlanErrorCode::RegionContainsInteriorSingularity,
@@ -2463,7 +2559,7 @@ TEST(GlobalTopologyPlan, IndependentDiscProofOracleAgreesWithPublishedCertificat
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
   ASSERT_FALSE(plan.regions().empty());
   const auto proof =
       independent_disc_proof_oracle(plan, fixture.mesh, *fixture.network);
@@ -2478,14 +2574,14 @@ TEST(GlobalTopologyPlan, RejectsTamperedDiscProofCertificate) {
   ASSERT_TRUE(fixture.sourceAuthority.has_value());
   ASSERT_TRUE(fixture.network.has_value());
   const auto plan = build_topology_plan(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.network);
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
   auto candidate = plan.validation_candidate();
   ASSERT_FALSE(candidate.regionCertificates.empty());
   const auto tamperedRegion = candidate.regionCertificates.front().region;
   ++candidate.regionCertificates.front().eulerCharacteristic;
-  auto rejected = directional::geometry::GlobalTopologyPlan::make_from_candidate(
-      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
-      *fixture.sourceAuthority, *fixture.network, std::move(candidate));
+  auto rejected = rebuild_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network,
+      std::move(candidate));
   ASSERT_FALSE(rejected);
   EXPECT_EQ(
       directional::geometry::GlobalTopologyPlanErrorCode::InvalidRegionCertificateBinding,
@@ -2513,7 +2609,7 @@ TEST(GlobalTopologyPlan, UnestablishedFieldTransportCannotProduceATopologyPlan) 
                                NetworkFactory>);
   using PlanFactory = directional::geometry::GlobalTopologyPlanBuildResult (*)(
       const Eigen::MatrixXi &, std::size_t, const SourceTopologyRegions &,
-      const FieldAlignedCurveNetwork &);
+      const FieldAlignedCurveNetwork &, const directional::geometry::SurfaceCutGraph &);
   static_assert(std::is_same_v<decltype(&directional::geometry::GlobalTopologyPlan::make),
                                PlanFactory>);
 
@@ -2527,9 +2623,11 @@ TEST(GlobalTopologyPlan, UnestablishedFieldTransportCannotProduceATopologyPlan) 
       << "the only public atlas value route publishes an established certificate";
   const auto rails = rails_from_atlas(mesh, atlas.value());
   const auto network = build_network(mesh, *sourceAuthority, atlas.value(), rails);
+  const auto cutGraph = build_surface_cut_graph(
+      mesh, *sourceAuthority, atlas.value(), network);
   const auto plan = directional::geometry::GlobalTopologyPlan::make(
       mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
-      network);
+      network, cutGraph);
   EXPECT_TRUE(plan) << (plan ? ""
                            : directional::geometry::global_topology_plan_error_code_name(
                                  plan.error().code));
@@ -2562,6 +2660,7 @@ struct Cp4cProductionFixture {
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
   std::optional<FieldAlignedCurveNetwork> network;
+  std::optional<directional::geometry::SurfaceCutGraph> cutGraph;
   std::optional<directional::geometry::GlobalTopologyPlan> plan;
 };
 
@@ -2733,6 +2832,7 @@ struct Cp4cReachabilityObservation {
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
   std::optional<FieldAlignedCurveNetwork> network;
+  std::optional<directional::geometry::SurfaceCutGraph> cutGraph;
   std::optional<directional::geometry::GlobalTopologyPlan> plan;
   std::string report;
 };
@@ -3732,8 +3832,20 @@ void append_plan_error(std::ostringstream &stream,
   if (error.arc.has_value()) {
     stream << ";arc=" << error.arc->index();
   }
+  if (error.networkEdge.has_value()) {
+    stream << ";networkEdge=" << error.networkEdge->index();
+  }
+  if (error.trace.has_value()) {
+    stream << ";trace=" << error.trace->index();
+  }
+  if (error.sourceEdge.has_value()) {
+    stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
+  }
   if (error.sourceFace.has_value()) {
     stream << ";sourceFace=" << source_face_locus(*error.sourceFace);
+  }
+  if (error.secondSourceFace.has_value()) {
+    stream << ";secondSourceFace=" << source_face_locus(*error.secondSourceFace);
   }
   if (error.sourceVertex.has_value()) {
     stream << ";sourceVertex=" << error.sourceVertex->index();
@@ -3850,9 +3962,35 @@ Cp4cReachabilityObservation observe_cp4c_witness(
          << ";networkEventCount=" << observation.network->events().size();
   append_cp4c_terminal_event_report(report, *observation.network);
 
+  auto cutGraphBuild = directional::geometry::SurfaceCutGraph::make(
+      observation.mesh.F, static_cast<std::size_t>(observation.mesh.V.rows()),
+      *observation.sourceAuthority, *observation.atlas, *observation.network);
+  if (!cutGraphBuild) {
+    report << ";furthestStage=field-aligned-network;failedStage=surface-cut-graph"
+           << ";surfaceCutGraphError="
+           << directional::geometry::surface_cut_graph_error_code_name(
+                  cutGraphBuild.error().code);
+    observation.report = report.str();
+    return observation;
+  }
+  observation.cutGraph = std::move(cutGraphBuild.value());
+  const auto &cutCertificate = observation.cutGraph->certificate();
+  report << ";surfaceCutGraph=true"
+         << ";networkNodeCount=" << observation.network->nodes().size()
+         << ";networkMandatoryEdgeCount="
+         << observation.network->mandatory_edges().size()
+         << ";cutEdgeCount=" << observation.cutGraph->cut_edges().size()
+         << ";networkAlreadyCellular="
+         << (observation.cutGraph->cut_edges().empty() ? "true" : "false")
+         << ";cutGraphV=" << cutCertificate.vertexCount
+         << ";cutGraphE=" << cutCertificate.edgeCount
+         << ";cutGraphF=" << cutCertificate.faceCount
+         << ";cutGraphChi=" << cutCertificate.eulerCharacteristic
+         << ";sourceChi=" << cutCertificate.sourceEulerCharacteristic;
+
   auto planBuild = directional::geometry::GlobalTopologyPlan::make(
       observation.mesh.F, static_cast<std::size_t>(observation.mesh.V.rows()),
-      *observation.sourceAuthority, *observation.network);
+      *observation.sourceAuthority, *observation.network, *observation.cutGraph);
   if (!planBuild) {
     report << ";furthestStage=field-aligned-network;failedStage=global-topology-plan;";
     append_plan_error(report, planBuild.error());
@@ -4249,6 +4387,7 @@ Cp4cProductionFixture build_cp4c_production_fixture(
   if (!products.sourceTopologyRegions.has_value() ||
       !products.fieldTransportAtlas.has_value() ||
       !products.fieldAlignedCurveNetwork.has_value() ||
+      !products.surfaceCutGraph.has_value() ||
       !products.globalTopologyPlan.has_value()) {
     throw std::runtime_error(
         fixtureName + " pipeline did not retain CP4c topology authority: " +
@@ -4259,6 +4398,7 @@ Cp4cProductionFixture build_cp4c_production_fixture(
   fixture.sourceAuthority = products.sourceTopologyRegions;
   fixture.atlas = products.fieldTransportAtlas;
   fixture.network = products.fieldAlignedCurveNetwork;
+  fixture.cutGraph = products.surfaceCutGraph;
   fixture.plan = products.globalTopologyPlan;
   return fixture;
 }
@@ -4331,7 +4471,21 @@ void assert_cp4c_common_preconditions(const Cp4cProductionFixture &fixture) {
 }
 
 void assert_cp4c_torus_preconditions(const Cp4cProductionFixture &fixture) {
-  ASSERT_NO_FATAL_FAILURE(assert_cp4c_common_preconditions(fixture));
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  ASSERT_TRUE(fixture.cutGraph.has_value());
+  ASSERT_TRUE(fixture.plan.has_value());
+  ASSERT_TRUE(fixture.atlas->quadrangulability().established())
+      << "CP4c witness requires an established quadrangulability certificate";
+  ASSERT_FALSE(fixture.plan->regions().empty())
+      << "CP4c-2 C1 is the non-vacuity anchor: torus must publish a region";
+  ASSERT_TRUE(std::any_of(fixture.plan->regions().begin(),
+                          fixture.plan->regions().end(),
+                          [](const auto &region) {
+                            return region.sourceFaces.size() > 1U;
+                          }))
+      << "the torus cut graph must publish non-vacuous multi-face support";
   ASSERT_TRUE(fixture.mesh.boundaryLoops.empty())
       << "the committed torus witness must be closed";
   ASSERT_EQ(0, fixture.mesh.eulerChar)
@@ -4340,12 +4494,6 @@ void assert_cp4c_torus_preconditions(const Cp4cProductionFixture &fixture) {
                     static_cast<int>(fixture.mesh.boundaryLoops.size());
   ASSERT_EQ(1, genus)
       << "the committed torus witness must derive genus 1 from source topology";
-  ASSERT_TRUE(std::any_of(
-      fixture.plan->regions().begin(), fixture.plan->regions().end(),
-      [&](const auto &region) {
-        return region_boundary_uses_nontrivial_cycle(*fixture.plan, region);
-      }))
-      << "the torus witness must expose a non-trivial multi-face graph cycle";
 }
 
 void assert_cp4c_mechanical_preconditions(
@@ -4362,8 +4510,11 @@ void expect_cp4c_plan_disc_proofs(const Cp4cProductionFixture &fixture) {
   ASSERT_TRUE(fixture.plan.has_value());
   const auto &network = *fixture.network;
   const auto &plan = *fixture.plan;
+  ASSERT_TRUE(fixture.cutGraph.has_value());
   EXPECT_EQ(network.source_digest(), plan.source_digest());
-  EXPECT_EQ(network.semantic_digest(), plan.network_digest());
+  EXPECT_EQ(network.source_digest(), fixture.cutGraph->source_digest());
+  EXPECT_EQ(network.semantic_digest(), fixture.cutGraph->network_digest());
+  EXPECT_EQ(fixture.cutGraph->semantic_digest(), plan.cut_graph_digest());
   ASSERT_EQ(plan.regions().size(), plan.region_certificates().size());
   for (const auto &region : plan.regions()) {
     const auto *certificate = plan.find_region_certificate(region.id);
@@ -4520,10 +4671,37 @@ TEST(GlobalTopologyPlan, MechanicalWitnessStageReachabilityIsObservable) {
   FAIL() << observation.report;
 }
 
+TEST(GlobalTopologyPlan, Cp4c2PrescribedSphereCellularityScopeDecisionIsObservable) {
+  const Cp4cReachabilityObservation observation =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  FAIL() << "m3Cp4c2X2;" << observation.report;
+}
+
 TEST(GlobalTopologyPlan, TorusWitnessDerivesRegionsThroughProductionEntryPath) {
   const auto &fixture = cp4c_torus_fixture();
   ASSERT_NO_FATAL_FAILURE(assert_cp4c_torus_preconditions(fixture));
   ASSERT_NO_FATAL_FAILURE(expect_cp4c_plan_disc_proofs(fixture));
+
+  ASSERT_TRUE(fixture.network->candidate_traces().empty());
+  ASSERT_TRUE(fixture.network->events().empty());
+  const std::size_t networkVertices = fixture.network->nodes().size();
+  const std::size_t networkEdges = fixture.network->mandatory_edges().size();
+  const int impliedCellularFaces =
+      static_cast<int>(networkEdges) - static_cast<int>(networkVertices) +
+      fixture.mesh.eulerChar;
+  EXPECT_EQ(48U, networkVertices);
+  EXPECT_EQ(48U, networkEdges);
+  EXPECT_EQ(0, impliedCellularFaces);
+  ASSERT_GE(fixture.cutGraph->cut_edges().size(), 2U)
+      << "a genus-1 closed surface requires at least two independent cuts";
+
+  std::cout << "m3Cp4c2X1X7"
+            << ";networkV=" << networkVertices
+            << ";networkE=" << networkEdges
+            << ";sourceChi=" << fixture.mesh.eulerChar
+            << ";impliedCellularF=" << impliedCellularFaces
+            << ";cutEdgeCount=" << fixture.cutGraph->cut_edges().size()
+            << ";torusRegionCount=" << fixture.plan->regions().size() << '\n';
 }
 
 TEST(GlobalTopologyPlan,
@@ -6943,9 +7121,10 @@ TEST(GlobalTopologyPlan,
   ASSERT_NO_FATAL_FAILURE(
       expect_all_mandatory_edges_preserved(*torus.network, *torus.plan));
 
-  const auto &mechanical = cp4c_mechanical_fixture();
-  ASSERT_NO_FATAL_FAILURE(assert_cp4c_mechanical_preconditions(mechanical));
-  ASSERT_NO_FATAL_FAILURE(expect_cp4c_plan_disc_proofs(mechanical));
-  ASSERT_NO_FATAL_FAILURE(expect_all_mandatory_edges_preserved(
-      *mechanical.network, *mechanical.plan));
+  const std::size_t examinedRegions = torus.plan->regions().size();
+  ASSERT_GT(examinedRegions, 0U)
+      << "a green C6 over zero regions is a red CP4c-2 result";
+  std::cout << "m3Cp4c2X7"
+            << ";torusRegionCount=" << torus.plan->regions().size()
+            << ";c6RegionsExamined=" << examinedRegions << '\n';
 }

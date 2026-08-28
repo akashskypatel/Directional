@@ -160,12 +160,12 @@ Four properties are load-bearing and each is checkable rather than assumed:
  
 ### 4.6 The motorcycle graph supplies the region-decomposition guarantee
  
-Eppstein, Goodrich, Kim, and Tamstorf, *Motorcycle Graphs: Canonical Quad Mesh Partitioning* (2008), define a canonical partition in which each trace terminates on first contact with an existing trace. The resulting graph is a cell decomposition whose cells are of disc topology, whose size is `O(n)` in the number of extraordinary nodes, and whose structure is canonical rather than dependent on tracing order.
+Eppstein, Goodrich, Kim, and Tamstorf, *Motorcycle Graphs: Canonical Quad Mesh Partitioning* (2008), define a canonical partition in which each trace terminates on first contact with an existing trace. For fields with at least one singularity port or a source boundary, that traced network supplies the intended cell decomposition. On a closed index-free surface, however, A2a may legitimately publish a non-cellular or even empty curve network; disc-region authority then comes from the separate A2a′ `SurfaceCutGraph`, derived from source topology and the immutable A2a network before any region exists.
  
 Three consequences are load-bearing here:
  
 - **termination and cleanliness by construction.** Crash-on-contact removes limit cycles and non-terminating traces structurally. The architecture does not contain a "detect and repair limit cycles" step because it does not create them.
-- **disc topology by construction.** Region validity (§7.2) is a property of the decomposition, not an assertion checked afterward.
+- **disc topology by construction when the traced network is cellular.** For closed index-free surfaces, A2a′ completes the immutable A2a network to a cellular embedding before region derivation; region validity (§7.2) is still a property of the decomposition, not a post-region repair.
 - **the conformity plan is the same object.** The decomposition is describable as an `O(n)` graph whose nodes are region corners, whose edges are shared boundary arcs between two regions, and whose edge labels are subdivision counts along those arcs. That is precisely `GlobalConformityPlan`.
 Minimizing the number of regions is NP-hard but efficiently approximable; the architecture therefore treats region count as a quality objective, never a validity condition.
  
@@ -222,7 +222,8 @@ Each stage is a pure transformation over immutable inputs. A stage may create di
 | A0. Source authority | source mesh and feature metadata | `SourceAuthoritySnapshot` | exact support, incidence, components, sheets, barriers, and stable typed IDs are complete; sanitization is recorded |
 | A1. Field transport atlas | A0 and cross field | `FieldTransportAtlas` | every traversable adjacency has a typed transport; cycle and singularity facts are explicit; quadrangulability precondition is decided |
 | A2a. Field-aligned curve network | A0–A1 | `FieldAlignedCurveNetwork` | every required singularity port is owned once; every trace is branch-consistent, non-crossing, and terminates at a typed network event |
-| A2b. Topology plan | A0–A2a | `GlobalTopologyPlan` | regions, cuts, rails, singularity ports, seam certificates, and holonomy ownership are complete; every region is a disc unless explicitly typed otherwise |
+| A2a′. Surface cut graph | A0–A2a | `SurfaceCutGraph` | the immutable field-aligned network plus deterministic source-edge cuts is a certified cellular embedding; already-cellular input publishes an empty cut set |
+| A2b. Topology plan | A0–A2a′ | `GlobalTopologyPlan` | regions, cuts, rails, singularity ports, seam certificates, and holonomy ownership are complete; every region is a disc unless explicitly typed otherwise |
 | A3. Conformity plan | A0–A2b and target size | `GlobalConformityPlan` | every shared rail has one positive breakpoint sequence; side counts and parity are globally feasible |
 | A4. Local construction | A0–A3 | `RegionCellComplex` per region | cells conform exactly to the supplied plan; no shared decision is recomputed |
 | A5. Occurrence complex | all A4 outputs | `SurfaceOccurrenceComplex` | every cell corner and directed side is explicit; relations refer to occurrence IDs |
@@ -235,7 +236,7 @@ No stage may write into an earlier stage's object. Aggregation is a new stage ou
  
 ### 5.1 Stage cost structure
  
-The default path contains **no global linear system and no numeric factorization**. A0 and A1 are linear passes. A2a is combinatorial tracing in exact arithmetic. A2b and A3 are graph and flow problems over an `O(n)` structure. A4 is local and parallel per region. A5–A9 are combinatorial. This property is normative: any proposed change that introduces a global factorization into the default path is a stop condition (§15) and belongs in Pipeline A instead.
+The default path contains **no global linear system and no numeric factorization**. A0 and A1 are linear passes. A2a is combinatorial tracing in exact arithmetic. A2a′, A2b, and A3 are graph and flow problems over an `O(n)` structure. A4 is local and parallel per region. A5–A9 are combinatorial. This property is normative: any proposed change that introduces a global factorization into the default path is a stop condition (§15) and belongs in Pipeline A instead.
  
 ### 5.2 Degradation points
  
@@ -248,7 +249,7 @@ Degradation is permitted at exactly four points, each with one named substitutio
 | a region has no degraded producer, or the degraded producer also fails | A4 | that region only is omitted; its rails become boundary loops | D3 |
 | the conformity plan is infeasible for a rail subset | A3 | the affected rails' regions are marked non-constructible; construction proceeds for the remainder | D3 |
  
-No other stage may degrade. A0, A1, A2a, A2b, A5, A6, A7, and A9 have no degraded mode: a failure at those stages is either catastrophic (§2.3) or is a defect to be fixed, never worked around.
+No other stage may degrade. A0, A1, A2a, A2a′, A2b, A5, A6, A7, and A9 have no degraded mode: a failure at those stages is either catastrophic (§2.3) or is a defect to be fixed, never worked around.
  
 ### 5.3 The degraded region producer
  
@@ -437,8 +438,9 @@ These concepts may correlate, but none is a numeric alias or representative for 
 5. terminate each trace on first contact with an existing trace, a boundary, a feature, or a singularity — never in a regular face interior;
 6. record every trace intersection as an explicit network node;
 7. globally select and simplify the candidate network subject to the mandatory topology being preserved;
-8. extract the faces of the embedded graph;
-9. emit those faces as topology regions.
+8. before any region exists, consume the A2a′ `SurfaceCutGraph`, which deterministically adds only certified source-edge cuts needed to make the immutable A2a network a cellular embedding;
+9. extract the faces of that certified cellular embedding (field-aligned network plus cut graph);
+10. emit those faces as topology regions.
 Invariants on `FieldAlignedCurveNetwork`:
  
 1. every required singularity port is owned exactly once;
@@ -447,9 +449,9 @@ Invariants on `FieldAlignedCurveNetwork`:
 4. trace intersections create explicit graph nodes;
 5. feature and boundary constraints are first-class graph edges;
 6. every selected curve bounds one or two regions as appropriate;
-7. every resulting region has disc topology unless explicitly typed otherwise;
+7. every resulting region has disc topology unless explicitly typed otherwise; on closed index-free surfaces this invariant is supplied by the certified A2a′ cut graph rather than by A2a alone;
 8. network reduction may remove redundant traces but may not alter required singularity index or port topology.
-Because tracing is combinatorial and terminates on contact, invariants 3 and 7 hold by construction. The architecture contains no limit-cycle detection, tiny-region collapse, or non-disc repair step, and adding one is a stop condition: such a step would be a repair of an immutable upstream product.
+Because tracing is combinatorial and terminates on contact, invariant 3 holds by construction. Invariant 7 holds directly when A2a is already cellular and otherwise through the certified A2a′ cut graph before region derivation. The architecture contains no limit-cycle detection, tiny-region collapse, post-`GlobalTopologyPlan` re-cut, or non-disc region repair step; adding one is a stop condition because it would repair an immutable upstream product. A2a′ is not such a repair: it is the single pre-region authority that completes a closed index-free embedding without changing A2a.
  
 ### 7.3 Single-writer authority
  
@@ -801,8 +803,9 @@ Pipeline A replaces A2a with a solved layout and adds a per-region embedding ste
 |---|---|
 | A0, A1 | unchanged |
 | A2p | **new:** one continuous seamless parametrization solve, containing **no integer variables** |
-| A2a′ | motorcycle graph extracted by tracing A2p isolines instead of field separatrices |
-| A2b | unchanged in contract; regions derived from the isoline-traced graph |
+| A2a | field-aligned curve network extracted by tracing A2p isolines instead of field separatrices |
+| A2a′ | unchanged in contract; `SurfaceCutGraph` certifies/completes the immutable isoline-traced network before region derivation |
+| A2b | unchanged in contract; regions derived from the certified cellular embedding |
 | A3 | unchanged in contract; may use the parametric-distance validity test in addition to positivity, permitting zero-length rails |
 | A4 | region interiors embedded by guaranteed-injective barycentric mapping with A3-fixed boundaries, optionally refined per region |
 | A5–A9 | unchanged |
