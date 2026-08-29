@@ -24,7 +24,7 @@ grep -qi 'gmpxx' "$W/package/metadata/gmp-evidence.txt" && grep -qi 'gmp' "$W/pa
 for b in directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks; do [[ -x "$W/package/bin/$b" ]] || { REASON="binary_not_executable:$b"; finish 2; }; done
 rm -rf "$GITHUB_WORKSPACE"/* "$GITHUB_WORKSPACE"/.[!.]* "$GITHUB_WORKSPACE"/..?* 2>/dev/null || true
 tar -xzf "$ST" -C "$GITHUB_WORKSPACE" || { REASON=source_extract_failure; finish 2; }
-test -f "$GITHUB_WORKSPACE/benchmarks/fixtures/bunny_1k_random.obj" || { REASON=fixture_layout_failure; finish 2; }
+test -f "$GITHUB_WORKSPACE/benchmarks/fixtures/milestone-g/bunny_1k_random.obj" || { REASON=fixture_layout_failure; finish 2; }
 grep -q "^CMAKE_HOME_DIRECTORY:INTERNAL=$GITHUB_WORKSPACE$" "$W/package/metadata/CMakeCache.txt" || { REASON=compile_source_path_mismatch; finish 2; }
 inv "$W/package" "$E/package-before.tsv"; inv "$GITHUB_WORKSPACE" "$E/source-before.tsv"; HAVE_BASE=1
 S1="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt"; S357="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_357.txt"; S358="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_358.txt"
