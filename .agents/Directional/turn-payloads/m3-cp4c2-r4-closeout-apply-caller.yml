@@ -1,0 +1,39 @@
+name: M3 CP4c2 R4 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-r4-closeout-apply/run.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c2-r4-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-r4-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1lTc45qEx2lGvP6h3dpAF94ZMFFE_0b3p
+      patch_sha256: 83afd2f40d419a75e8711b01e831681584a84b4372a8c5e1e35143c555110e53
+      base_sha: 8a07028fc390e8c2d15a5e55b5efd73aaf070d83
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: record M3 CP4c2 R4 EXEC evidence"
+      retention_days: 7
+    secrets: inherit
