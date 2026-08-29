@@ -1,0 +1,3 @@
+Validate the exact temporary schema-validation caller and CP4c consolidation Drive-apply draft before publishing the apply caller.
+Expected pre-trigger head: 1bdbb9d34c5998e89658c20a4b2eb316a0e762dc
+Retry: 0
