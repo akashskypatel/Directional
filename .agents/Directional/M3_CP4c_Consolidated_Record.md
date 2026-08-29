@@ -6,8 +6,8 @@ historical synthesis, not the current turn procedure.
 
 **Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**.
 `M3-CP4c-2-CB5` is complete/build-green/runtime-free at `755485865a7cf9c485d754f22b82a41ee151824b` with immutable package `9719216316`;
-CP4c-2 remains runtime-unaccepted. Exact next is artifact-only `M3-CP4c-2-TB-X2-R7-EXEC`.
-`M3-CP4c-3` remains blocked on CP4c-2 closure.
+CP4c-2 remains runtime-unaccepted. `M3-CP4c-2-DOC-R1` is documentation-green; exact next is the artifact-only
+`M3-CP4c-2-TB-X2-R7-EXEC` retry on unchanged package `9719216316`. `M3-CP4c-3` remains blocked on CP4c-2 closure.
 
 **Current accounting.** Stable regressions **44 events / 14 categories / 30 recurrences**; produced-witness debt
 **5**; authoritative M3 packages **64**. Accepted runtime predecessor remains CP4c-1 **355/355**.
@@ -29,7 +29,7 @@ CP4c-2 evidence/plan authority.
 | `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` | current CP4c-2 non-gating diagnostics |
 | `M3_CP4c0b_Closure_Record.md`, `M3_CP4c1_Closure_Record.md` | checkpoint closure authorities |
 | `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` | current immutable CP4c-2 build/package authority |
-| `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` | current immutable CP4c-2 runtime evidence |
+| `Architecture_M3_CP4c2_DOC_R1_Documentation_Correction_Report.md` | current documentation-correction/consolidation evidence |
 | `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` | current exact runtime-execution authority |
 | `CHANGELOG.md` | exact per-turn commits, run/job IDs, package/artifact IDs, and immutable evidence identities |
 | `Regression_Root_Cause_Tracker.md` | stable regression/candidate history |
@@ -131,7 +131,7 @@ Closure authority: semantic/test source `b1ce8ad65952bd2bd76238f6dfc55523f6a2474
 run/job `33161644741 / 98817323175`, **355/355 PASS**, result/log artifacts `9681960334 / 9681960615`.
 `M3_CP4c1_Closure_Record.md` is the closure pointer and CP4c-2 predecessor authority.
 
-## 6. CP4c-2 — cut-graph/cellularity history through R6
+## 6. CP4c-2 — cut-graph/cellularity history through DOC-R1
 
 ### 6.1 Definition and theorem
 
@@ -227,6 +227,26 @@ two-ring and torus witnesses. No selector changed. R043/R044 remain runtime-uncl
 R7 keeps D2 behind a green full accepted prefix as required by AD9. If another upstream accepted-prefix stop prevents
 D2, the next review may reconsider non-gating diagnostic sequencing; R7 itself does not weaken that stop rule.
 
+### 6.6 R7 preflight stop and DOC-R1 documentation correction
+
+The first R7 attempt never executed a Directional process. Immutable preflight found four prose constants (346,
+353, 357, 358) that disagreed with unchanged selector bytes; 316 and 355 matched. The hard-stop/no-self-heal rule
+worked correctly and the package remained unchanged. This is tracked as non-stable orchestration/document-authority
+`M3-CP4c2-TB-X2-R7-ORCH-01`; stable regression accounting did not change.
+
+Independent review proved the four values were transcription fabrications, not selector drift: one was only 63
+characters and all four matched the prefix/suffix shape of earlier abbreviated hashes. DOC-R1 then independently
+recomputed all six from committed bytes, corrected the four current-authority occurrences in the CB5 AD0 audit and
+R7 plan, added source-file/derivation columns and 64-lowercase-hex authoring checks, and preserved the digest rule
+in `LESSONS.md` 22n. No selector, package, semantic/test source, product, test, or fixture changed.
+
+AE8 also moves the non-gating R7-2..R7-5 measurements before the accepted 355 prefix on retry. Each runs in a
+fresh process against the immutable package, grants no accepted-count credit, and mutates nothing; the accepted
+prefix remains the unchanged gate and still blocks 357/358/cumulative-gate/benchmark work on red.
+
+DOC-R1 selector authority (recomputed from bytes): 316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`, 346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`, 355 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, 357
+`b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`, 358 `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62`. Exact next is the artifact-only R7 retry on package `9719216316`.
+
 ## 7. High-value reversals and lessons retained from the review arc
 
 | Earlier claim / approach | Final disposition |
@@ -299,8 +319,28 @@ tracker, definitions, and closure records were reconciled. They are no longer cu
 - `Architecture_M3_CP4c2_TB_X2_R6_Artifact_Only_Test_Benchmark_Plan.md`
 - `Architecture_M3_CP4c2_TB_X2_Review_Record.md`
 
-**Retained current CP4c-2 authority:** CB5 build report, R6 EXEC evidence, and the R7 artifact-only plan. Older
-CB4/R6-review files are provenance until the next consolidation round; they are no longer current source/package/plan authority.
+**Retained current CP4c-2 authority after that round:** CB5 build report, R6 EXEC evidence, and the R7 artifact-only plan. Older
+CB4/R6-review files were provenance pending the next consolidation round.
+
+### 8.3 2026-08-29 seventh consolidation — superseded CP4c-2 turn records retired
+
+After DOC-R1 preserved the R7 stop/review facts and corrected the current execution authority, the following six
+per-turn records became historical-only and were retired under explicit user authorization:
+
+- `Architecture_M3_CP4c2_CB4_Code_Build_Report.md`
+- `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md`
+- `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md`
+- `Architecture_M3_CP4c2_TB_X2_R7_EXEC_Artifact_Only_Evidence.md`
+- `Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Plan.md`
+- `Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md`
+
+Their durable facts remain in §§6.3-6.6, `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`, `LESSONS.md`, and the
+current DOC-R1 report. Historical filenames in old changelog entries remain provenance tied to their original
+commits/runs. No frozen definition, selector, closure record, product/test/fixture source, or immutable package was
+retired or modified.
+
+**Retained current CP4c-2 authority:** CB5 build report, DOC-R1 correction report, R7 artifact-only retry plan,
+frozen definitions/selectors, closure records, and the durable cross-cutting trackers/policies.
 
 ## 9. Resume pointer
 
@@ -310,5 +350,5 @@ Do not resume implementation from this historical record. Use, in order:
 2. `Future_Chat_Session_Handoff.md` for exact mandatory procedure and next turn;
 3. `TODO.md` for open/blocked work;
 4. `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` for the exact next execution;
-5. `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` and
-   `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` for current immutable runtime/build evidence.
+5. `Architecture_M3_CP4c2_DOC_R1_Documentation_Correction_Report.md` for the corrected hash/consolidation evidence;
+6. `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` for current immutable build/package authority.

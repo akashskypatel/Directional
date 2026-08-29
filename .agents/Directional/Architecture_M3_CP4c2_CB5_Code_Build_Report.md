@@ -38,11 +38,11 @@ or unconditional postflight logic changed.
 
 - **AD0 — preserved preconditions.** Frozen selector identities remain byte-identical: 316
   `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`, 346
-  `20d3b0b1b942af39b1e105e06dc122cfc7d5c90102735de292aac4924ac3e46a`, 353
-  `51ff96d7dd69051042213673ca1876a0fcf2a192aa69eae26fd31b0b958ac6a5`, 355
+  `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, 353
+  `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`, 355
   `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, 357
-  `b896d0db98bdf3ea421d98df870867077114622e24558204490d2f17464dc70`, and 358
-  `6eda3aadbeaa4b991726a6f6e2cc080d45ca5a8ab8a18a37e3fce986b64fbe62`.
+  `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`, and 358
+  `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62`.
   `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 - **AD1 — semantic/provenance split.** `SurfaceCutGraph` now publishes `semantic_digest()` separately from
   provenance. `candidate_hash` is unchanged and still consumes `atlasDigest` and `networkDigest`; therefore

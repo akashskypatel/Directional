@@ -17,8 +17,8 @@ behind. The required update covers:
 **Keep it substance-only.** No turn workflow, no policies, no checklists, no transport or connector mechanics.
 That boundary is what makes this document cheap enough to read first, and it is the reason it exists.
 
-Authority for this rule: user instruction, recorded in
-`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` §8.
+Authority for this rule: user instruction, preserved in `M3_CP4c_Consolidated_Record.md` §6.6 and the
+2026-08-29 `M3-CP4c-2-TB-X2-R7-REV` changelog entry.
 
 ---
 
@@ -28,7 +28,7 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-29 at `M3-CP4c-2-TB-X2-R7-REV`. If the head commit is far ahead, trust
+**Currency.** Last updated 2026-08-29 at documentation closeout `M3-CP4c-2-DOC-R1`; exact next is the artifact-only `M3-CP4c-2-TB-X2-R7-EXEC` retry. If the head commit is far ahead, trust
 `TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
 "where we are" section; the architecture and recurring-defect sections age much more slowly.
 
@@ -88,11 +88,16 @@ is comparable across the whole arc.
 | CP4c-2 candidate 357 (frozen, unselected) | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` |
 | CP4c-2 candidate 358 (frozen, unselected) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
 
-**These six values are authority and were recomputed from bytes at `M3-CP4c-2-TB-X2-R7-REV`.** They derive from
+**These six values are authority and were recomputed from bytes at `M3-CP4c-2-TB-X2-R7-REV` and independently re-derived at `M3-CP4c-2-DOC-R1`.** They derive from
 `Architecture_M3_CP4c1_Required_Green_Selector.txt` — `head -316`, `head -346`, `head -353`, and the whole file —
 plus the two CP4c-2 candidate files. **Recompute rather than copy**, and never write a digest as `PREFIX…SUFFIX`
 where a value is expected: `PR8` orchestration defect `R7-ORCH-01` was four hashes expanded back to full length
 from abbreviations, one of them only 63 characters long.
+
+
+`M3-CP4c-2-DOC-R1` corrected four prose-only selector hash transcriptions without changing selector bytes, package,
+or semantic/test source. The exact next turn is the artifact-only `M3-CP4c-2-TB-X2-R7-EXEC` retry on package `9719216316`; non-gating
+R7-2..R7-5 now publish before the full accepted 355 gate. No 357/358 gate is selected.
 
 Stable regression accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**.
 

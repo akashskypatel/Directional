@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-DOC-R1`: selector-hash authority corrected; superseded CP4c-2 records consolidated
+
+Documentation-only closeout under R7-REV measures AE0–AE9 plus the user's historical-consolidation instruction.
+No Directional runtime, configure, compile, relink, package, product/test/fixture/selector mutation, 357/358 gate,
+benchmark, mechanical/C2, or CP4c-3 work occurred. Immutable GMP package `9719216316`, semantic/test source
+`755485865a7cf9c485d754f22b82a41ee151824b`, and all selector bytes remain unchanged.
+
+- AE0 independently recomputed the six authorities from committed bytes: 316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`, 346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`, 355 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, 357 `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`, 358 `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62`.
+- AE1 corrected the same four mistranscribed constants in each of the two current-authority documents (8 occurrences total: four in the CB5 AD0 audit and four in the R7 preflight plan); no selector file was touched.
+- AE2 audited **77** occurrences of the six selector-authority values plus the four known fabricated variants across `.agents/Directional/**`. There were **16** fabricated-token occurrences before editing: **8 current-authority occurrences corrected** (four in CB5, four in the R7 plan), **4 historical Plan-values occurrences deliberately retained** in the regression tracker, and **4 historical R7-EXEC mismatch occurrences retired with that superseded evidence file**. No additional unique fabricated selector value was found.
+- AE3 was already durable as `LESSONS.md` 22n; it was not duplicated or retroactively expanded in historical prose. AE4's 64-lowercase-hex authoring validation passed for every selector value and every `sha256:` digest literal in the two corrected current plan/report documents. AE5 adds source file + derivation to every R7 preflight selector row.
+- AE7's hard-stop/no-self-heal/preflight-integrity behavior is unchanged. AE8 reorders only publication: after green R7-0, non-gating R7-2..R7-5 run first in fresh processes, then the unchanged full accepted 355 gate.
+- Six superseded CP4c-2 per-turn records were retired into `M3_CP4c_Consolidated_Record.md` §8.3; stale provenance narratives were removed from `TODO.md` and the handoff. Durable definitions, selectors, closure records, trackers, `ORIENTATION.md`, CB5 build authority, and the current R7 retry plan remain.
+
+Exact next: artifact-only **`M3-CP4c-2-TB-X2-R7-EXEC` retry** on unchanged package `9719216316`. Stable accounting remains **44 / 14 / 30**, debt **5**, M3 packages **64**; `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+
 ## 2026-08-29 — `M3-CP4c-2-TB-X2-R7-REV`: four fabricated hashes, one of them 63 characters
 
 Independent review and planning only. No Directional runtime, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md`. `selected_r2_branch` and `selected_gate` both remain **NONE**.
