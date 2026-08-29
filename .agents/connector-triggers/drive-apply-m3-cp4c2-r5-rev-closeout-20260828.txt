@@ -1,5 +1,0 @@
-turn=M3-CP4c-2-TB-X2-R5-REV
-purpose=apply independently reviewed R5-REV durable closeout patch
-base_sha=f7e78445901c364e07e6a3bd99d27d954347a682
-patch_sha256=89f194d8b79f2650edaf511480aba0acb16e4ff2b63c5754891400467ae0834a
-runtimeExecution=false

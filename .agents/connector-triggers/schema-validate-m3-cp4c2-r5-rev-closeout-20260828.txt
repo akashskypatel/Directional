@@ -1,3 +1,0 @@
-turn=M3-CP4c-2-TB-X2-R5-REV
-purpose=validate exact closeout Drive-apply caller draft and schema-validator caller
-runtimeExecution=false
