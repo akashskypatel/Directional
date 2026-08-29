@@ -6,10 +6,10 @@
 
 #include <directional/geometry/SurfaceCutGraph.h>
 
+#include "EmbeddedGraphTopology.h"
 #include "SourceFaceComponentPartition.h"
 
 #include <algorithm>
-#include <array>
 #include <map>
 #include <numeric>
 #include <set>
@@ -18,6 +18,9 @@
 
 namespace directional::geometry {
 namespace {
+
+using embedded_graph_topology_detail::EmbeddedGraphTopology;
+using embedded_graph_topology_detail::SourceTopologyIndex;
 
 constexpr std::uint64_t kFnvOffset = 1469598103934665603ULL;
 constexpr std::uint64_t kFnvPrime = 1099511628211ULL;
@@ -38,520 +41,258 @@ void hash_edge(std::uint64_t &hash,
   hash_id(hash, edge.second());
 }
 
-void hash_face(std::uint64_t &hash,
-               const authority::SourceFaceTopologyKey &face) noexcept {
-  for (const auto vertex : face.vertices()) hash_id(hash, vertex);
-}
-
 SurfaceCutGraphError cut_error(const SurfaceCutGraphErrorCode code) {
   SurfaceCutGraphError result;
   result.code = code;
   return result;
 }
 
-struct SourceFaceRecord {
-  authority::SourceFaceTopologyKey key;
-  std::array<authority::SourceVertexId, 3> vertices;
-  std::array<authority::SourceEdgeTopologyKey, 3> edges;
-};
-
-struct SourceIndex {
-  std::map<authority::SourceFaceTopologyKey, SourceFaceRecord> faces;
-  std::map<authority::SourceEdgeTopologyKey,
-           std::vector<authority::SourceFaceTopologyKey>>
-      incidentFaces;
-  std::set<authority::SourceVertexId> vertices;
-};
-
-std::optional<SourceIndex> build_source_index(
-    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
-    const SourceTopologyRegions &sourceAuthority) {
-  if (!sourceAuthority.matches_source_faces(sourceFaces, sourceVertexCount)) {
-    return std::nullopt;
+SurfaceCutGraphError topology_error(const GlobalTopologyPlanError &error) {
+  SurfaceCutGraphError result;
+  switch (error.code) {
+  case GlobalTopologyPlanErrorCode::InvalidSourceBinding:
+    result.code = SurfaceCutGraphErrorCode::InvalidSourceBinding;
+    break;
+  case GlobalTopologyPlanErrorCode::InvalidNetworkBinding:
+  case GlobalTopologyPlanErrorCode::InvalidCutGraphBinding:
+    result.code = SurfaceCutGraphErrorCode::InvalidNetworkBinding;
+    break;
+  default:
+    result.code = SurfaceCutGraphErrorCode::CellularityNotEstablished;
+    break;
   }
-  SourceIndex result;
-  for (int rowIndex = 0; rowIndex < sourceFaces.rows(); ++rowIndex) {
-    const auto row = authority::SourceFaceId::from_index(
-        rowIndex, static_cast<std::size_t>(sourceFaces.rows()));
-    if (!row) return std::nullopt;
-    std::array<authority::SourceVertexId, 3> vertices{
-        authority::SourceVertexId::from_index(sourceFaces(rowIndex, 0),
-                                               sourceVertexCount)
-            .value(),
-        authority::SourceVertexId::from_index(sourceFaces(rowIndex, 1),
-                                               sourceVertexCount)
-            .value(),
-        authority::SourceVertexId::from_index(sourceFaces(rowIndex, 2),
-                                               sourceVertexCount)
-            .value()};
-    const auto key = authority::SourceFaceTopologyKey::make(vertices);
-    if (!key || key.value() != sourceAuthority.topology_for_row(row.value())) {
-      return std::nullopt;
-    }
-    std::array<authority::SourceEdgeTopologyKey, 3> edges{
-        authority::SourceEdgeTopologyKey::make(vertices[0], vertices[1]).value(),
-        authority::SourceEdgeTopologyKey::make(vertices[1], vertices[2]).value(),
-        authority::SourceEdgeTopologyKey::make(vertices[2], vertices[0]).value()};
-    const SourceFaceRecord record{key.value(), vertices, edges};
-    if (!result.faces.emplace(record.key, record).second) return std::nullopt;
-    for (const auto vertex : vertices) result.vertices.insert(vertex);
-    for (const auto &edge : edges) result.incidentFaces[edge].push_back(record.key);
-  }
-  for (auto &[edge, faces] : result.incidentFaces) {
-    (void)edge;
-    std::sort(faces.begin(), faces.end());
-    faces.erase(std::unique(faces.begin(), faces.end()), faces.end());
-    if (faces.empty() || faces.size() > 2U) return std::nullopt;
-  }
+  result.sourceEdge = error.sourceEdge;
+  result.sourceFace = error.sourceFace;
   return result;
 }
 
-std::set<authority::SourceEdgeTopologyKey>
-network_barriers(const FieldAlignedCurveNetwork &network) {
-  std::set<authority::SourceEdgeTopologyKey> result;
-  for (const auto &edge : network.mandatory_edges()) result.insert(edge.sourceEdge);
+bool exact_interior_parameter(const authority::ExactUnitParameter &parameter) {
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  return parameter.value > zero && parameter.value < one;
+}
+
+using TraceCrossingResult =
+    std::variant<std::set<authority::SourceEdgeTopologyKey>, SurfaceCutGraphError>;
+
+TraceCrossingResult trace_crossed_source_edges(
+    const SourceTopologyIndex &topology,
+    const FieldAlignedCurveNetwork &network) {
+  std::set<authority::SourceEdgeTopologyKey> crossed;
+  const auto validate_and_record = [&](
+      const authority::FieldBoundaryPoint &point,
+      const authority::SourceEdgeTopologyKey &expected,
+      const authority::TraceId trace) -> std::optional<SurfaceCutGraphError> {
+    if (point.edge != expected || topology.incidentFaces.count(expected) == 0U) {
+      auto failure = cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);
+      failure.sourceEdge = expected;
+      return failure;
+    }
+    if (exact_interior_parameter(point.parameter)) crossed.insert(expected);
+    (void)trace;
+    return std::nullopt;
+  };
+
   for (const auto &trace : network.candidate_traces()) {
     for (const auto &segment : trace.segments) {
-      result.insert(segment.outgoingCarrier);
-      if (segment.incomingCarrier.has_value()) result.insert(*segment.incomingCarrier);
+      if (segment.incomingCarrier.has_value()) {
+        if (const auto failure = validate_and_record(
+                segment.entryPoint, *segment.incomingCarrier, trace.id);
+            failure.has_value()) return *failure;
+      }
+      if (segment.edgeTransitExit.has_value()) {
+        if (const auto failure = validate_and_record(
+                *segment.edgeTransitExit, segment.outgoingCarrier, trace.id);
+            failure.has_value()) return *failure;
+      }
     }
+    if (trace.terminalPoint.has_value()) {
+      if (topology.incidentFaces.count(trace.terminalPoint->edge) == 0U) {
+        auto failure = cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);
+        failure.sourceEdge = trace.terminalPoint->edge;
+        return failure;
+      }
+      if (exact_interior_parameter(trace.terminalPoint->parameter))
+        crossed.insert(trace.terminalPoint->edge);
+    }
+  }
+  return crossed;
+}
+
+std::set<authority::SourceEdgeTopologyKey> mandatory_source_edges(
+    const FieldAlignedCurveNetwork &network) {
+  std::set<authority::SourceEdgeTopologyKey> result;
+  for (const auto &edge : network.mandatory_edges()) result.insert(edge.sourceEdge);
+  return result;
+}
+
+std::vector<SurfaceCutCandidateEvidence> classify_cut_candidates(
+    const SourceTopologyIndex &topology,
+    const std::set<authority::SourceEdgeTopologyKey> &mandatory,
+    const std::set<authority::SourceEdgeTopologyKey> &traceCrossed,
+    const std::set<authority::SourceEdgeTopologyKey> &selected) {
+  std::vector<SurfaceCutCandidateEvidence> result;
+  result.reserve(topology.incidentFaces.size());
+  for (const auto &[edge, incident] : topology.incidentFaces) {
+    (void)incident;
+    SurfaceCutCandidateClass classification = SurfaceCutCandidateClass::Admissible;
+    if (mandatory.count(edge) != 0U)
+      classification = SurfaceCutCandidateClass::MandatoryAlreadyPresent;
+    else if (traceCrossed.count(edge) != 0U)
+      classification = SurfaceCutCandidateClass::TraceInteriorCrossing;
+    result.push_back({edge, classification, selected.count(edge) != 0U});
   }
   return result;
 }
 
-std::vector<std::vector<authority::SourceFaceTopologyKey>> build_components(
-    const SourceIndex &topology,
+std::vector<std::vector<authority::SourceFaceTopologyKey>> proposal_components(
+    const SourceTopologyIndex &topology,
     const std::set<authority::SourceEdgeTopologyKey> &barriers) {
   std::vector<authority::SourceFaceTopologyKey> faces;
   faces.reserve(topology.faces.size());
-  for (const auto &[key, record] : topology.faces) {
-    (void)record;
-    faces.push_back(key);
-  }
+  for (const auto &[key, record] : topology.faces) { (void)record; faces.push_back(key); }
   return detail::build_source_face_component_partition(
-             std::move(faces), topology.incidentFaces, barriers)
-      .components;
+             std::move(faces), topology.incidentFaces, barriers).components;
 }
 
-struct CornerKey {
+struct ProposalCornerKey {
   authority::SourceFaceTopologyKey face;
   authority::SourceVertexId vertex;
-  auto operator<=>(const CornerKey &) const = default;
+  auto operator<=>(const ProposalCornerKey &) const = default;
 };
 
-std::optional<SurfaceCutGraphComponentCertificate> certify_component(
-    const SourceIndex &topology,
+std::optional<bool> proposal_component_is_disc(
+    const SourceTopologyIndex &topology,
     const std::vector<authority::SourceFaceTopologyKey> &component,
     const std::set<authority::SourceEdgeTopologyKey> &barriers) {
   if (component.empty()) return std::nullopt;
-  std::set<authority::SourceFaceTopologyKey> members(component.begin(), component.end());
-  std::vector<CornerKey> corners;
-  std::map<CornerKey, std::size_t> cornerIndex;
+  const std::set<authority::SourceFaceTopologyKey> members(component.begin(), component.end());
+  std::vector<ProposalCornerKey> corners;
+  std::map<ProposalCornerKey, std::size_t> cornerIndex;
   for (const auto &faceKey : component) {
     const auto face = topology.faces.find(faceKey);
     if (face == topology.faces.end()) return std::nullopt;
     for (const auto vertex : face->second.vertices) {
-      const CornerKey key{faceKey, vertex};
-      cornerIndex.emplace(key, corners.size());
-      corners.push_back(key);
+      ProposalCornerKey key{faceKey, vertex}; cornerIndex.emplace(key, corners.size()); corners.push_back(key);
     }
   }
-  std::vector<std::size_t> parent(corners.size());
-  std::iota(parent.begin(), parent.end(), 0U);
-  const auto root = [&](const auto &self, std::size_t value) -> std::size_t {
-    return parent[value] == value ? value : self(self, parent[value]);
-  };
-  const auto unite = [&](std::size_t first, std::size_t second) {
-    first = root(root, first);
-    second = root(root, second);
-    if (first == second) return;
-    if (first < second) parent[second] = first;
-    else parent[first] = second;
-  };
-
-  std::size_t gluedEdges = 0U;
+  std::vector<std::size_t> parent(corners.size()); std::iota(parent.begin(), parent.end(), 0U);
+  const auto root=[&](const auto &self,std::size_t v)->std::size_t{return parent[v]==v?v:self(self,parent[v]);};
+  const auto unite=[&](std::size_t a,std::size_t b){a=root(root,a);b=root(root,b);if(a==b)return;if(a<b)parent[b]=a;else parent[a]=b;};
+  std::size_t gluedEdges=0U;
   for (const auto &[edge, incident] : topology.incidentFaces) {
-    if (incident.size() != 2U || barriers.count(edge) != 0U ||
-        members.count(incident[0]) == 0U || members.count(incident[1]) == 0U) {
-      continue;
-    }
+    if (incident.size()!=2U || barriers.count(edge)!=0U || members.count(incident[0])==0U || members.count(incident[1])==0U) continue;
     ++gluedEdges;
-    for (const auto vertex : {edge.first(), edge.second()}) {
-      unite(cornerIndex.at(CornerKey{incident[0], vertex}),
-            cornerIndex.at(CornerKey{incident[1], vertex}));
-    }
+    for (const auto vertex : {edge.first(), edge.second()})
+      unite(cornerIndex.at({incident[0],vertex}), cornerIndex.at({incident[1],vertex}));
   }
-
-  std::set<std::size_t> roots;
-  for (std::size_t index = 0U; index < corners.size(); ++index) {
-    roots.insert(root(root, index));
-  }
-  const std::size_t faceCount = component.size();
-  const std::size_t edgeCount = 3U * faceCount - gluedEdges;
-  const std::size_t vertexCount = roots.size();
-
-  std::map<std::size_t, std::multiset<std::size_t>> boundaryAdjacency;
-  std::size_t boundaryEdgeCopies = 0U;
+  std::set<std::size_t> vertices;
+  for(std::size_t i=0;i<corners.size();++i) vertices.insert(root(root,i));
+  const std::size_t faceCount=component.size();
+  const std::size_t edgeCount=3U*faceCount-gluedEdges;
+  const int chi=static_cast<int>(vertices.size())-static_cast<int>(edgeCount)+static_cast<int>(faceCount);
+  std::map<std::size_t,std::set<std::size_t>> boundaryAdjacency;
   for (const auto &faceKey : component) {
-    const auto &face = topology.faces.at(faceKey);
+    const auto &face=topology.faces.at(faceKey);
     for (const auto &edge : face.edges) {
-      const auto incident = topology.incidentFaces.find(edge);
-      if (incident == topology.incidentFaces.end()) return std::nullopt;
-      const bool glued = incident->second.size() == 2U &&
-                         barriers.count(edge) == 0U &&
-                         members.count(incident->second[0]) != 0U &&
-                         members.count(incident->second[1]) != 0U;
-      if (glued) continue;
-      const std::size_t first = root(root, cornerIndex.at(CornerKey{faceKey, edge.first()}));
-      const std::size_t second = root(root, cornerIndex.at(CornerKey{faceKey, edge.second()}));
-      if (first == second) return std::nullopt;
-      boundaryAdjacency[first].insert(second);
-      boundaryAdjacency[second].insert(first);
-      ++boundaryEdgeCopies;
+      const auto incident=topology.incidentFaces.find(edge); if(incident==topology.incidentFaces.end()) return std::nullopt;
+      const bool glued=incident->second.size()==2U && barriers.count(edge)==0U && members.count(incident->second[0])!=0U && members.count(incident->second[1])!=0U;
+      if(glued) continue;
+      const auto first=root(root,cornerIndex.at({faceKey,edge.first()}));
+      const auto second=root(root,cornerIndex.at({faceKey,edge.second()}));
+      if(first==second) return false;
+      boundaryAdjacency[first].insert(second); boundaryAdjacency[second].insert(first);
     }
   }
-
-  std::size_t boundaryWalkCount = 0U;
-  bool boundaryCyclesValid = boundaryEdgeCopies != 0U;
-  for (const auto &[vertex, adjacent] : boundaryAdjacency) {
-    (void)vertex;
-    if (adjacent.size() != 2U) boundaryCyclesValid = false;
-  }
-  if (boundaryCyclesValid) {
-    std::set<std::size_t> visited;
-    for (const auto &[start, adjacent] : boundaryAdjacency) {
-      (void)adjacent;
-      if (visited.count(start) != 0U) continue;
-      ++boundaryWalkCount;
-      std::vector<std::size_t> stack{start};
-      while (!stack.empty()) {
-        const std::size_t current = stack.back();
-        stack.pop_back();
-        if (!visited.insert(current).second) continue;
-        for (const std::size_t next : boundaryAdjacency.at(current)) {
-          if (visited.count(next) == 0U) stack.push_back(next);
-        }
-      }
-    }
-  }
-
-  SurfaceCutGraphComponentCertificate result;
-  result.sourceFaces = component;
-  result.boundaryWalkCount = boundaryCyclesValid ? boundaryWalkCount : 0U;
-  result.sourceFacesConnected = true;
-  result.eulerCharacteristic = static_cast<int>(vertexCount) -
-                               static_cast<int>(edgeCount) +
-                               static_cast<int>(faceCount);
-  result.vertexCount = vertexCount;
-  result.edgeCount = edgeCount;
-  result.faceCount = faceCount;
-  return result;
+  if(boundaryAdjacency.empty()) return false;
+  for(const auto &[vertex,adjacent]:boundaryAdjacency){(void)vertex;if(adjacent.size()!=2U)return false;}
+  std::set<std::size_t> visited; std::size_t boundaryLoops=0U;
+  for(const auto &[seed,adjacent]:boundaryAdjacency){(void)adjacent;if(visited.count(seed))continue;++boundaryLoops;std::vector<std::size_t> stack{seed};while(!stack.empty()){auto current=stack.back();stack.pop_back();if(!visited.insert(current).second)continue;for(auto next:boundaryAdjacency.at(current))if(!visited.count(next))stack.push_back(next);}}
+  return chi==1 && boundaryLoops==1U;
 }
 
-std::optional<std::set<authority::SourceEdgeTopologyKey>>
-tree_cotree_cut_edges(
-    const SourceIndex &topology,
+std::optional<std::set<authority::SourceEdgeTopologyKey>> proposal_tree_cotree_cut_edges(
+    const SourceTopologyIndex &topology,
     const std::vector<authority::SourceFaceTopologyKey> &component,
     const std::set<authority::SourceEdgeTopologyKey> &barriers) {
-  if (component.empty()) return std::nullopt;
-
-  std::map<authority::SourceFaceTopologyKey, std::size_t> faceIndex;
-  for (std::size_t index = 0U; index < component.size(); ++index) {
-    faceIndex.emplace(component[index], index);
-  }
-
-  std::vector<std::size_t> parent(component.size());
-  std::iota(parent.begin(), parent.end(), 0U);
-  const auto root = [&](const auto &self, const std::size_t value) -> std::size_t {
-    return parent[value] == value ? value : self(self, parent[value]);
-  };
-  const auto unite = [&](const std::size_t first, const std::size_t second) {
-    const std::size_t firstRoot = root(root, first);
-    const std::size_t secondRoot = root(root, second);
-    if (firstRoot == secondRoot) return false;
-    if (firstRoot < secondRoot) parent[secondRoot] = firstRoot;
-    else parent[firstRoot] = secondRoot;
-    return true;
-  };
-
-  // Deterministic tree-cotree baseline. SourceEdgeTopologyKey order chooses a
-  // dual spanning tree. Every remaining primal edge is the complementary
-  // tree-cotree cut graph. The subsequent certificate is recomputed from
-  // scratch; no construction argument is accepted as proof of cellularity.
-  std::set<authority::SourceEdgeTopologyKey> cuts;
-  std::size_t dualTreeEdges = 0U;
-  for (const auto &[edge, incident] : topology.incidentFaces) {
-    if (incident.size() != 2U || barriers.count(edge) != 0U) continue;
-    const auto first = faceIndex.find(incident[0]);
-    const auto second = faceIndex.find(incident[1]);
-    if (first == faceIndex.end() || second == faceIndex.end()) continue;
-    if (unite(first->second, second->second)) {
-      ++dualTreeEdges;
-    } else {
-      cuts.insert(edge);
-    }
-  }
-  if (dualTreeEdges + 1U != component.size()) return std::nullopt;
+  if(component.empty()) return std::nullopt;
+  std::map<authority::SourceFaceTopologyKey,std::size_t> faceIndex;
+  for(std::size_t i=0;i<component.size();++i) faceIndex.emplace(component[i],i);
+  std::vector<std::size_t> parent(component.size()); std::iota(parent.begin(),parent.end(),0U);
+  const auto root=[&](const auto &self,std::size_t v)->std::size_t{return parent[v]==v?v:self(self,parent[v]);};
+  const auto unite=[&](std::size_t a,std::size_t b){a=root(root,a);b=root(root,b);if(a==b)return false;if(a<b)parent[b]=a;else parent[a]=b;return true;};
+  std::set<authority::SourceEdgeTopologyKey> cuts; std::size_t dualTreeEdges=0U;
+  for(const auto &[edge,incident]:topology.incidentFaces){if(incident.size()!=2U||barriers.count(edge))continue;auto first=faceIndex.find(incident[0]);auto second=faceIndex.find(incident[1]);if(first==faceIndex.end()||second==faceIndex.end())continue;if(unite(first->second,second->second))++dualTreeEdges;else cuts.insert(edge);}
+  if(dualTreeEdges+1U!=component.size()) return std::nullopt;
   return cuts;
 }
 
-std::size_t network_edge_count(const FieldAlignedCurveNetwork &network) {
-  std::size_t result = network.mandatory_edges().size();
-  std::map<authority::SourceEdgeTopologyKey, std::set<authority::NetworkNodeId>>
-      mandatoryCuts;
-  for (const auto &event : network.events()) {
-    if (event.kind == FieldAlignedNetworkEventKind::MandatoryBarrierTermination &&
-        event.sourceEdge.has_value()) {
-      mandatoryCuts[*event.sourceEdge].insert(event.node);
-    }
-  }
-  for (const auto &[edge, nodes] : mandatoryCuts) {
-    if (network.find_mandatory_edge(edge) != nullptr) result += nodes.size();
-  }
-  for (const auto &trace : network.candidate_traces()) {
-    std::set<authority::NetworkNodeId> nodes;
-    const auto port = std::find_if(
-        network.singularity_ports().begin(), network.singularity_ports().end(),
-        [&](const auto &candidate) { return candidate.id == trace.port; });
-    if (port != network.singularity_ports().end()) nodes.insert(port->node);
-    for (const auto &event : network.events()) {
-      if (std::any_of(event.incidences.begin(), event.incidences.end(),
-                      [&](const auto &incidence) {
-                        return incidence.trace == trace.id;
-                      })) {
-        nodes.insert(event.node);
-      }
-    }
-    if (nodes.size() >= 2U) result += nodes.size() - 1U;
-  }
-  return result;
-}
+using CertificateResult = std::variant<SurfaceCutGraphCellularityCertificate, SurfaceCutGraphError>;
 
-std::set<authority::SourceVertexId>
-network_source_vertex_nodes(const FieldAlignedCurveNetwork &network) {
-  std::set<authority::SourceVertexId> result;
-  for (const auto &edge : network.mandatory_edges()) {
-    result.insert(edge.sourceEdge.first());
-    result.insert(edge.sourceEdge.second());
-  }
-  for (const auto &port : network.singularity_ports()) result.insert(port.sourceVertex);
-  return result;
+CertificateResult certify_actual_embedded_graph(
+    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
+    const SourceTopologyRegions &sourceAuthority,
+    const FieldAlignedCurveNetwork &network,
+    const std::vector<authority::SourceEdgeTopologyKey> &cutEdges,
+    const std::vector<SurfaceCutCandidateEvidence> &cutCandidates) {
+  using namespace embedded_graph_topology_detail;
+  const auto embeddedBuild=build_embedded_graph_topology(sourceFaces,sourceVertexCount,sourceAuthority,network,cutEdges);
+  if(const auto *failure=std::get_if<GlobalTopologyPlanError>(&embeddedBuild)) return topology_error(*failure);
+  const auto &embedded=std::get<EmbeddedGraphTopology>(embeddedBuild);
+  const auto exteriorBuild=exterior_boundary_orbits(embedded.sourceTopology,network,embedded.arcs,embedded.faceWalk);
+  if(const auto *failure=std::get_if<GlobalTopologyPlanError>(&exteriorBuild)) return topology_error(*failure);
+  const auto &exterior=std::get<std::set<std::size_t>>(exteriorBuild);
+  const auto boundaryLoops=source_boundary_loop_count(embedded.sourceTopology);
+  if(!boundaryLoops.has_value()) return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);
+  std::set<authority::SourceVertexId> sourceVertices; std::set<authority::SourceComponentId> sourceComponents;
+  for(const auto &[faceKey,face]:embedded.sourceTopology.faces){(void)faceKey;sourceComponents.insert(face.component);sourceVertices.insert(face.vertices.begin(),face.vertices.end());}
+  const std::size_t graphComponents=actual_graph_component_count(embedded), sourceComponentCount=sourceComponents.size(), totalOrbits=embedded.faceWalk.orbits.size();
+  if(exterior.size()>totalOrbits) return cut_error(SurfaceCutGraphErrorCode::CellularityNotEstablished);
+  const std::size_t countedFaces=totalOrbits-exterior.size();
+  const int correction=graphComponents>=sourceComponentCount?static_cast<int>(graphComponents-sourceComponentCount):0;
+  const int sourceEuler=static_cast<int>(sourceVertices.size())-static_cast<int>(embedded.sourceTopology.incidentFaces.size())+static_cast<int>(embedded.sourceTopology.faces.size());
+  const int graphEuler=static_cast<int>(embedded.cutNodes.combinedNodeExtent)-static_cast<int>(embedded.arcs.size())+static_cast<int>(countedFaces)-correction;
+  const bool discEmbeddingEstablished=graphComponents==sourceComponentCount && exterior.size()==*boundaryLoops && graphEuler==sourceEuler;
+  SurfaceCutGraphCellularityCertificate certificate;
+  certificate.vertexCount=embedded.cutNodes.combinedNodeExtent; certificate.edgeCount=embedded.arcs.size(); certificate.totalOrbitCount=totalOrbits; certificate.excludedBoundaryOrbitCount=exterior.size(); certificate.sourceBoundaryLoopCount=*boundaryLoops; certificate.faceCount=countedFaces; certificate.graphComponentCount=graphComponents; certificate.sourceComponentCount=sourceComponentCount; certificate.disconnectedComponentCorrection=correction; certificate.eulerCharacteristic=graphEuler; certificate.sourceEulerCharacteristic=sourceEuler; certificate.cutCandidates=cutCandidates;
+  certificate.faces.reserve(countedFaces);
+  for(std::size_t orbit=0;orbit<totalOrbits;++orbit){if(exterior.count(orbit))continue;certificate.faces.push_back({orbit,1U,embedded.faceWalk.orbits[orbit].size(),discEmbeddingEstablished});}
+  return certificate;
 }
 
 std::uint64_t candidate_hash(const SurfaceCutGraphCandidate &candidate) noexcept {
-  std::uint64_t hash = kFnvOffset;
-  hash_consume(hash, candidate.sourceDigest);
-  hash_consume(hash, candidate.atlasDigest);
-  hash_consume(hash, candidate.networkDigest);
-  hash_consume(hash, candidate.cutEdges.size());
-  for (const auto &edge : candidate.cutEdges) hash_edge(hash, edge);
-  const auto &certificate = candidate.certificate;
-  hash_consume(hash, certificate.vertexCount);
-  hash_consume(hash, certificate.edgeCount);
-  hash_consume(hash, certificate.faceCount);
-  hash_consume(hash, static_cast<std::uint64_t>(certificate.eulerCharacteristic));
-  hash_consume(hash,
-               static_cast<std::uint64_t>(certificate.sourceEulerCharacteristic));
-  hash_consume(hash, certificate.components.size());
-  for (const auto &component : certificate.components) {
-    hash_consume(hash, component.sourceFaces.size());
-    for (const auto &face : component.sourceFaces) hash_face(hash, face);
-    hash_consume(hash, component.boundaryWalkCount);
-    hash_consume(hash, component.sourceFacesConnected ? 1U : 0U);
-    hash_consume(hash, static_cast<std::uint64_t>(component.eulerCharacteristic));
-    hash_consume(hash, component.vertexCount);
-    hash_consume(hash, component.edgeCount);
-    hash_consume(hash, component.faceCount);
-  }
-  return hash;
+  std::uint64_t hash=kFnvOffset; hash_consume(hash,candidate.sourceDigest);hash_consume(hash,candidate.atlasDigest);hash_consume(hash,candidate.networkDigest);hash_consume(hash,candidate.cutEdges.size());for(const auto &edge:candidate.cutEdges)hash_edge(hash,edge);
+  const auto &c=candidate.certificate; hash_consume(hash,static_cast<std::uint64_t>(c.complex));hash_consume(hash,c.vertexCount);hash_consume(hash,c.edgeCount);hash_consume(hash,c.totalOrbitCount);hash_consume(hash,c.excludedBoundaryOrbitCount);hash_consume(hash,c.sourceBoundaryLoopCount);hash_consume(hash,c.faceCount);hash_consume(hash,c.graphComponentCount);hash_consume(hash,c.sourceComponentCount);hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.disconnectedComponentCorrection)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.eulerCharacteristic)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.sourceEulerCharacteristic)));hash_consume(hash,c.faces.size());for(const auto &face:c.faces){hash_consume(hash,face.orbit);hash_consume(hash,face.boundaryWalkCount);hash_consume(hash,face.boundaryArcCount);hash_consume(hash,face.discTopologyEstablished?1U:0U);}hash_consume(hash,c.cutCandidates.size());for(const auto &e:c.cutCandidates){hash_edge(hash,e.sourceEdge);hash_consume(hash,static_cast<std::uint64_t>(e.classification));hash_consume(hash,e.selected?1U:0U);}return hash;
 }
 
-using CandidateResult = std::variant<SurfaceCutGraphCandidate, SurfaceCutGraphError>;
-
-CandidateResult canonical_candidate(
-    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
-    const SourceTopologyRegions &sourceAuthority,
-    const authority::FieldTransportAtlas &fieldTransportAtlas,
-    const FieldAlignedCurveNetwork &network) {
-  const auto topology = build_source_index(sourceFaces, sourceVertexCount,
-                                           sourceAuthority);
-  if (!topology.has_value()) return cut_error(SurfaceCutGraphErrorCode::InvalidSourceBinding);
-  if (!fieldTransportAtlas.matches_source_faces(sourceFaces, sourceAuthority, sourceVertexCount) ||
-      !fieldTransportAtlas.quadrangulability().established()) {
-    return cut_error(SurfaceCutGraphErrorCode::InvalidAtlasBinding);
-  }
-  if (network.source_digest() != fieldTransportAtlas.quadrangulability().source_digest() ||
-      network.atlas_digest() != authority::field_transport_atlas_hash(fieldTransportAtlas)) {
-    return cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);
-  }
-
-  std::set<authority::SourceEdgeTopologyKey> barriers = network_barriers(network);
-  for (const auto &edge : barriers) {
-    if (topology->incidentFaces.count(edge) == 0U) {
-      SurfaceCutGraphError failure = cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);
-      failure.sourceEdge = edge;
-      return failure;
-    }
-  }
-
-  auto initialComponents = build_components(*topology, barriers);
-  std::vector<SurfaceCutGraphComponentCertificate> initialCertificates;
-  initialCertificates.reserve(initialComponents.size());
-  bool alreadyCellular = true;
-  for (const auto &component : initialComponents) {
-    const auto certificate = certify_component(*topology, component, barriers);
-    if (!certificate.has_value()) {
-      return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);
-    }
-    alreadyCellular = alreadyCellular && certificate->proves_disc_topology();
-    initialCertificates.push_back(*certificate);
-  }
-
+using CandidateResult=std::variant<SurfaceCutGraphCandidate,SurfaceCutGraphError>;
+CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network){
+  using namespace embedded_graph_topology_detail;
+  const auto topology=build_source_index(sourceFaces,sourceVertexCount,sourceAuthority); if(!topology.has_value())return cut_error(SurfaceCutGraphErrorCode::InvalidSourceBinding);
+  if(!fieldTransportAtlas.matches_source_faces(sourceFaces,sourceAuthority,sourceVertexCount)||!fieldTransportAtlas.quadrangulability().established())return cut_error(SurfaceCutGraphErrorCode::InvalidAtlasBinding);
+  if(network.source_digest()!=fieldTransportAtlas.quadrangulability().source_digest()||network.atlas_digest()!=authority::field_transport_atlas_hash(fieldTransportAtlas))return cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);
+  const auto mandatory=mandatory_source_edges(network); for(const auto &edge:mandatory)if(topology->incidentFaces.count(edge)==0U){auto failure=cut_error(SurfaceCutGraphErrorCode::InvalidNetworkBinding);failure.sourceEdge=edge;return failure;}
+  const auto crossedBuild=trace_crossed_source_edges(*topology,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&crossedBuild))return *failure;const auto &traceCrossed=std::get<std::set<authority::SourceEdgeTopologyKey>>(crossedBuild);
   std::set<authority::SourceEdgeTopologyKey> cuts;
-  if (!alreadyCellular) {
-    for (std::size_t componentIndex = 0U;
-         componentIndex < initialComponents.size(); ++componentIndex) {
-      if (initialCertificates[componentIndex].proves_disc_topology()) continue;
-      const auto componentCuts = tree_cotree_cut_edges(
-          *topology, initialComponents[componentIndex], barriers);
-      if (!componentCuts.has_value() || componentCuts->empty()) {
-        SurfaceCutGraphError failure =
-            cut_error(SurfaceCutGraphErrorCode::CellularityNotEstablished);
-        if (!initialComponents[componentIndex].empty()) {
-          failure.sourceFace = initialComponents[componentIndex].front();
-        }
-        return failure;
-      }
-      cuts.insert(componentCuts->begin(), componentCuts->end());
-    }
+  while(true){const auto evidence=classify_cut_candidates(*topology,mandatory,traceCrossed,cuts);const auto certificateBuild=certify_actual_embedded_graph(sourceFaces,sourceVertexCount,sourceAuthority,network,{cuts.begin(),cuts.end()},evidence);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&certificateBuild)){auto result=*failure;result.cutCandidates=evidence;return result;}auto certificate=std::get<SurfaceCutGraphCellularityCertificate>(certificateBuild);if(certificate.proves_cellularity()){SurfaceCutGraphCandidate result;result.cutEdges.assign(cuts.begin(),cuts.end());result.certificate=std::move(certificate);result.sourceDigest=network.source_digest();result.atlasDigest=network.atlas_digest();result.networkDigest=network.semantic_digest();return result;}
+    std::set<authority::SourceEdgeTopologyKey> barriers=mandatory;barriers.insert(traceCrossed.begin(),traceCrossed.end());barriers.insert(cuts.begin(),cuts.end());const auto components=proposal_components(*topology,barriers);bool added=false;std::optional<authority::SourceFaceTopologyKey> blockedLocus;
+    for(const auto &component:components){const auto disc=proposal_component_is_disc(*topology,component,barriers);if(!disc.has_value())return cut_error(SurfaceCutGraphErrorCode::NonManifoldSource);if(*disc)continue;if(!component.empty()&&!blockedLocus.has_value())blockedLocus=component.front();const auto proposed=proposal_tree_cotree_cut_edges(*topology,component,barriers);if(!proposed.has_value())continue;for(const auto &edge:*proposed){if(mandatory.count(edge)||traceCrossed.count(edge))continue;added=cuts.insert(edge).second||added;}}
+    if(!added){auto failure=cut_error(SurfaceCutGraphErrorCode::NoAdmissibleCutForNonDiscComponent);failure.sourceFace=blockedLocus;failure.cutCandidates=evidence;return failure;}
   }
-
-  barriers.insert(cuts.begin(), cuts.end());
-  const auto finalComponents = build_components(*topology, barriers);
-  std::vector<SurfaceCutGraphComponentCertificate> finalCertificates;
-  finalCertificates.reserve(finalComponents.size());
-  for (const auto &component : finalComponents) {
-    const auto certificate = certify_component(*topology, component, barriers);
-    if (!certificate.has_value() || !certificate->proves_disc_topology()) {
-      SurfaceCutGraphError failure =
-          cut_error(SurfaceCutGraphErrorCode::CellularityNotEstablished);
-      if (!component.empty()) failure.sourceFace = component.front();
-      return failure;
-    }
-    finalCertificates.push_back(*certificate);
-  }
-
-  const int sourceEuler = static_cast<int>(topology->vertices.size()) -
-                          static_cast<int>(topology->incidentFaces.size()) +
-                          static_cast<int>(topology->faces.size());
-  const std::size_t networkVertices = network.nodes().size();
-  const std::size_t networkEdges = network_edge_count(network);
-  const auto representedVertices = network_source_vertex_nodes(network);
-  std::set<authority::SourceVertexId> addedVertices;
-  for (const auto &edge : cuts) {
-    if (representedVertices.count(edge.first()) == 0U) addedVertices.insert(edge.first());
-    if (representedVertices.count(edge.second()) == 0U) addedVertices.insert(edge.second());
-  }
-  const std::size_t graphVertices = networkVertices + addedVertices.size();
-  const std::size_t graphEdges = networkEdges + cuts.size();
-  const std::size_t graphFaces = finalCertificates.size();
-
-  SurfaceCutGraphCandidate result;
-  result.cutEdges.assign(cuts.begin(), cuts.end());
-  result.sourceDigest = network.source_digest();
-  result.atlasDigest = network.atlas_digest();
-  result.networkDigest = network.semantic_digest();
-  result.certificate.vertexCount = graphVertices;
-  result.certificate.edgeCount = graphEdges;
-  result.certificate.faceCount = graphFaces;
-  result.certificate.eulerCharacteristic =
-      static_cast<int>(graphVertices) - static_cast<int>(graphEdges) +
-      static_cast<int>(graphFaces);
-  result.certificate.sourceEulerCharacteristic = sourceEuler;
-  result.certificate.components = std::move(finalCertificates);
-
-  if (!result.certificate.proves_cellularity()) {
-    return cut_error(SurfaceCutGraphErrorCode::CellularityNotEstablished);
-  }
-  return result;
 }
-
 } // namespace
 
 bool SurfaceCutGraphCellularityCertificate::proves_cellularity() const noexcept {
-  return faceCount > 0U && eulerCharacteristic == sourceEulerCharacteristic &&
-         !components.empty() &&
-         std::all_of(components.begin(), components.end(), [](const auto &component) {
-           return component.proves_disc_topology();
-         });
+  return complex==SurfaceCutGraphComplexKind::ActualEmbeddedGraph && faceCount>0U && totalOrbitCount>=excludedBoundaryOrbitCount && sourceBoundaryLoopCount==excludedBoundaryOrbitCount && graphComponentCount==sourceComponentCount && eulerCharacteristic==sourceEulerCharacteristic && !faces.empty() && std::all_of(faces.begin(),faces.end(),[](const auto &face){return face.proves_disc_topology();});
 }
 
-SurfaceCutGraphBuildResult SurfaceCutGraph::make(
-    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
-    const SourceTopologyRegions &sourceAuthority,
-    const authority::FieldTransportAtlas &fieldTransportAtlas,
-    const FieldAlignedCurveNetwork &network) {
-  const auto candidate = canonical_candidate(sourceFaces, sourceVertexCount,
-                                             sourceAuthority,
-                                             fieldTransportAtlas, network);
-  if (const auto *failure = std::get_if<SurfaceCutGraphError>(&candidate)) {
-    return SurfaceCutGraphBuildResult(*failure);
-  }
-  const auto &value = std::get<SurfaceCutGraphCandidate>(candidate);
-  return SurfaceCutGraphBuildResult(SurfaceCutGraph(
-      value.cutEdges, value.certificate, value.sourceDigest, value.atlasDigest,
-      value.networkDigest, candidate_hash(value)));
-}
+SurfaceCutGraphBuildResult SurfaceCutGraph::make(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network){const auto candidate=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&candidate))return SurfaceCutGraphBuildResult(*failure);const auto &value=std::get<SurfaceCutGraphCandidate>(candidate);return SurfaceCutGraphBuildResult(SurfaceCutGraph(value.cutEdges,value.certificate,value.sourceDigest,value.atlasDigest,value.networkDigest,candidate_hash(value)));}
 
-SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(
-    const Eigen::MatrixXi &sourceFaces, const std::size_t sourceVertexCount,
-    const SourceTopologyRegions &sourceAuthority,
-    const authority::FieldTransportAtlas &fieldTransportAtlas,
-    const FieldAlignedCurveNetwork &network, SurfaceCutGraphCandidate candidate) {
-  const auto canonical = canonical_candidate(sourceFaces, sourceVertexCount,
-                                             sourceAuthority,
-                                             fieldTransportAtlas, network);
-  if (const auto *failure = std::get_if<SurfaceCutGraphError>(&canonical)) {
-    return SurfaceCutGraphBuildResult(*failure);
-  }
-  auto wanted = std::get<SurfaceCutGraphCandidate>(canonical);
-  std::sort(candidate.cutEdges.begin(), candidate.cutEdges.end());
-  candidate.cutEdges.erase(std::unique(candidate.cutEdges.begin(), candidate.cutEdges.end()),
-                           candidate.cutEdges.end());
-  if (candidate != wanted) {
-    return SurfaceCutGraphBuildResult(
-        cut_error(candidate.sourceDigest != wanted.sourceDigest
-                      ? SurfaceCutGraphErrorCode::InvalidSourceBinding
-                      : candidate.atlasDigest != wanted.atlasDigest
-                            ? SurfaceCutGraphErrorCode::InvalidAtlasBinding
-                            : candidate.networkDigest != wanted.networkDigest
-                                  ? SurfaceCutGraphErrorCode::InvalidNetworkBinding
-                                  : SurfaceCutGraphErrorCode::CellularityNotEstablished));
-  }
-  return SurfaceCutGraphBuildResult(SurfaceCutGraph(
-      wanted.cutEdges, wanted.certificate, wanted.sourceDigest,
-      wanted.atlasDigest, wanted.networkDigest, candidate_hash(wanted)));
-}
+SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network,SurfaceCutGraphCandidate candidate){const auto canonical=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&canonical))return SurfaceCutGraphBuildResult(*failure);auto wanted=std::get<SurfaceCutGraphCandidate>(canonical);std::sort(candidate.cutEdges.begin(),candidate.cutEdges.end());candidate.cutEdges.erase(std::unique(candidate.cutEdges.begin(),candidate.cutEdges.end()),candidate.cutEdges.end());if(candidate!=wanted)return SurfaceCutGraphBuildResult(cut_error(candidate.sourceDigest!=wanted.sourceDigest?SurfaceCutGraphErrorCode::InvalidSourceBinding:candidate.atlasDigest!=wanted.atlasDigest?SurfaceCutGraphErrorCode::InvalidAtlasBinding:candidate.networkDigest!=wanted.networkDigest?SurfaceCutGraphErrorCode::InvalidNetworkBinding:SurfaceCutGraphErrorCode::CellularityNotEstablished));return SurfaceCutGraphBuildResult(SurfaceCutGraph(wanted.cutEdges,wanted.certificate,wanted.sourceDigest,wanted.atlasDigest,wanted.networkDigest,candidate_hash(wanted)));}
 
-const char *surface_cut_graph_error_code_name(
-    const SurfaceCutGraphErrorCode code) noexcept {
-  switch (code) {
-  case SurfaceCutGraphErrorCode::InvalidSourceBinding:
-    return "InvalidSourceBinding";
-  case SurfaceCutGraphErrorCode::InvalidAtlasBinding:
-    return "InvalidAtlasBinding";
-  case SurfaceCutGraphErrorCode::InvalidNetworkBinding:
-    return "InvalidNetworkBinding";
-  case SurfaceCutGraphErrorCode::NonManifoldSource:
-    return "NonManifoldSource";
-  case SurfaceCutGraphErrorCode::CellularityNotEstablished:
-    return "CellularityNotEstablished";
-  }
-  return "Unknown";
-}
-
-std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept {
-  return graph.semantic_digest();
-}
+const char *surface_cut_graph_error_code_name(const SurfaceCutGraphErrorCode code) noexcept {switch(code){case SurfaceCutGraphErrorCode::InvalidSourceBinding:return "InvalidSourceBinding";case SurfaceCutGraphErrorCode::InvalidAtlasBinding:return "InvalidAtlasBinding";case SurfaceCutGraphErrorCode::InvalidNetworkBinding:return "InvalidNetworkBinding";case SurfaceCutGraphErrorCode::NonManifoldSource:return "NonManifoldSource";case SurfaceCutGraphErrorCode::CellularityNotEstablished:return "CellularityNotEstablished";case SurfaceCutGraphErrorCode::NoAdmissibleCutForNonDiscComponent:return "NoAdmissibleCutForNonDiscComponent";}return "Unknown";}
+const char *surface_cut_candidate_class_name(const SurfaceCutCandidateClass c) noexcept {switch(c){case SurfaceCutCandidateClass::Admissible:return "Admissible";case SurfaceCutCandidateClass::MandatoryAlreadyPresent:return "MandatoryAlreadyPresent";case SurfaceCutCandidateClass::TraceInteriorCrossing:return "TraceInteriorCrossing";}return "Unknown";}
+const char *surface_cut_graph_complex_kind_name(const SurfaceCutGraphComplexKind kind) noexcept {switch(kind){case SurfaceCutGraphComplexKind::ActualEmbeddedGraph:return "actualEmbeddedGraph";}return "Unknown";}
+std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept {return graph.semantic_digest();}
 
 } // namespace directional::geometry

@@ -6661,7 +6661,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             "surface-cut-graph",
             geometry::surface_cut_graph_hash(*surfaceCutGraphProduct),
             surfaceCutGraphProduct->cut_edges().size() +
-                surfaceCutGraphProduct->certificate().components.size()),
+                surfaceCutGraphProduct->certificate().faces.size()),
         true);
     record_surface_cell_context_product(
         result.surfaceCellContext, "global-topology-plan",

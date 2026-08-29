@@ -161,6 +161,7 @@ add_library(
   src/geometry/CutMesh.cpp
   src/geometry/FaceCurvature.cpp
   src/geometry/FlowRepStrands.cpp
+  src/geometry/EmbeddedGraphTopology.cpp
   src/geometry/GlobalTopologyPlan.cpp
   src/geometry/SurfaceCutGraph.cpp
   src/geometry/GeneralGraphMatching.cpp

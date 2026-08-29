@@ -2105,9 +2105,12 @@ TEST(SurfaceCutGraph, AlreadyCellularNetworkPublishesEmptyCertifiedCutSet) {
   ASSERT_TRUE(cutGraph);
   EXPECT_TRUE(cutGraph.value().cut_edges().empty());
   EXPECT_TRUE(cutGraph.value().certificate().proves_cellularity());
-  ASSERT_EQ(1U, cutGraph.value().certificate().components.size());
-  EXPECT_EQ(1, cutGraph.value().certificate().components.front().eulerCharacteristic);
-  EXPECT_EQ(1U, cutGraph.value().certificate().components.front().boundaryWalkCount);
+  const auto &certificate = cutGraph.value().certificate();
+  EXPECT_EQ(directional::geometry::SurfaceCutGraphComplexKind::ActualEmbeddedGraph,
+            certificate.complex);
+  ASSERT_EQ(1U, certificate.faces.size());
+  EXPECT_EQ(1U, certificate.faces.front().boundaryWalkCount);
+  EXPECT_TRUE(certificate.faces.front().discTopologyEstablished);
 }
 
 TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
@@ -4940,8 +4943,9 @@ bool cp4c_oracle_angle_less(const Cp4cOraclePoint &origin,
   return firstLength < secondLength;
 }
 
-[[maybe_unused]] std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
-    const TriMesh &mesh, const FieldAlignedCurveNetwork &network) {
+std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
+    const TriMesh &mesh, const FieldAlignedCurveNetwork &network,
+    const std::vector<SourceEdgeTopologyKey> &cutEdges = {}) {
   using ContactKind =
       directional::geometry::surface_cell_tracing_detail::
           FieldAlignedSegmentContactKind;
@@ -4989,6 +4993,8 @@ bool cp4c_oracle_angle_less(const Cp4cOraclePoint &origin,
   for (const auto &edge : network.mandatory_edges()) {
     mandatoryEdges.insert(edge.sourceEdge);
   }
+  const std::set<SourceEdgeTopologyKey> selectedCuts(cutEdges.begin(),
+                                                      cutEdges.end());
 
   std::vector<Cp4cOracleFragment> fragments;
   for (const auto &[face, record] : topology->faces) {
@@ -5096,6 +5102,7 @@ bool cp4c_oracle_angle_less(const Cp4cOraclePoint &origin,
       for (std::size_t index = 0U; index + 1U < splitPoints.size(); ++index) {
         if (splitPoints[index].first == splitPoints[index + 1U].first) continue;
         const bool barrier = mandatoryEdges.count(edge) != 0U ||
+            selectedCuts.count(edge) != 0U ||
             cp4c_oracle_interval_is_covered(
                 splitPoints[index].first, splitPoints[index + 1U].first, edge,
                 draft.networkBoundaryIntervals);
@@ -5211,6 +5218,369 @@ bool cp4c_oracle_angle_less(const Cp4cOraclePoint &origin,
     }
   }
   return fragments;
+}
+
+
+struct Cp4cActualGraphCutEvidence {
+  SourceEdgeTopologyKey sourceEdge;
+  std::string classification;
+};
+
+struct Cp4cActualGraphFragmentOrbit {
+  SourceFaceTopologyKey sourceFace;
+  std::size_t localFragment = 0U;
+  std::size_t orbit = 0U;
+};
+
+struct Cp4cActualEmbeddedGraphOracle {
+  std::size_t vertexCount = 0U;
+  std::size_t edgeCount = 0U;
+  std::size_t totalOrbitCount = 0U;
+  std::size_t excludedBoundaryOrbitCount = 0U;
+  std::size_t faceCount = 0U;
+  std::size_t graphComponentCount = 0U;
+  std::size_t sourceComponentCount = 0U;
+  int disconnectedComponentCorrection = 0;
+  int eulerCharacteristic = 0;
+  int sourceEulerCharacteristic = 0;
+  std::vector<Cp4cActualGraphCutEvidence> cutEvidence;
+  std::vector<Cp4cActualGraphFragmentOrbit> fragmentOrbits;
+};
+
+std::set<SourceEdgeTopologyKey> cp4c_actual_trace_crossed_edges(
+    const FieldAlignedCurveNetwork &network) {
+  const auto zero = Cp4cOracleRational::from_integer(0);
+  const auto one = Cp4cOracleRational::from_integer(1);
+  std::set<SourceEdgeTopologyKey> crossed;
+  const auto add = [&](const directional::authority::FieldBoundaryPoint &point) {
+    if (point.parameter.value > zero && point.parameter.value < one) {
+      crossed.insert(point.edge);
+    }
+  };
+  for (const auto &trace : network.candidate_traces()) {
+    for (const auto &segment : trace.segments) {
+      if (segment.incomingCarrier.has_value()) add(segment.entryPoint);
+      if (segment.edgeTransitExit.has_value()) add(*segment.edgeTransitExit);
+    }
+    if (trace.terminalPoint.has_value()) add(*trace.terminalPoint);
+  }
+  return crossed;
+}
+
+std::optional<std::size_t> cp4c_actual_source_boundary_loops(
+    const IndependentSourceTopology &topology) {
+  std::map<SourceVertexId, std::vector<SourceVertexId>> adjacency;
+  for (const auto &[edge, incident] : topology.incidentFaces) {
+    if (incident.size() == 1U) {
+      adjacency[edge.first()].push_back(edge.second());
+      adjacency[edge.second()].push_back(edge.first());
+    } else if (incident.size() != 2U) {
+      return std::nullopt;
+    }
+  }
+  if (adjacency.empty()) return 0U;
+  for (auto &[vertex, neighbors] : adjacency) {
+    (void)vertex;
+    std::sort(neighbors.begin(), neighbors.end());
+    neighbors.erase(std::unique(neighbors.begin(), neighbors.end()),
+                    neighbors.end());
+    if (neighbors.size() != 2U) return std::nullopt;
+  }
+  std::set<SourceVertexId> visited;
+  std::size_t loops = 0U;
+  for (const auto &[seed, neighbors] : adjacency) {
+    (void)neighbors;
+    if (visited.count(seed) != 0U) continue;
+    ++loops;
+    std::vector<SourceVertexId> stack{seed};
+    while (!stack.empty()) {
+      const auto current = stack.back();
+      stack.pop_back();
+      if (!visited.insert(current).second) continue;
+      for (const auto next : adjacency.at(current)) {
+        if (visited.count(next) == 0U) stack.push_back(next);
+      }
+    }
+  }
+  return loops;
+}
+
+std::size_t cp4c_actual_source_component_count(
+    const IndependentSourceTopology &topology) {
+  if (topology.faces.empty()) return 0U;
+  std::map<SourceFaceTopologyKey, std::size_t> index;
+  std::size_t next = 0U;
+  for (const auto &[face, record] : topology.faces) {
+    (void)record;
+    index.emplace(face, next++);
+  }
+  std::vector<std::size_t> parent(index.size());
+  std::iota(parent.begin(), parent.end(), 0U);
+  const auto root = [&](const auto &self, std::size_t value) -> std::size_t {
+    return parent[value] == value ? value : self(self, parent[value]);
+  };
+  const auto unite = [&](std::size_t first, std::size_t second) {
+    first = root(root, first);
+    second = root(root, second);
+    if (first == second) return;
+    if (first < second) parent[second] = first;
+    else parent[first] = second;
+  };
+  for (const auto &[edge, incident] : topology.incidentFaces) {
+    (void)edge;
+    if (incident.size() == 2U) {
+      unite(index.at(incident[0]), index.at(incident[1]));
+    }
+  }
+  std::set<std::size_t> roots;
+  for (std::size_t i = 0U; i < parent.size(); ++i) roots.insert(root(root, i));
+  return roots.size();
+}
+
+std::optional<Cp4cActualEmbeddedGraphOracle>
+cp4c_independent_actual_embedded_graph_oracle(
+    const TriMesh &mesh, const FieldAlignedCurveNetwork &network,
+    const std::vector<SourceEdgeTopologyKey> &cutEdges) {
+  const auto topology = independent_source_topology(mesh);
+  if (!topology.has_value()) return std::nullopt;
+  const auto fragments = cp4c_oracle_fragments(mesh, network, cutEdges);
+  if (!fragments.has_value() || fragments->empty()) return std::nullopt;
+
+  // Independent per-face planar rotation construction above produces local
+  // positive face orbits. Stitch only non-barrier seam intervals; the resulting
+  // DSU roots are the counted complement orbits of the actual embedded graph.
+  std::vector<std::size_t> fragmentParent(fragments->size());
+  std::iota(fragmentParent.begin(), fragmentParent.end(), 0U);
+  const auto fragment_root = [&](const auto &self, std::size_t value) -> std::size_t {
+    return fragmentParent[value] == value ? value
+                                          : self(self, fragmentParent[value]);
+  };
+  const auto fragment_unite = [&](std::size_t first, std::size_t second) {
+    first = fragment_root(fragment_root, first);
+    second = fragment_root(fragment_root, second);
+    if (first == second) return;
+    if (first < second) fragmentParent[second] = first;
+    else fragmentParent[first] = second;
+  };
+  std::map<Cp4cOracleSeamKey, std::vector<Cp4cOracleSeamIncidence>> seams;
+  for (std::size_t fragmentIndex = 0U; fragmentIndex < fragments->size();
+       ++fragmentIndex) {
+    const auto &fragment = (*fragments)[fragmentIndex];
+    for (std::size_t edgeIndex = 0U; edgeIndex < fragment.edges.size();
+         ++edgeIndex) {
+      const auto &fragmentEdge = fragment.edges[edgeIndex];
+      if (!fragmentEdge.sourceEdge.has_value() || fragmentEdge.networkBarrier) {
+        continue;
+      }
+      const auto firstParameter = cp4c_oracle_edge_parameter(
+          fragment.sourceFace, *fragmentEdge.sourceEdge,
+          fragment.vertices[edgeIndex]);
+      const auto secondParameter = cp4c_oracle_edge_parameter(
+          fragment.sourceFace, *fragmentEdge.sourceEdge,
+          fragment.vertices[(edgeIndex + 1U) % fragment.vertices.size()]);
+      if (!firstParameter.has_value() || !secondParameter.has_value() ||
+          *firstParameter == *secondParameter) {
+        return std::nullopt;
+      }
+      const auto low = *firstParameter < *secondParameter ? *firstParameter
+                                                          : *secondParameter;
+      const auto high = *firstParameter < *secondParameter ? *secondParameter
+                                                           : *firstParameter;
+      seams[Cp4cOracleSeamKey{*fragmentEdge.sourceEdge, low, high}].push_back(
+          Cp4cOracleSeamIncidence{fragmentIndex, edgeIndex, 0U, 0U});
+    }
+  }
+  for (const auto &[key, incidences] : seams) {
+    const auto incident = topology->incidentFaces.find(key.edge);
+    if (incident == topology->incidentFaces.end()) return std::nullopt;
+    if (incident->second.size() == 2U) {
+      if (incidences.size() != 2U) return std::nullopt;
+      fragment_unite(incidences[0].fragment, incidences[1].fragment);
+    } else if (incident->second.size() != 1U || incidences.size() != 1U) {
+      return std::nullopt;
+    }
+  }
+  std::map<std::size_t, std::size_t> orbitByRoot;
+  Cp4cActualEmbeddedGraphOracle oracle;
+  for (std::size_t fragmentIndex = 0U; fragmentIndex < fragments->size();
+       ++fragmentIndex) {
+    const auto root = fragment_root(fragment_root, fragmentIndex);
+    const auto [found, inserted] = orbitByRoot.emplace(root, orbitByRoot.size());
+    (void)inserted;
+    oracle.fragmentOrbits.push_back(
+        Cp4cActualGraphFragmentOrbit{(*fragments)[fragmentIndex].sourceFace,
+                                    fragmentIndex, found->second});
+  }
+  oracle.faceCount = orbitByRoot.size();
+
+  const auto boundaryLoops = cp4c_actual_source_boundary_loops(*topology);
+  if (!boundaryLoops.has_value()) return std::nullopt;
+  oracle.excludedBoundaryOrbitCount = *boundaryLoops;
+  oracle.totalOrbitCount = oracle.faceCount + oracle.excludedBoundaryOrbitCount;
+  oracle.sourceComponentCount = cp4c_actual_source_component_count(*topology);
+  oracle.sourceEulerCharacteristic =
+      mesh.V.rows() - static_cast<int>(topology->incidentFaces.size()) +
+      mesh.F.rows();
+
+  std::map<SourceVertexId, directional::authority::NetworkNodeId> sourceNode;
+  for (const auto &mandatory : network.mandatory_edges()) {
+    sourceNode.emplace(mandatory.sourceEdge.first(), mandatory.firstNode);
+    sourceNode.emplace(mandatory.sourceEdge.second(), mandatory.secondNode);
+  }
+  for (const auto &port : network.singularity_ports()) {
+    sourceNode.emplace(port.sourceVertex, port.node);
+  }
+  std::set<SourceVertexId> syntheticCutVertices;
+  for (const auto &edge : cutEdges) {
+    if (sourceNode.count(edge.first()) == 0U) syntheticCutVertices.insert(edge.first());
+    if (sourceNode.count(edge.second()) == 0U) syntheticCutVertices.insert(edge.second());
+  }
+  oracle.vertexCount = network.nodes().size() + syntheticCutVertices.size();
+  const auto networkEdges = cp4c_oracle_network_edge_accounting(network);
+  oracle.edgeCount = networkEdges.total() + cutEdges.size();
+
+  const std::size_t graphNodeCount = oracle.vertexCount;
+  std::vector<std::size_t> graphParent(graphNodeCount);
+  std::iota(graphParent.begin(), graphParent.end(), 0U);
+  const auto graph_root = [&](const auto &self, std::size_t value) -> std::size_t {
+    return graphParent[value] == value ? value : self(self, graphParent[value]);
+  };
+  const auto graph_unite = [&](std::size_t first, std::size_t second) {
+    first = graph_root(graph_root, first);
+    second = graph_root(graph_root, second);
+    if (first == second) return;
+    if (first < second) graphParent[second] = first;
+    else graphParent[first] = second;
+  };
+  std::map<SourceVertexId, std::size_t> graphIndexBySourceVertex;
+  for (const auto &[vertex, node] : sourceNode) {
+    graphIndexBySourceVertex.emplace(vertex, node.index());
+  }
+  std::size_t syntheticIndex = network.nodes().size();
+  for (const auto vertex : syntheticCutVertices) {
+    graphIndexBySourceVertex.emplace(vertex, syntheticIndex++);
+  }
+  for (const auto &mandatory : network.mandatory_edges()) {
+    graph_unite(mandatory.firstNode.index(), mandatory.secondNode.index());
+    for (const auto &event : network.events()) {
+      if (event.sourceEdge == mandatory.sourceEdge) {
+        graph_unite(mandatory.firstNode.index(), event.node.index());
+      }
+    }
+  }
+  for (const auto &trace : network.candidate_traces()) {
+    std::set<std::size_t> traceNodes;
+    const auto port = std::find_if(
+        network.singularity_ports().begin(), network.singularity_ports().end(),
+        [&](const auto &candidate) { return candidate.id == trace.port; });
+    if (port != network.singularity_ports().end()) traceNodes.insert(port->node.index());
+    for (const auto &event : network.events()) {
+      if (std::any_of(event.incidences.begin(), event.incidences.end(),
+                      [&](const auto &incidence) { return incidence.trace == trace.id; })) {
+        traceNodes.insert(event.node.index());
+      }
+    }
+    if (!traceNodes.empty()) {
+      const auto first = *traceNodes.begin();
+      for (const auto node : traceNodes) graph_unite(first, node);
+    }
+  }
+  for (const auto &edge : cutEdges) {
+    const auto first = graphIndexBySourceVertex.find(edge.first());
+    const auto second = graphIndexBySourceVertex.find(edge.second());
+    if (first == graphIndexBySourceVertex.end() ||
+        second == graphIndexBySourceVertex.end()) return std::nullopt;
+    graph_unite(first->second, second->second);
+  }
+  std::set<std::size_t> graphRoots;
+  for (std::size_t node = 0U; node < graphNodeCount; ++node) {
+    graphRoots.insert(graph_root(graph_root, node));
+  }
+  oracle.graphComponentCount = graphRoots.size();
+  if (oracle.graphComponentCount < oracle.sourceComponentCount) return std::nullopt;
+  oracle.disconnectedComponentCorrection = static_cast<int>(
+      oracle.graphComponentCount - oracle.sourceComponentCount);
+  oracle.eulerCharacteristic =
+      static_cast<int>(oracle.vertexCount) - static_cast<int>(oracle.edgeCount) +
+      static_cast<int>(oracle.faceCount) - oracle.disconnectedComponentCorrection;
+
+  std::set<SourceEdgeTopologyKey> mandatory;
+  for (const auto &edge : network.mandatory_edges()) mandatory.insert(edge.sourceEdge);
+  const auto traceCrossed = cp4c_actual_trace_crossed_edges(network);
+  for (const auto &edge : cutEdges) {
+    std::string classification = "admissible";
+    if (mandatory.count(edge) != 0U) classification = "mandatoryAlreadyPresent";
+    else if (traceCrossed.count(edge) != 0U) classification = "traceInteriorCrossing";
+    oracle.cutEvidence.push_back({edge, classification});
+  }
+  return oracle;
+}
+
+std::string cp4c_actual_embedded_graph_oracle_report(
+    const std::string &witness, const Cp4cActualEmbeddedGraphOracle &oracle,
+    const directional::geometry::SurfaceCutGraphCellularityCertificate *producer) {
+  std::ostringstream report;
+  report << "m3Cp4c2ActualGraphOracle"
+         << ";witness=" << witness
+         << ";complex=actualEmbeddedGraph"
+         << ";oracleKind=independent-face-planar-rotation-seam-orbit"
+         << ";surfaceCutGraphCallsInsideOracle=0"
+         << ";V=" << oracle.vertexCount
+         << ";E=" << oracle.edgeCount
+         << ";totalOrbits=" << oracle.totalOrbitCount
+         << ";excludedBoundaryOrbits=" << oracle.excludedBoundaryOrbitCount
+         << ";F=" << oracle.faceCount
+         << ";c=" << oracle.graphComponentCount
+         << ";s=" << oracle.sourceComponentCount
+         << ";correction=" << oracle.disconnectedComponentCorrection
+         << ";chi=" << oracle.eulerCharacteristic
+         << ";sourceChi=" << oracle.sourceEulerCharacteristic;
+  if (producer != nullptr) {
+    report << ";producerComplex="
+           << directional::geometry::surface_cut_graph_complex_kind_name(
+                  producer->complex)
+           << ";diffV=" << (static_cast<long long>(producer->vertexCount) -
+                              static_cast<long long>(oracle.vertexCount))
+           << ";diffE=" << (static_cast<long long>(producer->edgeCount) -
+                              static_cast<long long>(oracle.edgeCount))
+           << ";diffTotalOrbits="
+           << (static_cast<long long>(producer->totalOrbitCount) -
+               static_cast<long long>(oracle.totalOrbitCount))
+           << ";diffExcludedBoundaryOrbits="
+           << (static_cast<long long>(producer->excludedBoundaryOrbitCount) -
+               static_cast<long long>(oracle.excludedBoundaryOrbitCount))
+           << ";diffF=" << (static_cast<long long>(producer->faceCount) -
+                              static_cast<long long>(oracle.faceCount))
+           << ";diffC=" << (static_cast<long long>(producer->graphComponentCount) -
+                              static_cast<long long>(oracle.graphComponentCount))
+           << ";diffCorrection="
+           << (producer->disconnectedComponentCorrection -
+               oracle.disconnectedComponentCorrection)
+           << ";diffChi=" << (producer->eulerCharacteristic -
+                                oracle.eulerCharacteristic)
+           << ";diffSourceChi=" << (producer->sourceEulerCharacteristic -
+                                      oracle.sourceEulerCharacteristic);
+  } else {
+    report << ";producerComplex=unavailable";
+  }
+  for (std::size_t index = 0U; index < oracle.cutEvidence.size(); ++index) {
+    report << ";cut[" << index << "]={edge="
+           << oracle.cutEvidence[index].sourceEdge.first().index() << '-'
+           << oracle.cutEvidence[index].sourceEdge.second().index()
+           << ",class=" << oracle.cutEvidence[index].classification << '}';
+  }
+  for (std::size_t index = 0U; index < oracle.fragmentOrbits.size(); ++index) {
+    const auto &fragment = oracle.fragmentOrbits[index];
+    report << ";fragment[" << index << "]={face=";
+    for (std::size_t corner = 0U; corner < fragment.sourceFace.vertices().size();
+         ++corner) {
+      if (corner != 0U) report << ',';
+      report << fragment.sourceFace.vertices()[corner].index();
+    }
+    report << ",local=" << fragment.localFragment
+           << ",orbit=" << fragment.orbit << '}';
+  }
+  return report.str();
 }
 
 std::optional<Cp4cNetworkOnlyCellularityOracle>
@@ -5341,8 +5711,9 @@ std::string cp4c_network_only_oracle_report(
          << ";witnessConstruction="
          << cp4c_witness_construction_name(fixture.witnessConstruction)
          << ";constructionSucceeded=true"
-         << ";oracleKind=independent-source-edge-barrier-complex"
+         << ";oracleKind=diagnostic-source-edge-barrier-complex"
          << ";complex=sourceEdgeBarrier"
+         << ";cellularityOracle=false"
          << ";surfaceCutGraphCalls=0"
          << ";railAuthority="
          << cp4c_rail_authority_name(fixture.railAuthority)
@@ -6166,6 +6537,7 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
   report << "m3Cp4c2Y2"
          << ";witness=prescribed-sphere"
          << ";oracleComplex=sourceEdgeBarrier"
+         << ";oracleIsCellularityOracle=false"
          << ";railAuthority="
          << cp4c_rail_authority_name(fixture.railAuthority)
          << ";mandatoryRailCount=" << fixture.rails.size()
@@ -7241,6 +7613,52 @@ TEST(ResolvedBranchCorrection,
       observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
   ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
   std::cout << cp4c_sphere_grazing_cost_census(sphere.mesh, *sphere.atlas) << '\n';
+}
+
+TEST(ResolvedBranchCorrection,
+     ActualEmbeddedGraphCellularityOracleIsPublishedNonGating) {
+  const std::array<std::tuple<const char *, const char *, Cp4cRailAuthority>, 3>
+      witnesses{{
+          {"synthetic-two-ring", "synthetic-two-ring", Cp4cRailAuthority::AtlasDerived},
+          {"torus", "torus", Cp4cRailAuthority::PipelineAuthoritative},
+          {"sphere_prescribed", "prescribed-sphere", Cp4cRailAuthority::PipelineAuthoritative},
+      }};
+  for (const auto &[fixtureStem, witnessName, railAuthority] : witnesses) {
+    const Cp4cNetworkOnlyFixture fixture =
+        cp4c_network_only_fixture(fixtureStem, railAuthority);
+    if (!fixture.sourceAuthority.has_value() || !fixture.atlas.has_value() ||
+        !fixture.network.has_value()) {
+      std::cout << "m3Cp4c2ActualGraphOracle;witness=" << witnessName
+                << ";complex=actualEmbeddedGraph;oracleAvailable=false"
+                << ";fixtureError=" << fixture.error << '\n';
+      continue;
+    }
+    const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+        fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+        *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+    const std::vector<SourceEdgeTopologyKey> cuts =
+        cutGraph ? cutGraph.value().cut_edges()
+                 : std::vector<SourceEdgeTopologyKey>{};
+    const auto oracle = cp4c_independent_actual_embedded_graph_oracle(
+        fixture.mesh, *fixture.network, cuts);
+    if (!oracle.has_value()) {
+      std::cout << "m3Cp4c2ActualGraphOracle;witness=" << witnessName
+                << ";complex=actualEmbeddedGraph;oracleAvailable=false"
+                << ";producerStatus=" << (cutGraph ? "success" : "error")
+                << '\n';
+      continue;
+    }
+    const auto *producer = cutGraph ? &cutGraph.value().certificate() : nullptr;
+    std::cout << cp4c_actual_embedded_graph_oracle_report(
+                     witnessName, *oracle, producer)
+              << ";producerStatus=" << (cutGraph ? "success" : "error");
+    if (!cutGraph) {
+      std::cout << ";producerError="
+                << directional::geometry::surface_cut_graph_error_code_name(
+                       cutGraph.error().code);
+    }
+    std::cout << '\n';
+  }
 }
 
 TEST(ResolvedBranchCorrection,
