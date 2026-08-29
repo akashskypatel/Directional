@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-08-29 — sixth CP4c historical consolidation
+
+Documentation-only consolidation under explicit user authorization. No product, test, fixture, selector, build,
+package, or runtime semantics changed. `M3_CP4c_Consolidated_Record.md` was rewritten as the concise durable
+history for the CP4c family and updated through R6 review. Thirty-five superseded CP4c per-turn plans, reports,
+execution records, and reviews were retired after their durable facts were reconciled into the consolidated record,
+this changelog, the regression tracker, frozen definitions, and closure records. `TODO.md` and the handoff were
+trimmed back to forward-looking/current authority only. Normative frozen definitions, frozen selectors, closure
+records, the current CB4 build authority, current R6 EXEC evidence, and current R6 review remain retained.
+Historical filenames in older changelog entries are provenance tied to their original commits/runs and may no
+longer exist at HEAD; see `M3_CP4c_Consolidated_Record.md` §8 for the retirement manifest.
+
+
 ## 2026-08-29 — `M3-CP4c-2-TB-X2-R6-REV`: one regression resolved at its locus, one confirmed with its fix already on file
 
 Independent review and planning only. No Directional runtime, compile, package, benchmark, or product/test/fixture/selector change. Records: `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md` and the new `ORIENTATION.md`. `selected_r2_branch` and `selected_gate` both remain **NONE**.
@@ -39,7 +52,7 @@ Code + Build only; **no Directional runtime, test, or benchmark executed**.
   R6-REV. 357/358, cumulative gate, mechanical/C2, and CP4c-3 remain blocked.
 
 
-> **Provenance note — CP4c document names.** Entries dated on or before **2026-08-27** cite CP4c
+> **Provenance note — CP4c document names.** Entries preceding the **2026-08-29 sixth consolidation** may cite CP4c
 > per-turn plans, reports and independent reviews by their original filenames. Those documents were
 > retired into `M3_CP4c_Consolidated_Record.md` on 2026-08-26 and 2026-08-27 under explicit user
 > authorization; the filenames below are retained as **historical provenance tied to the cited runs and

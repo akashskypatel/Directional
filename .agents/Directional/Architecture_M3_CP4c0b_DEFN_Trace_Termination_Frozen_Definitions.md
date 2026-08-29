@@ -26,8 +26,8 @@
 > `terminalBarrier`.
 >
 > **CP4c-0b is a correction and relocation of accepted authority, not a greenfield addition.** §7's
-> re-proof matrix is superseded by `Architecture_M3_CP4c0b_P0_3_Independent_Review_Record.md` §5, and
-> measures **P0–P9** are superseded by **S0–S8** in §6 of that record. **Q8 criterion 3 must be
+> re-proof matrix and the **P0–P9 → S0–S8** supersession are preserved in
+> `M3_CP4c_Consolidated_Record.md` §4. **Q8 criterion 3 must be
 > re-stated to require a contact produced by the corrected predicate on the prescribed sphere**, since
 > a *terminal* `TraceIntersection` is already producible by the defect.
 >
@@ -62,7 +62,7 @@ They are split.
 ## 1. The evidence this definition consumes
 
 All of it was re-derived from the committed fixtures with no product code, and it is recorded in
-`Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md`. Restated here because it decides §4 and §5.
+`M3_CP4c_Consolidated_Record.md`. Restated here because it decides §4 and §5.
 
 ### 1.1 Six traces do not terminate, and it is a limit cycle
 

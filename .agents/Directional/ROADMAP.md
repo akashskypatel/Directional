@@ -27,7 +27,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
 `M3-CP4-DEFN` is complete. CP4a/CP4b are superseded into CP4ab.
 
-**CP4c was split on 2026-08-25** by `M3_CP4c_Consolidated_Record.md` §3b (retired CP4c parent TB-R1 review) after TB-R1
+**CP4c was split on 2026-08-25** by `M3_CP4c_Consolidated_Record.md` §7 (retired CP4c parent TB-R1 review) after TB-R1
 returned VALID RED 316/322. Its two committed witnesses are **closed surfaces** — torus χ = 0 genus 1,
 mechanical χ = 2 sphere — while every witness that has ever validated A2b is a **bounded disc**, χ = 1.
 Two of the three failure families are therefore scope gaps in *accepted* authority, not CP4c defects.
@@ -58,7 +58,7 @@ The one substantive gap is not a criterion but a *scope* of proof: all six are p
 witnesses** (the two-ring skew disc and the four-triangle fan), not on production-representative
 meshes, and — as the CP4c plan establishes — **A2b is not yet constructed by the production pipeline at
 all**. That is exactly and only what CP4c exists to close. See
-`M3_CP4c_Consolidated_Record.md` §1.
+`M3_CP4c_Consolidated_Record.md` §2.
 
 ---
 
@@ -109,7 +109,7 @@ the prescribed sphere reaches A1 then A2a rejects `BranchContinuationDegenerateE
 publication. CP4c-0 remains unaccepted and CP4c-1 blocked.
 
 **CB2 → TB-R2 executed that correction, and `M3-CP4c-0-TB-R2-REVIEW-PLAN` closed on 2026-08-26**
-(`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R2 review)). CB2 is build green at
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R2 review)). CB2 is build green at
 `390e65b373063c667e3c3f5e78b74ed9d859093b` / package `9586196535` with the selector re-frozen at
 **338 = 316 + 12 + 10**. TB-R2 re-proved the accepted **316/316** and the prior **328/328** prefix, then
 failed at ordinal **329** on the first E1 correction identity: `FieldBranch::value()` returns
@@ -150,7 +150,7 @@ kept for future comparison but are unreachable from the production path, so the 
 second authority.
 
 **CB8 → TB-R8 → `M3-CP4c-0-CB9` exposed and guarded non-termination on 2026-08-27**
-(`Architecture_M3_CP4c0_TB_R8_Review_And_CB9_Corrective_Record.md`). CB8 implemented DEFN-2's grazing
+(`M3_CP4c_Consolidated_Record.md`). CB8 implemented DEFN-2's grazing
 transit faithfully. TB-R8 then ran for 853 seconds on one identity and died with
 `gcd(): while running too long!` — and the interesting part is what that turned out to mean.
 
@@ -207,7 +207,7 @@ for a reason that is a property of the field, and is re-homed to CP4c-1 with the
 pre-committed. Exact next is **`M3-CP4c-0-CB8`** under **L0–L9**, Code + Build only.
 
 **CB6 → TB-R6 delivered the decomposition, and `M3-CP4c-0-TB-R6-REVIEW-PLAN` closed on 2026-08-26**
-(`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R6 review)). **This cycle identified the root cause**,
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R6 review)). **This cycle identified the root cause**,
 and it is a contract/model gap rather than an implementation defect.
 
 The review reproduced the sphere's census from the committed `.obj` and `.rawfield` alone — no product
@@ -233,7 +233,7 @@ J3's 524/524 does not exclude H-B, because `independent_edge_measurement` re-imp
 matching, the algorithm H-B suspects.
 
 **CB5 → TB-R5 delivered the census, and `M3-CP4c-0-TB-R5-REVIEW-PLAN` closed on 2026-08-26**
-(`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R5 review)). H1 ran and reported **390 violations /
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R5 review)). H1 ran and reported **390 violations /
 4224 pairs**. Review verified the census's *mechanism* in source — it applies the published `signedLift`
 per Amendment 7 and reads the right coordinates — and then corrected its *population*:
 
@@ -256,7 +256,7 @@ Each branch of the resulting decision table names a different owner — field ma
 or flow classification. Measure **J1**; still **no production change authorized**.
 
 **CB4 → TB-R4 closed the test-side corrections, and `M3-CP4c-0-TB-R4-REVIEW-PLAN` closed on 2026-08-26**
-(`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R4 review)). **This is the first cycle in which
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R4 review)). **This is the first cycle in which
 CP4c-0's real subject is on the table.** G1–G4/G6 are runtime-proved, the frozen gate is **338/338
 green**, and Q8 became creditable — and red at criterion 2.
 
@@ -280,7 +280,7 @@ discriminates among all three. That census is measure **H1** and is the whole po
 accepted identity has ever asserted it, because E5 created that invariant in CB2.
 
 **CB3 → TB-R3 executed that correction, and `M3-CP4c-0-TB-R3-REVIEW-PLAN` closed on 2026-08-26**
-(`M3_CP4c_Consolidated_Record.md` §3b (retired TB-R3 review)). F1/F2 are runtime-proved and F6
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB-R3 review)). F1/F2 are runtime-proved and F6
 worked — all 338 identities executed despite an early red, which is why this cycle returned a complete
 picture rather than one bit. Two identities are red and **both are test-side**:
 
@@ -304,7 +304,7 @@ cycle even at 338/338, and nothing in the gate currently publishes the sphere's 
 Measures **G4** and **G5** address both. Exact next is **`M3-CP4c-0-CB4`** under **G0–G8**, test-side only.
 
 **`M3-CP4c-0-TB-REVIEW-PLAN` closed that adjudication on 2026-08-25**
-(`M3_CP4c_Consolidated_Record.md` §3b (retired TB review)). Verdict: **neither T6 nor Q8 is at
+(`M3_CP4c_Consolidated_Record.md` §7 (retired TB review)). Verdict: **neither T6 nor Q8 is at
 fault, and neither is weakened.** A1 decides the **sign of a barycentric direction coordinate** with a
 `double` tolerance in three separate places and publishes those verdicts as topological ownership
 (carrier-set membership, vertex-sector membership), while A2a's new continuation rule decides the same

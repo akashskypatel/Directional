@@ -24,7 +24,7 @@
 - result/log digests: `b8be035ed728b5d6f8efe65e260f9557a9aa8cad0e82b94d11107aab44187a5d / 55ad320aaf810bb5b02fbfccdd7662f4a47333586bdb30397d624d701710439b`
 
 Full execution evidence and W3/W5 disposition are retained in
-`Architecture_M3_CP4c1_TB_R5_Artifact_Only_Test_Benchmark_Report.md`.
+`M3_CP4c_Consolidated_Record.md` §5 and `CHANGELOG.md`.
 
 ## Contract closed
 

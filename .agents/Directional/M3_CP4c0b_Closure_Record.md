@@ -19,7 +19,7 @@
 - result/log digests: `7f582a03a3e1cd63d988d1db249b71bfc44d68e76507c3cacbec043179c1af53 / 91754edb40c3889111b5947aa4451875781d5b5232d060db87a6263be1aea458`
 
 The full evidence and U0-U7 disposition are in
-`Architecture_M3_CP4c0b_TB_T5_Artifact_Only_Test_Benchmark_Report.md`.
+`M3_CP4c_Consolidated_Record.md` §4 and `CHANGELOG.md`.
 
 ## Contract closed
 

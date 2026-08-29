@@ -121,8 +121,7 @@ No runtime regression was observed, so `Regression_Root_Cause_Tracker.md` is unc
 
 ## Successor
 
-Exact next is **`M3-CP4c-2-TB-X2-R6-EXEC`** on immutable package `9714226920`.
-Executable plan: `Architecture_M3_CP4c2_TB_X2_R6_Artifact_Only_Test_Benchmark_Plan.md`.
-
-R6-EXEC must preserve raw artifact-only evidence and stop at independent
-`M3-CP4c-2-TB-X2-R6-REV`. It may not run 357/358, the cumulative gate, mechanical/C2, or CP4c-3.
+Historical successor R6-EXEC has completed and its frozen plan was retired into `M3_CP4c_Consolidated_Record.md` §6.
+Current successor authority is `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md`, which authorizes
+`M3-CP4c-2-CB5` under AD0–AD9. Package `9714226920` remains the current immutable build authority until CB5
+supersedes it.
