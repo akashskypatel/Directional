@@ -1,3 +1,14 @@
+## PR8-R044 / M3-CP4c2-R002 — cut-graph semantic digest reimports gauge-dependent atlas provenance — ACTIVE STABLE / PRODUCT / REPRESENTATION_DEPENDENT_IDENTITY / RP-05
+
+- **Observed:** R6-EXEC artifact-only accepted-prefix re-proof on immutable CB4 package `9714226920` passes accepted ordinals 1-309 in fresh processes, including the former ordinal-305 failure, then ordinal 310 `GlobalTopologyPlan.RegionAuthorityIsInvariantToEnumerationOrderAndBranchRelabeling` selects exactly once and exits `1`. `baselinePlan.semantic_digest()` is `12176020141753559903`; gauge-relabeled `relabeledPlan.semantic_digest()` is `14339407889897379635`.
+- **Accepted predecessor:** ordinal 310 is part of CP4c-1's accepted **355/355** authority at source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. CB4 inserted/reworked `SurfaceCutGraph` authority while retaining the accepted identity, so this is loss of accepted-green behavior rather than a first-acceptance diagnostic.
+- **Root cause — statically localized in EXEC:** the identity first proves equal `FieldAlignedCurveNetwork::semantic_digest()` and unequal atlas digests under equivalent gauge relabeling. `GlobalTopologyPlan::candidate_semantic_digest` deliberately uses gauge-invariant `network.semantic_digest()` but also consumes `candidate.cutGraphDigest`. `SurfaceCutGraph::candidate_hash` includes `candidate.atlasDigest`, populated from `network.atlas_digest()`. Gauge-dependent atlas provenance therefore flows through the cut-graph digest into plan semantic identity, violating the established semantic/provenance split.
+- **Recurrence:** existing `RP-05 / REPRESENTATION_DEPENDENT_IDENTITY`. This is the same domain mistake previously stabilized at `PR8-R040 / M3-CP2b-R001`: a representation/provenance hash is consumed as semantic identity after gauge-equivalent relabeling.
+- **Runtime boundary:** frozen R6 hard-stop applied at ordinal 310. Ordinals 311-355, the independent actual-complex oracle, retained barrier diagnostic, D2, 357/358, and cumulative gate were not run. Unconditional package/source postflight passed with all mutation/build flags false.
+- **Owner:** independent `M3-CP4c-2-TB-X2-R6-REV`. EXEC records the recurrence and exact failure mechanism but authorizes no corrective implementation.
+- **Evidence:** `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md`; raw archive `Directional__M3-CP4c-2-TB-X2-R6-EXEC__raw-evidence.tar.gz`, SHA-256 `340f2e569d372809a299d5b7c065966756797fb2a6e47db959d82ea62213e4f5`; ordinal-310 stdout/stderr/combined SHA-256 `7e2780fe5d9153997035ce4f33eb412219f1877a50b84e2fd30c2e2cf12bf7b0 / 5023344a86ee85bb23e86456f2a0c19af6c61e422f8ec226305d9376acef849e / ba5f869f04aa48cc811cb737a5873eba1befe1f7c28af85f614ab6b70c22e70d`.
+- **Accounting:** one new stable event and one recurrence in existing category/pattern `REPRESENTATION_DEPENDENT_IDENTITY / RP-05`: totals advance **43 / 14 / 29 -> 44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**; M3 packages remain **63**.
+
 ## PR8-R043 / M3-CP4c2-R001 — CP4c-2 whole-source-face proxy rejects accepted embedded-graph witness — ACTIVE STABLE / PRODUCT / AUTHORITY_DOMAIN_CONFLATION / RP-01
 
 - **Observed:** R5-EXEC run/job `33232106030 / 99046593525` passes accepted ordinals 1-304 in fresh processes, then ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selects exactly once and exits `1`. Its first semantic failure is `SurfaceCutGraph::make(...)=CellularityNotEstablished`; the later `std::get: wrong index for variant` is secondary helper fallout.
@@ -8,14 +19,15 @@
 - **Causal boundary:** this defect predates CB3 AA1. `SurfaceCutGraph.cpp` is unchanged between diagnostic source `5ad711e5d4ced95f38e103b993139a6307ba2cee` and R5 source `76d757aab0ce18df09ce2823302d2dc224965187`; AA1 only moved pipeline snapshot publication. **Do not revert AA1.**
 - **Owner:** exact successor `M3-CP4c-2-DEFN-R1`, measures AB0-AB9 in `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`. Freeze one actual embedded-graph fragment/arrangement authority before a later CB.
 - **Evidence:** R5 result/log artifacts `9708817991 / 9708818239`, SHA-256 `bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 / b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`; review record `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`.
+- **R6-EXEC progress:** on CB4 package `9714226920`, accepted ordinal 305 now selects once and passes. The accepted re-proof later stops at ordinal 310 under separate `PR8-R044 / M3-CP4c2-R002`; therefore EXEC does not close this independently reviewed event or claim full 355 restoration. `PR8-R043` remains ACTIVE pending R6-REV.
 - **Accounting:** one new stable event and one recurrence in existing category/pattern `AUTHORITY_DOMAIN_CONFLATION / RP-01`: totals advance **42 / 14 / 28 -> 43 events / 14 categories / 29 recurrences**. Produced-witness debt remains **5**; M3 packages remain **62**.
 
-## M3-CP4c2-TB-X2-R5-ORCH-01 — runtime helper leaks errexit and suppresses postflight — ACTIVE / ORCHESTRATION / NON-STABLE
+## M3-CP4c2-TB-X2-R5-ORCH-01 — runtime helper leaks errexit and suppresses postflight — RESOLVED / R6 HARNESS CONFIRMED / ORCHESTRATION / NON-STABLE
 
 - **Observed:** R5's `run_identity` re-enabled `set -e` before returning the red ordinal-305 process status. The shell exited before the outer AA8 stop handler, semantic summary, and recursive package/source postflight could run. Raw result/log artifacts were still uploaded.
 - **Impact:** R5 is admissible for the semantic regression because immutable preflight plus the exact one-process raw log/row are complete, but it cannot prove post-runtime mutation inventories or any downstream AA2/D1/D2 result.
-- **Owning correction:** before the next runtime harness, preserve/restore caller errexit state or make semantic stop/postflight execute through an unconditional finalization/trap path. A red Directional identity must never suppress postflight evidence.
-- **Stable-count rationale:** orchestration-only; **+0 stable events / +0 recurrences**. Current totals remain **43 / 14 / 29**, debt **5**, M3 packages **62**.
+- **Resolution evidence:** R6-EXEC reaches a semantic red at accepted ordinal 310, preserves the stop, then still executes unconditional immutable postflight. Package/source byte-and-mode inventories compare equal, package/source hashes reverify, and all build/repair/mutation flags remain false. The R5 suppression mechanism is therefore runtime-falsified by the corrected harness.
+- **Stable-count rationale:** orchestration-only; **+0 stable events / +0 recurrences**. Current totals after the separate R6 semantic recurrence are **44 / 14 / 30**, debt **5**, M3 packages **63**.
 
 ## M3-CP4c2-TB-X2-R4-CAND-01 — final D1 assertion duplicates an already-published failure record — ACTIVE / TEST-AUTHORITY / PUBLICATION HYGIENE / NON-STABLE
 
@@ -1676,6 +1688,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `PR8-R041` | `M3-CP2b-R002` | `POLICY_STAGE_STATE_CONFLATION` | `RP-03` | resolved |
 | `PR8-R042` | `M3-CP4b-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved |
 | `PR8-R043` | `M3-CP4c2-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | **active** |
+| `PR8-R044` | `M3-CP4c2-R002` | `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | **active** |
 
 ## Current G4 stable-ID mapping
 
