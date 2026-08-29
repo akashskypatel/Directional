@@ -1,0 +1,4 @@
+purpose=M3-CP4c-2-CB2-DIAG-R2 apply verified work-preservation patch
+base_sha=7dd5d1a012e39ee3483dd81685461c0c2e817b29
+patch_sha256=6b7726da5bbad3345045ea46b60abe24565b967b6572626f22eb1a19a02c1c50
+retry=0
