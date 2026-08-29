@@ -1,0 +1,1 @@
+trigger schema validation for M3-CP4c-2-DEFN-R1 source snapshot caller
