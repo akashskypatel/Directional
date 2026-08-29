@@ -30,7 +30,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1HdX0wOdbJonBMG-SmQOb7jhZRHnqAuvC
-      patch_sha256: 566f9e89ce525207a3d435897d1b02ab38b409cf9b312717b0f2d03f2bb14ff3
+      patch_sha256: e34eb3ecd8a6c840247a1e14ad3ccbc6921c55ee36a3690b7589d66ceb13e3c6
       base_sha: fe42e1f466f2e510e69e267005d6c0644230289d
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs(M3-CP4c): consolidate historical records"
