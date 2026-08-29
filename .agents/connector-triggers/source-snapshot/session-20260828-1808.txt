@@ -1,2 +1,0 @@
-requested_source_sha=7dd5d1a012e39ee3483dd81685461c0c2e817b29
-purpose=start_session exact source snapshot

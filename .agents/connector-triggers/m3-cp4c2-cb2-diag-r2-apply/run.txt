@@ -1,5 +1,0 @@
-purpose=M3-CP4c-2-CB2-DIAG-R2 apply closeout documentation patch
-base_sha=0cd1cf2f70544fcad46cac3618821d5d04d4bcad
-patch_sha256=d5d03900f3ec4d63b14de993b5b382a3a0461899ce2ed4860fce42bc14322903
-schema_run=33227203442
-retry=0
