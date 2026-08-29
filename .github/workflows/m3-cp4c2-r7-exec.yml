@@ -62,7 +62,7 @@ jobs:
         run: |
           set -euo pipefail
           log="$RUNNER_TEMP/r7-exec.log"; exec > >(tee -a "$log") 2>&1
-          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r7-exec.sh)" = "1f509aeb04a9b36c6a4e9968588ebcc568382078"
+          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r7-exec.sh)" = "da16087893c781b44d9307680b5aafd1eefcd865"
           test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r7-exec-harness.py)" = "2f94372c60f0962b72bb587a6cc03b6778e0f2b6"
           cp control/.agents/Directional/turn-payloads/m3-cp4c2-r7-exec.sh "$RUNNER_TEMP/r7-exec.sh"
           cp control/.agents/Directional/turn-payloads/m3-cp4c2-r7-exec-harness.py "$RUNNER_TEMP/r7-harness.py"
