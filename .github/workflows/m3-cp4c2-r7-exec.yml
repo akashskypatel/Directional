@@ -62,8 +62,8 @@ jobs:
         run: |
           set -euo pipefail
           log="$RUNNER_TEMP/r7-exec.log"; exec > >(tee -a "$log") 2>&1
-          test "$(sha256sum control/.agents/Directional/turn-payloads/m3-cp4c2-r7-exec.sh | cut -d' ' -f1)" = "926eb4171ba5d5d41a1597355507ce7c3a57e5249eaa1738cadc3a9971e6a133"
-          test "$(sha256sum control/.agents/Directional/turn-payloads/m3-cp4c2-r7-exec-harness.py | cut -d' ' -f1)" = "0cb256a56de5a8a4e03a8bcfcbeafe2617389c2858a367b9bde9e03fcfb1a2b5"
+          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r7-exec.sh)" = "1f509aeb04a9b36c6a4e9968588ebcc568382078"
+          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r7-exec-harness.py)" = "2f94372c60f0962b72bb587a6cc03b6778e0f2b6"
           cp control/.agents/Directional/turn-payloads/m3-cp4c2-r7-exec.sh "$RUNNER_TEMP/r7-exec.sh"
           cp control/.agents/Directional/turn-payloads/m3-cp4c2-r7-exec-harness.py "$RUNNER_TEMP/r7-harness.py"
           rm -rf control
