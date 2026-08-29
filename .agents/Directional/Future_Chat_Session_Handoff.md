@@ -83,7 +83,58 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-DEFN-R1` — actual embedded-graph cut-cellularity redefinition
+## Mandatory next turn — `M3-CP4c-2-CB4` — actual embedded-graph certification, measures **AC0-AC9**
+
+`M3-CP4c-2-DEFN-R1` is **COMPLETE / DEFINITION-ONLY**. Read
+`Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` in full: §3 Amendment 13, §4 the representation to lift,
+§5 the two conventions that decide correctness, §6 admissible cuts, §8 the completeness split, §11 AC0-AC9.
+
+**The normative complex is the actual embedded graph** of `FieldAlignedCurveNetwork ∪ cutEdges`: vertices are
+network nodes plus cut-created nodes, edges are network arcs plus cut arcs, faces are the **dart orbits** under
+the node rotation system. **Nothing new is invented.** `GlobalTopologyArc`, `GlobalTopologyOrientedArc`,
+`GlobalTopologyNodeRotation` and `walk_graph_faces(arcs, rotations)` already exist in A2b and already compute
+exactly this. **AC1 lifts them into one shared pre-region authority consumed by both A2a' and A2b; a second
+implementation is prohibited** — that is `LESSONS.md` 22e, and a second implementation is how this checkpoint
+arrived here.
+
+**Amendment 13 withdraws DEFN §5.4's whole-source-face construction guidance** as cellularity authority; the
+source-edge-barrier partition survives only as a cut-*proposal* heuristic and diagnostic provenance, and every
+publication of it must carry a field saying it is not a cellularity oracle. **§§5.1-5.3 and Amendment 12 remain
+binding**, and §3's torus theorem stands.
+
+**The R2 normative-complex ruling was the reviewer's and it was wrong**; its three grounds were each true and
+collectively wrong. `PR8-R042` had already adjudicated the same question on the same witness and `LESSONS.md`
+22d/22e recorded the answer. New lessons **22k** and **22m** — cite the architecture that settles a
+representation, not the code path that exhibits the symptom; and self-consistency inside a named complex is
+never evidence that the complex is the right one.
+
+**Two conventions will decide correctness and must be derived, not guessed (§5).** The **exterior-orbit
+exclusion** on a surface with boundary — the accepted two-ring walks 4 orbits, exactly one exterior, giving
+`F = 3` — and the **disconnected-graph correction term**, because the torus's 48 arcs over 48 degree-2 nodes
+form **4 components** and unqualified `V - E + F = chi` is false there before any cut is considered. Mistaking
+that for non-cellularity would be right for the wrong reason.
+
+**New frozen constraint (§6):** a cut is a source edge promoted to a graph arc, so **a source edge crossed by a
+trace at an interior point is not an admissible cut** — promoting it would subdivide an immutable trace, which
+Amendment 12 forbids.
+
+**§8 splits completeness honestly.** Provable for trace-free non-disc components, which covers the torus
+entirely since it has zero traces. **Not proved** for trace-crossed ones: **AC5** requires a typed
+`NoAdmissibleCutForNonDiscComponent` stop with a component locus, and **AC7** makes hitting it a **return to
+definition**, never a judgement call, a widened admissibility, or a partial cut set.
+
+**On the accepted regression** `PR8-R043 / M3-CP4c2-R001` at ordinal 305: **Option A is frozen** — fix the
+certificate, because the accepted identity is correctly detecting a real defect. Decoupling A2a' from the
+accepted path is retained only as a contingency with the single trigger of §8.2 going live.
+
+**Do not revert AA1.** R5 §9 proves the regression predates it; `SurfaceCutGraph.cpp` is unchanged across that
+interval. AA8's "reverts AA1" clause was overbroad and is withdrawn: **prefix re-proof is a detection boundary,
+not a blame boundary.**
+
+Stable accounting **43 / 14 / 29**, produced-witness debt **5**, M3 packages **62**.
+`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+
+### Superseded — the R5 regression as reported (retained for provenance)
 
 `M3-CP4c-2-TB-X2-R5-REV` is **COMPLETE / REVIEW GREEN / ACCEPTED PRODUCT REGRESSION CONFIRMED / REPLAN REQUIRED**. Read `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md` in full before planning.
 
@@ -95,7 +146,7 @@ The prior R2 review statement that `sourceEdgeBarrier` is the normative cellular
 
 Stable accounting is **43 events / 14 categories / 29 recurrences**, produced-witness debt **5**, M3 packages **62**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
-**Exact next is definition/replanning only: `M3-CP4c-2-DEFN-R1`, measures AB0–AB9.** Freeze one pre-region exact representation of the actual `FieldAlignedCurveNetwork ∪ cutEdges` complement; reuse/refactor accepted CP4ab fragment/orbit authority or an equivalent exact arrangement; define candidate-cut updates and local/global certification in that one complex; prove or explicitly stop on cut-selection completeness; and redefine D1/D2 as an independent same-semantic-complex oracle. Run no Directional runtime, compile, build, package, selector 357/358, cumulative gate, mechanical/C2, or CP4c-3. Do not start corrective CB4 until DEFN-R1 is durably complete.
+At the close of R5-REV the next turn was definition-only `M3-CP4c-2-DEFN-R1`; **that turn is complete** and AB0-AB9 are discharged. Exact next is **`M3-CP4c-2-CB4`** under AC0-AC9.
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
@@ -316,23 +367,27 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 - R5-CAND-01 is active/non-stable for the accepted-prefix regression. R4-CAND-01 is active with corrective source compiled; R4-CAND-02 is localized with corrective source compiled; R4-CAND-03 is downstream/out-of-scope; R2-CAND-02 remains active until sphere measurement; X2 CAND-04 remains active/unlocalized until D2.
 - `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate runtime has not begun. Frozen candidate selectors remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…4fbe62`.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **62**.
-- **Exact next is `M3-CP4c-2-TB-X2-R5-REV`**, independent evidence-only review; run no new Directional runtime and stop at the review boundary.
+- **Exact next is `M3-CP4c-2-CB4`**, Code + Build, runtime-free, under measures AC0-AC9.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent independent Review guidance; evidence-only, no Directional runtime
+- turn-based-coding-agent `references/turns/CB.md`; `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_EXEC_Artifact_Only_Evidence.md` — current raw R5 stop and control-plane limitation.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` — frozen AA8 ordering/stop contract.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` — AA0-AA9 authorization and the predecessor candidate state.
-4. Result/log artifacts `9708817991 / 9708818239`; no new runtime in review.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R5-CAND-01 plus R4-CAND-01/02/03, R2-CAND-02, X2 CAND-04.
-6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` and `Architecture_M3_CP4c2_TB_X2_Plan.md` only as needed to adjudicate ownership; do not execute D2.
-7. `TODO.md` / `CHANGELOG.md` — current state/accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — **the authorizing record**; §4 the machinery to lift, §5 the conventions, §6 admissible cuts, §8 completeness, §11 AC0-AC9.
+2. `include/directional/geometry/GlobalTopologyPlan.h:33-47` — `GlobalTopologyOrientedArc` and `GlobalTopologyArc`, the arc/dart types.
+3. `src/geometry/GlobalTopologyPlan.cpp:1168-1260` — `FaceWalkResult` and `walk_graph_faces`, the face-orbit computation AC1 lifts; and `:1534-1660` — `fragmentOrbits`, `edgeOrbitEvidence`, `drafts`, `draftByOrbit`, the CP4ab fragment representation.
+4. `src/geometry/SurfaceCutGraph.cpp:109-134` (`network_barriers`, `build_components` — the withdrawn proxy) and `:444-476` (the mixed global certificate AC2 replaces).
+5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md` — the regression diagnosis and AB0-AB9 this definition discharges.
+6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §§5.1-5.3 still binding, §3's torus theorem, Amendment 12; **read its supersession note first**.
+7. `.agents/Directional/LESSONS.md` 22d, 22e, 22k, 22m — the representation-conversion rules this checkpoint exists to satisfy.
+8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `PR8-R043 / M3-CP4c2-R001`, `R5-ORCH-01`, R4-CAND-01/02/03, R2-CAND-02, X2 CAND-04.
+9. `TODO.md` / `CHANGELOG.md` — current state/accounting.
+
+Do not revert AA1. Do not run a cumulative gate, R6, 357/358, mechanical/C2, or CP4c-3 in CB4.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

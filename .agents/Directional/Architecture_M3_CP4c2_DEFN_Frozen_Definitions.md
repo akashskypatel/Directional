@@ -1,5 +1,22 @@
 # M3-CP4c-2 DEFN — Frozen Definitions: closed-surface cut-graph authority for A2b
 
+> ## SUPERSEDED IN PART — read this first
+>
+> **`M3-CP4c-2-DEFN-R1` (2026-08-29) withdraws §5.4's construction guidance.** The whole-source-face /
+> source-edge-barrier partition is **no longer cellularity authority**; it survives only as a cut-proposal
+> heuristic and diagnostic provenance, and every publication of it must say so. The normative complex is the
+> **actual embedded graph** of `FieldAlignedCurveNetwork ∪ cutEdges`, represented by the arc / dart / rotation /
+> face-orbit machinery A2b already contains. See `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`,
+> **Amendment 13**.
+>
+> **§§5.1–5.3 remain binding and unchanged**, as do §§1–4 and **Amendment 12**, whose precondition-versus-repair
+> boundary is unaffected. §3's torus theorem stands and was independently reconfirmed by R4.
+>
+> Cause: §5.4 step 1 directed the implementation to compute complement components over whole source faces
+> separated by source edges — resurrecting the representation class CP4ab had already rejected in
+> `PR8-R042 / M3-CP4b-R001` and recorded in `LESSONS.md` 22d/22e. That produced the stable regression
+> `PR8-R043 / M3-CP4c2-R001` at accepted ordinal 305.
+
 ## 0. Turn type and verdict
 
 `M3-CP4c-2-DEFN` is **COMPLETE / DEFINITION-ONLY**.

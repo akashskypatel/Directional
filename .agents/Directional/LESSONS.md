@@ -203,6 +203,23 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     interior-singularity check. Both guards were correct; the ordering made one unreachable. When a
     negative regresses to a different rejection code, suspect ordering before suspecting the contract —
     and prefer moving the shadowed check earlier over weakening the test to accept whatever arrives.
+22k. **A review that names a normative representation must cite the architecture that settles it, not the
+    code path that exhibits the symptom.** CP4c-2's R2 review declared the whole-source-face barrier partition
+    normative on three grounds that were each individually true — it is what one A2b traversal consumes, the
+    frozen definition had committed to source-edge cuts, and `V - E + F = chi` holds inside it — and
+    collectively wrong. The traversal it cited was a seeding fallback, not A2b's region authority; cut
+    *provenance* says nothing about certification *complex*; and internal self-consistency is exactly what a
+    coherent computation over the wrong object looks like. `PR8-R042` had already adjudicated the same
+    representation question on the same witness, and lessons **22d** and **22e** recorded the answer. Reading
+    `LESSONS.md` in full is mandatory start-of-turn step 5; the control existed and was not applied. **Before
+    freezing a representation, search for a prior checkpoint that already adjudicated it — a stable regression
+    ID in the tracker is the cheapest place to look.**
+22m. **Self-consistency inside a named complex is not evidence that the complex is the right one.** Both the
+    actual embedded graph (`9/11/3`) and the source-edge-barrier proxy (`10/11/2`) satisfy `V - E + F = chi`
+    on the accepted two-ring. An oracle can therefore be arithmetically flawless and still certify the wrong
+    object, and a "self-consistency" assertion will never detect it. Pair every such check with an
+    independent statement of *which* semantic object is being measured, and make the complex label a published
+    field so a later reader can tell the two apart.
 22e. **Converting a representation converts every consumer of it, or none.** CP4 moved region ownership
     from whole source faces to face fragments and left the disc certificate and its oracle computing on
     whole faces and whole edges — so the next gate failed one level down, at connectivity instead of

@@ -9,7 +9,23 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
-### 2026-08-29 — `M3-CP4c-2-TB-X2-R5-REV`: R5 accepted red is stable RP-01 regression; whole-face cellularity authority withdrawn
+### 2026-08-29 — `M3-CP4c-2-DEFN-R1`: the actual embedded graph, and a withdrawn reviewer ruling
+
+Definition-only. No Directional runtime, build, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`. `selected_r2_branch` and `selected_gate` both remain **NONE**.
+
+- **Amendment 13 freezes the normative complex as the actual embedded graph** of `FieldAlignedCurveNetwork ∪ cutEdges` — vertices are network nodes plus cut-created nodes, edges are network arcs plus cut arcs, faces are the **dart orbits** under the node rotation system. DEFN §5.4's whole-source-face construction guidance is **withdrawn** as cellularity authority and survives only as a cut-proposal heuristic and diagnostic provenance. §§5.1–5.3, Amendment 12, and §3's torus theorem all remain binding.
+- **Nothing new is invented.** `GlobalTopologyArc`, `GlobalTopologyOrientedArc`, `GlobalTopologyNodeRotation` and `walk_graph_faces(arcs, rotations)` already exist in A2b and already compute this complex. The corrective is a **lift into one shared pre-region authority**, consumed by both A2a′ and A2b. **A second implementation is prohibited** — `LESSONS.md` 22e — and a second implementation is precisely how this checkpoint arrived here.
+- **A reviewer error is owned precisely.** The R2 review declared the source-edge barrier complex normative on three grounds that were each individually true and collectively wrong: the traversal it cited (`GlobalTopologyPlan.cpp:1694-1704`) is a **seeding fallback**, not A2b's region authority; the frozen commitment to source-edge *cuts* says nothing about the certification *complex*; and `V − E + F = χ` holding inside the proxy is exactly what a coherent computation over the wrong object looks like. `PR8-R042 / M3-CP4b-R001` had already adjudicated the same representation question on the same two-ring witness, and lessons **22d** and **22e** recorded the answer. Reading `LESSONS.md` in full is mandatory start-of-turn step 5: **the control existed and was not applied.**
+- **Verified independently rather than accepted:** actual embedded graph `9 − 11 + 3 = 1 = χ`; source-edge-barrier proxy `10 − 11 + 2 = 1 = χ`; the producer mixes them as `9 − 11 + 2 = 0 ≠ 1`. The actual `F = 3` is corroborated by retained CP4ab evidence — `walk.orbits.size() = 4` with exactly one exterior, `drafts.size() = 3` — so it is a measured product quantity, not a reconstruction.
+- **Two conventions must be derived, not guessed**, and they are where a plausible guess yields a wrong certificate: the **exterior-orbit exclusion** on surfaces with boundary, and the **disconnected-graph correction term** — the torus's 48 arcs over 48 degree-2 nodes form **four components**, so unqualified `V − E + F = χ` is false there before any cut is considered, and mistaking that for non-cellularity would be right for the wrong reason.
+- **A new frozen constraint:** a cut is a source edge promoted to a graph arc, so **a source edge crossed by a trace at an interior point is not an admissible cut** — promoting it would subdivide an immutable trace, which Amendment 12 forbids.
+- **Completeness is split honestly rather than papered over.** Provable for trace-free non-disc components, which covers the torus entirely since it has zero traces; **not proved** for trace-crossed ones, where a typed `NoAdmissibleCutForNonDiscComponent` stop is required and hitting it is a **return to definition**, never a widened admissibility or a partial cut set.
+- **Option A is frozen for the accepted regression** `PR8-R043 / M3-CP4c2-R001`: fix the certificate, because ordinal 305 is correctly detecting a real defect. Decoupling A2a′ from the accepted path is retained only as a contingency with one stated trigger.
+- **AA1 must not be reverted.** R5 §9 shows the regression predates it; AA8's "reverts AA1" clause was overbroad and is withdrawn — **prefix re-proof is a detection boundary, not a blame boundary.**
+- Lessons **22k** and **22m** added; 22-series labels de-duplicated after a collision.
+- Stable accounting **43 / 14 / 29**, debt **5**, M3 packages **62**.
+
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R5-REV`: R5 accepted red is stable RP-01 regression; whole-face cellularity authority withdrawn
 
 **Independent review/planning only. No Directional runtime, compile, package, benchmark, product/test/fixture/selector mutation, or gate execution.** Review record: `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`.
 

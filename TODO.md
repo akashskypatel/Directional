@@ -21,7 +21,46 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-DEFN-R1` — actual embedded-graph cut-cellularity redefinition
+## Current focus — `M3-CP4c-2-CB4` — actual embedded-graph certification, under measures **AC0–AC9**
+
+**`M3-CP4c-2-DEFN-R1` is COMPLETE / DEFINITION-ONLY.** Record:
+`Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`. **Amendment 13** supersedes DEFN §5.4's construction
+guidance; §§5.1–5.3 and **Amendment 12** remain binding, and §3's torus theorem stands.
+
+**The normative complex is the actual embedded graph** of `FieldAlignedCurveNetwork ∪ cutEdges` — vertices are
+network nodes plus cut-created nodes, edges are network arcs plus cut arcs, faces are the **dart orbits** under
+the node rotation system. **Nothing new is invented:** `GlobalTopologyArc`, `GlobalTopologyOrientedArc`,
+`GlobalTopologyNodeRotation` and `walk_graph_faces` already exist in A2b. **AC1 lifts them into one shared
+pre-region authority consumed by both A2a′ and A2b — a second implementation is prohibited (LESSONS 22e).**
+
+**The R2 normative-complex ruling was mine and it was wrong.** Its three grounds were each true and
+collectively wrong: the traversal it cited is a seeding fallback, not A2b's region authority; cut *provenance*
+says nothing about certification *complex*; and self-consistency is what a coherent computation over the wrong
+object looks like. `PR8-R042` had already adjudicated this on the same witness and `LESSONS.md` 22d/22e
+recorded the answer — the control existed and I did not apply it. New lessons **22k** and **22m**.
+
+**Two conventions will decide correctness and must be derived, not guessed** (§5): the exterior-orbit exclusion
+on surfaces with boundary — the two-ring's 4 orbits minus 1 exterior gives `F = 3` — and the **disconnected-graph
+correction term**, because the torus's 48 arcs over 48 degree-2 nodes form **4 components** and unqualified
+`V − E + F = χ` is false there before any cut is considered.
+
+**New frozen constraint (§6):** a cut is a source edge promoted to a graph arc, so **a source edge crossed by a
+trace at an interior point is not an admissible cut** — promoting it would subdivide an immutable trace, which
+Amendment 12 forbids. **§8 splits completeness honestly:** provable for trace-free non-disc components, which
+covers the torus entirely (0 traces); **not proved** for trace-crossed ones, where **AC5** requires a typed
+`NoAdmissibleCutForNonDiscComponent` stop and **AC7** makes it a return to definition, not a judgement call.
+
+**Option A is frozen for the accepted regression** `PR8-R043 / M3-CP4c2-R001`: fix the certificate, because
+ordinal 305 is correctly detecting a real defect. Decoupling A2a′ from the accepted path is retained only as a
+contingency with one trigger — §8.2 going live.
+
+**AA1 must not be reverted**; R5 §9 shows the regression predates it. Prefix re-proof is a detection boundary,
+not a blame boundary.
+
+Stable accounting **43 / 14 / 29**, produced-witness debt **5**, M3 packages **62**.
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+
+## Superseded focus — `M3-CP4c-2-TB-X2-R5` regression (retained for provenance)
 
 `M3-CP4c-2-TB-X2-R5-REV` is **COMPLETE / REVIEW GREEN / ACCEPTED PRODUCT REGRESSION CONFIRMED / REPLAN REQUIRED**. R5's accepted-prefix red is admissible for semantic diagnosis: ordinals 1-304 pass and accepted ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` fails first at `SurfaceCutGraph::make(...)=CellularityNotEstablished`. Missing R5 postflight is retained as orchestration candidate `M3-CP4c2-TB-X2-R5-ORCH-01`; no mutation/postflight success is inferred.
 
@@ -31,7 +70,7 @@ The R2 statement that `sourceEdgeBarrier` is the normative complex is withdrawn.
 
 Stable accounting is now **43 events / 14 categories / 29 recurrences**, produced-witness debt **5**, M3 packages **62**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; CP4c-2 remains unaccepted.
 
-**Exact next: `M3-CP4c-2-DEFN-R1`, definition/replanning only, measures AB0-AB9 in `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`.** It must freeze one pre-region exact representation of the actual `FieldAlignedCurveNetwork ∪ cutEdges` complement, reuse/refactor CP4ab fragment/orbit authority or an equivalent exact arrangement, define cut updates and disc/global certification in that same complex, prove or explicitly stop on cut-selection completeness, and define an independent same-semantic-complex D1/D2 oracle. Run no Directional runtime, build, compile, package, selector 357/358, cumulative gate, mechanical/C2, or CP4c-3. Do not start a corrective CB until DEFN-R1 is complete.
+**That definition turn is complete.** AB0–AB9 are discharged by `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`, which freezes the actual embedded-graph complex, the reuse of A2b's arc/rotation/face-walk machinery, admissible-cut semantics, single-complex certification, the completeness split with its typed stop, and the independent oracle. **Exact next is `M3-CP4c-2-CB4` under measures AC0–AC9.**
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R4-EXEC` stop (retained for provenance)
 
@@ -228,12 +267,15 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-2-TB-X2-R3-REV` — **COMPLETE / REVIEW GREEN.** Upheld the stop and **localized** `R3-CAND-01` as test-side: `cp4c_build_rail_authority` diverges from production on the cross field (`finalize_surface_cell_raw_cross_field` vs `products.crossField`) and on the hard-feature edge set (locally rebuilt feature map vs `tracingOptions.hardFeatureEdges`) — and the torus is the one witness where that set is non-empty. Opened `R3-CAND-02` for the abort-in-loop gating that produced zero publications and discarded the sphere. Measures **Z10–Z19**. Record: `Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md`.
 - [x] `M3-CP4c-2-CB2-DIAG-R2` — **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.** Semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`; GMP compile run/job `33226609913 / 99031482464`; immutable package `9707091209`. Z10-Z19 implementation is compiled; runtime closure remains deferred to R4. Report: `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md`.
 - [x] `M3-CP4c-2-TB-X2-R4` — **COMPLETE.** EXEC on package `9707091209`, run/job `33228460953 / 99036688477`: torus published `48/48`, `barrierF=4`, `oracleSelfConsistent=true`, `networkOnlyCellular=false` with cut graph **and plan** available; sphere a typed construction failure with all snapshots unavailable; two-ring self-consistent. Stopped `STOP_EVIDENCE_CONFLICT` on a byte-identical duplicate sphere record. REV upheld the stop, ruled the evidence admissible, closed three candidates and localized the snapshot defect.
-- [ ] `M3-CP4c-2-CB3-DIAG` — **NEXT / CODE + BUILD / RUNTIME-FREE.** Under **AA0–AA9**: **AA1** publish each product snapshot immediately after that product is built (`RemeshPipeline.cpp`) — **the only `src/` change authorized**, changing no `fail_surface_cells` call, failure code, stage string, control flow, or build ordering; **AA2** confirm byte-identity of the two sphere lines from `d1-records.txt` or the R4 evidence is void; **AA3** publish a complete sphere record; **AA4** run D2 and localize `CellularityNotEstablished` to 419/437/474; **AA5** one record per witness with a machine-checkable count; **AA6** per-component χ and boundary cycles; **AA7** classify the torus `tracing` failure, do not fix it.
-- [ ] `M3-CP4c-2-TB-X2-R5` — **BLOCKED ON CB3-DIAG.** **AA8** is binding: because AA1 touches production, re-prove accepted prefixes **316/346/353/355** before crediting any CP4c-2-local identity. A regression in any accepted prefix is a stop and reverts AA1.
+- [x] `M3-CP4c-2-CB3-DIAG` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Under **AA0–AA9**: **AA1** publish each product snapshot immediately after that product is built (`RemeshPipeline.cpp`) — **the only `src/` change authorized**, changing no `fail_surface_cells` call, failure code, stage string, control flow, or build ordering; **AA2** confirm byte-identity of the two sphere lines from `d1-records.txt` or the R4 evidence is void; **AA3** publish a complete sphere record; **AA4** run D2 and localize `CellularityNotEstablished` to 419/437/474; **AA5** one record per witness with a machine-checkable count; **AA6** per-component χ and boundary cycles; **AA7** classify the torus `tracing` failure, do not fix it.
+- [x] `M3-CP4c-2-TB-X2-R5` — **COMPLETE / ACCEPTED-PREFIX REGRESSION.** AA8's re-proof exposed accepted ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` failing at `SurfaceCutGraph::make = CellularityNotEstablished`. Promoted to stable **`PR8-R043 / M3-CP4c2-R001`**, `AUTHORITY_DOMAIN_CONFLATION / RP-01`; accounting **42/14/28 → 43/14/29**. Postflight was suppressed by a shell `errexit` leak (`R5-ORCH-01`). **AA8's "reverts AA1" clause was overbroad and is withdrawn:** R5 §9 proves the regression predates AA1; prefix re-proof is a detection boundary, not a blame boundary.
+- [x] `M3-CP4c-2-DEFN-R1` — **COMPLETE / DEFINITION-ONLY.** Froze the actual embedded-graph complex and **Amendment 13**; withdrew DEFN §5.4's whole-source-face construction guidance; named the existing A2b arc/dart/rotation/orbit machinery to lift rather than reimplement; froze admissible-cut semantics (a trace-crossed source edge is **not** an admissible cut); split completeness — provable trace-free, typed stop otherwise; specified the independent oracle. Owned the R2 normative-complex error; lessons **22k**, **22m**. Record: `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`.
+- [ ] `M3-CP4c-2-CB4` — **NEXT / CODE + BUILD / RUNTIME-FREE.** Under **AC0–AC9**: **AC1** lift the arc/rotation/face-walk machinery into one shared pre-region authority — **no second implementation**; **AC2** convert every consumer in one package; **AC3** derive and publish the exterior-orbit and disconnected-graph conventions; **AC4** admissible cuts, exactly; **AC5** the typed `NoAdmissibleCutForNonDiscComponent` stop; **AC6** derive the two-ring's `9/11/3` from authority, never encoded; **AC7** §8.2 is a return to definition, not a judgement call. Do **not** revert AA1.
+- [ ] `M3-CP4c-2-TB-X2-R6` — **BLOCKED ON CB4.** Fresh artifact-only diagnostic, **not** a cumulative gate: re-prove accepted prefixes including ordinal 305, publish the independent actual-complex oracle with term-by-term producer comparison, then attempt D2. Fix `R5-ORCH-01` first — postflight must run from an unconditional finalization or trap path.
 - [x] `M3-CP4c-2-TB-X2-R2` (superseded row) — **COMPLETE / ARTIFACT-ONLY DIAGNOSTIC CONTROL STOP / GATE BLOCKED.** Consume immutable package `9702321260` from source `232ac459b13657529e064272a75c5583770a5963` without rebuild. EXEC runs D1 and D2 separately and preserves complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications; REVIEW adjudicates Y1–Y4 and selects exactly one frozen Y5 corrective branch or stops. **No selector is selected and `TB-GATE-EXEC` is not authorized.** Plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; latest diagnostic build authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / immutable GMP package `9707091209`. **Exact next is `M3-CP4c-2-CB3-DIAG`, runtime-free under measures AA0–AA9, with `src/` opened only for AA1's snapshot placement; no cumulative gate runtime is authorized.**
+Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting is now **43 / 14 / 29** after `PR8-R043 / M3-CP4c2-R001`, produced-witness debt **5**, M3 packages **62**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted and now carries an **active accepted-prefix regression at ordinal 305**. **Exact next is `M3-CP4c-2-CB4`, runtime-free under measures AC0–AC9, implementing the actual embedded-graph complex; no cumulative gate runtime is authorized.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
