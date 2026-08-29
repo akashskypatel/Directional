@@ -1,5 +1,0 @@
-# M3-CP4c-2-TB-X2-R7-EXEC closeout temporary-state inventory
-.agents/Directional/turn-payloads/m3-cp4c2-r7-exec-harness.py
-.agents/Directional/turn-payloads/m3-cp4c2-r7-exec.sh
-.agents/connector-triggers/m3-cp4c2-r7-exec-20260829.txt
-.agents/connector-triggers/source-snapshot/r7-exec-start-20260829.txt
