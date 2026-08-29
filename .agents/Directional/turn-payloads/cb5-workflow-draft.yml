@@ -1,0 +1,37 @@
+name: M3 CP4c2 CB5 Source Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb5-source-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c2-cb5-source-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-cb5-source-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply-drive-patch:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1K3OkloOm59AxgQL0q9gbkSqypt3aK2mn
+      patch_sha256: 3106b52029f546262e86e734a430e3c31ad213139bfb0d358e5af31f88e6a8c1
+      base_sha: 0050b931ec1a3a62c87b7c8b2c87dd88246fd74e
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "fix(M3-CP4c-2): split cut-graph semantic and provenance identity"
+    secrets: inherit
