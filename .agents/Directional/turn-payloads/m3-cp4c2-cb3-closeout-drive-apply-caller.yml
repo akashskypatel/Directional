@@ -1,0 +1,39 @@
+name: Temporary M3 CP4c2 CB3 Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-apply-m3-cp4c2-cb3-closeout-20260828.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: temp-m3-cp4c2-cb3-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: drive-apply-m3-cp4c2-cb3-closeout
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 15pMp32TSJ_p0hfi8CSdfaI_yNJW6WtoD
+      patch_sha256: be82833f1877b4c552e434ab9475e51bba0cd1996347887a7216a13e2edb4abe
+      base_sha: 76d757aab0ce18df09ce2823302d2dc224965187
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close out M3-CP4c-2-CB3-DIAG"
+      retention_days: 7
+    secrets: inherit
