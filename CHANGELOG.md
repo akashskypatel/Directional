@@ -1,3 +1,17 @@
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R5-EXEC`: AA8 accepted-prefix semantic red at ordinal 305
+
+Artifact-only R5 run/job `33232106030 / 99046593525` consumed immutable GMP package `9708324052` from source
+`76d757aab0ce18df09ce2823302d2dc224965187`. Package/source/GMP and all six frozen selector-hash preflight checks
+passed. AA8 then ran accepted identities in fresh processes: 1-304 PASS; ordinal 305
+`GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selected once and failed after
+`SurfaceCutGraph::make` returned `CellularityNotEstablished`. The frozen stop rule prevented ordinals 306-355, AA2,
+D1, D2, 357/358, cumulative gate, and benchmarks from running. Result/log artifacts `9708817991 / 9708818239`,
+SHA-256 `bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 /
+b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`. A temporary shell-control defect exited
+after the semantic red before planned postflight/summary emission; this limitation is preserved for independent
+review. New non-stable candidate `M3-CP4c2-TB-X2-R5-CAND-01`; stable accounting remains **42 / 14 / 28**, debt **5**,
+M3 packages **62**. Exact next: independent `M3-CP4c-2-TB-X2-R5-REV`; no new runtime.
+
 ## 2026-08-29 — `M3-CP4c-2-TB-X2-R4-EXEC`: valid semantic red, D1 evidence-conflict stop
 
 Artifact-only R4 run/job `33228460953 / 99036688477` consumed immutable GMP package `9707091209` from source

@@ -83,38 +83,34 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R5-EXEC` — artifact-only verification of CB3-DIAG
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R5-REV` — independent review of R5 accepted-prefix red
 
-`M3-CP4c-2-CB3-DIAG` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Read
-`Architecture_M3_CP4c2_CB3_DIAG_Code_Build_Report.md` and
-`Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` before execution.
+`M3-CP4c-2-TB-X2-R5-EXEC` is **COMPLETE AT THE FROZEN AA8 STOP / ACCEPTED-PREFIX SEMANTIC RED**. Read
+`Architecture_M3_CP4c2_TB_X2_R5_EXEC_Artifact_Only_Evidence.md` and the frozen
+`Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` before review.
 
-Current immutable build authority is semantic/test source `76d757aab0ce18df09ce2823302d2dc224965187`, compile
-run `33230423139`, full GMP package `9708324052` / `48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a`,
-compile log `9708324292` / `d200b4210a1adc204fd2fd90df07727c73c8c35c65110d99233ea44d9bd5d0fd`, source archive
-`f16141613e877c78746548596449ef494fb9f4b384736526d74eaaf54a0a9a2d`. No binary was executed in CB3.
+Runtime run/job `33232106030 / 99046593525` consumed immutable GMP package `9708324052` from semantic/test source
+`76d757aab0ce18df09ce2823302d2dc224965187`. Package/source/GMP and all six selector hashes passed preflight. AA8
+then ran accepted identities in fresh processes: ordinals 1-304 PASS; ordinal 305
+`GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selected once and failed after
+`SurfaceCutGraph::make` reported `CellularityNotEstablished`. The frozen stop rule prevented 306-355, AA2, D1, D2,
+357/358, cumulative gate, and benchmarks from running.
 
-CB3 implements only:
+Result/log artifacts are `9708817991 / 9708818239`, SHA-256
+`bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 /
+b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`. A temporary shell harness control bug
+re-enabled `set -e` before returning the nonzero identity, so the shell exited before planned postflight inventories
+and summary emission. Preserve that limitation: R5-REV owns whether the semantic evidence is admissible as-is or
+requires a bounded recovery. Do not silently infer a postflight.
 
-- **AA1:** `RemeshPipeline.cpp` retains each product snapshot immediately after that product succeeds; no fail call/code/stage/control flow/build order changes.
-- **AA5:** D1 emits each Y1 witness record once, final assertion names/statuses only, and a separate machine-checkable publication-count record enforces 1/1/1/3.
-- the required LESSONS entry that a premise-discharging result must be reported as a finding.
+New candidate `M3-CP4c2-TB-X2-R5-CAND-01` is ACTIVE / ACCEPTED-PREFIX REGRESSION / NON-STABLE / REVIEW REQUIRED.
+At EXEC boundary its initiating locus is `SurfaceCutGraph::make(...)=CellularityNotEstablished`; the later variant
+exception is secondary. Review must classify product vs witness vs test authority and then select only the bounded
+successor justified by preserved evidence. Stable accounting remains **42 / 14 / 28**, debt **5**, packages **62**.
 
-Frozen hashes remain: 316 `601ce2b6…0193c`, 346 `20d3b0b1…3e46a`, 353 `51ff96d7…ac6a5`, 355
-`e9d88f11…afeaa`, 357 `b896d0db…64dc70`, 358 `6eda3aad…4fbe62`. `selected_r2_branch=NONE`,
-`selected_gate=NONE`, `gate_execution_authorized=false`.
-
-R5-EXEC order is binding:
-
-1. immutable package/source preflight and six selector hashes;
-2. **AA8 accepted-prefix re-proof first:** 316 -> 346 -> 353 -> 355; any regression stops before local credit and routes to review;
-3. **AA2 prior-artifact check:** the two sphere Y1 lines from R4 artifact `9707662462` must be byte-identical or the admissibility ruling is void and R5 stops;
-4. D1 exactly once: three Y1 records plus one publication-count record; measure the prescribed sphere from retained pipeline products, publish per-component topology, and independently state whether the torus still derives a plan;
-5. if D1 evidence is structurally admissible, D2 exactly once: localize `CellularityNotEstablished` to 419/437/474 with the owning term-by-term certificate;
-6. immutable postflight. No benchmark, configure, compile, relink, repair, generated discovery, source/test/fixture/selector mutation, or 357/358 gate runtime.
-
-R5-EXEC preserves raw evidence only. It **must not select Y5 or 357/358**. After its evidence is durably preserved,
-exact next is independent `M3-CP4c-2-TB-X2-R5-REV`; the implementation loop stops completely at that boundary.
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. R5-REV is evidence-only: run no
+new Directional runtime, do not infer AA2/D1/D2, do not execute 357/358 or a cumulative gate, and do not start a
+corrective CB, mechanical/C2, or CP4c-3 unless the review durably authorizes a later successor.
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
@@ -195,6 +191,17 @@ CP4c-3 remains blocked until CP4c-2 closure.
 - exact TB plan: `Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md`.
 
 CB3 supplies compiled observability authority only. It does not adjudicate the sphere, select Y5, execute 357/358, or accept CP4c-2.
+
+### M3-CP4c-2 TB-X2-R5-EXEC — current raw runtime evidence, independent review pending
+
+- runtime run/job: `33232106030 / 99046593525` on source/package `76d757aab0ce18df09ce2823302d2dc224965187 / 9708324052`;
+- immutable/GMP/six-selector preflight PASS; 29 package and 539 source files inventoried before runtime;
+- AA8: ordinals 1-304 PASS, ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` RED with initiating `CellularityNotEstablished`; 306-355 unexecuted;
+- AA2/D1/D2/357/358/cumulative gate/benchmark all NOT RUN due the frozen AA8 stop;
+- result/log: `9708817991 / 9708818239`, SHA-256 `bda50fcd…2556e8 / b9e150de…8c9688`;
+- shell control bug prevented planned postflight/summary emission after the semantic red; R5-REV owns evidence admissibility and root-cause classification;
+- evidence record: `Architecture_M3_CP4c2_TB_X2_R5_EXEC_Artifact_Only_Evidence.md`;
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
 ### M3-CP4c-2 TB-X2-R4 — current reviewed runtime evidence
 
@@ -315,31 +322,30 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN through CB3-DIAG and R4 review are complete; CP4c-2 remains runtime-unaccepted.
+- CP4c-2 DEFN through CB3-DIAG, R4 review, and R5-EXEC are complete; CP4c-2 remains runtime-unaccepted; R5-REV is pending.
 - Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**.
 - Current build/package authority is `76d757aab0ce18df09ce2823302d2dc224965187` / package `9708324052`.
-- Current reviewed runtime evidence remains R4 run/job `33228460953 / 99036688477`: torus proves the cut graph can drive A2b to a GlobalTopologyPlan and then fails downstream at tracing; sphere snapshot visibility is an AA1-corrected observability defect pending R5 runtime; two-ring is self-consistent.
-- R4-CAND-01 is active with corrective source compiled; R4-CAND-02 is localized with corrective source compiled; R4-CAND-03 is downstream/out-of-scope; R2-CAND-02 remains active until sphere measurement; X2 CAND-04 remains active/unlocalized until D2.
+- Current raw runtime evidence is R5 run/job `33232106030 / 99046593525`: accepted ordinals 1-304 pass, ordinal 305 fails `SurfaceCutGraph::make` with `CellularityNotEstablished`, and the frozen AA8 stop prevents AA2/D1/D2 and all gate runtime. Independent R5-REV is pending.
+- R5-CAND-01 is active/non-stable for the accepted-prefix regression. R4-CAND-01 is active with corrective source compiled; R4-CAND-02 is localized with corrective source compiled; R4-CAND-03 is downstream/out-of-scope; R2-CAND-02 remains active until sphere measurement; X2 CAND-04 remains active/unlocalized until D2.
 - `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate runtime has not begun. Frozen candidate selectors remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…4fbe62`.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **62**.
-- **Exact next is `M3-CP4c-2-TB-X2-R5-EXEC`**, artifact-only on package `9708324052`; after raw EXEC evidence, exact next is independent `M3-CP4c-2-TB-X2-R5-REV` and the implementation loop stops at that boundary.
+- **Exact next is `M3-CP4c-2-TB-X2-R5-REV`**, independent evidence-only review; run no new Directional runtime and stop at the review boundary.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TB.md` / execution-only TB guidance; artifact-only, no source mutation
+- turn-based-coding-agent independent Review guidance; evidence-only, no Directional runtime
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_CB3_DIAG_Code_Build_Report.md` — exact semantic/build authority and AA0-AA9 disposition.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` — binding R5 execution order and stop rules.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` — AA0-AA9 authorization and predictions.
-4. Immutable package `9708324052`; no rebuild. Prior R4 result artifact `9707662462` is read only for AA2 byte identity.
-5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Plan.md` §3 — D2's 419/437/474 localization meanings.
-6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — A2a' contract and X6 idempotence.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R4-CAND-01/02/03, R2-CAND-02, X2 CAND-04.
-8. `TODO.md` / `CHANGELOG.md` — current state/accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_EXEC_Artifact_Only_Evidence.md` — current raw R5 stop and control-plane limitation.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` — frozen AA8 ordering/stop contract.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` — AA0-AA9 authorization and the predecessor candidate state.
+4. Result/log artifacts `9708817991 / 9708818239`; no new runtime in review.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R5-CAND-01 plus R4-CAND-01/02/03, R2-CAND-02, X2 CAND-04.
+6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` and `Architecture_M3_CP4c2_TB_X2_Plan.md` only as needed to adjudicate ownership; do not execute D2.
+7. `TODO.md` / `CHANGELOG.md` — current state/accounting.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

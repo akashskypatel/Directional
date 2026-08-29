@@ -21,43 +21,33 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R5-EXEC` — artifact-only verification of CB3-DIAG
+## Current focus — `M3-CP4c-2-TB-X2-R5-REV` — independent review of accepted-prefix red
 
-`M3-CP4c-2-CB3-DIAG` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Semantic/test source
-`76d757aab0ce18df09ce2823302d2dc224965187` implements only AA1 snapshot retention, AA5 publication
-hygiene, and the required LESSONS entry. No Directional runtime, benchmark, 357/358 selector gate, cumulative
-gate, or acceptance attempt occurred.
+`M3-CP4c-2-TB-X2-R5-EXEC` is **COMPLETE AT THE FROZEN AA8 STOP / ACCEPTED-PREFIX SEMANTIC RED** on
+run/job `33232106030 / 99046593525`, consuming immutable GMP package `9708324052` from semantic/test source
+`76d757aab0ce18df09ce2823302d2dc224965187`. Immutable package/source/GMP and all six selector-hash preflight
+checks passed.
 
-Authoritative build evidence:
+AA8 executed accepted identities in fresh processes and stopped at the first regression exactly as frozen: ordinals
+1-304 selected once and passed; ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph`
+selected once and exited `1` after `SurfaceCutGraph::make` reported `CellularityNotEstablished`. Ordinals 306-355,
+AA2, D1, D2, selector 357, selector 358, the cumulative gate, and benchmarks were **NOT RUN**. No CP4c-2-local
+credit was earned.
 
-- compile run `33230423139` — changed-owner and eight-target GMP jobs GREEN;
-- immutable package `9708324052` / `48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a`;
-- compile log `9708324292` / `d200b4210a1adc204fd2fd90df07727c73c8c35c65110d99233ea44d9bd5d0fd`;
-- packaged source archive `f16141613e877c78746548596449ef494fb9f4b384736526d74eaaf54a0a9a2d`;
-- all eight standard targets compile/link with GMP/GMPXX; manifest/source-status checks PASS; `runtimeExecution=false`.
+Raw result/log artifacts are `9708817991 / 9708818239`, SHA-256
+`bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 /
+b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`. The temporary shell harness re-enabled
+`set -e` before returning the red identity, so it exited before emitting the planned postflight inventories and
+summary. That control-plane limitation is preserved rather than papered over; independent review owns evidence
+admissibility.
 
-Frozen selector authority is unchanged: first-316 `601ce2b6…0193c`, first-346 `20d3b0b1…3e46a`, first-353
-`51ff96d7…ac6a5`, accepted 355 `e9d88f11…afeaa`, frozen 357 `b896d0db…64dc70`, frozen 358
-`6eda3aad…4fbe62`. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+New non-stable tracker candidate `M3-CP4c2-TB-X2-R5-CAND-01` records the accepted-prefix regression. Stable
+accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **62**.
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. CP4c-2 remains unaccepted.
 
-Exact next is **artifact-only `M3-CP4c-2-TB-X2-R5-EXEC`** under
-`Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md`:
-
-1. immutable preflight and selector-hash recomputation;
-2. **AA8 first:** re-prove accepted prefixes 316/346/353/355; any regression stops R5 before CP4c-2-local credit;
-3. **AA2:** prove the two prescribed-sphere Y1 lines in prior artifact `9707662462` byte-identical; mismatch stops;
-4. D1 exactly once: require one Y1 record per witness plus `m3Cp4c2PublicationCounts=1/1/1/3`; measure the sphere from retained pipeline products; preserve the torus plan-success finding and classify downstream tracing as out of scope;
-5. if D1 evidence is structurally admissible, D2 exactly once: localize sphere `CellularityNotEstablished` to exact site 419/437/474 with term-by-term certificate;
-6. immutable postflight; no configure/compile/relink/repair/mutation/benchmark.
-
-R5-EXEC is raw evidence only. It may not select 357/358 or close the checkpoint. After EXEC evidence is durably
-preserved, exact next is independent **`M3-CP4c-2-TB-X2-R5-REV`**, and the implementation loop stops at that
-review boundary.
-
-Candidate state remains runtime-pending: R4-CAND-01 corrective publication source compiled; R4-CAND-02 localized
-product-observability correction compiled; R4-CAND-03 torus tracing is out of scope; R2-CAND-02 remains active until
-the sphere oracle is measured; X2 CAND-04 remains active/unlocalized until D2. Stable accounting remains
-**42 / 14 / 28**, debt **5**; M3 packages advance to **62**.
+**Exact next is independent `M3-CP4c-2-TB-X2-R5-REV`**. Review only the preserved evidence and frozen plan; run no
+new Directional runtime and do not start corrective CB, 357/358, a cumulative gate, mechanical/C2, or CP4c-3
+unless the review itself durably authorizes a later successor.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R4-EXEC` stop (retained for provenance)
 

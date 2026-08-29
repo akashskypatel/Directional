@@ -1,3 +1,23 @@
+## M3-CP4c2-TB-X2-R5-CAND-01 — accepted prefix regresses at GlobalTopologyPlan ordinal 305 — ACTIVE / ACCEPTED-PREFIX REGRESSION / NON-STABLE / REVIEW REQUIRED
+
+- **Observed:** R5-EXEC run/job `33232106030 / 99046593525` passes accepted ordinals 1-304 in fresh processes, then
+  ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selects exactly once and exits `1`.
+  Its first semantic failure is `SurfaceCutGraph::make(...)=CellularityNotEstablished` in the shared
+  `build_surface_cut_graph(...)` helper. The later `std::get: wrong index for variant` is secondary fallout because
+  that helper uses non-fatal `EXPECT_TRUE(built)` before `built.value()`.
+- **Gate consequence:** AA8 requires accepted-prefix re-proof before any local CP4c-2 credit. The first-316 prefix is
+  therefore red before completion; 306-355, AA2, D1, D2, 357, 358, and cumulative-gate runtime were not executed.
+- **Root-cause analysis at EXEC boundary:** localized only to the accepted CP3b event fixture reaching
+  `SurfaceCutGraph::make` and failing cellularity before `GlobalTopologyPlan` construction. EXEC does not have
+  authority to decide whether the owner is product semantics, witness authority, or an accepted-test assumption.
+  The exception is not the initiating cause. Independent R5-REV must classify the red before any correction.
+- **Evidence:** result/log artifacts `9708817991 / 9708818239`, SHA-256
+  `bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 /
+  b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`; semantic/test source
+  `76d757aab0ce18df09ce2823302d2dc224965187`; package `9708324052`.
+- **Accounting:** non-stable pending independent review; stable totals remain **42 events / 14 categories / 28
+  recurrences**, produced-witness debt **5**, M3 packages **62**.
+
 ## M3-CP4c2-TB-X2-R4-CAND-01 — final D1 assertion duplicates an already-published failure record — ACTIVE / TEST-AUTHORITY / PUBLICATION HYGIENE / NON-STABLE
 
 - **Observed:** authoritative R4 EXEC run/job `33228460953 / 99036688477` executes D1 once and reaches all three
