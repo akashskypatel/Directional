@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the complete `M3-CP4c` family. This is historical synthesis, not current-turn procedure. Use `Future_Chat_Session_Handoff.md` for the exact next action and `TODO.md` for open work.
 
-**Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2-TB-X2-R7-REV` is **COMPLETE**. R7 re-proved the inherited predecessor **355/355** on immutable package `9719216316` / source `755485865a7cf9c485d754f22b82a41ee151824b`, closing `PR8-R043 / M3-CP4c2-R001`, `PR8-R044 / M3-CP4c2-R002`, and `M3-CP4c2-TB-X2-R7-ORCH-01`. CP4c-2 remains **open / runtime-unaccepted**: 357/358 are unselected/unrun and no gate is authorized. Exact next is `M3-CP4c-2-CB6`; CP4c-3 remains blocked.
+**Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. R7 re-proved the inherited predecessor **355/355** on immutable package `9719216316` / source `755485865a7cf9c485d754f22b82a41ee151824b`, closing `PR8-R043 / M3-CP4c2-R001`, `PR8-R044 / M3-CP4c2-R002`, and `M3-CP4c2-TB-X2-R7-ORCH-01`. `M3-CP4c-2-CB6` then stopped at its first measure, AF1, after retained independent evidence **refuted** the prescribed sphere's pre-cut cellularity and activated DEFN-R1 §8.3's mandatory return to definition. CP4c-2 remains **open / runtime-unaccepted**: 357/358 are unselected/unrun and no gate is authorized. Exact next is `M3-CP4c-2-DEFN-R2`; CP4c-3 remains blocked.
 
 Accounting: **44 / 14 / 30**, debt **5**, M3 packages **64**; `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 
@@ -19,6 +19,7 @@ This record does not replace frozen definitions/selectors, closure records, or c
 - `M3_CP4c0b_Closure_Record.md`, `M3_CP4c1_Closure_Record.md`
 - `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — current predecessor build/package authority
 - `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — latest runtime evidence
+- `Architecture_M3_CP4c2_CB6_Code_Build_Report.md` — AF1 definition-stop closeout; no build artifact
 - `CHANGELOG.md`, `Regression_Root_Cause_Tracker.md`, `LESSONS.md`, `ORIENTATION.md`
 
 ## 2. Checkpoint results
@@ -71,20 +72,30 @@ Corrected R7 run/job `33276039911 / 99162853852` passed immutable pre/postflight
 
 Therefore the sphere's `CellularityNotEstablished` is **not a cellularity verdict**. A2a′ renamed a pre-existing embedded-graph rotation-system failure before any cellularity decision. `M3-CP4c2-TB-X2-CAND-04` is reclassified to **localized to shared embedded-graph authority / cellularity framing withdrawn** and remains non-stable.
 
+### CB6 AF1 — pre-cut cellularity refuted; definition stop
+
+CB6 obeyed AF1's required-first ordering and read retained result artifact `9721564203` without executing new runtime. The prescribed-sphere independent `m3Cp4c2ActualGraphOracle` reports:
+
+`V=18, E=30, F=18, c=1, chi=6, sourceChi=2, excludedBoundaryOrbits=0`, with `complex=actualEmbeddedGraph`, `surfaceCutGraphCallsInsideOracle=0`, and producer status `error / CellularityNotEstablished`.
+
+The standing prediction that the sphere's network is already cellular pre-cut is therefore **REFUTED**. This does not contradict the R7-REV error-path finding: the producer still fails earlier through a lossy upstream-error translation, while the independent oracle evaluates the pre-cut actual embedded graph separately.
+
+DEFN-R1 §8.2 explicitly does not prove cut completeness for trace-crossed non-disc components, and §8.3 states that if the prescribed sphere is non-cellular then that case becomes live and CP4c-2 returns to definition. The sphere has 24 retained traces and AF1 now proves the pre-cut graph non-cellular, so CB6 stopped before AF0/AF2/AF3/AF4 implementation, before compile/package, and without runtime. This stop does **not** prove that no admissible cut exists; it proves that the frozen definition does not yet cover the now-live case.
+
 ## 4. R7-REV measures AF0-AF9
 
 | Measure | Durable requirement |
 |---|---|
-| **AF0** | Carry `optional<GlobalTopologyPlanErrorCode>` through `SurfaceCutGraphError` and print it; additive only, no re-map/new enum. |
-| **AF1** | First in CB6, no runtime: extract prescribed-sphere `m3Cp4c2ActualGraphOracle` from artifact `9721564203` and adjudicate “already cellular pre-cut.” |
-| **AF2** | Rename the withdrawn-proxy D2 helper, remove line-number locus labels, remove/redefine `localizationConsistent` against actual embedded graph. |
-| **AF3** | Rebuild torus digest diagnostics from production `torus.rawfield`; print typed atlas errors/loci; do not repair synthetic zero-transport torus. |
-| **AF4** | Use the production witness for `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration`; run it non-gating to settle AD3. |
-| **AF5** | DEFN must state per-identity A2a′ gate membership before acceptance. |
-| **AF6** | Run every frozen non-gating identity or state a per-identity skip rationale. |
-| **AF7** | Gate remains closed; probe selector-358's added identity non-gating before 358 can be selected. |
-| **AF8** | Apply R7 bookkeeping exactly; totals remain **44 / 14 / 30**, debt **5**, packages **64**. |
-| **AF9** | CB6: no selector/fixture bytes, new error enum, error re-map, sphere product fix, 357/358, cumulative gate, or benchmark; GMP/GMPXX mandatory if compiling. |
+| **AF0** | **Deferred by CB6 definition stop.** Carry originating typed-error provenance if/when implementation resumes; additive only, no re-map/new enum. |
+| **AF1** | **COMPLETE in CB6.** Sphere row is `V=18,E=30,F=18,c=1,chi=6,sourceChi=2`; “already cellular pre-cut” is **REFUTED** and DEFN-R1 §8.3 is triggered. |
+| **AF2** | **Deferred by CB6 definition stop.** D2 harness repair remains pending. |
+| **AF3** | **Deferred by CB6 definition stop.** Production-authority torus diagnostic repair remains pending. |
+| **AF4** | **Deferred by CB6 definition stop.** Enumeration-invariance witness remains the AD3 falsifier. |
+| **AF5** | **Owned by DEFN-R2.** State per-identity A2a′ gate membership before acceptance. |
+| **AF6** | Deferred; no TB follows stopped CB6. Run every frozen non-gating identity or state a per-identity skip rationale when TB is reauthorized. |
+| **AF7** | Deferred; gate remains closed. Probe selector-358's added identity non-gating before 358 can ever be selected. |
+| **AF8** | Deferred to the next authorized TB closeout; totals remain **44 / 14 / 30**, debt **5**, packages **64**. |
+| **AF9** | **Satisfied by stopped CB6:** no selector/fixture bytes, enum/re-map, sphere fix, 357/358, cumulative gate, benchmark, or compile. |
 
 ## 5. High-value reversals
 
@@ -117,8 +128,9 @@ No frozen definition, selector, closure record, policy, product/test/fixture sou
 1. `ORIENTATION.md`
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md`
-5. `Architecture_M3_CP4c2_CB5_Code_Build_Report.md`
-6. CP4c-2 frozen definitions/selectors as needed
+4. `Architecture_M3_CP4c2_CB6_Code_Build_Report.md`
+5. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — especially §§8.2–8.3
+6. `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md`
+7. `Architecture_M3_CP4c2_CB5_Code_Build_Report.md`
 
-**Exact next:** `M3-CP4c-2-CB6`. This consolidation does not start it and performs no implementation, compile, test, benchmark, selector execution, or gate selection.
+**Exact next:** `M3-CP4c-2-DEFN-R2`, definition/planning only. No implementation, compile, runtime, selector mutation, 357/358 execution, gate selection, or benchmark is authorized before the definition gap closes.

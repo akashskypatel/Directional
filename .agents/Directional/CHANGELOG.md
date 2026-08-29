@@ -1,5 +1,31 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-CB6`: AF1 refutes pre-cut sphere cellularity; frozen definition stop triggers
+
+Code + Build turn **stopped before implementation** at its required-first retained-evidence measure. No product,
+test, fixture, selector, build-configuration, or semantic source byte changed; no compile, package, Directional
+runtime, test, benchmark, discovery, or custom input executed.
+
+AF1 extracted the prescribed-sphere `m3Cp4c2ActualGraphOracle` row already published in R7 result artifact
+`9721564203`: `complex=actualEmbeddedGraph`, `V=18`, `E=30`, `F=18`, `c=1`, `chi=6`, `sourceChi=2`,
+`excludedBoundaryOrbits=0`, `surfaceCutGraphCallsInsideOracle=0`, while the live producer remained
+`error / CellularityNotEstablished`. The standing prediction that the sphere is already cellular pre-cut is
+therefore **REFUTED**. This is an independent oracle finding and does not reinterpret the producer's earlier lossy
+error translation as a cellularity verdict.
+
+The result activates `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` §8.3: DEFN-R1 proves cut completeness
+for trace-free components, explicitly leaves the trace-crossed non-disc case unproved, and requires CP4c-2 to
+return to definition if the prescribed sphere proves non-cellular. The sphere has 24 retained traces, so the gap is
+now live. CB6 therefore deferred AF0/AF2/AF3/AF4 rather than implementing across a frozen definition stop; AF5 is
+owned by the successor definition. This stop does **not** claim that no admissible cut exists.
+
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **64**.
+`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`; 357/358 remain unrun. CB5
+package `9719216316` remains build authority and R7 remains latest semantic runtime.
+
+**Exact next:** `M3-CP4c-2-DEFN-R2`, definition/planning only. Re-open trace-crossed non-cellular cut completeness,
+discharge AF5 gate membership, and re-adjudicate AF0/AF2/AF3/AF4 before any implementation resumes.
+
 ## 2026-08-29 — `M3-CP4c-2-TB-X2-R7-REV`: R043/R044/ORCH-01 closed; the sphere's "cellularity" failure is a collapsed typed error
 
 Independent review and planning only. No runtime, build, benchmark, or product/test/fixture/selector mutation.

@@ -520,6 +520,25 @@ Three consequences:
 - **Stable-count rationale unchanged:** CP4c-2 has never been runtime-accepted; no accepted-green behaviour is lost.
   **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
 
+### CB6 AF1 adjudication — pre-cut cellularity prediction refuted; definition gap is now live
+
+- **Retained evidence, no new runtime:** CB6 AF1 extracted the prescribed-sphere
+  `m3Cp4c2ActualGraphOracle` row from immutable R7 result artifact `9721564203`: `complex=actualEmbeddedGraph`,
+  `surfaceCutGraphCallsInsideOracle=0`, `V=18`, `E=30`, `F=18`, `c=1`, `chi=6`, `sourceChi=2`,
+  `excludedBoundaryOrbits=0`; producer state remains `error / CellularityNotEstablished`.
+- **Finding:** the standing prediction “the sphere's network is already cellular pre-cut” is **REFUTED** by the
+  independent actual-graph oracle. This does not reverse R7-REV's error-path finding: the live producer still fails
+  earlier through the lossy upstream-error bucket, and AF0 still has not printed the originating typed code.
+- **Frozen-definition effect:** DEFN-R1 §8.2 leaves trace-crossed non-disc cut completeness unproved; §8.3 states
+  that a non-cellular prescribed sphere makes that case live and requires CP4c-2 to return to definition. With 24
+  retained sphere traces and the AF1 non-cellularity result, `M3-CP4c-2-CB6` stopped before AF0/AF2/AF3/AF4 source
+  changes, compilation, packaging, or runtime. Exact successor: `M3-CP4c-2-DEFN-R2`.
+- **Scope caution:** AF1 does **not** establish that no admissible cut exists. It establishes that the frozen
+  completeness proof does not cover the live trace-crossed non-cellular case; DEFN-R2 must define a complete
+  strategy or a sound typed stop before implementation resumes.
+- **Stable-count rationale unchanged:** CP4c-2 remains runtime-unaccepted and no accepted-green behavior was lost.
+  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
 ## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
 
 - **Observed occurrence 1:** after semantic review documentation and temporary-state cleanup were already complete,
