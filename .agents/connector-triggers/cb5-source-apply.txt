@@ -1,0 +1,4 @@
+purpose=apply verified CB5 source patch from Google Drive
+base_sha=0050b931ec1a3a62c87b7c8b2c87dd88246fd74e
+patch_sha256=3106b52029f546262e86e734a430e3c31ad213139bfb0d358e5af31f88e6a8c1
+retry=0
