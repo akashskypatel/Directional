@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Fetch exact R4 execution payload
         env:
-          PAYLOAD_BLOB_SHA: d9e00bbf2cbb548a62eed3771d7e372b7e18cae9
+          PAYLOAD_BLOB_SHA: 15aa3422c979fe5cf5b0bc2f6f727a80892fdac5
         shell: bash
         run: |
           set -euo pipefail
