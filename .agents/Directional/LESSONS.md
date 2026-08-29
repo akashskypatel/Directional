@@ -223,6 +223,22 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     `LESSONS.md` in full is mandatory start-of-turn step 5; the control existed and was not applied. **Before
     freezing a representation, search for a prior checkpoint that already adjudicated it — a stable regression
     ID in the tracker is the cheapest place to look.**
+22p. **A non-gating diagnostic that iterates witnesses publishes one row per witness; a report that quotes one
+    row has withheld evidence the run already paid for.** R7-3 iterated two-ring, torus **and prescribed sphere**
+    and published an independent actual-embedded-graph oracle row for each. The EXEC report quoted the torus row
+    only. The sphere's row is the exact measurement the checkpoint's standing prediction had been waiting six
+    turns for, and it was sitting unread in the retained result artifact. **Before planning a new run, check
+    whether the last one already answered the question**: an artifact read is orders of magnitude cheaper than a
+    turn, and a diagnostic loop's value is per-witness, not per-test.
+22q. **A witness synthesized inside a test is not the witness the project reasons about, and it needs its own
+    proof of existence.** The torus semantic/provenance diagnostic built its atlas from a locally synthesized
+    zero-transport field rather than the committed `torus.rawfield` the production fixture uses. That synthetic
+    torus has no production counterpart and had never been shown constructible; the zero-effort cycle lift is
+    integral on a flat mesh and generically non-integral on a curved closed surface, so the diagnostic failed at
+    its own precondition before comparing anything. Two identities shared the construction and neither had ever
+    run green. **Derive a witness from the production authority whenever one exists**, and when a test must
+    synthesize an input, give it an executed precondition of its own rather than assuming the helper that works
+    on the flat fixture works everywhere.
 22m. **Self-consistency inside a named complex is not evidence that the complex is the right one.** Both the
     actual embedded graph (`9/11/3`) and the source-edge-barrier proxy (`10/11/2`) satisfy `V - E + F = chi`
     on the accepted two-ring. An oracle can therefore be arithmetically flawless and still certify the wrong
@@ -983,6 +999,18 @@ building any conclusion on it.**
     Compiled-but-unexecuted test authority is not evidence; it is debt wearing a green label. Check the
     selector's reach at the moment you authorize the edit, not at acceptance.
 
+57. **A `default:` case in an error-translation switch is a lossy channel, and the name it assigns will be
+    believed.** `SurfaceCutGraph::topology_error` maps 39 `GlobalTopologyPlanErrorCode` values onto three
+    `SurfaceCutGraphErrorCode` values: three survive as themselves and **36 collapse into
+    `CellularityNotEstablished`**. The prescribed sphere's failure was almost certainly
+    `RotationSystemInconsistent` raised inside the shared embedded-graph authority — a stage that never evaluates
+    cellularity at all — and for eight turns every plan, review and prediction reasoned about whether the sphere
+    was cellular, how many cuts it needed, and which complex certified it. Inserting a new stage upstream did not
+    change the failure; it **renamed** it. Two rules follow. **When translating a typed error across a stage
+    boundary, carry the originating code as provenance** so the collapse is reversible at zero semantic cost. And
+    **when a `default:` case assigns a name that asserts a semantic verdict, it is not a default — it is a
+    fabricated finding**; either enumerate the cases or give the bucket a name that admits it is one
+    (`UpstreamTopologyError`, not `CellularityNotEstablished`).
 53. **A downstream stage that already models a case perfectly is evidence about ownership, not
     reassurance.** A2b's edge-locus rotation requires exactly two mandatory rays at degree three and
     orders all three darts strictly — written for a trace ending inside a mandatory edge, and never
@@ -1173,6 +1201,22 @@ face gauge. Never equate branch integers across distinct frames merely because t
     excluded witness without granting credit — but together they created the appearance that the fan was
     covered by the gate twice over when it was covered zero times. When auditing coverage, grep for what
     an identity *asserts about the result*, not for whether it constructs the product.
+64v. **A frozen non-gating selector is authority, and a plan that quietly runs something else has replaced
+    it.** `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` names exactly one identity; R7 ran four
+    others and never ran that one, without recording why. The skipped identity was an unconditional-`FAIL()`
+    publisher whose whole job was to emit the sphere's pipeline-reachability report — free evidence, directly
+    on the checkpoint's open question. **A TB plan must run every identity in the frozen non-gating selector or
+    state, per identity, why not.** A selector that a plan may silently ignore is documentation, not authority.
+64w. **A new stage must have gated identities of its own, or it ships on transitive evidence.** CP4c-2 added
+    A2a′ `SurfaceCutGraph` and **none** of its four direct test identities appears in the accepted selector or in
+    either candidate gate — not the empty-cut certificate, not enumeration invariance, not the
+    semantic/provenance separation. One of the four turned out to be non-viable and nobody noticed, because
+    nothing ran it; another is the only falsifier of a live measure's written rationale. The checkpoint's actual
+    open witness, the prescribed sphere, is in neither candidate gate either, which is the structural reason its
+    failure survived eight turns unlocalized. **When a checkpoint introduces a stage, the gate decision must
+    state, per identity of that stage, gating or not and why** — "it was never added" is not a rationale. And
+    before selecting a gate, check what each added identity *binds*: one candidate's sole addition binds a
+    witness the checkpoint has explicitly declared out of scope.
 
 ## 7. Budget, attempts, and stop rules
 

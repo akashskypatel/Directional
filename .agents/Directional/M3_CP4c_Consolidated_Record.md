@@ -270,6 +270,36 @@ mechanically satisfied but does not reclassify stable records. Stable accounting
 R7-REV. Selector 357, selector 358, cumulative gate, and benchmarks were not run; `selected_r2_branch=NONE`,
 `selected_gate=NONE`, `gate_execution_authorized=false`. Exact next is `M3-CP4c-2-TB-X2-R7-REV`.
 
+### 6.8 R7-REV: three closures, and the collapsed typed error
+
+Independent review of the R7 retry closed `PR8-R043 / M3-CP4c2-R001` (ordinal 305 green in a full 355/355),
+`PR8-R044 / M3-CP4c2-R002` (ordinal 310 green in the same run, with the CB5 semantic/provenance split re-verified at
+source as a correct application of the CP3a template), and `M3-CP4c2-TB-X2-R7-ORCH-01` (green R7-0 on all six
+recomputed selector derivations). Stable totals were **not** changed: closure is a status change, not a count
+change, so accounting remains **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
+The review's substantive finding re-framed the checkpoint. `SurfaceCutGraph::topology_error` maps 39
+`GlobalTopologyPlanErrorCode` values onto three `SurfaceCutGraphErrorCode` values, collapsing **36 of them into
+`CellularityNotEstablished`** while copying `sourceFace` through. It is the only producer of that code on the `make`
+path that sets a `sourceFace`, and R7-5 published `errorSourceFace=25-27-28`. Its two call sites both enter
+`EmbeddedGraphTopology.cpp`, where every code that survives the collapse and carries a `sourceFace` is
+`RotationSystemInconsistent`. Neither call site evaluates cellularity. **The prescribed sphere therefore never
+reached a cellularity decision; inserting A2a′ upstream renamed its pre-existing failure rather than changing it**,
+and eight turns of planning reasoned about cuts and complexes for a mechanism that never ran. `CAND-04` was
+re-classified accordingly and the cellularity framing withdrawn.
+
+Three further findings were recorded as candidates: the D2 localization harness compares the actual embedded graph
+against the **withdrawn** source-edge-barrier proxy under a misleading helper name and stale line-number site labels
+(`R7-CAND-03`); the torus digest diagnostic builds a synthetic zero-transport witness with no production counterpart
+and fails at its own precondition (`R7-CAND-01`, adjudicated); and **no `SurfaceCutGraph.*` identity appears in the
+accepted 355 or in either candidate gate**, with the prescribed sphere in neither gate and selector 358's sole
+addition binding the out-of-scope mechanical witness (`R7-CAND-04`).
+
+Measures **AF0–AF9** were issued. No gate was selected: `selected_r2_branch=NONE`, `selected_gate=NONE`,
+`gate_execution_authorized=false`. Exact next is `M3-CP4c-2-CB6`, a bounded diagnostic and witness-repair Code +
+Build whose first measure, AF1, requires no build — it extracts the prescribed sphere's actual-embedded-graph oracle
+row, already published by R7-3 and omitted from the R7 report, from retained result artifact `9721564203`.
+
 ## 7. High-value reversals and lessons retained from the review arc
 
 | Earlier claim / approach | Final disposition |
@@ -283,6 +313,8 @@ R7-REV. Selector 357, selector 358, cumulative gate, and benchmarks were not run
 | accepted-prefix failure identifies the commit that caused it | false; prefix re-proof is a detection boundary, not a blame boundary |
 | one hash can serve semantic identity and provenance | false; semantic and provenance digests are distinct authorities |
 | an observation hidden behind a prior failing gate is evidence of absence | false; unexecuted diagnostics remain unknown |
+| the prescribed sphere's `CellularityNotEstablished` is a cellularity verdict | false; it is a `default:` bucket for 36 upstream codes, and the sphere never reached a cellularity decision |
+| a new stage's own identities are covered because the stage is reached transitively | false; none of A2a′'s four identities is in any selector, and one of them is non-viable |
 
 These lessons are also normalized in `LESSONS.md`; they are listed here only because they explain why several
 historical CP4c retry documents existed.

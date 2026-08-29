@@ -21,22 +21,51 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R7-REV` — independent review/planning only
+## Current focus — `M3-CP4c-2-CB6` — bounded diagnostic and witness-repair Code + Build
 
-R7 artifact-only execution is **COMPLETE** on immutable package `9719216316` / semantic source
-`755485865a7cf9c485d754f22b82a41ee151824b`. Authoritative run/job `33276039911 / 99162853852` re-proved the
-full accepted predecessor **355/355**, including ordinals 305 and 310, and immutable postflight passed.
+`M3-CP4c-2-TB-X2-R7-REV` is complete. R7's full accepted **355/355** re-proof on immutable package `9719216316`
+is accepted, and on it **`PR8-R043`, `PR8-R044` and `R7-ORCH-01` are CLOSED**. Full adjudication is in
+`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md`.
 
-Non-gating evidence is mixed: R7-2 two-ring passed; R7-2 torus failed at the `baselineAtlas` precondition before
-any digest comparison; R7-3/R7-4/R7-5 passed and the sphere D2 record finally published. Selector 357, selector
-358, cumulative gate, and benchmarks remain NOT RUN.
+The review's decisive finding: **the prescribed sphere's `CellularityNotEstablished` is a `default:` bucket, not a
+cellularity verdict.** `SurfaceCutGraph::topology_error` collapses 36 distinct `GlobalTopologyPlanErrorCode` values
+into it; R7-5's `errorSourceFace=25-27-28` proves the sphere took that path, and every such code reachable there is
+`RotationSystemInconsistent` inside `EmbeddedGraphTopology.cpp`. The sphere never reached a cellularity decision;
+A2a′ renamed its pre-existing failure rather than changing it.
 
-Exact next: **`M3-CP4c-2-TB-X2-R7-REV`**. It must independently adjudicate R043/R044 closure/count disposition,
-the torus non-gating diagnostic red, the sphere D2 localization record, and what (if anything) is authorized next.
-No new runtime or implementation/test/build-logic mutation belongs to that review.
+Exact next: **`M3-CP4c-2-CB6`** under measures **AF0–AF4** with the **AF9** prohibitions.
 
-Stable accounting remains **44 / 14 / 30** pending review, produced-witness debt **5**, authoritative M3 packages
-**64**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+- **AF1 runs first and needs no build:** extract the prescribed sphere's `m3Cp4c2ActualGraphOracle` row from
+  retained result artifact `9721564203` and state whether the standing prediction is confirmed. R7-3 already
+  published it; the R7 report quoted only the torus row.
+- **AF0** carry and print the originating `GlobalTopologyPlanErrorCode` through `topology_error` — additive only;
+  no re-mapping and no new enum value.
+- **AF2** repair the D2 localization harness (rename `cp4c_producer_rederivation`, drop the stale `419/437/474`
+  line-number labels, and either delete or redefine `localizationConsistent`).
+- **AF3** rebuild the torus digest diagnostic on the production `torus.rawfield` authority and print the typed
+  atlas error instead of `ASSERT_TRUE`.
+- **AF4** run `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` non-gating and settle measure **AD3**.
+
+**AF5** (frozen definitions must state per-identity gate membership for A2a′) is DEFN scope. **AF6** (a frozen
+non-gating selector must be run or its skips justified per identity) and **AF7** (358 probed non-gating before it
+may ever be selected) bind the TB after CB6. **AF8** binds that TB's closeout.
+
+Stable accounting remains **44 / 14 / 30** — closure is a status change, not a count change — produced-witness debt
+**5**, authoritative M3 packages **64**. `selected_r2_branch=NONE`; `selected_gate=NONE`;
+`gate_execution_authorized=false`.
+
+### Open CP4c-2 candidates
+
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere failure re-localized to the shared embedded-graph authority; cellularity
+      framing withdrawn. Needs AF0's printed code before any fix.
+- [ ] `M3-CP4c2-TB-X2-R7-CAND-01` — torus digest diagnostic builds a synthetic witness with no production
+      counterpart; AF3/AF4.
+- [ ] `M3-CP4c2-TB-X2-R7-CAND-03` — D2 harness compares the actual embedded graph against the withdrawn proxy
+      using stale line-number labels; AF2.
+- [ ] `M3-CP4c2-TB-X2-R7-CAND-04` — no `SurfaceCutGraph.*` identity is in any selector; the sphere is in neither
+      candidate gate; 358 binds the out-of-scope mechanical witness; AF5/AF7.
+- [ ] Measure **AD3** — `face.orbit` raw index consumed by `candidate_semantic_hash` under an unproved rationale;
+      its only falsifier has never run. AF4.
 
 ## Carried forward from M1
 
@@ -73,7 +102,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; R7 re-proved the inherited accepted **355/355** on CB5 package `9719216316`. CP4c-2 remains unaccepted because 357/358 are unselected/unrun; exact next is independent `M3-CP4c-2-TB-X2-R7-REV`; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; R7 re-proved the inherited accepted **355/355** on CB5 package `9719216316`, closing `PR8-R043` and `PR8-R044`. CP4c-2 remains unaccepted because 357/358 are unselected/unrun and the prescribed sphere's A2a′ failure is now localized but unfixed; exact next is `M3-CP4c-2-CB6`; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -83,6 +112,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
+- [ ] **Prescribed sphere A2a′ `RotationSystemInconsistent`** (via the collapsed `CellularityNotEstablished`): the checkpoint's real open product defect. Blocked on AF0's printed code; do not fix by inference.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.

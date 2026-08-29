@@ -84,73 +84,101 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R7-REV` — independent review/planning only
+## Mandatory next turn — `M3-CP4c-2-CB6` — bounded diagnostic and witness-repair Code + Build
 
-`M3-CP4c-2-TB-X2-R7-EXEC` is **COMPLETE** on unchanged immutable GMP package `9719216316`, semantic/test source
-`755485865a7cf9c485d754f22b82a41ee151824b`. Authoritative run/job `33276039911 / 99162853852` completed the
-frozen R7 order after green immutable preflight.
+`M3-CP4c-2-TB-X2-R7-REV` is **COMPLETE**. Full adjudication:
+`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md`. Measures **AF0–AF9**.
 
-- R7-2 two-ring semantic/provenance diagnostic: **PASS**.
-- R7-2 torus semantic/provenance diagnostic: **RED / NON-GATING** at the prerequisite `baselineAtlas == true`;
-  no torus digest comparison was reached.
-- R7-3 independent actual-embedded-graph oracle: **PASS**.
-- R7-4 retained source-edge-barrier diagnostic: **PASS**.
-- R7-5 prescribed-sphere localization diagnostic: **PASS** and publishes `localizedSite=474-global-certificate`
-  with `localizationConsistent=false`.
-- R7-1 accepted predecessor re-proof: **355/355 GREEN**, including ordinals **305** and **310** in the same full run.
-- R7-6 immutable postflight: **PASS**; no build/repair/source/test/fixture/selector/package mutation and no benchmark.
+**Accepted:** R7-1 re-proved the frozen accepted predecessor **355/355** in fresh processes on immutable package
+`9719216316` / semantic source `755485865a7cf9c485d754f22b82a41ee151824b` (run/job `33276039911 / 99162853852`),
+with ordinals **305** and **310** green in the same complete run and immutable pre/postflight green.
 
-Result artifact `9721564203` / `sha256:a854e562facfd616f9f61eddf653dc9e5814c3b932661993b2b2861b2bdab8db`;
-log artifact `9721564377` / `sha256:8edd56072491aa4267e3cd0d2c0942b0910a3e5a01f15e6bc21164bd0fbef3ec`;
-raw archive SHA-256 `933190d3591aa7633fd3ebb6c1a119c1ad7d0b04cc2ca4254a8c325d3c7f1200`.
+**Closed by that evidence:** `PR8-R043 / M3-CP4c2-R001`, `PR8-R044 / M3-CP4c2-R002`, and
+`M3-CP4c2-TB-X2-R7-ORCH-01`. Closure is a status change; **stable totals are unchanged at 44 / 14 / 30**, debt
+**5**, M3 packages **64**.
 
-R7-EXEC does **not** adjudicate stable regression closure. `PR8-R043` and `PR8-R044` have now mechanically met their
-frozen runtime closure conditions, but their stable statuses/count disposition remain for independent R7-REV.
-The torus R7-2 red is recorded as a new non-stable diagnostic candidate whose cause is established only through
-the failed baseline-atlas precondition. `M3-CP4c2-TB-X2-CAND-04` now has the previously missing D2 localization
-record, but review must interpret its `localizationConsistent=false` evidence.
+**Read this before touching the sphere.** The prescribed sphere's A2a′ `CellularityNotEstablished` is **not a
+cellularity verdict**. `SurfaceCutGraph::topology_error` (`src/geometry/SurfaceCutGraph.cpp:50-67`) collapses 36
+distinct `GlobalTopologyPlanErrorCode` values into it, and is the only producer on the `make` path that sets a
+`sourceFace`. R7-5 published `errorSourceFace=25-27-28`, so the sphere took that path; its two call sites (`:240`,
+`:243`) both enter `src/geometry/EmbeddedGraphTopology.cpp`, where every code that survives the collapse **and**
+carries a `sourceFace` is `RotationSystemInconsistent`. Neither call site evaluates cellularity — that happens later,
+at `proves_cellularity()` in the cut loop (`:323`) and the `:250` guard. **The sphere never reached a cellularity
+decision; A2a′ renamed its pre-existing failure.** Do not propose a product fix until AF0 prints the code.
 
-Stable accounting remains **44 / 14 / 30**, debt **5**, M3 packages **64**. `selected_r2_branch=NONE`,
-`selected_gate=NONE`, `gate_execution_authorized=false`. Selector 357, selector 358, cumulative CP4c-2 gate, and
-benchmarks remain **NOT RUN**. CP4c-2 remains runtime-unaccepted until review makes the next authority decision.
+**CB6 scope — measures AF0–AF4, prohibitions AF9:**
+
+1. **AF1 first, no build required.** Extract the prescribed sphere's `m3Cp4c2ActualGraphOracle` row from retained
+   result artifact `9721564203` (R7-3 already published it for all three witnesses; the R7 report quoted only the
+   torus row) and state whether the standing prediction — "the sphere's network is already cellular pre-cut" — is
+   confirmed, refuted, or undecided. This may change what CB6 needs to build.
+2. **AF0** add an `std::optional<GlobalTopologyPlanErrorCode>` provenance field to `SurfaceCutGraphError`, populate
+   it in `topology_error`, and print it wherever the collapsed code is printed. **Additive only:** do not re-map
+   `topology_error`'s switch and do not add an enum value — 355 accepted identities depend on the current mapping.
+3. **AF2** repair the D2 localization harness: rename `cp4c_producer_rederivation` (it models the **withdrawn**
+   source-edge-barrier proxy, not the producer), replace the stale `419-`/`437-`/`474-` line-number labels, and
+   either delete `localizationConsistent` or redefine it against the actual embedded graph.
+4. **AF3** rebuild `SemanticDigestIgnoresGaugeRelabelingForTorusWitness` on the production `torus.rawfield`
+   authority instead of `make_zero_transport_field`, and print `field_atlas_build_error_code_name(...)` plus loci
+   instead of `ASSERT_TRUE`. Do not "repair" the synthetic zero-transport torus.
+5. **AF4** give `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` the same treatment and run it
+   **non-gating** in the next TB; it is the only falsifier of measure **AD3**'s rationale for hashing the raw
+   `face.orbit` index into a semantic digest.
+
+**AF9 prohibitions:** no selector or fixture byte changes; no new error-enum value; no change to `topology_error`'s
+mapping; no product fix for the sphere; no 357/358 execution, cumulative gate, or benchmark. GMP/GMPXX linkage is
+mandatory per `GMP_COMPILE_POLICY.md`.
+
+**Binding the TB after CB6:** **AF6** run every identity in
+`Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` or justify each skip (R7 ran four others and skipped its
+only entry). **AF7** probe `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses` non-gating before
+selector 358 may ever be selected — its sole added identity binds the out-of-scope mechanical witness. **AF8** carry
+the regression bookkeeping. **AF5** is DEFN scope: state, per identity, which `SurfaceCutGraph.*` tests are gating.
+
+`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. Selector 357, selector 358, the
+cumulative CP4c-2 gate, and benchmarks remain **NOT RUN**.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 CB5 remains build-green at `755485865a7cf9c485d754f22b82a41ee151824b`; inherited accepted authority is
-  freshly re-proved **355/355** on package `9719216316`, but CP4c-2 itself remains unaccepted.
-- R7 is the latest semantic runtime evidence. Its accepted gate is green; one torus R7-2 non-gating diagnostic is
-  red at `baselineAtlas`, while R7-3/R7-4/R7-5 are green and postflight is immutable-green.
-- Stable accounting remains **44 events / 14 categories / 30 recurrences** pending independent review; produced-witness
-  debt **5**; authoritative M3 packages **64**.
-- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; 357/358/cumulative gate and
-  benchmarks remain blocked pending R7-REV.
-- **Exact next is `M3-CP4c-2-TB-X2-R7-REV`, independent review/planning only.**
+- CP4c-2 CB5 is build-green at `755485865a7cf9c485d754f22b82a41ee151824b`; the inherited accepted authority is
+  freshly re-proved **355/355** on package `9719216316`. **CP4c-2 itself remains unaccepted.**
+- R7 is the latest semantic runtime evidence. Its accepted gate is green and postflight is immutable-green; one
+  torus non-gating diagnostic is red at its own witness precondition, and R7-3/R7-4/R7-5 are green.
+- The checkpoint's real open product defect is the prescribed sphere's A2a′ `RotationSystemInconsistent`, currently
+  wearing the name `CellularityNotEstablished`.
+- Open candidates: `M3-CP4c2-TB-X2-CAND-04` (sphere, re-localized), `R7-CAND-01` (torus diagnostic witness),
+  `R7-CAND-03` (D2 harness domain conflation), `R7-CAND-04` (no `SurfaceCutGraph.*` identity is in any selector;
+  358 binds an out-of-scope witness), and live measure **AD3**.
+- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
+  packages **64**.
+- **Exact next is `M3-CP4c-2-CB6`.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/REVIEW.md` plus the GitHub/artifact capability module only if needed to
-  inspect preserved R7 evidence
+- turn-based-coding-agent `references/turns/CODE_BUILD.md`, plus the GitHub/artifact capability module (AF1 must
+  read retained result artifact `9721564203`), plus `GMP_COMPILE_POLICY.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — **read first**; durable cold-start substance. It is intentionally not
-   updated by EXEC; REVIEW must update it before closeout.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — exact R7 runtime
-   result/evidence summary.
-2. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R043, R044, R7 orchestration proof, new torus diagnostic
-   candidate, and CAND-04 localization evidence.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` — frozen execution contract and
-   non-actions; use it to judge what R7 evidence can and cannot authorize.
+0. `.agents/Directional/ORIENTATION.md` — **read first**; durable cold-start substance, current as of R7-REV.
+   §7 item 1 is the fact that reframes the whole checkpoint.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` — the authorizing review:
+   closures, findings, and measures **AF0–AF9** with their exact prohibitions.
+2. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `CAND-04` (re-localized), `R7-CAND-01`, `R7-CAND-03`,
+   `R7-CAND-04`, and the closed `PR8-R043` / `PR8-R044` / `R7-ORCH-01` entries.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — exact R7 runtime
+   result and artifact identities (AF1's source).
 4. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — immutable package/build authority.
-5. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — deduplicated CP4c-2 lineage through R7 EXEC.
-6. `TODO.md` / `CHANGELOG.md` — current task and exact run/artifact identities.
+5. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — Amendment 13; the actual embedded
+   graph is the normative complex and the source-edge-barrier partition is withdrawn.
+6. `TODO.md` / `CHANGELOG.md` — current task, run/artifact identities, and lessons adopted at R7-REV.
 
-**This is independent REVIEW only.** Adjudicate the R7 evidence and planning consequences; do not edit production,
-test, fixture, selector, or build logic, compile, execute new Directional runtime, run 357/358/cumulative gate, or
-benchmark in this turn. The review must decide regression dispositions and the next authorized scope; it must not
-silently treat the non-gating torus red as accepted-count loss or the 355 green as CP4c-2 closure.
+**This is a bounded diagnostic and witness-repair CODE + BUILD.** It exists to make three already-observed failures
+legible, not to fix them. Honour AF9 exactly: no selector or fixture byte changes, no new error-enum value, no
+change to `topology_error`'s code mapping, no product fix for the sphere, no 357/358 execution, no cumulative gate,
+no benchmark. Do not let a compile-green result be reported as semantic acceptance, and do not select a gate.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
@@ -189,6 +217,12 @@ CP3a broke the streak's shape: its fixture now **asserts its own precondition at
 singular-fan opposite carrier must be interior — so the next author cannot reintroduce the defect
 silently. CP3b then carried that habit forward unprompted and closed on attempt 1 with no diagnostic
 gate. Copy that pattern into CP4's witnesses.
+
+**Standing note on believing an error's name (added at `M3-CP4c-2-TB-X2-R7-REV`, `LESSONS.md` 57).** The
+single most expensive mistake in CP4c-2 was not a wrong fix — it was eight turns of correct reasoning aimed at
+the wrong mechanism, because a `default:` case in an error-translation switch assigned a semantic-sounding name
+to 36 distinct upstream errors. Before planning around any typed failure that crossed a stage boundary, find the
+translation site and check whether the code you are reading is the code that was raised.
 
 ## Mandatory end-of-turn checklist — DURABLE, DO NOT DELETE
 

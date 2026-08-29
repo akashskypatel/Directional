@@ -1,4 +1,54 @@
-## M3-CP4c2-TB-X2-R7-CAND-01 — torus semantic/provenance diagnostic fails at baseline-atlas precondition — ACTIVE / NON-GATING DIAGNOSTIC / WITNESS-PRECONDITION / NON-STABLE
+## M3-CP4c2-TB-X2-R7-CAND-03 — D2 localization harness compares the actual embedded graph against the withdrawn proxy using stale line-number labels — **ACTIVE / TEST-AUTHORITY / AUTHORITY_DOMAIN_CONFLATION / RP-01 / NON-STABLE**
+
+- **Observed:** R7-5 published `localizationConsistent=false` for the prescribed sphere. Independent review
+  (`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` §7) establishes that this boolean is false **by
+  construction** and carries no information about the sphere.
+- **Three independent defects, verified at source (working tree byte-identical to packaged source `755485865a`):**
+  1. `cp4c_producer_rederivation` (`tests/FieldAlignedCurveNetworkTests.cpp:6139`) builds components from
+     `cp4c_source_edge_barrier_accounting(network).barriers` — the **source-edge-barrier proxy complex withdrawn as
+     cellularity authority by DEFN-R1 Amendment 13** — while the real producer certifies the actual embedded graph.
+     Two different complexes localize differently by construction.
+  2. Its name asserts an authority it does not have: it is not a re-derivation of the producer; it models a
+     **pre-CB4 producer that no longer exists**.
+  3. Its site labels `419-initial-nondisc-no-cuts` / `437-final-nondisc` / `474-global-certificate`
+     (`:6173, :6190, :6225`) encode line numbers in a `src/geometry/SurfaceCutGraph.cpp` that **is 344 lines long**.
+     They are frozen provenance from a pre-CB4 revision and survived a whole-file rewrite silently.
+- **Mechanism of the observed value:** the producer's typed error carried a `sourceFace`, so D2 took the
+  `419-or-437-source-face-locus` branch (`:6621-6626`); the proxy re-derivation ran to completion and reported
+  `474-global-certificate`; the strings differ; the boolean is false.
+- **Owning correction:** measure **AF2** — rename the helper and state the withdrawn-proxy status in a comment,
+  replace the three line-number labels, and either delete `localizationConsistent` or redefine it to compare the
+  producer's printed `GlobalTopologyPlanErrorCode`/`sourceFace` (AF0) against a re-derivation over the **actual**
+  embedded graph.
+- **Stable-count rationale:** test/diagnostic authority only; CP4c-2 is unaccepted and no accepted-green behaviour is
+  lost. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
+## M3-CP4c2-TB-X2-R7-CAND-04 — no `SurfaceCutGraph` identity is in any selector, and candidate 358 binds an out-of-scope witness — **ACTIVE / GATE-AUTHORING / NON-STABLE**
+
+- **Observed:** `grep -c '^SurfaceCutGraph\.'` returns **0** against the accepted 355 selector, candidate 357, and
+  candidate 358. A2a′'s four direct identities — `AlreadyCellularNetworkPublishesEmptyCertifiedCutSet`,
+  `IsInvariantToSourceFaceAndEdgeEnumeration`, `SemanticDigestIgnoresGaugeRelabelingForTwoRingWitness`,
+  `SemanticDigestIgnoresGaugeRelabelingForTorusWitness` — are gated by nothing.
+- **Consequence:** both proposed gates would accept a new pipeline stage while requiring none of that stage's own
+  witnesses: its empty-cut certificate, its enumeration invariance, and its semantic/provenance separation. It is
+  also why `IsInvariantToSourceFaceAndEdgeEnumeration` has never executed despite a non-viable witness
+  (`M3-CP4c2-TB-X2-R7-CAND-01`), and why measure **AD3**'s orbit-ordinal rationale has no live falsifier.
+- **The prescribed sphere is in neither candidate gate.** 357 adds two torus-only `GlobalTopologyPlan` identities;
+  358 adds one more binding torus **and mechanical feature**. The checkpoint's actual open question therefore blocks
+  nothing at gate level — the eight-turn `CAND-04` drought is structural, not accidental.
+- **Blocking observation on 358, not yet runtime-established:** its added identity
+  `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses` (`:6826-6833`) calls
+  `cp4c_mechanical_fixture()`, and `build_cp4c_production_fixture` **throws** when the pipeline did not retain
+  atlas/network/cut-graph/plan (`:4523-4537`). `ORIENTATION.md` §4 records the mechanical witness as having no atlas
+  (A1 `IncompleteCycleBasis`), explicitly out of CP4c-2 scope. If that durable statement holds, **358 is a
+  guaranteed red**.
+- **Owning correction:** **AF5** (frozen definitions must state, per identity, which A2a′ tests are gating and why
+  any excluded one is excluded — "it was never added" is not a rationale) and **AF7** (358's added identity must be
+  probed non-gating before 358 may ever be selected). No selector byte changes in CB6.
+- **Stable-count rationale:** gate-authoring finding on an unaccepted checkpoint. **+0 events / +0 recurrences.**
+  Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
+## M3-CP4c2-TB-X2-R7-CAND-01 — torus semantic/provenance diagnostic fails at baseline-atlas precondition — **ADJUDICATED IN R7-REV / WITNESS-CONSTRUCTION DEFECT / NON-GATING DIAGNOSTIC / NON-STABLE**
 
 - **Observed:** R7 authoritative run/job `33276039911 / 99162853852` executes
   `SurfaceCutGraph.SemanticDigestIgnoresGaugeRelabelingForTorusWitness` exactly once in a fresh process. It exits
@@ -18,8 +68,37 @@
   `933190d3591aa7633fd3ebb6c1a119c1ad7d0b04cc2ca4254a8c325d3c7f1200`.
 - **Stable-count rationale:** CP4c-2 is unaccepted and this identity is explicitly non-gating; no accepted-green
   behavior is lost. **+0 stable events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+- **R7-REV adjudication — CONFIRMED as a defect in the diagnostic's witness construction, not in the CB5
+  semantic/provenance split.** `tests/FieldAlignedCurveNetworkTests.cpp:2220` is `ASSERT_TRUE(baselineAtlas)`, where
+  the atlas was built from `make_zero_transport_field(mesh)` (`:159`) — identity matching, zero effort, zero singular
+  cycles, constant `UnitX`/`UnitY` frames. **That is not the torus witness the project reasons about.** Every torus
+  statement in `ORIENTATION.md` §4/§10 derives from `cp4c_torus_fixture()`, which runs `remesh_from_raw_cross_field`
+  on the committed `torus.rawfield` (`:4489-4520`). `milestone-g/torus.obj` is loaded in exactly two places in the
+  whole test file (`:2119`, `:2213`) and both feed it the synthetic zero-transport field, so this witness has no
+  production counterpart and no prior green.
+- **Failure mechanism — bounded, deliberately not promoted.** `FieldTransportAtlas::make` lifts each cycle by
+  `(cycles·effort + 4·cycleCurvature)/2π` and rejects a non-integral result with `NonIntegralCycleLift`
+  (`src/authority/FieldTransportAtlas.cpp:1655-1660`). With zero effort the lift is `2·K_v/π` per interior vertex —
+  integral on a flat mesh (which is why `make_square_mesh` at `:2093` works) and generically non-integral on a curved
+  closed surface. `IncompleteCycleBasis` (`:1597/:1613`, `2·genus` handle generators) is the other live candidate.
+  **Neither is promoted as established**; AF3 requires the code to be printed.
+- **The assertion discards the answer.** `FieldTransportAtlas::make` returns a
+  `std::variant<FieldTransportAtlas, FieldAtlasBuildError>` carrying a typed code plus edge/face/vertex/region/branch
+  loci, and `field_atlas_build_error_code_name()` is already exported. `ASSERT_TRUE` printed `Actual: false`. A whole
+  turn was spent not knowing a value the process held.
+- **Paired identity is in the same trap and has never run.** `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration`
+  (`:2116`) constructs its torus atlas identically inside a lambda that uses non-fatal `EXPECT_TRUE(atlas)` and then
+  calls `atlas.value()` — on the same input that is `std::get` on the error alternative, i.e. an unhandled
+  `std::bad_variant_access` rather than a diagnosable assertion. It is in no selector, so this has never been
+  observed, and its assertions (non-empty cut set, `proves_cellularity()`, digest equality under face/edge
+  reordering) have never executed. See `M3-CP4c2-TB-X2-R7-CAND-04`.
+- **Consequence for `PR8-R044` closure:** the CB5 semantic/provenance split is runtime-proved on the **two-ring**
+  only. That is exactly what R044's frozen closure condition required, so closure stands; the second witness is this
+  separate record's business.
+- **Owning correction:** **AF3** (rebuild the diagnostic on the production torus authority and print the typed atlas
+  error) and **AF4** (run the fourth A2a′ identity non-gating and settle measure AD3 with it).
 
-## M3-CP4c2-TB-X2-R7-ORCH-01 — R7 plan transcribes four frozen selector hashes incorrectly — CORRECTED IN DOC-R1 / R7-0 RETRY GREEN / ORCHESTRATION / DOCUMENT-AUTHORITY / NON-STABLE
+## M3-CP4c2-TB-X2-R7-ORCH-01 — R7 plan transcribes four frozen selector hashes incorrectly — **CLOSED IN R7-REV** / ORCHESTRATION / DOCUMENT-AUTHORITY / NON-STABLE
 
 - **Observed:** R7-EXEC immutable preflight on package `9719216316` passes outer/package/source/GMP/mode checks and
   internal manifest **28/28**, then exact hash comparison disagrees for selector authorities 346, 353, 357, and
@@ -53,7 +132,7 @@
   Formal final disposition remains an R7-REV bookkeeping decision; no selector byte changed.
 - **Stable-count rationale:** documentation/orchestration only; no product semantic event, no selector or package change, no accepted identity affected. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
 
-## PR8-R044 / M3-CP4c2-R002 — cut-graph semantic digest reimports gauge-dependent atlas provenance — ACTIVE STABLE / PRODUCT / REPRESENTATION_DEPENDENT_IDENTITY / RP-05
+## PR8-R044 / M3-CP4c2-R002 — cut-graph semantic digest reimports gauge-dependent atlas provenance — **RESOLVED / CLOSED IN R7-REV** / STABLE / PRODUCT / REPRESENTATION_DEPENDENT_IDENTITY / RP-05
 
 - **Observed:** R6-EXEC artifact-only accepted-prefix re-proof on immutable CB4 package `9714226920` passes accepted ordinals 1-309 in fresh processes, including the former ordinal-305 failure, then ordinal 310 `GlobalTopologyPlan.RegionAuthorityIsInvariantToEnumerationOrderAndBranchRelabeling` selects exactly once and exits `1`. `baselinePlan.semantic_digest()` is `12176020141753559903`; gauge-relabeled `relabeledPlan.semantic_digest()` is `14339407889897379635`.
 - **Accepted predecessor:** ordinal 310 is part of CP4c-1's accepted **355/355** authority at source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. CB4 inserted/reworked `SurfaceCutGraph` authority while retaining the accepted identity, so this is loss of accepted-green behavior rather than a first-acceptance diagnostic.
@@ -70,8 +149,31 @@
 - **Owning correction:** `M3-CP4c-2-CB5` measures **AD1** (add the semantic digest), **AD2** (convert the consumer and extend the comment to both sites), **AD3** (orbit index), **AD4** (term-by-term certificate partition), **AD5** (a non-gating diagnostic that checks the split at the cut-graph boundary rather than two stages downstream). The superseded R6 review record is consolidated in `M3_CP4c_Consolidated_Record.md` §§6.4-6.5.
 - **Closure condition:** ordinal 310 green in a run that also reaches the full **355/355** accepted prefix.
 - **R7 retry EXEC evidence:** the same CB5 package now reaches the complete accepted **355/355**. Ordinal 310 selects exactly once and passes in that full run, mechanically satisfying this record's frozen runtime closure condition. **EXEC does not close/reclassify the stable record or alter totals; R7-REV owns that adjudication.**
+- **R7-REV disposition — CLOSED.** The frozen condition is met exactly: ordinal 310 green inside a complete
+  **355/355** run on CB5 package `9719216316`. The fix was independently re-verified at source and is the
+  `M3-CP3a-DG-CAND-02` template applied correctly: `SurfaceCutGraph.cpp:268` `candidate_semantic_hash` consumes
+  `sourceDigest` + `networkSemanticDigest` + cut edges + certificate terms and **not** `atlasDigest`;
+  `:263` `candidate_hash` **still** consumes `atlasDigest`, preserving foreign/tampered-atlas rejection in
+  `make_from_candidate` exactly as AD1's prohibition required; `:335` `make` constructs with both;
+  `GlobalTopologyPlan.cpp:1630` converted the consumer to `cutGraph.semantic_digest()`; and `:1511-1519`'s comment
+  now names both sites. R7-2's two-ring diagnostic confirms it at runtime — semantic `13559155349784658228 ==
+  13559155349784658228`, provenance `3398751569552983810 != 4134247641157939318`.
+- **What closure does not claim.** Ordinal 310 (`tests/FieldAlignedCurveNetworkTests.cpp:2509`) and R7-2's passing
+  counterpart both use the **two-ring**; the torus counterpart failed at its own witness precondition
+  (`M3-CP4c2-TB-X2-R7-CAND-01`). The split is therefore runtime-proved on one witness — which is precisely what the
+  frozen condition asked for. Moving a closure condition after the evidence arrives is the failure mode this project
+  has already corrected twice, and it is not repeated here.
+- **Live residual — measure AD3.** `candidate_semantic_hash` consumes `face.orbit`, the raw index into
+  `faceWalk.orbits`, under a written rationale (`SurfaceCutGraph.cpp:293-297`) that the ordinal is content-derived
+  because `NetworkArcId` comes from a total sort over semantic arc descriptors. That rationale is plausible and
+  **unproved**: its only dedicated falsifier is
+  `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration`, which tests the source face/edge **enumeration** axis
+  that gauge relabeling does not touch — and that identity is in no selector and has never run. AD3 therefore rests
+  on a comment. Owned by **AF4**.
+- **Accounting:** closure is a status change, not a count change. Totals remain **44 events / 14 categories /
+  30 recurrences**; debt **5**; M3 packages **64**.
 
-## PR8-R043 / M3-CP4c2-R001 — CP4c-2 whole-source-face proxy rejects accepted embedded-graph witness — ACTIVE STABLE / PRODUCT / AUTHORITY_DOMAIN_CONFLATION / RP-01
+## PR8-R043 / M3-CP4c2-R001 — CP4c-2 whole-source-face proxy rejects accepted embedded-graph witness — **RESOLVED / CLOSED IN R7-REV** / STABLE / PRODUCT / AUTHORITY_DOMAIN_CONFLATION / RP-01
 
 - **Observed:** R5-EXEC run/job `33232106030 / 99046593525` passes accepted ordinals 1-304 in fresh processes, then ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selects exactly once and exits `1`. Its first semantic failure is `SurfaceCutGraph::make(...)=CellularityNotEstablished`; the later `std::get: wrong index for variant` is secondary helper fallout.
 - **Accepted predecessor:** the same identity/witness is part of CP4c-1's accepted **355/355** authority at source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. CP4c-2 inserted `SurfaceCutGraph` ahead of `GlobalTopologyPlan`; the witness itself is not new or reconstructed.
@@ -86,6 +188,16 @@
 - **R6-REV disposition — RESOLVED AT LOCUS / CLOSURE PENDING FULL-PREFIX RE-PROOF.** Accepted ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` **passes** on CB4 package `9714226920`. The mixed-complex certificate that produced `9 - 11 + 2 = 0 != 1` is gone, replaced by DEFN-R1 Amendment 13's actual embedded-graph complex, and CB4 delivered `src/geometry/EmbeddedGraphTopology.{h,cpp}` as the single shared authority required by AC1.
 - **Not closed yet, deliberately.** R6 executed 309 of 355 accepted identities before stopping at ordinal 310. **`PR8-R043` closes only at a full 355/355 with ordinal 305 green** — recording closure on a 309-ordinal prefix would be the partial-evidence promotion this project has already corrected twice. Measure **AD8** carries the condition.
 - **R7 retry EXEC evidence:** the same CB5 package now reaches the complete accepted **355/355**. Ordinal 305 selects exactly once and passes in that full run, mechanically satisfying this record's frozen runtime closure condition. **EXEC does not close/reclassify the stable record or alter totals; R7-REV owns that adjudication.**
+- **R7-REV disposition — CLOSED.** Measure AD8's frozen condition — ordinal 305 green in a run reaching the full
+  355/355 — is met exactly, with no prefix promotion. The defect is also gone at the locus rather than masked: the
+  mixed-complex certificate that computed `9 − 11 + 2 = 0 ≠ 1` on the two-ring no longer exists, DEFN-R1
+  Amendment 13's actual-embedded-graph complex replaced it, and `proves_cellularity()`
+  (`src/geometry/SurfaceCutGraph.cpp:331-333`) now **requires**
+  `complex == SurfaceCutGraphComplexKind::ActualEmbeddedGraph`, so the withdrawn whole-source-face proxy cannot
+  re-enter a certificate by construction. `src/geometry/EmbeddedGraphTopology.{h,cpp}` is the single shared
+  authority AC1 required.
+- **Accounting:** closure is a status change, not a count change. Totals remain **44 / 14 / 30**; debt **5**;
+  M3 packages **64**.
 
 ## M3-CP4c2-TB-X2-R5-ORCH-01 — runtime helper leaks errexit and suppresses postflight — RESOLVED / R6 HARNESS CONFIRMED / ORCHESTRATION / NON-STABLE
 
@@ -331,7 +443,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 - **Stable-count rationale:** this is a report-only, not-yet-accepted CP4c-2 diagnostic/test-authority defect, not a
   loss of accepted-green behavior. **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
 
-## M3-CP4c2-TB-X2-CAND-04 — prescribed sphere reaches A2a′ then `SurfaceCutGraph` fails `CellularityNotEstablished` — **ACTIVE / PRODUCT FAILURE CANDIDATE / UNLOCALIZED / NON-STABLE**
+## M3-CP4c2-TB-X2-CAND-04 — prescribed sphere's A2a′ failure is a collapsed typed error, not a cellularity verdict — **ACTIVE / PRODUCT FAILURE CANDIDATE / LOCALIZED TO THE SHARED EMBEDDED-GRAPH AUTHORITY / CELLULARITY FRAMING WITHDRAWN / NON-STABLE**
 
 - **Observed:** the same authoritative X2 run proves source topology, `FieldTransportAtlas`, and
   `FieldAlignedCurveNetwork` all succeed for the prescribed sphere; the network has 24 traces / 56 events. The next
@@ -358,6 +470,55 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
   `localizedSite=474-global-certificate`, and `localizationConsistent=false`. This materially narrows the evidence
   but contains an explicit locus-consistency conflict; EXEC therefore preserves the record without promoting a
   specific product root cause. Independent R7-REV owns interpretation/disposition. Stable totals remain unchanged.
+
+### R7-REV adjudication — the cellularity framing is withdrawn
+
+Full derivation in `Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` §5. Established from retained
+evidence plus committed source (working tree byte-identical to packaged source `755485865a`):
+
+- **`errorSourceFace=25-27-28` is populated, and that settles the path.** In the `SurfaceCutGraph::make` path D2
+  exercises, `CellularityNotEstablished` has exactly three producers: `SurfaceCutGraph.cpp:250` (the
+  `exterior.size() > totalOrbits` guard, via `cut_error`, which sets **only** `code` — `:44-48`), `:337/:339`
+  (`make_from_candidate` binding fallbacks, not on this path), and `:50-67` `topology_error`, which is the **only**
+  one that copies `error.sourceFace`.
+- **`topology_error` is a lossy default bucket.** It maps 39 `GlobalTopologyPlanErrorCode` values into three
+  `SurfaceCutGraphErrorCode` values; `InvalidSourceBinding`, `InvalidNetworkBinding` and `InvalidCutGraphBinding`
+  survive as themselves and **the remaining 36 collapse to `CellularityNotEstablished`**. On this path that string is
+  not a verdict about cellularity — it is `default:`.
+- **It is called from exactly two sites,** `SurfaceCutGraph.cpp:240` (`build_embedded_graph_topology`) and `:243`
+  (`exterior_boundary_orbits`), both defined in `src/geometry/EmbeddedGraphTopology.cpp`, which calls nothing in
+  `global_topology_plan_detail`.
+- **Across that file's 58 error constructions, every code that both survives the default case and carries a
+  `sourceFace` is `RotationSystemInconsistent`** — all nine `sourceFace` assignments (`:364, :372, :499, :507, :514,
+  :813, :827, :929, :939`) belong to it; it accounts for 44 of the 58.
+- **Therefore:** the sphere's A2a′ failure is `GlobalTopologyPlanErrorCode::RotationSystemInconsistent` at one of
+  nine sites in `EmbeddedGraphTopology.cpp`, locus source face `25-27-28`, relabeled `CellularityNotEstablished` by
+  `topology_error`'s `default:`. The single residual — an error constructed in an unenumerated helper — is closed by
+  **AF0**, which prints the code instead of inferring it.
+
+Three consequences:
+
+1. **The sphere never reached a cellularity decision.** Neither `topology_error` call site evaluates cellularity;
+   that happens later, at `certificate.proves_cellularity()` in the cut loop (`:323`) and at the `:250` orbit guard.
+   Every turn from X2 forward reasoned about whether the sphere is cellular, how many cuts it needs, and which
+   complex certifies it — aimed at a mechanism the sphere never reached.
+2. **A2a′ did not change the sphere's failure; it renamed it.** This record previously asked whether the sphere's old
+   `RotationSystemInconsistent` was caused by non-cellularity. Inserting `SurfaceCutGraph` upstream of
+   `GlobalTopologyPlan` moved the same rotation-system inconsistency one stage earlier and gave it a new name
+   through the default case. This is the `ORIENTATION.md` §8 pattern *typed error flattened / one code collapsing
+   several mechanisms with no locus*, and it has cost the checkpoint eight turns.
+3. **The standing prediction is NOT confirmed.** "The sphere's network is already cellular pre-cut and needs zero
+   cuts" remains unadjudicated. What changed is that its principal counter-evidence evaporated. It must now be
+   settled on the actual-embedded-graph oracle row — which **R7-3 already published for the sphere** and which the
+   EXEC report omitted; it is in retained result artifact `9721564203`. **AF1** extracts it, with no new runtime.
+
+- **Owning correction:** **AF0** (carry and print the originating `GlobalTopologyPlanErrorCode`; do **not** re-map
+  `topology_error` and do **not** add an enum value — 355 accepted identities depend on the current mapping),
+  **AF1** (extract the sphere oracle row before planning any run), **AF2** (repair the D2 harness — see
+  `M3-CP4c2-TB-X2-R7-CAND-03`). No product fix for the rotation-system failure is authorized until the code is
+  printed; fixing a mechanism named by inference is how this checkpoint lost R2.
+- **Stable-count rationale unchanged:** CP4c-2 has never been runtime-accepted; no accepted-green behaviour is lost.
+  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
 
 ## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
 
@@ -1758,8 +1919,8 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `PR8-R040` | `M3-CP2b-R001` | `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | resolved |
 | `PR8-R041` | `M3-CP2b-R002` | `POLICY_STAGE_STATE_CONFLATION` | `RP-03` | resolved |
 | `PR8-R042` | `M3-CP4b-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved |
-| `PR8-R043` | `M3-CP4c2-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | **active** |
-| `PR8-R044` | `M3-CP4c2-R002` | `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | **active** |
+| `PR8-R043` | `M3-CP4c2-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved (R7-REV, 355/355 with ordinal 305 green) |
+| `PR8-R044` | `M3-CP4c2-R002` | `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | resolved (R7-REV, 355/355 with ordinal 310 green) |
 
 ## Current G4 stable-ID mapping
 

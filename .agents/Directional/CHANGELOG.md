@@ -1,5 +1,83 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R7-REV`: R043/R044/ORCH-01 closed; the sphere's "cellularity" failure is a collapsed typed error
+
+Independent review and planning only. No runtime, build, benchmark, or product/test/fixture/selector mutation.
+Static analysis was performed against the working tree, verified byte-identical to the packaged semantic source
+(`git diff --stat 755485865a HEAD -- tests/ src/ include/` is empty), so every source claim below describes exactly
+what R7 executed. Measures issued: **AF0–AF9**. Full record:
+`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md`.
+
+**Closures.**
+
+- **`PR8-R043 / M3-CP4c2-R001` — CLOSED.** Measure AD8's frozen condition (ordinal 305 green in a run reaching the
+  full 355/355) is met exactly, with no prefix promotion. The defect is gone at the locus, not masked:
+  `proves_cellularity()` now *requires* `SurfaceCutGraphComplexKind::ActualEmbeddedGraph`, so the withdrawn
+  whole-source-face proxy cannot re-enter a certificate by construction.
+- **`PR8-R044 / M3-CP4c2-R002` — CLOSED.** Ordinal 310 green in the same full run. The fix was re-verified at
+  source as a correct application of the `M3-CP3a-DG-CAND-02` template: `candidate_semantic_hash` excludes
+  `atlasDigest`, `candidate_hash` retains it for tamper rejection exactly as AD1 required, the consumer at
+  `GlobalTopologyPlan.cpp:1630` was converted, and R7-2's two-ring run confirms equal semantic / unequal provenance
+  digests at runtime. Stated explicitly: the split is runtime-proved on **one** witness, which is what the frozen
+  condition asked for; the torus counterpart is a separate record, not a reason to move a closure condition after
+  the evidence arrives.
+- **`M3-CP4c2-TB-X2-R7-ORCH-01` — CLOSED** on its frozen condition, a green R7-0 across all six recomputed selector
+  derivations. All six hashes were independently re-derived again in review and match.
+- Stable totals are **unchanged at 44 / 14 / 30**; closing an event changes its status, never the cumulative count.
+  Debt **5**; M3 packages **64**.
+
+**The decisive finding — `M3-CP4c2-TB-X2-CAND-04` re-localized, cellularity framing withdrawn.**
+
+- `SurfaceCutGraph::topology_error` (`src/geometry/SurfaceCutGraph.cpp:50-67`) maps 39
+  `GlobalTopologyPlanErrorCode` values onto three `SurfaceCutGraphErrorCode` values; three survive as themselves and
+  **36 collapse into `CellularityNotEstablished`**, carrying `sourceFace` through.
+- It is the **only** producer of that code on the `make` path that sets a `sourceFace` — `cut_error` (`:44-48`) sets
+  only `code`. R7-5 published `errorSourceFace=25-27-28`, so the sphere took the `topology_error` path.
+- Its two call sites (`:240`, `:243`) both enter `src/geometry/EmbeddedGraphTopology.cpp`. Across that file's 58
+  error constructions, every code that both survives the collapse and carries a `sourceFace` is
+  **`RotationSystemInconsistent`** — 44 of 58, and all nine `sourceFace` assignments.
+- Neither call site evaluates cellularity; that happens later at `proves_cellularity()` in the cut loop (`:323`) and
+  the `:250` orbit guard. **The sphere never reached a cellularity decision.** A2a′ did not change the sphere's
+  pre-existing `RotationSystemInconsistent`; inserting it upstream **renamed** it through a `default:` case, and
+  eight turns of planning reasoned about cuts and complexes for a mechanism that never ran.
+- The standing prediction ("the sphere is already cellular pre-cut") is **not** thereby confirmed — only its
+  principal counter-evidence has evaporated. It is settled by the sphere's actual-graph oracle row, which
+  **R7-3 already published and the R7 report omitted**; it is in retained result artifact `9721564203`, and AF1
+  extracts it with no new runtime.
+
+**Other findings.**
+
+- **`R7-CAND-01` adjudicated** — the torus digest diagnostic builds its atlas from a locally synthesized
+  zero-transport field, not the production `torus.rawfield`. That witness has no production counterpart and had
+  never been shown constructible; the zero-effort cycle lift is integral on a flat mesh and generically
+  non-integral on a curved closed surface. `ASSERT_TRUE(baselineAtlas)` discarded a typed error the process already
+  held. A witness-construction defect, not a defect in the CB5 split.
+- **New `R7-CAND-03`** — the D2 localization harness compares the actual embedded graph against the **withdrawn**
+  source-edge-barrier proxy, through a helper named `cp4c_producer_rederivation` that models a pre-CB4 producer, and
+  classifies with labels (`419-`, `437-`, `474-`) that are line numbers in a file 344 lines long.
+  `localizationConsistent=false` is false by construction. `RP-01` at the diagnostic layer.
+- **New `R7-CAND-04`** — **no `SurfaceCutGraph.*` identity appears in the accepted 355, in 357, or in 358.** Both
+  candidate gates would accept a new pipeline stage while requiring none of that stage's own witnesses, and the
+  prescribed sphere is in neither gate — the structural reason its failure survived eight turns. Selector 358's sole
+  addition binds the mechanical witness, which this checkpoint declares out of scope and which has no atlas; if that
+  holds, 358 is a guaranteed red. Never probed.
+- The frozen `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` names one identity and R7 ran four others,
+  without recording why.
+- Retention check: the deleted predecessor R7-REV record was retired compliantly — AE0–AE9, `LESSONS.md` 22k/22m/22n
+  and the review arc are all preserved in the DOC-R1 report, the tracker, the changelog and
+  `M3_CP4c_Consolidated_Record.md` §§6.1-6.7.
+
+**Lessons adopted:** `LESSONS.md` **22p** (a diagnostic loop's value is per-witness; a one-row summary withholds
+evidence already paid for), **22q** (a synthesized witness needs its own executed precondition; prefer production
+authority), **57** (a `default:` in an error-translation switch is a lossy channel, and a bucket that asserts a
+semantic verdict is a fabricated finding — carry the originating code), **64v** (a frozen non-gating selector must
+be run or its skips justified per identity), **64w** (a new stage needs gated identities of its own, and check what
+each candidate gate's added identities *bind*).
+
+**Gate selection deliberately not made.** `selected_r2_branch=NONE`, `selected_gate=NONE`,
+`gate_execution_authorized=false`. Exact next: **`M3-CP4c-2-CB6`**, a bounded diagnostic and witness-repair
+Code + Build under AF0–AF4 with the AF9 prohibitions; AF1 runs first and requires no build.
+
 ## 2026-08-29 — `M3-CP4c-2-TB-X2-R7-EXEC` retry: accepted 355/355 restored; non-gating torus diagnostic stops at baseline atlas
 
 Artifact-only Test + Benchmark execution on unchanged GMP package `9719216316` / semantic source

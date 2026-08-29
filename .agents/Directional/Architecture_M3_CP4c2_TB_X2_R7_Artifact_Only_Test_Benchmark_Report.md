@@ -95,3 +95,20 @@ fully re-proved on CB5.
 
 Exact next: **`M3-CP4c-2-TB-X2-R7-REV`**, independent review/planning only. No new runtime, implementation,
 test/fixture/build-logic mutation, 357/358 execution, cumulative gate, or benchmark is authorized by this report.
+
+---
+
+**Successor note (added by `M3-CP4c-2-TB-X2-R7-REV`; this report's own evidence is unchanged).** The review is
+complete: `Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md`. It closed `PR8-R043`, `PR8-R044` and
+`R7-ORCH-01`, left stable totals at **44 / 14 / 30**, selected no gate, and issued measures **AF0–AF9**. Two
+corrections to how this report's R7-5 and R7-3 rows should be read:
+
+- The R7-5 summary above omits `errorSourceFace=25-27-28` and `publishedLocusClass=419-or-437-source-face-locus`,
+  which the regression tracker preserves. Those two fields are what make the record interpretable: the
+  `CellularityNotEstablished` on that path is `topology_error`'s `default:` bucket for 36 distinct
+  `GlobalTopologyPlanErrorCode` values, not a cellularity verdict, and `localizationConsistent=false` is false by
+  construction because the harness compares the actual embedded graph against the withdrawn source-edge-barrier
+  proxy.
+- R7-3 publishes one oracle row **per witness**, including the prescribed sphere; this report quoted only the torus
+  row. The sphere's row is in retained result artifact `9721564203` and is the measurement the checkpoint's standing
+  prediction has been waiting for. Measure **AF1** extracts it.
