@@ -1,0 +1,47 @@
+name: M3 CP4c2 R5 EXEC Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-r5-exec-closeout-apply.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: m3-cp4c2-r5-exec-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  schema:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c2-r5-exec-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 7
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: M3-CP4c-2-TB-X2-R5-EXEC closeout apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: schema
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 15kjZuJXwZH-ZIPdk5SBsASbU9CgpG9MW
+      patch_sha256: 2df48159454b8c364215b7f95b7fdc3e0d759c3dd6fdd9233233a4017d2362ff
+      base_sha: 796e57db119ef34d73fcac3bd6f9ab0b42390136
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close out M3-CP4c-2 R5 EXEC'
+      retention_days: 7
+    secrets: inherit
