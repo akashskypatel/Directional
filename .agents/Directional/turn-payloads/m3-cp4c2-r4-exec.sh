@@ -19,14 +19,14 @@ echo "e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63  $zip" | 
 unzip -q "$zip" -d "$pkg"
 test "$(stat -c '%a' "$pkg/bin/directional_surface_cell_producer_tests")" = 755
 (cd "$pkg" && sha256sum -c SHA256SUMS)
-test "$(cat "$pkg/source-commit.txt")" = "5ad711e5d4ced95f38e103b993139a6307ba2cee"
-test "$(cat "$pkg/preflight-exit-code.txt")" = 0
-test "$(cat "$pkg/build-exit-code.txt")" = 0
-test ! -s "$pkg/source-status-pre.txt"; test ! -s "$pkg/source-status-post.txt"
-grep -Fx 'runtimeExecution=false' "$pkg/command-boundary.txt"
-grep -Fx 'turnBoundary=Code+Build-only' "$pkg/command-boundary.txt"
-grep -Fx 'exactArithmeticBackend=GMP' "$pkg/command-boundary.txt"
-grep -q 'libgmpxx\.so' "$pkg/gmp-evidence.txt"; grep -q 'libgmp\.so' "$pkg/gmp-evidence.txt"
+test "$(cat "$pkg/metadata/source-commit.txt")" = "5ad711e5d4ced95f38e103b993139a6307ba2cee"
+test "$(cat "$pkg/metadata/preflight-exit-code.txt")" = 0
+test "$(cat "$pkg/metadata/build-exit-code.txt")" = 0
+test ! -s "$pkg/metadata/source-status-preconfigure.txt"; test ! -s "$pkg/metadata/source-status-final.txt"
+grep -Fx 'runtimeExecution=false' "$pkg/metadata/command-boundary.txt"
+grep -Fx 'turnBoundary=Code+Build-only' "$pkg/metadata/command-boundary.txt"
+grep -Fx 'exactArithmeticBackend=GMP' "$pkg/metadata/command-boundary.txt"
+grep -q 'libgmpxx\.so' "$pkg/metadata/gmp-evidence.txt"; grep -q 'libgmp\.so' "$pkg/metadata/gmp-evidence.txt"
 cat > "$out/expected-targets.txt" <<'EOF'
 directional_benchmarks
 directional_compiled_api_tests
@@ -37,7 +37,7 @@ directional_surface_cell_completion_tests
 directional_surface_cell_producer_tests
 directional_surface_cell_validation_tests
 EOF
-LC_ALL=C sort "$pkg/compiled-targets.txt" > "$out/actual-targets.txt"
+LC_ALL=C sort "$pkg/metadata/compiled-targets.txt" > "$out/actual-targets.txt"
 diff -u "$out/expected-targets.txt" "$out/actual-targets.txt"
 src="$pkg/source/source-5ad711e5d4ced95f38e103b993139a6307ba2cee.tar.gz"
 echo "9a9dbfb5c6aede1618d41323109cb336f978f75434bef216472557121df2fb11  $src" | sha256sum -c -
@@ -76,12 +76,14 @@ out=Path(sys.argv[1]); rc=int(sys.argv[2])
 lines=[x for x in (out/'d1.log').read_text(errors='replace').splitlines() if 'm3Cp4c2Y1;' in x]
 rec={}
 for line in lines:
-    s=line[line.index('m3Cp4c2Y1;'):]; d={}
+    s=line[line.index('m3Cp4c2Y1;'):]
+    d={}
     for p in s.split(';')[1:]:
         if '=' in p:
             k,v=p.split('=',1); d[k]=v
-    rec[d.get('witness')]=d
-req={'torus','prescribed-sphere','two-ring'}; decision='STOP_EVIDENCE_CONFLICT'
+    w=d.get('witness'); rec[w]=d
+req={'torus','prescribed-sphere','two-ring'}
+decision='STOP_EVIDENCE_CONFLICT'
 if len(lines)==3 and set(rec)==req:
     t=rec['torus']; sp=rec['prescribed-sphere']; tr=rec['two-ring']
     shape=(t.get('witnessConstruction')=='pipelineProducts' and sp.get('witnessConstruction')=='pipelineProducts' and tr.get('witnessConstruction')=='constructed')
@@ -89,7 +91,9 @@ if len(lines)==3 and set(rec)==req:
     if shape and pf and (t.get('pipelineAtlasAvailable')=='false' or t.get('pipelineNetworkAvailable')=='false' or t.get('constructionSucceeded')!='true'):
         decision='STOP_Z12'
     elif shape and t.get('constructionSucceeded')=='true':
-        torus_ok=all(t.get(k)==v for k,v in {'complex':'sourceEdgeBarrier','railAuthority':'pipeline-authoritative','surfaceCutGraphCalls':'0','barrierV':'48','barrierE':'48','sourceChi':'0','networkOnlyCellular':'false','oracleSelfConsistent':'true'}.items())
+        torus_ok=all((t.get(k)==v) for k,v in {
+          'complex':'sourceEdgeBarrier','railAuthority':'pipeline-authoritative','surfaceCutGraphCalls':'0',
+          'barrierV':'48','barrierE':'48','sourceChi':'0','networkOnlyCellular':'false','oracleSelfConsistent':'true'}.items())
         common=lambda d: d.get('oracleKind')=='independent-source-edge-barrier-complex' and d.get('complex')=='sourceEdgeBarrier' and d.get('oracleSelfConsistent')=='true' and d.get('constructionSucceeded')=='true'
         allok=torus_ok and common(t) and common(sp) and common(tr) and sp.get('railAuthority')=='pipeline-authoritative' and tr.get('railAuthority')=='atlas-derived'
         decision='RUN_D2' if allok and rc==0 else 'STOP_D1_CONSISTENCY'
@@ -109,9 +113,11 @@ if [[ "$decision" == RUN_D2 ]]; then
 import sys
 from pathlib import Path
 out=Path(sys.argv[1]); rc=int(sys.argv[2])
-lines=[x for x in (out/'d2.log').read_text(errors='replace').splitlines() if 'm3Cp4c2Y2;' in x]; ok=False
+lines=[x for x in (out/'d2.log').read_text(errors='replace').splitlines() if 'm3Cp4c2Y2;' in x]
+ok=False
 if len(lines)==1:
-    s=lines[0][lines[0].index('m3Cp4c2Y2;'):]; d=dict(p.split('=',1) for p in s.split(';')[1:] if '=' in p)
+    s=lines[0][lines[0].index('m3Cp4c2Y2;'):]
+    d=dict(p.split('=',1) for p in s.split(';')[1:] if '=' in p)
     ok=rc==0 and d.get('witness')=='prescribed-sphere' and d.get('oracleComplex')=='sourceEdgeBarrier' and d.get('railAuthority')=='pipeline-authoritative' and d.get('oracleSelfConsistent')=='true' and d.get('localizationConsistent')=='true'
 (out/'d2-records.txt').write_text('\n'.join(lines)+('\n' if lines else ''))
 (out/'d2-decision.txt').write_text(('PASS' if ok else 'STOP_D2_EVIDENCE_CONFLICT')+'\n')
@@ -125,10 +131,10 @@ inv "$pkg" "$out/package-post.tsv"; inv "$GITHUB_WORKSPACE" "$out/source-post.ts
 cmp "$out/package-pre.tsv" "$out/package-post.tsv"
 cmp "$out/source-pre.tsv" "$out/source-post.tsv"
 (cd "$pkg" && sha256sum -c SHA256SUMS)
-test "$(cat "$pkg/source-commit.txt")" = "5ad711e5d4ced95f38e103b993139a6307ba2cee"
-grep -Fx 'runtimeExecution=false' "$pkg/command-boundary.txt"
-grep -Fx 'turnBoundary=Code+Build-only' "$pkg/command-boundary.txt"
-grep -Fx 'exactArithmeticBackend=GMP' "$pkg/command-boundary.txt"
+test "$(cat "$pkg/metadata/source-commit.txt")" = "5ad711e5d4ced95f38e103b993139a6307ba2cee"
+grep -Fx 'runtimeExecution=false' "$pkg/metadata/command-boundary.txt"
+grep -Fx 'turnBoundary=Code+Build-only' "$pkg/metadata/command-boundary.txt"
+grep -Fx 'exactArithmeticBackend=GMP' "$pkg/metadata/command-boundary.txt"
 
 final=semantic-red
 [[ "$(cat "$out/d1-decision.txt")" == RUN_D2 && "$(cat "$out/d2-decision.txt")" == PASS ]] && final=semantic-pass
