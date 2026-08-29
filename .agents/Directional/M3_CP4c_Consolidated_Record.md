@@ -5,11 +5,12 @@ reports, execution evidence, and reviews are retired here after their durable fa
 historical synthesis, not the current turn procedure.
 
 **Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**.
-`M3-CP4c-2` is active and runtime-unaccepted. `M3-CP4c-2-TB-X2-R6-REV` is complete/review-green and authorizes
-runtime-free `M3-CP4c-2-CB5` under **AD0–AD9**. `M3-CP4c-3` remains blocked on CP4c-2 closure.
+`M3-CP4c-2-CB5` is complete/build-green/runtime-free at `755485865a7cf9c485d754f22b82a41ee151824b` with immutable package `9719216316`;
+CP4c-2 remains runtime-unaccepted. Exact next is artifact-only `M3-CP4c-2-TB-X2-R7-EXEC`.
+`M3-CP4c-3` remains blocked on CP4c-2 closure.
 
 **Current accounting.** Stable regressions **44 events / 14 categories / 30 recurrences**; produced-witness debt
-**5**; authoritative M3 packages **63**. Accepted runtime predecessor remains CP4c-1 **355/355**.
+**5**; authoritative M3 packages **64**. Accepted runtime predecessor remains CP4c-1 **355/355**.
 `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 
 ## 1. Authority split: what stays separate
@@ -27,9 +28,9 @@ CP4c-2 evidence/plan authority.
 | `Architecture_M3_CP4c*_Required_Green_Selector*.txt` | frozen accepted/gate selector authority |
 | `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` | current CP4c-2 non-gating diagnostics |
 | `M3_CP4c0b_Closure_Record.md`, `M3_CP4c1_Closure_Record.md` | checkpoint closure authorities |
-| `Architecture_M3_CP4c2_CB4_Code_Build_Report.md` | current immutable CP4c-2 build/package authority until CB5 supersedes it |
+| `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` | current immutable CP4c-2 build/package authority |
 | `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` | current immutable CP4c-2 runtime evidence |
-| `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md` | current next-turn review/plan authority |
+| `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` | current exact runtime-execution authority |
 | `CHANGELOG.md` | exact per-turn commits, run/job IDs, package/artifact IDs, and immutable evidence identities |
 | `Regression_Root_Cause_Tracker.md` | stable regression/candidate history |
 | `LESSONS.md` | durable cross-turn lessons |
@@ -213,6 +214,19 @@ Independent R6 review therefore records:
 Exact next: **`M3-CP4c-2-CB5`**, runtime-free, measures **AD0–AD9**. Its successor must re-prove the complete
 355 accepted prefix; R043 and R044 close only when ordinals 305 and 310 are green in that full run.
 
+### 6.5 CB5: semantic/provenance split compiled
+
+CB5 implemented R6 AD0–AD9 at `755485865a7cf9c485d754f22b82a41ee151824b` and produced fresh GMP package `9719216316` /
+`sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc` with **28/28** internal-manifest verification and no runtime execution. `SurfaceCutGraph`
+now exposes separate semantic and provenance digests while leaving `candidate_hash` unchanged for atlas/network
+tamper binding; `GlobalTopologyPlan` consumes only the semantic cut-graph digest for semantic identity. The raw
+orbit index was retained only after proving it is a canonical rank induced by totally sorted semantic arc
+descriptors and canonical dart walking. Two non-gating cut-graph gauge-relabeling diagnostics were added for the
+two-ring and torus witnesses. No selector changed. R043/R044 remain runtime-unclosed until full R7 355 evidence.
+
+R7 keeps D2 behind a green full accepted prefix as required by AD9. If another upstream accepted-prefix stop prevents
+D2, the next review may reconsider non-gating diagnostic sequencing; R7 itself does not weaken that stop rule.
+
 ## 7. High-value reversals and lessons retained from the review arc
 
 | Earlier claim / approach | Final disposition |
@@ -285,8 +299,8 @@ tracker, definitions, and closure records were reconciled. They are no longer cu
 - `Architecture_M3_CP4c2_TB_X2_R6_Artifact_Only_Test_Benchmark_Plan.md`
 - `Architecture_M3_CP4c2_TB_X2_Review_Record.md`
 
-**Retained current CP4c-2 trio:** CB4 build report, R6 EXEC evidence, R6 independent review. They stay until a
-successor turn captures/supersedes their current source/package/runtime/plan authority.
+**Retained current CP4c-2 authority:** CB5 build report, R6 EXEC evidence, and the R7 artifact-only plan. Older
+CB4/R6-review files are provenance until the next consolidation round; they are no longer current source/package/plan authority.
 
 ## 9. Resume pointer
 
@@ -295,6 +309,6 @@ Do not resume implementation from this historical record. Use, in order:
 1. `ORIENTATION.md` for cold-start architecture/current context;
 2. `Future_Chat_Session_Handoff.md` for exact mandatory procedure and next turn;
 3. `TODO.md` for open/blocked work;
-4. `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md` for AD0–AD9;
+4. `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` for the exact next execution;
 5. `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` and
-   `Architecture_M3_CP4c2_CB4_Code_Build_Report.md` for current immutable evidence.
+   `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` for current immutable runtime/build evidence.

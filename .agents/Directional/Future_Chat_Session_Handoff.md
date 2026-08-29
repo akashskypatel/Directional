@@ -83,107 +83,89 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-CB5` — semantic/provenance digest split, measures **AD0-AD9**
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R7-EXEC` — immutable artifact-only re-proof
 
-`M3-CP4c-2-TB-X2-R6-REV` is **COMPLETE / REVIEW GREEN**. Read
-`Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md`: §3 the localization, §4 the corrective template,
-§5 the latent hazard, §6 the term partition, §7 measures AD0-AD9.
+`M3-CP4c-2-CB5` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / NOT SEMANTICALLY ACCEPTED**. Current semantic/test
+source is `755485865a7cf9c485d754f22b82a41ee151824b`. Fresh immutable GMP package `9719216316` /
+`sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc` was built on run `33267732093`; packaged source archive
+`sha256:78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`; internal manifest **28/28 PASS**. The build used GMP/GMPXX and executed no Directional
+runtime.
 
-**New: `ORIENTATION.md`** is a cold-start context document — architecture, current position, the three
-witnesses, the CP4c-2 theorem, the normative complex, open problems, recurring defect patterns, and source
-pointers, with **no procedural content**. In a fresh session read it before anything else; it exists so an agent
-does not have to reconstruct context from per-turn records.
+CB5 completed R6-REV AD0–AD9 without selector changes. `SurfaceCutGraph::candidate_hash` remains the full
+provenance/tamper hash, including gauge-dependent atlas binding; new `SurfaceCutGraph::semantic_digest()` excludes
+that representation-only provenance and consumes gauge-invariant network semantic identity. `GlobalTopologyPlan`
+now consumes the semantic cut-graph digest for semantic identity and keeps the full provenance path separately.
+AD3 was discharged by proof: `EmbeddedGraphTopology` totally sorts semantic arc descriptors, assigns
+`NetworkArcId` from that canonical rank, and walks faces in canonical dart order, so the stored orbit ordinal is a
+content-derived rank rather than source-row/container/gauge enumeration. Two non-gating cut-graph digest
+diagnostics were compiled for the two-ring and torus witnesses; they have not run.
 
-**`PR8-R043` is RESOLVED AT ITS LOCUS.** Accepted ordinal 305 passes on CB4 package `9714226920`; DEFN-R1's
-actual-embedded-graph complex works, and `src/geometry/EmbeddedGraphTopology.{h,cpp}` is the single shared
-authority AC1 required. **Closure is deferred to a full 355/355** — R6 ran 309 of 355, and closing on a
-309-ordinal prefix would be the partial-evidence promotion this project has corrected twice.
-
-**`PR8-R044` is confirmed, and the fix template already exists here.** Verified at source:
-`GlobalTopologyPlan.cpp:1511-1519` consumes `candidate.cutGraphDigest`; `SurfaceCutGraph.cpp:263-265` builds
-that digest from gauge-dependent `atlasDigest`; `canonical_candidate` stores `network.atlas_digest()` there.
-**A2b states the rule in a comment, obeys it on the line the comment guards, and is defeated two lines
-earlier.**
-
-**The error is a domain conflation, not a hashing bug.** `candidate_hash` is a **provenance** hash and is
-correct as such — `make_from_candidate` needs `atlasDigest` to reject a candidate built against a foreign or
-tampered atlas. The defect is a second consumer reading it as **semantic** identity.
-`M3-CP3a-DG-CAND-02` fixed exactly this for `FieldAlignedCurveNetwork`: semantic identity consumes the
-gauge-invariant digest while the full atlas hash is retained separately for binding/provenance. **AD1 gives
-`SurfaceCutGraph` the same split — add a `semantic_digest()`, leave `candidate_hash` unchanged. Removing
-`atlasDigest` from it is PROHIBITED**; that would trade a semantic defect for weakened tamper rejection one
-level down.
-
-**A hazard the EXEC did not reach, and it survives the obvious fix.** `SurfaceCutGraph.cpp:258` keys each
-certificate face by the **raw orbit index** into `faceWalk.orbits` — an enumeration artifact, not a face
-identity — and `candidate_hash` consumes it. Ordinal 310 asserts invariance to enumeration order **and**
-relabeling, so this is a latent instance of the same pattern that may simply not fire today. **AD3** requires it
-settled deliberately: prove orbit enumeration canonical and record the proof, or replace the index with a
-content-derived key. **"It passes now" is not an answer.**
-
-**Preserve what works (AD6):** `EmbeddedGraphTopology` as the single authority, the actual-complex certificate,
-the unconditional postflight path that discharged `R5-ORCH-01`, and AA1's snapshot placement.
-
-**`CAND-04` — the prescribed sphere — is unlocalized for the seventh turn.** D2 has been scheduled and correctly
-skipped five times, always because an upstream gate failed first. Review §8 raises, without deciding, whether
-the sphere diagnostic should be sequenced independently of the accepted-prefix outcome; it is non-gating and
-grants no credit, so its evidence would be admissible either way.
-
-Stable accounting **44 / 14 / 30**, produced-witness debt **5**, M3 packages **63**.
+`PR8-R043` remains **resolved at its former locus / closure pending full 355**. `PR8-R044` now has a compiled
+corrective implementation but remains runtime-unclosed. The accepted runtime predecessor is still CP4c-1
+**355/355**. Stable accounting **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **64**.
 `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 
 ### Current CP4c-2 immutable authority
 
-Historical CP4c retry/diagnostic narrative is consolidated in `M3_CP4c_Consolidated_Record.md`; do not
-reconstruct it here. Current authority only:
-
-- **Build/package:** `Architecture_M3_CP4c2_CB4_Code_Build_Report.md`; semantic/test source
-  `cebc12082c6dbe4830095df08169797b7dab0c5c`; immutable GMP package `9714226920`
-  (`sha256:931d422611a8144faf4efe3f9307b3a1a90bbce4cab6d8873eb95b32ca1b9f83`).
-- **Runtime evidence:** `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md`; accepted ordinals
-  1-309 PASS, ordinal 310 RED, unconditional immutable postflight PASS; 311-355 and all downstream diagnostics/gates
-  remain unexecuted in R6.
-- **Review/next plan:** `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md`; CB5 AD0-AD9 is authorized.
+- **Build/package:** `Architecture_M3_CP4c2_CB5_Code_Build_Report.md`; source `755485865a7cf9c485d754f22b82a41ee151824b`; package
+  `9719216316` (`sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`); package log `9719216455` (`sha256:af03c536bc55f37be90f6f654bb2e944c66a15036920e536a97cb5523b00f7c4`).
+- **Runtime evidence:** `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md`; accepted ordinals 1–309
+  PASS, ordinal 310 RED, unconditional immutable postflight PASS. This remains the latest runtime evidence until R7.
+- **Exact runtime plan:** `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md`.
 - **Normative definitions:** `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` and
-  `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`. The actual embedded graph is authoritative; the
-  source-edge-barrier complex is diagnostic/proposal provenance only.
+  `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`; actual embedded graph remains cellularity authority.
 - **Accepted predecessor:** CP4c-1 **355/355**, closure record `M3_CP4c1_Closure_Record.md`.
-- **Open defects:** R043 resolved at locus/closure pending full 355; R044 active; sphere CAND-04 unlocalized;
-  CP4c-3/mechanical remains blocked.
+
+### R7 execution boundary
+
+R7 is artifact-only and uses immutable package `9719216316`. It must:
+
+1. verify package/source/GMP/mode integrity plus all six frozen selector hashes;
+2. execute the ordered **355** accepted identities, one exact identity per fresh process, stopping at the first red;
+3. only after 355/355 green, run the two CB5 semantic/provenance diagnostics, then
+   `ResolvedBranchCorrection.ActualEmbeddedGraphCellularityOracleIsPublishedNonGating`,
+   `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable`, and
+   `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable`;
+4. run unconditional immutable postflight after any semantic result.
+
+A prefix red blocks all downstream R7 diagnostics. R7-EXEC does **not** run 357/358, a cumulative gate, benchmarks,
+mechanical/C2, or CP4c-3, and does not select a gate/branch. If D2 is blocked again by an accepted-prefix red, record
+it as NOT RUN; do not infer a result.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN-R1 and CB4 are complete; CP4c-2 remains runtime-unaccepted.
-- Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**; R6-EXEC re-proves only ordinals 1-309 before accepted ordinal 310 is red.
-- Current build/package authority is source `cebc12082c6dbe4830095df08169797b7dab0c5c` / GMP package `9714226920`.
-- Current reviewed runtime evidence is R6-EXEC under completed R6-REV: ordinal 305 PASS, ordinal 310 first RED, unconditional postflight PASS; R6-2/R6-3/R6-4 and 357/358 are unexecuted.
-- `PR8-R043 / M3-CP4c2-R001` is resolved at its former detection locus but remains open for closure until a full 355/355 run; `PR8-R044 / M3-CP4c2-R002` is independently confirmed and active; `R5-ORCH-01` is resolved by R6 postflight.
-- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; 357/358/cumulative gate remain blocked.
-- Stable accounting is **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3 packages **63**.
-- **Exact next is `M3-CP4c-2-CB5`**, Code + Build, runtime-free, under measures AD0-AD9.
-- CB5 is runtime-free under AD0-AD9; do not run TB, 357/358, the cumulative gate, mechanical/C2, or CP4c-3 work during CB5.
+- CP4c-2 CB5 is build-green/runtime-free; CP4c-2 remains runtime-unaccepted.
+- Current build/package authority is `755485865a7cf9c485d754f22b82a41ee151824b` / package `9719216316`.
+- Current runtime evidence is still R6-EXEC: ordinal 305 PASS, ordinal 310 first RED; R7 has not executed.
+- R043 closure requires ordinal 305 green within full 355; R044 closure requires ordinal 310 green within the same
+  full 355. `R5-ORCH-01` remains resolved by R6 unconditional postflight.
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; 357/358/cumulative gate remain
+  blocked pending reviewed R7 evidence.
+- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
+  packages **64**.
+- **Exact next is `M3-CP4c-2-TB-X2-R7-EXEC`**, artifact-only, under the exact R7 plan above.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/CB.md`; `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5
+- turn-based-coding-agent `references/turns/TB-EXEC.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — **read first in a fresh session**; cold-start substance with no procedure.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md` — **the authorizing record**; §4 the corrective template, §5 the orbit-index hazard, §6 the term partition, §7 AD0-AD9.
-2. `src/geometry/SurfaceCutGraph.cpp:255-275` — `candidate_hash` (the provenance hash AD1 must leave intact) and `:258` (the orbit-index face record AD3 must settle).
-3. `src/geometry/GlobalTopologyPlan.cpp:1511-1519` — `candidate_semantic_digest`, the consumer AD2 converts, and the comment AD2 extends to both sites.
-4. `tests/FieldAlignedCurveNetworkTests.cpp:2457-2463` — accepted ordinal 310's invariance assertion; the identity that caught this.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `PR8-R044`, `PR8-R043` (resolved at locus, closure deferred), `M3-CP3a-DG-CAND-02` at ~745 for the fix template, resolved `R5-ORCH-01`, and `CAND-04`.
-6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — Amendment 13 and the actual-complex contract, unchanged by this correction.
-7. `.agents/Directional/Architecture_M3_CP4c2_CB4_Code_Build_Report.md`, immutable package `9714226920`, source `cebc12082c6dbe4830095df08169797b7dab0c5c` — build provenance; do not rebuild from it.
+0. `.agents/Directional/ORIENTATION.md` — cold-start architecture/current context.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` — **exact executable authority**.
+2. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — package/source provenance and AD0–AD9 audit.
+3. Immutable package `9719216316` / `sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc` from source `755485865a7cf9c485d754f22b82a41ee151824b` — execute, never rebuild.
+4. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` — ordered 355 accepted identities.
+5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` — immediately preceding runtime
+   evidence and unconditional-postflight precedent.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R043, R044, R5-ORCH-01, and CAND-04 state.
+7. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — actual-complex contract.
 8. `TODO.md` / `CHANGELOG.md` — current state/accounting.
 
-Do not remove `atlasDigest` from `candidate_hash`; do not disturb `EmbeddedGraphTopology`, the actual-complex
-certificate, the unconditional postflight, or AA1. Do not run 357/358, a cumulative gate, or D2 before the full
-355 accepted prefix is green.
+Do not configure/compile/relink/repair the package in R7. Do not change selectors, fixtures, product/test/build logic,
+or run 357/358/cumulative gate/benchmarks/mechanical/C2/CP4c-3.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
