@@ -1,4 +1,0 @@
-M3-CP4c-2-TB-X2-R6-EXEC closeout Drive apply
-base=9d83017af6483002627f0f9d5793f4ac7dcfbf20
-patch_sha256=a43a5fe5121010124dc808a89d55f614170777164b09adc58e66e71ef5e82c03
-retry=0
