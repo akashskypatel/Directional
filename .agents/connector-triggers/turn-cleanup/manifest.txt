@@ -1,6 +1,0 @@
-# M3-CP4c-2-TB-X2-R4-EXEC temporary-state cleanup manifest
-.agents/connector-triggers/source-snapshot/m3-cp4c2-r4-exec.txt
-.agents/Directional/turn-payloads/m3-cp4c2-r4-exec.sh
-.agents/Directional/turn-payloads/m3-cp4c2-tb-x2-r4-exec-caller.yml
-.agents/connector-triggers/m3-cp4c2-r4-exec-schema-validate/run.txt
-.agents/connector-triggers/m3-cp4c2-tb-x2-r4-exec/run.txt
