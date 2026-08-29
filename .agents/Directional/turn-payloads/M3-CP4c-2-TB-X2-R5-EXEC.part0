@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TURN_ID="M3-CP4c-2-TB-X2-R5-EXEC"
+SOURCE_SHA="76d757aab0ce18df09ce2823302d2dc224965187"
+PACKAGE_ARTIFACT_ID="9708324052"
+PACKAGE_SHA256="48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a"
+SOURCE_ARCHIVE_SHA256="f16141613e877c78746548596449ef494fb9f4b384736526d74eaaf54a0a9a2d"
+R4_RESULT_ARTIFACT_ID="9707662462"
+R4_RESULT_SHA256="36e5982c152317a56d98d13e58a2ec1233c71b65e9f8570aeabfed373228a76f"
+SEL316_SHA="601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c"
+SEL346_SHA="20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a"
+SEL353_SHA="51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5"
+SEL355_SHA="e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa"
+SEL357_SHA="b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70"
+SEL358_SHA="6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62"
+
+ROOT="${RUNNER_TEMP}/r5-exec"
+RESULT="${RUNNER_TEMP}/r5-exec-result"
+LOG="${RUNNER_TEMP}/r5-exec.log"
+PACKAGE="${ROOT}/package"
+SOURCE="${ROOT}/source"
+RUNTIME="${ROOT}/runtime"
+RAW="${RESULT}/raw"
+mkdir -p "$ROOT" "$RESULT" "$RAW"
+
+exec > >(tee -a "$LOG") 2>&1
+trap 'rc=$?; echo "script_exit=${rc}"; echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"' EXIT
+
+echo "turn_id=${TURN_ID}"
+echo "event=${GITHUB_EVENT_NAME}"
+echo "event_sha=${GITHUB_SHA}"
+echo "repository=${GITHUB_REPOSITORY}"
+echo "semantic_source=${SOURCE_SHA}"
+echo "runtimeExecution=true"
+echo "benchmarkExecution=false"
+echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+inventory_tree() {
+  local root="$1" out="$2"
+  (
+    cd "$root"
+    find . -type f -print0 | sort -z | while IFS= read -r -d '' p; do
+      mode="$(stat -c '%a' "$p")"
+      bytes="$(stat -c '%s' "$p")"
+      hash="$(sha256sum "$p" | awk '{print $1}')"
+      printf '%s\t%s\t%s\t%s\n' "$mode" "$bytes" "$hash" "${p#./}"
+    done
+  ) > "$out"
+}
+
+fail_orchestration() {
+  echo "ORCHESTRATION_FAILURE: $*" | tee "$RESULT/orchestration-failure.txt"
+  printf 'ORCHESTRATION_FAILURE\n' > "$RESULT/status.txt"
+  return 1
+}
+
+# R5-0: exact immutable artifact preflight.
+echo '=== R5-0 package preflight ==='
+mkdir -p "$PACKAGE" "$SOURCE" "$RUNTIME/bin" "$RUNTIME/test-data/benchmarks"
+GH_TOKEN="${GH_TOKEN}" gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${PACKAGE_ARTIFACT_ID}/zip" > "$ROOT/package.zip"
+printf '%s  %s\n' "$PACKAGE_SHA256" "$ROOT/package.zip" | sha256sum -c -
+unzip -q "$ROOT/package.zip" -d "$PACKAGE"
+(
+  cd "$PACKAGE"
+  sha256sum -c SHA256SUMS
+)
+test "$(cat "$PACKAGE/metadata/source-commit.txt")" = "$SOURCE_SHA"
+grep -Fx 'runtimeExecution=false' "$PACKAGE/metadata/command-boundary.txt"
+grep -Fx 'turnBoundary=Code+Build-only' "$PACKAGE/metadata/command-boundary.txt"
+grep -Fx 'exactArithmeticBackend=GMP' "$PACKAGE/metadata/command-boundary.txt"
+grep -F 'libgmpxx' "$PACKAGE/metadata/gmp-evidence.txt"
+grep -F 'libgmp' "$PACKAGE/metadata/gmp-evidence.txt"
+for target in directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks; do
+  grep -Fx "$target" "$PACKAGE/metadata/compiled-targets.txt" >/dev/null
+ done
+for exe in directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks; do
+  test -x "$PACKAGE/bin/$exe"
+done
+SOURCE_TAR="$PACKAGE/source/source-${SOURCE_SHA}.tar.gz"
+printf '%s  %s\n' "$SOURCE_ARCHIVE_SHA256" "$SOURCE_TAR" | sha256sum -c -
+tar -xzf "$SOURCE_TAR" -C "$SOURCE"
+test -f "$SOURCE/benchmarks/fixtures/milestone-g/sphere_prescribed.obj"
+cp -a "$PACKAGE/bin/." "$RUNTIME/bin/"
+cp -a "$SOURCE/benchmarks/fixtures" "$RUNTIME/test-data/benchmarks/fixtures"
+for exe in "$PACKAGE"/bin/*; do
+  base="$(basename "$exe")"
+  cmp "$exe" "$RUNTIME/bin/$base"
+done
+inventory_tree "$PACKAGE" "$RESULT/package-pre.tsv"
+inventory_tree "$SOURCE" "$RESULT/source-pre.tsv"
+
+S346="$SOURCE/.agents/Directional/Architecture_M3_CP4c0_Required_Green_Selector.txt"
+S353="$SOURCE/.agents/Directional/Architecture_M3_CP4c0b_Required_Green_Selector.txt"
+S355="$SOURCE/.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt"
+S357="$SOURCE/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_357.txt"
+S358="$SOURCE/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_358.txt"
+test "$(wc -l < "$S346")" -eq 346
+test "$(wc -l < "$S353")" -eq 353
+test "$(wc -l < "$S355")" -eq 355
+test "$(wc -l < "$S357")" -eq 357
+test "$(wc -l < "$S358")" -eq 358
+test "$(head -n 316 "$S346" | sha256sum | awk '{print $1}')" = "$SEL316_SHA"
+test "$(sha256sum "$S346" | awk '{print $1}')" = "$SEL346_SHA"
+test "$(sha256sum "$S353" | awk '{print $1}')" = "$SEL353_SHA"
+test "$(sha256sum "$S355" | awk '{print $1}')" = "$SEL355_SHA"
+test "$(sha256sum "$S357" | awk '{print $1}')" = "$SEL357_SHA"
+test "$(sha256sum "$S358" | awk '{print $1}')" = "$SEL358_SHA"
+printf '316\t%s\n346\t%s\n353\t%s\n355\t%s\n357\t%s\n358\t%s\n' "$SEL316_SHA" "$SEL346_SHA" "$SEL353_SHA" "$SEL355_SHA" "$SEL357_SHA" "$SEL358_SHA" > "$RESULT/selector-hashes.tsv"
+
+# Static identity-to-owner mapping; no generated test discovery is allowed.
+python3 - "$SOURCE" "$S355" "$RESULT/identity-owner.tsv" <<'PY'
+from pathlib import Path
+import re, sys
+root=Path(sys.argv[1]); selector=Path(sys.argv[2]); out=Path(sys.argv[3])
+targets={
+'directional_surface_cell_producer_tests':[
