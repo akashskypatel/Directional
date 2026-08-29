@@ -1,3 +1,25 @@
+## M3-CP4c2-TB-X2-R3-CAND-01 — corrected D1 torus fixture fails before network publication with `field-transport-atlas-unavailable` — ACTIVE / DIAGNOSTIC-PRECONDITION / UNLOCALIZED / NON-STABLE
+
+- **Observed:** authoritative artifact-only R3 EXEC run/job `33222551366 / 99019499929` passed immutable preflight,
+  selected `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable` exactly once, and then
+  exited `1` at `tests/FieldAlignedCurveNetworkTests.cpp:5946` before publishing any `m3Cp4c2Y1` record.
+  `fixture.network.has_value()` was false with exact diagnostic `witness=torus;error=field-transport-atlas-unavailable`.
+- **Stop-rule effect:** Z6's torus 48/48 publication was never reached; Z3 all-witness self-consistency was not
+  evaluated; D2 was correctly skipped. R2 CAND-01/CAND-02 therefore remain active and X2 CAND-04 remains
+  active/unlocalized. EXEC makes no Y5 branch inference.
+- **Root-cause analysis status:** runtime localizes the failure to corrected torus diagnostic fixture construction
+  before `FieldAlignedCurveNetwork` publication. The EXEC evidence does not distinguish an invalid diagnostic
+  field/fixture precondition from a defect in the explicit product-authoritative rail/atlas construction path.
+  Adjudicating that distinction is the bounded responsibility of `M3-CP4c-2-TB-X2-R3-REV`; unchanged runtime
+  retry is prohibited.
+- **Immutability:** result/log artifacts `9705692837 / 9705693025`, SHA-256
+  `ba989d0ddd3bd244f03c8242060ded9f9c58b33679893ab0ddf1cc5fb8d015f5 /
+  ab653c13ec7b0eec30f2736a17bbf44406afa7c828cb1fddbadea795aa6701a6`; package/source byte-and-mode postflight
+  matches preflight exactly.
+- **Stable-count rationale:** CP4c-2 is unaccepted and this failure is in a new non-gating diagnostic authority;
+  no accepted-green product behavior regressed. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**,
+  debt **5**, M3 packages **60**.
+
 # Surface-Cell Regression Root-Cause Tracker
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
@@ -62,6 +84,10 @@ Last updated: **2026-08-28 UTC** after `M3-CP4c-2-CB2-DIAG-R1`. The bounded test
   `commit_run_file=false` skips that job.
 - **Correction/evidence:** the corrected caller granted the static union required by the reusable graph. Observer and
   schema-validation jobs both passed in authoritative run `33199227974`.
+- **R3 recurrence:** R3 EXEC caller run `33222474179` repeated the same startup failure after initially granting
+  `contents: read`; zero jobs/zero Directional runtime instantiated. Raising the caller ceiling to `contents: write`
+  produced authoritative runtime run `33222551366`. This is the same resolved orchestration pattern, not a new
+  semantic candidate or stable regression.
 - **Stable-count rationale:** workflow startup failed before semantic execution; **+0 events / +0 recurrences**.
   Totals remain **42 / 14 / 28**, debt **5**.
 

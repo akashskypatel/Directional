@@ -1,3 +1,18 @@
+## 2026-08-28 — `M3-CP4c-2-TB-X2-R3-EXEC`: valid diagnostic red, planned D1 stop before torus publication
+
+Artifact-only R3 EXEC run/job `33222551366 / 99019499929` consumed immutable GMP package `9704935112` from
+source `c552a5a4a318063cde2564c40773ec7edaf064f6`. Immutable package/source/GMP/selector preflight passed and D1
+selected exactly once, but exited `1` before any `m3Cp4c2Y1` publication: torus diagnostic fixture construction
+failed at `tests/FieldAlignedCurveNetworkTests.cpp:5946` with `witness=torus;error=field-transport-atlas-unavailable`.
+The frozen stop rule therefore skipped D2; no Y5 branch, selector 355/357/358, cumulative gate, benchmark, build,
+relink, repair, or generated discovery ran. Recursive package/source byte-and-mode postflight matched exactly.
+Result/log artifacts `9705692837 / 9705693025`, SHA-256
+`ba989d0ddd3bd244f03c8242060ded9f9c58b33679893ab0ddf1cc5fb8d015f5 /
+ab653c13ec7b0eec30f2736a17bbf44406afa7c828cb1fddbadea795aa6701a6`. A preceding caller startup failure
+`33222474179` instantiated zero jobs and repeated the known reusable-observer permission-ceiling orchestration
+pattern; the caller was corrected before runtime. Stable accounting remains **42 / 14 / 28**, debt **5**, M3
+packages **60**. Exact next: evidence-only `M3-CP4c-2-TB-X2-R3-REV`.
+
 ## 2026-08-28 — `M3-CP4c-0b-CB3-INSTR`: bounded non-gating observability build green
 
 CB3-INSTR is **COMPLETE / BUILD GREEN / RUNTIME-FREE** under independent-review measures V0-V7. Exact source `93059089881c8715a168a61968a8d6874ee1a670` changes only `tests/FieldAlignedCurveNetworkTests.cpp` and the CP4c-0b non-gating selector; `src/`, `include/`, fixtures, accepted identities, and the frozen 353 selector are unchanged. V1 selects the existing sphere A2a census; V2 adds a fan termination/guard census; V3 adds a two-ring FirstContact↔MandatoryBarrierTermination pairing census. Required selector remains 353 / `51ff96d7…ac6a5` with first-346 `20d3b0b1…3e46a`; non-gating selector is 4 / `d4224002…d9ad`. Authoritative compile run `33133572290`, jobs `98728445391 / 98728639650`, produced immutable GMP package `9671190795` (`2901926c86a467160bae11aa4aac422d86fb9b275feff974c1645dd03b9a05c1`), internal manifest 28/28 PASS, clean source status, GMP/GMPXX link evidence, `runtimeExecution=false`. Stable accounting stays **42 / 14 / 28**, debt **5**, M3 packages **55**. Exact next: artifact-only `M3-CP4c-0b-TB-T5`; `T5-CAND-01` remains active until U3/U4 are actually published.

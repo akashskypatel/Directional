@@ -83,34 +83,31 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R3-EXEC` — corrected artifact-only diagnostic retry
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R3-REV` — evidence-only review of the D1 pre-publication stop
 
-`M3-CP4c-2-CB2-DIAG-R1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** under the independent review's measures
-**Z0-Z9**. Final semantic/test authority is `c552a5a4a318063cde2564c40773ec7edaf064f6`. The correction is confined to
-`tests/FieldAlignedCurveNetworkTests.cpp`: explicit per-witness rail authority, one named `sourceEdgeBarrier`
-complex, barrier provenance/definitions, fail-closed `oracleSelfConsistent`, and Z6 D1 order
-**torus -> prescribed sphere -> two-ring**. `src/`, `include/`, `SurfaceCutGraph`, fixture results, build semantics,
-and selectors 355/357/358 remain frozen.
+`M3-CP4c-2-TB-X2-R3-EXEC` is **COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / PLANNED STOP** on immutable package
+`9704935112` from source `c552a5a4a318063cde2564c40773ec7edaf064f6`. Authoritative runtime run/job
+`33222551366 / 99019499929` passed immutable preflight, selected D1 exactly once, then exited `1` before any
+`m3Cp4c2Y1` publication with the exact torus failure `witness=torus;error=field-transport-atlas-unavailable` at
+`tests/FieldAlignedCurveNetworkTests.cpp:5946` (`fixture.network.has_value()` was false). D2 was correctly skipped
+by the frozen stop rule. Package/source byte-and-mode postflight matched preflight exactly.
 
-Final compile run/job `33220315294 / 99012815358` is green. Immutable GMP package `9704935112` / `sha256:dcb96ce4e37b2bc58ef69f2146723624575c32c090429ba00e6612b07938133f` and compile log
-`9704935373` / `sha256:1fc2250c00dd57e8cbd6385bde11857bc92126dfddfdf969ba188a67709651c0` are authoritative; packaged source archive SHA-256 `e533669daa7ac0219bc6ca6bd7d72db2901af32937848c3f37f02b772345ae02`. All eight required
-targets compiled/linked, the manifest verifies, source-status snapshots are empty, gmpxx and gmp are linked, and
-`runtimeExecution=false`.
+Raw evidence: `Architecture_M3_CP4c2_TB_X2_R3_EXEC_Artifact_Only_Evidence.md`; result artifact `9705692837` /
+`sha256:ba989d0ddd3bd244f03c8242060ded9f9c58b33679893ab0ddf1cc5fb8d015f5`; log artifact `9705693025` /
+`sha256:ab653c13ec7b0eec30f2736a17bbf44406afa7c828cb1fddbadea795aa6701a6`.
 
-The earlier R2 findings remain **runtime-unclosed** despite the compiled correction. `M3-CP4c2-TB-X2-R2-CAND-01`
-may be resolved only when corrected D1 actually reproduces the product-authoritative torus 48/48 control.
-`M3-CP4c2-TB-X2-R2-CAND-02` may be resolved only when all three corrected D1 witnesses publish
-`oracleSelfConsistent=true` under the one barrier complex. `M3-CP4c2-TB-X2-CAND-04` remains active/unlocalized
-until D2 evidence justifies a product-locus disposition. No Code + Build result closes any of them.
+Because the stop occurred before the first torus publication, R3 EXEC did **not** adjudicate Z6's 48/48 control,
+Z3 all-witness self-consistency, D2 localization, or Y5. `M3-CP4c2-TB-X2-R2-CAND-01` and `...CAND-02` remain
+active; `M3-CP4c2-TB-X2-CAND-04` remains active/unlocalized. New non-stable
+`M3-CP4c2-TB-X2-R3-CAND-01` records the diagnostic precondition failure; its exact cause is intentionally left to
+REV rather than inferred from EXEC.
 
-**Z6 successor order is binding:** D1 once; first publication torus and 48/48 control; Z3 self-consistency on all
-three witnesses; only then D2 once. A torus/control or Z3 failure is a stop and D2 must not execute.
+**Exact next is `M3-CP4c-2-TB-X2-R3-REV`.** It consumes the preserved evidence only and runs no new Directional
+runtime. Do not rerun unchanged D1, do not execute D2, selector 355/357/358, cumulative gate, CB3, mechanical/C2,
+or CP4c-3 before the evidence review adjudicates this stop.
 
-Exact plan: `Architecture_M3_CP4c2_TB_X2_R3_Artifact_Only_Test_Benchmark_Plan.md`. Exact next subturn is
-`M3-CP4c-2-TB-X2-R3-EXEC`; then `M3-CP4c-2-TB-X2-R3-REV` reviews existing evidence only.
-
-`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. Selector 355/357/358 runtime,
-cumulative gate, CB3, mechanical/C2, and CP4c-3 remain prohibited in R3 EXEC.
+`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. Stable accounting remains
+**42 / 14 / 28**, produced-witness debt **5**, M3 packages **60**.
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
@@ -302,11 +299,11 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
 - CP4c-2 DEFN, CB1, old X2 EXEC+REV+PLAN, CB2-DIAG, TB-X2-R2, R2 independent review, and **CB2-DIAG-R1** are complete.
 - Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**. CB2-DIAG-R1 is compile evidence only.
-- Current corrected build authority is `c552a5a4a318063cde2564c40773ec7edaf064f6` / package `9704935112`; no corrected D1/D2 runtime has executed.
-- `M3-CP4c2-TB-X2-R2-CAND-01` and `...CAND-02` remain active pending R3 D1; `M3-CP4c2-TB-X2-CAND-04` remains active/unlocalized pending authorized D2 evidence.
+- Current corrected build authority is `c552a5a4a318063cde2564c40773ec7edaf064f6` / package `9704935112`; R3 EXEC ran corrected D1 once but stopped before its first publication with `field-transport-atlas-unavailable`; D2 did not run.
+- `M3-CP4c2-TB-X2-R2-CAND-01` and `...CAND-02` remain active because R3 D1 produced no publication; `M3-CP4c2-TB-X2-CAND-04` remains active/unlocalized because D2 was correctly skipped; `M3-CP4c2-TB-X2-R3-CAND-01` records the new pre-publication diagnostic stop pending REV.
 - `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate runtime has not begun. Frozen candidates remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…b64fbe62`.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **60**.
-- **Exact next is `M3-CP4c-2-TB-X2-R3-EXEC`**, artifact-only on package `9704935112`, followed by evidence-only `M3-CP4c-2-TB-X2-R3-REV`.
+- **Exact next is `M3-CP4c-2-TB-X2-R3-REV`**, evidence-only on preserved run `33222551366`; no new runtime is authorized in REV.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
