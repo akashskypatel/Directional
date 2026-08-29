@@ -6036,6 +6036,7 @@ TEST(GlobalTopologyPlan,
           {"two-ring", "two-ring", Cp4cRailAuthority::AtlasDerived},
       }};
   bool allWitnessesValid = true;
+  std::map<std::string, std::size_t> publicationCounts;
   std::ostringstream failures;
   for (const auto &[fixtureStem, witnessName, railAuthority] : witnesses) {
     const Cp4cNetworkOnlyFixture fixture =
@@ -6044,7 +6045,8 @@ TEST(GlobalTopologyPlan,
       const std::string report = cp4c_network_only_failure_report(
           witnessName, fixture, "fixture-construction");
       std::cout << report << '\n';
-      failures << report << '\n';
+      ++publicationCounts[witnessName];
+      failures << witnessName << ":fixture-construction\n";
       allWitnessesValid = false;
       continue;
     }
@@ -6055,7 +6057,8 @@ TEST(GlobalTopologyPlan,
       const std::string report = cp4c_network_only_failure_report(
           witnessName, fixture, "oracle-unavailable");
       std::cout << report << '\n';
-      failures << report << '\n';
+      ++publicationCounts[witnessName];
+      failures << witnessName << ":oracle-unavailable\n";
       allWitnessesValid = false;
       continue;
     }
@@ -6063,12 +6066,29 @@ TEST(GlobalTopologyPlan,
     const std::string report =
         cp4c_network_only_oracle_report(witnessName, fixture, *oracle);
     std::cout << report << '\n';
+    ++publicationCounts[witnessName];
     if (!oracle->oracleSelfConsistent) {
-      failures << report << '\n';
+      failures << witnessName << ":oracle-inconsistent\n";
       allWitnessesValid = false;
     }
   }
-  ASSERT_TRUE(allWitnessesValid) << failures.str();
+
+  std::size_t publicationTotal = 0U;
+  bool publicationCountsValid = true;
+  std::cout << "m3Cp4c2PublicationCounts";
+  for (const auto &[fixtureStem, witnessName, railAuthority] : witnesses) {
+    (void)fixtureStem;
+    (void)railAuthority;
+    const std::size_t count = publicationCounts[witnessName];
+    publicationTotal += count;
+    publicationCountsValid = publicationCountsValid && count == 1U;
+    std::cout << ';' << witnessName << '=' << count;
+    if (count != 1U) {
+      failures << witnessName << ":publication-count=" << count << '\n';
+    }
+  }
+  std::cout << ";total=" << publicationTotal << '\n';
+  ASSERT_TRUE(allWitnessesValid && publicationCountsValid) << failures.str();
 }
 
 TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {

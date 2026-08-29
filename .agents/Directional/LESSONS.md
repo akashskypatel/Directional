@@ -81,6 +81,10 @@ A machine summary must not infer a typed first rejection by grepping an entire G
    claim cannot be verified, write no closure record, retire nothing, and say plainly what evidence
    is missing and what would satisfy it.
 
+### A premise-discharging result must be reported as a finding
+
+A diagnostic turn can stop on a separate contract violation and still establish a load-bearing premise for the checkpoint. When preserved evidence proves that an upstream product exists, reaches a stage, or satisfies a control theorem, report that fact explicitly as a finding instead of leaving it buried as one field in a larger record. A red turn blocks acceptance; it does not erase independent facts that its admissible evidence established.
+
 ## 2. Fixtures and witnesses
 
 8d. **"The fixture exists" is not "the fixture reaches the stage you are asserting on."** CP4c named

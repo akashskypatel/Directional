@@ -6571,6 +6571,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           SurfaceCellFailureCode::InvalidFieldTransportAtlas,
           "field-transport-atlas/source-authority");
     }
+    result.surfaceCellContext.productSnapshots.sourceTopologyRegions =
+        sourceTopologyRegionsProduct;
     tracingOptions.sourceAuthority = &*sourceTopologyRegionsProduct;
 
     authority::FieldTransportAtlasBuildResult atlasBuild =
@@ -6585,6 +6587,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                   atlasBuild.error().code));
     }
     fieldTransportAtlasProduct = std::move(atlasBuild.value());
+    result.surfaceCellContext.productSnapshots.fieldTransportAtlas =
+        fieldTransportAtlasProduct;
     tracingOptions.fieldTransportAtlas = &*fieldTransportAtlasProduct;
     auto fieldAlignedBuild = geometry::FieldAlignedCurveNetwork::make(
         meshWhole,
@@ -6598,6 +6602,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                   fieldAlignedBuild.error().code));
     }
     fieldAlignedNetworkProduct = std::move(fieldAlignedBuild.value());
+    result.surfaceCellContext.productSnapshots.fieldAlignedCurveNetwork =
+        fieldAlignedNetworkProduct;
     tracingOptions.fieldAlignedNetwork = &*fieldAlignedNetworkProduct;
     auto surfaceCutGraphBuild = geometry::SurfaceCutGraph::make(
         meshWhole.F, static_cast<std::size_t>(meshWhole.V.rows()),
@@ -6611,6 +6617,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                   surfaceCutGraphBuild.error().code));
     }
     surfaceCutGraphProduct = std::move(surfaceCutGraphBuild.value());
+    result.surfaceCellContext.productSnapshots.surfaceCutGraph =
+        surfaceCutGraphProduct;
     auto globalTopologyBuild = geometry::GlobalTopologyPlan::make(
         meshWhole.F, static_cast<std::size_t>(meshWhole.V.rows()),
         *sourceTopologyRegionsProduct, *fieldAlignedNetworkProduct,
@@ -6623,14 +6631,6 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                   globalTopologyBuild.error().code));
     }
     globalTopologyPlanProduct = std::move(globalTopologyBuild.value());
-    result.surfaceCellContext.productSnapshots.sourceTopologyRegions =
-        sourceTopologyRegionsProduct;
-    result.surfaceCellContext.productSnapshots.fieldTransportAtlas =
-        fieldTransportAtlasProduct;
-    result.surfaceCellContext.productSnapshots.fieldAlignedCurveNetwork =
-        fieldAlignedNetworkProduct;
-    result.surfaceCellContext.productSnapshots.surfaceCutGraph =
-        surfaceCutGraphProduct;
     result.surfaceCellContext.productSnapshots.globalTopologyPlan =
         globalTopologyPlanProduct;
     result.surfaceCellContext.fieldAlignedNetworkAuthorityUsed =
