@@ -1,0 +1,6 @@
+purpose=compile exact M3-CP4c-2-CB3-DIAG semantic source under GMP
+source_sha=76d757aab0ce18df09ce2823302d2dc224965187
+changed_owner_target=directional_surface_cell_producer_tests
+full_package_targets=8
+runtimeExecution=false
+retry=0
