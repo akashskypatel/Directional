@@ -1,5 +1,0 @@
-Purpose: execute frozen artifact-only M3-CP4c-2-TB-X2-R7-EXEC retry.
-Immutable package: 9719216316 / sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc.
-Semantic/test source: 755485865a7cf9c485d754f22b82a41ee151824b.
-Execution order: R7-0; R7-2; R7-3; R7-4; R7-5; R7-1; R7-6. No 357/358/cumulative gate/benchmark.
-Retry: orchestration retry 3 after correcting the preflight known-fixture path to the archive-preserved repository path benchmarks/fixtures/milestone-g/bunny_1k_random.obj; attempt 2 executed no Directional process and passed integrity postflight.
