@@ -1513,9 +1513,10 @@ std::uint64_t candidate_semantic_digest(
     const FieldAlignedCurveNetwork &network) noexcept {
   std::uint64_t hash = kFnvOffset;
   hash_consume(hash, candidate.sourceDigest);
+  // cutGraphDigest and network.semantic_digest() are semantic identities.
+  // Exact network/atlas provenance lives in candidate.networkDigest, while
+  // exact cut-graph provenance remains on SurfaceCutGraph::provenance_digest().
   hash_consume(hash, candidate.cutGraphDigest);
-  // Deliberately consume only the gauge-invariant network identity. The exact
-  // network/atlas provenance lives in candidate.networkDigest instead.
   hash_consume(hash, network.semantic_digest());
   hash_consume(hash, candidate.arcs.size());
   for (const auto &arc : candidate.arcs) {

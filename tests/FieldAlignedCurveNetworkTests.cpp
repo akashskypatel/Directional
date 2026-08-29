@@ -2161,6 +2161,98 @@ TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
             reorderedCutGraph.value().certificate().faceCount);
 }
 
+TEST(SurfaceCutGraph,
+     SemanticDigestIgnoresGaugeRelabelingForTwoRingWitness) {
+  const TriMesh mesh = make_cp3a_two_ring_skew_disc();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  CrossFieldResult baselineField;
+  make_cp3a_two_ring_index_one_field(mesh, baselineField);
+  auto baselineAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, baselineField);
+  ASSERT_TRUE(baselineAtlas);
+  const auto baselineRails = rails_from_atlas(mesh, baselineAtlas.value());
+  const FieldAlignedCurveNetwork baselineNetwork = build_network(
+      mesh, *sourceAuthority, baselineAtlas.value(), baselineRails);
+  const auto baselineCutGraph = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
+      baselineAtlas.value(), baselineNetwork);
+  ASSERT_TRUE(baselineCutGraph);
+
+  const CrossFieldResult relabeledField = gauge_relabel_field_for_network(
+      mesh, baselineField, cp3a_equivalent_gauge_shifts(mesh));
+  auto relabeledAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, relabeledField);
+  ASSERT_TRUE(relabeledAtlas);
+  const auto relabeledRails = rails_from_atlas(mesh, relabeledAtlas.value());
+  const FieldAlignedCurveNetwork relabeledNetwork = build_network(
+      mesh, *sourceAuthority, relabeledAtlas.value(), relabeledRails);
+  const auto relabeledCutGraph = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
+      relabeledAtlas.value(), relabeledNetwork);
+  ASSERT_TRUE(relabeledCutGraph);
+
+  ASSERT_EQ(baselineNetwork.semantic_digest(), relabeledNetwork.semantic_digest());
+  ASSERT_NE(baselineNetwork.atlas_digest(), relabeledNetwork.atlas_digest());
+  EXPECT_EQ(baselineCutGraph.value().semantic_digest(),
+            relabeledCutGraph.value().semantic_digest());
+  EXPECT_NE(baselineCutGraph.value().provenance_digest(),
+            relabeledCutGraph.value().provenance_digest());
+  std::cout << "surface-cut-graph-digest witness=two-ring semantic_baseline="
+            << baselineCutGraph.value().semantic_digest()
+            << " semantic_relabeled=" << relabeledCutGraph.value().semantic_digest()
+            << " provenance_baseline=" << baselineCutGraph.value().provenance_digest()
+            << " provenance_relabeled="
+            << relabeledCutGraph.value().provenance_digest() << '\n';
+}
+
+TEST(SurfaceCutGraph,
+     SemanticDigestIgnoresGaugeRelabelingForTorusWitness) {
+  TriMesh mesh;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.obj");
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const CrossFieldResult baselineField = make_zero_transport_field(mesh);
+  auto baselineAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, baselineField);
+  ASSERT_TRUE(baselineAtlas);
+  const auto baselineRails = rails_from_atlas(mesh, baselineAtlas.value());
+  const FieldAlignedCurveNetwork baselineNetwork = build_network(
+      mesh, *sourceAuthority, baselineAtlas.value(), baselineRails);
+  const auto baselineCutGraph = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
+      baselineAtlas.value(), baselineNetwork);
+  ASSERT_TRUE(baselineCutGraph);
+
+  const CrossFieldResult relabeledField = gauge_relabel_field_for_network(
+      mesh, baselineField, cp3a_equivalent_gauge_shifts(mesh));
+  auto relabeledAtlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, relabeledField);
+  ASSERT_TRUE(relabeledAtlas);
+  const auto relabeledRails = rails_from_atlas(mesh, relabeledAtlas.value());
+  const FieldAlignedCurveNetwork relabeledNetwork = build_network(
+      mesh, *sourceAuthority, relabeledAtlas.value(), relabeledRails);
+  const auto relabeledCutGraph = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
+      relabeledAtlas.value(), relabeledNetwork);
+  ASSERT_TRUE(relabeledCutGraph);
+
+  ASSERT_EQ(baselineNetwork.semantic_digest(), relabeledNetwork.semantic_digest());
+  ASSERT_NE(baselineNetwork.atlas_digest(), relabeledNetwork.atlas_digest());
+  EXPECT_EQ(baselineCutGraph.value().semantic_digest(),
+            relabeledCutGraph.value().semantic_digest());
+  EXPECT_NE(baselineCutGraph.value().provenance_digest(),
+            relabeledCutGraph.value().provenance_digest());
+  std::cout << "surface-cut-graph-digest witness=torus semantic_baseline="
+            << baselineCutGraph.value().semantic_digest()
+            << " semantic_relabeled=" << relabeledCutGraph.value().semantic_digest()
+            << " provenance_baseline=" << baselineCutGraph.value().provenance_digest()
+            << " provenance_relabeled="
+            << relabeledCutGraph.value().provenance_digest() << '\n';
+}
+
 TEST(GlobalTopologyPlan, DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph) {
   Cp3bEventFixture fixture = build_cp3b_event_fixture();
   ASSERT_TRUE(fixture.sourceAuthority.has_value());

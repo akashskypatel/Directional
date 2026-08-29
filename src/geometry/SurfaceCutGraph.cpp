@@ -265,6 +265,52 @@ std::uint64_t candidate_hash(const SurfaceCutGraphCandidate &candidate) noexcept
   const auto &c=candidate.certificate; hash_consume(hash,static_cast<std::uint64_t>(c.complex));hash_consume(hash,c.vertexCount);hash_consume(hash,c.edgeCount);hash_consume(hash,c.totalOrbitCount);hash_consume(hash,c.excludedBoundaryOrbitCount);hash_consume(hash,c.sourceBoundaryLoopCount);hash_consume(hash,c.faceCount);hash_consume(hash,c.graphComponentCount);hash_consume(hash,c.sourceComponentCount);hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.disconnectedComponentCorrection)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.eulerCharacteristic)));hash_consume(hash,static_cast<std::uint64_t>(static_cast<std::int64_t>(c.sourceEulerCharacteristic)));hash_consume(hash,c.faces.size());for(const auto &face:c.faces){hash_consume(hash,face.orbit);hash_consume(hash,face.boundaryWalkCount);hash_consume(hash,face.boundaryArcCount);hash_consume(hash,face.discTopologyEstablished?1U:0U);}hash_consume(hash,c.cutCandidates.size());for(const auto &e:c.cutCandidates){hash_edge(hash,e.sourceEdge);hash_consume(hash,static_cast<std::uint64_t>(e.classification));hash_consume(hash,e.selected?1U:0U);}return hash;
 }
 
+
+std::uint64_t candidate_semantic_hash(
+    const SurfaceCutGraphCandidate &candidate,
+    const std::uint64_t networkSemanticDigest) noexcept {
+  std::uint64_t hash = kFnvOffset;
+  hash_consume(hash, candidate.sourceDigest);
+  hash_consume(hash, networkSemanticDigest);
+  hash_consume(hash, candidate.cutEdges.size());
+  for (const auto &edge : candidate.cutEdges) hash_edge(hash, edge);
+
+  const auto &certificate = candidate.certificate;
+  hash_consume(hash, static_cast<std::uint64_t>(certificate.complex));
+  hash_consume(hash, certificate.vertexCount);
+  hash_consume(hash, certificate.edgeCount);
+  hash_consume(hash, certificate.totalOrbitCount);
+  hash_consume(hash, certificate.excludedBoundaryOrbitCount);
+  hash_consume(hash, certificate.sourceBoundaryLoopCount);
+  hash_consume(hash, certificate.faceCount);
+  hash_consume(hash, certificate.graphComponentCount);
+  hash_consume(hash, certificate.sourceComponentCount);
+  hash_consume(hash, static_cast<std::uint64_t>(static_cast<std::int64_t>(
+                         certificate.disconnectedComponentCorrection)));
+  hash_consume(hash, static_cast<std::uint64_t>(
+                         static_cast<std::int64_t>(certificate.eulerCharacteristic)));
+  hash_consume(hash, static_cast<std::uint64_t>(static_cast<std::int64_t>(
+                         certificate.sourceEulerCharacteristic)));
+  hash_consume(hash, certificate.faces.size());
+  for (const auto &face : certificate.faces) {
+    // EmbeddedGraphTopology assigns NetworkArcId from a total sort over
+    // semantic arc descriptors, then walk_graph_faces visits darts in that
+    // canonical ID/orientation order. The orbit ordinal is therefore a
+    // content-derived rank, not source-row, container, or gauge enumeration.
+    hash_consume(hash, face.orbit);
+    hash_consume(hash, face.boundaryWalkCount);
+    hash_consume(hash, face.boundaryArcCount);
+    hash_consume(hash, face.discTopologyEstablished ? 1U : 0U);
+  }
+  hash_consume(hash, certificate.cutCandidates.size());
+  for (const auto &evidence : certificate.cutCandidates) {
+    hash_edge(hash, evidence.sourceEdge);
+    hash_consume(hash, static_cast<std::uint64_t>(evidence.classification));
+    hash_consume(hash, evidence.selected ? 1U : 0U);
+  }
+  return hash;
+}
+
 using CandidateResult=std::variant<SurfaceCutGraphCandidate,SurfaceCutGraphError>;
 CandidateResult canonical_candidate(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network){
   using namespace embedded_graph_topology_detail;
@@ -286,13 +332,13 @@ bool SurfaceCutGraphCellularityCertificate::proves_cellularity() const noexcept 
   return complex==SurfaceCutGraphComplexKind::ActualEmbeddedGraph && faceCount>0U && totalOrbitCount>=excludedBoundaryOrbitCount && sourceBoundaryLoopCount==excludedBoundaryOrbitCount && graphComponentCount==sourceComponentCount && eulerCharacteristic==sourceEulerCharacteristic && !faces.empty() && std::all_of(faces.begin(),faces.end(),[](const auto &face){return face.proves_disc_topology();});
 }
 
-SurfaceCutGraphBuildResult SurfaceCutGraph::make(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network){const auto candidate=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&candidate))return SurfaceCutGraphBuildResult(*failure);const auto &value=std::get<SurfaceCutGraphCandidate>(candidate);return SurfaceCutGraphBuildResult(SurfaceCutGraph(value.cutEdges,value.certificate,value.sourceDigest,value.atlasDigest,value.networkDigest,candidate_hash(value)));}
+SurfaceCutGraphBuildResult SurfaceCutGraph::make(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network){const auto candidate=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&candidate))return SurfaceCutGraphBuildResult(*failure);const auto &value=std::get<SurfaceCutGraphCandidate>(candidate);return SurfaceCutGraphBuildResult(SurfaceCutGraph(value.cutEdges,value.certificate,value.sourceDigest,value.atlasDigest,value.networkDigest,candidate_semantic_hash(value,network.semantic_digest()),candidate_hash(value)));}
 
-SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network,SurfaceCutGraphCandidate candidate){const auto canonical=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&canonical))return SurfaceCutGraphBuildResult(*failure);auto wanted=std::get<SurfaceCutGraphCandidate>(canonical);std::sort(candidate.cutEdges.begin(),candidate.cutEdges.end());candidate.cutEdges.erase(std::unique(candidate.cutEdges.begin(),candidate.cutEdges.end()),candidate.cutEdges.end());if(candidate!=wanted)return SurfaceCutGraphBuildResult(cut_error(candidate.sourceDigest!=wanted.sourceDigest?SurfaceCutGraphErrorCode::InvalidSourceBinding:candidate.atlasDigest!=wanted.atlasDigest?SurfaceCutGraphErrorCode::InvalidAtlasBinding:candidate.networkDigest!=wanted.networkDigest?SurfaceCutGraphErrorCode::InvalidNetworkBinding:SurfaceCutGraphErrorCode::CellularityNotEstablished));return SurfaceCutGraphBuildResult(SurfaceCutGraph(wanted.cutEdges,wanted.certificate,wanted.sourceDigest,wanted.atlasDigest,wanted.networkDigest,candidate_hash(wanted)));}
+SurfaceCutGraphBuildResult SurfaceCutGraph::make_from_candidate(const Eigen::MatrixXi &sourceFaces,const std::size_t sourceVertexCount,const SourceTopologyRegions &sourceAuthority,const authority::FieldTransportAtlas &fieldTransportAtlas,const FieldAlignedCurveNetwork &network,SurfaceCutGraphCandidate candidate){const auto canonical=canonical_candidate(sourceFaces,sourceVertexCount,sourceAuthority,fieldTransportAtlas,network);if(const auto *failure=std::get_if<SurfaceCutGraphError>(&canonical))return SurfaceCutGraphBuildResult(*failure);auto wanted=std::get<SurfaceCutGraphCandidate>(canonical);std::sort(candidate.cutEdges.begin(),candidate.cutEdges.end());candidate.cutEdges.erase(std::unique(candidate.cutEdges.begin(),candidate.cutEdges.end()),candidate.cutEdges.end());if(candidate!=wanted)return SurfaceCutGraphBuildResult(cut_error(candidate.sourceDigest!=wanted.sourceDigest?SurfaceCutGraphErrorCode::InvalidSourceBinding:candidate.atlasDigest!=wanted.atlasDigest?SurfaceCutGraphErrorCode::InvalidAtlasBinding:candidate.networkDigest!=wanted.networkDigest?SurfaceCutGraphErrorCode::InvalidNetworkBinding:SurfaceCutGraphErrorCode::CellularityNotEstablished));return SurfaceCutGraphBuildResult(SurfaceCutGraph(wanted.cutEdges,wanted.certificate,wanted.sourceDigest,wanted.atlasDigest,wanted.networkDigest,candidate_semantic_hash(wanted,network.semantic_digest()),candidate_hash(wanted)));}
 
 const char *surface_cut_graph_error_code_name(const SurfaceCutGraphErrorCode code) noexcept {switch(code){case SurfaceCutGraphErrorCode::InvalidSourceBinding:return "InvalidSourceBinding";case SurfaceCutGraphErrorCode::InvalidAtlasBinding:return "InvalidAtlasBinding";case SurfaceCutGraphErrorCode::InvalidNetworkBinding:return "InvalidNetworkBinding";case SurfaceCutGraphErrorCode::NonManifoldSource:return "NonManifoldSource";case SurfaceCutGraphErrorCode::CellularityNotEstablished:return "CellularityNotEstablished";case SurfaceCutGraphErrorCode::NoAdmissibleCutForNonDiscComponent:return "NoAdmissibleCutForNonDiscComponent";}return "Unknown";}
 const char *surface_cut_candidate_class_name(const SurfaceCutCandidateClass c) noexcept {switch(c){case SurfaceCutCandidateClass::Admissible:return "Admissible";case SurfaceCutCandidateClass::MandatoryAlreadyPresent:return "MandatoryAlreadyPresent";case SurfaceCutCandidateClass::TraceInteriorCrossing:return "TraceInteriorCrossing";}return "Unknown";}
 const char *surface_cut_graph_complex_kind_name(const SurfaceCutGraphComplexKind kind) noexcept {switch(kind){case SurfaceCutGraphComplexKind::ActualEmbeddedGraph:return "actualEmbeddedGraph";}return "Unknown";}
-std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept {return graph.semantic_digest();}
+std::uint64_t surface_cut_graph_hash(const SurfaceCutGraph &graph) noexcept {return graph.provenance_digest();}
 
 } // namespace directional::geometry

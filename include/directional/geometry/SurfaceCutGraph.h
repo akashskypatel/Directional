@@ -124,21 +124,25 @@ public:
   [[nodiscard]] std::uint64_t atlas_digest() const noexcept { return atlasDigest_; }
   [[nodiscard]] std::uint64_t network_digest() const noexcept { return networkDigest_; }
   [[nodiscard]] std::uint64_t semantic_digest() const noexcept { return semanticDigest_; }
+  [[nodiscard]] std::uint64_t provenance_digest() const noexcept { return provenanceDigest_; }
 private:
   friend class SurfaceCutGraphBuildResult;
   SurfaceCutGraph(std::vector<authority::SourceEdgeTopologyKey> cutEdges,
                   SurfaceCutGraphCellularityCertificate certificate,
                   std::uint64_t sourceDigest, std::uint64_t atlasDigest,
-                  std::uint64_t networkDigest, std::uint64_t semanticDigest)
+                  std::uint64_t networkDigest, std::uint64_t semanticDigest,
+                  std::uint64_t provenanceDigest)
       : cutEdges_(std::move(cutEdges)), certificate_(std::move(certificate)),
         sourceDigest_(sourceDigest), atlasDigest_(atlasDigest),
-        networkDigest_(networkDigest), semanticDigest_(semanticDigest) {}
+        networkDigest_(networkDigest), semanticDigest_(semanticDigest),
+        provenanceDigest_(provenanceDigest) {}
   std::vector<authority::SourceEdgeTopologyKey> cutEdges_;
   SurfaceCutGraphCellularityCertificate certificate_;
   std::uint64_t sourceDigest_ = 0U;
   std::uint64_t atlasDigest_ = 0U;
   std::uint64_t networkDigest_ = 0U;
   std::uint64_t semanticDigest_ = 0U;
+  std::uint64_t provenanceDigest_ = 0U;
 };
 
 class SurfaceCutGraphBuildResult {
