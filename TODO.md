@@ -21,7 +21,45 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R6-REV` — independent evidence review only
+## Current focus — `M3-CP4c-2-CB5` — semantic/provenance digest split, under measures **AD0–AD9**
+
+**`M3-CP4c-2-TB-X2-R6-REV` is COMPLETE / REVIEW GREEN.** Record:
+`Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md`.
+
+**`PR8-R043` is RESOLVED AT ITS LOCUS.** Accepted ordinal 305 passes on the CB4 package — DEFN-R1's
+actual-embedded-graph complex did what it was defined to do, and CB4 delivered
+`src/geometry/EmbeddedGraphTopology.{h,cpp}` as the single shared authority AC1 required. **Closure is deferred
+to a full 355/355**, because R6 ran 309 of 355 accepted identities; closing on a 309 prefix would be the
+partial-evidence promotion this project has corrected twice.
+
+**`PR8-R044` is CONFIRMED, and the fix template already exists in this repository.** Verified at source:
+`GlobalTopologyPlan.cpp:1511-1519` consumes `candidate.cutGraphDigest`, and `SurfaceCutGraph.cpp:263-265`
+builds that digest from gauge-dependent `atlasDigest`. **A2b states the rule in a comment, obeys it on the line
+the comment guards, and is defeated two lines earlier.** The error is a **domain conflation**, not a hashing
+bug: `candidate_hash` is a *provenance* hash and is correct as such — `make_from_candidate` needs `atlasDigest`
+for tamper rejection. `M3-CP3a-DG-CAND-02` fixed exactly this for `FieldAlignedCurveNetwork`. **AD1 adds a
+`semantic_digest()` and leaves `candidate_hash` unchanged; removing `atlasDigest` from it is prohibited.**
+
+**One finding the EXEC did not reach.** `SurfaceCutGraph.cpp:258` keys each certificate face by the **raw orbit
+index** — an enumeration artifact — and `candidate_hash` consumes it. Ordinal 310 asserts invariance to
+enumeration order **and** relabeling, so removing `atlasDigest` alone leaves a latent instance of the same
+pattern. **AD3** requires it settled by proof or by replacement with a content-derived key; "it passes now" is
+not an answer.
+
+**`R5-ORCH-01` is RESOLVED** — R6's postflight ran unconditionally after the red and passed. Preserve that path.
+
+**`CAND-04` — the prescribed sphere — remains unlocalized for the seventh turn.** D2 has been scheduled and
+correctly skipped five times, always because an upstream gate failed first. §8 of the review raises, without
+deciding, whether the sphere diagnostic should be sequenced independently of the accepted-prefix outcome.
+
+Stable accounting **44 / 14 / 30**, produced-witness debt **5**, M3 packages **63**.
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+
+**New:** `ORIENTATION.md` is a cold-start context document — architecture, current position, witnesses, open
+problems, recurring defect patterns and source pointers, with no procedural content. Read it first in a fresh
+session.
+
+## Superseded focus — `M3-CP4c-2-TB-X2-R6-EXEC` stop (retained for provenance)
 
 **`M3-CP4c-2-TB-X2-R6-EXEC` is COMPLETE / VALID ACCEPTED-PREFIX SEMANTIC RED / POSTFLIGHT GREEN.** Raw evidence:
 `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md`. R6 consumed immutable CB4 GMP package
@@ -44,10 +82,8 @@ accounting is now **44 / 14 / 30**, produced-witness debt **5**, authoritative M
 
 `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
-**Exact next:** `M3-CP4c-2-TB-X2-R6-REV`, independent evidence review only. It may inspect existing R6 evidence
-and source but must run no new Directional runtime, must not infer unexecuted R6-2/R6-3/R6-4 results, must not
-run 357/358 or a cumulative gate, and must not begin corrective CB, mechanical/C2, or CP4c-3 until review
-durably authorizes a successor.
+**That review is complete.** It resolved `PR8-R043` at its locus, confirmed and re-localized `PR8-R044`, found
+the latent orbit-index hazard, and authorized `M3-CP4c-2-CB5` under **AD0–AD9**.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R5` regression (retained for provenance)
 
@@ -261,11 +297,13 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-2-DEFN-R1` — **COMPLETE / DEFINITION-ONLY.** Froze the actual embedded-graph complex and **Amendment 13**; withdrew DEFN §5.4's whole-source-face construction guidance; named the existing A2b arc/dart/rotation/orbit machinery to lift rather than reimplement; froze admissible-cut semantics (a trace-crossed source edge is **not** an admissible cut); split completeness — provable trace-free, typed stop otherwise; specified the independent oracle. Owned the R2 normative-complex error; lessons **22k**, **22m**. Record: `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`.
 - [x] `M3-CP4c-2-CB4` — **COMPLETE / BUILD GREEN / RUNTIME-FREE.** Semantic/test source `cebc12082c6dbe4830095df08169797b7dab0c5c`; changed-owner prepackage `33250503297 / 99095246849` PASS; fresh eight-target GMP package `33250547011 / 99095357374` PASS; immutable package `9714226920` / `931d4226…b9f83`; AC0–AC9 compiled; no Directional runtime. Report: `Architecture_M3_CP4c2_CB4_Code_Build_Report.md`.
 - [x] `M3-CP4c-2-TB-X2-R6-EXEC` — **COMPLETE / ACCEPTED-PREFIX RED AT 310 / POSTFLIGHT GREEN.** Accepted 1-309 PASS including ordinal 305; ordinal 310 `GlobalTopologyPlan.RegionAuthorityIsInvariantToEnumerationOrderAndBranchRelabeling` RED. Hard stop skipped 311-355, R6-2/R6-3/R6-4, 357/358 and cumulative gate. New stable `PR8-R044 / M3-CP4c2-R002`, `REPRESENTATION_DEPENDENT_IDENTITY / RP-05`; accounting `43/14/29 -> 44/14/30`. Evidence: `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md`.
-- [ ] `M3-CP4c-2-TB-X2-R6-REV` — **NEXT / INDEPENDENT REVIEW ONLY.** Consume existing R6 evidence; run no new Directional runtime or compile; independently adjudicate ordinal 310, `PR8-R043`, and the successor. R6-2/R6-3/R6-4, 357/358, cumulative gate, mechanical/C2 and CP4c-3 remain blocked/unexecuted.
+- [x] `M3-CP4c-2-TB-X2-R6-REV` — **COMPLETE / REVIEW GREEN.** `PR8-R043` **RESOLVED AT LOCUS** (ordinal 305 passes), closure deferred to a full 355/355. `PR8-R044` confirmed and re-localized: `candidate_hash` is a *provenance* hash consumed as *semantic* identity — a domain conflation whose fix template is `M3-CP3a-DG-CAND-02`. Found the latent **orbit-index** hazard the EXEC did not reach. `R5-ORCH-01` resolved. Measures **AD0–AD9**. Record: `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md`.
+- [ ] `M3-CP4c-2-CB5` — **NEXT / CODE + BUILD / RUNTIME-FREE.** Under **AD0–AD9**: **AD1** add `SurfaceCutGraph::semantic_digest()` and leave `candidate_hash` **unchanged** — removing `atlasDigest` from it is prohibited, it is what `make_from_candidate` uses for tamper rejection; **AD2** convert `GlobalTopologyPlan::candidate_semantic_digest` and extend its comment to both consumption sites; **AD3** settle the orbit-index question by proof or canonical key; **AD4** partition every certificate term into exactly one domain with a reason; **AD5** add a non-gating diagnostic that checks the split at the cut-graph boundary. Preserve `EmbeddedGraphTopology`, the actual-complex certificate, the unconditional postflight, and AA1.
+- [ ] `M3-CP4c-2-TB-X2-R7` — **BLOCKED ON CB5.** Re-prove the **full 355** accepted prefix including ordinals 305 and 310 — **AD8**: a green 309 prefix closes neither regression — then publish R6-2's actual-complex oracle, R6-3's barrier diagnostic, and R6-4's D2 localization.
 - [x] `M3-CP4c-2-TB-X2-R2` (superseded row) — **COMPLETE / ARTIFACT-ONLY DIAGNOSTIC CONTROL STOP / GATE BLOCKED.** Consume immutable package `9702321260` from source `232ac459b13657529e064272a75c5583770a5963` without rebuild. EXEC runs D1 and D2 separately and preserves complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications; REVIEW adjudicates Y1–Y4 and selects exactly one frozen Y5 corrective branch or stops. **No selector is selected and `TB-GATE-EXEC` is not authorized.** Plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority remains `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. R6 has not superseded that accepted authority: its re-proof reaches 309 green identities and then loses accepted ordinal 310. Stable accounting is now **44 / 14 / 30** after `PR8-R044 / M3-CP4c2-R002`, produced-witness debt **5**, M3 packages **63**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; `PR8-R043` and `PR8-R044` are active pending review. **Exact next is independent `M3-CP4c-2-TB-X2-R6-REV`; no new runtime, corrective CB, 357/358, cumulative gate, mechanical/C2, or CP4c-3 is authorized from EXEC.**
+Accepted runtime authority remains `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. R6 has not superseded that accepted authority: its re-proof reaches 309 green identities and then loses accepted ordinal 310. Stable accounting is now **44 / 14 / 30** after `PR8-R044 / M3-CP4c2-R002`, produced-witness debt **5**, M3 packages **63**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; `PR8-R043` is resolved at its locus with closure deferred to a full 355/355; `PR8-R044` is confirmed and localized. **Exact next is `M3-CP4c-2-CB5`, runtime-free under measures AD0–AD9; no 357/358, cumulative gate, D2, mechanical/C2, or CP4c-3 is authorized before AD8's full accepted prefix is green.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
