@@ -206,29 +206,39 @@ Result/log artifacts are `9681960334 / 9681960615`, digests
 55ad320aaf810bb5b02fbfccdd7662f4a47333586bdb30397d624d701710439b`. Stable accounting remains
 **42 / 14 / 28**, produced-witness debt **5**, M3 packages **57**.
 
-`M3-CP4c-2-DEFN`, CB1, TB-X2-EXEC, and TB-X2-REV are complete. The X2 review did **not** choose a gate: the
-preserved evidence fits neither frozen branch because network-only cellularity was not independently measured and
-the observation stopped at `SurfaceCutGraph::CellularityNotEstablished` before post-certificate A2b behavior.
-CP4c-3 remains blocked until CP4c-2 closure.
+`M3-CP4c-2-DEFN-R1` and CB4 are now complete. DEFN-R1 supersedes the withdrawn source-edge-barrier cellularity
+authority with the actual embedded graph, and CB4 compiles that correction plus its independent non-gating oracle.
+No CP4c-2 runtime acceptance has followed CB4 yet. CP4c-3 remains blocked until CP4c-2 closure.
 
 ## Current authority
 
-### M3-CP4c-2 CB3-DIAG — current build authority, runtime unaccepted
+### M3-CP4c-2 CB4 — current build authority, runtime unaccepted
 
 - status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
-- semantic/test source: `76d757aab0ce18df09ce2823302d2dc224965187`;
-- compile run: `33230423139`;
-- changed-owner result/log: `9708313428 / 9708313563`;
-- immutable full package: `9708324052` / `sha256:48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a`;
-- full compile log: `9708324292` / `sha256:d200b4210a1adc204fd2fd90df07727c73c8c35c65110d99233ea44d9bd5d0fd`;
-- packaged source archive: `f16141613e877c78746548596449ef494fb9f4b384736526d74eaaf54a0a9a2d`;
-- exact arithmetic: GMP/GMPXX; changed owner then all eight standard targets PASS; manifest/source-status checks PASS; `runtimeExecution=false`;
-- source changes: only AA1 snapshot placement in `src/pipeline/RemeshPipeline.cpp`, AA5 publication hygiene in `tests/FieldAlignedCurveNetworkTests.cpp`, and required lesson in `LESSONS.md`;
-- all six accepted/frozen selector hashes unchanged; `selected_r2_branch=NONE`; `selected_gate=NONE`;
-- report: `Architecture_M3_CP4c2_CB3_DIAG_Code_Build_Report.md`;
-- exact TB plan: `Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md`.
+- semantic/test source: `cebc12082c6dbe4830095df08169797b7dab0c5c`;
+- changed-owner prepackage run/job: `33250503297 / 99095246849` — PASS;
+- prepackage result/log: `9714212919 / 9714213161`;
+- fresh authoritative full compile run/job: `33250547011 / 99095357374` — PASS;
+- immutable full package: `9714226920` /
+  `sha256:931d422611a8144faf4efe3f9307b3a1a90bbce4cab6d8873eb95b32ca1b9f83`;
+- full compile log: `9714227128` /
+  `sha256:95c8272db296dc0f74e4d33b389cbf51305bd042590420974111d9f63afe31da`;
+- packaged source archive: `3bb299730077cd7bbd46acd5e10f6f7fec1d0e131bc882710a5676163e36b021`;
+- manifest 28/28 PASS; all eight targets present; source clean; exact GMP/GMPXX authority;
+- `runtimeExecution=false`, `turnBoundary=Code+Build-only`;
+- implementation: shared actual-embedded-graph owner, actual-complex certification, disconnected/boundary
+  conventions, exact admissible cuts, typed no-admissible-cut stop, converted consumers, independent non-gating
+  actual-complex oracle, retained barrier diagnostic explicitly non-cellularity;
+- selectors unchanged; `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`;
+- report: `Architecture_M3_CP4c2_CB4_Code_Build_Report.md`;
+- TB plan: `Architecture_M3_CP4c2_TB_X2_R6_Artifact_Only_Test_Benchmark_Plan.md`.
 
-CB3 supplies compiled observability authority only. It does not adjudicate the sphere, select Y5, execute 357/358, or accept CP4c-2.
+Earlier full-package run `33246515627` compiled the same semantic source but preceded a distinct changed-owner
+prepackage compile, so it is retained only as non-authoritative mechanics evidence. The sequence above re-proves
+the exact source in the required order.
+
+CB4 supplies compile/package authority only. It does not prove 355 at runtime, adjudicate the new oracle, execute
+D2, select 357/358, run the cumulative gate, accept CP4c-2, or begin CP4c-3.
 
 ### M3-CP4c-2 TB-X2-R5 — current reviewed runtime evidence
 
@@ -238,7 +248,7 @@ CB3 supplies compiled observability authority only. It does not adjudicate the s
 - independent review **admitted the semantic red**, promoted `PR8-R043 / M3-CP4c2-R001`, and statically localized the accepted two-ring failure to the final mixed-complex certificate;
 - current root cause: actual embedded network authority `9/11/3` was conflated with whole-source-face `sourceEdgeBarrier` proxy `10/11/2`;
 - review record: `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`;
-- exact successor: `M3-CP4c-2-DEFN-R1`; no corrective CB/gate/runtime yet;
+- historical successor was `M3-CP4c-2-DEFN-R1`; that definition and CB4 are now complete; this subsection remains the latest reviewed runtime evidence only;
 - `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
 ### M3-CP4c-2 TB-X2-R4 — current reviewed runtime evidence
@@ -360,34 +370,35 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN through CB3-DIAG, R4 review, and R5-EXEC are complete; CP4c-2 remains runtime-unaccepted; R5-REV is pending.
+- CP4c-2 DEFN-R1 and CB4 are complete; CP4c-2 remains runtime-unaccepted.
 - Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**.
-- Current build/package authority is `76d757aab0ce18df09ce2823302d2dc224965187` / package `9708324052`.
-- Current raw runtime evidence is R5 run/job `33232106030 / 99046593525`: accepted ordinals 1-304 pass, ordinal 305 fails `SurfaceCutGraph::make` with `CellularityNotEstablished`, and the frozen AA8 stop prevents AA2/D1/D2 and all gate runtime. Independent R5-REV is pending.
-- R5-CAND-01 is active/non-stable for the accepted-prefix regression. R4-CAND-01 is active with corrective source compiled; R4-CAND-02 is localized with corrective source compiled; R4-CAND-03 is downstream/out-of-scope; R2-CAND-02 remains active until sphere measurement; X2 CAND-04 remains active/unlocalized until D2.
-- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate runtime has not begun. Frozen candidate selectors remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…4fbe62`.
-- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **62**.
-- **Exact next is `M3-CP4c-2-CB4`**, Code + Build, runtime-free, under measures AC0-AC9.
-- CP4c-3 remains blocked on CP4c-2 closure.
+- Current build/package authority is source `cebc12082c6dbe4830095df08169797b7dab0c5c` / GMP package `9714226920`.
+- CB4 implements AC0–AC9 and compiles the independent actual-complex oracle; runtime predictions remain unadjudicated.
+- `PR8-R043 / M3-CP4c2-R001` remains active pending R6 and independent review.
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; 357/358/cumulative gate remain blocked.
+- Stable accounting is **43 events / 14 categories / 29 recurrences**; produced-witness debt **5**; authoritative M3 packages **63**.
+- **Exact next is `M3-CP4c-2-TB-X2-R6-EXEC`**, artifact-only on package `9714226920`.
+- R6-EXEC must stop at independent `M3-CP4c-2-TB-X2-R6-REV`; CP4c-3 remains blocked.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/CB.md`; `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5
+- turn-based-coding-agent `references/turns/TB-EXEC.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — **the authorizing record**; §4 the machinery to lift, §5 the conventions, §6 admissible cuts, §8 completeness, §11 AC0-AC9.
-2. `include/directional/geometry/GlobalTopologyPlan.h:33-47` — `GlobalTopologyOrientedArc` and `GlobalTopologyArc`, the arc/dart types.
-3. `src/geometry/GlobalTopologyPlan.cpp:1168-1260` — `FaceWalkResult` and `walk_graph_faces`, the face-orbit computation AC1 lifts; and `:1534-1660` — `fragmentOrbits`, `edgeOrbitEvidence`, `drafts`, `draftByOrbit`, the CP4ab fragment representation.
-4. `src/geometry/SurfaceCutGraph.cpp:109-134` (`network_barriers`, `build_components` — the withdrawn proxy) and `:444-476` (the mixed global certificate AC2 replaces).
-5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md` — the regression diagnosis and AB0-AB9 this definition discharges.
-6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §§5.1-5.3 still binding, §3's torus theorem, Amendment 12; **read its supersession note first**.
-7. `.agents/Directional/LESSONS.md` 22d, 22e, 22k, 22m — the representation-conversion rules this checkpoint exists to satisfy.
-8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `PR8-R043 / M3-CP4c2-R001`, `R5-ORCH-01`, R4-CAND-01/02/03, R2-CAND-02, X2 CAND-04.
-9. `TODO.md` / `CHANGELOG.md` — current state/accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R6_Artifact_Only_Test_Benchmark_Plan.md` — executable R6 authority.
+2. `.agents/Directional/Architecture_M3_CP4c2_CB4_Code_Build_Report.md` — source/package/build evidence and AC0–AC9 summary.
+3. immutable package `9714226920` from source `cebc12082c6dbe4830095df08169797b7dab0c5c`; do not rebuild.
+4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — §§5, 6, 8, 9 and predictions.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `PR8-R043 / M3-CP4c2-R001`, `R5-ORCH-01`, and remaining candidates.
+6. 316/346/353/355 and frozen 357/358 selectors for byte/hash verification only; 357/358 are not runtime-authorized.
+7. `TODO.md` / `CHANGELOG.md` — current state/accounting.
 
-Do not revert AA1. Do not run a cumulative gate, R6, 357/358, mechanical/C2, or CP4c-3 in CB4.
+R6-EXEC is artifact-only. Do not configure, compile, relink, mutate product/tests/fixtures/selectors, run generated
+discovery/list/help/version commands, run benchmarks, execute 357/358/cumulative gate, or begin CP4c-3. Postflight
+is unconditional even after semantic red. After raw evidence and required tracker updates are durable, stop at
+independent `M3-CP4c-2-TB-X2-R6-REV`.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

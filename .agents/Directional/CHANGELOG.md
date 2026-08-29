@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-CB4`: actual embedded-graph authority compiles green
+
+Code + Build only; **no Directional runtime, test, or benchmark executed**.
+
+- Source `cebc12082c6dbe4830095df08169797b7dab0c5c` implements DEFN-R1 AC0–AC9: one shared actual-embedded-graph
+  owner, actual-complex cellularity terms, disconnected/boundary conventions, exact trace-crossing cut
+  admissibility, typed `NoAdmissibleCutForNonDiscComponent`, all consumers converted together, and a non-gating
+  independent actual-complex oracle. Retained `sourceEdgeBarrier` evidence is diagnostic-only.
+- Implementation WIP patch SHA-256 `e0621b9c9a801c0af322e5f541082f457952f415a407bc440c63e032197c4d58`
+  was emitted before remote orchestration and applied through the durable Drive workflow; selectors did not change.
+- Required ordering is re-proved on the same source: changed-owner prepackage `33250503297 / 99095246849` PASS,
+  then fresh eight-target GMP package `33250547011 / 99095357374` PASS.
+- Authoritative package `9714226920` /
+  `sha256:931d422611a8144faf4efe3f9307b3a1a90bbce4cab6d8873eb95b32ca1b9f83`; log `9714227128` /
+  `sha256:95c8272db296dc0f74e4d33b389cbf51305bd042590420974111d9f63afe31da`; source archive
+  `3bb299730077cd7bbd46acd5e10f6f7fec1d0e131bc882710a5676163e36b021`. Manifest 28/28, source clean,
+  all eight targets present, GMP/GMPXX link evidence present, `runtimeExecution=false`.
+- Earlier full-package run `33246515627` is retained only as ordering-invalid mechanics evidence, not R6 authority.
+- Stable accounting remains **43 / 14 / 29**, debt **5**, authoritative M3 packages **63**. Accepted runtime
+  authority remains CP4c-1 355/355; CP4c-2 is not accepted.
+- Exact next: artifact-only `M3-CP4c-2-TB-X2-R6-EXEC` on package `9714226920`, then hard stop at independent
+  R6-REV. 357/358, cumulative gate, mechanical/C2, and CP4c-3 remain blocked.
+
+
 > **Provenance note — CP4c document names.** Entries dated on or before **2026-08-27** cite CP4c
 > per-turn plans, reports and independent reviews by their original filenames. Those documents were
 > retired into `M3_CP4c_Consolidated_Record.md` on 2026-08-26 and 2026-08-27 under explicit user

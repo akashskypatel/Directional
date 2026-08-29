@@ -21,44 +21,37 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-CB4` — actual embedded-graph certification, under measures **AC0–AC9**
+## Current focus — `M3-CP4c-2-TB-X2-R6-EXEC` — immutable CB4 package, execution-only
 
-**`M3-CP4c-2-DEFN-R1` is COMPLETE / DEFINITION-ONLY.** Record:
-`Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`. **Amendment 13** supersedes DEFN §5.4's construction
-guidance; §§5.1–5.3 and **Amendment 12** remain binding, and §3's torus theorem stands.
+**`M3-CP4c-2-CB4` is COMPLETE / BUILD GREEN / RUNTIME-FREE.** Report:
+`Architecture_M3_CP4c2_CB4_Code_Build_Report.md`. Semantic/test source
+`cebc12082c6dbe4830095df08169797b7dab0c5c` implements frozen DEFN-R1 **AC0–AC9**: one shared
+actual-embedded-graph topology owner, corrected disconnected/boundary certification, exact admissible-cut
+classification, typed `NoAdmissibleCutForNonDiscComponent`, all cellularity consumers converted together, and a
+non-gating independent actual-complex oracle. No selector changed and no runtime acceptance is claimed.
 
-**The normative complex is the actual embedded graph** of `FieldAlignedCurveNetwork ∪ cutEdges` — vertices are
-network nodes plus cut-created nodes, edges are network arcs plus cut arcs, faces are the **dart orbits** under
-the node rotation system. **Nothing new is invented:** `GlobalTopologyArc`, `GlobalTopologyOrientedArc`,
-`GlobalTopologyNodeRotation` and `walk_graph_faces` already exist in A2b. **AC1 lifts them into one shared
-pre-region authority consumed by both A2a′ and A2b — a second implementation is prohibited (LESSONS 22e).**
+Required build ordering is satisfied on that exact source: changed-owner prepackage run/job
+`33250503297 / 99095246849` PASS, followed by fresh authoritative eight-target GMP package run/job
+`33250547011 / 99095357374` PASS. Immutable R6 package is **`9714226920`** /
+`sha256:931d422611a8144faf4efe3f9307b3a1a90bbce4cab6d8873eb95b32ca1b9f83`; compile log
+`9714227128` / `sha256:95c8272db296dc0f74e4d33b389cbf51305bd042590420974111d9f63afe31da`;
+source archive `3bb299730077cd7bbd46acd5e10f6f7fec1d0e131bc882710a5676163e36b021`.
+Internal manifest is 28/28, all eight targets are present, source is clean, GMP/GMPXX link evidence is present,
+and `runtimeExecution=false`.
 
-**The R2 normative-complex ruling was mine and it was wrong.** Its three grounds were each true and
-collectively wrong: the traversal it cited is a seeding fallback, not A2b's region authority; cut *provenance*
-says nothing about certification *complex*; and self-consistency is what a coherent computation over the wrong
-object looks like. `PR8-R042` had already adjudicated this on the same witness and `LESSONS.md` 22d/22e
-recorded the answer — the control existed and I did not apply it. New lessons **22k** and **22m**.
+The earlier full-package attempt `33246515627` is retained only as ordering-invalid mechanics evidence because it
+preceded a separate changed-owner prepackage compile; it is **not** R6 authority.
 
-**Two conventions will decide correctness and must be derived, not guessed** (§5): the exterior-orbit exclusion
-on surfaces with boundary — the two-ring's 4 orbits minus 1 exterior gives `F = 3` — and the **disconnected-graph
-correction term**, because the torus's 48 arcs over 48 degree-2 nodes form **4 components** and unqualified
-`V − E + F = χ` is false there before any cut is considered.
+Accepted runtime authority remains CP4c-1 **355/355**. Stable accounting remains **43 / 14 / 29**, produced-witness
+debt **5**, authoritative M3 packages **63**. `selected_r2_branch=NONE`; `selected_gate=NONE`;
+`gate_execution_authorized=false`.
 
-**New frozen constraint (§6):** a cut is a source edge promoted to a graph arc, so **a source edge crossed by a
-trace at an interior point is not an admissible cut** — promoting it would subdivide an immutable trace, which
-Amendment 12 forbids. **§8 splits completeness honestly:** provable for trace-free non-disc components, which
-covers the torus entirely (0 traces); **not proved** for trace-crossed ones, where **AC5** requires a typed
-`NoAdmissibleCutForNonDiscComponent` stop and **AC7** makes it a return to definition, not a judgement call.
-
-**Option A is frozen for the accepted regression** `PR8-R043 / M3-CP4c2-R001`: fix the certificate, because
-ordinal 305 is correctly detecting a real defect. Decoupling A2a′ from the accepted path is retained only as a
-contingency with one trigger — §8.2 going live.
-
-**AA1 must not be reverted**; R5 §9 shows the regression predates it. Prefix re-proof is a detection boundary,
-not a blame boundary.
-
-Stable accounting **43 / 14 / 29**, produced-witness debt **5**, M3 packages **62**.
-`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+**Exact next:** `M3-CP4c-2-TB-X2-R6-EXEC`, artifact-only, using package `9714226920` and
+`Architecture_M3_CP4c2_TB_X2_R6_Artifact_Only_Test_Benchmark_Plan.md`. R6 must re-prove accepted prefixes through
+355 first, then conditionally publish the independent actual-complex oracle and D2, run immutable postflight
+unconditionally even on semantic red, preserve raw evidence, update the regression tracker for every observed
+runtime regression/candidate, and **stop at independent `M3-CP4c-2-TB-X2-R6-REV`**. 357/358, cumulative gate,
+mechanical/C2, and CP4c-3 remain blocked.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R5` regression (retained for provenance)
 
@@ -70,7 +63,7 @@ The R2 statement that `sourceEdgeBarrier` is the normative complex is withdrawn.
 
 Stable accounting is now **43 events / 14 categories / 29 recurrences**, produced-witness debt **5**, M3 packages **62**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; CP4c-2 remains unaccepted.
 
-**That definition turn is complete.** AB0–AB9 are discharged by `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`, which freezes the actual embedded-graph complex, the reuse of A2b's arc/rotation/face-walk machinery, admissible-cut semantics, single-complex certification, the completeness split with its typed stop, and the independent oracle. **Exact next is `M3-CP4c-2-CB4` under measures AC0–AC9.**
+**That definition turn is complete.** AB0–AB9 are discharged by `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`; its historical successor was `M3-CP4c-2-CB4`, which is now complete. This superseded section is retained only as provenance for `PR8-R043`.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R4-EXEC` stop (retained for provenance)
 
