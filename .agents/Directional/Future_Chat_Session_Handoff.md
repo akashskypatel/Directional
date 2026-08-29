@@ -83,7 +83,54 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R4-REV` — evidence review only
+## Mandatory next turn — `M3-CP4c-2-CB3-DIAG` — snapshot retention + sphere measurement, measures **AA0-AA9**
+
+`M3-CP4c-2-TB-X2-R4-REV` is **COMPLETE / REVIEW GREEN**. Read
+`Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` in full: §2 the unremarked success, §3 the
+product defect, §4 a reviewer error owned, §5 the admissibility ruling, §7 measures AA0-AA9.
+
+**Read this first: the checkpoint's defining failure is gone.** The torus published
+`pipelineCutGraphAvailable=true` **and `pipelinePlanAvailable=true`**. `products.globalTopologyPlan` is assigned
+at exactly one site — `RemeshPipeline.cpp:6634`, reachable only after `GlobalTopologyPlan::make` succeeds; the
+other two snapshot sites (12554, 12635) cannot produce a plan snapshot. **The torus derives a topology plan.**
+`UncutFaceComponentOrbitSeedNotUnique` no longer occurs, and D1 independently confirms the other half — torus
+network-only cellularity is **false**, matching the frozen theorem. **The DEFN's cut graph is measured working
+end to end on its own witness.** `R4-CAND-03`. Its residual `terminalFailureStage=tracing` is downstream of A2b
+and **out of scope**: **AA7** classifies it, does **not** fix it.
+
+**The sphere's "all snapshots unavailable" is a PRODUCT observability defect, fully localized.** Its record is
+self-contradictory: `terminalFailureStage=surface-cut-graph/CellularityNotEstablished` with atlas and network
+both `false` — yet failing *at* A2a' requires dereferencing all three products at
+`RemeshPipeline.cpp:6602-6605`. Mechanism: lines **6576-6612** are a chain of early
+`return fail_surface_cells(...)`, and lines **6626-6634** assign all five snapshots **after every one of
+them**. Any pre-A2b failure therefore discards products that were built successfully and are alive in local
+variables. The torus reaches 6626 and keeps everything; the sphere fails at 6607 and keeps nothing.
+
+**A reviewer error, owned.** Measure **Z11** told the implementer to consume `productSnapshots` and stop
+reconstructing the pipeline. Right in principle — the torus went from `field-transport-atlas-unavailable` to a
+clean 48/48 in one turn — but it assumed snapshots survive a failure. They do not. Z11 is unimplementable as
+written for the one witness whose pipeline fails at A2a', which is the prescribed sphere, the decision witness
+for Branch A. **AA1 repairs the premise rather than working around it.**
+
+**AA1 is the only `src/` change authorized in this checkpoint**, and it is priced. Publish each snapshot
+immediately after its product is built; change no `fail_surface_cells` call, failure code, stage string,
+control flow, or build ordering. **AA8**: because production is touched, the successor TB must re-prove
+accepted prefixes **316/346/353/355** before crediting any CP4c-2-local identity, and a regression in any of
+them is a stop that **reverts AA1**.
+
+**The `STOP_EVIDENCE_CONFLICT` was procedurally correct; the evidence is admissible.** The duplicate is
+byte-identical, so exactly one *distinct* record exists per witness and nothing is indeterminate. The contract
+is **amended, not waived** — exactly one *distinct* record per witness — and the ruling is **conditional on
+AA2** confirming byte-identity from `d1-records.txt` in artifact `9707662462`. **If the two sphere lines differ
+in any byte, the stop stands and the R4 evidence is void.**
+
+**Closed by this review:** `R2-CAND-01`, `R3-CAND-01`, `R3-CAND-02`. **`R2-CAND-02` remains ACTIVE** — torus
+and two-ring are self-consistent under `complex=sourceEdgeBarrier`, but the sphere has never been measured.
+**`CAND-04` remains UNLOCALIZED for the fifth consecutive turn; AA4 exists to end that.**
+
+`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+
+### Superseded — the R4 EXEC stop as reported (retained for provenance)
 
 `M3-CP4c-2-TB-X2-R4-EXEC` is **COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / D1 EVIDENCE-CONFLICT STOP**.
 Read `Architecture_M3_CP4c2_TB_X2_R4_EXEC_Artifact_Only_Evidence.md` and the frozen
@@ -363,26 +410,28 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
   `6eda3aad…b64fbe62`.
 - Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt
   **5**; M3 packages **61**.
-- **Exact next is `M3-CP4c-2-TB-X2-R4-REV`**, independent evidence review only.
+- **Exact next is `M3-CP4c-2-CB3-DIAG`**, Code + Build, runtime-free, under measures AA0-AA9, with `src/` opened only for AA1's snapshot placement.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TB-REVIEW.md`
+- turn-based-coding-agent `references/turns/CB.md`; `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_EXEC_Artifact_Only_Evidence.md` — **authoritative raw R4 evidence**.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md` — frozen review order and stop rules.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md` — Z10-Z19 authority.
-4. `.agents/Directional/Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md` — exact source/package authority and snapshot-retention context.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — existing and new R4 candidates.
-6. `TODO.md` / `CHANGELOG.md` — current state and accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` — **the authorizing record**; §3 the defect, §7 measures AA0-AA9, §8 predictions.
+2. `src/pipeline/RemeshPipeline.cpp:6560-6640` — the early-return chain and the snapshot block AA1 relocates. **This is the only production region AA1 opens.**
+3. `tests/FieldAlignedCurveNetworkTests.cpp` — `build_cp4c_pipeline_products_fixture` and `build_cp4c_production_fixture` (the relaxed and strict variants; the strict one may not be weakened), `cp4c_network_only_fixture` (~5259), and the D1 identity's final assertion at ~6071 that AA5 rewrites.
+4. Result artifact `9707662462` — `d1-records.txt` for AA2's byte-identity check and `d1-records.json` for AA6's per-component data.
+5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Plan.md` §3 — the 419/437/474 localization AA4 must produce.
+6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §5 the A2a' contract, X6 idempotence.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R4-CAND-01/02/03, R2-CAND-02, X2 CAND-04.
+8. `TODO.md` / `CHANGELOG.md` — current state and accounting.
 
-R4-REV is evidence review only. Do not run new Directional runtime, compile, mutate source/tests/fixtures, execute
-D2/355/357/358 or a cumulative gate, or preload Code + Build engineering modules unless the completed review
-later authorizes such a successor.
+Do not touch `src/` or `include/` beyond AA1's snapshot placement; do not change `SurfaceCutGraph` logic or
+`proves_cellularity()`; do not change or invent selectors; do not run a cumulative gate before AA8's prefixes
+are green; do not fix the torus's post-A2b `tracing` failure.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

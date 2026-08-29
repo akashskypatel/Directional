@@ -21,7 +21,45 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R4-REV` — independent evidence review only
+## Current focus — `M3-CP4c-2-CB3-DIAG` — snapshot retention + sphere measurement, under measures **AA0–AA9**
+
+**`M3-CP4c-2-TB-X2-R4-REV` is COMPLETE / REVIEW GREEN.** Record:
+`Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md`.
+
+**The evidence contains an unremarked success that reframes the checkpoint.** The torus published
+`pipelineCutGraphAvailable=true` **and `pipelinePlanAvailable=true`**. `products.globalTopologyPlan` is
+assigned at exactly one site — `RemeshPipeline.cpp:6634`, reachable only after `GlobalTopologyPlan::make`
+succeeds — so **the torus now derives a topology plan.** `UncutFaceComponentOrbitSeedNotUnique`, the failure
+that defined CP4c-2, is gone, and D1 independently confirms the other half: torus network-only cellularity is
+**false**, matching the frozen theorem. **The DEFN design is measured working end to end.**
+`M3-CP4c2-TB-X2-R4-CAND-03` records it, together with the residual `terminalFailureStage=tracing`, which is
+downstream of A2b and **out of scope** — AA7 classifies it, does not fix it.
+
+**The sphere's "all snapshots unavailable" is a PRODUCT observability defect, fully localized.** Its record is
+self-contradictory on its face: `terminalFailureStage=surface-cut-graph/CellularityNotEstablished` with atlas
+and network both `false` — yet failing *at* A2a′ requires dereferencing all three products at
+`RemeshPipeline.cpp:6602-6605`. Mechanism: lines 6576-6612 are a chain of early `return fail_surface_cells(...)`
+and lines 6626-6634 assign all five snapshots **after every one of them**, so any pre-A2b failure discards
+products that were built successfully. **This also means measure Z11 rested on a false assumption — the
+reviewer's — that snapshots survive failure.** `R4-CAND-02`; owned by **AA1**, the only `src/` change
+authorized in this checkpoint, priced by **AA8**: the successor TB must re-prove accepted prefixes
+316/346/353/355.
+
+**The `STOP_EVIDENCE_CONFLICT` was procedurally correct but the evidence is admissible.** The duplicate is
+byte-identical, so there is exactly one *distinct* record per witness and nothing is indeterminate. The
+contract is **amended, not waived** — exactly one *distinct* record per witness — and the adjudication is
+**conditional on AA2** confirming byte-identity from `d1-records.txt`; if the lines differ in any byte the stop
+stands and the evidence is void.
+
+**Closed by this review:** `R2-CAND-01` (torus now `pipeline-authoritative` at 48/48 from authority),
+`R3-CAND-01` (reconstruction removed), `R3-CAND-02` (sphere failed and the other two still published — Z13
+works). **`R2-CAND-02` remains ACTIVE** — torus and two-ring are self-consistent but the sphere is still
+unmeasured. **`CAND-04` remains UNLOCALIZED for the fifth consecutive turn; AA4 exists to end that.**
+
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Stable accounting remains
+**42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**.
+
+## Superseded focus — `M3-CP4c-2-TB-X2-R4-EXEC` stop (retained for provenance)
 
 **`M3-CP4c-2-TB-X2-R4-EXEC` is COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / D1 EVIDENCE-CONFLICT STOP.**
 Authoritative artifact-only run/job `33228460953 / 99036688477` consumed immutable GMP package `9707091209`
@@ -47,9 +85,9 @@ Recursive package/source byte-and-mode inventories match exactly.
 `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Stable accounting remains
 **42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**.
 
-Exact next is **`M3-CP4c-2-TB-X2-R4-REV`**. It is evidence review only: adjudicate Z13 witness isolation,
-the exactly-once publication conflict, torus 48/48, prescribed-sphere snapshot availability, and existing/new
-candidate dispositions. Do **not** rerun D1, run D2/355/357/358, execute a cumulative gate, benchmark, compile,
+**That review is complete.** It closed R2-CAND-01, R3-CAND-01 and R3-CAND-02, localized R4-CAND-02 as a
+product observability defect, opened R4-CAND-03 for the torus plan success, and authorized
+`M3-CP4c-2-CB3-DIAG` under AA0–AA9. Do **not** rerun D1, run D2/355/357/358, execute a cumulative gate, benchmark, compile,
 mutate source/tests/fixtures, start CB3, touch mechanical/C2, or begin CP4c-3 in REV.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R3-EXEC` stop (retained for provenance)
@@ -215,11 +253,13 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-2-TB-X2-R3-EXEC` — **COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / PLANNED STOP.** Run/job `33222551366 / 99019499929`; D1 selected once, zero Y1 publications, torus `field-transport-atlas-unavailable`; D2 correctly skipped; immutable postflight green. Evidence: `Architecture_M3_CP4c2_TB_X2_R3_EXEC_Artifact_Only_Evidence.md`.
 - [x] `M3-CP4c-2-TB-X2-R3-REV` — **COMPLETE / REVIEW GREEN.** Upheld the stop and **localized** `R3-CAND-01` as test-side: `cp4c_build_rail_authority` diverges from production on the cross field (`finalize_surface_cell_raw_cross_field` vs `products.crossField`) and on the hard-feature edge set (locally rebuilt feature map vs `tracingOptions.hardFeatureEdges`) — and the torus is the one witness where that set is non-empty. Opened `R3-CAND-02` for the abort-in-loop gating that produced zero publications and discarded the sphere. Measures **Z10–Z19**. Record: `Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md`.
 - [x] `M3-CP4c-2-CB2-DIAG-R2` — **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.** Semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`; GMP compile run/job `33226609913 / 99031482464`; immutable package `9707091209`. Z10-Z19 implementation is compiled; runtime closure remains deferred to R4. Report: `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md`.
-- [ ] `M3-CP4c-2-TB-X2-R4` — **NEXT / ARTIFACT-ONLY DIAGNOSTIC.** Execute `TB-X2-R4-EXEC` on package `9707091209`, then evidence-only `TB-X2-R4-REV`. Z17 ordering is binding: all three per-witness records first; then torus control; then Z3; only then D2/Y5. Z12 snapshot unavailability is an immediate review stop, not a 48/48 contradiction.
+- [x] `M3-CP4c-2-TB-X2-R4` — **COMPLETE.** EXEC on package `9707091209`, run/job `33228460953 / 99036688477`: torus published `48/48`, `barrierF=4`, `oracleSelfConsistent=true`, `networkOnlyCellular=false` with cut graph **and plan** available; sphere a typed construction failure with all snapshots unavailable; two-ring self-consistent. Stopped `STOP_EVIDENCE_CONFLICT` on a byte-identical duplicate sphere record. REV upheld the stop, ruled the evidence admissible, closed three candidates and localized the snapshot defect.
+- [ ] `M3-CP4c-2-CB3-DIAG` — **NEXT / CODE + BUILD / RUNTIME-FREE.** Under **AA0–AA9**: **AA1** publish each product snapshot immediately after that product is built (`RemeshPipeline.cpp`) — **the only `src/` change authorized**, changing no `fail_surface_cells` call, failure code, stage string, control flow, or build ordering; **AA2** confirm byte-identity of the two sphere lines from `d1-records.txt` or the R4 evidence is void; **AA3** publish a complete sphere record; **AA4** run D2 and localize `CellularityNotEstablished` to 419/437/474; **AA5** one record per witness with a machine-checkable count; **AA6** per-component χ and boundary cycles; **AA7** classify the torus `tracing` failure, do not fix it.
+- [ ] `M3-CP4c-2-TB-X2-R5` — **BLOCKED ON CB3-DIAG.** **AA8** is binding: because AA1 touches production, re-prove accepted prefixes **316/346/353/355** before crediting any CP4c-2-local identity. A regression in any accepted prefix is a stop and reverts AA1.
 - [x] `M3-CP4c-2-TB-X2-R2` (superseded row) — **COMPLETE / ARTIFACT-ONLY DIAGNOSTIC CONTROL STOP / GATE BLOCKED.** Consume immutable package `9702321260` from source `232ac459b13657529e064272a75c5583770a5963` without rebuild. EXEC runs D1 and D2 separately and preserves complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications; REVIEW adjudicates Y1–Y4 and selects exactly one frozen Y5 corrective branch or stops. **No selector is selected and `TB-GATE-EXEC` is not authorized.** Plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **60**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; corrected diagnostic build authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / immutable GMP package `9707091209`. **Exact next is `M3-CP4c-2-TB-X2-R4-EXEC`, artifact-only under the R4 plan; no cumulative gate runtime is authorized.**
+Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; latest diagnostic build authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / immutable GMP package `9707091209`. **Exact next is `M3-CP4c-2-CB3-DIAG`, runtime-free under measures AA0–AA9, with `src/` opened only for AA1's snapshot placement; no cumulative gate runtime is authorized.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 

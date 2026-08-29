@@ -1,4 +1,4 @@
-## M3-CP4c2-TB-X2-R4-CAND-01 — final D1 assertion duplicates an already-published failure record — **ACTIVE / TEST-AUTHORITY / PUBLICATION-CONTRACT / NON-STABLE**
+## M3-CP4c2-TB-X2-R4-CAND-01 — final D1 assertion duplicates an already-published failure record — ACTIVE / TEST-AUTHORITY / PUBLICATION HYGIENE / NON-STABLE
 
 - **Observed:** authoritative R4 EXEC run/job `33228460953 / 99036688477` executes D1 once and reaches all three
   witnesses, but preserved stdout has four `m3Cp4c2Y1` lines: torus once, prescribed sphere twice, two-ring once.
@@ -14,8 +14,12 @@
   No corrective implementation is authorized from EXEC.
 - **Stable-count rationale:** CP4c-2 is runtime-unaccepted and this is a new non-gating diagnostic authority.
   **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**, M3 packages **61**.
+- **Review adjudication — downgraded from evidence conflict to publication hygiene, conditionally.** `ASSERT_TRUE(allWitnessesValid) << failures.str()` at `tests/FieldAlignedCurveNetworkTests.cpp:6071` re-emits the sphere's already-published record, giving four `m3Cp4c2Y1` lines. The EXEC stop was **procedurally correct** — the rule was frozen and was applied. But **a byte-identical restatement is not an evidence conflict**: there is exactly one *distinct* record per witness and no witness's state is indeterminate.
+- **Contract amended, not waived:** the requirement is **exactly one *distinct* record per witness**. On that basis the preserved R4 evidence is **admissible** and the §6 closures follow from it.
+- **Conditional, and the condition is binding.** Measure **AA2** requires byte-identity confirmed from `d1-records.txt` in result artifact `9707662462`. **If the two sphere lines differ in any byte, the stop stands, the admissibility adjudication is void, and the R4 evidence cannot be used.**
+- **Owning correction:** `M3-CP4c-2-CB3-DIAG` measure **AA5** — emit each record once; the assertion message references failing witnesses by name and status only; publish the per-witness record count so the contract is machine-checkable.
 
-## M3-CP4c2-TB-X2-R4-CAND-02 — prescribed-sphere pipelineProducts witness has no retained source-topology snapshot — **ACTIVE / DIAGNOSTIC-PRECONDITION / SNAPSHOT-AVAILABILITY / NON-STABLE**
+## M3-CP4c2-TB-X2-R4-CAND-02 — pipeline discards product snapshots on any pre-A2b failure path — **LOCALIZED** / PRODUCT OBSERVABILITY DEFECT / NON-STABLE
 
 - **Observed:** the same R4 D1 run publishes the prescribed-sphere typed failure
   `constructionSucceeded=false`, `pipelineAtlasAvailable=false`, `pipelineNetworkAvailable=false`,
@@ -31,6 +35,20 @@
 - **Stable-count rationale:** CP4c-2 is unaccepted and this is diagnostic-precondition evidence, not a loss of an
   accepted-green identity. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**, M3
   packages **61**.
+- **LOCALIZED by `M3-CP4c-2-TB-X2-R4-REV` as a PRODUCT defect, not a test defect.** The sphere's record is self-contradictory on its face: `terminalFailureStage=surface-cut-graph/CellularityNotEstablished` with `pipelineAtlasAvailable=false` and `pipelineNetworkAvailable=false`. A failure **at** `surface-cut-graph` is reachable only through `SurfaceCutGraph::make(…, *sourceTopologyRegionsProduct, *fieldTransportAtlasProduct, *fieldAlignedNetworkProduct)` at `src/pipeline/RemeshPipeline.cpp:6602-6605` — **dereferencing all three proves all three were built.**
+- **Mechanism:** `RemeshPipeline.cpp` lines **6576-6612** are a chain of `return fail_surface_cells(...)` early exits, and lines **6626-6634** assign all five snapshots **in one block after every one of them**. Snapshots are therefore published only when every stage through A2b succeeds. The torus reaches 6626 and retains everything; the sphere fails at 6607 and retains nothing — although its products exist and are alive in local variables at that moment.
+- **Consequence for prior guidance:** measure **Z11** (consume `productSnapshots`) was written on the assumption that snapshots survive a failure. They do not. Z11 is unimplementable as written for any witness whose pipeline fails at or before A2b — which is exactly the prescribed sphere, the decision witness for Branch A. The reviewer owns that error; see the review record §4.
+- **Classification:** observability only. The failure code and stage string are already correct and no accept/reject decision changes.
+- **Owning correction:** `M3-CP4c-2-CB3-DIAG` measure **AA1** — publish each snapshot immediately after its product is successfully constructed, changing no `fail_surface_cells` call, failure code, stage string, control flow, or build ordering. This is **the only `src/` change authorized** in the checkpoint, and **AA8** prices it: the successor TB must re-prove accepted prefixes 316/346/353/355 before crediting any CP4c-2-local identity.
+- **Stable-count rationale:** observability defect; no accepted-green identity regressed and CP4c-2 has no accepted runtime authority. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
+
+## M3-CP4c2-TB-X2-R4-CAND-03 — torus completes A2a', A2b and a GlobalTopologyPlan, then fails downstream at tracing — ACTIVE / OUT-OF-SCOPE FOR CP4c-2 / NON-STABLE
+
+- **Observed:** R4's torus record reports `pipelineCutGraphAvailable=true` and `pipelinePlanAvailable=true`, with `terminalFailureCode=NotProductionReady` and `terminalFailureStage=tracing`.
+- **Why the plan availability is trustworthy:** `products.globalTopologyPlan` is assigned at exactly one site, `src/pipeline/RemeshPipeline.cpp:6634`, reachable only after `GlobalTopologyPlan::make(...)` returns success at 6614-6624. The two other snapshot-writing sites (12554, 12635) set only `sourceTopologyRegions` and `hasAuthoritativeRails` and cannot produce a plan snapshot. **The torus's plan was genuinely constructed.**
+- **Significance — this discharges CP4c-2's defining premise.** The checkpoint exists because the torus network is provably not a cut graph and A2b failed with `UncutFaceComponentOrbitSeedNotUnique`. D1 independently confirms the first half — network-only cellularity is **false** on the torus, matching the frozen theorem — while the pipeline confirms the second: with `SurfaceCutGraph` supplying cuts, A2b completes. **The DEFN design is measured working end to end on its own witness.**
+- **The residual `tracing` failure is downstream of A2b and outside CP4c-2's scope.** It must not be pulled into this checkpoint and must not be read as evidence against the cut graph. **AA7** requires it published and classified, explicitly **not** fixed.
+- **Stable-count rationale:** no accepted identity regressed; the finding is a success plus an out-of-scope successor failure. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c2-TB-X2-R4-ORCH-01 — first R4 runtime control script addressed package metadata at the wrong archive root — **RESOLVED ORCHESTRATION / NON-STABLE**
 
@@ -50,7 +68,7 @@
 - **Stable-count rationale:** process-ordering miss only; no semantic/build/runtime evidence changed.
   **+0 events / +0 recurrences**.
 
-## M3-CP4c2-TB-X2-R3-CAND-01 — corrected D1 torus fixture fails before network publication with `field-transport-atlas-unavailable` — **LOCALIZED** / TEST-AUTHORITY / DIAGNOSTIC FIXTURE RECONSTRUCTION DIVERGENCE / NON-STABLE
+## M3-CP4c2-TB-X2-R3-CAND-01 — corrected D1 torus fixture fails before network publication with `field-transport-atlas-unavailable` — **RESOLVED** / TEST-AUTHORITY / DIAGNOSTIC FIXTURE RECONSTRUCTION DIVERGENCE / NON-STABLE
 
 - **Observed:** authoritative artifact-only R3 EXEC run/job `33222551366 / 99019499929` passed immutable preflight,
   selected `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable` exactly once, and then
@@ -95,8 +113,9 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 - **Stable-count rationale:** diagnostic precondition failure in a non-gating identity; nothing about the product, the frozen theorem, or any accepted identity is established or lost. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
 
 - **R4 EXEC evidence pending review:** run `33228460953` reaches a successful torus `pipelineProducts` network and publishes `barrierV=48`, `barrierE=48`, `sourceChi=0`, non-cellular, `oracleSelfConsistent=true`. EXEC does not close this candidate; R4-REV owns the disposition.
+- **RESOLVED by `M3-CP4c-2-TB-X2-R4-REV`.** Measure Z11 removed the hand reconstruction for loaded production witnesses entirely: `build_cp4c_pipeline_products_fixture` consumes `productSnapshots`, and the torus reached a published network on the first run under it. The strict `build_cp4c_production_fixture` was layered on top **without being weakened**, as Z11 required.
 
-## M3-CP4c2-TB-X2-R3-CAND-02 — one witness's failure suppressed every other witness's publication — ACTIVE / TEST-AUTHORITY / DIAGNOSTIC GATING / NON-STABLE
+## M3-CP4c2-TB-X2-R3-CAND-02 — one witness's failure suppressed every other witness's publication — **RESOLVED** / TEST-AUTHORITY / DIAGNOSTIC GATING / NON-STABLE
 
 - **Observed:** the R3 D1 identity loops over `{torus, prescribed-sphere, two-ring}` and calls `ASSERT_TRUE(fixture.network.has_value())` **inside the loop** (`tests/FieldAlignedCurveNetworkTests.cpp:5946`). GoogleTest's `ASSERT_*` returns from the test body, and the torus is element 0 — so the identity ended after 14 ms with **zero** `m3Cp4c2Y1` publications.
 - **Cost:** the prescribed sphere and the two-ring were never constructed, measured, or published, despite nothing being known to be wrong with either. **The prescribed sphere is the decision witness for Branch A** and therefore for the 357/358 selector; its corrected barrier-complex numbers were available and were discarded.
@@ -107,6 +126,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 - **Stable-count rationale:** test-authority defect in a non-gating diagnostic; no accepted identity regressed. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
 
 - **R4 EXEC evidence pending review:** the sphere fails construction but torus and two-ring are still published, so the former suppression behavior is no longer observed. However the final assertion duplicates the sphere Y1 record and violates the strict exactly-once publication contract. R4-REV owns closure/disposition.
+- **RESOLVED by `M3-CP4c-2-TB-X2-R4-REV`.** In R4 the prescribed sphere failed construction and **the torus and two-ring were still published**, each with a complete record. Z13's witness isolation works. The separate duplicate-publication defect is tracked as `R4-CAND-01` and is a different problem.
 
 ## M3-CP4c2-TB-X2-R2-CAND-02 — D1 oracle computes Euler terms in two different complexes; sphere publication is self-contradictory — ACTIVE / TEST-AUTHORITY / MIXED-COMPLEX ACCOUNTING / NON-STABLE
 
@@ -124,8 +144,9 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 
 
 - **R4 EXEC evidence:** torus and two-ring publish `oracleSelfConsistent=true`, but prescribed sphere does not construct (`pipeline-source-topology-snapshot-unavailable`), so the all-three closure condition is not reached. Candidate remains ACTIVE pending review.
+- **R4 partial progress — remains ACTIVE, do not close early.** Under `complex=sourceEdgeBarrier` the torus (`48 − 48 + 4 = 4` vs `χ=0`) and the two-ring both published `oracleSelfConsistent=true`, and R2's exact-by-4 self-contradiction did **not** recur. But the closure condition is self-consistency on **all three** witnesses, and the prescribed sphere has still never been measured. Closes only when AA3 publishes a complete, self-consistent sphere record.
 
-## M3-CP4c2-TB-X2-R2-CAND-01 — D1 torus control reconstructs atlas-barrier rails instead of product-authoritative rails — **ACTIVE / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE**
+## M3-CP4c2-TB-X2-R2-CAND-01 — D1 torus control reconstructs atlas-barrier rails instead of product-authoritative rails — **RESOLVED** / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE
 
 - **Observed:** artifact-only R2 run/job `33215632118 / 98998526420` verified immutable package `9702321260`,
   executed D1 exactly once, and published all three Y1 records. The fixed torus control then reported
@@ -160,6 +181,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 
 
 - **R4 EXEC evidence pending review:** the corrected product-snapshot torus publishes the frozen 48/48 control from `pipeline-authoritative` rails with `oracleSelfConsistent=true`. EXEC preserves this evidence but does not close the candidate; R4-REV owns closure.
+- **RESOLVED by `M3-CP4c-2-TB-X2-R4-REV`.** R4 run/job `33228460953 / 99036688477` published the torus with `railAuthority=pipeline-authoritative`, `witnessConstruction=pipelineProducts`, and the frozen `barrierV=48`, `barrierE=48`, `sourceChi=0`, `networkOnlyCellular=false` — reproduced **from authority**, not from an encoded constant (Z5 held). Closure condition met. Record: `Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` §6.
 
 ## M3-CP4c2-TB-X2-CAND-01 — reusable observer permission ceiling caused startup failure — RESOLVED ORCHESTRATION / NON-STABLE
 
