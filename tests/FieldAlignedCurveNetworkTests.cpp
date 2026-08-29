@@ -2644,6 +2644,22 @@ enum class Cp4cRailAuthority {
   PipelineAuthoritative,
 };
 
+enum class Cp4cWitnessConstruction {
+  PipelineProducts,
+  Constructed,
+};
+
+const char *cp4c_witness_construction_name(
+    const Cp4cWitnessConstruction construction) {
+  switch (construction) {
+  case Cp4cWitnessConstruction::PipelineProducts:
+    return "pipelineProducts";
+  case Cp4cWitnessConstruction::Constructed:
+    return "constructed";
+  }
+  return "unknown";
+}
+
 const char *cp4c_rail_authority_name(const Cp4cRailAuthority authority) {
   switch (authority) {
   case Cp4cRailAuthority::AtlasDerived:
@@ -2657,11 +2673,16 @@ const char *cp4c_rail_authority_name(const Cp4cRailAuthority authority) {
 struct Cp4cProductionFixture {
   TriMesh mesh;
   Cp4cRailAuthority railAuthority = Cp4cRailAuthority::PipelineAuthoritative;
+  std::vector<SurfaceCellRail> rails;
+  bool authoritativeRailsSnapshotAvailable = false;
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
   std::optional<FieldAlignedCurveNetwork> network;
   std::optional<directional::geometry::SurfaceCutGraph> cutGraph;
   std::optional<directional::geometry::GlobalTopologyPlan> plan;
+  std::string terminalFailureCode;
+  std::string terminalFailureStage;
+  std::string loadError;
 };
 
 Eigen::MatrixXd read_cp4c_rawfield(const std::filesystem::path &path,
@@ -2703,51 +2724,6 @@ directional::pipeline::RemeshOptions cp4c_remesh_options() {
   options.surfaceCells.retainIntermediateGeometry = true;
   return options;
 }
-
-struct Cp4cRailAuthorityBuild {
-  std::vector<SurfaceCellRail> rails;
-  directional::authority::FieldTransportAtlas atlas;
-};
-
-std::optional<Cp4cRailAuthorityBuild> cp4c_build_rail_authority(
-    const TriMesh &mesh, const SourceTopologyRegions &sourceAuthority,
-    const CrossFieldResult &field, const Cp4cRailAuthority authority,
-    std::string &error) {
-  if (authority == Cp4cRailAuthority::AtlasDerived) {
-    auto atlas = directional::authority::FieldTransportAtlas::make(
-        mesh, sourceAuthority, {}, field);
-    if (!atlas) {
-      error = "field-transport-atlas-unavailable";
-      return std::nullopt;
-    }
-    auto rails = rails_from_atlas(mesh, atlas.value());
-    return Cp4cRailAuthorityBuild{std::move(rails), std::move(atlas.value())};
-  }
-
-  const auto options = cp4c_remesh_options();
-  const auto featureMap = directional::geometry::AdaptiveFeatureMapBuilder::build(
-      mesh.V, mesh.F,
-      options.featureAlign ? options.featureMap : options.surfaceCells.featureMap);
-  const auto railBuild =
-      directional::pipeline::build_authoritative_surface_cell_rails(mesh,
-                                                                     featureMap);
-  if (railBuild.is_rejected() || railBuild.produced_product() == nullptr) {
-    error = "pipeline-authoritative-rails-unavailable";
-    return std::nullopt;
-  }
-  std::vector<SurfaceCellRail> rails = railBuild.produced_product()->rails;
-  const auto hardFeatureRailEdges =
-      directional::pipeline::hard_feature_edge_keys_from_rails(
-          rails, static_cast<std::size_t>(mesh.V.rows()));
-  auto atlas = directional::authority::FieldTransportAtlas::make(
-      mesh, sourceAuthority, hardFeatureRailEdges, field);
-  if (!atlas) {
-    error = "field-transport-atlas-unavailable";
-    return std::nullopt;
-  }
-  return Cp4cRailAuthorityBuild{std::move(rails), std::move(atlas.value())};
-}
-
 
 void append_cp4c_terminal_event_report(
     std::ostringstream &report, const FieldAlignedCurveNetwork &network) {
@@ -3904,6 +3880,8 @@ std::size_t source_boundary_vertex_count(const TriMesh &mesh) {
   return vertices.size();
 }
 
+// CP4c witness idiom 1/3: reachability diagnostics replay stages from
+// published pipeline inputs to localize the first unavailable stage.
 Cp4cReachabilityObservation observe_cp4c_witness(
     const std::string &fixtureStem, const std::string &fixtureName) {
   Cp4cReachabilityObservation observation;
@@ -4411,7 +4389,9 @@ std::string cp4c_grazing_trace_multiplicity_census(
   return report.str();
 }
 
-Cp4cProductionFixture build_cp4c_production_fixture(
+// CP4c witness idiom 2/3: loaded production fixtures consume retained
+// productSnapshots; strict callers additionally require A2b products.
+Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
     const std::string &fixtureStem, const std::string &fixtureName) {
   Cp4cProductionFixture fixture;
   const auto meshPath = directional::tests::benchmark_fixture_path(
@@ -4419,33 +4399,49 @@ Cp4cProductionFixture build_cp4c_production_fixture(
   const auto fieldPath = directional::tests::benchmark_fixture_path(
       "milestone-g/" + fixtureStem + ".rawfield");
   if (!directional::readOBJ(meshPath.string(), fixture.mesh)) {
-    throw std::runtime_error("Failed to read committed " + fixtureName +
-                             " fixture");
+    fixture.loadError = "Failed to read committed " + fixtureName + " fixture";
+    return fixture;
   }
-  const Eigen::MatrixXd raw =
-      read_cp4c_rawfield(fieldPath, fixture.mesh.F.rows());
+  Eigen::MatrixXd raw;
+  try {
+    raw = read_cp4c_rawfield(fieldPath, fixture.mesh.F.rows());
+  } catch (const std::exception &error) {
+    fixture.loadError = error.what();
+    return fixture;
+  }
 
   const auto result = directional::pipeline::remesh_from_raw_cross_field(
       fixture.mesh.V, fixture.mesh.F, raw, cp4c_remesh_options());
   const auto &products = result.surfaceCellContext.productSnapshots;
-  if (!products.sourceTopologyRegions.has_value() ||
-      !products.fieldTransportAtlas.has_value() ||
-      !products.fieldAlignedCurveNetwork.has_value() ||
-      !products.surfaceCutGraph.has_value() ||
-      !products.globalTopologyPlan.has_value()) {
-    throw std::runtime_error(
-        fixtureName + " pipeline did not retain CP4c topology authority: " +
-        result.diagnostics.terminalFailureCode + "/" +
-        result.diagnostics.terminalFailureStage);
-  }
-
+  fixture.rails = products.authoritativeRails;
+  fixture.authoritativeRailsSnapshotAvailable = products.hasAuthoritativeRails;
   fixture.sourceAuthority = products.sourceTopologyRegions;
   fixture.atlas = products.fieldTransportAtlas;
   fixture.network = products.fieldAlignedCurveNetwork;
   fixture.cutGraph = products.surfaceCutGraph;
   fixture.plan = products.globalTopologyPlan;
+  fixture.terminalFailureCode = result.diagnostics.terminalFailureCode;
+  fixture.terminalFailureStage = result.diagnostics.terminalFailureStage;
   return fixture;
 }
+
+Cp4cProductionFixture build_cp4c_production_fixture(
+    const std::string &fixtureStem, const std::string &fixtureName) {
+  Cp4cProductionFixture fixture =
+      build_cp4c_pipeline_products_fixture(fixtureStem, fixtureName);
+  if (!fixture.loadError.empty()) {
+    throw std::runtime_error(fixture.loadError);
+  }
+  if (!fixture.sourceAuthority.has_value() || !fixture.atlas.has_value() ||
+      !fixture.network.has_value() || !fixture.cutGraph.has_value() ||
+      !fixture.plan.has_value()) {
+    throw std::runtime_error(
+        fixtureName + " pipeline did not retain CP4c topology authority: " +
+        fixture.terminalFailureCode + "/" + fixture.terminalFailureStage);
+  }
+  return fixture;
+}
+
 
 const Cp4cProductionFixture &cp4c_torus_fixture() {
   static const Cp4cProductionFixture fixture =
@@ -4669,11 +4665,24 @@ using Cp4cOraclePoint = std::array<Cp4cOracleRational, 3>;
 
 struct Cp4cNetworkOnlyFixture {
   TriMesh mesh;
+  Cp4cWitnessConstruction witnessConstruction =
+      Cp4cWitnessConstruction::Constructed;
   Cp4cRailAuthority railAuthority = Cp4cRailAuthority::AtlasDerived;
   std::vector<SurfaceCellRail> rails;
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
   std::optional<FieldAlignedCurveNetwork> network;
+  bool pipelineAtlasAvailable = false;
+  bool pipelineNetworkAvailable = false;
+  bool pipelineCutGraphAvailable = false;
+  bool pipelinePlanAvailable = false;
+  std::string terminalFailureCode;
+  std::string terminalFailureStage;
+  std::optional<directional::authority::FieldAtlasBuildError> atlasError;
+  std::optional<directional::geometry::FieldAlignedCurveNetworkError>
+      networkError;
+  CrossFieldResult diagnosticField;
+  bool hasDiagnosticField = false;
   std::string error;
 };
 
@@ -5246,50 +5255,73 @@ cp4c_independent_network_only_cellularity(
   return oracle;
 }
 
+// CP4c witness idiom 3/3: D1 uses pipeline products for loaded witnesses
+// and constructs only the synthetic two-ring, which has no pipeline fixture.
 Cp4cNetworkOnlyFixture cp4c_network_only_fixture(
     const std::string &fixtureStem, const Cp4cRailAuthority railAuthority) {
   Cp4cNetworkOnlyFixture fixture;
-  CrossFieldResult field;
-  if (fixtureStem == "two-ring") {
-    fixture.mesh = make_cp3a_two_ring_skew_disc();
-    make_cp3a_two_ring_index_one_field(fixture.mesh, field);
-  } else {
-    const auto meshPath = directional::tests::benchmark_fixture_path(
-        "milestone-g/" + fixtureStem + ".obj");
-    const auto fieldPath = directional::tests::benchmark_fixture_path(
-        "milestone-g/" + fixtureStem + ".rawfield");
-    if (!directional::readOBJ(meshPath.string(), fixture.mesh)) {
-      fixture.error = "fixture-load-failed";
-      return fixture;
+  fixture.railAuthority = railAuthority;
+
+  if (railAuthority == Cp4cRailAuthority::PipelineAuthoritative) {
+    const Cp4cProductionFixture pipeline =
+        build_cp4c_pipeline_products_fixture(fixtureStem, fixtureStem);
+    fixture.mesh = pipeline.mesh;
+    fixture.witnessConstruction = Cp4cWitnessConstruction::PipelineProducts;
+    fixture.rails = pipeline.rails;
+    fixture.sourceAuthority = pipeline.sourceAuthority;
+    fixture.atlas = pipeline.atlas;
+    fixture.network = pipeline.network;
+    fixture.pipelineAtlasAvailable = pipeline.atlas.has_value();
+    fixture.pipelineNetworkAvailable = pipeline.network.has_value();
+    fixture.pipelineCutGraphAvailable = pipeline.cutGraph.has_value();
+    fixture.pipelinePlanAvailable = pipeline.plan.has_value();
+    fixture.terminalFailureCode = pipeline.terminalFailureCode;
+    fixture.terminalFailureStage = pipeline.terminalFailureStage;
+
+    if (!pipeline.loadError.empty()) {
+      fixture.error = pipeline.loadError;
+    } else if (!pipeline.authoritativeRailsSnapshotAvailable) {
+      fixture.error = "pipeline-authoritative-rails-snapshot-unavailable";
+    } else if (!fixture.sourceAuthority.has_value()) {
+      fixture.error = "pipeline-source-topology-snapshot-unavailable";
+    } else if (!fixture.atlas.has_value()) {
+      fixture.error = "pipeline-field-transport-atlas-snapshot-unavailable";
+    } else if (!fixture.network.has_value()) {
+      fixture.error = "pipeline-field-aligned-network-snapshot-unavailable";
     }
-    const Eigen::MatrixXd raw =
-        read_cp4c_rawfield(fieldPath, fixture.mesh.F.rows());
-    field = directional::pipeline::finalize_surface_cell_raw_cross_field(
-        fixture.mesh, raw);
+    return fixture;
   }
 
+  fixture.mesh = make_cp3a_two_ring_skew_disc();
+  make_cp3a_two_ring_index_one_field(fixture.mesh, fixture.diagnosticField);
+  fixture.hasDiagnosticField = true;
   fixture.sourceAuthority = make_source_authority(fixture.mesh);
   if (!fixture.sourceAuthority.has_value()) {
     fixture.error = "source-authority-unavailable";
     return fixture;
   }
-  fixture.railAuthority = railAuthority;
-  auto authorityBuild = cp4c_build_rail_authority(
-      fixture.mesh, *fixture.sourceAuthority, field, railAuthority,
-      fixture.error);
-  if (!authorityBuild.has_value()) return fixture;
-  fixture.rails = std::move(authorityBuild->rails);
-  fixture.atlas = std::move(authorityBuild->atlas);
-  auto network = FieldAlignedCurveNetwork::make(
-      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails);
-  if (!network) {
-    fixture.error = "field-aligned-network-unavailable:" +
-                    network_error_locus(network.error());
+
+  auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *fixture.sourceAuthority, {}, fixture.diagnosticField);
+  if (!atlasBuild) {
+    fixture.atlasError = atlasBuild.error();
+    fixture.error = "constructed-field-transport-atlas-failure";
     return fixture;
   }
-  fixture.network = std::move(network.value());
+  fixture.atlas = std::move(atlasBuild.value());
+  fixture.rails = rails_from_atlas(fixture.mesh, *fixture.atlas);
+
+  auto networkBuild = FieldAlignedCurveNetwork::make(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails);
+  if (!networkBuild) {
+    fixture.networkError = networkBuild.error();
+    fixture.error = "constructed-field-aligned-network-failure";
+    return fixture;
+  }
+  fixture.network = std::move(networkBuild.value());
   return fixture;
 }
+
 
 std::string cp4c_network_only_oracle_report(
     const std::string &witness, const Cp4cNetworkOnlyFixture &fixture,
@@ -5306,6 +5338,9 @@ std::string cp4c_network_only_oracle_report(
   std::ostringstream report;
   report << "m3Cp4c2Y1"
          << ";witness=" << witness
+         << ";witnessConstruction="
+         << cp4c_witness_construction_name(fixture.witnessConstruction)
+         << ";constructionSucceeded=true"
          << ";oracleKind=independent-source-edge-barrier-complex"
          << ";complex=sourceEdgeBarrier"
          << ";surfaceCutGraphCalls=0"
@@ -5346,6 +5381,18 @@ std::string cp4c_network_only_oracle_report(
          << (oracle.networkOnlyCellular ? "true" : "false")
          << ";networkTraceCount=" << fixture.network->candidate_traces().size()
          << ";networkEventCount=" << fixture.network->events().size();
+  if (fixture.witnessConstruction == Cp4cWitnessConstruction::PipelineProducts) {
+    report << ";pipelineAtlasAvailable="
+           << (fixture.pipelineAtlasAvailable ? "true" : "false")
+           << ";pipelineNetworkAvailable="
+           << (fixture.pipelineNetworkAvailable ? "true" : "false")
+           << ";pipelineCutGraphAvailable="
+           << (fixture.pipelineCutGraphAvailable ? "true" : "false")
+           << ";pipelinePlanAvailable="
+           << (fixture.pipelinePlanAvailable ? "true" : "false")
+           << ";terminalFailureCode=" << fixture.terminalFailureCode
+           << ";terminalFailureStage=" << fixture.terminalFailureStage;
+  }
   for (std::size_t index = 0U; index < oracle.components.size(); ++index) {
     const auto &component = oracle.components[index];
     report << ";component[" << index << "]={chi="
@@ -5576,6 +5623,54 @@ cp4c_producer_tree_cotree_cuts(
   }
   if (dualTreeEdges + 1U != component.size()) return std::nullopt;
   return cuts;
+}
+
+std::string cp4c_network_only_failure_report(
+    const std::string &witness, const Cp4cNetworkOnlyFixture &fixture,
+    const std::string &failureKind) {
+  std::ostringstream report;
+  report << "m3Cp4c2Y1"
+         << ";witness=" << witness
+         << ";witnessConstruction="
+         << cp4c_witness_construction_name(fixture.witnessConstruction)
+         << ";constructionSucceeded=false"
+         << ";failureKind=" << failureKind
+         << ";railAuthority="
+         << cp4c_rail_authority_name(fixture.railAuthority)
+         << ";mandatoryRailCount=" << fixture.rails.size();
+
+  if (fixture.witnessConstruction == Cp4cWitnessConstruction::PipelineProducts) {
+    report << ";pipelineAtlasAvailable="
+           << (fixture.pipelineAtlasAvailable ? "true" : "false")
+           << ";pipelineNetworkAvailable="
+           << (fixture.pipelineNetworkAvailable ? "true" : "false")
+           << ";pipelineCutGraphAvailable="
+           << (fixture.pipelineCutGraphAvailable ? "true" : "false")
+           << ";pipelinePlanAvailable="
+           << (fixture.pipelinePlanAvailable ? "true" : "false")
+           << ";terminalFailureCode=" << fixture.terminalFailureCode
+           << ";terminalFailureStage=" << fixture.terminalFailureStage;
+  }
+
+  if (fixture.atlasError.has_value()) {
+    report << ';';
+    append_atlas_error(report, *fixture.atlasError);
+    if (fixture.sourceAuthority.has_value() && fixture.hasDiagnosticField) {
+      append_cp4c_atlas_failure_diagnosis(
+          report, fixture.mesh, *fixture.sourceAuthority, fixture.diagnosticField,
+          {}, *fixture.atlasError);
+    }
+  }
+  if (fixture.networkError.has_value()) {
+    report << ';';
+    append_network_error(report, *fixture.networkError);
+    report << ";networkErrorLocus="
+           << network_error_locus(*fixture.networkError);
+  }
+  if (!fixture.error.empty()) {
+    report << ";error=" << fixture.error;
+  }
+  return report.str();
 }
 
 std::optional<Cp4cProducerRederivation> cp4c_producer_rederivation(
@@ -5940,21 +6035,40 @@ TEST(GlobalTopologyPlan,
            Cp4cRailAuthority::PipelineAuthoritative},
           {"two-ring", "two-ring", Cp4cRailAuthority::AtlasDerived},
       }};
+  bool allWitnessesValid = true;
+  std::ostringstream failures;
   for (const auto &[fixtureStem, witnessName, railAuthority] : witnesses) {
     const Cp4cNetworkOnlyFixture fixture =
         cp4c_network_only_fixture(fixtureStem, railAuthority);
-    ASSERT_TRUE(fixture.network.has_value())
-        << "witness=" << witnessName << ";error=" << fixture.error;
+    if (!fixture.error.empty() || !fixture.network.has_value()) {
+      const std::string report = cp4c_network_only_failure_report(
+          witnessName, fixture, "fixture-construction");
+      std::cout << report << '\n';
+      failures << report << '\n';
+      allWitnessesValid = false;
+      continue;
+    }
+
     const auto oracle = cp4c_independent_network_only_cellularity(
         fixture.mesh, *fixture.network);
-    ASSERT_TRUE(oracle.has_value())
-        << "witness=" << witnessName
-        << ";oracle=independent-source-edge-barrier-complex";
+    if (!oracle.has_value()) {
+      const std::string report = cp4c_network_only_failure_report(
+          witnessName, fixture, "oracle-unavailable");
+      std::cout << report << '\n';
+      failures << report << '\n';
+      allWitnessesValid = false;
+      continue;
+    }
+
     const std::string report =
         cp4c_network_only_oracle_report(witnessName, fixture, *oracle);
     std::cout << report << '\n';
-    ASSERT_TRUE(oracle->oracleSelfConsistent) << report;
+    if (!oracle->oracleSelfConsistent) {
+      failures << report << '\n';
+      allWitnessesValid = false;
+    }
   }
+  ASSERT_TRUE(allWitnessesValid) << failures.str();
 }
 
 TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
