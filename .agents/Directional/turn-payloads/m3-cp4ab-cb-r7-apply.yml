@@ -30,8 +30,8 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 13wDgn_tuCdw-wMywCCgQqkV83KRbwTNt
-      patch_sha256: b12140a0fd5a66db457370b556fb611cdc678585c3a4b05e3dff6de4189fa2cc
+      file_id: 10ZN6ZJ5dplNIKLalWRiAffNOkQV-374m
+      patch_sha256: b4b095211f199d2b49c6e5043eec88c55a0f604cea86768e60bd861652af476f
       base_sha: 34723f0b61256c1dda3a9766655c8603934e37da
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close CB6 at frozen definition stop"
