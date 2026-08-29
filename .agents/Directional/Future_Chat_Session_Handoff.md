@@ -83,7 +83,17 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-CB4` — actual embedded-graph certification, measures **AC0-AC9**
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R6-EXEC` — immutable CB4 package, artifact-only
+
+`M3-CP4c-2-CB4` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Execute exactly
+`Architecture_M3_CP4c2_TB_X2_R6_Artifact_Only_Test_Benchmark_Plan.md` against immutable GMP package
+`9714226920` from semantic/test source `cebc12082c6dbe4830095df08169797b7dab0c5c`; do not rebuild. Re-prove the
+accepted prefixes through 355 first, conditionally publish the independent actual-complex oracle and D2 only as
+the plan permits, run immutable postflight unconditionally even after semantic red, preserve raw evidence and
+required regression-tracker updates, then **stop at independent `M3-CP4c-2-TB-X2-R6-REV`**. 357/358, the
+cumulative gate, mechanical/C2, and CP4c-3 remain blocked.
+
+### Completed CB4 definition/implementation context — retained for R6 interpretation
 
 `M3-CP4c-2-DEFN-R1` is **COMPLETE / DEFINITION-ONLY**. Read
 `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` in full: §3 Amendment 13, §4 the representation to lift,
