@@ -23,7 +23,7 @@
 - **Stable-count rationale:** test/diagnostic authority only; CP4c-2 is unaccepted and no accepted-green behaviour is
   lost. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
 
-## M3-CP4c2-TB-X2-R7-CAND-04 — no `SurfaceCutGraph` identity is in any selector, and candidate 358 binds an out-of-scope witness — **ACTIVE / GATE-AUTHORING / NON-STABLE**
+## M3-CP4c2-TB-X2-R7-CAND-04 — no `SurfaceCutGraph` identity is in any selector, and candidate 358 binds an out-of-scope witness — **RESOLVED IN DEFN-R2 / GATE-AUTHORING / NON-STABLE**
 
 - **Observed:** `grep -c '^SurfaceCutGraph\.'` returns **0** against the accepted 355 selector, candidate 357, and
   candidate 358. A2a′'s four direct identities — `AlreadyCellularNetworkPublishesEmptyCertifiedCutSet`,
@@ -47,6 +47,28 @@
   probed non-gating before 358 may ever be selected). No selector byte changes in CB6.
 - **Stable-count rationale:** gate-authoring finding on an unaccepted checkpoint. **+0 events / +0 recurrences.**
   Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+- **DEFN-R2 resolution — CLOSED.** Gate membership was decided per identity in
+  `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` §7, and selector
+  `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` was created as the CP4c-2 required-green gate:
+  whole-file SHA-256 `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`, computed from the created
+  bytes and validated as 64 lowercase hex per AE4.
+  - All **four** `SurfaceCutGraph.*` identities are **GATING**, each with a written rationale: idempotence and the
+    complex label; the only falsifier of live measure **AD3**; the semantic/provenance split checked at the A2a′
+    boundary rather than two stages downstream (measure AD5's purpose); and the same split on a closed genus-1
+    witness, since `PR8-R044` is runtime-proved on a disc only.
+  - **Two of the four enter the gate red**, pending AF3/AF4. That is deliberate: a required-green selector states
+    what must hold for the checkpoint to close, not what happens to pass today.
+  - **357 superseded** (incomplete, not wrong; both its identities are retained in 361). **358 withdrawn** — its
+    sole addition binds `cp4c_mechanical_fixture()`, and `build_cp4c_production_fixture` throws when no atlas is
+    retained. Both files are **retained** as historical authority and must not be deleted.
+  - **Prefix comparability preserved and verified:** `head -355` and `head -357` of the 361 file reproduce
+    `e9d88f11…5afeaa` and `b896d0db…64dc70` exactly, so `first_red_ordinal` stays comparable across the whole CP4c
+    arc. Recorded as `LESSONS.md` **64x**; **64y** records the out-of-scope-witness rule.
+  - **Criterion C3 is not withdrawn with 358.** It is split: `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnTorusProducedWitness`
+    is created and gated; the mechanical half moves to CP4c-3 / C2. Owned by **AG7**, together with the three new
+    Amendment-14 identities, producing gate **365**.
+  - `selected_gate` remains **NONE** and `gate_execution_authorized` remains **false**: freezing a gate's bytes is
+    not selecting it.
 
 ## M3-CP4c2-TB-X2-R7-CAND-01 — torus semantic/provenance diagnostic fails at baseline-atlas precondition — **ADJUDICATED IN R7-REV / WITNESS-CONSTRUCTION DEFECT / NON-GATING DIAGNOSTIC / NON-STABLE**
 

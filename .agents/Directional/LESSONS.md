@@ -999,6 +999,19 @@ building any conclusion on it.**
     Compiled-but-unexecuted test authority is not evidence; it is debt wearing a green label. Check the
     selector's reach at the moment you authorize the edit, not at acceptance.
 
+58. **An immutability guarantee constrains the writer, not the derived view — check what the representation
+    already does before ruling it out.** CP4c-2's DEFN-R1 excluded every trace-crossed source edge from the
+    admissible cut set on the ground that promoting one "would subdivide the trace — mutating an immutable
+    upstream product". The premise about the product was true and the conclusion was invalid: `build_arcs`
+    already emits **one trace arc per network event**, so a trace is many arcs in the arrangement and always has
+    been; it already splits a mandatory source edge into two arcs at a trace terminal; and the crossing point is
+    already published exactly by the network as a segment `entryPoint`, at a segment position the subdivision
+    machinery already keys on. Nothing upstream is mutated either way. The cost of the invalid step was a frozen
+    contract with an unprovable completeness case, a rollback plan triggered by it, and two turns of planning
+    around a restriction that was never required. **The control is the same one that catches the wrong-complex
+    family (`22e`): before a definition rules a representation out, read every existing consumer of that
+    representation.** A derived arrangement placing a node where the product already says two curves meet is not a
+    repair; it is what a derived arrangement is for.
 57. **A `default:` case in an error-translation switch is a lossy channel, and the name it assigns will be
     believed.** `SurfaceCutGraph::topology_error` maps 39 `GlobalTopologyPlanErrorCode` values onto three
     `SurfaceCutGraphErrorCode` values: three survive as themselves and **36 collapse into
@@ -1207,6 +1220,19 @@ face gauge. Never equate branch integers across distinct frames merely because t
     publisher whose whole job was to emit the sphere's pipeline-reachability report — free evidence, directly
     on the checkpoint's open question. **A TB plan must run every identity in the frozen non-gating selector or
     state, per identity, why not.** A selector that a plan may silently ignore is documentation, not authority.
+64x. **Extend a gate by appending, so every earlier prefix hash still reproduces.** CP4c-2's gate 361 is candidate
+    357 plus four appended identities; `head -355` and `head -357` of the new file reproduce the accepted-355 and
+    candidate-357 hashes byte for byte, so `first_red_ordinal` stays comparable across the whole checkpoint arc
+    and a red at ordinal 358+ is provably not a regression in accepted authority. Candidate 358 had already broken
+    this by **inserting** its extra identity at line 357 rather than appending — so 358 is not a prefix extension
+    of 357, and a first-red ordinal from one is not comparable with the other. Insert into a frozen selector and
+    you silently destroy the one cross-turn comparison the project runs on.
+64y. **A gate must not bind a witness its own checkpoint has declared out of scope.** Candidate 358's sole
+    addition bound `cp4c_mechanical_fixture()`, whose production fixture *throws* when the pipeline retains no
+    atlas — and the mechanical witness has no atlas and belongs to the next checkpoint. The gate would have been
+    unconditionally red for a reason with nothing to do with what it was meant to prove. When the criterion is
+    real but the witness set is mixed, **split the identity** — keep the in-scope witness gated, move the rest to
+    the checkpoint that owns it — rather than withdrawing the criterion or gating on the whole set.
 64w. **A new stage must have gated identities of its own, or it ships on transitive evidence.** CP4c-2 added
     A2a′ `SurfaceCutGraph` and **none** of its four direct test identities appears in the accepted selector or in
     either candidate gate — not the empty-cut certificate, not enumeration invariance, not the

@@ -28,8 +28,9 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-29 at independent review `M3-CP4c-2-TB-X2-R7-REV`; exact next is the bounded
-diagnostic `M3-CP4c-2-CB6` under measures AF0–AF4 with AF9 prohibitions. If the head commit is far ahead, trust
+**Currency.** Last updated 2026-08-29 at `M3-CP4c-2-DEFN-R2`; exact next is the bounded diagnostic
+`M3-CP4c-2-CB6` under measures AF0–AF4 with AF9 prohibitions, then `CB7` under AG1–AG6. If the head commit is far
+ahead, trust
 `TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
 "where we are" section; the architecture and recurring-defect sections age much more slowly.
 
@@ -86,48 +87,55 @@ is comparable across the whole arc.
 | accepted 346 prefix | `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a` |
 | accepted 353 prefix | `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5` |
 | accepted 355 | `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` |
-| CP4c-2 candidate 357 (frozen, unselected) | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` |
-| CP4c-2 candidate 358 (frozen, unselected) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
+| CP4c-2 357 prefix (superseded as a gate; retained) | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` |
+| CP4c-2 358 (**withdrawn** as a gate; retained) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
+| **CP4c-2 gate 361 (frozen at DEFN-R2, unselected)** | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
 
-**These six values are authority, recomputed from bytes at `M3-CP4c-2-TB-X2-R7-REV`, independently re-derived at `M3-CP4c-2-DOC-R1`, and re-verified at the second `R7-REV`.** They derive from
-`Architecture_M3_CP4c1_Required_Green_Selector.txt` — `head -316`, `head -346`, `head -353`, and the whole file —
-plus the two CP4c-2 candidate files. **Recompute rather than copy**, and never write a digest as `PREFIX…SUFFIX`
-where a value is expected: `PR8` orchestration defect `R7-ORCH-01` was four hashes expanded back to full length
-from abbreviations, one of them only 63 characters long.
+**All seven values are authority.** The first six were recomputed from bytes at `M3-CP4c-2-TB-X2-R7-REV`,
+independently re-derived at `M3-CP4c-2-DOC-R1`, and re-verified at the second `R7-REV`; the 361 value was computed
+at `DEFN-R2` when the file was created. The 316/346/353/355 rows derive from
+`Architecture_M3_CP4c1_Required_Green_Selector.txt` — `head -316`, `head -346`, `head -353`, and the whole file;
+357 and 358 from their own candidate files; 361 from
+`Architecture_M3_CP4c2_Required_Green_Selector_361.txt`, whose `head -355` and `head -357` reproduce the accepted
+355 and candidate 357 hashes exactly. **Recompute rather than copy**, validate every expected digest as exactly 64
+lowercase hex at authoring, and never write one as `PREFIX…SUFFIX` where a value is expected: `PR8` orchestration
+defect `R7-ORCH-01` was four hashes expanded back to full length from abbreviations, one of them only 63 characters
+long.
 
 
 **R7 re-proved the full accepted 355/355** on immutable package `9719216316` (run/job `33276039911 / 99162853852`),
 with ordinals 305 and 310 both green in the same complete run and immutable pre/postflight green. That closed
-`PR8-R043`, `PR8-R044`, and `R7-ORCH-01`. Selector 357, selector 358, the cumulative gate, and benchmarks remain
-**NOT RUN**; `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+`PR8-R043`, `PR8-R044`, and `R7-ORCH-01`. No CP4c-2 gate — 357, 358, 361 — has been run, and no cumulative gate or
+benchmark has run; `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 
 Stable regression accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**;
 authoritative M3 packages **64**. Closing a stable event changes its status, never the cumulative count.
 
 **CP4c-2 is open and unaccepted.** It owns the closed/higher-genus A2b gap and criteria **C1** (torus derives
-regions) and **C6** (disc proof + mandatory preservation). **C3** (rotation-system/face-walk agreement) is deferred.
+regions) and **C6** (disc proof + mandatory preservation). **C3** (rotation-system/face-walk agreement) is no longer
+deferred: DEFN-R2 split it, keeping the torus half in scope and moving the mechanical half to CP4c-3.
 
-**Gate selection is deliberately open, and the discriminator changed at R7-REV.** For six turns the 357-vs-358
-choice was framed as "depends on whether the sphere is already cellular"; §7 item 1 below shows that framing rested
-on an error string that was never a cellularity finding. Three facts now govern the choice:
+**The gate is settled: selector 361, frozen at `M3-CP4c-2-DEFN-R2` under AF5/AG0.** It is candidate 357 plus the
+four `SurfaceCutGraph.*` identities, appended so the 355 and 357 prefixes stay byte-identical and `first_red_ordinal`
+remains comparable across the whole CP4c arc.
 
-- **357** adds two `GlobalTopologyPlan` identities that bind the **torus only**.
-- **358** adds one more, `RotationSystemAndFaceWalkAgreeOnProducedWitnesses`, which binds the torus **and the
-  mechanical feature** — a witness this checkpoint declares out of scope and which has no atlas. If that remains
-  true, 358 is a guaranteed red and cannot be this checkpoint's gate. It has never been probed.
-- **No `SurfaceCutGraph.*` identity is in the accepted 355, in 357, or in 358, and the prescribed sphere is in
-  neither candidate gate.** Both gates would accept a new pipeline stage while requiring none of that stage's own
-  witnesses. This is the structural reason the sphere's failure survived eight turns.
+- **357 is superseded**, not wrong: its two `GlobalTopologyPlan` torus identities are retained in 361.
+- **358 is withdrawn.** Its sole addition, `RotationSystemAndFaceWalkAgreeOnProducedWitnesses`, binds
+  `cp4c_mechanical_fixture()`, and the mechanical witness has no atlas and is out of CP4c-2 scope — a gate may not
+  bind a witness its own checkpoint excludes. Criterion **C3** survives: its torus half becomes its own identity
+  and enters the gate; the mechanical half moves to CP4c-3.
+- **Two of the four appended identities enter the gate red.** That is correct — a required-green selector says what
+  must be true for the checkpoint to close, not what happens to pass today.
 
-357 is the only viable candidate, but it must be selected on evidence with the sphere explicitly dispositioned,
-never by omission.
+`selected_gate` is still **NONE** and `gate_execution_authorized` is still **false**: freezing a gate's bytes is not
+selecting it.
 
 ## 4. The three witnesses — the fastest way to understand the problem
 
 | witness | source | A2a result | current state |
 |---|---|---|---|
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | produces a cut graph **and a topology plan**; actual embedded graph after cuts `V/E/F = 72/76/4`, `χ=0`. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
-| **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192 | **24 traces / 56 events** | pipeline fails at A2a′ reporting `CellularityNotEstablished` at source face `25-27-28` — but that string is a `default:` bucket, **not a cellularity verdict** (§7 item 1). Still the open question |
+| **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, **zero mandatory edges** | **24 traces / 56 events** | **two independent problems.** (a) Its pre-cut actual embedded graph is measured **non-cellular**: `V/E/F = 18/30/18`, `χ=6` against `sourceChi=2`, one component, no excluded boundary orbits — so it genuinely needs cuts, and they will be trace-crossed. (b) The producer never gets there: it fails at A2a′ reporting `CellularityNotEstablished` at source face `25-27-28`, which is a `default:` bucket, **not a cellularity verdict** (§7 item 1) |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
 | mechanical feature | fixture | no atlas — stops in **A1** at `IncompleteCycleBasis` | belongs to CP4c-3 / C2, **out of scope** |
 
@@ -177,10 +185,29 @@ survives only as a cut-proposal heuristic and diagnostic provenance, and any pub
 Two complexes exist for the two-ring and both satisfy Euler — actual `9/11/3` and proxy `10/11/2` — which is
 precisely why self-consistency proves nothing about *which* object was measured.
 
-**Cut admissibility:** a cut is a source edge promoted to a graph arc. **A source edge crossed by a trace at an
-interior point is not an admissible cut**, because promoting it would subdivide an immutable trace. Completeness
-is proved for trace-free non-disc components (which covers the torus, at zero traces) and **not proved** for
-trace-crossed ones, where a typed `NoAdmissibleCutForNonDiscComponent` stop is required.
+**Cut admissibility — revised by Amendment 14 (DEFN-R2); the old rule below it is withdrawn.** A cut is a source
+edge promoted to a graph arc, and **every source edge that is not already a graph arc is admissible, including one
+a trace crosses at an interior point.** Promoting a crossed edge adds one arc per sub-interval between consecutive
+crossings and one cut-created node per crossing, and splits the trace arc **in the derived arrangement only**.
+
+The old rule — "a trace-crossed source edge is inadmissible because promoting it would subdivide an immutable
+trace" — rested on a premise that is false about this codebase. `build_arcs` already emits **one trace arc per
+event**, so a trace is many arcs, not one; it already splits a mandatory source edge at a trace terminal; and the
+crossing point is already published exactly by the network as `segments[i].entryPoint`, at a segment position the
+subdivision machinery already keys on. Nothing upstream is mutated either way. Amendment 12 forbids A2a′ *repairing*
+an upstream product; it never forbade A2a′'s own arrangement from placing a node where the network already says two
+curves meet.
+
+**Completeness is therefore proved outright.** The complement of the source 1-skeleton is the open triangles, each
+a disc; trace sub-arcs cut those discs into discs; so `network ∪ (source 1-skeleton)` is cellular, a sufficient cut
+set always exists, and at most `|E_source|` promotions are ever needed. `NoAdmissibleCutForNonDiscComponent` can no
+longer describe a real configuration and is retired; a distinct code reports "the search heuristic made no
+progress", and saturation — promoting the component's remaining admissible edges — is the defined, *published*
+last resort. It must never fire silently, and is predicted never to fire on the three witnesses.
+
+**The one real gap this opens:** at an edge-locus node, `build_rotation_system` handles only `Mandatory` (at exactly
+degree three) and `Trace` rays — a `Cut` ray there is an unhandled shape. A crossing node is two collinear `Cut`
+rays plus two `Trace` rays, degree four, and the existing four-sector model generalizes to it.
 
 ## 7. Open problems, in priority order
 
@@ -197,30 +224,38 @@ trace-crossed ones, where a typed `NoAdmissibleCutForNonDiscComponent` stop is r
    the sphere's old `RotationSystemInconsistent`; it renamed it. Eight turns of planning reasoned about cuts and
    complexes for a mechanism that never ran. Do not repeat that: get the code printed (measure AF0) before
    proposing any fix.
-2. **The sphere's actual-embedded-graph oracle row is already collected and has never been read.** R7-3 iterates
-   two-ring, torus **and sphere** and publishes an independent pre-cut `V/E/F/χ` row for each; the R7 report quoted
-   only the torus. The sphere's row is in retained result artifact `9721564203` and decides the standing prediction
-   with no new runtime (measure AF1).
-3. **Gate coverage hole — `M3-CP4c2-TB-X2-R7-CAND-04`.** No `SurfaceCutGraph.*` identity is in any selector, and
-   358's sole addition binds the out-of-scope mechanical witness. See §3.
-4. **`M3-CP4c2-TB-X2-R7-CAND-03`** — the D2 localization harness compares the actual embedded graph against the
+2. **The prescribed sphere genuinely needs cuts — measured, not predicted.** CB6's AF1 read the row R7-3 had
+   already published: `V/E/F = 18/30/18`, `c=1`, `χ=6` against `sourceChi=2`, no excluded boundary orbits, with the
+   oracle calling `SurfaceCutGraph` zero times. Non-cellular pre-cut, so the seven-turn standing prediction is
+   **refuted**. With 24 traces and zero mandatory edges every cut it needs will be trace-crossed — the case
+   Amendment 14 exists for. The derived excess `6 − 2 = 4` suggests roughly four extra boundary circles; **AG3 must
+   verify that against the per-component records rather than adopt it**.
+3. **Amendment 14 is defined and entirely unbuilt.** DEFN-R2 froze trace-crossed cut admissibility and proved
+   completeness, but no committed witness currently promotes a trace-crossed edge, so the whole amendment would
+   ship unexecuted without a purpose-built fixture (measure AG5). The one code gap is the degree-four edge-locus
+   rotation (§6). Owned by `M3-CP4c-2-CB7` under AG1–AG6.
+4. **Criterion C3 has been deferred six times** and is now split: a torus-only identity enters gate 361's successor;
+   the mechanical half moves to CP4c-3. Owned by AG7.
+5. **`M3-CP4c2-TB-X2-R7-CAND-03`** — the D2 localization harness compares the actual embedded graph against the
    **withdrawn** source-edge-barrier proxy, under a helper named `cp4c_producer_rederivation` that is not a
    producer re-derivation, using site labels (`419-`, `437-`, `474-`) that are line numbers in a
    `SurfaceCutGraph.cpp` which is 344 lines long. Its `localizationConsistent=false` is false by construction and
    means nothing about the sphere.
-5. **`M3-CP4c2-TB-X2-R7-CAND-01`** — the torus semantic/provenance diagnostic builds its atlas from a locally
+6. **`M3-CP4c2-TB-X2-R7-CAND-01`** — the torus semantic/provenance diagnostic builds its atlas from a locally
    synthesized zero-transport field instead of the production `torus.rawfield`, and fails at that precondition
    before comparing digests. `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` shares the construction,
    is in no selector, and has never run — which is why measure **AD3**'s rationale for hashing the raw
    `face.orbit` index into a *semantic* digest currently has no falsifier.
-6. **Torus post-A2b `tracing` failure** — downstream of A2b, out of CP4c-2 scope, tracked and not to be fixed
+7. **Torus post-A2b `tracing` failure** — downstream of A2b, out of CP4c-2 scope, tracked and not to be fixed
    here.
-7. **Mechanical witness A1 `IncompleteCycleBasis`** — CP4c-3 / C2. Note it also blocks selector 358 (§3).
+8. **Mechanical witness A1 `IncompleteCycleBasis`** — CP4c-3 / C2. It is also why selector 358 was withdrawn (§3).
 
-**The standing prediction, still unadjudicated:** the prescribed sphere's network is *already* cellular and needs
-zero cuts. Its principal counter-evidence has evaporated (item 1), but that is not confirmation — settle it on the
-oracle row (item 2), not on an error name. If true the gate is **357**; if false, the trace-crossed completeness
-question (§6) goes live.
+**The standing prediction is REFUTED and closed.** For seven turns the checkpoint carried "the prescribed sphere's
+network is already cellular and needs zero cuts". `M3-CP4c-2-CB6` read the independent oracle row R7-3 had already
+published — `V/E/F = 18/30/18`, `χ=6`, `sourceChi=2` — and `V − E + F ≥ χ` with equality iff cellular settles it:
+the sphere is **not** cellular pre-cut. It needs cuts, and with 24 traces and zero mandatory edges they will be
+trace-crossed. That is what made DEFN-R1 §8.2 live and what Amendment 14 exists to serve. **The evidence had been
+sitting unread in a retained artifact the whole time** — see §8's gated-observation family.
 
 ## 8. Recurring defect patterns — the highest-value section
 
@@ -239,6 +274,13 @@ Semantic and provenance are **two digests**, always.
 object. Self-consistency is never evidence that the complex is the right one. `LESSONS.md` 22d/22e: check that
 the representation can *express* the answer before debugging the algorithm, and convert every consumer of a
 representation or none.
+
+**Product property applied to the representation — the same family, one level up.** DEFN-R1 excluded trace-crossed
+cut edges by reasoning "the trace is an immutable product, therefore the arrangement may not subdivide it." True
+premise, invalid conclusion: `build_arcs` already emits one trace arc per event, and already splits a mandatory
+source edge at a trace terminal, without touching the product. An immutability guarantee constrains the *writer*,
+not the *derived view*. Before ruling a representation out on an upstream guarantee, read what the existing
+consumers of that representation already do — the same control (`LESSONS.md` 22e) that the R2 error missed.
 
 **Gated observation — the measurement suppressed by its own harness.** Publications gated behind a call that
 fails; one error code collapsing several mechanisms with no locus; one witness's failure aborting the loop
@@ -291,7 +333,9 @@ The two-ring is constructed in the test file, not a fixture.
 
 ## 10. Facts worth not re-deriving
 
-- Sphere: 98 V / 192 F / 288 E, `χ=2`, 8 index-¼ singularities at cube corners, 24 ports, 24 traces, 56 events.
+- Sphere: 98 V / 192 F / 288 E, `χ=2`, 8 index-¼ singularities at cube corners, 24 ports, 24 traces, 56 events,
+  **zero mandatory edges**. Its pre-cut actual embedded graph is `V/E/F = 18/30/18`, one component, `χ=6` — excess
+  4 over `sourceChi=2`, hence non-cellular.
   Of 48 directed trace ends, 42 terminate at singularities; the remaining 6 once circulated forever and are now
   terminated by crash-on-contact.
 - Torus: 72 V / 144 F / 216 E, `χ=0`, zero singularities, 48 hard-feature mandatory edges forming (inferred,

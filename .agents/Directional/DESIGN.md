@@ -453,6 +453,29 @@ Invariants on `FieldAlignedCurveNetwork`:
 8. network reduction may remove redundant traces but may not alter required singularity index or port topology.
 Because tracing is combinatorial and terminates on contact, invariant 3 holds by construction. Invariant 7 holds directly when A2a is already cellular and otherwise through the certified A2a′ cut graph before region derivation. The architecture contains no limit-cycle detection, tiny-region collapse, post-`GlobalTopologyPlan` re-cut, or non-disc region repair step; adding one is a stop condition because it would repair an immutable upstream product. A2a′ is not such a repair: it is the single pre-region authority that completes a closed index-free embedding without changing A2a.
  
+#### 7.2.1 Amendment record — normative
+
+Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 frozen-definition documents. They are
+normative and are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing
+above it is withdrawn except where an amendment says so explicitly.
+
+- **Amendment 12 — precondition, not repair.** Establishing a precondition *before* a product is derived is not
+  repairing that product afterward. A2a′ runs before any region exists and may not read a `GlobalTopologyPlan`.
+  Source: `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`; restated in `…DEFN_R1…` §3.5.
+- **Amendment 13 — the normative complex.** A2a′ certifies cellularity in the **actual embedded graph** of
+  `FieldAlignedCurveNetwork ∪ cutEdges`: vertices are network nodes plus nodes created by cuts, edges are network
+  arcs plus cut arcs, faces are the **dart orbits** under the node rotation system. Source-edge carrier provenance
+  is not graph-edge authority. The whole-source-face / source-edge-barrier partition is **withdrawn as cellularity
+  authority** and survives only as a cut-proposal heuristic and diagnostic provenance, and every publication of it
+  must say so. Source: `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` §3.
+- **Amendment 14 — trace-crossed cut admissibility, and completeness.** A source edge crossed by a trace at an
+  interior point **is** an admissible cut; promoting it adds one arc per sub-interval between consecutive crossings
+  and one cut-created node per crossing, subdividing the trace **in the derived arrangement only**. The immutable
+  network — its traces, segments, events and digests — is unchanged. The admissible cut set is therefore every
+  source edge that is not already a graph arc. Consequently `network ∪ (source 1-skeleton)` is a cellular
+  embedding, a sufficient cut set always exists, and step 8's "certified source-edge cuts" is a total contract
+  rather than a conditional one. Source: `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` §§3, 5.
+
 ### 7.3 Single-writer authority
  
 `SourceAuthoritySnapshot`, `GlobalTopologyPlan`, and `GlobalConformityPlan` are referenced, not copied into multiple mutable aggregates. A consumer receives a `const` view or stable typed ID. Network, phase-front, materializer, and validator objects cannot each own divergent copies of face-region or sheet arrays.

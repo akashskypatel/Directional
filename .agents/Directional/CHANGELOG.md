@@ -1,5 +1,85 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-DEFN-R2`: Amendment 14 makes trace-crossed cuts admissible and proves completeness; gate 361 frozen
+
+Definition and planning only. No Directional runtime, build, compile, package, benchmark, product, test, or fixture
+change. One selector authority file was **created** — the output `AF5` explicitly deferred to this turn type — and
+no existing selector byte was modified. Supersedes `…DEFN_R1…` **§6 case 2** and **§8** only; Amendment 13 and
+DEFN-R1 §§4, 5, 7, 9 stand unchanged, as does Amendment 12. Measures issued: **AG0–AG9**.
+
+**Why the definition reopened.** `M3-CP4c-2-CB6` obeyed AF1, read the prescribed sphere's independent oracle row
+from retained artifact `9721564203` — `V/E/F = 18/30/18`, `c=1`, `chi=6`, `sourceChi=2`,
+`excludedBoundaryOrbits=0`, `surfaceCutGraphCallsInsideOracle=0` — and refuted the seven-turn standing prediction:
+`V − E + F ≥ χ` with equality iff cellular, and `6 ≠ 2`, so the sphere's pre-cut graph is **not** cellular. With 24
+traces and zero mandatory edges its cuts must be trace-crossed, which is exactly DEFN-R1 §8.3's trigger. **Two
+independent sphere problems now stand together and must not be conflated:** the producer fails early through
+`topology_error`'s lossy `default:` bucket (R7-REV, still owned by AF0), *and* the network genuinely needs cuts
+(CB6, owned by Amendment 14). The oracle bypasses the producer entirely, so neither finding weakens the other.
+
+**Amendment 14 — trace-crossed source edges are admissible cuts.** DEFN-R1 excluded them on the ground that
+promoting one "would subdivide the trace — mutating an immutable upstream product". Three verified facts falsify
+the premise:
+
+- `build_arcs` (`EmbeddedGraphTopology.cpp:344-408`) already emits **one trace arc per network event**, so a trace
+  is `k+1` arcs, not one — this is how the accepted 355 has been green all along;
+- `build_arcs` (`:281-329`) already splits a **mandatory source edge** into two arcs at a trace terminal, one
+  `NetworkEdgeId`, two arcs, a shared node interior to the source edge;
+- the crossing point is already published **exactly** as `segments[i].entryPoint` (a `FieldBoundaryPoint`), at a
+  segment position the subdivision machinery already keys on, and `trace_crossed_source_edges` already tests strict
+  interiority exactly.
+
+Arcs are a derived representation; the network is untouched either way. Amendment 12 forbids A2a′ *repairing* an
+upstream product, not A2a′'s arrangement placing a node where the network already says two curves meet. The
+admissible cut set is now **every source edge that is not already a graph arc**;
+`SurfaceCutCandidateClass::TraceInteriorCrossing` is retained as provenance and removed as an exclusion.
+
+**Completeness is proved, and DEFN-R1 §8.2 closes.** The complement of the source 1-skeleton is the open triangles,
+each a disc; trace sub-arcs cut discs into discs; therefore `network ∪ (source 1-skeleton)` is a cellular embedding,
+a sufficient cut set always exists, and at most `|E_source|` promotions are ever required. Consequences:
+
+- `NoAdmissibleCutForNonDiscComponent` can no longer describe a real configuration and is retired as an outcome
+  (verified: **no test consumes it** — only the raise site, the name function, and the enum declaration);
+- a distinct `CutSearchExhaustedBeforeCellularity` reports "the heuristic made no progress", and **saturation** —
+  promoting the component's remaining admissible edges — is the defined last resort, published with locus and
+  count, never silent;
+- DEFN-R1 §10 **Option B is withdrawn**: its single trigger was "no admissible cut set exists", which §5.3 proves
+  cannot happen. The accepted path keeps A2a′ wired in, and therefore keeps the detector that caught `PR8-R043`.
+
+**The one real code gap:** at an edge-locus node, `build_rotation_system` (`:833-935`) handles `Mandatory` rays
+only at exactly degree three and requires everything else to be a `Trace` — a `Cut` ray there is an unhandled
+shape, and a crossing node is two collinear `Cut` rays plus two `Trace` rays. The existing four-sector cyclic model
+generalizes to it; a second ordering routine is prohibited.
+
+**AF5 resolved — CP4c-2's gate is selector 361, frozen.** Created as
+`Architecture_M3_CP4c2_Required_Green_Selector_361.txt`, whole-file SHA-256
+`61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`, computed from the created bytes and validated
+as 64 lowercase hex per AE4.
+
+- All **four** `SurfaceCutGraph.*` identities are **GATING**, each with a written rationale. Two enter red pending
+  AF3/AF4 — deliberate, since a required-green selector states what must hold for the checkpoint to close.
+- **357 superseded** (incomplete, not wrong; both its identities are retained). **358 withdrawn** — its sole
+  addition binds `cp4c_mechanical_fixture()`, which throws when no atlas is retained, and the mechanical witness
+  is out of CP4c-2 scope. Both files retained as historical authority.
+- `head -355` and `head -357` of the 361 file reproduce `e9d88f11…5afeaa` and `b896d0db…64dc70` exactly, so
+  `first_red_ordinal` stays comparable across the whole CP4c arc. (Candidate 358 had broken this by *inserting* at
+  line 357 rather than appending.)
+- **Criterion C3 is split, not withdrawn:** `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnTorusProducedWitness`
+  is created and gated; the mechanical half moves to CP4c-3 / C2.
+- `selected_gate=NONE` and `gate_execution_authorized=false` are unchanged — freezing a gate's bytes is not
+  selecting it.
+
+**`DESIGN.md` §7.2 gained a normative amendment record (§7.2.1).** Amendments 12, 13 and 14 had been declared in
+DEFN documents and **never written into `DESIGN.md`** — `ORIENTATION.md` §9 pointed cold-start readers at
+"§7.2 region derivation with Amendments 12 and 13" that were not there. The subsection is additive; nothing above
+it was withdrawn.
+
+**Lessons adopted:** `LESSONS.md` **58** (an immutability guarantee constrains the writer, not the derived view —
+read the representation's existing consumers before ruling it out), **64x** (extend a gate by appending so every
+earlier prefix hash still reproduces; inserting destroys `first_red_ordinal` comparability), **64y** (a gate must
+not bind a witness its own checkpoint declares out of scope — split the identity instead).
+
+Stable accounting unchanged: **44 / 14 / 30**, debt **5**, M3 packages **64**. Exact next remains
+**`M3-CP4c-2-CB6`** under AF0–AF4; `M3-CP4c-2-CB7` then implements Amendment 14 under AG1–AG6.
 ## 2026-08-29 — `M3-CP4c-2-CB6`: AF1 refutes pre-cut sphere cellularity; frozen definition stop triggers
 
 Code + Build turn **stopped before implementation** at its required-first retained-evidence measure. No product,

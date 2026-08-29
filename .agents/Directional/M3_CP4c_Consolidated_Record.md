@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the complete `M3-CP4c` family. This is historical synthesis, not current-turn procedure. Use `Future_Chat_Session_Handoff.md` for the exact next action and `TODO.md` for open work.
 
-**Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. R7 re-proved the inherited predecessor **355/355** on immutable package `9719216316` / source `755485865a7cf9c485d754f22b82a41ee151824b`, closing `PR8-R043 / M3-CP4c2-R001`, `PR8-R044 / M3-CP4c2-R002`, and `M3-CP4c2-TB-X2-R7-ORCH-01`. `M3-CP4c-2-CB6` then stopped at its first measure, AF1, after retained independent evidence **refuted** the prescribed sphere's pre-cut cellularity and activated DEFN-R1 §8.3's mandatory return to definition. CP4c-2 remains **open / runtime-unaccepted**: 357/358 are unselected/unrun and no gate is authorized. Exact next is `M3-CP4c-2-DEFN-R2`; CP4c-3 remains blocked.
+**Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. R7 re-proved the inherited predecessor **355/355** on immutable package `9719216316` / source `755485865a7cf9c485d754f22b82a41ee151824b`, closing `PR8-R043 / M3-CP4c2-R001`, `PR8-R044 / M3-CP4c2-R002`, and `M3-CP4c2-TB-X2-R7-ORCH-01`. `M3-CP4c-2-CB6` then stopped at its first measure, AF1, after retained independent evidence **refuted** the prescribed sphere's pre-cut cellularity and activated DEFN-R1 §8.3's mandatory return to definition. `M3-CP4c-2-DEFN-R2` then discharged that stop: **Amendment 14** makes trace-crossed source edges admissible cuts and **proves cut-set completeness outright**, and **AF5** is resolved with selector **361** frozen as the CP4c-2 gate. CP4c-2 remains **open / runtime-unaccepted**: no gate is selected or authorized. Exact next is `M3-CP4c-2-CB7`; CP4c-3 remains blocked.
 
 Accounting: **44 / 14 / 30**, debt **5**, M3 packages **64**; `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 
@@ -14,7 +14,8 @@ This record does not replace frozen definitions/selectors, closure records, or c
 - `Architecture_M3_CP4c0_DEFN_2_Frozen_Definitions.md`
 - `Architecture_M3_CP4c0b_DEFN_Trace_Termination_Frozen_Definitions.md`
 - `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md`
-- `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`
+- `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — **§6 case 2 and §8 superseded by DEFN-R2**
+- `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14, completeness theorem, AF5 gate decision
 - current `Architecture_M3_CP4c*_Required_Green_Selector*.txt` and non-gating selectors
 - `M3_CP4c0b_Closure_Record.md`, `M3_CP4c1_Closure_Record.md`
 - `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — current predecessor build/package authority
@@ -91,11 +92,44 @@ DEFN-R1 §8.2 explicitly does not prove cut completeness for trace-crossed non-d
 | **AF2** | **Deferred by CB6 definition stop.** D2 harness repair remains pending. |
 | **AF3** | **Deferred by CB6 definition stop.** Production-authority torus diagnostic repair remains pending. |
 | **AF4** | **Deferred by CB6 definition stop.** Enumeration-invariance witness remains the AD3 falsifier. |
-| **AF5** | **Owned by DEFN-R2.** State per-identity A2a′ gate membership before acceptance. |
+| **AF5** | **DISCHARGED by DEFN-R2 §7.** All four `SurfaceCutGraph.*` identities gating with written rationales; 357 superseded, 358 withdrawn; C3 split; selector **361** frozen. |
 | **AF6** | Deferred; no TB follows stopped CB6. Run every frozen non-gating identity or state a per-identity skip rationale when TB is reauthorized. |
-| **AF7** | Deferred; gate remains closed. Probe selector-358's added identity non-gating before 358 can ever be selected. |
+| **AF7** | **DISCHARGED by DEFN-R2 §7.3.** 358 is withdrawn rather than probed — its sole addition binds the out-of-scope mechanical witness — so no probe is owed. |
 | **AF8** | Deferred to the next authorized TB closeout; totals remain **44 / 14 / 30**, debt **5**, packages **64**. |
 | **AF9** | **Satisfied by stopped CB6:** no selector/fixture bytes, enum/re-map, sphere fix, 357/358, cumulative gate, benchmark, or compile. |
+
+### DEFN-R2 — Amendment 14, proved completeness, and the frozen gate
+
+DEFN-R2 answered CB6's stop, superseding DEFN-R1 §6 case 2 and §8 only; Amendment 13, DEFN-R1 §§4/5/7/9 and
+Amendment 12 stand.
+
+**Amendment 14.** A source edge crossed by a trace at an interior point **is** an admissible cut. DEFN-R1 had
+excluded it because promoting one "would subdivide the trace — mutating an immutable upstream product". The premise
+is false about this codebase: `build_arcs` already emits **one trace arc per network event**, already splits a
+mandatory source edge into two arcs at a trace terminal, and the crossing point is already published exactly as
+`segments[i].entryPoint` at a segment position the subdivision machinery keys on. Arcs are a derived
+representation; nothing upstream is mutated either way. The admissible cut set became **every source edge that is
+not already a graph arc**; `TraceInteriorCrossing` is retained as provenance and removed as an exclusion.
+
+**Completeness proved, discharging CB6's stop.** The complement of the source 1-skeleton is the open triangles,
+each a disc, and trace sub-arcs cut discs into discs, so `network ∪ (source 1-skeleton)` is a cellular embedding: a
+sufficient cut set **always exists**, within `|E_source|` promotions. That is exactly the sphere's case — pre-cut
+non-cellular with 24 traces. `NoAdmissibleCutForNonDiscComponent` is retired as an outcome (verified: no test
+consumes it) in favour of `CutSearchExhaustedBeforeCellularity` plus a **published** saturation last resort that may
+never fire silently. DEFN-R1 §10 Option B lost its only trigger and was withdrawn, so the accepted path keeps A2a′
+wired in and keeps the detector that caught `PR8-R043`.
+
+**The one code gap.** At an edge-locus node `build_rotation_system` (`EmbeddedGraphTopology.cpp:833-935`) handles
+`Mandatory` rays only at exactly degree three and requires everything else to be a `Trace`. A `Cut` ray there is an
+unhandled shape; a crossing node is two collinear `Cut` rays plus two `Trace` rays. The existing four-sector cyclic
+model generalizes to it.
+
+**Gate.** Selector **361** created as the CP4c-2 required-green gate, whole-file SHA-256
+`61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`, its `head -355` and `head -357` reproducing the
+accepted-355 and candidate-357 hashes exactly so `first_red_ordinal` stays comparable across the arc. Two of the
+four appended identities enter red, deliberately. `DESIGN.md` gained §7.2.1, a normative amendment record for 12,
+13 and 14 — declared in DEFN documents and never written into the architecture until now. Measures **AG0–AG9**
+issued; `selected_gate` and `gate_execution_authorized` unchanged.
 
 ## 5. High-value reversals
 
@@ -108,6 +142,9 @@ DEFN-R1 §8.2 explicitly does not prove cut completeness for trace-crossed non-d
 - Unexecuted diagnostics remain unknown.
 - Sphere `CellularityNotEstablished` was a lossy error bucket, not a cellularity finding.
 - A new stage is not covered merely because accepted tests transitively reach it; gate membership must be explicit.
+- A trace-crossed source edge *can* be cut: `build_arcs` already emits one trace arc per event, so an immutability guarantee constrains the writer, not the derived arrangement.
+- Trace-crossed cut completeness is not unprovable: `network ∪ source 1-skeleton` is cellular, so a sufficient cut set always exists.
+- The prescribed sphere is **not** already cellular pre-cut — `chi=6` against `sourceChi=2`. That prediction stood unadjudicated for seven turns and was refuted by evidence a prior run had already collected.
 
 ## 6. Historical retirement
 
@@ -129,8 +166,9 @@ No frozen definition, selector, closure record, policy, product/test/fixture sou
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
 4. `Architecture_M3_CP4c2_CB6_Code_Build_Report.md`
-5. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — especially §§8.2–8.3
+5. `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14, the completeness theorem, the AF5 gate decision, measures AG0–AG9
+6. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — Amendment 13; **§6 case 2 and §8 are superseded**, never read alone
 6. `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md`
 7. `Architecture_M3_CP4c2_CB5_Code_Build_Report.md`
 
-**Exact next:** `M3-CP4c-2-DEFN-R2`, definition/planning only. No implementation, compile, runtime, selector mutation, 357/358 execution, gate selection, or benchmark is authorized before the definition gap closes.
+**Exact next:** `M3-CP4c-2-CB7`, Code + Build, carrying the AF measures CB6 deferred (AF0, AF2, AF3, AF4) plus **AG1–AG6**, then **AG7**'s selector append. No gate selection, gate execution, or benchmark is authorized.

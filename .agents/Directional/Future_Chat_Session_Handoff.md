@@ -124,18 +124,98 @@ stopped before implementation. AF9 was satisfied: no prohibited semantic or runt
 `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. Stable accounting remains
 **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **64**.
 
+## `M3-CP4c-2-DEFN-R2` outcome — this is the current definition authority
+
+DEFN-R2 answered the stop CB6 raised. It supersedes `…DEFN_R1…` **§6 case 2** and **§8** only; Amendment 13 and
+DEFN-R1 §§4, 5, 7, 9 stand, as does Amendment 12.
+
+**Amendment 14 (normative, `DESIGN.md` §7.2.1).** A source edge crossed by a trace at an interior point **is** an
+admissible cut. DEFN-R1 had excluded it because promoting one "would subdivide the trace — mutating an immutable
+upstream product". The premise is false about this codebase: `build_arcs` already emits one trace arc per network
+event, already splits a mandatory source edge at a trace terminal, and the crossing point is already published
+exactly as `segments[i].entryPoint` at a segment position the subdivision machinery keys on. Arcs are a derived
+representation; nothing upstream is mutated either way. The admissible cut set is now **every source edge that is
+not already a graph arc**.
+
+**Completeness is proved, so CB6's stop is discharged.** The complement of the source 1-skeleton is the open
+triangles, each a disc, and trace sub-arcs cut discs into discs, so `network ∪ (source 1-skeleton)` is a cellular
+embedding: a sufficient cut set **always exists**, within `|E_source|` promotions. This is exactly what the sphere
+needs — CB6 measured its pre-cut graph non-cellular (`chi=6` vs `sourceChi=2`) with 24 traces, the case DEFN-R1
+§8.2 could not cover. DEFN-R1 §10 Option B loses its only trigger and is **withdrawn**, so the accepted path keeps
+A2a′ wired in and keeps the detector that caught `PR8-R043`.
+`NoAdmissibleCutForNonDiscComponent` is retired as an outcome — verified: no test consumes it — and replaced by
+`CutSearchExhaustedBeforeCellularity` plus a **published** saturation last resort that must never fire silently.
+
+**The one code gap:** at an edge-locus node `build_rotation_system` (`EmbeddedGraphTopology.cpp:833-935`) handles
+`Mandatory` rays only at exactly degree three and requires everything else to be a `Trace`. A `Cut` ray there is an
+unhandled shape, and a crossing node is two collinear `Cut` rays plus two `Trace` rays. Generalize the existing
+four-sector model and `mandatory_ray_points_to_second_endpoint` (`:651`); a second ordering routine is prohibited.
+
+**CP4c-2 gate — selector 361, frozen (AF5 discharged).**
+`.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_361.txt`, whole-file SHA-256
+`61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`. All four `SurfaceCutGraph.*` identities are
+gating, two of them red pending AF3/AF4. 357 superseded, 358 withdrawn (its sole addition binds the out-of-scope
+mechanical witness); **both files retained**. `head -355` and `head -357` reproduce the accepted-355 and
+candidate-357 hashes exactly, so `first_red_ordinal` stays comparable across the arc. Criterion **C3** is split: a
+torus-only identity is created and gated, the mechanical half moves to CP4c-3. `selected_gate=NONE`,
+`gate_execution_authorized=false` — freezing bytes is not selecting. **AF7 is discharged**: 358 is withdrawn rather
+than probed, so no probe is owed.
+
+## Mandatory next turn — `M3-CP4c-2-CB7` — implement Amendment 14
+
+CB6 stopped before AF0/AF2/AF3/AF4 and those measures are **deferred, not completed**; DEFN-R2 has now cleared the
+definition stop that blocked them. CB7 carries the deferred AF work **and** AG1–AG6:
+
+- **AF0** carry the originating `GlobalTopologyPlanErrorCode` through `topology_error` and print it. Additive only:
+  no re-map of the switch, no new enum value — 355 accepted identities depend on the current mapping. **This is
+  still the prerequisite for any sphere product fix**; do not propose one from an inferred code.
+- **AF2** repair the D2 localization harness — rename `cp4c_producer_rederivation` (it models the withdrawn proxy),
+  drop the stale `419-`/`437-`/`474-` line-number labels, and delete or redefine `localizationConsistent`.
+- **AF3** rebuild `SemanticDigestIgnoresGaugeRelabelingForTorusWitness` on the production `torus.rawfield`
+  authority and print `field_atlas_build_error_code_name(...)` instead of `ASSERT_TRUE`.
+- **AF4** give `IsInvariantToSourceFaceAndEdgeEnumeration` the same treatment and settle measure **AD3** with it.
+- **AG1** land DEFN-R2 §§4.1-4.5 as **one** conversion — edge-interior synthetic nodes keyed
+  `(SourceEdgeTopologyKey, TraceId, segment position)`, exact ordering along the promoted edge, trace-arc
+  subdivision at crossings, the rotation extension, and removal of the proposal filter that excludes trace-crossed
+  edges. A partial conversion is the defect this checkpoint has already corrected twice.
+- **AG2** the degree-four edge-locus rotation, by generalization not duplication.
+- **AG3** publish the completeness theorem's two conditions and the edge-orientation convention with derivations.
+- **AG4** the error-code split and published saturation.
+- **AG5** construct a witness that actually promotes a trace-crossed edge, asserting its precondition at runtime in
+  the CP3a style. The sphere may become such a witness once AF0/AG1 land, but it is blocked behind a producer fix,
+  so a constructed witness is still required — without one the amendment could ship unexecuted.
+- **AG6** extend the independent oracle to reconstruct crossing nodes by its own construction.
+- **AG7** append the four new identities named in DEFN-R2 §7.4 to selector 361, producing gate **365**, and record
+  its hash with the 355/357/361 prefixes re-verified.
+
+**AG8's merge condition is now moot in one direction:** CB6 never printed the code, so if AF0's output localizes
+the sphere's `RotationSystemInconsistent` to the edge-locus branch, AG2 and that fix are the same work. **AG9**
+carries the prohibitions: no tolerance anywhere in the crossing path, no geometric inference of a crossing, no
+publishing a crossing node back into the network, no second ordering routine, no relaxing `proves_cellularity()`,
+no gate selection or execution, no benchmark, and GMP/GMPXX linkage per `GMP_COMPILE_POLICY.md`.
+
+The TB after CB7 carries **AF6** (run every identity in the frozen non-gating selector or justify each skip per
+identity) and **AF8** (regression bookkeeping).
+
+
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
 - CP4c-2 CB5 remains build-green at `755485865a7cf9c485d754f22b82a41ee151824b`; inherited accepted authority is
   freshly re-proved **355/355** on package `9719216316`. **CP4c-2 itself remains unaccepted.**
 - R7 remains the latest semantic runtime. CB6 executed no new runtime and produced no build artifact.
-- CB6 AF1 independently proves the prescribed sphere's **pre-cut actual embedded graph is non-cellular**
-  (`chi=6`, `sourceChi=2`) and therefore triggers DEFN-R1 §8.3's mandatory return to definition.
-- The live producer still fails earlier through the collapsed upstream-error path. AF0 has not printed the originating
-  typed code; no error-path product fix is authorized.
-- Open candidates remain `M3-CP4c2-TB-X2-CAND-04`, `R7-CAND-01`, `R7-CAND-03`, `R7-CAND-04`, and live measure
-  **AD3**; the newly-live definition blocker is DEFN-R1 §8.2 trace-crossed non-disc cut completeness.
+- **CB6 AF1 independently proved the prescribed sphere's pre-cut actual embedded graph non-cellular**
+  (`V=18, E=30, F=18, c=1, chi=6, sourceChi=2`, `excludedBoundaryOrbits=0`, `complex=actualEmbeddedGraph`). The
+  standing prediction is **REFUTED**. DEFN-R2 then discharged the §8.3 stop this triggered.
+- The live producer still fails earlier through the collapsed upstream-error path — `topology_error`'s `default:`
+  bucket for 36 codes, almost certainly `RotationSystemInconsistent`. AF0 has not printed the originating code and
+  **no error-path product fix is authorized** until it does. This is separate from, and additional to, the
+  non-cellularity above.
+- Open candidates: `M3-CP4c2-TB-X2-CAND-04` (sphere producer error path), `R7-CAND-01` (torus diagnostic witness),
+  `R7-CAND-03` (D2 harness domain conflation), and live measure **AD3**. `R7-CAND-04` is **resolved** by DEFN-R2.
+- **Amendment 14 is defined and entirely unbuilt.** Its one code gap is the degree-four edge-locus rotation; AG5's
+  constructed witness is what keeps it from shipping unexecuted.
+- CP4c-2's gate is **selector 361**, frozen and unselected.
 - Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
   packages **64**.
 - **Exact next is `M3-CP4c-2-DEFN-R2`.**
@@ -151,16 +231,20 @@ stopped before implementation. AF9 was satisfied: no prohibited semantic or runt
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first; durable cold-start substance, current as of R7-REV.
-1. `.agents/Directional/Architecture_M3_CP4c2_CB6_Code_Build_Report.md` — AF1 row, frozen-stop reasoning, exact
-   deferred-measure disposition.
-2. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — especially §§6–9 and the binding
-   §8.2/§8.3 trace-crossed completeness trigger.
-3. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — deduplicated CP4c history and current AF authority.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — sphere `CAND-04`, `R7-CAND-01/03/04`, and AD3.
+0. `.agents/Directional/ORIENTATION.md` — **read first**; durable cold-start substance, current as of DEFN-R2.
+   §6 (cut admissibility) and §7 item 1 (the sphere) are the two facts that reframe the checkpoint.
+1. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — the authorizing definition:
+   Amendment 14, the completeness theorem, the AF5 gate decision, measures **AG0–AG9**.
+2. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — Amendment 13 and the normative
+   complex. **Its §6 case 2 and §8 are superseded** — never read it without DEFN-R2.
+3. `.agents/Directional/Architecture_M3_CP4c2_CB6_Code_Build_Report.md` — the AF1 oracle row and the frozen-stop
+   reasoning, plus the exact disposition of every deferred measure.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `CAND-04`, `R7-CAND-01`, `R7-CAND-03`, resolved
+   `R7-CAND-04`, live measure `AD3`, and the closed `PR8-R043` / `PR8-R044` / `R7-ORCH-01` entries.
 5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — immutable R7
-   runtime/artifact provenance; no new runtime is authorized by DEFN-R2.
-6. `TODO.md` / `CHANGELOG.md` — current task and CB6 definition-stop closeout.
+   runtime/artifact provenance.
+6. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — immutable package/build authority.
+7. `TODO.md` / `CHANGELOG.md` — current task, run/artifact identities, and lessons adopted at R7-REV and DEFN-R2.
 
 **This is definition/planning only.** It may revise frozen definitions/planning records but must not edit product,
 test, fixture, selector, or build logic; must not compile; and must not execute Directional runtime, 357/358, a

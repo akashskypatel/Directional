@@ -1,5 +1,20 @@
 # M3-CP4c-2 DEFN-R1 — Frozen Definitions: the actual embedded-graph complex for A2a′
 
+> **SUPERSEDED IN PART by `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` (2026-08-29). Never read this
+> document alone.**
+>
+> - **§6 case 2 is withdrawn.** Amendment 14 makes a trace-crossed source edge an **admissible** cut. The stated
+>   ground — that promoting one would subdivide an immutable trace — is false about this codebase: `build_arcs`
+>   already emits one trace arc per network event and already splits a mandatory source edge at a trace terminal,
+>   and the crossing point is already published exactly. §6 cases 1 and 3 stand.
+> - **§8 is superseded.** Completeness is **proved** for all cases, not split: `network ∪ (source 1-skeleton)` is a
+>   cellular embedding, so a sufficient cut set always exists. §8.2's typed stop
+>   (`NoAdmissibleCutForNonDiscComponent`) is retired as an outcome, and §8.3's conditional trigger is void.
+> - **§10 Option B is withdrawn**, its single trigger having been proved impossible; Option A stands and is now
+>   unconditional.
+> - **Everything else stands unchanged and binding** — Amendment 13, §§4, 5, 7, 9, and Amendment 12.
+> - `DESIGN.md` §7.2.1 carries the normative record of Amendments 12, 13 and 14.
+
 ## 0. Turn type and verdict
 
 `M3-CP4c-2-DEFN-R1` is **COMPLETE / DEFINITION-ONLY**.
