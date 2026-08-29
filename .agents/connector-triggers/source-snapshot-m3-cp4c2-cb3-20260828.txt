@@ -1,0 +1,3 @@
+purpose=materialize exact source snapshot for M3-CP4c-2-CB3-DIAG
+source_ref=3703a398eebe9b67f6a18bbba2d441f927cbcec7
+retry=0
