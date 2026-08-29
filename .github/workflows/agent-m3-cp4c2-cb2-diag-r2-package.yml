@@ -1,0 +1,35 @@
+name: Agent M3 CP4c-2 CB2 DIAG R2 Package
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-cb2-diag-r2-package/run.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c2-cb2-diag-r2-package-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-cb2-diag-r2-package
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 5ad711e5d4ced95f38e103b993139a6307ba2cee
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c2-cb2-diag-r2-package
+    secrets: inherit
