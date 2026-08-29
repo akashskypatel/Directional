@@ -1,0 +1,2 @@
+# M3-CP4c-2-TB-X2-R7-EXEC final closeout temporary-state inventory
+.agents/connector-triggers/m3-cp4c2-r7-exec-closeout-drive-20260829.txt
