@@ -9,6 +9,18 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-29 — `M3-CP4c-2-CB2-DIAG-R2`: published-product diagnostics compile green; all-witness publication restored
+
+Code + Build only. **No Directional runtime, test, or benchmark executed.** The R3 independent review authorized a bounded test/diagnostic correction under Z10-Z19; semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee` changes only `tests/FieldAlignedCurveNetworkTests.cpp`.
+
+- Loaded torus/sphere D1 witnesses now consume the pipeline's retained `productSnapshots` rather than rebuilding cross field, feature map, rails, atlas, and network. A relaxed pipeline-products fixture tolerates absent cut graph/global plan; the strict accepted production fixture is not weakened. Synthetic two-ring remains explicitly constructed/AtlasDerived.
+- D1 now emits one success/failure record for every witness and asserts once after the loop. `witnessConstruction`, construction success, pipeline atlas/network/cut-graph/plan availability, terminal code/stage, and typed atlas/network errors are preserved. The former `cp4c_build_rail_authority` reconstruction helper is removed. Z2/Z3/Z4/Z5/Z7 remain unchanged.
+- Static closeout inspection found a material Z12 risk: production currently copies atlas/network into `productSnapshots` only after cut graph and global plan both succeed. Because the torus is known to stop at `SurfaceCutGraph`, R4 may observe absent atlas/network snapshots despite their earlier successful construction. That is a **review stop**, not a 48/48 mismatch or product-fix authorization.
+- Changed-owner precompile run `33226421754` passed. Final authoritative GMP compile run/job `33226609913 / 99031482464` passed on exact semantic source `5ad711e5d4ced95f38e103b993139a6307ba2cee`. Immutable package `9707091209` / `sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`; compile log `9707091377` / `sha256:0188b2926df2d77b5885a6560ba358f325d709d3b57f326b3a2abf5473bfe3b2`; source archive `9a9dbfb5c6aede1618d41323109cb336f978f75434bef216472557121df2fb11`. All eight required targets compile/link with gmpxx/gmp, manifest and source-status checks pass, and `runtimeExecution=false`.
+- No runtime candidate is closed by compilation. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**; M3 packages advance to **61**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+- Exact next: artifact-only `M3-CP4c-2-TB-X2-R4-EXEC` on package `9707091209`, followed by evidence-only R4-REV. R4 must publish all three D1 witness records before any control decision; absent torus atlas/network snapshots trigger Z12 STOP before D2. Plan: `Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`.
+
+
 ## 2026-08-28 — `M3-CP4c-2-TB-X2-R3-REV`: a third idiom for one job, and one witness that silenced the rest
 
 Independent review and planning only. No Directional runtime, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md`. `selected_r2_branch` and `selected_gate` both remain **NONE**.

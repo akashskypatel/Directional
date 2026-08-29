@@ -83,61 +83,42 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-CB2-DIAG-R2` — consume published products, measures **Z10-Z19**
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R4-EXEC` — artifact-only, package `9707091209`
 
-`M3-CP4c-2-TB-X2-R3-REV` is **COMPLETE / REVIEW GREEN**. Read
-`Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md` in full: §2 the root cause, §3 the gating defect,
-§6 measures Z10-Z19, §7 predictions.
+`M3-CP4c-2-CB2-DIAG-R2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY**.
+Read `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md` and then execute exactly
+`Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`.
 
-**Root cause, localized — test-side with high confidence.** `cp4c_build_rail_authority` under
-`PipelineAuthoritative` diverges from production in two demonstrable ways. **A - the cross field:** the fixture
-computes `finalize_surface_cell_raw_cross_field(mesh, raw)`, while production and the working observer
-`observe_cp4c_witness` use the pipeline's published `products.crossField`. **B - the hard-feature edge set:**
-the fixture recomputes it from a locally built feature map, while the working observer passes
-`tracingOptions.hardFeatureEdges` from the pipeline. **The torus is the one witness whose rails originate in
-the feature map**, so it is the one witness where that set is non-empty and the divergence can bite.
-Divergences C and D remain plausible and unmeasured: production builds over `meshWhole` and via
-`build_source_topology_regions` with `sourceFaceComponents`/`sourceFaceSheets` populated, while the fixture uses
-the raw loaded OBJ and bare `make_source_authority`.
+**Build authority.** Semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`; authoritative full GMP
+compile run/job `33226609913 / 99031482464`; immutable package `9707091209` /
+`sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`; compile log `9707091377` /
+`sha256:0188b2926df2d77b5885a6560ba358f325d709d3b57f326b3a2abf5473bfe3b2`; packaged source archive
+`9a9dbfb5c6aede1618d41323109cb336f978f75434bef216472557121df2fb11`. All eight required targets passed with
+GMP/GMPXX; manifest and source-status checks are green; `runtimeExecution=false`.
 
-**Why test-side:** production reaches A2a on the torus — that is where the frozen `48/48` came from — so its
-atlas construction succeeds. A reconstruction that fails where the original succeeds is a reconstruction defect.
-**Z12 requires this confirmed by publication, not assumed:** if the pipeline's own torus atlas is also
-unavailable, the classification flips to a product finding and the frozen theorem is re-adjudicated.
+**Compiled correction.** Loaded torus/sphere D1 witnesses consume retained pipeline `productSnapshots`; two-ring
+remains explicitly constructed/AtlasDerived. The strict production fixture was not weakened. D1 publishes one
+record per witness and asserts once after the loop. Pipeline availability and terminal code/stage are published;
+typed atlas/network errors are retained. The former hand-reconstruction helper is removed. Z2/Z3/Z4/Z5/Z7
+remain unchanged.
 
-**Structural cause — a third idiom for one job.** `cp4c_production_fixture` consumes `products.*` and is
-faithful; `observe_cp4c_witness` rebuilds but from pipeline inputs and works on the torus;
-`cp4c_network_only_fixture` rebuilds field, feature map, rails and atlas locally and fails. Each new idiom has
-introduced a defect — its first version used `rails_from_atlas` (R2 CAND-01), its second diverges on field and
-feature map. **Fourth incident in one authority-divergence family.** Z4 fixed which authority is *named*;
-**Z11** fixes how it is *obtained*: consume `productSnapshots` for loaded production witnesses and stop
-reconstructing the pipeline.
+**Critical static retention finding.** In current production source, the atlas/network snapshot optionals are
+assigned only after `SurfaceCutGraph` and `GlobalTopologyPlan` both succeed. The torus is already known to stop at
+`SurfaceCutGraph`; therefore its R4 record may report `pipelineAtlasAvailable=false` /
+`pipelineNetworkAvailable=false` even though production constructed them earlier. Treat this only as a static
+prediction. **If runtime confirms it, Z12 requires STOP before D2 and review; it is not a 48/48 mismatch and does
+not authorize any product change.**
 
-**Critical detail, or Z11 fails immediately:** `cp4c_production_fixture` also requires
-`products.surfaceCutGraph` and `products.globalTopologyPlan` and throws when absent — **the torus has neither**,
-which is the whole open problem. Use a **relaxed variant** requiring only through `fieldAlignedCurveNetwork`.
-**Do not weaken the strict `cp4c_production_fixture`**; accepted identities depend on its preconditions.
+**R4 EXEC order.** (1) immutable package preflight; (2) run D1 once and preserve exactly one `m3Cp4c2Y1` record
+for torus, prescribed sphere, and two-ring; (3) if torus snapshots are unavailable, stop after all three records;
+(4) otherwise require torus 48/48 from authority and all-three Z3 self-consistency; (5) only after those gates
+pass may D2 run once; (6) immutable postflight. EXEC performs no branch inference.
 
-**The defect that cost R3 its evidence.** The D1 identity calls `ASSERT_TRUE` **inside** the witness loop and
-the torus is element 0, so the identity ended after 14 ms with **zero** publications. The prescribed sphere —
-the decision witness for Branch A and therefore for the 357/358 selector — was never measured despite nothing
-being known to be wrong with it. **Third appearance of one anti-pattern:** X2 gated every publication behind
-`SurfaceCutGraph::make`; `CellularityNotEstablished` collapsed three mechanisms behind one code with no locus;
-now one witness suppresses all others. **Z13** requires one record per witness — including a typed failure
-record — with a single assert after the loop; **Z17** makes per-witness publication unconditional.
+`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Stable accounting remains
+**42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**. Selector 355/357/358, cumulative gate, compile,
+source mutation, benchmarks, CB3, mechanical/C2, and CP4c-3 are forbidden in R4-EXEC.
 
-**Also recorded:** the typed atlas error was flattened to the bare string `field-transport-atlas-unavailable`,
-discarding `atlas.error().code`, when `append_atlas_error(...)` and `append_cp4c_atlas_failure_diagnosis(...)`
-already exist in the same file. **Z14** forbids a bare string as evidence.
-
-**Carry forward unchanged (Z16).** CB2-DIAG-R1 implemented Z2's named complex, Z3's self-consistency assertion,
-Z4's explicit rail-authority argument with no default, Z5's no-encoded-answers rule and Z7's two-ring
-re-derivation **correctly**. Do not re-litigate them.
-
-**Unchanged:** the normative source-edge barrier complex; the frozen `48/48` theorem, untouched because R3 never
-reached a torus network; R2 CAND-01/CAND-02 ACTIVE; **CAND-04 ACTIVE and unlocalized — D2 has never run on any
-package**. `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. `src/`,
-`include/`, `SurfaceCutGraph` and all selectors are frozen.
+After EXEC, exact next is `M3-CP4c-2-TB-X2-R4-REV`, evidence review only. Do not start a corrective CB from EXEC.
 
 ### Superseded — the R3 EXEC stop as reported (retained for provenance)
 
@@ -245,7 +226,25 @@ CP4c-3 remains blocked until CP4c-2 closure.
 - report: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Report.md`;
 - next review plan: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md`.
 
-### M3-CP4c-2 CB2-DIAG-R1 — current build authority, runtime unaccepted
+### M3-CP4c-2 CB2-DIAG-R2 — current build authority, runtime unaccepted
+
+- status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
+- semantic/test source: `5ad711e5d4ced95f38e103b993139a6307ba2cee`;
+- full GMP compile run/job: `33226609913 / 99031482464`;
+- immutable package: `9707091209` / `sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`;
+- compile log artifact: `9707091377` / `sha256:0188b2926df2d77b5885a6560ba358f325d709d3b57f326b3a2abf5473bfe3b2`;
+- packaged source archive: `9a9dbfb5c6aede1618d41323109cb336f978f75434bef216472557121df2fb11`;
+- exact arithmetic: GMP with both gmpxx/gmp linked; all eight required targets PASS; manifest verified; source status empty; `runtimeExecution=false`;
+- semantic change: only `tests/FieldAlignedCurveNetworkTests.cpp`;
+- loaded witnesses consume pipeline product snapshots; two-ring stays constructed/AtlasDerived;
+- D1 publishes one success/failure record per witness and asserts only after the loop; typed construction errors preserved;
+- static warning: atlas/network snapshots are currently copied only after cut-graph/global-plan success, so torus Z12 may stop R4 before 48/48;
+- report: `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md`;
+- exact TB plan: `Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`.
+
+R2 supplies compiled diagnostic authority only. It does not resolve runtime candidate closure, choose Y5, or accept CP4c-2.
+
+### M3-CP4c-2 CB2-DIAG-R1 — superseded build authority, runtime unaccepted
 
 - status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
 - semantic/test source: `c552a5a4a318063cde2564c40773ec7edaf064f6`;
@@ -354,31 +353,29 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN, CB1, old X2 EXEC+REV+PLAN, CB2-DIAG, TB-X2-R2, R2 independent review, and **CB2-DIAG-R1** are complete.
-- Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**. CB2-DIAG-R1 is compile evidence only.
-- Current corrected build authority is `c552a5a4a318063cde2564c40773ec7edaf064f6` / package `9704935112`; R3 EXEC ran corrected D1 once but stopped before its first publication with `field-transport-atlas-unavailable`; D2 did not run.
-- `M3-CP4c2-TB-X2-R2-CAND-01` and `...CAND-02` remain active because R3 D1 produced no publication; `M3-CP4c2-TB-X2-CAND-04` remains active/unlocalized because D2 was correctly skipped; `M3-CP4c2-TB-X2-R3-CAND-01` records the new pre-publication diagnostic stop pending REV.
+- CP4c-2 DEFN through R3 independent review and **CB2-DIAG-R2** are complete; CP4c-2 remains runtime-unaccepted.
+- Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**.
+- Current corrected build authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / package `9707091209`; no R4 runtime has executed.
+- R2 CAND-01/CAND-02 remain active pending corrected D1 runtime; R3 CAND-01 is localized/resolved as to cause but its runtime closure is pending; R3 CAND-02 is compiled-corrected but runtime closure is pending; X2 CAND-04 remains active/unlocalized because D2 has never run.
 - `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate runtime has not begun. Frozen candidates remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…b64fbe62`.
-- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **60**.
-- **Exact next is `M3-CP4c-2-CB2-DIAG-R2`**, Code + Build, runtime-free, test/diagnostic source only under measures Z10-Z19.
+- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **61**.
+- **Exact next is `M3-CP4c-2-TB-X2-R4-EXEC`**, artifact-only on package `9707091209`, followed by evidence-only R4-REV.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/CB.md`; `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5
+- turn-based-coding-agent `references/turns/TB-EXEC.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md` — **the authorizing record**; §2 root cause, §3 gating defect, §6 measures Z10-Z19.
-2. `tests/FieldAlignedCurveNetworkTests.cpp` — the three witness idioms side by side: `cp4c_production_fixture` (~4425, faithful, but demands cut graph + plan), `observe_cp4c_witness` (~3957-3991, rebuilds from pipeline inputs, works on the torus), `cp4c_network_only_fixture` + `cp4c_build_rail_authority` (the failing reconstruction), and the D1 identity at ~5933-5957 whose in-loop `ASSERT_TRUE` Z13 removes.
-3. `src/pipeline/RemeshPipeline.cpp:6560-6590` — production's own atlas construction, for comparison only.
-4. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Record.md` — the normative source-edge barrier complex (§5) and Z0-Z9, which Z16 carries forward.
-5. `.agents/Directional/Architecture_M3_CP4c2_CB2_DIAG_R1_Code_Build_Report.md` — what R1 implemented and its exact source/package.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R2 CAND-01/CAND-02, R3 CAND-01/CAND-02, X2 CAND-04.
-7. `TODO.md` / `CHANGELOG.md` — current state and durable accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md` — **the executable authority**.
+2. `.agents/Directional/Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md` — exact source/package and static snapshot-retention warning.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md` — Z10-Z19 and the binding Z12/Z17 stop logic.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R2 CAND-01/CAND-02, R3 CAND-01/CAND-02, X2 CAND-04.
+5. `TODO.md` / `CHANGELOG.md` — current state and accounting.
 
-Do not preload unrelated historical reports. Do not touch `src/`, `include/`, or `SurfaceCutGraph`; do not run selector 355/357/358; do not start CB3; do not execute cumulative gate work.
+Conditional module: GitHub connector/workflow module for immutable artifact execution. Do not load engineering/unit-test design modules in normal R4-EXEC. Do not preload unrelated historical reports. Do not configure/compile, mutate source/fixtures, run selectors 355/357/358, start CB3, or execute cumulative gate work.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -21,47 +21,39 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-CB2-DIAG-R2` — consume published products, under measures **Z10–Z19**
+## Current focus — `M3-CP4c-2-TB-X2-R4-EXEC` — artifact-only corrected D1/D2 evidence
 
-**`M3-CP4c-2-TB-X2-R3-REV` is COMPLETE / REVIEW GREEN.** Record:
-`Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md`. The R3 stop is upheld and
-`M3-CP4c2-TB-X2-R3-CAND-01` is **LOCALIZED** — test-side, with the mechanism named.
+**`M3-CP4c-2-CB2-DIAG-R2` is COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.**
+Report: `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md`. Exact semantic/test source
+`5ad711e5d4ced95f38e103b993139a6307ba2cee`; authoritative GMP compile run/job
+`33226609913 / 99031482464`; immutable package `9707091209` /
+`sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`. All eight required targets
+compile/link, both gmpxx/gmp are authoritative, package manifest passes, source-status snapshots are empty, and
+`runtimeExecution=false`. Only `tests/FieldAlignedCurveNetworkTests.cpp` changed semantically. M3 packages are
+now **61**.
 
-**Root cause.** `cp4c_build_rail_authority` diverges from production in two demonstrable ways. **A — the cross
-field:** the fixture computes `finalize_surface_cell_raw_cross_field(mesh, raw)`, while production and the
-working observer use the pipeline's published `products.crossField`. **B — the hard-feature edge set:** the
-fixture recomputes it from a locally built feature map, while the working observer passes
-`tracingOptions.hardFeatureEdges` from the pipeline. **The torus is the one witness whose rails originate in the
-feature map**, so it is the one witness where that set is non-empty and the divergence can bite. Production
-reaches A2a on the torus — that is where the frozen `48/48` came from — so a reconstruction that fails where the
-original succeeds is a reconstruction defect. **Z12 requires this confirmed by publication, not assumed.**
+**What R2 compiled.** Loaded torus/sphere witnesses now consume `productSnapshots` through a relaxed
+`build_cp4c_pipeline_products_fixture(...)`; the strict `cp4c_production_fixture(...)` remains unchanged in its
+cut-graph/global-plan precondition. The old hand-reconstruction helper is removed. Two-ring remains constructed
+`AtlasDerived`. Every D1 witness emits one success/failure record; one accumulated assert occurs after the loop.
+Pipeline records publish atlas/network/cut-graph/plan availability and terminal code/stage. Typed atlas/network
+errors are retained. Z2/Z3/Z4/Z5/Z7 remain unchanged.
 
-**Structural cause — a third idiom for one job.** The test file now has three witness constructions:
-`cp4c_production_fixture` consumes `products.*` and is faithful; `observe_cp4c_witness` rebuilds but from
-pipeline inputs and works on the torus; `cp4c_network_only_fixture` rebuilds everything locally and fails. Each
-new idiom has introduced a defect. **Fourth incident in one authority-divergence family.** Z4 fixed which
-authority is *named*; **Z11** fixes how it is *obtained* — consume `productSnapshots` for loaded production
-witnesses and stop reconstructing the pipeline. **Critical detail:** `cp4c_production_fixture` also demands
-`surfaceCutGraph` and `globalTopologyPlan` and throws without them, and **the torus has neither** — use a
-relaxed variant, and do not weaken the strict one.
-
-**The finding that cost this run its evidence.** The D1 identity calls `ASSERT_TRUE` **inside** the witness
-loop, and the torus is element 0 — so the identity ended after 14 ms with **zero** publications. The prescribed
-sphere, the decision witness for Branch A, was never measured despite nothing being wrong with it. Third
-appearance of one anti-pattern: X2 gated everything behind `SurfaceCutGraph::make`; `CellularityNotEstablished`
-collapsed three mechanisms behind one code; now one witness suppresses all others. **`M3-CP4c2-TB-X2-R3-CAND-02`;
-Z13** requires per-witness records with a single assert after the loop, and **Z17** makes per-witness publication
-unconditional.
-
-**Also recorded:** the typed atlas error was flattened to a bare string, discarding `atlas.error().code`, when
-`append_atlas_error(...)` and `append_cp4c_atlas_failure_diagnosis(...)` already exist in the same file. **Z14.**
-
-**Unchanged:** the normative source-edge barrier complex; the frozen `48/48` theorem (R3 never reached a torus
-network); R2 CAND-01/CAND-02 active; **CAND-04 active and unlocalized — D2 has never run on any package**.
-CB2-DIAG-R1's Z2/Z3/Z4/Z5/Z7 work was correct and must be carried forward unchanged (**Z16**).
+**Static retention warning — runtime must adjudicate it.** `RemeshPipeline.cpp` copies
+`sourceTopologyRegions`, `fieldTransportAtlas`, `fieldAlignedCurveNetwork`, `surfaceCutGraph`, and
+`globalTopologyPlan` into `productSnapshots` together only after cut-graph and global-plan construction succeed.
+The torus is known to terminate at `SurfaceCutGraph`, so R4 may publish pipeline atlas/network snapshots as
+unavailable even though production constructed them earlier. This is not runtime evidence and does not authorize
+a product fix. Under **Z12**, if torus atlas/network snapshots are unavailable, R4 must preserve all three D1
+records and **STOP before D2**, then route the evidence to R4-REV.
 
 `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Stable accounting remains
-**42 / 14 / 28**, debt **5**, M3 packages **60**.
+**42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**.
+
+Exact next is `M3-CP4c-2-TB-X2-R4-EXEC` on immutable package `9707091209`, followed by evidence-only
+`M3-CP4c-2-TB-X2-R4-REV`. Plan:
+`Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`. No selector 355/357/358, cumulative gate,
+benchmark, compile, source mutation, CB3, mechanical/C2, or CP4c-3 work is authorized in EXEC.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R3-EXEC` stop (retained for provenance)
 
@@ -225,12 +217,12 @@ C3 + C6**; that count/order is not frozen until the definition authorizes a succ
 - [x] `M3-CP4c-2-CB2-DIAG-R1` — **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.** Final source `c552a5a4a318063cde2564c40773ec7edaf064f6`; GMP compile run/job `33220315294 / 99012815358`; immutable package `9704935112`. Z1-Z7/Z9 are compiled; Z6 orders D1 torus -> prescribed sphere -> two-ring. Runtime closure conditions remain deferred to R3. Report: `Architecture_M3_CP4c2_CB2_DIAG_R1_Code_Build_Report.md`.
 - [x] `M3-CP4c-2-TB-X2-R3-EXEC` — **COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / PLANNED STOP.** Run/job `33222551366 / 99019499929`; D1 selected once, zero Y1 publications, torus `field-transport-atlas-unavailable`; D2 correctly skipped; immutable postflight green. Evidence: `Architecture_M3_CP4c2_TB_X2_R3_EXEC_Artifact_Only_Evidence.md`.
 - [x] `M3-CP4c-2-TB-X2-R3-REV` — **COMPLETE / REVIEW GREEN.** Upheld the stop and **localized** `R3-CAND-01` as test-side: `cp4c_build_rail_authority` diverges from production on the cross field (`finalize_surface_cell_raw_cross_field` vs `products.crossField`) and on the hard-feature edge set (locally rebuilt feature map vs `tracingOptions.hardFeatureEdges`) — and the torus is the one witness where that set is non-empty. Opened `R3-CAND-02` for the abort-in-loop gating that produced zero publications and discarded the sphere. Measures **Z10–Z19**. Record: `Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md`.
-- [ ] `M3-CP4c-2-CB2-DIAG-R2` — **NEXT / CODE + BUILD / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.** Under **Z10–Z19**: **Z11** consume `productSnapshots` for loaded production witnesses via a *relaxed* variant tolerating absent cut graph and plan (the strict `cp4c_production_fixture` throws without them and the torus has neither — do not weaken it); **Z12** publish pipeline atlas/network availability to confirm the test-side classification; **Z13** one record per witness with a single assert after the loop; **Z14** typed error codes and loci, never a bare string; **Z15** no fourth idiom; **Z16** carry Z2/Z3/Z4/Z5/Z7 forward unchanged.
-- [ ] `M3-CP4c-2-TB-X2-R4` — **BLOCKED ON CB2-DIAG-R2.** **Z17** ordering: per-witness publication is **unconditional** and comes first, then the torus control from authority, then Z3 self-consistency on all three, then D2 and Y5.
+- [x] `M3-CP4c-2-CB2-DIAG-R2` — **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.** Semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`; GMP compile run/job `33226609913 / 99031482464`; immutable package `9707091209`. Z10-Z19 implementation is compiled; runtime closure remains deferred to R4. Report: `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md`.
+- [ ] `M3-CP4c-2-TB-X2-R4` — **NEXT / ARTIFACT-ONLY DIAGNOSTIC.** Execute `TB-X2-R4-EXEC` on package `9707091209`, then evidence-only `TB-X2-R4-REV`. Z17 ordering is binding: all three per-witness records first; then torus control; then Z3; only then D2/Y5. Z12 snapshot unavailability is an immediate review stop, not a 48/48 contradiction.
 - [x] `M3-CP4c-2-TB-X2-R2` (superseded row) — **COMPLETE / ARTIFACT-ONLY DIAGNOSTIC CONTROL STOP / GATE BLOCKED.** Consume immutable package `9702321260` from source `232ac459b13657529e064272a75c5583770a5963` without rebuild. EXEC runs D1 and D2 separately and preserves complete `m3Cp4c2Y1`/`m3Cp4c2Y2` publications; REVIEW adjudicates Y1–Y4 and selects exactly one frozen Y5 corrective branch or stops. **No selector is selected and `TB-GATE-EXEC` is not authorized.** Plan: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Plan.md`.
 - [ ] `M3-CP4c-3-DEFN` — BLOCKED on CP4c-2 closure.
 
-Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **60**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; corrected diagnostic build authority is `c552a5a4a318063cde2564c40773ec7edaf064f6` / immutable GMP package `9704935112`. **Exact next is `M3-CP4c-2-CB2-DIAG-R2`, test/diagnostic source only, runtime-free, under measures Z10–Z19; no cumulative gate runtime is authorized.**
+Accepted runtime authority is `M3-CP4c-1-TB-R5`: **355/355**, run/job `33161644741 / 98817323175`, consuming immutable GMP package `9675666067` from source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. Required selector remains `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, with accepted 353/346/316 prefixes unchanged. Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **60**. `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. CP4c-2 remains runtime-unaccepted; corrected diagnostic build authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / immutable GMP package `9707091209`. **Exact next is `M3-CP4c-2-TB-X2-R4-EXEC`, artifact-only under the R4 plan; no cumulative gate runtime is authorized.**
 
 **TB-R6 disposition after review — corrected.** Three standing readings are **withdrawn**:
 
