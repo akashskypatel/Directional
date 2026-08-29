@@ -42,6 +42,6 @@ jobs:
       patch_sha256: 5f0036430f513518b0bc9cf5b8ee49a03ce9f41ca88f9c68bd81e0fe526409c5
       base_sha: 4ff78842b633ff9d550762fb6c61e6d24193f6c0
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: complete M3-CP4c-2 DOC-R1 and consolidate history
+      commit_message: "docs: complete M3-CP4c-2 DOC-R1 and consolidate history"
       retention_days: 7
     secrets: inherit
