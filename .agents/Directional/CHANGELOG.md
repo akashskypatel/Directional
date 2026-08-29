@@ -1,5 +1,23 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R7-EXEC`: immutable preflight hard-stops before runtime on four plan hash transcriptions
+
+Artifact-only EXEC reached **R7-0 only**. Package `9719216316` remains internally valid and unchanged: outer
+`acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`, source
+`755485865a7cf9c485d754f22b82a41ee151824b`, source archive
+`78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`, manifest **28/28 PASS**, GMP/GMPXX
+proven, and six runtime binaries executable. The frozen R7 plan's expected exact digests for 346, 353, 357, and
+358 disagree with the unchanged selector bytes; 316 and 355 match. R7 therefore honored its hard-stop rule and
+executed **no Directional process**. R7-1 through R7-5, 357/358 execution, cumulative gate, and benchmarks are NOT
+RUN. Raw archive `Directional__M3-CP4c-2-TB-X2-R7-EXEC__raw-evidence.tar.gz` hashes to
+`b83172acc3519fc6fe3472e5844a48e0bfd938fe9e6a5d68d14e515371454cc7`.
+
+The immutable values match `ORIENTATION.md` and R6-EXEC exact authority; the wrong full strings were introduced in
+CB5 closeout report/plan text, not by selector mutation. Tracked as non-stable orchestration defect
+`M3-CP4c2-TB-X2-R7-ORCH-01`; stable accounting remains **44 / 14 / 30**, debt **5**, M3 packages **64**. R043/R044
+receive no new runtime evidence. Exact next: independent **`M3-CP4c-2-TB-X2-R7-REV`**; no runtime or corrective
+implementation is authorized in review.
+
 ## 2026-08-29 — sixth CP4c historical consolidation
 
 Documentation-only consolidation under explicit user authorization. No product, test, fixture, selector, build,

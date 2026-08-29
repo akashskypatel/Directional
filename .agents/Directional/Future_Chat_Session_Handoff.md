@@ -83,89 +83,70 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R7-EXEC` — immutable artifact-only re-proof
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R7-REV` — independent selector-authority review
 
-`M3-CP4c-2-CB5` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / NOT SEMANTICALLY ACCEPTED**. Current semantic/test
-source is `755485865a7cf9c485d754f22b82a41ee151824b`. Fresh immutable GMP package `9719216316` /
-`sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc` was built on run `33267732093`; packaged source archive
-`sha256:78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`; internal manifest **28/28 PASS**. The build used GMP/GMPXX and executed no Directional
-runtime.
+`M3-CP4c-2-TB-X2-R7-EXEC` is **COMPLETE AT R7-0 / HARD ORCHESTRATION STOP / NO DIRECTIONAL RUNTIME**. Immutable
+CB5 package `9719216316` remains valid and unchanged: outer
+`sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`, semantic source
+`755485865a7cf9c485d754f22b82a41ee151824b`, source archive
+`sha256:78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`, internal manifest **28/28 PASS**,
+GMP/GMPXX proven, and all six runtime binaries executable.
 
-CB5 completed R6-REV AD0–AD9 without selector changes. `SurfaceCutGraph::candidate_hash` remains the full
-provenance/tamper hash, including gauge-dependent atlas binding; new `SurfaceCutGraph::semantic_digest()` excludes
-that representation-only provenance and consumes gauge-invariant network semantic identity. `GlobalTopologyPlan`
-now consumes the semantic cut-graph digest for semantic identity and keeps the full provenance path separately.
-AD3 was discharged by proof: `EmbeddedGraphTopology` totally sorts semantic arc descriptors, assigns
-`NetworkArcId` from that canonical rank, and walks faces in canonical dart order, so the stored orbit ordinal is a
-content-derived rank rather than source-row/container/gauge enumeration. Two non-gating cut-graph digest
-diagnostics were compiled for the two-ring and torus witnesses; they have not run.
+R7-0 obeyed the frozen *mismatch = hard stop* rule. The R7 plan's exact expected hashes disagree with immutable
+selector authority for 346, 353, 357, and 358; 316 and 355 match. The immutable values agree with `ORIENTATION.md`,
+R6-EXEC's prior successful preflight, and direct hashes of the package selectors. The wrong full strings were
+introduced in CB5 closeout report/plan text while selector bytes remained unchanged. Tracked as
+`M3-CP4c2-TB-X2-R7-ORCH-01`, **ORCHESTRATION / DOCUMENT-AUTHORITY / NON-STABLE**.
 
-`PR8-R043` remains **resolved at its former locus / closure pending full 355**. `PR8-R044` now has a compiled
-corrective implementation but remains runtime-unclosed. The accepted runtime predecessor is still CP4c-1
-**355/355**. Stable accounting **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **64**.
-`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+No accepted identity, CB5 diagnostic, independent actual-complex oracle, retained barrier diagnostic, D2, 357/358,
+cumulative gate, or benchmark ran. R043/R044 therefore receive no new runtime evidence. Raw R7 archive:
+`Directional__M3-CP4c-2-TB-X2-R7-EXEC__raw-evidence.tar.gz`,
+`sha256:b83172acc3519fc6fe3472e5844a48e0bfd938fe9e6a5d68d14e515371454cc7`.
 
-### Current CP4c-2 immutable authority
-
-- **Build/package:** `Architecture_M3_CP4c2_CB5_Code_Build_Report.md`; source `755485865a7cf9c485d754f22b82a41ee151824b`; package
-  `9719216316` (`sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`); package log `9719216455` (`sha256:af03c536bc55f37be90f6f654bb2e944c66a15036920e536a97cb5523b00f7c4`).
-- **Runtime evidence:** `Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md`; accepted ordinals 1–309
-  PASS, ordinal 310 RED, unconditional immutable postflight PASS. This remains the latest runtime evidence until R7.
-- **Exact runtime plan:** `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md`.
-- **Normative definitions:** `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` and
-  `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md`; actual embedded graph remains cellularity authority.
-- **Accepted predecessor:** CP4c-1 **355/355**, closure record `M3_CP4c1_Closure_Record.md`.
-
-### R7 execution boundary
-
-R7 is artifact-only and uses immutable package `9719216316`. It must:
-
-1. verify package/source/GMP/mode integrity plus all six frozen selector hashes;
-2. execute the ordered **355** accepted identities, one exact identity per fresh process, stopping at the first red;
-3. only after 355/355 green, run the two CB5 semantic/provenance diagnostics, then
-   `ResolvedBranchCorrection.ActualEmbeddedGraphCellularityOracleIsPublishedNonGating`,
-   `GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable`, and
-   `GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable`;
-4. run unconditional immutable postflight after any semantic result.
-
-A prefix red blocks all downstream R7 diagnostics. R7-EXEC does **not** run 357/358, a cumulative gate, benchmarks,
-mechanical/C2, or CP4c-3, and does not select a gate/branch. If D2 is blocked again by an accepted-prefix red, record
-it as NOT RUN; do not infer a result.
+R7-REV is review/planning only. It must independently recompute the six selector authorities, localize the
+transcription boundary, decide whether CB5 report/R7 plan require a documentation-only correction, and explicitly
+decide whether the same immutable package may be reused for a corrected R7 retry. It executes no Directional
+runtime and makes no product/test/fixture/selector semantic change, compile/package, benchmark, 357/358/gate
+selection, mechanical/C2, or CP4c-3 progress.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 CB5 is build-green/runtime-free; CP4c-2 remains runtime-unaccepted.
-- Current build/package authority is `755485865a7cf9c485d754f22b82a41ee151824b` / package `9719216316`.
-- Current runtime evidence is still R6-EXEC: ordinal 305 PASS, ordinal 310 first RED; R7 has not executed.
-- R043 closure requires ordinal 305 green within full 355; R044 closure requires ordinal 310 green within the same
-  full 355. `R5-ORCH-01` remains resolved by R6 unconditional postflight.
+- CP4c-2 CB5 remains build-green/runtime-free; CP4c-2 remains runtime-unaccepted.
+- Current build/package authority remains `755485865a7cf9c485d754f22b82a41ee151824b` / package `9719216316`.
+- Latest semantic runtime evidence remains R6-EXEC: ordinal 305 PASS, ordinal 310 first RED. R7 executed no
+  Directional process because preflight hard-stopped under `R7-ORCH-01`.
+- R043 closure still requires ordinal 305 green within full 355; R044 closure still requires ordinal 310 green
+  within the same full 355. `R5-ORCH-01` remains resolved by R6 unconditional postflight.
 - `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; 357/358/cumulative gate remain
   blocked pending reviewed R7 evidence.
 - Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
   packages **64**.
-- **Exact next is `M3-CP4c-2-TB-X2-R7-EXEC`**, artifact-only, under the exact R7 plan above.
+- **Exact next is `M3-CP4c-2-TB-X2-R7-REV`**, independent review/planning only.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TB-EXEC.md`
+- turn-based-coding-agent review/planning references
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — cold-start architecture/current context.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` — **exact executable authority**.
-2. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — package/source provenance and AD0–AD9 audit.
-3. Immutable package `9719216316` / `sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc` from source `755485865a7cf9c485d754f22b82a41ee151824b` — execute, never rebuild.
-4. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` — ordered 355 accepted identities.
-5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` — immediately preceding runtime
-   evidence and unconditional-postflight precedent.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R043, R044, R5-ORCH-01, and CAND-04 state.
-7. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — actual-complex contract.
-8. `TODO.md` / `CHANGELOG.md` — current state/accounting.
+0. `.agents/Directional/ORIENTATION.md` — cold-start architecture and exact selector table.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Plan.md` — **exact next-turn scope**.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_EXEC_Artifact_Only_Evidence.md` — R7-0 hard-stop evidence.
+3. `Directional__M3-CP4c-2-TB-X2-R7-EXEC__raw-evidence.tar.gz` — immutable raw preflight evidence.
+4. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` — faulty executable constants;
+   review, do not silently repair during EXEC.
+5. Immutable package `9719216316` / source `755485865a7cf9c485d754f22b82a41ee151824b` — inspect only; no runtime in REV.
+6. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` and
+   `.agents/Directional/M3_CP4c1_Closure_Record.md` — prior exact selector/runtime authority.
+7. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` and CB5 closeout patch provenance — locate
+   the transcription boundary without re-adjudicating the semantic fix.
+8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R7-ORCH-01`, R043, R044.
+9. `TODO.md` / `CHANGELOG.md` — current state/accounting.
 
-Do not configure/compile/relink/repair the package in R7. Do not change selectors, fixtures, product/test/build logic,
-or run 357/358/cumulative gate/benchmarks/mechanical/C2/CP4c-3.
+Do not run Directional runtime, configure/compile/relink/repair, mutate selectors/fixtures/product/tests, or run
+357/358/cumulative gate/benchmarks/mechanical/C2/CP4c-3 in R7-REV.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

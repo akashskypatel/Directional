@@ -21,30 +21,31 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R7-EXEC` — artifact-only full accepted-prefix re-proof
+## Current focus — `M3-CP4c-2-TB-X2-R7-REV` — independent selector-authority review
 
-**`M3-CP4c-2-CB5` is COMPLETE / BUILD GREEN / RUNTIME-FREE.** Semantic/test source
-`755485865a7cf9c485d754f22b82a41ee151824b` compiled through the mandatory GMP reusable. Fresh immutable eight-target package
-`9719216316` / `sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`; packaged source archive `sha256:78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`; internal
-`SHA256SUMS` **28/28 PASS**. No Directional binary ran during CB5.
+**`M3-CP4c-2-TB-X2-R7-EXEC` is COMPLETE AT R7-0 / HARD ORCHESTRATION STOP / NO DIRECTIONAL RUNTIME.**
+Immutable package `9719216316` remains valid: outer digest
+`acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`, source
+`755485865a7cf9c485d754f22b82a41ee151824b`, source archive
+`78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`, internal manifest **28/28 PASS**,
+GMP/GMPXX evidence present, six runtime binaries executable.
 
-CB5 implements AD0–AD9: `SurfaceCutGraph` now separates gauge-invariant semantic identity from full provenance;
-`candidate_hash` remains unchanged for atlas/network binding; `GlobalTopologyPlan` consumes the semantic cut-graph
-digest; the face-orbit ordinal is documented as a canonical rank derived from totally sorted semantic arc descriptors;
-and two non-gating cut-graph digest diagnostics were compiled for the two-ring and torus witnesses. No selector
-changed.
+R7-0 found that the plan's exact expected hashes for 346, 353, 357, and 358 do not match the unchanged immutable
+selector bytes. The actual values match `ORIENTATION.md` and R6-EXEC authority. The frozen rule therefore stopped
+before ordinal 1; R7-1 through R7-5, 357/358 execution, cumulative gate, and benchmarks are **NOT RUN**. Raw archive:
+`Directional__M3-CP4c-2-TB-X2-R7-EXEC__raw-evidence.tar.gz`,
+`sha256:b83172acc3519fc6fe3472e5844a48e0bfd938fe9e6a5d68d14e515371454cc7`.
 
-Exact next is artifact-only **`M3-CP4c-2-TB-X2-R7-EXEC`** using
-`.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` and immutable package `9719216316`.
-R7 first re-proves the ordered **355/355** accepted prefix one identity per fresh process. Only after 355/355 green
-may it execute the two CB5 digest diagnostics, independent actual-embedded-graph oracle, retained barrier diagnostic,
-and D2 localization. Unconditional immutable postflight runs after any semantic result. 357/358, cumulative gate,
-benchmarks, mechanical/C2, and CP4c-3 remain blocked.
+Tracked non-stable orchestration defect: **`M3-CP4c2-TB-X2-R7-ORCH-01`**. Stable accounting remains
+**44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **64**. R043 and R044 receive no new
+runtime evidence; their full-355 closure conditions remain unchanged. `selected_r2_branch=NONE`,
+`selected_gate=NONE`, `gate_execution_authorized=false`.
 
-`PR8-R043` is resolved at its former locus but closure still requires ordinal 305 green inside full 355.
-`PR8-R044` has a compiled corrective implementation but closure requires ordinal 310 green inside that same full run.
-Stable accounting **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **64**.
-`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+Exact next is **independent `M3-CP4c-2-TB-X2-R7-REV`**, using
+`.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Plan.md`. Review must establish exact
+selector-hash authority and authorize any minimal documentation-only correction before R7 may be retried. No
+runtime, compile/package, product/test/fixture/selector semantic change, 357/358/cumulative gate, benchmark,
+mechanical/C2, or CP4c-3 work is authorized in REV.
 
 ## Carried forward from M1
 

@@ -1,3 +1,21 @@
+## M3-CP4c2-TB-X2-R7-ORCH-01 — R7 plan transcribes four frozen selector hashes incorrectly — ACTIVE / ORCHESTRATION / DOCUMENT-AUTHORITY / NON-STABLE
+
+- **Observed:** R7-EXEC immutable preflight on package `9719216316` passes outer/package/source/GMP/mode checks and
+  internal manifest **28/28**, then exact hash comparison disagrees for selector authorities 346, 353, 357, and
+  358. Per the frozen R7-0 rule, execution stops before the first Directional process.
+- **Plan values:** 346 `20d3b0b1b942af39b1e105e06dc122cfc7d5c90102735de292aac4924ac3e46a`; 353 `51ff96d7dd69051042213673ca1876a0fcf2a192aa69eae26fd31b0b958ac6a5`; 357 `b896d0db98bdf3ea421d98df870867077114622e24558204490d2f17464dc70`; 358 `6eda3aadbeaa4b991726a6f6e2cc080d45ca5a8ab8a18a37e3fce986b64fbe62`.
+- **Immutable values:** 346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`; 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`; 357 `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`; 358 `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62`.
+  316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c` and 355 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` match the plan.
+- **Localization:** the immutable values match `ORIENTATION.md`, R6-EXEC's successful preflight, and direct hashes
+  of the unchanged CB5 package selector bytes. The wrong four full strings were introduced in the CB5 closeout
+  patch's AD0 report text and copied into the new R7 plan; selector files themselves were not changed.
+- **Impact:** orchestration authority only. No accepted identity, non-gating diagnostic, 357/358 candidate,
+  cumulative gate, benchmark, compile, repair, or mutation ran. R043/R044 receive no new runtime evidence.
+- **Owner:** independent `M3-CP4c-2-TB-X2-R7-REV` must adjudicate exact selector authority and the minimal
+  documentation-only correction before any R7 retry. EXEC does not silently substitute the immutable values.
+- **Stable-count rationale:** no product/test semantic regression and no accepted runtime result; **+0 stable events /
+  +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
 ## PR8-R044 / M3-CP4c2-R002 — cut-graph semantic digest reimports gauge-dependent atlas provenance — ACTIVE STABLE / PRODUCT / REPRESENTATION_DEPENDENT_IDENTITY / RP-05
 
 - **Observed:** R6-EXEC artifact-only accepted-prefix re-proof on immutable CB4 package `9714226920` passes accepted ordinals 1-309 in fresh processes, including the former ordinal-305 failure, then ordinal 310 `GlobalTopologyPlan.RegionAuthorityIsInvariantToEnumerationOrderAndBranchRelabeling` selects exactly once and exits `1`. `baselinePlan.semantic_digest()` is `12176020141753559903`; gauge-relabeled `relabeledPlan.semantic_digest()` is `14339407889897379635`.
@@ -14,6 +32,7 @@
 - **Additional finding the EXEC did not reach.** Removing `atlasDigest` is necessary but **not sufficient**. `SurfaceCutGraph.cpp:258` records each certificate face as `{orbit, …}` where `orbit` is the **raw loop index** into `faceWalk.orbits` — an enumeration artifact, not a semantic face identity — and `candidate_hash` consumes it. Ordinal 310 asserts invariance to enumeration order **and** relabeling, so this is a latent instance of the same pattern that may simply not fire today. **Measure AD3** requires it settled deliberately: prove orbit enumeration canonical and record the proof, or replace the index with a content-derived key. "It passes now" is not an answer.
 - **Owning correction:** `M3-CP4c-2-CB5` measures **AD1** (add the semantic digest), **AD2** (convert the consumer and extend the comment to both sites), **AD3** (orbit index), **AD4** (term-by-term certificate partition), **AD5** (a non-gating diagnostic that checks the split at the cut-graph boundary rather than two stages downstream). Record: `Architecture_M3_CP4c2_TB_X2_R6_Independent_Review_Record.md` §§3-7.
 - **Closure condition:** ordinal 310 green in a run that also reaches the full **355/355** accepted prefix.
+- **R7-EXEC:** no new runtime evidence; R7-0 hard-stopped before Directional execution under `R7-ORCH-01`.
 
 ## PR8-R043 / M3-CP4c2-R001 — CP4c-2 whole-source-face proxy rejects accepted embedded-graph witness — ACTIVE STABLE / PRODUCT / AUTHORITY_DOMAIN_CONFLATION / RP-01
 
@@ -29,6 +48,7 @@
 - **Accounting:** one new stable event and one recurrence in existing category/pattern `AUTHORITY_DOMAIN_CONFLATION / RP-01`: totals advance **42 / 14 / 28 -> 43 events / 14 categories / 29 recurrences**. Produced-witness debt remains **5**; M3 packages remain **62**.
 - **R6-REV disposition — RESOLVED AT LOCUS / CLOSURE PENDING FULL-PREFIX RE-PROOF.** Accepted ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` **passes** on CB4 package `9714226920`. The mixed-complex certificate that produced `9 - 11 + 2 = 0 != 1` is gone, replaced by DEFN-R1 Amendment 13's actual embedded-graph complex, and CB4 delivered `src/geometry/EmbeddedGraphTopology.{h,cpp}` as the single shared authority required by AC1.
 - **Not closed yet, deliberately.** R6 executed 309 of 355 accepted identities before stopping at ordinal 310. **`PR8-R043` closes only at a full 355/355 with ordinal 305 green** — recording closure on a 309-ordinal prefix would be the partial-evidence promotion this project has already corrected twice. Measure **AD8** carries the condition.
+- **R7-EXEC:** no new runtime evidence; R7-0 hard-stopped before Directional execution under `R7-ORCH-01`.
 
 ## M3-CP4c2-TB-X2-R5-ORCH-01 — runtime helper leaks errexit and suppresses postflight — RESOLVED / R6 HARNESS CONFIRMED / ORCHESTRATION / NON-STABLE
 
