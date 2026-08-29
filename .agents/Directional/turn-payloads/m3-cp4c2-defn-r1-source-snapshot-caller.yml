@@ -1,20 +1,20 @@
-name: Agent Drive Apply M3 CP4c2 CB4
+name: Agent Compile M3 CP4c2 CB4
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m3-cp4c2-cb4-drive-apply-20260829.txt
+      - .agents/connector-triggers/m3-cp4c2-cb4-compile-20260829.txt
 
 permissions:
   contents: write
   issues: write
   pull-requests: write
-  id-token: write
+  actions: write
 
 concurrency:
-  group: agent-drive-apply-m3-cp4c2-cb4
+  group: agent-compile-m3-cp4c2-cb4
   cancel-in-progress: false
 
 jobs:
@@ -22,17 +22,14 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: drive-apply-m3-cp4c2-cb4
+      label: compile-m3-cp4c2-cb4
       commit_run_file: false
     secrets: inherit
 
-  apply:
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1aAUUNeioCYR1mN1IqDPSooOC4GYUdikE
-      patch_sha256: e0621b9c9a801c0af322e5f541082f457952f415a407bc440c63e032197c4d58
-      base_sha: 858d2c37314d910aaabf77e9e49f03f48da43484
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-2-CB4: certify actual embedded graph"
-      retention_days: 14
+      source_sha: cebc12082c6dbe4830095df08169797b7dab0c5c
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c2-cb4
     secrets: inherit
