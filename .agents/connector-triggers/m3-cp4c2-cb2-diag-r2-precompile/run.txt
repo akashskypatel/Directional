@@ -1,0 +1,4 @@
+purpose=M3-CP4c-2-CB2-DIAG-R2 changed-owner pre-package compile
+semantic_source_sha=5ad711e5d4ced95f38e103b993139a6307ba2cee
+targets=directional_surface_cell_producer_tests
+retry=0
