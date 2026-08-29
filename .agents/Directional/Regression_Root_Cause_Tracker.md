@@ -18,6 +18,7 @@
 - **Contract amended, not waived:** the requirement is **exactly one *distinct* record per witness**. On that basis the preserved R4 evidence is **admissible** and the §6 closures follow from it.
 - **Conditional, and the condition is binding.** Measure **AA2** requires byte-identity confirmed from `d1-records.txt` in result artifact `9707662462`. **If the two sphere lines differ in any byte, the stop stands, the admissibility adjudication is void, and the R4 evidence cannot be used.**
 - **Owning correction:** `M3-CP4c-2-CB3-DIAG` measure **AA5** — emit each record once; the assertion message references failing witnesses by name and status only; publish the per-witness record count so the contract is machine-checkable.
+- **CB3 compile state:** corrective source `76d757aab0ce18df09ce2823302d2dc224965187` implements AA5 and compiles GREEN in GMP package `9708324052`. Candidate remains **ACTIVE / RUNTIME PENDING** until R5 proves exactly one Y1 record per witness plus publication counts 1/1/1/3.
 
 ## M3-CP4c2-TB-X2-R4-CAND-02 — pipeline discards product snapshots on any pre-A2b failure path — **LOCALIZED** / PRODUCT OBSERVABILITY DEFECT / NON-STABLE
 
@@ -40,6 +41,7 @@
 - **Consequence for prior guidance:** measure **Z11** (consume `productSnapshots`) was written on the assumption that snapshots survive a failure. They do not. Z11 is unimplementable as written for any witness whose pipeline fails at or before A2b — which is exactly the prescribed sphere, the decision witness for Branch A. The reviewer owns that error; see the review record §4.
 - **Classification:** observability only. The failure code and stage string are already correct and no accept/reject decision changes.
 - **Owning correction:** `M3-CP4c-2-CB3-DIAG` measure **AA1** — publish each snapshot immediately after its product is successfully constructed, changing no `fail_surface_cells` call, failure code, stage string, control flow, or build ordering. This is **the only `src/` change authorized** in the checkpoint, and **AA8** prices it: the successor TB must re-prove accepted prefixes 316/346/353/355 before crediting any CP4c-2-local identity.
+- **CB3 compile state:** corrective source `76d757aab0ce18df09ce2823302d2dc224965187` implements AA1 and compiles GREEN in GMP package `9708324052`. The defect remains **LOCALIZED / RUNTIME PENDING**; R5 must first re-prove 316/346/353/355 and then show that a sphere failure at `surface-cut-graph` retains the already-built source-topology/atlas/network products.
 - **Stable-count rationale:** observability defect; no accepted-green identity regressed and CP4c-2 has no accepted runtime authority. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c2-TB-X2-R4-CAND-03 — torus completes A2a', A2b and a GlobalTopologyPlan, then fails downstream at tracing — ACTIVE / OUT-OF-SCOPE FOR CP4c-2 / NON-STABLE

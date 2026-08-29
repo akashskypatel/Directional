@@ -9,6 +9,18 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+## 2026-08-29 — `M3-CP4c-2-CB3-DIAG`: snapshot retention and publication hygiene compile green
+
+Code + Build only. **No Directional runtime, test, benchmark, selector gate, or acceptance attempt executed.** Semantic/test source `76d757aab0ce18df09ce2823302d2dc224965187` implements only R4-review measures AA1/AA5 plus the required lesson.
+
+- `RemeshPipeline.cpp` now retains source-topology, atlas, network, cut-graph, and global-plan snapshots immediately after each product succeeds. The old all-at-end snapshot block is removed; fail calls/codes/stages, control flow, and product construction order are unchanged. This is the only `src/` edit.
+- D1 publication now emits one full Y1 record per witness, counts publications, emits `m3Cp4c2PublicationCounts`, and limits the final assertion message to witness names/statuses so it cannot duplicate a complete Y1 record.
+- `LESSONS.md` records the R4 review lesson that a premise-discharging result must be reported as a finding even if another contract makes the turn semantic red.
+- All six frozen selector hashes recompute unchanged: 316 `601ce2b6…0193c`, 346 `20d3b0b1…3e46a`, 353 `51ff96d7…ac6a5`, 355 `e9d88f11…afeaa`, 357 `b896d0db…64dc70`, 358 `6eda3aad…4fbe62`.
+- Compile run `33230423139` is GREEN under GMP/GMPXX: changed-owner result `9708313428`, then all eight standard targets in immutable package `9708324052` / `48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a`; compile log `9708324292` / `d200b4210a1adc204fd2fd90df07727c73c8c35c65110d99233ea44d9bd5d0fd`; source archive `f1614161…a0a9a2d`; `runtimeExecution=false`; manifest/source-status checks PASS.
+- Runtime candidates remain unadjudicated. Stable accounting stays **42 / 14 / 28**, debt **5**; M3 packages advance to **62**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+- Exact next: artifact-only `M3-CP4c-2-TB-X2-R5-EXEC` under `Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md`; accepted prefixes 316/346/353/355 must pass first. After EXEC, independent `R5-REV` is the stop boundary.
+
 ## 2026-08-29 — `M3-CP4c-2-TB-X2-R4-REV`: the torus derives a plan, and the sphere's invisibility is a product defect
 
 Independent review and planning only. No Directional runtime, compile, package, benchmark, or product/test/fixture/selector change. Record: `Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md`. `selected_r2_branch` and `selected_gate` both remain **NONE**.

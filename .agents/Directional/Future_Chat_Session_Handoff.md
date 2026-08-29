@@ -83,113 +83,38 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-CB3-DIAG` — snapshot retention + sphere measurement, measures **AA0-AA9**
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R5-EXEC` — artifact-only verification of CB3-DIAG
 
-`M3-CP4c-2-TB-X2-R4-REV` is **COMPLETE / REVIEW GREEN**. Read
-`Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` in full: §2 the unremarked success, §3 the
-product defect, §4 a reviewer error owned, §5 the admissibility ruling, §7 measures AA0-AA9.
+`M3-CP4c-2-CB3-DIAG` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Read
+`Architecture_M3_CP4c2_CB3_DIAG_Code_Build_Report.md` and
+`Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` before execution.
 
-**Read this first: the checkpoint's defining failure is gone.** The torus published
-`pipelineCutGraphAvailable=true` **and `pipelinePlanAvailable=true`**. `products.globalTopologyPlan` is assigned
-at exactly one site — `RemeshPipeline.cpp:6634`, reachable only after `GlobalTopologyPlan::make` succeeds; the
-other two snapshot sites (12554, 12635) cannot produce a plan snapshot. **The torus derives a topology plan.**
-`UncutFaceComponentOrbitSeedNotUnique` no longer occurs, and D1 independently confirms the other half — torus
-network-only cellularity is **false**, matching the frozen theorem. **The DEFN's cut graph is measured working
-end to end on its own witness.** `R4-CAND-03`. Its residual `terminalFailureStage=tracing` is downstream of A2b
-and **out of scope**: **AA7** classifies it, does **not** fix it.
+Current immutable build authority is semantic/test source `76d757aab0ce18df09ce2823302d2dc224965187`, compile
+run `33230423139`, full GMP package `9708324052` / `48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a`,
+compile log `9708324292` / `d200b4210a1adc204fd2fd90df07727c73c8c35c65110d99233ea44d9bd5d0fd`, source archive
+`f16141613e877c78746548596449ef494fb9f4b384736526d74eaaf54a0a9a2d`. No binary was executed in CB3.
 
-**The sphere's "all snapshots unavailable" is a PRODUCT observability defect, fully localized.** Its record is
-self-contradictory: `terminalFailureStage=surface-cut-graph/CellularityNotEstablished` with atlas and network
-both `false` — yet failing *at* A2a' requires dereferencing all three products at
-`RemeshPipeline.cpp:6602-6605`. Mechanism: lines **6576-6612** are a chain of early
-`return fail_surface_cells(...)`, and lines **6626-6634** assign all five snapshots **after every one of
-them**. Any pre-A2b failure therefore discards products that were built successfully and are alive in local
-variables. The torus reaches 6626 and keeps everything; the sphere fails at 6607 and keeps nothing.
+CB3 implements only:
 
-**A reviewer error, owned.** Measure **Z11** told the implementer to consume `productSnapshots` and stop
-reconstructing the pipeline. Right in principle — the torus went from `field-transport-atlas-unavailable` to a
-clean 48/48 in one turn — but it assumed snapshots survive a failure. They do not. Z11 is unimplementable as
-written for the one witness whose pipeline fails at A2a', which is the prescribed sphere, the decision witness
-for Branch A. **AA1 repairs the premise rather than working around it.**
+- **AA1:** `RemeshPipeline.cpp` retains each product snapshot immediately after that product succeeds; no fail call/code/stage/control flow/build order changes.
+- **AA5:** D1 emits each Y1 witness record once, final assertion names/statuses only, and a separate machine-checkable publication-count record enforces 1/1/1/3.
+- the required LESSONS entry that a premise-discharging result must be reported as a finding.
 
-**AA1 is the only `src/` change authorized in this checkpoint**, and it is priced. Publish each snapshot
-immediately after its product is built; change no `fail_surface_cells` call, failure code, stage string,
-control flow, or build ordering. **AA8**: because production is touched, the successor TB must re-prove
-accepted prefixes **316/346/353/355** before crediting any CP4c-2-local identity, and a regression in any of
-them is a stop that **reverts AA1**.
+Frozen hashes remain: 316 `601ce2b6…0193c`, 346 `20d3b0b1…3e46a`, 353 `51ff96d7…ac6a5`, 355
+`e9d88f11…afeaa`, 357 `b896d0db…64dc70`, 358 `6eda3aad…4fbe62`. `selected_r2_branch=NONE`,
+`selected_gate=NONE`, `gate_execution_authorized=false`.
 
-**The `STOP_EVIDENCE_CONFLICT` was procedurally correct; the evidence is admissible.** The duplicate is
-byte-identical, so exactly one *distinct* record exists per witness and nothing is indeterminate. The contract
-is **amended, not waived** — exactly one *distinct* record per witness — and the ruling is **conditional on
-AA2** confirming byte-identity from `d1-records.txt` in artifact `9707662462`. **If the two sphere lines differ
-in any byte, the stop stands and the R4 evidence is void.**
+R5-EXEC order is binding:
 
-**Closed by this review:** `R2-CAND-01`, `R3-CAND-01`, `R3-CAND-02`. **`R2-CAND-02` remains ACTIVE** — torus
-and two-ring are self-consistent under `complex=sourceEdgeBarrier`, but the sphere has never been measured.
-**`CAND-04` remains UNLOCALIZED for the fifth consecutive turn; AA4 exists to end that.**
+1. immutable package/source preflight and six selector hashes;
+2. **AA8 accepted-prefix re-proof first:** 316 -> 346 -> 353 -> 355; any regression stops before local credit and routes to review;
+3. **AA2 prior-artifact check:** the two sphere Y1 lines from R4 artifact `9707662462` must be byte-identical or the admissibility ruling is void and R5 stops;
+4. D1 exactly once: three Y1 records plus one publication-count record; measure the prescribed sphere from retained pipeline products, publish per-component topology, and independently state whether the torus still derives a plan;
+5. if D1 evidence is structurally admissible, D2 exactly once: localize `CellularityNotEstablished` to 419/437/474 with the owning term-by-term certificate;
+6. immutable postflight. No benchmark, configure, compile, relink, repair, generated discovery, source/test/fixture/selector mutation, or 357/358 gate runtime.
 
-`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
-
-### Superseded — the R4 EXEC stop as reported (retained for provenance)
-
-`M3-CP4c-2-TB-X2-R4-EXEC` is **COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / D1 EVIDENCE-CONFLICT STOP**.
-Read `Architecture_M3_CP4c2_TB_X2_R4_EXEC_Artifact_Only_Evidence.md` and the frozen
-`Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`. R4-REV consumes existing evidence only
-and runs no new Directional runtime.
-
-**Runtime authority.** Semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`; immutable GMP package
-`9707091209` / `sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`;
-authoritative EXEC run/job `33228460953 / 99036688477`; result artifact `9707662462` /
-`sha256:36e5982c152317a56d98d13e58a2ec1233c71b65e9f8570aeabfed373228a76f`; runtime log `9707662682` /
-`sha256:594edbad06c849e12ad52787ec144f08da526c6f25c4449d21a222691daae0eb`. Package/source byte-and-mode
-postflight matches preflight exactly.
-
-**D1 raw state.** D1 ran exactly once and exited `1`. Torus successfully consumed pipeline products and
-published `pipelineAtlasAvailable=true`, `pipelineNetworkAvailable=true`, `barrierV=48`, `barrierE=48`,
-`sourceChi=0`, `networkOnlyCellular=false`, `oracleSelfConsistent=true`. Prescribed sphere published
-`constructionSucceeded=false` with all pipeline snapshots unavailable and
-`error=pipeline-source-topology-snapshot-unavailable`. Two-ring published a successful/self-consistent
-AtlasDerived record. The final accumulated `ASSERT_TRUE` then repeats the prescribed-sphere failure record
-byte-identically, so stdout has four Y1 lines rather than exactly one per witness. EXEC therefore records
-`STOP_EVIDENCE_CONFLICT`; D2 was correctly skipped.
-
-**Review obligations.** R4-REV must adjudicate, in the frozen plan's order: Z13 witness isolation and the
-exactly-once publication conflict; torus snapshot availability and 48/48 control; Z3 consistency only where
-construction exists; R2 CAND-01/CAND-02 and R3 CAND-01/CAND-02; the new R4 publication/snapshot candidates; and
-D2/CAND-04 only as unmeasured evidence. Y5 may be selected only if the frozen prerequisites permit it.
-`selected_r2_branch=NONE`, `selected_gate=NONE`, and `gate_execution_authorized=false` remain binding entering
-review.
-
-Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**. Accepted runtime
-predecessor remains CP4c-1 TB-R5 **355/355**. R4-REV must not rerun D1, run D2/355/357/358, execute cumulative
-gate or benchmarks, compile, mutate source/tests/fixtures, start CB3, touch mechanical/C2, or begin CP4c-3.
-
-### Superseded — the R3 EXEC stop as reported (retained for provenance)
-
-`M3-CP4c-2-TB-X2-R3-EXEC` is **COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / PLANNED STOP** on immutable package
-`9704935112` from source `c552a5a4a318063cde2564c40773ec7edaf064f6`. Authoritative runtime run/job
-`33222551366 / 99019499929` passed immutable preflight, selected D1 exactly once, then exited `1` before any
-`m3Cp4c2Y1` publication with the exact torus failure `witness=torus;error=field-transport-atlas-unavailable` at
-`tests/FieldAlignedCurveNetworkTests.cpp:5946` (`fixture.network.has_value()` was false). D2 was correctly skipped
-by the frozen stop rule. Package/source byte-and-mode postflight matched preflight exactly.
-
-Raw evidence: `Architecture_M3_CP4c2_TB_X2_R3_EXEC_Artifact_Only_Evidence.md`; result artifact `9705692837` /
-`sha256:ba989d0ddd3bd244f03c8242060ded9f9c58b33679893ab0ddf1cc5fb8d015f5`; log artifact `9705693025` /
-`sha256:ab653c13ec7b0eec30f2736a17bbf44406afa7c828cb1fddbadea795aa6701a6`.
-
-Because the stop occurred before the first torus publication, R3 EXEC did **not** adjudicate Z6's 48/48 control,
-Z3 all-witness self-consistency, D2 localization, or Y5. `M3-CP4c2-TB-X2-R2-CAND-01` and `...CAND-02` remain
-active; `M3-CP4c2-TB-X2-CAND-04` remains active/unlocalized. New non-stable
-`M3-CP4c2-TB-X2-R3-CAND-01` records the diagnostic precondition failure; its exact cause is intentionally left to
-REV rather than inferred from EXEC.
-
-At the close of R3-EXEC the next turn was the evidence-only review named above; **that review is complete.**
-The superseded text below consumed the preserved evidence only and ran no new Directional
-runtime. Do not rerun unchanged D1, do not execute D2, selector 355/357/358, cumulative gate, CB3, mechanical/C2,
-or CP4c-3 before the evidence review adjudicates this stop.
-
-`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. Stable accounting remains
-**42 / 14 / 28**, produced-witness debt **5**, M3 packages **60**.
+R5-EXEC preserves raw evidence only. It **must not select Y5 or 357/358**. After its evidence is durably preserved,
+exact next is independent `M3-CP4c-2-TB-X2-R5-REV`; the implementation loop stops completely at that boundary.
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
@@ -254,39 +179,32 @@ CP4c-3 remains blocked until CP4c-2 closure.
 
 ## Current authority
 
-### M3-CP4c-2 TB-X2-R2 — current runtime evidence, control-invalid
-
-- status: **COMPLETE / PLANNED Y4 CONTROL STOP / NO BRANCH SELECTED**;
-- evidence source/package: `232ac459b13657529e064272a75c5583770a5963 / 9702321260`;
-- runtime run/job: `33215632118 / 98998526420`;
-- result/log artifacts: `9703233161 / 9703233545`;
-- result/log digests: `6b13e0bcddc3ffeba93077b6b1115bc8a400b9b9a6051d83df01ac11bec191f7 /
-  19975ef0fc0e154e02326827287fd60a3a7813b10cda1fe20840e60a072d3c1b`;
-- D1: one selected process, exit 0, three Y1 publications, zero `SurfaceCutGraph` calls;
-- Y4: **FAIL** — torus `V/E=0/0`, required `48/48`; source chi 0 and non-cellular agree only qualitatively;
-- D2/Y2/Y3: **NOT RUN / UNAVAILABLE** under the binding stop rule;
-- Y5: `selected_r2_branch=NONE`;
-- gate: `selected_gate=NONE`, `gate_execution_authorized=false`;
-- report: `Architecture_M3_CP4c2_TB_X2_R2_Artifact_Only_Test_Benchmark_Report.md`;
-- next review plan: `Architecture_M3_CP4c2_TB_X2_R2_Independent_Review_Plan.md`.
-
-### M3-CP4c-2 CB2-DIAG-R2 — current build authority, runtime unaccepted
+### M3-CP4c-2 CB3-DIAG — current build authority, runtime unaccepted
 
 - status: **COMPLETE / BUILD GREEN / RUNTIME-FREE**;
-- semantic/test source: `5ad711e5d4ced95f38e103b993139a6307ba2cee`;
-- full GMP compile run/job: `33226609913 / 99031482464`;
-- immutable package: `9707091209` / `sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`;
-- compile log artifact: `9707091377` / `sha256:0188b2926df2d77b5885a6560ba358f325d709d3b57f326b3a2abf5473bfe3b2`;
-- packaged source archive: `9a9dbfb5c6aede1618d41323109cb336f978f75434bef216472557121df2fb11`;
-- exact arithmetic: GMP with both gmpxx/gmp linked; all eight required targets PASS; manifest verified; source status empty; `runtimeExecution=false`;
-- semantic change: only `tests/FieldAlignedCurveNetworkTests.cpp`;
-- loaded witnesses consume pipeline product snapshots; two-ring stays constructed/AtlasDerived;
-- D1 publishes one success/failure record per witness and asserts only after the loop; typed construction errors preserved;
-- static warning: atlas/network snapshots are currently copied only after cut-graph/global-plan success, so torus Z12 may stop R4 before 48/48;
-- report: `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md`;
-- exact TB plan: `Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`.
+- semantic/test source: `76d757aab0ce18df09ce2823302d2dc224965187`;
+- compile run: `33230423139`;
+- changed-owner result/log: `9708313428 / 9708313563`;
+- immutable full package: `9708324052` / `sha256:48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a`;
+- full compile log: `9708324292` / `sha256:d200b4210a1adc204fd2fd90df07727c73c8c35c65110d99233ea44d9bd5d0fd`;
+- packaged source archive: `f16141613e877c78746548596449ef494fb9f4b384736526d74eaaf54a0a9a2d`;
+- exact arithmetic: GMP/GMPXX; changed owner then all eight standard targets PASS; manifest/source-status checks PASS; `runtimeExecution=false`;
+- source changes: only AA1 snapshot placement in `src/pipeline/RemeshPipeline.cpp`, AA5 publication hygiene in `tests/FieldAlignedCurveNetworkTests.cpp`, and required lesson in `LESSONS.md`;
+- all six accepted/frozen selector hashes unchanged; `selected_r2_branch=NONE`; `selected_gate=NONE`;
+- report: `Architecture_M3_CP4c2_CB3_DIAG_Code_Build_Report.md`;
+- exact TB plan: `Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md`.
 
-R2 supplies compiled diagnostic authority only. It does not resolve runtime candidate closure, choose Y5, or accept CP4c-2.
+CB3 supplies compiled observability authority only. It does not adjudicate the sphere, select Y5, execute 357/358, or accept CP4c-2.
+
+### M3-CP4c-2 TB-X2-R4 — current reviewed runtime evidence
+
+- authoritative EXEC run/job: `33228460953 / 99036688477` on source/package `5ad711e5d4ced95f38e103b993139a6307ba2cee / 9707091209`;
+- torus publishes network-only 48/48, `networkOnlyCellular=false`, a retained cut graph and a retained GlobalTopologyPlan, then fails downstream at tracing;
+- prescribed sphere fails at `surface-cut-graph/CellularityNotEstablished`, but pre-CB3 snapshot placement made its already-built atlas/network invisible;
+- two-ring publishes successfully/self-consistently;
+- duplicate sphere Y1 text is conditionally admissible only if AA2 proves the two prior lines byte-identical;
+- R4 independent review authorizes AA0-AA9 and no gate; `selected_r2_branch=NONE`; `selected_gate=NONE`;
+- review record: `Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md`.
 
 ### M3-CP4c-2 CB2-DIAG-R1 — superseded build authority, runtime unaccepted
 
@@ -397,41 +315,31 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN through CB2-DIAG-R2 and **R4-EXEC** are complete; CP4c-2 remains runtime-unaccepted.
+- CP4c-2 DEFN through CB3-DIAG and R4 review are complete; CP4c-2 remains runtime-unaccepted.
 - Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**.
-- Current build/package authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / package `9707091209`.
-- Current R4 runtime evidence is run/job `33228460953 / 99036688477`: torus 48/48 success, prescribed-sphere
-  snapshot-construction failure, two-ring success, duplicate sphere Y1 publication, D1 `STOP_EVIDENCE_CONFLICT`,
-  D2 skipped.
-- R2 CAND-01/CAND-02, R3 CAND-01/CAND-02, X2 CAND-04, and new R4 CAND-01/CAND-02 require R4-REV disposition.
-  EXEC closes none by interpretation.
-- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate
-  runtime has not begun. Frozen candidate selectors remain 357 / `b896d0db…64dc70` and 358 /
-  `6eda3aad…b64fbe62`.
-- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt
-  **5**; M3 packages **61**.
-- **Exact next is `M3-CP4c-2-CB3-DIAG`**, Code + Build, runtime-free, under measures AA0-AA9, with `src/` opened only for AA1's snapshot placement.
+- Current build/package authority is `76d757aab0ce18df09ce2823302d2dc224965187` / package `9708324052`.
+- Current reviewed runtime evidence remains R4 run/job `33228460953 / 99036688477`: torus proves the cut graph can drive A2b to a GlobalTopologyPlan and then fails downstream at tracing; sphere snapshot visibility is an AA1-corrected observability defect pending R5 runtime; two-ring is self-consistent.
+- R4-CAND-01 is active with corrective source compiled; R4-CAND-02 is localized with corrective source compiled; R4-CAND-03 is downstream/out-of-scope; R2-CAND-02 remains active until sphere measurement; X2 CAND-04 remains active/unlocalized until D2.
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate runtime has not begun. Frozen candidate selectors remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…4fbe62`.
+- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **62**.
+- **Exact next is `M3-CP4c-2-TB-X2-R5-EXEC`**, artifact-only on package `9708324052`; after raw EXEC evidence, exact next is independent `M3-CP4c-2-TB-X2-R5-REV` and the implementation loop stops at that boundary.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/CB.md`; `GMP_COMPILE_POLICY.md` is a mandatory read per start-checklist step 5
+- turn-based-coding-agent `references/turns/TB.md` / execution-only TB guidance; artifact-only, no source mutation
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` — **the authorizing record**; §3 the defect, §7 measures AA0-AA9, §8 predictions.
-2. `src/pipeline/RemeshPipeline.cpp:6560-6640` — the early-return chain and the snapshot block AA1 relocates. **This is the only production region AA1 opens.**
-3. `tests/FieldAlignedCurveNetworkTests.cpp` — `build_cp4c_pipeline_products_fixture` and `build_cp4c_production_fixture` (the relaxed and strict variants; the strict one may not be weakened), `cp4c_network_only_fixture` (~5259), and the D1 identity's final assertion at ~6071 that AA5 rewrites.
-4. Result artifact `9707662462` — `d1-records.txt` for AA2's byte-identity check and `d1-records.json` for AA6's per-component data.
-5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Plan.md` §3 — the 419/437/474 localization AA4 must produce.
-6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — §5 the A2a' contract, X6 idempotence.
+1. `.agents/Directional/Architecture_M3_CP4c2_CB3_DIAG_Code_Build_Report.md` — exact semantic/build authority and AA0-AA9 disposition.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` — binding R5 execution order and stop rules.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md` — AA0-AA9 authorization and predictions.
+4. Immutable package `9708324052`; no rebuild. Prior R4 result artifact `9707662462` is read only for AA2 byte identity.
+5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_Plan.md` §3 — D2's 419/437/474 localization meanings.
+6. `.agents/Directional/Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — A2a' contract and X6 idempotence.
 7. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R4-CAND-01/02/03, R2-CAND-02, X2 CAND-04.
-8. `TODO.md` / `CHANGELOG.md` — current state and accounting.
-
-Do not touch `src/` or `include/` beyond AA1's snapshot placement; do not change `SurfaceCutGraph` logic or
-`proves_cellularity()`; do not change or invent selectors; do not run a cumulative gate before AA8's prefixes
-are green; do not fix the torus's post-A2b `tracing` failure.
+8. `TODO.md` / `CHANGELOG.md` — current state/accounting.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -21,43 +21,43 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-CB3-DIAG` — snapshot retention + sphere measurement, under measures **AA0–AA9**
+## Current focus — `M3-CP4c-2-TB-X2-R5-EXEC` — artifact-only verification of CB3-DIAG
 
-**`M3-CP4c-2-TB-X2-R4-REV` is COMPLETE / REVIEW GREEN.** Record:
-`Architecture_M3_CP4c2_TB_X2_R4_Independent_Review_Record.md`.
+`M3-CP4c-2-CB3-DIAG` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Semantic/test source
+`76d757aab0ce18df09ce2823302d2dc224965187` implements only AA1 snapshot retention, AA5 publication
+hygiene, and the required LESSONS entry. No Directional runtime, benchmark, 357/358 selector gate, cumulative
+gate, or acceptance attempt occurred.
 
-**The evidence contains an unremarked success that reframes the checkpoint.** The torus published
-`pipelineCutGraphAvailable=true` **and `pipelinePlanAvailable=true`**. `products.globalTopologyPlan` is
-assigned at exactly one site — `RemeshPipeline.cpp:6634`, reachable only after `GlobalTopologyPlan::make`
-succeeds — so **the torus now derives a topology plan.** `UncutFaceComponentOrbitSeedNotUnique`, the failure
-that defined CP4c-2, is gone, and D1 independently confirms the other half: torus network-only cellularity is
-**false**, matching the frozen theorem. **The DEFN design is measured working end to end.**
-`M3-CP4c2-TB-X2-R4-CAND-03` records it, together with the residual `terminalFailureStage=tracing`, which is
-downstream of A2b and **out of scope** — AA7 classifies it, does not fix it.
+Authoritative build evidence:
 
-**The sphere's "all snapshots unavailable" is a PRODUCT observability defect, fully localized.** Its record is
-self-contradictory on its face: `terminalFailureStage=surface-cut-graph/CellularityNotEstablished` with atlas
-and network both `false` — yet failing *at* A2a′ requires dereferencing all three products at
-`RemeshPipeline.cpp:6602-6605`. Mechanism: lines 6576-6612 are a chain of early `return fail_surface_cells(...)`
-and lines 6626-6634 assign all five snapshots **after every one of them**, so any pre-A2b failure discards
-products that were built successfully. **This also means measure Z11 rested on a false assumption — the
-reviewer's — that snapshots survive failure.** `R4-CAND-02`; owned by **AA1**, the only `src/` change
-authorized in this checkpoint, priced by **AA8**: the successor TB must re-prove accepted prefixes
-316/346/353/355.
+- compile run `33230423139` — changed-owner and eight-target GMP jobs GREEN;
+- immutable package `9708324052` / `48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a`;
+- compile log `9708324292` / `d200b4210a1adc204fd2fd90df07727c73c8c35c65110d99233ea44d9bd5d0fd`;
+- packaged source archive `f16141613e877c78746548596449ef494fb9f4b384736526d74eaaf54a0a9a2d`;
+- all eight standard targets compile/link with GMP/GMPXX; manifest/source-status checks PASS; `runtimeExecution=false`.
 
-**The `STOP_EVIDENCE_CONFLICT` was procedurally correct but the evidence is admissible.** The duplicate is
-byte-identical, so there is exactly one *distinct* record per witness and nothing is indeterminate. The
-contract is **amended, not waived** — exactly one *distinct* record per witness — and the adjudication is
-**conditional on AA2** confirming byte-identity from `d1-records.txt`; if the lines differ in any byte the stop
-stands and the evidence is void.
+Frozen selector authority is unchanged: first-316 `601ce2b6…0193c`, first-346 `20d3b0b1…3e46a`, first-353
+`51ff96d7…ac6a5`, accepted 355 `e9d88f11…afeaa`, frozen 357 `b896d0db…64dc70`, frozen 358
+`6eda3aad…4fbe62`. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
-**Closed by this review:** `R2-CAND-01` (torus now `pipeline-authoritative` at 48/48 from authority),
-`R3-CAND-01` (reconstruction removed), `R3-CAND-02` (sphere failed and the other two still published — Z13
-works). **`R2-CAND-02` remains ACTIVE** — torus and two-ring are self-consistent but the sphere is still
-unmeasured. **`CAND-04` remains UNLOCALIZED for the fifth consecutive turn; AA4 exists to end that.**
+Exact next is **artifact-only `M3-CP4c-2-TB-X2-R5-EXEC`** under
+`Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md`:
 
-`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Stable accounting remains
-**42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**.
+1. immutable preflight and selector-hash recomputation;
+2. **AA8 first:** re-prove accepted prefixes 316/346/353/355; any regression stops R5 before CP4c-2-local credit;
+3. **AA2:** prove the two prescribed-sphere Y1 lines in prior artifact `9707662462` byte-identical; mismatch stops;
+4. D1 exactly once: require one Y1 record per witness plus `m3Cp4c2PublicationCounts=1/1/1/3`; measure the sphere from retained pipeline products; preserve the torus plan-success finding and classify downstream tracing as out of scope;
+5. if D1 evidence is structurally admissible, D2 exactly once: localize sphere `CellularityNotEstablished` to exact site 419/437/474 with term-by-term certificate;
+6. immutable postflight; no configure/compile/relink/repair/mutation/benchmark.
+
+R5-EXEC is raw evidence only. It may not select 357/358 or close the checkpoint. After EXEC evidence is durably
+preserved, exact next is independent **`M3-CP4c-2-TB-X2-R5-REV`**, and the implementation loop stops at that
+review boundary.
+
+Candidate state remains runtime-pending: R4-CAND-01 corrective publication source compiled; R4-CAND-02 localized
+product-observability correction compiled; R4-CAND-03 torus tracing is out of scope; R2-CAND-02 remains active until
+the sphere oracle is measured; X2 CAND-04 remains active/unlocalized until D2. Stable accounting remains
+**42 / 14 / 28**, debt **5**; M3 packages advance to **62**.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R4-EXEC` stop (retained for provenance)
 
