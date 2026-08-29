@@ -1,12 +1,34 @@
 # Directional — Orientation
 
+## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
+
+**This document is durable project authority.** It may be corrected or extended. It must **not** be deleted,
+renamed away, collapsed into another document, or replaced by a summary without explicit user authorization.
+
+**Every REVIEW turn must update this file before closing**, so a cold-start agent is never more than one review
+behind. The required update covers:
+
+1. the **currency line** below — turn ID and date;
+2. **§3 Where we are** — selector authority, stable accounting, checkpoint status;
+3. **§4 the witness table** — if any witness's state changed;
+4. **§7 Open problems** — re-ordered by current priority, with resolved items removed;
+5. **§8 Recurring defect patterns** — if the turn found a new pattern or a new instance of an existing one.
+
+**Keep it substance-only.** No turn workflow, no policies, no checklists, no transport or connector mechanics.
+That boundary is what makes this document cheap enough to read first, and it is the reason it exists.
+
+Authority for this rule: user instruction, recorded in
+`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` §8.
+
+---
+
 **Purpose.** Get an agent from cold start to useful in one read. This is *substance only*: what the system is,
 where it stands, what is broken, and where to look. It deliberately contains **no procedural information** — no
 turn workflow, no policies, no checklists, no transport or connector mechanics. Those live in
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-29 at `M3-CP4c-2-TB-X2-R6-REV`. If the head commit is far ahead, trust
+**Currency.** Last updated 2026-08-29 at `M3-CP4c-2-TB-X2-R7-REV`. If the head commit is far ahead, trust
 `TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
 "where we are" section; the architecture and recurring-defect sections age much more slowly.
 
@@ -65,6 +87,12 @@ is comparable across the whole arc.
 | accepted 355 | `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` |
 | CP4c-2 candidate 357 (frozen, unselected) | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` |
 | CP4c-2 candidate 358 (frozen, unselected) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
+
+**These six values are authority and were recomputed from bytes at `M3-CP4c-2-TB-X2-R7-REV`.** They derive from
+`Architecture_M3_CP4c1_Required_Green_Selector.txt` — `head -316`, `head -346`, `head -353`, and the whole file —
+plus the two CP4c-2 candidate files. **Recompute rather than copy**, and never write a digest as `PREFIX…SUFFIX`
+where a value is expected: `PR8` orchestration defect `R7-ORCH-01` was four hashes expanded back to full length
+from abbreviations, one of them only 63 characters long.
 
 Stable regression accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**.
 
@@ -135,19 +163,25 @@ trace-crossed ones, where a typed `NoAdmissibleCutForNonDiscComponent` stop is r
 
 ## 7. Open problems, in priority order
 
-1. **`PR8-R044 / M3-CP4c2-R002`** — ACTIVE STABLE. `SurfaceCutGraph::candidate_hash` consumes gauge-dependent
-   `atlasDigest`, and `GlobalTopologyPlan::candidate_semantic_digest` consumes that hash as *semantic* identity,
-   so branch relabeling changes the plan's semantic digest. Accepted ordinal 310 fails. The fix is to give
-   `SurfaceCutGraph` a **separate semantic digest**, leaving the provenance hash intact for tamper rejection —
-   the same split `FieldAlignedCurveNetwork` was given in CP3a.
+1. **`PR8-R044 / M3-CP4c2-R002`** — ACTIVE STABLE, **corrected in CB5 but runtime-unproved**.
+   `SurfaceCutGraph::candidate_hash` consumed gauge-dependent `atlasDigest`, and
+   `GlobalTopologyPlan::candidate_semantic_digest` consumed that hash as *semantic* identity, so branch
+   relabeling changed the plan's semantic digest and accepted ordinal 310 failed. The fix — a **separate
+   semantic digest** with the provenance hash left intact for tamper rejection, the same split
+   `FieldAlignedCurveNetwork` was given in CP3a — is compiled and has never executed. Closes on ordinal 310
+   green in a run reaching the full 355.
 2. **`PR8-R043 / M3-CP4c2-R001`** — RESOLVED AT LOCUS, closure pending. Ordinal 305 passes on the CB4 package;
    closes only at a full **355/355**.
-3. **`M3-CP4c2-TB-X2-CAND-04`** — the prescribed sphere's `CellularityNotEstablished`, **unlocalized for seven
-   turns**. D2 has been scheduled and correctly skipped five times because an upstream gate failed first. This
-   is the checkpoint's actual open question.
-4. **Torus post-A2b `tracing` failure** — downstream of A2b, out of CP4c-2 scope, tracked and not to be fixed
+3. **`M3-CP4c2-TB-X2-CAND-04`** — the prescribed sphere's `CellularityNotEstablished`, **unlocalized for eight
+   turns**. D2 has been scheduled and not run in R2, R3, R4, R5, R6 and R7 — every stop individually correct,
+   and every one upstream of the measurement. This is the checkpoint's actual open question, and the R7 review
+   authorizes running the non-gating diagnostics **before** the accepted-prefix gate to end the drought.
+4. **`M3-CP4c2-TB-X2-R7-ORCH-01`** — ACTIVE, non-stable, documentation-only. Four fabricated selector-hash
+   constants in the CB5 closeout report and the R7 plan stopped R7 before runtime. Selector bytes and the
+   immutable package are unaffected.
+5. **Torus post-A2b `tracing` failure** — downstream of A2b, out of CP4c-2 scope, tracked and not to be fixed
    here.
-5. **Mechanical witness A1 `IncompleteCycleBasis`** — CP4c-3 / C2.
+6. **Mechanical witness A1 `IncompleteCycleBasis`** — CP4c-3 / C2.
 
 **The standing prediction, unadjudicated across six turns:** the prescribed sphere's network is *already*
 cellular, needs zero cuts, and its `CellularityNotEstablished` is an idempotence failure rather than a genuine
@@ -177,7 +211,12 @@ fails; one error code collapsing several mechanisms with no locus; one witness's
 before the others publish; a typed error flattened to a bare string. **The witness the design reasoned about is
 not the witness that exercises the code** — this bit at ordinal 13, at the C5 torus, and at the sphere.
 
-A fifth, meta-level: **a result that discharges a premise must be reported as a finding, not left as a field
+**Transcribed constants and abbreviated digests.** A hash copied from prose is not evidence; a hash written as
+`PREFIX…SUFFIX` in a table where values belong invites a later reader to reconstruct the middle, and the
+reconstruction looks plausible. Four such values reached an executor and one was not even 64 characters.
+Recompute from the named file, and validate any expected digest as exactly 64 lowercase hex at authoring time.
+
+A sixth, meta-level: **a result that discharges a premise must be reported as a finding, not left as a field
 value.** The torus's `pipelinePlanAvailable=true` — the fact that A2a′ works end to end — sat unremarked in an
 evidence table under a "semantic red" verdict.
 

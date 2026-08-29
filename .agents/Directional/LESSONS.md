@@ -203,6 +203,15 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     interior-singularity check. Both guards were correct; the ordering made one unreachable. When a
     negative regresses to a different rejection code, suspect ordering before suspecting the contract —
     and prefer moving the shadowed check earlier over weakening the test to accept whatever arrives.
+22n. **A cryptographic digest is written in full, or replaced by a file reference and the word "recompute" —
+    never as `PREFIX…SUFFIX` where a value is expected.** An abbreviated hash in a table of values is a
+    *reference* wearing a value's clothes, and a later reader cannot reliably tell the difference. Four
+    abbreviated selector digests were expanded back to full length by inventing the middle, travelled through a
+    build report into an execution plan, and stopped a turn before its first process. One of the fabrications
+    was **63 characters** — not even a valid SHA-256 — and nothing in the authoring path checked. Validate every
+    expected digest as exactly 64 lowercase hex at the moment it is written, and prefer naming the source file
+    and derivation (`head -N <file>`) over transcribing the number at all: a transcribed constant cannot
+    distinguish drift from mistranscription, which is the whole reason the mismatch cost a turn to diagnose.
 22k. **A review that names a normative representation must cite the architecture that settles it, not the
     code path that exhibits the symptom.** CP4c-2's R2 review declared the whole-source-face barrier partition
     normative on three grounds that were each individually true — it is what one A2b traversal consumes, the

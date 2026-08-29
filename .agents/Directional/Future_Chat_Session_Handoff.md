@@ -41,7 +41,8 @@ At the end of every turn:
 9. `[ChatGPT Web]` `.github/workflows/agent-compile-reusable.yml` owns one durable compiler-cache namespace/schema. Turn-specific callers must not invent cache epochs, cache namespaces, or unrelated per-turn compatibility keys. Restore must always use the durable compatible namespace so prior ccache entries are reusable across turns.
 10. work units 2 and 3, plus the exact M1 full-authority partial edges tasklisted in `TODO.md`, have the user-authorized partial-CB cadence exception: only those exact `P-CB` → `P-CB` edges may omit an intervening TB. Every partial remains runtime-free and semantically unaccepted; the final packaging partial must advance to its TB before later milestone work starts.
 11. `[ChatGPT Web]` `.agents/Directional/TOOL_USE_CONSERVATION_POLICY.md` is durable operating authority and a mandatory full read at the start of every turn. Apply it before selecting repository-read, workflow-observation, artifact-download, multi-file-write, cleanup, or PR-comment strategies.
-12. `[ChatGPT Web]` `RETENTION_POLICY.md`'s **downloadable work-preservation durability barrier is mandatory**. Any coherent repository-applicable work that exists only in the local/container workspace must be emitted as a File-Library-backed downloadable `Directional__<TURN-ID>__base-<12SHA>__work-preservation.patch` before entering tool-heavy remote orchestration or another interruption-risk phase. A local `/mnt/data` file alone is not durable. The patch is recovery material, not semantic/build/test authority.
+12. **`.agents/Directional/ORIENTATION.md` is DURABLE and must be updated at every REVIEW turn.** It is the cold-start context document: architecture, current position, witnesses, open problems, recurring defect patterns and source pointers, deliberately **substance-only** with no procedural content. It may be corrected or extended; it must not be deleted, renamed away, collapsed into another document, or replaced by a summary without explicit user authorization. Every REVIEW turn updates its currency line, "where we are", the witness table if a witness changed, open problems in priority order, and the recurring-defect section if the turn found a new pattern or instance. Authority: user instruction, recorded in `Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` §8.
+13. `[ChatGPT Web]` `RETENTION_POLICY.md`'s **downloadable work-preservation durability barrier is mandatory**. Any coherent repository-applicable work that exists only in the local/container workspace must be emitted as a File-Library-backed downloadable `Directional__<TURN-ID>__base-<12SHA>__work-preservation.patch` before entering tool-heavy remote orchestration or another interruption-risk phase. A local `/mnt/data` file alone is not durable. The patch is recovery material, not semantic/build/test authority.
 
 Do not add transcripts, chronological tool history, copied superseded artifact tables, obsolete task selections, or generic procedure already owned by policy/skill files. Concision never authorizes deletion of durable information.
 
@@ -83,7 +84,53 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R7-REV` — independent selector-authority review
+## Mandatory next turn — `M3-CP4c-2-DOC-R1` — documentation-only hash correction, measures **AE0-AE9**
+
+`M3-CP4c-2-TB-X2-R7-REV` is **COMPLETE / REVIEW GREEN**. Read
+`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md`: §1 the recomputed authority, §2 the mechanism,
+§4 the design point, §5 what to preserve, §7 measures AE0-AE9, §8 the ORIENTATION rule.
+
+**R7-0's stop was correct.** It refused to substitute observed values for planned constants — which would have
+silently rewritten executable authority mid-run — stopped before the first Directional process, and ran a
+post-preflight integrity check even though runtime never started. **AE7 preserves all three; do not "fix" any
+of them.**
+
+**All six hashes were recomputed from bytes in review** and match the immutable package, R6-EXEC and
+`ORIENTATION.md` exactly. **The selector bytes never changed and the accepted authority chain is intact.** The
+authoritative values are in the review record §1 — but **AE0 requires you to derive them yourself** from
+`Architecture_M3_CP4c1_Required_Green_Selector.txt` (`head -316`, `head -346`, `head -353`, whole file) and the
+two CP4c-2 candidate files, **not to copy them from any prose, including that table.**
+
+**The defect is fabricated constants, and the proof is arithmetic:** the R7 plan's expected value for selector
+357 is **63 characters**. SHA-256 is 64, so a stale or wrong-file digest would still be 64 — this was assembled
+by hand. Every failing constant shares the **first eight** and the **trailing** characters with the truth and
+differs only in the middle: the signature of `PREFIX…SUFFIX` expanded back to full length.
+
+**Part of the cause is the reviewer's.** R6-REV's AD0 wrote all six hashes abbreviated, inside a measures table
+that reads like a value table. **Rule adopted (lesson 22n): a digest is written in full or replaced by a file
+reference plus "recompute" — never abbreviated where a value is expected.** **AE4** adds mandatory
+64-lowercase-hex validation at authoring time; that alone would have caught the malformed value a turn earlier.
+
+**AE2 is not optional and its report must include counts.** Sweep `.agents/Directional/**` for any other
+selector-hash-shaped string and verify each against recomputed truth. **Report the number checked and the number
+corrected even if it is zero** — a silent sweep is not evidence a sweep happened.
+
+**One narrow sequencing change (AE8).** After the correction R7 retries unchanged in content, except that the
+**non-gating** diagnostics R7-2..R7-5 run **before** the accepted-prefix gate and publish regardless of its
+outcome. They grant no credit and mutate nothing, so this reorders publication, not authority. It ends an
+eight-turn drought: `CAND-04` has been scheduled and not run in R2, R3, R4, R5, R6 and R7 — every stop
+individually correct, every one upstream of the measurement. **If you judge that this ordering would let a
+diagnostic observe state the gate would have rejected, stop and say so** rather than proceeding.
+
+**`ORIENTATION.md` is DURABLE and must be updated at every REVIEW turn** — see durable policy item 12 and
+end-of-turn checklist item 7.
+
+`PR8-R043` unchanged (RESOLVED AT LOCUS, closure pending a full 355/355). **`PR8-R044`'s CB5 correction is
+compiled but runtime-unproved** — the semantic/provenance split, the orbit-index resolution and the AD5
+diagnostic have never executed. Stable accounting **44 / 14 / 30**, debt **5**, M3 packages **64**.
+`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+
+### Superseded — the R7 EXEC stop as reported (retained for provenance)
 
 `M3-CP4c-2-TB-X2-R7-EXEC` is **COMPLETE AT R7-0 / HARD ORCHESTRATION STOP / NO DIRECTIONAL RUNTIME**. Immutable
 CB5 package `9719216316` remains valid and unchanged: outer
@@ -122,31 +169,28 @@ selection, mechanical/C2, or CP4c-3 progress.
   blocked pending reviewed R7 evidence.
 - Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
   packages **64**.
-- **Exact next is `M3-CP4c-2-TB-X2-R7-REV`**, independent review/planning only.
+- **Exact next is `M3-CP4c-2-DOC-R1`**, documentation-only, under measures AE0-AE9; then the R7 retry on unchanged package `9719216316`.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent review/planning references
+- turn-based-coding-agent documentation/planning references; **no Code + Build or runtime modules**
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — cold-start architecture and exact selector table.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Plan.md` — **exact next-turn scope**.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_EXEC_Artifact_Only_Evidence.md` — R7-0 hard-stop evidence.
-3. `Directional__M3-CP4c-2-TB-X2-R7-EXEC__raw-evidence.tar.gz` — immutable raw preflight evidence.
-4. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` — faulty executable constants;
-   review, do not silently repair during EXEC.
-5. Immutable package `9719216316` / source `755485865a7cf9c485d754f22b82a41ee151824b` — inspect only; no runtime in REV.
-6. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R6_EXEC_Artifact_Only_Evidence.md` and
-   `.agents/Directional/M3_CP4c1_Closure_Record.md` — prior exact selector/runtime authority.
-7. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` and CB5 closeout patch provenance — locate
-   the transcription boundary without re-adjudicating the semantic fix.
-8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R7-ORCH-01`, R043, R044.
-9. `TODO.md` / `CHANGELOG.md` — current state/accounting.
+0. `.agents/Directional/ORIENTATION.md` — **read first**; cold-start substance and the exact selector table. **Durable; update it at every REVIEW turn.**
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` — **the authorizing record**; §1 the recomputed authority, §2 the mechanism, §7 AE0-AE9, §8 the ORIENTATION rule.
+2. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` plus `Architecture_M3_CP4c2_Required_Green_Selector_{357,358}.txt` — **the only authority for AE0**; recompute, do not copy from prose.
+3. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` (AD0 audit) and `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` (preflight table) — the two documents AE1 corrects, and the only two it may touch.
+4. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_EXEC_Artifact_Only_Evidence.md` — R7-0's hard-stop evidence and the mismatch table.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R7-ORCH-01`, `PR8-R043`, `PR8-R044`, `CAND-04`.
+6. `.agents/Directional/LESSONS.md` **22n** — the digest-abbreviation rule this turn adopts.
+7. `TODO.md` / `CHANGELOG.md` — current state/accounting.
 
-Do not run Directional runtime, configure/compile/relink/repair, mutate selectors/fixtures/product/tests, or run
-357/358/cumulative gate/benchmarks/mechanical/C2/CP4c-3 in R7-REV.
+**This is a documentation-only turn.** Do not run any Directional runtime including the accepted prefix, 357,
+358, D2 or a cumulative gate; do not configure, compile, relink, package, or repair; do not edit any selector
+file, product, test, or fixture; do not retro-expand historical abbreviated digests; do not touch the mechanical
+witness, C2, or CP4c-3.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
@@ -194,6 +238,7 @@ gate. Copy that pattern into CP4's witnesses.
 4. Confirm exact source/package/run/artifact identities and stable regression totals are recorded in the owning durable report/tracker.
 5. `[ChatGPT Web]` **Confirm no meaningful repository-applicable work remains only in the local/container filesystem.** For each coherent local work unit not yet durable on the working branch, emit or refresh the mandatory File-Library-backed `Directional__<TURN-ID>__base-<12SHA>__work-preservation.patch` and locally verify its declared base/hash/applicability **before** cleanup or final repository closeout. If all such bytes are already durably committed, no new preservation patch is required solely for duplication.
 6. `[ChatGPT Web]` Make sure `.agents/connector-triggers/turn-cleanup/manifest.txt` is up to date and make sure it does not include any durable files or any other files that need to be retained. Execute `.github/workflows/agent-turn-cleanup.yml` workflow to process the manifest and clean up the repository, and trimp historical PR comments.
-7. Confirm the handoff names exactly one next turn and the task index agrees with it.
-8. `[ChatGPT Web]` Make the final repository write one summarized PR #8 conversation comment after all branch/PR-description writes. No downloadable-artifact/tool emission may occur after that final comment.
+7. **On every REVIEW turn, update `.agents/Directional/ORIENTATION.md` before closing** — currency line, "where we are" including selector authority and stable accounting, the witness table if a witness changed, open problems in priority order, and the recurring-defect section if the turn found a new pattern or a new instance. It is durable; keep it substance-only.
+8. Confirm the handoff names exactly one next turn and the task index agrees with it.
+9. `[ChatGPT Web]` Make the final repository write one summarized PR #8 conversation comment after all branch/PR-description writes. No downloadable-artifact/tool emission may occur after that final comment.
 
