@@ -1,5 +1,5 @@
-purpose=M3-CP4c-2-CB2-DIAG-R2 validate full package caller draft
+purpose=M3-CP4c-2-CB2-DIAG-R2 validate closeout apply caller
 candidate=.agents/Directional/turn-payloads/m3-cp4c0b-t5-exec.yml
-semantic_source_sha=5ad711e5d4ced95f38e103b993139a6307ba2cee
-precompile_run=33226421754
+base_sha=0cd1cf2f70544fcad46cac3618821d5d04d4bcad
+patch_sha256=d5d03900f3ec4d63b14de993b5b382a3a0461899ce2ed4860fce42bc14322903
 retry=0
