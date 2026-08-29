@@ -1,0 +1,39 @@
+name: Temporary M3 CP4c2 CB3 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-apply-m3-cp4c2-cb3-20260828.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: temp-m3-cp4c2-cb3-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: drive-apply-m3-cp4c2-cb3
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1StPVOgRnObQJ2ZWY24Lh_15N0-6bAtvM
+      patch_sha256: 6f7ade8d0fbe02093d352c6e81151625940d25caaf74073d16dd223efbd0cd40
+      base_sha: 3703a398eebe9b67f6a18bbba2d441f927cbcec7
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-2-CB3-DIAG: retain pipeline snapshots at production boundaries"
+      retention_days: 7
+    secrets: inherit
