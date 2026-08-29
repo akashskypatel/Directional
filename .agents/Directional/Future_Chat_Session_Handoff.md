@@ -83,40 +83,27 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R5-REV` — independent review of R5 accepted-prefix red
+## Mandatory next turn — `M3-CP4c-2-DEFN-R1` — actual embedded-graph cut-cellularity redefinition
 
-`M3-CP4c-2-TB-X2-R5-EXEC` is **COMPLETE AT THE FROZEN AA8 STOP / ACCEPTED-PREFIX SEMANTIC RED**. Read
-`Architecture_M3_CP4c2_TB_X2_R5_EXEC_Artifact_Only_Evidence.md` and the frozen
-`Architecture_M3_CP4c2_TB_X2_R5_Artifact_Only_Test_Benchmark_Plan.md` before review.
+`M3-CP4c-2-TB-X2-R5-REV` is **COMPLETE / REVIEW GREEN / ACCEPTED PRODUCT REGRESSION CONFIRMED / REPLAN REQUIRED**. Read `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md` in full before planning.
 
-Runtime run/job `33232106030 / 99046593525` consumed immutable GMP package `9708324052` from semantic/test source
-`76d757aab0ce18df09ce2823302d2dc224965187`. Package/source/GMP and all six selector hashes passed preflight. AA8
-then ran accepted identities in fresh processes: ordinals 1-304 PASS; ordinal 305
-`GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selected once and failed after
-`SurfaceCutGraph::make` reported `CellularityNotEstablished`. The frozen stop rule prevented 306-355, AA2, D1, D2,
-357/358, cumulative gate, and benchmarks from running.
+R5 run/job `33232106030 / 99046593525` on immutable GMP package `9708324052` proved accepted ordinals 1-304 and failed accepted ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` first at `SurfaceCutGraph::make(...)=CellularityNotEstablished`. The missing postflight is an orchestration defect, not acceptance evidence; no downstream AA2/D1/D2/357/358 outcome may be inferred.
 
-Result/log artifacts are `9708817991 / 9708818239`, SHA-256
-`bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 /
-b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`. A temporary shell harness control bug
-re-enabled `set -e` before returning the nonzero identity, so the shell exited before planned postflight inventories
-and summary emission. Preserve that limitation: R5-REV owns whether the semantic evidence is admissible as-is or
-requires a bounded recovery. Do not silently infer a postflight.
+Independent review promotes the failure to stable **`PR8-R043 / M3-CP4c2-R001`**, `AUTHORITY_DOMAIN_CONFLATION / RP-01`, ACTIVE. CP4c-2 reintroduced a whole-source-face/source-edge-barrier proxy that CP4ab had already proved cannot represent actual embedded graph faces when traces cross source-face interiors. On the exact accepted two-ring, actual embedded graph authority is `V/E/F=9/11/3`, while the self-consistent proxy is `10/11/2`; current `SurfaceCutGraph` mixes network `V/E=9/11` with proxy `F=2`, yielding `0 != source χ 1` at the final certificate. A one-line Euler repair is forbidden because it would certify the wrong object.
 
-New candidate `M3-CP4c2-TB-X2-R5-CAND-01` is ACTIVE / ACCEPTED-PREFIX REGRESSION / NON-STABLE / REVIEW REQUIRED.
-At EXEC boundary its initiating locus is `SurfaceCutGraph::make(...)=CellularityNotEstablished`; the later variant
-exception is secondary. Review must classify product vs witness vs test authority and then select only the bounded
-successor justified by preserved evidence. Stable accounting remains **42 / 14 / 28**, debt **5**, packages **62**.
+The prior R2 review statement that `sourceEdgeBarrier` is the normative cellularity complex is **withdrawn**. R2-CAND-02 is now ACTIVE / TEST-AUTHORITY / WRONG SEMANTIC COMPLEX. The independent diagnostic must measure the same actual embedded graph/fragment complement as the product through a different mechanism. R4 AA2 is independently confirmed byte-identical (two 468-byte sphere records, SHA-256 `84f9ca015ab63093086981cbd29256526159329c64537dfb52fba9e89d9fd078`), while AA5 runtime publication and AA1 sphere snapshot retention remain pending because R5 never reached D1. AA1 is not causal and must not be reverted.
 
-`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. R5-REV is evidence-only: run no
-new Directional runtime, do not infer AA2/D1/D2, do not execute 357/358 or a cumulative gate, and do not start a
-corrective CB, mechanical/C2, or CP4c-3 unless the review durably authorizes a later successor.
+Stable accounting is **43 events / 14 categories / 29 recurrences**, produced-witness debt **5**, M3 packages **62**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+
+**Exact next is definition/replanning only: `M3-CP4c-2-DEFN-R1`, measures AB0–AB9.** Freeze one pre-region exact representation of the actual `FieldAlignedCurveNetwork ∪ cutEdges` complement; reuse/refactor accepted CP4ab fragment/orbit authority or an equivalent exact arrangement; define candidate-cut updates and local/global certification in that one complex; prove or explicitly stop on cut-selection completeness; and redefine D1/D2 as an independent same-semantic-complex oracle. Run no Directional runtime, compile, build, package, selector 357/358, cumulative gate, mechanical/C2, or CP4c-3. Do not start corrective CB4 until DEFN-R1 is durably complete.
 
 ## M3-CP4c-2 frozen definition context — cut-graph authority for A2b, measures **X0-X9**
 
 `M3-CP4c-2-DEFN` is **COMPLETE / DEFINITION-ONLY**. Read
 `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` in full before writing any code; §5 is the frozen contract,
 §7 the measures, §8 the falsifiable predictions.
+
+**R5-REV correction:** §5.4.1 now withdraws the whole-source-face/source-edge-barrier construction as cellularity authority pending DEFN-R1. §§5.1–5.3 remain binding; do not implement the stale §5.4 proxy guidance.
 
 **CP4c-1's closure was independently re-verified before the definition was written** — all four selector hashes
 recomputed identical, `src/` and `include/` frozen across CB4, W1/W2/W5 confirmed in source. The claim is upheld.
@@ -192,15 +179,15 @@ CP4c-3 remains blocked until CP4c-2 closure.
 
 CB3 supplies compiled observability authority only. It does not adjudicate the sphere, select Y5, execute 357/358, or accept CP4c-2.
 
-### M3-CP4c-2 TB-X2-R5-EXEC — current raw runtime evidence, independent review pending
+### M3-CP4c-2 TB-X2-R5 — current reviewed runtime evidence
 
-- runtime run/job: `33232106030 / 99046593525` on source/package `76d757aab0ce18df09ce2823302d2dc224965187 / 9708324052`;
-- immutable/GMP/six-selector preflight PASS; 29 package and 539 source files inventoried before runtime;
-- AA8: ordinals 1-304 PASS, ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` RED with initiating `CellularityNotEstablished`; 306-355 unexecuted;
-- AA2/D1/D2/357/358/cumulative gate/benchmark all NOT RUN due the frozen AA8 stop;
-- result/log: `9708817991 / 9708818239`, SHA-256 `bda50fcd…2556e8 / b9e150de…8c9688`;
-- shell control bug prevented planned postflight/summary emission after the semantic red; R5-REV owns evidence admissibility and root-cause classification;
-- evidence record: `Architecture_M3_CP4c2_TB_X2_R5_EXEC_Artifact_Only_Evidence.md`;
+- EXEC run/job `33232106030 / 99046593525` on source/package `76d757aab0ce18df09ce2823302d2dc224965187 / 9708324052`;
+- immutable/GMP/six-selector preflight PASS; AA8 ordinals 1-304 PASS, accepted ordinal 305 RED with initiating `CellularityNotEstablished`; 306-355 and all local diagnostics/gates unexecuted;
+- result/log `9708817991 / 9708818239`, SHA-256 `bda50fcd…2556e8 / b9e150de…8c9688`; missing postflight retained under R5-ORCH-01 and not inferred;
+- independent review **admitted the semantic red**, promoted `PR8-R043 / M3-CP4c2-R001`, and statically localized the accepted two-ring failure to the final mixed-complex certificate;
+- current root cause: actual embedded network authority `9/11/3` was conflated with whole-source-face `sourceEdgeBarrier` proxy `10/11/2`;
+- review record: `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`;
+- exact successor: `M3-CP4c-2-DEFN-R1`; no corrective CB/gate/runtime yet;
 - `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
 ### M3-CP4c-2 TB-X2-R4 — current reviewed runtime evidence

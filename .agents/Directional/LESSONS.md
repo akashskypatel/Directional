@@ -176,6 +176,17 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     fixture.** When a helper populates two members from two inputs and the caller passes the same
     input twice, the domains coincide by accident and stay invisible until another fixture separates
     them. Name the domains and populate each explicitly.
+22j. **A re-proof stop locates when a regression was detected, not necessarily when it was introduced.**
+    R5's accepted-prefix check first exposed ordinal 305 immediately after AA1, but source comparison proved the
+    failing `SurfaceCutGraph` semantics predated AA1 and AA1 was only snapshot observability. A frozen "any red
+    reverts the latest change" rule would have removed a correct fix while preserving the actual defect. Route
+    rollback by causal ownership, using the re-proof as a detection boundary rather than a blame boundary.
+22i. **A self-consistent oracle can still certify the wrong semantic object.** CP4c-2 repaired a mixed Euler
+    equation by putting `V/E/F` into one named `sourceEdgeBarrier` complex; the arithmetic became coherent, but
+    CP4ab had already proved that whole source faces cannot represent embedded graph faces when traces cross face
+    interiors. On the accepted two-ring the proxy is valid at `10/11/2` while the actual graph is valid at
+    `9/11/3`. Independence means a different mechanism over the **same semantic complex**, not merely internally
+    consistent arithmetic over a different one.
 22h. **A stop that costs nothing is worth more than a fix that costs a gate.** CP4ab's CB-R8 stopped at
     a binding precondition, wrote a hand derivation, and changed no byte — and it prevented a correction
     that would have made the arithmetic green while leaving the structural defect in place. Three of this

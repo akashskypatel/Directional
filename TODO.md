@@ -21,33 +21,17 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R5-REV` — independent review of accepted-prefix red
+## Current focus — `M3-CP4c-2-DEFN-R1` — actual embedded-graph cut-cellularity redefinition
 
-`M3-CP4c-2-TB-X2-R5-EXEC` is **COMPLETE AT THE FROZEN AA8 STOP / ACCEPTED-PREFIX SEMANTIC RED** on
-run/job `33232106030 / 99046593525`, consuming immutable GMP package `9708324052` from semantic/test source
-`76d757aab0ce18df09ce2823302d2dc224965187`. Immutable package/source/GMP and all six selector-hash preflight
-checks passed.
+`M3-CP4c-2-TB-X2-R5-REV` is **COMPLETE / REVIEW GREEN / ACCEPTED PRODUCT REGRESSION CONFIRMED / REPLAN REQUIRED**. R5's accepted-prefix red is admissible for semantic diagnosis: ordinals 1-304 pass and accepted ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` fails first at `SurfaceCutGraph::make(...)=CellularityNotEstablished`. Missing R5 postflight is retained as orchestration candidate `M3-CP4c2-TB-X2-R5-ORCH-01`; no mutation/postflight success is inferred.
 
-AA8 executed accepted identities in fresh processes and stopped at the first regression exactly as frozen: ordinals
-1-304 selected once and passed; ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph`
-selected once and exited `1` after `SurfaceCutGraph::make` reported `CellularityNotEstablished`. Ordinals 306-355,
-AA2, D1, D2, selector 357, selector 358, the cumulative gate, and benchmarks were **NOT RUN**. No CP4c-2-local
-credit was earned.
+Independent review promotes the semantic regression to stable **`PR8-R043 / M3-CP4c2-R001`**, `AUTHORITY_DOMAIN_CONFLATION / RP-01`. CP4c-2 reintroduced whole-source-face/source-edge-barrier complement authority even though CP4ab had already proved that trace arcs crossing source-face interiors require face fragments/orbits. On the accepted two-ring, actual embedded graph authority is `V/E/F=9/11/3`, while the self-consistent source-edge-barrier proxy is `10/11/2`; current `SurfaceCutGraph` mixes actual network `V/E=9/11` with proxy `F=2`, producing `0 != source χ 1` at the final certificate. A one-line Euler fix is prohibited because it would certify the wrong object.
 
-Raw result/log artifacts are `9708817991 / 9708818239`, SHA-256
-`bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 /
-b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`. The temporary shell harness re-enabled
-`set -e` before returning the red identity, so it exited before emitting the planned postflight inventories and
-summary. That control-plane limitation is preserved rather than papered over; independent review owns evidence
-admissibility.
+The R2 statement that `sourceEdgeBarrier` is the normative complex is withdrawn. `M3-CP4c2-TB-X2-R2-CAND-02` remains ACTIVE as **TEST-AUTHORITY / WRONG SEMANTIC COMPLEX** until an independent oracle measures the actual embedded graph/fragment complement. R4 AA2 is independently confirmed byte-identical (`468` bytes each, SHA-256 `84f9ca015ab63093086981cbd29256526159329c64537dfb52fba9e89d9fd078`), but AA5 runtime publication and AA1 sphere snapshot retention remain pending because R5 stopped before D1. AA1 is not causal and must not be reverted.
 
-New non-stable tracker candidate `M3-CP4c2-TB-X2-R5-CAND-01` records the accepted-prefix regression. Stable
-accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **62**.
-`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. CP4c-2 remains unaccepted.
+Stable accounting is now **43 events / 14 categories / 29 recurrences**, produced-witness debt **5**, M3 packages **62**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; CP4c-2 remains unaccepted.
 
-**Exact next is independent `M3-CP4c-2-TB-X2-R5-REV`**. Review only the preserved evidence and frozen plan; run no
-new Directional runtime and do not start corrective CB, 357/358, a cumulative gate, mechanical/C2, or CP4c-3
-unless the review itself durably authorizes a later successor.
+**Exact next: `M3-CP4c-2-DEFN-R1`, definition/replanning only, measures AB0-AB9 in `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`.** It must freeze one pre-region exact representation of the actual `FieldAlignedCurveNetwork ∪ cutEdges` complement, reuse/refactor CP4ab fragment/orbit authority or an equivalent exact arrangement, define cut updates and disc/global certification in that same complex, prove or explicitly stop on cut-selection completeness, and define an independent same-semantic-complex D1/D2 oracle. Run no Directional runtime, build, compile, package, selector 357/358, cumulative gate, mechanical/C2, or CP4c-3. Do not start a corrective CB until DEFN-R1 is complete.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R4-EXEC` stop (retained for provenance)
 

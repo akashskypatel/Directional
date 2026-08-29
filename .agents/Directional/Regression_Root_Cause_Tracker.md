@@ -1,22 +1,21 @@
-## M3-CP4c2-TB-X2-R5-CAND-01 — accepted prefix regresses at GlobalTopologyPlan ordinal 305 — ACTIVE / ACCEPTED-PREFIX REGRESSION / NON-STABLE / REVIEW REQUIRED
+## PR8-R043 / M3-CP4c2-R001 — CP4c-2 whole-source-face proxy rejects accepted embedded-graph witness — ACTIVE STABLE / PRODUCT / AUTHORITY_DOMAIN_CONFLATION / RP-01
 
-- **Observed:** R5-EXEC run/job `33232106030 / 99046593525` passes accepted ordinals 1-304 in fresh processes, then
-  ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selects exactly once and exits `1`.
-  Its first semantic failure is `SurfaceCutGraph::make(...)=CellularityNotEstablished` in the shared
-  `build_surface_cut_graph(...)` helper. The later `std::get: wrong index for variant` is secondary fallout because
-  that helper uses non-fatal `EXPECT_TRUE(built)` before `built.value()`.
-- **Gate consequence:** AA8 requires accepted-prefix re-proof before any local CP4c-2 credit. The first-316 prefix is
-  therefore red before completion; 306-355, AA2, D1, D2, 357, 358, and cumulative-gate runtime were not executed.
-- **Root-cause analysis at EXEC boundary:** localized only to the accepted CP3b event fixture reaching
-  `SurfaceCutGraph::make` and failing cellularity before `GlobalTopologyPlan` construction. EXEC does not have
-  authority to decide whether the owner is product semantics, witness authority, or an accepted-test assumption.
-  The exception is not the initiating cause. Independent R5-REV must classify the red before any correction.
-- **Evidence:** result/log artifacts `9708817991 / 9708818239`, SHA-256
-  `bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 /
-  b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`; semantic/test source
-  `76d757aab0ce18df09ce2823302d2dc224965187`; package `9708324052`.
-- **Accounting:** non-stable pending independent review; stable totals remain **42 events / 14 categories / 28
-  recurrences**, produced-witness debt **5**, M3 packages **62**.
+- **Observed:** R5-EXEC run/job `33232106030 / 99046593525` passes accepted ordinals 1-304 in fresh processes, then ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` selects exactly once and exits `1`. Its first semantic failure is `SurfaceCutGraph::make(...)=CellularityNotEstablished`; the later `std::get: wrong index for variant` is secondary helper fallout.
+- **Accepted predecessor:** the same identity/witness is part of CP4c-1's accepted **355/355** authority at source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`. CP4c-2 inserted `SurfaceCutGraph` ahead of `GlobalTopologyPlan`; the witness itself is not new or reconstructed.
+- **Root cause — independently reviewed:** `SurfaceCutGraph` builds complement components as whole source faces separated by a `sourceEdgeBarrier` set containing mandatory edges plus every trace segment's incoming/outgoing **carrier source edge**. CP4ab had already proved this representation cannot express faces of the actual embedded graph when trace arcs cross face interiors and replaced whole-face ownership with face fragments/orbits (`PR8-R042`, LESSONS 22d/22e). CP4c-2 therefore reintroduced a previously rejected authority domain.
+- **Exact two-ring proof:** retained CP4ab evidence on the same accepted witness gives three interior embedded-graph faces; current network authority has `V=9`, `E=11`, so `9-11+3=1=source χ`. R4's independent proxy diagnostic instead measures self-consistent `sourceEdgeBarrier` terms `V=10`, `E=11`, `F=2`, also `χ=1`. Current product mixes network `V/E=9/11` with proxy `F=2`, yielding `0 != 1` and rejecting at the final global certificate (`SurfaceCutGraph.cpp:473-474`).
+- **Why this is not a one-line Euler fix:** the proxy's per-component disc proofs also operate on whole source faces. Replacing only global `V/E` with proxy counts would make arithmetic green while certifying the wrong semantic object, violating the normative contract that `SurfaceCutGraph` certifies the actual `FieldAlignedCurveNetwork ∪ cutEdges`.
+- **Causal boundary:** this defect predates CB3 AA1. `SurfaceCutGraph.cpp` is unchanged between diagnostic source `5ad711e5d4ced95f38e103b993139a6307ba2cee` and R5 source `76d757aab0ce18df09ce2823302d2dc224965187`; AA1 only moved pipeline snapshot publication. **Do not revert AA1.**
+- **Owner:** exact successor `M3-CP4c-2-DEFN-R1`, measures AB0-AB9 in `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`. Freeze one actual embedded-graph fragment/arrangement authority before a later CB.
+- **Evidence:** R5 result/log artifacts `9708817991 / 9708818239`, SHA-256 `bda50fcdaf2b89ccce9a9b1ed5ecb7f4cd656a4168583635e69251f03c2556e8 / b9e150dec9d47cec140f982650a65b5d8668d3c5d5b8f4074bae7e3d6f8c9688`; review record `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`.
+- **Accounting:** one new stable event and one recurrence in existing category/pattern `AUTHORITY_DOMAIN_CONFLATION / RP-01`: totals advance **42 / 14 / 28 -> 43 events / 14 categories / 29 recurrences**. Produced-witness debt remains **5**; M3 packages remain **62**.
+
+## M3-CP4c2-TB-X2-R5-ORCH-01 — runtime helper leaks errexit and suppresses postflight — ACTIVE / ORCHESTRATION / NON-STABLE
+
+- **Observed:** R5's `run_identity` re-enabled `set -e` before returning the red ordinal-305 process status. The shell exited before the outer AA8 stop handler, semantic summary, and recursive package/source postflight could run. Raw result/log artifacts were still uploaded.
+- **Impact:** R5 is admissible for the semantic regression because immutable preflight plus the exact one-process raw log/row are complete, but it cannot prove post-runtime mutation inventories or any downstream AA2/D1/D2 result.
+- **Owning correction:** before the next runtime harness, preserve/restore caller errexit state or make semantic stop/postflight execute through an unconditional finalization/trap path. A red Directional identity must never suppress postflight evidence.
+- **Stable-count rationale:** orchestration-only; **+0 stable events / +0 recurrences**. Current totals remain **43 / 14 / 29**, debt **5**, M3 packages **62**.
 
 ## M3-CP4c2-TB-X2-R4-CAND-01 — final D1 assertion duplicates an already-published failure record — ACTIVE / TEST-AUTHORITY / PUBLICATION HYGIENE / NON-STABLE
 
@@ -39,6 +38,7 @@
 - **Conditional, and the condition is binding.** Measure **AA2** requires byte-identity confirmed from `d1-records.txt` in result artifact `9707662462`. **If the two sphere lines differ in any byte, the stop stands, the admissibility adjudication is void, and the R4 evidence cannot be used.**
 - **Owning correction:** `M3-CP4c-2-CB3-DIAG` measure **AA5** — emit each record once; the assertion message references failing witnesses by name and status only; publish the per-witness record count so the contract is machine-checkable.
 - **CB3 compile state:** corrective source `76d757aab0ce18df09ce2823302d2dc224965187` implements AA5 and compiles GREEN in GMP package `9708324052`. Candidate remains **ACTIVE / RUNTIME PENDING** until R5 proves exactly one Y1 record per witness plus publication counts 1/1/1/3.
+- **R5-REV AA2 disposition:** independently extracted R4 `d1-records.txt`; the two prescribed-sphere lines are each **468 bytes**, each SHA-256 `84f9ca015ab63093086981cbd29256526159329c64537dfb52fba9e89d9fd078`, and are byte-identical. AA2's admissibility condition is therefore **CONFIRMED**. R5 stopped at accepted ordinal 305 before D1, so AA5's exactly-once runtime publication remains **ACTIVE / RUNTIME PENDING** rather than closed.
 
 ## M3-CP4c2-TB-X2-R4-CAND-02 — pipeline discards product snapshots on any pre-A2b failure path — **LOCALIZED** / PRODUCT OBSERVABILITY DEFECT / NON-STABLE
 
@@ -62,6 +62,7 @@
 - **Classification:** observability only. The failure code and stage string are already correct and no accept/reject decision changes.
 - **Owning correction:** `M3-CP4c-2-CB3-DIAG` measure **AA1** — publish each snapshot immediately after its product is successfully constructed, changing no `fail_surface_cells` call, failure code, stage string, control flow, or build ordering. This is **the only `src/` change authorized** in the checkpoint, and **AA8** prices it: the successor TB must re-prove accepted prefixes 316/346/353/355 before crediting any CP4c-2-local identity.
 - **CB3 compile state:** corrective source `76d757aab0ce18df09ce2823302d2dc224965187` implements AA1 and compiles GREEN in GMP package `9708324052`. The defect remains **LOCALIZED / RUNTIME PENDING**; R5 must first re-prove 316/346/353/355 and then show that a sphere failure at `surface-cut-graph` retains the already-built source-topology/atlas/network products.
+- **R5-REV causal adjudication:** R5's accepted ordinal-305 regression is **not caused by AA1**. `SurfaceCutGraph.cpp` is unchanged from pre-AA1 diagnostic source `5ad711e5d4ced95f38e103b993139a6307ba2cee` through R5 source, while ordinal 305 fails in direct `SurfaceCutGraph::make` before pipeline snapshot publication matters. AA1 remains the owning observability correction and must not be reverted; its runtime proof remains pending because R5 never reached the sphere.
 - **Stable-count rationale:** observability defect; no accepted-green identity regressed and CP4c-2 has no accepted runtime authority. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
 
 ## M3-CP4c2-TB-X2-R4-CAND-03 — torus completes A2a', A2b and a GlobalTopologyPlan, then fails downstream at tracing — ACTIVE / OUT-OF-SCOPE FOR CP4c-2 / NON-STABLE
@@ -150,7 +151,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 - **R4 EXEC evidence pending review:** the sphere fails construction but torus and two-ring are still published, so the former suppression behavior is no longer observed. However the final assertion duplicates the sphere Y1 record and violates the strict exactly-once publication contract. R4-REV owns closure/disposition.
 - **RESOLVED by `M3-CP4c-2-TB-X2-R4-REV`.** In R4 the prescribed sphere failed construction and **the torus and two-ring were still published**, each with a complete record. Z13's witness isolation works. The separate duplicate-publication defect is tracked as `R4-CAND-01` and is a different problem.
 
-## M3-CP4c2-TB-X2-R2-CAND-02 — D1 oracle computes Euler terms in two different complexes; sphere publication is self-contradictory — ACTIVE / TEST-AUTHORITY / MIXED-COMPLEX ACCOUNTING / NON-STABLE
+## M3-CP4c2-TB-X2-R2-CAND-02 — D1 oracle measures a self-consistent proxy rather than the actual embedded graph — ACTIVE / TEST-AUTHORITY / WRONG SEMANTIC COMPLEX / NON-STABLE
 
 - **Observed:** in TB-X2-R2 run/job `33215632118 / 98998526420`, D1's prescribed-sphere record publishes **all 18** complement components as discs (each `χ=1`, one boundary cycle) **and** global terms `V=18`, `E=30`, `F=18` giving `18 − 30 + 18 = 6` against source `χ=2`.
 - **Why this is a contradiction, not a discrepancy:** if every component of the complement of an embedded graph is an open disc, the embedding is cellular by definition and `V − E + F = χ` is an identity, requiring `E − V = F − χ = 18 − 2 = **16**`. The publication reports `E − V = **12**`. **The deficit is exactly 4.** At least one of the disc verdicts, the vertex/edge counts, or the face count is false; they cannot all hold.
@@ -167,6 +168,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 
 - **R4 EXEC evidence:** torus and two-ring publish `oracleSelfConsistent=true`, but prescribed sphere does not construct (`pipeline-source-topology-snapshot-unavailable`), so the all-three closure condition is not reached. Candidate remains ACTIVE pending review.
 - **R4 partial progress — remains ACTIVE, do not close early.** Under `complex=sourceEdgeBarrier` the torus (`48 − 48 + 4 = 4` vs `χ=0`) and the two-ring both published `oracleSelfConsistent=true`, and R2's exact-by-4 self-contradiction did **not** recur. But the closure condition is self-consistency on **all three** witnesses, and the prescribed sphere has still never been measured. Closes only when AA3 publishes a complete, self-consistent sphere record.
+- **R5-REV superseding adjudication:** the prior closure condition is withdrawn. R5 plus retained CP4ab authority proves `sourceEdgeBarrier` is a **different complex**, not the normative representation of `FieldAlignedCurveNetwork` when traces cross source-face interiors. On the accepted two-ring the proxy is self-consistent at `10/11/2`, while the actual embedded graph is self-consistent at `9/11/3`; the product regression arises by mixing those domains. Therefore all-three proxy self-consistency cannot close this candidate. Closure now requires an independent oracle over the **actual embedded graph/face-fragment complement**, using a mechanism independent of `SurfaceCutGraph`, with term-by-term `V/E/interior-F` and component-disc comparison in that same semantic complex. The R2 review statement that carrier-edge coarsening was only a quality concern is withdrawn.
 
 ## M3-CP4c2-TB-X2-R2-CAND-01 — D1 torus control reconstructs atlas-barrier rails instead of product-authoritative rails — **RESOLVED** / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE
 
@@ -1673,6 +1675,7 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 | `PR8-R040` | `M3-CP2b-R001` | `REPRESENTATION_DEPENDENT_IDENTITY` | `RP-05` | resolved |
 | `PR8-R041` | `M3-CP2b-R002` | `POLICY_STAGE_STATE_CONFLATION` | `RP-03` | resolved |
 | `PR8-R042` | `M3-CP4b-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | resolved |
+| `PR8-R043` | `M3-CP4c2-R001` | `AUTHORITY_DOMAIN_CONFLATION` | `RP-01` | **active** |
 
 ## Current G4 stable-ID mapping
 

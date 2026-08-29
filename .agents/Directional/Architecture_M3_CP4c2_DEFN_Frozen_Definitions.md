@@ -214,6 +214,34 @@ complementary component:
 Ties in generator selection must be broken by a **total order on typed IDs**, never by container order, never by
 geometry, and never by a floating-point quantity.
 
+### 5.4.1 R5-REV corrective override — whole-source-face barrier components are not cellularity authority
+
+**Status: binding correction recorded by `M3-CP4c-2-TB-X2-R5-REV`; exact redesign belongs to
+`M3-CP4c-2-DEFN-R1`.**
+
+R5 independently proved that §5.4 step 1's whole-source-face/source-edge-barrier construction is **not an exact
+representation of the complement of `FieldAlignedCurveNetwork` when trace arcs cross source-face interiors**.
+On the accepted two-ring witness, retained CP4ab fragment/orbit authority has three interior embedded-graph
+faces while the source-edge-barrier proxy has two whole-face components. The proxy may be arithmetically
+self-consistent and still describe a different complex.
+
+Therefore, until DEFN-R1 freezes the replacement:
+
+1. **§§5.1–5.3 remain binding.** `SurfaceCutGraph` must certify the actual immutable network plus its added cuts,
+   preserve idempotence, determinism, and fail-closed behavior, and may not repair a produced A2b region.
+2. **§5.4 step 1 is withdrawn as cellularity authority.** A whole-source-face `SourceFaceComponentPartition`
+   separated by trace carrier edges may be used only as proposal/provenance/diagnostic data. It may not define
+   the actual complement, its face count, or its per-component disc proof.
+3. **§5.4 steps 2–4 are non-authoritative wherever they depend on that proxy representation.** Final `V/E/F`,
+   boundary walks, and disc certificates must all be recomputed in one exact representation of the actual
+   embedded `network ∪ cutEdges`.
+4. **Do not repair this by changing only the Euler terms.** On the accepted two-ring, using proxy `10/11/2`
+   would make the equation green while certifying the wrong object. The representation and every consumer of
+   it must move together, per LESSONS 22d/22e.
+5. **No product mutation is authorized by this note.** DEFN-R1 must first freeze a pre-region
+   face-fragment/orbit (or equivalent exact arrangement) authority, candidate-cut update rule, termination proof,
+   and independent same-semantic-complex oracle.
+
 **A note on quality, and its limit for this checkpoint.** A cut graph is not unique, and the choice affects
 downstream quad quality: cuts ideally follow the field and lie where a seam is least visible. **CP4c-2 does not
 optimize that.** Its obligation is a correct, deterministic, certified cut graph. Choosing a *good* cut graph is

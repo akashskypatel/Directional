@@ -9,6 +9,20 @@
 > §3c for where each class of information now lives, and §5 for the exact retirement inventory.
 
 
+### 2026-08-29 — `M3-CP4c-2-TB-X2-R5-REV`: R5 accepted red is stable RP-01 regression; whole-face cellularity authority withdrawn
+
+**Independent review/planning only. No Directional runtime, compile, package, benchmark, product/test/fixture/selector mutation, or gate execution.** Review record: `Architecture_M3_CP4c2_TB_X2_R5_Independent_Review_Record.md`.
+
+- R5 run/job `33232106030 / 99046593525` is admissible for semantic diagnosis: immutable package/source/GMP/six-selector preflight passed, ordinals 1-304 passed, and accepted ordinal 305 selected once and failed first at `SurfaceCutGraph::make(...)=CellularityNotEstablished`. The missing postflight remains a real orchestration limitation and is not inferred; no AA2/D1/D2/357/358 result is attributed to R5.
+- The accepted two-ring provides the root-cause proof. CP4ab's retained fragment/orbit evidence gives **3 actual interior embedded-graph faces**; current network authority has **V=9, E=11**, so `9-11+3=1=source χ`. R4's independent `sourceEdgeBarrier` proxy is separately self-consistent at **V=10, E=11, F=2**. `SurfaceCutGraph` computes network V/E but uses the proxy's whole-source-face component count as F, producing **`9-11+2=0`** and rejecting at the final global certificate.
+- This is not repairable by swapping in proxy V/E. Trace carrier source edges are provenance/support, not the actual embedded trace arcs; the proxy per-component disc certificates also describe a different complement. CP4ab had already proven whole-source-face ownership insufficient and closed `PR8-R042` by moving to fragments/orbits. CP4c-2's DEFN §5.4 step 1 reintroduced that representation.
+- Stable `PR8-R043 / M3-CP4c2-R001` is opened **ACTIVE / PRODUCT / AUTHORITY_DOMAIN_CONFLATION / RP-01**. Stable accounting advances **43 events / 14 categories / 29 recurrences**; debt remains **5**, M3 packages **62**.
+- R2's prior claim that `sourceEdgeBarrier` is the normative complex, with carrier-edge coarsening only a quality concern, is **withdrawn**. `R2-CAND-02` remains ACTIVE as **TEST-AUTHORITY / WRONG SEMANTIC COMPLEX** until an independent oracle measures the actual embedded graph/fragment complement through a different mechanism.
+- R4 AA2 is independently discharged: the two prescribed-sphere lines in artifact `9707662462` are each **468 bytes**, each SHA-256 `84f9ca015ab63093086981cbd29256526159329c64537dfb52fba9e89d9fd078`, and byte-identical. AA5 runtime publication remains pending because R5 never reached D1. AA1 sphere-snapshot retention also remains runtime pending, but AA1 is **not causal**: `SurfaceCutGraph.cpp` predates AA1 unchanged, and ordinal 305 fails before pipeline snapshot publication is relevant.
+- New non-stable `R5-ORCH-01` records the `set -e` leakage that suppressed postflight. The next runtime harness must guarantee finalization/postflight even on semantic red.
+- `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` §5.4.1 now preserves a narrow R5 correction: §§5.1-5.3 remain binding, while whole-source-face/source-edge-barrier complement construction is withdrawn as cellularity authority pending redefinition.
+- **Exact next:** `M3-CP4c-2-DEFN-R1`, definition/replanning only, measures **AB0-AB9**. It must freeze one pre-region exact actual embedded-graph complement representation, candidate-cut update/certification, termination/completeness argument, and independent same-semantic-complex oracle before any later CB. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+
 ## 2026-08-29 — `M3-CP4c-2-CB3-DIAG`: snapshot retention and publication hygiene compile green
 
 Code + Build only. **No Directional runtime, test, benchmark, selector gate, or acceptance attempt executed.** Semantic/test source `76d757aab0ce18df09ce2823302d2dc224965187` implements only R4-review measures AA1/AA5 plus the required lesson.

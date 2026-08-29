@@ -1,3 +1,7 @@
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R5-REV`: accepted regression is whole-face/embedded-graph authority conflation
+
+Independent review is **COMPLETE / REVIEW GREEN / REPLAN REQUIRED** with no Directional runtime, build, compile, package, or product/test/fixture/selector mutation. R5's ordinal-305 red is admissible for semantic diagnosis despite missing postflight and is promoted to stable `PR8-R043 / M3-CP4c2-R001` (`AUTHORITY_DOMAIN_CONFLATION / RP-01`). Retained CP4ab evidence on the same accepted two-ring gives actual embedded-network `V/E/F=9/11/3`, while R4's self-consistent whole-source-edge proxy gives `10/11/2`; current `SurfaceCutGraph` mixes network `V/E=9/11` with proxy `F=2`, yielding `0 != source χ 1` at its final certificate. The prior R2 claim that `sourceEdgeBarrier` is normative is withdrawn; it is a diagnostic/proposal proxy, not actual cellularity authority. AA2's two R4 sphere records are independently byte-identical (468 bytes each, SHA-256 `84f9ca015ab63093086981cbd29256526159329c64537dfb52fba9e89d9fd078`). AA1 is not causal and is retained. Stable accounting advances **42 / 14 / 28 -> 43 / 14 / 29**, debt **5**, packages **62**. Exact next: definition-only `M3-CP4c-2-DEFN-R1` under AB0-AB9; no corrective CB or gate yet.
+
 ## 2026-08-29 — `M3-CP4c-2-TB-X2-R5-EXEC`: AA8 accepted-prefix semantic red at ordinal 305
 
 Artifact-only R5 run/job `33232106030 / 99046593525` consumed immutable GMP package `9708324052` from source
