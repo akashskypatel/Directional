@@ -30,10 +30,10 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1zzdiAZFuT3Jd5CtiUU7ADqN83ndYrkj2
-      patch_sha256: 6b7726da5bbad3345045ea46b60abe24565b967b6572626f22eb1a19a02c1c50
-      base_sha: 7dd5d1a012e39ee3483dd81685461c0c2e817b29
+      file_id: 1s9lmmxiCg5ApON_lLaqhC_3MCjooLhn8
+      patch_sha256: d5d03900f3ec4d63b14de993b5b382a3a0461899ce2ed4860fce42bc14322903
+      base_sha: 0cd1cf2f70544fcad46cac3618821d5d04d4bcad
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'test(M3-CP4c-2): make R2 witness construction pipeline-authoritative'
+      commit_message: 'docs(M3-CP4c-2): close CB2-DIAG-R2 and plan R4'
       retention_days: 7
     secrets: inherit
