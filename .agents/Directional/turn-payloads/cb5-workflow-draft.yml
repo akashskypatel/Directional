@@ -1,20 +1,20 @@
-name: M3 CP4c2 CB5 Source Patch Apply
+name: M3 CP4c2 CB5 Compile and Package
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/cb5-source-apply.txt
+      - .agents/connector-triggers/cb5-compile.txt
 
 permissions:
   contents: write
-  id-token: write
+  actions: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: m3-cp4c2-cb5-source-apply
+  group: m3-cp4c2-cb5-compile
   cancel-in-progress: false
 
 jobs:
@@ -22,16 +22,21 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c2-cb5-source-apply
+      label: m3-cp4c2-cb5-compile
       commit_run_file: false
     secrets: inherit
 
-  apply-drive-patch:
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+  owner-compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1K3OkloOm59AxgQL0q9gbkSqypt3aK2mn
-      patch_sha256: 3106b52029f546262e86e734a430e3c31ad213139bfb0d358e5af31f88e6a8c1
-      base_sha: 0050b931ec1a3a62c87b7c8b2c87dd88246fd74e
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "fix(M3-CP4c-2): split cut-graph semantic and provenance identity"
-    secrets: inherit
+      source_sha: 755485865a7cf9c485d754f22b82a41ee151824b
+      targets: directional_surface_cell_producer_tests
+      artifact_prefix: m3-cp4c2-cb5-owner-compile
+
+  package-compile:
+    needs: owner-compile
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 755485865a7cf9c485d754f22b82a41ee151824b
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c2-cb5-package
