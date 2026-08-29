@@ -1,4 +1,0 @@
-purpose=apply verified M3-CP4c-2-CB3-DIAG source patch from Google Drive
-base_sha=3703a398eebe9b67f6a18bbba2d441f927cbcec7
-patch_sha256=6f7ade8d0fbe02093d352c6e81151625940d25caaf74073d16dd223efbd0cd40
-retry=0

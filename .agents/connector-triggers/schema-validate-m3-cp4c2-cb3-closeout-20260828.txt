@@ -1,4 +1,0 @@
-purpose=validate M3-CP4c-2-CB3-DIAG closeout Drive patch caller
-base_sha=76d757aab0ce18df09ce2823302d2dc224965187
-patch_sha256=be82833f1877b4c552e434ab9475e51bba0cd1996347887a7216a13e2edb4abe
-retry=0

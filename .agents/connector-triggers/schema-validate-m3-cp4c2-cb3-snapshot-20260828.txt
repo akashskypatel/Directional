@@ -1,3 +1,0 @@
-purpose=validate temporary M3-CP4c-2-CB3 source-snapshot caller
-expected_source_authority=3703a398eebe9b67f6a18bbba2d441f927cbcec7
-retry=0
