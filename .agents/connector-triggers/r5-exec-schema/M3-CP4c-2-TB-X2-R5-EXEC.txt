@@ -1,0 +1,5 @@
+turn_id=M3-CP4c-2-TB-X2-R5-EXEC
+purpose=validate temporary R5 EXEC schema caller and workload draft
+schema_caller_blob=61dded64d8f4245fd7b8978a53553e678d1e0e1d
+workload_draft_blob=523fadd4ff6221389d31d99315127f5ddf51a118
+runtime_execution=false
