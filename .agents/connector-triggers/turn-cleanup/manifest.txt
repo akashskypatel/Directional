@@ -1,0 +1,13 @@
+# M3-CP4c-2-CB3-DIAG temporary state
+.agents/connector-triggers/compile-m3-cp4c2-cb3-20260828.txt
+.agents/connector-triggers/drive-apply-m3-cp4c2-cb3-20260828.txt
+.agents/connector-triggers/drive-apply-m3-cp4c2-cb3-closeout-20260828.txt
+.agents/connector-triggers/schema-validate-m3-cp4c2-cb3-apply-20260828.txt
+.agents/connector-triggers/schema-validate-m3-cp4c2-cb3-closeout-20260828.txt
+.agents/connector-triggers/schema-validate-m3-cp4c2-cb3-compile-20260828.txt
+.agents/connector-triggers/schema-validate-m3-cp4c2-cb3-snapshot-20260828.txt
+.agents/connector-triggers/source-snapshot-m3-cp4c2-cb3-20260828.txt
+.agents/Directional/turn-payloads/m3-cp4c2-cb3-closeout-drive-apply-caller.yml
+.agents/Directional/turn-payloads/m3-cp4c2-cb3-compile-caller.yml
+.agents/Directional/turn-payloads/m3-cp4c2-cb3-drive-apply-caller.yml
+.agents/Directional/turn-payloads/m3-cp4c2-cb3-source-snapshot-caller.yml
