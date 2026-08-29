@@ -32,14 +32,16 @@ jobs:
     steps:
       - name: Fetch exact R4 execution payload
         env:
-          PAYLOAD_SHA256: 16694cbc29ab912549b59954263d02ad564748f465add8a3f8a9388cc7afdf23
+          PAYLOAD_BLOB_SHA: d9e00bbf2cbb548a62eed3771d7e372b7e18cae9
         shell: bash
         run: |
           set -euo pipefail
+          f="${RUNNER_TEMP}/m3-cp4c2-r4-exec.sh"
           url="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/.agents/Directional/turn-payloads/m3-cp4c2-r4-exec.sh"
-          curl -fsSL "$url" -o "${RUNNER_TEMP}/m3-cp4c2-r4-exec.sh"
-          echo "${PAYLOAD_SHA256}  ${RUNNER_TEMP}/m3-cp4c2-r4-exec.sh" | sha256sum -c -
-          bash -n "${RUNNER_TEMP}/m3-cp4c2-r4-exec.sh"
+          curl -fsSL "$url" -o "$f"
+          actual="$({ printf 'blob %s\0' "$(wc -c < "$f")"; cat "$f"; } | sha1sum | cut -d' ' -f1)"
+          test "$actual" = "$PAYLOAD_BLOB_SHA"
+          bash -n "$f"
 
       - name: Execute frozen R4 artifact-only plan
         env:
