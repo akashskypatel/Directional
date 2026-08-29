@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R7-EXEC` retry: accepted 355/355 restored; non-gating torus diagnostic stops at baseline atlas
+
+Artifact-only Test + Benchmark execution on unchanged GMP package `9719216316` / semantic source
+`755485865a7cf9c485d754f22b82a41ee151824b`. Authoritative run/job `33276039911 / 99162853852` is GREEN at the
+workflow level and preserves the frozen distinction between accepted-gating and non-gating evidence. No configure,
+compile, relink, repair, generated discovery, source/test/fixture/selector/package mutation, or benchmark occurred.
+
+- R7-0 immutable preflight passed: package/source authority, **28/28** manifest, GMP/GMPXX boundary, modes, and all
+  six corrected selector derivations. This is runtime proof of the DOC-R1 selector-transcription correction.
+- R7-2 two-ring semantic/provenance diagnostic passed; torus R7-2 selected exactly once and failed non-gating at
+  `baselineAtlas == true` before any torus digest comparison. It is recorded as non-stable `R7-CAND-01`; no
+  accepted-count debit or root-cause adjudication is taken in EXEC.
+- R7-3 independent actual-embedded-graph oracle, R7-4 retained barrier diagnostic, and R7-5 prescribed-sphere
+  localization diagnostic all passed. R7-5 finally publishes D2 with `localizedSite=474-global-certificate` and
+  `localizationConsistent=false`, reserved for review interpretation.
+- R7-1 re-proved the frozen accepted predecessor in **355 fresh processes: 355/355 PASS**. Ordinal 305 (R043 locus)
+  and ordinal 310 (R044 locus) are both green in that same full run. EXEC records that their runtime closure
+  conditions are mechanically satisfied but leaves stable status/count adjudication to independent R7-REV.
+- R7-6 postflight passed; package/source byte+mode inventories are unchanged and every mutation/build flag is false.
+- Selector 357, selector 358, cumulative CP4c-2 gate, and benchmarks remain **NOT RUN**;
+  `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+- Result artifact `9721564203` / `sha256:a854e562facfd616f9f61eddf653dc9e5814c3b932661993b2b2861b2bdab8db`;
+  log artifact `9721564377` / `sha256:8edd56072491aa4267e3cd0d2c0942b0910a3e5a01f15e6bc21164bd0fbef3ec`;
+  raw evidence SHA-256 `933190d3591aa7633fd3ebb6c1a119c1ad7d0b04cc2ca4254a8c325d3c7f1200`.
+
+Stable accounting remains **44 / 14 / 30** pending review, debt **5**, M3 packages **64**. Exact next:
+**`M3-CP4c-2-TB-X2-R7-REV`**, independent review/planning only.
+
 ## 2026-08-29 — `M3-CP4c-2-DOC-R1`: selector-hash authority corrected; superseded CP4c-2 records consolidated
 
 Documentation-only closeout under R7-REV measures AE0–AE9 plus the user's historical-consolidation instruction.

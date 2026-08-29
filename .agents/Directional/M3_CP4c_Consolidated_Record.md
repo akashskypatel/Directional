@@ -5,9 +5,10 @@ reports, execution evidence, and reviews are retired here after their durable fa
 historical synthesis, not the current turn procedure.
 
 **Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**.
-`M3-CP4c-2-CB5` is complete/build-green/runtime-free at `755485865a7cf9c485d754f22b82a41ee151824b` with immutable package `9719216316`;
-CP4c-2 remains runtime-unaccepted. `M3-CP4c-2-DOC-R1` is documentation-green; exact next is the artifact-only
-`M3-CP4c-2-TB-X2-R7-EXEC` retry on unchanged package `9719216316`. `M3-CP4c-3` remains blocked on CP4c-2 closure.
+`M3-CP4c-2-CB5` is complete/build-green at `755485865a7cf9c485d754f22b82a41ee151824b` with immutable package `9719216316`.
+R7 artifact-only runtime re-proved the inherited accepted **355/355** and immutable postflight, but CP4c-2 remains
+runtime-unaccepted because 357/358 are unselected/unrun. Exact next is independent `M3-CP4c-2-TB-X2-R7-REV`.
+`M3-CP4c-3` remains blocked on CP4c-2 closure.
 
 **Current accounting.** Stable regressions **44 events / 14 categories / 30 recurrences**; produced-witness debt
 **5**; authoritative M3 packages **64**. Accepted runtime predecessor remains CP4c-1 **355/355**.
@@ -30,7 +31,8 @@ CP4c-2 evidence/plan authority.
 | `M3_CP4c0b_Closure_Record.md`, `M3_CP4c1_Closure_Record.md` | checkpoint closure authorities |
 | `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` | current immutable CP4c-2 build/package authority |
 | `Architecture_M3_CP4c2_DOC_R1_Documentation_Correction_Report.md` | current documentation-correction/consolidation evidence |
-| `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` | current exact runtime-execution authority |
+| `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` | frozen R7 runtime-execution contract |
+| `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` | current exact R7 runtime evidence |
 | `CHANGELOG.md` | exact per-turn commits, run/job IDs, package/artifact IDs, and immutable evidence identities |
 | `Regression_Root_Cause_Tracker.md` | stable regression/candidate history |
 | `LESSONS.md` | durable cross-turn lessons |
@@ -51,7 +53,7 @@ local tracing bug.
 | **CP4c-0** | resolved continuation and grazing behavior | **346/346 CLOSED / ACCEPTED** |
 | **CP4c-0b** | exact crash-on-contact termination / arrival semantics | **353/353 CLOSED / ACCEPTED** |
 | **CP4c-1** | witness observability, diagnosability, non-vacuous terminal-event contract | **355/355 CLOSED / ACCEPTED** |
-| **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | active; 357/358 branch unselected |
+| **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | active; inherited 355 re-proof green; 357/358 branch unselected |
 | **CP4c-3** | mechanical witness / missing field-transport adjacency (C2) | deferred |
 
 The same review arc removed the attempt-budget/diagnostic-cap model and collapsed the old dedicated diagnostic
@@ -246,6 +248,27 @@ prefix remains the unchanged gate and still blocks 357/358/cumulative-gate/bench
 
 DOC-R1 selector authority (recomputed from bytes): 316 `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`, 346 `20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a`, 353 `51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5`, 355 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, 357
 `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`, 358 `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62`. Exact next is the artifact-only R7 retry on package `9719216316`.
+
+### 6.7 R7 retry: full accepted re-proof green; non-gating torus precondition red
+
+The corrected R7 retry on unchanged package `9719216316` completed under run/job `33276039911 / 99162853852`.
+Immutable preflight passed all six recomputed selector authorities and postflight proved no package/source/test/fixture/
+selector mutation, configure, compile, relink, repair, generated discovery, or benchmark. Raw evidence archive SHA-256
+is `933190d3591aa7633fd3ebb6c1a119c1ad7d0b04cc2ca4254a8c325d3c7f1200`.
+
+Non-gating publication ran first. The two-ring semantic/provenance split passed with equal semantic and unequal
+provenance digests. The torus counterpart selected exactly once but failed at `baselineAtlas == true` before any
+digest comparison, so it is a non-stable diagnostic candidate rather than accepted-count loss. The independent
+actual-embedded-graph oracle, retained source-edge-barrier diagnostic, and prescribed-sphere D2 localization
+identity all passed. D2 finally publishes the previously missing record: `surfaceCutGraphError=CellularityNotEstablished`,
+`producerGlobalCountsReached=true`, `localizedSite=474-global-certificate`, and `localizationConsistent=false`;
+interpretation is reserved for independent review.
+
+The accepted predecessor selector then passed **355/355** in fresh processes, including ordinal 305 (R043 locus)
+and ordinal 310 (R044 locus) in the same complete run. EXEC records that both frozen runtime closure conditions are
+mechanically satisfied but does not reclassify stable records. Stable accounting remains **44 / 14 / 30** pending
+R7-REV. Selector 357, selector 358, cumulative gate, and benchmarks were not run; `selected_r2_branch=NONE`,
+`selected_gate=NONE`, `gate_execution_authorized=false`. Exact next is `M3-CP4c-2-TB-X2-R7-REV`.
 
 ## 7. High-value reversals and lessons retained from the review arc
 

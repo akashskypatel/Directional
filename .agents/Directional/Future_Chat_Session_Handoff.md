@@ -84,63 +84,73 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R7-EXEC` retry — artifact-only
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R7-REV` — independent review/planning only
 
-`M3-CP4c-2-DOC-R1` is **COMPLETE / DOCUMENTATION GREEN**. Its closeout is
-`Architecture_M3_CP4c2_DOC_R1_Documentation_Correction_Report.md`. No Directional runtime, configure, compile,
-relink, package, product/test/fixture/selector mutation, 357/358 gate, benchmark, mechanical/C2, or CP4c-3 work
-occurred.
+`M3-CP4c-2-TB-X2-R7-EXEC` is **COMPLETE** on unchanged immutable GMP package `9719216316`, semantic/test source
+`755485865a7cf9c485d754f22b82a41ee151824b`. Authoritative run/job `33276039911 / 99162853852` completed the
+frozen R7 order after green immutable preflight.
 
-The six selector authorities were independently recomputed from committed bytes. Four mistranscribed prose values
-were corrected in the CB5 AD0 audit and R7 plan; selector files remained byte-identical. The R7 plan now carries
-source file + derivation for every selector digest and preserves the hard-stop/no-self-heal/integrity behavior.
+- R7-2 two-ring semantic/provenance diagnostic: **PASS**.
+- R7-2 torus semantic/provenance diagnostic: **RED / NON-GATING** at the prerequisite `baselineAtlas == true`;
+  no torus digest comparison was reached.
+- R7-3 independent actual-embedded-graph oracle: **PASS**.
+- R7-4 retained source-edge-barrier diagnostic: **PASS**.
+- R7-5 prescribed-sphere localization diagnostic: **PASS** and publishes `localizedSite=474-global-certificate`
+  with `localizationConsistent=false`.
+- R7-1 accepted predecessor re-proof: **355/355 GREEN**, including ordinals **305** and **310** in the same full run.
+- R7-6 immutable postflight: **PASS**; no build/repair/source/test/fixture/selector/package mutation and no benchmark.
 
-**Execution order after a green R7-0 is now:** R7-2 -> R7-3 -> R7-4 -> R7-5 -> R7-1 -> R7-6. The first four are
-non-gating, execute once per fresh process, grant no accepted-count credit, and publish even if the later accepted
-prefix is red. R7-1 remains the unchanged full 355 acceptance gate; a red still blocks 357/358, cumulative gate,
-and benchmarks. R7-6 postflight remains unconditional after runtime starts.
+Result artifact `9721564203` / `sha256:a854e562facfd616f9f61eddf653dc9e5814c3b932661993b2b2861b2bdab8db`;
+log artifact `9721564377` / `sha256:8edd56072491aa4267e3cd0d2c0942b0910a3e5a01f15e6bc21164bd0fbef3ec`;
+raw archive SHA-256 `933190d3591aa7633fd3ebb6c1a119c1ad7d0b04cc2ca4254a8c325d3c7f1200`.
 
-Use unchanged immutable GMP package `9719216316` / `sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`,
-semantic/test source `755485865a7cf9c485d754f22b82a41ee151824b`, packaged source archive
-`sha256:78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`.
+R7-EXEC does **not** adjudicate stable regression closure. `PR8-R043` and `PR8-R044` have now mechanically met their
+frozen runtime closure conditions, but their stable statuses/count disposition remain for independent R7-REV.
+The torus R7-2 red is recorded as a new non-stable diagnostic candidate whose cause is established only through
+the failed baseline-atlas precondition. `M3-CP4c2-TB-X2-CAND-04` now has the previously missing D2 localization
+record, but review must interpret its `localizationConsistent=false` evidence.
 
-`PR8-R043` remains RESOLVED AT LOCUS / closure pending full 355. `PR8-R044` remains compiled but runtime-unproved.
-Stable accounting **44 / 14 / 30**, debt **5**, M3 packages **64**. `selected_r2_branch=NONE`,
-`selected_gate=NONE`, `gate_execution_authorized=false`.
+Stable accounting remains **44 / 14 / 30**, debt **5**, M3 packages **64**. `selected_r2_branch=NONE`,
+`selected_gate=NONE`, `gate_execution_authorized=false`. Selector 357, selector 358, cumulative CP4c-2 gate, and
+benchmarks remain **NOT RUN**. CP4c-2 remains runtime-unaccepted until review makes the next authority decision.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 CB5 remains build-green/runtime-free; CP4c-2 remains runtime-unaccepted.
-- Current build/package authority remains `755485865a7cf9c485d754f22b82a41ee151824b` / package `9719216316`.
-- Latest semantic runtime evidence remains R6-EXEC: ordinal 305 PASS, ordinal 310 first RED. R7 executed no
-  Directional process because preflight hard-stopped under `R7-ORCH-01`.
-- R043 closure still requires ordinal 305 green within full 355; R044 closure still requires ordinal 310 green
-  within the same full 355. `R5-ORCH-01` remains resolved by R6 unconditional postflight.
-- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; 357/358/cumulative gate remain
-  blocked pending reviewed R7 evidence.
-- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
-  packages **64**.
-- **Exact next is the artifact-only `M3-CP4c-2-TB-X2-R7-EXEC` retry** on unchanged package `9719216316`.
+- CP4c-2 CB5 remains build-green at `755485865a7cf9c485d754f22b82a41ee151824b`; inherited accepted authority is
+  freshly re-proved **355/355** on package `9719216316`, but CP4c-2 itself remains unaccepted.
+- R7 is the latest semantic runtime evidence. Its accepted gate is green; one torus R7-2 non-gating diagnostic is
+  red at `baselineAtlas`, while R7-3/R7-4/R7-5 are green and postflight is immutable-green.
+- Stable accounting remains **44 events / 14 categories / 30 recurrences** pending independent review; produced-witness
+  debt **5**; authoritative M3 packages **64**.
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; 357/358/cumulative gate and
+  benchmarks remain blocked pending R7-REV.
+- **Exact next is `M3-CP4c-2-TB-X2-R7-REV`, independent review/planning only.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TB-EXEC.md` plus the GitHub/artifact capability module required by the immutable-package execution
+- turn-based-coding-agent `references/turns/REVIEW.md` plus the GitHub/artifact capability module only if needed to
+  inspect preserved R7 evidence
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — **read first**; durable cold-start substance and selector authority.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` — **the exact execution authority**, including R7-0 derivations, AE8 ordering, hard stops, and postflight.
-2. `.agents/Directional/Architecture_M3_CP4c2_DOC_R1_Documentation_Correction_Report.md` — proof that the hash correction/consolidation changed no selector/package/runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — immutable package/build authority for `9719216316`.
-4. `.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt` plus `Architecture_M3_CP4c2_Required_Green_Selector_{357,358}.txt` — recompute preflight digests from bytes; do not trust prose.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R7-ORCH-01`, `PR8-R043`, `PR8-R044`, and `CAND-04`.
-6. `TODO.md` / `CHANGELOG.md` — current state/accounting.
+0. `.agents/Directional/ORIENTATION.md` — **read first**; durable cold-start substance. It is intentionally not
+   updated by EXEC; REVIEW must update it before closeout.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — exact R7 runtime
+   result/evidence summary.
+2. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R043, R044, R7 orchestration proof, new torus diagnostic
+   candidate, and CAND-04 localization evidence.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Plan.md` — frozen execution contract and
+   non-actions; use it to judge what R7 evidence can and cannot authorize.
+4. `.agents/Directional/Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — immutable package/build authority.
+5. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — deduplicated CP4c-2 lineage through R7 EXEC.
+6. `TODO.md` / `CHANGELOG.md` — current task and exact run/artifact identities.
 
-**This is artifact-only TB-EXEC.** Do not rebuild, repair, relink, patch packaged source/tests/fixtures/selectors, or
-mutate the immutable package. Do not run selector 357, selector 358, a cumulative CP4c-2 gate, or benchmarks in
-this turn. Preserve raw evidence for follow-on TB review.
+**This is independent REVIEW only.** Adjudicate the R7 evidence and planning consequences; do not edit production,
+test, fixture, selector, or build logic, compile, execute new Directional runtime, run 357/358/cumulative gate, or
+benchmark in this turn. The review must decide regression dispositions and the next authorized scope; it must not
+silently treat the non-gating torus red as accepted-count loss or the 355 green as CP4c-2 closure.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

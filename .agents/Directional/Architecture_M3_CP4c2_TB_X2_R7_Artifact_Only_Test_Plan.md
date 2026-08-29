@@ -2,7 +2,11 @@
 
 ## Status and authority
 
-**READY FOR RETRY / NOT EXECUTED AFTER `M3-CP4c-2-DOC-R1`**
+**EXECUTED / EVIDENCE PRESERVED / INDEPENDENT REVIEW PENDING**
+
+Authoritative retry run/job: `33276039911 / 99162853852`. Exact result is retained in
+`Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md`. This file remains the frozen execution
+contract; do not reinterpret its non-gating identities as gate credit.
 
 This plan is the exact runtime successor to build-green `M3-CP4c-2-CB5`. It consumes immutable GMP package
 `9719216316` (`sha256:acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`), built from exact semantic/test source

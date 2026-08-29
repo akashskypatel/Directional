@@ -1,4 +1,25 @@
-## M3-CP4c2-TB-X2-R7-ORCH-01 — R7 plan transcribes four frozen selector hashes incorrectly — CORRECTED IN DOC-R1 / RETRY PENDING / ORCHESTRATION / DOCUMENT-AUTHORITY / NON-STABLE
+## M3-CP4c2-TB-X2-R7-CAND-01 — torus semantic/provenance diagnostic fails at baseline-atlas precondition — ACTIVE / NON-GATING DIAGNOSTIC / WITNESS-PRECONDITION / NON-STABLE
+
+- **Observed:** R7 authoritative run/job `33276039911 / 99162853852` executes
+  `SurfaceCutGraph.SemanticDigestIgnoresGaugeRelabelingForTorusWitness` exactly once in a fresh process. It exits
+  `1` at `FieldAlignedCurveNetworkTests.cpp:2220`: `baselineAtlas` is `false`; expected `true`. No semantic or
+  provenance digest comparison is reached for the torus witness. Combined-output SHA-256 is
+  `bafa9ffb2c1e26143e6f391ae10ab10a929e8b16564bd9b6515d7706d68bdc15`.
+- **Control:** the paired two-ring diagnostic passes in the same immutable run and publishes semantic equality
+  `13559155349784658228 == 13559155349784658228` with provenance inequality
+  `3398751569552983810 != 4134247641157939318`. The accepted R7-1 gate separately passes 355/355.
+- **Root-cause bound from EXEC:** the failure is localized only to the torus diagnostic's baseline-atlas construction
+  precondition. Because the comparison body is not reached, this evidence does **not** establish a failure of the
+  CB5 semantic/provenance split, nor does it identify why baseline atlas construction returned false.
+- **Disposition boundary:** non-gating diagnostic only; it grants no accepted-count debit. Independent
+  `M3-CP4c-2-TB-X2-R7-REV` must adjudicate witness validity/root cause and any owning corrective scope. EXEC
+  authorizes no implementation/test change.
+- **Evidence:** result/log artifacts `9721564203 / 9721564377`; raw evidence SHA-256
+  `933190d3591aa7633fd3ebb6c1a119c1ad7d0b04cc2ca4254a8c325d3c7f1200`.
+- **Stable-count rationale:** CP4c-2 is unaccepted and this identity is explicitly non-gating; no accepted-green
+  behavior is lost. **+0 stable events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
+## M3-CP4c2-TB-X2-R7-ORCH-01 — R7 plan transcribes four frozen selector hashes incorrectly — CORRECTED IN DOC-R1 / R7-0 RETRY GREEN / ORCHESTRATION / DOCUMENT-AUTHORITY / NON-STABLE
 
 - **Observed:** R7-EXEC immutable preflight on package `9719216316` passes outer/package/source/GMP/mode checks and
   internal manifest **28/28**, then exact hash comparison disagrees for selector authorities 346, 353, 357, and
@@ -27,6 +48,9 @@
   selector files remained byte-identical. No runtime/package/test/product semantics changed. R7-0 retry is the proof
   boundary, so the orchestration candidate is corrected but not yet closed.
 - **Closure condition:** R7-0 preflight passes on all six rows against unchanged immutable package `9719216316`.
+- **R7 retry evidence:** authoritative run `33276039911` passes immutable R7-0 against all six corrected derivations,
+  then starts Directional runtime. The prose-only correction is therefore proven at its frozen preflight boundary.
+  Formal final disposition remains an R7-REV bookkeeping decision; no selector byte changed.
 - **Stable-count rationale:** documentation/orchestration only; no product semantic event, no selector or package change, no accepted identity affected. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
 
 ## PR8-R044 / M3-CP4c2-R002 — cut-graph semantic digest reimports gauge-dependent atlas provenance — ACTIVE STABLE / PRODUCT / REPRESENTATION_DEPENDENT_IDENTITY / RP-05
@@ -45,7 +69,7 @@
 - **Additional finding the EXEC did not reach.** Removing `atlasDigest` is necessary but **not sufficient**. `SurfaceCutGraph.cpp:258` records each certificate face as `{orbit, …}` where `orbit` is the **raw loop index** into `faceWalk.orbits` — an enumeration artifact, not a semantic face identity — and `candidate_hash` consumes it. Ordinal 310 asserts invariance to enumeration order **and** relabeling, so this is a latent instance of the same pattern that may simply not fire today. **Measure AD3** requires it settled deliberately: prove orbit enumeration canonical and record the proof, or replace the index with a content-derived key. "It passes now" is not an answer.
 - **Owning correction:** `M3-CP4c-2-CB5` measures **AD1** (add the semantic digest), **AD2** (convert the consumer and extend the comment to both sites), **AD3** (orbit index), **AD4** (term-by-term certificate partition), **AD5** (a non-gating diagnostic that checks the split at the cut-graph boundary rather than two stages downstream). The superseded R6 review record is consolidated in `M3_CP4c_Consolidated_Record.md` §§6.4-6.5.
 - **Closure condition:** ordinal 310 green in a run that also reaches the full **355/355** accepted prefix.
-- **R7-EXEC:** no new runtime evidence; R7-0 hard-stopped before Directional execution under `R7-ORCH-01`.
+- **R7 retry EXEC evidence:** the same CB5 package now reaches the complete accepted **355/355**. Ordinal 310 selects exactly once and passes in that full run, mechanically satisfying this record's frozen runtime closure condition. **EXEC does not close/reclassify the stable record or alter totals; R7-REV owns that adjudication.**
 
 ## PR8-R043 / M3-CP4c2-R001 — CP4c-2 whole-source-face proxy rejects accepted embedded-graph witness — ACTIVE STABLE / PRODUCT / AUTHORITY_DOMAIN_CONFLATION / RP-01
 
@@ -61,7 +85,7 @@
 - **Accounting:** one new stable event and one recurrence in existing category/pattern `AUTHORITY_DOMAIN_CONFLATION / RP-01`: totals advance **42 / 14 / 28 -> 43 events / 14 categories / 29 recurrences**. Produced-witness debt remains **5**; M3 packages remain **62**.
 - **R6-REV disposition — RESOLVED AT LOCUS / CLOSURE PENDING FULL-PREFIX RE-PROOF.** Accepted ordinal 305 `GlobalTopologyPlan.DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph` **passes** on CB4 package `9714226920`. The mixed-complex certificate that produced `9 - 11 + 2 = 0 != 1` is gone, replaced by DEFN-R1 Amendment 13's actual embedded-graph complex, and CB4 delivered `src/geometry/EmbeddedGraphTopology.{h,cpp}` as the single shared authority required by AC1.
 - **Not closed yet, deliberately.** R6 executed 309 of 355 accepted identities before stopping at ordinal 310. **`PR8-R043` closes only at a full 355/355 with ordinal 305 green** — recording closure on a 309-ordinal prefix would be the partial-evidence promotion this project has already corrected twice. Measure **AD8** carries the condition.
-- **R7-EXEC:** no new runtime evidence; R7-0 hard-stopped before Directional execution under `R7-ORCH-01`.
+- **R7 retry EXEC evidence:** the same CB5 package now reaches the complete accepted **355/355**. Ordinal 305 selects exactly once and passes in that full run, mechanically satisfying this record's frozen runtime closure condition. **EXEC does not close/reclassify the stable record or alter totals; R7-REV owns that adjudication.**
 
 ## M3-CP4c2-TB-X2-R5-ORCH-01 — runtime helper leaks errexit and suppresses postflight — RESOLVED / R6 HARNESS CONFIRMED / ORCHESTRATION / NON-STABLE
 
@@ -328,6 +352,12 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 
 
 - **R4 EXEC status:** D2 is not authorized after the D1 evidence-conflict/all-three-construction stop. Candidate remains ACTIVE / UNLOCALIZED; no product cause is inferred.
+- **R7 retry EXEC evidence:** D2 finally executes exactly once and the diagnostic test passes while publishing
+  `producerGlobalCountsReached=true`, `surfaceCutGraphStatus=error`, `surfaceCutGraphError=CellularityNotEstablished`,
+  `errorSourceFace=25-27-28`, `publishedLocusClass=419-or-437-source-face-locus`,
+  `localizedSite=474-global-certificate`, and `localizationConsistent=false`. This materially narrows the evidence
+  but contains an explicit locus-consistency conflict; EXEC therefore preserves the record without promoting a
+  specific product root cause. Independent R7-REV owns interpretation/disposition. Stable totals remain unchanged.
 
 ## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
 

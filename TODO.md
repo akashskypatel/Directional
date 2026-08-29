@@ -21,20 +21,21 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R7-EXEC` retry — artifact-only
+## Current focus — `M3-CP4c-2-TB-X2-R7-REV` — independent review/planning only
 
-`M3-CP4c-2-DOC-R1` is **COMPLETE / DOCUMENTATION GREEN**. The six selector hashes were recomputed from committed
-bytes; the four mistranscribed constants in the CB5 AD0 audit and R7 preflight plan were corrected; no selector,
-product, test, fixture, package, or semantic/test source changed. The R7 plan now records each selector source and
-derivation and runs non-gating R7-2..R7-5 before the accepted-prefix gate, as authorized by AE8.
+R7 artifact-only execution is **COMPLETE** on immutable package `9719216316` / semantic source
+`755485865a7cf9c485d754f22b82a41ee151824b`. Authoritative run/job `33276039911 / 99162853852` re-proved the
+full accepted predecessor **355/355**, including ordinals 305 and 310, and immutable postflight passed.
 
-Exact next: retry artifact-only **`M3-CP4c-2-TB-X2-R7-EXEC`** on unchanged GMP package `9719216316` / semantic/test
-source `755485865a7cf9c485d754f22b82a41ee151824b`. First run immutable R7-0 preflight. After a green preflight run
-R7-2..R7-5 as non-gating fresh-process diagnostics, then the full accepted 355 gate. A gate red still hard-stops
-357/358, cumulative gate, and benchmarks; unconditional postflight remains mandatory.
+Non-gating evidence is mixed: R7-2 two-ring passed; R7-2 torus failed at the `baselineAtlas` precondition before
+any digest comparison; R7-3/R7-4/R7-5 passed and the sphere D2 record finally published. Selector 357, selector
+358, cumulative gate, and benchmarks remain NOT RUN.
 
-`PR8-R043` remains RESOLVED AT LOCUS with closure pending full 355/355. `PR8-R044`'s CB5 correction remains compiled
-but runtime-unproved. Stable accounting **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages
+Exact next: **`M3-CP4c-2-TB-X2-R7-REV`**. It must independently adjudicate R043/R044 closure/count disposition,
+the torus non-gating diagnostic red, the sphere D2 localization record, and what (if anything) is authorized next.
+No new runtime or implementation/test/build-logic mutation belongs to that review.
+
+Stable accounting remains **44 / 14 / 30** pending review, produced-witness debt **5**, authoritative M3 packages
 **64**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
 
 ## Carried forward from M1
@@ -72,7 +73,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; accepted runtime authority remains **355/355**. CP4c-2 CB5 is build-green/runtime-free at `755485865a7cf9c485d754f22b82a41ee151824b` with immutable GMP package `9719216316`; no 357/358 gate is selected; exact next is the artifact-only `M3-CP4c-2-TB-X2-R7-EXEC` retry on unchanged package `9719216316`; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; R7 re-proved the inherited accepted **355/355** on CB5 package `9719216316`. CP4c-2 remains unaccepted because 357/358 are unselected/unrun; exact next is independent `M3-CP4c-2-TB-X2-R7-REV`; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
