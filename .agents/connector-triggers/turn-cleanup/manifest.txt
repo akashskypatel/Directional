@@ -1,5 +1,0 @@
-# M3 CP4c historical consolidation temporary-state cleanup
-.agents/connector-triggers/source-snapshot/20260829-cp4c-consolidation.txt
-.agents/connector-triggers/schema-validate-m3-cp4c-hist-consolidation-6.txt
-.agents/connector-triggers/m3-cp4c-hist-consolidation-6-drive-apply.txt
-.agents/Directional/turn-payloads/m3-cp4c-hist-consolidation-6-drive-apply-caller.yml

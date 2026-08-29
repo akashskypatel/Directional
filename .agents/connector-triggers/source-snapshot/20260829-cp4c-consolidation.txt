@@ -1,2 +1,0 @@
-M3_CP4c historical-document consolidation source snapshot trigger.
-Initial authority: b8f76ff476acd59f3ac3adff1b97503a0cbde829

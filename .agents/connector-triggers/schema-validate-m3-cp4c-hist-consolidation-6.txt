@@ -1,3 +1,0 @@
-Revalidate the exact temporary schema-validation caller and corrected CP4c consolidation Drive-apply draft after patch-metadata correction.
-Expected pre-trigger head: 842cbe4bd6f2f9f8c88c9682ae9a7d1a1a64c676
-Retry: 1
