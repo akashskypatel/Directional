@@ -1,4 +1,0 @@
-.agents/connector-triggers/source-snapshot/m3-cp4c2-cb6-20260829.txt
-.agents/connector-triggers/workflow-schema/m3-cp4ab-cb-r7-apply-20260823.txt
-.agents/connector-triggers/m3-cp4c2-cb6-apply-20260829.txt
-.agents/Directional/turn-payloads/m3-cp4ab-cb-r7-apply.yml

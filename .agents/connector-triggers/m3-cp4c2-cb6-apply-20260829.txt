@@ -1,4 +1,0 @@
-M3-CP4c-2-CB6 apply closeout patch
-caller=.github/workflows/m3-cp4c2-cb6-apply.yml
-patch_file_id=10ZN6ZJ5dplNIKLalWRiAffNOkQV-374m
-retry=1
