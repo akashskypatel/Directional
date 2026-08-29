@@ -1,0 +1,9 @@
+turn_id=M3-CP4c-2-TB-X2-R5-EXEC
+purpose=execute frozen artifact-only R5 validation plan
+semantic_source=76d757aab0ce18df09ce2823302d2dc224965187
+package_artifact_id=9708324052
+package_sha256=48e01cea66817525766566a1145b92beb22dbb847e4211629fe4c3373d23ff7a
+caller_blob=523fadd4ff6221389d31d99315127f5ddf51a118
+selected_r2_branch=NONE
+selected_gate=NONE
+gate_execution_authorized=false
