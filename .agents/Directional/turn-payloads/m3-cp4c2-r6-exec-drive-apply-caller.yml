@@ -1,0 +1,38 @@
+name: Agent Drive Apply M3 CP4c2 R6 EXEC Closeout
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-r6-exec-drive-apply-20260829.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-drive-apply-m3-cp4c2-r6-exec-closeout
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-r6-exec-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1zMVXK6f4jHXpNq5WPG8K_zmF1Ke7w-Hr
+      patch_sha256: a43a5fe5121010124dc808a89d55f614170777164b09adc58e66e71ef5e82c03
+      base_sha: 9d83017af6483002627f0f9d5793f4ac7dcfbf20
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: record M3-CP4c-2 TB-X2-R6 EXEC semantic stop"
+      retention_days: 14
+    secrets: inherit
