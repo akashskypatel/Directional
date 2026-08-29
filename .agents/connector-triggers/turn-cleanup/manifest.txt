@@ -1,4 +1,0 @@
-.agents/connector-triggers/m3-cp4c2-tb-x2-r3-start-snapshot-20260828.txt
-.agents/connector-triggers/m3-cp4c2-tb-x2-r3-exec/trigger-20260828.txt
-.agents/connector-triggers/m3-cp4c2-tb-x2-r3-exec/retry-1-20260828.txt
-.agents/connector-triggers/m3-cp4c2-tb-x2-r3-exec-closeout-apply-20260828.txt

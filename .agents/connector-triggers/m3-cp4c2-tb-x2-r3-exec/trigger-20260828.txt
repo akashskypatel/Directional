@@ -1,6 +1,0 @@
-turn=M3-CP4c-2-TB-X2-R3-EXEC
-purpose=execute corrected D1 then conditional D2 from immutable package 9704935112 only
-source_sha=c552a5a4a318063cde2564c40773ec7edaf064f6
-artifact_id=9704935112
-runtime_boundary=artifact-only
-retry=0
