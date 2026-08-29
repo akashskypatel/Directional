@@ -1,8 +1,0 @@
-# M3-CP4c-2-TB-X2-R5-EXEC complete temporary-state retirement
-.agents/connector-triggers/m3-cp4c2-r5-exec-closeout-apply.txt
-.agents/connector-triggers/r5-exec
-.agents/connector-triggers/r5-exec-schema
-.agents/Directional/turn-payloads/M3-CP4c-2-TB-X2-R5-EXEC.part0
-.agents/Directional/turn-payloads/M3-CP4c-2-TB-X2-R5-EXEC.part1
-.agents/Directional/turn-payloads/M3-CP4c-2-TB-X2-R5-EXEC.part2
-.agents/Directional/turn-payloads/M3-CP4c-2-TB-X2-R5-EXEC.workflow.yml
