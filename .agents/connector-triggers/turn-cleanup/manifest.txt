@@ -1,7 +1,0 @@
-# M3-CP4c-2-CB5 final temporary-state cleanup
-.agents/connector-triggers/cb5-compile.txt
-.agents/connector-triggers/cb5-schema-validate.txt
-.agents/connector-triggers/cb5-source-apply.txt
-.agents/connector-triggers/cb5-closeout-apply.txt
-.agents/connector-triggers/source-snapshot/continue-turn-20260829-01.txt
-.agents/Directional/turn-payloads/cb5-workflow-draft.yml
