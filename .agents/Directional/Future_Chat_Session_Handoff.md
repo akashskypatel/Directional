@@ -83,42 +83,39 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R4-EXEC` — artifact-only, package `9707091209`
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R4-REV` — evidence review only
 
-`M3-CP4c-2-CB2-DIAG-R2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY**.
-Read `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md` and then execute exactly
-`Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c-2-TB-X2-R4-EXEC` is **COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / D1 EVIDENCE-CONFLICT STOP**.
+Read `Architecture_M3_CP4c2_TB_X2_R4_EXEC_Artifact_Only_Evidence.md` and the frozen
+`Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`. R4-REV consumes existing evidence only
+and runs no new Directional runtime.
 
-**Build authority.** Semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`; authoritative full GMP
-compile run/job `33226609913 / 99031482464`; immutable package `9707091209` /
-`sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`; compile log `9707091377` /
-`sha256:0188b2926df2d77b5885a6560ba358f325d709d3b57f326b3a2abf5473bfe3b2`; packaged source archive
-`9a9dbfb5c6aede1618d41323109cb336f978f75434bef216472557121df2fb11`. All eight required targets passed with
-GMP/GMPXX; manifest and source-status checks are green; `runtimeExecution=false`.
+**Runtime authority.** Semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`; immutable GMP package
+`9707091209` / `sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`;
+authoritative EXEC run/job `33228460953 / 99036688477`; result artifact `9707662462` /
+`sha256:36e5982c152317a56d98d13e58a2ec1233c71b65e9f8570aeabfed373228a76f`; runtime log `9707662682` /
+`sha256:594edbad06c849e12ad52787ec144f08da526c6f25c4449d21a222691daae0eb`. Package/source byte-and-mode
+postflight matches preflight exactly.
 
-**Compiled correction.** Loaded torus/sphere D1 witnesses consume retained pipeline `productSnapshots`; two-ring
-remains explicitly constructed/AtlasDerived. The strict production fixture was not weakened. D1 publishes one
-record per witness and asserts once after the loop. Pipeline availability and terminal code/stage are published;
-typed atlas/network errors are retained. The former hand-reconstruction helper is removed. Z2/Z3/Z4/Z5/Z7
-remain unchanged.
+**D1 raw state.** D1 ran exactly once and exited `1`. Torus successfully consumed pipeline products and
+published `pipelineAtlasAvailable=true`, `pipelineNetworkAvailable=true`, `barrierV=48`, `barrierE=48`,
+`sourceChi=0`, `networkOnlyCellular=false`, `oracleSelfConsistent=true`. Prescribed sphere published
+`constructionSucceeded=false` with all pipeline snapshots unavailable and
+`error=pipeline-source-topology-snapshot-unavailable`. Two-ring published a successful/self-consistent
+AtlasDerived record. The final accumulated `ASSERT_TRUE` then repeats the prescribed-sphere failure record
+byte-identically, so stdout has four Y1 lines rather than exactly one per witness. EXEC therefore records
+`STOP_EVIDENCE_CONFLICT`; D2 was correctly skipped.
 
-**Critical static retention finding.** In current production source, the atlas/network snapshot optionals are
-assigned only after `SurfaceCutGraph` and `GlobalTopologyPlan` both succeed. The torus is already known to stop at
-`SurfaceCutGraph`; therefore its R4 record may report `pipelineAtlasAvailable=false` /
-`pipelineNetworkAvailable=false` even though production constructed them earlier. Treat this only as a static
-prediction. **If runtime confirms it, Z12 requires STOP before D2 and review; it is not a 48/48 mismatch and does
-not authorize any product change.**
+**Review obligations.** R4-REV must adjudicate, in the frozen plan's order: Z13 witness isolation and the
+exactly-once publication conflict; torus snapshot availability and 48/48 control; Z3 consistency only where
+construction exists; R2 CAND-01/CAND-02 and R3 CAND-01/CAND-02; the new R4 publication/snapshot candidates; and
+D2/CAND-04 only as unmeasured evidence. Y5 may be selected only if the frozen prerequisites permit it.
+`selected_r2_branch=NONE`, `selected_gate=NONE`, and `gate_execution_authorized=false` remain binding entering
+review.
 
-**R4 EXEC order.** (1) immutable package preflight; (2) run D1 once and preserve exactly one `m3Cp4c2Y1` record
-for torus, prescribed sphere, and two-ring; (3) if torus snapshots are unavailable, stop after all three records;
-(4) otherwise require torus 48/48 from authority and all-three Z3 self-consistency; (5) only after those gates
-pass may D2 run once; (6) immutable postflight. EXEC performs no branch inference.
-
-`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Stable accounting remains
-**42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**. Selector 355/357/358, cumulative gate, compile,
-source mutation, benchmarks, CB3, mechanical/C2, and CP4c-3 are forbidden in R4-EXEC.
-
-After EXEC, exact next is `M3-CP4c-2-TB-X2-R4-REV`, evidence review only. Do not start a corrective CB from EXEC.
+Stable accounting remains **42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**. Accepted runtime
+predecessor remains CP4c-1 TB-R5 **355/355**. R4-REV must not rerun D1, run D2/355/357/358, execute cumulative
+gate or benchmarks, compile, mutate source/tests/fixtures, start CB3, touch mechanical/C2, or begin CP4c-3.
 
 ### Superseded — the R3 EXEC stop as reported (retained for provenance)
 
@@ -353,29 +350,39 @@ This EXEC subturn does not interpret the X2 publication and does not choose 357 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 DEFN through R3 independent review and **CB2-DIAG-R2** are complete; CP4c-2 remains runtime-unaccepted.
+- CP4c-2 DEFN through CB2-DIAG-R2 and **R4-EXEC** are complete; CP4c-2 remains runtime-unaccepted.
 - Accepted runtime predecessor remains CP4c-1 TB-R5 **355/355**.
-- Current corrected build authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / package `9707091209`; no R4 runtime has executed.
-- R2 CAND-01/CAND-02 remain active pending corrected D1 runtime; R3 CAND-01 is localized/resolved as to cause but its runtime closure is pending; R3 CAND-02 is compiled-corrected but runtime closure is pending; X2 CAND-04 remains active/unlocalized because D2 has never run.
-- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate runtime has not begun. Frozen candidates remain 357 / `b896d0db…64dc70` and 358 / `6eda3aad…b64fbe62`.
-- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt **5**; M3 packages **61**.
-- **Exact next is `M3-CP4c-2-TB-X2-R4-EXEC`**, artifact-only on package `9707091209`, followed by evidence-only R4-REV.
+- Current build/package authority is `5ad711e5d4ced95f38e103b993139a6307ba2cee` / package `9707091209`.
+- Current R4 runtime evidence is run/job `33228460953 / 99036688477`: torus 48/48 success, prescribed-sphere
+  snapshot-construction failure, two-ring success, duplicate sphere Y1 publication, D1 `STOP_EVIDENCE_CONFLICT`,
+  D2 skipped.
+- R2 CAND-01/CAND-02, R3 CAND-01/CAND-02, X2 CAND-04, and new R4 CAND-01/CAND-02 require R4-REV disposition.
+  EXEC closes none by interpretation.
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`; cumulative CP4c-2 gate
+  runtime has not begun. Frozen candidate selectors remain 357 / `b896d0db…64dc70` and 358 /
+  `6eda3aad…b64fbe62`.
+- Stable regression accounting remains **42 events / 14 categories / 28 recurrences**; produced-witness debt
+  **5**; M3 packages **61**.
+- **Exact next is `M3-CP4c-2-TB-X2-R4-REV`**, independent evidence review only.
 - CP4c-3 remains blocked on CP4c-2 closure.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TB-EXEC.md`
+- turn-based-coding-agent `references/turns/TB-REVIEW.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md` — **the executable authority**.
-2. `.agents/Directional/Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md` — exact source/package and static snapshot-retention warning.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md` — Z10-Z19 and the binding Z12/Z17 stop logic.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — R2 CAND-01/CAND-02, R3 CAND-01/CAND-02, X2 CAND-04.
-5. `TODO.md` / `CHANGELOG.md` — current state and accounting.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_EXEC_Artifact_Only_Evidence.md` — **authoritative raw R4 evidence**.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md` — frozen review order and stop rules.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R3_Independent_Review_Record.md` — Z10-Z19 authority.
+4. `.agents/Directional/Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md` — exact source/package authority and snapshot-retention context.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — existing and new R4 candidates.
+6. `TODO.md` / `CHANGELOG.md` — current state and accounting.
 
-Conditional module: GitHub connector/workflow module for immutable artifact execution. Do not load engineering/unit-test design modules in normal R4-EXEC. Do not preload unrelated historical reports. Do not configure/compile, mutate source/fixtures, run selectors 355/357/358, start CB3, or execute cumulative gate work.
+R4-REV is evidence review only. Do not run new Directional runtime, compile, mutate source/tests/fixtures, execute
+D2/355/357/358 or a cumulative gate, or preload Code + Build engineering modules unless the completed review
+later authorizes such a successor.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

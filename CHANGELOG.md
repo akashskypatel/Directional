@@ -1,3 +1,19 @@
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R4-EXEC`: valid semantic red, D1 evidence-conflict stop
+
+Artifact-only R4 run/job `33228460953 / 99036688477` consumed immutable GMP package `9707091209` from source
+`5ad711e5d4ced95f38e103b993139a6307ba2cee`. Pre/post package/source/GMP/selector integrity passed. D1 ran once:
+torus published the product-authoritative 48/48 non-cellular control with `oracleSelfConsistent=true`; prescribed
+sphere published a typed `pipeline-source-topology-snapshot-unavailable` construction failure; two-ring published
+a successful/self-consistent record. The final accumulated GoogleTest assertion repeated the sphere failure
+record, yielding four Y1 lines instead of exactly one per witness, so the frozen contract stopped at
+`STOP_EVIDENCE_CONFLICT`; D2 was not authorized. No selector 355/357/358, cumulative gate, benchmark, compile,
+relink, generated discovery, repair, or source/package/fixture mutation occurred. Result/log artifacts
+`9707662462 / 9707662682`, SHA-256
+`36e5982c152317a56d98d13e58a2ec1233c71b65e9f8570aeabfed373228a76f /
+594edbad06c849e12ad52787ec144f08da526c6f25c4449d21a222691daae0eb`. Stable accounting remains
+**42 / 14 / 28**, debt **5**, M3 packages **61**. Exact next: independent evidence-only
+`M3-CP4c-2-TB-X2-R4-REV`.
+
 ## 2026-08-28 — `M3-CP4c-2-TB-X2-R3-EXEC`: valid diagnostic red, planned D1 stop before torus publication
 
 Artifact-only R3 EXEC run/job `33222551366 / 99019499929` consumed immutable GMP package `9704935112` from

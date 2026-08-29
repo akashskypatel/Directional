@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-28 UTC
+Last updated: 2026-08-29 UTC
 
 ## Purpose
 
@@ -21,39 +21,36 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R4-EXEC` — artifact-only corrected D1/D2 evidence
+## Current focus — `M3-CP4c-2-TB-X2-R4-REV` — independent evidence review only
 
-**`M3-CP4c-2-CB2-DIAG-R2` is COMPLETE / BUILD GREEN / RUNTIME-FREE / TEST-DIAGNOSTIC SOURCE ONLY.**
-Report: `Architecture_M3_CP4c2_CB2_DIAG_R2_Code_Build_Report.md`. Exact semantic/test source
-`5ad711e5d4ced95f38e103b993139a6307ba2cee`; authoritative GMP compile run/job
-`33226609913 / 99031482464`; immutable package `9707091209` /
-`sha256:e6852141847a23b77245887f66b11d411d7cffc414ae91c1a829eb93c8712f63`. All eight required targets
-compile/link, both gmpxx/gmp are authoritative, package manifest passes, source-status snapshots are empty, and
-`runtimeExecution=false`. Only `tests/FieldAlignedCurveNetworkTests.cpp` changed semantically. M3 packages are
-now **61**.
+**`M3-CP4c-2-TB-X2-R4-EXEC` is COMPLETE / VALID DIAGNOSTIC SEMANTIC RED / D1 EVIDENCE-CONFLICT STOP.**
+Authoritative artifact-only run/job `33228460953 / 99036688477` consumed immutable GMP package `9707091209`
+from semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`. Immutable package/source/GMP/selector
+preflight and postflight passed; no configure, compile, relink, generated discovery, package/source/test/fixture
+mutation, selector gate, or benchmark occurred.
 
-**What R2 compiled.** Loaded torus/sphere witnesses now consume `productSnapshots` through a relaxed
-`build_cp4c_pipeline_products_fixture(...)`; the strict `cp4c_production_fixture(...)` remains unchanged in its
-cut-graph/global-plan precondition. The old hand-reconstruction helper is removed. Two-ring remains constructed
-`AtlasDerived`. Every D1 witness emits one success/failure record; one accumulated assert occurs after the loop.
-Pipeline records publish atlas/network/cut-graph/plan availability and terminal code/stage. Typed atlas/network
-errors are retained. Z2/Z3/Z4/Z5/Z7 remain unchanged.
+D1 executed exactly once and exited `1`. Torus successfully consumed pipeline products and published the frozen
+product-authoritative `barrierV=48`, `barrierE=48`, `sourceChi=0`, `networkOnlyCellular=false`,
+`oracleSelfConsistent=true`, with atlas/network/cut-graph/plan snapshots all available. Prescribed sphere emitted
+a typed construction failure with every pipeline snapshot unavailable and
+`error=pipeline-source-topology-snapshot-unavailable`; two-ring published a successful/self-consistent
+`AtlasDerived` record. The final accumulated assertion then repeated the prescribed-sphere Y1 record
+byte-identically, so preserved stdout contains four `m3Cp4c2Y1` lines rather than exactly one per witness. The
+frozen publication contract therefore stops as `STOP_EVIDENCE_CONFLICT`; D2 was correctly skipped.
 
-**Static retention warning — runtime must adjudicate it.** `RemeshPipeline.cpp` copies
-`sourceTopologyRegions`, `fieldTransportAtlas`, `fieldAlignedCurveNetwork`, `surfaceCutGraph`, and
-`globalTopologyPlan` into `productSnapshots` together only after cut-graph and global-plan construction succeed.
-The torus is known to terminate at `SurfaceCutGraph`, so R4 may publish pipeline atlas/network snapshots as
-unavailable even though production constructed them earlier. This is not runtime evidence and does not authorize
-a product fix. Under **Z12**, if torus atlas/network snapshots are unavailable, R4 must preserve all three D1
-records and **STOP before D2**, then route the evidence to R4-REV.
+Raw evidence: `Architecture_M3_CP4c2_TB_X2_R4_EXEC_Artifact_Only_Evidence.md`. Result/log artifacts
+`9707662462 / 9707662682`, digests
+`36e5982c152317a56d98d13e58a2ec1233c71b65e9f8570aeabfed373228a76f /
+594edbad06c849e12ad52787ec144f08da526c6f25c4449d21a222691daae0eb`.
+Recursive package/source byte-and-mode inventories match exactly.
 
 `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. Stable accounting remains
 **42 / 14 / 28**, produced-witness debt **5**, M3 packages **61**.
 
-Exact next is `M3-CP4c-2-TB-X2-R4-EXEC` on immutable package `9707091209`, followed by evidence-only
-`M3-CP4c-2-TB-X2-R4-REV`. Plan:
-`Architecture_M3_CP4c2_TB_X2_R4_Artifact_Only_Test_Benchmark_Plan.md`. No selector 355/357/358, cumulative gate,
-benchmark, compile, source mutation, CB3, mechanical/C2, or CP4c-3 work is authorized in EXEC.
+Exact next is **`M3-CP4c-2-TB-X2-R4-REV`**. It is evidence review only: adjudicate Z13 witness isolation,
+the exactly-once publication conflict, torus 48/48, prescribed-sphere snapshot availability, and existing/new
+candidate dispositions. Do **not** rerun D1, run D2/355/357/358, execute a cumulative gate, benchmark, compile,
+mutate source/tests/fixtures, start CB3, touch mechanical/C2, or begin CP4c-3 in REV.
 
 ## Superseded focus — `M3-CP4c-2-TB-X2-R3-EXEC` stop (retained for provenance)
 

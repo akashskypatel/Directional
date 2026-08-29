@@ -1,3 +1,55 @@
+## M3-CP4c2-TB-X2-R4-CAND-01 — final D1 assertion duplicates an already-published failure record — **ACTIVE / TEST-AUTHORITY / PUBLICATION-CONTRACT / NON-STABLE**
+
+- **Observed:** authoritative R4 EXEC run/job `33228460953 / 99036688477` executes D1 once and reaches all three
+  witnesses, but preserved stdout has four `m3Cp4c2Y1` lines: torus once, prescribed sphere twice, two-ring once.
+  The two prescribed-sphere lines are byte-identical.
+- **Static localization:** `tests/FieldAlignedCurveNetworkTests.cpp:6043-6049` prints the failed witness report
+  immediately and also appends the same report to `failures`; line 6071 then streams `failures.str()` through
+  `ASSERT_TRUE(allWitnessesValid)`. GoogleTest therefore republishes the already-emitted Y1 text in the assertion
+  failure message.
+- **Impact:** R4's frozen exactly-one-record-per-witness contract is red, so D2 is not authorized and EXEC cannot
+  use the records to close candidates or select Y5. Witness isolation itself is observable, but its disposition
+  belongs to R4-REV.
+- **Root-cause status:** high-confidence diagnostic/test publication-contract defect; no product semantic claim.
+  No corrective implementation is authorized from EXEC.
+- **Stable-count rationale:** CP4c-2 is runtime-unaccepted and this is a new non-gating diagnostic authority.
+  **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**, M3 packages **61**.
+
+## M3-CP4c2-TB-X2-R4-CAND-02 — prescribed-sphere pipelineProducts witness has no retained source-topology snapshot — **ACTIVE / DIAGNOSTIC-PRECONDITION / SNAPSHOT-AVAILABILITY / NON-STABLE**
+
+- **Observed:** the same R4 D1 run publishes the prescribed-sphere typed failure
+  `constructionSucceeded=false`, `pipelineAtlasAvailable=false`, `pipelineNetworkAvailable=false`,
+  `pipelineCutGraphAvailable=false`, `pipelinePlanAvailable=false`,
+  `terminalFailureStage=surface-cut-graph/CellularityNotEstablished`,
+  `error=pipeline-source-topology-snapshot-unavailable`.
+- **What EXEC establishes:** sphere construction is unavailable through the current product-snapshot diagnostic
+  authority; torus and two-ring still publish, and D2 is not permitted because all three constructions did not
+  succeed.
+- **What EXEC does not establish:** whether retention policy, terminal-stage publication, or another diagnostic
+  precondition owns the missing sphere snapshot; whether X2 CAND-04's product failure changes; or any Y5 branch.
+  R4-REV owns that adjudication.
+- **Stable-count rationale:** CP4c-2 is unaccepted and this is diagnostic-precondition evidence, not a loss of an
+  accepted-green identity. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**, M3
+  packages **61**.
+
+## M3-CP4c2-TB-X2-R4-ORCH-01 — first R4 runtime control script addressed package metadata at the wrong archive root — **RESOLVED ORCHESTRATION / NON-STABLE**
+
+- **Observed:** run/job `33228330756 / 99036316061` verified package digest/manifest, then stopped before D1 at
+  `pkg/source-commit.txt` because package metadata is under `pkg/metadata/`.
+- **Correction:** only the execution control path was corrected, schema-validated, and retried with the exact same
+  immutable package and runtime semantics. Authoritative run `33228460953` then reached D1. No Directional binary
+  ran in the failed attempt.
+- **Stable-count rationale:** orchestration only; **+0 events / +0 recurrences**.
+
+## M3-CP4c2-TB-X2-R4-PROC-01 — READ_MODE was selected after an initial handoff fetch — **RESOLVED PROCESS / NON-STABLE**
+
+- **Observed:** the handoff was fetched before the mandatory full tool-use-policy read and explicit turn-local
+  READ_MODE choice.
+- **Correction:** the miss was recorded immediately, `READ_MODE=snapshot` was selected, and source snapshot
+  `9707441880` was acquired/verified before continuing repository source/document analysis.
+- **Stable-count rationale:** process-ordering miss only; no semantic/build/runtime evidence changed.
+  **+0 events / +0 recurrences**.
+
 ## M3-CP4c2-TB-X2-R3-CAND-01 — corrected D1 torus fixture fails before network publication with `field-transport-atlas-unavailable` — **LOCALIZED** / TEST-AUTHORITY / DIAGNOSTIC FIXTURE RECONSTRUCTION DIVERGENCE / NON-STABLE
 
 - **Observed:** authoritative artifact-only R3 EXEC run/job `33222551366 / 99019499929` passed immutable preflight,
@@ -24,7 +76,14 @@
 
 Permanent stable-ID regression, repeated-pattern, architecture, and test-authority index for PR #8. Detailed historical event evidence remains in `.agents/Directional/PR_8_Regression_Audit_Inventory.md`; the current immutable turn report owns current artifact/runtime detail.
 
-Last updated: **2026-08-29 UTC** after `M3-CP4c-2-CB2-DIAG-R2`. The bounded test/diagnostic correction is compile-green at semantic/test source `5ad711e5d4ced95f38e103b993139a6307ba2cee`, run/job `33226609913 / 99031482464`, immutable GMP package `9707091209`. No corrected R4 D1/D2 runtime has executed, so runtime closure conditions remain pending `TB-X2-R4`; no stable event/recurrence is added or resolved by compile evidence. Stable accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages **61**.
+Last updated: **2026-08-29 UTC** after `M3-CP4c-2-TB-X2-R4-EXEC`. Authoritative artifact-only run/job
+`33228460953 / 99036688477` consumed immutable GMP package `9707091209` from semantic/test source
+`5ad711e5d4ced95f38e103b993139a6307ba2cee`. D1 produced torus 48/48 success, a prescribed-sphere typed
+snapshot-construction failure, two-ring success, and one duplicate sphere Y1 line from the final assertion;
+therefore D1 stops `STOP_EVIDENCE_CONFLICT` and D2 is skipped. Candidate dispositions remain review-owned by
+`M3-CP4c-2-TB-X2-R4-REV`; no stable event/recurrence is added or resolved by EXEC interpretation. Stable
+accounting remains **42 events / 14 categories / 28 recurrences**, produced-witness debt **5**, M3 packages
+**61**.
 
 - **Review adjudication — LOCALIZED, test-side with high confidence.** `M3-CP4c-2-TB-X2-R3-REV` identified two demonstrable divergences from production in `cp4c_build_rail_authority` under `PipelineAuthoritative`. **Divergence A — the cross field:** the fixture computes `finalize_surface_cell_raw_cross_field(mesh, raw)`, while production and the working observer `observe_cp4c_witness` use the pipeline's published `products.crossField`. **Divergence B — the hard-feature edge set:** the fixture recomputes it from a locally built feature map (`options.featureAlign ? options.featureMap : options.surfaceCells.featureMap` → `hard_feature_edge_keys_from_rails`), while the working observer passes `tracingOptions.hardFeatureEdges` from the pipeline. The torus is the one witness whose rails originate in the feature map, so it is the one witness where that set is non-empty and the divergence can bite. **Divergences C and D remain plausible and unmeasured:** production builds over `meshWhole` and via `build_source_topology_regions` with `sourceFaceComponents`/`sourceFaceSheets` populated, whereas the fixture uses the raw loaded OBJ and bare `make_source_authority`.
 - **Why test-side:** production reaches A2a on the torus — the frozen `48 HardFeature rails / 48 structural nodes / 0 traces / 0 events` came from CB2's T1 — so production's atlas construction for the torus succeeds. A reconstruction that fails where the original succeeds is a reconstruction defect. **Measure Z12 requires this to be confirmed by publication, not assumed**; if the pipeline's own torus atlas is also unavailable, the classification flips to a product finding and the frozen theorem is re-adjudicated.
@@ -35,6 +94,8 @@ Last updated: **2026-08-29 UTC** after `M3-CP4c-2-CB2-DIAG-R2`. The bounded test
 - **Closure condition:** the torus reaches a published network through Z11 and reproduces `V=48, E=48, χ=0`, non-cellular, from authority rather than from an encoded constant.
 - **Stable-count rationale:** diagnostic precondition failure in a non-gating identity; nothing about the product, the frozen theorem, or any accepted identity is established or lost. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
 
+- **R4 EXEC evidence pending review:** run `33228460953` reaches a successful torus `pipelineProducts` network and publishes `barrierV=48`, `barrierE=48`, `sourceChi=0`, non-cellular, `oracleSelfConsistent=true`. EXEC does not close this candidate; R4-REV owns the disposition.
+
 ## M3-CP4c2-TB-X2-R3-CAND-02 — one witness's failure suppressed every other witness's publication — ACTIVE / TEST-AUTHORITY / DIAGNOSTIC GATING / NON-STABLE
 
 - **Observed:** the R3 D1 identity loops over `{torus, prescribed-sphere, two-ring}` and calls `ASSERT_TRUE(fixture.network.has_value())` **inside the loop** (`tests/FieldAlignedCurveNetworkTests.cpp:5946`). GoogleTest's `ASSERT_*` returns from the test body, and the torus is element 0 — so the identity ended after 14 ms with **zero** `m3Cp4c2Y1` publications.
@@ -44,6 +105,8 @@ Last updated: **2026-08-29 UTC** after `M3-CP4c-2-CB2-DIAG-R2`. The bounded test
 - **CB2-DIAG-R2 compile status:** the in-loop `ASSERT_*` is removed; each witness now emits one success/failure record, failures accumulate, and one assertion occurs after the loop. Package `9707091209` is green/runtime-free. **Candidate remains ACTIVE until R4 proves publication isolation at runtime.**
 - **Closure condition:** a run in which a per-witness failure occurs and every other witness is still published.
 - **Stable-count rationale:** test-authority defect in a non-gating diagnostic; no accepted identity regressed. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
+
+- **R4 EXEC evidence pending review:** the sphere fails construction but torus and two-ring are still published, so the former suppression behavior is no longer observed. However the final assertion duplicates the sphere Y1 record and violates the strict exactly-once publication contract. R4-REV owns closure/disposition.
 
 ## M3-CP4c2-TB-X2-R2-CAND-02 — D1 oracle computes Euler terms in two different complexes; sphere publication is self-contradictory — ACTIVE / TEST-AUTHORITY / MIXED-COMPLEX ACCOUNTING / NON-STABLE
 
@@ -59,6 +122,8 @@ Last updated: **2026-08-29 UTC** after `M3-CP4c-2-CB2-DIAG-R2`. The bounded test
 - **CB2-DIAG-R1 compile status:** source `c552a5a4a318063cde2564c40773ec7edaf064f6` replaces the mixed-complex diagnostic with one named `sourceEdgeBarrier` complex, publishes barrier definitions/provenance, and asserts `oracleSelfConsistent` per witness. Final compile package `9704935112` is green/runtime-free. **Candidate remains ACTIVE** because its closure condition is runtime evidence that all three corrected D1 witnesses are self-consistent; Code + Build cannot supply that evidence. Stable totals unchanged.
 - **CB2-DIAG-R2 carry-forward:** source `5ad711e5d4ced95f38e103b993139a6307ba2cee` preserves the same `sourceEdgeBarrier` and Z3 self-consistency authority while correcting witness construction/publication. Package `9707091209` is green/runtime-free. **Candidate remains ACTIVE** pending all-three R4 runtime publications and self-consistency.
 
+
+- **R4 EXEC evidence:** torus and two-ring publish `oracleSelfConsistent=true`, but prescribed sphere does not construct (`pipeline-source-topology-snapshot-unavailable`), so the all-three closure condition is not reached. Candidate remains ACTIVE pending review.
 
 ## M3-CP4c2-TB-X2-R2-CAND-01 — D1 torus control reconstructs atlas-barrier rails instead of product-authoritative rails — **ACTIVE / TEST-AUTHORITY / STRUCTURALLY INVALID FIXTURE / NON-STABLE**
 
@@ -93,6 +158,8 @@ Last updated: **2026-08-29 UTC** after `M3-CP4c-2-CB2-DIAG-R2`. The bounded test
 - **CB2-DIAG-R1 compile status:** source `c552a5a4a318063cde2564c40773ec7edaf064f6` gives torus and prescribed sphere explicit `PipelineAuthoritative` rail construction, two-ring explicit `AtlasDerived` authority, and orders D1 torus first. Final compile package `9704935112` is green/runtime-free. **Candidate remains ACTIVE** until R3 D1 actually reproduces the frozen 48/48 torus control; no compile result may close it. Stable totals unchanged.
 - **CB2-DIAG-R2 compile status:** source `5ad711e5d4ced95f38e103b993139a6307ba2cee` now obtains loaded-witness rail/source/atlas/network authority from pipeline product snapshots and leaves two-ring constructed/AtlasDerived. Package `9707091209` is green/runtime-free. **Candidate remains ACTIVE** until R4 has an actual successful torus network publication that reproduces 48/48; snapshot-retention absence does not satisfy or refute that closure condition.
 
+
+- **R4 EXEC evidence pending review:** the corrected product-snapshot torus publishes the frozen 48/48 control from `pipeline-authoritative` rails with `oracleSelfConsistent=true`. EXEC preserves this evidence but does not close the candidate; R4-REV owns closure.
 
 ## M3-CP4c2-TB-X2-CAND-01 — reusable observer permission ceiling caused startup failure — RESOLVED ORCHESTRATION / NON-STABLE
 
@@ -160,6 +227,8 @@ Last updated: **2026-08-29 UTC** after `M3-CP4c-2-CB2-DIAG-R2`. The bounded test
   **42 / 14 / 28**, debt **5**.
 - **CB2-DIAG-R1 status:** D2 compiles against corrected source `c552a5a4a318063cde2564c40773ec7edaf064f6` but has not executed. **Candidate remains ACTIVE / UNLOCALIZED**; R3 may run D2 only after the torus and all-three-witness self-consistency stop gates pass. No product root cause or stable recurrence is inferred from compilation.
 
+
+- **R4 EXEC status:** D2 is not authorized after the D1 evidence-conflict/all-three-construction stop. Candidate remains ACTIVE / UNLOCALIZED; no product cause is inferred.
 
 ## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
 
