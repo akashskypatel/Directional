@@ -1,0 +1,4 @@
+# M3-CP4c-2-CB4 handoff-correction temporary-state cleanup
+.agents/connector-triggers/m3-cp4c2-cb4-handoff-correction-drive-apply-20260829.txt
+.agents/connector-triggers/schema-validate-m3-cp4c2-cb4-handoff-correction-20260829.txt
+.agents/Directional/turn-payloads/m3-cp4c2-cb4-handoff-correction-drive-apply-caller.yml
