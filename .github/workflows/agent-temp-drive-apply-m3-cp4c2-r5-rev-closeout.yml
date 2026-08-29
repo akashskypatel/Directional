@@ -1,0 +1,38 @@
+name: Agent M3 CP4c2 R5 REV Closeout Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-apply-m3-cp4c2-r5-rev-closeout-20260828.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c2-r5-rev-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: drive-apply-m3-cp4c2-r5-rev-closeout
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1qtm7RdRo0bNpFs-BhT--GU76urogjXN2
+      patch_sha256: 89f194d8b79f2650edaf511480aba0acb16e4ff2b63c5754891400467ae0834a
+      base_sha: f7e78445901c364e07e6a3bd99d27d954347a682
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: independent review of M3-CP4c-2 R5 accepted-prefix regression"
+      retention_days: 14
+    secrets: inherit
