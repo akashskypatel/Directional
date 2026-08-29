@@ -1,0 +1,38 @@
+name: Agent Drive Apply M3 CP4c2 CB4 Handoff Correction
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-cb4-handoff-correction-drive-apply-20260829.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: agent-drive-apply-m3-cp4c2-cb4-handoff-correction
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: drive-apply-m3-cp4c2-cb4-handoff-correction
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1jLDE_PSqgfY0O5ZHVz3HfruOXgfpqBcZ
+      patch_sha256: fbaed08e6fd60df6a79a82da8943d4bb53aa9ddf63252f1014ca59804390aa8b
+      base_sha: b6aaf72862757dd9d582c546743668c47927fd58
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: correct CB4 handoff to R6 execution"
+      retention_days: 14
+    secrets: inherit
