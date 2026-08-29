@@ -1,3 +1,0 @@
-purpose=start-session exact source snapshot for historical-document consolidation
-frozen_source_sha=4ff78842b633ff9d550762fb6c61e6d24193f6c0
-retry=0
