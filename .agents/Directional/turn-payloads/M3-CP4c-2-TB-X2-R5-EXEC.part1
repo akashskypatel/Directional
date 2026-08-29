@@ -1,0 +1,121 @@
+ 'tests/AdaptiveFeatureMapPhase11Tests.cpp','tests/AdaptiveTargetSizePhase12Tests.cpp','tests/BoundedMeshPreconditionerTests.cpp','tests/CrossFieldTransferTests.cpp','tests/FieldAlignedCurveNetworkTests.cpp','tests/RegularizedCurvaturePhase1Tests.cpp','tests/SourceGridRecoveryAuthorityTests.cpp','tests/SurfaceCellDesignAcceptanceTests.cpp','tests/SurfaceCellREPackageTests.cpp','tests/SurfaceCellTransitionQuotientTests.cpp','tests/SurfaceCellsPhase10Tests.cpp'],
+'directional_surface_cell_authority_kernel_tests':['tests/FieldTransportAtlasTests.cpp','tests/SurfaceCellAuthorityKernelTests.cpp'],
+'directional_surface_cell_completion_tests':['tests/FlowRepStrandsPhase15Tests.cpp','tests/PatchDescriptorMilestoneETests.cpp','tests/PureQuadCompletionPhase18Tests.cpp','tests/SurfaceArrangementRowIdentityTests.cpp','tests/SurfaceComplexSimplificationPhase17Tests.cpp'],
+'directional_surface_cell_validation_tests':['tests/SourceAuthoritativeMeshValidatorPhase22Tests.cpp','tests/SurfaceMeshOptimizerPhase19Tests.cpp','tests/SurfaceMeshOptimizerPhase20Tests.cpp','tests/SurfaceMeshOptimizerPhase21Tests.cpp','tests/SurfaceMeshOptimizerPhase22Tests.cpp'],
+}
+pat=re.compile(r'TEST(?:_F|_P)?\s*\(\s*([A-Za-z0-9_]+)\s*,\s*([A-Za-z0-9_]+)\s*\)')
+owner={}
+for target, paths in targets.items():
+    for rel in paths:
+        text=(root/rel).read_text(errors='strict')
+        for m in pat.finditer(text):
+            ident=f'{m.group(1)}.{m.group(2)}'
+            if ident in owner:
+                raise SystemExit(f'duplicate built identity {ident}: {owner[ident]} vs {target}')
+            owner[ident]=target
+ids=[x.strip() for x in selector.read_text().splitlines() if x.strip()]
+if len(ids)!=355 or len(set(ids))!=355:
+    raise SystemExit('selector must contain 355 unique identities')
+missing=[x for x in ids if x not in owner]
+if missing:
+    raise SystemExit('missing built owners: '+','.join(missing))
+with out.open('w') as f:
+    for i, ident in enumerate(ids,1):
+        f.write(f'{i}\t{ident}\t{owner[ident]}\n')
+PY
+
+echo 'preflight=PASS' > "$RESULT/preflight.txt"
+
+run_identity() {
+  local ordinal="$1" identity="$2" owner="$3" phase="$4"
+  local slug log rc
+  slug="$(printf '%03d' "$ordinal")-$(printf '%s' "$identity" | tr -c 'A-Za-z0-9_.-' '_')"
+  log="$RAW/${phase}-${slug}.log"
+  echo "RUN phase=${phase} ordinal=${ordinal} owner=${owner} identity=${identity}"
+  set +e
+  "$RUNTIME/bin/$owner" --gtest_color=no "--gtest_filter=${identity}" 2>&1 | tee "$log"
+  rc=${PIPESTATUS[0]}
+  set -e
+  if ! grep -Eq 'Running 1 test from 1 test suite' "$log"; then
+    echo -e "${phase}\t${ordinal}\t${identity}\t${owner}\t${rc}\tZERO_OR_NONUNIT_SELECTION" >> "$RESULT/process-results.tsv"
+    fail_orchestration "identity did not select exactly one test: ${identity}"
+    return 2
+  fi
+  echo -e "${phase}\t${ordinal}\t${identity}\t${owner}\t${rc}\tSELECTED_ONE" >> "$RESULT/process-results.tsv"
+  return "$rc"
+}
+
+: > "$RESULT/process-results.tsv"
+: > "$RESULT/accepted-prefix-results.txt"
+semantic_stop=""
+first_red=""
+
+# R5-1: AA8 accepted-prefix re-proof, each identity once in a fresh process.
+echo '=== R5-1 AA8 accepted prefixes ==='
+for range in '1 316 316' '317 346 346' '347 353 353' '354 355 355'; do
+  read -r start end prefix <<< "$range"
+  for ordinal in $(seq "$start" "$end"); do
+    IFS=$'\t' read -r _ identity owner < <(sed -n "${ordinal}p" "$RESULT/identity-owner.tsv")
+    set +e
+    run_identity "$ordinal" "$identity" "$owner" "accepted"
+    rc=$?
+    set -e
+    if [[ "$rc" -ne 0 ]]; then
+      if [[ "$rc" -eq 2 ]]; then exit 2; fi
+      semantic_stop="AA8_ACCEPTED_PREFIX_REGRESSION"
+      first_red="${ordinal}:${identity}:exit=${rc}"
+      echo "prefix=${prefix};status=RED;first_red=${first_red}" >> "$RESULT/accepted-prefix-results.txt"
+      break 2
+    fi
+  done
+  echo "prefix=${prefix};status=PASS;executed_through=${end}" >> "$RESULT/accepted-prefix-results.txt"
+done
+
+if [[ -n "$semantic_stop" ]]; then
+  echo "semantic_stop=${semantic_stop}" | tee "$RESULT/decision.txt"
+  echo "first_red=${first_red}" | tee -a "$RESULT/decision.txt"
+else
+  # R5-2: AA2 prior-artifact exact byte-identity check.
+  echo '=== R5-2 AA2 prior artifact byte identity ==='
+  mkdir -p "$ROOT/r4"
+  GH_TOKEN="${GH_TOKEN}" gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${R4_RESULT_ARTIFACT_ID}/zip" > "$ROOT/r4.zip"
+  printf '%s  %s\n' "$R4_RESULT_SHA256" "$ROOT/r4.zip" | sha256sum -c -
+  unzip -q "$ROOT/r4.zip" -d "$ROOT/r4"
+  set +e
+  python3 - "$ROOT/r4/d1-records.txt" "$RESULT" <<'PY'
+from pathlib import Path
+import hashlib, sys
+p=Path(sys.argv[1]); out=Path(sys.argv[2])
+lines=[ln for ln in p.read_bytes().splitlines(keepends=True) if b'm3Cp4c2Y1;witness=prescribed-sphere' in ln]
+if len(lines)!=2:
+    (out/'aa2.txt').write_text(f'spherePriorCopies={len(lines)}\nsphereDuplicateByteIdentical=false\n')
+    raise SystemExit(3)
+for i,ln in enumerate(lines,1):
+    (out/f'aa2-sphere-line{i}.bin').write_bytes(ln)
+h=[hashlib.sha256(x).hexdigest() for x in lines]
+equal=lines[0]==lines[1]
+(out/'aa2.txt').write_text(f'spherePriorCopies=2\nsphereDuplicateByteIdentical={str(equal).lower()}\nsphereLine1Sha256={h[0]}\nsphereLine2Sha256={h[1]}\n')
+if not equal: raise SystemExit(4)
+PY
+  aa2_rc=$?
+  set -e
+  cat "$RESULT/aa2.txt"
+  if [[ "$aa2_rc" -ne 0 ]]; then
+    semantic_stop="AA2_PRIOR_ARTIFACT_MISMATCH"
+  fi
+fi
+
+if [[ -z "$semantic_stop" ]]; then
+  # R5-3: D1 exactly once.
+  echo '=== R5-3 D1 exactly once ==='
+  d1_identity='GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable'
+  set +e
+  run_identity 356 "$d1_identity" directional_surface_cell_producer_tests d1
+  d1_exit=$?
+  set -e
+  if [[ "$d1_exit" -eq 2 ]]; then exit 2; fi
+  echo "d1Exit=${d1_exit}" > "$RESULT/d1-exit.txt"
+  d1_log="$(find "$RAW" -maxdepth 1 -type f -name 'd1-356-*' -print -quit)"
+  grep 'm3Cp4c2Y1' "$d1_log" > "$RESULT/d1-records.txt" || true
+  grep 'm3Cp4c2PublicationCounts' "$d1_log" > "$RESULT/d1-publication-counts.txt" || true
+  d1_structural=true
