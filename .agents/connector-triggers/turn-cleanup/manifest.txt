@@ -1,9 +1,9 @@
 # M3-CP4c-2-CB2-DIAG-R2 closeout temporary state
+# retry=1; remove absent .agents/workflow-observation root, which is not a valid manifest entry
 .agents/connector-triggers/m3-cp4c0b-t5-schema-validate
 .agents/connector-triggers/m3-cp4c2-cb2-diag-r2-apply
 .agents/connector-triggers/m3-cp4c2-cb2-diag-r2-package
 .agents/connector-triggers/m3-cp4c2-cb2-diag-r2-precompile
 .agents/connector-triggers/source-snapshot
-.agents/workflow-observation
 .agents/Directional/turn-payloads/m3-cp4c0b-t5-schema-validate.yml
 .agents/Directional/turn-payloads/m3-cp4c0b-t5-exec.yml
