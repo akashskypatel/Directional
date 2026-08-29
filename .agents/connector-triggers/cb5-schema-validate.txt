@@ -1,0 +1,3 @@
+purpose=validate CB5 source-apply workflow draft
+expected_draft=.agents/Directional/turn-payloads/cb5-workflow-draft.yml
+retry=0
