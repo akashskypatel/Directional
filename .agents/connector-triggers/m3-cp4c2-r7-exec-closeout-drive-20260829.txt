@@ -3,3 +3,4 @@ Patch file ID: 1WNmsx9XcJKvsAbNSE5_YYnnAPTedBMdX.
 Patch SHA-256: da86b6f55340f6f93efe90f03cc0d96e7efe4874439cc9787759b152541225e3.
 Patch base: 90298d7d33ea3027190cbbcac3125bccf8eb54f1.
 No runtime, compile, rebuild, relink, implementation, test, fixture, selector, or benchmark mutation is authorized.
+Retry: orchestration retry 2 after quoting the YAML commit_message scalar; retry 1 was an invalid-workflow startup failure with zero jobs and no workload execution.
