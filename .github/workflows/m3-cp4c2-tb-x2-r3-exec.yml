@@ -1,0 +1,245 @@
+name: M3 CP4c2 TB X2 R3 Artifact Only Diagnostics
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-tb-x2-r3-exec/**
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c2-tb-x2-r3-exec
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-tb-x2-r3-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c2-tb-x2-r3-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${RUNNER_TEMP}/m3-cp4c2-tb-x2-r3.log"
+          printf 'workflow=%s\nrun_id=%s\nevent_sha=%s\nworkspace=%s\nstarted_at=%s\n' \
+            "$GITHUB_WORKFLOW" "$GITHUB_RUN_ID" "$GITHUB_SHA" "$GITHUB_WORKSPACE" \
+            "$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "${RUNNER_TEMP}/m3-cp4c2-tb-x2-r3.log"
+
+      - name: Verify immutable package and execute ordered D1 then D2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -uo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c2-tb-x2-r3.log"
+          out="${RUNNER_TEMP}/m3-cp4c2-tb-x2-r3-result"
+          pkg="${RUNNER_TEMP}/package"
+          zip="${RUNNER_TEMP}/package.zip"
+          mkdir -p "$out" "$pkg"
+          exec > >(tee -a "$log") 2>&1
+          fail=0
+          d1_stop=0
+          check() { "$@" || { echo "CHECK_FAILED: $*"; fail=1; }; }
+          d1check() { "$@" || { echo "D1_CHECK_FAILED: $*"; fail=1; d1_stop=1; }; }
+          has_token() { [[ "$1" == *"$2"* ]]; }
+          record_tree() {
+            local root="$1" prefix="$2"
+            (cd "$root" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > "$out/${prefix}.sha256"
+            (cd "$root" && find . -type f -printf '%m\t%s\t%P\n' | LC_ALL=C sort) > "$out/${prefix}.modes"
+          }
+
+          cat > "$out/boundary.txt" <<'EOF'
+          runtimeExecution=true
+          rebuild=false
+          relink=false
+          fixtureMutation=false
+          generatedDiscovery=false
+          benchmarkExecution=false
+          selectedGate=NONE
+          gateExecutionAuthorized=false
+          branchInferenceAuthorized=false
+          EOF
+
+          curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/artifacts/9704935112/zip" -o "$zip" || fail=1
+          check test "$(sha256sum "$zip" | awk '{print $1}')" = "dcb96ce4e37b2bc58ef69f2146723624575c32c090429ba00e6612b07938133f"
+          check unzip -q "$zip" -d "$pkg"
+          cd "$pkg" || fail=1
+          check sha256sum -c SHA256SUMS
+          check test -x bin/directional_surface_cell_producer_tests
+          check test "$(cat metadata/source-commit.txt)" = "c552a5a4a318063cde2564c40773ec7edaf064f6"
+          check test "$(cat metadata/preflight-exit-code.txt)" = 0
+          check test "$(cat metadata/build-exit-code.txt)" = 0
+          for f in metadata/source-status-*.txt; do check test ! -s "$f"; done
+          check grep -Fxq 'runtimeExecution=false' metadata/command-boundary.txt
+          check grep -Fxq 'turnBoundary=Code+Build-only' metadata/command-boundary.txt
+          check grep -Fxq 'exactArithmeticBackend=GMP' metadata/command-boundary.txt
+          check grep -q 'gmpxx' metadata/gmp-evidence.txt
+          check grep -q 'libgmp.so' metadata/gmp-evidence.txt
+          cat > "$out/expected-targets.txt" <<'EOF'
+          directional_core
+          directional_pipeline
+          directional_surface_cell_authority_kernel_tests
+          directional_surface_cell_producer_tests
+          directional_surface_cell_completion_tests
+          directional_surface_cell_validation_tests
+          directional_compiled_api_tests
+          directional_benchmarks
+          EOF
+          check diff -u "$out/expected-targets.txt" metadata/compiled-targets.txt
+          srcarc="source/source-c552a5a4a318063cde2564c40773ec7edaf064f6.tar.gz"
+          check test "$(sha256sum "$srcarc" | awk '{print $1}')" = "e533669daa7ac0219bc6ca6bd7d72db2901af32937848c3f37f02b772345ae02"
+          compiled_root="$(sed -n 's/^Directional_SOURCE_DIR:STATIC=//p' metadata/CMakeCache.txt)"
+          check test "$compiled_root" = "$GITHUB_WORKSPACE"
+          check test -z "$(find "$GITHUB_WORKSPACE" -mindepth 1 -maxdepth 1 -print -quit)"
+          check tar -xzf "$srcarc" -C "$GITHUB_WORKSPACE"
+          if (( fail == 0 )); then
+            find "$GITHUB_WORKSPACE" -type f -exec chmod a-w {} +
+            find "$GITHUB_WORKSPACE" -type d -exec chmod a-w {} +
+            if find "$GITHUB_WORKSPACE" -type f -perm /222 -print -quit | grep -q .; then
+              echo 'FIXTURE_READONLY_FAILED'; fail=1
+            else
+              echo 'fixtureMaterializationReadOnly=true' >> "$out/boundary.txt"
+            fi
+          fi
+          sel="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M3_CP4c1_Required_Green_Selector.txt"
+          s357="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_357.txt"
+          s358="$GITHUB_WORKSPACE/.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_358.txt"
+          check test "$(head -n 316 "$sel" | sha256sum | awk '{print $1}')" = "601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c"
+          check test "$(head -n 346 "$sel" | sha256sum | awk '{print $1}')" = "20d3b0b1400d5cab6af4a339a858c56fb7fd0359fb995a395dad215b20f3e46a"
+          check test "$(head -n 353 "$sel" | sha256sum | awk '{print $1}')" = "51ff96d72e1c2c88e9407e99737e42ec9093ea238aaf8b1e45ff2559f71ac6a5"
+          check test "$(sha256sum "$sel" | awk '{print $1}')" = "e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa"
+          check test "$(sha256sum "$s357" | awk '{print $1}')" = "b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70"
+          check test "$(sha256sum "$s358" | awk '{print $1}')" = "6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62"
+          record_tree "$pkg" package-pre
+          record_tree "$GITHUB_WORKSPACE" source-pre
+          if (( fail != 0 )); then echo preflight_failed > "$out/status.txt"; exit 2; fi
+
+          cmd1=(./bin/directional_surface_cell_producer_tests --gtest_filter=GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable)
+          printf '%q ' "${cmd1[@]}" > "$out/d1.command.txt"; echo >> "$out/d1.command.txt"
+          date -u +%Y-%m-%dT%H:%M:%SZ > "$out/d1.started-at.txt"
+          echo "D1_COMMAND=$(cat "$out/d1.command.txt")"
+          set +e
+          timeout 900s "${cmd1[@]}" > >(tee "$out/d1.stdout") 2> >(tee "$out/d1.stderr" >&2)
+          d1=$?
+          set -e
+          echo "$d1" > "$out/d1.exit-code.txt"
+          date -u +%Y-%m-%dT%H:%M:%SZ > "$out/d1.finished-at.txt"
+          d1_selected="$(grep -cF '[ RUN      ] GlobalTopologyPlan.Cp4c2IndependentNetworkOnlyCellularityOracleIsObservable' "$out/d1.stdout" || true)"
+          d1_publications="$(grep -c '^m3Cp4c2Y1;' "$out/d1.stdout" || true)"
+          echo "$d1_selected" > "$out/d1.selected-count.txt"
+          echo "$d1_publications" > "$out/d1.publication-count.txt"
+          grep '^m3Cp4c2Y1;' "$out/d1.stdout" > "$out/d1.publications.txt" || true
+          d1check test "$d1" = 0
+          d1check test "$d1_selected" = 1
+          d1check test "$d1_publications" = 3
+
+          mapfile -t y1 < "$out/d1.publications.txt"
+          if [[ "${#y1[@]}" -eq 3 ]]; then
+            d1check has_token "${y1[0]}" ';witness=torus;'
+            d1check has_token "${y1[1]}" ';witness=prescribed-sphere;'
+            d1check has_token "${y1[2]}" ';witness=two-ring;'
+            for rec in "${y1[@]}"; do
+              for token in ';oracleKind=independent-source-edge-barrier-complex;' ';complex=sourceEdgeBarrier;' ';surfaceCutGraphCalls=0;' ';mandatoryRailCount=' ';barrierVDefinition=unique-source-vertices-incident-to-source-edge-barriers;' ';barrierEDefinition=unique-source-edge-barriers;' ';barrierFDefinition=source-face-components-after-removing-barrier-edge-adjacencies;' ';barrierProvenance={' ';discComponents=' ';nonDiscComponents=' ';eulerIdentityMatches=' ';oracleSelfConsistent=true;'; do
+                d1check has_token "$rec" "$token"
+              done
+            done
+            torus="${y1[0]}"; sphere="${y1[1]}"; tworing="${y1[2]}"
+            for token in ';railAuthority=pipeline-authoritative;' ';barrierV=48;' ';barrierE=48;' ';sourceChi=0;' ';networkOnlyCellular=false;'; do d1check has_token "$torus" "$token"; done
+            d1check has_token "$sphere" ';railAuthority=pipeline-authoritative;'
+            d1check has_token "$tworing" ';railAuthority=atlas-derived;'
+          else
+            d1_stop=1
+            fail=1
+          fi
+
+          if (( d1_stop == 0 )); then
+            echo 'D1_CONTROL=PASS' | tee "$out/d1.status.txt"
+            cmd2=(./bin/directional_surface_cell_producer_tests --gtest_filter=GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable)
+            printf '%q ' "${cmd2[@]}" > "$out/d2.command.txt"; echo >> "$out/d2.command.txt"
+            date -u +%Y-%m-%dT%H:%M:%SZ > "$out/d2.started-at.txt"
+            echo "D2_COMMAND=$(cat "$out/d2.command.txt")"
+            set +e
+            timeout 900s "${cmd2[@]}" > >(tee "$out/d2.stdout") 2> >(tee "$out/d2.stderr" >&2)
+            d2=$?
+            set -e
+            echo "$d2" > "$out/d2.exit-code.txt"
+            date -u +%Y-%m-%dT%H:%M:%SZ > "$out/d2.finished-at.txt"
+            d2_selected="$(grep -cF '[ RUN      ] GlobalTopologyPlan.Cp4c2CutGraphFailureLocalizationIsObservable' "$out/d2.stdout" || true)"
+            d2_publications="$(grep -c '^m3Cp4c2Y2;' "$out/d2.stdout" || true)"
+            echo "$d2_selected" > "$out/d2.selected-count.txt"
+            echo "$d2_publications" > "$out/d2.publication-count.txt"
+            grep '^m3Cp4c2Y2;' "$out/d2.stdout" > "$out/d2.publications.txt" || true
+            check test "$d2" = 0
+            check test "$d2_selected" = 1
+            check test "$d2_publications" = 1
+            y2="$(cat "$out/d2.publications.txt" 2>/dev/null || true)"
+            for token in ';witness=prescribed-sphere;' ';oracleComplex=sourceEdgeBarrier;' ';railAuthority=pipeline-authoritative;' ';mandatoryRailCount=' ';oracleBarrierProvenance={' ';oracleSelfConsistent=true;' ';producerRederivationSite=' ';localizedSite=' ';surfaceCutGraphError=' ';publishedLocusClass=' ';localizationConsistent=true'; do
+              has_token "$y2" "$token" || { echo "D2_TOKEN_MISSING=$token"; fail=1; }
+            done
+            if (( fail == 0 )); then echo 'D2_LOCALIZATION=PASS' | tee "$out/d2.status.txt"; else echo 'D2_LOCALIZATION=EVIDENCE_CONFLICT' | tee "$out/d2.status.txt"; fi
+          else
+            echo 'D1_CONTROL=STOP' | tee "$out/d1.status.txt"
+            echo 'D2_SKIPPED_DUE_TO_D1_STOP' | tee "$out/d2.status.txt"
+          fi
+
+          record_tree "$pkg" package-post
+          record_tree "$GITHUB_WORKSPACE" source-post
+          check cmp -s "$out/package-pre.sha256" "$out/package-post.sha256"
+          check cmp -s "$out/package-pre.modes" "$out/package-post.modes"
+          check cmp -s "$out/source-pre.sha256" "$out/source-post.sha256"
+          check cmp -s "$out/source-pre.modes" "$out/source-post.modes"
+          for f in metadata/source-status-*.txt; do check test ! -s "$f"; done
+          check grep -Fxq 'runtimeExecution=false' metadata/command-boundary.txt
+          check test "$(sha256sum "$srcarc" | awk '{print $1}')" = "e533669daa7ac0219bc6ca6bd7d72db2901af32937848c3f37f02b772345ae02"
+          if (( fail == 0 )); then echo success > "$out/status.txt"; else echo stopped > "$out/status.txt"; fi
+          printf 'finished_at=%s\nstatus=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(cat "$out/status.txt")" | tee -a "$log"
+
+      - name: Upload R3 raw diagnostic result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c2-tb-x2-r3-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c2-tb-x2-r3-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload R3 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c2-tb-x2-r3-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c2-tb-x2-r3.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Propagate R3 execution status
+        if: always()
+        shell: bash
+        run: |
+          test -f "${RUNNER_TEMP}/m3-cp4c2-tb-x2-r3-result/status.txt"
+          test "$(cat "${RUNNER_TEMP}/m3-cp4c2-tb-x2-r3-result/status.txt")" = success
