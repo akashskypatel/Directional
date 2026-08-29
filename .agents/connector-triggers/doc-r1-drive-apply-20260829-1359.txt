@@ -1,4 +1,0 @@
-purpose=apply verified M3-CP4c-2-DOC-R1 documentation/consolidation patch
-base_sha=4ff78842b633ff9d550762fb6c61e6d24193f6c0
-patch_sha256=5f0036430f513518b0bc9cf5b8ee49a03ce9f41ca88f9c68bd81e0fe526409c5
-retry=1
