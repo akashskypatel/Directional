@@ -1,0 +1,5 @@
+turn_id=M3-CP4c-2-TB-X2-R5-EXEC
+purpose=start-of-turn exact source snapshot
+semantic_source=76d757aab0ce18df09ce2823302d2dc224965187
+control_head_before_trigger=093426be3fe711df04a2d70d634f09dc239fbd14
+runtime_execution=false
