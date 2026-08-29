@@ -1,5 +1,5 @@
-Apply the emitted/staged M3 CP4c historical consolidation patch through the durable Google Drive reusable.
+Apply the corrected emitted/staged M3 CP4c historical consolidation patch through the durable Google Drive reusable.
 Patch base: fe42e1f466f2e510e69e267005d6c0644230289d
-Patch SHA-256: 566f9e89ce525207a3d435897d1b02ab38b409cf9b312717b0f2d03f2bb14ff3
-Expected pre-trigger head: decebc3d8bfd3a3511ada10f3a1edb3005673bc1
-Retry: 0
+Patch SHA-256: e34eb3ecd8a6c840247a1e14ad3ccbc6921c55ee36a3690b7589d66ceb13e3c6
+Expected pre-trigger head: aee3beb2bd6ceb705bcc77111cea85105105329a
+Retry: 1
