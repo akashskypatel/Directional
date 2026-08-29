@@ -1,0 +1,2 @@
+# M3-CP4c-2-TB-X2-R4-EXEC temporary-state cleanup manifest
+.agents/connector-triggers/source-snapshot/m3-cp4c2-r4-exec.txt
