@@ -1,2 +1,5 @@
-# M3-CP4c-2-TB-X2-R5-EXEC closeout temporary state
+# M3-CP4c-2-TB-X2-R5-EXEC complete temporary-state retirement
 .agents/connector-triggers/m3-cp4c2-r5-exec-closeout-apply.txt
+.agents/connector-triggers/r5-exec/
+.agents/connector-triggers/r5-exec-schema/
+.agents/Directional/turn-payloads/
