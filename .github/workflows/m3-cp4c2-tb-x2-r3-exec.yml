@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/m3-cp4c2-tb-x2-r3-exec/**
 
 permissions:
-  contents: read
+  contents: write
   actions: read
   issues: write
   pull-requests: write
