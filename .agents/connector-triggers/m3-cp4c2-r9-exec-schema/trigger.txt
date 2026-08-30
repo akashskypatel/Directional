@@ -1,5 +1,4 @@
 turn=M3-CP4c-2-TB-X2-R9-EXEC
-purpose=validate R9 caller after artifact-download correction
-correction=gh-api-artifact-download
-payload_sha256=8b127d3174dc88b91a45fa3672dc9cd7d8201e9979430f8036856e8bb22a0ee8
+purpose=validate executable-mode-preserving corrected R9 caller
 runtimeExecution=false
+retry_reason=python_zipfile_extractall_dropped_artifact_executable_mode; switch to unzip extraction and exact Git-blob payload binding
