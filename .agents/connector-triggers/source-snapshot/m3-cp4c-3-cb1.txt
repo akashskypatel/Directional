@@ -1,0 +1,3 @@
+requested_semantic_source_sha=61f997dd60e93c8f7490d23ce8a573a30c4c4368
+turn=M3-CP4c-3-CB1
+purpose=source snapshot only; temporary control-plane marker
