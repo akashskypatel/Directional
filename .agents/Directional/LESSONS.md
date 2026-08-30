@@ -999,6 +999,25 @@ building any conclusion on it.**
     Compiled-but-unexecuted test authority is not evidence; it is debt wearing a green label. Check the
     selector's reach at the moment you authorize the edit, not at acceptance.
 
+59. **A measure that names an authority must enumerate the products that authority comprises.** R7-REV's AF3 told
+    the implementer to "build its baseline from the **production torus authority** — the same `torus.rawfield`-derived
+    field". CB7 did exactly that, correctly and including the non-obvious step of permuting raw-field rows alongside
+    mesh rows. But the production torus authority is **four** products — authoritative rails, the hard-feature edge
+    set derived from them, per-face component labels and per-face sheet labels — and the field is not one of them.
+    The parenthetical, meant as a clarification, silently narrowed the target to a single product, and the identity
+    shipped with three-quarters of the mismatch intact and a gating red. **"The production X" is ambiguous exactly
+    when X is a chain, and the ambiguity resolves toward whichever product the measure's author had in mind.** List
+    the products, name the function that derives each, and name a reference call site already doing it right. This
+    instance is the fifth `RP-01` in one subsystem and the first introduced *by a corrective measure written to
+    prevent it*.
+60. **A helper that cannot use `ASSERT_*` must not synthesize the product error it failed to obtain.** Ordinal 359's
+    build lambda reported atlas and network failures through non-fatal `ADD_FAILURE()` and then returned a
+    default-constructed `SurfaceCutGraphError` as a sentinel, so three distinct causes arrived at one fatal
+    assertion and the reported locus identified none of them. Worse, the sentinel is not inert: a default-constructed
+    error reads as `InvalidSourceBinding` with no originating code, so the obvious repair — printing the error code
+    at the assertion — would have manufactured a **false locus** in a subsystem that had just spent eight turns
+    recovering from exactly that. Return a typed result that names the failing stage and carries **that stage's own**
+    error; never fabricate a downstream error to satisfy a return type.
 58. **An immutability guarantee constrains the writer, not the derived view — check what the representation
     already does before ruling it out.** CP4c-2's DEFN-R1 excluded every trace-crossed source edge from the
     admissible cut set on the ground that promoting one "would subdivide the trace — mutating an immutable
@@ -1227,6 +1246,15 @@ face gauge. Never equate branch integers across distinct frames merely because t
     this by **inserting** its extra identity at line 357 rather than appending — so 358 is not a prefix extension
     of 357, and a first-red ordinal from one is not comparable with the other. Insert into a frozen selector and
     you silently destroy the one cross-turn comparison the project runs on.
+64z. **A witness construction that is lawful on one witness class can be vacuous on another — bind the
+    precondition to the class, not to the fixture.** `rails_from_atlas` filters the atlas's non-traversable edges to
+    `SourceBoundary ∪ HardFeature`. On a **bounded** witness that always yields the boundary rails, so ordinal 358's
+    square mesh passes. On a **closed** witness built with no declared hard features it yields **nothing**, so the
+    torus gets an empty rail set, an empty network, and a red at ordinal 359. The same three lines of code are
+    correct in one case and vacuous in the other, and the gate's own pass/fail split was the proof. **When a helper's
+    output can be empty for a whole class of witnesses, make every caller assert non-emptiness for that class at
+    runtime** — `if (mesh.boundaryLoops.empty()) ASSERT_FALSE(rails.empty())` — so the next author cannot
+    reintroduce it silently. That is the CP3a fixture-asserts-its-own-precondition control applied to a helper.
 64y. **A gate must not bind a witness its own checkpoint has declared out of scope.** Candidate 358's sole
     addition bound `cp4c_mechanical_fixture()`, whose production fixture *throws* when the pipeline retains no
     atlas — and the mechanical witness has no atlas and belongs to the next checkpoint. The gate would have been

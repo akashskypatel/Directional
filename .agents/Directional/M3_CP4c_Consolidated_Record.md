@@ -2,9 +2,9 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. CB7 implemented DEFN-R2 Amendment 14 plus deferred AF0/AF2/AF3/AF4, froze selector **365**, and produced a clean GMP/GMPXX package without runtime. Exact next is artifact-only **`M3-CP4c-2-TB-X2-R8-EXEC`** on package `9724864897`. CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. CB7 implemented DEFN-R2 Amendment 14 plus deferred AF0/AF2/AF3/AF4 and froze selector **365**; R8 then executed that gate on package `9724864897`, re-proved the inherited **355/355**, passed ordinals 356-358, and stopped red at ordinal **359**. R8-REV adjudicated that red as a **two-identity witness defect** (ordinals 359 and 361 build a closed-torus witness from a vacuous rail set), not a product defect, and issued **AH0-AH9**. Criteria **C1** and **C6** are green on the produced torus. Exact next is **`M3-CP4c-2-CB8`**. CP4c-3 remains blocked.
 
-Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **65**. `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **65**. `selected_r2_branch=NONE`; gate **365** is the frozen authority and was executed red in R8; `gate_execution_authorized=false` at closeout.
 
 ## 1. Current separate authority
 

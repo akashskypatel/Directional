@@ -28,9 +28,8 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-29 at `M3-CP4c-2-DEFN-R2`; exact next is the bounded diagnostic
-`M3-CP4c-2-CB6` under measures AF0–AF4 with AF9 prohibitions, then `CB7` under AG1–AG6. If the head commit is far
-ahead, trust
+**Currency.** Last updated 2026-08-30 at `M3-CP4c-2-TB-X2-R8-REV`; exact next is `M3-CP4c-2-CB8` under measures
+AH0–AH9, correcting exactly two test identities. If the head commit is far ahead, trust
 `TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
 "where we are" section; the architecture and recurring-defect sections age much more slowly.
 
@@ -89,37 +88,49 @@ is comparable across the whole arc.
 | accepted 355 | `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` |
 | CP4c-2 357 prefix (superseded as a gate; retained) | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` |
 | CP4c-2 358 (**withdrawn** as a gate; retained) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
-| **CP4c-2 gate 361 (frozen at DEFN-R2, unselected)** | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
+| CP4c-2 361 prefix (superseded by 365; retained) | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
+| **CP4c-2 gate 365 (frozen at CB7; executed red at ordinal 359 in R8)** | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
 
-**All seven values are authority.** The first six were recomputed from bytes at `M3-CP4c-2-TB-X2-R7-REV`,
-independently re-derived at `M3-CP4c-2-DOC-R1`, and re-verified at the second `R7-REV`; the 361 value was computed
-at `DEFN-R2` when the file was created. The 316/346/353/355 rows derive from
-`Architecture_M3_CP4c1_Required_Green_Selector.txt` — `head -316`, `head -346`, `head -353`, and the whole file;
-357 and 358 from their own candidate files; 361 from
-`Architecture_M3_CP4c2_Required_Green_Selector_361.txt`, whose `head -355` and `head -357` reproduce the accepted
-355 and candidate 357 hashes exactly. **Recompute rather than copy**, validate every expected digest as exactly 64
+**All eight values are authority**, each recomputed from committed bytes and re-verified at `R8-REV`. The
+316/346/353/355 rows derive from `Architecture_M3_CP4c1_Required_Green_Selector.txt` — `head -316`, `head -346`,
+`head -353`, and the whole file; 357 and 358 from their own candidate files; 361 and 365 from their own files.
+**The gate file `…_Selector_365.txt` reproduces all three earlier prefixes exactly** — its `head -355`,
+`head -357` and `head -361` equal the accepted-355, candidate-357 and 361 hashes — which is what keeps
+`first_red_ordinal` comparable across the whole arc. **Recompute rather than copy**, validate every expected digest as exactly 64
 lowercase hex at authoring, and never write one as `PREFIX…SUFFIX` where a value is expected: `PR8` orchestration
 defect `R7-ORCH-01` was four hashes expanded back to full length from abbreviations, one of them only 63 characters
 long.
 
 
-**R7 re-proved the full accepted 355/355** on immutable package `9719216316` (run/job `33276039911 / 99162853852`),
-with ordinals 305 and 310 both green in the same complete run and immutable pre/postflight green. That closed
-`PR8-R043`, `PR8-R044`, and `R7-ORCH-01`. No CP4c-2 gate — 357, 358, 361 — has been run, and no cumulative gate or
-benchmark has run; `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+**R8 executed the CP4c-2 gate for the first time** on immutable CB7 package `9724864897` (run/job
+`33288495471 / 99195869180`) and stopped semantic-red at ordinal **359**. The inherited accepted prefix survived a
+large A2a′ rewrite: **355/355 PASS**, plus 356, 357 and 358. Ordinals **360–365 are NOT RUN**.
+
+**The torus is done, and this is the checkpoint's headline result.** Ordinal 356 publishes `networkV=48`,
+`networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`; the independent oracle publishes actual graph
+`V/E/F = 72/76/4`. `72 − 48 = 24` added vertices and `76 − 48 = 28` added edges — **28 is exactly the producer's
+cut-edge count**, so producer and oracle agree term for term. A2a′ takes a closed genus-1 surface from a
+non-cellular network to a certified cellular embedding and A2b derives four regions. Criteria **C1** and **C6**
+hold on the produced torus.
 
 Stable regression accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**;
-authoritative M3 packages **64**. Closing a stable event changes its status, never the cumulative count.
+authoritative M3 packages **65**. `selected_r2_branch=NONE`; gate **365** was selected and executed red in R8;
+`gate_execution_authorized=false` at closeout.
 
-**CP4c-2 is open and unaccepted.** It owns the closed/higher-genus A2b gap and criteria **C1** (torus derives
-regions) and **C6** (disc proof + mandatory preservation). **C3** (rotation-system/face-walk agreement) is no longer
-deferred: DEFN-R2 split it, keeping the torus half in scope and moving the mechanical half to CP4c-3.
+**CP4c-2 is open and unaccepted.** Criteria **C1** and **C6** are now demonstrated at runtime on the produced
+torus (ordinals 356/357 green). **C3** is ordinal 362 and has not yet executed — deferred a seventh time by the
+ordinal-359 hard stop.
 
-**The gate is settled: selector 361, frozen at `M3-CP4c-2-DEFN-R2` under AF5/AG0.** It is candidate 357 plus the
-four `SurfaceCutGraph.*` identities, appended so the 355 and 357 prefixes stay byte-identical and `first_red_ordinal`
-remains comparable across the whole CP4c arc.
+**Ordinal 359 is red and it is a witness defect, not a product defect.** `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration`
+fails before its comparison because its torus witness is built from a **vacuous rail set** — see §6. Scope is
+exactly two identities, 359 and 361. Owned by `M3-CP4c2-TB-X2-R8-CAND-01` and measures AH0–AH9.
 
-- **357 is superseded**, not wrong: its two `GlobalTopologyPlan` torus identities are retained in 361.
+**The gate is selector 365**, frozen by CB7 under AG7: selector 361 plus criterion C3's torus identity and the
+three Amendment-14 identities. Every prefix is byte-identical to its predecessor — 355, 357, 361 — so
+`first_red_ordinal` is comparable across the whole CP4c arc.
+
+- **361 is superseded** by 365 and retained for lineage; **357 is superseded**, not wrong — its two
+  `GlobalTopologyPlan` torus identities are retained in both.
 - **358 is withdrawn.** Its sole addition, `RotationSystemAndFaceWalkAgreeOnProducedWitnesses`, binds
   `cp4c_mechanical_fixture()`, and the mechanical witness has no atlas and is out of CP4c-2 scope — a gate may not
   bind a witness its own checkpoint excludes. Criterion **C3** survives: its torus half becomes its own identity
@@ -134,7 +145,7 @@ selecting it.
 
 | witness | source | A2a result | current state |
 |---|---|---|---|
-| **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | produces a cut graph **and a topology plan**; actual embedded graph after cuts `V/E/F = 72/76/4`, `χ=0`. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
+| **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, **zero mandatory edges** | **24 traces / 56 events** | **two independent problems.** (a) Its pre-cut actual embedded graph is measured **non-cellular**: `V/E/F = 18/30/18`, `χ=6` against `sourceChi=2`, one component, no excluded boundary orbits — so it genuinely needs cuts, and they will be trace-crossed. (b) The producer never gets there: it fails at A2a′ reporting `CellularityNotEstablished` at source face `25-27-28`, which is a `default:` bucket, **not a cellularity verdict** (§7 item 1) |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
 | mechanical feature | fixture | no atlas — stops in **A1** at `IncompleteCycleBasis` | belongs to CP4c-3 / C2, **out of scope** |
@@ -207,13 +218,34 @@ last resort. It must never fire silently, and is predicted never to fire on the 
 
 **The one real gap this opens:** at an edge-locus node, `build_rotation_system` handles only `Mandatory` (at exactly
 degree three) and `Trace` rays — a `Cut` ray there is an unhandled shape. A crossing node is two collinear `Cut`
-rays plus two `Trace` rays, degree four, and the existing four-sector model generalizes to it.
+rays plus two `Trace` rays, degree four, and the existing four-sector model generalizes to it. CB7 implemented that
+generalization; ordinal 364 would prove it and **has not yet executed**.
+
+**Building an A2a′ witness by hand — the trap that produced R8's red.** The production feature authority is a
+**chain of four products**, and it is acyclic:
+
+```
+featureMap → build_authoritative_surface_cell_rails → authoritativeRails
+           → hard_feature_edge_keys_from_rails      → hardFeatureEdges
+           → SourceTopologyRegions(hardFeatureEdges, componentByFace, localSheetByFace, authoritativeRails)
+           → FieldTransportAtlas::make(…, hardFeatureEdges, …)
+```
+
+The test helper `rails_from_atlas` reads rails **back out** of an atlas, keeping only `SourceBoundary` and
+`HardFeature` non-traversable edges. That is correct only if the atlas was built with the hard features already.
+On a **closed** witness built with `hardFeatureEdges = {}` it returns **nothing**: no boundary, no declared
+features, and uniform component/sheet labels leave no `NonTraversable` edges either. The result is an empty rail
+set, an empty network, and a red that looks like a cut-graph failure. `make_source_authority(mesh)` supplies none
+of the four products — it zeroes components and sheets and passes no rails. Two call sites already do this right:
+`observe_cp4c_witness` (all four production inputs) and `build_cp4c_trace_crossed_cut_fixture` (computes hard
+features first, then threads them through source authority *and* atlas). Copy one of those; never call
+`rails_from_atlas` on an atlas that was not told about the features.
 
 ## 7. Open problems, in priority order
 
 1. **`M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere, and the single most important thing to understand here.**
    The sphere's A2a′ failure reports `CellularityNotEstablished`. **That string is a `default:` case, not a
-   verdict.** `SurfaceCutGraph::topology_error` (`src/geometry/SurfaceCutGraph.cpp:50-67`) maps 39
+   verdict — and R8's AF0 instrumentation has now printed the real one: `RotationSystemInconsistent`.** `SurfaceCutGraph::topology_error` (`src/geometry/SurfaceCutGraph.cpp:50-67`) maps 39
    `GlobalTopologyPlanErrorCode` values onto three: three survive as themselves and **36 collapse into
    `CellularityNotEstablished`**, carrying `sourceFace` through. It is called from exactly two sites, `:240` and
    `:243`, both entering `src/geometry/EmbeddedGraphTopology.cpp` — and across that file's 58 error constructions
@@ -223,29 +255,26 @@ rays plus two `Trace` rays, degree four, and the existing four-sector model gene
    (`:323`) and the `:250` orbit guard. **The sphere never reached a cellularity decision.** A2a′ did not change
    the sphere's old `RotationSystemInconsistent`; it renamed it. Eight turns of planning reasoned about cuts and
    complexes for a mechanism that never ran. Do not repeat that: get the code printed (measure AF0) before
-   proposing any fix.
+   proposing any fix. **R8 printed it: `originatingTopologyError=RotationSystemInconsistent`, at source face
+   `25-27-28`, with `producerCutEdgeCount=0` — so the sphere still fails before cut selection, and Amendment 14
+   is not an account of it. The static derivation and the printed code agree exactly.**
 2. **The prescribed sphere genuinely needs cuts — measured, not predicted.** CB6's AF1 read the row R7-3 had
    already published: `V/E/F = 18/30/18`, `c=1`, `χ=6` against `sourceChi=2`, no excluded boundary orbits, with the
    oracle calling `SurfaceCutGraph` zero times. Non-cellular pre-cut, so the seven-turn standing prediction is
    **refuted**. With 24 traces and zero mandatory edges every cut it needs will be trace-crossed — the case
    Amendment 14 exists for. The derived excess `6 − 2 = 4` suggests roughly four extra boundary circles; **AG3 must
    verify that against the per-component records rather than adopt it**.
-3. **Amendment 14 is defined and entirely unbuilt.** DEFN-R2 froze trace-crossed cut admissibility and proved
-   completeness, but no committed witness currently promotes a trace-crossed edge, so the whole amendment would
-   ship unexecuted without a purpose-built fixture (measure AG5). The one code gap is the degree-four edge-locus
-   rotation (§6). Owned by `M3-CP4c-2-CB7` under AG1–AG6.
-4. **Criterion C3 has been deferred six times** and is now split: a torus-only identity enters gate 361's successor;
-   the mechanical half moves to CP4c-3. Owned by AG7.
-5. **`M3-CP4c2-TB-X2-R7-CAND-03`** — the D2 localization harness compares the actual embedded graph against the
-   **withdrawn** source-edge-barrier proxy, under a helper named `cp4c_producer_rederivation` that is not a
-   producer re-derivation, using site labels (`419-`, `437-`, `474-`) that are line numbers in a
-   `SurfaceCutGraph.cpp` which is 344 lines long. Its `localizationConsistent=false` is false by construction and
-   means nothing about the sphere.
-6. **`M3-CP4c2-TB-X2-R7-CAND-01`** — the torus semantic/provenance diagnostic builds its atlas from a locally
-   synthesized zero-transport field instead of the production `torus.rawfield`, and fails at that precondition
-   before comparing digests. `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` shares the construction,
-   is in no selector, and has never run — which is why measure **AD3**'s rationale for hashing the raw
-   `face.orbit` index into a *semantic* digest currently has no falsifier.
+3. **`M3-CP4c2-TB-X2-R8-CAND-01` — the live gate red.** Ordinals 359 and 361 build their closed-torus witness from
+   a vacuous rail set (§6). Scope is exactly those two identities; ordinals 356/357/358/362–365 are unaffected.
+   R8's own pass/fail split proves the mechanism: every identity using this construction on a **bounded** witness
+   passes (358), the only one executed on a **closed** witness failed (359). Owned by AH0–AH9.
+4. **Amendment 14 is built but unexecuted.** CB7 implemented AG1–AG6 and ordinals 363–365 exist, but the ordinal-359
+   hard stop means the trace-crossed subdivision, the degree-four rotation, and the saturation last resort have
+   **never run**. Compiled authority is not evidence.
+5. **Criterion C3 has now been deferred seven times.** It is ordinal 362 and was not reached.
+6. **Measure `AD3` is unresolved for a third turn.** `candidate_semantic_hash` still consumes the raw `face.orbit`
+   index into a *semantic* digest on the strength of a code comment. Its only falsifier is ordinal 359, which has
+   still never reached its comparison.
 7. **Torus post-A2b `tracing` failure** — downstream of A2b, out of CP4c-2 scope, tracked and not to be fixed
    here.
 8. **Mechanical witness A1 `IncompleteCycleBasis`** — CP4c-3 / C2. It is also why selector 358 was withdrawn (§3).
@@ -263,8 +292,13 @@ Four families account for nearly every CP4c-2 turn that went sideways. Check aga
 plan or a fix.
 
 **`RP-01 / AUTHORITY_DOMAIN_CONFLATION` — two authorities for one datum.** Rails from `rails_from_atlas` versus
-the pipeline's `authoritativeRails` bit four separate times. A number and the expectation it is compared against
-must come from the same authority, and every published record should name the authority it used.
+the pipeline's `authoritativeRails` has now bitten **five** times, most recently as R8's gating red at ordinal 359.
+A number and the expectation it is compared against must come from the same authority, and every published record
+should name the authority it used. Two refinements the fifth instance taught: the production authority is a **chain
+of four products** (rails, hard-feature edges, component labels, sheet labels), so naming one of them is not naming
+the authority; and a **corrective measure can introduce the very pattern it was written to prevent** — R7-REV's AF3
+narrowed "the production torus authority" to "the field" in a parenthetical, and CB7 implemented that exactly.
+`LESSONS.md` 59.
 
 **`RP-05 / REPRESENTATION_DEPENDENT_IDENTITY` — one digest, two domains.** Semantic identity contaminated with
 gauge-dependent provenance. Stabilized at CP2b, fixed for the network at CP3a, and reintroduced by A2a′ now.

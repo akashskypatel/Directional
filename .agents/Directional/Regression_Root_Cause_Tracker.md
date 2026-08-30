@@ -4,6 +4,40 @@
 - **Mechanism:** the test now consumes committed `torus.rawfield`, but still constructs rails with test-local `rails_from_atlas(...)`. The passing production torus path (ordinal 356) consumes pipeline-published `authoritativeRails` and reports `networkV=48`, `networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`. CB7 AF3 therefore migrated field authority but not the rail-authority surface. Ordinal 361 contains the same residual local construction and was correctly not run.
 - **Disposition:** continuation/recurrence of R7-CAND-01; independent R8 review owns the bounded correction and must preserve the frozen hard-stop evidence. This is not product enumeration-invariance evidence because the comparison was never reached.
 - **Stable-count rationale:** ordinal 359 is newly gated and had never been accepted; inherited 355 remains green. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, M3 packages **65**.
+- **R8-REV adjudication — CONFIRMED as a witness defect, and the mechanism is fourfold, not single.** Full record:
+  `Architecture_M3_CP4c2_TB_X2_R8_Independent_Review_Record.md` §2.
+  - `make_source_authority(mesh)` (`tests/FieldAlignedCurveNetworkTests.cpp:181-191`) supplies **no** authoritative
+    rails, **no** hard-feature edges, and all-zero `sourceFaceComponents` / `sourceFaceSheets`. Production
+    (`src/pipeline/RemeshPipeline.cpp:6377-6394`) runs
+    `featureMap → build_authoritative_surface_cell_rails → hard_feature_edge_keys_from_rails → SourceTopologyRegions
+    + FieldTransportAtlas`. **The test inverts an acyclic dependency:** production derives hard features *from*
+    rails; the test tries to derive rails *from* an atlas it built without them.
+  - `rails_from_atlas` (`:229-252`) keeps only `SourceBoundary` and `HardFeature` non-traversable edges. On a
+    **closed** torus with `hardFeatureEdges = {}` there are neither, and uniform component/sheet labels prevent any
+    `NonTraversable` edge. **The rail set is therefore empty by construction**, the network has zero mandatory
+    edges, and the torus has zero singularities — an empty network.
+  - **R8's own pass/fail split confirms it.** The discriminator is closed-versus-bounded, not torus: ordinal 358
+    (`make_square_mesh`, 4 boundary edges) **passes** with the identical construction; ordinal 359 (closed torus)
+    fails; ordinal 361 (closed torus) shares it and is predicted to fail identically. Ordinals 356/357/362 consume
+    `cp4c_torus_fixture()` production products and pass.
+  - **`rails_from_atlas` is not itself the defect.** It is correct when the atlas was built with the same feature
+    set — which is exactly what CB7's own `build_cp4c_trace_crossed_cut_fixture` (`:1426-1491`) does, and what
+    `observe_cp4c_witness` (`:4391-4403`) does with all four production inputs.
+- **Cause of the incomplete migration — an under-specified measure, owned by the reviewer.** R7-REV's **AF3** said
+  "build its baseline from the production torus authority — *the same `torus.rawfield`-derived field*". CB7
+  implemented exactly that, correctly, including permuting raw-field rows alongside mesh rows. The parenthetical
+  narrowed a four-product authority to one product. Recorded as `LESSONS.md` **59**.
+- **Evidence gap that must be closed before code is written.** The lambda's `ADD_FAILURE()` calls are non-fatal and
+  it then returns a **default-constructed** `SurfaceCutGraphError`, so atlas / network / cut-graph failures all
+  arrive at the same fatal `ASSERT_TRUE` on line 2381 and the reported locus does not identify the cause. Printing
+  `cutGraph.error().code` there without removing the sentinel would emit a **fabricated** `InvalidSourceBinding`.
+  **AH1** requires the ordinal-359 stdout to be read out of retained artifact `9725240893` — no new runtime.
+- **Owning correction:** **AH1** (read the retained evidence first), **AH2** (rebuild ordinals 359 and 361 on one
+  production feature authority, threading rails + hard features + component labels + sheet labels), **AH4** (a
+  closed-witness non-empty-rail runtime precondition on ordinals 358-361 and the AG5 fixture), **AH5** (remove the
+  sentinel and name the failing stage). Scope is **exactly two identities**; no product source change is authorized.
+- **Closure condition:** ordinals 359 and 361 both green in a run reaching at least ordinal 361.
+- **Supersedes `M3-CP4c2-TB-X2-R7-CAND-01`**, which should be marked superseded rather than carried in parallel.
 
 ## M3-CP4c2-TB-X2-R8-ORCH-01 — stale expected payload blob SHA stops first caller before runtime — **CLOSED / ORCHESTRATION / NON-STABLE**
 
@@ -82,7 +116,13 @@
   - `selected_gate` remains **NONE** and `gate_execution_authorized` remains **false**: freezing a gate's bytes is
     not selecting it.
 
-## M3-CP4c2-TB-X2-R7-CAND-01 — torus semantic/provenance diagnostic fails at baseline-atlas precondition — **ADJUDICATED IN R7-REV / WITNESS-CONSTRUCTION DEFECT / NON-GATING DIAGNOSTIC / NON-STABLE**
+## M3-CP4c2-TB-X2-R7-CAND-01 — torus semantic/provenance diagnostic fails at baseline-atlas precondition — **SUPERSEDED BY `M3-CP4c2-TB-X2-R8-CAND-01` / WITNESS-CONSTRUCTION DEFECT / NON-STABLE**
+
+> **Superseded at R8-REV.** CB7's AF3 removed this record's specific cause — the synthetic zero-transport field —
+> and the identity now uses the committed `torus.rawfield`. The residual is a *different and wider* authority
+> mismatch (rails, hard-feature edges, component labels, sheet labels), the identity is now **gating** at ordinal
+> 359, and the successor record `M3-CP4c2-TB-X2-R8-CAND-01` owns it. Do not track both in parallel. The historical
+> analysis below remains accurate for the pre-CB7 source and is retained as provenance.
 
 - **Observed:** R7 authoritative run/job `33276039911 / 99162853852` executes
   `SurfaceCutGraph.SemanticDigestIgnoresGaugeRelabelingForTorusWitness` exactly once in a fresh process. It exits
