@@ -1,3 +1,0 @@
-.agents/connector-triggers/source-snapshot/m3-cp4c3-tb1.txt
-.agents/connector-triggers/m3-cp4c3-tb1-exec.txt
-.agents/connector-triggers/m3-cp4c3-tb1-closeout-apply.txt

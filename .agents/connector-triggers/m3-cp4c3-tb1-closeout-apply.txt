@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-TB1-CLOSEOUT
-purpose=apply durable artifact-only TB closeout documentation
-patch_drive_file_id=18Sb9pNaByH0SZqNPenb-HrXYy82iVY0a
-patch_sha256=1862f5497497970275c6ac27bc2ec9a91d1ae3da8e4d23914a3eb244448da8a9
-base_sha=ac274d9a690d0309688cb897e9594b2717f6b43e

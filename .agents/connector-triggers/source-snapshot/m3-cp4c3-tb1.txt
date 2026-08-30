@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB1
-purpose=source snapshot for artifact-only phase-1 TB
-source_authority=a339b533e4b85b92b24258b2b08b0055d81d8508
-runtimeExecution=false
