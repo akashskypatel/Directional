@@ -1,0 +1,4 @@
+# M3-CP4c-2-CB9 final cleanup
+.agents/connector-triggers/m3-cp4c2-cb9-final-correction-20260830.txt
+.agents/connector-triggers/m3-cp4c2-cb9-schema-validate-20260830.txt
+.agents/Directional/turn-payloads/m3-cp4c2-cb9-compile-draft.yml
