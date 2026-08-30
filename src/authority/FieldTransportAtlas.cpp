@@ -901,6 +901,76 @@ std::optional<LocalRegionMesh> make_local_region_mesh(
   return result;
 }
 
+std::vector<FieldAtlasRegionCycleBasisDiagnostics>
+collect_cycle_basis_diagnostics(
+    const TriMesh &sourceMesh,
+    const geometry::SourceTopologyRegions &sourceAuthority) {
+  std::vector<FieldAtlasRegionCycleBasisDiagnostics> diagnostics;
+  diagnostics.reserve(sourceAuthority.regions().size());
+  for (const auto &region : sourceAuthority.regions()) {
+    FieldAtlasRegionCycleBasisDiagnostics row;
+    row.topologyRegion = region.id();
+    const auto local = make_local_region_mesh(sourceMesh, sourceAuthority, region);
+    if (!local.has_value()) {
+      diagnostics.push_back(std::move(row));
+      continue;
+    }
+
+    row.localMeshAvailable = true;
+    row.vertexCount = static_cast<std::size_t>(local->mesh.V.rows());
+    row.edgeCount = static_cast<std::size_t>(local->mesh.EV.rows());
+    row.faceCount = static_cast<std::size_t>(local->mesh.F.rows());
+    row.eulerCharacteristic = static_cast<int>(
+        local->mesh.V.rows() - local->mesh.EV.rows() + local->mesh.F.rows());
+    row.boundaryLoopCount = static_cast<int>(local->mesh.boundaryLoops.size());
+    const int genusNumerator =
+        2 - row.boundaryLoopCount - row.eulerCharacteristic;
+    if (genusNumerator >= 0 && genusNumerator % 2 == 0) {
+      row.genus = genusNumerator / 2;
+    }
+    for (int vertex = 0; vertex < local->mesh.V.rows(); ++vertex) {
+      if (local->mesh.isBoundaryVertex(vertex) == 0) {
+        ++row.interiorLocalVertexCount;
+      }
+    }
+    if (row.genus >= 0) {
+      row.expectedCycleCount =
+          static_cast<int>(row.interiorLocalVertexCount) +
+          row.boundaryLoopCount + 2 * row.genus;
+    }
+
+    PCFaceTangentBundle bundle;
+    try {
+      bundle.init(local->mesh);
+      row.bundleInitialized = true;
+      row.cycleRowCount = static_cast<std::size_t>(bundle.cycles.rows());
+      row.cycleCurvatureCount = bundle.cycleCurvatures.size();
+      row.innerAdjacencyCount =
+          static_cast<std::size_t>(bundle.innerAdjacencies.size());
+    } catch (const std::exception &) {
+      row.bundleInitialized = false;
+    }
+    diagnostics.push_back(std::move(row));
+  }
+  return diagnostics;
+}
+
+FieldTransportAtlasBuildResult incomplete_cycle_basis_failure(
+    const TriMesh &sourceMesh,
+    const geometry::SourceTopologyRegions &sourceAuthority,
+    const IncompleteCycleBasisReason reason,
+    std::optional<SourceEdgeTopologyKey> sourceEdge,
+    const TopologyRegionId topologyRegion) {
+  FieldAtlasBuildError error;
+  error.code = FieldAtlasBuildErrorCode::IncompleteCycleBasis;
+  error.sourceEdge = std::move(sourceEdge);
+  error.topologyRegion = topologyRegion;
+  error.incompleteCycleBasisReason = reason;
+  error.regionCycleBasisDiagnostics =
+      collect_cycle_basis_diagnostics(sourceMesh, sourceAuthority);
+  return FieldTransportAtlasBuildResult(std::move(error));
+}
+
 SourceEdgeTopologyKey global_edge_key(const LocalRegionMesh &local,
                                       const int localEdge,
                                       const std::size_t vertexExtent) {
@@ -1594,8 +1664,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     try {
       bundle.init(local->mesh);
     } catch (const std::exception &) {
-      return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
-                  std::nullopt, std::nullopt, std::nullopt, region.id());
+      return incomplete_cycle_basis_failure(
+          sourceMesh, sourceAuthority,
+          IncompleteCycleBasisReason::LocalTangentBundleInitializationFailed,
+          std::nullopt, region.id());
     }
     std::vector<int> interiorLocalVertices;
     for (int vertex = 0; vertex < local->mesh.V.rows(); ++vertex) {
@@ -1610,8 +1682,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     if (bundle.cycles.rows() != expectedCycleCount ||
         bundle.cycleCurvatures.size() != expectedCycleCount ||
         bundle.cycles.cols() != bundle.innerAdjacencies.size()) {
-      return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
-                  std::nullopt, std::nullopt, std::nullopt, region.id());
+      return incomplete_cycle_basis_failure(
+          sourceMesh, sourceAuthority,
+          IncompleteCycleBasisReason::CycleDimensionCountMismatch, std::nullopt,
+          region.id());
     }
 
     Eigen::VectorXd effort(bundle.innerAdjacencies.size());
@@ -1670,8 +1744,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         if (std::abs(coefficient) < kIntegerTolerance) continue;
         if (std::abs(std::abs(coefficient) - 1.0) >= kIntegerTolerance ||
             it.col() < 0 || it.col() >= bundle.innerAdjacencies.size()) {
-          return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
-                      std::nullopt, std::nullopt, std::nullopt, region.id());
+          return incomplete_cycle_basis_failure(
+              sourceMesh, sourceAuthority,
+              IncompleteCycleBasisReason::CycleCoefficientInvalid, std::nullopt,
+              region.id());
         }
         const int localEdge = bundle.innerAdjacencies(it.col());
         const SourceEdgeTopologyKey edge =
@@ -1679,14 +1755,18 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
         const FieldTransportAdjacency *adjacency =
             find_adjacency_in(adjacencies, edge);
         if (adjacency == nullptr) {
-          return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis, edge,
-                      std::nullopt, std::nullopt, region.id());
+          return incomplete_cycle_basis_failure(
+              sourceMesh, sourceAuthority,
+              IncompleteCycleBasisReason::CycleTransportAdjacencyMissing, edge,
+              region.id());
         }
         const int firstLocal = local->mesh.EF(localEdge, 0);
         const int secondLocal = local->mesh.EF(localEdge, 1);
         if (firstLocal < 0 || secondLocal < 0) {
-          return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis, edge,
-                      std::nullopt, std::nullopt, region.id());
+          return incomplete_cycle_basis_failure(
+              sourceMesh, sourceAuthority,
+              IncompleteCycleBasisReason::CycleEdgeIncidentFaceMissing, edge,
+              region.id());
         }
         SourceFaceId first = make_id<SourceFaceId>(static_cast<std::size_t>(
             local->globalFaceByLocal[static_cast<std::size_t>(firstLocal)]));
@@ -1697,8 +1777,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       }
       const auto ordered = order_cycle_steps(directed);
       if (!ordered.has_value()) {
-        return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
-                    std::nullopt, std::nullopt, std::nullopt, region.id());
+        return incomplete_cycle_basis_failure(
+            sourceMesh, sourceAuthority,
+            IncompleteCycleBasisReason::CycleOrderingFailed, std::nullopt,
+            region.id());
       }
       const QuarterTurn composed = compose_cycle(*ordered);
       if (static_cast<int>(composed.value()) !=
@@ -1748,8 +1830,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
             static_cast<std::size_t>(boundaryLoopCount) ||
         handleCycleIndices.size() !=
             static_cast<std::size_t>(expectedHandleCount)) {
-      return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
-                  std::nullopt, std::nullopt, std::nullopt, region.id());
+      return incomplete_cycle_basis_failure(
+          sourceMesh, sourceAuthority,
+          IncompleteCycleBasisReason::CycleKindPartitionMismatch, std::nullopt,
+          region.id());
     }
 
     std::vector<int> signature;
@@ -1815,8 +1899,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       witness.indexSum = requiredIndexSum;
     }
     if (boundaryCycleIndices.size() != local->mesh.boundaryLoops.size()) {
-      return fail(FieldAtlasBuildErrorCode::IncompleteCycleBasis,
-                  std::nullopt, std::nullopt, std::nullopt, region.id());
+      return incomplete_cycle_basis_failure(
+          sourceMesh, sourceAuthority,
+          IncompleteCycleBasisReason::BoundaryCycleCountMismatch, std::nullopt,
+          region.id());
     }
     for (std::size_t loopIndex = 0;
          loopIndex < local->mesh.boundaryLoops.size(); ++loopIndex) {
@@ -2078,6 +2164,29 @@ const char *field_atlas_build_error_code_name(
     return "DuplicateSingularityPortRepresentative";
   case FieldAtlasBuildErrorCode::BranchDirectionNotBarycentric:
     return "BranchDirectionNotBarycentric";
+  }
+  return "Unknown";
+}
+
+const char *incomplete_cycle_basis_reason_name(
+    const IncompleteCycleBasisReason reason) noexcept {
+  switch (reason) {
+  case IncompleteCycleBasisReason::LocalTangentBundleInitializationFailed:
+    return "LocalTangentBundleInitializationFailed";
+  case IncompleteCycleBasisReason::CycleDimensionCountMismatch:
+    return "CycleDimensionCountMismatch";
+  case IncompleteCycleBasisReason::CycleCoefficientInvalid:
+    return "CycleCoefficientInvalid";
+  case IncompleteCycleBasisReason::CycleTransportAdjacencyMissing:
+    return "CycleTransportAdjacencyMissing";
+  case IncompleteCycleBasisReason::CycleEdgeIncidentFaceMissing:
+    return "CycleEdgeIncidentFaceMissing";
+  case IncompleteCycleBasisReason::CycleOrderingFailed:
+    return "CycleOrderingFailed";
+  case IncompleteCycleBasisReason::CycleKindPartitionMismatch:
+    return "CycleKindPartitionMismatch";
+  case IncompleteCycleBasisReason::BoundaryCycleCountMismatch:
+    return "BoundaryCycleCountMismatch";
   }
   return "Unknown";
 }

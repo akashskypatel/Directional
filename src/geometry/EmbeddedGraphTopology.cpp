@@ -456,6 +456,8 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
           result.sourceFace = event.sourceFace;
           result.sourceEdge = event.sourceEdge;
+          result.rotationSystemInconsistencyReason =
+              RotationSystemInconsistencyReason::TraceEventPositionInvalid;
           return result;
         }
         const auto inserted = cuts.emplace(*position, event.node);
@@ -464,6 +466,8 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
           result.sourceFace = event.sourceFace;
           result.sourceEdge = event.sourceEdge;
+          result.rotationSystemInconsistencyReason =
+              RotationSystemInconsistencyReason::TraceEventPositionNodeConflict;
           return result;
         }
         hasTerminal = hasTerminal ||
@@ -623,6 +627,8 @@ NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
           error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
       result.sourceFace = event.sourceFace;
       result.sourceEdge = event.sourceEdge;
+      result.rotationSystemInconsistencyReason =
+          RotationSystemInconsistencyReason::EventNodeLocusMissing;
       return result;
     }
     if (found->second.vertex.has_value()) continue;
@@ -630,6 +636,8 @@ NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
       GlobalTopologyPlanError result =
           error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
       result.sourceFace = event.sourceFace;
+      result.rotationSystemInconsistencyReason =
+          RotationSystemInconsistencyReason::EventLocusMissingSourceEdge;
       return result;
     }
     if (found->second.edge.has_value() &&
@@ -638,6 +646,8 @@ NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
           error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
       result.sourceFace = event.sourceFace;
       result.sourceEdge = event.sourceEdge;
+      result.rotationSystemInconsistencyReason =
+          RotationSystemInconsistencyReason::EventLocusSourceEdgeConflict;
       return result;
     }
     found->second.edge = event.sourceEdge;
@@ -980,6 +990,8 @@ RotationBuildResult build_rotation_system(
                 error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
             result.sourceVertex = locusIt->second.vertex;
             result.sourceFace = face;
+            result.rotationSystemInconsistencyReason =
+                RotationSystemInconsistencyReason::VertexTraceFaceMissingFromFan;
             return result;
           }
           key.primary = 2U * slot->second + 1U;
@@ -994,6 +1006,8 @@ RotationBuildResult build_rotation_system(
                 error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
             result.sourceVertex = locusIt->second.vertex;
             result.sourceFace = face;
+            result.rotationSystemInconsistencyReason =
+                RotationSystemInconsistencyReason::VertexTracePortOrdinalInvalid;
             return result;
           }
           key.secondary = static_cast<std::size_t>(port->ordinal);
@@ -1107,6 +1121,8 @@ RotationBuildResult build_rotation_system(
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
           result.sourceEdge = locusIt->second.edge;
           result.sourceFace = face;
+          result.rotationSystemInconsistencyReason =
+              RotationSystemInconsistencyReason::EdgeTraceFaceSideInvalid;
           return result;
         }
         const auto secondary = edge_locus_secondary_rank(
@@ -1117,6 +1133,8 @@ RotationBuildResult build_rotation_system(
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
           result.sourceEdge = locusIt->second.edge;
           result.sourceFace = face;
+          result.rotationSystemInconsistencyReason =
+              RotationSystemInconsistencyReason::EdgeTraceSecondaryRankInvalid;
           return result;
         }
         key.primary = edgeRayCount == 0U

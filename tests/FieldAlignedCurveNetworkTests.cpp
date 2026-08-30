@@ -2452,8 +2452,15 @@ std::string cp4c_cut_graph_fixture_failure_message(
   }
   if (const auto *error =
           std::get_if<directional::authority::FieldAtlasBuildError>(&outcome)) {
-    return std::string("stage=field-transport-atlas;error=") +
-           directional::authority::field_atlas_build_error_code_name(error->code);
+    std::string message = std::string("stage=field-transport-atlas;error=") +
+                          directional::authority::field_atlas_build_error_code_name(
+                              error->code);
+    if (error->incompleteCycleBasisReason.has_value()) {
+      message += ";incompleteCycleBasisReason=";
+      message += directional::authority::incomplete_cycle_basis_reason_name(
+          *error->incompleteCycleBasisReason);
+    }
+    return message;
   }
   if (const auto *error =
           std::get_if<directional::geometry::FieldAlignedCurveNetworkError>(
@@ -2473,6 +2480,13 @@ std::string cp4c_cut_graph_fixture_failure_message(
           *error->originatingTopologyError);
     } else {
       message += ";originatingTopologyError=none";
+    }
+    if (error->originatingRotationSystemInconsistencyReason.has_value()) {
+      message += ";originatingRotationSystemReason=";
+      message += directional::geometry::rotation_system_inconsistency_reason_name(
+          *error->originatingRotationSystemInconsistencyReason);
+    } else {
+      message += ";originatingRotationSystemReason=none";
     }
     return message;
   }
@@ -4355,6 +4369,31 @@ void append_atlas_error(std::ostringstream &stream,
   if (error.sourceEdge.has_value()) {
     stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
   }
+  if (error.incompleteCycleBasisReason.has_value()) {
+    stream << ";incompleteCycleBasisReason="
+           << directional::authority::incomplete_cycle_basis_reason_name(
+                  *error.incompleteCycleBasisReason);
+  }
+  for (std::size_t index = 0U;
+       index < error.regionCycleBasisDiagnostics.size(); ++index) {
+    const auto &row = error.regionCycleBasisDiagnostics[index];
+    stream << ";cycleBasisRegion[" << index << "]={topologyRegion="
+           << row.topologyRegion.index()
+           << ",localMeshAvailable="
+           << (row.localMeshAvailable ? "true" : "false")
+           << ",bundleInitialized="
+           << (row.bundleInitialized ? "true" : "false")
+           << ",V=" << row.vertexCount << ",E=" << row.edgeCount
+           << ",F=" << row.faceCount
+           << ",eulerCharacteristic=" << row.eulerCharacteristic
+           << ",boundaryLoopCount=" << row.boundaryLoopCount
+           << ",genus=" << row.genus
+           << ",interiorLocalVertexCount=" << row.interiorLocalVertexCount
+           << ",expectedCycleCount=" << row.expectedCycleCount
+           << ",cycleRows=" << row.cycleRowCount
+           << ",cycleCurvatures=" << row.cycleCurvatureCount
+           << ",innerAdjacencies=" << row.innerAdjacencyCount << '}';
+  }
 }
 
 void append_network_error(
@@ -4500,6 +4539,11 @@ void append_plan_error(std::ostringstream &stream,
   if (error.sourceVertex.has_value()) {
     stream << ";sourceVertex=" << error.sourceVertex->index();
   }
+  if (error.rotationSystemInconsistencyReason.has_value()) {
+    stream << ";rotationSystemReason="
+           << directional::geometry::rotation_system_inconsistency_reason_name(
+                  *error.rotationSystemInconsistencyReason);
+  }
 }
 
 std::size_t source_boundary_vertex_count(const TriMesh &mesh) {
@@ -4626,6 +4670,14 @@ Cp4cReachabilityObservation observe_cp4c_witness(
     if (cutGraphBuild.error().originatingTopologyError.has_value()) {
       report << directional::geometry::global_topology_plan_error_code_name(
                     *cutGraphBuild.error().originatingTopologyError);
+    } else {
+      report << "none";
+    }
+    report << ";originatingRotationSystemReason=";
+    if (cutGraphBuild.error()
+            .originatingRotationSystemInconsistencyReason.has_value()) {
+      report << directional::geometry::rotation_system_inconsistency_reason_name(
+          *cutGraphBuild.error().originatingRotationSystemInconsistencyReason);
     } else {
       report << "none";
     }
@@ -7502,6 +7554,13 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
     if (error.originatingTopologyError.has_value()) {
       report << directional::geometry::global_topology_plan_error_code_name(
                     *error.originatingTopologyError);
+    } else {
+      report << "none";
+    }
+    report << ";originatingRotationSystemReason=";
+    if (error.originatingRotationSystemInconsistencyReason.has_value()) {
+      report << directional::geometry::rotation_system_inconsistency_reason_name(
+          *error.originatingRotationSystemInconsistencyReason);
     } else {
       report << "none";
     }

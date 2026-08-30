@@ -64,6 +64,8 @@ SurfaceCutGraphError topology_error(const GlobalTopologyPlanError &error) {
   }
   result.sourceEdge = error.sourceEdge;
   result.sourceFace = error.sourceFace;
+  result.originatingRotationSystemInconsistencyReason =
+      error.rotationSystemInconsistencyReason;
   return result;
 }
 

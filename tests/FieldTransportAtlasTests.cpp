@@ -84,6 +84,11 @@ std::string describe_field_atlas_build_error(const FieldAtlasBuildError &error) 
   if (error.topologyRegion.has_value()) {
     out << ";topologyRegion=" << error.topologyRegion->index();
   }
+  if (error.incompleteCycleBasisReason.has_value()) {
+    out << ";incompleteCycleBasisReason="
+        << directional::authority::incomplete_cycle_basis_reason_name(
+               *error.incompleteCycleBasisReason);
+  }
   return out.str();
 }
 

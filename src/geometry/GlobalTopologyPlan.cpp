@@ -2134,6 +2134,31 @@ const char *global_topology_plan_error_code_name(
   return "Unknown";
 }
 
+const char *rotation_system_inconsistency_reason_name(
+    const RotationSystemInconsistencyReason reason) noexcept {
+  switch (reason) {
+  case RotationSystemInconsistencyReason::TraceEventPositionInvalid:
+    return "TraceEventPositionInvalid";
+  case RotationSystemInconsistencyReason::TraceEventPositionNodeConflict:
+    return "TraceEventPositionNodeConflict";
+  case RotationSystemInconsistencyReason::EventNodeLocusMissing:
+    return "EventNodeLocusMissing";
+  case RotationSystemInconsistencyReason::EventLocusMissingSourceEdge:
+    return "EventLocusMissingSourceEdge";
+  case RotationSystemInconsistencyReason::EventLocusSourceEdgeConflict:
+    return "EventLocusSourceEdgeConflict";
+  case RotationSystemInconsistencyReason::VertexTraceFaceMissingFromFan:
+    return "VertexTraceFaceMissingFromFan";
+  case RotationSystemInconsistencyReason::VertexTracePortOrdinalInvalid:
+    return "VertexTracePortOrdinalInvalid";
+  case RotationSystemInconsistencyReason::EdgeTraceFaceSideInvalid:
+    return "EdgeTraceFaceSideInvalid";
+  case RotationSystemInconsistencyReason::EdgeTraceSecondaryRankInvalid:
+    return "EdgeTraceSecondaryRankInvalid";
+  }
+  return "Unknown";
+}
+
 std::uint64_t global_topology_plan_hash(
     const GlobalTopologyPlan &plan) noexcept {
   return plan.semantic_digest();

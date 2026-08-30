@@ -6580,11 +6580,37 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             meshWhole, *sourceTopologyRegionsProduct, hardFeatureRailEdges,
             crossFieldProduct);
     if (!atlasBuild) {
-      return fail_surface_cells(
-          SurfaceCellFailureCode::InvalidFieldTransportAtlas,
-          std::string("field-transport-atlas/") +
-              authority::field_atlas_build_error_code_name(
-                  atlasBuild.error().code));
+      const authority::FieldAtlasBuildError &error = atlasBuild.error();
+      std::ostringstream stage;
+      stage << "field-transport-atlas/"
+            << authority::field_atlas_build_error_code_name(error.code);
+      if (error.incompleteCycleBasisReason.has_value()) {
+        stage << ";incompleteCycleBasisReason="
+              << authority::incomplete_cycle_basis_reason_name(
+                     *error.incompleteCycleBasisReason);
+      }
+      for (std::size_t index = 0U;
+           index < error.regionCycleBasisDiagnostics.size(); ++index) {
+        const auto &row = error.regionCycleBasisDiagnostics[index];
+        stage << ";cycleBasisRegion[" << index << "]={topologyRegion="
+              << row.topologyRegion.index()
+              << ",localMeshAvailable="
+              << (row.localMeshAvailable ? "true" : "false")
+              << ",bundleInitialized="
+              << (row.bundleInitialized ? "true" : "false")
+              << ",V=" << row.vertexCount << ",E=" << row.edgeCount
+              << ",F=" << row.faceCount
+              << ",eulerCharacteristic=" << row.eulerCharacteristic
+              << ",boundaryLoopCount=" << row.boundaryLoopCount
+              << ",genus=" << row.genus
+              << ",interiorLocalVertexCount=" << row.interiorLocalVertexCount
+              << ",expectedCycleCount=" << row.expectedCycleCount
+              << ",cycleRows=" << row.cycleRowCount
+              << ",cycleCurvatures=" << row.cycleCurvatureCount
+              << ",innerAdjacencies=" << row.innerAdjacencyCount << '}';
+      }
+      return fail_surface_cells(SurfaceCellFailureCode::InvalidFieldTransportAtlas,
+                                stage.str());
     }
     fieldTransportAtlasProduct = std::move(atlasBuild.value());
     result.surfaceCellContext.productSnapshots.fieldTransportAtlas =

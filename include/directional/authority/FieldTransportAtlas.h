@@ -91,6 +91,36 @@ enum class FieldQuadrangulabilityWitnessKind : std::uint8_t {
   RelativeBoundary,
 };
 
+enum class IncompleteCycleBasisReason : std::uint8_t {
+  LocalTangentBundleInitializationFailed = 0,
+  CycleDimensionCountMismatch = 1,
+  CycleCoefficientInvalid = 2,
+  CycleTransportAdjacencyMissing = 3,
+  CycleEdgeIncidentFaceMissing = 4,
+  CycleOrderingFailed = 5,
+  CycleKindPartitionMismatch = 6,
+  BoundaryCycleCountMismatch = 7,
+};
+
+struct FieldAtlasRegionCycleBasisDiagnostics {
+  TopologyRegionId topologyRegion;
+  bool localMeshAvailable = false;
+  bool bundleInitialized = false;
+  std::size_t vertexCount = 0U;
+  std::size_t edgeCount = 0U;
+  std::size_t faceCount = 0U;
+  int eulerCharacteristic = 0;
+  int boundaryLoopCount = 0;
+  int genus = -1;
+  std::size_t interiorLocalVertexCount = 0U;
+  int expectedCycleCount = -1;
+  std::size_t cycleRowCount = 0U;
+  std::size_t cycleCurvatureCount = 0U;
+  std::size_t innerAdjacencyCount = 0U;
+
+  auto operator<=>(const FieldAtlasRegionCycleBasisDiagnostics &) const = default;
+};
+
 enum class FieldAtlasBuildErrorCode : std::uint8_t {
   InvalidInput,
   CanonicalBindingMismatch,
@@ -134,6 +164,8 @@ struct FieldAtlasBuildError {
   std::optional<SourceVertexId> sourceVertex;
   std::optional<TopologyRegionId> topologyRegion;
   std::optional<FieldBranch> branch;
+  std::optional<IncompleteCycleBasisReason> incompleteCycleBasisReason;
+  std::vector<FieldAtlasRegionCycleBasisDiagnostics> regionCycleBasisDiagnostics;
 
   auto operator<=>(const FieldAtlasBuildError &) const = default;
 };
@@ -703,6 +735,9 @@ private:
 
 [[nodiscard]] DIRECTIONAL_API const char *
 field_atlas_build_error_code_name(FieldAtlasBuildErrorCode code) noexcept;
+
+[[nodiscard]] DIRECTIONAL_API const char *
+incomplete_cycle_basis_reason_name(IncompleteCycleBasisReason reason) noexcept;
 
 [[nodiscard]] DIRECTIONAL_API std::uint64_t
 field_transport_atlas_hash(const FieldTransportAtlas &atlas) noexcept;

@@ -150,6 +150,18 @@ enum class GlobalTopologyPlanErrorCode : std::uint8_t {
   InvalidCutGraphBinding = 38,
 };
 
+enum class RotationSystemInconsistencyReason : std::uint8_t {
+  TraceEventPositionInvalid = 0,
+  TraceEventPositionNodeConflict = 1,
+  EventNodeLocusMissing = 2,
+  EventLocusMissingSourceEdge = 3,
+  EventLocusSourceEdgeConflict = 4,
+  VertexTraceFaceMissingFromFan = 5,
+  VertexTracePortOrdinalInvalid = 6,
+  EdgeTraceFaceSideInvalid = 7,
+  EdgeTraceSecondaryRankInvalid = 8,
+};
+
 struct GlobalTopologyPlanError {
   GlobalTopologyPlanErrorCode code =
       GlobalTopologyPlanErrorCode::InvalidSourceBinding;
@@ -168,6 +180,8 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> vertexCount;
   std::optional<std::size_t> edgeCount;
   std::optional<std::size_t> faceCount;
+  std::optional<RotationSystemInconsistencyReason>
+      rotationSystemInconsistencyReason;
 
   auto operator<=>(const GlobalTopologyPlanError &) const = default;
 };
@@ -300,6 +314,8 @@ private:
 
 [[nodiscard]] const char *global_topology_plan_error_code_name(
     GlobalTopologyPlanErrorCode code) noexcept;
+[[nodiscard]] const char *rotation_system_inconsistency_reason_name(
+    RotationSystemInconsistencyReason reason) noexcept;
 [[nodiscard]] std::uint64_t
     global_topology_plan_hash(const GlobalTopologyPlan &plan) noexcept;
 

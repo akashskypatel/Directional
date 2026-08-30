@@ -24,6 +24,7 @@
 namespace directional::geometry {
 
 enum class GlobalTopologyPlanErrorCode : std::uint8_t;
+enum class RotationSystemInconsistencyReason : std::uint8_t;
 
 enum class SurfaceCutGraphComplexKind : std::uint8_t {
   ActualEmbeddedGraph = 0,
@@ -99,6 +100,8 @@ struct SurfaceCutGraphError {
   std::size_t nonDiscComponentCount = 0U;
   std::size_t remainingAdmissibleEdgeCount = 0U;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
+  std::optional<RotationSystemInconsistencyReason>
+      originatingRotationSystemInconsistencyReason;
   auto operator<=>(const SurfaceCutGraphError &) const = default;
 };
 
