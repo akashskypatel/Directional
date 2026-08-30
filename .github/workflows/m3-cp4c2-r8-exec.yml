@@ -62,7 +62,7 @@ jobs:
         run: |
           set -euo pipefail
           log="$RUNNER_TEMP/r8-exec.log"; exec > >(tee -a "$log") 2>&1
-          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r8-exec.sh)" = "0124c07aba0c265cdc59f460b2179b6f1ebf1a55"
+          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r8-exec.sh)" = "c6c717d5ce77038be42e0104265fcfc7da35e0f7"
           test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r8-lib.sh)" = "26549aa4dfedd7666ac68cac3f45724a703b1a13"
           test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r8-harness.py)" = "7f357aba6566a8f06aff930384c973515547a1c8"
           cp control/.agents/Directional/turn-payloads/m3-cp4c2-r8-exec.sh "$RUNNER_TEMP/r8-exec.sh"
