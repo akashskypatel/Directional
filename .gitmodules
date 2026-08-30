@@ -1,6 +1,6 @@
 [submodule "external/eigen"]
 	path = external/eigen
-	url = https://gitlab.com/libeigen/eigen
+	url = https://github.com/eigen-mirror/eigen
 	backupUrl = https://github.com/eigen-mirror/eigen
 [submodule "external/polyscope"]
 	path = external/polyscope
