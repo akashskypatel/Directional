@@ -1,0 +1,4 @@
+purpose=ChatGPT Web start-session exact source snapshot
+semantic_parent=b91823cd7e6ae70a5b1f4c43c9891add1aaf7cd5
+workflow_source_authority=this marker-trigger commit
+retry=0
