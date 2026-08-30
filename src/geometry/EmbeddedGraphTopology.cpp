@@ -188,6 +188,12 @@ struct ArcDraft {
   std::vector<authority::SourceFaceTopologyKey> sourceFaces;
 };
 
+bool exact_interior_parameter(const authority::ExactUnitParameter &parameter) {
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  return parameter.value > zero && parameter.value < one;
+}
+
 CutNodeBindingResult build_cut_node_bindings(
     const FieldAlignedCurveNetwork &network,
     const std::vector<authority::SourceEdgeTopologyKey> &cutEdges) {
@@ -212,16 +218,70 @@ CutNodeBindingResult build_cut_node_bindings(
   }
 
   std::set<authority::SourceVertexId> cutVertices;
+  const std::set<authority::SourceEdgeTopologyKey> selectedCuts(
+      cutEdges.begin(), cutEdges.end());
+  struct CrossingDraft {
+    CutCrossingKey key;
+    authority::ExactUnitParameter parameter;
+  };
+  std::vector<CrossingDraft> crossings;
+  std::map<authority::SourceEdgeTopologyKey,
+           std::map<authority::ExactUnitParameter, authority::TraceId>>
+      traceByExactPoint;
   for (const auto &edge : cutEdges) {
     cutVertices.insert(edge.first());
     cutVertices.insert(edge.second());
   }
+
+  // A trace crossing is published exactly at the next segment's entry point.
+  // The segment index is therefore the exact trace-cut position used by
+  // build_arcs; no geometric crossing inference or tolerance is needed.
+  for (const auto &trace : network.candidate_traces()) {
+    for (std::size_t segmentPosition = 0U;
+         segmentPosition < trace.segments.size(); ++segmentPosition) {
+      const auto &segment = trace.segments[segmentPosition];
+      if (!segment.incomingCarrier.has_value() ||
+          selectedCuts.count(*segment.incomingCarrier) == 0U) {
+        continue;
+      }
+      if (segment.entryPoint.edge != *segment.incomingCarrier) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidNetworkBinding);
+        failure.trace = trace.id;
+        failure.sourceEdge = segment.incomingCarrier;
+        failure.sourceFace = segment.sourceFace;
+        return failure;
+      }
+      if (!exact_interior_parameter(segment.entryPoint.parameter)) continue;
+
+      auto &byPoint = traceByExactPoint[*segment.incomingCarrier];
+      const auto duplicate = byPoint.find(segment.entryPoint.parameter);
+      if (duplicate != byPoint.end() && duplicate->second != trace.id) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+        failure.sourceEdge = *segment.incomingCarrier;
+        failure.trace = duplicate->second;
+        failure.secondTrace = trace.id;
+        return failure;
+      }
+      byPoint.emplace(segment.entryPoint.parameter, trace.id);
+      crossings.push_back(CrossingDraft{
+          CutCrossingKey{*segment.incomingCarrier, trace.id, segmentPosition},
+          segment.entryPoint.parameter});
+    }
+  }
+  std::sort(crossings.begin(), crossings.end(), [](const auto &lhs,
+                                                    const auto &rhs) {
+    return lhs.key < rhs.key;
+  });
+
   std::size_t nextIndex = network.nodes().size();
   const std::size_t extent = network.nodes().size() +
       static_cast<std::size_t>(std::count_if(
           cutVertices.begin(), cutVertices.end(), [&](const auto vertex) {
             return result.nodeByVertex.count(vertex) == 0U;
-          }));
+          })) +
+      crossings.size();
   for (const auto vertex : cutVertices) {
     if (result.nodeByVertex.count(vertex) != 0U) continue;
     const auto id = authority::NetworkNodeId::from_index(
@@ -229,6 +289,20 @@ CutNodeBindingResult build_cut_node_bindings(
     if (!id) return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
     result.nodeByVertex.emplace(vertex, id.value());
     result.syntheticVertices.emplace(id.value(), vertex);
+  }
+  for (const auto &crossing : crossings) {
+    const auto id = authority::NetworkNodeId::from_index(
+        static_cast<std::int64_t>(nextIndex++), extent);
+    if (!id) return error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+    CutCrossingBinding binding{crossing.key, crossing.parameter, id.value()};
+    if (!result.crossingByKey.emplace(crossing.key, binding).second ||
+        !result.syntheticCrossings.emplace(id.value(), binding).second) {
+      GlobalTopologyPlanError failure =
+          error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+      failure.sourceEdge = crossing.key.sourceEdge;
+      failure.trace = crossing.key.trace;
+      return failure;
+    }
   }
   result.combinedNodeExtent = extent;
   return result;
@@ -352,6 +426,25 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
 
     std::map<std::size_t, authority::NetworkNodeId> cuts;
     cuts.emplace(0U, origin->second);
+    for (const auto &[key, crossing] : cutNodes.crossingByKey) {
+      if (key.trace != trace.id) continue;
+      if (key.segmentPosition == 0U ||
+          key.segmentPosition >= trace.segments.size()) {
+        GlobalTopologyPlanError result =
+            error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+        result.trace = trace.id;
+        result.sourceEdge = key.sourceEdge;
+        return result;
+      }
+      const auto inserted = cuts.emplace(key.segmentPosition, crossing.node);
+      if (!inserted.second && inserted.first->second != crossing.node) {
+        GlobalTopologyPlanError result =
+            error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+        result.trace = trace.id;
+        result.sourceEdge = key.sourceEdge;
+        return result;
+      }
+    }
     bool hasTerminal = false;
     for (const auto &event : network.events()) {
       for (const auto &incidence : event.incidences) {
@@ -417,10 +510,39 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       failure.sourceEdge = cutEdge;
       return failure;
     }
-    ArcDraft draft(first->second, second->second);
-    draft.kind = GlobalTopologyArcKind::Cut;
-    draft.cutEdge = cutEdge;
-    drafts.push_back(std::move(draft));
+    std::vector<std::pair<authority::ExactUnitParameter,
+                          authority::NetworkNodeId>> orderedPoints;
+    orderedPoints.emplace_back(
+        authority::ExactUnitParameter{
+            authority::FieldExactRational::from_integer(0)},
+        first->second);
+    for (const auto &[key, crossing] : cutNodes.crossingByKey) {
+      if (key.sourceEdge == cutEdge) {
+        orderedPoints.emplace_back(crossing.parameter, crossing.node);
+      }
+    }
+    orderedPoints.emplace_back(
+        authority::ExactUnitParameter{
+            authority::FieldExactRational::from_integer(1)},
+        second->second);
+    std::sort(orderedPoints.begin(), orderedPoints.end(), [](const auto &lhs,
+                                                             const auto &rhs) {
+      return lhs.first < rhs.first;
+    });
+    for (std::size_t index = 1U; index < orderedPoints.size(); ++index) {
+      if (!(orderedPoints[index - 1U].first < orderedPoints[index].first) ||
+          orderedPoints[index - 1U].second == orderedPoints[index].second) {
+        GlobalTopologyPlanError failure =
+            error(GlobalTopologyPlanErrorCode::InvalidCutGraphBinding);
+        failure.sourceEdge = cutEdge;
+        return failure;
+      }
+      ArcDraft draft(orderedPoints[index - 1U].second,
+                     orderedPoints[index].second);
+      draft.kind = GlobalTopologyArcKind::Cut;
+      draft.cutEdge = cutEdge;
+      drafts.push_back(std::move(draft));
+    }
   }
 
   std::sort(drafts.begin(), drafts.end(), [](const ArcDraft &lhs,
@@ -452,6 +574,9 @@ NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
   for (const auto &node : network.nodes()) loci.emplace(node.id, NodeLocus{});
   for (const auto &[node, vertex] : cutNodes.syntheticVertices) {
     loci.emplace(node, NodeLocus{vertex, std::nullopt});
+  }
+  for (const auto &[node, crossing] : cutNodes.syntheticCrossings) {
+    loci.emplace(node, NodeLocus{std::nullopt, crossing.key.sourceEdge});
   }
 
   const auto set_vertex = [&](const authority::NetworkNodeId node,
@@ -648,15 +773,59 @@ std::optional<authority::SourceFaceTopologyKey> trace_ray_face(
                    trace.segments[arc.onePastLastSegment - 1U].sourceFace};
 }
 
-std::optional<bool> mandatory_ray_points_to_second_endpoint(
+std::optional<authority::ExactUnitParameter> cut_node_parameter(
+    const authority::NetworkNodeId node,
+    const authority::SourceEdgeTopologyKey &sourceEdge,
+    const CutNodeBindings &cutNodes) {
+  const auto first = cutNodes.nodeByVertex.find(sourceEdge.first());
+  const auto second = cutNodes.nodeByVertex.find(sourceEdge.second());
+  if (first != cutNodes.nodeByVertex.end() && first->second == node) {
+    return authority::ExactUnitParameter{
+        authority::FieldExactRational::from_integer(0)};
+  }
+  if (second != cutNodes.nodeByVertex.end() && second->second == node) {
+    return authority::ExactUnitParameter{
+        authority::FieldExactRational::from_integer(1)};
+  }
+  const auto crossing = cutNodes.syntheticCrossings.find(node);
+  if (crossing != cutNodes.syntheticCrossings.end() &&
+      crossing->second.key.sourceEdge == sourceEdge) {
+    return crossing->second.parameter;
+  }
+  return std::nullopt;
+}
+
+std::optional<bool> edge_ray_points_to_second_endpoint(
     const GlobalTopologyArc &arc, const authority::Orientation orientation,
-    const FieldAlignedMandatoryEdge &mandatory) {
+    const authority::SourceEdgeTopologyKey &sourceEdge,
+    const FieldAlignedCurveNetwork &network, const CutNodeBindings &cutNodes) {
   const authority::NetworkNodeId destination =
       orientation == authority::Orientation::Forward ? arc.secondNode
                                                      : arc.firstNode;
-  if (destination == mandatory.secondNode) return true;
-  if (destination == mandatory.firstNode) return false;
-  return std::nullopt;
+  if (arc.kind == GlobalTopologyArcKind::Mandatory) {
+    if (!arc.mandatoryEdge.has_value()) return std::nullopt;
+    const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
+    if (mandatory == nullptr || mandatory->sourceEdge != sourceEdge) {
+      return std::nullopt;
+    }
+    if (destination == mandatory->secondNode) return true;
+    if (destination == mandatory->firstNode) return false;
+    return std::nullopt;
+  }
+  if (arc.kind != GlobalTopologyArcKind::Cut || arc.cutEdge != sourceEdge) {
+    return std::nullopt;
+  }
+  const authority::NetworkNodeId origin =
+      orientation == authority::Orientation::Forward ? arc.firstNode
+                                                     : arc.secondNode;
+  const auto originParameter = cut_node_parameter(origin, sourceEdge, cutNodes);
+  const auto destinationParameter =
+      cut_node_parameter(destination, sourceEdge, cutNodes);
+  if (!originParameter.has_value() || !destinationParameter.has_value() ||
+      originParameter->value == destinationParameter->value) {
+    return std::nullopt;
+  }
+  return originParameter->value < destinationParameter->value;
 }
 
 std::optional<std::size_t> edge_locus_secondary_rank(
@@ -853,14 +1022,20 @@ RotationBuildResult build_rotation_system(
                 : 1U);
       }
 
-      const std::size_t mandatoryRayCount = static_cast<std::size_t>(
+      const std::size_t edgeRayCount = static_cast<std::size_t>(
           std::count_if(outgoing.begin(), outgoing.end(), [&](const auto incidence) {
             const auto arcIt = arcById.find(incidence.arc);
             return arcIt != arcById.end() &&
-                   arcIt->second->kind == GlobalTopologyArcKind::Mandatory;
+                   (arcIt->second->kind == GlobalTopologyArcKind::Mandatory ||
+                    arcIt->second->kind == GlobalTopologyArcKind::Cut);
           }));
-      if (mandatoryRayCount != 0U &&
-          (mandatoryRayCount != 2U || outgoing.size() != 3U)) {
+      if (edgeRayCount != 0U && edgeRayCount != 2U) {
+        GlobalTopologyPlanError result =
+            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+        result.sourceEdge = locusIt->second.edge;
+        return result;
+      }
+      if (edgeRayCount == 2U && outgoing.size() != 3U && outgoing.size() != 4U) {
         GlobalTopologyPlanError result =
             error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
         result.sourceEdge = locusIt->second.edge;
@@ -879,28 +1054,33 @@ RotationBuildResult build_rotation_system(
         key.arc = arc.id;
         key.orientation = incidence.orientation;
 
-        if (arc.kind == GlobalTopologyArcKind::Mandatory) {
-          if (mandatoryRayCount != 2U || !arc.mandatoryEdge.has_value()) {
+        if (arc.kind == GlobalTopologyArcKind::Mandatory ||
+            arc.kind == GlobalTopologyArcKind::Cut) {
+          if (edgeRayCount != 2U) {
             GlobalTopologyPlanError result =
                 error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
             result.sourceEdge = locusIt->second.edge;
             return result;
           }
-          const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
-          if (mandatory == nullptr ||
-              mandatory->sourceEdge != *locusIt->second.edge) {
+          if (arc.kind == GlobalTopologyArcKind::Mandatory &&
+              !arc.mandatoryEdge.has_value()) {
+            return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          }
+          if (arc.kind == GlobalTopologyArcKind::Cut &&
+              arc.cutEdge != *locusIt->second.edge) {
             GlobalTopologyPlanError result =
                 error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
             result.sourceEdge = locusIt->second.edge;
             return result;
           }
-          const auto towardSecond = mandatory_ray_points_to_second_endpoint(
-              arc, incidence.orientation, *mandatory);
+          const auto towardSecond = edge_ray_points_to_second_endpoint(
+              arc, incidence.orientation, *locusIt->second.edge, network,
+              cutNodes);
           if (!towardSecond.has_value()) {
             GlobalTopologyPlanError result =
                 error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
             result.sourceEdge = locusIt->second.edge;
-            result.networkEdge = mandatory->id;
+            result.networkEdge = arc.mandatoryEdge;
             return result;
           }
           // Around the canonical edge direction, side-rank 0 lies between
@@ -939,7 +1119,7 @@ RotationBuildResult build_rotation_system(
           result.sourceFace = face;
           return result;
         }
-        key.primary = mandatoryRayCount == 0U
+        key.primary = edgeRayCount == 0U
                           ? sideRank.at(*face)
                           : 2U * sideRank.at(*face) + 1U;
         key.secondary = *secondary;

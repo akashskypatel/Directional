@@ -1299,6 +1299,199 @@ Cp3bEventFixture build_cp3b_event_fixture() {
   return fixture;
 }
 
+TriMesh make_cp4c_three_ring_skew_disc() {
+  constexpr std::array<double, kCp3aRingSize> angles{
+      -2.85, -1.48, -0.20, 1.08, 2.42};
+  constexpr std::array<double, kCp3aRingSize> innerRadii{
+      1.10, 1.38, 1.22, 1.47, 1.18};
+  constexpr std::array<double, kCp3aRingSize> middleRadii{
+      2.05, 2.27, 2.12, 2.31, 2.18};
+  constexpr std::array<double, kCp3aRingSize> outerRadii{
+      3.10, 3.43, 3.22, 3.51, 3.31};
+  constexpr double centerX = 0.17;
+  constexpr double centerY = -0.11;
+
+  Eigen::MatrixXd vertices(1 + 3 * kCp3aRingSize, 3);
+  vertices.row(kCp3aCenterVertex) =
+      Eigen::RowVector3d(centerX, centerY, 0.0);
+  const auto writeRing = [&](const int offset, const auto &radii) {
+    for (int ring = 0; ring < kCp3aRingSize; ++ring) {
+      const double cosine = std::cos(angles[static_cast<std::size_t>(ring)]);
+      const double sine = std::sin(angles[static_cast<std::size_t>(ring)]);
+      vertices.row(offset + ring) = Eigen::RowVector3d(
+          centerX + radii[static_cast<std::size_t>(ring)] * cosine,
+          centerY + radii[static_cast<std::size_t>(ring)] * sine, 0.0);
+    }
+  };
+  writeRing(1, innerRadii);
+  writeRing(1 + kCp3aRingSize, middleRadii);
+  writeRing(1 + 2 * kCp3aRingSize, outerRadii);
+
+  Eigen::MatrixXi faces(5 * kCp3aRingSize, 3);
+  int face = 0;
+  for (int ring = 0; ring < kCp3aRingSize; ++ring) {
+    const int next = (ring + 1) % kCp3aRingSize;
+    faces.row(face++) << kCp3aCenterVertex, 1 + ring, 1 + next;
+  }
+  for (int band = 0; band < 2; ++band) {
+    const int firstRing = 1 + band * kCp3aRingSize;
+    const int secondRing = firstRing + kCp3aRingSize;
+    for (int ring = 0; ring < kCp3aRingSize; ++ring) {
+      const int next = (ring + 1) % kCp3aRingSize;
+      const int inner = firstRing + ring;
+      const int nextInner = firstRing + next;
+      const int outer = secondRing + ring;
+      const int nextOuter = secondRing + next;
+      faces.row(face++) << inner, outer, nextOuter;
+      faces.row(face++) << inner, nextOuter, nextInner;
+    }
+  }
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return mesh;
+}
+
+void make_cp4c_three_ring_index_one_field(const TriMesh &mesh,
+                                            CrossFieldResult &field) {
+  Eigen::MatrixXd primaryDirections(mesh.F.rows(), 3);
+  Eigen::MatrixXd secondaryDirections(mesh.F.rows(), 3);
+  const Eigen::RowVector3d center = mesh.V.row(kCp3aCenterVertex);
+  constexpr double baseAngle = 0.20577431881013147;
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    const Eigen::RowVector3d centroid =
+        (mesh.V.row(mesh.F(face, 0)) + mesh.V.row(mesh.F(face, 1)) +
+         mesh.V.row(mesh.F(face, 2))) /
+        3.0;
+    const double polar =
+        std::atan2(centroid.y() - center.y(), centroid.x() - center.x());
+    const double smoothPhase =
+        polar + 0.14 * std::sin(2.0 * polar) + 0.06 * std::sin(3.0 * polar);
+    const double angle = baseAngle + 0.25 * smoothPhase;
+    primaryDirections.row(face) =
+        Eigen::RowVector3d(std::cos(angle), std::sin(angle), 0.0);
+    secondaryDirections.row(face) =
+        Eigen::RowVector3d(-std::sin(angle), std::cos(angle), 0.0);
+  }
+
+  directional::PCFaceTangentBundle bundle;
+  bundle.init(mesh);
+  directional::CartesianField rawField;
+  rawField.init(bundle, directional::fieldTypeEnum::RAW_FIELD,
+                directional::fields::kCrossFieldDegree);
+  ASSERT_NO_THROW(rawField.set_extrinsic_field(
+      directional::fields::make_raw_cross_field(
+          mesh, primaryDirections, secondaryDirections)));
+  ASSERT_NO_THROW(field = directional::fields::finalize_cross_field_result(
+                      rawField, false, true));
+  ASSERT_TRUE(field.matchingComputed);
+  ASSERT_TRUE(field.singularitiesComputed);
+  std::vector<int> interiorSingularities;
+  for (Eigen::Index row = 0; row < field.singularCycles.size(); ++row) {
+    const int vertex = field.singularCycles(row);
+    if (mesh.isBoundaryVertex(vertex) == 0) interiorSingularities.push_back(vertex);
+  }
+  ASSERT_EQ(std::vector<int>{kCp3aCenterVertex}, interiorSingularities);
+}
+
+std::set<SourceEdgeTopologyKey> cp4c_trace_crossed_edges(
+    const FieldAlignedCurveNetwork &network) {
+  std::set<SourceEdgeTopologyKey> crossed;
+  const auto zero = directional::authority::FieldExactRational::from_integer(0);
+  const auto one = directional::authority::FieldExactRational::from_integer(1);
+  const auto record = [&](const directional::authority::FieldBoundaryPoint &point) {
+    if (point.parameter.value > zero && point.parameter.value < one)
+      crossed.insert(point.edge);
+  };
+  for (const auto &trace : network.candidate_traces()) {
+    for (const auto &segment : trace.segments) {
+      if (segment.incomingCarrier.has_value()) record(segment.entryPoint);
+      if (segment.edgeTransitExit.has_value()) record(*segment.edgeTransitExit);
+    }
+    if (trace.terminalPoint.has_value()) record(*trace.terminalPoint);
+  }
+  return crossed;
+}
+
+struct Cp4cTraceCrossedCutFixture {
+  TriMesh mesh;
+  CrossFieldResult field;
+  std::set<SourceEdgeTopologyKey> hardFeatures;
+  std::set<SourceEdgeTopologyKey> baselineTraceCrossed;
+  std::optional<SourceTopologyRegions> sourceAuthority;
+  std::optional<directional::authority::FieldTransportAtlas> atlas;
+  std::vector<SurfaceCellRail> rails;
+  std::optional<FieldAlignedCurveNetwork> network;
+};
+
+Cp4cTraceCrossedCutFixture build_cp4c_trace_crossed_cut_fixture() {
+  Cp4cTraceCrossedCutFixture fixture;
+  fixture.mesh = make_cp4c_three_ring_skew_disc();
+  make_cp4c_three_ring_index_one_field(fixture.mesh, fixture.field);
+
+  const auto baselineAuthority = make_source_authority(fixture.mesh);
+  EXPECT_TRUE(baselineAuthority.has_value());
+  if (!baselineAuthority.has_value()) return fixture;
+  auto baselineAtlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *baselineAuthority, {}, fixture.field);
+  EXPECT_TRUE(baselineAtlas);
+  if (!baselineAtlas) return fixture;
+  const auto baselineRails = rails_from_atlas(fixture.mesh, baselineAtlas.value());
+  auto baselineNetwork = FieldAlignedCurveNetwork::make(
+      fixture.mesh, *baselineAuthority, baselineAtlas.value(), baselineRails);
+  EXPECT_TRUE(baselineNetwork);
+  if (!baselineNetwork) return fixture;
+  fixture.baselineTraceCrossed = cp4c_trace_crossed_edges(baselineNetwork.value());
+  EXPECT_FALSE(fixture.baselineTraceCrossed.empty());
+
+  // Pick one all-interior source triangle whose boundary the baseline traces do
+  // not touch. Promoting its three edges to hard features creates a disconnected
+  // interior cycle, so the actual graph is non-cellular until A2a' connects it
+  // to the surrounding graph. Trace-crossed edges elsewhere remain admissible.
+  for (int face = kCp3aRingSize; face < 3 * kCp3aRingSize; ++face) {
+    std::set<SourceEdgeTopologyKey> candidate;
+    bool valid = true;
+    for (int local = 0; local < 3; ++local) {
+      const int first = fixture.mesh.F(face, local);
+      const int second = fixture.mesh.F(face, (local + 1) % 3);
+      const auto edge = SourceEdgeTopologyKey::from_indices(
+          first, second, static_cast<std::size_t>(fixture.mesh.V.rows()));
+      if (!edge.has_value()) {
+        valid = false;
+        break;
+      }
+      const auto edgeKey = edge.value();
+      const int edgeIndex = source_edge_index(fixture.mesh, edgeKey);
+      if (edgeIndex < 0 || fixture.mesh.EF(edgeIndex, 1) < 0 ||
+          fixture.baselineTraceCrossed.count(edgeKey) != 0U) {
+        valid = false;
+        break;
+      }
+      candidate.insert(edgeKey);
+    }
+    if (valid && candidate.size() == 3U) {
+      fixture.hardFeatures = std::move(candidate);
+      break;
+    }
+  }
+  EXPECT_EQ(3U, fixture.hardFeatures.size());
+  if (fixture.hardFeatures.size() != 3U) return fixture;
+
+  fixture.sourceAuthority = make_source_authority(fixture.mesh, fixture.hardFeatures);
+  EXPECT_TRUE(fixture.sourceAuthority.has_value());
+  if (!fixture.sourceAuthority.has_value()) return fixture;
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      fixture.mesh, *fixture.sourceAuthority, fixture.hardFeatures, fixture.field);
+  EXPECT_TRUE(atlas);
+  if (!atlas) return fixture;
+  fixture.atlas = atlas.value();
+  fixture.rails = rails_from_atlas(fixture.mesh, *fixture.atlas);
+  auto network = FieldAlignedCurveNetwork::make(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails);
+  EXPECT_TRUE(network);
+  if (network) fixture.network = network.value();
+  return fixture;
+}
+
 } // namespace
 
 TEST(FieldAlignedCurveNetwork, PublishesTypedFirstContactAndTerminationEvents) {
@@ -2085,6 +2278,32 @@ ordered_mandatory_cycle(const directional::geometry::GlobalTopologyPlan &plan) {
   return result;
 }
 
+Eigen::MatrixXd read_cp4c_rawfield(const std::filesystem::path &path,
+                                   const int expectedFaces) {
+  std::ifstream stream(path);
+  if (!stream) {
+    throw std::runtime_error("Failed to open rawfield fixture: " +
+                             path.string());
+  }
+  int degree = 0;
+  int faceCount = 0;
+  if (!(stream >> degree >> faceCount) || degree != 4 ||
+      faceCount != expectedFaces) {
+    throw std::runtime_error("Invalid rawfield fixture header: " +
+                             path.string());
+  }
+  Eigen::MatrixXd raw(faceCount, 3 * degree);
+  for (int face = 0; face < faceCount; ++face) {
+    for (int column = 0; column < raw.cols(); ++column) {
+      if (!(stream >> raw(face, column))) {
+        throw std::runtime_error("Invalid rawfield fixture payload: " +
+                                 path.string());
+      }
+    }
+  }
+  return raw;
+}
+
 } // namespace
 
 TEST(SurfaceCutGraph, AlreadyCellularNetworkPublishesEmptyCertifiedCutSet) {
@@ -2117,26 +2336,48 @@ TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
   TriMesh baseline;
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/torus.obj");
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.rawfield");
   ASSERT_TRUE(directional::readOBJ(meshPath.string(), baseline));
   ASSERT_TRUE(baseline.boundaryLoops.empty());
   ASSERT_EQ(0, baseline.eulerChar);
+  const Eigen::MatrixXd baselineRaw =
+      read_cp4c_rawfield(fieldPath, baseline.F.rows());
 
-  const auto build = [](const TriMesh &mesh) {
+  const auto build = [](const TriMesh &mesh, const Eigen::MatrixXd &raw) {
     const auto authority = make_source_authority(mesh);
-    EXPECT_TRUE(authority.has_value());
+    if (!authority.has_value()) {
+      ADD_FAILURE() << "torus source authority unavailable";
+      return directional::geometry::SurfaceCutGraphBuildResult(
+          directional::geometry::SurfaceCutGraphError{});
+    }
+    const CrossFieldResult field =
+        directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
     auto atlas = directional::authority::FieldTransportAtlas::make(
-        mesh, *authority, {}, make_zero_transport_field(mesh));
-    EXPECT_TRUE(atlas);
+        mesh, *authority, {}, field);
+    if (!atlas) {
+      ADD_FAILURE() << "production torus atlas failed;code="
+                    << directional::authority::field_atlas_build_error_code_name(
+                           atlas.error().code);
+      return directional::geometry::SurfaceCutGraphBuildResult(
+          directional::geometry::SurfaceCutGraphError{});
+    }
     const auto rails = rails_from_atlas(mesh, atlas.value());
     auto network = FieldAlignedCurveNetwork::make(
         mesh, *authority, atlas.value(), rails);
-    EXPECT_TRUE(network);
+    if (!network) {
+      ADD_FAILURE() << "production torus network failed;code="
+                    << directional::geometry::field_aligned_curve_network_error_code_name(
+                           network.error().code);
+      return directional::geometry::SurfaceCutGraphBuildResult(
+          directional::geometry::SurfaceCutGraphError{});
+    }
     return directional::geometry::SurfaceCutGraph::make(
         mesh.F, static_cast<std::size_t>(mesh.V.rows()), *authority,
         atlas.value(), network.value());
   };
 
-  auto baselineCutGraph = build(baseline);
+  auto baselineCutGraph = build(baseline, baselineRaw);
   ASSERT_TRUE(baselineCutGraph);
   ASSERT_FALSE(baselineCutGraph.value().cut_edges().empty());
   ASSERT_TRUE(baselineCutGraph.value().certificate().proves_cellularity());
@@ -2146,9 +2387,14 @@ TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
        ++first, --last) {
     reorderedFaces.row(first).swap(reorderedFaces.row(last));
   }
+  Eigen::MatrixXd reorderedRaw = baselineRaw;
+  for (int first = 0, last = reorderedRaw.rows() - 1; first < last;
+       ++first, --last) {
+    reorderedRaw.row(first).swap(reorderedRaw.row(last));
+  }
   TriMesh reordered;
   reordered.set_mesh(baseline.V, reorderedFaces);
-  auto reorderedCutGraph = build(reordered);
+  auto reorderedCutGraph = build(reordered, reorderedRaw);
   ASSERT_TRUE(reorderedCutGraph);
 
   EXPECT_EQ(baselineCutGraph.value().cut_edges(),
@@ -2214,10 +2460,18 @@ TEST(SurfaceCutGraph,
   ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
-  const CrossFieldResult baselineField = make_zero_transport_field(mesh);
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.rawfield");
+  const Eigen::MatrixXd raw = read_cp4c_rawfield(fieldPath, mesh.F.rows());
+  const CrossFieldResult baselineField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
   auto baselineAtlas = directional::authority::FieldTransportAtlas::make(
       mesh, *sourceAuthority, {}, baselineField);
-  ASSERT_TRUE(baselineAtlas);
+  if (!baselineAtlas) {
+    FAIL() << "production torus atlas failed;code="
+           << directional::authority::field_atlas_build_error_code_name(
+                  baselineAtlas.error().code);
+  }
   const auto baselineRails = rails_from_atlas(mesh, baselineAtlas.value());
   const FieldAlignedCurveNetwork baselineNetwork = build_network(
       mesh, *sourceAuthority, baselineAtlas.value(), baselineRails);
@@ -2251,6 +2505,137 @@ TEST(SurfaceCutGraph,
             << " provenance_baseline=" << baselineCutGraph.value().provenance_digest()
             << " provenance_relabeled="
             << relabeledCutGraph.value().provenance_digest() << '\n';
+}
+
+TEST(SurfaceCutGraph, TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs) {
+  const Cp4cTraceCrossedCutFixture fixture =
+      build_cp4c_trace_crossed_cut_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  ASSERT_FALSE(fixture.network->candidate_traces().empty());
+  const auto actualTraceCrossed = cp4c_trace_crossed_edges(*fixture.network);
+  ASSERT_FALSE(actualTraceCrossed.empty())
+      << "AG5 witness must retain at least one exact trace/source-edge crossing";
+
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  ASSERT_TRUE(cutGraph)
+      << directional::geometry::surface_cut_graph_error_code_name(
+             cutGraph.error().code);
+  ASSERT_TRUE(cutGraph.value().certificate().proves_cellularity());
+
+  std::set<SourceEdgeTopologyKey> selectedTraceCrossed;
+  for (const auto &evidence : cutGraph.value().certificate().cutCandidates) {
+    if (evidence.selected &&
+        evidence.classification ==
+            directional::geometry::SurfaceCutCandidateClass::TraceInteriorCrossing) {
+      selectedTraceCrossed.insert(evidence.sourceEdge);
+    }
+  }
+  ASSERT_FALSE(selectedTraceCrossed.empty())
+      << "runtime precondition: the constructed non-disc witness must actually "
+         "require Amendment-14 trace-crossed promotion";
+
+  const auto plan = build_topology_plan(
+      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  std::set<directional::authority::NetworkNodeId> networkNodes;
+  for (const auto &node : fixture.network->nodes()) networkNodes.insert(node.id);
+
+  bool foundSubdividedCrossing = false;
+  for (const auto &rotation : plan.rotation_system()) {
+    if (networkNodes.count(rotation.node) != 0U) continue;
+    std::size_t cutRayCount = 0U;
+    std::size_t traceRayCount = 0U;
+    std::optional<SourceEdgeTopologyKey> cutEdge;
+    for (const auto &arc : plan.arcs()) {
+      if (arc.firstNode != rotation.node && arc.secondNode != rotation.node)
+        continue;
+      if (arc.kind == directional::geometry::GlobalTopologyArcKind::Cut) {
+        ++cutRayCount;
+        if (arc.cutEdge.has_value()) cutEdge = arc.cutEdge;
+      } else if (arc.kind ==
+                 directional::geometry::GlobalTopologyArcKind::Trace) {
+        ++traceRayCount;
+      }
+    }
+    if (cutRayCount == 2U && traceRayCount == 2U && cutEdge.has_value() &&
+        selectedTraceCrossed.count(*cutEdge) != 0U) {
+      foundSubdividedCrossing = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(foundSubdividedCrossing)
+      << "a selected trace-crossed source edge must subdivide both the cut "
+         "edge and the immutable trace in the derived arrangement";
+}
+
+TEST(SurfaceCutGraph, CutCrossingNodeRotationIsDerivedAtDegreeFour) {
+  const Cp4cTraceCrossedCutFixture fixture =
+      build_cp4c_trace_crossed_cut_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  ASSERT_TRUE(cutGraph);
+  const auto plan = directional::geometry::GlobalTopologyPlan::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.network, cutGraph.value());
+  ASSERT_TRUE(plan)
+      << directional::geometry::global_topology_plan_error_code_name(
+             plan.error().code);
+
+  std::set<directional::authority::NetworkNodeId> networkNodes;
+  for (const auto &node : fixture.network->nodes()) networkNodes.insert(node.id);
+  bool foundDegreeFourCrossing = false;
+  for (const auto &rotation : plan.value().rotation_system()) {
+    if (networkNodes.count(rotation.node) != 0U ||
+        rotation.counterClockwise.size() != 4U)
+      continue;
+    std::size_t cutRayCount = 0U;
+    std::size_t traceRayCount = 0U;
+    for (const auto &arc : plan.value().arcs()) {
+      if (arc.firstNode != rotation.node && arc.secondNode != rotation.node)
+        continue;
+      cutRayCount += static_cast<std::size_t>(
+          arc.kind == directional::geometry::GlobalTopologyArcKind::Cut);
+      traceRayCount += static_cast<std::size_t>(
+          arc.kind == directional::geometry::GlobalTopologyArcKind::Trace);
+    }
+    if (cutRayCount == 2U && traceRayCount == 2U) {
+      foundDegreeFourCrossing = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(foundDegreeFourCrossing)
+      << "AG2 must derive the two-Cut/two-Trace four-sector rotation at an "
+         "edge-interior crossing node";
+}
+
+TEST(SurfaceCutGraph, CutSetSaturationProvesCellularityWhenSearchIsExhausted) {
+  const Cp4cTraceCrossedCutFixture fixture =
+      build_cp4c_trace_crossed_cut_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  ASSERT_TRUE(cutGraph)
+      << directional::geometry::surface_cut_graph_error_code_name(
+             cutGraph.error().code);
+  const auto &certificate = cutGraph.value().certificate();
+  EXPECT_TRUE(certificate.saturationUsed)
+      << "AG5 witness must exhaust the conservative proposal heuristic so the "
+         "published saturation last resort is exercised";
+  EXPECT_TRUE(certificate.saturationLocus.has_value());
+  EXPECT_GT(certificate.saturationPromotedEdgeCount, 0U);
+  EXPECT_TRUE(certificate.proves_cellularity())
+      << "saturation is not authority: the actual embedded-graph certificate "
+         "must still independently prove cellularity";
 }
 
 TEST(GlobalTopologyPlan, DerivesRegionsAsFacesOfTheEmbeddedNetworkGraph) {
@@ -2780,31 +3165,7 @@ struct Cp4cProductionFixture {
   std::string loadError;
 };
 
-Eigen::MatrixXd read_cp4c_rawfield(const std::filesystem::path &path,
-                                   const int expectedFaces) {
-  std::ifstream stream(path);
-  if (!stream) {
-    throw std::runtime_error("Failed to open rawfield fixture: " +
-                             path.string());
-  }
-  int degree = 0;
-  int faceCount = 0;
-  if (!(stream >> degree >> faceCount) || degree != 4 ||
-      faceCount != expectedFaces) {
-    throw std::runtime_error("Invalid rawfield fixture header: " +
-                             path.string());
-  }
-  Eigen::MatrixXd raw(faceCount, 3 * degree);
-  for (int face = 0; face < faceCount; ++face) {
-    for (int column = 0; column < raw.cols(); ++column) {
-      if (!(stream >> raw(face, column))) {
-        throw std::runtime_error("Invalid rawfield fixture payload: " +
-                                 path.string());
-      }
-    }
-  }
-  return raw;
-}
+
 
 directional::pipeline::RemeshOptions cp4c_remesh_options() {
   directional::pipeline::RemeshOptions options;
@@ -4086,7 +4447,14 @@ Cp4cReachabilityObservation observe_cp4c_witness(
     report << ";furthestStage=field-aligned-network;failedStage=surface-cut-graph"
            << ";surfaceCutGraphError="
            << directional::geometry::surface_cut_graph_error_code_name(
-                  cutGraphBuild.error().code);
+                  cutGraphBuild.error().code)
+           << ";originatingTopologyError=";
+    if (cutGraphBuild.error().originatingTopologyError.has_value()) {
+      report << directional::geometry::global_topology_plan_error_code_name(
+                    *cutGraphBuild.error().originatingTopologyError);
+    } else {
+      report << "none";
+    }
     observation.report = report.str();
     return observation;
   }
@@ -5316,6 +5684,8 @@ std::optional<std::vector<Cp4cOracleFragment>> cp4c_oracle_fragments(
 struct Cp4cActualGraphCutEvidence {
   SourceEdgeTopologyKey sourceEdge;
   std::string classification;
+  std::size_t crossingNodeCount = 0U;
+  std::size_t cutArcCount = 0U;
 };
 
 struct Cp4cActualGraphFragmentOrbit {
@@ -5335,9 +5705,61 @@ struct Cp4cActualEmbeddedGraphOracle {
   int disconnectedComponentCorrection = 0;
   int eulerCharacteristic = 0;
   int sourceEulerCharacteristic = 0;
+  std::size_t cutCrossingNodeCount = 0U;
+  std::size_t cutCrossingArcCount = 0U;
+  bool traceEndpointsAttached = false;
+  bool noDegreeZeroNodes = false;
   std::vector<Cp4cActualGraphCutEvidence> cutEvidence;
   std::vector<Cp4cActualGraphFragmentOrbit> fragmentOrbits;
+  std::vector<IndependentComplementComponentTopology> components;
 };
+
+struct Cp4cIndependentCutCrossing {
+  SourceEdgeTopologyKey sourceEdge;
+  directional::authority::TraceId trace;
+  std::size_t segmentPosition = 0U;
+  directional::authority::ExactUnitParameter parameter;
+};
+
+std::optional<std::vector<Cp4cIndependentCutCrossing>>
+cp4c_independent_cut_crossings(
+    const FieldAlignedCurveNetwork &network,
+    const std::vector<SourceEdgeTopologyKey> &cutEdges) {
+  const std::set<SourceEdgeTopologyKey> selected(cutEdges.begin(), cutEdges.end());
+  const auto zero = Cp4cOracleRational::from_integer(0);
+  const auto one = Cp4cOracleRational::from_integer(1);
+  std::map<SourceEdgeTopologyKey,
+           std::map<directional::authority::ExactUnitParameter,
+                    directional::authority::TraceId>>
+      traceAtPoint;
+  std::vector<Cp4cIndependentCutCrossing> result;
+  for (const auto &trace : network.candidate_traces()) {
+    for (std::size_t position = 0U; position < trace.segments.size(); ++position) {
+      const auto &segment = trace.segments[position];
+      if (!segment.incomingCarrier.has_value() ||
+          selected.count(*segment.incomingCarrier) == 0U) {
+        continue;
+      }
+      if (segment.entryPoint.edge != *segment.incomingCarrier) return std::nullopt;
+      if (!(segment.entryPoint.parameter.value > zero &&
+            segment.entryPoint.parameter.value < one)) {
+        continue;
+      }
+      auto &byPoint = traceAtPoint[*segment.incomingCarrier];
+      const auto duplicate = byPoint.find(segment.entryPoint.parameter);
+      if (duplicate != byPoint.end()) return std::nullopt;
+      byPoint.emplace(segment.entryPoint.parameter, trace.id);
+      result.push_back(Cp4cIndependentCutCrossing{
+          *segment.incomingCarrier, trace.id, position,
+          segment.entryPoint.parameter});
+    }
+  }
+  std::sort(result.begin(), result.end(), [](const auto &lhs, const auto &rhs) {
+    return std::tie(lhs.sourceEdge, lhs.parameter, lhs.trace, lhs.segmentPosition) <
+           std::tie(rhs.sourceEdge, rhs.parameter, rhs.trace, rhs.segmentPosition);
+  });
+  return result;
+}
 
 std::set<SourceEdgeTopologyKey> cp4c_actual_trace_crossed_edges(
     const FieldAlignedCurveNetwork &network) {
@@ -5435,6 +5857,8 @@ cp4c_independent_actual_embedded_graph_oracle(
     const std::vector<SourceEdgeTopologyKey> &cutEdges) {
   const auto topology = independent_source_topology(mesh);
   if (!topology.has_value()) return std::nullopt;
+  const auto cutCrossings = cp4c_independent_cut_crossings(network, cutEdges);
+  if (!cutCrossings.has_value()) return std::nullopt;
   const auto fragments = cp4c_oracle_fragments(mesh, network, cutEdges);
   if (!fragments.has_value() || fragments->empty()) return std::nullopt;
 
@@ -5478,8 +5902,14 @@ cp4c_independent_actual_embedded_graph_oracle(
                                                           : *secondParameter;
       const auto high = *firstParameter < *secondParameter ? *secondParameter
                                                            : *firstParameter;
+      const std::size_t nextEdgeIndex =
+          (edgeIndex + 1U) % fragment.vertices.size();
+      const std::size_t lowCorner =
+          *firstParameter < *secondParameter ? edgeIndex : nextEdgeIndex;
+      const std::size_t highCorner =
+          *firstParameter < *secondParameter ? nextEdgeIndex : edgeIndex;
       seams[Cp4cOracleSeamKey{*fragmentEdge.sourceEdge, low, high}].push_back(
-          Cp4cOracleSeamIncidence{fragmentIndex, edgeIndex, 0U, 0U});
+          Cp4cOracleSeamIncidence{fragmentIndex, edgeIndex, lowCorner, highCorner});
     }
   }
   for (const auto &[key, incidences] : seams) {
@@ -5505,6 +5935,125 @@ cp4c_independent_actual_embedded_graph_oracle(
   }
   oracle.faceCount = orbitByRoot.size();
 
+  // Compute topology of each actual complement component directly from the
+  // independently reconstructed polygon fragments.  This is the per-component
+  // evidence AG3 needs; it does not call SurfaceCutGraph or the shared embedded
+  // graph authority.
+  std::vector<std::size_t> cornerOffset(fragments->size() + 1U, 0U);
+  for (std::size_t fragmentIndex = 0U; fragmentIndex < fragments->size();
+       ++fragmentIndex) {
+    cornerOffset[fragmentIndex + 1U] =
+        cornerOffset[fragmentIndex] + (*fragments)[fragmentIndex].vertices.size();
+  }
+  std::vector<std::size_t> cornerParent(cornerOffset.back());
+  std::iota(cornerParent.begin(), cornerParent.end(), 0U);
+  const auto corner_root = [&](const auto &self, std::size_t value) -> std::size_t {
+    return cornerParent[value] == value ? value : self(self, cornerParent[value]);
+  };
+  const auto corner_unite = [&](std::size_t first, std::size_t second) {
+    first = corner_root(corner_root, first);
+    second = corner_root(corner_root, second);
+    if (first == second) return;
+    if (first < second) cornerParent[second] = first;
+    else cornerParent[first] = second;
+  };
+  for (const auto &[key, incidences] : seams) {
+    (void)key;
+    if (incidences.size() != 2U) continue;
+    const auto &first = incidences[0];
+    const auto &second = incidences[1];
+    corner_unite(cornerOffset[first.fragment] + first.lowCorner,
+                 cornerOffset[second.fragment] + second.lowCorner);
+    corner_unite(cornerOffset[first.fragment] + first.highCorner,
+                 cornerOffset[second.fragment] + second.highCorner);
+  }
+
+  std::map<std::size_t, std::vector<std::size_t>> fragmentsByRoot;
+  for (std::size_t fragmentIndex = 0U; fragmentIndex < fragments->size();
+       ++fragmentIndex) {
+    fragmentsByRoot[fragment_root(fragment_root, fragmentIndex)].push_back(
+        fragmentIndex);
+  }
+  for (const auto &[componentRoot, componentFragments] : fragmentsByRoot) {
+    (void)componentRoot;
+    std::set<std::size_t> members(componentFragments.begin(),
+                                  componentFragments.end());
+    std::set<std::size_t> vertices;
+    std::size_t edgeCopies = 0U;
+    for (const auto fragmentIndex : componentFragments) {
+      const auto &fragment = (*fragments)[fragmentIndex];
+      edgeCopies += fragment.edges.size();
+      for (std::size_t corner = 0U; corner < fragment.vertices.size(); ++corner) {
+        vertices.insert(corner_root(
+            corner_root, cornerOffset[fragmentIndex] + corner));
+      }
+    }
+    std::size_t gluedEdgePairs = 0U;
+    std::set<std::pair<std::size_t, std::size_t>> gluedLocalEdges;
+    for (const auto &[key, incidences] : seams) {
+      (void)key;
+      if (incidences.size() != 2U ||
+          members.count(incidences[0].fragment) == 0U)
+        continue;
+      ++gluedEdgePairs;
+      gluedLocalEdges.insert({incidences[0].fragment, incidences[0].edge});
+      gluedLocalEdges.insert({incidences[1].fragment, incidences[1].edge});
+    }
+
+    std::map<std::size_t, std::multiset<std::size_t>> boundaryAdjacency;
+    std::size_t boundaryEdgeCopies = 0U;
+    for (const auto fragmentIndex : componentFragments) {
+      const auto &fragment = (*fragments)[fragmentIndex];
+      for (std::size_t edgeIndex = 0U; edgeIndex < fragment.edges.size();
+           ++edgeIndex) {
+        if (gluedLocalEdges.count({fragmentIndex, edgeIndex}) != 0U) continue;
+        const std::size_t first = corner_root(
+            corner_root, cornerOffset[fragmentIndex] + edgeIndex);
+        const std::size_t second = corner_root(
+            corner_root, cornerOffset[fragmentIndex] +
+                             (edgeIndex + 1U) % fragment.vertices.size());
+        if (first == second) return std::nullopt;
+        boundaryAdjacency[first].insert(second);
+        boundaryAdjacency[second].insert(first);
+        ++boundaryEdgeCopies;
+      }
+    }
+    bool boundaryCyclesValid = boundaryEdgeCopies != 0U;
+    for (const auto &[vertex, adjacent] : boundaryAdjacency) {
+      (void)vertex;
+      if (adjacent.size() != 2U) boundaryCyclesValid = false;
+    }
+    std::size_t boundaryWalkCount = 0U;
+    if (boundaryCyclesValid) {
+      std::set<std::size_t> visited;
+      for (const auto &[start, adjacent] : boundaryAdjacency) {
+        (void)adjacent;
+        if (visited.count(start) != 0U) continue;
+        ++boundaryWalkCount;
+        std::vector<std::size_t> stack{start};
+        while (!stack.empty()) {
+          const auto current = stack.back();
+          stack.pop_back();
+          if (!visited.insert(current).second) continue;
+          for (const auto next : boundaryAdjacency.at(current)) {
+            if (visited.count(next) == 0U) stack.push_back(next);
+          }
+        }
+      }
+    }
+    IndependentComplementComponentTopology component;
+    component.faceCount = componentFragments.size();
+    component.vertexCount = vertices.size();
+    component.edgeCount = edgeCopies - gluedEdgePairs;
+    component.boundaryWalkCount = boundaryWalkCount;
+    component.eulerCharacteristic =
+        static_cast<int>(component.vertexCount) -
+        static_cast<int>(component.edgeCount) +
+        static_cast<int>(component.faceCount);
+    component.boundaryCyclesValid = boundaryCyclesValid;
+    oracle.components.push_back(component);
+  }
+
   const auto boundaryLoops = cp4c_actual_source_boundary_loops(*topology);
   if (!boundaryLoops.has_value()) return std::nullopt;
   oracle.excludedBoundaryOrbitCount = *boundaryLoops;
@@ -5527,9 +6076,15 @@ cp4c_independent_actual_embedded_graph_oracle(
     if (sourceNode.count(edge.first()) == 0U) syntheticCutVertices.insert(edge.first());
     if (sourceNode.count(edge.second()) == 0U) syntheticCutVertices.insert(edge.second());
   }
-  oracle.vertexCount = network.nodes().size() + syntheticCutVertices.size();
+  oracle.cutCrossingNodeCount = cutCrossings->size();
+  oracle.vertexCount = network.nodes().size() + syntheticCutVertices.size() +
+                       oracle.cutCrossingNodeCount;
   const auto networkEdges = cp4c_oracle_network_edge_accounting(network);
-  oracle.edgeCount = networkEdges.total() + cutEdges.size();
+  oracle.cutCrossingArcCount = cutEdges.size() + cutCrossings->size();
+  // Every cut-created crossing subdivides both the selected source-edge cut
+  // and the traversing trace once.
+  oracle.edgeCount = networkEdges.total() + oracle.cutCrossingArcCount +
+                     cutCrossings->size();
 
   const std::size_t graphNodeCount = oracle.vertexCount;
   std::vector<std::size_t> graphParent(graphNodeCount);
@@ -5551,6 +6106,15 @@ cp4c_independent_actual_embedded_graph_oracle(
   std::size_t syntheticIndex = network.nodes().size();
   for (const auto vertex : syntheticCutVertices) {
     graphIndexBySourceVertex.emplace(vertex, syntheticIndex++);
+  }
+  struct OracleCrossingNode {
+    Cp4cIndependentCutCrossing crossing;
+    std::size_t graphIndex = 0U;
+  };
+  std::vector<OracleCrossingNode> crossingNodes;
+  crossingNodes.reserve(cutCrossings->size());
+  for (const auto &crossing : *cutCrossings) {
+    crossingNodes.push_back(OracleCrossingNode{crossing, syntheticIndex++});
   }
   for (const auto &mandatory : network.mandatory_edges()) {
     graph_unite(mandatory.firstNode.index(), mandatory.secondNode.index());
@@ -5575,6 +6139,11 @@ cp4c_independent_actual_embedded_graph_oracle(
     if (!traceNodes.empty()) {
       const auto first = *traceNodes.begin();
       for (const auto node : traceNodes) graph_unite(first, node);
+      for (const auto &crossing : crossingNodes) {
+        if (crossing.crossing.trace == trace.id) {
+          graph_unite(first, crossing.graphIndex);
+        }
+      }
     }
   }
   for (const auto &edge : cutEdges) {
@@ -5583,6 +6152,11 @@ cp4c_independent_actual_embedded_graph_oracle(
     if (first == graphIndexBySourceVertex.end() ||
         second == graphIndexBySourceVertex.end()) return std::nullopt;
     graph_unite(first->second, second->second);
+    for (const auto &crossing : crossingNodes) {
+      if (crossing.crossing.sourceEdge == edge) {
+        graph_unite(first->second, crossing.graphIndex);
+      }
+    }
   }
   std::set<std::size_t> graphRoots;
   for (std::size_t node = 0U; node < graphNodeCount; ++node) {
@@ -5596,6 +6170,40 @@ cp4c_independent_actual_embedded_graph_oracle(
       static_cast<int>(oracle.vertexCount) - static_cast<int>(oracle.edgeCount) +
       static_cast<int>(oracle.faceCount) - oracle.disconnectedComponentCorrection;
 
+  std::set<directional::authority::NetworkNodeId> attachedNetworkNodes;
+  for (const auto &edge : network.mandatory_edges()) {
+    attachedNetworkNodes.insert(edge.firstNode);
+    attachedNetworkNodes.insert(edge.secondNode);
+  }
+  for (const auto &port : network.singularity_ports())
+    attachedNetworkNodes.insert(port.node);
+  for (const auto &event : network.events()) {
+    if (!event.incidences.empty()) attachedNetworkNodes.insert(event.node);
+  }
+  oracle.noDegreeZeroNodes = std::all_of(
+      network.nodes().begin(), network.nodes().end(), [&](const auto &node) {
+        return attachedNetworkNodes.count(node.id) != 0U;
+      });
+  oracle.traceEndpointsAttached = std::all_of(
+      network.candidate_traces().begin(), network.candidate_traces().end(),
+      [&](const auto &trace) {
+        const bool originAttached = std::any_of(
+            network.singularity_ports().begin(), network.singularity_ports().end(),
+            [&](const auto &port) { return port.id == trace.port; });
+        const bool terminalAttached = std::any_of(
+            network.events().begin(), network.events().end(),
+            [&](const auto &event) {
+              return std::any_of(
+                  event.incidences.begin(), event.incidences.end(),
+                  [&](const auto &incidence) {
+                    return incidence.trace == trace.id &&
+                           incidence.role ==
+                               directional::geometry::FieldAlignedTraceEventRole::Terminal;
+                  });
+            });
+        return originAttached && terminalAttached;
+      });
+
   std::set<SourceEdgeTopologyKey> mandatory;
   for (const auto &edge : network.mandatory_edges()) mandatory.insert(edge.sourceEdge);
   const auto traceCrossed = cp4c_actual_trace_crossed_edges(network);
@@ -5603,7 +6211,11 @@ cp4c_independent_actual_embedded_graph_oracle(
     std::string classification = "admissible";
     if (mandatory.count(edge) != 0U) classification = "mandatoryAlreadyPresent";
     else if (traceCrossed.count(edge) != 0U) classification = "traceInteriorCrossing";
-    oracle.cutEvidence.push_back({edge, classification});
+    const std::size_t crossingCount = static_cast<std::size_t>(std::count_if(
+        cutCrossings->begin(), cutCrossings->end(),
+        [&](const auto &crossing) { return crossing.sourceEdge == edge; }));
+    oracle.cutEvidence.push_back(
+        {edge, classification, crossingCount, crossingCount + 1U});
   }
   return oracle;
 }
@@ -5626,7 +6238,13 @@ std::string cp4c_actual_embedded_graph_oracle_report(
          << ";s=" << oracle.sourceComponentCount
          << ";correction=" << oracle.disconnectedComponentCorrection
          << ";chi=" << oracle.eulerCharacteristic
-         << ";sourceChi=" << oracle.sourceEulerCharacteristic;
+         << ";sourceChi=" << oracle.sourceEulerCharacteristic
+         << ";cutCrossingNodes=" << oracle.cutCrossingNodeCount
+         << ";cutCrossingArcs=" << oracle.cutCrossingArcCount
+         << ";traceEndpointsAttached="
+         << (oracle.traceEndpointsAttached ? "true" : "false")
+         << ";noDegreeZeroNodes="
+         << (oracle.noDegreeZeroNodes ? "true" : "false");
   if (producer != nullptr) {
     report << ";producerComplex="
            << directional::geometry::surface_cut_graph_complex_kind_name(
@@ -5655,11 +6273,23 @@ std::string cp4c_actual_embedded_graph_oracle_report(
   } else {
     report << ";producerComplex=unavailable";
   }
+  for (std::size_t index = 0U; index < oracle.components.size(); ++index) {
+    const auto &component = oracle.components[index];
+    report << ";component[" << index << "]={fragments="
+           << component.faceCount << ",V=" << component.vertexCount
+           << ",E=" << component.edgeCount
+           << ",boundaryWalks=" << component.boundaryWalkCount
+           << ",chi=" << component.eulerCharacteristic
+           << ",boundaryCyclesValid="
+           << (component.boundaryCyclesValid ? "true" : "false") << '}';
+  }
   for (std::size_t index = 0U; index < oracle.cutEvidence.size(); ++index) {
     report << ";cut[" << index << "]={edge="
            << oracle.cutEvidence[index].sourceEdge.first().index() << '-'
            << oracle.cutEvidence[index].sourceEdge.second().index()
-           << ",class=" << oracle.cutEvidence[index].classification << '}';
+           << ",class=" << oracle.cutEvidence[index].classification
+           << ",crossingNodes=" << oracle.cutEvidence[index].crossingNodeCount
+           << ",cutArcs=" << oracle.cutEvidence[index].cutArcCount << '}';
   }
   for (std::size_t index = 0U; index < oracle.fragmentOrbits.size(); ++index) {
     const auto &fragment = oracle.fragmentOrbits[index];
@@ -6136,7 +6766,7 @@ std::string cp4c_network_only_failure_report(
   return report.str();
 }
 
-std::optional<Cp4cProducerRederivation> cp4c_producer_rederivation(
+std::optional<Cp4cProducerRederivation> cp4c_withdrawn_barrier_proxy_diagnostic(
     const TriMesh &mesh, const FieldAlignedCurveNetwork &network) {
   const auto topology = independent_source_topology(mesh);
   if (!topology.has_value()) return std::nullopt;
@@ -6170,7 +6800,7 @@ std::optional<Cp4cProducerRederivation> cp4c_producer_rederivation(
       const auto componentCuts = cp4c_producer_tree_cotree_cuts(
           *topology, component.sourceFaces, barriers);
       if (!componentCuts.has_value() || componentCuts->empty()) {
-        result.localizedSite = "419-initial-nondisc-no-cuts";
+        result.localizedSite = "proposal-initial-nondisc-no-cuts";
         result.errorSourceFace = component.sourceFaces.front();
         return result;
       }
@@ -6187,7 +6817,7 @@ std::optional<Cp4cProducerRederivation> cp4c_producer_rederivation(
         cp4c_producer_component_topology(*topology, component, barriers);
     if (!componentTopology.has_value() ||
         !componentTopology->proves_disc_topology()) {
-      result.localizedSite = "437-final-nondisc";
+      result.localizedSite = "proposal-final-nondisc";
       if (!component.empty()) result.errorSourceFace = component.front();
       return result;
     }
@@ -6222,7 +6852,7 @@ std::optional<Cp4cProducerRederivation> cp4c_producer_rederivation(
       static_cast<int>(result.faceCount);
   if (result.faceCount == 0U ||
       result.eulerCharacteristic != result.sourceEulerCharacteristic) {
-    result.localizedSite = "474-global-certificate";
+    result.localizedSite = "proposal-global-certificate";
   }
   return result;
 }
@@ -6565,7 +7195,7 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
       fixture.mesh, *fixture.network);
   ASSERT_TRUE(oracle.has_value());
   const auto producer =
-      cp4c_producer_rederivation(fixture.mesh, *fixture.network);
+      cp4c_withdrawn_barrier_proxy_diagnostic(fixture.mesh, *fixture.network);
   ASSERT_TRUE(producer.has_value());
 
   const std::size_t oracleDiscCount = static_cast<std::size_t>(std::count_if(
@@ -6597,33 +7227,12 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
   const std::size_t producerFinalNonDiscCount =
       producer->finalComponents.size() - producerFinalDiscCount;
   const bool producerGlobalCountsReached =
-      producer->localizedSite == "474-global-certificate" ||
+      producer->localizedSite == "proposal-global-certificate" ||
       producer->localizedSite == "none";
 
   auto cutGraphBuild = directional::geometry::SurfaceCutGraph::make(
       fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
       *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
-
-  std::string publishedLocusClass = "none";
-  bool localizationConsistent = false;
-  if (cutGraphBuild) {
-    localizationConsistent = producer->localizedSite == "none";
-  } else if (cutGraphBuild.error().code !=
-             directional::geometry::SurfaceCutGraphErrorCode::
-                 CellularityNotEstablished) {
-    publishedLocusClass = "non-cellularity-error";
-    localizationConsistent = false;
-  } else if (!cutGraphBuild.error().sourceFace.has_value()) {
-    publishedLocusClass = "474-global-certificate";
-    localizationConsistent =
-        producer->localizedSite == "474-global-certificate";
-  } else {
-    publishedLocusClass = "419-or-437-source-face-locus";
-    localizationConsistent =
-        producer->errorSourceFace == cutGraphBuild.error().sourceFace &&
-        (producer->localizedSite == "419-initial-nondisc-no-cuts" ||
-         producer->localizedSite == "437-final-nondisc");
-  }
 
   std::ostringstream report;
   report << "m3Cp4c2Y2"
@@ -6652,7 +7261,7 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
          << (oracle->oracleSelfConsistent ? "true" : "false")
          << ";oracleNetworkOnlyCellular="
          << (oracle->networkOnlyCellular ? "true" : "false")
-         << ";producerRederivationSite=" << producer->localizedSite
+         << ";withdrawnBarrierProxySite=" << producer->localizedSite
          << ";producerInitialComponents=" << producer->initialComponents.size()
          << ";producerInitialDiscComponents=" << producerInitialDiscCount
          << ";producerInitialNonDiscComponents=" << producerInitialNonDiscCount
@@ -6695,10 +7304,8 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
     report << ";surfaceCutGraphStatus=success"
            << ";surfaceCutGraphError=none"
            << ";errorSourceFace=none"
-           << ";publishedLocusClass=none"
-           << ";localizedSite=" << producer->localizedSite
-           << ";localizationConsistent="
-           << (localizationConsistent ? "true" : "false")
+           << ";originatingTopologyError=none"
+           << ";withdrawnBarrierProxySite=" << producer->localizedSite
            << ";cutEdgeCount=" << cutGraphBuild.value().cut_edges().size()
            << ";certificateV=" << certificate.vertexCount
            << ";certificateE=" << certificate.edgeCount
@@ -6717,10 +7324,14 @@ TEST(GlobalTopologyPlan, Cp4c2CutGraphFailureLocalizationIsObservable) {
     } else {
       report << "none";
     }
-    report << ";publishedLocusClass=" << publishedLocusClass
-           << ";localizedSite=" << producer->localizedSite
-           << ";localizationConsistent="
-           << (localizationConsistent ? "true" : "false");
+    report << ";originatingTopologyError=";
+    if (error.originatingTopologyError.has_value()) {
+      report << directional::geometry::global_topology_plan_error_code_name(
+                    *error.originatingTopologyError);
+    } else {
+      report << "none";
+    }
+    report << ";withdrawnBarrierProxySite=" << producer->localizedSite;
   }
 
   for (std::size_t index = 0U; index < producer->initialComponents.size();
@@ -6831,6 +7442,12 @@ TEST(GlobalTopologyPlan, RotationSystemAndFaceWalkAgreeOnProducedWitnesses) {
   const auto &mechanical = cp4c_mechanical_fixture();
   ASSERT_NO_FATAL_FAILURE(assert_cp4c_mechanical_preconditions(mechanical));
   ASSERT_NO_FATAL_FAILURE(expect_rotation_face_walk_agreement(mechanical));
+}
+
+TEST(GlobalTopologyPlan, RotationSystemAndFaceWalkAgreeOnTorusProducedWitness) {
+  const auto &torus = cp4c_torus_fixture();
+  ASSERT_NO_FATAL_FAILURE(assert_cp4c_torus_preconditions(torus));
+  ASSERT_NO_FATAL_FAILURE(expect_rotation_face_walk_agreement(torus));
 }
 
 

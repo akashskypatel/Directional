@@ -41,10 +41,29 @@ struct SourceTopologyIndex {
       incidentFacesByVertex;
 };
 
-/** Binding from exact source vertices to existing or cut-created graph nodes. */
+/** Semantic identity of a cut-created node where one trace crosses a cut edge. */
+struct CutCrossingKey {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  authority::TraceId trace;
+  std::size_t segmentPosition = 0U;
+
+  auto operator<=>(const CutCrossingKey &) const = default;
+};
+
+struct CutCrossingBinding {
+  CutCrossingKey key;
+  authority::ExactUnitParameter parameter;
+  authority::NetworkNodeId node;
+
+  auto operator<=>(const CutCrossingBinding &) const = default;
+};
+
+/** Binding from exact source loci to existing or cut-created graph nodes. */
 struct CutNodeBindings {
   std::map<authority::SourceVertexId, authority::NetworkNodeId> nodeByVertex;
   std::map<authority::NetworkNodeId, authority::SourceVertexId> syntheticVertices;
+  std::map<CutCrossingKey, CutCrossingBinding> crossingByKey;
+  std::map<authority::NetworkNodeId, CutCrossingBinding> syntheticCrossings;
   std::size_t combinedNodeExtent = 0U;
 };
 

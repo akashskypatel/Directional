@@ -6610,11 +6610,17 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         *sourceTopologyRegionsProduct, *fieldTransportAtlasProduct,
         *fieldAlignedNetworkProduct);
     if (!surfaceCutGraphBuild) {
+      std::string detail = std::string("surface-cut-graph/") +
+          geometry::surface_cut_graph_error_code_name(
+              surfaceCutGraphBuild.error().code);
+      if (surfaceCutGraphBuild.error().originatingTopologyError.has_value()) {
+        detail += "/origin=";
+        detail += geometry::global_topology_plan_error_code_name(
+            *surfaceCutGraphBuild.error().originatingTopologyError);
+      }
       return fail_surface_cells(
           SurfaceCellFailureCode::NotProductionReady,
-          std::string("surface-cut-graph/") +
-              geometry::surface_cut_graph_error_code_name(
-                  surfaceCutGraphBuild.error().code));
+          std::move(detail));
     }
     surfaceCutGraphProduct = std::move(surfaceCutGraphBuild.value());
     result.surfaceCellContext.productSnapshots.surfaceCutGraph =

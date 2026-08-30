@@ -23,6 +23,8 @@
 
 namespace directional::geometry {
 
+enum class GlobalTopologyPlanErrorCode : std::uint8_t;
+
 enum class SurfaceCutGraphComplexKind : std::uint8_t {
   ActualEmbeddedGraph = 0,
 };
@@ -71,6 +73,9 @@ struct SurfaceCutGraphCellularityCertificate {
   int disconnectedComponentCorrection = 0;
   int eulerCharacteristic = 0;
   int sourceEulerCharacteristic = 0;
+  bool saturationUsed = false;
+  std::optional<authority::SourceFaceTopologyKey> saturationLocus;
+  std::size_t saturationPromotedEdgeCount = 0U;
   std::vector<SurfaceCutGraphFaceCertificate> faces;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
   [[nodiscard]] bool proves_cellularity() const noexcept;
@@ -83,13 +88,16 @@ enum class SurfaceCutGraphErrorCode : std::uint8_t {
   InvalidNetworkBinding = 2,
   NonManifoldSource = 3,
   CellularityNotEstablished = 4,
-  NoAdmissibleCutForNonDiscComponent = 5,
+  CutSearchExhaustedBeforeCellularity = 5,
 };
 
 struct SurfaceCutGraphError {
   SurfaceCutGraphErrorCode code = SurfaceCutGraphErrorCode::InvalidSourceBinding;
   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
   std::optional<authority::SourceFaceTopologyKey> sourceFace;
+  std::optional<GlobalTopologyPlanErrorCode> originatingTopologyError;
+  std::size_t nonDiscComponentCount = 0U;
+  std::size_t remainingAdmissibleEdgeCount = 0U;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
   auto operator<=>(const SurfaceCutGraphError &) const = default;
 };
