@@ -1,3 +1,0 @@
-purpose=consolidate M3_CP4c historical records
-semantic_source_sha=4a4d5f8d0dea3ff4021a7c7b14cfbebd43d174cb
-requested_by=ChatGPT Web
