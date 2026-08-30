@@ -39,7 +39,7 @@ jobs:
       - name: Checkout exact semantic source
         uses: actions/checkout@v4
         with:
-          ref: 014c7f7f8d6984518cf5c81156a10d3e06298349
+          ref: 48dd011c4aa689a245b74527ed9df0900ada9bf3
           fetch-depth: 1
           submodules: false
 
@@ -77,6 +77,6 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 014c7f7f8d6984518cf5c81156a10d3e06298349
+      source_sha: 48dd011c4aa689a245b74527ed9df0900ada9bf3
       artifact_prefix: m3-cp4c3-cb1
     secrets: inherit
