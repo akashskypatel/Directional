@@ -1,4 +1,0 @@
-M3-CP4c-2-TB-X2-R10-EXEC closeout schema validation
-payload=.agents/Directional/turn-payloads/M3-CP4c-2-R10-closeout-drive.yml
-patch_sha256=98233b601c6246c3b0c98711b1f3d9f873f111d03c2abbd509dddd694c7e7e6e
-base_sha=f5be26c16da7217af03a6dd04a421466ea7fea27

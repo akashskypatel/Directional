@@ -1,5 +1,0 @@
-M3-CP4c-2-TB-X2-R10-EXEC
-artifact_id=9736088354
-artifact_sha256=78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf
-semantic_source=57444781af7bdc460e38cc68930a9a8c8199eeea
-payload_blob=f3acec0ede3ab43c65f207d6529bca34068fc4ea
