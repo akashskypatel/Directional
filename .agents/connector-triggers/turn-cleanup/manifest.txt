@@ -1,5 +1,8 @@
-# M3-CP4c-2-CB9 final temporary-state cleanup
+# M3-CP4c-2-CB9 final temporary-state cleanup retry 1
 .agents/Directional/turn-payloads/m3-cp4c2-cb9-compile-draft.yml
+.agents/Directional/turn-payloads/m3-cp4c2-cb9-drive-apply-draft.yml
 .agents/connector-triggers/m3-cp4c2-cb9-compile-20260830.txt
-.agents/connector-triggers/m3-cp4c2-cb9-schema-validate-20260830.txt
 .agents/connector-triggers/m3-cp4c2-cb9-docs-apply-20260830.txt
+.agents/connector-triggers/m3-cp4c2-cb9-drive-apply-20260830.txt
+.agents/connector-triggers/m3-cp4c2-cb9-schema-validate-20260830.txt
+.agents/connector-triggers/source-snapshot/start-session-20260830-0947.txt
