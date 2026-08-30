@@ -89,14 +89,38 @@ jobs:
             echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           } | tee -a "$log"
 
-      - name: Checkout exact source with submodules
+      - name: Checkout exact source
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.source_ref != '' && inputs.source_ref || github.sha }}
           fetch-depth: 1
-          submodules: recursive
+          submodules: false
           lfs: false
           token: ${{ secrets.GH_TOKEN || github.token }}
+
+      - name: Initialize submodules with Eigen backup mirror
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/agent-source-snapshot.log"
+          exec > >(tee -a "$log") 2>&1
+          git submodule sync --recursive
+          if git submodule update --init --force --depth=1 --recursive; then
+            echo "eigen_submodule_transport=canonical"
+          else
+            backup_url="$(git config -f .gitmodules --get submodule.external/eigen.backupUrl)"
+            test -n "$backup_url"
+            echo "canonical submodule update failed; retrying Eigen via backup mirror: $backup_url"
+            rm -rf external/eigen .git/modules/external/eigen
+            git config submodule.external/eigen.url "$backup_url"
+            git submodule update --init --force --depth=1 --recursive
+            echo "eigen_submodule_transport=backup"
+          fi
+          expected_eigen="$(git ls-tree HEAD external/eigen | awk '{print $3}')"
+          actual_eigen="$(git -C external/eigen rev-parse HEAD)"
+          echo "eigen_expected=$expected_eigen"
+          echo "eigen_actual=$actual_eigen"
+          test "$actual_eigen" = "$expected_eigen"
 
       - name: Verify source authority
         id: metadata
