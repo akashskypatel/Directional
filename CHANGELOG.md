@@ -1,3 +1,23 @@
+## 2026-08-30 — `M3-CP4c-2-CB8`: closed-witness authority correction build green
+
+CB8 is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Semantic/test source
+`05f9ef299ee54f8c9d50318fc9a37e5a5503740d` corrects ordinals 359/361 to consume one production feature authority,
+adds closed-witness non-vacuity guards, and replaces the fabricated default-error sentinel with typed stage failures.
+AH1's retained R8 evidence contained no `ADD_FAILURE` lines and proved the former zero-node/zero-arc witness reached
+`SurfaceCutGraph::make`; because its real code/origin was not printed, CB8 records active non-gating product question
+`M3-CP4c2-TB-X2-R8-CAND-02` and does not widen into a product fix.
+
+Authoritative GMP package **66** is artifact `9726295440` (`sha256:1017a2f40829c171a0ec066b16e1f9f5436588f5e2376742e340ce1617d2556f`),
+source archive `ec9b9b7929521e3f2cd1df4e21beb2f01012f97ff1907ffbf5ae2b35334fd20c`, run/job
+`33292137782 / 99205507393`. The build transport used the verified GitHub Eigen mirror at exact gitlink `769c72fd…`
+after GitLab load failure; canonical `.gitmodules` was restored. All eight standard targets linked with GMP/GMPXX,
+manifest 28/28, and no Directional executable ran. An earlier caller permission startup failure and one GitLab
+checkout failure produced no semantic/build package evidence.
+
+Selector 365 remains byte-frozen at `6b5b6555…14b8a1` with unchanged 355/357/361 prefixes. Stable accounting remains
+**44 / 14 / 30**, debt **5**, packages **66**. Exact next is artifact-only `M3-CP4c-2-TB-X2-R9-EXEC` on package
+`9726295440`, from ordinal 1, with AH6 mandatory if ordinals 363–365 are reached. No benchmark is frozen for R9.
+
 ## 2026-08-30 — `M3-CP4c-2-CB7`: Amendment 14 build green, selector 365 frozen
 
 CB7 is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Semantic source `4f0f3ca74a88ba260a20c019437bc4995f2056e0`

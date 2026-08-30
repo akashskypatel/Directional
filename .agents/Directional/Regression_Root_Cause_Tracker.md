@@ -4,14 +4,15 @@
 - **Input state:** R8-REV's static derivation remains authoritative: the closed torus atlas was built with no hard-feature edges, `rails_from_atlas(...)` was empty, and the zero-singularity torus therefore supplied a zero-node / zero-arc network to A2a′.
 - **Product question:** on a closed surface with an empty network, A2a′ should either (a) establish cellularity by selecting source-edge cuts from scratch, or (b) reject with a typed error that explicitly names the empty-network condition. Current retained evidence proves only failure, not which contract is correct.
 - **CB8 disposition (AH7):** **do not fix or widen scope.** AH2 removes this input state from gated ordinals 359/361 by reconstructing their local atlas/network from the production feature authority. No selector identity depends on zero-arc behavior after that correction. Bring this candidate to the next definition or independent-review turn.
-- **Stable-count rationale:** the behavior was exposed by an unaccepted, newly gated witness and no accepted-green behavior was lost. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, M3 packages **65**.
+- **Stable-count rationale:** the behavior was exposed by an unaccepted, newly gated witness and no accepted-green behavior was lost. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
 
 ## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **ACTIVE / WITNESS-CONSTRUCTION / AUTHORITY-SURFACE MISMATCH / GATING / NON-STABLE**
 
 - **Observed:** authoritative R8 run/job `33288495471 / 99195869180` re-proves accepted 355/355 and passes ordinals 356-358, then ordinal 359 `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` selects once and fails at `FieldAlignedCurveNetworkTests.cpp:2381`, `ASSERT_TRUE(baselineCutGraph)`, before any invariance comparison. Frozen hard stop leaves 360-365 unexecuted.
 - **Mechanism:** the test now consumes committed `torus.rawfield`, but still constructs rails with test-local `rails_from_atlas(...)`. The passing production torus path (ordinal 356) consumes pipeline-published `authoritativeRails` and reports `networkV=48`, `networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`. CB7 AF3 therefore migrated field authority but not the rail-authority surface. Ordinal 361 contains the same residual local construction and was correctly not run.
 - **Disposition:** continuation/recurrence of R7-CAND-01; independent R8 review owns the bounded correction and must preserve the frozen hard-stop evidence. This is not product enumeration-invariance evidence because the comparison was never reached.
-- **Stable-count rationale:** ordinal 359 is newly gated and had never been accepted; inherited 355 remains green. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, M3 packages **65**.
+- **Stable-count rationale:** ordinal 359 is newly gated and had never been accepted; inherited 355 remains green. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
+- **CB8 code/build disposition:** semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d` corrects both 359 and 361 to consume the production feature authority; immutable package `9726295440` is BUILD GREEN / runtime-free. This record remains **ACTIVE** until a valid R9 run reaches ordinal 361 with both 359 and 361 green.
 - **R8-REV adjudication — CONFIRMED as a witness defect, and the mechanism is fourfold, not single.** Full record:
   `Architecture_M3_CP4c2_TB_X2_R8_Independent_Review_Record.md` §2.
   - `make_source_authority(mesh)` (`tests/FieldAlignedCurveNetworkTests.cpp:181-191`) supplies **no** authoritative
@@ -2082,8 +2083,16 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Latest accepted runtime remains CP4ab **316/316**. Current CP4c-1 build authority is semantic source `2888dbdcf5aaf27fd629a5d29cbd57bc7d63e4f0`, immutable package `9553525746` (`44a2754c674b232b1327e4feef636d374d6fac0b5573212ec184eb7cf3ab35c8`).
+Latest accepted runtime authority remains CP4c-1 **355/355**. Latest CP4c-2 semantic runtime is R8 run/job
+`33288495471 / 99195869180`: inherited 355/355 PASS, ordinals 356-358 PASS, first red at 359; 360-365 not run.
 
-Authoritative `M3-CP4c-1-TB-R2` run/job `32851859581 / 97814494564` is **VALID RED 316/318**: accepted prefix 316/316 PASS, C4/C5 0/2, three non-gating diagnostics, 321 fresh processes, zero orchestration errors, every mutation/build flag false. Result/control artifacts are `9564681836 / 9564682452`, SHA-256 `2febb8c314323009853a5cbdcaa8cd1000692f886654da2fba7039173a987df0 / d990338a12c40770fe33a0ef66a55456d74430dadca153643867ffc62e0f44a7`. Stable totals remain **42 / 14 / 28**, debt **5**, M3 packages **38**.
+Current immutable CP4c-2 build authority is CB8 semantic/test source
+`05f9ef299ee54f8c9d50318fc9a37e5a5503740d`, GMP package **66** artifact `9726295440`
+(`1017a2f40829c171a0ec066b16e1f9f5436588f5e2376742e340ce1617d2556f`), packaged source
+`ec9b9b7929521e3f2cd1df4e21beb2f01012f97ff1907ffbf5ae2b35334fd20c`, compile run/job
+`33292137782 / 99205507393`, runtime-free. Stable totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
 
-Exact next is independent `M3-CP4c-1-TB-R2-REVIEW-PLAN`, review/planning only. No runtime retry, semantic mutation, or CB is authorized before review.
+Exact next is artifact-only `M3-CP4c-2-TB-X2-R9-EXEC` under
+`Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md`. Run selector 365 from ordinal 1 with the
+frozen first-semantic-red hard stop, no benchmark, and AH6 if ordinals 363-365 are reached. No rebuild/repair or
+source/test/fixture/selector mutation is authorized.

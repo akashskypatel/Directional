@@ -2,9 +2,9 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. CB7 implemented DEFN-R2 Amendment 14 plus deferred AF0/AF2/AF3/AF4 and froze selector **365**; R8 then executed that gate on package `9724864897`, re-proved the inherited **355/355**, passed ordinals 356-358, and stopped red at ordinal **359**. R8-REV adjudicated that red as a **two-identity witness defect** (ordinals 359 and 361 build a closed-torus witness from a vacuous rail set), not a product defect, and issued **AH0-AH9**. Criteria **C1** and **C6** are green on the produced torus. Exact next is **`M3-CP4c-2-CB8`**. CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. CB8 corrected the two R8 witness-construction identities without product changes and is **BUILD GREEN / RUNTIME-FREE** at semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d`. Immutable GMP package **66** is artifact `9726295440` (`1017a2f4…2556f`), built on run/job `33292137782 / 99205507393`. Selector **365** is byte-frozen and unchanged. Exact next is artifact-only **`M3-CP4c-2-TB-X2-R9-EXEC`** from ordinal 1; AH6 is mandatory if ordinals 363-365 are reached. CP4c-3 remains blocked.
 
-Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **65**. `selected_r2_branch=NONE`; gate **365** is the frozen authority and was executed red in R8; `gate_execution_authorized=false` at closeout.
+Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **66**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false` at closeout.
 
 ## 1. Current separate authority
 
@@ -17,9 +17,12 @@ These files remain separate because they are still required by current or future
 - `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` — frozen prefix authority retained for lineage.
 - `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — current CP4c-2 required-green authority; unexecuted.
 - `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — current report-only TB surface.
-- `Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — current immutable build/package authority.
+- `Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — current immutable build/package 66 authority.
+- `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — current frozen artifact-only execution plan.
+- `Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — retained predecessor Amendment-14 build authority.
 - `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — retained predecessor package authority for R7 lineage.
-- `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — latest current runtime evidence.
+- `Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md` — latest current runtime evidence.
+- `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — retained predecessor runtime lineage.
 - `Architecture_M3_CP4c2_CB6_Code_Build_Report.md` — immediate AF1 definition-stop predecessor.
 
 The authoritative architecture is also carried by `DESIGN.md` §7.2/§7.2.1; regression/status facts remain in `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -167,11 +170,13 @@ Read, in order after the durable start-of-turn checklist:
 1. `ORIENTATION.md`
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c2_CB7_Code_Build_Report.md`
-5. `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md`
-6. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — only the still-binding sections identified by R2
-7. `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md`
-8. `Regression_Root_Cause_Tracker.md`
+4. `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md`
+5. `Architecture_M3_CP4c2_CB8_Code_Build_Report.md`
+6. `Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md`
+7. `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md`
+8. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — only still-binding sections identified by R2
+9. `Regression_Root_Cause_Tracker.md`
 
-**Exact next:** `M3-CP4c-2-TB-X2-R8-EXEC`, artifact-only on immutable GMP package `9724864897`. Do not rebuild or
-repair in TB. Selector 365 remains unselected/unexecuted until the R8 authorization boundary is recorded.
+**Exact next:** `M3-CP4c-2-TB-X2-R9-EXEC`, artifact-only on immutable GMP package `9726295440`. Do not rebuild,
+repair, chmod, regenerate discovery, mutate source/tests/fixtures/selectors, or execute benchmarks. Run selector 365
+from ordinal 1 with the frozen first-red hard stop and AH6 when 363-365 are reached.

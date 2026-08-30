@@ -84,116 +84,95 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-CB8` — correct exactly two test identities
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R9-EXEC` — immutable artifact-only selector 365
 
-`M3-CP4c-2-TB-X2-R8-REV` is **COMPLETE**:
-`Architecture_M3_CP4c2_TB_X2_R8_Independent_Review_Record.md`. Measures **AH0–AH9**.
+`M3-CP4c-2-CB8` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**:
+`Architecture_M3_CP4c2_CB8_Code_Build_Report.md`.
 
-### What R8 proved — do not re-derive any of this
+### CB8 result — do not re-implement
 
-- Inherited accepted prefix **355/355 PASS** on immutable CB7 package `9724864897` (run/job
-  `33288495471 / 99195869180`), plus ordinals 356, 357, 358. Postflight immutable-green, all mutation flags false.
-- **The torus is done.** Ordinal 356: `networkV=48`, `networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`;
-  independent oracle `V/E/F = 72/76/4`. `76 − 48 = 28` equals the producer's cut-edge count, so producer and oracle
-  agree term for term. Criteria **C1** and **C6** hold on the produced torus.
-- **AF0 printed the sphere's real origin:** `originatingTopologyError=RotationSystemInconsistent`, source face
-  `25-27-28`, `producerCutEdgeCount=0`. The sphere fails **before** cut selection; Amendment 14 does not explain it.
-- AF2's repaired D2 executes; AG3's `traceEndpointsAttached` and `noDegreeZeroNodes` hold on all three witnesses,
-  so DEFN-R2 §5.2's completeness premises are runtime-verified; AF6 was honoured.
+- Semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d` changes no product implementation source.
+- Ordinals 359 and 361 now reconstruct local cut-graph authority from one production feature authority: authoritative
+  rails, derived hard-feature edges, component labels, and sheet labels. Face permutations also permute the per-face
+  labels; vertex-keyed rails/hard-feature edges remain invariant.
+- Closed-witness rail non-vacuity is self-checking, and the fabricated default-constructed cut-graph error sentinel
+  was replaced by typed stage outcomes.
+- AH1 used retained R8 artifact `9725240893` only: ordinal 359 emitted **no `ADD_FAILURE` lines** and reached
+  `SurfaceCutGraph::make(...)`, which failed on the former zero-node/zero-arc input. R8 did not print the real error
+  code/origin, so CB8 records `M3-CP4c2-TB-X2-R8-CAND-02` and does not invent a product diagnosis.
+- Selector 365 and its 355/357/361 prefixes are byte-identical to CB7.
 
-### The red, and why it is narrow
+### Immutable package 66
 
-`SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` (ordinal 359) fails at
-`tests/FieldAlignedCurveNetworkTests.cpp:2381` before any comparison. `make_source_authority(mesh)` supplies **none**
-of the four production feature products — no `authoritativeRails`, no hard-feature edges, all-zero
-`sourceFaceComponents` and `sourceFaceSheets` — and `rails_from_atlas` then keeps only `SourceBoundary` and
-`HardFeature` edges, of which a **closed** torus with no declared features has neither. The rail set is **empty by
-construction**; the network is empty.
+- package artifact `9726295440`
+- outer SHA-256 `1017a2f40829c171a0ec066b16e1f9f5436588f5e2376742e340ce1617d2556f`
+- packaged source archive SHA-256 `ec9b9b7929521e3f2cd1df4e21beb2f01012f97ff1907ffbf5ae2b35334fd20c`
+- compile run/job `33292137782 / 99205507393`
+- exact Eigen gitlink `769c72fd8019e389810d1de1e7c243521a43b594`
+- all eight standard targets linked with GMP/GMPXX; internal manifest **28/28 PASS**
+- `runtimeExecution=false`; no test, benchmark, gate, or generated Directional executable ran.
 
-R8's own split is the proof: ordinal 358 uses the identical construction on the **bounded** `make_square_mesh` and
-passes; 359 is the only one executed on a **closed** witness. Ordinal 361 shares it. **Scope is ordinals 359 and
-361 only** — 356/357/362 use the production fixture, 363–365 thread features correctly. Record:
-`M3-CP4c2-TB-X2-R8-CAND-01`, which **supersedes** `R7-CAND-01`.
+The successful build used a temporary GitHub Eigen mirror at the same gitlink after GitLab returned a load error;
+canonical `.gitmodules` was restored afterward. Earlier permission-startup and GitLab-checkout failures are
+orchestration-only and produced no semantic package evidence.
 
-`rails_from_atlas` is not the defect. It is correct when the atlas was built with the features first — exactly what
-CB7's own `build_cp4c_trace_crossed_cut_fixture` (`:1426-1491`) and `observe_cp4c_witness` (`:4391-4403`) do.
+### R9 execution contract
 
-### CB8 scope — AH0–AH9
+Follow `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` exactly:
 
-1. **AH1 first, no build.** Read the ordinal-359 process stdout/stderr from retained result artifact `9725240893`
-   and publish every `ADD_FAILURE` line verbatim. The lambda's non-fatal failures plus a **default-constructed**
-   `SurfaceCutGraphError` sentinel funnel atlas / network / cut-graph failures into one fatal `ASSERT_TRUE`, so the
-   reported locus identifies none of them. No new runtime.
-2. **AH2** rebuild ordinals 359 and 361 on one production feature authority: take `products.authoritativeRails` and
-   `hard_feature_edge_keys_from_rails(rails, |V|)`, set `SurfaceCellTracingOptions.authoritativeRails`,
-   `.hardFeatureEdges`, and the **permuted** `.sourceFaceComponents` / `.sourceFaceSheets`, then
-   `build_source_topology_regions` and `FieldTransportAtlas::make(..., hardFeatures, ...)`. Follow
-   `observe_cp4c_witness`. `SourceEdgeTopologyKey` is vertex-keyed, so rails and hard features are **invariant**
-   under face-row reordering — only the per-face label vectors need permuting, by the reversal the test already
-   applies to `F` and the raw-field rows.
-3. **AH3** do **not** re-run the whole pipeline per ordering. Considered and rejected: it would couple A2a′'s gate
-   to upstream enumeration invariance and destroy the red's locality.
-4. **AH4** add a closed-witness runtime precondition — `if (mesh.boundaryLoops.empty()) ASSERT_FALSE(rails.empty())`
-   — to ordinals 358–361 and the AG5 fixture, in the CP3a style.
-5. **AH5** remove the sentinel; return a typed result naming the failing stage with **that stage's own** error.
-   **Prohibited:** printing `cutGraph.error().code` at line 2381 while the sentinel remains — a default-constructed
-   error reads as `InvalidSourceBinding` and would emit a fabricated locus.
-6. **AH6** binds the TB: when 363–365 first run, publish whether trace-crossed edges were selected by the ordinary
-   tree–cotree path or only under saturation; if only under saturation, a second witness is owed.
-7. **AH7** if AH1 shows the cut graph itself failed on an *empty* network, record a new candidate — do **not**
-   widen CB8.
-8. **AH8** CB8 must not absorb: the sphere's `RotationSystemInconsistent` fix, any new gate identity, any selector
-   byte, any change to `topology_error`'s mapping or an error enum value, a whole-pipeline invariance identity, a
-   benchmark, or `gate_execution_authorized=true`.
-9. **AH9** bookkeeping; the TB after CB8 re-runs gate 365 **from ordinal 1** and still honours AF6.
-
-### Still unexecuted after the hard stop
-
-Ordinals 360 (two-ring digest split as a gate), 361 (closed-witness digest split — `PR8-R044`'s fix is runtime-proved
-on **one** witness only), 362 (**criterion C3, deferred a seventh time**), 363–365 (Amendment 14's subdivision, the
-degree-four edge-locus rotation, and the saturation last resort). **Measure `AD3` is unresolved for a third turn**;
-ordinal 359 is its only falsifier. Compiled-but-unexecuted authority is debt wearing a green label.
+1. immutable package/source/GMP/mode/manifest/selector preflight; no repair, chmod, configure, compile, relink, or
+   generated discovery;
+2. run the frozen sphere publisher, AF2 D2, and AG3 actual-graph oracle once each as non-gating fresh processes;
+3. execute selector 365 **from ordinal 1**, one fresh process per identity, with first-semantic-red hard stop;
+4. inherited accepted prefix must re-prove **355/355**;
+5. `R8-CAND-01` closes only if **359 and 361 both pass** in a valid run reaching 361;
+6. ordinal 362 owns criterion C3; 363-365 are Amendment 14's first runtime evidence;
+7. **AH6 is mandatory if 363-365 are reached:** publish whether the trace-crossed edge is selected by ordinary
+   tree-cotree proposal or saturation-only. Saturation-only creates a new non-stable coverage candidate and keeps
+   CP4c-2 open even if 365/365 is green; R9 does not add the owed second witness;
+8. no benchmark is frozen; `benchmarkExecution=false`;
+9. unconditional postflight and regression-tracker disposition for every red/materially new behavior.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 is **OPEN / runtime-unaccepted**. CB7 package `9724864897` is current build authority; R8 is the latest
-  semantic runtime evidence.
-- **Gate authority is selector 365**, whole-file SHA-256
-  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; its `head -355`, `head -357` and `head -361`
-  reproduce the accepted-355, candidate-357 and 361 hashes exactly. 357, 358 and 361 are retained lineage only.
-- Open candidates: `M3-CP4c2-TB-X2-R8-CAND-01` (ordinals 359/361, vacuous rail set) and
-  `M3-CP4c2-TB-X2-CAND-04` (the sphere: a producer `RotationSystemInconsistent` **and**, independently, a
-  non-cellular pre-cut graph `V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`). `R7-CAND-01` is superseded;
-  `R7-CAND-03` and `R8-ORCH-01` are closed. Live measure **AD3**.
+- CP4c-2 is **OPEN / runtime-unaccepted**. CB8 package `9726295440` is current immutable build authority; R8 remains
+  the latest semantic runtime evidence until R9 executes.
+- Gate authority is selector 365, whole-file SHA-256
+  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; frozen prefix hashes remain 355
+  `e9d88f11…5afeaa`, 357 `b896d0db…64dc70`, 361 `61918d9f…0288b`.
+- Open CP4c-2 candidates/debts: `R8-CAND-01` awaiting runtime proof of both corrected identities;
+  `R8-CAND-02` zero-node/zero-arc closed-surface product question; prescribed-sphere `CAND-04`; AH6 ordinary-path
+  coverage; criterion C3 at ordinal 362; AD3 at ordinal 359.
 - Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
-  packages **65**. `selected_r2_branch=NONE`; `gate_execution_authorized=false`.
-- **Exact next is `M3-CP4c-2-CB8`.**
+  packages **66**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
+- **Exact next is `M3-CP4c-2-TB-X2-R9-EXEC`.** CP4c-3 remains blocked.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/CODE_BUILD.md`, the GitHub/artifact capability module (AH1 must read
-  retained result artifact `9725240893`), and `GMP_COMPILE_POLICY.md`
+- turn-based-coding-agent `references/turns/TEST_BENCHMARK.md`, GitHub/artifact capability module, and immutable
+  artifact execution rules. Do not load Code+Build implementation guidance unless R9-REV later authorizes a CB.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — **read first**; current as of R8-REV. §6's closing paragraph explains the
-   vacuous-rail trap that produced this red; §7 items 1-3 are the live problems.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R8_Independent_Review_Record.md` — the authorizing review:
-   the fourfold mechanism, the two-ordinal blast radius, and measures **AH0–AH9** with their prohibitions.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md` — exact R8 runtime
-   result and artifact identities (AH1's source).
-3. `.agents/Directional/Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — current immutable build/package authority
-   and the AF/AG delivery record.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R8-CAND-01`, `CAND-04`, superseded `R7-CAND-01`,
-   live measure `AD3`.
-5. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14 and the completeness
-   theorem; read `…DEFN_R1…` only alongside it, since its §6 case 2 and §8 are superseded.
-6. `TODO.md` / `CHANGELOG.md` — current task and the lessons adopted at R8-REV (59, 60, 64z).
+0. `.agents/Directional/ORIENTATION.md` — read first; substance authority remains current from R8-REV.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — binding execution
+   order, hard stops, AH6, postflight, and evidence requirements.
+2. `.agents/Directional/Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — immutable package 66 and CB8 build boundary.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md` — latest runtime
+   authority and the 359 red that CB8 corrected.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R8-CAND-01`, `R8-CAND-02`, sphere `CAND-04`, stable
+   totals.
+5. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14/completeness contract;
+   read R1 only for sections R2 explicitly leaves binding.
+6. `.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt` and
+   `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — frozen runtime identities.
+7. `TODO.md` / `CHANGELOG.md` — current execution pointer and CB8 closeout.
 
-**This is a bounded CODE + BUILD over two test identities.** Honour AH8 exactly: no product source change is
-authorized by this review, and a compile-green result is not semantic acceptance.
+**This is immutable Test + Benchmark.** No rebuild, repair, source/test/fixture/selector mutation, generated discovery,
+or benchmark execution is authorized. R9 ends at independent `M3-CP4c-2-TB-X2-R9-REV`; it does not auto-close
+CP4c-2.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
