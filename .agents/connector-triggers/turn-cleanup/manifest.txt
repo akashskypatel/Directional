@@ -1,7 +1,0 @@
-# turn-cleanup manifest v1
-.agents/Directional/turn-payloads/M3-CP4c-2-R9-exec.py
-.agents/Directional/turn-payloads/M3-CP4c-2-R9-exec.yml
-.agents/connector-triggers/m3-cp4c2-r9-closeout-apply/trigger.txt
-.agents/connector-triggers/m3-cp4c2-r9-exec-schema/trigger.txt
-.agents/connector-triggers/m3-cp4c2-r9-exec/trigger.txt
-.agents/connector-triggers/source-snapshot/r9-start.txt
