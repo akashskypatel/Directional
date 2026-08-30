@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/m3-cp4c2-r9-exec-schema/**
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
