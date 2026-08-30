@@ -1,0 +1,46 @@
+name: M3 CP4c3 CB1 Apply Patch
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb1-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb1-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb1-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb1-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1VtJsJmjZgVfKlc0NPl5nDVT00O4k5MdF
+      patch_sha256: 29ebdf7a78c5429e5ef25f1ca9f59b3c792cd2ad991ef1a8c54d5a5278f4d043
+      base_sha: 61f997dd60e93c8f7490d23ce8a573a30c4c4368
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'M3-CP4c-3-CB1: add phase-1 provenance instrumentation'
+    secrets: inherit
