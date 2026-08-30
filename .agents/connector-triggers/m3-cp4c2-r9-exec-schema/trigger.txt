@@ -1,4 +1,4 @@
 turn=M3-CP4c-2-TB-X2-R9-EXEC
-purpose=validate executable-mode-preserving corrected R9 caller
+purpose=validate exact R9 closeout Drive apply caller draft
 runtimeExecution=false
-retry_reason=python_zipfile_extractall_dropped_artifact_executable_mode; switch to unzip extraction and exact Git-blob payload binding
+patch_sha256=6be7a1d00395c4eff2c2c8fa4a2bc59941d41c37e9d647237bc0dd94a2b4369b
