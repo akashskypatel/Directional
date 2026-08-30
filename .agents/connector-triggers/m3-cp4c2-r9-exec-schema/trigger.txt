@@ -1,3 +1,4 @@
 turn=M3-CP4c-2-TB-X2-R9-EXEC
-purpose=validate frozen R9 execution caller draft
+purpose=validate corrected frozen R9 execution caller draft
+correction=contents-write-required-by-reusable-observer
 runtimeExecution=false
