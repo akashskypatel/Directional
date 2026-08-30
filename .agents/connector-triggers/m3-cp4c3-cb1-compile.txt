@@ -1,5 +1,6 @@
 turn=M3-CP4c-3-CB1
-purpose=compile-only phase-1 instrumentation
-semantic_source_sha=014c7f7f8d6984518cf5c81156a10d3e06298349
+purpose=compile-only phase-1 instrumentation after compile-fix
+semantic_source_sha=48dd011c4aa689a245b74527ed9df0900ada9bf3
 selector367_sha256=ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf
+attempt=2
 runtimeExecution=false
