@@ -1,0 +1,4 @@
+turn=M3-CP4c-2-CB8
+purpose=validate exact patch-apply caller draft before activation
+retry=0
+runtimeExecution=false
