@@ -1,3 +1,0 @@
-purpose=validate corrected M3-CP4c-2-CB8 compile caller
-correction=contents-write-required-by-reusable-observer
-runtimeExecution=false

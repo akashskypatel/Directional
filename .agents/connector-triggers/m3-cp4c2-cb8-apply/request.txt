@@ -1,6 +1,0 @@
-turn=M3-CP4c-2-CB8
-purpose=apply verified test-and-tracker patch from Google Drive
-base_sha=666e8a3499cd69089ea0b963018236959aeca99c
-patch_sha256=e127a2ebd8f90f98a9df97124c6d6c74a7fc064024ed9e29f021ff7cf3dc70e3
-retry=0
-runtimeExecution=false
