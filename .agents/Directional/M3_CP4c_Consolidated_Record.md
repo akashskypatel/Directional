@@ -2,9 +2,9 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. R9-EXEC re-proved 355/355, passed 356-362, and hard-stopped at 363 with the first genuine product defect in this arc. R9-REV identified two stale Amendment-14 A2b consumers. **CB9 now corrects both and is BUILD GREEN / runtime-free** on semantic source `57444781af7bdc460e38cc68930a9a8c8199eeea` and immutable package **67**, artifact `9736088354` / `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`. The correction iterates all Cut sub-arcs, uses actual sub-arc endpoint `NodeLocus` authority for `boundaryVertices`, publishes AI2 fragment/orbit diagnostics, and fixes helper fall-through without widening the frozen representation or selector. Exact next is **`M3-CP4c-2-TB-X2-R10-EXEC`** on that immutable package; CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / review pending**. CB9 corrected both stale Amendment-14 A2b consumers on semantic source `57444781af7bdc460e38cc68930a9a8c8199eeea` and immutable package **67**, artifact `9736088354` / `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`. **R10-EXEC is execution-valid and 365/365 GREEN**: run/job `33331453506 / 99310594268`, result artifact `9737796927`, diagnostic artifact `9737797177`, immutable pre/postflight PASS, and no rebuild/repair/mutation/benchmark. AI2 and AH6 raw evidence were retained. Exact next is **`M3-CP4c-2-TB-X2-R10-REV`**; CP4c-3 remains blocked.
 
-Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **67**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false` at CB9 closeout.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, M3 packages **67** pending R10-REV disposition. `selected_r2_branch=NONE`.
 
 ## 1. Current separate authority
 
@@ -18,7 +18,8 @@ These files remain separate because they are still required by current or future
 - `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — current CP4c-2 required-green authority; R9 executed through first red at ordinal 363.
 - `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — current report-only TB surface.
 - `Architecture_M3_CP4c2_CB9_Code_Build_Report.md` — current immutable build/package 67 authority.
-- `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md` — current frozen artifact-only execution plan.
+- `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md` — frozen R10 execution/review contract.
+- `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Report.md` — latest runtime evidence; valid 365/365 GREEN execution pending review.
 - `Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — retained predecessor package 66 authority.
 - `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — retained predecessor executed plan.
 - `Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — retained predecessor Amendment-14 build authority.
@@ -79,7 +80,13 @@ R9-REV authorized AI0-AI9. CB9 first re-derived every product reader of `arc.cut
 
 Semantic/test source `57444781af7bdc460e38cc68930a9a8c8199eeea` converts region binding to iterate all derived Cut sub-arcs while preserving the canonical `cutEdge.first()→cutEdge.second()` orientation dependency and the existing interior-dart formula. It reuses one `NodeLocus` map so only actual source-vertex endpoints of each boundary sub-arc enter the skip list, and it publishes per-face `fragment_reconciliation` plus per-face/cut-edge orbit-cardinality diagnostics under `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`. The ordinal-359 semantic-digest rationale is annotated with its runtime falsifier and the two helper fall-throughs are stopped. No selector, sphere, crossing producer, enum, invariant, or benchmark scope changed.
 
-Compile-only run `33325344311`: changed-owner prepackage job `99294371782` compiled producer tests 105/105; package job `99294619815` compiled the eight standard targets with GMP/GMPXX and `runtimeExecution=false`. Immutable package 67 is artifact `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`, packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`, manifest 28/28 PASS. Runtime is intentionally unadjudicated until R10.
+Compile-only run `33325344311`: changed-owner prepackage job `99294371782` compiled producer tests 105/105; package job `99294619815` compiled the eight standard targets with GMP/GMPXX and `runtimeExecution=false`. Immutable package 67 is artifact `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`, packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`, manifest 28/28 PASS.
+
+### 3.0b R10 execution — valid 365/365 green evidence handoff
+
+Artifact-only run/job `33331453506 / 99310594268` consumed CB9 package `9736088354` without rebuild or repair. Immutable preflight and postflight passed. Three frozen non-gating diagnostics ran once each (**2 PASS / 1 RED**), accepted predecessor ordinals 1-355 re-proved **355/355**, and ordinals 356-365 all passed, yielding **365/365 GREEN** with no first red. Result artifact `9737796927` has SHA-256 `b02022367785d6a4790549ad127bff69f831404b6ea525f426b707794f71649b`; diagnostic artifact `9737797177` has SHA-256 `0a374b6b240877049eacfec2c70be944c39ce3cc4e5a6c461c358a1b206e78c8`.
+
+Ordinal 363 ran once with AI2 fragment diagnostics and retained 50 `fragment_reconciliation` plus 128 `cut_edge_orbit_evidence` rows. AH6 is applicable; the raw publication records no ordinary-proposal selection and `saturation_used=yes`, with exact selected edge/locus/promoted count not observable from the frozen output. EXEC records those facts only. R10-REV owns all interpretation, candidate/tracker disposition, and CP4c-2 acceptance eligibility.
 
 
 ### 3.1 Why A2a′ exists

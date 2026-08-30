@@ -84,67 +84,59 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R10-EXEC` — immutable artifact-only execution
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R10-REV` — independent evidence review
 
-`M3-CP4c-2-CB9` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Owning record:
-`Architecture_M3_CP4c2_CB9_Code_Build_Report.md`. Frozen execution plan:
+`M3-CP4c-2-TB-X2-R10-EXEC` is **COMPLETE / EXECUTION VALID / 365/365 GREEN / REVIEW PENDING**. Owning raw-evidence record:
+`Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Report.md`. Frozen execution authority remains:
 `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md`.
 
-### CB9 authority — do not rebuild it
+### R10 immutable execution authority — do not rebuild or rerun it
 
 - semantic/test source: `57444781af7bdc460e38cc68930a9a8c8199eeea`
-- compile workflow run: `33325344311`
-- changed-owner prepackage job: `99294371782` — `directional_surface_cell_producer_tests` **105/105**
-- authoritative package job: `99294619815` — all eight standard targets
 - immutable package **67**: artifact `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`
-- packaged source archive SHA-256: `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`
-- internal manifest: **28/28 PASS**
-- exact arithmetic backend: GMP/GMPXX
-- `runtimeExecution=false`.
+- R10 run/job: `33331453506 / 99310594268`
+- result artifact `9737796927`, SHA-256 `b02022367785d6a4790549ad127bff69f831404b6ea525f426b707794f71649b`
+- diagnostic artifact `9737797177`, SHA-256 `0a374b6b240877049eacfec2c70be944c39ce3cc4e5a6c461c358a1b206e78c8`
+- immutable preflight/postflight: **PASS**
+- selector: **365 executed / 365 PASS / no first red**
+- non-gating diagnostics: **3 executed / 2 PASS / 1 RED**
+- `benchmarkExecution=false`; configure/compile/relink/repair/generated discovery and all package/source/test/fixture/selector mutation flags are false.
 
-CB9's independent AI1 audit found exactly two stale Amendment-14 consumers and no representation-level widening. AI2 iterates every Cut sub-arc while preserving canonical-direction dart semantics and publishes fragment/orbit diagnostics. AI3 threads one shared `NodeLocus` authority so `boundaryVertices` contains only actual sub-arc source-vertex endpoints. AI4/AI5 are complete. AI6/AH6 remains runtime-owned. AI8 exclusions remain untouched.
+Accepted predecessor 1-355 re-proved 355/355. Ordinals 356-365 all passed, including first execution of 364 and 365. Ordinal 363 ran once with `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` and published 50 fragment-reconciliation plus 128 cut-edge-orbit rows.
 
-Frozen selector authority is unchanged: 355 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, 357 `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`, 361 `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`, whole 365 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, cardinality/uniqueness **365/365**.
+AH6 is applicable. The raw EXEC publication states `ordinary_proposal_selected_trace_crossed_edge=no`, `saturation_used=yes`, and classifies 363/364 as a saturation-reached state; exact selected edge/locus/promoted count are not observable from frozen output. EXEC did not disposition that evidence.
 
-Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; M3 packages **67**. `selected_r2_branch=NONE`; CP4c-2 remains open and CP4c-3 blocked.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; M3 packages **67**. CP4c-2 remains open pending review and CP4c-3 remains blocked.
 
-### R10-EXEC — exact allowed work
+### R10-REV — exact allowed work
 
-R10-EXEC is runtime/raw-evidence only. Follow the frozen R10 plan exactly:
+R10-REV consumes the immutable EXEC artifacts. It owns:
 
-1. verify artifact `9736088354` and its outer/internal/source hashes before any Directional process;
-2. preserve packaged executable modes — no Python `zipfile.extractall`, `chmod`, repair, configure, compile, relink, or generated discovery;
-3. run the three frozen non-gating identities once each;
-4. execute selector 365 from ordinal 1, exactly one fresh process per identity, with first-semantic-red hard stop;
-5. if ordinal 363 is reached, enable `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` in that same process and preserve AI2 `fragment_reconciliation` and `cut_edge_orbit_evidence` rows;
-6. if 363-365 are all reached, publish AH6 ordinary tree-cotree versus saturation evidence;
-7. always run immutable postflight; `benchmarkExecution=false`.
+1. independent validation of the execution evidence and every regression/candidate classification;
+2. the required `Regression_Root_Cause_Tracker.md` update;
+3. formal `R9-CAND-01` disposition now that the frozen 363/364/365 runtime condition is observed green;
+4. explicit AI2 comparison of `fragment_orbit_count` against `trace_piece_count + 1` and per-face cut-edge orbit-cardinality interpretation;
+5. AH6 saturation-only coverage disposition and any non-stable coverage candidate required by the frozen plan;
+6. prescribed-sphere non-gating evidence disposition without inferring a product fix from EXEC alone;
+7. CP4c-2 acceptance eligibility and the next bounded turn.
 
-Do **not** diagnose/plan a correction in EXEC beyond preserving exact raw evidence and integrity status. The successor subturn is **`M3-CP4c-2-TB-X2-R10-REV`**, which owns root-cause/candidate disposition, tracker/report updates, and next-step planning.
-
-### Open runtime obligations
-
-- `M3-CP4c2-TB-X2-R9-CAND-01` closes only when 363, 364 and 365 are all green in one valid run reaching 365.
-- 364 and 365 remain never-executed.
-- AI2's fragment-count/orbit-cardinality evidence is not yet runtime proof.
-- AH6 remains owed.
-- `CAND-04` sphere and `R8-CAND-02` empty-network question remain non-gating and unchanged.
+Do not rebuild, rerun, repair, or mutate the executed package while reviewing it.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TB-EXEC.md`
+- turn-based-coding-agent review/planning guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md` — **execution authority; read first after durable policies**.
-1. `.agents/Directional/Architecture_M3_CP4c2_CB9_Code_Build_Report.md` — exact immutable package and CB9 scope.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md` — AI2/AH6 rationale only; do not re-plan CB9.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md` — predecessor runtime and ordinal-363 locus.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — current candidates; R10-EXEC does not disposition them.
+0. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Report.md` — **raw execution evidence; read first**.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md` — frozen review ownership and closure conditions.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md` — predecessor candidates and AI2/AH6 rationale.
+3. `.agents/Directional/Regression_Root_Cause_Tracker.md` — current candidate/stable accounting authority.
+4. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — durable CP4c lineage.
 5. `TODO.md` — current task pointer.
 
-**This is immutable artifact-only TB-EXEC.** No source/test/fixture/selector/build mutation, no rebuild, and no benchmark.
+**This is REVIEW + PLAN only.** Do not execute Directional runtime or begin corrective Code + Build work before review disposition.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

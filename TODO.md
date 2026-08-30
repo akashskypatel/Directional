@@ -21,7 +21,7 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R10-EXEC` — immutable re-proof of CB9 package 67
+## Current focus — `M3-CP4c-2-TB-X2-R10-REV` — review valid R10 365/365 evidence
 
 `M3-CP4c-2-CB9` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**:
 `Architecture_M3_CP4c2_CB9_Code_Build_Report.md`.
@@ -35,30 +35,30 @@ gate count excludes them, each carries a written rationale and an owning correct
 
 Compile-only run `33325344311` is green. Changed-owner prepackage job `99294371782` compiled `directional_surface_cell_producer_tests` **105/105**; authoritative package job `99294619815` built all eight standard targets through `agent-compile-reusable.yml`. Immutable package **67** is artifact `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`, packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`, manifest **28/28 PASS**, GMP/GMPXX, `runtimeExecution=false`.
 
-### R10 execution boundary
+### R10 execution result and review boundary
 
-Exact next is **`M3-CP4c-2-TB-X2-R10-EXEC`** under
-`Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c-2-TB-X2-R10-EXEC` is **COMPLETE / EXECUTION VALID** under
+`Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Report.md`.
 
-- artifact-only; no rebuild, relink, repair, chmod, source/test/fixture/selector/package mutation, generated discovery, or benchmark;
-- verify immutable package `9736088354` and frozen selector 365 authority first;
-- run the three frozen non-gating identities once each;
-- execute selector 365 from ordinal 1, one fresh process per identity, with the first-semantic-red hard stop;
-- if ordinal 363 is reached, enable `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` in that same process and preserve AI2 fragment/orbit rows;
-- if 363-365 are all reached, publish AH6 ordinary-path versus saturation evidence;
-- unconditional immutable postflight regardless of semantic outcome.
+Run/job `33331453506 / 99310594268` consumed immutable package `9736088354` directly. Preflight and postflight passed; all configure/compile/relink/repair/generated-discovery and mutation flags are false; `benchmarkExecution=false`.
 
-R10 is split: **R10-EXEC** owns runtime/raw evidence only; **R10-REV** owns diagnostics, regression/candidate disposition, tracker/report updates, and next-step planning. Do not perform R10-REV work inside EXEC.
+- the three non-gating diagnostics executed once each: **2 PASS / 1 RED**;
+- accepted predecessor ordinals **1-355 re-proved 355/355 PASS**;
+- ordinals **356-365 all PASS**, including first-ever green execution of 364 and 365;
+- selector result: **365/365 PASS**, no first red;
+- ordinal 363 published AI2 evidence in the same process: 50 fragment-reconciliation rows plus 128 cut-edge-orbit rows;
+- AH6 is applicable and the raw publication reports `ordinary_proposal_selected_trace_crossed_edge=no` and `saturation_used=yes`.
 
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **67**. `selected_r2_branch=NONE`; selector **365** remains frozen; CP4c-2 remains unaccepted and CP4c-3 blocked.
+Exact next is **`M3-CP4c-2-TB-X2-R10-REV`**. REVIEW owns all diagnostic interpretation, regression/candidate disposition, tracker updates, `R9-CAND-01` formal closure decision, AH6 coverage disposition, and CP4c-2 acceptance eligibility.
 
-### Open CP4c-2 candidates
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **67** pending that review. `selected_r2_branch=NONE`; selector **365** remains frozen; CP4c-2 remains unaccepted and CP4c-3 blocked.
 
-- [ ] `M3-CP4c2-TB-X2-R9-CAND-01` — corrective source is compile-green; closes only when ordinals **363, 364 and 365 are all green** in a valid run reaching 365.
-- [ ] **Ordinals 364 and 365 have never run** — degree-four two-Cut/two-Trace rotation and saturation last resort.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere: producer `RotationSystemInconsistent` plus independently non-cellular pre-cut graph; non-gating and unchanged.
+### Open CP4c-2 review obligations
+
+- [ ] `M3-CP4c2-TB-X2-R9-CAND-01` — R10-EXEC mechanically reached its frozen runtime condition with **363/364/365 PASS in a valid run reaching 365**; formal disposition is owned by R10-REV.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere non-gating diagnostic remained RED in R10-EXEC; review owns disposition, not EXEC.
 - [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — zero-node / zero-arc closed-surface cut-graph behavior; non-gating and unchanged.
-- [ ] **AH6** — requires 363-365 all reached.
+- [ ] **AH6** — R10-EXEC published saturation-only raw evidence; R10-REV owns the required coverage-candidate/acceptance disposition.
 
 ## Carried forward from M1
 
@@ -95,7 +95,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted. R9 re-proved **355/355**, passed 356-362, and exposed the first genuine CP4c-2 product defect at 363. CB9 implements both stale Cut-sub-arc consumer corrections and is BUILD GREEN on immutable package **67** (`9736088354`), but runtime is unadjudicated. Exact next is `M3-CP4c-2-TB-X2-R10-EXEC`; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted. R10-EXEC validly re-proved **365/365 GREEN** on immutable package **67** (`9736088354`), with AI2 and AH6 raw evidence retained. CP4c-2 remains unaccepted pending `M3-CP4c-2-TB-X2-R10-REV`; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -105,7 +105,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-2 R10 re-proof:** CB9 corrects the ordinal-363 one-arc binding and silent `boundaryVertices` over-insertion; immutable runtime must now prove 363-365, AI2 fragment/orbit reconciliation, and AH6 without weakening the frozen gate.
+- [ ] **CP4c-2 R10 review:** EXEC is valid **365/365 GREEN**; review must interpret AI2 fragment/orbit evidence and AH6 saturation-only coverage, disposition candidates, and decide CP4c-2 acceptance eligibility without altering the executed package.
 - [ ] **Prescribed sphere A2a′ upstream error:** AF0 now publishes `originatingTopologyError=RotationSystemInconsistent` at source face `25-27-28`; review the exact rotation-system locus before any product fix.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.

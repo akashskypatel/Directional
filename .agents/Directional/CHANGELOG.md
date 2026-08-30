@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-30 — `M3-CP4c-2-TB-X2-R10-EXEC`: valid immutable 365/365 green execution; review pending
+
+Artifact-only runtime/raw-evidence subturn. Run/job `33331453506 / 99310594268` consumed CB9 package `9736088354` directly and completed successfully. Result artifact `9737796927` has SHA-256 `b02022367785d6a4790549ad127bff69f831404b6ea525f426b707794f71649b`; diagnostic artifact `9737797177` has SHA-256 `0a374b6b240877049eacfec2c70be944c39ce3cc4e5a6c461c358a1b206e78c8`. Immutable preflight/postflight passed; configure/compile/relink/repair/generated discovery and all package/source/test/fixture/selector mutation flags were false; `benchmarkExecution=false`.
+
+Three frozen non-gating identities executed once each (**2 PASS / 1 RED**). The required-green selector re-proved accepted ordinals 1-355 **355/355 PASS** and passed every tail ordinal 356-365, including 363, 364 and 365, for **365/365 GREEN** with no first red. Ordinal 363 published AI2 evidence in the same process: 50 fragment-reconciliation and 128 cut-edge-orbit rows. AH6 is applicable; raw publication records `ordinary_proposal_selected_trace_crossed_edge=no`, `saturation_used=yes`, and a saturation-reached state. EXEC performs no candidate classification or acceptance decision. Exact next is `M3-CP4c-2-TB-X2-R10-REV`, which owns tracker updates, R9-CAND-01 disposition, AI2/AH6 interpretation, and CP4c-2 acceptance eligibility. Stable accounting remains **44 / 14 / 30**, debt **5**, M3 packages **67** pending review.
+
 ## 2026-08-30 — `M3-CP4c-2-CB9`: both stale Amendment-14 consumers corrected; package 67 build-green
 
 Code + Build only. Semantic/test source `57444781af7bdc460e38cc68930a9a8c8199eeea` implements R9-REV AI0-AI9 without selector, sphere, crossing-producer, error-enum, invariant, or benchmark widening. AI1 independently re-derived the full Cut/cut-edge consumer set; exactly two A2b consumers were stale. Region binding now iterates every derived Cut sub-arc under the canonical source-edge direction invariant, and region-certificate `boundaryVertices` now uses the existing shared `NodeLocus` authority so only actual sub-arc source-vertex endpoints enter the skip list. AI2 fragment/orbit diagnostics were added, ordinal 359 is recorded beside the semantic-digest rationale, and both typed-error helpers stop before `built.value()` fall-through.
