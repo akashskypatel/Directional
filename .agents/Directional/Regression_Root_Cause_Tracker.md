@@ -1,4 +1,16 @@
-## M3-CP4c2-TB-X2-R7-CAND-03 — D2 localization harness compares the actual embedded graph against the withdrawn proxy using stale line-number labels — **ACTIVE / TEST-AUTHORITY / AUTHORITY_DOMAIN_CONFLATION / RP-01 / NON-STABLE**
+## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **ACTIVE / WITNESS-CONSTRUCTION / AUTHORITY-SURFACE MISMATCH / GATING / NON-STABLE**
+
+- **Observed:** authoritative R8 run/job `33288495471 / 99195869180` re-proves accepted 355/355 and passes ordinals 356-358, then ordinal 359 `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` selects once and fails at `FieldAlignedCurveNetworkTests.cpp:2381`, `ASSERT_TRUE(baselineCutGraph)`, before any invariance comparison. Frozen hard stop leaves 360-365 unexecuted.
+- **Mechanism:** the test now consumes committed `torus.rawfield`, but still constructs rails with test-local `rails_from_atlas(...)`. The passing production torus path (ordinal 356) consumes pipeline-published `authoritativeRails` and reports `networkV=48`, `networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`. CB7 AF3 therefore migrated field authority but not the rail-authority surface. Ordinal 361 contains the same residual local construction and was correctly not run.
+- **Disposition:** continuation/recurrence of R7-CAND-01; independent R8 review owns the bounded correction and must preserve the frozen hard-stop evidence. This is not product enumeration-invariance evidence because the comparison was never reached.
+- **Stable-count rationale:** ordinal 359 is newly gated and had never been accepted; inherited 355 remains green. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, M3 packages **65**.
+
+## M3-CP4c2-TB-X2-R8-ORCH-01 — stale expected payload blob SHA stops first caller before runtime — **CLOSED / ORCHESTRATION / NON-STABLE**
+
+- Run `33288435250` failed in the exact payload-binding step because the caller expected the pre-write local blob SHA rather than the committed `m3-cp4c2-r8-exec.sh` blob. The execution step was skipped and no result directory existed; therefore no Directional runtime occurred.
+- The caller was corrected to the committed blob SHA, schema validation passed, and authoritative semantic run `33288495471` is the only R8 runtime attempt. **+0 stable accounting**.
+
+## M3-CP4c2-TB-X2-R7-CAND-03 — D2 localization harness compares the actual embedded graph against the withdrawn proxy using stale line-number labels — **RESOLVED IN R8-EXEC / TEST-AUTHORITY / AUTHORITY_DOMAIN_CONFLATION / RP-01 / NON-STABLE**
 
 - **Observed:** R7-5 published `localizationConsistent=false` for the prescribed sphere. Independent review
   (`Architecture_M3_CP4c2_TB_X2_R7_Independent_Review_Record.md` §7) establishes that this boolean is false **by

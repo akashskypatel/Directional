@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-08-29 — `M3-CP4c-2-TB-X2-R8-EXEC`: 355 accepted green; selector 365 red at ordinal 359
+
+Artifact-only R8 consumed immutable GMP package `9724864897` from semantic source `4f0f3ca74a88ba260a20c019437bc4995f2056e0`. Authoritative run/job `33288495471 / 99195869180` passed immutable preflight, executed every identity in a fresh process, re-proved **355/355**, passed 356-358, then stopped at ordinal **359** `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration`. The failure occurs at baseline cut-graph construction before the invariance comparison: the gated test still uses test-local `rails_from_atlas(...)` while the passing production torus path consumes pipeline `authoritativeRails`. 360-365 and benchmarks were not run. AF0 now publishes the sphere's originating `RotationSystemInconsistent`; AF2 and AG3 diagnostics pass. Postflight is green with no build/repair/mutation. Result/log artifacts `9725240893 / 9725241013`; raw evidence SHA-256 `9da936add8204f35832acd0646a395b17bb71b58c56820dd5d1e52f8dcda7aa3`. Stable accounting remains **44 / 14 / 30**, debt **5**, packages **65**. Exact next: independent `M3-CP4c-2-TB-X2-R8-REV`; no retry or corrective CB first.
+
 ## 2026-08-29 — `M3-CP4c-2-DEFN-R2`: Amendment 14 makes trace-crossed cuts admissible and proves completeness; gate 361 frozen
 
 Definition and planning only. No Directional runtime, build, compile, package, benchmark, product, test, or fixture

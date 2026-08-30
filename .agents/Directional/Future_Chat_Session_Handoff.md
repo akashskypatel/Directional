@@ -84,9 +84,16 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R8-EXEC` — artifact-only selector-365 execution
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R8-REV` — independent review of ordinal-359 gating-witness red
 
-`M3-CP4c-2-CB7` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**.
+R8 is **COMPLETE / SEMANTIC RED / POSTFLIGHT GREEN** on immutable CB7 package `9724864897`. Authoritative run/job
+`33288495471 / 99195869180` re-proved the inherited **355/355**, passed 356-358, and stopped at ordinal **359**
+`SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration`. The identity fails at its baseline
+`ASSERT_TRUE(baselineCutGraph)` before any enumeration comparison; 360-365 were not run. Full evidence is in
+`Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md`. No retry or corrective CB is authorized
+before the independent review.
+
+`M3-CP4c-2-CB7` remains the immutable **BUILD GREEN / RUNTIME-FREE** package authority used by R8.
 
 **Immutable build authority**
 
@@ -120,10 +127,10 @@ Ordinals 362–365 are, in order:
 `SurfaceCutGraph.CutCrossingNodeRotationIsDerivedAtDegreeFour`,
 `SurfaceCutGraph.CutSetSaturationProvesCellularityWhenSearchIsExhausted`.
 
-`selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`. Stable accounting is
-**44 / 14 / 30**, produced-witness debt **5**, M3 packages **65**.
+`selected_r2_branch=NONE`; selector 365 was selected and executed red in R8; `gate_execution_authorized=false`
+at closeout. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, M3 packages **65**.
 
-### R8 execution plan — binding successor plan
+### R8 execution plan — COMPLETED EVIDENCE, NOT A SUCCESSOR PLAN
 
 1. **Immutable preflight before runtime.** Download package `9724864897` by exact artifact ID; verify its outer
    SHA-256, internal `SHA256SUMS`, source archive, source commit `1230621b…`, exact Eigen revision, clean source
@@ -173,9 +180,10 @@ Ordinals 362–365 are, in order:
 
 ### Context Load Plan
 
-After the durable start-of-turn checklist, read:
+After the durable start-of-turn checklist, the R8 review must read:
 
-1. `ORIENTATION.md`.
+1. `Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md` — immutable first-red and diagnostics.
+2. `ORIENTATION.md`.
 2. `Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — exact package/build and measure disposition.
 3. `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14 and AG0–AG9.
 4. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — only still-binding §§4/5/7/9 and Amendment 13.
@@ -183,7 +191,10 @@ After the durable start-of-turn checklist, read:
 6. `Regression_Root_Cause_Tracker.md`.
 7. `TODO.md`, `CHANGELOG.md`, and selector 365.
 
-Do not rebuild in R8. The next turn is artifact-only runtime on the immutable CB7 package.
+The exact next turn is independent `M3-CP4c-2-TB-X2-R8-REV`. It may review and plan only: no retry, corrective
+source/test mutation, compile, package, benchmark, or new Directional runtime. It must adjudicate R8-CAND-01, the
+incomplete AF3 rail-authority migration, the sphere `RotationSystemInconsistent` origin, and the unexecuted 360-365
+tail before authorizing any CB.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
