@@ -84,59 +84,106 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R10-REV` — independent evidence review
+## Mandatory next turn — `M3-CP4c-3-DEFN` — definition and planning only
 
-`M3-CP4c-2-TB-X2-R10-EXEC` is **COMPLETE / EXECUTION VALID / 365/365 GREEN / REVIEW PENDING**. Owning raw-evidence record:
-`Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Report.md`. Frozen execution authority remains:
-`Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md`.
+**`M3-CP4c-2` is CLOSED / ACCEPTED at 365/365.** Adjudicated by
+`Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`. Measures **AJ0–AJ9**.
 
-### R10 immutable execution authority — do not rebuild or rerun it
+### Accepted authority — do not re-derive
 
-- semantic/test source: `57444781af7bdc460e38cc68930a9a8c8199eeea`
-- immutable package **67**: artifact `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`
-- R10 run/job: `33331453506 / 99310594268`
-- result artifact `9737796927`, SHA-256 `b02022367785d6a4790549ad127bff69f831404b6ea525f426b707794f71649b`
-- diagnostic artifact `9737797177`, SHA-256 `0a374b6b240877049eacfec2c70be944c39ce3cc4e5a6c461c358a1b206e78c8`
-- immutable preflight/postflight: **PASS**
-- selector: **365 executed / 365 PASS / no first red**
-- non-gating diagnostics: **3 executed / 2 PASS / 1 RED**
-- `benchmarkExecution=false`; configure/compile/relink/repair/generated discovery and all package/source/test/fixture/selector mutation flags are false.
+| item | value |
+|---|---|
+| accepted source | `57444781af7bdc460e38cc68930a9a8c8199eeea` |
+| accepted GMP package | `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf` |
+| packaged source archive | `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e` |
+| accepted selector | **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
+| run / job | `33331453506 / 99310594268` |
+| result / log artifacts | `9737796927` / `9737797177` |
+| result | **365 / 365 PASS**, first red none, immutable pre/postflight green, all mutation and benchmark flags false |
 
-Accepted predecessor 1-355 re-proved 355/355. Ordinals 356-365 all passed, including first execution of 364 and 365. Ordinal 363 ran once with `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` and published 50 fragment-reconciliation plus 128 cut-edge-orbit rows.
+Criteria **C1**, **C3** and **C6** are green. A2a′ `SurfaceCutGraph` is a certified pre-region authority: the closed
+genus-1 torus goes from a non-cellular network to a certified cellular embedding with 28 cut edges, A2b derives 4
+regions, and producer and independent oracle agree term for term (`V/E/F = 72/76/4`; `76 − 48 = 28`).
 
-AH6 is applicable. The raw EXEC publication states `ordinary_proposal_selected_trace_crossed_edge=no`, `saturation_used=yes`, and classifies 363/364 as a saturation-reached state; exact selected edge/locus/promoted count are not observable from frozen output. EXEC did not disposition that evidence.
+### What CP4c-2 did NOT deliver — CP4c-3 inherits all three
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; M3 packages **67**. CP4c-2 remains open pending review and CP4c-3 remains blocked.
+1. **The prescribed sphere** (`M3-CP4c2-TB-X2-CAND-04`). Two independent problems: (a) the producer fails at
+   `SurfaceCutGraph.cpp:240/243` with `originatingTopologyError=RotationSystemInconsistent` at source face
+   `25-27-28`, `producerCutEdgeCount=0`, **before** cut selection; (b) independently, its pre-cut actual embedded
+   graph is non-cellular (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`) and will need trace-crossed cuts. Fixing (a)
+   does not fix (b). **CP4c-2 closed with this witness unable to reach A2b at all**, by recorded decision.
+2. **Amendment 14's *ordinary* proposal path** (`M3-CP4c2-TB-X2-R10-CAND-01`). R10 published
+   `ordinary_proposal_selected_trace_crossed_edge=no` with `saturation_used=yes`. Mechanism, from the committed
+   loop: `barriers = mandatory ∪ traceCrossed ∪ cuts`, so a trace-crossed edge **bounds** a proposal component
+   instead of lying inside one, and a tree–cotree search draws from a component's interior edges. DEFN-R2 §4.5
+   removed the *filter* but permitted the conservative *barrier set*. Amendment 14's **representation** is fully
+   proved regardless; what is at stake is cut-graph **quality**.
+3. **`M3-CP4c2-TB-X2-R8-CAND-02`** — zero-node / zero-arc closed-surface cut-graph behaviour.
 
-### R10-REV — exact allowed work
+### CP4c-3 scope — AJ0–AJ9
 
-R10-REV consumes the immutable EXEC artifacts. It owns:
+1. **AJ0** record the closure in `M3_CP4c_Consolidated_Record.md` §2 and `ROADMAP.md` §1 with the exact identities
+   above; authoritative M3 package count **67**; stable accounting unchanged at **44 / 14 / 30**, debt **5**.
+   Recompute every hash from committed bytes at authoring; never transcribe.
+2. **AJ1** freeze CP4c-3's gate by **appending** to accepted 365, so `head -355`, `head -357`, `head -361` and
+   `head -365` all still reproduce their frozen hashes — inserting instead of appending is what broke candidate 358
+   (`LESSONS.md` 64x). State per-identity gating membership with a rationale (`LESSONS.md` 64w).
+3. **AJ2** the prescribed sphere is CP4c-3's **first-class subject**. Separate its two problems in the definition.
+   If it stays outside the gate, say why in writing — closing a second checkpoint around it silently would be the
+   `AF5` coverage failure a third time.
+4. **AJ3** read the 50 `fragment_reconciliation` and 128 `cut_edge_orbit_evidence` rows from retained artifact
+   `9737796927` and state whether `fragment_orbit_count == expected_fragment_count` on every row. The product's own
+   guard already proves the identity, so this is characterization — but a published number nobody compares is how
+   `localizationConsistent` became meaningless. **No new runtime.**
+5. **AJ4** own `R10-CAND-01`: model trace crossings as **per-face chords** in the proposal heuristic, matching the
+   fragment machinery, so a trace-crossed edge is interior to its component. **Heuristic only** — Amendment 13 §3
+   already denies it certification authority, so Amendment 14 is not reopened. Require a witness where the ordinary
+   path selects a trace-crossed edge with `saturationUsed=false`; keep the AG5 witness as the saturation case.
+6. **AJ5** decide `R8-CAND-02` rather than deferring it again.
+7. **AJ6** preserve CP4c-2's diagnostic surface — `originatingTopologyError`, the AI2 fragment/orbit publication,
+   the actual-embedded-graph oracle, the repaired D2 harness. They belong to the product now. Keep running the
+   frozen non-gating selector in full or justify skips per identity (`AF6`).
+8. **AJ7** measures must carry their own enumerations, or require the implementer to **search** rather than copy
+   (`LESSONS.md` 59, 61).
+9. **AJ8** no reopening of Amendments 12/13/14; no change to accepted selector 365's bytes; no relaxation of
+   `proves_cellularity()`, the fragment-count invariant, `UncutFaceComponentOrbitSeedNotUnique`, or any typed error
+   mapping; and **no implementation in a definition turn** — no compile, package, runtime, gate execution or
+   benchmark. `gate_execution_authorized` stays `false`.
 
-1. independent validation of the execution evidence and every regression/candidate classification;
-2. the required `Regression_Root_Cause_Tracker.md` update;
-3. formal `R9-CAND-01` disposition now that the frozen 363/364/365 runtime condition is observed green;
-4. explicit AI2 comparison of `fragment_orbit_count` against `trace_piece_count + 1` and per-face cut-edge orbit-cardinality interpretation;
-5. AH6 saturation-only coverage disposition and any non-stable coverage candidate required by the frozen plan;
-6. prescribed-sphere non-gating evidence disposition without inferring a product fix from EXEC alone;
-7. CP4c-2 acceptance eligibility and the next bounded turn.
+## Standing product state
 
-Do not rebuild, rerun, repair, or mutate the executed package while reviewing it.
+- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are **CLOSED / ACCEPTED**.
+- **CP4c-3 is unblocked.** Its parent responsibility is the closed-surface missing field-transport adjacency in A1
+  and then the mechanical witness (criterion **C2**), plus the three inherited items above.
+- Accepted selector is **365**; 357, 358 and 361 are retained lineage and are not executable authority.
+- Open candidates: `M3-CP4c2-TB-X2-CAND-04`, `M3-CP4c2-TB-X2-R10-CAND-01`, `M3-CP4c2-TB-X2-R8-CAND-02`.
+  Closed in CP4c-2: `PR8-R043`, `PR8-R044`, `R7-ORCH-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-CAND-01`, `R8-ORCH-01`,
+  `R9-CAND-01`, `R9-ORCH-01`, and measure `AD3`.
+- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
+  packages **67**. `selected_r2_branch=NONE`; `gate_execution_authorized=false`.
+- **Exact next is `M3-CP4c-3-DEFN`.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent review/planning guidance
+- turn-based-coding-agent `references/turns/REVIEW.md` — the definition/planning-only boundary for a DEFN turn
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Report.md` — **raw execution evidence; read first**.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md` — frozen review ownership and closure conditions.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md` — predecessor candidates and AI2/AH6 rationale.
-3. `.agents/Directional/Regression_Root_Cause_Tracker.md` — current candidate/stable accounting authority.
-4. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — durable CP4c lineage.
-5. `TODO.md` — current task pointer.
+0. `.agents/Directional/ORIENTATION.md` — **read first**; current as of R10-REV. §7 items 1-3 are exactly what
+   CP4c-3 inherits; §6 carries the normative complex, Amendment 14's cut admissibility, and the
+   witness-construction trap.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — the closure adjudication:
+   validity verification, the CB9 audit, the `AH6` disposition and its reasoning, measures **AJ0–AJ9**.
+2. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — CP4c-2's closure record and the whole family's history.
+3. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendments 14, the completeness
+   theorem, and the gate-membership discipline. Read `…DEFN_R1…` only alongside it.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — the three inherited candidates.
+5. `ROADMAP.md` — CP4c-3's parent responsibility and the path to `M8-CP3`.
+6. `TODO.md` / `CHANGELOG.md` — current task and the lesson adopted at R10-REV (63).
 
-**This is REVIEW + PLAN only.** Do not execute Directional runtime or begin corrective Code + Build work before review disposition.
+**This is a DEFINITION turn.** It may freeze definitions, selectors and measures; it must not compile, package,
+execute Directional runtime, run any gate, or benchmark.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

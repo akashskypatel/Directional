@@ -2,9 +2,9 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / review pending**. CB9 corrected both stale Amendment-14 A2b consumers on semantic source `57444781af7bdc460e38cc68930a9a8c8199eeea` and immutable package **67**, artifact `9736088354` / `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`. **R10-EXEC is execution-valid and 365/365 GREEN**: run/job `33331453506 / 99310594268`, result artifact `9737796927`, diagnostic artifact `9737797177`, immutable pre/postflight PASS, and no rebuild/repair/mutation/benchmark. AI2 and AH6 raw evidence were retained. Exact next is **`M3-CP4c-2-TB-X2-R10-REV`**; CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2`** are all **CLOSED / ACCEPTED**. R10-REV verified R10's execution validity and audited the CB8→CB9 conversion line by line, then closed CP4c-2 at **365/365**; `R9-CAND-01` is closed, `R10-CAND-01` (the ordinary trace-crossed proposal path is reachable only via saturation) is opened as a quality/coverage debt, and the prescribed sphere plus the zero-node/zero-arc question carry to CP4c-3. Exact next is **`M3-CP4c-3-DEFN`** under AJ0-AJ9. Prior state: CB9 corrected both stale Amendment-14 A2b consumers on semantic source `57444781af7bdc460e38cc68930a9a8c8199eeea` and immutable package **67**, artifact `9736088354` / `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`. **R10-EXEC is execution-valid and 365/365 GREEN**: run/job `33331453506 / 99310594268`, result artifact `9737796927`, diagnostic artifact `9737797177`, immutable pre/postflight PASS, and no rebuild/repair/mutation/benchmark. AI2 and AH6 raw evidence were retained. Exact next is **`M3-CP4c-2-TB-X2-R10-REV`**; CP4c-3 remains blocked.
 
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, M3 packages **67** pending R10-REV disposition. `selected_r2_branch=NONE`.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **67**. `selected_r2_branch=NONE`; selector **365** is now accepted authority.
 
 ## 1. Current separate authority
 
@@ -38,8 +38,32 @@ The authoritative architecture is also carried by `DESIGN.md` §7.2/§7.2.1; reg
 | **CP4c-0** | exact resolved continuation and grazing | **346/346 CLOSED** |
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
-| **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | active; inherited **355/355** re-proof green |
+| **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
 | **CP4c-3** | mechanical witness / missing field-transport adjacency | blocked |
+
+### CP4c-2
+
+A2a′ `SurfaceCutGraph` exists as a certified pre-region authority. It takes the closed genus-1 torus from a
+non-cellular network to a certified cellular embedding with **28 cut edges**, A2b derives **4** regions from it, and
+the producer's cut count reconciles exactly with the independent oracle (actual graph `V/E/F = 72/76/4`, and
+`76 − 48 = 28`). Cellularity is certified in the **actual embedded graph** (Amendment 13); trace-crossed source
+edges are admissible cuts with proved completeness (Amendment 14); semantic and provenance identity are separate
+digests, proved on a bounded and a closed witness; enumeration invariance is proved rather than asserted.
+Criteria **C1**, **C3** and **C6** are green.
+
+Accepted authority: source `57444781af7bdc460e38cc68930a9a8c8199eeea`, GMP package `9736088354`, package SHA-256
+`78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`, packaged source archive
+`2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`, R10 run/job `33331453506 / 99310594268`,
+result/log artifacts `9737796927 / 9737797177`, selector **365** SHA-256
+`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, final **365/365 PASS** with no first red,
+immutable pre/postflight green and every mutation and benchmark flag false.
+
+**What CP4c-2 does not deliver**, recorded so the closure is not read as more than it is: the **prescribed sphere**
+still fails before cut selection with `originatingTopologyError=RotationSystemInconsistent` at source face
+`25-27-28`, and independently its pre-cut graph is non-cellular (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`) — it
+was outside the gate by recorded decision, so **CP4c-2 closes with one of its three witnesses unable to reach A2b at
+all**. Amendment 14's **ordinary** trace-crossed proposal path is also unexercised (`R10-CAND-01`), and the
+zero-node/zero-arc closed-surface question (`R8-CAND-02`) is unresolved. All three carry to CP4c-3.
 
 ### CP4c-0
 

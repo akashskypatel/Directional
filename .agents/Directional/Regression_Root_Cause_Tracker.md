@@ -1,4 +1,67 @@
-## M3-CP4c2-TB-X2-R9-CAND-01 — trace-crossed selected cut edge is subdivided into multiple arcs but region binding still requires exactly one — **ACTIVE / PRODUCT AUTHORITY-SHAPE MISMATCH / GATING / NON-STABLE**
+## M3-CP4c2-TB-X2-R10-CAND-01 — Amendment 14's ordinary trace-crossed proposal path is structurally unreachable; only saturation promotes such an edge — **ACTIVE / QUALITY / COVERAGE / NON-STABLE**
+
+- **Observed:** R10 (run/job `33331453506 / 99310594268`, package `9736088354`) published, for the AG5
+  trace-crossed witness: `ordinary_proposal_selected_trace_crossed_edge=no`, `saturation_used=yes`,
+  `selected_trace_crossed_edge_exists=yes`, `subdivided_crossing_exists=yes`. Ordinals 363/364/365 all PASS.
+  `AH6`'s stated condition has fired.
+- **Mechanism, read from the committed loop and not accidental:** the proposal is
+  `barriers = mandatory ∪ traceCrossed ∪ cuts; components = proposal_components(topology, barriers);
+  proposed = proposal_tree_cotree_cut_edges(topology, component, barriers)`. DEFN-R2 §4.5's **filter** was correctly
+  removed — only `mandatory` is skipped now — but the **barrier set still contains `traceCrossed`**, so every
+  trace-crossed edge *bounds* a proposal component instead of lying inside one, and a tree–cotree generator search
+  draws from edges interior to its component. **The ordinary path therefore almost never has a trace-crossed edge
+  available to propose**, and saturation is the only route by which one enters the cut set.
+- **Cause — the reviewer's, owned.** DEFN-R2 §4.5 explicitly permitted keeping the conservative barrier set on the
+  reasoning that *"over-separation costs extra cuts, never correctness."* True about correctness, wrong about
+  coverage: over-separation makes the edges Amendment 14 newly admitted **structurally unreachable** by the ordinary
+  proposal. DEFN-R2 prediction 5 said saturation firing anywhere is "a finding"; it fired, and this is it.
+- **What remains proved regardless.** Saturation changes *which* edges are selected, not *how* a selected edge is
+  represented. Ordinals 363/364 assert on an actually-promoted trace-crossed edge — `selectedTraceCrossed`
+  non-empty, `foundSubdividedCrossing`, a degree-four node with two `Cut` and two `Trace` rays — and those hold
+  whichever path selected it. Amendment 14's **representation** is fully proved; completeness is unaffected, since
+  DEFN-R2 §5.1's theorem guarantees a sufficient cut set exists and saturation reaching it is the theorem working.
+- **What is at stake:** cut-graph **quality**. A saturated cut set promotes far more edges than a tree–cotree
+  selection would, producing many small regions; and a production witness firing saturation is now
+  indistinguishable from this expected case.
+- **This did not withhold CP4c-2's closure.** Gate 365 was frozen at CB7 under AG7 before any of this was known,
+  every identity in it passed, and the run is valid. Adding a coverage condition after the evidence arrived would be
+  the goalpost-moving this project corrected twice — including when the evidence favoured being strict
+  (`PR8-R044` at R7-REV). The discipline holds when it favours leniency too.
+- **Owning correction:** **AJ4**. Replace the conservative `traceCrossed` barrier contribution with the per-face
+  **trace-segment chord** model the fragment machinery already uses, so a trace-crossed edge is interior to its
+  component and available to the ordinary proposal. This touches the **proposal heuristic only** — Amendment 13 §3
+  already denies it certification authority — so it does **not** reopen Amendment 14 or any certificate. Requires a
+  witness in which the ordinary proposal selects a trace-crossed edge with `saturationUsed=false`, retaining the
+  AG5 witness as the positive saturation case.
+- **Stable-count rationale:** quality/coverage finding on a checkpoint whose gate is green; no accepted-green
+  behaviour lost. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **67**.
+
+## M3-CP4c2-TB-X2-R9-CAND-01 — trace-crossed selected cut edge is subdivided into multiple arcs but region binding still requires exactly one — **CLOSED AT R10-REV / PRODUCT AUTHORITY-SHAPE MISMATCH / NON-STABLE**
+
+- **R10-REV disposition — CLOSED.** The frozen condition was *ordinals 363, 364 and 365 all green in a run reaching
+  365*; R10 satisfies it exactly, and the CB8→CB9 diff was audited line by line to confirm the fix was the specified
+  conversion rather than an accommodation. `arcIndices.size() != 1U` became `arcIndices.empty()`, dropping only the
+  upper bound and **retaining a typed `InvalidCutGraphBinding` for zero arcs**; the per-face body now runs once per
+  sub-arc with both existing guards retained; and the stale "ordinary embedded source-edge barriers" comment was
+  replaced with one that **names the canonical-direction dependency** the dart formula rests on.
+- **The silent consumer was fixed and the fix *tightens*.** `:1264-1281` resolves each sub-arc endpoint through the
+  shared `NodeLocus` authority and inserts a source vertex only when the node has a `vertex` locus, so a crossing
+  node contributes nothing; a node with no locus now returns a typed error, a path that did not previously exist.
+  Because `boundaryVertices` is a skip list this change can only *reduce* skipping — it cannot manufacture a pass,
+  only create new reds, and none appeared. `build_node_loci` is now computed once and threaded to both consumers,
+  removing a pre-existing redundant recompute in `validate_no_region_fragment_pinch`.
+- **The fragment reconciliation is proved by the product, not merely published.**
+  `GlobalTopologyPlan.cpp:679-687` unconditionally rejects unless
+  `fragmentOrbits[face].size() == tracePieceCount[face] + 1` for every face, and that guard is untouched by CB9.
+  Ordinal 363's pass therefore proves R9-REV §2.3's geometric argument on every face of the witness, including those
+  incident to a promoted trace-crossed edge. The 178 retained diagnostic rows are corroboration; **AJ3** still
+  requires them read and compared.
+- **First runtime proof of two long-pending contracts:** ordinal **364**, the degree-four two-Cut/two-Trace
+  edge-locus rotation — the single genuine code gap DEFN-R2 named, compiled and unexecuted for three turns — and
+  ordinal **365**, the saturation last resort, which publishes its fields while cellularity remains independently
+  proved by the actual embedded-graph certificate afterwards.
+- **Accounting:** closure is a status change, not a count change. Totals remain **44 / 14 / 30**, debt **5**,
+  M3 packages **67**.
 
 - **Observed:** authoritative R9 run/job `33319911575 / 99279955697` re-proves 355/355 and passes ordinals 356-362, then ordinal 363 `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` selects exactly once and fails with typed `InvalidCutGraphBinding`. Frozen hard stop leaves 364-365 unexecuted.
 - **Runtime preconditions reached:** the witness retains an exact trace/source-edge crossing; `SurfaceCutGraph::make` succeeds; its certificate proves cellularity; and at least one selected cut candidate is classified `TraceInteriorCrossing`. The failure is therefore downstream in `GlobalTopologyPlan::make`, not in cut selection.

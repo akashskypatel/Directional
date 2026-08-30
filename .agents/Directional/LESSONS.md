@@ -999,6 +999,14 @@ building any conclusion on it.**
     Compiled-but-unexecuted test authority is not evidence; it is debt wearing a green label. Check the
     selector's reach at the moment you authorize the edit, not at acceptance.
 
+63. **A green gate proves exactly what it enumerates; name what it did not cover in the same breath.** CP4c-2
+    closed at 365/365 with the prescribed sphere unable to reach A2b at all, and with Amendment 14's ordinary
+    trace-crossed proposal path unexercised — both outside the gate by recorded decision, both real. The closure is
+    honest only because it says so. **The converse discipline is the same rule:** once a gate is frozen and its
+    evidence arrives, do not add conditions to it. That was easy to honour at R7-REV, where the new information
+    favoured strictness and `PR8-R044` closed on its frozen condition despite a one-witness residual; it was harder
+    at R10-REV, where `AH6`'s coverage gap tempted a withheld closure. A gate that can be tightened after the fact
+    is not a gate, and the project's own record shows the temptation runs in both directions.
 61. **"Convert every consumer" must ship with the enumeration, or say who owes it.** DEFN-R2 §4 itemized
     Amendment 14 as five producer-side changes under the heading "what must actually be built, itemized", and AG1
     said "land §§4.1–4.5 as one conversion — a partial conversion is the defect this checkpoint is correcting". The

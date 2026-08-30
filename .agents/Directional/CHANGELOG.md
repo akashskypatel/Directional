@@ -1,5 +1,81 @@
 # Changelog
 
+## 2026-08-30 — `M3-CP4c-2-TB-X2-R10-REV`: **`M3-CP4c-2` CLOSED / ACCEPTED at 365/365**
+
+Independent review and planning only. No runtime, build, compile, package, benchmark, or product/test/fixture/
+selector mutation. A green gate closes a checkpoint, so this review verified rather than accepted: the working tree
+was confirmed byte-identical to packaged semantic source `57444781af7bdc460e38cc68930a9a8c8199eeea`, all four
+selector-365 authorities were recomputed from committed bytes, and **the whole CB8→CB9 product diff was audited line
+by line**. Measures issued: **AJ0–AJ9**. Full record:
+`Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`.
+
+**Accepted authority.** Source `57444781af7bdc460e38cc68930a9a8c8199eeea`; GMP package `9736088354`, SHA-256
+`78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`; packaged source archive
+`2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`; run/job `33331453506 / 99310594268`;
+result/log artifacts `9737796927 / 9737797177`; selector **365** SHA-256
+`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; **365/365 PASS**, first red none, immutable
+pre/postflight green, every mutation and benchmark flag false, one identity per fresh process from ordinal 1.
+
+**What CP4c-2 delivers.** Criteria **C1**, **C3** and **C6** green. A2a′ `SurfaceCutGraph` is a certified
+pre-region authority: the closed genus-1 torus goes from a non-cellular network to a certified cellular embedding
+with 28 cut edges, A2b derives 4 regions from it, and producer and independent oracle agree term for term
+(actual graph `V/E/F = 72/76/4`; `76 − 48 = 28`). Cellularity is certified in the **actual embedded graph**
+(Amendment 13); trace-crossed source edges are admissible cuts with proved completeness (Amendment 14); semantic
+and provenance identity are separate digests, proved on a bounded *and* a closed witness; enumeration invariance is
+proved rather than asserted.
+
+**The green is not vacuous — CB9 audited.** `arcIndices.size() != 1U` became `arcIndices.empty()`, dropping only
+the upper bound and **retaining a typed `InvalidCutGraphBinding` for zero arcs**; the per-face body now runs once
+per sub-arc with both existing guards retained; and the stale "ordinary embedded source-edge barriers" comment was
+replaced with one that **explicitly names the canonical-direction dependency** the dart formula rests on. The
+`boundaryVertices` fix **tightens**: it resolves each sub-arc endpoint through the shared `NodeLocus` authority,
+inserts a source vertex only for a node with a `vertex` locus, and adds a typed error for an unresolvable node —
+and because `boundaryVertices` is a skip list it can only create reds, never manufacture a pass. None appeared.
+`build_node_loci` is now computed once and threaded to both consumers, removing a pre-existing redundant recompute.
+**Nothing in the diff weakens a check**, and AI8's exclusions were respected in full.
+
+**AI2's reconciliation is proved by the product, not merely published.** `GlobalTopologyPlan.cpp:679-687`
+unconditionally rejects unless `fragmentOrbits[face].size() == tracePieceCount[face] + 1` for every face, and CB9
+left that guard untouched; ordinal 363's pass therefore proves R9-REV's geometric argument on every face, including
+those incident to a promoted trace-crossed edge. The 178 retained diagnostic rows are corroboration; **AJ3** still
+requires them read and compared.
+
+**`R9-CAND-01` CLOSED**, and with it the first runtime proof of two long-pending contracts: ordinal **364**, the
+degree-four two-Cut/two-Trace edge-locus rotation — the single genuine code gap DEFN-R2 named, compiled and
+unexecuted for three turns — and ordinal **365**, the saturation last resort, which publishes its fields while
+cellularity remains independently proved by the certificate afterwards.
+
+**`AH6` fired, and its cause is the reviewer's.** R10 published
+`ordinary_proposal_selected_trace_crossed_edge=no` with `saturation_used=yes`: the only route by which a
+trace-crossed edge enters the cut set is saturation. The mechanism is in the committed loop —
+`barriers = mandatory ∪ traceCrossed ∪ cuts`, so a trace-crossed edge **bounds** a proposal component instead of
+lying inside one, and a tree–cotree search draws from a component's interior edges. DEFN-R2 §4.5 removed the
+*filter* but permitted the conservative *barrier set* on the reasoning that over-separation "costs extra cuts,
+never correctness" — true about correctness, wrong about coverage. Amendment 14's **representation** is fully
+proved regardless, since ordinals 363/364 assert on an actually-promoted crossed edge whichever path selected it;
+what is at stake is cut-graph **quality**. Opened as `M3-CP4c2-TB-X2-R10-CAND-01`, owned by **AJ4**, corrective
+identified: model trace crossings as **per-face chords** in the proposal — heuristic-only, so Amendment 14 is not
+reopened.
+
+**This did not withhold closure, and the reasoning is recorded because the temptation ran the other way.** Gate 365
+was frozen at CB7 under AG7 before any of this was known, every identity passed, and the run is valid. Adding a
+coverage condition after the evidence arrived would be the goalpost-moving this project corrected twice — including
+at R7-REV, when the new information favoured being *strict* and `PR8-R044` still closed on its frozen condition.
+The discipline has to hold when it favours leniency too.
+
+**What CP4c-2 does not deliver**, recorded so the closure is not read as more than it is: the **prescribed sphere**
+still fails before cut selection (`originatingTopologyError=RotationSystemInconsistent`, source face `25-27-28`) and
+is independently non-cellular pre-cut (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`) — it sat outside the gate by
+recorded decision, so **CP4c-2 closes with one of its three witnesses unable to reach A2b at all**; Amendment 14's
+ordinary proposal path is unexercised; and `R8-CAND-02` is unresolved. All three carry to CP4c-3.
+
+**Lesson adopted:** `LESSONS.md` **63** — a green gate proves exactly what it enumerates, so name what it did not
+cover in the same breath; and once a gate is frozen, do not add conditions to it, whether the new information
+favours strictness or leniency.
+
+Stable accounting unchanged: **44 / 14 / 30**, debt **5**, authoritative M3 packages **67**. Selector 365 becomes
+accepted authority. Exact next: **`M3-CP4c-3-DEFN`** under AJ0–AJ9; CP4c-3 is unblocked.
+
 ## 2026-08-30 — `M3-CP4c-2-TB-X2-R10-EXEC`: valid immutable 365/365 green execution; review pending
 
 Artifact-only runtime/raw-evidence subturn. Run/job `33331453506 / 99310594268` consumed CB9 package `9736088354` directly and completed successfully. Result artifact `9737796927` has SHA-256 `b02022367785d6a4790549ad127bff69f831404b6ea525f426b707794f71649b`; diagnostic artifact `9737797177` has SHA-256 `0a374b6b240877049eacfec2c70be944c39ce3cc4e5a6c461c358a1b206e78c8`. Immutable preflight/postflight passed; configure/compile/relink/repair/generated discovery and all package/source/test/fixture/selector mutation flags were false; `benchmarkExecution=false`.

@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-28 (**CP4c-1 CLOSED / ACCEPTED at 355/355.** Authoritative TB-R5 run/job `33161644741 / 98817323175` consumed immutable GMP package `9675666067`; W3 prediction and immutable postflight passed. Exact next is definition-only `M3-CP4c-2-DEFN`.)
+**Status date:** 2026-08-30 (**CP4c-2 CLOSED / ACCEPTED at 365/365.** Authoritative R10 run/job `33331453506 / 99310594268` consumed immutable GMP package `9736088354`; selector 365 SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, immutable pre/postflight passed, every mutation and benchmark flag false. Criteria C1/C3/C6 green. Carried to CP4c-3: the prescribed sphere, Amendment 14's ordinary trace-crossed proposal path (`R10-CAND-01`), and `R8-CAND-02`. Exact next is definition-only `M3-CP4c-3-DEFN`.)
 
 ---
 
@@ -74,8 +74,8 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0`** | resolved interval pairing with propagated barycentric positions (`DESIGN.md` §4.5) — **continuation only after the split** | **346**, `20d3b0b1...` | **Contract complete.** DEFN froze the continuation rule, DEFN-2 the grazing model, CB8 implemented it, CB9 landed deterministic cost guards. Closes on a green `M3-CP4c-0-TB-R9` against Q8 criteria **1, 4, 5** |
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
-| **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **358 = accepted 355 + C1 + C3 + C6** (prospective; DEFN must freeze) | **NEXT:** `M3-CP4c-2-DEFN` |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | **359 = prospective 358 + C2** | needs `M3-CP4c-3-DEFN` after CP4c-2 |
+| **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | extends accepted **365** by appending (every earlier prefix must still reproduce) | **NEXT:** `M3-CP4c-3-DEFN` under AJ0-AJ9 |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

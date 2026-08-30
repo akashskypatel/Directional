@@ -28,8 +28,8 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-30 at `M3-CP4c-2-TB-X2-R9-REV`; exact next is `M3-CP4c-2-CB9` under measures
-AI0–AI9, converting A2b's two stale cut-arc consumers. If the head commit is far ahead, trust
+**Currency.** Last updated 2026-08-30 at `M3-CP4c-2-TB-X2-R10-REV`, which **closed CP4c-2 at 365/365**; exact next
+is `M3-CP4c-3-DEFN` under measures AJ0–AJ9. If the head commit is far ahead, trust
 `TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
 "where we are" section; the architecture and recurring-defect sections age much more slowly.
 
@@ -69,16 +69,17 @@ guarantee. The distinguishing commitments:
 | A8 | `VerificationReport` + `OutputDisposition` | independent verifier assigns the tier |
 | A9 | logs and public result | — |
 
-A2a′ is new in CP4c-2 and is the current work. Everything from A3 onward is unreached.
+A2a′ was added and closed in CP4c-2. A2b now derives regions with disc proofs on the produced torus. Everything
+from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (§7 item 1).
 
 **Disposition ladder** (assigned by A8, never asserted by a producer; a run only moves down):
 `D0 Certified` → `D1 QualityRelaxed` → `D2 LocallyDegraded` → `D3 Partial` → `D4 DiagnosticOnly`.
 
 ## 3. Where we are
 
-**Accepted authority: CP4c-1 at 355/355.** CP4c-0, CP4c-0b and CP4c-1 are CLOSED / ACCEPTED. The accepted
-selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so `first_red_ordinal`
-is comparable across the whole arc.
+**Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
+accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
+`first_red_ordinal` is comparable across the whole arc.
 
 | selector | SHA-256 |
 |---|---|
@@ -88,10 +89,10 @@ is comparable across the whole arc.
 | accepted 355 | `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa` |
 | CP4c-2 357 prefix (superseded as a gate; retained) | `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70` |
 | CP4c-2 358 (**withdrawn** as a gate; retained) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
-| CP4c-2 361 prefix (superseded by 365; retained) | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
-| **CP4c-2 gate 365 (frozen at CB7; executed red at ordinal 363 in R9)** | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
+| CP4c-2 361 prefix (superseded by accepted 365; retained) | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
+| **accepted 365 (CP4c-2, closed at R10)** | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
 
-**All eight values are authority**, each recomputed from committed bytes and re-verified at `R9-REV`. The
+**All eight values are authority**, each recomputed from committed bytes and re-verified at `R10-REV`. The
 316/346/353/355 rows derive from `Architecture_M3_CP4c1_Required_Green_Selector.txt` — `head -316`, `head -346`,
 `head -353`, and the whole file; 357 and 358 from their own candidate files; 361 and 365 from their own files.
 **The gate file `…_Selector_365.txt` reproduces all three earlier prefixes exactly** — its `head -355`,
@@ -102,13 +103,16 @@ defect `R7-ORCH-01` was four hashes expanded back to full length from abbreviati
 long.
 
 
-**R9 reached ordinal 363.** On immutable CB8 package `9726295440` (run/job `33319911575 / 99279955697`) the
-accepted prefix is **355/355 PASS** and ordinals **356–362 PASS**; ordinal **363** is red and 364–365 are NOT RUN.
-CB8's AH2 correction worked — 359 and 361 both pass — so **`R8-CAND-01` is closed**, **measure `AD3` is resolved**
-(359 reached its comparison at last), **criterion C3 is green** at ordinal 362 after seven deferrals, and
-**`PR8-R044`'s fix is now proved on two witnesses**, bounded (360) and closed (361).
+**CP4c-2 CLOSED / ACCEPTED at 365/365.** R10 (run/job `33331453506 / 99310594268`) executed the frozen gate from
+ordinal 1 against immutable CB9 package `9736088354`, one identity per fresh process, with green immutable
+pre/postflight and every mutation and benchmark flag false. Accepted source
+`57444781af7bdc460e38cc68930a9a8c8199eeea`; package SHA-256 `78f542c7…0490ebdf`. Criteria **C1**, **C3** and **C6**
+are green.
 
-**Ordinal 363 is the first genuine product defect in this arc** — see §7 item 1. Everything before it is green.
+**What CP4c-2 does not deliver**, so the closure is not read as more than it is: the **prescribed sphere** still
+fails before cut selection and was outside the gate by recorded decision, so CP4c-2 closed with one of its three
+witnesses unable to reach A2b at all (§7 item 1); Amendment 14's **ordinary** trace-crossed proposal path is
+unexercised (§7 item 2); and the zero-node/zero-arc question is unresolved (§7 item 3). All three carry to CP4c-3.
 
 **The torus is done, and this is the checkpoint's headline result.** Ordinal 356 publishes `networkV=48`,
 `networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`; the independent oracle publishes actual graph
@@ -118,11 +122,11 @@ non-cellular network to a certified cellular embedding and A2b derives four regi
 **C6** all hold on the produced torus (ordinals 356, 357, 362).
 
 Stable regression accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**;
-authoritative M3 packages **66**. `selected_r2_branch=NONE`; gate **365** is the frozen authority, executed red at
-ordinal 363 in R9; `gate_execution_authorized=false` at closeout.
+authoritative M3 packages **67**. `selected_r2_branch=NONE`; selector **365** is now accepted authority;
+`gate_execution_authorized=false`.
 
-**CP4c-2 is open and unaccepted.** Criteria **C1**, **C3** and **C6** are all now green at runtime on the produced
-torus (ordinals 356, 357, 362). What remains is the trace-crossed cut machinery: ordinal 363 red, 364–365 unrun.
+**CP4c-3 is next and unblocked.** Its parent responsibility is the closed-surface missing field-transport adjacency
+in A1 and then the mechanical witness (criterion **C2**), plus the three items CP4c-2 carried forward.
 
 **The gate is selector 365**, frozen by CB7 under AG7: selector 361 plus criterion C3's torus identity and the
 three Amendment-14 identities. Every prefix is byte-identical to its predecessor — 355, 357, 361 — so
@@ -242,44 +246,40 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **`M3-CP4c2-TB-X2-R9-CAND-01` — the live gate red at ordinal 363, and the first genuine *product* defect in
-   this arc.** Amendment 14 makes a promoted trace-crossed source edge own `n+1` collinear `Cut` arcs.
-   `EmbeddedGraphTopology.cpp:503-545` emits them correctly — exact `ExactUnitParameter` ordering, coincident
-   crossings rejected rather than merged, every sub-arc in the canonical `first()→second()` direction. But
-   `GlobalTopologyPlan.cpp:479-516` still demands **exactly one** Cut arc per cut edge and calls cuts *"ordinary
-   embedded source-edge barriers"*, while the trace block eighteen lines below already reasons in **chords and
-   fragments**. **Amendment 14 made cut arcs chord-like; A2b still treats them as whole-edge barriers** — the same
-   whole-edge-versus-arrangement error that `PR8-R043` and Amendment 13 fixed one layer up.
-   **A second consumer fails silently**: `GlobalTopologyPlan.cpp:1239-1242` inserts the whole source edge's two
-   endpoints into `boundaryVertices` for a sub-arc, and `boundaryVertices` is a **skip list**, so it suppresses the
-   interior-vertex ownership check with no error at all. Fixing only the loud site would trade a red gate for a
-   quiet weakening. Owned by measures **AI0–AI9**.
-2. **Amendment 14's producer is proved; ordinals 364 and 365 have still never run.** Ordinal 363 reached and passed
-   `SurfaceCutGraph::make` on the trace-crossed witness — exact crossing, cellular certificate,
-   `TraceInteriorCrossing` selection — before A2b rejected the plan. The **degree-four two-Cut/two-Trace edge-locus
-   rotation** (the one code gap DEFN-R2 named) and the **saturation last resort** remain unexecuted for a third
-   turn. Static reading says CB7's `edge_ray_points_to_second_endpoint` generalization is sub-arc-correct; that is
-   not evidence.
-3. **`M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere.** Two independent problems, neither in the gate.
-   (a) The producer fails at `SurfaceCutGraph.cpp:240/243` with `originatingTopologyError=RotationSystemInconsistent`
-   at source face `25-27-28`, `producerCutEdgeCount=0` — **before** cut selection, so Amendment 14 is not an account
-   of it. `CellularityNotEstablished` there is `topology_error`'s `default:` bucket for 36 upstream codes, not a
-   verdict; AF0's instrumentation printed the real one and it matches R7-REV's static derivation exactly.
-   (b) Independently, its pre-cut graph is **non-cellular** — `V/E/F = 18/30/18`, `c=1`, `chi=6` against
-   `sourceChi=2` — so it genuinely needs cuts, and with 24 traces and zero mandatory edges they will be
-   trace-crossed. Fixing (a) does not fix (b).
-4. **`AH6` is still not adjudicated.** It needs 363–365 all reached: does the AG5 witness select its trace-crossed
-   edges by the ordinary tree–cotree path, or only after saturation fires? If only under saturation, Amendment 14's
-   primary selection path is ungated and a second witness is owed.
-5. **`M3-CP4c2-TB-X2-R8-CAND-02`** — zero-node / zero-arc closed-surface cut-graph behaviour is an open product
-   question: A2a′ should either certify by cutting from scratch or reject with a typed error naming the empty
-   network. Non-gating, non-stable.
-6. **Torus post-A2b `tracing` failure** — downstream of A2b, out of CP4c-2 scope, tracked and not to be fixed here.
-7. **Mechanical witness A1 `IncompleteCycleBasis`** — CP4c-3 / C2. It is also why selector 358 was withdrawn (§3).
+The first three are CP4c-2's carried-forward debts and are CP4c-3's inheritance.
 
-**Closed at R9, do not re-open:** `R8-CAND-01` (359 and 361 green), measure **`AD3`** (359 reached its comparison —
-the raw `face.orbit` index in a semantic digest is now proved by test, not by comment), criterion **C3** (ordinal
-362), and `PR8-R044`'s single-witness residual (360 bounded + 361 closed).
+1. **`M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere, still the largest piece of unfinished business.** Two
+   independent problems, and fixing either does not fix the other.
+   (a) The producer fails at `SurfaceCutGraph.cpp:240/243` with
+   `originatingTopologyError=RotationSystemInconsistent` at source face `25-27-28`, `producerCutEdgeCount=0` —
+   **before** cut selection, so Amendment 14 is not an account of it. `CellularityNotEstablished` there is
+   `topology_error`'s `default:` bucket for 36 upstream codes, not a verdict; AF0's instrumentation printed the real
+   one and it matched R7-REV's static derivation exactly.
+   (b) Independently, its pre-cut actual embedded graph is **non-cellular** — `V/E/F = 18/30/18`, `c=1`, `χ=6`
+   against `sourceChi=2` — so it genuinely needs cuts, and with 24 traces and zero mandatory edges they will be
+   trace-crossed, which is exactly the case item 2 governs.
+2. **`M3-CP4c2-TB-X2-R10-CAND-01` — Amendment 14's *ordinary* proposal path is structurally unreachable.** R10
+   published `ordinary_proposal_selected_trace_crossed_edge=no` with `saturation_used=yes`: the only route by which
+   a trace-crossed edge enters the cut set is the saturation last resort. The mechanism is in the committed loop —
+   `barriers = mandatory ∪ traceCrossed ∪ cuts`, so a trace-crossed edge **bounds** a proposal component instead of
+   lying inside one, and a tree–cotree search draws from a component's interior edges. DEFN-R2 §4.5 removed the
+   *filter* but permitted the conservative *barrier set*, on the reasoning that over-separation "costs extra cuts,
+   never correctness" — true about correctness, wrong about coverage. Amendment 14's **representation** is fully
+   proved (ordinals 363/364 assert on an actually-promoted crossed edge whichever path selected it); what is at
+   stake is cut-graph **quality**, and the fact that saturation firing on a production witness is now
+   indistinguishable from this expected case. Corrective: model trace crossings as **per-face chords** in the
+   proposal, matching the fragment machinery. Heuristic-only — Amendment 13 §3 already denies it certification
+   authority — so it does not reopen Amendment 14.
+3. **`M3-CP4c2-TB-X2-R8-CAND-02`** — zero-node / zero-arc closed-surface cut-graph behaviour: A2a′ should either
+   certify by cutting from scratch or reject with a typed error naming the empty network. Non-gating, unresolved.
+4. **Criterion C2 / the mechanical witness** — A1 `IncompleteCycleBasis`. This is CP4c-3's own parent
+   responsibility, and it is why selector 358 was withdrawn as a gate candidate (§3).
+5. **Torus post-A2b `tracing` failure** — downstream of A2b, tracked, and out of CP4c-2's scope by decision.
+
+**Closed in CP4c-2, do not re-open:** `PR8-R043`, `PR8-R044` (proved on a bounded *and* a closed witness),
+`R7-ORCH-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-CAND-01`, `R8-ORCH-01`, `R9-CAND-01`, `R9-ORCH-01`; measure **AD3**
+(ordinal 359 — the raw `face.orbit` index in a semantic digest is proved by test, and the falsifier is now cited
+beside the claim in the source); criteria **C1**, **C3**, **C6**.
 
 ## 8. Recurring defect patterns — the highest-value section
 
@@ -318,6 +318,13 @@ premise, invalid conclusion: `build_arcs` already emits one trace arc per event,
 source edge at a trace terminal, without touching the product. An immutability guarantee constrains the *writer*,
 not the *derived view*. Before ruling a representation out on an upstream guarantee, read what the existing
 consumers of that representation already do — the same control (`LESSONS.md` 22e) that the R2 error missed.
+
+**A green gate proves exactly what it enumerates, and its silence is the finding.** CP4c-2 closed at 365/365 with
+one of its three witnesses — the prescribed sphere — unable to reach A2b at all, and with Amendment 14's ordinary
+proposal path unexercised. Both were outside the gate by recorded decision, and both are real. A closure record that
+lists only what went green is a misleading record: say what the gate did **not** cover, in the same breath. The
+converse discipline matters equally — once a gate is frozen and its evidence arrives, do not add conditions to it,
+whether the new information favours strictness (`PR8-R044` at R7-REV) or leniency (`AH6` at R10-REV).
 
 **Gated observation — the measurement suppressed by its own harness.** Publications gated behind a call that
 fails; one error code collapsing several mechanisms with no locus; one witness's failure aborting the loop
