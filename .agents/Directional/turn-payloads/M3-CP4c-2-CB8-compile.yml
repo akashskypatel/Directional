@@ -1,0 +1,36 @@
+name: M3 CP4c2 CB8 Compile
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-cb8-compile/**
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c2-cb8-compile-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-cb8-compile
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: 05f9ef299ee54f8c9d50318fc9a37e5a5503740d
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c2-cb8
+    secrets: inherit
