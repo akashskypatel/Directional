@@ -1,3 +1,36 @@
+## M3-CP4c3-DEFN-CAND-01 — `IncompleteCycleBasis` collapses seven distinct A1 conditions and the mechanical witness has never been diagnosed — **ACTIVE / DIAGNOSTIC-AUTHORITY / GATING / NON-STABLE**
+
+- **Observed statically at `M3-CP4c-3-DEFN`**, on the source accepted at CP4c-2
+  (`57444781af7bdc460e38cc68930a9a8c8199eeea`): `src/authority/FieldTransportAtlas.cpp` returns
+  `FieldAtlasBuildErrorCode::IncompleteCycleBasis` from **eight sites** for **seven distinct conditions** —
+  `:1597` (`PCFaceTangentBundle::init` threw), `:1613` (cycle/curvature/column counts disagree with
+  `interiorVertices + boundaryLoops + 2·genus`), `:1673` (a cycle coefficient is neither ≈0 nor ≈±1, or a column is
+  out of range), `:1682` (**no `FieldTransportAdjacency` for a cycle's edge**), `:1688` (a local edge has a negative
+  incident face), `:1700` (`order_cycle_steps` failed), `:1751` (per-kind cycle partition counts disagree), `:1818`
+  (boundary-cycle count ≠ `boundaryLoops.size()`). **Five publish nothing but a region id.**
+- **Impact:** the mechanical witness — criterion **C2**, now gated at ordinal 366 — has been recorded for the whole
+  CP4c arc as "no atlas — stops in A1 at `IncompleteCycleBasis`", and **no diagnostic has ever been run on it**.
+  `ROADMAP.md`'s framing of CP4c-3's parent responsibility as "missing field-transport adjacency" matches site
+  `:1682` specifically, but that is **one site among seven and has never been confirmed**.
+- **Pattern:** `LESSONS.md` **57**, recurring in A1. CP4c-2 spent **eight turns** reasoning about cellularity because
+  `topology_error` collapsed 36 codes into `CellularityNotEstablished`; AF0's additive `originatingTopologyError`
+  provenance field ended it without touching the mapping. The same fix applies here.
+- **Second-order gap:** `:1613`, `:1751` and `:1818` all derive their expectations from the *local region mesh*
+  built by `make_local_region_mesh` (`:850-895`) from a region's faces plus all their vertices, so
+  `isBoundaryVertex`, `boundaryLoops` and the expected counts depend on that mesh's shape. The site alone will not
+  explain a count mismatch.
+- **No mechanism is promoted.** Candidate readings exist but are hypotheses; the measures exist so the next turn
+  reports a measurement rather than adopting one. This is the R2 discipline, which has shortened the last three
+  checkpoints.
+- **Owning correction:** **AK1** (additive enumerated-reason provenance at all eight sites — an enumerated reason,
+  **not** a line number; `LESSONS.md` 62's stale `419/437/474` labels are the counter-example; no re-mapping, no
+  enum renumbering, no new error code), **AK2** (publish the per-region local-mesh shape and every count for the
+  mechanical witness), **AK6** (the fix, phase 2, naming the measured site). **AK8** requires the implementer to
+  re-derive the site enumeration by search rather than copying the DEFN's table.
+- **Closure condition:** ordinal 366 green in a run reaching at least 366.
+- **Stable-count rationale:** diagnostic-authority finding on an unaccepted checkpoint; the accepted 365 is green.
+  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **67**.
+
 ## M3-CP4c2-TB-X2-R10-CAND-01 — Amendment 14's ordinary trace-crossed proposal path is structurally unreachable; only saturation promotes such an edge — **ACTIVE / QUALITY / COVERAGE / NON-STABLE**
 
 - **Observed:** R10 (run/job `33331453506 / 99310594268`, package `9736088354`) published, for the AG5
@@ -27,7 +60,10 @@
   every identity in it passed, and the run is valid. Adding a coverage condition after the evidence arrived would be
   the goalpost-moving this project corrected twice — including when the evidence favoured being strict
   (`PR8-R044` at R7-REV). The discipline holds when it favours leniency too.
-- **Owning correction:** **AJ4**. Replace the conservative `traceCrossed` barrier contribution with the per-face
+- **CP4c-3 DEFN disposition:** carried to CP4c-3 as owner, corrective unchanged and now measure **AK4**; the
+  §6.2 identity `SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation` is named for append into
+  the gate under **AK7**, so the ordinary path stops being ungated.
+- **Owning correction:** **AJ4 / AK4**. Replace the conservative `traceCrossed` barrier contribution with the per-face
   **trace-segment chord** model the fragment machinery already uses, so a trace-crossed edge is interior to its
   component and available to the ordinary proposal. This touches the **proposal heuristic only** — Amendment 13 §3
   already denies it certification authority — so it does **not** reopen Amendment 14 or any certificate. Requires a

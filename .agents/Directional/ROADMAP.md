@@ -32,7 +32,7 @@ returned VALID RED 316/322. Its two committed witnesses are **closed surfaces** 
 mechanical χ = 2 sphere — while every witness that has ever validated A2b is a **bounded disc**, χ = 1.
 Two of the three failure families are therefore scope gaps in *accepted* authority, not CP4c defects.
 
-Cumulative accepted authority has grown 304 → 316 → 346 → 353 → **355** through CP4c-1. The remaining parent identities C1/C3/C6 and C2 are allocated to CP4c-2 and CP4c-3 respectively; their successor cumulative selectors are not frozen until their definition turns.
+Cumulative accepted authority has grown 304 → 316 → 346 → 353 → 355 → **365** through CP4c-2. C1/C3/C6 were allocated to CP4c-2 and are green; C2 is allocated to CP4c-3, whose gate was frozen at **367** by `M3-CP4c-3-DEFN` and extends to **370** under AK7. The allocation of criteria to checkpoints is unchanged; which **witnesses** a checkpoint's identities bind is a DEFN decision, and CP4c-3's DEFN put the prescribed sphere in its gate.
 
 ---
 
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness | extends accepted **365** by appending (every earlier prefix must still reproduce) | **NEXT:** `M3-CP4c-3-DEFN` under AJ0-AJ9 |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **367 = accepted 365 + C2 + C3's full torus-and-mechanical form**, frozen at `M3-CP4c-3-DEFN`, SHA-256 `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`; extended to **370** by AK7 | **NEXT:** `M3-CP4c-3-CB1` under AK0-AK3 |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

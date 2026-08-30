@@ -84,106 +84,125 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-3-DEFN` — definition and planning only
+**`DEFN` absorbs `REVIEW + PLAN` — user-authorized 2026-08-30.** When `DEFN` is the next step in the
+chain, it **is** the review-and-plan turn for its checkpoint: one turn freezes definitions, adjudicates
+the inherited candidates, decides gate membership per identity, and issues the successor's measures. A
+separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This collapses only the
+`REVIEW+PLAN → DEFN` edge; every other edge above is unchanged, and a red TB that routes to
+`REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
+`M3-CP4c-3-DEFN`.
 
-**`M3-CP4c-2` is CLOSED / ACCEPTED at 365/365.** Adjudicated by
-`Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`. Measures **AJ0–AJ9**.
+## Mandatory next turn — `M3-CP4c-3-CB1` — phase-1 instrumentation, no product fix
 
-### Accepted authority — do not re-derive
+`M3-CP4c-3-DEFN` is **COMPLETE** and, under the new cadence, was also the review/plan turn:
+`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`. Measures **AK0–AK9**.
 
-| item | value |
-|---|---|
-| accepted source | `57444781af7bdc460e38cc68930a9a8c8199eeea` |
-| accepted GMP package | `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf` |
-| packaged source archive | `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e` |
-| accepted selector | **365**, SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
-| run / job | `33331453506 / 99310594268` |
-| result / log artifacts | `9737796927` / `9737797177` |
-| result | **365 / 365 PASS**, first red none, immutable pre/postflight green, all mutation and benchmark flags false |
+**`M3-CP4c-2` remains CLOSED / ACCEPTED at 365/365** — source `57444781af7bdc460e38cc68930a9a8c8199eeea`, package
+`9736088354`, selector 365 SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
 
-Criteria **C1**, **C3** and **C6** are green. A2a′ `SurfaceCutGraph` is a certified pre-region authority: the closed
-genus-1 torus goes from a non-cellular network to a certified cellular embedding with 28 cut edges, A2b derives 4
-regions, and producer and independent oracle agree term for term (`V/E/F = 72/76/4`; `76 − 48 = 28`).
+### Read this before touching the mechanical witness or the sphere
 
-### What CP4c-2 did NOT deliver — CP4c-3 inherits all three
+**`IncompleteCycleBasis` is a seven-way collapse.** `src/authority/FieldTransportAtlas.cpp` returns that one code
+from **eight sites** for **seven distinct conditions**, and **five publish nothing but a region id**:
 
-1. **The prescribed sphere** (`M3-CP4c2-TB-X2-CAND-04`). Two independent problems: (a) the producer fails at
-   `SurfaceCutGraph.cpp:240/243` with `originatingTopologyError=RotationSystemInconsistent` at source face
-   `25-27-28`, `producerCutEdgeCount=0`, **before** cut selection; (b) independently, its pre-cut actual embedded
-   graph is non-cellular (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`) and will need trace-crossed cuts. Fixing (a)
-   does not fix (b). **CP4c-2 closed with this witness unable to reach A2b at all**, by recorded decision.
-2. **Amendment 14's *ordinary* proposal path** (`M3-CP4c2-TB-X2-R10-CAND-01`). R10 published
-   `ordinary_proposal_selected_trace_crossed_edge=no` with `saturation_used=yes`. Mechanism, from the committed
-   loop: `barriers = mandatory ∪ traceCrossed ∪ cuts`, so a trace-crossed edge **bounds** a proposal component
-   instead of lying inside one, and a tree–cotree search draws from a component's interior edges. DEFN-R2 §4.5
-   removed the *filter* but permitted the conservative *barrier set*. Amendment 14's **representation** is fully
-   proved regardless; what is at stake is cut-graph **quality**.
-3. **`M3-CP4c2-TB-X2-R8-CAND-02`** — zero-node / zero-arc closed-surface cut-graph behaviour.
+| site | condition | locus |
+|---|---|---|
+| `:1597` | `PCFaceTangentBundle::init` threw | region |
+| `:1613` | cycle/curvature/column counts ≠ `interiorVertices + boundaryLoops + 2·genus` | region |
+| `:1673` | a cycle coefficient is neither ≈0 nor ≈±1, or a column is out of range | region |
+| **`:1682`** | **no `FieldTransportAdjacency` for a cycle's edge** | region + edge |
+| `:1688` | a local edge has a negative incident face | region + edge |
+| `:1700` | `order_cycle_steps` could not order the directed cycle | region |
+| `:1751` | per-kind cycle partition counts disagree | region |
+| `:1818` | boundary-cycle count ≠ `boundaryLoops.size()` | region |
 
-### CP4c-3 scope — AJ0–AJ9
+`:1682` is literally "missing field-transport adjacency", the phrase `ROADMAP.md` uses for CP4c-3's parent
+responsibility — **one site among seven, never confirmed**. No diagnostic has ever been run on this witness. This is
+`LESSONS.md` 57 recurring in A1, and CP4c-2 paid **eight turns** for the identical pattern at `topology_error`.
+`:1613`, `:1751` and `:1818` all derive their expectations from the *local region mesh*
+(`make_local_region_mesh`, `:850-895`), so the site alone will not explain a count mismatch.
 
-1. **AJ0** record the closure in `M3_CP4c_Consolidated_Record.md` §2 and `ROADMAP.md` §1 with the exact identities
-   above; authoritative M3 package count **67**; stable accounting unchanged at **44 / 14 / 30**, debt **5**.
-   Recompute every hash from committed bytes at authoring; never transcribe.
-2. **AJ1** freeze CP4c-3's gate by **appending** to accepted 365, so `head -355`, `head -357`, `head -361` and
-   `head -365` all still reproduce their frozen hashes — inserting instead of appending is what broke candidate 358
-   (`LESSONS.md` 64x). State per-identity gating membership with a rationale (`LESSONS.md` 64w).
-3. **AJ2** the prescribed sphere is CP4c-3's **first-class subject**. Separate its two problems in the definition.
-   If it stays outside the gate, say why in writing — closing a second checkpoint around it silently would be the
-   `AF5` coverage failure a third time.
-4. **AJ3** read the 50 `fragment_reconciliation` and 128 `cut_edge_orbit_evidence` rows from retained artifact
-   `9737796927` and state whether `fragment_orbit_count == expected_fragment_count` on every row. The product's own
-   guard already proves the identity, so this is characterization — but a published number nobody compares is how
-   `localizationConsistent` became meaningless. **No new runtime.**
-5. **AJ4** own `R10-CAND-01`: model trace crossings as **per-face chords** in the proposal heuristic, matching the
-   fragment machinery, so a trace-crossed edge is interior to its component. **Heuristic only** — Amendment 13 §3
-   already denies it certification authority, so Amendment 14 is not reopened. Require a witness where the ordinary
-   path selects a trace-crossed edge with `saturationUsed=false`; keep the AG5 witness as the saturation case.
-6. **AJ5** decide `R8-CAND-02` rather than deferring it again.
-7. **AJ6** preserve CP4c-2's diagnostic surface — `originatingTopologyError`, the AI2 fragment/orbit publication,
-   the actual-embedded-graph oracle, the repaired D2 harness. They belong to the product now. Keep running the
-   frozen non-gating selector in full or justify skips per identity (`AF6`).
-8. **AJ7** measures must carry their own enumerations, or require the implementer to **search** rather than copy
-   (`LESSONS.md` 59, 61).
-9. **AJ8** no reopening of Amendments 12/13/14; no change to accepted selector 365's bytes; no relaxation of
-   `proves_cellularity()`, the fragment-count invariant, `UncutFaceComponentOrbitSeedNotUnique`, or any typed error
-   mapping; and **no implementation in a definition turn** — no compile, package, runtime, gate execution or
-   benchmark. `gate_execution_authorized` stays `false`.
+### CP4c-3 gate — selector 367, frozen
+
+`.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt`, whole-file SHA-256
+`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`. Accepted 365 plus **366**
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` (criterion **C2**) and **367**
+`GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses` (criterion **C3**'s full torus-and-mechanical
+form). `head -355 / -357 / -361 / -365` all reproduce their frozen hashes. Both appended identities are **red
+today** — correct for a required-green selector. `selected_gate=NONE`; `gate_execution_authorized=false`.
+
+**Named for append under AK7, producing gate 370:**
+`GlobalTopologyPlan.PrescribedSphereWitnessDerivesRegionsThroughProductionEntryPath`,
+`SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation`,
+`SurfaceCutGraph.EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError`.
+
+### The DEFN's decisions
+
+- **The prescribed sphere is IN the gate** — it has sat outside two consecutive gates, it is the only witness that
+  cannot reach A2b at all, A2b is what M4 builds on, and its problem (b) is directly coupled to `R10-CAND-01`.
+  Adding a gated **witness** is not reallocating a **criterion**; the ROADMAP allocation is untouched.
+- **`R8-CAND-02` decided:** an empty network on a closed surface is **rejected with a typed error**. Cutting from
+  scratch would make A2a′ the producer of the whole embedded graph, which is A2a's single-writer authority. The new
+  code is **appended**, never renumbered.
+- **Two phases against one gate:** phase 1 instruments and fixes nothing; phase 2 fixes on measured causes, with its
+  internal ordering left to the phase-1 review because the causes may share a locus.
+
+### CB1 scope — AK0–AK3, instrumentation only
+
+1. **AK1** add an optional **enumerated-reason** provenance field to `FieldAtlasBuildError` identifying which of the
+   eight sites fired; populate all eight; print it wherever `field_atlas_build_error_code_name` is printed.
+   **Additive only:** no re-mapping, no enum renumbering, no new `FieldAtlasBuildErrorCode` value. Use an
+   **enumerated reason, not a line number** — `LESSONS.md` 62's stale `419/437/474` labels are the counter-example.
+   This is AF0's template applied to A1; follow it exactly.
+2. **AK2** publish the local-region-mesh shape for **every** region of the mechanical witness — `V/E/F`, computed
+   `eulerCharacteristic`, `boundaryLoopCount`, `genus`, `interiorLocalVertices.size()`, `expectedCycleCount`, and
+   the actual `bundle.cycles.rows()` / `cycleCurvatures.size()` / `innerAdjacencies.size()` — as a per-region row
+   set in the AG3 idiom, not only the first failing region.
+3. **AK3** print the sphere's `RotationSystemInconsistent` at **nine-way** granularity through the existing frozen
+   non-gating sphere diagnostic. **No product fix for the sphere in phase 1.**
+4. **AK8** every "every site / every region / every consumer" measure is discharged by the implementer's **own
+   search**, published in the report; the DEFN's eight-site table is an after-the-fact cross-check, never a source
+   to copy (`LESSONS.md` 59, 61).
+
+**Prohibited in CB1** (full list in the DEFN §7): designing a fix for either witness before AK1–AK3 print the site;
+renumbering or removing any existing error-enum value or changing any mapping; reopening Amendments 12/13/14;
+changing accepted selector 365's bytes or any byte of 357/358/361, or 367 other than by AK7's append; treating
+`R10-CAND-01`'s corrective as a certification change; introducing any tolerance; removing CP4c-2's diagnostic
+surface.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are **CLOSED / ACCEPTED**.
-- **CP4c-3 is unblocked.** Its parent responsibility is the closed-surface missing field-transport adjacency in A1
-  and then the mechanical witness (criterion **C2**), plus the three inherited items above.
-- Accepted selector is **365**; 357, 358 and 361 are retained lineage and are not executable authority.
-- Open candidates: `M3-CP4c2-TB-X2-CAND-04`, `M3-CP4c2-TB-X2-R10-CAND-01`, `M3-CP4c2-TB-X2-R8-CAND-02`.
-  Closed in CP4c-2: `PR8-R043`, `PR8-R044`, `R7-ORCH-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-CAND-01`, `R8-ORCH-01`,
-  `R9-CAND-01`, `R9-ORCH-01`, and measure `AD3`.
+- **CP4c-3 is open**, gate frozen at **367**, two phases, four owned items: criterion **C2** (the mechanical
+  witness), the prescribed sphere (`CAND-04`, now gated), `R10-CAND-01`, and `R8-CAND-02` (decided, awaiting
+  implementation). New this turn: `M3-CP4c3-DEFN-CAND-01`, the A1 seven-way error collapse.
+- Accepted selector is **365**; 357, 358 and 361 are retained lineage; 367 is CP4c-3's frozen, unselected gate.
 - Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
   packages **67**. `selected_r2_branch=NONE`; `gate_execution_authorized=false`.
-- **Exact next is `M3-CP4c-3-DEFN`.**
+- **Exact next is `M3-CP4c-3-CB1`.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/REVIEW.md` — the definition/planning-only boundary for a DEFN turn
+- turn-based-coding-agent `references/turns/CODE_BUILD.md` and `GMP_COMPILE_POLICY.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — **read first**; current as of R10-REV. §7 items 1-3 are exactly what
-   CP4c-3 inherits; §6 carries the normative complex, Amendment 14's cut admissibility, and the
-   witness-construction trap.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — the closure adjudication:
-   validity verification, the CB9 audit, the `AH6` disposition and its reasoning, measures **AJ0–AJ9**.
-2. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — CP4c-2's closure record and the whole family's history.
-3. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendments 14, the completeness
-   theorem, and the gate-membership discipline. Read `…DEFN_R1…` only alongside it.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — the three inherited candidates.
+0. `.agents/Directional/ORIENTATION.md` — **read first**; current as of `M3-CP4c-3-DEFN`. §7 items 1–4 are exactly
+   what CP4c-3 owns; §8's first pattern is the error-collapse family that both open witnesses belong to.
+1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — the authorizing definition: the
+   eight-site table, the sphere scope decision, the `R8-CAND-02` decision, the gate, and measures **AK0–AK9** with
+   their prohibitions.
+2. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-DEFN-CAND-01`, `CAND-04`, `R10-CAND-01`,
+   `R8-CAND-02`.
+3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2's closure
+   adjudication and the AF0 provenance template AK1 reuses.
+4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14 and the completeness
+   theorem, **frozen**; read `…DEFN_R1…` only alongside it.
 5. `ROADMAP.md` — CP4c-3's parent responsibility and the path to `M8-CP3`.
-6. `TODO.md` / `CHANGELOG.md` — current task and the lesson adopted at R10-REV (63).
+6. `TODO.md` / `CHANGELOG.md` — current task and the cadence change recorded this turn.
 
-**This is a DEFINITION turn.** It may freeze definitions, selectors and measures; it must not compile, package,
-execute Directional runtime, run any gate, or benchmark.
+**This is a phase-1 CODE + BUILD that instruments and does not fix.** A compile-green result is build evidence only.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

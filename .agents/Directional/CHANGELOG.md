@@ -1,5 +1,63 @@
 # Changelog
 
+## 2026-08-30 — `M3-CP4c-3-DEFN`: gate 367 frozen, the sphere gated, and A1's seven-way error collapse found
+
+Definition, review and planning in one turn. **Cadence change, user-authorized 2026-08-30:** when `DEFN` is the next
+step in the chain it **is** the review-and-plan turn for its checkpoint — one turn freezes definitions, adjudicates
+inherited candidates, decides gate membership, and issues the successor's measures. Only the `REVIEW+PLAN → DEFN`
+edge collapses; a red TB with no `DEFN` ahead of it still gets its own review turn. Recorded additively in the
+durable turn-workflow sections of `TODO.md` and `Future_Chat_Session_Handoff.md`.
+
+No Directional runtime, build, compile, package, benchmark, or product/test/fixture change. One selector authority
+file was **created**; no existing selector byte was modified. Measures issued: **AK0–AK9**. Full record:
+`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`.
+
+**The finding — `IncompleteCycleBasis` is a seven-way collapse, and the mechanical witness has never been
+diagnosed.** `ORIENTATION` had recorded only "no atlas — stops in A1 at `IncompleteCycleBasis`". Read at source,
+`src/authority/FieldTransportAtlas.cpp` returns that one code from **eight sites** — `:1597, :1613, :1673, :1682,
+:1688, :1700, :1751, :1818` — for **seven distinct conditions**, and **five of them publish nothing but a region
+id**. Site `:1682` is literally "no `FieldTransportAdjacency` for a cycle's edge", the phrase `ROADMAP.md` uses for
+CP4c-3's parent responsibility, so the roadmap points at one site among seven that has never been confirmed. This is
+`LESSONS.md` 57 recurring in A1, and CP4c-2 paid **eight turns** for the identical pattern at `topology_error`. AF0's
+additive-provenance fix is the direct template, applied by **AK1**; **AK2** additionally publishes the
+local-region-mesh shape per region, because `:1613`, `:1751` and `:1818` all derive their expectations from it and
+the site alone will not explain a count mismatch. **No mechanism is promoted** — the candidate readings are
+hypotheses, and AK1/AK2 exist so the next turn reports a measurement rather than adopting one.
+
+**The prescribed sphere is IN CP4c-3's gate.** AJ2 required this decided explicitly. It has sat outside two
+consecutive frozen gates, and `LESSONS.md` 64w plus the `AF5` finding record that a witness outside every gate is
+how a defect survives — the sphere's own eight-turn misdiagnosis is the proof. It is also the only remaining witness
+that cannot reach A2b at all, and A2b is what M4 builds on; and its problem (b) is directly coupled to
+`R10-CAND-01`, which CP4c-3 already owns. Adding a gated **witness** is not reallocating a **criterion**:
+`ROADMAP.md`'s C1/C3/C6→CP4c-2, C2→CP4c-3 allocation is untouched, and which witnesses a checkpoint's identities
+bind is a DEFN decision.
+
+**`R8-CAND-02` decided rather than deferred a third time.** An empty network on a closed surface is **rejected with
+a typed error**. A2a′'s contract is to add cuts to an existing network; cutting from scratch would make it the
+producer of the entire embedded graph, which is A2a's single-writer authority, and a "certified" plan from a witness
+with no field-aligned content is the vacuous-green shape `LESSONS.md` 64r warns about. The new code is **appended**,
+never renumbered, since accepted identities consume the existing values.
+
+**Gate 367 frozen.** `Architecture_M3_CP4c3_Required_Green_Selector_367.txt`, whole-file SHA-256
+`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` — accepted 365 plus ordinal 366
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` (criterion **C2**) and ordinal
+367 `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses` (criterion **C3**'s full
+torus-and-mechanical form, honouring DEFN-R2 §7.3's commitment to move the mechanical half here). `head -355`,
+`head -357`, `head -361` and `head -365` all reproduce their frozen hashes. Both appended identities are **red
+today**, which is correct for a required-green selector. Three further identities are named for append under
+**AK7**, producing gate **370**: the sphere's production-entry-path identity, an ordinary-proposal-without-saturation
+identity, and the empty-network rejection identity.
+
+**Two phases, one gate.** Phase 1 instruments (AK1–AK3) and fixes nothing; phase 2 fixes on measured causes
+(AK4–AK6), with its internal ordering left to the phase-1 review because the measured causes may share a locus — as
+the torus and sphere did. **AK6 states it plainly: a fix whose report cannot name the measured site is not
+authorized.** **AK8** requires every "every site / every region / every consumer" measure to be discharged by the
+implementer's own search, with the DEFN's eight-site table used only as an after-the-fact cross-check —
+`LESSONS.md` 59 and 61 exist because a copied enumeration inherits the author's omissions.
+
+Stable accounting unchanged: **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **67**.
+CP4c-2 remains CLOSED / ACCEPTED at 365/365. Exact next: **`M3-CP4c-3-CB1`** under AK0–AK3.
+
 ## 2026-08-30 — `M3-CP4c-2-TB-X2-R10-REV`: **`M3-CP4c-2` CLOSED / ACCEPTED at 365/365**
 
 Independent review and planning only. No runtime, build, compile, package, benchmark, or product/test/fixture/

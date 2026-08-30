@@ -21,68 +21,86 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-3-DEFN` — definition and planning only
+**`DEFN` absorbs `REVIEW + PLAN` — user-authorized 2026-08-30.** When `DEFN` is the next step in the chain it **is**
+the review-and-plan turn: one turn freezes definitions, adjudicates inherited candidates, decides gate membership,
+and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
+it still gets its own review turn.
 
-**`M3-CP4c-2` is CLOSED / ACCEPTED at 365/365.** Adjudicated by
-`Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`. Measures **AJ0–AJ9**.
+## Current focus — `M3-CP4c-3-CB1` — phase-1 instrumentation, no product fix
 
-Accepted authority: source `57444781af7bdc460e38cc68930a9a8c8199eeea`, GMP package `9736088354`
-(SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`), packaged source archive
-`2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`, R10 run/job `33331453506 / 99310594268`,
-result/log artifacts `9737796927 / 9737797177`, selector **365** SHA-256
-`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, final **365/365 PASS**, immutable
-pre/postflight green, every mutation and benchmark flag false.
+`M3-CP4c-3-DEFN` is complete and, under the new cadence, was also the review/plan turn:
+`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`. Measures **AK0–AK9**.
 
-**What CP4c-2 delivered.** Criteria **C1**, **C3** and **C6** green. A2a′ `SurfaceCutGraph` is a certified
-pre-region authority: the closed genus-1 torus goes from a non-cellular network to a certified cellular embedding
-with 28 cut edges, A2b derives 4 regions, and producer and independent oracle agree term for term
-(`V/E/F = 72/76/4`, `76 − 48 = 28`). Cellularity is certified in the actual embedded graph (Amendment 13),
-trace-crossed source edges are admissible cuts with proved completeness (Amendment 14), semantic and provenance
-identity are separate digests on a bounded *and* a closed witness, and enumeration invariance is proved.
+**`M3-CP4c-2` remains CLOSED / ACCEPTED at 365/365** — accepted source
+`57444781af7bdc460e38cc68930a9a8c8199eeea`, package `9736088354`, selector 365 SHA-256
+`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
 
-**What it did not deliver** — the three items CP4c-3 inherits, listed below.
+### The DEFN's four decisions
 
-### CB9 was audited line by line before closure
+1. **`IncompleteCycleBasis` is a seven-way collapse.** Read at source, `src/authority/FieldTransportAtlas.cpp`
+   returns that one code from **eight** sites (`:1597, :1613, :1673, :1682, :1688, :1700, :1751, :1818`) for seven
+   distinct conditions, and **five of them publish nothing but a region id**. Site `:1682` is literally "no
+   `FieldTransportAdjacency` for a cycle's edge" — the phrase `ROADMAP.md` uses for CP4c-3's parent responsibility —
+   so the roadmap points at one site among seven that has never been confirmed. **No diagnostic has ever been run on
+   the mechanical witness.** This is `LESSONS.md` 57 recurring in A1, and CP4c-2 paid eight turns for the identical
+   pattern at `topology_error`. Instrument before designing.
+2. **The prescribed sphere IS in CP4c-3's gate** (AJ2 discharged). It has sat outside two consecutive frozen gates;
+   it is the only witness that cannot reach A2b at all, and A2b is what M4 builds on; and its problem (b) is
+   directly coupled to `R10-CAND-01`, which CP4c-3 already owns. Adding a gated **witness** is not reallocating a
+   **criterion** — `ROADMAP.md`'s C1/C3/C6→CP4c-2, C2→CP4c-3 allocation is untouched.
+3. **`R8-CAND-02` decided, not deferred a third time:** an empty network on a closed surface is **rejected with a
+   typed error**. A2a′ adds cuts to an existing network; cutting from scratch would make it the producer of the
+   whole embedded graph, which is A2a's single-writer authority, and a "certified" plan from a witness with no
+   field-aligned content is the vacuous-green shape `LESSONS.md` 64r warns about.
+4. **Two phases against one frozen gate.** Phase 1 instruments (AK1–AK3); phase 2 fixes on measured causes
+   (AK4–AK6). Ordering within phase 2 is a phase-1-review decision, since the measured causes may share a locus.
 
-`arcIndices.size() != 1U` → `arcIndices.empty()` drops only the upper bound and **keeps a typed failure for zero
-arcs**; the per-face body runs once per sub-arc with both guards retained; the comment now **names the
-canonical-direction dependency** the dart formula rests on. The `boundaryVertices` fix **tightens** — it resolves
-each sub-arc endpoint through the shared `NodeLocus` authority and adds a typed error for an unresolvable node — so
-it can only create reds, not manufacture a pass, and none appeared. `build_node_loci` is now computed once and
-threaded, removing a pre-existing redundant recompute. **Nothing in the diff weakens a check.**
+### CP4c-3 gate authority — selector 367, frozen
 
-The AI2 fragment reconciliation is proved by the product, not merely published: `GlobalTopologyPlan.cpp:679-687`
-unconditionally rejects unless `fragmentOrbits[face].size() == tracePieceCount[face] + 1`, and ordinal 363 passed.
+`.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt`, whole-file SHA-256
+`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`. Accepted 365 plus:
 
-### CP4c-3 scope — AJ0–AJ9
+- **366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` — criterion **C2**;
+- **367** `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses` — criterion **C3**'s full form,
+  binding torus **and** mechanical, honouring DEFN-R2 §7.3's commitment to move the mechanical half to CP4c-3.
 
-- **AJ0** record the closure in `M3_CP4c_Consolidated_Record.md` §2 and `ROADMAP.md` §1; package count **67**.
-- **AJ1** freeze CP4c-3's gate by **appending** to accepted 365, so `head -355/-357/-361/-365` all still reproduce;
-  state per-identity gating membership with a rationale.
-- **AJ2** the prescribed sphere is CP4c-3's **first-class subject**, not a footnote — separate its two problems, and
-  if it stays outside the gate, say why in writing.
-- **AJ3** read the 178 retained AI2 rows from artifact `9737796927` and state the comparison explicitly. No runtime.
-- **AJ4** own `R10-CAND-01`: model trace crossings as per-face chords in the proposal heuristic; require a witness
-  where the **ordinary** path selects a trace-crossed edge with `saturationUsed=false`.
-- **AJ5** decide `R8-CAND-02` rather than deferring it again.
-- **AJ6** preserve CP4c-2's diagnostic surface — `originatingTopologyError`, the AI2 publication, the
-  actual-embedded-graph oracle, the repaired D2 harness — and keep running the frozen non-gating selector in full.
-- **AJ7** measures must carry their own enumerations, or require a **search** rather than a copy.
-- **AJ8** no reopening of Amendments 12/13/14; no change to accepted selector 365's bytes; no implementation,
-  compile, package, runtime, gate execution or benchmark in a definition turn.
+`head -355`, `head -357`, `head -361` and `head -365` all reproduce their frozen hashes, so `first_red_ordinal`
+stays comparable across the whole CP4c arc. Both appended identities are **red today** — correct for a
+required-green selector. `selected_gate=NONE`; `gate_execution_authorized=false`.
+
+**To be appended by AK7, producing gate 370** — named now so they cannot be silently omitted:
+`GlobalTopologyPlan.PrescribedSphereWitnessDerivesRegionsThroughProductionEntryPath`,
+`SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation`,
+`SurfaceCutGraph.EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError`.
+
+### CB1 scope — AK0–AK3, instrumentation only
+
+- **AK1** add an optional **enumerated-reason** provenance field to `FieldAtlasBuildError` identifying which of the
+  eight sites fired, populate all eight, and print it. **Additive only:** no re-mapping, no enum renumbering, no new
+  `FieldAtlasBuildErrorCode` value. This is AF0's template applied to A1. Use an enumerated reason, **not a line
+  number** — `LESSONS.md` 62's stale `419/437/474` labels are the counter-example.
+- **AK2** publish the local-region-mesh shape for **every** region of the mechanical witness: `V/E/F`, computed
+  `eulerCharacteristic`, `boundaryLoopCount`, `genus`, `interiorLocalVertices.size()`, `expectedCycleCount`, and the
+  actual `bundle.cycles.rows()` / `cycleCurvatures.size()` / `innerAdjacencies.size()`. The site alone will not
+  explain a count mismatch; the counts will.
+- **AK3** print the sphere's `RotationSystemInconsistent` at **nine-way** granularity through the existing frozen
+  non-gating sphere diagnostic. No product fix for the sphere in phase 1.
+- **AK8** every "every consumer / every site / every region" measure requires the implementer to produce the
+  enumeration by **search** and publish it; the DEFN's eight-site table is a cross-check to compare against
+  afterwards, never to copy (`LESSONS.md` 59, 61).
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **67**.
-`selected_r2_branch=NONE`; `gate_execution_authorized=false`.
+`selected_r2_branch=NONE`.
 
-### Inherited by CP4c-3 from CP4c-2
+### CP4c-3 open items
 
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere. (a) producer `RotationSystemInconsistent` at source face
-      `25-27-28`, `producerCutEdgeCount=0`, before cut selection; (b) independently, a non-cellular pre-cut graph
-      (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`) needing trace-crossed cuts. Fixing (a) does not fix (b). AJ2.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — Amendment 14's **ordinary** trace-crossed proposal path is structurally
-      unreachable; only saturation promotes such an edge, because `barriers` still contains `traceCrossed` so those
-      edges bound components instead of lying inside them. Quality/coverage, not correctness. AJ4.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — zero-node / zero-arc closed-surface cut-graph behaviour. AJ5.
+- [ ] **C2 / the mechanical witness** — A1 `IncompleteCycleBasis`, site unknown among seven. AK1/AK2, then AK6.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere, **now gated**. (a) producer `RotationSystemInconsistent` at
+      source face `25-27-28` before cut selection; (b) independently non-cellular pre-cut
+      (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`). Fixing (a) does not fix (b). AK3, then AK6.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — model trace crossings as **per-face chords** in the proposal heuristic so the
+      ordinary tree–cotree path can reach them. Heuristic only; Amendment 14 is not reopened. AK4.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — implement decision 3 with a **new, appended** error code. AK5.
 
 ## Carried forward from M1
 
@@ -119,7 +137,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted; R10 closed CP4c-2 at **365/365** on immutable package `9736088354`, with criteria C1/C3/C6 green. CP4c-3 is **unblocked** and inherits three items — the prescribed sphere, Amendment 14's unexercised ordinary proposal path, and the zero-node/zero-arc question. Exact next is `M3-CP4c-3-DEFN` under AJ0-AJ9.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted; R10 closed CP4c-2 at **365/365** on immutable package `9736088354`, with criteria C1/C3/C6 green. CP4c-3 is **unblocked** and inherits three items — the prescribed sphere, Amendment 14's unexercised ordinary proposal path, and the zero-node/zero-arc question. `M3-CP4c-3-DEFN` froze CP4c-3's gate at **367**, put the sphere **in** the gate, and decided `R8-CAND-02`. Exact next is `M3-CP4c-3-CB1` under AK0-AK3, instrumentation only.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
