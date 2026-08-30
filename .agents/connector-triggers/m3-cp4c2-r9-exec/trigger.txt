@@ -1,5 +1,6 @@
 turn=M3-CP4c-2-TB-X2-R9-EXEC
 artifact_id=9726295440
 semantic_source=05f9ef299ee54f8c9d50318fc9a37e5a5503740d
-purpose=execute frozen immutable artifact-only R9 plan
+purpose=execute corrected frozen immutable artifact-only R9 plan
 benchmarkExecution=false
+retry_reason=replace redirect-sensitive urllib artifact download with authenticated gh api artifact download
