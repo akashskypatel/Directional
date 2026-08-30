@@ -65,7 +65,7 @@ jobs:
           exec > >(tee -a "$log") 2>&1
           payload=".agents/Directional/turn-payloads/M3-CP4c-2-R9-exec.py"
           test -f "$payload"
-          echo "18a88945b9d5ae2d492455de03ce92b043cffbb26ade0ea18e0c5b1d0d3158c8  $payload" | sha256sum -c -
+          echo "8b127d3174dc88b91a45fa3672dc9cd7d8201e9979430f8036856e8bb22a0ee8  $payload" | sha256sum -c -
           python3 -m py_compile "$payload"
           git status --short
 
