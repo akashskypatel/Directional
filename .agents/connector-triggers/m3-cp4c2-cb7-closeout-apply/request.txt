@@ -1,0 +1,5 @@
+turn=M3-CP4c-2-CB7
+purpose=apply verified closeout documentation patch
+base_sha=d78bdd8c774b9ea828014cc7f8abfaaf49f1cafc
+patch_sha256=603b77edc271601527813d848cba71d678c970f32f8911f28abcf76d867012f6
+runtimeExecution=false
