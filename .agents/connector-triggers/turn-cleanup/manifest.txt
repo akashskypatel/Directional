@@ -1,0 +1,6 @@
+# M3-CP4c-3-CB1 temporary state
+.agents/connector-triggers/m3-cp4c3-cb1-apply.txt
+.agents/connector-triggers/m3-cp4c3-cb1-closeout-apply.txt
+.agents/connector-triggers/m3-cp4c3-cb1-compile.txt
+.agents/connector-triggers/m3-cp4c3-cb1-fix-apply.txt
+.agents/connector-triggers/source-snapshot/m3-cp4c-3-cb1.txt
