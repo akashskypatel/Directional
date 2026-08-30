@@ -85,7 +85,7 @@ def run_one(scope,ordinal,identity,m):
 def preflight():
  print('R9_PREFLIGHT_BEGIN'); download()
  if sha(R/'package.zip')!=PKG_SHA: bad('integrity','package sha')
- with zipfile.ZipFile(R/'package.zip') as z: z.extractall(P)
+ subprocess.run(['unzip','-q',str(R/'package.zip'),'-d',str(P)],check=True)
  if not manifest_ok(): bad('integrity','manifest 28/28')
  src=P/'source'/f'source-{TRANSPORT}.tar.gz'
  if not src.exists() or sha(src)!=SRC_SHA: bad('integrity','source archive')
