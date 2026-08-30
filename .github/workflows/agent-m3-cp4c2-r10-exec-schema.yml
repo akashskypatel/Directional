@@ -25,5 +25,5 @@ jobs:
   validate:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .agents/Directional/turn-payloads/M3-CP4c-2-R10-exec.yml
+      workflow_path: .agents/Directional/turn-payloads/M3-CP4c-2-R10-closeout-drive.yml
     secrets: inherit
