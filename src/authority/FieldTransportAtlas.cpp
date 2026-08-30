@@ -908,8 +908,7 @@ collect_cycle_basis_diagnostics(
   std::vector<FieldAtlasRegionCycleBasisDiagnostics> diagnostics;
   diagnostics.reserve(sourceAuthority.regions().size());
   for (const auto &region : sourceAuthority.regions()) {
-    FieldAtlasRegionCycleBasisDiagnostics row;
-    row.topologyRegion = region.id();
+    FieldAtlasRegionCycleBasisDiagnostics row{region.id()};
     const auto local = make_local_region_mesh(sourceMesh, sourceAuthority, region);
     if (!local.has_value()) {
       diagnostics.push_back(std::move(row));
