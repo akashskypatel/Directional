@@ -1,4 +1,5 @@
 turn=M3-CP4c-2-TB-X2-R9-EXEC
-purpose=validate corrected frozen R9 execution caller draft
-correction=contents-write-required-by-reusable-observer
+purpose=validate R9 caller after artifact-download correction
+correction=gh-api-artifact-download
+payload_sha256=8b127d3174dc88b91a45fa3672dc9cd7d8201e9979430f8036856e8bb22a0ee8
 runtimeExecution=false
