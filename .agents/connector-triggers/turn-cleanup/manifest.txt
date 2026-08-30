@@ -1,0 +1,14 @@
+# M3-CP4c-2-CB8 final temporary-state cleanup
+.agents/connector-triggers/m3-cp4c2-cb7-apply
+.agents/connector-triggers/m3-cp4c2-cb7-schema
+.agents/connector-triggers/m3-cp4c2-cb8-apply
+.agents/connector-triggers/m3-cp4c2-cb8-compile-schema
+.agents/connector-triggers/m3-cp4c2-cb8-compile
+.agents/connector-triggers/m3-cp4c2-cb8-schema
+.agents/connector-triggers/source-snapshot
+.agents/connector-triggers/m3-cp4c2-cb8-closeout-apply-schema
+.agents/connector-triggers/m3-cp4c2-cb8-closeout-apply
+.agents/Directional/turn-payloads/M3-CP4c-2-CB7-apply.yml
+.agents/Directional/turn-payloads/M3-CP4c-2-CB8-apply.yml
+.agents/Directional/turn-payloads/M3-CP4c-2-CB8-compile.yml
+.agents/Directional/turn-payloads/M3-CP4c-2-CB8-closeout-apply.yml
