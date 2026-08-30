@@ -105,8 +105,7 @@
 - **Secondary diagnostic issue:** the test helper at `FieldAlignedCurveNetworkTests.cpp:1710-1713` uses non-fatal `EXPECT_TRUE(built)` and then unconditionally calls `built.value()`, producing `std::get: wrong index for variant` after the real typed failure. This does not change the primary diagnosis.
 - **Disposition boundary:** independent `M3-CP4c-2-TB-X2-R9-REV` owns corrective planning. EXEC does not change implementation/test logic or authorize a retry. AH6 is not applicable because 363-365 were not all reached.
 - **Stable-count rationale:** ordinal 363 is newly gated and CP4c-2 has never been accepted; inherited 355/355 remains green. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
-- **R9-REV adjudication — CONFIRMED as a genuine product defect, the first in this arc.** Full record:
-  `Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md` §§2-5. Unlike R8's ordinal 359, the witness is not
+- **R9-REV adjudication — CONFIRMED as a genuine product defect, the first in this arc.** Historical review authority is consolidated in `M3_CP4c_Consolidated_Record.md` §3.7. Unlike R8's ordinal 359, the witness is not
   at fault: it proved an exact crossing, built a **cellular** cut graph, and selected a `TraceInteriorCrossing`
   candidate. A2a′ did its job; A2b rejected the result.
 - **The producer is correct, verified line by line.** `EmbeddedGraphTopology.cpp:503-545` implements DEFN-R2
@@ -191,8 +190,7 @@
 - **Stable-count rationale:** ordinal 359 is newly gated and had never been accepted; inherited 355 remains green. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
 - **CB8 code/build disposition:** semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d` corrects both 359 and 361 to consume the production feature authority; immutable package `9726295440` is BUILD GREEN / runtime-free. This record remains **ACTIVE** until a valid R9 run reaches ordinal 361 with both 359 and 361 green.
 - **R9 EXEC runtime condition:** authoritative valid run `33319911575` reaches ordinal 361 and passes both 359 and 361. The frozen runtime closure condition is therefore satisfied. Per the R9 plan, independent R9-REV owns the formal closure/adjudication; stable totals remain unchanged.
-- **R8-REV adjudication — CONFIRMED as a witness defect, and the mechanism is fourfold, not single.** Full record:
-  `Architecture_M3_CP4c2_TB_X2_R8_Independent_Review_Record.md` §2.
+- **R8-REV adjudication — CONFIRMED as a witness defect, and the mechanism is fourfold, not single.** Historical review authority is consolidated in `M3_CP4c_Consolidated_Record.md` §3.6.
   - `make_source_authority(mesh)` (`tests/FieldAlignedCurveNetworkTests.cpp:181-191`) supplies **no** authoritative
     rails, **no** hard-feature edges, and all-zero `sourceFaceComponents` / `sourceFaceSheets`. Production
     (`src/pipeline/RemeshPipeline.cpp:6377-6394`) runs
@@ -2274,7 +2272,7 @@ Current immutable CP4c-2 build authority is CB8 semantic/test source
 `ec9b9b7929521e3f2cd1df4e21beb2f01012f97ff1907ffbf5ae2b35334fd20c`, compile run/job
 `33292137782 / 99205507393`, runtime-free. Stable totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
 
-Exact next is artifact-only `M3-CP4c-2-TB-X2-R9-EXEC` under
-`Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md`. Run selector 365 from ordinal 1 with the
+Historical next at this point was artifact-only `M3-CP4c-2-TB-X2-R9-EXEC` under the frozen R9 plan now
+consolidated in `M3_CP4c_Consolidated_Record.md` §3.7. Run selector 365 from ordinal 1 with the
 frozen first-semantic-red hard stop, no benchmark, and AH6 if ordinals 363-365 are reached. No rebuild/repair or
 source/test/fixture/selector mutation is authorized.

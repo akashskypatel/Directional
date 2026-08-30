@@ -144,15 +144,14 @@ Three frozen non-gating identities executed once each (**2 PASS / 1 RED**). The 
 
 Code + Build only. Semantic/test source `57444781af7bdc460e38cc68930a9a8c8199eeea` implements R9-REV AI0-AI9 without selector, sphere, crossing-producer, error-enum, invariant, or benchmark widening. AI1 independently re-derived the full Cut/cut-edge consumer set; exactly two A2b consumers were stale. Region binding now iterates every derived Cut sub-arc under the canonical source-edge direction invariant, and region-certificate `boundaryVertices` now uses the existing shared `NodeLocus` authority so only actual sub-arc source-vertex endpoints enter the skip list. AI2 fragment/orbit diagnostics were added, ordinal 359 is recorded beside the semantic-digest rationale, and both typed-error helpers stop before `built.value()` fall-through.
 
-Compile-only run `33325344311`: changed-owner prepackage job `99294371782` compiled `directional_surface_cell_producer_tests` **105/105**; package job `99294619815` compiled all eight standard targets through `agent-compile-reusable.yml` with GMP/GMPXX. Immutable package **67** is artifact `9736088354` (`78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`); packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`; internal manifest **28/28 PASS**; `runtimeExecution=false`. Stable totals remain **44 / 14 / 30**, debt **5**. Exact next: `M3-CP4c-2-TB-X2-R10-EXEC`, artifact-only under `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md`; R10-REV owns diagnostics/disposition after EXEC.
+Compile-only run `33325344311`: changed-owner prepackage job `99294371782` compiled `directional_surface_cell_producer_tests` **105/105**; package job `99294619815` compiled all eight standard targets through `agent-compile-reusable.yml` with GMP/GMPXX. Immutable package **67** is artifact `9736088354` (`78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`); packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`; internal manifest **28/28 PASS**; `runtimeExecution=false`. Stable totals remain **44 / 14 / 30**, debt **5**. Exact next: `M3-CP4c-2-TB-X2-R10-EXEC`, artifact-only under the now-consolidated R10 frozen plan (`M3_CP4c_Consolidated_Record.md` §3.8); R10-REV owns diagnostics/disposition after EXEC.
 
 ## 2026-08-30 — `M3-CP4c-2-TB-X2-R9-REV`: four closures, and A2b's stale one-arc-per-cut-edge binding
 
 Independent review and planning only. No runtime, build, compile, package, benchmark, or product/test/fixture/
 selector mutation. Static analysis ran against a working tree verified byte-identical to packaged semantic source
 `05f9ef299ee54f8c9d50318fc9a37e5a5503740d`; selector-365 and accepted-355 hashes recomputed from committed bytes.
-Measures issued: **AI0–AI9**. Full record:
-`Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md`.
+Measures issued: **AI0–AI9**. Historical review record consolidated in `M3_CP4c_Consolidated_Record.md` §3.7.
 
 **Four long-running items closed by R9** (run/job `33319911575 / 99279955697`, CB8 package `9726295440`; accepted
 prefix 355/355 and ordinals 356–362 green):
@@ -223,8 +222,7 @@ a **product** defect, non-stable only because CP4c-2 has never been runtime-acce
 Independent review and planning only. No runtime, build, compile, package, benchmark, or product/test/fixture/
 selector mutation. Static analysis ran against a working tree verified byte-identical to the packaged semantic
 source `4f0f3ca74a88ba260a20c019437bc4995f2056e0`, and all four selector-365 authorities were recomputed from
-committed bytes. Measures issued: **AH0–AH9**. Full record:
-`Architecture_M3_CP4c2_TB_X2_R8_Independent_Review_Record.md`.
+committed bytes. Measures issued: **AH0–AH9**. Historical review record consolidated in `M3_CP4c_Consolidated_Record.md` §3.6.
 
 **What R8 established, and it is a great deal.**
 
@@ -460,7 +458,7 @@ what R7 executed. Measures issued: **AF0–AF9**. Full record:
   prescribed sphere is in neither gate — the structural reason its failure survived eight turns. Selector 358's sole
   addition binds the mechanical witness, which this checkpoint declares out of scope and which has no atlas; if that
   holds, 358 is a guaranteed red. Never probed.
-- The frozen `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` names one identity and R7 ran four others,
+- The historical frozen CP4c-2 non-gating selector (consolidated in `M3_CP4c_Consolidated_Record.md` §3.3) named one identity and R7 ran four others,
   without recording why.
 - Retention check: the deleted predecessor R7-REV record was retired compliantly — AE0–AE9, `LESSONS.md` 22k/22m/22n
   and the review arc are all preserved in the DOC-R1 report, the tracker, the changelog and

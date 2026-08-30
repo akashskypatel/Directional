@@ -1263,7 +1263,7 @@ face gauge. Never equate branch integers across distinct frames merely because t
     covered by the gate twice over when it was covered zero times. When auditing coverage, grep for what
     an identity *asserts about the result*, not for whether it constructs the product.
 64v. **A frozen non-gating selector is authority, and a plan that quietly runs something else has replaced
-    it.** `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` names exactly one identity; R7 ran four
+    it.** `M3_CP4c_Consolidated_Record.md` §3.3 records that the frozen CP4c-2 non-gating selector named exactly one identity; R7 ran four
     others and never ran that one, without recording why. The skipped identity was an unconditional-`FAIL()`
     publisher whose whole job was to emit the sphere's pipeline-reachability report — free evidence, directly
     on the checkpoint's open question. **A TB plan must run every identity in the frozen non-gating selector or
