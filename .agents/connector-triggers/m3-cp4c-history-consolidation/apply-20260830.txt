@@ -1,0 +1,5 @@
+purpose=apply verified M3 CP4c historical consolidation patch
+patch_file_id=19Zs3VcJhMU4IgoOsAkXzrdx6FhSkWhbd
+patch_sha256=695ecfa547692b5027b3381286fe37fa2032432505dbf99cda0d48eb9d036284
+base_sha=b8bfaa0a878db78181ce060b77aa569505058eb3
+retry=0
