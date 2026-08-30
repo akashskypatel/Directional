@@ -3,3 +3,5 @@ purpose=artifact-only phase-1 runtime evidence
 package_artifact_id=9739919234
 package_sha256=127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c
 selector367_sha256=ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf
+retry=1
+retry_reason=preflight-pipefail-on-strings-grep-no-runtime-executed
