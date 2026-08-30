@@ -1,20 +1,20 @@
-name: M3 CP4c2 CB9 Compile
+name: M3 CP4c2 CB9 Docs Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m3-cp4c2-cb9-compile-20260830.txt
+      - .agents/connector-triggers/m3-cp4c2-cb9-docs-apply-20260830.txt
 
 permissions:
-  actions: write
   contents: write
+  id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: m3-cp4c2-cb9-compile
+  group: m3-cp4c2-cb9-docs-apply
   cancel-in-progress: false
 
 jobs:
@@ -22,23 +22,16 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c2-cb9-compile
+      label: m3-cp4c2-cb9-docs-apply
       commit_run_file: false
     secrets: inherit
 
-  prepackage:
-    uses: ./.github/workflows/agent-compile-reusable.yml
+  apply-docs:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      source_sha: 57444781af7bdc460e38cc68930a9a8c8199eeea
-      targets: directional_surface_cell_producer_tests
-      artifact_prefix: m3-cp4c2-cb9-prepackage
-    secrets: inherit
-
-  package:
-    needs: prepackage
-    uses: ./.github/workflows/agent-compile-reusable.yml
-    with:
-      source_sha: 57444781af7bdc460e38cc68930a9a8c8199eeea
-      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
-      artifact_prefix: m3-cp4c2-cb9-package
+      file_id: 1mJZoh4fwKx_hJHWVcTB22xmvhcXPDbuS
+      patch_sha256: 1aacd9fff0e9cc071ef5baa765550832c097953d8a1ed22ffe57d0d959d671c3
+      base_sha: a4a34e77ea595be480d2499db812b6f985f12848
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close out M3-CP4c-2-CB9 and freeze R10'
     secrets: inherit
