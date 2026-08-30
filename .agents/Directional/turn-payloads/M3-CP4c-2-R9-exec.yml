@@ -34,6 +34,6 @@ jobs:
       patch_sha256: 6be7a1d00395c4eff2c2c8fa4a2bc59941d41c37e9d647237bc0dd94a2b4369b
       base_sha: 88932488319a5f449d1af219905aea07909acc56
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close out M3 CP4c2 R9 execution
+      commit_message: "docs: close out M3 CP4c2 R9 execution"
       retention_days: 14
     secrets: inherit
