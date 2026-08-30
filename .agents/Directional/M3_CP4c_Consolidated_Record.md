@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. CB8 corrected the two R8 witness-construction identities without product changes and is **BUILD GREEN / RUNTIME-FREE** at semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d`. Immutable GMP package **66** is artifact `9726295440` (`1017a2f4…2556f`), built on run/job `33292137782 / 99205507393`. Selector **365** is byte-frozen and unchanged. Exact next is artifact-only **`M3-CP4c-2-TB-X2-R9-EXEC`** from ordinal 1; AH6 is mandatory if ordinals 363-365 are reached. CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. R9-EXEC is **COMPLETE / VALID SEMANTIC RED AT ORDINAL 363** on immutable GMP package **66**, artifact `9726295440`. Authoritative run/job `33319911575 / 99279955697` re-proved 355/355, passed 356-362, and hard-stopped at 363 `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` with `InvalidCutGraphBinding`; 364-365 were not run. Exact next is independent **`M3-CP4c-2-TB-X2-R9-REV`**. CP4c-3 remains blocked.
 
 Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **66**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false` at closeout.
 
@@ -15,13 +15,14 @@ These files remain separate because they are still required by current or future
 - `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14, completeness theorem, AF5 and AG0–AG9.
 - `Architecture_M3_CP4c2_Required_Green_Selector_357.txt` and `_358.txt` — retained because current DEFN-R2 explicitly uses their frozen lineage/prefix authority; 357 is superseded and 358 withdrawn, neither is executable gate authority.
 - `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` — frozen prefix authority retained for lineage.
-- `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — current CP4c-2 required-green authority; unexecuted.
+- `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — current CP4c-2 required-green authority; R9 executed through first red at ordinal 363.
 - `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — current report-only TB surface.
 - `Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — current immutable build/package 66 authority.
 - `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — current frozen artifact-only execution plan.
 - `Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — retained predecessor Amendment-14 build authority.
 - `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — retained predecessor package authority for R7 lineage.
-- `Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md` — latest current runtime evidence.
+- `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md` — latest current runtime evidence; valid red at ordinal 363.
+- `Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md` — retained predecessor runtime evidence.
 - `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — retained predecessor runtime lineage.
 - `Architecture_M3_CP4c2_CB6_Code_Build_Report.md` — immediate AF1 definition-stop predecessor.
 
@@ -54,6 +55,18 @@ C4/C5 closed the diagnosability and event-non-vacuity surface: tampered trace-in
 Accepted authority: source `b1ce8ad65952bd2bd76238f6dfc55523f6a24747`, GMP package `9675666067`, package SHA-256 `63b66788e724f7f22acc5f3bd204a1eb666a779ced96d1373f320e00cd45ec17`, TB-R5 run/job `33161644741 / 98817323175`, selector **355** SHA-256 `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`, final **355/355 PASS**. Observed terminal-kind union was exactly `{TraceIntersection(2), MandatoryBarrierTermination(3), SingularityTermination(4)}`. The torus lawfully contributes zero trace/event kinds; the mechanical witness remains outside CP4c-1 reach at `IncompleteCycleBasis`.
 
 ## 3. CP4c-2 durable history
+
+### 3.0 R9 execution — first Amendment-14 gate red
+
+Authoritative artifact-only run/job `33319911575 / 99279955697` consumed CB8 package `9726295440`, passed immutable
+preflight, ran three non-gating diagnostics, re-proved accepted 355/355, passed 356-362, and first-red hard-stopped at
+363 with `InvalidCutGraphBinding`. Static localization on the immutable packaged source shows the new crossing authority
+splits a selected trace-crossed source edge into multiple Cut arcs, while region binding still requires exactly one
+Cut arc per selected source edge. This is `R9-CAND-01`, non-stable because CP4c-2 is unaccepted and predecessor 355
+remains green. R8-CAND-01's runtime closure condition is satisfied by 359/361 green; formal disposition remains
+review-owned. AH6 did not apply because 363-365 were not all reached. Result/log artifacts `9734625006 / 9734625165`;
+all mutation/build/benchmark flags false; postflight PASS.
+
 
 ### 3.1 Why A2a′ exists
 

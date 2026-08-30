@@ -1,3 +1,19 @@
+## M3-CP4c2-TB-X2-R9-CAND-01 — trace-crossed selected cut edge is subdivided into multiple arcs but region binding still requires exactly one — **ACTIVE / PRODUCT AUTHORITY-SHAPE MISMATCH / GATING / NON-STABLE**
+
+- **Observed:** authoritative R9 run/job `33319911575 / 99279955697` re-proves 355/355 and passes ordinals 356-362, then ordinal 363 `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` selects exactly once and fails with typed `InvalidCutGraphBinding`. Frozen hard stop leaves 364-365 unexecuted.
+- **Runtime preconditions reached:** the witness retains an exact trace/source-edge crossing; `SurfaceCutGraph::make` succeeds; its certificate proves cellularity; and at least one selected cut candidate is classified `TraceInteriorCrossing`. The failure is therefore downstream in `GlobalTopologyPlan::make`, not in cut selection.
+- **Localized mechanism:** `EmbeddedGraphTopology.cpp:503-545` deliberately splits a selected cut source edge at every synthetic cut/trace crossing and emits one Cut arc per consecutive point pair. `GlobalTopologyPlan.cpp:479-499` then gathers all Cut arcs carrying each selected source edge and returns `InvalidCutGraphBinding` unless `arcIndices.size() == 1`. The Amendment-14 subdivision therefore violates a stale single-arc binding assumption.
+- **Secondary diagnostic issue:** the test helper at `FieldAlignedCurveNetworkTests.cpp:1710-1713` uses non-fatal `EXPECT_TRUE(built)` and then unconditionally calls `built.value()`, producing `std::get: wrong index for variant` after the real typed failure. This does not change the primary diagnosis.
+- **Disposition boundary:** independent `M3-CP4c-2-TB-X2-R9-REV` owns corrective planning. EXEC does not change implementation/test logic or authorize a retry. AH6 is not applicable because 363-365 were not all reached.
+- **Stable-count rationale:** ordinal 363 is newly gated and CP4c-2 has never been accepted; inherited 355/355 remains green. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
+
+## M3-CP4c2-TB-X2-R9-ORCH-01 — R9 pre-authority harness failures — **CLOSED / ORCHESTRATION / NON-STABLE**
+
+- Schema run `33314981376` failed at startup because the caller's static reusable-workflow permission ceiling omitted `contents: write`; zero jobs and zero Directional runtime.
+- Execution run `33315131472` stopped before Directional runtime when redirect-sensitive artifact retrieval returned HTTP 401.
+- Execution run `33319546759` stopped in immutable preflight because Python ZIP extraction dropped packaged executable mode bits; zero Directional runtime.
+- The corrected caller was schema-valid on `33319885323`; authoritative run `33319911575` is the sole semantic R9 authority. **+0 stable accounting.**
+
 ## M3-CP4c2-TB-X2-R8-CAND-02 — zero-node / zero-arc closed-surface cut-graph behavior is unresolved — **ACTIVE / PRODUCT-QUESTION / NON-GATING / NON-STABLE**
 
 - **Observed from retained R8 evidence (AH1, no new runtime):** result artifact `9725240893`, ordinal 359 process `R8-CHECKPOINT-41e8933d9b0e719a`, contains **no `ADD_FAILURE` lines** and terminates only at `FieldAlignedCurveNetworkTests.cpp:2381`, `ASSERT_TRUE(baselineCutGraph)`. Therefore the local source-authority, atlas, and network failure branches were not taken; `SurfaceCutGraph::make(...)` itself returned failure. The retained stdout does **not** print the cut-graph error code or `originatingTopologyError`, so neither value is inferred or fabricated here.
@@ -6,13 +22,14 @@
 - **CB8 disposition (AH7):** **do not fix or widen scope.** AH2 removes this input state from gated ordinals 359/361 by reconstructing their local atlas/network from the production feature authority. No selector identity depends on zero-arc behavior after that correction. Bring this candidate to the next definition or independent-review turn.
 - **Stable-count rationale:** the behavior was exposed by an unaccepted, newly gated witness and no accepted-green behavior was lost. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
 
-## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **ACTIVE / WITNESS-CONSTRUCTION / AUTHORITY-SURFACE MISMATCH / GATING / NON-STABLE**
+## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **RUNTIME CLOSURE CONDITION SATISFIED IN R9 / FORMAL REVIEW DISPOSITION PENDING / NON-STABLE**
 
 - **Observed:** authoritative R8 run/job `33288495471 / 99195869180` re-proves accepted 355/355 and passes ordinals 356-358, then ordinal 359 `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` selects once and fails at `FieldAlignedCurveNetworkTests.cpp:2381`, `ASSERT_TRUE(baselineCutGraph)`, before any invariance comparison. Frozen hard stop leaves 360-365 unexecuted.
 - **Mechanism:** the test now consumes committed `torus.rawfield`, but still constructs rails with test-local `rails_from_atlas(...)`. The passing production torus path (ordinal 356) consumes pipeline-published `authoritativeRails` and reports `networkV=48`, `networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`. CB7 AF3 therefore migrated field authority but not the rail-authority surface. Ordinal 361 contains the same residual local construction and was correctly not run.
 - **Disposition:** continuation/recurrence of R7-CAND-01; independent R8 review owns the bounded correction and must preserve the frozen hard-stop evidence. This is not product enumeration-invariance evidence because the comparison was never reached.
 - **Stable-count rationale:** ordinal 359 is newly gated and had never been accepted; inherited 355 remains green. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
 - **CB8 code/build disposition:** semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d` corrects both 359 and 361 to consume the production feature authority; immutable package `9726295440` is BUILD GREEN / runtime-free. This record remains **ACTIVE** until a valid R9 run reaches ordinal 361 with both 359 and 361 green.
+- **R9 EXEC runtime condition:** authoritative valid run `33319911575` reaches ordinal 361 and passes both 359 and 361. The frozen runtime closure condition is therefore satisfied. Per the R9 plan, independent R9-REV owns the formal closure/adjudication; stable totals remain unchanged.
 - **R8-REV adjudication — CONFIRMED as a witness defect, and the mechanism is fourfold, not single.** Full record:
   `Architecture_M3_CP4c2_TB_X2_R8_Independent_Review_Record.md` §2.
   - `make_source_authority(mesh)` (`tests/FieldAlignedCurveNetworkTests.cpp:181-191`) supplies **no** authoritative
@@ -602,6 +619,10 @@ Three consequences:
   printed; fixing a mechanism named by inference is how this checkpoint lost R2.
 - **Stable-count rationale unchanged:** CP4c-2 has never been runtime-accepted; no accepted-green behaviour is lost.
   **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
+### R9 EXEC direct-origin confirmation
+
+- Frozen non-gating identity `GlobalTopologyPlan.Cp4c2PrescribedSphereCellularityScopeDecisionIsObservable` executes once in authoritative run `33319911575` and remains RED while now directly publishing `surfaceCutGraphError=CellularityNotEstablished` and `originatingTopologyError=RotationSystemInconsistent`. This runtime publication confirms R7-REV's previously static provenance localization; it does not add gate credit or change stable accounting.
 
 ### CB6 AF1 adjudication — pre-cut cellularity prediction refuted; definition gap is now live
 

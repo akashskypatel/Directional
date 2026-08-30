@@ -1,3 +1,18 @@
+## 2026-08-30 — `M3-CP4c-2-TB-X2-R9-EXEC`: valid semantic red at ordinal 363
+
+R9 is **COMPLETE / VALID SEMANTIC RED** on authoritative run/job `33319911575 / 99279955697`, consuming immutable
+CB8 package `9726295440`. Preflight reproduced package/source hashes, 28/28 manifest, GMP/GMPXX, executable modes,
+selector 365 and frozen prefixes. Three non-gating diagnostics ran once each; the prescribed-sphere publisher remains
+red and directly confirms `originatingTopologyError=RotationSystemInconsistent`, while the other two pass. Selector
+1-355 re-proves **355/355**, 356-362 pass, and 363
+`SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` fails with `InvalidCutGraphBinding`; 364-365
+are not run under the frozen hard stop. R8-CAND-01's 359/361 runtime closure condition is satisfied; AH6 is not
+applicable because 363-365 were not all reached. Immutable source localizes `R9-CAND-01`: the crossing builder splits
+one selected source cut edge into multiple Cut arcs, while region binding still requires exactly one. Result/log
+artifacts `9734625006` (`d4cac956…a3081`) / `9734625165` (`9325840a…274e10`); postflight PASS; all
+build/mutation/benchmark flags false. Stable accounting remains **44 / 14 / 30**, debt **5**, packages **66**. Exact
+next: independent `M3-CP4c-2-TB-X2-R9-REV`.
+
 ## 2026-08-30 — `M3-CP4c-2-CB8`: closed-witness authority correction build green
 
 CB8 is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Semantic/test source

@@ -1,7 +1,7 @@
 # M3-CP4c-2 TB-X2-R9 — Artifact-Only Test + Benchmark Plan
 
 Date: 2026-08-30 UTC
-Status: **FROZEN EXECUTION PLAN / NOT YET EXECUTED**
+Status: **FROZEN EXECUTION PLAN / EXECUTED — VALID SEMANTIC RED AT ORDINAL 363**
 
 ## 1. Purpose and boundary
 
@@ -167,3 +167,14 @@ Do not delete immutable Actions evidence during closeout.
 R9 performs no implementation and grants no automatic CP4c-2 acceptance. After durable R9 evidence/tracker closeout,
 stop at **`M3-CP4c-2-TB-X2-R9-REV`**, independent review/planning. The review owns final interpretation of a red,
 R8-CAND-01 closure, AH6 coverage, criterion C3, AD3, and any eligibility to close CP4c-2. CP4c-3 remains blocked.
+
+## 11. Execution record — 2026-08-30
+
+Authoritative run/job `33319911575 / 99279955697` validly re-proved 355/355, passed ordinals 356-362, and
+hard-stopped at ordinal 363 `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` with typed
+`InvalidCutGraphBinding`. Ordinals 364-365 were not run; AH6 was therefore not applicable. Result/log artifacts are
+`9734625006` (`d4cac956267b275b07f25857570b728b863470973ba7bfee0c47d4b8a9da3081`) and `9734625165`
+(`9325840a0a68a2c6678e485aa2dc6a19311f9df041ab2b7764b415dea3274e10`). Immutable postflight passed; all
+mutation/build/benchmark flags are false. Exact evidence and candidate disposition are in
+`Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md`. Exact successor is
+`M3-CP4c-2-TB-X2-R9-REV`.

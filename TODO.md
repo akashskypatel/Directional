@@ -21,61 +21,30 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-TB-X2-R9-EXEC` — immutable artifact-only gate 365
+## Current focus — `M3-CP4c-2-TB-X2-R9-REV` — independent review/planning
 
-CB8 is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic/test source
-`05f9ef299ee54f8c9d50318fc9a37e5a5503740d`.
-`Architecture_M3_CP4c2_CB8_Code_Build_Report.md` is the owning report.
+R9-EXEC is **COMPLETE / VALID SEMANTIC RED AT ORDINAL 363** on immutable CB8 package **66**. Authoritative run/job
+`33319911575 / 99279955697` re-proves accepted **355/355**, passes ordinals 356-362, and hard-stops at ordinal 363
+`SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` with typed `InvalidCutGraphBinding`.
+Ordinals 364-365 were **NOT RUN**. Result/log artifacts: `9734625006` / `9734625165`. No configure, compile, relink,
+repair, generated discovery, mutation, or benchmark occurred; immutable postflight passed.
 
-CB8 corrected the two R8-REV witness identities without product changes: ordinals 359/361 now consume one
-production feature authority (rails, hard-feature edges, component labels, sheet labels), the closed-witness rail
-precondition is self-checking, and the default-constructed error sentinel is replaced by a typed failing-stage
-result. AH1's retained R8 evidence proved that the former empty network reached `SurfaceCutGraph::make`; because the
-R8 process did not print the real cut-graph code/origin, CB8 records the zero-node/zero-arc behavior as
-`R8-CAND-02` rather than inventing a product diagnosis.
+### Review-owned questions
 
-Immutable package **66** is artifact `9726295440`, SHA-256
-`1017a2f40829c171a0ec066b16e1f9f5436588f5e2376742e340ce1617d2556f`, packaged source SHA-256
-`ec9b9b7929521e3f2cd1df4e21beb2f01012f97ff1907ffbf5ae2b35334fd20c`, build run/job
-`33292137782 / 99205507393`. All eight standard targets compiled/linked with GMP/GMPXX; internal manifest 28/28;
-`runtimeExecution=false`. Selector 365 and all 355/357/361 prefixes remain byte-frozen.
-
-### R9 required execution
-
-Follow `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` exactly:
-
-- immutable preflight; preserve executable modes; **no repair/chmod/configure/compile/relink/generated discovery**;
-- frozen prescribed-sphere non-gating publisher plus AF2 D2 and AG3 actual-graph oracle, one process each;
-- selector 365 **from ordinal 1**, one fresh process per identity, first-semantic-red hard stop;
-- accepted prefix must re-prove 355/355;
-- `R8-CAND-01` closes only if 359 and 361 both pass in a run reaching 361;
-- ordinal 362 owns criterion C3; 363–365 are Amendment 14's first runtime evidence;
-- AH6: if 363–365 run, publish whether trace-crossed selection is ordinary tree–cotree or saturation-only. If
-  saturation-only, record a new non-stable coverage candidate and keep CP4c-2 open even if 365/365 is green;
-- no benchmark is frozen for R9; `benchmarkExecution=false`;
-- unconditional postflight plus regression-tracker update for every observed change.
-
-### CP4c-2 gate authority
-
-**Selector 365** — `.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt`, whole-file SHA-256
-`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`. Prefix hashes remain:
-355 `e9d88f11…5afeaa`, 357 `b896d0db…64dc70`, 361 `61918d9f…0288b`. Cardinality/uniqueness 365/365.
-
-### Open CP4c-2 candidates / debts
-
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-01` — former vacuous-authority construction in 359/361. Code/test correction is built;
-      closes only when **both** identities pass in a run reaching 361. Supersedes `R7-CAND-01`.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — zero-node/zero-arc closed-surface `SurfaceCutGraph` behavior is unresolved;
-      **product question / non-gating / non-stable**. R9's gate does not depend on that input.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere producer `RotationSystemInconsistent` at source face `25-27-28`
-      before cut selection, plus independently non-cellular pre-cut graph `V/E/F=18/30/18`, `chi=6` vs `sourceChi=2`.
-- [ ] **AH6 ordinary-path coverage** — adjudicate at 363–365; a saturation-only result owes a second witness.
-- [ ] **Criterion C3** — ordinal 362, still unexecuted.
-- [ ] Measure **AD3** — raw `face.orbit` index in semantic digest; falsifier is ordinal 359.
+- [ ] Adjudicate `M3-CP4c2-TB-X2-R9-CAND-01`: selected trace-crossed cut edges are intentionally split into
+      multiple derived Cut arcs, while `GlobalTopologyPlan::build_regions` still requires exactly one Cut arc per
+      selected source edge. Define the bounded next CB correction; do not implement it in review.
+- [ ] Formally dispose `R8-CAND-01`: its frozen runtime closure condition is satisfied because R9 passes both 359
+      and 361 in the same valid run reaching 361.
+- [ ] Record criterion C3 disposition from ordinal 362 **GREEN** and AD3 disposition from ordinal 359 **GREEN**.
+- [ ] Keep AH6 unadjudicated for runtime coverage: 363-365 were not all reached, so AH6 was **not applicable**.
+- [ ] Continue `R8-CAND-02` zero-node/zero-arc product question as non-gating/non-stable.
+- [ ] Continue prescribed-sphere `CAND-04`; R9 directly confirms
+      `originatingTopologyError=RotationSystemInconsistent` in its frozen non-gating publisher.
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **66**.
-`selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`. CP4c-2 and CP4c-3 remain open;
-CP4c-3 is blocked behind R9/review disposition.
+CP4c-2 and CP4c-3 remain open. No runtime retry, implementation/test/fixture change, configure, compile, or benchmark is
+authorized before `M3-CP4c-2-TB-X2-R9-REV`.
 
 ## Carried forward from M1
 

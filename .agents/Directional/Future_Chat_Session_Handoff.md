@@ -84,95 +84,59 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R9-EXEC` — immutable artifact-only selector 365
+## Mandatory next turn — `M3-CP4c-2-TB-X2-R9-REV` — independent review/planning
 
-`M3-CP4c-2-CB8` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**:
-`Architecture_M3_CP4c2_CB8_Code_Build_Report.md`.
+R9-EXEC is **COMPLETE / VALID SEMANTIC RED AT ORDINAL 363**. Do not rerun, repair, compile, or implement before review.
 
-### CB8 result — do not re-implement
+### R9 runtime authority
 
-- Semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d` changes no product implementation source.
-- Ordinals 359 and 361 now reconstruct local cut-graph authority from one production feature authority: authoritative
-  rails, derived hard-feature edges, component labels, and sheet labels. Face permutations also permute the per-face
-  labels; vertex-keyed rails/hard-feature edges remain invariant.
-- Closed-witness rail non-vacuity is self-checking, and the fabricated default-constructed cut-graph error sentinel
-  was replaced by typed stage outcomes.
-- AH1 used retained R8 artifact `9725240893` only: ordinal 359 emitted **no `ADD_FAILURE` lines** and reached
-  `SurfaceCutGraph::make(...)`, which failed on the former zero-node/zero-arc input. R8 did not print the real error
-  code/origin, so CB8 records `M3-CP4c2-TB-X2-R8-CAND-02` and does not invent a product diagnosis.
-- Selector 365 and its 355/357/361 prefixes are byte-identical to CB7.
+- immutable semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d`; package artifact `9726295440`
+- authoritative run/job `33319911575 / 99279955697`
+- result artifact `9734625006`, SHA-256 `d4cac956267b275b07f25857570b728b863470973ba7bfee0c47d4b8a9da3081`
+- log artifact `9734625165`, SHA-256 `9325840a0a68a2c6678e485aa2dc6a19311f9df041ab2b7764b415dea3274e10`
+- accepted predecessor **355/355 GREEN**; 356-362 GREEN; ordinal 363 RED; 364-365 NOT RUN
+- first red: `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` -> `InvalidCutGraphBinding`
+- non-gating diagnostics: 2 PASS / 1 RED; sphere red directly publishes
+  `originatingTopologyError=RotationSystemInconsistent`
+- immutable postflight PASS; every build/mutation/benchmark flag false
 
-### Immutable package 66
+### Review-owned adjudication
 
-- package artifact `9726295440`
-- outer SHA-256 `1017a2f40829c171a0ec066b16e1f9f5436588f5e2376742e340ce1617d2556f`
-- packaged source archive SHA-256 `ec9b9b7929521e3f2cd1df4e21beb2f01012f97ff1907ffbf5ae2b35334fd20c`
-- compile run/job `33292137782 / 99205507393`
-- exact Eigen gitlink `769c72fd8019e389810d1de1e7c243521a43b594`
-- all eight standard targets linked with GMP/GMPXX; internal manifest **28/28 PASS**
-- `runtimeExecution=false`; no test, benchmark, gate, or generated Directional executable ran.
+`R9-CAND-01` is localized to an authority-shape contradiction: `EmbeddedGraphTopology` intentionally subdivides a
+selected trace-crossed source edge into multiple Cut arcs at its synthetic crossing, while
+`GlobalTopologyPlan::build_regions` still requires exactly one Cut arc for each selected source edge. R9-REV must
+adjudicate that mechanism and author the bounded next CB plan without implementation.
 
-The successful build used a temporary GitHub Eigen mirror at the same gitlink after GitLab returned a load error;
-canonical `.gitmodules` was restored afterward. Earlier permission-startup and GitLab-checkout failures are
-orchestration-only and produced no semantic package evidence.
+`R8-CAND-01`'s frozen runtime closure condition is satisfied because both 359 and 361 pass in this valid run; review
+owns formal closure. Criterion C3's ordinal 362 and AD3's ordinal 359 are runtime green. AH6 is **not applicable** to
+R9 because 363-365 were not all reached. `R8-CAND-02` and prescribed-sphere `CAND-04` remain non-stable open review
+inputs.
 
-### R9 execution contract
+### Standing product state
 
-Follow `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` exactly:
-
-1. immutable package/source/GMP/mode/manifest/selector preflight; no repair, chmod, configure, compile, relink, or
-   generated discovery;
-2. run the frozen sphere publisher, AF2 D2, and AG3 actual-graph oracle once each as non-gating fresh processes;
-3. execute selector 365 **from ordinal 1**, one fresh process per identity, with first-semantic-red hard stop;
-4. inherited accepted prefix must re-prove **355/355**;
-5. `R8-CAND-01` closes only if **359 and 361 both pass** in a valid run reaching 361;
-6. ordinal 362 owns criterion C3; 363-365 are Amendment 14's first runtime evidence;
-7. **AH6 is mandatory if 363-365 are reached:** publish whether the trace-crossed edge is selected by ordinary
-   tree-cotree proposal or saturation-only. Saturation-only creates a new non-stable coverage candidate and keeps
-   CP4c-2 open even if 365/365 is green; R9 does not add the owed second witness;
-8. no benchmark is frozen; `benchmarkExecution=false`;
-9. unconditional postflight and regression-tracker disposition for every red/materially new behavior.
-
-## Standing product state
-
-- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
-- CP4c-2 is **OPEN / runtime-unaccepted**. CB8 package `9726295440` is current immutable build authority; R8 remains
-  the latest semantic runtime evidence until R9 executes.
-- Gate authority is selector 365, whole-file SHA-256
-  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; frozen prefix hashes remain 355
-  `e9d88f11…5afeaa`, 357 `b896d0db…64dc70`, 361 `61918d9f…0288b`.
-- Open CP4c-2 candidates/debts: `R8-CAND-01` awaiting runtime proof of both corrected identities;
-  `R8-CAND-02` zero-node/zero-arc closed-surface product question; prescribed-sphere `CAND-04`; AH6 ordinary-path
-  coverage; criterion C3 at ordinal 362; AD3 at ordinal 359.
-- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
-  packages **66**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`.
-- **Exact next is `M3-CP4c-2-TB-X2-R9-EXEC`.** CP4c-3 remains blocked.
+M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 remain **CLOSED / ACCEPTED**.
+CP4c-2 remains **OPEN / runtime-unaccepted**; CP4c-3 remains blocked. Stable accounting remains **44 events / 14
+categories / 30 recurrences**, produced-witness debt **5**, M3 packages **66**. `selected_r2_branch=NONE`;
+`selected_gate=NONE`; `gate_execution_authorized=false`.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TEST_BENCHMARK.md`, GitHub/artifact capability module, and immutable
-  artifact execution rules. Do not load Code+Build implementation guidance unless R9-REV later authorizes a CB.
+- turn-based-coding-agent `references/turns/REVIEW.md`, GitHub/artifact capability only if needed. This is independent
+  review/planning: no implementation, runtime execution, configure, compile, relink, or test/fixture/selector mutation.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first; substance authority remains current from R8-REV.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — binding execution
-   order, hard stops, AH6, postflight, and evidence requirements.
-2. `.agents/Directional/Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — immutable package 66 and CB8 build boundary.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md` — latest runtime
-   authority and the 359 red that CB8 corrected.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R8-CAND-01`, `R8-CAND-02`, sphere `CAND-04`, stable
-   totals.
-5. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14/completeness contract;
-   read R1 only for sections R2 explicitly leaves binding.
-6. `.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt` and
-   `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — frozen runtime identities.
-7. `TODO.md` / `CHANGELOG.md` — current execution pointer and CB8 closeout.
+0. `.agents/Directional/ORIENTATION.md` — update it in this review turn.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md` — authoritative R9 evidence.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — frozen stop/interpretation contract.
+3. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R9-CAND-01`, `R8-CAND-01`, `R8-CAND-02`, sphere `CAND-04`.
+4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14/completeness contract; read R1 only where R2 leaves it binding.
+5. `.agents/Directional/Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — immutable package 66 authority.
+6. `.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — frozen ordinal authority; 364-365 were not run.
+7. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — synchronized review pointer and concise history.
 
-**This is immutable Test + Benchmark.** No rebuild, repair, source/test/fixture/selector mutation, generated discovery,
-or benchmark execution is authorized. R9 ends at independent `M3-CP4c-2-TB-X2-R9-REV`; it does not auto-close
-CP4c-2.
+**Stop after R9-REV planning closeout.** Do not begin its next CB in the same review turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
