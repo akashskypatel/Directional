@@ -1,0 +1,3 @@
+turn=M3-CP4c-2-TB-X2-R8-EXEC
+purpose=validate closeout patch-apply workflow
+patch_sha256=3446f9ae8b3631bbfa80f908d4d984abcc8f7f87f32391023df8c48362428192
