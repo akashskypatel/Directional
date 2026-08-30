@@ -1,6 +1,7 @@
 turn=M3-CP4c-2-CB7
 purpose=GMP-linked Code+Build compile/package only
-source_sha=4f0f3ca74a88ba260a20c019437bc4995f2056e0
+semantic_source_sha=4f0f3ca74a88ba260a20c019437bc4995f2056e0
+build_transport_source_sha=1230621baff6d04fb20df3b1bf48903cd65b5d69
 runtimeExecution=false
-checkoutFallback=eigen-mirror/eigen@769c72fd8019e389810d1de1e7c243521a43b594
-retry=4
+eigenMirrorCommit=769c72fd8019e389810d1de1e7c243521a43b594
+retry=5
