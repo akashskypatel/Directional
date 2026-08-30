@@ -31,8 +31,8 @@ jobs:
       workflow_path: .github/workflows/m3-cp4c2-cb9-schema-validate.yml
     secrets: inherit
 
-  validate-drive-draft:
+  validate-compile-draft:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .agents/Directional/turn-payloads/m3-cp4c2-cb9-drive-apply-draft.yml
+      workflow_path: .agents/Directional/turn-payloads/m3-cp4c2-cb9-compile-draft.yml
     secrets: inherit
