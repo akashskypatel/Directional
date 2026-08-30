@@ -1,4 +1,4 @@
 M3-CP4c-2-CB9 schema validation trigger
-validation_target=compile-caller
-expected_parent=e2885c42c43d37d02dc1fc7276e74599839f5318
-retry=1
+validation_target=docs-apply-draft
+expected_parent=2e6a27f0054f49fd262404f9c2eb85c4491fc0ae
+retry=2
