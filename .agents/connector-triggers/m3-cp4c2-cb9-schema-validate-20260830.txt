@@ -1,0 +1,4 @@
+M3-CP4c-2-CB9 schema validation trigger
+validation_target=final-correction-draft
+expected_parent=1bcb49335ae4a036132c996afa3d14ab3fc3b185
+retry=3
