@@ -61,7 +61,7 @@ jobs:
           test "$(sed -n 366p "$S")" = GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath; test "$(sed -n 367p "$S")" = GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses
           N="$W/non-gating.txt"; printf '%s\n' GlobalTopologyPlan.TorusWitnessStageReachabilityIsObservable GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable GlobalTopologyPlan.SpherePrescribedWitnessStageReachabilityIsObservable > "$N"; test "$(sha256sum "$N"|cut -d' ' -f1)" = "$NGSHA"
           for e in "$P"/bin/directional_*tests; do test -x "$e"; done; test -f "$GITHUB_WORKSPACE/benchmarks/fixtures/milestone-g/mechanical_feature.obj"; test -f "$GITHUB_WORKSPACE/benchmarks/fixtures/milestone-g/sphere_prescribed.obj"
-          strings "$P/bin/directional_surface_cell_producer_tests"|grep -Fq "$GITHUB_WORKSPACE"; ldd "$P/bin/directional_surface_cell_producer_tests"|tee "$R/ldd.txt"; grep -Fq libgmpxx "$R/ldd.txt"; grep -Fq libgmp "$R/ldd.txt"
+          strings "$P/bin/directional_surface_cell_producer_tests" > "$W/producer.strings"; grep -Fq "$GITHUB_WORKSPACE" "$W/producer.strings"; ldd "$P/bin/directional_surface_cell_producer_tests"|tee "$R/ldd.txt"; grep -Fq libgmpxx "$R/ldd.txt"; grep -Fq libgmp "$R/ldd.txt"
           inv(){ while IFS= read -r -d '' f; do printf '%s ' "$(stat -c %a "$f")"; sha256sum "$f"; done < <(find "$1" -type f -print0|sort -z); }; inv "$P" > "$W/package.pre"; inv "$GITHUB_WORKSPACE" > "$W/source.pre"; printf 'preflight=PASS\nselectorCount=367\nnonGatingCount=3\n' > "$R/preflight.txt"
       - name: Execute selectors one identity per process
         shell: bash
