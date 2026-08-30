@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-30 — `M3-CP4c-2-CB9`: both stale Amendment-14 consumers corrected; package 67 build-green
+
+Code + Build only. Semantic/test source `57444781af7bdc460e38cc68930a9a8c8199eeea` implements R9-REV AI0-AI9 without selector, sphere, crossing-producer, error-enum, invariant, or benchmark widening. AI1 independently re-derived the full Cut/cut-edge consumer set; exactly two A2b consumers were stale. Region binding now iterates every derived Cut sub-arc under the canonical source-edge direction invariant, and region-certificate `boundaryVertices` now uses the existing shared `NodeLocus` authority so only actual sub-arc source-vertex endpoints enter the skip list. AI2 fragment/orbit diagnostics were added, ordinal 359 is recorded beside the semantic-digest rationale, and both typed-error helpers stop before `built.value()` fall-through.
+
+Compile-only run `33325344311`: changed-owner prepackage job `99294371782` compiled `directional_surface_cell_producer_tests` **105/105**; package job `99294619815` compiled all eight standard targets through `agent-compile-reusable.yml` with GMP/GMPXX. Immutable package **67** is artifact `9736088354` (`78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`); packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`; internal manifest **28/28 PASS**; `runtimeExecution=false`. Stable totals remain **44 / 14 / 30**, debt **5**. Exact next: `M3-CP4c-2-TB-X2-R10-EXEC`, artifact-only under `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md`; R10-REV owns diagnostics/disposition after EXEC.
+
 ## 2026-08-30 — `M3-CP4c-2-TB-X2-R9-REV`: four closures, and A2b's stale one-arc-per-cut-edge binding
 
 Independent review and planning only. No runtime, build, compile, package, benchmark, or product/test/fixture/

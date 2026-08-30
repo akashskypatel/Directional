@@ -54,6 +54,7 @@
   expect it to *tighten* a loose check, so a new legitimate red there is a finding, not a regression), **AI5**
   (test-helper hygiene), **AI7** (if the audit finds a site needing a representation change rather than a per-arc
   loop, **stop and return to definition** — Amendment 14 is frozen and must not be worked around).
+- **CB9 Code + Build disposition — IMPLEMENTED / COMPILE-GREEN / RUNTIME UNADJUDICATED.** Semantic/test source `57444781af7bdc460e38cc68930a9a8c8199eeea` independently audited every Cut/cut-edge consumer and found exactly the two R9-REV stale sites; no representation-level widening was required. AI2 now iterates all Cut sub-arcs and publishes fragment/orbit evidence; AI3 uses one shared `NodeLocus` authority so `boundaryVertices` contains only actual sub-arc source-vertex endpoints; AI4/AI5 are complete. Compile-only run `33325344311` is green, immutable package **67** is artifact `9736088354` / `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`, manifest 28/28 PASS, GMP/GMPXX, `runtimeExecution=false`. This does **not** close the candidate or change stable totals; R10 must satisfy the frozen runtime closure condition.
 - **Closure condition:** ordinals **363, 364 and 365 all green** in a run reaching 365.
 
 ## M3-CP4c2-TB-X2-R9-ORCH-01 — R9 pre-authority harness failures — **CLOSED / ORCHESTRATION / NON-STABLE**

@@ -21,75 +21,44 @@ CB  →  TB  →  green?  →  checkpoint CLOSES
 **Non-gating diagnostic identities** TB executes and reports them, the
 gate count excludes them, each carries a written rationale and an owning corrective measure.
 
-## Current focus — `M3-CP4c-2-CB9` — convert A2b's two stale cut-arc consumers
+## Current focus — `M3-CP4c-2-TB-X2-R10-EXEC` — immutable re-proof of CB9 package 67
 
-`M3-CP4c-2-TB-X2-R9-REV` is complete:
-`Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md`. Measures **AI0–AI9**.
+`M3-CP4c-2-CB9` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**:
+`Architecture_M3_CP4c2_CB9_Code_Build_Report.md`.
 
-**R9 closed four long-running items.** On immutable CB8 package `9726295440` (run/job
-`33319911575 / 99279955697`): accepted prefix **355/355 PASS**, ordinals **356–362 PASS**, ordinal **363 RED**,
-364–365 NOT RUN.
+- semantic/test source `57444781af7bdc460e38cc68930a9a8c8199eeea` converts both stale Amendment-14 A2b consumers identified by R9-REV;
+- AI1 independently re-derived every `arc.cutEdge` / `GlobalTopologyArcKind::Cut` / `cut_edges()` product consumer before editing: exactly two were stale, and no representation-level widening was required;
+- AI2 now binds every derived Cut sub-arc and publishes fragment-reconciliation plus cut-edge-orbit diagnostics;
+- AI3 uses the existing `NodeLocus` authority so only actual sub-arc source-vertex endpoints enter the `boundaryVertices` skip list;
+- AI4 records ordinal 359 next to the semantic-digest rationale; AI5 stops helper fall-through after typed build failure;
+- AI6/AH6 remains runtime-owned; AI8 exclusions remain untouched.
 
-- **`R8-CAND-01` CLOSED** — 359 and 361 both green in a run reaching 361. AH2 was the right correction.
-- **Measure `AD3` RESOLVED** — ordinal 359 reached its enumeration-invariance comparison for the first time, so the
-  raw `face.orbit` index in `candidate_semantic_hash` is proved by test rather than by comment.
-- **Criterion `C3` GREEN** at ordinal 362, after seven deferrals. **C1, C3 and C6 all hold on the produced torus.**
-- **`PR8-R044`'s single-witness residual discharged** — 360 (bounded two-ring) and 361 (closed torus) both pass.
+Compile-only run `33325344311` is green. Changed-owner prepackage job `99294371782` compiled `directional_surface_cell_producer_tests` **105/105**; authoritative package job `99294619815` built all eight standard targets through `agent-compile-reusable.yml`. Immutable package **67** is artifact `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`, packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`, manifest **28/28 PASS**, GMP/GMPXX, `runtimeExecution=false`.
 
-**Ordinal 363 is the first genuine product defect in this arc.** The witness is fine: it proved an exact
-trace/source-edge crossing, built a **cellular** cut graph, and selected a `TraceInteriorCrossing` candidate. A2a′
-did its job; A2b rejected the result.
+### R10 execution boundary
 
-- **Producer correct** (`EmbeddedGraphTopology.cpp:503-545`): exact `ExactUnitParameter` ordering, coincident
-  crossings rejected not merged, and every sub-arc emitted in the canonical `cutEdge.first() → cutEdge.second()`
-  direction (`ArcDraft` stores endpoints verbatim). That last property is why the fix is small.
-- **Consumer stale and loud** (`GlobalTopologyPlan.cpp:479-516`): demands exactly one Cut arc per cut edge, and
-  still calls cuts "ordinary embedded source-edge barriers" while the trace block below reasons in chords and
-  fragments. Amendment 14 made cut arcs chord-like; A2b treats them as whole-edge barriers.
-- **Consumer stale and SILENT** (`GlobalTopologyPlan.cpp:1239-1242`): inserts the whole source edge's endpoints
-  into `boundaryVertices` for a sub-arc. `boundaryVertices` is a **skip list**, so this suppresses the
-  interior-vertex ownership check with no error and no symptom. **Fixing only the loud site would trade a red gate
-  for a quiet weakening.**
-- **Cause of the omission — the reviewer's.** DEFN-R2 §4 itemized five producer-side changes under "convert every
-  consumer" and did not list A2b's cut-arc binding. CB7/CB8 implemented §§4.1–4.5 correctly and completely.
-  `LESSONS.md` **61**.
+Exact next is **`M3-CP4c-2-TB-X2-R10-EXEC`** under
+`Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md`.
 
-### CB9 scope — AI0–AI9
+- artifact-only; no rebuild, relink, repair, chmod, source/test/fixture/selector/package mutation, generated discovery, or benchmark;
+- verify immutable package `9736088354` and frozen selector 365 authority first;
+- run the three frozen non-gating identities once each;
+- execute selector 365 from ordinal 1, one fresh process per identity, with the first-semantic-red hard stop;
+- if ordinal 363 is reached, enable `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1` in that same process and preserve AI2 fragment/orbit rows;
+- if 363-365 are all reached, publish AH6 ordinary-path versus saturation evidence;
+- unconditional immutable postflight regardless of semantic outcome.
 
-- **AI1 first, no build.** Produce the consumer audit **yourself**, by search over `arc.cutEdge`,
-  `GlobalTopologyArcKind::Cut` and `cut_edges()`, and publish it with a per-site verdict. Compare against the
-  review's §4 table **after**; any difference must be explained. This measure exists because a copied enumeration
-  inherits the omission that caused this red.
-- **AI2** iterate all sub-arcs at `:479-516`; state the canonical-direction dependency in the comment; keep the
-  two-incident-faces guard; keep a typed failure for **zero** arcs; publish `fragmentOrbits[face].size()` against
-  `tracePieceCount[face] + 1` and the `edgeOrbitEvidence` cardinalities as evidence.
-- **AI3** fix the silent `boundaryVertices` site using `build_node_loci`'s existing `NodeLocus{vertex, edge}`,
-  threaded in — no second node→vertex lookup. This **tightens** a loose check, so a new legitimate red there is a
-  finding, not a regression.
-- **AI4** record the four closures with their evidence, including annotating `SurfaceCutGraph.cpp:293-297` with
-  "proved by ordinal 359".
-- **AI5** test-helper hygiene: `build_topology_plan` / `build_surface_cut_graph` print the typed code and then
-  throw on `built.value()`. `LESSONS.md` 60, second instance.
-- **AI7** if the audit finds a site needing a representation change rather than a per-arc loop, **stop and return
-  to definition** — Amendment 14 is frozen and must not be worked around.
-- **AI8** CB9 must not absorb the sphere fix, any new gate identity, any selector byte, any error-enum change, or
-  any change to `EmbeddedGraphTopology.cpp`'s crossing emission.
+R10 is split: **R10-EXEC** owns runtime/raw evidence only; **R10-REV** owns diagnostics, regression/candidate disposition, tracker/report updates, and next-step planning. Do not perform R10-REV work inside EXEC.
 
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **66**.
-`selected_r2_branch=NONE`; gate **365** is the frozen authority, executed red at ordinal 363;
-`gate_execution_authorized=false`. CP4c-3 remains blocked.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **67**. `selected_r2_branch=NONE`; selector **365** remains frozen; CP4c-2 remains unaccepted and CP4c-3 blocked.
 
 ### Open CP4c-2 candidates
 
-- [ ] `M3-CP4c2-TB-X2-R9-CAND-01` — A2b's two stale cut-arc consumers; AI1–AI3. Closes when ordinals **363, 364 and
-      365 are all green** in a run reaching 365.
-- [ ] **Ordinals 364 and 365 have never run** — the degree-four two-Cut/two-Trace rotation and the saturation last
-      resort, unexecuted for a third turn.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere: a producer `RotationSystemInconsistent` at source face
-      `25-27-28` **and**, independently, a non-cellular pre-cut graph (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`).
-      Neither is in the gate.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — zero-node / zero-arc closed-surface cut-graph behaviour; non-gating.
-- [ ] **`AH6`** — carried forward; needs 363–365 all reached.
+- [ ] `M3-CP4c2-TB-X2-R9-CAND-01` — corrective source is compile-green; closes only when ordinals **363, 364 and 365 are all green** in a valid run reaching 365.
+- [ ] **Ordinals 364 and 365 have never run** — degree-four two-Cut/two-Trace rotation and saturation last resort.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere: producer `RotationSystemInconsistent` plus independently non-cellular pre-cut graph; non-gating and unchanged.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — zero-node / zero-arc closed-surface cut-graph behavior; non-gating and unchanged.
+- [ ] **AH6** — requires 363-365 all reached.
 
 ## Carried forward from M1
 
@@ -126,7 +95,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted; R9 re-proved the inherited **355/355** and passed 356-362, closing `R8-CAND-01`, measure `AD3` and criterion C3, then stopped red at ordinal 363. Criteria C1/C3/C6 are green on the produced torus; the remaining red is A2b's stale one-arc-per-cut-edge binding, a genuine product defect. CP4c-2 remains unaccepted. Exact next is `M3-CP4c-2-CB9` under AI0-AI9; CP4c-3 remains blocked.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are accepted. R9 re-proved **355/355**, passed 356-362, and exposed the first genuine CP4c-2 product defect at 363. CB9 implements both stale Cut-sub-arc consumer corrections and is BUILD GREEN on immutable package **67** (`9736088354`), but runtime is unadjudicated. Exact next is `M3-CP4c-2-TB-X2-R10-EXEC`; CP4c-3 remains blocked.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -136,7 +105,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-2 gate ordinal 363:** A2b binds one derived `Cut` arc per selected cut edge, while Amendment 14 gives a trace-crossed edge `n+1` sub-arcs. A second consumer (`boundaryVertices`) over-inserts silently. R9-CAND-01 / R9-REV, measures AI1-AI3.
+- [ ] **CP4c-2 R10 re-proof:** CB9 corrects the ordinal-363 one-arc binding and silent `boundaryVertices` over-insertion; immutable runtime must now prove 363-365, AI2 fragment/orbit reconciliation, and AH6 without weakening the frozen gate.
 - [ ] **Prescribed sphere A2a′ upstream error:** AF0 now publishes `originatingTopologyError=RotationSystemInconsistent` at source face `25-27-28`; review the exact rotation-system locus before any product fix.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.

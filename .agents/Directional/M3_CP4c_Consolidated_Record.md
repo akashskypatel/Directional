@@ -2,9 +2,9 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. R9-EXEC re-proved 355/355, passed ordinals 356-362, and hard-stopped at 363 with `InvalidCutGraphBinding` on immutable package **66**, artifact `9726295440` (run/job `33319911575 / 99279955697`); 364-365 were not run. **R9-REV closed four items** — `R8-CAND-01`, measure `AD3`, criterion **C3**, and `PR8-R044`'s single-witness residual — leaving **C1, C3 and C6 all green on the produced torus**. It adjudicated ordinal 363 as the arc's **first genuine product defect**: Amendment 14 gives a trace-crossed cut edge `n+1` derived Cut arcs, while A2b still binds exactly one, and a **second consumer over-inserts into a `boundaryVertices` skip list and fails silently**. Measures **AI0-AI9** issued. Exact next is **`M3-CP4c-2-CB9`**. CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. R9-EXEC re-proved 355/355, passed 356-362, and hard-stopped at 363 with the first genuine product defect in this arc. R9-REV identified two stale Amendment-14 A2b consumers. **CB9 now corrects both and is BUILD GREEN / runtime-free** on semantic source `57444781af7bdc460e38cc68930a9a8c8199eeea` and immutable package **67**, artifact `9736088354` / `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`. The correction iterates all Cut sub-arcs, uses actual sub-arc endpoint `NodeLocus` authority for `boundaryVertices`, publishes AI2 fragment/orbit diagnostics, and fixes helper fall-through without widening the frozen representation or selector. Exact next is **`M3-CP4c-2-TB-X2-R10-EXEC`** on that immutable package; CP4c-3 remains blocked.
 
-Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **66**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false` at closeout.
+Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **67**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false` at CB9 closeout.
 
 ## 1. Current separate authority
 
@@ -17,8 +17,10 @@ These files remain separate because they are still required by current or future
 - `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` — frozen prefix authority retained for lineage.
 - `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — current CP4c-2 required-green authority; R9 executed through first red at ordinal 363.
 - `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — current report-only TB surface.
-- `Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — current immutable build/package 66 authority.
-- `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — current frozen artifact-only execution plan.
+- `Architecture_M3_CP4c2_CB9_Code_Build_Report.md` — current immutable build/package 67 authority.
+- `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md` — current frozen artifact-only execution plan.
+- `Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — retained predecessor package 66 authority.
+- `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — retained predecessor executed plan.
 - `Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — retained predecessor Amendment-14 build authority.
 - `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — retained predecessor package authority for R7 lineage.
 - `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md` — latest current runtime evidence; valid red at ordinal 363.
@@ -70,6 +72,14 @@ endpoints into the `boundaryVertices` **skip list**, suppressing the interior-ve
 R8-CAND-01 is **closed** by 359/361 green; measure `AD3` is **resolved** and criterion **C3** is **green**. AH6 did
 not apply because 363-365 were not all reached. Result/log artifacts `9734625006 / 9734625165`;
 all mutation/build/benchmark flags false; postflight PASS.
+
+### 3.0a CB9 — convert both stale Cut-sub-arc consumers
+
+R9-REV authorized AI0-AI9. CB9 first re-derived every product reader of `arc.cutEdge`, `GlobalTopologyArcKind::Cut`, and `cut_edges()` rather than trusting the review table. Exactly two consumers were stale: region binding required one Cut arc per source cut edge, and region-certificate `boundaryVertices` inserted both whole-source-edge endpoints for each sub-arc. No other consumer required a representation change.
+
+Semantic/test source `57444781af7bdc460e38cc68930a9a8c8199eeea` converts region binding to iterate all derived Cut sub-arcs while preserving the canonical `cutEdge.first()→cutEdge.second()` orientation dependency and the existing interior-dart formula. It reuses one `NodeLocus` map so only actual source-vertex endpoints of each boundary sub-arc enter the skip list, and it publishes per-face `fragment_reconciliation` plus per-face/cut-edge orbit-cardinality diagnostics under `DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS=1`. The ordinal-359 semantic-digest rationale is annotated with its runtime falsifier and the two helper fall-throughs are stopped. No selector, sphere, crossing producer, enum, invariant, or benchmark scope changed.
+
+Compile-only run `33325344311`: changed-owner prepackage job `99294371782` compiled producer tests 105/105; package job `99294619815` compiled the eight standard targets with GMP/GMPXX and `runtimeExecution=false`. Immutable package 67 is artifact `9736088354`, SHA-256 `78f542c775090968cde0d010cb9cd794d2c9deab15b42a7b29285f1d0490ebdf`, packaged source archive `2ea3ffcd806e8f9ffc04efeb99cf05962017ce4ad03587f07d09b2aa4bc21c5e`, manifest 28/28 PASS. Runtime is intentionally unadjudicated until R10.
 
 
 ### 3.1 Why A2a′ exists
@@ -134,13 +144,9 @@ GMP/GMPXX and `runtimeExecution=false`. Immutable package artifact `9724864897` 
 `a4d9803eea326b5a22f6c4e21cc07e0908eaede944d02a726ae3c5f6d856734c`. The canonical Eigen remote was restored
 after packaging. Runtime behavior remains unadjudicated until R8.
 
-## 4. Runtime evidence owed by R8
+## 4. Runtime evidence owed by R10
 
-CB7 compiled the AF/AG publication and test surfaces but deliberately executed none of them. R8 owns the runtime
-adjudication: accepted prefix 355, ordinals 356–365, every frozen non-gating CP4c-2 identity or explicit skip
-rationale, originating-error provenance, repaired D2 semantics, production torus + enumeration invariance, sphere
-component topology and theorem conditions, the trace-crossed degree-four witness, independent crossing counts, and
-published saturation behavior. Full order and stop rules are in `Future_Chat_Session_Handoff.md`.
+R10-EXEC must consume immutable package 67 without rebuild/repair, re-prove accepted 355/355, then execute 356-365 in frozen order with the first-semantic-red hard stop. Ordinal 363 must publish AI2 fragment-reconciliation and cut-edge-orbit evidence in its single gate process; if 363-365 are all reached, AH6 must distinguish ordinary tree-cotree selection from saturation. Three frozen non-gating diagnostics remain report-only. R10-REV, not EXEC, owns candidate/regression disposition and CP4c-2 acceptance planning. No benchmark is authorized.
 
 ## 5. High-value reversals retained
 
@@ -184,16 +190,13 @@ Historical per-turn CP4c reports retired by earlier consolidation rounds remain 
 
 Read, in order after the durable start-of-turn checklist:
 
-1. `ORIENTATION.md`
-2. `Future_Chat_Session_Handoff.md`
-3. `TODO.md`
-4. `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md`
-5. `Architecture_M3_CP4c2_CB8_Code_Build_Report.md`
-6. `Architecture_M3_CP4c2_TB_X2_R8_Artifact_Only_Test_Benchmark_Report.md`
+1. `Future_Chat_Session_Handoff.md`
+2. `TODO.md`
+3. `Architecture_M3_CP4c2_TB_X2_R10_Artifact_Only_Test_Benchmark_Plan.md`
+4. `Architecture_M3_CP4c2_CB9_Code_Build_Report.md`
+5. `Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md`
+6. `Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md`
 7. `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md`
-8. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — only still-binding sections identified by R2
-9. `Regression_Root_Cause_Tracker.md`
+8. `Regression_Root_Cause_Tracker.md`
 
-**Exact next:** `M3-CP4c-2-TB-X2-R9-EXEC`, artifact-only on immutable GMP package `9726295440`. Do not rebuild,
-repair, chmod, regenerate discovery, mutate source/tests/fixtures/selectors, or execute benchmarks. Run selector 365
-from ordinal 1 with the frozen first-red hard stop and AH6 when 363-365 are reached.
+**Exact next:** `M3-CP4c-2-TB-X2-R10-EXEC`, artifact-only on immutable GMP package `9736088354`. Do not rebuild, repair, chmod, regenerate discovery, mutate source/tests/fixtures/selectors, or execute benchmarks. Run selector 365 from ordinal 1 with the frozen first-red hard stop, AI2 diagnostics at ordinal 363, and AH6 when 363-365 are reached.
