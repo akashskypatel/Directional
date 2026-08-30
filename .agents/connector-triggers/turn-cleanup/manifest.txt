@@ -1,0 +1,10 @@
+# turn-cleanup manifest v1
+branch=agent/surface_cell_quad/p5-recover-bridge-healing
+pr_number=8
+trim_workflow_comments=true
+path=.agents/Directional/turn-payloads/M3-CP4c-2-R9-exec.py
+path=.agents/Directional/turn-payloads/M3-CP4c-2-R9-exec.yml
+path=.agents/connector-triggers/m3-cp4c2-r9-closeout-apply/trigger.txt
+path=.agents/connector-triggers/m3-cp4c2-r9-exec-schema/trigger.txt
+path=.agents/connector-triggers/m3-cp4c2-r9-exec/trigger.txt
+path=.agents/connector-triggers/source-snapshot/r9-start.txt
