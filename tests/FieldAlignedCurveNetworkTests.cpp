@@ -19,6 +19,7 @@
 #include <tuple>
 #include <type_traits>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include <Eigen/Sparse>
@@ -1485,6 +1486,12 @@ Cp4cTraceCrossedCutFixture build_cp4c_trace_crossed_cut_fixture() {
   if (!atlas) return fixture;
   fixture.atlas = atlas.value();
   fixture.rails = rails_from_atlas(fixture.mesh, *fixture.atlas);
+  if (fixture.mesh.boundaryLoops.empty() && fixture.rails.empty()) {
+    ADD_FAILURE()
+        << "closed witness: rails_from_atlas is vacuous unless the atlas was built "
+           "with this witness's hard-feature edges";
+    return fixture;
+  }
   auto network = FieldAlignedCurveNetwork::make(
       fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails);
   EXPECT_TRUE(network);
@@ -2314,6 +2321,11 @@ TEST(SurfaceCutGraph, AlreadyCellularNetworkPublishesEmptyCertifiedCutSet) {
       mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
   ASSERT_TRUE(atlas);
   const auto rails = rails_from_atlas(mesh, atlas.value());
+  if (mesh.boundaryLoops.empty()) {
+    ASSERT_FALSE(rails.empty())
+        << "closed witness: rails_from_atlas is vacuous unless the atlas was built "
+           "with this witness's hard-feature edges";
+  }
   const auto network = FieldAlignedCurveNetwork::make(
       mesh, *sourceAuthority, atlas.value(), rails);
   ASSERT_TRUE(network);
@@ -2332,6 +2344,137 @@ TEST(SurfaceCutGraph, AlreadyCellularNetworkPublishesEmptyCertifiedCutSet) {
   EXPECT_TRUE(certificate.faces.front().discTopologyEstablished);
 }
 
+namespace {
+
+struct Cp4cProductionFeatureAuthority {
+  std::vector<SurfaceCellRail> rails;
+  directional::geometry::SourceSurfaceLabels sourceLabels;
+  bool hasRails = false;
+  bool hasSourceLabels = false;
+};
+
+struct Cp4cSourceAuthorityBuildFailure {};
+struct Cp4cClosedRailsPreconditionFailure {};
+
+struct Cp4cCutGraphFixtureSuccess {
+  FieldAlignedCurveNetwork network;
+  directional::geometry::SurfaceCutGraph cutGraph;
+};
+
+using Cp4cCutGraphFixtureBuildOutcome = std::variant<
+    Cp4cCutGraphFixtureSuccess, Cp4cSourceAuthorityBuildFailure,
+    Cp4cClosedRailsPreconditionFailure,
+    directional::authority::FieldAtlasBuildError,
+    directional::geometry::FieldAlignedCurveNetworkError,
+    directional::geometry::SurfaceCutGraphError>;
+
+Cp4cProductionFeatureAuthority cp4c_torus_production_feature_authority(
+    const TriMesh &mesh, const Eigen::MatrixXd &raw) {
+  directional::pipeline::RemeshOptions options;
+  options.lengthRatio = 0.2;
+  options.integralSeamless = false;
+  options.roundSeams = false;
+  options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+  options.surfaceCells.enabled = true;
+  options.surfaceCells.fallbackPolicy =
+      directional::pipeline::SurfaceCellFallbackPolicy::Fail;
+  options.surfaceCells.allowSourceGridRecovery = false;
+  options.surfaceCells.retainIntermediateGeometry = true;
+
+  const auto result = directional::pipeline::remesh_from_raw_cross_field(
+      mesh.V, mesh.F, raw, options);
+  const auto &products = result.surfaceCellContext.productSnapshots;
+  Cp4cProductionFeatureAuthority authority;
+  authority.rails = products.authoritativeRails;
+  authority.sourceLabels = products.sourceSurfaceLabels;
+  authority.hasRails = products.hasAuthoritativeRails;
+  authority.hasSourceLabels = products.hasSourceSurfaceLabels;
+  return authority;
+}
+
+Cp4cCutGraphFixtureBuildOutcome
+build_cp4c_cut_graph_from_production_feature_authority(
+    const TriMesh &mesh, const CrossFieldResult &field,
+    const std::vector<SurfaceCellRail> &authoritativeRails,
+    const std::set<SourceEdgeTopologyKey> &hardFeatureEdges,
+    const std::vector<int> &sourceFaceComponents,
+    const std::vector<int> &sourceFaceSheets) {
+  if (sourceFaceComponents.size() != static_cast<std::size_t>(mesh.F.rows()) ||
+      sourceFaceSheets.size() != static_cast<std::size_t>(mesh.F.rows())) {
+    return Cp4cSourceAuthorityBuildFailure{};
+  }
+
+  SurfaceCellTracingOptions tracingOptions;
+  tracingOptions.authoritativeRails = authoritativeRails;
+  tracingOptions.hardFeatureEdges = hardFeatureEdges;
+  tracingOptions.sourceFaceComponents = sourceFaceComponents;
+  tracingOptions.sourceFaceSheets = sourceFaceSheets;
+  auto sourceAuthority = directional::geometry::surface_cell_tracing_detail::
+      build_source_topology_regions(mesh.F, tracingOptions);
+  if (!sourceAuthority.has_value()) {
+    return Cp4cSourceAuthorityBuildFailure{};
+  }
+
+  auto atlas = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, hardFeatureEdges, field);
+  if (!atlas) return atlas.error();
+
+  const auto localRails = rails_from_atlas(mesh, atlas.value());
+  if (mesh.boundaryLoops.empty() && localRails.empty()) {
+    return Cp4cClosedRailsPreconditionFailure{};
+  }
+
+  auto network = FieldAlignedCurveNetwork::make(
+      mesh, *sourceAuthority, atlas.value(), localRails);
+  if (!network) return network.error();
+
+  auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
+      atlas.value(), network.value());
+  if (!cutGraph) return cutGraph.error();
+
+  return Cp4cCutGraphFixtureSuccess{network.value(), cutGraph.value()};
+}
+
+std::string cp4c_cut_graph_fixture_failure_message(
+    const Cp4cCutGraphFixtureBuildOutcome &outcome) {
+  if (std::holds_alternative<Cp4cSourceAuthorityBuildFailure>(outcome)) {
+    return "stage=source-authority;error=Unavailable";
+  }
+  if (std::holds_alternative<Cp4cClosedRailsPreconditionFailure>(outcome)) {
+    return "stage=runtime-precondition;error=ClosedWitnessHasVacuousAtlasRails";
+  }
+  if (const auto *error =
+          std::get_if<directional::authority::FieldAtlasBuildError>(&outcome)) {
+    return std::string("stage=field-transport-atlas;error=") +
+           directional::authority::field_atlas_build_error_code_name(error->code);
+  }
+  if (const auto *error =
+          std::get_if<directional::geometry::FieldAlignedCurveNetworkError>(
+              &outcome)) {
+    return std::string("stage=field-aligned-network;error=") +
+           directional::geometry::field_aligned_curve_network_error_code_name(
+               error->code);
+  }
+  if (const auto *error =
+          std::get_if<directional::geometry::SurfaceCutGraphError>(&outcome)) {
+    std::string message = std::string("stage=surface-cut-graph;error=") +
+                          directional::geometry::surface_cut_graph_error_code_name(
+                              error->code);
+    if (error->originatingTopologyError.has_value()) {
+      message += ";originatingTopologyError=";
+      message += directional::geometry::global_topology_plan_error_code_name(
+          *error->originatingTopologyError);
+    } else {
+      message += ";originatingTopologyError=none";
+    }
+    return message;
+  }
+  return "stage=success;error=none";
+}
+
+} // namespace
+
 TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
   TriMesh baseline;
   const auto meshPath = directional::tests::benchmark_fixture_path(
@@ -2344,43 +2487,36 @@ TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
   const Eigen::MatrixXd baselineRaw =
       read_cp4c_rawfield(fieldPath, baseline.F.rows());
 
-  const auto build = [](const TriMesh &mesh, const Eigen::MatrixXd &raw) {
-    const auto authority = make_source_authority(mesh);
-    if (!authority.has_value()) {
-      ADD_FAILURE() << "torus source authority unavailable";
-      return directional::geometry::SurfaceCutGraphBuildResult(
-          directional::geometry::SurfaceCutGraphError{});
-    }
-    const CrossFieldResult field =
-        directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
-    auto atlas = directional::authority::FieldTransportAtlas::make(
-        mesh, *authority, {}, field);
-    if (!atlas) {
-      ADD_FAILURE() << "production torus atlas failed;code="
-                    << directional::authority::field_atlas_build_error_code_name(
-                           atlas.error().code);
-      return directional::geometry::SurfaceCutGraphBuildResult(
-          directional::geometry::SurfaceCutGraphError{});
-    }
-    const auto rails = rails_from_atlas(mesh, atlas.value());
-    auto network = FieldAlignedCurveNetwork::make(
-        mesh, *authority, atlas.value(), rails);
-    if (!network) {
-      ADD_FAILURE() << "production torus network failed;code="
-                    << directional::geometry::field_aligned_curve_network_error_code_name(
-                           network.error().code);
-      return directional::geometry::SurfaceCutGraphBuildResult(
-          directional::geometry::SurfaceCutGraphError{});
-    }
-    return directional::geometry::SurfaceCutGraph::make(
-        mesh.F, static_cast<std::size_t>(mesh.V.rows()), *authority,
-        atlas.value(), network.value());
-  };
+  const Cp4cProductionFeatureAuthority productionAuthority =
+      cp4c_torus_production_feature_authority(baseline, baselineRaw);
+  ASSERT_TRUE(productionAuthority.hasRails);
+  ASSERT_TRUE(productionAuthority.hasSourceLabels);
+  ASSERT_FALSE(productionAuthority.rails.empty())
+      << "closed witness runtime precondition: production authoritative rails "
+         "must be non-empty";
+  ASSERT_EQ(static_cast<std::size_t>(baseline.F.rows()),
+            productionAuthority.sourceLabels.componentByFace.size());
+  ASSERT_EQ(static_cast<std::size_t>(baseline.F.rows()),
+            productionAuthority.sourceLabels.localSheetByFace.size());
+  const auto hardFeatureEdges =
+      directional::pipeline::hard_feature_edge_keys_from_rails(
+          productionAuthority.rails,
+          static_cast<std::size_t>(baseline.V.rows()));
 
-  auto baselineCutGraph = build(baseline, baselineRaw);
-  ASSERT_TRUE(baselineCutGraph);
-  ASSERT_FALSE(baselineCutGraph.value().cut_edges().empty());
-  ASSERT_TRUE(baselineCutGraph.value().certificate().proves_cellularity());
+  const CrossFieldResult baselineField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          baseline, baselineRaw);
+  const auto baselineBuild =
+      build_cp4c_cut_graph_from_production_feature_authority(
+          baseline, baselineField, productionAuthority.rails, hardFeatureEdges,
+          productionAuthority.sourceLabels.componentByFace,
+          productionAuthority.sourceLabels.localSheetByFace);
+  ASSERT_TRUE(std::holds_alternative<Cp4cCutGraphFixtureSuccess>(baselineBuild))
+      << cp4c_cut_graph_fixture_failure_message(baselineBuild);
+  const auto &baselineSuccess =
+      std::get<Cp4cCutGraphFixtureSuccess>(baselineBuild);
+  ASSERT_FALSE(baselineSuccess.cutGraph.cut_edges().empty());
+  ASSERT_TRUE(baselineSuccess.cutGraph.certificate().proves_cellularity());
 
   Eigen::MatrixXi reorderedFaces = baseline.F;
   for (int first = 0, last = reorderedFaces.rows() - 1; first < last;
@@ -2392,19 +2528,33 @@ TEST(SurfaceCutGraph, IsInvariantToSourceFaceAndEdgeEnumeration) {
        ++first, --last) {
     reorderedRaw.row(first).swap(reorderedRaw.row(last));
   }
+  auto reorderedComponents = productionAuthority.sourceLabels.componentByFace;
+  auto reorderedSheets = productionAuthority.sourceLabels.localSheetByFace;
+  std::reverse(reorderedComponents.begin(), reorderedComponents.end());
+  std::reverse(reorderedSheets.begin(), reorderedSheets.end());
+
   TriMesh reordered;
   reordered.set_mesh(baseline.V, reorderedFaces);
-  auto reorderedCutGraph = build(reordered, reorderedRaw);
-  ASSERT_TRUE(reorderedCutGraph);
+  const CrossFieldResult reorderedField =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(
+          reordered, reorderedRaw);
+  const auto reorderedBuild =
+      build_cp4c_cut_graph_from_production_feature_authority(
+          reordered, reorderedField, productionAuthority.rails,
+          hardFeatureEdges, reorderedComponents, reorderedSheets);
+  ASSERT_TRUE(std::holds_alternative<Cp4cCutGraphFixtureSuccess>(reorderedBuild))
+      << cp4c_cut_graph_fixture_failure_message(reorderedBuild);
+  const auto &reorderedSuccess =
+      std::get<Cp4cCutGraphFixtureSuccess>(reorderedBuild);
 
-  EXPECT_EQ(baselineCutGraph.value().cut_edges(),
-            reorderedCutGraph.value().cut_edges());
-  EXPECT_EQ(baselineCutGraph.value().semantic_digest(),
-            reorderedCutGraph.value().semantic_digest());
-  EXPECT_EQ(baselineCutGraph.value().certificate().eulerCharacteristic,
-            reorderedCutGraph.value().certificate().eulerCharacteristic);
-  EXPECT_EQ(baselineCutGraph.value().certificate().faceCount,
-            reorderedCutGraph.value().certificate().faceCount);
+  EXPECT_EQ(baselineSuccess.cutGraph.cut_edges(),
+            reorderedSuccess.cutGraph.cut_edges());
+  EXPECT_EQ(baselineSuccess.cutGraph.semantic_digest(),
+            reorderedSuccess.cutGraph.semantic_digest());
+  EXPECT_EQ(baselineSuccess.cutGraph.certificate().eulerCharacteristic,
+            reorderedSuccess.cutGraph.certificate().eulerCharacteristic);
+  EXPECT_EQ(baselineSuccess.cutGraph.certificate().faceCount,
+            reorderedSuccess.cutGraph.certificate().faceCount);
 }
 
 TEST(SurfaceCutGraph,
@@ -2418,6 +2568,11 @@ TEST(SurfaceCutGraph,
       mesh, *sourceAuthority, {}, baselineField);
   ASSERT_TRUE(baselineAtlas);
   const auto baselineRails = rails_from_atlas(mesh, baselineAtlas.value());
+  if (mesh.boundaryLoops.empty()) {
+    ASSERT_FALSE(baselineRails.empty())
+        << "closed witness: rails_from_atlas is vacuous unless the atlas was built "
+           "with this witness's hard-feature edges";
+  }
   const FieldAlignedCurveNetwork baselineNetwork = build_network(
       mesh, *sourceAuthority, baselineAtlas.value(), baselineRails);
   const auto baselineCutGraph = directional::geometry::SurfaceCutGraph::make(
@@ -2458,53 +2613,66 @@ TEST(SurfaceCutGraph,
   const auto meshPath = directional::tests::benchmark_fixture_path(
       "milestone-g/torus.obj");
   ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
-  const auto sourceAuthority = make_source_authority(mesh);
-  ASSERT_TRUE(sourceAuthority.has_value());
+  ASSERT_TRUE(mesh.boundaryLoops.empty());
   const auto fieldPath = directional::tests::benchmark_fixture_path(
       "milestone-g/torus.rawfield");
   const Eigen::MatrixXd raw = read_cp4c_rawfield(fieldPath, mesh.F.rows());
+
+  const Cp4cProductionFeatureAuthority productionAuthority =
+      cp4c_torus_production_feature_authority(mesh, raw);
+  ASSERT_TRUE(productionAuthority.hasRails);
+  ASSERT_TRUE(productionAuthority.hasSourceLabels);
+  ASSERT_FALSE(productionAuthority.rails.empty())
+      << "closed witness runtime precondition: production authoritative rails "
+         "must be non-empty";
+  ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()),
+            productionAuthority.sourceLabels.componentByFace.size());
+  ASSERT_EQ(static_cast<std::size_t>(mesh.F.rows()),
+            productionAuthority.sourceLabels.localSheetByFace.size());
+  const auto hardFeatureEdges =
+      directional::pipeline::hard_feature_edge_keys_from_rails(
+          productionAuthority.rails, static_cast<std::size_t>(mesh.V.rows()));
+
   const CrossFieldResult baselineField =
       directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
-  auto baselineAtlas = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, baselineField);
-  if (!baselineAtlas) {
-    FAIL() << "production torus atlas failed;code="
-           << directional::authority::field_atlas_build_error_code_name(
-                  baselineAtlas.error().code);
-  }
-  const auto baselineRails = rails_from_atlas(mesh, baselineAtlas.value());
-  const FieldAlignedCurveNetwork baselineNetwork = build_network(
-      mesh, *sourceAuthority, baselineAtlas.value(), baselineRails);
-  const auto baselineCutGraph = directional::geometry::SurfaceCutGraph::make(
-      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
-      baselineAtlas.value(), baselineNetwork);
-  ASSERT_TRUE(baselineCutGraph);
+  const auto baselineBuild =
+      build_cp4c_cut_graph_from_production_feature_authority(
+          mesh, baselineField, productionAuthority.rails, hardFeatureEdges,
+          productionAuthority.sourceLabels.componentByFace,
+          productionAuthority.sourceLabels.localSheetByFace);
+  ASSERT_TRUE(std::holds_alternative<Cp4cCutGraphFixtureSuccess>(baselineBuild))
+      << cp4c_cut_graph_fixture_failure_message(baselineBuild);
+  const auto &baselineSuccess =
+      std::get<Cp4cCutGraphFixtureSuccess>(baselineBuild);
 
   const CrossFieldResult relabeledField = gauge_relabel_field_for_network(
       mesh, baselineField, cp3a_equivalent_gauge_shifts(mesh));
-  auto relabeledAtlas = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, relabeledField);
-  ASSERT_TRUE(relabeledAtlas);
-  const auto relabeledRails = rails_from_atlas(mesh, relabeledAtlas.value());
-  const FieldAlignedCurveNetwork relabeledNetwork = build_network(
-      mesh, *sourceAuthority, relabeledAtlas.value(), relabeledRails);
-  const auto relabeledCutGraph = directional::geometry::SurfaceCutGraph::make(
-      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
-      relabeledAtlas.value(), relabeledNetwork);
-  ASSERT_TRUE(relabeledCutGraph);
+  const auto relabeledBuild =
+      build_cp4c_cut_graph_from_production_feature_authority(
+          mesh, relabeledField, productionAuthority.rails, hardFeatureEdges,
+          productionAuthority.sourceLabels.componentByFace,
+          productionAuthority.sourceLabels.localSheetByFace);
+  ASSERT_TRUE(std::holds_alternative<Cp4cCutGraphFixtureSuccess>(relabeledBuild))
+      << cp4c_cut_graph_fixture_failure_message(relabeledBuild);
+  const auto &relabeledSuccess =
+      std::get<Cp4cCutGraphFixtureSuccess>(relabeledBuild);
 
-  ASSERT_EQ(baselineNetwork.semantic_digest(), relabeledNetwork.semantic_digest());
-  ASSERT_NE(baselineNetwork.atlas_digest(), relabeledNetwork.atlas_digest());
-  EXPECT_EQ(baselineCutGraph.value().semantic_digest(),
-            relabeledCutGraph.value().semantic_digest());
-  EXPECT_NE(baselineCutGraph.value().provenance_digest(),
-            relabeledCutGraph.value().provenance_digest());
+  ASSERT_EQ(baselineSuccess.network.semantic_digest(),
+            relabeledSuccess.network.semantic_digest());
+  ASSERT_NE(baselineSuccess.network.atlas_digest(),
+            relabeledSuccess.network.atlas_digest());
+  EXPECT_EQ(baselineSuccess.cutGraph.semantic_digest(),
+            relabeledSuccess.cutGraph.semantic_digest());
+  EXPECT_NE(baselineSuccess.cutGraph.provenance_digest(),
+            relabeledSuccess.cutGraph.provenance_digest());
   std::cout << "surface-cut-graph-digest witness=torus semantic_baseline="
-            << baselineCutGraph.value().semantic_digest()
-            << " semantic_relabeled=" << relabeledCutGraph.value().semantic_digest()
-            << " provenance_baseline=" << baselineCutGraph.value().provenance_digest()
+            << baselineSuccess.cutGraph.semantic_digest()
+            << " semantic_relabeled="
+            << relabeledSuccess.cutGraph.semantic_digest()
+            << " provenance_baseline="
+            << baselineSuccess.cutGraph.provenance_digest()
             << " provenance_relabeled="
-            << relabeledCutGraph.value().provenance_digest() << '\n';
+            << relabeledSuccess.cutGraph.provenance_digest() << '\n';
 }
 
 TEST(SurfaceCutGraph, TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs) {
