@@ -92,10 +92,11 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — independent CP4c-3 phase-1 TB review
+## Mandatory next turn — `M3-CP4c-3-DEFN-R1` (combined definition + review)
 
-`M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED / REVIEW REQUIRED**. The retained execution authority is
-`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED / REVIEWED**. The retained execution authority is
+`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`; the adjudication and the successor measures
+**AL0–AL9** are `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md`.
 
 ### Immutable TB1 authority
 
@@ -135,49 +136,97 @@ Measured phase-1 evidence:
 5. Three earlier attempts stopped in preflight with no Directional runtime; they are orchestration-only controls.
    `33340448381` is the sole semantic runtime authority.
 
-### Exact review scope
+### What the review concluded — the successor's starting facts
 
-The next turn is **independent REVIEW + PLAN**, not another TB and not a corrective CB. It must:
+- **TB1 execution is VALID** and the working tree is byte-identical to the packaged semantic source
+  (`git diff --stat 48dd011c… HEAD -- tests/ src/ include/` empty), so every source claim in the review record
+  describes exactly what ran. CB1 delivered AK1–AK3 exactly as specified — an enumerated reason, additive, no
+  mapping changed and no enum value renumbered.
+- **Mechanical witness — CAUSE ESTABLISHED.** Edge `0-3` is a `HardFeature` **barrier**, by elimination over
+  `FieldTransportAtlas::make`'s four adjacency buckets (`SourceBoundary` excluded by `globalEF=1,158`,
+  `NonTraversable` by a single region over all 300 faces, `adjacencies` by the measurement). It entered the cycle
+  basis anyway because `build_source_topology_regions` skips hard-feature edges when flood-filling and **skipping
+  an adjacency disconnects nothing unless the edges separate** — region 0 is all 300 faces with `boundaryLoops=0`,
+  so the edge stayed interior to the local mesh and the transport walk demanded an adjacency the atlas
+  deliberately withheld. Region 0 is χ=2/genus 0/no boundary — a sphere — and every closed curve on a sphere
+  separates, so the feature set **necessarily contains at least one open arc**. The torus succeeds because its 48
+  hard-feature edges form four **separating** closed loops, putting them on region boundaries.
+- **Prescribed sphere — ONE LEVEL SHORT, phase 2 NOT authorized.** `TraceEventPositionInvalid` is itself a two-way
+  collapse in `trace_event_position` (`EmbeddedGraphTopology.cpp:138-173`): `positions.empty()` is a binding
+  defect, `positions.size() > 1` is an ambiguity, and they need **opposite** fixes. A widening second pass that
+  ignores `sourceFace` can also turn an empty precise pass into an ambiguous reported failure. Ambiguity is a
+  suspicion, deliberately **not** promoted to a finding.
+- **The two causes do not share a locus** (A1 `FieldTransportAtlas` vs A2a′ `EmbeddedGraphTopology`), so they may
+  be worked independently. That is what authorizes phase 2 for the mechanical witness alone.
 
-- independently interpret the measured `CycleTransportAdjacencyMissing` and `TraceEventPositionInvalid` causes;
-- update `ORIENTATION.md` as required for every REVIEW turn;
-- determine the bounded phase-2 ordering under AK4–AK7/AK6 without weakening selector or accepted-prefix authority;
-- preserve the distinction between the sphere's measured rotation-system blocker and its independent pre-cut
-  non-cellularity evidence;
-- keep the torus downstream tracing failure out of CP4c-3 scope.
+### Exact scope of `M3-CP4c-3-DEFN-R1`
 
-No phase-2 product correction is authorized until that review has issued the successor measures.
+A **combined definition + review** turn under the standing cadence. Definition and planning only: no compile, no
+package, no runtime, no gate execution, no benchmark. It must:
+
+1. **AL2** — settle normatively what a topology region *is* when a barrier does not separate: option **A** (cut the
+   local region mesh along the non-separating barrier arc so it becomes real boundary; recommended) versus option
+   **D** (fail closed with a precise typed error, the frozen fallback if A exceeds CP4c-3). Option **C** — giving a
+   barrier edge a transport adjacency — is **PROHIBITED**: it destroys the barrier semantics hard features exist to
+   express;
+2. if A, write down the treatment of an open arc's **endpoints**, where the cut surface touches itself, **with its
+   derivation** — this is the hard part and may not be left to the implementation, exactly as DEFN-R1 §5 required
+   for the boundary-orbit and disconnected-graph conventions;
+3. **show**, not assert, that `χ`, `boundaryLoops` and `expectedCycleCount` stay consistent for a slit region;
+4. record the decision as an amendment in `DESIGN.md` §7.2.1 alongside 12, 13 and 14;
+5. issue the successor's measures and keep selector **367** frozen until AL7's already-defined append point,
+   without weakening the accepted 365 prefix.
+
+Then **`M3-CP4c-3-CB2`** under **AL3** (add an enumerated sub-reason distinguishing `NoCarrierMatch` from
+`AmbiguousCarrierMatch`, publish trace/event/`sourceEdge`/`sourceFace`, every candidate position in the ambiguous
+case, and **which pass** produced the result) and **AL5** (implement AL2's decision). **AL4** forbids designing the
+sphere's fix before AL3 reports. **AL1** confirms the elimination by publishing the mechanical feature set's
+connected-arc decomposition — components, closed loops, open arcs, and each arc's endpoint vertices — which also
+sizes option A directly. **AL8** moves the 64-lowercase-hex digest validation into the orchestration payload
+authoring path, the third occurrence of `R7-ORCH-01` having proved a reminder insufficient.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are **CLOSED / ACCEPTED**.
 - **CP4c-3 is open**. Selector 367 is frozen; TB1 re-proved 365/365 and first-red stopped at 366.
-- Mechanical C2 is now measured at `CycleTransportAdjacencyMissing`; the gated sphere is measured at
-  `TraceEventPositionInvalid`.
-- `R10-CAND-01` and `R8-CAND-02` remain CP4c-3-owned phase-2 work pending review ordering.
+- Mechanical C2's cause is **ESTABLISHED**: a non-separating `HardFeature` barrier edge remains interior to its
+  topology region, so the cycle basis spans an edge the atlas deliberately gave no adjacency. Phase 2 is authorized
+  for this witness only, after AL2's normative decision.
+- The gated sphere is **ACTIVE / ONE LEVEL SHORT** at `TraceEventPositionInvalid`, which is itself a two-way
+  collapse. AL3 owns the next resolution; AL4 forbids designing across it.
+- `R10-CAND-01` and `R8-CAND-02` remain CP4c-3-owned phase-2 work under AL6 — unchanged by TB1, no shared locus,
+  neither blocks nor is blocked.
 - Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
-  packages **68**.
-- **Exact next is the independent CP4c-3 phase-1 TB review / planning turn.**
+  packages **68**. TB1 added **+0 events / +0 recurrences**.
+- **Exact next is `M3-CP4c-3-DEFN-R1`**, combined definition + review under measures AL0–AL9, then
+  `M3-CP4c-3-CB2`.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent review/planning guidance
+- turn-based-coding-agent definition/review/planning guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first; the review must update it before closeout.
-1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, phase boundary and prohibitions.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — authoritative measured
+0. `.agents/Directional/ORIENTATION.md` — read first; a combined DEFN+REVIEW turn must update it before closeout.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — **AL0–AL9**, the mechanical cause,
+   the sphere's remaining collapse, and the option table AL2 must decide between.
+2. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, phase boundary and prohibitions;
+   AL2's amendment extends this line of definitions, it does not replace it.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — authoritative measured
    AK1–AK3 evidence and first-red result.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB1_Code_Build_Report.md` — instrumentation and package 68 provenance.
-4. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen gate.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — measured candidates and stable accounting.
-6. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — inherited CP4c-2 dispositions.
-7. `TODO.md` / `CHANGELOG.md` — active review scope and runtime evidence summary.
+4. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12, 13 and 14; AL2's decision is recorded there as the next amendment.
+5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen gate.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — measured candidates and stable accounting.
+7. `TODO.md` / `CHANGELOG.md` — active scope and runtime evidence summary.
 
-**This is REVIEW + PLAN.** No Directional runtime or phase-2 code change belongs in the successor until the review
-has independently derived and issued the correction measures.
+Source the DEFN must read before deciding AL2, since the decision is about what these three agree on:
+`src/authority/FieldTransportAtlas.cpp` (`make_local_region_mesh` `:850-895`, `find_adjacency_in` `:817-827`, the
+eight `IncompleteCycleBasis` sites) and `src/geometry/SurfaceCellTracing.cpp:6655-6737`
+(`build_source_topology_regions`).
+
+**This is DEFN + REVIEW.** No Directional runtime and no phase-2 code change belongs in it; the corrective is
+authored in `M3-CP4c-3-CB2` after the normative question is settled.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
@@ -222,6 +271,13 @@ single most expensive mistake in CP4c-2 was not a wrong fix — it was eight tur
 the wrong mechanism, because a `default:` case in an error-translation switch assigned a semantic-sounding name
 to 36 distinct upstream errors. Before planning around any typed failure that crossed a stage boundary, find the
 translation site and check whether the code you are reading is the code that was raised.
+
+**Extended at `M3-CP4c-3-TB1-REV` (`LESSONS.md` 64): the reason you add may itself be a collapse.** The same
+sphere failure has now been resolved three times, one layer per turn — 36 codes → `RotationSystemInconsistent`
+(AF0), nine sites → `TraceEventPositionInvalid` (AK3), and that name still covers **two** conditions with opposite
+fixes. Every layer was worth resolving; each was declared "the cause" one turn too early. **When instrumenting a
+collapsed error, read the site that sets the reason you are adding and count the distinct conditions that reach it,
+before declaring the layer done.** A check at authoring time replaces a whole turn.
 
 ## Mandatory end-of-turn checklist — DURABLE, DO NOT DELETE
 

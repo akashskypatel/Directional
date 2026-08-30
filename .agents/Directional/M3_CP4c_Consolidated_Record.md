@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN` and phase-1 `M3-CP4c-3-CB1` are complete; `M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED** on immutable package **68**, after re-proving accepted **365/365** and first-red stopping at ordinal **366**. CP4c-3 remains **OPEN**; selector **367** is frozen, and the exact next turn is the **independent CP4c-3 phase-1 TB review / planning turn**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN`, phase-1 `M3-CP4c-3-CB1`, `M3-CP4c-3-TB1` and its independent review `M3-CP4c-3-TB1-REV` are complete; TB1 is a **VALID SEMANTIC RED** on immutable package **68**, after re-proving accepted **365/365** and first-red stopping at ordinal **366**. The review established the mechanical witness's cause, found the prescribed sphere's **one level short**, and authorized phase 2 for the mechanical witness only. CP4c-3 remains **OPEN**; selector **367** is frozen, and the exact next turn is **`M3-CP4c-3-DEFN-R1`** (combined definition + review, measures AL0–AL9), then `M3-CP4c-3-CB2`. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**.
 
 ## 1. Separate current/future authority
 
@@ -18,7 +18,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2 closure/adjudication authority and current carry-forward source for CP4c-3.
 - `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — current CP4c-3 definitions, review decisions, and AK0–AK9 plan.
 - `Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — current frozen CP4c-3 gate.
-- `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — current measured phase-1 runtime authority for the independent review.
+- `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — current measured phase-1 runtime authority.
+- `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — current review/adjudication authority and the **AL0–AL9** measures that govern `M3-CP4c-3-DEFN-R1` and `M3-CP4c-3-CB2`.
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -171,8 +172,38 @@ Inherited CP4c-2 dispositions remain explicit:
 - `M3-CP4c3-DEFN-CAND-01`: no longer diagnostically ambiguous; TB1 measured
   `CycleTransportAdjacencyMissing`, and the independent review now owns AK6 corrective interpretation.
 
-Stable accounting remains **44 / 14 / 30**, debt **5**, packages **68**. The exact next turn is the
-**independent CP4c-3 phase-1 TB review / planning turn**. No AK4–AK7 product correction begins before that review.
+### `M3-CP4c-3-TB1-REV` adjudication (measures AL0–AL9)
+
+Review record: `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md`. TB1's execution is **ACCEPTED** as a valid
+semantic red; the working tree is byte-identical to the packaged semantic source, and CB1 delivered AK1–AK3 exactly
+as specified — additive, enumerated, no mapping changed and no enum value renumbered.
+
+- **`M3-CP4c3-DEFN-CAND-01` → CAUSE ESTABLISHED.** Edge `0-3` is a `HardFeature` **barrier** by elimination over
+  `FieldTransportAtlas::make`'s four adjacency buckets. It entered the cycle basis because
+  `build_source_topology_regions` skips hard-feature edges when flood-filling regions and **skipping an adjacency
+  disconnects nothing unless the edges separate** — region 0 is all 300 faces with `boundaryLoops=0`, so the edge
+  stayed interior to the local mesh and the walk demanded an adjacency the atlas deliberately withheld. The region
+  decomposition and the traversability classification **disagree about the same edge**. Region 0 is a sphere
+  (`χ=2`, genus 0, no boundary) and every closed curve on a sphere separates, so the feature set necessarily
+  contains at least one **open arc**; the torus escapes only because its four hard-feature loops **do** separate it.
+  The corrective is a normative choice (**A** cut the local mesh along the arc, recommended; **D** typed fail-closed
+  as the frozen fallback; **C** giving barrier edges an adjacency is **prohibited**) owned by `M3-CP4c-3-DEFN-R1`.
+- **`M3-CP4c2-TB-X2-CAND-04` → ACTIVE / ONE LEVEL SHORT.** `TraceEventPositionInvalid` is itself a two-way collapse
+  in `trace_event_position` — `positions.empty()` (a binding defect) versus `positions.size() > 1` (an ambiguity) —
+  needing **opposite** fixes, plus a widening second pass that can manufacture the ambiguous case. Ambiguity is a
+  suspicion, not a finding. **AL3** measures it; **AL4** forbids designing across it. Phase 2 is **not** authorized
+  for this witness.
+- **The two measured causes share no locus** (A1 `FieldTransportAtlas` versus A2a′ `EmbeddedGraphTopology`), so
+  phase 2 opened for the mechanical witness alone and the inherited items remain independently workable under
+  **AL6**.
+- **`M3-CP4c3-TB1-ORCH-01`** is closed but **escalated**: its 63-hex digest is the third `R7-ORCH-01` occurrence, so
+  **AL8** moves the 64-lowercase-hex validation into the orchestration payload authoring path.
+- `LESSONS.md` **64** added: *when instrumenting a collapsed error, check whether the reason you are adding is
+  itself a collapse before declaring the layer done.*
+
+Stable accounting remains **44 / 14 / 30**, debt **5**, packages **68**; TB1 added **+0 events / +0 recurrences**.
+Gate **367** stays frozen and unselected. The exact next turn is **`M3-CP4c-3-DEFN-R1`**, a combined definition +
+review turn under the standing cadence, then **`M3-CP4c-3-CB2`** under AL3 and AL5.
 
 ## 5. High-value reversals retained
 
@@ -249,4 +280,4 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 8. `Regression_Root_Cause_Tracker.md`
 9. this consolidated record only when historical lineage is needed.
 
-**Exact next:** independent CP4c-3 phase-1 TB review / planning, consuming the retained TB1 report and measured AK1–AK3 evidence. Do not proceed to phase-2 product corrections until that review independently derives and orders the bounded AK4–AK7 work.
+**Exact next:** **`M3-CP4c-3-DEFN-R1`** — a combined definition + review turn under the standing cadence — consuming `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` (AL0–AL9) and settling **AL2**: what a topology region *is* when a barrier does not separate, recorded as a `DESIGN.md` §7.2.1 amendment. Then `M3-CP4c-3-CB2` under **AL3** and **AL5**. The mechanical fix may not land before AL2 decides, and the sphere's fix may not be designed before AL3 reports.

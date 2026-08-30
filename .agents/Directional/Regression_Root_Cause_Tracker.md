@@ -1,4 +1,4 @@
-## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **ACTIVE / MEASURED PRODUCT FAILURE CANDIDATE / GATING / REVIEW REQUIRED / NON-STABLE**
+## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **ACTIVE / CAUSE ESTABLISHED / GATING / PHASE 2 AUTHORIZED AFTER A DEFN / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-DEFN`**, on the source accepted at CP4c-2
   (`57444781af7bdc460e38cc68930a9a8c8199eeea`): `src/authority/FieldTransportAtlas.cpp` returns
@@ -43,6 +43,48 @@
 - **Disposition boundary:** this TB measured the mechanism but does not design the fix. The independent phase-1
   review owns AK6 causal interpretation and corrective ordering. Ordinal 366 remains red, so the candidate remains
   active. **+0 stable events / +0 recurrences.**
+- **`M3-CP4c-3-TB1-REV` — CAUSE ESTABLISHED.** Edge `0-3` is a **`HardFeature` barrier**, derived by elimination
+  over the four buckets `FieldTransportAtlas::make`'s adjacency loop routes every row of `mesh.EV` into:
+  `SourceBoundary` is excluded by `globalEF=1,158` (the edge has two incident faces); `NonTraversable` is excluded
+  because the region count is **1** over all 300 faces, so both incidences are region 0 and share a component;
+  `adjacencies` is excluded by the measured `fieldTransportAdjacencyExists=false`. Only `HardFeature` remains.
+  **Nothing is missing by accident — the atlas deliberately created no adjacency for a barrier.**
+- **Why it is in the cycle basis anyway.** `build_source_topology_regions`
+  (`src/geometry/SurfaceCellTracing.cpp:6655-6737`) skips `options.hardFeatureEdges` when flood-filling the
+  face-adjacency graph, but **skipping an adjacency disconnects nothing unless the removed edges separate the
+  graph**. Here they did not: region 0 is all 300 faces with `boundaryLoops=0`. `make_local_region_mesh`
+  (`src/authority/FieldTransportAtlas.cpp:850-895`) therefore builds a local mesh in which edge `0-3` is
+  **interior** — `localEF=1,158`, 0 local boundary edges — so `PCFaceTangentBundle` counts it among the 450 inner
+  adjacencies, the cycle basis spans it, and the walk calls `find_adjacency_in(adjacencies, edge)` for an adjacency
+  that by design does not exist.
+- **Root cause, stated once:** **the region decomposition and the traversability classification disagree about the
+  same edge.** A1's cycle-basis machinery assumes region boundaries and non-traversable edges coincide — true for
+  source boundaries and for *separating* feature curves, false for a feature that does not separate. Neither
+  classifier is wrong on its own terms; the coincidence was never written down as an invariant.
+- **Why this is forced rather than exotic.** Region 0 is `χ=2`, `genus=0`, `boundaryLoops=0` — a sphere — and every
+  closed curve on a sphere separates it. Since the hard features demonstrably did not separate, **the mechanical
+  witness's feature set necessarily contains at least one open arc**. The torus builds its atlas fine only because
+  its 48 hard-feature edges form four closed loops that **do** separate it into four annuli, placing them on region
+  boundaries where they never enter a local mesh's inner set. The first witness with an open feature arc was always
+  going to hit this.
+- **The corrective is a normative choice, not an implementation detail**, because it changes what a topology region
+  *is* when a barrier does not separate — a `DESIGN.md` §7.2/§7.2.1 question a CB may not settle. Options:
+  **A** cut the local region mesh along the non-separating barrier arc so it becomes real boundary (**recommended**;
+  `isBoundaryVertex`, `boundaryLoops`, `χ` and `expectedCycleCount` all become self-consistent and barrier edges
+  leave the inner set; the hard part is the arc's **endpoints**, where the cut surface touches itself, and the work
+  is local to `make_local_region_mesh`); **B** build the cycle basis over the traversable sub-complex only —
+  converges on A, since `PCFaceTangentBundle::init` takes a mesh, not a barrier set; **C** give barrier edges a
+  transport adjacency — **PROHIBITED**, it destroys the barrier semantics hard features exist to express and would
+  silently let transport cross a feature; **D** fail closed with a precise typed error naming "a non-separating
+  barrier edge remains interior to its region" — not a fix, but the correct frozen fallback if A exceeds CP4c-3, at
+  the explicit cost that CP4c-3 cannot then close on criterion **C2**.
+- **Owning corrections after review:** **AL2** (the DEFN-R1 normative decision, including the endpoint treatment
+  written down with its derivation, and shown-not-asserted consistency of `χ`/`boundaryLoops`/`expectedCycleCount`
+  for a slit region, recorded as a `DESIGN.md` §7.2.1 amendment), **AL5** (the implementation, naming which option
+  was taken and why), **AL1** (publish the feature set's connected-arc decomposition — components, closed loops,
+  open arcs, endpoint vertices — confirming the elimination directly and sizing option A).
+- **Closure condition unchanged:** ordinal 366 green in a run reaching at least 366. **+0 stable events /
+  +0 recurrences.**
 
 ## M3-CP4c3-TB1-ORCH-01 — three pre-runtime preflight controls before authoritative TB1 — **CLOSED / ORCHESTRATION / NON-STABLE**
 
@@ -56,6 +98,13 @@
   the sole TB1 runtime authority.
 - **Stable-count rationale:** control-plane only; **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**,
   debt **5**, M3 packages **68**.
+- **`M3-CP4c-3-TB1-REV` — closed, but escalated.** The malformed 63-hex source-archive digest in `33340336194` is
+  the **third** occurrence of `R7-ORCH-01`, the defect `LESSONS.md` **22n** and measure **AE4** were written to
+  prevent and which cost a whole turn once already. AE4's rule — validate every expected digest as exactly 64
+  lowercase hex at authoring time — has now failed to prevent its own defect twice, so a reminder is demonstrably
+  insufficient. **AL8** moves the validation into the orchestration payload **authoring path**, so the check runs
+  where the value is written rather than depending on an author remembering it. Disposition of this record is
+  unchanged: control-plane only, **+0 events / +0 recurrences**.
 
 ## M3-CP4c2-TB-X2-R10-CAND-01 — Amendment 14's ordinary trace-crossed proposal path is structurally unreachable; only saturation promotes such an edge — **ACTIVE / QUALITY / COVERAGE / NON-STABLE**
 
@@ -97,6 +146,10 @@
   AG5 witness as the positive saturation case.
 - **Stable-count rationale:** quality/coverage finding on a checkpoint whose gate is green; no accepted-green
   behaviour lost. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **67**.
+- **`M3-CP4c-3-TB1-REV` disposition — UNCHANGED, and unblocked.** TB1 touched nothing this record depends on. It
+  shares no locus with the mechanical A1 cause (`M3-CP4c3-DEFN-CAND-01`) or the sphere's A2a′ cause
+  (`M3-CP4c2-TB-X2-CAND-04`), so it neither blocks nor is blocked by either. Carried as phase-2 work under **AL6**
+  with its AK4 corrective and AK7 gate append exactly as written.
 
 ## M3-CP4c2-TB-X2-R9-CAND-01 — trace-crossed selected cut edge is subdivided into multiple arcs but region binding still requires exactly one — **CLOSED AT R10-REV / PRODUCT AUTHORITY-SHAPE MISMATCH / NON-STABLE**
 
@@ -195,6 +248,12 @@
 - **Product question:** on a closed surface with an empty network, A2a′ should either (a) establish cellularity by selecting source-edge cuts from scratch, or (b) reject with a typed error that explicitly names the empty-network condition. Current retained evidence proves only failure, not which contract is correct.
 - **CB8 disposition (AH7):** **do not fix or widen scope.** AH2 removes this input state from gated ordinals 359/361 by reconstructing their local atlas/network from the production feature authority. No selector identity depends on zero-arc behavior after that correction. Bring this candidate to the next definition or independent-review turn.
 - **Stable-count rationale:** the behavior was exposed by an unaccepted, newly gated witness and no accepted-green behavior was lost. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
+- **`M3-CP4c-3-TB1-REV` disposition — UNCHANGED, and unblocked.** The product question was already **decided** at
+  `M3-CP4c-3-DEFN` in favour of (b), a typed rejection with an **appended** — never renumbered — error code, since
+  cutting from scratch would make A2a′ the producer of the whole embedded graph and that is A2a's single-writer
+  authority. TB1 measured nothing that bears on it. Carried as phase-2 implementation work under **AL6** with its
+  AK5 corrective and AK7 gate append (`EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError`) as written; it shares
+  no locus with either measured cause, so it neither blocks nor is blocked.
 
 ## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **CLOSED AT R9-REV / WITNESS-CONSTRUCTION / AUTHORITY-SURFACE MISMATCH / NON-STABLE**
 
@@ -733,7 +792,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 - **Stable-count rationale:** this is a report-only, not-yet-accepted CP4c-2 diagnostic/test-authority defect, not a
   loss of accepted-green behavior. **+0 events / +0 recurrences**. Totals remain **42 / 14 / 28**, debt **5**.
 
-## M3-CP4c2-TB-X2-CAND-04 — prescribed sphere's A2a′ failure is a collapsed typed error, not a cellularity verdict — **ACTIVE / PRODUCT FAILURE CANDIDATE / LOCALIZED TO THE SHARED EMBEDDED-GRAPH AUTHORITY / CELLULARITY FRAMING WITHDRAWN / NON-STABLE**
+## M3-CP4c2-TB-X2-CAND-04 — prescribed sphere's A2a′ failure is a collapsed typed error, not a cellularity verdict — **ACTIVE / ONE LEVEL SHORT / RESOLVED TO `TraceEventPositionInvalid`, WHICH IS ITSELF A TWO-WAY COLLAPSE / PHASE 2 NOT AUTHORIZED / NON-STABLE**
 
 - **Observed:** the same authoritative X2 run proves source topology, `FieldTransportAtlas`, and
   `FieldAlignedCurveNetwork` all succeed for the prescribed sphere; the network has 24 traces / 56 events. The next
@@ -820,6 +879,48 @@ Three consequences:
   carrying `originatingTopologyError=RotationSystemInconsistent`. The nine-way ambiguity is therefore closed at the
   producer-reason level, but the product candidate remains ACTIVE pending independent review/correction.
   **+0 events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **68**.
+
+### `M3-CP4c-3-TB1-REV` adjudication — the new reason is itself a collapse
+
+Full derivation in `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` §4. AK3 delivered exactly what it was
+asked and resolved nine `sourceFace`-carrying sites to one enumerated reason. **The candidate is nevertheless still
+one resolution short, and phase 2 is NOT authorized for this witness.**
+
+- **`TraceEventPositionInvalid` names two conditions.** `trace_event_position`
+  (`src/geometry/EmbeddedGraphTopology.cpp:138-173`) collects segment positions whose carrier matches the event's
+  `sourceEdge`, then returns `std::nullopt` from a single `if (positions.size() != 1U)`. So:
+  - **`positions.empty()`** — the event's source edge is not a carrier of any segment of this trace. That is a
+    network/event **binding** defect: the event does not belong to the trace it claims, or its `sourceEdge` is
+    wrong. The corrective is upstream, in A2a.
+  - **`positions.size() > 1`** — the source edge is a carrier at more than one position on the same trace. That is
+    an **ambiguity**: the position is not determined by `sourceEdge` alone. The corrective is a stronger key.
+  **The two fixes are opposite**, and no measurement currently distinguishes them.
+- **A two-pass structure can manufacture the second case.** The first pass considers only segments whose
+  `sourceFace == event.sourceFace`; only if that finds nothing does a fallback pass run over **all** segments
+  ignoring the face. A widening fallback that runs after a precise pass found nothing can turn "no match in the
+  right face" into "several matches across the trace", so an `empty` first pass may be reported as an `ambiguous`
+  failure. Any measurement must therefore publish **which pass produced the result**.
+- **Ambiguity is the live suspicion and is deliberately NOT promoted.** The sphere is the trace-dense witness — 24
+  traces, 56 events, 10 terminal trace intersections, and six directed trace ends that once circulated forever — and
+  a trace crossing the same source edge twice yields exactly `positions.size() == 2`. That is a hypothesis. Acting
+  on a plausible unmeasured mechanism is precisely what cost this checkpoint eight turns at this same witness.
+- **If ambiguous, the discriminator already exists and costs nothing.** CP4c-2 established that the exact crossing
+  point is published by the network as `segment.entryPoint` / `edgeTransitExit` (`FieldBoundaryPoint`).
+- **Pattern:** `LESSONS.md` **57** for the third time in this project, one level deeper each turn, on the same
+  failure — 36 codes → `RotationSystemInconsistent` (AF0); nine sites → `TraceEventPositionInvalid` (AK3); two
+  conditions → still open. Recorded as `LESSONS.md` **64**: *when instrumenting a collapsed error, check whether
+  the reason you are adding is itself a collapse before declaring the layer done.*
+- **Owning corrections:** **AL3** — add an enumerated sub-reason distinguishing `NoCarrierMatch` from
+  `AmbiguousCarrierMatch` and publish, for the sphere, the trace id, event id, event `sourceEdge` and `sourceFace`,
+  **every** candidate position with its segment index and carrier in the ambiguous case, and which pass produced
+  the result. Additive only: no change to `trace_event_position`'s return contract, no re-mapping, no enum
+  renumbering. **AL4** — do not design this witness's fix until AL3 reports; a fix whose report cannot name the
+  measured sub-reason is not authorized.
+- **Locus finding:** this candidate and `M3-CP4c3-DEFN-CAND-01` **do not share a locus** — A2a′
+  `EmbeddedGraphTopology` versus A1 `FieldTransportAtlas`, no shared code and no shared datum — so neither blocks
+  the other and they may be worked independently.
+- **Stable-count rationale unchanged:** CP4c-3 has never been runtime-accepted and the accepted 365 prefix is green
+  in the same run. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **68**.
 
 ### CB6 AF1 adjudication — pre-cut cellularity prediction refuted; definition gap is now live
 

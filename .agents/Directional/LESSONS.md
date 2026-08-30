@@ -1077,6 +1077,22 @@ building any conclusion on it.**
     orders all three darts strictly — written for a trace ending inside a mandatory edge, and never
     once executed. **Dead code in a correct consumer means the producer is not publishing the case.**
     Search for unreachable-but-correct downstream branches when localizing a missing fact.
+64. **When instrumenting a collapsed error, check whether the reason you are adding is itself a collapse before
+    declaring the layer done.** This is lesson 57 for the third time in this project, one level deeper each turn,
+    and all three layers were on the *same* sphere failure: `topology_error` collapsed 36 codes, and AF0 resolved
+    it to `RotationSystemInconsistent`; nine sites shared that name, and AK3 resolved it to
+    `TraceEventPositionInvalid`; and that name covers **two** conditions —
+    `trace_event_position` returns `std::nullopt` from one `if (positions.size() != 1U)`, where `empty` is an
+    event/trace **binding** defect and `> 1` is an **ambiguity**, needing opposite corrections. Every layer was
+    worth resolving and none was wasted work; each was nevertheless declared "the cause" one turn too early, at a
+    cost of one turn apiece. The control is mechanical and belongs in the measure that adds the reason: **read the
+    site that sets the value you are about to publish and count the distinct conditions that reach it.** If more
+    than one does, the new reason is provenance, not a diagnosis, and the measure must say so. Two corollaries.
+    A collapse can be *manufactured* by control flow rather than by a shared name — `trace_event_position` runs a
+    precise face-restricted pass and then, only on failure, a widening pass that ignores the face, so an `empty`
+    first pass can be reported as `ambiguous`; publish **which pass produced the result**, not only the result.
+    And when the two branches need opposite fixes, **do not design across the gap**: the plausible mechanism is
+    exactly when the temptation is strongest, and CP4c-2 paid eight turns for acting on one.
 
 ## 5. Cross-field, cycle, and orientation conventions
 
