@@ -26,81 +26,51 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB1` — phase-1 instrumentation, no product fix
+## Current focus — artifact-only CP4c-3 phase-1 TB on package 68
 
-`M3-CP4c-3-DEFN` is complete and, under the new cadence, was also the review/plan turn:
-`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`. Measures **AK0–AK9**.
+`M3-CP4c-3-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / PHASE-1 INSTRUMENTATION ONLY**.
+Its retained report is `Architecture_M3_CP4c3_CB1_Code_Build_Report.md`. Corrected semantic source
+`48dd011c4aa689a245b74527ed9df0900ada9bf3` compiled under GMP/GMPXX in run/job
+`33338642383 / 99330058374`, producing immutable package **68**, artifact `9739919234`, SHA-256
+`127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c`; packaged-source archive SHA-256
+`f1fce7f720718c8ac974d0d5f77ca1fee4244b10c710d2b505a1af162e4f937f`. Internal manifest **28/28 PASS**;
+`runtimeExecution=false`. The first compile attempt exposed only a default-construction error in the new diagnostics row;
+the isolated correction aggregate-initializes it with `region.id()` and changes no intended product behavior.
 
-**`M3-CP4c-2` remains CLOSED / ACCEPTED at 365/365** — accepted source
-`57444781af7bdc460e38cc68930a9a8c8199eeea`, package `9736088354`, selector 365 SHA-256
-`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
+CP4c-3 selector **367** remains frozen and unselected at SHA-256
+`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`; the accepted 355/357/361/365
+prefix hashes remain unchanged. `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 
-### The DEFN's four decisions
+### CB1 instrumentation now available to runtime
 
-1. **`IncompleteCycleBasis` is a seven-way collapse.** Read at source, `src/authority/FieldTransportAtlas.cpp`
-   returns that one code from **eight** sites (`:1597, :1613, :1673, :1682, :1688, :1700, :1751, :1818`) for seven
-   distinct conditions, and **five of them publish nothing but a region id**. Site `:1682` is literally "no
-   `FieldTransportAdjacency` for a cycle's edge" — the phrase `ROADMAP.md` uses for CP4c-3's parent responsibility —
-   so the roadmap points at one site among seven that has never been confirmed. **No diagnostic has ever been run on
-   the mechanical witness.** This is `LESSONS.md` 57 recurring in A1, and CP4c-2 paid eight turns for the identical
-   pattern at `topology_error`. Instrument before designing.
-2. **The prescribed sphere IS in CP4c-3's gate** (AJ2 discharged). It has sat outside two consecutive frozen gates;
-   it is the only witness that cannot reach A2b at all, and A2b is what M4 builds on; and its problem (b) is
-   directly coupled to `R10-CAND-01`, which CP4c-3 already owns. Adding a gated **witness** is not reallocating a
-   **criterion** — `ROADMAP.md`'s C1/C3/C6→CP4c-2, C2→CP4c-3 allocation is untouched.
-3. **`R8-CAND-02` decided, not deferred a third time:** an empty network on a closed surface is **rejected with a
-   typed error**. A2a′ adds cuts to an existing network; cutting from scratch would make it the producer of the
-   whole embedded graph, which is A2a's single-writer authority, and a "certified" plan from a witness with no
-   field-aligned content is the vacuous-green shape `LESSONS.md` 64r warns about.
-4. **Two phases against one frozen gate.** Phase 1 instruments (AK1–AK3); phase 2 fixes on measured causes
-   (AK4–AK6). Ordering within phase 2 is a phase-1-review decision, since the measured causes may share a locus.
+- **AK1:** all eight `IncompleteCycleBasis` producer sites carry an enumerated `IncompleteCycleBasisReason`, and all
+  existing error-code diagnostic consumers publish it. No error mapping/value changed.
+- **AK2:** every region on an `IncompleteCycleBasis` failure publishes local `V/E/F`, Euler characteristic, boundary
+  loops, genus, interior-local-vertex count, expected cycle count, actual cycle rows/curvatures/inner adjacencies,
+  plus local-mesh/bundle availability.
+- **AK3:** all nine instrumented `RotationSystemInconsistent` source sites carry an enumerated
+  `RotationSystemInconsistencyReason`, transported through `SurfaceCutGraphError` and the existing sphere diagnostic.
+- **AK8:** the retained CB1 report records the search-produced site/consumer enumerations.
 
-### CP4c-3 gate authority — selector 367, frozen
+### Exact next turn
 
-`.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt`, whole-file SHA-256
-`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`. Accepted 365 plus:
+Run the **artifact-only CP4c-3 phase-1 Test + Benchmark execution** directly from package 68 (`9739919234`):
 
-- **366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` — criterion **C2**;
-- **367** `GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses` — criterion **C3**'s full form,
-  binding torus **and** mechanical, honouring DEFN-R2 §7.3's commitment to move the mechanical half to CP4c-3.
+1. immutable preflight; no rebuild/repair/source/test/fixture/selector/package mutation;
+2. execute frozen selector **367 from ordinal 1**;
+3. run the frozen non-gating selector in full, or justify each skipped identity under AF6;
+4. publish the mechanical-witness AK1 discriminator plus all AK2 region rows and the prescribed-sphere AK3 reason;
+5. preserve first-red and stop semantics; do not design a phase-2 fix inside execution;
+6. hand the evidence to the independent TB review, which alone orders phase 2.
 
-`head -355`, `head -357`, `head -361` and `head -365` all reproduce their frozen hashes, so `first_red_ordinal`
-stays comparable across the whole CP4c arc. Both appended identities are **red today** — correct for a
-required-green selector. `selected_gate=NONE`; `gate_execution_authorized=false`.
-
-**To be appended by AK7, producing gate 370** — named now so they cannot be silently omitted:
-`GlobalTopologyPlan.PrescribedSphereWitnessDerivesRegionsThroughProductionEntryPath`,
-`SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation`,
-`SurfaceCutGraph.EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError`.
-
-### CB1 scope — AK0–AK3, instrumentation only
-
-- **AK1** add an optional **enumerated-reason** provenance field to `FieldAtlasBuildError` identifying which of the
-  eight sites fired, populate all eight, and print it. **Additive only:** no re-mapping, no enum renumbering, no new
-  `FieldAtlasBuildErrorCode` value. This is AF0's template applied to A1. Use an enumerated reason, **not a line
-  number** — `LESSONS.md` 62's stale `419/437/474` labels are the counter-example.
-- **AK2** publish the local-region-mesh shape for **every** region of the mechanical witness: `V/E/F`, computed
-  `eulerCharacteristic`, `boundaryLoopCount`, `genus`, `interiorLocalVertices.size()`, `expectedCycleCount`, and the
-  actual `bundle.cycles.rows()` / `cycleCurvatures.size()` / `innerAdjacencies.size()`. The site alone will not
-  explain a count mismatch; the counts will.
-- **AK3** print the sphere's `RotationSystemInconsistent` at **nine-way** granularity through the existing frozen
-  non-gating sphere diagnostic. No product fix for the sphere in phase 1.
-- **AK8** every "every consumer / every site / every region" measure requires the implementer to produce the
-  enumeration by **search** and publish it; the DEFN's eight-site table is a cross-check to compare against
-  afterwards, never to copy (`LESSONS.md` 59, 61).
-
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **67**.
-`selected_r2_branch=NONE`.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **68**.
 
 ### CP4c-3 open items
 
-- [ ] **C2 / the mechanical witness** — A1 `IncompleteCycleBasis`, site unknown among seven. AK1/AK2, then AK6.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere, **now gated**. (a) producer `RotationSystemInconsistent` at
-      source face `25-27-28` before cut selection; (b) independently non-cellular pre-cut
-      (`V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`). Fixing (a) does not fix (b). AK3, then AK6.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — model trace crossings as **per-face chords** in the proposal heuristic so the
-      ordinary tree–cotree path can reach them. Heuristic only; Amendment 14 is not reopened. AK4.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — implement decision 3 with a **new, appended** error code. AK5.
+- [ ] **C2 / mechanical witness** — measured cause pending artifact-only AK1/AK2 runtime evidence, then AK6.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere, now gated; measured nine-way producer cause pending AK3, then AK6.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — per-face-chord proposal-heuristic correction, AK4; not authorized before phase-1 review.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — typed empty-network rejection, AK5; not authorized before phase-1 review.
 
 ## Carried forward from M1
 

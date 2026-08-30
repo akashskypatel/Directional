@@ -92,117 +92,76 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB1` — phase-1 instrumentation, no product fix
+## Mandatory next turn — artifact-only CP4c-3 phase-1 TB on package 68
 
-`M3-CP4c-3-DEFN` is **COMPLETE** and, under the new cadence, was also the review/plan turn:
-`Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`. Measures **AK0–AK9**.
+`M3-CP4c-3-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / PHASE-1 INSTRUMENTATION ONLY**. The exact
+next turn is the artifact-only Test + Benchmark execution required by `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` §10.
 
-**`M3-CP4c-2` remains CLOSED / ACCEPTED at 365/365** — source `57444781af7bdc460e38cc68930a9a8c8199eeea`, package
-`9736088354`, selector 365 SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
+### Immutable CB1 package authority
 
-### Read this before touching the mechanical witness or the sphere
+- corrected semantic source: `48dd011c4aa689a245b74527ed9df0900ada9bf3`
+- compile run/job: `33338642383 / 99330058374`
+- package **68** artifact: `9739919234`
+- package SHA-256: `127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c`
+- packaged source archive SHA-256: `f1fce7f720718c8ac974d0d5f77ca1fee4244b10c710d2b505a1af162e4f937f`
+- compile log artifact: `9739919468`, SHA-256 `2074a5d2035dd84fe62ad424a8d95dfebe7af219f520f9f07e062af57ade21cd`
+- internal manifest: **28/28 verified**
+- exact arithmetic: **GMP/GMPXX linked**
+- `runtimeExecution=false`; all eight standard targets compiled/linked; no binary executed
 
-**`IncompleteCycleBasis` is a seven-way collapse.** `src/authority/FieldTransportAtlas.cpp` returns that one code
-from **eight sites** for **seven distinct conditions**, and **five publish nothing but a region id**:
+The instrumentation originally landed in `014c7f7f8d6984518cf5c81156a10d3e06298349`. Compile attempt
+`33338011871` exposed a single construction defect in the new AK2 diagnostics row; corrected source `48dd…` only
+aggregate-initializes `FieldAtlasRegionCycleBasisDiagnostics` with `region.id()`. No product fix or gate change was
+introduced. Full evidence and the AK8 search-produced enumeration are retained in
+`Architecture_M3_CP4c3_CB1_Code_Build_Report.md`.
 
-| site | condition | locus |
-|---|---|---|
-| `:1597` | `PCFaceTangentBundle::init` threw | region |
-| `:1613` | cycle/curvature/column counts ≠ `interiorVertices + boundaryLoops + 2·genus` | region |
-| `:1673` | a cycle coefficient is neither ≈0 nor ≈±1, or a column is out of range | region |
-| **`:1682`** | **no `FieldTransportAdjacency` for a cycle's edge** | region + edge |
-| `:1688` | a local edge has a negative incident face | region + edge |
-| `:1700` | `order_cycle_steps` could not order the directed cycle | region |
-| `:1751` | per-kind cycle partition counts disagree | region |
-| `:1818` | boundary-cycle count ≠ `boundaryLoops.size()` | region |
+### Frozen TB authority
 
-`:1682` is literally "missing field-transport adjacency", the phrase `ROADMAP.md` uses for CP4c-3's parent
-responsibility — **one site among seven, never confirmed**. No diagnostic has ever been run on this witness. This is
-`LESSONS.md` 57 recurring in A1, and CP4c-2 paid **eight turns** for the identical pattern at `topology_error`.
-`:1613`, `:1751` and `:1818` all derive their expectations from the *local region mesh*
-(`make_local_region_mesh`, `:850-895`), so the site alone will not explain a count mismatch.
+CP4c-2 remains **CLOSED / ACCEPTED at 365/365**. CP4c-3 selector 367 remains byte-for-byte frozen:
 
-### CP4c-3 gate — selector 367, frozen
+- whole 367 SHA-256: `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`
+- prefix 355: `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`
+- prefix 357: `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`
+- prefix 361: `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`
+- prefix 365: `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`
+- cardinality/uniqueness: **367 / 367**
+- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`
 
-`.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt`, whole-file SHA-256
-`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`. Accepted 365 plus **366**
-`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` (criterion **C2**) and **367**
-`GlobalTopologyPlan.RotationSystemAndFaceWalkAgreeOnProducedWitnesses` (criterion **C3**'s full torus-and-mechanical
-form). `head -355 / -357 / -361 / -365` all reproduce their frozen hashes. Both appended identities are **red
-today** — correct for a required-green selector. `selected_gate=NONE`; `gate_execution_authorized=false`.
+### Exact execution scope
 
-**Named for append under AK7, producing gate 370:**
-`GlobalTopologyPlan.PrescribedSphereWitnessDerivesRegionsThroughProductionEntryPath`,
-`SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation`,
-`SurfaceCutGraph.EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError`.
+Consume package 68 directly. Do **not** configure, compile, relink, repair, regenerate, or mutate source/tests/fixtures/selector/package. Execute frozen selector **367 from ordinal 1** and the frozen non-gating diagnostic selector in full unless AF6 gives a per-identity justified skip. Publish:
 
-### The DEFN's decisions
+1. the mechanical witness's exact **AK1** `IncompleteCycleBasisReason`;
+2. **AK2** region rows for every mechanical-witness region (`V/E/F`, χ, boundary loops, genus, interior vertices, expected cycles, actual cycle rows/curvatures/inner adjacencies, availability flags);
+3. the prescribed sphere's exact nine-way **AK3** `RotationSystemInconsistencyReason`;
+4. exact first-red/stop evidence without phase-2 diagnosis or repair.
 
-- **The prescribed sphere is IN the gate** — it has sat outside two consecutive gates, it is the only witness that
-  cannot reach A2b at all, A2b is what M4 builds on, and its problem (b) is directly coupled to `R10-CAND-01`.
-  Adding a gated **witness** is not reallocating a **criterion**; the ROADMAP allocation is untouched.
-- **`R8-CAND-02` decided:** an empty network on a closed surface is **rejected with a typed error**. Cutting from
-  scratch would make A2a′ the producer of the whole embedded graph, which is A2a's single-writer authority. The new
-  code is **appended**, never renumbered.
-- **Two phases against one gate:** phase 1 instruments and fixes nothing; phase 2 fixes on measured causes, with its
-  internal ordering left to the phase-1 review because the causes may share a locus.
-
-### CB1 scope — AK0–AK3, instrumentation only
-
-1. **AK1** add an optional **enumerated-reason** provenance field to `FieldAtlasBuildError` identifying which of the
-   eight sites fired; populate all eight; print it wherever `field_atlas_build_error_code_name` is printed.
-   **Additive only:** no re-mapping, no enum renumbering, no new `FieldAtlasBuildErrorCode` value. Use an
-   **enumerated reason, not a line number** — `LESSONS.md` 62's stale `419/437/474` labels are the counter-example.
-   This is AF0's template applied to A1; follow it exactly.
-2. **AK2** publish the local-region-mesh shape for **every** region of the mechanical witness — `V/E/F`, computed
-   `eulerCharacteristic`, `boundaryLoopCount`, `genus`, `interiorLocalVertices.size()`, `expectedCycleCount`, and
-   the actual `bundle.cycles.rows()` / `cycleCurvatures.size()` / `innerAdjacencies.size()` — as a per-region row
-   set in the AG3 idiom, not only the first failing region.
-3. **AK3** print the sphere's `RotationSystemInconsistent` at **nine-way** granularity through the existing frozen
-   non-gating sphere diagnostic. **No product fix for the sphere in phase 1.**
-4. **AK8** every "every site / every region / every consumer" measure is discharged by the implementer's **own
-   search**, published in the report; the DEFN's eight-site table is an after-the-fact cross-check, never a source
-   to copy (`LESSONS.md` 59, 61).
-
-**Prohibited in CB1** (full list in the DEFN §7): designing a fix for either witness before AK1–AK3 print the site;
-renumbering or removing any existing error-enum value or changing any mapping; reopening Amendments 12/13/14;
-changing accepted selector 365's bytes or any byte of 357/358/361, or 367 other than by AK7's append; treating
-`R10-CAND-01`'s corrective as a certification change; introducing any tolerance; removing CP4c-2's diagnostic
-surface.
+The independent TB review after execution is the boundary that interprets those measurements and orders phase 2. Do not begin AK4–AK7 product work before that review.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are **CLOSED / ACCEPTED**.
-- **CP4c-3 is open**, gate frozen at **367**, two phases, four owned items: criterion **C2** (the mechanical
-  witness), the prescribed sphere (`CAND-04`, now gated), `R10-CAND-01`, and `R8-CAND-02` (decided, awaiting
-  implementation). New this turn: `M3-CP4c3-DEFN-CAND-01`, the A1 seven-way error collapse.
-- Accepted selector is **365**; 357, 358 and 361 are retained lineage; 367 is CP4c-3's frozen, unselected gate.
-- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
-  packages **67**. `selected_r2_branch=NONE`; `gate_execution_authorized=false`.
-- **Exact next is `M3-CP4c-3-CB1`.**
+- **CP4c-3 is open**, selector 367 frozen/unselected; phase-1 instrumentation is compile-green and awaiting its first artifact-only runtime measurement.
+- Open CP4c-3-owned items remain the mechanical C2 witness, gated prescribed sphere (`CAND-04`), `R10-CAND-01`, `R8-CAND-02`, and diagnostic-surface `M3-CP4c3-DEFN-CAND-01`.
+- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3 packages **68**.
+- **Exact next is the artifact-only CP4c-3 phase-1 TB on package 68.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/CODE_BUILD.md` and `GMP_COMPILE_POLICY.md`
+- turn-based-coding-agent `references/turns/TEST_BENCHMARK.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — **read first**; current as of `M3-CP4c-3-DEFN`. §7 items 1–4 are exactly
-   what CP4c-3 owns; §8's first pattern is the error-collapse family that both open witnesses belong to.
-1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — the authorizing definition: the
-   eight-site table, the sphere scope decision, the `R8-CAND-02` decision, the gate, and measures **AK0–AK9** with
-   their prohibitions.
-2. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-DEFN-CAND-01`, `CAND-04`, `R10-CAND-01`,
-   `R8-CAND-02`.
-3. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2's closure
-   adjudication and the AF0 provenance template AK1 reuses.
-4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14 and the completeness
-   theorem, **frozen**; read `…DEFN_R1…` only alongside it.
-5. `ROADMAP.md` — CP4c-3's parent responsibility and the path to `M8-CP3`.
-6. `TODO.md` / `CHANGELOG.md` — current task and the cadence change recorded this turn.
+0. `.agents/Directional/ORIENTATION.md` — read first; current substance authority from the latest review.
+1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, selector 367, phase boundary and prohibitions.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB1_Code_Build_Report.md` — package 68, instrumentation enumeration and exact build evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen execution selector.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — current candidates and stable accounting.
+5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2 closure and AF0 provenance template.
+6. `TODO.md` / `CHANGELOG.md` — active execution scope and latest package authority.
 
-**This is a phase-1 CODE + BUILD that instruments and does not fix.** A compile-green result is build evidence only.
+**This is artifact-only TEST + BENCHMARK execution.** No rebuild or repair is authorized. Its review, not execution, chooses the phase-2 ordering.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

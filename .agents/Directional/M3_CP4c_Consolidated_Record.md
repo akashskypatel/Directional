@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN` is **COMPLETE / DEFINITION + REVIEW/PLAN, COMBINED**; CP4c-3 is **OPEN**, selector **367** is frozen and unselected, and the exact next implementation turn is **`M3-CP4c-3-CB1`**, runtime-free, under AK0–AK3. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **67**, `selected_r2_branch=NONE`, and `gate_execution_authorized=false`.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN` is **COMPLETE / DEFINITION + REVIEW/PLAN, COMBINED** and phase-1 `M3-CP4c-3-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** on immutable package **68**. CP4c-3 remains **OPEN**, selector **367** is frozen and unselected, and the exact next turn is the **artifact-only CP4c-3 phase-1 TB on package 68**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**, `selected_r2_branch=NONE`, and `gate_execution_authorized=false`.
 
 ## 1. Separate current/future authority
 
@@ -139,10 +139,10 @@ This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.
 
 `M3-CP4c-3-DEFN` combined definition with review/plan and made four binding decisions:
 
-1. The mechanical witness's `IncompleteCycleBasis` is a multi-site collapse; no prior evidence identifies which exact producer site fires. **CB1 must instrument before designing a fix.**
-2. The prescribed sphere is now **in CP4c-3's gate** rather than remaining report-only.
-3. CP4c-3 runs in two phases under one frozen selector, **367**, extended only by append.
-4. AK0–AK9 govern the checkpoint; exact next is **`M3-CP4c-3-CB1`**, runtime-free, under AK0–AK3.
+1. The mechanical witness's `IncompleteCycleBasis` is a multi-site collapse. **CB1 has now instrumented all eight sites plus per-region cycle-basis shape, but no runtime has yet measured which reason fires.**
+2. The prescribed sphere is now **in CP4c-3's gate** rather than remaining report-only; CB1 adds nine-way rotation-system provenance without fixing it.
+3. CP4c-3 runs in two phases under one frozen selector, **367**, extended only by append. Phase-1 instrumentation is compile-green in package 68; phase-2 ordering still waits on the phase-1 TB/review.
+4. AK0–AK9 govern the checkpoint; exact next is the **artifact-only CP4c-3 phase-1 TB on package 68**, not a product-correction CB.
 
 Inherited CP4c-2 dispositions are now explicit:
 
@@ -226,4 +226,4 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 8. `Regression_Root_Cause_Tracker.md`
 9. this consolidated record only when historical lineage is needed.
 
-**Exact next:** `M3-CP4c-3-CB1`, Code + Build, runtime-free, under AK0–AK3 and the prohibitions in `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`. Do not proceed to phase-2 product corrections until the frozen instrumentation evidence identifies the measured cause.
+**Exact next:** artifact-only CP4c-3 phase-1 Test + Benchmark on immutable package **68** (`9739919234`), executing frozen selector **367 from ordinal 1** and publishing AK1–AK3 evidence. Do not proceed to phase-2 product corrections until that evidence is independently reviewed and the measured causes order phase 2.

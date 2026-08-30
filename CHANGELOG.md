@@ -1,4 +1,9 @@
+## 2026-08-30 — `M3-CP4c-3-CB1`: phase-1 provenance instrumentation build green
+
+CB1 is **COMPLETE / BUILD GREEN / RUNTIME-FREE / INSTRUMENTATION ONLY** under AK0–AK3. Instrumentation commit `014c7f7f8d6984518cf5c81156a10d3e06298349` adds eight-way `IncompleteCycleBasisReason`, per-region cycle-basis shape diagnostics, and nine-way `RotationSystemInconsistencyReason` provenance without changing product error mappings or selector bytes. First compile-only run `33338011871` caught one construction defect in the new diagnostics row; isolated corrected source `48dd011c4aa689a245b74527ed9df0900ada9bf3` aggregate-initializes that row with `region.id()` and changes no intended product behavior. Authoritative GMP/GMPXX compile run/job `33338642383 / 99330058374` compiled/linked all eight standard targets with `runtimeExecution=false`, clean source status, and internal **28/28** manifest, producing immutable package **68** artifact `9739919234` (`127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c`), source archive `f1fce7f720718c8ac974d0d5f77ca1fee4244b10c710d2b505a1af162e4f937f`, and log artifact `9739919468` (`2074a5d2035dd84fe62ad424a8d95dfebe7af219f520f9f07e062af57ade21cd`). Selector 367 remains `ef9d082f…16bf`, all frozen prefixes/cardinality/uniqueness reverified. Stable accounting remains **44 / 14 / 30**, debt **5**, packages **68**. Exact next: artifact-only CP4c-3 phase-1 TB on package 68, selector 367 from ordinal 1, publishing AK1–AK3 evidence; no phase-2 fix before independent review.
+
 ## 2026-08-30 — `M3-CP4c-2-TB-X2-R9-EXEC`: valid semantic red at ordinal 363
+
 
 R9 is **COMPLETE / VALID SEMANTIC RED** on authoritative run/job `33319911575 / 99279955697`, consuming immutable
 CB8 package `9726295440`. Preflight reproduced package/source hashes, 28/28 manifest, GMP/GMPXX, executable modes,
