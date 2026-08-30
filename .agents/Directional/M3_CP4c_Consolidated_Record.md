@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN` is **COMPLETE / DEFINITION + REVIEW/PLAN, COMBINED** and phase-1 `M3-CP4c-3-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** on immutable package **68**. CP4c-3 remains **OPEN**, selector **367** is frozen and unselected, and the exact next turn is the **artifact-only CP4c-3 phase-1 TB on package 68**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**, `selected_r2_branch=NONE`, and `gate_execution_authorized=false`.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN` and phase-1 `M3-CP4c-3-CB1` are complete; `M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED** on immutable package **68**, after re-proving accepted **365/365** and first-red stopping at ordinal **366**. CP4c-3 remains **OPEN**; selector **367** is frozen, and the exact next turn is the **independent CP4c-3 phase-1 TB review / planning turn**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**.
 
 ## 1. Separate current/future authority
 
@@ -18,6 +18,7 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2 closure/adjudication authority and current carry-forward source for CP4c-3.
 - `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — current CP4c-3 definitions, review decisions, and AK0–AK9 plan.
 - `Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — current frozen CP4c-3 gate.
+- `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — current measured phase-1 runtime authority for the independent review.
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -40,7 +41,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; selector 367 frozen** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB1 valid red at ordinal 366; selector 367 frozen** |
 
 ### 2.1 CP4c-0
 
@@ -135,21 +136,43 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 ## 4. CP4c-3 carry-forward summary
 
-This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` is normative.
+This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` is normative and
+`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` is the measured phase-1 runtime authority.
 
-`M3-CP4c-3-DEFN` combined definition with review/plan and made four binding decisions:
+`M3-CP4c-3-TB1` consumed immutable package **68** (`9739919234`) directly in run/job
+`33340448381 / 99335020672`. Result artifact `9740416876` has SHA-256
+`713d4e6853adde54e17738d6d25e5a310a5f88ff8e4232abf67bb73c7a8cbdc0`; log artifact `9740417020` has
+SHA-256 `8302f6ae50a8d5d29f92952aed0f144eb78bda3f070612f3dec67a63701debc0`. Immutable pre/postflight passed,
+package/source were unchanged, and no configure/compile/relink/repair/generated-discovery/benchmark/mutation occurred.
 
-1. The mechanical witness's `IncompleteCycleBasis` is a multi-site collapse. **CB1 has now instrumented all eight sites plus per-region cycle-basis shape, but no runtime has yet measured which reason fires.**
-2. The prescribed sphere is now **in CP4c-3's gate** rather than remaining report-only; CB1 adds nine-way rotation-system provenance without fixing it.
-3. CP4c-3 runs in two phases under one frozen selector, **367**, extended only by append. Phase-1 instrumentation is compile-green in package 68; phase-2 ordering still waits on the phase-1 TB/review.
-4. AK0–AK9 govern the checkpoint; exact next is the **artifact-only CP4c-3 phase-1 TB on package 68**, not a product-correction CB.
+The frozen 367 selector re-proved the accepted **365/365** prefix, then first-red hard-stopped at ordinal **366**:
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`. Required result:
+**366 executed / 365 PASS / 1 RED**; ordinal 367 was not executed after the red.
 
-Inherited CP4c-2 dispositions are now explicit:
+Phase-1 measurements are now concrete:
 
-- `M3-CP4c2-TB-X2-CAND-04`: sphere producer `RotationSystemInconsistent` before cut selection plus independently non-cellular pre-cut graph; CP4c-3 measures the blocking producer cause first.
-- `M3-CP4c2-TB-X2-R10-CAND-01`: cause established; corrective is proposal-heuristic-only. Model a trace crossing as a per-face chord so trace-crossed edges are interior to proposal components; this does **not** reopen Amendment 14 certification.
-- `M3-CP4c2-TB-X2-R8-CAND-02`: decided; an empty network on a closed surface must fail closed with a new appended typed `SurfaceCutGraphErrorCode`, preserving A2a single-writer authority.
-- `M3-CP4c3-DEFN-CAND-01`: the mechanical `IncompleteCycleBasis` diagnostic surface is too collapsed; CB1 instruments exact origin before any product fix.
+- mechanical A1: `IncompleteCycleBasisReason=CycleTransportAdjacencyMissing`;
+- mechanical locus: region `0`, source edge `0-3`, `fieldTransportAdjacencyExists=false`;
+- mechanical AK2 row: `V/E/F=152/450/300`, χ=2, boundary loops=0, genus=0, interior local vertices=152,
+  expected cycles=152, cycle rows=152, cycle curvatures=152, inner adjacencies=450;
+- prescribed sphere: `RotationSystemInconsistent → TraceEventPositionInvalid` after source topology, atlas and network
+  succeed (24 traces / 56 events);
+- frozen non-gating diagnostics all executed report-only: torus retains a valid cut graph/global plan before the
+  existing downstream tracing failure; mechanical and sphere reproduce the measured AK1–AK3 causes.
+
+Inherited CP4c-2 dispositions remain explicit:
+
+- `M3-CP4c2-TB-X2-CAND-04`: still active/non-stable, now localized by AK3 to `TraceEventPositionInvalid`; the
+  independent pre-cut non-cellularity evidence remains separate.
+- `M3-CP4c2-TB-X2-R10-CAND-01`: cause established; corrective remains proposal-heuristic-only, using per-face trace
+  chords; Amendment 14 certification is not reopened.
+- `M3-CP4c2-TB-X2-R8-CAND-02`: decided; an empty closed-surface network must fail closed with an appended typed
+  `SurfaceCutGraphErrorCode`.
+- `M3-CP4c3-DEFN-CAND-01`: no longer diagnostically ambiguous; TB1 measured
+  `CycleTransportAdjacencyMissing`, and the independent review now owns AK6 corrective interpretation.
+
+Stable accounting remains **44 / 14 / 30**, debt **5**, packages **68**. The exact next turn is the
+**independent CP4c-3 phase-1 TB review / planning turn**. No AK4–AK7 product correction begins before that review.
 
 ## 5. High-value reversals retained
 
@@ -226,4 +249,4 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 8. `Regression_Root_Cause_Tracker.md`
 9. this consolidated record only when historical lineage is needed.
 
-**Exact next:** artifact-only CP4c-3 phase-1 Test + Benchmark on immutable package **68** (`9739919234`), executing frozen selector **367 from ordinal 1** and publishing AK1–AK3 evidence. Do not proceed to phase-2 product corrections until that evidence is independently reviewed and the measured causes order phase 2.
+**Exact next:** independent CP4c-3 phase-1 TB review / planning, consuming the retained TB1 report and measured AK1–AK3 evidence. Do not proceed to phase-2 product corrections until that review independently derives and orders the bounded AK4–AK7 work.

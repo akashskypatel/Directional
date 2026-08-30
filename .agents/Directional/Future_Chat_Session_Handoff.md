@@ -92,76 +92,92 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — artifact-only CP4c-3 phase-1 TB on package 68
+## Mandatory next turn — independent CP4c-3 phase-1 TB review
 
-`M3-CP4c-3-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / PHASE-1 INSTRUMENTATION ONLY**. The exact
-next turn is the artifact-only Test + Benchmark execution required by `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` §10.
+`M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED / REVIEW REQUIRED**. The retained execution authority is
+`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`.
 
-### Immutable CB1 package authority
+### Immutable TB1 authority
 
-- corrected semantic source: `48dd011c4aa689a245b74527ed9df0900ada9bf3`
-- compile run/job: `33338642383 / 99330058374`
-- package **68** artifact: `9739919234`
+- semantic source: `48dd011c4aa689a245b74527ed9df0900ada9bf3`
+- immutable package **68** artifact: `9739919234`
 - package SHA-256: `127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c`
 - packaged source archive SHA-256: `f1fce7f720718c8ac974d0d5f77ca1fee4244b10c710d2b505a1af162e4f937f`
-- compile log artifact: `9739919468`, SHA-256 `2074a5d2035dd84fe62ad424a8d95dfebe7af219f520f9f07e062af57ade21cd`
-- internal manifest: **28/28 verified**
-- exact arithmetic: **GMP/GMPXX linked**
-- `runtimeExecution=false`; all eight standard targets compiled/linked; no binary executed
+- artifact-only run/job: `33340448381 / 99335020672`
+- result artifact: `9740416876`, SHA-256
+  `713d4e6853adde54e17738d6d25e5a310a5f88ff8e4232abf67bb73c7a8cbdc0`
+- diagnostic artifact: `9740417020`, SHA-256
+  `8302f6ae50a8d5d29f92952aed0f144eb78bda3f070612f3dec67a63701debc0`
+- immutable preflight/postflight: **PASS**
+- package/source immutable: **true**
+- no configure, compile, relink, repair, generated discovery, benchmark or mutation
 
-The instrumentation originally landed in `014c7f7f8d6984518cf5c81156a10d3e06298349`. Compile attempt
-`33338011871` exposed a single construction defect in the new AK2 diagnostics row; corrected source `48dd…` only
-aggregate-initializes `FieldAtlasRegionCycleBasisDiagnostics` with `region.id()`. No product fix or gate change was
-introduced. Full evidence and the AK8 search-produced enumeration are retained in
-`Architecture_M3_CP4c3_CB1_Code_Build_Report.md`.
+Frozen selector 367 remains SHA-256
+`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`; all 355/357/361/365 prefix
+hashes remain unchanged.
 
-### Frozen TB authority
+### TB1 semantic result
 
-CP4c-2 remains **CLOSED / ACCEPTED at 365/365**. CP4c-3 selector 367 remains byte-for-byte frozen:
+Required execution: **366 executed / 365 PASS / 1 RED**. The accepted **365/365 prefix is green**. First red is
+ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`; ordinal 367
+was correctly not executed under first-red hard stop.
 
-- whole 367 SHA-256: `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`
-- prefix 355: `e9d88f1196e412e06424294d6be22b32f01c9671ec5e4de119abd3f2fb5afeaa`
-- prefix 357: `b896d0db7f26aeb0f3513418405efdeccbcf84fb6dc971500c6ddac9e364dc70`
-- prefix 361: `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`
-- prefix 365: `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`
-- cardinality/uniqueness: **367 / 367**
-- `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false`
+Measured phase-1 evidence:
 
-### Exact execution scope
+1. **Mechanical AK1:** `IncompleteCycleBasisReason=CycleTransportAdjacencyMissing`.
+2. **Mechanical AK2:** region `0`, source edge `0-3`, `fieldTransportAdjacencyExists=false`,
+   `V/E/F=152/450/300`, χ=2, boundary loops=0, genus=0, interior vertices=152, expected cycles=152,
+   cycle rows=152, cycle curvatures=152, inner adjacencies=450, local mesh/bundle available.
+3. **Sphere AK3:** `RotationSystemInconsistent → TraceEventPositionInvalid`; source topology, atlas and network are
+   available (24 traces / 56 events), then `SurfaceCutGraph` fails.
+4. Frozen non-gating diagnostics executed in full: **0 PASS / 3 RED**, report-only. Torus reaches a valid
+   `GlobalTopologyPlan` before its known downstream `tracing` failure; mechanical and sphere reproduce AK1–AK3.
+5. Three earlier attempts stopped in preflight with no Directional runtime; they are orchestration-only controls.
+   `33340448381` is the sole semantic runtime authority.
 
-Consume package 68 directly. Do **not** configure, compile, relink, repair, regenerate, or mutate source/tests/fixtures/selector/package. Execute frozen selector **367 from ordinal 1** and the frozen non-gating diagnostic selector in full unless AF6 gives a per-identity justified skip. Publish:
+### Exact review scope
 
-1. the mechanical witness's exact **AK1** `IncompleteCycleBasisReason`;
-2. **AK2** region rows for every mechanical-witness region (`V/E/F`, χ, boundary loops, genus, interior vertices, expected cycles, actual cycle rows/curvatures/inner adjacencies, availability flags);
-3. the prescribed sphere's exact nine-way **AK3** `RotationSystemInconsistencyReason`;
-4. exact first-red/stop evidence without phase-2 diagnosis or repair.
+The next turn is **independent REVIEW + PLAN**, not another TB and not a corrective CB. It must:
 
-The independent TB review after execution is the boundary that interprets those measurements and orders phase 2. Do not begin AK4–AK7 product work before that review.
+- independently interpret the measured `CycleTransportAdjacencyMissing` and `TraceEventPositionInvalid` causes;
+- update `ORIENTATION.md` as required for every REVIEW turn;
+- determine the bounded phase-2 ordering under AK4–AK7/AK6 without weakening selector or accepted-prefix authority;
+- preserve the distinction between the sphere's measured rotation-system blocker and its independent pre-cut
+  non-cellularity evidence;
+- keep the torus downstream tracing failure out of CP4c-3 scope.
+
+No phase-2 product correction is authorized until that review has issued the successor measures.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are **CLOSED / ACCEPTED**.
-- **CP4c-3 is open**, selector 367 frozen/unselected; phase-1 instrumentation is compile-green and awaiting its first artifact-only runtime measurement.
-- Open CP4c-3-owned items remain the mechanical C2 witness, gated prescribed sphere (`CAND-04`), `R10-CAND-01`, `R8-CAND-02`, and diagnostic-surface `M3-CP4c3-DEFN-CAND-01`.
-- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3 packages **68**.
-- **Exact next is the artifact-only CP4c-3 phase-1 TB on package 68.**
+- **CP4c-3 is open**. Selector 367 is frozen; TB1 re-proved 365/365 and first-red stopped at 366.
+- Mechanical C2 is now measured at `CycleTransportAdjacencyMissing`; the gated sphere is measured at
+  `TraceEventPositionInvalid`.
+- `R10-CAND-01` and `R8-CAND-02` remain CP4c-3-owned phase-2 work pending review ordering.
+- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
+  packages **68**.
+- **Exact next is the independent CP4c-3 phase-1 TB review / planning turn.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/TEST_BENCHMARK.md`
+- turn-based-coding-agent review/planning guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first; current substance authority from the latest review.
-1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, selector 367, phase boundary and prohibitions.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB1_Code_Build_Report.md` — package 68, instrumentation enumeration and exact build evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen execution selector.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — current candidates and stable accounting.
-5. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2 closure and AF0 provenance template.
-6. `TODO.md` / `CHANGELOG.md` — active execution scope and latest package authority.
+0. `.agents/Directional/ORIENTATION.md` — read first; the review must update it before closeout.
+1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, phase boundary and prohibitions.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — authoritative measured
+   AK1–AK3 evidence and first-red result.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB1_Code_Build_Report.md` — instrumentation and package 68 provenance.
+4. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen gate.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — measured candidates and stable accounting.
+6. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — inherited CP4c-2 dispositions.
+7. `TODO.md` / `CHANGELOG.md` — active review scope and runtime evidence summary.
 
-**This is artifact-only TEST + BENCHMARK execution.** No rebuild or repair is authorized. Its review, not execution, chooses the phase-2 ordering.
+**This is REVIEW + PLAN.** No Directional runtime or phase-2 code change belongs in the successor until the review
+has independently derived and issued the correction measures.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

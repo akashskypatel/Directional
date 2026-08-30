@@ -1,4 +1,4 @@
-## M3-CP4c3-DEFN-CAND-01 — `IncompleteCycleBasis` collapses seven distinct A1 conditions and the mechanical witness has never been diagnosed — **ACTIVE / DIAGNOSTIC-AUTHORITY / GATING / NON-STABLE**
+## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **ACTIVE / MEASURED PRODUCT FAILURE CANDIDATE / GATING / REVIEW REQUIRED / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-DEFN`**, on the source accepted at CP4c-2
   (`57444781af7bdc460e38cc68930a9a8c8199eeea`): `src/authority/FieldTransportAtlas.cpp` returns
@@ -29,7 +29,33 @@
   re-derive the site enumeration by search rather than copying the DEFN's table.
 - **Closure condition:** ordinal 366 green in a run reaching at least 366.
 - **Stable-count rationale:** diagnostic-authority finding on an unaccepted checkpoint; the accepted 365 is green.
-  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **67**.
+  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **68**.
+- **TB1 runtime measurement — mechanism no longer ambiguous.** Authoritative artifact-only run/job
+  `33340448381 / 99335020672` re-proves 365/365 and first-red stops at ordinal **366**. The gated identity reports
+  `IncompleteCycleBasisReason=CycleTransportAdjacencyMissing`; the report-only mechanical identity independently
+  repeats the same discriminator.
+- **AK2 measured locus:** topology region `0`, source edge `0-3`, `fieldTransportAdjacencyExists=false`,
+  `globalEF=1,158`, `localEF=1,158`, local boundary edges `0`. The region row is
+  `V/E/F=152/450/300`, χ=2, boundary loops=0, genus=0, interior vertices=152, expected cycles=152,
+  cycle rows=152, cycle curvatures=152, inner adjacencies=450, with local mesh and tangent bundle both available.
+  The count/dimension branches therefore agree; the failing discriminator is specifically the missing transport
+  adjacency for the cycle edge.
+- **Disposition boundary:** this TB measured the mechanism but does not design the fix. The independent phase-1
+  review owns AK6 causal interpretation and corrective ordering. Ordinal 366 remains red, so the candidate remains
+  active. **+0 stable events / +0 recurrences.**
+
+## M3-CP4c3-TB1-ORCH-01 — three pre-runtime preflight controls before authoritative TB1 — **CLOSED / ORCHESTRATION / NON-STABLE**
+
+- `33340136751` stopped in preflight on the `strings | grep -q` / `pipefail` control interaction.
+- `33340220758` stopped in preflight on an over-strict dynamic `libgmpxx` runtime-library expectation even though
+  package/link evidence already established GMP/GMPXX authority.
+- `33340336194` stopped in preflight because the source-archive SHA-256 had been transcribed as a malformed 63-hex
+  value.
+- No Directional binary ran in any of the three attempts. Package 68, source, selectors, tests and fixtures remained
+  immutable. Corrected run `33340448381` completed preflight, semantic execution and postflight successfully and is
+  the sole TB1 runtime authority.
+- **Stable-count rationale:** control-plane only; **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**,
+  debt **5**, M3 packages **68**.
 
 ## M3-CP4c2-TB-X2-R10-CAND-01 — Amendment 14's ordinary trace-crossed proposal path is structurally unreachable; only saturation promotes such an edge — **ACTIVE / QUALITY / COVERAGE / NON-STABLE**
 
@@ -520,6 +546,11 @@
 - **Significance — this discharges CP4c-2's defining premise.** The checkpoint exists because the torus network is provably not a cut graph and A2b failed with `UncutFaceComponentOrbitSeedNotUnique`. D1 independently confirms the first half — network-only cellularity is **false** on the torus, matching the frozen theorem — while the pipeline confirms the second: with `SurfaceCutGraph` supplying cuts, A2b completes. **The DEFN design is measured working end to end on its own witness.**
 - **The residual `tracing` failure is downstream of A2b and outside CP4c-2's scope.** It must not be pulled into this checkpoint and must not be read as evidence against the cut graph. **AA7** requires it published and classified, explicitly **not** fixed.
 - **Stable-count rationale:** no accepted identity regressed; the finding is a success plus an out-of-scope successor failure. **+0 events / +0 recurrences.** Totals remain **42 / 14 / 28**, debt **5**.
+- **CP4c-3 TB1 re-observation:** frozen report-only identity
+  `GlobalTopologyPlan.TorusWitnessStageReachabilityIsObservable` remains RED in authoritative run `33340448381`,
+  while publishing `surfaceCutGraph=true`, `globalTopologyPlan=true`, `cutEdgeCount=28`, actual graph
+  `V/E/F=72/76/4`, and four χ=1 regions before `failedStage=tracing`. This is the same downstream out-of-scope
+  residual, not a CP4c-3 regression. Current stable totals remain **44 / 14 / 30**, debt **5**, packages **68**.
 
 ## M3-CP4c2-TB-X2-R4-ORCH-01 — first R4 runtime control script addressed package metadata at the wrong archive root — **RESOLVED ORCHESTRATION / NON-STABLE**
 
@@ -782,6 +813,13 @@ Three consequences:
 ### R9 EXEC direct-origin confirmation
 
 - Frozen non-gating identity `GlobalTopologyPlan.Cp4c2PrescribedSphereCellularityScopeDecisionIsObservable` executes once in authoritative run `33319911575` and remains RED while now directly publishing `surfaceCutGraphError=CellularityNotEstablished` and `originatingTopologyError=RotationSystemInconsistent`. This runtime publication confirms R7-REV's previously static provenance localization; it does not add gate credit or change stable accounting.
+- **CP4c-3 TB1 AK3 measurement:** authoritative run `33340448381` executes
+  `GlobalTopologyPlan.SpherePrescribedWitnessStageReachabilityIsObservable` report-only and publishes
+  `originatingRotationSystemReason=TraceEventPositionInvalid`. Source topology, atlas and network are all available;
+  the network has **24 traces / 56 events** and the failure remains at `surface-cut-graph/CellularityNotEstablished`
+  carrying `originatingTopologyError=RotationSystemInconsistent`. The nine-way ambiguity is therefore closed at the
+  producer-reason level, but the product candidate remains ACTIVE pending independent review/correction.
+  **+0 events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **68**.
 
 ### CB6 AF1 adjudication — pre-cut cellularity prediction refuted; definition gap is now live
 

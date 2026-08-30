@@ -26,51 +26,57 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — artifact-only CP4c-3 phase-1 TB on package 68
+## Current focus — independent CP4c-3 phase-1 TB review
 
-`M3-CP4c-3-CB1` is **COMPLETE / BUILD GREEN / RUNTIME-FREE / PHASE-1 INSTRUMENTATION ONLY**.
-Its retained report is `Architecture_M3_CP4c3_CB1_Code_Build_Report.md`. Corrected semantic source
-`48dd011c4aa689a245b74527ed9df0900ada9bf3` compiled under GMP/GMPXX in run/job
-`33338642383 / 99330058374`, producing immutable package **68**, artifact `9739919234`, SHA-256
-`127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c`; packaged-source archive SHA-256
-`f1fce7f720718c8ac974d0d5f77ca1fee4244b10c710d2b505a1af162e4f937f`. Internal manifest **28/28 PASS**;
-`runtimeExecution=false`. The first compile attempt exposed only a default-construction error in the new diagnostics row;
-the isolated correction aggregate-initializes it with `region.id()` and changes no intended product behavior.
+`M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED / REVIEW REQUIRED**. Retained execution report:
+`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`.
 
-CP4c-3 selector **367** remains frozen and unselected at SHA-256
-`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`; the accepted 355/357/361/365
-prefix hashes remain unchanged. `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+Authoritative artifact-only run/job `33340448381 / 99335020672` consumed immutable package **68** artifact
+`9739919234` directly. Result artifact `9740416876` has SHA-256
+`713d4e6853adde54e17738d6d25e5a310a5f88ff8e4232abf67bb73c7a8cbdc0`; diagnostic artifact `9740417020` has
+SHA-256 `8302f6ae50a8d5d29f92952aed0f144eb78bda3f070612f3dec67a63701debc0`. Preflight/postflight and package/source
+immutability passed; configure/compile/relink/repair/generated discovery/benchmark/mutation flags were all false.
 
-### CB1 instrumentation now available to runtime
+Frozen selector **367** remains byte-identical at SHA-256
+`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`. TB1 re-proved the accepted prefix
+**365/365 PASS**, then hard-stopped at ordinal **366**:
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`.
+Required result: **366 executed / 365 PASS / 1 RED**; ordinal 367 was correctly not executed after the first red.
 
-- **AK1:** all eight `IncompleteCycleBasis` producer sites carry an enumerated `IncompleteCycleBasisReason`, and all
-  existing error-code diagnostic consumers publish it. No error mapping/value changed.
-- **AK2:** every region on an `IncompleteCycleBasis` failure publishes local `V/E/F`, Euler characteristic, boundary
-  loops, genus, interior-local-vertex count, expected cycle count, actual cycle rows/curvatures/inner adjacencies,
-  plus local-mesh/bundle availability.
-- **AK3:** all nine instrumented `RotationSystemInconsistent` source sites carry an enumerated
-  `RotationSystemInconsistencyReason`, transported through `SurfaceCutGraphError` and the existing sphere diagnostic.
-- **AK8:** the retained CB1 report records the search-produced site/consumer enumerations.
+### Phase-1 measurements now available to review
+
+- **AK1 mechanical discriminator:** `CycleTransportAdjacencyMissing`.
+- **AK2 mechanical locus/shape:** region `0`, source edge `0-3`, `fieldTransportAdjacencyExists=false`;
+  `V/E/F=152/450/300`, χ=2, boundary loops=0, genus=0, interior local vertices=152, expected cycles=152,
+  cycle rows=152, cycle curvatures=152, inner adjacencies=450, local mesh/bundle both available.
+- **AK3 prescribed sphere discriminator:** `RotationSystemInconsistent → TraceEventPositionInvalid`. The sphere still
+  reaches source topology, atlas and network (24 traces / 56 events) before the `SurfaceCutGraph` failure.
+- Frozen non-gating diagnostics executed in full: **0 PASS / 3 RED**, report-only. Torus reaches a valid
+  `GlobalTopologyPlan` and then fails downstream at `tracing`; mechanical and sphere reproduce the AK1–AK3 evidence.
+- Three earlier workflow controls failed only in preflight and executed no Directional runtime. They are closed as
+  orchestration-only; `33340448381` is the sole semantic TB1 authority.
 
 ### Exact next turn
 
-Run the **artifact-only CP4c-3 phase-1 Test + Benchmark execution** directly from package 68 (`9739919234`):
+Run the **independent CP4c-3 phase-1 TB review / planning turn**. It must:
 
-1. immutable preflight; no rebuild/repair/source/test/fixture/selector/package mutation;
-2. execute frozen selector **367 from ordinal 1**;
-3. run the frozen non-gating selector in full, or justify each skipped identity under AF6;
-4. publish the mechanical-witness AK1 discriminator plus all AK2 region rows and the prescribed-sphere AK3 reason;
-5. preserve first-red and stop semantics; do not design a phase-2 fix inside execution;
-6. hand the evidence to the independent TB review, which alone orders phase 2.
+1. treat the TB1 red as evidence, not as authorization to retry or patch;
+2. interpret the measured mechanical `CycleTransportAdjacencyMissing` locus and sphere
+   `TraceEventPositionInvalid` reason against the committed authority;
+3. update `ORIENTATION.md` as required for every REVIEW turn;
+4. order the bounded AK4–AK7 / phase-2 corrections, including whether any measured causes share a locus;
+5. keep selector 367 frozen until the already-defined append point and do not weaken the accepted 365 prefix.
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **68**.
 
 ### CP4c-3 open items
 
-- [ ] **C2 / mechanical witness** — measured cause pending artifact-only AK1/AK2 runtime evidence, then AK6.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere, now gated; measured nine-way producer cause pending AK3, then AK6.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — per-face-chord proposal-heuristic correction, AK4; not authorized before phase-1 review.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — typed empty-network rejection, AK5; not authorized before phase-1 review.
+- [ ] **C2 / mechanical witness** — TB1 measured `CycleTransportAdjacencyMissing` at source edge `0-3`; independent
+  review now owns AK6 corrective design/order.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere, gated; AK3 now measures
+  `TraceEventPositionInvalid`; independent review owns the corrective order.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — per-face-chord proposal-heuristic correction, AK4; phase-2 review ordering pending.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — typed empty-network rejection, AK5; phase-2 review ordering pending.
 
 ## Carried forward from M1
 
@@ -107,7 +113,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted; R10 closed CP4c-2 at **365/365** on immutable package `9736088354`, with criteria C1/C3/C6 green. CP4c-3 is **unblocked** and inherits three items — the prescribed sphere, Amendment 14's unexercised ordinary proposal path, and the zero-node/zero-arc question. `M3-CP4c-3-DEFN` froze CP4c-3's gate at **367**, put the sphere **in** the gate, and decided `R8-CAND-02`. Exact next is `M3-CP4c-3-CB1` under AK0-AK3, instrumentation only.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 selector **367** is frozen; CB1 phase-1 instrumentation is compile-green in package **68** and TB1 is a valid semantic red after re-proving the accepted **365/365** prefix. Ordinal 366 measures `CycleTransportAdjacencyMissing`; AK3 measures the prescribed sphere at `TraceEventPositionInvalid`. Exact next is the independent CP4c-3 phase-1 TB review / planning turn; no phase-2 fix is authorized before it.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -117,8 +123,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-2 R10 review:** EXEC is valid **365/365 GREEN**; review must interpret AI2 fragment/orbit evidence and AH6 saturation-only coverage, disposition candidates, and decide CP4c-2 acceptance eligibility without altering the executed package.
-- [ ] **Prescribed sphere A2a′ upstream error:** AF0 now publishes `originatingTopologyError=RotationSystemInconsistent` at source face `25-27-28`; review the exact rotation-system locus before any product fix.
+- [ ] **CP4c-3 phase-1 TB review:** valid TB1 red at ordinal 366 measured `CycleTransportAdjacencyMissing` on source edge `0-3`; review must derive the corrective invariant before AK6 implementation.
+- [ ] **Prescribed sphere A2a′ upstream error:** AK3 now publishes `originatingTopologyError=RotationSystemInconsistent` with `originatingRotationSystemReason=TraceEventPositionInvalid`; review the exact cause before any product fix.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.

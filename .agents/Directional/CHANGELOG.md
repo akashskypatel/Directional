@@ -1,5 +1,37 @@
 # Changelog
 
+## 2026-08-30 — `M3-CP4c-3-TB1`: accepted 365/365 re-proved; ordinal 366 valid red localizes mechanical A1
+
+Artifact-only Test + Benchmark execution. Authoritative run/job `33340448381 / 99335020672` consumed immutable
+package **68** artifact `9739919234` directly. Result artifact `9740416876` has SHA-256
+`713d4e6853adde54e17738d6d25e5a310a5f88ff8e4232abf67bb73c7a8cbdc0`; diagnostic artifact `9740417020` has
+SHA-256 `8302f6ae50a8d5d29f92952aed0f144eb78bda3f070612f3dec67a63701debc0`. Preflight/postflight and package/source
+immutability passed; configure/compile/relink/repair/generated discovery/benchmark/mutation were all false.
+
+Frozen selector **367** remained byte-identical. The run re-proved accepted ordinals 1–365 **365/365 PASS**, then
+hard-stopped at ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`.
+Required result: **366 executed / 365 PASS / 1 RED**; ordinal 367 was correctly not executed after the first red.
+
+**AK1 measured the previously collapsed A1 cause:** `IncompleteCycleBasisReason=CycleTransportAdjacencyMissing`.
+**AK2** localizes it to topology region `0`, source edge `0-3`, with `fieldTransportAdjacencyExists=false`;
+the region itself is internally count-consistent at `V/E/F=152/450/300`, χ=2, boundary loops=0, genus=0,
+interior vertices=152, expected cycles=152, cycle rows=152, cycle curvatures=152, inner adjacencies=450.
+**AK3** localizes the prescribed sphere's `RotationSystemInconsistent` to
+`RotationSystemInconsistencyReason=TraceEventPositionInvalid`; the sphere still reaches source topology, atlas and
+network (24 traces / 56 events) before the cut-graph failure.
+
+All three frozen non-gating diagnostics executed report-only (**0 PASS / 3 RED**). The torus reaches a valid
+`SurfaceCutGraph` and `GlobalTopologyPlan` with 4 regions before its known downstream `tracing` failure; mechanical
+and sphere reproduce the AK1–AK3 measurements. Three earlier workflow attempts stopped in preflight before any
+Directional runtime and are closed as orchestration-only controls.
+
+No stable event/recurrence is added: accepted 365 remains green and CP4c-3 has never been accepted. Stable accounting
+remains **44 / 14 / 30**, produced-witness debt **5**, packages **68**. Full retained report:
+`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`.
+
+Exact next: **independent CP4c-3 phase-1 TB review / planning**. No phase-2 product correction is authorized before
+that review interprets the measured causes and orders AK4–AK7.
+
 ## 2026-08-30 — `M3-CP4c-3-DEFN`: gate 367 frozen, the sphere gated, and A1's seven-way error collapse found
 
 Definition, review and planning in one turn. **Cadence change, user-authorized 2026-08-30:** when `DEFN` is the next
