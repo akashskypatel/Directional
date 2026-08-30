@@ -1,0 +1,4 @@
+turn=M3-CP4c-2-CB7
+purpose=apply verified Amendment 14 CB7 patch
+base_sha=a3d1c0412de910e987a5f8edaff9487f15a56cc9
+patch_sha256=43a63e3cc56e35d19a6f2472e9cf3fe928388d8bae1deaa2011074daa8c0446e
