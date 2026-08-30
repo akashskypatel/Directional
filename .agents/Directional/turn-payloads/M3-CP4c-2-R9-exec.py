@@ -45,9 +45,9 @@ def inv(root):
  return rows
 def write_inv(path,rows): path.write_text(''.join('\t'.join(r)+'\n' for r in rows),encoding='utf-8')
 def download():
- token=os.environ['GH_TOKEN']; url=f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/artifacts/{AID}/zip"
- q=urllib.request.Request(url,headers={'Authorization':f'Bearer {token}','Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'})
- with urllib.request.urlopen(q) as r, open(R/'package.zip','wb') as f: shutil.copyfileobj(r,f)
+ path=f"repos/{os.environ['GITHUB_REPOSITORY']}/actions/artifacts/{AID}/zip"
+ with open(R/'package.zip','wb') as f:
+  subprocess.run(['gh','api',path],stdout=f,check=True,env=os.environ.copy())
 def manifest_ok():
  lines=(P/'SHA256SUMS').read_text().splitlines()
  if len(lines)!=28: return False
