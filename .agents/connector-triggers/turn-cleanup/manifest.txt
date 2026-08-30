@@ -1,0 +1,3 @@
+# M3 CP4c historical consolidation temporary-state cleanup
+.agents/connector-triggers/m3-cp4c-history-consolidation/apply-20260830.txt
+.agents/connector-triggers/source-snapshot/consolidate-m3-cp4c-20260830.txt
