@@ -1,0 +1,33 @@
+name: M3 CP4c2 CB8 Closeout Apply Schema Validation
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-cb8-closeout-apply-schema/**
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c2-cb8-closeout-apply-schema-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-cb8-closeout-apply-schema
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/M3-CP4c-2-CB8-closeout-apply.yml
+    secrets: inherit
