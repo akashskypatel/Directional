@@ -1,4 +1,0 @@
-M3-CP4c-2-CB9 Drive apply trigger
-validated_draft_blob=6354c9650c338202493b8814a057228f31b85ee4
-caller_install=b5626553a2f5700329caddf92ba90073bae04eb3
-retry=0

@@ -1,5 +1,0 @@
-M3-CP4c-2-CB9 documentation closeout apply trigger
-patch_base=a4a34e77ea595be480d2499db812b6f985f12848
-patch_sha256=1aacd9fff0e9cc071ef5baa765550832c097953d8a1ed22ffe57d0d959d671c3
-caller_install=aa3f3b9c7dea426314541991cc6768584e2f1d3e
-retry=0
