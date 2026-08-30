@@ -1,0 +1,2 @@
+Purpose: validate the durable Eigen backup mirror fallback in agent-source-snapshot.yml.
+Expected source: this marker-trigger commit; no product/runtime execution.
