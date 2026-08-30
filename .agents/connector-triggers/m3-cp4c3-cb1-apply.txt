@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-CB1
-purpose=apply verified phase-1 instrumentation patch
-base_sha=61f997dd60e93c8f7490d23ce8a573a30c4c4368
-patch_sha256=29ebdf7a78c5429e5ef25f1ca9f59b3c792cd2ad991ef1a8c54d5a5278f4d043
-retry=0

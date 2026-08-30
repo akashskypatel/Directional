@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-CB1
-purpose=apply durable closeout docs only
-base_sha=7dcb9d00f7e95085ee613c601880b906bc0cde7a
-patch_sha256=4f4b7fedaaedc5a5e3872808c03aad9daa49b46cfbe515431cbcecc7c286b57b
-runtimeExecution=false
