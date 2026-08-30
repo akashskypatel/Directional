@@ -1,0 +1,5 @@
+# M3-CP4c-2-CB7 temporary-state cleanup
+.agents/Directional/turn-payloads/M3-CP4c-2-CB7-compile.yml
+.agents/connector-triggers/m3-cp4c2-cb7-compile-schema/request.txt
+.agents/connector-triggers/m3-cp4c2-cb7-compile/request.txt
+.agents/connector-triggers/m3-cp4c2-cb7-closeout-apply/request.txt
