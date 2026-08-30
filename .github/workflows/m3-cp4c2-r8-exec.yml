@@ -1,0 +1,112 @@
+name: M3 CP4c2 R8 Artifact-Only EXEC
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-r8-exec/**
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c2-r8-exec
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c2-r8-exec.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c2-r8-exec
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Initialize persistent R8 activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/r8-exec.log"
+          : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" "repository=$GITHUB_REPOSITORY" "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout control payload only
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          path: control
+
+      - name: Bind and stage immutable R8 execution harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/r8-exec.log"; exec > >(tee -a "$log") 2>&1
+          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r8-exec.sh)" = "0124c07aba0c265cdc59f460b2179b6f1ebf1a55"
+          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r8-lib.sh)" = "26549aa4dfedd7666ac68cac3f45724a703b1a13"
+          test "$(git -C control hash-object .agents/Directional/turn-payloads/m3-cp4c2-r8-harness.py)" = "7f357aba6566a8f06aff930384c973515547a1c8"
+          cp control/.agents/Directional/turn-payloads/m3-cp4c2-r8-exec.sh "$RUNNER_TEMP/r8-exec.sh"
+          cp control/.agents/Directional/turn-payloads/m3-cp4c2-r8-lib.sh "$RUNNER_TEMP/r8-lib.sh"
+          cp control/.agents/Directional/turn-payloads/m3-cp4c2-r8-harness.py "$RUNNER_TEMP/r8-harness.py"
+          rm -rf control
+          printf '%s\n' 'artifactOnly=true' 'compile=false' 'generatedDiscovery=false' 'benchmarkExecution=false'
+
+      - name: Execute frozen R8 plan
+        id: exec
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set +e
+          log="$RUNNER_TEMP/r8-exec.log"
+          bash "$RUNNER_TEMP/r8-exec.sh" > >(tee -a "$log") 2>&1
+          rc=$?
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Upload immutable R8 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c2-r8-exec-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/r8-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload R8 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c2-r8-exec-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/r8-exec.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Propagate R8 semantic or orchestration status
+        if: always()
+        shell: bash
+        run: |
+          rc="${{ steps.exec.outputs.rc }}"
+          test -n "$rc" || exit 2
+          exit "$rc"
