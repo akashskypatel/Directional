@@ -298,6 +298,8 @@ std::uint64_t candidate_semantic_hash(
     // semantic arc descriptors, then walk_graph_faces visits darts in that
     // canonical ID/orientation order. The orbit ordinal is therefore a
     // content-derived rank, not source-row, container, or gauge enumeration.
+    // Proved by ordinal 359
+    // SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration.
     hash_consume(hash, face.orbit);
     hash_consume(hash, face.boundaryWalkCount);
     hash_consume(hash, face.boundaryArcCount);

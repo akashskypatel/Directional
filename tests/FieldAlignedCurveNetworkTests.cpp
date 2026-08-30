@@ -1693,9 +1693,12 @@ directional::geometry::SurfaceCutGraph build_surface_cut_graph(
     const FieldAlignedCurveNetwork &network) {
   auto built = directional::geometry::SurfaceCutGraph::make(
       mesh.F, static_cast<std::size_t>(mesh.V.rows()), sourceAuthority, atlas, network);
-  EXPECT_TRUE(built) << (built ? ""
-                              : directional::geometry::surface_cut_graph_error_code_name(
-                                    built.error().code));
+  if (!built) {
+    const char *code = directional::geometry::surface_cut_graph_error_code_name(
+        built.error().code);
+    ADD_FAILURE() << code;
+    throw std::runtime_error(std::string("surface-cut-graph build failed: ") + code);
+  }
   return built.value();
 }
 
@@ -1707,9 +1710,12 @@ directional::geometry::GlobalTopologyPlan build_topology_plan(
   auto built = directional::geometry::GlobalTopologyPlan::make(
       mesh.F, static_cast<std::size_t>(mesh.V.rows()), sourceAuthority, network,
       cutGraph);
-  EXPECT_TRUE(built) << (built ? ""
-                              : directional::geometry::global_topology_plan_error_code_name(
-                                    built.error().code));
+  if (!built) {
+    const char *code = directional::geometry::global_topology_plan_error_code_name(
+        built.error().code);
+    ADD_FAILURE() << code;
+    throw std::runtime_error(std::string("global-topology-plan build failed: ") + code);
+  }
   return built.value();
 }
 
