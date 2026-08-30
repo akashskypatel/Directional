@@ -1,3 +1,0 @@
-# Temporary files created for M3-CP4c-2-CB7
-.agents/connector-triggers/source-snapshot/M3-CP4c-2-CB7.snapshot
-.agents/connector-triggers/turn-cleanup/manifest.txt
