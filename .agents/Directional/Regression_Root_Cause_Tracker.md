@@ -6,6 +6,55 @@
 - **Secondary diagnostic issue:** the test helper at `FieldAlignedCurveNetworkTests.cpp:1710-1713` uses non-fatal `EXPECT_TRUE(built)` and then unconditionally calls `built.value()`, producing `std::get: wrong index for variant` after the real typed failure. This does not change the primary diagnosis.
 - **Disposition boundary:** independent `M3-CP4c-2-TB-X2-R9-REV` owns corrective planning. EXEC does not change implementation/test logic or authorize a retry. AH6 is not applicable because 363-365 were not all reached.
 - **Stable-count rationale:** ordinal 363 is newly gated and CP4c-2 has never been accepted; inherited 355/355 remains green. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
+- **R9-REV adjudication — CONFIRMED as a genuine product defect, the first in this arc.** Full record:
+  `Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md` §§2-5. Unlike R8's ordinal 359, the witness is not
+  at fault: it proved an exact crossing, built a **cellular** cut graph, and selected a `TraceInteriorCrossing`
+  candidate. A2a′ did its job; A2b rejected the result.
+- **The producer is correct, verified line by line.** `EmbeddedGraphTopology.cpp:503-545` implements DEFN-R2
+  §§4.1-4.2 exactly: points ordered by exact `ExactUnitParameter`; coincident crossings **rejected, not merged**;
+  and **every sub-arc emitted in the canonical `cutEdge.first() → cutEdge.second()` direction**, because the points
+  are sorted ascending and `ArcDraft` (`:175-178`) stores endpoints verbatim with no canonicalization. That third
+  property is what makes the correction small.
+- **The consumer is stale, and it is the same error one layer down.** `GlobalTopologyPlan.cpp:479-516` encodes
+  *one source cut edge ⇒ one derived Cut arc* and still calls cuts *"ordinary embedded source-edge barriers"*,
+  while the trace block eighteen lines below (`:534-537`) already reasons in **chords and fragments**.
+  **Amendment 14 made cut arcs chord-like and A2b still treats them as whole-edge barriers** — recognisably the
+  whole-edge-versus-arrangement error that `PR8-R043` and Amendment 13 corrected one layer up. `RP-01` at the
+  cut/region seam.
+- **Why the fix is small, and provably so.** `forward` is computed from the source edge, and every sub-arc runs in
+  that same canonical direction, so `interiorDart = 2·id + (forward ? 0 : 1)` stays valid **per sub-arc**: run the
+  existing body once per sub-arc instead of once per edge. The fragment-count invariant
+  (`fragmentOrbits[face].size() == tracePieceCount[face] + 1`, `:670-683`) **survives**: for edge `e` shared by
+  faces `A`/`B` and crossed by one trace at `p`, sub-arcs `(v₁→p)` and `(p→v₂)` lie on **opposite sides of that
+  chord** and border **different fragments** of `A`, so `A` gains exactly two orbits and `tracePieceCount[A]+1 = 2`.
+  `edgeOrbitEvidence`'s only consumer (`:719-728`) takes a seed only when the set is a singleton, so a multi-orbit
+  set declines to seed rather than erroring — tolerant by construction, and `UncutFaceComponentOrbitSeedNotUnique`
+  still fires loudly downstream.
+- **A SECOND stale consumer, which EXEC did not reach, and it fails *silently*.**
+  `GlobalTopologyPlan.cpp:1239-1242` inserts the **whole source edge's two endpoints** into `boundaryVertices` for
+  a sub-arc whose own endpoints may be a source vertex and a crossing node — or two crossing nodes, touching no
+  source vertex at all. `boundaryVertices` is a **skip list** (`:1341-1344`), so over-inserting **suppresses** the
+  interior-vertex ownership check with no error and no diagnostic: a region certificate that validated less than it
+  claims. **Fixing only `:479-516` would convert a loud red into a quiet weakening.** Correct rule: a sub-arc
+  contributes only the source vertices that are endpoints *of that sub-arc*, resolved through `build_node_loci`'s
+  existing `NodeLocus{vertex, edge}` — a node with only an `edge` locus contributes none. Do not add a second
+  node→vertex lookup.
+- **Already correct and needing no change:** `edge_ray_points_to_second_endpoint`
+  (`EmbeddedGraphTopology.cpp:815-828`) orders a Cut ray by exact `cut_node_parameter` of its **own** endpoints, so
+  CB7's AG2 generalization is sub-arc-correct; and `cutEdges` as a source-edge barrier set
+  (`GlobalTopologyPlan.cpp:702, 708, 1152-1155`) is edge-keyed by intent.
+- **Cause of the omission — the reviewer's, owned.** DEFN-R2 §4 itemized the Amendment-14 work as five
+  producer-side items and **did not list A2b's cut-arc binding**, although AG1's own sentence said "a partial
+  conversion is the defect this checkpoint is correcting". CB7/CB8 implemented §§4.1-4.5 correctly and completely;
+  the gap was in the itemization. Second consecutive turn where an enumeration inside a measure was read as
+  exhaustive when it was illustrative — see `LESSONS.md` **59** and now **61**.
+- **Owning correction:** **AI1** (produce and publish the consumer audit by search, do **not** copy the review's
+  table), **AI2** (iterate all sub-arcs; state the canonical-direction dependency in the comment; publish the
+  fragment-count and `edgeOrbitEvidence` cardinalities as evidence), **AI3** (the silent `boundaryVertices` site;
+  expect it to *tighten* a loose check, so a new legitimate red there is a finding, not a regression), **AI5**
+  (test-helper hygiene), **AI7** (if the audit finds a site needing a representation change rather than a per-arc
+  loop, **stop and return to definition** — Amendment 14 is frozen and must not be worked around).
+- **Closure condition:** ordinals **363, 364 and 365 all green** in a run reaching 365.
 
 ## M3-CP4c2-TB-X2-R9-ORCH-01 — R9 pre-authority harness failures — **CLOSED / ORCHESTRATION / NON-STABLE**
 
@@ -22,7 +71,19 @@
 - **CB8 disposition (AH7):** **do not fix or widen scope.** AH2 removes this input state from gated ordinals 359/361 by reconstructing their local atlas/network from the production feature authority. No selector identity depends on zero-arc behavior after that correction. Bring this candidate to the next definition or independent-review turn.
 - **Stable-count rationale:** the behavior was exposed by an unaccepted, newly gated witness and no accepted-green behavior was lost. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
 
-## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **RUNTIME CLOSURE CONDITION SATISFIED IN R9 / FORMAL REVIEW DISPOSITION PENDING / NON-STABLE**
+## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **CLOSED AT R9-REV / WITNESS-CONSTRUCTION / AUTHORITY-SURFACE MISMATCH / NON-STABLE**
+
+- **R9-REV disposition — CLOSED.** The frozen condition was *ordinals 359 and 361 both green in a run reaching at
+  least 361*; R9 satisfies it exactly. **AH2 was the right correction**: rebuilding both identities on one
+  production feature authority — authoritative rails, `hard_feature_edge_keys_from_rails`, and the permuted
+  component/sheet labels — made the closed-torus witness constructible, which confirms the vacuous-rail-set
+  diagnosis by the fix working. AH4's closed-witness non-empty-rail precondition now guards the class.
+- **Two further items close with it:** measure **`AD3` is RESOLVED** — ordinal 359 reached and passed its
+  enumeration-invariance comparison for the first time, so the raw-`face.orbit` rationale at
+  `SurfaceCutGraph.cpp:293-297` is proved by test rather than by comment; and **`PR8-R044`'s single-witness
+  residual is discharged**, since ordinals 360 (bounded two-ring) and 361 (closed genus-1 torus) both pass.
+- **Accounting:** closure is a status change, not a count change. Totals remain **44 / 14 / 30**, debt **5**,
+  M3 packages **66**.
 
 - **Observed:** authoritative R8 run/job `33288495471 / 99195869180` re-proves accepted 355/355 and passes ordinals 356-358, then ordinal 359 `SurfaceCutGraph.IsInvariantToSourceFaceAndEdgeEnumeration` selects once and fails at `FieldAlignedCurveNetworkTests.cpp:2381`, `ASSERT_TRUE(baselineCutGraph)`, before any invariance comparison. Frozen hard stop leaves 360-365 unexecuted.
 - **Mechanism:** the test now consumes committed `torus.rawfield`, but still constructs rails with test-local `rails_from_atlas(...)`. The passing production torus path (ordinal 356) consumes pipeline-published `authoritativeRails` and reports `networkV=48`, `networkE=48`, `cutEdgeCount=28`, `torusRegionCount=4`. CB7 AF3 therefore migrated field authority but not the rail-authority surface. Ordinal 361 contains the same residual local construction and was correctly not run.

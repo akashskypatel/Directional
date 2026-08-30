@@ -1,5 +1,77 @@
 # Changelog
 
+## 2026-08-30 — `M3-CP4c-2-TB-X2-R9-REV`: four closures, and A2b's stale one-arc-per-cut-edge binding
+
+Independent review and planning only. No runtime, build, compile, package, benchmark, or product/test/fixture/
+selector mutation. Static analysis ran against a working tree verified byte-identical to packaged semantic source
+`05f9ef299ee54f8c9d50318fc9a37e5a5503740d`; selector-365 and accepted-355 hashes recomputed from committed bytes.
+Measures issued: **AI0–AI9**. Full record:
+`Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md`.
+
+**Four long-running items closed by R9** (run/job `33319911575 / 99279955697`, CB8 package `9726295440`; accepted
+prefix 355/355 and ordinals 356–362 green):
+
+- **`M3-CP4c2-TB-X2-R8-CAND-01` CLOSED.** Its frozen condition — 359 and 361 both green in a run reaching 361 — is
+  satisfied. AH2 was the right correction: rebuilding both identities on one production feature authority (rails,
+  hard-feature edges, component and sheet labels) made the closed-torus witness constructible, confirming the
+  vacuous-rail-set diagnosis by the fix working.
+- **Measure `AD3` RESOLVED.** Ordinal 359 reached and passed its enumeration-invariance comparison for the first
+  time, so consuming the raw `face.orbit` index in `candidate_semantic_hash` is now proved by test rather than by a
+  code comment — after three turns.
+- **Criterion `C3` GREEN** at ordinal 362, after seven deferrals; DEFN-R2's decision to split it (torus half gated,
+  mechanical half to CP4c-3) is vindicated. **C1, C3 and C6 all now hold on the produced torus.**
+- **`PR8-R044`'s single-witness residual discharged** — the semantic/provenance split passes on a disc (360) and a
+  closed genus-1 surface (361).
+
+**Ordinal 363 — the first genuine product defect in this arc.** The witness proved an exact trace/source-edge
+crossing, built a **cellular** `SurfaceCutGraph`, and selected a `TraceInteriorCrossing` candidate; A2b then
+rejected the plan with `InvalidCutGraphBinding`.
+
+- **The producer is correct**, verified line by line. `EmbeddedGraphTopology.cpp:503-545` implements DEFN-R2
+  §§4.1-4.2 exactly: exact `ExactUnitParameter` ordering, coincident crossings **rejected not merged**, and every
+  sub-arc emitted in the canonical `cutEdge.first() → cutEdge.second()` direction (`ArcDraft` `:175-178` stores
+  endpoints verbatim). That third property is what keeps the correction small.
+- **The consumer is stale.** `GlobalTopologyPlan.cpp:479-516` encodes *one source cut edge ⇒ one derived Cut arc*
+  and still calls cuts "ordinary embedded source-edge barriers", while the trace block eighteen lines below already
+  reasons in **chords and fragments**. **Amendment 14 made cut arcs chord-like and A2b still treats them as
+  whole-edge barriers** — the whole-edge-versus-arrangement error that `PR8-R043` and Amendment 13 fixed one layer
+  up, recurring at the cut/region seam.
+- **The correction is provably small.** `forward` comes from the source edge and every sub-arc runs in that same
+  canonical direction, so `interiorDart = 2·id + (forward ? 0 : 1)` stays valid per sub-arc. The fragment-count
+  invariant survives: for edge `e` shared by `A`/`B` and crossed at `p`, sub-arcs `(v₁→p)` and `(p→v₂)` lie on
+  opposite sides of the trace chord and border different fragments, so `A` gains exactly two orbits and
+  `tracePieceCount[A]+1 = 2`.
+- **A second consumer fails *silently*, and EXEC did not reach it.** `GlobalTopologyPlan.cpp:1239-1242` inserts the
+  whole source edge's two endpoints into `boundaryVertices` for a sub-arc whose own endpoints may be a source
+  vertex and a crossing node — or two crossing nodes, touching no source vertex at all. `boundaryVertices` is a
+  **skip list** (`:1341-1344`), so over-inserting **suppresses** the interior-vertex ownership check with no error
+  and no diagnostic: a certificate that validates less than it claims. **Fixing only the loud site would trade a
+  red gate for a quiet weakening.**
+- **Already correct, needing no change:** `edge_ray_points_to_second_endpoint` (`EmbeddedGraphTopology.cpp:815-828`)
+  orders a Cut ray by exact `cut_node_parameter` of its **own** endpoints, so CB7's AG2 generalization is
+  sub-arc-correct; and the `cutEdges` barrier sets in `GlobalTopologyPlan` are edge-keyed by intent.
+
+**Cause of the omission — the reviewer's, owned.** DEFN-R2 §4 itemized Amendment 14 as five producer-side changes
+under "what must actually be built, itemized", and AG1 said "land §§4.1–4.5 as one conversion — a partial
+conversion is the defect this checkpoint is correcting". The itemization omitted A2b's cut-arc binding. CB7 and CB8
+implemented all five items correctly and completely. Second consecutive turn in which an enumeration inside a
+measure was read as exhaustive when it was illustrative; **AI1 is written to be self-correcting**, requiring the
+implementer to produce the audit by search rather than copy the review's table.
+
+**Still unexecuted:** ordinals **364** (the degree-four two-Cut/two-Trace edge-locus rotation — the one code gap
+DEFN-R2 named) and **365** (the saturation last resort), for a third turn. **`AH6` remains not-applicable** and
+carries forward. The prescribed sphere's non-gating publisher is still red with
+`originatingTopologyError=RotationSystemInconsistent`; `CAND-04` unchanged.
+
+**Lessons adopted:** `LESSONS.md` **61** ("convert every consumer" must ship with the enumeration, or say who owes
+it — and require the successor to search rather than copy) and **62** (a representation change breaks consumers in
+two ways; the loud one gets fixed and the quiet permissive one becomes the real defect — classify consumers by
+failure mode, not by whether they compile).
+
+Stable accounting unchanged: **44 / 14 / 30**, debt **5**, M3 packages **66**. Noted for the record: ordinal 363 is
+a **product** defect, non-stable only because CP4c-2 has never been runtime-accepted. Exact next:
+**`M3-CP4c-2-CB9`** under AI0–AI9; AI1 runs first and needs no build.
+
 ## 2026-08-30 — `M3-CP4c-2-TB-X2-R8-REV`: the torus is done; ordinal 359's red is a two-identity witness defect
 
 Independent review and planning only. No runtime, build, compile, package, benchmark, or product/test/fixture/

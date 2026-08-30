@@ -84,59 +84,126 @@ identities that TB executes and reports but that are **excluded from the gate co
 written rationale and an owning corrective measure. A non-gating identity may never be promoted to
 gating without a review recording why its precondition is now independently established.
 
-## Mandatory next turn — `M3-CP4c-2-TB-X2-R9-REV` — independent review/planning
+## Mandatory next turn — `M3-CP4c-2-CB9` — convert A2b's two stale cut-arc consumers
 
-R9-EXEC is **COMPLETE / VALID SEMANTIC RED AT ORDINAL 363**. Do not rerun, repair, compile, or implement before review.
+`M3-CP4c-2-TB-X2-R9-REV` is **COMPLETE**:
+`Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md`. Measures **AI0–AI9**.
 
-### R9 runtime authority
+### What R9 settled — do not re-derive any of this
 
-- immutable semantic/test source `05f9ef299ee54f8c9d50318fc9a37e5a5503740d`; package artifact `9726295440`
-- authoritative run/job `33319911575 / 99279955697`
-- result artifact `9734625006`, SHA-256 `d4cac956267b275b07f25857570b728b863470973ba7bfee0c47d4b8a9da3081`
-- log artifact `9734625165`, SHA-256 `9325840a0a68a2c6678e485aa2dc6a19311f9df041ab2b7764b415dea3274e10`
-- accepted predecessor **355/355 GREEN**; 356-362 GREEN; ordinal 363 RED; 364-365 NOT RUN
-- first red: `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` -> `InvalidCutGraphBinding`
-- non-gating diagnostics: 2 PASS / 1 RED; sphere red directly publishes
-  `originatingTopologyError=RotationSystemInconsistent`
-- immutable postflight PASS; every build/mutation/benchmark flag false
+Run/job `33319911575 / 99279955697` on immutable CB8 package `9726295440`: accepted prefix **355/355 PASS**,
+ordinals **356–362 PASS**, ordinal **363 RED**, 364–365 NOT RUN; 366 fresh processes, zero zero-selected,
+postflight immutable-green with every mutation and benchmark flag false, three frozen non-gating identities each
+selected once.
 
-### Review-owned adjudication
+- **`R8-CAND-01` CLOSED** — 359 and 361 both green in a run reaching 361. AH2 was correct.
+- **Measure `AD3` RESOLVED** — ordinal 359 reached its comparison at last, so the raw `face.orbit` index in a
+  semantic digest is proved by test, not by comment.
+- **Criterion `C3` GREEN** at ordinal 362, after seven deferrals. **C1, C3 and C6 all hold on the produced torus.**
+- **`PR8-R044`'s single-witness residual discharged** — 360 (bounded) and 361 (closed) both pass.
 
-`R9-CAND-01` is localized to an authority-shape contradiction: `EmbeddedGraphTopology` intentionally subdivides a
-selected trace-crossed source edge into multiple Cut arcs at its synthetic crossing, while
-`GlobalTopologyPlan::build_regions` still requires exactly one Cut arc for each selected source edge. R9-REV must
-adjudicate that mechanism and author the bounded next CB plan without implementation.
+### The red at ordinal 363 — a genuine product defect
 
-`R8-CAND-01`'s frozen runtime closure condition is satisfied because both 359 and 361 pass in this valid run; review
-owns formal closure. Criterion C3's ordinal 362 and AD3's ordinal 359 are runtime green. AH6 is **not applicable** to
-R9 because 363-365 were not all reached. `R8-CAND-02` and prescribed-sphere `CAND-04` remain non-stable open review
-inputs.
+The witness is fine: it proved an exact trace/source-edge crossing, built a **cellular** `SurfaceCutGraph`, and
+selected a `TraceInteriorCrossing` candidate. A2a′ did its job; `GlobalTopologyPlan::make` rejected the plan with
+`InvalidCutGraphBinding`.
 
-### Standing product state
+**The producer is correct** (`EmbeddedGraphTopology.cpp:503-545`): exact `ExactUnitParameter` ordering, coincident
+crossings rejected not merged, and **every sub-arc emitted in the canonical `cutEdge.first() → cutEdge.second()`
+direction** (`ArcDraft` `:175-178` stores endpoints verbatim, no canonicalization). That third property is what
+makes the correction small — the existing `face_orients_edge_forward` + `interiorDart = 2·id + (forward ? 0 : 1)`
+formula stays valid **per sub-arc**.
 
-M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 remain **CLOSED / ACCEPTED**.
-CP4c-2 remains **OPEN / runtime-unaccepted**; CP4c-3 remains blocked. Stable accounting remains **44 events / 14
-categories / 30 recurrences**, produced-witness debt **5**, M3 packages **66**. `selected_r2_branch=NONE`;
-`selected_gate=NONE`; `gate_execution_authorized=false`.
+**Two consumers are stale, and they fail differently:**
+
+1. **Loud** — `GlobalTopologyPlan.cpp:479-516` demands exactly one Cut arc per cut edge, and still calls cuts
+   *"ordinary embedded source-edge barriers"* while the trace block eighteen lines below reasons in **chords and
+   fragments**. Amendment 14 made cut arcs chord-like; A2b treats them as whole-edge barriers — the
+   whole-edge-versus-arrangement error `PR8-R043` and Amendment 13 fixed one layer up.
+2. **Silent** — `GlobalTopologyPlan.cpp:1239-1242` inserts the **whole source edge's two endpoints** into
+   `boundaryVertices` for a sub-arc whose own endpoints may be a source vertex and a crossing node, or two crossing
+   nodes touching no source vertex at all. `boundaryVertices` is a **skip list** (`:1341-1344`), so over-inserting
+   **suppresses** the interior-vertex ownership check with no error and no diagnostic. **Fixing only site 1 would
+   trade a red gate for a quiet weakening.**
+
+**Cause of the omission:** DEFN-R2 §4 itemized five producer-side changes under "convert every consumer" and did
+not list A2b's cut-arc binding. CB7 and CB8 implemented all five correctly. `LESSONS.md` **61**.
+
+### CB9 scope — AI0–AI9
+
+1. **AI1 first, no build.** Produce the consumer audit **yourself**, by search over `arc.cutEdge`,
+   `GlobalTopologyArcKind::Cut` and `cutGraph.cut_edges()`, and publish it with a per-site verdict:
+   *edge-keyed by intent (correct)* / *arc-keyed and already sub-arc-correct* / *arc-keyed and stale*. Compare with
+   the review's §4 table **after**; explain any difference. A copied enumeration inherits the omission that caused
+   this red.
+2. **AI2** convert `:479-516` to iterate all sub-arcs; **state the canonical-direction dependency in the comment**
+   so a later change to emission order cannot silently invalidate the dart formula; keep the two-incident-faces
+   guard; keep a typed failure for **zero** arcs; replace the stale "source-edge barriers" comment. Publish
+   `fragmentOrbits[face].size()` against `tracePieceCount[face] + 1` and the per-(face, cutEdge)
+   `edgeOrbitEvidence` cardinalities — verify the reconciliation, do not adopt the review's argument.
+3. **AI3** fix the silent `boundaryVertices` site: a sub-arc contributes only the source vertices that are its own
+   endpoints, resolved through `build_node_loci`'s existing `NodeLocus{vertex, edge}` threaded in from
+   `build_regions`. A node with only an `edge` locus contributes none. **No second node→vertex lookup.** This
+   **tightens** a loose check, so a new legitimate red there is a finding, not a regression.
+4. **AI4** record the four closures, and annotate `SurfaceCutGraph.cpp:293-297` with "proved by ordinal 359".
+5. **AI5** test-helper hygiene: `build_topology_plan` / `build_surface_cut_graph`
+   (`tests/FieldAlignedCurveNetworkTests.cpp:~1690-1714`) print the typed code and then throw on `built.value()`.
+   Keep the printing; stop the fall-through. `LESSONS.md` 60, second instance.
+6. **AI6** carry `AH6` forward unchanged — it needs 363–365 all reached.
+7. **AI7** if the audit finds a site needing a **representation** change rather than a per-arc loop, **stop and
+   return to definition**. Amendment 14 is frozen and must not be worked around.
+8. **AI8** CB9 must not absorb: the sphere's `RotationSystemInconsistent` fix, any new gate identity, any selector
+   byte, any error-enum or `topology_error` mapping change, any change to `EmbeddedGraphTopology.cpp`'s crossing
+   emission (AI2 depends on its canonical direction), or any relaxation of `proves_cellularity()`, the
+   fragment-count invariant, or `UncutFaceComponentOrbitSeedNotUnique`. No benchmark, no gate execution.
+9. **AI9** bookkeeping; the TB after CB9 re-runs gate 365 **from ordinal 1** and still honours the frozen
+   non-gating selector.
+
+### Still unexecuted
+
+Ordinals **364** (the degree-four two-Cut/two-Trace edge-locus rotation — the one code gap DEFN-R2 named) and
+**365** (the saturation last resort), for a third turn. Static reading says CB7's generalization is sub-arc-correct;
+that is not evidence.
+
+## Standing product state
+
+- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, and CP4c-1 are **CLOSED / ACCEPTED**.
+- CP4c-2 is **OPEN / runtime-unaccepted**. CB8 package `9726295440` is current build authority; R9 is the latest
+  semantic runtime evidence. **C1, C3 and C6 are green on the produced torus.**
+- **Gate authority is selector 365**, whole-file SHA-256
+  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; its `head -355`, `head -357` and `head -361`
+  reproduce the accepted-355, candidate-357 and 361 hashes exactly. 357, 358 and 361 are retained lineage only.
+- Open candidates: `M3-CP4c2-TB-X2-R9-CAND-01` (A2b's two stale cut-arc consumers),
+  `M3-CP4c2-TB-X2-CAND-04` (the sphere: a producer `RotationSystemInconsistent` **and**, independently, a
+  non-cellular pre-cut graph `V/E/F = 18/30/18`, `chi=6` vs `sourceChi=2`), and `R8-CAND-02` (zero-node/zero-arc
+  closed-surface behaviour, non-gating). `R8-CAND-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-ORCH-01` and `R9-ORCH-01`
+  are closed; measure `AD3` is resolved.
+- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
+  packages **66**. `selected_r2_branch=NONE`; `gate_execution_authorized=false`.
+- **Exact next is `M3-CP4c-2-CB9`.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent `references/turns/REVIEW.md`, GitHub/artifact capability only if needed. This is independent
-  review/planning: no implementation, runtime execution, configure, compile, relink, or test/fixture/selector mutation.
+- turn-based-coding-agent `references/turns/CODE_BUILD.md` and `GMP_COMPILE_POLICY.md`
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — update it in this review turn.
-1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md` — authoritative R9 evidence.
-2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Plan.md` — frozen stop/interpretation contract.
-3. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R9-CAND-01`, `R8-CAND-01`, `R8-CAND-02`, sphere `CAND-04`.
-4. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14/completeness contract; read R1 only where R2 leaves it binding.
-5. `.agents/Directional/Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — immutable package 66 authority.
-6. `.agents/Directional/Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — frozen ordinal authority; 364-365 were not run.
-7. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — synchronized review pointer and concise history.
+0. `.agents/Directional/ORIENTATION.md` — **read first**; current as of R9-REV. §7 items 1-2 are the live problems;
+   §6's closing paragraphs carry the arrangement model and the witness-construction trap.
+1. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Independent_Review_Record.md` — the authorizing review: the
+   producer/consumer split, the loud-and-silent consumer pair, the §4 audit table, measures **AI0–AI9**.
+2. `.agents/Directional/Architecture_M3_CP4c2_TB_X2_R9_Artifact_Only_Test_Benchmark_Report.md` — exact R9 runtime
+   result and artifact identities.
+3. `.agents/Directional/Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14 and the completeness
+   theorem, **frozen**; read `…DEFN_R1…` only alongside it (its §6 case 2 and §8 are superseded).
+4. `.agents/Directional/Architecture_M3_CP4c2_CB8_Code_Build_Report.md` — current immutable build/package authority.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `R9-CAND-01`, `CAND-04`, `R8-CAND-02`, and the closed
+   `R8-CAND-01`.
+6. `TODO.md` / `CHANGELOG.md` — current task and the lessons adopted at R9-REV (61, 62).
 
-**Stop after R9-REV planning closeout.** Do not begin its next CB in the same review turn.
+**This is a bounded CODE + BUILD over two A2b consumers plus test-helper hygiene.** Honour AI8 exactly, and treat a
+compile-green result as build evidence only.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

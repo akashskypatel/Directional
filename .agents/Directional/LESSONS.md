@@ -999,6 +999,27 @@ building any conclusion on it.**
     Compiled-but-unexecuted test authority is not evidence; it is debt wearing a green label. Check the
     selector's reach at the moment you authorize the edit, not at acceptance.
 
+61. **"Convert every consumer" must ship with the enumeration, or say who owes it.** DEFN-R2 §4 itemized
+    Amendment 14 as five producer-side changes under the heading "what must actually be built, itemized", and AG1
+    said "land §§4.1–4.5 as one conversion — a partial conversion is the defect this checkpoint is correcting". The
+    itemization omitted A2b's cut-arc binding, which the amendment necessarily invalidates. CB7 and CB8 implemented
+    all five items correctly and completely; the gate then went red on the sixth. **A numbered list adjacent to the
+    words "every consumer" reads as the enumeration whether or not it was meant to, and the reader is not wrong to
+    read it that way.** Either produce the list by search over the codebase and put it in the measure, or state
+    explicitly that the implementer must produce and publish it — and then make the follow-up measure require the
+    search rather than a copy of the reviewer's table, so the next enumeration corrects the last one's omissions
+    instead of inheriting them. Second consecutive turn in which an enumeration inside a measure was read as
+    exhaustive when it was illustrative; see also **59**.
+62. **When one representation change breaks two consumers, the loud one gets fixed and the quiet one becomes the
+    real defect.** Amendment 14 made a promoted source edge own several derived arcs. `GlobalTopologyPlan` read
+    that change in two places: a binding check that demanded exactly one arc — which failed **loudly**, with a
+    typed code and a source-edge locus, and was localized in a single runtime — and a `boundaryVertices` insertion
+    that assumed a single whole-edge arc and therefore over-inserted. The second is a **skip list**, so
+    over-inserting suppresses an interior-vertex ownership check with no error, no diagnostic, and no symptom: a
+    certificate that validates less than it claims. Fixing only the loud site would have converted a red gate into
+    a quiet weakening. **After changing a representation, grep for every consumer and classify each by failure
+    mode, not just by whether it compiles** — a permissive consumer is more dangerous than a strict one, precisely
+    because nothing will tell you about it.
 59. **A measure that names an authority must enumerate the products that authority comprises.** R7-REV's AF3 told
     the implementer to "build its baseline from the **production torus authority** — the same `torus.rawfield`-derived
     field". CB7 did exactly that, correctly and including the non-obvious step of permuting raw-field rows alongside

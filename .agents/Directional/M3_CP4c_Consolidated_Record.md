@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. R9-EXEC is **COMPLETE / VALID SEMANTIC RED AT ORDINAL 363** on immutable GMP package **66**, artifact `9726295440`. Authoritative run/job `33319911575 / 99279955697` re-proved 355/355, passed 356-362, and hard-stopped at 363 `SurfaceCutGraph.TraceCrossedSourceEdgeIsAdmissibleAndSubdividesBothArcs` with `InvalidCutGraphBinding`; 364-365 were not run. Exact next is independent **`M3-CP4c-2-TB-X2-R9-REV`**. CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. R9-EXEC re-proved 355/355, passed ordinals 356-362, and hard-stopped at 363 with `InvalidCutGraphBinding` on immutable package **66**, artifact `9726295440` (run/job `33319911575 / 99279955697`); 364-365 were not run. **R9-REV closed four items** — `R8-CAND-01`, measure `AD3`, criterion **C3**, and `PR8-R044`'s single-witness residual — leaving **C1, C3 and C6 all green on the produced torus**. It adjudicated ordinal 363 as the arc's **first genuine product defect**: Amendment 14 gives a trace-crossed cut edge `n+1` derived Cut arcs, while A2b still binds exactly one, and a **second consumer over-inserts into a `boundaryVertices` skip list and fails silently**. Measures **AI0-AI9** issued. Exact next is **`M3-CP4c-2-CB9`**. CP4c-3 remains blocked.
 
 Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **66**. `selected_r2_branch=NONE`; `selected_gate=NONE`; `gate_execution_authorized=false` at closeout.
 
@@ -63,8 +63,12 @@ preflight, ran three non-gating diagnostics, re-proved accepted 355/355, passed 
 363 with `InvalidCutGraphBinding`. Static localization on the immutable packaged source shows the new crossing authority
 splits a selected trace-crossed source edge into multiple Cut arcs, while region binding still requires exactly one
 Cut arc per selected source edge. This is `R9-CAND-01`, non-stable because CP4c-2 is unaccepted and predecessor 355
-remains green. R8-CAND-01's runtime closure condition is satisfied by 359/361 green; formal disposition remains
-review-owned. AH6 did not apply because 363-365 were not all reached. Result/log artifacts `9734625006 / 9734625165`;
+remains green. **R9-REV** confirmed the producer correct line by line — exact `ExactUnitParameter` ordering,
+coincident crossings rejected not merged, every sub-arc in the canonical `first()→second()` direction — and found a
+**second stale consumer EXEC did not reach**: `GlobalTopologyPlan.cpp:1239-1242` over-inserts whole-source-edge
+endpoints into the `boundaryVertices` **skip list**, suppressing the interior-vertex ownership check with no error.
+R8-CAND-01 is **closed** by 359/361 green; measure `AD3` is **resolved** and criterion **C3** is **green**. AH6 did
+not apply because 363-365 were not all reached. Result/log artifacts `9734625006 / 9734625165`;
 all mutation/build/benchmark flags false; postflight PASS.
 
 
