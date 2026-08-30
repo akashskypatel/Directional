@@ -1,3 +1,22 @@
+## 2026-08-30 — `M3-CP4c-2-CB7`: Amendment 14 build green, selector 365 frozen
+
+CB7 is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Semantic source `4f0f3ca74a88ba260a20c019437bc4995f2056e0`
+implements the deferred AF0/AF2/AF3/AF4 measures plus DEFN-R2 AG1–AG7: preserved originating topology-error
+provenance, repaired withdrawn-barrier diagnostics, production-authority torus/enumeration surfaces, exact
+trace-crossed cut nodes and cut/trace subdivision, generalized four-sector edge-locus rotation, explicit
+`CutSearchExhaustedBeforeCellularity` plus published saturation, a purpose-built trace-crossed witness, and an
+independent crossing oracle. Selector **365** is frozen at
+`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; its 355/357/361 prefixes reproduce their
+frozen hashes exactly. GitLab load errors blocked three checkout attempts before compile, so the authoritative
+package used transport-only source `1230621baff6d04fb20df3b1bf48903cd65b5d69`, substituting the verified GitHub
+Eigen mirror at exact gitlink `769c72fd8019e389810d1de1e7c243521a43b594` without changing any semantic path;
+the canonical remote was restored afterward. Run/job `33287281975 / 99192562149` compiled all eight standard
+targets with GMP/GMPXX, clean source, and `runtimeExecution=false`. Package `9724864897`
+(`a4d9803eea326b5a22f6c4e21cc07e0908eaede944d02a726ae3c5f6d856734c`), log `9724865018`
+(`462090e66648fc6db583b770a2518aca0a3f63ee2ae167d900070fb4ed5460bd`). Stable accounting remains
+**44 / 14 / 30**, debt **5**, packages **65**. Exact next: artifact-only `M3-CP4c-2-TB-X2-R8-EXEC`; no gate was
+selected or executed in CB7.
+
 ## 2026-08-29 — `M3-CP4c-2-CB5`: semantic/provenance split build green
 
 CB5 is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic/test source `755485865a7cf9c485d754f22b82a41ee151824b`. `SurfaceCutGraph` now separates gauge-invariant semantic identity from full provenance while leaving `candidate_hash` and atlas/network tamper binding unchanged; `GlobalTopologyPlan` consumes the semantic cut-graph digest; the face-orbit ordinal is retained with a documented canonical-rank proof; and two non-gating cut-graph gauge-relabeling diagnostics were compiled for two-ring and torus. Source recovery patch SHA-256 `3106b52029f546262e86e734a430e3c31ad213139bfb0d358e5af31f88e6a8c1` / diff-body `40a9eec971fe17691577159c0f876409a26f472dcdbd2e26baa8a3578f94c008` was emitted, staged through Drive, and applied on `33267545221 / 99140191320`; result/log artifacts `9719098241 / 9719098425`. Authoritative compile/package run `33267732093` compiled the changed-owner test target and all eight standard targets with GMP/GMPXX, no runtime, source clean, internal **28/28 PASS**. Fresh package `9719216316` (`acb43cf0ec79437408c782193ece354eb790d9ae2159eaeb42546546ea20c3fc`), log `9719216455` (`af03c536bc55f37be90f6f654bb2e944c66a15036920e536a97cb5523b00f7c4`), source archive `78ca517ac7b96ee3737d6ae5b277fc4d06e7393c460f4c9585eb35b2541d84cf`. No selector changed; stable accounting remains **44 / 14 / 30**, debt **5**, packages **64**. Exact next: artifact-only `M3-CP4c-2-TB-X2-R7-EXEC`; 357/358, cumulative gate, benchmarks, mechanical/C2, and CP4c-3 remain blocked.

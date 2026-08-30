@@ -2,9 +2,9 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed/superseded CP4c documents are consolidated here; only documents that remain normative, current evidence, or future-work inputs stay separate. For execution authority use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-29).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. CB6 stopped at AF1 after retained independent evidence refuted the prescribed sphere's pre-cut cellularity. DEFN-R2 then discharged the definition stop: Amendment 14 admits trace-crossed source edges as cuts, proves cut-set completeness, and freezes selector **361**. Exact next is **`M3-CP4c-2-CB7`**. CP4c-3 remains blocked.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, and `M3-CP4c-1` are **CLOSED / ACCEPTED**. `M3-CP4c-2` is **OPEN / runtime-unaccepted**. CB7 implemented DEFN-R2 Amendment 14 plus deferred AF0/AF2/AF3/AF4, froze selector **365**, and produced a clean GMP/GMPXX package without runtime. Exact next is artifact-only **`M3-CP4c-2-TB-X2-R8-EXEC`** on package `9724864897`. CP4c-3 remains blocked.
 
-Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **64**. `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
+Stable accounting: **44 / 14 / 30**, produced-witness debt **5**, M3 packages **65**. `selected_r2_branch=NONE`, `selected_gate=NONE`, `gate_execution_authorized=false`.
 
 ## 1. Current separate authority
 
@@ -14,9 +14,11 @@ These files remain separate because they are still required by current or future
 - `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — Amendment 13 and still-binding §§4/5/7/9; §6 case 2 and §8 are superseded by R2.
 - `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14, completeness theorem, AF5 and AG0–AG9.
 - `Architecture_M3_CP4c2_Required_Green_Selector_357.txt` and `_358.txt` — retained because current DEFN-R2 explicitly uses their frozen lineage/prefix authority; 357 is superseded and 358 withdrawn, neither is executable gate authority.
-- `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` — current CP4c-2 required-green authority.
+- `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` — frozen prefix authority retained for lineage.
+- `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — current CP4c-2 required-green authority; unexecuted.
 - `Architecture_M3_CP4c2_Non_Gating_Diagnostic_Selector.txt` — current report-only TB surface.
-- `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — current immutable build/package predecessor authority.
+- `Architecture_M3_CP4c2_CB7_Code_Build_Report.md` — current immutable build/package authority.
+- `Architecture_M3_CP4c2_CB5_Code_Build_Report.md` — retained predecessor package authority for R7 lineage.
 - `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md` — latest current runtime evidence.
 - `Architecture_M3_CP4c2_CB6_Code_Build_Report.md` — immediate AF1 definition-stop predecessor.
 
@@ -92,19 +94,33 @@ The concrete code gap is the edge-locus rotation: `build_rotation_system` curren
 
 Current gate authority is selector **361**, whole-file SHA-256 `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b`. Its first 355 and first 357 entries reproduce the accepted-355 and candidate-357 authorities so `first_red_ordinal` remains comparable. 357 is superseded; 358 is withdrawn because its sole addition bound the out-of-scope mechanical witness. No gate is selected or executable yet.
 
-## 4. Deferred/current measures entering CB7
 
-- **AF0:** print originating `GlobalTopologyPlanErrorCode`; additive-only, no re-map/new enum.
-- **AF2:** repair D2 harness.
-- **AF3:** production-authority torus diagnostic/witness.
-- **AF4:** keep enumeration-invariance witness as AD3 falsifier.
-- **AG1:** edge-interior synthetic crossing nodes, exact edge ordering, trace subdivision, rotation extension, remove trace-crossed proposal exclusion.
-- **AG2:** generalize the four-sector edge-locus rotation to degree-four `Cut + Trace` crossings.
-- **AG3:** publish completeness conditions and canonical edge-orientation derivations.
-- **AG4:** retire `NoAdmissibleCutForNonDiscComponent`; add explicit search-exhaustion/saturation evidence.
-- **AG5:** constructed witness must actually promote a trace-crossed edge and assert that precondition.
-- **AG6:** independent oracle reconstructs crossing nodes independently.
-- **AG7:** append the four DEFN-R2 §7.4 identities to selector 361, advancing the intended gate to 365. AF6/AF8 bind the later authorized TB closeout.
+### 3.6 CB7 implementation and package
+
+CB7 semantic source `4f0f3ca74a88ba260a20c019437bc4995f2056e0` implements trace-crossed cut nodes,
+exact crossing ordering, cut/trace arc subdivision, generalized edge-locus rotation, explicit search exhaustion and
+published saturation, additive originating-error provenance, production-authority torus diagnostics, the repaired
+withdrawn-barrier diagnostic, and an independent crossing oracle. A purpose-built three-ring witness asserts that a
+trace-crossed cut is actually selected before exercising the two-Cut/two-Trace degree-four rotation.
+
+Selector **365** appends the four DEFN-R2 identities to 361. Its whole-file SHA-256 is
+`6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`; its 355/357/361 prefixes reproduce the
+frozen authorities exactly.
+
+GitLab load failures prevented the first compile checkout. The successful package used transport-only source
+`1230621baff6d04fb20df3b1bf48903cd65b5d69`, substituting the verified GitHub Eigen mirror at the same exact gitlink
+while changing no semantic path. Run/job `33287281975 / 99192562149` compiled all eight standard targets with
+GMP/GMPXX and `runtimeExecution=false`. Immutable package artifact `9724864897` has SHA-256
+`a4d9803eea326b5a22f6c4e21cc07e0908eaede944d02a726ae3c5f6d856734c`. The canonical Eigen remote was restored
+after packaging. Runtime behavior remains unadjudicated until R8.
+
+## 4. Runtime evidence owed by R8
+
+CB7 compiled the AF/AG publication and test surfaces but deliberately executed none of them. R8 owns the runtime
+adjudication: accepted prefix 355, ordinals 356–365, every frozen non-gating CP4c-2 identity or explicit skip
+rationale, originating-error provenance, repaired D2 semantics, production torus + enumeration invariance, sphere
+component topology and theorem conditions, the trace-crossed degree-four witness, independent crossing counts, and
+published saturation behavior. Full order and stop rules are in `Future_Chat_Session_Handoff.md`.
 
 ## 5. High-value reversals retained
 
@@ -151,10 +167,11 @@ Read, in order after the durable start-of-turn checklist:
 1. `ORIENTATION.md`
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c2_CB6_Code_Build_Report.md`
+4. `Architecture_M3_CP4c2_CB7_Code_Build_Report.md`
 5. `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md`
 6. `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — only the still-binding sections identified by R2
 7. `Architecture_M3_CP4c2_TB_X2_R7_Artifact_Only_Test_Benchmark_Report.md`
-8. `Architecture_M3_CP4c2_CB5_Code_Build_Report.md`
+8. `Regression_Root_Cause_Tracker.md`
 
-**Exact next:** `M3-CP4c-2-CB7`, Code + Build. Implement the deferred AF0/AF2/AF3/AF4 measures plus AG1–AG7 within the frozen contracts. No gate selection, gate execution, benchmark, or runtime is authorized in CB7.
+**Exact next:** `M3-CP4c-2-TB-X2-R8-EXEC`, artifact-only on immutable GMP package `9724864897`. Do not rebuild or
+repair in TB. Selector 365 remains unselected/unexecuted until the R8 authorization boundary is recorded.
