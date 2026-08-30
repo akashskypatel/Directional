@@ -1,0 +1,24 @@
+name: M3 CP4c2 CB7 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c2-cb7-closeout-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1Lg1YJQRIQJg925AGkW66asvjUj1kHRWv
+      patch_sha256: 603b77edc271601527813d848cba71d678c970f32f8911f28abcf76d867012f6
+      base_sha: d78bdd8c774b9ea828014cc7f8abfaaf49f1cafc
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3-CP4c-2-CB7 and hand off R8"
+      retention_days: 14
+    secrets: inherit
