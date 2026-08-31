@@ -380,6 +380,31 @@ Artifact-only TB4 on immutable package **73** is authoritative at run/job `33436
 
 After the gate verdict was fixed, AP6 executed ordinals **367–373** once report-only with zero gate credit: **1 PASS / 6 RED**. 368 reproduces the sphere's `RotationSystemInconsistent → TraceEventPositionInvalid` at trace 2/event 30; 369 reaches its intended assertion with `saturationUsed=true`; 370 stops earlier at `atlasBuild=false`; 371/372 are blocked by the same mechanical network red; 373 passes its synthetic barrier-arc singularity-binding contract. Result/log artifacts are `9774693166` (`056f86df2e387391227bcf52f59ba932dd64a5d02923a8ff688cd8e315ff8a7e`) / `9774693946` (`d2acc62037d0bce07ef98bb77a7cb42ee90758d8b72477d9d8516da2fa0afcb6`). Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **71**. Exact successor is independent `M3-CP4c-3-TB4-REV`; no unchanged TB retry or semantic correction precedes review.
 
+### `M3-CP4c-3-CB6` — Amendment 17 one-datum election and package 74
+
+CB6 implements the TB4-REV Amendment-17 correction at final semantic source
+`49536cf7b4b261bd52f36a91c861b6459db356a4`: vertex continuation election captures one arrival-face incoming
+direction, transports that same geometric datum through the reachable fan, re-expresses it per face, and applies
+the unchanged exact half-open sector predicate. Candidate-cell `pairing.direction` values are retained only as
+diagnostics; published signed-lift branch transport remains separate authority. The audit channel records both
+directions, transport path, composed quarter-turn and sector outcomes per reachable state.
+
+CB6 also exposes ordinal 370's existing typed atlas-build error/locus without repairing its witness and publishes
+`NoCarrierMatch / SourceEdgeUnavailable` for the prescribed-sphere no-source-edge diagnostic path without changing
+sphere semantics. An independent same-pattern audit found per-cell representative/sector testing in
+`FieldTransportAtlas.cpp` singularity-port incidence construction; it was intentionally left untouched. Synthetic
+ordinal 373 remains partial evidence until the mechanical witness proves `unboundSingularityCount=0`.
+
+The first compile-only attempt found one mechanical C++ access defect (`DomainResult<SourceVertexId>`); the sole
+correction was `rowVertex.value()`. Corrected GMP/GMPXX compile run/job `33445894845 / 99664857496` is green with
+`runtimeExecution=false`; raw result/log artifacts are `9778128771` / `9778129236`. Mode-preserving package **74**
+from `33446658075 / 99667201075` is artifact `9778267541`, outer SHA-256
+`bad0ade74ff8e47c9937013c0fcc3f1084272c66eda35a2db60800ff7b6b767d`, inner tar
+`c8d5167652ea95504252f5adb4d1dc5d9f463a4dfacfb7e5e11bd086fe935d8e`, source archive
+`5afa250d0dd8e003b91e7e5f887e3eed8658f16faa6754722bf8a2dd37a1c931`, with 27 package-relative fixtures and
+six `0755` executables. Selector 373 remains unchanged. Stable accounting remains **44 / 14 / 30**, debt **5**;
+semantic packages advance **71 → 72**. Exact successor is artifact-only `M3-CP4c-3-TB5`.
+
 ## 5. High-value reversals retained
 
 - Face-local branch labels are not cross-face semantic identity; use published transport/lift.

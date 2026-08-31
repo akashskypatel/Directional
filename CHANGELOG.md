@@ -1,3 +1,18 @@
+## 2026-08-31 — `M3-CP4c-3-CB6`: Amendment 17 build/package green; package 74 frozen
+
+CB6 is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at final semantic source
+`49536cf7b4b261bd52f36a91c861b6459db356a4`. Amendment 17 now elects vertex continuation from one arrival
+direction transported around the reachable fan; per-cell representatives remain audit diagnostics only. Ordinal
+370 now prints its typed atlas-build error/locus without witness repair, and the prescribed-sphere no-source-edge
+path publishes `NoCarrierMatch / SourceEdgeUnavailable` without a sphere semantic fix. The first compile-only
+attempt exposed one `DomainResult<SourceVertexId>` access error; the sole correction was `rowVertex.value()`.
+Authoritative retry `33445894845 / 99664857496` compiled all approved targets with GMP/GMPXX and
+`runtimeExecution=false`; result/log artifacts are `9778128771` (`64ff0422…996c`) / `9778129236`
+(`cc9019d9…0490`). Mode-preserving package **74** from `33446658075 / 99667201075` is artifact `9778267541`
+(`bad0ade7…767d`), inner tar `c8d51676…5d8e`, with packaged source `5afa250d…c931`, 27 fixtures and six `0755`
+executables. Selector 373 is unchanged. Stable accounting remains **44 / 14 / 30**, debt **5**; semantic packages
+advance **71 → 72**. Exact successor: artifact-only `M3-CP4c-3-TB5`.
+
 ## 2026-08-31 — `M3-CP4c-3-TB4`: exact two-candidate transit locus measured; AP6 diagnostics executed
 
 TB4 is **COMPLETE / VALID SEMANTIC RED** on immutable package **73** / semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`. Authoritative run/job `33436492493 / 99634138202` passes immutable package/source/GMP/27-fixture/six-`0755`/selector preflight, re-proves **365/365**, then first-reds ordinal **366** at `VertexTransitSectorUnresolved`. CB5's typed locus exposes source vertex **30**, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, exactly two candidate faces `(25,30,31)` / `(30,31,119)`, `BarrierAbsorbed=false`, `barrierIncident=false`: M1's zero-candidate prediction and direct M3 are falsified, while M2's singular-holonomy cause remains unproved. AP6 then runs 367–373 once report-only with zero gate credit: **1 PASS / 6 RED**; 368 reproduces sphere `TraceEventPositionInvalid` trace 2/event 30, 369 reports saturation still used, 370 stops at `atlasBuild=false`, 373 passes. Result/log `9774693166` (`056f86df…8a7e`) / `9774693946` (`d2acc620…fcb6`); immutable postflight PASS and all build/repair/mutation flags false. Earlier `33436283363 / 99633462747` is resolved pre-runtime orchestration only: the runner expected `package73.tar.gz.sha256` instead of actual `package73.sha256`; control commit `41a7a8b…dde7b` corrected only that lookup. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **71**. Exact next: independent `M3-CP4c-3-TB4-REV`; no unchanged TB retry or semantic correction before review.

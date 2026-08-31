@@ -1,3 +1,23 @@
+## 2026-08-31 — `M3-CP4c-3-CB6`: one-datum transit authority compiled; package 74 frozen
+
+CB6 is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** under
+`Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` AS0–AS9. Final semantic/evidence source is
+`49536cf7b4b261bd52f36a91c861b6459db356a4`: vertex transit captures one arrival-face direction and transports
+that same datum through the reachable fan while signed-lift branch labels remain separate authority. The exact
+half-open sector rule, barrier semantics and `FaceInterior` exclusion are unchanged. New state diagnostics retain
+the old representative and transported incoming direction side-by-side. AS3 makes ordinal 370's typed atlas error
+visible without witness repair; AS5 identified and left untouched the independent singularity-port
+per-cell-representative pattern in `FieldTransportAtlas.cpp`; AS6 publishes
+`NoCarrierMatch / SourceEdgeUnavailable` on the sphere no-source-edge path while AL4 remains binding.
+
+The first compile-only attempt stopped on one mechanical `DomainResult<SourceVertexId>` access error. The only
+correction was `rowVertex.value()`. Authoritative GMP/GMPXX retry `33445894845 / 99664857496` compiled all approved
+targets with `runtimeExecution=false`; artifacts `9778128771` (`64ff0422…996c`) and `9778129236`
+(`cc9019d9…0490`). Mode-preserving package **74**, run/job `33446658075 / 99667201075`, is artifact `9778267541`
+(`bad0ade7…767d`), inner tar `c8d51676…5d8e`, source archive `5afa250d…c931`, 27 fixtures, six executables at
+`0755`, selector 373 unchanged. Stable accounting stays **44 / 14 / 30**, produced-witness debt **5**; semantic
+packages advance **71 → 72**. Frozen successor is artifact-only `M3-CP4c-3-TB5`; no CB6 runtime occurred.
+
 ## 2026-08-31 — `M3-CP4c-3-TB4-REV`: all three enumerated mechanisms falsified; Amendment 17 declared
 
 Independent review, definition and planning under the frozen `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md`
