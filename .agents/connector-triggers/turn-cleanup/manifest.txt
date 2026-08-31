@@ -1,5 +1,0 @@
-# M3-CP4c-3-TB3-R1 temporary state
-.agents/connector-triggers/source-snapshot/m3-cp4c3-tb3-r1-start-20260831t1625.txt
-.agents/connector-triggers/cp4c3-tb3-r1-20260831t1643.txt
-.agents/connector-triggers/cp4c3-tb3-r1-closeout-apply-20260831t1720.txt
-.agents/Directional/turn-payloads/cp4c3-tb3-r1-run.sh

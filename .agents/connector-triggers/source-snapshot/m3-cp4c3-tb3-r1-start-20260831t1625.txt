@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB3-R1
-requested_source=4efec99b37c838c8de814a59d1e6a1c9a2687fa4
-purpose=start-of-turn exact source snapshot
-runtimeExecution=false

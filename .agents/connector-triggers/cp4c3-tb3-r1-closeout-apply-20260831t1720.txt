@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-TB3-R1
-purpose=apply-durable-closeout
-base_sha=87933cf9b22726c19ccc680252127612681977d3
-patch_sha256=38e77fe2341a055467771bd75aa8963db5090bca1ceee4e2fcef472aad227bde
-file_id=13jMpu6Rogq0CkTtil5YMcRXgiE8gPrKb
