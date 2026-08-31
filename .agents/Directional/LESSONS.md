@@ -1177,6 +1177,29 @@ building any conclusion on it.**
     datum before you touch the partition** — and when the predicate is already exact, ambiguity is evidence about
     the *inputs*, never a reason to add a tolerance.
 
+72. **A correction that satisfies a measure's letter can defeat its substance — so write the measure about the
+    *provenance*, not the operator.** Amendment 17 required an election to test a single datum, and AS9 prohibited
+    "any tolerance in the predicate". CB6 complied with both: it did not touch the predicate, which stayed exact
+    `FieldExactRational`. It instead carried the datum through **world-space `double`** — exact barycentric →
+    `to_double()` → normalized 3-vector → transported face to face in doubles → `from_double_exact()` → fed to the
+    exact comparison. **An exact comparison on a float-derived operand is a floating-point decision with an exact
+    final rounding step.** The conversions also brought three silent failure modes (`squaredNorm() == 0.0`,
+    non-finite, failed reconstruction) into the least observable place in the pipeline. The rule: **exactness is a
+    property of the whole derivation chain, not of the final comparison** (`DESIGN.md` Amendment 18), and a measure
+    that names an operator will be satisfied by changing the operand. Where speed is needed, only a **certified
+    filter** is admissible — one that returns the provably-correct answer or defers to exact, never an
+    approximation.
+73. **A producer with an unreportable exit will eventually report a name that is false.** `resolve_field_vertex_transit`
+    grew four paths that `continue` or skip before the per-state diagnostic is recorded — an empty seed when the
+    arrival pairing is missing or its direction fails to convert, a mid-walk conversion failure, and a failed
+    transport during expansion. When the seed itself dropped, the walk never ran, so the function returned
+    `VertexTransitSectorUnresolved` with **zero candidates and zero diagnostic rows**: a typed name asserting that
+    a sector election was unresolved, for a run in which **no election happened at all**. Five consecutive review
+    turns have now been spent on names that misdescribed their own cause. Two rules. **Record the diagnostic before
+    any conditional that can skip the state** — a diagnostic gathered after the guards documents only the paths that
+    did not fail. And **an empty diagnostic set must be its own named condition**, because "we examined nothing" and
+    "we examined everything and none qualified" are opposite findings that must never share a code.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-31 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Selector **373** stays frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, re-verified with all six predecessor prefixes at `M3-CP4c-3-TB4-REV`. **A1 is clear end to end** — Amendments 15 and 16/P2 are both proved effective at runtime, with ordinals **1–365 green** throughout. Valid TB4 run `33436492493` on package **73** first-reds at ordinal **366** in **A2a**, `VertexTransitSectorUnresolved`, now with a published locus: source vertex 30, `FaceInterior`, two candidate faces. `M3-CP4c-3-TB4-REV` **falsified all three** previously enumerated mechanisms and **proved** the two candidates are tested against two geometrically distinct directions at a **regular** vertex — one semantic continuation represented twice — then declared **Amendment 17** (an election is decided from a single datum, never one representative per cell). Exact next is `M3-CP4c-3-CB6` under measures AS0–AS9.)
+**Status date:** 2026-08-31 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Selector **373** stays frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, re-verified with its byte-prefix lineage at `M3-CP4c-3-TB5-REV`. **A1 is clear end to end** — Amendments 15 and 16/P2 are proved effective at runtime and ordinals **1–365 stay green** through five invasive changes. Valid TB5 run `33448925069` on package **74** first-reds at ordinal **366** in **A2a** at a **zero-candidate, zero-diagnostic** locus, source vertex 11. `M3-CP4c-3-TB5-REV` established this is a **silent seed-drop** — the walk never started — with four unreportable exits, and that CB6 satisfied Amendment 17 by round-tripping the continuation direction through **world-space doubles**, breaking exactness. Amendment 17 is therefore **masked, not cleared**. **Amendments 18 and 19** declared. The adversarial architecture review of 2026-08-31 is adjudicated in full: four cost/coverage concerns scheduled in §3b, the rest contradicted by measurement and recorded as prohibited. Cadence changes in §3c. Exact next is `M3-CP4c-3-CB7` under measures AU0–AU9.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open with A1 clear end to end and a valid red at ordinal 366 in A2a, cause family proved |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open, A1 clear, ordinal 366 red in A2a on a seed-drop with exactness and reportability amendments pending |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** A1 clear end to end after Amendments 15 and 16/P2, ordinals 1–365 green throughout. TB4 on package 73 is a valid semantic red at ordinal **366** in **A2a**; the locus is published and the cause family proved (per-cell representative election), Amendment 17 declared. **NEXT:** `M3-CP4c-3-CB6` under AS0–AS9 |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** A1 clear end to end; ordinals 1–365 green throughout. TB5 on package 74 first-reds at ordinal **366** on a silent seed-drop in A2a; Amendment 17 masked, not cleared; exactness broken by a double round-trip and restored by **Amendment 18**, reportability by **Amendment 19**. **NEXT:** `M3-CP4c-3-CB7` under AU0–AU9 |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval
@@ -314,6 +314,48 @@ The defect is in the CP4c-0 frozen definitions, which asserted that surviving to
 five amendments were issued. **CB2 is now BUILD GREEN** at `390e65b373063c667e3c3f5e78b74ed9d859093b` after a verification-first audit found E1–E9 already present; the required selector is **338 = 316 + 12 + 10**. Exact next is **`M3-CP4c-0-TB-R2`**, artifact-only runtime. After E2–E5, T6 is *provably unreachable* from any well-formed production state.
 
 **No budget.** Attempt and diagnostic budgets and the `DG` turn type were abolished on 2026-08-25. Workflow is `CB → TB → (red) → REVIEW+PLAN → CB`; a red TB consumes nothing and mandatorily routes to review.
+
+---
+
+## 3b. Scale, robustness and coverage items — from the 2026-08-31 adversarial architecture review
+
+An adversarial review of the design was adjudicated in full at `M3-CP4c-3-TB5-REV` §9. Four of its concerns are
+valid about **cost and coverage** and are scheduled here; the rest were contradicted by measured evidence and are
+recorded as prohibited in that record and in `DESIGN.md` §7.2.1. None of these is a CP4c-3 blocker, and none may be
+pulled forward into a bounded corrective turn.
+
+| Item | Concern | Scheduled | Constraint |
+|---|---|---|---|
+| **S1 — expression swell** | exact barycentric parameters composed face-to-face grow in bit-width; never measured, and `field_aligned_trace_step_budget`'s own comment asserts growth without quantifying it | **M4** — *measure first*: max/mean numerator-denominator bit-width per trace step on all four witnesses | mitigation must be representational (reduce to lowest terms; recompute in the destination face from exact source data). **Lattice snapping is prohibited** — it changes the value, not the cost (Amendment 18) |
+| **S2 — certified predicate filters** | a blanket "always full rational" evaluation leaves large constant factors on the table | **M4/M8** — admit Shewchuk-style adaptive predicates and interval filters | permitted **only** in certified form: return the provably-correct result or defer to exact. A filter that can differ from the exact path is prohibited (Amendment 18) |
+| **S3 — limit cycles vs. a step budget** | a step budget is a heuristic; budget termination would create an unjustified boundary in the quad mesh | **M4** — exact cycle detection: a trace revisiting an exact `(face, branch, entry point)` state is provably periodic; terminate with a typed `LimitCycleTermination` and close the loop as a real topological feature | additive to CP4c-0b's frozen termination contract, which is **not** reopened. The state space is not finite, so this supplements the budget and makes any remaining budget hit a reportable anomaly |
+| **S4 — post-mortem disc proof** | regions may grow to thousands of faces before failing `χ = 1` | **M4-scale / M8** — incremental Betti tracking (union-find) with early rejection | fails **earlier, never differently**; weakens no guarantee. **Backtracking into A2a′ is prohibited** — that is `RP-01` authority conflation |
+| **S5 — higher-genus coverage** | handle-generator cycles (`2g`) have only ever been exercised at genus 1 (torus); genus ≥ 2 is untested | **M4** — add a genus ≥ 2 witness to the produced-witness set | a coverage gap, not a defect; the atlas already *verifies* holonomy rather than choosing it, so no ILP redesign is implied |
+| **S6 — input-noise stability** | the field comes from a floating-point optimizer, so an exact predicate answers a question whose premise carries noise | **M5** — a perturbation witness: re-run with the field perturbed at the last significant bits and assert the **topological** output is unchanged | this replaces "thickened predicates", which are prohibited: an epsilon tube relocates the discontinuity to the tube boundary and reintroduces a tuning constant |
+
+**Related open audit already tracked:** `TODO.md` carries the `kBranchTopologyTolerance` item —
+`direction_in_incident_vertex_sector`'s callers compare a Gram **determinant** against `1e-10`. S2 and S6 are the
+right frame in which to close it.
+
+---
+
+## 3c. Development-cadence changes — 2026-08-31
+
+CP4c-3 held ordinal 366 red for six consecutive TB runs at roughly **one defect per three turns**. The causes are
+recorded in `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §10. Three changes follow, none of which
+weakens the gate, changes a selector byte, or alters `first_red_ordinal` semantics:
+
+1. **Full report-only pass.** After the first red fixes the verdict, execute **every remaining ordinal** report-only
+   with **zero gate credit**. The restricted 367–373 version of this produced four independent findings in a single
+   run; extending it makes each run buy every independently-reachable defect instead of one.
+2. **Minimal witnesses for active defects.** Every active gating defect gets a small constructed witness that
+   reproduces it — for the transit election, a single interior vertex with a known fan and an exact synthetic
+   field. A 152-vertex production witness is the wrong instrument for first-light debugging; the minimal witness
+   also becomes a permanent regression identity.
+3. **Measures written as predicates with a named falsifier.** A corrective measure states the invalidated
+   assumption in words, and names the observation that would fall outside it. Five consecutive measures were
+   satisfied exactly and defeated in substance because they were scoped by symbol, enum, stage, mechanism
+   enumeration and predicate-versus-provenance. `LESSONS.md` 68 and 70.
 
 ---
 

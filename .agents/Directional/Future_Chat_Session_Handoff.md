@@ -92,44 +92,70 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB5-REV` (independent REVIEW + PLAN)
+## Mandatory next turn — `M3-CP4c-3-CB7` (Code + Build, runtime-free)
 
-`M3-CP4c-3-TB5` is **COMPLETE / VALID SEMANTIC RED**. Authoritative report:
-`Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md`. Frozen successor scope:
-`Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md`.
+`M3-CP4c-3-TB5-REV` is **COMPLETE**: it accepted TB5, established the vertex-11 failure as a **silent seed-drop**, found that CB6 broke exactness by carrying the continuation datum through **world-space doubles**, ruled Amendment 17 **masked not cleared**, declared **Amendments 18 and 19** (`DESIGN.md` §7.2.1), adjudicated a user-supplied adversarial architecture review in full, and issued **AU0–AU9**. Record: `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`. Roadmap effects: `ROADMAP.md` §3b (scale/coverage) and §3c (cadence).
 
 ### Immutable TB5 authority
 
-- semantic/evidence source `49536cf7b4b261bd52f36a91c861b6459db356a4`;
-- immutable package **74** artifact `9778267541`, Actions SHA-256 `bad0ade74ff8e47c9937013c0fcc3f1084272c66eda35a2db60800ff7b6b767d`;
-- inner tar `c8d5167652ea95504252f5adb4d1dc5d9f463a4dfacfb7e5e11bd086fe935d8e`, source archive `5afa250d0dd8e003b91e7e5f887e3eed8658f16faa6754722bf8a2dd37a1c931`;
-- selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- authoritative TB5 run/job `33448925069 / 99674216849`;
-- result artifact `9779114492`, SHA-256 `a4d9239e7eee452b6b0e053577ad18126d37b5d5cc2a6a1225c1deefd660ca55`;
-- immutable preflight/postflight PASS; every build/repair/mutation flag false; no benchmark.
+- semantic source `49536cf7b4b261bd52f36a91c861b6459db356a4`; immutable package **74** artifact `9778267541`, ZIP SHA-256 `bad0ade74ff8e47c9937013c0fcc3f1084272c66eda35a2db60800ff7b6b767d`, inner tar `c8d5167652ea95504252f5adb4d1dc5d9f463a4dfacfb7e5e11bd086fe935d8e`;
+- packaged source archive `5afa250d0dd8e003b91e7e5f887e3eed8658f16faa6754722bf8a2dd37a1c931`; selector **373** `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
+- run/job `33448925069 / 99674216849`; result artifact `9779114492`;
+- gate **366 executed / 365 PASS / first red 366**; report-only 367–373 **1 PASS / 6 RED**, zero gate credit;
+- preflight/postflight PASS; no configure/compile/relink/repair/generated-discovery/benchmark or package/source/test/fixture/selector mutation.
 
-### Exact semantic result
+**Selector-lineage note, durable:** selector **358 is not and never was a byte prefix of 373** — it is the withdrawn fork retained for history, whose identity set is a **subset** of 373; **361** restores byte-prefix continuity. Preflight must check 357/361/365/367/370 by byte prefix and 358 by hash + cardinality + set-subset.
 
-- ordinals **1–365 PASS**;
-- first red ordinal **366**, mechanical production witness;
-- `VertexTransitSectorUnresolved` at source vertex **11**, face `(8,10,11)`, branch 1, region 0,
-  `FaceInterior`, **zero candidates**, not barrier-absorbed/incident;
-- CB6 state audit serializes **zero `vertexTransitState` rows** at this locus;
-- AP6 367–373 report-only: **1 PASS / 6 RED**, zero gate credit;
-- sphere 368: `TraceEventPositionInvalid`, trace 2/event 30, **`NoCarrierMatch / SourceEdgeUnavailable`**;
-- 369: `saturationUsed=true`;
-- 370: atlas precondition fails typed as **`NonIntegralCycleLift;topologyRegion=0`**; classify the constant-zero-field torus setup as an invalid diagnostic witness/precondition, without repairing it;
-- 371/372: upstream-blocked; 373: synthetic PASS only, mechanical zero-unbound proof still owed.
+### What the review established — the successor's starting facts
 
-### Review boundary
+- **The walk never started.** CB6 made the BFS seed conditional (`SurfaceCellTracing.cpp:659-667`): pushed only if the arrival face has exactly one pairing for the branch **and** `field_direction_world` converts. Either failure leaves `pending` empty, the loop never runs, `diagnostics` — populated only inside it — stays empty, and the function still returns `VertexTransitSectorUnresolved` with `publishedFaceCount=0`. **Four exits record nothing:** empty seed (two causes), mid-walk `field_direction_from_world` failure, and non-finite/zero-norm transported direction during expansion.
+- **Vertex 11 is structurally ordinary** — reproduced from the fixture as a **regular** vertex with a closed, consistently oriented six-face fan (rows 8, 9, 18, 119, 108, 109). Zero examined states is a seeding defect, not geometry.
+- **Exactness was broken:** exact barycentric → `to_double()` → normalized world vector → transported in doubles → `from_double_exact()` → exact sector comparison. The comparison stayed exact; the datum did not. **Amendment 18** governs.
+- **Amendment 17 is masked, not cleared.** The stop precedes any election; **AS1's falsifier never ran**; the vertex-30 reconstruction is untested. Not a regression of accepted authority (1–365 green) but a new defect at 366 — before CB6 the seed was unconditional.
+- **Sphere:** `NoCarrierMatch / SourceEdgeUnavailable` at trace 2 / event 30. AL3 answered; the **ambiguity** branch is dead; **AL4's blocking condition is discharged**. It is the only CP4c-3 witness with a measured cause and no scheduled fix.
+- **Ordinal 370:** the atlas's `NonIntegralCycleLift` rejection of a constant ambient field on a closed torus is **legitimate** — invalid witness, not a product defect.
 
-The review must independently reconstruct the vertex-11 fan/transports and every pre-diagnostic exit in
-`resolve_field_vertex_transit`; explain the empty state-diagnostic vector; determine whether Amendment 17 actually
-cleared the old vertex-30 two-candidate defect or whether it is masked; preserve AL4's sphere prohibition; and freeze
-one falsifiable successor. **No Directional runtime, compile, package, benchmark, product/test/fixture/selector
-mutation, unchanged TB retry, or semantic correction is authorized in `TB5-REV`.**
+### Exact scope of `M3-CP4c-3-CB7`
 
-Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **72**.
+**Code + Build.** Compiles and packages; **executes no Directional runtime**; no gate execution, no benchmark. GMP/GMPXX mandatory.
+
+1. **AU1** — make every exit in `resolve_field_vertex_transit` reportable (Amendment 19): the four sites plus any found by search, each with an appended typed reason. Publish **which** exit fired at ordinal 366 and at which state. Give the empty-seed and empty-walk cases their own codes — reporting "sector unresolved" when no state was examined is prohibited.
+2. **AU2** — remove floating point from the transit datum (Amendment 18). Compose the atlas's exact per-edge branch transport (`FieldBranchTransportAdjacency`, `signedLift`, `FieldExactRational`) instead of the world-space round trip; delete `field_direction_world` / `field_direction_from_world` from the decision path or demote them to a diagnostic-only leaf. **State that no value reaching `direction_in_vertex_sector` has passed through a `double`.**
+3. **AU3** — only then restore AS1's measurement (per state: branch label, **exact** direction vector, transport path, composed quarter-turn, three booleans). **Falsifier stands:** equal elected directions at a multi-candidate locus ⇒ stop and route to review.
+4. **AU4** — do **not** redesign the election in CB7. AU1/AU2 are prerequisites, not the correction.
+5. **AU5** — audit by two predicates, findings listed, each with a site named **outside** `resolve_field_vertex_transit`: *"a value reaches a topological decision after passing through floating point"* and *"a producer can exit without recording a typed reason."*
+6. **AU6** — publish the sphere's binding evidence: the event's claimed trace, its `sourceEdge`, that edge's availability on the trace's segment carriers, and which pass produced the result. **No sphere fix in CB7.**
+7. **AU7** — repair the ordinal-370 witness only, preserving its intent (empty rails, empty network, closed surface). The atlas's rejection may not be weakened.
+8. **AU8** — cadence: extend the report-only pass to **every remaining ordinal** after the first red (zero gate credit), and add the minimal transit witness (one interior vertex, known fan, exact synthetic field).
+9. **AU9** — prohibited: any float-derived value reaching a topological decision; any unreportable producer exit; redesigning the election before AU3; forcing `candidates.size() == 1` by picking first, ordering faces, changing the sector convention or the `FaceInterior` rule, or adding a tolerance; crossing/closing a barrier; weakening `NonIntegralCycleLift`; designing the sphere's fix; reopening Amendments 12–19 or P2; renumbering or removing any error-enum value; changing any frozen selector byte; treating report-only results as gate credit; executing runtime or running a gate in a CB turn.
+
+## Context Load Plan
+
+`load_next`:
+- turn-based-coding-agent Code + Build guidance
+
+Minimum successor context after the mandatory durable policy/start checklist:
+
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — **AU0–AU9**, the seed-drop
+   analysis, the exactness finding, and the adversarial-review adjudication.
+2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–19, normative.
+3. `ROADMAP.md` §3b / §3c — scheduled scale/coverage items and the cadence changes.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md` — runtime authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` — the vertex-30 partition proof and
+   Amendment 17's still-untested substance.
+6. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+
+Source CB7 will change or must audit: `src/geometry/SurfaceCellTracing.cpp` — `field_direction_world` /
+`field_direction_from_world` (`:364-427`) and `resolve_field_vertex_transit` (`:630-727`); read-only,
+`src/authority/FieldTransportAtlas.cpp:404-426` and `:1623-1654` (the exact sector predicate — **do not change**),
+and `tests/FieldAlignedCurveNetworkTests.cpp` for the ordinal-370 witness. Fixture context:
+`benchmarks/fixtures/milestone-g/mechanical_feature.obj`, vertex 11 (rows 8, 9, 18, 119, 108, 109) and vertex 30
+(rows 43, 40, 41, 208, 209, 218).
+
+**This is CODE + BUILD.** It compiles and packages and **executes no Directional runtime**; a gate may not be run.
+A red TB after it routes to `REVIEW + PLAN` as usual.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -26,41 +26,67 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB5-REV` (independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB7` (Code + Build, runtime-free)
 
-`M3-CP4c-3-TB5` is **COMPLETE / VALID SEMANTIC RED** on immutable package 74. Authoritative run/job
-`33448925069 / 99674216849` passed immutable preflight and postflight, re-proved **365/365**, and first-reds ordinal
-**366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` at
-`VertexTransitSectorUnresolved` with source vertex **11**, face `(8,10,11)`, branch 1, region 0, `FaceInterior`,
-`publishedFaceCount=0`, `barrierAbsorbed=false`, `barrierIncident=false`. No `vertexTransitState` records were
-serialized. Exact report: `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB5-REV` is **COMPLETE**: it accepted TB5, established the vertex-11 failure as a **silent seed-drop**,
+found that CB6 broke exactness by round-tripping the continuation direction through **world-space doubles**, ruled
+Amendment 17 **masked not cleared**, declared **Amendments 18 and 19**, adjudicated the adversarial architecture
+review in full, and issued **AU0–AU9**. Record:
+`Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`. Roadmap effects: `ROADMAP.md` **§3b** and **§3c**.
 
-AP6 report-only 367–373 ran once after the gate verdict: **1 PASS / 6 RED, zero gate credit**. Sphere 368 now proves
-`NoCarrierMatch / SourceEdgeUnavailable`; 369 reconfirms `saturationUsed=true`; 370 publishes
-`NonIntegralCycleLift;topologyRegion=0`, classifying its constant-zero-field torus setup as an invalid diagnostic
-witness/precondition while leaving the intended empty-network product contract unmeasured; 371/372 remain blocked
-upstream; 373 passes synthetically but does not discharge the mechanical zero-unbound requirement.
+### What the review established
+
+- **The walk never started.** CB6 made the BFS seed conditional; if the arrival pairing is missing or its direction
+  fails to convert, `pending` is empty, the loop never runs, `diagnostics` stays empty — and the function still
+  returns `VertexTransitSectorUnresolved` with zero candidates. **Four exits record nothing.** Vertex 11 is a
+  regular vertex with a closed 6-face fan, so this is seeding, not geometry.
+- **Exactness was broken.** exact barycentric → `to_double()` → world vector → transported in doubles →
+  `from_double_exact()` → exact comparison. The comparison stayed exact; the datum did not.
+- **Amendment 17 is untested** — the stop precedes any election, so AS1's falsifier never ran.
+- **The sphere advanced** to `NoCarrierMatch / SourceEdgeUnavailable`; the ambiguity branch is dead and AL4's
+  blocking condition is discharged. **Ordinal 370 is classified** as an invalid witness, not a product defect.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB5-REV`** exactly from
-`Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md`. Review only: independently reconstruct the vertex-11
-zero-state/zero-candidate transit path, explain why the CB6 state diagnostic vector is empty, determine whether the
-old vertex-30 Amendment-17 defect is cleared or merely masked, adjudicate the report-only findings, update
-`ORIENTATION.md`, and freeze one bounded successor. **No unchanged TB retry or semantic correction before review.**
+Run **`M3-CP4c-3-CB7`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AU0–AU9**:
+
+1. **AU1** make every transit exit reportable (Amendment 19) and publish which exit fired at ordinal 366;
+2. **AU2** remove floating point from the transit datum (Amendment 18) — compose the atlas's exact per-edge branch
+   transport instead of the double round-trip, and state that no value reaching `direction_in_vertex_sector` has
+   passed through a `double`;
+3. **AU3** only then restore AS1's measurement; the falsifier still stands;
+4. **AU4** do **not** redesign the election in CB7 — AU1/AU2 are prerequisites, not the correction;
+5. **AU5** audit by two predicates (float reaching a topological decision; producer exits without a typed reason)
+   and name a site outside `resolve_field_vertex_transit` for each;
+6. **AU6** publish the sphere's binding evidence so a successor DEFN can settle it — no sphere fix in CB7;
+7. **AU7** repair the ordinal-370 witness only; the atlas's `NonIntegralCycleLift` rejection stands;
+8. **AU8** land the cadence changes: full report-only pass, minimal transit witness.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB5-CAND-01` — new gating locus: vertex 11 / face `(8,10,11)` / branch 1 / `FaceInterior`, zero candidates and zero state-diagnostic rows. Independent review owns cause.
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — ordinal 366 remains red; TB5 does not prove whether Amendment 17 cleared vertex 30 or is masked by the earlier vertex-11 stop.
-- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — **classified as invalid diagnostic witness/precondition** by runtime `NonIntegralCycleLift`; intended empty-network product contract remains unmeasured and witness repair is not authorized in TB5.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 synthetic pass remains partial; mechanical `unboundSingularityCount=0` is still owed.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere is localized to `NoCarrierMatch / SourceEdgeUnavailable`; AL4 still forbids a sphere fix.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — runtime again confirms `saturationUsed=true`; deferred quality/coverage work.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — intended empty-network cut-graph contract remains unaccepted/unmeasured.
+- [ ] `M3-CP4c3-TB5-CAND-01` — **CAUSE ESTABLISHED**: silent seed-drop, four unreportable exits. **AU1**, **AU2**.
+- [ ] `M3-CP4c3-TB5-REV-CAND-01` — floating point in the transit decision path. **AU2** (Amendment 18).
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — vertex-30 election **MASKED, NOT RESOLVED**; reopened for **AU3**.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere: `NoCarrierMatch / SourceEdgeUnavailable`, cause measured, **fix
+  unscheduled**. AL4's blocking condition discharged; **AU6** publishes the binding evidence.
+- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — **CLASSIFIED** invalid witness; **AU7** repairs the witness only.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — still unmeasured, blocked on AU7.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — partial; mechanical zero-unbound still owed.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — `saturationUsed=true` reconfirmed; deferred behind the mechanical gate.
 
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **72**. TB5 created no
-package and performed no benchmark/build/repair/mutation.
+**Amendment 15's Euler-cut identity and barrier-exclusion contracts (371/372) remain UNMEASURED, not falsified** —
+blocked upstream for the third consecutive run.
+
+### Scheduled from the adversarial architecture review — `ROADMAP.md` §3b, not CP4c-3 work
+
+- [ ] **S1** measure exact-parameter bit-width growth per trace step (M4). Lattice snapping prohibited.
+- [ ] **S2** certified adaptive/interval predicate filters (M4/M8). Must defer to exact, never approximate.
+- [ ] **S3** exact limit-cycle detection with a typed `LimitCycleTermination` (M4), supplementing the step budget.
+- [ ] **S4** incremental Betti early rejection (M4-scale/M8). Backtracking into A2a′ prohibited.
+- [ ] **S5** genus ≥ 2 witness — handle generators only ever exercised at genus 1 (M4).
+- [ ] **S6** input-perturbation stability witness (M5), replacing "thickened predicates".
+
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **72**.
 
 ## Superseded — `M3-CP4c-3-TB2` execution record
 

@@ -1,4 +1,4 @@
-## M3-CP4c3-TB5-CAND-01 — Amendment-17 runtime moves ordinal 366 to a zero-candidate vertex-11 transit with no state diagnostics — **ACTIVE / GATING / CAUSE UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB5-CAND-01 — Amendment-17 runtime moves ordinal 366 to a zero-candidate vertex-11 transit with no state diagnostics — **ACTIVE / CAUSE ESTABLISHED: SILENT SEED-DROP / GATING / NON-STABLE**
 
 - **Observed in authoritative TB5.** Immutable package 74 / source `49536cf7b4b261bd52f36a91c861b6459db356a4`; run/job `33448925069 / 99674216849`; immutable pre/postflight PASS. Ordinals **1–365 PASS** and ordinal **366** first-reds exactly once.
 - **Measured locus.** `VertexTransitSectorUnresolved`; `sourceVertex=11`; arrival face `(8,10,11)`; branch 1; region 0; `FaceInterior`; `publishedFaceCount=0`; `barrierAbsorbed=false`; `barrierIncident=false`.
@@ -7,7 +7,61 @@
 - **Owning next turn:** `M3-CP4c-3-TB5-REV` under `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md`. No unchanged TB retry or semantic correction before review.
 - **Stable-count rationale:** CP4c-3 remains unaccepted and the accepted 365-prefix is still 365/365 green. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **72**.
 
-## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE FAMILY ESTABLISHED BY PROOF / M1+M2+M3 ALL FALSIFIED / GATING / NON-STABLE**
+- **`M3-CP4c-3-TB5-REV` adjudication — THE WALK NEVER STARTED.**
+  - **Mechanism, read at source.** CB6 rewrote the BFS so the seed is **conditional**
+    (`src/geometry/SurfaceCellTracing.cpp:659-667`): `pending` starts empty and receives the arrival state only if
+    the arrival face has **exactly one** `FieldBranchBoundaryPairing` for the branch **and** `field_direction_world`
+    converts. `diagnostics` is populated **only inside the walk loop** (`:703`). So an empty seed ⇒ loop never runs
+    ⇒ `diagnostics` empty ⇒ `candidates` empty ⇒ fall through to `candidates.size() != 1U` ⇒
+    `VertexTransitSectorUnresolved` with `publishedFaceCount=0` **and zero state rows**. That is exactly TB5's
+    measurement, and it means the typed name asserts an election that never happened.
+  - **Four unreportable exits**, none recording a diagnostic: (1) `:660` `currentPairing == nullptr` — missing
+    frame, component/region mismatch, or the two-pairing ambiguity guard nulling it; (2) `:661-663`
+    `field_direction_world` returns `nullopt` — non-barycentric, non-finite, or **`squaredNorm() == 0.0`** after
+    conversion to `double`; (3) `:695` `field_direction_from_world` fails the `double → exact` reconstruction;
+    (4) `:731-735` transported direction non-finite or zero-norm during expansion.
+  - **Vertex 11 is structurally ordinary.** Reproduced from the committed fixture: six incident faces (mesh rows 8,
+    9, 18, 119, 108, 109) in a single **closed, consistently oriented** fan; not barrier-incident, not
+    barrier-absorbed, not among the eight prescribed singularities — a **regular** vertex with trivial holonomy,
+    the same shape as vertex 30. Zero examined states at an ordinary vertex is a seeding defect, not geometry.
+  - **Not a regression of accepted authority** (1–365 green) **but a new defect at 366**: before CB6 the seed was
+    pushed unconditionally (`std::vector<State> pending{{currentFace, currentBranch}}`), so the walk always started.
+  - **Owning corrections:** **AU1** (make every exit reportable, Amendment 19; publish which fired) and **AU2**
+    (remove the float round-trip, Amendment 18). **AU4** forbids redesigning the election in the same turn.
+  - **Closure condition:** ordinal 366 green in a run reaching at least 366. **+0 events / +0 recurrences.**
+
+## M3-CP4c3-TB5-REV-CAND-01 — floating point reaches a topological decision in the transit datum — **ACTIVE / EXACTNESS VIOLATION / NON-STABLE**
+
+- **Observed statically at `M3-CP4c-3-TB5-REV`** from committed source; no runtime executed.
+- **Mechanism.** CB6 satisfied Amendment 17's "single datum" by carrying the continuation direction as a
+  **world-space `Eigen::RowVector3d`**: exact barycentric → `to_double()` (`field_direction_world`) → normalized
+  3-vector → transported face to face by `transport_direction_between_faces` (double arithmetic) →
+  `from_double_exact()` (`field_direction_from_world`) → fed to `direction_in_vertex_sector`, whose comparison is
+  exact. **The comparison stayed exact; the datum did not.** An exact comparison on a float-derived operand is a
+  floating-point decision with an exact final rounding step.
+- **Why it matters beyond principle.** The conversions introduce three silent failure modes — underflow to
+  `squaredNorm() == 0.0`, non-finite intermediates, and failed reconstruction — at exactly the points that are
+  unreportable today, so the exactness break and the diagnostic break are the same defect seen twice.
+- **Measure-scoping failure, owned.** **AS9** prohibited "any tolerance **in the predicate**". CB6 did not touch
+  the predicate; it changed the **provenance of the predicate's inputs**. The measure was satisfied to the letter
+  and defeated in substance — the fifth consecutive measure of this reviewer scoped one level too narrow.
+- **Corrective frame: Amendment 18** (`DESIGN.md` §7.2.1) — exactness is a property of the derivation chain, not of
+  the final comparison; only a **certified filter** (provably-correct result, or defer to exact) is admissible; and
+  snapping an exact coordinate onto a bounded lattice is prohibited because it changes the value rather than the
+  cost.
+- **Owning correction: AU2** — compose the atlas's exact per-edge branch transport instead of the world-space round
+  trip; delete `field_direction_world` / `field_direction_from_world` from the decision path or demote them to a
+  diagnostic-only leaf; state in the CB report that no value reaching `direction_in_vertex_sector` has passed
+  through a `double`.
+- **Prediction:** no exact path is lost by the removal — the atlas already publishes exact branch transport
+  sufficient to carry the datum. If it is not sufficient, the single-datum **choice** is revisited, never the
+  exactness.
+- **Accounting:** static finding on an unaccepted surface; no accepted-green behaviour lost.
+  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **72**.
+
+## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE FAMILY PROVED / AMENDMENT 17 MASKED, NOT CLEARED / GATING / NON-STABLE**
+
+- **`M3-CP4c-3-TB5-REV` status — MASKED.** TB5's vertex-11 stop occurs **before any election runs**, so none of Amendment 17's substance was exercised and **AS1's falsifier never executed**. The vertex-30 two-candidate reconstruction is therefore neither confirmed nor refuted; it is untested. Reopened for **AU3**, which restores the measurement once AU1 (reportable exits) and AU2 (exact datum) land.
 
 - **Observed in valid TB3-R1.** Immutable package 72 preserved semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, all six frozen hashes/modes, and package-relative fixtures. Run/job `33416686424 / 99568970224` passed immutable pre/postflight.
 - **Measured boundary.** Ordinals **1–365** each selected exactly once and passed. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and failed with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; first-red semantics left 367–373 unexecuted.
@@ -133,7 +187,19 @@
   derive it. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
 - **TB4 closure evidence.** Run/job `33436492493 / 99634138202` publishes the ordinal-366 network error directly through the shared diagnostics boundary: source vertex 30, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, two candidate faces, and barrier classification. The TB report can adjudicate the discriminator without a review reconstructing the locus by elimination. Closure condition is satisfied. **+0 stable events / +0 recurrences**; this was a diagnostic-surface defect on an unaccepted checkpoint.
 
-## M3-CP4c3-TB4-DIAG-CAND-01 — ordinal 370 cannot reach the empty-network cut-graph contract because its synthetic atlas build fails — **ACTIVE / DIAGNOSTIC-WITNESS PRECONDITION / CAUSE UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB4-DIAG-CAND-01 — ordinal 370 cannot reach the empty-network cut-graph contract because its synthetic atlas build fails — **CLASSIFIED AT TB5-REV: INVALID DIAGNOSTIC WITNESS / PRODUCT BEHAVIOUR LEGITIMATE / NON-STABLE**
+
+- **`M3-CP4c-3-TB5-REV` classification.** AS3's requirement was met: the atlas error is now published as
+  **`NonIntegralCycleLift; topologyRegion=0`**. The witness pairs `make_source_authority(mesh)` with a **globally
+  constant ambient** `make_zero_transport_field` (`UnitX`/`UnitY` per face) on the closed torus, which does not
+  satisfy the atlas's integral-cycle-lift precondition. Of AQ5's three options this is the **third**: the atlas's
+  fail-closed rejection is **legitimate product behaviour** and the witness is invalid. The identity was appended at
+  CB2 under AL7 and had never executed until the report-only pass, so this was an original authoring defect — the
+  fourth instance in this checkpoint of compiled-but-never-executed test authority proving to be debt
+  (`LESSONS.md` 56).
+- **Owning correction: AU7** — repair the **witness only**, preserving its intent (empty rails, empty network,
+  closed surface) with a field the atlas accepts. **Weakening `NonIntegralCycleLift` to make the ordinal pass is
+  prohibited.** `M3-CP4c2-TB-X2-R8-CAND-02`'s intended contract stays **unmeasured** until then.
 
 - **Observed in TB4 AP6 report-only execution.** Ordinal 370 `SurfaceCutGraph.EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError` executes once after the semantic gate verdict is already fixed and fails at `ASSERT_TRUE(atlasBuild)`. No cut graph is constructed and the appended `EmptyNetworkOnClosedSurface` error is therefore not measured.
 - **Exact witness boundary.** The test loads the closed torus, builds source authority, then calls `FieldTransportAtlas::make(mesh, sourceAuthority, {}, make_zero_transport_field(mesh))`; that call returns failure before the test constructs the expected zero-node/zero-arc network. TB4 stdout does not print the atlas error code, so product cause cannot be assigned from runtime evidence alone.

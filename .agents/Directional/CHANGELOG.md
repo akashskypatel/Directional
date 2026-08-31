@@ -1,3 +1,87 @@
+## 2026-08-31 — `M3-CP4c-3-TB5-REV`: a silent seed-drop, exactness broken by a double round-trip, and an adversarial architecture review adjudicated
+
+Independent review, definition and planning under the frozen `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md`
+(**AT0–AT7**), plus adjudication of a user-supplied adversarial architecture review. Nothing executed, compiled,
+packaged or benchmarked; no gate selected or run; **no product, test, fixture, selector or build-logic byte
+changed**. Measures issued: **AU0–AU9**. Full record:
+`Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`. Normative records: `DESIGN.md` §7.2.1 **Amendments 18 and
+19**; `ROADMAP.md` **§3b** (scale/coverage) and **§3c** (cadence).
+
+**Evidence accepted (AT0).** Package 74 immutable, accepted **365 prefix green**, first-red hard stop, postflight
+clean. Both pre-runtime attempts were control-plane only; the second stopped on an **over-strong** lineage
+assertion — selector **358 is not a byte prefix of 373** and never was, being the withdrawn fork whose identity set
+is a subset, with 361 restoring byte-prefix continuity. The corrected preflight is right and no selector byte
+changed.
+
+**The vertex-11 failure is a silent seed-drop, and that is why the diagnostic vector is empty (AT1/AT2).** CB6 made
+the BFS seed **conditional** (`SurfaceCellTracing.cpp:659-667`): it is pushed only if the arrival face has exactly
+one pairing for the branch **and** `field_direction_world` converts. Either failure leaves `pending` empty, the
+walk loop never executes, `diagnostics` — populated only inside that loop — stays empty, and control still falls to
+`candidates.size() != 1U`, returning `VertexTransitSectorUnresolved` with `publishedFaceCount=0` and zero state
+rows. **Four exits record nothing**: the empty seed (two causes), a mid-walk `field_direction_from_world` failure,
+and a non-finite or zero-norm transported direction during expansion. Vertex 11 was reproduced from the committed
+fixture as a **regular** vertex with a closed, consistently oriented six-face fan — structurally ordinary — so zero
+examined states is a defect in seeding, not in geometry. The typed name asserts an election that never happened;
+this is the fifth consecutive turn spent on a name that misdescribed its own cause.
+
+**CB6 broke exactness to satisfy Amendment 17 (AT6).** The "single datum" is carried as a **world-space
+`Eigen::RowVector3d`**: exact barycentric → `to_double()` → normalized 3-vector → transported face to face in
+doubles → `from_double_exact()` → fed to the exact sector comparison. **The comparison stayed exact; the datum did
+not.** AS9 prohibited "any tolerance in the predicate"; CB6 did not touch the predicate, it changed the
+*provenance of its inputs* — the measure satisfied to the letter and defeated in substance, and the fifth
+consecutive measure of this reviewer scoped one level too narrow. Amendment 17 itself is **not** at fault and is
+not reopened; carrying the datum through doubles was the wrong mechanism when exact per-edge branch transport
+already exists.
+
+**Amendment 17 is masked, not cleared (AT3).** The stop precedes any election, so none of Amendment 17's substance
+ran and **AS1's falsifier never executed**. Vertex 30's reconstruction is untested. This is not a regression of
+accepted authority — 1–365 are green — but it is a new defect at 366: before CB6 the seed was pushed
+unconditionally.
+
+**Report-only pass (AT5).** **368 — the sphere advanced**: `TraceEventPositionInvalid` resolves to
+**`NoCarrierMatch / SourceEdgeUnavailable`**. AL3's discriminator is answered, the **ambiguity** suspicion carried
+since TB1 is **dead**, and AL4's blocking condition is discharged — the sphere is now the only CP4c-3 witness with
+a measured cause and no scheduled fix (**AU6**). **370 — classified**: the atlas's `NonIntegralCycleLift` rejection
+of a constant ambient field on a closed torus is **legitimate**, so the witness is invalid, not the product
+(**AU7** repairs the witness only). **369** reconfirms `saturationUsed=true`. **367/371/372** are blocked upstream,
+so Amendment 15's contracts stay **unmeasured, not falsified**. **373** passes synthetically only.
+
+**Amendments declared.** **18 — exactness is a property of the derivation chain, not of the final comparison**: a
+value reaching a topological decision may not have passed through floating point at any point in its derivation;
+only a **certified filter** (provably-correct result or defer to exact) is admissible, and lattice snapping is
+prohibited because it changes the value rather than the cost. **19 — a producer may not have an unreportable
+exit**: record the diagnostic *before* any conditional that can skip the state, and make an empty diagnostic set
+its own named condition, because "we examined nothing" and "we examined everything and none qualified" are opposite
+findings.
+
+**Adversarial architecture review adjudicated in full (§9).** Adopted: **certified adaptive/interval predicate
+filters** (as Amendment 18's permitted form); **expression-swell measurement** scheduled M4 with lattice snapping
+prohibited; **exact limit-cycle detection** scheduled M4 as a typed `LimitCycleTermination` supplementing the step
+budget; **incremental Betti early rejection** scheduled M4-scale/M8 with backtracking into A2a′ prohibited; plus
+**genus ≥ 2 coverage** and an **input-perturbation stability witness**. Rejected on measured evidence: the **delta
+authority** (its premise misreads the sphere's pre-cut χ=6, and it would create two authorities for one datum —
+`RP-01`, five instances); the **lexicographic tie-break for vertex transit** (TB4-REV *proves* the sectors are an
+exact partition, so multiplicity means two distinct directions were tested, not a geometric ambiguity — and
+Amendment 17 already prohibits exactly this fix); **thickened/epsilon-tube predicates** (they relocate the
+discontinuity and reintroduce a tuning constant; TB5 is the empirical case against relaxing exactness); **phantom
+ports** (the cited failure was a barrier-transport demand, not a missing branch, and P2 already answers the real
+phenomenon); and the **holonomy ILP** (the atlas ingests and *verifies* branch transitions from the input field, it
+does not choose them greedily — what survives is the genus coverage gap). The review's central thesis — relax
+exactness, admit repair — is contradicted by this checkpoint's record: every defect was a **representation or
+reporting** defect, and the strict immutability it would relax is what proved five invasive changes regressed
+nothing.
+
+**Progress and cadence (§10, `ROADMAP.md` §3c).** Ordinal 366 has been red for six consecutive TB runs at roughly
+one defect per three turns. Four causes are named from the record, including this reviewer's five consecutive
+too-narrow scopes. Three changes follow, none weakening the gate: a **full report-only pass** over every remaining
+ordinal after the first red; **minimal witnesses** for active defects instead of debugging on a 152-vertex
+production mesh; and **measures written as predicates with a named falsifier**.
+
+Gate **373** stays frozen and unselected. Accounting unchanged: **44 / 14 / 30**, debt **5**, semantic packages
+**72**, **+0 events / +0 recurrences**. `LESSONS.md` **72** and **73** added.
+
+Exact next: **`M3-CP4c-3-CB7`** — Code + Build, runtime-free, GMP/GMPXX linked, under AU0–AU9.
+
 ## 2026-08-31 — `M3-CP4c-3-TB5`: 365-prefix green; first red moves to zero-candidate vertex 11
 
 TB5 is **COMPLETE / VALID SEMANTIC RED** on immutable package **74** / semantic source

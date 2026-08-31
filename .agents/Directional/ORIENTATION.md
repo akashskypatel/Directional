@@ -28,17 +28,17 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-31 at `M3-CP4c-3-TB4-REV`, which accepted TB4 as a valid semantic red at ordinal
-**366** with the locus finally published, **falsified all three** mechanisms the previous review enumerated —
-including its leading suspicion — **proved** from the committed fixture that the two elected continuation
-candidates are tested against two *geometrically distinct* directions at a **regular** vertex, and declared
-**Amendment 17**. Measures **AS0–AS9**; exact next is `M3-CP4c-3-CB6`, Code + Build, runtime-free.
+**Currency.** Last updated 2026-08-31 at `M3-CP4c-3-TB5-REV`, which accepted TB5 as a valid semantic red at ordinal
+**366**, established that the new zero-candidate / **zero-diagnostic** failure at vertex 11 is a **silent
+seed-drop** — the transit walk never started — found that CB6 satisfied Amendment 17 by round-tripping the
+continuation direction through **world-space doubles** and so broke exactness, ruled Amendment 17 **masked rather
+than cleared**, declared **Amendments 18 and 19**, and adjudicated a user-supplied adversarial architecture review
+in full. Measures **AU0–AU9**; exact next is `M3-CP4c-3-CB7`, Code + Build, runtime-free.
 
-*(Prior turns, retained for lineage: `M3-CP4c-3-TB3-REV` traced package 71's pre-runtime stop — all six executables
-`0644` — to Actions artifact permission normalization, corrected by the package-only `CB4-PKG` and package **72**;
-`M3-CP4c-3-TB3-R1-REV` confirmed Amendment 16/P2 effective, widened Amendment 16's scope to every stage, and
-ordered the typed failure-locus channel that CB5 then delivered — which is why TB4 could publish the locus
-directly instead of a fourth review recovering it by elimination.)*
+*(Prior turns, retained for lineage: `TB3-R1-REV` confirmed Amendment 16/P2 effective and ordered the typed
+failure-locus channel that CB5 delivered; `TB4-REV` falsified all three enumerated mechanisms, proved from the
+committed fixture that the two vertex-30 candidates are tested against two *geometrically distinct* directions at a
+**regular** vertex, and declared **Amendment 17**.)*
 
 ---
 
@@ -176,7 +176,30 @@ to its freeze.
   preflight and executed no Directional runtime; one of them is the **third** occurrence of the `R7-ORCH-01`
   malformed-digest defect, escalated from a reminder to a mechanism by AL8.
 
-**`M3-CP4c-3-TB4` published the locus at last, and it falsified every mechanism the previous review named.** Run/job
+**`M3-CP4c-3-TB5` moved the first red to a zero-candidate, zero-diagnostic locus — and that is the finding.**
+Run/job `33448925069 / 99674216849`, immutable package **74**, semantic source
+`49536cf7b4b261bd52f36a91c861b6459db356a4`. Ordinals **1–365 green**; ordinal 366 still
+`VertexTransitSectorUnresolved`, now at `sourceVertex=11`, face `(8,10,11)`, branch 1, region 0, `FaceInterior`,
+**`publishedFaceCount=0`**, `barrierAbsorbed=false`, `barrierIncident=false`, and **zero `vertexTransitState`
+rows**.
+
+- **It is a silent seed-drop, not an election.** CB6 made the BFS seed *conditional*
+  (`SurfaceCellTracing.cpp:659-667`): if the arrival pairing is missing or its direction fails to convert, `pending`
+  is empty, the loop never runs, `diagnostics` stays empty, and the function still returns "sector unresolved".
+  Four exits drop states without recording anything (§7 item 2). Vertex 11 is a structurally ordinary **regular**
+  vertex with a closed, consistently oriented 6-face fan — reproduced from the fixture — so zero examined states is
+  a defect in seeding, not in geometry.
+- **CB6 broke exactness to satisfy Amendment 17.** The "single datum" is carried as a **world-space `double`**:
+  exact barycentric → `to_double()` → normalized 3-vector → transported in doubles → `from_double_exact()` → fed to
+  the exact sector comparison. The comparison stayed exact; the datum did not. **Amendment 18** now governs this.
+- **Amendment 17 is masked, not cleared.** The stop precedes any election, so AS1's falsifier never ran and the
+  vertex-30 reconstruction remains untested.
+- **The sphere advanced:** ordinal 368 resolves to **`NoCarrierMatch / SourceEdgeUnavailable`** — AL3's
+  discriminator is answered, the ambiguity suspicion carried since TB1 is **dead**, and AL4's blocking condition is
+  discharged. **Ordinal 370 is classified**: the atlas's `NonIntegralCycleLift` rejection of a constant ambient
+  field on a closed torus is legitimate, so that witness is invalid, not the product.
+
+**`M3-CP4c-3-TB4` published the vertex-30 locus and falsified every mechanism the previous review named.** Run/job
 `33436492493 / 99634138202`, immutable package **73** (`9773591345`), semantic source
 `2d22ef293363058cfdca96d01158a93d2c0200f8`. Ordinals **1–365 green**; ordinal 366 still first-reds at
 `VertexTransitSectorUnresolved`, now with `sourceVertex=30`, arrival face `(24,30,32)`, `branch=1`, region 0,
@@ -374,36 +397,34 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4c-2.
 
-1. **Criterion C2 — A1 is clear; the A2a election at vertex 30 tests two different directions against one
-   partition.** Both A1 halves are fixed and proved at runtime (Amendment 15 for the cycle basis, Amendment 16/P2
-   for the ports), and ordinals **1–365 stayed green** through both. The remaining red is in
-   `resolve_field_vertex_transit` (`SurfaceCellTracing.cpp:557-640`).
+1. **Criterion C2 — A1 is clear; A2a's vertex transit now fails before it decides anything.** Both A1 halves are
+   fixed and proved at runtime, and ordinals **1–365 stayed green** through five invasive changes. The remaining red
+   is in `resolve_field_vertex_transit` (`SurfaceCellTracing.cpp:630-727`), and it has **two distinct defects**,
+   only one of which has ever been exercised.
 
-   **Measured at TB4:** `sourceVertex=30`, arrival face `(24,30,32)`, `branch=1`, region 0, `FaceInterior`, two
-   candidate faces `(25,30,31)` and `(30,31,119)`, `barrierAbsorbed=false`, `barrierIncident=false`.
+   **(a) The seed-drop, measured at TB5 (vertex 11).** CB6 made the BFS seed conditional: it is pushed only if the
+   arrival face has exactly one pairing for the branch *and* `field_direction_world` converts. Either failure
+   leaves `pending` empty, so the loop never runs, `diagnostics` stays empty, and the function still returns
+   `VertexTransitSectorUnresolved` — a name asserting an election that never happened. **Four exits record
+   nothing:** the empty seed (two causes), a mid-walk `field_direction_from_world` failure, and a non-finite or
+   zero-norm transported direction during expansion. Vertex 11 is a regular vertex with a closed 6-face fan, so
+   this is a seeding defect, not geometry. **Amendment 19** now forbids unreportable exits; **AU1** makes them all
+   report.
 
-   **Established by proof, not hypothesis.** Vertex 30 is a **regular** interior vertex — six incident faces in one
-   closed consistently-oriented fan, reproduced from the committed fixture, with Poincaré–Hopf accounting for all
-   eight index-`+1` singularities elsewhere (`4χ = 8`), so it has trivial branch holonomy. The election predicate
-   `direction[next] > 0 && direction[prev] >= 0` is an **exact partition** of the full turn: adjacent wedges share
-   exactly one ray, owned by the face where it is `next`. The two candidates are **fan-adjacent** and share ray
-   30→31, which `(25,30,31)` owns and `(30,31,119)` excludes. A single direction can therefore elect at most one of
-   them — **so two geometrically distinct vectors were tested.** The two candidates are two representations of
-   **one** semantic continuation.
+   **(b) The election itself, measured at TB4 (vertex 30) and still untested.** Two fan-adjacent faces elected
+   because the routine tested **each face's own** representative of the transported branch against that face's
+   wedge. The sector predicate is an **exact partition** of the turn — adjacent wedges share one ray, owned by the
+   face where it is `next` — so one direction elects at most one wedge; two elections **prove** two distinct
+   vectors were tested, i.e. one continuation represented twice. **Amendment 17** fixes the frame (elect from a
+   single datum). CB6 implemented it by carrying that datum through **world-space doubles**, which satisfies
+   Amendment 17 and breaks exactness — see §8 and **Amendment 18**. Because the seed-drop stops the run first,
+   Amendment 17's substance is **masked, not cleared**, and AS1's falsifier never ran.
 
-   **Why:** the routine elects per-cell. For every reachable `(face, branch)` state it asks whether *that face's
-   own* representative of the transported branch lies in *that face's* wedge — and a cross field's per-face
-   representatives are related by transport, **not equal as vectors**. That is **M4**, the surviving mechanism;
-   **M5** (the representative is not the trace's continuation at all, so multiplicity is generic rather than a
-   boundary effect) is retained. **AS1** measures the two vectors and falsifies both if they are equal.
-
-   **Amendment 17** (`DESIGN.md` §7.2.1) fixes the frame: an election among candidate cells is decided from a
-   **single datum**, never one representative per cell; a partition disambiguates one point among cells and cannot
-   disambiguate one point per cell. **Prohibited**, because each removes the symptom rather than the cause: picking
-   the first candidate or ordering faces; widening or narrowing the sector convention; any tolerance in a predicate
-   that is exact today; and changing the `FaceInterior` exclusion to alter cardinality. **Left open pending AS1:**
-   *which* single datum — the incoming direction transported into each candidate, the ray's geometric exit from the
-   star, or a continuation owner published upstream by A1. That is a single-writer question.
+   **Order of work: AU1 (report every exit) and AU2 (remove the double round-trip) are prerequisites; AU3 then
+   re-runs the measurement that decides the election's final shape.** Prohibited throughout: picking the first
+   candidate, ordering faces, changing the sector convention or the `FaceInterior` rule, and any tolerance —
+   the adversarial architecture review proposed exactly the lexicographic tie-break these prohibit, and §7's
+   record explains why it is wrong here.
 
 1b. **The cycle-basis half, retained for reference — cause ESTABLISHED, and it was a definition question.** TB1 resolved the
    eight-site `IncompleteCycleBasis` collapse to `CycleTransportAdjacencyMissing` at region `0`, source edge `0-3`,
@@ -490,28 +511,27 @@ CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4
    unbound, with a green build. Owned by **AM4**; landing the cut without it trades a red gate for an
    unverifiable certificate. CB2 implemented the binding, but **ordinal 373 has never executed**, so the unbound
    count is still unmeasured and this stays open.
-7. **`M3-CP4c3-TB4-DIAG-CAND-01` — ordinal 370 fails at its own precondition and the cause is unreadable.**
-   `EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError` stops at `ASSERT_TRUE(atlasBuild)` before reaching its
-   intended contract, and the assertion **discards `atlasBuild.error()`** — the `ORIENTATION` §8 anti-pattern, now
-   at the *test* boundary rather than the pipeline funnel AP1 just fixed. The witness uses
-   `make_source_authority(mesh)` plus a globally constant ambient `make_zero_transport_field` on the closed torus;
-   the empty rail set is **intentional** here, so this is **not** the R8 `rails_from_atlas` trap. The identity was
-   appended at CB2 and had **never executed** until TB4's report-only pass, so an original authoring defect is at
-   least as likely as an interaction with the fail-closed checks CB2/CB3/CB5 added to the same `make` path.
-   Classification is deferred until the code is published — **AS3**.
-8. **Ordinals 367/371/372 are blocked upstream, not failing.** They red only because the mechanical witness stops at
-   366, so **Amendment 15's Euler-cut identity and barrier-exclusion contracts remain unmeasured** — this must
-   never be recorded as "Amendment 15 failed". Ordinal **373 passes on a synthetic fixture only**; the mechanical
-   witness's zero-unbound count is still owed, so `M3-CP4c3-DEFN-R1-CAND-01` is **partially** discharged (**AS7**).
-   The **AP6 report-only pass is retained** (**AS8**): it converted a three-turn blackout into four findings in one
-   run.
-9. **The prescribed sphere has been measured three times without publishing its sub-reason.** Ordinal 368
-   reproduces `RotationSystemInconsistent → TraceEventPositionInvalid` at trace 2 / event 30, but AL3/AM7's
-   `NoCarrierMatch` versus `AmbiguousCarrierMatch` discriminator — and which pass produced it — has still never
-   appeared in a report. **AS6** determines whether the instrumentation exists and is not reaching the report or
-   was never wired on this path. **AL4 still forbids designing the sphere's fix.**
+7. **Ordinals 367/371/372 are blocked upstream, not failing** — for the third consecutive run. **Amendment 15's
+   Euler-cut identity and barrier-exclusion contracts remain UNMEASURED, not falsified.** Ordinal **373 passes on a
+   synthetic fixture only**, so `M3-CP4c3-DEFN-R1-CAND-01` is **partially** discharged and the mechanical
+   zero-unbound count is still owed.
+8. **The prescribed sphere is measured, unambiguous, and now schedulable.** Ordinal 368 resolves to
+   **`NoCarrierMatch / SourceEdgeUnavailable`** at trace 2 / event 30. AL3's discriminator is answered — the
+   **ambiguity** branch carried as a suspicion since TB1 is **dead** — so the live reading is a network/event
+   **binding** defect: the event's `sourceEdge` is not a carrier on the trace it claims. AL4's blocking condition
+   (*"two candidate causes need opposite fixes"*) is **discharged**; **AU6** publishes the binding evidence so a
+   successor DEFN can settle the contract. This is the only CP4c-3 witness whose cause is measured and whose fix is
+   unscheduled.
+9. **`M3-CP4c3-TB4-DIAG-CAND-01` — CLASSIFIED: invalid diagnostic witness, not a product defect.** Ordinal 370's
+   atlas build publishes `NonIntegralCycleLift; topologyRegion=0`: the constant ambient `make_zero_transport_field`
+   on a closed torus violates the atlas precondition, and the fail-closed rejection is **legitimate**. The intended
+   empty-network contract (`R8-CAND-02`) remains **unmeasured**; **AU7** repairs the witness only, and the atlas's
+   rejection may not be weakened to make the ordinal pass.
 
-**Closed at `M3-CP4c-3-TB4`, do not re-open:** `M3-CP4c3-TB3-R1-REV-CAND-01` — the typed failure-locus channel
+**Closed at `M3-CP4c-3-TB5`, do not re-open:** the `NoCarrierMatch`-versus-`AmbiguousCarrierMatch` question for the
+sphere (answered: `NoCarrierMatch`); and the ordinal-370 classification (answered: invalid witness).
+
+**Closed at `M3-CP4c-3-TB4`, do not re-open:****Closed at `M3-CP4c-3-TB4`, do not re-open:** `M3-CP4c3-TB3-R1-REV-CAND-01` — the typed failure-locus channel
 landed and TB4 published the ordinal-366 locus directly, so no review had to recover it by elimination; and
 `M3-CP4c3-TB4-ORCH-01`, a package-sidecar filename mismatch that executed no Directional runtime.
 
@@ -638,6 +658,24 @@ by **symbol**, AN1 scoped instrumentation by **enum**, and Amendment 16 was writ
 than the reasoning that produced it, and each invisible because the implementer complied exactly. **Write the
 scope from the argument, and prefer a predicate a reader can apply to code you have not read over an enumeration
 of the code you have.** `LESSONS.md` 68 and 69.
+
+**Exactness is a property of the derivation chain, not of the final comparison — and a measure that names an
+operator will be satisfied by changing the operand.** Amendment 17 required an election to test one datum; AS9
+prohibited any tolerance *in the predicate*. CB6 complied with both and still broke the guarantee: it left the
+predicate exact and carried the datum through **world-space `double`** — exact barycentric → `to_double()` →
+normalized vector → transported in doubles → `from_double_exact()` → exact comparison. An exact comparison on a
+float-derived operand is a floating-point decision with an exact final rounding step, and the conversions brought
+three silent failure modes into the least observable place in the pipeline. Where speed demands it, only a
+**certified filter** is admissible: it returns the provably-correct answer or defers to exact, never an
+approximation. `DESIGN.md` Amendment 18, `LESSONS.md` 72.
+
+**A producer with an unreportable exit will eventually report a name that is false.** Four paths in
+`resolve_field_vertex_transit` skip a state *before* the per-state diagnostic is recorded, so when the seed itself
+dropped, the function returned `VertexTransitSectorUnresolved` with zero candidates **and zero diagnostic rows** —
+a typed name asserting an election that never ran. Record the diagnostic **before** any conditional that can skip
+the state, and make an empty diagnostic set its own named condition: *"we examined nothing"* and *"we examined
+everything and none qualified"* are opposite findings and must never share a code. `DESIGN.md` Amendment 19,
+`LESSONS.md` 73.
 
 **An enumeration of candidate *mechanisms* is as dangerous as an enumeration of candidate *consumers*, and a
 partition test needs one point, not one point per cell.** At TB3-R1-REV three mechanisms were enumerated for the

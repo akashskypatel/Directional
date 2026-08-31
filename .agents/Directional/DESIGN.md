@@ -459,7 +459,8 @@ Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 fro
 was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain, and Amendment 16 at
 `M3-CP4c-3-TB2-REV` generalizes it to every derivation that walks transport in any stage (scope widened at
 `M3-CP4c-3-TB3-R1-REV`); Amendment 17 at `M3-CP4c-3-TB4-REV` governs how an election among candidate cells is
-decided. They are normative and
+decided, and Amendments 18-19 at `M3-CP4c-3-TB5-REV` govern the provenance of values reaching a topological
+decision and the reportability of every producer exit. They are normative and
 are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
 withdrawn except where an amendment says so explicitly.
 
@@ -550,6 +551,26 @@ withdrawn except where an amendment says so explicitly.
   used — the incoming direction transported into each candidate, the ray's geometric exit from the star, or a
   continuation owner published upstream — is a single-writer question left to the turn that measures the elected
   directions. Source: `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` §§AQ2, 5.
+
+- **Amendment 18 — exactness is a property of the derivation chain, not of the final comparison.** A value that
+  reaches a topological decision may not have passed through floating point at **any** point in its derivation,
+  even when the comparison itself is exact. Converting an exact quantity to `double` and back — for transport, for
+  normalization, or for convenience — destroys the guarantee regardless of the comparison's type, and introduces
+  silent failure modes (underflow to zero, non-finite intermediates, failed reconstruction) precisely where the
+  decision is least observable. Where performance requires it, a **certified filter** is admitted: a
+  floating-point or interval evaluation that either returns the provably-correct result or **defers to the exact
+  computation** (Shewchuk-style adaptive predicates, or interval arithmetic used as a filter). A filter that can
+  return a different answer than the exact path is not a filter and is prohibited; so is snapping an exact
+  coordinate onto a bounded lattice, which changes the value rather than the cost. Source:
+  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT6, §9.1.
+- **Amendment 19 — a producer may not have an unreportable exit.** Every control-flow path that can end in a typed
+  failure must record a typed reason. An early `continue`, a `nullopt` return on a conversion, or a guard that
+  skips a state must leave evidence. A producer that reports a typed name describing a decision it never made is
+  **worse** than one that reports nothing, because the name is believed — five consecutive review turns have been
+  spent on names that misdescribed their own cause. Where a producer publishes per-state diagnostics, the
+  diagnostic must be recorded **before** any conditional that can skip the state, and an empty diagnostic set must
+  itself be a distinguishable, named condition. Source:
+  `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT1-AT2, §11.
 
 ### 7.3 Single-writer authority
  

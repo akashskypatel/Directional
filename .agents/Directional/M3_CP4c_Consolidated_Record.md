@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. Current runtime authority is package 74 / TB5 (`33448925069 / 99674216849`): ordinals **1–365 PASS**, ordinal **366** first-reds at `VertexTransitSectorUnresolved` on source vertex 11 / face `(8,10,11)` / branch 1 / `FaceInterior` with **zero candidates**, no barrier-absorbed/incident locus, and no serialized transit-state rows. AP6 367–373 is **1 PASS / 6 RED** with zero gate credit; sphere localization is `NoCarrierMatch / SourceEdgeUnavailable`, ordinal 370 exposes `NonIntegralCycleLift` and is classified as an invalid diagnostic witness/precondition, and 373 is synthetic-only partial proof. Exact next is independent **`M3-CP4c-3-TB5-REV`**. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **72**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. Current runtime authority is package 74 / TB5 (`33448925069 / 99674216849`): ordinals **1–365 PASS**, ordinal **366** first-reds at `VertexTransitSectorUnresolved` with **zero candidates and zero state diagnostics** at source vertex 11. `M3-CP4c-3-TB5-REV` established this is a **silent seed-drop** — CB6 made the BFS seed conditional and four exits record nothing, so the typed name asserts an election that never ran — and that CB6 satisfied Amendment 17 by round-tripping the continuation datum through **world-space doubles**, breaking exactness. **Amendment 17 is masked, not cleared**; AS1's falsifier never executed. **Amendments 18 and 19** declared. The report-only pass advanced the sphere to **`NoCarrierMatch / SourceEdgeUnavailable`** (AL3 answered, AL4's blocking condition discharged) and classified ordinal 370 as an **invalid diagnostic witness** with the atlas's `NonIntegralCycleLift` rejection legitimate. A user-supplied adversarial architecture review was adjudicated in full: four cost/coverage concerns scheduled in `ROADMAP.md` §3b, the rest contradicted by measurement and recorded as prohibited; cadence changes in §3c. Exact next is **`M3-CP4c-3-CB7`** under **AU0–AU9**. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **72**.
 
 ## 1. Separate current/future authority
 
@@ -40,7 +40,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_CB6_Code_Build_Report.md` — compile/package authority for Amendment 17 and immutable package 74.
 - `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB5 execution authority, retained because its selector-358 lineage correction is evidence for the authoritative run.
 - `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365 green, first red ordinal 366 at the zero-candidate vertex-11 locus, plus AP6 diagnostic classifications.
-- `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md` — **current next-turn authority** for independent review and bounded successor planning.
+- `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md` — the frozen AT0–AT7 scope that governed the TB5 review.
+- `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — **current review authority: the seed-drop analysis, the exactness finding, the adversarial-review adjudication, Amendments 18-19, and the AU0–AU9 measures that govern `M3-CP4c-3-CB7`.**
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -65,7 +66,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB5 keeps 365 PASS and first-reds ordinal 366 at a new zero-candidate vertex-11 A2a locus with no state diagnostics. Amendment 17 is build-proved but not runtime-accepted; next is independent `TB5-REV`.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB5 keeps 365 PASS and first-reds ordinal 366 on a silent seed-drop at vertex 11. Amendment 17 masked, not cleared; exactness broken by a double round-trip and restored by Amendment 18, reportability by Amendment 19. Next is `CB7` under AU0–AU9.** |
 
 ### 2.1 CP4c-0
 
