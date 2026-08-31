@@ -1,0 +1,4 @@
+purpose=apply verified M3-CP4c-3-CB6 compile correction
+base_sha=4f8747b7f920589bc41fdf5c7217942f5921d700
+patch_sha256=04864b769628bded2573b82b042cb889838fdbb3afbaaa3a646695746e2df27c
+retry=0
