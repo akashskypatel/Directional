@@ -1,4 +1,0 @@
-# CP4ab / CP4c historical consolidation turn cleanup
-.agents/connector-triggers/source-snapshot/cp4-consolidation-20260831.txt
-.agents/connector-triggers/drive-patch/cp4-consolidation-20260831.txt
-.agents/connector-triggers/drive-patch/cp4-consolidation-20260831-r1.txt
