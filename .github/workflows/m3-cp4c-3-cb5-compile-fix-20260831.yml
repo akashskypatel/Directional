@@ -22,7 +22,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c-3-cb5-compile-fix-20260831
+      label: m3-cp4c-3-cb5-compile-fix-r2-20260831
       commit_run_file: false
     secrets: inherit
 
@@ -37,9 +37,9 @@ jobs:
     needs: validate
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1NbgThTgFNnXohs6H9T-Bt6PgYV8BhVoC
-      patch_sha256: 54770c33b8e165c1ca481da7b6102a73f12b23cb758bd3a805df058fd8535102
-      base_sha: 57d68245ddc60b2fd8725e7ff84059f45ff95144
+      file_id: 1kc6Dc69c1wKREVj-Ym_SvSQs3-VoyqL9
+      patch_sha256: 866b4a22bf293e85db7159d81c41a1171c42243ec2d8a496ac85cbdb268d0585
+      base_sha: 5191f4d31a863af5115de7f9aa7926764ca941af
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB5: fix arrival-mode diagnostic type"
+      commit_message: "M3-CP4c-3-CB5: expose arrival-mode alias to detail consumers"
     secrets: inherit
