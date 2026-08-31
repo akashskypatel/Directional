@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-TB3-R1
+package_artifact_id=9765247195
+package72_tar_sha256=20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73
+selector_sha256=b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834
+purpose=execute immutable artifact-only selector 373 from ordinal 1
