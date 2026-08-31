@@ -1,5 +1,5 @@
 turn=M3-CP4c-3-TB3-closeout
-purpose=apply preserved blocked-TB3 documentation patch
-base_sha=3689773a684245f9c973dd1089b4c0edfcbeeef7
-patch_sha256=dcea012f0864a4a0212af1188d52056e3e77c336a7d3e3850a2a51ff5121a110
-attempt=1
+purpose=apply corrected complete blocked-TB3 documentation patch
+base_sha=93af20d4d04445674951d14c62531d415826a7f3
+patch_sha256=b11ec596070a6264a6084afee8cf7082f14cffe30acc0f19b90fba9b2763313b
+attempt=2
