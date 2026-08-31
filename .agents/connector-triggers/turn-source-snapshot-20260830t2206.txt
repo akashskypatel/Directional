@@ -1,2 +1,0 @@
-source_sha=9951886c540d219b936abd13a14cf82fd6229760
-purpose=start-of-turn exact source snapshot

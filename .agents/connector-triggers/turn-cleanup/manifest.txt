@@ -1,4 +1,0 @@
-.agents/connector-triggers/turn-source-snapshot-20260830t2206.txt
-.agents/connector-triggers/cp4c3-cb3-apply-20260831t0038.txt
-.agents/connector-triggers/cp4c3-cb3-compile-20260831t0038.txt
-.agents/connector-triggers/cp4c3-cb3-closeout-apply-20260831t0506.txt
