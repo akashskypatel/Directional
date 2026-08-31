@@ -3,3 +3,4 @@ source_sha=49536cf7b4b261bd52f36a91c861b6459db356a4
 package_artifact_id=9778267541
 selector_sha256=b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834
 benchmarkExecution=false
+retry=1
