@@ -75,6 +75,23 @@ self-contained. Two defects were introduced and are repaired at this review:
    was the `#### M3-CP4c` subsection of §4A.3 — a scope statement, not a decomposition. Routing now
    points at `M3_CP4c_Consolidated_Record.md`.
 
+### 1c. Final CP4ab per-turn report retirement — 2026-08-31
+
+`Architecture_M3_CP4ab_TB_R3_Artifact_Only_Test_Benchmark_Report.md` was the last remaining CP4ab
+per-turn report. It is now retired into this closure record; its authoritative acceptance facts were already
+represented in §§1–2 and are unchanged. The remaining non-duplicated provenance from that report is retained here:
+
+- schema validation run/job `32758229076 / 97530617094` passed before acceptance execution;
+- the frozen selector hashes were predecessor 304 `c05a4c4329d7e01a47fd1ecb094be438595533bf90585b24b94a3c4221ffb666`,
+  CP4ab 12 `7e7e32f147a2e865d75b1882542e0295527aa4f709bbc4bd1cf6974416d234ec`, and cumulative 316
+  `601ce2b6a4aa2b0cda971e06e9378ebccba5fa75a9b416407447f7ed3600193c`;
+- the package source archive was materialized without stripping its recorded root layout, the known plane fixture
+  was present, and fresh pre/post-runtime extractions were byte-identical with zero-byte source diffs;
+- the report recorded one process-only ordering miss: connector schema discovery preceded the mandatory tool-use
+  policy read, but no repository inspection, runtime, semantic mutation, or acceptance authority was affected.
+
+The retired report's exact bytes remain recoverable from Git history. No current or future authority points to it.
+
 ## 2. Accepted immutable authority
 
 - semantic source: `157bf784a9cdd2765018206ae0ac26729ed7a584`

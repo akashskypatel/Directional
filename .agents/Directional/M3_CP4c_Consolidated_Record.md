@@ -413,7 +413,29 @@ The durable facts from these superseded per-turn records are preserved in §§3�
 
 Historical per-turn CP4c records retired in earlier consolidation rounds remain represented here, in `CHANGELOG.md`, and in Git history; they are not resurrected.
 
-### 6.3 Durable ORIENTATION authority
+### 6.3 Retired by the 2026-08-31 consolidation
+
+`Architecture_M3_CP4c3_CB1_Code_Build_Report.md` is the only additional CP4c per-turn record that became
+historical after the prior consolidation. Its durable AK1–AK3 outcome and measured successor evidence are already
+preserved in §4 and the retained TB1/review authorities. The non-duplicated compile/package provenance retained from
+CB1 is:
+
+- instrumentation commit `014c7f7f8d6984518cf5c81156a10d3e06298349`; corrected semantic source
+  `48dd011c4aa689a245b74527ed9df0900ada9bf3`;
+- the first compile-only run `33338011871` failed because `FieldAtlasRegionCycleBasisDiagnostics` was
+  default-constructed despite its non-default-constructible `TopologyRegionId`; the only correction was aggregate
+  initialization with `region.id()`;
+- authoritative compile/package run/job `33338642383 / 99330058374`, package **68**, artifact `9739919234`,
+  package SHA-256 `127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c`, packaged source archive
+  SHA-256 `f1fce7f720718c8ac974d0d5f77ca1fee4244b10c710d2b505a1af162e4f937f`, compile-log artifact
+  `9739919468` SHA-256 `2074a5d2035dd84fe62ad424a8d95dfebe7af219f520f9f07e062af57ade21cd`, internal manifest
+  **28/28 verified**;
+- build used `DIRECTIONAL_ENABLE_GMP=ON`, linked both GMPXX and GMP, reported `exactArithmeticBackend=GMP`,
+  and executed no compiled binary.
+
+The CB1 report's exact bytes remain recoverable from Git history and no current/future authority depends on the file.
+
+### 6.4 Durable ORIENTATION authority
 
 `ORIENTATION.md` is **DURABLE** and is not historical CP4c debris. Every REVIEW turn must update its currency line, current position, witness table when changed, open problems in priority order, and recurring-defect section when a new pattern or instance is found. It must not be deleted, renamed away, or collapsed into another document without explicit user authorization.
 
@@ -424,12 +446,14 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`
-5. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`
-6. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
-7. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
+4. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
+5. `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`
+6. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`
+7. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
 8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
 9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** independent **`M3-CP4c-3-TB3-R1-REV` — REVIEW + PLAN**. No product/test/fixture/selector mutation, configure, compile, package, TB retry, or Directional runtime before review.
+**Exact next:** **`M3-CP4c-3-CB5` — Code + Build, diagnostic-only, runtime-free**, under AP0–AP9 from the
+TB3-R1 independent review. No TB retry or product-correction design is authorized before CB5 publishes the typed
+locus evidence and completes its compile-only boundary.
