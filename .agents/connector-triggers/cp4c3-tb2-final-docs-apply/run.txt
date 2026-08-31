@@ -1,3 +1,3 @@
-M3-CP4c-3-TB2 final durable documentation apply
+M3-CP4c-3-TB2 final durable documentation apply v2
 base=fa273cc829644ea5d6b17a74d8c4df2c4e26ffe4
-patch_sha256=c94877ca3673c8c52c9cc308fb30be298eaa41d0a6ca8f79f9db197ed88c2ac0
+patch_sha256=87228a4cb2fbb21431ee623d9939d9f8c6e499d03f9ee2f804ded7e324db92da
