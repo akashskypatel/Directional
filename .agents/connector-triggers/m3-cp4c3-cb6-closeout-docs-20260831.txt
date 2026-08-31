@@ -1,5 +1,0 @@
-purpose=apply M3-CP4c-3-CB6 documentation-only closeout
-base_sha=d8a1c733c8f85b6bc8729a7efce7be13fc53f961
-patch_sha256=48eb0cb7f597843d47347be095c3ecda4cf250ad8e4982164ba2dfaee112b3af
-runtimeExecution=false
-retry=0
