@@ -1,3 +1,2 @@
-M3-CP4c-3-TB2 final durable documentation apply v2
-base=fa273cc829644ea5d6b17a74d8c4df2c4e26ffe4
-patch_sha256=87228a4cb2fbb21431ee623d9939d9f8c6e499d03f9ee2f804ded7e324db92da
+M3-CP4c-3-TB2 final cleanup
+verified_docs_commit=556250bdb0533c37e52e406510fec00e45fb1a27
