@@ -1,3 +1,12 @@
+## M3-CP4c3-TB3-ORCH-01 — package 71's immutable Actions artifact has no executable test binaries — **ACTIVE / BUILD-PACKAGING CONTRACT DEFECT / NON-STABLE / PRE-RUNTIME**
+
+- **Observed at `M3-CP4c-3-TB3` preflight**, run/job `33399144281 / 99510922630`, before any Directional process executed.
+- **Mechanism proved.** Exact package 71 (`9750235004`, `bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`) and its complete internal manifest/source authority verify, but all six packaged test/benchmark executables extract as mode `0644`; `non_executable_binary_count=6`. The artifact-only TB contract forbids `chmod`, repacking, permission repair, or replacement compilation.
+- **Causal boundary.** The final immutable artifact is unusable as runtime authority. Current evidence does not yet prove whether mode information was lost in the raw compile package, the package-fixtures step, or Actions artifact transport; do not guess or repair inside TB.
+- **Semantic disposition.** `0/373` identities executed, so this is not a product regression and gives no evidence for or against Amendment 16/P2 or any checkpoint-local identity.
+- **Owning successor:** independent `M3-CP4c-3-TB3-REV` must trace the package/mode chain and decide the minimal mode-preserving correction before any repackage/rebuild/retry.
+- **Accounting:** unaccepted checkpoint, pre-runtime packaging contract defect. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
+
 ## M3-CP4c3-TB2-REV-CAND-01 — package-70 binary identity is self-reported and never compared against package 69 — **ACTIVE / EVIDENCE GAP / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-TB2-REV`**, from committed records only; no runtime executed.

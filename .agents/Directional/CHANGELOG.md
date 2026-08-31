@@ -1,3 +1,7 @@
+## 2026-08-31 — `M3-CP4c-3-TB3`: blocked pre-runtime by package-71 executable modes
+
+TB3 is **COMPLETE / BLOCKED — PRE-RUNTIME / NO SEMANTIC VERDICT**. Run/job `33399144281 / 99510922630` verified exact immutable package **71** (`9750235004`, `bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`), its complete internal manifest, semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, and packaged fixtures, then stopped before ordinal 1 because all six packaged test/benchmark executables extracted as mode `0644`. Artifact-only policy prohibits `chmod`, repacking, repair, mutation, or replacement compilation. Result/log artifacts: `9760518962` (`ec5bc5cccb99e38e4ce77533478c5864e756735b3511575d843bbafb328f4677`) / `9760519355` (`b803c9f81df4a5acbea642860d88f8c61f3df8f13d2204cf836344f6efb1016d`). Selector execution **0/373**; no runtime, benchmark, configure, compile, relink, generated discovery, repair, or mutation occurred. New `M3-CP4c3-TB3-ORCH-01` is **ACTIVE / BUILD-PACKAGING CONTRACT DEFECT / NON-STABLE**; exact mode-loss stage is deferred to independent review. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**. Exact next: independent `M3-CP4c-3-TB3-REV` — no repackage/rebuild/mode repair/TB retry before review.
+
 # Changelog
 
 ## 2026-08-31 — `M3-CP4c-3-CB3`: Amendment 16/P2 build green; package 71 portable

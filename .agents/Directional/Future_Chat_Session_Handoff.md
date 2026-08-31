@@ -92,75 +92,53 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB3` (artifact-only Test + Benchmark)
+## Mandatory next turn — `M3-CP4c-3-TB3-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB3` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Report:
-`Architecture_M3_CP4c3_CB3_Code_Build_Report.md`. CP4c-3 remains **OPEN** until package 71 passes selector 373.
+`M3-CP4c-3-TB3` is **COMPLETE / BLOCKED — PRE-RUNTIME / NO SEMANTIC VERDICT**. Report:
+`Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md`. CP4c-3 remains **OPEN**.
 
-### Immutable authority
+### Immutable authority and blocker
 
 - semantic/evidence source: `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`
-- compile/package run/job: `33370966957 / 99421816569`
-- immutable GMP package **71**: artifact `9750235004`, SHA-256
-  `bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`
-- package fixture log: artifact `9750235481`, SHA-256
-  `e628989374fb6b1529ab0a6c8c9a41ff764770aa2e67d64bafeaf580c5c78f8b`
+- immutable GMP package **71**: artifact `9750235004`, SHA-256 `bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`
 - packaged source archive SHA-256: `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`
-- selector **373**: `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-  355/357/361/365/367/370 prefixes remain frozen
-- fixture authority: package-relative `test-data/benchmarks/fixtures`, **27** files; compile-time absolute source fallback false
-- compile boundary: all eight standard targets linked with GMP/GMPXX; `runtimeExecution=false`
+- selector **373**: `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; no selector identity executed in TB3
+- authoritative preflight run/job: `33399144281 / 99510922630`
+- result artifact `9760518962` (`ec5bc5cccb99e38e4ce77533478c5864e756735b3511575d843bbafb328f4677`)
+- diagnostic log artifact `9760519355` (`b803c9f81df4a5acbea642860d88f8c61f3df8f13d2204cf836344f6efb1016d`)
+- package/internal manifest/source authority: PASS
+- executable-mode precondition: **FAIL** — all six packaged test/benchmark executables extract as `0644`
+- runtime/benchmark/configure/compile/relink/repair/generated-discovery/mutation: **all false**
 
-### CB3 product decision and evidence
+The frozen TB3 and workflow policies prohibit `chmod`, repacking, permission repair, package mutation, or replacement
+compilation inside artifact-only TB. `M3-CP4c3-TB3-ORCH-01` is therefore an **ACTIVE / BUILD-PACKAGING CONTRACT
+DEFECT / NON-STABLE** blocker, not a semantic red. Amendment 16/P2, ordinals 366–373, and the accepted-prefix re-proof
+received no TB3 runtime evidence. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
-Static pre-design measurement established 8 prescribed +1 singularities on the mechanical witness, 4 barrier-incident.
-All four are degree-2 `InteriorArc` singularities whose cut transport stars have two components; the mechanical barrier
-graph is a four-component forest (`n=16, m=12, c=4, χ(B)=4`) with no cycles. The prescribed sphere has zero active
-barrier-incident singularities. These facts choose Amendment 16 **P2 — boundary-absorbed / no ports**.
+### Exact scope of `M3-CP4c-3-TB3-REV`
 
-`FieldSingularityFact::PortPolicy` makes that choice explicit: slit-bound barrier singularities are
-`BarrierAbsorbed`, `build_singularity_attachments` does not force a closed fan across their barrier, and the
-field-aligned producer neither counts nor emits ports for them. Barrier branch transport remains prohibited.
-Diagnostics now retain the complete atlas error/locus and publish per-region barrier-singularity census/classification.
-No sphere correction was designed.
-
-AN2 is discharged: all six binaries in package 69 and fixture-only package 70 independently hash identically. AN3
-is corrected in the new artifact contract: package 71 carries its fixture tree beside the binaries and no active
-compile-time `DIRECTIONAL_TEST_SOURCE_DIR` authority remains. Package 68/69 did not carry that sibling fixture tree.
-AN8's independent assumption consumer is `canonical_field_aligned_candidate`, which assumed every singularity emits
-`4-index` ports without touching the cut-mesh data structures.
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative
-semantic M3 package accounting advances to **70**. No runtime gate has been credited for CB3.
-
-### Exact scope of `M3-CP4c-3-TB3`
-
-Follow `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md` exactly. Preflight package 71, its 56-entry
-manifest, 27-file package-relative fixture root, source/GMP evidence, frozen selectors, and no absolute fixture
-authority before runtime. Then execute ordinals 1–373 in order, one identity per fresh process, with hard first-red
-stop. At 366 publish the four absorbed mechanical singularity rows and require zero emitted ports for them; 367–373
-remain required when reached. The corrected rerun rule is **produced no semantic verdict**, not zero runtime
-processes. 373/373 plus immutable postflight closes CP4c-3; any valid semantic red routes to independent review.
+Review only. Trace executable-mode authority across the CB3 raw compile package, package-fixtures step, and final
+Actions artifact transport. Establish the exact loss point without executing Directional. Decide whether a
+byte-identical mode-preserving package-only correction is valid or whether the next correction must be a new Code +
+Build package. Freeze the exact successor and any package/runtime preconditions before any package regeneration,
+rebuild, `chmod`, or TB retry. Update `ORIENTATION.md` as required for every REVIEW turn.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Test + Benchmark / TB-EXEC guidance
+- turn-based-coding-agent Optional independent Review / REVIEW guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md`
-1. `.agents/Directional/Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md` — executable package-71 plan.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — exact source/package/Amendment-16 build authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — Amendment 16 / AN0–AN9 review authority.
-4. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–16.
-5. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — Amendment 15 and still-binding AM measures.
-6. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — frozen gate authority.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md` — required if TB observes a semantic regression.
-8. `TODO.md` / `M3_CP4c_Consolidated_Record.md` — current status and lineage.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md` — exact blocker evidence.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — package-71 build/packaging lineage.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md` — immutable TB contract.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB3-ORCH-01` and inherited candidates.
+5. `.github/workflows/agent-compile-reusable.yml` plus the CB3 package-fixtures workflow evidence/source needed to trace mode preservation.
+6. `TODO.md` / `M3_CP4c_Consolidated_Record.md` — current status and lineage.
 
-Do not preload superseded CB/TB reports beyond the specifically cited review lineage unless a runtime result requires
-historical comparison. Do not execute TB3 during CB3 closeout.
+Do not execute Directional, regenerate package 71, repair file modes, compile, or begin another TB during the review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

@@ -333,6 +333,21 @@ absolute `DIRECTIONAL_TEST_SOURCE_DIR` authority. Package **71** / artifact `975
 invariance. Stable accounting stays **44 / 14 / 30**, debt **5**; authoritative semantic package accounting becomes
 **70**. Exact successor: artifact-only `M3-CP4c-3-TB3` on package 71 with selector 373.
 
+
+### `M3-CP4c-3-TB3` — blocked before runtime by executable-mode package contract
+
+TB3 is **COMPLETE / BLOCKED — PRE-RUNTIME / NO SEMANTIC VERDICT**. Run/job `33399144281 / 99510922630` consumed exact
+package **71** (`9750235004`, `bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`) and re-proved its complete internal manifest, semantic source
+`93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, and package-relative fixture payload. Before ordinal 1, all six
+packaged test/benchmark executables were mode `0644`; policy forbids `chmod`, repacking, repair, or replacement
+compilation inside artifact-only TB. Result/log artifacts are `9760518962` (`ec5bc5cccb99e38e4ce77533478c5864e756735b3511575d843bbafb328f4677`) and `9760519355`
+(`b803c9f81df4a5acbea642860d88f8c61f3df8f13d2204cf836344f6efb1016d`). Selector execution is **0/373** and all runtime/build/mutation flags remain false.
+
+`M3-CP4c3-TB3-ORCH-01` records this as an **ACTIVE / BUILD-PACKAGING CONTRACT DEFECT / NON-STABLE** blocker. The
+exact mode-loss stage is intentionally unadjudicated until independent review. Stable accounting remains **44 / 14 /
+30**, debt **5**, semantic packages **70**. Exact successor: independent **`M3-CP4c-3-TB3-REV` — REVIEW + PLAN**;
+no repackage, rebuild, permission repair, or runtime retry before review.
+
 ## 5. High-value reversals retained
 
 - Face-local branch labels are not cross-face semantic identity; use published transport/lift.
@@ -401,12 +416,12 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
-5. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`
-6. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
-7. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
-8. `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`
+4. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md`
+5. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
+6. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`
+7. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
+8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
 9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB3`** — artifact-only Test + Benchmark on immutable package 71 / selector 373. No rebuild or product correction in TB.
+**Exact next:** independent **`M3-CP4c-3-TB3-REV` — REVIEW + PLAN** on the pre-runtime executable-mode packaging blocker. No repackage, rebuild, mode repair, or runtime retry before review.
