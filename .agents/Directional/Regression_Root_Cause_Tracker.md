@@ -1,4 +1,4 @@
-## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / SEMANTIC / CAUSE UNADJUDICATED / GATING / NON-STABLE**
+## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / SEMANTIC / TWO-CANDIDATE LOCUS MEASURED / CAUSE UNADJUDICATED / GATING / NON-STABLE**
 
 - **Observed in valid TB3-R1.** Immutable package 72 preserved semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, all six frozen hashes/modes, and package-relative fixtures. Run/job `33416686424 / 99568970224` passed immutable pre/postflight.
 - **Measured boundary.** Ordinals **1–365** each selected exactly once and passed. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and failed with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; first-red semantics left 367–373 unexecuted.
@@ -44,7 +44,9 @@
     CB3's census); **AP5** implements only after AP2 reports; **AP3** forbids any semantic change in CB5.
   - **Closure condition:** ordinal 366 green in a run reaching at least 366. **+0 events / +0 recurrences.**
 
-## M3-CP4c3-TB3-R1-REV-CAND-01 — the pipeline failure funnel discards every stage's typed error locus — **ACTIVE / DIAGNOSTIC-SURFACE DEFECT / THIRD OCCURRENCE / NON-STABLE**
+- **TB4 runtime discriminator.** Package 73 / run-job `33436492493 / 99634138202` re-proves 365/365 and first-reds at ordinal 366 with the complete typed locus: `sourceVertex=30`, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, `publishedFaceCount=2`, candidates `(25,30,31)` and `(30,31,119)`, `BarrierAbsorbed=false`, `barrierIncident=false`. **M1 is falsified** because the candidate set is not empty. **Direct M3 is falsified** because the failure is not at a barrier-absorbed/barrier-incident vertex. M2's *multiplicity* observation is true but its *singular-vertex holonomy* explanation is not established: TB4 does not classify vertex 30 or prove why both candidate states pass. Exact owner is `M3-CP4c-3-TB4-REV`; no semantic correction before that reconstruction. Stable accounting remains +0/+0 because the accepted 365-prefix stays green and CP4c-3 was already open.
+
+## M3-CP4c3-TB3-R1-REV-CAND-01 — the pipeline failure funnel discards every stage's typed error locus — **RESOLVED / RUNTIME PROVED / DIAGNOSTIC-SURFACE DEFECT / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-TB3-R1-REV`** from committed source; no runtime executed.
 - **Mechanism.** `fail_surface_cells` (`src/pipeline/RemeshPipeline.cpp:6146-6163`) takes only
@@ -73,6 +75,20 @@
   lesson is **68**.
 - **Closure condition:** a TB report that names the failing locus for a stage error without the review having to
   derive it. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
+- **TB4 closure evidence.** Run/job `33436492493 / 99634138202` publishes the ordinal-366 network error directly through the shared diagnostics boundary: source vertex 30, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, two candidate faces, and barrier classification. The TB report can adjudicate the discriminator without a review reconstructing the locus by elimination. Closure condition is satisfied. **+0 stable events / +0 recurrences**; this was a diagnostic-surface defect on an unaccepted checkpoint.
+
+## M3-CP4c3-TB4-DIAG-CAND-01 — ordinal 370 cannot reach the empty-network cut-graph contract because its synthetic atlas build fails — **ACTIVE / DIAGNOSTIC-WITNESS PRECONDITION / CAUSE UNADJUDICATED / NON-STABLE**
+
+- **Observed in TB4 AP6 report-only execution.** Ordinal 370 `SurfaceCutGraph.EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError` executes once after the semantic gate verdict is already fixed and fails at `ASSERT_TRUE(atlasBuild)`. No cut graph is constructed and the appended `EmptyNetworkOnClosedSurface` error is therefore not measured.
+- **Exact witness boundary.** The test loads the closed torus, builds source authority, then calls `FieldTransportAtlas::make(mesh, sourceAuthority, {}, make_zero_transport_field(mesh))`; that call returns failure before the test constructs the expected zero-node/zero-arc network. TB4 stdout does not print the atlas error code, so product cause cannot be assigned from runtime evidence alone.
+- **Relationship to `M3-CP4c2-TB-X2-R8-CAND-02`.** The older product question remains active. TB4 does not answer it because its synthetic witness no longer reaches A2a′. Independent TB4 review must inspect the exact atlas failure and decide whether the test precondition is stale, the atlas correctly rejects this zero-field authority, or another product change is involved.
+- **Accounting:** report-only, zero gate credit, newly gated/unaccepted surface, accepted 365-prefix unchanged. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **71**.
+
+## M3-CP4c3-TB4-ORCH-01 — TB4 runner expected the wrong package-73 digest-sidecar filename — **RESOLVED / PRE-RUNTIME / NON-STABLE**
+
+- **Observed:** run/job `33436283363 / 99633462747` stopped before any Directional runtime with `package73-envelope-missing` after downloading the correct package artifact.
+- **Root cause:** the runner expected `package73.tar.gz.sha256`; the frozen package-73 envelope contains `package73.sha256`. Control-only commit `41a7a8b92a311c240cfbcf320a4003d1f17dde7b` changed exactly the sidecar existence/hash read and did not touch package/source/test/fixture/selector bytes.
+- **Closure:** authoritative retry `33436492493 / 99634138202` passed preflight and executed the semantic gate. **+0 stable events / +0 recurrences**.
 
 ## M3-CP4c3-TB3-ORCH-01 — package 71 loses executable modes at Actions artifact re-materialization — **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE / PRE-RUNTIME**
 
@@ -209,6 +225,7 @@
   gated identity `PrescribedSingularityOnABarrierArcRemainsBoundToACycle` (appended under AM8, gate **373**) is
   green.
 - **`M3-CP4c-3-CB2` disposition — CORRECTIVE IMPLEMENTED / COMPILE GREEN / RUNTIME PENDING.** AM4 now requires an explicit cycle binding and reports local-cycle/slit-boundary/unbound counts. Evidence source `005512f20ed56edc793f4d6505f3d2b4c2999c71` compiles in GMP package **69**; ordinal **373** is compiled but unexecuted. Candidate remains non-stable until TB proves `unbound=0`.
+- **TB4 AP6 diagnostic disposition.** Ordinal 373 `PrescribedSingularityOnABarrierArcRemainsBoundToACycle` executes once report-only and **PASSes**. This satisfies the identity half of the closure condition, but the record remains active because TB4's mechanical failure output does not publish the required zero-unbound prescribed-singularity count. No stable count change.
 - **Stable-count rationale:** found by static derivation in a definition turn; no accepted behaviour is lost. Its new gating identity is compiled but unexecuted, so there is still no semantic recurrence evidence. **+0 events / +0 recurrences.** Totals remain
   **44 / 14 / 30**, debt **5**, M3 packages **69**.
 
@@ -401,6 +418,7 @@
   every identity in it passed, and the run is valid. Adding a coverage condition after the evidence arrived would be
   the goalpost-moving this project corrected twice — including when the evidence favoured being strict
   (`PR8-R044` at R7-REV). The discipline holds when it favours leniency too.
+- **TB4 AP6 diagnostic disposition.** Ordinal 369 executes report-only and reaches its intended quality assertion; `certificate.saturationUsed` is `true`, so the ordinary trace-crossed proposal is still not selected without saturation. This directly reconfirms the active quality/coverage finding but adds no stable recurrence because the identity is on an unaccepted/report-only surface. TB4-REV owns scheduling relative to the mechanical blocker.
 - **CP4c-3 DEFN disposition:** carried to CP4c-3 as owner, corrective unchanged and now measure **AK4**; the
   §6.2 identity `SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation` is named for append into
   the gate under **AK7**, so the ordinary path stops being ungated.
@@ -515,6 +533,7 @@
 - **Product question:** on a closed surface with an empty network, A2a′ should either (a) establish cellularity by selecting source-edge cuts from scratch, or (b) reject with a typed error that explicitly names the empty-network condition. Current retained evidence proves only failure, not which contract is correct.
 - **CB8 disposition (AH7):** **do not fix or widen scope.** AH2 removes this input state from gated ordinals 359/361 by reconstructing their local atlas/network from the production feature authority. No selector identity depends on zero-arc behavior after that correction. Bring this candidate to the next definition or independent-review turn.
 - **Stable-count rationale:** the behavior was exposed by an unaccepted, newly gated witness and no accepted-green behavior was lost. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
+- **TB4 AP6 diagnostic disposition.** Ordinal 370 executes report-only but fails earlier at `ASSERT_TRUE(atlasBuild)` for the synthetic zero-field torus. It therefore does **not** prove or disprove the intended `EmptyNetworkOnClosedSurface` A2a′ error contract. New `M3-CP4c3-TB4-DIAG-CAND-01` owns the failed witness precondition; this product question remains active. +0/+0.
 - **`M3-CP4c-3-TB1-REV` disposition — UNCHANGED, and unblocked.** The product question was already **decided** at
   `M3-CP4c-3-DEFN` in favour of (b), a typed rejection with an **appended** — never renumbered — error code, since
   cutting from scratch would make A2a′ the producer of the whole embedded graph and that is A2a's single-writer
@@ -1078,6 +1097,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
 - **Stable-count rationale:** CP4c-2 has never been accepted at runtime and this product is new in the unaccepted
   checkpoint. The finding is material but non-stable: **+0 events / +0 recurrences**. Totals remain
   **42 / 14 / 28**, debt **5**.
+- **TB4 AP6 diagnostic disposition.** Ordinal 368 now executes report-only with zero gate credit and independently reproduces `surfaceCutGraphError=CellularityNotEstablished`, `originatingTopologyError=RotationSystemInconsistent`, `originatingRotationSystemReason=TraceEventPositionInvalid`, trace 2 / event 30. This confirms the current localization but does not resolve the two-way `TraceEventPositionInvalid` collapse or authorize a sphere correction; **AL4 remains binding**. +0/+0.
 - **CB2-DIAG-R1 status:** D2 compiles against corrected source `c552a5a4a318063cde2564c40773ec7edaf064f6` but has not executed. **Candidate remains ACTIVE / UNLOCALIZED**; R3 may run D2 only after the torus and all-three-witness self-consistency stop gates pass. No product root cause or stable recurrence is inferred from compilation.
 
 

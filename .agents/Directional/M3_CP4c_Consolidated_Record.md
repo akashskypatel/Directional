@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. Last runtime authority is package 72 / TB3-R1 (`33416686424 / 99568970224`): ordinals **1–365 PASS**, ordinal **366** first-reds at `VertexTransitSectorUnresolved`, and 367–373 were not reached. `M3-CP4c-3-TB3-R1-REV` froze AP0–AP9 without assigning cause. Diagnostic-only `M3-CP4c-3-CB5` is now **BUILD + PACKAGE GREEN / RUNTIME-FREE** on semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`, immutable package **73** (`9773591345`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`). The shared failure funnel retains typed stage loci and ordinal 366 can publish the AP2 M1/M2/M3 discriminator, but **no AP2 runtime value exists yet**. Exact next is artifact-only **`M3-CP4c-3-TB4`** with selector 373 unchanged plus a separate post-first-red non-gating 367–373 pass. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **71**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. Current runtime authority is package 73 / TB4 (`33436492493 / 99634138202`): ordinals **1–365 PASS**, ordinal **366** first-reds at `VertexTransitSectorUnresolved`, now localized to source vertex 30 / face `(24,30,32)` / branch 1 / `FaceInterior` with exactly two candidate faces and no barrier-absorbed/barrier-incident locus. AP6 then ran 367–373 report-only with zero gate credit: **1 PASS / 6 RED**. M1 and direct M3 are falsified at the failing locus; M2's singular-holonomy explanation is not yet established. Exact next is independent **`M3-CP4c-3-TB4-REV`** under the frozen TB4 review plan. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **71**.
 
 ## 1. Separate current/future authority
 
@@ -33,6 +33,9 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — current valid semantic runtime authority for package 72; 365/365 accepted prefix green and first red at ordinal 366.
 - `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` — the frozen AR0–AR7 scope that governed the TB3-R1 review.
 - `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md` — **current review authority: the reconstructed transit invariant, the M1/M2/M3 enumeration, Amendment 16's widened scope, and the AP0–AP9 measures that govern `M3-CP4c-3-CB5`.**
+- `Architecture_M3_CP4c3_CB5_Code_Build_Report.md` — compile/package authority for the typed shared failure-locus surface and immutable package 73.
+- `Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365 green, first red at ordinal 366 with the exact two-candidate vertex-30 locus, plus AP6 report-only 367–373 evidence.
+- `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md` — **current next-turn authority** for static adjudication of the two candidates and report-only diagnostics.
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -57,7 +60,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; A1 clear end to end after Amendments 15 and 16/P2; TB3-R1 is 365 PASS then valid red at ordinal 366 in A2a; cause not established; next is diagnostic-only `CB5` under AP0–AP9** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; A1 clear end to end; TB4 keeps 365 PASS and first-reds at ordinal 366 in A2a with a measured two-candidate FaceInterior transit at vertex 30; M1/direct-M3 falsified, cause still under review; next `TB4-REV`** |
 
 ### 2.1 CP4c-0
 
@@ -370,6 +373,12 @@ mode-preserving package **73** artifact `9773591345`, inner tar `fc939abc4110f4a
 six `0755` executables. AP6 carries into TB4 as a separate report-only 367–373 pass after the gate first-red verdict,
 with zero gate credit.
 
+### `M3-CP4c-3-TB4` — valid semantic red with exact transit locus; AP6 diagnostics measured
+
+Artifact-only TB4 on immutable package **73** is authoritative at run/job `33436492493 / 99634138202`. Package/source/GMP/27-fixture/six-`0755`/selector preflight and immutable postflight passed. The semantic gate re-proved ordinals **1–365 = 365/365 PASS** and first-red at ordinal **366**. CB5's typed locus now identifies `VertexTransitSectorUnresolved` at source vertex **30**, arrival face `(24,30,32)`, branch **1**, region 0, `FaceInterior`, with exactly **two** candidate faces `(25,30,31)` and `(30,31,119)`, `BarrierAbsorbed=false`, `barrierIncident=false`. This falsifies M1's zero-candidate prediction and direct M3's barrier-absorbed-vertex prediction, but does not prove M2's singular-holonomy premise.
+
+After the gate verdict was fixed, AP6 executed ordinals **367–373** once report-only with zero gate credit: **1 PASS / 6 RED**. 368 reproduces the sphere's `RotationSystemInconsistent → TraceEventPositionInvalid` at trace 2/event 30; 369 reaches its intended assertion with `saturationUsed=true`; 370 stops earlier at `atlasBuild=false`; 371/372 are blocked by the same mechanical network red; 373 passes its synthetic barrier-arc singularity-binding contract. Result/log artifacts are `9774693166` (`056f86df2e387391227bcf52f59ba932dd64a5d02923a8ff688cd8e315ff8a7e`) / `9774693946` (`d2acc62037d0bce07ef98bb77a7cb42ee90758d8b72477d9d8516da2fa0afcb6`). Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **71**. Exact successor is independent `M3-CP4c-3-TB4-REV`; no unchanged TB retry or semantic correction precedes review.
+
 ## 5. High-value reversals retained
 
 - Face-local branch labels are not cross-face semantic identity; use published transport/lift.
@@ -460,14 +469,12 @@ After the durable start-of-turn checklist, load:
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_CB5_Code_Build_Report.md`
-5. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
-6. `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`
-7. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
-8. `Regression_Root_Cause_Tracker.md`
-9. this consolidated record only when historical lineage is needed.
+4. `Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md`
+5. `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md`
+6. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
+7. `Architecture_M3_CP4c3_CB5_Code_Build_Report.md`
+8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+9. `Regression_Root_Cause_Tracker.md`
+10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB4` — artifact-only Test + Benchmark** on immutable package **73**. Run the unchanged
-373 gate from ordinal 1 with first-red semantics; after recording a gate first red, execute frozen ordinals 367–373
-once as AP6's non-gating report-only pass with zero gate credit. No rebuild, relink, package repair, generated
-discovery, or semantic correction is authorized in TB4.
+**Exact next:** **`M3-CP4c-3-TB4-REV` — independent REVIEW + PLAN**. Static review only: classify vertex 30, reconstruct the two exact continuation states and sector predicates, adjudicate M1/M2/M3 and the 368/369/370/373 diagnostic findings, update `ORIENTATION.md`, and freeze one bounded successor. No Directional runtime, compile, package, or product/test/fixture/selector mutation is authorized in the review.

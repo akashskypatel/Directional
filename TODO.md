@@ -26,55 +26,58 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB4` (Artifact-Only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB4-REV` (Independent Review + Plan)
 
-`M3-CP4c-3-CB5` is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE**. Evidence:
-`Architecture_M3_CP4c3_CB5_Code_Build_Report.md`.
+`M3-CP4c-3-TB4` is **COMPLETE / VALID SEMANTIC RED**. Authoritative report:
+`Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md`.
 
-### Immutable CB5 authority
+### Immutable TB4 authority
 
-- semantic/evidence source `2d22ef293363058cfdca96d01158a93d2c0200f8`;
-- immutable package **73** artifact `9773591345`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`;
-- full eight-target compile `33433309655 / 99623694545`; package-only envelope `33433718709 / 99625035344`;
+- semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`;
+- immutable package **73** artifact `9773591345`, outer SHA-256 `8f3a8f0d6a3ad0931db89cb3e94c33d1d7e8a0d9e1aba27a6ad2690ec9c402a0`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`;
 - selector 373 unchanged at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- **27** package-relative fixtures and six `0755` test/benchmark executables verified;
-- GMP/GMPXX linkage, manifests and clean source/package checks pass;
-- `runtimeExecution=false`; no Directional runtime executed.
+- authoritative run/job `33436492493 / 99634138202`;
+- result/log `9774693166` (`056f86df…8a7e`) / `9774693946` (`d2acc620…fcb6`);
+- semantic gate **366 executed / 365 PASS / first red 366**;
+- AP6 report-only diagnostics 367–373: **7 executed / 1 PASS / 6 RED / zero gate credit**;
+- immutable postflight PASS; no benchmark/configure/compile/relink/repair/generated discovery or package/source/test/fixture/selector mutation.
 
-### What CB5 established
+### What TB4 established
 
-- **AP1 implemented:** all four typed stage-error boundaries retain a shared `SurfaceCellFailureLocusDiagnostics`
-  payload instead of dropping their locus.
-- **AP2 implemented but unmeasured:** ordinal 366 can publish source vertex, face, branch, arrival mode, candidate
-  cardinality/faces, `BarrierAbsorbed`, barrier incidence/degree and transport-star component count.
-  **M1/M2/M3 remain unadjudicated** until runtime.
-- **AP3/AP4 held:** no transit/product correction and no design against M3.
-- **AP6 adopted for TB4:** after the normal first red, run frozen ordinals **367–373** once as a **non-gating**
-  diagnostic pass, report-only and zero gate credit. Selector bytes and gate semantics are unchanged.
-- **AP8:** independent typed-data-loss sites were found at `surfaceCutGraphBuild.error()` and
-  `globalTopologyBuild.error()`, proving the audit was predicate-driven.
+- Ordinal 366 still first-reds at `VertexTransitSectorUnresolved`, but AP2 now publishes the exact locus:
+  `sourceVertex=30`, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, **two** candidate faces
+  `(25,30,31)` and `(30,31,119)`, `BarrierAbsorbed=false`, `barrierIncident=false`.
+- **M1 is falsified** at this locus because candidate cardinality is 2, not zero.
+- **Direct M3 is falsified** because the failure is not at a `BarrierAbsorbed`/barrier-incident vertex.
+- **M2 is not yet established**: multiplicity is measured, but TB4 does not prove vertex 30 is singular or explain why both exact sector candidates survive.
+- `M3-CP4c3-TB3-R1-REV-CAND-01` is **RESOLVED / RUNTIME PROVED** because the failing locus is now published directly.
+- Ordinal 368 reproduces the sphere's `RotationSystemInconsistent → TraceEventPositionInvalid` at trace 2/event 30; **AL4 remains binding**.
+- Ordinal 369 reaches its intended assertion and reports `saturationUsed=true`; the R10 quality/coverage candidate remains active.
+- Ordinal 370 fails before its intended contract at `atlasBuild=false`; new non-stable diagnostic candidate `M3-CP4c3-TB4-DIAG-CAND-01` owns that precondition gap.
+- Ordinal 373 is green, but `M3-CP4c3-DEFN-R1-CAND-01` still also requires mechanical zero-unbound evidence before closure.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB4`** artifact-only on package **73**:
+Run **independent `M3-CP4c-3-TB4-REV` — REVIEW + PLAN only** under
+`Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md`:
 
-1. verify immutable package/source/GMP/27-fixture/six-mode/selector authority;
-2. execute selector 373 from ordinal 1, one exact identity per fresh process, first-red hard stop;
-3. after recording the gate verdict, execute frozen ordinals **367–373** once as AP6's non-gating diagnostic pass
-   with **zero gate credit**;
-4. if ordinal 366 is red, capture AP2's full typed locus and classify M1/M2/M3 from measured evidence;
-5. semantic red → `REVIEW + PLAN`; no rebuild, relink, package repair, generated discovery, or corrective
-   implementation is allowed in TB4.
+1. classify source vertex 30 from atlas/source authority;
+2. reconstruct both candidate `(face,branch)` states and their exact transport paths/sector predicates;
+3. adjudicate M1/M2/M3 and causality relative to P2 without assuming multiplicity implies singularity;
+4. separately adjudicate report-only ordinals 368/369/370/373 with zero gate credit;
+5. freeze exactly one bounded successor; no runtime, compile, package or product/test/fixture/selector mutation in review;
+6. update `ORIENTATION.md` as required for every REVIEW turn.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / CAUSE NOT ESTABLISHED / GATING**; TB4 owns the AP2 discriminator.
-- [x] `M3-CP4c3-TB3-R1-REV-CAND-01` — shared typed-error funnel repaired in CB5; runtime publication remains TB evidence.
-- [ ] **C2 / mechanical witness** — A1 is proved clear; current accepted-path red remains A2a pending TB4.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 still runtime-unproved.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere ACTIVE / ONE LEVEL SHORT; ordinal 368 runtime-unproved. **AL4** still forbids designing its fix.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 runtime-unproved.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 runtime-unproved.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / TWO-CANDIDATE LOCUS MEASURED / CAUSE UNADJUDICATED / GATING**; review owns vertex-30 classification and duplicate-vs-distinct continuation analysis.
+- [x] `M3-CP4c3-TB3-R1-REV-CAND-01` — **RESOLVED / RUNTIME PROVED** by TB4 typed-locus publication.
+- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — ordinal 370 fails at `atlasBuild=false` before its intended empty-network A2a′ contract; review owns classification.
+- [ ] **C2 / mechanical witness** — A1 remains proved clear; A2a first-red persists at a measured two-candidate FaceInterior transit.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 is runtime green; mechanical zero-unbound closure evidence remains outstanding.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains ACTIVE / ONE LEVEL SHORT; TB4 confirms its current subreason/locus. **AL4** still forbids designing its fix here.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 is runtime red with saturation still used.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains unproved because the synthetic atlas precondition fails first.
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **71**.
 
