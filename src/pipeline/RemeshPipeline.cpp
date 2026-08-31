@@ -6143,8 +6143,12 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       result.diagnostics.surfaceCellFlowRepRetainedCapacityBytes = 0U;
       result.diagnostics.surfaceCellArrangementRetainedCapacityBytes = 0U;
     };
-    auto fail_surface_cells = [&](const SurfaceCellFailureCode code,
-                                  const std::string &stage) -> RemeshResult {
+    auto fail_surface_cells = [&](
+                                  const SurfaceCellFailureCode code,
+                                  const std::string &stage,
+                                  const std::string &detailCode = "None",
+                                  SurfaceCellFailureLocusDiagnostics locus = {})
+        -> RemeshResult {
       const std::string failureCode = surface_cell_failure_code_name(code);
       result.vertices.resize(0, 3);
       result.faces.resize(0, 0);
@@ -6161,12 +6165,16 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           remesh_backend_name(RemeshBackend::SurfaceCells);
       result.diagnostics.terminalFailureCode = failureCode;
       result.diagnostics.terminalFailureStage = stage;
+      result.diagnostics.terminalFailureDetailCode = detailCode;
+      result.diagnostics.terminalFailureLocus = locus;
       const std::string noneFailure = surface_cell_failure_code_name(
           SurfaceCellFailureCode::None);
       if (result.diagnostics.originalSurfaceCellFailureCode.empty() ||
           result.diagnostics.originalSurfaceCellFailureCode == noneFailure) {
         result.diagnostics.originalSurfaceCellFailureCode = failureCode;
         result.diagnostics.originalSurfaceCellFailureStage = stage;
+        result.diagnostics.originalSurfaceCellFailureDetailCode = detailCode;
+        result.diagnostics.originalSurfaceCellFailureLocus = locus;
       }
       result.diagnostics.surfaceCellFallbackCause.clear();
       result.diagnostics.surfaceCellFallbackAttempted = false;
@@ -6206,6 +6214,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         result.diagnostics.terminalFailureCode =
             surface_cell_failure_code_name(SurfaceCellFailureCode::None);
         result.diagnostics.terminalFailureStage.clear();
+        result.diagnostics.terminalFailureDetailCode = "None";
+        result.diagnostics.terminalFailureLocus = {};
         result.diagnostics.surfaceCellRemeshOccurred = false;
         record_face_degree_histogram(result);
         update_overall_pipeline_time();
@@ -6575,6 +6585,128 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         sourceTopologyRegionsProduct;
     tracingOptions.sourceAuthority = &*sourceTopologyRegionsProduct;
 
+    constexpr std::size_t kPublishedFailureFaceLimit = 8U;
+    const auto topology_face_locus = [](
+        const authority::SourceFaceTopologyKey &face) {
+      const auto &vertices = face.vertices();
+      return std::array<std::size_t, 3>{vertices[0].index(),
+                                        vertices[1].index(),
+                                        vertices[2].index()};
+    };
+    const auto topology_edge_locus = [](
+        const authority::SourceEdgeTopologyKey &edge) {
+      return std::array<std::size_t, 2>{edge.first().index(),
+                                        edge.second().index()};
+    };
+    const auto atlas_failure_locus = [&](
+        const authority::FieldAtlasBuildError &error) {
+      SurfaceCellFailureLocusDiagnostics locus;
+      if (error.sourceVertex.has_value())
+        locus.sourceVertex = error.sourceVertex->index();
+      if (error.sourceEdge.has_value())
+        locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
+      if (error.sourceFace.has_value() &&
+          error.sourceFace->index() <
+              static_cast<std::size_t>(meshWhole.F.rows())) {
+        const Eigen::Index row =
+            static_cast<Eigen::Index>(error.sourceFace->index());
+        locus.sourceFace = std::array<std::size_t, 3>{
+            static_cast<std::size_t>(meshWhole.F(row, 0)),
+            static_cast<std::size_t>(meshWhole.F(row, 1)),
+            static_cast<std::size_t>(meshWhole.F(row, 2))};
+      }
+      if (error.branch.has_value())
+        locus.branch = static_cast<int>(error.branch->value());
+      if (error.topologyRegion.has_value())
+        locus.topologyRegion = error.topologyRegion->index();
+      return locus;
+    };
+    const auto network_failure_locus = [&](
+        const geometry::FieldAlignedCurveNetworkError &error,
+        const authority::FieldTransportAtlas &atlas) {
+      SurfaceCellFailureLocusDiagnostics locus;
+      if (error.sourceVertex.has_value())
+        locus.sourceVertex = error.sourceVertex->index();
+      if (error.sourceEdge.has_value())
+        locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
+      if (error.sourceFace.has_value())
+        locus.sourceFace = topology_face_locus(*error.sourceFace);
+      if (error.branch.has_value())
+        locus.branch = static_cast<int>(error.branch->value());
+      if (error.topologyRegion.has_value())
+        locus.topologyRegion = error.topologyRegion->index();
+      if (error.vertexArrivalMode.has_value()) {
+        locus.vertexArrivalMode =
+            *error.vertexArrivalMode ==
+                    geometry::FieldVertexArrivalMode::FaceInterior
+                ? "FaceInterior"
+                : "EdgeTransit";
+      }
+      locus.publishedFaceCount = error.publishedFaces.size();
+      const std::size_t faceLimit =
+          std::min(kPublishedFailureFaceLimit, error.publishedFaces.size());
+      locus.publishedFaces.reserve(faceLimit);
+      for (std::size_t index = 0U; index < faceLimit; ++index)
+        locus.publishedFaces.push_back(
+            topology_face_locus(error.publishedFaces[index]));
+
+      if (error.sourceVertex.has_value()) {
+        locus.barrierAbsorbed = false;
+        for (const auto &singularity : atlas.singularities()) {
+          if (singularity.sourceVertex != *error.sourceVertex) continue;
+          if (error.topologyRegion.has_value() &&
+              singularity.topologyRegion != error.topologyRegion)
+            continue;
+          if (singularity.portPolicy ==
+              authority::FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
+            locus.barrierAbsorbed = true;
+            break;
+          }
+        }
+
+        locus.barrierIncident = false;
+        for (const auto &region : atlas.region_transport_diagnostics()) {
+          if (error.topologyRegion.has_value() &&
+              region.topologyRegion != *error.topologyRegion)
+            continue;
+          const auto found = std::find_if(
+              region.barrierIncidentSingularities.begin(),
+              region.barrierIncidentSingularities.end(),
+              [&](const authority::FieldBarrierIncidentSingularityDiagnostics
+                      &row) {
+                return row.sourceVertex == *error.sourceVertex;
+              });
+          if (found == region.barrierIncidentSingularities.end()) continue;
+          locus.barrierIncident = true;
+          locus.barrierDegree = found->barrierDegree;
+          locus.transportStarComponentCount =
+              found->transportStarComponentCount;
+          break;
+        }
+      }
+      return locus;
+    };
+    const auto cut_graph_failure_locus = [&](
+        const geometry::SurfaceCutGraphError &error) {
+      SurfaceCellFailureLocusDiagnostics locus;
+      if (error.sourceEdge.has_value())
+        locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
+      if (error.sourceFace.has_value())
+        locus.sourceFace = topology_face_locus(*error.sourceFace);
+      return locus;
+    };
+    const auto topology_plan_failure_locus = [&](
+        const geometry::GlobalTopologyPlanError &error) {
+      SurfaceCellFailureLocusDiagnostics locus;
+      if (error.sourceVertex.has_value())
+        locus.sourceVertex = error.sourceVertex->index();
+      if (error.sourceEdge.has_value())
+        locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
+      if (error.sourceFace.has_value())
+        locus.sourceFace = topology_face_locus(*error.sourceFace);
+      return locus;
+    };
+
     authority::FieldTransportAtlasBuildResult atlasBuild =
         authority::FieldTransportAtlas::make(
             meshWhole, *sourceTopologyRegionsProduct, hardFeatureRailEdges,
@@ -6659,8 +6791,10 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                 << singularity.transportStarComponentCount << '}';
         }
       }
-      return fail_surface_cells(SurfaceCellFailureCode::InvalidFieldTransportAtlas,
-                                stage.str());
+      return fail_surface_cells(
+          SurfaceCellFailureCode::InvalidFieldTransportAtlas, stage.str(),
+          authority::field_atlas_build_error_code_name(error.code),
+          atlas_failure_locus(error));
     }
     fieldTransportAtlasProduct = std::move(atlasBuild.value());
     result.surfaceCellContext.productSnapshots.fieldTransportAtlas =
@@ -6671,11 +6805,13 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         *sourceTopologyRegionsProduct, *fieldTransportAtlasProduct,
         authoritativeRails);
     if (!fieldAlignedBuild) {
+      const geometry::FieldAlignedCurveNetworkError &error =
+          fieldAlignedBuild.error();
       return fail_surface_cells(
           SurfaceCellFailureCode::NotProductionReady,
-          std::string("field-aligned-network/") +
-              geometry::field_aligned_curve_network_error_code_name(
-                  fieldAlignedBuild.error().code));
+          "field-aligned-network",
+          geometry::field_aligned_curve_network_error_code_name(error.code),
+          network_failure_locus(error, *fieldTransportAtlasProduct));
     }
     fieldAlignedNetworkProduct = std::move(fieldAlignedBuild.value());
     result.surfaceCellContext.productSnapshots.fieldAlignedCurveNetwork =
@@ -6695,8 +6831,10 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             *surfaceCutGraphBuild.error().originatingTopologyError);
       }
       return fail_surface_cells(
-          SurfaceCellFailureCode::NotProductionReady,
-          std::move(detail));
+          SurfaceCellFailureCode::NotProductionReady, std::move(detail),
+          geometry::surface_cut_graph_error_code_name(
+              surfaceCutGraphBuild.error().code),
+          cut_graph_failure_locus(surfaceCutGraphBuild.error()));
     }
     surfaceCutGraphProduct = std::move(surfaceCutGraphBuild.value());
     result.surfaceCellContext.productSnapshots.surfaceCutGraph =
@@ -6706,11 +6844,14 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         *sourceTopologyRegionsProduct, *fieldAlignedNetworkProduct,
         *surfaceCutGraphProduct);
     if (!globalTopologyBuild) {
+      const geometry::GlobalTopologyPlanError &error =
+          globalTopologyBuild.error();
       return fail_surface_cells(
           SurfaceCellFailureCode::NotProductionReady,
           std::string("global-topology-plan/") +
-              geometry::global_topology_plan_error_code_name(
-                  globalTopologyBuild.error().code));
+              geometry::global_topology_plan_error_code_name(error.code),
+          geometry::global_topology_plan_error_code_name(error.code),
+          topology_plan_failure_locus(error));
     }
     globalTopologyPlanProduct = std::move(globalTopologyBuild.value());
     result.surfaceCellContext.productSnapshots.globalTopologyPlan =
@@ -10109,6 +10250,8 @@ void accumulate_component_diagnostics(
       source.terminalFailureCode != "None") {
     target.terminalFailureCode = source.terminalFailureCode;
     target.terminalFailureStage = source.terminalFailureStage;
+    target.terminalFailureDetailCode = source.terminalFailureDetailCode;
+    target.terminalFailureLocus = source.terminalFailureLocus;
   }
   if (source.originalSurfaceCellFailureCode != "None") {
     if (target.originalSurfaceCellFailureCode == "None") {
@@ -10116,12 +10259,18 @@ void accumulate_component_diagnostics(
           source.originalSurfaceCellFailureCode;
       target.originalSurfaceCellFailureStage =
           source.originalSurfaceCellFailureStage;
+      target.originalSurfaceCellFailureDetailCode =
+          source.originalSurfaceCellFailureDetailCode;
+      target.originalSurfaceCellFailureLocus =
+          source.originalSurfaceCellFailureLocus;
     } else if (target.originalSurfaceCellFailureCode !=
                    source.originalSurfaceCellFailureCode ||
                target.originalSurfaceCellFailureStage !=
                    source.originalSurfaceCellFailureStage) {
       target.originalSurfaceCellFailureCode = "Mixed";
       target.originalSurfaceCellFailureStage = "component-aggregation";
+      target.originalSurfaceCellFailureDetailCode = "Mixed";
+      target.originalSurfaceCellFailureLocus = {};
     }
   }
   if (target.requestedBackend == "LegacyInteger" &&
@@ -11340,6 +11489,10 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
         failure.diagnostics.terminalFailureCode;
     merged.diagnostics.terminalFailureStage =
         failure.diagnostics.terminalFailureStage;
+    merged.diagnostics.terminalFailureDetailCode =
+        failure.diagnostics.terminalFailureDetailCode;
+    merged.diagnostics.terminalFailureLocus =
+        failure.diagnostics.terminalFailureLocus;
     merged.diagnostics.surfaceCellFirstInvalidProducerStage =
         failure.diagnostics.surfaceCellFirstInvalidProducerStage;
     merged.diagnostics.surfaceCellFirstInvalidProducerReason =
@@ -11511,6 +11664,8 @@ RemeshResult remesh_surface_cell_components_from_cross_field_aggregate_impl(
             surface_cell_failure_code_name(
                 SurfaceCellFailureCode::NotProductionReady);
         merged.diagnostics.terminalFailureStage = "component-merge-authority";
+        merged.diagnostics.terminalFailureDetailCode = "None";
+        merged.diagnostics.terminalFailureLocus = {};
         merged.diagnostics.surfaceCellFirstInvalidProducerStage =
             "component-merge-authority";
         merged.diagnostics.surfaceCellFirstInvalidProducerReason = reason;

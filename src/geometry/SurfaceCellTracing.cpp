@@ -630,6 +630,8 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     FieldAlignedCurveNetworkError error = continuation_error(
         FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved,
         currentFace, currentBranch, std::nullopt, sourceVertex);
+    error.topologyRegion = topologyRegion;
+    error.vertexArrivalMode = arrivalMode;
     error.publishedFaces.reserve(candidates.size());
     for (const FieldVertexTransitDecision &candidate : candidates) {
       error.publishedFaces.push_back(candidate.nextFace);

@@ -14,6 +14,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <limits>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -95,6 +96,21 @@ struct SurfaceCellPeriodicHolonomyDiagnostics {
   std::vector<std::uint64_t> cutSourceTopology;
 };
 
+struct SurfaceCellFailureLocusDiagnostics {
+  std::optional<std::size_t> sourceVertex;
+  std::optional<std::array<std::size_t, 2>> sourceEdge;
+  std::optional<std::array<std::size_t, 3>> sourceFace;
+  std::optional<int> branch;
+  std::optional<std::size_t> topologyRegion;
+  std::size_t publishedFaceCount = 0U;
+  std::vector<std::array<std::size_t, 3>> publishedFaces;
+  std::string vertexArrivalMode;
+  std::optional<bool> barrierAbsorbed;
+  std::optional<bool> barrierIncident;
+  std::optional<std::size_t> barrierDegree;
+  std::optional<std::size_t> transportStarComponentCount;
+};
+
 struct SurfaceCellStageLineage {
   std::string stage;
   SurfaceCellObjectIdentity inputObject;
@@ -121,8 +137,12 @@ struct RemeshDiagnostics {
   std::string surfaceCellFallbackCause;
   std::string originalSurfaceCellFailureCode = "None";
   std::string originalSurfaceCellFailureStage;
+  std::string originalSurfaceCellFailureDetailCode = "None";
+  SurfaceCellFailureLocusDiagnostics originalSurfaceCellFailureLocus;
   std::string terminalFailureCode = "None";
   std::string terminalFailureStage;
+  std::string terminalFailureDetailCode = "None";
+  SurfaceCellFailureLocusDiagnostics terminalFailureLocus;
   bool surfaceCellFallbackAttempted = false;
   bool surfaceCellUsedLegacyFallback = false;
   bool surfaceCellReturnedInputMeshFallback = false;

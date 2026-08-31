@@ -163,6 +163,8 @@ struct FieldAlignedTraceStepDiagnostic {
   auto operator<=>(const FieldAlignedTraceStepDiagnostic &) const = default;
 };
 
+enum class FieldVertexArrivalMode : std::uint8_t;
+
 struct FieldAlignedCurveNetworkError {
   FieldAlignedCurveNetworkErrorCode code =
       FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding;
@@ -174,6 +176,8 @@ struct FieldAlignedCurveNetworkError {
   std::optional<authority::SourceFaceTopologyKey> relatedSourceFace;
   std::optional<authority::FieldBranch> branch;
   std::optional<authority::FieldBranch> relatedBranch;
+  std::optional<authority::TopologyRegionId> topologyRegion;
+  std::optional<FieldVertexArrivalMode> vertexArrivalMode;
   std::optional<int> signedLift;
   std::optional<authority::ExactUnitParameter> parameter;
   std::vector<authority::FieldExactRational> exactValues;

@@ -3351,9 +3351,48 @@ struct Cp4cProductionFixture {
   std::optional<directional::geometry::GlobalTopologyPlan> plan;
   std::string terminalFailureCode;
   std::string terminalFailureStage;
+  std::string terminalFailureDetailCode;
+  directional::SurfaceCellFailureLocusDiagnostics terminalFailureLocus;
   std::string loadError;
 };
 
+void append_cp4c_failure_locus(
+    std::ostream &report,
+    const directional::SurfaceCellFailureLocusDiagnostics &locus) {
+  if (locus.sourceVertex.has_value())
+    report << ";sourceVertex=" << *locus.sourceVertex;
+  if (locus.sourceEdge.has_value())
+    report << ";sourceEdge=" << (*locus.sourceEdge)[0] << '-'
+           << (*locus.sourceEdge)[1];
+  if (locus.sourceFace.has_value())
+    report << ";sourceFace=" << (*locus.sourceFace)[0] << ','
+           << (*locus.sourceFace)[1] << ',' << (*locus.sourceFace)[2];
+  if (locus.branch.has_value()) report << ";branch=" << *locus.branch;
+  if (locus.topologyRegion.has_value())
+    report << ";topologyRegion=" << *locus.topologyRegion;
+  if (!locus.vertexArrivalMode.empty())
+    report << ";arrivalMode=" << locus.vertexArrivalMode;
+  report << ";publishedFaceCount=" << locus.publishedFaceCount;
+  if (!locus.publishedFaces.empty()) {
+    report << ";publishedFaces=";
+    for (std::size_t index = 0U; index < locus.publishedFaces.size(); ++index) {
+      if (index != 0U) report << '|';
+      const auto &face = locus.publishedFaces[index];
+      report << face[0] << ',' << face[1] << ',' << face[2];
+    }
+  }
+  if (locus.barrierAbsorbed.has_value())
+    report << ";barrierAbsorbed="
+           << (*locus.barrierAbsorbed ? "true" : "false");
+  if (locus.barrierIncident.has_value())
+    report << ";barrierIncident="
+           << (*locus.barrierIncident ? "true" : "false");
+  if (locus.barrierDegree.has_value())
+    report << ";barrierDegree=" << *locus.barrierDegree;
+  if (locus.transportStarComponentCount.has_value())
+    report << ";transportStarComponentCount="
+           << *locus.transportStarComponentCount;
+}
 
 
 directional::pipeline::RemeshOptions cp4c_remesh_options() {
@@ -5319,6 +5358,9 @@ Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
   fixture.plan = products.globalTopologyPlan;
   fixture.terminalFailureCode = result.diagnostics.terminalFailureCode;
   fixture.terminalFailureStage = result.diagnostics.terminalFailureStage;
+  fixture.terminalFailureDetailCode =
+      result.diagnostics.terminalFailureDetailCode;
+  fixture.terminalFailureLocus = result.diagnostics.terminalFailureLocus;
   return fixture;
 }
 
@@ -5336,7 +5378,9 @@ Cp4cProductionFixture build_cp4c_production_fixture(
     failure << fixtureName
             << " pipeline did not retain CP4c topology authority: "
             << fixture.terminalFailureCode << '/'
-            << fixture.terminalFailureStage;
+            << fixture.terminalFailureStage
+            << ";detailCode=" << fixture.terminalFailureDetailCode;
+    append_cp4c_failure_locus(failure, fixture.terminalFailureLocus);
     if (fixture.atlasError.has_value()) {
       failure << ';';
       append_atlas_error(failure, *fixture.atlasError);
