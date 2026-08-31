@@ -53,7 +53,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; CB3 build green on package 71 with Amendment 16/P2 compiled; TB3 artifact-only selector 373 next** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB3 preflight blocked on package-mode transport; review froze package-only CB4-PKG correction before selector retry** |
 
 ### 2.1 CP4c-0
 
@@ -343,8 +343,7 @@ packaged test/benchmark executables were mode `0644`; policy forbids `chmod`, re
 compilation inside artifact-only TB. Result/log artifacts are `9760518962` (`ec5bc5cccb99e38e4ce77533478c5864e756735b3511575d843bbafb328f4677`) and `9760519355`
 (`b803c9f81df4a5acbea642860d88f8c61f3df8f13d2204cf836344f6efb1016d`). Selector execution is **0/373** and all runtime/build/mutation flags remain false.
 
-`M3-CP4c3-TB3-ORCH-01` records this as an **ACTIVE / BUILD-PACKAGING CONTRACT DEFECT / NON-STABLE** blocker. The
-exact mode-loss stage is intentionally unadjudicated until independent review. Stable accounting remains **44 / 14 /
+`M3-CP4c3-TB3-ORCH-01` is **ROOT CAUSE ESTABLISHED / AWAITING PACKAGE-ONLY CORRECTION / NON-STABLE**. Independent TB3-REV proved raw artifact 9750227619 preserves all six exact binaries as `0755`, while CB3 fixture packaging materialized it through `actions/download-artifact@v4`, normalizing files to `0644` before final re-upload. Binary bytes stayed identical. A replacement compile is unnecessary; CB4-PKG must emit a mode-preserving tar envelope from the raw compile authority. Stable accounting remains **44 / 14 /
 30**, debt **5**, semantic packages **70**. Exact successor: independent **`M3-CP4c-3-TB3-REV` — REVIEW + PLAN**;
 no repackage, rebuild, permission repair, or runtime retry before review.
 
@@ -416,12 +415,13 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md`
-5. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
-6. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`
-7. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
-8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
-9. `Regression_Root_Cause_Tracker.md`
-10. this consolidated record only when historical lineage is needed.
+4. `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md`
+5. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md`
+6. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
+7. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`
+8. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
+9. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+10. `Regression_Root_Cause_Tracker.md`
+11. this consolidated record only when historical lineage is needed.
 
-**Exact next:** independent **`M3-CP4c-3-TB3-REV` — REVIEW + PLAN** on the pre-runtime executable-mode packaging blocker. No repackage, rebuild, mode repair, or runtime retry before review.
+**Exact next:** **`M3-CP4c-3-CB4-PKG` — package-only Code + Build** under TB3-REV measures AO0–AO5. No Directional runtime or replacement compile; successor runtime is an artifact-only TB3 retry only after a corrected immutable package passes mode-preserving closeout.

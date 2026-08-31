@@ -28,13 +28,7 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-31 at `M3-CP4c-3-TB2-REV`, which accepted TB2 as a valid semantic red at ordinal
-**366**, **confirmed Amendment 15 effective at runtime** (the mechanical witness advanced past `IncompleteCycleBasis`
-with the accepted 365 prefix still green), established the next cause — `MissingSingularityBranchTransport`, the
-same disagreement one consumer later, **proved pre-existing and merely unmasked** — and declared **Amendment 16**.
-Measures **AN0–AN9**; exact next is `M3-CP4c-3-CB3`, Code + Build, runtime-free. If the head commit is far ahead, trust
-`TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
-"where we are" section; the architecture and recurring-defect sections age much more slowly.
+**Currency.** Last updated 2026-08-31 at `M3-CP4c-3-TB3-REV`. TB3 itself executed no Directional runtime: package 71 stopped before ordinal 1 because all six executables were `0644`. Independent review traced the defect to Actions artifact permission normalization during CB3 fixture packaging: raw compile artifact 9750227619 preserves the same six binary bytes as `0755`, while `actions/download-artifact@v4` materializes artifact files as `0644` before final re-upload. ORCH-01 is therefore a packaging-metadata defect, not a product red. Exact next is `M3-CP4c-3-CB4-PKG`, a package-only runtime-free correction using a mode-preserving tar envelope; no replacement compile is justified.
 
 ---
 
@@ -141,6 +135,8 @@ trace-crossed proposal (369) and the typed empty-network rejection (370), plus A
 (371–373). All eight are red or unreached today, which is correct for a required-green selector.
 `M3-CP4c-3-DEFN` also put the **prescribed sphere in the gate** after two checkpoints outside one, and decided
 `R8-CAND-02`.
+
+**TB3 packaging review is now decisive.** Package 71 never reached runtime. Raw CB3 artifact `9750227619` independently retains all six exact executable hashes with mode `0755`; final package 71 retains those bytes but exposes `0644`. The loss point is the fixture-packaging job's `actions/download-artifact@v4` materialization boundary. The correction is transport-only: package the immutable tree inside `tar.gz` so executable metadata survives outer Actions transport. Accepted authority remains CP4c-2 at **365/365**; CP4c-3 selector 373 is still frozen and runtime-unproved beyond the prior TB2 first-red history. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
 **Phase 1 is done and its answers are in.** `M3-CP4c-3-TB1` (run/job `33340448381 / 99335020672`, immutable CB1
 package `9739919234`, semantic source `48dd011c4aa689a245b74527ed9df0900ada9bf3`) re-proved the **accepted 365
@@ -437,6 +433,8 @@ CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4
    orchestration that produced package 70, and the two manifests (28 vs 55 entries) are not comparable line for
    line. Owned by **AN2**: publish the four per-binary SHA-256 from packages 69 and 70 side by side.
 
+9. **`M3-CP4c3-TB3-ORCH-01` — executable permission is package authority.** TB3 stopped at preflight because final package 71 carried all six runtime binaries as `0644`. Review proved raw CB3 artifact 9750227619 stores the same exact bytes as `0755`; the fixture job then passed the tree through `actions/download-artifact@v4`, whose permission-loss behavior normalizes files to `0644`, before re-upload. Root cause is established. The next package must preserve modes inside an archive envelope; TB must never repair them.
+
 **Closed in CP4c-2, do not re-open:** `PR8-R043`, `PR8-R044` (proved on a bounded *and* a closed witness),
 `R7-ORCH-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-CAND-01`, `R8-ORCH-01`, `R9-CAND-01`, `R9-ORCH-01`; measure **AD3**
 (ordinal 359 — the raw `face.orbit` index in a semantic digest is proved by test, and the falsifier is cited beside
@@ -571,6 +569,8 @@ depending on an author remembering it.
 A sixth, meta-level: **a result that discharges a premise must be reported as a finding, not left as a field
 value.** The torus's `pipelinePlanAvailable=true` — the fact that A2a′ works end to end — sat unremarked in an
 evidence table under a "semantic red" verdict.
+
+**Artifact bytes are not the whole package contract.** Executable permission is semantic runtime metadata for packaged binaries. A transport can preserve every file hash while silently destroying executability. If a package crosses Actions artifact download/upload boundaries, carry permission-sensitive trees inside a mode-preserving archive and verify modes after a clean round trip. Never make TB repair package permissions: that hides a packaging defect and invalidates immutable-artifact authority.
 
 ## 9. Where to look
 

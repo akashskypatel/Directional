@@ -26,32 +26,21 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB3-REV` (independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB4-PKG` (package-only Code + Build)
 
-`M3-CP4c-3-TB3` is **COMPLETE / BLOCKED — PRE-RUNTIME / NO SEMANTIC VERDICT**. Preflight run/job
-`33399144281 / 99510922630` verified exact immutable package **71** (`9750235004`, `bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`), its complete internal
-manifest, semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, packaged source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, and package-relative fixtures.
-Before ordinal 1, all six packaged test/benchmark executables were found as mode **`0644`**; the frozen artifact-only
-contract prohibits `chmod`, repacking, permission repair, or replacement compilation. Result/log artifacts:
-`9760518962` (`ec5bc5cccb99e38e4ce77533478c5864e756735b3511575d843bbafb328f4677`) / `9760519355` (`b803c9f81df4a5acbea642860d88f8c61f3df8f13d2204cf836344f6efb1016d`). Selector execution: **0/373**.
+`M3-CP4c-3-TB3-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**. Independent review proved `M3-CP4c3-TB3-ORCH-01` is permission-metadata loss in the CB3 fixture-packaging transport: raw compile artifact `9750227619` preserves all six exact binaries as `0755`; `actions/download-artifact@v4` normalizes downloaded files to `0644`; the fixture job then re-uploaded those normalized files as package 71. Binary bytes match exactly. A replacement compile is unnecessary and would add variance.
 
 ### Exact next turn
 
-Run independent **`M3-CP4c-3-TB3-REV` — REVIEW + PLAN**. Determine exactly where executable-mode authority was
-lost across the raw compile package, fixture-packaging step, and final Actions artifact transport. Decide whether the
-minimal correction is a byte-identical, mode-preserving package-only transport or requires a new Code + Build package,
-and freeze the successor plan before any package regeneration, rebuild, or TB retry. Do not infer product semantics
-from this blocker.
+Run **`M3-CP4c-3-CB4-PKG`** under review measures AO0–AO5 in `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md`. Produce a new immutable package from raw artifact `9750227619` using a mode-preserving `tar.gz` envelope, with package-relative fixtures copied only from the embedded verified source archive. No Directional runtime, product/test/selector semantic edit, replacement compile, or TB-side `chmod` is authorized.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-ORCH-01` — package 71 final artifact has six non-executable (`0644`) binaries; review owns the
-  causal trace and correction boundary.
+- [ ] `M3-CP4c3-TB3-ORCH-01` — root cause established; closes only when the corrected immutable package independently preflights with all six exact hashes and `0755` modes after transport.
 - [ ] **C2 / mechanical witness:** runtime-prove Amendment 16/P2 at ordinal 366; TB3 provided no runtime evidence.
 - [ ] `M3-CP4c3-TB2-CAND-01` — cause established/pre-existing; closes only on ordinal 366 green.
 - [x] `M3-CP4c3-TB2-REV-CAND-01` — package 69/70 binary identity independently proved in CB3.
-- [ ] `M3-CP4c3-TB2-ORCH-01` — package-relative fixture contract is corrected in source/package 71 but runtime-root
-  selection remains unproved because TB3 stopped on executable modes before runtime.
+- [ ] `M3-CP4c3-TB2-ORCH-01` — package-relative fixture source/package correction exists, but runtime-root selection remains unproved because TB3 stopped before runtime.
 - [ ] `M3-CP4c3-DEFN-R1-CAND-01` — compile-green only; ordinal 373 remains runtime-unproved.
 - [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains ACTIVE / ONE LEVEL SHORT; ordinal 368 remains runtime-unproved.
 - [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains runtime-unproved.

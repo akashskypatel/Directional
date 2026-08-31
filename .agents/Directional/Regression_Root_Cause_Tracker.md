@@ -1,11 +1,11 @@
-## M3-CP4c3-TB3-ORCH-01 — package 71's immutable Actions artifact has no executable test binaries — **ACTIVE / BUILD-PACKAGING CONTRACT DEFECT / NON-STABLE / PRE-RUNTIME**
+## M3-CP4c3-TB3-ORCH-01 — package 71 loses executable modes at Actions artifact re-materialization — **ROOT CAUSE ESTABLISHED / AWAITING PACKAGE-ONLY CORRECTION / NON-STABLE / PRE-RUNTIME**
 
-- **Observed at `M3-CP4c-3-TB3` preflight**, run/job `33399144281 / 99510922630`, before any Directional process executed.
-- **Mechanism proved.** Exact package 71 (`9750235004`, `bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`) and its complete internal manifest/source authority verify, but all six packaged test/benchmark executables extract as mode `0644`; `non_executable_binary_count=6`. The artifact-only TB contract forbids `chmod`, repacking, permission repair, or replacement compilation.
-- **Causal boundary.** The final immutable artifact is unusable as runtime authority. Current evidence does not yet prove whether mode information was lost in the raw compile package, the package-fixtures step, or Actions artifact transport; do not guess or repair inside TB.
-- **Semantic disposition.** `0/373` identities executed, so this is not a product regression and gives no evidence for or against Amendment 16/P2 or any checkpoint-local identity.
-- **Owning successor:** independent `M3-CP4c-3-TB3-REV` must trace the package/mode chain and decide the minimal mode-preserving correction before any repackage/rebuild/retry.
-- **Accounting:** unaccepted checkpoint, pre-runtime packaging contract defect. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
+- **Observed at `M3-CP4c-3-TB3` preflight**, run/job `33399144281 / 99510922630`, before any Directional process executed. Final package 71 verified byte/source/manifest authority but all six runtime executables were `0644`; selector execution was `0/373`.
+- **Root cause independently established at `M3-CP4c-3-TB3-REV`.** Raw CB3 artifact `9750227619` (`b1cc9a989af2db84ddd2ad83babf9b2221396e45a165aa84927082e610c351c8`) stores every runtime binary as Unix `100755`, and mode-preserving extraction restores `0755`. Fixture job `99423544681` then materialized that artifact with `actions/download-artifact@v4`, which documents permission loss / file normalization to `0644`, copied fixtures, and re-uploaded the normalized directory. Final package 71 has the same six binary SHA-256 values but `100644` ZIP modes.
+- **Semantic disposition.** Binary bytes are unchanged; this is transport metadata loss, not a product regression. Package 71 remains unusable as runtime authority and must not be repaired in TB.
+- **Owning correction:** `M3-CP4c-3-CB4-PKG` starts from raw artifact 9750227619, independently re-proves its six `0755` modes and exact hashes, relocates the immutable embedded fixture tree, and emits a `tar.gz` package envelope that preserves permissions across Actions transport. No replacement compile or semantic source/test/selector edit is authorized.
+- **Closure condition.** ORCH-01 closes when the new immutable package is independently preflighted after transport with all six exact binary hashes and `0755` modes, without runtime-side repair.
+- **Accounting:** **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
 ## M3-CP4c3-TB2-REV-CAND-01 — package-70 binary identity is self-reported and never compared against package 69 — **ACTIVE / EVIDENCE GAP / NON-STABLE**
 
