@@ -38,5 +38,5 @@ jobs:
     if: ${{ needs.validate-caller.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      source_sha: 4f8747b7f920589bc41fdf5c7217942f5921d700
+      source_sha: 49536cf7b4b261bd52f36a91c861b6459db356a4
       artifact_prefix: m3-cp4c3-cb6
