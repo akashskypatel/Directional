@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-CB5
-purpose=apply verified diagnostic-only work-preservation patch
-base_sha=09dda5cf520028025542a9c4c2cce288d9280679
-retry=0
