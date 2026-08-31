@@ -8,6 +8,71 @@
 - **Causality not assigned.** The red may be pre-existing/unmasked, a changed-port reachability consequence of P2, or another consumer/representation/election mismatch. The fact that it follows CB3 is not causality evidence.
 - **Owning next turn:** independent `M3-CP4c-3-TB3-R1-REV` under `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`. No unchanged TB retry.
 - **Accounting:** unaccepted checkpoint; accepted 365-prefix remains green. **+0 stable events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
+- **`M3-CP4c-3-TB3-R1-REV` adjudication — INVARIANT FIXED, CAUSE STILL NOT ESTABLISHED, AND THAT IS THE FINDING.**
+  - **The invariant.** `resolve_field_vertex_transit` (`src/geometry/SurfaceCellTracing.cpp:557-640`) answers "a
+    trace arrived at vertex `v` in face `F` on branch `b`; which single `(face, branch)` does it continue into?"
+    It BFS-walks `(face, branch)` states, gates each on frame presence and matching `sourceComponent` /
+    `topologyRegion`, requires **exactly one** `FieldBranchBoundaryPairing` per branch in a frame, tests candidacy
+    only when `arrivalMode == EdgeTransit` **or** the state's face differs from the arrival face, expands **only**
+    through `topology.transports()`, then elects on `candidates.size() == 1` after dedup on `(nextFace, nextBranch)`.
+  - **The election is exact.** `direction_in_vertex_sector` (`FieldTransportAtlas.cpp:1623-1654`) delegates to
+    `direction_in_incident_vertex_sector` (`:404-426`), a half-open partition over `FieldExactRational`:
+    `direction[next] > 0 && direction[previous] >= 0`. **No tolerance.** Cardinality is therefore a topological
+    fact, not a numerical accident, and "multiple candidates" would be a real representational ambiguity.
+  - **Zero is reachable by barrier truncation.** `topology.transports()` is the `FieldBranchTransportAdjacency`
+    set built from `adjacencies`, which excludes every `SourceBoundary`, `HardFeature` and `NonTraversable` edge by
+    construction, so the walk is confined to the connected component of `star(v) ∖ B(R)` containing the arrival
+    face. **Multiplicity is structurally expected at a *singular* vertex**: holonomy is a non-trivial quarter-turn,
+    so one face is reachable with different branches, dedup keeps them distinct, and two states can both pass the
+    predicate.
+  - **Amendment-16 audit: compliant, but missing a case.** The traversal already cannot cross a barrier — it is
+    Amendment-16-compliant by construction. What it lacks is a **response to truncation**: it reports "sector
+    unresolved" rather than "blocked by a barrier", although the network already models
+    `MandatoryBarrierTermination` as a frozen terminal kind. `LESSONS.md` 51 — read the siblings before believing
+    the shortcut is a design. **The correction must not restore uniqueness by widening the walk.**
+  - **Causality NOT assigned, on evidence rather than caution.** CB3's entire diff to `SurfaceCellTracing.cpp` is
+    **8 insertions / 1 deletion in two hunks inside `canonical_field_aligned_candidate`**;
+    `resolve_field_vertex_transit`, `direction_in_vertex_sector` and the sector predicate are **untouched**. But
+    P2 changed which traces exist and where they start, so unchanged code reached with a changed trace set can fail
+    for a new reason. Three mechanisms remain live, **none promoted**, each decided by one measurement:
+    **M1** barrier truncation → `publishedFaces` **empty**; **M2** singular-vertex multiplicity → `publishedFaces`
+    **size ≥ 2**; **M3** P2 consumer mismatch → the failing vertex is one of the four `BarrierAbsorbed` census
+    vertices. M3 is the leading suspicion — terminal ownership *is* port-keyed (`:832-839` raises
+    `InvalidNetworkTerminalOwnership` when no port matches `candidate.singularityPorts`) and P2 removed four ports
+    — and **AP4 forbids designing against it**. M1 and M3 are not exclusive.
+  - **Owning correction:** **AP2** measures the discriminator (all of it already exists in the typed error or in
+    CB3's census); **AP5** implements only after AP2 reports; **AP3** forbids any semantic change in CB5.
+  - **Closure condition:** ordinal 366 green in a run reaching at least 366. **+0 events / +0 recurrences.**
+
+## M3-CP4c3-TB3-R1-REV-CAND-01 — the pipeline failure funnel discards every stage's typed error locus — **ACTIVE / DIAGNOSTIC-SURFACE DEFECT / THIRD OCCURRENCE / NON-STABLE**
+
+- **Observed statically at `M3-CP4c-3-TB3-R1-REV`** from committed source; no runtime executed.
+- **Mechanism.** `fail_surface_cells` (`src/pipeline/RemeshPipeline.cpp:6146-6163`) takes only
+  `(SurfaceCellFailureCode, const std::string &stage)` and stores `terminalFailureCode` / `terminalFailureStage`.
+  **It has no locus parameter at all.** Every stage funnels through it, and every caller drops the typed error it
+  is holding — the A2a site (`:6673-6678`) reads `fieldAlignedBuild.error().code` and lets `sourceVertex`,
+  `sourceFace`, `branch` and `publishedFaces` die at the `return`. The test harness then composes its message from
+  `terminalFailureCode + "/" + terminalFailureStage`
+  (`tests/FieldAlignedCurveNetworkTests.cpp:5283-5285`).
+- **Third occurrence, and the shape is what matters.** TB1 (`IncompleteCycleBasis`), TB2
+  (`MissingSingularityBranchTransport`) and TB3-R1 (`VertexTransitSectorUnresolved`) each forced a review to
+  recover a locus by **elimination**. Each was answered with a *bespoke per-code* channel — AK1/AK2 added region
+  diagnostics, AN1 added atlas locus fields — and one call site had already grown a hand-rolled channel by
+  string-concatenating `"field-aligned-network/" + code`, which is a locus channel with room for exactly one field.
+  The project has been re-implementing the same channel once per stage while the structured object is dropped one
+  line later.
+- **Why it is not merely inconvenient.** In this instance the discarded field (`publishedFaces`) is precisely the
+  discriminator between two mechanisms needing opposite corrections, so the loss directly costs a turn.
+- **Owning correction:** **AP1** — give the boundary a **typed locus payload** (optional source vertex / face /
+  edge / branch / region plus a bounded published-face list), populate it from whichever stage error is in hand,
+  surface it in `RemeshDiagnostics`, and convert **all four** stage call sites (A1, A2a, A2a′, A2b) in one change,
+  retiring the string-concatenation channel at the same time. Additive only; no existing code, mapping or enum
+  value changes.
+- **Pattern:** `ORIENTATION.md` §8 gated-observation family — "an assertion that discards a typed error it already
+  holds" — at a boundary rather than at a call site. Recorded as `LESSONS.md` **69**; the companion measure-scoping
+  lesson is **68**.
+- **Closure condition:** a TB report that names the failing locus for a stage error without the review having to
+  derive it. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
 ## M3-CP4c3-TB3-ORCH-01 — package 71 loses executable modes at Actions artifact re-materialization — **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE / PRE-RUNTIME**
 

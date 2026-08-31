@@ -92,7 +92,9 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB3-R1-REV` (independent REVIEW + PLAN)
+## Mandatory next turn — `M3-CP4c-3-CB5` (Code + Build, diagnostic-only, runtime-free)
+
+`M3-CP4c-3-TB3-R1-REV` is **COMPLETE**: it accepted TB3-R1 as valid semantic evidence, confirmed **Amendment 16/P2** effective at runtime, reconstructed the failing invariant, **declined to assign causality**, widened Amendment 16's scope to every stage (`DESIGN.md` §7.2.1), and issued **AP0–AP9**. Record: `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`.
 
 `M3-CP4c-3-TB3-R1` is **COMPLETE / VALID SEMANTIC RED**. CP4c-3 remains **OPEN**. Authoritative runtime report: `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`; frozen successor plan: `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`.
 
@@ -113,27 +115,59 @@ The previous atlas stop `MissingSingularityBranchTransport` is cleared: the mech
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic packages **70**. New candidate `M3-CP4c3-TB3-R1-CAND-01` is active/non-stable.
 
-### Exact scope of `M3-CP4c-3-TB3-R1-REV`
+### What the review concluded — the successor's starting facts
 
-Review/planning only. Reconstruct the exact transit invariant and candidate walk; recover or explicitly identify the missing source vertex/face/branch/arrival-mode/candidate-face evidence; distinguish zero from multiple candidates; audit the interaction with the cut transport domain without ever crossing a hard-feature barrier; determine causality relative to Amendment 16/P2; adjudicate carried candidates; update `ORIENTATION.md`; and freeze exactly one bounded successor. No product/test/fixture/selector mutation, configure, compile, package, TB retry, or Directional runtime is authorized in review.
+- **Execution ACCEPTED.** Working tree byte-identical to packaged source `93ed2ff50…`; selector **373** and all six predecessor prefixes recomputed from committed bytes and reproducing exactly; 55-entry manifest, 27 package-relative fixtures, six executables at `0755` **without repair**; every mutation/build flag false.
+- **A1 is clear end to end.** Amendments 15 and 16/P2 are both proved at runtime, and **ordinals 1–365 stayed green** through both invasive A1 changes. CB3's census — 8 prescribed singularities, 4 barrier-incident, all `InteriorArc`, `d_B(v)=2`, 2-component star — also **statically confirms DEFN-R1's Theorem 2** (`n=16`, `m=12`, `c=4`, `χ(B)=4`, no cycles).
+- **The failing invariant.** `resolve_field_vertex_transit` (`SurfaceCellTracing.cpp:557-640`) BFS-walks `(face, branch)` states, expands **only** through the barrier-free `topology.transports()`, elects by an **exact** half-open sector predicate (`direction[next] > 0 && direction[previous] >= 0`, `FieldExactRational`, **no tolerance**), and requires exactly one candidate. Zero can come from barrier truncation; **multiplicity is structurally expected at a singular vertex**, because non-trivial holonomy makes one face reachable with different branches and the dedup on `(face, branch)` keeps them distinct.
+- **It already complies with Amendment 16** — it cannot cross a barrier. **What it lacks is a response to truncation**: it says "sector unresolved" where the network already models `MandatoryBarrierTermination`. A missing case, not a violation, so **the fix must not be "make it cross"**.
+- **Cause NOT established.** `resolve_field_vertex_transit` is **untouched** by CB3 (whose only tracing hunks are inside `canonical_field_aligned_candidate`), but P2 changed which traces exist, so untouched code reached with a changed trace set can fail newly. Three mechanisms, none promoted: **M1** zero candidates from barrier truncation; **M2** multiple candidates from singular-vertex holonomy; **M3** a P2 consumer mismatch — terminal ownership is port-keyed (`:832-839` raises `InvalidNetworkTerminalOwnership` when no port matches) and P2 removed four ports. **M3 is the leading suspicion and AP4 forbids designing against it.**
+- **The locus exists and was discarded at a boundary.** `error.publishedFaces` already distinguishes zero from multiple. `RemeshPipeline.cpp:6673-6678` reads only `.code`; `fail_surface_cells` (`:6146-6163`) has **no locus parameter at all**. Third consecutive turn losing a locus there.
+
+### Exact scope of `M3-CP4c-3-CB5`
+
+**Code + Build, diagnostic-only.** Compiles and packages; **executes no Directional runtime**; no gate execution, no benchmark. GMP/GMPXX linkage mandatory.
+
+1. **AP1** — give the surface-cell failure boundary a **typed locus payload** (optional source vertex/face/edge/branch/region plus a bounded published-face list), populated from whichever stage error is in hand, surfaced in `RemeshDiagnostics` beside `terminalFailureCode`. Convert **all four** stage call sites in one change (A1, A2a, A2a′, A2b) and retire the `"field-aligned-network/" + code` string channel in the same change. Additive only.
+2. **AP2** — publish what discriminates M1/M2/M3 for the ordinal-366 path: failing **source vertex**, arrival **face**, **branch**, **arrival mode** (`FaceInterior` vs `EdgeTransit`), `publishedFaces` with its **cardinality**, whether the vertex is one of the four `BarrierAbsorbed` census vertices, whether it is barrier-incident and with what `d_B(v)`, and the reachable star-component count.
+3. **AP3** — **no semantic correction in CB5.** A CB that also changes transit behaviour is out of scope and must be rejected at review even if ordinal 366 turns green.
+4. **AP4** — do not design against M3 until AP2 reports.
+5. **AP5** — the correction is sketched, not decided: M1 → a barrier-aware termination consistent with `MandatoryBarrierTermination` (read the siblings first, `LESSONS.md` 51); M2 → transiting a singular vertex is the wrong operation and the fix belongs to arrival/termination; M3 → reconcile A2a's port-keyed paths with A1's singularity facts.
+6. **AP6** — propose a frozen **non-gating** diagnostic pass executing ordinals **367–373** report-only after the first red, zero gate credit, no selector byte changed. Three consecutive TB runs have never executed them. Declining requires a written rationale.
+7. **AP7** — carry the unreached items unchanged; **AL4** still forbids designing the sphere's fix.
+8. **AP8** — audit by assumption and name at least one site satisfying the predicate **without** touching the symbols named in the review record.
+9. **AP9** — prohibited: giving a barrier a branch transport or otherwise crossing/closing one to make `candidates.size() == 1`; changing transit behaviour in CB5; weakening the election into "pick the first"; any tolerance in the sector predicate; reopening Amendments 12–16 or the P2 decision; renumbering or removing any error-enum value; changing any frozen selector byte.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent REVIEW + PLAN guidance
+- turn-based-coding-agent Code + Build guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md`
-1. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — exact valid-red runtime authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` — frozen AR0–AR7 review scope.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — Amendment 16/P2 authority and AN measures.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — exact semantic implementation/static evidence inherited by package 72.
-5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged frozen selector lineage.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — active candidate and stable-accounting rules.
-7. `TODO.md` / `M3_CP4c_Consolidated_Record.md` — current state.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md` — **AP0–AP9**, the reconstructed
+   invariant, the M1/M2/M3 enumeration and the single discriminating measurement.
+2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–16, normative; 16's scope now covers every stage.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — the valid-red runtime
+   authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — the AN1 census and P2 implementation
+   inherited by package 72.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — Amendment 16 origin and the AN
+   measures.
+6. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
+7. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged frozen selector lineage.
+8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — active candidates and stable-accounting rules.
+9. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — current state and retained lineage.
 
-Review only. Do not configure, compile, package, execute Directional, retry TB, or mutate product/test/fixture/selector semantics.
+Source CB5 will change or must audit: `src/pipeline/RemeshPipeline.cpp` — `fail_surface_cells` (`:6146-6163`) and
+the four stage call sites, the A2a one at `:6673-6678`; and read-only,
+`src/geometry/SurfaceCellTracing.cpp:557-640` (`resolve_field_vertex_transit`), `:832-862` (port-keyed terminal
+ownership), `:3069-3125` (CB3's P2 hunks), and `src/authority/FieldTransportAtlas.cpp:404-426, 1623-1654` (the
+exact sector predicate).
+
+**This is CODE + BUILD, diagnostic-only.** It compiles and packages and **executes no Directional runtime**; a gate
+may not be run, and transit behaviour may not change. A red TB after it routes to `REVIEW + PLAN` as usual.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

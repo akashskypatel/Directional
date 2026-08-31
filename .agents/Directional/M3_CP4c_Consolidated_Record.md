@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN** on semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`. Package-only CB4-PKG corrected ORCH-01 and froze mode-preserving package **72** (`9765247195`, Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`, inner tar `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`). Valid TB3-R1 run/job `33416686424 / 99568970224` then passed ordinals **1–365** and first-red at ordinal **366** with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; 367–373 remain unexecuted. The prior `MissingSingularityBranchTransport` locus is cleared and package-relative fixture authority is runtime-proved. New `M3-CP4c3-TB3-R1-CAND-01` is active/non-stable; exact next is independent **`M3-CP4c-3-TB3-R1-REV`**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 packages **70**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN** on semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, immutable mode-preserving package **72** (`9765247195`). Valid TB3-R1 run/job `33416686424 / 99568970224` passed ordinals **1–365** and first-red at ordinal **366** with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; 367–373 remain unexecuted for the third consecutive TB. `M3-CP4c-3-TB3-R1-REV` accepted that execution, **confirmed Amendment 16/P2 effective at runtime** — A1 is now clear end to end and the first red has moved into **A2a** — reconstructed the failing transit invariant, **declined to assign causality** because the locus was discarded by the pipeline failure funnel, widened **Amendment 16**'s scope to every stage, and issued **AP0–AP9**. `M3-CP4c3-TB2-ORCH-01`, `M3-CP4c3-TB2-REV-CAND-01` and `M3-CP4c3-TB3-ORCH-01` are resolved and runtime-proved. Exact next is **`M3-CP4c-3-CB5`**, Code + Build, **diagnostic-only**, runtime-free. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 packages **70**.
 
 ## 1. Separate current/future authority
 
@@ -31,7 +31,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md` — authoritative pre-runtime package-71 blocker evidence (`0/373`).
 - `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md` — current ORCH-01 root-cause adjudication and AO0–AO5 package-only correction authority.
 - `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — current valid semantic runtime authority for package 72; 365/365 accepted prefix green and first red at ordinal 366.
-- `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` — frozen next-turn review scope for `VertexTransitSectorUnresolved`.
+- `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` — the frozen AR0–AR7 scope that governed the TB3-R1 review.
+- `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md` — **current review authority: the reconstructed transit invariant, the M1/M2/M3 enumeration, Amendment 16's widened scope, and the AP0–AP9 measures that govern `M3-CP4c-3-CB5`.**
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -56,7 +57,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB3-R1 is 365 PASS then valid red at ordinal 366 `VertexTransitSectorUnresolved`; exact next is independent review** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; A1 clear end to end after Amendments 15 and 16/P2; TB3-R1 is 365 PASS then valid red at ordinal 366 in A2a; cause not established; next is diagnostic-only `CB5` under AP0–AP9** |
 
 ### 2.1 CP4c-0
 

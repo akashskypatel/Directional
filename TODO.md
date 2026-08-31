@@ -26,27 +26,61 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB3-R1-REV` (independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB5` (Code + Build, diagnostic-only, runtime-free)
 
-`M3-CP4c-3-TB3-R1` is **COMPLETE / VALID SEMANTIC RED** on immutable package **72**. Run/job `33416686424 / 99568970224` passed package/source/GMP/fixture/selector preflight, executed ordinals **1–365** as 365/365 green fresh processes, then first-red at ordinal **366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`. Ordinals 367–373 were not executed. Result/log artifacts are `9767376410` (`7f2c9492d2dae96dfcf1732c320e772be05538a3552ce6a673bd83eb9189824e`) and `9767376976` (`492d19f1e08fd339f130a07dfcf891a3b7bbaaf537483fb54af6e9b96095ad72`). Immutable postflight passed; no benchmark/build/repair/mutation occurred.
+`M3-CP4c-3-TB3-R1-REV` is **COMPLETE**: it accepted TB3-R1 as valid semantic evidence, **confirmed Amendment 16/P2
+effective at runtime**, reconstructed the failing invariant, **declined to assign causality** because the locus was
+discarded by the pipeline's failure funnel, widened **Amendment 16**'s scope to every stage, and issued
+**AP0–AP9**. Record: `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`.
 
-The prior `MissingSingularityBranchTransport` first-red is gone and the mechanical witness now reaches field-aligned-network construction, but the current production exception publishes only the typed code and not the underlying network error's source vertex/face/branch/candidate-face locus. `resolve_field_vertex_transit` rejects when its deduplicated exact continuation candidate count is not one, so TB3-R1 does not establish whether the failure has zero or multiple candidates.
+### What the review established
+
+- **A1 is clear end to end.** `MissingSingularityBranchTransport` is gone; the mechanical witness clears the cut
+  transport domain, tangent bundle, cycle basis, index accounting and port attachment, and first-reds for the first
+  time in **A2a**. Ordinals **1–365 stayed green** through a second invasive A1 change.
+- **The failing invariant:** `resolve_field_vertex_transit` walks `(face, branch)` states, expands **only** through
+  the barrier-free `topology.transports()`, elects by an **exact** half-open sector predicate (no tolerance), and
+  requires exactly one candidate. Zero can come from barrier truncation; **multiplicity is structurally expected at
+  a singular vertex** because holonomy makes one face reachable with different branches.
+- **The traversal already complies with Amendment 16** — it cannot cross a barrier. What it lacks is a *response*
+  to truncation, while the network already models `MandatoryBarrierTermination`. A missing case, not a violation:
+  **the fix must not be "make it cross".**
+- **Cause NOT established.** Three mechanisms, none promoted, one discriminating measurement: **M1** zero
+  candidates from barrier truncation; **M2** multiple candidates from singular-vertex holonomy; **M3** a P2
+  consumer mismatch, since terminal ownership is port-keyed and P2 removed four ports. **AP4** forbids designing
+  against M3.
+- **The locus was thrown away at a boundary for the third turn running.** `fail_surface_cells` takes only
+  `(code, stage)` and every caller drops the typed error it holds.
 
 ### Exact next turn
 
-Run independent **`M3-CP4c-3-TB3-R1-REV`** under `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`. Review/planning only: recover the transit invariant/locus, distinguish zero vs multiple candidates and `FaceInterior` vs `EdgeTransit`, adjudicate causality relative to Amendment 16/P2, and freeze one bounded successor. No semantic mutation, compile, package, TB retry, or additional Directional runtime is authorized in review.
+Run **`M3-CP4c-3-CB5`** — Code + Build, **diagnostic-only**, runtime-free, GMP/GMPXX linked, under **AP0–AP9**:
+
+1. **AP1** give the surface-cell failure boundary a **typed locus payload** and convert **all four** stage call
+   sites in one change; retire the string-concatenation channel in the same change;
+2. **AP2** publish what discriminates M1/M2/M3 — failing source vertex, arrival face, branch, arrival mode
+   (`FaceInterior` vs `EdgeTransit`), `publishedFaces` **cardinality**, whether the vertex is one of the four
+   `BarrierAbsorbed` census vertices, its `d_B(v)`, and the reachable star-component count;
+3. **AP3** no semantic correction in CB5 — diagnostic instrumentation first, by the frozen plan's own rule;
+4. **AP4** do not design against M3 until AP2 reports;
+5. **AP6** propose a frozen **non-gating** diagnostic pass so ordinals 367–373 stop being invisible after a first
+   red — three TB runs in a row have never executed them;
+6. **AP8** audit by assumption and name a site satisfying the predicate without touching the named symbols.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / SEMANTIC / CAUSE UNADJUDICATED / GATING / NON-STABLE** at ordinal 366 `VertexTransitSectorUnresolved`; owned by the independent review.
-- [ ] **C2 / mechanical witness:** Amendment 16 clears the prior atlas branch-transport failure, but ordinal 366 remains red downstream in field-aligned-network.
-- [x] `M3-CP4c3-TB2-REV-CAND-01` — package 69/70 binary identity independently proved in CB3.
-- [x] `M3-CP4c3-TB2-ORCH-01` — package-relative fixture authority and removal of the absolute source fallback are runtime-proved by TB3-R1 preflight/execution.
-- [x] `M3-CP4c3-TB2-CAND-01` **at its prior failure locus** — `MissingSingularityBranchTransport` no longer occurs; the gating identity remains open because it now fails later.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 remains runtime-unproved because first-red stopped at 366.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains ACTIVE / ONE LEVEL SHORT; ordinal 368 remains runtime-unproved.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains runtime-unproved.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains runtime-unproved.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / CAUSE NOT ESTABLISHED / GATING**; invariant fixed, three mechanisms
+  enumerated, discriminated by **AP2**.
+- [ ] `M3-CP4c3-TB3-R1-REV-CAND-01` — the pipeline failure funnel discards every stage's typed error locus; owned
+  by **AP1**.
+- [ ] **C2 / mechanical witness** — both A1 halves fixed and proved; the remaining red is in A2a.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 still runtime-unproved.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere ACTIVE / ONE LEVEL SHORT; ordinal 368 still runtime-unproved. **AL4** still
+  forbids designing its fix.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 still runtime-unproved.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 still runtime-unproved.
+- [x] `M3-CP4c3-TB2-REV-CAND-01`, `M3-CP4c3-TB2-ORCH-01`, `M3-CP4c3-TB3-ORCH-01` — resolved and runtime-proved by
+  package 72 and TB3-R1.
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **70**.
 
@@ -117,8 +151,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** Amendment 15 is implemented and **proved effective at runtime** — the mechanical witness passes the cycle basis and ordinals 1–365 stay green. It now first-reds at `MissingSingularityBranchTransport`, the same assumption at the singularity-port consumer, proved pre-existing and unmasked. Frame settled by **Amendment 16**; the port-emission policy is blocked on AN1's census (AN4) and implemented under AN5.
-- [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`. AM7 instrumentation is compile-green, but ordinal 368 was not reached because first-red stopped at 366; no sphere product disposition may be inferred from TB2.
+- [ ] **CP4c-3 criterion C2:** Amendments 15 and 16/P2 are both implemented and **proved effective at runtime** — the mechanical witness clears **all of A1** and ordinals 1–365 stay green through both changes. It now first-reds in **A2a** at `VertexTransitSectorUnresolved`. Cause not established; three mechanisms enumerated and discriminated by **AP2**, with **AP4** forbidding design against the leading suspicion.
+- [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`. AM7 instrumentation is compile-green, but ordinal 368 has never been reached — first-red has stopped at 366 in three consecutive TB runs. **AP6** proposes a non-gating diagnostic pass so 367–373 stop being invisible. No sphere product disposition may be inferred.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.

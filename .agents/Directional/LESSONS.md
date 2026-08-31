@@ -1132,6 +1132,28 @@ building any conclusion on it.**
     stage's typed error carries locus fields, **route the locus for every code that stage can raise**, in one
     change. A per-site instrumentation measure buys exactly one turn of visibility.
 
+68. **When a witness is advancing stage by stage, scope the measure to the pipeline, not to the stage that is
+    currently failing.** Three consecutive corrective measures were each satisfied *exactly* and each turned out
+    one level too narrow, and the narrowing was invisible precisely because the implementer complied. **AM2**
+    scoped a consumer audit by **symbol** (`globalVertexByLocal`) when the thing to audit was an assumption, so a
+    faithful search could not reach the consumer that broke. **AN1** scoped error instrumentation by **enum**
+    (`FieldAtlasBuildErrorCode`) while the witness was visibly clearing one stage per turn — and the next failure
+    was in a different stage's enum. **Amendment 16** was written for **A1** when its own reasoning covered every
+    stage. Each measure was narrower than the reasoning that produced it. Two rules. Write the measure's scope from
+    the *reasoning*, not from the code you happened to read: if the argument is about "any derivation that walks
+    transport", say that, not "A1". And prefer **a predicate a reader can apply to code you have not read** over an
+    enumeration of the code you have — an enumeration is a snapshot of your own search, and the next failure is by
+    definition somewhere you did not look.
+69. **A diagnostic channel rebuilt once per stage is a funnel defect wearing three costumes.** Three consecutive
+    review turns recovered a failure locus by elimination because the pipeline's surface-cell failure path takes
+    only `(code, stage)` and every caller drops the typed error it is holding — `fail_surface_cells` has no locus
+    parameter at all, and one call site had already grown a hand-rolled channel by string-concatenating the stage
+    name with the error code. Each turn answered with a bespoke per-code channel instead of fixing the funnel. When
+    the same information is lost at the same boundary twice, stop widening the caller and **give the boundary a
+    typed payload**, converting every call site in one change; the alternative is paying one turn per stage
+    forever. Corollary for reviewers: before writing "add a diagnostic for X", check whether the value already
+    exists in a typed object that something downstream is discarding — in all three cases it did.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

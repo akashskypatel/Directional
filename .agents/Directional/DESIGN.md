@@ -457,7 +457,8 @@ Because tracing is combinatorial and terminates on contact, invariant 3 holds by
 
 Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 frozen-definition documents; Amendment 15
 was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain, and Amendment 16 at
-`M3-CP4c-3-TB2-REV` generalizes it to every A1 derivation that walks transport. They are normative and
+`M3-CP4c-3-TB2-REV` generalizes it to every derivation that walks transport in any stage (scope widened at
+`M3-CP4c-3-TB3-R1-REV`). They are normative and
 are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
 withdrawn except where an amendment says so explicitly.
 
@@ -507,10 +508,15 @@ withdrawn except where an amendment says so explicitly.
   cycle and **fail closed** when it binds to nothing. Amendment 12 is not weakened: constructing a derived
   transport domain is not repairing an upstream product, exactly as Amendment 14 established for the derived
   arrangement. Source: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` §§2-7.
-- **Amendment 16 — every A1 derivation that walks transport is a transport-domain operation.** Amendment 15
-  defined a region's transport domain and applied it to the cycle basis. It applies to **every** A1 derivation
-  that traverses transport, without exception — including singularity port attachment, its incident-fan
-  construction, and any future consumer. A barrier edge is **never** traversed, never supplied with a branch
+- **Amendment 16 — every derivation that walks transport is a transport-domain operation.** Amendment 15
+  defined a region's transport domain and applied it to the cycle basis. It applies to **every** derivation
+  that traverses transport, in **any** stage, without exception — including singularity port attachment, its
+  incident-fan construction, A2a's vertex-transit resolution, and any future consumer. *(Scope widened from "every
+  A1 derivation" to every stage at `M3-CP4c-3-TB3-R1-REV`: the reasoning was never A1-specific, A2a's
+  `resolve_field_vertex_transit` already complies by consuming the atlas's barrier-free transport set, and stating
+  the obligation prevents a later turn from closing a red by widening a traversal across a barrier. A derivation
+  whose transport walk is **truncated** by a barrier must report or handle the truncation — terminating at the
+  barrier where the stage models that — and may never restore uniqueness by crossing one.)* A barrier edge is **never** traversed, never supplied with a branch
   transport, and never required to have one; supplying one so that a fan closes is the port-derivation form of
   Amendment 15's prohibited option C. Where a derivation assumed a **closed** ring or a fully traversable
   neighbourhood, that assumption is replaced by the corresponding transport-domain object: the fan of one local

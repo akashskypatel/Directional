@@ -1,3 +1,83 @@
+## 2026-08-31 — `M3-CP4c-3-TB3-R1-REV`: A1 is clear; the cause of the A2a red is deliberately not assigned
+
+Independent review and planning under the frozen `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`
+(**AR0–AR7**). Nothing executed, compiled, packaged or benchmarked; no gate selected or run; **no product, test,
+fixture, selector or build-logic byte changed**. Measures issued: **AP0–AP9**. Full record:
+`Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`.
+
+**Verified independently rather than accepted (AR0).** The working tree is byte-identical to packaged semantic
+source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, and selector **373** plus **all six** predecessor prefixes (355,
+357, 361, 365, 367, 370) were recomputed from committed bytes and reproduce exactly. TB3-R1 is admissible semantic
+evidence: immutable package 72 consumed directly, 55-entry manifest PASS, 27 package-relative fixtures, six
+executables at mode `0755` **without repair**, one identity per fresh process, first-red hard stop, and every
+mutation/build flag false.
+
+**Headline: Amendment 16 with policy P2 works, and A1 is now clear end to end.**
+`MissingSingularityBranchTransport` is gone. The mechanical witness clears the cut transport domain, the tangent
+bundle, the cycle basis, index accounting **and** singularity port attachment, and first-reds for the first time in
+**A2a**. **Ordinals 1–365 stayed green** through this second invasive A1 change, as they did through the first.
+CB3 chose P2 on measured evidence — 8 prescribed singularities, 4 barrier-incident, all `InteriorArc` with
+`d_B(v)=2` and a 2-component star — and that census **statically confirms DEFN-R1's Theorem 2**: the barrier graph
+is a four-component forest, `n=16`, `m=12`, `c=4`, `χ(B)=4`, **no cycles**.
+
+**The failing invariant, reconstructed (AR1).** `resolve_field_vertex_transit`
+(`SurfaceCellTracing.cpp:557-640`) resolves where a trace continues after arriving at a vertex. It BFS-walks
+`(face, branch)` states, expands **only** through `topology.transports()` — the barrier-free set — elects
+candidates by an **exact** half-open sector predicate (`direction[next] > 0 && direction[previous] >= 0` over
+`FieldExactRational`; **no tolerance**), and requires `candidates.size() == 1`. Cardinality is therefore a
+topological fact, not a numerical accident. Zero can arise from a barrier-truncated expansion; **multiplicity is
+structurally expected at a *singular* vertex**, because non-trivial holonomy makes one face reachable with
+different branches and the dedup on `(face, branch)` keeps them distinct.
+
+**The traversal already complies with Amendment 16 (AR3)** — it cannot cross a barrier, because the transport set
+has none. **What it lacks is a response to truncation:** it reports "sector unresolved" rather than "blocked by a
+barrier", although the network already models `MandatoryBarrierTermination` as a frozen terminal kind. A missing
+case, not a violation — so the fix must not be "make it cross". Both prohibited interpretations are restated and
+refused: no branch transport for a barrier edge, and no manufacturing uniqueness by widening the walk.
+
+**Amendment 16's scope widened from "every A1 derivation" to every stage** (`DESIGN.md` §7.2.1). Its reasoning was
+never A1-specific and A2a already complies by accident of consuming the atlas's transport set; stating the
+obligation prevents a later turn from closing this red by widening a traversal across a barrier.
+
+**Causality NOT established, and deliberately so (AR4).** CB3's entire diff to `SurfaceCellTracing.cpp` is 8
+insertions and 1 deletion in two hunks inside `canonical_field_aligned_candidate`; `resolve_field_vertex_transit`
+is **untouched**. But P2 changed which traces exist and where they start, so unchanged code reached with a changed
+trace set can fail for a genuinely new reason. Three mechanisms are enumerated, **none promoted**, and one
+measurement discriminates all three: **M1** barrier truncation with zero candidates; **M2** multiple candidates
+from singular-vertex holonomy; **M3** a P2 consumer mismatch — a vertex that is a singularity in A1's facts but has
+no port in A2a is invisible to A2a paths keyed on ports, and terminal ownership *is* port-keyed
+(`SurfaceCellTracing.cpp:832-839` raises `InvalidNetworkTerminalOwnership` when no port matches). M3 is the leading
+suspicion and **AP4 forbids designing against it**. The red is not called a regression merely because it follows
+CB3, nor pre-existing merely because the function is untouched.
+
+**The locus was recoverable and was thrown away at a boundary, for the third turn running (AR2).**
+`error.publishedFaces` already distinguishes zero from multiple, and `continuation_error` carries `sourceVertex`,
+`sourceFace` and `branch`. `RemeshPipeline.cpp:6673-6678` reads only `.code` and lets the object die at the
+`return`; `fail_surface_cells` (`:6146-6163`) takes only `(SurfaceCellFailureCode, stage string)` and **has no
+locus parameter at all**, so every stage loses everything but its name. TB1, TB2 and TB3-R1 have each answered with
+a bespoke per-code channel — one call site had already grown a hand-rolled one by concatenating
+`"field-aligned-network/" + code`. **AP1 fixes the funnel instead:** a typed locus payload, all four stage call
+sites converted in one change. Opened as `M3-CP4c3-TB3-R1-REV-CAND-01`; recorded as `LESSONS.md` **69**.
+
+**Owned: three consecutive measures of mine were scoped one level too narrowly** — AM2 by **symbol**, AN1 by
+**enum**, Amendment 16 by **stage** — each satisfied exactly, each narrower than the reasoning that produced it.
+Recorded as `LESSONS.md` **68**: when a witness is advancing stage by stage, scope the measure to the pipeline, and
+prefer a predicate a reader can apply to code you have not read over an enumeration of the code you have.
+
+**Resolved and runtime-proved (AR6):** `M3-CP4c3-TB2-ORCH-01` (package-relative fixture authority; the absolute
+compile-time source-root fallback is gone), `M3-CP4c3-TB2-REV-CAND-01` (CB3 compared the package 69/70 binary
+digests), and `M3-CP4c3-TB3-ORCH-01` (the mode-preserving tar envelope held). **Still unproved:** ordinals 367–373
+have been blocked by a first red at 366 in **three consecutive TB runs**, so Amendment 15's three self-checks, the
+prescribed sphere, the ordinary proposal and the empty-network rejection have never executed. **AP6** proposes a
+frozen **non-gating** diagnostic pass that runs them report-only after the first red — no selector byte and no gate
+semantics change — and requires a written rationale if declined.
+
+The successor is **diagnostic-only** by the frozen plan's own rule: with locus and cardinality unknown, no semantic
+correction is authorized. Gate **373** stays frozen and unselected. Accounting unchanged: **44 / 14 / 30**, debt
+**5**, semantic packages **70**, **+0 events / +0 recurrences**.
+
+Exact next: **`M3-CP4c-3-CB5`** — Code + Build, diagnostic-only, runtime-free, GMP/GMPXX linked, under AP0–AP9.
+
 ## 2026-08-31 — `M3-CP4c-3-TB3-R1`: valid semantic first red moves from atlas to vertex transit
 
 TB3-R1 is **COMPLETE / VALID SEMANTIC RED** on immutable package **72**. Run/job `33416686424 / 99568970224` passed package/tar/source/GMP/27-fixture/six-hash/six-`0755`/selector preflight and executed selector 373 from ordinal 1 as one exact identity per fresh process. Ordinals **1–365 passed**; ordinal **366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` first-red with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; 367–373 were not executed. Immutable postflight passed and no benchmark/configure/compile/relink/repair/generated discovery/mutation occurred. Result/log artifacts: `9767376410` (`7f2c9492d2dae96dfcf1732c320e772be05538a3552ce6a673bd83eb9189824e`) / `9767376976` (`492d19f1e08fd339f130a07dfcf891a3b7bbaaf537483fb54af6e9b96095ad72`). The prior `MissingSingularityBranchTransport` stop is cleared; the witness reaches network construction. New non-stable gating candidate `M3-CP4c3-TB3-R1-CAND-01` records the unresolved exact vertex-sector candidate cardinality/locus. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**. Exact next: independent `M3-CP4c-3-TB3-R1-REV`; no unchanged retry or implementation before review.
