@@ -28,6 +28,8 @@ Measure Amendment 17's one-datum vertex election on the exact mechanical product
 3. Verify all 58 internal `SHA256SUMS` entries, source commit, source-archive digest, clean source-status records, `runtimeExecution=false`, `packageRepair=false`, `exactArithmeticBackend=GMP`, and generated link evidence containing both GMPXX and GMP.
 4. Require exactly 27 package-relative fixture files and all six test/benchmark executables at mode `0755`.
 5. Recompute selector 373 and predecessor 357/358/361/365/367/370 hashes from immutable source. Require exactly 373 unique identities, 64-lowercase-hex digests, byte-prefix continuity, and static mapping of every identity to exactly one packaged executable.
+
+**Execution-time control correction (2026-08-31):** selector 358 is a retained historical fork, not a byte prefix of selector 373. Its exact hash/cardinality/uniqueness remain frozen and every 358 identity is present exactly once in selector 373; byte-prefix continuity resumes at selector 361. Authoritative TB5 used byte-prefix checks for 357/361/365/367/370 and exact-hash + set-subset continuity for 358. No selector byte changed.
 6. Record a package-tree byte/mode census for postflight comparison.
 7. No configure, compile, relink, generated discovery, package repair, source/test/fixture/selector mutation, or benchmark is permitted.
 

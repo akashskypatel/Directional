@@ -26,37 +26,41 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB5` (artifact-only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB5-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB6` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE**. Amendment 17 now elects vertex continuation from one incoming datum transported through the reachable fan; per-cell representatives remain diagnostics only. CB6 also makes ordinal 370's atlas precondition error readable and wires the prescribed-sphere no-source-edge path to `NoCarrierMatch / SourceEdgeUnavailable`. Exact report: `Architecture_M3_CP4c3_CB6_Code_Build_Report.md`.
+`M3-CP4c-3-TB5` is **COMPLETE / VALID SEMANTIC RED** on immutable package 74. Authoritative run/job
+`33448925069 / 99674216849` passed immutable preflight and postflight, re-proved **365/365**, and first-reds ordinal
+**366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` at
+`VertexTransitSectorUnresolved` with source vertex **11**, face `(8,10,11)`, branch 1, region 0, `FaceInterior`,
+`publishedFaceCount=0`, `barrierAbsorbed=false`, `barrierIncident=false`. No `vertexTransitState` records were
+serialized. Exact report: `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md`.
 
-### Immutable CB6 authority
-
-- semantic/evidence source `49536cf7b4b261bd52f36a91c861b6459db356a4`;
-- compile run/job `33445894845 / 99664857496`;
-- raw result/log artifacts `9778128771` / `9778129236`;
-- mode-preserving package **74** artifact `9778267541`, outer SHA-256 `bad0ade74ff8e47c9937013c0fcc3f1084272c66eda35a2db60800ff7b6b767d`, inner tar `c8d5167652ea95504252f5adb4d1dc5d9f463a4dfacfb7e5e11bd086fe935d8e`;
-- packaged source archive `5afa250d0dd8e003b91e7e5f887e3eed8658f16faa6754722bf8a2dd37a1c931`;
-- selector 373 unchanged at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- 27 package-relative fixtures, six executable test/benchmark binaries at `0755`, GMP/GMPXX link evidence, `runtimeExecution=false`.
+AP6 report-only 367–373 ran once after the gate verdict: **1 PASS / 6 RED, zero gate credit**. Sphere 368 now proves
+`NoCarrierMatch / SourceEdgeUnavailable`; 369 reconfirms `saturationUsed=true`; 370 publishes
+`NonIntegralCycleLift;topologyRegion=0`, classifying its constant-zero-field torus setup as an invalid diagnostic
+witness/precondition while leaving the intended empty-network product contract unmeasured; 371/372 remain blocked
+upstream; 373 passes synthetically but does not discharge the mechanical zero-unbound requirement.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB5`** exactly from `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Plan.md`: immutable package 74 only, selector from ordinal 1, one identity per fresh process, first-red hard stop, no rebuild/repair, then AP6 ordinals 367–373 once report-only with zero gate credit. A valid red routes to independent `REVIEW + PLAN`; a complete 373/373 green may close CP4c-3 after regression/candidate accounting and immutable postflight.
+Run **`M3-CP4c-3-TB5-REV`** exactly from
+`Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md`. Review only: independently reconstruct the vertex-11
+zero-state/zero-candidate transit path, explain why the CB6 state diagnostic vector is empty, determine whether the
+old vertex-30 Amendment-17 defect is cleared or merely masked, adjudicate the report-only findings, update
+`ORIENTATION.md`, and freeze one bounded successor. **No unchanged TB retry or semantic correction before review.**
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — Amendment 17 is implemented/compile-proved; **TB5 owns runtime acceptance** of the one-datum election.
-- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — diagnostic publication is compile-proved; **TB5 must classify the now-readable ordinal-370 atlas error before any witness repair**.
-- [ ] **C2 / mechanical witness** — A1 is clear; TB5 determines whether the A2a vertex election now clears.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — synthetic ordinal 373 remains partial; mechanical `unboundSingularityCount=0` is still owed.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere subreason wiring is compile-proved; **TB5 measures it**; AL4 still forbids a sphere fix.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — runtime-confirmed `saturationUsed=true`; deferred behind mechanical gate.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — intended cut-graph contract remains unaccepted until ordinal 370 gets past its atlas precondition.
-- [x] `M3-CP4c3-TB3-R1-REV-CAND-01` — resolved/runtime-proved typed locus.
-- [x] `M3-CP4c3-TB4-ORCH-01` — resolved pre-runtime sidecar error.
+- [ ] `M3-CP4c3-TB5-CAND-01` — new gating locus: vertex 11 / face `(8,10,11)` / branch 1 / `FaceInterior`, zero candidates and zero state-diagnostic rows. Independent review owns cause.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — ordinal 366 remains red; TB5 does not prove whether Amendment 17 cleared vertex 30 or is masked by the earlier vertex-11 stop.
+- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — **classified as invalid diagnostic witness/precondition** by runtime `NonIntegralCycleLift`; intended empty-network product contract remains unmeasured and witness repair is not authorized in TB5.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 synthetic pass remains partial; mechanical `unboundSingularityCount=0` is still owed.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere is localized to `NoCarrierMatch / SourceEdgeUnavailable`; AL4 still forbids a sphere fix.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — runtime again confirms `saturationUsed=true`; deferred quality/coverage work.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — intended empty-network cut-graph contract remains unaccepted/unmeasured.
 
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **72**. No CB6 runtime occurred.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **72**. TB5 created no
+package and performed no benchmark/build/repair/mutation.
 
 ## Superseded — `M3-CP4c-3-TB2` execution record
 

@@ -1,3 +1,12 @@
+## M3-CP4c3-TB5-CAND-01 — Amendment-17 runtime moves ordinal 366 to a zero-candidate vertex-11 transit with no state diagnostics — **ACTIVE / GATING / CAUSE UNADJUDICATED / NON-STABLE**
+
+- **Observed in authoritative TB5.** Immutable package 74 / source `49536cf7b4b261bd52f36a91c861b6459db356a4`; run/job `33448925069 / 99674216849`; immutable pre/postflight PASS. Ordinals **1–365 PASS** and ordinal **366** first-reds exactly once.
+- **Measured locus.** `VertexTransitSectorUnresolved`; `sourceVertex=11`; arrival face `(8,10,11)`; branch 1; region 0; `FaceInterior`; `publishedFaceCount=0`; `barrierAbsorbed=false`; `barrierIncident=false`.
+- **What changed from TB4.** TB4 observed two candidates at regular vertex 30. TB5 reaches a different, earlier zero-candidate locus at vertex 11. This proves the runtime failure surface changed after CB6, but **does not prove vertex 30 accepted**; that defect may be cleared or merely masked.
+- **Diagnostic discriminator.** CB6 serializes every completed reachable transit state into `vertexTransitStates`, yet TB5 emits **zero state rows**. Independent review must enumerate and adjudicate the resolver's paths that fail before a diagnostic state is appended rather than assuming an ordinary sector miss.
+- **Owning next turn:** `M3-CP4c-3-TB5-REV` under `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md`. No unchanged TB retry or semantic correction before review.
+- **Stable-count rationale:** CP4c-3 remains unaccepted and the accepted 365-prefix is still 365/365 green. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **72**.
+
 ## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE FAMILY ESTABLISHED BY PROOF / M1+M2+M3 ALL FALSIFIED / GATING / NON-STABLE**
 
 - **Observed in valid TB3-R1.** Immutable package 72 preserved semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, all six frozen hashes/modes, and package-relative fixtures. Run/job `33416686424 / 99568970224` passed immutable pre/postflight.
@@ -144,6 +153,7 @@
   requires sweeping the test file for the same discard-the-typed-error pattern rather than fixing this one site.
   This is the fourth instance in this checkpoint of compiled-but-never-executed test authority turning out to be
   debt (`LESSONS.md` 56), and the strongest argument for retaining the AP6 report-only pass (**AS8**).
+- **TB5 classification.** AS3 succeeded: ordinal 370 now publishes `fieldAtlasError=NonIntegralCycleLift;topologyRegion=0`. The test supplies a globally constant ambient `UnitX/UnitY` field with zero matching/effort on a curved closed torus; that synthetic field fails A1's cycle-integrality precondition before the intended empty-network A2a′ contract. Classify this record as **invalid diagnostic witness/precondition**; the atlas rejection is legitimate fail-closed behavior. Do not repair the witness in TB5. `M3-CP4c2-TB-X2-R8-CAND-02` therefore remains unmeasured. +0/+0.
 
 ## M3-CP4c3-TB4-ORCH-01 — TB4 runner expected the wrong package-73 digest-sidecar filename — **RESOLVED / PRE-RUNTIME / NON-STABLE**
 
@@ -429,6 +439,7 @@
   singularities = 0 — have **never run**, and AM1's barrier decomposition, though computed, was not reported. Every
   DEFN-R1 prediction stays unverified, including the falsifier "a measured cycle in `B(R)` reopens the amendment".
   Closes when ordinals 371–373 execute green. **+0 events / +0 recurrences.**
+- **TB5 AP6 disposition.** Ordinals 371 and 372 execute report-only but are blocked upstream by the mechanical vertex-11 `VertexTransitSectorUnresolved`; they remain unmeasured, not falsified. Ordinal 373 passes on its synthetic fixture only. The record remains ACTIVE until the mechanical production witness supplies the required zero-unbound proof. +0/+0.
 
 ## M3-CP4c3-TB1-ORCH-01 — three pre-runtime preflight controls before authoritative TB1 — **CLOSED / ORCHESTRATION / NON-STABLE**
 
@@ -480,6 +491,7 @@
   the goalpost-moving this project corrected twice — including when the evidence favoured being strict
   (`PR8-R044` at R7-REV). The discipline holds when it favours leniency too.
 - **TB4 AP6 diagnostic disposition.** Ordinal 369 executes report-only and reaches its intended quality assertion; `certificate.saturationUsed` is `true`, so the ordinary trace-crossed proposal is still not selected without saturation. This directly reconfirms the active quality/coverage finding but adds no stable recurrence because the identity is on an unaccepted/report-only surface. TB4-REV owns scheduling relative to the mechanical blocker.
+- **TB5 AP6 disposition.** Ordinal 369 again reaches the intended assertion and reports `certificate.saturationUsed=true`. The quality/coverage finding is reproduced unchanged; report-only evidence carries zero gate credit and adds +0 stable recurrences.
 - **CP4c-3 DEFN disposition:** carried to CP4c-3 as owner, corrective unchanged and now measure **AK4**; the
   §6.2 identity `SurfaceCutGraph.OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation` is named for append into
   the gate under **AK7**, so the ordinary path stops being ungated.
@@ -1159,6 +1171,7 @@ accounting remains **42 events / 14 categories / 28 recurrences**, produced-witn
   checkpoint. The finding is material but non-stable: **+0 events / +0 recurrences**. Totals remain
   **42 / 14 / 28**, debt **5**.
 - **TB4 AP6 diagnostic disposition.** Ordinal 368 now executes report-only with zero gate credit and independently reproduces `surfaceCutGraphError=CellularityNotEstablished`, `originatingTopologyError=RotationSystemInconsistent`, `originatingRotationSystemReason=TraceEventPositionInvalid`, trace 2 / event 30. This confirms the current localization but does not resolve the two-way `TraceEventPositionInvalid` collapse or authorize a sphere correction; **AL4 remains binding**. +0/+0.
+- **TB5 AP6 localization.** AS6 is runtime-proved: the same trace 2 / event 30 now publishes `traceEventPositionFailure=NoCarrierMatch;traceEventPositionPass=SourceEdgeUnavailable`. The prior two-way collapse is resolved to the nonterminal no-source-edge path. This is localization only; **AL4 remains binding and no sphere semantic fix is authorized**. +0/+0.
 - **CB2-DIAG-R1 status:** D2 compiles against corrected source `c552a5a4a318063cde2564c40773ec7edaf064f6` but has not executed. **Candidate remains ACTIVE / UNLOCALIZED**; R3 may run D2 only after the torus and all-three-witness self-consistency stop gates pass. No product root cause or stable recurrence is inferred from compilation.
 
 

@@ -1,3 +1,21 @@
+## 2026-08-31 — `M3-CP4c-3-TB5`: 365-prefix green; first red moves to zero-candidate vertex 11
+
+TB5 is **COMPLETE / VALID SEMANTIC RED** on immutable package **74** / semantic source
+`49536cf7b4b261bd52f36a91c861b6459db356a4`. Authoritative run/job `33448925069 / 99674216849` passed immutable
+package/source/GMP/27-fixture/six-`0755`/selector preflight, ran exactly one identity per fresh process, re-proved
+**365/365**, then first-red ordinal **366** at `VertexTransitSectorUnresolved`: source vertex 11, face `(8,10,11)`,
+branch 1, region 0, `FaceInterior`, zero candidate faces, no barrier absorption/incidence, and no serialized
+`vertexTransitState` rows. This differs from TB4's two-candidate vertex-30 locus and requires independent review;
+Amendment 17 is not accepted merely because the old locus was not reached. AP6 367–373 ran once report-only with
+zero gate credit: **1 PASS / 6 RED**. Sphere 368 now proves `NoCarrierMatch / SourceEdgeUnavailable`; 369 again
+reports `saturationUsed=true`; 370 publishes `NonIntegralCycleLift;topologyRegion=0`, classifying its constant-zero-
+field torus setup as an invalid diagnostic witness/precondition; 371/372 are upstream-blocked; 373 passes
+synthetically only. Result artifact `9779114492` is `a4d9239e…ca55`; postflight PASS and every build/repair/mutation
+flag false. Two earlier control attempts produced no semantic evidence: one reusable-permission startup failure and
+one pre-runtime selector-358 lineage check corrected from byte-prefix to exact-hash/set-subset continuity. Stable
+accounting remains **44 / 14 / 30**, debt **5**, semantic packages **72**. Exact next:
+`M3-CP4c-3-TB5-REV` independent REVIEW + PLAN; no unchanged retry or semantic patch before review.
+
 ## 2026-08-31 — `M3-CP4c-3-CB6`: Amendment 17 build/package green; package 74 frozen
 
 CB6 is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at final semantic source
