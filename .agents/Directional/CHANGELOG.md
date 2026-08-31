@@ -1,3 +1,7 @@
+## 2026-08-31 — `M3-CP4c-3-CB4-PKG`: package 72 restores executable-mode transport authority
+
+CB4-PKG is **COMPLETE / PACKAGE GREEN / RUNTIME-FREE**. Package-only run/job `33411346157 / 99551438549` consumed raw CB3 artifact `9750227619` (`b1cc9a989af2db84ddd2ad83babf9b2221396e45a165aa84927082e610c351c8`) through the Actions artifact API, re-proved all six frozen binaries as byte-identical `0755`, copied exactly 27 fixtures only from embedded source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, regenerated the 55-entry manifest, and emitted mode-preserving package **72** without configure/compile/relink/runtime/benchmark. Artifact `9765247195` has Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`; inner `package72.tar.gz` is `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`. Independent post-download clean extraction re-proves source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, GMP authority, 27 fixtures, 55/55 manifest, and six exact hashes/modes. `M3-CP4c3-TB3-ORCH-01` is resolved non-stable; stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**. Exact next: artifact-only `M3-CP4c-3-TB3-R1` on package 72 and unchanged selector 373 from ordinal 1.
+
 ## 2026-08-31 — M3-CP4c-3-TB3-REV traces ORCH-01 and freezes package-only correction
 
 - Independent review proved raw CB3 artifact `9750227619` preserves all six exact runtime binaries with mode `0755`; final package 71 has identical binary hashes but `0644`.

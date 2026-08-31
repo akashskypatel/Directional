@@ -92,42 +92,42 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB4-PKG` (package-only Code + Build)
+## Mandatory next turn — `M3-CP4c-3-TB3-R1` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB3-REV` is **COMPLETE / APPROVED WITH AMENDMENTS**. Review record: `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md`. CP4c-3 remains **OPEN**.
+`M3-CP4c-3-CB4-PKG` is **COMPLETE / PACKAGE GREEN / RUNTIME-FREE**. CP4c-3 remains **OPEN**. Authoritative package report: `Architecture_M3_CP4c3_CB4_PKG_Code_Build_Report.md`; frozen runtime plan: `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`.
 
-### Root cause and immutable authority
+### Immutable package 72 authority
 
-- semantic/evidence source remains `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`; no semantic source change was authorized by review;
-- raw CB3 compile artifact `9750227619`, SHA-256 `b1cc9a989af2db84ddd2ad83babf9b2221396e45a165aa84927082e610c351c8`, contains all six runtime binaries with exact frozen bytes and Unix mode `100755`;
-- final package 71 `9750235004` has the same six binary hashes but mode `100644`;
-- CB3 fixture job `99423544681` materialized the raw package using `actions/download-artifact@v4`, whose documented permission-loss behavior normalizes downloaded files to `0644`, then re-uploaded the normalized tree;
-- `M3-CP4c3-TB3-ORCH-01` is therefore **ROOT CAUSE ESTABLISHED / AWAITING PACKAGE-ONLY CORRECTION / NON-STABLE**, not a product red;
-- TB3 remains `0/373`; stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
+- semantic/evidence source remains `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`; CB4-PKG made no semantic source/test/selector change;
+- raw compile authority remains artifact `9750227619`, SHA-256 `b1cc9a989af2db84ddd2ad83babf9b2221396e45a165aa84927082e610c351c8`;
+- package-only run/job `33411346157 / 99551438549` completed successfully with no configure, compile, relink, runtime, or benchmark;
+- immutable package **72** is artifact `9765247195`, Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`;
+- inner `package72.tar.gz` SHA-256 is `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`;
+- source archive remains `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`;
+- clean extraction verifies the self-excluding 55-entry manifest, exactly 27 package-relative fixtures, GMP/GMPXX authority, all six frozen executable hashes, and all six modes `0755`;
+- frozen selector 373 remains `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
+- `M3-CP4c3-TB3-ORCH-01` is **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE**. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
-### Exact scope of `M3-CP4c-3-CB4-PKG`
+### Exact scope of `M3-CP4c-3-TB3-R1`
 
-Execute review measures **AO0–AO5** only. Start from raw artifact 9750227619, verify its outer digest/internal authority plus all six frozen executable hashes and `0755` modes, populate the 27-file package-relative fixture tree only from the embedded verified source archive, prove binary hashes unchanged, regenerate `SHA256SUMS`, and produce a single mode-preserving `package72.tar.gz`. Clean-extract that tarball before upload and re-prove manifest/source/GMP/fixtures/hashes/modes. Runtime, benchmark, configure, replacement compile, relink, product/test/selector edits, and TB-side permission repair are forbidden.
-
-On success, freeze package 72 and author the artifact-only TB3 retry plan against unchanged selector 373 from ordinal 1 under first-red semantics.
+Consume package 72 only. Verify its outer Actions digest, inner tar digest, 55-entry manifest, source/source-archive identity, GMP evidence, exactly 27 fixtures, six exact executable hashes and six `0755` modes **without repair**. Recompute selector 373 and frozen prefixes. If preflight passes, execute ordinals 1–373 in order, one exact identity per fresh process, and stop immediately at the first semantic red. Any valid semantic red routes to independent `REVIEW + PLAN`; an orchestration blocker with no semantic verdict may restart only after the control defect is corrected and must restart from ordinal 1. No `chmod`, repack, configure, compile, relink, generated discovery, benchmark, or package/source/test/fixture/selector mutation is authorized.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Code + Build / CB guidance
+- turn-based-coding-agent Test + Benchmark / TB guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md`
-1. `.agents/Directional/Architecture_M3_CP4c3_TB3_Independent_Review_Record.md` — AO0–AO5 correction authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md` — blocked pre-runtime evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — raw/final package lineage and GMP compile authority.
-4. `.github/workflows/agent-compile-reusable.yml` only as historical raw-package production authority; CB4-PKG must not invoke a replacement compile.
-5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged future runtime selector.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — ORCH-01 closure condition and inherited candidates.
-7. `TODO.md` / `M3_CP4c_Consolidated_Record.md` — current state.
+1. `.agents/Directional/Architecture_M3_CP4c3_CB4_PKG_Code_Build_Report.md` — package 72 authority and AO0–AO5 closeout.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md` — exact TB3-R1 execution contract.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB3_Independent_Review_Record.md` — Amendment 16 packaging adjudication and retry authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged runtime selector.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — inherited candidates and stable-accounting rules.
+6. `TODO.md` / `M3_CP4c_Consolidated_Record.md` — current state.
 
-Do not execute Directional during CB4-PKG.
+Do not configure, compile, relink, repair, mutate package 72, or run benchmarks during TB3-R1.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
