@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-TB3-closeout
+purpose=apply preserved blocked-TB3 documentation patch
+base_sha=3689773a684245f9c973dd1089b4c0edfcbeeef7
+patch_sha256=dcea012f0864a4a0212af1188d52056e3e77c336a7d3e3850a2a51ff5121a110
+attempt=1
