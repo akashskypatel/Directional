@@ -1,0 +1,34 @@
+name: Agent Source Snapshot CP4 Consolidation 20260831
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/source-snapshot/cp4-consolidation-20260831.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-source-snapshot-cp4-consolidation-20260831
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: source-snapshot-cp4-consolidation-20260831
+      commit_run_file: false
+    secrets: inherit
+
+  snapshot:
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: ad37794ac2762ca1c053012cc6e65ab0e47a96e6
+      artifact_prefix: directional-source
+      retention_days: 7
+    secrets: inherit
