@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-30 (**CP4c-2 CLOSED / ACCEPTED at 365/365.** Authoritative R10 run/job `33331453506 / 99310594268` consumed immutable GMP package `9736088354`; selector 365 SHA-256 `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`, immutable pre/postflight passed, every mutation and benchmark flag false. Criteria C1/C3/C6 green. Carried to CP4c-3: the prescribed sphere, Amendment 14's ordinary trace-crossed proposal path (`R10-CAND-01`), and `R8-CAND-02`. **CP4c-3 phase 1 is complete and reviewed:** `M3-CP4c-3-TB1` re-proved 365/365 on immutable package **68** and first-red stopped at ordinal **366**; `M3-CP4c-3-TB1-REV` **established** the mechanical witness's cause — a non-separating `HardFeature` barrier edge stays interior to its topology region, so the cycle basis spans an edge the atlas deliberately gave no adjacency — and found the prescribed sphere's cause **one level short**, `TraceEventPositionInvalid` being itself a two-way collapse. The two causes share no locus. `M3-CP4c-3-DEFN-R1` then settled the normative question as **Amendment 15** (`DESIGN.md` §7.2.1): a region's *transport domain* is the region cut along its non-separating barrier set `B(R)`, cut in A1's derived local mesh only, with a derived endpoint rule and the Euler cut identity `χ(R_cut) = χ(R) − χ(B) + ∂`. Exact next is `M3-CP4c-3-CB2` under measures AM0–AM9, runtime-free.)
+**Status date:** 2026-08-31 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 CB2 is COMPLETE / BUILD GREEN / RUNTIME-FREE.** Amendment 15 option A′ is implemented at semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71` and compiled with mandatory GMP/GMPXX in package **69**, artifact `9742715856`, run/job `33347935915 / 99355596358`. Selector **373** is frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` with all 355/357/361/365/367/370 predecessor hashes and byte prefixes reverified. No gate identity executed in CB2. Exact next is artifact-only `M3-CP4c-3-TB2`; 373/373 closes CP4c-3, a valid semantic red routes to review.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 2 checkpoints remaining** | CP4c-1 **355/355**, `M3_CP4c1_Closure_Record.md` |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 TB2 pending on selector 373 |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **367 = accepted 365 + C2 + C3's full torus-and-mechanical form**, frozen at `M3-CP4c-3-DEFN`, SHA-256 `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`; extended to **370** by AL7 and to **373** by AM8 | **OPEN.** Phase 1 done: TB1 valid red at ordinal 366, cause established (a non-separating hard-feature barrier left interior to its region), corrective defined by **Amendment 15**. **NEXT:** `M3-CP4c-3-CB2` under AM0-AM9 |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** CB2 Amendment 15 option A′ is compile-green in GMP package **69**; no runtime executed. **NEXT:** artifact-only `M3-CP4c-3-TB2` on selector 373 |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

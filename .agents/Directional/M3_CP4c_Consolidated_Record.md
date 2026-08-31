@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN`, phase-1 `M3-CP4c-3-CB1`, `M3-CP4c-3-TB1`, its independent review `M3-CP4c-3-TB1-REV`, and `M3-CP4c-3-DEFN-R1` are complete; TB1 is a **VALID SEMANTIC RED** on immutable package **68**, after re-proving accepted **365/365** and first-red stopping at ordinal **366**. The review established the mechanical witness's cause and found the prescribed sphere's **one level short**; DEFN-R1 then settled the normative question as **Amendment 15** — a region's transport domain is the region cut along its non-separating barrier set, cut in A1's derived local mesh only. CP4c-3 remains **OPEN**; selector **367** is frozen, and the exact next turn is **`M3-CP4c-3-CB2`** (Code + Build, measures AM0–AM9, runtime-free). Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. `M3-CP4c-3-CB2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**: Amendment 15 option A′ is implemented at semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71` and compiled with mandatory GMP/GMPXX in immutable package **69**, artifact `9742715856`, run/job `33347935915 / 99355596358`. Selector **373** is frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; no gate identity executed in CB2. CP4c-3 remains **OPEN** and the exact next turn is artifact-only **`M3-CP4c-3-TB2`**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **69**.
 
 ## 1. Separate current/future authority
 
@@ -17,7 +17,11 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — accepted CP4c-2 gate authority.
 - `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2 closure/adjudication authority and current carry-forward source for CP4c-3.
 - `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — current CP4c-3 definitions, review decisions, and AK0–AK9 plan.
-- `Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — current frozen CP4c-3 gate.
+- `Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — retained frozen CP4c-3 prefix.
+- `Architecture_M3_CP4c3_Required_Green_Selector_370.txt` — retained AL7 prefix.
+- `Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — **current frozen CP4c-3 gate**.
+- `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — current compile/package evidence.
+- `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — exact successor execution authority.
 - `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — current measured phase-1 runtime authority.
 - `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — TB1 adjudication authority and the **AL0–AL9** measures; AL3/AL4 still govern the prescribed sphere.
 - `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — current definition authority: **Amendment 15** and the **AM0–AM9** measures that govern `M3-CP4c-3-CB2`.
@@ -34,6 +38,8 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | 361 prefix | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
 | accepted 365 prefix | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
 | CP4c-3 selector 367 | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` |
+| CP4c-3 selector 370 | `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525` |
+| **CP4c-3 selector 373** | **`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`** |
 
 ## 2. Checkpoint closure record
 
@@ -43,7 +49,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB1 valid red at ordinal 366; selector 367 frozen** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; CB2 build green on package 69; selector 373 frozen; TB2 next** |
 
 ### 2.1 CP4c-0
 
@@ -308,11 +314,11 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md`
-5. `Architecture_M3_CP4c3_Required_Green_Selector_367.txt`
-6. `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`
-7. `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md`
+4. `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md`
+5. `Architecture_M3_CP4c3_CB2_Code_Build_Report.md`
+6. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+7. `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`
 8. `Regression_Root_Cause_Tracker.md`
 9. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB2`** — Code + Build under **AM0–AM9**, runtime-free and GMP/GMPXX linked, implementing Amendment 15 (AM2–AM6), carrying AL3's sphere instrumentation (AM7), and freezing the **373** gate append (AM8). AM2 may not land without AM4, and the sphere's fix may not be designed before AL3 reports.
+**Exact next:** **`M3-CP4c-3-TB2`** — artifact-only Test + Benchmark on immutable GMP package **69**, selector **373**, with no rebuild/repair/benchmark and first-red hard-stop semantics. Green 373/373 closes CP4c-3; a valid semantic red routes to `REVIEW + PLAN`.

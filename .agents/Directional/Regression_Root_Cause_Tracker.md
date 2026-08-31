@@ -1,4 +1,4 @@
-## M3-CP4c3-DEFN-R1-CAND-01 — the interior-singularity binding does not fail closed while the boundary one does — **ACTIVE / LATENT PRE-EXISTING GAP / MADE REACHABLE BY AMENDMENT 15 / NON-GATING TODAY / NON-STABLE**
+## M3-CP4c3-DEFN-R1-CAND-01 — the interior-singularity binding does not fail closed while the boundary one does — **ACTIVE / CORRECTIVE COMPILE-GREEN / GATING AT 373 / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-DEFN-R1`** while deriving Amendment 15, on the source TB1 executed
   (`48dd011c4aa689a245b74527ed9df0900ada9bf3`, working tree byte-identical). No runtime was executed.
@@ -31,9 +31,9 @@
 - **Closure condition:** a run in which the mechanical witness reports zero unbound prescribed singularities and
   gated identity `PrescribedSingularityOnABarrierArcRemainsBoundToACycle` (appended under AM8, gate **373**) is
   green.
-- **Stable-count rationale:** found by static derivation in a definition turn; no runtime executed, no accepted
-  behaviour lost, and no gated identity binds it yet. **+0 events / +0 recurrences.** Totals remain
-  **44 / 14 / 30**, debt **5**, M3 packages **68**.
+- **`M3-CP4c-3-CB2` disposition — CORRECTIVE IMPLEMENTED / COMPILE GREEN / RUNTIME PENDING.** AM4 now requires an explicit cycle binding and reports local-cycle/slit-boundary/unbound counts. Evidence source `005512f20ed56edc793f4d6505f3d2b4c2999c71` compiles in GMP package **69**; ordinal **373** is compiled but unexecuted. Candidate remains non-stable until TB proves `unbound=0`.
+- **Stable-count rationale:** found by static derivation in a definition turn; no accepted behaviour is lost. Its new gating identity is compiled but unexecuted, so there is still no semantic recurrence evidence. **+0 events / +0 recurrences.** Totals remain
+  **44 / 14 / 30**, debt **5**, M3 packages **69**.
 
 ## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **ACTIVE / CAUSE ESTABLISHED / CORRECTIVE DEFINED BY AMENDMENT 15 / GATING / NON-STABLE**
 
@@ -158,6 +158,8 @@
   - **Owning correction now:** **AM1** (publish `B(R)`'s decomposition first), **AM2** (the cut), **AM3**–**AM6**
     (the controls), **AM8** (gate append 367 → 370 → **373**). Prediction on record: `B(R)` contains **no cycles**
     on the mechanical witness; a measured cycle falsifies the theorem and reopens the amendment.
+- **`M3-CP4c-3-CB2` disposition — OPTION A′ IMPLEMENTED / COMPILE GREEN / RUNTIME PENDING.** The A1 derived-local-mesh cut, barrier decomposition, cut identity, fail-closed singularity control and index/witness diagnostics compile at `005512f20ed56edc793f4d6505f3d2b4c2999c71` in package **69**. Supporting ordinals **371–373** and gating mechanical ordinal **366** are unexecuted; the candidate remains active/non-stable until TB.
+- **Current accounting after CB2:** stable totals remain **44 / 14 / 30**, debt **5**, M3 packages **69**.
 
 ## M3-CP4c3-TB1-ORCH-01 — three pre-runtime preflight controls before authoritative TB1 — **CLOSED / ORCHESTRATION / NON-STABLE**
 
@@ -223,6 +225,7 @@
   shares no locus with the mechanical A1 cause (`M3-CP4c3-DEFN-CAND-01`) or the sphere's A2a′ cause
   (`M3-CP4c2-TB-X2-CAND-04`), so it neither blocks nor is blocked by either. Carried as phase-2 work under **AL6**
   with its AK4 corrective and AK7 gate append exactly as written.
+- **`M3-CP4c-3-CB2` disposition — IDENTITY GATED, PRODUCT CORRECTIVE NOT CLAIMED.** Ordinal **369** `OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation` is frozen/compiled in selector 373, but CB2 does not establish that the canonical proposal heuristic changed; runtime remains required and the candidate stays active/non-stable.
 
 ## M3-CP4c2-TB-X2-R9-CAND-01 — trace-crossed selected cut edge is subdivided into multiple arcs but region binding still requires exactly one — **CLOSED AT R10-REV / PRODUCT AUTHORITY-SHAPE MISMATCH / NON-STABLE**
 
@@ -314,7 +317,7 @@
 - Execution run `33319546759` stopped in immutable preflight because Python ZIP extraction dropped packaged executable mode bits; zero Directional runtime.
 - The corrected caller was schema-valid on `33319885323`; authoritative run `33319911575` is the sole semantic R9 authority. **+0 stable accounting.**
 
-## M3-CP4c2-TB-X2-R8-CAND-02 — zero-node / zero-arc closed-surface cut-graph behavior is unresolved — **ACTIVE / PRODUCT-QUESTION / NON-GATING / NON-STABLE**
+## M3-CP4c2-TB-X2-R8-CAND-02 — zero-node / zero-arc closed-surface cut-graph behavior is unresolved — **ACTIVE / PRODUCT-QUESTION / GATING AT 370 / NON-STABLE**
 
 - **Observed from retained R8 evidence (AH1, no new runtime):** result artifact `9725240893`, ordinal 359 process `R8-CHECKPOINT-41e8933d9b0e719a`, contains **no `ADD_FAILURE` lines** and terminates only at `FieldAlignedCurveNetworkTests.cpp:2381`, `ASSERT_TRUE(baselineCutGraph)`. Therefore the local source-authority, atlas, and network failure branches were not taken; `SurfaceCutGraph::make(...)` itself returned failure. The retained stdout does **not** print the cut-graph error code or `originatingTopologyError`, so neither value is inferred or fabricated here.
 - **Input state:** R8-REV's static derivation remains authoritative: the closed torus atlas was built with no hard-feature edges, `rails_from_atlas(...)` was empty, and the zero-singularity torus therefore supplied a zero-node / zero-arc network to A2a′.
@@ -327,6 +330,8 @@
   authority. TB1 measured nothing that bears on it. Carried as phase-2 implementation work under **AL6** with its
   AK5 corrective and AK7 gate append (`EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError`) as written; it shares
   no locus with either measured cause, so it neither blocks nor is blocked.
+
+- **`M3-CP4c-3-CB2` disposition — IDENTITY GATED, PRODUCT CORRECTIVE NOT CLAIMED.** Ordinal **370** `EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError` and the appended error vocabulary compile at `005512f20ed56edc793f4d6505f3d2b4c2999c71`, but CB2 provides no runtime proof that the producer emits that error on the frozen closed-surface condition. Candidate remains active/non-stable.
 
 ## M3-CP4c2-TB-X2-R8-CAND-01 — ordinal 359 still reconstructs torus rails outside production authority — **CLOSED AT R9-REV / WITNESS-CONSTRUCTION / AUTHORITY-SURFACE MISMATCH / NON-STABLE**
 
@@ -1013,6 +1018,8 @@ one resolution short, and phase 2 is NOT authorized for this witness.**
   strategy or a sound typed stop before implementation resumes.
 - **Stable-count rationale unchanged:** CP4c-2 remains runtime-unaccepted and no accepted-green behavior was lost.
   **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, M3 packages **64**.
+
+- **`M3-CP4c-3-CB2` disposition — AM7 INSTRUMENTATION COMPILE GREEN / NO FIX AUTHORIZED.** Ordinal **368** now carries `NoCarrierMatch` versus `AmbiguousCarrierMatch`, precise/widened-pass provenance and candidate loci. It is compiled at `005512f20ed56edc793f4d6505f3d2b4c2999c71` but unexecuted; candidate remains **ONE LEVEL SHORT** until TB reports.
 
 ## M3-CP4c2-TB-X2-REV-CAND-01 — placeholder connector mutation during PR-closeout setup — **RESOLVED ORCHESTRATION / NON-STABLE**
 

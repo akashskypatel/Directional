@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-30 UTC
+Last updated: 2026-08-31 UTC
 
 ## Purpose
 
@@ -26,96 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB2` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-TB2` (Artifact-Only Test + Benchmark)
 
-`M3-CP4c-3-DEFN-R1` is **COMPLETE**: it settled AL2 by declaring **Amendment 15** and issued **AM0–AM9**. Record:
-`Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`; normative record: `DESIGN.md` §7.2.1.
+`M3-CP4c-3-CB2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** under Amendment 15 and AM0–AM9. Authoritative semantic/evidence source is `005512f20ed56edc793f4d6505f3d2b4c2999c71`; compile run/job `33347935915 / 99355596358` produced immutable GMP package **69**, result artifact `9742715856` (`2accc6d7cbbd48531919518ceb93a9d8f837b1c5683769a88ef915e4f092efc5`), log artifact `9742715997` (`f0f94864be943658bc4d461bdafc312b1d40333e7eca9d2dd4ae88cacdfb218b`), and packaged source archive `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`. Internal manifest **28/28 PASS**, all eight standard targets compile/link, source status is clean, `runtimeExecution=false`, and both GMPXX/GMP are on the authoritative link command. The earlier compile attempt failed only on default construction of the new diagnostics object and executed no runtime; the minimal explicit-constructor correction is included in the evidence source.
 
-`M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED / REVIEWED**. The independent review is
-`Architecture_M3_CP4c3_TB1_Independent_Review_Record.md`, measures **AL0–AL9**; the retained execution report is
-`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`.
+Selector lineage is now frozen through **373**: 370 `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525`, 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, with 355/357/361/365/367 hashes unchanged, cardinality=unique-cardinality, and every predecessor a byte-exact prefix. **No gate identity executed in CB2.**
 
-TB1 (run/job `33340448381 / 99335020672`, immutable package **68** artifact `9739919234`, semantic source
-`48dd011c4aa689a245b74527ed9df0900ada9bf3`) re-proved the accepted prefix **365/365 PASS** and hard-stopped at
-ordinal **366** — `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`. Execution
-validity is **ACCEPTED**: immutable package consumed directly, preflight/postflight PASS, every
-configure/compile/relink/repair/generated-discovery/benchmark/mutation flag false. Frozen selector **367** remains
-byte-identical at SHA-256 `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`, and the working tree
-is byte-identical to the packaged semantic source (`git diff --stat 48dd011c… HEAD -- tests/ src/ include/` empty).
+### What CB2 implemented
 
-### What phase 1 established
+- **AM1–AM6 / Amendment 15 option A′:** A1 derives the local transport mesh cut along `B(R)`, publishes the barrier decomposition, checks the Euler cut identity under new typed failure, fails closed on unbound prescribed singularities, and publishes the index/witness-kind correction. Region-product topology is unchanged.
+- **AM7:** the sphere now reports `NoCarrierMatch` versus `AmbiguousCarrierMatch` plus precise/widened-pass provenance; AL4 still forbids a sphere fix until runtime reports it.
+- **AM8:** ordinals 368–370 append the inherited sphere/R10/R8 identities; 371–373 append Amendment 15's barrier exclusion, cut identity, and singularity-binding identities.
+- **AL8 control:** orchestration digest authoring validates exact 64-lowercase-hex values before publication.
 
-- **Mechanical witness — CAUSE ESTABLISHED.** `CycleTransportAdjacencyMissing`, region `0`, source edge `0-3`,
-  `fieldTransportAdjacencyExists=false`; sole region `V/E/F=152/450/300`, χ=2, genus 0, `boundaryLoops=0`, 152
-  interior vertices / expected cycles / rows / curvatures, 450 inner adjacencies, `globalEF = localEF = 1,158`.
-  Edge `0-3` is a `HardFeature` **barrier** by elimination over the four adjacency buckets. Regions skip hard
-  features when flood-filling, but that **disconnects nothing unless the edges separate** — and on a χ=2 region they
-  provably cannot all be closed curves, so the feature set contains at least one **open arc**. The region
-  decomposition and the traversability classification disagree about the same edge.
-- **Prescribed sphere — ONE LEVEL SHORT.** `RotationSystemInconsistent → TraceEventPositionInvalid`, reached with
-  source topology, atlas and network all available (24 traces / 56 events). `TraceEventPositionInvalid` is itself a
-  two-way collapse (`positions.empty()` vs `positions.size() > 1`) whose branches need **opposite** fixes, plus a
-  widening second pass that can manufacture the ambiguous case. Not actionable until AL3 reports.
-- **The two causes do not share a locus** — A1 `FieldTransportAtlas` vs A2a′ `EmbeddedGraphTopology` — so they may
-  be worked independently.
-- Frozen non-gating diagnostics executed in full: **0 PASS / 3 RED**, report-only. Three workflow controls failed in
-  preflight and executed no Directional runtime; `33340448381` is the sole semantic TB1 authority. One control is
-  the **third** `R7-ORCH-01` malformed-digest occurrence, escalated to a mechanism by AL8.
-
-### What DEFN-R1 decided — Amendment 15
-
-A region's face set and its published `euler_characteristic()` / `boundary_loop_count()` are unchanged; **A1
-derives its tangent bundle, cycle basis and index quantities from the region cut along**
-`B(R) = { e ∈ hardFeatureEdges : both incident faces ∈ R }`. The cut lives in A1's **derived local mesh**, not in
-the region product — which literally cannot express an open slit, since `build_source_topology_regions` requires
-every region-boundary vertex to have exactly two boundary neighbours and an arc's tip has one.
-
-- **Endpoint rule:** `copies(v)` = connected components of `star(v) ∖ B(R)` = `d_B(v)` interior, `d_B(v) + 1` on
-  the boundary. An open arc's **tip is not duplicated** but does become a boundary vertex. Manifold, no geometry
-  moves, `set_mesh` re-derives every count.
-- **Identity:** `χ(R_cut) = χ(R) − χ(B) + ∂`. For the mechanical witness: `χ' = 2 − c`, `b' = c`, genus 0,
-  `interiorVertices' = 152 − |V(B)|`, `innerAdjacencies = 450 − |B|`, cycle-matrix rank deficiency stays **1**.
-- **Scope bound:** isolation seams are traversable by design and are **not** barriers.
-- **Costs:** replace (never delete) the `:1654` cross-check; the region moves from `ClosedShenSufficient` to the
-  weaker `RelativeBoundary` index branch; barrier vertices lose their inner-vertex cycle, so prescribed
-  singularities there must be re-bound and fail closed.
+CB2 does **not** claim the inherited `R10-CAND-01` proposal heuristic or `R8-CAND-02` empty-network product behavior is corrected. Their identities are now gated at 369/370 and compiled, not executed; runtime owns their disposition. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **69**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB2`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AM0–AM9**:
-
-1. **AM1** publish the barrier set and its component decomposition **before** cutting anything — this confirms the
-   elimination directly and falsifies the arithmetic if it disagrees;
-2. **AM2** implement the cut as a face-array rewrite in `make_local_region_mesh`, auditing every consumer of the
-   now many-to-one `globalVertexByLocal` **by search**, not by copying the DEFN's list;
-3. **AM3** replace the `:1654` cross-check with the cut identity under a new **appended** error code;
-4. **AM4** make the interior-singularity binding fail closed; publish bound/unbound counts, the last must be zero;
-5. **AM5** land AM2–AM4 together and declare whether option A′ or the frozen fallback D was taken;
-6. **AM6** report the per-region witness-kind change and absorbed `correction`;
-7. **AM7** carry AL3's sphere sub-reason instrumentation unchanged — **AL4 still forbids designing the sphere's
-   fix** until it reports;
-8. **AM8** freeze the gate append 367 → **370** (AL7) → **373** (Amendment 15's three identities), re-verifying all
-   five predecessor prefixes.
-
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **68**.
+Run **`M3-CP4c-3-TB2` artifact-only** under `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md`. Consume only artifact `9742715856` / semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`; no rebuild, repair, relink, generated discovery, package mutation, or benchmark. Preflight package/GMP/source/selector authority, then execute frozen selector **373** from ordinal 1, one identity per fresh process with first-red hard stop. Green **373/373** closes CP4c-3; any valid semantic red routes to `REVIEW + PLAN`.
 
 ### CP4c-3 open items
 
-- [ ] **C2 / mechanical witness** — cause established, corrective **defined** by Amendment 15; **AM5** owns the
-  implementation, **AM1** the confirming measurement.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — the interior-singularity binding does not fail closed
-  (`FieldTransportAtlas.cpp:1980-1990`). Pre-existing at HEAD, made reachable by the cut; owned by **AM4**.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — prescribed sphere, gated, **ACTIVE / ONE LEVEL SHORT**; **AL3/AM7** owns the next
-  resolution, **AL4** forbids designing across it.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — per-face-chord proposal-heuristic correction, AK4/**AL6**; unchanged by TB1,
-  no shared locus, neither blocks nor is blocked.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — typed empty-network rejection, AK5/**AL6**; same.
-- [ ] **AL7 / AM8** — append `PrescribedSphereWitnessDerivesRegionsThroughProductionEntryPath`,
-  `OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation`,
-  `EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError` to selector 367 producing **370**, then Amendment 15's
-  three identities producing **373**, with all five earlier prefixes re-verified. Omission requires a written
-  rationale.
-- [ ] **AL8** — move the 64-lowercase-hex digest validation into the orchestration payload authoring path itself.
+- [ ] **C2 / mechanical witness** — Amendment 15 option A′ is compile-green; ordinals 366/371/372/373 provide the runtime proof.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — AM4 correction is compile-green; ordinal 373 must prove zero unbound prescribed singularities before closure.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains **ACTIVE / ONE LEVEL SHORT**; ordinal 368 carries AM7 provenance, no fix authorized yet.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — gated at ordinal 369; product correction is not claimed by CB2 and remains runtime/open.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — gated at ordinal 370; typed-error product behavior remains runtime/open.
 
 ## Carried forward from M1
 
@@ -152,7 +88,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 selector **367** is frozen; CB1 phase-1 instrumentation is compile-green in package **68** and TB1 is a valid semantic red after re-proving the accepted **365/365** prefix. TB1 is now reviewed: the mechanical witness's cause is **established** (a non-separating hard-feature barrier left interior to its region), the prescribed sphere's is **one level short**, and the two do not share a locus. `M3-CP4c-3-DEFN-R1` settled the normative question as **Amendment 15** — a region's transport domain is the region cut along its non-separating barriers, cut in A1's derived local mesh only. Exact next is `M3-CP4c-3-CB2` under AM0–AM9.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 CB2 is **BUILD GREEN / RUNTIME-FREE** in GMP package **69** with selector **373** frozen. Amendment 15 option A′ is implemented; inherited sphere/R10/R8 semantics remain runtime-pending. Exact next is artifact-only `M3-CP4c-3-TB2` on package 69.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -162,8 +98,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** a non-separating `HardFeature` barrier edge stays interior to its topology region, so the cycle basis spans an edge the atlas deliberately gave no adjacency. Cause established at TB1; corrective **defined** by Amendment 15 (cut A1's derived local mesh along `B(R)`); implementation owned by `M3-CP4c-3-CB2` under AM2–AM6.
-- [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`, which is itself a two-way collapse. AL3 must distinguish `NoCarrierMatch` from `AmbiguousCarrierMatch` — and report which pass produced it — before any product fix.
+- [ ] **CP4c-3 criterion C2:** Amendment 15 option A′ is implemented and compile-green; TB2 must prove that cutting A1's derived local mesh along `B(R)` removes non-separating barriers from the local cycle basis and satisfies the cut identity without weakening singularity/index controls.
+- [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`. AM7 instrumentation that distinguishes `NoCarrierMatch` from `AmbiguousCarrierMatch` and precise/widened pass is compile-green; TB2 must report it before any product fix.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.

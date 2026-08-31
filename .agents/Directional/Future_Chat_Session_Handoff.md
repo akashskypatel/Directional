@@ -92,188 +92,60 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB2` (Code + Build, runtime-free)
+## Mandatory next turn — `M3-CP4c-3-TB2` (Artifact-Only Test + Benchmark)
 
-`M3-CP4c-3-DEFN-R1` is **COMPLETE**: AL2 is settled, **Amendment 15** is declared in `DESIGN.md` §7.2.1, and
-measures **AM0–AM9** are issued. Record: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`.
+`M3-CP4c-3-CB2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The authoritative Code + Build report is `Architecture_M3_CP4c3_CB2_Code_Build_Report.md`; the executable successor plan is `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
 
-`M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED / REVIEWED**. The retained execution authority is
-`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`; the adjudication and the successor measures
-**AL0–AL9** are `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md`.
+### Immutable CB2 build authority
 
-### Immutable TB1 authority
+- semantic/evidence source: `005512f20ed56edc793f4d6505f3d2b4c2999c71`
+- immutable GMP package **69**: result artifact `9742715856`, SHA-256 `2accc6d7cbbd48531919518ceb93a9d8f837b1c5683769a88ef915e4f092efc5`
+- packaged source archive SHA-256: `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`
+- compile run/job: `33347935915 / 99355596358`
+- diagnostic artifact: `9742715997`, SHA-256 `f0f94864be943658bc4d461bdafc312b1d40333e7eca9d2dd4ae88cacdfb218b`
+- internal manifest: **28/28 PASS**
+- all eight standard targets: **compile/link PASS**
+- exact arithmetic: `DIRECTIONAL_ENABLE_GMP=ON`, `libgmpxx` + `libgmp` verified, `exactArithmeticBackend=GMP`
+- source-status snapshots: clean
+- `runtimeExecution=false`; no Directional test, benchmark, discovery, CLI, fuzzer, or produced executable ran
 
-- semantic source: `48dd011c4aa689a245b74527ed9df0900ada9bf3`
-- immutable package **68** artifact: `9739919234`
-- package SHA-256: `127c7b086a8849de7f0c14928f2c5d762c3bf71711821d0a1fabfefda889d11c`
-- packaged source archive SHA-256: `f1fce7f720718c8ac974d0d5f77ca1fee4244b10c710d2b505a1af162e4f937f`
-- artifact-only run/job: `33340448381 / 99335020672`
-- result artifact: `9740416876`, SHA-256
-  `713d4e6853adde54e17738d6d25e5a310a5f88ff8e4232abf67bb73c7a8cbdc0`
-- diagnostic artifact: `9740417020`, SHA-256
-  `8302f6ae50a8d5d29f92952aed0f144eb78bda3f070612f3dec67a63701debc0`
-- immutable preflight/postflight: **PASS**
-- package/source immutable: **true**
-- no configure, compile, relink, repair, generated discovery, benchmark or mutation
+The first compile attempt `33347423799 / 99354145677` failed only because the new diagnostics object contained non-default-constructible `TopologyRegionId`; it executed no runtime. The minimal correction explicitly initializes the diagnostics/local-region object with `region.id()` and is the only semantic delta before the successful build above.
 
-Frozen selector 367 remains SHA-256
-`ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf`; all 355/357/361/365 prefix
-hashes remain unchanged.
+### CB2 product state
 
-### TB1 semantic result
+- **Amendment 15 option A′ is implemented and compile-green:** A1 cuts only its derived local transport mesh along `B(R)`, the region product is unchanged, the Euler cut identity replaces the stale uncut/local equality, and prescribed singularity binding now fails closed.
+- AM1/AM6 diagnostics publish barrier decomposition, cut topology, cycle/index shape, witness kind, and absorbed boundary correction.
+- AM7 distinguishes sphere `NoCarrierMatch` from `AmbiguousCarrierMatch` and precise/widened-pass provenance; **no sphere fix was designed**.
+- AL8's authoring-time digest validator is present.
+- The inherited `R10-CAND-01` proposal heuristic and `R8-CAND-02` empty-network product corrections are **not claimed implemented or accepted**. Their identities are compiled/gated and TB owns their disposition.
 
-Required execution: **366 executed / 365 PASS / 1 RED**. The accepted **365/365 prefix is green**. First red is
-ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`; ordinal 367
-was correctly not executed under first-red hard stop.
+### Frozen selector authority
 
-Measured phase-1 evidence:
+Selector **373** is current: SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. Selector 370 is `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525`. Frozen 355/357/361/365/367 hashes remain unchanged, every file has cardinality=unique-cardinality, and every adjacent predecessor is a byte-exact prefix. Ordinals 368–373 are, respectively: prescribed sphere, ordinary trace-crossed proposal, typed empty closed-surface network rejection, barrier exclusion from local cycle basis, Euler cut identity, and prescribed-singularity cycle binding. **No selector identity executed in CB2.**
 
-1. **Mechanical AK1:** `IncompleteCycleBasisReason=CycleTransportAdjacencyMissing`.
-2. **Mechanical AK2:** region `0`, source edge `0-3`, `fieldTransportAdjacencyExists=false`,
-   `V/E/F=152/450/300`, χ=2, boundary loops=0, genus=0, interior vertices=152, expected cycles=152,
-   cycle rows=152, cycle curvatures=152, inner adjacencies=450, local mesh/bundle available.
-3. **Sphere AK3:** `RotationSystemInconsistent → TraceEventPositionInvalid`; source topology, atlas and network are
-   available (24 traces / 56 events), then `SurfaceCutGraph` fails.
-4. Frozen non-gating diagnostics executed in full: **0 PASS / 3 RED**, report-only. Torus reaches a valid
-   `GlobalTopologyPlan` before its known downstream `tracing` failure; mechanical and sphere reproduce AK1–AK3.
-5. Three earlier attempts stopped in preflight with no Directional runtime; they are orchestration-only controls.
-   `33340448381` is the sole semantic runtime authority.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3 packages advance **68 → 69**.
 
-### What the review concluded — the successor's starting facts
+### Exact successor
 
-- **TB1 execution is VALID** and the working tree is byte-identical to the packaged semantic source
-  (`git diff --stat 48dd011c… HEAD -- tests/ src/ include/` empty), so every source claim in the review record
-  describes exactly what ran. CB1 delivered AK1–AK3 exactly as specified — an enumerated reason, additive, no
-  mapping changed and no enum value renumbered.
-- **Mechanical witness — CAUSE ESTABLISHED.** Edge `0-3` is a `HardFeature` **barrier**, by elimination over
-  `FieldTransportAtlas::make`'s four adjacency buckets (`SourceBoundary` excluded by `globalEF=1,158`,
-  `NonTraversable` by a single region over all 300 faces, `adjacencies` by the measurement). It entered the cycle
-  basis anyway because `build_source_topology_regions` skips hard-feature edges when flood-filling and **skipping
-  an adjacency disconnects nothing unless the edges separate** — region 0 is all 300 faces with `boundaryLoops=0`,
-  so the edge stayed interior to the local mesh and the transport walk demanded an adjacency the atlas
-  deliberately withheld. Region 0 is χ=2/genus 0/no boundary — a sphere — and every closed curve on a sphere
-  separates, so the feature set **necessarily contains at least one open arc**. The torus succeeds because its 48
-  hard-feature edges form four **separating** closed loops, putting them on region boundaries.
-- **Prescribed sphere — ONE LEVEL SHORT, phase 2 NOT authorized.** `TraceEventPositionInvalid` is itself a two-way
-  collapse in `trace_event_position` (`EmbeddedGraphTopology.cpp:138-173`): `positions.empty()` is a binding
-  defect, `positions.size() > 1` is an ambiguity, and they need **opposite** fixes. A widening second pass that
-  ignores `sourceFace` can also turn an empty precise pass into an ambiguous reported failure. Ambiguity is a
-  suspicion, deliberately **not** promoted to a finding.
-- **The two causes do not share a locus** (A1 `FieldTransportAtlas` vs A2a′ `EmbeddedGraphTopology`), so they may
-  be worked independently. That is what authorizes phase 2 for the mechanical witness alone.
-
-### What `M3-CP4c-3-DEFN-R1` decided — Amendment 15
-
-Record: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`. Normative record: `DESIGN.md` §7.2.1
-**Amendment 15**. AL2 is **settled**; measures **AM0–AM9** govern the successor.
-
-> A region's face set and its published `euler_characteristic()` / `boundary_loop_count()` are facts about the
-> **uncut** source complex and are unchanged. A1 derives its tangent bundle, cycle basis and index quantities from
-> the region's **transport domain**: the region **cut along**
-> `B(R) = { e ∈ hardFeatureEdges : both incident faces ∈ R }`.
-
-- **Two theorems bound it, both forced by construction.** *(i)* `B(R)` is the entire defect class — a
-  source-boundary edge and a region/component-crossing edge have at most one incident face in `R` and are already
-  local boundary edges; a traversable edge has an adjacency. Isolation seams are traversable **by design** and are
-  not barriers. *(ii)* The cut never disconnects, because a region *is* a connected component of the face graph
-  built without barrier edges — so no subset of `B(R)` separates `R`, and on a `χ=2, b=0` region every barrier
-  component is a **tree**.
-- **The cut lives in A1's derived local mesh, not the region product.** `build_source_topology_regions` requires
-  every region-boundary vertex to have exactly two boundary neighbours (`SurfaceCellTracing.cpp:6905`) and fails
-  the whole `SourceTopologyRegions` product otherwise; an arc's tip has one. Adding `B(R)` to
-  `region.boundaryEdges` therefore breaks A0/A2 outright. This is the Amendment 14 precedent — an immutability
-  guarantee constrains the writer, not a derived view.
-- **Endpoint rule:** `copies(v)` = connected components of `star(v) ∖ B(R)` = `d_B(v)` for interior `v`,
-  `d_B(v) + 1` on the boundary. **An open arc's tip is not duplicated** — the cut surface genuinely touches itself
-  — but becomes a boundary vertex with a single fan. Manifold with boundary; no geometry moves; `set_mesh`
-  re-derives `EV`, `EF`, `isBoundaryVertex` and `boundaryLoops` from the rewritten face array.
-- **Identity:** `χ(R_cut) = χ(R) − χ(B) + ∂`, `χ(B) = |V(B)| − |B|`. Mechanical witness: `χ' = 2 − c`, `b' = c`,
-  genus 0, `interiorVertices' = 152 − |V(B)|`, `expectedCycleCount' = 152 − |V(B)| + c`,
-  `innerAdjacencies = 450 − |B|`; cycle-matrix rank deficiency stays exactly **1**, as today.
-- **Why the failure becomes impossible rather than avoided:** `dual_cycles`' columns are **inner edges only**, so a
-  barrier edge that is now a boundary edge can never be a column, and `find_adjacency_in` is never called for it.
-
-### Exact scope of `M3-CP4c-3-CB2`
-
-**Code + Build.** Authors semantics, compiles, packages. **Executes no Directional runtime**; no gate execution, no
-benchmark. GMP/GMPXX linkage is mandatory (`GMP_COMPILE_POLICY.md`).
-
-1. **AM1** — publish the barrier set **before** cutting: `|hardFeatureEdges|`, whether edge `0-3` is a member, and
-   per component of `B(R)` its vertex/edge counts, `χ`, tree-or-cycle, degree-1 tips, degree-≥3 branch vertices,
-   and how many vertices lie on the region boundary. Publish the totals `n, m, c, χ(B), ∂` the identity consumes.
-2. **AM2** — implement the cut as a face-array rewrite in `make_local_region_mesh` per the endpoint rule.
-   `globalVertexByLocal` becomes **many-to-one**; audit every consumer **by search**, not by copying the DEFN's
-   list, and report what the search found and how each was classified.
-3. **AM3** — **replace** (never delete) the `:1654` local-mesh-versus-region cross-check with the cut identity,
-   under a **new appended** error code. Reusing `CanonicalBindingMismatch` is prohibited.
-4. **AM4** — make the interior-singularity binding fail closed (`FieldTransportAtlas.cpp:1980-1990`); publish per
-   witness how many prescribed singularities bound to a `LocalVertex` cycle, to a slit boundary cycle, and to
-   nothing — the last must be **zero**.
-5. **AM5** — land AM2–AM4 **together**; declare explicitly whether option A′ or the frozen fallback D was taken.
-6. **AM6** — report per region the witness kind (`ClosedShenSufficient` / `RelativeBoundary`), `requiredIndexSum`,
-   `interiorIndexSum`, `boundaryIndexSum` and the absorbed `correction`.
-7. **AM7** — carry AL3's sphere instrumentation unchanged (`NoCarrierMatch` vs `AmbiguousCarrierMatch`, the
-   trace/event/`sourceEdge`/`sourceFace` row, every candidate position when ambiguous, and **which pass** produced
-   the result). **AL4 stands: do not design the sphere's fix until AL3 reports.**
-8. **AM8** — freeze the gate append 367 → **370** (AL7's three identities) → **373**
-   (`NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis`, `CutTransportDomainSatisfiesTheEulerCutIdentity`,
-   `PrescribedSingularityOnABarrierArcRemainsBoundToACycle`), re-verifying all five predecessor prefixes.
-9. **AL8** — move the 64-lowercase-hex digest validation into the orchestration payload authoring path, the third
-   occurrence of `R7-ORCH-01` having proved a reminder insufficient.
-
-**Three costs are required work, not optional polish** — an implementation that lands the cut without them trades
-a red gate for an unverifiable certificate: AM3's replacement, AM6's disclosure that a slit region moves from the
-closed index **equality** to the weaker boundary-corrected branch, and AM4's fail-closed binding.
-
-## Standing product state
-
-- M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are **CLOSED / ACCEPTED**.
-- **CP4c-3 is open**. Selector 367 is frozen; TB1 re-proved 365/365 and first-red stopped at 366.
-- Mechanical C2's cause is **ESTABLISHED** and its corrective is **DEFINED**: a non-separating `HardFeature`
-  barrier edge remains interior to its topology region, so the cycle basis spans an edge the atlas deliberately
-  gave no adjacency. **Amendment 15** fixes the corrective — A1 derives from the region **cut along** `B(R)`, in
-  its own local mesh only. `M3-CP4c-3-CB2` implements it under AM2–AM6.
-- `M3-CP4c3-DEFN-R1-CAND-01` is open: the interior-singularity binding does not fail closed
-  (`FieldTransportAtlas.cpp:1980-1990`) while the boundary one does. Pre-existing at HEAD, made reachable by the
-  cut; owned by **AM4**.
-- The gated sphere is **ACTIVE / ONE LEVEL SHORT** at `TraceEventPositionInvalid`, which is itself a two-way
-  collapse. AL3 owns the next resolution; AL4 forbids designing across it.
-- `R10-CAND-01` and `R8-CAND-02` remain CP4c-3-owned phase-2 work under AL6 — unchanged by TB1, no shared locus,
-  neither blocks nor is blocked.
-- Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
-  packages **68**. TB1 added **+0 events / +0 recurrences**.
-- **Exact next is `M3-CP4c-3-CB2`**, Code + Build under measures AM0–AM9, runtime-free.
+Execute `M3-CP4c-3-TB2` strictly artifact-only on package 69. Preflight artifact/source/GMP/manifest/selector authority, then run selector 373 ordinal 1→373, one identity per fresh process, with first-red hard stop and every mutation/compile/repair/benchmark flag false. A green **373/373** closes CP4c-3. A valid semantic red routes to `REVIEW + PLAN`; do not repair or rebuild in TB.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Code + Build guidance
+- turn-based-coding-agent Test + Benchmark guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — **AM0–AM9**, Amendment 15 with its
-   two theorems, the endpoint rule, the cut identity, the three required controls, and the falsifiable predictions.
-2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–15, normative.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — AL0–AL9; AL3/AL4 still govern the
-   sphere and are carried as AM7.
-4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, phase boundary and
-   prohibitions; Amendment 15 extends this line, it does not replace it.
-5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen gate, the AM8 append base.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — measured candidates and stable accounting.
-7. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
-8. `TODO.md` / `CHANGELOG.md` — active scope and runtime evidence summary.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — **primary execution authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — package/source/build evidence and retained risks.
+3. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — frozen current gate; verify all predecessor hashes from committed bytes.
+4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` and `DESIGN.md` §7.2.1 — Amendment 15/AM0–AM9 semantic authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — AL3/AL4 sphere boundary and inherited AL6 work.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — active candidates and mandatory TB regression accounting.
+7. `TODO.md` / `CHANGELOG.md` — current status and evidence summary.
 
-Source CB2 will change or must audit: `src/authority/FieldTransportAtlas.cpp` — `make_local_region_mesh`
-(`:850-902`, the cut), the bucket classification (`:1456-1491`), the region cross-check (`:1654-1658`), the cycle
-loop and its `find_adjacency_in` call (`:1690-1761`), the index branch (`:1857-1898`), and the singularity
-reconciliation pair (`:1960-1976` strict, `:1980-1990` permissive). Read-only context:
-`src/geometry/SurfaceCellTracing.cpp:6655-6926` (`build_source_topology_regions`),
-`include/directional/geometry/MeshTopology.h:55-74` (`dual_cycles`' row/column contract), and
-`include/directional/core/TriMesh.h:202-241` (`set_mesh`'s derived boundary data).
-
-**This is CODE + BUILD.** It compiles and packages and **executes no Directional runtime**; a gate may not be run.
-A red TB after it routes to `REVIEW + PLAN` as usual.
+**This is TEST + BENCHMARK.** Consume the immutable package; do not edit implementation/test/benchmark/build logic and do not compile a replacement source revision.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
