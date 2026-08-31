@@ -1,3 +1,84 @@
+## 2026-08-31 — `M3-CP4c-3-TB4-REV`: all three enumerated mechanisms falsified; Amendment 17 declared
+
+Independent review, definition and planning under the frozen `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md`
+(**AQ0–AQ8**). Nothing executed, compiled, packaged or benchmarked; no gate selected or run; **no product, test,
+fixture, selector or build-logic byte changed**. Measures issued: **AS0–AS9**. Full record:
+`Architecture_M3_CP4c3_TB4_Independent_Review_Record.md`. Normative record: `DESIGN.md` §7.2.1 **Amendment 17**.
+
+**Verified independently (AQ0).** Working tree byte-identical to packaged source
+`2d22ef293363058cfdca96d01158a93d2c0200f8`; selector **373** and all six predecessor prefixes recomputed from
+committed bytes and reproducing exactly; 57-entry manifest, 27 fixtures, six executables at `0755` without repair,
+accepted **365 prefix green**, AP6 pass separated with zero gate credit, every mutation/build flag false. **CB5
+honoured AP3 exactly**: its only change to `resolve_field_vertex_transit` is two additive lines populating
+`topologyRegion` and `vertexArrivalMode` — no behaviour changed, which is what makes TB4's locus comparable to
+TB3-R1's.
+
+**AP4 did its job, and it saved a wrong fix.** The previous review named M3 — a P2 consumer mismatch at a
+`BarrierAbsorbed` vertex — as the leading suspicion and forbade designing against it. TB4 measured
+`barrierAbsorbed=false`, `barrierIncident=false` at source vertex **30**. The leading suspicion was wrong; so were
+the other two.
+
+**All three mechanisms are falsified.** M1 (barrier truncation → zero candidates): cardinality is **2**. M3 (P2
+consumer mismatch at an absorbed vertex): the vertex is neither absorbed nor barrier-incident. M2 (singular-vertex
+holonomy): **vertex 30 is regular** — reproduced from the committed fixture as six incident faces forming one
+closed, consistently oriented fan, with Poincaré–Hopf accounting for all eight index-`+1` singularities elsewhere
+(`4χ = 8` on this `χ = 2` witness), so no others can exist, and A1 would have rejected the atlas at
+`SingularityMismatch` had any interior vertex's turning lift disagreed.
+
+**A proof replaces the enumeration (AQ2).** The election predicate `direction[next] > 0 && direction[prev] >= 0` is
+an **exact partition** of the full turn around the vertex: adjacent wedges share exactly one ray, owned by the face
+where it is `next`, with no overlap, no gap and no tolerance. The two candidates are **fan-adjacent** — steps 2 and
+3 of a six-face fan whose step 0 is the excluded arrival face — sharing ray 30→31, which `(25,30,31)` owns and
+`(30,31,119)` excludes. A single direction can therefore elect **at most one** of them. Two were elected.
+**Therefore two geometrically distinct vectors were tested**, and the boundary-case explanation is dead. Answering
+AQ2's sharpest question: the candidates are **two representations of one semantic continuation**, not two
+continuations.
+
+**The surviving mechanism, named and not promoted.** **M4 — election by per-cell representative:** the routine
+asks, for every reachable `(face, branch)` state, whether *that face's own* representative of the transported
+branch is admissible in *that face's* wedge, and a cross field's per-face representatives are related by transport,
+**not equal as vectors**. **M5** is retained: the representative may not be the trace's continuation at all, making
+multiplicity generic rather than a boundary effect. **AS1** publishes both direction vectors and falsifies both if
+they are equal.
+
+**Causality relative to P2 (AQ3):** the M4 mechanism involves no barrier, no port and no singularity, and
+`resolve_field_vertex_transit` is untouched in behaviour by CB3 and CB5 — but `barrierAbsorbed=false` does **not**
+prove causal independence, since P2 changed which traces exist and where they start. The correct statement is **a
+pre-existing, P2-independent defect reached by a trace set P2 may have changed**; the correction is the same either
+way.
+
+**Amendment 17 declared**: an election among candidate cells is decided from a **single datum**, never one
+representative per cell — a partition disambiguates one point among cells and cannot disambiguate one point per
+cell. Prohibited, each removing the symptom rather than the cause: picking the first candidate or ordering faces;
+widening or narrowing the sector convention; any tolerance in a predicate that is exact today; and changing the
+`FaceInterior` exclusion to alter cardinality. **Left open pending AS1**, because it is a single-writer question:
+*which* single datum — the incoming direction transported into each candidate, the ray's geometric exit from the
+star, or a continuation owner published upstream by A1.
+
+**AP6's report-only pass paid for itself immediately (AQ5)**, converting a three-turn blackout into four findings:
+**369** gives the first *runtime* confirmation of `saturationUsed=true`, corroborating `R10-CAND-01` and staying
+deferred behind the mechanical gate; **370** stops at `ASSERT_TRUE(atlasBuild)` before its own contract and the
+cause is unreadable because the assertion **discards the typed error it holds** — the same anti-pattern AP1 just
+fixed on the product side, now at the test boundary, so classification is deferred to **AS3** rather than guessed;
+**373** passes on a **synthetic** fixture only, so `M3-CP4c3-DEFN-R1-CAND-01` is **partially** discharged and the
+mechanical zero-unbound count is still owed (**AS7**); and **367/371/372** are **blocked upstream**, which means
+Amendment 15's Euler-cut identity and barrier-exclusion contracts remain **unmeasured, not falsified** — a
+distinction this record makes explicitly so a later turn cannot misread it. Ordinal **368** reproduces the sphere's
+`TraceEventPositionInvalid` at trace 2 / event 30 for the third time **without ever publishing AL3/AM7's
+`NoCarrierMatch` versus `AmbiguousCarrierMatch` discriminator**; **AS6** determines whether the instrumentation is
+not reaching the report or was never wired. **AL4 remains binding.**
+
+**Owned: four consecutive turns, four scopes of mine too narrow** — by **symbol** (AM2), by **enum** (AN1), by
+**stage** (Amendment 16), and now by **enumeration of mechanisms**. Recorded as `LESSONS.md` **70**: enumerate
+mechanisms to design the measurement, never to bound the answer, and state which observation would fall outside
+every listed mechanism. `LESSONS.md` **71** records the reusable technical form: a partition test disambiguates one
+point among cells, not one point per cell.
+
+Gate **373** stays frozen and unselected. Accounting unchanged: **44 / 14 / 30**, debt **5**, semantic packages
+**71**, **+0 events / +0 recurrences**.
+
+Exact next: **`M3-CP4c-3-CB6`** — Code + Build, runtime-free, GMP/GMPXX linked, under AS0–AS9.
+
 ## 2026-08-31 — `M3-CP4c-3-TB4`: exact two-candidate transit locus measured; AP6 diagnostics executed
 
 TB4 is **COMPLETE / VALID SEMANTIC RED** on immutable package **73** / semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`. Authoritative run/job `33436492493 / 99634138202` passes immutable package/source/GMP/27-fixture/six-`0755`/selector preflight, re-proves **365/365**, then first-reds ordinal **366** at `VertexTransitSectorUnresolved`. CB5's typed locus exposes source vertex **30**, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, exactly two candidate faces `(25,30,31)` / `(30,31,119)`, `BarrierAbsorbed=false`, `barrierIncident=false`: M1's zero-candidate prediction and direct M3 are falsified, while M2's singular-holonomy cause remains unproved. AP6 then runs 367–373 once report-only with zero gate credit: **1 PASS / 6 RED**; 368 reproduces sphere `TraceEventPositionInvalid` trace 2/event 30, 369 reports saturation still used, 370 stops at `atlasBuild=false`, 373 passes. Result/log `9774693166` (`056f86df…8a7e`) / `9774693946` (`d2acc620…fcb6`); immutable postflight PASS and all build/repair/mutation flags false. Earlier `33436283363 / 99633462747` is resolved pre-runtime orchestration only: the runner expected `package73.tar.gz.sha256` instead of actual `package73.sha256`; control commit `41a7a8b…dde7b` corrected only that lookup. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **71**. Exact next: independent `M3-CP4c-3-TB4-REV`; no unchanged TB retry or semantic correction before review.

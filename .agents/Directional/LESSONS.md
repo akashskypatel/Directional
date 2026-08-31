@@ -1154,6 +1154,29 @@ building any conclusion on it.**
     forever. Corollary for reviewers: before writing "add a diagnostic for X", check whether the value already
     exists in a typed object that something downstream is discarding — in all three cases it did.
 
+70. **An enumeration of candidate *mechanisms* is exactly as dangerous as an enumeration of candidate
+    *consumers*.** At `M3-CP4c-3-TB3-R1-REV` I enumerated three mechanisms for a transit failure — barrier
+    truncation with zero candidates, singular-vertex holonomy, and a port-policy consumer mismatch — and one run
+    falsified **all three**: the cardinality was 2 (not 0), the vertex was neither barrier-incident nor
+    barrier-absorbed, and it turned out to be a **regular** vertex with trivial holonomy. The frozen review plan I
+    was working from had listed five possibilities including "exact sector predicate/election defect", which is
+    where the answer actually lives, and my own enumeration dropped it. An enumeration of mechanisms is a snapshot
+    of the reviewer's imagination, and the next failure is by definition somewhere they did not look. **Enumerate
+    mechanisms to design the measurement, never to bound the answer**, and state in the record which observation
+    would fall outside every listed mechanism — that sentence is what stops a falsified enumeration from becoming a
+    wrong correction. The measurement design is the part worth keeping: one published field (`publishedFaces`)
+    discriminated all three mechanisms at once, which is why a single run could kill them all.
+71. **A partition test disambiguates one point among cells; it cannot disambiguate one point per cell.** The vertex
+    transit election tests, for every candidate face, whether *that face's own* representative of the transported
+    branch lies in *that face's* angular sector. The sectors are an exact half-open partition of the full turn — no
+    overlap, no gap, no tolerance — so a single direction can elect at most one face. Two faces elected anyway,
+    which **proves** that two geometrically distinct vectors were tested: a cross field's per-face branch
+    representatives are related by transport, not equal as vectors. No refinement of the cells, no tightening of the
+    half-open convention and no ordering of candidates can fix this, because the non-uniqueness is not in the
+    cells. **When an election looks ambiguous, check whether every candidate is being tested against the same
+    datum before you touch the partition** — and when the predicate is already exact, ambiguity is evidence about
+    the *inputs*, never a reason to add a tolerance.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

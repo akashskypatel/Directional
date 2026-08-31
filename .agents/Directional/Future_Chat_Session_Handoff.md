@@ -92,90 +92,76 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB4-REV` (Independent Review + Plan)
+## Mandatory next turn — `M3-CP4c-3-CB6` (Code + Build, runtime-free)
 
-`M3-CP4c-3-TB4` is **COMPLETE / VALID SEMANTIC RED**. Authoritative report:
-`Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md`. CP4c-3 remains **OPEN**.
+`M3-CP4c-3-TB4-REV` is **COMPLETE**: it accepted TB4 as valid semantic evidence, **falsified all three** mechanisms the previous review enumerated, **proved** that the two elected continuation candidates are tested against two geometrically distinct directions at a **regular** vertex, declared **Amendment 17** (`DESIGN.md` §7.2.1), and issued **AS0–AS9**. Record: `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md`.
+
+`M3-CP4c-3-TB4` is **COMPLETE / VALID SEMANTIC RED**. Authoritative report: `Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md`.
 
 ### Immutable TB4 authority
 
-- semantic/evidence source `2d22ef293363058cfdca96d01158a93d2c0200f8`;
-- immutable package **73** artifact `9773591345`, Actions SHA-256 `8f3a8f0d6a3ad0931db89cb3e94c33d1d7e8a0d9e1aba27a6ad2690ec9c402a0`;
-- inner `package73.tar.gz` `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`;
-- source archive `36451a2473a8858225cf9eabb181a58a5397f400f7f0a99995a1b8da37a2cb4f`;
-- selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- authoritative TB run/job `33436492493 / 99634138202`;
-- result artifact `9774693166` / `056f86df2e387391227bcf52f59ba932dd64a5d02923a8ff688cd8e315ff8a7e`;
-- log artifact `9774693946` / `d2acc62037d0bce07ef98bb77a7cb42ee90758d8b72477d9d8516da2fa0afcb6`;
-- semantic gate: **365 PASS**, first red ordinal **366**;
-- AP6 diagnostics 367–373: **1 PASS / 6 RED / zero gate credit**;
-- immutable postflight PASS; no prohibited build/repair/mutation activity.
+- semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`;
+- immutable package **73** artifact `9773591345`, outer SHA-256 `8f3a8f0d6a3ad0931db89cb3e94c33d1d7e8a0d9e1aba27a6ad2690ec9c402a0`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`;
+- packaged source archive `36451a2473a8858225cf9eabb181a58a5397f400f7f0a99995a1b8da37a2cb4f`;
+- selector **373** unchanged at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, with all six predecessor prefixes reproducing;
+- run/job `33436492493 / 99634138202`; result/log `9774693166` / `9774693946`;
+- semantic gate **366 executed / 365 PASS / first red 366**; AP6 report-only 367–373: **7 executed / 1 PASS / 6 RED / zero gate credit**;
+- immutable postflight PASS; no configure/compile/relink/repair/generated-discovery/benchmark or package/source/test/fixture/selector mutation.
 
-The earlier TB4 run/job `33436283363 / 99633462747` is resolved orchestration-only evidence: it executed zero
-Directional runtime because the runner expected `package73.tar.gz.sha256` instead of package 73's actual
-`package73.sha256`. Control-only commit `41a7a8b92a311c240cfbcf320a4003d1f17dde7b` corrected that filename before the
-authoritative run.
+### What the review established — the successor's starting facts
 
-### Measured mechanical locus
+- **The locus:** `sourceVertex=30`, arrival face `(24,30,32)`, `branch=1`, region 0, `arrivalMode=FaceInterior`, candidates `(25,30,31)` and `(30,31,119)`, `barrierAbsorbed=false`, `barrierIncident=false`. CB5's typed locus channel worked as ordered — **AP3 was honoured exactly**, its only transit change being two additive diagnostic lines.
+- **M1, M2 and M3 are all falsified.** Cardinality is 2, not 0; the vertex is neither barrier-absorbed nor barrier-incident; and it is **regular** — six incident faces in one closed, consistently oriented fan (reproduced from the committed fixture), with Poincaré–Hopf accounting for all eight index-`+1` singularities elsewhere (`4χ = 8`), so no others exist.
+- **Proof.** The predicate `direction[next] > 0 && direction[prev] >= 0` is an **exact partition** of the turn: adjacent wedges share exactly one ray, owned by the face where it is `next`. The two candidates are **fan-adjacent** across ray 30→31, owned by `(25,30,31)`. One direction elects at most one wedge — **so two geometrically distinct vectors were tested.** They are two representations of **one** semantic continuation.
+- **M4 (surviving):** the routine elects per-cell — each face's *own* representative of the transported branch tested against that face's wedge — and a cross field's per-face representatives are related by transport, not equal as vectors. **M5 retained:** the representative may not be the continuation at all, making multiplicity generic. **AS1 falsifies both if the vectors are equal.**
+- **Causality:** a pre-existing, P2-independent defect reached by a trace set P2 may have changed. `barrierAbsorbed=false` does not by itself prove independence from CB3.
+- **Amendment 17:** an election among candidate cells is decided from a **single datum**, never one representative per cell. Prohibited: picking the first candidate or ordering faces; widening/narrowing the sector convention; any tolerance in an exact predicate; changing the `FaceInterior` exclusion to alter cardinality. **Which** datum is left open pending AS1 — a single-writer question.
+- **AP6 findings:** 369 gives the first *runtime* `saturationUsed=true`; 370 stops at its own precondition with the typed error discarded; 373 passes **synthetically only**; 367/371/372 are **blocked upstream**, so Amendment 15's contracts are **unmeasured, not falsified**; 368 reproduces the sphere without ever publishing its sub-reason.
 
-Ordinal 366 remains `VertexTransitSectorUnresolved`, now with the complete AP2 payload:
+### Exact scope of `M3-CP4c-3-CB6`
 
-- source vertex **30**;
-- arrival/source face `(24,30,32)`;
-- branch **1**, topology region **0**;
-- arrival mode **`FaceInterior`**;
-- candidate cardinality **2**;
-- candidate faces `(25,30,31)` and `(30,31,119)`;
-- `BarrierAbsorbed=false`, `barrierIncident=false`.
+**Code + Build.** Compiles and packages; **executes no Directional runtime**; no gate execution, no benchmark. GMP/GMPXX linkage mandatory.
 
-Therefore M1's zero-candidate prediction and direct M3's barrier-absorbed-vertex prediction are falsified at the
-actual failure locus. M2 is **not** established merely because cardinality is 2: the next review must classify vertex
-30 and explain the two exact candidate states before assigning cause. No semantic correction is authorized yet.
-
-### AP6 diagnostic facts that the review must adjudicate
-
-- 367, 371, 372: red only because the mechanical vertex-30 failure blocks them upstream.
-- 368: sphere remains at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30; **AL4 remains binding**.
-- 369: intended quality assertion reached; `saturationUsed=true`.
-- 370: intended empty-network cut-graph contract not reached; `FieldTransportAtlas::make` returns false first.
-- 373: synthetic barrier-arc singularity binding **PASS**; full mechanical zero-unbound closure evidence is still absent.
-
-`M3-CP4c3-TB3-R1-REV-CAND-01` is closed by runtime: the common typed failure-locus channel now reports the failure
-directly. New `M3-CP4c3-TB4-DIAG-CAND-01` tracks ordinal 370's atlas-precondition stop. Stable accounting remains
-**44 / 14 / 30**, debt **5**, semantic packages **71**.
-
-### Exact scope of `M3-CP4c-3-TB4-REV`
-
-Review only under `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md`:
-
-1. classify source vertex 30;
-2. reconstruct both reachable candidate `(face,branch)` states, branch transports and exact sector predicates;
-3. adjudicate M1/M2/M3 and causality relative to Amendment 16/P2;
-4. adjudicate diagnostics 368/369/370/373 separately from the semantic gate;
-5. freeze one bounded successor, semantic only if the cause is uniquely established;
-6. update `ORIENTATION.md` before closing the review.
-
-No product/test/fixture/selector mutation, configure, compile, package, benchmark, or Directional runtime is
-authorized in this review.
+1. **AS1** — publish, per candidate: transported **branch label**, the **exact barycentric direction vector** tested, the transport-adjacency path and composed quarter-turn, and the incoming direction at the arrival face; publish the same for **every** reachable state so the fan is auditable. **Falsifier: if the two elected vectors are identical, stop and route to review.**
+2. **AS2** — implement Amendment 17 only if AS1 confirms; state which single datum was chosen **and which measured fact chose it**. If AS1 shows M5 rather than M4, say so — that makes the upstream-owner option the only sound one.
+3. **AS3** — publish ordinal 370's atlas error (`ASSERT_TRUE(atlasBuild)` currently discards it), then classify `M3-CP4c3-TB4-DIAG-CAND-01` as witness defect, changed product contract, or legitimate fail-closed behaviour. **Do not "fix" the witness before the code is published.** Sweep the test file for the same anti-pattern.
+4. **AS4** — keep the correction bounded to the election: not the transport set, barrier semantics, predicate exactness, the `FaceInterior` exclusion, or A1.
+5. **AS5** — audit by assumption (*"this code elects among candidates by testing each against its own representative of a shared datum"*) and name at least one site satisfying it **without** touching `resolve_field_vertex_transit`.
+6. **AS6** — publish the sphere's `NoCarrierMatch` vs `AmbiguousCarrierMatch` sub-reason and which pass produced it; determine whether AM7's instrumentation is not reaching the report or was never wired. **AL4 still forbids designing the sphere's fix.**
+7. **AS7** — record ordinal 373's residual as **debt, not closure**: `M3-CP4c3-DEFN-R1-CAND-01` needs the **mechanical** witness's zero-unbound count.
+8. **AS8** — retain the AP6 report-only pass in the next TB plan, zero gate credit; withdrawing it requires a written rationale.
+9. **AS9** — prohibited: forcing `candidates.size() == 1` by picking first, ordering faces, changing the sector convention or the `FaceInterior` rule, or adding **any** tolerance; crossing/closing a barrier; designing before AS1 reports or proceeding if AS1 falsifies; correcting ordinal 370 before AS3 publishes; designing the sphere's fix; folding AK4 into this turn; reopening Amendments 12–17 or P2; renumbering or removing any error-enum value; changing any frozen selector byte; treating AP6 results as gate credit; executing runtime or running a gate in a CB turn.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Review + Plan guidance
+- turn-based-coding-agent Code + Build guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md`
-1. `.agents/Directional/Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md`
-2. `.agents/Directional/Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md`
-3. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
-4. `.agents/Directional/Architecture_M3_CP4c3_CB5_Code_Build_Report.md`
-5. `DESIGN.md` §7.2 / §7.2.1
-6. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`
-8. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md`
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` — **AS0–AS9**, the fixture-derived
+   fan, the partition proof, M4/M5, and Amendment 17's open question.
+2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–17, normative.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md` — the valid-red runtime
+   authority and the AP6 report-only results.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB5_Code_Build_Report.md` — the typed locus channel and package 73.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md` — AP0–AP9 and the falsified
+   M1/M2/M3 enumeration, retained so the successor sees what was ruled out and why.
+6. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
+7. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged frozen selector lineage.
+8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — active candidates and stable-accounting rules.
+9. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — current state and retained lineage.
 
-TB4-REV is static review only. Do not execute package 73 or any other Directional runtime.
+Source CB6 will change or must audit: `src/geometry/SurfaceCellTracing.cpp:557-640`
+(`resolve_field_vertex_transit`, the election) and its four call sites (`:1198`, `:1294`, `:1859`, `:1976`);
+read-only, `src/authority/FieldTransportAtlas.cpp:404-426` and `:1623-1654` (the exact sector predicate — **do not
+change**), and `tests/FieldAlignedCurveNetworkTests.cpp` for the ordinal-370 assertion that discards its typed
+error. Fixture context: `benchmarks/fixtures/milestone-g/mechanical_feature.obj`, vertex 30's six-face fan
+(rows 43, 40, 41, 208, 209, 218 in cycle order).
+
+**This is CODE + BUILD.** It compiles and packages and **executes no Directional runtime**; a gate may not be run.
+A red TB after it routes to `REVIEW + PLAN` as usual.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

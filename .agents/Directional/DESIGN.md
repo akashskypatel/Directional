@@ -458,7 +458,8 @@ Because tracing is combinatorial and terminates on contact, invariant 3 holds by
 Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 frozen-definition documents; Amendment 15
 was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain, and Amendment 16 at
 `M3-CP4c-3-TB2-REV` generalizes it to every derivation that walks transport in any stage (scope widened at
-`M3-CP4c-3-TB3-R1-REV`). They are normative and
+`M3-CP4c-3-TB3-R1-REV`); Amendment 17 at `M3-CP4c-3-TB4-REV` governs how an election among candidate cells is
+decided. They are normative and
 are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
 withdrawn except where an amendment says so explicitly.
 
@@ -530,6 +531,25 @@ withdrawn except where an amendment says so explicitly.
   emitting none), because the two differ in product-visible behaviour — the second means no traces start at such a
   singularity — and the choice requires a measured census of barrier-incident singularities that does not yet
   exist. Source: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` §5.
+
+- **Amendment 17 — an election among candidate cells is decided from a single datum, not from one representative
+  per cell.** Where a producer chooses among candidate faces, sectors or cells by asking *"is this cell's own
+  representative of the datum admissible in this cell?"*, the question is **not a partition test**, and its
+  non-uniqueness cannot be removed by refining the cells, tightening a half-open convention, ordering the
+  candidates, or introducing a tolerance — the non-uniqueness is not in the cells. A partition disambiguates one
+  point among cells; it cannot disambiguate one point per cell. Vertex continuation in particular is a property of
+  **one** incoming ray and must be decided from that ray — expressed once and tested against the fan, or
+  equivalently from where the ray exits the vertex star. A cross field's per-face branch representatives are
+  related by transport, **not equal as vectors**, so testing each face against its own representative tests a
+  different point in every cell.
+
+  Three corrections are **prohibited** because they remove the symptom rather than the cause: electing the first
+  candidate or ordering faces to force uniqueness; widening or narrowing the sector convention; and introducing any
+  tolerance into a predicate that is exact today. Changing an arrival-mode exclusion in order to alter cardinality
+  is prohibited for the same reason. The amendment fixes the frame and the prohibitions; **which** single datum is
+  used — the incoming direction transported into each candidate, the ray's geometric exit from the star, or a
+  continuation owner published upstream — is a single-writer question left to the turn that measures the elected
+  directions. Source: `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` §§AQ2, 5.
 
 ### 7.3 Single-writer authority
  

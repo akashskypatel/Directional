@@ -26,58 +26,64 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB4-REV` (Independent Review + Plan)
+## Current focus — `M3-CP4c-3-CB6` (Code + Build, runtime-free)
 
-`M3-CP4c-3-TB4` is **COMPLETE / VALID SEMANTIC RED**. Authoritative report:
-`Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB4-REV` is **COMPLETE**: it accepted TB4 as valid semantic evidence, **falsified all three** mechanisms
+the previous review enumerated, **proved** that the two elected continuation candidates are tested against two
+geometrically distinct directions at a **regular** vertex, declared **Amendment 17**, and issued **AS0–AS9**.
+Record: `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md`.
 
-### Immutable TB4 authority
+### What the review established
 
-- semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`;
-- immutable package **73** artifact `9773591345`, outer SHA-256 `8f3a8f0d6a3ad0931db89cb3e94c33d1d7e8a0d9e1aba27a6ad2690ec9c402a0`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`;
-- selector 373 unchanged at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- authoritative run/job `33436492493 / 99634138202`;
-- result/log `9774693166` (`056f86df…8a7e`) / `9774693946` (`d2acc620…fcb6`);
-- semantic gate **366 executed / 365 PASS / first red 366**;
-- AP6 report-only diagnostics 367–373: **7 executed / 1 PASS / 6 RED / zero gate credit**;
-- immutable postflight PASS; no benchmark/configure/compile/relink/repair/generated discovery or package/source/test/fixture/selector mutation.
-
-### What TB4 established
-
-- Ordinal 366 still first-reds at `VertexTransitSectorUnresolved`, but AP2 now publishes the exact locus:
-  `sourceVertex=30`, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, **two** candidate faces
-  `(25,30,31)` and `(30,31,119)`, `BarrierAbsorbed=false`, `barrierIncident=false`.
-- **M1 is falsified** at this locus because candidate cardinality is 2, not zero.
-- **Direct M3 is falsified** because the failure is not at a `BarrierAbsorbed`/barrier-incident vertex.
-- **M2 is not yet established**: multiplicity is measured, but TB4 does not prove vertex 30 is singular or explain why both exact sector candidates survive.
-- `M3-CP4c3-TB3-R1-REV-CAND-01` is **RESOLVED / RUNTIME PROVED** because the failing locus is now published directly.
-- Ordinal 368 reproduces the sphere's `RotationSystemInconsistent → TraceEventPositionInvalid` at trace 2/event 30; **AL4 remains binding**.
-- Ordinal 369 reaches its intended assertion and reports `saturationUsed=true`; the R10 quality/coverage candidate remains active.
-- Ordinal 370 fails before its intended contract at `atlasBuild=false`; new non-stable diagnostic candidate `M3-CP4c3-TB4-DIAG-CAND-01` owns that precondition gap.
-- Ordinal 373 is green, but `M3-CP4c3-DEFN-R1-CAND-01` still also requires mechanical zero-unbound evidence before closure.
+- **The locus, published at last:** `sourceVertex=30`, arrival face `(24,30,32)`, `branch=1`, region 0,
+  `FaceInterior`, candidates `(25,30,31)` and `(30,31,119)`, `barrierAbsorbed=false`, `barrierIncident=false`.
+  CB5's typed locus channel worked as ordered — no fourth review had to recover it by elimination.
+- **M1, M2 and M3 are all dead.** Cardinality 2 (not 0); the vertex is not barrier-related; and it is **regular** —
+  six incident faces in one closed consistently-oriented fan, reproduced from the committed fixture, with
+  Poincaré–Hopf accounting for all eight index-`+1` singularities elsewhere.
+- **Proof, not hypothesis:** the sector predicate is an **exact partition** of the turn, adjacent wedges share one
+  ray owned by the face where it is `next`, and the two candidates are fan-adjacent across ray 30→31. One direction
+  can elect at most one wedge — **so two geometrically distinct vectors were tested.** The candidates are two
+  representations of **one** semantic continuation.
+- **M4 (per-cell representative election)** is the surviving mechanism, **M5** retained; **AS1** falsifies both if
+  the vectors are equal.
+- **Amendment 17**: an election is decided from a **single datum**, never one representative per cell.
 
 ### Exact next turn
 
-Run **independent `M3-CP4c-3-TB4-REV` — REVIEW + PLAN only** under
-`Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md`:
+Run **`M3-CP4c-3-CB6`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AS0–AS9**:
 
-1. classify source vertex 30 from atlas/source authority;
-2. reconstruct both candidate `(face,branch)` states and their exact transport paths/sector predicates;
-3. adjudicate M1/M2/M3 and causality relative to P2 without assuming multiplicity implies singularity;
-4. separately adjudicate report-only ordinals 368/369/370/373 with zero gate credit;
-5. freeze exactly one bounded successor; no runtime, compile, package or product/test/fixture/selector mutation in review;
-6. update `ORIENTATION.md` as required for every REVIEW turn.
+1. **AS1** publish both elected direction vectors, their branch labels and transport paths, and every reachable
+   state — **stop and route to review if the two vectors are equal**;
+2. **AS2** implement Amendment 17 only if AS1 confirms, naming which single datum was chosen and which measured
+   fact chose it;
+3. **AS3** publish ordinal 370's discarded atlas error, then classify `M3-CP4c3-TB4-DIAG-CAND-01`; sweep the test
+   file for the same discard-the-typed-error pattern;
+4. **AS4** keep the correction bounded to the election — not the transport set, barrier semantics, predicate
+   exactness, `FaceInterior` rule, or A1;
+5. **AS6** publish the sphere's `NoCarrierMatch` vs `AmbiguousCarrierMatch` sub-reason, unmeasured after three
+   reproductions; **AL4** still forbids designing its fix;
+6. **AS7** record ordinal 373's synthetic-only pass as debt, not closure;
+7. **AS8** retain the AP6 report-only pass in the next TB plan.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / TWO-CANDIDATE LOCUS MEASURED / CAUSE UNADJUDICATED / GATING**; review owns vertex-30 classification and duplicate-vs-distinct continuation analysis.
-- [x] `M3-CP4c3-TB3-R1-REV-CAND-01` — **RESOLVED / RUNTIME PROVED** by TB4 typed-locus publication.
-- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — ordinal 370 fails at `atlasBuild=false` before its intended empty-network A2a′ contract; review owns classification.
-- [ ] **C2 / mechanical witness** — A1 remains proved clear; A2a first-red persists at a measured two-candidate FaceInterior transit.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 is runtime green; mechanical zero-unbound closure evidence remains outstanding.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains ACTIVE / ONE LEVEL SHORT; TB4 confirms its current subreason/locus. **AL4** still forbids designing its fix here.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 is runtime red with saturation still used.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains unproved because the synthetic atlas precondition fails first.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / GATING / CAUSE FAMILY ESTABLISHED**; M4 named, M5 retained, **AS1**
+  confirms and **AS2** corrects.
+- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — ordinal 370 unreadable until **AS3** publishes the atlas error.
+- [ ] **C2 / mechanical witness** — A1 clear end to end; the remaining red is the A2a election.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — **partially discharged**: ordinal 373 green on a **synthetic** contract; the
+  mechanical zero-unbound count is still owed (**AS7**).
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere ACTIVE / ONE LEVEL SHORT; measured three times, sub-reason still
+  unpublished (**AS6**). **AL4** binding.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — **runtime-confirmed** at ordinal 369 (`saturationUsed=true`); deferred behind
+  the mechanical gate.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 never reached its contract.
+- [x] `M3-CP4c3-TB3-R1-REV-CAND-01` — resolved and runtime-proved; the typed locus channel published the locus.
+- [x] `M3-CP4c3-TB4-ORCH-01` — resolved, pre-runtime sidecar filename only.
+
+**Amendment 15's Euler-cut identity and barrier-exclusion contracts (ordinals 371/372) remain UNMEASURED, not
+falsified** — they are blocked upstream by ordinal 366.
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **71**.
 

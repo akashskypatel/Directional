@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. Current runtime authority is package 73 / TB4 (`33436492493 / 99634138202`): ordinals **1–365 PASS**, ordinal **366** first-reds at `VertexTransitSectorUnresolved`, now localized to source vertex 30 / face `(24,30,32)` / branch 1 / `FaceInterior` with exactly two candidate faces and no barrier-absorbed/barrier-incident locus. AP6 then ran 367–373 report-only with zero gate credit: **1 PASS / 6 RED**. M1 and direct M3 are falsified at the failing locus; M2's singular-holonomy explanation is not yet established. Exact next is independent **`M3-CP4c-3-TB4-REV`** under the frozen TB4 review plan. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **71**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. Current runtime authority is package 73 / TB4 (`33436492493 / 99634138202`): ordinals **1–365 PASS**, ordinal **366** first-reds at `VertexTransitSectorUnresolved`, localized to source vertex 30 / face `(24,30,32)` / branch 1 / `FaceInterior` with two candidate faces and no barrier-absorbed or barrier-incident locus; AP6 then ran 367–373 report-only with zero gate credit (**1 PASS / 6 RED**). `M3-CP4c-3-TB4-REV` **falsified all three** enumerated mechanisms — including its predecessor's leading suspicion — and **proved** from the committed fixture that the two elected candidates are tested against two *geometrically distinct* directions at a **regular** vertex whose exact sector wedges tile the turn without overlap. It declared **Amendment 17** and issued **AS0–AS9**. Exact next is **`M3-CP4c-3-CB6`**, Code + Build, runtime-free. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **71**.
 
 ## 1. Separate current/future authority
 
@@ -35,7 +35,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md` — **current review authority: the reconstructed transit invariant, the M1/M2/M3 enumeration, Amendment 16's widened scope, and the AP0–AP9 measures that govern `M3-CP4c-3-CB5`.**
 - `Architecture_M3_CP4c3_CB5_Code_Build_Report.md` — compile/package authority for the typed shared failure-locus surface and immutable package 73.
 - `Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365 green, first red at ordinal 366 with the exact two-candidate vertex-30 locus, plus AP6 report-only 367–373 evidence.
-- `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md` — **current next-turn authority** for static adjudication of the two candidates and report-only diagnostics.
+- `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md` — the frozen AQ0–AQ8 scope that governed the TB4 review.
+- `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` — **current review authority: the fixture-derived fan at vertex 30, the partition proof, M4/M5, Amendment 17, and the AS0–AS9 measures that govern `M3-CP4c-3-CB6`.**
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -60,7 +61,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; A1 clear end to end; TB4 keeps 365 PASS and first-reds at ordinal 366 in A2a with a measured two-candidate FaceInterior transit at vertex 30; M1/direct-M3 falsified, cause still under review; next `TB4-REV`** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; A1 clear end to end; TB4 keeps 365 PASS and first-reds at ordinal 366 in A2a. M1/M2/M3 all falsified; the two candidates are proved to be two representations of one continuation at a regular vertex. Amendment 17 declared; next is diagnostic-first `CB6` under AS0–AS9** |
 
 ### 2.1 CP4c-0
 

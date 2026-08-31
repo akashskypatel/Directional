@@ -1,4 +1,4 @@
-## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / SEMANTIC / TWO-CANDIDATE LOCUS MEASURED / CAUSE UNADJUDICATED / GATING / NON-STABLE**
+## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE FAMILY ESTABLISHED BY PROOF / M1+M2+M3 ALL FALSIFIED / GATING / NON-STABLE**
 
 - **Observed in valid TB3-R1.** Immutable package 72 preserved semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, all six frozen hashes/modes, and package-relative fixtures. Run/job `33416686424 / 99568970224` passed immutable pre/postflight.
 - **Measured boundary.** Ordinals **1–365** each selected exactly once and passed. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and failed with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; first-red semantics left 367–373 unexecuted.
@@ -46,6 +46,53 @@
 
 - **TB4 runtime discriminator.** Package 73 / run-job `33436492493 / 99634138202` re-proves 365/365 and first-reds at ordinal 366 with the complete typed locus: `sourceVertex=30`, face `(24,30,32)`, branch 1, region 0, `FaceInterior`, `publishedFaceCount=2`, candidates `(25,30,31)` and `(30,31,119)`, `BarrierAbsorbed=false`, `barrierIncident=false`. **M1 is falsified** because the candidate set is not empty. **Direct M3 is falsified** because the failure is not at a barrier-absorbed/barrier-incident vertex. M2's *multiplicity* observation is true but its *singular-vertex holonomy* explanation is not established: TB4 does not classify vertex 30 or prove why both candidate states pass. Exact owner is `M3-CP4c-3-TB4-REV`; no semantic correction before that reconstruction. Stable accounting remains +0/+0 because the accepted 365-prefix stays green and CP4c-3 was already open.
 
+- **`M3-CP4c-3-TB4-REV` adjudication — ALL THREE ENUMERATED MECHANISMS FALSIFIED; THE CAUSE FAMILY IS PROVED.**
+  - **Measured locus (AP2 delivered).** `sourceVertex=30`, arrival face `(24,30,32)`, `branch=1`, region 0,
+    `arrivalMode=FaceInterior`, candidates `(25,30,31)` and `(30,31,119)`, `barrierAbsorbed=false`,
+    `barrierIncident=false`.
+  - **M1 falsified** — cardinality is **2**, not zero, so barrier truncation is not the mechanism at this locus.
+  - **M3 falsified** — the vertex is neither barrier-absorbed nor barrier-incident, so the P2 consumer mismatch has
+    no purchase here. **AP4 did its job:** this was the reviewer's leading suspicion and it was measured before it
+    became a correction.
+  - **M2 falsified** — **vertex 30 is a regular interior vertex.** Reproduced from the committed fixture
+    `benchmarks/fixtures/milestone-g/mechanical_feature.obj`: six incident faces (mesh rows 43, 40, 41, 208, 209,
+    218) forming **one closed, consistently oriented fan**. It is not among the four port-emitting singularities
+    (10/35/47/71) nor the four `BarrierAbsorbed` ones, and Poincaré–Hopf closes with exactly those eight index-`+1`
+    singularities (`4χ = 8` on this `χ = 2` witness), so no others can exist. A1 would additionally have raised
+    `SingularityMismatch` (`FieldTransportAtlas.cpp:1843-1851`) had any interior vertex's turning lift disagreed,
+    and the atlas built. **Vertex 30 therefore has trivial branch holonomy**, and singular-vertex multiplicity
+    cannot be the mechanism.
+  - **The proof that replaces the enumeration.** `direction[next] > 0 && direction[previous] >= 0` is exactly *the
+    closed wedge between ray(v→next) and ray(v→prev), minus the ray(v→prev)*. Adjacent wedges share exactly one
+    ray, assigned to the face where it is `next`; the six wedges therefore **tile the full turn with no overlap and
+    no gap**, and there is no tolerance anywhere in the decision. The two candidates are **fan-adjacent** — steps 2
+    and 3 of the fan whose step 0 is the excluded arrival face — sharing ray 30→31, which `(25,30,31)` **owns** and
+    `(30,31,119)` **excludes**. A single geometric direction can therefore elect **at most one** of them.
+    **Two were elected ⇒ two geometrically distinct vectors were tested.** This is a proof, and it kills the
+    "direction landed on the shared ray" explanation outright.
+  - **Alias, not ambiguity.** The trace has one continuation. The routine elects **per cell**: for each reachable
+    `(face, branch)` state it tests *that face's own* representative of the transported branch against *that
+    face's* wedge, and a cross field's per-face representatives are related by transport, **not equal as vectors**.
+    The two candidates are two representations of **one** semantic continuation.
+  - **Surviving mechanisms, unpromoted.** **M4 — election by per-cell representative** (leading; explains
+    multiplicity at a regular vertex, exactly two candidates, their fan-adjacency, and their position opposite the
+    arrival). **M5 — the representative is not the trace's continuation at all**, making multiplicity generic
+    rather than a boundary effect. **AS1** publishes both direction vectors and **falsifies both if they are
+    equal**.
+  - **Causality relative to P2.** The mechanism involves no barrier, port or singularity, and
+    `resolve_field_vertex_transit` is untouched in behaviour by CB3 and CB5 (CB5 added two purely diagnostic
+    lines). But `barrierAbsorbed=false` does **not** prove causal independence: P2 changed which traces exist and
+    where they start. Correct statement: **a pre-existing, P2-independent defect reached by a trace set P2 may have
+    changed.** The correction is the same either way.
+  - **Corrective frame: Amendment 17** (`DESIGN.md` §7.2.1) — an election among candidate cells is decided from a
+    **single datum**, never one representative per cell. Prohibited because each removes the symptom rather than
+    the cause: picking the first candidate or ordering faces; widening/narrowing the sector convention; any
+    tolerance in a predicate that is exact today; changing the `FaceInterior` exclusion to alter cardinality.
+    **Which** single datum is left open pending AS1 — a single-writer question.
+  - **Owning correction:** **AS1** confirms, **AS2** implements, **AS4** bounds it to the election.
+  - **Closure condition unchanged:** ordinal 366 green in a run reaching at least 366. **+0 events /
+    +0 recurrences.**
+
 ## M3-CP4c3-TB3-R1-REV-CAND-01 — the pipeline failure funnel discards every stage's typed error locus — **RESOLVED / RUNTIME PROVED / DIAGNOSTIC-SURFACE DEFECT / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-TB3-R1-REV`** from committed source; no runtime executed.
@@ -83,6 +130,20 @@
 - **Exact witness boundary.** The test loads the closed torus, builds source authority, then calls `FieldTransportAtlas::make(mesh, sourceAuthority, {}, make_zero_transport_field(mesh))`; that call returns failure before the test constructs the expected zero-node/zero-arc network. TB4 stdout does not print the atlas error code, so product cause cannot be assigned from runtime evidence alone.
 - **Relationship to `M3-CP4c2-TB-X2-R8-CAND-02`.** The older product question remains active. TB4 does not answer it because its synthetic witness no longer reaches A2a′. Independent TB4 review must inspect the exact atlas failure and decide whether the test precondition is stale, the atlas correctly rejects this zero-field authority, or another product change is involved.
 - **Accounting:** report-only, zero gate credit, newly gated/unaccepted surface, accepted 365-prefix unchanged. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **71**.
+- **`M3-CP4c-3-TB4-REV` adjudication — STILL UNCLASSIFIABLE, AND THE REASON IS ITSELF THE FINDING.** The test's
+  `ASSERT_TRUE(atlasBuild)` **discards `atlasBuild.error()`**, which is in hand and for which
+  `field_atlas_build_error_code_name()` exists — the `ORIENTATION.md` §8 anti-pattern, now at the **test**
+  boundary rather than the pipeline funnel AP1 just fixed on the product side. The review therefore declines to
+  choose among AQ5's three options and requires the code first (**AS3**).
+  What *can* be said without guessing: the witness pairs `make_source_authority(mesh)` with a **globally constant
+  ambient** `make_zero_transport_field` (`UnitX`/`UnitY` per face) on the closed torus, and the empty rail set is
+  **intentional** — the test wants an empty network — so this is **not** the R8 `rails_from_atlas` trap that
+  `ORIENTATION.md` §6 documents. The identity was appended at CB2 under AL7 and had **never executed** until TB4's
+  report-only pass, so an original authoring defect is at least as likely as an interaction with the fail-closed
+  checks CB2/CB3/CB5 added to the same `make` path; that distinction is exactly what AS3 decides. **AS3** also
+  requires sweeping the test file for the same discard-the-typed-error pattern rather than fixing this one site.
+  This is the fourth instance in this checkpoint of compiled-but-never-executed test authority turning out to be
+  debt (`LESSONS.md` 56), and the strongest argument for retaining the AP6 report-only pass (**AS8**).
 
 ## M3-CP4c3-TB4-ORCH-01 — TB4 runner expected the wrong package-73 digest-sidecar filename — **RESOLVED / PRE-RUNTIME / NON-STABLE**
 
