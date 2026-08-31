@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB3
+purpose=artifact-only immutable package 71 preflight
+expected_evidence_source=93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4
+retry=1
