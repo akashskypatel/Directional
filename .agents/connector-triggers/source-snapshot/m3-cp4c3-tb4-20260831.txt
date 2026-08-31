@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB4
+purpose=exact source/document snapshot for artifact-only TB4 preflight
+requested_source_head=3dbbdca9fbb4128393c6676568f84fb691d2b6e7
+runtime_execution=false
