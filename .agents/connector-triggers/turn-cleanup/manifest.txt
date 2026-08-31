@@ -1,0 +1,4 @@
+# M3-CP4c-3-CB4-PKG temporary repository state
+.agents/connector-triggers/cp4c3-cb4pkg-source-snapshot-20260831t1520.txt
+.agents/connector-triggers/cp4c3-cb4pkg-package72-20260831t1520.txt
+.agents/connector-triggers/cp4c3-cb4pkg-closeout-20260831t1520.txt
