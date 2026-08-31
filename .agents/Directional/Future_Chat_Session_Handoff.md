@@ -94,30 +94,32 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 ## Mandatory next turn — `M3-CP4c-3-TB2-REV` (Independent REVIEW + PLAN)
 
-`M3-CP4c-3-TB2` is **COMPLETE / BLOCKED — ORCHESTRATION-INVALID AFTER RUNTIME BEGAN / NO GATE AUTHORITY**. The authoritative report is `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB2` is **COMPLETE / RED — VALID SEMANTIC FIRST-RED AT ORDINAL 366**. The authoritative report is `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md`.
 
 ### Immutable authority retained
 
 - semantic/evidence source: `005512f20ed56edc793f4d6505f3d2b4c2999c71`
-- immutable GMP package **69**: artifact `9742715856`, SHA-256 `2accc6d7cbbd48531919518ceb93a9d8f837b1c5683769a88ef915e4f092efc5`
+- immutable GMP semantic package **69**: artifact `9742715856`, SHA-256 `2accc6d7cbbd48531919518ceb93a9d8f837b1c5683769a88ef915e4f092efc5`
+- user-authorized fixture-only execution package **70**: artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`; package-69 binaries are byte-identical and the sibling `test-data` fixture payload is copied from the immutable packaged source
 - packaged source archive SHA-256: `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`
 - selector **373**: `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; all 355/357/361/365/367/370 prefixes remain byte-exact
-- package internal manifest: **28/28 PASS**; GMP/GMPXX authority reproduced; executable modes intact
-- postflight: package/source/selector unchanged; all mutation/compile/repair/benchmark flags false
+- exact static target map: SHA-256 `f73ea05bb146a7e4a71329b5bd4344898c7fc643094be4858ea8a17ab075d740`, producer 227 / authority-kernel 30 / completion 75 / validation 41
+- authoritative execution: R4 run `33355714664`; result artifact `9745109157`; log artifact `9745109337`
+- postflight: package/source/selector/mapping unchanged; compile/relink/repair/generated-discovery/benchmark flags false
 
-### TB2 blocked evidence
+### TB2 measured evidence
 
-The artifact-only harness executed ordinals 1–40 as exactly-selected green fresh processes. Ordinal **41**, `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, selected exactly once but threw before product adjudication because it could not open the compile-time fallback path `/home/runner/work/Directional/Directional/benchmarks/fixtures/milestone_g_manifest.json`.
+The original package-69 attempt exposed `M3-CP4c3-TB2-ORCH-01`: the packaged producer fell back to its missing compile-time source root at ordinal 41. The user explicitly authorized an orchestration/fixture-only correction and same-turn re-execution. Package 70 materialized the exact immutable fixture tree at the sibling `test-data` location selected before the compile-time fallback and proved the semantic binaries unchanged. R1–R3 were orchestration-invalid preflight/mapping trials and carry no gate authority.
 
-The exact manifest **is present** in package 69's packaged source. `TestFixturePaths` found no sibling/bin `test-data`, then fell back to the absolute `DIRECTIONAL_TEST_SOURCE_DIR` compiled into the producer binary; the local execution root did not materialize the immutable source there. This is `M3-CP4c3-TB2-ORCH-01`, an orchestration/harness defect, **not** a semantic regression.
+R4 passed immutable package/source/GMP/selector/static-mapping/fixture preflight and executed one exact selector identity per fresh process. Ordinals **1–365** each selected exactly once and exited 0. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and exited 1 with:
 
-Because 41 Directional processes had already executed when the defect was classified, the frozen TB2 plan does **not** authorize a corrected-root restart inside the same turn. Ordinals 42–373, including 366–373, are unexecuted. The 40 earlier passes receive no gate credit because the attempt is orchestration-invalid as a whole.
+`InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`.
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; packages **69**. CP4c-3 remains **OPEN**.
+This is a **valid semantic first-red**. Ordinals **367–373** were not executed. `M3-CP4c3-TB2-ORCH-01` is resolved as non-stable orchestration debt; the new semantic observation is tracked as `M3-CP4c3-TB2-CAND-01`. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic packages **69**. CP4c-3 remains **OPEN**.
 
 ### Exact successor
 
-Run independent **`M3-CP4c-3-TB2-REV`**. It must update `ORIENTATION.md`, adjudicate `M3-CP4c3-TB2-ORCH-01`, freeze a pre-runtime fixture-root check that proves the path actually selected by `TestFixturePaths`, and explicitly decide whether unchanged package 69 may be re-executed. Do **not** implement a product/test/build correction, rebuild package 69, or retry TB2 before that review.
+Run independent **`M3-CP4c-3-TB2-REV`**. It must update `ORIENTATION.md`, adjudicate `M3-CP4c3-TB2-CAND-01`, and trace the singularity-attachment contract against Amendment 15's slit-bound prescribed-singularity representation and the explicit prohibition on giving hard-feature barriers transport adjacency. The review must determine whether the missing branch transport is an invalid consumer expectation, a missing non-barrier attachment route, or another upstream representation mismatch before prescribing a correction. Do **not** implement product/test/build semantics or retry the gate before that review.
 
 ## Context Load Plan
 
@@ -127,15 +129,15 @@ Run independent **`M3-CP4c-3-TB2-REV`**. It must update `ORIENTATION.md`, adjudi
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — **read first and update during this REVIEW turn**.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — primary measured/blocker authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — frozen retry/stop authority that prohibited an in-turn restart after runtime began.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — immutable package 69/build authority.
-4. `.agents/Directional/LESSONS.md` §8, especially lessons 76 and 76a — fixture-layout and runtime-root harness controls.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB2-ORCH-01` and still-active CP4c-3 candidates.
-6. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` and selector 373 — unchanged product/gate authority.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — primary valid R4 first-red authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — Amendment 15 contract, especially slit-bound singularities and prohibited barrier adjacency.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — immutable semantic package-69/build authority and the singularity-attachment implementation boundary.
+4. `.agents/Directional/LESSONS.md` §§4, 5, 7, 8 — representation/consumer invariants, field/cycle conventions, stop rules, and harness mechanics.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB2-CAND-01`, resolved `M3-CP4c3-TB2-ORCH-01`, and inherited CP4c-3 candidates.
+6. selector 373 and R4 result/log artifacts — 365 green followed by exact ordinal-366 semantic red.
 7. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — current status and retained lineage.
 
-**This is REVIEW + PLAN.** Do not execute Directional runtime, retry the gate, patch product/test/build semantics, or produce a replacement package in the review turn.
+**This is REVIEW + PLAN.** Do not execute Directional runtime, retry the gate, patch product/test/build semantics, or produce a replacement semantic package in the review turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

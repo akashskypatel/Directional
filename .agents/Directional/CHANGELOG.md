@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-31 — `M3-CP4c-3-TB2`: orchestration remediated; valid semantic first-red moves to ordinal 366
+
+Following explicit user authorization, the fixture-root defect from the initial TB2 attempt was corrected without changing semantic source or binaries. Fixture-only package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) adds the immutable packaged fixture tree at sibling `test-data`; package-69 semantic binaries were proven byte-identical. R1–R3 exposed only orchestration mapping/preflight defects and carry no gate authority.
+
+R4 run `33355714664` reproduced package/source/GMP/selector authority and the exact static 227/30/75/41 target map, then ran selector 373 one identity per fresh process. Ordinals **1–365** selected exactly once and exited green. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected once and failed with `InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`; ordinals **367–373** were not executed under first-red semantics. Postflight proved package/source/selector/mapping unchanged and no compile/relink/repair/generated-discovery/benchmark occurred.
+
+`M3-CP4c3-TB2-ORCH-01` is resolved as non-stable orchestration debt. New `M3-CP4c3-TB2-CAND-01` records the valid semantic first-red and routes to independent **`M3-CP4c-3-TB2-REV`**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, debt **5**, authoritative semantic packages **69**. No product correction or TB retry is authorized before review.
+
 ## 2026-08-31 — `M3-CP4c-3-TB2`: blocked by packaged-binary fixture-root authority after runtime began
 
 Artifact-only TB2 consumed immutable GMP package **69** / artifact `9742715856` and reproduced package/source/GMP/selector preflight. Selector 373 began one identity per fresh process: ordinals **1–40** selected once and exited green; ordinal **41**, `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, selected once but threw before product adjudication because `TestFixturePaths` fell back to the producer binary's compile-time absolute `DIRECTIONAL_TEST_SOURCE_DIR` (`/home/runner/work/Directional/Directional`) and could not open `benchmarks/fixtures/milestone_g_manifest.json` there. The exact manifest exists in the immutable packaged source; the artifact-only harness had materialized that source at another root and package 69 contains no sibling `test-data` fallback.

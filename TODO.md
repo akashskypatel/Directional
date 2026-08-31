@@ -28,30 +28,30 @@ it still gets its own review turn.
 
 ## Current focus — `M3-CP4c-3-TB2-REV` (Independent REVIEW + PLAN)
 
-`M3-CP4c-3-TB2` is **COMPLETE / BLOCKED — ORCHESTRATION-INVALID AFTER RUNTIME BEGAN / NO GATE AUTHORITY**. Immutable package **69** and selector **373** remain unchanged authority. TB2 preflight reproduced package/source/GMP/selector integrity, then ordinals 1–40 selected exactly once and exited 0. Ordinal **41**, `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, selected exactly once but failed before product adjudication because the packaged binary fell back to the compile-time absolute fixture root `/home/runner/work/Directional/Directional`, which was not materialized by the local artifact-only harness. The exact manifest exists in the packaged source.
+`M3-CP4c-3-TB2` is **COMPLETE / RED — VALID SEMANTIC FIRST-RED AT ORDINAL 366** after the user-authorized orchestration/fixture remediation. Fixture-only package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) preserves semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, the frozen selector **373**, and byte-identical package-69 binaries while adding the immutable sibling `test-data` fixture payload. R4 run `33355714664` passed package/source/GMP/selector/mapping/fixture preflight, then executed ordinals **1–365** as exactly-selected green fresh processes.
 
-This is tracked as **`M3-CP4c3-TB2-ORCH-01`**, orchestration/non-stable, **+0 stable events / +0 recurrences**. The frozen TB2 plan permits an orchestration restart only when no Directional runtime ran; 41 processes had already executed, so an in-turn corrected-root retry was prohibited. Ordinals 42–373, including all CP4c-3 checkpoint-local ordinals 366–373, remain unexecuted. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative packages **69**.
+Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and exited 1 with `InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`. This is a valid semantic first-red. Ordinals **367–373** were not executed under first-red semantics. `M3-CP4c3-TB2-ORCH-01` is **RESOLVED / NON-STABLE** by package 70 and the R4 preflight; it adds **+0 stable events / +0 recurrences**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic packages **69**.
 
 ### Exact next turn
 
 Run **`M3-CP4c-3-TB2-REV` — independent REVIEW + PLAN**. Review must:
 
 - [ ] update durable `ORIENTATION.md` for the review;
-- [ ] adjudicate `M3-CP4c3-TB2-ORCH-01` and the exact `TestFixturePaths` fallback chain;
-- [ ] freeze a pre-runtime control that proves a known fixture exists at the **actual path selected by the packaged binary**, not merely somewhere in the source archive;
-- [ ] decide explicitly whether unchanged package 69 / selector 373 may be re-executed artifact-only after that harness correction;
-- [ ] preserve Amendment 15/R10/R8 product dispositions as **unmeasured in TB2**; do not infer them from the invalid attempt.
+- [ ] adjudicate new candidate `M3-CP4c3-TB2-CAND-01` from the exact ordinal-366 `MissingSingularityBranchTransport` failure;
+- [ ] trace the singularity-attachment obligation against Amendment 15's slit-bound prescribed-singularity binding and the prohibition on giving barrier edges transport adjacency;
+- [ ] distinguish whether the missing branch transport is an invalid consumer expectation, a missing non-barrier attachment route, or another upstream representation mismatch before prescribing any correction;
+- [ ] preserve sphere/R10/R8 and checkpoint-local ordinals 367–373 as **unmeasured in this TB2 run**.
 
 No product/test/build correction, rebuild, or gate retry is authorized before that review.
 
 ### CP4c-3 open items
 
-- [ ] **C2 / mechanical witness** — Amendment 15 option A′ remains compile-green but TB2 did not reach ordinal 366 or 371–373.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — correction remains compile-green/gating; ordinal 373 is still unexecuted.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains **ACTIVE / ONE LEVEL SHORT**; ordinal 368 remains unexecuted in TB2.
+- [ ] **C2 / mechanical witness** — Amendment 15 advances past the TB1 `CycleTransportAdjacencyMissing` stop, but the production-entry witness now first-reds at ordinal 366 with `MissingSingularityBranchTransport`; review owns causal interpretation.
+- [ ] `M3-CP4c3-TB2-CAND-01` — exact valid semantic first-red at ordinal 366; new non-stable review candidate.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — correction remains compile-green/gating; ordinal 373 is still unexecuted because first-red stopped at 366.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains **ACTIVE / ONE LEVEL SHORT**; ordinal 368 remains unexecuted in R4.
 - [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains unexecuted; product correction still unaccepted.
 - [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains unexecuted; typed-error behavior still unaccepted.
-- [ ] `M3-CP4c3-TB2-ORCH-01` — review and freeze correct artifact-only fixture-root preflight before any rerun.
 
 ## Carried forward from M1
 
@@ -88,7 +88,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 CB2 remains **BUILD GREEN / RUNTIME-FREE** in immutable GMP package **69** with selector **373** frozen. TB2 is **BLOCKED / ORCHESTRATION-INVALID / NO GATE AUTHORITY** after the packaged binary failed to resolve its compile-time fixture root at ordinal 41; inherited Amendment 15/sphere/R10/R8 semantics remain unmeasured. Exact next is independent `M3-CP4c-3-TB2-REV`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 CB2 remains **BUILD GREEN / RUNTIME-FREE** in immutable GMP package **69** with selector **373** frozen. User-authorized fixture-only package 70 reuses byte-identical semantic binaries and valid TB2 R4 proves ordinals 1–365 green before semantic first-red ordinal **366** at `MissingSingularityBranchTransport`. Exact next is independent `M3-CP4c-3-TB2-REV`; no further TB retry or product correction is authorized before review.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -98,8 +98,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** Amendment 15 option A′ is implemented and compile-green; TB2 must prove that cutting A1's derived local mesh along `B(R)` removes non-separating barriers from the local cycle basis and satisfies the cut identity without weakening singularity/index controls.
-- [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`. AM7 instrumentation that distinguishes `NoCarrierMatch` from `AmbiguousCarrierMatch` and precise/widened pass is compile-green; TB2 must report it before any product fix.
+- [ ] **CP4c-3 criterion C2:** Amendment 15 option A′ is implemented and compile-green; valid TB2 R4 advances the mechanical production-entry witness past the former `CycleTransportAdjacencyMissing` stop but first-reds at `MissingSingularityBranchTransport`. Independent review must settle the attachment contract before any correction.
+- [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`. AM7 instrumentation is compile-green, but ordinal 368 was not reached because first-red stopped at 366; no sphere product disposition may be inferred from TB2.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.
@@ -122,4 +122,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative M3 package count is **68**. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **69**; fixture-only package 70 is execution transport with byte-identical package-69 binaries. PR #8 remains open, draft, and unmerged.

@@ -1,28 +1,17 @@
-## M3-CP4c3-TB2-ORCH-01 — packaged fixture exists but runtime falls back to a missing compile-time source root — **ACTIVE / REVIEW REQUIRED / ORCHESTRATION / NON-STABLE**
+## M3-CP4c3-TB2-ORCH-01 — packaged fixture exists but runtime falls back to a missing compile-time source root — **RESOLVED / ORCHESTRATION / NON-STABLE**
 
-- **Observed in `M3-CP4c-3-TB2`** on immutable GMP package **69**, artifact `9742715856`, semantic source
-  `005512f20ed56edc793f4d6505f3d2b4c2999c71`. Preflight reproduced the package/source/GMP/selector authority
-  and all mutation flags were false.
-- **Observed boundary.** Ordinals 1–40 each selected exactly one packaged test and exited 0. Ordinal **41**,
-  `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, also selected exactly once but threw before
-  product adjudication because it could not open
-  `/home/runner/work/Directional/Directional/benchmarks/fixtures/milestone_g_manifest.json`.
-- **Cause.** The exact manifest exists in the packaged immutable source. `TestFixturePaths` first probes sibling/bin
-  `test-data` layouts, then falls back to the absolute `DIRECTIONAL_TEST_SOURCE_DIR` compiled into the producer
-  binary. Package 69 has no sibling `test-data`; the artifact-only launch materialized the source under a different
-  root, so the fallback path was absent. This is a harness-root defect, not evidence against product semantics.
-- **Why the attempt cannot simply restart.** The frozen TB2 plan allows an orchestration restart only when the prior
-  attempt executed no Directional runtime. Forty-one Directional test processes had run before this control defect
-  was classified. Therefore no corrected-root retry is authorized inside TB2; ordinals 42–373 remain unexecuted and
-  the attempt has **no gate authority**.
-- **Required review.** `M3-CP4c-3-TB2-REV` must freeze a pre-runtime check that resolves the exact fixture root the
-  binary will use and proves a known fixture exists there, then explicitly decide whether unchanged package 69 may
-  be re-executed. Product/test/build correction is not justified by this evidence.
-- **Postflight.** Package SHA, 28-entry manifest, source archive, selector 373, executable modes and freshly
-  re-extracted source remained unchanged; no configure/compile/relink/repair/generated-discovery/benchmark or
-  source/test/fixture/selector/package mutation occurred.
-- **Accounting:** non-stable orchestration candidate, **+0 stable events / +0 recurrences**. Stable totals remain
-  **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3 packages **69**.
+- **Original observation.** The first package-69 TB2 attempt reached ordinal 41 and failed before product adjudication because `TestFixturePaths` exhausted sibling/bin `test-data` probes and fell back to the missing absolute compile-time `DIRECTIONAL_TEST_SOURCE_DIR`. The exact manifest was already present in the immutable packaged source, so this was a harness-root defect rather than semantic evidence.
+- **User-authorized remediation.** The user explicitly authorized an orchestration/fixture-only correction and same-turn package regeneration/re-execution. Package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) copies the immutable source fixture tree to sibling `test-data` and proves all package-69 semantic binaries byte-identical. No configure, compile, relink, product/test source repair, or benchmark occurred.
+- **Closure evidence.** R4 run `33355714664` proved the exact sibling fixture manifest exists before runtime, reproduced package/source/GMP/selector/static-target-map authority, and advanced cleanly through the previous ordinal-41 stop. Its eventual first-red was semantic at ordinal 366, so the fixture-root defect is closed.
+- **Accounting:** resolved non-stable orchestration candidate, **+0 stable events / +0 recurrences**. Stable totals remain **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 packages **69**.
+
+## M3-CP4c3-TB2-CAND-01 — mechanical production witness first-reds at `MissingSingularityBranchTransport` after Amendment 15 — **ACTIVE / REVIEW REQUIRED / NON-STABLE**
+
+- **Observed in valid TB2 R4.** Immutable execution package 70 preserves semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, byte-identical package-69 binaries, source archive `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`, and selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. R4 preflight and postflight were immutable.
+- **Measured boundary.** Ordinals **1–365** each selected exactly once and exited 0. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and exited 1 with `InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`. First-red semantics left ordinals 367–373 unexecuted.
+- **What changed relative to TB1.** The same mechanical witness previously stopped at `IncompleteCycleBasis → CycleTransportAdjacencyMissing`. The valid R4 observation proves the CB2/Amendment-15 implementation advances past that earlier stop; it does **not** by itself explain why the later singularity attachment asks for a branch transport.
+- **Review boundary.** Do not infer that a hard-feature barrier should receive transport adjacency. Amendment 15 explicitly prohibits that shortcut. Independent `M3-CP4c-3-TB2-REV` must trace `build_singularity_attachments` and the slit-bound prescribed-singularity representation to determine whether this is an invalid consumer expectation, a missing non-barrier attachment route, or another upstream representation mismatch.
+- **Accounting:** current checkpoint is unaccepted and the accepted 365-prefix is green, so this is **+0 stable events / +0 recurrences**. Stable totals remain **44 / 14 / 30**; debt **5**.
 
 ## M3-CP4c3-DEFN-R1-CAND-01 — the interior-singularity binding does not fail closed while the boundary one does — **ACTIVE / CORRECTIVE COMPILE-GREEN / GATING AT 373 / NON-STABLE**
 
