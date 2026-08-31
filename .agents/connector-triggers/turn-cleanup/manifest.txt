@@ -1,0 +1,3 @@
+# M3-CP4c-3-TB2 temporary repository state
+.agents/connector-triggers/source-snapshot/cp4c3-tb2-start.txt
+.agents/connector-triggers/cp4c3-tb2-docs-apply/run.txt
