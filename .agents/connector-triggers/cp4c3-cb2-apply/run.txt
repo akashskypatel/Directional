@@ -1,4 +1,0 @@
-M3-CP4c-3-CB2 documentation closeout patch apply
-base=005512f20ed56edc793f4d6505f3d2b4c2999c71
-patch_sha256=944b070212c12400b07b0487bb031de57d67473b4029f209c79bf3cd7b9502ef
-retry=2

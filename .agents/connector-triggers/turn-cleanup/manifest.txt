@@ -1,4 +1,0 @@
-# M3-CP4c-3-CB2 closeout temporary-state cleanup
-.agents/connector-triggers/cp4c3-cb2-apply
-.agents/connector-triggers/cp4c3-cb2-compile
-.agents/connector-triggers/cp4c3-cb2-snapshot
