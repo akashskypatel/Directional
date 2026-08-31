@@ -1,0 +1,46 @@
+name: M3 CP4c3 CB6 Compile Fix Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb6-compile-fix-apply-20260831.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb6-compile-fix-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb6-compile-fix-apply
+      commit_run_file: false
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb6-compile-fix-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1LmMV1bSmEZqnSwLztMSyybX7SjCJXemO
+      patch_sha256: 04864b769628bded2573b82b042cb889838fdbb3afbaaa3a646695746e2df27c
+      base_sha: 4f8747b7f920589bc41fdf5c7217942f5921d700
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-CB6: fix DomainResult access in transported direction"
+    secrets: inherit
