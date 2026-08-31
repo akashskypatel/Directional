@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-TB4-closeout
-purpose=apply verified durable documentation patch from Google Drive
-base_sha=6e39d528057db61e1aa555ef77b31e077f620b08
-patch_sha256=8aad30551d565d61aeb364f7726101d7709abfc83b5c6897ce7f23913256d414
-retry=0

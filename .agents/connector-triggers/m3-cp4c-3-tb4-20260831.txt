@@ -1,6 +1,0 @@
-turn=M3-CP4c-3-TB4
-purpose=artifact-only selector-373 gate plus AP6 report-only diagnostics
-package_artifact_id=9773591345
-semantic_source=2d22ef293363058cfdca96d01158a93d2c0200f8
-retry=1
-correction=package73-sidecar-filename
