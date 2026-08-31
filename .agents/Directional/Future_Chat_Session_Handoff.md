@@ -92,82 +92,74 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB5` (Code + Build, diagnostic-only, runtime-free)
+## Mandatory next turn — `M3-CP4c-3-TB4` (Artifact-Only Test + Benchmark)
 
-`M3-CP4c-3-TB3-R1-REV` is **COMPLETE**: it accepted TB3-R1 as valid semantic evidence, confirmed **Amendment 16/P2** effective at runtime, reconstructed the failing invariant, **declined to assign causality**, widened Amendment 16's scope to every stage (`DESIGN.md` §7.2.1), and issued **AP0–AP9**. Record: `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`.
+`M3-CP4c-3-CB5` is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE**.
+Authoritative report: `Architecture_M3_CP4c3_CB5_Code_Build_Report.md`. CP4c-3 remains **OPEN**.
 
-`M3-CP4c-3-TB3-R1` is **COMPLETE / VALID SEMANTIC RED**. CP4c-3 remains **OPEN**. Authoritative runtime report: `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`; frozen successor plan: `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`.
+### Immutable CB5 authority
 
-### Immutable runtime authority
+- semantic/evidence source `2d22ef293363058cfdca96d01158a93d2c0200f8`;
+- immutable mode-preserving package **73** artifact `9773591345`, Actions SHA-256 `8f3a8f0d6a3ad0931db89cb3e94c33d1d7e8a0d9e1aba27a6ad2690ec9c402a0`;
+- inner `package73.tar.gz` `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`;
+- full eight-target compile `33433309655 / 99623694545`, raw result/log `9773522237 / 9773523017`;
+- package-only mode/fixture envelope `33433718709 / 99625035344`;
+- source archive `36451a2473a8858225cf9eabb181a58a5397f400f7f0a99995a1b8da37a2cb4f`;
+- selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
+- **27** package-relative fixtures; six test/benchmark executables verified `0755`;
+- GMP/GMPXX linked; `runtimeExecution=false` throughout.
 
-- semantic/evidence source: `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`;
-- package 72: artifact `9765247195`, Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`;
-- inner `package72.tar.gz`: `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`;
-- source archive: `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`;
-- selector 373: `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- TB run/job: `33416686424 / 99568970224`;
-- result artifact `9767376410`, SHA-256 `7f2c9492d2dae96dfcf1732c320e772be05538a3552ce6a673bd83eb9189824e`;
-- log artifact `9767376976`, SHA-256 `492d19f1e08fd339f130a07dfcf891a3b7bbaaf537483fb54af6e9b96095ad72`;
-- gate: **366 executed / 365 PASS / 1 RED**; first red ordinal 366 `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`; 367–373 not executed;
-- failure: `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; immutable postflight PASS; benchmark/build/repair/generated-discovery/mutation flags false.
+Last runtime authority remains TB3-R1 on package 72: **365 PASS**, first red ordinal 366
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` /
+`VertexTransitSectorUnresolved`. CB5 does not reinterpret it.
 
-The previous atlas stop `MissingSingularityBranchTransport` is cleared: the mechanical witness reaches field-aligned-network construction. `resolve_field_vertex_transit` rejects when the exact deduplicated continuation-candidate set has cardinality other than one. The production exception published only the code, not the underlying network error's `sourceVertex/sourceFace/branch/publishedFaces`, so TB3-R1 does not decide zero candidates versus multiple candidates or the arrival mode.
+### CB5 result — capability, not observed values
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic packages **70**. New candidate `M3-CP4c3-TB3-R1-CAND-01` is active/non-stable.
+- **AP1 complete:** atlas, field-aligned-network, surface-cut-graph and global-topology-plan typed errors now retain a
+  common failure locus through `fail_surface_cells`.
+- **AP2 compile-green:** ordinal 366 can publish source vertex, arrival face, branch, arrival mode, candidate
+  cardinality/faces, `BarrierAbsorbed`, barrier incidence/degree, and transport-star component count.
+- **No AP2 runtime values exist yet.** Zero vs multiple and M1/M2/M3 remain unadjudicated; **AP4 still forbids
+  designing against M3**.
+- **No semantic correction landed:** no transit/barrier/P2/election/tolerance/selector/enum behavior changed.
+- **AP8:** independent typed-loss sites at `surfaceCutGraphBuild.error()` and `globalTopologyBuild.error()` now use
+  the same locus channel.
+- **AP6 adopted for TB4:** after the normal gate first-red verdict, frozen ordinals **367–373** run once as a
+  separate non-gating diagnostic pass, report-only, **zero gate credit**. Selector 373 remains byte-frozen.
+- **AL4 remains binding** for the prescribed sphere.
 
-### What the review concluded — the successor's starting facts
+Stable accounting remains **44 / 14 / 30**, debt **5**; semantic M3 package count is **71**.
 
-- **Execution ACCEPTED.** Working tree byte-identical to packaged source `93ed2ff50…`; selector **373** and all six predecessor prefixes recomputed from committed bytes and reproducing exactly; 55-entry manifest, 27 package-relative fixtures, six executables at `0755` **without repair**; every mutation/build flag false.
-- **A1 is clear end to end.** Amendments 15 and 16/P2 are both proved at runtime, and **ordinals 1–365 stayed green** through both invasive A1 changes. CB3's census — 8 prescribed singularities, 4 barrier-incident, all `InteriorArc`, `d_B(v)=2`, 2-component star — also **statically confirms DEFN-R1's Theorem 2** (`n=16`, `m=12`, `c=4`, `χ(B)=4`, no cycles).
-- **The failing invariant.** `resolve_field_vertex_transit` (`SurfaceCellTracing.cpp:557-640`) BFS-walks `(face, branch)` states, expands **only** through the barrier-free `topology.transports()`, elects by an **exact** half-open sector predicate (`direction[next] > 0 && direction[previous] >= 0`, `FieldExactRational`, **no tolerance**), and requires exactly one candidate. Zero can come from barrier truncation; **multiplicity is structurally expected at a singular vertex**, because non-trivial holonomy makes one face reachable with different branches and the dedup on `(face, branch)` keeps them distinct.
-- **It already complies with Amendment 16** — it cannot cross a barrier. **What it lacks is a response to truncation**: it says "sector unresolved" where the network already models `MandatoryBarrierTermination`. A missing case, not a violation, so **the fix must not be "make it cross"**.
-- **Cause NOT established.** `resolve_field_vertex_transit` is **untouched** by CB3 (whose only tracing hunks are inside `canonical_field_aligned_candidate`), but P2 changed which traces exist, so untouched code reached with a changed trace set can fail newly. Three mechanisms, none promoted: **M1** zero candidates from barrier truncation; **M2** multiple candidates from singular-vertex holonomy; **M3** a P2 consumer mismatch — terminal ownership is port-keyed (`:832-839` raises `InvalidNetworkTerminalOwnership` when no port matches) and P2 removed four ports. **M3 is the leading suspicion and AP4 forbids designing against it.**
-- **The locus exists and was discarded at a boundary.** `error.publishedFaces` already distinguishes zero from multiple. `RemeshPipeline.cpp:6673-6678` reads only `.code`; `fail_surface_cells` (`:6146-6163`) has **no locus parameter at all**. Third consecutive turn losing a locus there.
+### Exact scope of `M3-CP4c-3-TB4`
 
-### Exact scope of `M3-CP4c-3-CB5`
+Artifact-only. No configure, compile, relink, package repair, generated discovery, or source/fixture mutation.
 
-**Code + Build, diagnostic-only.** Compiles and packages; **executes no Directional runtime**; no gate execution, no benchmark. GMP/GMPXX linkage mandatory.
-
-1. **AP1** — give the surface-cell failure boundary a **typed locus payload** (optional source vertex/face/edge/branch/region plus a bounded published-face list), populated from whichever stage error is in hand, surfaced in `RemeshDiagnostics` beside `terminalFailureCode`. Convert **all four** stage call sites in one change (A1, A2a, A2a′, A2b) and retire the `"field-aligned-network/" + code` string channel in the same change. Additive only.
-2. **AP2** — publish what discriminates M1/M2/M3 for the ordinal-366 path: failing **source vertex**, arrival **face**, **branch**, **arrival mode** (`FaceInterior` vs `EdgeTransit`), `publishedFaces` with its **cardinality**, whether the vertex is one of the four `BarrierAbsorbed` census vertices, whether it is barrier-incident and with what `d_B(v)`, and the reachable star-component count.
-3. **AP3** — **no semantic correction in CB5.** A CB that also changes transit behaviour is out of scope and must be rejected at review even if ordinal 366 turns green.
-4. **AP4** — do not design against M3 until AP2 reports.
-5. **AP5** — the correction is sketched, not decided: M1 → a barrier-aware termination consistent with `MandatoryBarrierTermination` (read the siblings first, `LESSONS.md` 51); M2 → transiting a singular vertex is the wrong operation and the fix belongs to arrival/termination; M3 → reconcile A2a's port-keyed paths with A1's singularity facts.
-6. **AP6** — propose a frozen **non-gating** diagnostic pass executing ordinals **367–373** report-only after the first red, zero gate credit, no selector byte changed. Three consecutive TB runs have never executed them. Declining requires a written rationale.
-7. **AP7** — carry the unreached items unchanged; **AL4** still forbids designing the sphere's fix.
-8. **AP8** — audit by assumption and name at least one site satisfying the predicate **without** touching the symbols named in the review record.
-9. **AP9** — prohibited: giving a barrier a branch transport or otherwise crossing/closing one to make `candidates.size() == 1`; changing transit behaviour in CB5; weakening the election into "pick the first"; any tolerance in the sector predicate; reopening Amendments 12–16 or the P2 decision; renumbering or removing any error-enum value; changing any frozen selector byte.
+1. Verify package 73 hash/source/manifest/27-fixture/six-mode/GMP/selector authority.
+2. Execute selector 373 from ordinal 1, one identity per fresh process, first-red hard stop.
+3. Record the gate verdict first; if it red-stops, then execute **367–373 only** as AP6's non-gating diagnostic
+   pass with zero gate credit.
+4. If ordinal 366 remains red, publish AP2's complete measured locus/cardinality and use it to support or falsify
+   M1/M2/M3. Do not choose a correction beyond the evidence.
+5. Semantic red routes to `REVIEW + PLAN`; green 373/373 may close only after immutable postflight passes.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Code + Build guidance
+- turn-based-coding-agent Test + Benchmark guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md` — **AP0–AP9**, the reconstructed
-   invariant, the M1/M2/M3 enumeration and the single discriminating measurement.
-2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–16, normative; 16's scope now covers every stage.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — the valid-red runtime
-   authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — the AN1 census and P2 implementation
-   inherited by package 72.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — Amendment 16 origin and the AN
-   measures.
-6. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
-7. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged frozen selector lineage.
-8. `.agents/Directional/Regression_Root_Cause_Tracker.md` — active candidates and stable-accounting rules.
-9. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — current state and retained lineage.
+0. `.agents/Directional/ORIENTATION.md`
+1. `.agents/Directional/Architecture_M3_CP4c3_CB5_Code_Build_Report.md`
+2. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
+3. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`
+4. `DESIGN.md` §7.2 / §7.2.1
+5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`
+7. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md`
 
-Source CB5 will change or must audit: `src/pipeline/RemeshPipeline.cpp` — `fail_surface_cells` (`:6146-6163`) and
-the four stage call sites, the A2a one at `:6673-6678`; and read-only,
-`src/geometry/SurfaceCellTracing.cpp:557-640` (`resolve_field_vertex_transit`), `:832-862` (port-keyed terminal
-ownership), `:3069-3125` (CB3's P2 hunks), and `src/authority/FieldTransportAtlas.cpp:404-426, 1623-1654` (the
-exact sector predicate).
-
-**This is CODE + BUILD, diagnostic-only.** It compiles and packages and **executes no Directional runtime**; a gate
-may not be run, and transit behaviour may not change. A red TB after it routes to `REVIEW + PLAN` as usual.
+TB4 consumes immutable package **73** only. The AP6 367–373 pass is diagnostic-only and occurs only after the gate
+first-red verdict is recorded.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

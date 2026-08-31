@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN** on semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, immutable mode-preserving package **72** (`9765247195`). Valid TB3-R1 run/job `33416686424 / 99568970224` passed ordinals **1–365** and first-red at ordinal **366** with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; 367–373 remain unexecuted for the third consecutive TB. `M3-CP4c-3-TB3-R1-REV` accepted that execution, **confirmed Amendment 16/P2 effective at runtime** — A1 is now clear end to end and the first red has moved into **A2a** — reconstructed the failing transit invariant, **declined to assign causality** because the locus was discarded by the pipeline failure funnel, widened **Amendment 16**'s scope to every stage, and issued **AP0–AP9**. `M3-CP4c3-TB2-ORCH-01`, `M3-CP4c3-TB2-REV-CAND-01` and `M3-CP4c3-TB3-ORCH-01` are resolved and runtime-proved. Exact next is **`M3-CP4c-3-CB5`**, Code + Build, **diagnostic-only**, runtime-free. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 packages **70**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. Last runtime authority is package 72 / TB3-R1 (`33416686424 / 99568970224`): ordinals **1–365 PASS**, ordinal **366** first-reds at `VertexTransitSectorUnresolved`, and 367–373 were not reached. `M3-CP4c-3-TB3-R1-REV` froze AP0–AP9 without assigning cause. Diagnostic-only `M3-CP4c-3-CB5` is now **BUILD + PACKAGE GREEN / RUNTIME-FREE** on semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`, immutable package **73** (`9773591345`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`). The shared failure funnel retains typed stage loci and ordinal 366 can publish the AP2 M1/M2/M3 discriminator, but **no AP2 runtime value exists yet**. Exact next is artifact-only **`M3-CP4c-3-TB4`** with selector 373 unchanged plus a separate post-first-red non-gating 367–373 pass. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **71**.
 
 ## 1. Separate current/future authority
 
@@ -356,6 +356,20 @@ Mode-preserving package **72** enabled the first valid TB3 semantic execution. R
 The old `MissingSingularityBranchTransport` locus is cleared: atlas partition diagnostics are emitted and the mechanical witness reaches network construction. Static source localizes the new code to `resolve_field_vertex_transit`, which walks transported `(face,branch)` states around the hit vertex and requires exactly one `direction_in_vertex_sector` candidate. The production exception drops the typed network error's source vertex/face/branch/candidate-face details, so runtime does not reveal whether candidate cardinality is zero or greater than one, nor whether the failing arrival is `FaceInterior` or `EdgeTransit`. New non-stable gating candidate `M3-CP4c3-TB3-R1-CAND-01` is therefore routed to independent review, not patched inside TB. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
 
+
+### `M3-CP4c-3-CB5` — typed failure locus and immutable package 73
+
+CB5 implements AP1/AP2 diagnostics only on source `2d22ef293363058cfdca96d01158a93d2c0200f8`. Atlas, field-aligned-network, surface-cut-graph and
+global-topology-plan errors retain a shared typed locus; the network locus additionally carries arrival mode,
+candidate cardinality/faces, `BarrierAbsorbed`, barrier incidence/degree and transport-star component count.
+AP8 independently found cut-graph and global-topology typed-loss sites. No transit/product semantic correction
+landed, selector 373 is unchanged, and no Directional runtime executed; M1/M2/M3 remain unadjudicated.
+
+Full eight-target GMP compile `33433309655 / 99623694545` is green. Package-only run `33433718709 / 99625035344` produced
+mode-preserving package **73** artifact `9773591345`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`, with 27 package-relative fixtures and
+six `0755` executables. AP6 carries into TB4 as a separate report-only 367–373 pass after the gate first-red verdict,
+with zero gate credit.
+
 ## 5. High-value reversals retained
 
 - Face-local branch labels are not cross-face semantic identity; use published transport/lift.
@@ -441,19 +455,19 @@ The CB1 report's exact bytes remain recoverable from Git history and no current/
 
 ## 7. Resume pointer
 
-After the durable start-of-turn checklist, current CP4c work should load only the authority needed for the active checkpoint:
+After the durable start-of-turn checklist, load:
 
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
-5. `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`
-6. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`
-7. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
-8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
-9. `Regression_Root_Cause_Tracker.md`
-10. this consolidated record only when historical lineage is needed.
+4. `Architecture_M3_CP4c3_CB5_Code_Build_Report.md`
+5. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
+6. `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`
+7. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+8. `Regression_Root_Cause_Tracker.md`
+9. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB5` — Code + Build, diagnostic-only, runtime-free**, under AP0–AP9 from the
-TB3-R1 independent review. No TB retry or product-correction design is authorized before CB5 publishes the typed
-locus evidence and completes its compile-only boundary.
+**Exact next:** **`M3-CP4c-3-TB4` — artifact-only Test + Benchmark** on immutable package **73**. Run the unchanged
+373 gate from ordinal 1 with first-red semantics; after recording a gate first red, execute frozen ordinals 367–373
+once as AP6's non-gating report-only pass with zero gate credit. No rebuild, relink, package repair, generated
+discovery, or semantic correction is authorized in TB4.

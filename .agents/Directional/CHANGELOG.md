@@ -1,3 +1,25 @@
+## 2026-08-31 — `M3-CP4c-3-CB5`: typed failure locus compiled; package 73 is runtime-ready
+
+CB5 is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE** on source `2d22ef293363058cfdca96d01158a93d2c0200f8`. AP1 replaces
+stage-by-stage locus loss with shared `SurfaceCellFailureLocusDiagnostics`; all four typed stage errors now preserve
+their available locus through `fail_surface_cells`. AP2 adds the ordinal-366 discriminator: arrival mode, candidate
+cardinality/faces, `BarrierAbsorbed`, barrier incidence/degree and transport-star component count. Runtime did not
+execute, so **M1/M2/M3 remain unadjudicated** and AP4 still forbids designing against M3.
+
+AP8 found independent typed-data-loss sites at `surfaceCutGraphBuild.error()` and `globalTopologyBuild.error()`.
+AP6 is adopted for the successor: after the ordinary first-red verdict is recorded, frozen ordinals **367–373**
+run once as a separate **non-gating diagnostic pass** with zero gate credit. Selector 373 remains `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`.
+
+Changed-owner compile `33431349204 / 99617230353` passed. Final full compile `33433309655 / 99623694545` compiled all
+eight standard GMP-linked targets; raw result/log artifacts are `9773522237 / 9773523017`. Its first
+temporary package step had an orchestration-only fixture-root typo after compile success. Package-only retry
+`33433718709 / 99625035344` reused those exact bytes and produced immutable mode-preserving package **73** artifact
+`9773591345` (Actions SHA-256 `8f3a8f0d6a3ad0931db89cb3e94c33d1d7e8a0d9e1aba27a6ad2690ec9c402a0`), inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`, source archive `36451a2473a8858225cf9eabb181a58a5397f400f7f0a99995a1b8da37a2cb4f`, with 27
+package-relative fixtures and six `0755` test/benchmark executables. No Directional binary ran.
+
+Stable accounting remains **44 / 14 / 30**, debt **5**, +0 stable events/+0 recurrences; semantic M3 package count
+advances **70 → 71**. Exact next: **`M3-CP4c-3-TB4` artifact-only** on package 73.
+
 ## 2026-08-31 — `M3-CP4c-3-TB3-R1-REV`: A1 is clear; the cause of the A2a red is deliberately not assigned
 
 Independent review and planning under the frozen `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`

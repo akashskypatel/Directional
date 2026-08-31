@@ -26,63 +26,57 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB5` (Code + Build, diagnostic-only, runtime-free)
+## Current focus — `M3-CP4c-3-TB4` (Artifact-Only Test + Benchmark)
 
-`M3-CP4c-3-TB3-R1-REV` is **COMPLETE**: it accepted TB3-R1 as valid semantic evidence, **confirmed Amendment 16/P2
-effective at runtime**, reconstructed the failing invariant, **declined to assign causality** because the locus was
-discarded by the pipeline's failure funnel, widened **Amendment 16**'s scope to every stage, and issued
-**AP0–AP9**. Record: `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`.
+`M3-CP4c-3-CB5` is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE**. Evidence:
+`Architecture_M3_CP4c3_CB5_Code_Build_Report.md`.
 
-### What the review established
+### Immutable CB5 authority
 
-- **A1 is clear end to end.** `MissingSingularityBranchTransport` is gone; the mechanical witness clears the cut
-  transport domain, tangent bundle, cycle basis, index accounting and port attachment, and first-reds for the first
-  time in **A2a**. Ordinals **1–365 stayed green** through a second invasive A1 change.
-- **The failing invariant:** `resolve_field_vertex_transit` walks `(face, branch)` states, expands **only** through
-  the barrier-free `topology.transports()`, elects by an **exact** half-open sector predicate (no tolerance), and
-  requires exactly one candidate. Zero can come from barrier truncation; **multiplicity is structurally expected at
-  a singular vertex** because holonomy makes one face reachable with different branches.
-- **The traversal already complies with Amendment 16** — it cannot cross a barrier. What it lacks is a *response*
-  to truncation, while the network already models `MandatoryBarrierTermination`. A missing case, not a violation:
-  **the fix must not be "make it cross".**
-- **Cause NOT established.** Three mechanisms, none promoted, one discriminating measurement: **M1** zero
-  candidates from barrier truncation; **M2** multiple candidates from singular-vertex holonomy; **M3** a P2
-  consumer mismatch, since terminal ownership is port-keyed and P2 removed four ports. **AP4** forbids designing
-  against M3.
-- **The locus was thrown away at a boundary for the third turn running.** `fail_surface_cells` takes only
-  `(code, stage)` and every caller drops the typed error it holds.
+- semantic/evidence source `2d22ef293363058cfdca96d01158a93d2c0200f8`;
+- immutable package **73** artifact `9773591345`, inner tar `fc939abc4110f4a658d80932b395f59c9fd7cecbbcde7caac0ba7b6a41d1aca1`;
+- full eight-target compile `33433309655 / 99623694545`; package-only envelope `33433718709 / 99625035344`;
+- selector 373 unchanged at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
+- **27** package-relative fixtures and six `0755` test/benchmark executables verified;
+- GMP/GMPXX linkage, manifests and clean source/package checks pass;
+- `runtimeExecution=false`; no Directional runtime executed.
+
+### What CB5 established
+
+- **AP1 implemented:** all four typed stage-error boundaries retain a shared `SurfaceCellFailureLocusDiagnostics`
+  payload instead of dropping their locus.
+- **AP2 implemented but unmeasured:** ordinal 366 can publish source vertex, face, branch, arrival mode, candidate
+  cardinality/faces, `BarrierAbsorbed`, barrier incidence/degree and transport-star component count.
+  **M1/M2/M3 remain unadjudicated** until runtime.
+- **AP3/AP4 held:** no transit/product correction and no design against M3.
+- **AP6 adopted for TB4:** after the normal first red, run frozen ordinals **367–373** once as a **non-gating**
+  diagnostic pass, report-only and zero gate credit. Selector bytes and gate semantics are unchanged.
+- **AP8:** independent typed-data-loss sites were found at `surfaceCutGraphBuild.error()` and
+  `globalTopologyBuild.error()`, proving the audit was predicate-driven.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB5`** — Code + Build, **diagnostic-only**, runtime-free, GMP/GMPXX linked, under **AP0–AP9**:
+Run **`M3-CP4c-3-TB4`** artifact-only on package **73**:
 
-1. **AP1** give the surface-cell failure boundary a **typed locus payload** and convert **all four** stage call
-   sites in one change; retire the string-concatenation channel in the same change;
-2. **AP2** publish what discriminates M1/M2/M3 — failing source vertex, arrival face, branch, arrival mode
-   (`FaceInterior` vs `EdgeTransit`), `publishedFaces` **cardinality**, whether the vertex is one of the four
-   `BarrierAbsorbed` census vertices, its `d_B(v)`, and the reachable star-component count;
-3. **AP3** no semantic correction in CB5 — diagnostic instrumentation first, by the frozen plan's own rule;
-4. **AP4** do not design against M3 until AP2 reports;
-5. **AP6** propose a frozen **non-gating** diagnostic pass so ordinals 367–373 stop being invisible after a first
-   red — three TB runs in a row have never executed them;
-6. **AP8** audit by assumption and name a site satisfying the predicate without touching the named symbols.
+1. verify immutable package/source/GMP/27-fixture/six-mode/selector authority;
+2. execute selector 373 from ordinal 1, one exact identity per fresh process, first-red hard stop;
+3. after recording the gate verdict, execute frozen ordinals **367–373** once as AP6's non-gating diagnostic pass
+   with **zero gate credit**;
+4. if ordinal 366 is red, capture AP2's full typed locus and classify M1/M2/M3 from measured evidence;
+5. semantic red → `REVIEW + PLAN`; no rebuild, relink, package repair, generated discovery, or corrective
+   implementation is allowed in TB4.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / CAUSE NOT ESTABLISHED / GATING**; invariant fixed, three mechanisms
-  enumerated, discriminated by **AP2**.
-- [ ] `M3-CP4c3-TB3-R1-REV-CAND-01` — the pipeline failure funnel discards every stage's typed error locus; owned
-  by **AP1**.
-- [ ] **C2 / mechanical witness** — both A1 halves fixed and proved; the remaining red is in A2a.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / CAUSE NOT ESTABLISHED / GATING**; TB4 owns the AP2 discriminator.
+- [x] `M3-CP4c3-TB3-R1-REV-CAND-01` — shared typed-error funnel repaired in CB5; runtime publication remains TB evidence.
+- [ ] **C2 / mechanical witness** — A1 is proved clear; current accepted-path red remains A2a pending TB4.
 - [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 still runtime-unproved.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere ACTIVE / ONE LEVEL SHORT; ordinal 368 still runtime-unproved. **AL4** still
-  forbids designing its fix.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 still runtime-unproved.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 still runtime-unproved.
-- [x] `M3-CP4c3-TB2-REV-CAND-01`, `M3-CP4c3-TB2-ORCH-01`, `M3-CP4c3-TB3-ORCH-01` — resolved and runtime-proved by
-  package 72 and TB3-R1.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere ACTIVE / ONE LEVEL SHORT; ordinal 368 runtime-unproved. **AL4** still forbids designing its fix.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 runtime-unproved.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 runtime-unproved.
 
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **70**.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **71**.
 
 ## Superseded — `M3-CP4c-3-TB2` execution record
 
@@ -141,7 +135,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 Amendment 16/P2 semantic bytes are compile-green and frozen on source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`. The first TB3 attempt executed **0/373** because package 71 lost executable modes during Actions artifact re-materialization; independent review established the root cause and package-only CB4-PKG corrected the transport contract without recompilation or semantic mutation. Immutable mode-preserving package **72** is now authoritative; exact next is `M3-CP4c-3-TB3-R1` from selector ordinal 1 under first-red semantics.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 CB5 diagnostic instrumentation is compile/package-green on semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`, immutable package **73**. No semantic runtime has consumed it. Exact next is artifact-only `M3-CP4c-3-TB4` under unchanged selector 373 plus AP6's post-first-red non-gating diagnostic pass.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -175,4 +169,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **69**; fixture-only package 70 is execution transport with byte-identical package-69 binaries. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **71** after CB5; package labels 70 and 72 were transport/envelope corrections rather than new semantic sources. PR #8 remains open, draft, and unmerged.
