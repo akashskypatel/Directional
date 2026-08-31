@@ -1,0 +1,127 @@
+name: M3 CP4c3 CB5 Package R2 20260831
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c-3-cb5-package-r2-20260831.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c-3-cb5-package-r2-20260831
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c-3-cb5-package-r2-20260831
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c-3-cb5-package-r2-20260831.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  package:
+    needs: validate
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download exact successful full compile result
+        uses: actions/download-artifact@v4
+        with:
+          name: m3-cp4c3-cb5-full-result-33433309655
+          path: ${{ runner.temp }}/raw
+          repository: akashskypatel/Directional
+          run-id: 33433309655
+          github-token: ${{ github.token }}
+
+      - name: Build and verify immutable mode-preserving package 73
+        shell: bash
+        run: |
+          set -euo pipefail
+          raw="$RUNNER_TEMP/raw"
+          out="$RUNNER_TEMP/package73"
+          src="$RUNNER_TEMP/source-tree"
+          verify="$RUNNER_TEMP/package73-verify"
+          rm -rf "$out" "$src" "$verify"
+          test "$(cat "$raw/metadata/source-commit.txt")" = "2d22ef293363058cfdca96d01158a93d2c0200f8"
+          test "$(cat "$raw/metadata/build-exit-code.txt")" = "0"
+          grep -q '^runtimeExecution=false$' "$raw/metadata/command-boundary.txt"
+          grep -q '^exactArithmeticBackend=GMP$' "$raw/metadata/command-boundary.txt"
+          (cd "$raw" && sha256sum -c SHA256SUMS)
+          source_archive="$(find "$raw/source" -maxdepth 1 -type f -name 'source-*.tar.gz' -print -quit)"
+          test -n "$source_archive"
+          mkdir -p "$src" "$out"
+          tar -xzf "$source_archive" -C "$src"
+          fixture_root="$src/benchmarks/fixtures"
+          test -d "$fixture_root"
+          test "$(find "$fixture_root" -type f | wc -l)" -eq 27
+          cp -a "$raw/bin" "$raw/lib" "$raw/metadata" "$raw/source" "$out/"
+          mkdir -p "$out/test-data/benchmarks"
+          cp -a "$fixture_root" "$out/test-data/benchmarks/fixtures"
+          for binary in \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_compiled_api_tests \
+            directional_benchmarks; do
+            test -f "$out/bin/$binary"
+            chmod 0755 "$out/bin/$binary"
+          done
+          printf '%s\n' \
+            'package=73' \
+            'source_commit=2d22ef293363058cfdca96d01158a93d2c0200f8' \
+            'fixture_count=27' \
+            'fixture_authority=package-relative' \
+            'runtimeExecution=false' \
+            'packageRepair=false' > "$out/metadata/fixture-package-contract.txt"
+          printf '%s\n' \
+            'runtimeExecution=false' \
+            'turnBoundary=Code+Build-only' \
+            'exactArithmeticBackend=GMP' \
+            'modePreservingEnvelope=true' \
+            'semanticContracts=compiled-not-executed' > "$out/metadata/package-envelope.txt"
+          (cd "$out" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          (cd "$out" && sha256sum -c SHA256SUMS)
+          test "$(grep -c 'SHA256SUMS' "$out/SHA256SUMS" || true)" -eq 0
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -C "$RUNNER_TEMP" -cf - package73 | gzip -n > "$RUNNER_TEMP/package73.tar.gz"
+          mkdir -p "$verify"
+          tar -xzf "$RUNNER_TEMP/package73.tar.gz" -C "$verify"
+          test "$(find "$verify/package73/test-data/benchmarks/fixtures" -type f | wc -l)" -eq 27
+          (cd "$verify/package73" && sha256sum -c SHA256SUMS)
+          for binary in \
+            directional_surface_cell_authority_kernel_tests \
+            directional_surface_cell_producer_tests \
+            directional_surface_cell_completion_tests \
+            directional_surface_cell_validation_tests \
+            directional_compiled_api_tests \
+            directional_benchmarks; do
+            test "$(stat -c '%a' "$verify/package73/bin/$binary")" = "755"
+          done
+          sha256sum "$RUNNER_TEMP/package73.tar.gz" | tee "$RUNNER_TEMP/package73.sha256"
+          sha256sum "$source_archive" | tee "$RUNNER_TEMP/source-archive.sha256"
+          printf '%s\n' 'runtimeExecution=false' 'No Directional binary was executed while packaging.' > "$RUNNER_TEMP/package73-boundary.txt"
+
+      - name: Upload immutable package 73
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-cb5-package73-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/package73.tar.gz
+            ${{ runner.temp }}/package73.sha256
+            ${{ runner.temp }}/source-archive.sha256
+            ${{ runner.temp }}/package73-boundary.txt
+          if-no-files-found: error
+          retention-days: 7
