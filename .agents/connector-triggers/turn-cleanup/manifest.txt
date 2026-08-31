@@ -1,0 +1,4 @@
+# M3-CP4c-3-TB3 temporary non-workflow state
+.agents/connector-triggers/cp4c3-tb3-preflight-20260831t0640.txt
+.agents/connector-triggers/source-snapshot/m3-cp4c3-tb3-start-20260831t0629.txt
+.agents/connector-triggers/cp4c3-tb3-closeout-apply-20260831t0712.txt
