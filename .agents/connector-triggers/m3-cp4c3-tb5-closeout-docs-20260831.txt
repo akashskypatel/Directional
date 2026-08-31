@@ -1,5 +1,0 @@
-purpose=apply M3-CP4c-3-TB5 durable closeout documentation
-base_sha=5b383837b2fdef732f00c357e7ccd8c901a696ae
-patch_sha256=0d65b33d4376c726622f2a0c3f1129376920f0f5792a9f38da1e2153b977d1df
-drive_file_id=1LuHLKuiD9vzvU2xNcNGV5L93DFB7Vrk0
-retry=1 after YAML quoting correction
