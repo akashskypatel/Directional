@@ -1,0 +1,2 @@
+# M3-CP4c-3-CB6 final temporary-state cleanup
+.agents/connector-triggers/m3-cp4c3-cb6-closeout-docs-20260831.txt
