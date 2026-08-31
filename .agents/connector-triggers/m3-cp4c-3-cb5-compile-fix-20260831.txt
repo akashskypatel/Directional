@@ -1,3 +1,3 @@
-M3-CP4c-3-CB5 compile-fix patch apply trigger.
-base_sha=57d68245ddc60b2fd8725e7ff84059f45ff95144
-patch_sha256=54770c33b8e165c1ca481da7b6102a73f12b23cb758bd3a805df058fd8535102
+M3-CP4c-3-CB5 compile-fix R2 patch apply trigger.
+base_sha=5191f4d31a863af5115de7f9aa7926764ca941af
+patch_sha256=866b4a22bf293e85db7159d81c41a1171c42243ec2d8a496ac85cbdb268d0585
