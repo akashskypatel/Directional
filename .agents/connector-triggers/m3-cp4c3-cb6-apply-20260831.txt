@@ -1,0 +1,4 @@
+purpose=apply verified M3-CP4c-3-CB6 source/test patch
+base_sha=ac8f6dd01defefc2135d674c9a9ce9351c08c764
+patch_sha256=17b87ef26ef166a7819fba1104b8c2a32829ad25c3860d668bbfa3f442f2b7f5
+retry=0
