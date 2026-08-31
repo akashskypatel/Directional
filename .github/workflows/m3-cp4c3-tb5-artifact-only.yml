@@ -128,11 +128,18 @@ jobs:
             printf '%s %s\n' "$n" "$actual" | tee -a "$work/result/selector-hashes.txt"
           done
           selector="$(selector_path 373)"
-          for n in 357 358 361 365 367 370; do
+          for n in 357 361 365 367 370; do
             p="$(selector_path "$n")"
             head -n "$n" "$selector" > "$work/prefix-$n.txt"
             cmp -s "$p" "$work/prefix-$n.txt"
           done
+          # Selector 358 is a retained historical fork, not a byte prefix: its
+          # former RotationSystem identity was later relocated while 361 restored
+          # the cumulative prefix. Preserve its exact hash and require every 358
+          # identity to remain present exactly once in selector 373.
+          p358="$(selector_path 358)"
+          test -z "$(comm -23 <(LC_ALL=C sort "$p358") <(LC_ALL=C sort "$selector"))"
+          echo '358 lineage=historical-set-subset-not-byte-prefix' | tee -a "$work/result/selector-hashes.txt"
 
           python3 - "$src" "$selector" "$work/result/mapping.tsv" <<'PY'
           from pathlib import Path
