@@ -494,6 +494,10 @@ build_singularity_attachments(
           std::nullopt, singularity.sourceVertex, singularity.topologyRegion};
       return std::nullopt;
     }
+    if (singularity.portPolicy ==
+        FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
+      continue;
+    }
     const auto fan = ordered_incident_fan(sourceMesh, rowTopology,
                                           singularity.sourceVertex);
     if (!fan.has_value()) {
@@ -849,6 +853,7 @@ struct LocalRegionMesh {
   std::vector<int> globalFaceByLocal;
   std::vector<int> globalVertexByLocal;
   std::set<int> barrierVertices;
+  std::map<int, std::size_t> transportStarComponentCountByGlobalVertex;
   FieldTransportRegionDiagnostics diagnostics;
   bool uncutAuthorityMatches = false;
   bool cutIdentityValid = false;
@@ -1094,6 +1099,8 @@ std::optional<LocalRegionMesh> make_local_region_mesh(
       return sourceAuthority.topology_for_row(firstId) <
              sourceAuthority.topology_for_row(secondId);
     });
+    result.transportStarComponentCountByGlobalVertex.emplace(
+        globalVertex, components.size());
     for (const auto &component : components) {
       const int localVertex =
           static_cast<int>(result.globalVertexByLocal.size());
@@ -1544,17 +1551,19 @@ std::uint64_t atlas_fact_digest(
   consume_hash(hash, cycleDigests.size());
   for (const std::uint64_t digest : cycleDigests) consume_hash(hash, digest);
 
-  std::vector<std::pair<std::uint64_t, int>> singularityFacts;
+  std::vector<std::tuple<std::uint64_t, int, std::uint8_t>> singularityFacts;
   singularityFacts.reserve(singularities.size());
   for (const FieldSingularityFact &singularity : singularities) {
-    singularityFacts.emplace_back(singularity.sourceVertex.index(),
-                                  singularity.indexNumerator);
+    singularityFacts.emplace_back(
+        singularity.sourceVertex.index(), singularity.indexNumerator,
+        static_cast<std::uint8_t>(singularity.portPolicy));
   }
   std::sort(singularityFacts.begin(), singularityFacts.end());
   consume_hash(hash, singularityFacts.size());
-  for (const auto &[vertex, numerator] : singularityFacts) {
+  for (const auto &[vertex, numerator, portPolicy] : singularityFacts) {
     consume_hash(hash, vertex);
     consume_signed(hash, numerator);
+    consume_hash(hash, portPolicy);
   }
 
   std::vector<std::tuple<int, int, int, std::size_t, std::size_t,
@@ -2278,6 +2287,47 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
     regionDiagnostics.interiorIndexSum = interiorIndexSum;
     regionDiagnostics.boundaryIndexSum = boundaryIndexSum;
     regionDiagnostics.absorbedCorrection = absorbedCorrection;
+    for (const auto &[rawVertex, numerator] : rawSingularity) {
+      if (local->barrierVertices.count(rawVertex) == 0U) continue;
+      std::size_t barrierDegree = 0U;
+      for (const SourceEdgeTopologyKey &edge : local->diagnostics.barrierEdges) {
+        if (edge.first().index() == static_cast<std::size_t>(rawVertex) ||
+            edge.second().index() == static_cast<std::size_t>(rawVertex)) {
+          ++barrierDegree;
+        }
+      }
+      const auto starComponents =
+          local->transportStarComponentCountByGlobalVertex.find(rawVertex);
+      if (barrierDegree == 0U ||
+          starComponents ==
+              local->transportStarComponentCountByGlobalVertex.end()) {
+        return fail(
+            FieldAtlasBuildErrorCode::SingularityMismatch, std::nullopt,
+            std::nullopt,
+            make_id<SourceVertexId>(static_cast<std::size_t>(rawVertex)),
+            region.id());
+      }
+      const FieldBarrierSingularityClass classification =
+          barrierDegree == 1U
+              ? FieldBarrierSingularityClass::Tip
+              : (barrierDegree == 2U
+                     ? FieldBarrierSingularityClass::InteriorArc
+                     : FieldBarrierSingularityClass::Branch);
+      regionDiagnostics.barrierIncidentSingularities.push_back(
+          FieldBarrierIncidentSingularityDiagnostics{
+              make_id<SourceVertexId>(static_cast<std::size_t>(rawVertex)),
+              numerator, barrierDegree, starComponents->second,
+              classification});
+    }
+    std::sort(
+        regionDiagnostics.barrierIncidentSingularities.begin(),
+        regionDiagnostics.barrierIncidentSingularities.end(),
+        [](const FieldBarrierIncidentSingularityDiagnostics &first,
+           const FieldBarrierIncidentSingularityDiagnostics &second) {
+          return first.sourceVertex < second.sourceVertex;
+        });
+    regionDiagnostics.barrierIncidentSingularityCount =
+        regionDiagnostics.barrierIncidentSingularities.size();
     regionTransportDiagnostics.push_back(std::move(regionDiagnostics));
   }
 
@@ -2362,9 +2412,13 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       return fail(FieldAtlasBuildErrorCode::SingularityMismatch,
                   std::nullopt, std::nullopt, vertex);
     }
+    const FieldSingularityFact::PortPolicy portPolicy =
+        slitOwner != slitCycleByGlobalVertex.end()
+            ? FieldSingularityFact::PortPolicy::BarrierAbsorbed
+            : FieldSingularityFact::PortPolicy::Emit;
     singularities.push_back(FieldSingularityFact{
         make_id<FieldSingularityId>(singularities.size()), vertex, *component,
-        numerator, owner.first, owner.second});
+        numerator, owner.first, owner.second, portPolicy});
   }
   for (FieldTransportRegionDiagnostics &diagnostics :
        regionTransportDiagnostics) {
@@ -2385,9 +2439,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       sourceMesh, rowTopology, builtFramesByRow, *branchTransports,
       singularities, attachmentError);
   if (!singularityAttachments.has_value()) {
-    return fail(attachmentError.code, attachmentError.sourceEdge,
-                attachmentError.sourceFace, attachmentError.sourceVertex,
-                attachmentError.topologyRegion);
+    attachmentError.regionTransportDiagnostics = regionTransportDiagnostics;
+    return FieldTransportAtlasBuildResult(std::move(attachmentError));
   }
   const std::uint64_t branchDigest = branch_topology_digest(
       branchFrames, *branchTransports, *singularityAttachments);

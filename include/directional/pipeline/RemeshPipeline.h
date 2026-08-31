@@ -305,6 +305,7 @@ struct SurfaceCellDiagnosticProductSnapshots {
   bool hasCrossField = false;
 
   std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;
+  std::optional<authority::FieldAtlasBuildError> fieldTransportAtlasError;
   std::optional<geometry::FieldAlignedCurveNetwork> fieldAlignedCurveNetwork;
   std::optional<geometry::SurfaceCutGraph> surfaceCutGraph;
   std::optional<geometry::GlobalTopologyPlan> globalTopologyPlan;

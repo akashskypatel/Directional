@@ -60,7 +60,7 @@ inline std::filesystem::path test_data_root() {
   if (std::filesystem::exists(legacyPackage / "benchmarks" / "fixtures")) {
     return legacyPackage;
   }
-  return std::filesystem::path(DIRECTIONAL_TEST_SOURCE_DIR);
+  return siblingPackage;
 }
 
 inline std::filesystem::path benchmark_fixture_path(

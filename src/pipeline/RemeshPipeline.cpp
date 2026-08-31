@@ -6581,9 +6581,27 @@ remesh_from_raw_cross_field_impl_with_stage_products(
             crossFieldProduct);
     if (!atlasBuild) {
       const authority::FieldAtlasBuildError &error = atlasBuild.error();
+      result.surfaceCellContext.productSnapshots.fieldTransportAtlasError =
+          error;
       std::ostringstream stage;
       stage << "field-transport-atlas/"
             << authority::field_atlas_build_error_code_name(error.code);
+      if (error.sourceEdge.has_value()) {
+        stage << ";sourceEdge=" << error.sourceEdge->first().index() << '-'
+              << error.sourceEdge->second().index();
+      }
+      if (error.sourceFace.has_value()) {
+        stage << ";sourceFace=" << error.sourceFace->index();
+      }
+      if (error.sourceVertex.has_value()) {
+        stage << ";sourceVertex=" << error.sourceVertex->index();
+      }
+      if (error.topologyRegion.has_value()) {
+        stage << ";topologyRegion=" << error.topologyRegion->index();
+      }
+      if (error.branch.has_value()) {
+        stage << ";branch=" << static_cast<int>(error.branch->value());
+      }
       if (error.incompleteCycleBasisReason.has_value()) {
         stage << ";incompleteCycleBasisReason="
               << authority::incomplete_cycle_basis_reason_name(
@@ -6608,6 +6626,38 @@ remesh_from_raw_cross_field_impl_with_stage_products(
               << ",cycleRows=" << row.cycleRowCount
               << ",cycleCurvatures=" << row.cycleCurvatureCount
               << ",innerAdjacencies=" << row.innerAdjacencyCount << '}';
+      }
+      for (std::size_t index = 0U;
+           index < error.regionTransportDiagnostics.size(); ++index) {
+        const auto &row = error.regionTransportDiagnostics[index];
+        stage << ";transportRegion[" << index << "]={topologyRegion="
+              << row.topologyRegion.index()
+              << ",hardFeatureEdges=" << row.hardFeatureEdgeCount
+              << ",barrierEdges=" << row.barrierEdgeCount
+              << ",barrierVertices=" << row.barrierVertexCount
+              << ",barrierComponents=" << row.barrierComponentCount
+              << ",barrierChi=" << row.barrierEulerCharacteristic
+              << ",boundaryBarrierVertices="
+              << row.barrierRegionBoundaryVertexCount
+              << ",barrierIncidentSingularities="
+              << row.barrierIncidentSingularityCount
+              << ",uncutChi=" << row.uncutEulerCharacteristic
+              << ",cutChi=" << row.cutEulerCharacteristic
+              << ",uncutBoundaryLoops=" << row.uncutBoundaryLoopCount
+              << ",cutBoundaryLoops=" << row.cutBoundaryLoopCount << '}';
+        for (std::size_t singularityIndex = 0U;
+             singularityIndex < row.barrierIncidentSingularities.size();
+             ++singularityIndex) {
+          const auto &singularity =
+              row.barrierIncidentSingularities[singularityIndex];
+          stage << ";transportRegion[" << index
+                << "].barrierSingularity[" << singularityIndex
+                << "]={sourceVertex=" << singularity.sourceVertex.index()
+                << ",indexNumerator=" << singularity.indexNumerator
+                << ",barrierDegree=" << singularity.barrierDegree
+                << ",transportStarComponents="
+                << singularity.transportStarComponentCount << '}';
+        }
       }
       return fail_surface_cells(SurfaceCellFailureCode::InvalidFieldTransportAtlas,
                                 stage.str());

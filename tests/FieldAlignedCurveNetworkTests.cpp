@@ -3345,6 +3345,7 @@ struct Cp4cProductionFixture {
   bool authoritativeRailsSnapshotAvailable = false;
   std::optional<SourceTopologyRegions> sourceAuthority;
   std::optional<directional::authority::FieldTransportAtlas> atlas;
+  std::optional<directional::authority::FieldAtlasBuildError> atlasError;
   std::optional<FieldAlignedCurveNetwork> network;
   std::optional<directional::geometry::SurfaceCutGraph> cutGraph;
   std::optional<directional::geometry::GlobalTopologyPlan> plan;
@@ -4369,6 +4370,9 @@ void append_atlas_error(std::ostringstream &stream,
   if (error.sourceEdge.has_value()) {
     stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
   }
+  if (error.branch.has_value()) {
+    stream << ";branch=" << static_cast<int>(error.branch->value());
+  }
   if (error.incompleteCycleBasisReason.has_value()) {
     stream << ";incompleteCycleBasisReason="
            << directional::authority::incomplete_cycle_basis_reason_name(
@@ -4406,6 +4410,8 @@ void append_atlas_error(std::ostringstream &stream,
            << ",barrierChi=" << row.barrierEulerCharacteristic
            << ",boundaryBarrierVertices="
            << row.barrierRegionBoundaryVertexCount
+           << ",barrierIncidentSingularities="
+           << row.barrierIncidentSingularityCount
            << ",uncutChi=" << row.uncutEulerCharacteristic
            << ",cutChi=" << row.cutEulerCharacteristic
            << ",uncutBoundaryLoops=" << row.uncutBoundaryLoopCount
@@ -4421,6 +4427,19 @@ void append_atlas_error(std::ostringstream &stream,
              << ",cycle=" << (component.containsCycle ? "true" : "false")
              << ",boundaryVertices=" << component.regionBoundaryVertexCount
              << '}';
+    }
+    for (std::size_t singularityIndex = 0U;
+         singularityIndex < row.barrierIncidentSingularities.size();
+         ++singularityIndex) {
+      const auto &singularity =
+          row.barrierIncidentSingularities[singularityIndex];
+      stream << ";transportRegion[" << index << "].barrierSingularity["
+             << singularityIndex << "]={sourceVertex="
+             << singularity.sourceVertex.index()
+             << ",indexNumerator=" << singularity.indexNumerator
+             << ",barrierDegree=" << singularity.barrierDegree
+             << ",transportStarComponents="
+             << singularity.transportStarComponentCount << '}';
     }
   }
 }
@@ -4612,6 +4631,19 @@ const char *field_quadrangulability_witness_kind_name(
   return "Unknown";
 }
 
+const char *field_barrier_singularity_class_name(
+    const directional::authority::FieldBarrierSingularityClass value) {
+  switch (value) {
+  case directional::authority::FieldBarrierSingularityClass::Tip:
+    return "Tip";
+  case directional::authority::FieldBarrierSingularityClass::InteriorArc:
+    return "InteriorArc";
+  case directional::authority::FieldBarrierSingularityClass::Branch:
+    return "Branch";
+  }
+  return "Unknown";
+}
+
 void append_transport_region_diagnostics(
     std::ostringstream &stream,
     const directional::authority::FieldTransportAtlas &atlas) {
@@ -4624,6 +4656,8 @@ void append_transport_region_diagnostics(
            << ",barrierChi=" << region.barrierEulerCharacteristic
            << ",boundaryBarrierVertices="
            << region.barrierRegionBoundaryVertexCount
+           << ",barrierIncidentSingularities="
+           << region.barrierIncidentSingularityCount
            << ",uncutChi=" << region.uncutEulerCharacteristic
            << ",uncutBoundaryLoops=" << region.uncutBoundaryLoopCount
            << ",cutChi=" << region.cutEulerCharacteristic
@@ -4669,6 +4703,23 @@ void append_transport_region_diagnostics(
         stream << component.branchVertices[i].index();
       }
       stream << '}';
+    }
+    for (std::size_t singularityIndex = 0U;
+         singularityIndex < region.barrierIncidentSingularities.size();
+         ++singularityIndex) {
+      const auto &singularity =
+          region.barrierIncidentSingularities[singularityIndex];
+      stream << ";transportRegion[" << region.topologyRegion.index()
+             << "].barrierSingularity[" << singularityIndex
+             << "]={sourceVertex=" << singularity.sourceVertex.index()
+             << ",indexNumerator=" << singularity.indexNumerator
+             << ",barrierDegree=" << singularity.barrierDegree
+             << ",transportStarComponents="
+             << singularity.transportStarComponentCount
+             << ",class="
+             << field_barrier_singularity_class_name(
+                    singularity.classification)
+             << '}';
     }
   }
 }
@@ -5262,6 +5313,7 @@ Cp4cProductionFixture build_cp4c_pipeline_products_fixture(
   fixture.authoritativeRailsSnapshotAvailable = products.hasAuthoritativeRails;
   fixture.sourceAuthority = products.sourceTopologyRegions;
   fixture.atlas = products.fieldTransportAtlas;
+  fixture.atlasError = products.fieldTransportAtlasError;
   fixture.network = products.fieldAlignedCurveNetwork;
   fixture.cutGraph = products.surfaceCutGraph;
   fixture.plan = products.globalTopologyPlan;
@@ -5280,9 +5332,17 @@ Cp4cProductionFixture build_cp4c_production_fixture(
   if (!fixture.sourceAuthority.has_value() || !fixture.atlas.has_value() ||
       !fixture.network.has_value() || !fixture.cutGraph.has_value() ||
       !fixture.plan.has_value()) {
+    std::ostringstream failure;
+    failure << fixtureName
+            << " pipeline did not retain CP4c topology authority: "
+            << fixture.terminalFailureCode << '/'
+            << fixture.terminalFailureStage;
+    if (fixture.atlasError.has_value()) {
+      failure << ';';
+      append_atlas_error(failure, *fixture.atlasError);
+    }
     throw std::runtime_error(
-        fixtureName + " pipeline did not retain CP4c topology authority: " +
-        fixture.terminalFailureCode + "/" + fixture.terminalFailureStage);
+        failure.str());
   }
   return fixture;
 }
@@ -7932,8 +7992,10 @@ TEST(FieldTransportAtlas, CutTransportDomainSatisfiesTheEulerCutIdentity) {
   std::ostringstream report;
   append_transport_region_diagnostics(report, *fixture.atlas);
   bool hasBarrier = false;
+  std::size_t barrierIncidentSingularities = 0U;
   for (const auto &region : fixture.atlas->region_transport_diagnostics()) {
     hasBarrier = hasBarrier || region.barrierEdgeCount != 0U;
+    barrierIncidentSingularities += region.barrierIncidentSingularityCount;
     EXPECT_EQ(region.uncutEulerCharacteristic -
                   region.barrierEulerCharacteristic +
                   static_cast<int>(region.barrierRegionBoundaryVertexCount),
@@ -7944,8 +8006,28 @@ TEST(FieldTransportAtlas, CutTransportDomainSatisfiesTheEulerCutIdentity) {
       EXPECT_TRUE(component.tree) << report.str();
       EXPECT_FALSE(component.containsCycle) << report.str();
     }
+    for (const auto &singularity : region.barrierIncidentSingularities) {
+      EXPECT_EQ(2U, singularity.barrierDegree) << report.str();
+      EXPECT_EQ(2U, singularity.transportStarComponentCount) << report.str();
+      EXPECT_EQ(
+          directional::authority::FieldBarrierSingularityClass::InteriorArc,
+          singularity.classification)
+          << report.str();
+      const auto fact = std::find_if(
+          fixture.atlas->singularities().begin(),
+          fixture.atlas->singularities().end(),
+          [&](const auto &candidate) {
+            return candidate.sourceVertex == singularity.sourceVertex;
+          });
+      ASSERT_NE(fixture.atlas->singularities().end(), fact) << report.str();
+      EXPECT_EQ(directional::authority::FieldSingularityFact::PortPolicy::
+                    BarrierAbsorbed,
+                fact->portPolicy)
+          << report.str();
+    }
   }
   EXPECT_TRUE(hasBarrier) << report.str();
+  EXPECT_EQ(4U, barrierIncidentSingularities) << report.str();
   std::cout << "m3Cp4c3AM3AM6" << report.str() << '\n';
 }
 
@@ -7966,15 +8048,29 @@ TEST(FieldTransportAtlas,
   const auto &singularity = atlas.singularities().front();
   ASSERT_TRUE(singularity.topologyRegion.has_value());
   ASSERT_TRUE(singularity.localCycle.has_value());
+  EXPECT_EQ(directional::authority::FieldSingularityFact::PortPolicy::
+                BarrierAbsorbed,
+            singularity.portPolicy);
   ASSERT_LT(singularity.localCycle->index(), atlas.cycles().size());
   EXPECT_EQ(directional::authority::FieldCycleKind::BoundaryLoop,
             atlas.cycles()[singularity.localCycle->index()].kind);
+  EXPECT_TRUE(atlas.branch_topology().singularity_port_attachments().empty());
   ASSERT_EQ(1U, atlas.region_transport_diagnostics().size());
   const auto &diagnostics = atlas.region_transport_diagnostics().front();
   EXPECT_EQ(1U, diagnostics.prescribedSingularityCount);
   EXPECT_EQ(0U, diagnostics.localVertexBoundSingularityCount);
   EXPECT_EQ(1U, diagnostics.slitBoundaryBoundSingularityCount);
   EXPECT_EQ(0U, diagnostics.unboundSingularityCount);
+  ASSERT_EQ(1U, diagnostics.barrierIncidentSingularityCount);
+  ASSERT_EQ(1U, diagnostics.barrierIncidentSingularities.size());
+  const auto &barrierSingularity =
+      diagnostics.barrierIncidentSingularities.front();
+  EXPECT_EQ(singularity.sourceVertex, barrierSingularity.sourceVertex);
+  EXPECT_EQ(1, barrierSingularity.indexNumerator);
+  EXPECT_EQ(1U, barrierSingularity.barrierDegree);
+  EXPECT_EQ(1U, barrierSingularity.transportStarComponentCount);
+  EXPECT_EQ(directional::authority::FieldBarrierSingularityClass::Tip,
+            barrierSingularity.classification);
 }
 
 TEST(GlobalTopologyPlan, RotationSystemAndFaceWalkAgreeOnProducedWitnesses) {

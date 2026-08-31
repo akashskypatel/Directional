@@ -134,6 +134,24 @@ struct FieldBarrierComponentDiagnostics {
   auto operator<=>(const FieldBarrierComponentDiagnostics &) const = default;
 };
 
+enum class FieldBarrierSingularityClass : std::uint8_t {
+  Tip,
+  InteriorArc,
+  Branch,
+};
+
+struct FieldBarrierIncidentSingularityDiagnostics {
+  SourceVertexId sourceVertex;
+  int indexNumerator = 0;
+  std::size_t barrierDegree = 0U;
+  std::size_t transportStarComponentCount = 0U;
+  FieldBarrierSingularityClass classification =
+      FieldBarrierSingularityClass::InteriorArc;
+
+  auto operator<=>(const FieldBarrierIncidentSingularityDiagnostics &) const =
+      default;
+};
+
 /** Derived, non-authoritative diagnostics for one A1 transport domain. */
 struct FieldTransportRegionDiagnostics {
   explicit FieldTransportRegionDiagnostics(TopologyRegionId topologyRegion)
@@ -148,6 +166,9 @@ struct FieldTransportRegionDiagnostics {
   std::size_t barrierComponentCount = 0U;
   int barrierEulerCharacteristic = 0;
   std::size_t barrierRegionBoundaryVertexCount = 0U;
+  std::size_t barrierIncidentSingularityCount = 0U;
+  std::vector<FieldBarrierIncidentSingularityDiagnostics>
+      barrierIncidentSingularities;
   int uncutEulerCharacteristic = 0;
   int uncutBoundaryLoopCount = 0;
   int cutEulerCharacteristic = 0;
@@ -270,12 +291,18 @@ struct FieldCycleWitness {
 };
 
 struct FieldSingularityFact {
+  enum class PortPolicy : std::uint8_t {
+    Emit,
+    BarrierAbsorbed,
+  };
+
   FieldSingularityId id;
   SourceVertexId sourceVertex;
   SourceComponentId sourceComponent;
   int indexNumerator = 0;
   std::optional<TopologyRegionId> topologyRegion;
   std::optional<FieldCycleId> localCycle;
+  PortPolicy portPolicy = PortPolicy::Emit;
 
   auto operator<=>(const FieldSingularityFact &) const = default;
 };

@@ -3069,7 +3069,10 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
     }
     nodeVertices.insert(singularity.sourceVertex);
     singularities.push_back(&singularity);
-    totalPortCount += static_cast<std::size_t>(expectedValence);
+    if (singularity.portPolicy ==
+        authority::FieldSingularityFact::PortPolicy::Emit) {
+      totalPortCount += static_cast<std::size_t>(expectedValence);
+    }
   }
   std::sort(singularities.begin(), singularities.end(),
             [](const auto *lhs, const auto *rhs) {
@@ -3113,6 +3116,10 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
   candidate.singularityPorts.reserve(totalPortCount);
   std::size_t portIndex = 0U;
   for (const authority::FieldSingularityFact *singularity : singularities) {
+    if (singularity->portPolicy ==
+        authority::FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
+      continue;
+    }
     const int expectedValence = 4 - singularity->indexNumerator;
     const auto region = singularityRegions.find(singularity->id);
     const auto node = nodeByVertex.find(singularity->sourceVertex);

@@ -302,9 +302,6 @@ directional_require_re_authority_split(
   "tests/SurfaceCellREPackageTests.cpp")
 
 directional_copy_manifest_fixture(directional_surface_cell_producer_tests)
-target_compile_definitions(
-  directional_surface_cell_producer_tests
-  PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 target_include_directories(
   directional_surface_cell_producer_tests
   PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
@@ -372,9 +369,6 @@ if(DIRECTIONAL_BUILD_LEGACY_INTEGRATION_TESTS)
     tests/TargetedStiffeningTests.cpp)
   directional_configure_test_target(directional_legacy_integration_tests)
   directional_copy_manifest_fixture(directional_legacy_integration_tests)
-  target_compile_definitions(
-    directional_legacy_integration_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
   target_include_directories(
     directional_legacy_integration_tests
     PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")
@@ -404,9 +398,6 @@ if(DIRECTIONAL_BUILD_HISTORICAL_TESTS)
     tests/SurfaceCellTracingPhase14Tests.cpp)
   directional_configure_test_target(directional_surface_cell_historical_tests)
   directional_copy_manifest_fixture(directional_surface_cell_historical_tests)
-  target_compile_definitions(
-    directional_surface_cell_historical_tests
-    PRIVATE DIRECTIONAL_TEST_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
   target_include_directories(
     directional_surface_cell_historical_tests
     PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/bench")

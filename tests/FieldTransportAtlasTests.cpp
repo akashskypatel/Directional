@@ -569,17 +569,19 @@ std::uint64_t independent_atlas_digest(
     independent_consume(hash, digest);
   }
 
-  std::vector<std::pair<std::uint64_t, int>> singularities;
+  std::vector<std::tuple<std::uint64_t, int, std::uint8_t>> singularities;
   singularities.reserve(snapshot.singularities.size());
   for (const FieldSingularityFact &singularity : snapshot.singularities) {
-    singularities.emplace_back(singularity.sourceVertex.index(),
-                               singularity.indexNumerator);
+    singularities.emplace_back(
+        singularity.sourceVertex.index(), singularity.indexNumerator,
+        static_cast<std::uint8_t>(singularity.portPolicy));
   }
   std::sort(singularities.begin(), singularities.end());
   independent_consume(hash, singularities.size());
-  for (const auto &[vertex, numerator] : singularities) {
+  for (const auto &[vertex, numerator, portPolicy] : singularities) {
     independent_consume(hash, vertex);
     independent_consume_signed(hash, numerator);
+    independent_consume(hash, portPolicy);
   }
 
   std::vector<std::tuple<int, int, int, std::size_t, std::size_t,
@@ -1607,6 +1609,18 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
       return FieldAtlasBuildErrorCode::SingularityMismatch;
     }
 
+    if (singularity.portPolicy ==
+        FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
+      if (!singularity.topologyRegion.has_value() ||
+          !singularity.localCycle.has_value() ||
+          singularity.localCycle->index() >= snapshot.cycles.size() ||
+          snapshot.cycles[singularity.localCycle->index()].kind !=
+              FieldCycleKind::BoundaryLoop) {
+        return FieldAtlasBuildErrorCode::SingularityMismatch;
+      }
+      continue;
+    }
+
     const auto localCycle = localCycleByVertex.find(vertex);
     if (localCycle == localCycleByVertex.end()) {
       if (singularity.topologyRegion.has_value() ||
@@ -1670,6 +1684,13 @@ std::optional<FieldAtlasBuildErrorCode> independent_validate_snapshot(
   for (const FieldSingularityFact &singularity : snapshot.singularities) {
     const int expected = 4 - singularity.indexNumerator;
     const auto found = attachmentsBySingularity.find(singularity.id);
+    if (singularity.portPolicy ==
+        FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
+      if (found != attachmentsBySingularity.end() && !found->second.empty()) {
+        return FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment;
+      }
+      continue;
+    }
     if (expected <= 0 || expected > 4 ||
         found == attachmentsBySingularity.end() ||
         found->second.size() != static_cast<std::size_t>(expected)) {
