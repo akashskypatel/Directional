@@ -92,60 +92,50 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB2` (Artifact-Only Test + Benchmark)
+## Mandatory next turn — `M3-CP4c-3-TB2-REV` (Independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. The authoritative Code + Build report is `Architecture_M3_CP4c3_CB2_Code_Build_Report.md`; the executable successor plan is `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c-3-TB2` is **COMPLETE / BLOCKED — ORCHESTRATION-INVALID AFTER RUNTIME BEGAN / NO GATE AUTHORITY**. The authoritative report is `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md`.
 
-### Immutable CB2 build authority
+### Immutable authority retained
 
 - semantic/evidence source: `005512f20ed56edc793f4d6505f3d2b4c2999c71`
-- immutable GMP package **69**: result artifact `9742715856`, SHA-256 `2accc6d7cbbd48531919518ceb93a9d8f837b1c5683769a88ef915e4f092efc5`
+- immutable GMP package **69**: artifact `9742715856`, SHA-256 `2accc6d7cbbd48531919518ceb93a9d8f837b1c5683769a88ef915e4f092efc5`
 - packaged source archive SHA-256: `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`
-- compile run/job: `33347935915 / 99355596358`
-- diagnostic artifact: `9742715997`, SHA-256 `f0f94864be943658bc4d461bdafc312b1d40333e7eca9d2dd4ae88cacdfb218b`
-- internal manifest: **28/28 PASS**
-- all eight standard targets: **compile/link PASS**
-- exact arithmetic: `DIRECTIONAL_ENABLE_GMP=ON`, `libgmpxx` + `libgmp` verified, `exactArithmeticBackend=GMP`
-- source-status snapshots: clean
-- `runtimeExecution=false`; no Directional test, benchmark, discovery, CLI, fuzzer, or produced executable ran
+- selector **373**: `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; all 355/357/361/365/367/370 prefixes remain byte-exact
+- package internal manifest: **28/28 PASS**; GMP/GMPXX authority reproduced; executable modes intact
+- postflight: package/source/selector unchanged; all mutation/compile/repair/benchmark flags false
 
-The first compile attempt `33347423799 / 99354145677` failed only because the new diagnostics object contained non-default-constructible `TopologyRegionId`; it executed no runtime. The minimal correction explicitly initializes the diagnostics/local-region object with `region.id()` and is the only semantic delta before the successful build above.
+### TB2 blocked evidence
 
-### CB2 product state
+The artifact-only harness executed ordinals 1–40 as exactly-selected green fresh processes. Ordinal **41**, `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, selected exactly once but threw before product adjudication because it could not open the compile-time fallback path `/home/runner/work/Directional/Directional/benchmarks/fixtures/milestone_g_manifest.json`.
 
-- **Amendment 15 option A′ is implemented and compile-green:** A1 cuts only its derived local transport mesh along `B(R)`, the region product is unchanged, the Euler cut identity replaces the stale uncut/local equality, and prescribed singularity binding now fails closed.
-- AM1/AM6 diagnostics publish barrier decomposition, cut topology, cycle/index shape, witness kind, and absorbed boundary correction.
-- AM7 distinguishes sphere `NoCarrierMatch` from `AmbiguousCarrierMatch` and precise/widened-pass provenance; **no sphere fix was designed**.
-- AL8's authoring-time digest validator is present.
-- The inherited `R10-CAND-01` proposal heuristic and `R8-CAND-02` empty-network product corrections are **not claimed implemented or accepted**. Their identities are compiled/gated and TB owns their disposition.
+The exact manifest **is present** in package 69's packaged source. `TestFixturePaths` found no sibling/bin `test-data`, then fell back to the absolute `DIRECTIONAL_TEST_SOURCE_DIR` compiled into the producer binary; the local execution root did not materialize the immutable source there. This is `M3-CP4c3-TB2-ORCH-01`, an orchestration/harness defect, **not** a semantic regression.
 
-### Frozen selector authority
+Because 41 Directional processes had already executed when the defect was classified, the frozen TB2 plan does **not** authorize a corrected-root restart inside the same turn. Ordinals 42–373, including 366–373, are unexecuted. The 40 earlier passes receive no gate credit because the attempt is orchestration-invalid as a whole.
 
-Selector **373** is current: SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. Selector 370 is `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525`. Frozen 355/357/361/365/367 hashes remain unchanged, every file has cardinality=unique-cardinality, and every adjacent predecessor is a byte-exact prefix. Ordinals 368–373 are, respectively: prescribed sphere, ordinary trace-crossed proposal, typed empty closed-surface network rejection, barrier exclusion from local cycle basis, Euler cut identity, and prescribed-singularity cycle binding. **No selector identity executed in CB2.**
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3 packages advance **68 → 69**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; packages **69**. CP4c-3 remains **OPEN**.
 
 ### Exact successor
 
-Execute `M3-CP4c-3-TB2` strictly artifact-only on package 69. Preflight artifact/source/GMP/manifest/selector authority, then run selector 373 ordinal 1→373, one identity per fresh process, with first-red hard stop and every mutation/compile/repair/benchmark flag false. A green **373/373** closes CP4c-3. A valid semantic red routes to `REVIEW + PLAN`; do not repair or rebuild in TB.
+Run independent **`M3-CP4c-3-TB2-REV`**. It must update `ORIENTATION.md`, adjudicate `M3-CP4c3-TB2-ORCH-01`, freeze a pre-runtime fixture-root check that proves the path actually selected by `TestFixturePaths`, and explicitly decide whether unchanged package 69 may be re-executed. Do **not** implement a product/test/build correction, rebuild package 69, or retry TB2 before that review.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Test + Benchmark guidance
+- turn-based-coding-agent REVIEW guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — **primary execution authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — package/source/build evidence and retained risks.
-3. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — frozen current gate; verify all predecessor hashes from committed bytes.
-4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` and `DESIGN.md` §7.2.1 — Amendment 15/AM0–AM9 semantic authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — AL3/AL4 sphere boundary and inherited AL6 work.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — active candidates and mandatory TB regression accounting.
-7. `TODO.md` / `CHANGELOG.md` — current status and evidence summary.
+0. `.agents/Directional/ORIENTATION.md` — **read first and update during this REVIEW turn**.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — primary measured/blocker authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — frozen retry/stop authority that prohibited an in-turn restart after runtime began.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — immutable package 69/build authority.
+4. `.agents/Directional/LESSONS.md` §8, especially lessons 76 and 76a — fixture-layout and runtime-root harness controls.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB2-ORCH-01` and still-active CP4c-3 candidates.
+6. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` and selector 373 — unchanged product/gate authority.
+7. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — current status and retained lineage.
 
-**This is TEST + BENCHMARK.** Consume the immutable package; do not edit implementation/test/benchmark/build logic and do not compile a replacement source revision.
+**This is REVIEW + PLAN.** Do not execute Directional runtime, retry the gate, patch product/test/build semantics, or produce a replacement package in the review turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

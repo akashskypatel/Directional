@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-31 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 CB2 is COMPLETE / BUILD GREEN / RUNTIME-FREE.** Amendment 15 option A′ is implemented at semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71` and compiled with mandatory GMP/GMPXX in package **69**, artifact `9742715856`, run/job `33347935915 / 99355596358`. Selector **373** is frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` with all 355/357/361/365/367/370 predecessor hashes and byte prefixes reverified. No gate identity executed in CB2. Exact next is artifact-only `M3-CP4c-3-TB2`; 373/373 closes CP4c-3, a valid semantic red routes to review.)
+**Status date:** 2026-08-31 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** CB2 Amendment 15 option A′ is compile-green in immutable GMP package **69**, artifact `9742715856`; selector **373** remains frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. TB2 is COMPLETE but **BLOCKED / ORCHESTRATION-INVALID AFTER RUNTIME BEGAN**: ordinals 1–40 ran green, ordinal 41 could not open a manifest through the binary's baked `DIRECTIONAL_TEST_SOURCE_DIR` fallback even though the fixture exists in packaged source, and ordinals 42–373 were not run. No gate authority was earned. Exact next is independent `M3-CP4c-3-TB2-REV`.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 TB2 pending on selector 373 |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 TB2 blocked by harness-root authority, review next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** CB2 Amendment 15 option A′ is compile-green in GMP package **69**; no runtime executed. **NEXT:** artifact-only `M3-CP4c-3-TB2` on selector 373 |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** CB2 package 69 remains immutable. TB2 stopped orchestration-invalid at ordinal 41 after 40 green processes because the binary fixture fallback root was absent; no gate authority. **NEXT:** `M3-CP4c-3-TB2-REV` |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

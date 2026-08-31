@@ -1,3 +1,29 @@
+## M3-CP4c3-TB2-ORCH-01 — packaged fixture exists but runtime falls back to a missing compile-time source root — **ACTIVE / REVIEW REQUIRED / ORCHESTRATION / NON-STABLE**
+
+- **Observed in `M3-CP4c-3-TB2`** on immutable GMP package **69**, artifact `9742715856`, semantic source
+  `005512f20ed56edc793f4d6505f3d2b4c2999c71`. Preflight reproduced the package/source/GMP/selector authority
+  and all mutation flags were false.
+- **Observed boundary.** Ordinals 1–40 each selected exactly one packaged test and exited 0. Ordinal **41**,
+  `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, also selected exactly once but threw before
+  product adjudication because it could not open
+  `/home/runner/work/Directional/Directional/benchmarks/fixtures/milestone_g_manifest.json`.
+- **Cause.** The exact manifest exists in the packaged immutable source. `TestFixturePaths` first probes sibling/bin
+  `test-data` layouts, then falls back to the absolute `DIRECTIONAL_TEST_SOURCE_DIR` compiled into the producer
+  binary. Package 69 has no sibling `test-data`; the artifact-only launch materialized the source under a different
+  root, so the fallback path was absent. This is a harness-root defect, not evidence against product semantics.
+- **Why the attempt cannot simply restart.** The frozen TB2 plan allows an orchestration restart only when the prior
+  attempt executed no Directional runtime. Forty-one Directional test processes had run before this control defect
+  was classified. Therefore no corrected-root retry is authorized inside TB2; ordinals 42–373 remain unexecuted and
+  the attempt has **no gate authority**.
+- **Required review.** `M3-CP4c-3-TB2-REV` must freeze a pre-runtime check that resolves the exact fixture root the
+  binary will use and proves a known fixture exists there, then explicitly decide whether unchanged package 69 may
+  be re-executed. Product/test/build correction is not justified by this evidence.
+- **Postflight.** Package SHA, 28-entry manifest, source archive, selector 373, executable modes and freshly
+  re-extracted source remained unchanged; no configure/compile/relink/repair/generated-discovery/benchmark or
+  source/test/fixture/selector/package mutation occurred.
+- **Accounting:** non-stable orchestration candidate, **+0 stable events / +0 recurrences**. Stable totals remain
+  **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3 packages **69**.
+
 ## M3-CP4c3-DEFN-R1-CAND-01 — the interior-singularity binding does not fail closed while the boundary one does — **ACTIVE / CORRECTIVE COMPILE-GREEN / GATING AT 373 / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-DEFN-R1`** while deriving Amendment 15, on the source TB1 executed

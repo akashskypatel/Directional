@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-31 — `M3-CP4c-3-TB2`: blocked by packaged-binary fixture-root authority after runtime began
+
+Artifact-only TB2 consumed immutable GMP package **69** / artifact `9742715856` and reproduced package/source/GMP/selector preflight. Selector 373 began one identity per fresh process: ordinals **1–40** selected once and exited green; ordinal **41**, `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, selected once but threw before product adjudication because `TestFixturePaths` fell back to the producer binary's compile-time absolute `DIRECTIONAL_TEST_SOURCE_DIR` (`/home/runner/work/Directional/Directional`) and could not open `benchmarks/fixtures/milestone_g_manifest.json` there. The exact manifest exists in the immutable packaged source; the artifact-only harness had materialized that source at another root and package 69 contains no sibling `test-data` fallback.
+
+This is **`M3-CP4c3-TB2-ORCH-01` — ORCHESTRATION / NON-STABLE**, not a semantic red. The frozen TB2 plan permits a control-plane restart only when no Directional runtime executed; 41 test processes had already run, so no corrected-root retry was authorized. Ordinals **42–373**, including checkpoint-local 366–373, remain unexecuted and the 40 preceding passes receive no gate authority. Postflight re-proved package SHA, **28/28** manifest, source archive, selector 373, executable modes and source-tree immutability; no configure/compile/relink/repair/generated-discovery/benchmark or source/test/fixture/selector/package mutation occurred.
+
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, debt **5**, packages **69**. `LESSONS.md` 76a now requires preflight to prove the runtime fixture root actually selected by the packaged binary, not merely archive layout. CP4c-3 remains **OPEN**. Exact successor: independent **`M3-CP4c-3-TB2-REV` — REVIEW + PLAN**; no product/test/build correction, rebuild or gate retry before that review.
+
 ## 2026-08-30 — `M3-CP4c-3-DEFN-R1`: Amendment 15 — a region's transport domain is the region cut along its barriers
 
 Combined definition + review turn under the standing cadence, discharging **AL2**. Nothing executed, compiled,

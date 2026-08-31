@@ -26,32 +26,32 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB2` (Artifact-Only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB2-REV` (Independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB2` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** under Amendment 15 and AM0–AM9. Authoritative semantic/evidence source is `005512f20ed56edc793f4d6505f3d2b4c2999c71`; compile run/job `33347935915 / 99355596358` produced immutable GMP package **69**, result artifact `9742715856` (`2accc6d7cbbd48531919518ceb93a9d8f837b1c5683769a88ef915e4f092efc5`), log artifact `9742715997` (`f0f94864be943658bc4d461bdafc312b1d40333e7eca9d2dd4ae88cacdfb218b`), and packaged source archive `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`. Internal manifest **28/28 PASS**, all eight standard targets compile/link, source status is clean, `runtimeExecution=false`, and both GMPXX/GMP are on the authoritative link command. The earlier compile attempt failed only on default construction of the new diagnostics object and executed no runtime; the minimal explicit-constructor correction is included in the evidence source.
+`M3-CP4c-3-TB2` is **COMPLETE / BLOCKED — ORCHESTRATION-INVALID AFTER RUNTIME BEGAN / NO GATE AUTHORITY**. Immutable package **69** and selector **373** remain unchanged authority. TB2 preflight reproduced package/source/GMP/selector integrity, then ordinals 1–40 selected exactly once and exited 0. Ordinal **41**, `MilestoneGP26.PrescribedSphereSingularitiesMatchRecoveredValence`, selected exactly once but failed before product adjudication because the packaged binary fell back to the compile-time absolute fixture root `/home/runner/work/Directional/Directional`, which was not materialized by the local artifact-only harness. The exact manifest exists in the packaged source.
 
-Selector lineage is now frozen through **373**: 370 `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525`, 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, with 355/357/361/365/367 hashes unchanged, cardinality=unique-cardinality, and every predecessor a byte-exact prefix. **No gate identity executed in CB2.**
-
-### What CB2 implemented
-
-- **AM1–AM6 / Amendment 15 option A′:** A1 derives the local transport mesh cut along `B(R)`, publishes the barrier decomposition, checks the Euler cut identity under new typed failure, fails closed on unbound prescribed singularities, and publishes the index/witness-kind correction. Region-product topology is unchanged.
-- **AM7:** the sphere now reports `NoCarrierMatch` versus `AmbiguousCarrierMatch` plus precise/widened-pass provenance; AL4 still forbids a sphere fix until runtime reports it.
-- **AM8:** ordinals 368–370 append the inherited sphere/R10/R8 identities; 371–373 append Amendment 15's barrier exclusion, cut identity, and singularity-binding identities.
-- **AL8 control:** orchestration digest authoring validates exact 64-lowercase-hex values before publication.
-
-CB2 does **not** claim the inherited `R10-CAND-01` proposal heuristic or `R8-CAND-02` empty-network product behavior is corrected. Their identities are now gated at 369/370 and compiled, not executed; runtime owns their disposition. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative M3 packages **69**.
+This is tracked as **`M3-CP4c3-TB2-ORCH-01`**, orchestration/non-stable, **+0 stable events / +0 recurrences**. The frozen TB2 plan permits an orchestration restart only when no Directional runtime ran; 41 processes had already executed, so an in-turn corrected-root retry was prohibited. Ordinals 42–373, including all CP4c-3 checkpoint-local ordinals 366–373, remain unexecuted. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative packages **69**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB2` artifact-only** under `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md`. Consume only artifact `9742715856` / semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`; no rebuild, repair, relink, generated discovery, package mutation, or benchmark. Preflight package/GMP/source/selector authority, then execute frozen selector **373** from ordinal 1, one identity per fresh process with first-red hard stop. Green **373/373** closes CP4c-3; any valid semantic red routes to `REVIEW + PLAN`.
+Run **`M3-CP4c-3-TB2-REV` — independent REVIEW + PLAN**. Review must:
+
+- [ ] update durable `ORIENTATION.md` for the review;
+- [ ] adjudicate `M3-CP4c3-TB2-ORCH-01` and the exact `TestFixturePaths` fallback chain;
+- [ ] freeze a pre-runtime control that proves a known fixture exists at the **actual path selected by the packaged binary**, not merely somewhere in the source archive;
+- [ ] decide explicitly whether unchanged package 69 / selector 373 may be re-executed artifact-only after that harness correction;
+- [ ] preserve Amendment 15/R10/R8 product dispositions as **unmeasured in TB2**; do not infer them from the invalid attempt.
+
+No product/test/build correction, rebuild, or gate retry is authorized before that review.
 
 ### CP4c-3 open items
 
-- [ ] **C2 / mechanical witness** — Amendment 15 option A′ is compile-green; ordinals 366/371/372/373 provide the runtime proof.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — AM4 correction is compile-green; ordinal 373 must prove zero unbound prescribed singularities before closure.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains **ACTIVE / ONE LEVEL SHORT**; ordinal 368 carries AM7 provenance, no fix authorized yet.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — gated at ordinal 369; product correction is not claimed by CB2 and remains runtime/open.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — gated at ordinal 370; typed-error product behavior remains runtime/open.
+- [ ] **C2 / mechanical witness** — Amendment 15 option A′ remains compile-green but TB2 did not reach ordinal 366 or 371–373.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — correction remains compile-green/gating; ordinal 373 is still unexecuted.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains **ACTIVE / ONE LEVEL SHORT**; ordinal 368 remains unexecuted in TB2.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains unexecuted; product correction still unaccepted.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains unexecuted; typed-error behavior still unaccepted.
+- [ ] `M3-CP4c3-TB2-ORCH-01` — review and freeze correct artifact-only fixture-root preflight before any rerun.
 
 ## Carried forward from M1
 
@@ -88,7 +88,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 CB2 is **BUILD GREEN / RUNTIME-FREE** in GMP package **69** with selector **373** frozen. Amendment 15 option A′ is implemented; inherited sphere/R10/R8 semantics remain runtime-pending. Exact next is artifact-only `M3-CP4c-3-TB2` on package 69.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 CB2 remains **BUILD GREEN / RUNTIME-FREE** in immutable GMP package **69** with selector **373** frozen. TB2 is **BLOCKED / ORCHESTRATION-INVALID / NO GATE AUTHORITY** after the packaged binary failed to resolve its compile-time fixture root at ordinal 41; inherited Amendment 15/sphere/R10/R8 semantics remain unmeasured. Exact next is independent `M3-CP4c-3-TB2-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
