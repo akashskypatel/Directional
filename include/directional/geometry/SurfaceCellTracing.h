@@ -163,7 +163,10 @@ struct FieldAlignedTraceStepDiagnostic {
   auto operator<=>(const FieldAlignedTraceStepDiagnostic &) const = default;
 };
 
-enum class FieldVertexArrivalMode : std::uint8_t;
+enum class FieldVertexArrivalMode : std::uint8_t {
+  FaceInterior = 0,
+  EdgeTransit = 1,
+};
 
 struct FieldAlignedCurveNetworkError {
   FieldAlignedCurveNetworkErrorCode code =
@@ -696,11 +699,6 @@ enum class FieldBranchEdgeFlowRelation : std::uint8_t {
   Inflow = 0,
   Tangent = 1,
   Outflow = 2,
-};
-
-enum class FieldVertexArrivalMode : std::uint8_t {
-  FaceInterior = 0,
-  EdgeTransit = 1,
 };
 
 struct FieldBranchContinuationDecision {
