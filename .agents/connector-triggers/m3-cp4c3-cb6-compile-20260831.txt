@@ -1,0 +1,4 @@
+purpose=compile exact M3-CP4c-3-CB6 semantic source
+source_sha=4f8747b7f920589bc41fdf5c7217942f5921d700
+runtimeExecution=false
+retry=0
