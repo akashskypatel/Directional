@@ -61,6 +61,7 @@ Every agent workflow must:
 9. never modify `.github/workflows/**` from inside a workflow;
 10. use indentation-safe YAML/shell construction;
 11. validate every new or modified GitHub workflow YAML against `.github/workflows/agent-workflow-schema-validator-reusable.yml` before it is treated as publishable workflow authority. Draft new workflows outside `.github/workflows/**` when practical, validate the draft first, then publish it. For an existing workflow that must be edited in place, validate the exact resulting file before triggering it. Schema validation complements but does not replace reusable-input and permission-ceiling checks.
+12. when an orchestration draft contains an expected SHA-256 literal, author the draft with `@@SHA256:<name>@@` placeholders and materialize it through `.agents/Directional/tools/write_orchestration_payload.py --sha256 <name>=<digest>`. The writer rejects any value that is not exactly 64 lowercase hexadecimal characters **before the output file is written**; do not bypass it by transcribing an expected digest directly into a temporary caller or payload.
 
 ## `[ChatGPT Web]` Standard Google Drive patch transport
 

@@ -121,6 +121,50 @@ struct FieldAtlasRegionCycleBasisDiagnostics {
   auto operator<=>(const FieldAtlasRegionCycleBasisDiagnostics &) const = default;
 };
 
+struct FieldBarrierComponentDiagnostics {
+  std::size_t vertexCount = 0U;
+  std::size_t edgeCount = 0U;
+  int eulerCharacteristic = 0;
+  bool tree = false;
+  bool containsCycle = false;
+  std::vector<SourceVertexId> tipVertices;
+  std::vector<SourceVertexId> branchVertices;
+  std::size_t regionBoundaryVertexCount = 0U;
+
+  auto operator<=>(const FieldBarrierComponentDiagnostics &) const = default;
+};
+
+/** Derived, non-authoritative diagnostics for one A1 transport domain. */
+struct FieldTransportRegionDiagnostics {
+  TopologyRegionId topologyRegion;
+  std::size_t hardFeatureEdgeCount = 0U;
+  std::vector<SourceEdgeTopologyKey> barrierEdges;
+  std::vector<FieldBarrierComponentDiagnostics> barrierComponents;
+  std::size_t barrierVertexCount = 0U;
+  std::size_t barrierEdgeCount = 0U;
+  std::size_t barrierComponentCount = 0U;
+  int barrierEulerCharacteristic = 0;
+  std::size_t barrierRegionBoundaryVertexCount = 0U;
+  int uncutEulerCharacteristic = 0;
+  int uncutBoundaryLoopCount = 0;
+  int cutEulerCharacteristic = 0;
+  int cutBoundaryLoopCount = 0;
+  int newSlitBoundaryLoopCount = 0;
+  FieldQuadrangulabilityWitnessKind witnessKind =
+      FieldQuadrangulabilityWitnessKind::ClosedShenSufficient;
+  int requiredIndexSum = 0;
+  int interiorIndexSum = 0;
+  int boundaryIndexSum = 0;
+  int absorbedCorrection = 0;
+  std::size_t prescribedSingularityCount = 0U;
+  std::size_t localVertexBoundSingularityCount = 0U;
+  std::size_t slitBoundaryBoundSingularityCount = 0U;
+  std::size_t sourceBoundaryBoundSingularityCount = 0U;
+  std::size_t unboundSingularityCount = 0U;
+
+  auto operator<=>(const FieldTransportRegionDiagnostics &) const = default;
+};
+
 enum class FieldAtlasBuildErrorCode : std::uint8_t {
   InvalidInput,
   CanonicalBindingMismatch,
@@ -155,6 +199,7 @@ enum class FieldAtlasBuildErrorCode : std::uint8_t {
   DuplicateSingularityClassRepresentative,
   DuplicateSingularityPortRepresentative,
   BranchDirectionNotBarycentric,
+  CutTransportDomainIdentityMismatch,
 };
 
 struct FieldAtlasBuildError {
@@ -166,6 +211,7 @@ struct FieldAtlasBuildError {
   std::optional<FieldBranch> branch;
   std::optional<IncompleteCycleBasisReason> incompleteCycleBasisReason;
   std::vector<FieldAtlasRegionCycleBasisDiagnostics> regionCycleBasisDiagnostics;
+  std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics;
 
   auto operator<=>(const FieldAtlasBuildError &) const = default;
 };
@@ -654,6 +700,10 @@ public:
   [[nodiscard]] const FieldBranchTopology &branch_topology() const noexcept {
     return branchTopology_;
   }
+  [[nodiscard]] const std::vector<FieldTransportRegionDiagnostics> &
+  region_transport_diagnostics() const noexcept {
+    return regionTransportDiagnostics_;
+  }
 
   [[nodiscard]] DIRECTIONAL_API const FieldTransportAdjacency *
   find_adjacency(const SourceEdgeTopologyKey &sourceEdge) const noexcept;
@@ -682,6 +732,7 @@ private:
       std::vector<FieldCycleWitness> cycles,
       std::vector<FieldSingularityFact> singularities,
       std::vector<FieldComponentTopology> componentTopology,
+      std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics,
       FieldBranchTopology branchTopology,
       FieldQuadrangulabilityCertificate quadrangulability)
       : sourceVertexCount_(sourceVertexCount),
@@ -692,6 +743,7 @@ private:
         nontraversableEdges_(std::move(nontraversableEdges)),
         cycles_(std::move(cycles)), singularities_(std::move(singularities)),
         componentTopology_(std::move(componentTopology)),
+        regionTransportDiagnostics_(std::move(regionTransportDiagnostics)),
         branchTopology_(std::move(branchTopology)),
         quadrangulability_(std::move(quadrangulability)) {}
 
@@ -704,6 +756,7 @@ private:
   std::vector<FieldCycleWitness> cycles_;
   std::vector<FieldSingularityFact> singularities_;
   std::vector<FieldComponentTopology> componentTopology_;
+  std::vector<FieldTransportRegionDiagnostics> regionTransportDiagnostics_;
   FieldBranchTopology branchTopology_;
   FieldQuadrangulabilityCertificate quadrangulability_;
 };

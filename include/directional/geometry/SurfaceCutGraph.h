@@ -25,6 +25,9 @@ namespace directional::geometry {
 
 enum class GlobalTopologyPlanErrorCode : std::uint8_t;
 enum class RotationSystemInconsistencyReason : std::uint8_t;
+enum class TraceEventPositionFailureReason : std::uint8_t;
+enum class TraceEventPositionPass : std::uint8_t;
+enum class TraceEventPositionCarrierRole : std::uint8_t;
 
 enum class SurfaceCutGraphComplexKind : std::uint8_t {
   ActualEmbeddedGraph = 0,
@@ -90,6 +93,17 @@ enum class SurfaceCutGraphErrorCode : std::uint8_t {
   NonManifoldSource = 3,
   CellularityNotEstablished = 4,
   CutSearchExhaustedBeforeCellularity = 5,
+  EmptyNetworkOnClosedSurface = 6,
+};
+
+struct SurfaceCutGraphTraceEventPositionCandidate {
+  std::size_t position = 0U;
+  std::size_t segmentIndex = 0U;
+  authority::SourceEdgeTopologyKey carrier;
+  TraceEventPositionCarrierRole carrierRole;
+
+  auto operator<=>(const SurfaceCutGraphTraceEventPositionCandidate &) const =
+      default;
 };
 
 struct SurfaceCutGraphError {
@@ -102,6 +116,12 @@ struct SurfaceCutGraphError {
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
   std::optional<RotationSystemInconsistencyReason>
       originatingRotationSystemInconsistencyReason;
+  std::optional<authority::TraceId> trace;
+  std::optional<std::size_t> traceEventIndex;
+  std::optional<TraceEventPositionFailureReason> traceEventPositionFailureReason;
+  std::optional<TraceEventPositionPass> traceEventPositionPass;
+  std::vector<SurfaceCutGraphTraceEventPositionCandidate>
+      traceEventPositionCandidates;
   auto operator<=>(const SurfaceCutGraphError &) const = default;
 };
 

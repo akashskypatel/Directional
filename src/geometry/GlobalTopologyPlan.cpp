@@ -2159,6 +2159,39 @@ const char *rotation_system_inconsistency_reason_name(
   return "Unknown";
 }
 
+const char *trace_event_position_failure_reason_name(
+    const TraceEventPositionFailureReason reason) noexcept {
+  switch (reason) {
+  case TraceEventPositionFailureReason::NoCarrierMatch:
+    return "NoCarrierMatch";
+  case TraceEventPositionFailureReason::AmbiguousCarrierMatch:
+    return "AmbiguousCarrierMatch";
+  }
+  return "Unknown";
+}
+
+const char *trace_event_position_pass_name(
+    const TraceEventPositionPass pass) noexcept {
+  switch (pass) {
+  case TraceEventPositionPass::FaceRestricted:
+    return "FaceRestricted";
+  case TraceEventPositionPass::WideningFallback:
+    return "WideningFallback";
+  }
+  return "Unknown";
+}
+
+const char *trace_event_position_carrier_role_name(
+    const TraceEventPositionCarrierRole role) noexcept {
+  switch (role) {
+  case TraceEventPositionCarrierRole::Incoming:
+    return "Incoming";
+  case TraceEventPositionCarrierRole::Outgoing:
+    return "Outgoing";
+  }
+  return "Unknown";
+}
+
 std::uint64_t global_topology_plan_hash(
     const GlobalTopologyPlan &plan) noexcept {
   return plan.semantic_digest();

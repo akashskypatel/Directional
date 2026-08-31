@@ -135,11 +135,18 @@ struct TraceCut {
   auto operator<=>(const TraceCut &) const = default;
 };
 
+struct TraceEventPositionDiagnostics {
+  std::optional<TraceEventPositionFailureReason> failureReason;
+  std::optional<TraceEventPositionPass> pass;
+  std::vector<TraceEventPositionCandidate> candidates;
+};
+
 std::optional<std::size_t> trace_event_position(
     const FieldAlignedCandidateTrace &trace,
     const FieldAlignedNetworkEvent &event,
     const FieldAlignedTraceEventRole role,
-    const authority::NetworkNodeId originNode) {
+    const authority::NetworkNodeId originNode,
+    TraceEventPositionDiagnostics *diagnostics = nullptr) {
   if (event.node == originNode && !event.sourceEdge.has_value()) return 0U;
   if (!event.sourceEdge.has_value()) {
     return role == FieldAlignedTraceEventRole::Terminal
@@ -148,6 +155,7 @@ std::optional<std::size_t> trace_event_position(
   }
 
   std::set<std::size_t> positions;
+  std::vector<TraceEventPositionCandidate> candidates;
   const auto consider = [&](const std::size_t index,
                             const bool requireFace) {
     const auto &segment = trace.segments[index];
@@ -155,20 +163,39 @@ std::optional<std::size_t> trace_event_position(
     if (segment.incomingCarrier.has_value() &&
         *segment.incomingCarrier == *event.sourceEdge) {
       positions.insert(index);
+      candidates.push_back(TraceEventPositionCandidate{
+          index, index, *segment.incomingCarrier,
+          TraceEventPositionCarrierRole::Incoming});
     }
     if (segment.outgoingCarrier == *event.sourceEdge) {
       positions.insert(index + 1U);
+      candidates.push_back(TraceEventPositionCandidate{
+          index + 1U, index, segment.outgoingCarrier,
+          TraceEventPositionCarrierRole::Outgoing});
     }
   };
   for (std::size_t index = 0U; index < trace.segments.size(); ++index) {
     consider(index, true);
   }
+  TraceEventPositionPass pass = TraceEventPositionPass::FaceRestricted;
   if (positions.empty()) {
+    candidates.clear();
+    pass = TraceEventPositionPass::WideningFallback;
     for (std::size_t index = 0U; index < trace.segments.size(); ++index) {
       consider(index, false);
     }
   }
-  if (positions.size() != 1U) return std::nullopt;
+  if (positions.size() != 1U) {
+    if (diagnostics != nullptr) {
+      diagnostics->failureReason =
+          positions.empty()
+              ? TraceEventPositionFailureReason::NoCarrierMatch
+              : TraceEventPositionFailureReason::AmbiguousCarrierMatch;
+      diagnostics->pass = pass;
+      diagnostics->candidates = std::move(candidates);
+    }
+    return std::nullopt;
+  }
   return *positions.begin();
 }
 
@@ -446,18 +473,28 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
       }
     }
     bool hasTerminal = false;
-    for (const auto &event : network.events()) {
+    for (std::size_t eventIndex = 0U; eventIndex < network.events().size();
+         ++eventIndex) {
+      const auto &event = network.events()[eventIndex];
       for (const auto &incidence : event.incidences) {
         if (incidence.trace != trace.id) continue;
-        const auto position =
-            trace_event_position(trace, event, incidence.role, origin->second);
+        TraceEventPositionDiagnostics positionDiagnostics;
+        const auto position = trace_event_position(
+            trace, event, incidence.role, origin->second, &positionDiagnostics);
         if (!position.has_value() || *position > trace.segments.size()) {
           GlobalTopologyPlanError result =
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          result.trace = trace.id;
           result.sourceFace = event.sourceFace;
           result.sourceEdge = event.sourceEdge;
           result.rotationSystemInconsistencyReason =
               RotationSystemInconsistencyReason::TraceEventPositionInvalid;
+          result.traceEventIndex = eventIndex;
+          result.traceEventPositionFailureReason =
+              positionDiagnostics.failureReason;
+          result.traceEventPositionPass = positionDiagnostics.pass;
+          result.traceEventPositionCandidates =
+              std::move(positionDiagnostics.candidates);
           return result;
         }
         const auto inserted = cuts.emplace(*position, event.node);

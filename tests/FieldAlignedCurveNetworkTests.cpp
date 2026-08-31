@@ -4394,6 +4394,35 @@ void append_atlas_error(std::ostringstream &stream,
            << ",cycleCurvatures=" << row.cycleCurvatureCount
            << ",innerAdjacencies=" << row.innerAdjacencyCount << '}';
   }
+  for (std::size_t index = 0U;
+       index < error.regionTransportDiagnostics.size(); ++index) {
+    const auto &row = error.regionTransportDiagnostics[index];
+    stream << ";transportRegion[" << index << "]={topologyRegion="
+           << row.topologyRegion.index()
+           << ",hardFeatureEdges=" << row.hardFeatureEdgeCount
+           << ",barrierEdges=" << row.barrierEdgeCount
+           << ",barrierVertices=" << row.barrierVertexCount
+           << ",barrierComponents=" << row.barrierComponentCount
+           << ",barrierChi=" << row.barrierEulerCharacteristic
+           << ",boundaryBarrierVertices="
+           << row.barrierRegionBoundaryVertexCount
+           << ",uncutChi=" << row.uncutEulerCharacteristic
+           << ",cutChi=" << row.cutEulerCharacteristic
+           << ",uncutBoundaryLoops=" << row.uncutBoundaryLoopCount
+           << ",cutBoundaryLoops=" << row.cutBoundaryLoopCount << '}';
+    for (std::size_t componentIndex = 0U;
+         componentIndex < row.barrierComponents.size(); ++componentIndex) {
+      const auto &component = row.barrierComponents[componentIndex];
+      stream << ";transportRegion[" << index << "].component["
+             << componentIndex << "]={V=" << component.vertexCount
+             << ",E=" << component.edgeCount
+             << ",chi=" << component.eulerCharacteristic
+             << ",tree=" << (component.tree ? "true" : "false")
+             << ",cycle=" << (component.containsCycle ? "true" : "false")
+             << ",boundaryVertices=" << component.regionBoundaryVertexCount
+             << '}';
+    }
+  }
 }
 
 void append_network_error(
@@ -4544,6 +4573,104 @@ void append_plan_error(std::ostringstream &stream,
            << directional::geometry::rotation_system_inconsistency_reason_name(
                   *error.rotationSystemInconsistencyReason);
   }
+  if (error.traceEventIndex.has_value()) {
+    stream << ";traceEvent=" << *error.traceEventIndex;
+  }
+  if (error.traceEventPositionFailureReason.has_value()) {
+    stream << ";traceEventPositionFailure="
+           << directional::geometry::trace_event_position_failure_reason_name(
+                  *error.traceEventPositionFailureReason);
+  }
+  if (error.traceEventPositionPass.has_value()) {
+    stream << ";traceEventPositionPass="
+           << directional::geometry::trace_event_position_pass_name(
+                  *error.traceEventPositionPass);
+  }
+  for (std::size_t index = 0U;
+       index < error.traceEventPositionCandidates.size(); ++index) {
+    const auto &candidate = error.traceEventPositionCandidates[index];
+    stream << ";traceEventPositionCandidate[" << index << "]={position="
+           << candidate.position << ",segment=" << candidate.segmentIndex
+           << ",carrier=" << source_edge_locus(candidate.carrier)
+           << ",role="
+           << directional::geometry::trace_event_position_carrier_role_name(
+                  candidate.carrierRole)
+           << '}';
+  }
+}
+
+const char *field_quadrangulability_witness_kind_name(
+    const directional::authority::FieldQuadrangulabilityWitnessKind kind) {
+  switch (kind) {
+  case directional::authority::FieldQuadrangulabilityWitnessKind::
+      ClosedShenSufficient:
+    return "ClosedShenSufficient";
+  case directional::authority::FieldQuadrangulabilityWitnessKind::
+      RelativeBoundary:
+    return "RelativeBoundary";
+  }
+  return "Unknown";
+}
+
+void append_transport_region_diagnostics(
+    std::ostringstream &stream,
+    const directional::authority::FieldTransportAtlas &atlas) {
+  for (const auto &region : atlas.region_transport_diagnostics()) {
+    stream << ";transportRegion[" << region.topologyRegion.index()
+           << "]={hardFeatureEdges=" << region.hardFeatureEdgeCount
+           << ",barrierEdges=" << region.barrierEdgeCount
+           << ",barrierVertices=" << region.barrierVertexCount
+           << ",barrierComponents=" << region.barrierComponentCount
+           << ",barrierChi=" << region.barrierEulerCharacteristic
+           << ",boundaryBarrierVertices="
+           << region.barrierRegionBoundaryVertexCount
+           << ",uncutChi=" << region.uncutEulerCharacteristic
+           << ",uncutBoundaryLoops=" << region.uncutBoundaryLoopCount
+           << ",cutChi=" << region.cutEulerCharacteristic
+           << ",cutBoundaryLoops=" << region.cutBoundaryLoopCount
+           << ",newSlitBoundaryLoops=" << region.newSlitBoundaryLoopCount
+           << ",witnessKind="
+           << field_quadrangulability_witness_kind_name(region.witnessKind)
+           << ",requiredIndexSum=" << region.requiredIndexSum
+           << ",interiorIndexSum=" << region.interiorIndexSum
+           << ",boundaryIndexSum=" << region.boundaryIndexSum
+           << ",absorbedCorrection=" << region.absorbedCorrection
+           << ",prescribedSingularities="
+           << region.prescribedSingularityCount
+           << ",localVertexBound="
+           << region.localVertexBoundSingularityCount
+           << ",slitBoundaryBound="
+           << region.slitBoundaryBoundSingularityCount
+           << ",unbound=" << region.unboundSingularityCount << '}';
+    for (std::size_t edgeIndex = 0U; edgeIndex < region.barrierEdges.size();
+         ++edgeIndex) {
+      stream << ";transportRegion[" << region.topologyRegion.index()
+             << "].barrier[" << edgeIndex
+             << "]=" << source_edge_locus(region.barrierEdges[edgeIndex]);
+    }
+    for (std::size_t componentIndex = 0U;
+         componentIndex < region.barrierComponents.size(); ++componentIndex) {
+      const auto &component = region.barrierComponents[componentIndex];
+      stream << ";transportRegion[" << region.topologyRegion.index()
+             << "].barrierComponent[" << componentIndex << "]={V="
+             << component.vertexCount << ",E=" << component.edgeCount
+             << ",chi=" << component.eulerCharacteristic
+             << ",tree=" << (component.tree ? "true" : "false")
+             << ",cycle=" << (component.containsCycle ? "true" : "false")
+             << ",boundaryVertices=" << component.regionBoundaryVertexCount
+             << ",tips=";
+      for (std::size_t i = 0U; i < component.tipVertices.size(); ++i) {
+        if (i != 0U) stream << ',';
+        stream << component.tipVertices[i].index();
+      }
+      stream << ",branches=";
+      for (std::size_t i = 0U; i < component.branchVertices.size(); ++i) {
+        if (i != 0U) stream << ',';
+        stream << component.branchVertices[i].index();
+      }
+      stream << '}';
+    }
+  }
 }
 
 std::size_t source_boundary_vertex_count(const TriMesh &mesh) {
@@ -4680,6 +4807,35 @@ Cp4cReachabilityObservation observe_cp4c_witness(
           *cutGraphBuild.error().originatingRotationSystemInconsistencyReason);
     } else {
       report << "none";
+    }
+    if (cutGraphBuild.error().trace.has_value()) {
+      report << ";trace=" << cutGraphBuild.error().trace->index();
+    }
+    if (cutGraphBuild.error().traceEventIndex.has_value()) {
+      report << ";traceEvent=" << *cutGraphBuild.error().traceEventIndex;
+    }
+    if (cutGraphBuild.error().traceEventPositionFailureReason.has_value()) {
+      report << ";traceEventPositionFailure="
+             << directional::geometry::trace_event_position_failure_reason_name(
+                    *cutGraphBuild.error().traceEventPositionFailureReason);
+    }
+    if (cutGraphBuild.error().traceEventPositionPass.has_value()) {
+      report << ";traceEventPositionPass="
+             << directional::geometry::trace_event_position_pass_name(
+                    *cutGraphBuild.error().traceEventPositionPass);
+    }
+    for (std::size_t index = 0U;
+         index < cutGraphBuild.error().traceEventPositionCandidates.size();
+         ++index) {
+      const auto &candidate =
+          cutGraphBuild.error().traceEventPositionCandidates[index];
+      report << ";traceEventPositionCandidate[" << index << "]={position="
+             << candidate.position << ",segment=" << candidate.segmentIndex
+             << ",carrier=" << source_edge_locus(candidate.carrier)
+             << ",role="
+             << directional::geometry::trace_event_position_carrier_role_name(
+                    candidate.carrierRole)
+             << '}';
     }
     observation.report = report.str();
     return observation;
@@ -7665,6 +7821,160 @@ TEST(GlobalTopologyPlan,
   const auto &fixture = cp4c_mechanical_fixture();
   ASSERT_NO_FATAL_FAILURE(assert_cp4c_mechanical_preconditions(fixture));
   ASSERT_NO_FATAL_FAILURE(expect_cp4c_plan_disc_proofs(fixture));
+}
+
+TEST(GlobalTopologyPlan,
+     PrescribedSphereWitnessDerivesRegionsThroughProductionEntryPath) {
+  const Cp4cReachabilityObservation sphere =
+      observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.cutGraph.has_value()) << sphere.report;
+  ASSERT_TRUE(sphere.plan.has_value()) << sphere.report;
+  ASSERT_EQ(sphere.plan->regions().size(),
+            sphere.plan->region_certificates().size()) << sphere.report;
+  for (const auto &certificate : sphere.plan->region_certificates()) {
+    EXPECT_TRUE(certificate.proves_disc_topology()) << sphere.report;
+    EXPECT_TRUE(certificate.proves_field_regularity()) << sphere.report;
+  }
+}
+
+TEST(SurfaceCutGraph,
+     OrdinaryProposalSelectsTraceCrossedEdgeWithoutSaturation) {
+  const Cp4cTraceCrossedCutFixture fixture =
+      build_cp4c_trace_crossed_cut_fixture();
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value());
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
+      *fixture.sourceAuthority, *fixture.atlas, *fixture.network);
+  ASSERT_TRUE(cutGraph)
+      << directional::geometry::surface_cut_graph_error_code_name(
+             cutGraph.error().code);
+  const auto &certificate = cutGraph.value().certificate();
+  const auto selectedTraceCrossed = std::find_if(
+      certificate.cutCandidates.begin(), certificate.cutCandidates.end(),
+      [](const auto &candidate) {
+        return candidate.classification ==
+                   directional::geometry::SurfaceCutCandidateClass::
+                       TraceInteriorCrossing &&
+               candidate.selected;
+      });
+  ASSERT_NE(certificate.cutCandidates.end(), selectedTraceCrossed)
+      << "the ordinary proposal must select an edge already crossed by a trace";
+  EXPECT_FALSE(certificate.saturationUsed)
+      << "the selected trace-crossed edge must come from the ordinary "
+         "tree-cotree proposal, not the saturation fallback";
+}
+
+TEST(SurfaceCutGraph, EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError) {
+  TriMesh mesh;
+  const auto meshPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.obj");
+  ASSERT_TRUE(directional::readOBJ(meshPath.string(), mesh));
+  ASSERT_TRUE(mesh.boundaryLoops.empty());
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const auto rails = rails_from_atlas(mesh, atlasBuild.value());
+  ASSERT_TRUE(rails.empty());
+  auto networkBuild = FieldAlignedCurveNetwork::make(
+      mesh, *sourceAuthority, atlasBuild.value(), rails);
+  ASSERT_TRUE(networkBuild);
+  ASSERT_TRUE(networkBuild.value().nodes().empty());
+  ASSERT_TRUE(networkBuild.value().mandatory_edges().empty());
+  ASSERT_TRUE(networkBuild.value().candidate_traces().empty());
+  const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority,
+      atlasBuild.value(), networkBuild.value());
+  ASSERT_FALSE(cutGraph);
+  EXPECT_EQ(directional::geometry::SurfaceCutGraphErrorCode::
+                EmptyNetworkOnClosedSurface,
+            cutGraph.error().code);
+  EXPECT_TRUE(cutGraph.error().sourceFace.has_value())
+      << "the typed empty-network rejection must carry a source-face locus";
+}
+
+TEST(FieldTransportAtlas, NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis) {
+  const auto &fixture = cp4c_mechanical_fixture();
+  ASSERT_TRUE(fixture.atlas.has_value());
+  const auto edge03 = topology_edge(
+      0, 3, static_cast<std::size_t>(fixture.mesh.V.rows()));
+  bool barrierPublished = false;
+  std::ostringstream report;
+  append_transport_region_diagnostics(report, *fixture.atlas);
+  for (const auto &region : fixture.atlas->region_transport_diagnostics()) {
+    barrierPublished =
+        barrierPublished ||
+        std::find(region.barrierEdges.begin(), region.barrierEdges.end(),
+                  edge03) != region.barrierEdges.end();
+  }
+  EXPECT_TRUE(barrierPublished) << report.str();
+  for (const auto &cycle : fixture.atlas->cycles()) {
+    for (const auto &step : cycle.steps) {
+      EXPECT_NE(edge03, step.sourceEdge)
+          << "a non-separating hard-feature barrier must be boundary of the "
+             "derived transport domain, never a cycle-basis column;"
+          << report.str();
+    }
+  }
+  std::cout << "m3Cp4c3AM1AM6" << report.str() << '\n';
+}
+
+TEST(FieldTransportAtlas, CutTransportDomainSatisfiesTheEulerCutIdentity) {
+  const auto &fixture = cp4c_mechanical_fixture();
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_FALSE(fixture.atlas->region_transport_diagnostics().empty());
+  std::ostringstream report;
+  append_transport_region_diagnostics(report, *fixture.atlas);
+  bool hasBarrier = false;
+  for (const auto &region : fixture.atlas->region_transport_diagnostics()) {
+    hasBarrier = hasBarrier || region.barrierEdgeCount != 0U;
+    EXPECT_EQ(region.uncutEulerCharacteristic -
+                  region.barrierEulerCharacteristic +
+                  static_cast<int>(region.barrierRegionBoundaryVertexCount),
+              region.cutEulerCharacteristic)
+        << report.str();
+    EXPECT_GE(region.newSlitBoundaryLoopCount, 0) << report.str();
+    for (const auto &component : region.barrierComponents) {
+      EXPECT_TRUE(component.tree) << report.str();
+      EXPECT_FALSE(component.containsCycle) << report.str();
+    }
+  }
+  EXPECT_TRUE(hasBarrier) << report.str();
+  std::cout << "m3Cp4c3AM3AM6" << report.str() << '\n';
+}
+
+TEST(FieldTransportAtlas,
+     PrescribedSingularityOnABarrierArcRemainsBoundToACycle) {
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto barrier = topology_edge(0, 4, 5U);
+  const std::set<SourceEdgeTopologyKey> hardEdges{barrier};
+  const auto sourceAuthority = make_source_authority(mesh, hardEdges);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, hardEdges, make_index_one_singularity_field(mesh));
+  ASSERT_TRUE(atlasBuild)
+      << directional::authority::field_atlas_build_error_code_name(
+             atlasBuild.error().code);
+  const auto &atlas = atlasBuild.value();
+  ASSERT_EQ(1U, atlas.singularities().size());
+  const auto &singularity = atlas.singularities().front();
+  ASSERT_TRUE(singularity.topologyRegion.has_value());
+  ASSERT_TRUE(singularity.localCycle.has_value());
+  ASSERT_LT(singularity.localCycle->index(), atlas.cycles().size());
+  EXPECT_EQ(directional::authority::FieldCycleKind::BoundaryLoop,
+            atlas.cycles()[singularity.localCycle->index()].kind);
+  ASSERT_EQ(1U, atlas.region_transport_diagnostics().size());
+  const auto &diagnostics = atlas.region_transport_diagnostics().front();
+  EXPECT_EQ(1U, diagnostics.prescribedSingularityCount);
+  EXPECT_EQ(0U, diagnostics.localVertexBoundSingularityCount);
+  EXPECT_EQ(1U, diagnostics.slitBoundaryBoundSingularityCount);
+  EXPECT_EQ(0U, diagnostics.unboundSingularityCount);
 }
 
 TEST(GlobalTopologyPlan, RotationSystemAndFaceWalkAgreeOnProducedWitnesses) {

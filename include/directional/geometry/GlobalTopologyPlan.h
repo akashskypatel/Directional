@@ -162,6 +162,31 @@ enum class RotationSystemInconsistencyReason : std::uint8_t {
   EdgeTraceSecondaryRankInvalid = 8,
 };
 
+enum class TraceEventPositionFailureReason : std::uint8_t {
+  NoCarrierMatch = 0,
+  AmbiguousCarrierMatch = 1,
+};
+
+enum class TraceEventPositionPass : std::uint8_t {
+  FaceRestricted = 0,
+  WideningFallback = 1,
+};
+
+enum class TraceEventPositionCarrierRole : std::uint8_t {
+  Incoming = 0,
+  Outgoing = 1,
+};
+
+struct TraceEventPositionCandidate {
+  std::size_t position = 0U;
+  std::size_t segmentIndex = 0U;
+  authority::SourceEdgeTopologyKey carrier;
+  TraceEventPositionCarrierRole carrierRole =
+      TraceEventPositionCarrierRole::Incoming;
+
+  auto operator<=>(const TraceEventPositionCandidate &) const = default;
+};
+
 struct GlobalTopologyPlanError {
   GlobalTopologyPlanErrorCode code =
       GlobalTopologyPlanErrorCode::InvalidSourceBinding;
@@ -182,6 +207,10 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> faceCount;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
+  std::optional<std::size_t> traceEventIndex;
+  std::optional<TraceEventPositionFailureReason> traceEventPositionFailureReason;
+  std::optional<TraceEventPositionPass> traceEventPositionPass;
+  std::vector<TraceEventPositionCandidate> traceEventPositionCandidates;
 
   auto operator<=>(const GlobalTopologyPlanError &) const = default;
 };
@@ -316,6 +345,12 @@ private:
     GlobalTopologyPlanErrorCode code) noexcept;
 [[nodiscard]] const char *rotation_system_inconsistency_reason_name(
     RotationSystemInconsistencyReason reason) noexcept;
+[[nodiscard]] const char *trace_event_position_failure_reason_name(
+    TraceEventPositionFailureReason reason) noexcept;
+[[nodiscard]] const char *trace_event_position_pass_name(
+    TraceEventPositionPass pass) noexcept;
+[[nodiscard]] const char *trace_event_position_carrier_role_name(
+    TraceEventPositionCarrierRole role) noexcept;
 [[nodiscard]] std::uint64_t
     global_topology_plan_hash(const GlobalTopologyPlan &plan) noexcept;
 
