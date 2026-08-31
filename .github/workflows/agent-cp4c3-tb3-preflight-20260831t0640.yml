@@ -1,0 +1,146 @@
+name: M3 CP4c3 TB3 Artifact Preflight
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cp4c3-tb3-preflight-20260831t0640.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb3-preflight-20260831t0640
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cp4c3-tb3-preflight
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cp4c3-tb3-preflight-20260831t0640.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  preflight:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      ARTIFACT_ID: '9750235004'
+      EXPECTED_PACKAGE_SHA256: 'bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038'
+      EXPECTED_SOURCE_SHA: '93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4'
+      EXPECTED_SOURCE_ARCHIVE_SHA256: 'fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb'
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "$RUNNER_TEMP/tb3-preflight.log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" "event_sha=$GITHUB_SHA" \
+            "artifact_id=$ARTIFACT_ID" "evidence_source=$EXPECTED_SOURCE_SHA" \
+            'turn=M3-CP4c-3-TB3' 'subturn=TB-EXEC' \
+            'runtimeExecution=false' 'benchmarkExecution=false' | tee -a "$RUNNER_TEMP/tb3-preflight.log"
+
+      - name: Verify immutable package preflight
+        id: preflight
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -uo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/tb3-preflight.log") 2>&1
+          zip="$RUNNER_TEMP/package71.zip"
+          pkg="$RUNNER_TEMP/package71"
+          result="$RUNNER_TEMP/tb3-preflight-result"
+          mkdir -p "$result"
+          status=0
+          reason=none
+          curl --fail-with-body --silent --show-error --location \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" \
+            -o "$zip" || { status=2; reason=artifact-download-failed; }
+          if [ "$status" -eq 0 ]; then
+            actual="$(sha256sum "$zip" | awk '{print $1}')"
+            printf 'package_zip_sha256=%s\n' "$actual"
+            [ "$actual" = "$EXPECTED_PACKAGE_SHA256" ] || { status=2; reason=actions-digest-mismatch; }
+          fi
+          if [ "$status" -eq 0 ]; then
+            rm -rf "$pkg"; mkdir -p "$pkg"
+            unzip -q "$zip" -d "$pkg" || { status=2; reason=archive-extract-failed; }
+          fi
+          if [ "$status" -eq 0 ]; then
+            (cd "$pkg" && sha256sum -c SHA256SUMS) || { status=2; reason=internal-manifest-failed; }
+          fi
+          if [ "$status" -eq 0 ]; then
+            [ "$(cat "$pkg/metadata/source-commit.txt")" = "$EXPECTED_SOURCE_SHA" ] || { status=2; reason=source-sha-mismatch; }
+            source_archive="$(find "$pkg/source" -maxdepth 1 -type f -name 'source-*.tar.gz' -print -quit)"
+            [ -n "$source_archive" ] || { status=2; reason=source-archive-missing; }
+            if [ "$status" -eq 0 ]; then
+              actual_source="$(sha256sum "$source_archive" | awk '{print $1}')"
+              [ "$actual_source" = "$EXPECTED_SOURCE_ARCHIVE_SHA256" ] || { status=2; reason=source-archive-digest-mismatch; }
+            fi
+          fi
+          if [ "$status" -eq 0 ]; then
+            bad_modes=0
+            : > "$result/executable-modes.txt"
+            for exe in "$pkg"/bin/*; do
+              mode="$(stat -c '%a' "$exe")"
+              printf '%s %s\n' "$mode" "${exe#"$pkg/"}" | tee -a "$result/executable-modes.txt"
+              case "$mode" in
+                *1|*3|*5|*7) ;;
+                *) bad_modes=$((bad_modes + 1));;
+              esac
+            done
+            printf 'non_executable_binary_count=%s\n' "$bad_modes" | tee -a "$result/executable-modes.txt"
+            if [ "$bad_modes" -ne 0 ]; then status=2; reason=missing-archived-executable-mode; fi
+          fi
+          printf '%s\n' \
+            "preflight_status=$status" "preflight_reason=$reason" \
+            'runtimeExecution=false' 'benchmarkExecution=false' \
+            'configure=false' 'compile=false' 'relink=false' 'repair=false' \
+            'generatedDiscovery=false' 'packageMutation=false' 'sourceMutation=false' \
+            'testMutation=false' 'fixtureMutation=false' 'selectorMutation=false' > "$result/result.env"
+          cat "$result/result.env"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit "$status"
+
+      - name: Upload preflight result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb3-preflight-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/tb3-preflight-result
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb3-preflight-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/tb3-preflight.log
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Propagate preflight status
+        if: always()
+        shell: bash
+        run: |
+          test "${{ steps.preflight.outputs.status }}" = 0
