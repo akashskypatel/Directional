@@ -1,6 +1,0 @@
-turn=M3-CP4c-3-TB2
-purpose=diagnosed orchestration-only R2 after zero-runtime mapping-digest mismatch
-package70_artifact=9744461475
-semantic_source=005512f20ed56edc793f4d6505f3d2b4c2999c71
-selector_count=373
-retry=2
