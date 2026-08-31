@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB3-REV
-purpose=exact start-of-turn source snapshot for ORCH-01 review
-frozen_pre_marker_head=81eda5ebf929ae96c89e4035b30e90f46ee17c6a
-read_mode=snapshot

@@ -1,2 +1,0 @@
-.agents/connector-triggers/source-snapshot/m3-cp4c3-orch01-review-20260831t0740.txt
-.agents/connector-triggers/cp4c3-tb3-rev-closeout-20260831t0745.txt
