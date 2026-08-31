@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-TB3
-purpose=start-of-turn exact source snapshot
-read_mode=snapshot
-initial_branch_head=1a3ede6749240a3436c1f61a7706e513eb5e97cf
