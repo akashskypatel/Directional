@@ -136,6 +136,9 @@ struct FieldBarrierComponentDiagnostics {
 
 /** Derived, non-authoritative diagnostics for one A1 transport domain. */
 struct FieldTransportRegionDiagnostics {
+  explicit FieldTransportRegionDiagnostics(TopologyRegionId topologyRegion)
+      : topologyRegion(topologyRegion) {}
+
   TopologyRegionId topologyRegion;
   std::size_t hardFeatureEdgeCount = 0U;
   std::vector<SourceEdgeTopologyKey> barrierEdges;

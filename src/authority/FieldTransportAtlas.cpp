@@ -842,6 +842,9 @@ std::optional<FieldDirectedTransport> directed_transport(
 }
 
 struct LocalRegionMesh {
+  explicit LocalRegionMesh(TopologyRegionId topologyRegion)
+      : diagnostics(topologyRegion) {}
+
   TriMesh mesh;
   std::vector<int> globalFaceByLocal;
   std::vector<int> globalVertexByLocal;
@@ -860,8 +863,7 @@ std::optional<LocalRegionMesh> make_local_region_mesh(
       sourceAuthority.rows_for_region(region.id());
   if (rows.empty()) return std::nullopt;
 
-  LocalRegionMesh result;
-  result.diagnostics.topologyRegion = region.id();
+  LocalRegionMesh result(region.id());
   result.diagnostics.hardFeatureEdgeCount = hardFeatureEdges.size();
   result.globalFaceByLocal.reserve(rows.size());
   std::set<int> regionFaces;
@@ -1909,8 +1911,7 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       certificateWitnesses.push_back(std::move(witness));
       componentTopology.push_back(FieldComponentTopology{
           region.id(), region.component(), 1, 1, 0, 3U, 3U, 1U, 0U, 0U});
-      FieldTransportRegionDiagnostics regionDiagnostics;
-      regionDiagnostics.topologyRegion = region.id();
+      FieldTransportRegionDiagnostics regionDiagnostics(region.id());
       regionDiagnostics.hardFeatureEdgeCount = hardFeatureEdges.size();
       regionDiagnostics.uncutEulerCharacteristic = 1;
       regionDiagnostics.uncutBoundaryLoopCount = 1;
