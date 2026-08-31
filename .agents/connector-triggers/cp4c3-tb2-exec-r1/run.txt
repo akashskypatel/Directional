@@ -1,0 +1,7 @@
+turn=M3-CP4c-3-TB2
+purpose=user-authorized same-turn artifact-only re-execution after portable fixture package regeneration
+package70_artifact=9744461475
+package70_sha256=4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5
+semantic_source=005512f20ed56edc793f4d6505f3d2b4c2999c71
+selector373_sha256=b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834
+retry=1
