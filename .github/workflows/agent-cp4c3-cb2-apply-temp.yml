@@ -38,10 +38,10 @@ jobs:
     if: ${{ needs.validate_caller.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1m3jgrVQyOyvMzhiXFzs-EpX5dPTz9qjT
-      patch_sha256: ba1abaaa3649682950adb7c9b81ae4fb3ff02eb6578e138ed5ff53803d2f3042
-      base_sha: 4250f1bf87f2aca21a8a72bdf20d2b5d47b9a719
+      file_id: 1NDwhA-R5O5wK3CL5_l89DG0avcQRkmax
+      patch_sha256: 944b070212c12400b07b0487bb031de57d67473b4029f209c79bf3cd7b9502ef
+      base_sha: 005512f20ed56edc793f4d6505f3d2b4c2999c71
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'fix: initialize CP4c3 CB2 transport diagnostics'
+      commit_message: 'docs: close M3-CP4c-3-CB2 and plan TB2'
       retention_days: 14
     secrets: inherit
