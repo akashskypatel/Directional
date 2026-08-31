@@ -1,0 +1,166 @@
+name: M3 CP4c3 CB4 Package 72
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/cp4c3-cb4pkg-package72-20260831t1548.txt]
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb4pkg-package72
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cp4c3-cb4pkg-package72-20260831t1548.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cp4c3-cb4pkg-package72
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  package:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    env:
+      RAW_ARTIFACT_ID: '9750227619'
+      RAW_SHA256: 'b1cc9a989af2db84ddd2ad83babf9b2221396e45a165aa84927082e610c351c8'
+      SOURCE_SHA: 93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4
+      SOURCE_ARCHIVE_SHA256: 'fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb'
+      TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/cp4c3-cb4pkg-package72.log"; : > "$log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" "event_sha=$GITHUB_SHA" \
+            "runtimeExecution=false" "benchmarkExecution=false" "configure=false" "compile=false" "relink=false" \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Download, inspect, and extract immutable raw artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/cp4c3-cb4pkg-package72.log"; exec > >(tee -a "$log") 2>&1
+          w="${RUNNER_TEMP}/cb4pkg"; rm -rf "$w"; mkdir -p "$w/package"
+          curl --fail-with-body --silent --show-error --location \
+            -H "Authorization: Bearer ${TOKEN}" -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${RAW_ARTIFACT_ID}/zip" -o "$w/raw.zip"
+          actual="$(sha256sum "$w/raw.zip" | awk '{print $1}')"; echo "raw_artifact_sha256=$actual"; test "$actual" = "$RAW_SHA256"
+          cat > "$w/expected.tsv" <<'EOF'
+          971426cf6846af474df1652d4a64a4bacebcc090bf0c91ed1366ffbcf8720431 bin/directional_benchmarks
+          9eee80431354ba7f6a8122f0755cce40a367219e4596f15be6ea5b891880c07b bin/directional_compiled_api_tests
+          319338df85e52036a2a38cf8a515236c13f3d18b205c3f830b3f58a46970be67 bin/directional_surface_cell_authority_kernel_tests
+          e895a6bf556a73fd213070095ec44a22a755d22a970208e929f45386cec15ea3 bin/directional_surface_cell_completion_tests
+          23acd5a3bba6355d1a35ab62c9fa817e410be10ee095bedcaada7995ddacf575 bin/directional_surface_cell_producer_tests
+          e8a9bc573c964d09ca24e8691ef4fe1eef93b270451e6f581aae474f820b98f7 bin/directional_surface_cell_validation_tests
+          EOF
+          python3 - "$w/raw.zip" "$w/expected.tsv" <<'PY'
+          import sys, zipfile
+          expected=[line.split()[1] for line in open(sys.argv[2],encoding='utf-8') if line.strip()]
+          with zipfile.ZipFile(sys.argv[1]) as z: modes={i.filename:(i.external_attr>>16)&0xffff for i in z.infolist()}
+          for name in expected:
+              mode=modes.get(name,0)&0o7777; print(f'raw_zip_mode={name}:{mode:04o}')
+              if mode!=0o755: raise SystemExit(f'raw mode mismatch: {name}:{mode:04o}')
+          PY
+          unzip -q "$w/raw.zip" -d "$w/package"
+
+      - name: Verify authority and relocate source-archive fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/cp4c3-cb4pkg-package72.log"; exec > >(tee -a "$log") 2>&1
+          w="${RUNNER_TEMP}/cb4pkg"; p="$w/package"
+          cd "$p"; sha256sum -c SHA256SUMS
+          test "$(cat metadata/source-commit.txt)" = "$SOURCE_SHA"
+          test "$(sha256sum source/source-${SOURCE_SHA}.tar.gz | awk '{print $1}')" = "$SOURCE_ARCHIVE_SHA256"
+          grep -F 'exactArithmeticBackend=GMP' metadata/command-boundary.txt
+          grep -F 'runtimeExecution=false' metadata/command-boundary.txt
+          grep -F 'libgmpxx.so' metadata/gmp-evidence.txt; grep -F 'libgmp.so' metadata/gmp-evidence.txt
+          while read -r hash rel; do test "$(stat -c '%a' "$rel")" = 755; test "$(sha256sum "$rel" | awk '{print $1}')" = "$hash"; done < "$w/expected.tsv"
+          mkdir "$w/source"; tar -xzf "source/source-${SOURCE_SHA}.tar.gz" -C "$w/source"
+          mkdir -p test-data/benchmarks; cp -a "$w/source/benchmarks/fixtures" test-data/benchmarks/fixtures
+          count="$(find test-data/benchmarks/fixtures -type f | wc -l | tr -d ' ')"; echo "fixture_file_count=$count"; test "$count" = 27
+          test -f test-data/benchmarks/fixtures/milestone-g/mechanical_feature.obj
+          test -f test-data/benchmarks/fixtures/milestone-g/sphere_prescribed.obj
+          while read -r hash rel; do test "$(stat -c '%a' "$rel")" = 755; test "$(sha256sum "$rel" | awk '{print $1}')" = "$hash"; done < "$w/expected.tsv"
+          find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > SHA256SUMS
+          sha256sum -c SHA256SUMS
+
+      - name: Create and clean-extract package 72
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/cp4c3-cb4pkg-package72.log"; exec > >(tee -a "$log") 2>&1
+          w="${RUNNER_TEMP}/cb4pkg"; mkdir -p "$w/out" "$w/verify"
+          tar -C "$w/package" -czf "$w/out/package72.tar.gz" .
+          tar_sha="$(sha256sum "$w/out/package72.tar.gz" | awk '{print $1}')"; printf '%s  %s\n' "$tar_sha" package72.tar.gz > "$w/out/package72.tar.gz.sha256"
+          tar -xzf "$w/out/package72.tar.gz" -C "$w/verify"; cd "$w/verify"; sha256sum -c SHA256SUMS
+          test "$(cat metadata/source-commit.txt)" = "$SOURCE_SHA"
+          test "$(sha256sum source/source-${SOURCE_SHA}.tar.gz | awk '{print $1}')" = "$SOURCE_ARCHIVE_SHA256"
+          test "$(find test-data/benchmarks/fixtures -type f | wc -l | tr -d ' ')" = 27
+          while read -r hash rel; do mode="$(stat -c '%a' "$rel")"; actual="$(sha256sum "$rel" | awk '{print $1}')"; echo "verified_binary=$rel sha256=$actual mode=$mode"; test "$mode" = 755; test "$actual" = "$hash"; done < "$w/expected.tsv"
+          grep -F 'exactArithmeticBackend=GMP' metadata/command-boundary.txt; grep -F 'runtimeExecution=false' metadata/command-boundary.txt
+          cat > "$w/out/result.env" <<EOF
+          turn=M3-CP4c-3-CB4-PKG
+          raw_artifact_id=${RAW_ARTIFACT_ID}
+          raw_artifact_sha256=${RAW_SHA256}
+          semantic_source=${SOURCE_SHA}
+          source_archive_sha256=${SOURCE_ARCHIVE_SHA256}
+          fixture_file_count=27
+          package72_tar_sha256=${tar_sha}
+          runtimeExecution=false
+          benchmarkExecution=false
+          configure=false
+          compile=false
+          relink=false
+          productMutation=false
+          testMutation=false
+          selectorMutation=false
+          fixtureContentMutation=false
+          packagingLayoutMutation=true
+          job_status=success
+          EOF
+          cat "$w/out/result.env"
+
+      - name: Upload package 72
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-package72-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/cb4pkg/out/package72.tar.gz
+            ${{ runner.temp }}/cb4pkg/out/package72.tar.gz.sha256
+            ${{ runner.temp }}/cb4pkg/out/result.env
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Record final package status
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          printf '%s\n' "final_job_status=${{ job.status }}" "runtimeExecution=false" "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "${RUNNER_TEMP}/cp4c3-cb4pkg-package72.log"
+
+      - name: Upload diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-package72-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/cp4c3-cb4pkg-package72.log
+          if-no-files-found: error
+          retention-days: 7
