@@ -170,6 +170,7 @@ enum class TraceEventPositionFailureReason : std::uint8_t {
 enum class TraceEventPositionPass : std::uint8_t {
   FaceRestricted = 0,
   WideningFallback = 1,
+  SourceEdgeUnavailable = 2,
 };
 
 enum class TraceEventPositionCarrierRole : std::uint8_t {

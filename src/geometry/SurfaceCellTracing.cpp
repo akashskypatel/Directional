@@ -361,6 +361,73 @@ std::optional<authority::SourceFaceId> field_face_row(
   return std::nullopt;
 }
 
+std::optional<Eigen::RowVector3d> field_direction_world(
+    const TriMesh &sourceMesh,
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const authority::FieldBranchDirection &direction) {
+  if (!direction.is_barycentric()) return std::nullopt;
+  const auto &vertices = sourceFace.vertices();
+  for (const authority::SourceVertexId vertex : vertices) {
+    if (vertex.index() >= static_cast<std::size_t>(sourceMesh.V.rows())) {
+      return std::nullopt;
+    }
+  }
+  const Eigen::RowVector3d p0 =
+      sourceMesh.V.row(static_cast<int>(vertices[0].index()));
+  const Eigen::RowVector3d p1 =
+      sourceMesh.V.row(static_cast<int>(vertices[1].index()));
+  const Eigen::RowVector3d p2 =
+      sourceMesh.V.row(static_cast<int>(vertices[2].index()));
+  Eigen::RowVector3d result =
+      static_cast<double>(direction[1].to_double()) * (p1 - p0) +
+      static_cast<double>(direction[2].to_double()) * (p2 - p0);
+  if (!result.array().isFinite().all() || result.squaredNorm() == 0.0) {
+    return std::nullopt;
+  }
+  result.normalize();
+  return result;
+}
+
+std::optional<authority::FieldBranchDirection> field_direction_from_world(
+    const TriMesh &sourceMesh, const authority::SourceFaceId sourceFace,
+    const authority::SourceFaceTopologyKey &sourceTopology,
+    const Eigen::RowVector3d &direction) {
+  Eigen::RowVector3d rowDirection;
+  if (!surface_cell_tracing_detail::barycentric_derivative(
+          sourceMesh.V, sourceMesh.F, static_cast<int>(sourceFace.index()),
+          direction, rowDirection)) {
+    return std::nullopt;
+  }
+  const auto exactSecond =
+      authority::FieldExactRational::from_double_exact(rowDirection[1]);
+  const auto exactThird =
+      authority::FieldExactRational::from_double_exact(rowDirection[2]);
+  if (!exactSecond.has_value() || !exactThird.has_value()) {
+    return std::nullopt;
+  }
+  const std::array<authority::FieldExactRational, 3> rowExact{
+      -*exactSecond - *exactThird, *exactSecond, *exactThird};
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  std::array<authority::FieldExactRational, 3> canonical{zero, zero, zero};
+  const auto &canonicalVertices = sourceTopology.vertices();
+  for (int corner = 0; corner < 3; ++corner) {
+    const auto rowVertex = authority::SourceVertexId::from_index(
+        sourceMesh.F(static_cast<int>(sourceFace.index()), corner),
+        static_cast<std::size_t>(sourceMesh.V.rows()));
+    if (!rowVertex.has_value()) return std::nullopt;
+    const auto found = std::find(canonicalVertices.begin(),
+                                 canonicalVertices.end(), *rowVertex);
+    if (found == canonicalVertices.end()) return std::nullopt;
+    canonical[static_cast<std::size_t>(
+        std::distance(canonicalVertices.begin(), found))] =
+        rowExact[static_cast<std::size_t>(corner)];
+  }
+  authority::FieldBranchDirection result{canonical};
+  return result.is_barycentric()
+             ? std::optional<authority::FieldBranchDirection>{std::move(result)}
+             : std::nullopt;
+}
+
 } // namespace
 
 FieldBranchExitTimeOrdering compare_field_branch_exit_times(
@@ -563,38 +630,84 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     const authority::FieldBranch currentBranch,
     const authority::SourceVertexId sourceVertex,
     const FieldVertexArrivalMode arrivalMode) {
-  using State =
+  struct TransitState {
+    authority::SourceFaceTopologyKey sourceFace;
+    authority::FieldBranch branch;
+    Eigen::RowVector3d incomingDirection;
+    std::vector<authority::SourceEdgeTopologyKey> transportPath;
+    int composedSignedLift = 0;
+  };
+  using StateKey =
       std::pair<authority::SourceFaceTopologyKey, authority::FieldBranch>;
-  std::vector<State> pending{{currentFace, currentBranch}};
-  std::set<State> visited;
+
+  const auto *currentFrame = topology.find_frame(currentFace);
+  const authority::FieldBranchBoundaryPairing *currentPairing = nullptr;
+  if (currentFrame != nullptr &&
+      currentFrame->sourceComponent == sourceComponent &&
+      currentFrame->topologyRegion == topologyRegion) {
+    for (const authority::FieldBranchBoundaryPairing &candidate :
+         currentFrame->branches) {
+      if (candidate.branch != currentBranch) continue;
+      if (currentPairing != nullptr) {
+        currentPairing = nullptr;
+        break;
+      }
+      currentPairing = &candidate;
+    }
+  }
+
+  std::vector<TransitState> pending;
+  if (currentPairing != nullptr) {
+    const auto incomingDirection =
+        field_direction_world(sourceMesh, currentFace, currentPairing->direction);
+    if (incomingDirection.has_value()) {
+      pending.push_back(
+          TransitState{currentFace, currentBranch, *incomingDirection, {}, 0});
+    }
+  }
+
+  std::set<StateKey> visited;
   std::vector<FieldVertexTransitDecision> candidates;
+  std::vector<FieldVertexTransitStateDiagnostic> diagnostics;
 
   for (std::size_t cursor = 0U; cursor < pending.size(); ++cursor) {
-    const State state = pending[cursor];
-    if (!visited.insert(state).second) continue;
-    const auto *frame = topology.find_frame(state.first);
+    const TransitState state = pending[cursor];
+    const StateKey stateKey{state.sourceFace, state.branch};
+    if (!visited.insert(stateKey).second) continue;
+    const auto *frame = topology.find_frame(state.sourceFace);
     if (frame == nullptr || frame->sourceComponent != sourceComponent ||
         frame->topologyRegion != topologyRegion) {
       continue;
     }
     const authority::FieldBranchBoundaryPairing *pairing = nullptr;
     for (const authority::FieldBranchBoundaryPairing &candidate : frame->branches) {
-      if (candidate.branch != state.second) continue;
+      if (candidate.branch != state.branch) continue;
       if (pairing != nullptr) {
         pairing = nullptr;
         break;
       }
       pairing = &candidate;
     }
-    const auto row = field_face_row(sourceMesh, state.first);
+    const auto row = field_face_row(sourceMesh, state.sourceFace);
     if (pairing == nullptr || !row.has_value()) continue;
 
-    if (arrivalMode == FieldVertexArrivalMode::EdgeTransit ||
-        state.first != currentFace) {
-      if (authority::direction_in_vertex_sector(
-              sourceMesh, *row, sourceVertex, pairing->direction)) {
-        candidates.emplace_back(state.first, state.second);
-      }
+    const auto incomingDirection = field_direction_from_world(
+        sourceMesh, *row, state.sourceFace, state.incomingDirection);
+    if (!incomingDirection.has_value()) continue;
+    const bool eligible = arrivalMode == FieldVertexArrivalMode::EdgeTransit ||
+                          state.sourceFace != currentFace;
+    const bool representativeInSector = authority::direction_in_vertex_sector(
+        sourceMesh, *row, sourceVertex, pairing->direction);
+    const bool incomingInSector = authority::direction_in_vertex_sector(
+        sourceMesh, *row, sourceVertex, *incomingDirection);
+    diagnostics.push_back(FieldVertexTransitStateDiagnostic{
+        state.sourceFace, state.branch, pairing->direction, *incomingDirection,
+        state.transportPath,
+        ((state.composedSignedLift % 4) + 4) % 4, eligible,
+        representativeInSector, incomingInSector});
+
+    if (eligible && incomingInSector) {
+      candidates.emplace_back(state.sourceFace, state.branch);
     }
 
     for (const authority::FieldBranchTransportAdjacency &adjacency :
@@ -604,18 +717,31 @@ FieldVertexTransitResult resolve_field_vertex_transit(
         continue;
       }
       std::optional<authority::SourceFaceTopologyKey> nextFace;
-      if (adjacency.firstFace == state.first) {
+      if (adjacency.firstFace == state.sourceFace) {
         nextFace = adjacency.secondFace;
-      } else if (adjacency.secondFace == state.first) {
+      } else if (adjacency.secondFace == state.sourceFace) {
         nextFace = adjacency.firstFace;
       } else {
         continue;
       }
-      const auto directed =
-          topology.transport(adjacency.sourceEdge, state.first, *nextFace);
-      if (!directed.has_value()) continue;
-      pending.emplace_back(*nextFace,
-                           state.second.rotated(directed->signedLift));
+      const auto directed = topology.transport(adjacency.sourceEdge,
+                                               state.sourceFace, *nextFace);
+      const auto nextRow = field_face_row(sourceMesh, *nextFace);
+      if (!directed.has_value() || !nextRow.has_value()) continue;
+      const Eigen::RowVector3d transportedIncoming =
+          surface_cell_tracing_detail::transport_direction_between_faces(
+              sourceMesh.V, sourceMesh.F, static_cast<int>(row->index()),
+              static_cast<int>(nextRow->index()), state.incomingDirection);
+      if (!transportedIncoming.array().isFinite().all() ||
+          transportedIncoming.squaredNorm() == 0.0) {
+        continue;
+      }
+      auto transportPath = state.transportPath;
+      transportPath.push_back(adjacency.sourceEdge);
+      pending.push_back(TransitState{
+          *nextFace, state.branch.rotated(directed->signedLift),
+          transportedIncoming, std::move(transportPath),
+          state.composedSignedLift + directed->signedLift});
     }
   }
 
@@ -636,6 +762,7 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     for (const FieldVertexTransitDecision &candidate : candidates) {
       error.publishedFaces.push_back(candidate.nextFace);
     }
+    error.vertexTransitStates = std::move(diagnostics);
     return error;
   }
   return candidates.front();

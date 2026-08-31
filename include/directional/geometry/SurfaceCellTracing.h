@@ -168,6 +168,20 @@ enum class FieldVertexArrivalMode : std::uint8_t {
   EdgeTransit = 1,
 };
 
+struct FieldVertexTransitStateDiagnostic {
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  authority::FieldBranchDirection representativeDirection;
+  authority::FieldBranchDirection incomingDirection;
+  std::vector<authority::SourceEdgeTopologyKey> transportPath;
+  int composedQuarterTurn = 0;
+  bool eligibleForElection = false;
+  bool representativeInSector = false;
+  bool incomingInSector = false;
+
+  auto operator<=>(const FieldVertexTransitStateDiagnostic &) const = default;
+};
+
 struct FieldAlignedCurveNetworkError {
   FieldAlignedCurveNetworkErrorCode code =
       FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding;
@@ -186,6 +200,7 @@ struct FieldAlignedCurveNetworkError {
   std::vector<authority::FieldExactRational> exactValues;
   std::vector<authority::SourceEdgeTopologyKey> publishedEdges;
   std::vector<authority::SourceFaceTopologyKey> publishedFaces;
+  std::vector<FieldVertexTransitStateDiagnostic> vertexTransitStates;
   std::optional<authority::SourceVertexId> traceSeedVertex;
   std::optional<authority::FieldSingularityId> traceSeedSingularity;
   std::vector<FieldAlignedTraceStepDiagnostic> traceHistory;

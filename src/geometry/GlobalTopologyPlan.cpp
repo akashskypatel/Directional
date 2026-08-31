@@ -2177,6 +2177,8 @@ const char *trace_event_position_pass_name(
     return "FaceRestricted";
   case TraceEventPositionPass::WideningFallback:
     return "WideningFallback";
+  case TraceEventPositionPass::SourceEdgeUnavailable:
+    return "SourceEdgeUnavailable";
   }
   return "Unknown";
 }

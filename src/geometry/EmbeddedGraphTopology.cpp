@@ -149,6 +149,13 @@ std::optional<std::size_t> trace_event_position(
     TraceEventPositionDiagnostics *diagnostics = nullptr) {
   if (event.node == originNode && !event.sourceEdge.has_value()) return 0U;
   if (!event.sourceEdge.has_value()) {
+    if (role != FieldAlignedTraceEventRole::Terminal &&
+        diagnostics != nullptr) {
+      diagnostics->failureReason =
+          TraceEventPositionFailureReason::NoCarrierMatch;
+      diagnostics->pass = TraceEventPositionPass::SourceEdgeUnavailable;
+      diagnostics->candidates.clear();
+    }
     return role == FieldAlignedTraceEventRole::Terminal
                ? std::optional<std::size_t>{trace.segments.size()}
                : std::nullopt;

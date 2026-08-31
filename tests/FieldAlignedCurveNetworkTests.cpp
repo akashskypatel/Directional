@@ -4543,6 +4543,43 @@ void append_network_error(
     }
     stream << ']';
   }
+  for (std::size_t index = 0U; index < error.vertexTransitStates.size();
+       ++index) {
+    const auto &state = error.vertexTransitStates[index];
+    stream << ";vertexTransitState[" << index << "]={sourceFace="
+           << source_face_locus(state.sourceFace)
+           << ",branch=" << branch_locus(state.branch)
+           << ",representativeDirection=[";
+    for (std::size_t component = 0U;
+         component < state.representativeDirection.barycentric.size();
+         ++component) {
+      if (component != 0U) stream << ',';
+      stream << exact_rational_locus(
+          state.representativeDirection.barycentric[component]);
+    }
+    stream << "]"
+           << ",incomingDirection=[";
+    for (std::size_t component = 0U;
+         component < state.incomingDirection.barycentric.size(); ++component) {
+      if (component != 0U) stream << ',';
+      stream << exact_rational_locus(
+          state.incomingDirection.barycentric[component]);
+    }
+    stream << "]"
+           << ",transportPath=[";
+    for (std::size_t edge = 0U; edge < state.transportPath.size(); ++edge) {
+      if (edge != 0U) stream << ',';
+      stream << source_edge_locus(state.transportPath[edge]);
+    }
+    stream << "]"
+           << ",composedQuarterTurn=" << state.composedQuarterTurn
+           << ",eligibleForElection="
+           << (state.eligibleForElection ? "true" : "false")
+           << ",representativeInSector="
+           << (state.representativeInSector ? "true" : "false")
+           << ",incomingInSector="
+           << (state.incomingInSector ? "true" : "false") << '}';
+  }
   if (error.rail.has_value()) {
     stream << ";rail=" << error.rail->index();
   }
@@ -7983,7 +8020,9 @@ TEST(SurfaceCutGraph, EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError) {
   ASSERT_TRUE(sourceAuthority.has_value());
   auto atlasBuild = directional::authority::FieldTransportAtlas::make(
       mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
-  ASSERT_TRUE(atlasBuild);
+  std::ostringstream atlasReport;
+  if (!atlasBuild) append_atlas_error(atlasReport, atlasBuild.error());
+  ASSERT_TRUE(atlasBuild) << atlasReport.str();
   const auto rails = rails_from_atlas(mesh, atlasBuild.value());
   ASSERT_TRUE(rails.empty());
   auto networkBuild = FieldAlignedCurveNetwork::make(
