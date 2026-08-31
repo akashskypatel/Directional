@@ -416,7 +416,7 @@ std::optional<authority::FieldBranchDirection> field_direction_from_world(
         static_cast<std::size_t>(sourceMesh.V.rows()));
     if (!rowVertex.has_value()) return std::nullopt;
     const auto found = std::find(canonicalVertices.begin(),
-                                 canonicalVertices.end(), *rowVertex);
+                                 canonicalVertices.end(), rowVertex.value());
     if (found == canonicalVertices.end()) return std::nullopt;
     canonical[static_cast<std::size_t>(
         std::distance(canonicalVertices.begin(), found))] =
