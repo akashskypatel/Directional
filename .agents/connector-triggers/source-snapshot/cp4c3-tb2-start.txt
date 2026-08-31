@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB2
+purpose=start-of-turn exact repository snapshot for mandatory local policy/document inspection
+initial_authority=150a80dc273b0162dd44929b88a1996ee15a91e7
+runtimeExecution=false
