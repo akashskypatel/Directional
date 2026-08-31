@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB2
+purpose=apply durable TB2 blocked closeout documentation from verified Drive patch
+patch_base=eba4588debf1a426849829d90e2a7b7138dbb1a9
+retry=1
