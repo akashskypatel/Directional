@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-CB4-PKG
-source_sha=c7a1e2b59321b7b91a3e1e840dc9103b25fcfef7
-purpose=start-of-turn exact source snapshot
-runtimeExecution=false

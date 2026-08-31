@@ -1,6 +1,0 @@
-turn=M3-CP4c-3-CB4-PKG
-base_sha=157bf5f9bf871e66d8c128c6a11a0b225f446fcf
-patch_sha256=af80109093fb30349a62061ecec17ed77450865bb63cb96081c9621f7060db57
-purpose=apply CB4-PKG durable closeout retry after id-token permission correction
-runtimeExecution=false
-retry=1

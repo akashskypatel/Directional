@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-CB4-PKG
-purpose=build mode-preserving package72 from immutable raw artifact 9750227619
-runtimeExecution=false
