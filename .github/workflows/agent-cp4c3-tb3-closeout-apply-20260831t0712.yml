@@ -39,9 +39,9 @@ jobs:
     if: ${{ needs.validate-caller.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 13f49vl0Rs-JamLitjuLCdfDdGYStkH_9
-      patch_sha256: dcea012f0864a4a0212af1188d52056e3e77c336a7d3e3850a2a51ff5121a110
-      base_sha: 3689773a684245f9c973dd1089b4c0edfcbeeef7
+      file_id: 1u5WpS3DWwIE3QYPj-2KYSZyixmCY8GRF
+      patch_sha256: b11ec596070a6264a6084afee8cf7082f14cffe30acc0f19b90fba9b2763313b
+      base_sha: 93af20d4d04445674951d14c62531d415826a7f3
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "docs: close blocked M3-CP4c-3-TB3 preflight"
       retention_days: 7
