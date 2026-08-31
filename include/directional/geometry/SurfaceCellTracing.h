@@ -553,6 +553,8 @@ private:
 
 namespace surface_cell_tracing_detail {
 
+using FieldVertexArrivalMode = directional::geometry::FieldVertexArrivalMode;
+
 struct FieldAlignedArrivalMeasure {
   double value = 0.0;
   double bound = 0.0;
