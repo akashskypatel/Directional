@@ -1,4 +1,4 @@
-name: Agent CP4c3 TB2 Final Docs Apply
+name: Agent CP4c3 TB2 Final Cleanup
 
 on:
   push:
@@ -11,10 +11,9 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
-  id-token: write
 
 concurrency:
-  group: agent-cp4c3-tb2-final-docs-apply
+  group: agent-cp4c3-tb2-final-cleanup
   cancel-in-progress: false
 
 jobs:
@@ -22,7 +21,7 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: cp4c3-tb2-final-docs-apply
+      label: cp4c3-tb2-final-cleanup
       commit_run_file: false
     secrets: inherit
 
@@ -33,14 +32,53 @@ jobs:
       source_ref: ${{ github.sha }}
     secrets: inherit
 
-  apply:
+  cleanup:
     needs: validate_caller
     if: ${{ needs.validate_caller.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
-    with:
-      file_id: 1xrzpbyL1KQ_3VvL-Efg4ql7lXAAcHzps
-      patch_sha256: '87228a4cb2fbb21431ee623d9939d9f8c6e499d03f9ee2f804ded7e324db92da'
-      base_sha: fa273cc829644ea5d6b17a74d8c4df2c4e26ffe4
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'docs: close M3-CP4c-3-TB2 semantic first-red'
-    secrets: inherit
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact control source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+
+      - name: Retire TB2 temporary control state
+        shell: bash
+        run: |
+          set -euo pipefail
+          target='agent/surface_cell_quad/p5-recover-bridge-healing'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          rm -f \
+            .github/workflows/agent-cp4c3-tb2-exec-r1-temp.yml \
+            .github/workflows/agent-cp4c3-tb2-exec-r2-temp.yml \
+            .github/workflows/agent-cp4c3-tb2-exec-r3-temp.yml \
+            .github/workflows/agent-cp4c3-tb2-exec-r4-temp.yml \
+            .github/workflows/agent-cp4c3-tb2-repackage-temp.yml \
+            .github/workflows/agent-cp4c3-tb2-final-docs-apply-temp.yml
+          rm -rf \
+            .agents/connector-triggers/cp4c3-tb2-exec-r1 \
+            .agents/connector-triggers/cp4c3-tb2-exec-r2 \
+            .agents/connector-triggers/cp4c3-tb2-exec-r3 \
+            .agents/connector-triggers/cp4c3-tb2-exec-r4 \
+            .agents/connector-triggers/cp4c3-tb2-repackage \
+            .agents/connector-triggers/cp4c3-tb2-final-docs-apply
+
+          git add -A
+          changed="$(git diff --cached --name-only)"
+          test -n "$changed"
+          bad="$(printf '%s\n' "$changed" | grep -Ev '^(\.github/workflows/agent-cp4c3-tb2-(exec-r[1-4]|repackage|final-docs-apply)-temp\.yml|\.agents/connector-triggers/cp4c3-tb2-(exec-r[1-4]|repackage|final-docs-apply)/)' || true)"
+          test -z "$bad"
+          git diff --cached --check
+          git commit -m 'cleanup: retire M3-CP4c-3-TB2 temporary control state'
+          git push origin "HEAD:${target}"
+
+          for branch in \
+            agent/surface_cell_quad/p5-recover-bridge-healing-final-docs \
+            agent/surface_cell_quad/p5-recover-bridge-healing-final-docs-2; do
+            if git ls-remote --exit-code --heads origin "refs/heads/${branch}" >/dev/null 2>&1; then
+              git push origin --delete "$branch"
+            fi
+          done
