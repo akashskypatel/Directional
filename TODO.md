@@ -26,45 +26,52 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB3` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-TB3` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB2-REV` is **COMPLETE**: it accepted TB2's execution, **confirmed Amendment 15 effective at runtime**,
-established the ordinal-366 cause and **proved it pre-existing rather than a regression**, declared **Amendment 16**
-(`DESIGN.md` §7.2.1), and issued **AN0–AN9**. Record:
-`Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`.
+`M3-CP4c-3-CB3` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** on semantic source
+`93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`. Immutable GMP package **71** is artifact `9750235004`
+(`sha256:bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`), with packaged source archive
+`fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`. All eight required targets compile/link
+with GMP/GMPXX; no Directional runtime executed. Report: `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`.
 
-### What the review established
+### CB3 disposition of AN0–AN9
 
-- **Amendment 15 works.** The mechanical witness advanced past `IncompleteCycleBasis`; ordinals **1–365** are green,
-  so the cut regressed nothing in the accepted gate. Selector 373 and all six predecessor prefixes were recomputed
-  from committed bytes and match.
-- **Ordinal 366 is the same disagreement one consumer later.** `build_singularity_attachments` demands a branch
-  transport on every radial edge of a **globally closed** one-ring fan, while `branchTransports` excludes every
-  barrier by construction — so a singular vertex incident to a hard feature fails by construction. Established by
-  the same elimination as TB1.
-- **It is pre-existing and unmasked, not a regression:** CB2's diff to `FieldTransportAtlas.cpp` begins at old line
-  842, leaving `build_branch_transports`, `ordered_incident_fan` and `build_singularity_attachments` untouched.
-- **Amendment 16** generalizes 15 to every A1 derivation that walks transport. It fixes the prohibition (never give
-  a barrier a branch transport, never close a fan across one) and **leaves the port-emission policy open** pending
-  measurement — **AN4** forbids designing across it.
-- **Still unproved:** ordinals 367–373 never ran, so Amendment 15's own self-checks and AM1's barrier decomposition
-  remain unmeasured and every DEFN-R1 prediction is unverified.
+- [x] **AN1:** atlas/pipeline diagnostics now retain source edge/face/vertex/topology-region/branch locus and publish
+  per-region barrier-singularity census/classification. Static pre-design census: 8 prescribed +1 singularities, 4
+  barrier-incident; every barrier-incident row is degree-2 `InteriorArc` with two transport-star components. Mechanical
+  `B(R)` is a four-component forest (`n=16, m=12, c=4, χ(B)=4`, no cycles). Sphere has zero active barrier-incident
+  singularities.
+- [x] **AN2:** independently rehashed packages 69/70; all six packaged binaries are byte-identical.
+- [x] **AN3:** compile-time absolute `DIRECTIONAL_TEST_SOURCE_DIR` authority removed. Package 71 carries 27 fixtures
+  at sibling `test-data/benchmarks/fixtures`; manifest and binary-byte invariance pass. Package 68/69 had no sibling
+  fixture tree.
+- [x] **AN4/AN5:** measured facts select Amendment 16 **P2 — boundary-absorbed / no ports**. Slit-bound barrier
+  singularities are `BarrierAbsorbed`; no illegal hard-feature branch transport is introduced and no singularity ports
+  are emitted for those facts.
+- [x] **AN6:** selector 373 and ordinals 367–373 unchanged; no sphere-specific correction.
+- [x] **AN7:** TB3 restart rule keys on **produced no semantic verdict**, not zero runtime processes.
+- [x] **AN8:** assumption audit names `canonical_field_aligned_candidate` as an independent consumer assuming every
+  singularity emits `4-index` ports.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB3`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AN0–AN9**:
+Run **`M3-CP4c-3-TB3` artifact-only** using
+`Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`. Consume package 71 exactly; execute selector 373
+one identity per fresh process with hard first-red stop. Required closure: **373/373 PASS + immutable postflight**. Any
+valid semantic red keeps CP4c-3 open and routes to independent review/planning. Do not rebuild or repair in TB.
 
-1. **AN1** publish the failing locus (route the four fields the typed error already carries) for **every** error
-   code the mechanical and sphere witnesses can reach, plus the barrier-incident singularity census and AM1's
-   barrier decomposition;
-2. **AN2** publish the four per-binary SHA-256 from packages 69 and 70 side by side;
-3. **AN3** fix fixture resolution **in the package** — the compile-time absolute `DIRECTIONAL_TEST_SOURCE_DIR`
-   fallback must stop being an authority — and report whether package 68 shipped a fixture tree;
-4. **AN4** do not design the port correction until AN1 reports;
-5. **AN5** implement Amendment 16 once the evidence chooses, naming which policy was taken and which measured fact
-   chose it, and resolving the AM4-versus-port-derivation contradiction;
-6. **AN7** correct the next TB plan's rerun rule to key on *"produced no semantic verdict"*;
-7. **AN8** audit by assumption and name a consumer that holds it without touching the changed data structures.
+### CP4c-3 open items
+
+- [ ] **C2 / mechanical witness:** runtime-prove Amendment 16/P2 at ordinal 366, including four absorbed
+  barrier-incident singularities, zero ports for those facts, and no `MissingSingularityBranchTransport`.
+- [ ] `M3-CP4c3-TB2-CAND-01` — cause established/pre-existing; closes on ordinal 366 green.
+- [x] `M3-CP4c3-TB2-REV-CAND-01` — package 69/70 binary identity independently proved in CB3.
+- [ ] `M3-CP4c3-TB2-ORCH-01` — package contract corrected in package 71; closes operationally when TB3 preflight
+  proves the package-relative fixture root selected by the immutable artifact.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — compile-green only; ordinal 373 remains runtime-unproved.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains ACTIVE / ONE LEVEL SHORT; ordinal 368 remains runtime-unproved.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains runtime-unproved.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains runtime-unproved.
 
 ## Superseded — `M3-CP4c-3-TB2` execution record
 

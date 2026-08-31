@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-08-31 — `M3-CP4c-3-CB3`: Amendment 16/P2 build green; package 71 portable
+
+CB3 is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`. Static AN1 measurement found four barrier-incident mechanical singularities, all degree-2 interior-arc facts with two transport-star components, selecting Amendment 16 **P2 (`BarrierAbsorbed`, no ports)**; no illegal hard-feature transport and no sphere-specific fix were introduced. Atlas/pipeline diagnostics now publish complete failure loci and barrier-singularity census/classification. AN2 independently proves package 69/70 binaries byte-identical. AN3 removes compile-time absolute fixture-root authority and package 71 carries 27 fixtures at `test-data/benchmarks/fixtures`. Run `33370966957` compiled all eight required targets with GMP/GMPXX and no runtime. Immutable package **71** is artifact `9750235004` (`bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`), source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`; fixture contract and binary-byte invariance pass. Selector 373 remains frozen/unexecuted. Stable accounting stays **44 / 14 / 30**, debt **5**, semantic packages **70**. Exact next: artifact-only `M3-CP4c-3-TB3`.
+
 ## 2026-08-31 — `M3-CP4c-3-TB2-REV`: Amendment 15 confirmed at runtime; Amendment 16 declared
 
 Independent review, definition and planning in one turn under the standing cadence, with the user's authorization

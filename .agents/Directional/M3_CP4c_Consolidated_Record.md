@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. `M3-CP4c-3-CB2` remains **COMPLETE / BUILD GREEN / RUNTIME-FREE** on semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, immutable GMP package **69** / artifact `9742715856`, selector **373** `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. `M3-CP4c-3-TB2` is **COMPLETE / VALID SEMANTIC RED AT ORDINAL 366 / REVIEWED**: its first attempt stopped at ordinal 41 on the binary's compile-time absolute fixture-root fallback, and after a user-authorized fixture-only transport package **70** (artifact `9744461475`) run `33355714664` executed selector 373 from ordinal 1 with ordinals **1–365 green**. `M3-CP4c-3-TB2-REV` accepted that execution, **confirmed Amendment 15 effective at runtime**, established the next cause `MissingSingularityBranchTransport` as the same architectural disagreement at the singularity-port consumer and **proved it pre-existing rather than a regression**, and declared **Amendment 16** with measures **AN0–AN9**. Ordinals 367–373 remain unexecuted, so Amendment 15's own self-checks are still unmeasured. CP4c-3 remains **OPEN**; exact next is **`M3-CP4c-3-CB3`**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative semantic M3 packages **69**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. `M3-CP4c-3-CB3` is **COMPLETE / BUILD GREEN / RUNTIME-FREE** on semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`; immutable GMP package **71** is artifact `9750235004` (`bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`) with package-relative 27-file fixture authority and no compile-time absolute fixture fallback. Static AN1 measurement selected Amendment 16 **P2 — boundary-absorbed / no ports** for the four barrier-incident mechanical singularities; no sphere correction was designed. Package 69/70 binary identity is independently proved. Selector 373 remains byte-frozen and **unexecuted on CB3**. CP4c-3 remains **OPEN**; exact next is artifact-only **`M3-CP4c-3-TB3`** on package 71. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative semantic M3 packages **70**.
 
 ## 1. Separate current/future authority
 
@@ -27,6 +27,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — TB1 adjudication authority and the **AL0–AL9** measures; AL3/AL4 still govern the prescribed sphere.
 - `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — **Amendment 15** and the AM0–AM9 measures.
 - `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — **current review/definition authority: Amendment 16 and the AN0–AN9 measures that govern `M3-CP4c-3-CB3`.**
+- `Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — current compile/package authority for Amendment 16/P2 and package 71.
+- `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md` — current executable successor plan for package 71 / selector 373.
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -51,7 +53,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB2 valid semantic red at ordinal 366 with 1–365 green; Amendment 15 confirmed effective, Amendment 16 declared; CB3 next under AN0–AN9** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; CB3 build green on package 71 with Amendment 16/P2 compiled; TB3 artifact-only selector 373 next** |
 
 ### 2.1 CP4c-0
 
@@ -306,6 +308,31 @@ execution, and no product/test/fixture/selector byte changed.
 
 Exact successor: **`M3-CP4c-3-CB3`** — Code + Build under **AN0–AN9**, runtime-free, GMP/GMPXX linked.
 
+### `M3-CP4c-3-CB3` — Amendment 16/P2 build green, package 71 portable
+
+CB3 is **COMPLETE / BUILD GREEN / RUNTIME-FREE** at semantic source
+`93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`. Static AN1 measurement found 8 prescribed +1 mechanical
+singularities, 4 barrier-incident; all four are degree-2 `InteriorArc` facts with two cut-star components. Mechanical
+`B(R)` is a four-component forest (`n=16, m=12, c=4, χ(B)=4`), while the prescribed sphere has zero active
+barrier-incident singularities. Those facts select Amendment 16 **P2**: slit-bound barrier singularities are
+`BarrierAbsorbed` and emit no singularity ports; no branch transport is ever created across a hard feature.
+
+The atlas now publishes barrier-singularity census/classification and complete failure loci through pipeline
+diagnostics. `build_singularity_attachments` skips the illegal closed-fan derivation for absorbed facts, and the
+field-aligned producer respects the explicit port policy. The assumption audit also found
+`canonical_field_aligned_candidate`, which independently assumed every singularity emitted `4-index` ports. No
+sphere-specific correction was made and ordinals 367–373 remain frozen/unexecuted.
+
+AN2 independently rehashes package 69/70 and proves all six binaries byte-identical. AN3 removes the compile-time
+absolute `DIRECTIONAL_TEST_SOURCE_DIR` authority. Package **71** / artifact `9750235004`
+(`bcda529df43e1ddca2de0af8eacaca165c839be01961d6edb36b9b0a5df2b038`) carries 27 immutable fixtures under
+`test-data/benchmarks/fixtures`; source archive SHA-256 is
+`fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`. Run/job
+`33370966957 / 99421816569` compiled all eight standard targets with GMP/GMPXX, source clean, build exit 0, and
+`runtimeExecution=false`; package-fixtures job `99423544681` proved the manifest, fixture contract, and binary-byte
+invariance. Stable accounting stays **44 / 14 / 30**, debt **5**; authoritative semantic package accounting becomes
+**70**. Exact successor: artifact-only `M3-CP4c-3-TB3` on package 71 with selector 373.
+
 ## 5. High-value reversals retained
 
 - Face-local branch labels are not cross-face semantic identity; use published transport/lift.
@@ -374,12 +401,12 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md`
-5. `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md`
-6. `Architecture_M3_CP4c3_CB2_Code_Build_Report.md`
+4. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
+5. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`
+6. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
 7. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
 8. `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`
 9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB2-REV`** — independent REVIEW + PLAN. Freeze the packaged binary's actual fixture-root preflight and adjudicate whether unchanged package 69 / selector 373 may be re-executed. No product/test/build correction or runtime retry before that review.
+**Exact next:** **`M3-CP4c-3-TB3`** — artifact-only Test + Benchmark on immutable package 71 / selector 373. No rebuild or product correction in TB.
