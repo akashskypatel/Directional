@@ -1,4 +1,41 @@
-## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **ACTIVE / CAUSE ESTABLISHED / GATING / PHASE 2 AUTHORIZED AFTER A DEFN / NON-STABLE**
+## M3-CP4c3-DEFN-R1-CAND-01 — the interior-singularity binding does not fail closed while the boundary one does — **ACTIVE / LATENT PRE-EXISTING GAP / MADE REACHABLE BY AMENDMENT 15 / NON-GATING TODAY / NON-STABLE**
+
+- **Observed statically at `M3-CP4c-3-DEFN-R1`** while deriving Amendment 15, on the source TB1 executed
+  (`48dd011c4aa689a245b74527ed9df0900ada9bf3`, working tree byte-identical). No runtime was executed.
+- **Mechanism.** `FieldTransportAtlas.cpp:1546-1564` partitions prescribed singularities into `rawSingularity` and
+  `rawBoundarySingularity` using **`sourceMesh.isBoundaryVertex`** — the *global* mesh. Both are then reconciled,
+  and the two reconciliations disagree about failure:
+  - `:1960-1976` (**boundary**) demands an owner in `boundaryCycleByGlobalVertex`, checks the owning cycle's kind
+    and `turningLift`, and raises `SingularityMismatch` when either is absent or wrong. **Fails closed.**
+  - `:1980-1990` (**interior**) calls `localCycleByGlobalVertex.find(rawVertex)` and, on a miss, simply leaves
+    `region` and `cycle` as empty `std::optional`s and continues. The loop emits a `FieldSingularityFact` with **no
+    region and no cycle binding, and no error.** **Fails open.**
+- **Why it matters now.** Under Amendment 15 every vertex incident to `B(R)` becomes a **boundary** vertex of the
+  cut local mesh, so it leaves `interiorLocalVertices` and no `LocalVertex` cycle is emitted for it. Two effects
+  compound: `:1843-1851`'s check that the atlas's computed `turningLift` equals the **prescribed** index at that
+  vertex stops running; and because the partition key is the *global* boundary flag, such a vertex is still
+  classified an *interior* singularity and therefore takes the permissive path. **A prescribed singularity sitting
+  on a feature arc goes from verified-against-holonomy to unverified-and-unbound, with a green build.**
+- **Not introduced by the amendment.** The asymmetry exists at HEAD and is reachable today by any configuration
+  that yields a prescribed interior singularity with no local-vertex cycle. Amendment 15 makes it reachable **by
+  construction** on every witness with an open feature arc, which is why it must be closed in the same change.
+- **Pattern:** the `ORIENTATION.md` §8 quiet-weakening family — "a representation change breaks its consumers in
+  two ways and only one of them tells you" — in its sharpest form: two paths discharging one obligation, alike in
+  what they *do* and opposite in what they *report*. Aggravated by a split key that belongs to a different object
+  than the thing reconciled (the **global** mesh's boundary flag deciding how a **local** mesh's cycle is checked).
+  Recorded as `LESSONS.md` **65**.
+- **Owning correction:** **AM4** — every `rawSingularity` entry must bind to exactly one cycle (a `LocalVertex`
+  cycle, or the boundary cycle of the slit loop that consumed its vertex), and an unbound prescribed singularity is
+  a **typed failure**, not a `nullopt` field. Publish per witness the counts bound to a local-vertex cycle, to a
+  slit boundary cycle, and to nothing; the last must be zero. **AM9** prohibits landing AM2 without AM4.
+- **Closure condition:** a run in which the mechanical witness reports zero unbound prescribed singularities and
+  gated identity `PrescribedSingularityOnABarrierArcRemainsBoundToACycle` (appended under AM8, gate **373**) is
+  green.
+- **Stable-count rationale:** found by static derivation in a definition turn; no runtime executed, no accepted
+  behaviour lost, and no gated identity binds it yet. **+0 events / +0 recurrences.** Totals remain
+  **44 / 14 / 30**, debt **5**, M3 packages **68**.
+
+## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **ACTIVE / CAUSE ESTABLISHED / CORRECTIVE DEFINED BY AMENDMENT 15 / GATING / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-DEFN`**, on the source accepted at CP4c-2
   (`57444781af7bdc460e38cc68930a9a8c8199eeea`): `src/authority/FieldTransportAtlas.cpp` returns
@@ -85,6 +122,42 @@
   open arcs, endpoint vertices — confirming the elimination directly and sizing option A).
 - **Closure condition unchanged:** ordinal 366 green in a run reaching at least 366. **+0 stable events /
   +0 recurrences.**
+- **`M3-CP4c-3-DEFN-R1` — CORRECTIVE DEFINED (Amendment 15, `DESIGN.md` §7.2.1).** Option **A′**: A1 derives its
+  tangent bundle, cycle basis and index quantities from the region **cut along** `B(R)`, in A1's **derived local
+  mesh only**; the `SurfaceTopologyRegion` product's face set, `euler_characteristic()` and
+  `boundary_loop_count()` are untouched.
+  - **Scope is provably exactly `B(R)`.** The four adjacency buckets (`:1456-1491`) are ordered so that a
+    `SourceBoundary` edge and a region-/component-crossing `NonTraversable` edge each have at most one incident
+    face in a region and are therefore **already** local boundary edges; a bucket-4 edge has an adjacency. Only a
+    hard feature can be non-traversable *and* interior. **Isolation seams are not barriers** — same region, same
+    component, different sheet, not a hard feature (`SurfaceCellTracing.cpp:6837-6851`) — they fall through to
+    bucket 4 and do get an adjacency, and must not be swept into the fix.
+  - **The cut never disconnects**, because a region *is* a connected component of the face graph built while
+    skipping every hard-feature edge (`:6715-6741`). Corollary: no subset of `B(R)` separates `R`, so on a
+    `χ=2, b=0` region every component of `B(R)` is a **tree**.
+  - **Why not at the region level:** `build_source_topology_regions` requires every region-boundary vertex to have
+    exactly two boundary neighbours (`:6905`) and fails the whole `SourceTopologyRegions` product otherwise. An
+    open arc's tip would have one, so a slit is **inexpressible** there. The slit needs vertex duplication, which
+    only the local mesh can do.
+  - **Endpoint rule:** `copies(v)` = connected components of `star(v) ∖ B(R)` = `d_B(v)` interior, `d_B(v) + 1` on
+    the boundary; an open arc's **tip is not duplicated** but becomes a boundary vertex. Manifold with boundary;
+    no geometry moves; `TriMesh::set_mesh` re-derives every count from the rewritten face array.
+  - **Identity:** `χ(R_cut) = χ(R) − χ(B) + ∂`. Mechanical witness: `χ' = 2 − c`, `b' = c`, `genus' = 0`,
+    `interiorVertices' = 152 − |V(B)|`, `expectedCycleCount' = 152 − |V(B)| + c`, `innerAdjacencies = 450 − |B|`,
+    and the cycle matrix's rank deficiency stays exactly **1** — unchanged from today.
+  - **The failure becomes structurally impossible:** `dual_cycles` indexes its columns into **inner edges only**,
+    so a barrier that is now a boundary edge can never be a column and `find_adjacency_in` is never called for it.
+  - **Three required controls, else the fix is a quiet weakening:** replace (never delete) the `:1654`
+    local-mesh-versus-region cross-check with the cut identity under a new appended code (**AM3**); disclose that
+    a slit region moves from the closed `ClosedShenSufficient` index **equality** (`:1872`) to the
+    boundary-corrected `RelativeBoundary` branch (`:1878-1898`), which absorbs any multiple of 4 (**AM6**); and
+    make the interior-singularity binding fail closed (**AM4**, `M3-CP4c3-DEFN-R1-CAND-01`).
+  - **Frozen fallback D** — a new appended `IncompleteCycleBasisReason` naming "a non-separating barrier edge
+    remains interior to its region" — is taken **only** if AM4's control cannot be made to fail closed without
+    changing an accepted A1 contract, must be declared in the CB report, and means **C2 cannot close**.
+  - **Owning correction now:** **AM1** (publish `B(R)`'s decomposition first), **AM2** (the cut), **AM3**–**AM6**
+    (the controls), **AM8** (gate append 367 → 370 → **373**). Prediction on record: `B(R)` contains **no cycles**
+    on the mechanical witness; a measured cycle falsifies the theorem and reopens the amendment.
 
 ## M3-CP4c3-TB1-ORCH-01 — three pre-runtime preflight controls before authoritative TB1 — **CLOSED / ORCHESTRATION / NON-STABLE**
 

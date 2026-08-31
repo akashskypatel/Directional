@@ -1093,6 +1093,21 @@ building any conclusion on it.**
     first pass can be reported as `ambiguous`; publish **which pass produced the result**, not only the result.
     And when the two branches need opposite fixes, **do not design across the gap**: the plausible mechanism is
     exactly when the temptation is strongest, and CP4c-2 paid eight turns for acting on one.
+65. **When one obligation is discharged by two paths, diff their *failure* behaviour, not their success
+    behaviour.** `FieldTransportAtlas` splits prescribed singularities into an interior map and a boundary map at
+    `:1557`, then reconciles each: the boundary loop (`:1960-1976`) demands an owner and raises
+    `SingularityMismatch` without one; the interior loop (`:1980-1990`) looks the owner up and, on a miss, leaves
+    `region` and `cycle` as empty `std::optional`s and continues. Read for what they *do*, the two loops look
+    alike — both "handle" a missing owner. Only one **reports** it. Any change that moves items from the strict
+    path to the permissive one silently converts a verified fact into an unverified one; Amendment 15's cut does
+    exactly that, because every vertex on a barrier loses its inner-vertex cycle. Two sharpeners. **Be most
+    suspicious when the split key belongs to a different object than the thing being reconciled** — here the
+    *global* mesh's `isBoundaryVertex` decides how a *local* mesh's cycle is checked, so a vertex that is locally
+    on a boundary but globally interior takes the permissive path, which is precisely the case the change
+    creates. And **an `std::optional` left empty on a lookup miss is a silent failure mode wearing a type**: the
+    absence is representable, so nothing forces a decision, and the miss reaches a product as a field that merely
+    looks unset. Grep for `.find(...) != ...end()` guards whose else-branch is fallthrough whenever you change
+    which items land in the map.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

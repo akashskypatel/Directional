@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN`, phase-1 `M3-CP4c-3-CB1`, `M3-CP4c-3-TB1` and its independent review `M3-CP4c-3-TB1-REV` are complete; TB1 is a **VALID SEMANTIC RED** on immutable package **68**, after re-proving accepted **365/365** and first-red stopping at ordinal **366**. The review established the mechanical witness's cause, found the prescribed sphere's **one level short**, and authorized phase 2 for the mechanical witness only. CP4c-3 remains **OPEN**; selector **367** is frozen, and the exact next turn is **`M3-CP4c-3-DEFN-R1`** (combined definition + review, measures AL0–AL9), then `M3-CP4c-3-CB2`. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**.
+**Current state (2026-08-30).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-2 closed at **365/365 PASS** on immutable package **67**. `M3-CP4c-3-DEFN`, phase-1 `M3-CP4c-3-CB1`, `M3-CP4c-3-TB1`, its independent review `M3-CP4c-3-TB1-REV`, and `M3-CP4c-3-DEFN-R1` are complete; TB1 is a **VALID SEMANTIC RED** on immutable package **68**, after re-proving accepted **365/365** and first-red stopping at ordinal **366**. The review established the mechanical witness's cause and found the prescribed sphere's **one level short**; DEFN-R1 then settled the normative question as **Amendment 15** — a region's transport domain is the region cut along its non-separating barrier set, cut in A1's derived local mesh only. CP4c-3 remains **OPEN**; selector **367** is frozen, and the exact next turn is **`M3-CP4c-3-CB2`** (Code + Build, measures AM0–AM9, runtime-free). Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **68**.
 
 ## 1. Separate current/future authority
 
@@ -19,7 +19,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — current CP4c-3 definitions, review decisions, and AK0–AK9 plan.
 - `Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — current frozen CP4c-3 gate.
 - `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — current measured phase-1 runtime authority.
-- `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — current review/adjudication authority and the **AL0–AL9** measures that govern `M3-CP4c-3-DEFN-R1` and `M3-CP4c-3-CB2`.
+- `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — TB1 adjudication authority and the **AL0–AL9** measures; AL3/AL4 still govern the prescribed sphere.
+- `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — current definition authority: **Amendment 15** and the **AM0–AM9** measures that govern `M3-CP4c-3-CB2`.
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -202,8 +203,42 @@ as specified — additive, enumerated, no mapping changed and no enum value renu
   itself a collapse before declaring the layer done.*
 
 Stable accounting remains **44 / 14 / 30**, debt **5**, packages **68**; TB1 added **+0 events / +0 recurrences**.
-Gate **367** stays frozen and unselected. The exact next turn is **`M3-CP4c-3-DEFN-R1`**, a combined definition +
-review turn under the standing cadence, then **`M3-CP4c-3-CB2`** under AL3 and AL5.
+
+### `M3-CP4c-3-DEFN-R1` — Amendment 15 (measures AM0–AM9)
+
+Record: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`. Normative record: `DESIGN.md` §7.2.1
+**Amendment 15**. Definition, review and planning in one turn under the standing cadence; no runtime, no compile,
+no packaging, no gate execution, and no product/test/fixture/selector byte changed.
+
+**Decision.** A region's face set and its published `euler_characteristic()` / `boundary_loop_count()` describe the
+**uncut** source complex and are unchanged. A1 derives its tangent bundle, cycle basis and index quantities from
+the region's **transport domain** — the region **cut along** `B(R) = { e ∈ hardFeatureEdges : both incident faces
+∈ R }` — in A1's **derived local mesh only**. Option C stays prohibited; option D is the frozen fallback with a
+declared trigger and the stated cost that C2 cannot then close.
+
+**Two theorems, both forced by construction rather than observed:** `B(R)` is the entire defect class, because a
+source-boundary edge and a region-/component-crossing edge each have at most one incident face in `R` and are
+already local boundary edges, while a traversable edge has an adjacency — and isolation seams are traversable by
+design, so they are **not** barriers; and the cut never disconnects, because a region *is* a connected component
+of the face graph built without barrier edges, from which it follows that no subset of `B(R)` separates `R` and
+that on a `χ=2, b=0` region every barrier component is a tree.
+
+**Endpoint rule and arithmetic.** `copies(v)` = connected components of `star(v) ∖ B(R)` = `d_B(v)` interior,
+`d_B(v) + 1` on the boundary, so an open arc's **tip is not duplicated** but becomes a boundary vertex; the result
+is a manifold with boundary and `set_mesh` re-derives every count. `χ(R_cut) = χ(R) − χ(B) + ∂`, verified against
+four independent cases. Mechanical witness: `χ' = 2 − c`, `b' = c`, genus 0, `interiorVertices' = 152 − |V(B)|`,
+`innerAdjacencies = 450 − |B|`, cycle-matrix rank deficiency unchanged at **1**. Because `dual_cycles` indexes
+columns into inner edges only, a barrier can never again raise `CycleTransportAdjacencyMissing`.
+
+**Three costs, all required work:** replace (never delete) the local-mesh-versus-region cross-check with the cut
+identity; disclose the move from the closed index equality to the weaker boundary-corrected branch; and make the
+interior-singularity binding fail closed. The last opens **`M3-CP4c3-DEFN-R1-CAND-01`** — a pre-existing latent
+gap at HEAD, not introduced here but made reachable by the cut — and is recorded as `LESSONS.md` **65**.
+
+Gate **367** stays frozen and unselected; the append point 367 → **370** (AL7) → **373** (Amendment 15's three
+identities) is defined but executed at CB2's freeze. Accounting unchanged, **+0 events / +0 recurrences**.
+
+The exact next turn is **`M3-CP4c-3-CB2`** — Code + Build under **AM0–AM9**, runtime-free, GMP/GMPXX linked.
 
 ## 5. High-value reversals retained
 
@@ -280,4 +315,4 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 8. `Regression_Root_Cause_Tracker.md`
 9. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-DEFN-R1`** — a combined definition + review turn under the standing cadence — consuming `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` (AL0–AL9) and settling **AL2**: what a topology region *is* when a barrier does not separate, recorded as a `DESIGN.md` §7.2.1 amendment. Then `M3-CP4c-3-CB2` under **AL3** and **AL5**. The mechanical fix may not land before AL2 decides, and the sphere's fix may not be designed before AL3 reports.
+**Exact next:** **`M3-CP4c-3-CB2`** — Code + Build under **AM0–AM9**, runtime-free and GMP/GMPXX linked, implementing Amendment 15 (AM2–AM6), carrying AL3's sphere instrumentation (AM7), and freezing the **373** gate append (AM8). AM2 may not land without AM4, and the sphere's fix may not be designed before AL3 reports.

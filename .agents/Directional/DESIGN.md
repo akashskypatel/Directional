@@ -455,9 +455,10 @@ Because tracing is combinatorial and terminates on contact, invariant 3 holds by
  
 #### 7.2.1 Amendment record — normative
 
-Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 frozen-definition documents. They are
-normative and are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing
-above it is withdrawn except where an amendment says so explicitly.
+Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 frozen-definition documents; Amendment 15
+was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain. They are normative and
+are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
+withdrawn except where an amendment says so explicitly.
 
 - **Amendment 12 — precondition, not repair.** Establishing a precondition *before* a product is derived is not
   repairing that product afterward. A2a′ runs before any region exists and may not read a `GlobalTopologyPlan`.
@@ -475,6 +476,36 @@ above it is withdrawn except where an amendment says so explicitly.
   source edge that is not already a graph arc. Consequently `network ∪ (source 1-skeleton)` is a cellular
   embedding, a sufficient cut set always exists, and step 8's "certified source-edge cuts" is a total contract
   rather than a conditional one. Source: `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` §§3, 5.
+- **Amendment 15 — a topology region's transport domain is the region cut along its non-separating barriers.**
+  A region's face set, its published `euler_characteristic()` and its published `boundary_loop_count()` are facts
+  about the **uncut** source complex and are unchanged. A1's tangent bundle, cycle basis and index quantities are
+  derived instead from the region's **transport domain**: the region **cut along**
+  `B(R) = { e ∈ hardFeatureEdges : both faces incident to e belong to R }`, its non-separating barrier set.
+  Four consequences are normative.
+  1. **`B(R)` is the whole defect class.** A source-boundary edge and a region- or component-crossing edge each
+     have at most one incident face in `R`, so both are already local boundary edges; a traversable edge has an
+     adjacency. Only a hard-feature edge can be non-traversable *and* interior to a region. Isolation seams —
+     same region, same component, different sheet — are traversable by design and are **not** barriers.
+  2. **The cut never disconnects.** A region is a connected component of the face graph built *without* barrier
+     edges, so cutting along `B(R)` leaves that graph untouched. It follows that no subset of `B(R)` separates
+     `R`, and hence that on a region with `χ = 2, b = 0` every component of `B(R)` is a tree.
+  3. **The cut is a face-array rewrite with a fixed endpoint rule.** A vertex `v` incident to `B(R)` is duplicated
+     into one copy per connected component of `star(v) ∖ B(R)`: `copies(v) = d_B(v)` for `v` interior,
+     `d_B(v) + 1` for `v` on the region's local-mesh boundary. An open arc's **tip** has `d = 1` and is therefore
+     **not** duplicated — the cut surface genuinely touches itself there — but it does become a boundary vertex.
+     The result is a manifold with boundary; geometry does not move.
+  4. **The arithmetic is an identity, not a coincidence:** `χ(R_cut) = χ(R) − χ(B) + ∂`, where `χ(B) = |V(B)| −
+     |B|` and `∂` counts `B`'s vertices already on the region's boundary. Barrier edges become boundary edges,
+     leave `dual_cycles`' inner-edge columns, and can no longer demand a transport adjacency — so a barrier can
+     never again raise `CycleTransportAdjacencyMissing`.
+
+  The amendment is **not free** and its costs are normative too: A1's local-mesh-versus-region cross-check must be
+  **replaced** by the identity in 4 rather than deleted; a region that gains a slit moves from the closed
+  `ClosedShenSufficient` index equality to the boundary-corrected `RelativeBoundary` branch; and every vertex on a
+  barrier loses its inner-vertex cycle, so a prescribed singularity there must be re-bound to the slit's boundary
+  cycle and **fail closed** when it binds to nothing. Amendment 12 is not weakened: constructing a derived
+  transport domain is not repairing an upstream product, exactly as Amendment 14 established for the derived
+  arrangement. Source: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` §§2-7.
 
 ### 7.3 Single-writer authority
  

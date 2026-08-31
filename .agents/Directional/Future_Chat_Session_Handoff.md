@@ -92,7 +92,10 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-DEFN-R1` (combined definition + review)
+## Mandatory next turn — `M3-CP4c-3-CB2` (Code + Build, runtime-free)
+
+`M3-CP4c-3-DEFN-R1` is **COMPLETE**: AL2 is settled, **Amendment 15** is declared in `DESIGN.md` §7.2.1, and
+measures **AM0–AM9** are issued. Record: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`.
 
 `M3-CP4c-3-TB1` is **COMPLETE / VALID SEMANTIC RED / REVIEWED**. The retained execution authority is
 `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`; the adjudication and the successor measures
@@ -159,74 +162,118 @@ Measured phase-1 evidence:
 - **The two causes do not share a locus** (A1 `FieldTransportAtlas` vs A2a′ `EmbeddedGraphTopology`), so they may
   be worked independently. That is what authorizes phase 2 for the mechanical witness alone.
 
-### Exact scope of `M3-CP4c-3-DEFN-R1`
+### What `M3-CP4c-3-DEFN-R1` decided — Amendment 15
 
-A **combined definition + review** turn under the standing cadence. Definition and planning only: no compile, no
-package, no runtime, no gate execution, no benchmark. It must:
+Record: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md`. Normative record: `DESIGN.md` §7.2.1
+**Amendment 15**. AL2 is **settled**; measures **AM0–AM9** govern the successor.
 
-1. **AL2** — settle normatively what a topology region *is* when a barrier does not separate: option **A** (cut the
-   local region mesh along the non-separating barrier arc so it becomes real boundary; recommended) versus option
-   **D** (fail closed with a precise typed error, the frozen fallback if A exceeds CP4c-3). Option **C** — giving a
-   barrier edge a transport adjacency — is **PROHIBITED**: it destroys the barrier semantics hard features exist to
-   express;
-2. if A, write down the treatment of an open arc's **endpoints**, where the cut surface touches itself, **with its
-   derivation** — this is the hard part and may not be left to the implementation, exactly as DEFN-R1 §5 required
-   for the boundary-orbit and disconnected-graph conventions;
-3. **show**, not assert, that `χ`, `boundaryLoops` and `expectedCycleCount` stay consistent for a slit region;
-4. record the decision as an amendment in `DESIGN.md` §7.2.1 alongside 12, 13 and 14;
-5. issue the successor's measures and keep selector **367** frozen until AL7's already-defined append point,
-   without weakening the accepted 365 prefix.
+> A region's face set and its published `euler_characteristic()` / `boundary_loop_count()` are facts about the
+> **uncut** source complex and are unchanged. A1 derives its tangent bundle, cycle basis and index quantities from
+> the region's **transport domain**: the region **cut along**
+> `B(R) = { e ∈ hardFeatureEdges : both incident faces ∈ R }`.
 
-Then **`M3-CP4c-3-CB2`** under **AL3** (add an enumerated sub-reason distinguishing `NoCarrierMatch` from
-`AmbiguousCarrierMatch`, publish trace/event/`sourceEdge`/`sourceFace`, every candidate position in the ambiguous
-case, and **which pass** produced the result) and **AL5** (implement AL2's decision). **AL4** forbids designing the
-sphere's fix before AL3 reports. **AL1** confirms the elimination by publishing the mechanical feature set's
-connected-arc decomposition — components, closed loops, open arcs, and each arc's endpoint vertices — which also
-sizes option A directly. **AL8** moves the 64-lowercase-hex digest validation into the orchestration payload
-authoring path, the third occurrence of `R7-ORCH-01` having proved a reminder insufficient.
+- **Two theorems bound it, both forced by construction.** *(i)* `B(R)` is the entire defect class — a
+  source-boundary edge and a region/component-crossing edge have at most one incident face in `R` and are already
+  local boundary edges; a traversable edge has an adjacency. Isolation seams are traversable **by design** and are
+  not barriers. *(ii)* The cut never disconnects, because a region *is* a connected component of the face graph
+  built without barrier edges — so no subset of `B(R)` separates `R`, and on a `χ=2, b=0` region every barrier
+  component is a **tree**.
+- **The cut lives in A1's derived local mesh, not the region product.** `build_source_topology_regions` requires
+  every region-boundary vertex to have exactly two boundary neighbours (`SurfaceCellTracing.cpp:6905`) and fails
+  the whole `SourceTopologyRegions` product otherwise; an arc's tip has one. Adding `B(R)` to
+  `region.boundaryEdges` therefore breaks A0/A2 outright. This is the Amendment 14 precedent — an immutability
+  guarantee constrains the writer, not a derived view.
+- **Endpoint rule:** `copies(v)` = connected components of `star(v) ∖ B(R)` = `d_B(v)` for interior `v`,
+  `d_B(v) + 1` on the boundary. **An open arc's tip is not duplicated** — the cut surface genuinely touches itself
+  — but becomes a boundary vertex with a single fan. Manifold with boundary; no geometry moves; `set_mesh`
+  re-derives `EV`, `EF`, `isBoundaryVertex` and `boundaryLoops` from the rewritten face array.
+- **Identity:** `χ(R_cut) = χ(R) − χ(B) + ∂`, `χ(B) = |V(B)| − |B|`. Mechanical witness: `χ' = 2 − c`, `b' = c`,
+  genus 0, `interiorVertices' = 152 − |V(B)|`, `expectedCycleCount' = 152 − |V(B)| + c`,
+  `innerAdjacencies = 450 − |B|`; cycle-matrix rank deficiency stays exactly **1**, as today.
+- **Why the failure becomes impossible rather than avoided:** `dual_cycles`' columns are **inner edges only**, so a
+  barrier edge that is now a boundary edge can never be a column, and `find_adjacency_in` is never called for it.
+
+### Exact scope of `M3-CP4c-3-CB2`
+
+**Code + Build.** Authors semantics, compiles, packages. **Executes no Directional runtime**; no gate execution, no
+benchmark. GMP/GMPXX linkage is mandatory (`GMP_COMPILE_POLICY.md`).
+
+1. **AM1** — publish the barrier set **before** cutting: `|hardFeatureEdges|`, whether edge `0-3` is a member, and
+   per component of `B(R)` its vertex/edge counts, `χ`, tree-or-cycle, degree-1 tips, degree-≥3 branch vertices,
+   and how many vertices lie on the region boundary. Publish the totals `n, m, c, χ(B), ∂` the identity consumes.
+2. **AM2** — implement the cut as a face-array rewrite in `make_local_region_mesh` per the endpoint rule.
+   `globalVertexByLocal` becomes **many-to-one**; audit every consumer **by search**, not by copying the DEFN's
+   list, and report what the search found and how each was classified.
+3. **AM3** — **replace** (never delete) the `:1654` local-mesh-versus-region cross-check with the cut identity,
+   under a **new appended** error code. Reusing `CanonicalBindingMismatch` is prohibited.
+4. **AM4** — make the interior-singularity binding fail closed (`FieldTransportAtlas.cpp:1980-1990`); publish per
+   witness how many prescribed singularities bound to a `LocalVertex` cycle, to a slit boundary cycle, and to
+   nothing — the last must be **zero**.
+5. **AM5** — land AM2–AM4 **together**; declare explicitly whether option A′ or the frozen fallback D was taken.
+6. **AM6** — report per region the witness kind (`ClosedShenSufficient` / `RelativeBoundary`), `requiredIndexSum`,
+   `interiorIndexSum`, `boundaryIndexSum` and the absorbed `correction`.
+7. **AM7** — carry AL3's sphere instrumentation unchanged (`NoCarrierMatch` vs `AmbiguousCarrierMatch`, the
+   trace/event/`sourceEdge`/`sourceFace` row, every candidate position when ambiguous, and **which pass** produced
+   the result). **AL4 stands: do not design the sphere's fix until AL3 reports.**
+8. **AM8** — freeze the gate append 367 → **370** (AL7's three identities) → **373**
+   (`NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis`, `CutTransportDomainSatisfiesTheEulerCutIdentity`,
+   `PrescribedSingularityOnABarrierArcRemainsBoundToACycle`), re-verifying all five predecessor prefixes.
+9. **AL8** — move the 64-lowercase-hex digest validation into the orchestration payload authoring path, the third
+   occurrence of `R7-ORCH-01` having proved a reminder insufficient.
+
+**Three costs are required work, not optional polish** — an implementation that lands the cut without them trades
+a red gate for an unverifiable certificate: AM3's replacement, AM6's disclosure that a slit region moves from the
+closed index **equality** to the weaker boundary-corrected branch, and AM4's fail-closed binding.
 
 ## Standing product state
 
 - M1/M2 and M3 CP1, CP2, CP2b, CP3a, CP3b, CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are **CLOSED / ACCEPTED**.
 - **CP4c-3 is open**. Selector 367 is frozen; TB1 re-proved 365/365 and first-red stopped at 366.
-- Mechanical C2's cause is **ESTABLISHED**: a non-separating `HardFeature` barrier edge remains interior to its
-  topology region, so the cycle basis spans an edge the atlas deliberately gave no adjacency. Phase 2 is authorized
-  for this witness only, after AL2's normative decision.
+- Mechanical C2's cause is **ESTABLISHED** and its corrective is **DEFINED**: a non-separating `HardFeature`
+  barrier edge remains interior to its topology region, so the cycle basis spans an edge the atlas deliberately
+  gave no adjacency. **Amendment 15** fixes the corrective — A1 derives from the region **cut along** `B(R)`, in
+  its own local mesh only. `M3-CP4c-3-CB2` implements it under AM2–AM6.
+- `M3-CP4c3-DEFN-R1-CAND-01` is open: the interior-singularity binding does not fail closed
+  (`FieldTransportAtlas.cpp:1980-1990`) while the boundary one does. Pre-existing at HEAD, made reachable by the
+  cut; owned by **AM4**.
 - The gated sphere is **ACTIVE / ONE LEVEL SHORT** at `TraceEventPositionInvalid`, which is itself a two-way
   collapse. AL3 owns the next resolution; AL4 forbids designing across it.
 - `R10-CAND-01` and `R8-CAND-02` remain CP4c-3-owned phase-2 work under AL6 — unchanged by TB1, no shared locus,
   neither blocks nor is blocked.
 - Stable accounting **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative M3
   packages **68**. TB1 added **+0 events / +0 recurrences**.
-- **Exact next is `M3-CP4c-3-DEFN-R1`**, combined definition + review under measures AL0–AL9, then
-  `M3-CP4c-3-CB2`.
+- **Exact next is `M3-CP4c-3-CB2`**, Code + Build under measures AM0–AM9, runtime-free.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent definition/review/planning guidance
+- turn-based-coding-agent Code + Build guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first; a combined DEFN+REVIEW turn must update it before closeout.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — **AL0–AL9**, the mechanical cause,
-   the sphere's remaining collapse, and the option table AL2 must decide between.
-2. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, phase boundary and prohibitions;
-   AL2's amendment extends this line of definitions, it does not replace it.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — authoritative measured
-   AK1–AK3 evidence and first-red result.
-4. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12, 13 and 14; AL2's decision is recorded there as the next amendment.
-5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen gate.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — **AM0–AM9**, Amendment 15 with its
+   two theorems, the endpoint rule, the cut identity, the three required controls, and the falsifiable predictions.
+2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–15, normative.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — AL0–AL9; AL3/AL4 still govern the
+   sphere and are carried as AM7.
+4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — AK0–AK9, phase boundary and
+   prohibitions; Amendment 15 extends this line, it does not replace it.
+5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — frozen gate, the AM8 append base.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — measured candidates and stable accounting.
-7. `TODO.md` / `CHANGELOG.md` — active scope and runtime evidence summary.
+7. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
+8. `TODO.md` / `CHANGELOG.md` — active scope and runtime evidence summary.
 
-Source the DEFN must read before deciding AL2, since the decision is about what these three agree on:
-`src/authority/FieldTransportAtlas.cpp` (`make_local_region_mesh` `:850-895`, `find_adjacency_in` `:817-827`, the
-eight `IncompleteCycleBasis` sites) and `src/geometry/SurfaceCellTracing.cpp:6655-6737`
-(`build_source_topology_regions`).
+Source CB2 will change or must audit: `src/authority/FieldTransportAtlas.cpp` — `make_local_region_mesh`
+(`:850-902`, the cut), the bucket classification (`:1456-1491`), the region cross-check (`:1654-1658`), the cycle
+loop and its `find_adjacency_in` call (`:1690-1761`), the index branch (`:1857-1898`), and the singularity
+reconciliation pair (`:1960-1976` strict, `:1980-1990` permissive). Read-only context:
+`src/geometry/SurfaceCellTracing.cpp:6655-6926` (`build_source_topology_regions`),
+`include/directional/geometry/MeshTopology.h:55-74` (`dual_cycles`' row/column contract), and
+`include/directional/core/TriMesh.h:202-241` (`set_mesh`'s derived boundary data).
 
-**This is DEFN + REVIEW.** No Directional runtime and no phase-2 code change belongs in it; the corrective is
-authored in `M3-CP4c-3-CB2` after the normative question is settled.
+**This is CODE + BUILD.** It compiles and packages and **executes no Directional runtime**; a gate may not be run.
+A red TB after it routes to `REVIEW + PLAN` as usual.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

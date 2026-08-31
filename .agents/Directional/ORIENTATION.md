@@ -28,10 +28,9 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-30 at `M3-CP4c-3-TB1-REV`, which adjudicated TB1's valid semantic red at
-ordinal **366**, **established** the mechanical witness's cause, and found the prescribed sphere's cause **one
-level short**. Exact next is `M3-CP4c-3-DEFN-R1` — a combined definition + review turn under the standing cadence —
-under measures AL0–AL9, then `M3-CP4c-3-CB2`. If the head commit is far ahead, trust
+**Currency.** Last updated 2026-08-30 at `M3-CP4c-3-DEFN-R1`, which settled AL2 by declaring **Amendment 15** — a
+topology region's *transport domain* is the region cut along its non-separating barrier set — and issued measures
+**AM0–AM9**. Exact next is `M3-CP4c-3-CB2`, Code + Build, runtime-free. If the head commit is far ahead, trust
 `TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
 "where we are" section; the architecture and recurring-defect sections age much more slowly.
 
@@ -165,6 +164,15 @@ to its freeze.
   preflight and executed no Directional runtime; one of them is the **third** occurrence of the `R7-ORCH-01`
   malformed-digest defect, escalated from a reminder to a mechanism by AL8.
 
+**`M3-CP4c-3-DEFN-R1` settled the normative question with Amendment 15 (`DESIGN.md` §7.2.1).** A region's face set
+and its published `euler_characteristic()` / `boundary_loop_count()` are facts about the **uncut** source complex
+and are unchanged; A1 instead derives its tangent bundle, cycle basis and index quantities from the region's
+**transport domain** — the region **cut along** `B(R) = { e ∈ hardFeatureEdges : both incident faces ∈ R }`. The
+cut lives in A1's derived local mesh, **not** in the region product, for three reasons: the region product
+literally cannot express an open slit (§7 item 1); it is the Amendment 14 precedent — an immutability guarantee
+constrains the writer, not a derived view; and it makes the two classifications agree **by construction** instead
+of by an unwritten assumption. The corrective is now defined; **`M3-CP4c-3-CB2` implements it under AM0–AM9**.
+
 **The gate is selector 365**, frozen by CB7 under AG7: selector 361 plus criterion C3's torus identity and the
 three Amendment-14 identities. Every prefix is byte-identical to its predecessor — 355, 357, 361 — so
 `first_red_ordinal` is comparable across the whole CP4c arc.
@@ -188,7 +196,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, **zero mandatory edges** | **24 traces / 56 events** | **two independent problems.** (a) Its pre-cut actual embedded graph is measured **non-cellular**: `V/E/F = 18/30/18`, `χ=6` against `sourceChi=2`, one component, no excluded boundary orbits — so it genuinely needs cuts, and they will be trace-crossed. (b) The producer never gets there: it fails at A2a′ reporting `CellularityNotEstablished` at source face `25-27-28`, which is a `default:` bucket, **not a cellularity verdict**. TB1 resolved that bucket two levels further — `RotationSystemInconsistent → TraceEventPositionInvalid` — with source topology, atlas and network all available; one level short of actionable (§7 item 2) |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F | no atlas — stops in **A1** at `IncompleteCycleBasis` | **criterion C2, gated at ordinal 366, cause ESTABLISHED at TB1.** Resolved to `CycleTransportAdjacencyMissing`, region `0`, source edge `0-3`. Its sole region is `V/E/F = 152/450/300`, `χ=2`, `boundaryLoops=0`, `genus=0` — a **sphere** — with 152 interior vertices, 152 expected cycles / rows / curvatures and 450 inner adjacencies. A non-separating `HardFeature` barrier stayed interior to its own region; see §7 item 1 |
+| **mechanical feature** | fixture, 152 V / 300 F | no atlas — stops in **A1** at `IncompleteCycleBasis` | **criterion C2, gated at ordinal 366, cause ESTABLISHED at TB1.** Resolved to `CycleTransportAdjacencyMissing`, region `0`, source edge `0-3`. Its sole region is `V/E/F = 152/450/300`, `χ=2`, `boundaryLoops=0`, `genus=0` — a **sphere** — with 152 interior vertices, 152 expected cycles / rows / curvatures and 450 inner adjacencies. A non-separating `HardFeature` barrier stayed interior to its own region. **Corrective defined** by Amendment 15; cut, it becomes a sphere with `c` holes — `χ' = 2 − c`, `b' = c`, genus 0. See §7 item 1 |
 
 ## 5. The central theorem of CP4c-2
 
@@ -303,15 +311,34 @@ CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4
    *boundaries* where they never enter a local mesh's inner set. The first witness with an open feature arc was
    always going to hit this.
 
-   **The corrective is a normative choice, owned by `M3-CP4c-3-DEFN-R1` (measure AL2), not by a CB:**
-   **A** — cut the local region mesh along non-separating barrier edges so the arc becomes real boundary
-   (recommended; the hard part is the arc's **endpoints**, where the cut surface touches itself);
-   **B** — build the cycle basis over the traversable sub-complex only (converges on A, since
-   `PCFaceTangentBundle::init` takes a mesh, not a barrier set);
-   **C** — give barrier edges a transport adjacency: **PROHIBITED**, it destroys the barrier semantics hard
-   features exist to express;
-   **D** — fail closed with a precise typed error naming "a non-separating barrier edge remains interior to its
-   region" — not a fix, but the correct frozen fallback if A exceeds CP4c-3, at the cost of C2 not closing.
+   **DECIDED at `M3-CP4c-3-DEFN-R1` — Amendment 15, option A in its derived-view form.** A1 cuts its **local
+   mesh** along `B(R)`; the region product is untouched. Two theorems make it safe, and both are forced rather
+   than observed. *(i)* `B(R)` is the entire defect class: a source-boundary edge and a region- or
+   component-crossing edge each have at most one incident face in `R`, so they are already local boundary edges,
+   and a traversable edge has an adjacency — only a hard feature can be non-traversable **and** interior.
+   Isolation seams (same region, same component, different sheet) are traversable by design and are **not**
+   barriers. *(ii)* The cut never disconnects: a region *is* a connected component of the face graph built
+   without barrier edges, so cutting along `B(R)` leaves that graph untouched — from which it also follows that
+   no subset of `B(R)` separates `R`, and hence that on a `χ=2, b=0` region every barrier component is a **tree**.
+
+   **The endpoint rule** — the part AL2 flagged as hard: `v` incident to `B(R)` is duplicated into one copy per
+   connected component of `star(v) ∖ B(R)`, i.e. `copies(v) = d_B(v)` for interior `v` and `d_B(v) + 1` for `v` on
+   the region's boundary. An open arc's **tip** has `d = 1`, so it is **not** duplicated — the cut surface really
+   does touch itself there — but it becomes a boundary vertex with a single fan. The result is a manifold with
+   boundary; no geometry moves; `set_mesh` re-derives every count.
+
+   **The arithmetic is an identity:** `χ(R_cut) = χ(R) − χ(B) + ∂`, checked against four independent cases. For
+   the mechanical witness `χ' = 2 − c`, `b' = c`, `genus' = 0`, `interiorVertices' = 152 − |V(B)|`,
+   `innerAdjacencies = 450 − |B|`, and the cycle matrix's **rank deficiency stays exactly 1** — the same value it
+   has today — so nothing downstream that tolerates today's single dependency newly breaks.
+
+   **Three costs, all required work, none visible at the failing line.** The local-mesh-vs-region cross-check must
+   be **replaced** by the identity above, not deleted. A slit region moves from the closed `ClosedShenSufficient`
+   index **equality** to the boundary-corrected `RelativeBoundary` branch, which absorbs any multiple of 4 — a
+   real weakening that must appear in evidence. And every vertex on a barrier loses its inner-vertex cycle, so a
+   prescribed singularity there must be re-bound and **fail closed**; see §8's new pattern and §7 item 6.
+   **Option C stays prohibited. Option D** — fail closed with a precise typed error — is the frozen fallback, with
+   an explicit trigger, at the stated cost that C2 cannot then close.
 2. **`M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere, IN the gate, and one resolution short.** Two independent
    problems; fixing either does not fix the other. (a) The producer fails at A2a′ at source face `25-27-28`,
    `producerCutEdgeCount=0` — **before** cut selection, so Amendment 14 is not an account of it. AK3 resolved the
@@ -341,6 +368,15 @@ CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4
    scratch would make it the producer of the whole embedded graph, which is A2a's single-writer authority. The new
    code is **appended**, never renumbered.
 5. **Torus post-A2b `tracing` failure** — downstream of A2b, tracked, and out of CP4c-3's scope by decision.
+6. **`M3-CP4c3-DEFN-R1-CAND-01` — the interior-singularity binding does not fail closed.** A latent gap found
+   while deriving Amendment 15, pre-existing at HEAD and **not** introduced by it, but made reachable by it.
+   `FieldTransportAtlas.cpp:1557` partitions prescribed singularities by **`sourceMesh.isBoundaryVertex`** — the
+   *global* mesh. The boundary path reconciles and fails closed when an owner is missing (`:1960-1976`); the
+   interior path does **not** (`:1980-1990`) — `localCycleByGlobalVertex.find(...)` simply leaves `region` and
+   `cycle` as `std::nullopt` and continues. A vertex consumed by a slit is still *globally* interior, so it takes
+   the unchecked path: its prescribed index goes from verified against the field's own holonomy to unverified and
+   unbound, with a green build. Owned by **AM4**; landing the cut without it trades a red gate for an
+   unverifiable certificate.
 
 **Closed in CP4c-2, do not re-open:** `PR8-R043`, `PR8-R044` (proved on a bounded *and* a closed witness),
 `R7-ORCH-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-CAND-01`, `R8-ORCH-01`, `R9-CAND-01`, `R9-ORCH-01`; measure **AD3**
@@ -380,6 +416,17 @@ assumed a whole-edge arc and therefore **over-inserts into a skip list**, suppre
 error and no symptom. Fixing only the loud one converts a red gate into a quiet weakening. After changing a
 representation, grep every consumer and classify each **by failure mode**, not by whether it compiles — a
 permissive consumer is the dangerous one precisely because nothing will report it. `LESSONS.md` 62.
+
+**Two paths that reconcile the same obligation, and only one fails closed.** The sharpest form of the pattern
+above, found while deriving Amendment 15. `FieldTransportAtlas` splits prescribed singularities into an interior
+map and a boundary map, then reconciles them in two loops written years apart in spirit: the boundary loop
+demands an owner and raises `SingularityMismatch` without one; the interior loop looks the owner up, and on a miss
+leaves two `std::optional` fields empty and carries on. Both loops "handle" a missing owner. Only one reports it.
+A change that moves items from one path to the other — which is exactly what cutting a region does — silently
+converts a verified fact into an unverified one. **When one obligation is discharged by two paths, diff their
+failure behaviour, not their success behaviour**, and be most suspicious when the split key belongs to a
+*different* object than the thing being reconciled (here: the **global** mesh's boundary flag deciding how a
+**local** mesh's cycle is checked). `LESSONS.md` 65.
 
 **Wrong-representation, right-arithmetic.** A computation can be internally flawless and describe the wrong
 object. Self-consistency is never evidence that the complex is the right one. `LESSONS.md` 22d/22e: check that
@@ -504,6 +551,24 @@ The two-ring is constructed in the test file, not a fixture.
   failure came from `EmbeddedGraphTopology`, upstream of any cellularity decision. On the prescribed sphere the
   full resolved chain is now `CellularityNotEstablished → RotationSystemInconsistent → TraceEventPositionInvalid`,
   and the last of those is still two conditions wide.
+- Cutting a surface along a subgraph `B` of its 1-skeleton: duplicate each vertex into one copy per connected
+  component of `star(v) ∖ B` — `copies(v) = d_B(v)` interior, `d_B(v) + 1` on the boundary, so a degree-1 **tip is
+  not duplicated**. Then `ΔV = (2|B| − |V(B)|) + ∂`, `ΔE = |B|`, `ΔF = 0`, giving
+  **`χ(cut) = χ − χ(B) + ∂`** where `χ(B) = |V(B)| − |B|` and `∂` counts `B`'s vertices already on the boundary.
+  Verified against: sphere + one arc → disc; torus + one non-separating loop → annulus; disc + arc to the
+  boundary → disc; disc + arc between two boundary points → two discs.
+- `dual_cycles` (`geometry/MeshTopology.h:55-74`) emits `#V − #b` inner-vertex cycles **in vertex order**, then
+  `#b` boundary cycles, then `2g` generators, with columns indexed into **inner edges only**. That column rule is
+  why making an edge a boundary edge removes it from the cycle basis entirely — the mechanism Amendment 15 relies
+  on. The row count exceeds the dual cycle space dimension by exactly **1** (one linear dependency), on both the
+  uncut and the cut mesh.
+- `TriMesh::set_mesh` (`core/TriMesh.h:202-241`) derives `EV`, `EF`, `isBoundaryVertex`, `isBoundaryEdge` and
+  `boundaryLoops` from V/F, and `gaussian_curvature` consumes `isBoundaryVertex`. So a cut expressed purely as a
+  rewritten face array propagates to every count and curvature with no further bookkeeping.
+- `build_source_topology_regions` requires **every** region-boundary vertex to have exactly two boundary
+  neighbours (`SurfaceCellTracing.cpp:6905`) and fails the whole `SourceTopologyRegions` product otherwise. An
+  open slit is therefore inexpressible at the region level — its tip would have one — which is why Amendment 15
+  puts the cut in A1's derived local mesh instead.
 - `trace_event_position` (`EmbeddedGraphTopology.cpp:138-173`) returns `std::nullopt` from a single
   `if (positions.size() != 1U)`, so "no carrier matched" and "several carriers matched" are indistinguishable at
   the call site. It also runs **two** passes — segments whose `sourceFace` matches the event's, then, only if that
