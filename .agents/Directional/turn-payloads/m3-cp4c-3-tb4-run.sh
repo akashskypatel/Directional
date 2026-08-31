@@ -42,9 +42,9 @@ sha(){ sha256sum "$1" | awk '{print $1}'; }
 curl --fail-with-body --silent --show-error --location -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${PACKAGE_ARTIFACT_ID}/zip" -o "$w/package-actions.zip"
 [[ "$(sha "$w/package-actions.zip")" == "$PACKAGE_OUTER_SHA256" ]] || die outer-artifact-digest-mismatch
 unzip -q "$w/package-actions.zip" -d "$w/outer"
-[[ -f "$w/outer/package73.tar.gz" && -f "$w/outer/package73.tar.gz.sha256" ]] || die package73-envelope-missing
+[[ -f "$w/outer/package73.tar.gz" && -f "$w/outer/package73.sha256" ]] || die package73-envelope-missing
 [[ "$(sha "$w/outer/package73.tar.gz")" == "$PACKAGE_TAR_SHA256" ]] || die inner-tar-digest-mismatch
-grep -F "${PACKAGE_TAR_SHA256}  package73.tar.gz" "$w/outer/package73.tar.gz.sha256" >/dev/null || die inner-digest-sidecar-mismatch
+[[ "$(awk '{print $1}' "$w/outer/package73.sha256")" == "$PACKAGE_TAR_SHA256" ]] || die inner-digest-sidecar-mismatch
 tar -xzf "$w/outer/package73.tar.gz" -C "$w/pkg"; cd "$w/pkg/package73"
 [[ "$(grep -c . SHA256SUMS)" == 57 ]] || die manifest-cardinality-mismatch
 sha256sum -c SHA256SUMS || die package-manifest-failed
