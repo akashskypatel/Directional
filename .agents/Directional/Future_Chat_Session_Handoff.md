@@ -92,42 +92,48 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB3-R1` (artifact-only Test + Benchmark)
+## Mandatory next turn — `M3-CP4c-3-TB3-R1-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB4-PKG` is **COMPLETE / PACKAGE GREEN / RUNTIME-FREE**. CP4c-3 remains **OPEN**. Authoritative package report: `Architecture_M3_CP4c3_CB4_PKG_Code_Build_Report.md`; frozen runtime plan: `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c-3-TB3-R1` is **COMPLETE / VALID SEMANTIC RED**. CP4c-3 remains **OPEN**. Authoritative runtime report: `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`; frozen successor plan: `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`.
 
-### Immutable package 72 authority
+### Immutable runtime authority
 
-- semantic/evidence source remains `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`; CB4-PKG made no semantic source/test/selector change;
-- raw compile authority remains artifact `9750227619`, SHA-256 `b1cc9a989af2db84ddd2ad83babf9b2221396e45a165aa84927082e610c351c8`;
-- package-only run/job `33411346157 / 99551438549` completed successfully with no configure, compile, relink, runtime, or benchmark;
-- immutable package **72** is artifact `9765247195`, Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`;
-- inner `package72.tar.gz` SHA-256 is `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`;
-- source archive remains `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`;
-- clean extraction verifies the self-excluding 55-entry manifest, exactly 27 package-relative fixtures, GMP/GMPXX authority, all six frozen executable hashes, and all six modes `0755`;
-- frozen selector 373 remains `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- `M3-CP4c3-TB3-ORCH-01` is **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE**. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
+- semantic/evidence source: `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`;
+- package 72: artifact `9765247195`, Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`;
+- inner `package72.tar.gz`: `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`;
+- source archive: `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`;
+- selector 373: `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
+- TB run/job: `33416686424 / 99568970224`;
+- result artifact `9767376410`, SHA-256 `7f2c9492d2dae96dfcf1732c320e772be05538a3552ce6a673bd83eb9189824e`;
+- log artifact `9767376976`, SHA-256 `492d19f1e08fd339f130a07dfcf891a3b7bbaaf537483fb54af6e9b96095ad72`;
+- gate: **366 executed / 365 PASS / 1 RED**; first red ordinal 366 `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`; 367–373 not executed;
+- failure: `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; immutable postflight PASS; benchmark/build/repair/generated-discovery/mutation flags false.
 
-### Exact scope of `M3-CP4c-3-TB3-R1`
+The previous atlas stop `MissingSingularityBranchTransport` is cleared: the mechanical witness reaches field-aligned-network construction. `resolve_field_vertex_transit` rejects when the exact deduplicated continuation-candidate set has cardinality other than one. The production exception published only the code, not the underlying network error's `sourceVertex/sourceFace/branch/publishedFaces`, so TB3-R1 does not decide zero candidates versus multiple candidates or the arrival mode.
 
-Consume package 72 only. Verify its outer Actions digest, inner tar digest, 55-entry manifest, source/source-archive identity, GMP evidence, exactly 27 fixtures, six exact executable hashes and six `0755` modes **without repair**. Recompute selector 373 and frozen prefixes. If preflight passes, execute ordinals 1–373 in order, one exact identity per fresh process, and stop immediately at the first semantic red. Any valid semantic red routes to independent `REVIEW + PLAN`; an orchestration blocker with no semantic verdict may restart only after the control defect is corrected and must restart from ordinal 1. No `chmod`, repack, configure, compile, relink, generated discovery, benchmark, or package/source/test/fixture/selector mutation is authorized.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic packages **70**. New candidate `M3-CP4c3-TB3-R1-CAND-01` is active/non-stable.
+
+### Exact scope of `M3-CP4c-3-TB3-R1-REV`
+
+Review/planning only. Reconstruct the exact transit invariant and candidate walk; recover or explicitly identify the missing source vertex/face/branch/arrival-mode/candidate-face evidence; distinguish zero from multiple candidates; audit the interaction with the cut transport domain without ever crossing a hard-feature barrier; determine causality relative to Amendment 16/P2; adjudicate carried candidates; update `ORIENTATION.md`; and freeze exactly one bounded successor. No product/test/fixture/selector mutation, configure, compile, package, TB retry, or Directional runtime is authorized in review.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Test + Benchmark / TB guidance
+- turn-based-coding-agent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md`
-1. `.agents/Directional/Architecture_M3_CP4c3_CB4_PKG_Code_Build_Report.md` — package 72 authority and AO0–AO5 closeout.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md` — exact TB3-R1 execution contract.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB3_Independent_Review_Record.md` — Amendment 16 packaging adjudication and retry authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged runtime selector.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — inherited candidates and stable-accounting rules.
-6. `TODO.md` / `M3_CP4c_Consolidated_Record.md` — current state.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — exact valid-red runtime authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` — frozen AR0–AR7 review scope.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — Amendment 16/P2 authority and AN measures.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — exact semantic implementation/static evidence inherited by package 72.
+5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — unchanged frozen selector lineage.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md` — active candidate and stable-accounting rules.
+7. `TODO.md` / `M3_CP4c_Consolidated_Record.md` — current state.
 
-Do not configure, compile, relink, repair, mutate package 72, or run benchmarks during TB3-R1.
+Review only. Do not configure, compile, package, execute Directional, retry TB, or mutate product/test/fixture/selector semantics.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

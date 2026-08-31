@@ -26,27 +26,29 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB3-R1` (artifact-only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB3-R1-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB4-PKG` is **COMPLETE / PACKAGE GREEN / RUNTIME-FREE**. Package-only run/job `33411346157 / 99551438549` consumed raw CB3 artifact `9750227619`, re-proved its exact six `0755` executable modes and frozen hashes, relocated exactly 27 fixtures only from the embedded verified source archive, and emitted mode-preserving package **72** without configure, compile, relink, Directional runtime, benchmark, or semantic mutation.
+`M3-CP4c-3-TB3-R1` is **COMPLETE / VALID SEMANTIC RED** on immutable package **72**. Run/job `33416686424 / 99568970224` passed package/source/GMP/fixture/selector preflight, executed ordinals **1–365** as 365/365 green fresh processes, then first-red at ordinal **366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`. Ordinals 367–373 were not executed. Result/log artifacts are `9767376410` (`7f2c9492d2dae96dfcf1732c320e772be05538a3552ce6a673bd83eb9189824e`) and `9767376976` (`492d19f1e08fd339f130a07dfcf891a3b7bbaaf537483fb54af6e9b96095ad72`). Immutable postflight passed; no benchmark/build/repair/mutation occurred.
 
-Package 72 authority: artifact `9765247195`, Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`, inner `package72.tar.gz` SHA-256 `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`, semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`. Independent post-download clean extraction re-proved the 55-entry manifest, 27 fixtures, GMP boundary, six exact binary hashes, and six `0755` modes. `M3-CP4c3-TB3-ORCH-01` is therefore **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE**.
+The prior `MissingSingularityBranchTransport` first-red is gone and the mechanical witness now reaches field-aligned-network construction, but the current production exception publishes only the typed code and not the underlying network error's source vertex/face/branch/candidate-face locus. `resolve_field_vertex_transit` rejects when its deduplicated exact continuation candidate count is not one, so TB3-R1 does not establish whether the failure has zero or multiple candidates.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB3-R1`** using `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`. Consume immutable package 72 only; verify the Actions artifact and inner tar authority without repair, then execute unchanged selector 373 from ordinal 1, one exact identity per fresh process, stopping at the first semantic red. No configure, compile, relink, package mutation, permission repair, generated discovery, or benchmark is authorized.
+Run independent **`M3-CP4c-3-TB3-R1-REV`** under `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`. Review/planning only: recover the transit invariant/locus, distinguish zero vs multiple candidates and `FaceInterior` vs `EdgeTransit`, adjudicate causality relative to Amendment 16/P2, and freeze one bounded successor. No semantic mutation, compile, package, TB retry, or additional Directional runtime is authorized in review.
 
 ### CP4c-3 open items
 
-- [x] `M3-CP4c3-TB3-ORCH-01` — corrected package 72 independently re-proves all six exact hashes and `0755` modes after Actions transport; +0 stable accounting.
-- [ ] **C2 / mechanical witness:** runtime-prove Amendment 16/P2 at ordinal 366; prior TB3 provided no runtime evidence.
-- [ ] `M3-CP4c3-TB2-CAND-01` — cause established/pre-existing; closes only on ordinal 366 green.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / SEMANTIC / CAUSE UNADJUDICATED / GATING / NON-STABLE** at ordinal 366 `VertexTransitSectorUnresolved`; owned by the independent review.
+- [ ] **C2 / mechanical witness:** Amendment 16 clears the prior atlas branch-transport failure, but ordinal 366 remains red downstream in field-aligned-network.
 - [x] `M3-CP4c3-TB2-REV-CAND-01` — package 69/70 binary identity independently proved in CB3.
-- [ ] `M3-CP4c3-TB2-ORCH-01` — package-relative fixture correction exists; runtime-root selection remains to be proved by TB3-R1.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — compile-green only; ordinal 373 remains runtime-unproved.
+- [x] `M3-CP4c3-TB2-ORCH-01` — package-relative fixture authority and removal of the absolute source fallback are runtime-proved by TB3-R1 preflight/execution.
+- [x] `M3-CP4c3-TB2-CAND-01` **at its prior failure locus** — `MissingSingularityBranchTransport` no longer occurs; the gating identity remains open because it now fails later.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — ordinal 373 remains runtime-unproved because first-red stopped at 366.
 - [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains ACTIVE / ONE LEVEL SHORT; ordinal 368 remains runtime-unproved.
 - [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains runtime-unproved.
 - [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains runtime-unproved.
+
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **70**.
 
 ## Superseded — `M3-CP4c-3-TB2` execution record
 

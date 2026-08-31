@@ -1,3 +1,14 @@
+## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / SEMANTIC / CAUSE UNADJUDICATED / GATING / NON-STABLE**
+
+- **Observed in valid TB3-R1.** Immutable package 72 preserved semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, source archive `fb3080e58f41f7c55790f8a77ad9989ce4a91e212ae323ab71afc9bc061812fb`, selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, all six frozen hashes/modes, and package-relative fixtures. Run/job `33416686424 / 99568970224` passed immutable pre/postflight.
+- **Measured boundary.** Ordinals **1–365** each selected exactly once and passed. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and failed with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; first-red semantics left 367–373 unexecuted.
+- **What advanced.** `MissingSingularityBranchTransport` is absent. Atlas partition diagnostics are emitted and production reaches field-aligned-network construction, proving the prior Amendment-16/P2 atlas failure locus is cleared far enough to expose a later consumer seam.
+- **Static localization.** `resolve_field_vertex_transit` walks reachable `(face,branch)` states through published transport adjacencies incident to the hit vertex, tests `direction_in_vertex_sector`, deduplicates decisions, and requires exactly one candidate. Candidate count **0 or >1** yields `VertexTransitSectorUnresolved`; the typed error stores the source vertex/current face/current branch and candidate faces.
+- **Diagnostic gap.** The CP4c production exception publishes only `stage/error` for a network failure, so this TB does not reveal candidate cardinality, source vertex/face/branch, candidate faces, or `FaceInterior` versus `EdgeTransit`. Review must recover those facts before a semantic correction is selected.
+- **Causality not assigned.** The red may be pre-existing/unmasked, a changed-port reachability consequence of P2, or another consumer/representation/election mismatch. The fact that it follows CB3 is not causality evidence.
+- **Owning next turn:** independent `M3-CP4c-3-TB3-R1-REV` under `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`. No unchanged TB retry.
+- **Accounting:** unaccepted checkpoint; accepted 365-prefix remains green. **+0 stable events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
+
 ## M3-CP4c3-TB3-ORCH-01 — package 71 loses executable modes at Actions artifact re-materialization — **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE / PRE-RUNTIME**
 
 - **Observed at `M3-CP4c-3-TB3` preflight**, run/job `33399144281 / 99510922630`, before any Directional process executed. Final package 71 verified byte/source/manifest authority but all six runtime executables were `0644`; selector execution was `0/373`.
@@ -6,7 +17,7 @@
 - **Semantic disposition.** Package 71 remains immutable and unusable; package 72 restores runtime transport authority without changing product/test/selector/fixture semantics or compiled bytes. No product semantic result was observed in TB3 or CB4-PKG.
 - **Accounting:** resolved non-stable packaging defect, **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
-## M3-CP4c3-TB2-REV-CAND-01 — package-70 binary identity is self-reported and never compared against package 69 — **ACTIVE / EVIDENCE GAP / NON-STABLE**
+## M3-CP4c3-TB2-REV-CAND-01 — package-69/70 binary identity comparison — **RESOLVED / INDEPENDENT BYTE IDENTITY PROVED / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-TB2-REV`**, from committed records only; no runtime executed.
 - **Mechanism.** TB2 executed a **different package** from the one CB2 froze. The substitution is acceptable in kind
@@ -20,14 +31,10 @@
 - **Why it matters.** An executor may not be the sole witness to its own immutability, and a number and the
   expectation it is compared against must come from the same authority. Ordinals 1–365 passing on both packages is
   strong corroboration, not proof.
-- **Owning correction:** **AN2** — publish the four packaged test executables' SHA-256 from packages 69 and 70 side
-  by side and state whether they match. If a future TB needs a fixture-only transport package again, that comparison
-  is a **precondition of using it**, not a postscript. Prediction on record: the digests will match; a mismatch
-  invalidates TB2's semantic authority retroactively and routes immediately to review.
-- **Accounting:** evidence-surface gap on an unaccepted checkpoint; no accepted-green behaviour lost.
-  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **69**.
+- **Closure evidence:** CB3 AN2 independently hashed packages 69 and 70 side by side and proved the packaged runtime binaries byte-identical. The evidence gap is closed; package 70 did not alter semantic binary bytes.
+- **Accounting:** resolved evidence-surface gap on an unaccepted checkpoint. **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
-## M3-CP4c3-TB2-ORCH-01 — the packaged artifact cannot locate its own fixtures — **REOPENED AND RECLASSIFIED AT TB2-REV / BUILD-PACKAGING CONTRACT DEFECT / NON-STABLE**
+## M3-CP4c3-TB2-ORCH-01 — packaged artifact fixture-root authority — **RESOLVED / BUILD-PACKAGING CONTRACT CORRECTED AND RUNTIME PROVED / NON-STABLE**
 
 - **Original observation.** The first package-69 TB2 attempt reached ordinal 41 and failed before product adjudication because `TestFixturePaths` exhausted sibling/bin `test-data` probes and fell back to the missing absolute compile-time `DIRECTIONAL_TEST_SOURCE_DIR`. The exact manifest was already present in the immutable packaged source, so this was a harness-root defect rather than semantic evidence.
 - **User-authorized remediation.** The user explicitly authorized an orchestration/fixture-only correction and same-turn package regeneration/re-execution. Package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) copies the immutable source fixture tree to sibling `test-data` and proves all package-69 semantic binaries byte-identical. No configure, compile, relink, product/test source repair, or benchmark occurred.
@@ -54,7 +61,9 @@
     the open question is answered rather than left.
   - Accounting is unchanged by the reclassification: **+0 events / +0 recurrences**.
 
-## M3-CP4c3-TB2-CAND-01 — mechanical production witness first-reds at `MissingSingularityBranchTransport` after Amendment 15 — **ACTIVE / CAUSE ESTABLISHED / PRE-EXISTING AND UNMASKED / GATING / NON-STABLE**
+
+- **Final closure evidence at CB3/TB3-R1.** CB3 AN3 removed the compile-time `DIRECTIONAL_TEST_SOURCE_DIR` fallback and package 71/72 carries exactly 27 fixtures at the package-relative root. TB3-R1 package-72 preflight found that root without repair and runtime advanced through the former ordinal-41 fixture stop to a semantic first red at ordinal 366. The artifact no longer depends on builder-path coincidence.
+## M3-CP4c3-TB2-CAND-01 — mechanical `MissingSingularityBranchTransport` first-red — **PRIOR FAILURE LOCUS CLEARED / SUPERSEDED BY DOWNSTREAM FIRST RED / NON-STABLE**
 
 - **Observed in valid TB2 R4.** Immutable execution package 70 preserves semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, byte-identical package-69 binaries, source archive `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`, and selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. R4 preflight and postflight were immutable.
 - **Measured boundary.** Ordinals **1–365** each selected exactly once and exited 0. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and exited 1 with `InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`. First-red semantics left ordinals 367–373 unexecuted.
@@ -97,6 +106,9 @@
     (`tests/FieldAlignedCurveNetworkTests.cpp:5283-5285`), so the locus had to be recovered by elimination rather
     than read. `LESSONS.md` **67**.
   - **Closure condition:** ordinal 366 green in a run reaching at least 366. **+0 events / +0 recurrences.**
+
+- **TB3-R1 runtime disposition.** Package 72 executes the same ordinal 366 through atlas construction without `MissingSingularityBranchTransport` and reaches the later field-aligned-network error `VertexTransitSectorUnresolved`. The prior failure locus is therefore cleared. Because ordinal 366 is still red, this does not close C2 or CP4c-3; the active gating blocker is now `M3-CP4c3-TB3-R1-CAND-01`.
+- **Accounting remains +0/+0.** The prior candidate was non-stable on an unaccepted checkpoint; clearing its failure locus does not alter cumulative stable totals.
 
 ## M3-CP4c3-DEFN-R1-CAND-01 — the interior-singularity binding does not fail closed while the boundary one does — **ACTIVE / CORRECTIVE COMPILE-GREEN / GATING AT 373 / NON-STABLE**
 

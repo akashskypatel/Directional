@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. `M3-CP4c-3-CB3` remains **COMPLETE / BUILD GREEN / RUNTIME-FREE** on semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`, with Amendment 16 **P2 — boundary-absorbed / no ports** frozen for the four barrier-incident mechanical singularities. The first TB3 attempt stopped **pre-runtime at 0/373** because final package 71 had lost executable modes; independent `M3-CP4c-3-TB3-REV` traced that loss to `actions/download-artifact@v4` re-materialization and authorized a package-only correction. `M3-CP4c-3-CB4-PKG` is now **COMPLETE / PACKAGE GREEN / RUNTIME-FREE**: immutable package **72** is artifact `9765247195` (Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`) containing `package72.tar.gz` SHA-256 `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`, a verified 55-entry manifest, exactly 27 package-relative fixtures, GMP/GMPXX authority, the six frozen binary hashes, and all six modes `0755`. No configure, compile, relink, runtime, benchmark, or semantic mutation occurred. `M3-CP4c3-TB3-ORCH-01` is **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE**. Selector 373 remains byte-frozen and has received no TB3 semantic runtime evidence. CP4c-3 remains **OPEN**; exact next is artifact-only **`M3-CP4c-3-TB3-R1`** on package 72 from ordinal 1. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative semantic M3 packages **70**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN** on semantic source `93ed2ff50ddad96c9a6aa93f327b3e4d9d93a9b4`. Package-only CB4-PKG corrected ORCH-01 and froze mode-preserving package **72** (`9765247195`, Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`, inner tar `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`). Valid TB3-R1 run/job `33416686424 / 99568970224` then passed ordinals **1–365** and first-red at ordinal **366** with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`; 367–373 remain unexecuted. The prior `MissingSingularityBranchTransport` locus is cleared and package-relative fixture authority is runtime-proved. New `M3-CP4c3-TB3-R1-CAND-01` is active/non-stable; exact next is independent **`M3-CP4c-3-TB3-R1-REV`**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 packages **70**.
 
 ## 1. Separate current/future authority
 
@@ -30,8 +30,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — compile authority for Amendment 16/P2 and the frozen semantic bytes inherited by package 72.
 - `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md` — authoritative pre-runtime package-71 blocker evidence (`0/373`).
 - `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md` — current ORCH-01 root-cause adjudication and AO0–AO5 package-only correction authority.
-- `Architecture_M3_CP4c3_CB4_PKG_Code_Build_Report.md` — current package 72 construction/verification authority.
-- `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md` — current executable `TB3-R1` plan for package 72 / selector 373.
+- `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — current valid semantic runtime authority for package 72; 365/365 accepted prefix green and first red at ordinal 366.
+- `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` — frozen next-turn review scope for `VertexTransitSectorUnresolved`.
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -56,7 +56,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; package 72 restores executable transport authority; exact next is TB3-R1 selector retry from ordinal 1** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB3-R1 is 365 PASS then valid red at ordinal 366 `VertexTransitSectorUnresolved`; exact next is independent review** |
 
 ### 2.1 CP4c-0
 
@@ -348,6 +348,13 @@ compilation inside artifact-only TB. Result/log artifacts are `9760518962` (`ec5
 
 `M3-CP4c3-TB3-ORCH-01` is **RESOLVED / PACKAGE CONTRACT CORRECTED / NON-STABLE**. TB3-REV traced package-71 mode loss to `actions/download-artifact@v4`; CB4-PKG then consumed raw artifact 9750227619 without replacement compilation and produced immutable package **72** in run/job `33411346157 / 99551438549`. Artifact `9765247195` has Actions SHA-256 `41ebe4dec4a3eb5c8194900a3f27a0377c3271212edd10fb952c48f55a6a2e6d`; inner `package72.tar.gz` is `20630897aa432572d0929022abef3861fff80c2b5792c223071990dd2e3c6a73`. Independent clean extraction verifies the 55-entry manifest, semantic source/archive, GMP boundary, exactly 27 fixtures, and all six frozen binary hashes at mode `0755`. No Directional runtime or semantic mutation occurred. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
 
+### `M3-CP4c-3-TB3-R1` — valid semantic red at vertex-transit sector resolution
+
+Mode-preserving package **72** enabled the first valid TB3 semantic execution. Run/job `33416686424 / 99568970224` passed immutable package/tar/source/GMP/fixture/binary-mode/selector preflight, then executed ordinals 1–365 as **365/365 PASS** and first-red at ordinal **366** `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` with `NotProductionReady/field-aligned-network/VertexTransitSectorUnresolved`. First-red semantics left 367–373 unexecuted. Result/log artifacts are `9767376410` (`7f2c9492d2dae96dfcf1732c320e772be05538a3552ce6a673bd83eb9189824e`) and `9767376976` (`492d19f1e08fd339f130a07dfcf891a3b7bbaaf537483fb54af6e9b96095ad72`); immutable postflight passed and all prohibited build/repair/mutation flags remained false.
+
+The old `MissingSingularityBranchTransport` locus is cleared: atlas partition diagnostics are emitted and the mechanical witness reaches network construction. Static source localizes the new code to `resolve_field_vertex_transit`, which walks transported `(face,branch)` states around the hit vertex and requires exactly one `direction_in_vertex_sector` candidate. The production exception drops the typed network error's source vertex/face/branch/candidate-face details, so runtime does not reveal whether candidate cardinality is zero or greater than one, nor whether the failing arrival is `FaceInterior` or `EdgeTransit`. New non-stable gating candidate `M3-CP4c3-TB3-R1-CAND-01` is therefore routed to independent review, not patched inside TB. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **70**.
+
+
 ## 5. High-value reversals retained
 
 - Face-local branch labels are not cross-face semantic identity; use published transport/lift.
@@ -416,14 +423,12 @@ After the durable start-of-turn checklist, current CP4c work should load only th
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_CB4_PKG_Code_Build_Report.md`
-5. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Plan.md`
-6. `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md`
-7. `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md`
-8. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
-9. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
-10. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
-11. `Regression_Root_Cause_Tracker.md`
-12. this consolidated record only when historical lineage is needed.
+4. `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md`
+5. `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md`
+6. `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
+7. `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`
+8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+9. `Regression_Root_Cause_Tracker.md`
+10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB3-R1` — artifact-only Test + Benchmark** on immutable package 72, unchanged selector 373 from ordinal 1, one identity per fresh process and first-red semantics. No configure, compile, relink, repair, package mutation, generated discovery, or benchmark.
+**Exact next:** independent **`M3-CP4c-3-TB3-R1-REV` — REVIEW + PLAN**. No product/test/fixture/selector mutation, configure, compile, package, TB retry, or Directional runtime before review.
