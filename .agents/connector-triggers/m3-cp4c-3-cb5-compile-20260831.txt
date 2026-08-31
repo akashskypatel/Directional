@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-CB5
+purpose=compile exact diagnostic-only semantic source
+source_sha=57d68245ddc60b2fd8725e7ff84059f45ff95144
+retry=0
