@@ -1,0 +1,4 @@
+M3-CP4c-3-CB2 source/test/selector patch apply
+base=d260f6a9c0bc60946b1c4d30ed77f9e838552ab6
+patch_sha256=2ac36d8b615008d59a69aa0beb908a6bc93b65f0ceb3869459f9af7ddb644b07
+retry=0
