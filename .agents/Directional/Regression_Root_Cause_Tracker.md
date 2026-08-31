@@ -1,17 +1,94 @@
-## M3-CP4c3-TB2-ORCH-01 — packaged fixture exists but runtime falls back to a missing compile-time source root — **RESOLVED / ORCHESTRATION / NON-STABLE**
+## M3-CP4c3-TB2-REV-CAND-01 — package-70 binary identity is self-reported and never compared against package 69 — **ACTIVE / EVIDENCE GAP / NON-STABLE**
+
+- **Observed statically at `M3-CP4c-3-TB2-REV`**, from committed records only; no runtime executed.
+- **Mechanism.** TB2 executed a **different package** from the one CB2 froze. The substitution is acceptable in kind
+  — package 70 adds no content, it **relocates bytes that were already immutable**, copying the fixture tree out of
+  the embedded source archive whose SHA-256 `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`
+  matched the frozen authority, into the `test-data` root the binary probes first — and no configure, compile,
+  relink, repair or source edit occurred. **But the load-bearing claim is unverified:**
+  `semanticBinariesUnchanged=true` is asserted by the same orchestration that produced package 70, and package 70's
+  internal manifest has **55** entries against package 69's **28**, so the two manifests cannot be compared line for
+  line. No per-binary SHA-256 from package 69 is published beside the corresponding digest from package 70.
+- **Why it matters.** An executor may not be the sole witness to its own immutability, and a number and the
+  expectation it is compared against must come from the same authority. Ordinals 1–365 passing on both packages is
+  strong corroboration, not proof.
+- **Owning correction:** **AN2** — publish the four packaged test executables' SHA-256 from packages 69 and 70 side
+  by side and state whether they match. If a future TB needs a fixture-only transport package again, that comparison
+  is a **precondition of using it**, not a postscript. Prediction on record: the digests will match; a mismatch
+  invalidates TB2's semantic authority retroactively and routes immediately to review.
+- **Accounting:** evidence-surface gap on an unaccepted checkpoint; no accepted-green behaviour lost.
+  **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **69**.
+
+## M3-CP4c3-TB2-ORCH-01 — the packaged artifact cannot locate its own fixtures — **REOPENED AND RECLASSIFIED AT TB2-REV / BUILD-PACKAGING CONTRACT DEFECT / NON-STABLE**
 
 - **Original observation.** The first package-69 TB2 attempt reached ordinal 41 and failed before product adjudication because `TestFixturePaths` exhausted sibling/bin `test-data` probes and fell back to the missing absolute compile-time `DIRECTIONAL_TEST_SOURCE_DIR`. The exact manifest was already present in the immutable packaged source, so this was a harness-root defect rather than semantic evidence.
 - **User-authorized remediation.** The user explicitly authorized an orchestration/fixture-only correction and same-turn package regeneration/re-execution. Package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) copies the immutable source fixture tree to sibling `test-data` and proves all package-69 semantic binaries byte-identical. No configure, compile, relink, product/test source repair, or benchmark occurred.
 - **Closure evidence.** R4 run `33355714664` proved the exact sibling fixture manifest exists before runtime, reproduced package/source/GMP/selector/static-target-map authority, and advanced cleanly through the previous ordinal-41 stop. Its eventual first-red was semantic at ordinal 366, so the fixture-root defect is closed.
 - **Accounting:** resolved non-stable orchestration candidate, **+0 stable events / +0 recurrences**. Stable totals remain **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 packages **69**.
+- **`M3-CP4c-3-TB2-REV` — REOPENED AND RECLASSIFIED. The fix was applied to the execution, not to the defect.**
+  Closing this as a resolved *harness* defect misfiles it, and the misfiling would cost a turn later, because **the
+  defect lives inside the artifact under test**:
+  - `tests/TestFixturePaths.h:51-64` resolves the fixture root by probing `<exe>/../test-data`, then
+    `<exe>/test-data`, then returning the **compile-time absolute** `DIRECTIONAL_TEST_SOURCE_DIR` baked in by
+    `cmake/DirectionalTests.cmake:307,377,409`. That value is the **build machine's** source directory. It is not a
+    fallback: off the builder it is a guaranteed miss, and on the builder it succeeds **by coincidence of path** —
+    exactly the kind of coincidence this project refuses to let an authority depend on.
+  - Package 69's internal manifest has **28** entries and ships **no** fixture tree; package 70's has **55** and
+    does. So the packaged artifact cannot locate its own fixtures, and **every future artifact-only TB needs the
+    same out-of-band remedy** until a Code + Build turn fixes it.
+  - The risk if left alone is not inconvenience: a green TB could depend on a runner's directory layout, which makes
+    **gate authority environment-dependent**.
+  - **Unmeasured and not guessed:** TB1 executed 366 ordinals on package **68** without hitting this. Whether that
+    is because 68 shipped a fixture tree or because the runner path happened to match is not established.
+  - **Owning correction: AN3** — either the packaging step ships the fixture tree at a package-relative root the
+    binary probes, or the resolver **fails closed** with a typed error naming the roots it tried. A silent
+    fall-through to a build-machine path is prohibited. AN3 must also report whether package 68 shipped fixtures, so
+    the open question is answered rather than left.
+  - Accounting is unchanged by the reclassification: **+0 events / +0 recurrences**.
 
-## M3-CP4c3-TB2-CAND-01 — mechanical production witness first-reds at `MissingSingularityBranchTransport` after Amendment 15 — **ACTIVE / REVIEW REQUIRED / NON-STABLE**
+## M3-CP4c3-TB2-CAND-01 — mechanical production witness first-reds at `MissingSingularityBranchTransport` after Amendment 15 — **ACTIVE / CAUSE ESTABLISHED / PRE-EXISTING AND UNMASKED / GATING / NON-STABLE**
 
 - **Observed in valid TB2 R4.** Immutable execution package 70 preserves semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, byte-identical package-69 binaries, source archive `c7cd8b4bbba2d3b374da7c7f18e27c0e688ffe7679c261b644c6fffbf34426b1`, and selector 373 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. R4 preflight and postflight were immutable.
 - **Measured boundary.** Ordinals **1–365** each selected exactly once and exited 0. Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and exited 1 with `InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`. First-red semantics left ordinals 367–373 unexecuted.
 - **What changed relative to TB1.** The same mechanical witness previously stopped at `IncompleteCycleBasis → CycleTransportAdjacencyMissing`. The valid R4 observation proves the CB2/Amendment-15 implementation advances past that earlier stop; it does **not** by itself explain why the later singularity attachment asks for a branch transport.
 - **Review boundary.** Do not infer that a hard-feature barrier should receive transport adjacency. Amendment 15 explicitly prohibits that shortcut. Independent `M3-CP4c-3-TB2-REV` must trace `build_singularity_attachments` and the slit-bound prescribed-singularity representation to determine whether this is an invalid consumer expectation, a missing non-barrier attachment route, or another upstream representation mismatch.
 - **Accounting:** current checkpoint is unaccepted and the accepted 365-prefix is green, so this is **+0 stable events / +0 recurrences**. Stable totals remain **44 / 14 / 30**; debt **5**.
+- **`M3-CP4c-3-TB2-REV` — CAUSE ESTABLISHED, by the same elimination as TB1, one consumer later.**
+  - **Mechanism, read at source.** `build_singularity_attachments` (`FieldTransportAtlas.cpp:597-618`) walks the
+    ordered one-ring fan of a singular vertex and demands a branch transport on **every** radial edge, failing with
+    `MissingSingularityBranchTransport` when `find_branch_transport_in` returns null.
+    `ordered_incident_fan` (`:351-402`) builds that fan from the **global** `sourceMesh.F`, takes no region, no
+    barrier set and no local mesh, and at `:398` **requires the walk to close back on its first face**. And
+    `build_branch_transports` (`:304-342`, invoked at `:1827`) is built purely from `adjacencies` — bucket 4 of the
+    classification at `:1456-1491` — which **excludes every `SourceBoundary`, `HardFeature` and `NonTraversable`
+    edge by construction**.
+  - **Elimination.** The failing radial edge is absent from `adjacencies`, so it is `SourceBoundary`,
+    `NonTraversable` or `HardFeature`. On this witness `SourceBoundary` is excluded because the domain is closed
+    (`globalEF = localEF = 1,158`, `boundaryLoops = 0`) and `NonTraversable` because there is exactly **one** region
+    over all 300 faces sharing one raw component. **It is a `HardFeature` edge**: a singular vertex of the
+    mechanical witness is incident to a barrier, and the port derivation demands transport across it.
+  - **Pre-existing and unmasked — the decisive check.** Call order is `build_branch_transports` `:1827` → the region
+    cycle-basis loop `:1865` → `build_singularity_attachments` `:2384`, so the cycle failure fired first at TB1. And
+    CB2's diff to this file **begins at old line 842**, leaving `build_branch_transports`, `ordered_incident_fan`
+    and `build_singularity_attachments` untouched. **Not a regression, not a side effect of the cut, and not a
+    defect in Amendment 15's implementation** — the witness simply got further.
+  - **A degree-1 tip is not exempt.** Its star is not split (one component of `star(v) ∖ B(R)`), but the ring walk
+    still straddles the single barrier ray, so every barrier-incident singular vertex is affected.
+  - **Corrective frame: Amendment 16** (`DESIGN.md` §7.2.1) — every A1 derivation that walks transport is a
+    transport-domain operation; a barrier is never traversed, never supplied with a branch transport, and never
+    required to have one; a closed ring is replaced by the fan of one connected component of `star(v) ∖ B(R)`.
+    Supplying a barrier with a branch transport so the fan closes is the port-derivation form of Amendment 15's
+    prohibited option C.
+  - **Policy deliberately NOT decided:** whether an *open* sector fan still emits ports (**P1**) or emits none while
+    the slit boundary cycle absorbs the index (**P2**, consistent with AM4 today but meaning **no traces start at
+    that singularity**). **AN4** forbids designing across it until **AN1**'s barrier-incident singularity census
+    reports. CB2 already holds the contradiction in miniature: AM4 binds such a vertex to a slit boundary cycle
+    while the port derivation demands a closed transportable ring for the same vertex.
+  - **Diagnostic gap owned by AN1:** the typed error at `:613-616` carries the radial `sourceEdge`, `sourceFace`,
+    `sourceVertex` and `topologyRegion`, and the harness published only `code/stage`
+    (`tests/FieldAlignedCurveNetworkTests.cpp:5283-5285`), so the locus had to be recovered by elimination rather
+    than read. `LESSONS.md` **67**.
+  - **Closure condition:** ordinal 366 green in a run reaching at least 366. **+0 events / +0 recurrences.**
 
 ## M3-CP4c3-DEFN-R1-CAND-01 — the interior-singularity binding does not fail closed while the boundary one does — **ACTIVE / CORRECTIVE COMPILE-GREEN / GATING AT 373 / NON-STABLE**
 
@@ -50,7 +127,7 @@
 - **Stable-count rationale:** found by static derivation in a definition turn; no accepted behaviour is lost. Its new gating identity is compiled but unexecuted, so there is still no semantic recurrence evidence. **+0 events / +0 recurrences.** Totals remain
   **44 / 14 / 30**, debt **5**, M3 packages **69**.
 
-## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **ACTIVE / CAUSE ESTABLISHED / CORRECTIVE DEFINED BY AMENDMENT 15 / GATING / NON-STABLE**
+## M3-CP4c3-DEFN-CAND-01 — mechanical A1 `IncompleteCycleBasis` measured as `CycleTransportAdjacencyMissing` — **CORRECTIVE PROVED AT RUNTIME / RETAINED ACTIVE ONLY FOR ITS UNEXECUTED CONFIRMING IDENTITIES / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-DEFN`**, on the source accepted at CP4c-2
   (`57444781af7bdc460e38cc68930a9a8c8199eeea`): `src/authority/FieldTransportAtlas.cpp` returns
@@ -175,6 +252,20 @@
     on the mechanical witness; a measured cycle falsifies the theorem and reopens the amendment.
 - **`M3-CP4c-3-CB2` disposition — OPTION A′ IMPLEMENTED / COMPILE GREEN / RUNTIME PENDING.** The A1 derived-local-mesh cut, barrier decomposition, cut identity, fail-closed singularity control and index/witness diagnostics compile at `005512f20ed56edc793f4d6505f3d2b4c2999c71` in package **69**. Supporting ordinals **371–373** and gating mechanical ordinal **366** are unexecuted; the candidate remains active/non-stable until TB.
 - **Current accounting after CB2:** stable totals remain **44 / 14 / 30**, debt **5**, M3 packages **69**.
+- **`M3-CP4c-3-TB2` / `TB2-REV` disposition — CORRECTIVE PROVED AT RUNTIME.** Run `33355714664` advanced the
+  mechanical witness **past** `IncompleteCycleBasis`: the cut transport domain is constructed, the tangent bundle
+  initializes, the cycle basis is built and validated, index accounting completes, and execution reaches
+  `build_singularity_attachments` at `:2384`. The failure this record owns **no longer occurs**. Ordinals
+  **1–365 are green**, so the change regressed nothing in the accepted gate.
+  CB2 also implemented the endpoint rule **better than Amendment 15 specified it**: rather than applying the formula
+  `copies(v) = d_B(v)`, `make_local_region_mesh` (`:1030-1104`) implements the *definition* — it flood-fills the
+  star's face-adjacency graph with barrier edges removed and creates one local copy per component — so tips, branch
+  vertices and boundary vertices need no special case and a formula error is impossible.
+  **Retained ACTIVE for one reason only:** first-red at ordinal 366 left ordinals **371–373 unexecuted**, so the
+  confirming identities — barrier exclusion from the cycle basis, the Euler cut identity, unbound prescribed
+  singularities = 0 — have **never run**, and AM1's barrier decomposition, though computed, was not reported. Every
+  DEFN-R1 prediction stays unverified, including the falsifier "a measured cycle in `B(R)` reopens the amendment".
+  Closes when ordinals 371–373 execute green. **+0 events / +0 recurrences.**
 
 ## M3-CP4c3-TB1-ORCH-01 — three pre-runtime preflight controls before authoritative TB1 — **CLOSED / ORCHESTRATION / NON-STABLE**
 

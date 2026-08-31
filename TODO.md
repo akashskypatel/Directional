@@ -26,28 +26,63 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB2-REV` (Independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB3` (Code + Build, runtime-free)
+
+`M3-CP4c-3-TB2-REV` is **COMPLETE**: it accepted TB2's execution, **confirmed Amendment 15 effective at runtime**,
+established the ordinal-366 cause and **proved it pre-existing rather than a regression**, declared **Amendment 16**
+(`DESIGN.md` §7.2.1), and issued **AN0–AN9**. Record:
+`Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`.
+
+### What the review established
+
+- **Amendment 15 works.** The mechanical witness advanced past `IncompleteCycleBasis`; ordinals **1–365** are green,
+  so the cut regressed nothing in the accepted gate. Selector 373 and all six predecessor prefixes were recomputed
+  from committed bytes and match.
+- **Ordinal 366 is the same disagreement one consumer later.** `build_singularity_attachments` demands a branch
+  transport on every radial edge of a **globally closed** one-ring fan, while `branchTransports` excludes every
+  barrier by construction — so a singular vertex incident to a hard feature fails by construction. Established by
+  the same elimination as TB1.
+- **It is pre-existing and unmasked, not a regression:** CB2's diff to `FieldTransportAtlas.cpp` begins at old line
+  842, leaving `build_branch_transports`, `ordered_incident_fan` and `build_singularity_attachments` untouched.
+- **Amendment 16** generalizes 15 to every A1 derivation that walks transport. It fixes the prohibition (never give
+  a barrier a branch transport, never close a fan across one) and **leaves the port-emission policy open** pending
+  measurement — **AN4** forbids designing across it.
+- **Still unproved:** ordinals 367–373 never ran, so Amendment 15's own self-checks and AM1's barrier decomposition
+  remain unmeasured and every DEFN-R1 prediction is unverified.
+
+### Exact next turn
+
+Run **`M3-CP4c-3-CB3`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AN0–AN9**:
+
+1. **AN1** publish the failing locus (route the four fields the typed error already carries) for **every** error
+   code the mechanical and sphere witnesses can reach, plus the barrier-incident singularity census and AM1's
+   barrier decomposition;
+2. **AN2** publish the four per-binary SHA-256 from packages 69 and 70 side by side;
+3. **AN3** fix fixture resolution **in the package** — the compile-time absolute `DIRECTIONAL_TEST_SOURCE_DIR`
+   fallback must stop being an authority — and report whether package 68 shipped a fixture tree;
+4. **AN4** do not design the port correction until AN1 reports;
+5. **AN5** implement Amendment 16 once the evidence chooses, naming which policy was taken and which measured fact
+   chose it, and resolving the AM4-versus-port-derivation contradiction;
+6. **AN7** correct the next TB plan's rerun rule to key on *"produced no semantic verdict"*;
+7. **AN8** audit by assumption and name a consumer that holds it without touching the changed data structures.
+
+## Superseded — `M3-CP4c-3-TB2` execution record
 
 `M3-CP4c-3-TB2` is **COMPLETE / RED — VALID SEMANTIC FIRST-RED AT ORDINAL 366** after the user-authorized orchestration/fixture remediation. Fixture-only package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) preserves semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, the frozen selector **373**, and byte-identical package-69 binaries while adding the immutable sibling `test-data` fixture payload. R4 run `33355714664` passed package/source/GMP/selector/mapping/fixture preflight, then executed ordinals **1–365** as exactly-selected green fresh processes.
 
 Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and exited 1 with `InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`. This is a valid semantic first-red. Ordinals **367–373** were not executed under first-red semantics. `M3-CP4c3-TB2-ORCH-01` is **RESOLVED / NON-STABLE** by package 70 and the R4 preflight; it adds **+0 stable events / +0 recurrences**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic packages **69**.
 
-### Exact next turn
-
-Run **`M3-CP4c-3-TB2-REV` — independent REVIEW + PLAN**. Review must:
-
-- [ ] update durable `ORIENTATION.md` for the review;
-- [ ] adjudicate new candidate `M3-CP4c3-TB2-CAND-01` from the exact ordinal-366 `MissingSingularityBranchTransport` failure;
-- [ ] trace the singularity-attachment obligation against Amendment 15's slit-bound prescribed-singularity binding and the prohibition on giving barrier edges transport adjacency;
-- [ ] distinguish whether the missing branch transport is an invalid consumer expectation, a missing non-barrier attachment route, or another upstream representation mismatch before prescribing any correction;
-- [ ] preserve sphere/R10/R8 and checkpoint-local ordinals 367–373 as **unmeasured in this TB2 run**.
-
-No product/test/build correction, rebuild, or gate retry is authorized before that review.
-
 ### CP4c-3 open items
 
-- [ ] **C2 / mechanical witness** — Amendment 15 advances past the TB1 `CycleTransportAdjacencyMissing` stop, but the production-entry witness now first-reds at ordinal 366 with `MissingSingularityBranchTransport`; review owns causal interpretation.
-- [ ] `M3-CP4c3-TB2-CAND-01` — exact valid semantic first-red at ordinal 366; new non-stable review candidate.
+- [ ] **C2 / mechanical witness** — the cycle-basis half is **fixed and proved**; what remains is the same
+  assumption at the singularity-port consumer. Frame settled by Amendment 16; policy blocked on **AN1**, implemented
+  under **AN5**.
+- [ ] `M3-CP4c3-TB2-CAND-01` — **CAUSE ESTABLISHED**; pre-existing and unmasked, not a regression. Closes on ordinal
+  366 green in a run reaching at least 366.
+- [ ] `M3-CP4c3-TB2-REV-CAND-01` — package-70 binary identity is self-reported and unverified against package 69's
+  per-binary digests; owned by **AN2**.
+- [ ] `M3-CP4c3-TB2-ORCH-01` — **reopened and reclassified** as a build/packaging contract defect: the packaged
+  artifact cannot locate its own fixtures. Owned by **AN3**.
 - [ ] `M3-CP4c3-DEFN-R1-CAND-01` — correction remains compile-green/gating; ordinal 373 is still unexecuted because first-red stopped at 366.
 - [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains **ACTIVE / ONE LEVEL SHORT**; ordinal 368 remains unexecuted in R4.
 - [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains unexecuted; product correction still unaccepted.
@@ -98,7 +133,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** Amendment 15 option A′ is implemented and compile-green; valid TB2 R4 advances the mechanical production-entry witness past the former `CycleTransportAdjacencyMissing` stop but first-reds at `MissingSingularityBranchTransport`. Independent review must settle the attachment contract before any correction.
+- [ ] **CP4c-3 criterion C2:** Amendment 15 is implemented and **proved effective at runtime** — the mechanical witness passes the cycle basis and ordinals 1–365 stay green. It now first-reds at `MissingSingularityBranchTransport`, the same assumption at the singularity-port consumer, proved pre-existing and unmasked. Frame settled by **Amendment 16**; the port-emission policy is blocked on AN1's census (AN4) and implemented under AN5.
 - [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`. AM7 instrumentation is compile-green, but ordinal 368 was not reached because first-red stopped at 366; no sphere product disposition may be inferred from TB2.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.

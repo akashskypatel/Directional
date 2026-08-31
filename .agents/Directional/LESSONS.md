@@ -1109,6 +1109,29 @@ building any conclusion on it.**
     looks unset. Grep for `.find(...) != ...end()` guards whose else-branch is fallthrough whenever you change
     which items land in the map.
 
+66. **When a change invalidates an assumption, write the audit predicate as the assumption — not as a symbol.**
+    Amendment 15 cut A1's local region mesh along its barrier set. Measure AM2 told the implementer that
+    `globalVertexByLocal` becomes many-to-one and that **every consumer of it** must be audited *by search, not by
+    copying the measure's list*. That search was performed faithfully and correctly returned nothing about
+    `build_singularity_attachments` — which consumes neither that map, nor the local mesh, nor the cut, and which
+    nevertheless holds the identical assumption the amendment invalidated: *the transport neighbourhood is fully
+    traversable*. It walks the **global** one-ring of a singular vertex, requires the ring to **close**, and demands
+    a branch transport on every radial edge, while `branchTransports` excludes every barrier by construction. It
+    failed the moment the cut let execution reach it. **The instruction to search was right and the predicate was
+    wrong.** Two rules follow. Write the audit predicate as the invalidated assumption in words, then search for
+    that; and **name at least one consumer that does not touch the changed data structure**, as evidence the
+    predicate was not silently reduced to a symbol search. This is the third instance of the family lessons 59 and
+    61 record — AF3 narrowed a four-product authority to one, DEFN-R2 §4 enumerated five consumers and omitted a
+    sixth — and the first in which the enumeration discipline was honoured and the scope still missed.
+67. **Instrument the stage's error surface, not the site that is currently failing.** Measures AK1/AK2 resolved
+    `IncompleteCycleBasis` from a name into an enumerated reason plus a full locus row, and did it well. They were
+    scoped to *that code*. One turn later the same producer failed on the neighbouring code,
+    `MissingSingularityBranchTransport`, whose typed error already carries `sourceEdge`, `sourceFace`,
+    `sourceVertex` and `topologyRegion` — and the harness reported only `code/stage`, discarding all four, so the
+    locus had to be recovered by elimination instead of read. The cheap fix is not another per-code measure: when a
+    stage's typed error carries locus fields, **route the locus for every code that stage can raise**, in one
+    change. A per-site instrumentation measure buys exactly one turn of visibility.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

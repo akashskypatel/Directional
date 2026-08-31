@@ -456,7 +456,8 @@ Because tracing is combinatorial and terminates on contact, invariant 3 holds by
 #### 7.2.1 Amendment record — normative
 
 Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 frozen-definition documents; Amendment 15
-was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain. They are normative and
+was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain, and Amendment 16 at
+`M3-CP4c-3-TB2-REV` generalizes it to every A1 derivation that walks transport. They are normative and
 are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
 withdrawn except where an amendment says so explicitly.
 
@@ -506,6 +507,23 @@ withdrawn except where an amendment says so explicitly.
   cycle and **fail closed** when it binds to nothing. Amendment 12 is not weakened: constructing a derived
   transport domain is not repairing an upstream product, exactly as Amendment 14 established for the derived
   arrangement. Source: `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` §§2-7.
+- **Amendment 16 — every A1 derivation that walks transport is a transport-domain operation.** Amendment 15
+  defined a region's transport domain and applied it to the cycle basis. It applies to **every** A1 derivation
+  that traverses transport, without exception — including singularity port attachment, its incident-fan
+  construction, and any future consumer. A barrier edge is **never** traversed, never supplied with a branch
+  transport, and never required to have one; supplying one so that a fan closes is the port-derivation form of
+  Amendment 15's prohibited option C. Where a derivation assumed a **closed** ring or a fully traversable
+  neighbourhood, that assumption is replaced by the corresponding transport-domain object: the fan of one local
+  copy — one connected component of `star(v) ∖ B(R)` — which is **open** when the vertex lies on a barrier. A
+  degree-1 barrier vertex is not exempt: its star is not split, but its ring walk still straddles the barrier ray.
+  One product may not hold two notions of traversability, so a vertex bound to a slit boundary cycle may not also
+  be required to present a closed transportable ring.
+
+  The amendment fixes the **frame and the prohibition**; it deliberately leaves open whether an *open* sector fan
+  still emits singularity ports (per-sector ports, versus absorbing the index into the slit boundary cycle and
+  emitting none), because the two differ in product-visible behaviour — the second means no traces start at such a
+  singularity — and the choice requires a measured census of barrier-incident singularities that does not yet
+  exist. Source: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` §5.
 
 ### 7.3 Single-writer authority
  

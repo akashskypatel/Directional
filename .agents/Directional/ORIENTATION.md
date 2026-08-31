@@ -28,9 +28,11 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-30 at `M3-CP4c-3-DEFN-R1`, which settled AL2 by declaring **Amendment 15** — a
-topology region's *transport domain* is the region cut along its non-separating barrier set — and issued measures
-**AM0–AM9**. Exact next is `M3-CP4c-3-CB2`, Code + Build, runtime-free. If the head commit is far ahead, trust
+**Currency.** Last updated 2026-08-31 at `M3-CP4c-3-TB2-REV`, which accepted TB2 as a valid semantic red at ordinal
+**366**, **confirmed Amendment 15 effective at runtime** (the mechanical witness advanced past `IncompleteCycleBasis`
+with the accepted 365 prefix still green), established the next cause — `MissingSingularityBranchTransport`, the
+same disagreement one consumer later, **proved pre-existing and merely unmasked** — and declared **Amendment 16**.
+Measures **AN0–AN9**; exact next is `M3-CP4c-3-CB3`, Code + Build, runtime-free. If the head commit is far ahead, trust
 `TODO.md`'s current-focus block and `Future_Chat_Session_Handoff.md`'s next-turn block over this file's
 "where we are" section; the architecture and recurring-defect sections age much more slowly.
 
@@ -92,14 +94,17 @@ accepted selector is cumulative and each checkpoint's prefix is byte-identical t
 | CP4c-2 358 (**withdrawn** as a gate; retained) | `6eda3aad83de81fc55d5cd446f80704d604a842f10995789b483291bb64fbe62` |
 | CP4c-2 361 prefix (superseded by accepted 365; retained) | `61918d9fbd7bf757437886f0e86776b60665c58e4d7283b81d42caca03c0288b` |
 | **accepted 365 (CP4c-2, closed at R10)** | `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
-| **CP4c-3 gate 367 (frozen at DEFN, unselected)** | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` |
+| CP4c-3 367 prefix (frozen at DEFN; superseded as a gate, retained) | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` |
+| CP4c-3 370 prefix (AL7 append; retained) | `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525` |
+| **CP4c-3 gate 373 (frozen at CB2 under AM8, unselected)** | `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` |
 
-**All nine values are authority**, each recomputed from committed bytes; the first eight were re-verified at
-`R10-REV` and 367 was computed at `M3-CP4c-3-DEFN` when its file was created. The CP4c-3 gate file's `head -355`,
-`head -357`, `head -361` and `head -365` all reproduce their frozen hashes. `Architecture_M3_CP4c1_Required_Green_Selector.txt` was retired in a cleanup and **no longer exists**; that is by
+**All eleven values are authority**, each recomputed from committed bytes. At `M3-CP4c-3-TB2-REV` the 373 gate file
+was re-verified independently: 373 lines, 373 unique identities, and `head -355`, `head -357`, `head -361`,
+`head -365`, `head -367` and `head -370` **each reproduce their frozen hash exactly**. `Architecture_M3_CP4c1_Required_Green_Selector.txt` was retired in a cleanup and **no longer exists**; that is by
 design, because every accepted hash survives as a **prefix of its successor gate file**. Derive them from the
-current CP4c-3 gate file: `head -316`, `head -346`, `head -353`, `head -355`, `head -357`, `head -361`,
-`head -365`. 358 has its own retained file. **Every gate file reproduces all of its predecessor prefixes exactly**, which is what keeps
+current CP4c-3 gate file `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`: `head -316`, `head -346`,
+`head -353`, `head -355`, `head -357`, `head -361`, `head -365`, `head -367`, `head -370`. 358 has its own retained
+file. **Every gate file reproduces all of its predecessor prefixes exactly**, which is what keeps
 `first_red_ordinal` comparable across the whole arc. **Recompute rather than copy**, validate every expected digest as exactly 64
 lowercase hex at authoring, and never write one as `PREFIX…SUFFIX` where a value is expected: `PR8` orchestration
 defect `R7-ORCH-01` was four hashes expanded back to full length from abbreviations, one of them only 63 characters
@@ -130,12 +135,12 @@ authoritative M3 packages **68**. `selected_r2_branch=NONE`; selector **365** is
 `gate_execution_authorized=false`. TB1 added **+0 events / +0 recurrences**: ordinal 366 belongs to a gate that has
 never been accepted, and the accepted 365 prefix went green in that very run.
 
-**CP4c-3 is open, and its gate is frozen at 367** — accepted 365 plus criterion **C2**
-(`MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, ordinal 366) and criterion **C3**'s full
-torus-and-mechanical form (ordinal 367). Both are red today, which is correct for a required-green selector.
+**CP4c-3 is open, and its gate is frozen at 373** — accepted 365, plus criterion **C2** (ordinal 366) and criterion
+**C3**'s full torus-and-mechanical form (367), plus the inherited prescribed sphere (368), the ordinary
+trace-crossed proposal (369) and the typed empty-network rejection (370), plus Amendment 15's three self-checks
+(371–373). All eight are red or unreached today, which is correct for a required-green selector.
 `M3-CP4c-3-DEFN` also put the **prescribed sphere in the gate** after two checkpoints outside one, and decided
-`R8-CAND-02`. Three further identities are named for append under AK7, producing gate **370**. CP4c-3 runs in two
-phases: instrument (AK1–AK3), then fix on measured causes (AK4–AK6).
+`R8-CAND-02`.
 
 **Phase 1 is done and its answers are in.** `M3-CP4c-3-TB1` (run/job `33340448381 / 99335020672`, immutable CB1
 package `9739919234`, semantic source `48dd011c4aa689a245b74527ed9df0900ada9bf3`) re-proved the **accepted 365
@@ -163,6 +168,31 @@ to its freeze.
 - Frozen non-gating diagnostics ran in full: **0 PASS / 3 RED**, report-only. Three workflow controls failed in
   preflight and executed no Directional runtime; one of them is the **third** occurrence of the `R7-ORCH-01`
   malformed-digest defect, escalated from a reminder to a mechanism by AL8.
+
+**`M3-CP4c-3-TB2` proved Amendment 15 works, and this is the current headline result.** Run `33355714664`,
+semantic package **69** (`9742715856`), semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, executed
+against fixture-only transport package **70**. The mechanical witness **advanced past `IncompleteCycleBasis`** —
+TB1's stop is gone, the cut transport domain is constructed, the tangent bundle initializes, the cycle basis is
+built and validated, and execution reaches a later stage of the same producer. **Ordinals 1–365 are green**, so a
+deeply invasive change to A1's local mesh construction regressed nothing in the accepted gate.
+
+- **New first red at ordinal 366: `MissingSingularityBranchTransport`** — and it is the *same architectural
+  disagreement one consumer later*. `build_singularity_attachments` (`FieldTransportAtlas.cpp:597-618`) walks the
+  ordered one-ring fan of a singular vertex and demands a branch transport on **every** radial edge;
+  `ordered_incident_fan` (`:351-402`) builds that fan from the **global** `sourceMesh.F` and *requires it to
+  close*; and `branchTransports` (`:304-342`, built at `:1827` from `adjacencies`) **excludes every barrier by
+  construction**. So a singular vertex incident to a hard feature fails by construction. Established by the same
+  elimination as TB1: the failing radial edge is not `SourceBoundary` (the domain is closed) and not
+  `NonTraversable` (one region over all 300 faces), so it is `HardFeature`.
+- **It is pre-existing and was merely unmasked — not a regression.** Call order is `build_branch_transports`
+  `:1827` → cycle-basis loop `:1865` → `build_singularity_attachments` `:2384`, so the cycle failure fired first at
+  TB1; and CB2's diff to that file begins at old line **842**, leaving all three functions untouched. The
+  mechanical witness simply got further.
+- **Amendment 15's own self-checks never ran.** First-red at 366 left ordinals 367–373 unexecuted, so the barrier
+  decomposition, the Euler cut identity and the unbound-singularity count are still **unmeasured**, and every
+  DEFN-R1 prediction remains unverified. The amendment is *effective* and *unverified* at once.
+- **`M3-CP4c-3-TB2-REV` declared Amendment 16**, generalizing 15 from the cycle basis to **every** A1 derivation
+  that walks transport. See §7 item 1.
 
 **`M3-CP4c-3-DEFN-R1` settled the normative question with Amendment 15 (`DESIGN.md` §7.2.1).** A region's face set
 and its published `euler_characteristic()` / `boundary_loop_count()` are facts about the **uncut** source complex
@@ -196,7 +226,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, **zero mandatory edges** | **24 traces / 56 events** | **two independent problems.** (a) Its pre-cut actual embedded graph is measured **non-cellular**: `V/E/F = 18/30/18`, `χ=6` against `sourceChi=2`, one component, no excluded boundary orbits — so it genuinely needs cuts, and they will be trace-crossed. (b) The producer never gets there: it fails at A2a′ reporting `CellularityNotEstablished` at source face `25-27-28`, which is a `default:` bucket, **not a cellularity verdict**. TB1 resolved that bucket two levels further — `RotationSystemInconsistent → TraceEventPositionInvalid` — with source topology, atlas and network all available; one level short of actionable (§7 item 2) |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F | no atlas — stops in **A1** at `IncompleteCycleBasis` | **criterion C2, gated at ordinal 366, cause ESTABLISHED at TB1.** Resolved to `CycleTransportAdjacencyMissing`, region `0`, source edge `0-3`. Its sole region is `V/E/F = 152/450/300`, `χ=2`, `boundaryLoops=0`, `genus=0` — a **sphere** — with 152 interior vertices, 152 expected cycles / rows / curvatures and 450 inner adjacencies. A non-separating `HardFeature` barrier stayed interior to its own region. **Corrective defined** by Amendment 15; cut, it becomes a sphere with `c` holes — `χ' = 2 − c`, `b' = c`, genus 0. See §7 item 1 |
+| **mechanical feature** | fixture, 152 V / 300 F | no atlas — stops in **A1** at `IncompleteCycleBasis` | **criterion C2, gated at ordinal 366, cause ESTABLISHED at TB1.** Resolved to `CycleTransportAdjacencyMissing`, region `0`, source edge `0-3`. Its sole region is `V/E/F = 152/450/300`, `χ=2`, `boundaryLoops=0`, `genus=0` — a **sphere** — with 152 interior vertices, 152 expected cycles / rows / curvatures and 450 inner adjacencies. A non-separating `HardFeature` barrier stayed interior to its own region. **Amendment 15 fixed it and TB2 proved the fix at runtime** — the cycle basis now builds. The witness advanced to `MissingSingularityBranchTransport` at ordinal 366: the same disagreement at the *port* consumer, where a singular vertex incident to a barrier cannot close its one-ring. See §7 item 1 |
 
 ## 5. The central theorem of CP4c-2
 
@@ -293,7 +323,22 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4c-2.
 
-1. **Criterion C2 — the mechanical witness: cause ESTABLISHED, and it is a definition question.** TB1 resolved the
+1. **Criterion C2 — the mechanical witness now fails at the *port* consumer, `MissingSingularityBranchTransport`.**
+   The cycle-basis half is **fixed and proved** (Amendment 15, TB2 ordinal 366 advanced past it). What remains is
+   the same assumption in `build_singularity_attachments`: it requires a **globally closed** one-ring fan and a
+   branch transport on every radial edge, while `branchTransports` excludes barriers by construction, so any
+   singular vertex incident to a hard feature fails. Pre-existing, unmasked, not a regression (§3 above).
+   **A degree-1 tip is not exempt** — its star is not split, but the ring walk still straddles the single barrier
+   ray. **Amendment 16** (`DESIGN.md` §7.2.1) fixes the frame: every A1 derivation that walks transport is a
+   transport-domain operation, a barrier is never traversed and never given a branch transport, and a closed ring
+   is replaced by the fan of one connected component of `star(v) ∖ B(R)`. CB2 has already created the contradiction
+   the amendment forbids — AM4 binds a barrier-incident singularity to a **slit boundary cycle** while the port
+   derivation still demands a **closed transportable ring** for the same vertex.
+   **What Amendment 16 deliberately leaves open, pending measurement (AN1, enforced by AN4):** whether an *open*
+   sector fan still emits ports (**P1**, per-sector ports — apportioning the index across copies must then be
+   defined and proved) or emits none and lets the slit boundary cycle absorb the index (**P2** — internally
+   consistent with AM4 today, but it means **no traces start at that singularity**, a real A2a consequence).
+1b. **The cycle-basis half, retained for reference — cause ESTABLISHED, and it was a definition question.** TB1 resolved the
    eight-site `IncompleteCycleBasis` collapse to `CycleTransportAdjacencyMissing` at region `0`, source edge `0-3`,
    `fieldTransportAdjacencyExists=false`. Edge `0-3` is a `HardFeature` **barrier** — by elimination over
    `FieldTransportAtlas::make`'s four buckets, not by guess — and the atlas deliberately created no adjacency for
@@ -376,7 +421,21 @@ CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4
    `cycle` as `std::nullopt` and continues. A vertex consumed by a slit is still *globally* interior, so it takes
    the unchecked path: its prescribed index goes from verified against the field's own holonomy to unverified and
    unbound, with a green build. Owned by **AM4**; landing the cut without it trades a red gate for an
-   unverifiable certificate.
+   unverifiable certificate. CB2 implemented the binding, but **ordinal 373 has never executed**, so the unbound
+   count is still unmeasured and this stays open.
+7. **`M3-CP4c3-TB2-ORCH-01` — the packaged artifact cannot locate its own fixtures.** Reclassified at TB2-REV from
+   "resolved orchestration" to a **build/packaging contract defect**, because the defect is inside the artifact
+   under test. `tests/TestFixturePaths.h:51-64` probes `<exe>/../test-data`, then `<exe>/test-data`, then returns
+   the **compile-time absolute** `DIRECTIONAL_TEST_SOURCE_DIR` baked in by `cmake/DirectionalTests.cmake`. That is
+   the *build machine's* source directory: off the builder it is a guaranteed miss, and on it a success by
+   coincidence of path. Package 69's manifest has 28 entries and ships no fixtures; package 70's has 55 and does.
+   Every future artifact-only TB needs the same out-of-band remedy until a CB fixes it, and a gate that depends on
+   a runner's directory layout is environment-dependent authority. Owned by **AN3**.
+8. **`M3-CP4c3-TB2-REV-CAND-01` — package-70 binary identity is self-reported.** TB2 executed a different package
+   from the one CB2 froze. The substitution is acceptable — it relocates fixture bytes that were already inside the
+   immutable source archive whose digest matched — but `semanticBinariesUnchanged=true` is asserted by the same
+   orchestration that produced package 70, and the two manifests (28 vs 55 entries) are not comparable line for
+   line. Owned by **AN2**: publish the four per-binary SHA-256 from packages 69 and 70 side by side.
 
 **Closed in CP4c-2, do not re-open:** `PR8-R043`, `PR8-R044` (proved on a bounded *and* a closed witness),
 `R7-ORCH-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-CAND-01`, `R8-ORCH-01`, `R9-CAND-01`, `R9-ORCH-01`; measure **AD3**
@@ -473,6 +532,23 @@ errors and was believed for eight turns. Related and equally cheap to avoid: an 
 error it already holds (`ASSERT_TRUE(atlasBuild)` where `atlasBuild.error()` and
 `field_atlas_build_error_code_name()` both exist); a diagnostic loop whose per-witness rows are collected and then
 summarized down to one row; and a frozen non-gating selector a plan silently declines to run.
+
+**An audit scoped by symbol is not an audit scoped by assumption — and the search can be done perfectly and still
+miss.** The sharpest form of the enumeration family, and the first where the discipline was honoured. AM2 told the
+implementer that `globalVertexByLocal` becomes many-to-one and that **every consumer of it** must be found *by
+search, not by copying the measure's list*. That search was correct, and correctly returned nothing about
+`build_singularity_attachments` — which touches neither that map, nor the local mesh, nor the cut, and which holds
+the exact assumption Amendment 15 invalidated: *the transport neighbourhood is fully traversable*. It broke the
+moment the cut let execution reach it. **Write the audit predicate as the invalidated assumption, in words, and
+name at least one consumer that does not touch the changed data structure** — that last item is the evidence the
+predicate was not silently reduced to a symbol search. `LESSONS.md` 66.
+
+**Instrument the stage's error surface, not the site that is failing.** AK1/AK2 resolved `IncompleteCycleBasis`
+into an enumerated reason plus a full locus row, and did it well — scoped to that one code. One turn later the same
+producer failed on the neighbouring code, whose typed error already carries `sourceEdge`, `sourceFace`,
+`sourceVertex` and `topologyRegion`, and the harness published only `code/stage`, so the locus had to be recovered
+by elimination instead of read. A per-site instrumentation measure buys exactly one turn of visibility.
+`LESSONS.md` 67.
 
 **An enumeration inside a measure is read as exhaustive.** Twice in consecutive turns a corrective measure listed
 items next to a universal instruction and the list was taken for the instruction's scope. AF3 named "the production

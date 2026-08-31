@@ -1,5 +1,95 @@
 # Changelog
 
+## 2026-08-31 — `M3-CP4c-3-TB2-REV`: Amendment 15 confirmed at runtime; Amendment 16 declared
+
+Independent review, definition and planning in one turn under the standing cadence, with the user's authorization
+to combine a DEFN where one is needed. Nothing executed, compiled, packaged or benchmarked; no gate selected or
+run; **no product, test, fixture, selector or build-logic byte changed**. Measures issued: **AN0–AN9**. Full
+record: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`. Normative record: `DESIGN.md` §7.2.1
+**Amendment 16**.
+
+**Verified independently rather than accepted.** The working tree is byte-identical to packaged semantic source
+`005512f20ed56edc793f4d6505f3d2b4c2999c71`, so every source claim describes the binary that ran. Selector **373**
+was recomputed from committed bytes — 373 lines, 373 unique identities,
+`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` — and **all six** predecessor prefixes (355,
+357, 361, 365, 367, 370) reproduce exactly from `head -n` of that file, so `first_red_ordinal` stays comparable
+across the whole CP4c arc. AM8's append is exactly as specified at ordinals 366–373.
+
+**The headline result: Amendment 15 works.** The mechanical witness **advanced past `IncompleteCycleBasis`** —
+TB1's stop is gone. The cut transport domain is constructed, the tangent bundle initializes, the cycle basis is
+built and validated, index accounting completes, and execution reaches a later stage of the same producer. And
+**ordinals 1–365 are green**, so a deeply invasive change to A1's local mesh construction regressed nothing in the
+accepted gate. CB2 also implemented the endpoint rule *better than the amendment specified it*: rather than
+applying the formula `copies(v) = d_B(v)`, `make_local_region_mesh` (`:1030-1104`) implements the **definition** —
+it flood-fills the star's face-adjacency graph with barrier edges removed and creates one local copy per component
+— so tips, branch vertices and boundary vertices all fall out with no special case and a formula error is
+impossible.
+
+**New first red at ordinal 366: `MissingSingularityBranchTransport`, the same disagreement one consumer later.**
+`build_singularity_attachments` (`:597-618`) walks the ordered one-ring fan of a singular vertex and demands a
+branch transport on **every** radial edge; `ordered_incident_fan` (`:351-402`) builds that fan from the **global**
+`sourceMesh.F` and **requires it to close**; and `branchTransports` (`:304-342`, built at `:1827` from
+`adjacencies`) **excludes every barrier by construction**. A singular vertex incident to a hard feature therefore
+fails by construction. Established by the same elimination as TB1: the failing radial edge is not `SourceBoundary`
+(the domain is closed, `globalEF = localEF = 1,158`, `boundaryLoops = 0`) and not `NonTraversable` (one region over
+all 300 faces), so it is `HardFeature`.
+
+**It is pre-existing and merely unmasked — decisively, not by argument.** Call order is `build_branch_transports`
+`:1827` → cycle-basis loop `:1865` → `build_singularity_attachments` `:2384`, so the cycle failure fired first at
+TB1; and CB2's diff to that file begins at old line **842**, leaving all three functions untouched. Not a
+regression, not a side effect of the cut, and not a defect in Amendment 15's implementation — the witness simply
+got further.
+
+**Amendment 16 declared**, generalizing 15 from the cycle basis to **every** A1 derivation that walks transport:
+a barrier is never traversed, never supplied with a branch transport, and never required to have one; a closed ring
+is replaced by the fan of one connected component of `star(v) ∖ B(R)`, which is open when the vertex lies on a
+barrier. A degree-1 tip is **not** exempt — its star is not split, but the ring walk still straddles the single
+barrier ray. The amendment fixes the frame and the prohibition and **deliberately leaves the port-emission policy
+open**: per-sector ports versus absorbing the index into the slit boundary cycle and emitting none differ in
+product-visible behaviour — the second means no traces start at that singularity — and the choice needs a measured
+census of barrier-incident singularities that does not exist. **AN4** forbids designing across that gap. CB2 has
+already created the contradiction the amendment forbids in miniature: AM4 binds a barrier-incident singularity to a
+**slit boundary cycle** while the port derivation still demands a **closed transportable ring** for the same vertex.
+
+**Owned: measure AM2 was under-specified.** It required auditing every consumer of `globalVertexByLocal` *by
+search, not by copying the list*. That search was performed faithfully and correctly found nothing about
+`build_singularity_attachments`, which touches neither that map nor the local mesh nor the cut — and holds the
+invalidated assumption anyway. The instruction to search was right and the **predicate** was wrong: the audit was
+scoped by symbol when the thing to audit was an assumption. Third instance of the family `LESSONS.md` 59/61 record,
+and the first where the enumeration discipline was honoured and the scope still missed. Recorded as `LESSONS.md`
+**66**, with **AN8** requiring the CB to name at least one consumer that holds the assumption without touching the
+changed data structures.
+
+**Also recorded, `LESSONS.md` 67:** the typed error at `:613-616` carries four locus fields — radial `sourceEdge`,
+`sourceFace`, `sourceVertex`, `topologyRegion` — and the harness published only `code/stage`
+(`tests/FieldAlignedCurveNetworkTests.cpp:5283-5285`), so the locus had to be recovered by elimination. AK1/AK2
+fixed exactly this one turn earlier, in the same producer, scoped to the neighbouring code. **Instrument the
+stage's error surface, not the site that is failing.** Owned by **AN1**.
+
+**Two procedural findings.** `M3-CP4c3-TB2-ORCH-01` is **reopened and reclassified** from resolved orchestration to
+a **build/packaging contract defect**: `tests/TestFixturePaths.h:51-64` falls back to the compile-time absolute
+`DIRECTIONAL_TEST_SOURCE_DIR`, the build machine's own source directory — off the builder a guaranteed miss, on it
+a success by coincidence of path — and package 69 ships no fixture tree (28-entry manifest against package 70's
+55). Every future artifact-only TB needs the same out-of-band remedy until a CB fixes it, and a gate that depends on
+a runner's directory layout is environment-dependent authority (**AN3**). And the package-70 substitution is
+**accepted** — it relocates fixture bytes that were already inside the immutable source archive whose digest
+matched, with no configure, compile, relink or source edit — but its load-bearing claim
+`semanticBinariesUnchanged=true` is asserted by the same orchestration that produced package 70, and the manifests
+are not comparable line for line; opened as `M3-CP4c3-TB2-REV-CAND-01` and owned by **AN2**. Separately, the frozen
+TB2 plan's rerun rule keys on *"executed no Directional runtime"* when it means *"produced no semantic verdict"*;
+R4's restart after 40 green harness-blocked processes was right and the rule was wrong (**AN7**).
+
+**What is still unproved.** First-red at 366 left ordinals **367–373 unexecuted**, so Amendment 15's own three
+self-checks — barrier exclusion from the cycle basis, the Euler cut identity, and unbound prescribed singularities
+= 0 — have **never run**, and AM1's barrier decomposition, though computed by the implementation, is absent from
+the TB2 report. Every DEFN-R1 prediction remains unverified, including the falsifier "a measured cycle in `B(R)`
+reopens the amendment". The amendment is effective and unverified at the same time, and both halves are recorded.
+
+Gate **373** stays frozen and unselected; `selected_gate=NONE`, `gate_execution_authorized=false`. Accounting
+unchanged: **44 / 14 / 30**, debt **5**, semantic packages **69**, **+0 events / +0 recurrences**.
+
+Exact next: **`M3-CP4c-3-CB3`** — Code + Build under AN0–AN9, runtime-free, GMP/GMPXX linked.
+
 ## 2026-08-31 — `M3-CP4c-3-TB2`: orchestration remediated; valid semantic first-red moves to ordinal 366
 
 Following explicit user authorization, the fixture-root defect from the initial TB2 attempt was corrected without changing semantic source or binaries. Fixture-only package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) adds the immutable packaged fixture tree at sibling `test-data`; package-69 semantic binaries were proven byte-identical. R1–R3 exposed only orchestration mapping/preflight defects and carry no gate authority.

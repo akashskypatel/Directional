@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. `M3-CP4c-3-CB2` remains **COMPLETE / BUILD GREEN / RUNTIME-FREE** on semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, immutable GMP package **69** / artifact `9742715856`, selector **373** `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. `M3-CP4c-3-TB2` is **COMPLETE / BLOCKED — ORCHESTRATION-INVALID AFTER RUNTIME BEGAN / NO GATE AUTHORITY**: 40 fresh-process identities passed, ordinal 41 could not resolve its packaged fixture through the binary's compile-time absolute source-root fallback, and 42–373 were not executed. Package/source/selector postflight stayed immutable. CP4c-3 remains **OPEN**; exact next is independent **`M3-CP4c-3-TB2-REV`**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative M3 packages **69**.
+**Current state (2026-08-31).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. `M3-CP4c-3-CB2` remains **COMPLETE / BUILD GREEN / RUNTIME-FREE** on semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, immutable GMP package **69** / artifact `9742715856`, selector **373** `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`. `M3-CP4c-3-TB2` is **COMPLETE / VALID SEMANTIC RED AT ORDINAL 366 / REVIEWED**: its first attempt stopped at ordinal 41 on the binary's compile-time absolute fixture-root fallback, and after a user-authorized fixture-only transport package **70** (artifact `9744461475`) run `33355714664` executed selector 373 from ordinal 1 with ordinals **1–365 green**. `M3-CP4c-3-TB2-REV` accepted that execution, **confirmed Amendment 15 effective at runtime**, established the next cause `MissingSingularityBranchTransport` as the same architectural disagreement at the singularity-port consumer and **proved it pre-existing rather than a regression**, and declared **Amendment 16** with measures **AN0–AN9**. Ordinals 367–373 remain unexecuted, so Amendment 15's own self-checks are still unmeasured. CP4c-3 remains **OPEN**; exact next is **`M3-CP4c-3-CB3`**. Stable accounting remains **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, authoritative semantic M3 packages **69**.
 
 ## 1. Separate current/future authority
 
@@ -25,7 +25,8 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — current TB2 blocker/postflight authority.
 - `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — current measured phase-1 runtime authority.
 - `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — TB1 adjudication authority and the **AL0–AL9** measures; AL3/AL4 still govern the prescribed sphere.
-- `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — current definition authority: **Amendment 15** and the **AM0–AM9** measures that govern `M3-CP4c-3-CB2`.
+- `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — **Amendment 15** and the AM0–AM9 measures.
+- `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — **current review/definition authority: Amendment 16 and the AN0–AN9 measures that govern `M3-CP4c-3-CB3`.**
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
@@ -50,7 +51,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB2 orchestration-invalid at ordinal 41 after 40 green processes; no gate authority; TB2 review next** |
+| **CP4c-3** | mechanical witness / missing field-transport adjacency plus inherited CP4c-2 debts | **OPEN; TB2 valid semantic red at ordinal 366 with 1–365 green; Amendment 15 confirmed effective, Amendment 16 declared; CB3 next under AN0–AN9** |
 
 ### 2.1 CP4c-0
 
@@ -264,9 +265,46 @@ be drawn.
 
 Postflight re-proved package SHA, **28/28** manifest, source archive, selector 373, executable mode and source-tree
 immutability; no configure/compile/relink/repair/generated-discovery/benchmark or source/test/fixture/selector/package
-mutation occurred. Stable accounting is unchanged at **44 / 14 / 30**, debt **5**, packages **69**. Exact successor:
-independent **`M3-CP4c-3-TB2-REV`**, which must freeze the actual runtime fixture-root preflight and decide whether
-unchanged package 69 may be re-executed.
+mutation occurred. Stable accounting is unchanged at **44 / 14 / 30**, debt **5**, packages **69**.
+
+**Superseded within the same turn.** The user authorized a fixture-only correction; package **70** (artifact
+`9744461475`) relocated the exact immutable fixture tree from the packaged source archive into the sibling
+`test-data` root the binary probes first, and run `33355714664` re-executed selector 373 from ordinal 1. The record
+below is retained because it is where the packaging defect was first observed; the authoritative TB2 result is the
+valid semantic red at ordinal 366.
+
+### `M3-CP4c-3-TB2-REV` — Amendment 16 (measures AN0–AN9)
+
+Record: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`. Normative record: `DESIGN.md` §7.2.1
+**Amendment 16**. Review, definition and planning in one turn; no runtime, no compile, no packaging, no gate
+execution, and no product/test/fixture/selector byte changed.
+
+- **Execution ACCEPTED.** Selector 373 was recomputed from committed bytes and all six predecessor prefixes (355,
+  357, 361, 365, 367, 370) reproduce exactly; the working tree is byte-identical to packaged source
+  `005512f20ed56edc793f4d6505f3d2b4c2999c71`. The package-70 substitution is accepted as *relocation of already
+  immutable bytes*, with one qualification: `semanticBinariesUnchanged=true` is self-reported and the two manifests
+  (28 vs 55 entries) are not comparable line for line, so per-binary digests must be published (**AN2**).
+- **Amendment 15 confirmed effective at runtime.** The mechanical witness advanced past `IncompleteCycleBasis`, and
+  ordinals **1–365** are green, so the cut regressed nothing in the accepted gate.
+- **New cause established by elimination:** `MissingSingularityBranchTransport` — `build_singularity_attachments`
+  demands a branch transport on every radial edge of a **globally closed** one-ring fan, while `branchTransports`
+  excludes every barrier by construction. **Proved pre-existing and merely unmasked**: CB2's diff to that file
+  begins at old line 842, leaving `build_branch_transports`, `ordered_incident_fan` and
+  `build_singularity_attachments` untouched.
+- **Amendment 16** generalizes 15 to every A1 derivation that walks transport, prohibits supplying a barrier with a
+  branch transport, and replaces a closed ring with the fan of one component of `star(v) ∖ B(R)`. It leaves the
+  **port-emission policy** open pending AN1's census; **AN4** forbids designing across it.
+- **Owned:** measure AM2 scoped its consumer audit by *symbol* rather than by *assumption*, so a faithful search
+  could not have found this consumer. `LESSONS.md` **66**; **AN8** requires naming a consumer that holds the
+  assumption without touching the changed data structures. `LESSONS.md` **67** records that per-site error
+  instrumentation buys exactly one turn of visibility.
+- **`M3-CP4c3-TB2-ORCH-01` reopened and reclassified** as a build/packaging contract defect owned by **AN3**: the
+  binary's compile-time absolute `DIRECTIONAL_TEST_SOURCE_DIR` fallback makes fixture resolution depend on the
+  runner's directory layout.
+- **Still unproved:** ordinals 367–373 never executed, so Amendment 15's three self-checks and AM1's barrier
+  decomposition remain unmeasured and every DEFN-R1 prediction is unverified.
+
+Exact successor: **`M3-CP4c-3-CB3`** — Code + Build under **AN0–AN9**, runtime-free, GMP/GMPXX linked.
 
 ## 5. High-value reversals retained
 

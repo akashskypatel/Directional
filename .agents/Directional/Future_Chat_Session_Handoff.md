@@ -92,7 +92,9 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB2-REV` (Independent REVIEW + PLAN)
+## Mandatory next turn — `M3-CP4c-3-CB3` (Code + Build, runtime-free)
+
+`M3-CP4c-3-TB2-REV` is **COMPLETE**: it accepted TB2's execution, confirmed **Amendment 15** effective at runtime, established the ordinal-366 cause and proved it pre-existing, declared **Amendment 16** (`DESIGN.md` §7.2.1), and issued **AN0–AN9**. Record: `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md`.
 
 `M3-CP4c-3-TB2` is **COMPLETE / RED — VALID SEMANTIC FIRST-RED AT ORDINAL 366**. The authoritative report is `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md`.
 
@@ -117,27 +119,49 @@ R4 passed immutable package/source/GMP/selector/static-mapping/fixture preflight
 
 This is a **valid semantic first-red**. Ordinals **367–373** were not executed. `M3-CP4c3-TB2-ORCH-01` is resolved as non-stable orchestration debt; the new semantic observation is tracked as `M3-CP4c3-TB2-CAND-01`. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic packages **69**. CP4c-3 remains **OPEN**.
 
-### Exact successor
+### What the review concluded — the successor's starting facts
 
-Run independent **`M3-CP4c-3-TB2-REV`**. It must update `ORIENTATION.md`, adjudicate `M3-CP4c3-TB2-CAND-01`, and trace the singularity-attachment contract against Amendment 15's slit-bound prescribed-singularity representation and the explicit prohibition on giving hard-feature barriers transport adjacency. The review must determine whether the missing branch transport is an invalid consumer expectation, a missing non-barrier attachment route, or another upstream representation mismatch before prescribing a correction. Do **not** implement product/test/build semantics or retry the gate before that review.
+- **Execution ACCEPTED, one qualification recorded.** Selector 373 was recomputed from committed bytes (373 lines, 373 unique identities) and **all six** predecessor prefixes reproduce exactly; the working tree is byte-identical to packaged source `005512f20…`. The package-70 substitution is accepted as *relocation of already-immutable bytes* — the fixture tree came out of the source archive whose digest matched — but `semanticBinariesUnchanged=true` is **self-reported** and the manifests (28 vs 55 entries) are not comparable line for line. Opened as `M3-CP4c3-TB2-REV-CAND-01`, owned by **AN2**.
+- **Amendment 15 is confirmed effective at runtime.** The mechanical witness advanced past `IncompleteCycleBasis`, and ordinals **1–365** are green, so the cut regressed nothing in the accepted gate. CB2 implemented the endpoint rule better than the amendment specified: `make_local_region_mesh` flood-fills `star(v) ∖ B(R)` and creates one copy per component, so tips, branch and boundary vertices need no special case.
+- **Ordinal 366 is the same architectural disagreement one consumer later.** `build_singularity_attachments` (`:597-618`) demands a branch transport on **every** radial edge of a fan that `ordered_incident_fan` (`:351-402`) builds from the **global** `sourceMesh.F` and **requires to close**, while `branchTransports` (`:304-342`, built at `:1827` from `adjacencies`) **excludes every barrier by construction**. Established by the same elimination as TB1: the failing radial edge is not `SourceBoundary` (closed domain) and not `NonTraversable` (one region over 300 faces), so it is `HardFeature`.
+- **Pre-existing and unmasked, not a regression.** Call order is `build_branch_transports` `:1827` → cycle loop `:1865` → `build_singularity_attachments` `:2384`, and CB2's diff to that file begins at old line **842**, leaving all three untouched.
+- **A degree-1 tip is not exempt:** its star is not split, but the ring walk still straddles the single barrier ray.
+- **CB2 already holds the contradiction Amendment 16 forbids:** AM4 binds a barrier-incident singularity to a **slit boundary cycle** while the port derivation still demands a **closed transportable ring** for the same vertex.
+- **Still unproved:** ordinals 367–373 never executed, so Amendment 15's three self-checks and AM1's barrier decomposition are unmeasured and every DEFN-R1 prediction is unverified.
+
+### Exact scope of `M3-CP4c-3-CB3`
+
+**Code + Build.** Authors semantics, compiles, packages. **Executes no Directional runtime**; no gate execution, no benchmark. GMP/GMPXX linkage mandatory.
+
+1. **AN1 — publish before designing.** Route `MissingSingularityBranchTransport`'s four existing locus fields (radial `sourceEdge`, `sourceFace`, `sourceVertex`, `topologyRegion`) into the reported diagnostic, and do the same for **every** `FieldAtlasBuildErrorCode` the mechanical and sphere witnesses can reach — fixing one code per turn is what produced this turn. Publish the **barrier-incident singularity census**: how many prescribed singularities are incident to `B(R)`, each one's `d_B(v)`, whether it is a tip / interior arc vertex / branch vertex, how many copies its star splits into, and its index. Publish AM1's barrier decomposition (`n`, `m`, `c`, `χ(B)`, `∂`, tree-or-cycle per component), which CB2 computes and TB2 did not report.
+2. **AN2** — publish the four per-binary SHA-256 from packages **69** and **70** side by side and state whether they match.
+3. **AN3** — fix fixture resolution **in the package**: the compile-time absolute `DIRECTIONAL_TEST_SOURCE_DIR` fallback (`tests/TestFixturePaths.h:51-64`, `cmake/DirectionalTests.cmake:307,377,409`) must stop being an authority — ship the tree at a package-relative root the binary probes, or fail closed with a typed error naming the roots tried. Report whether package **68** shipped a fixture tree.
+4. **AN4** — **do not design the port correction until AN1 reports.** P1 (per-sector ports) and P2 (no ports; the slit boundary cycle absorbs the index, so **no traces start there**) differ in product-visible behaviour.
+5. **AN5** — implement Amendment 16 for `build_singularity_attachments` and its fan construction; state which policy was taken **and which measured fact chose it**; resolve the AM4-versus-port contradiction.
+6. **AN6** — carry ordinals 367–373 unchanged; **AL4 still forbids designing the sphere's fix**.
+7. **AN7** — correct the next TB plan's rerun rule: the restart test is **"produced no semantic verdict"**, not "executed no Directional runtime".
+8. **AN8** — audit by **assumption** (*"this code assumes the transport neighbourhood is fully traversable"*), not by symbol, and name at least one consumer that holds the assumption **without** touching the cut data structures.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent REVIEW guidance
+- turn-based-coding-agent Code + Build guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — **read first and update during this REVIEW turn**.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — primary valid R4 first-red authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — Amendment 15 contract, especially slit-bound singularities and prohibited barrier adjacency.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — immutable semantic package-69/build authority and the singularity-attachment implementation boundary.
-4. `.agents/Directional/LESSONS.md` §§4, 5, 7, 8 — representation/consumer invariants, field/cycle conventions, stop rules, and harness mechanics.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB2-CAND-01`, resolved `M3-CP4c3-TB2-ORCH-01`, and inherited CP4c-3 candidates.
-6. selector 373 and R4 result/log artifacts — 365 green followed by exact ordinal-366 semantic red.
-7. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — current status and retained lineage.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — **AN0–AN9**, Amendment 16, the established cause, and the P1/P2 policy question AN4 blocks.
+2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–16, normative.
+3. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — Amendment 15 and AM0–AM9; still binding.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — the valid R4 first-red authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — package-69 build authority and the implementation boundary.
+6. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md` — `M3-CP4c3-TB2-CAND-01`, reopened `M3-CP4c3-TB2-ORCH-01`, new `M3-CP4c3-TB2-REV-CAND-01`, and inherited candidates.
+8. `TODO.md` / `CHANGELOG.md` / `M3_CP4c_Consolidated_Record.md` — current status and retained lineage.
 
-**This is REVIEW + PLAN.** Do not execute Directional runtime, retry the gate, patch product/test/build semantics, or produce a replacement semantic package in the review turn.
+Source CB3 will change or must audit: `src/authority/FieldTransportAtlas.cpp` — `build_branch_transports` (`:304-342`), `ordered_incident_fan` (`:351-402`), `build_singularity_attachments` (`:480-...`, the failing site `:597-618`), the bucket classification (`:1456-1491`), and `make_local_region_mesh`'s cut (`:857-1190`). Also `tests/TestFixturePaths.h:51-64` and `cmake/DirectionalTests.cmake:307,377,409` for AN3, and `tests/FieldAlignedCurveNetworkTests.cpp:5273-5288` for the discarded locus.
+
+**This is CODE + BUILD.** It compiles and packages and **executes no Directional runtime**; a gate may not be run. A red TB after it routes to `REVIEW + PLAN` as usual.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
