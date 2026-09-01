@@ -92,113 +92,110 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB9` (Code + Build, runtime-free)
+## Mandatory next turn — `M3-CP4c-3-TB7` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-DEFN-R2` is **COMPLETE**. It discharged CB8-REV's **AX1–AX8**, froze the vertex-star continuation
-semantics, proved the mechanical locus exactly, and authorized exactly one bounded successor. Record and measure
-authority: `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` (**AY0–AY9**). Nothing was executed, compiled,
-packaged or mutated. Selector **373** stays byte-frozen at
-`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; **selector 374 still does not exist.**
+`M3-CP4c-3-CB9` is **COMPLETE at the Code + Build boundary**. Current report:
+`Architecture_M3_CP4c3_CB9_Code_Build_Report.md`. The exact implementation source is
+`e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`.
 
-### What is now frozen
+CB9 implemented DEFN-R2's **AY0–AY9** without valid Directional runtime: one immutable exact arrival ray, intrinsic
+vertex-star development, straightest-geodesic continuation `β = α + Θ/2`, unchanged exact half-open sector
+ownership, certified filter + reachable exact radical-elimination fallback, published fan budget 16 with typed
+fail-closed states, and the complete AX8 diagnostic projection.
 
-**Amendment 22 — continuation is the straightest geodesic of the intrinsic vertex star.** One exact
-arrival-anchored ray (pointing *back* along the incoming trace, in the arrival face's chart), written once by A2a
-branch continuation; the admissible fan (barrier and source-boundary truncation inherited) developed isometrically
-into one chart, so the `k`-th radial ray sits at `A_k = Σ_{i<k} θ_i`; continuation at `β = α + Θ/2` with
-`Θ = Σ_i θ_i`; the **unchanged** exact half-open convention applied to the developed sectors `[A_k, A_{k+1})`; one
-typed certificate. `Θ/2` rather than `π` is the load-bearing choice — it makes a non-flat star's gap/overlap
-**impossible** instead of adjudicated, and coincides with the ordinary straight line wherever `Θ = 2π`. A1 is not
-redefined: `signedLift` maps a branch label and is never a ray transform. Every candidate-local direction is
-demoted to audit data.
+The committed folded-cone discriminator is exact and non-flat: three right-angle sectors give `Θ=3π/2`; the obsolete
+candidate-local rule accepts two eligible target representatives, while the frozen arrival-ray authority elects one
+owner. A deliberate exact continuation-boundary instance reaches the fallback, and an exact radial-arrival instance
+covers the half-open arrival convention. This discharged AY5 and legitimately authorized the one-line selector-374
+append.
 
-**Amendment 23 — publish the budget.** The exact election is the sign of a signed sum of arccosines
-(`cos θ = D/√P`, `sin θ = √Q/√P`, `D`/`P`/`Q` exact rationals), degree up to `4^k` in fan length. Admissible only
-with a **certified filter** (correct answer or defer, never an approximation), an **exact fallback that always
-terminates and is actually implemented**, and a **declared budget** with a typed fail-closed state. The fallback is
-load-bearing: it is the only path that can decide a continuation lying exactly on a radial ray.
+### Immutable selector and package authority
 
-**Typed states:** boundary-ray (decided by the existing convention, recorded as `onRadialRay`),
-`VertexStarTruncatedBeforeContinuation` (open fan — reported, never restored by crossing a barrier), and
-`VertexStarDegenerateSector` (an angle exactly `0` or `π` — reported at A2a with its locus, repaired only at the
-conditioning stage, Amendment 20).
+- accepted semantic authority remains **365** until TB7;
+- selector 373 remains byte-frozen at
+  `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
+- selector 374 contains exactly 374 unique identities and has SHA-256
+  `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`;
+- final compile run/job `33535836292 / 99949862868` — **success**;
+- raw compile artifact `9811669562`, Actions SHA-256
+  `b5049004f2687eb48abfd40398c87606224cda1b7892bc22d7a2901d6dab16d2`;
+- package run/job `33536818075 / 99953090803` — **success**;
+- package artifact **76** `9811964367`, Actions SHA-256
+  `5c7d27996aa43ef798aa8110df756fc34bbcb6d490356bdfaea249c3953cc949`;
+- inner `package76.tar.gz` SHA-256
+  `a940ee61c29a1c4e25040dad6353ad54152a0d6181da3450a8fe771dfc170f8e`;
+- packaged source archive SHA-256
+  `71b86aafae465b5dcb1763cc3e0250b4310b188d8f2d6e34ac8d7b8c6c74f6ea`;
+- exactly 27 package-relative fixtures and six executable `directional_*` binaries;
+- compile/package boundary: `runtimeExecution=false`, `packageRepair=false`, exact backend **GMP**, GMPXX/GMP link
+  evidence present.
 
-### The mechanical proof — vertex 30, exact
+Package 76 is **compiled-not-executed** and has zero semantic gate credit.
 
-Rational identities over the committed `mechanical_feature.obj`; no factorization, no floating point. Rows 43 and
-218 are exact right angles (`u·w = 0`); `θ₂₀₉ + θ₂₀₈ = π/2` and `θ₄₁ + θ₄₀ = π/2` exactly (`D₁D₂ ≥ 0` and
-`(D₁D₂)² = Q₁Q₂`). Hence **`Θ(v30) = 2π` exactly** — CB8-REV's explicitly non-authoritative float observation is now
-a proof, and the same test over the six other pairings is false, so it is the fixture's structure and not a fitted
-coincidence. The developed sectors give `sector(209) ∪ sector(208) = [π, 3π/2)`, which contains the continuation of
-every `FaceInterior` seed from arrival face `(24,30,32)` (`α ∈ (0, π/2)`).
+### TB7 boundary
 
-> **Owner = row 209 `(30,119,123)` if `α < θ₂₀₉`, else row 208 `(30,31,119)`; `α = θ₂₀₉` is the exact boundary-ray
-> case. Row 41 `(25,30,31)` — one of the two faces the current code elects — is unreachable by any continuation.**
+Follow `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Plan.md` exactly:
 
-The star is genuinely folded: hinges `43|218` and `208|41` have non-parallel normals.
+1. verify artifact `9811964367`, its outer digest, inner tar digest, recursive manifest, source/selector hashes,
+   package-relative fixtures, executable modes, GMP evidence, clean source state, and mutation flags **before**
+   runtime;
+2. run selector **374 from ordinal 1**, one exact identity per fresh process, each filter selecting exactly one test;
+3. required closure is **374/374 PASS**;
+4. at mechanical ordinal 366, the corrected authority may elect row 209 or row 208 according to the exact seed but
+   **never row 41**;
+5. when vertex-star evidence is reached, verify the complete seed/kernel/development/election/failure contract survives
+   through `RemeshDiagnostics`;
+6. ordinal 374 must execute
+   `ResolvedBranchCorrection.FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection`;
+7. a valid first semantic red stops gate credit, then TB7 executes the full zero-credit remainder through ordinal 374
+   and performs immutable postflight before routing to `REVIEW + PLAN`;
+8. TB7 may not configure, compile, relink, regenerate discovery, repair package bytes, change fixtures/selectors, or
+   benchmark.
 
-### What CB9 must do — AY0–AY9
+### Live audit/deferred debt
 
-1. **AY0** selector 373 recomputed and byte-frozen at authoring and preflight; accepted 365 untouched;
-   `selected_gate=NONE`; `gate_execution_authorized=false`; no runtime, no gate, no benchmark.
-2. **AY1** implement the seed, one per arrival event, sign and chart exactly as frozen.
-3. **AY2** implement the development and election with `direction_in_vertex_sector` **unchanged**, applied to
-   developed sectors. Remove `incomingDirection = nextPairing->direction` and every per-candidate representative
-   from the decision path; keep them as audit rows only.
-4. **AY3** implement the certified filter, the exact fallback and the published budget (**≥ 16**), in that
-   dependency order. The fallback must be reachable, not stubbed.
-5. **AY4** implement the typed states, each recorded **before** any conditional that can skip a state
-   (Amendment 19).
-6. **AY5** derive and commit the falsifying folded-fan witness — exact coordinates, at least one non-coplanar
-   hinge, angles certified by rational identities, cross representatives chosen so **more than one** candidate would
-   accept its own representative, and a boundary-ray instance. **Vertex 30 cannot be the only witness**: it is
-   intrinsically flat and cannot separate `β = α + Θ/2` from `β = α + π`, so a `Θ ≠ 2π` witness is required too.
-   Prove in the report that the witness fails under the old mechanism and passes under the frozen authority.
-7. **AY6** append ordinal **374** only if AY5 falsifies; otherwise report and stop. Selector 373 keeps every byte.
-8. **AY7** implement the §AX8 audit contract **and extend the `RemeshDiagnostics` projection in the same change** —
-   the closure of `M3-CP4c3-TB6-CAND-01`.
-9. **AY8** audit by assumption: *"a value reaching a topological decision was re-expressed by its consumer"* and
-   *"an exact computation has no declared bound on its input size"*, each with a site named outside the record's own
-   list.
+- `M3-CP4c3-CB9-AUDIT-01`: `FieldTransportAtlas.cpp::build_boundary_pairing` computes `u/v` in `double`, then
+  re-expresses them as exact values whose signs classify boundary-flow carrier topology. This is an AY8
+  consumer-re-expression seam outside CB9's bounded vertex-star fix.
+- `M3-CP4c3-CB9-AUDIT-02`: generic `FieldExactRational::integer_sqrt_floor` has no published reusable bit-width input
+  budget. CB9's vertex-star path remains within its frozen finite-source/fan-length-16 contract; generic exact
+  utility hardening remains debt.
+- Ordinal 370 empty-network product, prescribed-sphere `NoCarrierMatch / SourceEdgeUnavailable`, saturation coverage,
+  and the mechanical zero-unbound proof remain deferred and untouched.
 
-**AY9 prohibits:** any floating-point step in the decision chain, including `from_double_exact` of a transported
-value (Amendment 18); treating `signedLift` as a ray transform; deciding from a candidate's own representative;
-candidate ordering, nearest-angle, seams, or **any** tolerance; changing the half-open convention, the
-`FaceInterior` rule, or barrier/boundary truncation; inventing a port or face (Amendment 21); repairing degenerate
-input geometry at A2a (Amendment 20); publishing an owner without its certificate; stubbing the exact fallback or
-shipping an unpublished budget; touching ordinal 370, the prescribed sphere or saturation; reopening
-Amendments 12–23; changing any selector byte beyond the one authorized append; treating report-only results as gate
-credit; and executing Directional runtime, running a gate, or benchmarking in a CB turn.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
+package count is **74** after package 76. CP4c-2 remains **CLOSED / ACCEPTED at 365/365**; CP4c-3 remains **OPEN**.
 
-**Stop rule.** If the exact fallback cannot be implemented within the frozen semantics, CB9 stops and reports, as
-CB8 correctly did. A second architectural stop is a valid outcome; a tolerance is not.
+### Process note
 
-### Deferred and untouched by this turn
-
-Ordinal 370's empty-network product red, the prescribed sphere's `NoCarrierMatch / SourceEdgeUnavailable`,
-saturation coverage, and the mechanical zero-unbound proof all remain open and were untouched, as AX0 requires.
-Stable accounting **44 / 14 / 30**; produced-witness debt **5**; semantic package count **73**. CP4c-3 remains
-OPEN; CP4c-2 remains CLOSED / ACCEPTED at 365/365.
+The CB9 report retains the earlier policy violations as material evidence: late WIP preservation, an invalid local
+compile that receives no authority, startup-only workflow failures, and loss of an exact whole-turn tool-call count
+across context compactions. Do not use any local compile as evidence. All valid compile/package authority is the
+GitHub Actions evidence above.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Code + Build guidance
+- turn-based-coding-agent Test + Benchmark guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — **the frozen AY0–AY9 scope, Amendments 22–23, the vertex-30 proof, and the AX8 audit contract.**
-2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 17, 18, 19, 20, 21, 22, 23.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB8_Independent_Review_Record.md` — the AX plan this record discharges, and the ownership split it froze.
-4. `.agents/Directional/Architecture_M3_CP4c3_CB8_Code_Build_Report.md` — the exact source baseline and the stop CB9 is resuming from.
-5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — byte-frozen; recompute, do not edit.
-6. `benchmarks/fixtures/milestone-g/mechanical_feature.obj` — the fixture the vertex-30 proof is derived from.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `GMP_COMPILE_POLICY.md`.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Plan.md` — **the exact immutable
+   package-76 gate and stop/postflight rules.**
+2. `.agents/Directional/Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — AY0–AY9 implementation/build/package
+   evidence and AY8 audit.
+3. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22/23 and the frozen
+   semantics TB7 is testing.
+4. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_374.txt` — 374 identities; do not edit.
+5. `DESIGN.md` §7.2 / §7.2.1 — Amendments 17–23.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
+   `M3_CP4c_Consolidated_Record.md`.
+7. Immutable package-76 artifact `9811964367` from run `33536818075`; do not rebuild or repair it.
 
-CB9 is **runtime-free**: no Directional runtime, no gate execution, no benchmarking, no acceptance attempt. Every
-compile links **GMP/GMPXX** (`GMP_COMPILE_POLICY.md`). The successor after CB9 is an artifact-only TB on the new
-immutable package against selector 373, or 374 if AY6 legitimately created it.
+TB7 is artifact-only. It executes packaged tests, not repository source. A complete 374/374 green gate plus immutable
+postflight closes CP4c-3. Any valid semantic red routes to independent `REVIEW + PLAN`; do not patch or rerun the
+same semantic failure inside TB7.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

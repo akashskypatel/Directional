@@ -1,3 +1,43 @@
+## 2026-09-01 — `M3-CP4c-3-CB9`: exact vertex-star continuation implemented; package 76 compiled, runtime pending TB7
+
+Code + Build only under DEFN-R2 **AY0–AY9**. Semantic implementation commit
+`e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`. No valid Directional runtime, test gate, or benchmark executed.
+
+CB9 replaces candidate-local vertex election with one exact arrival-anchored ray, intrinsic fan development,
+straightest-geodesic continuation `β=α+Θ/2`, the unchanged exact half-open sector convention, a certified filter plus
+reachable exact radical-elimination fallback, published fan-length budget **16**, typed fail-closed states, and the
+full AX8 projection into `RemeshDiagnostics`. `M3-CP4c3-TB6-CAND-01` is closed at the implementation/projection
+boundary, pending runtime validation.
+
+AY5's committed rational non-flat three-sector cone has exact `Θ=3π/2`. Its obsolete candidate-local election admits
+two eligible owners while the frozen one-ray authority derives one; deliberate exact-boundary and radial-arrival
+instances cover the fallback and half-open conventions. AY6 therefore appended exactly ordinal 374. Selector 373
+remains byte-identical at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; selector 374
+is `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`.
+
+Final authoritative compile run/job `33535836292 / 99949862868` is green on all eight standard targets with
+GMP/GMPXX, preflight/build exit 0, clean source, and `runtimeExecution=false`. Raw artifact `9811669562` Actions
+SHA-256 `b5049004f2687eb48abfd40398c87606224cda1b7892bc22d7a2901d6dab16d2`.
+
+Immutable package **76** was produced by run/job `33536818075 / 99953090803`: artifact `9811964367`, Actions SHA-256
+`5c7d27996aa43ef798aa8110df756fc34bbcb6d490356bdfaea249c3953cc949`; inner tar SHA-256
+`a940ee61c29a1c4e25040dad6353ad54152a0d6181da3450a8fe771dfc170f8e`; packaged-source SHA-256
+`71b86aafae465b5dcb1763cc3e0250b4310b188d8f2d6e34ac8d7b8c6c74f6ea`; 27 package-relative fixtures, six
+executable binaries, `runtimeExecution=false`, `packageRepair=false`.
+
+AY8 found two static follow-up sites outside DEFN-R2's named list:
+`M3-CP4c3-CB9-AUDIT-01` (`FieldTransportAtlas::build_boundary_pairing` floating `u/v` re-expressed as exact before
+boundary-flow topology classification) and `M3-CP4c3-CB9-AUDIT-02` (generic exact integer-square-root utility lacks a
+published reusable bit-width budget). Neither is a runtime regression event; stable totals remain **44 / 14 / 30**,
+produced-witness debt **5**, and semantic M3 package count advances **73 → 74**.
+
+Material process deviations are retained in the CB9 report rather than hidden: late WIP preservation, an invalid
+local compile excluded from authority, startup-only workflow failures, and loss of an exact whole-turn tool-call
+total across context compactions. Valid build/package authority is GitHub Actions only.
+
+Exact successor: **`M3-CP4c-3-TB7`**, artifact-only against package 76 and selector 374. Accepted authority remains
+365 until TB7. CP4c-3 remains **OPEN**.
+
 ## 2026-09-01 — `M3-CP4c-3-DEFN-R2`: vertex-star continuation frozen (Amendments 22–23); vertex 30 proved exactly
 
 Definition + Review/Plan only, discharging **AX0–AX9** from `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
