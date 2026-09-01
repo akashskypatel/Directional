@@ -1,3 +1,0 @@
-trigger=apply-m3cp4c3-cb7
-caller_commit=a631283eccc1a64ebe269c8c5ce6d0db75b64935
-patch_sha256=943ca5fa2d0f47ff185d88f04c86b351cdd6c9bb70a9367b6992dbfba3a6e668

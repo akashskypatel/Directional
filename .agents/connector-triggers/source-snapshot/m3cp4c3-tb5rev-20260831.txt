@@ -1,3 +1,0 @@
-snapshot_source_sha=5ac1d0ba8b965ed14318f5883d88ec84ca2d9c7a
-caller_install_sha=eddb5fb1f1c05f7193d0fae953dc00e1e1322b5e
-purpose=M3-CP4c-3-TB5-REV exact-source snapshot

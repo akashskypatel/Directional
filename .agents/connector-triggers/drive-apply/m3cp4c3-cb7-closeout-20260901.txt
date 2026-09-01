@@ -1,4 +1,0 @@
-trigger=drive-apply-m3cp4c3-cb7-closeout
-caller_commit=d6b622c568c5f17588be96a0b3885144dd6352a6
-patch_sha256=a1786f26ed2f33ccf4b9d2d5a773ce8992a4574d8628832fd2680a7f4d012bc9
-base_sha=039cc348be67008e7e18b54c1d7a260df51d720f
