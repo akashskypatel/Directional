@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-TB6-CLOSEOUT
+purpose=apply verified durable TB6 closeout documentation patch from Google Drive
+patch_file_id=1NDvgCfWYCKsskJSFoKu-6MqsULWEsPF-
+patch_base=32527741f6a14afa88994d501a920f8be5013cbc
+retry=0
