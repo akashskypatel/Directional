@@ -5,4 +5,4 @@
 .agents/connector-triggers/m3-cp4c3-cb10-package78.txt
 .agents/connector-triggers/m3-cp4c3-cb10-schema-validation.txt
 .agents/connector-triggers/source-snapshot
-.agents/Directional/turn-payloads
+.agents/Directional/turn-payloads/
