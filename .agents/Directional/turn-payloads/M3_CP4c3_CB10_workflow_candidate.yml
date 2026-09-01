@@ -1,20 +1,20 @@
-name: Agent M3 CP4c3 CB10 Drive Apply
+name: Agent M3 CP4c3 CB10 Compile
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m3-cp4c3-cb10-drive-apply.txt
+      - .agents/connector-triggers/m3-cp4c3-cb10-compile.txt
 
 permissions:
+  actions: write
   contents: write
-  id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: m3-cp4c3-cb10-drive-apply
+  group: m3-cp4c3-cb10-compile
   cancel-in-progress: false
 
 jobs:
@@ -22,17 +22,15 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c3-cb10-drive-apply
+      label: m3-cp4c3-cb10-compile
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  apply:
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1hVq2DsRr8L3Anp21O8Bnx0HC59AFrfXD
-      patch_sha256: fa5ac02a74b94ef888cfbd6c9e2b6aecb2cc0b76bcaa00b90cfbd39cf43fe8eb
-      base_sha: 24adc6ef3c5fa67268ee8773cd05e93ca6da5834
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB10: admit exact on-radial vertex arrivals"
+      source_sha: 37e18cc5832d5f648b8bb042c535ee6dd05214b5
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c3-cb10-compile
     secrets: inherit
