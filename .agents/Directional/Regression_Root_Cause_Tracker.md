@@ -1,3 +1,59 @@
+## M3-CP4c3-TB8 — artifact-only semantic disposition — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package 78 / source `e2b59295c9920db5685239c2da188858839fa94f`; run/job
+  `33561723204 / 100035596811`; result artifact `9821602279`
+  (`e9858ac5194646f888a193937e52cc504aa36a6940d79904b36f70c059026a62`); log artifact `9821602943`
+  (`1f41626b53642bb30a00bcaafbbc3993d09870c20c2ffc15f2224670ecc65239`).
+- **Gate:** ordinals **1–365 PASS**; ordinal **366 RED** at
+  `InvalidNetworkTerminalOwnership`, source edge `36-38`, source face `(36,38,39)`, branch 2,
+  `publishedFaceCount=0`. The prior source-vertex-11 `VertexTransitSeedUnavailable` stop is cleared; vertex 30 is
+  not reached.
+- **Remainder:** 367–374 executed once report-only with zero gate credit: **1 PASS / 7 RED**. 367/371/372 share the
+  new terminal-ownership block; 368 preserves sphere `NoCarrierMatch / SourceEdgeUnavailable`; 369 preserves
+  saturation; 370 preserves the genuine empty-network typed-error red; 373 passes synthetically; 374 repeats the
+  pre-classified invalid folded-cone witness stop.
+- **Diagnostic:** identity **375**
+  `ResolvedBranchCorrection.FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries` PASS, fresh process, zero gate
+  credit. Gate identities 328/329 also PASS, providing runtime evidence for the repaired audit/rendering surfaces.
+- **Immutable boundary:** preflight/postflight PASS; configure/compile/relink/repair/generated-discovery/product/test/
+  fixture/selector mutation and benchmark flags false.
+- **Accounting:** accepted authority stays **365/365** and CP4c-3 is unaccepted. **+0 stable events / +0 stable
+  recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **75**.
+- **Owner:** independent `M3-CP4c-3-TB8-REV`; no unchanged TB retry or semantic correction before review.
+
+## M3-CP4c3-TB8-CAND-01 — network terminal ownership invalid after the mechanical path clears vertex 11 — **ACTIVE / GATING / FIRST-FAILURE / NON-STABLE**
+
+- **Observed:** authoritative TB8 ordinal 366 fails at
+  `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`.
+  Report-only ordinals 367/371/372 are blocked by the same locus.
+- **What is proved:** this is later than TB7's seed-admissibility stop and is not a repeat of that mechanism. TB8
+  serializes an edge/face/branch terminal-ownership locus and deliberately does not serialize the old inappropriate
+  `sourceVertex` field.
+- **What is not yet proved:** whether the terminal owner is missing because of a product ownership defect, an invalid
+  witness/precondition, or insufficient diagnostics; which exact terminal/event object owns the invariant; and
+  whether correction would reach vertex 30.
+- **Owner:** `M3-CP4c-3-TB8-REV` BA1–BA7. Review must reconstruct the exact endpoint/carrier/provenance path and
+  classify ownership before authoring a fix.
+- **Accounting:** gating on an unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain
+  **44 / 14 / 30**, debt **5**, packages **75**.
+
+## M3-CP4c3-TB8-CLOSURE — CB10 radial-arrival and diagnostic-consumer corrections — **RUNTIME PROVED / NON-STABLE**
+
+- `M3-CP4c3-TB7-CAND-01` is **CLOSED / RUNTIME PROVED**: ordinal 366 clears the source-vertex-11
+  `VertexTransitSeedUnavailable` stop, and diagnostic 375 passes both exact radial `FaceInterior` orientations.
+- `M3-CP4c3-TB7-REV-CAND-01` is **CLOSED / RUNTIME PROVED** for its audit-object reachability and renderer/consumer
+  defect: gating identities 328/329 and diagnostic 375 execute the repaired surfaces.
+- `M3-CP4c3-TB6-CAND-01` remains **ACTIVE for mechanical vertex-30 acceptance/projection**. The generic projection
+  path now has runtime evidence, but TB8 does not reach vertex 30, so the row-209/row-208 owner condition is not
+  accepted.
+- `M3-CP4c3-DEFN-R2-CAND-01` remains **ACTIVE**: diagnostic 375 proves the radial-arrival correction, not the general
+  non-flat exact-fallback/budget path. Ordinal 374 still fails before that discriminator.
+- `M3-CP4c3-TB7-CAND-02` remains **ACTIVE / DEFERRED / PRE-CLASSIFIED WITNESS PRECONDITION**. Its repeated ordinal-374
+  stop adds no new product evidence and does not itself trigger another review.
+- Sphere, saturation, ordinal-370 and mechanical singularity-binding dispositions are unchanged.
+- **Accounting:** these are closures/status updates on an unaccepted surface, with no accepted-green loss.
+  **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **75**.
+
 ## M3-CP4c3-TB7-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md`, measures **AW0–AW7** discharged. Static only:

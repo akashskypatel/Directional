@@ -1,3 +1,37 @@
+## 2026-09-01 — `M3-CP4c-3-TB8`: vertex-11 defect cleared; new terminal-ownership first red at ordinal 366
+
+Artifact-only Test + Benchmark against immutable package **78** from semantic source
+`e2b59295c9920db5685239c2da188858839fa94f`, run/job `33561723204 / 100035596811`. Result artifact `9821602279`
+(`e9858ac5194646f888a193937e52cc504aa36a6940d79904b36f70c059026a62`); log artifact `9821602943`
+(`1f41626b53642bb30a00bcaafbbc3993d09870c20c2ffc15f2224670ecc65239`). Report:
+`Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md`.
+
+Selector 374 re-proved ordinals **1–365 PASS**. Ordinal **366**
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` is the first red at
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`. This clears
+TB7's source-vertex-11 `VertexTransitSeedUnavailable` stop and establishes a new later masking locus, but the
+mechanical path still does not reach vertex 30.
+
+The required zero-credit remainder 367–374 completed as **1 PASS / 7 RED**: 367/371/372 share the new
+terminal-ownership block; 368 preserves the sphere `NoCarrierMatch / SourceEdgeUnavailable` finding; 369 preserves
+`saturationUsed=true`; 370 preserves the genuine empty-network typed-error red; 373 passes synthetically; and 374
+repeats the already-reviewed invalid folded-cone `atlasBuild` stop with no new product inference.
+
+Diagnostic identity **375**
+`ResolvedBranchCorrection.FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries` PASSed in a fresh process with
+zero gate credit. Together with green identities 328/329, this runtime-closes the TB7 radial-arrival admissibility
+mechanism and the TB7-REV audit/rendering reachability defect. The mechanical vertex-30 acceptance condition and the
+general non-flat exact-fallback/budget class remain open.
+
+Immutable preflight/postflight PASSed. `configureExecution`, `compileExecution`, `relinkExecution`,
+`packageRepair`, `generatedDiscovery`, `productMutation`, `testMutation`, `fixtureMutation`, `selectorMutation` and
+`benchmarkExecution` are false. Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting
+remains **44 / 14 / 30**, produced-witness debt **5**, semantic M3 package count **75**.
+
+Exact successor is independent `M3-CP4c-3-TB8-REV` REVIEW + PLAN under
+`Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`; no unchanged retry or semantic correction is authorized before
+that review.
+
 ## 2026-09-01 — `M3-CP4c-3-CB10`: radial-arrival admissibility corrected; immutable package 78 frozen for TB8
 
 Code + Build only under `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` **AZ0–AZ9**. Final semantic source

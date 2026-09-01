@@ -2,7 +2,16 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. `M3-CP4c-3-CB10` is Code + Build PASS at final semantic source `e2b59295c9920db5685239c2da188858839fa94f` and immutable package **78**. It corrected CB9's radial-arrival seed-admissibility defect without changing the half-open ownership convention, made the early seed audit reachable, projected the AX8/state rows, and appended diagnostic identity **375** only after a two-orientation falsifier. Gating selector **374** remains byte-frozen; selector 375 is zero-credit diagnostic authority. Package 78 is the sole TB8 runtime input; package 77 is superseded. Exact next is **`M3-CP4c-3-TB8`** artifact-only. Accepted authority remains **365/365**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic M3 package count **75**.
+**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED /
+ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. `M3-CP4c-3-TB8` is COMPLETE / valid semantic RED against
+immutable package **78** from source `e2b59295c9920db5685239c2da188858839fa94f`: ordinals **1–365 PASS**, ordinal
+**366** first-reds at
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`. TB8 therefore
+clears CB10's former source-vertex-11 seed stop but does not reach vertex 30. Report-only 367–374 is **1 PASS / 7
+RED** with zero gate credit; diagnostic 375 PASSes separately and runtime-closes the radial-arrival/audit-rendering
+defects. Ordinal 374 remains the pre-classified invalid folded-cone witness. Exact next is independent
+**`M3-CP4c-3-TB8-REV`** REVIEW + PLAN only. Accepted authority remains **365/365**. Stable accounting remains
+**44 / 14 / 30**, produced-witness debt **5**, authoritative semantic M3 package count **75**.
 
 ## 1. Separate current/future authority
 
@@ -23,10 +32,12 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_Required_Green_Selector_374.txt` — **current frozen CP4c-3 gate**; 373 is its byte-identical prefix.
 - `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — **Amendments 22 and 23**, AX0–AX9 and the AY0–AY9 measures.
 - `Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — package-76 compile/package authority and the AY8 static audit.
-- `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — current measured runtime authority.
-- `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — **current review authority** and the AZ0–AZ9 measures governing `M3-CP4c-3-CB10`.
+- `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — prior runtime authority for the source-vertex-11 seed stop.
+- `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — AZ0–AZ9 cause/corrective authority that governed `M3-CP4c-3-CB10`.
 - `Architecture_M3_CP4c3_CB10_Code_Build_Report.md` — final CB10 implementation, compile and immutable package-78 authority.
-- `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md` — **exact next-turn execution authority** for package 78.
+- `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB8 execution authority for package 78.
+- `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — **current measured runtime authority**: 365 green, first red ordinal 366 at terminal ownership, complete remainder and diagnostic 375.
+- `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` — **exact next-turn review authority**, BA0–BA7.
 - `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — append-only **diagnostic** selector; selector 374 is its unchanged byte prefix and remains the gate.
 - `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — current compile/package evidence.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB2 execution/retry authority.
@@ -82,7 +93,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; CB10 Code + Build PASS produced immutable package 78. Exact next is artifact-only TB8 on gating selector 374 plus zero-credit diagnostic 375. Accepted authority remains 365/365.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB8 re-proved 365/365, cleared the vertex-11 seed defect, and first-reds at `InvalidNetworkTerminalOwnership` on edge 36-38 / face (36,38,39) / branch 2. Exact next is independent TB8-REV.** |
 
 ### 2.1 CP4c-0
 
@@ -177,8 +188,25 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 ## 4. CP4c-3 carry-forward summary
 
-This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` is normative and
-`Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` is the measured phase-1 runtime authority.
+This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
+`Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
+`Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md`; current exact next-turn authority is
+`Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`.
+
+### `M3-CP4c-3-TB8` — current runtime boundary
+
+TB8 consumed immutable package 78 from semantic source `e2b59295c9920db5685239c2da188858839fa94f` in run/job
+`33561723204 / 100035596811`. Result artifact `9821602279`
+(`e9858ac5194646f888a193937e52cc504aa36a6940d79904b36f70c059026a62`) and log artifact `9821602943`
+(`1f41626b53642bb30a00bcaafbbc3993d09870c20c2ffc15f2224670ecc65239`) are authoritative. Immutable pre/postflight
+PASSed with all build/repair/mutation/benchmark flags false.
+
+Selector 374 re-proved **365/365** and first-reds at ordinal 366 with
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`, proving CB10
+cleared the earlier source-vertex-11 seed stop while exposing a new later masking locus. Vertex 30 remains unreached.
+Report-only 367–374 is **1 PASS / 7 RED** with the sphere/saturation/370/374 dispositions unchanged and 373
+synthetically green. Diagnostic 375 PASSes separately with zero gate credit; together with green 328/329 it closes
+the TB7 radial-arrival and TB7-REV audit/rendering defects, but not the general non-flat exact-fallback/budget class.
 
 `M3-CP4c-3-TB1` consumed immutable package **68** (`9739919234`) directly in run/job
 `33340448381 / 99335020672`. Result artifact `9740416876` has SHA-256
@@ -564,24 +592,22 @@ The CB1 report's exact bytes remain recoverable from Git history and no current/
 
 After the durable start-of-turn checklist, load:
 
-1. `ORIENTATION.md` — read first.
+1. `ORIENTATION.md` — read first and update during the REVIEW.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — **current review authority and the AZ0–AZ9 measures.**
-5. `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md`
-6. `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22 and 23.
-7. `Architecture_M3_CP4c3_CB9_Code_Build_Report.md`
-8. `Architecture_M3_CP4c3_Required_Green_Selector_374.txt`
-9. `Regression_Root_Cause_Tracker.md`
-10. this consolidated record only when historical lineage is needed.
+4. `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` — **exact next-turn BA0–BA7 authority.**
+5. `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority.**
+6. `Architecture_M3_CP4c3_CB10_Code_Build_Report.md`
+7. `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — AZ0–AZ9 prior cause/corrective authority.
+8. `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22 and 23.
+9. `Architecture_M3_CP4c3_Required_Green_Selector_374.txt`
+10. `Regression_Root_Cause_Tracker.md`
+11. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB10` — Code + Build, runtime-free, GMP/GMPXX linked.** Follow **AZ0–AZ9** in
-`Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §8. The successor is **product-only**: separate the exact
-closed-wedge arrival-admissibility predicate from the half-open ownership convention (which must not change),
-support both on-radial arrival orientations through the exact fallback, split the collapsed typed outcome, build the
-audit object before the first returning conditional, and give the AX8 rows a reader found by search. Selector 374
-keeps every byte; ordinal 375 is appended only if AZ6's witness is shown to fail under CB9 and pass under the
-correction. The ordinal-374 folded-cone witness is **classified and deliberately deferred** — it has a different
-owner and will still be red in TB8, which is pre-classified and must not consume a review. The sphere, ordinal 370,
-saturation, mechanical zero-unbound debt, the atlas's admissibility invariants, and accepted selectors remain
-untouched.
+**Exact next:** **`M3-CP4c-3-TB8-REV` — independent REVIEW + PLAN only.** Follow **BA0–BA7** in
+`Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`. Reconstruct the new ordinal-366
+`InvalidNetworkTerminalOwnership` locus at edge `36-38`, face `(36,38,39)`, branch 2; classify its owner before
+prescribing a fix; keep vertex-30 acceptance open; preserve the independent sphere/saturation/370/374 and mechanical
+zero-unbound debts unless shared ownership is proved; reconcile candidate/accounting state; update `ORIENTATION.md`;
+and freeze exactly one bounded successor. Do not execute runtime/build/package or mutate product/test/fixture/selector
+bytes in the review.

@@ -26,50 +26,48 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB8` (artifact-only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB8-REV` (independent REVIEW + PLAN only)
 
-`M3-CP4c-3-CB10` is **COMPLETE / Code + Build PASS** under AZ0–AZ9. Report:
-`Architecture_M3_CP4c3_CB10_Code_Build_Report.md`.
+`M3-CP4c-3-TB8` is **COMPLETE / VALID SEMANTIC RED / FIRST RED ORDINAL 366**. Report:
+`Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md`.
 
-CB10 separates exact closed-wedge arrival admissibility from the unchanged half-open owner convention, accepts both
-exact radial `FaceInterior` arrival orientations, splits the collapsed seed outcomes, makes the early
-`SeedUnavailable` audit reachable, and gives the AX8/vertex-transit rows consumers. The falsifying radial-arrival
-diagnostic is appended as selector identity **375** without changing selector 374.
+TB8 consumed immutable package **78** from semantic source
+`e2b59295c9920db5685239c2da188858839fa94f` in run/job `33561723204 / 100035596811`. Result artifact
+`9821602279` has Actions SHA-256 `e9858ac5194646f888a193937e52cc504aa36a6940d79904b36f70c059026a62`;
+log artifact `9821602943` has SHA-256 `1f41626b53642bb30a00bcaafbbc3993d09870c20c2ffc15f2224670ecc65239`.
+Immutable preflight/postflight passed and every build/repair/mutation/benchmark flag remained false.
 
-Immutable successor input:
+Ordinals **1–365 PASS**. Ordinal **366** moved past TB7's source-vertex-11 seed failure and now first-reds at
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`. The mechanical
+path does not reach vertex 30, so its row-209/row-208 owner election remains runtime-unvalidated. Report-only 367–374
+completed as **1 PASS / 7 RED**; 367/371/372 share the new terminal-ownership block, 368/369/370 preserve their
+existing independent debts, 373 passes synthetically, and 374 repeats the already-reviewed invalid-witness
+`atlasBuild` stop without creating a new review trigger.
 
-- semantic source `e2b59295c9920db5685239c2da188858839fa94f`;
-- final compile run/job `33556556002 / 100018687726`;
-- immutable package **78**, run/job `33557613904 / 100022216004`;
-- package artifact `9819958467`, Actions SHA-256
-  `81414f18af71d5aacf50231a720b2774df71d88b223283c81ce747d13a977a51`;
-- gating selector **374** SHA-256
-  `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`;
-- diagnostic selector **375** SHA-256
-  `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`.
-
-Package 77 is superseded and is not TB8 authority. Accepted semantic authority remains **365/365**; CP4c-3 remains
-**OPEN**.
+Diagnostic identity **375**
+`ResolvedBranchCorrection.FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries` PASSed separately with zero gate
+credit. Together with green identities 328/329, this runtime-closes the TB7 radial-arrival admissibility defect and the
+TB7-REV audit/rendering reachability defect. It does not close the general non-flat exact-fallback/budget class.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB8`** under
-`Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md`.
+Run **`M3-CP4c-3-TB8-REV`** under
+`Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`.
 
-- [ ] Immutable package-78 preflight; no rebuild, repair, source/test/fixture/selector mutation, generated discovery,
-      or benchmark.
-- [ ] Execute gating selector **374 from ordinal 1**, one identity per fresh process.
-- [ ] Ordinal 366 must clear the TB7 vertex-11 seed stop; if vertex 30 is reached, owner must be row 209 or 208,
-      never row 41.
-- [ ] After the first semantic red, execute the complete later-ordinal remainder through 374 with zero gate credit.
-- [ ] Preserve ordinal 374's already-reviewed invalid-witness `CycleTransportMismatch` classification; that repeat
-      alone does not consume another review turn.
-- [ ] Execute diagnostic identity **375** separately in a fresh process with **zero gate credit**; both exact radial
-      `FaceInterior` orientations must pass.
-- [ ] Run immutable postflight and update the regression tracker for every newly observed regression/candidate.
+- [ ] REVIEW + PLAN only: no Directional runtime, compile, package, benchmark, or product/test/fixture/selector
+      mutation.
+- [ ] Re-establish immutable TB8 authority and reconstruct the exact terminal-ownership failure at edge `36-38`,
+      face `(36,38,39)`, branch 2.
+- [ ] Classify the new first red as product defect, invalid witness/precondition, or diagnostic insufficiency before
+      prescribing a correction.
+- [ ] Keep vertex-30 owner acceptance open; TB8 did not reach it.
+- [ ] Preserve the independent sphere, saturation, ordinal-370, ordinal-374 and mechanical zero-unbound debts unless
+      shared ownership is proved.
+- [ ] Reconcile candidate/accounting status and freeze exactly one bounded successor for the earliest gating owner.
+- [ ] Update `ORIENTATION.md` during the review as required by durable policy.
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative
-semantic M3 package count **75**.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **75**.
 
 ## Carried forward from M1
 
@@ -106,7 +104,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; CB10 corrected the radial-arrival seed defect and produced immutable package 78. Exact next is artifact-only `M3-CP4c-3-TB8` on gating selector 374 plus zero-credit diagnostic identity 375.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB8 re-proved the 365-prefix, cleared the CB10 vertex-11 defect, and first-reds at new terminal-ownership locus `36-38 / (36,38,39) / branch 2`. Exact next is independent `M3-CP4c-3-TB8-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -116,8 +114,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** CB10 corrected the proved vertex-11 seed-admissibility defect in immutable package 78. TB8 must now verify ordinal 366 clears vertex 11, reaches the next independent locus, and if vertex 30 is reached elects row 209 or 208, never row 41. No candidate-order, tolerance, float-transport, `signedLift`-as-ray, or target-representative shortcut.
-- [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. Ordinal 374 stays red in TB8 by construction; that is pre-classified.
+- [ ] **CP4c-3 criterion C2 — current gate owner under review:** TB8 clears the proved vertex-11 seed-admissibility defect but first-reds at `InvalidNetworkTerminalOwnership`, source edge `36-38`, source face `(36,38,39)`, branch 2, `publishedFaceCount=0`. `TB8-REV` must establish cause/owner before any correction. Vertex 30 remains unreached and its row-209/row-208 owner acceptance remains open. No candidate-order, tolerance, float-transport, `signedLift`-as-ray, or target-representative shortcut.
+- [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
@@ -141,4 +139,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **75** after CB10/package 78. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **75** after CB10/package 78; TB8 created no package. PR #8 remains open, draft, and unmerged.
