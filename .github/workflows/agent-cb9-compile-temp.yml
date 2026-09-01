@@ -1,11 +1,11 @@
-name: Agent CB9 Authoritative Compile
+name: Agent CB9 Workflow Draft Validator
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/cb9-compile/**
+      - .agents/connector-triggers/cb9-package-workflow-validation/**
 
 permissions:
   contents: write
@@ -17,21 +17,12 @@ jobs:
   validate:
     uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
     with:
-      workflow_path: .github/workflows/agent-cb9-compile-temp.yml
-
-  compile:
-    needs: validate
-    if: ${{ needs.validate.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-compile-reusable.yml
-    with:
-      source_sha: e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a
-      artifact_prefix: m3-cp4c3-cb9-package76-raw
-    secrets: inherit
+      workflow_path: .agents/Directional/turn-payloads/m3-cp4c3-cb9-package76.yml
 
   observe:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: M3-CP4c-3-CB9-package76-compile
+      label: M3-CP4c-3-CB9-package76-workflow-validation
       trim_stale_comments: true
     secrets: inherit
