@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. `M3-CP4c-3-TB6-REV` is **COMPLETE**: TB6 is a valid semantic red with 365/365 accepted-prefix green and first red 366 at regular vertex 30. Review proves current CB7 election still violates Amendment 17 because every transported state rebinds `incomingDirection` to its target local `nextPairing->direction`; exact transit rows are separately dropped by the production failure projection. Exact next is runtime-free **`M3-CP4c-3-CB8`** under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`. Current selector 373 remains frozen; CB8 may create append-only selector 374 by adding the minimal transit regression identity. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**.
+**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. `M3-CP4c-3-CB8-REV` is **COMPLETE** and upholds CB8's architectural stop: one exact arrival-anchored ray is now frozen as Amendment 17's primitive datum, but general non-flat vertex-star continuation has neither frozen semantics nor an exact/certified kernel. A1 remains branch-correspondence authority; A2a will own the eventual one-seed owner/non-owner certificate. Selector 373 remains frozen and selector 374 does not exist. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**. Exact next is combined Definition + Review/Plan **`M3-CP4c-3-DEFN-R2`**, measures AX0–AX9 in `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
 
 ## 1. Separate current/future authority
 
@@ -438,6 +438,35 @@ CB8 must strengthen the same identity and append it as ordinal 374 in a new requ
 Sphere and saturation remain deferred. Stable accounting stays **44 / 14 / 30**, debt **5**, semantic packages
 **73**. Exact successor: **`M3-CP4c-3-CB8`**, Code + Build only, runtime-free.
 
+### `M3-CP4c-3-CB8` — architectural stop, unchanged source build-green
+
+CB8 audited semantic source `0d943f95b42e49813060399e83a1e4180e8348f6` and triggered AW1 before semantic
+editing. The atlas has exact face-local `FieldBranchBoundaryPairing::direction` values plus branch correspondence by
+quarter-turn/`signedLift`, but no exact/certified transform for one arbitrary ray across a general non-coplanar fan.
+`SourceChartTransitionGraph` is topological only; the available physical transport path is floating/tolerance-based.
+No product/test/fixture/selector byte changed and selector 374 was not created. The unchanged source remained GMP
+build-green in run `33467212874`, result/log artifacts `9785279716 / 9785279945`, `runtimeExecution=false`; no new
+semantic package was produced. Exact successor was independent CB8-REV.
+
+### `M3-CP4c-3-CB8-REV` — one ray frozen; deeper vertex-star definition required
+
+Independent review upholds the stop and chooses the primitive datum: one exact arrival-anchored ray written once by
+A2a branch continuation. A target face's branch representative is not a projection of that ray, and an upstream
+owner does not eliminate the need to derive the owner exactly. The correct reference problem is an arrival-anchored
+intrinsic development of the source-vertex fan. Current GMP rationals are not a general construction type for
+non-coplanar hinge unfolding, while current source has no exact algebraic/direct predicate with certified fallback.
+More fundamentally, the design has not defined what a developed gap or overlap means on a non-flat star. Amendment
+21 therefore forces a definition step before implementation: those outcomes must become typed exact states, not
+face order, tolerance, hidden seam, or invented topology.
+
+Authority remains minimal: A1 owns branch topology; A2a will own one seed and one derived vertex-star
+owner/non-owner certificate from A0 geometry + A1 topology. Mechanical vertex 30 remains the falsifier of the old
+per-cell mechanism, but no exact owner is guessed before the geometry is frozen. `M3-CP4c3-TB6-CAND-01` remains
+active downstream at the production DTO. Selector 373 stays byte-frozen; selector 374 is blocked until an exact
+non-coplanar witness fails under `incomingDirection = nextPairing->direction`. Stable totals stay **44 / 14 / 30**,
+debt **5**, semantic packages **73**. Exact successor: **`M3-CP4c-3-DEFN-R2`**, combined Definition + Review/Plan,
+measures AX0–AX9 in `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
+
 ## 5. High-value reversals retained
 
 - Face-local branch labels are not cross-face semantic identity; use published transport/lift.
@@ -528,13 +557,12 @@ After the durable start-of-turn checklist, load:
 1. `Future_Chat_Session_Handoff.md`
 2. `TODO.md`
 3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`
-5. `Architecture_M3_CP4c3_TB6_Independent_Review_Record.md`
-6. `Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md`
+4. `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`
+5. `Architecture_M3_CP4c3_CB8_Code_Build_Report.md`
+6. `Architecture_M3_CP4c3_TB6_Independent_Review_Record.md`
 7. `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`
-8. `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md`
-9. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
-10. `Regression_Root_Cause_Tracker.md`
-11. this consolidated record only when historical lineage is needed.
+8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+9. `Regression_Root_Cause_Tracker.md`
+10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB8` — Code + Build, runtime-free.** Follow AW0–AW9. Establish one exact single-writer vertex-transit datum, preserve/certify its per-face views, close the production transit-audit projection, strengthen the minimal transit regression, append it as selector ordinal 374 while preserving 373, compile the default eight targets with GMP/GMPXX, package without runtime, and freeze the artifact-only selector-374 TB successor. Do not touch ordinal 370, sphere, saturation, barrier semantics, `FaceInterior`, or accepted selectors.
+**Exact next:** **`M3-CP4c-3-DEFN-R2` — combined Definition + Review/Plan, runtime/build-free.** Follow AX0–AX9 in `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`. Freeze one arrival-anchored ray, the intrinsic vertex-star continuation semantics including gap/overlap typed states, the exact/certified predicate/kernel, A2a owner/certificate contract, mechanical proof, exact selector-374 falsifier contract, and production audit schema. Do not create selector 374, compile, package, or execute Directional in DEFN-R2. Ordinal 370, sphere, saturation, `FaceInterior`, barrier semantics, and accepted selectors remain untouched.

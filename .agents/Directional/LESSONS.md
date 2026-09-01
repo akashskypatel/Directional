@@ -1218,6 +1218,17 @@ building any conclusion on it.**
     carries no information. This is the sixth recorded instance of the same scope-narrowing failure — by symbol
     (66), by enum (67), by stage, by mechanism enumeration (70), by operand (72), and now by **witness domain**.
 
+
+74a. **A representation gap can be proof that the semantic operation was never defined.** CB8 stopped because the
+    exact branch atlas could not transport an arbitrary ray through a non-coplanar vertex fan. The first instinct
+    was to choose a richer exact number type. Independent review found a prior question: on a non-flat intrinsic
+    vertex star, an unfolded straight-through ray can encounter a gap or overlap, and the architecture had never
+    said whether that means no owner, multiple owners, regularizable degeneracy, or something else. **Do not choose
+    a representation for an operation whose mathematical result set is still unspecified.** First freeze the
+    reference geometry, ownership rule, and typed non-owner states; only then choose an exact predicate or a
+    certified filter with exact fallback. Moving a discrete owner upstream does not solve the problem if its writer
+    still needs the undefined predicate.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

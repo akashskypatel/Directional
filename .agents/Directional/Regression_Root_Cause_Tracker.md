@@ -1,3 +1,29 @@
+## M3-CP4c3-CB8-REV — vertex-transit stop adjudicated as definition + representation gap — **CURRENT REVIEW AUTHORITY / NON-STABLE**
+
+- **CB8 stop upheld.** Current A1 products carry exact face-local branch directions and exact branch correspondence,
+  but no exact/certified arbitrary-ray metric transport. `signedLift`, target-local representatives and the old
+  world-space-double helper are not Amendment-17/18 authority.
+- **Primitive datum frozen.** One A2a arrival event writes one exact arrival-anchored ray. A candidate face never
+  rewrites that datum. A geometric exit/owner is a derived result, not a second primitive authority.
+- **Deeper gap established.** General non-flat vertex-star continuation is not normatively defined. Under an
+  arrival-anchored intrinsic development, sector gaps/overlaps need typed Amendment-21 semantics before a numeric
+  representation can be selected. Plain GMP rationals are not a general hinge-development construction type; any
+  filter must defer to an exact algebraic/direct-predicate path.
+- **Stage owner frozen.** A1 remains branch-topology authority. A2a owns one derived vertex-star transit contract
+  consuming A0 geometry + A1 topology + one seed and writing one owner/non-owner certificate.
+- **Mechanical witness.** Vertex 30 remains a valid falsifier because rows 41 and 208 use distinct target-local
+  branch families; one common developed seed cannot become two candidates merely by substituting those local rays.
+  Exact owner is intentionally deferred until DEFN-R2 freezes the geometry.
+- **Candidates.** `M3-CP4c3-TB3-R1-CAND-01` remains ACTIVE, reclassified as **definition + representation authority
+  gap**. `M3-CP4c3-TB6-CAND-01` remains ACTIVE / owner-proved at the production projection DTO, but its fix is
+  blocked until the correct seed/certificate audit is defined.
+- **Selector governance.** Selector 373 remains frozen. Selector 374 is blocked until an exact non-coplanar witness
+  demonstrably fails under `incomingDirection = nextPairing->direction`.
+- **Accounting:** unaccepted CP4c-3 surface; accepted 365 remains green. **+0 stable events / +0 recurrences.**
+  Totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**.
+- **Owner:** exact successor `M3-CP4c-3-DEFN-R2`, measures AX0–AX9 in
+  `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`; definition/review only.
+
 ## M3-CP4c3-TB6-REV — independent adjudication of TB6 mechanical and report-only findings — **CURRENT REVIEW AUTHORITY / NON-STABLE**
 
 - **Evidence identity correction:** authoritative TB6 result artifact is `9782227361`, SHA-256 `e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`; the prior `5748464145 / f084...` documentation pair was wrong. Runtime classification is unchanged.
@@ -10,13 +36,13 @@
 - **Accounting:** accepted 365-prefix remains green and CP4c-3 is unaccepted. **+0 stable events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**.
 - **Owner:** `M3-CP4c-3-CB8` under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`; runtime-free.
 
-## M3-CP4c3-TB6-CAND-01 — gating vertex-30 red omits CB7 exact transit/election rows from production evidence — **ACTIVE / OWNER PROVED: PRODUCTION PROJECTION DTO / GATING / NON-STABLE**
+## M3-CP4c3-TB6-CAND-01 — gating vertex-30 red omits exact transit/election certificate rows from production evidence — **ACTIVE / OWNER PROVED: PRODUCTION PROJECTION DTO / BLOCKED ON DEFN-R2 / GATING / NON-STABLE**
 
 - **Observed in authoritative TB6.** Package 75 / source `e926ada023bc51220628be550bbe9a87f98d7067`; run/job `33458067065 / 99702200466`; immutable pre/postflight PASS; ordinals **1–365 PASS**, ordinal **366 RED**.
 - **Measured locus.** `VertexTransitSectorUnresolved`; source vertex 30; face `(24,30,32)`; branch 1; `FaceInterior`; `publishedFaceCount=2`; faces `(25,30,31)|(30,31,119)`; no barrier absorption/incidence.
 - **Evidence gap.** CB7 compiled typed per-state outcomes and exact representative/incoming/elected-direction diagnostics, but ordinal 366's production exception serializes none of those rows. `publishedFaceCount=2` alone cannot decide Amendment 17's equal-direction falsifier.
 - **Selector-governance companion.** CB7 also compiled `ResolvedBranchCorrection.MinimalExactVertexTransitWitnessPublishesKnownFanState`; frozen selector 373 does not contain it, so TB6 correctly did not execute it. Review must adjudicate its future role before any selector change.
-- **Owner:** `M3-CP4c-3-TB6-REV` under `Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md`, AV1–AV4. If static reconstruction cannot prove the exact election, successor is diagnostic-only.
+- **Current owner after CB8-REV:** `M3-CP4c-3-DEFN-R2` AX8 freezes the correct seed/certificate audit surface; a later CB may then repair this production projection. Publishing richer rows for the invalid per-cell datum is not closure.
 - **Stable-count rationale:** accepted ordinals 1–365 remain 365/365 green; CP4c-3 is unaccepted. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**.
 
 ## M3-CP4c3-TB5-CAND-01 — Amendment-17 runtime moved ordinal 366 to a zero-candidate vertex-11 transit with no state diagnostics — **RESOLVED AS FIRST-FAILURE SURFACE / NON-STABLE**
@@ -84,7 +110,9 @@
 
 - **`M3-CP4c-3-TB6` disposition — EXACT PATH IS THE EXECUTED AUTHORITY; NO FLOAT-ROUND-TRIP FAILURE REAPPEARS.** TB6 consumes CB7/package-75 bytes and advances the mechanical witness beyond the vertex-11 seed/drop locus to vertex 30. The exactness violation identified at TB5-REV is corrected in source authority; the remaining red is owned separately by the transit/election evidence gap. **+0/+0**.
 
-## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE CONFIRMED: PER-CELL REPRESENTATIVE ELECTION / AMENDMENT 17 VIOLATED / GATING / NON-STABLE**
+## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE CONFIRMED: PER-CELL REPRESENTATIVE ELECTION / DEFINITION + REPRESENTATION AUTHORITY GAP / GATING / NON-STABLE**
+
+- **`M3-CP4c-3-CB8-REV` disposition — DEFINITION BOUNDARY.** The per-cell-representative mechanism remains proven, but review establishes that current architecture does not yet define one exact straight-through continuation on a general non-flat vertex star. One arrival-anchored ray is frozen as the primitive datum; its exact owner predicate and gap/overlap semantics move to DEFN-R2 AX1–AX6. No CB is authorized and **+0/+0**.
 
 - **`M3-CP4c-3-TB6` status — VERTEX 30 REACHED AGAIN, AMENDMENT 17 STILL NOT ADJUDICATED.** First red 366 returns to vertex 30 / `(24,30,32)` / branch 1 with two published faces `(25,30,31)` and `(30,31,119)`. The authoritative production exception does not serialize CB7's exact per-state/election diagnostics, so equality or inequality of the elected exact directions is unknown. Keep this candidate ACTIVE and route the missing discriminator through `M3-CP4c3-TB6-CAND-01`; do not choose a candidate by order. **+0/+0**.
 

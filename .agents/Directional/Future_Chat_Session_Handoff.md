@@ -92,54 +92,59 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB8-REV` (independent Review + Plan only)
+## Mandatory next turn — `M3-CP4c-3-DEFN-R2` (Definition + Review/Plan only)
 
-`M3-CP4c-3-CB8` is **COMPLETE / ARCHITECTURAL STOP / BUILD GREEN / RUNTIME-FREE**. Report:
-`Architecture_M3_CP4c3_CB8_Code_Build_Report.md`.
+`M3-CP4c-3-CB8-REV` is **COMPLETE / ARCHITECTURAL STOP UPHELD / DEEPER DEFINITION REQUIRED**. Record:
+`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
 
-CB8 re-established the TB6-REV defect and then triggered its frozen AW1 stop rule. The current atlas publishes exact
-face-local `FieldBranchBoundaryPairing::direction` values plus quarter-turn/`signedLift` **branch correspondence**,
-but no exact/certified transform for one arbitrary incoming ray across a general non-coplanar vertex fan.
-`SourceChartTransitionGraph` is topological only, and the existing physical zero-turn path is planar and
-floating/tolerance-based. Therefore the one-datum projection required by Amendment 17 cannot be manufactured from
-current authority without violating Amendment 18 or substituting the target face's representative.
+The review freezes Amendment 17's primitive as **one exact arrival-anchored ray written once by A2a branch
+continuation**. It also proves that another Code + Build turn is not yet safe. Current A1 authority publishes exact
+face-local branch representatives and quarter-turn/`signedLift` branch correspondence; it does not publish an
+exact/certified arbitrary-ray metric transport. More importantly, `DESIGN.md` does not yet define how a straight
+continuation through a general **non-flat** vertex star behaves when an arrival-anchored intrinsic development has a
+gap or overlap. Amendment 21 forbids resolving those cases by arbitrary seam/order/tolerance or invented topology.
 
-No product/test/fixture/selector semantic byte changed. Selector **373** remains 373 lines with SHA-256
-`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; selector 374 was **not** created because
-the current minimal witness does not yet falsify the old mechanism. No new semantic package was created.
+The next definition must therefore freeze the vertex-star reference geometry and typed non-owner states **before**
+choosing the numeric kernel. Plain `FieldExactRational` is not generally closed under non-coplanar hinge
+development; a direct exact predicate or exact algebraic construction is required, with floating/interval evaluation
+allowed only as a certified filter that defers to an exact fallback. Publishing a continuation owner upstream does
+not avoid this derivation.
 
-The unchanged semantic source `0d943f95b42e49813060399e83a1e4180e8348f6` was compile-checked through the
-mandatory reusable workflow: run `33467212874`, result artifact `9785279716`
-(`aa85ae5f6c4ca3d4e0a559f033ffea9c04030ceb6dcfc58fe7cbbdb4f64251f2`), log artifact `9785279945`
-(`febed58abc2d515505ce7a5d3a937fff4650d5c2a86c4bed42fd6de96ba6f25f`). All eight targets linked,
-`DIRECTIONAL_ENABLE_GMP=ON`, GMPXX/GMP link evidence is present, source status is clean, and
-`runtimeExecution=false`.
+Stage ownership is also frozen at the semantic level: A0 keeps source geometry/topology; A1 stays branch-topology
+authority; A2a writes one arrival seed and one derived vertex-star owner/non-owner certificate. Candidate-local
+`nextPairing->direction` values are audit data only. Production transit-row projection remains a separate downstream
+defect until the correct seed/certificate audit contract exists.
 
-Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**. Ordinal 370, sphere and
-saturation remain deferred and unchanged.
+Mechanical vertex 30 remains the gating falsifier of the old mechanism, but its exact owner is intentionally not
+guessed before the star-development semantics exist. Selector **373** remains 373 lines with SHA-256
+`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; selector 374 does **not** exist.
 
-Exact next: independent **`M3-CP4c-3-CB8-REV`** under
-`Architecture_M3_CP4c3_CB8_Independent_Review_Plan.md`. The loop stops at this review boundary. The review must
-freeze the missing single-writer exact/certified transit authority (or another Amendment-17-compliant upstream
-continuation owner) before another Code + Build turn is authorized.
+Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**. Ordinal 370, sphere,
+saturation, accepted selector 365, and mechanical zero-unbound debt remain unchanged/deferred.
+
+Exact next: **`M3-CP4c-3-DEFN-R2`**, combined Definition + Review/Plan under measures **AX0–AX9** in
+`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`. DEFN-R2 is runtime/build-free. It must freeze the
+arrival-seed contract, intrinsic vertex-star geometry, gap/overlap/degeneracy semantics, exact/certified predicate,
+A2a owner API, mechanical proof, exact selector-374 falsifier contract, and production audit schema. Only if those
+are complete may DEFN-R2 issue a later bounded Code + Build plan.
 
 ## Context Load Plan
 
 `load_next`:
-- independent Review + Plan guidance
+- combined Definition + Review/Plan guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — current substantive authority.
-1. `.agents/Directional/Architecture_M3_CP4c3_CB8_Independent_Review_Plan.md` — exact next review scope.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB8_Code_Build_Report.md` — AW1 blocker proof and compile evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB6_Independent_Review_Record.md` — Amendment-17 cause and representation constraint.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendment 18 and rejected CB6 float path.
-5. `DESIGN.md` Amendments 16–19 and the current `FieldTransportAtlas` / `SurfaceCellTracing` / `SourceChartTransitions` contracts.
+1. `.agents/Directional/Architecture_M3_CP4c3_CB8_Independent_Review_Record.md` — AX0–AX9 and exact definition boundary.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB8_Code_Build_Report.md` — AW1 source/representation stop.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB6_Independent_Review_Record.md` — Amendment-17 cause and mechanical reconstruction.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendment 18 and rejected float path.
+5. `.agents/Directional/DESIGN.md` Amendments 17, 18 and 21 plus current `FieldTransportAtlas` / `SurfaceCellTracing` contracts.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `ROADMAP.md`, and `M3_CP4c_Consolidated_Record.md`.
 
-No Directional runtime, compile, package mutation, test, benchmark, fixture, selector, or product-code edit is
-authorized in the independent review turn.
+No Directional runtime, compile, package mutation, product/test/fixture/selector edit, or benchmark is authorized in
+DEFN-R2. DEFN is itself the review-and-plan turn under the standing user-authorized cadence.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

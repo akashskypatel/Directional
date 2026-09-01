@@ -28,19 +28,18 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-01 at `M3-CP4c-3-TB6-REV`. TB6 is a valid semantic red on immutable
-package **75**: ordinals **1–365 PASS**, first red **366** at regular source vertex **30** with two published
-candidate faces. Independent source/fixture reconstruction now proves that CB7 restored exact arithmetic but
-reintroduced Amendment 17's semantic defect: every fan transition rotates the branch label and then assigns
-`incomingDirection = nextPairing->direction`, so the election again tests **one exact local representative per
-cell**, not one continuation datum against a partition. The production pipeline also drops the resolver's exact
-per-state audit rows at `network_failure_locus` / `SurfaceCellFailureLocusDiagnostics`. The compiled minimal transit
-witness was required by TB5-REV to become permanent regression authority but is absent from selector 373. Exact
-next is **`M3-CP4c-3-CB8`**, runtime-free Code + Build, under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`:
-introduce one exact single-writer transit datum, preserve it through certified per-face views, publish the audit,
-strengthen the minimal witness, and append it as ordinal 374 without changing selector 373. Stable accounting
-remains **44 events / 14 categories / 30 recurrences**, debt **5**, semantic M3 packages **73**. Ordinal 370 is a
-separate measured `SurfaceCutGraph::canonical_candidate` product red and is explicitly deferred from CB8.
+**Currency.** Last updated 2026-09-01 at `M3-CP4c-3-CB8-REV`. CB8's architectural stop is independently
+**UPHELD**, and the review takes option 2: a deeper definition is required before another implementation turn. The
+primitive Amendment-17 datum is one exact arrival-anchored ray written once by A2a branch continuation. Existing
+A1 transport carries exact branch correspondence, not a certified arbitrary-ray metric transform, and current
+architecture does not define straight continuation through a general non-flat vertex star. The reference semantics
+that must now be frozen are an arrival-anchored intrinsic vertex-star development plus typed no-owner/multi-owner
+outcomes under Amendment 21. Plain GMP rationals are not generally closed under the required hinge development; a
+direct exact predicate or exact algebraic construction (optionally behind a certified filter with exact fallback)
+is required. Production transit-row projection remains a separate downstream evidence defect. Selector **373** is
+unchanged; selector 374 does not exist. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages
+**73**. Exact next is **`M3-CP4c-3-DEFN-R2`**, combined Definition + Review/Plan, under AX0–AX9 in
+`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
 
 *(Prior turns, retained for lineage: `TB3-R1-REV` confirmed Amendment 16/P2 effective and ordered the typed
 failure-locus channel that CB5 delivered; `TB4-REV` falsified all three enumerated mechanisms, proved from the
@@ -91,13 +90,15 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB6-REV.** Accepted authority remains selector **365**. CP4c-3's current frozen gate is
-selector **373** (`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`) and is still unaccepted: TB6
-re-proved 365/365 then first-red ordinal 366 at vertex 30. `M3-CP4c-3-CB8` is authorized to create selector **374**
-only by appending `ResolvedBranchCorrection.MinimalExactVertexTransitWitnessPublishesKnownFanState` to byte-frozen
-373; selector 374 does not exist yet and has no hash until CB8. Stable accounting is **44 / 14 / 30**, produced-
-witness debt **5**, semantic M3 packages **73**. The independent ordinal-370 empty-network red remains deferred.
-
+**Current authority — CB8-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate
+remains selector **373** (`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`); selector 374 does **not** exist.
+TB6 remains the latest semantic runtime evidence: 365/365 accepted-prefix green, first red ordinal 366 at regular
+vertex 30, report-only 367–373 at 1 PASS / 6 RED and zero gate credit. CB8-REV proves the next missing authority is
+**definition-level**: one arrival seed is required, but the project has neither a frozen intrinsic vertex-star
+continuation rule for general non-flat stars nor an exact/certified kernel implementing it. No successor CB is
+authorized. Exact next is `M3-CP4c-3-DEFN-R2` AX0–AX9. Stable accounting is **44 / 14 / 30**, produced-witness
+debt **5**, semantic M3 packages **73**. Ordinal 370, sphere, saturation, and mechanical zero-unbound debt remain
+deferred.
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -315,7 +316,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F | clears all A1 and reaches A2a vertex transit | **Current gate owner.** TB6 first-red 366 reaches regular vertex **30**, arrival `(24,30,32)`, branch 1, `FaceInterior`, with candidates `(25,30,31)` and `(30,31,119)`. TB6-REV proves current `incomingDirection` is each target face's local pairing direction. The two candidate-face branch sets are geometrically disjoint in the committed raw field, so Amendment 17 remains violated by per-cell-representative election. CB8 owns the exact single-datum correction and production audit. |
+| **mechanical feature** | fixture, 152 V / 300 F | clears all A1 and reaches A2a vertex transit | **Current definition owner.** TB6 first-red 366 reaches regular vertex **30**, arrival `(24,30,32)`, branch 1, `FaceInterior`, with candidates `(25,30,31)` and `(30,31,119)`. CB8-REV confirms the old mechanism tests two distinct target-local rays and freezes one arrival-anchored seed as the primitive datum. The exact common-fan owner is intentionally not named until DEFN-R2 defines intrinsic vertex-star continuation and its exact/certified predicate. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -410,46 +411,47 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Mechanical vertex transit / Amendment 17 — ACTIVE, gating.** TB6 first-red 366 reaches regular vertex 30 with
-   adjacent candidates `(25,30,31)` and `(30,31,119)`. TB6-REV proves the current exact path is semantically wrong:
-   `signedLift` transports the branch label, then `incomingDirection` is rebound to each target
-   `nextPairing->direction`. The candidate-face branch sets are independently distinct in the fixture. **CB8 owns
-   the correction.** One exact single-writer continuation datum must be projected/certified into every fan sector;
-   target local field representatives remain audit values only. No ordering, tolerance, `FaceInterior`, or barrier
-   change is admissible.
+1. **Vertex-star transit geometry / Amendments 17, 18, 21 — ACTIVE, gating, definition-owned.** One exact
+   arrival-anchored ray is now the frozen primitive datum, but "continue that ray through a general non-coplanar
+   vertex" is not yet a normative operation. `M3-CP4c-3-DEFN-R2` must define the intrinsic developed fan, curved
+   gap/overlap semantics, exact/certified predicate/kernel, and A2a single-writer owner certificate. Moving an owner
+   upstream does not remove this derivation obligation.
 
-2. **Production transit audit projection — ACTIVE, owner proved.** `resolve_field_vertex_transit` retains typed exact
-   per-state rows in `FieldAlignedCurveNetworkError::vertexTransitStates`; `RemeshPipeline.cpp::network_failure_locus`
-   and `SurfaceCellFailureLocusDiagnostics` drop them. CB8 must carry an additive diagnostics DTO/serialization so
-   the next immutable TB can adjudicate the one-datum invariant at the production entry path.
+2. **Production transit audit projection — ACTIVE, owner proved / blocked on item 1.**
+   `FieldAlignedCurveNetworkError::vertexTransitStates` retains typed exact rows; `network_failure_locus` /
+   `SurfaceCellFailureLocusDiagnostics` drops them. DEFN-R2 AX8 first freezes the correct seed/certificate audit
+   contract; a later CB may then carry it through production.
 
-3. **Minimal transit witness / selector governance — ACTIVE.** TB5-REV required the minimal interior-vertex witness
-   to become a permanent regression identity. CB7 compiled it but selector 373 intentionally stayed frozen. CB8
-   must keep 373 byte-identical, strengthen the same identity into a real Amendment-17 falsifier, and append it as
-   ordinal **374** in a new required-green selector.
+3. **Minimal transit witness / selector governance — ACTIVE / blocked on item 1.** Selector 373 remains immutable.
+   The current minimal identity does not falsify target-representative rebinding. DEFN-R2 AX7 must derive an exact
+   non-coplanar folded-fan witness whose expected owner/non-owner follows from the new semantics and fails under
+   `incomingDirection = nextPairing->direction`; only then may a later CB append ordinal **374**.
 
-4. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB6's repaired witness now
+4. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB6's repaired witness
    reaches `SurfaceCutGraph::canonical_candidate` and returns `CellularityNotEstablished` instead of required
-   `EmptyNetworkOnClosedSurface`. Static review finds no specialized empty-network branch in that producer. This
-   owner is independent of vertex transit and is **deferred from CB8**; schedule it only after the mechanical gate
-   permits a separate bounded turn.
+   `EmptyNetworkOnClosedSurface`. It is independent and remains deferred until the mechanical definition path clears.
 
 5. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 remains `NoCarrierMatch / SourceEdgeUnavailable` at
-   trace 2/event 30. Preserve AL4: no sphere semantic correction is authorized while the mechanical gate owns the
-   critical path.
+   trace 2/event 30. Preserve AL4: no sphere semantic correction while the mechanical gate owns the critical path.
 
-6. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 again proves
-   `certificate.saturationUsed=true`. Amendment 14 representation remains proved; the ordinary proposal coverage /
-   quality debt stays deferred behind the mechanical gate.
+6. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 still publishes
+   `certificate.saturationUsed=true`. Amendment-14 representation is proved; ordinary-proposal coverage remains debt.
 
 7. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
-   witness. `M3-CP4c3-DEFN-R1-CAND-01` remains open until the mechanical production witness reaches and publishes
+   witness. `M3-CP4c3-DEFN-R1-CAND-01` stays open until production reaches and publishes
    `unboundSingularityCount=0`.
 
-8. **Report-only 367, 371, 372 — UNMEASURED underlying contracts.** Their TB6 reds are upstream consequences of
-   ordinal 366. Do not classify their own downstream contracts as failed until the mechanical blocker clears.
+8. **Report-only 367, 371, 372 — UNMEASURED underlying contracts.** Their TB6 reds remain upstream consequences of
+   ordinal 366; do not classify their downstream contracts before the mechanical blocker clears.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A representation gap can reveal that the semantic operation itself was never defined.** CB8 first looked like a
+missing exact transport type: branch lift is exact, arbitrary-ray transport is not. CB8-REV found the deeper gap:
+for a general non-flat vertex star the design has never stated what "straight through the vertex" means when an
+intrinsic development has a gap or overlap. Choosing an algebraic type, moving an owner upstream, or adding a
+certificate before that semantic choice would only encode an undefined operation more carefully. **Define the
+reference geometry and all typed non-owner states before choosing its representation.** This is `LESSONS.md` 74a.
 
 **Exact representation can still carry the wrong semantic authority.** TB6-REV adds a sharper instance to the
 single-authority family. CB7 correctly removed the CB6 float round-trip and made every value reaching the sector

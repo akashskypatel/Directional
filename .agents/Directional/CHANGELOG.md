@@ -1,3 +1,22 @@
+## 2026-09-01 — `M3-CP4c-3-CB8-REV`: architectural stop upheld; vertex-star semantics routed to DEFN-R2
+
+Independent REVIEW + PLAN only; no Directional runtime, build, compile, package, product/test/fixture/selector
+mutation. CB8's AW1 stop is upheld. Review freezes **one exact arrival-anchored ray** as Amendment 17's primitive
+vertex-transit datum, but proves another CB is still premature: A1 publishes branch correspondence, not arbitrary-ray
+metric transport, and the design has never defined straight continuation through a general non-flat vertex star. An
+intrinsic arrival-anchored fan development is the reference semantics to freeze; gap/overlap cases require typed
+Amendment-21 disposition, and plain GMP rationals are not generally closed under non-coplanar hinge development. A
+direct exact predicate or exact algebraic construction is required; a certified filter is admissible only with an
+exact fallback. An upstream owner representation does not avoid that derivation.
+
+The new authority remains A2a-owned: branch continuation writes one immutable seed, and one derived vertex-star
+transit authority writes one owner/non-owner certificate from A0 geometry + immutable A1 branch topology. Mechanical
+vertex 30 remains the production falsifier of per-cell representative election, but its exact owner is deliberately
+not guessed before the geometry is defined. Production transit-row projection remains active downstream. Selector
+373 stays byte-frozen; selector 374 is not created. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic
+packages **73**. Exact next: **`M3-CP4c-3-DEFN-R2`**, combined Definition + Review/Plan under AX0–AX9 in
+`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`. Ordinal 370, sphere and saturation remain deferred.
+
 ## 2026-09-01 — `M3-CP4c-3-CB8`: AW1 architectural stop; unchanged source remains GMP build-green
 
 CB8 is **COMPLETE / ARCHITECTURAL STOP / BUILD GREEN / RUNTIME-FREE**. Exact source audit at
