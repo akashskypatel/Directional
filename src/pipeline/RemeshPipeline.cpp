@@ -6642,11 +6642,40 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                 ? "FaceInterior"
                 : "EdgeTransit";
       }
+      const auto exact_string = [](const authority::FieldExactRational &value) {
+        return value.numerator_string() + "/" + value.denominator_string();
+      };
+      locus.vertexTransitStates.reserve(error.vertexTransitStates.size());
+      for (const auto &state : error.vertexTransitStates) {
+        SurfaceCellVertexTransitStateDiagnostics projected;
+        projected.sourceFace = topology_face_locus(state.sourceFace);
+        projected.branch = static_cast<int>(state.branch.value());
+        projected.outcome =
+            geometry::field_vertex_transit_state_outcome_name(state.outcome);
+        if (state.representativeDirection.has_value()) {
+          for (const auto &coordinate :
+               state.representativeDirection->barycentric) {
+            projected.representativeDirection.push_back(exact_string(coordinate));
+          }
+        }
+        if (state.incomingDirection.has_value()) {
+          for (const auto &coordinate : state.incomingDirection->barycentric) {
+            projected.incomingDirection.push_back(exact_string(coordinate));
+          }
+        }
+        if (state.transportEdge.has_value())
+          projected.transportEdge = topology_edge_locus(*state.transportEdge);
+        projected.transportPath.reserve(state.transportPath.size());
+        for (const auto &edge : state.transportPath)
+          projected.transportPath.push_back(topology_edge_locus(edge));
+        projected.composedQuarterTurn = state.composedQuarterTurn;
+        projected.eligibleForElection = state.eligibleForElection;
+        projected.representativeInSector = state.representativeInSector;
+        projected.incomingInSector = state.incomingInSector;
+        locus.vertexTransitStates.push_back(std::move(projected));
+      }
       if (error.vertexStarTransit.has_value()) {
         const auto &audit = *error.vertexStarTransit;
-        const auto exact_string = [](const authority::FieldExactRational &value) {
-          return value.numerator_string() + "/" + value.denominator_string();
-        };
         switch (audit.kernelRoute) {
         case geometry::VertexStarDecisionKernelRoute::Filter:
           locus.vertexStarKernelRoute = "Filter"; break;
@@ -6679,6 +6708,9 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           locus.vertexStarArrivalBranch = static_cast<int>(audit.seed->arrivalBranch.value());
           for (const auto &coordinate : audit.seed->arrivalRay.barycentric)
             locus.vertexStarArrivalRay.push_back(exact_string(coordinate));
+          locus.vertexStarArrivalOnRadialRay = audit.seed->onRadialRay;
+          if (audit.seed->radialRay.has_value())
+            locus.vertexStarArrivalRadialRay = audit.seed->radialRay->index();
           if (audit.seed->provenanceTrace.has_value())
             locus.vertexStarProvenanceTrace = audit.seed->provenanceTrace->index();
           locus.vertexStarProvenanceEvent = audit.seed->provenanceEvent;

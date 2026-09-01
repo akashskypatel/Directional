@@ -206,6 +206,8 @@ struct VertexStarRaySeed {
   authority::FieldBranch arrivalBranch;
   authority::FieldBranchDirection arrivalRay;
   FieldVertexArrivalMode arrivalMode = FieldVertexArrivalMode::FaceInterior;
+  bool onRadialRay = false;
+  std::optional<authority::SourceVertexId> radialRay;
   std::optional<authority::TraceId> provenanceTrace;
   std::optional<std::size_t> provenanceEvent;
 
@@ -268,6 +270,8 @@ enum class FieldVertexTransitStateOutcome : std::uint8_t {
   StateIncomingDirectionNotBarycentric = 17,
   TransportTargetDirectionNotBarycentric = 18,
   DuplicateStateSuppressed = 19,
+  SeedArrivalFaceRowUnavailable = 20,
+  SeedDirectionOutsideClosedWedge = 21,
 };
 
 struct FieldVertexTransitStateDiagnostic {

@@ -3450,6 +3450,143 @@ void append_cp4c_failure_locus(
   if (locus.transportStarComponentCount.has_value())
     report << ";transportStarComponentCount="
            << *locus.transportStarComponentCount;
+
+  for (std::size_t index = 0U; index < locus.vertexTransitStates.size();
+       ++index) {
+    const auto &state = locus.vertexTransitStates[index];
+    report << ";vertexTransitState[" << index << "]={sourceFace="
+           << state.sourceFace[0] << ',' << state.sourceFace[1] << ','
+           << state.sourceFace[2] << ",branch=" << state.branch
+           << ",outcome=" << state.outcome
+           << ",representativeDirection=";
+    if (state.representativeDirection.empty()) {
+      report << "none";
+    } else {
+      report << '[';
+      for (std::size_t component = 0U;
+           component < state.representativeDirection.size(); ++component) {
+        if (component != 0U) report << ',';
+        report << state.representativeDirection[component];
+      }
+      report << ']';
+    }
+    report << ",incomingDirection=";
+    if (state.incomingDirection.empty()) {
+      report << "none";
+    } else {
+      report << '[';
+      for (std::size_t component = 0U;
+           component < state.incomingDirection.size(); ++component) {
+        if (component != 0U) report << ',';
+        report << state.incomingDirection[component];
+      }
+      report << ']';
+    }
+    report << ",transportEdge=";
+    if (state.transportEdge.has_value()) {
+      report << (*state.transportEdge)[0] << '-' << (*state.transportEdge)[1];
+    } else {
+      report << "none";
+    }
+    report << ",transportPath=[";
+    for (std::size_t edge = 0U; edge < state.transportPath.size(); ++edge) {
+      if (edge != 0U) report << ',';
+      report << state.transportPath[edge][0] << '-' << state.transportPath[edge][1];
+    }
+    report << "]"
+           << ",composedQuarterTurn=" << state.composedQuarterTurn
+           << ",eligibleForElection="
+           << (state.eligibleForElection ? "true" : "false")
+           << ",representativeInSector="
+           << (state.representativeInSector ? "true" : "false")
+           << ",incomingInSector="
+           << (state.incomingInSector ? "true" : "false") << '}';
+  }
+
+  if (!locus.vertexStarState.empty()) {
+    if (locus.vertexStarArrivalFace.has_value())
+      report << ";vertexStarArrivalFace=" << (*locus.vertexStarArrivalFace)[0]
+             << ',' << (*locus.vertexStarArrivalFace)[1] << ','
+             << (*locus.vertexStarArrivalFace)[2];
+    if (locus.vertexStarArrivalBranch.has_value())
+      report << ";vertexStarArrivalBranch=" << *locus.vertexStarArrivalBranch;
+    if (!locus.vertexStarArrivalRay.empty()) {
+      report << ";vertexStarArrivalRay=[";
+      for (std::size_t component = 0U;
+           component < locus.vertexStarArrivalRay.size(); ++component) {
+        if (component != 0U) report << ',';
+        report << locus.vertexStarArrivalRay[component];
+      }
+      report << ']';
+    }
+    report << ";vertexStarArrivalOnRadialRay="
+           << (locus.vertexStarArrivalOnRadialRay ? "true" : "false");
+    if (locus.vertexStarArrivalRadialRay.has_value())
+      report << ";vertexStarArrivalRadialRay="
+             << *locus.vertexStarArrivalRadialRay;
+    if (locus.vertexStarProvenanceTrace.has_value())
+      report << ";vertexStarProvenanceTrace="
+             << *locus.vertexStarProvenanceTrace;
+    if (locus.vertexStarProvenanceEvent.has_value())
+      report << ";vertexStarProvenanceEvent="
+             << *locus.vertexStarProvenanceEvent;
+    report << ";vertexStarKernelRoute=" << locus.vertexStarKernelRoute
+           << ";vertexStarState=" << locus.vertexStarState
+           << ";vertexStarFanLength=" << locus.vertexStarFanLength
+           << ";vertexStarExactFanLengthBudget="
+           << locus.vertexStarExactFanLengthBudget
+           << ";vertexStarClosedFan="
+           << (locus.vertexStarClosedFan ? "true" : "false")
+           << ";vertexStarTruncationReason="
+           << locus.vertexStarTruncationReason
+           << ";vertexStarConeAngleDefinition="
+           << locus.vertexStarConeAngleDefinition;
+    for (std::size_t index = 0U; index < locus.vertexStarFanFaces.size();
+         ++index) {
+      const auto &face = locus.vertexStarFanFaces[index];
+      report << ";vertexStarSector[" << index << "]={sourceFace=" << face[0]
+             << ',' << face[1] << ',' << face[2];
+      if (index < locus.vertexStarFanBranches.size())
+        report << ",branch=" << locus.vertexStarFanBranches[index];
+      if (index < locus.vertexStarFanNextRadialVertices.size())
+        report << ",nextRadial="
+               << locus.vertexStarFanNextRadialVertices[index];
+      if (index < locus.vertexStarFanPreviousRadialVertices.size())
+        report << ",previousRadial="
+               << locus.vertexStarFanPreviousRadialVertices[index];
+      if (index < locus.vertexStarSectorExactDPQ.size()) {
+        const auto &exact = locus.vertexStarSectorExactDPQ[index];
+        report << ",exactDPQ=" << exact[0] << ',' << exact[1] << ','
+               << exact[2];
+      }
+      if (index < locus.vertexStarSectorEligibleForElection.size())
+        report << ",eligibleForElection="
+               << (locus.vertexStarSectorEligibleForElection[index] ? "true"
+                                                                    : "false");
+      if (index < locus.vertexStarSectorContainsContinuation.size())
+        report << ",containsContinuation="
+               << (locus.vertexStarSectorContainsContinuation[index] ? "true"
+                                                                     : "false");
+      if (index < locus.vertexStarCandidateRepresentativeInOwnSector.size())
+        report << ",candidateRepresentativeInOwnSector="
+               << (locus.vertexStarCandidateRepresentativeInOwnSector[index]
+                       ? "true"
+                       : "false");
+      report << '}';
+    }
+    report << ";vertexStarOwnerCardinality="
+           << locus.vertexStarOwnerCardinality;
+    if (locus.vertexStarOwnerFace.has_value())
+      report << ";vertexStarOwnerFace=" << (*locus.vertexStarOwnerFace)[0]
+             << ',' << (*locus.vertexStarOwnerFace)[1] << ','
+             << (*locus.vertexStarOwnerFace)[2];
+    if (locus.vertexStarOwnerBranch.has_value())
+      report << ";vertexStarOwnerBranch=" << *locus.vertexStarOwnerBranch;
+    report << ";vertexStarOnRadialRay="
+           << (locus.vertexStarOnRadialRay ? "true" : "false");
+    if (locus.vertexStarRadialRay.has_value())
+      report << ";vertexStarRadialRay=" << *locus.vertexStarRadialRay;
+  }
 }
 
 
@@ -8850,6 +8987,84 @@ TEST(ResolvedBranchCorrection,
   EXPECT_FALSE(audit.onRadialRay);
 }
 
+TEST(ResolvedBranchCorrection,
+     FoldedConeFaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries) {
+  const TriMesh mesh = make_three_right_angle_cone_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_folded_cone_radial_arrival_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+
+  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 2, 4U);
+  const SourceFaceId arrivalRow = SourceFaceId::from_index(0, 3U).value();
+  const SourceVertexId center = SourceVertexId::from_index(0, 4U).value();
+  const auto *arrivalFrame = topology.find_frame(arrivalFace);
+  ASSERT_NE(nullptr, arrivalFrame);
+
+  struct RadialCase {
+    directional::authority::FieldBranch branch;
+    SourceVertexId radialRay;
+    SourceFaceTopologyKey expectedOwner;
+    bool cb9HalfOpenAdmits;
+    bool cb9DevelopedFaceInteriorGuardRejects;
+  };
+  const std::array<RadialCase, 2> cases{
+      RadialCase{directional::authority::FieldBranch::from_integer(2),
+                 SourceVertexId::from_index(1, 4U).value(),
+                 topology_face(0, 2, 3, 4U), true, true},
+      RadialCase{directional::authority::FieldBranch::from_integer(3),
+                 SourceVertexId::from_index(2, 4U).value(),
+                 topology_face(0, 3, 1, 4U), false, false}};
+
+  for (const RadialCase &radialCase : cases) {
+    const auto pairing = std::find_if(
+        arrivalFrame->branches.begin(), arrivalFrame->branches.end(),
+        [&](const auto &candidate) { return candidate.branch == radialCase.branch; });
+    ASSERT_NE(arrivalFrame->branches.end(), pairing);
+    auto arrivalRay = pairing->direction;
+    for (auto &coordinate : arrivalRay.barycentric) coordinate = -coordinate;
+
+    const bool cb9HalfOpenAdmits =
+        directional::authority::direction_in_vertex_sector(
+            mesh, arrivalRow, center, arrivalRay);
+    EXPECT_EQ(radialCase.cb9HalfOpenAdmits, cb9HalfOpenAdmits);
+    EXPECT_TRUE(directional::authority::direction_in_closed_vertex_wedge(
+        mesh, arrivalRow, center, arrivalRay));
+    // CB9 rejected the previous-radial case at its half-open seed guard and
+    // the next-radial case at the later FaceInterior alpha==0 guard.  Thus
+    // each exact radial orientation is a direct falsifier of one old guard.
+    EXPECT_TRUE(!cb9HalfOpenAdmits ||
+                radialCase.cb9DevelopedFaceInteriorGuardRejects);
+
+    const auto result = directional::geometry::surface_cell_tracing_detail::
+        resolve_field_vertex_transit(
+            mesh, topology, arrivalFrame->sourceComponent,
+            arrivalFrame->topologyRegion, arrivalFace, radialCase.branch,
+            center, directional::geometry::FieldVertexArrivalMode::FaceInterior);
+    ASSERT_TRUE(std::holds_alternative<
+                directional::geometry::surface_cell_tracing_detail::
+                    FieldVertexTransitDecision>(result));
+    const auto &decision = std::get<
+        directional::geometry::surface_cell_tracing_detail::
+            FieldVertexTransitDecision>(result);
+    ASSERT_TRUE(decision.vertexStarTransit.has_value());
+    const auto &audit = *decision.vertexStarTransit;
+    ASSERT_TRUE(audit.seed.has_value());
+
+    EXPECT_EQ(radialCase.expectedOwner, decision.nextFace);
+    EXPECT_EQ(directional::geometry::FieldVertexArrivalMode::FaceInterior,
+              audit.seed->arrivalMode);
+    EXPECT_TRUE(audit.seed->onRadialRay);
+    ASSERT_TRUE(audit.seed->radialRay.has_value());
+    EXPECT_EQ(radialCase.radialRay, *audit.seed->radialRay);
+    EXPECT_EQ(directional::geometry::VertexStarTransitState::Owner,
+              audit.state);
+    EXPECT_EQ(1U, audit.ownerCardinality);
+  }
+}
+
 TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
@@ -8882,6 +9097,10 @@ TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {
   EXPECT_EQ(directional::geometry::FieldVertexTransitStateOutcome::
                 SeedAuthorityMismatch,
             error.vertexTransitStates.front().outcome);
+  ASSERT_TRUE(error.vertexStarTransit.has_value());
+  EXPECT_EQ(directional::geometry::VertexStarTransitState::SeedUnavailable,
+            error.vertexStarTransit->state);
+  EXPECT_FALSE(error.vertexStarTransit->seed.has_value());
 }
 
 TEST(ResolvedBranchCorrection,

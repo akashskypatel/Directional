@@ -695,6 +695,10 @@ struct FieldSingularityPortAttachment {
     const TriMesh &sourceMesh, SourceFaceId sourceFace, SourceVertexId vertex,
     const FieldBranchDirection &direction);
 
+[[nodiscard]] DIRECTIONAL_API bool direction_in_closed_vertex_wedge(
+    const TriMesh &sourceMesh, SourceFaceId sourceFace, SourceVertexId vertex,
+    const FieldBranchDirection &direction);
+
 /** Immutable canonical local branch topology nested inside the A1 atlas. */
 class FieldBranchTopology {
 public:

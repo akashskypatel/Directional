@@ -425,6 +425,26 @@ bool direction_in_incident_vertex_sector(
   return direction[*nextIndex] > zero && direction[*previousIndex] >= zero;
 }
 
+bool direction_in_closed_incident_vertex_wedge(
+    const IncidentFanFace &face, const SourceVertexId vertex,
+    const FieldBranchDirection &direction) {
+  if (!direction.is_barycentric()) return false;
+  const auto &vertices = face.topology.vertices();
+  std::optional<std::size_t> nextIndex;
+  std::optional<std::size_t> previousIndex;
+  for (std::size_t index = 0U; index < vertices.size(); ++index) {
+    if (vertices[index] == face.nextVertex) nextIndex = index;
+    if (vertices[index] == face.previousVertex) previousIndex = index;
+  }
+  if (!nextIndex.has_value() || !previousIndex.has_value()) return false;
+
+  const FieldExactRational zero = FieldExactRational::from_integer(0);
+  const FieldExactRational &next = direction[*nextIndex];
+  const FieldExactRational &previous = direction[*previousIndex];
+  return next >= zero && previous >= zero &&
+         !(next == zero && previous == zero);
+}
+
 std::optional<double> counter_clockwise_sector_angle(
     const TriMesh &sourceMesh, const IncidentFanFace &face,
     const SourceVertexId vertex, const Eigen::Vector3d &direction) {
@@ -1648,6 +1668,38 @@ bool direction_in_vertex_sector(const TriMesh &sourceMesh,
       vertex, next.value(), previous.value()});
   if (!topology) return false;
   return direction_in_incident_vertex_sector(
+      IncidentFanFace{sourceFace, topology.value(), next.value(),
+                      previous.value()},
+      vertex, direction);
+}
+
+bool direction_in_closed_vertex_wedge(
+    const TriMesh &sourceMesh, const SourceFaceId sourceFace,
+    const SourceVertexId vertex, const FieldBranchDirection &direction) {
+  if (sourceFace.index() >= static_cast<std::size_t>(sourceMesh.F.rows()) ||
+      vertex.index() >= static_cast<std::size_t>(sourceMesh.V.rows())) {
+    return false;
+  }
+  const int row = static_cast<int>(sourceFace.index());
+  int corner = -1;
+  for (int c = 0; c < 3; ++c) {
+    if (sourceMesh.F(row, c) == static_cast<int>(vertex.index())) {
+      corner = c;
+      break;
+    }
+  }
+  if (corner < 0) return false;
+  const auto next = SourceVertexId::from_index(
+      sourceMesh.F(row, (corner + 1) % 3),
+      static_cast<std::size_t>(sourceMesh.V.rows()));
+  const auto previous = SourceVertexId::from_index(
+      sourceMesh.F(row, (corner + 2) % 3),
+      static_cast<std::size_t>(sourceMesh.V.rows()));
+  if (!next || !previous) return false;
+  const auto topology = SourceFaceTopologyKey::make(std::array<SourceVertexId, 3>{
+      vertex, next.value(), previous.value()});
+  if (!topology) return false;
+  return direction_in_closed_incident_vertex_wedge(
       IncidentFanFace{sourceFace, topology.value(), next.value(),
                       previous.value()},
       vertex, direction);

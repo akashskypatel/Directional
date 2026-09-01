@@ -96,6 +96,20 @@ struct SurfaceCellPeriodicHolonomyDiagnostics {
   std::vector<std::uint64_t> cutSourceTopology;
 };
 
+struct SurfaceCellVertexTransitStateDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  int branch = 0;
+  std::string outcome;
+  std::vector<std::string> representativeDirection;
+  std::vector<std::string> incomingDirection;
+  std::optional<std::array<std::size_t, 2>> transportEdge;
+  std::vector<std::array<std::size_t, 2>> transportPath;
+  int composedQuarterTurn = 0;
+  bool eligibleForElection = false;
+  bool representativeInSector = false;
+  bool incomingInSector = false;
+};
+
 struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> sourceVertex;
   std::optional<std::array<std::size_t, 2>> sourceEdge;
@@ -115,6 +129,8 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::array<std::size_t, 3>> vertexStarArrivalFace;
   std::optional<int> vertexStarArrivalBranch;
   std::vector<std::string> vertexStarArrivalRay;
+  bool vertexStarArrivalOnRadialRay = false;
+  std::optional<std::size_t> vertexStarArrivalRadialRay;
   std::optional<std::size_t> vertexStarProvenanceTrace;
   std::optional<std::size_t> vertexStarProvenanceEvent;
   std::string vertexStarKernelRoute;
@@ -137,6 +153,7 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<int> vertexStarOwnerBranch;
   bool vertexStarOnRadialRay = false;
   std::optional<std::size_t> vertexStarRadialRay;
+  std::vector<SurfaceCellVertexTransitStateDiagnostics> vertexTransitStates;
 };
 
 struct SurfaceCellStageLineage {

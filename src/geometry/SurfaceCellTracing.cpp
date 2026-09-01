@@ -1169,6 +1169,48 @@ void vertex_star_append(std::vector<VertexStarAngleTerm> &target,
   target.insert(target.end(), source.begin(), source.end());
 }
 
+std::optional<authority::SourceVertexId> vertex_star_arrival_radial_ray(
+    const TriMesh &sourceMesh, const authority::SourceFaceId sourceFace,
+    const authority::SourceFaceTopologyKey &sourceTopology,
+    const authority::SourceVertexId sourceVertex,
+    const authority::FieldBranchDirection &direction) {
+  if (sourceFace.index() >= static_cast<std::size_t>(sourceMesh.F.rows()))
+    return std::nullopt;
+  const int row = static_cast<int>(sourceFace.index());
+  int corner = -1;
+  for (int index = 0; index < 3; ++index) {
+    if (sourceMesh.F(row, index) == static_cast<int>(sourceVertex.index())) {
+      corner = index;
+      break;
+    }
+  }
+  if (corner < 0) return std::nullopt;
+  const auto next = authority::SourceVertexId::from_index(
+      sourceMesh.F(row, (corner + 1) % 3),
+      static_cast<std::size_t>(sourceMesh.V.rows()));
+  const auto previous = authority::SourceVertexId::from_index(
+      sourceMesh.F(row, (corner + 2) % 3),
+      static_cast<std::size_t>(sourceMesh.V.rows()));
+  if (!next || !previous) return std::nullopt;
+
+  const auto &vertices = sourceTopology.vertices();
+  const auto nextIndex = std::find(vertices.begin(), vertices.end(), next.value());
+  const auto previousIndex =
+      std::find(vertices.begin(), vertices.end(), previous.value());
+  if (nextIndex == vertices.end() || previousIndex == vertices.end())
+    return std::nullopt;
+  const auto zero = vertex_star_zero();
+  const auto nextOffset =
+      static_cast<std::size_t>(std::distance(vertices.begin(), nextIndex));
+  const auto previousOffset =
+      static_cast<std::size_t>(std::distance(vertices.begin(), previousIndex));
+  if (direction[nextOffset] > zero && direction[previousOffset] == zero)
+    return next.value();
+  if (direction[nextOffset] == zero && direction[previousOffset] > zero)
+    return previous.value();
+  return std::nullopt;
+}
+
 authority::FieldBranchDirection vertex_star_membership_witness(
     const VertexStarSector &sector, const authority::SourceVertexId sourceVertex,
     const bool onNextRadial) {
@@ -1212,7 +1254,7 @@ FieldVertexTransitResult resolve_field_vertex_transit(
       std::pair<authority::SourceFaceTopologyKey, authority::FieldBranch>;
 
   std::vector<FieldVertexTransitStateDiagnostic> diagnostics;
-  std::optional<VertexStarTransitAudit> audit;
+  std::optional<VertexStarTransitAudit> audit{VertexStarTransitAudit{}};
   const auto record =
       [&](const authority::SourceFaceTopologyKey &sourceFace,
           const authority::FieldBranch branch,
@@ -1278,6 +1320,13 @@ FieldVertexTransitResult resolve_field_vertex_transit(
            std::nullopt, std::nullopt, {}, 0);
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
+  authority::FieldBranchDirection arrivalRay = currentPairing->direction;
+  for (VertexStarRational &coordinate : arrivalRay.barycentric) {
+    coordinate = -coordinate;
+  }
+  audit->seed = VertexStarRaySeed{sourceVertex, currentFace, currentBranch,
+                                  arrivalRay, arrivalMode, false, std::nullopt,
+                                  provenanceTrace, provenanceEvent};
   if (!currentPairing->direction.is_barycentric()) {
     record(currentFace, currentBranch,
            FieldVertexTransitStateOutcome::SeedDirectionNotBarycentric,
@@ -1285,24 +1334,23 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
 
-  authority::FieldBranchDirection arrivalRay = currentPairing->direction;
-  for (VertexStarRational &coordinate : arrivalRay.barycentric) {
-    coordinate = -coordinate;
-  }
   const auto currentRow = field_face_row(sourceMesh, currentFace);
-  if (!currentRow.has_value() ||
-      !authority::direction_in_vertex_sector(sourceMesh, *currentRow,
-                                             sourceVertex, arrivalRay)) {
+  if (!currentRow.has_value()) {
     record(currentFace, currentBranch,
-           FieldVertexTransitStateOutcome::SeedDirectionNotBarycentric,
+           FieldVertexTransitStateOutcome::SeedArrivalFaceRowUnavailable,
            currentPairing->direction, std::nullopt, {}, 0);
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
-
-  audit = VertexStarTransitAudit{};
-  audit->seed = VertexStarRaySeed{sourceVertex, currentFace, currentBranch,
-                                  arrivalRay, arrivalMode, provenanceTrace,
-                                  provenanceEvent};
+  if (!authority::direction_in_closed_vertex_wedge(
+          sourceMesh, *currentRow, sourceVertex, arrivalRay)) {
+    record(currentFace, currentBranch,
+           FieldVertexTransitStateOutcome::SeedDirectionOutsideClosedWedge,
+           currentPairing->direction, std::nullopt, {}, 0);
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  audit->seed->radialRay = vertex_star_arrival_radial_ray(
+      sourceMesh, *currentRow, currentFace, sourceVertex, arrivalRay);
+  audit->seed->onRadialRay = audit->seed->radialRay.has_value();
 
   std::vector<TransitState> pending{{currentFace, currentBranch, {}, 0}};
   std::set<StateKey> visited;
@@ -1528,10 +1576,6 @@ FieldVertexTransitResult resolve_field_vertex_transit(
   const auto alpha = vertex_star_angle_term(
       vertex_star_subtract(*startPoint, *origin), *ray);
   if (!alpha.has_value()) {
-    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
-  }
-  if (arrivalMode == FieldVertexArrivalMode::FaceInterior &&
-      alpha->crossSquared == vertex_star_zero()) {
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
   if (alpha->crossSquared == vertex_star_zero() &&
@@ -4926,6 +4970,10 @@ const char *field_vertex_transit_state_outcome_name(
     return "TransportTargetDirectionNotBarycentric";
   case FieldVertexTransitStateOutcome::DuplicateStateSuppressed:
     return "DuplicateStateSuppressed";
+  case FieldVertexTransitStateOutcome::SeedArrivalFaceRowUnavailable:
+    return "SeedArrivalFaceRowUnavailable";
+  case FieldVertexTransitStateOutcome::SeedDirectionOutsideClosedWedge:
+    return "SeedDirectionOutsideClosedWedge";
   }
   return "Unknown";
 }
