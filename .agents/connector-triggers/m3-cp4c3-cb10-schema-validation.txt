@@ -1,3 +1,3 @@
-purpose=M3-CP4c-3-CB10 schema validation retry 3
+purpose=M3-CP4c-3-CB10 compile caller schema validation
 workflow_candidate=.agents/Directional/turn-payloads/M3_CP4c3_CB10_workflow_candidate.yml
-validated_change=delimiter-corrected-patch-sha
+source_sha=37e18cc5832d5f648b8bb042c535ee6dd05214b5
