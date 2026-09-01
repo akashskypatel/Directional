@@ -1,0 +1,2 @@
+# M3-CP4c-3-TB8 temporary-state cleanup
+.agents/connector-triggers/source-snapshot/20260901T2115-tb8-start.txt
