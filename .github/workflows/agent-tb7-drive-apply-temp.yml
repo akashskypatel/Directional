@@ -26,11 +26,11 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1B7Wd-iZkIH3YHt68VDChCafBihHcj9jt
-      patch_sha256: 2f3d35e6c7360b71fb3e4665d8b79c12ba3011d4045ebd9f9969307167a002ce
-      base_sha: c87d30c6193793d0ef0fdf1fc783b2cc7a32ef62
+      file_id: 1TZJhOd2bX1RvBZc6IbrUNXtWEou9f1sw
+      patch_sha256: 8f596e96a884c31578d661ebd8e69f14a4b71c5378a56c0590f50a2d51b25a8a
+      base_sha: 5672defdd1f0b918d9c39fa9b510c2c30ae2e7ac
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-TB7: stage artifact-only runtime payloads"
+      commit_message: "M3-CP4c-3-TB7: close out artifact-only semantic evidence"
       retention_days: 7
     secrets: inherit
 
@@ -40,6 +40,6 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: M3-CP4c-3-TB7-drive-apply
+      label: M3-CP4c-3-TB7-closeout-drive-apply
       trim_stale_comments: true
     secrets: inherit
