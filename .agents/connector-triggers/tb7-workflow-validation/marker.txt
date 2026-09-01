@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-TB7
-purpose=validate exact artifact-only workflow draft before publication
-retry=0

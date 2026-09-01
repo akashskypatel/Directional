@@ -1,9 +1,0 @@
-.agents/Directional/turn-payloads/m3-cp4c3-tb7-20260901.yml
-.agents/Directional/turn-payloads/m3cp4c3-tb7-postflight.sh
-.agents/Directional/turn-payloads/m3cp4c3-tb7-preflight.sh
-.agents/Directional/turn-payloads/m3cp4c3-tb7-runtime.sh
-.agents/connector-triggers/m3-cp4c3-tb7-20260901.txt
-.agents/connector-triggers/source-snapshot/tb7-closeout.txt
-.agents/connector-triggers/tb7-drive-apply/closeout.txt
-.agents/connector-triggers/tb7-drive-apply/trigger.txt
-.agents/connector-triggers/tb7-workflow-validation/marker.txt

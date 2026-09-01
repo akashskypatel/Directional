@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-TB7
-purpose=exact current-head documentation closeout snapshot
-source_ref=1cb960e098f658d60a33c61524190fca5a4b55a6
