@@ -1,0 +1,156 @@
+name: M3 CP4c3 CB9 Package 76
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-cb9-package76.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-cb9-package76
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-cb9-package76
+      commit_run_file: false
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-cb9-package76.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  package:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent activity log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-cb9-package76.log"
+          : > "$log"
+          {
+            echo "workflow=${GITHUB_WORKFLOW}"
+            echo "run_id=${GITHUB_RUN_ID}"
+            echo "event=${GITHUB_EVENT_NAME}"
+            echo "event_sha=${GITHUB_SHA}"
+            echo "source_sha=e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a"
+            echo "compile_artifact_id=9811669562"
+            echo "runtimeExecution=false"
+            echo "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } | tee -a "$log"
+
+      - name: Download and verify exact compile artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-cb9-package76.log"
+          exec > >(tee -a "$log") 2>&1
+          work="${RUNNER_TEMP}/m3-cp4c3-cb9-package76"
+          mkdir -p "$work/raw"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/9811669562/zip" > "$work/raw.zip"
+          echo "b5049004f2687eb48abfd40398c87606224cda1b7892bc22d7a2901d6dab16d2  $work/raw.zip" | sha256sum -c -
+          unzip -q "$work/raw.zip" -d "$work/raw"
+          test "$(cat "$work/raw/metadata/source-commit.txt")" = "e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a"
+          grep -qx 'runtimeExecution=false' "$work/raw/metadata/command-boundary.txt"
+          grep -qx 'exactArithmeticBackend=GMP' "$work/raw/metadata/command-boundary.txt"
+          grep -q 'libgmpxx.so' "$work/raw/metadata/gmp-evidence.txt"
+          grep -q 'libgmp.so' "$work/raw/metadata/gmp-evidence.txt"
+          test "$(cat "$work/raw/metadata/preflight-exit-code.txt")" = 0
+          test "$(cat "$work/raw/metadata/build-exit-code.txt")" = 0
+          test ! -s "$work/raw/metadata/source-status-final.txt"
+          (cd "$work/raw" && sha256sum -c SHA256SUMS)
+
+      - name: Build and verify mode-preserving package 76
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/m3-cp4c3-cb9-package76.log"
+          exec > >(tee -a "$log") 2>&1
+          work="${RUNNER_TEMP}/m3-cp4c3-cb9-package76"
+          pkg="$work/package76"
+          mkdir -p "$pkg"
+          cp -a "$work/raw/bin" "$work/raw/lib" "$work/raw/metadata" "$work/raw/source" "$pkg/"
+          mkdir -p "$work/source-tree" "$pkg/test-data/benchmarks"
+          tar -xzf "$work/raw/source/source-e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a.tar.gz" -C "$work/source-tree" benchmarks/fixtures .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt .agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_374.txt
+          echo "b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834  $work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt" | sha256sum -c -
+          echo "d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f  $work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_374.txt" | sha256sum -c -
+          test "$(wc -l < "$work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_374.txt" | tr -d ' ')" = 374
+          cp -a "$work/source-tree/benchmarks/fixtures" "$pkg/test-data/benchmarks/"
+          fixture_count="$(find "$pkg/test-data/benchmarks/fixtures" -type f | wc -l | tr -d ' ')"
+          test "$fixture_count" = 27
+          cat > "$pkg/metadata/fixture-package-contract.txt" <<'EOF'
+          package=76
+          source_commit=e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a
+          fixture_count=27
+          fixture_authority=package-relative
+          selector=374
+          selector_sha256=d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f
+          runtimeExecution=false
+          packageRepair=false
+          EOF
+          cat > "$pkg/metadata/package-envelope.txt" <<'EOF'
+          runtimeExecution=false
+          turnBoundary=Code+Build-only
+          exactArithmeticBackend=GMP
+          modePreservingEnvelope=true
+          semanticContracts=compiled-not-executed
+          EOF
+          rm -f "$pkg/SHA256SUMS"
+          (cd "$pkg" && find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS)
+          (cd "$pkg" && sha256sum -c SHA256SUMS)
+          for exe in "$pkg"/bin/directional_*; do test -x "$exe"; done
+          test "$(find "$pkg/bin" -maxdepth 1 -type f -name 'directional_*' | wc -l | tr -d ' ')" = 6
+          tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -czf "$work/package76.tar.gz" -C "$work" package76
+          sha256sum "$work/package76.tar.gz" > "$work/package76.sha256"
+          sha256sum "$work/raw/source/source-e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a.tar.gz" > "$work/source-archive.sha256"
+          cat > "$work/package76-boundary.txt" <<'EOF'
+          runtimeExecution=false
+          packageRepair=false
+          No Directional binary was executed while packaging.
+          EOF
+          mkdir -p "$work/verify"
+          tar -xzf "$work/package76.tar.gz" -C "$work/verify"
+          (cd "$work/verify/package76" && sha256sum -c SHA256SUMS)
+          for exe in "$work/verify/package76"/bin/directional_*; do test -x "$exe"; done
+          echo "fixture_count=$fixture_count"
+          cat "$work/package76.sha256"
+          cat "$work/source-archive.sha256"
+
+      - name: Upload package 76
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-package76-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/m3-cp4c3-cb9-package76/package76.tar.gz
+            ${{ runner.temp }}/m3-cp4c3-cb9-package76/package76.sha256
+            ${{ runner.temp }}/m3-cp4c3-cb9-package76/source-archive.sha256
+            ${{ runner.temp }}/m3-cp4c3-cb9-package76/package76-boundary.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload persistent activity log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-package76-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-cb9-package76.log
+          if-no-files-found: error
+          retention-days: 14
