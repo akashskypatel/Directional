@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. `M3-CP4c-3-DEFN-R2` is **COMPLETE** and discharged CB8-REV's AX1–AX8: it froze the vertex-star continuation semantics the project had never written down. **Amendment 22** — a curve continues through a source vertex along the **straightest geodesic** of the intrinsic star: one exact arrival-anchored ray, one isometric development of the admissible fan, continuation at `β = α + Θ/2`, the *unchanged* half-open sector convention applied to developed sectors, one typed certificate. Choosing `Θ/2` over `π` makes a non-flat star's gap/overlap impossible rather than adjudicated. **Amendment 23** — the exact election is the sign of a sum of arccosines, degree up to `4^k` in fan length, so the producer owes a certified filter, an *implemented* exact fallback and a **published budget** with a typed fail-closed state. **Vertex 30 is proved exactly**: by rational identities alone (two exact right angles, two exact complementary pairs) `Θ(v30) = 2π`, the developed sectors give `sector(209) ∪ sector(208) = [π, 3π/2)`, and the owner is row 209 or row 208 — **row 41 is unreachable by any continuation**, so one of the two faces the current code elects is wrong about the surface. Selector **373** stays byte-frozen; selector 374 remains conditional. Exact next is **`M3-CP4c-3-CB9`** under **AY0–AY9**. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**.
+**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN** with its gate frozen at selector **374**. `M3-CP4c-3-CB9` implemented Amendments 22/23 (package 76, source `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`); `M3-CP4c-3-TB7` re-proved **365/365** and first-redded at ordinal **366**, `VertexTransitSeedUnavailable`, source vertex 11, face `(8,10,11)`, branch 1, `FaceInterior`, with report-only 367–374 at **1 PASS / 7 RED**. `M3-CP4c-3-TB7-REV` is **COMPLETE** and discharged **AW0–AW7**. It explained both reds and proved they have **different owners**. (a) Ordinal 366 is a **CB9-introduced product defect**: `AY1` added a fifth seed guard, absent from the source TB6 ran, that applies the **half-open ownership convention** `direction[next] > 0 ∧ direction[previous] ≥ 0` as an *admissibility test on the incoming arrival ray*. Proved exactly from committed fixture bytes — face `(8,10,11)` is mesh row 8, its branch-1 direction is `(0, −2.77777777777777857, +2.77777777777777857)` with an exact IEEE zero at `v8`, so the port trace out of singularity vertex 10 runs along mesh edge `(10,11)` and lands on vertex 11 under Amendment 3, and its arrival ray is exactly the radial ray `v11 → v10`, which neighbouring row 109 owns. A second guard rejects the mirror orientation, so together they make **every** edge-collinear vertex arrival unresolvable in `FaceInterior` mode. It is **not** a TB5 recurrence. (b) Ordinal 374 is an **invalid witness with a legitimate product rejection**: the folded cone has `Θ = 3π/2` and angle defect `K = π/2` while `make_zero_transport_field` declares `effort ≡ 0` and no singularities, forcing `exactLift = 1` against a matching composing to `0` — `CycleTransportMismatch`, with `SingularityMismatch` behind it. **Amendments 22 and 23 survive intact**; `DEFN-R2` §AX1 never imposed CB9's guard and §AX7 §7.2 item 5 *required* the on-radial seed it made unreachable. Selector **374 stays byte-frozen and is not withdrawn**; selector 375 is conditional on AZ6. Exact next is **`M3-CP4c-3-CB10`** under **AZ0–AZ9**, product-only. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **74**.
 
 ## 1. Separate current/future authority
 
@@ -20,6 +20,11 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — retained frozen CP4c-3 prefix.
 - `Architecture_M3_CP4c3_Required_Green_Selector_370.txt` — retained AL7 prefix.
 - `Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — **current frozen CP4c-3 gate**.
+- `Architecture_M3_CP4c3_Required_Green_Selector_374.txt` — **current frozen CP4c-3 gate**; 373 is its byte-identical prefix.
+- `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — **Amendments 22 and 23**, AX0–AX9 and the AY0–AY9 measures.
+- `Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — package-76 compile/package authority and the AY8 static audit.
+- `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — current measured runtime authority.
+- `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — **current review authority** and the AZ0–AZ9 measures governing `M3-CP4c-3-CB10`.
 - `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — current compile/package evidence.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB2 execution/retry authority.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — current TB2 blocker/postflight authority.
@@ -554,15 +559,24 @@ The CB1 report's exact bytes remain recoverable from Git history and no current/
 
 After the durable start-of-turn checklist, load:
 
-1. `Future_Chat_Session_Handoff.md`
-2. `TODO.md`
-3. `ORIENTATION.md`
-4. `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`
-5. `Architecture_M3_CP4c3_CB8_Code_Build_Report.md`
-6. `Architecture_M3_CP4c3_TB6_Independent_Review_Record.md`
-7. `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`
-8. `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`
+1. `ORIENTATION.md` — read first.
+2. `Future_Chat_Session_Handoff.md`
+3. `TODO.md`
+4. `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — **current review authority and the AZ0–AZ9 measures.**
+5. `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md`
+6. `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22 and 23.
+7. `Architecture_M3_CP4c3_CB9_Code_Build_Report.md`
+8. `Architecture_M3_CP4c3_Required_Green_Selector_374.txt`
 9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-DEFN-R2` — combined Definition + Review/Plan, runtime/build-free.** Follow AX0–AX9 in `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`. Freeze one arrival-anchored ray, the intrinsic vertex-star continuation semantics including gap/overlap typed states, the exact/certified predicate/kernel, A2a owner/certificate contract, mechanical proof, exact selector-374 falsifier contract, and production audit schema. Do not create selector 374, compile, package, or execute Directional in DEFN-R2. Ordinal 370, sphere, saturation, `FaceInterior`, barrier semantics, and accepted selectors remain untouched.
+**Exact next:** **`M3-CP4c-3-CB10` — Code + Build, runtime-free, GMP/GMPXX linked.** Follow **AZ0–AZ9** in
+`Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §8. The successor is **product-only**: separate the exact
+closed-wedge arrival-admissibility predicate from the half-open ownership convention (which must not change),
+support both on-radial arrival orientations through the exact fallback, split the collapsed typed outcome, build the
+audit object before the first returning conditional, and give the AX8 rows a reader found by search. Selector 374
+keeps every byte; ordinal 375 is appended only if AZ6's witness is shown to fail under CB9 and pass under the
+correction. The ordinal-374 folded-cone witness is **classified and deliberately deferred** — it has a different
+owner and will still be red in TB8, which is pre-classified and must not consume a review. The sphere, ordinal 370,
+saturation, mechanical zero-unbound debt, the atlas's admissibility invariants, and accepted selectors remain
+untouched.

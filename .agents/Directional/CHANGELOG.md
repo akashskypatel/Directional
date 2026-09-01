@@ -1,3 +1,97 @@
+## 2026-09-01 — `M3-CP4c-3-TB7-REV`: both TB7 reds explained, different owners proved, `M3-CP4c-3-CB10` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md`, measures **AW0–AW7**
+discharged. Static only: no Directional runtime, compile, link, package, benchmark, or product/test/fixture/selector
+mutation. Record: `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md`.
+
+**AW0.** All eleven selector values independently recomputed from committed bytes rather than transcribed: selector
+374 `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`, 374 lines / 374 unique, with
+`head -316/-346/-353/-355/-357/-361/-365/-367/-370/-373` each reproducing its frozen hash. The working tree is
+byte-identical to CB9 semantic source `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a` across `src/`, `include/`,
+`tests/`, `benchmarks/` and `CMakeLists.txt`, so every derivation reads the bytes package 76 was built from.
+
+**AW1 — ordinal 366 is a CB9-introduced product defect, not TB5 reintroduced.** CB9's `AY1` seed added a **fifth**
+guard the pre-CB9 source does not contain (`src/geometry/SurfaceCellTracing.cpp:1289-1300`): the reversed arrival
+ray must satisfy the **half-open** predicate `direction[next] > 0 ∧ direction[previous] ≥ 0` in the arrival face.
+That predicate is an *ownership* convention for electing one sector of a fan, reused as an *admissibility test on
+one incoming ray*. Proved exactly from `benchmarks/fixtures/milestone-g/mechanical_feature.{obj,rawfield}`: face
+`(8,10,11)` is mesh row 8 with corner order `[8,10,11]`, its branch-1 direction is
+`(0, −2.77777777777777857, +2.77777777777777857)` over `(v8, v10, v11)` with an **exact IEEE zero** at `v8`, so
+`|M| = 1`, the direction is exactly tangent to edge `(10,11)`, and the port trace leaving singularity **vertex 10**
+lands on vertex 11 under Amendment 3. Its arrival ray is exactly the radial ray `v11 → v10`, the `previous` ray at
+that corner, so `arrivalRay[next] = 0` and the guard rejects. The ray **is** owned — by neighbouring row 109
+`(79,11,10)` — so the convention is correct and the question asked of it was not. A second guard at `:1531-1540`
+rejects the mirror orientation, so the two together make **every** Amendment-3 edge-collinear vertex arrival
+unresolvable in `FaceInterior` mode, which is the only mode a `VertexHit` publishes. TB5's stop at the same vertex
+was CB6's *silent* seed drop with zero rows; CB7 fixed it and TB6 passed this arrival. **Shared locus, different
+mechanism; `M3-CP4c3-TB5-REV-CAND-01` is not reopened and no recurrence is counted.**
+
+**AW2 — AY7 was delivered producer-side only.** The `VertexStarTransitAudit` is constructed *after* all five seed
+guards, so every seed failure publishes `std::nullopt`; `VertexStarTransitState::SeedUnavailable` is therefore dead
+by construction; and the 26 AX8 fields CB9 added to `SurfaceCellFailureLocusDiagnostics` have **no reader** —
+`append_cp4c_failure_locus`, the only renderer the CP4c identities use, prints none of them and `vertexTransitStates`
+has no projection at all. `M3-CP4c3-TB6-CAND-01` stays **ACTIVE**; the CB9 report's closure claim is superseded.
+
+**AW3 — Amendments 22 and 23 survive intact.** `DEFN-R2` §AX1 fixes the seed's meaning, sign, writer and lifetime
+and imposes no such guard; §AX7 §7.2 item 5 *required* a seed "placed exactly on a radial ray". CB9 made that
+unreachable in `FaceInterior` mode and then wrote its own third AY5 instance in `EdgeTransit` mode — with the
+comment *"EdgeTransit is the admissible arrival mode for that exact radial seed"* — so the production defect
+survived its own falsifier.
+
+**AW4 — ordinal 374 is an invalid witness with a legitimate product rejection (category 1).**
+`make_three_right_angle_cone_fan` has three exact right angles at its centre, so `Θ = 3π/2` and the angle defect is
+`K = π/2`; `make_zero_transport_field` declares `effort ≡ 0` on every edge and no singularities, so
+`exactLift = (0 + 4K)/2π = 1` exactly while the declared matchings `2, 2, 0` compose to `0 (mod 4)`:
+**`CycleTransportMismatch`** at `src/authority/FieldTransportAtlas.cpp:2098`, with `SingularityMismatch` behind it
+at `:2150-2163`. Frames build cleanly, so no earlier atlas check is involved. **No atlas invariant may be
+weakened.** Root cause: `make_zero_transport_field` carries an **unstated precondition — the mesh must be
+intrinsically flat at every interior vertex** — satisfied accidentally by every prior consumer
+(`make_four_triangle_fan` is planar); and `DEFN-R2` §7.2 omitted the consistency a non-flat **regular** vertex
+forces, since production terminates traces at singular vertices before vertex-star transit ever runs.
+
+**AW5–AW6.** 367/371/372 remain upstream-blocked; 368 preserves `NoCarrierMatch / SourceEdgeUnavailable`; 369 and
+370 keep their existing candidates; 373's synthetic pass carries no mechanical zero-unbound credit; both CB9 AY8
+findings remain static debt. Recorded explicitly: `M3-CP4c3-CB9-AUDIT-01` is the mechanism that produced the exact
+zero this review turns on, and on this witness it produced the **right** answer, so it is **not** the cause of
+ordinal 366. New candidate `M3-CP4c3-TB7-REV-CAND-01` records the AY7 projection defects.
+
+**AW7 — one bounded successor: `M3-CP4c-3-CB10` under AZ0–AZ9, product-only.** Separate the exact closed-wedge
+admissibility predicate from the untouched half-open ownership convention (AZ1); support both on-radial arrival
+orientations through the exact fallback (AZ2); one typed name per condition (AZ3); build the audit object before the
+first returning conditional (AZ4); give the AX8 rows a reader, found by search (AZ5); derive the on-radial
+`FaceInterior` witness from the mechanical vertex-11 star with conditional selector 375 (AZ6); prohibitions (AZ7);
+audit by assumption (AZ8); published TB8 discriminators (AZ9). The ordinal-374 witness has a **different owner** and
+is deliberately deferred with its corrective specified; it will still be red in TB8, which is pre-classified and must
+not consume a review. **Selector 374 keeps every byte and is not withdrawn.**
+
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Static review on an unaccepted surface:
+**+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, produced-witness debt **5**, semantic M3
+package count **74**. New durable lessons: `LESSONS.md` §4 77 and §2 22r.
+
+## 2026-09-01 — `M3-CP4c-3-TB7`: artifact-only gate, 365/365 accepted prefix green, valid semantic red at ordinal 366
+
+Artifact-only Test + Benchmark against immutable package **76** (`9811964367`) from semantic source
+`e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`, run/job `33541437165 / 99968443127`. Result artifact `9813862211`
+(`814157162acfb95e785d4f5af3c886696534a0972942ac1f685d64b1c04086f0`); log artifact `9813862640`
+(`188d02d98928ccaf29d2e899918e487c35c186b96550044ac0138d48defea1a4`). Report:
+`Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md`.
+
+Selector 374 executed from ordinal 1, one identity per fresh process. Ordinals **1–365 PASS**; first red **366**
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` with
+`NotProductionReady/field-aligned-network;detailCode=VertexTransitSeedUnavailable`, source vertex 11, face
+`(8,10,11)`, branch 1, region 0, `FaceInterior`, `publishedFaceCount=0`, no barrier absorption or incidence. The
+required report-only remainder 367–374 executed once each with zero gate credit: **1 PASS / 7 RED** — 367/371/372
+upstream-blocked by the same stop, 368 reproducing sphere `NoCarrierMatch / SourceEdgeUnavailable`, 369 reproducing
+`saturationUsed=true`, 370 reproducing the genuine `CellularityNotEstablished` versus required
+`EmptyNetworkOnClosedSurface` product red, 373 passing synthetically, and 374 failing at `ASSERT_TRUE(atlasBuild)`
+before the folded-cone vertex-star authority with no typed atlas error printed.
+
+Immutable preflight and postflight PASS with `configureExecution`, `compileExecution`, `relinkExecution`,
+`packageRepair`, `generatedDiscovery`, `productMutation`, `testMutation`, `fixtureMutation`, `selectorMutation` and
+`benchmarkExecution` all false. Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. **+0 stable events
+/ +0 recurrences**; totals **44 / 14 / 30**, debt **5**, semantic packages **74**. New candidates
+`M3-CP4c3-TB7-CAND-01` and `M3-CP4c3-TB7-CAND-02`; exact successor independent `M3-CP4c-3-TB7-REV`.
+
 ## 2026-09-01 — `M3-CP4c-3-CB9`: exact vertex-star continuation implemented; package 76 compiled, runtime pending TB7
 
 Code + Build only under DEFN-R2 **AY0–AY9**. Semantic implementation commit

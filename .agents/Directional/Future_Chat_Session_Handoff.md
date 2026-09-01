@@ -92,82 +92,106 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB7-REV` (independent REVIEW + PLAN)
+## Mandatory next turn — `M3-CP4c-3-CB10` — EXACT NEXT / Code + Build, runtime-free, GMP/GMPXX linked
 
-`M3-CP4c-3-TB7` is **COMPLETE / VALID SEMANTIC RED**. Current runtime report:
-`Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md`.
+`M3-CP4c-3-TB7-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — measures **AW0–AW7** discharged, static only, no runtime,
+compile, package, or mutation.
 
-### Immutable TB7 authority
+### What the review established
+
+**Both TB7 reds are explained and they have different owners.**
+
+1. **Ordinal 366 is a CB9-introduced product defect, not TB5 reintroduced.** `AY1` added a **fifth** seed guard that
+   the source TB6 ran does not contain (`src/geometry/SurfaceCellTracing.cpp:1289-1300`): the reversed arrival ray
+   must satisfy the **half-open** predicate `direction[next] > 0 ∧ direction[previous] ≥ 0` in the arrival face.
+   That predicate is an *ownership* convention for electing one sector of a fan; CB9 uses it as an *admissibility
+   test on one incoming ray*.
+
+   Proved exactly from committed fixture bytes: face `(8,10,11)` is mesh **row 8** with corner order `[8,10,11]`;
+   its branch-1 direction is `(0, −2.77777777777777857, +2.77777777777777857)` over `(v8, v10, v11)`, an **exact
+   IEEE zero** at `v8`. So `|M| = 1`, the direction is exactly tangent to edge `(10,11)`, and the port trace leaving
+   singularity **vertex 10** lands on vertex 11 under Amendment 3. Its arrival ray is exactly the radial ray
+   `v11 → v10` — the `previous` ray at that corner — so `arrivalRay[next] = 0` and the guard rejects. The ray **is**
+   owned, by neighbouring row 109 `(79,11,10)`. A second guard at `:1531-1540` rejects the mirror orientation, so
+   the two together make **every** edge-collinear vertex arrival unresolvable in `FaceInterior` mode.
+
+   TB5's stop at the same vertex was CB6's *silent* seed drop with zero diagnostic rows; CB7 fixed it and TB6 passed
+   this arrival. **Shared locus, different mechanism; no recurrence is counted and `M3-CP4c3-TB5-REV-CAND-01` is not
+   reopened.**
+
+2. **Ordinal 374 is an invalid witness with a legitimate product rejection — AW4 category 1.** The folded cone has
+   `Θ = 3π/2` and angle defect `K = π/2`, while `make_zero_transport_field` declares `effort ≡ 0` on every edge and
+   no singularities. Discrete Gauss–Bonnet then forces `exactLift = (0 + 4K)/2π = 1`, contradicting both the
+   declared matchings (`2, 2, 0`, composing to `0 mod 4`) and the empty singularity set:
+   **`CycleTransportMismatch`** at `src/authority/FieldTransportAtlas.cpp:2098`, with `SingularityMismatch` behind
+   it. **No atlas invariant may be weakened.** The reusable finding is that `make_zero_transport_field` carries an
+   **unstated precondition — the mesh must be intrinsically flat at every interior vertex** — and every prior
+   consumer satisfied it by accident.
+
+3. **Amendments 22 and 23 survive intact.** `DEFN-R2` §AX1 never imposed CB9's guard, and §AX7 §7.2 item 5
+   *required* a seed "placed exactly on a radial ray". CB9 made that unreachable in `FaceInterior` mode and then
+   wrote its own third AY5 instance in `EdgeTransit` mode to route around the restriction — which is why the defect
+   survived its own falsifier.
+
+4. **AY7 was delivered producer-side only.** The audit object is built after all five guards, so every seed failure
+   publishes `std::nullopt`; `VertexStarTransitState::SeedUnavailable` is dead by construction; and the 26 AX8
+   fields have no reader — `append_cp4c_failure_locus` prints none of them. `M3-CP4c3-TB6-CAND-01` stays ACTIVE.
+
+### The bounded successor
+
+`M3-CP4c-3-CB10` under **AZ0–AZ9** (`Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §8), **product-only**:
+the exact closed-wedge admissibility predicate separated from the untouched half-open ownership convention (AZ1);
+both on-radial arrival orientations supported through the exact fallback (AZ2); one typed name per condition (AZ3);
+the audit object built before the first returning conditional (AZ4); a reader for the AX8 rows, found by search
+(AZ5); the on-radial `FaceInterior` witness derived from the mechanical vertex-11 star with conditional selector 375
+(AZ6); the prohibitions (AZ7); audit by assumption (AZ8); published TB8 discriminators (AZ9).
+
+**Ordinal 374 is deliberately deferred** — different owner, corrective specified and test-only. It will still be red
+in TB8 at exactly the same stop; that is **pre-classified, carries no new information, and must not consume a review
+turn.** Selector **374 keeps every byte and is not withdrawn**.
+
+### Immutable TB7 authority — retained
 
 - semantic source: `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`;
 - immutable package 76 artifact: `9811964367`;
-- selector 374:
-  `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`;
+- selector 374: `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f` — independently recomputed at
+  TB7-REV, 374 lines / 374 unique, with `head -316/-346/-353/-355/-357/-361/-365/-367/-370/-373` each reproducing
+  its frozen hash;
 - TB7 run/job: `33541437165 / 99968443127`;
 - result artifact `9813862211`, Actions SHA-256
   `814157162acfb95e785d4f5af3c886696534a0972942ac1f685d64b1c04086f0`;
 - log artifact `9813862640`, Actions SHA-256
   `188d02d98928ccaf29d2e899918e487c35c186b96550044ac0138d48defea1a4`;
-- immutable preflight/postflight: PASS;
-- no configure, compile, relink, repair, mutation, generated discovery, or benchmark in TB7.
+- ordinals **1–365 PASS**, first red **366**, report-only 367–374 **1 PASS / 7 RED**, immutable pre/postflight PASS,
+  every configure/compile/relink/repair/generatedDiscovery/mutation/benchmark flag false.
 
-### Semantic result
-
-- ordinals **1–365: 365/365 PASS**;
-- first red ordinal **366**:
-  `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`;
-- failure:
-  `VertexTransitSeedUnavailable`;
-- locus: source vertex 11, face `(8,10,11)`, branch 1, region 0, `FaceInterior`,
-  `publishedFaceCount=0`, no barrier absorption/incidence;
-- report-only 367–374: **1 PASS / 7 RED**, zero gate credit;
-- 367/371/372 are upstream-blocked by the same vertex-11 stop;
-- 368 reproduces sphere `NoCarrierMatch / SourceEdgeUnavailable`;
-- 369 reproduces `saturationUsed=true`;
-- 370 reproduces the genuine `CellularityNotEstablished` versus required `EmptyNetworkOnClosedSurface` product red;
-- 373 passes synthetically but mechanical zero-unbound proof remains owed;
-- 374 folded-cone discriminator fails at `ASSERT_TRUE(atlasBuild)` before vertex-star election/fallback and prints no
-  typed atlas cause.
-
-Accepted authority remains **365/365** and CP4c-3 remains **OPEN**.
-
-### Review boundary
-
-Follow `Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md` exactly. The review must re-establish immutable TB7
-evidence, reconstruct the source-vertex-11 arrival/seed path, determine whether it is TB5's mechanism reintroduced
-or a distinct seed-authority defect, trace the CB9 seed/certificate/AX8 projection ownership, recover ordinal 374's
-exact atlas error and classify witness-precondition versus product rejection, reconcile candidates/accounting, and
-freeze exactly one bounded successor.
-
-No Directional runtime, compile, package, product/test/fixture/selector mutation, unchanged TB retry, or acceptance
-attempt is authorized in the review.
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
-package count **74**.
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **74**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent REVIEW guidance
+- turn-based-coding-agent CODE + BUILD guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md` — **exact review scope and
-   prohibitions.**
-2. `.agents/Directional/Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — authoritative TB7
-   semantic evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — AY0–AY9 implementation/build/package
-   evidence and AY8 audit.
-4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22/23.
-5. `DESIGN.md` §7.2 / §7.2.1 — Amendments 17–23.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
+1. `.agents/Directional/Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — **AZ0–AZ9, the exact successor
+   scope and prohibitions.**
+2. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22 and 23, §AX1 and
+   §AX7 §7.2 in particular.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — TB7 runtime evidence.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — the implementation CB10 corrects.
+5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+6. `src/geometry/SurfaceCellTracing.cpp` (`resolve_field_vertex_transit`),
+   `src/authority/FieldTransportAtlas.cpp` (`direction_in_vertex_sector`, unchanged),
+   `src/pipeline/RemeshPipeline.cpp` (`network_failure_locus`), `tests/FieldAlignedCurveNetworkTests.cpp`.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
    `M3_CP4c_Consolidated_Record.md`.
-7. Immutable TB7 result artifact `9813862211` and package-76 artifact `9811964367`; use as evidence only. Do not
-   rebuild or rerun.
 
-TB7-REV is static REVIEW + PLAN only. It must freeze one bounded successor; it may not patch the semantic failure or
-rerun package 76.
+CB10 is Code + Build only: it authors semantics, compiles and packages, and executes **no** Directional runtime,
+test, gate, or benchmark. Its successor is artifact-only `M3-CP4c-3-TB8` on selector 374 from ordinal 1.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

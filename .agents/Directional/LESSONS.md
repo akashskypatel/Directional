@@ -268,6 +268,23 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     express multi-face traversal at all. Re-derive capability against the *new* contract before
     reusing a witness, and encode the result as a runtime assertion inside the fixture.
 
+22r. **A fixture helper's silent precondition surfaces the first time a witness stops being degenerate — and the
+    helper, not the witness, is the defect.** `make_zero_transport_field` declares `effort = 0` on every edge and no
+    singularities. `FieldTransportAtlas` derives a cycle's lift as `(cycles·effort + 4·cycleCurvature)/2π`, so that
+    declaration is consistent **only** on a mesh with zero angle defect at every interior vertex. Every consumer
+    before AY5 satisfied it by accident — `make_four_triangle_fan` is entirely planar. AY5 needed the project's
+    *first* non-flat star, because a flat star cannot separate `β = α + Θ/2` from `β = α + π`; it inherited the
+    flat-only helper unchanged, and the resulting folded cone (`Θ = 3π/2`, `K = π/2`, so lift `1`) was refused by
+    the atlas with `CycleTransportMismatch` before the identity's first assertion ran.
+    Two things to carry forward. First, this is the degenerate-fixture family arriving from the opposite direction:
+    not a witness too degenerate to exercise the code, but a **helper too degenerate to describe the witness** — so
+    the control is the CP3a one, **make the helper assert its own precondition at runtime**. Second, a witness spec
+    that enumerates geometric properties must also state the *consistency* the product will check: production
+    terminates traces at singular vertices before vertex-star transit ever runs, so a vertex-star witness with a
+    non-flat centre must carry `Σ_cycle effort = −4K` and a matching composing to lift `0`, or the vertex it is
+    built around is a singularity and the path it exists to test is unreachable.
+    `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §5.
+
 23. **A loop guard is not effective merely because one exists; its bound must terminate expensive work before the process becomes operationally stuck.** TB-R8 already had two nominal guards: exact tracing tracks visited states and a structural step budget, and `BigInteger::gcd` throws after 10,000 Euclidean iterations. Yet the prescribed sphere received a trace budget of **1,775,616** states, one identity spent 853 s before the GCD backstop fired, and the next sphere identity still had to be cancelled. For geometry with exact arithmetic, guard the semantic progress/cycle at the owning algorithm with a deterministic, practically bounded finite-work contract. Keep low-level arithmetic guards as backstops; do not substitute CI/test wall-clock timeouts for a product termination invariant.
 
 ### A witness census is cheap; assuming a witness is capable is not
@@ -1267,6 +1284,23 @@ building any conclusion on it.**
     reference geometry, ownership rule, and typed non-owner states; only then choose an exact predicate or a
     certified filter with exact fallback. Moving a discrete owner upstream does not solve the problem if its writer
     still needs the undefined predicate.
+
+77. **A convention that makes a choice unique is not a precondition on one of the alternatives.** The exact
+    half-open sector rule `direction[next] > 0 ∧ direction[previous] ≥ 0` exists so that exactly one sector of a
+    vertex fan owns each ray; its asymmetry — include the `next` radial ray, exclude the `previous` one — is
+    deliberate, and as a partition it is correct. CB9 reused the same call to answer a different question: *is this
+    one face the owner of the ray the trace arrived on?* Asked that way, the deliberate exclusion becomes an
+    arbitrary rejection of an ordinary arrival, decided by which side of a shared edge the mesh happened to number
+    first. At mechanical vertex 11 the branch direction has an **exact IEEE zero** coordinate, so the trace runs
+    along mesh edge `(10,11)` and its reversed arrival ray *is* a radial ray — owned, correctly, by the neighbouring
+    face. The product refused a legitimate arrival and reported `VertexTransitSeedUnavailable`.
+    The general form: a predicate whose name or comment says *partition*, *elect*, *own*, or *choose* answers a
+    question about a **set**. A question about a **single member** — "is this ray admissible in this face?" — is a
+    different question and needs its own predicate; the two must never share a call. Membership in a closed region
+    and ownership of its boundary are not the same relation, and only the second is allowed to be half-open.
+    This is the sharpest form yet of the single-authority family: not two authorities for one datum, but **one
+    correct rule reused for a question it was not written to answer**.
+    `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §3, §6.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

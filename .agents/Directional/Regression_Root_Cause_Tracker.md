@@ -1,3 +1,20 @@
+## M3-CP4c3-TB7-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md`, measures **AW0–AW7** discharged. Static only:
+  no runtime, compile, package, or product/test/fixture/selector mutation.
+- **AW0 re-established independently.** All eleven selector values recomputed from committed bytes: selector 374
+  `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`, 374 lines / 374 unique, and `head -316`,
+  `-346`, `-353`, `-355`, `-357`, `-361`, `-365`, `-367`, `-370`, `-373` each reproduce their frozen hash. The
+  working tree is byte-identical to CB9 semantic source `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a` across `src/`,
+  `include/`, `tests/`, `benchmarks/`, `CMakeLists.txt`.
+- **Both TB7 reds are explained and they have different owners.** Ordinal 366 is a CB9-introduced product defect;
+  ordinal 374 is an invalid witness precondition with a legitimate product rejection. The successor is therefore
+  the earlier gating owner alone: **`M3-CP4c-3-CB10`** under **AZ0–AZ9**, product-only.
+- **Amendments 22 and 23 remain internally valid.** No new semantics is substituted. `DEFN-R2` §AX1 never imposed
+  the guard CB9 added, and §AX7 §7.2 item 5 *required* the on-radial-ray seed CB9 made unreachable.
+- **Accounting:** static review on an unaccepted surface. **+0 events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, semantic packages **74**. Accepted authority remains **365/365**.
+
 ## M3-CP4c3-TB7 — artifact-only semantic disposition — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 76 / source `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`; run/job
@@ -17,35 +34,94 @@
   recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **74**.
 - **Owner:** independent `M3-CP4c-3-TB7-REV`; no unchanged TB retry or semantic correction before review.
 
-## M3-CP4c3-TB7-CAND-01 — Amendment-22 runtime first-reds at source vertex 11 before a ray seed exists — **ACTIVE / GATING / FIRST-FAILURE / NON-STABLE**
+## M3-CP4c3-TB7-CAND-01 — the half-open ownership convention used as an arrival admissibility precondition — **ACTIVE / GATING / CAUSE ESTABLISHED / NON-STABLE**
 
 - **Observed:** authoritative TB7 ordinal 366 fails with
   `NotProductionReady/field-aligned-network;detailCode=VertexTransitSeedUnavailable;sourceVertex=11;sourceFace=8,10,11;branch=1;topologyRegion=0;arrivalMode=FaceInterior;publishedFaceCount=0;barrierAbsorbed=false;barrierIncident=false`.
-- **Why this is not yet a recurrence claim:** TB5 also stopped at source vertex 11, but there the typed code was
-  `VertexTransitSectorUnresolved` with zero candidate faces. CB9 replaced the primitive/election authority and added
-  a dedicated seed failure. The common locus does not establish common mechanism.
-- **Evidence boundary:** the failure occurs before a complete developed-fan/election certificate can be credited.
-  It therefore masks the vertex-30 discriminator and does not establish whether the CB9 Amendment-22/23 kernel would
-  pass if seeded.
-- **Review question:** reconstruct the exact incoming trace/arrival geometry and prove which frozen seed precondition
-  is unavailable, then decide whether TB5's mechanism was reintroduced or a new seed-authority defect exists.
-- **Accounting:** newly gated but still unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain
+- **Cause — ESTABLISHED at `M3-CP4c-3-TB7-REV` by static derivation from the packaged source and the committed
+  fixture.** CB9 added a **fifth** seed guard that the source TB6 ran does not contain
+  (`src/geometry/SurfaceCellTracing.cpp:1289-1300`): the reversed arrival ray must satisfy the **half-open**
+  predicate `direction[next] > 0 ∧ direction[previous] ≥ 0` in the arrival face. That predicate is an *ownership*
+  convention — it partitions a fan by deliberately excluding one radial ray — and it is being used as an
+  *admissibility test on one incoming ray*.
+- **Exact proof at the locus.** Face `(8,10,11)` is mesh row 8 with corner order `[8,10,11]`. Its branch-1 direction
+  is `(0, −2.77777777777777857, +2.77777777777777857)` over `(v8, v10, v11)`; `d[v8]` is an **exact IEEE zero**, so
+  `from_double_exact` yields exact rational `0`. `|M| = 1`, the direction is exactly tangent to edge `(10,11)`, and
+  entry at vertex 10 — one of the four port-emitting singularities — lands the exit exactly on vertex 11
+  (Amendment 3). The arrival ray `−d` is exactly the radial ray `v11 → v10`, which at corner `v11` in row 8 is the
+  **`previous`** ray: `arrivalRay[next] = 0`, so `next > 0` is false and the guard rejects. Every other seed guard
+  is unreachable at this call site. The ray *is* owned — by neighbouring row 109 `(79,11,10)`, where `v10` is the
+  `next` ray — so the convention is correct and the question asked of it was not.
+- **Second instance of the same conflation, downstream.** `SurfaceCellTracing.cpp:1531-1540` rejects
+  `arrivalMode == FaceInterior` with developed `α` exactly on a radial ray. Together the two guards make **every**
+  Amendment-3 edge-collinear vertex arrival unresolvable in `FaceInterior` mode, which is the only mode a
+  `VertexHit` publishes. Correcting one alone moves the failure rather than removing it.
+- **Not a recurrence of TB5.** TB5's stop at the same vertex was CB6's *silent* conditional seed drop with zero
+  diagnostic rows — an unreportable exit (Amendment 19). CB7 fixed it and TB6 passed this arrival, first-redding at
+  vertex 30. TB7's stop is a *newly added* precondition that reports itself correctly. Shared locus, different
+  mechanism; `M3-CP4c3-TB5-REV-CAND-01` is **not** reopened and no recurrence is counted.
+- **Owner:** **AZ1–AZ4** of `M3-CP4c-3-CB10`. Separate the closed-wedge admissibility test from the half-open
+  ownership convention, support both on-radial arrival orientations, split the collapsed typed outcome, and build
+  the audit object before the first returning conditional.
+- **Accounting:** gating on an unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain
   **44 / 14 / 30**, debt **5**, packages **74**.
 
-## M3-CP4c3-TB7-CAND-02 — folded-cone ordinal 374 stops in atlas construction before the intended exact discriminator — **ACTIVE / GATING / UNCLASSIFIED WITNESS-PRECONDITION OR PRODUCT / NON-STABLE**
+## M3-CP4c3-TB7-CAND-02 — folded-cone AY5 witness declares a flat-star field on a non-flat star — **ACTIVE / GATING / CLASSIFIED WITNESS PRECONDITION / DEFERRED / NON-STABLE**
 
 - **Observed:** report-only ordinal 374
   `ResolvedBranchCorrection.FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection` selects exactly
-  once and fails at `ASSERT_TRUE(atlasBuild)`. No typed `atlasBuild.error()` is printed.
-- **What is not proved:** the run does not reach the one-ray election, the deliberate exact continuation-boundary
-  fallback, or the old-mechanism-vs-new-owner assertions. It therefore neither validates nor falsifies the CB9 exact
-  kernel.
-- **Classification stop:** current evidence cannot distinguish an invalid synthetic cross-field/atlas precondition
-  from a genuine product rejection of the frozen witness. Weakening atlas validation is prohibited.
-- **Owner:** `M3-CP4c-3-TB7-REV` must recover the exact atlas error and classify the witness before prescribing any
-  product or test correction.
-- **Accounting:** ordinal 374 is newly gated on an unaccepted surface and carries zero gate credit in the remainder;
-  **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **74**.
+  once and fails at `ASSERT_TRUE(atlasBuild)`; the test prints no typed atlas error.
+- **Recovered error — ESTABLISHED at `M3-CP4c-3-TB7-REV` by static derivation.**
+  `FieldAtlasBuildErrorCode::CycleTransportMismatch`, raised at `src/authority/FieldTransportAtlas.cpp:2098` with
+  only `topologyRegion` populated. `make_three_right_angle_cone_fan` has three exact right angles at its center, so
+  `Θ = 3π/2` and the angle defect is `K = π/2`; `make_zero_transport_field` declares `effort ≡ 0` on every edge and
+  no singularities, so `exactLift = (0 + 4·K)/2π = 1` exactly, while the declared matchings `2, 2, 0` compose to
+  `0 (mod 4)`. `0 ≠ 1` → mismatch. A second independent contradiction sits behind it at `:2150-2163`: an interior
+  cycle with `turningLift = 1` and no supplied singularity is `SingularityMismatch`.
+- **Classification — AW4 category 1: invalid test/field precondition with legitimate product rejection.** The atlas
+  is enforcing discrete Gauss–Bonnet / Poincaré–Hopf consistency and is correct. **No atlas invariant may be
+  weakened and no product repair is warranted.**
+- **Root cause, reusable.** `make_zero_transport_field` carries an **unstated precondition: the mesh must be
+  intrinsically flat at every interior vertex.** Every prior consumer satisfied it accidentally
+  (`make_four_triangle_fan` is entirely planar). AY5 required the project's first non-flat star and inherited the
+  flat-only helper unchanged. `DEFN-R2` §7.2 enumerated five witness properties and omitted the consistency a
+  non-flat **regular** vertex forces: production terminates traces at singular vertices *before* vertex-star
+  transit, so an AY5 witness must satisfy `Σ_cycle effort = −4K` with matching composing to lift `0`, plus the
+  boundary index correction.
+- **Corrective, specified and deliberately unauthorized here.** Test-side only: derive matching/effort/singularities
+  with the production authority `directional::fields::principal_matching` instead of declaring them; choose
+  representatives so the center's derived lift is `0` while §7.2 item 4 still holds; keep the exact expected-owner
+  derivation (`Θ = 3π/2`, per-sector `D=0, P=1, Q=1`, `β = α + 3π/4`); certify the witness against the atlas's whole
+  admissibility chain in the report. **Selector 374 stays byte-frozen and is not withdrawn** — only the fixture and
+  field inside the identity's body are invalid, and repairing them changes no selector byte.
+- **Deferral, per the review plan.** Different owner from `M3-CP4c3-TB7-CAND-01`, so it is not combined with it.
+  Ordinal 374 will remain red in `M3-CP4c-3-TB8` at exactly this stop; that is **pre-classified, carries no new
+  information, and must not consume a review turn.**
+- **Accounting:** gating on an unaccepted surface with zero gate credit; **+0 events / +0 recurrences**. Totals
+  remain **44 / 14 / 30**, debt **5**, packages **74**.
+
+## M3-CP4c3-TB7-REV-CAND-01 — AY7's projection was delivered producer-side only, and its typed state is unreachable — **ACTIVE / STATIC / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB7-REV`** from static derivation; no runtime executed. It supersedes the claim in the
+  CB9 report that `M3-CP4c3-TB6-CAND-01` is closed.
+- **Three distinct defects on one path.**
+  1. `VertexStarTransitAudit` and its `VertexStarRaySeed` are constructed **after** all five seed guards
+     (`SurfaceCellTracing.cpp:1302-1305`), so every seed failure leaves `error.vertexStarTransit == std::nullopt`.
+     Amendment 19 was applied to the diagnostic *rows* and not to the audit object it equally governs.
+  2. `VertexStarTransitState::SeedUnavailable` is therefore **dead by construction**: `network_failure_locus` maps
+     it to a string, but the whole projection block is guarded by `if (error.vertexStarTransit.has_value())`.
+  3. The 26 AX8 fields CB9 added to `SurfaceCellFailureLocusDiagnostics` have **no reader**.
+     `append_cp4c_failure_locus` — the only renderer the CP4c identities use — prints none of them, and
+     `vertexTransitStates` has no projection at all. Even a post-seed failure would publish nothing new.
+- **Why it matters as a class.** This is the third consecutive turn in which a measurement was ordered, built, and
+  discarded at a stage boundary (AS1, AU1/AU3, AY7), each time one layer further out. `LESSONS.md` 75's two
+  authoring-time controls were both honoured; what they did not require was naming the **consumer that renders**
+  the datum.
+- **Owner:** **AZ4–AZ5** of `M3-CP4c-3-CB10`, with the consumer set found **by search against a predicate**, not by
+  copying the measure's list, and at least one consumer named that the measure did not name. `M3-CP4c3-TB6-CAND-01`
+  remains ACTIVE until AZ5 lands.
+- **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
+  debt **5**, packages **74**.
 
 ## M3-CP4c3-DEFN-R2-CAND-01 — an exact decision with no declared bound on its input size — **ACTIVE / ARCHITECTURAL CLASS / NON-STABLE**
 
