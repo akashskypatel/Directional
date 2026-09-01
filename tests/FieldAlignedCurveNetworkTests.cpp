@@ -8954,7 +8954,7 @@ TEST(ResolvedBranchCorrection,
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
   const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_folded_cone_radial_arrival_field(mesh));
+      mesh, *sourceAuthority, {}, make_folded_cone_vertex_field(mesh, false));
   ASSERT_TRUE(atlasBuild);
   const auto &topology = atlasBuild.value().branch_topology();
 
