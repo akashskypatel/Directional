@@ -1,11 +1,11 @@
-name: Agent CB9 Drive Patch Apply
+name: Agent CB9 Closeout Drive Patch Apply
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/cb9-drive-apply/**
+      - .agents/connector-triggers/cb9-closeout-drive-apply/**
 
 permissions:
   contents: write
@@ -25,20 +25,18 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 12DPdYZPQmMp1MtSlEnoNeI0Biw4ZAjdF
-      patch_sha256: dd9901f34de95be83e0f235d2e2c355c2c06be415ae23ceadec5b3dfe03f1648
-      base_sha: 095461e2a749e39c4b344805748b1e3bd870a063
+      file_id: 1YWFw_UqLWThH9wsdieQzauxKYxY_U1oq
+      patch_sha256: daffeaaa04adcd6332a6a7dc8b955d65c1e08217eb20361958849f11644a7bb7
+      base_sha: e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB9: implement exact vertex-star continuation"
+      commit_message: "M3-CP4c-3-CB9: close out code-build evidence"
       retention_days: 7
     secrets: inherit
 
   observe:
-    needs: [validate, apply]
-    if: ${{ always() }}
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: M3-CP4c-3-CB9-drive-apply
+      label: M3-CP4c-3-CB9-closeout-drive-apply
       trim_stale_comments: true
     secrets: inherit
