@@ -92,74 +92,47 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB7` (Code + Build, runtime-free)
+## Mandatory next turn — `M3-CP4c-3-TB6` (Test + Benchmark, artifact-only)
 
-`M3-CP4c-3-TB5-REV` is **COMPLETE**: it accepted TB5, established the vertex-11 failure as a **silent seed-drop**, found that CB6 broke exactness by carrying the continuation datum through **world-space doubles**, ruled Amendment 17 **masked not cleared**, declared **Amendments 18 and 19** (`DESIGN.md` §7.2.1), adjudicated a user-supplied adversarial architecture review in full, and issued **AU0–AU9**. Record: `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`. Roadmap effects: `ROADMAP.md` §3b (scale/coverage) and §3c (cadence).
+`M3-CP4c-3-CB7` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** under AU0–AU9. Exact semantic/evidence source is `e926ada023bc51220628be550bbe9a87f98d7067`; report authority is `Architecture_M3_CP4c3_CB7_Code_Build_Report.md`. CB7 made every vertex-transit suppression path typed/reportable, removed the transit datum's world-space-double round trip, restored exact Amendment-17 diagnostics without redesigning election, published sphere binding evidence, repaired only ordinal 370's invalid witness, added the minimal exact transit witness, and froze the full post-first-red report-only cadence.
 
-**Extended 2026-09-01 — `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md`.** That review's rejection of five architecture proposals was re-evaluated under a production lens and largely **reversed**: the fixtures were measured as near-uniform, sliver-free, low-valence meshes (area ratio ≤ 3.17, max aspect ≤ 2.67, max valence 6, ≤ 152 V, all singularities `+1`, genus ≤ 1) and are structurally incapable of exhibiting the targeted cases. **Amendments 20 (input conditioning is a stage) and 21 (typed regularizable degeneracy)** are declared; `ROADMAP.md` §3b-bis opens the witness-coverage gap and adds checkpoints `M4-CP-COND`, `M4-CP-SCALE`, `M5-CP-REG`. **None of that is CP4c-3 work and AU0–AU9 are unchanged.**
+### Immutable CB7 authority
 
-### Immutable TB5 authority
+- compile run/job `33455549602 / 99694672138`; raw result artifact `9781459057`, SHA-256 `e66ff9cbb04a586a8862ceb40ee9e0651741a4588ab8fcd8caf2fc2a8c1fcbba`; raw log `9781459549`, SHA-256 `5fea70b8a6bed7190eadeda827cafcee6e160b76a6508b83b349e3e31149c2b9`;
+- packaged source archive `64e5189f3c9f22d648e496c50b4093e842a0fad25a885dca65778d7a110b629a`;
+- immutable package **75**: run/job `33456115934 / 99696350077`, artifact `9781487311`, Actions SHA-256 `547f2441b026b68d2bef10e7c7694faf994be473a1d2db68a6375d06b1e654b8`, inner tar `8814b700a5c07290ce099ce1f719f01b2fbd5bcfd80f36037fe5bafc600f7896`;
+- package log `9781487686`, SHA-256 `ad8327ca35a27c3ddde0930f36f17e144198550f1f3d9a6e0ba6d5ebfcf19a2a`;
+- selector **373** remains `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; exactly 27 fixtures and six `0755` executables are frozen in package 75; GMP/GMPXX linked; `runtimeExecution=false`, `packageRepair=false`.
 
-- semantic source `49536cf7b4b261bd52f36a91c861b6459db356a4`; immutable package **74** artifact `9778267541`, ZIP SHA-256 `bad0ade74ff8e47c9937013c0fcc3f1084272c66eda35a2db60800ff7b6b767d`, inner tar `c8d5167652ea95504252f5adb4d1dc5d9f463a4dfacfb7e5e11bd086fe935d8e`;
-- packaged source archive `5afa250d0dd8e003b91e7e5f887e3eed8658f16faa6754722bf8a2dd37a1c931`; selector **373** `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- run/job `33448925069 / 99674216849`; result artifact `9779114492`;
-- gate **366 executed / 365 PASS / first red 366**; report-only 367–373 **1 PASS / 6 RED**, zero gate credit;
-- preflight/postflight PASS; no configure/compile/relink/repair/generated-discovery/benchmark or package/source/test/fixture/selector mutation.
+**Selector-lineage note, durable:** selector **358 is not and never was a byte prefix of 373**; verify it by exact hash/cardinality/set-subset. Byte-prefix continuity resumes at 361.
 
-**Selector-lineage note, durable:** selector **358 is not and never was a byte prefix of 373** — it is the withdrawn fork retained for history, whose identity set is a **subset** of 373; **361** restores byte-prefix continuity. Preflight must check 357/361/365/367/370 by byte prefix and 358 by hash + cardinality + set-subset.
+### TB6 obligations
 
-### What the review established — the successor's starting facts
+1. Preflight immutable package 75, source, GMP/GMPXX, 27 fixtures, six executable modes, internal manifest, and frozen selectors before runtime.
+2. Run selector 373 from ordinal 1, one exact identity per fresh process; first semantic red fixes the gate verdict and stops further **gate credit**.
+3. At any transit red, preserve typed seed/walk/election reason and every exact `vertexTransitState[*]` row. Equal elected directions at a multi-candidate locus remain Amendment 17's falsifier.
+4. After the gate verdict is fixed, execute **every remaining ordinal through 373** once report-only with zero gate credit.
+5. Consume sphere binding fields and ordinal-370's repaired witness; do not design fixes in TB.
+6. Perform immutable byte/mode postflight. No configure, compile, relink, repair, generated discovery, package/source/test/fixture/selector mutation, or benchmark is authorized.
 
-- **The walk never started.** CB6 made the BFS seed conditional (`SurfaceCellTracing.cpp:659-667`): pushed only if the arrival face has exactly one pairing for the branch **and** `field_direction_world` converts. Either failure leaves `pending` empty, the loop never runs, `diagnostics` — populated only inside it — stays empty, and the function still returns `VertexTransitSectorUnresolved` with `publishedFaceCount=0`. **Four exits record nothing:** empty seed (two causes), mid-walk `field_direction_from_world` failure, and non-finite/zero-norm transported direction during expansion.
-- **Vertex 11 is structurally ordinary** — reproduced from the fixture as a **regular** vertex with a closed, consistently oriented six-face fan (rows 8, 9, 18, 119, 108, 109). Zero examined states is a seeding defect, not geometry.
-- **Exactness was broken:** exact barycentric → `to_double()` → normalized world vector → transported in doubles → `from_double_exact()` → exact sector comparison. The comparison stayed exact; the datum did not. **Amendment 18** governs.
-- **Amendment 17 is masked, not cleared.** The stop precedes any election; **AS1's falsifier never ran**; the vertex-30 reconstruction is untested. Not a regression of accepted authority (1–365 green) but a new defect at 366 — before CB6 the seed was unconditional.
-- **Sphere:** `NoCarrierMatch / SourceEdgeUnavailable` at trace 2 / event 30. AL3 answered; the **ambiguity** branch is dead; **AL4's blocking condition is discharged**. It is the only CP4c-3 witness with a measured cause and no scheduled fix.
-- **Ordinal 370:** the atlas's `NonIntegralCycleLift` rejection of a constant ambient field on a closed torus is **legitimate** — invalid witness, not a product defect.
-
-### Exact scope of `M3-CP4c-3-CB7`
-
-**Code + Build.** Compiles and packages; **executes no Directional runtime**; no gate execution, no benchmark. GMP/GMPXX mandatory.
-
-1. **AU1** — make every exit in `resolve_field_vertex_transit` reportable (Amendment 19): the four sites plus any found by search, each with an appended typed reason. Publish **which** exit fired at ordinal 366 and at which state. Give the empty-seed and empty-walk cases their own codes — reporting "sector unresolved" when no state was examined is prohibited.
-2. **AU2** — remove floating point from the transit datum (Amendment 18). Compose the atlas's exact per-edge branch transport (`FieldBranchTransportAdjacency`, `signedLift`, `FieldExactRational`) instead of the world-space round trip; delete `field_direction_world` / `field_direction_from_world` from the decision path or demote them to a diagnostic-only leaf. **State that no value reaching `direction_in_vertex_sector` has passed through a `double`.**
-3. **AU3** — only then restore AS1's measurement (per state: branch label, **exact** direction vector, transport path, composed quarter-turn, three booleans). **Falsifier stands:** equal elected directions at a multi-candidate locus ⇒ stop and route to review.
-4. **AU4** — do **not** redesign the election in CB7. AU1/AU2 are prerequisites, not the correction.
-5. **AU5** — audit by two predicates, findings listed, each with a site named **outside** `resolve_field_vertex_transit`: *"a value reaches a topological decision after passing through floating point"* and *"a producer can exit without recording a typed reason."*
-6. **AU6** — publish the sphere's binding evidence: the event's claimed trace, its `sourceEdge`, that edge's availability on the trace's segment carriers, and which pass produced the result. **No sphere fix in CB7.**
-7. **AU7** — repair the ordinal-370 witness only, preserving its intent (empty rails, empty network, closed surface). The atlas's rejection may not be weakened.
-8. **AU8** — cadence: extend the report-only pass to **every remaining ordinal** after the first red (zero gate credit), and add the minimal transit witness (one interior vertex, known fan, exact synthetic field).
-9. **AU9** — prohibited: any float-derived value reaching a topological decision; any unreportable producer exit; redesigning the election before AU3; forcing `candidates.size() == 1` by picking first, ordering faces, changing the sector convention or the `FaceInterior` rule, or adding a tolerance; crossing/closing a barrier; weakening `NonIntegralCycleLift`; designing the sphere's fix; reopening Amendments 12–19 or P2; renumbering or removing any error-enum value; changing any frozen selector byte; treating report-only results as gate credit; executing runtime or running a gate in a CB turn.
+Stable regression accounting entering TB6 is **44 / 14 / 30**; produced-witness debt **5**; semantic package count **73**. CP4c-3 remains OPEN until semantic runtime settles the gate.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Code + Build guidance
+- turn-based-coding-agent Test + Benchmark guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — **AU0–AU9**, the seed-drop
-   analysis, the exactness finding, and the adversarial-review adjudication (its §9.3 is superseded in part).
-1b. `.agents/Directional/Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` — the production-lens
-   re-evaluation, **Amendments 20-21**, and the witness-coverage gap. Read before proposing any M4+ scope.
-2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–19, normative.
-3. `ROADMAP.md` §3b / §3c — scheduled scale/coverage items and the cadence changes.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md` — runtime authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` — the vertex-30 partition proof and
-   Amendment 17's still-untested substance.
-6. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory before any Code + Build turn.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Plan.md` — exact executable authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB7_Code_Build_Report.md` — source/package authority and AU0–AU9 implementation record.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendment-17 falsifier, Amendments 18/19 and review rationale.
+4. `DESIGN.md` §7.2 / §7.2.1 — normative Amendments 12–21.
+5. `ROADMAP.md` §3b / §3b-bis / §3c — later scale/conditioning/coverage work and cadence; none expands TB6 scope.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 
-Source CB7 will change or must audit: `src/geometry/SurfaceCellTracing.cpp` — `field_direction_world` /
-`field_direction_from_world` (`:364-427`) and `resolve_field_vertex_transit` (`:630-727`); read-only,
-`src/authority/FieldTransportAtlas.cpp:404-426` and `:1623-1654` (the exact sector predicate — **do not change**),
-and `tests/FieldAlignedCurveNetworkTests.cpp` for the ordinal-370 witness. Fixture context:
-`benchmarks/fixtures/milestone-g/mechanical_feature.obj`, vertex 11 (rows 8, 9, 18, 119, 108, 109) and vertex 30
-(rows 43, 40, 41, 208, 209, 218).
-
-**This is CODE + BUILD.** It compiles and packages and **executes no Directional runtime**; a gate may not be run.
-A red TB after it routes to `REVIEW + PLAN` as usual.
+Runtime authority is immutable package **75** only. Do not compile or repair a replacement package inside TB6. A valid semantic red routes to independent `REVIEW + PLAN` after the mandatory full remainder pass and postflight.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

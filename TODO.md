@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-08-31 UTC
+Last updated: 2026-09-01 UTC
 
 ## Purpose
 
@@ -26,56 +26,46 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB7` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-TB6` (Test + Benchmark, artifact-only)
 
-`M3-CP4c-3-TB5-REV` is **COMPLETE**: it accepted TB5, established the vertex-11 failure as a **silent seed-drop**,
-found that CB6 broke exactness by round-tripping the continuation direction through **world-space doubles**, ruled
-Amendment 17 **masked not cleared**, declared **Amendments 18 and 19**, adjudicated the adversarial architecture
-review in full, and issued **AU0–AU9**. Record:
-`Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`. Roadmap effects: `ROADMAP.md` **§3b** and **§3c**.
+`M3-CP4c-3-CB7` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic/evidence source
+`e926ada023bc51220628be550bbe9a87f98d7067`. Report:
+`Architecture_M3_CP4c3_CB7_Code_Build_Report.md`. Immutable package **75** is artifact `9781487311`
+(`547f2441b026b68d2bef10e7c7694faf994be473a1d2db68a6375d06b1e654b8`), inner tar
+`8814b700a5c07290ce099ce1f719f01b2fbd5bcfd80f36037fe5bafc600f7896`. No Directional runtime executed.
 
-### What the review established
+### What CB7 completed
 
-- **The walk never started.** CB6 made the BFS seed conditional; if the arrival pairing is missing or its direction
-  fails to convert, `pending` is empty, the loop never runs, `diagnostics` stays empty — and the function still
-  returns `VertexTransitSectorUnresolved` with zero candidates. **Four exits record nothing.** Vertex 11 is a
-  regular vertex with a closed 6-face fan, so this is seeding, not geometry.
-- **Exactness was broken.** exact barycentric → `to_double()` → world vector → transported in doubles →
-  `from_double_exact()` → exact comparison. The comparison stayed exact; the datum did not.
-- **Amendment 17 is untested** — the stop precedes any election, so AS1's falsifier never ran.
-- **The sphere advanced** to `NoCarrierMatch / SourceEdgeUnavailable`; the ambiguity branch is dead and AL4's
-  blocking condition is discharged. **Ordinal 370 is classified** as an invalid witness, not a product defect.
+- **Amendment 19 reportability:** vertex transit now distinguishes typed seed-unavailable and walk-unexamined failures and records a typed per-state outcome before every suppressing branch.
+- **Amendment 18 exactness:** the transit datum no longer passes through world-space doubles; both sector predicates consume exact rational branch directions transported through atlas branch authority.
+- **Amendment 17 is measurable again, not accepted:** the existing incoming-direction election remains unchanged and publishes exact representative/incoming directions, path, composed quarter-turn, and election booleans.
+- **Sphere binding publication:** claimed trace/edge, carrier availability and pass are now visible; no sphere fix was made.
+- **Ordinal 370 witness repaired:** it now uses the accepted production torus field while preserving empty rails/network intent; the atlas rejection itself is unchanged.
+- **AU8 landed:** a minimal exact transit witness is compiled, and TB6 must run every post-first-red remainder ordinal report-only with zero gate credit.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB7`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AU0–AU9**:
+Run **`M3-CP4c-3-TB6`** artifact-only on immutable package **75** under
+`Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Plan.md`:
 
-1. **AU1** make every transit exit reportable (Amendment 19) and publish which exit fired at ordinal 366;
-2. **AU2** remove floating point from the transit datum (Amendment 18) — compose the atlas's exact per-edge branch
-   transport instead of the double round-trip, and state that no value reaching `direction_in_vertex_sector` has
-   passed through a `double`;
-3. **AU3** only then restore AS1's measurement; the falsifier still stands;
-4. **AU4** do **not** redesign the election in CB7 — AU1/AU2 are prerequisites, not the correction;
-5. **AU5** audit by two predicates (float reaching a topological decision; producer exits without a typed reason)
-   and name a site outside `resolve_field_vertex_transit` for each;
-6. **AU6** publish the sphere's binding evidence so a successor DEFN can settle it — no sphere fix in CB7;
-7. **AU7** repair the ordinal-370 witness only; the atlas's `NonIntegralCycleLift` rejection stands;
-8. **AU8** land the cadence changes: full report-only pass, minimal transit witness.
+1. immutable package/source/GMP/fixtures/modes/selector preflight;
+2. frozen selector 373 from ordinal 1, one identity per fresh process, first-red hard stop for gate credit;
+3. preserve complete typed transit diagnostics at the stopping locus;
+4. after the gate verdict is fixed, execute **every remaining ordinal through 373** once report-only with zero gate credit;
+5. immutable byte/mode postflight; no configure/compile/relink/repair/generated discovery/package/source/test/fixture/selector mutation or benchmark.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB5-CAND-01` — **CAUSE ESTABLISHED**: silent seed-drop, four unreportable exits. **AU1**, **AU2**.
-- [ ] `M3-CP4c3-TB5-REV-CAND-01` — floating point in the transit decision path. **AU2** (Amendment 18).
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — vertex-30 election **MASKED, NOT RESOLVED**; reopened for **AU3**.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere: `NoCarrierMatch / SourceEdgeUnavailable`, cause measured, **fix
-  unscheduled**. AL4's blocking condition discharged; **AU6** publishes the binding evidence.
-- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — **CLASSIFIED** invalid witness; **AU7** repairs the witness only.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — still unmeasured, blocked on AU7.
+- [ ] `M3-CP4c3-TB5-CAND-01` — silent seed-drop implementation corrected by CB7; **runtime acceptance pending TB6**.
+- [ ] `M3-CP4c3-TB5-REV-CAND-01` — float round-trip removed from transit decision path; **runtime acceptance pending TB6**.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — vertex-30 Amendment-17 election remains **MASKED / UNACCEPTED** until TB6 actually reaches/measures it.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere cause measured; CB7 binding evidence compiled; **fix still unscheduled**.
+- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — invalid ordinal-370 witness repaired in CB7; **runtime confirmation pending TB6**.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — now measurable through the repaired ordinal-370 witness.
 - [ ] `M3-CP4c3-DEFN-R1-CAND-01` — partial; mechanical zero-unbound still owed.
 - [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — `saturationUsed=true` reconfirmed; deferred behind the mechanical gate.
 
-**Amendment 15's Euler-cut identity and barrier-exclusion contracts (371/372) remain UNMEASURED, not falsified** —
-blocked upstream for the third consecutive run.
+**Amendment 15's Euler-cut identity and barrier-exclusion contracts (371/372) remain UNMEASURED, not falsified** pending TB6.
 
 ### Scheduled from the adversarial architecture review — `ROADMAP.md` §3b / §3b-bis, **not CP4c-3 work**
 
@@ -100,7 +90,7 @@ valence 6, ≤ 152 V) that cannot exhibit the targeted cases. **Amendments 20 an
 singularities** (all are `+1`); boundary-truncated separatrices; inadmissible input fields; genus ≥ 2; exact ties
 from symmetric input. Matrix and owners in `ROADMAP.md` §3b-bis.
 
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **72**.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **73**.
 
 ## Superseded — `M3-CP4c-3-TB2` execution record
 
