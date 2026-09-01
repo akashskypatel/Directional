@@ -3426,15 +3426,43 @@ void append_cp4c_failure_locus(
   if (locus.sourceEdge.has_value())
     report << ";sourceEdge=" << (*locus.sourceEdge)[0] << '-'
            << (*locus.sourceEdge)[1];
+  if (locus.rail.has_value()) report << ";rail=" << *locus.rail;
+  if (locus.singularity.has_value())
+    report << ";singularity=" << *locus.singularity;
   if (locus.sourceFace.has_value())
     report << ";sourceFace=" << (*locus.sourceFace)[0] << ','
            << (*locus.sourceFace)[1] << ',' << (*locus.sourceFace)[2];
+  if (locus.relatedSourceFace.has_value())
+    report << ";relatedSourceFace=" << (*locus.relatedSourceFace)[0] << ','
+           << (*locus.relatedSourceFace)[1] << ','
+           << (*locus.relatedSourceFace)[2];
   if (locus.branch.has_value()) report << ";branch=" << *locus.branch;
+  if (locus.relatedBranch.has_value())
+    report << ";relatedBranch=" << *locus.relatedBranch;
   if (locus.topologyRegion.has_value())
     report << ";topologyRegion=" << *locus.topologyRegion;
-  if (!locus.vertexArrivalMode.empty())
-    report << ";arrivalMode=" << locus.vertexArrivalMode;
-  report << ";publishedFaceCount=" << locus.publishedFaceCount;
+  if (!locus.networkErrorCondition.empty())
+    report << ";networkErrorCondition=" << locus.networkErrorCondition;
+  if (locus.signedLift.has_value())
+    report << ";signedLift=" << *locus.signedLift;
+  if (locus.parameter.has_value())
+    report << ";parameter=" << *locus.parameter;
+  if (!locus.exactValues.empty()) {
+    report << ";exactValues=[";
+    for (std::size_t index = 0U; index < locus.exactValues.size(); ++index) {
+      if (index != 0U) report << ',';
+      report << locus.exactValues[index];
+    }
+    report << ']';
+  }
+  if (!locus.publishedEdges.empty()) {
+    report << ";publishedEdges=";
+    for (std::size_t index = 0U; index < locus.publishedEdges.size(); ++index) {
+      if (index != 0U) report << '|';
+      report << locus.publishedEdges[index][0] << '-'
+             << locus.publishedEdges[index][1];
+    }
+  }
   if (!locus.publishedFaces.empty()) {
     report << ";publishedFaces=";
     for (std::size_t index = 0U; index < locus.publishedFaces.size(); ++index) {
@@ -3443,6 +3471,42 @@ void append_cp4c_failure_locus(
       report << face[0] << ',' << face[1] << ',' << face[2];
     }
   }
+  if (locus.traceSeedVertex.has_value())
+    report << ";traceSeedVertex=" << *locus.traceSeedVertex;
+  if (locus.traceSeedSingularity.has_value())
+    report << ";traceSeedSingularity=" << *locus.traceSeedSingularity;
+  if (locus.traceHistoryCount != 0U || locus.traceHistoryTruncated) {
+    report << ";traceHistoryCount=" << locus.traceHistoryCount
+           << ";traceHistoryTruncated="
+           << (locus.traceHistoryTruncated ? "true" : "false")
+           << ";traceHistory=[";
+    for (std::size_t index = 0U; index < locus.traceHistory.size(); ++index) {
+      if (index != 0U) report << ',';
+      const auto &step = locus.traceHistory[index];
+      report << "{sourceFace=" << step.sourceFace[0] << ','
+             << step.sourceFace[1] << ',' << step.sourceFace[2]
+             << ",branch=" << step.branch << ",incomingCarrier=";
+      if (step.incomingCarrier.has_value()) {
+        report << (*step.incomingCarrier)[0] << '-'
+               << (*step.incomingCarrier)[1];
+      } else {
+        report << "none";
+      }
+      report << ",entryParameter=" << step.entryParameter << '}';
+    }
+    report << ']';
+  }
+  if (locus.traceSteps.has_value())
+    report << ";traceSteps=" << *locus.traceSteps;
+  if (locus.traceStepBudget.has_value())
+    report << ";traceStepBudget=" << *locus.traceStepBudget;
+  if (locus.traceCombinatorialVisits.has_value())
+    report << ";traceCombinatorialVisits="
+           << *locus.traceCombinatorialVisits;
+  if (locus.traceCombinatorialVisitAllowance.has_value())
+    report << ";traceCombinatorialVisitAllowance="
+           << *locus.traceCombinatorialVisitAllowance;
+
   if (locus.barrierAbsorbed.has_value())
     report << ";barrierAbsorbed="
            << (*locus.barrierAbsorbed ? "true" : "false");
@@ -4689,6 +4753,12 @@ void append_network_error(
          << ";networkError="
          << directional::geometry::field_aligned_curve_network_error_code_name(
                 error.code);
+  if (error.condition.has_value()) {
+    stream << ";networkErrorCondition="
+           << directional::geometry::
+                  field_aligned_curve_network_error_condition_name(
+                      *error.condition);
+  }
   if (error.sourceVertex.has_value()) {
     stream << ";sourceVertex=" << error.sourceVertex->index();
   }
@@ -4849,6 +4919,16 @@ std::string network_error_locus(
     const directional::geometry::FieldAlignedCurveNetworkError &error) {
   std::ostringstream stream;
   append_network_error(stream, error);
+  return stream.str();
+}
+
+std::string production_network_error_locus(
+    const directional::geometry::FieldAlignedCurveNetworkError &error,
+    const directional::authority::FieldTransportAtlas &atlas) {
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_field_aligned_curve_network_failure_locus(error, atlas);
+  std::ostringstream stream;
+  append_cp4c_failure_locus(stream, locus);
   return stream.str();
 }
 
@@ -9263,6 +9343,88 @@ TEST(ResolvedBranchCorrection,
   expect_tokens(cycle, {"sourceFace=0-1-2", "branch=1", "sourceEdge=0-1",
                         "parameter=1/3", "traceSteps=7",
                         "traceStepBudget=64"});
+
+  // The production CP4c projection used to drop these otherwise-populated
+  // producer fields. Keep the original test-local assertions above unchanged,
+  // and assert the same losslessness contract through the actual pipeline DTO.
+  const TriMesh projectionMesh = make_four_triangle_fan();
+  const auto projectionAuthority = make_source_authority(projectionMesh);
+  ASSERT_TRUE(projectionAuthority.has_value());
+  const auto projectionAtlasBuild = directional::authority::FieldTransportAtlas::make(
+      projectionMesh, *projectionAuthority, {},
+      make_zero_transport_field(projectionMesh));
+  ASSERT_TRUE(projectionAtlasBuild);
+
+  Error projectedError;
+  projectedError.code =
+      FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership;
+  projectedError.condition = directional::geometry::
+      FieldAlignedCurveNetworkErrorCondition::
+          SingularityTerminationPortOwnershipMismatch;
+  projectedError.sourceVertex = SourceVertexId::from_index(0, 5).value();
+  projectedError.sourceEdge = topology_edge(0, 1, 5);
+  projectedError.rail = HardRailId::from_index(0, 1).value();
+  projectedError.singularity = FieldSingularityId::from_index(0, 1).value();
+  projectedError.sourceFace = topology_face(0, 1, 4, 5);
+  projectedError.relatedSourceFace = topology_face(1, 2, 4, 5);
+  projectedError.branch = directional::authority::FieldBranch::from_integer(1);
+  projectedError.relatedBranch =
+      directional::authority::FieldBranch::from_integer(3);
+  projectedError.topologyRegion =
+      directional::authority::TopologyRegionId::from_index(0, 1).value();
+  projectedError.vertexArrivalMode =
+      directional::geometry::FieldVertexArrivalMode::EdgeTransit;
+  projectedError.signedLift = 2;
+  projectedError.parameter = directional::authority::ExactUnitParameter{
+      exact_ratio(1, 3)};
+  projectedError.exactValues = {exact_ratio(1, 2), exact_ratio(2, 3)};
+  projectedError.publishedEdges = {topology_edge(0, 1, 5)};
+  projectedError.publishedFaces = {topology_face(0, 1, 4, 5),
+                                   topology_face(1, 2, 4, 5)};
+  projectedError.traceSeedVertex = SourceVertexId::from_index(4, 5).value();
+  projectedError.traceSeedSingularity =
+      FieldSingularityId::from_index(0, 1).value();
+  for (int index = 0; index < 10; ++index) {
+    projectedError.traceHistory.push_back(
+        directional::geometry::FieldAlignedTraceStepDiagnostic{
+            topology_face(0, 1, 4, 5),
+            directional::authority::FieldBranch::from_integer(index % 4),
+            topology_edge(0, 4, 5),
+            directional::authority::ExactUnitParameter{
+                exact_ratio(index + 1, index + 2)}});
+  }
+  projectedError.traceSteps = 10U;
+  projectedError.traceStepBudget = 64U;
+  projectedError.traceCombinatorialVisits = 2U;
+  projectedError.traceCombinatorialVisitAllowance = 2U;
+
+  const auto projectedLocus = directional::pipeline::remesh_pipeline_detail::
+      project_field_aligned_curve_network_failure_locus(
+          projectedError, projectionAtlasBuild.value());
+  ASSERT_EQ(8U, projectedLocus.traceHistory.size());
+  EXPECT_EQ(10U, projectedLocus.traceHistoryCount);
+  EXPECT_TRUE(projectedLocus.traceHistoryTruncated);
+  const std::string productionEmitted =
+      production_network_error_locus(projectedError,
+                                     projectionAtlasBuild.value());
+  for (const std::string &token : std::vector<std::string>{
+           "networkErrorCondition=SingularityTerminationPortOwnershipMismatch",
+           "sourceVertex=0", "sourceEdge=0-1", "rail=0", "singularity=0",
+           "sourceFace=0,1,4", "relatedSourceFace=1,2,4", "branch=1",
+           "relatedBranch=3", "topologyRegion=0", "signedLift=2",
+           "parameter=1/3", "exactValues=[1/2,2/3]",
+           "publishedEdges=0-1", "publishedFaces=0,1,4|1,2,4",
+           "traceSeedVertex=4", "traceSeedSingularity=0",
+           "traceHistoryCount=10", "traceHistoryTruncated=true",
+           "traceSteps=10", "traceStepBudget=64",
+           "traceCombinatorialVisits=2",
+           "traceCombinatorialVisitAllowance=2"}) {
+    EXPECT_NE(std::string::npos, productionEmitted.find(token))
+        << productionEmitted;
+  }
+  EXPECT_EQ(std::string::npos,
+            productionEmitted.find("publishedFaceCount="))
+      << productionEmitted;
 }
 
 TEST(ResolvedBranchCorrection,
@@ -9441,6 +9603,120 @@ TEST(ResolvedBranchCorrection,
   }
 }
 
+
+TEST(ResolvedBranchCorrection,
+     NetworkTerminalOwnershipConditionsSurviveProductionFailureProjection) {
+  using directional::authority::NetworkNodeId;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedCurveNetworkErrorCondition;
+
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const auto &atlas = atlasBuild.value();
+  const auto &topology = atlas.branch_topology();
+
+  const SourceFaceTopologyKey face = topology_face(0, 1, 4, 5U);
+  const SourceEdgeTopologyKey entryEdge = topology_edge(0, 4, 5U);
+  const SourceEdgeTopologyKey terminalEdge = topology_edge(0, 1, 5U);
+  const auto branch = directional::authority::FieldBranch::from_integer(0);
+  const auto sourceComponent = SourceComponentId::from_index(0, 1).value();
+  const auto topologyRegion = TopologyRegionId::from_index(0, 1).value();
+  const SourceVertexId seedVertex = SourceVertexId::from_index(4, 5).value();
+  const SourceVertexId mismatchedTerminalVertex =
+      SourceVertexId::from_index(2, 5).value();
+  const FieldSingularityId sourceSingularity =
+      FieldSingularityId::from_index(0, 2).value();
+  const FieldSingularityId terminalSingularity =
+      FieldSingularityId::from_index(1, 2).value();
+  const SingularityPortId sourcePort =
+      SingularityPortId::from_index(0, 2).value();
+  const SingularityPortId terminalPort =
+      SingularityPortId::from_index(1, 2).value();
+
+  // Survivor A: line 1900's singularity-port owner mismatch. The terminal
+  // boundary point is vertex 1, while the authoritative terminal port owns
+  // vertex 2. The semantic decision is unchanged; only its typed condition and
+  // trace provenance are observed.
+  directional::geometry::FieldAlignedCurveNetworkCandidate portCandidate;
+  portCandidate.singularityPorts.emplace_back(
+      terminalPort, terminalSingularity, NetworkNodeId::from_index(0, 1).value(),
+      mismatchedTerminalVertex, sourceComponent, topologyRegion, 1, 0);
+  FieldAlignedCandidateTrace portTrace(
+      TraceId::from_index(0, 1).value(), sourcePort, sourceSingularity,
+      seedVertex, sourceComponent, topologyRegion);
+  portTrace.segments.emplace_back(
+      face, branch, boundary_point(entryEdge, 1, 2), std::nullopt,
+      terminalEdge, std::nullopt);
+  portTrace.terminalPoint = boundary_point(terminalEdge, 1, 1);
+  portTrace.terminalSingularity = terminalSingularity;
+
+  const auto portError = directional::geometry::surface_cell_tracing_detail::
+      append_field_aligned_singularity_termination(portCandidate, portTrace);
+  ASSERT_TRUE(portError.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+            portError->code);
+  ASSERT_TRUE(portError->condition.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCondition::
+                SingularityTerminationPortOwnershipMismatch,
+            *portError->condition);
+  ASSERT_EQ(1U, portError->traceHistory.size());
+  const std::string portLocus = production_network_error_locus(*portError, atlas);
+  for (const std::string &token : std::vector<std::string>{
+           "networkErrorCondition=SingularityTerminationPortOwnershipMismatch",
+           "sourceEdge=0-1", "sourceFace=0,1,4", "branch=0",
+           "traceSeedVertex=4", "traceSeedSingularity=0",
+           "traceHistoryCount=1", "traceHistoryTruncated=false",
+           "traceHistory=[{sourceFace=0,1,4,branch=0,incomingCarrier=none,entryParameter=1/2}]"}) {
+    EXPECT_NE(std::string::npos, portLocus.find(token)) << portLocus;
+  }
+
+  // Survivor B: line 3920's finalize fall-through. terminalContact is
+  // deliberately present; the production finalizer is intentionally not
+  // changed to consume it in CB11, so a boundary outgoing carrier still
+  // reaches the existing fail-closed loop-closure condition.
+  directional::geometry::FieldAlignedCurveNetworkCandidate contactCandidate;
+  contactCandidate.singularityPorts.emplace_back(
+      sourcePort, sourceSingularity, NetworkNodeId::from_index(0, 1).value(),
+      seedVertex, sourceComponent, topologyRegion, 1, 0);
+  FieldAlignedCandidateTrace contactTrace(
+      TraceId::from_index(0, 1).value(), sourcePort, sourceSingularity,
+      seedVertex, sourceComponent, topologyRegion);
+  contactTrace.segments.emplace_back(
+      face, branch, boundary_point(entryEdge, 1, 2), std::nullopt,
+      terminalEdge, std::nullopt);
+  contactTrace.terminalContact = directional::geometry::FieldAlignedTerminalContact{
+      face,
+      {exact_integer(0), exact_integer(0), exact_integer(1)},
+      contactTrace.id, 0U};
+  contactCandidate.candidateTraces.push_back(contactTrace);
+
+  const auto contactError =
+      directional::geometry::surface_cell_tracing_detail::
+          diagnose_finalize_field_aligned_events(topology, contactCandidate);
+  ASSERT_TRUE(contactError.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+            contactError->code);
+  ASSERT_TRUE(contactError->condition.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCondition::FinalizeLoopClosureUnavailable,
+            *contactError->condition);
+  ASSERT_EQ(1U, contactError->traceHistory.size());
+  const std::string contactLocus =
+      production_network_error_locus(*contactError, atlas);
+  for (const std::string &token : std::vector<std::string>{
+           "networkErrorCondition=FinalizeLoopClosureUnavailable",
+           "sourceEdge=0-1", "sourceFace=0,1,4", "branch=0",
+           "traceSeedVertex=4", "traceSeedSingularity=0",
+           "traceHistoryCount=1", "traceHistoryTruncated=false",
+           "traceHistory=[{sourceFace=0,1,4,branch=0,incomingCarrier=none,entryParameter=1/2}]"}) {
+    EXPECT_NE(std::string::npos, contactLocus.find(token)) << contactLocus;
+  }
+}
 
 const char *cp4c0b_contact_census_terminal_kind_name(
     const directional::geometry::surface_cell_tracing_detail::

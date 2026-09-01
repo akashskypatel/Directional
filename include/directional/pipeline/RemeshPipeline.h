@@ -1164,6 +1164,16 @@ bool remap_component_typed_lineage_authority(
 
 namespace remesh_pipeline_detail {
 
+/**
+ * Diagnostic-only projection used by the production surface-cell failure path.
+ * Tests may call this seam to verify that network error provenance survives the
+ * exact projection consumed by CP4c failure rendering.
+ */
+SurfaceCellFailureLocusDiagnostics
+project_field_aligned_curve_network_failure_locus(
+    const geometry::FieldAlignedCurveNetworkError &error,
+    const authority::FieldTransportAtlas &atlas);
+
 struct SurfaceCellComponentStageProducts {
   std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
   std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;

@@ -110,14 +110,38 @@ struct SurfaceCellVertexTransitStateDiagnostics {
   bool incomingInSector = false;
 };
 
+struct SurfaceCellTraceStepDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  int branch = 0;
+  std::optional<std::array<std::size_t, 2>> incomingCarrier;
+  std::string entryParameter;
+};
+
 struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> sourceVertex;
   std::optional<std::array<std::size_t, 2>> sourceEdge;
+  std::optional<std::size_t> rail;
+  std::optional<std::size_t> singularity;
   std::optional<std::array<std::size_t, 3>> sourceFace;
+  std::optional<std::array<std::size_t, 3>> relatedSourceFace;
   std::optional<int> branch;
+  std::optional<int> relatedBranch;
   std::optional<std::size_t> topologyRegion;
-  std::size_t publishedFaceCount = 0U;
+  std::string networkErrorCondition;
+  std::optional<int> signedLift;
+  std::optional<std::string> parameter;
+  std::vector<std::string> exactValues;
+  std::vector<std::array<std::size_t, 2>> publishedEdges;
   std::vector<std::array<std::size_t, 3>> publishedFaces;
+  std::optional<std::size_t> traceSeedVertex;
+  std::optional<std::size_t> traceSeedSingularity;
+  std::vector<SurfaceCellTraceStepDiagnostics> traceHistory;
+  std::size_t traceHistoryCount = 0U;
+  bool traceHistoryTruncated = false;
+  std::optional<std::size_t> traceSteps;
+  std::optional<std::size_t> traceStepBudget;
+  std::optional<std::size_t> traceCombinatorialVisits;
+  std::optional<std::size_t> traceCombinatorialVisitAllowance;
   std::string vertexArrivalMode;
   std::optional<bool> barrierAbsorbed;
   std::optional<bool> barrierIncident;

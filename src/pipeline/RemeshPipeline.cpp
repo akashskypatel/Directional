@@ -141,6 +141,228 @@ SurfaceCellFailureCode surface_cell_failure_from_endpoint_completion(
 
 } // namespace directional::pipeline
 
+namespace directional::pipeline::remesh_pipeline_detail {
+
+SurfaceCellFailureLocusDiagnostics
+project_field_aligned_curve_network_failure_locus(
+    const geometry::FieldAlignedCurveNetworkError &error,
+    const authority::FieldTransportAtlas &atlas) {
+  constexpr std::size_t kPublishedFailureEntryLimit = 8U;
+  const auto topology_face_locus = [](
+      const authority::SourceFaceTopologyKey &face) {
+    const auto &vertices = face.vertices();
+    return std::array<std::size_t, 3>{vertices[0].index(),
+                                      vertices[1].index(),
+                                      vertices[2].index()};
+  };
+  const auto topology_edge_locus = [](
+      const authority::SourceEdgeTopologyKey &edge) {
+    return std::array<std::size_t, 2>{edge.first().index(),
+                                      edge.second().index()};
+  };
+  const auto exact_string = [](const authority::FieldExactRational &value) {
+    return value.numerator_string() + "/" + value.denominator_string();
+  };
+
+  SurfaceCellFailureLocusDiagnostics locus;
+  if (error.condition.has_value()) {
+    locus.networkErrorCondition =
+        geometry::field_aligned_curve_network_error_condition_name(
+            *error.condition);
+  }
+  if (error.sourceVertex.has_value())
+    locus.sourceVertex = error.sourceVertex->index();
+  if (error.sourceEdge.has_value())
+    locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
+  if (error.rail.has_value()) locus.rail = error.rail->index();
+  if (error.singularity.has_value())
+    locus.singularity = error.singularity->index();
+  if (error.sourceFace.has_value())
+    locus.sourceFace = topology_face_locus(*error.sourceFace);
+  if (error.relatedSourceFace.has_value())
+    locus.relatedSourceFace = topology_face_locus(*error.relatedSourceFace);
+  if (error.branch.has_value())
+    locus.branch = static_cast<int>(error.branch->value());
+  if (error.relatedBranch.has_value())
+    locus.relatedBranch = static_cast<int>(error.relatedBranch->value());
+  if (error.topologyRegion.has_value())
+    locus.topologyRegion = error.topologyRegion->index();
+  locus.signedLift = error.signedLift;
+  if (error.parameter.has_value())
+    locus.parameter = exact_string(error.parameter->value);
+  locus.exactValues.reserve(error.exactValues.size());
+  for (const auto &value : error.exactValues)
+    locus.exactValues.push_back(exact_string(value));
+  locus.publishedEdges.reserve(error.publishedEdges.size());
+  for (const auto &edge : error.publishedEdges)
+    locus.publishedEdges.push_back(topology_edge_locus(edge));
+  locus.publishedFaces.reserve(error.publishedFaces.size());
+  for (const auto &face : error.publishedFaces)
+    locus.publishedFaces.push_back(topology_face_locus(face));
+  if (error.traceSeedVertex.has_value())
+    locus.traceSeedVertex = error.traceSeedVertex->index();
+  if (error.traceSeedSingularity.has_value())
+    locus.traceSeedSingularity = error.traceSeedSingularity->index();
+  locus.traceHistoryCount = error.traceHistory.size();
+  locus.traceHistoryTruncated =
+      error.traceHistory.size() > kPublishedFailureEntryLimit;
+  const std::size_t traceLimit =
+      std::min(kPublishedFailureEntryLimit, error.traceHistory.size());
+  locus.traceHistory.reserve(traceLimit);
+  for (std::size_t index = 0U; index < traceLimit; ++index) {
+    const auto &step = error.traceHistory[index];
+    SurfaceCellTraceStepDiagnostics projected;
+    projected.sourceFace = topology_face_locus(step.sourceFace);
+    projected.branch = static_cast<int>(step.branch.value());
+    if (step.incomingCarrier.has_value())
+      projected.incomingCarrier = topology_edge_locus(*step.incomingCarrier);
+    projected.entryParameter = exact_string(step.entryParameter.value);
+    locus.traceHistory.push_back(std::move(projected));
+  }
+  locus.traceSteps = error.traceSteps;
+  locus.traceStepBudget = error.traceStepBudget;
+  locus.traceCombinatorialVisits = error.traceCombinatorialVisits;
+  locus.traceCombinatorialVisitAllowance =
+      error.traceCombinatorialVisitAllowance;
+  if (error.vertexArrivalMode.has_value()) {
+    locus.vertexArrivalMode =
+        *error.vertexArrivalMode == geometry::FieldVertexArrivalMode::FaceInterior
+            ? "FaceInterior"
+            : "EdgeTransit";
+  }
+
+  locus.vertexTransitStates.reserve(error.vertexTransitStates.size());
+  for (const auto &state : error.vertexTransitStates) {
+    SurfaceCellVertexTransitStateDiagnostics projected;
+    projected.sourceFace = topology_face_locus(state.sourceFace);
+    projected.branch = static_cast<int>(state.branch.value());
+    projected.outcome =
+        geometry::field_vertex_transit_state_outcome_name(state.outcome);
+    if (state.representativeDirection.has_value()) {
+      for (const auto &coordinate : state.representativeDirection->barycentric)
+        projected.representativeDirection.push_back(exact_string(coordinate));
+    }
+    if (state.incomingDirection.has_value()) {
+      for (const auto &coordinate : state.incomingDirection->barycentric)
+        projected.incomingDirection.push_back(exact_string(coordinate));
+    }
+    if (state.transportEdge.has_value())
+      projected.transportEdge = topology_edge_locus(*state.transportEdge);
+    projected.transportPath.reserve(state.transportPath.size());
+    for (const auto &edge : state.transportPath)
+      projected.transportPath.push_back(topology_edge_locus(edge));
+    projected.composedQuarterTurn = state.composedQuarterTurn;
+    projected.eligibleForElection = state.eligibleForElection;
+    projected.representativeInSector = state.representativeInSector;
+    projected.incomingInSector = state.incomingInSector;
+    locus.vertexTransitStates.push_back(std::move(projected));
+  }
+
+  if (error.vertexStarTransit.has_value()) {
+    const auto &audit = *error.vertexStarTransit;
+    switch (audit.kernelRoute) {
+    case geometry::VertexStarDecisionKernelRoute::Filter:
+      locus.vertexStarKernelRoute = "Filter"; break;
+    case geometry::VertexStarDecisionKernelRoute::ExactFallback:
+      locus.vertexStarKernelRoute = "ExactFallback"; break;
+    case geometry::VertexStarDecisionKernelRoute::RationalShortCircuit:
+      locus.vertexStarKernelRoute = "RationalShortCircuit"; break;
+    case geometry::VertexStarDecisionKernelRoute::NotRun:
+      locus.vertexStarKernelRoute = "NotRun"; break;
+    }
+    switch (audit.state) {
+    case geometry::VertexStarTransitState::Owner:
+      locus.vertexStarState = "Owner"; break;
+    case geometry::VertexStarTransitState::TruncatedBeforeContinuation:
+      locus.vertexStarState = "VertexStarTruncatedBeforeContinuation"; break;
+    case geometry::VertexStarTransitState::DegenerateSector:
+      locus.vertexStarState = "VertexStarDegenerateSector"; break;
+    case geometry::VertexStarTransitState::ExactBudgetExceeded:
+      locus.vertexStarState = "VertexStarExactBudgetExceeded"; break;
+    case geometry::VertexStarTransitState::SeedUnavailable:
+      locus.vertexStarState = "SeedUnavailable"; break;
+    }
+    locus.vertexStarFanLength = audit.fanLength;
+    locus.vertexStarExactFanLengthBudget = audit.exactFanLengthBudget;
+    locus.vertexStarClosedFan = audit.closedFan;
+    locus.vertexStarTruncationReason = audit.truncationReason;
+    locus.vertexStarConeAngleDefinition = audit.coneAngleDefinition;
+    if (audit.seed.has_value()) {
+      locus.vertexStarArrivalFace = topology_face_locus(audit.seed->arrivalFace);
+      locus.vertexStarArrivalBranch =
+          static_cast<int>(audit.seed->arrivalBranch.value());
+      for (const auto &coordinate : audit.seed->arrivalRay.barycentric)
+        locus.vertexStarArrivalRay.push_back(exact_string(coordinate));
+      locus.vertexStarArrivalOnRadialRay = audit.seed->onRadialRay;
+      if (audit.seed->radialRay.has_value())
+        locus.vertexStarArrivalRadialRay = audit.seed->radialRay->index();
+      if (audit.seed->provenanceTrace.has_value())
+        locus.vertexStarProvenanceTrace = audit.seed->provenanceTrace->index();
+      locus.vertexStarProvenanceEvent = audit.seed->provenanceEvent;
+    }
+    for (const auto &sector : audit.sectors) {
+      locus.vertexStarFanFaces.push_back(topology_face_locus(sector.sourceFace));
+      locus.vertexStarFanBranches.push_back(static_cast<int>(sector.branch.value()));
+      locus.vertexStarFanNextRadialVertices.push_back(sector.nextRadialVertex.index());
+      locus.vertexStarFanPreviousRadialVertices.push_back(
+          sector.previousRadialVertex.index());
+      locus.vertexStarSectorExactDPQ.push_back(
+          {exact_string(sector.dot), exact_string(sector.normProduct),
+           exact_string(sector.crossSquared)});
+      locus.vertexStarSectorEligibleForElection.push_back(
+          sector.eligibleForElection);
+      locus.vertexStarSectorContainsContinuation.push_back(
+          sector.containsContinuation);
+      locus.vertexStarCandidateRepresentativeInOwnSector.push_back(
+          sector.candidateRepresentativeInOwnSector);
+    }
+    locus.vertexStarOwnerCardinality = audit.ownerCardinality;
+    if (audit.ownerFace.has_value())
+      locus.vertexStarOwnerFace = topology_face_locus(*audit.ownerFace);
+    if (audit.ownerBranch.has_value())
+      locus.vertexStarOwnerBranch = static_cast<int>(audit.ownerBranch->value());
+    locus.vertexStarOnRadialRay = audit.onRadialRay;
+    if (audit.radialRay.has_value())
+      locus.vertexStarRadialRay = audit.radialRay->index();
+  }
+
+  if (error.sourceVertex.has_value()) {
+    locus.barrierAbsorbed = false;
+    for (const auto &singularity : atlas.singularities()) {
+      if (singularity.sourceVertex != *error.sourceVertex) continue;
+      if (error.topologyRegion.has_value() &&
+          singularity.topologyRegion != error.topologyRegion)
+        continue;
+      if (singularity.portPolicy ==
+          authority::FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
+        locus.barrierAbsorbed = true;
+        break;
+      }
+    }
+
+    locus.barrierIncident = false;
+    for (const auto &region : atlas.region_transport_diagnostics()) {
+      if (error.topologyRegion.has_value() &&
+          region.topologyRegion != *error.topologyRegion)
+        continue;
+      const auto found = std::find_if(
+          region.barrierIncidentSingularities.begin(),
+          region.barrierIncidentSingularities.end(),
+          [&](const authority::FieldBarrierIncidentSingularityDiagnostics &row) {
+            return row.sourceVertex == *error.sourceVertex;
+          });
+      if (found == region.barrierIncidentSingularities.end()) continue;
+      locus.barrierIncident = true;
+      locus.barrierDegree = found->barrierDegree;
+      locus.transportStarComponentCount = found->transportStarComponentCount;
+      break;
+    }
+  }
+  return locus;
+}
+
+} // namespace directional::pipeline::remesh_pipeline_detail
+
 namespace directional::pipeline {
 
 namespace {
@@ -6585,7 +6807,6 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         sourceTopologyRegionsProduct;
     tracingOptions.sourceAuthority = &*sourceTopologyRegionsProduct;
 
-    constexpr std::size_t kPublishedFailureFaceLimit = 8U;
     const auto topology_face_locus = [](
         const authority::SourceFaceTopologyKey &face) {
       const auto &vertices = face.vertices();
@@ -6624,167 +6845,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     const auto network_failure_locus = [&](
         const geometry::FieldAlignedCurveNetworkError &error,
         const authority::FieldTransportAtlas &atlas) {
-      SurfaceCellFailureLocusDiagnostics locus;
-      if (error.sourceVertex.has_value())
-        locus.sourceVertex = error.sourceVertex->index();
-      if (error.sourceEdge.has_value())
-        locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
-      if (error.sourceFace.has_value())
-        locus.sourceFace = topology_face_locus(*error.sourceFace);
-      if (error.branch.has_value())
-        locus.branch = static_cast<int>(error.branch->value());
-      if (error.topologyRegion.has_value())
-        locus.topologyRegion = error.topologyRegion->index();
-      if (error.vertexArrivalMode.has_value()) {
-        locus.vertexArrivalMode =
-            *error.vertexArrivalMode ==
-                    geometry::FieldVertexArrivalMode::FaceInterior
-                ? "FaceInterior"
-                : "EdgeTransit";
-      }
-      const auto exact_string = [](const authority::FieldExactRational &value) {
-        return value.numerator_string() + "/" + value.denominator_string();
-      };
-      locus.vertexTransitStates.reserve(error.vertexTransitStates.size());
-      for (const auto &state : error.vertexTransitStates) {
-        SurfaceCellVertexTransitStateDiagnostics projected;
-        projected.sourceFace = topology_face_locus(state.sourceFace);
-        projected.branch = static_cast<int>(state.branch.value());
-        projected.outcome =
-            geometry::field_vertex_transit_state_outcome_name(state.outcome);
-        if (state.representativeDirection.has_value()) {
-          for (const auto &coordinate :
-               state.representativeDirection->barycentric) {
-            projected.representativeDirection.push_back(exact_string(coordinate));
-          }
-        }
-        if (state.incomingDirection.has_value()) {
-          for (const auto &coordinate : state.incomingDirection->barycentric) {
-            projected.incomingDirection.push_back(exact_string(coordinate));
-          }
-        }
-        if (state.transportEdge.has_value())
-          projected.transportEdge = topology_edge_locus(*state.transportEdge);
-        projected.transportPath.reserve(state.transportPath.size());
-        for (const auto &edge : state.transportPath)
-          projected.transportPath.push_back(topology_edge_locus(edge));
-        projected.composedQuarterTurn = state.composedQuarterTurn;
-        projected.eligibleForElection = state.eligibleForElection;
-        projected.representativeInSector = state.representativeInSector;
-        projected.incomingInSector = state.incomingInSector;
-        locus.vertexTransitStates.push_back(std::move(projected));
-      }
-      if (error.vertexStarTransit.has_value()) {
-        const auto &audit = *error.vertexStarTransit;
-        switch (audit.kernelRoute) {
-        case geometry::VertexStarDecisionKernelRoute::Filter:
-          locus.vertexStarKernelRoute = "Filter"; break;
-        case geometry::VertexStarDecisionKernelRoute::ExactFallback:
-          locus.vertexStarKernelRoute = "ExactFallback"; break;
-        case geometry::VertexStarDecisionKernelRoute::RationalShortCircuit:
-          locus.vertexStarKernelRoute = "RationalShortCircuit"; break;
-        case geometry::VertexStarDecisionKernelRoute::NotRun:
-          locus.vertexStarKernelRoute = "NotRun"; break;
-        }
-        switch (audit.state) {
-        case geometry::VertexStarTransitState::Owner:
-          locus.vertexStarState = "Owner"; break;
-        case geometry::VertexStarTransitState::TruncatedBeforeContinuation:
-          locus.vertexStarState = "VertexStarTruncatedBeforeContinuation"; break;
-        case geometry::VertexStarTransitState::DegenerateSector:
-          locus.vertexStarState = "VertexStarDegenerateSector"; break;
-        case geometry::VertexStarTransitState::ExactBudgetExceeded:
-          locus.vertexStarState = "VertexStarExactBudgetExceeded"; break;
-        case geometry::VertexStarTransitState::SeedUnavailable:
-          locus.vertexStarState = "SeedUnavailable"; break;
-        }
-        locus.vertexStarFanLength = audit.fanLength;
-        locus.vertexStarExactFanLengthBudget = audit.exactFanLengthBudget;
-        locus.vertexStarClosedFan = audit.closedFan;
-        locus.vertexStarTruncationReason = audit.truncationReason;
-        locus.vertexStarConeAngleDefinition = audit.coneAngleDefinition;
-        if (audit.seed.has_value()) {
-          locus.vertexStarArrivalFace = topology_face_locus(audit.seed->arrivalFace);
-          locus.vertexStarArrivalBranch = static_cast<int>(audit.seed->arrivalBranch.value());
-          for (const auto &coordinate : audit.seed->arrivalRay.barycentric)
-            locus.vertexStarArrivalRay.push_back(exact_string(coordinate));
-          locus.vertexStarArrivalOnRadialRay = audit.seed->onRadialRay;
-          if (audit.seed->radialRay.has_value())
-            locus.vertexStarArrivalRadialRay = audit.seed->radialRay->index();
-          if (audit.seed->provenanceTrace.has_value())
-            locus.vertexStarProvenanceTrace = audit.seed->provenanceTrace->index();
-          locus.vertexStarProvenanceEvent = audit.seed->provenanceEvent;
-        }
-        for (const auto &sector : audit.sectors) {
-          locus.vertexStarFanFaces.push_back(topology_face_locus(sector.sourceFace));
-          locus.vertexStarFanBranches.push_back(
-              static_cast<int>(sector.branch.value()));
-          locus.vertexStarFanNextRadialVertices.push_back(
-              sector.nextRadialVertex.index());
-          locus.vertexStarFanPreviousRadialVertices.push_back(
-              sector.previousRadialVertex.index());
-          locus.vertexStarSectorExactDPQ.push_back(
-              {exact_string(sector.dot), exact_string(sector.normProduct),
-               exact_string(sector.crossSquared)});
-          locus.vertexStarSectorEligibleForElection.push_back(
-              sector.eligibleForElection);
-          locus.vertexStarSectorContainsContinuation.push_back(
-              sector.containsContinuation);
-          locus.vertexStarCandidateRepresentativeInOwnSector.push_back(
-              sector.candidateRepresentativeInOwnSector);
-        }
-        locus.vertexStarOwnerCardinality = audit.ownerCardinality;
-        if (audit.ownerFace.has_value())
-          locus.vertexStarOwnerFace = topology_face_locus(*audit.ownerFace);
-        if (audit.ownerBranch.has_value())
-          locus.vertexStarOwnerBranch = static_cast<int>(audit.ownerBranch->value());
-        locus.vertexStarOnRadialRay = audit.onRadialRay;
-        if (audit.radialRay.has_value())
-          locus.vertexStarRadialRay = audit.radialRay->index();
-      }
-      locus.publishedFaceCount = error.publishedFaces.size();
-      const std::size_t faceLimit =
-          std::min(kPublishedFailureFaceLimit, error.publishedFaces.size());
-      locus.publishedFaces.reserve(faceLimit);
-      for (std::size_t index = 0U; index < faceLimit; ++index)
-        locus.publishedFaces.push_back(
-            topology_face_locus(error.publishedFaces[index]));
-
-      if (error.sourceVertex.has_value()) {
-        locus.barrierAbsorbed = false;
-        for (const auto &singularity : atlas.singularities()) {
-          if (singularity.sourceVertex != *error.sourceVertex) continue;
-          if (error.topologyRegion.has_value() &&
-              singularity.topologyRegion != error.topologyRegion)
-            continue;
-          if (singularity.portPolicy ==
-              authority::FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
-            locus.barrierAbsorbed = true;
-            break;
-          }
-        }
-
-        locus.barrierIncident = false;
-        for (const auto &region : atlas.region_transport_diagnostics()) {
-          if (error.topologyRegion.has_value() &&
-              region.topologyRegion != *error.topologyRegion)
-            continue;
-          const auto found = std::find_if(
-              region.barrierIncidentSingularities.begin(),
-              region.barrierIncidentSingularities.end(),
-              [&](const authority::FieldBarrierIncidentSingularityDiagnostics
-                      &row) {
-                return row.sourceVertex == *error.sourceVertex;
-              });
-          if (found == region.barrierIncidentSingularities.end()) continue;
-          locus.barrierIncident = true;
-          locus.barrierDegree = found->barrierDegree;
-          locus.transportStarComponentCount =
-              found->transportStarComponentCount;
-          break;
-        }
-      }
-      return locus;
+      return remesh_pipeline_detail::
+          project_field_aligned_curve_network_failure_locus(error, atlas);
     };
     const auto cut_graph_failure_locus = [&](
         const geometry::SurfaceCutGraphError &error) {

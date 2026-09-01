@@ -1827,15 +1827,22 @@ void annotate_field_aligned_trace_seed(
 
 void annotate_field_aligned_trace_history(
     FieldAlignedCurveNetworkError &error,
-    const FieldAlignedCandidateTrace &trace,
-    const FieldAlignedTraceTraversalState &state) {
+    const FieldAlignedCandidateTrace &trace) {
   error.traceHistory.clear();
-  error.traceHistory.reserve(trace.segments.size() + 1U);
+  error.traceHistory.reserve(trace.segments.size());
   for (const FieldAlignedCandidateTraceSegment &segment : trace.segments) {
     error.traceHistory.push_back(FieldAlignedTraceStepDiagnostic{
         segment.sourceFace, segment.branch, segment.incomingCarrier,
         segment.entryPoint.parameter});
   }
+}
+
+void annotate_field_aligned_trace_history(
+    FieldAlignedCurveNetworkError &error,
+    const FieldAlignedCandidateTrace &trace,
+    const FieldAlignedTraceTraversalState &state) {
+  annotate_field_aligned_trace_history(error, trace);
+  error.traceHistory.reserve(trace.segments.size() + 1U);
   const FieldAlignedTraceStepDiagnostic current{
       state.sourceFace, state.branch, state.incomingCarrier,
       state.entryPoint.parameter};
@@ -1865,15 +1872,34 @@ FieldAlignedCurveNetworkError trace_scoped_field_aligned_error(
   return error;
 }
 
+FieldAlignedCurveNetworkError trace_scoped_terminal_ownership_error(
+    const FieldAlignedCurveNetworkErrorCondition condition,
+    const authority::SourceVertexId traceSeedVertex,
+    const authority::FieldSingularityId traceSeedSingularity,
+    std::optional<authority::SourceVertexId> sourceVertex = std::nullopt,
+    std::optional<authority::SourceEdgeTopologyKey> sourceEdge = std::nullopt,
+    std::optional<authority::SourceFaceTopologyKey> sourceFace = std::nullopt,
+    std::optional<authority::FieldBranch> branch = std::nullopt,
+    std::optional<authority::FieldSingularityId> singularity = std::nullopt) {
+  FieldAlignedCurveNetworkError error = trace_scoped_field_aligned_error(
+      FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+      traceSeedVertex, traceSeedSingularity, sourceVertex, std::move(sourceEdge),
+      std::move(sourceFace), branch, singularity);
+  error.condition = condition;
+  return error;
+}
+
 std::optional<FieldAlignedCurveNetworkError>
 append_field_aligned_singularity_termination(
     FieldAlignedCurveNetworkCandidate &candidate,
     const FieldAlignedCandidateTrace &trace) {
   if (!trace.terminalSingularity.has_value() ||
       !trace.terminalPoint.has_value() || trace.segments.empty()) {
-    FieldAlignedCurveNetworkError error = trace_scoped_field_aligned_error(
-        FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+    FieldAlignedCurveNetworkError error = trace_scoped_terminal_ownership_error(
+        FieldAlignedCurveNetworkErrorCondition::
+            SingularityTerminationTraceIncomplete,
         trace.sourceVertex, trace.singularity);
+    annotate_field_aligned_trace_history(error, trace);
     if (!trace.segments.empty()) {
       error.sourceFace = trace.segments.back().sourceFace;
       error.branch = trace.segments.back().branch;
@@ -1896,11 +1922,13 @@ append_field_aligned_singularity_termination(
   if (vertexSupport == nullptr ||
       terminalPort == candidate.singularityPorts.end() ||
       terminalPort->sourceVertex != vertexSupport->vertex) {
-    FieldAlignedCurveNetworkError error = trace_scoped_field_aligned_error(
-        FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+    FieldAlignedCurveNetworkError error = trace_scoped_terminal_ownership_error(
+        FieldAlignedCurveNetworkErrorCondition::
+            SingularityTerminationPortOwnershipMismatch,
         trace.sourceVertex, trace.singularity, std::nullopt,
         trace.terminalPoint->edge, trace.segments.back().sourceFace,
         trace.segments.back().branch);
+    annotate_field_aligned_trace_history(error, trace);
     return error;
   }
 
@@ -3118,8 +3146,8 @@ field_aligned_publish_barrier_termination(
     const FieldAlignedCandidateTrace &trace) {
   if (!trace.terminalBarrier.has_value() || !trace.terminalPoint.has_value() ||
       trace.segments.empty()) {
-    return trace_scoped_field_aligned_error(
-        FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+    return trace_scoped_terminal_ownership_error(
+        FieldAlignedCurveNetworkErrorCondition::BarrierTerminationTraceIncomplete,
         trace.sourceVertex, trace.singularity);
   }
   const auto mandatory = std::find_if(
@@ -3128,8 +3156,9 @@ field_aligned_publish_barrier_termination(
         return edge.sourceEdge == *trace.terminalBarrier;
       });
   if (mandatory == candidate.mandatoryEdges.end()) {
-    return trace_scoped_field_aligned_error(
-        FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+    return trace_scoped_terminal_ownership_error(
+        FieldAlignedCurveNetworkErrorCondition::
+            BarrierTerminationMandatoryEdgeMissing,
         trace.sourceVertex, trace.singularity, std::nullopt,
         trace.terminalBarrier, trace.segments.back().sourceFace,
         trace.segments.back().branch);
@@ -3272,8 +3301,8 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
 
   if (terminateFirst && firstRuntime.active) {
     if (!firstRuntime.proposal.has_value()) {
-      return trace_scoped_field_aligned_error(
-          FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+      return trace_scoped_terminal_ownership_error(
+          FieldAlignedCurveNetworkErrorCondition::ContactFirstProposalMissing,
           firstTrace.sourceVertex, firstTrace.singularity);
     }
     const std::size_t struckSegment =
@@ -3291,8 +3320,8 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
   if (!selfContact && terminateSecond && secondRuntime.active) {
     if (event.secondIsProposal) {
       if (!secondRuntime.proposal.has_value()) {
-        return trace_scoped_field_aligned_error(
-            FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+        return trace_scoped_terminal_ownership_error(
+            FieldAlignedCurveNetworkErrorCondition::ContactSecondProposalMissing,
             secondTrace.sourceVertex, secondTrace.singularity);
       }
       const std::size_t struckSegment = firstPendingSegmentIndex;
@@ -3313,8 +3342,9 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
       // topology. A retired wall would require retroactive event repair and is
       // therefore a typed fail-closed outcome.
       if (!secondRuntime.active || event.secondSegment >= secondTrace.segments.size()) {
-        return trace_scoped_field_aligned_error(
-            FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+        return trace_scoped_terminal_ownership_error(
+            FieldAlignedCurveNetworkErrorCondition::
+                ContactActiveWallCannotBeShortened,
             secondTrace.sourceVertex, secondTrace.singularity, std::nullopt,
             std::nullopt, event.sourceFace);
       }
@@ -3605,8 +3635,9 @@ canonical_field_aligned_traces_and_events(
           if (ordering == FieldAlignedArrivalOrdering::Earlier) continue;
           if (ordering == FieldAlignedArrivalOrdering::Inconclusive &&
               !wallRuntime.active) {
-            return trace_scoped_field_aligned_error(
-                FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+            return trace_scoped_terminal_ownership_error(
+                FieldAlignedCurveNetworkErrorCondition::
+                    ContactInconclusiveAgainstRetiredWall,
                 movingTrace.sourceVertex, movingTrace.singularity,
                 std::nullopt, std::nullopt,
                 movingRuntime.proposal->segment.sourceFace);
@@ -3631,8 +3662,10 @@ canonical_field_aligned_traces_and_events(
     }
 
     if (queue.empty()) {
-      return field_aligned_error(
+      FieldAlignedCurveNetworkError error = field_aligned_error(
           FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership);
+      error.condition = FieldAlignedCurveNetworkErrorCondition::TraceQueueEmpty;
+      return error;
     }
     const FieldAlignedQueueEvent event = queue.top();
     queue.pop();
@@ -3702,8 +3735,8 @@ canonical_field_aligned_traces_and_events(
         static_cast<std::size_t>(trace.terminalBarrier.has_value()) +
         static_cast<std::size_t>(trace.terminalContact.has_value());
     if (trace.segments.empty() || terminalKinds != 1U) {
-      return trace_scoped_field_aligned_error(
-          FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+      return trace_scoped_terminal_ownership_error(
+          FieldAlignedCurveNetworkErrorCondition::TraceTerminalKindInvalid,
           trace.sourceVertex, trace.singularity);
     }
   }
@@ -3875,8 +3908,9 @@ std::optional<FieldAlignedCurveNetworkError> finalize_field_aligned_events(
             return edge.sourceEdge == *trace.terminalBarrier;
           });
       if (mandatory == candidate.mandatoryEdges.end()) {
-        return trace_scoped_field_aligned_error(
-            FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+        return trace_scoped_terminal_ownership_error(
+            FieldAlignedCurveNetworkErrorCondition::
+                FinalizeBarrierMandatoryEdgeMissing,
             trace.sourceVertex, trace.singularity, std::nullopt,
             trace.terminalBarrier, trace.segments.back().sourceFace,
             trace.segments.back().branch);
@@ -3916,10 +3950,12 @@ std::optional<FieldAlignedCurveNetworkError> finalize_field_aligned_events(
                       return segment.sourceFace == *nextFace;
                     });
     if (!closesOnEarlierState) {
-      return trace_scoped_field_aligned_error(
-          FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+      FieldAlignedCurveNetworkError error = trace_scoped_terminal_ownership_error(
+          FieldAlignedCurveNetworkErrorCondition::FinalizeLoopClosureUnavailable,
           trace.sourceVertex, trace.singularity, std::nullopt,
           last.outgoingCarrier, last.sourceFace, last.branch);
+      annotate_field_aligned_trace_history(error, trace);
+      return error;
     }
     const auto contactNode = field_aligned_append_contact_node(candidate, *nextFace);
     if (!contactNode.has_value()) {
@@ -3962,6 +3998,13 @@ std::optional<FieldAlignedCurveNetworkError> finalize_field_aligned_events(
             });
   field_aligned_sort_events(candidate.events);
   return std::nullopt;
+}
+
+std::optional<FieldAlignedCurveNetworkError>
+diagnose_finalize_field_aligned_events(
+    const authority::FieldBranchTopology &topology,
+    FieldAlignedCurveNetworkCandidate &candidate) {
+  return finalize_field_aligned_events(topology, candidate);
 }
 
 struct FieldAlignedRailSupport {
@@ -4923,6 +4966,42 @@ const char *field_aligned_curve_network_error_code_name(
     return "VertexStarDegenerateSector";
   case FieldAlignedCurveNetworkErrorCode::VertexStarExactBudgetExceeded:
     return "VertexStarExactBudgetExceeded";
+  }
+  return "Unknown";
+}
+
+const char *field_aligned_curve_network_error_condition_name(
+    const FieldAlignedCurveNetworkErrorCondition condition) noexcept {
+  switch (condition) {
+  case FieldAlignedCurveNetworkErrorCondition::SingularityTerminationTraceIncomplete:
+    return "SingularityTerminationTraceIncomplete";
+  case FieldAlignedCurveNetworkErrorCondition::
+      SingularityTerminationPortOwnershipMismatch:
+    return "SingularityTerminationPortOwnershipMismatch";
+  case FieldAlignedCurveNetworkErrorCondition::BarrierTerminationTraceIncomplete:
+    return "BarrierTerminationTraceIncomplete";
+  case FieldAlignedCurveNetworkErrorCondition::
+      BarrierTerminationMandatoryEdgeMissing:
+    return "BarrierTerminationMandatoryEdgeMissing";
+  case FieldAlignedCurveNetworkErrorCondition::ContactFirstProposalMissing:
+    return "ContactFirstProposalMissing";
+  case FieldAlignedCurveNetworkErrorCondition::ContactSecondProposalMissing:
+    return "ContactSecondProposalMissing";
+  case FieldAlignedCurveNetworkErrorCondition::
+      ContactActiveWallCannotBeShortened:
+    return "ContactActiveWallCannotBeShortened";
+  case FieldAlignedCurveNetworkErrorCondition::
+      ContactInconclusiveAgainstRetiredWall:
+    return "ContactInconclusiveAgainstRetiredWall";
+  case FieldAlignedCurveNetworkErrorCondition::TraceQueueEmpty:
+    return "TraceQueueEmpty";
+  case FieldAlignedCurveNetworkErrorCondition::TraceTerminalKindInvalid:
+    return "TraceTerminalKindInvalid";
+  case FieldAlignedCurveNetworkErrorCondition::
+      FinalizeBarrierMandatoryEdgeMissing:
+    return "FinalizeBarrierMandatoryEdgeMissing";
+  case FieldAlignedCurveNetworkErrorCondition::FinalizeLoopClosureUnavailable:
+    return "FinalizeLoopClosureUnavailable";
   }
   return "Unknown";
 }

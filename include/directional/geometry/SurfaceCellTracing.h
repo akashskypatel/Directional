@@ -169,6 +169,25 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   VertexStarExactBudgetExceeded = 35,
 };
 
+// Diagnostic-only discriminator for distinct producer conditions that retain
+// the frozen FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership
+// authority. Values are additive observations only; they must never select
+// tracing, ownership, or termination behavior.
+enum class FieldAlignedCurveNetworkErrorCondition : std::uint8_t {
+  SingularityTerminationTraceIncomplete = 0,
+  SingularityTerminationPortOwnershipMismatch = 1,
+  BarrierTerminationTraceIncomplete = 2,
+  BarrierTerminationMandatoryEdgeMissing = 3,
+  ContactFirstProposalMissing = 4,
+  ContactSecondProposalMissing = 5,
+  ContactActiveWallCannotBeShortened = 6,
+  ContactInconclusiveAgainstRetiredWall = 7,
+  TraceQueueEmpty = 8,
+  TraceTerminalKindInvalid = 9,
+  FinalizeBarrierMandatoryEdgeMissing = 10,
+  FinalizeLoopClosureUnavailable = 11,
+};
+
 struct FieldAlignedTraceStepDiagnostic {
   authority::SourceFaceTopologyKey sourceFace;
   authority::FieldBranch branch;
@@ -294,6 +313,7 @@ struct FieldVertexTransitStateDiagnostic {
 struct FieldAlignedCurveNetworkError {
   FieldAlignedCurveNetworkErrorCode code =
       FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding;
+  std::optional<FieldAlignedCurveNetworkErrorCondition> condition;
   std::optional<authority::SourceVertexId> sourceVertex;
   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
   std::optional<authority::HardRailId> rail;
@@ -673,6 +693,8 @@ private:
 
 [[nodiscard]] const char *field_aligned_curve_network_error_code_name(
     FieldAlignedCurveNetworkErrorCode code) noexcept;
+[[nodiscard]] const char *field_aligned_curve_network_error_condition_name(
+    FieldAlignedCurveNetworkErrorCondition condition) noexcept;
 [[nodiscard]] const char *field_vertex_transit_state_outcome_name(
     FieldVertexTransitStateOutcome outcome) noexcept;
 [[nodiscard]] std::uint64_t field_aligned_curve_network_hash(
@@ -1017,6 +1039,14 @@ void annotate_field_aligned_trace_seed(
 append_field_aligned_singularity_termination(
     FieldAlignedCurveNetworkCandidate &candidate,
     const FieldAlignedCandidateTrace &trace);
+
+// Diagnostic-only test seam over the exact production finalizer. The finalizer
+// itself remains unchanged; this exposes its typed failure observation so unit
+// witnesses can prove which frozen error condition was reached.
+[[nodiscard]] std::optional<FieldAlignedCurveNetworkError>
+diagnose_finalize_field_aligned_events(
+    const authority::FieldBranchTopology &topology,
+    FieldAlignedCurveNetworkCandidate &candidate);
 
 } // namespace surface_cell_tracing_detail
 
