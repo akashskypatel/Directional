@@ -92,47 +92,58 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB6` (Test + Benchmark, artifact-only)
+## Mandatory next turn — `M3-CP4c-3-TB6-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB7` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** under AU0–AU9. Exact semantic/evidence source is `e926ada023bc51220628be550bbe9a87f98d7067`; report authority is `Architecture_M3_CP4c3_CB7_Code_Build_Report.md`. CB7 made every vertex-transit suppression path typed/reportable, removed the transit datum's world-space-double round trip, restored exact Amendment-17 diagnostics without redesigning election, published sphere binding evidence, repaired only ordinal 370's invalid witness, added the minimal exact transit witness, and froze the full post-first-red report-only cadence.
+`M3-CP4c-3-TB6` is **COMPLETE / VALID SEMANTIC RED** on immutable package **75**, semantic source
+`e926ada023bc51220628be550bbe9a87f98d7067`. Authoritative run/job `33458067065 / 99702200466` passed immutable
+pre/postflight, re-proved ordinals **1–365**, and first-red ordinal **366** at
+`VertexTransitSectorUnresolved;sourceVertex=30;sourceFace=24,30,32;branch=1;topologyRegion=0;arrivalMode=FaceInterior;publishedFaceCount=2;publishedFaces=25,30,31|30,31,119`.
+Report authority: `Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md`.
 
-### Immutable CB7 authority
+### TB6 report-only disposition
 
-- compile run/job `33455549602 / 99694672138`; raw result artifact `9781459057`, SHA-256 `e66ff9cbb04a586a8862ceb40ee9e0651741a4588ab8fcd8caf2fc2a8c1fcbba`; raw log `9781459549`, SHA-256 `5fea70b8a6bed7190eadeda827cafcee6e160b76a6508b83b349e3e31149c2b9`;
-- packaged source archive `64e5189f3c9f22d648e496c50b4093e842a0fad25a885dca65778d7a110b629a`;
-- immutable package **75**: run/job `33456115934 / 99696350077`, artifact `9781487311`, Actions SHA-256 `547f2441b026b68d2bef10e7c7694faf994be473a1d2db68a6375d06b1e654b8`, inner tar `8814b700a5c07290ce099ce1f719f01b2fbd5bcfd80f36037fe5bafc600f7896`;
-- package log `9781487686`, SHA-256 `ad8327ca35a27c3ddde0930f36f17e144198550f1f3d9a6e0ba6d5ebfcf19a2a`;
-- selector **373** remains `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; exactly 27 fixtures and six `0755` executables are frozen in package 75; GMP/GMPXX linked; `runtimeExecution=false`, `packageRepair=false`.
+The mandatory zero-credit remainder executed every ordinal 367–373: **1 PASS / 6 RED**.
 
-**Selector-lineage note, durable:** selector **358 is not and never was a byte prefix of 373**; verify it by exact hash/cardinality/set-subset. Byte-prefix continuity resumes at 361.
+- 367, 371, 372: RED upstream on the same mechanical vertex-30 failure; their underlying contracts remain unmeasured.
+- 368: RED, preserving `TraceEventPositionInvalid` at trace 2/event 30 with `NoCarrierMatch / SourceEdgeUnavailable`.
+- 369: RED with `certificate.saturationUsed=true`.
+- 370: RED after the repaired witness clears `NonIntegralCycleLift`; actual code is `CellularityNotEstablished` with
+  no `sourceFace`, not required `EmptyNetworkOnClosedSurface`.
+- 373: PASS synthetically, zero gate credit; mechanical zero-unbound evidence remains owed.
 
-### TB6 obligations
+### Review-critical discriminators
 
-1. Preflight immutable package 75, source, GMP/GMPXX, 27 fixtures, six executable modes, internal manifest, and frozen selectors before runtime.
-2. Run selector 373 from ordinal 1, one exact identity per fresh process; first semantic red fixes the gate verdict and stops further **gate credit**.
-3. At any transit red, preserve typed seed/walk/election reason and every exact `vertexTransitState[*]` row. Equal elected directions at a multi-candidate locus remain Amendment 17's falsifier.
-4. After the gate verdict is fixed, execute **every remaining ordinal through 373** once report-only with zero gate credit.
-5. Consume sphere binding fields and ordinal-370's repaired witness; do not design fixes in TB.
-6. Perform immutable byte/mode postflight. No configure, compile, relink, repair, generated discovery, package/source/test/fixture/selector mutation, or benchmark is authorized.
+TB6 returns from TB5's vertex-11 silent seed-drop to the vertex-30 two-published-face surface, so the seed-drop is
+runtime-cleared as the first failure. However, ordinal 366's production exception contains **none** of CB7's exact
+`vertexTransitState`/representative/incoming/elected-direction rows. Amendment 17's equal-direction falsifier is
+therefore not adjudicable from TB6 runtime output alone. The review must trace whether the data were recorded and
+dropped by projection/serialization or never recorded at this locus.
 
-Stable regression accounting entering TB6 is **44 / 14 / 30**; produced-witness debt **5**; semantic package count **73**. CP4c-3 remains OPEN until semantic runtime settles the gate.
+CB7 also compiled `ResolvedBranchCorrection.MinimalExactVertexTransitWitnessPublishesKnownFanState`, but that
+identity is **not in frozen selector 373**. TB6 correctly did not widen selector authority. `TB6-REV` must classify
+that governance mismatch before any future selector change.
+
+Stable regression accounting remains **44 / 14 / 30**; produced-witness debt **5**; semantic package count **73**.
+CP4c-3 remains OPEN.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Test + Benchmark guidance
+- turn-based-coding-agent independent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Plan.md` — exact executable authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB7_Code_Build_Report.md` — source/package authority and AU0–AU9 implementation record.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendment-17 falsifier, Amendments 18/19 and review rationale.
-4. `DESIGN.md` §7.2 / §7.2.1 — normative Amendments 12–21.
-5. `ROADMAP.md` §3b / §3b-bis / §3c — later scale/conditioning/coverage work and cadence; none expands TB6 scope.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during the review as required.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md` — exact frozen review scope.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md` — authoritative runtime evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB7_Code_Build_Report.md` — exact source/package and AU0–AU9 implementation authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendments 17–19 and the frozen falsifier.
+5. `DESIGN.md` §7.2 / §7.2.1 and `ROADMAP.md` §3 / §3b / §3b-bis / §3c.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
 
-Runtime authority is immutable package **75** only. Do not compile or repair a replacement package inside TB6. A valid semantic red routes to independent `REVIEW + PLAN` after the mandatory full remainder pass and postflight.
+No Directional runtime, compile, link, package, benchmark, product/test/fixture/selector mutation, unchanged TB retry,
+or acceptance attempt is authorized in `TB6-REV`. Freeze exactly one bounded successor after cause/ownership is
+proved; if the mechanical cause is still underdetermined, freeze a diagnostic-only CB.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

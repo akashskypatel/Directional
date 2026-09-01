@@ -1,3 +1,24 @@
+## 2026-09-01 — `M3-CP4c-3-TB6`: valid semantic red returns to vertex 30; full remainder exposes six reds
+
+Artifact-only TB6 is **COMPLETE / VALID SEMANTIC RED** on immutable package **75**, semantic source
+`e926ada023bc51220628be550bbe9a87f98d7067`. Authoritative run/job `33458067065 / 99702200466`; result artifact
+`5748464145` (`f08436984cf61ed60e77012e4b6ad763c56b097df9e67c60d23bb8572611698d`). Immutable pre/postflight passed;
+no configure, compile, relink, package repair, generated discovery, source/product/test/fixture/selector mutation, or
+benchmark occurred. Ordinals **1–365 PASS**; first red **366** returns to `VertexTransitSectorUnresolved` at source
+vertex 30 / face `(24,30,32)` / branch 1 / `FaceInterior`, with two published faces `(25,30,31)` and
+`(30,31,119)`. TB5's vertex-11 silent seed-drop is therefore cleared as the first failure surface, but Amendment
+17 is **not adjudicated**: the production exception contains none of CB7's exact per-state/election rows. CB7's
+minimal exact transit witness was compiled but is not a member of frozen selector 373, so TB6 correctly did not
+execute or widen it.
+
+The mandatory zero-credit 367–373 remainder completed **1 PASS / 6 RED**: 367 and 371/372 are blocked by the same
+mechanical vertex-30 red; sphere 368 remains `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains RED with
+`saturationUsed=true`; repaired 370 now clears `NonIntegralCycleLift` and exposes a genuine product-contract red —
+`CellularityNotEstablished` with no source-face locus instead of `EmptyNetworkOnClosedSurface`; 373 passes only on
+its synthetic witness. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **73**. Exact
+successor is independent `M3-CP4c-3-TB6-REV` under `Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md`; no
+unchanged retry or semantic correction precedes review.
+
 ## 2026-09-01 — `M3-CP4c-3-CB7`: exact/reportable transit build green; package 75 frozen
 
 CB7 is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic/evidence source `e926ada023bc51220628be550bbe9a87f98d7067`. Vertex transit now gives typed seed/walk failure reasons and per-state outcomes before every suppressing path; its election datum remains exact rational throughout atlas branch transport, with no world-space-double round trip reaching `direction_in_vertex_sector`. Amendment 17's incoming-direction election is unchanged but fully measurable again. CB7 also publishes prescribed-sphere trace/edge binding evidence, repairs only ordinal 370's invalid constant-field witness using the accepted torus raw field, adds the minimal exact fan transit witness, and freezes AU8's full remaining-ordinal report-only cadence. Compile `33455549602 / 99694672138` built all eight standard targets with GMP/GMPXX and `runtimeExecution=false`; result/log artifacts `9781459057` (`e66ff9cb…cbba`) / `9781459549` (`5fea70b8…c2b9`). Mode-preserving package **75** from `33456115934 / 99696350077` is artifact `9781487311` (`547f2441…54b8`), inner tar `8814b700…7896`, source archive `64e5189f…629a`, 27 fixtures and six `0755` executables. Selector 373 is unchanged. Stable accounting remains **44 / 14 / 30**, debt **5**; semantic packages advance **72 → 73**. Exact successor: artifact-only `M3-CP4c-3-TB6`.

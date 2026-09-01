@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. `M3-CP4c-3-CB7` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic/evidence source `e926ada023bc51220628be550bbe9a87f98d7067`. CB7 implements Amendments 18/19 for exact/reportable vertex transit, restores Amendment-17 measurement without changing election policy, publishes sphere binding evidence, repairs only ordinal 370's invalid witness, and adds the minimal exact transit witness. Compile `33455549602 / 99694672138` produced raw artifact `9781459057`; immutable mode-preserving package **75** is artifact `9781487311` from `33456115934 / 99696350077`, inner tar `8814b700a5c07290ce099ce1f719f01b2fbd5bcfd80f36037fe5bafc600f7896`, exact source archive `64e5189f3c9f22d648e496c50b4093e842a0fad25a885dca65778d7a110b629a`. No runtime executed. Exact next is artifact-only **`M3-CP4c-3-TB6`** on package 75 under the frozen selector 373, with first-red gate semantics plus AU8's full remaining-ordinal report-only pass. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**.
+**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED**. CP4c-3 remains **OPEN**. `M3-CP4c-3-TB6` is **COMPLETE / VALID SEMANTIC RED** on immutable package **75** / semantic source `e926ada023bc51220628be550bbe9a87f98d7067`. Run/job `33458067065 / 99702200466` passed immutable pre/postflight, re-proved **365/365**, and first-reds ordinal 366 at `VertexTransitSectorUnresolved`, source vertex 30 / face `(24,30,32)` / branch 1 / `FaceInterior`, with two published faces `(25,30,31)` and `(30,31,119)`. The full report-only 367–373 remainder is **1 PASS / 6 RED**, zero gate credit. The vertex-11 silent seed-drop is cleared as the first failure surface, but Amendment 17 remains unadjudicated because the production exception omits CB7's exact state/election rows. Repaired ordinal 370 now reaches A2a′ and is genuinely red with `CellularityNotEstablished` and no source-face locus instead of `EmptyNetworkOnClosedSurface`. Exact next is independent **`M3-CP4c-3-TB6-REV`**. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**.
 
 ## 1. Separate current/future authority
 
@@ -42,6 +42,9 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365 green, first red ordinal 366 at the zero-candidate vertex-11 locus, plus AP6 diagnostic classifications.
 - `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md` — the frozen AT0–AT7 scope that governed the TB5 review.
 - `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — **current review authority: the seed-drop analysis, the exactness finding, the adversarial-review adjudication, Amendments 18-19, and the AU0–AU9 measures that govern `M3-CP4c-3-CB7`.**
+- `Architecture_M3_CP4c3_CB7_Code_Build_Report.md` — compile/package authority for Amendments 18/19, exact transit, diagnostic publication, repaired ordinal-370 witness, and immutable package 75.
+- `Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365 green, first red ordinal 366 at vertex 30 with two published faces, plus the complete 367–373 report-only disposition.
+- `Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md` — frozen AV0–AV7 scope for the mandatory next review.
 - `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` — **production-lens re-evaluation of the adversarial architecture review: Amendments 20-21, the witness-coverage gap, and the `M4-CP-COND` / `M4-CP-SCALE` / `M5-CP-REG` checkpoints.** Not CP4c-3 scope.
 - `M3_CP4c_Consolidated_Record.md` — this durable historical record.
 
@@ -67,7 +70,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB5 keeps 365 PASS and first-reds ordinal 366 on a silent seed-drop at vertex 11. Amendment 17 masked, not cleared; exactness broken by a double round-trip and restored by Amendment 18, reportability by Amendment 19. Next is `CB7` under AU0–AU9.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB6 keeps 365 PASS and first-reds ordinal 366 at vertex 30 with two published faces. The vertex-11 seed-drop is cleared, but Amendment 17 is not adjudicable from the production projection. 367–373 report-only = 1 PASS / 6 RED. Next is independent `TB6-REV`.** |
 
 ### 2.1 CP4c-0
 

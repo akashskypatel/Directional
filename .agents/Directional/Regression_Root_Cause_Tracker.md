@@ -1,3 +1,12 @@
+## M3-CP4c3-TB6-CAND-01 — gating vertex-30 red omits CB7 exact transit/election rows from production evidence — **ACTIVE / DIAGNOSTIC-PROJECTION GAP / GATING / NON-STABLE**
+
+- **Observed in authoritative TB6.** Package 75 / source `e926ada023bc51220628be550bbe9a87f98d7067`; run/job `33458067065 / 99702200466`; immutable pre/postflight PASS; ordinals **1–365 PASS**, ordinal **366 RED**.
+- **Measured locus.** `VertexTransitSectorUnresolved`; source vertex 30; face `(24,30,32)`; branch 1; `FaceInterior`; `publishedFaceCount=2`; faces `(25,30,31)|(30,31,119)`; no barrier absorption/incidence.
+- **Evidence gap.** CB7 compiled typed per-state outcomes and exact representative/incoming/elected-direction diagnostics, but ordinal 366's production exception serializes none of those rows. `publishedFaceCount=2` alone cannot decide Amendment 17's equal-direction falsifier.
+- **Selector-governance companion.** CB7 also compiled `ResolvedBranchCorrection.MinimalExactVertexTransitWitnessPublishesKnownFanState`; frozen selector 373 does not contain it, so TB6 correctly did not execute it. Review must adjudicate its future role before any selector change.
+- **Owner:** `M3-CP4c-3-TB6-REV` under `Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md`, AV1–AV4. If static reconstruction cannot prove the exact election, successor is diagnostic-only.
+- **Stable-count rationale:** accepted ordinals 1–365 remain 365/365 green; CP4c-3 is unaccepted. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**.
+
 ## M3-CP4c3-TB5-CAND-01 — Amendment-17 runtime moves ordinal 366 to a zero-candidate vertex-11 transit with no state diagnostics — **ACTIVE / CAUSE ESTABLISHED: SILENT SEED-DROP / GATING / NON-STABLE**
 
 - **Observed in authoritative TB5.** Immutable package 74 / source `49536cf7b4b261bd52f36a91c861b6459db356a4`; run/job `33448925069 / 99674216849`; immutable pre/postflight PASS. Ordinals **1–365 PASS** and ordinal **366** first-reds exactly once.
@@ -30,6 +39,8 @@
     (remove the float round-trip, Amendment 18). **AU4** forbids redesigning the election in the same turn.
   - **Closure condition:** ordinal 366 green in a run reaching at least 366. **+0 events / +0 recurrences.**
 
+- **`M3-CP4c-3-TB6` disposition — RUNTIME CLEARS THE SILENT SEED-DROP AS FIRST FAILURE.** Package 75 executes the mechanical witness past TB5's regular vertex-11 zero-state stop and returns to source vertex 30 with `publishedFaceCount=2`. This is sufficient to close the **silent-seed-drop first-failure** claim, not CP4c-3: ordinal 366 remains red. The accepted 365-prefix is unchanged; **+0/+0**.
+
 ## M3-CP4c3-TB5-REV-CAND-01 — floating point reaches a topological decision in the transit datum — **ACTIVE / EXACTNESS VIOLATION / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-TB5-REV`** from committed source; no runtime executed.
@@ -59,7 +70,11 @@
 - **Accounting:** static finding on an unaccepted surface; no accepted-green behaviour lost.
   **+0 events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **72**.
 
+- **`M3-CP4c-3-TB6` disposition — EXACT PATH IS THE EXECUTED AUTHORITY; NO FLOAT-ROUND-TRIP FAILURE REAPPEARS.** TB6 consumes CB7/package-75 bytes and advances the mechanical witness beyond the vertex-11 seed/drop locus to vertex 30. The exactness violation identified at TB5-REV is corrected in source authority; the remaining red is owned separately by the transit/election evidence gap. **+0/+0**.
+
 ## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE FAMILY PROVED / AMENDMENT 17 MASKED, NOT CLEARED / GATING / NON-STABLE**
+
+- **`M3-CP4c-3-TB6` status — VERTEX 30 REACHED AGAIN, AMENDMENT 17 STILL NOT ADJUDICATED.** First red 366 returns to vertex 30 / `(24,30,32)` / branch 1 with two published faces `(25,30,31)` and `(30,31,119)`. The authoritative production exception does not serialize CB7's exact per-state/election diagnostics, so equality or inequality of the elected exact directions is unknown. Keep this candidate ACTIVE and route the missing discriminator through `M3-CP4c3-TB6-CAND-01`; do not choose a candidate by order. **+0/+0**.
 
 - **`M3-CP4c-3-TB5-REV` status — MASKED.** TB5's vertex-11 stop occurs **before any election runs**, so none of Amendment 17's substance was exercised and **AS1's falsifier never executed**. The vertex-30 two-candidate reconstruction is therefore neither confirmed nor refuted; it is untested. Reopened for **AU3**, which restores the measurement once AU1 (reportable exits) and AU2 (exact datum) land.
 
@@ -220,6 +235,8 @@
   This is the fourth instance in this checkpoint of compiled-but-never-executed test authority turning out to be
   debt (`LESSONS.md` 56), and the strongest argument for retaining the AP6 report-only pass (**AS8**).
 - **TB5 classification.** AS3 succeeded: ordinal 370 now publishes `fieldAtlasError=NonIntegralCycleLift;topologyRegion=0`. The test supplies a globally constant ambient `UnitX/UnitY` field with zero matching/effort on a curved closed torus; that synthetic field fails A1's cycle-integrality precondition before the intended empty-network A2a′ contract. Classify this record as **invalid diagnostic witness/precondition**; the atlas rejection is legitimate fail-closed behavior. Do not repair the witness in TB5. `M3-CP4c2-TB-X2-R8-CAND-02` therefore remains unmeasured. +0/+0.
+
+- **`M3-CP4c-3-TB6` disposition — INVALID-ATLAS-WITNESS PRECONDITION RESOLVED; PRODUCT CONTRACT NOW MEASURED RED.** CB7's repaired ordinal-370 witness no longer returns `NonIntegralCycleLift`. TB6 reaches `SurfaceCutGraph` and observes error code **4 = `CellularityNotEstablished`** with no `sourceFace`, while the frozen identity requires code **6 = `EmptyNetworkOnClosedSurface`** plus a source-face locus. Close `M3-CP4c3-TB4-DIAG-CAND-01` as a witness-precondition issue; transfer the genuine measured product red to `M3-CP4c2-TB-X2-R8-CAND-02`. **+0/+0**.
 
 ## M3-CP4c3-TB4-ORCH-01 — TB4 runner expected the wrong package-73 digest-sidecar filename — **RESOLVED / PRE-RUNTIME / NON-STABLE**
 
@@ -529,6 +546,8 @@
 
 ## M3-CP4c2-TB-X2-R10-CAND-01 — Amendment 14's ordinary trace-crossed proposal path is structurally unreachable; only saturation promotes such an edge — **ACTIVE / QUALITY / COVERAGE / NON-STABLE**
 
+- **`M3-CP4c-3-TB6` confirmation.** Ordinal 369 again reaches the intended assertion and reports `certificate.saturationUsed=true`. Finding remains ACTIVE/deferred; zero gate credit and **+0/+0**.
+
 - **Observed:** R10 (run/job `33331453506 / 99310594268`, package `9736088354`) published, for the AG5
   trace-crossed witness: `ordinary_proposal_selected_trace_crossed_edge=no`, `saturation_used=yes`,
   `selected_trace_crossed_edge_exists=yes`, `subdivided_crossing_exists=yes`. Ordinals 363/364/365 all PASS.
@@ -666,6 +685,8 @@
 - The corrected caller was schema-valid on `33319885323`; authoritative run `33319911575` is the sole semantic R9 authority. **+0 stable accounting.**
 
 ## M3-CP4c2-TB-X2-R8-CAND-02 — zero-node / zero-arc closed-surface cut-graph behavior is unresolved — **ACTIVE / PRODUCT-QUESTION / GATING AT 370 / NON-STABLE**
+
+- **`M3-CP4c-3-TB6` measurement — ACTIVE / GENUINE PRODUCT RED.** Repaired ordinal 370 now clears the atlas precondition and reaches the intended closed-surface empty-network assertion. Actual `SurfaceCutGraphErrorCode` is `CellularityNotEstablished` (4), expected `EmptyNetworkOnClosedSurface` (6), and `sourceFace` is absent. This is no longer an invalid witness classification. Root cause/owner must be established at TB6-REV before any correction. Report-only evidence has zero gate credit; **+0/+0**.
 
 - **Observed from retained R8 evidence (AH1, no new runtime):** result artifact `9725240893`, ordinal 359 process `R8-CHECKPOINT-41e8933d9b0e719a`, contains **no `ADD_FAILURE` lines** and terminates only at `FieldAlignedCurveNetworkTests.cpp:2381`, `ASSERT_TRUE(baselineCutGraph)`. Therefore the local source-authority, atlas, and network failure branches were not taken; `SurfaceCutGraph::make(...)` itself returned failure. The retained stdout does **not** print the cut-graph error code or `originatingTopologyError`, so neither value is inferred or fabricated here.
 - **Input state:** R8-REV's static derivation remains authoritative: the closed torus atlas was built with no hard-feature edges, `rails_from_atlas(...)` was empty, and the zero-singularity torus therefore supplied a zero-node / zero-arc network to A2a′.

@@ -26,46 +26,50 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB6` (Test + Benchmark, artifact-only)
+## Current focus — `M3-CP4c-3-TB6-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB7` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic/evidence source
-`e926ada023bc51220628be550bbe9a87f98d7067`. Report:
-`Architecture_M3_CP4c3_CB7_Code_Build_Report.md`. Immutable package **75** is artifact `9781487311`
-(`547f2441b026b68d2bef10e7c7694faf994be473a1d2db68a6375d06b1e654b8`), inner tar
-`8814b700a5c07290ce099ce1f719f01b2fbd5bcfd80f36037fe5bafc600f7896`. No Directional runtime executed.
+`M3-CP4c-3-TB6` is **COMPLETE / VALID SEMANTIC RED** on immutable package **75**. Authoritative run/job
+`33458067065 / 99702200466` passed immutable pre/postflight, re-proved ordinals **1–365**, and first-reds ordinal
+**366** at `VertexTransitSectorUnresolved`, source vertex **30**, face `(24,30,32)`, branch 1, `FaceInterior`, with
+`publishedFaceCount=2` and faces `(25,30,31)|(30,31,119)`. Report:
+`Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md`.
 
-### What CB7 completed
-
-- **Amendment 19 reportability:** vertex transit now distinguishes typed seed-unavailable and walk-unexamined failures and records a typed per-state outcome before every suppressing branch.
-- **Amendment 18 exactness:** the transit datum no longer passes through world-space doubles; both sector predicates consume exact rational branch directions transported through atlas branch authority.
-- **Amendment 17 is measurable again, not accepted:** the existing incoming-direction election remains unchanged and publishes exact representative/incoming directions, path, composed quarter-turn, and election booleans.
-- **Sphere binding publication:** claimed trace/edge, carrier availability and pass are now visible; no sphere fix was made.
-- **Ordinal 370 witness repaired:** it now uses the accepted production torus field while preserving empty rails/network intent; the atlas rejection itself is unchanged.
-- **AU8 landed:** a minimal exact transit witness is compiled, and TB6 must run every post-first-red remainder ordinal report-only with zero gate credit.
+The required 367–373 report-only remainder completed **1 PASS / 6 RED** with zero gate credit. Sphere 368 remains
+`NoCarrierMatch / SourceEdgeUnavailable`; 369 still reports `saturationUsed=true`; repaired 370 now clears its prior
+atlas precondition but returns `CellularityNotEstablished` without a source-face locus instead of
+`EmptyNetworkOnClosedSurface`; 371/372 are upstream-blocked; 373 alone passes synthetically.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB6`** artifact-only on immutable package **75** under
-`Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Plan.md`:
+Run independent **`M3-CP4c-3-TB6-REV` REVIEW + PLAN only** under
+`Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md`. No runtime, compile, package, product/test/fixture/selector
+mutation, unchanged TB retry, or semantic correction is authorized.
 
-1. immutable package/source/GMP/fixtures/modes/selector preflight;
-2. frozen selector 373 from ordinal 1, one identity per fresh process, first-red hard stop for gate credit;
-3. preserve complete typed transit diagnostics at the stopping locus;
-4. after the gate verdict is fixed, execute **every remaining ordinal through 373** once report-only with zero gate credit;
-5. immutable byte/mode postflight; no configure/compile/relink/repair/generated discovery/package/source/test/fixture/selector mutation or benchmark.
+The review must:
+
+1. reconstruct CB7's exact vertex-30 transit/election state and adjudicate Amendment 17 without treating two
+   published faces as proof of equal elected directions;
+2. trace why the production failure projection emits none of CB7's exact per-state/election rows;
+3. adjudicate the compiled-but-unselected `ResolvedBranchCorrection.MinimalExactVertexTransitWitnessPublishesKnownFanState`
+   identity, which is not in frozen selector 373;
+4. classify ordinal 370's now-genuine A2a′ product red and preserve sphere/saturation scope boundaries;
+5. freeze exactly one bounded successor CB, diagnostic-only if cause remains underdetermined.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB5-CAND-01` — silent seed-drop implementation corrected by CB7; **runtime acceptance pending TB6**.
-- [ ] `M3-CP4c3-TB5-REV-CAND-01` — float round-trip removed from transit decision path; **runtime acceptance pending TB6**.
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — vertex-30 Amendment-17 election remains **MASKED / UNACCEPTED** until TB6 actually reaches/measures it.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere cause measured; CB7 binding evidence compiled; **fix still unscheduled**.
-- [ ] `M3-CP4c3-TB4-DIAG-CAND-01` — invalid ordinal-370 witness repaired in CB7; **runtime confirmation pending TB6**.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — now measurable through the repaired ordinal-370 witness.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — partial; mechanical zero-unbound still owed.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — `saturationUsed=true` reconfirmed; deferred behind the mechanical gate.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE**; TB6 returns to vertex 30 with two published faces, but Amendment 17's
+  exact-direction falsifier is not exposed by the production exception.
+- [ ] `M3-CP4c3-TB6-CAND-01` — **ACTIVE / diagnostic-projection gap**; compiled exact transit state/election evidence
+  is not serialized at the gating production failure surface.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains localized to `NoCarrierMatch / SourceEdgeUnavailable`; fix unscheduled.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — repaired witness now measures the intended empty-network contract and is RED:
+  `CellularityNotEstablished`, no source-face locus, instead of `EmptyNetworkOnClosedSurface`.
+- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — partial; ordinal 373's synthetic pass does not prove mechanical zero-unbound.
+- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — `saturationUsed=true` reconfirmed at 369; deferred behind the mechanical gate.
 
-**Amendment 15's Euler-cut identity and barrier-exclusion contracts (371/372) remain UNMEASURED, not falsified** pending TB6.
+`M3-CP4c3-TB5-CAND-01`'s silent vertex-11 seed-drop is runtime-cleared as the first failure surface, and
+`M3-CP4c3-TB4-DIAG-CAND-01`'s invalid ordinal-370 atlas precondition is repaired. Amendment 15's 371/372 contracts
+remain **UNMEASURED, not falsified**, because both are blocked by the mechanical vertex-30 red.
 
 ### Scheduled from the adversarial architecture review — `ROADMAP.md` §3b / §3b-bis, **not CP4c-3 work**
 
@@ -91,28 +95,6 @@ singularities** (all are `+1`); boundary-truncated separatrices; inadmissible in
 from symmetric input. Matrix and owners in `ROADMAP.md` §3b-bis.
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **73**.
-
-## Superseded — `M3-CP4c-3-TB2` execution record
-
-`M3-CP4c-3-TB2` is **COMPLETE / RED — VALID SEMANTIC FIRST-RED AT ORDINAL 366** after the user-authorized orchestration/fixture remediation. Fixture-only package **70** (artifact `9744461475`, SHA-256 `4265079b78af1a95300eebdaa5f2b2643030aa1ad2f51b70f904d88b16de7fe5`) preserves semantic source `005512f20ed56edc793f4d6505f3d2b4c2999c71`, the frozen selector **373**, and byte-identical package-69 binaries while adding the immutable sibling `test-data` fixture payload. R4 run `33355714664` passed package/source/GMP/selector/mapping/fixture preflight, then executed ordinals **1–365** as exactly-selected green fresh processes.
-
-Ordinal **366**, `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`, selected exactly once and exited 1 with `InvalidFieldTransportAtlas/field-transport-atlas/MissingSingularityBranchTransport`. This is a valid semantic first-red. Ordinals **367–373** were not executed under first-red semantics. `M3-CP4c3-TB2-ORCH-01` is **RESOLVED / NON-STABLE** by package 70 and the R4 preflight; it adds **+0 stable events / +0 recurrences**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic packages **69**.
-
-### CP4c-3 open items
-
-- [ ] **C2 / mechanical witness** — the cycle-basis half is **fixed and proved**; what remains is the same
-  assumption at the singularity-port consumer. Frame settled by Amendment 16; policy blocked on **AN1**, implemented
-  under **AN5**.
-- [ ] `M3-CP4c3-TB2-CAND-01` — **CAUSE ESTABLISHED**; pre-existing and unmasked, not a regression. Closes on ordinal
-  366 green in a run reaching at least 366.
-- [ ] `M3-CP4c3-TB2-REV-CAND-01` — package-70 binary identity is self-reported and unverified against package 69's
-  per-binary digests; owned by **AN2**.
-- [ ] `M3-CP4c3-TB2-ORCH-01` — **reopened and reclassified** as a build/packaging contract defect: the packaged
-  artifact cannot locate its own fixtures. Owned by **AN3**.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — correction remains compile-green/gating; ordinal 373 is still unexecuted because first-red stopped at 366.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere remains **ACTIVE / ONE LEVEL SHORT**; ordinal 368 remains unexecuted in R4.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — ordinal 369 remains unexecuted; product correction still unaccepted.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — ordinal 370 remains unexecuted; typed-error behavior still unaccepted.
 
 ## Carried forward from M1
 
@@ -149,7 +131,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 CB5 diagnostic instrumentation is compile/package-green on semantic source `2d22ef293363058cfdca96d01158a93d2c0200f8`, immutable package **73**. No semantic runtime has consumed it. Exact next is artifact-only `M3-CP4c-3-TB4` under unchanged selector 373 plus AP6's post-first-red non-gating diagnostic pass.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 TB6 preserves the accepted 365-prefix but remains RED at ordinal 366 on the vertex-30 transit/election surface. Exact next is independent `M3-CP4c-3-TB6-REV`; no retry or correction precedes review.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -159,8 +141,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** Amendments 15 and 16/P2 are both implemented and **proved effective at runtime** — the mechanical witness clears **all of A1** and ordinals 1–365 stay green through both changes. It now first-reds in **A2a** at `VertexTransitSectorUnresolved`. Cause not established; three mechanisms enumerated and discriminated by **AP2**, with **AP4** forbidding design against the leading suspicion.
-- [ ] **Prescribed sphere A2a′ upstream error:** resolved to `RotationSystemInconsistent → TraceEventPositionInvalid`. AM7 instrumentation is compile-green, but ordinal 368 has never been reached — first-red has stopped at 366 in three consecutive TB runs. **AP6** proposes a non-gating diagnostic pass so 367–373 stop being invisible. No sphere product disposition may be inferred.
+- [ ] **CP4c-3 criterion C2:** TB6 preserves the accepted 365-prefix and first-reds ordinal 366 at `VertexTransitSectorUnresolved`, source vertex 30, with two published faces. CB7 cleared TB5's silent seed-drop, but the production exception omits the exact state/election rows required to adjudicate Amendment 17. Owned by `TB6-REV`; no candidate-order shortcut.
+- [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.
 - [ ] `G4-B003`: nonzero periodic Z4 production; M5.
@@ -183,4 +165,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **71** after CB5; package labels 70 and 72 were transport/envelope corrections rather than new semantic sources. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **73** after CB7/package 75. PR #8 remains open, draft, and unmerged.
