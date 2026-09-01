@@ -1,20 +1,20 @@
-name: Agent CB11 Patch Apply Caller
+name: Agent CB11 Compile Caller
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/cb11-apply-20260901.txt
+      - .agents/connector-triggers/cb11-compile-20260901.txt
 
 permissions:
   contents: write
-  id-token: write
+  actions: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: agent-cb11-patch-apply
+  group: agent-cb11-compile
   cancel-in-progress: false
 
 jobs:
@@ -29,20 +29,16 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: cb11-patch-apply
+      label: cb11-compile
       commit_run_file: false
       trim_stale_comments: false
     secrets: inherit
 
-  apply:
+  compile:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1xZ0zTmJEzjSzRB1I9_vGMtLN0Syi3whW
-      patch_sha256: fca796d6d6afcda9f83b602635cd46bd384f661d4a550182a85cd85fd73267c8
-      base_sha: 1ad5d2191c65cd1af7443559a6446236ec499ecd
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB11: add terminal ownership diagnostics"
-      retention_days: 14
+      source_sha: d8eb6332e10804bd847d3b10911efbcb75c39688
+      artifact_prefix: m3-cp4c3-cb11-compile
     secrets: inherit
