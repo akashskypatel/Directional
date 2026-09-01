@@ -25,16 +25,13 @@ jobs:
     uses: ./.github/workflows/agent-compile-reusable.yml
     with:
       source_sha: e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a
-      targets: directional_core directional_pipeline directional_surface_cell_producer_tests
-      artifact_prefix: m3-cp4c3-cb9-compile
+      artifact_prefix: m3-cp4c3-cb9-package76-raw
     secrets: inherit
 
   observe:
-    needs: [validate, compile]
-    if: ${{ always() }}
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: M3-CP4c-3-CB9-compile
+      label: M3-CP4c-3-CB9-package76-compile
       trim_stale_comments: true
     secrets: inherit
