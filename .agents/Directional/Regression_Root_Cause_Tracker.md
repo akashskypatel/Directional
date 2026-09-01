@@ -1,3 +1,29 @@
+## M3-CP4c3-DEFN-R2-CAND-01 — an exact decision with no declared bound on its input size — **ACTIVE / ARCHITECTURAL CLASS / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-DEFN-R2`** from static derivation; no runtime executed.
+- **The instance that opened it.** Electing a developed vertex sector (Amendment 22) is deciding the sign of a
+  signed sum of arccosines. Each face angle at the vertex has `cos θ = D/√P` and `sin θ = √Q/√P` with `D = u·w`,
+  `P = (u·u)(w·w)`, `Q = P − D²` exact rationals, so composing the fan's rotations exactly lands in a tower of
+  degree up to `4^k` in the fan length `k`. **There is no bounded algebraic representation as valence grows**, and
+  nothing in the codebase currently declares that or bounds it.
+- **Why it is a class, not an instance.** Any exact predicate whose cost grows with an input parameter has the same
+  three failure modes, and all three are already recorded defects here: exactify a floating result (the CB6 defect,
+  `M3-CP4c3-TB5-REV-CAND-01`), introduce a tolerance (prohibited by Amendment 17), or let "the filter was
+  inconclusive" stand as an answer — which silently converts the exactly-degenerate case, the one case that most
+  needs deciding, into a failure.
+- **Resolution shape: `DESIGN.md` Amendment 23.** A certified filter that returns the provably-correct answer or
+  defers; an exact fallback that always terminates and is **actually implemented**; and a **published budget** with
+  a typed fail-closed state above it. Here the exact fallback is load-bearing rather than ceremonial: it is the only
+  path that can decide a continuation lying exactly on a radial ray.
+- **Counterweight, recorded so the budget is not read as pessimism:** the worst case is not the measured case. At
+  vertex 30 every sign test collapsed to rational identities (two exact right angles, two exact complementary
+  pairs), so `Θ = 2π` was proved with no factorization and no floating point. An exactly-recognizable rational
+  short-circuit is a legitimate optimization; it is never a semantics, and the general path must stay reachable.
+- **Owner:** **AY3** implements the filter/fallback/budget; **AY8**'s second predicate — *"an exact computation has
+  no declared bound on its input size"* — sweeps for other instances with a site named outside this record.
+- **Stable-count rationale:** static, definition-level, on an unaccepted surface. **+0 events / +0 recurrences**;
+  totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**. Lesson: `LESSONS.md` 76.
+
 ## M3-CP4c3-CB8-REV — vertex-transit stop adjudicated as definition + representation gap — **CURRENT REVIEW AUTHORITY / NON-STABLE**
 
 - **CB8 stop upheld.** Current A1 products carry exact face-local branch directions and exact branch correspondence,
@@ -36,7 +62,25 @@
 - **Accounting:** accepted 365-prefix remains green and CP4c-3 is unaccepted. **+0 stable events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**.
 - **Owner:** `M3-CP4c-3-CB8` under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`; runtime-free.
 
-## M3-CP4c3-TB6-CAND-01 — gating vertex-30 red omits exact transit/election certificate rows from production evidence — **ACTIVE / OWNER PROVED: PRODUCTION PROJECTION DTO / BLOCKED ON DEFN-R2 / GATING / NON-STABLE**
+## M3-CP4c3-TB6-CAND-01 — gating vertex-30 red omits exact transit/election certificate rows from production evidence — **ACTIVE / OWNER PROVED / AUDIT CONTRACT NOW FROZEN / GATING / NON-STABLE**
+
+- **`M3-CP4c-3-DEFN-R2` disposition — contract frozen, correction scheduled.** §AX8 freezes exactly what the
+  projection must publish, and deliberately describes the **corrected** datum rather than today's rows: seed
+  identity and provenance; which kernel route decided it (`Filter` / `ExactFallback` / `RationalShortCircuit`) and
+  the budget in force; the ordered fan with each face's exact `(D, P, Q)`, its truncation reason where open, and
+  the exact cone angle or the certified relations determining it; per developed sector, its identity and exact
+  membership outcome; then `ownerCardinality`, the elected owner, and `onRadialRay` with the ray's identity; and the
+  typed non-owner state with its locus. Publishing richer rows for the invalid per-cell datum would only document
+  the wrong decision better.
+- **Owner:** **AY7**, which must implement the contract **and extend the `RemeshDiagnostics` projection in the same
+  change**. That same-change obligation is the authoring control this candidate exists to teach: `vertexTransitStates`
+  was built correctly three times (AS1, AU1, AU3) and read zero times because no measure was obliged to name the
+  reader. `LESSONS.md` 75.
+- **+0 events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **73**.
+
+### Prior disposition, retained for lineage
+
+## M3-CP4c3-TB6-CAND-01 (TB6-REV entry) — **ACTIVE / OWNER PROVED: PRODUCTION PROJECTION DTO / BLOCKED ON DEFN-R2 / GATING / NON-STABLE**
 
 - **Observed in authoritative TB6.** Package 75 / source `e926ada023bc51220628be550bbe9a87f98d7067`; run/job `33458067065 / 99702200466`; immutable pre/postflight PASS; ordinals **1–365 PASS**, ordinal **366 RED**.
 - **Measured locus.** `VertexTransitSectorUnresolved`; source vertex 30; face `(24,30,32)`; branch 1; `FaceInterior`; `publishedFaceCount=2`; faces `(25,30,31)|(30,31,119)`; no barrier absorption/incidence.
@@ -110,7 +154,32 @@
 
 - **`M3-CP4c-3-TB6` disposition — EXACT PATH IS THE EXECUTED AUTHORITY; NO FLOAT-ROUND-TRIP FAILURE REAPPEARS.** TB6 consumes CB7/package-75 bytes and advances the mechanical witness beyond the vertex-11 seed/drop locus to vertex 30. The exactness violation identified at TB5-REV is corrected in source authority; the remaining red is owned separately by the transit/election evidence gap. **+0/+0**.
 
-## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE CONFIRMED: PER-CELL REPRESENTATIVE ELECTION / DEFINITION + REPRESENTATION AUTHORITY GAP / GATING / NON-STABLE**
+## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / SEMANTICS FROZEN / EXPECTED ANSWER PROVED AT THE LOCUS / GATING / NON-STABLE**
+
+- **`M3-CP4c-3-DEFN-R2` disposition — the definition gap is closed and the locus is decided.** Amendment 22 freezes
+  continuation as the straightest geodesic of the intrinsic vertex star; Amendment 23 freezes the exact-decision
+  budget. The cause CB8-REV confirmed — one representative per candidate cell — is unchanged and is now not merely
+  ill-posed but **provably wrong at this locus**.
+- **Exact proof from the committed fixture**, rational identities only, no factorization and no floating point:
+  rows 43 and 218 are exact right angles (`u·w = 0`); `θ₂₀₉ + θ₂₀₈ = π/2` and `θ₄₁ + θ₄₀ = π/2` exactly
+  (`D₁D₂ ≥ 0` and `(D₁D₂)² = Q₁Q₂`, the rational form of `cos(θ₁+θ₂) = 0`); hence **`Θ(v30) = 2π` exactly**. The
+  same test over the six other pairings is false, so the decomposition is the fixture's structure rather than a
+  coincidence fitted afterwards. Every `Q_i > 0`, so no sector is degenerate, and the star is genuinely folded
+  (hinges `43|218` and `208|41` have non-parallel normals).
+- **The finding.** The developed sectors give `sector(209) ∪ sector(208) = [π, 3π/2)` exactly, and every
+  `FaceInterior` seed in arrival face `(24,30,32)` has `α ∈ (0, π/2)`, so its continuation `β = α + π` lies in
+  exactly that arc. **Owner = row 209 `(30,119,123)` if `α < θ₂₀₉`, else row 208 `(30,31,119)`; `α = θ₂₀₉` is the
+  exact boundary-ray case owned by the unchanged half-open convention. Row 41 `(25,30,31)` is unreachable by any
+  continuation.** TB4-REV proved two elections imply two distinct data were tested; this proves *which* of the two
+  answers is geometrically impossible. The expected result was not overwritten to match the current expectation —
+  it contradicts it.
+- **Owner:** **AY1–AY3**. `direction_in_vertex_sector` is kept unchanged; it was never the defect, and TB4-REV's
+  partition proof is now the reason the developed election is single-valued.
+- **+0 events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **73**.
+
+### Prior disposition, retained for lineage
+
+## M3-CP4c3-TB3-R1-CAND-01 (CB8-REV entry) — **ACTIVE / CAUSE CONFIRMED: PER-CELL REPRESENTATIVE ELECTION / DEFINITION + REPRESENTATION AUTHORITY GAP / GATING / NON-STABLE**
 
 - **`M3-CP4c-3-CB8-REV` disposition — DEFINITION BOUNDARY.** The per-cell-representative mechanism remains proven, but review establishes that current architecture does not yet define one exact straight-through continuation on a general non-flat vertex star. One arrival-anchored ray is frozen as the primitive datum; its exact owner predicate and gap/overlap semantics move to DEFN-R2 AX1–AX6. No CB is authorized and **+0/+0**.
 

@@ -28,18 +28,32 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-01 at `M3-CP4c-3-CB8-REV`. CB8's architectural stop is independently
-**UPHELD**, and the review takes option 2: a deeper definition is required before another implementation turn. The
-primitive Amendment-17 datum is one exact arrival-anchored ray written once by A2a branch continuation. Existing
-A1 transport carries exact branch correspondence, not a certified arbitrary-ray metric transform, and current
-architecture does not define straight continuation through a general non-flat vertex star. The reference semantics
-that must now be frozen are an arrival-anchored intrinsic vertex-star development plus typed no-owner/multi-owner
-outcomes under Amendment 21. Plain GMP rationals are not generally closed under the required hinge development; a
-direct exact predicate or exact algebraic construction (optionally behind a certified filter with exact fallback)
-is required. Production transit-row projection remains a separate downstream evidence defect. Selector **373** is
-unchanged; selector 374 does not exist. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages
-**73**. Exact next is **`M3-CP4c-3-DEFN-R2`**, combined Definition + Review/Plan, under AX0–AX9 in
-`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
+**Currency.** Last updated 2026-09-01 at `M3-CP4c-3-DEFN-R2`, which discharged CB8-REV's **AX1–AX8** and **froze
+the vertex-star continuation semantics** the project had never written down. **Amendment 22:** a curve continues
+through a source vertex along the **straightest geodesic** of the intrinsic vertex star — one exact arrival-anchored
+ray, one isometric development of the fan, continuation at `β = α + Θ/2`, the *unchanged* half-open sector
+convention applied to developed sectors, one typed certificate. Choosing `Θ/2` over `π` is the substance: it makes
+the gap/overlap pathology of a non-flat star **impossible** rather than adjudicated, and coincides with the ordinary
+straight line at every flat vertex. **Amendment 23:** the exact election is the sign of a sum of arccosines, degree
+up to `4^k` in fan length, so the architecture owes a certified filter, an implemented exact fallback, and a
+**published budget** with a typed fail-closed state.
+
+**Vertex 30 is now proved, exactly, and the old election is falsified by geometry rather than by cardinality.**
+Four rational identities over the committed fixture — two exact right angles (`u·w = 0`) and two exact
+complementary pairs (`(D₁D₂)² = Q₁Q₂`) — give `Θ(v30) = 2π` **exactly**, with no factorization and no floating
+point. The developed sectors then place the continuation of any `FaceInterior` seed from arrival face `(24,30,32)`
+in `[π, 3π/2)`, which is exactly `sector(row 209) ∪ sector(row 208)`. So the owner is row 209 `(30,119,123)` or row
+208 `(30,31,119)`, split exactly at `α = θ₂₀₉` — and **row 41 `(25,30,31)`, one of the two faces the current code
+elects, is unreachable by any continuation.** Not "the election is ill-posed": one of its two answers is wrong about
+the surface.
+
+One bounded successor is authorized: **`M3-CP4c-3-CB9`** under **AY0–AY9**. Selector **373** stays byte-frozen;
+selector 374 remains conditional on a witness that actually falsifies the old mechanism. Stable accounting
+**44 / 14 / 30**, debt **5**, semantic M3 packages **73**.
+
+*(Prior turn, retained for lineage: `M3-CP4c-3-CB8-REV` upheld CB8's architectural stop and proved the missing
+authority was definition-level — one arrival seed is required, but the project had neither a frozen continuation
+rule for general non-flat stars nor an exact kernel implementing it. It issued AX0–AX9 and authorized no CB.)*
 
 *(Prior turns, retained for lineage: `TB3-R1-REV` confirmed Amendment 16/P2 effective and ordered the typed
 failure-locus channel that CB5 delivered; `TB4-REV` falsified all three enumerated mechanisms, proved from the
@@ -90,15 +104,15 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — CB8-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate
-remains selector **373** (`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`); selector 374 does **not** exist.
-TB6 remains the latest semantic runtime evidence: 365/365 accepted-prefix green, first red ordinal 366 at regular
-vertex 30, report-only 367–373 at 1 PASS / 6 RED and zero gate credit. CB8-REV proves the next missing authority is
-**definition-level**: one arrival seed is required, but the project has neither a frozen intrinsic vertex-star
-continuation rule for general non-flat stars nor an exact/certified kernel implementing it. No successor CB is
-authorized. Exact next is `M3-CP4c-3-DEFN-R2` AX0–AX9. Stable accounting is **44 / 14 / 30**, produced-witness
-debt **5**, semantic M3 packages **73**. Ordinal 370, sphere, saturation, and mechanical zero-unbound debt remain
-deferred.
+**Current authority — DEFN-R2.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate
+remains selector **373** (`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`); **selector 374 does
+not exist** and is conditional on AY5's falsifying witness. TB6 remains the latest semantic runtime evidence:
+365/365 accepted-prefix green, first red ordinal 366 at regular vertex 30, report-only 367–373 at 1 PASS / 6 RED and
+zero gate credit. CB8-REV proved the missing authority was **definition-level**; `M3-CP4c-3-DEFN-R2` supplied it —
+**Amendments 22 and 23** freeze the continuation semantics and the exact-decision budget, and vertex 30 is now
+proved exactly (§7 item 1). **One bounded successor is authorized: `M3-CP4c-3-CB9` under AY0–AY9.** Stable
+accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **73**. Ordinal 370, sphere,
+saturation, and mechanical zero-unbound debt remain deferred and were untouched by this turn.
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -316,7 +330,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F | clears all A1 and reaches A2a vertex transit | **Current definition owner.** TB6 first-red 366 reaches regular vertex **30**, arrival `(24,30,32)`, branch 1, `FaceInterior`, with candidates `(25,30,31)` and `(30,31,119)`. CB8-REV confirms the old mechanism tests two distinct target-local rays and freezes one arrival-anchored seed as the primitive datum. The exact common-fan owner is intentionally not named until DEFN-R2 defines intrinsic vertex-star continuation and its exact/certified predicate. |
+| **mechanical feature** | fixture, 152 V / 300 F | clears all A1 and reaches A2a vertex transit | **Current definition owner.** TB6 first-red 366 reaches regular vertex **30**, arrival `(24,30,32)`, branch 1, `FaceInterior`, with candidates `(25,30,31)` and `(30,31,119)`. CB8-REV confirms the old mechanism tests two distinct target-local rays and freezes one arrival-anchored seed as the primitive datum. **DEFN-R2 names it.** Under Amendment 22 the star is proved intrinsically flat by rational identities (`Θ = 2π` exactly) and the developed sectors give `sector(209) ∪ sector(208) = [π, 3π/2)`, which contains the continuation of every `FaceInterior` seed from `(24,30,32)`. The owner is row **209** `(30,119,123)` if `α < θ₂₀₉`, else row **208** `(30,31,119)` — and **row 41 `(25,30,31)` is unreachable**, so one of the two faces the current code elects is wrong about the surface. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -411,21 +425,54 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Vertex-star transit geometry / Amendments 17, 18, 21 — ACTIVE, gating, definition-owned.** One exact
-   arrival-anchored ray is now the frozen primitive datum, but "continue that ray through a general non-coplanar
-   vertex" is not yet a normative operation. `M3-CP4c-3-DEFN-R2` must define the intrinsic developed fan, curved
-   gap/overlap semantics, exact/certified predicate/kernel, and A2a single-writer owner certificate. Moving an owner
-   upstream does not remove this derivation obligation.
+1. **Vertex-star transit — ACTIVE and gating, but the semantics are now FROZEN and the answer at the measured
+   locus is known.** `M3-CP4c-3-DEFN-R2` supplied the definition CB8-REV said was missing.
 
-2. **Production transit audit projection — ACTIVE, owner proved / blocked on item 1.**
+   **What is settled. Amendment 22:** continuation through a source vertex is the **straightest geodesic** of the
+   intrinsic star — one exact arrival-anchored ray, one isometric development of the admissible fan, continuation at
+   `β = α + Θ/2`, the *unchanged* half-open sector convention applied to developed sectors, and one typed
+   certificate. `Θ/2` rather than `π` is the load-bearing choice: it makes a non-flat star's gap/overlap
+   **impossible** instead of adjudicated, and coincides with the ordinary straight line wherever `Θ = 2π`.
+   **Amendment 23:** the exact election is the sign of a sum of arccosines — degree up to `4^k` in fan length — so
+   the producer owes a certified filter, an *implemented* exact fallback (it is the only path that decides a
+   continuation lying exactly on a radial ray), and a **published budget** with a typed fail-closed state.
+
+   **Vertex 30 is proved exactly, and the old election is falsified by geometry, not cardinality.** From the
+   committed fixture, by rational identities only — no factorization, no floating point: rows 43 and 218 are exact
+   right angles (`u·w = 0`); `θ₂₀₉ + θ₂₀₈ = π/2` and `θ₄₁ + θ₄₀ = π/2` exactly (`D₁D₂ ≥ 0`,
+   `(D₁D₂)² = Q₁Q₂`); hence **`Θ(v30) = 2π` exactly**, upgrading CB8-REV's explicitly non-authoritative float
+   observation to a proof. The developed sectors then give
+   `sector(209) ∪ sector(208) = [π, 3π/2)`, and any `FaceInterior` seed in arrival face `(24,30,32)` has
+   `α ∈ (0, π/2)`, so its continuation `β = α + π` lies in exactly that arc. **The owner is row 209 `(30,119,123)`
+   if `α < θ₂₀₉`, else row 208 `(30,31,119)`; `α = θ₂₀₉` is the exact boundary-ray case the half-open convention
+   already owns. Row 41 `(25,30,31)` — one of the two faces the current code elects — is unreachable by any
+   continuation.** The star is genuinely folded: hinges `43|218` and `208|41` have non-parallel normals.
+
+   **What remains.** `M3-CP4c-3-CB9` implements it under **AY0–AY9**: the seed (AY1), the development and election
+   with `direction_in_vertex_sector` unchanged (AY2), the filter/fallback/budget (AY3), the typed states (AY4), the
+   falsifying witness (AY5), conditional selector 374 (AY6), and the audit contract *with its projection extended in
+   the same change* (AY7). Still prohibited: candidate ordering, nearest-angle, seams, any tolerance, floating point
+   anywhere in the chain, treating `signedLift` as a ray transform, and deciding from a candidate's own
+   representative.
+
+2. **Production transit audit projection — ACTIVE, owner proved, contract now FROZEN.**
    `FieldAlignedCurveNetworkError::vertexTransitStates` retains typed exact rows; `network_failure_locus` /
-   `SurfaceCellFailureLocusDiagnostics` drops them. DEFN-R2 AX8 first freezes the correct seed/certificate audit
-   contract; a later CB may then carry it through production.
+   `SurfaceCellFailureLocusDiagnostics` drops them. DEFN-R2 §AX8 freezes what must be published — seed and its
+   provenance, which kernel route decided it and under what budget, the ordered fan with each face's exact
+   `(D,P,Q)` and the cone angle, per-sector exact outcomes, owner cardinality and `onRadialRay`, and the typed
+   failure state with its locus. It deliberately describes the **new** datum: publishing richer rows for the invalid
+   per-cell datum would only document the wrong decision better. **AY7** closes it, and closes it *with the
+   projection extended in the same change*.
 
-3. **Minimal transit witness / selector governance — ACTIVE / blocked on item 1.** Selector 373 remains immutable.
-   The current minimal identity does not falsify target-representative rebinding. DEFN-R2 AX7 must derive an exact
-   non-coplanar folded-fan witness whose expected owner/non-owner follows from the new semantics and fails under
-   `incomingDirection = nextPairing->direction`; only then may a later CB append ordinal **374**.
+3. **Minimal transit witness / selector governance — ACTIVE, spec frozen, still conditional.** Selector 373 stays
+   byte-immutable. The current minimal identity is a channel test — it proves exact state is published and nothing
+   about which datum was tested — so it may be strengthened in place or replaced, never admitted as-is. **AY5** must
+   derive the witness: exact rational coordinates, at least one non-coplanar hinge, per-face angles certified by
+   rational identities so the expected owner is derivable by hand, cross representatives chosen so **more than one**
+   candidate would accept its own representative, and a second instance seeded exactly on a radial ray. **Vertex 30
+   cannot be the only witness** — it is intrinsically flat, so it cannot separate `β = α + Θ/2` from `β = α + π`; a
+   `Θ ≠ 2π` witness is required for that. Ordinal **374** is appended only after the witness is shown to fail under
+   the old mechanism and pass under the frozen authority (**AY6**).
 
 4. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB6's repaired witness
    reaches `SurfaceCutGraph::canonical_candidate` and returns `CellularityNotEstablished` instead of required
@@ -452,6 +499,29 @@ for a general non-flat vertex star the design has never stated what "straight th
 intrinsic development has a gap or overlap. Choosing an algebraic type, moving an owner upstream, or adding a
 certificate before that semantic choice would only encode an undefined operation more carefully. **Define the
 reference geometry and all typed non-owner states before choosing its representation.** This is `LESSONS.md` 74a.
+
+**A definition gap can hide behind a *cost* — and the cost is a first-class architectural fact.** Having frozen
+what continuation *means* (Amendment 22), DEFN-R2 found the next layer: electing a developed sector is the sign of a
+signed sum of arccosines, and composing the fan's rotations exactly lands in a tower of degree up to `4^k` in fan
+length. There is no bounded algebraic representation as valence grows. The wrong responses are all tempting and all
+familiar — carry the value through `double` and exactify (the CB6 defect), pick a tolerance, or let "the filter was
+inconclusive" become an answer. The right response is to **publish the budget**: a certified filter that returns the
+correct answer or defers, an exact fallback that is actually implemented (here it is the *only* path that can decide
+a continuation lying exactly on a radial ray, so it is load-bearing rather than ceremonial), and a declared limit
+with a typed fail-closed state above it. An unbounded computation with no declared limit is Amendment 19's
+unreportable exit wearing a performance costume. Worth recording alongside it: the *worst* case need not be the
+*measured* case — at vertex 30 every sign test collapsed to rational identities, and an exactly-recognizable
+rational short-circuit is a legitimate optimization as long as it is an exact identity and the general path stays
+reachable. `DESIGN.md` Amendment 23, `LESSONS.md` 76.
+
+**A measurement is evidence only if some identity or projection carries it.** `vertexTransitStates` was built at the
+failure site by CB6, extended exactly and correctly by CB7, attached to the typed error — and read zero times,
+because it has no projection out of the producer. Three consecutive measures (AS1, AU1, AU3) ordered it; three
+consecutive reviews observed its absence; every turn complied exactly. The two authoring-time controls cost nothing:
+**a measure that orders a measurement must name the identity or projection that will carry it**, and **a diagnostic
+added to a typed error for operational reporting must have its projection extended in the same change**. A
+diagnostic built and destroyed at a stage boundary is unexecuted authority (`LESSONS.md` 56) wearing a diagnostic's
+costume. `LESSONS.md` 75.
 
 **Exact representation can still carry the wrong semantic authority.** TB6-REV adds a sharper instance to the
 single-authority family. CB7 correctly removed the CB6 float round-trip and made every value reaching the sector

@@ -1217,6 +1217,45 @@ building any conclusion on it.**
     construction, the least likely input to exhibit degeneracy, so its silence about degeneracy is guaranteed and
     carries no information. This is the sixth recorded instance of the same scope-narrowing failure — by symbol
     (66), by enum (67), by stage, by mechanism enumeration (70), by operand (72), and now by **witness domain**.
+75. **A measurement is evidence only if some identity or projection carries it — and three correct
+    implementations in a row will not make one appear.** AS1 asked for each candidate's exact direction; CB6 built
+    the rows. AU1/AU3 asked for reportable exits and the restored measurement; CB7 built them *exactly* — both
+    `representativeDirection` and `incomingDirection` as exact barycentrics, a per-state outcome enum, unit tests
+    asserting `is_barycentric()`. Every turn complied. The rows still reached no reader:
+    `FieldAlignedCurveNetworkError::vertexTransitStates` is populated at the failure site and dropped at
+    `RemeshPipeline.cpp::network_failure_locus`, whose `SurfaceCellFailureLocusDiagnostics` DTO has no field for it.
+    AP1 had fixed that boundary for the field *shapes* that existed when CB5 wrote it, and those still project
+    correctly; a new shape was added twice afterwards and the projection was never extended, because no measure said
+    to. Three reviews observed the absence and none diagnosed it, because at each turn the omission was invisible
+    from inside the turn.
+    Two authoring-time controls, both free. **A measure that orders a measurement must name the identity or the
+    projection that will carry it** — otherwise the measure is not dischargeable and the reviewer discovers that
+    only after the run. And **a diagnostic added to a typed error for operational reporting must have its projection
+    extended in the same change**, or be explicitly declared producer-boundary-only. A diagnostic built and then
+    destroyed at a stage boundary is unexecuted authority in the sense of 56, wearing a diagnostic's costume. A
+    related trap the same episode exposed: publishing *richer* rows for a datum that is semantically wrong makes the
+    wrong decision better documented, so freeze the audit contract for the corrected datum before extending any
+    projection. `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` §AX8.
+76. **When an exact decision has no bounded algebraic representation, the budget is part of the architecture — and
+    the measured case is not the worst case.** Electing a developed vertex sector is deciding the sign of a signed
+    sum of arccosines: each face angle has `cos θ = D/√P`, `sin θ = √Q/√P` with `D`, `P`, `Q` exact rationals, so
+    composing the fan's rotations exactly lands in a tower of degree up to `4^k` in fan length `k`. No amount of
+    care makes that bounded. The three tempting escapes are all defects already recorded here: carry the value
+    through `double` and exactify the result (the CB6 defect, 72); introduce a tolerance (prohibited by
+    Amendment 17); or let "the filter was inconclusive" stand as an answer, which silently converts the
+    exactly-degenerate case — the one case that most needs deciding — into a failure.
+    The admissible shape is: a **certified filter** that returns the provably-correct answer or defers, an **exact
+    fallback that is implemented and reachable**, and a **published budget** with a typed fail-closed state above
+    it. Note which of those is load-bearing: here the exact fallback is the *only* path that can decide a
+    continuation lying exactly on a radial ray, so it is not a ceremonial backstop, and a stubbed fallback would be
+    a correctness hole rather than a performance choice. An unbounded computation with no declared limit is
+    Amendment 19's unreportable exit in a performance costume.
+    The counterweight, equally worth carrying: **the worst case need not be the measured one.** At the mechanical
+    witness's vertex 30 every sign test collapsed to rational identities — two exact right angles (`u·w = 0`) and
+    two exact complementary pairs (`D₁D₂ ≥ 0 ∧ (D₁D₂)² = Q₁Q₂`) — giving `Θ = 2π` exactly with no factorization and
+    no floating point, and turning a previously non-authoritative float observation into a proof. An
+    exactly-recognizable rational short-circuit is a legitimate optimization; it is never a semantics, and the
+    general path must stay reachable. `DESIGN.md` Amendment 23.
 
 
 74a. **A representation gap can be proof that the semantic operation was never defined.** CB8 stopped because the

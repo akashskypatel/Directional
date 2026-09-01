@@ -1,3 +1,92 @@
+## 2026-09-01 — `M3-CP4c-3-DEFN-R2`: vertex-star continuation frozen (Amendments 22–23); vertex 30 proved exactly
+
+Definition + Review/Plan only, discharging **AX0–AX9** from `Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
+No Directional runtime, compile, link, package, benchmark, product, test, fixture or selector byte was executed or
+mutated. Selector **373** stays byte-frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
+**selector 374 still does not exist** and is conditional on AY5. Accepted authority remains **365**. Record:
+`Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md`.
+
+**Amendment 22 — a curve continues through a source vertex along the *straightest geodesic* of the intrinsic vertex
+star.** The primitive datum is one exact incoming ray, anchored once at the vertex-arrival event, expressed in the
+arrival face's chart, pointing away from the vertex back along the incoming trace, written by A2a branch
+continuation. The decision: order the admissible incident fan (barrier and source-boundary truncation inherited, not
+redefined); anchor the arrival face with the seed at developed angle `α`; unfold each subsequent face sector
+isometrically about its shared radial edge, so the `k`-th radial ray sits at the cumulative intrinsic angle
+`A_k = Σ_{i<k} θ_i`; continue at `β = α + Θ/2` where `Θ = Σ_i θ_i`; apply the **unchanged** exact half-open sector
+convention to the developed sectors; return one owner certificate or one typed non-owner state.
+
+Choosing `Θ/2` rather than `π` is the substance of the amendment. `β = α + π` can, on a star with `Θ ≠ 2π`, point
+into no sector (a gap) or into two (an overlap) — the two pathologies CB8-REV refused to let a CB guess at.
+`β = α + Θ/2` can do neither, because the developed sectors partition `[0, Θ)`. The two coincide exactly at an
+intrinsically flat vertex, the only case in which "straight" is unambiguous. The amendment therefore adopts a
+semantics in which the ambiguity does not arise, at the price of one visible commitment: continuation at a cone
+point bisects the cone.
+
+Three consequences bind. **A1 is not redefined** — `signedLift` maps a branch label and is never a transport of an
+arbitrary geometric ray. **Every candidate-local value is demoted to audit data** — a candidate's own `direction`,
+its `representativeDirection`, and any label lifted into a target face may be published but may not enter the
+decision. And the residual cases are **named**: a continuation exactly on a radial ray is decided by the existing
+half-open convention and recorded as `onRadialRay`; a continuation leaving an open fan is
+`VertexStarTruncatedBeforeContinuation`, never restored by crossing a barrier; a sector of angle exactly `0` or `π`
+is reported with its locus at A2a and repaired only at the conditioning stage (Amendment 20).
+
+**Amendment 23 — where an exact decision has no bounded algebraic representation, the architecture must state the
+budget, not hide it.** Electing a developed sector is deciding the sign of a signed sum of arccosines: each face
+angle has `cos θ = D/√P`, `sin θ = √Q/√P` with `D`, `P`, `Q` exact rationals, so composing the fan's rotations
+exactly lands in a tower of degree up to `4^k` in fan length. Admissible only with a **certified filter** that
+returns the provably-correct answer or defers, an **exact fallback that always terminates and is actually
+implemented**, and a **declared budget** with a **typed fail-closed state** above it. "The filter was inconclusive"
+is not an answer; an undeclared budget is an undiscovered failure mode. The exact fallback is load-bearing here, not
+ceremonial: it is the only path that can decide the boundary-ray case. Named inadmissible so they are not
+rediscovered: plain `FieldExactRational` hinge rotation, floating transport followed by exactification (the CB6
+defect), and "filter inconclusive ⇒ reject".
+
+**Vertex 30 is proved exactly, and the old election is falsified by geometry rather than by cardinality.** From the
+committed `mechanical_feature.obj`, by rational identities only — no factorization, no floating point: rows 43 and
+218 are exact right angles (`u·w = 0`); `θ₂₀₉ + θ₂₀₈ = π/2` and `θ₄₁ + θ₄₀ = π/2` exactly, by the rational form of
+`cos(θ₁+θ₂) = 0` (`D₁D₂ ≥ 0` and `(D₁D₂)² = Q₁Q₂`). Hence **`Θ(v30) = 2π` exactly**, upgrading CB8-REV's explicitly
+non-authoritative float observation to a proof; the same test over the six other pairings returns false, so the
+decomposition is the fixture's structure and not a coincidence fitted afterwards. Every `θ_i` has `Q_i > 0`, so no
+sector is degenerate, and the star is genuinely folded — hinges `43|218` and `208|41` have non-parallel normals.
+
+The developed chart then gives `sector(209) ∪ sector(208) = [π, 3π/2)` exactly, and every `FaceInterior` seed in
+arrival face `(24,30,32)` has `α ∈ (0, π/2)`, so its continuation `β = α + π` lies in exactly that arc. **The owner
+is row 209 `(30,119,123)` if `α < θ₂₀₉`, else row 208 `(30,31,119)`; `α = θ₂₀₉` is the exact boundary-ray case. Row
+41 `(25,30,31)` — one of the two faces the current code elects — is unreachable by any continuation.** TB4-REV
+proved two elections imply two distinct data were tested; this proves *which* of the two answers is geometrically
+impossible. The corrected producer therefore has a known expected answer at the measured locus for the first time in
+the checkpoint, and that answer contradicts the current expectation rather than confirming it.
+
+**Ownership (AX5).** A0 owns exact source geometry; A1 owns branch identity and edge transport and is not
+redefined; A2a branch continuation writes the one seed; an A2a-local vertex-star transit authority consumes A0
+geometry, immutable A1 fan topology and that seed and writes one certificate.
+`resolve_field_vertex_transit` is the only consumer; candidate enumeration becomes the set being tested and writes
+nothing. `direction_in_vertex_sector` is **kept unchanged** — the predicate was never the defect, and TB4-REV's
+partition proof is now the reason the developed election is single-valued.
+
+**Audit contract (AX8)** frozen for the *corrected* datum — seed and provenance, kernel route and budget, the
+ordered fan with each face's exact `(D, P, Q)` and cone angle, per-sector exact outcomes, owner cardinality and
+`onRadialRay`, and the typed failure state with its locus. Publishing richer rows for the invalid per-cell datum
+would only document the wrong decision better, so the projection repair follows the contract, not the current rows.
+
+**Witness and selector governance (AX7).** Vertex 30 cannot be the only witness: it is intrinsically flat, so it
+cannot separate `β = α + Θ/2` from `β = α + π`. AY5 must derive a non-coplanar folded fan with exact coordinates,
+angles certified by rational identities, cross representatives chosen so more than one candidate would accept its
+own representative, and a boundary-ray instance; plus a `Θ ≠ 2π` witness to discriminate the semantics. Ordinal 374
+is appended only after the witness fails under the old mechanism and passes under the frozen authority.
+
+**Lessons.** `LESSONS.md` **75** (a measurement is evidence only if some identity or projection carries it — three
+correct implementations in a row will not make one appear) and **76** (when an exact decision has no bounded
+algebraic representation, the budget is part of the architecture, and the measured case is not the worst case).
+
+**Accounting.** **44 events / 14 categories / 30 recurrences**, produced-witness debt **5**, semantic M3 packages
+**73**, **+0 events / +0 recurrences**. New candidate `M3-CP4c3-DEFN-R2-CAND-01` (an exact computation with no
+declared bound on its input size, owned by AY8). Ordinal 370, the prescribed sphere and saturation were untouched by
+this turn, as AX0 requires.
+
+**Exact successor: `M3-CP4c-3-CB9`** — Code + Build, runtime-free, GMP/GMPXX linked, under **AY0–AY9**. CP4c-2
+remains **CLOSED / ACCEPTED at 365/365**; CP4c-3 remains **OPEN**.
+
 ## 2026-09-01 — `M3-CP4c-3-CB8-REV`: architectural stop upheld; vertex-star semantics routed to DEFN-R2
 
 Independent REVIEW + PLAN only; no Directional runtime, build, compile, package, product/test/fixture/selector

@@ -26,56 +26,80 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-DEFN-R2` (Definition + Review/Plan only)
+## Current focus — `M3-CP4c-3-CB9` (Code + Build, runtime-free)
 
-`M3-CP4c-3-CB8-REV` is **COMPLETE / ARCHITECTURAL STOP UPHELD / DEEPER DEFINITION REQUIRED**. The independent
-review answered CB8's authority question but did **not** authorize another CB. Amendment 17's primitive is one exact
-arrival-anchored ray; current A1 products publish exact branch correspondence, not an exact/certified arbitrary-ray
-metric transport, and the design has never defined straight continuation through a general non-flat vertex star.
+`M3-CP4c-3-DEFN-R2` is **COMPLETE**. It discharged CB8-REV's **AX1–AX8**, froze the vertex-star continuation
+semantics the project had never written down, proved the mechanical locus exactly, and authorized **one** bounded
+successor. Record: `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md`. Nothing was executed, compiled, packaged
+or mutated; selector **373** stays byte-frozen and **selector 374 still does not exist**.
 
-### CB8-REV verdict
+### What DEFN-R2 froze
 
-- Freeze one A2a `VertexStarRaySeed` at each exact vertex-arrival event. Candidate-local
-  `FieldBranchBoundaryPairing::direction` values are audit data only, never replacements for that seed.
-- Use an arrival-anchored intrinsic vertex-star development as the **reference semantics** to be defined. Plain
-  `FieldExactRational` is not a general construction type for non-coplanar isometric unfolding; exact algebraic
-  geometry or a direct exact predicate is required, with a certified filter allowed only when it defers to an exact
-  fallback.
-- An upstream continuation-owner representation does not remove this obligation; it merely moves the same exact
-  derivation unless the semantic owner rule is independently defined.
-- The authority belongs to A2a vertex transit as one derived single-writer contract consuming A0 source geometry +
-  immutable A1 branch topology + the one seed. A1 remains branch-correspondence authority.
-- General non-flat stars can produce a developed gap or overlap under a straight-through model. Amendment 21
-  requires those cases to become explicitly defined typed states, not candidate ordering, a tolerance, a hidden seam,
-  or invented topology.
-- Mechanical vertex 30 remains a valid falsifier of the old mechanism: its two candidate faces use geometrically
-  distinct local branch representatives. One common developed seed cannot become two candidates merely because each
-  face's own cross representative is admissible. The exact owner is intentionally **not** named until DEFN-R2
-  freezes the geometry.
-- Production transit-row projection (`M3-CP4c3-TB6-CAND-01`) remains a real downstream defect but must publish the
-  eventual correct seed/certificate rather than richer evidence for the invalid per-cell datum.
-- Selector 373 remains frozen at SHA-256
-  `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; selector 374 still does not exist.
+- **Amendment 22 — continuation is the straightest geodesic of the intrinsic vertex star.** One exact
+  arrival-anchored ray (pointing *back* along the incoming trace), written once by A2a branch continuation; the
+  admissible fan developed isometrically into one chart; continuation at `β = α + Θ/2` where `Θ` is the cone angle;
+  the **unchanged** exact half-open sector convention applied to developed sectors; one typed certificate.
+  Choosing `Θ/2` over `π` is the substance — it makes a non-flat star's gap/overlap **impossible** rather than
+  adjudicated, and coincides with the ordinary straight line wherever `Θ = 2π`. A1 is not redefined: `signedLift`
+  maps a branch label and is never a ray transform. Every candidate-local direction is demoted to audit data.
+- **Amendment 23 — publish the budget.** The exact election is the sign of a sum of arccosines, degree up to `4^k`
+  in fan length. Admissible only with a certified filter, an *implemented* exact fallback (the only path that can
+  decide a continuation lying exactly on a radial ray), and a **declared budget** with a typed fail-closed state.
+- **Typed states:** boundary-ray (decided by the existing convention, recorded as `onRadialRay`),
+  `VertexStarTruncatedBeforeContinuation` (open fan — reported, never restored by crossing a barrier), and
+  `VertexStarDegenerateSector` (reported at A2a with its locus; repaired only at the conditioning stage).
+
+### The mechanical proof — vertex 30, exact
+
+By rational identities over the committed fixture, with no factorization and no floating point: rows 43 and 218 are
+exact right angles (`u·w = 0`), and `θ₂₀₉ + θ₂₀₈ = π/2`, `θ₄₁ + θ₄₀ = π/2` exactly
+(`D₁D₂ ≥ 0 ∧ (D₁D₂)² = Q₁Q₂`). Hence **`Θ(v30) = 2π` exactly** — CB8-REV's explicitly non-authoritative float
+observation is now a proof. The developed sectors give `sector(209) ∪ sector(208) = [π, 3π/2)`, which contains the
+continuation of every `FaceInterior` seed from arrival face `(24,30,32)`. **Owner = row 209 `(30,119,123)` if
+`α < θ₂₀₉`, else row 208 `(30,31,119)`; `α = θ₂₀₉` is the exact boundary-ray case. Row 41 `(25,30,31)` is
+unreachable by any continuation** — so one of the two faces the current code elects is wrong about the surface, a
+strictly stronger result than the cardinality argument the checkpoint has run on since TB4.
 
 ### Exact next turn
 
-Execute **`M3-CP4c-3-DEFN-R2` — Definition + Review/Plan only** under measures **AX0–AX9** in
-`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`. DEFN-R2 must freeze the vertex-star transit geometry,
-curved/degenerate-star semantics, exact/certified kernel, A2a owning contract, mechanical proof, selector-374
-falsifier contract, and production audit contract before it may issue any later Code + Build measures. No runtime,
-compile, package, product, test, fixture, or selector mutation is allowed in DEFN-R2.
+Run **`M3-CP4c-3-CB9`** — Code + Build, **runtime-free**, GMP/GMPXX linked — under **AY0–AY9**:
+
+1. **AY1** the seed, written once per arrival event, sign and chart as frozen.
+2. **AY2** the development and election, with `direction_in_vertex_sector` **unchanged** and applied to developed
+   sectors; remove `incomingDirection = nextPairing->direction` and every per-candidate representative from the
+   decision path, retaining them as audit rows.
+3. **AY3** the certified filter, the *implemented* exact fallback, and the published budget (≥ 16).
+4. **AY4** the typed states, each recorded **before** any conditional that can skip a state (Amendment 19).
+5. **AY5** derive and commit the falsifying folded-fan witness; prove in the report that it fails under the old
+   mechanism and passes under the frozen authority. Vertex 30 alone cannot discriminate the semantics — it is
+   intrinsically flat — so a `Θ ≠ 2π` witness is required too.
+6. **AY6** append ordinal **374** *only* if AY5 falsifies; otherwise report and stop. Selector 373 keeps every byte.
+7. **AY7** implement §AX8's audit contract **and extend the `RemeshDiagnostics` projection in the same change** —
+   this is the closure of `M3-CP4c3-TB6-CAND-01`.
+8. **AY8** audit by assumption: *"a value reaching a topological decision was re-expressed by its consumer"* and
+   *"an exact computation has no declared bound on its input size."*
+
+**AY9 prohibits:** any floating-point step in the decision chain including `from_double_exact` of a transported
+value; treating `signedLift` as a ray transform; deciding from a candidate's own representative; candidate
+ordering, nearest-angle, seams or **any** tolerance; changing the half-open convention, the `FaceInterior` rule or
+barrier/boundary truncation; inventing a port or face; repairing degenerate input geometry at A2a; publishing an
+owner without its certificate; stubbing the exact fallback or shipping an unpublished budget; touching ordinal 370,
+the sphere or saturation; reopening Amendments 12–23; changing any selector byte beyond the one authorized append;
+and executing runtime, running a gate or benchmarking in a CB turn. **If the exact fallback cannot be implemented
+within the frozen semantics, CB9 stops and reports** — a second architectural stop is a valid outcome, a tolerance
+is not.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / definition + representation authority gap**: the per-cell
-  representative cause is proven, but the exact semantics of general non-coplanar vertex-star continuation are not
-  yet defined. Owned by DEFN-R2 AX1–AX6.
-- [ ] `M3-CP4c3-TB6-CAND-01` — **ACTIVE / owner proved / blocked on semantic datum**: production projection/DTO
-  drops exact transit rows. DEFN-R2 AX8 freezes the correct audit contract; a later CB may then repair the projection.
-- [ ] selector governance — keep selector 373 immutable; selector 374 is authorized only after AX7 derives a
-  non-coplanar exact witness that actually fails under `incomingDirection = nextPairing->direction`.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — genuine independent empty-network product red; deferred.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere `NoCarrierMatch / SourceEdgeUnavailable`; deferred.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / SEMANTICS FROZEN**; the expected answer at the measured locus is now
+  known exactly. Owned by AY1–AY3.
+- [ ] `M3-CP4c3-TB6-CAND-01` — **ACTIVE / CONTRACT FROZEN**; §AX8 fixes what the projection must publish, AY7
+  closes it at the projection boundary.
+- [ ] selector governance — selector 373 immutable; ordinal 374 conditional on AY5's falsification.
+- [ ] `M3-CP4c3-DEFN-R2-CAND-01` — **NEW**; an exact computation with no declared bound on its input size.
+  Amendment 23 requires a published budget and a typed state; AY8's second predicate sweeps for other instances.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — empty-network product red; deferred, untouched by this turn.
+- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere `NoCarrierMatch / SourceEdgeUnavailable`; deferred, AL4 binding.
 - [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — `saturationUsed=true`; deferred quality/coverage debt.
 - [ ] `M3-CP4c3-DEFN-R1-CAND-01` — partial; mechanical zero-unbound proof still owed.
 

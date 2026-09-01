@@ -92,59 +92,113 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-DEFN-R2` (Definition + Review/Plan only)
+## Mandatory next turn — `M3-CP4c-3-CB9` (Code + Build, runtime-free)
 
-`M3-CP4c-3-CB8-REV` is **COMPLETE / ARCHITECTURAL STOP UPHELD / DEEPER DEFINITION REQUIRED**. Record:
-`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`.
+`M3-CP4c-3-DEFN-R2` is **COMPLETE**. It discharged CB8-REV's **AX1–AX8**, froze the vertex-star continuation
+semantics, proved the mechanical locus exactly, and authorized exactly one bounded successor. Record and measure
+authority: `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` (**AY0–AY9**). Nothing was executed, compiled,
+packaged or mutated. Selector **373** stays byte-frozen at
+`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; **selector 374 still does not exist.**
 
-The review freezes Amendment 17's primitive as **one exact arrival-anchored ray written once by A2a branch
-continuation**. It also proves that another Code + Build turn is not yet safe. Current A1 authority publishes exact
-face-local branch representatives and quarter-turn/`signedLift` branch correspondence; it does not publish an
-exact/certified arbitrary-ray metric transport. More importantly, `DESIGN.md` does not yet define how a straight
-continuation through a general **non-flat** vertex star behaves when an arrival-anchored intrinsic development has a
-gap or overlap. Amendment 21 forbids resolving those cases by arbitrary seam/order/tolerance or invented topology.
+### What is now frozen
 
-The next definition must therefore freeze the vertex-star reference geometry and typed non-owner states **before**
-choosing the numeric kernel. Plain `FieldExactRational` is not generally closed under non-coplanar hinge
-development; a direct exact predicate or exact algebraic construction is required, with floating/interval evaluation
-allowed only as a certified filter that defers to an exact fallback. Publishing a continuation owner upstream does
-not avoid this derivation.
+**Amendment 22 — continuation is the straightest geodesic of the intrinsic vertex star.** One exact
+arrival-anchored ray (pointing *back* along the incoming trace, in the arrival face's chart), written once by A2a
+branch continuation; the admissible fan (barrier and source-boundary truncation inherited) developed isometrically
+into one chart, so the `k`-th radial ray sits at `A_k = Σ_{i<k} θ_i`; continuation at `β = α + Θ/2` with
+`Θ = Σ_i θ_i`; the **unchanged** exact half-open convention applied to the developed sectors `[A_k, A_{k+1})`; one
+typed certificate. `Θ/2` rather than `π` is the load-bearing choice — it makes a non-flat star's gap/overlap
+**impossible** instead of adjudicated, and coincides with the ordinary straight line wherever `Θ = 2π`. A1 is not
+redefined: `signedLift` maps a branch label and is never a ray transform. Every candidate-local direction is
+demoted to audit data.
 
-Stage ownership is also frozen at the semantic level: A0 keeps source geometry/topology; A1 stays branch-topology
-authority; A2a writes one arrival seed and one derived vertex-star owner/non-owner certificate. Candidate-local
-`nextPairing->direction` values are audit data only. Production transit-row projection remains a separate downstream
-defect until the correct seed/certificate audit contract exists.
+**Amendment 23 — publish the budget.** The exact election is the sign of a signed sum of arccosines
+(`cos θ = D/√P`, `sin θ = √Q/√P`, `D`/`P`/`Q` exact rationals), degree up to `4^k` in fan length. Admissible only
+with a **certified filter** (correct answer or defer, never an approximation), an **exact fallback that always
+terminates and is actually implemented**, and a **declared budget** with a typed fail-closed state. The fallback is
+load-bearing: it is the only path that can decide a continuation lying exactly on a radial ray.
 
-Mechanical vertex 30 remains the gating falsifier of the old mechanism, but its exact owner is intentionally not
-guessed before the star-development semantics exist. Selector **373** remains 373 lines with SHA-256
-`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; selector 374 does **not** exist.
+**Typed states:** boundary-ray (decided by the existing convention, recorded as `onRadialRay`),
+`VertexStarTruncatedBeforeContinuation` (open fan — reported, never restored by crossing a barrier), and
+`VertexStarDegenerateSector` (an angle exactly `0` or `π` — reported at A2a with its locus, repaired only at the
+conditioning stage, Amendment 20).
 
-Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**. Ordinal 370, sphere,
-saturation, accepted selector 365, and mechanical zero-unbound debt remain unchanged/deferred.
+### The mechanical proof — vertex 30, exact
 
-Exact next: **`M3-CP4c-3-DEFN-R2`**, combined Definition + Review/Plan under measures **AX0–AX9** in
-`Architecture_M3_CP4c3_CB8_Independent_Review_Record.md`. DEFN-R2 is runtime/build-free. It must freeze the
-arrival-seed contract, intrinsic vertex-star geometry, gap/overlap/degeneracy semantics, exact/certified predicate,
-A2a owner API, mechanical proof, exact selector-374 falsifier contract, and production audit schema. Only if those
-are complete may DEFN-R2 issue a later bounded Code + Build plan.
+Rational identities over the committed `mechanical_feature.obj`; no factorization, no floating point. Rows 43 and
+218 are exact right angles (`u·w = 0`); `θ₂₀₉ + θ₂₀₈ = π/2` and `θ₄₁ + θ₄₀ = π/2` exactly (`D₁D₂ ≥ 0` and
+`(D₁D₂)² = Q₁Q₂`). Hence **`Θ(v30) = 2π` exactly** — CB8-REV's explicitly non-authoritative float observation is now
+a proof, and the same test over the six other pairings is false, so it is the fixture's structure and not a fitted
+coincidence. The developed sectors give `sector(209) ∪ sector(208) = [π, 3π/2)`, which contains the continuation of
+every `FaceInterior` seed from arrival face `(24,30,32)` (`α ∈ (0, π/2)`).
+
+> **Owner = row 209 `(30,119,123)` if `α < θ₂₀₉`, else row 208 `(30,31,119)`; `α = θ₂₀₉` is the exact boundary-ray
+> case. Row 41 `(25,30,31)` — one of the two faces the current code elects — is unreachable by any continuation.**
+
+The star is genuinely folded: hinges `43|218` and `208|41` have non-parallel normals.
+
+### What CB9 must do — AY0–AY9
+
+1. **AY0** selector 373 recomputed and byte-frozen at authoring and preflight; accepted 365 untouched;
+   `selected_gate=NONE`; `gate_execution_authorized=false`; no runtime, no gate, no benchmark.
+2. **AY1** implement the seed, one per arrival event, sign and chart exactly as frozen.
+3. **AY2** implement the development and election with `direction_in_vertex_sector` **unchanged**, applied to
+   developed sectors. Remove `incomingDirection = nextPairing->direction` and every per-candidate representative
+   from the decision path; keep them as audit rows only.
+4. **AY3** implement the certified filter, the exact fallback and the published budget (**≥ 16**), in that
+   dependency order. The fallback must be reachable, not stubbed.
+5. **AY4** implement the typed states, each recorded **before** any conditional that can skip a state
+   (Amendment 19).
+6. **AY5** derive and commit the falsifying folded-fan witness — exact coordinates, at least one non-coplanar
+   hinge, angles certified by rational identities, cross representatives chosen so **more than one** candidate would
+   accept its own representative, and a boundary-ray instance. **Vertex 30 cannot be the only witness**: it is
+   intrinsically flat and cannot separate `β = α + Θ/2` from `β = α + π`, so a `Θ ≠ 2π` witness is required too.
+   Prove in the report that the witness fails under the old mechanism and passes under the frozen authority.
+7. **AY6** append ordinal **374** only if AY5 falsifies; otherwise report and stop. Selector 373 keeps every byte.
+8. **AY7** implement the §AX8 audit contract **and extend the `RemeshDiagnostics` projection in the same change** —
+   the closure of `M3-CP4c3-TB6-CAND-01`.
+9. **AY8** audit by assumption: *"a value reaching a topological decision was re-expressed by its consumer"* and
+   *"an exact computation has no declared bound on its input size"*, each with a site named outside the record's own
+   list.
+
+**AY9 prohibits:** any floating-point step in the decision chain, including `from_double_exact` of a transported
+value (Amendment 18); treating `signedLift` as a ray transform; deciding from a candidate's own representative;
+candidate ordering, nearest-angle, seams, or **any** tolerance; changing the half-open convention, the
+`FaceInterior` rule, or barrier/boundary truncation; inventing a port or face (Amendment 21); repairing degenerate
+input geometry at A2a (Amendment 20); publishing an owner without its certificate; stubbing the exact fallback or
+shipping an unpublished budget; touching ordinal 370, the prescribed sphere or saturation; reopening
+Amendments 12–23; changing any selector byte beyond the one authorized append; treating report-only results as gate
+credit; and executing Directional runtime, running a gate, or benchmarking in a CB turn.
+
+**Stop rule.** If the exact fallback cannot be implemented within the frozen semantics, CB9 stops and reports, as
+CB8 correctly did. A second architectural stop is a valid outcome; a tolerance is not.
+
+### Deferred and untouched by this turn
+
+Ordinal 370's empty-network product red, the prescribed sphere's `NoCarrierMatch / SourceEdgeUnavailable`,
+saturation coverage, and the mechanical zero-unbound proof all remain open and were untouched, as AX0 requires.
+Stable accounting **44 / 14 / 30**; produced-witness debt **5**; semantic package count **73**. CP4c-3 remains
+OPEN; CP4c-2 remains CLOSED / ACCEPTED at 365/365.
 
 ## Context Load Plan
 
 `load_next`:
-- combined Definition + Review/Plan guidance
+- turn-based-coding-agent Code + Build guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — current substantive authority.
-1. `.agents/Directional/Architecture_M3_CP4c3_CB8_Independent_Review_Record.md` — AX0–AX9 and exact definition boundary.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB8_Code_Build_Report.md` — AW1 source/representation stop.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB6_Independent_Review_Record.md` — Amendment-17 cause and mechanical reconstruction.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendment 18 and rejected float path.
-5. `.agents/Directional/DESIGN.md` Amendments 17, 18 and 21 plus current `FieldTransportAtlas` / `SurfaceCellTracing` contracts.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `ROADMAP.md`, and `M3_CP4c_Consolidated_Record.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — **the frozen AY0–AY9 scope, Amendments 22–23, the vertex-30 proof, and the AX8 audit contract.**
+2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 17, 18, 19, 20, 21, 22, 23.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB8_Independent_Review_Record.md` — the AX plan this record discharges, and the ownership split it froze.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB8_Code_Build_Report.md` — the exact source baseline and the stop CB9 is resuming from.
+5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — byte-frozen; recompute, do not edit.
+6. `benchmarks/fixtures/milestone-g/mechanical_feature.obj` — the fixture the vertex-30 proof is derived from.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `GMP_COMPILE_POLICY.md`.
 
-No Directional runtime, compile, package mutation, product/test/fixture/selector edit, or benchmark is authorized in
-DEFN-R2. DEFN is itself the review-and-plan turn under the standing user-authorized cadence.
+CB9 is **runtime-free**: no Directional runtime, no gate execution, no benchmarking, no acceptance attempt. Every
+compile links **GMP/GMPXX** (`GMP_COMPILE_POLICY.md`). The successor after CB9 is an artifact-only TB on the new
+immutable package against selector 373, or 374 if AY6 legitimately created it.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

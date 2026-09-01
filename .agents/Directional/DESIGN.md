@@ -462,7 +462,9 @@ was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transp
 decided, Amendments 18-19 at `M3-CP4c-3-TB5-REV` govern the provenance of values reaching a topological
 decision and the reportability of every producer exit, and Amendments 20-21, added when the adversarial
 architecture review was re-evaluated under a production lens, introduce input conditioning as a stage and typed
-regularizable degeneracy. They are normative and
+regularizable degeneracy; and Amendments 22-23 at `M3-CP4c-3-DEFN-R2` define how a curve continues through a source
+vertex and what an architecture owes when an exact decision has no bounded algebraic representation. They are
+normative and
 are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
 withdrawn except where an amendment says so explicitly.
 
@@ -596,6 +598,56 @@ withdrawn except where an amendment says so explicitly.
   ports"); it may only resolve a choice among admissible alternatives, or fail closed with a typed deficit naming
   what geometry could not supply. Source:
   `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` §§3.2, 3.4, 5.
+
+- **Amendment 22 — a curve continues through a source vertex along the *straightest geodesic* of the intrinsic
+  vertex star, decided in one arrival-anchored development, and the outcome is one typed certificate.** The
+  primitive datum is **one exact incoming ray**, anchored once at the vertex-arrival event, expressed in the
+  arrival face's chart, pointing away from the vertex back along the incoming trace, and written by A2a branch
+  continuation. The decision is: order the admissible incident fan (barrier and source-boundary truncation
+  inherited, not redefined); anchor the arrival face with the seed at developed angle `α`; unfold each subsequent
+  face sector isometrically about its shared radial edge into one developed chart, so the `k`-th radial ray sits at
+  the cumulative intrinsic angle `A_k = Σ_{i<k} θ_i`; continue at `β = α + Θ/2` where `Θ = Σ_i θ_i` is the cone
+  angle; apply the **unchanged** exact half-open sector convention to the developed sectors `[A_k, A_{k+1})`; and
+  return exactly one owner certificate or one typed non-owner state.
+
+  **Straightest geodesic, not the developed straight line, and that choice is the substance of the amendment.**
+  `β = α + π` can, on a star with `Θ ≠ 2π`, point into no sector (a gap) or into two (an overlap). `β = α + Θ/2`
+  can do neither: for any `Θ > 0` it lands in exactly one half-open sector because the sectors partition `[0, Θ)`.
+  The two coincide exactly at an intrinsically flat vertex, which is the only case where "straight" is unambiguous.
+  The amendment therefore does not adjudicate the non-flat ambiguity by policy — it adopts a semantics in which the
+  ambiguity does not arise, at the price of one visible commitment: continuation at a cone point bisects the cone.
+
+  Three consequences are binding. **A1 is not redefined:** `signedLift` maps a branch label and is never a transport
+  of an arbitrary geometric ray; the development consumes A0 geometry and A1 fan topology only, and may not consult
+  any per-face cross representative. **Every candidate-local value is demoted to audit data** — a candidate's own
+  `direction`, its `representativeDirection`, and any label obtained by lifting into a target face may be published
+  but may not enter the decision; deciding from them is the Amendment 17 defect in its concrete form. And the
+  residual cases are **named, not resolved silently**: a continuation exactly on a radial ray is decided by the
+  existing half-open convention and recorded as such; a continuation leaving an open (barrier- or
+  boundary-truncated) fan is a typed fail-closed state, never restored by crossing the barrier (Amendment 16); and a
+  sector of angle exactly `0` or `π` is reported with its locus at A2a and repaired only at the conditioning stage
+  (Amendment 20), never in place. Candidate ordering, nearest-angle selection, a seam, a tolerance, and inventing a
+  port or face all remain prohibited (Amendments 17, 21). Source:
+  `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` §§AX1-AX3, AX5.
+
+- **Amendment 23 — where an exact decision has no bounded algebraic representation, the architecture must state the
+  budget, not hide it.** Electing a developed sector is deciding the sign of a signed sum of arccosines of algebraic
+  numbers: each face angle has `cos θ = D/√P` and `sin θ = √Q/√P` with `D`, `P`, `Q` exact rationals, so composing
+  the fan's rotations exactly lands in a tower of degree up to `4^k` in the fan length `k`. That cost is real and
+  may not be papered over. A topological decision whose exact evaluation grows with an input parameter is
+  admissible only if the producer (a) publishes a **certified filter** that returns the provably-correct answer or
+  defers — never an approximation; (b) names an **exact fallback that always terminates and is actually
+  implemented**, because it is the only path that can decide the exactly-degenerate case; and (c) declares an
+  **explicit budget** on the parameter with a **typed fail-closed state** for inputs that exceed it. "The filter was
+  inconclusive" is not an answer, and an undeclared budget is not a budget — it is an undiscovered failure mode.
+  This is the exactness counterpart of Amendment 19: an unbounded computation with no declared limit is an
+  unreportable exit wearing a performance costume. Three routes are named inadmissible so they are not rediscovered
+  as ideas: plain `FieldExactRational` hinge rotation, whose field is not closed under the construction; floating
+  transport followed by exactification, which is Amendment 18 and the CB6 defect verbatim; and "filter
+  inconclusive ⇒ reject", which silently converts the boundary case into a failure. An exactly-recognizable rational
+  short-circuit is permitted as an optimization — a right angle is `u·w = 0`, two angles are complementary iff
+  `D₁D₂ ≥ 0 ∧ (D₁D₂)² = Q₁Q₂` — provided it is an exact identity and the general path stays reachable. Source:
+  `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` §AX4.
 
 ### 7.3 Single-writer authority
  

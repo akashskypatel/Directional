@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-01 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB6` remains the latest semantic RED on immutable package **75**: 365/365 accepted prefix green, first red ordinal 366 at vertex 30, remainder 1 PASS / 6 RED. `M3-CP4c-3-CB8` triggered its frozen AW1 architectural stop before semantic editing: current products publish exact branch correspondence and exact face-local representatives, but no exact/certified arbitrary-ray projection through a general non-coplanar fan. The unchanged source is eight-target GMP compile-green with `runtimeExecution=false`. **NEXT:** independent `M3-CP4c-3-CB8-REV`.)
+**Status date:** 2026-09-01 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB6` remains the latest semantic RED on immutable package **75**: 365/365 accepted prefix green, first red ordinal 366 at vertex 30, remainder 1 PASS / 6 RED. CB8's architectural stop was upheld at CB8-REV and the missing authority proved definition-level; **`M3-CP4c-3-DEFN-R2` has now supplied it** — **Amendment 22** freezes continuation through a source vertex as the straightest geodesic of the intrinsic vertex star, **Amendment 23** freezes the exact-decision budget, and vertex 30 is proved exactly: `Θ = 2π` by rational identities, owner is row 209 or row 208, and row 41 is **unreachable**. Selector **373** stays byte-frozen; selector 374 is conditional. **NEXT:** `M3-CP4c-3-CB9` under AY0–AY9.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open, TB6 first-reds ordinal 366; CB8 hit the exact-transit-authority stop, so independent CB8 review is next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open, TB6 first-reds ordinal 366; CB8's stop was upheld and DEFN-R2 froze the vertex-star continuation semantics (Amendments 22–23) and proved the mechanical locus exactly, authorizing `CB9` |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** TB6 on package **75**: 365 PASS, ordinal 366 RED at vertex 30 with two published faces; 367–373 report-only = 1 PASS / 6 RED. Exact Amendment-17 election evidence is absent from the production projection. **NEXT:** independent `M3-CP4c-3-TB6-REV` |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** TB6 on package **75**: 365 PASS, ordinal 366 RED at vertex 30 with two published faces; 367–373 report-only = 1 PASS / 6 RED. DEFN-R2 froze the continuation semantics (Amendments 22–23) and proved the owner at that locus is row 209 or row 208, never row 41. Selector 374 is conditional on a falsifying witness. **NEXT:** `M3-CP4c-3-CB9` under AY0–AY9 |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval
