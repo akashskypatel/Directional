@@ -1,4 +1,4 @@
-purpose=M3-CP4c-3-CB10 package 77 caller schema validation
+purpose=M3-CP4c-3-CB10 AZ6 correction Drive caller schema validation
 workflow_candidate=.agents/Directional/turn-payloads/M3_CP4c3_CB10_workflow_candidate.yml
 source_sha=37e18cc5832d5f648b8bb042c535ee6dd05214b5
-compile_artifact_id=9818460564
+candidate_sha=f3897b1c1b484aacd2f9a5c5e0578747107c7e19
