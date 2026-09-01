@@ -30,9 +30,9 @@ jobs:
   apply:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1KHedDZfCPb6707qNuiP8d_Cj4fcqIbKw
-      patch_sha256: fd745e4484bb3b4bbd46ec30f1a8bd47e31a7dd507c05645eff4f209444986a6
-      base_sha: c120e0a87e18f46a2415bda64f29fce59cd9eb9a
+      file_id: 1uNeKv4slrMr0ZmY6XeZphBG3PoYvBbhL
+      patch_sha256: 6a2a38e67a9992613ed0618bbf2b655beed13d076103c6baf511edee5ae1e76e
+      base_sha: e96be81a39a16c0093a5d64ccf2d64b334c479f4
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB10: fix radial witness compile reference"
+      commit_message: "docs: close out M3-CP4c-3-CB10 and freeze TB8"
     secrets: inherit
