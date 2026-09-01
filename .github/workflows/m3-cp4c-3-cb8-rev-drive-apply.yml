@@ -8,6 +8,7 @@ on:
       - .agents/connector-triggers/m3-cp4c-3-cb8-rev-drive-apply-20260901.txt
 
 permissions:
+  actions: write
   contents: write
   id-token: write
   issues: write
@@ -30,7 +31,7 @@ jobs:
     with:
       pr_number: 8
       label: m3-cp4c-3-cb8-rev-drive-apply
-      trim_stale_comments: true
+      commit_run_file: false
     secrets: inherit
 
   apply:
@@ -42,5 +43,5 @@ jobs:
       patch_sha256: 205bd9d53e6a959bc4308c090feb79c52281e51c38f391929c5c8e8d7078f02f
       base_sha: 882dccf2d3984b06c18bcb22de143bfaff3ceb55
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close independent M3-CP4c-3-CB8-REV
+      commit_message: "docs: close independent M3-CP4c-3-CB8-REV"
     secrets: inherit
