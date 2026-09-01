@@ -1,6 +1,0 @@
-turn=M3-CP4c-3-TB6
-package=75
-artifact_id=9781487311
-semantic_source=e926ada023bc51220628be550bbe9a87f98d7067
-selector_sha256=b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834
-retry=0
