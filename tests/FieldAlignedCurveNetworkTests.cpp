@@ -231,10 +231,14 @@ CrossFieldResult make_folded_cone_vertex_field(const TriMesh &mesh,
   return field;
 }
 
-CrossFieldResult make_folded_cone_radial_arrival_field(const TriMesh &mesh) {
-  CrossFieldResult field = make_folded_cone_vertex_field(mesh, false);
-  field.primaryDirections.row(0) = Eigen::RowVector3d(1.0, 0.0, 0.0);
-  field.secondaryDirections.row(0) = Eigen::RowVector3d(0.0, 1.0, 0.0);
+CrossFieldResult make_planar_radial_arrival_field(const TriMesh &mesh) {
+  CrossFieldResult field = make_zero_transport_field(mesh);
+  for (int face = 0; face < mesh.F.rows(); ++face) {
+    field.primaryDirections.row(face) =
+        Eigen::RowVector3d(1.0, -1.0, 0.0);
+    field.secondaryDirections.row(face) =
+        Eigen::RowVector3d(1.0, 1.0, 0.0);
+  }
   return field;
 }
 
@@ -8988,60 +8992,76 @@ TEST(ResolvedBranchCorrection,
 }
 
 TEST(ResolvedBranchCorrection,
-     FoldedConeFaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries) {
-  const TriMesh mesh = make_three_right_angle_cone_fan();
+     FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries) {
+  const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
   const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_folded_cone_radial_arrival_field(mesh));
+      mesh, *sourceAuthority, {}, make_planar_radial_arrival_field(mesh));
   ASSERT_TRUE(atlasBuild);
   const auto &topology = atlasBuild.value().branch_topology();
 
-  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 2, 4U);
-  const SourceFaceId arrivalRow = SourceFaceId::from_index(0, 3U).value();
-  const SourceVertexId center = SourceVertexId::from_index(0, 4U).value();
+  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 4, 5U);
+  const SourceFaceId arrivalRow = SourceFaceId::from_index(0, 4U).value();
+  const SourceVertexId center = SourceVertexId::from_index(4, 5U).value();
   const auto *arrivalFrame = topology.find_frame(arrivalFace);
   ASSERT_NE(nullptr, arrivalFrame);
 
   struct RadialCase {
-    directional::authority::FieldBranch branch;
-    SourceVertexId radialRay;
+    SourceVertexId arrivalRadial;
     SourceFaceTopologyKey expectedOwner;
     bool cb9HalfOpenAdmits;
-    bool cb9DevelopedFaceInteriorGuardRejects;
   };
   const std::array<RadialCase, 2> cases{
-      RadialCase{directional::authority::FieldBranch::from_integer(2),
-                 SourceVertexId::from_index(1, 4U).value(),
-                 topology_face(0, 2, 3, 4U), true, true},
-      RadialCase{directional::authority::FieldBranch::from_integer(3),
-                 SourceVertexId::from_index(2, 4U).value(),
-                 topology_face(0, 3, 1, 4U), false, false}};
+      RadialCase{SourceVertexId::from_index(0, 5U).value(),
+                 topology_face(2, 3, 4, 5U), true},
+      RadialCase{SourceVertexId::from_index(1, 5U).value(),
+                 topology_face(3, 0, 4, 5U), false}};
+
+  const auto &vertices = arrivalFace.vertices();
+  const auto centerIt = std::find(vertices.begin(), vertices.end(), center);
+  ASSERT_NE(vertices.end(), centerIt);
+  const std::size_t centerIndex =
+      static_cast<std::size_t>(std::distance(vertices.begin(), centerIt));
+  const auto zero = exact_integer(0);
 
   for (const RadialCase &radialCase : cases) {
+    const auto radialIt =
+        std::find(vertices.begin(), vertices.end(), radialCase.arrivalRadial);
+    ASSERT_NE(vertices.end(), radialIt);
+    const std::size_t radialIndex =
+        static_cast<std::size_t>(std::distance(vertices.begin(), radialIt));
+    const std::size_t otherIndex =
+        3U - centerIndex - radialIndex;
+
     const auto pairing = std::find_if(
         arrivalFrame->branches.begin(), arrivalFrame->branches.end(),
-        [&](const auto &candidate) { return candidate.branch == radialCase.branch; });
+        [&](const auto &candidate) {
+          auto arrivalRay = candidate.direction;
+          for (auto &coordinate : arrivalRay.barycentric) coordinate = -coordinate;
+          return arrivalRay[radialIndex] > zero &&
+                 arrivalRay[centerIndex] < zero &&
+                 arrivalRay[otherIndex] == zero;
+        });
     ASSERT_NE(arrivalFrame->branches.end(), pairing);
+
     auto arrivalRay = pairing->direction;
     for (auto &coordinate : arrivalRay.barycentric) coordinate = -coordinate;
-
     const bool cb9HalfOpenAdmits =
         directional::authority::direction_in_vertex_sector(
             mesh, arrivalRow, center, arrivalRay);
     EXPECT_EQ(radialCase.cb9HalfOpenAdmits, cb9HalfOpenAdmits);
     EXPECT_TRUE(directional::authority::direction_in_closed_vertex_wedge(
         mesh, arrivalRow, center, arrivalRay));
-    // CB9 rejected the previous-radial case at its half-open seed guard and
-    // the next-radial case at the later FaceInterior alpha==0 guard.  Thus
-    // each exact radial orientation is a direct falsifier of one old guard.
-    EXPECT_TRUE(!cb9HalfOpenAdmits ||
-                radialCase.cb9DevelopedFaceInteriorGuardRejects);
 
+    // CB9 rejected the previous-radial case at its half-open seed guard and
+    // the next-radial case at the later FaceInterior alpha==0 guard.  The
+    // planar star keeps K=0, matching=0, effort=0 and no singularity, so the
+    // witness is atlas-admissible before it reaches either corrected guard.
     const auto result = directional::geometry::surface_cell_tracing_detail::
         resolve_field_vertex_transit(
             mesh, topology, arrivalFrame->sourceComponent,
-            arrivalFrame->topologyRegion, arrivalFace, radialCase.branch,
+            arrivalFrame->topologyRegion, arrivalFace, pairing->branch,
             center, directional::geometry::FieldVertexArrivalMode::FaceInterior);
     ASSERT_TRUE(std::holds_alternative<
                 directional::geometry::surface_cell_tracing_detail::
@@ -9058,7 +9078,7 @@ TEST(ResolvedBranchCorrection,
               audit.seed->arrivalMode);
     EXPECT_TRUE(audit.seed->onRadialRay);
     ASSERT_TRUE(audit.seed->radialRay.has_value());
-    EXPECT_EQ(radialCase.radialRay, *audit.seed->radialRay);
+    EXPECT_EQ(radialCase.arrivalRadial, *audit.seed->radialRay);
     EXPECT_EQ(directional::geometry::VertexStarTransitState::Owner,
               audit.state);
     EXPECT_EQ(1U, audit.ownerCardinality);
