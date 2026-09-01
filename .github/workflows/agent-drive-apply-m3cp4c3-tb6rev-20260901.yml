@@ -40,6 +40,6 @@ jobs:
       patch_sha256: f39d83d9e25212b9ee9850186cf5c94f4a5e5ac9de5f2153e8c3954b6c70c0b7
       base_sha: d4fcfe734cce99427e13a00d1278f2c3e7763430
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: independent TB6 review and freeze CP4c3 CB8
+      commit_message: "docs: independent TB6 review and freeze CP4c3 CB8"
       retention_days: 14
     secrets: inherit
