@@ -1,0 +1,2 @@
+# M3-CP4c-3-TB8 closeout Drive caller schema validation
+candidate=.agents/Directional/turn-payloads/M3_CP4c3_TB8_closeout_drive_candidate.yml
