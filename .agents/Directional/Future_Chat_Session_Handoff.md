@@ -96,6 +96,8 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 `M3-CP4c-3-TB5-REV` is **COMPLETE**: it accepted TB5, established the vertex-11 failure as a **silent seed-drop**, found that CB6 broke exactness by carrying the continuation datum through **world-space doubles**, ruled Amendment 17 **masked not cleared**, declared **Amendments 18 and 19** (`DESIGN.md` §7.2.1), adjudicated a user-supplied adversarial architecture review in full, and issued **AU0–AU9**. Record: `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md`. Roadmap effects: `ROADMAP.md` §3b (scale/coverage) and §3c (cadence).
 
+**Extended 2026-09-01 — `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md`.** That review's rejection of five architecture proposals was re-evaluated under a production lens and largely **reversed**: the fixtures were measured as near-uniform, sliver-free, low-valence meshes (area ratio ≤ 3.17, max aspect ≤ 2.67, max valence 6, ≤ 152 V, all singularities `+1`, genus ≤ 1) and are structurally incapable of exhibiting the targeted cases. **Amendments 20 (input conditioning is a stage) and 21 (typed regularizable degeneracy)** are declared; `ROADMAP.md` §3b-bis opens the witness-coverage gap and adds checkpoints `M4-CP-COND`, `M4-CP-SCALE`, `M5-CP-REG`. **None of that is CP4c-3 work and AU0–AU9 are unchanged.**
+
 ### Immutable TB5 authority
 
 - semantic source `49536cf7b4b261bd52f36a91c861b6459db356a4`; immutable package **74** artifact `9778267541`, ZIP SHA-256 `bad0ade74ff8e47c9937013c0fcc3f1084272c66eda35a2db60800ff7b6b767d`, inner tar `c8d5167652ea95504252f5adb4d1dc5d9f463a4dfacfb7e5e11bd086fe935d8e`;
@@ -138,7 +140,9 @@ Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
 1. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — **AU0–AU9**, the seed-drop
-   analysis, the exactness finding, and the adversarial-review adjudication.
+   analysis, the exactness finding, and the adversarial-review adjudication (its §9.3 is superseded in part).
+1b. `.agents/Directional/Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` — the production-lens
+   re-evaluation, **Amendments 20-21**, and the witness-coverage gap. Read before proposing any M4+ scope.
 2. `DESIGN.md` §7.2 / §7.2.1 — Amendments 12–19, normative.
 3. `ROADMAP.md` §3b / §3c — scheduled scale/coverage items and the cadence changes.
 4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md` — runtime authority.

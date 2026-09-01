@@ -1,3 +1,76 @@
+## 2026-09-01 — Adversarial architecture review re-evaluated under a production lens: five rejections reversed
+
+Review and planning only; **no product, test, fixture, selector or build-logic byte changed**, and **CP4c-3's
+measures AU0–AU9 are unchanged**. Record:
+`Architecture_Adversarial_Review_Reevaluation_Production_Lens.md`. Normative: `DESIGN.md` §7.2.1 **Amendments 20
+and 21**. Roadmap: `ROADMAP.md` **§3b-bis** (witness coverage, three new checkpoints).
+
+**The challenge, and why it lands.** `M3-CP4c-3-TB5-REV` §9 rejected five of the adversarial review's eight items,
+each rejection grounded in measurements of the committed fixtures. Those fixtures were then measured:
+
+| fixture | V / F | area ratio | max aspect | valence |
+|---|---|---|---|---|
+| `mechanical_feature` | 152 / 300 | 2.38 | 2.67 | 4–6 |
+| `sphere_prescribed` | 98 / 192 | 3.17 | 1.72 | 4–6 |
+| `torus` | 72 / 144 | 2.05 | 2.14 | 6 only |
+
+Production inputs routinely carry area ratios of `10⁶`+ and aspect ratios in the hundreds. Add that **no
+negative-index singularity has ever been exercised** (all prescribed are `+1`; the torus has none), genus ≤ 1, no
+boundary-truncated separatrix, and every input field admissible by construction. **The evidence base was
+structurally incapable of producing the cases the proposals target**, so the rejections established only that the
+proposals did not diagnose the *current* failure — never that they were unnecessary as architecture. Two claims
+were conflated; the second does not follow from the first on this evidence.
+
+**Reversals.** *Repair/"delta authority"* — the `RP-01` objection was about mechanism, not need; production will
+present slivers, near-duplicates, T-junctions and tiny components, and `DESIGN.md` §6.7's D0–D4 ladder has never
+had a producer that can put a run on it. *Regularization policy* — the fixtures are irregular, so exact ties are
+measure-zero there, while CAD, grid-aligned and mirror-symmetric production input produces them routinely; the
+project already tie-breaks where ties are real (`field_aligned_compare_arrivals`, mutual termination) but has never
+stated it as architecture. *Input noise* — two cases were invisible on these fixtures: sliver geometry makes an
+exact predicate exactly answer a meaningless question, and there is no contract for input uncertainty at all.
+*Index-versus-geometry* — the supporting argument was "Poincaré–Hopf closes with 8 × (+1)", a fact about **one
+witness** used to dismiss a claim about production; P2 answers the barrier case and says nothing about
+boundary-truncated or merged separatrices, or negative-index singularities. *Holonomy ILP* — the mechanism stays
+out of scope, but the consequence was missed: because the pipeline only **verifies** the input field, it will
+**reject** globally inconsistent fields with no defined contract, no repair path and no conditioning.
+
+**The synthesis: five rejections, one missing stage.** `remesh_from_raw_cross_field` goes straight from
+`(V, F, rawField)` to source authority. There is no producer that certifies input admissibility, no product
+recording what was repaired, and no path onto the disposition ladder. The gap was invisible for four milestones
+because every witness is pre-conditioned by construction.
+
+**Amendment 20 — input admissibility and conditioning is a stage, not an assumption.** A0 gains a predecessor that
+either emits a **conditioned source product** — immutable, digested, with a **certified correspondence** to the raw
+input recording every repair — or fails with a typed inadmissibility reason. All downstream guarantees are stated
+relative to the conditioned product. This is the **only** place value-changing operations are permitted:
+bounded-lattice quantization, sliver repair-or-refusal, near-duplicate merging and field-matching repair, applied
+**once, at the boundary, and recorded**. Mid-pipeline application stays prohibited (Amendment 18).
+
+**Amendment 21 — degeneracy is a typed product state, not only a failure.** `FatalInadmissible` versus
+`RegularizableDegeneracy`; every regularization must be exact, deterministic, **recorded in the certificate**, and
+mapped to a disposition tier. Prohibited: regularizing where a partition or exact predicate already decides (the
+vertex-sector election keeps its Amendment 17 prohibition), and **inventing** topology — a deficit fails closed
+with a typed reason naming what geometry could not supply.
+
+**Held on the merits, not on fixture evidence:** lattice snapping *mid-pipeline* (adopted instead at the
+conditioning boundary, which is a fuller adoption of the review's goal); composed `(output + delta)` working state
+(two authorities for one datum); a tie-break at the vertex-sector election (TB4-REV *proves* the sectors are an
+exact partition, so it is not a tie); predicates that change their answer; phantom ports as invented topology; and
+moving field generation inside this pipeline.
+
+**Roadmap.** `ROADMAP.md` §3b-bis adds the coverage matrix and three checkpoints: **`M4-CP-COND`** (Amendment 20,
+plus witnesses for slivers, high valence, negative-index singularities, boundary-truncated separatrices and an
+inadmissible field), **`M4-CP-SCALE`** (S1–S4), and **`M5-CP-REG`** (Amendment 21 plus the index-deficit contract).
+S6 is promoted to the acceptance evidence for the conditioning contract.
+
+`LESSONS.md` **74**: *"measured on the witnesses" and "true in general" are different claims* — a review that
+rejects a proposal as unnecessary must name the witness that would exhibit the case, and if none can, the
+disposition is **"unmeasured, witness owed"**, never "rejected". Sixth recorded instance of the same
+scope-narrowing failure, now by **witness domain**.
+
+Accounting unchanged: **44 / 14 / 30**, debt **5**, semantic packages **72**, **+0 events / +0 recurrences**. Gate
+**373** stays frozen. Exact next remains **`M3-CP4c-3-CB7`** under AU0–AU9.
+
 ## 2026-08-31 — `M3-CP4c-3-TB5-REV`: a silent seed-drop, exactness broken by a double round-trip, and an adversarial architecture review adjudicated
 
 Independent review, definition and planning under the frozen `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md`

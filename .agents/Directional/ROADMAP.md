@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-08-31 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Selector **373** stays frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, re-verified with its byte-prefix lineage at `M3-CP4c-3-TB5-REV`. **A1 is clear end to end** — Amendments 15 and 16/P2 are proved effective at runtime and ordinals **1–365 stay green** through five invasive changes. Valid TB5 run `33448925069` on package **74** first-reds at ordinal **366** in **A2a** at a **zero-candidate, zero-diagnostic** locus, source vertex 11. `M3-CP4c-3-TB5-REV` established this is a **silent seed-drop** — the walk never started — with four unreportable exits, and that CB6 satisfied Amendment 17 by round-tripping the continuation direction through **world-space doubles**, breaking exactness. Amendment 17 is therefore **masked, not cleared**. **Amendments 18 and 19** declared. The adversarial architecture review of 2026-08-31 is adjudicated in full: four cost/coverage concerns scheduled in §3b, the rest contradicted by measurement and recorded as prohibited. Cadence changes in §3c. Exact next is `M3-CP4c-3-CB7` under measures AU0–AU9.)
+**Status date:** 2026-09-01 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** Selector **373** stays frozen at `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`, re-verified with its byte-prefix lineage at `M3-CP4c-3-TB5-REV`. **A1 is clear end to end** — Amendments 15 and 16/P2 are proved effective at runtime and ordinals **1–365 stay green** through five invasive changes. Valid TB5 run `33448925069` on package **74** first-reds at ordinal **366** in **A2a** at a **zero-candidate, zero-diagnostic** locus, source vertex 11. `M3-CP4c-3-TB5-REV` established this is a **silent seed-drop** — the walk never started — with four unreportable exits, and that CB6 satisfied Amendment 17 by round-tripping the continuation direction through **world-space doubles**, breaking exactness. Amendment 17 is therefore **masked, not cleared**. **Amendments 18 and 19** declared. The adversarial architecture review of 2026-08-31 was adjudicated in §3b and then **re-evaluated under a production lens on 2026-09-01** (§3b-bis): five of its six rejected items are partially or wholly reversed, because every witness the project has run is a near-uniform, sliver-free, low-valence mesh of at most 152 vertices and cannot exhibit the cases those proposals target. **Amendments 20 and 21** introduce input conditioning as a stage and typed regularizable degeneracy; new checkpoints `M4-CP-COND`, `M4-CP-SCALE` and `M5-CP-REG` own them. Cadence changes in §3c. **None of that is CP4c-3 work** — exact next is `M3-CP4c-3-CB7` under measures AU0–AU9, unchanged.)
 
 ---
 
@@ -336,6 +336,53 @@ pulled forward into a bounded corrective turn.
 **Related open audit already tracked:** `TODO.md` carries the `kBranchTopologyTolerance` item —
 `direction_in_incident_vertex_sector`'s callers compare a Gram **determinant** against `1e-10`. S2 and S6 are the
 right frame in which to close it.
+
+---
+
+## 3b-bis. Witness coverage is the binding constraint on production readiness — 2026-09-01
+
+The adversarial architecture review of 2026-08-31 was **re-evaluated under a production lens** in
+`Architecture_Adversarial_Review_Reevaluation_Production_Lens.md`, and five of its six rejected items were
+partially or wholly reversed. The operative finding is not about any one proposal:
+
+**Every witness this project has run is a near-uniform, sliver-free, low-valence mesh of at most 152 vertices.**
+Measured from the committed fixtures:
+
+| fixture | V / F | area ratio | max aspect ratio | valence |
+|---|---|---|---|---|
+| `mechanical_feature` | 152 / 300 | **2.38** | **2.67** | 4–6 |
+| `sphere_prescribed` | 98 / 192 | **3.17** | **1.72** | 4–6 |
+| `torus` | 72 / 144 | **2.05** | **2.14** | **6 only** |
+
+Production inputs routinely carry area ratios of `10⁶`+ and aspect ratios in the hundreds. A rejection of the form
+*"unnecessary, because the measured evidence shows no such case"* is invalid when the evidence base cannot produce
+that case. **The correct disposition for such an item is "unmeasured, witness owed" — never "rejected."**
+
+### Coverage matrix — what has never been exercised
+
+| gap | evidence | owning checkpoint |
+|---|---|---|
+| **sliver / anisotropic geometry** | max aspect 2.67 across all witnesses | **M4-CP-COND** |
+| **high valence** | max valence 6; the torus is uniformly 6 | **M4-CP-COND** |
+| **scale** | ≤ 152 vertices, ≤ 300 faces | **M4-CP-SCALE** (with S1 swell measurement) |
+| **negative-index singularity** | all prescribed singularities are `+1`; the torus has none | **M4-CP-COND** |
+| **boundary-truncated separatrix** | the only bounded witness is the two-ring disc | **M4-CP-COND** |
+| **inadmissible input field** | every field has been admissible or synthetic; the one deliberately synthetic field was itself found inadmissible at ordinal 370 | **M4-CP-COND** |
+| **genus ≥ 2** | handle generators exercised only at genus 1 | **M4** (S5) |
+| **exact ties from symmetric input** | fixtures are irregular, so exact ties are measure-zero; CAD/grid-aligned/mirror-symmetric production input produces them routinely | **M5-CP-REG** |
+
+### New checkpoints
+
+| Checkpoint | Owns | Gate content |
+|---|---|---|
+| **`M4-CP-COND`** | **Amendment 20** — the conditioning stage before A0: admissibility certification, a conditioned immutable source product with a certified correspondence to the raw input, and typed inadmissibility. Sliver repair-or-refusal, near-duplicate merging, bounded-lattice quantization and field-matching repair live here and **only** here | witnesses for slivers, high valence, negative-index singularities, boundary-truncated separatrices, and an inadmissible input field; correspondence-integrity and idempotence identities |
+| **`M4-CP-SCALE`** | production-scale behaviour: S1 expression-swell measurement, S2 certified filters, S3 exact limit-cycle detection, S4 incremental Betti early rejection | measured bit-width envelopes; a typed `LimitCycleTermination`; early-rejection localization |
+| **`M5-CP-REG`** | **Amendment 21** — the degeneracy taxonomy, the regularization policy interface, certificate recording of every regularization, and its mapping onto the D0–D4 disposition ladder; plus the typed index-deficit reconciliation contract | exact-tie witnesses from symmetric input; a run that lands on a degraded tier **and says so** |
+
+**S6 (input-perturbation stability) is promoted** from a stability measurement to the **acceptance evidence for the
+conditioning contract** under `M4-CP-COND`.
+
+**None of this is CP4c-3 work.** CP4c-3 closes on the mechanical witness under **AU0–AU9**, unchanged.
 
 ---
 

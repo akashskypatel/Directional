@@ -459,8 +459,10 @@ Amendments 12–14 refine §7.2 steps 8–10 and were declared in the CP4c-2 fro
 was declared at `M3-CP4c-3-DEFN-R1` and governs how A1 derives a region's transport domain, and Amendment 16 at
 `M3-CP4c-3-TB2-REV` generalizes it to every derivation that walks transport in any stage (scope widened at
 `M3-CP4c-3-TB3-R1-REV`); Amendment 17 at `M3-CP4c-3-TB4-REV` governs how an election among candidate cells is
-decided, and Amendments 18-19 at `M3-CP4c-3-TB5-REV` govern the provenance of values reaching a topological
-decision and the reportability of every producer exit. They are normative and
+decided, Amendments 18-19 at `M3-CP4c-3-TB5-REV` govern the provenance of values reaching a topological
+decision and the reportability of every producer exit, and Amendments 20-21, added when the adversarial
+architecture review was re-evaluated under a production lens, introduce input conditioning as a stage and typed
+regularizable degeneracy. They are normative and
 are recorded here so §7.2 can be read without them being lost. This subsection is additive: nothing above it is
 withdrawn except where an amendment says so explicitly.
 
@@ -571,6 +573,29 @@ withdrawn except where an amendment says so explicitly.
   diagnostic must be recorded **before** any conditional that can skip the state, and an empty diagnostic set must
   itself be a distinguishable, named condition. Source:
   `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` §AT1-AT2, §11.
+
+- **Amendment 20 — input admissibility and conditioning is a stage, not an assumption.** A0 has a predecessor. The
+  conditioning stage consumes the raw input and either emits a **conditioned source product** — immutable, with its
+  own semantic digest and a **certified correspondence** to the raw input recording every repair applied — or fails
+  with a typed inadmissibility reason. All downstream exactness and topology guarantees are stated **relative to
+  the conditioned product**, and the correspondence is what makes that honest rather than a loophole. This is the
+  **only** place where value-changing operations on input geometry or fields are permitted: quantization onto a
+  bounded rational lattice, sliver repair or refusal, near-duplicate merging, and field-matching admissibility
+  repair all belong here — applied **once, at the boundary, and recorded**. Applying any of them mid-pipeline
+  remains prohibited (Amendment 18): a value silently changed between stages corrupts every guarantee already
+  published, whereas a value changed once at the boundary and published is a product like any other. Source:
+  `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` §§3.1, 4, 5.
+- **Amendment 21 — degeneracy is a typed product state, not only a failure.** The error surface bifurcates:
+  `FatalInadmissible` (corrupted or contradictory input no policy can resolve) versus `RegularizableDegeneracy` (a
+  discrete-mesh condition with a defined, deterministic resolution). A regularization must be **exact and
+  deterministic**, must be **recorded in the certificate** with its locus and the resolving policy, and must map
+  the run to a **disposition tier** (§6.7), so a regularized result is never silently indistinguishable from a
+  clean one. Two prohibitions. Regularization may **not** be applied where a partition or an exact predicate
+  already decides — an apparent ambiguity there is evidence of a representation defect, and the vertex-sector
+  election keeps its Amendment 17 prohibition. And a regularization may never **invent** topology ("phantom
+  ports"); it may only resolve a choice among admissible alternatives, or fail closed with a typed deficit naming
+  what geometry could not supply. Source:
+  `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` §§3.2, 3.4, 5.
 
 ### 7.3 Single-writer authority
  

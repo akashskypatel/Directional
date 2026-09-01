@@ -77,14 +77,28 @@ Run **`M3-CP4c-3-CB7`** — Code + Build, runtime-free, GMP/GMPXX linked, under 
 **Amendment 15's Euler-cut identity and barrier-exclusion contracts (371/372) remain UNMEASURED, not falsified** —
 blocked upstream for the third consecutive run.
 
-### Scheduled from the adversarial architecture review — `ROADMAP.md` §3b, not CP4c-3 work
+### Scheduled from the adversarial architecture review — `ROADMAP.md` §3b / §3b-bis, **not CP4c-3 work**
 
-- [ ] **S1** measure exact-parameter bit-width growth per trace step (M4). Lattice snapping prohibited.
-- [ ] **S2** certified adaptive/interval predicate filters (M4/M8). Must defer to exact, never approximate.
-- [ ] **S3** exact limit-cycle detection with a typed `LimitCycleTermination` (M4), supplementing the step budget.
-- [ ] **S4** incremental Betti early rejection (M4-scale/M8). Backtracking into A2a′ prohibited.
-- [ ] **S5** genus ≥ 2 witness — handle generators only ever exercised at genus 1 (M4).
-- [ ] **S6** input-perturbation stability witness (M5), replacing "thickened predicates".
+Re-evaluated under a production lens on 2026-09-01
+(`Architecture_Adversarial_Review_Reevaluation_Production_Lens.md`): five of six rejections reversed after the
+fixtures were measured as near-uniform, sliver-free, low-valence meshes (area ratio ≤ 3.17, max aspect ≤ 2.67, max
+valence 6, ≤ 152 V) that cannot exhibit the targeted cases. **Amendments 20 and 21** declared.
+
+- [ ] **`M4-CP-COND`** — **Amendment 20**: the conditioning stage before A0. Admissibility certification, a
+  conditioned immutable source product with a certified correspondence to the raw input, typed inadmissibility.
+  Sliver repair-or-refusal, near-duplicate merging, bounded-lattice quantization and field-matching repair live
+  here and **only** here.
+- [ ] **`M4-CP-SCALE`** — S1 expression-swell measurement, S2 certified filters, S3 exact limit-cycle detection
+  with a typed `LimitCycleTermination`, S4 incremental Betti early rejection.
+- [ ] **`M5-CP-REG`** — **Amendment 21**: degeneracy taxonomy, regularization policy interface, certificate
+  recording of every regularization and its mapping onto the D0–D4 ladder, plus the typed index-deficit
+  reconciliation contract.
+- [ ] **S5** genus ≥ 2 witness (M4). **S6** input-perturbation stability, promoted to the acceptance evidence for
+  the conditioning contract (M4-CP-COND).
+
+**Witness-coverage gap — never exercised:** slivers / anisotropy; valence > 6; scale beyond 152 V; **negative-index
+singularities** (all are `+1`); boundary-truncated separatrices; inadmissible input fields; genus ≥ 2; exact ties
+from symmetric input. Matrix and owners in `ROADMAP.md` §3b-bis.
 
 Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **72**.
 

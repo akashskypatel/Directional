@@ -33,7 +33,11 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 seed-drop** — the transit walk never started — found that CB6 satisfied Amendment 17 by round-tripping the
 continuation direction through **world-space doubles** and so broke exactness, ruled Amendment 17 **masked rather
 than cleared**, declared **Amendments 18 and 19**, and adjudicated a user-supplied adversarial architecture review
-in full. Measures **AU0–AU9**; exact next is `M3-CP4c-3-CB7`, Code + Build, runtime-free.
+in full. Measures **AU0–AU9**; exact next is `M3-CP4c-3-CB7`, Code + Build, runtime-free. **Extended 2026-09-01:** that
+review's rejection of five architecture proposals was **re-evaluated under a production lens** and largely
+reversed — the fixtures were measured to be near-uniform, sliver-free, low-valence meshes that cannot exhibit the
+cases the proposals target — declaring **Amendments 20 and 21** and opening a witness-coverage gap
+(`ROADMAP.md` §3b-bis). **CP4c-3's work is unchanged.**
 
 *(Prior turns, retained for lineage: `TB3-R1-REV` confirmed Amendment 16/P2 effective and ordered the typed
 failure-locus channel that CB5 delivered; `TB4-REV` falsified all three enumerated mechanisms, proved from the
@@ -658,6 +662,16 @@ by **symbol**, AN1 scoped instrumentation by **enum**, and Amendment 16 was writ
 than the reasoning that produced it, and each invisible because the implementer complied exactly. **Write the
 scope from the argument, and prefer a predicate a reader can apply to code you have not read over an enumeration
 of the code you have.** `LESSONS.md` 68 and 69.
+
+**A witness set built to isolate contracts is guaranteed to be silent about degeneracy, so its silence carries no
+information.** Every witness this project has run is near-uniform and sliver-free: measured area ratios 2.05–3.17,
+maximum aspect ratios 1.72–2.67, valences 4–6, ≤ 152 vertices, all singularities `+1`, genus ≤ 1, every input field
+admissible by construction. Production inputs carry area ratios of `10⁶`+ and aspect ratios in the hundreds. Five
+architecture proposals were rejected as *unnecessary* on the strength of measurements from that base, and five were
+reversed once the base itself was measured. **A rejection of the form "unnecessary, no such case is observed" is
+invalid when the evidence cannot produce the case** — the correct disposition is **"unmeasured, witness owed."**
+Always separate *"wrong as a diagnosis of what we measured"* from *"wrong as an architecture"*; the first almost
+never implies the second. `LESSONS.md` 74.
 
 **Exactness is a property of the derivation chain, not of the final comparison — and a measure that names an
 operator will be satisfied by changing the operand.** Amendment 17 required an election to test one datum; AS9

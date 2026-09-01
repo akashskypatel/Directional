@@ -299,6 +299,15 @@ policy P2**, where a barrier-incident singularity emits **no** ports and its ind
 boundary cycle, with Gauss–Bonnet accounting preserved. That is strictly better than "phantom ports", which would
 inject fictitious topology and violate *derived, not assumed*. **Phantom ports are recorded as prohibited.**
 
+> **SUPERSEDED IN PART, 2026-09-01.** The rejections in §9.3 were grounded in measurements of the committed
+> fixtures, and those fixtures were subsequently measured to be near-uniform, sliver-free, low-valence meshes of at
+> most 152 vertices (area ratio ≤ 3.17, max aspect ratio ≤ 2.67, max valence 6) — structurally incapable of
+> exhibiting most of the cases the proposals target. **Five of the six rejections are partially or wholly
+> reversed** in `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md`, which declares **Amendments 20
+> and 21** and opens the witness-coverage gap in `ROADMAP.md` §3b-bis. Read §9.3 as *"wrong as a diagnosis of the
+> currently measured failure"* — which it remains — and **not** as *"wrong as a general architectural solution"*,
+> which it does not establish. §9.4's central-thesis assessment is likewise narrowed there.
+
 ### 9.3 Contradicted by measurement — recorded as prohibited
 
 **#2 — "delta authority" / `TopologicalCorrectionDelta`. REJECTED.** The premise is wrong twice over. The cited
@@ -340,7 +349,7 @@ consistency — it builds the cycle basis, computes exact lifts, and enforces `i
 *generation*, which is upstream and out of this pipeline's scope. What survives is the genus ≥ 2 coverage gap
 (§9.1).
 
-### 9.4 The review's central thesis, assessed
+### 9.4 The review's central thesis, assessed — *narrowed 2026-09-01, see the re-evaluation record*
 
 The closing claim is that Directional must evolve from "a strict immutable compiler" into "a robust topologically-
 aware solver", chiefly by relaxing exactness and admitting repair. **The measured evidence of this checkpoint

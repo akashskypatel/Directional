@@ -1200,6 +1200,24 @@ building any conclusion on it.**
     did not fail. And **an empty diagnostic set must be its own named condition**, because "we examined nothing" and
     "we examined everything and none qualified" are opposite findings that must never share a code.
 
+74. **"Measured on the witnesses" and "true in general" are different claims — and the witnesses' regularity is
+    itself a measurable property that bounds which one a result can support.** An adversarial architecture review
+    proposed input conditioning, a degeneracy taxonomy, index-deficit reconciliation and uncertainty handling.
+    Five proposals were rejected as unnecessary, each rejection grounded in measurements of the committed fixtures.
+    Then the fixtures were measured: `mechanical_feature` 152V/300F, `sphere_prescribed` 98V/192F, `torus`
+    72V/144F, **area ratios 2.05–3.17, maximum aspect ratios 1.72–2.67, valences 4–6**, all singularities `+1`,
+    genus ≤ 1, every field admissible by construction. Production inputs carry area ratios of `10⁶`+ and aspect
+    ratios in the hundreds. **The evidence base was structurally incapable of producing the cases the proposals
+    targeted**, so the rejections established only that the proposals did not diagnose the *current* failure —
+    never that they were unnecessary. Five were reversed. The rule: **a review that rejects a proposal as
+    unnecessary must name the witness that would exhibit the case, and if no witness can, the correct disposition
+    is "unmeasured, witness owed" — never "rejected."** Two corollaries. Distinguish explicitly between *"wrong as
+    a diagnosis of what we measured"* and *"wrong as an architecture"*; the first almost never implies the second.
+    And treat fixture regularity as a first-class measurement: a witness set built to isolate contracts is, by
+    construction, the least likely input to exhibit degeneracy, so its silence about degeneracy is guaranteed and
+    carries no information. This is the sixth recorded instance of the same scope-narrowing failure — by symbol
+    (66), by enum (67), by stage, by mechanism enumeration (70), by operand (72), and now by **witness domain**.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
