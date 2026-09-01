@@ -1,0 +1,5 @@
+purpose=M3-CP4c-3-CB10 package 78
+source_sha=e2b59295c9920db5685239c2da188858839fa94f
+compile_artifact_id=9819595448
+compile_artifact_sha256=b520ecc8f760b29c909ed1fe122dc15b3a9999752f4b85e263a5eafaa15facee
+runtimeExecution=false
