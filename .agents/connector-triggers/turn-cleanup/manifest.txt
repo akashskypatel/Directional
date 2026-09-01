@@ -1,0 +1,6 @@
+# M3-CP4c-3-CB7 temporary repository control-state cleanup
+.agents/connector-triggers/source-snapshot/m3cp4c3-tb5rev-20260831.txt
+.agents/connector-triggers/drive-apply/m3cp4c3-cb7-20260901.txt
+.agents/connector-triggers/drive-apply/m3cp4c3-cb7-closeout-20260901.txt
+.agents/connector-triggers/compile/m3cp4c3-cb7-20260901.txt
+.agents/connector-triggers/m3-cp4c3-cb7-package75-20260901.txt
