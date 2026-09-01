@@ -1,0 +1,44 @@
+name: Agent CB9 Drive Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb9-drive-apply/**
+
+permissions:
+  contents: write
+  id-token: write
+  actions: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb9-drive-apply-temp.yml
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 12DPdYZPQmMp1MtSlEnoNeI0Biw4ZAjdF
+      patch_sha256: dd9901f34de95be83e0f235d2e2c355c2c06be415ae23ceadec5b3dfe03f1648
+      base_sha: 095461e2a749e39c4b344805748b1e3bd870a063
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-CB9: implement exact vertex-star continuation"
+      retention_days: 7
+    secrets: inherit
+
+  observe:
+    needs: [validate, apply]
+    if: ${{ always() }}
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: M3-CP4c-3-CB9-drive-apply
+      trim_stale_comments: true
+    secrets: inherit
