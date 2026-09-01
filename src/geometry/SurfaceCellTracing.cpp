@@ -361,72 +361,6 @@ std::optional<authority::SourceFaceId> field_face_row(
   return std::nullopt;
 }
 
-std::optional<Eigen::RowVector3d> field_direction_world(
-    const TriMesh &sourceMesh,
-    const authority::SourceFaceTopologyKey &sourceFace,
-    const authority::FieldBranchDirection &direction) {
-  if (!direction.is_barycentric()) return std::nullopt;
-  const auto &vertices = sourceFace.vertices();
-  for (const authority::SourceVertexId vertex : vertices) {
-    if (vertex.index() >= static_cast<std::size_t>(sourceMesh.V.rows())) {
-      return std::nullopt;
-    }
-  }
-  const Eigen::RowVector3d p0 =
-      sourceMesh.V.row(static_cast<int>(vertices[0].index()));
-  const Eigen::RowVector3d p1 =
-      sourceMesh.V.row(static_cast<int>(vertices[1].index()));
-  const Eigen::RowVector3d p2 =
-      sourceMesh.V.row(static_cast<int>(vertices[2].index()));
-  Eigen::RowVector3d result =
-      static_cast<double>(direction[1].to_double()) * (p1 - p0) +
-      static_cast<double>(direction[2].to_double()) * (p2 - p0);
-  if (!result.array().isFinite().all() || result.squaredNorm() == 0.0) {
-    return std::nullopt;
-  }
-  result.normalize();
-  return result;
-}
-
-std::optional<authority::FieldBranchDirection> field_direction_from_world(
-    const TriMesh &sourceMesh, const authority::SourceFaceId sourceFace,
-    const authority::SourceFaceTopologyKey &sourceTopology,
-    const Eigen::RowVector3d &direction) {
-  Eigen::RowVector3d rowDirection;
-  if (!surface_cell_tracing_detail::barycentric_derivative(
-          sourceMesh.V, sourceMesh.F, static_cast<int>(sourceFace.index()),
-          direction, rowDirection)) {
-    return std::nullopt;
-  }
-  const auto exactSecond =
-      authority::FieldExactRational::from_double_exact(rowDirection[1]);
-  const auto exactThird =
-      authority::FieldExactRational::from_double_exact(rowDirection[2]);
-  if (!exactSecond.has_value() || !exactThird.has_value()) {
-    return std::nullopt;
-  }
-  const std::array<authority::FieldExactRational, 3> rowExact{
-      -*exactSecond - *exactThird, *exactSecond, *exactThird};
-  const auto zero = authority::FieldExactRational::from_integer(0);
-  std::array<authority::FieldExactRational, 3> canonical{zero, zero, zero};
-  const auto &canonicalVertices = sourceTopology.vertices();
-  for (int corner = 0; corner < 3; ++corner) {
-    const auto rowVertex = authority::SourceVertexId::from_index(
-        sourceMesh.F(static_cast<int>(sourceFace.index()), corner),
-        static_cast<std::size_t>(sourceMesh.V.rows()));
-    if (!rowVertex.has_value()) return std::nullopt;
-    const auto found = std::find(canonicalVertices.begin(),
-                                 canonicalVertices.end(), rowVertex.value());
-    if (found == canonicalVertices.end()) return std::nullopt;
-    canonical[static_cast<std::size_t>(
-        std::distance(canonicalVertices.begin(), found))] =
-        rowExact[static_cast<std::size_t>(corner)];
-  }
-  authority::FieldBranchDirection result{canonical};
-  return result.is_barycentric()
-             ? std::optional<authority::FieldBranchDirection>{std::move(result)}
-             : std::nullopt;
-}
 
 } // namespace
 
@@ -633,78 +567,177 @@ FieldVertexTransitResult resolve_field_vertex_transit(
   struct TransitState {
     authority::SourceFaceTopologyKey sourceFace;
     authority::FieldBranch branch;
-    Eigen::RowVector3d incomingDirection;
+    authority::FieldBranchDirection incomingDirection;
     std::vector<authority::SourceEdgeTopologyKey> transportPath;
     int composedSignedLift = 0;
   };
   using StateKey =
       std::pair<authority::SourceFaceTopologyKey, authority::FieldBranch>;
 
-  const auto *currentFrame = topology.find_frame(currentFace);
-  const authority::FieldBranchBoundaryPairing *currentPairing = nullptr;
-  if (currentFrame != nullptr &&
-      currentFrame->sourceComponent == sourceComponent &&
-      currentFrame->topologyRegion == topologyRegion) {
+  std::vector<FieldVertexTransitStateDiagnostic> diagnostics;
+  const auto record =
+      [&](const authority::SourceFaceTopologyKey &sourceFace,
+          const authority::FieldBranch branch,
+          const FieldVertexTransitStateOutcome outcome,
+          const std::optional<authority::FieldBranchDirection> &representative,
+          const std::optional<authority::FieldBranchDirection> &incoming,
+          const std::optional<authority::SourceEdgeTopologyKey> &transportEdge,
+          const std::vector<authority::SourceEdgeTopologyKey> &transportPath,
+          const int composedSignedLift, const bool eligible = false,
+          const bool representativeInSector = false,
+          const bool incomingInSector = false) {
+        diagnostics.push_back(FieldVertexTransitStateDiagnostic{
+            sourceFace,
+            branch,
+            representative,
+            incoming,
+            transportEdge,
+            transportPath,
+            ((composedSignedLift % 4) + 4) % 4,
+            outcome,
+            eligible,
+            representativeInSector,
+            incomingInSector});
+      };
+  const auto failure = [&](const FieldAlignedCurveNetworkErrorCode code) {
+    FieldAlignedCurveNetworkError error = continuation_error(
+        code, currentFace, currentBranch, std::nullopt, sourceVertex);
+    error.topologyRegion = topologyRegion;
+    error.vertexArrivalMode = arrivalMode;
+    error.vertexTransitStates = diagnostics;
+    return error;
+  };
+  const auto unique_pairing = [](const authority::FieldFaceBranchFrame &frame,
+                                 const authority::FieldBranch branch,
+                                 bool &ambiguous) {
+    const authority::FieldBranchBoundaryPairing *result = nullptr;
+    ambiguous = false;
     for (const authority::FieldBranchBoundaryPairing &candidate :
-         currentFrame->branches) {
-      if (candidate.branch != currentBranch) continue;
-      if (currentPairing != nullptr) {
-        currentPairing = nullptr;
-        break;
+         frame.branches) {
+      if (candidate.branch != branch) continue;
+      if (result != nullptr) {
+        ambiguous = true;
+        return static_cast<const authority::FieldBranchBoundaryPairing *>(
+            nullptr);
       }
-      currentPairing = &candidate;
+      result = &candidate;
     }
+    return result;
+  };
+
+  const auto *currentFrame = topology.find_frame(currentFace);
+  if (currentFrame == nullptr) {
+    record(currentFace, currentBranch,
+           FieldVertexTransitStateOutcome::SeedFrameUnavailable, std::nullopt,
+           std::nullopt, std::nullopt, {}, 0);
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  if (currentFrame->sourceComponent != sourceComponent ||
+      currentFrame->topologyRegion != topologyRegion) {
+    record(currentFace, currentBranch,
+           FieldVertexTransitStateOutcome::SeedAuthorityMismatch, std::nullopt,
+           std::nullopt, std::nullopt, {}, 0);
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  bool currentPairingAmbiguous = false;
+  const auto *currentPairing =
+      unique_pairing(*currentFrame, currentBranch, currentPairingAmbiguous);
+  if (currentPairing == nullptr) {
+    record(currentFace, currentBranch,
+           currentPairingAmbiguous
+               ? FieldVertexTransitStateOutcome::SeedBranchPairingAmbiguous
+               : FieldVertexTransitStateOutcome::SeedBranchPairingMissing,
+           std::nullopt, std::nullopt, std::nullopt, {}, 0);
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  if (!currentPairing->direction.is_barycentric()) {
+    record(currentFace, currentBranch,
+           FieldVertexTransitStateOutcome::SeedDirectionNotBarycentric,
+           currentPairing->direction, std::nullopt, std::nullopt, {}, 0);
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
 
-  std::vector<TransitState> pending;
-  if (currentPairing != nullptr) {
-    const auto incomingDirection =
-        field_direction_world(sourceMesh, currentFace, currentPairing->direction);
-    if (incomingDirection.has_value()) {
-      pending.push_back(
-          TransitState{currentFace, currentBranch, *incomingDirection, {}, 0});
-    }
-  }
-
+  std::vector<TransitState> pending{{currentFace, currentBranch,
+                                     currentPairing->direction, {}, 0}};
   std::set<StateKey> visited;
   std::vector<FieldVertexTransitDecision> candidates;
-  std::vector<FieldVertexTransitStateDiagnostic> diagnostics;
+  std::size_t evaluatedStates = 0U;
 
   for (std::size_t cursor = 0U; cursor < pending.size(); ++cursor) {
     const TransitState state = pending[cursor];
     const StateKey stateKey{state.sourceFace, state.branch};
-    if (!visited.insert(stateKey).second) continue;
-    const auto *frame = topology.find_frame(state.sourceFace);
-    if (frame == nullptr || frame->sourceComponent != sourceComponent ||
-        frame->topologyRegion != topologyRegion) {
+    if (!visited.insert(stateKey).second) {
+      record(state.sourceFace, state.branch,
+             FieldVertexTransitStateOutcome::DuplicateStateSuppressed,
+             std::nullopt, state.incomingDirection, std::nullopt,
+             state.transportPath, state.composedSignedLift);
       continue;
     }
-    const authority::FieldBranchBoundaryPairing *pairing = nullptr;
-    for (const authority::FieldBranchBoundaryPairing &candidate : frame->branches) {
-      if (candidate.branch != state.branch) continue;
-      if (pairing != nullptr) {
-        pairing = nullptr;
-        break;
-      }
-      pairing = &candidate;
-    }
-    const auto row = field_face_row(sourceMesh, state.sourceFace);
-    if (pairing == nullptr || !row.has_value()) continue;
 
-    const auto incomingDirection = field_direction_from_world(
-        sourceMesh, *row, state.sourceFace, state.incomingDirection);
-    if (!incomingDirection.has_value()) continue;
+    const auto *frame = topology.find_frame(state.sourceFace);
+    if (frame == nullptr) {
+      record(state.sourceFace, state.branch,
+             FieldVertexTransitStateOutcome::StateFrameUnavailable,
+             std::nullopt, state.incomingDirection, std::nullopt,
+             state.transportPath, state.composedSignedLift);
+      continue;
+    }
+    if (frame->sourceComponent != sourceComponent ||
+        frame->topologyRegion != topologyRegion) {
+      record(state.sourceFace, state.branch,
+             FieldVertexTransitStateOutcome::StateAuthorityMismatch,
+             std::nullopt, state.incomingDirection, std::nullopt,
+             state.transportPath, state.composedSignedLift);
+      continue;
+    }
+
+    bool pairingAmbiguous = false;
+    const auto *pairing = unique_pairing(*frame, state.branch, pairingAmbiguous);
+    if (pairing == nullptr) {
+      record(state.sourceFace, state.branch,
+             pairingAmbiguous
+                 ? FieldVertexTransitStateOutcome::StateBranchPairingAmbiguous
+                 : FieldVertexTransitStateOutcome::StateBranchPairingMissing,
+             std::nullopt, state.incomingDirection, std::nullopt,
+             state.transportPath, state.composedSignedLift);
+      continue;
+    }
+    if (!pairing->direction.is_barycentric()) {
+      record(state.sourceFace, state.branch,
+             FieldVertexTransitStateOutcome::StateRepresentativeDirectionNotBarycentric,
+             pairing->direction, state.incomingDirection, std::nullopt,
+             state.transportPath, state.composedSignedLift);
+      continue;
+    }
+    if (!state.incomingDirection.is_barycentric()) {
+      record(state.sourceFace, state.branch,
+             FieldVertexTransitStateOutcome::StateIncomingDirectionNotBarycentric,
+             pairing->direction, state.incomingDirection, std::nullopt,
+             state.transportPath, state.composedSignedLift);
+      continue;
+    }
+
+    const auto row = field_face_row(sourceMesh, state.sourceFace);
+    if (!row.has_value()) {
+      record(state.sourceFace, state.branch,
+             FieldVertexTransitStateOutcome::StateSourceFaceRowUnavailable,
+             pairing->direction, state.incomingDirection, std::nullopt,
+             state.transportPath, state.composedSignedLift);
+      continue;
+    }
+
     const bool eligible = arrivalMode == FieldVertexArrivalMode::EdgeTransit ||
                           state.sourceFace != currentFace;
     const bool representativeInSector = authority::direction_in_vertex_sector(
         sourceMesh, *row, sourceVertex, pairing->direction);
     const bool incomingInSector = authority::direction_in_vertex_sector(
-        sourceMesh, *row, sourceVertex, *incomingDirection);
-    diagnostics.push_back(FieldVertexTransitStateDiagnostic{
-        state.sourceFace, state.branch, pairing->direction, *incomingDirection,
-        state.transportPath,
-        ((state.composedSignedLift % 4) + 4) % 4, eligible,
-        representativeInSector, incomingInSector});
+        sourceMesh, *row, sourceVertex, state.incomingDirection);
+    record(state.sourceFace, state.branch,
+           FieldVertexTransitStateOutcome::Evaluated, pairing->direction,
+           state.incomingDirection, std::nullopt, state.transportPath,
+           state.composedSignedLift, eligible, representativeInSector,
+           incomingInSector);
+    ++evaluatedStates;
 
     if (eligible && incomingInSector) {
       candidates.emplace_back(state.sourceFace, state.branch);
@@ -724,25 +757,75 @@ FieldVertexTransitResult resolve_field_vertex_transit(
       } else {
         continue;
       }
+
       const auto directed = topology.transport(adjacency.sourceEdge,
                                                state.sourceFace, *nextFace);
-      const auto nextRow = field_face_row(sourceMesh, *nextFace);
-      if (!directed.has_value() || !nextRow.has_value()) continue;
-      const Eigen::RowVector3d transportedIncoming =
-          surface_cell_tracing_detail::transport_direction_between_faces(
-              sourceMesh.V, sourceMesh.F, static_cast<int>(row->index()),
-              static_cast<int>(nextRow->index()), state.incomingDirection);
-      if (!transportedIncoming.array().isFinite().all() ||
-          transportedIncoming.squaredNorm() == 0.0) {
+      if (!directed.has_value()) {
+        record(state.sourceFace, state.branch,
+               FieldVertexTransitStateOutcome::DirectedTransportUnavailable,
+               pairing->direction, state.incomingDirection,
+               adjacency.sourceEdge, state.transportPath,
+               state.composedSignedLift);
         continue;
       }
+
       auto transportPath = state.transportPath;
       transportPath.push_back(adjacency.sourceEdge);
-      pending.push_back(TransitState{
-          *nextFace, state.branch.rotated(directed->signedLift),
-          transportedIncoming, std::move(transportPath),
-          state.composedSignedLift + directed->signedLift});
+      const auto nextBranch = state.branch.rotated(directed->signedLift);
+      const int nextSignedLift =
+          state.composedSignedLift + directed->signedLift;
+      const auto *nextFrame = topology.find_frame(*nextFace);
+      if (nextFrame == nullptr) {
+        record(*nextFace, nextBranch,
+               FieldVertexTransitStateOutcome::TransportTargetFrameUnavailable,
+               std::nullopt, std::nullopt, adjacency.sourceEdge, transportPath,
+               nextSignedLift);
+        continue;
+      }
+      if (nextFrame->sourceComponent != sourceComponent ||
+          nextFrame->topologyRegion != topologyRegion) {
+        record(*nextFace, nextBranch,
+               FieldVertexTransitStateOutcome::TransportTargetAuthorityMismatch,
+               std::nullopt, std::nullopt, adjacency.sourceEdge, transportPath,
+               nextSignedLift);
+        continue;
+      }
+
+      bool nextPairingAmbiguous = false;
+      const auto *nextPairing =
+          unique_pairing(*nextFrame, nextBranch, nextPairingAmbiguous);
+      if (nextPairing == nullptr) {
+        record(*nextFace, nextBranch,
+               nextPairingAmbiguous
+                   ? FieldVertexTransitStateOutcome::
+                         TransportTargetBranchPairingAmbiguous
+                   : FieldVertexTransitStateOutcome::
+                         TransportTargetBranchPairingMissing,
+               std::nullopt, std::nullopt, adjacency.sourceEdge, transportPath,
+               nextSignedLift);
+        continue;
+      }
+      if (!nextPairing->direction.is_barycentric()) {
+        record(*nextFace, nextBranch,
+               FieldVertexTransitStateOutcome::
+                   TransportTargetDirectionNotBarycentric,
+               nextPairing->direction, std::nullopt, adjacency.sourceEdge,
+               transportPath, nextSignedLift);
+        continue;
+      }
+
+      // The atlas's signed lift is the exact branch transport authority.  Once
+      // the branch label is transported, the target frame's exact rational
+      // branch direction is the transported continuation datum.  No value used
+      // by the sector predicates passes through floating point.
+      pending.push_back(TransitState{*nextFace, nextBranch,
+                                     nextPairing->direction,
+                                     std::move(transportPath), nextSignedLift});
     }
+  }
+
+  if (evaluatedStates == 0U) {
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitWalkUnexamined);
   }
 
   std::sort(candidates.begin(), candidates.end(),
@@ -753,16 +836,12 @@ FieldVertexTransitResult resolve_field_vertex_transit(
   candidates.erase(std::unique(candidates.begin(), candidates.end()),
                    candidates.end());
   if (candidates.size() != 1U) {
-    FieldAlignedCurveNetworkError error = continuation_error(
-        FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved,
-        currentFace, currentBranch, std::nullopt, sourceVertex);
-    error.topologyRegion = topologyRegion;
-    error.vertexArrivalMode = arrivalMode;
+    FieldAlignedCurveNetworkError error =
+        failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
     error.publishedFaces.reserve(candidates.size());
     for (const FieldVertexTransitDecision &candidate : candidates) {
       error.publishedFaces.push_back(candidate.nextFace);
     }
-    error.vertexTransitStates = std::move(diagnostics);
     return error;
   }
   return candidates.front();
@@ -3980,6 +4059,57 @@ const char *field_aligned_curve_network_error_code_name(
   case FieldAlignedCurveNetworkErrorCode::
       BranchContinuationExactMagnitudeExceeded:
     return "BranchContinuationExactMagnitudeExceeded";
+  case FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable:
+    return "VertexTransitSeedUnavailable";
+  case FieldAlignedCurveNetworkErrorCode::VertexTransitWalkUnexamined:
+    return "VertexTransitWalkUnexamined";
+  }
+  return "Unknown";
+}
+
+const char *field_vertex_transit_state_outcome_name(
+    const FieldVertexTransitStateOutcome outcome) noexcept {
+  switch (outcome) {
+  case FieldVertexTransitStateOutcome::Evaluated:
+    return "Evaluated";
+  case FieldVertexTransitStateOutcome::SeedFrameUnavailable:
+    return "SeedFrameUnavailable";
+  case FieldVertexTransitStateOutcome::SeedAuthorityMismatch:
+    return "SeedAuthorityMismatch";
+  case FieldVertexTransitStateOutcome::SeedBranchPairingMissing:
+    return "SeedBranchPairingMissing";
+  case FieldVertexTransitStateOutcome::SeedBranchPairingAmbiguous:
+    return "SeedBranchPairingAmbiguous";
+  case FieldVertexTransitStateOutcome::StateFrameUnavailable:
+    return "StateFrameUnavailable";
+  case FieldVertexTransitStateOutcome::StateAuthorityMismatch:
+    return "StateAuthorityMismatch";
+  case FieldVertexTransitStateOutcome::StateBranchPairingMissing:
+    return "StateBranchPairingMissing";
+  case FieldVertexTransitStateOutcome::StateBranchPairingAmbiguous:
+    return "StateBranchPairingAmbiguous";
+  case FieldVertexTransitStateOutcome::StateSourceFaceRowUnavailable:
+    return "StateSourceFaceRowUnavailable";
+  case FieldVertexTransitStateOutcome::DirectedTransportUnavailable:
+    return "DirectedTransportUnavailable";
+  case FieldVertexTransitStateOutcome::TransportTargetFrameUnavailable:
+    return "TransportTargetFrameUnavailable";
+  case FieldVertexTransitStateOutcome::TransportTargetAuthorityMismatch:
+    return "TransportTargetAuthorityMismatch";
+  case FieldVertexTransitStateOutcome::TransportTargetBranchPairingMissing:
+    return "TransportTargetBranchPairingMissing";
+  case FieldVertexTransitStateOutcome::TransportTargetBranchPairingAmbiguous:
+    return "TransportTargetBranchPairingAmbiguous";
+  case FieldVertexTransitStateOutcome::SeedDirectionNotBarycentric:
+    return "SeedDirectionNotBarycentric";
+  case FieldVertexTransitStateOutcome::StateRepresentativeDirectionNotBarycentric:
+    return "StateRepresentativeDirectionNotBarycentric";
+  case FieldVertexTransitStateOutcome::StateIncomingDirectionNotBarycentric:
+    return "StateIncomingDirectionNotBarycentric";
+  case FieldVertexTransitStateOutcome::TransportTargetDirectionNotBarycentric:
+    return "TransportTargetDirectionNotBarycentric";
+  case FieldVertexTransitStateOutcome::DuplicateStateSuppressed:
+    return "DuplicateStateSuppressed";
   }
   return "Unknown";
 }

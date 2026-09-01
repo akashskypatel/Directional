@@ -152,6 +152,12 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   // Independent backstop for a circulation that never repeats a combinatorial
   // state; it declines to answer rather than answering approximately.
   BranchContinuationExactMagnitudeExceeded = 30,
+  // The vertex-transit producer could not construct its first exact state.
+  // Appended for Amendment 19; existing numeric values remain frozen.
+  VertexTransitSeedUnavailable = 31,
+  // The transit walk was seeded but no state reached the sector predicates.
+  // Appended for Amendment 19; existing numeric values remain frozen.
+  VertexTransitWalkUnexamined = 32,
 };
 
 struct FieldAlignedTraceStepDiagnostic {
@@ -168,13 +174,39 @@ enum class FieldVertexArrivalMode : std::uint8_t {
   EdgeTransit = 1,
 };
 
+enum class FieldVertexTransitStateOutcome : std::uint8_t {
+  Evaluated = 0,
+  SeedFrameUnavailable = 1,
+  SeedAuthorityMismatch = 2,
+  SeedBranchPairingMissing = 3,
+  SeedBranchPairingAmbiguous = 4,
+  StateFrameUnavailable = 5,
+  StateAuthorityMismatch = 6,
+  StateBranchPairingMissing = 7,
+  StateBranchPairingAmbiguous = 8,
+  StateSourceFaceRowUnavailable = 9,
+  DirectedTransportUnavailable = 10,
+  TransportTargetFrameUnavailable = 11,
+  TransportTargetAuthorityMismatch = 12,
+  TransportTargetBranchPairingMissing = 13,
+  TransportTargetBranchPairingAmbiguous = 14,
+  SeedDirectionNotBarycentric = 15,
+  StateRepresentativeDirectionNotBarycentric = 16,
+  StateIncomingDirectionNotBarycentric = 17,
+  TransportTargetDirectionNotBarycentric = 18,
+  DuplicateStateSuppressed = 19,
+};
+
 struct FieldVertexTransitStateDiagnostic {
   authority::SourceFaceTopologyKey sourceFace;
   authority::FieldBranch branch;
-  authority::FieldBranchDirection representativeDirection;
-  authority::FieldBranchDirection incomingDirection;
+  std::optional<authority::FieldBranchDirection> representativeDirection;
+  std::optional<authority::FieldBranchDirection> incomingDirection;
+  std::optional<authority::SourceEdgeTopologyKey> transportEdge;
   std::vector<authority::SourceEdgeTopologyKey> transportPath;
   int composedQuarterTurn = 0;
+  FieldVertexTransitStateOutcome outcome =
+      FieldVertexTransitStateOutcome::Evaluated;
   bool eligibleForElection = false;
   bool representativeInSector = false;
   bool incomingInSector = false;
@@ -563,6 +595,8 @@ private:
 
 [[nodiscard]] const char *field_aligned_curve_network_error_code_name(
     FieldAlignedCurveNetworkErrorCode code) noexcept;
+[[nodiscard]] const char *field_vertex_transit_state_outcome_name(
+    FieldVertexTransitStateOutcome outcome) noexcept;
 [[nodiscard]] std::uint64_t field_aligned_curve_network_hash(
     const FieldAlignedCurveNetwork &network) noexcept;
 

@@ -4549,24 +4549,44 @@ void append_network_error(
     stream << ";vertexTransitState[" << index << "]={sourceFace="
            << source_face_locus(state.sourceFace)
            << ",branch=" << branch_locus(state.branch)
-           << ",representativeDirection=[";
-    for (std::size_t component = 0U;
-         component < state.representativeDirection.barycentric.size();
-         ++component) {
-      if (component != 0U) stream << ',';
-      stream << exact_rational_locus(
-          state.representativeDirection.barycentric[component]);
+           << ",outcome="
+           << directional::geometry::field_vertex_transit_state_outcome_name(
+                  state.outcome)
+           << ",representativeDirection=";
+    if (state.representativeDirection.has_value()) {
+      stream << '[';
+      for (std::size_t component = 0U;
+           component < state.representativeDirection->barycentric.size();
+           ++component) {
+        if (component != 0U) stream << ',';
+        stream << exact_rational_locus(
+            state.representativeDirection->barycentric[component]);
+      }
+      stream << ']';
+    } else {
+      stream << "none";
     }
-    stream << "]"
-           << ",incomingDirection=[";
-    for (std::size_t component = 0U;
-         component < state.incomingDirection.barycentric.size(); ++component) {
-      if (component != 0U) stream << ',';
-      stream << exact_rational_locus(
-          state.incomingDirection.barycentric[component]);
+    stream << ",incomingDirection=";
+    if (state.incomingDirection.has_value()) {
+      stream << '[';
+      for (std::size_t component = 0U;
+           component < state.incomingDirection->barycentric.size();
+           ++component) {
+        if (component != 0U) stream << ',';
+        stream << exact_rational_locus(
+            state.incomingDirection->barycentric[component]);
+      }
+      stream << ']';
+    } else {
+      stream << "none";
     }
-    stream << "]"
-           << ",transportPath=[";
+    stream << ",transportEdge=";
+    if (state.transportEdge.has_value()) {
+      stream << source_edge_locus(*state.transportEdge);
+    } else {
+      stream << "none";
+    }
+    stream << ",transportPath=[";
     for (std::size_t edge = 0U; edge < state.transportPath.size(); ++edge) {
       if (edge != 0U) stream << ',';
       stream << source_edge_locus(state.transportPath[edge]);
@@ -4940,6 +4960,49 @@ Cp4cReachabilityObservation observe_cp4c_witness(
     }
     if (cutGraphBuild.error().traceEventIndex.has_value()) {
       report << ";traceEvent=" << *cutGraphBuild.error().traceEventIndex;
+    }
+    report << ";traceEventClaimedSourceEdge=";
+    if (cutGraphBuild.error().sourceEdge.has_value()) {
+      report << source_edge_locus(*cutGraphBuild.error().sourceEdge);
+    } else {
+      report << "none";
+    }
+    if (cutGraphBuild.error().trace.has_value()) {
+      const auto claimedTrace = std::find_if(
+          observation.network->candidate_traces().begin(),
+          observation.network->candidate_traces().end(), [&](const auto &trace) {
+            return trace.id == *cutGraphBuild.error().trace;
+          });
+      report << ";traceEventClaimedTracePresent="
+             << (claimedTrace != observation.network->candidate_traces().end()
+                     ? "true"
+                     : "false");
+      if (claimedTrace != observation.network->candidate_traces().end()) {
+        std::size_t incomingMatches = 0U;
+        std::size_t outgoingMatches = 0U;
+        if (cutGraphBuild.error().sourceEdge.has_value()) {
+          for (const auto &segment : claimedTrace->segments) {
+            incomingMatches +=
+                segment.incomingCarrier.has_value() &&
+                        *segment.incomingCarrier == *cutGraphBuild.error().sourceEdge
+                    ? 1U
+                    : 0U;
+            outgoingMatches +=
+                segment.outgoingCarrier == *cutGraphBuild.error().sourceEdge
+                    ? 1U
+                    : 0U;
+          }
+        }
+        report << ";traceEventClaimedEdgeIncomingCarrierMatches="
+               << incomingMatches
+               << ";traceEventClaimedEdgeOutgoingCarrierMatches="
+               << outgoingMatches
+               << ";traceEventClaimedEdgeAvailableOnTrace="
+               << (cutGraphBuild.error().sourceEdge.has_value() &&
+                           (incomingMatches + outgoingMatches) > 0U
+                       ? "true"
+                       : "false");
+      }
     }
     if (cutGraphBuild.error().traceEventPositionFailureReason.has_value()) {
       report << ";traceEventPositionFailure="
@@ -8018,8 +8081,13 @@ TEST(SurfaceCutGraph, EmptyNetworkOnClosedSurfaceIsRejectedWithTypedError) {
   ASSERT_TRUE(mesh.boundaryLoops.empty());
   const auto sourceAuthority = make_source_authority(mesh);
   ASSERT_TRUE(sourceAuthority.has_value());
+  const auto fieldPath = directional::tests::benchmark_fixture_path(
+      "milestone-g/torus.rawfield");
+  const Eigen::MatrixXd raw = read_cp4c_rawfield(fieldPath, mesh.F.rows());
+  const CrossFieldResult field =
+      directional::pipeline::finalize_surface_cell_raw_cross_field(mesh, raw);
   auto atlasBuild = directional::authority::FieldTransportAtlas::make(
-      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+      mesh, *sourceAuthority, {}, field);
   std::ostringstream atlasReport;
   if (!atlasBuild) append_atlas_error(atlasReport, atlasBuild.error());
   ASSERT_TRUE(atlasBuild) << atlasReport.str();
@@ -8513,6 +8581,61 @@ TEST(ResolvedBranchContinuation, RejectsBoundaryPointOnForeignEdge) {
   EXPECT_EQ(foreign, error.sourceEdge);
 }
 
+TEST(ResolvedBranchCorrection,
+     MinimalExactVertexTransitWitnessPublishesKnownFanState) {
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_zero_transport_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+  const SourceVertexId center =
+      SourceVertexId::from_index(4, static_cast<std::size_t>(mesh.V.rows()))
+          .value();
+
+  const auto frameIt = std::find_if(
+      topology.frames().begin(), topology.frames().end(), [&](const auto &frame) {
+        return std::find(frame.sourceFace.vertices().begin(),
+                         frame.sourceFace.vertices().end(), center) !=
+               frame.sourceFace.vertices().end();
+      });
+  ASSERT_NE(topology.frames().end(), frameIt);
+  ASSERT_FALSE(frameIt->branches.empty());
+
+  const auto result = directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit(
+          mesh, topology, frameIt->sourceComponent, frameIt->topologyRegion,
+          frameIt->sourceFace, frameIt->branches.front().branch, center,
+          directional::geometry::FieldVertexArrivalMode::FaceInterior);
+  if (const auto *decision = std::get_if<
+          directional::geometry::surface_cell_tracing_detail::
+              FieldVertexTransitDecision>(&result)) {
+    EXPECT_NE(frameIt->sourceFace, decision->nextFace);
+    return;
+  }
+
+  const auto &error =
+      std::get<directional::geometry::FieldAlignedCurveNetworkError>(result);
+  EXPECT_NE(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable,
+            error.code);
+  EXPECT_NE(FieldAlignedCurveNetworkErrorCode::VertexTransitWalkUnexamined,
+            error.code);
+  ASSERT_FALSE(error.vertexTransitStates.empty());
+  const auto evaluated = std::find_if(
+      error.vertexTransitStates.begin(), error.vertexTransitStates.end(),
+      [](const auto &state) {
+        return state.outcome ==
+               directional::geometry::FieldVertexTransitStateOutcome::
+                   Evaluated;
+      });
+  ASSERT_NE(error.vertexTransitStates.end(), evaluated);
+  ASSERT_TRUE(evaluated->representativeDirection.has_value());
+  ASSERT_TRUE(evaluated->incomingDirection.has_value());
+  EXPECT_TRUE(evaluated->representativeDirection->is_barycentric());
+  EXPECT_TRUE(evaluated->incomingDirection->is_barycentric());
+}
+
 TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {
   const TriMesh mesh = make_four_triangle_fan();
   const auto sourceAuthority = make_source_authority(mesh);
@@ -8536,11 +8659,15 @@ TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {
               directional::geometry::FieldAlignedCurveNetworkError>(result));
   const auto &error =
       std::get<directional::geometry::FieldAlignedCurveNetworkError>(result);
-  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved,
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable,
             error.code);
   EXPECT_EQ(center, error.sourceVertex);
   EXPECT_EQ(frame.sourceFace, error.sourceFace);
   EXPECT_EQ(frame.branches.front().branch, error.branch);
+  ASSERT_EQ(1U, error.vertexTransitStates.size());
+  EXPECT_EQ(directional::geometry::FieldVertexTransitStateOutcome::
+                SeedAuthorityMismatch,
+            error.vertexTransitStates.front().outcome);
 }
 
 TEST(ResolvedBranchCorrection,
@@ -8620,7 +8747,34 @@ TEST(ResolvedBranchCorrection,
   expect_tokens(sector, {"sourceVertex=0", "sourceFace=0-1-2", "branch=1",
                          "publishedFaces=[]"});
   sector.publishedFaces = {firstFace, secondFace};
-  expect_tokens(sector, {"publishedFaces=[0-1-2,0-1-3]"});
+  sector.vertexTransitStates.push_back(
+      directional::geometry::FieldVertexTransitStateDiagnostic{
+          firstFace, branch, std::nullopt, std::nullopt, edge, {edge}, 1,
+          directional::geometry::FieldVertexTransitStateOutcome::
+              DirectedTransportUnavailable,
+          false, false, false});
+  expect_tokens(
+      sector,
+      {"publishedFaces=[0-1-2,0-1-3]",
+       "vertexTransitState[0]={sourceFace=0-1-2,branch=1,outcome="
+       "DirectedTransportUnavailable",
+       "representativeDirection=none", "incomingDirection=none",
+       "transportEdge=0-1", "transportPath=[0-1]",
+       "composedQuarterTurn=1"});
+
+  Error seedUnavailable =
+      base_error(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  seedUnavailable.sourceVertex = SourceVertexId::from_index(0, 4).value();
+  expect_tokens(seedUnavailable,
+                {"networkError=VertexTransitSeedUnavailable",
+                 "sourceVertex=0", "sourceFace=0-1-2", "branch=1"});
+
+  Error walkUnexamined =
+      base_error(FieldAlignedCurveNetworkErrorCode::VertexTransitWalkUnexamined);
+  walkUnexamined.sourceVertex = SourceVertexId::from_index(0, 4).value();
+  expect_tokens(walkUnexamined,
+                {"networkError=VertexTransitWalkUnexamined",
+                 "sourceVertex=0", "sourceFace=0-1-2", "branch=1"});
 
   Error grazing = base_error(
       FieldAlignedCurveNetworkErrorCode::BranchGrazingSlideDirectionAmbiguous);
@@ -8687,7 +8841,7 @@ TEST(ResolvedBranchCorrection,
 TEST(ResolvedBranchCorrection,
      NetworkDiagnosticsContainNoControlCharactersForAnyCode) {
   using Error = directional::geometry::FieldAlignedCurveNetworkError;
-  const std::array<FieldAlignedCurveNetworkErrorCode, 29> codes{{
+  const std::array<FieldAlignedCurveNetworkErrorCode, 33> codes{{
       FieldAlignedCurveNetworkErrorCode::InvalidSourceBinding,
       FieldAlignedCurveNetworkErrorCode::InvalidAtlasBinding,
       FieldAlignedCurveNetworkErrorCode::DuplicateRailId,
@@ -8717,6 +8871,11 @@ TEST(ResolvedBranchCorrection,
       FieldAlignedCurveNetworkErrorCode::TraceStateCycleDetected,
       FieldAlignedCurveNetworkErrorCode::TraceStepBudgetExhausted,
       FieldAlignedCurveNetworkErrorCode::BranchGrazingSlideDirectionAmbiguous,
+      FieldAlignedCurveNetworkErrorCode::TraceCombinatorialRecurrenceExceeded,
+      FieldAlignedCurveNetworkErrorCode::
+          BranchContinuationExactMagnitudeExceeded,
+      FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable,
+      FieldAlignedCurveNetworkErrorCode::VertexTransitWalkUnexamined,
   }};
   const SourceFaceTopologyKey firstFace = topology_face(0, 1, 2, 4);
   const SourceFaceTopologyKey secondFace = topology_face(0, 1, 3, 4);
