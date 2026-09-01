@@ -1,0 +1,3 @@
+purpose=M3-CP4c-3-CB11 exact source snapshot
+source_sha=1ad5d2191c65cd1af7443559a6446236ec499ecd
+retry=0
