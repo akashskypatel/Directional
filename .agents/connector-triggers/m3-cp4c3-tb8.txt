@@ -1,8 +1,0 @@
-purpose=M3-CP4c-3-TB8 artifact-only semantic validation
-semantic_source=e2b59295c9920db5685239c2da188858839fa94f
-package=78
-package_artifact_id=9819958467
-gate_selector=374
-diagnostic_selector=375
-runtimeExecution=true
-benchmarkExecution=false

@@ -1,3 +1,0 @@
-purpose=M3-CP4c-3-TB8 candidate schema validation
-candidate=.agents/Directional/turn-payloads/M3_CP4c3_TB8_workflow_candidate.yml
-runtimeExecution=false
