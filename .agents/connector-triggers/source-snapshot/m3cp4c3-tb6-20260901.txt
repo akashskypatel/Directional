@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB6
+purpose=exact source snapshot for mandatory start-of-turn review
+initial_authority=736a1bf33d0cab920b32da5fd98b7de44674cc1f
+retry=0
