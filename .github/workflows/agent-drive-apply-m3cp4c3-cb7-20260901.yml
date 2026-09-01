@@ -1,0 +1,46 @@
+name: Agent Drive Apply M3 CP4c3 CB7 20260901
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/drive-apply/m3cp4c3-cb7-20260901.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-drive-apply-m3cp4c3-cb7-20260901
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: drive-apply-m3cp4c3-cb7-20260901
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-drive-apply-m3cp4c3-cb7-20260901.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1hSJHBn_L0tOxbVD6hUfKgB2v8C1ABoAO
+      patch_sha256: 943ca5fa2d0f47ff185d88f04c86b351cdd6c9bb70a9367b6992dbfba3a6e668
+      base_sha: 5ac1d0ba8b965ed14318f5883d88ec84ca2d9c7a
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "fix: make CP4c3 vertex transit exact and reportable"
+    secrets: inherit
