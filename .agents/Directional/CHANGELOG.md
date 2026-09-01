@@ -1,3 +1,40 @@
+## 2026-09-01 — `M3-CP4c-3-CB10`: radial-arrival admissibility corrected; immutable package 78 frozen for TB8
+
+Code + Build only under `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` **AZ0–AZ9**. Final semantic source
+`e2b59295c9920db5685239c2da188858839fa94f`; no Directional runtime, test gate, benchmark, `ctest`, generated
+discovery, or custom runtime input executed.
+
+CB10 separated exact **closed-wedge arrival admissibility** from the unchanged half-open sector ownership convention;
+supports both exact radial `FaceInterior` arrival orientations; split the collapsed seed outcomes into
+`SeedDirectionNotBarycentric`, `SeedArrivalFaceRowUnavailable`, and `SeedDirectionOutsideClosedWedge`; constructs
+the vertex-star audit before early seed return so `SeedUnavailable` is reachable; and projects/renders the AX8 state
+rows and radial-seed fields. The final planar two-orientation witness
+`ResolvedBranchCorrection.FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries` demonstrates both CB9 rejection
+paths and therefore authorizes the single diagnostic selector-375 append. Selector 374 remains byte-frozen and is
+still the gate; selector 375 (`aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`) is
+zero-credit diagnostic authority. The frozen ordinal-374 folded-cone witness was not changed and its reviewed
+`CycleTransportMismatch` remains pre-classified test-witness debt.
+
+Final compile run/job `33556556002 / 100018687726` succeeded for all eight standard targets with GMP/GMPXX linkage
+and `runtimeExecution=false`. Result artifact `9819595448`
+(`b520ecc8f760b29c909ed1fe122dc15b3a9999752f4b85e263a5eafaa15facee`); log artifact `9819595930`
+(`0a06318c64f9d211caa9c9c92b16e341ed7870a194d3df290e82c08b58036d13`).
+
+Immutable package **78** was produced by run/job `33557613904 / 100022216004`: package artifact `9819958467`
+(`81414f18af71d5aacf50231a720b2774df71d88b223283c81ce747d13a977a51`), log artifact `9819959056`
+(`a18145ef17bf5b2eebc7b1422e67af488480d2859413709b601457e266ae6ebb`), inner package SHA-256
+`2cc3541cab1208781e234948228baa2d2b8d7bfdb12d855e6fd912cb30006591`, packaged source SHA-256
+`c1eadfdc4c1f118b34f9996aec00c2b51537e45e201ff52225b1d06b0d253d11`. Recursive manifests, 27 fixtures,
+six executable binaries, selector hashes/prefixes, GMP envelope, and runtime/package-repair false boundaries all
+verified. An earlier package-78 attempt `33557314415` stopped before package upload because its caller retained the
+pre-correction selector-375 hash; that was orchestration-only and executed no Directional binary. Package 77 is
+superseded and is not TB8 authority.
+
+CB10 is Code + Build PASS but grants no semantic gate credit. Accepted authority remains **365/365**; CP4c-3 remains
+**OPEN**; stable accounting remains **44 / 14 / 30**; produced-witness debt **5**; authoritative semantic M3 package
+count advances **74 → 75**. Exact next is artifact-only `M3-CP4c-3-TB8` on immutable package 78, gating selector
+374 from ordinal 1, plus diagnostic identity 375 separately with zero gate credit.
+
 ## 2026-09-01 — `M3-CP4c-3-TB7-REV`: both TB7 reds explained, different owners proved, `M3-CP4c-3-CB10` frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md`, measures **AW0–AW7**

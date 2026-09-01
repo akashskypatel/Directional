@@ -26,61 +26,50 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB10` (Code + Build, runtime-free, GMP/GMPXX linked)
+## Current focus — `M3-CP4c-3-TB8` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB7-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB7_Independent_Review_Record.md`, measures **AW0–AW7** discharged, static only.
+`M3-CP4c-3-CB10` is **COMPLETE / Code + Build PASS** under AZ0–AZ9. Report:
+`Architecture_M3_CP4c3_CB10_Code_Build_Report.md`.
 
-It explained **both** TB7 reds and proved they have **different owners**:
+CB10 separates exact closed-wedge arrival admissibility from the unchanged half-open owner convention, accepts both
+exact radial `FaceInterior` arrival orientations, splits the collapsed seed outcomes, makes the early
+`SeedUnavailable` audit reachable, and gives the AX8/vertex-transit rows consumers. The falsifying radial-arrival
+diagnostic is appended as selector identity **375** without changing selector 374.
 
-- **Ordinal 366 — CB9-introduced product defect.** `AY1` added a fifth seed guard absent from the source TB6 ran,
-  applying the **half-open ownership convention** `direction[next] > 0 ∧ direction[previous] ≥ 0` as an
-  *admissibility test on the incoming arrival ray*. Proved exactly from committed fixture bytes: face `(8,10,11)` is
-  mesh row 8 and its branch-1 direction is `(0, −2.77777777777777857, +2.77777777777777857)` over `(v8, v10, v11)`
-  with an **exact IEEE zero** at `v8`, so the port trace out of singularity vertex 10 runs along mesh edge `(10,11)`
-  and lands on vertex 11 (Amendment 3); its arrival ray is exactly the radial ray `v11 → v10`, which neighbouring
-  row 109 `(79,11,10)` owns. A second guard at `SurfaceCellTracing.cpp:1531-1540` rejects the mirror orientation, so
-  the two together make **every** edge-collinear vertex arrival unresolvable in `FaceInterior` mode. **Not** a TB5
-  recurrence: shared locus, different mechanism, no recurrence counted.
-- **Ordinal 374 — invalid witness, legitimate product rejection (AW4 category 1).** The folded cone has
-  `Θ = 3π/2`, angle defect `K = π/2`, while `make_zero_transport_field` declares `effort ≡ 0` and no singularities;
-  discrete Gauss–Bonnet forces `exactLift = 1` against a matching composing to `0` →
-  `CycleTransportMismatch` at `FieldTransportAtlas.cpp:2098`, with `SingularityMismatch` behind it. **No atlas
-  invariant may be weakened.** Corrective is test-only, specified, and **deferred**.
+Immutable successor input:
 
-**Amendments 22 and 23 survive intact.** `DEFN-R2` §AX1 never imposed CB9's guard, and §AX7 §7.2 item 5 *required*
-the on-radial-ray seed CB9 made unreachable. Accepted authority remains **365**; CP4c-3 remains **OPEN**.
+- semantic source `e2b59295c9920db5685239c2da188858839fa94f`;
+- final compile run/job `33556556002 / 100018687726`;
+- immutable package **78**, run/job `33557613904 / 100022216004`;
+- package artifact `9819958467`, Actions SHA-256
+  `81414f18af71d5aacf50231a720b2774df71d88b223283c81ce747d13a977a51`;
+- gating selector **374** SHA-256
+  `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`;
+- diagnostic selector **375** SHA-256
+  `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`.
+
+Package 77 is superseded and is not TB8 authority. Accepted semantic authority remains **365/365**; CP4c-3 remains
+**OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB10`** under **AZ0–AZ9** in
-`Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §8. **Product-only**; Code + Build is runtime-free and
-GMP/GMPXX linkage is mandatory.
+Run **`M3-CP4c-3-TB8`** under
+`Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md`.
 
-- [ ] **AZ0** selector 374 byte-frozen and recomputed at authoring and preflight; accepted 365 untouched;
-      `selected_gate=NONE`; `gate_execution_authorized=false`; no runtime, gate, benchmark, or package repair.
-- [ ] **AZ1** add a separate exact **closed-wedge** admissibility predicate (`next ≥ 0 ∧ prev ≥ 0`, not both zero);
-      leave `direction_in_vertex_sector` unchanged and reserved for developed-sector ownership.
-- [ ] **AZ2** support the on-radial-ray arrival in **both** orientations; remove the two `FaceInterior` rejections;
-      define `α` exactly on each radial ray and route ray-exact cases to the exact fallback.
-- [ ] **AZ3** one typed name per condition — split the three conditions currently sharing
-      `SeedDirectionNotBarycentric`, and report the distinct-condition count at each name's setting site.
-- [ ] **AZ4** build the `VertexStarTransitAudit` and seed **before** the first returning conditional; demonstrate
-      reachability of all four typed states, including `SeedUnavailable`.
-- [ ] **AZ5** give the AX8 rows a reader; find consumers **by search against a predicate**, and name at least one
-      the measure did not name. Closes `M3-CP4c3-TB6-CAND-01`.
-- [ ] **AZ6** derive the on-radial `FaceInterior` witness from the mechanical vertex-11 star, both orientations,
-      expected owner derived from Amendment 22 before the code; selector 375 appended **only** on demonstrated
-      falsification.
-- [ ] **AZ7** prohibited: weakening or reusing `direction_in_vertex_sector` for admissibility; any tolerance or
-      float-derived topological decision; `signedLift` as ray transport; candidate ordering/nearest-angle/tie-break;
-      deciding from a candidate's own representative; repairing `build_boundary_pairing` as if it caused 366;
-      touching the ordinal-374 witness, the sphere, ordinal 370, or atlas invariants.
-- [ ] **AZ8** audit by assumption, two predicates, each with a site named outside this record.
-- [ ] **AZ9** publish the expected TB8 discriminators.
+- [ ] Immutable package-78 preflight; no rebuild, repair, source/test/fixture/selector mutation, generated discovery,
+      or benchmark.
+- [ ] Execute gating selector **374 from ordinal 1**, one identity per fresh process.
+- [ ] Ordinal 366 must clear the TB7 vertex-11 seed stop; if vertex 30 is reached, owner must be row 209 or 208,
+      never row 41.
+- [ ] After the first semantic red, execute the complete later-ordinal remainder through 374 with zero gate credit.
+- [ ] Preserve ordinal 374's already-reviewed invalid-witness `CycleTransportMismatch` classification; that repeat
+      alone does not consume another review turn.
+- [ ] Execute diagnostic identity **375** separately in a fresh process with **zero gate credit**; both exact radial
+      `FaceInterior` orientations must pass.
+- [ ] Run immutable postflight and update the regression tracker for every newly observed regression/candidate.
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
-package count **74**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative
+semantic M3 package count **75**.
 
 ## Carried forward from M1
 
@@ -117,7 +106,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB7 first-red at ordinal 366 is now explained as a CB9-introduced seed-admissibility defect, and ordinal 374's stop is classified as an invalid witness precondition. Exact next is `M3-CP4c-3-CB10` under AZ0–AZ9, product-only.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; CB10 corrected the radial-arrival seed defect and produced immutable package 78. Exact next is artifact-only `M3-CP4c-3-TB8` on gating selector 374 plus zero-credit diagnostic identity 375.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -127,7 +116,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** TB7 first-red at ordinal 366 is a CB9 seed-admissibility defect at source vertex 11, proved exactly; vertex 30's frozen answer is **masked** by it and untested since TB6. CB10 must clear vertex 11, after which TB8 must prove the mechanical witness elects row 209 or 208, never row 41, and then carry selector 374 through the full gate. No candidate-order, tolerance, float-transport, `signedLift`-as-ray, or target-representative shortcut.
+- [ ] **CP4c-3 criterion C2:** CB10 corrected the proved vertex-11 seed-admissibility defect in immutable package 78. TB8 must now verify ordinal 366 clears vertex 11, reaches the next independent locus, and if vertex 30 is reached elects row 209 or 208, never row 41. No candidate-order, tolerance, float-transport, `signedLift`-as-ray, or target-representative shortcut.
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. Ordinal 374 stays red in TB8 by construction; that is pre-classified.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
@@ -152,4 +141,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **74** after CB9/package 76. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **75** after CB10/package 78. PR #8 remains open, draft, and unmerged.

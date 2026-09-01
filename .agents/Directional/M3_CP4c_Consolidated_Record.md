@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN** with its gate frozen at selector **374**. `M3-CP4c-3-CB9` implemented Amendments 22/23 (package 76, source `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`); `M3-CP4c-3-TB7` re-proved **365/365** and first-redded at ordinal **366**, `VertexTransitSeedUnavailable`, source vertex 11, face `(8,10,11)`, branch 1, `FaceInterior`, with report-only 367–374 at **1 PASS / 7 RED**. `M3-CP4c-3-TB7-REV` is **COMPLETE** and discharged **AW0–AW7**. It explained both reds and proved they have **different owners**. (a) Ordinal 366 is a **CB9-introduced product defect**: `AY1` added a fifth seed guard, absent from the source TB6 ran, that applies the **half-open ownership convention** `direction[next] > 0 ∧ direction[previous] ≥ 0` as an *admissibility test on the incoming arrival ray*. Proved exactly from committed fixture bytes — face `(8,10,11)` is mesh row 8, its branch-1 direction is `(0, −2.77777777777777857, +2.77777777777777857)` with an exact IEEE zero at `v8`, so the port trace out of singularity vertex 10 runs along mesh edge `(10,11)` and lands on vertex 11 under Amendment 3, and its arrival ray is exactly the radial ray `v11 → v10`, which neighbouring row 109 owns. A second guard rejects the mirror orientation, so together they make **every** edge-collinear vertex arrival unresolvable in `FaceInterior` mode. It is **not** a TB5 recurrence. (b) Ordinal 374 is an **invalid witness with a legitimate product rejection**: the folded cone has `Θ = 3π/2` and angle defect `K = π/2` while `make_zero_transport_field` declares `effort ≡ 0` and no singularities, forcing `exactLift = 1` against a matching composing to `0` — `CycleTransportMismatch`, with `SingularityMismatch` behind it. **Amendments 22 and 23 survive intact**; `DEFN-R2` §AX1 never imposed CB9's guard and §AX7 §7.2 item 5 *required* the on-radial seed it made unreachable. Selector **374 stays byte-frozen and is not withdrawn**; selector 375 is conditional on AZ6. Exact next is **`M3-CP4c-3-CB10`** under **AZ0–AZ9**, product-only. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **74**.
+**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. `M3-CP4c-3-CB10` is Code + Build PASS at final semantic source `e2b59295c9920db5685239c2da188858839fa94f` and immutable package **78**. It corrected CB9's radial-arrival seed-admissibility defect without changing the half-open ownership convention, made the early seed audit reachable, projected the AX8/state rows, and appended diagnostic identity **375** only after a two-orientation falsifier. Gating selector **374** remains byte-frozen; selector 375 is zero-credit diagnostic authority. Package 78 is the sole TB8 runtime input; package 77 is superseded. Exact next is **`M3-CP4c-3-TB8`** artifact-only. Accepted authority remains **365/365**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic M3 package count **75**.
 
 ## 1. Separate current/future authority
 
@@ -25,6 +25,9 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — package-76 compile/package authority and the AY8 static audit.
 - `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — current measured runtime authority.
 - `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — **current review authority** and the AZ0–AZ9 measures governing `M3-CP4c-3-CB10`.
+- `Architecture_M3_CP4c3_CB10_Code_Build_Report.md` — final CB10 implementation, compile and immutable package-78 authority.
+- `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md` — **exact next-turn execution authority** for package 78.
+- `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — append-only **diagnostic** selector; selector 374 is its unchanged byte prefix and remains the gate.
 - `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — current compile/package evidence.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB2 execution/retry authority.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — current TB2 blocker/postflight authority.
@@ -68,6 +71,8 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | CP4c-3 selector 367 | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` |
 | CP4c-3 selector 370 | `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525` |
 | **CP4c-3 selector 373** | **`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`** |
+| **CP4c-3 selector 374 (gate)** | **`d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`** |
+| CP4c-3 selector 375 (diagnostic) | `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0` |
 
 ## 2. Checkpoint closure record
 
@@ -77,7 +82,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB6 keeps 365 PASS and first-reds ordinal 366 at vertex 30 with two published faces. The vertex-11 seed-drop is cleared, but Amendment 17 is not adjudicable from the production projection. 367–373 report-only = 1 PASS / 6 RED. Next is independent `TB6-REV`.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; CB10 Code + Build PASS produced immutable package 78. Exact next is artifact-only TB8 on gating selector 374 plus zero-credit diagnostic 375. Accepted authority remains 365/365.** |
 
 ### 2.1 CP4c-0
 
