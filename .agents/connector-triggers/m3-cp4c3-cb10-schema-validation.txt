@@ -1,4 +1,4 @@
-purpose=M3-CP4c-3-CB10 corrected package 78 caller schema validation
+purpose=M3-CP4c-3-CB10 closeout drive-apply caller schema validation
 workflow_candidate=.agents/Directional/turn-payloads/M3_CP4c3_CB10_workflow_candidate.yml
-source_sha=e2b59295c9920db5685239c2da188858839fa94f
-candidate_sha=5d9ca6d244589ed2d4964a8217f8685fbb675a51
+base_sha=e96be81a39a16c0093a5d64ccf2d64b334c479f4
+patch_sha256=6a2a38e67a9992613ed0618bbf2b655beed13d076103c6baf511edee5ae1e76e
