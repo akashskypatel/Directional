@@ -1,2 +1,0 @@
-requested_semantic_source_sha=2ed56cd99beccf150034b837678e14aa791b90ae
-purpose=M3-CP4c-3-CB10 start-of-turn source snapshot

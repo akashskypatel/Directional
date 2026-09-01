@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB10 corrected final compile-only build
-source_sha=e2b59295c9920db5685239c2da188858839fa94f
-runtimeExecution=false
-artifact_prefix=m3-cp4c3-cb10-compile-final

@@ -1,5 +1,0 @@
-purpose=M3-CP4c-3-CB10 closeout documentation apply
-file_id=1uNeKv4slrMr0ZmY6XeZphBG3PoYvBbhL
-patch_sha256=6a2a38e67a9992613ed0618bbf2b655beed13d076103c6baf511edee5ae1e76e
-base_sha=e96be81a39a16c0093a5d64ccf2d64b334c479f4
-intended_path_count=6
