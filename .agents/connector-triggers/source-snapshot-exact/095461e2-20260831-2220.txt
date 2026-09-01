@@ -1,3 +1,0 @@
-source_sha=095461e2a749e39c4b344805748b1e3bd870a063
-caller_install_sha=bd44d27551cf28a894ec65fbe790e67d0193e2e8
-purpose=exact-source-snapshot

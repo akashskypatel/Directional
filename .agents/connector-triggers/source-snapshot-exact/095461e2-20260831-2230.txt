@@ -1,4 +1,0 @@
-source_sha=095461e2a749e39c4b344805748b1e3bd870a063
-caller_sha=49ddc5d93df5150072b71773644aba21406e3e53
-purpose=exact-source-snapshot-retry-permissions
-previous_startup_failure_runs=33473454497,33473620983

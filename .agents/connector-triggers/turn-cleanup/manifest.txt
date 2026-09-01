@@ -1,8 +1,0 @@
-# M3-CP4c-3-CB9 formal closeout temporary-state inventory
-.agents/connector-triggers/cb9-closeout-drive-apply/
-.agents/connector-triggers/cb9-compile/
-.agents/connector-triggers/cb9-drive-apply/
-.agents/connector-triggers/cb9-package-workflow-validation/
-.agents/connector-triggers/source-snapshot-exact/
-.agents/connector-triggers/m3-cp4c3-cb9-package76.txt
-.agents/Directional/turn-payloads/m3-cp4c3-cb9-package76.yml

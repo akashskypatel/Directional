@@ -1,4 +1,0 @@
-turn=M3-CP4c-3-CB9
-candidate=.agents/Directional/turn-payloads/m3-cp4c3-cb9-package76.yml
-purpose=prepublication-schema-validation
-runtimeExecution=false
