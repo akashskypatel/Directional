@@ -1,0 +1,34 @@
+name: M3 CP4c-3 CB8 Source Snapshot
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c-3-cb8-source-snapshot-20260831.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c-3-cb8-source-snapshot
+  cancel-in-progress: false
+
+jobs:
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c-3-cb8-source-snapshot.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  snapshot:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-source-snapshot.yml
+    with:
+      source_ref: 0d943f95b42e49813060399e83a1e4180e8348f6
+      artifact_prefix: m3-cp4c-3-cb8-source
+    secrets: inherit
