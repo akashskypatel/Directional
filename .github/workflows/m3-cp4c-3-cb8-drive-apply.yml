@@ -43,5 +43,5 @@ jobs:
       patch_sha256: 6e4f5a3ed9fb9188a9731a62216780245d7fe895500e3a3ec22f476c2878a467
       base_sha: 0d943f95b42e49813060399e83a1e4180e8348f6
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: docs: close CB8 on exact transit authority stop
+      commit_message: "docs: close CB8 on exact transit authority stop"
     secrets: inherit
