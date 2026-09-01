@@ -190,3 +190,45 @@ The mandatory successor is `M3-CP4c-3-TB7`, artifact-only, against immutable pac
 run the cumulative selector from ordinal 1, one identity per fresh process, with every mutation/build/repair flag
 false. A complete **374/374 PASS** closes CP4c-3; any valid semantic red routes to independent REVIEW + PLAN after
 the required report-only remainder pass and immutable postflight.
+
+## 9. Formal closeout and cleanup evidence
+
+CB9 closeout documentation was applied by the validated Drive patch workflow as commit
+`ca04dc1e2591eb94aa21afecde995a86473bc455`. The work-preservation patch had full SHA-256
+`daffeaaa04adcd6332a6a7dc8b955d65c1e08217eb20361958849f11644a7bb7` and diff-body SHA-256
+`b92c8ac91c2de931b3edc37f8c42a2fa0e5a6db965351347431e40f51b82c98e`. The three consumed Drive patch files
+(WIP2, WIP3, and CB9 closeout) were retired after durable application.
+
+Repository temporary-state cleanup ran through `.github/workflows/agent-turn-cleanup.yml`:
+
+- run `33539076325` — **success**;
+- cleanup commit / final branch head: `965b0ac4d4ee625c6fda58e20584a7b227cbe880`;
+- seven manifest paths removed, covering twelve turn-temporary files plus the cleanup manifest itself;
+- final workflow inventory is exactly the seven durable workflows;
+- `.agents/connector-triggers`, `.agents/workflow-observation`, and `.agents/Directional/turn-payloads` are absent;
+- `runtimeExecution=false`.
+
+The final PR closeout summary is intentionally published only after this cleanup evidence is durable.
+
+## 10. Tool-use conservation ledger
+
+The exact whole formal-turn count is unavailable after earlier platform context compactions and is not fabricated.
+For the reconstructable continuation beginning with the final `cont.txt`, the exact count **including the final PR
+summary write** is **123 tool invocations**:
+
+- **53 GitHub/API-control invocations**;
+- **13 Google Drive/discovery invocations**;
+- **57 local static Python/container invocations**.
+
+Conservation gains retained as evidence:
+
+- the final authoritative compile bundled all eight standard targets into one GitHub compile job instead of separate
+  compile runs;
+- terminal workflow jobs/artifacts were fetched once per evidence-producing run after run identity was known;
+- the cleanup manifest grouped five temporary directories plus two files into one cleanup commit, removing twelve
+  temporary files and the manifest atomically.
+
+Material conservation misses in this continuation included an initial empty observer lookup before comments became
+visible, a blocked first WIP3 Drive-delete call followed by recovery searches, and several redundant source/context
+reads already identified in the process-deviation record. These do not alter semantic evidence but remain process
+quality debt.
