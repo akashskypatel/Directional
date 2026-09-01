@@ -1,4 +1,4 @@
-purpose=M3-CP4c-3-CB10 apply delimiter-corrected preserved semantic patch
-base_sha=24adc6ef3c5fa67268ee8773cd05e93ca6da5834
-patch_sha256=fa5ac02a74b94ef888cfbd6c9e2b6aecb2cc0b76bcaa00b90cfbd39cf43fe8eb
-metadata_fix=intended_paths-semicolon-list
+purpose=M3-CP4c-3-CB10 AZ6 witness correction apply
+file_id=1jpmn2SGSghhkkqlSgpLTOvBFC6IxL3oJ
+patch_sha256=6938ce6805cf4894d97845efbc2b9fe9b7ed8876fe9acab06d7f1eeb31168691
+base_sha=37e18cc5832d5f648b8bb042c535ee6dd05214b5
