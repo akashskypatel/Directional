@@ -1,3 +1,0 @@
-purpose=M3-CP4c-3-TB8 start-of-turn snapshot
-read_mode=snapshot
-runtimeExecution=false
