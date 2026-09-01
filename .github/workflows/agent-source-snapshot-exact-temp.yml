@@ -25,6 +25,5 @@ jobs:
     uses: ./.github/workflows/agent-source-snapshot.yml
     with:
       source_ref: 095461e2a749e39c4b344805748b1e3bd870a063
-      archive_name: source-snapshot-095461e2
-      include_submodules: false
+      artifact_prefix: source-snapshot-095461e2
     secrets: inherit
