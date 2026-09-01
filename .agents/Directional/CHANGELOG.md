@@ -1,3 +1,22 @@
+## 2026-09-01 — `M3-CP4c-3-CB8`: AW1 architectural stop; unchanged source remains GMP build-green
+
+CB8 is **COMPLETE / ARCHITECTURAL STOP / BUILD GREEN / RUNTIME-FREE**. Exact source audit at
+`0d943f95b42e49813060399e83a1e4180e8348f6` proved the frozen AW1 stop condition: atlas branch transport carries
+quarter-turn/`signedLift` correspondence but no exact/certified transform for one arbitrary incoming ray across a
+general non-coplanar fan; `FieldBranchBoundaryPairing::direction` is independently constructed per face,
+`SourceChartTransitionGraph` is topological only, and the only physical zero-turn path is a planar floating/tolerance
+special case. CB8 therefore made **no product/test/fixture/selector semantic change**, did not create selector 374,
+and did not package a false Amendment-17 authority. Selector 373 remains
+`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`.
+
+The unchanged semantic source was compiled through the mandatory reusable workflow: run `33467212874`, result
+artifact `9785279716` (`aa85ae5f…251f2`), log artifact `9785279945` (`febed58a…6f25f`), all eight standard targets,
+GMP/GMPXX linked, clean source, `runtimeExecution=false`. No Directional runtime or immutable semantic package was
+created. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **73**. Ordinal 370, sphere and
+saturation remain deferred. Exact next: independent `M3-CP4c-3-CB8-REV` under
+`Architecture_M3_CP4c3_CB8_Independent_Review_Plan.md` to freeze the missing single-writer exact/certified transit
+authority before another CB is authorized.
+
 ## 2026-09-01 — `M3-CP4c-3-TB6-REV`: Amendment 17 still violated; exact CB8 successor frozen
 
 Independent REVIEW + PLAN only; no Directional runtime/build/package/test/fixture/selector mutation. TB6 immutable

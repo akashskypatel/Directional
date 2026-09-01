@@ -26,40 +26,46 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB8` (Code + Build, runtime-free)
+## Current focus — `M3-CP4c-3-CB8-REV` (independent Review + Plan only)
 
-`M3-CP4c-3-TB6-REV` is **COMPLETE**. Independent review accepted TB6 as a valid semantic red and established the
-current cause/owners. Review authority: `Architecture_M3_CP4c3_TB6_Independent_Review_Record.md`.
+`M3-CP4c-3-CB8` is **COMPLETE / ARCHITECTURAL STOP / BUILD GREEN / RUNTIME-FREE**. Its frozen AW1 stop rule fired
+before semantic editing: current source/atlas authority can transport exact branch correspondence but cannot publish
+an exact/certified projection of one arbitrary incoming tangent ray through a general non-coplanar fan.
 
-### Review verdict
+### CB8 verdict
 
-- TB6 authority is package 75 / source `e926ada023bc51220628be550bbe9a87f98d7067`, run/job
-  `33458067065 / 99702200466`, result artifact **`9782227361`** (`e39fcab4…72a87`); the older documented
-  `5748464145 / f084...` result identity was incorrect and has been corrected.
-- Accepted ordinals **1–365 remain green**. First red 366 is still vertex 30 with two candidate faces.
-- CB7's exactness repair did not preserve Amendment 17: each fan transition assigns
-  `incomingDirection = nextPairing->direction`, so election still consumes one exact local representative per cell.
-- Resolver audit rows exist but are dropped by `network_failure_locus` / `SurfaceCellFailureLocusDiagnostics`.
-- CB7's minimal transit witness was required to become permanent regression authority; selector 373 stayed frozen.
-  CB8 must append it as ordinal **374** in a new selector while leaving 373 unchanged.
-- Ordinal 370 is a separate genuine product red owned by `SurfaceCutGraph::canonical_candidate`; do not combine it
-  with CB8. Sphere and saturation remain deferred.
+- `resolve_field_vertex_transit` still rebinds successor `incomingDirection` to `nextPairing->direction`; no code
+  change was made because replacing that with `signedLift`, target-local data, or CB6-style world-space transport
+  would violate Amendments 17/18.
+- `FieldBranchTransportAdjacency` / `FieldDirectedBranchTransport` carry only quarter-turn, integer lift and floating
+  effort; they do not carry an exact arbitrary-ray transform.
+- `SourceChartTransitionGraph` carries topology/orientation/corner permutation only, not a tangent metric transform.
+- The existing planar phase-front zero-turn path is floating/tolerance-based and not general non-coplanar authority.
+- Production transit rows remain dropped at `network_failure_locus` / `SurfaceCellFailureLocusDiagnostics`; this is
+  retained as `M3-CP4c3-TB6-CAND-01`, but CB8 did not publish richer rows for an invalid datum.
+- Selector 373 remains frozen at SHA-256
+  `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; selector 374 was not created.
+- Blocker compile run `33467212874` built all eight standard targets from unchanged semantic source
+  `0d943f95b42e49813060399e83a1e4180e8348f6` with GMP/GMPXX and `runtimeExecution=false`.
+- No semantic package was created. Latest semantic package remains package 75; semantic package count remains 73.
 
 ### Exact next turn
 
-Execute **`M3-CP4c-3-CB8` Code + Build only** under
-`Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`. No Directional runtime is authorized. The bounded work is: one
-exact single-writer transit datum and certified per-face views; additive production transit-audit projection;
-strengthened minimal witness; append-only selector 374; eight-target GMP/GMPXX compile; immutable package and next
-artifact-only TB plan. If exact single-datum transport cannot be represented from existing authority without
-float/tolerance or rebinding to a target field representative, stop and report the architectural authority gap.
+Execute **`M3-CP4c-3-CB8-REV` independent Review + Plan only** under
+`Architecture_M3_CP4c3_CB8_Independent_Review_Plan.md`. The review must freeze the smallest single-writer
+exact/certified transit representation (or another Amendment-17-compliant continuation owner) before authorizing
+another CB. No runtime/build/package/test/fixture/selector/product edit is allowed in that review.
 
 ### CP4c-3 open items
 
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / cause confirmed**: per-cell representative election violates Amendment 17.
-- [ ] `M3-CP4c3-TB6-CAND-01` — **ACTIVE / owner proved**: production projection/DTO drops exact transit rows.
-- [ ] selector governance — create selector 374 only by appending the minimal transit identity to frozen 373.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — genuine independent empty-network product red; deferred from CB8.
+- [ ] `M3-CP4c3-TB3-R1-CAND-01` — **ACTIVE / architectural authority gap**: Amendment 17 requires one datum, while
+  current products provide branch correspondence and per-face representatives but no exact/certified arbitrary-ray
+  projection across non-coplanar fans.
+- [ ] `M3-CP4c3-TB6-CAND-01` — **ACTIVE / owner proved**: production projection/DTO drops exact transit rows; repair
+  only after the review freezes the correct datum/projection authority those rows must publish.
+- [ ] selector governance — keep selector 373 immutable; create selector 374 only after the minimal transit identity
+  is strengthened to falsify the old target-representative mechanism.
+- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — genuine independent empty-network product red; deferred.
 - [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere `NoCarrierMatch / SourceEdgeUnavailable`; deferred.
 - [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — `saturationUsed=true`; deferred quality/coverage debt.
 - [ ] `M3-CP4c3-DEFN-R1-CAND-01` — partial; mechanical zero-unbound proof still owed.
@@ -101,7 +107,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 TB6 preserves the accepted 365-prefix but remains RED at ordinal 366. TB6-REV confirms per-cell-representative election still violates Amendment 17. Exact next is runtime-free `M3-CP4c-3-CB8` under the frozen AW0–AW9 plan.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 TB6 preserves the accepted 365-prefix but remains RED at ordinal 366. CB8 triggered its AW1 architectural stop because current products lack exact/certified one-ray projection across a non-coplanar fan. Exact next is independent `M3-CP4c-3-CB8-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -111,7 +117,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2:** TB6 preserves the accepted 365-prefix and first-reds ordinal 366 at `VertexTransitSectorUnresolved`, source vertex 30, with two published faces. TB6-REV proves current source still elects from one target-local representative per cell and localizes the missing audit to the production projection DTO. Owned by runtime-free `CB8`; no candidate-order, tolerance, float-transport, or target-representative shortcut.
+- [ ] **CP4c-3 criterion C2:** TB6 preserves the accepted 365-prefix and first-reds ordinal 366 at `VertexTransitSectorUnresolved`, source vertex 30, with two published faces. CB8 stopped before semantic editing because current source/atlas authority has no exact/certified arbitrary-ray projection across the non-coplanar fan. Owned next by independent `CB8-REV`; no candidate-order, tolerance, float-transport, `signedLift`-as-ray, or target-representative shortcut.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
 - [ ] `G4-B002`: exact torus `InvalidHardRailPairing`; revised M4.

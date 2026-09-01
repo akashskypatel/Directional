@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-01 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB6` is a valid semantic RED on immutable package **75**: 365/365 accepted prefix green, first red ordinal 366 at vertex 30 with two published faces, and the required 367–373 remainder completed 1 PASS / 6 RED with zero gate credit. Amendment 17 is not adjudicable from the production projection because its exact state/election rows are absent. **NEXT:** independent `M3-CP4c-3-TB6-REV`.)
+**Status date:** 2026-09-01 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB6` remains the latest semantic RED on immutable package **75**: 365/365 accepted prefix green, first red ordinal 366 at vertex 30, remainder 1 PASS / 6 RED. `M3-CP4c-3-CB8` triggered its frozen AW1 architectural stop before semantic editing: current products publish exact branch correspondence and exact face-local representatives, but no exact/certified arbitrary-ray projection through a general non-coplanar fan. The unchanged source is eight-target GMP compile-green with `runtimeExecution=false`. **NEXT:** independent `M3-CP4c-3-CB8-REV`.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open, TB6 preserves 365/365 and first-reds ordinal 366 at the vertex-30 exact transit/election surface; independent TB6 review is next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open, TB6 first-reds ordinal 366; CB8 hit the exact-transit-authority stop, so independent CB8 review is next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

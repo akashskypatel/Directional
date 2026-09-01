@@ -92,53 +92,54 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB8` (Code + Build, runtime-free)
+## Mandatory next turn — `M3-CP4c-3-CB8-REV` (independent Review + Plan only)
 
-`M3-CP4c-3-TB6-REV` is **COMPLETE**. Review record:
-`Architecture_M3_CP4c3_TB6_Independent_Review_Record.md`.
+`M3-CP4c-3-CB8` is **COMPLETE / ARCHITECTURAL STOP / BUILD GREEN / RUNTIME-FREE**. Report:
+`Architecture_M3_CP4c3_CB8_Code_Build_Report.md`.
 
-The review independently re-established package 75 / TB6 evidence, corrected the TB6 result-artifact record to
-**`9782227361` / `e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`**, and proved the mechanical cause.
-Current `resolve_field_vertex_transit` transports an exact branch label but then assigns each target face's local
-`nextPairing->direction` as `incomingDirection`; the election therefore still tests one representative per cell and
-violates Amendment 17. The production pipeline separately drops the resolver's exact state rows at
-`network_failure_locus` / `SurfaceCellFailureLocusDiagnostics`. The candidate-face branch sets at vertex 30 are
-provably geometrically distinct in the committed raw field.
+CB8 re-established the TB6-REV defect and then triggered its frozen AW1 stop rule. The current atlas publishes exact
+face-local `FieldBranchBoundaryPairing::direction` values plus quarter-turn/`signedLift` **branch correspondence**,
+but no exact/certified transform for one arbitrary incoming ray across a general non-coplanar vertex fan.
+`SourceChartTransitionGraph` is topological only, and the existing physical zero-turn path is planar and
+floating/tolerance-based. Therefore the one-datum projection required by Amendment 17 cannot be manufactured from
+current authority without violating Amendment 18 or substituting the target face's representative.
 
-CB8 is frozen by `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`:
+No product/test/fixture/selector semantic byte changed. Selector **373** remains 373 lines with SHA-256
+`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; selector 374 was **not** created because
+the current minimal witness does not yet falsify the old mechanism. No new semantic package was created.
 
-- establish one exact single-writer continuation datum and derive/certify every fan-state sector view from it;
-- never rebind the datum to a target local field representative or treat `signedLift` as arbitrary-ray transport;
-- carry the exact transit audit through the production diagnostic DTO;
-- strengthen `ResolvedBranchCorrection.MinimalExactVertexTransitWitnessPublishesKnownFanState`;
-- preserve selector 373 byte-for-byte and append that identity as ordinal 374 in a new selector;
-- compile the default eight targets through the reusable GMP/GMPXX workflow; package only; `runtimeExecution=false`;
-- draft the immutable selector-374 TB successor.
+The unchanged semantic source `0d943f95b42e49813060399e83a1e4180e8348f6` was compile-checked through the
+mandatory reusable workflow: run `33467212874`, result artifact `9785279716`
+(`aa85ae5f6c4ca3d4e0a559f033ffea9c04030ceb6dcfc58fe7cbbdb4f64251f2`), log artifact `9785279945`
+(`febed58abc2d515505ce7a5d3a937fff4650d5c2a86c4bed42fd6de96ba6f25f`). All eight targets linked,
+`DIRECTIONAL_ENABLE_GMP=ON`, GMPXX/GMP link evidence is present, source status is clean, and
+`runtimeExecution=false`.
 
-If an exact/certified single-datum projection cannot be represented by current source/atlas authority, CB8 must
-stop and report that architectural gap rather than restore float transport, use tolerance, or substitute the target
-pairing. Do **not** touch ordinal 370, sphere, saturation, barrier semantics, `FaceInterior`, or accepted selectors.
+Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**. Ordinal 370, sphere and
+saturation remain deferred and unchanged.
 
-Stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **73**. Accepted selector **365** is
-unchanged; current unaccepted CP4c-3 selector **373** remains frozen until CB8 creates append-only 374.
+Exact next: independent **`M3-CP4c-3-CB8-REV`** under
+`Architecture_M3_CP4c3_CB8_Independent_Review_Plan.md`. The loop stops at this review boundary. The review must
+freeze the missing single-writer exact/certified transit authority (or another Amendment-17-compliant upstream
+continuation owner) before another Code + Build turn is authorized.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Code + Build guidance
+- independent Review + Plan guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — current substantive authority.
-1. `.agents/Directional/Architecture_M3_CP4c3_CB8_Code_Build_Plan.md` — exact frozen CB8 scope.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB6_Independent_Review_Record.md` — cause/ownership evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md` — authoritative runtime evidence.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendments 18/19 and exactness constraints.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` — Amendment 17 and vertex-30 partition proof.
-6. `DESIGN.md` §7.2/§7.2.1, `LESSONS.md` §4/§5/§6/§8, and `ROADMAP.md` relevant CP4c-3 sections.
-7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, and `M3_CP4c_Consolidated_Record.md`.
+1. `.agents/Directional/Architecture_M3_CP4c3_CB8_Independent_Review_Plan.md` — exact next review scope.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB8_Code_Build_Report.md` — AW1 blocker proof and compile evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB6_Independent_Review_Record.md` — Amendment-17 cause and representation constraint.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — Amendment 18 and rejected CB6 float path.
+5. `DESIGN.md` Amendments 16–19 and the current `FieldTransportAtlas` / `SurfaceCellTracing` / `SourceChartTransitions` contracts.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `ROADMAP.md`, and `M3_CP4c_Consolidated_Record.md`.
 
-No Directional runtime is authorized in CB8. Linking to GMP/GMPXX is mandatory for every compile.
+No Directional runtime, compile, package mutation, test, benchmark, fixture, selector, or product-code edit is
+authorized in the independent review turn.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
