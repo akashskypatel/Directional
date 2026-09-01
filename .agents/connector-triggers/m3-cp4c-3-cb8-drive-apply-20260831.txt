@@ -1,6 +1,0 @@
-purpose=M3-CP4c-3-CB8 documentation closeout apply
-base_sha=0d943f95b42e49813060399e83a1e4180e8348f6
-patch_sha256=6e4f5a3ed9fb9188a9731a62216780245d7fe895500e3a3ec22f476c2878a467
-drive_file_id=1JshaUJlmGjMM-uA1mOYAdFNvNJS1d9Jb
-runtimeExecution=false
-retry=1
