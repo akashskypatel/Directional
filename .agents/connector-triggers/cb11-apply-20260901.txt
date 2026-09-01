@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-CB11 apply verified Google Drive patch
+base_sha=1ad5d2191c65cd1af7443559a6446236ec499ecd
+patch_sha256=fca796d6d6afcda9f83b602635cd46bd384f661d4a550182a85cd85fd73267c8
+retry=0
