@@ -1,3 +1,61 @@
+## M3-CP4c3-TB8-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md`, measures **BA0-BA7** discharged. Static only:
+  no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BA0 re-established independently.** Semantic source `e2b5929` exists and is an ancestor of branch HEAD; selector
+  374 LF SHA-256 recomputes to `d496ce96...c503c4f` and selector 375 to `aa7b22bb...06a8f3a0`; 374 has 374 identities
+  and 375 has 375; ordinals 366 and 367-375 match the TB8 report line for line. Three results TB8 does not assert:
+  **375 = 374 + exactly one appended line** (no reordering, so 374 is byte-frozen through CB10); 374's hash is
+  asserted identically in the CB9 report, TB7 plan/report/review, CB10 report and TB8 plan/report - five consecutive
+  turns; and **the first 365 lines of selector 375 are byte-identical to accepted selector 365**. Finally,
+  `git diff e2b5929 HEAD -- src include tests benchmarks CMakeLists.txt cmake` is **empty**, which is what licenses
+  static review of the working tree as evidence about package 78.
+- **BA1 - the locus reduces to two sites and no further.** `InvalidNetworkTerminalOwnership` has **twelve** emission
+  sites in `SurfaceCellTracing.cpp`. Eight cannot populate `sourceEdge` + `sourceFace` + `branch` together; `:3132`
+  and `:3879` require the emitted edge to be a `terminalBarrier`, and edge `36-38` has an **exactly 0 degree
+  dihedral** between two identical-normal faces inside a 50-face coplanar patch at `x = -1.4`, so it is not a hard
+  feature edge and can never be one. Survivors: **`:1900`** (singularity-termination port ownership; the live
+  disjunct is a `BarrierAbsorbed` singularity contributing no ports) and **`:3920`** (the
+  `finalize_field_aligned_events` fall-through - `terminalContact` is **never read** in `:3745-3935`, and
+  `field_aligned_first_trace_contact` can never match trace index 0). They emit the **identical** rendered locus.
+- **BA2 - classified category 3, diagnostic insufficiency, over a proved two-element set.** The rendered line also
+  proves by field order that `sourceVertex`, `topologyRegion` and `vertexArrivalMode` were all empty and that
+  `vertexTransitStates` / `vertexStarTransit` were empty - so ordinal 366 is **not** a vertex-star transit failure.
+  `publishedFaceCount=0` is uninformative: `FieldAlignedCurveNetworkError::publishedFaces` is declared and **never
+  assigned anywhere**.
+- **BA3 - CB10's corrections separated and one TB8 claim corrected.** `M3-CP4c3-TB7-CAND-01` CLOSED (ordinal 366
+  clears vertex 11 on the production path; diagnostic 375 elects one owner in **both** radial orientations,
+  including the one CB9 rejected). `M3-CP4c3-TB7-REV-CAND-01` CLOSED - **verdict confirmed on different evidence**:
+  the closure holds because CB10 added the `vertexStar*` / `vertexTransitState[...]` reader to
+  `append_cp4c_failure_locus`, **not** because 328/329/375 exercise it. All three are unit-level synthetic
+  identities against the test-local renderer; **no identity in selector 375 exercises the production projection**.
+- **BA6 - one bounded successor frozen:** **`M3-CP4c-3-CB11`** under **BB0-BB9**, **diagnostic-only**.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **75**.
+
+## M3-CP4c3-TB8-REV-CAND-01 - the trace-scoped diagnostics have no production reader, and the identity that asserts losslessness tests the wrong renderer - **ACTIVE / STATIC / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB8-REV`** from static derivation; no runtime executed.
+- **Two defects on one path.**
+  1. `SurfaceCellFailureLocusDiagnostics` declares a field for **none** of `traceSeedVertex`,
+     `traceSeedSingularity`, `traceHistory`, `traceSteps`, `traceStepBudget`, `traceCombinatorialVisits`,
+     `traceCombinatorialVisitAllowance`, `singularity`, `rail`, `relatedSourceFace`, `relatedBranch`, `signedLift`,
+     `parameter`, `exactValues` or `publishedEdges`, and `RemeshPipeline.cpp` reads none of them. The complete
+     reader set is `tests/FieldAlignedCurveNetworkTests.cpp:4808-4834` (the **test-local** `network_error_locus`)
+     plus assertions in ordinals 328/329.
+  2. Accepted ordinal **329** `NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`
+     (`tests/FieldAlignedCurveNetworkTests.cpp:9127+`) constructs `FieldAlignedCurveNetworkError` values by hand and
+     asserts tokens against that same test-local renderer. It never executes `network_failure_locus`, never
+     populates a `SurfaceCellFailureLocusDiagnostics`, and never calls `append_cp4c_failure_locus`. **The
+     losslessness guarantee has never been enforced on the production path.**
+- **Why it matters as a class.** Fourth consecutive turn in which a measurement was ordered, built and discarded at
+  a stage boundary - AS1, AU1/AU3, AY7, now the trace-scoped group. AZ5 required the consumer set to be found *by
+  search against a predicate*, and it was - for the fields AY7 named. The predicate must instead be **every field of
+  the error DTO with no projected counterpart**. `LESSONS.md` section 4 lesson 78.
+- **Owner:** **BB1-BB5** of `M3-CP4c-3-CB11`.
+- **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
+  debt **5**, packages **75**.
+
 ## M3-CP4c3-TB8 — artifact-only semantic disposition — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 78 / source `e2b59295c9920db5685239c2da188858839fa94f`; run/job
@@ -21,19 +79,25 @@
   recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **75**.
 - **Owner:** independent `M3-CP4c-3-TB8-REV`; no unchanged TB retry or semantic correction before review.
 
-## M3-CP4c3-TB8-CAND-01 — network terminal ownership invalid after the mechanical path clears vertex 11 — **ACTIVE / GATING / FIRST-FAILURE / NON-STABLE**
+## M3-CP4c3-TB8-CAND-01 - network terminal ownership invalid after the mechanical path clears vertex 11 - **ACTIVE / GATING / ADJUDICATED AT TB8-REV / NON-STABLE**
 
 - **Observed:** authoritative TB8 ordinal 366 fails at
   `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`.
   Report-only ordinals 367/371/372 are blocked by the same locus.
-- **What is proved:** this is later than TB7's seed-admissibility stop and is not a repeat of that mechanism. TB8
-  serializes an edge/face/branch terminal-ownership locus and deliberately does not serialize the old inappropriate
-  `sourceVertex` field.
-- **What is not yet proved:** whether the terminal owner is missing because of a product ownership defect, an invalid
-  witness/precondition, or insufficient diagnostics; which exact terminal/event object owns the invariant; and
-  whether correction would reach vertex 30.
-- **Owner:** `M3-CP4c-3-TB8-REV` BA1–BA7. Review must reconstruct the exact endpoint/carrier/provenance path and
-  classify ownership before authoring a fix.
+- **Adjudicated at `M3-CP4c-3-TB8-REV` as BA2 category 3 - diagnostic insufficiency over a proved two-element
+  candidate set.** This is later than TB7's seed-admissibility stop and is not a repeat of that mechanism; the
+  rendered field order proves it is not a vertex-star transit failure at all.
+- **What is now proved.** Ten of the twelve `InvalidNetworkTerminalOwnership` emission sites are eliminated: eight
+  cannot populate `sourceEdge` + `sourceFace` + `branch` together, and `:3132` / `:3879` require the edge to be a
+  `terminalBarrier`, which edge `36-38` cannot be (exactly 0 degree dihedral inside a 50-face coplanar patch;
+  barriers are a subset of hard feature edges). The survivors are `:1900` and `:3920`, with **different owners** -
+  singularity port ownership versus a missing `terminalContact` branch in `finalize_field_aligned_events`.
+- **What is still not proved, and why it cannot be from this artifact.** Which of the two fired. They emit the same
+  code with the same three populated fields and the same three absent ones, and every field that would separate
+  them is dropped at the pipeline projection - see `M3-CP4c3-TB8-REV-CAND-01`.
+- **Owner:** re-owned to **`M3-CP4c-3-CB11`** (BB0-BB9, diagnostic-only), then to `M3-CP4c-3-TB9-REV` for the
+  product correction once TB9 names the site. **No product correction is authorized before then**, and CB11 must
+  **not** repair the `terminalContact` fall-through it is ordered to diagnose.
 - **Accounting:** gating on an unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain
   **44 / 14 / 30**, debt **5**, packages **75**.
 
@@ -41,8 +105,12 @@
 
 - `M3-CP4c3-TB7-CAND-01` is **CLOSED / RUNTIME PROVED**: ordinal 366 clears the source-vertex-11
   `VertexTransitSeedUnavailable` stop, and diagnostic 375 passes both exact radial `FaceInterior` orientations.
-- `M3-CP4c3-TB7-REV-CAND-01` is **CLOSED / RUNTIME PROVED** for its audit-object reachability and renderer/consumer
-  defect: gating identities 328/329 and diagnostic 375 execute the repaired surfaces.
+- `M3-CP4c3-TB7-REV-CAND-01` is **CLOSED** for its audit-object reachability and renderer/consumer defect.
+  **Reason corrected at `M3-CP4c-3-TB8-REV`:** the closure holds on static evidence - CB10 added the
+  `vertexStar*` / `vertexTransitState[...]` reader to `append_cp4c_failure_locus`. It does **not** hold on the
+  basis stated here: identities 328, 329 and 375 are unit-level synthetic identities that assert against the
+  test-local `network_error_locus` or drive `resolve_field_vertex_transit` directly, and **none of them executes
+  `network_failure_locus`, populates a `SurfaceCellFailureLocusDiagnostics`, or calls `append_cp4c_failure_locus`**.
 - `M3-CP4c3-TB6-CAND-01` remains **ACTIVE for mechanical vertex-30 acceptance/projection**. The generic projection
   path now has runtime evidence, but TB8 does not reach vertex 30, so the row-209/row-208 owner condition is not
   accepted.

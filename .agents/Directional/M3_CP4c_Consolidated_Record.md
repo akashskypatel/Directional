@@ -4,14 +4,20 @@
 
 **Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED /
 ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. `M3-CP4c-3-TB8` is COMPLETE / valid semantic RED against
-immutable package **78** from source `e2b59295c9920db5685239c2da188858839fa94f`: ordinals **1–365 PASS**, ordinal
+immutable package **78** from source `e2b59295c9920db5685239c2da188858839fa94f`: ordinals **1-365 PASS**, ordinal
 **366** first-reds at
-`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`. TB8 therefore
-clears CB10's former source-vertex-11 seed stop but does not reach vertex 30. Report-only 367–374 is **1 PASS / 7
-RED** with zero gate credit; diagnostic 375 PASSes separately and runtime-closes the radial-arrival/audit-rendering
-defects. Ordinal 374 remains the pre-classified invalid folded-cone witness. Exact next is independent
-**`M3-CP4c-3-TB8-REV`** REVIEW + PLAN only. Accepted authority remains **365/365**. Stable accounting remains
-**44 / 14 / 30**, produced-witness debt **5**, authoritative semantic M3 package count **75**.
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`; report-only
+367-374 is **1 PASS / 7 RED**; diagnostic 375 PASSes separately. **`M3-CP4c-3-TB8-REV` has adjudicated that red as
+BA2 category 3 - diagnostic insufficiency over a proved two-element candidate set.** Ten of the twelve emission
+sites of that typed code are eliminated by proof; the two survivors (`SurfaceCellTracing.cpp:1900` and `:3920`) have
+different owners and emit the identical rendered locus, because every discriminating field of
+`FieldAlignedCurveNetworkError` - `traceSeedVertex`, `traceSeedSingularity`, `traceHistory`, `traceSteps`,
+`singularity`, `rail`, `relatedSourceFace`, `relatedBranch`, `parameter`, `exactValues`, ... - has no field in
+`SurfaceCellFailureLocusDiagnostics` and no reader in `RemeshPipeline.cpp`. `M3-CP4c3-TB7-CAND-01` and
+`M3-CP4c3-TB7-REV-CAND-01` are **CLOSED**; vertex 30 is still not reached. Exact next is
+**`M3-CP4c-3-CB11`** - Code + Build, **diagnostic-only**, under **BB0-BB9**. Accepted authority remains **365/365**.
+Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic M3 package count
+**75**.
 
 ## 1. Separate current/future authority
 
@@ -37,7 +43,11 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_CB10_Code_Build_Report.md` — final CB10 implementation, compile and immutable package-78 authority.
 - `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB8 execution authority for package 78.
 - `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — **current measured runtime authority**: 365 green, first red ordinal 366 at terminal ownership, complete remainder and diagnostic 375.
-- `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` — **exact next-turn review authority**, BA0–BA7.
+- `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` - discharged review scope, BA0-BA7.
+- `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - **exact next-turn authority**: the BA0-BA7
+  adjudication and the frozen `M3-CP4c-3-CB11` successor, section 8 **BB0-BB9**.
+- `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` - diagnostic selector, 375 identities,
+  `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`; selector 374 plus exactly one appended line.
 - `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — append-only **diagnostic** selector; selector 374 is its unchanged byte prefix and remains the gate.
 - `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — current compile/package evidence.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB2 execution/retry authority.
@@ -93,7 +103,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB8 re-proved 365/365, cleared the vertex-11 seed defect, and first-reds at `InvalidNetworkTerminalOwnership` on edge 36-38 / face (36,38,39) / branch 2. Exact next is independent TB8-REV.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB8 re-proved 365/365 and cleared the vertex-11 seed defect. TB8-REV classified the ordinal-366 `InvalidNetworkTerminalOwnership` red as diagnostic insufficiency over two proved candidate sites. Exact next is `M3-CP4c-3-CB11`, diagnostic-only under BB0-BB9.** |
 
 ### 2.1 CP4c-0
 
@@ -595,7 +605,7 @@ After the durable start-of-turn checklist, load:
 1. `ORIENTATION.md` — read first and update during the REVIEW.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` — **exact next-turn BA0–BA7 authority.**
+4. `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - **exact next-turn BB0-BB9 authority.**
 5. `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority.**
 6. `Architecture_M3_CP4c3_CB10_Code_Build_Report.md`
 7. `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — AZ0–AZ9 prior cause/corrective authority.
@@ -604,10 +614,12 @@ After the durable start-of-turn checklist, load:
 10. `Regression_Root_Cause_Tracker.md`
 11. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB8-REV` — independent REVIEW + PLAN only.** Follow **BA0–BA7** in
-`Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`. Reconstruct the new ordinal-366
-`InvalidNetworkTerminalOwnership` locus at edge `36-38`, face `(36,38,39)`, branch 2; classify its owner before
-prescribing a fix; keep vertex-30 acceptance open; preserve the independent sphere/saturation/370/374 and mechanical
-zero-unbound debts unless shared ownership is proved; reconcile candidate/accounting state; update `ORIENTATION.md`;
-and freeze exactly one bounded successor. Do not execute runtime/build/package or mutate product/test/fixture/selector
-bytes in the review.
+**Exact next:** **`M3-CP4c-3-CB11` - Code + Build, DIAGNOSTIC-ONLY.** Follow section 8 **BB0-BB9** of
+`Architecture_M3_CP4c3_TB8_Independent_Review_Record.md`. Carry the trace-scoped fields of
+`FieldAlignedCurveNetworkError` into `SurfaceCellFailureLocusDiagnostics` / `network_failure_locus` and render them
+in `append_cp4c_failure_locus`; add a typed per-site discriminator **as a field**, never by splitting the
+`InvalidNetworkTerminalOwnership` enum value, which accepted ordinal 328 asserts; make `publishedFaces` honest;
+re-aim accepted ordinal 329's losslessness guarantee at the production renderer. **Diagnose the `terminalContact`
+fall-through in `finalize_field_aligned_events` and do not repair it.** Selectors 374 and 375 stay byte-frozen;
+append selector 376 only on demonstrated falsification. GMP/GMPXX linkage is mandatory. **No product correction is
+authorized until `M3-CP4c-3-TB9` names the site.**

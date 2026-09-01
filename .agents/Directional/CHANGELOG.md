@@ -1,3 +1,54 @@
+## 2026-09-01 — `M3-CP4c-3-TB8-REV`: ordinal 366 classified as diagnostic insufficiency; `M3-CP4c-3-CB11` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`, measures **BA0–BA7**. Record:
+`Architecture_M3_CP4c3_TB8_Independent_Review_Record.md`. Static only — no runtime, compile, link, package,
+benchmark, or product/test/fixture/selector mutation.
+
+**BA0.** Semantic source `e2b5929` verified as an ancestor of branch HEAD; selector 374 recomputes to
+`d496ce96…c503c4f` and selector 375 to `aa7b22bb…06a8f3a0`; ordinals 366 and 367–375 match the TB8 report line for
+line. Three additional results: **375 = 374 + exactly one appended line**, so 374 is byte-frozen through CB10 and its
+hash is asserted identically across five consecutive turns; **the first 365 lines of selector 375 are byte-identical
+to accepted selector 365**; and `git diff e2b5929 HEAD` over `src include tests benchmarks CMakeLists.txt cmake` is
+**empty**, which licenses static review of the working tree as evidence about package 78.
+
+**BA1.** `InvalidNetworkTerminalOwnership` has **twelve** emission sites in `SurfaceCellTracing.cpp`. **Ten are
+eliminated by proof.** Eight cannot populate `sourceEdge` + `sourceFace` + `branch` together. `:3132` and `:3879`
+require the emitted edge to be a `terminalBarrier`: edge `36-38` is interior between rows 50 `(36,37,38)` and 51
+`(36,38,39)` with **identical unit normals `(-1,0,0)`** and an **exactly 0° dihedral**, inside a 50-face coplanar
+patch at `x = -1.4`; barriers are a subset of hard feature edges, so it can never be one. The survivors are `:1900`
+(singularity-termination port ownership; live disjunct is a `BarrierAbsorbed` singularity contributing no ports) and
+`:3920` (the `finalize_field_aligned_events` fall-through — **`terminalContact` is never read in `:3745-3935`**, and
+`field_aligned_first_trace_contact` compares trace `i` only against indices `< i` so it can never match trace 0).
+They emit the **identical** rendered locus.
+
+**BA2.** Classified **category 3 — diagnostic insufficiency** over that proved two-element set. The rendered field
+order also proves `sourceVertex`, `topologyRegion`, `vertexArrivalMode`, `vertexTransitStates` and
+`vertexStarTransit` were all empty, so ordinal 366 is **not** a vertex-star transit failure.
+`FieldAlignedCurveNetworkError::publishedFaces` is **declared and never assigned anywhere**, so
+`publishedFaceCount=0` is uninformative.
+
+**BA3.** `M3-CP4c3-TB7-CAND-01` **CLOSED**. `M3-CP4c3-TB7-REV-CAND-01` **CLOSED**, verdict confirmed but its
+evidentiary basis **corrected**: the closure holds because CB10 added the `vertexStar*` / `vertexTransitState[…]`
+reader to `append_cp4c_failure_locus`, not because identities 328/329/375 exercise it — all three are unit-level
+synthetic identities and **no identity in selector 375 exercises the production projection**. Accepted ordinal 329,
+`NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`, asserts against the **test-local** `network_error_locus`.
+
+**BA4–BA5.** Sphere (368), saturation (369), ordinal 370, ordinal 374 and the mechanical zero-unbound debt preserved
+independently. New candidate `M3-CP4c3-TB8-REV-CAND-01` opened. `M3-CP4c3-TB6-CAND-01`,
+`M3-CP4c3-DEFN-R2-CAND-01` and `M3-CP4c3-TB7-CAND-02` remain ACTIVE. **+0 stable events / +0 recurrences**; totals
+remain **44 / 14 / 30**, debt **5**, packages **75**. A non-stable pattern recurrence is recorded: this is the
+**fourth** consecutive turn losing a measurement at a stage boundary (AS1, AU1/AU3, AY7, now the trace-scoped group).
+
+**BA6.** One bounded successor frozen: **`M3-CP4c-3-CB11`** under **BB0–BB9**, **diagnostic-only**. Carry the
+trace-scoped fields to the production renderer; add a typed per-site discriminator **as a field** (the enum must not
+be split — accepted ordinal 328 asserts it); make `publishedFaces` honest; re-aim ordinal 329's guarantee at the
+production path. **CB11 must diagnose the `terminalContact` fall-through and must not repair it.** No product
+correction is authorized until TB9 names the site.
+
+**Lessons added.** §4 **78** — a guarantee is scoped by its call graph, not its name. §4 **79** — one typed name over
+twelve emission conditions is an untyped failure, and when an accepted identity asserts the name the discriminator
+belongs in an added field.
+
 ## 2026-09-01 — `M3-CP4c-3-TB8`: vertex-11 defect cleared; new terminal-ownership first red at ordinal 366
 
 Artifact-only Test + Benchmark against immutable package **78** from semantic source

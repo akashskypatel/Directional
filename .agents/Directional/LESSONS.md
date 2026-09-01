@@ -1302,6 +1302,33 @@ building any conclusion on it.**
     correct rule reused for a question it was not written to answer**.
     `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §3, §6.
 
+78. **A guarantee is scoped by its call graph, not by its name.** Accepted identity
+    `ResolvedBranchCorrection.NetworkDiagnosticsPublishEveryRequiredLocusLosslessly` has passed every gate since it
+    was written, while the production projection silently discards fifteen fields of
+    `FieldAlignedCurveNetworkError`. The identity constructs error objects by hand and asserts tokens against
+    `network_error_locus` — a **test-local** renderer. The path every CP4c production witness actually reports
+    through — `RemeshPipeline.cpp::network_failure_locus` → `SurfaceCellFailureLocusDiagnostics` →
+    `append_cp4c_failure_locus` — is never touched. The authoring control: an identity whose name asserts a property
+    of *the system* must be routed through the entry point the system uses; if it builds the DTO itself, its name may
+    only claim a property of the DTO. Declared at `M3-CP4c-3-TB8-REV`; the cost was one full turn spent proving that
+    a red could not be attributed.
+
+79. **One typed name over many emission conditions is an untyped failure — and splitting the name is often
+    unavailable.** `FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership` is emitted at **twelve**
+    distinct sites for twelve distinct conditions. When it fired at TB8 ordinal 366, static proof eliminated ten and
+    could go no further, because the two survivors emit the identical rendered locus. `M3-CP4c-3-CB10`'s AZ3 rule —
+    one typed name per condition — had been applied to the three vertex-star seed conditions and nowhere else. The
+    catch worth remembering: an **accepted identity may assert the enum value** (ordinal 328 asserts this one), so
+    splitting it would be a stable regression. The discriminator then belongs in an **added field**, which is
+    additive and cannot break an accepted assertion. Generalize AZ3 to every multi-site code, by field where the name
+    is load-bearing.
+
+80. **A diagnostic field that is declared and never assigned is worse than a missing one.**
+    `FieldAlignedCurveNetworkError::publishedFaces` has a declaration, a projection, and a rendered token, and **no
+    assignment anywhere in `src/` or `include/`**. Every network-stage failure therefore renders
+    `publishedFaceCount=0`, which reads as an observation about the network and is in fact a property of the code.
+    Before trusting a locus token as evidence, confirm the field behind it is written on the path that produced it.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
