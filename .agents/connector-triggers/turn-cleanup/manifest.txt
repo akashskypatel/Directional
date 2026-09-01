@@ -1,3 +1,6 @@
 # M3-CP4c-3-TB6 temporary state
 .agents/connector-triggers/source-snapshot/m3cp4c3-tb6-20260901.txt
 .agents/connector-triggers/m3-cp4c3-tb6-20260901.txt
+.agents/Directional/turn-payloads/m3cp4c3-tb6-preflight.sh
+.agents/Directional/turn-payloads/m3cp4c3-tb6-runtime.sh
+.agents/Directional/turn-payloads/m3cp4c3-tb6-postflight.sh
