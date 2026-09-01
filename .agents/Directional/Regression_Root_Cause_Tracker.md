@@ -1,4 +1,16 @@
-## M3-CP4c3-TB6-CAND-01 — gating vertex-30 red omits CB7 exact transit/election rows from production evidence — **ACTIVE / DIAGNOSTIC-PROJECTION GAP / GATING / NON-STABLE**
+## M3-CP4c3-TB6-REV — independent adjudication of TB6 mechanical and report-only findings — **CURRENT REVIEW AUTHORITY / NON-STABLE**
+
+- **Evidence identity correction:** authoritative TB6 result artifact is `9782227361`, SHA-256 `e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`; the prior `5748464145 / f084...` documentation pair was wrong. Runtime classification is unchanged.
+- **Mechanical cause confirmed:** current CB7 source sets each transported state's `incomingDirection` from the target face's `nextPairing->direction`. The exact predicate therefore consumes one local representative per cell. Fixture rows 41 and 208 have disjoint branch-vector families, proving the two candidate-face representatives are geometrically distinct under every gauge permutation. `M3-CP4c3-TB3-R1-CAND-01` remains ACTIVE with Amendment 17 violated.
+- **Diagnostic owner proved:** `FieldAlignedCurveNetworkError::vertexTransitStates` retains the exact rows; `RemeshPipeline.cpp::network_failure_locus` / `SurfaceCellFailureLocusDiagnostics` drops them. `M3-CP4c3-TB6-CAND-01` remains ACTIVE, now localized to the production projection/DTO.
+- **Prior first-failure/exactness candidates:** `M3-CP4c3-TB5-CAND-01` is RESOLVED as the first-failure surface; `M3-CP4c3-TB5-REV-CAND-01` is RESOLVED as the CB6 float-round-trip violation. CB7 corrected the numeric derivation but exposed/reintroduced a separate semantic single-authority defect.
+- **Selector governance:** the CB7 minimal witness was required by TB5-REV to become permanent regression authority. CB8 must preserve selector 373 and append the same identity as ordinal 374 in a new required-green selector.
+- **Ordinal 370:** repaired witness is a genuine independent product red. Static owner is `SurfaceCutGraph::canonical_candidate`, which contains no `EmptyNetworkOnClosedSurface` branch; keep `M3-CP4c2-TB-X2-R8-CAND-02` ACTIVE and defer it from CB8.
+- **Other report-only:** sphere `NoCarrierMatch / SourceEdgeUnavailable`, saturation `saturationUsed=true`, and mechanical zero-unbound debt remain active/deferred; 367/371/372 are upstream-blocked and their contracts remain unmeasured.
+- **Accounting:** accepted 365-prefix remains green and CP4c-3 is unaccepted. **+0 stable events / +0 recurrences.** Totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**.
+- **Owner:** `M3-CP4c-3-CB8` under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`; runtime-free.
+
+## M3-CP4c3-TB6-CAND-01 — gating vertex-30 red omits CB7 exact transit/election rows from production evidence — **ACTIVE / OWNER PROVED: PRODUCTION PROJECTION DTO / GATING / NON-STABLE**
 
 - **Observed in authoritative TB6.** Package 75 / source `e926ada023bc51220628be550bbe9a87f98d7067`; run/job `33458067065 / 99702200466`; immutable pre/postflight PASS; ordinals **1–365 PASS**, ordinal **366 RED**.
 - **Measured locus.** `VertexTransitSectorUnresolved`; source vertex 30; face `(24,30,32)`; branch 1; `FaceInterior`; `publishedFaceCount=2`; faces `(25,30,31)|(30,31,119)`; no barrier absorption/incidence.
@@ -7,7 +19,7 @@
 - **Owner:** `M3-CP4c-3-TB6-REV` under `Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md`, AV1–AV4. If static reconstruction cannot prove the exact election, successor is diagnostic-only.
 - **Stable-count rationale:** accepted ordinals 1–365 remain 365/365 green; CP4c-3 is unaccepted. **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, semantic packages **73**.
 
-## M3-CP4c3-TB5-CAND-01 — Amendment-17 runtime moves ordinal 366 to a zero-candidate vertex-11 transit with no state diagnostics — **ACTIVE / CAUSE ESTABLISHED: SILENT SEED-DROP / GATING / NON-STABLE**
+## M3-CP4c3-TB5-CAND-01 — Amendment-17 runtime moved ordinal 366 to a zero-candidate vertex-11 transit with no state diagnostics — **RESOLVED AS FIRST-FAILURE SURFACE / NON-STABLE**
 
 - **Observed in authoritative TB5.** Immutable package 74 / source `49536cf7b4b261bd52f36a91c861b6459db356a4`; run/job `33448925069 / 99674216849`; immutable pre/postflight PASS. Ordinals **1–365 PASS** and ordinal **366** first-reds exactly once.
 - **Measured locus.** `VertexTransitSectorUnresolved`; `sourceVertex=11`; arrival face `(8,10,11)`; branch 1; region 0; `FaceInterior`; `publishedFaceCount=0`; `barrierAbsorbed=false`; `barrierIncident=false`.
@@ -41,7 +53,7 @@
 
 - **`M3-CP4c-3-TB6` disposition — RUNTIME CLEARS THE SILENT SEED-DROP AS FIRST FAILURE.** Package 75 executes the mechanical witness past TB5's regular vertex-11 zero-state stop and returns to source vertex 30 with `publishedFaceCount=2`. This is sufficient to close the **silent-seed-drop first-failure** claim, not CP4c-3: ordinal 366 remains red. The accepted 365-prefix is unchanged; **+0/+0**.
 
-## M3-CP4c3-TB5-REV-CAND-01 — floating point reaches a topological decision in the transit datum — **ACTIVE / EXACTNESS VIOLATION / NON-STABLE**
+## M3-CP4c3-TB5-REV-CAND-01 — floating point reached a topological decision in the transit datum — **RESOLVED BY CB7 EXACT PATH / NON-STABLE**
 
 - **Observed statically at `M3-CP4c-3-TB5-REV`** from committed source; no runtime executed.
 - **Mechanism.** CB6 satisfied Amendment 17's "single datum" by carrying the continuation direction as a
@@ -72,7 +84,7 @@
 
 - **`M3-CP4c-3-TB6` disposition — EXACT PATH IS THE EXECUTED AUTHORITY; NO FLOAT-ROUND-TRIP FAILURE REAPPEARS.** TB6 consumes CB7/package-75 bytes and advances the mechanical witness beyond the vertex-11 seed/drop locus to vertex 30. The exactness violation identified at TB5-REV is corrected in source authority; the remaining red is owned separately by the transit/election evidence gap. **+0/+0**.
 
-## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE FAMILY PROVED / AMENDMENT 17 MASKED, NOT CLEARED / GATING / NON-STABLE**
+## M3-CP4c3-TB3-R1-CAND-01 — mechanical production witness first-reds at `VertexTransitSectorUnresolved` — **ACTIVE / CAUSE CONFIRMED: PER-CELL REPRESENTATIVE ELECTION / AMENDMENT 17 VIOLATED / GATING / NON-STABLE**
 
 - **`M3-CP4c-3-TB6` status — VERTEX 30 REACHED AGAIN, AMENDMENT 17 STILL NOT ADJUDICATED.** First red 366 returns to vertex 30 / `(24,30,32)` / branch 1 with two published faces `(25,30,31)` and `(30,31,119)`. The authoritative production exception does not serialize CB7's exact per-state/election diagnostics, so equality or inequality of the elected exact directions is unknown. Keep this candidate ACTIVE and route the missing discriminator through `M3-CP4c3-TB6-CAND-01`; do not choose a candidate by order. **+0/+0**.
 

@@ -28,16 +28,19 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-08-31 at `M3-CP4c-3-TB5-REV`, which accepted TB5 as a valid semantic red at ordinal
-**366**, established that the new zero-candidate / **zero-diagnostic** failure at vertex 11 is a **silent
-seed-drop** — the transit walk never started — found that CB6 satisfied Amendment 17 by round-tripping the
-continuation direction through **world-space doubles** and so broke exactness, ruled Amendment 17 **masked rather
-than cleared**, declared **Amendments 18 and 19**, and adjudicated a user-supplied adversarial architecture review
-in full. Measures **AU0–AU9**; exact next is `M3-CP4c-3-CB7`, Code + Build, runtime-free. **Extended 2026-09-01:** that
-review's rejection of five architecture proposals was **re-evaluated under a production lens** and largely
-reversed — the fixtures were measured to be near-uniform, sliver-free, low-valence meshes that cannot exhibit the
-cases the proposals target — declaring **Amendments 20 and 21** and opening a witness-coverage gap
-(`ROADMAP.md` §3b-bis). **CP4c-3's work is unchanged.**
+**Currency.** Last updated 2026-09-01 at `M3-CP4c-3-TB6-REV`. TB6 is a valid semantic red on immutable
+package **75**: ordinals **1–365 PASS**, first red **366** at regular source vertex **30** with two published
+candidate faces. Independent source/fixture reconstruction now proves that CB7 restored exact arithmetic but
+reintroduced Amendment 17's semantic defect: every fan transition rotates the branch label and then assigns
+`incomingDirection = nextPairing->direction`, so the election again tests **one exact local representative per
+cell**, not one continuation datum against a partition. The production pipeline also drops the resolver's exact
+per-state audit rows at `network_failure_locus` / `SurfaceCellFailureLocusDiagnostics`. The compiled minimal transit
+witness was required by TB5-REV to become permanent regression authority but is absent from selector 373. Exact
+next is **`M3-CP4c-3-CB8`**, runtime-free Code + Build, under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`:
+introduce one exact single-writer transit datum, preserve it through certified per-face views, publish the audit,
+strengthen the minimal witness, and append it as ordinal 374 without changing selector 373. Stable accounting
+remains **44 events / 14 categories / 30 recurrences**, debt **5**, semantic M3 packages **73**. Ordinal 370 is a
+separate measured `SurfaceCutGraph::canonical_candidate` product red and is explicitly deferred from CB8.
 
 *(Prior turns, retained for lineage: `TB3-R1-REV` confirmed Amendment 16/P2 effective and ordered the typed
 failure-locus channel that CB5 delivered; `TB4-REV` falsified all three enumerated mechanisms, proved from the
@@ -87,6 +90,14 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 `D0 Certified` → `D1 QualityRelaxed` → `D2 LocallyDegraded` → `D3 Partial` → `D4 DiagnosticOnly`.
 
 ## 3. Where we are
+
+**Current authority — TB6-REV.** Accepted authority remains selector **365**. CP4c-3's current frozen gate is
+selector **373** (`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`) and is still unaccepted: TB6
+re-proved 365/365 then first-red ordinal 366 at vertex 30. `M3-CP4c-3-CB8` is authorized to create selector **374**
+only by appending `ResolvedBranchCorrection.MinimalExactVertexTransitWitnessPublishesKnownFanState` to byte-frozen
+373; selector 374 does not exist yet and has no hash until CB8. Stable accounting is **44 / 14 / 30**, produced-
+witness debt **5**, semantic M3 packages **73**. The independent ordinal-370 empty-network red remains deferred.
+
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -302,9 +313,9 @@ selecting it.
 | witness | source | A2a result | current state |
 |---|---|---|---|
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
-| **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, **zero mandatory edges** | **24 traces / 56 events** | **two independent problems.** (a) Its pre-cut actual embedded graph is measured **non-cellular**: `V/E/F = 18/30/18`, `χ=6` against `sourceChi=2`, one component, no excluded boundary orbits — so it genuinely needs cuts, and they will be trace-crossed. (b) The producer never gets there: it fails at A2a′ reporting `CellularityNotEstablished` at source face `25-27-28`, which is a `default:` bucket, **not a cellularity verdict**. TB1 resolved that bucket two levels further — `RotationSystemInconsistent → TraceEventPositionInvalid` — with source topology, atlas and network all available; one level short of actionable (§7 item 2) |
+| **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F | no atlas — stops in **A1** at `IncompleteCycleBasis` | **criterion C2, gated at ordinal 366, cause ESTABLISHED at TB1.** Resolved to `CycleTransportAdjacencyMissing`, region `0`, source edge `0-3`. Its sole region is `V/E/F = 152/450/300`, `χ=2`, `boundaryLoops=0`, `genus=0` — a **sphere** — with 152 interior vertices, 152 expected cycles / rows / curvatures and 450 inner adjacencies. A non-separating `HardFeature` barrier stayed interior to its own region. **Amendment 15 fixed it and TB2 proved the fix at runtime** — the cycle basis now builds. The witness advanced to `MissingSingularityBranchTransport` at ordinal 366: the same disagreement at the *port* consumer. **Amendment 16/P2 fixed that too, and TB3-R1 proved it** — the witness now clears **all of A1** (cut domain, bundle, cycle basis, index accounting, port attachment) and first-reds for the first time in **A2a** at `VertexTransitSectorUnresolved`. Its 8 prescribed singularities split 4 port-emitting (vertices 10/35/47/71) and 4 `BarrierAbsorbed`. **TB4 published the locus:** vertex **30** — a *regular* vertex, 6-face closed fan — arrival face `(24,30,32)`, branch 1, `FaceInterior`, **two** candidates `(25,30,31)` and `(30,31,119)`, neither barrier-absorbed nor barrier-incident. See §7 item 1 |
+| **mechanical feature** | fixture, 152 V / 300 F | clears all A1 and reaches A2a vertex transit | **Current gate owner.** TB6 first-red 366 reaches regular vertex **30**, arrival `(24,30,32)`, branch 1, `FaceInterior`, with candidates `(25,30,31)` and `(30,31,119)`. TB6-REV proves current `incomingDirection` is each target face's local pairing direction. The two candidate-face branch sets are geometrically disjoint in the committed raw field, so Amendment 17 remains violated by per-cell-representative election. CB8 owns the exact single-datum correction and production audit. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -399,158 +410,57 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-CP4c-3 owns all of these. Its gate is **367**, frozen; items 2–4 came from CP4c-2.
+1. **Mechanical vertex transit / Amendment 17 — ACTIVE, gating.** TB6 first-red 366 reaches regular vertex 30 with
+   adjacent candidates `(25,30,31)` and `(30,31,119)`. TB6-REV proves the current exact path is semantically wrong:
+   `signedLift` transports the branch label, then `incomingDirection` is rebound to each target
+   `nextPairing->direction`. The candidate-face branch sets are independently distinct in the fixture. **CB8 owns
+   the correction.** One exact single-writer continuation datum must be projected/certified into every fan sector;
+   target local field representatives remain audit values only. No ordering, tolerance, `FaceInterior`, or barrier
+   change is admissible.
 
-1. **Criterion C2 — A1 is clear; A2a's vertex transit now fails before it decides anything.** Both A1 halves are
-   fixed and proved at runtime, and ordinals **1–365 stayed green** through five invasive changes. The remaining red
-   is in `resolve_field_vertex_transit` (`SurfaceCellTracing.cpp:630-727`), and it has **two distinct defects**,
-   only one of which has ever been exercised.
+2. **Production transit audit projection — ACTIVE, owner proved.** `resolve_field_vertex_transit` retains typed exact
+   per-state rows in `FieldAlignedCurveNetworkError::vertexTransitStates`; `RemeshPipeline.cpp::network_failure_locus`
+   and `SurfaceCellFailureLocusDiagnostics` drop them. CB8 must carry an additive diagnostics DTO/serialization so
+   the next immutable TB can adjudicate the one-datum invariant at the production entry path.
 
-   **(a) The seed-drop, measured at TB5 (vertex 11).** CB6 made the BFS seed conditional: it is pushed only if the
-   arrival face has exactly one pairing for the branch *and* `field_direction_world` converts. Either failure
-   leaves `pending` empty, so the loop never runs, `diagnostics` stays empty, and the function still returns
-   `VertexTransitSectorUnresolved` — a name asserting an election that never happened. **Four exits record
-   nothing:** the empty seed (two causes), a mid-walk `field_direction_from_world` failure, and a non-finite or
-   zero-norm transported direction during expansion. Vertex 11 is a regular vertex with a closed 6-face fan, so
-   this is a seeding defect, not geometry. **Amendment 19** now forbids unreportable exits; **AU1** makes them all
-   report.
+3. **Minimal transit witness / selector governance — ACTIVE.** TB5-REV required the minimal interior-vertex witness
+   to become a permanent regression identity. CB7 compiled it but selector 373 intentionally stayed frozen. CB8
+   must keep 373 byte-identical, strengthen the same identity into a real Amendment-17 falsifier, and append it as
+   ordinal **374** in a new required-green selector.
 
-   **(b) The election itself, measured at TB4 (vertex 30) and still untested.** Two fan-adjacent faces elected
-   because the routine tested **each face's own** representative of the transported branch against that face's
-   wedge. The sector predicate is an **exact partition** of the turn — adjacent wedges share one ray, owned by the
-   face where it is `next` — so one direction elects at most one wedge; two elections **prove** two distinct
-   vectors were tested, i.e. one continuation represented twice. **Amendment 17** fixes the frame (elect from a
-   single datum). CB6 implemented it by carrying that datum through **world-space doubles**, which satisfies
-   Amendment 17 and breaks exactness — see §8 and **Amendment 18**. Because the seed-drop stops the run first,
-   Amendment 17's substance is **masked, not cleared**, and AS1's falsifier never ran.
+4. **Ordinal 370 empty closed network — ACTIVE, measured independent A2a′ product red.** TB6's repaired witness now
+   reaches `SurfaceCutGraph::canonical_candidate` and returns `CellularityNotEstablished` instead of required
+   `EmptyNetworkOnClosedSurface`. Static review finds no specialized empty-network branch in that producer. This
+   owner is independent of vertex transit and is **deferred from CB8**; schedule it only after the mechanical gate
+   permits a separate bounded turn.
 
-   **Order of work: AU1 (report every exit) and AU2 (remove the double round-trip) are prerequisites; AU3 then
-   re-runs the measurement that decides the election's final shape.** Prohibited throughout: picking the first
-   candidate, ordering faces, changing the sector convention or the `FaceInterior` rule, and any tolerance —
-   the adversarial architecture review proposed exactly the lexicographic tie-break these prohibit, and §7's
-   record explains why it is wrong here.
+5. **Prescribed sphere — ACTIVE / deferred.** Report-only 368 remains `NoCarrierMatch / SourceEdgeUnavailable` at
+   trace 2/event 30. Preserve AL4: no sphere semantic correction is authorized while the mechanical gate owns the
+   critical path.
 
-1b. **The cycle-basis half, retained for reference — cause ESTABLISHED, and it was a definition question.** TB1 resolved the
-   eight-site `IncompleteCycleBasis` collapse to `CycleTransportAdjacencyMissing` at region `0`, source edge `0-3`,
-   `fieldTransportAdjacencyExists=false`. Edge `0-3` is a `HardFeature` **barrier** — by elimination over
-   `FieldTransportAtlas::make`'s four buckets, not by guess — and the atlas deliberately created no adjacency for
-   it. It nevertheless entered the cycle basis because `build_source_topology_regions`
-   (`src/geometry/SurfaceCellTracing.cpp:6655-6737`) skips hard-feature edges when flood-filling regions, and
-   **skipping an adjacency disconnects nothing unless the removed edges separate**. They did not: region 0 is all
-   300 faces with `boundaryLoops=0`, so `make_local_region_mesh` (`src/authority/FieldTransportAtlas.cpp:850-895`)
-   sees the edge as *interior*, `PCFaceTangentBundle` counts it among the 450 inner adjacencies, and the transport
-   walk asks `find_adjacency_in(adjacencies, edge)` for an adjacency that by design does not exist.
+6. **Ordinary trace-crossed proposal quality — ACTIVE / deferred.** Report-only 369 again proves
+   `certificate.saturationUsed=true`. Amendment 14 representation remains proved; the ordinary proposal coverage /
+   quality debt stays deferred behind the mechanical gate.
 
-   **Why this is forced, not exotic.** Region 0 has `χ=2`, `genus=0`, `boundaryLoops=0` — a sphere — and **every
-   closed curve on a sphere separates it**. Since the features demonstrably did not separate, the mechanical
-   witness's feature set **necessarily contains at least one open arc**. The torus succeeds only because its 48
-   hard-feature edges form four closed loops that **do** separate it into four annuli, putting them on region
-   *boundaries* where they never enter a local mesh's inner set. The first witness with an open feature arc was
-   always going to hit this.
+7. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
+   witness. `M3-CP4c3-DEFN-R1-CAND-01` remains open until the mechanical production witness reaches and publishes
+   `unboundSingularityCount=0`.
 
-   **DECIDED at `M3-CP4c-3-DEFN-R1` — Amendment 15, option A in its derived-view form.** A1 cuts its **local
-   mesh** along `B(R)`; the region product is untouched. Two theorems make it safe, and both are forced rather
-   than observed. *(i)* `B(R)` is the entire defect class: a source-boundary edge and a region- or
-   component-crossing edge each have at most one incident face in `R`, so they are already local boundary edges,
-   and a traversable edge has an adjacency — only a hard feature can be non-traversable **and** interior.
-   Isolation seams (same region, same component, different sheet) are traversable by design and are **not**
-   barriers. *(ii)* The cut never disconnects: a region *is* a connected component of the face graph built
-   without barrier edges, so cutting along `B(R)` leaves that graph untouched — from which it also follows that
-   no subset of `B(R)` separates `R`, and hence that on a `χ=2, b=0` region every barrier component is a **tree**.
-
-   **The endpoint rule** — the part AL2 flagged as hard: `v` incident to `B(R)` is duplicated into one copy per
-   connected component of `star(v) ∖ B(R)`, i.e. `copies(v) = d_B(v)` for interior `v` and `d_B(v) + 1` for `v` on
-   the region's boundary. An open arc's **tip** has `d = 1`, so it is **not** duplicated — the cut surface really
-   does touch itself there — but it becomes a boundary vertex with a single fan. The result is a manifold with
-   boundary; no geometry moves; `set_mesh` re-derives every count.
-
-   **The arithmetic is an identity:** `χ(R_cut) = χ(R) − χ(B) + ∂`, checked against four independent cases. For
-   the mechanical witness `χ' = 2 − c`, `b' = c`, `genus' = 0`, `interiorVertices' = 152 − |V(B)|`,
-   `innerAdjacencies = 450 − |B|`, and the cycle matrix's **rank deficiency stays exactly 1** — the same value it
-   has today — so nothing downstream that tolerates today's single dependency newly breaks.
-
-   **Three costs, all required work, none visible at the failing line.** The local-mesh-vs-region cross-check must
-   be **replaced** by the identity above, not deleted. A slit region moves from the closed `ClosedShenSufficient`
-   index **equality** to the boundary-corrected `RelativeBoundary` branch, which absorbs any multiple of 4 — a
-   real weakening that must appear in evidence. And every vertex on a barrier loses its inner-vertex cycle, so a
-   prescribed singularity there must be re-bound and **fail closed**; see §8's new pattern and §7 item 6.
-   **Option C stays prohibited. Option D** — fail closed with a precise typed error — is the frozen fallback, with
-   an explicit trigger, at the stated cost that C2 cannot then close.
-2. **`M3-CP4c2-TB-X2-CAND-04` — the prescribed sphere, IN the gate, and one resolution short.** Two independent
-   problems; fixing either does not fix the other. (a) The producer fails at A2a′ at source face `25-27-28`,
-   `producerCutEdgeCount=0` — **before** cut selection, so Amendment 14 is not an account of it. AK3 resolved the
-   nine-site `RotationSystemInconsistent` collapse to **`TraceEventPositionInvalid`** — but that name is *itself* a
-   two-way collapse in `trace_event_position` (`src/geometry/EmbeddedGraphTopology.cpp:138-173`), where
-   `positions.empty()` and `positions.size() > 1` both fall out of one `if (positions.size() != 1U)`.
-   `empty` is a network/event **binding** defect; `> 1` is an **ambiguity** — the position is not determined by
-   `sourceEdge` alone — and **the two need opposite fixes**. Note also the two-pass structure: a face-restricted
-   pass, then a widening fallback over all segments ignoring the face, which can turn "no match in the right face"
-   into "several matches across the trace" and so *manufacture* the ambiguous case. Ambiguity is the live
-   **suspicion** — 24 traces, 56 events, 10 terminal trace intersections, and a trace crossing one source edge twice
-   yields exactly `size() == 2` — but it is **not** a finding and must not be designed against: AL3 measures it,
-   AL4 forbids fixing across it. If ambiguous, the stronger key already exists and is free to consult:
-   `segment.entryPoint` / `edgeTransitExit` publish the exact crossing point. (b) Independently, its pre-cut actual
-   embedded graph is **non-cellular** — `V/E/F = 18/30/18`, `c=1`, `χ=6` against `sourceChi=2` — so it needs cuts,
-   and with 24 traces and zero mandatory edges they will be trace-crossed, which is exactly what item 3 governs.
-3. **`M3-CP4c2-TB-X2-R10-CAND-01` — Amendment 14's *ordinary* proposal path is structurally unreachable.**
-   `barriers = mandatory ∪ traceCrossed ∪ cuts`, so a trace-crossed edge **bounds** a proposal component instead of
-   lying inside one, and a tree–cotree search draws from a component's interior edges; only saturation can promote
-   one. DEFN-R2 §4.5 removed the *filter* but permitted the conservative *barrier set*, on the reasoning that
-   over-separation "costs extra cuts, never correctness" — true about correctness, wrong about coverage.
-   Amendment 14's **representation** is fully proved regardless; what is at stake is cut-graph **quality**.
-   Corrective: model a trace crossing as a **per-face chord**, matching the fragment machinery. Heuristic only —
-   Amendment 13 §3 already denies it certification authority — so Amendment 14 is not reopened.
-4. **`M3-CP4c2-TB-X2-R8-CAND-02` — decided at CP4c-3's DEFN, awaiting implementation.** An empty network on a
-   closed surface is **rejected with a typed error**: A2a′ adds cuts to an existing network, and cutting from
-   scratch would make it the producer of the whole embedded graph, which is A2a's single-writer authority. The new
-   code is **appended**, never renumbered.
-5. **Torus post-A2b `tracing` failure** — downstream of A2b, tracked, and out of CP4c-3's scope by decision.
-6. **`M3-CP4c3-DEFN-R1-CAND-01` — the interior-singularity binding does not fail closed.** A latent gap found
-   while deriving Amendment 15, pre-existing at HEAD and **not** introduced by it, but made reachable by it.
-   `FieldTransportAtlas.cpp:1557` partitions prescribed singularities by **`sourceMesh.isBoundaryVertex`** — the
-   *global* mesh. The boundary path reconciles and fails closed when an owner is missing (`:1960-1976`); the
-   interior path does **not** (`:1980-1990`) — `localCycleByGlobalVertex.find(...)` simply leaves `region` and
-   `cycle` as `std::nullopt` and continues. A vertex consumed by a slit is still *globally* interior, so it takes
-   the unchecked path: its prescribed index goes from verified against the field's own holonomy to unverified and
-   unbound, with a green build. Owned by **AM4**; landing the cut without it trades a red gate for an
-   unverifiable certificate. CB2 implemented the binding, but **ordinal 373 has never executed**, so the unbound
-   count is still unmeasured and this stays open.
-7. **Ordinals 367/371/372 are blocked upstream, not failing** — for the third consecutive run. **Amendment 15's
-   Euler-cut identity and barrier-exclusion contracts remain UNMEASURED, not falsified.** Ordinal **373 passes on a
-   synthetic fixture only**, so `M3-CP4c3-DEFN-R1-CAND-01` is **partially** discharged and the mechanical
-   zero-unbound count is still owed.
-8. **The prescribed sphere is measured, unambiguous, and now schedulable.** Ordinal 368 resolves to
-   **`NoCarrierMatch / SourceEdgeUnavailable`** at trace 2 / event 30. AL3's discriminator is answered — the
-   **ambiguity** branch carried as a suspicion since TB1 is **dead** — so the live reading is a network/event
-   **binding** defect: the event's `sourceEdge` is not a carrier on the trace it claims. AL4's blocking condition
-   (*"two candidate causes need opposite fixes"*) is **discharged**; **AU6** publishes the binding evidence so a
-   successor DEFN can settle the contract. This is the only CP4c-3 witness whose cause is measured and whose fix is
-   unscheduled.
-9. **`M3-CP4c3-TB4-DIAG-CAND-01` — CLASSIFIED: invalid diagnostic witness, not a product defect.** Ordinal 370's
-   atlas build publishes `NonIntegralCycleLift; topologyRegion=0`: the constant ambient `make_zero_transport_field`
-   on a closed torus violates the atlas precondition, and the fail-closed rejection is **legitimate**. The intended
-   empty-network contract (`R8-CAND-02`) remains **unmeasured**; **AU7** repairs the witness only, and the atlas's
-   rejection may not be weakened to make the ordinal pass.
-
-**Closed at `M3-CP4c-3-TB5`, do not re-open:** the `NoCarrierMatch`-versus-`AmbiguousCarrierMatch` question for the
-sphere (answered: `NoCarrierMatch`); and the ordinal-370 classification (answered: invalid witness).
-
-**Closed at `M3-CP4c-3-TB4`, do not re-open:****Closed at `M3-CP4c-3-TB4`, do not re-open:** `M3-CP4c3-TB3-R1-REV-CAND-01` — the typed failure-locus channel
-landed and TB4 published the ordinal-366 locus directly, so no review had to recover it by elimination; and
-`M3-CP4c3-TB4-ORCH-01`, a package-sidecar filename mismatch that executed no Directional runtime.
-
-**Closed at `M3-CP4c-3-TB3-R1`, do not re-open:** `M3-CP4c3-TB2-ORCH-01` (package-relative fixture authority and
-removal of the absolute compile-time source-root fallback are runtime-proved; 27 fixtures verified in package 72),
-`M3-CP4c3-TB2-REV-CAND-01` (CB3 independently compared the package 69/70 binary digests), and
-`M3-CP4c3-TB3-ORCH-01` (the mode-preserving tar envelope held: all six executables reproduced `0755` with no
-repair).
-
-**Closed in CP4c-2, do not re-open:** `PR8-R043`, `PR8-R044` (proved on a bounded *and* a closed witness),
-`R7-ORCH-01`, `R7-CAND-01`, `R7-CAND-03`, `R8-CAND-01`, `R8-ORCH-01`, `R9-CAND-01`, `R9-ORCH-01`; measure **AD3**
-(ordinal 359 — the raw `face.orbit` index in a semantic digest is proved by test, and the falsifier is cited beside
-the claim in the source); criteria **C1**, **C3** (torus form) and **C6**.
+8. **Report-only 367, 371, 372 — UNMEASURED underlying contracts.** Their TB6 reds are upstream consequences of
+   ordinal 366. Do not classify their own downstream contracts as failed until the mechanical blocker clears.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**Exact representation can still carry the wrong semantic authority.** TB6-REV adds a sharper instance to the
+single-authority family. CB7 correctly removed the CB6 float round-trip and made every value reaching the sector
+predicate exact, but the transition step then renamed each target face's `nextPairing->direction` as
+`incomingDirection`. Exactness was restored while Amendment 17's one-datum invariant was lost: a branch
+**correspondence** (`signedLift`) is not an exact continuous transport of an arbitrary geometric ray, and a local
+field representative is not a projection of the original datum merely because it has the corresponding branch
+label. **Audit the writer of the semantic datum after every representation correction, not only its numeric type.**
+This is also a diagnostic-funnel instance: the resolver owns the exact state rows but the production DTO drops them,
+so the most important evidence disappears at a stage boundary.
+
 
 Four families account for nearly every CP4c-2 turn that went sideways. Check against these *before* writing a
 plan or a fix.

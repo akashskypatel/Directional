@@ -1269,6 +1269,16 @@ world/exact directions in independently canonicalized frames. **Cross-face oracl
 authority through the published transition or compare the published physical/exact directions under each
 face gauge. Never equate branch integers across distinct frames merely because their stored values match.**
 
+### Branch correspondence is not geometric-datum transport
+
+A quarter-turn/signed-lift transition can prove **which branch label corresponds** across two face gauges without
+proving that the target face's local branch representative is the transported image of one incoming geometric ray.
+TB6-REV found this after a correct exactness repair: the code rotated the branch label exactly and then assigned the
+target `pairing.direction` as `incomingDirection`, restoring exact arithmetic while silently returning to one datum
+per cell. **When a contract requires one semantic datum, audit its writer and provenance at every state; exact type,
+matching label, and common name do not establish common authority.** If exact continuous transport is not present
+in the product, fail closed or add that authority — never manufacture it by rebinding to a local representative.
+
 ## 6. Gate and criterion authoring
 
 60. **Do not author a gate criterion in terms the gated milestone cannot express.** M1 criterion 5

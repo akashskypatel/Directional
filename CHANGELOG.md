@@ -1,3 +1,20 @@
+## 2026-09-01 — `M3-CP4c-3-TB6-REV`: Amendment 17 still violated; exact CB8 successor frozen
+
+Independent REVIEW + PLAN only; no Directional runtime/build/package/test/fixture/selector mutation. TB6 immutable
+evidence was re-established and one documentation identity corrected: authoritative result artifact is
+**`9782227361`** (`e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`), not the previously recorded
+`5748464145 / f084...`. The semantic result remains 365/365 accepted-prefix green and first-red 366 at regular
+vertex 30. Static source/fixture reconstruction proves CB7's exactness repair reintroduced the Amendment-17
+mechanism: every fan transition maps the branch label by `signedLift` and then assigns the target face's local
+`nextPairing->direction` as `incomingDirection`, so the election still tests one representative per cell. Candidate
+faces row 41 and row 208 have disjoint branch-vector families, independently proving the local representatives are
+distinct. The resolver retains exact per-state audit rows, but `network_failure_locus` /
+`SurfaceCellFailureLocusDiagnostics` drops them at the production projection boundary. The CB7 minimal witness is
+adjudicated as required future gate authority: preserve selector 373 and append the strengthened identity as ordinal
+374. Ordinal 370 is a separate genuine `SurfaceCutGraph::canonical_candidate` red and is deferred. Stable accounting
+remains **44 / 14 / 30**, debt **5**, semantic packages **73**. Exact next: runtime-free
+`M3-CP4c-3-CB8` under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`.
+
 ## 2026-09-01 — `M3-CP4c-3-CB7`: exact/reportable transit build green; package 75 frozen
 
 CB7 is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic/evidence source `e926ada023bc51220628be550bbe9a87f98d7067`. Vertex transit now gives typed seed/walk failure reasons and per-state outcomes before every suppressing path; its election datum remains exact rational throughout atlas branch transport, with no world-space-double round trip reaching `direction_in_vertex_sector`. Amendment 17's incoming-direction election is unchanged but fully measurable again. CB7 also publishes prescribed-sphere trace/edge binding evidence, repairs only ordinal 370's invalid constant-field witness using the accepted torus raw field, adds the minimal exact fan transit witness, and freezes AU8's full remaining-ordinal report-only cadence. Compile `33455549602 / 99694672138` built all eight standard targets with GMP/GMPXX and `runtimeExecution=false`; result/log artifacts `9781459057` (`e66ff9cb…cbba`) / `9781459549` (`5fea70b8…c2b9`). Mode-preserving package **75** from `33456115934 / 99696350077` is artifact `9781487311` (`547f2441…54b8`), inner tar `8814b700…7896`, source archive `64e5189f…629a`, 27 fixtures and six `0755` executables. Selector 373 is unchanged. Stable accounting remains **44 / 14 / 30**, debt **5**; semantic packages advance **72 → 73**. Exact successor: artifact-only `M3-CP4c-3-TB6`.

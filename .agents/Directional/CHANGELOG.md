@@ -1,8 +1,25 @@
+## 2026-09-01 — `M3-CP4c-3-TB6-REV`: Amendment 17 still violated; exact CB8 successor frozen
+
+Independent REVIEW + PLAN only; no Directional runtime/build/package/test/fixture/selector mutation. TB6 immutable
+evidence was re-established and one documentation identity corrected: authoritative result artifact is
+**`9782227361`** (`e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`), not the previously recorded
+`5748464145 / f084...`. The semantic result remains 365/365 accepted-prefix green and first-red 366 at regular
+vertex 30. Static source/fixture reconstruction proves CB7's exactness repair reintroduced the Amendment-17
+mechanism: every fan transition maps the branch label by `signedLift` and then assigns the target face's local
+`nextPairing->direction` as `incomingDirection`, so the election still tests one representative per cell. Candidate
+faces row 41 and row 208 have disjoint branch-vector families, independently proving the local representatives are
+distinct. The resolver retains exact per-state audit rows, but `network_failure_locus` /
+`SurfaceCellFailureLocusDiagnostics` drops them at the production projection boundary. The CB7 minimal witness is
+adjudicated as required future gate authority: preserve selector 373 and append the strengthened identity as ordinal
+374. Ordinal 370 is a separate genuine `SurfaceCutGraph::canonical_candidate` red and is deferred. Stable accounting
+remains **44 / 14 / 30**, debt **5**, semantic packages **73**. Exact next: runtime-free
+`M3-CP4c-3-CB8` under `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md`.
+
 ## 2026-09-01 — `M3-CP4c-3-TB6`: valid semantic red returns to vertex 30; full remainder exposes six reds
 
 Artifact-only TB6 is **COMPLETE / VALID SEMANTIC RED** on immutable package **75**, semantic source
 `e926ada023bc51220628be550bbe9a87f98d7067`. Authoritative run/job `33458067065 / 99702200466`; result artifact
-`5748464145` (`f08436984cf61ed60e77012e4b6ad763c56b097df9e67c60d23bb8572611698d`). Immutable pre/postflight passed;
+`9782227361` (`e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`). Immutable pre/postflight passed;
 no configure, compile, relink, package repair, generated discovery, source/product/test/fixture/selector mutation, or
 benchmark occurred. Ordinals **1–365 PASS**; first red **366** returns to `VertexTransitSectorUnresolved` at source
 vertex 30 / face `(24,30,32)` / branch 1 / `FaceInterior`, with two published faces `(25,30,31)` and

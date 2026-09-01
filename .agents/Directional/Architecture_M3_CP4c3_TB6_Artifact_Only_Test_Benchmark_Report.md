@@ -16,7 +16,7 @@ TB6 executed only immutable package **75** built from semantic/evidence source
 - packaged source archive SHA-256: `64e5189f3c9f22d648e496c50b4093e842a0fad25a885dca65778d7a110b629a`
 - selector 373 SHA-256: `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`
 - authoritative TB6 run/job: `33458067065 / 99702200466`
-- result artifact: `5748464145`, Actions SHA-256 `f08436984cf61ed60e77012e4b6ad763c56b097df9e67c60d23bb8572611698d`
+- result artifact: `9782227361`, Actions SHA-256 `e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`
 - supplemental immutable-source artifact: `5748464025`, Actions SHA-256 `5730c1681b51c63c20fe74453f37456dddb99b39b57d56f5d51d9d4a9c421a31`
 - supplemental immutable-artifacts artifact: `5748463876`, Actions SHA-256 `3b25c796f9fb97e4642454e0ab46c6cf287190baf9fe0da7a970e347003af8c7`
 

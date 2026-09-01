@@ -11,7 +11,7 @@ Review the exact TB6 semantic authority only:
 - semantic source `e926ada023bc51220628be550bbe9a87f98d7067`;
 - immutable package 75 artifact `9781487311`;
 - TB6 run/job `33458067065 / 99702200466`;
-- TB6 result artifact `5748464145`, SHA-256 `f08436984cf61ed60e77012e4b6ad763c56b097df9e67c60d23bb8572611698d`;
+- TB6 result artifact `9782227361`, SHA-256 `e39fcab4ec71c951f9dd7505d052d73fbee7a4f2f66105ae6ff7a47dad672a87`;
 - selector 373 SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`.
 
 TB6 re-proved ordinals 1–365 and first-red ordinal 366 at source vertex 30 / face `(24,30,32)` / branch 1 /
