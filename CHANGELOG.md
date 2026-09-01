@@ -1,3 +1,19 @@
+## 2026-09-01 — `M3-CP4c-3-TB7`: 365-prefix green; first red is vertex-11 seed unavailability
+
+TB7 is **COMPLETE / VALID SEMANTIC RED** on immutable package **76** / source
+`e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`. Authoritative run/job
+`33541437165 / 99968443127` passed immutable package/source/GMP/27-fixture/six-executable/selector preflight,
+executed selector 374 one identity per fresh process, re-proved **365/365**, then first-red ordinal **366** with
+`VertexTransitSeedUnavailable` at source vertex 11, face `(8,10,11)`, branch 1, region 0, `FaceInterior`.
+The mandatory 367–374 report-only remainder ran **1 PASS / 7 RED** with zero gate credit: sphere 368 reproduces
+`NoCarrierMatch / SourceEdgeUnavailable`; 369 again reports `saturationUsed=true`; 370 reproduces the genuine
+empty-network product red; 371/372 are upstream-blocked; 373 passes synthetically; and new ordinal 374 stops at
+`atlasBuild=false` before the folded-cone vertex-star discriminator, with no typed atlas error published. Immutable
+postflight PASSes and all build/repair/mutation/benchmark flags remain false. Result/log artifacts are
+`9813862211` (`81415716…86f0`) / `9813862640` (`188d02d9…a1a4`). Stable accounting remains **44 / 14 / 30**,
+debt **5**, semantic packages **74**. Exact next: independent `M3-CP4c-3-TB7-REV` REVIEW + PLAN; no unchanged retry
+or semantic correction before review.
+
 ## 2026-09-01 — `M3-CP4c-3-TB6-REV`: Amendment 17 still violated; exact CB8 successor frozen
 
 Independent REVIEW + PLAN only; no Directional runtime/build/package/test/fixture/selector mutation. TB6 immutable

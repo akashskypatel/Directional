@@ -92,110 +92,82 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB7` (artifact-only Test + Benchmark)
+## Mandatory next turn — `M3-CP4c-3-TB7-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB9` is **COMPLETE at the Code + Build boundary**. Current report:
-`Architecture_M3_CP4c3_CB9_Code_Build_Report.md`. The exact implementation source is
-`e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`.
+`M3-CP4c-3-TB7` is **COMPLETE / VALID SEMANTIC RED**. Current runtime report:
+`Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md`.
 
-CB9 implemented DEFN-R2's **AY0–AY9** without valid Directional runtime: one immutable exact arrival ray, intrinsic
-vertex-star development, straightest-geodesic continuation `β = α + Θ/2`, unchanged exact half-open sector
-ownership, certified filter + reachable exact radical-elimination fallback, published fan budget 16 with typed
-fail-closed states, and the complete AX8 diagnostic projection.
+### Immutable TB7 authority
 
-The committed folded-cone discriminator is exact and non-flat: three right-angle sectors give `Θ=3π/2`; the obsolete
-candidate-local rule accepts two eligible target representatives, while the frozen arrival-ray authority elects one
-owner. A deliberate exact continuation-boundary instance reaches the fallback, and an exact radial-arrival instance
-covers the half-open arrival convention. This discharged AY5 and legitimately authorized the one-line selector-374
-append.
-
-### Immutable selector and package authority
-
-- accepted semantic authority remains **365** until TB7;
-- selector 373 remains byte-frozen at
-  `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`;
-- selector 374 contains exactly 374 unique identities and has SHA-256
+- semantic source: `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`;
+- immutable package 76 artifact: `9811964367`;
+- selector 374:
   `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`;
-- final compile run/job `33535836292 / 99949862868` — **success**;
-- raw compile artifact `9811669562`, Actions SHA-256
-  `b5049004f2687eb48abfd40398c87606224cda1b7892bc22d7a2901d6dab16d2`;
-- package run/job `33536818075 / 99953090803` — **success**;
-- package artifact **76** `9811964367`, Actions SHA-256
-  `5c7d27996aa43ef798aa8110df756fc34bbcb6d490356bdfaea249c3953cc949`;
-- inner `package76.tar.gz` SHA-256
-  `a940ee61c29a1c4e25040dad6353ad54152a0d6181da3450a8fe771dfc170f8e`;
-- packaged source archive SHA-256
-  `71b86aafae465b5dcb1763cc3e0250b4310b188d8f2d6e34ac8d7b8c6c74f6ea`;
-- exactly 27 package-relative fixtures and six executable `directional_*` binaries;
-- compile/package boundary: `runtimeExecution=false`, `packageRepair=false`, exact backend **GMP**, GMPXX/GMP link
-  evidence present.
+- TB7 run/job: `33541437165 / 99968443127`;
+- result artifact `9813862211`, Actions SHA-256
+  `814157162acfb95e785d4f5af3c886696534a0972942ac1f685d64b1c04086f0`;
+- log artifact `9813862640`, Actions SHA-256
+  `188d02d98928ccaf29d2e899918e487c35c186b96550044ac0138d48defea1a4`;
+- immutable preflight/postflight: PASS;
+- no configure, compile, relink, repair, mutation, generated discovery, or benchmark in TB7.
 
-Package 76 is **compiled-not-executed** and has zero semantic gate credit.
+### Semantic result
 
-### TB7 boundary
+- ordinals **1–365: 365/365 PASS**;
+- first red ordinal **366**:
+  `GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath`;
+- failure:
+  `VertexTransitSeedUnavailable`;
+- locus: source vertex 11, face `(8,10,11)`, branch 1, region 0, `FaceInterior`,
+  `publishedFaceCount=0`, no barrier absorption/incidence;
+- report-only 367–374: **1 PASS / 7 RED**, zero gate credit;
+- 367/371/372 are upstream-blocked by the same vertex-11 stop;
+- 368 reproduces sphere `NoCarrierMatch / SourceEdgeUnavailable`;
+- 369 reproduces `saturationUsed=true`;
+- 370 reproduces the genuine `CellularityNotEstablished` versus required `EmptyNetworkOnClosedSurface` product red;
+- 373 passes synthetically but mechanical zero-unbound proof remains owed;
+- 374 folded-cone discriminator fails at `ASSERT_TRUE(atlasBuild)` before vertex-star election/fallback and prints no
+  typed atlas cause.
 
-Follow `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Plan.md` exactly:
+Accepted authority remains **365/365** and CP4c-3 remains **OPEN**.
 
-1. verify artifact `9811964367`, its outer digest, inner tar digest, recursive manifest, source/selector hashes,
-   package-relative fixtures, executable modes, GMP evidence, clean source state, and mutation flags **before**
-   runtime;
-2. run selector **374 from ordinal 1**, one exact identity per fresh process, each filter selecting exactly one test;
-3. required closure is **374/374 PASS**;
-4. at mechanical ordinal 366, the corrected authority may elect row 209 or row 208 according to the exact seed but
-   **never row 41**;
-5. when vertex-star evidence is reached, verify the complete seed/kernel/development/election/failure contract survives
-   through `RemeshDiagnostics`;
-6. ordinal 374 must execute
-   `ResolvedBranchCorrection.FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection`;
-7. a valid first semantic red stops gate credit, then TB7 executes the full zero-credit remainder through ordinal 374
-   and performs immutable postflight before routing to `REVIEW + PLAN`;
-8. TB7 may not configure, compile, relink, regenerate discovery, repair package bytes, change fixtures/selectors, or
-   benchmark.
+### Review boundary
 
-### Live audit/deferred debt
+Follow `Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md` exactly. The review must re-establish immutable TB7
+evidence, reconstruct the source-vertex-11 arrival/seed path, determine whether it is TB5's mechanism reintroduced
+or a distinct seed-authority defect, trace the CB9 seed/certificate/AX8 projection ownership, recover ordinal 374's
+exact atlas error and classify witness-precondition versus product rejection, reconcile candidates/accounting, and
+freeze exactly one bounded successor.
 
-- `M3-CP4c3-CB9-AUDIT-01`: `FieldTransportAtlas.cpp::build_boundary_pairing` computes `u/v` in `double`, then
-  re-expresses them as exact values whose signs classify boundary-flow carrier topology. This is an AY8
-  consumer-re-expression seam outside CB9's bounded vertex-star fix.
-- `M3-CP4c3-CB9-AUDIT-02`: generic `FieldExactRational::integer_sqrt_floor` has no published reusable bit-width input
-  budget. CB9's vertex-star path remains within its frozen finite-source/fan-length-16 contract; generic exact
-  utility hardening remains debt.
-- Ordinal 370 empty-network product, prescribed-sphere `NoCarrierMatch / SourceEdgeUnavailable`, saturation coverage,
-  and the mechanical zero-unbound proof remain deferred and untouched.
+No Directional runtime, compile, package, product/test/fixture/selector mutation, unchanged TB retry, or acceptance
+attempt is authorized in the review.
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
-package count is **74** after package 76. CP4c-2 remains **CLOSED / ACCEPTED at 365/365**; CP4c-3 remains **OPEN**.
-
-### Process note
-
-The CB9 report retains the earlier policy violations as material evidence: late WIP preservation, an invalid local
-compile that receives no authority, startup-only workflow failures, and loss of an exact whole-turn tool-call count
-across context compactions. Do not use any local compile as evidence. All valid compile/package authority is the
-GitHub Actions evidence above.
+package count **74**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent Test + Benchmark guidance
+- turn-based-coding-agent REVIEW guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Plan.md` — **the exact immutable
-   package-76 gate and stop/postflight rules.**
-2. `.agents/Directional/Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — AY0–AY9 implementation/build/package
+1. `.agents/Directional/Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md` — **exact review scope and
+   prohibitions.**
+2. `.agents/Directional/Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — authoritative TB7
+   semantic evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — AY0–AY9 implementation/build/package
    evidence and AY8 audit.
-3. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22/23 and the frozen
-   semantics TB7 is testing.
-4. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_374.txt` — 374 identities; do not edit.
+4. `.agents/Directional/Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22/23.
 5. `DESIGN.md` §7.2 / §7.2.1 — Amendments 17–23.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
    `M3_CP4c_Consolidated_Record.md`.
-7. Immutable package-76 artifact `9811964367` from run `33536818075`; do not rebuild or repair it.
+7. Immutable TB7 result artifact `9813862211` and package-76 artifact `9811964367`; use as evidence only. Do not
+   rebuild or rerun.
 
-TB7 is artifact-only. It executes packaged tests, not repository source. A complete 374/374 green gate plus immutable
-postflight closes CP4c-3. Any valid semantic red routes to independent `REVIEW + PLAN`; do not patch or rerun the
-same semantic failure inside TB7.
+TB7-REV is static REVIEW + PLAN only. It must freeze one bounded successor; it may not patch the semantic failure or
+rerun package 76.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

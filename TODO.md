@@ -26,76 +26,41 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB7` (artifact-only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB7-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB9` is **COMPLETE at the Code + Build boundary**. Report:
-`Architecture_M3_CP4c3_CB9_Code_Build_Report.md`. The semantic implementation source is
-`e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`.
+`M3-CP4c-3-TB7` is **COMPLETE / VALID SEMANTIC RED**. Report:
+`Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md`.
 
-CB9 implemented the frozen Amendment-22/23 vertex-star authority: one exact arrival ray, intrinsic fan development,
-`β = α + Θ/2`, unchanged exact half-open sector ownership, a certified filter plus reachable exact fallback,
-published fan-length budget 16 with typed fail-closed states, and the full AX8 projection into `RemeshDiagnostics`.
-The exact non-flat folded-cone witness has `Θ=3π/2`, demonstrates **two** owners under the obsolete candidate-local
-mechanism versus **one** owner under the frozen authority, and includes exact continuation-boundary/radial-arrival
-instances.
+Immutable package 76 / source `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a` re-proved accepted authority
+**365/365**, then first-red ordinal **366**
+`GlobalTopologyPlan.MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath` with
+`VertexTransitSeedUnavailable` at source vertex 11, face `(8,10,11)`, branch 1, region 0, `FaceInterior`.
+The required 367–374 report-only remainder completed **1 PASS / 7 RED** with zero gate credit and immutable
+postflight PASS.
 
-Selector **373** remains byte-frozen at
-`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`.
-AY5 therefore legitimately authorized the one-line selector **374** append:
-`d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`.
-Accepted semantic authority remains **365** until TB7 executes.
+New review-owned candidates:
 
-### Immutable package 76
+- `M3-CP4c3-TB7-CAND-01`: gating source-vertex-11 seed failure; relationship to TB5's earlier vertex-11 stop is
+  unproved.
+- `M3-CP4c3-TB7-CAND-02`: ordinal 374 fails at `atlasBuild=false` before the folded-cone exact discriminator; typed
+  atlas cause was not published and witness-precondition versus product rejection is unclassified.
 
-- final compile run/job: `33535836292 / 99949862868` — success;
-- exact semantic source: `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`;
-- raw compile artifact `9811669562`, Actions SHA-256
-  `b5049004f2687eb48abfd40398c87606224cda1b7892bc22d7a2901d6dab16d2`;
-- package run/job: `33536818075 / 99953090803` — success;
-- package artifact `9811964367`, Actions SHA-256
-  `5c7d27996aa43ef798aa8110df756fc34bbcb6d490356bdfaea249c3953cc949`;
-- inner `package76.tar.gz` SHA-256
-  `a940ee61c29a1c4e25040dad6353ad54152a0d6181da3450a8fe771dfc170f8e`;
-- packaged source SHA-256
-  `71b86aafae465b5dcb1763cc3e0250b4310b188d8f2d6e34ac8d7b8c6c74f6ea`;
-- exactly 27 package-relative fixtures, six executable test/benchmark binaries, GMP/GMPXX linked;
-- `runtimeExecution=false`, `packageRepair=false`.
-
-No valid CB9 runtime/test/gate/benchmark execution occurred. Package 76 has **zero semantic gate credit** until TB7.
+Existing independent findings remain: sphere `NoCarrierMatch / SourceEdgeUnavailable`, saturation coverage at 369,
+the genuine empty-network product red at 370, mechanical zero-unbound debt, and CB9's two static AY8 audit
+candidates. Accepted authority remains **365**; CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB7`** from
-`Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Plan.md`.
+Run **`M3-CP4c-3-TB7-REV`** under
+`Architecture_M3_CP4c3_TB7_Independent_Review_Plan.md`.
 
-TB7 must consume immutable package 76 without rebuilding or repairing it and execute selector **374 from ordinal 1**,
-one identity per fresh process. Required closure is **374/374 PASS** plus immutable postflight. A valid semantic red
-stops gate credit, requires the full zero-credit remainder pass through ordinal 374, then routes to independent
-`REVIEW + PLAN`.
+The review is static REVIEW + PLAN only: no Directional runtime, build, package, product/test/fixture/selector
+mutation, unchanged retry, or acceptance attempt. It must reconstruct the vertex-11 seed path, recover ordinal 374's
+typed atlas failure, adjudicate candidate lineage/accounting, preserve unrelated report-only findings, and freeze
+exactly one bounded successor.
 
-### CP4c-3 open items
-
-- [ ] `M3-CP4c3-TB3-R1-CAND-01` — implementation changed under Amendments 22/23; semantic disposition now owned by
-  TB7's mechanical production witness.
-- [ ] selector governance — selector 374 is compiled/package-frozen but not accepted; TB7 owns 374/374 validation.
-- [ ] `M3-CP4c3-CB9-AUDIT-01` — `FieldTransportAtlas.cpp::build_boundary_pairing` computes `u/v` in floating point,
-  re-expresses them as `FieldExactRational`, then uses the signs for boundary-flow carrier topology. Static
-  consumer-re-expression finding; outside CB9's bounded vertex-star change.
-- [ ] `M3-CP4c3-CB9-AUDIT-02` — generic `FieldExactRational::integer_sqrt_floor` has no published reusable bit-width
-  input budget. CB9's vertex-star path remains bounded by finite source storage plus fan budget 16; generic exact
-  utility hardening remains debt.
-- [ ] `M3-CP4c2-TB-X2-R8-CAND-02` — empty-network product red; deferred, untouched by CB9.
-- [ ] `M3-CP4c2-TB-X2-CAND-04` — sphere `NoCarrierMatch / SourceEdgeUnavailable`; deferred, AL4 binding.
-- [ ] `M3-CP4c2-TB-X2-R10-CAND-01` — `saturationUsed=true`; deferred quality/coverage debt.
-- [ ] `M3-CP4c3-DEFN-R1-CAND-01` — partial; mechanical zero-unbound proof still owed.
-
-`M3-CP4c3-TB6-CAND-01` is closed at the implementation/projection boundary by CB9 AY7; TB7 still must validate the
-published contract at runtime. `M3-CP4c3-DEFN-R2-CAND-01` is closed for the vertex-star decision by the published
-fan-length budget and typed `VertexStarExactBudgetExceeded`.
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**. Semantic M3
-package count advances **73 → 74** with package 76. CP4c-2 remains **CLOSED / ACCEPTED at 365/365**; CP4c-3 remains
-**OPEN**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
+package count **74**.
 
 ## Carried forward from M1
 

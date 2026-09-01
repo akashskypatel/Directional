@@ -1,3 +1,52 @@
+## M3-CP4c3-TB7 — artifact-only semantic disposition — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package 76 / source `e5d6ed76cfb4e0dc21e39aa8d3fc5de98fd5595a`; run/job
+  `33541437165 / 99968443127`; result artifact `9813862211`
+  (`814157162acfb95e785d4f5af3c886696534a0972942ac1f685d64b1c04086f0`).
+- **Gate:** ordinals **1–365 PASS**; ordinal **366 RED** at
+  `VertexTransitSeedUnavailable`, source vertex 11, face `(8,10,11)`, branch 1, region 0, `FaceInterior`,
+  `publishedFaceCount=0`, no barrier absorption/incidence.
+- **Remainder:** 367–374 executed once report-only with zero gate credit: **1 PASS / 7 RED**. 367/371/372 are
+  upstream-blocked by the same vertex-11 stop; 368 reproduces sphere `NoCarrierMatch / SourceEdgeUnavailable`; 369
+  reproduces `saturationUsed=true`; 370 reproduces the genuine empty-network product red; 373 passes synthetically;
+  374 stops at `atlasBuild=false` before folded-cone vertex-star evaluation.
+- **Prior candidates:** `M3-CP4c3-TB6-CAND-01` and `M3-CP4c3-DEFN-R2-CAND-01` remain runtime-unclosed because the
+  corrected certificate/fallback surfaces are not reached. `M3-CP4c2-TB-X2-R10-CAND-01`,
+  `M3-CP4c2-TB-X2-R8-CAND-02`, and `M3-CP4c3-DEFN-R1-CAND-01` remain active with the same dispositions.
+- **Accounting:** accepted authority stays **365/365** and CP4c-3 is unaccepted. **+0 stable events / +0 stable
+  recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **74**.
+- **Owner:** independent `M3-CP4c-3-TB7-REV`; no unchanged TB retry or semantic correction before review.
+
+## M3-CP4c3-TB7-CAND-01 — Amendment-22 runtime first-reds at source vertex 11 before a ray seed exists — **ACTIVE / GATING / FIRST-FAILURE / NON-STABLE**
+
+- **Observed:** authoritative TB7 ordinal 366 fails with
+  `NotProductionReady/field-aligned-network;detailCode=VertexTransitSeedUnavailable;sourceVertex=11;sourceFace=8,10,11;branch=1;topologyRegion=0;arrivalMode=FaceInterior;publishedFaceCount=0;barrierAbsorbed=false;barrierIncident=false`.
+- **Why this is not yet a recurrence claim:** TB5 also stopped at source vertex 11, but there the typed code was
+  `VertexTransitSectorUnresolved` with zero candidate faces. CB9 replaced the primitive/election authority and added
+  a dedicated seed failure. The common locus does not establish common mechanism.
+- **Evidence boundary:** the failure occurs before a complete developed-fan/election certificate can be credited.
+  It therefore masks the vertex-30 discriminator and does not establish whether the CB9 Amendment-22/23 kernel would
+  pass if seeded.
+- **Review question:** reconstruct the exact incoming trace/arrival geometry and prove which frozen seed precondition
+  is unavailable, then decide whether TB5's mechanism was reintroduced or a new seed-authority defect exists.
+- **Accounting:** newly gated but still unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain
+  **44 / 14 / 30**, debt **5**, packages **74**.
+
+## M3-CP4c3-TB7-CAND-02 — folded-cone ordinal 374 stops in atlas construction before the intended exact discriminator — **ACTIVE / GATING / UNCLASSIFIED WITNESS-PRECONDITION OR PRODUCT / NON-STABLE**
+
+- **Observed:** report-only ordinal 374
+  `ResolvedBranchCorrection.FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection` selects exactly
+  once and fails at `ASSERT_TRUE(atlasBuild)`. No typed `atlasBuild.error()` is printed.
+- **What is not proved:** the run does not reach the one-ray election, the deliberate exact continuation-boundary
+  fallback, or the old-mechanism-vs-new-owner assertions. It therefore neither validates nor falsifies the CB9 exact
+  kernel.
+- **Classification stop:** current evidence cannot distinguish an invalid synthetic cross-field/atlas precondition
+  from a genuine product rejection of the frozen witness. Weakening atlas validation is prohibited.
+- **Owner:** `M3-CP4c-3-TB7-REV` must recover the exact atlas error and classify the witness before prescribing any
+  product or test correction.
+- **Accounting:** ordinal 374 is newly gated on an unaccepted surface and carries zero gate credit in the remainder;
+  **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **74**.
+
 ## M3-CP4c3-DEFN-R2-CAND-01 — an exact decision with no declared bound on its input size — **ACTIVE / ARCHITECTURAL CLASS / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-DEFN-R2`** from static derivation; no runtime executed.
