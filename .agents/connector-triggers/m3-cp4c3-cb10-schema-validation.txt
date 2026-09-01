@@ -1,4 +1,4 @@
-purpose=M3-CP4c-3-CB10 compile-fix Drive caller schema validation
+purpose=M3-CP4c-3-CB10 corrected final compile caller schema validation
 workflow_candidate=.agents/Directional/turn-payloads/M3_CP4c3_CB10_workflow_candidate.yml
-source_sha=c120e0a87e18f46a2415bda64f29fce59cd9eb9a
-candidate_sha=bfae4ca90206c841fd17a5114c5c6ec1ec355b74
+source_sha=e2b59295c9920db5685239c2da188858839fa94f
+candidate_sha=7929340b850396ada2dca9b6c0945c17747409d5
