@@ -1,3 +1,0 @@
-M3-CP4c-3-CB8-REV source snapshot
-frozen_source=882dccf2d3984b06c18bcb22de143bfaff3ceb55
-attempt=1

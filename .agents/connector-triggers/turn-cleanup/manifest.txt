@@ -1,3 +1,0 @@
-# M3-CP4c-3-CB8-REV temporary-state cleanup
-.agents/connector-triggers/m3-cp4c-3-cb8-rev-source-snapshot-20260831.txt
-.agents/connector-triggers/m3-cp4c-3-cb8-rev-drive-apply-20260901.txt
