@@ -1,20 +1,20 @@
-name: Agent M3 CP4c3 CB10 Drive Apply
+name: Agent M3 CP4c3 CB10 Compile
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/m3-cp4c3-cb10-drive-apply.txt
+      - .agents/connector-triggers/m3-cp4c3-cb10-compile.txt
 
 permissions:
+  actions: write
   contents: write
-  id-token: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: m3-cp4c3-cb10-drive-apply
+  group: m3-cp4c3-cb10-compile
   cancel-in-progress: false
 
 jobs:
@@ -22,17 +22,15 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c3-cb10-drive-apply
+      label: m3-cp4c3-cb10-compile
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
 
-  apply:
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1KHedDZfCPb6707qNuiP8d_Cj4fcqIbKw
-      patch_sha256: fd745e4484bb3b4bbd46ec30f1a8bd47e31a7dd507c05645eff4f209444986a6
-      base_sha: c120e0a87e18f46a2415bda64f29fce59cd9eb9a
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB10: fix radial witness compile reference"
+      source_sha: e2b59295c9920db5685239c2da188858839fa94f
+      targets: directional_core directional_pipeline directional_surface_cell_authority_kernel_tests directional_surface_cell_producer_tests directional_surface_cell_completion_tests directional_surface_cell_validation_tests directional_compiled_api_tests directional_benchmarks
+      artifact_prefix: m3-cp4c3-cb10-compile-final
     secrets: inherit
