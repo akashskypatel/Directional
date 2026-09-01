@@ -109,6 +109,34 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<bool> barrierIncident;
   std::optional<std::size_t> barrierDegree;
   std::optional<std::size_t> transportStarComponentCount;
+
+  // Amendment 22/23 vertex-star transit projection. Exact rationals remain
+  // exact reduced strings; no topological value is re-expressed as floating point.
+  std::optional<std::array<std::size_t, 3>> vertexStarArrivalFace;
+  std::optional<int> vertexStarArrivalBranch;
+  std::vector<std::string> vertexStarArrivalRay;
+  std::optional<std::size_t> vertexStarProvenanceTrace;
+  std::optional<std::size_t> vertexStarProvenanceEvent;
+  std::string vertexStarKernelRoute;
+  std::string vertexStarState;
+  std::size_t vertexStarFanLength = 0U;
+  std::size_t vertexStarExactFanLengthBudget = 0U;
+  bool vertexStarClosedFan = false;
+  std::string vertexStarTruncationReason;
+  std::string vertexStarConeAngleDefinition;
+  std::vector<std::array<std::size_t, 3>> vertexStarFanFaces;
+  std::vector<int> vertexStarFanBranches;
+  std::vector<std::size_t> vertexStarFanNextRadialVertices;
+  std::vector<std::size_t> vertexStarFanPreviousRadialVertices;
+  std::vector<std::array<std::string, 3>> vertexStarSectorExactDPQ;
+  std::vector<bool> vertexStarSectorEligibleForElection;
+  std::vector<bool> vertexStarSectorContainsContinuation;
+  std::vector<bool> vertexStarCandidateRepresentativeInOwnSector;
+  std::size_t vertexStarOwnerCardinality = 0U;
+  std::optional<std::array<std::size_t, 3>> vertexStarOwnerFace;
+  std::optional<int> vertexStarOwnerBranch;
+  bool vertexStarOnRadialRay = false;
+  std::optional<std::size_t> vertexStarRadialRay;
 };
 
 struct SurfaceCellStageLineage {

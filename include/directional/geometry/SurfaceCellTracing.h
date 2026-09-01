@@ -21,6 +21,7 @@
 #include <queue>
 #include <set>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <variant>
@@ -158,6 +159,14 @@ enum class FieldAlignedCurveNetworkErrorCode : int {
   // The transit walk was seeded but no state reached the sector predicates.
   // Appended for Amendment 19; existing numeric values remain frozen.
   VertexTransitWalkUnexamined = 32,
+  // Amendment 22: the admissible open star ends before the intrinsic
+  // half-cone continuation.
+  VertexStarTruncatedBeforeContinuation = 33,
+  // Amendment 22: an incident source triangle has zero or pi vertex angle.
+  VertexStarDegenerateSector = 34,
+  // Amendment 23: exact algebraic election is bounded by the published fan
+  // length budget and fails closed above it.
+  VertexStarExactBudgetExceeded = 35,
 };
 
 struct FieldAlignedTraceStepDiagnostic {
@@ -172,6 +181,70 @@ struct FieldAlignedTraceStepDiagnostic {
 enum class FieldVertexArrivalMode : std::uint8_t {
   FaceInterior = 0,
   EdgeTransit = 1,
+};
+
+inline constexpr std::size_t kVertexStarExactFanLengthBudget = 16U;
+
+enum class VertexStarDecisionKernelRoute : std::uint8_t {
+  Filter = 0,
+  ExactFallback = 1,
+  RationalShortCircuit = 2,
+  NotRun = 3,
+};
+
+enum class VertexStarTransitState : std::uint8_t {
+  Owner = 0,
+  TruncatedBeforeContinuation = 1,
+  DegenerateSector = 2,
+  ExactBudgetExceeded = 3,
+  SeedUnavailable = 4,
+};
+
+struct VertexStarRaySeed {
+  authority::SourceVertexId sourceVertex;
+  authority::SourceFaceTopologyKey arrivalFace;
+  authority::FieldBranch arrivalBranch;
+  authority::FieldBranchDirection arrivalRay;
+  FieldVertexArrivalMode arrivalMode = FieldVertexArrivalMode::FaceInterior;
+  std::optional<authority::TraceId> provenanceTrace;
+  std::optional<std::size_t> provenanceEvent;
+
+  auto operator<=>(const VertexStarRaySeed &) const = default;
+};
+
+struct VertexStarSectorAudit {
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::FieldBranch branch;
+  authority::SourceVertexId nextRadialVertex;
+  authority::SourceVertexId previousRadialVertex;
+  authority::FieldExactRational dot;
+  authority::FieldExactRational normProduct;
+  authority::FieldExactRational crossSquared;
+  bool eligibleForElection = false;
+  bool containsContinuation = false;
+  bool candidateRepresentativeInOwnSector = false;
+
+  auto operator<=>(const VertexStarSectorAudit &) const = default;
+};
+
+struct VertexStarTransitAudit {
+  std::optional<VertexStarRaySeed> seed;
+  VertexStarDecisionKernelRoute kernelRoute =
+      VertexStarDecisionKernelRoute::NotRun;
+  VertexStarTransitState state = VertexStarTransitState::SeedUnavailable;
+  std::size_t fanLength = 0U;
+  std::size_t exactFanLengthBudget = kVertexStarExactFanLengthBudget;
+  bool closedFan = false;
+  std::string truncationReason;
+  std::string coneAngleDefinition = "sum(acos(D/sqrt(P)))";
+  std::vector<VertexStarSectorAudit> sectors;
+  std::size_t ownerCardinality = 0U;
+  std::optional<authority::SourceFaceTopologyKey> ownerFace;
+  std::optional<authority::FieldBranch> ownerBranch;
+  bool onRadialRay = false;
+  std::optional<authority::SourceVertexId> radialRay;
+
+  auto operator<=>(const VertexStarTransitAudit &) const = default;
 };
 
 enum class FieldVertexTransitStateOutcome : std::uint8_t {
@@ -233,6 +306,7 @@ struct FieldAlignedCurveNetworkError {
   std::vector<authority::SourceEdgeTopologyKey> publishedEdges;
   std::vector<authority::SourceFaceTopologyKey> publishedFaces;
   std::vector<FieldVertexTransitStateDiagnostic> vertexTransitStates;
+  std::optional<VertexStarTransitAudit> vertexStarTransit;
   std::optional<authority::SourceVertexId> traceSeedVertex;
   std::optional<authority::FieldSingularityId> traceSeedSingularity;
   std::vector<FieldAlignedTraceStepDiagnostic> traceHistory;
@@ -767,11 +841,14 @@ using FieldBranchContinuationResult =
 struct FieldVertexTransitDecision {
   FieldVertexTransitDecision(
       authority::SourceFaceTopologyKey faceValue,
-      authority::FieldBranch branchValue)
-      : nextFace(std::move(faceValue)), nextBranch(branchValue) {}
+      authority::FieldBranch branchValue,
+      std::optional<VertexStarTransitAudit> auditValue = std::nullopt)
+      : nextFace(std::move(faceValue)), nextBranch(branchValue),
+        vertexStarTransit(std::move(auditValue)) {}
 
   authority::SourceFaceTopologyKey nextFace;
   authority::FieldBranch nextBranch;
+  std::optional<VertexStarTransitAudit> vertexStarTransit;
 
   auto operator<=>(const FieldVertexTransitDecision &) const = default;
 };
@@ -914,7 +991,9 @@ inline constexpr std::size_t kFieldExactContinuationMagnitudeBits = 4096U;
     const authority::SourceFaceTopologyKey &currentFace,
     authority::FieldBranch currentBranch,
     authority::SourceVertexId sourceVertex,
-    FieldVertexArrivalMode arrivalMode = FieldVertexArrivalMode::FaceInterior);
+    FieldVertexArrivalMode arrivalMode = FieldVertexArrivalMode::FaceInterior,
+    std::optional<authority::TraceId> provenanceTrace = std::nullopt,
+    std::optional<std::size_t> provenanceEvent = std::nullopt);
 
 [[nodiscard]] std::size_t field_aligned_trace_step_budget(
     const authority::FieldBranchTopology &topology) noexcept;

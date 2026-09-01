@@ -6642,6 +6642,74 @@ remesh_from_raw_cross_field_impl_with_stage_products(
                 ? "FaceInterior"
                 : "EdgeTransit";
       }
+      if (error.vertexStarTransit.has_value()) {
+        const auto &audit = *error.vertexStarTransit;
+        const auto exact_string = [](const authority::FieldExactRational &value) {
+          return value.numerator_string() + "/" + value.denominator_string();
+        };
+        switch (audit.kernelRoute) {
+        case geometry::VertexStarDecisionKernelRoute::Filter:
+          locus.vertexStarKernelRoute = "Filter"; break;
+        case geometry::VertexStarDecisionKernelRoute::ExactFallback:
+          locus.vertexStarKernelRoute = "ExactFallback"; break;
+        case geometry::VertexStarDecisionKernelRoute::RationalShortCircuit:
+          locus.vertexStarKernelRoute = "RationalShortCircuit"; break;
+        case geometry::VertexStarDecisionKernelRoute::NotRun:
+          locus.vertexStarKernelRoute = "NotRun"; break;
+        }
+        switch (audit.state) {
+        case geometry::VertexStarTransitState::Owner:
+          locus.vertexStarState = "Owner"; break;
+        case geometry::VertexStarTransitState::TruncatedBeforeContinuation:
+          locus.vertexStarState = "VertexStarTruncatedBeforeContinuation"; break;
+        case geometry::VertexStarTransitState::DegenerateSector:
+          locus.vertexStarState = "VertexStarDegenerateSector"; break;
+        case geometry::VertexStarTransitState::ExactBudgetExceeded:
+          locus.vertexStarState = "VertexStarExactBudgetExceeded"; break;
+        case geometry::VertexStarTransitState::SeedUnavailable:
+          locus.vertexStarState = "SeedUnavailable"; break;
+        }
+        locus.vertexStarFanLength = audit.fanLength;
+        locus.vertexStarExactFanLengthBudget = audit.exactFanLengthBudget;
+        locus.vertexStarClosedFan = audit.closedFan;
+        locus.vertexStarTruncationReason = audit.truncationReason;
+        locus.vertexStarConeAngleDefinition = audit.coneAngleDefinition;
+        if (audit.seed.has_value()) {
+          locus.vertexStarArrivalFace = topology_face_locus(audit.seed->arrivalFace);
+          locus.vertexStarArrivalBranch = static_cast<int>(audit.seed->arrivalBranch.value());
+          for (const auto &coordinate : audit.seed->arrivalRay.barycentric)
+            locus.vertexStarArrivalRay.push_back(exact_string(coordinate));
+          if (audit.seed->provenanceTrace.has_value())
+            locus.vertexStarProvenanceTrace = audit.seed->provenanceTrace->index();
+          locus.vertexStarProvenanceEvent = audit.seed->provenanceEvent;
+        }
+        for (const auto &sector : audit.sectors) {
+          locus.vertexStarFanFaces.push_back(topology_face_locus(sector.sourceFace));
+          locus.vertexStarFanBranches.push_back(
+              static_cast<int>(sector.branch.value()));
+          locus.vertexStarFanNextRadialVertices.push_back(
+              sector.nextRadialVertex.index());
+          locus.vertexStarFanPreviousRadialVertices.push_back(
+              sector.previousRadialVertex.index());
+          locus.vertexStarSectorExactDPQ.push_back(
+              {exact_string(sector.dot), exact_string(sector.normProduct),
+               exact_string(sector.crossSquared)});
+          locus.vertexStarSectorEligibleForElection.push_back(
+              sector.eligibleForElection);
+          locus.vertexStarSectorContainsContinuation.push_back(
+              sector.containsContinuation);
+          locus.vertexStarCandidateRepresentativeInOwnSector.push_back(
+              sector.candidateRepresentativeInOwnSector);
+        }
+        locus.vertexStarOwnerCardinality = audit.ownerCardinality;
+        if (audit.ownerFace.has_value())
+          locus.vertexStarOwnerFace = topology_face_locus(*audit.ownerFace);
+        if (audit.ownerBranch.has_value())
+          locus.vertexStarOwnerBranch = static_cast<int>(audit.ownerBranch->value());
+        locus.vertexStarOnRadialRay = audit.onRadialRay;
+        if (audit.radialRay.has_value())
+          locus.vertexStarRadialRay = audit.radialRay->index();
+      }
       locus.publishedFaceCount = error.publishedFaces.size();
       const std::size_t faceLimit =
           std::min(kPublishedFailureFaceLimit, error.publishedFaces.size());

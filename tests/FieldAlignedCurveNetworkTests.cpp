@@ -180,6 +180,64 @@ CrossFieldResult make_zero_transport_field(const TriMesh &mesh) {
   return field;
 }
 
+TriMesh make_three_right_angle_cone_fan() {
+  Eigen::MatrixXd vertices(4, 3);
+  vertices << 0, 0, 0,
+              1, 0, 0,
+              0, 1, 0,
+              0, 0, 1;
+  Eigen::MatrixXi faces(3, 3);
+  faces << 0, 1, 2,
+           0, 2, 3,
+           0, 3, 1;
+  TriMesh mesh;
+  mesh.set_mesh(vertices, faces);
+  return mesh;
+}
+
+CrossFieldResult make_folded_cone_vertex_field(const TriMesh &mesh,
+                                                const bool radialBoundarySeed) {
+  CrossFieldResult field = make_zero_transport_field(mesh);
+  field.primaryDirections.row(0) =
+      radialBoundarySeed ? Eigen::RowVector3d(1.0, 1.0, 0.0)
+                         : Eigen::RowVector3d(2.0, 1.0, 0.0);
+  field.secondaryDirections.row(0) =
+      radialBoundarySeed ? Eigen::RowVector3d(-1.0, 1.0, 0.0)
+                         : Eigen::RowVector3d(-1.0, 2.0, 0.0);
+  field.primaryDirections.row(1) = Eigen::RowVector3d(0.0, 1.0, 1.0);
+  field.secondaryDirections.row(1) = Eigen::RowVector3d(0.0, -1.0, 1.0);
+  field.primaryDirections.row(2) = Eigen::RowVector3d(1.0, 0.0, 1.0);
+  field.secondaryDirections.row(2) = Eigen::RowVector3d(-1.0, 0.0, 1.0);
+
+  for (int edge = 0; edge < mesh.EV.rows(); ++edge) {
+    const int first = mesh.EV(edge, 0);
+    const int second = mesh.EV(edge, 1);
+    int matching = 0;
+    if (first == 0 || second == 0) {
+      const int radial = first == 0 ? second : first;
+      matching = radial == 3 ? 0 : 2;
+    }
+    field.matching(edge) = matching;
+    auto transition = std::find_if(
+        field.edgeTransitions.begin(), field.edgeTransitions.end(),
+        [&](const CrossFieldEdgeTransition &candidate) {
+          return candidate.sourceEdge == edge;
+        });
+    EXPECT_NE(field.edgeTransitions.end(), transition);
+    if (transition != field.edgeTransitions.end()) {
+      transition->matching = matching;
+    }
+  }
+  return field;
+}
+
+CrossFieldResult make_folded_cone_radial_arrival_field(const TriMesh &mesh) {
+  CrossFieldResult field = make_folded_cone_vertex_field(mesh, false);
+  field.primaryDirections.row(0) = Eigen::RowVector3d(1.0, 0.0, 0.0);
+  field.secondaryDirections.row(0) = Eigen::RowVector3d(0.0, 1.0, 0.0);
+  return field;
+}
+
 std::optional<SourceTopologyRegions> make_source_authority(
     const TriMesh &mesh,
     const std::set<SourceEdgeTopologyKey> &hardFeatureEdges = {}) {
@@ -8612,6 +8670,9 @@ TEST(ResolvedBranchCorrection,
           directional::geometry::surface_cell_tracing_detail::
               FieldVertexTransitDecision>(&result)) {
     EXPECT_NE(frameIt->sourceFace, decision->nextFace);
+    ASSERT_TRUE(decision->vertexStarTransit.has_value());
+    ASSERT_TRUE(decision->vertexStarTransit->seed.has_value());
+    EXPECT_TRUE(decision->vertexStarTransit->seed->arrivalRay.is_barycentric());
     return;
   }
 
@@ -8631,9 +8692,162 @@ TEST(ResolvedBranchCorrection,
       });
   ASSERT_NE(error.vertexTransitStates.end(), evaluated);
   ASSERT_TRUE(evaluated->representativeDirection.has_value());
-  ASSERT_TRUE(evaluated->incomingDirection.has_value());
   EXPECT_TRUE(evaluated->representativeDirection->is_barycentric());
-  EXPECT_TRUE(evaluated->incomingDirection->is_barycentric());
+  ASSERT_TRUE(error.vertexStarTransit.has_value());
+  ASSERT_TRUE(error.vertexStarTransit->seed.has_value());
+  EXPECT_TRUE(error.vertexStarTransit->seed->arrivalRay.is_barycentric());
+}
+
+TEST(ResolvedBranchCorrection,
+     FoldedConeArrivalRayElectsOneOwnerAndFalsifiesCandidateLocalElection) {
+  const TriMesh mesh = make_three_right_angle_cone_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_folded_cone_vertex_field(mesh, false));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+
+  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 2, 4U);
+  const SourceFaceTopologyKey expectedOwner = topology_face(0, 2, 3, 4U);
+  const SourceVertexId center = SourceVertexId::from_index(0, 4U).value();
+  const auto *arrivalFrame = topology.find_frame(arrivalFace);
+  ASSERT_NE(nullptr, arrivalFrame);
+
+  // The row-0 primary axis is (2,1,0).  Gauge branch 2 points toward the
+  // center, so Amendment 22 seeds the outward arrival ray (2,1,0), with
+  // alpha=atan(1/2).  Every cone sector has D=0,P=1,Q=1, hence
+  // Theta=3*pi/2 exactly and beta=alpha+3*pi/4 lies strictly in face 0-2-3.
+  const auto result = directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit(
+          mesh, topology, arrivalFrame->sourceComponent,
+          arrivalFrame->topologyRegion, arrivalFace,
+          directional::authority::FieldBranch::from_integer(2), center,
+          directional::geometry::FieldVertexArrivalMode::FaceInterior);
+  ASSERT_TRUE(std::holds_alternative<
+              directional::geometry::surface_cell_tracing_detail::
+                  FieldVertexTransitDecision>(result));
+  const auto &decision = std::get<
+      directional::geometry::surface_cell_tracing_detail::
+          FieldVertexTransitDecision>(result);
+  ASSERT_TRUE(decision.vertexStarTransit.has_value());
+  const auto &audit = *decision.vertexStarTransit;
+
+  EXPECT_EQ(expectedOwner, decision.nextFace);
+  EXPECT_EQ(directional::authority::FieldBranch::from_integer(0),
+            decision.nextBranch);
+  EXPECT_TRUE(audit.closedFan);
+  EXPECT_EQ(3U, audit.fanLength);
+  EXPECT_EQ(3U, audit.sectors.size());
+  EXPECT_EQ(directional::geometry::VertexStarTransitState::Owner, audit.state);
+  EXPECT_EQ(directional::geometry::VertexStarDecisionKernelRoute::Filter,
+            audit.kernelRoute);
+  EXPECT_EQ(1U, audit.ownerCardinality);
+  ASSERT_TRUE(audit.ownerFace.has_value());
+  EXPECT_EQ(expectedOwner, *audit.ownerFace);
+  EXPECT_FALSE(audit.onRadialRay);
+
+  std::size_t oldCandidateLocalOwners = 0U;
+  for (const auto &sector : audit.sectors) {
+    EXPECT_EQ(exact_integer(0), sector.dot);
+    EXPECT_EQ(exact_integer(1), sector.normProduct);
+    EXPECT_EQ(exact_integer(1), sector.crossSquared);
+    if (sector.eligibleForElection && sector.candidateRepresentativeInOwnSector) {
+      ++oldCandidateLocalOwners;
+    }
+  }
+  // The pre-Amendment-22 mechanism would have accepted both eligible target
+  // faces from their own local representatives.  The single developed arrival
+  // ray elects exactly one owner without candidate ordering or a tie-break.
+  EXPECT_EQ(2U, oldCandidateLocalOwners);
+}
+
+TEST(ResolvedBranchCorrection,
+     FoldedConeBoundaryContinuationUsesExactFallbackAndHalfOpenOwner) {
+  const TriMesh mesh = make_three_right_angle_cone_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_folded_cone_vertex_field(mesh, true));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+
+  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 2, 4U);
+  const SourceFaceTopologyKey expectedOwner = topology_face(0, 3, 1, 4U);
+  const SourceVertexId center = SourceVertexId::from_index(0, 4U).value();
+  const auto *arrivalFrame = topology.find_frame(arrivalFace);
+  ASSERT_NE(nullptr, arrivalFrame);
+
+  // Here alpha=pi/4 exactly.  With Theta=3*pi/2, beta=pi lands exactly
+  // on radial ray vertex 3.  The unchanged half-open convention assigns that
+  // ray to the sector where it is the next radial: face 0-3-1.
+  const auto result = directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit(
+          mesh, topology, arrivalFrame->sourceComponent,
+          arrivalFrame->topologyRegion, arrivalFace,
+          directional::authority::FieldBranch::from_integer(2), center,
+          directional::geometry::FieldVertexArrivalMode::FaceInterior);
+  ASSERT_TRUE(std::holds_alternative<
+              directional::geometry::surface_cell_tracing_detail::
+                  FieldVertexTransitDecision>(result));
+  const auto &decision = std::get<
+      directional::geometry::surface_cell_tracing_detail::
+          FieldVertexTransitDecision>(result);
+  ASSERT_TRUE(decision.vertexStarTransit.has_value());
+  const auto &audit = *decision.vertexStarTransit;
+
+  EXPECT_EQ(expectedOwner, decision.nextFace);
+  EXPECT_EQ(directional::geometry::VertexStarDecisionKernelRoute::ExactFallback,
+            audit.kernelRoute);
+  EXPECT_EQ(1U, audit.ownerCardinality);
+  EXPECT_TRUE(audit.onRadialRay);
+  ASSERT_TRUE(audit.radialRay.has_value());
+  EXPECT_EQ(SourceVertexId::from_index(3, 4U).value(), *audit.radialRay);
+  ASSERT_TRUE(audit.ownerFace.has_value());
+  EXPECT_EQ(expectedOwner, *audit.ownerFace);
+}
+
+TEST(ResolvedBranchCorrection,
+     FoldedConeRadialArrivalSeedUsesExactHalfOpenArrivalConvention) {
+  const TriMesh mesh = make_three_right_angle_cone_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto atlasBuild = directional::authority::FieldTransportAtlas::make(
+      mesh, *sourceAuthority, {}, make_folded_cone_radial_arrival_field(mesh));
+  ASSERT_TRUE(atlasBuild);
+  const auto &topology = atlasBuild.value().branch_topology();
+
+  const SourceFaceTopologyKey arrivalFace = topology_face(0, 1, 2, 4U);
+  const SourceFaceTopologyKey expectedOwner = topology_face(0, 2, 3, 4U);
+  const SourceVertexId center = SourceVertexId::from_index(0, 4U).value();
+  const auto *arrivalFrame = topology.find_frame(arrivalFace);
+  ASSERT_NE(nullptr, arrivalFrame);
+
+  // Gauge branch 2 points toward the center along -x, so the one stored seed
+  // points away from the vertex exactly on radial ray x.  EdgeTransit is the
+  // admissible arrival mode for that exact radial seed.  Alpha=0 and
+  // beta=Theta/2=3*pi/4, which lies strictly inside face 0-2-3.
+  const auto result = directional::geometry::surface_cell_tracing_detail::
+      resolve_field_vertex_transit(
+          mesh, topology, arrivalFrame->sourceComponent,
+          arrivalFrame->topologyRegion, arrivalFace,
+          directional::authority::FieldBranch::from_integer(2), center,
+          directional::geometry::FieldVertexArrivalMode::EdgeTransit);
+  ASSERT_TRUE(std::holds_alternative<
+              directional::geometry::surface_cell_tracing_detail::
+                  FieldVertexTransitDecision>(result));
+  const auto &decision = std::get<
+      directional::geometry::surface_cell_tracing_detail::
+          FieldVertexTransitDecision>(result);
+  ASSERT_TRUE(decision.vertexStarTransit.has_value());
+  const auto &audit = *decision.vertexStarTransit;
+  ASSERT_TRUE(audit.seed.has_value());
+
+  EXPECT_EQ(expectedOwner, decision.nextFace);
+  EXPECT_EQ(directional::geometry::FieldVertexArrivalMode::EdgeTransit,
+            audit.seed->arrivalMode);
+  EXPECT_EQ(1U, audit.ownerCardinality);
+  EXPECT_FALSE(audit.onRadialRay);
 }
 
 TEST(ResolvedBranchContinuation, RejectsUnresolvedRegularVertexSector) {

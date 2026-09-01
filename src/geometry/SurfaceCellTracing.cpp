@@ -10,6 +10,7 @@
 #include <cassert>
 #include <cmath>
 #include <exception>
+#include <functional>
 #include <limits>
 #include <optional>
 #include <queue>
@@ -555,6 +556,641 @@ FieldBranchContinuationResult resolve_field_branch_continuation(
       representative, sharedVertex};
 }
 
+namespace {
+
+using VertexStarRational = authority::FieldExactRational;
+
+struct VertexStarExactVector3 {
+  std::array<VertexStarRational, 3> value{};
+};
+
+VertexStarRational vertex_star_zero() {
+  return VertexStarRational::from_integer(0);
+}
+VertexStarRational vertex_star_one() {
+  return VertexStarRational::from_integer(1);
+}
+
+std::optional<VertexStarExactVector3>
+vertex_star_exact_position(const TriMesh &sourceMesh,
+                           const authority::SourceVertexId vertex) {
+  if (vertex.index() >= static_cast<std::size_t>(sourceMesh.V.rows())) {
+    return std::nullopt;
+  }
+  VertexStarExactVector3 result;
+  for (std::size_t coordinate = 0U; coordinate < 3U; ++coordinate) {
+    const auto exact = VertexStarRational::from_double_exact(
+        sourceMesh.V(static_cast<int>(vertex.index()),
+                     static_cast<int>(coordinate)));
+    if (!exact.has_value()) return std::nullopt;
+    result.value[coordinate] = *exact;
+  }
+  return result;
+}
+
+VertexStarExactVector3 vertex_star_subtract(const VertexStarExactVector3 &a,
+                                             const VertexStarExactVector3 &b) {
+  VertexStarExactVector3 result;
+  for (std::size_t coordinate = 0U; coordinate < 3U; ++coordinate) {
+    result.value[coordinate] = a.value[coordinate] - b.value[coordinate];
+  }
+  return result;
+}
+
+VertexStarRational vertex_star_dot(const VertexStarExactVector3 &a,
+                                   const VertexStarExactVector3 &b) {
+  VertexStarRational result = vertex_star_zero();
+  for (std::size_t coordinate = 0U; coordinate < 3U; ++coordinate) {
+    result = result + a.value[coordinate] * b.value[coordinate];
+  }
+  return result;
+}
+
+std::optional<VertexStarExactVector3> vertex_star_exact_direction(
+    const TriMesh &sourceMesh,
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const authority::FieldBranchDirection &direction) {
+  if (!direction.is_barycentric()) return std::nullopt;
+  VertexStarExactVector3 result;
+  for (auto &coordinate : result.value) coordinate = vertex_star_zero();
+  const auto &vertices = sourceFace.vertices();
+  for (std::size_t index = 0U; index < vertices.size(); ++index) {
+    const auto point = vertex_star_exact_position(sourceMesh, vertices[index]);
+    if (!point.has_value()) return std::nullopt;
+    for (std::size_t coordinate = 0U; coordinate < 3U; ++coordinate) {
+      result.value[coordinate] = result.value[coordinate] +
+          direction[index] * point->value[coordinate];
+    }
+  }
+  return result;
+}
+
+struct VertexStarAngleTerm {
+  VertexStarRational dot;
+  VertexStarRational normProduct;
+  VertexStarRational crossSquared;
+};
+
+std::optional<VertexStarAngleTerm>
+vertex_star_angle_term(const VertexStarExactVector3 &first,
+                       const VertexStarExactVector3 &second) {
+  const VertexStarRational firstNorm = vertex_star_dot(first, first);
+  const VertexStarRational secondNorm = vertex_star_dot(second, second);
+  const VertexStarRational product = firstNorm * secondNorm;
+  if (product <= vertex_star_zero()) return std::nullopt;
+  const VertexStarRational dot = vertex_star_dot(first, second);
+  const VertexStarRational crossSquared = product - dot * dot;
+  if (crossSquared < vertex_star_zero()) return std::nullopt;
+  return VertexStarAngleTerm{dot, product, crossSquared};
+}
+
+struct VertexStarRadicalRepresentation {
+  VertexStarRational coefficient = vertex_star_one();
+  std::size_t mask = 0U;
+};
+
+class VertexStarRadicalBasis {
+public:
+  VertexStarRadicalBasis() : products_{vertex_star_one()} {}
+
+  [[nodiscard]] std::optional<VertexStarRadicalRepresentation>
+  represent_square_root(const VertexStarRational &radicand) {
+    if (radicand < vertex_star_zero()) return std::nullopt;
+    if (radicand == vertex_star_zero()) {
+      return VertexStarRadicalRepresentation{vertex_star_zero(), 0U};
+    }
+    if (const auto found = find_square_root(radicand)) return found;
+    if (basis_.size() >= sizeof(std::size_t) * 8U - 1U) {
+      return std::nullopt;
+    }
+    const std::size_t oldSize = products_.size();
+    basis_.push_back(radicand);
+    products_.resize(oldSize * 2U);
+    for (std::size_t mask = 0U; mask < oldSize; ++mask) {
+      products_[oldSize + mask] = products_[mask] * radicand;
+    }
+    return VertexStarRadicalRepresentation{vertex_star_one(), oldSize};
+  }
+
+  [[nodiscard]] std::optional<VertexStarRadicalRepresentation>
+  find_square_root(const VertexStarRational &radicand) const {
+    if (radicand < vertex_star_zero()) return std::nullopt;
+    if (radicand == vertex_star_zero()) {
+      return VertexStarRadicalRepresentation{vertex_star_zero(), 0U};
+    }
+    for (std::size_t mask = 0U; mask < products_.size(); ++mask) {
+      const VertexStarRational ratio = radicand / products_[mask];
+      const auto root = ratio.rational_square_root();
+      if (root.has_value()) {
+        return VertexStarRadicalRepresentation{*root, mask};
+      }
+    }
+    return std::nullopt;
+  }
+
+  [[nodiscard]] std::size_t dimension() const noexcept { return basis_.size(); }
+  [[nodiscard]] std::size_t coefficient_count() const noexcept {
+    return products_.size();
+  }
+  [[nodiscard]] const std::vector<VertexStarRational> &basis() const noexcept {
+    return basis_;
+  }
+  [[nodiscard]] const VertexStarRational &product(const std::size_t mask) const {
+    return products_[mask];
+  }
+
+private:
+  std::vector<VertexStarRational> basis_;
+  std::vector<VertexStarRational> products_;
+};
+
+struct VertexStarAlgebraicValue {
+  std::vector<VertexStarRational> coefficients;
+};
+struct VertexStarComplexValue {
+  VertexStarAlgebraicValue real;
+  VertexStarAlgebraicValue imaginary;
+};
+
+VertexStarComplexValue
+vertex_star_complex_one(const VertexStarRadicalBasis &basis) {
+  VertexStarComplexValue result;
+  result.real.coefficients.assign(basis.coefficient_count(), vertex_star_zero());
+  result.imaginary.coefficients.assign(basis.coefficient_count(),
+                                       vertex_star_zero());
+  result.real.coefficients[0] = vertex_star_one();
+  return result;
+}
+
+VertexStarRational vertex_star_radical_monomial_coefficient(
+    const VertexStarRadicalBasis &basis, const std::size_t existingMask,
+    const VertexStarRadicalRepresentation &radical) {
+  return radical.coefficient * basis.product(existingMask & radical.mask);
+}
+
+void vertex_star_multiply_angle_factor(
+    VertexStarComplexValue &value, const VertexStarRadicalBasis &basis,
+    const VertexStarAngleTerm &term,
+    const VertexStarRadicalRepresentation &radical,
+    const int orientation) {
+  std::vector<VertexStarRational> nextReal(
+      basis.coefficient_count(), vertex_star_zero());
+  std::vector<VertexStarRational> nextImaginary(
+      basis.coefficient_count(), vertex_star_zero());
+  const VertexStarRational orientationValue =
+      VertexStarRational::from_integer(orientation);
+  for (std::size_t mask = 0U; mask < basis.coefficient_count(); ++mask) {
+    const VertexStarRational &real = value.real.coefficients[mask];
+    const VertexStarRational &imaginary = value.imaginary.coefficients[mask];
+    nextReal[mask] = nextReal[mask] + real * term.dot;
+    nextImaginary[mask] = nextImaginary[mask] + imaginary * term.dot;
+    const std::size_t radicalMask = mask ^ radical.mask;
+    const VertexStarRational radicalCoefficient =
+        vertex_star_radical_monomial_coefficient(basis, mask, radical);
+    nextReal[radicalMask] = nextReal[radicalMask] -
+        orientationValue * imaginary * radicalCoefficient;
+    nextImaginary[radicalMask] = nextImaginary[radicalMask] +
+        orientationValue * real * radicalCoefficient;
+  }
+  value.real.coefficients = std::move(nextReal);
+  value.imaginary.coefficients = std::move(nextImaginary);
+}
+
+bool vertex_star_algebraic_zero(const VertexStarAlgebraicValue &value) {
+  const VertexStarRational zero = vertex_star_zero();
+  return std::all_of(value.coefficients.begin(), value.coefficients.end(),
+                     [&](const VertexStarRational &coefficient) {
+                       return coefficient == zero;
+                     });
+}
+
+std::optional<int> vertex_star_algebraic_sign_at_precision(
+    const VertexStarAlgebraicValue &value,
+    const VertexStarRadicalBasis &basis, const std::size_t fractionalBits) {
+  if (vertex_star_algebraic_zero(value)) return 0;
+  std::vector<VertexStarRational> radicalLower(basis.dimension(),
+                                               vertex_star_zero());
+  std::vector<VertexStarRational> radicalUpper(basis.dimension(),
+                                               vertex_star_zero());
+  for (std::size_t index = 0U; index < basis.dimension(); ++index) {
+    const auto bounds = basis.basis()[index].sqrt_bounds(fractionalBits);
+    if (!bounds.has_value()) return std::nullopt;
+    radicalLower[index] = bounds->first;
+    radicalUpper[index] = bounds->second;
+  }
+  std::vector<VertexStarRational> monomialLower(
+      basis.coefficient_count(), vertex_star_one());
+  std::vector<VertexStarRational> monomialUpper(
+      basis.coefficient_count(), vertex_star_one());
+  for (std::size_t mask = 1U; mask < basis.coefficient_count(); ++mask) {
+    std::size_t bit = 0U;
+    while (((mask >> bit) & 1U) == 0U) ++bit;
+    const std::size_t previous = mask & ~(std::size_t{1} << bit);
+    monomialLower[mask] = monomialLower[previous] * radicalLower[bit];
+    monomialUpper[mask] = monomialUpper[previous] * radicalUpper[bit];
+  }
+  VertexStarRational lower = vertex_star_zero();
+  VertexStarRational upper = vertex_star_zero();
+  const VertexStarRational zero = vertex_star_zero();
+  for (std::size_t mask = 0U; mask < basis.coefficient_count(); ++mask) {
+    const VertexStarRational &coefficient = value.coefficients[mask];
+    if (coefficient == zero) continue;
+    if (coefficient > zero) {
+      lower = lower + coefficient * monomialLower[mask];
+      upper = upper + coefficient * monomialUpper[mask];
+    } else {
+      lower = lower + coefficient * monomialUpper[mask];
+      upper = upper + coefficient * monomialLower[mask];
+    }
+  }
+  if (lower > zero) return 1;
+  if (upper < zero) return -1;
+  return std::nullopt;
+}
+
+VertexStarAlgebraicValue vertex_star_algebraic_multiply(
+    const VertexStarAlgebraicValue &first,
+    const VertexStarAlgebraicValue &second,
+    const VertexStarRadicalBasis &basis, const std::size_t dimension) {
+  const std::size_t coefficientCount = std::size_t{1} << dimension;
+  assert(first.coefficients.size() == coefficientCount);
+  assert(second.coefficients.size() == coefficientCount);
+  VertexStarAlgebraicValue result;
+  result.coefficients.assign(coefficientCount, vertex_star_zero());
+  const VertexStarRational zero = vertex_star_zero();
+  for (std::size_t firstMask = 0U; firstMask < coefficientCount; ++firstMask) {
+    if (first.coefficients[firstMask] == zero) continue;
+    for (std::size_t secondMask = 0U; secondMask < coefficientCount;
+         ++secondMask) {
+      if (second.coefficients[secondMask] == zero) continue;
+      const std::size_t targetMask = firstMask ^ secondMask;
+      const VertexStarRational repeatedRadicals =
+          basis.product(firstMask & secondMask);
+      result.coefficients[targetMask] = result.coefficients[targetMask] +
+          first.coefficients[firstMask] * second.coefficients[secondMask] *
+              repeatedRadicals;
+    }
+  }
+  return result;
+}
+
+int vertex_star_algebraic_sign_exact_recursive(
+    const VertexStarAlgebraicValue &value,
+    const VertexStarRadicalBasis &basis, const std::size_t dimension) {
+  if (vertex_star_algebraic_zero(value)) return 0;
+  if (dimension == 0U) {
+    const VertexStarRational zero = vertex_star_zero();
+    return value.coefficients[0] < zero ? -1 : 1;
+  }
+
+  const std::size_t half = std::size_t{1} << (dimension - 1U);
+  VertexStarAlgebraicValue rationalPart;
+  VertexStarAlgebraicValue radicalPart;
+  rationalPart.coefficients.assign(value.coefficients.begin(),
+                                   value.coefficients.begin() + half);
+  radicalPart.coefficients.assign(value.coefficients.begin() + half,
+                                  value.coefficients.end());
+
+  const int rationalSign = vertex_star_algebraic_sign_exact_recursive(
+      rationalPart, basis, dimension - 1U);
+  const int radicalSign = vertex_star_algebraic_sign_exact_recursive(
+      radicalPart, basis, dimension - 1U);
+  if (radicalSign == 0) return rationalSign;
+  if (rationalSign == 0) return radicalSign;
+  if (rationalSign == radicalSign) return rationalSign;
+
+  // Successively eliminate the highest radical.  For
+  // x = a + b*sqrt(q), opposite signs of a and b reduce the decision to
+  // sign(a^2 - q*b^2) in the smaller multiquadratic field.  Every recursive
+  // call removes one radical, so this exact fallback always terminates.
+  VertexStarAlgebraicValue difference = vertex_star_algebraic_multiply(
+      rationalPart, rationalPart, basis, dimension - 1U);
+  const VertexStarAlgebraicValue radicalSquared =
+      vertex_star_algebraic_multiply(radicalPart, radicalPart, basis,
+                                     dimension - 1U);
+  const VertexStarRational &radicand = basis.basis()[dimension - 1U];
+  for (std::size_t mask = 0U; mask < half; ++mask) {
+    difference.coefficients[mask] = difference.coefficients[mask] -
+        radicand * radicalSquared.coefficients[mask];
+  }
+  const int magnitudeOrdering = vertex_star_algebraic_sign_exact_recursive(
+      difference, basis, dimension - 1U);
+  if (magnitudeOrdering == 0) return 0;
+  return magnitudeOrdering > 0 ? rationalSign : radicalSign;
+}
+
+int vertex_star_algebraic_sign_exact(const VertexStarAlgebraicValue &value,
+                                     const VertexStarRadicalBasis &basis) {
+  assert(value.coefficients.size() == basis.coefficient_count());
+  return vertex_star_algebraic_sign_exact_recursive(value, basis,
+                                                     basis.dimension());
+}
+
+std::optional<int> vertex_star_algebraic_sign_filter(
+    const VertexStarAlgebraicValue &value,
+    const VertexStarRadicalBasis &basis) {
+  if (vertex_star_algebraic_zero(value)) return 0;
+  std::size_t precision = 32U;
+  while (true) {
+    if (const auto sign =
+            vertex_star_algebraic_sign_at_precision(value, basis, precision)) {
+      return sign;
+    }
+    if (precision >
+        static_cast<std::size_t>(std::numeric_limits<int>::max() / 4)) {
+      // A certified filter is allowed to defer.  The exact elimination
+      // fallback owns the decision from here; no approximate answer escapes.
+      return std::nullopt;
+    }
+    precision *= 2U;
+  }
+}
+
+struct VertexStarAngleAccumulator {
+  VertexStarComplexValue value;
+  int halfTurns = 0;
+};
+using VertexStarSignFilter = std::function<std::optional<int>(
+    const VertexStarAlgebraicValue &, const VertexStarRadicalBasis &)>;
+
+std::optional<VertexStarAngleAccumulator> vertex_star_accumulate_angles(
+    const std::vector<VertexStarAngleTerm> &terms,
+    const VertexStarRadicalBasis &basis, const VertexStarSignFilter &sign) {
+  VertexStarAngleAccumulator accumulator{vertex_star_complex_one(basis), 0};
+  for (const VertexStarAngleTerm &term : terms) {
+    const auto radical = basis.find_square_root(term.crossSquared);
+    if (!radical.has_value()) return std::nullopt;
+    vertex_star_multiply_angle_factor(accumulator.value, basis, term, *radical,
+                                      +1);
+    const auto imaginarySign = sign(accumulator.value.imaginary, basis);
+    if (!imaginarySign.has_value()) return std::nullopt;
+    if (*imaginarySign == 0) {
+      ++accumulator.halfTurns;
+      continue;
+    }
+    const int expected = (accumulator.halfTurns % 2 == 0) ? 1 : -1;
+    if (*imaginarySign != expected) ++accumulator.halfTurns;
+  }
+  return accumulator;
+}
+
+std::optional<int> vertex_star_compare_angle_sums_with_sign(
+    const std::vector<VertexStarAngleTerm> &first,
+    const std::vector<VertexStarAngleTerm> &second,
+    const bool filterOnly) {
+  VertexStarRadicalBasis basis;
+  for (const VertexStarAngleTerm &term : first) {
+    if (!basis.represent_square_root(term.crossSquared).has_value()) {
+      return std::nullopt;
+    }
+  }
+  for (const VertexStarAngleTerm &term : second) {
+    if (!basis.represent_square_root(term.crossSquared).has_value()) {
+      return std::nullopt;
+    }
+  }
+  const VertexStarSignFilter sign =
+      [&](const VertexStarAlgebraicValue &value,
+          const VertexStarRadicalBasis &activeBasis) -> std::optional<int> {
+    return filterOnly
+        ? vertex_star_algebraic_sign_filter(value, activeBasis)
+        : std::optional<int>{vertex_star_algebraic_sign_exact(value,
+                                                               activeBasis)};
+  };
+  const auto firstAccumulator = vertex_star_accumulate_angles(first, basis, sign);
+  const auto secondAccumulator =
+      vertex_star_accumulate_angles(second, basis, sign);
+  if (!firstAccumulator.has_value() || !secondAccumulator.has_value()) {
+    return std::nullopt;
+  }
+  if (firstAccumulator->halfTurns != secondAccumulator->halfTurns) {
+    return firstAccumulator->halfTurns < secondAccumulator->halfTurns ? -1 : 1;
+  }
+  VertexStarComplexValue difference = vertex_star_complex_one(basis);
+  for (const VertexStarAngleTerm &term : first) {
+    const auto radical = basis.find_square_root(term.crossSquared);
+    if (!radical.has_value()) return std::nullopt;
+    vertex_star_multiply_angle_factor(difference, basis, term, *radical, +1);
+  }
+  for (const VertexStarAngleTerm &term : second) {
+    const auto radical = basis.find_square_root(term.crossSquared);
+    if (!radical.has_value()) return std::nullopt;
+    vertex_star_multiply_angle_factor(difference, basis, term, *radical, -1);
+  }
+  if (filterOnly && vertex_star_algebraic_zero(difference.imaginary)) {
+    return std::nullopt;
+  }
+  return sign(difference.imaginary, basis);
+}
+
+struct VertexStarAngleComparison {
+  int ordering = 0;
+  VertexStarDecisionKernelRoute route = VertexStarDecisionKernelRoute::Filter;
+};
+
+VertexStarAngleComparison vertex_star_compare_angle_sums(
+    const std::vector<VertexStarAngleTerm> &first,
+    const std::vector<VertexStarAngleTerm> &second) {
+  if (const auto filtered =
+          vertex_star_compare_angle_sums_with_sign(first, second, true)) {
+    return VertexStarAngleComparison{*filtered,
+                                     VertexStarDecisionKernelRoute::Filter};
+  }
+  const auto exact = vertex_star_compare_angle_sums_with_sign(first, second,
+                                                               false);
+  if (!exact.has_value()) {
+    throw std::runtime_error("vertex-star exact angle comparison unavailable");
+  }
+  return VertexStarAngleComparison{*exact,
+                                   VertexStarDecisionKernelRoute::ExactFallback};
+}
+
+void vertex_star_merge_kernel_route(VertexStarDecisionKernelRoute &target,
+                                    const VertexStarDecisionKernelRoute route) {
+  if (route == VertexStarDecisionKernelRoute::ExactFallback ||
+      target == VertexStarDecisionKernelRoute::ExactFallback) {
+    target = VertexStarDecisionKernelRoute::ExactFallback;
+  } else if (route == VertexStarDecisionKernelRoute::RationalShortCircuit ||
+             target == VertexStarDecisionKernelRoute::RationalShortCircuit) {
+    target = VertexStarDecisionKernelRoute::RationalShortCircuit;
+  } else {
+    target = route;
+  }
+}
+
+struct VertexStarSector {
+  authority::SourceFaceTopologyKey sourceFace;
+  authority::SourceFaceId sourceRow;
+  authority::FieldBranch branch;
+  authority::SourceVertexId nextRadialVertex;
+  authority::SourceVertexId previousRadialVertex;
+  authority::FieldBranchDirection representativeDirection;
+  VertexStarAngleTerm angle;
+  bool representativeInOwnSector = false;
+};
+
+std::optional<VertexStarSector> vertex_star_sector(
+    const TriMesh &sourceMesh,
+    const authority::SourceFaceTopologyKey &sourceFace,
+    const authority::FieldBranch branch,
+    const authority::FieldBranchDirection &representativeDirection,
+    const authority::SourceVertexId sourceVertex) {
+  const auto row = field_face_row(sourceMesh, sourceFace);
+  if (!row.has_value()) return std::nullopt;
+  const int sourceRow = static_cast<int>(row->index());
+  int corner = -1;
+  for (int index = 0; index < 3; ++index) {
+    if (sourceMesh.F(sourceRow, index) ==
+        static_cast<int>(sourceVertex.index())) {
+      corner = index;
+      break;
+    }
+  }
+  if (corner < 0) return std::nullopt;
+  const auto next = authority::SourceVertexId::from_index(
+      sourceMesh.F(sourceRow, (corner + 1) % 3),
+      static_cast<std::size_t>(sourceMesh.V.rows()));
+  const auto previous = authority::SourceVertexId::from_index(
+      sourceMesh.F(sourceRow, (corner + 2) % 3),
+      static_cast<std::size_t>(sourceMesh.V.rows()));
+  if (!next || !previous) return std::nullopt;
+  const auto origin = vertex_star_exact_position(sourceMesh, sourceVertex);
+  const auto nextPoint = vertex_star_exact_position(sourceMesh, next.value());
+  const auto previousPoint =
+      vertex_star_exact_position(sourceMesh, previous.value());
+  if (!origin || !nextPoint || !previousPoint) return std::nullopt;
+  const auto angle = vertex_star_angle_term(
+      vertex_star_subtract(*nextPoint, *origin),
+      vertex_star_subtract(*previousPoint, *origin));
+  if (!angle.has_value()) return std::nullopt;
+  return VertexStarSector{
+      sourceFace, *row, branch, next.value(), previous.value(),
+      representativeDirection, *angle,
+      authority::direction_in_vertex_sector(sourceMesh, *row, sourceVertex,
+                                             representativeDirection)};
+}
+
+bool vertex_star_has_transport(
+    const authority::FieldBranchTopology &topology,
+    const authority::SourceVertexId sourceVertex,
+    const VertexStarSector &from, const VertexStarSector &to) {
+  if (from.previousRadialVertex != to.nextRadialVertex) return false;
+  const auto edge = authority::SourceEdgeTopologyKey::make(
+      sourceVertex, from.previousRadialVertex);
+  return edge && topology.transport(edge.value(), from.sourceFace,
+                                    to.sourceFace).has_value();
+}
+
+std::optional<std::vector<VertexStarSector>> vertex_star_order_sectors(
+    const authority::FieldBranchTopology &topology,
+    const authority::SourceVertexId sourceVertex,
+    const authority::SourceFaceTopologyKey &arrivalFace,
+    const std::vector<VertexStarSector> &input, bool &closed) {
+  if (input.empty()) return std::nullopt;
+  std::vector<std::optional<std::size_t>> successor(input.size());
+  std::vector<std::optional<std::size_t>> predecessor(input.size());
+  for (std::size_t first = 0U; first < input.size(); ++first) {
+    for (std::size_t second = 0U; second < input.size(); ++second) {
+      if (first == second) continue;
+      if (!vertex_star_has_transport(topology, sourceVertex, input[first],
+                                     input[second])) continue;
+      if (successor[first].has_value() || predecessor[second].has_value()) {
+        return std::nullopt;
+      }
+      successor[first] = second;
+      predecessor[second] = first;
+    }
+  }
+  const std::size_t noSuccessor = static_cast<std::size_t>(std::count_if(
+      successor.begin(), successor.end(),
+      [](const auto &value) { return !value.has_value(); }));
+  const std::size_t noPredecessor = static_cast<std::size_t>(std::count_if(
+      predecessor.begin(), predecessor.end(),
+      [](const auto &value) { return !value.has_value(); }));
+  closed = noSuccessor == 0U && noPredecessor == 0U;
+  if (!closed && (noSuccessor != 1U || noPredecessor != 1U)) {
+    return std::nullopt;
+  }
+  std::size_t start = 0U;
+  if (closed) {
+    const auto found = std::find_if(
+        input.begin(), input.end(), [&](const VertexStarSector &sector) {
+          return sector.sourceFace == arrivalFace;
+        });
+    if (found == input.end()) return std::nullopt;
+    start = static_cast<std::size_t>(std::distance(input.begin(), found));
+  } else {
+    const auto found = std::find_if(
+        predecessor.begin(), predecessor.end(),
+        [](const auto &value) { return !value.has_value(); });
+    if (found == predecessor.end()) return std::nullopt;
+    start = static_cast<std::size_t>(std::distance(predecessor.begin(), found));
+  }
+  std::vector<VertexStarSector> ordered;
+  ordered.reserve(input.size());
+  std::set<std::size_t> seen;
+  std::size_t current = start;
+  while (seen.insert(current).second) {
+    ordered.push_back(input[current]);
+    if (!successor[current].has_value()) break;
+    current = *successor[current];
+    if (closed && current == start) break;
+  }
+  if (ordered.size() != input.size()) return std::nullopt;
+  return ordered;
+}
+
+bool vertex_star_source_boundary_edge(
+    const TriMesh &sourceMesh, const authority::SourceVertexId sourceVertex,
+    const authority::SourceVertexId radialVertex) {
+  const auto edge = authority::SourceEdgeTopologyKey::make(sourceVertex,
+                                                            radialVertex);
+  if (!edge) return false;
+  for (int row = 0; row < sourceMesh.EV.rows(); ++row) {
+    const auto candidate = authority::SourceEdgeTopologyKey::from_indices(
+        sourceMesh.EV(row, 0), sourceMesh.EV(row, 1),
+        static_cast<std::size_t>(sourceMesh.V.rows()));
+    if (!candidate || candidate.value() != edge.value()) continue;
+    return sourceMesh.EF(row, 0) < 0 || sourceMesh.EF(row, 1) < 0;
+  }
+  return false;
+}
+
+std::vector<VertexStarAngleTerm> vertex_star_twice(
+    const std::vector<VertexStarAngleTerm> &terms) {
+  std::vector<VertexStarAngleTerm> result;
+  result.reserve(terms.size() * 2U);
+  result.insert(result.end(), terms.begin(), terms.end());
+  result.insert(result.end(), terms.begin(), terms.end());
+  return result;
+}
+void vertex_star_append(std::vector<VertexStarAngleTerm> &target,
+                        const std::vector<VertexStarAngleTerm> &source) {
+  target.insert(target.end(), source.begin(), source.end());
+}
+
+authority::FieldBranchDirection vertex_star_membership_witness(
+    const VertexStarSector &sector, const authority::SourceVertexId sourceVertex,
+    const bool onNextRadial) {
+  authority::FieldBranchDirection result;
+  const auto zero = vertex_star_zero();
+  const auto one = vertex_star_one();
+  for (std::size_t index = 0U; index < sector.sourceFace.vertices().size();
+       ++index) {
+    const auto vertex = sector.sourceFace.vertices()[index];
+    if (vertex == sourceVertex) {
+      result.barycentric[index] = onNextRadial ? -one : -one - one;
+    } else if (vertex == sector.nextRadialVertex) {
+      result.barycentric[index] = one;
+    } else if (vertex == sector.previousRadialVertex) {
+      result.barycentric[index] = onNextRadial ? zero : one;
+    }
+  }
+  return result;
+}
+
+} // namespace
+
 FieldVertexTransitResult resolve_field_vertex_transit(
     const TriMesh &sourceMesh,
     const authority::FieldBranchTopology &topology,
@@ -563,11 +1199,12 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     const authority::SourceFaceTopologyKey &currentFace,
     const authority::FieldBranch currentBranch,
     const authority::SourceVertexId sourceVertex,
-    const FieldVertexArrivalMode arrivalMode) {
+    const FieldVertexArrivalMode arrivalMode,
+    const std::optional<authority::TraceId> provenanceTrace,
+    const std::optional<std::size_t> provenanceEvent) {
   struct TransitState {
     authority::SourceFaceTopologyKey sourceFace;
     authority::FieldBranch branch;
-    authority::FieldBranchDirection incomingDirection;
     std::vector<authority::SourceEdgeTopologyKey> transportPath;
     int composedSignedLift = 0;
   };
@@ -575,29 +1212,20 @@ FieldVertexTransitResult resolve_field_vertex_transit(
       std::pair<authority::SourceFaceTopologyKey, authority::FieldBranch>;
 
   std::vector<FieldVertexTransitStateDiagnostic> diagnostics;
+  std::optional<VertexStarTransitAudit> audit;
   const auto record =
       [&](const authority::SourceFaceTopologyKey &sourceFace,
           const authority::FieldBranch branch,
           const FieldVertexTransitStateOutcome outcome,
           const std::optional<authority::FieldBranchDirection> &representative,
-          const std::optional<authority::FieldBranchDirection> &incoming,
           const std::optional<authority::SourceEdgeTopologyKey> &transportEdge,
           const std::vector<authority::SourceEdgeTopologyKey> &transportPath,
           const int composedSignedLift, const bool eligible = false,
-          const bool representativeInSector = false,
-          const bool incomingInSector = false) {
+          const bool representativeInSector = false) {
         diagnostics.push_back(FieldVertexTransitStateDiagnostic{
-            sourceFace,
-            branch,
-            representative,
-            incoming,
-            transportEdge,
-            transportPath,
-            ((composedSignedLift % 4) + 4) % 4,
-            outcome,
-            eligible,
-            representativeInSector,
-            incomingInSector});
+            sourceFace, branch, representative, std::nullopt, transportEdge,
+            transportPath, ((composedSignedLift % 4) + 4) % 4, outcome,
+            eligible, representativeInSector, false});
       };
   const auto failure = [&](const FieldAlignedCurveNetworkErrorCode code) {
     FieldAlignedCurveNetworkError error = continuation_error(
@@ -605,6 +1233,7 @@ FieldVertexTransitResult resolve_field_vertex_transit(
     error.topologyRegion = topologyRegion;
     error.vertexArrivalMode = arrivalMode;
     error.vertexTransitStates = diagnostics;
+    error.vertexStarTransit = audit;
     return error;
   };
   const auto unique_pairing = [](const authority::FieldFaceBranchFrame &frame,
@@ -612,8 +1241,7 @@ FieldVertexTransitResult resolve_field_vertex_transit(
                                  bool &ambiguous) {
     const authority::FieldBranchBoundaryPairing *result = nullptr;
     ambiguous = false;
-    for (const authority::FieldBranchBoundaryPairing &candidate :
-         frame.branches) {
+    for (const auto &candidate : frame.branches) {
       if (candidate.branch != branch) continue;
       if (result != nullptr) {
         ambiguous = true;
@@ -629,14 +1257,14 @@ FieldVertexTransitResult resolve_field_vertex_transit(
   if (currentFrame == nullptr) {
     record(currentFace, currentBranch,
            FieldVertexTransitStateOutcome::SeedFrameUnavailable, std::nullopt,
-           std::nullopt, std::nullopt, {}, 0);
+           std::nullopt, {}, 0);
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
   if (currentFrame->sourceComponent != sourceComponent ||
       currentFrame->topologyRegion != topologyRegion) {
     record(currentFace, currentBranch,
            FieldVertexTransitStateOutcome::SeedAuthorityMismatch, std::nullopt,
-           std::nullopt, std::nullopt, {}, 0);
+           std::nullopt, {}, 0);
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
   bool currentPairingAmbiguous = false;
@@ -647,50 +1275,68 @@ FieldVertexTransitResult resolve_field_vertex_transit(
            currentPairingAmbiguous
                ? FieldVertexTransitStateOutcome::SeedBranchPairingAmbiguous
                : FieldVertexTransitStateOutcome::SeedBranchPairingMissing,
-           std::nullopt, std::nullopt, std::nullopt, {}, 0);
+           std::nullopt, std::nullopt, {}, 0);
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
   if (!currentPairing->direction.is_barycentric()) {
     record(currentFace, currentBranch,
            FieldVertexTransitStateOutcome::SeedDirectionNotBarycentric,
-           currentPairing->direction, std::nullopt, std::nullopt, {}, 0);
+           currentPairing->direction, std::nullopt, {}, 0);
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
   }
 
-  std::vector<TransitState> pending{{currentFace, currentBranch,
-                                     currentPairing->direction, {}, 0}};
+  authority::FieldBranchDirection arrivalRay = currentPairing->direction;
+  for (VertexStarRational &coordinate : arrivalRay.barycentric) {
+    coordinate = -coordinate;
+  }
+  const auto currentRow = field_face_row(sourceMesh, currentFace);
+  if (!currentRow.has_value() ||
+      !authority::direction_in_vertex_sector(sourceMesh, *currentRow,
+                                             sourceVertex, arrivalRay)) {
+    record(currentFace, currentBranch,
+           FieldVertexTransitStateOutcome::SeedDirectionNotBarycentric,
+           currentPairing->direction, std::nullopt, {}, 0);
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+
+  audit = VertexStarTransitAudit{};
+  audit->seed = VertexStarRaySeed{sourceVertex, currentFace, currentBranch,
+                                  arrivalRay, arrivalMode, provenanceTrace,
+                                  provenanceEvent};
+
+  std::vector<TransitState> pending{{currentFace, currentBranch, {}, 0}};
   std::set<StateKey> visited;
-  std::vector<FieldVertexTransitDecision> candidates;
+  std::map<authority::SourceFaceTopologyKey, TransitState> reachable;
   std::size_t evaluatedStates = 0U;
+  bool walkIncomplete = false;
 
   for (std::size_t cursor = 0U; cursor < pending.size(); ++cursor) {
     const TransitState state = pending[cursor];
-    const StateKey stateKey{state.sourceFace, state.branch};
-    if (!visited.insert(stateKey).second) {
+    if (!visited.insert(StateKey{state.sourceFace, state.branch}).second) {
       record(state.sourceFace, state.branch,
              FieldVertexTransitStateOutcome::DuplicateStateSuppressed,
-             std::nullopt, state.incomingDirection, std::nullopt,
-             state.transportPath, state.composedSignedLift);
+             std::nullopt, std::nullopt, state.transportPath,
+             state.composedSignedLift);
       continue;
     }
-
     const auto *frame = topology.find_frame(state.sourceFace);
     if (frame == nullptr) {
       record(state.sourceFace, state.branch,
              FieldVertexTransitStateOutcome::StateFrameUnavailable,
-             std::nullopt, state.incomingDirection, std::nullopt,
-             state.transportPath, state.composedSignedLift);
+             std::nullopt, std::nullopt, state.transportPath,
+             state.composedSignedLift);
+      walkIncomplete = true;
       continue;
     }
     if (frame->sourceComponent != sourceComponent ||
         frame->topologyRegion != topologyRegion) {
       record(state.sourceFace, state.branch,
              FieldVertexTransitStateOutcome::StateAuthorityMismatch,
-             std::nullopt, state.incomingDirection, std::nullopt,
-             state.transportPath, state.composedSignedLift);
+             std::nullopt, std::nullopt, state.transportPath,
+             state.composedSignedLift);
+      walkIncomplete = true;
       continue;
     }
-
     bool pairingAmbiguous = false;
     const auto *pairing = unique_pairing(*frame, state.branch, pairingAmbiguous);
     if (pairing == nullptr) {
@@ -698,57 +1344,45 @@ FieldVertexTransitResult resolve_field_vertex_transit(
              pairingAmbiguous
                  ? FieldVertexTransitStateOutcome::StateBranchPairingAmbiguous
                  : FieldVertexTransitStateOutcome::StateBranchPairingMissing,
-             std::nullopt, state.incomingDirection, std::nullopt,
-             state.transportPath, state.composedSignedLift);
+             std::nullopt, std::nullopt, state.transportPath,
+             state.composedSignedLift);
+      walkIncomplete = true;
       continue;
     }
     if (!pairing->direction.is_barycentric()) {
       record(state.sourceFace, state.branch,
              FieldVertexTransitStateOutcome::StateRepresentativeDirectionNotBarycentric,
-             pairing->direction, state.incomingDirection, std::nullopt,
-             state.transportPath, state.composedSignedLift);
+             pairing->direction, std::nullopt, state.transportPath,
+             state.composedSignedLift);
+      walkIncomplete = true;
       continue;
     }
-    if (!state.incomingDirection.is_barycentric()) {
-      record(state.sourceFace, state.branch,
-             FieldVertexTransitStateOutcome::StateIncomingDirectionNotBarycentric,
-             pairing->direction, state.incomingDirection, std::nullopt,
-             state.transportPath, state.composedSignedLift);
-      continue;
-    }
-
     const auto row = field_face_row(sourceMesh, state.sourceFace);
     if (!row.has_value()) {
       record(state.sourceFace, state.branch,
              FieldVertexTransitStateOutcome::StateSourceFaceRowUnavailable,
-             pairing->direction, state.incomingDirection, std::nullopt,
-             state.transportPath, state.composedSignedLift);
+             pairing->direction, std::nullopt, state.transportPath,
+             state.composedSignedLift);
+      walkIncomplete = true;
       continue;
     }
-
     const bool eligible = arrivalMode == FieldVertexArrivalMode::EdgeTransit ||
                           state.sourceFace != currentFace;
     const bool representativeInSector = authority::direction_in_vertex_sector(
         sourceMesh, *row, sourceVertex, pairing->direction);
-    const bool incomingInSector = authority::direction_in_vertex_sector(
-        sourceMesh, *row, sourceVertex, state.incomingDirection);
     record(state.sourceFace, state.branch,
            FieldVertexTransitStateOutcome::Evaluated, pairing->direction,
-           state.incomingDirection, std::nullopt, state.transportPath,
-           state.composedSignedLift, eligible, representativeInSector,
-           incomingInSector);
+           std::nullopt, state.transportPath, state.composedSignedLift, eligible,
+           representativeInSector);
     ++evaluatedStates;
-
-    if (eligible && incomingInSector) {
-      candidates.emplace_back(state.sourceFace, state.branch);
+    const auto [found, inserted] = reachable.emplace(state.sourceFace, state);
+    if (!inserted && found->second.branch != state.branch) {
+      return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
     }
 
-    for (const authority::FieldBranchTransportAdjacency &adjacency :
-         topology.transports()) {
+    for (const auto &adjacency : topology.transports()) {
       if (adjacency.sourceEdge.first() != sourceVertex &&
-          adjacency.sourceEdge.second() != sourceVertex) {
-        continue;
-      }
+          adjacency.sourceEdge.second() != sourceVertex) continue;
       std::optional<authority::SourceFaceTopologyKey> nextFace;
       if (adjacency.firstFace == state.sourceFace) {
         nextFace = adjacency.secondFace;
@@ -757,94 +1391,267 @@ FieldVertexTransitResult resolve_field_vertex_transit(
       } else {
         continue;
       }
-
       const auto directed = topology.transport(adjacency.sourceEdge,
                                                state.sourceFace, *nextFace);
       if (!directed.has_value()) {
         record(state.sourceFace, state.branch,
                FieldVertexTransitStateOutcome::DirectedTransportUnavailable,
-               pairing->direction, state.incomingDirection,
-               adjacency.sourceEdge, state.transportPath,
+               pairing->direction, adjacency.sourceEdge, state.transportPath,
                state.composedSignedLift);
+        walkIncomplete = true;
         continue;
       }
-
       auto transportPath = state.transportPath;
       transportPath.push_back(adjacency.sourceEdge);
       const auto nextBranch = state.branch.rotated(directed->signedLift);
-      const int nextSignedLift =
-          state.composedSignedLift + directed->signedLift;
+      const int nextSignedLift = state.composedSignedLift + directed->signedLift;
       const auto *nextFrame = topology.find_frame(*nextFace);
       if (nextFrame == nullptr) {
         record(*nextFace, nextBranch,
                FieldVertexTransitStateOutcome::TransportTargetFrameUnavailable,
-               std::nullopt, std::nullopt, adjacency.sourceEdge, transportPath,
+               std::nullopt, adjacency.sourceEdge, transportPath,
                nextSignedLift);
+        walkIncomplete = true;
         continue;
       }
       if (nextFrame->sourceComponent != sourceComponent ||
           nextFrame->topologyRegion != topologyRegion) {
         record(*nextFace, nextBranch,
                FieldVertexTransitStateOutcome::TransportTargetAuthorityMismatch,
-               std::nullopt, std::nullopt, adjacency.sourceEdge, transportPath,
+               std::nullopt, adjacency.sourceEdge, transportPath,
                nextSignedLift);
+        walkIncomplete = true;
         continue;
       }
-
       bool nextPairingAmbiguous = false;
       const auto *nextPairing =
           unique_pairing(*nextFrame, nextBranch, nextPairingAmbiguous);
       if (nextPairing == nullptr) {
         record(*nextFace, nextBranch,
                nextPairingAmbiguous
-                   ? FieldVertexTransitStateOutcome::
-                         TransportTargetBranchPairingAmbiguous
-                   : FieldVertexTransitStateOutcome::
-                         TransportTargetBranchPairingMissing,
-               std::nullopt, std::nullopt, adjacency.sourceEdge, transportPath,
+                   ? FieldVertexTransitStateOutcome::TransportTargetBranchPairingAmbiguous
+                   : FieldVertexTransitStateOutcome::TransportTargetBranchPairingMissing,
+               std::nullopt, adjacency.sourceEdge, transportPath,
                nextSignedLift);
+        walkIncomplete = true;
         continue;
       }
       if (!nextPairing->direction.is_barycentric()) {
         record(*nextFace, nextBranch,
-               FieldVertexTransitStateOutcome::
-                   TransportTargetDirectionNotBarycentric,
-               nextPairing->direction, std::nullopt, adjacency.sourceEdge,
-               transportPath, nextSignedLift);
+               FieldVertexTransitStateOutcome::TransportTargetDirectionNotBarycentric,
+               nextPairing->direction, adjacency.sourceEdge, transportPath,
+               nextSignedLift);
+        walkIncomplete = true;
         continue;
       }
-
-      // The atlas's signed lift is the exact branch transport authority.  Once
-      // the branch label is transported, the target frame's exact rational
-      // branch direction is the transported continuation datum.  No value used
-      // by the sector predicates passes through floating point.
-      pending.push_back(TransitState{*nextFace, nextBranch,
-                                     nextPairing->direction,
-                                     std::move(transportPath), nextSignedLift});
+      pending.push_back(
+          TransitState{*nextFace, nextBranch, std::move(transportPath),
+                       nextSignedLift});
     }
   }
 
-  if (evaluatedStates == 0U) {
+  if (evaluatedStates == 0U || reachable.empty()) {
     return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitWalkUnexamined);
   }
-
-  std::sort(candidates.begin(), candidates.end(),
-            [](const auto &lhs, const auto &rhs) {
-              return std::tie(lhs.nextFace, lhs.nextBranch) <
-                     std::tie(rhs.nextFace, rhs.nextBranch);
-            });
-  candidates.erase(std::unique(candidates.begin(), candidates.end()),
-                   candidates.end());
-  if (candidates.size() != 1U) {
-    FieldAlignedCurveNetworkError error =
-        failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
-    error.publishedFaces.reserve(candidates.size());
-    for (const FieldVertexTransitDecision &candidate : candidates) {
-      error.publishedFaces.push_back(candidate.nextFace);
-    }
-    return error;
+  if (walkIncomplete) {
+    // Amendment 19 requires every failed walk state to be diagnosed before it
+    // can be skipped. Once such a state exists, the admissible fan is not
+    // certified complete, so fail closed rather than elect from a subset.
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
   }
-  return candidates.front();
+
+  std::vector<VertexStarSector> sectors;
+  sectors.reserve(reachable.size());
+  for (const auto &[face, state] : reachable) {
+    const auto *frame = topology.find_frame(face);
+    bool ambiguous = false;
+    const auto *pairing = frame == nullptr
+                              ? nullptr
+                              : unique_pairing(*frame, state.branch, ambiguous);
+    if (pairing == nullptr) {
+      return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
+    }
+    const auto sector = vertex_star_sector(sourceMesh, face, state.branch,
+                                           pairing->direction, sourceVertex);
+    if (!sector.has_value()) {
+      return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
+    }
+    sectors.push_back(*sector);
+  }
+
+  bool closedFan = false;
+  const auto ordered = vertex_star_order_sectors(
+      topology, sourceVertex, currentFace, sectors, closedFan);
+  if (!ordered.has_value()) {
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
+  }
+  sectors = *ordered;
+  audit->closedFan = closedFan;
+  audit->fanLength = sectors.size();
+  audit->sectors.reserve(sectors.size());
+  for (const VertexStarSector &sector : sectors) {
+    audit->sectors.push_back(VertexStarSectorAudit{
+        sector.sourceFace, sector.branch, sector.nextRadialVertex,
+        sector.previousRadialVertex, sector.angle.dot, sector.angle.normProduct,
+        sector.angle.crossSquared,
+        arrivalMode == FieldVertexArrivalMode::EdgeTransit ||
+            sector.sourceFace != currentFace,
+        false, sector.representativeInOwnSector});
+    if (sector.angle.crossSquared == vertex_star_zero()) {
+      audit->state = VertexStarTransitState::DegenerateSector;
+      return failure(FieldAlignedCurveNetworkErrorCode::VertexStarDegenerateSector);
+    }
+  }
+  if (sectors.size() > kVertexStarExactFanLengthBudget) {
+    audit->state = VertexStarTransitState::ExactBudgetExceeded;
+    audit->kernelRoute = VertexStarDecisionKernelRoute::NotRun;
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexStarExactBudgetExceeded);
+  }
+
+  const auto arrivalFound = std::find_if(
+      sectors.begin(), sectors.end(), [&](const VertexStarSector &sector) {
+        return sector.sourceFace == currentFace;
+      });
+  if (arrivalFound == sectors.end()) {
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  const std::size_t arrivalIndex =
+      static_cast<std::size_t>(std::distance(sectors.begin(), arrivalFound));
+  const auto origin = vertex_star_exact_position(sourceMesh, sourceVertex);
+  const auto startPoint =
+      vertex_star_exact_position(sourceMesh, arrivalFound->nextRadialVertex);
+  const auto ray = vertex_star_exact_direction(sourceMesh, currentFace,
+                                                arrivalRay);
+  if (!origin || !startPoint || !ray) {
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  const auto alpha = vertex_star_angle_term(
+      vertex_star_subtract(*startPoint, *origin), *ray);
+  if (!alpha.has_value()) {
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  if (arrivalMode == FieldVertexArrivalMode::FaceInterior &&
+      alpha->crossSquared == vertex_star_zero()) {
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+  if (alpha->crossSquared == vertex_star_zero() &&
+      alpha->dot <= vertex_star_zero()) {
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSeedUnavailable);
+  }
+
+  std::vector<VertexStarAngleTerm> alphaTerms;
+  if (alpha->crossSquared != vertex_star_zero()) alphaTerms.push_back(*alpha);
+  std::vector<VertexStarAngleTerm> thetaTerms;
+  thetaTerms.reserve(sectors.size());
+  for (const VertexStarSector &sector : sectors) thetaTerms.push_back(sector.angle);
+
+  VertexStarDecisionKernelRoute kernelRoute =
+      VertexStarDecisionKernelRoute::Filter;
+  std::size_t ownerIndex = sectors.size();
+  bool onRadialRay = false;
+  std::optional<authority::SourceVertexId> radialRay;
+
+  if (closedFan) {
+    std::vector<VertexStarAngleTerm> right = thetaTerms;
+    vertex_star_append(right, vertex_star_twice(alphaTerms));
+    std::vector<VertexStarAngleTerm> prefix;
+    for (std::size_t index = 0U; index < sectors.size(); ++index) {
+      prefix.push_back(sectors[index].angle);
+      const auto comparison =
+          vertex_star_compare_angle_sums(vertex_star_twice(prefix), right);
+      vertex_star_merge_kernel_route(kernelRoute, comparison.route);
+      if (comparison.ordering < 0) continue;
+      if (comparison.ordering == 0) {
+        ownerIndex = (index + 1U) % sectors.size();
+        onRadialRay = true;
+        radialRay = sectors[index].previousRadialVertex;
+      } else {
+        ownerIndex = index;
+      }
+      break;
+    }
+    if (ownerIndex == sectors.size()) ownerIndex = 0U;
+  } else {
+    audit->truncationReason =
+        vertex_star_source_boundary_edge(sourceMesh, sourceVertex,
+                                         sectors.front().nextRadialVertex) ||
+                vertex_star_source_boundary_edge(
+                    sourceMesh, sourceVertex,
+                    sectors.back().previousRadialVertex)
+            ? "SourceBoundary"
+            : "Barrier";
+    std::vector<VertexStarAngleTerm> alphaGlobal;
+    for (std::size_t index = 0U; index < arrivalIndex; ++index) {
+      alphaGlobal.push_back(sectors[index].angle);
+    }
+    vertex_star_append(alphaGlobal, alphaTerms);
+    const auto truncationComparison = vertex_star_compare_angle_sums(
+        vertex_star_twice(alphaGlobal), thetaTerms);
+    vertex_star_merge_kernel_route(kernelRoute, truncationComparison.route);
+    if (truncationComparison.ordering >= 0) {
+      audit->kernelRoute = kernelRoute;
+      audit->state = VertexStarTransitState::TruncatedBeforeContinuation;
+      return failure(FieldAlignedCurveNetworkErrorCode::
+                         VertexStarTruncatedBeforeContinuation);
+    }
+    std::vector<VertexStarAngleTerm> target = thetaTerms;
+    vertex_star_append(target, vertex_star_twice(alphaGlobal));
+    std::vector<VertexStarAngleTerm> prefix;
+    for (std::size_t index = 0U; index < sectors.size(); ++index) {
+      prefix.push_back(sectors[index].angle);
+      const auto comparison =
+          vertex_star_compare_angle_sums(vertex_star_twice(prefix), target);
+      vertex_star_merge_kernel_route(kernelRoute, comparison.route);
+      if (comparison.ordering < 0) continue;
+      if (comparison.ordering == 0) {
+        if (index + 1U == sectors.size()) {
+          audit->kernelRoute = kernelRoute;
+          audit->state = VertexStarTransitState::TruncatedBeforeContinuation;
+          audit->onRadialRay = true;
+          audit->radialRay = sectors[index].previousRadialVertex;
+          return failure(FieldAlignedCurveNetworkErrorCode::
+                             VertexStarTruncatedBeforeContinuation);
+        }
+        ownerIndex = index + 1U;
+        onRadialRay = true;
+        radialRay = sectors[index].previousRadialVertex;
+      } else {
+        ownerIndex = index;
+      }
+      break;
+    }
+  }
+
+  if (ownerIndex >= sectors.size()) {
+    audit->kernelRoute = kernelRoute;
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
+  }
+  const VertexStarSector &owner = sectors[ownerIndex];
+  const bool eligible = arrivalMode == FieldVertexArrivalMode::EdgeTransit ||
+                        owner.sourceFace != currentFace;
+  if (!eligible) {
+    audit->kernelRoute = kernelRoute;
+    audit->ownerFace = owner.sourceFace;
+    audit->ownerBranch = owner.branch;
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
+  }
+  const authority::FieldBranchDirection membershipWitness =
+      vertex_star_membership_witness(owner, sourceVertex, onRadialRay);
+  if (!authority::direction_in_vertex_sector(sourceMesh, owner.sourceRow,
+                                             sourceVertex,
+                                             membershipWitness)) {
+    audit->kernelRoute = kernelRoute;
+    return failure(FieldAlignedCurveNetworkErrorCode::VertexTransitSectorUnresolved);
+  }
+  audit->kernelRoute = kernelRoute;
+  audit->state = VertexStarTransitState::Owner;
+  audit->ownerCardinality = 1U;
+  audit->ownerFace = owner.sourceFace;
+  audit->ownerBranch = owner.branch;
+  audit->onRadialRay = onRadialRay;
+  audit->radialRay = radialRay;
+  audit->sectors[ownerIndex].containsContinuation = true;
+  return FieldVertexTransitDecision{owner.sourceFace, owner.branch, audit};
 }
 
 std::size_t field_aligned_trace_step_budget(
@@ -1406,7 +2213,8 @@ FieldAlignedCandidateTraceResult legacy_canonical_field_aligned_traces(
         auto transit = resolve_field_vertex_transit(
             sourceMesh, topology, trace.sourceComponent,
             trace.sourceTopologyRegion, currentFace, currentBranch,
-            *decision.sourceVertex);
+            *decision.sourceVertex, FieldVertexArrivalMode::FaceInterior,
+            trace.id, trace.segments.size() - 1U);
         if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
           return traceError(std::move(*error));
         }
@@ -1502,7 +2310,8 @@ FieldAlignedCandidateTraceResult legacy_canonical_field_aligned_traces(
         auto vertexTransit = resolve_field_vertex_transit(
             sourceMesh, topology, trace.sourceComponent,
             trace.sourceTopologyRegion, currentFace, currentBranch,
-            *edgeTransit.sourceVertex, FieldVertexArrivalMode::EdgeTransit);
+            *edgeTransit.sourceVertex, FieldVertexArrivalMode::EdgeTransit,
+            trace.id, trace.segments.size() - 1U);
         if (auto *error =
                 std::get_if<FieldAlignedCurveNetworkError>(&vertexTransit)) {
           return traceError(std::move(*error));
@@ -2066,7 +2875,8 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
 
     auto transit = resolve_field_vertex_transit(
         sourceMesh, topology, trace.sourceComponent, trace.sourceTopologyRegion,
-        runtime.currentFace, runtime.currentBranch, *decision.sourceVertex);
+        runtime.currentFace, runtime.currentBranch, *decision.sourceVertex,
+        FieldVertexArrivalMode::FaceInterior, trace.id, trace.segments.size());
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&transit)) {
       return traceError(std::move(*error));
     }
@@ -2184,7 +2994,7 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
     auto vertexTransit = resolve_field_vertex_transit(
         sourceMesh, topology, trace.sourceComponent, trace.sourceTopologyRegion,
         runtime.currentFace, runtime.currentBranch, *edgeTransit.sourceVertex,
-        FieldVertexArrivalMode::EdgeTransit);
+        FieldVertexArrivalMode::EdgeTransit, trace.id, trace.segments.size());
     if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&vertexTransit)) {
       return traceError(std::move(*error));
     }
@@ -4063,6 +4873,12 @@ const char *field_aligned_curve_network_error_code_name(
     return "VertexTransitSeedUnavailable";
   case FieldAlignedCurveNetworkErrorCode::VertexTransitWalkUnexamined:
     return "VertexTransitWalkUnexamined";
+  case FieldAlignedCurveNetworkErrorCode::VertexStarTruncatedBeforeContinuation:
+    return "VertexStarTruncatedBeforeContinuation";
+  case FieldAlignedCurveNetworkErrorCode::VertexStarDegenerateSector:
+    return "VertexStarDegenerateSector";
+  case FieldAlignedCurveNetworkErrorCode::VertexStarExactBudgetExceeded:
+    return "VertexStarExactBudgetExceeded";
   }
   return "Unknown";
 }

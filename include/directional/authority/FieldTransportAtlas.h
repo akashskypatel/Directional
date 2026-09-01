@@ -467,6 +467,46 @@ public:
     return numeratorBits > denominatorBits ? numeratorBits : denominatorBits;
   }
 
+  /** Exact rational square root when reduced numerator and denominator are squares. */
+  [[nodiscard]] std::optional<FieldExactRational> rational_square_root() const {
+    if (value_ < ENumber(EInt(0))) return std::nullopt;
+    const EInt numerator = enumber_num(value_);
+    const EInt denominator = enumber_den(value_);
+    const EInt numeratorRoot = integer_sqrt_floor(numerator);
+    const EInt denominatorRoot = integer_sqrt_floor(denominator);
+    if (numeratorRoot * numeratorRoot != numerator ||
+        denominatorRoot * denominatorRoot != denominator) {
+      return std::nullopt;
+    }
+    return FieldExactRational(ENumber(numeratorRoot, denominatorRoot, true));
+  }
+
+  /** Certified dyadic enclosure of the non-negative square root. */
+  [[nodiscard]] std::optional<std::pair<FieldExactRational, FieldExactRational>>
+  sqrt_bounds(const std::size_t fractionalBits) const {
+    if (value_ < ENumber(EInt(0))) return std::nullopt;
+    if (value_ == ENumber(EInt(0))) {
+      const FieldExactRational zero = from_integer(0);
+      return std::pair<FieldExactRational, FieldExactRational>{zero, zero};
+    }
+    if (fractionalBits >
+        static_cast<std::size_t>(std::numeric_limits<int>::max() / 2)) {
+      return std::nullopt;
+    }
+    const EInt numerator = enumber_num(value_);
+    const EInt denominator = enumber_den(value_);
+    const EInt scale = power_of_two(static_cast<int>(fractionalBits));
+    const EInt scaledNumerator = numerator * scale * scale;
+    const EInt quotient = scaledNumerator / denominator;
+    const EInt root = integer_sqrt_floor(quotient);
+    const FieldExactRational lower(ENumber(root, scale, true));
+    if (lower * lower == *this) {
+      return std::pair<FieldExactRational, FieldExactRational>{lower, lower};
+    }
+    const FieldExactRational upper(ENumber(root + EInt(1), scale, true));
+    return std::pair<FieldExactRational, FieldExactRational>{lower, upper};
+  }
+
   friend FieldExactRational operator+(const FieldExactRational &a,
                                       const FieldExactRational &b) {
     return FieldExactRational(a.value_ + b.value_);
@@ -522,6 +562,22 @@ private:
       if (exponent != 0) base = base * base;
     }
     return result;
+  }
+
+  [[nodiscard]] static EInt integer_sqrt_floor(const EInt &value) {
+    if (value <= EInt(0)) return EInt(0);
+    const std::size_t bits = value.magnitude_bits();
+    const std::size_t exponent = (bits + 1U) / 2U;
+    if (exponent > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+      throw std::overflow_error("exact integer square-root exponent overflow");
+    }
+    EInt estimate = power_of_two(static_cast<int>(exponent));
+    const EInt two(2);
+    while (true) {
+      const EInt next = (estimate + value / estimate) / two;
+      if (next >= estimate) return estimate;
+      estimate = next;
+    }
   }
 
   ENumber value_;
