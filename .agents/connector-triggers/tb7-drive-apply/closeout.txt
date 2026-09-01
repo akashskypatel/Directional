@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-TB7
+purpose=apply-closeout-documentation
+base_sha=5672defdd1f0b918d9c39fa9b510c2c30ae2e7ac
+patch_sha256=8f596e96a884c31578d661ebd8e69f14a4b71c5378a56c0590f50a2d51b25a8a
