@@ -1,2 +1,8 @@
 # M3-CP4c-3-TB8 temporary-state cleanup
 .agents/connector-triggers/source-snapshot/20260901T2115-tb8-start.txt
+.agents/Directional/turn-payloads/m3cp4c3-tb8-preflight.sh
+.agents/Directional/turn-payloads/m3cp4c3-tb8-runtime.sh
+.agents/Directional/turn-payloads/m3cp4c3-tb8-postflight.sh
+.agents/Directional/turn-payloads/M3_CP4c3_TB8_workflow_candidate.yml
+.agents/connector-triggers/m3-cp4c3-tb8-schema-validation.txt
+.agents/connector-triggers/m3-cp4c3-tb8.txt
