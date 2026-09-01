@@ -1,0 +1,43 @@
+name: Agent Compile M3 CP4c3 CB7 20260901
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/compile/m3cp4c3-cb7-20260901.txt
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-compile-m3cp4c3-cb7-20260901
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: compile-m3cp4c3-cb7-20260901
+      commit_run_file: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-compile-m3cp4c3-cb7-20260901.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  compile:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: e926ada023bc51220628be550bbe9a87f98d7067
+      artifact_prefix: m3cp4c3-cb7
+    secrets: inherit
