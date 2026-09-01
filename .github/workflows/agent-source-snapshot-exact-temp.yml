@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/source-snapshot-exact/**
 
 permissions:
-  contents: read
+  contents: write
   actions: read
   issues: write
   pull-requests: write
