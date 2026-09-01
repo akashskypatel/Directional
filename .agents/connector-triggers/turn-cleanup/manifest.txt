@@ -1,0 +1,8 @@
+# M3-CP4c-3-CB10 temporary-state cleanup
+.agents/connector-triggers/m3-cp4c3-cb10-compile.txt
+.agents/connector-triggers/m3-cp4c3-cb10-drive-apply.txt
+.agents/connector-triggers/m3-cp4c3-cb10-package77.txt
+.agents/connector-triggers/m3-cp4c3-cb10-package78.txt
+.agents/connector-triggers/m3-cp4c3-cb10-schema-validation.txt
+.agents/connector-triggers/source-snapshot
+.agents/Directional/turn-payloads
