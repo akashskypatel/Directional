@@ -31,44 +31,49 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB11-REV`, which proved the ordinal-366 collision is **not
-adjudicable from the retained evidence** and froze one bounded **diagnostic-only** successor.
+**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB12-REV`, which **proved the root cause** of the ordinal-366
+collision and froze one bounded **product** successor.
 
-**CB13 delivered its discriminator.** TB11 (package 81, source `3070173894ee097f631b96c1c6d29f276df89a66`,
-run/job `33611378451 / 100187075757`) re-proved **365/365** and ordinal 366 now names the producer condition and
-phase: `rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`.
-`M3-CP4c3-TB10-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**. The unique emitter is
-`EmbeddedGraphTopology.cpp:1214` in `build_rotation_system`, post-sort, before `counterClockwise` publication.
+**CB14 delivered both operands.** TB12 (package 82, source `71ece3ca184e90858d9222fb014b37c16d292294`, run/job
+`33657062615 / 100338185825`) re-proved **365/365** and retained the rejected pair:
+`primary=3 secondary=0` for **arc 20 / trace 6 / Forward / origin vertex 47** and for **arc 23 / trace 9 / Reverse
+/ origin vertex 71**, both in face `(45,46,47)` at fan slot 1, in a **complete, untruncated 5-ray census**.
+`M3-CP4c3-TB11-REV-CAND-01` is **CLOSED**.
 
-**The guard compares less than the key it asserts on.** `RayOrderKey` has six members — `primary`, `secondary`,
-`kind`, `trace`, `arc`, `orientation` — and the **sort uses all six**, but the collision predicate compares only
-`primary` and `secondary` (plus `kind == Trace` on both sides, at a vertex locus). Three discriminators sit unused
-in the very struct being checked.
+**The fan is combinatorially correct; only the within-wedge order is missing.** `build_vertex_fan_slots` walks the
+star alternately — edge(slot 0), face(slot 1), edge(slot 2), face(slot 3), … — so **edges take even slots, faces
+odd**, and each face slot lies strictly between its two bounding edge slots. The rotation at v47 is therefore
+determined **down to which wedge a ray occupies**, and undetermined **only** for two rays inside one wedge.
 
-**`secondary` is borrowed from a namespace that is not vertex-local.** For a trace ray,
-`primary = 2·faceSlot + 1` and `secondary = port->ordinal`, where `port` is the singularity port the trace
-**originated from** — matched by `candidate.id == trace->port`, with **no check that the port's source vertex is
-the locus vertex**. It discriminates reliably only among rays emanating from that same singularity.
+**`secondary` is the designated within-wedge rank, filled with the wrong quantity.** At a vertex locus it is
+`port->ordinal` — the ordinal of the port the trace **originated** from. TB12 shows the production consequence
+directly: at locus **47**, the arriving ray's `secondary=0` comes from a port whose source vertex is **71**.
 
-**A collision exists that requires no defect anywhere else.** The incidence map pushes `Forward` at
-`arc.firstNode` and `Reverse` at `arc.secondNode` unconditionally, so a **self-loop arc** contributes two darts at
-one node with the same `trace` and therefore the **same `secondary`**. If both darts' `trace_ray_face` resolve into
-the same fan sector, `primary` matches too and the guard fires — on a legitimate network, distinguished only by
-`arc` and `orientation`, the two members the predicate ignores.
+**The correct pattern is already implemented one branch away.** At an **edge** locus, `secondary` comes from
+`edge_locus_secondary_rank`, which resolves the ray's face, locates the **locus** in it, and ranks by where the ray
+goes relative to that locus — with the in-source comment *"Keep that exact topological case between the two carrier
+destinations **without using geometry**"*. Locus-relative, exact, geometry-free. The vertex branch is the only one
+that departs from the convention.
 
-**Neither colliding ray is retained, and that is proved.** `GlobalTopologyPlanError` carries `arc`, `trace`,
-**`secondTrace`**, `sourceFace` and **`secondSourceFace`** — a DTO visibly shaped for a two-sided comparison — and
-the emitter sets only the reason, `sourceVertex` and `sourceEdge`. **No field of the DTO can hold the colliding
-`primary`/`secondary` values at all.** Four of the five BG2 alternatives — duplicate incidences, an
-under-discriminating key, genuinely coincident rays needing a tie rule, and stale provenance — produce a
-**byte-identical** rendered line.
+**Both rays are valid, so this is not an invalid witness.** v47 is an index-`+1` singularity with
+`expectedValence = 3`; the census shows exactly three `Forward` rays with origin 47 and ordinals 0, 1, 2 in three
+**different** wedges, plus two `Reverse` terminations arriving from singularities 71 and 10 — the behaviour CB12
+made correct. **BI2 alternative 2 is proved**: valid distinct rays collapsed by an under-discriminating
+collision-equivalence contract.
 
-One bounded successor is authorized: **`M3-CP4c-3-CB14`** under **BH0–BH9**, **diagnostic-only** — name both
-colliding rays using the fields the DTO already has, add typed fields for the key operands and **both origin ports'
-source vertices**, publish a bounded fan census at the failing vertex, and make the certification counters honest.
-**No semantic correction is authorized until TB12 separates the alternatives**, and CB14 must not touch the
-predicate, the sort, the key, or any ordering semantics. Selector **377** stays byte-frozen; selector 378 is
-conditional on BH6. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **78**.
+One bounded successor is authorized: **`M3-CP4c-3-CB15`** under **BJ0–BJ9**, a **product correction** — replace the
+vertex-locus `secondary` with an **exact within-wedge rank about the locus vertex**, keep exactly-coincident rays
+**fail-closed** under a distinct typed condition, and **do not** add `arc`/`trace`/`orientation` to the predicate,
+because ordering by identity is proved semantically wrong. **Accepted-boundary safety is proved structurally:**
+`secondary` is consulted only on a `primary` tie, a `primary` tie between trace rays means a shared wedge, and every
+shared-wedge case is a hard error today — so redefining it cannot change any rotation that succeeds now. Selector
+**378** stays byte-frozen; selector 379 is conditional on BJ6. Stable accounting **44 / 14 / 30**, debt **5**,
+semantic M3 packages **79**.
+
+*(Prior turn, retained for lineage: `M3-CP4c-3-TB11-REV` proved the collision was underdetermined because the
+emitter retained neither operand, and froze the diagnostic-only CB14 that produced the evidence above. Its
+predicted mechanism — lesson 85, "an identifier is only a discriminator inside the scope that makes it unique" —
+is now runtime-confirmed.)*
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB10-REV` proved the firing site was one of **28**
 `RotationSystemInconsistent` emission sites publishing neither a reason nor a locus, making the phase undecidable;
@@ -154,20 +159,22 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB11-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
-selector **377** (`7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`, 377 identities), whose first
-365 lines reproduce the accepted hash `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
+**Current authority — TB12-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
+selector **378** (`86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`, 378 identities). Selector 377
+(`7255ac86…6426cbec1`) is its exact 377-identity prefix, and the first 365 lines reproduce the accepted
+`6b5b6555…cfc14b8a1` — so CB14 appended exactly one identity,
+`GlobalTopologyPlan.RotationRayOrderCollisionDiagnosticsSurviveProductionFailureProjection`, and reordered nothing.
 
-**TB11 is the latest semantic runtime evidence** (package 81, source
-`3070173894ee097f631b96c1c6d29f276df89a66`, run/job `33611378451 / 100187075757`, result artifact `9839236420`):
-**369 PASS / 8 RED**, ordinals **1–365 green**, first red **366** at
-`CellularityNotEstablished/origin=RotationSystemInconsistent` with
-`rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;cutCandidateCount=450;certificationAttempt=0;certificationCutEdges=0`;
-report-only 367, 368, 369, 370, 371, 372, 374; ordinal 377 PASS; immutable pre/postflight PASS.
+**TB12 is the latest semantic runtime evidence** (package 82, source
+`71ece3ca184e90858d9222fb014b37c16d292294`, run/job `33657062615 / 100338185825`, result artifact `9857275334`):
+**370 PASS / 8 RED**, ordinals **1–365 green**, first red **366** at `RotationRayOrderKeyCollision`, source vertex
+47, certification attempt 0 / 0 cut edges, with **both colliding rays and a complete 5-ray fan census retained**;
+report-only 367, 368, 369, 370, 371, 372, 374; ordinals 373/375/376/377/378 PASS; immutable pre/postflight PASS.
 
-`M3-CP4c-3-TB11-REV` proved the root cause is **underdetermined because the emitter retains neither colliding
-ray**, and froze **`M3-CP4c-3-CB14` under BH0–BH9**, diagnostic-only (§7 item 1). Stable accounting is
-**44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **78**. Ordinal 370, the sphere, saturation,
+`M3-CP4c-3-TB12-REV` **proved the root cause** — BI2 alternative 2, an under-discriminating
+collision-equivalence contract whose specific defect is that `RayOrderKey::secondary` is not locus-relative at a
+vertex — and froze **`M3-CP4c-3-CB15` under BJ0–BJ9**, a product correction (§7 item 1). Stable accounting is
+**44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **79**. Ordinal 370, the sphere, saturation,
 the folded-cone witness, the 371/372 test coupling, the finalize/contact fall-through and the mechanical
 zero-unbound debt remain deferred and untouched. **Vertex 30 is still not reached.**
 
@@ -391,7 +398,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10) and, since CB12, the whole of A2a | **Current owner of the critical path, in A2a'.** TB11 first-reds at ordinal 366 with `rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0` - i.e. on the **first certification of the uncut embedded graph**, before any cut proposal exists. CB13's discriminator discharged TB10-REV's undecidability finding. TB11-REV proved the guard compares only `primary`/`secondary` while the key sorts on six members, that `secondary` is the **origin** port ordinal with no check that the port's vertex is the locus vertex, and that a **self-loop arc** yields two darts at one node with the same `secondary` by construction. It also proved the emitter retains **neither** colliding ray, so four distinct causes render identically. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10) and, since CB12, the whole of A2a | **Current owner of the critical path, in A2a'.** TB12 first-reds at ordinal 366 with `RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`, on the **first certification of the uncut embedded graph**. CB14 retained both rays: **arc 20 / trace 6 / Forward / origin 47** and **arc 23 / trace 9 / Reverse / origin 71**, both `(primary,secondary)=(3,0)` in face `(45,46,47)` at fan slot 1, within a complete untruncated **5-ray** census. TB12-REV proved both rays valid - v47 emits exactly 3 rays (ordinals 0,1,2) into three **different** wedges, and the two Reverse rays are terminations arriving from singularities 71 and 10 - so the defect is the key, not the witness: `secondary` is the **origin** port ordinal instead of a locus-relative within-wedge rank. The fan is closed and combinatorially correct (slots 1,3,5,7 -> primary 3,7,11,15), independently reproduced by `tools/fixture_probe.py fan 47`. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -486,35 +493,34 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Vertex-47 trace-ray order-key collision in A2a′ — ACTIVE and gating; the condition is named, the cause is
-   underdetermined, and the reason it is underdetermined is proved.** TB11 reports
-   `rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`.
-   `M3-CP4c-3-TB11-REV` proved:
+1. **Vertex-47 within-wedge ray ordering in A2a′ — ACTIVE and gating; root cause PROVED, owner named, product
+   correction frozen.** TB12 retained both colliding rays and `M3-CP4c-3-TB12-REV` proved:
 
-   - **The unique emitter** is `EmbeddedGraphTopology.cpp:1214` in `build_rotation_system`, running **after** key
-     construction and **after** the sort, **before** `counterClockwise` is published, on adjacent sorted pairs that
-     are both `Trace` at a **vertex** locus.
-   - **The guard compares less than the key.** `RayOrderKey` sorts on six members; the predicate tests only
-     `primary` and `secondary`. `arc` and `orientation` are present and excluded.
-   - **`secondary` is not vertex-local.** It is `port->ordinal` for the port the trace **originated** from, matched
-     by id with **no check** that the port's source vertex is the locus vertex — injective only among one
-     singularity's own emanating rays.
-   - **A self-loop arc collides by construction.** The incidence map pushes `Forward` at `firstNode` and `Reverse`
-     at `secondNode` unconditionally, so both darts share `arc.trace` and hence `secondary`; if `trace_ray_face`
-     puts both in one sector, `primary` matches too. No upstream defect is required.
-   - **Neither colliding ray is retained.** The emitter sets only the reason, `sourceVertex` and `sourceEdge`,
-     while the DTO already declares `arc`, `trace`, `secondTrace`, `sourceFace` and `secondSourceFace` — and **no
-     field can hold `primary`/`secondary` at all**. Duplicate incidences, an under-discriminating key, genuinely
-     coincident rays and stale provenance therefore render **identically**.
+   - **Both rays are valid.** v47 is an index-`+1` singularity with `expectedValence = 3`; the complete 5-ray
+     census shows its three `Forward` rays (ordinals 0, 1, 2) in three **different** wedges, plus two `Reverse`
+     terminations arriving from singularities 71 and 10 — the behaviour CB12 made correct. Nothing is duplicated,
+     stale, or malformed, so alternatives 1 and 4 are falsified.
+   - **The fan is correct down to the wedge.** `build_vertex_fan_slots` alternates edge(even)/face(odd) slots, so
+     each face slot lies strictly between its bounding edge slots. Only the order of two rays *inside one wedge* is
+     undefined.
+   - **`secondary` is the designated within-wedge rank, filled with the wrong quantity** — `port->ordinal` from the
+     ray's **origin** namespace. At locus 47 the arriving ray's `secondary=0` comes from a port at vertex **71**.
+     It is written at exactly one vertex-locus site and was never load-bearing where it was correct, since
+     `primary` already separates v47's own three rays.
+   - **The correct convention already exists at the edge locus**, in `edge_locus_secondary_rank`: locus-relative,
+     exact, explicitly geometry-free.
 
-   `M3-CP4c-3-CB14` (BH0–BH9) is **diagnostic-only**: name both rays, publish the key operands and both origin
-   ports' **source vertices**, emit a bounded fan census at the failing vertex, and make the certification counters
-   honest. **Prohibited:** touching the predicate, the sort, `RayOrderKey`, `primary`/`secondary` construction,
-   `trace_ray_face`, the incidence map, or any ordering semantics; reverting CB12; decoupling 371/372.
+   **The invariant:** at a vertex locus, `secondary` must be an exact rank of the ray **within its wedge, measured
+   about the locus vertex**, derived from the ray relative to the locus and never from its origin namespace.
+   `M3-CP4c-3-CB15` (BJ0–BJ9) implements it. **Prohibited:** adding `arc`/`trace`/`orientation` to the predicate —
+   ordering two geometrically distinct rays by identity can publish a rotation that disagrees with the embedding,
+   and the face walk and cellularity certificate would then adjudicate the wrong surface. Exactly-coincident rays
+   stay **fail-closed** under a distinct typed condition; that is BI2 alternative 3 and its semantics are not yet
+   established.
 
-   *(Caution for the successor: the rotation system at a **singularity** node became reachable on this witness only
-   after CB12 and CB13 let the pipeline advance this far. This is a **newly reachable** path, not demonstrably a
-   newly introduced defect, and CB12 must not be treated as suspect on this evidence.)*
+   **Accepted-boundary safety is structural:** `secondary` is compared only on a `primary` tie; a `primary` tie
+   between trace rays means a shared wedge; every shared-wedge case is a hard error today. So redefining it cannot
+   change the rotation of any currently-succeeding case.
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -582,6 +588,17 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**One field, two branches, one of them already right.** The vertex locus and the edge locus fill the same
+`RayOrderKey::secondary` slot. The edge branch computes a locus-relative, exact, geometry-free rank and says so in
+a comment; the vertex branch substitutes the ray's **origin** port ordinal. The correct design was already
+implemented forty lines away in the same function. Before designing a rank, a key, or a tiebreak, diff the sibling
+implementations of the same field — the convention may already exist. `LESSONS.md` §4 86.
+
+**A quantity that is only incidentally correct is wrong the first time it matters.** `port->ordinal` was consistent
+for a singularity's own emanating rays — and the v47 census shows `primary` already separated those, so it never
+did any work there. It became load-bearing only for rays arriving from **other** vertices, which is exactly where
+it is meaningless. Before trusting a tiebreak, ask which inputs actually reach it. `LESSONS.md` §4 87.
 
 **A fail-closed uniqueness assertion that compares less than the key it asserts on.** `RayOrderKey` sorts on six
 members and is checked for collisions on two. That is defensible only if the other four are known-irrelevant to the
@@ -948,6 +965,10 @@ evidence table under a "semantic red" verdict.
 
 ## 9. Where to look
 
+- `.agents/Directional/tools/` — read-only review helpers: `review_check.py` (authority +
+  boundary), `selector_probe.py` (selector hashes, ordinal ↔ identity, test-line → ordinal), and
+  `fixture_probe.py` (fixture topology, dihedrals, vertex fans). See `tools/README.md` for the caveats.
+
 **Architecture and plan:** `DESIGN.md` (§4.5 grazing, §4.6 motorcycle graph, §7.2 region derivation with
 Amendments 12 and 13), `ROADMAP.md`, `REORIENTATION_PLAN.md`.
 
@@ -1146,3 +1167,18 @@ The two-ring is constructed in the test file, not a fixture.
   **`secondSourceFace`**, `singularity`, `sourceVertex` and the rotation reason — the `second*` fields exist for
   two-sided comparisons. It has **no field for the colliding `primary`/`secondary` values**, so those are
   unrecoverable from any current locus render.
+- At a vertex locus `RayOrderKey::secondary` is written at **exactly one** site (`build_rotation_system`, vertex
+  branch) as `port->ordinal` — the ordinal of the port the trace **originated** from, with no check that the
+  port's source vertex is the locus vertex. At an **edge** locus the same field is written from
+  `edge_locus_secondary_rank`, which is locus-relative, exact and explicitly geometry-free. The vertex branch is
+  the outlier; the edge branch is the convention to follow.
+- `secondary` is the **second** member of a defaulted `operator<=>`, so it is consulted **only when `primary`
+  ties**. For two trace rays `primary` ties **iff they share a wedge**. Consequence, useful for any future change:
+  in every configuration that certifies today, `secondary` is never consulted for trace rays, so redefining it
+  cannot alter a rotation that currently succeeds.
+- A singularity's own emanating rays are separated by `primary` alone when each port occupies a different wedge —
+  which is the ordinary case. At v47 the three ports (ordinals 0, 1, 2) sit in three of its four wedges, so the
+  ordinal tiebreak was never load-bearing there.
+- `tools/fixture_probe.py fan <v>` reproduces `build_vertex_fan_slots` and prints both `primary` forms. For v47 it
+  independently reproduces the TB12 runtime census exactly: face slots 1, 3, 5, 7 in rows 59, 100, 101, 290 with
+  trace-ray primaries 3, 7, 11, 15, and a closed fan.

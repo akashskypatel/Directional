@@ -1402,6 +1402,19 @@ building any conclusion on it.**
     vertices, so two unrelated rays in one sector can carry the same number. Before borrowing an id as an ordering
     key, verify that the scope guaranteeing its uniqueness is the scope being ordered.
 
+86. **When one branch of a shared contract is right, read it before designing the other.** The vertex locus and the
+    edge locus fill the same `RayOrderKey::secondary` slot in `build_rotation_system`. The edge branch computes a
+    locus-relative, exact rank and documents that intent in a comment - "keep that exact topological case between
+    the two carrier destinations without using geometry" - while the vertex branch substitutes the ray's origin
+    port ordinal. The correct design was already implemented forty lines away. Before inventing a rank, key or
+    tiebreak, diff the sibling implementations of the same field.
+
+87. **A quantity that is only incidentally correct will be wrong the first time it matters.** `port->ordinal` was
+    consistent for a singularity's own emanating rays, and the v47 census shows `primary` already separated those -
+    so it never did any work where it was correct. It became load-bearing only for rays arriving from other
+    vertices, which is precisely where it carries no meaning. Ask which inputs actually reach a tiebreak before
+    trusting it, and check whether the cases where it is correct are cases where it is also redundant.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB12 is the latest runtime authority** on immutable package **82** / selector **378**: 370 PASS / 8 RED, accepted **365/365**, first red ordinal 366 remains `RotationRayOrderKeyCollision` at source vertex 47 / certification attempt 0 / 0 cut edges. CB14's retained diagnostics now identify the rejected pair as distinct rays: arc 20 / trace 6 / Forward / origin vertex 47 and arc 23 / trace 9 / Reverse / origin vertex 71, both `(primary,secondary)=(3,0)` in face `(45,46,47)` / fan slot 1. The fan census is complete at 5 rays; unmeasured non-disc/admissible counters are absent. Thus `M3-CP4c3-TB11-REV-CAND-01` is CLOSED / RUNTIME DISCRIMINATED and `M3-CP4c3-TB11-CAND-01` transitions to **DISTINCT-RAY SAME-SECTOR COLLISION / SEMANTIC POLICY UNADJUDICATED**. The simplest duplicate-incidence identity case is falsified, but valid coincident/tie semantics versus invalid/stale provenance or witness/precondition remains for review. Exact next is **`M3-CP4c-3-TB12-REV`** under BI0-BI7, review/planning only. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **79**.
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB12 is the latest runtime authority** on immutable package **82** / selector **378**: 370 PASS / 8 RED, accepted **365/365**, first red ordinal 366 at `RotationRayOrderKeyCollision`, vertex 47, certification attempt 0 / 0 cut edges, with **both colliding rays retained** (arc 20/trace 6/Forward/origin 47 and arc 23/trace 9/Reverse/origin 71, both `(primary,secondary)=(3,0)` in face `(45,46,47)` at fan slot 1) inside a complete untruncated 5-ray census. **`M3-CP4c-3-TB12-REV` proved the root cause - BI2 alternative 2:** both rays are valid (v47 emits exactly three rays into three different wedges; the Reverse rays are legitimate terminations from singularities 71 and 10), the fan is combinatorially correct down to which wedge a ray occupies, and the only undefined quantity is the within-wedge order - for which `RayOrderKey::secondary` is the designated field, filled with the ray's **origin** port ordinal instead of a locus-relative rank. The correct convention already exists at the edge locus in `edge_locus_secondary_rank`. Ordering by identity is semantically wrong, and redefining `secondary` is provably accepted-safe because it is consulted only on a `primary` tie, which for trace rays means a shared wedge - a hard error today. `M3-CP4c3-TB11-REV-CAND-01` is CLOSED; `M3-CP4c3-TB11-CAND-01` transitions to root-cause-proved; new `M3-CP4c3-TB12-REV-CAND-01` is ACTIVE. Exact next is **`M3-CP4c-3-CB15`** - Code + Build, **product correction**, under **BJ0-BJ9**. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **79**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -738,8 +738,13 @@ After the durable start-of-turn checklist, load:
 9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB12-REV` — independent REVIEW + PLAN only.** Trace both retained runtime ray
-incidences end to end, define the intended vertex rotation collision/equivalence invariant, adjudicate origin-port
-locality and the remaining valid-coincident versus invalid-provenance/precondition alternatives, preserve all carried
-reds without double counting, and freeze exactly one bounded successor only after ownership is proved. **No runtime,
-build, package, mutation, unchanged TB12 retry, or semantic correction is authorized inside the review.**
+**Exact next:** **`M3-CP4c-3-CB15` - Code + Build, PRODUCT CORRECTION.** Follow section 8.2 **BJ0-BJ9** of
+`Architecture_M3_CP4c3_TB12_Independent_Review_Record.md`. Replace the vertex-locus `RayOrderKey::secondary` with
+an **exact within-wedge rank measured about the locus vertex**, following the `edge_locus_secondary_rank`
+convention; handle both orientations; keep exactly-coincident rays **fail-closed** under a distinct typed
+condition. **Do not** add `arc`, `trace` or `orientation` to the collision predicate or comparator - ordering two
+geometrically distinct rays by identity can publish a rotation that disagrees with the embedding being certified.
+Leave `primary`, `build_vertex_fan_slots`, `trace_ray_face`, the edge-locus branch and the incidence map
+unchanged; do not revert CB12 or CB14; do not repair the finalize/contact fall-through; do not decouple 371/372.
+Selector 378 stays byte-frozen; append selector 379 only on demonstrated falsification. Eight compile targets,
+GMP/GMPXX linkage mandatory.

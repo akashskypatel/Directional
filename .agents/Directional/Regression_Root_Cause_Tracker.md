@@ -1,3 +1,39 @@
+## M3-CP4c3-TB12-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md`, measures **BI0-BI7** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BI0.** Source `71ece3ca` is an ancestor of branch HEAD with **no code drift**; selector 378 recomputes to
+  `86259d91...396440b8` with 378 identities, selector 377 is its exact 377-prefix, and the first 365 lines
+  reproduce accepted `6b5b6555...cfc14b8a1`. CB14 appended exactly one identity,
+  `GlobalTopologyPlan.RotationRayOrderCollisionDiagnosticsSurviveProductionFailureProjection` (BH6 honoured).
+  TB12's `READ_MODE` process-order deviation is recorded; it changed no package, selector, runtime or product
+  evidence.
+- **BI1 - both incidences traced.** Ray 1 = arc 20 / trace 6 / **Forward**, one of v47's own three emanating rays
+  (`expectedValence = 4 - 1 = 3`, ordinals 0/1/2 in three **different** wedges). Ray 2 = arc 23 / trace 9 /
+  **Reverse**, a termination arriving from singularity **71** - the path CB12 made correct. The 5-ray census is
+  complete and untruncated, and three independent checks reconcile: slot parity (faces odd), fan closure (v47 has
+  degree 4 and its four faces form a closed star), and the 3-port emanation count. Independently reproduced by
+  `tools/fixture_probe.py fan 47`: slots 1/3/5/7 in rows 59/100/101/290 with primaries 3/7/11/15.
+- **BI2 - root cause PROVED, alternative 2.** Valid distinct rays collapsed by an under-discriminating
+  collision-equivalence contract. Alternatives 1 and 4 are falsified (distinct arcs/traces/orientations/origins,
+  both accounted for by construction, ordinary configuration); alternative 3 is not this instance but remains a
+  latent case to keep fail-closed. **Ordering by identity is semantically wrong**: ray order about a vertex is a
+  property of the embedding, so arc/trace ids could publish a rotation that disagrees with the surface being
+  certified.
+- **BI3 - origin-port locality resolved.** `secondary` is written at exactly two sites: the vertex branch
+  (`port->ordinal`) and the edge branch (`edge_locus_secondary_rank`, locus-relative and explicitly
+  geometry-free). There is exactly **one** vertex-locus trace-ray key construction path, and it is the defect. The
+  origin ordinal is invalid as a local rank for an arriving ray, and merely redundant for an emanating one.
+- **BI4.** Attempt 0 / 0 cut edges again proves initial uncut-graph certification; `cutCandidateCount=450` is
+  measured there; **BH4 is runtime-validated** - the unmeasured counters are now absent rather than rendering zero
+  defaults. Selector 378 PASS is diagnostic-projection evidence only.
+- **BI6 - accepted-boundary safety proved structurally.** `secondary` is compared only on a `primary` tie; a
+  `primary` tie between trace rays means a shared wedge; every shared-wedge case is a hard error today. Redefining
+  it therefore cannot change any currently-succeeding rotation. One bounded successor frozen:
+  **`M3-CP4c-3-CB15`** under **BJ0-BJ9**, product correction.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **79**.
+
 ## M3-CP4c3-TB12 — distinct-ray same-sector collision measured — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 82 / source `71ece3ca184e90858d9222fb014b37c16d292294`; run/job
@@ -85,7 +121,30 @@
 - **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
   debt **5**, packages **78**.
 
-## M3-CP4c3-TB11-CAND-01 - vertex-47 distinct-ray same-sector collision during initial certification - **ACTIVE / GATING / SEMANTIC POLICY UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB12-REV-CAND-01 - vertex-locus ray rank is taken from the ray's origin namespace - **ACTIVE / GATING / PRODUCT / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB12-REV`** from static derivation over TB12's retained runtime operands.
+- **Mechanism.** `RayOrderKey::secondary` is the designated within-wedge rank at a vertex locus, but is assigned
+  `port->ordinal` - the ordinal of the port the trace **originated** from, with no check that the port's source
+  vertex is the locus vertex. Two valid rays sharing a wedge therefore tie whenever their origin ordinals happen to
+  match, as TB12 shows at locus 47 with an arriving ray whose port belongs to vertex 71.
+- **Invariant to restore.** At a vertex locus, `secondary` must be an exact rank of the ray **within its wedge,
+  measured about the locus vertex**, derived from the ray relative to the locus and never from its origin
+  namespace, and it must totally order the rays sharing that wedge. Exactly-coincident rays remain fail-closed.
+- **Precedent.** `edge_locus_secondary_rank` already implements the locus-relative, exact, geometry-free
+  convention for the edge locus.
+- **Accepted-boundary safety.** `secondary` is consulted only on a `primary` tie, which for trace rays means a
+  shared wedge, and every shared-wedge case is a hard error today - so no currently-succeeding rotation changes.
+- **Owner:** **BJ1-BJ5** of `M3-CP4c-3-CB15`.
+- **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, packages **79**.
+
+## M3-CP4c3-TB11-CAND-01 - vertex-47 distinct-ray same-sector collision during initial certification - **ACTIVE / GATING / ROOT CAUSE PROVED AT TB12-REV / NON-STABLE**
+
+- **Adjudicated at `M3-CP4c-3-TB12-REV` as BI2 alternative 2:** both rays are valid, and they collapse because
+  `RayOrderKey::secondary` at a vertex locus is the ray's **origin** port ordinal instead of a locus-relative
+  within-wedge rank. Owner: `EmbeddedGraphTopology.cpp::build_rotation_system`, vertex branch. Re-owned to
+  **`M3-CP4c-3-CB15`** (BJ0-BJ9, product correction). See `M3-CP4c3-TB12-REV-CAND-01`.
 
 - **Transitioned at TB12:** the missing-operand ambiguity is discharged. The rays are distinct: arc 20/trace 6/Forward/origin vertex 47 versus arc 23/trace 9/Reverse/origin vertex 71, while both have `(primary,secondary)=(3,0)` and the same face/fan slot. Exact semantic policy remains unadjudicated; owner is **`M3-CP4c-3-TB12-REV`** BI0-BI7.
 

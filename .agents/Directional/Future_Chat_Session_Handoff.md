@@ -92,76 +92,100 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB12-REV` — EXACT NEXT / Independent REVIEW + PLAN only
+## Mandatory next turn — `M3-CP4c-3-CB15` — EXACT NEXT / Code + Build, PRODUCT CORRECTION
 
-`M3-CP4c-3-TB12` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Owning report:
-`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md`. Frozen review authority:
-`Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` (**BI0-BI7**).
+`M3-CP4c-3-TB12-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` (measures **BI0–BI7** discharged, static only).
 
-### TB12 runtime authority now frozen
+### What the review established
 
-Immutable package **82** / semantic source `71ece3ca184e90858d9222fb014b37c16d292294` and selector **378** were
-executed artifact-only. Authoritative run/job `33657062615 / 100338185825` succeeded operationally. Result artifact
-`9857275334` has Actions SHA-256 `085b3de9ebf5a9a29cbcf883e4058c97855e11a1a7b2bc53f961c809dace9145`; log
-artifact `9857276091` has Actions SHA-256 `89cac6cb1ea6444b8204d8b5ca9233daed7e0ff88986d8592af576e319cb4120`.
+TB12's ordinal-366 red — `RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`
+— now has a **proved root cause**: **BI2 alternative 2**, valid distinct rays collapsed by an under-discriminating
+collision-equivalence contract.
 
-All **378** selector identities ran once in fresh processes: **370 PASS / 8 RED**. Ordinals **1-365 remain
-365/365 PASS**; first red remains ordinal **366**, proving CB14 did not move semantics. Ordinals 367, 368, 369,
-370, 371, 372 and 374 are report-only RED; 373/375/376/377/**378** PASS. The separate mechanical diagnostic ran
-once with zero gate credit. Immutable package byte/mode census and manifest are identical postflight; all
-configure/compile/relink/repair/discovery/product/test/fixture/selector-mutation flags are false and no benchmark ran.
+- **Both rays are valid.** v47 is an index-`+1` singularity with `expectedValence = 3`; the complete, untruncated
+  5-ray census shows its three `Forward` rays (ordinals 0, 1, 2) in three **different** wedges, plus two `Reverse`
+  terminations arriving from singularities 71 and 10 — the path CB12 made correct. Alternatives 1 and 4 falsified.
+- **The fan is correct down to the wedge.** `build_vertex_fan_slots` alternates edge(even)/face(odd) slots, so each
+  face slot lies strictly between its bounding edge slots. Only the order of two rays *inside one wedge* is
+  undefined. Independently reproduced by `tools/fixture_probe.py fan 47`.
+- **`secondary` is the designated within-wedge rank, filled with the wrong quantity** — `port->ordinal` from the
+  ray's **origin** namespace. At locus 47 the arriving ray's `secondary=0` comes from a port at vertex **71**. It
+  is written at exactly one vertex-locus site, and was never load-bearing where it was correct.
+- **The correct convention already exists one branch away**, in `edge_locus_secondary_rank`: locus-relative, exact,
+  explicitly geometry-free.
+- **Ordering by identity is semantically wrong.** Ray order about a vertex is a property of the embedding;
+  arc/trace ids do not track it, so a rotation ordered by them could disagree with the surface being certified.
+- **Accepted-boundary safety is structural.** `secondary` is compared only on a `primary` tie; a `primary` tie
+  between trace rays means a shared wedge; every shared-wedge case is a hard error today. Redefining it cannot
+  change any currently-succeeding rotation.
 
-### BH9 discriminator — retained operands at vertex 47
+`M3-CP4c3-TB11-REV-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**; `M3-CP4c3-TB11-CAND-01` transitions to **root
+cause proved**; new `M3-CP4c3-TB12-REV-CAND-01` is **ACTIVE**. The 371/372 coupling stays **DEFERRED**; sphere 368,
+saturation 369, ordinal 370, folded-cone 374, vertex 30 and the finalize/contact fall-through are unchanged.
 
-Ordinal 366 remains `RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`.
-The two rejected rays are now explicit:
+### CB15 binding scope — `BJ0–BJ9`, in the review record §8.2
 
-- previous: arc **20**, trace **6**, `Forward`, `primary=3`, `secondary=0`, face `(45,46,47)`, fan slot **1**,
-  origin port ordinal **0**, origin port source vertex **47**;
-- current: arc **23**, trace **9**, `Reverse`, `primary=3`, `secondary=0`, the same face and fan slot, origin port
-  ordinal **0**, origin port source vertex **71**.
+**Product correction**, narrowly scoped to the vertex-locus `secondary` rank. Owner:
+`src/geometry/EmbeddedGraphTopology.cpp::build_rotation_system`, vertex branch.
 
-The bounded fan census is complete (**5 rays / truncated=false**). The simplest duplicate-incidence identity
-explanation is falsified by distinct arc/trace IDs, opposite orientations and different origin vertices. The failing
-production witness also proves `secondary` is not vertex-local: a ray at locus 47 carries an origin-port ordinal from
-vertex 71. The collision guard nevertheless equates the rays on `primary`/`secondary`. This is direct evidence for
-an under-discriminating collision-equivalence contract, but both rays share the same source face and fan slot; TB12
-does **not** decide whether they are valid coincident rays needing deterministic tie/equivalence semantics, invalid/
-stale provenance, or a witness/precondition failure. That semantic decision belongs to BI0-BI7 review.
+- **BJ0** — accepted 365 untouched; **selector 378 byte-frozen** at `86259d91…396440b8`, republished unchanged;
+  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
+- **BJ1** — replace `key.secondary = port->ordinal` with an **exact within-wedge rank about the locus vertex**,
+  following the `edge_locus_secondary_rank` convention. For a wedge `F` at corner `v`, the angular order of two
+  rays from `v` equals the order of their crossings of the edge of `F` opposite `v`; equivalently the sign of the
+  existing exact barycentric orientation determinant. **Exact rationals only — no tolerance, no floating point.**
+- **BJ2** — handle both orientations from the locus (`Forward` → `segments[arc.firstSegment]`, `Reverse` →
+  `segments[arc.onePastLastSegment - 1U]`, matching `trace_ray_face`); a ray terminating inside the wedge ranks
+  from its terminal barycentric point rather than being excluded.
+- **BJ3** — keep the guard **fail-closed** for rays exactly coincident from the locus, under a **distinct typed
+  condition**. That is BI2 alternative 3 and its semantics are not established.
+- **BJ4** — **do not** add `arc`, `trace` or `orientation` to the predicate or comparator; leave `primary`,
+  `build_vertex_fan_slots`, `trace_ray_face`, the edge-locus branch and the incidence map unchanged.
+- **BJ5** — witnesses. *Positive:* a synthetic vertex fan with two trace rays in one wedge at distinct angles,
+  asserting a rotation whose order matches the geometric order, through the production path. *Negative:* two
+  exactly coincident rays still fail closed under BJ3. *Regression:* a fan with at most one trace ray per wedge
+  publishes a byte-identical rotation before and after.
+- **BJ6** — append **selector 379** only on demonstrated falsification; no reordering of any existing ordinal.
+- **BJ7** — prohibitions: no other ordering, cut or topology change; do not revert or weaken CB12 or CB14; do not
+  repair the `finalize_field_aligned_events` fall-through; do not decouple 371/372; do not touch the unguarded
+  Mandatory/Cut same-slot case; no sphere, saturation, ordinal-370 or folded-cone correction; no fixture mutation.
+- **BJ8** — audit by assumption; prove no accepted-green rotation changes and demonstrate a byte-identical
+  before/after rotation on at least one currently-passing witness.
+- **BJ9** — publish five `M3-CP4c-3-TB13` discriminators: (1) 1–365 stay 365/365; (2) ordinal 366 no longer reports
+  `RotationRayOrderKeyCollision` at vertex 47 — a repeat there falsifies BJ1; (3) rays 1 and 2 receive **distinct**
+  `secondary` values and all five rays publish; (4) any remaining red is at a different stage/reason/locus, and the
+  certification may proceed into the face walk where the non-disc/admissible counters can legitimately appear for
+  the first time; (5) `M3-CP4c3-TB11-CAND-01` closes only on 1, 2 and 3 together.
 
-`cutCandidateCount=450` remains measured. `nonDiscComponentCount` and `remainingAdmissibleEdgeCount` are absent on
-this path, validating CB14's honest optional-counter correction. Selector 378 PASSes production diagnostic
-projection.
+**No vertex-30 discriminator is published** — nothing proves the corrected rotation reaches it.
 
-`M3-CP4c3-TB11-REV-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**.
-`M3-CP4c3-TB11-CAND-01` remains **ACTIVE / GATING / NON-STABLE**, transitioned to **DISTINCT-RAY SAME-SECTOR
-COLLISION / SEMANTIC POLICY UNADJUDICATED** and owned by `M3-CP4c-3-TB12-REV`. 367/371/372 remain shared
-upstream stops; sphere 368, saturation 369, ordinal 370, folded-cone 374, vertex 30, finalize/contact and the
-371/372 coupling candidate retain prior ownership.
-
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events /
-14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **79**.
-
-### Review boundary
-
-Run BI0-BI7 without runtime or mutation. Trace both ray incidences end to end, define the intended rotation
-equivalence invariant, adjudicate origin-port locality, falsify the remaining semantic alternatives, and freeze one
-bounded successor only after ownership is proved. Do **not** rerun TB12 or patch the collision predicate in review.
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **79**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent REVIEW + PLAN guidance
+- turn-based-coding-agent CODE + BUILD guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first and update during the review.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — **frozen BI0-BI7 authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — immutable package-82/build authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — prior alternatives and BH0-BH9 rationale.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `ROADMAP.md`.
-6. Packaged source is inspection-only; no runtime/build/package mutation is authorized in review.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` — **frozen CB15 scope, §8.2 BJ0–BJ9**.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — package-82 implementation authority.
+4. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
+   `M3_CP4c_Consolidated_Record.md`.
+
+Source surfaces CB15 will touch: `src/geometry/EmbeddedGraphTopology.cpp` (vertex branch of
+`build_rotation_system`, plus a new exact within-wedge rank helper alongside `edge_locus_secondary_rank`),
+`include/directional/geometry/GlobalTopologyPlan.h` (the BJ3 typed condition), and `tests/` for the BJ5 witnesses.
+
+**Review tooling:** `.agents/Directional/tools/` holds read-only helpers so these derivations are not rewritten
+each turn — `review_check.py authority <sha>` and `review_check.py boundary`, `selector_probe.py` for selector
+hashes and ordinal ↔ identity lookups, `fixture_probe.py` for fixture topology and vertex fans. See
+`tools/README.md`, especially its caveats.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

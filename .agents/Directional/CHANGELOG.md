@@ -1,3 +1,60 @@
+## 2026-09-02 — `M3-CP4c-3-TB12-REV`: ordinal-366 root cause proved; `M3-CP4c-3-CB15` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md`, measures **BI0–BI7**.
+Record: `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md`. Static only — no runtime, compile, link,
+package, benchmark, or product/test/fixture/selector mutation.
+
+**BI0.** Source `71ece3ca` verified as an ancestor of branch HEAD with **no code drift** over the code surfaces;
+selector 378 recomputes to `86259d91…396440b8` with 378 identities, selector 377 is its exact 377-identity prefix,
+and the first 365 lines reproduce accepted `6b5b6555…cfc14b8a1`. CB14 appended exactly one identity,
+`GlobalTopologyPlan.RotationRayOrderCollisionDiagnosticsSurviveProductionFailureProjection` — BH6 honoured. TB12's
+`READ_MODE` process-order deviation is recorded; it changed no package, selector, runtime or product evidence.
+
+**BI1.** Both incidences traced. Ray 1 = arc 20 / trace 6 / **Forward**, one of v47's own three emanating rays
+(`expectedValence = 4 − 1 = 3`, ordinals 0/1/2 in three **different** wedges). Ray 2 = arc 23 / trace 9 /
+**Reverse**, a termination arriving from singularity **71** — the path CB12 made correct. The 5-ray census is
+complete and untruncated, and three independent checks reconcile: slot parity, fan closure, and the emanation
+count. `tools/fixture_probe.py fan 47` reproduces the census exactly — slots 1/3/5/7 in rows 59/100/101/290 with
+primaries 3/7/11/15, closed fan.
+
+**BI2 — root cause PROVED, alternative 2.** Valid distinct rays collapsed by an under-discriminating
+collision-equivalence contract. `build_vertex_fan_slots` alternates edge(even)/face(odd) slots, so the rotation is
+determined **down to which wedge a ray occupies** and undefined **only** within a wedge — and
+`RayOrderKey::secondary`, the field designated for that rank, is assigned `port->ordinal` from the ray's **origin**
+namespace. **Ordering by identity is semantically wrong**: ray order about a vertex is a property of the embedding,
+so arc/trace ids could publish a rotation that disagrees with the surface being certified. Alternatives 1 and 4 are
+falsified; alternative 3 is not this instance but stays fail-closed.
+
+**BI3.** `secondary` is written at exactly two sites — the vertex branch (`port->ordinal`) and the edge branch
+(`edge_locus_secondary_rank`, locus-relative, exact, explicitly geometry-free). There is exactly **one**
+vertex-locus trace-ray key construction path, and it is the defect. The origin ordinal is invalid as a local rank
+for an arriving ray and merely **redundant** for an emanating one, since `primary` already separates those.
+
+**BI4.** Attempt 0 / 0 cut edges again proves initial uncut-graph certification and `cutCandidateCount=450` is
+measured there. **BH4 is runtime-validated** — the unmeasured counters are now *absent* rather than rendering zero
+defaults, closing the third recurrence of that pattern at its locus.
+
+**BI6 — accepted-boundary safety proved structurally.** `secondary` is compared only on a `primary` tie; a
+`primary` tie between trace rays means a shared wedge; every shared-wedge case is a hard error today. Redefining it
+therefore cannot change any currently-succeeding rotation, without enumerating ordinals 1–365.
+
+**BI5/BI7.** 367/371/372 abort at the same collision with no duplicate event; sphere 368, saturation 369, ordinal
+370, folded-cone 374, vertex 30, the finalize/contact fall-through and the 371/372 coupling all unchanged.
+`M3-CP4c3-TB11-REV-CAND-01` **CLOSED**; `M3-CP4c3-TB11-CAND-01` transitions to root-cause-proved; new
+`M3-CP4c3-TB12-REV-CAND-01` **ACTIVE**. One bounded successor frozen: **`M3-CP4c-3-CB15`** under **BJ0–BJ9**, a
+product correction. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages
+**79**.
+
+**Review tooling added.** `.agents/Directional/tools/` now holds read-only helpers so review turns stop
+regenerating the same derivations: `review_check.py` (authority + boundary gate), `selector_probe.py` (selector
+hashes, prefix continuity, ordinal ↔ identity, test-line → ordinal), and `fixture_probe.py` (fixture topology,
+dihedrals, vertex fans, corroborating singularity reconstruction), with a `README.md` carrying the caveats that
+have previously cost review turns.
+
+**Lessons added.** §4 **86** — when one branch of a shared contract is right, read it before designing the other.
+§4 **87** — a quantity that is only incidentally correct will be wrong the first time it matters. §4 **85**
+(TB11-REV) is now runtime-confirmed.
+
 ## 2026-09-02 — `M3-CP4c-3-TB11-REV`: ordinal 366 proved underdetermined; `M3-CP4c-3-CB14` frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB11_Independent_Review_Plan.md`, measures **BG0–BG7**.
