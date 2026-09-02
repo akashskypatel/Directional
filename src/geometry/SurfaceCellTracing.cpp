@@ -4000,13 +4000,6 @@ std::optional<FieldAlignedCurveNetworkError> finalize_field_aligned_events(
   return std::nullopt;
 }
 
-std::optional<FieldAlignedCurveNetworkError>
-diagnose_finalize_field_aligned_events(
-    const authority::FieldBranchTopology &topology,
-    FieldAlignedCurveNetworkCandidate &candidate) {
-  return finalize_field_aligned_events(topology, candidate);
-}
-
 struct FieldAlignedRailSupport {
   FieldAlignedRailSupport(authority::HardRailId railValue,
                           const SurfaceCellRailKind kindValue)
@@ -4678,6 +4671,13 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
 }
 
 } // namespace
+
+std::optional<FieldAlignedCurveNetworkError>
+diagnose_finalize_field_aligned_events(
+    const authority::FieldBranchTopology &topology,
+    FieldAlignedCurveNetworkCandidate &candidate) {
+  return finalize_field_aligned_events(topology, candidate);
+}
 
 std::optional<FieldAlignedArrivalMeasure>
 field_aligned_filtered_arrival_measure(
