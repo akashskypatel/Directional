@@ -186,6 +186,7 @@ enum class FieldAlignedCurveNetworkErrorCondition : std::uint8_t {
   TraceTerminalKindInvalid = 9,
   FinalizeBarrierMandatoryEdgeMissing = 10,
   FinalizeLoopClosureUnavailable = 11,
+  SingularityTerminationBarrierAbsorbedNodeMissing = 12,
 };
 
 struct FieldAlignedTraceStepDiagnostic {
@@ -554,6 +555,13 @@ struct FieldAlignedCurveNetworkCandidate {
   // network semantic identity.
   std::uint64_t sourceDigest = 0U;
   std::uint64_t atlasDigest = 0U;
+
+  // Construction-only policy provenance. This keeps legal no-port
+  // BarrierAbsorbed arrivals distinct from inconsistent missing Emit ports.
+  // It is not part of the published network semantic identity.
+  std::map<authority::FieldSingularityId,
+           authority::FieldSingularityFact::PortPolicy>
+      singularityPortPolicies;
 };
 
 class FieldAlignedCurveNetworkBuildResult;

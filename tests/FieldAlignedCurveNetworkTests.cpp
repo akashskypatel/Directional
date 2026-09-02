@@ -8668,6 +8668,9 @@ TEST(ResolvedBranchContinuation,
   const NetworkNodeId terminalNode = NetworkNodeId::from_index(0, 1).value();
 
   FieldAlignedCurveNetworkCandidate candidate;
+  candidate.singularityPortPolicies.emplace(
+      terminalSingularity,
+      directional::authority::FieldSingularityFact::PortPolicy::Emit);
   candidate.singularityPorts.emplace_back(
       terminalPortId, terminalSingularity, terminalNode, terminalVertex,
       sourceComponent, topologyRegion, 1, 0);
@@ -8702,6 +8705,146 @@ TEST(ResolvedBranchContinuation,
   EXPECT_EQ(trace.terminalPoint, std::optional{terminalPoint});
   EXPECT_EQ(trace.terminalSingularity,
             std::optional{terminalSingularity});
+}
+
+
+TEST(ResolvedBranchCorrection,
+     BarrierAbsorbedMechanicalTerminationUsesNetworkNodeWithoutPort) {
+  using directional::authority::FieldSingularityFact;
+  using directional::authority::FieldTransportBarrierKind;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::FieldAlignedCurveNetworkErrorCondition;
+  using directional::geometry::FieldAlignedNetworkEventKind;
+
+  const Cp4cReachabilityObservation mechanical =
+      observe_cp4c_witness("mechanical_feature", "mechanical feature");
+  ASSERT_TRUE(mechanical.atlas.has_value()) << mechanical.report;
+
+  const auto &atlas = *mechanical.atlas;
+  const std::size_t vertexExtent =
+      static_cast<std::size_t>(mechanical.mesh.V.rows());
+  const SourceVertexId terminalVertex =
+      SourceVertexId::from_index(36U, vertexExtent).value();
+
+  const auto singularity = std::find_if(
+      atlas.singularities().begin(), atlas.singularities().end(),
+      [&](const FieldSingularityFact &fact) {
+        return fact.sourceVertex == terminalVertex;
+      });
+  ASSERT_NE(atlas.singularities().end(), singularity) << mechanical.report;
+  ASSERT_TRUE(singularity->topologyRegion.has_value()) << mechanical.report;
+  EXPECT_EQ(FieldSingularityFact::PortPolicy::BarrierAbsorbed,
+            singularity->portPolicy)
+      << mechanical.report;
+
+  const auto &attachments =
+      atlas.branch_topology().singularity_port_attachments();
+  EXPECT_EQ(attachments.end(),
+            std::find_if(attachments.begin(), attachments.end(),
+                         [&](const auto &attachment) {
+                           return attachment.singularity == singularity->id;
+                         }))
+      << "BarrierAbsorbed singularity must own no origin port";
+
+  std::set<SourceVertexId> nodeVertices;
+  for (const FieldSingularityFact &fact : atlas.singularities()) {
+    nodeVertices.insert(fact.sourceVertex);
+  }
+
+  std::vector<SourceEdgeTopologyKey> incidentMandatoryEdges;
+  const directional::authority::FieldNonTraversableEdge *carrier = nullptr;
+  for (const auto &edge : atlas.nontraversable_edges()) {
+    if (edge.kind != FieldTransportBarrierKind::SourceBoundary &&
+        edge.kind != FieldTransportBarrierKind::HardFeature) {
+      continue;
+    }
+    nodeVertices.insert(edge.sourceEdge.first());
+    nodeVertices.insert(edge.sourceEdge.second());
+    if (edge.sourceEdge.first() == terminalVertex ||
+        edge.sourceEdge.second() == terminalVertex) {
+      incidentMandatoryEdges.push_back(edge.sourceEdge);
+      if (carrier == nullptr) carrier = &edge;
+    }
+  }
+  ASSERT_NE(nullptr, carrier) << mechanical.report;
+  ASSERT_FALSE(incidentMandatoryEdges.empty()) << mechanical.report;
+
+  const auto nodePosition = nodeVertices.find(terminalVertex);
+  ASSERT_NE(nodeVertices.end(), nodePosition);
+  const std::size_t nodeIndex =
+      static_cast<std::size_t>(std::distance(nodeVertices.begin(), nodePosition));
+  const NetworkNodeId expectedNode =
+      NetworkNodeId::from_index(nodeIndex, nodeVertices.size()).value();
+
+  const std::optional<SourceFaceId> sourceFaceId =
+      carrier->firstFace.has_value() ? carrier->firstFace : carrier->secondFace;
+  ASSERT_TRUE(sourceFaceId.has_value()) << mechanical.report;
+  const int faceRow = static_cast<int>(sourceFaceId->index());
+  ASSERT_GE(faceRow, 0);
+  ASSERT_LT(faceRow, mechanical.mesh.F.rows());
+  const SourceFaceTopologyKey sourceFace = topology_face(
+      mechanical.mesh.F(faceRow, 0), mechanical.mesh.F(faceRow, 1),
+      mechanical.mesh.F(faceRow, 2), vertexExtent);
+  const int terminalParameter =
+      carrier->sourceEdge.first() == terminalVertex ? 0 : 1;
+  const auto terminalPoint =
+      boundary_point(carrier->sourceEdge, terminalParameter, 1);
+
+  FieldAlignedCandidateTrace trace(
+      TraceId::from_index(0U, 1U).value(),
+      SingularityPortId::from_index(0U, 1U).value(), singularity->id,
+      terminalVertex, singularity->sourceComponent,
+      *singularity->topologyRegion);
+  trace.segments.emplace_back(
+      sourceFace, directional::authority::FieldBranch::from_integer(0),
+      terminalPoint, std::nullopt, carrier->sourceEdge, std::nullopt);
+  trace.terminalPoint = terminalPoint;
+  trace.terminalSingularity = singularity->id;
+
+  FieldAlignedCurveNetworkCandidate missingNode;
+  missingNode.singularityPortPolicies.emplace(
+      singularity->id, FieldSingularityFact::PortPolicy::BarrierAbsorbed);
+  const auto missingNodeError =
+      directional::geometry::surface_cell_tracing_detail::
+          append_field_aligned_singularity_termination(missingNode, trace);
+  ASSERT_TRUE(missingNodeError.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+            missingNodeError->code);
+  ASSERT_TRUE(missingNodeError->condition.has_value());
+  EXPECT_EQ(FieldAlignedCurveNetworkErrorCondition::
+                SingularityTerminationBarrierAbsorbedNodeMissing,
+            *missingNodeError->condition);
+  EXPECT_TRUE(missingNode.events.empty());
+
+  FieldAlignedCurveNetworkCandidate candidate;
+  candidate.singularityPortPolicies.emplace(
+      singularity->id, FieldSingularityFact::PortPolicy::BarrierAbsorbed);
+  candidate.nodes.emplace_back(expectedNode, terminalVertex);
+  const auto error =
+      directional::geometry::surface_cell_tracing_detail::
+          append_field_aligned_singularity_termination(candidate, trace);
+  ASSERT_FALSE(error.has_value());
+  ASSERT_EQ(2U, candidate.events.size());
+  EXPECT_EQ(FieldAlignedNetworkEventKind::FirstContact,
+            candidate.events.front().kind);
+  EXPECT_EQ(expectedNode, candidate.events.front().node);
+  EXPECT_EQ(FieldAlignedNetworkEventKind::SingularityTermination,
+            candidate.events.back().kind);
+  EXPECT_EQ(expectedNode, candidate.events.back().node);
+
+  std::ostringstream report;
+  report << "m3Cp4c3BD5;terminalVertex=" << terminalVertex.index()
+         << ";singularity=" << singularity->id.index()
+         << ";portPolicy=BarrierAbsorbed"
+         << ";node=" << expectedNode.index()
+         << ";incidentMandatoryEdges=";
+  for (std::size_t index = 0; index < incidentMandatoryEdges.size(); ++index) {
+    if (index != 0U) report << ',';
+    report << source_edge_locus(incidentMandatoryEdges[index]);
+  }
+  std::cout << report.str() << '\n';
 }
 
 TEST(ResolvedBranchContinuation,

@@ -1914,34 +1914,62 @@ append_field_aligned_singularity_termination(
       support.has_value()
           ? std::get_if<authority::SourceVertexSupport>(&*support)
           : nullptr;
-  const auto terminalPort = std::find_if(
-      candidate.singularityPorts.begin(), candidate.singularityPorts.end(),
-      [&](const FieldAlignedSingularityPort &port) {
-        return port.singularity == *trace.terminalSingularity;
-      });
-  if (vertexSupport == nullptr ||
-      terminalPort == candidate.singularityPorts.end() ||
-      terminalPort->sourceVertex != vertexSupport->vertex) {
-    FieldAlignedCurveNetworkError error = trace_scoped_terminal_ownership_error(
-        FieldAlignedCurveNetworkErrorCondition::
-            SingularityTerminationPortOwnershipMismatch,
-        trace.sourceVertex, trace.singularity, std::nullopt,
-        trace.terminalPoint->edge, trace.segments.back().sourceFace,
-        trace.segments.back().branch);
-    annotate_field_aligned_trace_history(error, trace);
-    return error;
+  std::optional<authority::NetworkNodeId> terminalNode;
+  const auto policy =
+      candidate.singularityPortPolicies.find(*trace.terminalSingularity);
+  if (vertexSupport != nullptr &&
+      policy != candidate.singularityPortPolicies.end() &&
+      policy->second ==
+          authority::FieldSingularityFact::PortPolicy::BarrierAbsorbed) {
+    const auto node = std::find_if(
+        candidate.nodes.begin(), candidate.nodes.end(),
+        [&](const FieldAlignedCurveNetworkNode &candidateNode) {
+          return candidateNode.sourceVertex == vertexSupport->vertex;
+        });
+    if (node == candidate.nodes.end()) {
+      FieldAlignedCurveNetworkError error =
+          trace_scoped_terminal_ownership_error(
+              FieldAlignedCurveNetworkErrorCondition::
+                  SingularityTerminationBarrierAbsorbedNodeMissing,
+              trace.sourceVertex, trace.singularity, std::nullopt,
+              trace.terminalPoint->edge, trace.segments.back().sourceFace,
+              trace.segments.back().branch);
+      annotate_field_aligned_trace_history(error, trace);
+      return error;
+    }
+    terminalNode = node->id;
+  } else {
+    const auto terminalPort = std::find_if(
+        candidate.singularityPorts.begin(), candidate.singularityPorts.end(),
+        [&](const FieldAlignedSingularityPort &port) {
+          return port.singularity == *trace.terminalSingularity;
+        });
+    if (vertexSupport == nullptr ||
+        terminalPort == candidate.singularityPorts.end() ||
+        terminalPort->sourceVertex != vertexSupport->vertex) {
+      FieldAlignedCurveNetworkError error =
+          trace_scoped_terminal_ownership_error(
+              FieldAlignedCurveNetworkErrorCondition::
+                  SingularityTerminationPortOwnershipMismatch,
+              trace.sourceVertex, trace.singularity, std::nullopt,
+              trace.terminalPoint->edge, trace.segments.back().sourceFace,
+              trace.segments.back().branch);
+      annotate_field_aligned_trace_history(error, trace);
+      return error;
+    }
+    terminalNode = terminalPort->node;
   }
 
   const authority::SourceFaceTopologyKey sourceFace =
       trace.segments.back().sourceFace;
   candidate.events.emplace_back(
-      terminalPort->node, FieldAlignedNetworkEventKind::FirstContact,
+      *terminalNode, FieldAlignedNetworkEventKind::FirstContact,
       sourceFace, trace.terminalPoint->edge,
       std::vector<FieldAlignedNetworkEventIncidence>{
           FieldAlignedNetworkEventIncidence(
               trace.id, trace.port, FieldAlignedTraceEventRole::Interior)});
   candidate.events.emplace_back(
-      terminalPort->node, FieldAlignedNetworkEventKind::SingularityTermination,
+      *terminalNode, FieldAlignedNetworkEventKind::SingularityTermination,
       sourceFace, trace.terminalPoint->edge,
       std::vector<FieldAlignedNetworkEventIncidence>{
           FieldAlignedNetworkEventIncidence(
@@ -4201,6 +4229,10 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
   FieldAlignedCurveNetworkCandidate candidate;
   candidate.sourceDigest = fieldTransportAtlas.quadrangulability().source_digest();
   candidate.atlasDigest = authority::field_transport_atlas_hash(fieldTransportAtlas);
+  for (const authority::FieldSingularityFact *singularity : singularities) {
+    candidate.singularityPortPolicies.emplace(singularity->id,
+                                              singularity->portPolicy);
+  }
   candidate.nodes.reserve(nodeVertices.size());
   std::map<authority::SourceVertexId, authority::NetworkNodeId> nodeByVertex;
   std::size_t nodeIndex = 0U;
@@ -5002,6 +5034,9 @@ const char *field_aligned_curve_network_error_condition_name(
     return "FinalizeBarrierMandatoryEdgeMissing";
   case FieldAlignedCurveNetworkErrorCondition::FinalizeLoopClosureUnavailable:
     return "FinalizeLoopClosureUnavailable";
+  case FieldAlignedCurveNetworkErrorCondition::
+      SingularityTerminationBarrierAbsorbedNodeMissing:
+    return "SingularityTerminationBarrierAbsorbedNodeMissing";
   }
   return "Unknown";
 }
