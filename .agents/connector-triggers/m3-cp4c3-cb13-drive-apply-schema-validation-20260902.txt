@@ -1,2 +1,0 @@
-purpose=validate M3-CP4c-3-CB13 Drive apply caller
-candidate_sha256=a5b739c6356ce213dbe461cd8e2ecf6bc5bff68cac388ec0acc9a118ddca0f15
