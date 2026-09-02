@@ -1,3 +1,39 @@
+## M3-CP4c3-TB11-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB11_Independent_Review_Record.md`, measures **BG0-BG7** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BG0.** Source `3070173` is an ancestor of branch HEAD; selector 377 recomputes to `7255ac86...6426cbec1` with
+  377 identities and a 365-prefix of `6b5b6555...cfc14b8a1`. `git diff 3070173 HEAD` over `src include tests
+  benchmarks CMakeLists.txt cmake` is **empty**, licensing static review as evidence about package 81.
+- **BG1 - unique emitter and exact contract.** `EmbeddedGraphTopology.cpp:1214` in `build_rotation_system`, running
+  after key construction and after the sort, before `counterClockwise` publication, on adjacent sorted pairs that
+  are both `Trace` at a **vertex** locus with equal `primary` and `secondary`.
+- **BG1 - three structural findings.** (a) `RayOrderKey` sorts on **six** members but the predicate compares
+  **two**; `arc` and `orientation` are present and excluded. (b) `key.secondary = port->ordinal` is the **origin**
+  port's ordinal, matched by id with **no check** that the port's source vertex is the locus vertex - injective
+  only among one singularity's own emanating rays. (c) The incidence map pushes `Forward` at `firstNode` and
+  `Reverse` at `secondNode` unconditionally, so a **self-loop arc** contributes two darts at one node sharing
+  `arc.trace` and hence `secondary`; if `trace_ray_face` puts both in one sector the guard fires **with no
+  upstream defect**.
+- **BG1 - the missing datum, proved.** The emitter sets only the reason, `sourceVertex` and `sourceEdge`, while
+  `GlobalTopologyPlanError` already declares `arc`, `trace`, **`secondTrace`**, `sourceFace` and
+  **`secondSourceFace`**; and **no field of the DTO can hold the colliding `primary`/`secondary` values**. Neither
+  colliding ray is recoverable from retained evidence.
+- **BG2 - underdetermined, and the cause of the underdetermination is diagnostic.** Alternatives 1-4 (duplicate
+  incidences, under-discriminating key, genuinely coincident rays, stale provenance) render **byte-identically**;
+  alternative 5 is weakest but not formally excluded. No semantic correction is authorized.
+- **BG3 - certification phase.** `certificationAttemptIndex` increments only after a completed non-cellular
+  certification (`SurfaceCutGraph.cpp:344-346`), so attempt 0 with 0 cut edges proves failure on the **first
+  certification of the uncut graph, before any cut proposal**. `cutCandidateCount=450` is a real measurement;
+  `nonDiscComponentCount=0` and `remainingAdmissibleEdgeCount=0` are **struct defaults**, assigned only at `:365`
+  and `:367` on a different error code.
+- **BG5.** `RayOrderKey` is in an anonymous namespace in one `.cpp` and appears in no header - **no external
+  consumers**. Selector 377 immutability verified. CB12's terminal-ownership correction stays closed; the rotation
+  system at a singularity node is **newly reachable**, not demonstrably newly defective.
+- **BG6 - one bounded successor frozen:** **`M3-CP4c-3-CB14`** under **BH0-BH9**, **diagnostic-only**.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **78**.
+
 ## M3-CP4c3-TB11 — typed rotation collision observed — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 81 / source `3070173894ee097f631b96c1c6d29f276df89a66`; run/job `33611378451 / 100187075757`; result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`); log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`).
@@ -7,7 +43,28 @@
 - **Accounting:** same unaccepted first-red surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **78**.
 - **Owner transition:** exact next owner is independent `M3-CP4c-3-TB11-REV` under BG0–BG7.
 
-## M3-CP4c3-TB11-CAND-01 — vertex-47 trace-ray order key collision during initial certification — **ACTIVE / GATING / ROOT-CAUSE UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB11-REV-CAND-01 - the rotation collision guard discards both of its own operands - **ACTIVE / GATING / DIAGNOSTIC / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB11-REV`** from static derivation over TB11's runtime evidence.
+- **Mechanism.** The collision emitter compares `previous` and `current` `RayOrderKey`s and then reports neither.
+  `GlobalTopologyPlanError` already declares `arc`, `trace`, `secondTrace`, `sourceFace` and `secondSourceFace` -
+  fields visibly shaped for a two-sided comparison - and the emitter assigns only the reason, `sourceVertex` and
+  `sourceEdge`. The colliding `primary`/`secondary` values have **no field anywhere** in the DTO.
+- **Consequence.** Duplicate incidences, an under-discriminating key, genuinely coincident rays and stale
+  provenance are indistinguishable in the artifact, so no semantic owner can be named.
+- **Secondary defect in the same locus.** `nonDiscComponentCount` and `remainingAdmissibleEdgeCount` are rendered
+  unconditionally but assigned only on the `CutSearchExhaustedBeforeCellularity` path, so they publish struct
+  defaults as observations - the third instance of that pattern after `publishedFaces` and the trace-scoped group.
+- **Owner:** **BH1-BH4** of `M3-CP4c-3-CB14`.
+- **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
+  debt **5**, packages **78**.
+
+## M3-CP4c3-TB11-CAND-01 - vertex-47 trace-ray order key collision during initial certification - **ACTIVE / GATING / UNDERDETERMINED BY RETAINED EVIDENCE / NON-STABLE**
+
+- **Transitioned at `M3-CP4c-3-TB11-REV`:** the condition, phase and emitter are proved; the **root cause is
+  underdetermined because the emitter retains neither colliding ray**, and BG2 alternatives 1-4 render
+  byte-identically. Re-owned to **`M3-CP4c-3-CB14`** (BH0-BH9, diagnostic-only), then to `M3-CP4c-3-TB12-REV`
+  for the category decision. See `M3-CP4c3-TB11-REV-CAND-01`.
 
 - **Runtime fact:** first-red ordinal 366 fails at `RotationRayOrderKeyCollision`, source vertex 47, certification attempt 0 with zero cut edges. This is no longer a diagnostic-projection ambiguity.
 - **Static localization:** the unique emitter is in `build_rotation_system` after ray keys are constructed and sorted. It rejects two vertex-locus trace rays whose `RayOrderKey.primary` and `.secondary` compare equal, before publishing the counter-clockwise rotation.

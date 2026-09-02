@@ -26,17 +26,61 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB11-REV` (independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB14` (Code + Build, DIAGNOSTIC-ONLY)
 
-`M3-CP4c-3-TB11` is **COMPLETE / VALID SEMANTIC RED** on immutable package 81. Run/job `33611378451 / 100187075757`; result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`); log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`). Selector 377 executed in 377 fresh processes: **369 PASS / 8 RED**, ordinals 1–365 green, first red 366, ordinal 377 PASS. Immutable postflight passed; no rebuild/repair/mutation/benchmark occurred.
+`M3-CP4c-3-TB11-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` (**BG0–BG7** discharged, static only).
 
-Ordinal 366 now publishes the required discriminator: **`RotationRayOrderKeyCollision`**, `sourceVertex=47`, `certificationAttempt=0`, `certificationCutEdges=0`, `cutCandidateCount=450`, `nonDiscComponentCount=0`, `remainingAdmissibleEdgeCount=0`. Static source maps it uniquely to `build_rotation_system` after ray-key construction/sort and before final CCW rotation publication. CB13's diagnostic owner is therefore discharged. The underlying semantic cause is **not yet adjudicated**.
+TB11's ordinal-366 red —
+`rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`
+— is **not adjudicable from the retained evidence**, and `M3-CP4c-3-TB11-REV` proved why.
+
+- **The unique emitter** is `EmbeddedGraphTopology.cpp:1214` in `build_rotation_system`: post key-construction,
+  post-sort, pre-`counterClockwise`, on adjacent sorted pairs that are both `Trace` at a **vertex** locus.
+- **The guard compares less than the key.** `RayOrderKey` sorts on six members; the predicate tests only `primary`
+  and `secondary`. `arc` and `orientation` are present and excluded.
+- **`secondary` is not vertex-local.** It is `port->ordinal` for the port the trace **originated** from, matched by
+  id with **no check** that the port's source vertex is the locus vertex.
+- **A self-loop arc collides by construction.** The incidence map pushes `Forward` at `firstNode` and `Reverse` at
+  `secondNode` unconditionally; both darts share `arc.trace` and hence `secondary`. No upstream defect is required.
+- **Neither colliding ray is retained.** The emitter sets only the reason, `sourceVertex` and `sourceEdge`, while
+  the DTO already declares `arc`, `trace`, `secondTrace`, `sourceFace` and `secondSourceFace` — and **no field can
+  hold `primary`/`secondary` at all**. BG2 alternatives 1–4 render **byte-identically**.
+- **Certification phase (BG3).** `certificationAttempt=0` / `certificationCutEdges=0` prove failure on the **first
+  certification of the uncut graph**, before any cut proposal. `cutCandidateCount=450` is a real measurement;
+  `nonDiscComponentCount=0` and `remainingAdmissibleEdgeCount=0` are **struct defaults on this path**, assigned
+  only at `SurfaceCutGraph.cpp:365`/`:367` under a different error code.
+
+`M3-CP4c3-TB10-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**. `M3-CP4c3-TB11-CAND-01` transitions to
+**underdetermined by retained evidence**; new `M3-CP4c3-TB11-REV-CAND-01` is **ACTIVE**.
+`M3-CP4c3-TB10-REV-CAND-01` (371/372 test coupling) stays **DEFERRED**; sphere 368, saturation 369, ordinal 370,
+folded-cone 374, vertex 30 and the finalize/contact fall-through are unchanged.
+
+**Caution:** the rotation system at a **singularity** node became reachable only after CB12 and CB13 let the
+pipeline advance this far. This is a **newly reachable** path, not demonstrably a newly introduced defect; CB12
+must not be reverted or treated as suspect on this evidence.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB11-REV`** under BG0–BG7 in `Architecture_M3_CP4c3_TB11_Independent_Review_Plan.md`. Review must recover or prove unavailable the two colliding trace incidences/key values at vertex 47, distinguish duplicate/stale incidence vs incomplete key vs valid coincident rays/tie-rule vs witness precondition, establish attempt-0 certification context, preserve carried reds without double counting, and freeze exactly one bounded successor. **No Directional runtime, compile, package, product/test/fixture/selector mutation, or unchanged TB retry.**
+Run **`M3-CP4c-3-CB14`** under §8 **BH0–BH9** of
+`Architecture_M3_CP4c3_TB11_Independent_Review_Record.md`. **Diagnostic-only.**
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **78**; accepted authority **365/365**; CP4c-3 **OPEN**.
+- [ ] **BH0** — selector 377 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
+- [ ] **BH1** — name both colliding rays via `arc`/`trace`/`sourceFace` and `secondTrace`/`secondSourceFace`.
+- [ ] **BH2** — add typed fields for both `primary`/`secondary`, both orientations, both origin port ordinals **and
+      their source vertices**, and each ray's fan slot.
+- [ ] **BH3** — publish a bounded fan census at the failing locus with a truncation marker.
+- [ ] **BH4** — make `nonDiscComponentCount` / `remainingAdmissibleEdgeCount` honest on the certification path.
+- [ ] **BH5** — synthetic same-sector collision witness through the **production** renderer + mechanical assertion.
+- [ ] **BH6** — append selector 378 only on demonstrated falsification; republish 377 unchanged.
+- [ ] **BH7** — prohibitions: no change to the predicate, sort, `RayOrderKey`, `primary`/`secondary`,
+      `trace_ray_face`, the incidence map, or any ordering semantics; no CB12 revert; no finalize/contact repair;
+      no 371/372 decoupling; no sphere/369/370/folded-cone correction.
+- [ ] **BH8** — audit by assumption; prove no accepted-green observable output changes.
+- [ ] **BH9** — publish the five `M3-CP4c-3-TB12` discriminators.
+
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **78**.
 
 ## Carried forward from M1
 

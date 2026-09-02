@@ -1389,6 +1389,19 @@ building any conclusion on it.**
     `incompleteCycleBasisReason` plus full per-region rows, forty lines above the cut-graph failure that renders
     almost nothing. `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §3.3.
 
+84. **A fail-closed uniqueness assertion must compare the whole key it asserts on, or say why not.** `RayOrderKey`
+    sorts on six members - `primary`, `secondary`, `kind`, `trace`, `arc`, `orientation` - and
+    `build_rotation_system` checks collisions on two. That is defensible only if the other four are
+    known-irrelevant to the invariant, and if so the key should not carry them and the guard should say so. As
+    written, the predicate cannot distinguish "the key is under-determined" from "the input is duplicated" - the
+    exact ambiguity that left `M3-CP4c-3-TB11-REV` unable to adjudicate.
+
+85. **An identifier is only a discriminator inside the scope that makes it unique.** `port->ordinal` is injective
+    over the ports of one singularity. Used as the within-sector tiebreak at an arbitrary vertex fan - with no
+    check that the port's source vertex is the locus vertex - it silently ranges over ordinals minted at other
+    vertices, so two unrelated rays in one sector can carry the same number. Before borrowing an id as an ordering
+    key, verify that the scope guaranteeing its uniqueness is the scope being ordered.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB11 is the latest runtime authority** on immutable package **81** / selector **377**: 369 PASS / 8 RED, accepted **365/365**, first red ordinal 366. CB13's diagnostics now expose `RotationRayOrderKeyCollision` at `sourceVertex=47`, `certificationAttempt=0`, `certificationCutEdges=0`; package source localizes it to post-sort trace-key collision validation in `build_rotation_system`, before final CCW rotation publication. TB11 run/job `33611378451 / 100187075757`; result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`), log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`). `M3-CP4c3-TB10-CAND-01` is closed as runtime-discriminated; `M3-CP4c3-TB11-CAND-01` is active/root-cause-unadjudicated. **Exact next:** independent `M3-CP4c-3-TB11-REV` under BG0–BG7. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **78**.
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB11 is the latest runtime authority** on immutable package **81** / selector **377**: 369 PASS / 8 RED, accepted **365/365**, first red ordinal 366 at `rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`. **`M3-CP4c-3-TB11-REV` has adjudicated that red as UNDERDETERMINED BY RETAINED EVIDENCE, and proved why:** the unique emitter (`EmbeddedGraphTopology.cpp:1214`) compares only `primary`/`secondary` while `RayOrderKey` sorts on six members; `secondary` is the **origin** port ordinal with no check that the port's vertex is the locus vertex; a **self-loop arc** contributes two darts sharing `secondary` by construction; and the emitter retains **neither** colliding ray, although the DTO already declares `secondTrace` and `secondSourceFace` and has no field at all for `primary`/`secondary`. BG2 alternatives 1-4 therefore render byte-identically. BG3: attempt 0 / 0 cut edges proves failure on the **first certification of the uncut graph**; `cutCandidateCount=450` is real, while `nonDiscComponentCount` and `remainingAdmissibleEdgeCount` are **struct defaults on that path**. `M3-CP4c3-TB10-CAND-01` is CLOSED; `M3-CP4c3-TB11-CAND-01` transitions to underdetermined; new `M3-CP4c3-TB11-REV-CAND-01` is ACTIVE. Exact next is **`M3-CP4c-3-CB14`** - Code + Build, **diagnostic-only**, under **BH0-BH9**. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **78**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -696,14 +696,13 @@ After the durable start-of-turn checklist, load:
    `src/pipeline/RemeshPipeline.cpp`, `tests/FieldAlignedCurveNetworkTests.cpp`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB11-REV` — independent REVIEW + PLAN only under BG0–BG7.** Follow
-**BF0–BF9** in `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §7. Give every currently silent
-`RotationSystemInconsistent` emission site a distinct enumerated reason, scoped **by predicate** rather than by
-copying the record's list, with the re-derived counts reconciled in the report; add `sourceVertex` to
-`SurfaceCutGraphError` and copy it in `topology_error`; extend `cut_graph_failure_locus` to publish the reason,
-vertex, trace, event, position failure/pass and cut-candidate evidence, with consumers found by search; publish
-which `certify_actual_embedded_graph` attempt failed; and extend `append_cp4c_failure_locus` in the same change so
-**ordinal 366's own failure message** carries the answer. **No topology decision may change, no gate ordinal may be
-added, and no selector byte may move.** The sphere, ordinal 370, saturation, the folded-cone witness, vertex 30, the
-`finalize_field_aligned_events` contact fall-through and the 371/372 fixture coupling all remain deferred and
-separately owned.
+**Exact next:** **`M3-CP4c-3-CB14` - Code + Build, DIAGNOSTIC-ONLY.** Follow section 8 **BH0-BH9** of
+`Architecture_M3_CP4c3_TB11_Independent_Review_Record.md`. Name both colliding rays using the `arc`/`trace`/
+`sourceFace` and `secondTrace`/`secondSourceFace` fields the DTO already declares; add typed fields for the
+colliding `primary`/`secondary`, both orientations, and both origin ports' **source vertices**; publish a bounded
+fan census at the failing locus; and make `nonDiscComponentCount`/`remainingAdmissibleEdgeCount` honest on the
+certification-failure path. **Do not touch the collision predicate, the sort comparator, `RayOrderKey`,
+`primary`/`secondary` construction, `trace_ray_face`, the incidence map, or any ordering semantics**; do not revert
+CB12; do not repair the finalize/contact fall-through; do not decouple 371/372. Selector 377 stays byte-frozen;
+append selector 378 only on demonstrated falsification. Eight compile targets, GMP/GMPXX linkage mandatory. **No
+semantic correction is authorized until `M3-CP4c-3-TB12` separates the alternatives.**

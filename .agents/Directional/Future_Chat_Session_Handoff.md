@@ -92,51 +92,99 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB11-REV` — EXACT NEXT / independent REVIEW + PLAN
+## Mandatory next turn — `M3-CP4c-3-CB14` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
 
-`M3-CP4c-3-TB11` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Runtime authority: immutable package **81**, source `3070173894ee097f631b96c1c6d29f276df89a66`, selector 377 SHA `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`, run/job `33611378451 / 100187075757`, result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`), log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`).
+`M3-CP4c-3-TB11-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` (measures **BG0–BG7** discharged, static only).
 
-Selector result: **369 PASS / 8 RED** in 377 fresh processes; ordinals **1–365 PASS**, first red **366**, ordinal **377 PASS**. Non-gating diagnostic ran once with zero gate credit. Postflight package census and manifest are unchanged; configure/compile/relink/repair/discovery/product/test/fixture/selector mutation and benchmark flags are false.
+### What the review established
 
-### TB11 discriminator
+TB11's ordinal-366 red —
+`rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`
+— is **not adjudicable from the retained evidence**, and `M3-CP4c-3-TB11-REV` proved why.
 
-Ordinal 366 now reports `RotationRayOrderKeyCollision`, `sourceVertex=47`, `cutCandidateCount=450`, `nonDiscComponentCount=0`, `remainingAdmissibleEdgeCount=0`, `certificationAttempt=0`, `certificationCutEdges=0`. Package source maps this reason uniquely to **`build_rotation_system`**, after ray keys are constructed and sorted, during equal-primary/equal-secondary trace-key collision validation, before final `counterClockwise` publication. The non-gating diagnostic independently reports the same originating reason and failed stage.
+- **The unique emitter** is `EmbeddedGraphTopology.cpp:1214` in `build_rotation_system`: post key-construction,
+  post-sort, pre-`counterClockwise`, on adjacent sorted pairs that are both `Trace` at a **vertex** locus.
+- **The guard compares less than the key.** `RayOrderKey` sorts on six members; the predicate tests only `primary`
+  and `secondary`. `arc` and `orientation` are present and excluded.
+- **`secondary` is not vertex-local.** It is `port->ordinal` for the port the trace **originated** from, matched by
+  id with **no check** that the port's source vertex is the locus vertex.
+- **A self-loop arc collides by construction.** The incidence map pushes `Forward` at `firstNode` and `Reverse` at
+  `secondNode` unconditionally; both darts share `arc.trace` and hence `secondary`. No upstream defect is required.
+- **Neither colliding ray is retained.** The emitter sets only the reason, `sourceVertex` and `sourceEdge`, while
+  the DTO already declares `arc`, `trace`, `secondTrace`, `sourceFace` and `secondSourceFace` — and **no field can
+  hold `primary`/`secondary` at all**. BG2 alternatives 1–4 render **byte-identically**.
+- **Certification phase (BG3).** `certificationAttempt=0` / `certificationCutEdges=0` prove failure on the **first
+  certification of the uncut graph**, before any cut proposal. `cutCandidateCount=450` is a real measurement;
+  `nonDiscComponentCount=0` and `remainingAdmissibleEdgeCount=0` are **struct defaults on this path**, assigned
+  only at `SurfaceCutGraph.cpp:365`/`:367` under a different error code.
 
-`M3-CP4c3-TB10-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**. `M3-CP4c3-TB11-CAND-01` is **ACTIVE / GATING / ROOT-CAUSE UNADJUDICATED / NON-STABLE**. Review must determine whether the colliding vertex-47 trace incidences are duplicate/stale, distinct valid rays collapsed by an incomplete key, valid coincident rays requiring a defined tie/equivalence rule, or an invalid witness/precondition. TB11 authorizes no semantic fix.
+`M3-CP4c3-TB10-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**. `M3-CP4c3-TB11-CAND-01` transitions to
+**underdetermined by retained evidence**; new `M3-CP4c3-TB11-REV-CAND-01` is **ACTIVE**.
+`M3-CP4c3-TB10-REV-CAND-01` (371/372 test coupling) stays **DEFERRED**; sphere 368, saturation 369, ordinal 370,
+folded-cone 374, vertex 30 and the finalize/contact fall-through are unchanged.
 
-Carried results: 367/371/372 share the exact same upstream exception; 368 remains `TraceEventPositionInvalid` trace 2/event 30 with `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains wrong typed code 4 vs expected 6 with missing source-face locus; 374 remains `atlasBuild=false`.
+**Caution:** the rotation system at a **singularity** node became reachable only after CB12 and CB13 let the
+pipeline advance this far. This is a **newly reachable** path, not demonstrably a newly introduced defect; CB12
+must not be reverted or treated as suspect on this evidence.
 
-Accepted authority remains **365/365**; CP4c-3 **OPEN**; stable accounting **44 events / 14 categories / 30 recurrences**; debt **5**; semantic packages **78**.
+### CB14 binding scope — `BH0–BH9`, in the review record §8
 
-### Required review authority
+**Diagnostic-only.** Owner: the collision emitter in
+`src/geometry/EmbeddedGraphTopology.cpp::build_rotation_system` and the DTO/projection surfaces it reports through.
 
-1. `.agents/Directional/Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Plan.md` — exact BG0–BG7 review measures.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB13_Code_Build_Report.md` — package-81 build authority and diagnostic implementation.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — candidate/accounting authority.
+- **BH0** — selector **377** byte-frozen at `7255ac86…6426cbec1`; accepted 365 untouched; **eight standard compile
+  targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
+- **BH1** — name both colliding rays using the fields the DTO already has: `arc`/`trace`/`sourceFace` for
+  `previous`, `secondTrace`/`secondSourceFace` for `current`; add a second arc field if absent. Render all of them.
+- **BH2** — add typed fields for the colliding `primary` and `secondary`, both `orientation`s, both origin port
+  ordinals **and both origin port source vertices** (the last proves whether `secondary` was vertex-local), and
+  each ray's resolved fan slot. Render them.
+- **BH3** — publish a **bounded** census of the keyed fan at the failing locus (kind, `primary`, `secondary`, arc,
+  trace, orientation per ray) with an explicit truncation marker. This is what separates BG2's alternatives 1–4.
+- **BH4** — make `nonDiscComponentCount` / `remainingAdmissibleEdgeCount` honest: assign them on the
+  certification-failure path or stop rendering them there. **No default may render as an observation.**
+- **BH5** — witnesses: a synthetic same-sector vertex collision (the self-loop shape is cheapest) asserting that
+  both sides, both key operands and the fan census render through the **production** locus path; plus a mechanical
+  assertion that ordinal 366 now carries both ray identities. Preserve every existing assertion verbatim.
+- **BH6** — append **selector 378** only on demonstrated falsification; republish 377 with unchanged SHA-256.
+- **BH7** — prohibitions: **do not** change the collision predicate, the sort comparator, `RayOrderKey`'s members,
+  `primary`/`secondary` construction, `trace_ray_face`, the incidence map, or any ordering/rotation semantics; do
+  **not** add `arc`/`orientation` to the collision test; do **not** revert or weaken CB12; do **not** repair the
+  `finalize_field_aligned_events` contact fall-through; do **not** decouple 371/372; no sphere, saturation,
+  ordinal-370 or folded-cone correction; no fixture mutation, tolerance, or float-derived topological decision.
+- **BH8** — audit by assumption; prove no accepted-green observable output changes and that no rotation, ordering
+  or cut decision differs before and after.
+- **BH9** — publish five `M3-CP4c-3-TB12` discriminators: (1) 1–365 stay 365/365; (2) ordinal 366 still reds at
+  `RotationRayOrderKeyCollision`, `sourceVertex=47`, attempt 0 / 0 cut edges — **any movement falsifies BH7**;
+  (3) the line names both arcs, both traces, both faces, both orientations and both origin ports with their source
+  vertices; (4) the bounded fan census at v47 shows the colliding sector's occupancy; (5) the two certification
+  counters are either populated on this path or absent from it.
 
-**Turn boundary:** REVIEW + PLAN only. No Directional runtime, benchmark, configure, compile, link, package, product/test/fixture/selector mutation, or unchanged TB retry. Update `ORIENTATION.md` during the review and freeze exactly one bounded successor.
+**No semantic correction is authorized until TB12 separates the alternatives.**
 
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **78**.
 
 ## Context Load Plan
 
 `load_next`:
-- `references/turns/TB.md`
+- turn-based-coding-agent CODE + BUILD guidance
 
-`conditional_modules`:
-- GitHub connector / Actions / artifact work → `modules/github-connector/MODULE.md`
-- existing-test evidence diagnosis only if required → `modules/unit-testing/MODULE.md`
-
-Minimum project context after the mandatory durable policy/start checklist:
+Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Plan.md` — exact execution authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB13_Code_Build_Report.md` — package-81 build authority and BF0–BF9 discharge.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md` — comparison runtime authority for the first red and carried reds.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — candidate ownership/accounting.
-5. `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md` only as needed for closeout.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — **frozen CB14 scope, §8 BH0–BH9**.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB13_Code_Build_Report.md` — package-81 implementation authority.
+4. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
+   `M3_CP4c_Consolidated_Record.md`.
 
-TB11 is artifact-only. It may execute immutable package 81 and classify/plan from evidence; it may not edit product/test/benchmark/build logic or compile a replacement source revision.
+Source surfaces CB14 will touch: `src/geometry/EmbeddedGraphTopology.cpp` (the collision emitter only),
+`include/directional/geometry/GlobalTopologyPlan.h` (added diagnostic fields),
+`include/directional/geometry/SurfaceCutGraph.h` and `src/geometry/SurfaceCutGraph.cpp` (BH4 counters),
+`src/pipeline/RemeshPipeline.cpp` (projection), and `tests/` for the BH5 witnesses.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

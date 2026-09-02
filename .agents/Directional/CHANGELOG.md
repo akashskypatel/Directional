@@ -1,3 +1,55 @@
+## 2026-09-02 — `M3-CP4c-3-TB11-REV`: ordinal 366 proved underdetermined; `M3-CP4c-3-CB14` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB11_Independent_Review_Plan.md`, measures **BG0–BG7**.
+Record: `Architecture_M3_CP4c3_TB11_Independent_Review_Record.md`. Static only — no runtime, compile, link,
+package, benchmark, or product/test/fixture/selector mutation.
+
+**BG0.** Source `3070173` verified as an ancestor of branch HEAD; selector 377 recomputes to
+`7255ac86…6426cbec1` with 377 identities, and its first 365 lines reproduce the accepted
+`6b5b6555…cfc14b8a1`. `git diff 3070173 HEAD` over the code surfaces is **empty**, licensing static review as
+evidence about package 81; control-plane commits after package 81 touch no code surface.
+
+**BG1.** `RotationRayOrderKeyCollision` has exactly one emitter — `EmbeddedGraphTopology.cpp:1214` in
+`build_rotation_system` — running after key construction and after the sort, before `counterClockwise` publication,
+on adjacent sorted pairs that are both `Trace` at a **vertex** locus. Three structural findings: **(a)**
+`RayOrderKey` sorts on six members (`primary`, `secondary`, `kind`, `trace`, `arc`, `orientation`) while the
+predicate compares **two**; **(b)** `key.secondary = port->ordinal` is the **origin** port's ordinal, matched by id
+with **no check** that the port's source vertex is the locus vertex, so it is injective only among one
+singularity's own emanating rays; **(c)** the incidence map pushes `Forward` at `firstNode` and `Reverse` at
+`secondNode` unconditionally, so a **self-loop arc** contributes two darts at one node sharing `arc.trace` and
+hence `secondary` — a collision requiring no upstream defect.
+
+**The missing datum, proved.** The emitter assigns only the reason, `sourceVertex` and `sourceEdge`, while
+`GlobalTopologyPlanError` already declares `arc`, `trace`, **`secondTrace`**, `sourceFace` and
+**`secondSourceFace`**, and **no field of the DTO can hold the colliding `primary`/`secondary` values**. Neither
+colliding ray is recoverable.
+
+**BG2.** Classified **underdetermined**: alternatives 1–4 (duplicate incidences, under-discriminating key,
+genuinely coincident rays, stale provenance) render **byte-identically**; alternative 5 is weakest but not formally
+excluded. Under BG6's explicit conditional this mandates a diagnostic-only successor, not a semantic correction.
+
+**BG3.** `certificationAttemptIndex` increments only after a completed non-cellular certification
+(`SurfaceCutGraph.cpp:344-346`), so attempt 0 with 0 cut edges proves failure on the **first certification of the
+uncut graph**, before any cut proposal. `cutCandidateCount=450` is a real measurement on that path;
+`nonDiscComponentCount=0` and `remainingAdmissibleEdgeCount=0` are **struct defaults** — assigned only at `:365`
+and `:367` under `CutSearchExhaustedBeforeCellularity` — and must not be read as observations.
+
+**BG4–BG5.** 367/371/372 abort at the same exception with no duplicate event; sphere 368, saturation 369, ordinal
+370, folded-cone 374, vertex 30, the finalize/contact fall-through and the 371/372 test coupling all preserved
+unchanged. `RayOrderKey` is in an anonymous namespace in one `.cpp` and appears in no header, so it has **no
+external consumers**. CB12 stays closed: the rotation system at a singularity node is **newly reachable**, not
+demonstrably newly defective.
+
+**BG6–BG7.** One bounded successor frozen: **`M3-CP4c-3-CB14`** under **BH0–BH9**, diagnostic-only — name both
+rays, publish the key operands and both origin ports' source vertices, emit a bounded fan census, and make the
+certification counters honest. `M3-CP4c3-TB10-CAND-01` **CLOSED**; `M3-CP4c3-TB11-CAND-01` transitions to
+underdetermined; new `M3-CP4c3-TB11-REV-CAND-01` **ACTIVE**. **+0 stable events / +0 recurrences**; totals remain
+**44 / 14 / 30**, debt **5**, packages **78**.
+
+**Lessons added.** §4 **84** — a fail-closed uniqueness assertion must compare the whole key it asserts on, or say
+why not. §4 **85** — an identifier is only a discriminator inside the scope that makes it unique. §4 **80** records
+its third recurrence: a default rendered as an observation.
+
 ## 2026-09-02 — `M3-CP4c-3-TB11`: ordinal 366 is runtime-localized to `RotationRayOrderKeyCollision`
 
 Artifact-only Test + Benchmark on immutable package **81** / source `3070173894ee097f631b96c1c6d29f276df89a66`. Run/job **`33611378451 / 100187075757`** succeeded operationally. Result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`); log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`). Selector 377 ran in 377 fresh processes: **369 PASS / 8 RED**, accepted ordinals **1–365 PASS**, first red **366**, ordinal 377 PASS. The non-gating mechanical diagnostic ran once with zero gate credit. Postflight byte/mode census and internal manifest are unchanged; no configure/compile/relink/repair/discovery/mutation/benchmark occurred.
