@@ -1,0 +1,49 @@
+name: M3 CP4c3 TB13 Closeout Patch Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb13-doc-apply/run.txt
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: directional-m3-cp4c3-tb13-doc-apply
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-tb13-doc-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb13-doc-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1X1ecoLTYDVdHLVyhXYruWQY2rzjz6-4t
+      patch_sha256: 958bf36450c1dc64578f18b25eb973fcc301f50387a3e2e12bfcfe6d408154a7
+      base_sha: dbe367a4dc046a7c21e2831a0541511f823d6335
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3 CP4c3 TB13 and freeze independent review"
+      retention_days: 14
+    secrets: inherit
