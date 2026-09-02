@@ -1,0 +1,164 @@
+name: M3 CP4c3 TB10 Artifact Only
+
+on:
+  push:
+    branches: [agent/surface_cell_quad/p5-recover-bridge-healing]
+    paths: [.agents/connector-triggers/m3-cp4c3-tb10.txt]
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: directional-m3-cp4c3-tb10
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb10
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  tb10:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          : > "${RUNNER_TEMP}/tb10.log"
+          printf '%s\n' "workflow=$GITHUB_WORKFLOW" "run_id=$GITHUB_RUN_ID" "event_sha=$GITHUB_SHA" \
+            "repository=$GITHUB_REPOSITORY" "started_at=$(date -u +%FT%TZ)" | tee -a "${RUNNER_TEMP}/tb10.log"
+
+      - name: Execute immutable selector 377
+        env:
+          TOKEN: ${{ secrets.GH_TOKEN || github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="${RUNNER_TEMP}/tb10.log"; exec > >(tee -a "$log") 2>&1
+          trap 's=$?; echo "tb10_exit=$s"' EXIT
+          out="${RUNNER_TEMP}/tb10-result"; envd="${RUNNER_TEMP}/envelope"; pkg="${RUNNER_TEMP}/package80/package80"
+          src="${RUNNER_TEMP}/source"; mkdir -p "$out" "$envd" "$(dirname "$pkg")" "$src"
+          archive="${RUNNER_TEMP}/package80.zip"
+          curl --fail --silent --show-error --location -H "Authorization: Bearer ${TOKEN}" \
+            -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/9828786744/zip" -o "$archive"
+          test "$(sha256sum "$archive"|cut -d' ' -f1)" = f4643d0535684f81de5afc9660ef40f2ffb941d1c540b91026225681314fe20e
+          unzip -q "$archive" -d "$envd"
+          test "$(sha256sum "$envd/package80.tar.gz"|cut -d' ' -f1)" = 4e8303489adb46528ae0a92c7ecf9dae65f0cbd57527740d845d318c65af02ce
+          grep -qx 'runtimeExecution=false' "$envd/package80-boundary.txt"
+          grep -qx 'packageRepair=false' "$envd/package80-boundary.txt"
+          tar -xzf "$envd/package80.tar.gz" -C "$(dirname "$pkg")"
+          (cd "$pkg" && sha256sum -c SHA256SUMS)
+          test "$(sha256sum "$pkg/source/source-a3b6f1a41feaa8a115faf11de52f85ce4cc42a15.tar.gz"|cut -d' ' -f1)" = 026a8b1efa2dc85fe2b474e0e64657bf8f997aee5b49f274c7c0c69d279fd18a
+          tar -xzf "$pkg/source/source-a3b6f1a41feaa8a115faf11de52f85ce4cc42a15.tar.gz" -C "$src"
+          test "$(cat "$pkg/metadata/source-commit.txt")" = a3b6f1a41feaa8a115faf11de52f85ce4cc42a15
+          test "$(cat "$pkg/metadata/build-exit-code.txt")" = 0; test "$(cat "$pkg/metadata/preflight-exit-code.txt")" = 0
+          grep -q '^runtimeExecution=false$' "$pkg/metadata/package-envelope.txt"; grep -q '^packageRepair=false$' "$pkg/metadata/fixture-package-contract.txt"
+          grep -q '^exactArithmeticBackend=GMP$' "$pkg/metadata/package-envelope.txt"; grep -q '^modePreservingEnvelope=true$' "$pkg/metadata/package-envelope.txt"
+          grep -q '^DIRECTIONAL_ENABLE_GMP:BOOL=ON$' "$pkg/metadata/CMakeCache.txt"
+          grep -q 'libgmpxx' "$pkg/metadata/gmp-evidence.txt"; grep -q 'libgmp\.so' "$pkg/metadata/gmp-evidence.txt"
+          for f in "$pkg"/metadata/source-status-*.txt; do test ! -s "$f"; done
+          test "$(find "$pkg/test-data" -type f|wc -l)" -eq 27
+          python3 - "$pkg" "$src" "$out" <<'PY'
+          import hashlib,os,re,stat,sys
+          from pathlib import Path
+          p,s,o=map(Path,sys.argv[1:])
+          bins=sorted(x for x in (p/'bin').glob('directional_*') if x.is_file())
+          assert len(bins)==6 and all(stat.S_IMODE(x.stat().st_mode)==0o755 for x in bins)
+          exp={374:'d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f',375:'aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0',376:'6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8',377:'7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1'}
+          sd=s/'.agents/Directional'; selectors={}
+          for n,h in exp.items():
+            f=sd/f'Architecture_M3_CP4c3_Required_Green_Selector_{n}.txt'; b=f.read_bytes(); a=f.read_text().splitlines()
+            assert len(a)==n and len(set(a))==n and hashlib.sha256(b).hexdigest()==h; selectors[n]=a
+          for n in (374,375,376): assert selectors[377][:n]==selectors[n]
+          assert selectors[377][-1]=='ResolvedBranchCorrection.BarrierAbsorbedMechanicalTerminationUsesNetworkNodeWithoutPort'
+          cm=(s/'cmake/DirectionalTests.cmake').read_text(); own={}
+          m=re.search(r'set\(DIRECTIONAL_SURFACE_CELL_PRODUCER_TEST_SOURCES(.*?)\)',cm,re.S); assert m
+          for f in re.findall(r'tests/([^\s)]+\.cpp)',m[1]): own[f]='directional_surface_cell_producer_tests'
+          for t in ('directional_surface_cell_authority_kernel_tests','directional_surface_cell_completion_tests','directional_surface_cell_validation_tests'):
+            m=re.search(r'add_executable\(\s*'+re.escape(t)+r'\s+(.*?)\)',cm,re.S); assert m,t
+            for f in re.findall(r'tests/([^\s)]+\.cpp)',m[1]): own[f]=t
+          defs={}
+          for f in (s/'tests').glob('*.cpp'):
+            for m in re.finditer(r'\b(?:TEST|TEST_F|TEST_P)\s*\(\s*([A-Za-z_]\w*)\s*,\s*([A-Za-z_]\w*)\s*\)',f.read_text(errors='replace')): defs.setdefault(m[1]+'.'+m[2],[]).append(f.name)
+          rows=[]
+          for i,x in enumerate(selectors[377],1):
+            hits=[(f,own[f]) for f in defs.get(x,[]) if f in own]; assert len(hits)==1,(i,x,hits); f,t=hits[0]; assert (p/'bin'/t).is_file(); rows.append((i,x,t))
+          assert len(rows)==377
+          (o/'mapping.tsv').write_text(''.join(f'{i}\t{x}\t{t}\n' for i,x,t in rows))
+          def census(dst):
+            r=[]
+            for x in sorted(p.rglob('*'),key=lambda z:z.relative_to(p).as_posix()):
+              q=x.relative_to(p).as_posix(); st=x.lstat(); m=stat.S_IMODE(st.st_mode)
+              if x.is_file(): r.append(f'F\t{m:04o}\t{st.st_size}\t{hashlib.sha256(x.read_bytes()).hexdigest()}\t{q}')
+              elif x.is_dir(): r.append(f'D\t{m:04o}\t0\t-\t{q}')
+            dst.write_text('\n'.join(r)+'\n')
+          census(o/'pre.census')
+          PY
+          printf 'ordinal\tidentity\ttarget\tresult\tcredit\texit\n' > "$out/results.tsv"
+          first_red=0; pass=0; red=0; proc=0
+          while IFS=$'\t' read -r ord ident target; do
+            rlog="$out/ordinal-$(printf '%03d' "$ord").log"; set +e
+            (cd "$pkg" && "$pkg/bin/$target" "--gtest_filter=$ident" --gtest_color=no) >"$rlog" 2>&1; rc=$?; set -e
+            proc=$((proc+1)); runs="$(grep -Fxc "[ RUN      ] $ident" "$rlog" || true)"; allruns="$(grep -c '^\[ RUN      \]' "$rlog" || true)"
+            test "$runs" -eq 1; test "$allruns" -eq 1
+            if [ "$rc" -eq 0 ]; then result=PASS; pass=$((pass+1)); else result=RED; red=$((red+1)); fi
+            if [ "$first_red" -eq 0 ]; then credit=gate; [ "$rc" -eq 0 ] || first_red="$ord"; else credit=report-only; fi
+            printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$ord" "$ident" "$target" "$result" "$credit" "$rc" >> "$out/results.tsv"
+          done < "$out/mapping.tsv"
+          test "$proc" -eq 377
+          awk -F '\t' 'NR>1&&$1<=365&&$4!="PASS"{bad=1} END{exit bad}' "$out/results.tsv"
+          old_pair=false
+          if grep -q 'SingularityTerminationPortOwnershipMismatch' "$out/ordinal-366.log" && grep -q 'traceSeedVertex=47;traceSeedSingularity=5' "$out/ordinal-366.log"; then old_pair=true; fi
+          test "$old_pair" = false
+          test "$(awk -F '\t' '$1==377{print $4}' "$out/results.tsv")" = PASS
+          grep -q 'm3Cp4c3BD5;terminalVertex=36;' "$out/ordinal-377.log"
+          python3 - "$pkg" "$out" <<'PY'
+          import hashlib,stat,sys
+          from pathlib import Path
+          p,o=map(Path,sys.argv[1:]); r=[]
+          for x in sorted(p.rglob('*'),key=lambda z:z.relative_to(p).as_posix()):
+            q=x.relative_to(p).as_posix(); st=x.lstat(); m=stat.S_IMODE(st.st_mode)
+            if x.is_file(): r.append(f'F\t{m:04o}\t{st.st_size}\t{hashlib.sha256(x.read_bytes()).hexdigest()}\t{q}')
+            elif x.is_dir(): r.append(f'D\t{m:04o}\t0\t-\t{q}')
+          (o/'post.census').write_text('\n'.join(r)+'\n')
+          PY
+          cmp "$out/pre.census" "$out/post.census"; (cd "$pkg" && sha256sum -c SHA256SUMS) > "$out/post-manifest.txt"
+          printf '%s\n' "package=80" "selector=377" "processes=$proc" "passes=$pass" "reds=$red" "firstRedOrdinal=$first_red" \
+            "acceptedPrefix365=true" "oldOrdinal366ConditionSeedPair=false" "ordinal377=PASS" "runtimeExecution=true" \
+            "configureExecution=false" "compileExecution=false" "relinkExecution=false" "packageRepair=false" \
+            "generatedDiscovery=false" "productMutation=false" "testMutation=false" "fixtureMutation=false" \
+            "selectorMutation=false" "benchmarkExecution=false" > "$out/summary.env"
+          cat "$out/summary.env"
+
+      - name: Record final status
+        if: always()
+        shell: bash
+        run: |
+          printf '%s\n' "final_job_status=${{ job.status }}" "finished_at=$(date -u +%FT%TZ)" | tee -a "${RUNNER_TEMP}/tb10.log"
+
+      - name: Upload TB10 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb10-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/tb10-result
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload TB10 log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb10-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/tb10.log
+          if-no-files-found: error
+          retention-days: 14
