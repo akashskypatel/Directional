@@ -1,3 +1,0 @@
-purpose=M3-CP4c-3-CB16 compile-fix patch application
-base_sha=a2efc8d10213c86aa9136821cd83bfcb32388f80
-retry=0
