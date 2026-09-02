@@ -1,0 +1,7 @@
+# M3-CP4c-3-CB13 temporary control cleanup
+.agents/Directional/turn-payloads/m3-cp4c3-cb13-compile.yml
+.agents/Directional/turn-payloads/m3-cp4c3-cb13-package81.yml
+.agents/connector-triggers/m3-cp4c3-cb13-compile-20260902.txt
+.agents/connector-triggers/m3-cp4c3-cb13-compile-schema-validation-20260902.txt
+.agents/connector-triggers/m3-cp4c3-cb13-package81-schema-validation-20260902.txt
+.agents/connector-triggers/m3-cp4c3-cb13-package81.txt
