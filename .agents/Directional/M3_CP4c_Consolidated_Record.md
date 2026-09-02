@@ -3,17 +3,13 @@
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
 **Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED /
-ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. TB9 remains the latest measured runtime authority: package
-79 / selector 376 re-proved **365/365** and first-reds ordinal 366 at
-`SingularityTerminationPortOwnershipMismatch`, seed vertex 47 / singularity 5. TB9-REV classified that as a valid
-product ownership defect. **CB12 is now COMPLETE / BUILD GREEN** on exact source
-`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`: `BarrierAbsorbed` terminal arrivals use the singularity's already-
-created network node, `Emit` remains port-owned, policy is explicit, and a distinct missing-node fail-close is added.
-Selector **377** appends one mechanical v36 regression identity while selectors 374/375/376 remain byte-frozen.
-Compile run/job `33581576670 / 100096794713` passed all eight GMP/GMPXX targets; immutable package **80** is artifact
-`9828786744` from run/job `33582280392 / 100098880900`, inner tar
-`4e8303489adb46528ae0a92c7ecf9dae65f0cbd57527740d845d318c65af02ce`. No runtime executed. Exact next is
-**`M3-CP4c-3-TB10`**, artifact-only on package 80 / selector 377. Accepted authority stays **365/365**; stable
+ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB10 is the latest measured runtime authority**: immutable
+package **80** / selector **377**, run/job `33584653692 / 100106147126`, re-proved **365/365** and first-reds ordinal
+366 at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`. CB12's prior terminal-ownership
+defect is runtime-proved corrected: the old seed-47/singularity-5 condition is absent and identity 377 PASSes at
+mechanical terminal v36 / `BarrierAbsorbed` / network node 7, so `M3-CP4c3-TB9-REV-CAND-01` is closed. The new
+`M3-CP4c3-TB10-CAND-01` owns the lost rotation-system subreason/locus at the production cut-graph projection. Exact
+next is **`M3-CP4c-3-TB10-REV`**, independent REVIEW + PLAN only. Accepted authority stays **365/365**; stable
 accounting **44 / 14 / 30**, debt **5**, semantic package count **77**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
@@ -42,11 +38,13 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - completed BA0-BA7 adjudication and the BB0-BB9 scope that governed CB11.
 - `Architecture_M3_CP4c3_CB11_Code_Build_Report.md` - prior package-79 diagnostic build authority.
 - `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md` - consumed TB9 execution authority for package 79 / selector 376.
-- `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md` - **current measured runtime authority**: 365 green, first red 366 at the named singularity-terminal ownership site, complete remainder, diagnostic 376, immutable postflight.
+- `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md` - prior runtime authority: terminal-ownership site discrimination.
 - `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` - discharged review scope, BC0-BC7.
 - `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` - BD0-BD9 product-correction authority discharged by CB12.
 - `Architecture_M3_CP4c3_CB12_Code_Build_Report.md` - **current build/package authority**: source `a3b6f1a…`, package 80, selector 377.
-- `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md` - **exact next-turn authority**: package 80 / selector 377 from ordinal 1.
+- `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md` - consumed TB10 execution authority: package 80 / selector 377 from ordinal 1.
+- `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md` - **current measured runtime authority**: 365 green, moved first red 366 at surface-cut-graph `RotationSystemInconsistent`, complete 377-process remainder, immutable postflight.
+- `Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md` - **exact next-turn authority**, BE0-BE7.
 - `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — frozen append-only diagnostic selector; selector 374 is its unchanged byte prefix.
 - `Architecture_M3_CP4c3_Required_Green_Selector_376.txt` — frozen append-only diagnostic selector; selector 375 is its unchanged byte prefix.
 - `Architecture_M3_CP4c3_Required_Green_Selector_377.txt` — **current append-only execution selector**; selector 376 is its unchanged byte prefix.
@@ -106,7 +104,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. CB12 is build-green on source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`, immutable package 80 / selector 377 is frozen, and no CB12 runtime has executed. Exact next is artifact-only `M3-CP4c-3-TB10` under the frozen BD9 discriminators.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB10 is current runtime authority on package 80 / selector 377: CB12 ownership is runtime-proved and ordinal 366 now first-reds at `CellularityNotEstablished/origin=RotationSystemInconsistent`. `M3-CP4c3-TB10-CAND-01` owns the lost rotation-system subreason/locus. Exact next is independent `M3-CP4c-3-TB10-REV` under BE0–BE7.** |
 
 ### 2.1 CP4c-0
 
@@ -203,11 +201,27 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
 `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
-`Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
+`Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
 `Architecture_M3_CP4c3_CB12_Code_Build_Report.md`; exact next-turn authority is
-`Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md`.
+`Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md`.
 
-### `M3-CP4c-3-CB12` — current build/package boundary
+### `M3-CP4c-3-TB10` — current measured runtime boundary
+
+Artifact-only TB10 consumed package **80** / selector **377** without rebuild or repair. Run/job
+`33584653692 / 100106147126`, result artifact `9829700900`
+(`2e7d978dd3ad2a5f0667ef3eed15c291ed8c7b91bb7e2d323557a8bc40763572`), log artifact `9829701136`
+(`89f445c5934c3493ccf966e39f0c106c8418719a32c5d206055cafa932cce17d`). All 377 identities ran in fresh
+processes: **369 PASS / 8 RED**. Ordinals 1–365 remain green; ordinal 366 is first red at
+`CellularityNotEstablished/origin=RotationSystemInconsistent`. The old seed-47/singularity-5 terminal-ownership
+condition is absent and identity 377 passes at v36 / `BarrierAbsorbed` / node 7, closing
+`M3-CP4c3-TB9-REV-CAND-01`. The new `M3-CP4c3-TB10-CAND-01` is a production-projection diagnostic gap: the
+cut-graph error carries the rotation-system subreason/locus but the pipeline failure string omits it. 367/371/372 are
+upstream-blocked by that same mechanical stop; sphere 368, saturation 369, ordinal 370 and folded-cone 374 retain
+their prior independent dispositions. Immutable postflight passed. Accepted authority stays **365/365**, stable
+**44 / 14 / 30**, debt **5**, semantic packages **77**. Exact successor: independent
+`M3-CP4c-3-TB10-REV` under BE0–BE7.
+
+### `M3-CP4c-3-CB12` — prior build/package boundary
 
 CB12 executed TB9-REV **BD0–BD9** as a product correction. Exact source
 `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15` carries explicit singularity port policy into terminal ownership.
@@ -224,9 +238,9 @@ Selectors 374/375/376 are unchanged. Selector **377** is selector 376 plus exact
 `4e8303489adb46528ae0a92c7ecf9dae65f0cbd57527740d845d318c65af02ce`, packaged source
 `026a8b1efa2dc85fe2b474e0e64657bf8f997aee5b49f274c7c0c69d279fd18a`.
 
-No acceptance changes in CB12: authority stays **365/365**, CP4c-3 OPEN, stable **44 / 14 / 30**, debt **5**,
-semantic packages **77**. `M3-CP4c3-TB9-REV-CAND-01` stays ACTIVE pending TB10. Exact successor is artifact-only
-`M3-CP4c-3-TB10` on package 80 / selector 377.
+At the CB12 boundary, authority stayed **365/365**, CP4c-3 OPEN, stable **44 / 14 / 30**, debt **5**, semantic
+packages **77**; `M3-CP4c3-TB9-REV-CAND-01` remained active pending TB10. TB10 has since consumed package 80,
+closed that candidate, and moved the first red to `M3-CP4c3-TB10-CAND-01`.
 
 ### `M3-CP4c-3-CB11` — prior build/package boundary
 

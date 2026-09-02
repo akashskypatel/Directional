@@ -26,41 +26,42 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB10` (Test + Benchmark, ARTIFACT-ONLY / NOT EXECUTED)
+## Current focus — `M3-CP4c-3-TB10-REV` (independent REVIEW + PLAN / NOT EXECUTED)
 
-`M3-CP4c-3-CB12` is **COMPLETE / BUILD GREEN / PRODUCT CORRECTION**. Exact product/test/selector source:
-`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`. Compile run/job `33581576670 / 100096794713` passed all eight
-required targets through the mandatory GMP/GMPXX reusable compile workflow. Immutable package **80** is artifact
-`9828786744` from package run/job `33582280392 / 100098880900`; inner tar SHA-256
-`4e8303489adb46528ae0a92c7ecf9dae65f0cbd57527740d845d318c65af02ce`. `runtimeExecution=false` throughout CB12.
+`M3-CP4c-3-TB10` is **COMPLETE / VALID SEMANTIC RED** on immutable package **80**, selector **377**. Run/job
+`33584653692 / 100106147126` executed 377 fresh processes: **369 PASS / 8 RED**. Ordinals **1–365 remain 365/365
+PASS**; ordinal **366** remains the gating frontier but moved to
+`surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`.
 
-CB12 discharged the frozen BD0–BD9 scope without touching the separate finalize/contact fall-through or any deferred
-sphere/370/saturation/folded-cone/vertex-30 correction:
+CB12's frozen discriminators all passed: the old `SingularityTerminationPortOwnershipMismatch` at seed 47 /
+singularity 5 is absent, and identity 377 PASSes at mechanical terminal **v36**, `BarrierAbsorbed`, network node 7,
+mandatory edges `36-37,36-96`. Therefore **`M3-CP4c3-TB9-REV-CAND-01` is CLOSED / RUNTIME PROVED**.
 
-- [x] **BD0** — selectors 374/375/376 remain byte-frozen; accepted 365 untouched; GMP/GMPXX linkage proved.
-- [x] **BD1** — `BarrierAbsorbed` termination now owns the arrival with the singularity's network node and publishes
-      the existing `FirstContact` + `SingularityTermination` pair; `Emit` remains port-owned.
-- [x] **BD2** — policy is carried explicitly in construction state; empty ports are not a policy proxy.
-- [x] **BD3** — existing `SingularityTerminationPortOwnershipMismatch` is preserved; missing barrier-absorbed node has
-      distinct fail-closed `SingularityTerminationBarrierAbsorbedNodeMissing`.
-- [x] **BD4/BD5** — compiled regression witness derives mechanical terminal **v36**, `BarrierAbsorbed` policy, network
-      node and mandatory-barrier incidence; it covers missing-node rejection and positive node-owned termination.
-- [x] **BD6** — selector **377** appended exactly one identity, SHA-256
-      `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`; 376 is its unchanged prefix.
-- [x] **BD7/BD8** — frozen prohibitions and accepted-output audit preserved. Runtime equivalence is not claimed by CB.
-- [x] **BD9** — five TB10 discriminators are frozen in
-      `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md`; **no vertex-30 discriminator**.
+The new gating candidate is **`M3-CP4c3-TB10-CAND-01`**. Package-80 source proves `SurfaceCutGraphError` already
+carries the originating rotation-system subreason/locus, but `RemeshPipeline.cpp`'s production cut-graph failure
+string drops that information and renders only the cut-graph code plus `originatingTopologyError`. The underlying
+mechanical semantic producer is therefore not yet safely selectable.
 
-`M3-CP4c3-TB9-REV-CAND-01` remains **ACTIVE** until TB10 proves the accepted prefix, the old condition+seed no longer
-repeats, and the mechanical v36 network-node witness passes. Accepted authority remains **365/365**; CP4c-3 remains
-**OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**;
-authoritative semantic M3 package count **77**.
+- [ ] **BE0** — re-establish package/source/selector/run/postflight authority.
+- [ ] **BE1** — recover the exact mechanical `RotationSystemInconsistent` subreason/locus from retained authority, or
+      prove it is unavailable at the current projection boundary.
+- [ ] **BE2** — classify the underlying condition before any semantic fix; do not choose among possible producers by
+      guess, candidate order, tolerance, or geometry alone.
+- [ ] **BE3** — prove whether report-only 367/371/372 are strictly upstream-blocked by the same stop; do not double count.
+- [ ] **BE4** — preserve independent sphere/saturation/370/folded-cone/vertex-30/general-budget/finalize-contact debt.
+- [ ] **BE5** — adversarially falsify the nearest alternative owner and confirm accepted 365 behavior is untouched.
+- [ ] **BE6** — freeze exactly one bounded successor: diagnostic-only if runtime truth is still hidden, product CB only
+      if exact cause is independently proved.
+- [ ] **BE7** — update `ORIENTATION.md` and durable tracker/handoff/roadmap/consolidated/changelog state.
+
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative
+semantic M3 package count **77**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB10`**, artifact-only on immutable package **80**, selector **377 from ordinal 1**, exactly under
-`Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md`. No rebuild, relink, source/test/fixture/selector
-mutation, package repair, or benchmark. CB12 closeout does not begin TB10.
+Run **`M3-CP4c-3-TB10-REV`**, static independent REVIEW + PLAN only, exactly under
+`Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md`. No Directional runtime, compile, package, product/test/
+fixture/selector mutation, benchmark, unchanged TB retry, or opportunistic correction is authorized.
 
 ## Carried forward from M1
 
@@ -97,7 +98,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB9 is current runtime authority at accepted prefix 365 / first red 366. CB12 is build-green on package 80 / selector 377. Exact next is artifact-only `M3-CP4c-3-TB10`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB10 is current runtime authority at accepted prefix 365 / first red 366, now `CellularityNotEstablished/origin=RotationSystemInconsistent`. CB12 ownership is runtime-proved; exact next is independent `M3-CP4c-3-TB10-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -107,7 +108,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — singularity-terminal ownership:** CB12 compiled the BD0–BD9 correction on source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15` and froze immutable package 80 / selector 377. Runtime closure is deliberately pending TB10: ordinal 366 must not repeat `SingularityTerminationPortOwnershipMismatch` at seed 47 / singularity 5, and identity 377 must prove `BarrierAbsorbed` termination at v36's network node. The separate finalize/contact fall-through remains open and untouched; vertex 30 remains unreached.
+- [ ] **CP4c-3 criterion C2 — moved mechanical first red:** TB10 runtime-proved CB12's barrier-absorbed termination correction and closed `M3-CP4c3-TB9-REV-CAND-01`. The gating frontier remains ordinal 366 but now stops at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`. `M3-CP4c3-TB10-CAND-01` owns the lost rotation-system subreason/locus at the production projection boundary; independent TB10-REV must adjudicate the exact underlying condition before any semantic correction. Vertex 30 and the separate finalize/contact fall-through remain open and untouched.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
@@ -133,4 +134,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **76** after CB11/package 79; TB9 created no package. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **77** after CB12/package 80; TB10 created no package. PR #8 remains open, draft, and unmerged.

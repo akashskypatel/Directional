@@ -1,4 +1,59 @@
-## M3-CP4c3-CB12 — barrier-absorbed termination ownership correction — **COMPLETE / COMPILE-PROVED / RUNTIME UNPROVEN / NON-STABLE**
+## M3-CP4c3-TB10 — artifact-only moved-first-red gate — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package **80** / semantic source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`; TB10 run/job
+  `33584653692 / 100106147126`; result artifact `9829700900`
+  (`2e7d978dd3ad2a5f0667ef3eed15c291ed8c7b91bb7e2d323557a8bc40763572`); log artifact `9829701136`
+  (`89f445c5934c3493ccf966e39f0c106c8418719a32c5d206055cafa932cce17d`).
+- **Gate:** selector 377 ran in 377 fresh processes: **369 PASS / 8 RED**. Ordinals **1–365 PASS**; first red remains
+  ordinal **366**, now at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`.
+  `oldOrdinal366ConditionSeedPair=false`; therefore TB9's terminal-ownership condition+seed did not recur.
+- **CB12 closure:** identity **377 PASS** publishes terminal v36 / singularity 4 / `BarrierAbsorbed` / network node 7 /
+  mandatory edges `36-37,36-96`. Together with green 1–365 and the absent old condition+seed, this closes
+  `M3-CP4c3-TB9-REV-CAND-01` as **RUNTIME PROVED**.
+- **Ordinal 366:** new `M3-CP4c3-TB10-CAND-01`, **GATING / DIAGNOSTIC INSUFFICIENCY / NON-STABLE**. The product has
+  advanced past field-aligned-network termination into `SurfaceCutGraph`. Package-80 source shows
+  `SurfaceCutGraph::topology_error` already carries the originating rotation-system reason plus locus/trace fields,
+  while `RemeshPipeline.cpp` renders only cut-graph code + originating topology code. The precise mechanical
+  `RotationSystemInconsistent` subreason/locus is therefore lost at the production projection boundary; review must
+  recover it from retained authority or freeze a diagnostic-only projection before any semantic fix.
+- **Ordinal 367:** same mechanical exception before its own assertion; **UPSTREAM-BLOCKED by TB10-CAND-01**, no
+  independent stable event.
+- **Ordinal 368:** reproduces `M3-CP4c2-TB-X2-CAND-04` at trace 2/event 30,
+  `TraceEventPositionInvalid → NoCarrierMatch / SourceEdgeUnavailable`; report-only, unchanged.
+- **Ordinal 369:** reproduces `M3-CP4c2-TB-X2-R10-CAND-01`, `saturationUsed=true`; report-only quality/coverage,
+  unchanged.
+- **Ordinal 370:** reproduces `M3-CP4c2-TB-X2-R8-CAND-02`: actual `CellularityNotEstablished` (4), expected
+  `EmptyNetworkOnClosedSurface` (6), source-face locus absent; report-only genuine product red, unchanged.
+- **Ordinals 371/372:** same mechanical exception before their own assertions; **UPSTREAM-BLOCKED by TB10-CAND-01**,
+  no independent stable events.
+- **Ordinal 374:** repeats `M3-CP4c3-TB7-CAND-02` with `atlasBuild=false`; pre-classified folded-cone witness
+  precondition, no product inference.
+- **Postflight:** package byte/mode census is unchanged and the internal manifest verifies. Runtime only:
+  configure/compile/relink/repair/generated-discovery/product/test/fixture/selector mutation and benchmark flags are
+  false.
+- **Accounting:** accepted authority stays **365/365**, CP4c-3 OPEN; **+0 events / +0 recurrences**. Totals remain
+  **44 / 14 / 30**, debt **5**, semantic packages **77**. Exact owner: independent `M3-CP4c-3-TB10-REV`.
+
+## M3-CP4c3-TB10-CAND-01 — mechanical first red loses the carried rotation-system subreason/locus at the production cut-graph projection — **ACTIVE / GATING / DIAGNOSTIC INSUFFICIENCY / NON-STABLE**
+
+- **Observed:** TB10 ordinal 366 first-reds at
+  `NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`; no deeper
+  rotation-system reason, source vertex/edge/face, trace, or event is rendered by the mechanical production entry
+  failure string.
+- **Root-cause localization:** package-80 source proves the cut-graph error mapper copies
+  `rotationSystemInconsistencyReason`, `sourceEdge`, `sourceFace`, trace/event, and trace-position diagnostics from the
+  originating `GlobalTopologyPlanError`. `RemeshPipeline.cpp`'s surface-cut-graph error-string construction emits only
+  `surface_cut_graph_error_code_name(code)` and `originatingTopologyError`. Thus runtime authority needed to select
+  one `RotationSystemInconsistent` producer is dropped at the final production projection.
+- **What is not proved:** TB10 does not identify the underlying rotation-system semantic defect and does not prove the
+  witness invalid. It also does not reach/adjudicate vertex 30. Candidate order, tolerance, or a guessed producer
+  are not authorized repairs.
+- **Owner:** **`M3-CP4c-3-TB10-REV`** under BE0–BE7. Recover the exact existing typed/locus data if possible; otherwise
+  freeze the minimum diagnostic-only projection needed to discriminate the producer before any product correction.
+- **Accounting:** gating on an unaccepted surface, accepted 365 prefix green; **+0 events / +0 recurrences**. Stable
+  totals remain **44 / 14 / 30**, debt **5**, packages **77**.
+
+## M3-CP4c3-CB12 — barrier-absorbed termination ownership correction — **COMPLETE / COMPILE-PROVED / TB10 RUNTIME-PROVED / NON-STABLE**
 
 - **Authority:** semantic/evidence source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`; compile run/job
   `33581576670 / 100096794713`; immutable package **80** artifact `9828786744`. No Directional runtime executed.
@@ -9,11 +64,12 @@
 - **Regression authority:** selector **377** appends exactly
   `ResolvedBranchCorrection.BarrierAbsorbedMechanicalTerminationUsesNetworkNodeWithoutPort`, SHA-256
   `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`; selectors 374/375/376 remain frozen.
-- **Candidate disposition:** `M3-CP4c3-TB9-REV-CAND-01` remains **ACTIVE** until TB10 proves the accepted prefix,
-  absence of the old condition+seed at ordinal 366, and v36 network-node termination. No stable event is closed by
-  compilation alone.
+- **TB10 disposition:** `M3-CP4c3-TB9-REV-CAND-01` is **CLOSED / RUNTIME PROVED**. TB10 re-proved the accepted
+  prefix, eliminated the old condition+seed at ordinal 366, and passed the v36 network-node termination witness.
+  The later first red is separately owned by `M3-CP4c3-TB10-CAND-01`.
 - **Accounting:** **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**; semantic packages
-  advance **76 → 77**. Exact next owner: artifact-only `M3-CP4c-3-TB10`.
+  advance **76 → 77**. TB10 has consumed the package; current owner is independent `M3-CP4c-3-TB10-REV` for the later
+  `M3-CP4c3-TB10-CAND-01`.
 
 ## M3-CP4c3-TB9-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
@@ -53,7 +109,7 @@
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
   remain **44 / 14 / 30**, debt **5**, packages **76**.
 
-## M3-CP4c3-TB9-REV-CAND-01 - a barrier-absorbed singularity cannot receive a termination, because the owner is looked up in the port table its policy deliberately leaves empty - **ACTIVE / GATING / PRODUCT / NON-STABLE**
+## M3-CP4c3-TB9-REV-CAND-01 - a barrier-absorbed singularity cannot receive a termination, because the owner is looked up in the port table its policy deliberately leaves empty - **CLOSED / RUNTIME PROVED / PRODUCT / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB9-REV`** from static derivation over TB9's runtime evidence.
 - **Mechanism.** `append_field_aligned_singularity_termination` resolves the terminal owner as
@@ -65,8 +121,9 @@
 - **Invariant to restore.** Every singularity has exactly one network node and that node owns **every** trace
   terminating at its source vertex. A port constrains only a trace's **origin** and is never a precondition on an
   arrival. `BarrierAbsorbed` must still be able to receive terminations.
-- **CB12 build status:** BD1–BD5 are implemented and compile-proved at source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`; immutable package 80 is frozen. Runtime closure is not claimed.
-- **Owner:** artifact-only **`M3-CP4c-3-TB10`**, under the five BD9 discriminators.
+- **CB12 build status:** BD1–BD5 are implemented and compile-proved at source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`; immutable package 80 is frozen.
+- **TB10 closure:** run/job `33584653692 / 100106147126` re-proves 365/365, sets `oldOrdinal366ConditionSeedPair=false`, and passes identity 377 at terminal v36 / `BarrierAbsorbed` / network node 7. The candidate is therefore closed under its frozen BD9 rule.
+- **Owner:** none; historical closed candidate. The later surface-cut-graph first red is `M3-CP4c3-TB10-CAND-01`.
 - **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
   **44 / 14 / 30**, debt **5**, packages **77**.
 

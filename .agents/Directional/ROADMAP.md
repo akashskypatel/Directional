@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** TB9 is the latest measured runtime authority: package 79 / selector 376, accepted prefix 365/365, first red 366 at `SingularityTerminationPortOwnershipMismatch`, seed 47 / singularity 5. TB9-REV classified it as a valid product ownership defect. **CB12 is BUILD GREEN** on source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`: `BarrierAbsorbed` terminal arrivals now use the singularity network node, selector 377 adds the mechanical v36 regression, and immutable package **80** is frozen. No runtime has yet validated CB12. Vertex 30 and the separate finalize/contact fall-through remain open. **NEXT:** artifact-only `M3-CP4c-3-TB10` on package 80 / selector 377.)
+**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** TB10 is the latest measured runtime authority: package 80 / selector 377, accepted prefix 365/365, first red 366 at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`. CB12's terminal-ownership correction is runtime-proved: the old seed-47/singularity-5 condition is absent and identity 377 passes at v36 / `BarrierAbsorbed` / network node 7. `M3-CP4c3-TB9-REV-CAND-01` is closed; new `M3-CP4c3-TB10-CAND-01` owns the lost rotation-system subreason/locus at the production projection boundary. Vertex 30 and the separate finalize/contact fall-through remain open. **NEXT:** independent `M3-CP4c-3-TB10-REV` under BE0–BE7.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB9 latest runtime red at 366; CB12 build-green on package 80 / selector 377; TB10 exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB10 latest runtime red at 366 after CB12 ownership closure; TB10-REV exact next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus the prescribed sphere, `R10-CAND-01` and `R8-CAND-02` inherited from CP4c-2 | **373 = accepted 365 + CP4c-3 identities through Amendment 15**, SHA-256 `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`; 367/370 retained as frozen prefixes | **OPEN.** TB6 on package **75**: 365 PASS, ordinal 366 RED at vertex 30 with two published faces; 367–373 report-only = 1 PASS / 6 RED. DEFN-R2 froze the continuation semantics (Amendments 22–23) and proved the owner at that locus is row 209 or row 208, never row 41. Selector 374 is conditional on a falsifying witness. **NEXT:** `M3-CP4c-3-CB9` under AY0–AY9 |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; append-only execution selector 377** | **OPEN.** TB10 on package **80** re-proved 365/365, closed the CB12 barrier-absorbed termination defect, and first-reds at ordinal 366 with `CellularityNotEstablished/origin=RotationSystemInconsistent`. `TB10-CAND-01` owns the lost rotation-system subreason/locus. **NEXT:** independent `M3-CP4c-3-TB10-REV` under BE0–BE7. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

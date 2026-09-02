@@ -1,3 +1,31 @@
+## 2026-09-02 — `M3-CP4c-3-TB10`: CB12 ownership correction passes; mechanical first red moves to rotation-system projection
+
+Artifact-only Test + Benchmark consumed immutable package **80** / semantic source
+`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`, selector **377**. Authoritative run/job
+**`33584653692 / 100106147126`**; result artifact **`9829700900`**
+(`2e7d978dd3ad2a5f0667ef3eed15c291ed8c7b91bb7e2d323557a8bc40763572`); log artifact **`9829701136`**
+(`89f445c5934c3493ccf966e39f0c106c8418719a32c5d206055cafa932cce17d`). Preflight/postflight passed and the
+package byte/mode census remained identical. No configure, compile, relink, package repair, generated discovery,
+source/test/fixture/selector mutation, or benchmark occurred.
+
+All **377** identities ran in fresh processes: **369 PASS / 8 RED**. Ordinals **1–365 remain 365/365 PASS**. Ordinal
+**366** remains first red but advances past the TB9 terminal-ownership site to
+`NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`.
+`oldOrdinal366ConditionSeedPair=false`, so the old `SingularityTerminationPortOwnershipMismatch` at seed vertex 47 /
+singularity 5 did not recur.
+
+Identity **377 PASSes** and publishes mechanical terminal **v36**, singularity 4, `BarrierAbsorbed`, network node 7,
+mandatory edges `36-37,36-96`. The frozen BD9 closure rule is satisfied: **`M3-CP4c3-TB9-REV-CAND-01` is CLOSED /
+RUNTIME PROVED**. New `M3-CP4c3-TB10-CAND-01` owns the moved first red's diagnostic gap: package source already carries
+the originating rotation-system subreason/locus in `SurfaceCutGraphError`, while the production pipeline failure string
+drops it. No semantic fix is authorized until independent review recovers/adjudicates the exact condition.
+
+Report-only reds remain independently classified: 367/371/372 are upstream-blocked by the same mechanical stop; 368
+preserves sphere `NoCarrierMatch / SourceEdgeUnavailable`; 369 preserves `saturationUsed=true`; 370 preserves the
+wrong `CellularityNotEstablished` empty-network error with no source-face locus; 374 preserves the pre-classified
+folded-cone `atlasBuild=false` witness precondition. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic
+packages **77**. Exact successor: independent **`M3-CP4c-3-TB10-REV`** under BE0–BE7; no unchanged TB retry.
+
 ## 2026-09-02 — `M3-CP4c-3-CB12`: barrier-absorbed termination ownership corrected; package 80 frozen for TB10
 
 Code + Build under TB9-REV **BD0–BD9**. Exact correction source

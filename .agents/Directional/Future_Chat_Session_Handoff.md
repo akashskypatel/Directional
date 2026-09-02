@@ -92,72 +92,63 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB10` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB10-REV` — EXACT NEXT / independent REVIEW + PLAN only
 
-`M3-CP4c-3-CB12` is **COMPLETE / BUILD GREEN / PRODUCT CORRECTION**. No Directional runtime was executed.
+`M3-CP4c-3-TB10` is **COMPLETE / VALID SEMANTIC RED**. Immutable package **80** and selector **377** were consumed
+without rebuild or repair. Accepted authority remains **365/365** and CP4c-3 remains **OPEN**.
 
-### CB12 authority
+### TB10 authority
 
-- exact semantic/evidence source: **`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`**;
-- compile run/job: **`33581576670 / 100096794713`**; result artifact **`9828721201`** SHA-256
-  `53b40433f2b63c551d07ee5fdf7dd9a67c278825b7c3f8b2a1aa0ca1b9194155`; log artifact **`9828721582`** SHA-256
-  `680cbf8ec5b8632b1fcf0802c746fe87fe5a0d1d5407606bc78cce248faf4e0f`;
-- immutable package **80**: run/job **`33582280392 / 100098880900`**, artifact **`9828786744`** SHA-256
-  `f4643d0535684f81de5afc9660ef40f2ffb941d1c540b91026225681314fe20e`; log **`9828787020`** SHA-256
-  `c48c699d6422c4e8504a4b4708f73fb23bbbfc9e85b9d6a22fac1bdedfaf42f2`;
-- inner `package80.tar.gz` SHA-256 **`4e8303489adb46528ae0a92c7ecf9dae65f0cbd57527740d845d318c65af02ce`**;
-- packaged source archive SHA-256 **`026a8b1efa2dc85fe2b474e0e64657bf8f997aee5b49f274c7c0c69d279fd18a`**;
-- `runtimeExecution=false`, `packageRepair=false`, `exactArithmeticBackend=GMP`, `modePreservingEnvelope=true`.
+- semantic source: **`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`**;
+- package 80 artifact **`9828786744`**, SHA-256
+  `f4643d0535684f81de5afc9660ef40f2ffb941d1c540b91026225681314fe20e`;
+- selector 377 SHA-256 **`7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`**;
+- TB10 run/job **`33584653692 / 100106147126`**;
+- result artifact **`9829700900`**, SHA-256
+  `2e7d978dd3ad2a5f0667ef3eed15c291ed8c7b91bb7e2d323557a8bc40763572`;
+- log artifact **`9829701136`**, SHA-256
+  `89f445c5934c3493ccf966e39f0c106c8418719a32c5d206055cafa932cce17d`;
+- ordered execution: **377 processes / 369 PASS / 8 RED**; first red ordinal **366**;
+- immutable postflight passed; no configure/compile/relink/repair/generated-discovery/product/test/fixture/selector
+  mutation or benchmark occurred.
 
-### What CB12 changed
+### Runtime verdict
 
-`append_field_aligned_singularity_termination` now distinguishes origin-port policy from arrival ownership. For
-`BarrierAbsorbed`, it resolves the already-created network node by the terminal singularity's support vertex and
-publishes the same `FirstContact` + `SingularityTermination` pair. For `Emit`, the pre-existing port-owner path is
-unchanged. `FieldAlignedCurveNetworkCandidate` carries construction-only `singularityPortPolicies`; empty ports are
-never interpreted as policy. Existing `SingularityTerminationPortOwnershipMismatch` is preserved, while a missing
-barrier-absorbed node fails closed as `SingularityTerminationBarrierAbsorbedNodeMissing`.
+Ordinals **1–365 remain 365/365 PASS**. Ordinal 366 moved past CB12's terminal-ownership site and now fails at
+`NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`.
+`oldOrdinal366ConditionSeedPair=false`, so the TB9 `SingularityTerminationPortOwnershipMismatch` at seed vertex 47 /
+singularity 5 did not recur.
 
-Selectors 374/375/376 remain byte-frozen. Selector **377** appends exactly
-`ResolvedBranchCorrection.BarrierAbsorbedMechanicalTerminationUsesNetworkNodeWithoutPort`, has 377 unique lines and
-SHA-256 **`7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`**. The compiled witness derives terminal
-**v36**, `BarrierAbsorbed` policy, its network node and mandatory-barrier incidence, verifies missing-node fail-close,
-and expects positive `SingularityTermination` at the v36 node. It has **not** yet executed.
+Identity **377 PASSes** and publishes
+`terminalVertex=36;singularity=4;portPolicy=BarrierAbsorbed;node=7;incidentMandatoryEdges=36-37,36-96`. The frozen BD9
+closure rule is therefore satisfied and **`M3-CP4c3-TB9-REV-CAND-01` is CLOSED / RUNTIME PROVED**.
 
-### TB10 binding discriminators
+The new gating owner is **`M3-CP4c3-TB10-CAND-01`**: the mechanical `RotationSystemInconsistent` subreason/locus is
+already carried by `SurfaceCutGraphError` but omitted by the production `RemeshPipeline.cpp` surface-cut-graph error
+string. The underlying semantic producer is not yet adjudicated; no guessed fix is authorized.
 
-Run selector 377 from ordinal 1 against package 80 under
-`Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md`:
-
-1. ordinals **1–365 remain 365/365 PASS**;
-2. ordinal 366 must not repeat `SingularityTerminationPortOwnershipMismatch` at seed 47 / singularity 5; the same
-   condition+seed falsifies CB12;
-3. any remaining red must identify a genuinely different condition/locus/seed;
-4. identity 377 must prove `SingularityTermination` at **v36's network node** for the `BarrierAbsorbed` mechanical
-   termination, including the negative missing-node check;
-5. `M3-CP4c3-TB9-REV-CAND-01` closes only when 1, 2 and 4 all hold.
-
-No vertex-30 discriminator is published. `M3-CP4c3-TB6-CAND-01`, the general exact-fallback/budget candidate, folded-
-cone witness debt, sphere/saturation/ordinal-370 dispositions, and the separate finalize/contact fall-through remain
-unchanged. Accepted authority stays **365/365**; CP4c-3 remains **OPEN**; stable accounting **44 / 14 / 30**, debt
-**5**, semantic packages **77**.
+Report-only reds: 367/371/372 are upstream-blocked by the same mechanical stop; 368 preserves sphere
+`NoCarrierMatch / SourceEdgeUnavailable`; 369 preserves `saturationUsed=true`; 370 preserves the genuine wrong
+empty-network typed error/no-locus red; 374 preserves the pre-classified folded-cone `atlasBuild=false` witness
+precondition. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **77**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent TEST + BENCHMARK guidance
+- turn-based-coding-agent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md` — **exact TB10 execution authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB12_Code_Build_Report.md` — package-80 implementation/build authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` — frozen BD9 discriminators and candidate closure rule.
-4. `.agents/Directional/GMP_COMPILE_POLICY.md` — package evidence requires the already-recorded exact GMP backend; TB10 must not rebuild.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first and **update during this REVIEW turn**.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md` — exact runtime authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md` — **BE0–BE7 exact review scope**.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB12_Code_Build_Report.md` — package-80 correction/build authority.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — TB10-CAND-01 plus carried candidate dispositions.
+5. `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `ROADMAP.md`.
 
-TB10 must consume immutable package **80** artifact `9828786744` directly. Do not compile, relink, repair package
-permissions/content, regenerate discovery, mutate source/test/fixture/selector bytes, or benchmark.
+The review is static only: no Directional runtime, compile, package, product/test/fixture/selector mutation, benchmark,
+or unchanged TB retry. It must recover/adjudicate the moved ordinal-366 rotation-system condition and freeze exactly
+one bounded successor.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
