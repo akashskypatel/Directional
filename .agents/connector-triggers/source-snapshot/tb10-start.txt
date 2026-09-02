@@ -1,3 +1,0 @@
-M3-CP4c-3-TB10 start-of-turn source snapshot
-requested_turn=M3-CP4c-3-TB10
-base_head=e4f108fa64f5a5453e20fd77eb427457e88a0e15
