@@ -65,9 +65,16 @@ SurfaceCutGraphError topology_error(const GlobalTopologyPlanError &error) {
   result.sourceVertex = error.sourceVertex;
   result.sourceEdge = error.sourceEdge;
   result.sourceFace = error.sourceFace;
+  result.secondSourceFace = error.secondSourceFace;
   result.originatingRotationSystemInconsistencyReason =
       error.rotationSystemInconsistencyReason;
+  result.arc = error.arc;
+  result.secondArc = error.secondArc;
   result.trace = error.trace;
+  result.secondTrace = error.secondTrace;
+  result.rotationPreviousRay = error.rotationPreviousRay;
+  result.rotationCurrentRay = error.rotationCurrentRay;
+  result.rotationFanCensus = error.rotationFanCensus;
   result.traceEventIndex = error.traceEventIndex;
   result.traceEventPositionFailureReason =
       error.traceEventPositionFailureReason;

@@ -1174,6 +1174,11 @@ project_field_aligned_curve_network_failure_locus(
     const geometry::FieldAlignedCurveNetworkError &error,
     const authority::FieldTransportAtlas &atlas);
 
+/** Diagnostic-only projection used by the production cut-graph failure path. */
+SurfaceCellFailureLocusDiagnostics
+project_surface_cut_graph_failure_locus(
+    const geometry::SurfaceCutGraphError &error);
+
 struct SurfaceCellComponentStageProducts {
   std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
   std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;

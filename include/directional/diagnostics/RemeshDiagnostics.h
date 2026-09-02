@@ -117,6 +117,25 @@ struct SurfaceCellTraceStepDiagnostics {
   std::string entryParameter;
 };
 
+struct SurfaceCellRotationRayDiagnostics {
+  std::string kind;
+  std::size_t primary = 0U;
+  std::size_t secondary = 0U;
+  std::size_t arc = 0U;
+  std::optional<std::size_t> trace;
+  std::string orientation;
+  std::optional<std::array<std::size_t, 3>> sourceFace;
+  std::optional<std::size_t> fanSlot;
+  std::optional<int> originPortOrdinal;
+  std::optional<std::size_t> originPortSourceVertex;
+};
+
+struct SurfaceCellRotationFanCensusDiagnostics {
+  std::vector<SurfaceCellRotationRayDiagnostics> rays;
+  std::size_t totalRayCount = 0U;
+  bool truncated = false;
+};
+
 struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> sourceVertex;
   std::optional<std::array<std::size_t, 2>> sourceEdge;
@@ -129,7 +148,13 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> topologyRegion;
   std::string networkErrorCondition;
   std::string rotationSystemInconsistencyReason;
+  std::optional<std::size_t> arc;
+  std::optional<std::size_t> secondArc;
   std::optional<std::size_t> trace;
+  std::optional<std::size_t> secondTrace;
+  std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
+  std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;
+  SurfaceCellRotationFanCensusDiagnostics rotationFanCensus;
   std::optional<std::size_t> traceEventIndex;
   std::string traceEventPositionFailureReason;
   std::string traceEventPositionPass;

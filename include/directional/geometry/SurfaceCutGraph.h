@@ -19,6 +19,7 @@
 
 #include <directional/authority/FieldTransportAtlas.h>
 #include <directional/geometry/SourceTopologyRegions.h>
+#include <directional/geometry/RotationSystemDiagnostics.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 
 namespace directional::geometry {
@@ -112,19 +113,26 @@ struct SurfaceCutGraphError {
   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
   std::optional<authority::SourceFaceTopologyKey> sourceFace;
   std::optional<GlobalTopologyPlanErrorCode> originatingTopologyError;
-  std::size_t nonDiscComponentCount = 0U;
-  std::size_t remainingAdmissibleEdgeCount = 0U;
+  std::optional<std::size_t> nonDiscComponentCount;
+  std::optional<std::size_t> remainingAdmissibleEdgeCount;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
   std::optional<std::size_t> certificationAttemptIndex;
   std::optional<std::size_t> certificationCutEdgeCount;
   std::optional<RotationSystemInconsistencyReason>
       originatingRotationSystemInconsistencyReason;
+  std::optional<authority::NetworkArcId> arc;
+  std::optional<authority::NetworkArcId> secondArc;
   std::optional<authority::TraceId> trace;
+  std::optional<authority::TraceId> secondTrace;
+  std::optional<authority::SourceFaceTopologyKey> secondSourceFace;
   std::optional<std::size_t> traceEventIndex;
   std::optional<TraceEventPositionFailureReason> traceEventPositionFailureReason;
   std::optional<TraceEventPositionPass> traceEventPositionPass;
   std::vector<SurfaceCutGraphTraceEventPositionCandidate>
       traceEventPositionCandidates;
+  std::optional<RotationRayOrderDiagnostic> rotationPreviousRay;
+  std::optional<RotationRayOrderDiagnostic> rotationCurrentRay;
+  RotationRayOrderCensus rotationFanCensus;
   auto operator<=>(const SurfaceCutGraphError &) const = default;
 };
 

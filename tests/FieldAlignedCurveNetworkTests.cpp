@@ -3418,6 +3418,25 @@ struct Cp4cProductionFixture {
   std::string loadError;
 };
 
+void append_rotation_ray_diagnostics(
+    std::ostream &report, const char *label,
+    const directional::SurfaceCellRotationRayDiagnostics &ray) {
+  report << ';' << label << "={kind=" << ray.kind
+         << ",primary=" << ray.primary << ",secondary=" << ray.secondary
+         << ",arc=" << ray.arc;
+  if (ray.trace.has_value()) report << ",trace=" << *ray.trace;
+  report << ",orientation=" << ray.orientation;
+  if (ray.sourceFace.has_value())
+    report << ",sourceFace=" << (*ray.sourceFace)[0] << ','
+           << (*ray.sourceFace)[1] << ',' << (*ray.sourceFace)[2];
+  if (ray.fanSlot.has_value()) report << ",fanSlot=" << *ray.fanSlot;
+  if (ray.originPortOrdinal.has_value())
+    report << ",originPortOrdinal=" << *ray.originPortOrdinal;
+  if (ray.originPortSourceVertex.has_value())
+    report << ",originPortSourceVertex=" << *ray.originPortSourceVertex;
+  report << '}';
+}
+
 void append_cp4c_failure_locus(
     std::ostream &report,
     const directional::SurfaceCellFailureLocusDiagnostics &locus) {
@@ -3446,7 +3465,31 @@ void append_cp4c_failure_locus(
   if (!locus.rotationSystemInconsistencyReason.empty())
     report << ";rotationSystemReason="
            << locus.rotationSystemInconsistencyReason;
+  if (locus.arc.has_value()) report << ";arc=" << *locus.arc;
+  if (locus.secondArc.has_value()) report << ";secondArc=" << *locus.secondArc;
   if (locus.trace.has_value()) report << ";trace=" << *locus.trace;
+  if (locus.secondTrace.has_value())
+    report << ";secondTrace=" << *locus.secondTrace;
+  if (locus.rotationPreviousRay.has_value())
+    append_rotation_ray_diagnostics(report, "rotationPreviousRay",
+                                    *locus.rotationPreviousRay);
+  if (locus.rotationCurrentRay.has_value())
+    append_rotation_ray_diagnostics(report, "rotationCurrentRay",
+                                    *locus.rotationCurrentRay);
+  if (locus.rotationFanCensus.totalRayCount != 0U ||
+      !locus.rotationFanCensus.rays.empty()) {
+    report << ";rotationFanCensusTotal="
+           << locus.rotationFanCensus.totalRayCount
+           << ";rotationFanCensusTruncated="
+           << (locus.rotationFanCensus.truncated ? "true" : "false");
+    for (std::size_t index = 0U;
+         index < locus.rotationFanCensus.rays.size(); ++index) {
+      const std::string label =
+          "rotationFanRay[" + std::to_string(index) + "]";
+      append_rotation_ray_diagnostics(report, label.c_str(),
+                                      locus.rotationFanCensus.rays[index]);
+    }
+  }
   if (locus.traceEventIndex.has_value())
     report << ";traceEvent=" << *locus.traceEventIndex;
   if (!locus.traceEventPositionFailureReason.empty())
@@ -4954,6 +4997,15 @@ std::string production_network_error_locus(
   return stream.str();
 }
 
+std::string production_cut_graph_error_locus(
+    const directional::geometry::SurfaceCutGraphError &error) {
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_surface_cut_graph_failure_locus(error);
+  std::ostringstream stream;
+  append_cp4c_failure_locus(stream, locus);
+  return stream.str();
+}
+
 void append_plan_error(std::ostringstream &stream,
                        const directional::geometry::GlobalTopologyPlanError &error) {
   stream << "globalTopologyPlan=false"
@@ -4966,11 +5018,17 @@ void append_plan_error(std::ostringstream &stream,
   if (error.arc.has_value()) {
     stream << ";arc=" << error.arc->index();
   }
+  if (error.secondArc.has_value()) {
+    stream << ";secondArc=" << error.secondArc->index();
+  }
   if (error.networkEdge.has_value()) {
     stream << ";networkEdge=" << error.networkEdge->index();
   }
   if (error.trace.has_value()) {
     stream << ";trace=" << error.trace->index();
+  }
+  if (error.secondTrace.has_value()) {
+    stream << ";secondTrace=" << error.secondTrace->index();
   }
   if (error.sourceEdge.has_value()) {
     stream << ";sourceEdge=" << source_edge_locus(*error.sourceEdge);
@@ -4988,6 +5046,44 @@ void append_plan_error(std::ostringstream &stream,
     stream << ";rotationSystemReason="
            << directional::geometry::rotation_system_inconsistency_reason_name(
                   *error.rotationSystemInconsistencyReason);
+  }
+  const auto append_plan_ray = [&](
+      const char *label,
+      const directional::geometry::RotationRayOrderDiagnostic &ray) {
+    stream << ';' << label << "={kind="
+           << static_cast<int>(ray.kind) << ",primary=" << ray.primary
+           << ",secondary=" << ray.secondary << ",arc=" << ray.arc.index();
+    if (ray.trace.has_value()) stream << ",trace=" << ray.trace->index();
+    stream << ",orientation="
+           << (ray.orientation == directional::authority::Orientation::Forward
+                   ? "Forward"
+                   : "Reverse");
+    if (ray.sourceFace.has_value())
+      stream << ",sourceFace=" << source_face_locus(*ray.sourceFace);
+    if (ray.fanSlot.has_value()) stream << ",fanSlot=" << *ray.fanSlot;
+    if (ray.originPortOrdinal.has_value())
+      stream << ",originPortOrdinal=" << *ray.originPortOrdinal;
+    if (ray.originPortSourceVertex.has_value())
+      stream << ",originPortSourceVertex="
+             << ray.originPortSourceVertex->index();
+    stream << '}';
+  };
+  if (error.rotationPreviousRay.has_value())
+    append_plan_ray("rotationPreviousRay", *error.rotationPreviousRay);
+  if (error.rotationCurrentRay.has_value())
+    append_plan_ray("rotationCurrentRay", *error.rotationCurrentRay);
+  if (error.rotationFanCensus.totalRayCount != 0U ||
+      !error.rotationFanCensus.rays.empty()) {
+    stream << ";rotationFanCensusTotal="
+           << error.rotationFanCensus.totalRayCount
+           << ";rotationFanCensusTruncated="
+           << (error.rotationFanCensus.truncated ? "true" : "false");
+    for (std::size_t index = 0U; index < error.rotationFanCensus.rays.size();
+         ++index) {
+      const std::string label =
+          "rotationFanRay[" + std::to_string(index) + "]";
+      append_plan_ray(label.c_str(), error.rotationFanCensus.rays[index]);
+    }
   }
   if (error.traceEventIndex.has_value()) {
     stream << ";traceEvent=" << *error.traceEventIndex;
@@ -9590,6 +9686,95 @@ TEST(ResolvedBranchCorrection,
   EXPECT_EQ(std::string::npos,
             productionEmitted.find("publishedFaceCount="))
       << productionEmitted;
+}
+
+TEST(GlobalTopologyPlan,
+     RotationRayOrderCollisionDiagnosticsSurviveProductionFailureProjection) {
+  using directional::authority::NetworkArcId;
+  using directional::authority::SourceVertexId;
+  using directional::authority::TraceId;
+  using directional::geometry::GlobalTopologyArcKind;
+  using directional::geometry::RotationRayOrderDiagnostic;
+  using directional::geometry::RotationSystemInconsistencyReason;
+  using directional::geometry::SurfaceCutGraphError;
+  using directional::geometry::SurfaceCutGraphErrorCode;
+
+  SurfaceCutGraphError error;
+  error.code = SurfaceCutGraphErrorCode::CellularityNotEstablished;
+  error.sourceVertex = SourceVertexId::from_index(0, 4).value();
+  error.originatingRotationSystemInconsistencyReason =
+      RotationSystemInconsistencyReason::RotationRayOrderKeyCollision;
+  error.certificationAttemptIndex = 0U;
+  error.certificationCutEdgeCount = 0U;
+
+  RotationRayOrderDiagnostic previous(
+      NetworkArcId::from_index(0, 2).value());
+  previous.kind = GlobalTopologyArcKind::Trace;
+  previous.primary = 3U;
+  previous.secondary = 2U;
+  previous.trace = TraceId::from_index(0, 2).value();
+  previous.orientation = directional::authority::Orientation::Forward;
+  previous.sourceFace = topology_face(0, 1, 2, 4);
+  previous.fanSlot = 1U;
+  previous.originPortOrdinal = 2;
+  previous.originPortSourceVertex = SourceVertexId::from_index(0, 4).value();
+
+  RotationRayOrderDiagnostic current(
+      NetworkArcId::from_index(1, 2).value());
+  current.kind = previous.kind;
+  current.primary = previous.primary;
+  current.secondary = previous.secondary;
+  current.sourceFace = previous.sourceFace;
+  current.fanSlot = previous.fanSlot;
+  current.originPortOrdinal = previous.originPortOrdinal;
+  current.originPortSourceVertex = previous.originPortSourceVertex;
+  current.trace = TraceId::from_index(1, 2).value();
+  current.orientation = directional::authority::Orientation::Reverse;
+
+  error.arc = previous.arc;
+  error.secondArc = current.arc;
+  error.trace = previous.trace;
+  error.secondTrace = current.trace;
+  error.sourceFace = previous.sourceFace;
+  error.secondSourceFace = current.sourceFace;
+  error.rotationPreviousRay = previous;
+  error.rotationCurrentRay = current;
+  error.rotationFanCensus.rays = {previous, current};
+  error.rotationFanCensus.totalRayCount = 2U;
+  error.rotationFanCensus.truncated = false;
+
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_surface_cut_graph_failure_locus(error);
+  ASSERT_TRUE(locus.rotationPreviousRay.has_value());
+  ASSERT_TRUE(locus.rotationCurrentRay.has_value());
+  EXPECT_EQ(locus.rotationPreviousRay->primary,
+            locus.rotationCurrentRay->primary);
+  EXPECT_EQ(locus.rotationPreviousRay->secondary,
+            locus.rotationCurrentRay->secondary);
+  EXPECT_EQ(2U, locus.rotationFanCensus.totalRayCount);
+  ASSERT_EQ(2U, locus.rotationFanCensus.rays.size());
+  EXPECT_FALSE(locus.rotationFanCensus.truncated);
+  EXPECT_FALSE(locus.nonDiscComponentCount.has_value());
+  EXPECT_FALSE(locus.remainingAdmissibleEdgeCount.has_value());
+
+  const std::string emitted = production_cut_graph_error_locus(error);
+  for (const std::string &token : std::vector<std::string>{
+           "sourceVertex=0",
+           "rotationSystemReason=RotationRayOrderKeyCollision",
+           "arc=0", "secondArc=1", "trace=0", "secondTrace=1",
+           "rotationPreviousRay={kind=Trace,primary=3,secondary=2,arc=0,trace=0,orientation=Forward,sourceFace=0,1,2,fanSlot=1,originPortOrdinal=2,originPortSourceVertex=0}",
+           "rotationCurrentRay={kind=Trace,primary=3,secondary=2,arc=1,trace=1,orientation=Reverse,sourceFace=0,1,2,fanSlot=1,originPortOrdinal=2,originPortSourceVertex=0}",
+           "rotationFanCensusTotal=2",
+           "rotationFanCensusTruncated=false",
+           "rotationFanRay[0]={kind=Trace,primary=3,secondary=2,arc=0,trace=0,orientation=Forward",
+           "rotationFanRay[1]={kind=Trace,primary=3,secondary=2,arc=1,trace=1,orientation=Reverse",
+           "certificationAttempt=0", "certificationCutEdges=0"}) {
+    EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+  }
+  EXPECT_EQ(std::string::npos, emitted.find("nonDiscComponentCount="))
+      << emitted;
+  EXPECT_EQ(std::string::npos, emitted.find("remainingAdmissibleEdgeCount="))
+      << emitted;
 }
 
 TEST(ResolvedBranchCorrection,

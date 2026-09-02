@@ -977,6 +977,18 @@ RotationBuildResult build_rotation_system(
 
     std::vector<std::pair<RayOrderKey, GlobalTopologyOrientedArc>> keyed;
     keyed.reserve(outgoing.size());
+    std::map<GlobalTopologyOrientedArc, RotationRayOrderDiagnostic>
+        rayDiagnostics;
+    const auto base_ray_diagnostic = [](const RayOrderKey &key) {
+      RotationRayOrderDiagnostic diagnostic(key.arc);
+      diagnostic.kind = key.kind;
+      diagnostic.primary = key.primary;
+      diagnostic.secondary = key.secondary;
+      diagnostic.arc = key.arc;
+      diagnostic.trace = key.trace;
+      diagnostic.orientation = key.orientation;
+      return diagnostic;
+    };
     if (locusIt->second.vertex.has_value()) {
       const auto slots =
           build_vertex_fan_slots(topology, *locusIt->second.vertex);
@@ -1063,6 +1075,12 @@ RotationBuildResult build_rotation_system(
             return result;
           }
           key.secondary = static_cast<std::size_t>(port->ordinal);
+          RotationRayOrderDiagnostic diagnostic = base_ray_diagnostic(key);
+          diagnostic.sourceFace = *face;
+          diagnostic.fanSlot = slot->second;
+          diagnostic.originPortOrdinal = port->ordinal;
+          diagnostic.originPortSourceVertex = port->sourceVertex;
+          rayDiagnostics.emplace(incidence, std::move(diagnostic));
         }
         keyed.emplace_back(key, incidence);
       }
@@ -1214,6 +1232,31 @@ RotationBuildResult build_rotation_system(
             rotation_error(RotationSystemInconsistencyReason::RotationRayOrderKeyCollision);
         result.sourceVertex = locusIt->second.vertex;
         result.sourceEdge = locusIt->second.edge;
+        const auto diagnostic_for = [&](const std::size_t keyedIndex) {
+          const auto found = rayDiagnostics.find(keyed[keyedIndex].second);
+          return found != rayDiagnostics.end()
+                     ? found->second
+                     : base_ray_diagnostic(keyed[keyedIndex].first);
+        };
+        result.rotationPreviousRay = diagnostic_for(index - 1U);
+        result.rotationCurrentRay = diagnostic_for(index);
+        result.arc = result.rotationPreviousRay->arc;
+        result.secondArc = result.rotationCurrentRay->arc;
+        result.trace = result.rotationPreviousRay->trace;
+        result.secondTrace = result.rotationCurrentRay->trace;
+        result.sourceFace = result.rotationPreviousRay->sourceFace;
+        result.secondSourceFace = result.rotationCurrentRay->sourceFace;
+        constexpr std::size_t kRotationFanCensusLimit = 16U;
+        result.rotationFanCensus.totalRayCount = keyed.size();
+        const std::size_t censusCount =
+            std::min(keyed.size(), kRotationFanCensusLimit);
+        result.rotationFanCensus.rays.reserve(censusCount);
+        for (std::size_t censusIndex = 0U; censusIndex < censusCount;
+             ++censusIndex) {
+          result.rotationFanCensus.rays.push_back(
+              diagnostic_for(censusIndex));
+        }
+        result.rotationFanCensus.truncated = censusCount < keyed.size();
         return result;
       }
     }

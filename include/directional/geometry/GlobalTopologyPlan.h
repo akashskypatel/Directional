@@ -19,6 +19,7 @@
 
 #include <directional/authority/AuthorityIds.h>
 #include <directional/geometry/SourceTopologyRegions.h>
+#include <directional/geometry/RotationSystemDiagnostics.h>
 #include <directional/geometry/SurfaceCellTracing.h>
 #include <directional/geometry/SurfaceCutGraph.h>
 
@@ -247,6 +248,7 @@ struct GlobalTopologyPlanError {
   std::optional<authority::NetworkRegionId> region;
   std::optional<authority::NetworkRegionId> secondRegion;
   std::optional<authority::NetworkArcId> arc;
+  std::optional<authority::NetworkArcId> secondArc;
   std::optional<authority::NetworkEdgeId> networkEdge;
   std::optional<authority::TraceId> trace;
   std::optional<authority::TraceId> secondTrace;
@@ -265,6 +267,9 @@ struct GlobalTopologyPlanError {
   std::optional<TraceEventPositionFailureReason> traceEventPositionFailureReason;
   std::optional<TraceEventPositionPass> traceEventPositionPass;
   std::vector<TraceEventPositionCandidate> traceEventPositionCandidates;
+  std::optional<RotationRayOrderDiagnostic> rotationPreviousRay;
+  std::optional<RotationRayOrderDiagnostic> rotationCurrentRay;
+  RotationRayOrderCensus rotationFanCensus;
 
   auto operator<=>(const GlobalTopologyPlanError &) const = default;
 };

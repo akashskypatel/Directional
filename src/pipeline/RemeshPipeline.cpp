@@ -361,6 +361,96 @@ project_field_aligned_curve_network_failure_locus(
   return locus;
 }
 
+SurfaceCellFailureLocusDiagnostics
+project_surface_cut_graph_failure_locus(
+    const geometry::SurfaceCutGraphError &error) {
+  const auto topology_face_locus = [](
+      const authority::SourceFaceTopologyKey &face) {
+    const auto &vertices = face.vertices();
+    return std::array<std::size_t, 3>{vertices[0].index(),
+                                      vertices[1].index(),
+                                      vertices[2].index()};
+  };
+  const auto topology_edge_locus = [](
+      const authority::SourceEdgeTopologyKey &edge) {
+    return std::array<std::size_t, 2>{edge.first().index(),
+                                      edge.second().index()};
+  };
+  const auto rotation_ray_diagnostics = [&](
+      const geometry::RotationRayOrderDiagnostic &ray) {
+    SurfaceCellRotationRayDiagnostics diagnostic;
+    switch (ray.kind) {
+    case geometry::GlobalTopologyArcKind::Mandatory:
+      diagnostic.kind = "Mandatory";
+      break;
+    case geometry::GlobalTopologyArcKind::Trace:
+      diagnostic.kind = "Trace";
+      break;
+    case geometry::GlobalTopologyArcKind::Cut:
+      diagnostic.kind = "Cut";
+      break;
+    }
+    diagnostic.primary = ray.primary;
+    diagnostic.secondary = ray.secondary;
+    diagnostic.arc = ray.arc.index();
+    if (ray.trace.has_value()) diagnostic.trace = ray.trace->index();
+    diagnostic.orientation =
+        ray.orientation == authority::Orientation::Forward ? "Forward"
+                                                           : "Reverse";
+    if (ray.sourceFace.has_value())
+      diagnostic.sourceFace = topology_face_locus(*ray.sourceFace);
+    diagnostic.fanSlot = ray.fanSlot;
+    diagnostic.originPortOrdinal = ray.originPortOrdinal;
+    if (ray.originPortSourceVertex.has_value())
+      diagnostic.originPortSourceVertex = ray.originPortSourceVertex->index();
+    return diagnostic;
+  };
+
+  SurfaceCellFailureLocusDiagnostics locus;
+  if (error.sourceVertex.has_value())
+    locus.sourceVertex = error.sourceVertex->index();
+  if (error.sourceEdge.has_value())
+    locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
+  if (error.sourceFace.has_value())
+    locus.sourceFace = topology_face_locus(*error.sourceFace);
+  if (error.secondSourceFace.has_value())
+    locus.relatedSourceFace = topology_face_locus(*error.secondSourceFace);
+  if (error.originatingRotationSystemInconsistencyReason.has_value())
+    locus.rotationSystemInconsistencyReason =
+        geometry::rotation_system_inconsistency_reason_name(
+            *error.originatingRotationSystemInconsistencyReason);
+  if (error.arc.has_value()) locus.arc = error.arc->index();
+  if (error.secondArc.has_value()) locus.secondArc = error.secondArc->index();
+  if (error.trace.has_value()) locus.trace = error.trace->index();
+  if (error.secondTrace.has_value())
+    locus.secondTrace = error.secondTrace->index();
+  if (error.rotationPreviousRay.has_value())
+    locus.rotationPreviousRay =
+        rotation_ray_diagnostics(*error.rotationPreviousRay);
+  if (error.rotationCurrentRay.has_value())
+    locus.rotationCurrentRay =
+        rotation_ray_diagnostics(*error.rotationCurrentRay);
+  locus.rotationFanCensus.totalRayCount = error.rotationFanCensus.totalRayCount;
+  locus.rotationFanCensus.truncated = error.rotationFanCensus.truncated;
+  locus.rotationFanCensus.rays.reserve(error.rotationFanCensus.rays.size());
+  for (const auto &ray : error.rotationFanCensus.rays)
+    locus.rotationFanCensus.rays.push_back(rotation_ray_diagnostics(ray));
+  locus.traceEventIndex = error.traceEventIndex;
+  if (error.traceEventPositionFailureReason.has_value())
+    locus.traceEventPositionFailureReason =
+        geometry::trace_event_position_failure_reason_name(
+            *error.traceEventPositionFailureReason);
+  if (error.traceEventPositionPass.has_value())
+    locus.traceEventPositionPass = geometry::trace_event_position_pass_name(
+        *error.traceEventPositionPass);
+  locus.cutCandidateCount = error.cutCandidates.size();
+  locus.nonDiscComponentCount = error.nonDiscComponentCount;
+  locus.remainingAdmissibleEdgeCount = error.remainingAdmissibleEdgeCount;
+  locus.certificationAttemptIndex = error.certificationAttemptIndex;
+  locus.certificationCutEdgeCount = error.certificationCutEdgeCount;
+  return locus;
+}
+
 } // namespace directional::pipeline::remesh_pipeline_detail
 
 namespace directional::pipeline {
@@ -6850,35 +6940,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     };
     const auto cut_graph_failure_locus = [&](
         const geometry::SurfaceCutGraphError &error) {
-      SurfaceCellFailureLocusDiagnostics locus;
-      if (error.sourceVertex.has_value())
-        locus.sourceVertex = error.sourceVertex->index();
-      if (error.sourceEdge.has_value())
-        locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
-      if (error.sourceFace.has_value())
-        locus.sourceFace = topology_face_locus(*error.sourceFace);
-      if (error.originatingRotationSystemInconsistencyReason.has_value()) {
-        locus.rotationSystemInconsistencyReason =
-            geometry::rotation_system_inconsistency_reason_name(
-                *error.originatingRotationSystemInconsistencyReason);
-      }
-      if (error.trace.has_value()) locus.trace = error.trace->index();
-      locus.traceEventIndex = error.traceEventIndex;
-      if (error.traceEventPositionFailureReason.has_value()) {
-        locus.traceEventPositionFailureReason =
-            geometry::trace_event_position_failure_reason_name(
-                *error.traceEventPositionFailureReason);
-      }
-      if (error.traceEventPositionPass.has_value()) {
-        locus.traceEventPositionPass = geometry::trace_event_position_pass_name(
-            *error.traceEventPositionPass);
-      }
-      locus.cutCandidateCount = error.cutCandidates.size();
-      locus.nonDiscComponentCount = error.nonDiscComponentCount;
-      locus.remainingAdmissibleEdgeCount = error.remainingAdmissibleEdgeCount;
-      locus.certificationAttemptIndex = error.certificationAttemptIndex;
-      locus.certificationCutEdgeCount = error.certificationCutEdgeCount;
-      return locus;
+      return remesh_pipeline_detail::project_surface_cut_graph_failure_locus(
+          error);
     };
     const auto topology_plan_failure_locus = [&](
         const geometry::GlobalTopologyPlanError &error) {
@@ -6889,7 +6952,26 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
       if (error.sourceFace.has_value())
         locus.sourceFace = topology_face_locus(*error.sourceFace);
-      return locus;
+      if (error.rotationSystemInconsistencyReason.has_value())
+        locus.rotationSystemInconsistencyReason =
+            geometry::rotation_system_inconsistency_reason_name(
+                *error.rotationSystemInconsistencyReason);
+      geometry::SurfaceCutGraphError projected;
+      projected.sourceVertex = error.sourceVertex;
+      projected.sourceEdge = error.sourceEdge;
+      projected.sourceFace = error.sourceFace;
+      projected.secondSourceFace = error.secondSourceFace;
+      projected.arc = error.arc;
+      projected.secondArc = error.secondArc;
+      projected.trace = error.trace;
+      projected.secondTrace = error.secondTrace;
+      projected.originatingRotationSystemInconsistencyReason =
+          error.rotationSystemInconsistencyReason;
+      projected.rotationPreviousRay = error.rotationPreviousRay;
+      projected.rotationCurrentRay = error.rotationCurrentRay;
+      projected.rotationFanCensus = error.rotationFanCensus;
+      return remesh_pipeline_detail::project_surface_cut_graph_failure_locus(
+          projected);
     };
 
     authority::FieldTransportAtlasBuildResult atlasBuild =
