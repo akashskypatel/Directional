@@ -1,0 +1,2 @@
+M3-CP4c-3-CB12 prepublication schema validation trigger
+candidate=.agents/Directional/turn-payloads/cb12-drive-apply-candidate.yml
