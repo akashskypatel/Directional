@@ -1,0 +1,3 @@
+purpose=M3-CP4c-3-CB16 start-of-turn source snapshot
+requested_source_sha=9a55fbafeeb47457272a42026aea34760434d3f5
+retry=0
