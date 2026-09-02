@@ -1,0 +1,41 @@
+name: TB10 Prepublication Schema Validation
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb10-schema-validate.txt
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: directional-tb10-schema-validation
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: tb10-schema-validation
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-self:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/tb10-schema-validator.yml
+      retention_days: 7
+    secrets: inherit
+
+  validate-candidate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .agents/Directional/turn-payloads/tb10-candidate.yml
+      retention_days: 7
+    secrets: inherit
