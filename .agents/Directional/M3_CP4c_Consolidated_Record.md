@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB12 is the latest runtime authority** on immutable package **82** / selector **378**: 370 PASS / 8 RED, accepted **365/365**, first red ordinal 366 at `RotationRayOrderKeyCollision`, vertex 47, certification attempt 0 / 0 cut edges, with **both colliding rays retained** (arc 20/trace 6/Forward/origin 47 and arc 23/trace 9/Reverse/origin 71, both `(primary,secondary)=(3,0)` in face `(45,46,47)` at fan slot 1) inside a complete untruncated 5-ray census. **`M3-CP4c-3-TB12-REV` proved the root cause - BI2 alternative 2:** both rays are valid (v47 emits exactly three rays into three different wedges; the Reverse rays are legitimate terminations from singularities 71 and 10), the fan is combinatorially correct down to which wedge a ray occupies, and the only undefined quantity is the within-wedge order - for which `RayOrderKey::secondary` is the designated field, filled with the ray's **origin** port ordinal instead of a locus-relative rank. The correct convention already exists at the edge locus in `edge_locus_secondary_rank`. Ordering by identity is semantically wrong, and redefining `secondary` is provably accepted-safe because it is consulted only on a `primary` tie, which for trace rays means a shared wedge - a hard error today. `M3-CP4c3-TB11-REV-CAND-01` is CLOSED; `M3-CP4c3-TB11-CAND-01` transitions to root-cause-proved; new `M3-CP4c3-TB12-REV-CAND-01` is ACTIVE. Exact next is **`M3-CP4c-3-CB15`** - Code + Build, **product correction**, under **BJ0-BJ9**. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **79**.
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. TB12 remains the latest runtime authority on package 82 / selector 378: accepted **365/365**, first red ordinal 366 at the distinct-ray same-sector v47 `RotationRayOrderKeyCollision`. TB12-REV proved BI2 alternative 2: the two rays are valid and `secondary` was incorrectly taken from each ray's origin namespace. **CB15 is now COMPLETE / BUILD GREEN / RUNTIME-FREE** at source `a2fd98eaa015ff5872890bb1945cf4e9e9493615`: vertex-locus trace rays use exact locus-relative within-wedge rank, exact ties fail closed as `RotationVertexTraceRaysExactlyCoincident`, selector **379** is `ef51298f...2594b7`, and immutable package **83** is artifact `9861269273` (`1b8ce6a1...901cab4`). No runtime acceptance is inferred. `M3-CP4c3-TB12-REV-CAND-01` is implemented/pending TB13; `M3-CP4c3-TB11-CAND-01` remains open until the frozen TB13 conjunctive discriminators pass. Exact next is artifact-only **`M3-CP4c-3-TB13`**. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **80**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -42,8 +42,11 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — frozen append-only diagnostic selector; selector 374 is its unchanged byte prefix.
 - `Architecture_M3_CP4c3_Required_Green_Selector_376.txt` — frozen append-only diagnostic selector; selector 375 is its unchanged byte prefix.
 - `Architecture_M3_CP4c3_Required_Green_Selector_377.txt` — frozen prefix authority; selector 376 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_378.txt` — **current append-only execution selector**; selector 377 is its unchanged byte prefix.
+- `Architecture_M3_CP4c3_Required_Green_Selector_378.txt` — frozen append-only prefix; selector 377 is its unchanged byte prefix.
+- `Architecture_M3_CP4c3_Required_Green_Selector_379.txt` — **current append-only execution selector**; selector 378 is its unchanged byte prefix.
 - `Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — **current build/package authority**: source `71ece3ca…`, immutable package 82, selector 378 diagnostics.
+- `Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — **current build/package authority**: source `a2fd98ea…`, immutable package 83, selector 379 exact vertex-locus rank correction.
+- `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md` — **exact next-turn execution authority** for package 83 / selector 379.
 - `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB12 execution authority for package 82 / selector 378.
 - `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365/365 accepted prefix, distinct-ray same-sector first red at ordinal 366, complete 378-process remainder and immutable postflight.
 - `Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — **exact next-turn authority**, BI0-BI7.
@@ -727,24 +730,15 @@ The CB1 report's exact bytes remain recoverable from Git history and no current/
 
 After the durable start-of-turn checklist, load:
 
-1. `ORIENTATION.md` — read first and update during the REVIEW turn.
+1. `ORIENTATION.md` — read first.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — **frozen BI0-BI7 review authority.**
-5. `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority.**
-6. `Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — package-82/build authority.
-7. `Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — prior alternatives and BH0-BH9 rationale.
-8. `Architecture_M3_CP4c3_Required_Green_Selector_378.txt` and frozen selector 377.
+4. `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md` — **binding next execution authority.**
+5. `Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — **current package-83/build authority.**
+6. `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — latest runtime baseline.
+7. `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` — root-cause and BJ0-BJ9 authority.
+8. `Architecture_M3_CP4c3_Required_Green_Selector_379.txt` and frozen selector 378.
 9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB15` - Code + Build, PRODUCT CORRECTION.** Follow section 8.2 **BJ0-BJ9** of
-`Architecture_M3_CP4c3_TB12_Independent_Review_Record.md`. Replace the vertex-locus `RayOrderKey::secondary` with
-an **exact within-wedge rank measured about the locus vertex**, following the `edge_locus_secondary_rank`
-convention; handle both orientations; keep exactly-coincident rays **fail-closed** under a distinct typed
-condition. **Do not** add `arc`, `trace` or `orientation` to the collision predicate or comparator - ordering two
-geometrically distinct rays by identity can publish a rotation that disagrees with the embedding being certified.
-Leave `primary`, `build_vertex_fan_slots`, `trace_ray_face`, the edge-locus branch and the incidence map
-unchanged; do not revert CB12 or CB14; do not repair the finalize/contact fall-through; do not decouple 371/372.
-Selector 378 stays byte-frozen; append selector 379 only on demonstrated falsification. Eight compile targets,
-GMP/GMPXX linkage mandatory.
+**Exact next:** artifact-only **`M3-CP4c-3-TB13`** on immutable package **83** / source `a2fd98eaa015ff5872890bb1945cf4e9e9493615`. Run selector 379 from ordinal 1, one identity per fresh process, preserve 365/365, prove the old v47 `RotationRayOrderKeyCollision` no longer occurs, require distinct `secondary` ranks and all five rays at v47, and preserve any new red exactly for review. No rebuild, repair, selector/test/fixture/source mutation, generated discovery, or benchmark.

@@ -1,6 +1,6 @@
 # Directional — Orientation
 
-> **Current CP4c-3 runtime authority (2026-09-02):** TB11 on immutable package 81 / selector 377 is 369 PASS / 8 RED with accepted prefix 365/365. First red 366 is now `RotationRayOrderKeyCollision` at source vertex 47, certification attempt 0 / zero cut edges, localized to post-sort trace-key collision validation in `build_rotation_system`. Exact next is independent `M3-CP4c-3-TB11-REV`; no semantic fix is authorized yet.
+> **Current CP4c-3 authority (2026-09-02):** TB12 remains latest runtime at accepted 365/365 / first red 366; CB15 is current build authority on immutable package 83 / selector 379. Exact next is artifact-only `M3-CP4c-3-TB13`; CB15 makes no runtime-acceptance claim.
 
 
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
@@ -31,8 +31,7 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB12-REV`, which **proved the root cause** of the ordinal-366
-collision and froze one bounded **product** successor.
+**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-CB15`, **COMPLETE / BUILD GREEN / RUNTIME-FREE**; immutable package 83 is frozen for TB13.
 
 **CB14 delivered both operands.** TB12 (package 82, source `71ece3ca184e90858d9222fb014b37c16d292294`, run/job
 `33657062615 / 100338185825`) re-proved **365/365** and retained the rejected pair:
@@ -61,14 +60,7 @@ that departs from the convention.
 made correct. **BI2 alternative 2 is proved**: valid distinct rays collapsed by an under-discriminating
 collision-equivalence contract.
 
-One bounded successor is authorized: **`M3-CP4c-3-CB15`** under **BJ0–BJ9**, a **product correction** — replace the
-vertex-locus `secondary` with an **exact within-wedge rank about the locus vertex**, keep exactly-coincident rays
-**fail-closed** under a distinct typed condition, and **do not** add `arc`/`trace`/`orientation` to the predicate,
-because ordering by identity is proved semantically wrong. **Accepted-boundary safety is proved structurally:**
-`secondary` is consulted only on a `primary` tie, a `primary` tie between trace rays means a shared wedge, and every
-shared-wedge case is a hard error today — so redefining it cannot change any rotation that succeeds now. Selector
-**378** stays byte-frozen; selector 379 is conditional on BJ6. Stable accounting **44 / 14 / 30**, debt **5**,
-semantic M3 packages **79**.
+CB15 has now implemented that bounded successor under **BJ0–BJ9**. Final source `a2fd98eaa015ff5872890bb1945cf4e9e9493615` uses an **exact within-wedge rank about the locus vertex**, keeps exactly-coincident rays **fail-closed** under `RotationVertexTraceRaysExactlyCoincident`, and does **not** add `arc`/`trace`/`orientation` identity ordering. Selector 378 remains byte-frozen; selector **379** appends one compiled witness. Eight-target GMP/GMPXX compile and immutable package **83** are green with `runtimeExecution=false`. **Exact next is artifact-only `M3-CP4c-3-TB13`**. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **80**.
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB11-REV` proved the collision was underdetermined because the
 emitter retained neither operand, and froze the diagnostic-only CB14 that produced the evidence above. Its
@@ -159,24 +151,11 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB12-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
-selector **378** (`86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`, 378 identities). Selector 377
-(`7255ac86…6426cbec1`) is its exact 377-identity prefix, and the first 365 lines reproduce the accepted
-`6b5b6555…cfc14b8a1` — so CB14 appended exactly one identity,
-`GlobalTopologyPlan.RotationRayOrderCollisionDiagnosticsSurviveProductionFailureProjection`, and reordered nothing.
+**Current runtime authority — TB12 / TB12-REV.** Accepted authority remains selector **365**. TB12 on immutable package **82** / selector **378** produced **370 PASS / 8 RED**, kept ordinals 1–365 green, and first-red ordinal 366 at `RotationRayOrderKeyCollision`, source vertex 47, attempt 0 / 0 cut edges. TB12-REV proved BI2 alternative 2: both same-wedge rays are valid and vertex-locus `secondary` incorrectly came from each ray's origin namespace.
 
-**TB12 is the latest semantic runtime evidence** (package 82, source
-`71ece3ca184e90858d9222fb014b37c16d292294`, run/job `33657062615 / 100338185825`, result artifact `9857275334`):
-**370 PASS / 8 RED**, ordinals **1–365 green**, first red **366** at `RotationRayOrderKeyCollision`, source vertex
-47, certification attempt 0 / 0 cut edges, with **both colliding rays and a complete 5-ray fan census retained**;
-report-only 367, 368, 369, 370, 371, 372, 374; ordinals 373/375/376/377/378 PASS; immutable pre/postflight PASS.
+**Current build authority — CB15.** Final source **`a2fd98eaa015ff5872890bb1945cf4e9e9493615`** replaces that value with an exact locus-relative within-wedge rank, covering Forward, Reverse and interior-terminal rays; exact ties remain fail-closed under `RotationVertexTraceRaysExactlyCoincident`. Selector **379** is `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`; selector 378 is its exact frozen prefix. Immutable package **83** is artifact `9861269273` (`1b8ce6a12edc8f7949deea3c43855e94e5755c0e73ed1cb603a2acd50901cab4`). No Directional runtime ran in CB15.
 
-`M3-CP4c-3-TB12-REV` **proved the root cause** — BI2 alternative 2, an under-discriminating
-collision-equivalence contract whose specific defect is that `RayOrderKey::secondary` is not locus-relative at a
-vertex — and froze **`M3-CP4c-3-CB15` under BJ0–BJ9**, a product correction (§7 item 1). Stable accounting is
-**44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **79**. Ordinal 370, the sphere, saturation,
-the folded-cone witness, the 371/372 test coupling, the finalize/contact fall-through and the mechanical
-zero-unbound debt remain deferred and untouched. **Vertex 30 is still not reached.**
+**Exact next is artifact-only `M3-CP4c-3-TB13`.** It must preserve 365/365, prove the old v47 collision absent, require distinct former-pair `secondary` values and all five v47 rays, and preserve any new stage/reason/locus exactly. Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **80**. Deferred owners are unchanged and there is no vertex-30 discriminator.
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -199,14 +178,14 @@ accepted selector is cumulative and each checkpoint's prefix is byte-identical t
 | CP4c-3 diagnostic 375 (one append) | `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0` |
 | CP4c-3 376 (one append) | `6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8` |
 | **CP4c-3 execution selector 377 (current, TB10)** | `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1` |
+| CP4c-3 execution selector 378 (TB12 diagnostics; frozen prefix) | `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8` |
+| **CP4c-3 execution selector 379 (current, CB15/TB13)** | `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7` |
 
-**All fifteen values are authority**, each recomputed from committed bytes — never transcribed. The current
-execution selector file `Architecture_M3_CP4c3_Required_Green_Selector_377.txt` was re-verified independently at
-`M3-CP4c-3-TB10-REV`: 377 lines, 377 unique identities, and `head -365`, `head -367`, `head -370`, `head -373`,
-`head -374`, `head -375` and `head -376` **each reproduce their frozen hash exactly**.
+**All seventeen values are authority**, each recomputed from committed bytes — never transcribed. The current
+execution selector file `Architecture_M3_CP4c3_Required_Green_Selector_379.txt` is 379 lines / 379 unique identities; selector 378 is its exact 378-line prefix, and all earlier frozen prefixes remain byte-identical. CB15 recomputed selector 379 as `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7` without executing it.
 `Architecture_M3_CP4c1_Required_Green_Selector.txt` was retired in a cleanup and **no longer exists**; that is by
 design, because every accepted hash survives as a **prefix of its successor file**. Derive the older values from
-377 with `head -316`, `head -346`, `head -353`, `head -355`, `head -357`, `head -361`, `head -365`. 358 has its own
+379 with `head -316`, `head -346`, `head -353`, `head -355`, `head -357`, `head -361`, `head -365`. 358 has its own
 retained file. **Every selector file reproduces all of its predecessor prefixes exactly**, which is what keeps
 `first_red_ordinal` comparable across the whole arc. **Recompute rather than copy**, validate every expected digest
 as exactly 64 lowercase hex at authoring, and never write one as `PREFIX…SUFFIX` where a value is expected: `PR8`

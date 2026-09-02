@@ -1,3 +1,11 @@
+## M3-CP4c3-CB15 - exact vertex-locus within-wedge rank correction - **CURRENT BUILD AUTHORITY / GREEN / RUNTIME-FREE / NON-STABLE**
+
+- Final source **`a2fd98eaa015ff5872890bb1945cf4e9e9493615`** implements BJ1-BJ5 and selector 379 without executing runtime.
+- Eight-target GMP/GMPXX compile `33667287957 / 100372314673` is GREEN; immutable package **83** is artifact `9861269273` (`1b8ce6a12edc8f7949deea3c43855e94e5755c0e73ed1cb603a2acd50901cab4`).
+- Vertex-locus trace-ray `secondary` is now exact and locus-relative; exact coincidence remains fail-closed as `RotationVertexTraceRaysExactlyCoincident`. Selector 378 is frozen; selector 379 appends one compiled witness.
+- **Runtime status:** unmeasured. `M3-CP4c3-TB12-REV-CAND-01` is implemented but remains non-stable until TB13; `M3-CP4c3-TB11-CAND-01` closes only if TB13 proves accepted 365/365, removes the old v47 collision, and publishes distinct ranks/all five rays.
+- **Accounting:** +0 stable events / +0 recurrences. Stable totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **80**. Exact next: artifact-only `M3-CP4c-3-TB13`.
+
 ## M3-CP4c3-TB12-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md`, measures **BI0-BI7** discharged. Static
@@ -32,7 +40,7 @@
   it therefore cannot change any currently-succeeding rotation. One bounded successor frozen:
   **`M3-CP4c-3-CB15`** under **BJ0-BJ9**, product correction.
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
-  remain **44 / 14 / 30**, debt **5**, packages **79**.
+  remain **44 / 14 / 30**, debt **5**, packages **80**.
 
 ## M3-CP4c3-TB12 — distinct-ray same-sector collision measured — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
@@ -58,7 +66,7 @@
   `TraceEventPositionInvalid -> NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370
   remains typed code 4 vs 6 with missing source face; 374 remains `atlasBuild=false`. No duplicate stable event.
 - **Accounting:** same unaccepted first-red surface, **+0 stable events / +0 recurrences**; totals remain
-  **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **79**.
+  **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **80**.
 
 ## M3-CP4c3-TB11-REV - independent review adjudication - **PRIOR REVIEW AUTHORITY / STATIC / NON-STABLE**
 
@@ -121,7 +129,7 @@
 - **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
   debt **5**, packages **78**.
 
-## M3-CP4c3-TB12-REV-CAND-01 - vertex-locus ray rank is taken from the ray's origin namespace - **ACTIVE / GATING / PRODUCT / NON-STABLE**
+## M3-CP4c3-TB12-REV-CAND-01 - vertex-locus ray rank is taken from the ray's origin namespace - **IMPLEMENTED / PENDING TB13 / GATING / PRODUCT / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB12-REV`** from static derivation over TB12's retained runtime operands.
 - **Mechanism.** `RayOrderKey::secondary` is the designated within-wedge rank at a vertex locus, but is assigned
@@ -135,23 +143,23 @@
   convention for the edge locus.
 - **Accepted-boundary safety.** `secondary` is consulted only on a `primary` tie, which for trace rays means a
   shared wedge, and every shared-wedge case is a hard error today - so no currently-succeeding rotation changes.
-- **Owner:** **BJ1-BJ5** of `M3-CP4c-3-CB15`.
+- **Implementation:** BJ1-BJ5 landed in `M3-CP4c-3-CB15`; runtime owner is artifact-only **`M3-CP4c-3-TB13`**.
 - **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
-  **44 / 14 / 30**, debt **5**, packages **79**.
+  **44 / 14 / 30**, debt **5**, packages **80**.
 
 ## M3-CP4c3-TB11-CAND-01 - vertex-47 distinct-ray same-sector collision during initial certification - **ACTIVE / GATING / ROOT CAUSE PROVED AT TB12-REV / NON-STABLE**
 
 - **Adjudicated at `M3-CP4c-3-TB12-REV` as BI2 alternative 2:** both rays are valid, and they collapse because
   `RayOrderKey::secondary` at a vertex locus is the ray's **origin** port ordinal instead of a locus-relative
-  within-wedge rank. Owner: `EmbeddedGraphTopology.cpp::build_rotation_system`, vertex branch. Re-owned to
-  **`M3-CP4c-3-CB15`** (BJ0-BJ9, product correction). See `M3-CP4c3-TB12-REV-CAND-01`.
+  within-wedge rank. Owner: `EmbeddedGraphTopology.cpp::build_rotation_system`, vertex branch. CB15 has implemented the correction; runtime proof is owned by
+  **`M3-CP4c-3-TB13`** on immutable package 83. See `M3-CP4c3-TB12-REV-CAND-01`.
 
 - **Transitioned at TB12:** the missing-operand ambiguity is discharged. The rays are distinct: arc 20/trace 6/Forward/origin vertex 47 versus arc 23/trace 9/Reverse/origin vertex 71, while both have `(primary,secondary)=(3,0)` and the same face/fan slot. Exact semantic policy remains unadjudicated; owner is **`M3-CP4c-3-TB12-REV`** BI0-BI7.
 
 - **Runtime fact:** first-red ordinal 366 fails at `RotationRayOrderKeyCollision`, source vertex 47, certification attempt 0 with zero cut edges. This is no longer a diagnostic-projection ambiguity.
 - **Static localization:** the unique emitter is in `build_rotation_system` after ray keys are constructed and sorted. It rejects two vertex-locus trace rays whose `RayOrderKey.primary` and `.secondary` compare equal, before publishing the counter-clockwise rotation.
-- **Current alternatives:** simplest duplicate-incidence identity is falsified by distinct arc/trace/origin identity. Review must still decide whether both rays are valid same-sector incidences needing a tie/equivalence rule, invalid/stale provenance, or a witness/precondition violation. TB12 authorizes no semantic repair.
-- **Owner:** independent `M3-CP4c-3-TB12-REV`; trace both retained incidences end to end and adjudicate the rotation equivalence/locality contract before freezing any CB successor.
+- **Adjudication:** TB12-REV proved both rays valid and selected the origin-namespace rank defect; CB15 implemented the exact locus-relative correction without runtime.
+- **Owner:** artifact-only `M3-CP4c-3-TB13`; close only if accepted 365/365 holds, the old v47 collision is absent, and the full five-ray rotation publishes with distinct former-pair ranks.
 - **Accounting:** continuation of the existing unaccepted gating surface; **+0/+0**, totals remain **44 / 14 / 30**.
 
 ## M3-CP4c3-CB13 — diagnostic owner discharge — **BUILD GREEN / NON-STABLE / NO RUNTIME**
