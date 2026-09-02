@@ -1,0 +1,5 @@
+# M3-CP4c-3-TB12 turn closeout temporary-state manifest
+.agents/connector-triggers/tb12-closeout-drive-apply
+.agents/connector-triggers/m3-cp4c3-tb12-20260902.txt
+.agents/connector-triggers/source-snapshot/tb12-20260902.txt
+.agents/Directional/turn-payloads/m3-cp4c3-tb12.sh
