@@ -1,2 +1,3 @@
-M3-CP4c-3-CB12 source snapshot request
-semantic_source_sha=ec57a6a54ff18a172c66cca3dc3cf67d9697e58d
+purpose=M3-CP4c-3-CB13 source snapshot
+semantic_source_sha=4af6bee20931f69789f1932e8f5da299b438ec53
+retry=0
