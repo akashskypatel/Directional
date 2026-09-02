@@ -1,6 +1,0 @@
-turn=M3-CP4c-3-CB17
-caller_install_sha=ec0d032a506d09f05bd6115f96db182f2374d05f
-base_sha=2190ee1d751675733bd0bf058f6fefff4d515808
-patch_sha256=8908784862273f94905ecc179f1aa26df749d973ea021b3342359d2aa265b806
-file_id=1hPI7IsIIdE_UzCxOzISXklUDTo_7sYU-
-runtimeExecution=false
