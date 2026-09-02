@@ -1,0 +1,104 @@
+name: M3 CP4c3 TB9 Artifact Only
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-tb9.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb9-artifact-only
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb9
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-tb9-20260901.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  tb9:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize persistent TB9 log
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="${RUNNER_TEMP}/m3-cp4c3-tb9"
+          mkdir -p "$work/result"
+          log="$work/tb9.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=${GITHUB_WORKFLOW}" \
+            "run_id=${GITHUB_RUN_ID}" \
+            "event=${GITHUB_EVENT_NAME}" \
+            "event_sha=${GITHUB_SHA}" \
+            'control_checkout_only=true' \
+            'semantic_source=803300698289e0d0f629eaa878add1aebc7193c1' \
+            'package=79' \
+            'package_artifact_id=9826005253' \
+            'execution_selector=376' \
+            'benchmarkExecution=false' \
+            'configureExecution=false' \
+            'compileExecution=false' \
+            'relinkExecution=false' \
+            'packageRepair=false' \
+            'generatedDiscovery=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout exact control scripts only
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Immutable package 79 preflight
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: bash .agents/Directional/turn-payloads/m3cp4c3-tb9-preflight.sh
+
+      - name: Run ordered gate, zero-credit remainder, and diagnostic 376
+        shell: bash
+        run: bash .agents/Directional/turn-payloads/m3cp4c3-tb9-runtime.sh
+
+      - name: Immutable postflight
+        shell: bash
+        run: bash .agents/Directional/turn-payloads/m3cp4c3-tb9-postflight.sh
+
+      - name: Upload TB9 result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb9-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb9/result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload persistent TB9 log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb9-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb9/tb9.log
+          if-no-files-found: error
+          retention-days: 14
