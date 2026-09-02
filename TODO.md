@@ -26,38 +26,36 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB13` (Artifact-Only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB13-REV` (Independent Review + Plan)
 
-`M3-CP4c-3-CB15` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Report:
-`Architecture_M3_CP4c3_CB15_Code_Build_Report.md`. Final semantic/compiled source is
-`a2fd98eaa015ff5872890bb1945cf4e9e9493615`; immutable package **83** is artifact `9861269273`
-(Actions SHA-256 `1b8ce6a12edc8f7949deea3c43855e94e5755c0e73ed1cb603a2acd50901cab4`), selector **379** is
-`ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`, and selector 378 remains byte-frozen.
+`M3-CP4c-3-TB13` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Report:
+`Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md`. Immutable package **83** / selector **379**
+executed 379 fresh processes: **371 PASS / 8 RED**; ordinals 1–365 remain **365/365** and first red remains 366.
+The new selector-379 focused witness passes.
 
-CB15 replaced the vertex-locus trace-ray origin-port ordinal with an exact locus-relative within-wedge rank.
-Forward, Reverse and interior-terminal rays are covered; exactly coincident rays remain fail-closed under
-`RotationVertexTraceRaysExactlyCoincident`. All eight standard targets compile/link with GMP/GMPXX. No Directional
-runtime was executed and no semantic acceptance is claimed.
+Ordinal 366 no longer reports the old v47 `RotationRayOrderKeyCollision`; it now fails earlier at source vertex
+**10**, face `(8,10,11)`, `VertexTracePortOrdinalInvalid`, certification attempt 0 / zero cut edges. Because production
+stops there, TB13 does **not** publish the required v47 five-ray census or former-pair secondary ranks.
+`M3-CP4c3-TB11-CAND-01` therefore remains open.
+
+The retained reason is ambiguous in package source: it covers both the legacy port lookup/ordinal failure and failure
+of the new exact secondary-parameter computation. TB13 opens `M3-CP4c3-TB13-CAND-01`; no product correction is
+authorized until independent review identifies the earliest owner.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB13`** exactly as frozen in
-`Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md`.
+Run **`M3-CP4c-3-TB13-REV`** exactly as frozen in
+`Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md`.
 
-- [ ] Immutable preflight package 83; no rebuild, repair, relink, generated discovery, mutation, or benchmark.
-- [ ] Execute selector 379 from ordinal 1, one exact identity per fresh process.
-- [ ] Re-prove ordinals 1–365 = **365/365**.
-- [ ] Ordinal 366 must no longer report `RotationRayOrderKeyCollision` at v47; identical repeat falsifies BJ1.
-- [ ] Require former rays arc 20/trace 6/Forward and arc 23/trace 9/Reverse to carry distinct `secondary` ranks and
-      publish the complete five-ray v47 rotation.
-- [ ] If ordinal 366 still reds, preserve its exact new stage/reason/locus; do not patch in TB13.
-- [ ] Execute ordinal 379 in normal selector order and the separate non-gating mechanical diagnostic once.
-- [ ] Immutable postflight and regression/accounting review.
-
-`M3-CP4c3-TB12-REV-CAND-01` is **IMPLEMENTED / PENDING TB13 / NON-STABLE**.
-`M3-CP4c3-TB11-CAND-01` remains open until TB13 discriminators 1, 2 and 3 all hold. No vertex-30 discriminator exists.
-The 371/372 coupling, sphere 368, saturation 369, ordinal 370, folded-cone 374, vertex 30, and finalize/contact
-fall-through remain separately owned/deferred.
+- [ ] BK0 re-establish immutable package83/selector379/TB13 authority.
+- [ ] BK1 enumerate every `VertexTracePortOrdinalInvalid` emitter/condition.
+- [ ] BK2 trace the vertex-10 candidate ray incidence(s) and identify the missing discriminator if static proof stops.
+- [ ] BK3 audit exact Forward/Reverse/terminal second-point and within-wedge parameter semantics against production arc slicing.
+- [ ] BK4 separate diagnostics from semantics; if cause remains underdetermined, freeze diagnostic-only successor.
+- [ ] BK5 preserve CB15 settled exact/locus-relative ordering and no identity tie-break unless independently falsified.
+- [ ] BK6 preserve accepted 365/365 and carried-red ownership without double counting.
+- [ ] BK7 keep the v47 1+2+3 closure conjunction open; no vertex-30 discriminator.
+- [ ] BK8 freeze exactly one bounded successor and update mandatory REVIEW-turn orientation/tracker/handoff records.
 
 Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **80**.
@@ -97,7 +95,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB12 is the latest runtime authority at accepted prefix 365 / first red 366. CB15 is build-green on package 83 / selector 379 with the exact vertex-locus rank correction compiled but unexecuted. Exact next is artifact-only `M3-CP4c-3-TB13`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB13 is the latest runtime authority at accepted prefix 365 / first red 366, now moved to vertex 10 `VertexTracePortOrdinalInvalid`. CB15/package83 remains current build authority. Exact next is independent `M3-CP4c-3-TB13-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -107,7 +105,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — ordinal 366 vertex-locus rotation correction awaiting runtime proof:** TB12 retained two valid same-wedge rays at v47 and TB12-REV proved the defect: vertex-locus `secondary` used the ray origin-port ordinal instead of a locus-relative within-wedge rank. CB15 implements the exact rank, preserves exact coincidence fail-close, and freezes package 83 / selector 379 without runtime. TB13 must preserve 365/365, remove the old v47 collision, and publish distinct former-pair ranks plus all five rays before `M3-CP4c3-TB11-CAND-01` can close. Vertex 30 and the separate finalize/contact fall-through remain open and untouched.
+- [ ] **CP4c-3 criterion C2 — ordinal 366 now moves to vertex-10 ambiguous vertex-trace rank failure:** TB13 preserves 365/365 and removes the old v47 collision at the frontier, but production stops earlier at source vertex 10 / face `(8,10,11)` under `VertexTracePortOrdinalInvalid`. That reason conflates the legacy port lookup/ordinal failure with failure of the new exact secondary-parameter computation, and retained evidence does not identify arc/trace/orientation or subcondition. `M3-CP4c3-TB13-CAND-01` is the gating owner for independent review. The v47 five-ray/distinct-rank conjunction remains open under `M3-CP4c3-TB11-CAND-01`; vertex 30 and finalize/contact remain separate and untouched.
 - [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. Amendment 15's barrier-cycle and Euler-cut contracts have been unmeasured from TB2 through TB10 for a reason unrelated to either. Corrective is test-only (an atlas-scoped fixture accessor, assertions byte-unchanged); deferred because clearing ordinal 366 unblocks them automatically. `M3-CP4c3-TB10-REV-CAND-01`.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.

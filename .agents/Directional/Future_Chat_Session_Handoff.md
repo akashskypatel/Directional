@@ -92,45 +92,42 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB13` — EXACT NEXT / Artifact-Only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB13-REV` — EXACT NEXT / Independent REVIEW + PLAN
 
-`M3-CP4c-3-CB15` is **COMPLETE / BUILD GREEN / RUNTIME-FREE**. Authoritative report:
-`Architecture_M3_CP4c3_CB15_Code_Build_Report.md`; frozen execution plan:
-`Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c-3-TB13` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Authoritative report:
+`Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md`; frozen successor:
+`Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md`.
 
-### CB15 build authority
+### TB13 runtime authority
 
-- final semantic/compile/package source: **`a2fd98eaa015ff5872890bb1945cf4e9e9493615`**;
-- final eight-target compile run/job: **`33667287957 / 100372314673`**; result artifact `9861189794` SHA-256
-  `310d8ac7a0b40cd11932e0e0a1a8c1b9e19689f927a6d9f383981867e6810f50`; log artifact `9861190565` SHA-256
-  `dfce2f1c1e8b0ca877d5ceb4ba576f36812ebd4582ef264806ac32c408115e2e`; GMP/GMPXX verified;
-- immutable package **83** run/job **`33667812301 / 100373836357`**, artifact **`9861269273`** SHA-256
-  `1b8ce6a12edc8f7949deea3c43855e94e5755c0e73ed1cb603a2acd50901cab4`; inner tar
-  `c09d98ed35e9155805f759f27f54491b03643851650ce49dcb65c2191fc069ff`; packaged source
-  `55305976488edc1edc13432e953787555c5ef5d4dcaff041617c0ae568d922c2`;
-- selector **379** SHA-256 `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`; selector 378 remains
-  byte-frozen at `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`;
-- no Directional runtime, selector execution, benchmark, generated discovery, or acceptance occurred in CB15.
+- semantic/package source **`a2fd98eaa015ff5872890bb1945cf4e9e9493615`**; immutable package **83** artifact
+  `9861269273` / selector **379** `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`;
+- TB13 run/job **`33671968437 / 100387569925`**; result artifact **`9862995609`** SHA-256
+  `d7da71ea122a20225e6e3e7b9f2534fd3a7d8c1b1401ebc64b5f1191eb21bb8b`; log artifact **`9862996106`** SHA-256
+  `b9a6288472f0ec204f93aa0f209b457c365e4c8ecf98e166c100c99bb3f6caf4`;
+- 379 fresh processes: **371 PASS / 8 RED**; ordinals **1-365 = 365/365 PASS**; first red 366; selector 379 PASS;
+- no rebuild/repair/configure/relink/generated discovery/product/test/fixture/selector mutation or benchmark; package postflight immutable.
 
-### What CB15 changed
+### New gating boundary
 
-The vertex-locus branch of `build_rotation_system` now ranks same-wedge trace rays with an **exact locus-relative
-within-wedge parameter** rather than the ray's origin-port ordinal. Forward and Reverse orientations and interior
-terminal contacts use exact source-face barycentrics. Exact ties remain fail-closed under the distinct typed reason
-`RotationVertexTraceRaysExactlyCoincident`; no arc/trace/orientation identity tie-break was introduced. Selector 379
-adds one compiled witness, `GlobalTopologyPlan.VertexLocusSecondaryRankUsesExactWithinWedgeGeometry`.
+Ordinal 366 no longer repeats the v47 `RotationRayOrderKeyCollision`. It now fails earlier at source vertex **10**,
+face `(8,10,11)`, with `rotationSystemReason=VertexTracePortOrdinalInvalid`, `cutCandidateCount=450`,
+`certificationAttempt=0`, `certificationCutEdges=0`. No v47 five-ray census or former-pair secondary ranks are
+published because production stops first at vertex 10. Therefore `M3-CP4c3-TB11-CAND-01` remains open and
+`M3-CP4c3-TB12-REV-CAND-01` is only partially runtime discriminated.
 
-### TB13 binding discriminators
+Package source reuses `VertexTracePortOrdinalInvalid` for two distinct conditions: invalid/missing origin-port
+ordinal and failure of the new exact `vertex_locus_secondary_parameter`. The artifact cannot distinguish them and
+does not retain arc/trace/orientation for the failing v10 ray. New candidate `M3-CP4c3-TB13-CAND-01` is **ACTIVE /
+GATING / PRODUCT-DIAGNOSTIC AMBIGUITY / NON-STABLE**. Do not infer the semantic owner from the reason name.
 
-1. ordinals **1–365 remain 365/365**;
-2. ordinal 366 **must not** repeat `RotationRayOrderKeyCollision` at vertex 47;
-3. former colliding rays arc 20/trace 6/Forward from v47 and arc 23/trace 9/Reverse from v71 receive **distinct**
-   `secondary` values and the v47 rotation publishes all five rays;
-4. any residual ordinal-366 red must move to a different stage/reason/locus and be preserved exactly;
-5. `M3-CP4c3-TB11-CAND-01` closes only when 1, 2 and 3 all hold.
+### Review authority — BK0-BK8
 
-There is **no vertex-30 discriminator**. The 371/372 coupling, sphere 368, saturation 369, ordinal 370, folded-cone
-374, vertex 30 and finalize/contact fall-through remain unchanged/deferred.
+The independent review must enumerate every emitter, trace the v10 candidate incidence(s), audit exact
+Forward/Reverse/terminal second-point semantics, separate diagnostic insufficiency from semantic defect, preserve
+CB15's settled exact locus-relative ordering unless falsified, keep all carried owners separate, and freeze exactly
+one bounded successor. If static authority cannot identify the firing subcondition, the successor must be
+diagnostic-only. No Directional runtime or compile is allowed in REVIEW.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 / 14 / 30**, debt
 **5**, semantic M3 package count **80**.
@@ -138,18 +135,19 @@ Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounti
 ## Context Load Plan
 
 `load_next`:
-- artifact-only TEST + BENCHMARK guidance
+- independent REVIEW guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md` — **binding TB13 execution authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — package-83 build authority and BJ9 discriminators.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — baseline runtime authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` — root-cause/BJ0-BJ9 authority.
-5. `.agents/Directional/GMP_COMPILE_POLICY.md`, `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first; REVIEW must update it before closeout.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md` — **binding BK0-BK8 review authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — current runtime evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — package-83 implementation/build authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` — BJ0-BJ9 and settled v47 semantic rationale.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `M3_CP4c_Consolidated_Record.md`, `LESSONS.md`.
 
-TB13 consumes immutable package 83 only. No source/build/package repair is authorized.
+Review is static/planning-only: no runtime, compile, package, implementation, test, fixture, selector, or benchmark
+mutation.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

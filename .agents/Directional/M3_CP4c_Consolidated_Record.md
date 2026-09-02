@@ -46,10 +46,12 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_Required_Green_Selector_379.txt` — **current append-only execution selector**; selector 378 is its unchanged byte prefix.
 - `Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — **current build/package authority**: source `71ece3ca…`, immutable package 82, selector 378 diagnostics.
 - `Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — **current build/package authority**: source `a2fd98ea…`, immutable package 83, selector 379 exact vertex-locus rank correction.
-- `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md` — **exact next-turn execution authority** for package 83 / selector 379.
+- `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB13 execution authority for package 83 / selector 379.
+- `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365/365 accepted prefix, moved first red at v10 `VertexTracePortOrdinalInvalid`, complete 379-process remainder and immutable postflight.
+- `Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md` — **exact next-turn authority**, BK0-BK8.
 - `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB12 execution authority for package 82 / selector 378.
-- `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365/365 accepted prefix, distinct-ray same-sector first red at ordinal 366, complete 378-process remainder and immutable postflight.
-- `Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — **exact next-turn authority**, BI0-BI7.
+- `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — prior runtime authority: 365/365 accepted prefix, distinct-ray same-sector first red at ordinal 366, complete 378-process remainder and immutable postflight.
+- `Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — discharged BI0-BI7 review scope.
 - `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — historical compile/package evidence.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — historical TB2 execution/retry authority.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — historical TB2 blocker/postflight authority.
@@ -204,11 +206,19 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
 `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
-`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
-`Architecture_M3_CP4c3_CB14_Code_Build_Report.md`; exact next-turn authority is
-`Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md`.
+`Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
+`Architecture_M3_CP4c3_CB15_Code_Build_Report.md`; exact next-turn authority is
+`Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md`.
 
-### `M3-CP4c-3-TB12` — current measured runtime boundary
+### `M3-CP4c-3-TB13` — current measured runtime boundary
+
+Artifact-only TB13 consumed immutable package **83** / selector **379** from source `a2fd98eaa015ff5872890bb1945cf4e9e9493615`. Run/job `33671968437 / 100387569925`; result/log artifacts `9862995609` (`d7da71ea122a20225e6e3e7b9f2534fd3a7d8c1b1401ebc64b5f1191eb21bb8b`) / `9862996106` (`b9a6288472f0ec204f93aa0f209b457c365e4c8ecf98e166c100c99bb3f6caf4`). All 379 identities ran in fresh processes: **371 PASS / 8 RED**; accepted 1-365 green, first red 366, and selector 379 PASS. The old v47 `RotationRayOrderKeyCollision` is absent at ordinal 366, but production now fails earlier at source vertex 10 / face `(8,10,11)` under `VertexTracePortOrdinalInvalid`, attempt 0 / zero cut edges. Because that earlier failure prevents publication of the v47 five-ray census and former-pair secondary ranks, the TB11 closure conjunction is not satisfied. Package source reuses the new reason for both legacy port validation and exact secondary-parameter failure, so exact cause is underdetermined and owned by `M3-CP4c-3-TB13-REV` BK0-BK8. Package postflight is immutable; accepted authority 365/365, accounting 44/14/30, debt 5, packages 80.
+
+### `M3-CP4c-3-CB15` — current build/package boundary
+
+CB15 final source `a2fd98eaa015ff5872890bb1945cf4e9e9493615` replaces vertex-locus origin-port ordinal ordering with exact locus-relative within-wedge rank and keeps exact coincidence fail-closed. Eight-target GMP/GMPXX compile `33667287957 / 100372314673` is green. Immutable package **83** artifact `9861269273` has Actions SHA-256 `1b8ce6a12edc8f7949deea3c43855e94e5755c0e73ed1cb603a2acd50901cab4`; inner tar `c09d98ed35e9155805f759f27f54491b03643851650ce49dcb65c2191fc069ff`; selector 379 `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`. TB13 now provides its runtime disposition; accepted authority remains 365/365.
+
+### `M3-CP4c-3-TB12` — prior measured runtime boundary
 
 Artifact-only TB12 consumed package **82** / selector **378** with no rebuild or repair. Run/job
 `33657062615 / 100338185825`; result/log artifacts `9857275334`
