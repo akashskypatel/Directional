@@ -1,3 +1,38 @@
+## M3-CP4c3-TB13-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB13_Independent_Review_Record.md`, measures **BK0-BK8** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BK0.** Source `a2fd98ea` is an ancestor of branch HEAD with **no code drift**; selector 379 recomputes to
+  `ef51298f...842594b7` with 379 identities, selector 378 is its exact 378-prefix, and the first 365 lines
+  reproduce accepted `6b5b6555...cfc14b8a1`. CB15 appended exactly one identity,
+  `GlobalTopologyPlan.VertexLocusSecondaryRankUsesExactWithinWedgeGeometry` (BJ6 honoured). TB13's start-of-turn
+  `READ_MODE` deviation is recorded as procedural only.
+- **BK1 - two emitters, one reason.** `VertexTracePortOrdinalInvalid` is emitted at
+  `EmbeddedGraphTopology.cpp:1204` (legacy: port lookup failed or `ordinal < 0`) and `:1217` (CB15's
+  `vertex_locus_secondary_parameter == nullopt`). Both set only reason + `sourceVertex` + `sourceFace`; no other
+  producer or projection creates the rendered reason.
+- **BK2 - the failing incidence, determined.** The legacy emitter is **excluded**: CB15's delta touches four files,
+  none `SurfaceCellTracing.cpp`, so the network is byte-identical to TB12's; node ids are monotone in vertex index
+  and `incidences` is a node-id map, so v10 is processed **before** v47 - which TB12 reached. Only a **Forward**
+  ray can fail emitter B, because the `Reverse` path resolves the segment's own entry point. The failure is
+  therefore an **emanating ray at v10 in face `(8,10,11)`** - mesh row 8, fan slot 7, bounded by edge `10-11`.
+- **BK3 - the contract gap.** `segment.edgeTransitExit` is assigned only on the edge-transit path, never for a
+  `VertexHit`; the remaining Forward fallbacks require expressibility in *this* face. TB7-REV proved v10's port
+  trace runs along mesh edge `(10,11)` and lands on **vertex 11**, a corner of its own face. The point is
+  barycentric `(0,0,1)`: denominator 1, both coordinates non-negative, parameter exactly **0**. A valid ray with a
+  valid exact parameter, rejected because the helper cannot locate its second point.
+- **BK4/BK5 - semantic defect, bounded.** BK4's diagnostic-only fallback does not apply because the condition is
+  determined. The correction is bounded to `vertex_trace_ray_second_point`; every CB15 invariant is preserved and
+  CB12/CB14 are untouched. One diagnostic measure travels with it: the two emitters must stop sharing a reason.
+- **BK6 - accepted-boundary safety.** The new case is appended **last** in a chain whose current exhaustion is a
+  hard error, so no currently-succeeding rotation can change. Where the existing continuation case and the new
+  vertex case both apply they resolve to the same shared vertex.
+- **BK7 - v47 obligation preserved.** `M3-CP4c3-TB11-CAND-01` does **not** close; `M3-CP4c3-TB12-REV-CAND-01` is
+  only partially discriminated. There is still no vertex-30 discriminator.
+- **BK8 - one bounded successor frozen:** **`M3-CP4c-3-CB16`** under **BL0-BL9**.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **80**.
+
 ## M3-CP4c3-TB13 — first red moves to vertex 10 before v47 re-proof — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 83 / source `a2fd98eaa015ff5872890bb1945cf4e9e9493615`; run/job `33671968437 / 100387569925`; result artifact `9862995609` (`d7da71ea122a20225e6e3e7b9f2534fd3a7d8c1b1401ebc64b5f1191eb21bb8b`); log artifact `9862996106` (`b9a6288472f0ec204f93aa0f209b457c365e4c8ecf98e166c100c99bb3f6caf4`).
@@ -5,7 +40,30 @@
 - **BJ9:** old v47 `RotationRayOrderKeyCollision` is absent, but ordinal 366 now fails earlier at source vertex **10**, face `(8,10,11)`, `VertexTracePortOrdinalInvalid`, attempt 0 / 0 cut edges, `cutCandidateCount=450`. The v47 five-ray census/former-pair secondary values are not published, so the required closure conjunction is incomplete.
 - **Accounting:** same unaccepted gating surface, **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **80**. Exact owner: independent `M3-CP4c-3-TB13-REV`.
 
-## M3-CP4c3-TB13-CAND-01 — `VertexTracePortOrdinalInvalid` conflates the new vertex-10 failure conditions — **ACTIVE / GATING / PRODUCT-DIAGNOSTIC AMBIGUITY / NON-STABLE**
+## M3-CP4c3-TB13-REV-CAND-01 - the Forward second-point chain has no case for a vertex exit - **ACTIVE / GATING / PRODUCT / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB13-REV`** from static authority over TB13's runtime evidence.
+- **Mechanism.** `vertex_trace_ray_second_point` locates a Forward ray's second point through four cases:
+  `segment.edgeTransitExit`, the next segment's entry point *expressible in this face*, a `terminalContact` in this
+  face, and a `terminalPoint` expressible in this face. `edgeTransitExit` is assigned only on the edge-transit
+  path, so a segment that exits through a **vertex** - Amendment 3's `VertexHit` - matches none of them unless a
+  later fallback coincidentally applies. `vertex_locus_secondary_parameter` then returns `nullopt` and the
+  rotation fails.
+- **The rejected ray is valid and exactly representable.** v10's port trace runs along mesh edge `(10,11)` to
+  vertex 11, a corner of face `(8,10,11)`. Second point `(0,0,1)`, denominator 1, parameter exactly **0**.
+- **Correction.** Append a vertex-exit case **last** in the chain, recovering the vertex identity from existing
+  exact authority (`FieldBoundaryPoint::source_support()` on the continuation entry point, or the segment's
+  `outgoingCarrier` endpoint the continuation reaches). Last placement makes accepted-safety exact.
+- **Owner:** **BL1-BL3** of `M3-CP4c-3-CB16`.
+- **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, packages **80**.
+
+## M3-CP4c3-TB13-CAND-01 - `VertexTracePortOrdinalInvalid` conflates the new vertex-10 failure conditions - **ACTIVE / GATING / ROOT CAUSE PROVED AT TB13-REV / NON-STABLE**
+
+- **Adjudicated at `M3-CP4c-3-TB13-REV`:** the firing emitter is CB15's `vertex_locus_secondary_parameter ==
+  nullopt` branch (`:1217`), not the legacy port branch (`:1204`), and the cause is a missing **vertex-exit**
+  case in `vertex_trace_ray_second_point`'s Forward chain. Re-owned to **`M3-CP4c-3-CB16`** (BL0-BL9). The
+  reason-collapse itself is corrected by BL3. See `M3-CP4c3-TB13-REV-CAND-01`.
 
 - **Runtime fact:** ordinal 366 first-red is `RotationSystemInconsistent` at source vertex 10 / face `(8,10,11)`, rendered as `VertexTracePortOrdinalInvalid`, certification attempt 0 / zero cut edges. 367/371/372 share the same upstream exception.
 - **Static ambiguity:** package source assigns that one reason to both (a) missing/negative origin port ordinal and (b) `vertex_locus_secondary_parameter(...) == nullopt`; the latter itself covers multiple exact second-point/face/locus/denominator failure modes. Retained evidence has no arc/trace/orientation or subcondition tag.

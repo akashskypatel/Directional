@@ -26,36 +26,58 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB13-REV` (Independent Review + Plan)
+## Current focus — `M3-CP4c-3-CB16` (Code + Build, PRODUCT CORRECTION)
 
-`M3-CP4c-3-TB13` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Report:
-`Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md`. Immutable package **83** / selector **379**
-executed 379 fresh processes: **371 PASS / 8 RED**; ordinals 1–365 remain **365/365** and first red remains 366.
-The new selector-379 focused witness passes.
+`M3-CP4c-3-TB13-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` (**BK0–BK8** discharged, static only).
 
-Ordinal 366 no longer reports the old v47 `RotationRayOrderKeyCollision`; it now fails earlier at source vertex
-**10**, face `(8,10,11)`, `VertexTracePortOrdinalInvalid`, certification attempt 0 / zero cut edges. Because production
-stops there, TB13 does **not** publish the required v47 five-ray census or former-pair secondary ranks.
-`M3-CP4c3-TB11-CAND-01` therefore remains open.
+TB13's first red moved **earlier**, to source vertex **10**, face `(8,10,11)`, reason
+`VertexTracePortOrdinalInvalid`. TB13 called the cause underdetermined; `M3-CP4c-3-TB13-REV` **determined it from
+static authority**.
 
-The retained reason is ambiguous in package source: it covers both the legacy port lookup/ordinal failure and failure
-of the new exact secondary-parameter computation. TB13 opens `M3-CP4c3-TB13-CAND-01`; no product correction is
-authorized until independent review identifies the earliest owner.
+- **That reason names two emitters.** `EmbeddedGraphTopology.cpp:1204` (legacy: port lookup failed or
+  `ordinal < 0`) and `:1217` (CB15's `vertex_locus_secondary_parameter == nullopt`) both set only reason,
+  `sourceVertex` and `sourceFace`.
+- **The legacy emitter is excluded.** CB15 touched four files, none `SurfaceCellTracing.cpp`, so the network is
+  **byte-identical** to TB12's; node ids are monotone in vertex index and `incidences` is a node-id map, so v10 is
+  processed **before** v47 — which TB12 reached. v10 passed that branch on identical inputs.
+- **Only a `Forward` ray can fail.** The `Reverse` path resolves the segment's own entry point, which lies on an
+  edge of that segment's face by construction. So the failure is an **emanating ray at v10 in face `(8,10,11)`** —
+  mesh row 8, fan slot 7, bounded by edge `10-11`.
+- **The defect is one missing case.** `segment.edgeTransitExit` is assigned only on the edge-transit path, never
+  for a `VertexHit`. TB7-REV proved v10's port trace runs along mesh edge `(10,11)` to **vertex 11**, a corner of
+  its own face — so the four-case Forward chain finds nothing, while the point is barycentric `(0,0,1)` giving
+  denominator 1 and an exact within-wedge parameter of **0**. Every guard would have passed.
+- **Accepted-boundary safety is structural.** Appending the new case **last** means it is reached only where the
+  helper errors today, so no currently-succeeding rotation can change.
+
+`M3-CP4c3-TB13-CAND-01` transitions to **root cause proved**; new `M3-CP4c3-TB13-REV-CAND-01` is **ACTIVE**.
+**The v47 obligation stays open** — `M3-CP4c3-TB11-CAND-01` does **not** close and
+`M3-CP4c3-TB12-REV-CAND-01` is only partially discriminated, because the five-ray v47 rotation with distinct ranks
+was never reached. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, vertex 30 and
+the finalize/contact fall-through are unchanged. **There is still no vertex-30 discriminator.**
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB13-REV`** exactly as frozen in
-`Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md`.
+Run **`M3-CP4c-3-CB16`** under §9 **BL0–BL9** of
+`Architecture_M3_CP4c3_TB13_Independent_Review_Record.md`.
 
-- [ ] BK0 re-establish immutable package83/selector379/TB13 authority.
-- [ ] BK1 enumerate every `VertexTracePortOrdinalInvalid` emitter/condition.
-- [ ] BK2 trace the vertex-10 candidate ray incidence(s) and identify the missing discriminator if static proof stops.
-- [ ] BK3 audit exact Forward/Reverse/terminal second-point and within-wedge parameter semantics against production arc slicing.
-- [ ] BK4 separate diagnostics from semantics; if cause remains underdetermined, freeze diagnostic-only successor.
-- [ ] BK5 preserve CB15 settled exact/locus-relative ordering and no identity tie-break unless independently falsified.
-- [ ] BK6 preserve accepted 365/365 and carried-red ownership without double counting.
-- [ ] BK7 keep the v47 1+2+3 closure conjunction open; no vertex-30 discriminator.
-- [ ] BK8 freeze exactly one bounded successor and update mandatory REVIEW-turn orientation/tracker/handoff records.
+- [ ] **BL0** — selector 379 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
+- [ ] **BL1** — add the **vertex-exit case** to `vertex_trace_ray_second_point`'s Forward chain, recovering the
+      vertex from `source_support()` / the `outgoingCarrier` endpoint. Exact rationals only.
+- [ ] **BL2** — place it **last** in the chain, so it is reached only where the helper errors today.
+- [ ] **BL3** — **split the collapsed reason**; give emitter B its own typed name and retain arc, trace,
+      orientation, segment bounds and the failing subcondition.
+- [ ] **BL4** — preserve every CB15 invariant; do not revert CB12 or CB14.
+- [ ] **BL5** — positive (corner exit ranks at exact parameter 0/1), negative (no representable second point fails
+      under the new reason) and regression (edge-transit ray byte-identical) witnesses.
+- [ ] **BL6** — append selector 380 only on demonstrated falsification.
+- [ ] **BL7** — prohibitions: no identity tie-break, no tolerance/float, no change to the projection formula,
+      `vertex_trace_secondary_ranks`, `build_vertex_fan_slots`, `trace_ray_face`, the edge-locus branch or the
+      incidence map; no CB12/CB14/CB15 revert; no finalize/contact repair; no 371/372 decoupling.
+- [ ] **BL8** — audit by assumption; prove no accepted-green rotation changes.
+- [ ] **BL9** — publish the six `M3-CP4c-3-TB14` discriminators, **including the v47 five-ray re-proof**.
+      **No vertex-30 discriminator.**
 
 Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **80**.

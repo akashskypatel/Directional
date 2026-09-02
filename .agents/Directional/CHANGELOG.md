@@ -1,3 +1,53 @@
+## 2026-09-02 — `M3-CP4c-3-TB13-REV`: vertex-10 emitter and cause determined; `M3-CP4c-3-CB16` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md`, measures **BK0–BK8**.
+Record: `Architecture_M3_CP4c3_TB13_Independent_Review_Record.md`. Static only — no runtime, compile, link,
+package, benchmark, or product/test/fixture/selector mutation.
+
+**BK0.** Source `a2fd98ea` verified as an ancestor of branch HEAD with **no code drift**; selector 379 recomputes
+to `ef51298f…842594b7` with 379 identities, selector 378 is its exact 378-identity prefix, and the first 365 lines
+reproduce accepted `6b5b6555…cfc14b8a1`. CB15 appended exactly one identity,
+`GlobalTopologyPlan.VertexLocusSecondaryRankUsesExactWithinWedgeGeometry` — BJ6 honoured. TB13's start-of-turn
+`READ_MODE` deviation is recorded as procedural only.
+
+**BK1.** `VertexTracePortOrdinalInvalid` has **two** emitters in `build_rotation_system`:
+`EmbeddedGraphTopology.cpp:1204` (legacy — port lookup failed or `ordinal < 0`) and `:1217` (CB15's
+`vertex_locus_secondary_parameter == nullopt`). Both set only reason, `sourceVertex` and `sourceFace`; no other
+producer or projection creates the rendered reason. CB15 minted a distinct reason for its fail-close case
+(`RotationVertexTraceRaysExactlyCoincident`) and reused an old one here.
+
+**BK2 — determined, not guessed.** The legacy emitter is **excluded**: CB15's delta touches four files, none
+`SurfaceCellTracing.cpp`, so the network is byte-identical to TB12's; node ids are monotone in vertex index
+(`nodeVertices` is a `std::set`) and `incidences` is a node-id map, so v10 is processed **before** v47 — which TB12
+reached. Only a **Forward** ray can fail emitter B, because the `Reverse` path resolves the segment's own entry
+point, which lies on an edge of that face by construction. The failure is an **emanating ray at v10 in face
+`(8,10,11)`** — mesh row 8, fan slot 7, bounded by edge `10-11`, confirmed with `tools/fixture_probe.py fan 10`.
+
+**BK3 — the contract gap.** `segment.edgeTransitExit` is assigned on exactly two lines, both on the **edge-transit**
+path — never for a `VertexHit`; the remaining Forward fallbacks require expressibility in *this* face. TB7-REV
+proved v10's port trace runs along mesh edge `(10,11)` and lands on **vertex 11**, a corner of its own face. The
+second point is barycentric `(0,0,1)`: denominator 1, both coordinates non-negative, parameter exactly **0**. A
+valid ray with a valid exact parameter, rejected because the helper cannot locate its second point.
+
+**BK4/BK5/BK6.** A semantic defect is proved, so the diagnostic-only fallback does not apply; the correction is
+bounded to `vertex_trace_ray_second_point`, with one diagnostic measure travelling with it (the emitters must stop
+sharing a reason, or the next TB cannot distinguish an incomplete fix from a port defect). Accepted-boundary safety
+is structural: the new case is appended **last** to a chain whose exhaustion is a hard error today, so no
+currently-succeeding rotation can change.
+
+**BK7 — the v47 obligation stays open.** `M3-CP4c3-TB11-CAND-01` does **not** close and
+`M3-CP4c3-TB12-REV-CAND-01` is only **partially** discriminated: the five-ray v47 rotation with distinct
+former-pair ranks was never reached. Any TB that clears vertex 10 must re-prove that conjunction. There is still
+no vertex-30 discriminator.
+
+**BK8.** One bounded successor frozen: **`M3-CP4c-3-CB16`** under **BL0–BL9**. Carried reds unchanged: sphere 368,
+saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, vertex 30 and the finalize/contact fall-through.
+367/371/372 share the vertex-10 upstream red with no duplicate event. **+0 stable events / +0 recurrences**; totals
+remain **44 / 14 / 30**, debt **5**, packages **80**.
+
+**Lessons added.** §4 **88** — a turn that mints a typed reason must audit the reasons it reuses. §4 **89** —
+execution order across turns is usable evidence. §4 **90** — a fallback chain owes coverage, not arithmetic.
+
 ## 2026-09-02 — `M3-CP4c-3-TB13`: accepted prefix holds; first red moves to ambiguous vertex-10 trace rank failure
 
 Artifact-only TB13 consumed immutable package **83** / source `a2fd98eaa015ff5872890bb1945cf4e9e9493615` / selector **379**. Run/job `33671968437 / 100387569925` executed 379 fresh selector processes for **371 PASS / 8 RED**: ordinals 1-365 remain **365/365**, first red remains 366, and the new `VertexLocusSecondaryRankUsesExactWithinWedgeGeometry` witness passes. Result/log artifacts are `9862995609` (`d7da71ea122a20225e6e3e7b9f2534fd3a7d8c1b1401ebc64b5f1191eb21bb8b`) / `9862996106` (`b9a6288472f0ec204f93aa0f209b457c365e4c8ecf98e166c100c99bb3f6caf4`). Package postflight is byte/mode identical; no rebuild, repair, mutation, discovery, or benchmark occurred.

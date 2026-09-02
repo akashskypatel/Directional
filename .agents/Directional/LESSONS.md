@@ -1415,6 +1415,27 @@ building any conclusion on it.**
     vertices, which is precisely where it carries no meaning. Ask which inputs actually reach a tiebreak before
     trusting it, and check whether the cases where it is correct are cases where it is also redundant.
 
+88. **A turn that mints a typed reason must audit the reasons it reuses.** `M3-CP4c-3-CB15` correctly created
+    `RotationVertexTraceRaysExactlyCoincident` for its exact-coincidence fail-close, then routed its other new
+    failure into the pre-existing `VertexTracePortOrdinalInvalid`, whose legacy emitter sets the identical locus
+    fields. The result was a first red whose cause TB13 could not attribute, recreating in one commit the
+    collapsed-reason ambiguity of lessons 79, 82 and 84. When a change adds a condition, ask not only whether the
+    new condition needs a name but whether the name being reused still denotes one thing.
+
+89. **Execution order across turns is usable evidence.** The legacy emitter was excluded at vertex 10 without
+    reading its logic: CB15 touched no file upstream of the rotation system, so the network was byte-identical to
+    the previous TB's; node ids are monotone in vertex index and the incidence map is keyed by node id, so vertex
+    10 is processed before vertex 47 - which the previous TB reached. The same code had already passed that vertex
+    on those exact inputs. When a successor changes one layer and the failure moves, the untouched layers' prior
+    successes are a proof instrument, not just context.
+
+90. **A fallback chain owes coverage, not arithmetic.** `vertex_locus_secondary_parameter`'s exact opposite-edge
+    projection and its guards were correct; the defect was that `vertex_trace_ray_second_point` enumerated four
+    ways to locate a ray's second point and omitted a fifth the producer emits - the `VertexHit` exit, documented
+    as Amendment 3 since `M3-CP4c-3-TB7-REV`. The rejected ray's parameter was exactly 0 and every guard would
+    have passed. When a function body is a lookup chain, review the chain against the producer's case list rather
+    than the mathematics that follows it.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
