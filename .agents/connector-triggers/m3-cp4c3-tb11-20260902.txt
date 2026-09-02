@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-TB11 artifact-only selector377 plus non-gating diagnostic
+package_artifact=9834661539
+selector_sha256=7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1
+retry=0
