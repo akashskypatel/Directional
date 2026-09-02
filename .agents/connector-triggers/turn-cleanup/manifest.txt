@@ -1,0 +1,7 @@
+# M3-CP4c-3-CB12 temporary-state cleanup
+.agents/connector-triggers/cb12-closeout-docs-apply.txt
+.agents/connector-triggers/cb12-compile.txt
+.agents/connector-triggers/cb12-drive-apply.txt
+.agents/connector-triggers/cb12-schema-validate.txt
+.agents/connector-triggers/m3-cp4c3-cb12-package80.txt
+.agents/Directional/turn-payloads/cb12-drive-apply-candidate.yml
