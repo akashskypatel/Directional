@@ -1075,17 +1075,46 @@ std::optional<std::size_t> edge_locus_secondary_rank(
     const SourceTopologyIndex &topology,
     const authority::SourceEdgeTopologyKey &locus,
     const GlobalTopologyArc &arc, const authority::Orientation orientation,
-    const FieldAlignedCandidateTrace &trace) {
+    const FieldAlignedCandidateTrace &trace,
+    EdgeTraceSecondaryRankFailureReason *failureReason,
+    EdgeLocusSecondaryRankDiagnosticContext *diagnosticContext) {
+  if (diagnosticContext != nullptr) *diagnosticContext = {};
+  const auto fail = [&](const EdgeTraceSecondaryRankFailureReason reason)
+      -> std::optional<std::size_t> {
+    if (failureReason != nullptr) *failureReason = reason;
+    return std::nullopt;
+  };
+
   const auto faceKey = trace_ray_face(arc, orientation, trace);
-  if (!faceKey.has_value()) return std::nullopt;
+  if (!faceKey.has_value()) {
+    return fail(
+        EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable);
+  }
+  if (diagnosticContext != nullptr) diagnosticContext->sourceFace = *faceKey;
+
   const auto faceIt = topology.faces.find(*faceKey);
-  if (faceIt == topology.faces.end()) return std::nullopt;
+  if (faceIt == topology.faces.end()) {
+    return fail(
+        EdgeTraceSecondaryRankFailureReason::SourceFaceRecordUnavailable);
+  }
+  if (diagnosticContext != nullptr)
+    diagnosticContext->faceCorners = faceIt->second.vertices;
+
   const auto contactIndex = local_edge_index(faceIt->second, locus);
-  if (!contactIndex.has_value()) return std::nullopt;
+  if (!contactIndex.has_value()) {
+    return fail(EdgeTraceSecondaryRankFailureReason::ContactEdgeUnavailable);
+  }
+  if (diagnosticContext != nullptr)
+    diagnosticContext->contactIndex = *contactIndex;
 
   const auto &segment = orientation == authority::Orientation::Forward
                             ? trace.segments[arc.firstSegment]
                             : trace.segments[arc.onePastLastSegment - 1U];
+  if (diagnosticContext != nullptr) {
+    diagnosticContext->incomingCarrier = segment.incomingCarrier;
+    diagnosticContext->outgoingCarrier = segment.outgoingCarrier;
+  }
+
   std::optional<authority::SourceEdgeTopologyKey> other;
   if (orientation == authority::Orientation::Forward) {
     if (segment.incomingCarrier.has_value() &&
@@ -1095,10 +1124,18 @@ std::optional<std::size_t> edge_locus_secondary_rank(
   } else if (segment.outgoingCarrier == locus) {
     other = segment.incomingCarrier;
   }
+  if (diagnosticContext != nullptr)
+    diagnosticContext->otherCarrier = other;
+
   if (other.has_value()) {
     const auto otherIndex = local_edge_index(faceIt->second, *other);
-    if (!otherIndex.has_value() || *otherIndex == *contactIndex) {
-      return std::nullopt;
+    if (!otherIndex.has_value()) {
+      return fail(
+          EdgeTraceSecondaryRankFailureReason::OppositeCarrierNotInFace);
+    }
+    if (*otherIndex == *contactIndex) {
+      return fail(
+          EdgeTraceSecondaryRankFailureReason::CoincidentLocalEdgeIndex);
     }
     return 2U * ((*otherIndex + 3U - *contactIndex) % 3U);
   }
@@ -1111,7 +1148,8 @@ std::optional<std::size_t> edge_locus_secondary_rank(
       return 1U + 2U * corner;
     }
   }
-  return std::nullopt;
+  return fail(
+      EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound);
 }
 
 RotationBuildResult build_rotation_system(
@@ -1359,6 +1397,62 @@ RotationBuildResult build_rotation_system(
         return result;
       }
 
+      // Diagnostic-only census for edge-locus failures. It reuses the exact
+      // already-owned ordering inputs and never feeds a semantic decision.
+      const auto edge_ray_diagnostic = [&](const GlobalTopologyOrientedArc incidence) {
+        RotationRayOrderDiagnostic diagnostic(incidence.arc);
+        diagnostic.orientation = incidence.orientation;
+        const auto arcIt = arcById.find(incidence.arc);
+        if (arcIt == arcById.end()) return diagnostic;
+        const GlobalTopologyArc &arc = *arcIt->second;
+        diagnostic.kind = arc.kind;
+        diagnostic.trace = arc.trace;
+
+        if (arc.kind == GlobalTopologyArcKind::Mandatory ||
+            arc.kind == GlobalTopologyArcKind::Cut) {
+          const auto towardSecond = edge_ray_points_to_second_endpoint(
+              arc, incidence.orientation, *locusIt->second.edge, network,
+              cutNodes);
+          if (towardSecond.has_value()) {
+            diagnostic.primary = *towardSecond ? 0U : 2U;
+          }
+          return diagnostic;
+        }
+
+        diagnostic.secondaryAvailable = false;
+        if (!arc.trace.has_value()) return diagnostic;
+        const auto *trace = find_trace(network, *arc.trace);
+        if (trace == nullptr) return diagnostic;
+        const auto face = trace_ray_face(arc, incidence.orientation, *trace);
+        if (!face.has_value()) return diagnostic;
+        diagnostic.sourceFace = *face;
+        const auto side = sideRank.find(*face);
+        if (side == sideRank.end()) return diagnostic;
+        diagnostic.primary = edgeRayCount == 0U ? side->second
+                                                : 2U * side->second + 1U;
+        const auto secondary = edge_locus_secondary_rank(
+            topology, *locusIt->second.edge, arc, incidence.orientation,
+            *trace);
+        if (secondary.has_value()) {
+          diagnostic.secondary = *secondary;
+          diagnostic.secondaryAvailable = true;
+        }
+        return diagnostic;
+      };
+      const auto publish_edge_locus_census = [&](GlobalTopologyPlanError &result) {
+        constexpr std::size_t kRotationFanCensusLimit = 16U;
+        result.rotationFanCensus.totalRayCount = outgoing.size();
+        const std::size_t censusCount =
+            std::min(outgoing.size(), kRotationFanCensusLimit);
+        result.rotationFanCensus.rays.reserve(censusCount);
+        for (std::size_t censusIndex = 0U; censusIndex < censusCount;
+             ++censusIndex) {
+          result.rotationFanCensus.rays.push_back(
+              edge_ray_diagnostic(outgoing[censusIndex]));
+        }
+        result.rotationFanCensus.truncated = censusCount < outgoing.size();
+      };
+
       for (const auto incidence : outgoing) {
         const auto arcIt = arcById.find(incidence.arc);
         if (arcIt == arcById.end()) {
@@ -1428,16 +1522,32 @@ RotationBuildResult build_rotation_system(
               RotationSystemInconsistencyReason::EdgeTraceFaceSideInvalid;
           return result;
         }
+        EdgeTraceSecondaryRankFailureReason secondaryFailure =
+            EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound;
+        EdgeLocusSecondaryRankDiagnosticContext secondaryContext;
         const auto secondary = edge_locus_secondary_rank(
             topology, *locusIt->second.edge, arc, incidence.orientation,
-            *trace);
+            *trace, &secondaryFailure, &secondaryContext);
         if (!secondary.has_value()) {
           GlobalTopologyPlanError result =
               error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
           result.sourceEdge = locusIt->second.edge;
           result.sourceFace = face;
+          result.sourceVertex = trace->sourceVertex;
           result.rotationSystemInconsistencyReason =
               RotationSystemInconsistencyReason::EdgeTraceSecondaryRankInvalid;
+          result.edgeTraceSecondaryRankFailureReason = secondaryFailure;
+          result.arc = arc.id;
+          result.trace = trace->id;
+          result.rotationTraceOrientation = incidence.orientation;
+          result.traceFirstSegment = arc.firstSegment;
+          result.traceOnePastLastSegment = arc.onePastLastSegment;
+          result.traceIncomingCarrier = secondaryContext.incomingCarrier;
+          result.traceOutgoingCarrier = secondaryContext.outgoingCarrier;
+          result.edgeTraceContactIndex = secondaryContext.contactIndex;
+          result.edgeTraceOtherCarrier = secondaryContext.otherCarrier;
+          result.edgeTraceFaceCorners = secondaryContext.faceCorners;
+          publish_edge_locus_census(result);
           return result;
         }
         key.primary = edgeRayCount == 0U

@@ -70,9 +70,16 @@ SurfaceCutGraphError topology_error(const GlobalTopologyPlanError &error) {
       error.rotationSystemInconsistencyReason;
   result.vertexTraceSecondaryParameterFailureReason =
       error.vertexTraceSecondaryParameterFailureReason;
+  result.edgeTraceSecondaryRankFailureReason =
+      error.edgeTraceSecondaryRankFailureReason;
   result.rotationTraceOrientation = error.rotationTraceOrientation;
   result.traceFirstSegment = error.traceFirstSegment;
   result.traceOnePastLastSegment = error.traceOnePastLastSegment;
+  result.traceIncomingCarrier = error.traceIncomingCarrier;
+  result.traceOutgoingCarrier = error.traceOutgoingCarrier;
+  result.edgeTraceContactIndex = error.edgeTraceContactIndex;
+  result.edgeTraceOtherCarrier = error.edgeTraceOtherCarrier;
+  result.edgeTraceFaceCorners = error.edgeTraceFaceCorners;
   result.arc = error.arc;
   result.secondArc = error.secondArc;
   result.trace = error.trace;

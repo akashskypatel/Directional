@@ -3424,8 +3424,13 @@ void append_rotation_ray_diagnostics(
     std::ostream &report, const char *label,
     const directional::SurfaceCellRotationRayDiagnostics &ray) {
   report << ';' << label << "={kind=" << ray.kind
-         << ",primary=" << ray.primary << ",secondary=" << ray.secondary
-         << ",arc=" << ray.arc;
+         << ",primary=" << ray.primary << ",secondary=";
+  if (ray.secondaryAvailable) {
+    report << ray.secondary;
+  } else {
+    report << "unavailable";
+  }
+  report << ",arc=" << ray.arc;
   if (ray.trace.has_value()) report << ",trace=" << *ray.trace;
   report << ",orientation=" << ray.orientation;
   if (ray.sourceFace.has_value())
@@ -3470,6 +3475,45 @@ void append_cp4c_failure_locus(
   if (!locus.vertexTraceSecondaryParameterFailureReason.empty())
     report << ";vertexTraceSecondaryFailure="
            << locus.vertexTraceSecondaryParameterFailureReason;
+  if (!locus.edgeTraceSecondaryRankFailureReason.empty()) {
+    report << ";edgeTraceSecondaryFailure="
+           << locus.edgeTraceSecondaryRankFailureReason;
+    report << ";traceIncomingCarrier=";
+    if (locus.traceIncomingCarrier.has_value()) {
+      report << (*locus.traceIncomingCarrier)[0] << '-'
+             << (*locus.traceIncomingCarrier)[1];
+    } else {
+      report << "none";
+    }
+    report << ";traceOutgoingCarrier=";
+    if (locus.traceOutgoingCarrier.has_value()) {
+      report << (*locus.traceOutgoingCarrier)[0] << '-'
+             << (*locus.traceOutgoingCarrier)[1];
+    } else {
+      report << "none";
+    }
+    report << ";edgeTraceContactIndex=";
+    if (locus.edgeTraceContactIndex.has_value()) {
+      report << *locus.edgeTraceContactIndex;
+    } else {
+      report << "none";
+    }
+    report << ";edgeTraceOtherCarrier=";
+    if (locus.edgeTraceOtherCarrier.has_value()) {
+      report << (*locus.edgeTraceOtherCarrier)[0] << '-'
+             << (*locus.edgeTraceOtherCarrier)[1];
+    } else {
+      report << "none";
+    }
+    report << ";edgeTraceFaceCorners=";
+    if (locus.edgeTraceFaceCorners.has_value()) {
+      report << (*locus.edgeTraceFaceCorners)[0] << ','
+             << (*locus.edgeTraceFaceCorners)[1] << ','
+             << (*locus.edgeTraceFaceCorners)[2];
+    } else {
+      report << "none";
+    }
+  }
   if (!locus.rotationTraceOrientation.empty())
     report << ";rotationTraceOrientation=" << locus.rotationTraceOrientation;
   if (locus.traceFirstSegment.has_value())
@@ -5064,6 +5108,44 @@ void append_plan_error(std::ostringstream &stream,
                   vertex_trace_secondary_parameter_failure_reason_name(
                       *error.vertexTraceSecondaryParameterFailureReason);
   }
+  if (error.edgeTraceSecondaryRankFailureReason.has_value()) {
+    stream << ";edgeTraceSecondaryFailure="
+           << directional::geometry::
+                  edge_trace_secondary_rank_failure_reason_name(
+                      *error.edgeTraceSecondaryRankFailureReason);
+    stream << ";traceIncomingCarrier=";
+    if (error.traceIncomingCarrier.has_value()) {
+      stream << source_edge_locus(*error.traceIncomingCarrier);
+    } else {
+      stream << "none";
+    }
+    stream << ";traceOutgoingCarrier=";
+    if (error.traceOutgoingCarrier.has_value()) {
+      stream << source_edge_locus(*error.traceOutgoingCarrier);
+    } else {
+      stream << "none";
+    }
+    stream << ";edgeTraceContactIndex=";
+    if (error.edgeTraceContactIndex.has_value()) {
+      stream << *error.edgeTraceContactIndex;
+    } else {
+      stream << "none";
+    }
+    stream << ";edgeTraceOtherCarrier=";
+    if (error.edgeTraceOtherCarrier.has_value()) {
+      stream << source_edge_locus(*error.edgeTraceOtherCarrier);
+    } else {
+      stream << "none";
+    }
+    stream << ";edgeTraceFaceCorners=";
+    if (error.edgeTraceFaceCorners.has_value()) {
+      stream << (*error.edgeTraceFaceCorners)[0].index() << ','
+             << (*error.edgeTraceFaceCorners)[1].index() << ','
+             << (*error.edgeTraceFaceCorners)[2].index();
+    } else {
+      stream << "none";
+    }
+  }
   if (error.rotationTraceOrientation.has_value()) {
     stream << ";rotationTraceOrientation="
            << (*error.rotationTraceOrientation ==
@@ -5080,7 +5162,13 @@ void append_plan_error(std::ostringstream &stream,
       const directional::geometry::RotationRayOrderDiagnostic &ray) {
     stream << ';' << label << "={kind="
            << static_cast<int>(ray.kind) << ",primary=" << ray.primary
-           << ",secondary=" << ray.secondary << ",arc=" << ray.arc.index();
+           << ",secondary=";
+    if (ray.secondaryAvailable) {
+      stream << ray.secondary;
+    } else {
+      stream << "unavailable";
+    }
+    stream << ",arc=" << ray.arc.index();
     if (ray.trace.has_value()) stream << ",trace=" << ray.trace->index();
     stream << ",orientation="
            << (ray.orientation == directional::authority::Orientation::Forward
@@ -10032,6 +10120,208 @@ TEST(GlobalTopologyPlan,
       });
   ASSERT_NE(rotations.end(), published);
   EXPECT_FALSE(published->counterClockwise.empty());
+}
+
+TEST(GlobalTopologyPlan,
+     EdgeLocusSecondaryRankFailuresAreTypedAndProductionVisible) {
+  using directional::authority::FieldBranch;
+  using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::SourceComponentId;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::EdgeTraceSecondaryRankFailureReason;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+  using directional::geometry::RotationSystemInconsistencyReason;
+  using directional::geometry::SurfaceCutGraphError;
+  using directional::geometry::SurfaceCutGraphErrorCode;
+
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto topology = embedded::build_source_index(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+
+  const auto component = SourceComponentId::from_index(0, 1).value();
+  const auto region = TopologyRegionId::from_index(0, 1).value();
+  const auto singularity = FieldSingularityId::from_index(0, 1).value();
+  const auto port = SingularityPortId::from_index(0, 1).value();
+  const auto branch = FieldBranch::from_integer(0);
+  const SourceFaceTopologyKey face = topology_face(0, 1, 4, 5U);
+  const SourceFaceTopologyKey missingFace = topology_face(0, 1, 2, 5U);
+  const SourceEdgeTopologyKey locus = topology_edge(0, 1, 5U);
+  const SourceEdgeTopologyKey next = topology_edge(1, 4, 5U);
+  const SourceEdgeTopologyKey foreign = topology_edge(2, 3, 5U);
+  const auto entry = boundary_point(locus, 1, 2);
+
+  const auto makeTrace = [&](const std::size_t traceIndex,
+                             const SourceVertexId sourceVertex,
+                             const SourceFaceTopologyKey sourceFace,
+                             const std::optional<SourceEdgeTopologyKey> incoming,
+                             const SourceEdgeTopologyKey outgoing) {
+    FieldAlignedCandidateTrace trace(
+        TraceId::from_index(traceIndex, 8U).value(), port, singularity,
+        sourceVertex, component, region);
+    trace.segments.emplace_back(sourceFace, branch, entry, incoming, outgoing,
+                                std::nullopt);
+    return trace;
+  };
+  const auto makeArc = [&](const std::size_t arcIndex, const TraceId trace,
+                           const std::size_t firstSegment = 0U,
+                           const std::size_t onePastLastSegment = 1U) {
+    return GlobalTopologyArc{
+        NetworkArcId::from_index(arcIndex, 8U).value(),
+        GlobalTopologyArcKind::Trace,
+        NetworkNodeId::from_index(0U, 2U).value(),
+        NetworkNodeId::from_index(1U, 2U).value(), std::nullopt, trace,
+        std::nullopt, firstSegment, onePastLastSegment, {face}};
+  };
+
+  const SourceVertexId vertex4 = SourceVertexId::from_index(4, 5U).value();
+  const SourceVertexId vertex2 = SourceVertexId::from_index(2, 5U).value();
+  const FieldAlignedCandidateTrace valid =
+      makeTrace(0U, vertex4, face, locus, next);
+  const GlobalTopologyArc validArc = makeArc(0U, valid.id);
+  const auto validWithoutDiagnostics = embedded::edge_locus_secondary_rank(
+      *topology, locus, validArc, Orientation::Forward, valid);
+  EdgeTraceSecondaryRankFailureReason untouchedReason =
+      EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable;
+  embedded::EdgeLocusSecondaryRankDiagnosticContext validContext;
+  const auto validWithDiagnostics = embedded::edge_locus_secondary_rank(
+      *topology, locus, validArc, Orientation::Forward, valid,
+      &untouchedReason, &validContext);
+  ASSERT_TRUE(validWithoutDiagnostics.has_value());
+  ASSERT_TRUE(validWithDiagnostics.has_value());
+  EXPECT_EQ(2U, *validWithoutDiagnostics);
+  EXPECT_EQ(*validWithoutDiagnostics, *validWithDiagnostics);
+  EXPECT_EQ(EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable,
+            untouchedReason)
+      << "successful rank must not manufacture a failure reason";
+  ASSERT_TRUE(validContext.contactIndex.has_value());
+  EXPECT_EQ(0U, *validContext.contactIndex);
+  ASSERT_TRUE(validContext.otherCarrier.has_value());
+  EXPECT_EQ(next, *validContext.otherCarrier);
+
+  struct FailureCase {
+    const char *name;
+    EdgeTraceSecondaryRankFailureReason expected;
+    SourceEdgeTopologyKey locus;
+    FieldAlignedCandidateTrace trace;
+    GlobalTopologyArc arc;
+  };
+  std::vector<FailureCase> cases;
+
+  FieldAlignedCandidateTrace invalidInterval =
+      makeTrace(1U, vertex4, face, locus, next);
+  cases.push_back({
+      "TraceRayFaceUnavailable",
+      EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable, locus,
+      invalidInterval, makeArc(1U, invalidInterval.id, 1U, 1U)});
+
+  FieldAlignedCandidateTrace missingRecord =
+      makeTrace(2U, vertex4, missingFace, locus, topology_edge(1, 2, 5U));
+  cases.push_back({
+      "SourceFaceRecordUnavailable",
+      EdgeTraceSecondaryRankFailureReason::SourceFaceRecordUnavailable, locus,
+      missingRecord, makeArc(2U, missingRecord.id)});
+
+  FieldAlignedCandidateTrace missingContact =
+      makeTrace(3U, vertex4, face, locus, next);
+  cases.push_back({
+      "ContactEdgeUnavailable",
+      EdgeTraceSecondaryRankFailureReason::ContactEdgeUnavailable, foreign,
+      missingContact, makeArc(3U, missingContact.id)});
+
+  FieldAlignedCandidateTrace foreignOpposite =
+      makeTrace(4U, vertex4, face, locus, foreign);
+  cases.push_back({
+      "OppositeCarrierNotInFace",
+      EdgeTraceSecondaryRankFailureReason::OppositeCarrierNotInFace, locus,
+      foreignOpposite, makeArc(4U, foreignOpposite.id)});
+
+  FieldAlignedCandidateTrace coincident =
+      makeTrace(5U, vertex4, face, locus, locus);
+  cases.push_back({
+      "CoincidentLocalEdgeIndex",
+      EdgeTraceSecondaryRankFailureReason::CoincidentLocalEdgeIndex, locus,
+      coincident, makeArc(5U, coincident.id)});
+
+  FieldAlignedCandidateTrace fallbackUnbound =
+      makeTrace(6U, vertex2, face, std::nullopt, next);
+  cases.push_back({
+      "SourceVertexFallbackUnbound",
+      EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound, locus,
+      fallbackUnbound, makeArc(6U, fallbackUnbound.id)});
+
+  for (const auto &testCase : cases) {
+    SCOPED_TRACE(testCase.name);
+    EdgeTraceSecondaryRankFailureReason reason =
+        EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable;
+    embedded::EdgeLocusSecondaryRankDiagnosticContext context;
+    const auto rank = embedded::edge_locus_secondary_rank(
+        *topology, testCase.locus, testCase.arc, Orientation::Forward,
+        testCase.trace, &reason, &context);
+    EXPECT_FALSE(rank.has_value());
+    EXPECT_EQ(testCase.expected, reason);
+    EXPECT_STREQ(
+        testCase.name,
+        directional::geometry::edge_trace_secondary_rank_failure_reason_name(
+            reason));
+
+    SurfaceCutGraphError diagnostic;
+    diagnostic.code = SurfaceCutGraphErrorCode::CellularityNotEstablished;
+    diagnostic.sourceVertex = testCase.trace.sourceVertex;
+    diagnostic.sourceEdge = testCase.locus;
+    diagnostic.sourceFace = context.sourceFace;
+    diagnostic.originatingRotationSystemInconsistencyReason =
+        RotationSystemInconsistencyReason::EdgeTraceSecondaryRankInvalid;
+    diagnostic.edgeTraceSecondaryRankFailureReason = reason;
+    diagnostic.rotationTraceOrientation = Orientation::Forward;
+    diagnostic.traceFirstSegment = testCase.arc.firstSegment;
+    diagnostic.traceOnePastLastSegment = testCase.arc.onePastLastSegment;
+    diagnostic.traceIncomingCarrier = context.incomingCarrier;
+    diagnostic.traceOutgoingCarrier = context.outgoingCarrier;
+    diagnostic.edgeTraceContactIndex = context.contactIndex;
+    diagnostic.edgeTraceOtherCarrier = context.otherCarrier;
+    diagnostic.edgeTraceFaceCorners = context.faceCorners;
+    diagnostic.arc = testCase.arc.id;
+    diagnostic.trace = testCase.trace.id;
+    directional::geometry::RotationRayOrderDiagnostic censusRay(
+        testCase.arc.id);
+    censusRay.kind = GlobalTopologyArcKind::Trace;
+    censusRay.primary = 1U;
+    censusRay.secondaryAvailable = false;
+    censusRay.trace = testCase.trace.id;
+    censusRay.orientation = Orientation::Forward;
+    censusRay.sourceFace = context.sourceFace;
+    diagnostic.rotationFanCensus.rays = {censusRay};
+    diagnostic.rotationFanCensus.totalRayCount = 1U;
+    diagnostic.rotationFanCensus.truncated = false;
+
+    const std::string emitted = production_cut_graph_error_locus(diagnostic);
+    for (const std::string &token : std::vector<std::string>{
+             std::string("edgeTraceSecondaryFailure=") + testCase.name,
+             "rotationSystemReason=EdgeTraceSecondaryRankInvalid",
+             "rotationTraceOrientation=Forward",
+             std::string("traceFirstSegment=") +
+                 std::to_string(testCase.arc.firstSegment),
+             std::string("traceOnePastLastSegment=") +
+                 std::to_string(testCase.arc.onePastLastSegment),
+             std::string("arc=") + std::to_string(testCase.arc.id.index()),
+             std::string("trace=") +
+                 std::to_string(testCase.trace.id.index()),
+             "traceIncomingCarrier=", "traceOutgoingCarrier=",
+             "edgeTraceContactIndex=", "edgeTraceOtherCarrier=",
+             "edgeTraceFaceCorners=", "rotationFanCensusTotal=1",
+             "rotationFanCensusTruncated=false",
+             "rotationFanRay[0]={kind=Trace,primary=1,secondary=unavailable"}) {
+      EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+    }
+  }
 }
 
 TEST(GlobalTopologyPlan,

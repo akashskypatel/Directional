@@ -226,6 +226,15 @@ enum class VertexTraceSecondaryParameterFailureReason : std::uint8_t {
   InvalidDenominator = 4,
 };
 
+enum class EdgeTraceSecondaryRankFailureReason : std::uint8_t {
+  TraceRayFaceUnavailable = 0,
+  SourceFaceRecordUnavailable = 1,
+  ContactEdgeUnavailable = 2,
+  OppositeCarrierNotInFace = 3,
+  CoincidentLocalEdgeIndex = 4,
+  SourceVertexFallbackUnbound = 5,
+};
+
 enum class TraceEventPositionFailureReason : std::uint8_t {
   NoCarrierMatch = 0,
   AmbiguousCarrierMatch = 1,
@@ -275,9 +284,16 @@ struct GlobalTopologyPlanError {
       rotationSystemInconsistencyReason;
   std::optional<VertexTraceSecondaryParameterFailureReason>
       vertexTraceSecondaryParameterFailureReason;
+  std::optional<EdgeTraceSecondaryRankFailureReason>
+      edgeTraceSecondaryRankFailureReason;
   std::optional<authority::Orientation> rotationTraceOrientation;
   std::optional<std::size_t> traceFirstSegment;
   std::optional<std::size_t> traceOnePastLastSegment;
+  std::optional<authority::SourceEdgeTopologyKey> traceIncomingCarrier;
+  std::optional<authority::SourceEdgeTopologyKey> traceOutgoingCarrier;
+  std::optional<std::size_t> edgeTraceContactIndex;
+  std::optional<authority::SourceEdgeTopologyKey> edgeTraceOtherCarrier;
+  std::optional<std::array<authority::SourceVertexId, 3>> edgeTraceFaceCorners;
   std::optional<std::size_t> traceEventIndex;
   std::optional<TraceEventPositionFailureReason> traceEventPositionFailureReason;
   std::optional<TraceEventPositionPass> traceEventPositionPass;
@@ -421,6 +437,8 @@ private:
     RotationSystemInconsistencyReason reason) noexcept;
 [[nodiscard]] const char *vertex_trace_secondary_parameter_failure_reason_name(
     VertexTraceSecondaryParameterFailureReason reason) noexcept;
+[[nodiscard]] const char *edge_trace_secondary_rank_failure_reason_name(
+    EdgeTraceSecondaryRankFailureReason reason) noexcept;
 [[nodiscard]] const char *trace_event_position_failure_reason_name(
     TraceEventPositionFailureReason reason) noexcept;
 [[nodiscard]] const char *trace_event_position_pass_name(

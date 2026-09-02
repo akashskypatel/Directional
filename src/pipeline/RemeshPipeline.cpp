@@ -392,6 +392,7 @@ project_surface_cut_graph_failure_locus(
     }
     diagnostic.primary = ray.primary;
     diagnostic.secondary = ray.secondary;
+    diagnostic.secondaryAvailable = ray.secondaryAvailable;
     diagnostic.arc = ray.arc.index();
     if (ray.trace.has_value()) diagnostic.trace = ray.trace->index();
     diagnostic.orientation =
@@ -423,6 +424,10 @@ project_surface_cut_graph_failure_locus(
     locus.vertexTraceSecondaryParameterFailureReason =
         geometry::vertex_trace_secondary_parameter_failure_reason_name(
             *error.vertexTraceSecondaryParameterFailureReason);
+  if (error.edgeTraceSecondaryRankFailureReason.has_value())
+    locus.edgeTraceSecondaryRankFailureReason =
+        geometry::edge_trace_secondary_rank_failure_reason_name(
+            *error.edgeTraceSecondaryRankFailureReason);
   if (error.rotationTraceOrientation.has_value())
     locus.rotationTraceOrientation =
         *error.rotationTraceOrientation == authority::Orientation::Forward
@@ -430,6 +435,19 @@ project_surface_cut_graph_failure_locus(
             : "Reverse";
   locus.traceFirstSegment = error.traceFirstSegment;
   locus.traceOnePastLastSegment = error.traceOnePastLastSegment;
+  if (error.traceIncomingCarrier.has_value())
+    locus.traceIncomingCarrier = topology_edge_locus(*error.traceIncomingCarrier);
+  if (error.traceOutgoingCarrier.has_value())
+    locus.traceOutgoingCarrier = topology_edge_locus(*error.traceOutgoingCarrier);
+  locus.edgeTraceContactIndex = error.edgeTraceContactIndex;
+  if (error.edgeTraceOtherCarrier.has_value())
+    locus.edgeTraceOtherCarrier = topology_edge_locus(*error.edgeTraceOtherCarrier);
+  if (error.edgeTraceFaceCorners.has_value()) {
+    locus.edgeTraceFaceCorners = std::array<std::size_t, 3>{
+        (*error.edgeTraceFaceCorners)[0].index(),
+        (*error.edgeTraceFaceCorners)[1].index(),
+        (*error.edgeTraceFaceCorners)[2].index()};
+  }
   if (error.arc.has_value()) locus.arc = error.arc->index();
   if (error.secondArc.has_value()) locus.secondArc = error.secondArc->index();
   if (error.trace.has_value()) locus.trace = error.trace->index();
@@ -6980,9 +6998,16 @@ remesh_from_raw_cross_field_impl_with_stage_products(
           error.rotationSystemInconsistencyReason;
       projected.vertexTraceSecondaryParameterFailureReason =
           error.vertexTraceSecondaryParameterFailureReason;
+      projected.edgeTraceSecondaryRankFailureReason =
+          error.edgeTraceSecondaryRankFailureReason;
       projected.rotationTraceOrientation = error.rotationTraceOrientation;
       projected.traceFirstSegment = error.traceFirstSegment;
       projected.traceOnePastLastSegment = error.traceOnePastLastSegment;
+      projected.traceIncomingCarrier = error.traceIncomingCarrier;
+      projected.traceOutgoingCarrier = error.traceOutgoingCarrier;
+      projected.edgeTraceContactIndex = error.edgeTraceContactIndex;
+      projected.edgeTraceOtherCarrier = error.edgeTraceOtherCarrier;
+      projected.edgeTraceFaceCorners = error.edgeTraceFaceCorners;
       projected.rotationPreviousRay = error.rotationPreviousRay;
       projected.rotationCurrentRay = error.rotationCurrentRay;
       projected.rotationFanCensus = error.rotationFanCensus;

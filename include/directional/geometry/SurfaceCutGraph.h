@@ -123,9 +123,16 @@ struct SurfaceCutGraphError {
       originatingRotationSystemInconsistencyReason;
   std::optional<VertexTraceSecondaryParameterFailureReason>
       vertexTraceSecondaryParameterFailureReason;
+  std::optional<EdgeTraceSecondaryRankFailureReason>
+      edgeTraceSecondaryRankFailureReason;
   std::optional<authority::Orientation> rotationTraceOrientation;
   std::optional<std::size_t> traceFirstSegment;
   std::optional<std::size_t> traceOnePastLastSegment;
+  std::optional<authority::SourceEdgeTopologyKey> traceIncomingCarrier;
+  std::optional<authority::SourceEdgeTopologyKey> traceOutgoingCarrier;
+  std::optional<std::size_t> edgeTraceContactIndex;
+  std::optional<authority::SourceEdgeTopologyKey> edgeTraceOtherCarrier;
+  std::optional<std::array<authority::SourceVertexId, 3>> edgeTraceFaceCorners;
   std::optional<authority::NetworkArcId> arc;
   std::optional<authority::NetworkArcId> secondArc;
   std::optional<authority::TraceId> trace;

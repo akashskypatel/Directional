@@ -2294,6 +2294,25 @@ const char *vertex_trace_secondary_parameter_failure_reason_name(
   return "Unknown";
 }
 
+const char *edge_trace_secondary_rank_failure_reason_name(
+    const EdgeTraceSecondaryRankFailureReason reason) noexcept {
+  switch (reason) {
+  case EdgeTraceSecondaryRankFailureReason::TraceRayFaceUnavailable:
+    return "TraceRayFaceUnavailable";
+  case EdgeTraceSecondaryRankFailureReason::SourceFaceRecordUnavailable:
+    return "SourceFaceRecordUnavailable";
+  case EdgeTraceSecondaryRankFailureReason::ContactEdgeUnavailable:
+    return "ContactEdgeUnavailable";
+  case EdgeTraceSecondaryRankFailureReason::OppositeCarrierNotInFace:
+    return "OppositeCarrierNotInFace";
+  case EdgeTraceSecondaryRankFailureReason::CoincidentLocalEdgeIndex:
+    return "CoincidentLocalEdgeIndex";
+  case EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound:
+    return "SourceVertexFallbackUnbound";
+  }
+  return "Unknown";
+}
+
 const char *trace_event_position_failure_reason_name(
     const TraceEventPositionFailureReason reason) noexcept {
   switch (reason) {

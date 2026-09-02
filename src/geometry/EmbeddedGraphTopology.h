@@ -149,6 +149,24 @@ vertex_locus_secondary_parameter(
     const FieldAlignedCandidateTrace &trace,
     VertexTraceSecondaryParameterFailureReason *failureReason = nullptr);
 
+struct EdgeLocusSecondaryRankDiagnosticContext {
+  std::optional<authority::SourceFaceTopologyKey> sourceFace;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  std::optional<authority::SourceEdgeTopologyKey> outgoingCarrier;
+  std::optional<std::size_t> contactIndex;
+  std::optional<authority::SourceEdgeTopologyKey> otherCarrier;
+  std::optional<std::array<authority::SourceVertexId, 3>> faceCorners;
+};
+
+/** Exact edge-locus within-side rank with typed diagnostic-only failure output. */
+[[nodiscard]] std::optional<std::size_t> edge_locus_secondary_rank(
+    const SourceTopologyIndex &topology,
+    const authority::SourceEdgeTopologyKey &locus,
+    const GlobalTopologyArc &arc, authority::Orientation orientation,
+    const FieldAlignedCandidateTrace &trace,
+    EdgeTraceSecondaryRankFailureReason *failureReason = nullptr,
+    EdgeLocusSecondaryRankDiagnosticContext *diagnosticContext = nullptr);
+
 /** Dense exact ranks corresponding to input parameters; exact ties share a rank. */
 [[nodiscard]] std::vector<std::size_t> vertex_trace_secondary_ranks(
     const std::vector<authority::FieldExactRational> &parameters);

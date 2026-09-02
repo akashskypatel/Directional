@@ -28,6 +28,7 @@ struct RotationRayOrderDiagnostic {
   GlobalTopologyArcKind kind{};
   std::size_t primary = 0U;
   std::size_t secondary = 0U;
+  bool secondaryAvailable = true;
   authority::NetworkArcId arc;
   std::optional<authority::TraceId> trace;
   authority::Orientation orientation = authority::Orientation::Forward;

@@ -121,6 +121,7 @@ struct SurfaceCellRotationRayDiagnostics {
   std::string kind;
   std::size_t primary = 0U;
   std::size_t secondary = 0U;
+  bool secondaryAvailable = true;
   std::size_t arc = 0U;
   std::optional<std::size_t> trace;
   std::string orientation;
@@ -149,9 +150,15 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::string networkErrorCondition;
   std::string rotationSystemInconsistencyReason;
   std::string vertexTraceSecondaryParameterFailureReason;
+  std::string edgeTraceSecondaryRankFailureReason;
   std::string rotationTraceOrientation;
   std::optional<std::size_t> traceFirstSegment;
   std::optional<std::size_t> traceOnePastLastSegment;
+  std::optional<std::array<std::size_t, 2>> traceIncomingCarrier;
+  std::optional<std::array<std::size_t, 2>> traceOutgoingCarrier;
+  std::optional<std::size_t> edgeTraceContactIndex;
+  std::optional<std::array<std::size_t, 2>> edgeTraceOtherCarrier;
+  std::optional<std::array<std::size_t, 3>> edgeTraceFaceCorners;
   std::optional<std::size_t> arc;
   std::optional<std::size_t> secondArc;
   std::optional<std::size_t> trace;
