@@ -214,6 +214,7 @@ enum class RotationSystemInconsistencyReason : std::uint8_t {
   RegionFragmentIncomingDartOutOfRange = 59,
   RegionOrbitMissing = 60,
   CandidateRotationSystemMismatch = 61,
+  RotationVertexTraceRaysExactlyCoincident = 62,
 };
 
 enum class TraceEventPositionFailureReason : std::uint8_t {

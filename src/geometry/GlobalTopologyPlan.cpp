@@ -2269,6 +2269,8 @@ const char *rotation_system_inconsistency_reason_name(
     return "RegionOrbitMissing";
   case RotationSystemInconsistencyReason::CandidateRotationSystemMismatch:
     return "CandidateRotationSystemMismatch";
+  case RotationSystemInconsistencyReason::RotationVertexTraceRaysExactlyCoincident:
+    return "RotationVertexTraceRaysExactlyCoincident";
   }
   return "Unknown";
 }

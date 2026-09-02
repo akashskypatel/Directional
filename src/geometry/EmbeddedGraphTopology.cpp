@@ -890,6 +890,134 @@ std::optional<bool> edge_ray_points_to_second_endpoint(
   return originParameter->value < destinationParameter->value;
 }
 
+std::optional<std::array<authority::FieldExactRational, 3>>
+field_boundary_point_barycentric(
+    const SourceFaceRecord &face,
+    const authority::FieldBoundaryPoint &point) {
+  std::array<authority::FieldExactRational, 3> barycentric{
+      authority::FieldExactRational::from_integer(0),
+      authority::FieldExactRational::from_integer(0),
+      authority::FieldExactRational::from_integer(0)};
+  std::optional<std::size_t> firstIndex;
+  std::optional<std::size_t> secondIndex;
+  for (std::size_t index = 0U; index < face.vertices.size(); ++index) {
+    if (face.vertices[index] == point.edge.first()) firstIndex = index;
+    if (face.vertices[index] == point.edge.second()) secondIndex = index;
+  }
+  if (!firstIndex.has_value() || !secondIndex.has_value()) return std::nullopt;
+  const auto one = authority::FieldExactRational::from_integer(1);
+  barycentric[*firstIndex] = one - point.parameter.value;
+  barycentric[*secondIndex] = point.parameter.value;
+  return barycentric;
+}
+
+std::optional<std::array<authority::FieldExactRational, 3>>
+vertex_trace_ray_second_point(
+    const SourceFaceRecord &face, const GlobalTopologyArc &arc,
+    const authority::Orientation orientation,
+    const FieldAlignedCandidateTrace &trace) {
+  if (arc.firstSegment >= arc.onePastLastSegment ||
+      arc.onePastLastSegment > trace.segments.size()) {
+    return std::nullopt;
+  }
+  const std::size_t segmentIndex =
+      orientation == authority::Orientation::Forward
+          ? arc.firstSegment
+          : arc.onePastLastSegment - 1U;
+  const auto &segment = trace.segments[segmentIndex];
+  if (segment.sourceFace != face.topology) return std::nullopt;
+
+  if (orientation == authority::Orientation::Reverse) {
+    return field_boundary_point_barycentric(face, segment.entryPoint);
+  }
+
+  if (segment.edgeTransitExit.has_value()) {
+    return field_boundary_point_barycentric(face, *segment.edgeTransitExit);
+  }
+  if (segmentIndex + 1U < trace.segments.size()) {
+    const auto continued = field_boundary_point_barycentric(
+        face, trace.segments[segmentIndex + 1U].entryPoint);
+    if (continued.has_value()) return continued;
+  }
+  if (trace.terminalContact.has_value() &&
+      trace.terminalContact->sourceFace == face.topology) {
+    return trace.terminalContact->barycentric;
+  }
+  if (trace.terminalPoint.has_value()) {
+    return field_boundary_point_barycentric(face, *trace.terminalPoint);
+  }
+  return std::nullopt;
+}
+
+std::optional<authority::FieldExactRational> vertex_locus_secondary_parameter(
+    const SourceTopologyIndex &topology,
+    const authority::SourceVertexId locus, const GlobalTopologyArc &arc,
+    const authority::Orientation orientation,
+    const FieldAlignedCandidateTrace &trace) {
+  const auto faceKey = trace_ray_face(arc, orientation, trace);
+  if (!faceKey.has_value()) return std::nullopt;
+  const auto faceIt = topology.faces.find(*faceKey);
+  if (faceIt == topology.faces.end()) return std::nullopt;
+  const SourceFaceRecord &face = faceIt->second;
+
+  std::size_t corner = 3U;
+  for (std::size_t index = 0U; index < face.vertices.size(); ++index) {
+    if (face.vertices[index] == locus) {
+      corner = index;
+      break;
+    }
+  }
+  if (corner >= 3U) return std::nullopt;
+
+  const auto secondPoint =
+      vertex_trace_ray_second_point(face, arc, orientation, trace);
+  if (!secondPoint.has_value()) return std::nullopt;
+  const std::size_t next = (corner + 1U) % 3U;
+  const std::size_t previous = (corner + 2U) % 3U;
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto denominator = (*secondPoint)[next] + (*secondPoint)[previous];
+  if (denominator <= zero || (*secondPoint)[next] < zero ||
+      (*secondPoint)[previous] < zero) {
+    return std::nullopt;
+  }
+
+  // build_vertex_fan_slots orders a face wedge from the oriented edge
+  // (v,next) to (previous,v).  Projecting a ray from v to the opposite edge
+  // preserves angular order, so the exact opposite-edge parameter below is a
+  // canonical within-wedge order key.  No metric geometry is involved.
+  return (*secondPoint)[previous] / denominator;
+}
+
+std::vector<std::size_t> vertex_trace_secondary_ranks(
+    const std::vector<authority::FieldExactRational> &parameters) {
+  std::vector<std::size_t> order(parameters.size());
+  std::iota(order.begin(), order.end(), 0U);
+  std::sort(order.begin(), order.end(), [&](const std::size_t lhs,
+                                            const std::size_t rhs) {
+    return parameters[lhs] < parameters[rhs];
+  });
+
+  std::vector<std::size_t> ranks(parameters.size(), 0U);
+  std::size_t rank = 0U;
+  for (std::size_t position = 0U; position < order.size(); ++position) {
+    if (position > 0U &&
+        parameters[order[position - 1U]] != parameters[order[position]]) {
+      ++rank;
+    }
+    ranks[order[position]] = rank;
+  }
+  return ranks;
+}
+
+RotationSystemInconsistencyReason vertex_trace_secondary_collision_reason(
+    const authority::FieldExactRational &first,
+    const authority::FieldExactRational &second) noexcept {
+  return first == second
+             ? RotationSystemInconsistencyReason::
+                   RotationVertexTraceRaysExactlyCoincident
+             : RotationSystemInconsistencyReason::RotationRayOrderKeyCollision;
+}
+
 std::optional<std::size_t> edge_locus_secondary_rank(
     const SourceTopologyIndex &topology,
     const authority::SourceEdgeTopologyKey &locus,
@@ -979,6 +1107,8 @@ RotationBuildResult build_rotation_system(
     keyed.reserve(outgoing.size());
     std::map<GlobalTopologyOrientedArc, RotationRayOrderDiagnostic>
         rayDiagnostics;
+    std::map<GlobalTopologyOrientedArc, authority::FieldExactRational>
+        vertexTraceSecondaryParameters;
     const auto base_ray_diagnostic = [](const RayOrderKey &key) {
       RotationRayOrderDiagnostic diagnostic(key.arc);
       diagnostic.kind = key.kind;
@@ -1074,7 +1204,22 @@ RotationBuildResult build_rotation_system(
                 RotationSystemInconsistencyReason::VertexTracePortOrdinalInvalid;
             return result;
           }
-          key.secondary = static_cast<std::size_t>(port->ordinal);
+          const auto secondaryParameter = vertex_locus_secondary_parameter(
+              topology, *locusIt->second.vertex, arc, incidence.orientation,
+              *trace);
+          if (!secondaryParameter.has_value()) {
+            GlobalTopologyPlanError result =
+                error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            result.sourceVertex = locusIt->second.vertex;
+            result.sourceFace = face;
+            result.rotationSystemInconsistencyReason =
+                RotationSystemInconsistencyReason::
+                    VertexTracePortOrdinalInvalid;
+            return result;
+          }
+          key.secondary = 0U;
+          vertexTraceSecondaryParameters.emplace(incidence,
+                                                  *secondaryParameter);
           RotationRayOrderDiagnostic diagnostic = base_ray_diagnostic(key);
           diagnostic.sourceFace = *face;
           diagnostic.fanSlot = slot->second;
@@ -1083,6 +1228,31 @@ RotationBuildResult build_rotation_system(
           rayDiagnostics.emplace(incidence, std::move(diagnostic));
         }
         keyed.emplace_back(key, incidence);
+      }
+
+      std::map<std::size_t, std::vector<std::size_t>> traceRaysByWedge;
+      for (std::size_t index = 0U; index < keyed.size(); ++index) {
+        if (keyed[index].first.kind == GlobalTopologyArcKind::Trace) {
+          traceRaysByWedge[keyed[index].first.primary].push_back(index);
+        }
+      }
+      for (auto &[primary, indices] : traceRaysByWedge) {
+        (void)primary;
+        std::vector<authority::FieldExactRational> parameters;
+        parameters.reserve(indices.size());
+        for (const std::size_t index : indices) {
+          parameters.push_back(
+              vertexTraceSecondaryParameters.at(keyed[index].second));
+        }
+        const auto ranks = vertex_trace_secondary_ranks(parameters);
+        for (std::size_t position = 0U; position < indices.size(); ++position) {
+          RayOrderKey &key = keyed[indices[position]].first;
+          key.secondary = ranks[position];
+          const auto diagnostic = rayDiagnostics.find(keyed[indices[position]].second);
+          if (diagnostic != rayDiagnostics.end()) {
+            diagnostic->second.secondary = ranks[position];
+          }
+        }
       }
     } else if (locusIt->second.edge.has_value()) {
       const auto incidentFaces = topology.incidentFaces.find(*locusIt->second.edge);
@@ -1228,8 +1398,10 @@ RotationBuildResult build_rotation_system(
           current.kind == GlobalTopologyArcKind::Trace &&
           previous.primary == current.primary &&
           previous.secondary == current.secondary) {
-        GlobalTopologyPlanError result =
-            rotation_error(RotationSystemInconsistencyReason::RotationRayOrderKeyCollision);
+        GlobalTopologyPlanError result = rotation_error(
+            vertex_trace_secondary_collision_reason(
+                vertexTraceSecondaryParameters.at(keyed[index - 1U].second),
+                vertexTraceSecondaryParameters.at(keyed[index].second)));
         result.sourceVertex = locusIt->second.vertex;
         result.sourceEdge = locusIt->second.edge;
         const auto diagnostic_for = [&](const std::size_t keyedIndex) {

@@ -140,6 +140,23 @@ using ExteriorOrbitBuildResult =
 [[nodiscard]] const FieldAlignedMandatoryEdge *find_mandatory(
     const FieldAlignedCurveNetwork &network,
     authority::NetworkEdgeId edge);
+
+/** Exact ray parameter from the oriented start edge to end edge of one vertex wedge. */
+[[nodiscard]] std::optional<authority::FieldExactRational>
+vertex_locus_secondary_parameter(
+    const SourceTopologyIndex &topology, authority::SourceVertexId locus,
+    const GlobalTopologyArc &arc, authority::Orientation orientation,
+    const FieldAlignedCandidateTrace &trace);
+
+/** Dense exact ranks corresponding to input parameters; exact ties share a rank. */
+[[nodiscard]] std::vector<std::size_t> vertex_trace_secondary_ranks(
+    const std::vector<authority::FieldExactRational> &parameters);
+
+[[nodiscard]] RotationSystemInconsistencyReason
+vertex_trace_secondary_collision_reason(
+    const authority::FieldExactRational &first,
+    const authority::FieldExactRational &second) noexcept;
+
 [[nodiscard]] RotationBuildResult build_rotation_system(
     const SourceTopologyIndex &topology,
     const FieldAlignedCurveNetwork &network,

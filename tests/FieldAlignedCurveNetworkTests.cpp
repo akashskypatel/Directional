@@ -34,6 +34,7 @@
 #include <directional/io/ReadOBJ.h>
 #include <directional/pipeline/RemeshPipeline.h>
 
+#include "../src/geometry/EmbeddedGraphTopology.h"
 #include "TestFixturePaths.h"
 #include "support/SkewSingularFieldWitness.h"
 
@@ -58,6 +59,7 @@ using directional::geometry::SourceTopologyRegions;
 using directional::geometry::SurfaceCellRail;
 using directional::geometry::SurfaceCellRailKind;
 using directional::geometry::SurfaceCellTracingOptions;
+namespace embedded = directional::geometry::embedded_graph_topology_detail;
 
 TriMesh make_square_mesh(const bool reverseFaceRows = false) {
   Eigen::MatrixXd vertices(4, 3);
@@ -9698,6 +9700,138 @@ TEST(ResolvedBranchCorrection,
   EXPECT_EQ(std::string::npos,
             productionEmitted.find("publishedFaceCount="))
       << productionEmitted;
+}
+
+TEST(GlobalTopologyPlan,
+     VertexLocusSecondaryRankUsesExactWithinWedgeGeometry) {
+  using directional::authority::FieldBranch;
+  using directional::authority::FieldExactRational;
+  using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::SourceComponentId;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+  using directional::geometry::RotationSystemInconsistencyReason;
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto topology = embedded::build_source_index(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+
+  const SourceVertexId locus = SourceVertexId::from_index(4, 5).value();
+  const SourceFaceTopologyKey face = topology_face(0, 1, 4, 5U);
+  const auto component = SourceComponentId::from_index(0, 1).value();
+  const auto region = TopologyRegionId::from_index(0, 1).value();
+  const auto singularity = FieldSingularityId::from_index(0, 1).value();
+  const auto port = SingularityPortId::from_index(0, 1).value();
+  const auto branch = FieldBranch::from_integer(0);
+  const auto entryAtLocus = boundary_point(topology_edge(0, 4, 5U), 1, 1);
+  const auto opposite = topology_edge(0, 1, 5U);
+
+  const auto makeForward = [&](const std::size_t traceIndex,
+                               const int numerator,
+                               const int denominator) {
+    FieldAlignedCandidateTrace trace(
+        TraceId::from_index(traceIndex, 4).value(), port, singularity, locus,
+        component, region);
+    trace.segments.emplace_back(face, branch, entryAtLocus, std::nullopt,
+                                opposite, std::nullopt);
+    trace.segments.back().edgeTransitExit =
+        boundary_point(opposite, numerator, denominator);
+    return trace;
+  };
+  const auto makeArc = [&](const std::size_t arcIndex,
+                           const TraceId trace) {
+    GlobalTopologyArc arc;
+    arc.id = NetworkArcId::from_index(arcIndex, 4).value();
+    arc.kind = GlobalTopologyArcKind::Trace;
+    arc.firstNode = NetworkNodeId::from_index(0, 2).value();
+    arc.secondNode = NetworkNodeId::from_index(1, 2).value();
+    arc.trace = trace;
+    arc.firstSegment = 0U;
+    arc.onePastLastSegment = 1U;
+    arc.sourceFaces = {face};
+    return arc;
+  };
+
+  const FieldAlignedCandidateTrace nearStart = makeForward(0U, 1, 4);
+  const FieldAlignedCandidateTrace nearEnd = makeForward(1U, 3, 4);
+  const GlobalTopologyArc nearStartArc = makeArc(0U, nearStart.id);
+  const GlobalTopologyArc nearEndArc = makeArc(1U, nearEnd.id);
+  const auto nearStartParameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, nearStartArc, Orientation::Forward, nearStart);
+  const auto nearEndParameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, nearEndArc, Orientation::Forward, nearEnd);
+  ASSERT_TRUE(nearStartParameter.has_value());
+  ASSERT_TRUE(nearEndParameter.has_value());
+  EXPECT_EQ(exact_ratio(1, 4), *nearStartParameter);
+  EXPECT_EQ(exact_ratio(3, 4), *nearEndParameter);
+
+  // Deliberately present the two rays in the opposite order.  The production
+  // rank must recover the geometric wedge order rather than input identity.
+  const auto ranks = embedded::vertex_trace_secondary_ranks(
+      {*nearEndParameter, *nearStartParameter});
+  ASSERT_EQ(2U, ranks.size());
+  EXPECT_EQ(1U, ranks[0]);
+  EXPECT_EQ(0U, ranks[1]);
+
+  // Reverse orientation uses the last segment's entry point as the point away
+  // from the locus.
+  FieldAlignedCandidateTrace reverse(
+      TraceId::from_index(2U, 4U).value(), port, singularity,
+      SourceVertexId::from_index(0, 5).value(), component, region);
+  reverse.segments.emplace_back(
+      face, branch, boundary_point(opposite, 1, 2), opposite,
+      topology_edge(1, 4, 5U), std::nullopt);
+  reverse.terminalPoint = entryAtLocus;
+  GlobalTopologyArc reverseArc = makeArc(2U, reverse.id);
+  const auto reverseParameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, reverseArc, Orientation::Reverse, reverse);
+  ASSERT_TRUE(reverseParameter.has_value());
+  EXPECT_EQ(exact_ratio(1, 2), *reverseParameter);
+
+  // A ray ending inside the wedge is ranked by its exact terminal barycentric
+  // point, not rejected for lacking an edge exit.
+  FieldAlignedCandidateTrace interior(
+      TraceId::from_index(3U, 4U).value(), port, singularity, locus, component,
+      region);
+  interior.segments.emplace_back(face, branch, entryAtLocus, std::nullopt,
+                                 opposite, std::nullopt);
+  interior.terminalContact = directional::geometry::FieldAlignedTerminalContact{
+      face,
+      {exact_ratio(1, 4), exact_ratio(1, 2), exact_ratio(1, 4)},
+      nearStart.id, 0U};
+  GlobalTopologyArc interiorArc = makeArc(3U, interior.id);
+  const auto interiorParameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, interiorArc, Orientation::Forward, interior);
+  ASSERT_TRUE(interiorParameter.has_value());
+  EXPECT_EQ(exact_ratio(2, 3), *interiorParameter);
+
+  // Exact coincidence remains fail-closed and is no longer conflated with the
+  // historical identifier collision.
+  const auto tiedRanks = embedded::vertex_trace_secondary_ranks(
+      {*nearStartParameter, *nearStartParameter});
+  ASSERT_EQ(std::vector<std::size_t>({0U, 0U}), tiedRanks);
+  EXPECT_EQ(RotationSystemInconsistencyReason::
+                RotationVertexTraceRaysExactlyCoincident,
+            embedded::vertex_trace_secondary_collision_reason(
+                *nearStartParameter, *nearStartParameter));
+  EXPECT_STREQ(
+      "RotationVertexTraceRaysExactlyCoincident",
+      directional::geometry::rotation_system_inconsistency_reason_name(
+          RotationSystemInconsistencyReason::
+              RotationVertexTraceRaysExactlyCoincident));
+
+  // Accepted-boundary regression: a wedge with only one trace ray has the
+  // unique dense rank zero, so changing the secondary source cannot reorder a
+  // currently-passing rotation.
+  EXPECT_EQ(std::vector<std::size_t>({0U}),
+            embedded::vertex_trace_secondary_ranks({*nearEndParameter}));
 }
 
 TEST(GlobalTopologyPlan,
