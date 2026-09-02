@@ -1,4 +1,54 @@
-## M3-CP4c3-TB14-CAND-01 - edge-locus trace secondary rank unavailable at mechanical edge 25-31 - **ACTIVE / GATING / SEMANTIC PRODUCT CANDIDATE / ROOT CAUSE PENDING REVIEW / NON-STABLE**
+## M3-CP4c3-TB14-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB14_Independent_Review_Record.md`, measures **BM0-BM8** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BM0.** Source `6808c090` is an ancestor of branch HEAD with **no code drift**; selector 380 recomputes to
+  `1a95d328...d852a0e4e` with 380 identities, selector 379 is its exact 379-prefix, and the first 365 lines
+  reproduce accepted `6b5b6555...cfc14b8a1`. The exact-line `[ OK ]` parser defect is **provably reporting-only**:
+  the corrected ledger derives from per-process exit codes and terminal logs, which precede parsing and cannot be
+  fed back into execution order, exit codes or package bytes; postflight equals preflight. **No semantic rerun is
+  authorized or needed.** `M3-CP4c3-TB14-ORCH-01` and `-ORCH-02` are resolved non-stable orchestration candidates,
+  not product owners.
+- **BM1 - one emitter, collapse one layer down.** `EdgeTraceSecondaryRankInvalid` is emitted only at
+  `EmbeddedGraphTopology.cpp:1440`; no downstream translation can fabricate it. But `edge_locus_secondary_rank`
+  has **five** untyped `return std::nullopt` sites, and the emitter retains only `sourceEdge`, `sourceFace` and the
+  reason. CB16 did not touch this helper.
+- **BM2 - newly reachable, and undetermined.** Contact nodes are appended after every vertex node and `incidences`
+  is a node-id map, so **all vertex loci precede all edge loci**; TB13 failed at a vertex locus, so this helper had
+  never run on the witness. The locus is a **contact node** - `build_node_loci` gives an edge locus to any node
+  lacking a vertex locus whose event names a `sourceEdge`, so zero cut edges is consistent. Branches 1-3 are
+  excluded (the caller resolved the face and required it in `sideRank`; edge `25-31` is an edge of row 41).
+  **Branches 4 and 5 are not separable from the retained locus.**
+- **BM3 - validity cannot be decided, and the two branches have opposite owners.** Branch 4 would make the
+  *producer* the owner (a segment whose other carrier is not an edge of its own face); branch 5 the *rank contract*
+  (a fallback under-specified for contact-node rays). Choosing now would repeat the project's documented
+  collapsed-condition failure mode.
+- **BM4 - conditional finding.** If branch 5 fires it is structurally guaranteed to fail here: the fallback
+  searches the face's corners for `trace.sourceVertex`, row 41's corners are `{25,30,31}`, and the port-emitting
+  singularities are `{10,35,47,71}`. Recorded as a conditional, not as the cause.
+- **BM6 - v47 obligation preserved.** Selector 380 REDs at its production assertion because attempt-0 rotation
+  returns `EdgeTraceSecondaryRankInvalid`, so the five-ray/distinct-rank proof is again unpublished.
+  `M3-CP4c3-TB11-CAND-01` stays **OPEN**; `M3-CP4c3-TB12-REV-CAND-01` stays **PARTIALLY DISCRIMINATED**.
+- **BM8 - one bounded successor frozen:** **`M3-CP4c-3-CB17`** under **BN0-BN9**, **diagnostic-only**.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **81**.
+
+## M3-CP4c3-TB13-CAND-01 / M3-CP4c3-TB13-REV-CAND-01 - **CLOSED / RUNTIME PROVED at TB14**
+
+- `M3-CP4c3-TB13-CAND-01` (collapsed `VertexTracePortOrdinalInvalid`) is **CLOSED**: CB16 split it via
+  `VertexTraceSecondaryParameterFailureReason`, and TB14 shows every vertex locus now clears, so the ambiguity is
+  both corrected and no longer reachable.
+- `M3-CP4c3-TB13-REV-CAND-01` (missing vertex-exit case in `vertex_trace_ray_second_point`) is **CLOSED / RUNTIME
+  PROVED**: TB14's rotation passes **every** vertex locus including v10, which is only possible if that case
+  resolves.
+
+## M3-CP4c3-TB14-CAND-01 - edge-locus trace secondary rank unavailable at mechanical edge 25-31 - **ACTIVE / GATING / BRANCH UNDETERMINED BY RETAINED EVIDENCE / NON-STABLE**
+
+- **Adjudicated at `M3-CP4c-3-TB14-REV`:** one emitter, but `edge_locus_secondary_rank` collapses **five**
+  conditions into an untyped `nullopt` and the emitter retains no incidence identity. Branches 1-3 are excluded;
+  the surviving two - opposite-carrier and source-vertex fallback - have **different owners and opposite
+  corrections**. This is the **first edge locus ever reached** on this witness. Re-owned to
+  **`M3-CP4c-3-CB17`** (BN0-BN9, diagnostic-only), then to `M3-CP4c-3-TB15-REV` for the semantic decision.
 
 - **Declared from valid `M3-CP4c-3-TB14` replacement runtime.** Package 84 / selector 380 completed all 380 fresh processes: corrected **371 PASS / 9 RED**, accepted 1-365 **365/365 PASS**, first red 366.
 - **First-red evidence:** `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid`, source edge `25-31`, source face `(25,30,31)`, `cutCandidateCount=450`, certification attempt 0 / zero cut edges. Ordinal 367 and the 371/372 shared fixture inherit the same upstream failure. The non-gating mechanical diagnostic independently reproduces reason/edge and reaches no global topology plan.

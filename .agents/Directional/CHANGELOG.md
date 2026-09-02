@@ -1,3 +1,53 @@
+## 2026-09-02 — `M3-CP4c-3-TB14-REV`: first edge locus reached; branch undetermined; `M3-CP4c-3-CB17` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`, measures **BM0–BM8**.
+Record: `Architecture_M3_CP4c3_TB14_Independent_Review_Record.md`. Static only — no runtime, compile, link,
+package, benchmark, or product/test/fixture/selector mutation.
+
+**BM0.** Source `6808c090` verified as an ancestor of branch HEAD with **no code drift**; selector 380 recomputes
+to `1a95d328…d852a0e4e` with 380 identities, selector 379 is its exact 379-identity prefix, and the first 365 lines
+reproduce accepted `6b5b6555…cfc14b8a1`. The exact-line `[ OK ]` parser defect is **provably reporting-only**: the
+corrected ledger derives from per-process exit codes and terminal logs, which precede parsing and cannot feed back
+into execution order, exit codes or package bytes; the 58-file postflight equals preflight. **No semantic rerun is
+authorized or needed.** `M3-CP4c3-TB14-ORCH-01` and `-ORCH-02` are resolved non-stable orchestration candidates,
+not product owners.
+
+**CB16 worked.** Every vertex locus now clears: the vertex-10 `VertexTracePortOrdinalInvalid` stop is gone, so
+`M3-CP4c3-TB13-CAND-01` and `M3-CP4c3-TB13-REV-CAND-01` are **CLOSED**.
+
+**BM1/BM2 — newly reachable, and undetermined.** Ordinal 366 is now `EdgeTraceSecondaryRankInvalid` at edge
+`25-31` / face `(25,30,31)` = mesh row 41. There is exactly **one** emitter
+(`EmbeddedGraphTopology.cpp:1440`), but `edge_locus_secondary_rank` has **five** untyped `return std::nullopt`
+sites and the emitter retains only `sourceEdge`, `sourceFace` and the reason. Contact nodes are appended after
+every vertex node and `build_rotation_system` iterates `incidences` by node id, so **all vertex loci precede all
+edge loci** — and TB13 failed at a vertex locus, so this helper had **never run** on the witness. The locus is a
+**contact node**: `build_node_loci` assigns an edge locus to any node lacking a vertex locus whose event names a
+`sourceEdge`, so `certificationCutEdges = 0` is consistent. Branches 1–3 are excluded (the caller resolved the face
+and required it in `sideRank`; edge `25-31` is an edge of row 41), leaving **opposite-carrier** versus
+**source-vertex fallback** — not separable, and with **opposite owners**: branch 4 makes the *producer* the owner,
+branch 5 the *rank contract*.
+
+**BM4 — conditional, recorded not asserted.** If the fallback branch fires it is structurally guaranteed to fail
+here: it searches the face's corners for `trace.sourceVertex`, row 41's corners are `{25,30,31}`, and the
+port-emitting singularities are `{10,35,47,71}` — origin-namespace reasoning of the kind already recorded as
+lessons 85 and 87.
+
+**BM6.** The v47 obligation stays open: selector 380 REDs at its production assertion because attempt-0 rotation
+returns `EdgeTraceSecondaryRankInvalid`, so the five-ray/distinct-rank proof is again unpublished.
+`M3-CP4c3-TB11-CAND-01` stays **OPEN**; `M3-CP4c3-TB12-REV-CAND-01` stays **PARTIALLY DISCRIMINATED**. There is
+still no vertex-30 discriminator, and row 41's `DEFN-R2` unreachability proof concerns vertex-30 *continuation
+ownership* and is not contradicted by a segment reaching row 41 through ordinary transits.
+
+**BM7/BM8.** Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, vertex 30 and the
+finalize/contact fall-through keep their owners; no duplicate stable event for the shared upstream stop. One
+bounded successor frozen: **`M3-CP4c-3-CB17`** under **BN0–BN9**, **diagnostic-only** — a typed reason per
+`nullopt` site mirroring CB16's own `VertexTraceSecondaryParameterFailureReason`, the retained incidence, and a
+bounded edge-locus ray census. **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**,
+packages **81**.
+
+**Lessons added.** §4 **91** — clearing a stage exposes the next stage's untested contract. §4 **92** — a
+typed-reason split is a pattern, not a patch.
+
 ## 2026-09-02 — `M3-CP4c-3-TB14`: complete user-authorized orchestration recovery; valid semantic red at edge-locus secondary rank
 
 The prior local-host interruption was recovered by explicit user authorization without changing package/source/test/fixture/selector bytes. Complete GitHub Actions replacement run/job **`33689875040 / 100445977571`** executed all 380 selector identities one-per-fresh-process on immutable package **84** / source `6808c090f2dd229a48550d758f459bfd156da4b6` / selector **380**, then the retained non-gating diagnostic. Result/log artifacts are `9869697113` (`a96d8ff82b467c0cfd89c1437fc0a146461ab18d4850e04515acc562070b975a`) / `9869697543` (`5e961520a3844d5b01ab77d4b85b5117c4124bfa03d4993812270e4563deb5f2`). A temporary exact-line `[ OK ]` parser mislabeled passing logs in generated summary fields; immutable process exit codes and terminal logs correct the ledger to **371 PASS / 9 RED**, SHA-256 `0b42866471ce0ad5939ab2d3c2d5c82f4efebb93c0a56ca7a60e295fad07397b`, without rerunning any semantic identity.

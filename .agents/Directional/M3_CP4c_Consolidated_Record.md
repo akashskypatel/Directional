@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB14 is current valid runtime authority** on immutable package **84** / selector **380**: user-authorized orchestration recovery completed all 380 selector identities plus the retained diagnostic on run/job `33689875040 / 100445977571`; corrected immutable raw evidence is **371 PASS / 9 RED**, accepted **365/365**, first red 366 `EdgeTraceSecondaryRankInvalid` at edge `25-31` / face `(25,30,31)`. **CB16/package84 remains current build/package authority** at source `6808c090f2dd229a48550d758f459bfd156da4b6`. TB13's vertex-10 `VertexTracePortOrdinalInvalid` failure is cleared, but the full v47 five-ray/distinct-rank production conjunction is still not published. Package 84 postflight is byte/mode-identical. Exact next is independent **`M3-CP4c-3-TB14-REV`** under BM0-BM8. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **81**.
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB14 is current runtime authority** on immutable package **84** / selector **380**: corrected **371 PASS / 9 RED**, accepted **365/365**, first red ordinal 366 `EdgeTraceSecondaryRankInvalid` at edge `25-31` / face `(25,30,31)` = mesh row 41, attempt 0 / zero cut edges. **CB16 cleared every vertex locus**, closing `M3-CP4c3-TB13-CAND-01` and `M3-CP4c3-TB13-REV-CAND-01`. **`M3-CP4c-3-TB14-REV` proved this is newly reachable code, not a regression:** contact nodes are appended after all vertex nodes and `build_rotation_system` iterates `incidences` by node id, so every vertex locus precedes every edge locus - and TB13 failed at a vertex locus, so `edge_locus_secondary_rank` had never run on this witness. The locus is a **contact node**, since `build_node_loci` gives an edge locus to any node lacking a vertex locus whose event names a `sourceEdge`; zero cut edges is therefore consistent. One emitter, but the helper below it collapses **five** conditions into an untyped `nullopt` and the emitter retains no incidence identity. Branches 1-3 are excluded; the surviving two - opposite-carrier versus source-vertex fallback - are **not separable** and have **opposite owners**, so no product correction is authorized. The v47 five-ray/distinct-rank conjunction is **still owed** (selector 380 REDs at its production assertion), so `M3-CP4c3-TB11-CAND-01` stays OPEN and `M3-CP4c3-TB12-REV-CAND-01` partially discriminated. `M3-CP4c3-TB14-CAND-01` transitions to branch-undetermined. Exact next is **`M3-CP4c-3-CB17`** - Code + Build, **diagnostic-only**, under **BN0-BN9**. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **81**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -768,5 +768,14 @@ After the durable start-of-turn checklist, load:
 9. `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` — distinct-ray v47 semantic authority.
 10. `Regression_Root_Cause_Tracker.md`; this consolidated record only when historical lineage is needed.
 
-**Exact next:** independent **`M3-CP4c-3-TB14-REV`** under BM0-BM8. No Directional runtime, benchmark, build,
-package, product/test/fixture/selector mutation is authorized in REVIEW. The next execution plan must be frozen by BM8.
+**Exact next:** **`M3-CP4c-3-CB17` - Code + Build, DIAGNOSTIC-ONLY.** Follow section 9 **BN0-BN9** of
+`Architecture_M3_CP4c3_TB14_Independent_Review_Record.md`. Give `edge_locus_secondary_rank` a **typed failure
+reason** per `nullopt` site, mirroring CB16's own `VertexTraceSecondaryParameterFailureReason`, and retain the
+incidence on the error: arc, trace, orientation, segment interval, both carriers, the resolved `contactIndex`, the
+candidate `other` carrier, `trace.sourceVertex` and the face's three corners. Project it through the **production**
+renderer and publish a bounded edge-locus ray census. **No semantic change whatsoever** - the rank formulas, the
+fallback, `sideRank`, `key.primary`, collision detection, `build_node_loci` and contact-node construction stay
+untouched; no revert of CB12/CB14/CB15/CB16. Selector 380 stays byte-frozen; append selector 381 only on
+demonstrated falsification. Eight compile targets, GMP/GMPXX linkage mandatory. **No product correction and no
+vertex-30 discriminator are authorized until `M3-CP4c-3-TB15` names the branch, and the v47 conjunction remains
+owed.**

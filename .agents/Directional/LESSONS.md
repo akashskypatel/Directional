@@ -1436,6 +1436,19 @@ building any conclusion on it.**
     have passed. When a function body is a lookup chain, review the chain against the producer's case list rather
     than the mathematics that follows it.
 
+91. **Clearing a stage exposes the next stage's untested contract.** `M3-CP4c-3-CB16` fixed the last vertex-locus
+    defect, and the very next node the rotation reached was the first contact node ever processed on the mechanical
+    witness - whose edge-locus rank helper had never run there. The helper was not wrong for the inputs it had
+    previously seen; it had never been exercised. When a correction unblocks a traversal, the newly reachable code
+    has the diagnostic maturity of code that has never failed. Budget a diagnostic turn for it instead of reading
+    the first red as a regression.
+
+92. **A typed-reason split is a pattern, not a patch.** CB16 correctly applied its measure to the vertex helper and
+    left the structurally identical edge helper with five untyped `return std::nullopt` statements, so the next
+    failure was again unattributable for the same reason, one helper over. When a turn corrects a
+    diagnostic-collapse defect, the measure should name the class - every helper funnelling multiple conditions
+    into one bare `nullopt` behind a single typed reason - rather than the one instance the current red exposed.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.
