@@ -1,0 +1,4 @@
+# M3-CP4c-3-TB9 temporary repository state
+.agents/connector-triggers/turn-cleanup/manifest.txt
+.agents/connector-triggers/source-snapshot/tb9-20260901.txt
+.agents/connector-triggers/m3-cp4c3-tb9.txt
