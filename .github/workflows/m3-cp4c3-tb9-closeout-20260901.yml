@@ -1,0 +1,48 @@
+name: M3 CP4c3 TB9 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/m3-cp4c3-tb9-closeout.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: m3-cp4c3-tb9-closeout
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb9-closeout
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate-caller:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/m3-cp4c3-tb9-closeout-20260901.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate-caller
+    if: ${{ needs.validate-caller.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1C7oYlRWl9foJusnYZkr2xbVI-hI-2Enf
+      patch_sha256: 3cfa377f3d7c3fbde54acbd5d317068f6861469046fe1a4991a284c62c19068e
+      base_sha: 21c7def45c1a41d9e870f40dbb3f1a9ce814da3a
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-TB9: record artifact-only red and freeze review"
+      retention_days: 14
+    secrets: inherit
