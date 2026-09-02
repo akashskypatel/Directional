@@ -1,0 +1,3 @@
+purpose=M3-CP4c-3-TB14 start-of-turn exact source snapshot
+initial_authority=c65402546e39418646d237e6d443e6062a0b9337
+runtimeExecution=false
