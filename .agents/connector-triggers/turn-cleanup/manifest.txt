@@ -1,6 +1,0 @@
-.agents/Directional/turn-payloads/m3cp4c3-tb9-preflight.sh
-.agents/Directional/turn-payloads/m3cp4c3-tb9-runtime.sh
-.agents/Directional/turn-payloads/m3cp4c3-tb9-postflight.sh
-.agents/connector-triggers/source-snapshot/tb9-20260901.txt
-.agents/connector-triggers/m3-cp4c3-tb9.txt
-.agents/connector-triggers/m3-cp4c3-tb9-closeout.txt
