@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** TB13 remains latest valid runtime authority at accepted 365/365 / first red 366. CB16/package84 is current build authority. TB14 package-84 execution terminated orchestration-invalid after 135 organic PASS observations and host-interrupted ordinals 130/137, before ordinal 366; it has no semantic disposition. **NEXT:** independent `M3-CP4c-3-TB14-REV` BM0-BM7 to adjudicate exact-once/retry recovery before further runtime.)
+**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** TB14 is current valid runtime authority on package 84 / selector 380: corrected 371 PASS / 9 RED, accepted 1-365 = 365/365, first red 366 `EdgeTraceSecondaryRankInvalid` at edge 25-31 / face `(25,30,31)`. CB16/package84 remains current build authority. **NEXT:** independent `M3-CP4c-3-TB14-REV` BM0-BM8.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB13 latest valid runtime, CB16/package84 current build; TB14 orchestration-invalid; TB14-REV exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB14 current valid runtime at 365/365 accepted / first red 366 edge-rank; CB16/package84 current build; TB14-REV exact next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; selector 380** | **OPEN.** TB13 latest valid runtime: 365/365 accepted, first red 366 at v10. CB16/package84 current build authority. TB14 terminated orchestration-invalid before 366. **NEXT:** independent `M3-CP4c-3-TB14-REV`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; selector 380** | **OPEN.** TB14 current runtime: 365/365 accepted, first red 366 `EdgeTraceSecondaryRankInvalid` at edge 25-31 / face `(25,30,31)`. CB16/package84 current build authority. **NEXT:** independent `M3-CP4c-3-TB14-REV`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

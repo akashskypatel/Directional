@@ -2,7 +2,7 @@
 
 Date: 2026-09-02 UTC
 Turn: `M3-CP4c-3-TB14`
-Status: **TURN TERMINATED / ORCHESTRATION INVALID / SELECTOR INCOMPLETE / NO SEMANTIC DISPOSITION**
+Status: **COMPLETE / VALID SEMANTIC RED / USER-AUTHORIZED ORCHESTRATION RECOVERY / NON-STABLE**
 
 ## Immutable authority and execution boundary
 
@@ -17,96 +17,143 @@ identities; selector 379 is its exact first-379 prefix at
 `ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`, and the first 365 identities reproduce
 accepted authority `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1`.
 
-Preflight verified the internal `SHA256SUMS`, exact source commit, `runtimeExecution=false`, `packageRepair=false`,
-`exactArithmeticBackend=GMP`, GMPXX/GMP link evidence, all 27 package-relative fixtures, all six executable modes,
-and the append-only selector lineage through 380. The 58-file byte/mode census SHA-256 is
-`95ba3950267a1e145be427b2e1c896204aef7d86bd079d039a63bc0834e8a3e2`.
+The replacement execution was explicitly user-authorized after the first local attempt was classified orchestration
+invalid. No package/source/test/fixture/selector byte was changed. The complete replacement ran on GitHub Actions with
+**no repository timeout** and one exact identity per fresh process:
 
-Boundary flags: `runtimeExecution=true`; `configureExecution=false`; `compileExecution=false`;
-`relinkExecution=false`; `packageRepair=false`; `generatedDiscovery=false`; product/test/fixture/selector mutation
-all false; `benchmarkExecution=false`.
+- run/job: **`33689875040 / 100445977571`**;
+- workflow event/control SHA: `11f9b15d162894d41598288b165c739b8b28038e` — orchestration only, not semantic source;
+- result artifact: **`9869697113`**, Actions SHA-256
+  **`a96d8ff82b467c0cfd89c1437fc0a146461ab18d4850e04515acc562070b975a`**;
+- diagnostic-log artifact: **`9869697543`**, Actions SHA-256
+  **`5e961520a3844d5b01ab77d4b85b5117c4124bfa03d4993812270e4563deb5f2`**.
 
-## Orchestration failure
+Preflight verified the external/inner/source hashes, internal `SHA256SUMS`, source commit, exact GMP backend, 27
+package-relative fixtures, six executable modes (`755`), 58-file package census, selectors 373-380 and every
+append-only prefix relation. Boundary flags: `runtimeExecution=true`; `benchmarkExecution=false`;
+`configureExecution=false`; `compileExecution=false`; `relinkExecution=false`; `packageRepair=false`;
+`generatedDiscovery=false`; product/test/fixture/selector mutation all false.
 
-TB14 did **not** reach a valid selector result. The local execution host terminated two fresh-process invocations
-because the surrounding tool call exceeded its wall-clock allowance; neither binary produced an organic process
-result:
+## Orchestration recovery and evidence-parser correction
 
-1. ordinals **1-129** completed organically and all PASSed. Ordinal **130**
-   `SurfaceCellAuthorityContractCutover.FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority`
-   started and reached GoogleTest `[ RUN ]`, but the host terminated the enclosing call before `[ OK ]`, a final
-   GoogleTest summary, or an exit status could be recorded. Its partial log SHA-256 is
-   `cb179f3e3a6c3a519122f49f01aeb5382a7e0c54d748cb550cfc229ed4488846`.
-2. TB14 then resumed **without rerunning ordinal 130**. Ordinals **131-136** completed organically and all PASSed.
-   Ordinal **137**
-   `SurfaceCellAuthorityContractCutover.FinalOracleRejectsMissingForeignOrUncertifiedHardRailChartAuthority`
-   likewise reached `[ RUN ]` but no organic result before the host terminated the call. Its partial log SHA-256 is
-   `8498d801cb2c7fc226287274c8b7ac1baf4cf268409d2d8f08c00bc6c9bc5dbc`.
+The first TB14 attempt remains retained as superseded infrastructure evidence: the local tool host interrupted ordinal
+130 and later 137 after GoogleTest `[ RUN ]`. The user then explicitly authorized fixing the orchestration error and
+re-executing TB14. Moving the complete immutable selector run to GitHub Actions removed the local host wall-clock
+constraint. In the replacement run, ordinals **130** and **137** both completed organically, and execution continued
+through ordinal 380 plus the required non-gating diagnostic.
 
-The retained raw orchestration-evidence archive has SHA-256 `66e2b7c204be16dec6e95317c273b0654fb15bac8f468e1dbe1493e65c25107e` and contains the completed ledger, per-ordinal logs, identity map, run metadata, and pre/postflight census.
+One **reporting-only** defect was found after the valid replacement run: the temporary runner recognized PASS with an
+exact full-line comparison to `[       OK ] <identity>`, while GoogleTest appends duration text such as `(17 ms)`.
+That parser therefore mislabeled every selector row as RED and emitted a false `0 PASS / 380 RED` summary even though
+it retained each exact exit code and complete per-identity log. This did **not** alter selection, process execution,
+exit status, test output, package bytes, or execution order.
 
-The completed-result ledger contains **135 organic PASS / 0 semantic RED** observations for ordinals
-`1-129,131-136`; SHA-256
-`61e616cd54b6289ade99b53d111398df857f395ec633658f2bddd502ac933952`. These are retained observations, but they
-cannot establish the selector gate because ordinal 130 is inside the accepted 1-365 prefix and has no organic
-result. After the second interrupted process, execution stopped rather than risk another partial identity or an
-unauthorized retry.
+The semantic ledger was reconstructed once from the immutable raw artifact using the authoritative process evidence:
+an ordinal is PASS iff its process exit code is 0 and its exact log contains the terminal `[       OK ] <identity>`
+record (allowing GoogleTest's duration suffix); otherwise it is RED. All 380 logs independently contain the exact
+filter, exactly one selected test, `[ RUN ]`, and an organic terminal result. The corrected ledger SHA-256 is
+**`0b42866471ce0ad5939ab2d3c2d5c82f4efebb93c0a56ca7a60e295fad07397b`**. No semantic identity was rerun to
+correct the parser. This resolved orchestration candidate `M3-CP4c3-TB14-ORCH-02` with zero regression accounting.
 
-This is an **orchestration/infrastructure failure, not a semantic red**. No product, test, fixture, selector, or
-package defect is inferred from either interrupted process. The frozen TB14 rule permits a rerun only for an
-orchestration failure that executed no creditable semantic identity; this attempt already contains completed
-semantic identities and two identities that began execution without an organic result. TB14 therefore does not
-self-authorize a restart, retry of 130/137, or continuation past 137.
+## Gate result
+
+Corrected selector disposition is **371 PASS / 9 RED**.
+
+- ordinals **1-365: 365/365 PASS**;
+- first semantic red: **ordinal 366**;
+- report-only reds: **366, 367, 368, 369, 370, 371, 372, 374, 380**;
+- report-only passes after the frontier: **373, 375, 376, 377, 378, 379**;
+- selector-380 witness: **RED**;
+- selector-379 witness `GlobalTopologyPlan.VertexLocusSecondaryRankUsesExactWithinWedgeGeometry`: **PASS**;
+- selector-378 diagnostic-projection witness: **PASS**;
+- separate non-gating `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable`: **RED**, exit 1, zero gate
+  credit.
+
+The first red has moved again. Ordinal 366 now reports:
+
+`NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent;detailCode=CellularityNotEstablished;sourceEdge=25-31;sourceFace=25,30,31;rotationSystemReason=EdgeTraceSecondaryRankInvalid;cutCandidateCount=450;certificationAttempt=0;certificationCutEdges=0`
+
+The TB13 vertex-10 `(8,10,11)` / `VertexTracePortOrdinalInvalid` failure is absent. The new frontier is an **edge-locus
+trace secondary-rank failure** at source edge `25-31`, source face `(25,30,31)`, still at certification attempt 0
+with zero cut edges.
 
 ## BL9 discriminator disposition
 
-1. **NOT MEASURED — accepted boundary.** TB14 observed PASS through 129 and again at 131-136, but ordinal 130 has no
-   organic result and ordinals 138-365 were never attempted. The prior accepted authority remains **365/365** from
-   TB13; TB14 neither re-proves nor falsifies it.
-2. **NOT REACHED — vertex-10 correction.** Ordinal 366 was not attempted.
-3. **NOT REACHED — reason separation.** No production secondary-parameter red was reached.
-4. **NOT REACHED — BK7/v47 conjunction.** No v47 production census was reached; both inherited candidates remain
-   open.
-5. **NOT SATISFIED — candidate closure.** None of the four runtime-open CB15/CB16 candidates closes from TB14.
-6. **NOT REACHED — downstream face-walk evidence.** No new `nonDiscComponentCount` or
-   `remainingAdmissibleEdgeCount` evidence exists.
+1. **PASS — accepted boundary.** Ordinals 1-365 are re-proved **365/365 PASS** on package 84.
+2. **PASS — vertex-10 correction.** Ordinal 366 no longer reports source vertex 10, face `(8,10,11)`, or the old
+   ambiguous `VertexTracePortOrdinalInvalid` path. Runtime advances to `EdgeTraceSecondaryRankInvalid` at edge
+   `25-31` / face `(25,30,31)`.
+3. **DISCRIMINATED — reason separation.** No production `VertexTracePortOrdinalInvalid` or
+   `VertexTraceSecondaryParameterUnavailable` red remains at the frontier. Selector 380 reaches its focused
+   exact-corner/typed-failure checks without an earlier assertion failure, then fails only at its final production
+   assertion because attempt-0 rotation stops later at `EdgeTraceSecondaryRankInvalid`. The vertex-trace ambiguity
+   that motivated CB16 is therefore cleared; the new failure is a distinct edge-trace mechanism.
+4. **NOT PROVEN — BK7/v47 conjunction.** The old v47 `RotationRayOrderKeyCollision` remains absent, and selector 379
+   still passes, but the new edge-locus failure occurs before complete attempt-0 rotation publication. TB14 does not
+   publish the required five-ray v47 production rotation with distinct former-pair ranks. Absence of the old error
+   alone remains insufficient.
+5. **PARTIAL — candidate closure.** CB16's exact vertex-10 defect is runtime-cleared, but the whole selector-380
+   identity is RED and discriminator 4 is not satisfied. `M3-CP4c3-TB11-CAND-01` and
+   `M3-CP4c3-TB12-REV-CAND-01` remain open. Final disposition of `M3-CP4c3-TB13-CAND-01` and
+   `M3-CP4c3-TB13-REV-CAND-01` is reserved for independent TB14-REV so a focused local success is not confused with
+   production closure.
+6. **NOT REACHED — downstream face-walk evidence.** The mechanical witness still stops inside rotation-system
+   construction. No legitimate `nonDiscComponentCount` or `remainingAdmissibleEdgeCount` is produced at the actual
+   ordinal-366 frontier.
 
-Selector-380 witness ordinal **380** and the separate non-gating
-`GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` diagnostic were **not attempted**. No benchmark
-was executed.
+There remains **no vertex-30 discriminator**.
+
+## Carried report-only surfaces
+
+The report-only remainder preserves prior ownership unless the new runtime directly discriminates it:
+
+- **367** inherits the same new mechanical `EdgeTraceSecondaryRankInvalid` frontier as 366;
+- **368** reproduces the prescribed-sphere `RotationSystemInconsistent -> TraceEventPositionInvalid`, trace 2 /
+  event 30, `NoCarrierMatch / SourceEdgeUnavailable` surface;
+- **369** reproduces `saturationUsed=true` where the frozen identity expects ordinary proposal selection;
+- **370** still does not return the expected `EmptyNetworkOnClosedSurface` typed code and still lacks the required
+  `sourceFace` locus;
+- **371/372** again fail only because their shared mechanical fixture constructor reaches the same upstream
+  `EdgeTraceSecondaryRankInvalid` failure;
+- **374** still stops at `atlasBuild=false` in the pre-classified folded-cone fixture;
+- **373/375/376/377/378/379** pass report-only.
+
+The required non-gating mechanical diagnostic independently reports the same mechanical provenance:
+`pipelineFailure=NotProductionReady`, failed stage `surface-cut-graph`, origin `RotationSystemInconsistent`,
+`originatingRotationSystemReason=EdgeTraceSecondaryRankInvalid`, `traceEventClaimedSourceEdge=25-31`, furthest stage
+`field-aligned-network`, with source-topology/atlas/network snapshots present and no global-topology-plan snapshot.
+It remains zero-credit diagnostic evidence.
 
 ## Regression/candidate categorization
 
-New non-stable infrastructure candidate **`M3-CP4c3-TB14-ORCH-01`** records the execution-host interruption. It is
-not a product regression and changes stable accounting by **+0 events / +0 recurrences**. The existing product
-candidates remain exactly where CB16 left them:
+- **`M3-CP4c3-TB14-CAND-01` — ACTIVE / GATING / NON-STABLE:** new first-red mechanism
+  `EdgeTraceSecondaryRankInvalid` at source edge `25-31` / face `(25,30,31)`. Root cause is not assigned by TB14;
+  independent review must distinguish missing/stale edge-trace provenance from a real rank-construction contract
+  gap before a product correction is authorized.
+- **`M3-CP4c3-TB14-ORCH-01` — RESOLVED / INFRASTRUCTURE / NON-STABLE:** moving the complete replacement to GitHub
+  Actions produced organic results for the previously interrupted ordinals and the entire selector.
+- **`M3-CP4c3-TB14-ORCH-02` — RESOLVED / REPORTING / NON-STABLE:** exact `[ OK ]` line matching mislabeled valid
+  logs; corrected from immutable exit codes/logs without semantic rerun.
 
-- `M3-CP4c3-TB13-REV-CAND-01` — build corrected, runtime confirmation still absent;
-- `M3-CP4c3-TB13-CAND-01` — build corrected, runtime confirmation still absent;
-- `M3-CP4c3-TB12-REV-CAND-01` — partially runtime discriminated, v47 conjunction still absent;
-- `M3-CP4c3-TB11-CAND-01` — active, full v47 conjunction still absent.
-
-No carried 368/369/370/371/372/374 surface was reached in this attempt, so none acquires new evidence or changes
-owner. There remains no vertex-30 discriminator.
+These are on the still-unaccepted CP4c-3 surface and cause no accepted-green loss. Stable accounting therefore
+remains **44 events / 14 categories / 30 recurrences**; produced-witness debt remains **5**; semantic M3 package
+count remains **81**.
 
 ## Immutable postflight
 
-After execution stopped, the complete 58-file package-tree byte/mode census is exactly identical to preflight,
-SHA-256 `95ba3950267a1e145be427b2e1c896204aef7d86bd079d039a63bc0834e8a3e2`, and the internal `SHA256SUMS` manifest
-re-verifies. No package repair, rebuild, relink, configure, generated discovery, source/test/fixture/selector
-mutation, or benchmark occurred.
+The complete 58-file package-tree byte/mode census is exactly identical before and after runtime. Corrected
+pre/post census SHA-256 is **`fc6b983f8544e27c805aaf00020a5b92be835b0dfccf5d81c73aa73905c484b5`** for both sides, and the package
+internal manifest remains valid. No package repair, rebuild, relink, configure, generated discovery,
+source/test/fixture/selector mutation, or benchmark occurred.
 
 ## Phase status and exact successor
 
-TB14 is **terminated but not semantically complete**. It is neither green nor a valid semantic red, so it does not
-advance or reduce accepted authority. The latest valid runtime authority remains **TB13 / package 83 / selector
-379** at accepted **365/365** and first red 366. CB16/package84 remains current build/package authority. Stable
-accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt remains **5**; semantic M3
-package count remains **81**.
+TB14 is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Accepted semantic authority remains **365/365**; the current
+measured first-red frontier is ordinal **366**, now `EdgeTraceSecondaryRankInvalid` at edge `25-31` / face
+`(25,30,31)`. CB16/package84 remains current build/package authority.
 
-The frozen plan cannot itself authorize a retry after this partial execution. Exact successor is therefore
-**`M3-CP4c-3-TB14-REV` — independent REVIEW + PLAN only**, under
-`Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`. That review must adjudicate recovery from the two
-non-organic identity terminations without treating them as semantic failures or silently duplicating runtime. No
-product correction, selector change, compile, package, or additional TB14 identity execution is authorized before
-that review.
+Exact successor is **`M3-CP4c-3-TB14-REV` — independent REVIEW + PLAN only**, under
+`Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`. It must statically determine the exact edge-locus incidence
+and contract behind `EdgeTraceSecondaryRankInvalid`, preserve the v47 five-ray obligation, adjudicate candidate
+closure, and freeze one bounded Code + Build successor. No runtime, benchmark, compile, package, or product/test/
+fixture/selector mutation is authorized in that review.

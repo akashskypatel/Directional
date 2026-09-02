@@ -2,107 +2,132 @@
 
 Date: 2026-09-02 UTC
 Turn: `M3-CP4c-3-TB14-REV`
-Status: **FROZEN SUCCESSOR / REVIEW + PLAN ONLY / NOT EXECUTED**
+Status: **FROZEN SUCCESSOR / INDEPENDENT REVIEW + PLAN ONLY / NOT EXECUTED**
 
 ## Authority
 
-Review the orchestration-invalid TB14 attempt without rerunning any identity:
+Review the completed user-authorized package-84 TB14 replacement run; do not rerun any identity:
 
 - semantic/package source `6808c090f2dd229a48550d758f459bfd156da4b6`;
 - immutable package **84** artifact `9867334959`, Actions SHA-256
   `67f1ea7012f3b0e06a1dd60e87d40c7e593e5260703cab425c9021cb0c2ebd55`, inner tar SHA-256
   `8385a994ebff3e9d3583f95f769e107a73dcec892c7d9073502103a981a40eff`;
 - selector **380** SHA-256 `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`;
-- retained raw orchestration-evidence archive SHA-256 `66e2b7c204be16dec6e95317c273b0654fb15bac8f468e1dbe1493e65c25107e`;
-- 135 organic PASS observations for ordinals `1-129,131-136`, results-ledger SHA-256
-  `61e616cd54b6289ade99b53d111398df857f395ec633658f2bddd502ac933952`;
-- ordinal 130 partial log SHA-256 `cb179f3e3a6c3a519122f49f01aeb5382a7e0c54d748cb550cfc229ed4488846`;
-- ordinal 137 partial log SHA-256 `8498d801cb2c7fc226287274c8b7ac1baf4cf268409d2d8f08c00bc6c9bc5dbc`;
-- both partial logs reach GoogleTest `[ RUN ]` but contain no organic completion/exit result;
-- selector 366, selector 380, and the non-gating mechanical diagnostic were not reached;
-- immutable postflight passed with the exact same 58-file census SHA-256
-  `95ba3950267a1e145be427b2e1c896204aef7d86bd079d039a63bc0834e8a3e2`;
-- latest **valid** runtime authority remains TB13 at accepted 365/365 / first red 366.
+- authoritative replacement run/job **`33689875040 / 100445977571`**;
+- result artifact **`9869697113`**, Actions SHA-256
+  `a96d8ff82b467c0cfd89c1437fc0a146461ab18d4850e04515acc562070b975a`;
+- diagnostic-log artifact **`9869697543`**, Actions SHA-256
+  `5e961520a3844d5b01ab77d4b85b5117c4124bfa03d4993812270e4563deb5f2`;
+- corrected semantic ledger SHA-256
+  `0b42866471ce0ad5939ab2d3c2d5c82f4efebb93c0a56ca7a60e295fad07397b`, derived from immutable per-process
+  exit codes and terminal GoogleTest logs after the reporting-only exact-line parser defect was identified;
+- complete selector result **371 PASS / 9 RED**, accepted **1-365 = 365/365 PASS**, first red **366**;
+- ordinal 366: `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid`, source edge `25-31`, source face
+  `(25,30,31)`, attempt 0 / zero cut edges / 450 candidates;
+- selector 379 PASS; selector 380 RED at its final production assertion because attempt-0 rotation returns
+  `EdgeTraceSecondaryRankInvalid`;
+- non-gating mechanical diagnostic RED with the same edge/reason and zero gate credit;
+- immutable 58-file postflight equal to preflight; no build/configure/relink/repair/discovery/mutation/benchmark.
+
+The earlier local-host interruption is superseded by this complete replacement and is infrastructure history only.
+`M3-CP4c3-TB14-ORCH-01` and the reporting-only `M3-CP4c3-TB14-ORCH-02` are resolved non-stable orchestration
+candidates and are not product owners.
 
 ## Objective
 
-Adjudicate the only unresolved question created by TB14: how to obtain a valid package-84 selector-380 result after
-an execution-host interruption without laundering a partial process into semantic evidence or violating the frozen
-no-unchanged-retry/exact-once rules. This is an orchestration review, not a product review. Do not infer a Directional
-failure from ordinals 130 or 137 merely because their enclosing host calls ended.
+Determine the exact semantic cause of the new **edge-locus trace secondary-rank** failure without guessing from the
+reason name, then freeze one bounded Code + Build successor if and only if source/fixture evidence proves a real
+contract defect. Preserve the accepted 365 boundary, the v47 five-ray/distinct-rank obligation, and all independent
+carried surfaces. This review may revise planning records only; it executes no Directional runtime and changes no
+implementation/test/fixture/selector/build logic.
 
-## Required measures — BM0–BM7
+## Required measures — BM0–BM8
 
-### BM0 — Re-establish immutable authority
+### BM0 — Re-establish immutable and corrected evidence authority
 
-Verify package/source/selector hashes, the preflight/postflight census, the exact completed-result ledger, the two
-partial logs, and that no configure/build/relink/repair/generated discovery/benchmark or source/test/fixture/selector
-mutation occurred. Keep TB13 as latest valid runtime authority and CB16/package84 as current build authority.
+Verify package/source/selector hashes, run/job/artifact identities, all 380 exact fresh-process selections, corrected
+371/9 ledger reconstruction, 365/365 accepted prefix, non-gating diagnostic, and byte/mode-identical postflight.
+Independently prove the runner's exact-line `[ OK ]` parser defect was reporting-only: execution order, exit codes,
+logs and package bytes must not depend on the corrected labels. Record that no semantic rerun is authorized or
+needed for this evidence correction.
 
-### BM1 — Classify the interruption precisely
+### BM1 — Enumerate every `EdgeTraceSecondaryRankInvalid` producer and projection path
 
-Determine whether the outer tool timeout killed the test processes, whether either process returned an organic exit
-that was merely not recorded, and whether any residual process survived. Use retained logs/process evidence only;
-do not rerun an identity to answer this question. The default classification remains orchestration/infrastructure
-unless evidence proves otherwise.
+Audit `build_rotation_system`, `edge_locus_secondary_rank`, error rendering/projection, and every caller. Establish
+how many emitters can produce this exact reason, what preconditions return `nullopt`, which locus fields survive to
+TB14, and whether any downstream translation can fabricate or collapse the same reason. Do not infer the cause from
+the enum alone.
 
-### BM2 — Adjudicate exact-once and retry semantics
+### BM2 — Trace the exact failing edge incidence
 
-Interpret TB14 §3/§8 and the turn-based testing-integrity rules against the actual interruption. Explicitly decide
-whether an identity that reached `[ RUN ]` but has no organic completion is considered "executed" for the frozen
-no-rerun rule. Separately decide whether the 135 completed organic PASS observations may be retained in a successor
-execution ledger. Do not choose a convenient interpretation silently.
+For source edge `25-31` / face `(25,30,31)`, identify the exact network arc, trace, orientation, segment interval,
+contact carrier, candidate `other` carrier, source vertex and side rank that reach `edge_locus_secondary_rank`.
+Determine which specific `nullopt` branch fires: missing trace-ray face, missing source face, contact edge not in the
+face, invalid/missing opposite carrier, coincident local edge index, or the source-vertex fallback failing to bind.
+Use existing package source/fixtures and retained runtime evidence only; no runtime probe is allowed in REVIEW.
 
-### BM3 — Choose a safe execution plane
+### BM3 — Decide whether the rejected incidence is semantically valid
 
-If any further package-84 runtime is authorized, use an execution plane that can run each required fresh process to
-an organic result without ChatGPT/container-call wall-clock termination. Prefer one bounded GitHub Actions TB
-workflow with no repository-imposed full-gate timeout and immutable package verification. Do not rebuild or repair
-package 84.
+Establish the intended edge-locus rotation contract from the frozen topology definitions and actual trace
+provenance. If the incidence is valid, derive the exact rank that should exist and prove why it is canonical,
+locus-relative, orientation-correct and enumeration-invariant. If the incidence is invalid/stale, identify the
+earlier producer invariant that should reject or repair it instead of manufacturing a rank in rotation assembly.
+Reject fixture-specific index rules and id/order tie-breakers.
 
-### BM4 — Freeze exactly one recovery model
+### BM4 — Audit the whole edge-locus rank construction, not only the failing branch
 
-Choose exactly one and justify it:
+Review `edge_locus_secondary_rank` for Forward and Reverse rays, ordinary incoming/outgoing carrier pairs, direct
+source-vertex first/last segments, both canonical edge orientations, both incident face sides, and any endpoint
+coincidence. Prove the returned rank integrates correctly with `key.primary`, `sideRank`, mandatory/cut edge rays,
+and collision detection. Any correction must preserve exact topology semantics and fail closed on true ambiguity.
 
-1. **resume model:** retain only identities proved organically complete and execute only never-completed identities
-   permitted by BM2; or
-2. **replacement model:** declare the local attempt wholly non-authoritative and authorize one complete replacement
-   selector execution on immutable package 84, only if BM2 proves that doing so does not violate the frozen retry
-   contract.
+### BM5 — Prove accepted-boundary and generalization safety
 
-If neither model is legally supported by current authority, freeze the minimal documentation/policy amendment needed
-before runtime rather than improvising execution.
+Explain why the proposed correction, if any, cannot alter accepted ordinals 1-365 except by preserving their already
+observed outputs. Identify the invariant enforced, the complete class of valid inputs affected, potential regressions,
+and negative cases that must remain rejected. Freeze focused compile-time/test contracts that are semantic rather
+than fixture-index-specific. Do not weaken an assertion to make ordinal 366 green.
 
-### BM5 — Preserve semantic obligations
+### BM6 — Preserve and adjudicate the v47 obligation
 
-No product candidate closes from TB14. Any authorized successor must still publish all six BL9 discriminators,
-including 1-365 = 365/365 and the complete v47 five-ray/distinct-former-pair-rank conjunction. It must also execute
-selector 380 and the retained non-gating mechanical diagnostic exactly as required by the eventual recovery model.
-There remains no vertex-30 discriminator.
+`M3-CP4c3-TB11-CAND-01` remains open until production publishes the full five-ray v47 rotation and distinct secondary
+ranks for the former pair (arc 20 / trace 6 / Forward and arc 23 / trace 9 / Reverse). Selector-379 PASS and absence
+of `RotationRayOrderKeyCollision` are necessary but insufficient. Decide whether
+`M3-CP4c3-TB12-REV-CAND-01`, `M3-CP4c3-TB13-CAND-01`, and `M3-CP4c3-TB13-REV-CAND-01` can close, partially close,
+or remain runtime-open under the exact TB14 evidence. There is still no vertex-30 discriminator.
 
-### BM6 — Preserve carried ownership and accounting
+### BM7 — Keep carried surfaces independently owned
 
-Do not reclassify sphere 368, saturation 369, ordinal 370, 371/372 coupling, folded-cone 374, vertex 30, or
-finalize/contact from the incomplete TB14 attempt. `M3-CP4c3-TB14-ORCH-01` is infrastructure/non-stable; stable
-accounting remains 44 / 14 / 30, debt 5, accepted authority 365/365, packages 81 unless later valid semantic evidence
-changes it.
+Confirm TB14's report-only reds do not get folded into the new edge-rank owner:
 
-### BM7 — Freeze one successor and close review durably
+- 368 remains prescribed-sphere `TraceEventPositionInvalid` / `NoCarrierMatch`;
+- 369 remains saturation/ordinary-proposal coverage;
+- 370 remains the empty-network typed-code/locus surface;
+- 371/372 are test-coupled through the shared mechanical fixture and inherit the 366 upstream stop only;
+- 374 remains the pre-classified folded-cone `atlasBuild=false` fixture surface;
+- finalize/contact and vertex 30 remain separate.
 
-Issue exactly one falsifiable successor consistent with BM0-BM6. If further runtime is authorized, freeze an
-artifact-only TB plan bound to package 84/selector 380 and explicitly state which prior observations, if any, carry
-credit and which identities may run. If runtime cannot yet be authorized, freeze only the minimum policy/plan
-correction needed. Update `ORIENTATION.md` (mandatory REVIEW-turn update), tracker, consolidated record, TODO,
-handoff, roadmap and changelog. Do not edit product/test/fixture/selector/build logic.
+Update regression ownership only where the evidence actually discriminates a mechanism.
 
-## Prohibitions
+### BM8 — Freeze exactly one bounded successor
 
-No Directional runtime, benchmark, configure, compile, link, package, product/test/fixture/selector mutation,
-unreviewed retry of ordinals 130 or 137, silent restart of selector 380, semantic inference from a host timeout, or
-closure of any CB15/CB16 product candidate without the missing BL9 runtime evidence.
+If BM2-BM5 prove a product defect, freeze one `M3-CP4c-3-CB17` Code + Build plan with surgical production/test
+changes, compile-only acceptance, GMP/GMPXX, selector-prefix preservation, and a following immutable TB plan. If the
+failure is fixture/test authority instead, freeze the correspondingly bounded test-only CB correction. If evidence
+is insufficient, freeze the minimum diagnostic CB necessary to make the missing incidence observable rather than
+speculating. In every case:
 
-## Completion criterion
+- no REVIEW runtime, benchmark, configure, compile, link, package, product/test/fixture/selector mutation;
+- no accepted-boundary weakening or fixture special-case;
+- update `ORIENTATION.md` as required for every REVIEW turn;
+- stable accounting remains **44 / 14 / 30** unless review proves a distinct historical stable event under tracker
+  rules;
+- accepted authority remains **365/365**, debt **5**, packages **81** until a later CB creates a new immutable
+  package.
 
-The review closes only when the two interrupted processes are classified, exact-once/retry semantics are explicit,
-one safe execution/recovery model is chosen or rejected with evidence, every inherited semantic obligation remains
-intact, and exactly one bounded successor is frozen without guessing.
+## Exit gate
+
+The review closes only when BM0-BM8 are discharged, every candidate has an explicit owner/disposition, the exact
+edge-locus failure branch and semantic validity are determined or a minimum diagnostic gap is proved, and exactly one
+bounded successor is frozen. No product correction is authorized merely because `EdgeTraceSecondaryRankInvalid`
+exists; the mechanism must be proved first.

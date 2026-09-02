@@ -94,34 +94,37 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 
 ## Mandatory next turn — `M3-CP4c-3-TB14-REV` — EXACT NEXT / Independent REVIEW + PLAN
 
-`M3-CP4c-3-TB14` is **TURN TERMINATED / ORCHESTRATION INVALID / SELECTOR INCOMPLETE / NO SEMANTIC DISPOSITION**.
+`M3-CP4c-3-TB14` is **COMPLETE / VALID SEMANTIC RED / USER-AUTHORIZED ORCHESTRATION RECOVERY / NON-STABLE**.
 Record: `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md`.
 
-### What happened
+### Current measured boundary
 
-- Immutable package **84** / semantic source `6808c090f2dd229a48550d758f459bfd156da4b6` passed full package/source/GMP/27-fixture/six-executable/selector-380 preflight.
-- Selector execution used one exact identity per fresh process. Ordinals **1-129** completed organically and PASSed.
-- Ordinal **130** (`FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority`) reached GoogleTest `[ RUN ]`, then the surrounding local execution call exceeded its wall-clock allowance. No `[ OK ]`, final GoogleTest summary, or organic exit status exists.
-- Execution resumed **without rerunning 130**. Ordinals **131-136** completed organically and PASSed. Ordinal **137** (`FinalOracleRejectsMissingForeignOrUncertifiedHardRailChartAuthority`) then suffered the same host-level interruption after `[ RUN ]` and before any organic result.
-- Execution stopped at that point. **135 organic PASS / 0 semantic RED** observations exist for `1-129,131-136`; selector 366, selector 380, and the retained non-gating diagnostic were not reached. The accepted 1-365 discriminator is therefore **not measured by TB14** because ordinal 130 is inside it.
-- Postflight package bytes/modes remain exactly identical to preflight; census SHA-256 `95ba3950267a1e145be427b2e1c896204aef7d86bd079d039a63bc0834e8a3e2` and internal manifest reverify.
+- Immutable package **84** / semantic source `6808c090f2dd229a48550d758f459bfd156da4b6` remains byte/mode unchanged.
+- The prior local-host interruption was recovered by explicit user authorization: the full selector was re-executed on GitHub Actions with no repository timeout, one exact identity per fresh process, run/job **`33689875040 / 100445977571`**.
+- Result/log artifacts are `9869697113` (`a96d8ff82b467c0cfd89c1437fc0a146461ab18d4850e04515acc562070b975a`) / `9869697543` (`5e961520a3844d5b01ab77d4b85b5117c4124bfa03d4993812270e4563deb5f2`).
+- A reporting-only exact-line `[ OK ]` parser defect mislabeled passing logs in the temporary summary. Immutable exit codes and complete per-identity logs correct the ledger to **371 PASS / 9 RED**; corrected ledger SHA-256 `0b42866471ce0ad5939ab2d3c2d5c82f4efebb93c0a56ca7a60e295fad07397b`. No semantic identity was rerun for that correction.
+- Ordinals **1-365 remain 365/365 PASS**. First red remains ordinal **366**, but it has moved from TB13's vertex-10 `VertexTracePortOrdinalInvalid` to `EdgeTraceSecondaryRankInvalid` at source edge **25-31**, face `(25,30,31)`, certification attempt 0 / zero cut edges / 450 candidates.
+- Selector 379 PASSes. Selector 380 REDs only at its final production assertion because attempt-0 rotation stops on the new edge-rank failure. The old vertex-10 ambiguous failure is cleared, but the complete v47 five-ray/distinct-rank production conjunction is still not published.
+- Report-only reds are 366/367/368/369/370/371/372/374/380; 373/375/376/377/378/379 PASS. The non-gating mechanical diagnostic independently reproduces `EdgeTraceSecondaryRankInvalid` at edge `25-31` and remains zero-credit.
+- Package postflight is identical; no configure/build/relink/repair/generated discovery/source/test/fixture/selector mutation or benchmark occurred.
 
-This is **orchestration/infrastructure evidence, not a semantic red**. The frozen TB14 plan permits a rerun only for a demonstrated orchestration failure that executed no creditable semantic identity; this attempt already contains completed semantic identities and two started-but-nonorganic identities. TB14 therefore does **not** self-authorize retry, restart, or continuation. Latest valid runtime authority remains **TB13 / package 83 / selector 379**, accepted **365/365** / first red 366. CB16/package84 remains current build/package authority. Stable accounting remains **44 events / 14 categories / 30 recurrences**; debt **5**; packages **81**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; debt **5**; packages **81**. New non-stable semantic owner is `M3-CP4c3-TB14-CAND-01`. The local-host and result-parser orchestration defects are resolved as `M3-CP4c3-TB14-ORCH-01/02`.
 
-### Independent review scope — BM0-BM7
+### Independent review scope — BM0-BM8
 
 Run only `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`:
 
-1. re-establish package/source/selector and partial-execution evidence;
-2. classify the host-level interruptions without rerunning an identity;
-3. adjudicate whether `[ RUN ]` without organic completion counts as executed under the exact-once/no-rerun contract, and whether the 135 organic observations can carry into a successor ledger;
-4. choose a safe execution plane if more package-84 runtime is authorized;
-5. freeze exactly one recovery model (resume, complete replacement, or minimum policy/plan correction) rather than improvising;
-6. preserve every BL9 semantic obligation and carried surface; no product candidate closes from TB14;
-7. keep stable accounting unchanged unless later valid semantic evidence authorizes a change;
-8. freeze exactly one successor and update `ORIENTATION.md` as required for every REVIEW turn.
+1. re-establish immutable package/run evidence and independently verify the corrected 371/9 ledger;
+2. enumerate every `EdgeTraceSecondaryRankInvalid` emitter/projection path;
+3. trace the exact arc/trace/orientation/segment/carrier incidence at edge `25-31` / face `(25,30,31)` and identify the firing `nullopt` branch;
+4. determine whether that incidence is semantically valid or stale/invalid provenance;
+5. audit the complete edge-locus rank construction and prove any correction is canonical, exact and order-invariant;
+6. preserve accepted 365/365 and the full v47 five-ray/distinct-rank closure obligation;
+7. keep 368/369/370/371/372/374, vertex 30 and finalize/contact under their independent owners;
+8. adjudicate inherited candidate closure precisely;
+9. update `ORIENTATION.md` and freeze exactly one bounded CB successor under BM8.
 
-**No Directional runtime, benchmark, configure, compile, link, package, product/test/fixture/selector mutation, or unreviewed retry is authorized in `M3-CP4c-3-TB14-REV`.**
+**No Directional runtime, benchmark, configure, compile, link, package, product/test/fixture/selector mutation is authorized in `M3-CP4c-3-TB14-REV`.**
 
 ## Context Load Plan
 
@@ -131,15 +134,15 @@ Run only `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`:
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first and update during the REVIEW turn.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` — **binding BM0-BM7 review scope**.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — orchestration-invalid attempt evidence.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — frozen exact-once/rerun contract being adjudicated.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` — **binding BM0-BM8 semantic review scope**.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — **current valid runtime authority**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — frozen BL9 gate/discriminator contract.
 4. `.agents/Directional/Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — current package-84/build authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — latest valid runtime authority.
-6. `.agents/Directional/Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — BL0-BL9/root-cause authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — vertex-10 root cause and inherited v47 obligation.
+6. `.agents/Directional/Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` — v47 distinct-ray semantic authority.
 7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
 
-Do not execute any package-84 identity before BM2/BM4 explicitly authorize the recovery model.
+Do not execute any package-84 identity in REVIEW. The next runtime decision belongs to the bounded successor frozen by BM8.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
