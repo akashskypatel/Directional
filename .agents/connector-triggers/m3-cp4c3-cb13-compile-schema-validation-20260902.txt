@@ -1,2 +1,0 @@
-purpose=validate M3-CP4c-3-CB13 compile caller
-candidate_sha256=eb7024584bc165624fc7fc682d3967272e72d6eeff88da71ca25f0a72a47fe94
