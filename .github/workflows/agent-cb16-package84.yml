@@ -66,8 +66,10 @@ jobs:
           exec > >(tee -a "$log") 2>&1
           work="${RUNNER_TEMP}/m3-cp4c3-cb16-package84"
           mkdir -p "$work/raw"
+          artifact_digest="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/9866902345" --jq '.digest')"
+          test "$artifact_digest" = "sha256:410f18cd45f0662d480592bc2bb567bb6ab02583cf0a0dd06629b5c57a0174f9"
+          echo "compile_artifact_digest=$artifact_digest" | tee -a "$log"
           gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/9866902345/zip" > "$work/raw.zip"
-          echo "516836c28645f3263d1315e0fd84b99ac3519c339fb408c9d72f0769df5c3de6  $work/raw.zip" | sha256sum -c -
           unzip -q "$work/raw.zip" -d "$work/raw"
           test "$(cat "$work/raw/metadata/source-commit.txt")" = "6808c090f2dd229a48550d758f459bfd156da4b6"
           grep -qx 'runtimeExecution=false' "$work/raw/metadata/command-boundary.txt"
