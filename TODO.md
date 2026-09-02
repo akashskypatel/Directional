@@ -26,69 +26,29 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB13` (diagnostic-only Code + Build, runtime-free, GMP/GMPXX linked)
+## Current focus — `M3-CP4c-3-TB11` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB10-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB10_Independent_Review_Record.md`, measures **BE0–BE7** discharged, static only.
+`M3-CP4c-3-CB13` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Exact compile/package source:
+`3070173894ee097f631b96c1c6d29f276df89a66`. Compile run/job `33598896270 / 100148036281` succeeded across all eight standard targets with GMP/GMPXX and `runtimeExecution=false`. Immutable package **81** was created by run/job `33599637764 / 100150255983`; artifact `9834661539`, Actions SHA-256 `10e18bc81c2f850a1e7bc3d4ce16830a5d5ebe7d1992cd728c1bb043dc71cb2f`, inner tar SHA-256 `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`.
 
-**CB12 is runtime-proved and `M3-CP4c3-TB9-REV-CAND-01` is CLOSED.** TB10 (package 80, source
-`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`, selector 377, run/job `33584653692 / 100106147126`) re-proved
-**365/365**, published `oldOrdinal366ConditionSeedPair=false`, and passed identity 377 at terminal **v36** /
-singularity 4 / `BarrierAbsorbed` / network node **7**. The first red moved out of `field-aligned-network` into
-**`surface-cut-graph`**.
-
-**The moved red is provably unreadable, and that is the finding.**
-
-- `EmbeddedGraphTopology.cpp` emits `RotationSystemInconsistent` from **46 sites**, all reachable from
-  `SurfaceCutGraph::make`. Only **9** publish a `RotationSystemInconsistencyReason`, and **every one of those 9
-  also sets `sourceEdge` and/or `sourceFace`**. The ordinal-366 renderer prints both when present and printed
-  neither, so the firing site is one of the **28** publishing neither — 14 `build_rotation_system`,
-  9 `walk_graph_faces`, 2 `build_arcs`, 2 `build_node_loci`, 1 `exterior_boundary_orbits`. **23 publish nothing at
-  all**; 5 publish only `sourceVertex`.
-- **Three sequential losses of one datum, and the previously reported one is the last:** the silent producer sites;
-  `SurfaceCutGraph::topology_error`, whose `SurfaceCutGraphError` has **no `sourceVertex` field**; and
-  `cut_graph_failure_locus`, which publishes only two of the ten fields the error carries. **Repairing the last one
-  alone changes ordinal 366's output by nothing.**
-- No product snapshot or existing identity rescues it, and **the failing phase — before, during or after fan ray
-  ordering — is provably undecidable today.**
-
-Ordinals 367/371/372 are **strictly upstream-blocked by one cause**, but 371/372 read only the A1 atlas and are
-held by a fixture-helper precondition (`M3-CP4c3-TB10-REV-CAND-01`, deferred on purpose). Accepted authority
-remains **365**; CP4c-3 remains **OPEN**.
+CB13 discharged BF0–BF9:
+- [x] **BF0** selectors 374–377 recomputed/frozen; accepted 365 prefix unchanged; no runtime/gate/benchmark/package repair; GMP/GMPXX proved.
+- [x] **BF1** re-derived 46 total `EmbeddedGraphTopology.cpp` emission sites and reconciled the review's 28 narrower no-reason/no-edge-or-face subset with the actual **37 reasonless-site predicate**; typed all 37 plus eight same-code sites in `GlobalTopologyPlan.cpp`: **45 sites / 53 condition names**.
+- [x] **BF2** added/copied `sourceVertex`; field audit records 11 other `GlobalTopologyPlanError` fields absent from `SurfaceCutGraphError`.
+- [x] **BF3** projected reason/vertex/trace/event/cut-attempt shape and found DTO consumers by search; `fail_surface_cells` is an independently named consumer.
+- [x] **BF4** certification attempt index and active cut-edge count are published.
+- [x] **BF5** ordinal 366's existing failure message renders the new evidence; no gate ordinal added; `MechanicalWitnessStageReachabilityIsObservable` is non-gating diagnostic-only for TB11.
+- [x] **BF6** audit-by-assumption found independent repeated-code/bare-emitter and subset-projection examples outside the review's named sites.
+- [x] **BF7/BF8** no topology decision, ray order, cellularity, cut proposal, admissibility, tolerance, sphere/370/saturation/folded-cone/vertex-30/finalize-contact/371-372 behavior, or selector byte changed.
+- [x] **BF9** TB11 discriminators frozen in `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Plan.md`.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB13`** under **BF0–BF9** in
-`Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §7. **Diagnostic-only**: it changes no topology decision,
-adds no gate ordinal, and moves no selector byte.
+Run **`M3-CP4c-3-TB11`** artifact-only on immutable package 81. Execute selector 377 from ordinal 1, one identity per fresh process, with normal mode-preserving extraction and no repository timeout on the complete selector. Then run `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once with zero gate credit. Do not configure, compile, relink, repair, regenerate, mutate source/test/fixture/selector bytes, or run a benchmark.
 
-- [ ] **BF0** selectors 374/375/376/377 byte-frozen and recomputed at authoring and preflight; accepted 365 prefix
-      untouched; `selected_gate=NONE`; `gate_execution_authorized=false`; GMP/GMPXX linkage proved.
-- [ ] **BF1** one typed name per condition at every silent producer site, scoped **by predicate** — "any site
-      constructing a `RotationSystemInconsistent` error without assigning `rotationSystemInconsistencyReason`" —
-      found by search; re-derive the counts (this review found 28 candidates of 46 in
-      `EmbeddedGraphTopology.cpp`, plus 8 sites in `GlobalTopologyPlan.cpp`) and reconcile any difference.
-- [ ] **BF2** add `sourceVertex` to `SurfaceCutGraphError` and copy it in `topology_error`; audit that mapper
-      field-by-field and report anything else silently dropped.
-- [ ] **BF3** extend `cut_graph_failure_locus` with the reason, vertex, trace, event, position failure/pass and
-      cut-candidate evidence; find consumers by search and name one this measure did not name.
-- [ ] **BF4** publish which `certify_actual_embedded_graph` attempt failed — initial uncut certification, or
-      proposal *n* with *k* cut edges.
-- [ ] **BF5** name the carrier: extend `append_cp4c_failure_locus` in the same change so **ordinal 366's own
-      failure message** carries the answer; declare `MechanicalWitnessStageReachabilityIsObservable` a **non-gating
-      diagnostic identity** for the successor TB.
-- [ ] **BF6** audit by assumption, two predicates, each with a site named outside this record.
-- [ ] **BF7** prohibited: changing any topology decision, ray ordering, cellularity test or cut proposal; adding or
-      removing a gate ordinal; altering any selector byte; a tolerance or float-derived topological decision;
-      repairing the sphere, ordinal 370, saturation, the folded-cone witness, vertex 30, the finalize/contact
-      fall-through, or the 371/372 fixture coupling; inferring and "fixing" a producer before the measurement names
-      it.
-- [ ] **BF8** report the re-derived counts and reconciliation, per-site distinct-condition counts, the mapper audit,
-      the consumer search, and an explicit statement that no topology decision changed.
-- [ ] **BF9** publish the expected `M3-CP4c-3-TB11` discriminators.
+Required discriminator: ordinal 366 must name a post-CB13 `rotationSystemReason`, map to exactly one producer phase, and publish `certificationAttempt`/`certificationCutEdges`; accepted 1–365 must stay green and first red remain 366. Carried reds 367/371/372 and 368/369/370/374 retain their existing ownership unless new exact evidence proves otherwise.
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
-package count **77**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **78**; accepted authority **365/365**; CP4c-3 **OPEN**.
 
 ## Carried forward from M1
 

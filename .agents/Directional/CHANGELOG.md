@@ -1,3 +1,11 @@
+## 2026-09-02 — `M3-CP4c-3-CB13`: rotation-system failure instrumentation is complete, build green, package 81 frozen
+
+Diagnostic-only Code + Build under BF0–BF9. Implementation commit `3e3411bdc63f1fb841bf223e6e5971284e3770ab`; exact compile/package source `3070173894ee097f631b96c1c6d29f276df89a66`. The exact BF1 predicate re-derived **37** reasonless sites among 46 in `EmbeddedGraphTopology.cpp` (reconciling the review's narrower 28 no-reason/no-edge-or-face subset) and eight additional reasonless same-code sites in `GlobalTopologyPlan.cpp`; CB13 typed **45 sites / 53 conditions**. It added `sourceVertex` propagation, expanded cut-graph failure projection, recorded certification attempt/cut-edge count, and rendered the new evidence through ordinal 366's existing failure message. No topology decision, selector byte, gate ordinal, tolerance, cut rule, or carried witness behavior changed.
+
+Compile run/job `33598896270 / 100148036281` succeeded for all eight standard targets with GMP/GMPXX and `runtimeExecution=false`; artifacts `9834487605` (`3546a2795741f16aed374f49c666a8323de04a2605745fd1f83f5b8d52e820b8`) and `9834487931` (`e64116b211ebe5180b6d12424eda0388c04bd2b9f32c5402860dc676637cd58e`). Package run/job `33599637764 / 100150255983` produced immutable package **81** artifact `9834661539` (`10e18bc81c2f850a1e7bc3d4ce16830a5d5ebe7d1992cd728c1bb043dc71cb2f`), inner tar `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`; package log `9834661871` (`b730ee97e1df872305b872e5a631226a71044dc240efe65a84fbf296ce0f0a76`). Package metadata verifies selector 377, 27 fixtures, six executable-mode binaries, GMP, `runtimeExecution=false`, and `packageRepair=false`.
+
+Accepted authority remains **365/365**; stable accounting **44 / 14 / 30**; debt **5**; semantic package count **77 → 78**. `M3-CP4c3-TB10-CAND-01` stays ACTIVE / GATING / NON-STABLE pending runtime discrimination. Exact successor: **`M3-CP4c-3-TB11`**, artifact-only package 81 under `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Plan.md`.
+
 ## 2026-09-02 — `M3-CP4c-3-TB10-REV`: the moved mechanical red is proved unreadable, the loss is relocated to the producer, and `M3-CP4c-3-CB13` is frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md`, measures **BE0–BE7**

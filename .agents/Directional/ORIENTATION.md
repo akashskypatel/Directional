@@ -28,46 +28,13 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB10-REV`, which proved the moved mechanical first red is
-**not recoverable at the current instrumentation**, corrected where the loss actually is, and froze one bounded
-**diagnostic-only** successor.
+**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-CB13`, which is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Exact compile/package source is `3070173894ee097f631b96c1c6d29f276df89a66`; immutable package **81** is artifact `9834661539` with inner tar SHA-256 `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`. No Directional runtime executed in CB13.
 
-**CB12 delivered and is runtime-proved.** TB10 (package 80, source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`,
-run/job `33584653692 / 100106147126`, selector **377**) re-proved **365/365**, published
-`oldOrdinal366ConditionSeedPair=false`, and passed identity 377 at terminal **v36** / singularity 4 /
-`BarrierAbsorbed` / network node **7**. `M3-CP4c3-TB9-REV-CAND-01` is **CLOSED**. The first red moved out of
-`field-aligned-network` into **`surface-cut-graph`**: ordinal 366 now fails at
-`CellularityNotEstablished/origin=RotationSystemInconsistent`, with no reason, no vertex, no edge, no face, no
-trace and no event.
+**The moved ordinal-366 red is now instrumented, not corrected.** CB13 independently reconciled the review census: `EmbeddedGraphTopology.cpp` has 46 `RotationSystemInconsistent` emission sites, **37** meet BF1's exact missing-reason predicate, while the review's **28** is the narrower subset missing both reason and edge/face locus. All 37 were typed, and the eight reasonless same-code sites in `GlobalTopologyPlan.cpp` were typed too: **45 sites / 53 new condition names**. Existing reason values 0–8 remain unchanged.
 
-**The discriminator that exists cannot discriminate this failure.** `EmbeddedGraphTopology.cpp` emits
-`RotationSystemInconsistent` from **46 sites**, all reachable from `SurfaceCutGraph::make`. Only **9** publish a
-`RotationSystemInconsistencyReason` — and **every one of those 9 also sets `sourceEdge` and/or `sourceFace`**. The
-ordinal-366 renderer prints both when present and printed neither, so the firing site is one of the **28** that
-publish *neither* a reason nor an edge/face: 14 in `build_rotation_system`, 9 in `walk_graph_faces`, 2 in
-`build_arcs`, 2 in `build_node_loci`, 1 in `exterior_boundary_orbits`. Of those 28, **23 publish nothing at all**
-and 5 publish only `sourceVertex`.
+`SurfaceCutGraphError` now carries `sourceVertex`; `topology_error` copies it; `cut_graph_failure_locus` projects the rotation reason, vertex, trace/event, position reason/pass and cut-attempt shape; `canonical_candidate` records the certification attempt index and current cut-edge count; and `append_cp4c_failure_locus` renders them into **ordinal 366's own existing failure message**. No topology decision, gate identity, selector byte, ray ordering, cellularity rule, cut proposal, admissibility rule or tolerance changed.
 
-**There are three sequential losses of the same datum, and the reported one is the last.** (1) The 28 producer
-sites publish no reason, and 23 no locus of any kind. (2) `SurfaceCutGraph::topology_error` has no `sourceVertex`
-field, so the only datum the remaining 5 carry is dropped a layer before the pipeline. (3)
-`RemeshPipeline::cut_graph_failure_locus` publishes only `sourceEdge`/`sourceFace`, dropping the reason, trace,
-event, position failure/pass and cut-candidate evidence — while the *same file forty lines earlier* renders the
-atlas failure with full per-region diagnostic rows. **Repairing (3) alone would change ordinal 366's output by
-nothing**, because (1) and (2) have already emptied the error.
-
-**No existing snapshot or identity resolves it either.** `SurfaceCellDiagnosticProductSnapshots` has
-`fieldTransportAtlasError` but no `surfaceCutGraphError`, and `productSnapshots.surfaceCutGraph` is assigned only
-on success. `observe_cp4c_witness` — the idiom that makes the *sphere* legible at ordinal 368, and which
-`MechanicalWitnessStageReachabilityIsObservable` already applies to the mechanical witness — reads the same
-`SurfaceCutGraphError` and would print `originatingRotationSystemReason=none`. **The failing phase is provably
-undecidable today**: the 28 candidates straddle before, during and after fan ray ordering.
-
-One bounded successor is authorized: **`M3-CP4c-3-CB13`** under **BF0–BF9**, **diagnostic-only** — one typed name
-per condition at every silent producer site, `sourceVertex` carried through the mapper, the projection extended,
-the failing certification attempt identified, and **ordinal 366's own failure message named as the carrier**. No
-topology decision changes and no gate ordinal is added. **Vertex 30 is still not reached.** Selectors **374, 375,
-376, 377** stay byte-frozen. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **77**.
+**Exact next is `M3-CP4c-3-TB11`.** Artifact-only package-81 runtime must determine which typed condition actually fires and whether certification failed on the initial uncut graph or a later proposal. A reason in `walk_graph_faces` or `exterior_boundary_orbits` falsifies the current fan-order hypothesis and is a valid outcome. Selector 377 remains frozen; accepted authority remains **365/365**; stable accounting **44 / 14 / 30**; debt **5**; semantic packages **78**.
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB9-REV` classified TB9's first red as a **genuine product ownership
 defect on a valid witness** — a `FieldAlignedSingularityPort`, an *origin* credential, was being used as an

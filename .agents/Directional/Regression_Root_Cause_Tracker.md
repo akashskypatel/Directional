@@ -1,3 +1,11 @@
+## M3-CP4c3-CB13 — diagnostic owner discharge — **BUILD GREEN / NON-STABLE / NO RUNTIME**
+
+- **Authority:** implementation commit `3e3411bdc63f1fb841bf223e6e5971284e3770ab`; exact compile/package source `3070173894ee097f631b96c1c6d29f276df89a66`; compile run/job `33598896270 / 100148036281`; immutable package **81** artifact `9834661539` with inner tar SHA `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`.
+- **Diagnostic correction only:** BF1 re-derived 37 reasonless sites among 46 `EmbeddedGraphTopology.cpp` emitters, reconciling the review's narrower 28 no-reason/no-edge-or-face subset; all 37 plus eight same-code `GlobalTopologyPlan.cpp` sites are typed (**45 sites / 53 conditions**). `sourceVertex`, rotation reason, trace/event, cut-attempt shape and certification attempt/cut-edge count now survive to ordinal 366's existing rendered failure message.
+- **No semantic claim:** no Directional runtime executed; no topology/ray/cellularity/cut/admissibility/tolerance decision, gate ordinal, selector byte or carried witness was changed. `M3-CP4c3-TB10-CAND-01` therefore remains **ACTIVE / GATING / DIAGNOSTIC INSUFFICIENCY / NON-STABLE** until TB11 observes the new discriminator.
+- **Owner transition:** exact next owner is artifact-only **`M3-CP4c-3-TB11`** on package 81. It must name the actual producing condition/certification attempt before any product correction is planned.
+- **Accounting:** build-only diagnostic change, **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, accepted authority **365/365**; semantic packages **78**.
+
 ## M3-CP4c3-TB10-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md`, measures **BE0–BE7** discharged. Static
@@ -88,11 +96,9 @@
   edges, 0 traces; sphere: 24 traces, 0 mandatory edges; two-ring: a disc), so `build_rotation_system` meets
   `Mandatory`, `Trace` and `Cut` rays at one vertex fan for the first time. A reason inside `walk_graph_faces` or
   `exterior_boundary_orbits` would falsify this, which is a legitimate outcome.
-- **Owner:** **`M3-CP4c-3-CB13`** under **BF0–BF9**, diagnostic-only: one typed name per condition at every silent
-  site found *by predicate*, `sourceVertex` carried through the mapper, the projection extended, the certification
-  attempt identified, and **ordinal 366's own failure message named as the carrier**.
+- **Owner:** CB13 has discharged the instrumentation owner. **Exact next owner is artifact-only `M3-CP4c-3-TB11`** on package 81; no semantic correction is authorized until runtime names the producer and certification attempt.
 - **Accounting:** gating on an unaccepted surface, accepted 365 prefix green; **+0 events / +0 recurrences**. Totals
-  remain **44 / 14 / 30**, debt **5**, packages **77**.
+  remain **44 / 14 / 30**, debt **5**, packages **78**.
 
 ## M3-CP4c3-TB10-REV-CAND-01 — ordinals 371/372 are blocked by a shared fixture precondition, not by their own contracts — **ACTIVE / TEST-COUPLING / DEFERRED / NON-STABLE**
 
