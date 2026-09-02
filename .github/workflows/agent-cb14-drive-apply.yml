@@ -39,10 +39,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1myHurRvJBoUoIo7htaxP4sm_SrO_DsTx
-      patch_sha256: b93677c03695d4d241487c5dd5820303a17ea085f76fe1e33b53b3b0c81ced9a
-      base_sha: 1959eb0ab7c293ac943d8bd647d458ea22f362dd
+      file_id: 1tAFks0plqMdSXuo3obYE6D_NBZCelxUu
+      patch_sha256: b1a1b2cdf234e2696a3c9f82a00c69b2787e9def36c5666f9dfa6e4a54370a45
+      base_sha: 1d684f954deb48a8a2490b2a7453e143a134d0e9
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: 'diagnostics: discriminate rotation ray-order collision'
+      commit_message: 'tests: complete CB14 diagnostic witness and selector'
       retention_days: 14
     secrets: inherit
