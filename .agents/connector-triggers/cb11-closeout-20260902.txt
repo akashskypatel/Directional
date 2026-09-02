@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB11 closeout documentation and frozen TB9 plan
-base_sha=faa5a3c701bcc92a12f3c8f982b1c147fb3ac3b0
-patch_sha256=e491dfb080a0d4a5814da8770b63576fa553275a12a0890057d0212359f414c5
-retry=1
