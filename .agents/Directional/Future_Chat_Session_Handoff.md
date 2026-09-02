@@ -92,63 +92,106 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB10-REV` — EXACT NEXT / independent REVIEW + PLAN only
+## Mandatory next turn — `M3-CP4c-3-CB13` — EXACT NEXT / diagnostic-only Code + Build, runtime-free, GMP/GMPXX linked
 
-`M3-CP4c-3-TB10` is **COMPLETE / VALID SEMANTIC RED**. Immutable package **80** and selector **377** were consumed
-without rebuild or repair. Accepted authority remains **365/365** and CP4c-3 remains **OPEN**.
+`M3-CP4c-3-TB10-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` — measures **BE0–BE7** discharged, static only, with no
+runtime, compile, package, or product/test/fixture/selector mutation.
 
-### TB10 authority
+### What the review established
 
-- semantic source: **`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`**;
-- package 80 artifact **`9828786744`**, SHA-256
-  `f4643d0535684f81de5afc9660ef40f2ffb941d1c540b91026225681314fe20e`;
-- selector 377 SHA-256 **`7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`**;
-- TB10 run/job **`33584653692 / 100106147126`**;
-- result artifact **`9829700900`**, SHA-256
-  `2e7d978dd3ad2a5f0667ef3eed15c291ed8c7b91bb7e2d323557a8bc40763572`;
-- log artifact **`9829701136`**, SHA-256
-  `89f445c5934c3493ccf966e39f0c106c8418719a32c5d206055cafa932cce17d`;
-- ordered execution: **377 processes / 369 PASS / 8 RED**; first red ordinal **366**;
-- immutable postflight passed; no configure/compile/relink/repair/generated-discovery/product/test/fixture/selector
-  mutation or benchmark occurred.
+1. **CB12 is runtime-proved; `M3-CP4c3-TB9-REV-CAND-01` is CLOSED.** TB10 re-proved **365/365**, published
+   `oldOrdinal366ConditionSeedPair=false`, and passed identity 377 at terminal **v36** / singularity 4 /
+   `BarrierAbsorbed` / network node **7**. The first red moved out of `field-aligned-network` into
+   **`surface-cut-graph`**: ordinal 366 now fails at
+   `CellularityNotEstablished/origin=RotationSystemInconsistent`, with no reason, vertex, edge, face, trace or
+   event.
 
-### Runtime verdict
+2. **The exact condition is proved UNAVAILABLE, and the loss is producer-side.** `EmbeddedGraphTopology.cpp` emits
+   `RotationSystemInconsistent` from **46 sites**, all reachable from `SurfaceCutGraph::make`. Only **9** publish a
+   `RotationSystemInconsistencyReason` — and **every one of those 9 also sets `sourceEdge` and/or `sourceFace`**.
+   The ordinal-366 renderer prints those two fields whenever present and printed neither, so the firing site is one
+   of the **28** that publish neither: 14 `build_rotation_system`, 9 `walk_graph_faces`, 2 `build_arcs`,
+   2 `build_node_loci`, 1 `exterior_boundary_orbits`. **23 publish nothing at all**; 5 publish only `sourceVertex`.
+   **The discriminator that exists cannot discriminate this failure**, because it was added only to sites that
+   already carried a locus.
 
-Ordinals **1–365 remain 365/365 PASS**. Ordinal 366 moved past CB12's terminal-ownership site and now fails at
-`NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`.
-`oldOrdinal366ConditionSeedPair=false`, so the TB9 `SingularityTerminationPortOwnershipMismatch` at seed vertex 47 /
-singularity 5 did not recur.
+3. **The TB10 localization is corrected: three losses, and the reported one is the last.** (1) the 28 silent
+   producer sites; (2) `SurfaceCutGraph::topology_error`, whose `SurfaceCutGraphError` has **no `sourceVertex`
+   field**, dropping the only datum the remaining 5 carry; (3) `cut_graph_failure_locus`, which publishes only
+   `sourceEdge`/`sourceFace` out of ten fields — while the *same file forty lines earlier* renders the atlas
+   failure with full per-region diagnostic rows. **Repairing (3) alone would change ordinal 366's output by
+   nothing.**
 
-Identity **377 PASSes** and publishes
-`terminalVertex=36;singularity=4;portPolicy=BarrierAbsorbed;node=7;incidentMandatoryEdges=36-37,36-96`. The frozen BD9
-closure rule is therefore satisfied and **`M3-CP4c3-TB9-REV-CAND-01` is CLOSED / RUNTIME PROVED**.
+4. **Nothing existing rescues it.** `SurfaceCellDiagnosticProductSnapshots` has no `surfaceCutGraphError`, and
+   `productSnapshots.surfaceCutGraph` is assigned only on success. `observe_cp4c_witness` — the idiom that makes
+   the *sphere* legible at ordinal 368, already applied to the mechanical witness by the unselected
+   `MechanicalWitnessStageReachabilityIsObservable` — reads the same `SurfaceCutGraphError` and would print
+   `originatingRotationSystemReason=none`. **The failing phase, before/during/after fan ray ordering, is provably
+   undecidable today**, and nothing says whether the failing `certify_actual_embedded_graph` call was the initial
+   uncut certification or a later cut proposal.
 
-The new gating owner is **`M3-CP4c3-TB10-CAND-01`**: the mechanical `RotationSystemInconsistent` subreason/locus is
-already carried by `SurfaceCutGraphError` but omitted by the production `RemeshPipeline.cpp` surface-cut-graph error
-string. The underlying semantic producer is not yet adjudicated; no guessed fix is authorized.
+5. **BE3: ordinals 367/371/372 are strictly upstream-blocked by one cause** — they abort inside the shared
+   `cp4c_mechanical_fixture()` constructor. But **371 and 372 read only the A1 atlas**, which is available and
+   correct, so their contracts are independently reachable and held by a fixture-helper precondition. Recorded as
+   `M3-CP4c3-TB10-REV-CAND-01` and **deliberately deferred**: clearing ordinal 366 unblocks them automatically.
 
-Report-only reds: 367/371/372 are upstream-blocked by the same mechanical stop; 368 preserves sphere
-`NoCarrierMatch / SourceEdgeUnavailable`; 369 preserves `saturationUsed=true`; 370 preserves the genuine wrong
-empty-network typed error/no-locus red; 374 preserves the pre-classified folded-cone `atlasBuild=false` witness
-precondition. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, semantic packages **77**.
+### The bounded successor
+
+`M3-CP4c-3-CB13` under **BF0–BF9** (`Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §7),
+**diagnostic-only**: one typed name per condition at every silent producer site scoped **by predicate** (BF1);
+`sourceVertex` added to `SurfaceCutGraphError` and copied in `topology_error`, with that mapper audited field by
+field (BF2); `cut_graph_failure_locus` extended and its consumers found by search (BF3); the failing certification
+attempt identified (BF4); **ordinal 366's own failure message named as the carrier**, with
+`MechanicalWitnessStageReachabilityIsObservable` declared a non-gating diagnostic identity (BF5); audit by
+assumption (BF6); prohibitions (BF7); report obligations (BF8); expected TB11 discriminators (BF9).
+
+**No topology decision may change, no gate ordinal may be added, and no selector byte may move.** The sphere,
+ordinal 370, saturation, the folded-cone witness, vertex 30, the `finalize_field_aligned_events` contact
+fall-through and the 371/372 fixture coupling all remain deferred and separately owned.
+
+### Immutable TB10 authority — retained
+
+- semantic source: `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`, byte-identical to the reviewed head across `src/`,
+  `include/`, `tests/`, `benchmarks/`, `CMakeLists.txt` and the selector file;
+- immutable package **80** artifact `9828786744`
+  (`f4643d0535684f81de5afc9660ef40f2ffb941d1c540b91026225681314fe20e`);
+- execution selector **377** `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1` — recomputed at
+  TB10-REV, 377 lines / 377 unique, with `head -365/-367/-370/-373/-374/-375/-376` each reproducing its frozen
+  hash;
+- TB10 run/job `33584653692 / 100106147126`; result artifact `9829700900`
+  (`2e7d978dd3ad2a5f0667ef3eed15c291ed8c7b91bb7e2d323557a8bc40763572`); log artifact `9829701136`
+  (`89f445c5934c3493ccf966e39f0c106c8418719a32c5d206055cafa932cce17d`);
+- 377 fresh processes, **369 PASS / 8 RED**; ordinals 1–365 PASS; first red 366; immutable pre/postflight PASS with
+  every configure/compile/relink/repair/generated-discovery/mutation/benchmark flag false.
+
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **77**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent REVIEW + PLAN guidance
+- turn-based-coding-agent CODE + BUILD guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first and **update during this REVIEW turn**.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md` — exact runtime authority.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md` — **BE0–BE7 exact review scope**.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB12_Code_Build_Report.md` — package-80 correction/build authority.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — TB10-CAND-01 plus carried candidate dispositions.
-5. `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `ROADMAP.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` — **BF0–BF9, the exact successor
+   scope and prohibitions.**
+2. `.agents/Directional/Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md` — TB10 runtime evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB12_Code_Build_Report.md` — the package-80 build authority.
+4. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+5. `src/geometry/EmbeddedGraphTopology.cpp` (the 46 emission sites),
+   `src/geometry/SurfaceCutGraph.cpp` (`topology_error`, `certify_actual_embedded_graph`),
+   `include/directional/geometry/SurfaceCutGraph.h` (`SurfaceCutGraphError`),
+   `src/pipeline/RemeshPipeline.cpp` (`cut_graph_failure_locus`),
+   `tests/FieldAlignedCurveNetworkTests.cpp` (`append_cp4c_failure_locus`, `observe_cp4c_witness`).
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
+   `M3_CP4c_Consolidated_Record.md`.
 
-The review is static only: no Directional runtime, compile, package, product/test/fixture/selector mutation, benchmark,
-or unchanged TB retry. It must recover/adjudicate the moved ordinal-366 rotation-system condition and freeze exactly
-one bounded successor.
+CB13 is Code + Build only: it authors diagnostics, compiles and packages, and executes **no** Directional runtime,
+test, gate, or benchmark. Its successor is artifact-only `M3-CP4c-3-TB11` on selector 377 from ordinal 1, plus the
+declared non-gating diagnostic identity.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

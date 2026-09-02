@@ -28,43 +28,51 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB9-REV`, which classified TB9's first red as a **genuine
-product ownership defect on a valid witness** and froze one bounded **product** successor.
+**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB10-REV`, which proved the moved mechanical first red is
+**not recoverable at the current instrumentation**, corrected where the loss actually is, and froze one bounded
+**diagnostic-only** successor.
 
-**CB11 delivered.** TB9 (package 79, source `803300698289e0d0f629eaa878add1aebc7193c1`, run/job
-`33575920177 / 100079784804`) re-proved **365/365**, and ordinal 366 now carries exactly one typed condition plus
-full trace provenance:
-`networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`
-with five untruncated exact history rows. TB8's proved two-site ambiguity is resolved to the
-singularity-termination site. `M3-CP4c3-TB8-REV-CAND-01` is **CLOSED**.
+**CB12 delivered and is runtime-proved.** TB10 (package 80, source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`,
+run/job `33584653692 / 100106147126`, selector **377**) re-proved **365/365**, published
+`oldOrdinal366ConditionSeedPair=false`, and passed identity 377 at terminal **v36** / singularity 4 /
+`BarrierAbsorbed` / network node **7**. `M3-CP4c3-TB9-REV-CAND-01` is **CLOSED**. The first red moved out of
+`field-aligned-network` into **`surface-cut-graph`**: ordinal 366 now fails at
+`CellularityNotEstablished/origin=RotationSystemInconsistent`, with no reason, no vertex, no edge, no face, no
+trace and no event.
 
-**Only one of the guard's three subconditions is reachable, and it means exactly one thing.** Both `VertexHit`
-constructions in `resolve_field_branch_continuation` derive the terminal vertex **from** `source_support()` (or
-build the point at the parameter that inverts to it), and `field_aligned_singularity_at` matches **by that same
-vertex** — so `vertexSupport` is never null and never disagrees with the port's vertex. Disjuncts 1 and 3 are dead
-by construction. The port table is built over **all** atlas singularities with a single `continue` on
-`portPolicy == BarrierAbsorbed`, and `expectedValence ∈ [3,6]` is pre-enforced, so **a missing port means
-`BarrierAbsorbed` and nothing else** — which on this closed witness means *singular ∧ barrier-incident*.
+**The discriminator that exists cannot discriminate this failure.** `EmbeddedGraphTopology.cpp` emits
+`RotationSystemInconsistent` from **46 sites**, all reachable from `SurfaceCutGraph::make`. Only **9** publish a
+`RotationSystemInconsistencyReason` — and **every one of those 9 also sets `sourceEdge` and/or `sourceFace`**. The
+ordinal-366 renderer prints both when present and printed neither, so the firing site is one of the **28** that
+publish *neither* a reason nor an edge/face: 14 in `build_rotation_system`, 9 in `walk_graph_faces`, 2 in
+`build_arcs`, 2 in `build_node_loci`, 1 in `exterior_boundary_orbits`. Of those 28, **23 publish nothing at all**
+and 5 publish only `sourceVertex`.
 
-**A port is an origin credential being used as an arrival credential.** `FieldAlignedSingularityPort` records where
-a trace may **start**. The guard uses it to decide who owns an **arrival**, and takes the terminal node from
-`terminalPort->node`. A `BarrierAbsorbed` singularity has no ports *by design* — yet its node is allocated
-**unconditionally** (`nodeVertices.insert(singularity.sourceVertex)` runs before the policy test, and the terminal
-vertex is additionally a mandatory-barrier endpoint). The product rejects a legitimate termination whose owner it
-has already built.
+**There are three sequential losses of the same datum, and the reported one is the last.** (1) The 28 producer
+sites publish no reason, and 23 no locus of any kind. (2) `SurfaceCutGraph::topology_error` has no `sourceVertex`
+field, so the only datum the remaining 5 carry is dropped a layer before the pipeline. (3)
+`RemeshPipeline::cut_graph_failure_locus` publishes only `sourceEdge`/`sourceFace`, dropping the reason, trace,
+event, position failure/pass and cut-candidate evidence — while the *same file forty lines earlier* renders the
+atlas failure with full per-region diagnostic rows. **Repairing (3) alone would change ordinal 366's output by
+nothing**, because (1) and (2) have already emptied the error.
 
-**The witness is ordinary.** The trace runs from singular corner **v47** down the sharp box edge
-`(x = -1.4, z = -0.9)` through regular vertices 45, 43, 41, 39 — every chain edge at an **exactly 90°** dihedral —
-and terminates at **v36**, the chamfered corner where the silhouette meets the machined pocket. v38 is excluded as
-the terminal because its **entire star is coplanar** (every incident dihedral exactly 0°), so it can be
-barrier-incident under no threshold.
+**No existing snapshot or identity resolves it either.** `SurfaceCellDiagnosticProductSnapshots` has
+`fieldTransportAtlasError` but no `surfaceCutGraphError`, and `productSnapshots.surfaceCutGraph` is assigned only
+on success. `observe_cp4c_witness` — the idiom that makes the *sphere* legible at ordinal 368, and which
+`MechanicalWitnessStageReachabilityIsObservable` already applies to the mechanical witness — reads the same
+`SurfaceCutGraphError` and would print `originatingRotationSystemReason=none`. **The failing phase is provably
+undecidable today**: the 28 candidates straddle before, during and after fan ray ordering.
 
-One bounded successor is authorized: **`M3-CP4c-3-CB12`** under **BD0–BD9**, a **product correction** — own a
-`BarrierAbsorbed` termination with the singularity's **network node**, leave the `Emit` port path untouched, carry
-the policy to the decision point rather than inferring it from an empty table, and add a witness for the disjunct
-production actually reaches. **Vertex 30 is still not reached and no vertex-30 discriminator is published.**
-Selectors **374**, **375** and **376** stay byte-frozen; selector 377 is conditional on BD6. Stable accounting
-**44 / 14 / 30**, debt **5**, semantic M3 packages **76**.
+One bounded successor is authorized: **`M3-CP4c-3-CB13`** under **BF0–BF9**, **diagnostic-only** — one typed name
+per condition at every silent producer site, `sourceVertex` carried through the mapper, the projection extended,
+the failing certification attempt identified, and **ordinal 366's own failure message named as the carrier**. No
+topology decision changes and no gate ordinal is added. **Vertex 30 is still not reached.** Selectors **374, 375,
+376, 377** stay byte-frozen. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **77**.
+
+*(Prior turn, retained for lineage: `M3-CP4c-3-TB9-REV` classified TB9's first red as a **genuine product ownership
+defect on a valid witness** — a `FieldAlignedSingularityPort`, an *origin* credential, was being used as an
+*arrival* credential, and a `BarrierAbsorbed` singularity has no ports by design although its network node is
+allocated unconditionally. It froze `M3-CP4c-3-CB12` under BD0–BD9, which TB10 has now runtime-proved.)*
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB8-REV` reduced the twelve `InvalidNetworkTerminalOwnership`
 emission sites to **two** and classified the red as **diagnostic insufficiency**, because the two survivors emitted
@@ -141,27 +149,26 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB9-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
-selector **374** (`d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`), byte-frozen across CB9, TB7,
-TB7-REV, CB10, TB8, TB8-REV, CB11 and TB9. Diagnostic selector **375**
-(`aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`) and execution selector **376**
-(`6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`) each append **exactly one** identity to their
-predecessor and reorder nothing; the first 365 lines of 376 are byte-identical to accepted selector 365.
+**Current authority — TB10-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
+selector **374** (`d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`), byte-frozen since CB9.
+Diagnostic **375** (`aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`), **376**
+(`6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`) and current execution selector **377**
+(`7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`) each append **exactly one** identity to their
+predecessor and reorder nothing; the first 365 lines of 377 are byte-identical to accepted selector 365. All were
+recomputed from committed bytes at this review.
 
-**TB9 is the latest semantic runtime evidence** (package 79, source
-`803300698289e0d0f629eaa878add1aebc7193c1`, run/job `33575920177 / 100079784804`, result artifact `9826689980`):
-ordinals **1–365 green**, first red **366** at
-`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2` with
-`networkErrorCondition=SingularityTerminationPortOwnershipMismatch`, `traceSeedVertex=47`,
-`traceSeedSingularity=5`, five untruncated history rows; report-only 367–375 at **2 PASS / 7 RED**; diagnostic 376
-PASS; immutable pre/postflight PASS.
+**TB10 is the latest semantic runtime evidence** (package 80, source
+`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`, run/job `33584653692 / 100106147126`, result artifact `9829700900`):
+377 fresh processes, **369 PASS / 8 RED**; ordinals **1–365 green**; first red **366**, moved into
+`surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent` with **no** reason, vertex, edge,
+face, trace or event; report-only 367–377 with zero gate credit; immutable pre/postflight PASS.
 
-`M3-CP4c-3-TB9-REV` classified that red **BC2 category 1 — a genuine product ownership defect** (§7 item 1) and
-froze **`M3-CP4c-3-CB12` under BD0–BD9**, a product correction. Stable accounting is **44 / 14 / 30**,
-produced-witness debt **5**, semantic M3 packages **76**. Ordinal 370, the sphere, saturation, the folded-cone
-witness and the mechanical zero-unbound debt remain deferred and were untouched. **Vertex 30 is still not
-reached**, so the frozen row-209/row-208 owner election has no runtime acceptance and `M3-CP4c3-TB6-CAND-01` stays
-ACTIVE.
+`M3-CP4c-3-TB10-REV` classified that red **BE2 diagnostic insufficiency, producer-side** (§7 item 1) — proving,
+not assuming, that the exact condition is unavailable — and froze **`M3-CP4c-3-CB13` under BF0–BF9**,
+diagnostic-only. Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **77**.
+Ordinal 370, the sphere, saturation, the folded-cone witness and the mechanical zero-unbound debt remain deferred
+and were untouched. **Vertex 30 is still not reached**, so the frozen row-209/row-208 owner election has no runtime
+acceptance and `M3-CP4c3-TB6-CAND-01` stays ACTIVE.
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -180,19 +187,23 @@ accepted selector is cumulative and each checkpoint's prefix is byte-identical t
 | CP4c-3 367 prefix (frozen at DEFN; superseded as a gate, retained) | `ef9d082f56f5c8de83124cf2e6257d098408cc597d9147b967cf9c84da4916bf` |
 | CP4c-3 370 prefix (AL7 append; retained) | `9160ea619afb9e10cbad30012d0bd354c263a2b749e690c271f653db3bf83525` |
 | **CP4c-3 gate 373 (frozen at CB2 under AM8, unselected)** | `b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834` |
+| **CP4c-3 gate 374 (frozen at CB9 under AY6; current gate)** | `d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f` |
+| CP4c-3 diagnostic 375 (one append) | `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0` |
+| CP4c-3 376 (one append) | `6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8` |
+| **CP4c-3 execution selector 377 (current, TB10)** | `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1` |
 
-**All eleven values are authority**, each recomputed from committed bytes. The 373 gate file has now been
-re-verified independently at `M3-CP4c-3-TB2-REV`, `M3-CP4c-3-TB3-R1-REV` and `M3-CP4c-3-TB4-REV`: 373 lines, 373 unique
-identities, and `head -355`, `head -357`, `head -361`, `head -365`, `head -367` and `head -370` **each reproduce
-their frozen hash exactly**. `Architecture_M3_CP4c1_Required_Green_Selector.txt` was retired in a cleanup and **no longer exists**; that is by
-design, because every accepted hash survives as a **prefix of its successor gate file**. Derive them from the
-current CP4c-3 gate file `Architecture_M3_CP4c3_Required_Green_Selector_373.txt`: `head -316`, `head -346`,
-`head -353`, `head -355`, `head -357`, `head -361`, `head -365`, `head -367`, `head -370`. 358 has its own retained
-file. **Every gate file reproduces all of its predecessor prefixes exactly**, which is what keeps
-`first_red_ordinal` comparable across the whole arc. **Recompute rather than copy**, validate every expected digest as exactly 64
-lowercase hex at authoring, and never write one as `PREFIX…SUFFIX` where a value is expected: `PR8` orchestration
-defect `R7-ORCH-01` was four hashes expanded back to full length from abbreviations, one of them only 63 characters
-long.
+**All fifteen values are authority**, each recomputed from committed bytes — never transcribed. The current
+execution selector file `Architecture_M3_CP4c3_Required_Green_Selector_377.txt` was re-verified independently at
+`M3-CP4c-3-TB10-REV`: 377 lines, 377 unique identities, and `head -365`, `head -367`, `head -370`, `head -373`,
+`head -374`, `head -375` and `head -376` **each reproduce their frozen hash exactly**.
+`Architecture_M3_CP4c1_Required_Green_Selector.txt` was retired in a cleanup and **no longer exists**; that is by
+design, because every accepted hash survives as a **prefix of its successor file**. Derive the older values from
+377 with `head -316`, `head -346`, `head -353`, `head -355`, `head -357`, `head -361`, `head -365`. 358 has its own
+retained file. **Every selector file reproduces all of its predecessor prefixes exactly**, which is what keeps
+`first_red_ordinal` comparable across the whole arc. **Recompute rather than copy**, validate every expected digest
+as exactly 64 lowercase hex at authoring, and never write one as `PREFIX…SUFFIX` where a value is expected: `PR8`
+orchestration defect `R7-ORCH-01` was four hashes expanded back to full length from abbreviations, one of them only
+63 characters long.
 
 
 **CP4c-2 CLOSED / ACCEPTED at 365/365.** R10 (run/job `33331453506 / 99310594268`) executed the frozen gate from
@@ -379,7 +390,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1 and, since CB10, the vertex-11 transit | **Current owner of the critical path.** TB9 first-reds at ordinal 366 with `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`. The trace runs from singular corner **v47** `(-1.4, 0.72, -0.9)` down the sharp box edge `(x = -1.4, z = -0.9)` through mesh rows 59, 57, 55, 53, 51 and **regular** vertices 45, 43, 41, 39 — every chain edge at an exactly **90.000000 degree** dihedral — and terminates at **v36** `(-1.4, -0.78, -0.9)`, the chamfered corner where the silhouette meets the machined pocket. v38 is excluded as terminal: its entire star is coplanar. TB9-REV proved the only reachable subcondition is *missing port*, which means `BarrierAbsorbed`, so **v36 carries a barrier-incident singularity that emits no ports** and the termination is rejected for lacking one. Vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10) and, since CB12, the whole of A2a | **Current owner of the critical path, now in A2a′.** TB10 first-reds at ordinal 366 in `SurfaceCutGraph` with `CellularityNotEstablished/origin=RotationSystemInconsistent` and **no** reason, vertex, edge, face, trace or event. CB12's termination correction is runtime-proved: identity 377 passes at terminal **v36** / singularity 4 / `BarrierAbsorbed` / network node **7**, and `oldOrdinal366ConditionSeedPair=false`. TB10-REV proved the firing site is one of **28** `RotationSystemInconsistent` emission sites that publish neither a reason nor an edge/face locus, so the failing phase — before, during or after fan ray ordering — is **undecidable at the current instrumentation**. This is the first closed witness carrying **both** traces and non-separating hard features, so `build_rotation_system` meets `Mandatory`, `Trace` and `Cut` rays at one vertex fan for the first time — a hypothesis for the next measurement to discriminate, not an assignment. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -474,36 +485,41 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Termination ownership at a barrier-absorbed singularity — ACTIVE and gating; cause established, owner
-   named, product-owned.** TB9's first red is
-   `InvalidNetworkTerminalOwnership;…;networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`.
-   `M3-CP4c-3-TB9-REV` proved:
+1. **Mechanical rotation-system rejection in A2a′ — ACTIVE and gating; the cause is provably unreadable, and that
+   is the finding.** TB10's first red is
+   `NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`, with no
+   reason, no source vertex, edge or face, no trace and no event. `M3-CP4c-3-TB10-REV` proved:
 
-   - **Only one of the guard's three subconditions is reachable.** Both `VertexHit` constructions
-     (`SurfaceCellTracing.cpp:517-523` and `:546-556`) derive the terminal vertex **from** `source_support()`, or
-     build the boundary point at the exact parameter that `source_support()` inverts to it; and
-     `field_aligned_singularity_at` matches **by that same vertex**. So `vertexSupport` is never null and never
-     disagrees with the port's vertex — disjuncts 1 and 3 are **dead by construction**.
-   - **A missing port means `BarrierAbsorbed`, and nothing else.** The port loop runs over **all**
-     `fieldTransportAtlas.singularities()` with exactly one `continue` (on `BarrierAbsorbed`), and
-     `expectedValence ∈ [3,6]` is pre-enforced, so every `Emit` singularity gets at least three ports. Region
-     scoping, ordering and zero-valence are each excluded by a named check.
-   - **On this closed witness, `BarrierAbsorbed` ⟺ singular ∧ barrier-incident** (`FieldTransportAtlas.cpp:2296-2300`,
-     with the boundary clause vacuous because the mesh has 0 boundary edges).
+   - **46 emission sites, 9 with a reason, and the two sets are disjoint from what is missing.**
+     `EmbeddedGraphTopology.cpp` emits `RotationSystemInconsistent` from 46 sites, all reachable from
+     `SurfaceCutGraph::make`; only 9 publish a `RotationSystemInconsistencyReason`, and **every one of those 9 also
+     sets `sourceEdge` and/or `sourceFace`**. The ordinal-366 renderer prints both when present and printed
+     neither, so the firing site is one of the **28** that publish neither — 14 `build_rotation_system`,
+     9 `walk_graph_faces`, 2 `build_arcs`, 2 `build_node_loci`, 1 `exterior_boundary_orbits`. **23 of the 28
+     publish nothing at all**; 5 publish only `sourceVertex`.
+   - **Three sequential losses of one datum, and the reported one is the last.** (1) the 28 producer sites;
+     (2) `SurfaceCutGraph::topology_error`, whose `SurfaceCutGraphError` has **no `sourceVertex` field**, dropping
+     the only datum the remaining 5 carry; (3) `RemeshPipeline::cut_graph_failure_locus`, which publishes only
+     `sourceEdge`/`sourceFace` while the same file forty lines earlier renders the atlas failure with full
+     per-region rows. **Repairing (3) alone changes ordinal 366's output by nothing.**
+   - **No snapshot or existing identity rescues it.** There is no `surfaceCutGraphError` in
+     `SurfaceCellDiagnosticProductSnapshots`, and `productSnapshots.surfaceCutGraph` is set only on success.
+     `observe_cp4c_witness` — the idiom that makes the *sphere* legible at ordinal 368, already applied to the
+     mechanical witness by the unselected `MechanicalWitnessStageReachabilityIsObservable` — reads the same
+     `SurfaceCutGraphError` and would print `originatingRotationSystemReason=none`.
+   - **The failing phase is undecidable today.** The 28 candidates straddle before, during and after fan ray
+     ordering, and nothing published says whether the failing `certify_actual_embedded_graph` call was the initial
+     uncut certification or a later cut proposal.
 
-   **The defect is a category error.** A **port** says where a trace may *originate*; a **node** says what it may
-   *terminate at*. The guard reaches the terminal node through `terminalPort->node` — a table the atlas
-   deliberately leaves empty for this policy — while the node itself is allocated **unconditionally**
-   (`nodeVertices.insert(singularity.sourceVertex)` precedes the policy test) and v36 is additionally a
-   mandatory-barrier endpoint. `M3-CP4c-3-CB12` (BD0–BD9) restores the invariant: **own a `BarrierAbsorbed`
-   termination with the singularity's network node**, leave the `Emit` port path unchanged, carry the policy to the
-   decision point rather than inferring it from an empty table, and add a witness for the disjunct production
-   actually reaches. Prohibited: converting the arrival into a barrier termination, reordering the `VertexHit`
-   check against the mandatory-edge check, synthesizing a port, or making the port table policy-blind.
+   **`M3-CP4c-3-CB13` (BF0–BF9) is diagnostic-only**: one typed name per condition at every silent producer site
+   found *by predicate*, `sourceVertex` carried through the mapper, the projection extended, the failing
+   certification attempt identified, and **ordinal 366's own failure message named as the carrier** so no gate
+   ordinal is added. Prohibited: changing any topology decision, ray ordering, cellularity test or cut proposal;
+   inferring and "fixing" a producer before the measurement names it.
 
    *(Still open and separately owned: the `finalize_field_aligned_events` contact fall-through TB8-REV documented —
-   `terminalContact` is never read in `:3745-3935`. TB9 proves only that it is not the **first** mechanical failure.
-   CB12 must not repair it.)*
+   `terminalContact` is never read in `:3745-3935`. Neither TB9 nor TB10 makes it the first mechanical failure, and
+   CB13 must not repair it.)*
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -553,8 +569,16 @@ features first, then threads them through source authority *and* atlas). Copy on
 8. **Mechanical zero-unbound singularity proof — PARTIAL.** Ordinal 373 is green only on its synthetic barrier-arc
    witness. `M3-CP4c3-DEFN-R1-CAND-01` stays open until production publishes `unboundSingularityCount=0`.
 
-9. **Report-only 367, 371, 372 — UNMEASURED underlying contracts.** Their TB7 reds remain upstream consequences of
-   ordinal 366; do not classify their downstream contracts before the mechanical blocker clears.
+9. **Report-only 367, 371, 372 — UNMEASURED, and 371/372 are blocked by a fixture helper rather than by their own
+   contracts.** All three abort inside the shared `cp4c_mechanical_fixture()` constructor, which throws unless *all
+   five* of `sourceAuthority`, `atlas`, `network`, `cutGraph` and `plan` are retained — so their TB10 reds are one
+   upstream cause, not three. But **371 and 372 read only `fixture.atlas`**, an A1 product that is available and
+   built successfully in the same run: their contracts are independently reachable today and are held hostage three
+   stages downstream. Amendment 15's barrier-cycle and Euler-cut contracts have therefore been "unmeasured, not
+   falsified" from TB2 through TB10 for a reason unrelated to either. Ordinal 367 genuinely needs `plan` and is
+   legitimately blocked. Recorded as `M3-CP4c3-TB10-REV-CAND-01` with a test-only corrective and **deliberately
+   deferred**: clearing ordinal 366 unblocks 371/372 automatically, so the candidate exists to make the coupling's
+   cost visible if it does not.
 
 10. **CB9 static audit debt — ACTIVE, static.** `M3-CP4c3-CB9-AUDIT-01` (`build_boundary_pairing` computes `u/v` in
     `double` and exactifies them before the flow classification reads their signs) and `M3-CP4c3-CB9-AUDIT-02`
@@ -563,6 +587,37 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A discriminator added only to the sites that already had a locus discriminates nothing new.** Nine of
+`EmbeddedGraphTopology.cpp`'s forty-six `RotationSystemInconsistent` sites gained a
+`RotationSystemInconsistencyReason` — and all nine already published a `sourceEdge` or a `sourceFace`. The cases
+that were already localisable became more legible; the twenty-eight that published nothing stayed silent, and one
+of those is the current gating red. When resolving a collapsed error code, **enumerate the sites that publish
+nothing and start there** — the ones you can already localise are the ones that least need a name. This is the
+counterpart of `LESSONS.md` 57/64: it is not enough to add a reason, the reason has to reach the *silent* sites.
+
+**Count the losses before repairing one.** The TB10 report localised a real projection loss — `cut_graph_failure_locus`
+publishes only two of the ten fields `SurfaceCutGraphError` carries — and named it the cause. There were **three**
+losses of the same datum in series (silent producers → a mapper with no `sourceVertex` field → the projection), and
+the reported one was the **last**. Repairing it alone would have bought a whole turn of identical evidence. Before
+proposing a diagnostic fix, walk the datum from producer to reader and count every boundary that drops it; then fix
+the earliest.
+
+**Two identities observing the same stage can have very different eyesight, and the idiom decides.** The prescribed
+sphere's cut-graph failure is fully legible at ordinal 368 because it uses `observe_cp4c_witness`, which calls
+`SurfaceCutGraph::make` directly and holds the typed error. The mechanical failure is opaque at ordinal 366 because
+it uses `build_cp4c_production_fixture`, which throws a string assembled from the lossy pipeline locus. Same stage,
+same error family, same test file — different observation idiom. When one witness is legible and another is not,
+compare the observation idioms before concluding anything about the witnesses.
+
+**A shared fixture helper's precondition is a coupling that can silence contracts for many turns.** Ordinals 371 and
+372 assert only about the A1 atlas, which has been available and correct throughout, yet they have been unmeasurable
+since TB2 because the helper that hands them the atlas also demands four downstream products. A helper that returns
+*all or nothing* converts every downstream failure into a blackout over every upstream contract that shares it.
+
+**Shared error strings are not shared causes.** Ordinals 366 and 370 both render `CellularityNotEstablished`. One
+arrives through `topology_error` carrying `origin=RotationSystemInconsistent`; the other is a direct `cut_error`
+with no origin. Check the producer before merging two reds that read alike.
 
 **An origin credential used as an arrival credential.** A singularity **port** records where a trace may
 *start*; a singularity **node** records what a trace may *end at*. The product allocates the node
@@ -980,6 +1035,27 @@ The two-ring is constructed in the test file, not a fixture.
   `field_aligned_singularity_at` first and terminate the trace with `SingularityTermination` when a singularity
   fact exists there. So a witness for vertex-star continuation may not put its interesting geometry on a singular
   vertex — a non-flat center must carry `Σ_cycle effort = −4K` so that its lift is `0`.
+- `EmbeddedGraphTopology.cpp` emits `GlobalTopologyPlanErrorCode::RotationSystemInconsistent` from **46 sites**,
+  all reachable from `SurfaceCutGraph::make` via `build_embedded_graph_topology` (`build_cut_node_bindings`,
+  `build_arcs`, `build_rotation_system`, `walk_graph_faces`) and `exterior_boundary_orbits`. Only **9** publish a
+  `RotationSystemInconsistencyReason`, and all 9 also set `sourceEdge` and/or `sourceFace`. Per function —
+  `build_arcs` 4 sites / 2 reasons, `build_node_loci` 5 / 3, `build_rotation_system` 27 / 4, `walk_graph_faces`
+  9 / 0, `exterior_boundary_orbits` 1 / 0. `GlobalTopologyPlan.cpp` emits the same code from a further 8 sites.
+- The `RotationSystemInconsistent` datum is dropped at **three** boundaries in series: the silent producer sites;
+  `SurfaceCutGraph::topology_error`, whose `SurfaceCutGraphError` has **no `sourceVertex` field**; and
+  `RemeshPipeline::cut_graph_failure_locus`, which publishes only `sourceEdge`/`sourceFace` out of the ten fields
+  the error carries.
+- `SurfaceCellDiagnosticProductSnapshots` retains `fieldTransportAtlasError` but has **no** `surfaceCutGraphError`
+  and no `globalTopologyPlanError`; `productSnapshots.surfaceCutGraph` is assigned only on success. So a cut-graph
+  failure leaves no typed object behind.
+- The two CP4c witness-observation idioms differ in what they can see. `build_cp4c_production_fixture` **throws**
+  unless all five of `sourceAuthority`, `atlas`, `network`, `cutGraph`, `plan` are retained, rendering only
+  `terminalFailureLocus` through `append_cp4c_failure_locus`. `observe_cp4c_witness` re-invokes each stage directly
+  from the four production inputs and therefore holds each typed error, rendering the cut-graph reason, trace,
+  event and position diagnostics. Ordinals 366 and 368 differ by exactly this choice.
+- `SurfaceCutGraph::make` certifies inside a `while(true)` cut-proposal loop and returns the **first**
+  `certify_actual_embedded_graph` failure, so a published cut-graph error does not say whether it came from the
+  initial uncut certification or from a later proposal.
 - Grazing is **edge transit**, not termination — decided on a continuity argument, not on cost data.
 - Trace termination is **crash-on-contact** (motorcycle graph), on an exact predicate, with mutual termination
   on a tie; the production arrival priority is `ArcLengthFiltered` with a certified forward error bound.

@@ -26,42 +26,69 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB10-REV` (independent REVIEW + PLAN / NOT EXECUTED)
+## Current focus — `M3-CP4c-3-CB13` (diagnostic-only Code + Build, runtime-free, GMP/GMPXX linked)
 
-`M3-CP4c-3-TB10` is **COMPLETE / VALID SEMANTIC RED** on immutable package **80**, selector **377**. Run/job
-`33584653692 / 100106147126` executed 377 fresh processes: **369 PASS / 8 RED**. Ordinals **1–365 remain 365/365
-PASS**; ordinal **366** remains the gating frontier but moved to
-`surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`.
+`M3-CP4c-3-TB10-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB10_Independent_Review_Record.md`, measures **BE0–BE7** discharged, static only.
 
-CB12's frozen discriminators all passed: the old `SingularityTerminationPortOwnershipMismatch` at seed 47 /
-singularity 5 is absent, and identity 377 PASSes at mechanical terminal **v36**, `BarrierAbsorbed`, network node 7,
-mandatory edges `36-37,36-96`. Therefore **`M3-CP4c3-TB9-REV-CAND-01` is CLOSED / RUNTIME PROVED**.
+**CB12 is runtime-proved and `M3-CP4c3-TB9-REV-CAND-01` is CLOSED.** TB10 (package 80, source
+`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`, selector 377, run/job `33584653692 / 100106147126`) re-proved
+**365/365**, published `oldOrdinal366ConditionSeedPair=false`, and passed identity 377 at terminal **v36** /
+singularity 4 / `BarrierAbsorbed` / network node **7**. The first red moved out of `field-aligned-network` into
+**`surface-cut-graph`**.
 
-The new gating candidate is **`M3-CP4c3-TB10-CAND-01`**. Package-80 source proves `SurfaceCutGraphError` already
-carries the originating rotation-system subreason/locus, but `RemeshPipeline.cpp`'s production cut-graph failure
-string drops that information and renders only the cut-graph code plus `originatingTopologyError`. The underlying
-mechanical semantic producer is therefore not yet safely selectable.
+**The moved red is provably unreadable, and that is the finding.**
 
-- [ ] **BE0** — re-establish package/source/selector/run/postflight authority.
-- [ ] **BE1** — recover the exact mechanical `RotationSystemInconsistent` subreason/locus from retained authority, or
-      prove it is unavailable at the current projection boundary.
-- [ ] **BE2** — classify the underlying condition before any semantic fix; do not choose among possible producers by
-      guess, candidate order, tolerance, or geometry alone.
-- [ ] **BE3** — prove whether report-only 367/371/372 are strictly upstream-blocked by the same stop; do not double count.
-- [ ] **BE4** — preserve independent sphere/saturation/370/folded-cone/vertex-30/general-budget/finalize-contact debt.
-- [ ] **BE5** — adversarially falsify the nearest alternative owner and confirm accepted 365 behavior is untouched.
-- [ ] **BE6** — freeze exactly one bounded successor: diagnostic-only if runtime truth is still hidden, product CB only
-      if exact cause is independently proved.
-- [ ] **BE7** — update `ORIENTATION.md` and durable tracker/handoff/roadmap/consolidated/changelog state.
+- `EmbeddedGraphTopology.cpp` emits `RotationSystemInconsistent` from **46 sites**, all reachable from
+  `SurfaceCutGraph::make`. Only **9** publish a `RotationSystemInconsistencyReason`, and **every one of those 9
+  also sets `sourceEdge` and/or `sourceFace`**. The ordinal-366 renderer prints both when present and printed
+  neither, so the firing site is one of the **28** publishing neither — 14 `build_rotation_system`,
+  9 `walk_graph_faces`, 2 `build_arcs`, 2 `build_node_loci`, 1 `exterior_boundary_orbits`. **23 publish nothing at
+  all**; 5 publish only `sourceVertex`.
+- **Three sequential losses of one datum, and the previously reported one is the last:** the silent producer sites;
+  `SurfaceCutGraph::topology_error`, whose `SurfaceCutGraphError` has **no `sourceVertex` field**; and
+  `cut_graph_failure_locus`, which publishes only two of the ten fields the error carries. **Repairing the last one
+  alone changes ordinal 366's output by nothing.**
+- No product snapshot or existing identity rescues it, and **the failing phase — before, during or after fan ray
+  ordering — is provably undecidable today.**
 
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative
-semantic M3 package count **77**.
+Ordinals 367/371/372 are **strictly upstream-blocked by one cause**, but 371/372 read only the A1 atlas and are
+held by a fixture-helper precondition (`M3-CP4c3-TB10-REV-CAND-01`, deferred on purpose). Accepted authority
+remains **365**; CP4c-3 remains **OPEN**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB10-REV`**, static independent REVIEW + PLAN only, exactly under
-`Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md`. No Directional runtime, compile, package, product/test/
-fixture/selector mutation, benchmark, unchanged TB retry, or opportunistic correction is authorized.
+Run **`M3-CP4c-3-CB13`** under **BF0–BF9** in
+`Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §7. **Diagnostic-only**: it changes no topology decision,
+adds no gate ordinal, and moves no selector byte.
+
+- [ ] **BF0** selectors 374/375/376/377 byte-frozen and recomputed at authoring and preflight; accepted 365 prefix
+      untouched; `selected_gate=NONE`; `gate_execution_authorized=false`; GMP/GMPXX linkage proved.
+- [ ] **BF1** one typed name per condition at every silent producer site, scoped **by predicate** — "any site
+      constructing a `RotationSystemInconsistent` error without assigning `rotationSystemInconsistencyReason`" —
+      found by search; re-derive the counts (this review found 28 candidates of 46 in
+      `EmbeddedGraphTopology.cpp`, plus 8 sites in `GlobalTopologyPlan.cpp`) and reconcile any difference.
+- [ ] **BF2** add `sourceVertex` to `SurfaceCutGraphError` and copy it in `topology_error`; audit that mapper
+      field-by-field and report anything else silently dropped.
+- [ ] **BF3** extend `cut_graph_failure_locus` with the reason, vertex, trace, event, position failure/pass and
+      cut-candidate evidence; find consumers by search and name one this measure did not name.
+- [ ] **BF4** publish which `certify_actual_embedded_graph` attempt failed — initial uncut certification, or
+      proposal *n* with *k* cut edges.
+- [ ] **BF5** name the carrier: extend `append_cp4c_failure_locus` in the same change so **ordinal 366's own
+      failure message** carries the answer; declare `MechanicalWitnessStageReachabilityIsObservable` a **non-gating
+      diagnostic identity** for the successor TB.
+- [ ] **BF6** audit by assumption, two predicates, each with a site named outside this record.
+- [ ] **BF7** prohibited: changing any topology decision, ray ordering, cellularity test or cut proposal; adding or
+      removing a gate ordinal; altering any selector byte; a tolerance or float-derived topological decision;
+      repairing the sphere, ordinal 370, saturation, the folded-cone witness, vertex 30, the finalize/contact
+      fall-through, or the 371/372 fixture coupling; inferring and "fixing" a producer before the measurement names
+      it.
+- [ ] **BF8** report the re-derived counts and reconciliation, per-site distinct-condition counts, the mapper audit,
+      the consumer search, and an explicit statement that no topology decision changed.
+- [ ] **BF9** publish the expected `M3-CP4c-3-TB11` discriminators.
+
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
+package count **77**.
 
 ## Carried forward from M1
 
@@ -108,7 +135,8 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — moved mechanical first red:** TB10 runtime-proved CB12's barrier-absorbed termination correction and closed `M3-CP4c3-TB9-REV-CAND-01`. The gating frontier remains ordinal 366 but now stops at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`. `M3-CP4c3-TB10-CAND-01` owns the lost rotation-system subreason/locus at the production projection boundary; independent TB10-REV must adjudicate the exact underlying condition before any semantic correction. Vertex 30 and the separate finalize/contact fall-through remain open and untouched.
+- [ ] **CP4c-3 criterion C2 — moved mechanical first red:** TB10 runtime-proved CB12's barrier-absorbed termination correction and closed `M3-CP4c3-TB9-REV-CAND-01`. The gating frontier is ordinal 366 in `surface-cut-graph`, at `CellularityNotEstablished/origin=RotationSystemInconsistent`. TB10-REV proved the firing site is one of **28** `RotationSystemInconsistent` emission sites that publish neither a reason nor an edge/face locus, so the underlying condition is **unavailable at the current instrumentation and the loss is producer-side** — the projection repair alone would change nothing. `M3-CP4c3-TB10-CAND-01` is owned by diagnostic-only `M3-CP4c-3-CB13` (BF0–BF9). No product semantic correction is authorized or inferable. Vertex 30 and the separate finalize/contact fall-through remain open and untouched.
+- [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. Amendment 15's barrier-cycle and Euler-cut contracts have been unmeasured from TB2 through TB10 for a reason unrelated to either. Corrective is test-only (an atlas-scoped fixture accessor, assertions byte-unchanged); deferred because clearing ordinal 366 unblocks them automatically. `M3-CP4c3-TB10-REV-CAND-01`.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.

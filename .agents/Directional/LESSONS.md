@@ -285,6 +285,19 @@ A diagnostic turn can stop on a separate contract violation and still establish 
     built around is a singularity and the path it exists to test is unreachable.
     `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` §5.
 
+22s. **A shared fixture helper that returns all-or-nothing converts every downstream failure into a blackout over
+    every upstream contract that uses it.** `cp4c_mechanical_fixture()` throws unless all five of
+    `sourceAuthority`, `atlas`, `network`, `cutGraph` and `plan` are retained. Two gate identities that assert only
+    about the **A1 atlas** — the non-separating barrier-edge cycle-basis witness and the Euler cut-identity witness
+    — therefore abort in the fixture constructor whenever anything three stages downstream fails, and Amendment 15's
+    two contracts have been *unmeasured, not falsified* across nine consecutive Test + Benchmark turns for a reason
+    that has nothing to do with either of them. The identities were correct, the products they need were built and
+    green in the very same run, and nobody was wrong at any single step.
+    **Scope a fixture helper's precondition to what its consumers actually read**, or give it per-stage accessors, so
+    an identity is blocked only by the products it asserts about. A helper is also a gate: an over-strong
+    precondition silently converts an unrelated red into missing evidence, which is the most expensive kind because
+    it looks like nothing happened. `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §5.
+
 23. **A loop guard is not effective merely because one exists; its bound must terminate expensive work before the process becomes operationally stuck.** TB-R8 already had two nominal guards: exact tracing tracks visited states and a structural step budget, and `BigInteger::gcd` throws after 10,000 Euclidean iterations. Yet the prescribed sphere received a trace budget of **1,775,616** states, one identity spent 853 s before the GCD backstop fired, and the next sphere identity still had to be cancelled. For geometry with exact arithmetic, guard the semantic progress/cycle at the owning algorithm with a deterministic, practically bounded finite-work contract. Keep low-level arithmetic guards as backstops; do not substitute CI/test wall-clock timeouts for a product termination invariant.
 
 ### A witness census is cheap; assuming a witness is capable is not
@@ -1349,6 +1362,32 @@ building any conclusion on it.**
     equally sharp and provably emits ports, because barrier edges are region-restricted
     (`FieldTransportAtlas.cpp:962` requires both incident faces inside the region). Reconstructing a fixture is the
     right tool for finding where a trace went and the wrong tool for deciding whether the product was correct.
+
+84. **Resolving a collapsed error code means naming the sites that publish *nothing*; adding the name to the sites
+    that already had a locus resolves the cases that were never the problem.** `EmbeddedGraphTopology.cpp` emits
+    `RotationSystemInconsistent` from **46 sites**. Nine gained a `RotationSystemInconsistencyReason` in an earlier
+    turn — and every one of those nine already set `sourceEdge` and/or `sourceFace`. So the localisable cases became
+    more localisable while **twenty-eight** sites that publish neither a reason nor an edge/face locus stayed
+    silent, twenty-three of them publishing nothing at all — and the gating red then fired from that silent set,
+    leaving the review able to prove only which twenty-eight sites it was **not** narrowed beyond.
+    The rule this adds to 57 and 64: when instrumenting a collapsed code, **partition its emission sites by what
+    they already publish, and instrument the empty partition first.** The sites you can already localise are the
+    ones that least need a name, and an instrumentation measure scoped by "add a reason" will be satisfied by the
+    easy half unless it says otherwise. Write the measure as a predicate over sites — *"any site constructing this
+    error without assigning a reason"* — and require the implementer to report the count.
+    `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §3.
+
+85. **Count every boundary that drops the datum before repairing one — the loss you can see is usually the last
+    one.** TB10 correctly observed that `RemeshPipeline::cut_graph_failure_locus` publishes two of the ten fields
+    `SurfaceCutGraphError` carries, and named that as the cause of an unreadable red. There were **three** losses of
+    the same datum in series: the silent producer sites; `SurfaceCutGraph::topology_error`, whose error type has no
+    `sourceVertex` field at all; and only then the projection. Repairing the visible one alone would have bought a
+    full turn of byte-identical evidence, because the error was already empty before the renderer saw it. **Walk the
+    datum from its producer to its reader, count every boundary that narrows it, and fix the earliest.** A corollary
+    worth keeping: when one stage boundary in a file publishes everything it holds and the neighbouring one
+    publishes two fields, the asymmetry is the finding — here the *atlas* failure in the same function renders
+    `incompleteCycleBasisReason` plus full per-region rows, forty lines above the cut-graph failure that renders
+    almost nothing. `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §3.3.
 
 ## 5. Cross-field, cycle, and orientation conventions
 

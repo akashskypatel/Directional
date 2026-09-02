@@ -2,15 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED /
-ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB10 is the latest measured runtime authority**: immutable
-package **80** / selector **377**, run/job `33584653692 / 100106147126`, re-proved **365/365** and first-reds ordinal
-366 at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`. CB12's prior terminal-ownership
-defect is runtime-proved corrected: the old seed-47/singularity-5 condition is absent and identity 377 PASSes at
-mechanical terminal v36 / `BarrierAbsorbed` / network node 7, so `M3-CP4c3-TB9-REV-CAND-01` is closed. The new
-`M3-CP4c3-TB10-CAND-01` owns the lost rotation-system subreason/locus at the production cut-graph projection. Exact
-next is **`M3-CP4c-3-TB10-REV`**, independent REVIEW + PLAN only. Accepted authority stays **365/365**; stable
-accounting **44 / 14 / 30**, debt **5**, semantic package count **77**.
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB10 is the latest measured runtime authority**: immutable package **80** / semantic source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15` / selector **377**, run/job `33584653692 / 100106147126`, 377 fresh processes for **369 PASS / 8 RED**, re-proving **365/365** and first-redding ordinal **366** at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`. CB12's terminal-ownership defect is runtime-proved corrected — `oldOrdinal366ConditionSeedPair=false` and identity 377 PASSes at mechanical terminal **v36** / singularity 4 / `BarrierAbsorbed` / network node **7** — so `M3-CP4c3-TB9-REV-CAND-01` is **CLOSED / RUNTIME PROVED**. **`M3-CP4c-3-TB10-REV` is COMPLETE** and discharged **BE0–BE7**. It proved the exact ordinal-366 condition is **unavailable at the current instrumentation, and that the unavailability is producer-side**: `EmbeddedGraphTopology.cpp` emits `RotationSystemInconsistent` from **46 sites**, all reachable from `SurfaceCutGraph::make`; only **9** publish a `RotationSystemInconsistencyReason`, and **every one of those 9 also sets `sourceEdge` and/or `sourceFace`** — so, since the ordinal-366 renderer prints those two fields whenever present and printed neither, the firing site is one of the **28** publishing neither (14 `build_rotation_system`, 9 `walk_graph_faces`, 2 `build_arcs`, 2 `build_node_loci`, 1 `exterior_boundary_orbits`; 23 of them publish nothing at all). It **corrected the TB10 localization**: there are **three** sequential losses of the same datum — the silent producer sites, `SurfaceCutGraph::topology_error` having no `sourceVertex` field, and `cut_graph_failure_locus` publishing only two of the ten fields the error carries — and the previously reported projection loss is the **last**, so repairing it alone would change ordinal 366's output by nothing. The failing phase, before/during/after fan ray ordering, is **provably undecidable** today, and no product snapshot or existing identity rescues it. Ordinals 367/371/372 are **strictly upstream-blocked by one cause**, but 371/372 read only the A1 atlas and are held by a fixture-helper precondition (`M3-CP4c3-TB10-REV-CAND-01`, deferred by design). Exact next is **`M3-CP4c-3-CB13`** under **BF0–BF9**, **diagnostic-only**, with **ordinal 366's own failure message** as the named carrier and no gate ordinal added. Selectors **374/375/376/377** stay byte-frozen. Accepted authority stays **365/365**; stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **77**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -689,21 +681,23 @@ After the durable start-of-turn checklist, load:
 1. `ORIENTATION.md` — read first.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` - **exact next-turn authority, BD0-BD9.**
-5. `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md` — **current measured runtime authority.**
-6. `Architecture_M3_CP4c3_CB11_Code_Build_Report.md` — source/compile/package authority for package 79.
-7. `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - prior two-site proof; its finalize/contact fall-through finding is still open and is NOT part of CB12.
-8. `Architecture_M3_CP4c3_Required_Green_Selector_376.txt`
-9. `Regression_Root_Cause_Tracker.md`
+4. `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` — **current review authority and the BF0–BF9 measures.**
+5. `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md`
+6. `Architecture_M3_CP4c3_CB12_Code_Build_Report.md`
+7. `Architecture_M3_CP4c3_Required_Green_Selector_377.txt`
+8. `Regression_Root_Cause_Tracker.md`
+9. `src/geometry/EmbeddedGraphTopology.cpp`, `src/geometry/SurfaceCutGraph.cpp`,
+   `src/pipeline/RemeshPipeline.cpp`, `tests/FieldAlignedCurveNetworkTests.cpp`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB12` - Code + Build, PRODUCT CORRECTION.** Follow section 8 **BD0-BD9** of
-`Architecture_M3_CP4c3_TB9_Independent_Review_Record.md`. Own a `BarrierAbsorbed` termination with the
-singularity's **network node** rather than through `terminalPort->node`; leave the `Emit` port path unchanged;
-carry `portPolicy` to the decision point instead of inferring it from an empty table; keep
-`SingularityTerminationPortOwnershipMismatch` correct and reachable for `Emit`, since accepted ordinal 328 asserts
-it; add a witness for the **missing-port** disjunct, which ordinal 328's synthetic witness does not cover. **Do not
-repair the `finalize_field_aligned_events` contact fall-through** - it is TB8-REV's separate open finding.
-Selectors 374, 375 and 376 stay byte-frozen; append selector 377 only on demonstrated falsification. GMP/GMPXX
-linkage is mandatory. **No vertex-30 discriminator is published**, because the corrected path is not proved to
-reach it.
+**Exact next:** **`M3-CP4c-3-CB13` — diagnostic-only Code + Build, runtime-free, GMP/GMPXX linked.** Follow
+**BF0–BF9** in `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §7. Give every currently silent
+`RotationSystemInconsistent` emission site a distinct enumerated reason, scoped **by predicate** rather than by
+copying the record's list, with the re-derived counts reconciled in the report; add `sourceVertex` to
+`SurfaceCutGraphError` and copy it in `topology_error`; extend `cut_graph_failure_locus` to publish the reason,
+vertex, trace, event, position failure/pass and cut-candidate evidence, with consumers found by search; publish
+which `certify_actual_embedded_graph` attempt failed; and extend `append_cp4c_failure_locus` in the same change so
+**ordinal 366's own failure message** carries the answer. **No topology decision may change, no gate ordinal may be
+added, and no selector byte may move.** The sphere, ordinal 370, saturation, the folded-cone witness, vertex 30, the
+`finalize_field_aligned_events` contact fall-through and the 371/372 fixture coupling all remain deferred and
+separately owned.

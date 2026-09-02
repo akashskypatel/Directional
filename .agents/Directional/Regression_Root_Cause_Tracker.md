@@ -1,3 +1,32 @@
+## M3-CP4c3-TB10-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md`, measures **BE0–BE7** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BE0.** Selector **377** recomputed from committed bytes: `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`,
+  377 lines / 377 unique, with `head -365/-367/-370/-373/-374/-375/-376` each reproducing its frozen hash. `git diff`
+  between package-80 semantic source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15` and the reviewed head is **empty**
+  across `src/`, `include/`, `tests/`, `benchmarks/`, `CMakeLists.txt` and the selector file; the 42 intervening
+  commits are control-plane only and none is used as semantic evidence.
+- **BE1/BE2 — the exact condition is proved UNAVAILABLE, producer-side.** `EmbeddedGraphTopology.cpp` emits
+  `RotationSystemInconsistent` from **46 sites**, all reachable from `SurfaceCutGraph::make`; only **9** publish a
+  `RotationSystemInconsistencyReason` and **every one of those 9 also sets `sourceEdge` and/or `sourceFace`**. The
+  ordinal-366 renderer prints both when present and printed neither, so the firing site is one of the **28** that
+  publish neither (14 `build_rotation_system`, 9 `walk_graph_faces`, 2 `build_arcs`, 2 `build_node_loci`,
+  1 `exterior_boundary_orbits`); 23 of those publish nothing at all and 5 only `sourceVertex`.
+- **The TB10 localization is corrected.** There are **three** sequential losses of the same datum, and the reported
+  projection loss is the **last**: (1) the 28 silent producer sites; (2) `SurfaceCutGraph::topology_error`, whose
+  `SurfaceCutGraphError` has no `sourceVertex` field; (3) `cut_graph_failure_locus`, which publishes only
+  `sourceEdge`/`sourceFace`. **Repairing (3) alone would change ordinal 366's output by nothing.**
+- **BE5.** The failing phase — before, during or after fan ray ordering — is **provably undecidable** today, and no
+  product snapshot or existing identity rescues it: there is no `surfaceCutGraphError` snapshot, and
+  `observe_cp4c_witness` (which makes the sphere legible at ordinal 368, and is already applied to the mechanical
+  witness by the unselected `MechanicalWitnessStageReachabilityIsObservable`) reads the same error and would print
+  `originatingRotationSystemReason=none`. CB12's correction is independently upheld as runtime-proved.
+- **BE6 successor:** **`M3-CP4c-3-CB13`** under **BF0–BF9**, **diagnostic-only**. No topology decision changes and
+  no gate ordinal is added; the carrier is **ordinal 366's own failure message**.
+- **Accounting:** static review on an unaccepted surface. **+0 events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, semantic packages **77**. Accepted authority remains **365/365**.
+
 ## M3-CP4c3-TB10 — artifact-only moved-first-red gate — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package **80** / semantic source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`; TB10 run/job
@@ -34,24 +63,57 @@
 - **Accounting:** accepted authority stays **365/365**, CP4c-3 OPEN; **+0 events / +0 recurrences**. Totals remain
   **44 / 14 / 30**, debt **5**, semantic packages **77**. Exact owner: independent `M3-CP4c-3-TB10-REV`.
 
-## M3-CP4c3-TB10-CAND-01 — mechanical first red loses the carried rotation-system subreason/locus at the production cut-graph projection — **ACTIVE / GATING / DIAGNOSTIC INSUFFICIENCY / NON-STABLE**
+## M3-CP4c3-TB10-CAND-01 — the mechanical first red fires from a `RotationSystemInconsistent` site that publishes nothing — **ACTIVE / GATING / DIAGNOSTIC INSUFFICIENCY (PRODUCER-SIDE) / NON-STABLE**
 
 - **Observed:** TB10 ordinal 366 first-reds at
-  `NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`; no deeper
-  rotation-system reason, source vertex/edge/face, trace, or event is rendered by the mechanical production entry
-  failure string.
-- **Root-cause localization:** package-80 source proves the cut-graph error mapper copies
-  `rotationSystemInconsistencyReason`, `sourceEdge`, `sourceFace`, trace/event, and trace-position diagnostics from the
-  originating `GlobalTopologyPlanError`. `RemeshPipeline.cpp`'s surface-cut-graph error-string construction emits only
-  `surface_cut_graph_error_code_name(code)` and `originatingTopologyError`. Thus runtime authority needed to select
-  one `RotationSystemInconsistent` producer is dropped at the final production projection.
-- **What is not proved:** TB10 does not identify the underlying rotation-system semantic defect and does not prove the
-  witness invalid. It also does not reach/adjudicate vertex 30. Candidate order, tolerance, or a guessed producer
-  are not authorized repairs.
-- **Owner:** **`M3-CP4c-3-TB10-REV`** under BE0–BE7. Recover the exact existing typed/locus data if possible; otherwise
-  freeze the minimum diagnostic-only projection needed to discriminate the producer before any product correction.
-- **Accounting:** gating on an unaccepted surface, accepted 365 prefix green; **+0 events / +0 recurrences**. Stable
-  totals remain **44 / 14 / 30**, debt **5**, packages **77**.
+  `NotProductionReady/surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent` with no
+  rotation-system reason, no source vertex/edge/face, no trace and no event.
+- **Cause localized at `M3-CP4c-3-TB10-REV` by static enumeration of the packaged source.** 46 emission sites in
+  `EmbeddedGraphTopology.cpp`, all reachable from `SurfaceCutGraph::make`; 9 publish a reason and **all 9 also set
+  `sourceEdge` and/or `sourceFace`**. Since the ordinal-366 renderer prints those two fields whenever present and
+  printed neither, the firing site is one of the **28** that publish neither a reason nor an edge/face locus:
+  14 `build_rotation_system`, 9 `walk_graph_faces`, 2 `build_arcs`, 2 `build_node_loci`,
+  1 `exterior_boundary_orbits`. 23 publish nothing at all; 5 publish only `sourceVertex`.
+- **Three losses, not one — and the previously recorded one is the last.** (1) the 28 silent producer sites;
+  (2) `SurfaceCutGraph::topology_error` drops `sourceVertex` because `SurfaceCutGraphError` has no such field;
+  (3) `RemeshPipeline::cut_graph_failure_locus` publishes only `sourceEdge`/`sourceFace` out of the ten fields the
+  error carries — while the same file forty lines earlier renders the atlas failure with full per-region rows.
+  **Repairing (3) alone changes nothing about ordinal 366.**
+- **What is NOT proved, and is not inferable.** The producing function, the failing phase (the 28 candidates
+  straddle before, during and after fan ray ordering), whether the failing `certify_actual_embedded_graph` call was
+  the initial uncut certification or a later cut proposal, and whether any product semantics is defective. No
+  witness-precondition claim is supported either. Guessing a producer is not an authorized repair.
+- **Ranked hypothesis, recorded as a measurement target and explicitly not an owner assignment.** The mechanical
+  witness is the first **closed** witness carrying both traces and non-separating hard features (torus: 48 mandatory
+  edges, 0 traces; sphere: 24 traces, 0 mandatory edges; two-ring: a disc), so `build_rotation_system` meets
+  `Mandatory`, `Trace` and `Cut` rays at one vertex fan for the first time. A reason inside `walk_graph_faces` or
+  `exterior_boundary_orbits` would falsify this, which is a legitimate outcome.
+- **Owner:** **`M3-CP4c-3-CB13`** under **BF0–BF9**, diagnostic-only: one typed name per condition at every silent
+  site found *by predicate*, `sourceVertex` carried through the mapper, the projection extended, the certification
+  attempt identified, and **ordinal 366's own failure message named as the carrier**.
+- **Accounting:** gating on an unaccepted surface, accepted 365 prefix green; **+0 events / +0 recurrences**. Totals
+  remain **44 / 14 / 30**, debt **5**, packages **77**.
+
+## M3-CP4c3-TB10-REV-CAND-01 — ordinals 371/372 are blocked by a shared fixture precondition, not by their own contracts — **ACTIVE / TEST-COUPLING / DEFERRED / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB10-REV`** from static reading; no runtime executed.
+- **Observed relation.** Ordinals 367, 371 and 372 all abort inside the function-local `static`
+  `cp4c_mechanical_fixture()`, initialized by `build_cp4c_production_fixture`, which **throws** unless all five of
+  `sourceAuthority`, `atlas`, `network`, `cutGraph` and `plan` are retained. They are therefore **strictly
+  upstream-blocked by `M3-CP4c3-TB10-CAND-01` — one cause, not three**, and no duplicate product candidates are
+  created.
+- **The separable part.** `FieldTransportAtlas.NonSeparatingBarrierEdgeIsAbsentFromLocalCycleBasis` (371) and
+  `FieldTransportAtlas.CutTransportDomainSatisfiesTheEulerCutIdentity` (372) read **only `fixture.atlas`**, an A1
+  product that is available and built successfully in the same run. Their contracts are independently reachable
+  today and are held hostage three stages downstream. Amendment 15's barrier-cycle and Euler-cut contracts have
+  therefore been *unmeasured, not falsified* from TB2 through TB10 for a reason unrelated to either. Ordinal 367
+  genuinely needs `plan` and is legitimately blocked.
+- **Corrective, specified and deliberately unauthorized.** Test-only: give the two A1 identities an atlas-scoped
+  fixture accessor, with their assertions byte-unchanged and no selector byte touched. **Deferred on purpose** —
+  BE6 forbids combining surfaces that merely co-occur in one TB result, and clearing ordinal 366 unblocks 371/372
+  automatically. This candidate exists so the coupling's cost is visible rather than rediscovered if it does not.
+- **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
+  debt **5**, packages **77**.
 
 ## M3-CP4c3-CB12 — barrier-absorbed termination ownership correction — **COMPLETE / COMPILE-PROVED / TB10 RUNTIME-PROVED / NON-STABLE**
 
@@ -71,7 +133,7 @@
   advance **76 → 77**. TB10 has consumed the package; current owner is independent `M3-CP4c-3-TB10-REV` for the later
   `M3-CP4c3-TB10-CAND-01`.
 
-## M3-CP4c3-TB9-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-TB9-REV - independent review adjudication - **SUPERSEDED BY TB10-REV / RETAINED FOR LINEAGE / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md`, measures **BC0-BC7** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
