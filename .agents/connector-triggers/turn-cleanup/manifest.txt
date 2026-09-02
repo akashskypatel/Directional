@@ -1,0 +1,6 @@
+# M3-CP4c-3-CB14 turn closeout temporary-state manifest
+.agents/connector-triggers/cb14-compile
+.agents/connector-triggers/cb14-drive-apply
+.agents/connector-triggers/cb14-closeout-drive-apply
+.agents/connector-triggers/m3-cp4c3-cb14-package82
+.agents/connector-triggers/source-snapshot/session-20260902T1526Z.txt
