@@ -1,3 +1,54 @@
+## 2026-09-02 — `M3-CP4c-3-TB9-REV`: ordinal 366 classified as a product ownership defect; `M3-CP4c-3-CB12` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md`, measures **BC0–BC7**.
+Record: `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md`. Static only — no runtime, compile, link, package,
+benchmark, or product/test/fixture/selector mutation.
+
+**BC0.** Source `8033006` verified as an ancestor of branch HEAD; selectors 374/375/376 recompute to
+`d496ce96…c503c4f`, `aa7b22bb…06a8f3a0`, `6ab2d9fa…6234bfa5e8` with 374/375/376 identities. **376 = 375 + exactly
+one appended line**, **375 = 374 + one**, and the first 365 lines of 376 are byte-identical to accepted selector
+365 — so CB11 appended and reordered nothing and BB6 was honoured. `git diff 8033006 HEAD` over the code surfaces
+is empty.
+
+**BC1.** Only one of the guard's three subconditions is reachable on the production path. Both `VertexHit`
+constructions derive the terminal vertex **from** `source_support()` (or build the point at the parameter that
+inverts to it), and `field_aligned_singularity_at` matches **by that same vertex** — so `vertexSupport` is never
+null and never disagrees with the port's vertex, killing disjuncts 1 and 3. The port table is built over **all**
+atlas singularities with a single `continue` on `portPolicy == BarrierAbsorbed`, and `expectedValence ∈ [3,6]` is
+pre-enforced, so **a missing port means `BarrierAbsorbed` and nothing else** — on this closed witness, *singular ∧
+barrier-incident*. The trace runs from singular corner **v47** down the sharp box edge `(x = -1.4, z = -0.9)`
+through mesh rows 59, 57, 55, 53, 51 and regular vertices 45, 43, 41, 39 — every chain edge at an exactly
+**90.000000°** dihedral — and terminates at **v36**. v38 is excluded because its entire star is coplanar.
+
+**BC2.** Classified **category 1 — genuine product ownership defect on a valid mechanical witness**. A port records
+where a trace may *originate*; the guard uses it to own an *arrival*, reaching the terminal node through
+`terminalPort->node`. A `BarrierAbsorbed` singularity has no ports **by design**, yet its node is allocated
+unconditionally (`nodeVertices.insert(singularity.sourceVertex)` precedes the policy test) and v36 is additionally
+a mandatory-barrier endpoint. Owner:
+`src/geometry/SurfaceCellTracing.cpp::append_field_aligned_singularity_termination`.
+
+**BC3.** `M3-CP4c3-TB8-REV-CAND-01` **CLOSED / RUNTIME PROVED**. No inference drawn about the unobserved
+finalize/contact site — TB8-REV's finding there is untouched and still open.
+
+**BC7 — two adversarial results.** Geometric sharpness is **not** a valid proxy for the barrier set: v47 has three
+exactly-90° incident edges and is proved `Emit` by TB9's own trace seed, because barriers are region-restricted
+(`FieldTransportAtlas.cpp:962`). And accepted ordinal **328**'s port-ownership witness is synthetic and fires
+**disjunct 3**, which production cannot reach — the accepted suite does not cover the production disjunct.
+
+**BC4–BC5.** Sphere (368), saturation (369), ordinal 370, folded-cone (374), the mechanical zero-unbound debt and
+vertex-30 acceptance all preserved independently. New candidate `M3-CP4c3-TB9-REV-CAND-01` opened;
+`M3-CP4c3-TB8-CAND-01` advances to root-cause-established. **+0 stable events / +0 recurrences**; totals remain
+**44 / 14 / 30**, debt **5**, packages **76**.
+
+**BC6.** One bounded successor frozen: **`M3-CP4c-3-CB12`** under **BD0–BD9**, a product correction — own a
+`BarrierAbsorbed` termination with the singularity's **network node**, leave the `Emit` port path unchanged, carry
+the policy to the decision point instead of inferring it from an empty table, and witness the disjunct production
+actually reaches. **No vertex-30 discriminator is published**; the corrected path is not proved to reach it.
+
+**Lessons added.** §4 **81** — an origin credential is not an arrival credential. §4 **82** — a reachability
+witness proves the name, not the branch; a disjunction owes a witness per disjunct. §4 **83** — geometry locates a
+failure, only the source predicate adjudicates one.
+
 ## 2026-09-02 — `M3-CP4c-3-TB9`: terminal-ownership site discriminated to singularity termination
 
 Artifact-only Test + Benchmark on immutable package **79** / semantic source

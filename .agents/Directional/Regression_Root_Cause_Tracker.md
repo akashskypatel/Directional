@@ -1,3 +1,57 @@
+## M3-CP4c3-TB9-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md`, measures **BC0-BC7** discharged. Static
+  only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **BC0 re-established independently.** Source `8033006` is an ancestor of branch HEAD; selectors 374/375/376
+  recompute to `d496ce96...c503c4f`, `aa7b22bb...06a8f3a0`, `6ab2d9fa...6234bfa5e8` with 374/375/376 identities.
+  **376 = 375 + exactly one appended line** and **375 = 374 + one**, so 374 and 375 remain byte-frozen through
+  CB11 (BB6 honoured); the first 365 lines of 376 are byte-identical to accepted selector 365. `git diff 8033006
+  HEAD` over `src include tests benchmarks CMakeLists.txt cmake` is **empty**, licensing static review as evidence
+  about package 79.
+- **BC1 - only one subcondition is reachable, and it means one thing.** Both `VertexHit` constructions
+  (`SurfaceCellTracing.cpp:517-523`, `:546-556`) derive the terminal vertex **from** `source_support()` or invert
+  its parameter mapping, and `field_aligned_singularity_at` matches by that same vertex - so `vertexSupport` is
+  never null and never disagrees with the port's vertex. **Disjuncts 1 and 3 are dead by construction.** The port
+  loop runs over **all** atlas singularities with one `continue` on `BarrierAbsorbed`, and `expectedValence` in
+  [3,6] is pre-enforced, so **`terminalPort == end()` iff `portPolicy == BarrierAbsorbed`**, which on this closed
+  witness means *singular and barrier-incident* (`FieldTransportAtlas.cpp:2296-2300`, `:2467-2470`).
+- **BC1 - the witness.** The trace runs from singular corner **v47** down the sharp box edge `(x = -1.4, z = -0.9)`
+  through mesh rows 59, 57, 55, 53, 51 and **regular** vertices 45, 43, 41, 39, every chain edge at an exactly
+  **90.000000 degree** dihedral, and terminates at **v36**. v38 is excluded: its entire star is coplanar, so it is
+  barrier-incident under no positive threshold.
+- **BC2 - classified category 1, genuine product ownership defect on a valid witness.** A **port** records where a
+  trace may originate; the guard uses it to own an **arrival** and takes the terminal node from
+  `terminalPort->node`. A `BarrierAbsorbed` singularity has no ports by design, yet its node is allocated
+  **unconditionally** and v36 is additionally a mandatory-barrier endpoint. Owner:
+  `src/geometry/SurfaceCellTracing.cpp::append_field_aligned_singularity_termination`.
+- **BC3 - CB11 closure confirmed without semantic acceptance.** `M3-CP4c3-TB8-REV-CAND-01` CLOSED. No inference is
+  drawn about the unobserved finalize/contact site; TB8-REV's finding there (`terminalContact` never read in
+  `:3745-3935`) is **untouched and still open**, and CB12 must not repair it.
+- **BC7 - adversarial.** Sharpness is **not** a valid proxy for the barrier set: v47 has three exactly-90 degree
+  incident edges and is proved `Emit` by TB9's own trace seed, because barriers are region-restricted
+  (`FieldTransportAtlas.cpp:962`). Separately, accepted ordinal **328**'s port-ownership witness is synthetic and
+  fires **disjunct 3**, which production cannot reach - so the accepted suite does **not** cover the production
+  disjunct.
+- **BC6 - one bounded successor frozen:** **`M3-CP4c-3-CB12`** under **BD0-BD9**, product correction.
+- **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **76**.
+
+## M3-CP4c3-TB9-REV-CAND-01 - a barrier-absorbed singularity cannot receive a termination, because the owner is looked up in the port table its policy deliberately leaves empty - **ACTIVE / GATING / PRODUCT / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB9-REV`** from static derivation over TB9's runtime evidence.
+- **Mechanism.** `append_field_aligned_singularity_termination` resolves the terminal owner as
+  `terminalPort->node`, found by `std::find_if` over `candidate.singularityPorts`. That table is built over all
+  atlas singularities but **skips `portPolicy == BarrierAbsorbed`** outright. The corresponding node, however, is
+  created unconditionally: `nodeVertices.insert(singularity.sourceVertex)` precedes the policy test, and a
+  barrier-incident vertex is inserted again by the mandatory-edge loop. The owner exists; the lookup goes through
+  the wrong table.
+- **Invariant to restore.** Every singularity has exactly one network node and that node owns **every** trace
+  terminating at its source vertex. A port constrains only a trace's **origin** and is never a precondition on an
+  arrival. `BarrierAbsorbed` must still be able to receive terminations.
+- **Owner:** **BD1-BD5** of `M3-CP4c-3-CB12`.
+- **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, packages **76**.
+
 ## M3-CP4c3-TB9 — artifact-only site discrimination — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 79 / semantic source `803300698289e0d0f629eaa878add1aebc7193c1`; run/job
@@ -108,7 +162,11 @@
   recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **75**.
 - **Owner:** independent `M3-CP4c-3-TB8-REV`; no unchanged TB retry or semantic correction before review.
 
-## M3-CP4c3-TB8-CAND-01 - mechanical singularity termination fails terminal port ownership - **ACTIVE / GATING / SITE DISCRIMINATED AT TB9 / NON-STABLE**
+## M3-CP4c3-TB8-CAND-01 - mechanical singularity termination fails terminal port ownership - **ACTIVE / GATING / ROOT CAUSE ESTABLISHED AT TB9-REV / NON-STABLE**
+
+- **Root cause established at `M3-CP4c-3-TB9-REV`:** the firing subcondition is *missing port*, which means
+  `portPolicy == BarrierAbsorbed`; the terminal vertex is **v36**; the defect is product-owned (BC2 category 1).
+  Re-owned to **`M3-CP4c-3-CB12`** under BD0-BD9. See `M3-CP4c3-TB9-REV-CAND-01`.
 
 - **TB8 origin:** ordinal 366 exposed `InvalidNetworkTerminalOwnership` at edge `36-38`, face `(36,38,39)`, branch
   2. TB8-REV eliminated ten of twelve producer sites and proved only singularity termination versus finalize/contact

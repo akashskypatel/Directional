@@ -28,44 +28,50 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-01 at `M3-CP4c-3-TB8-REV`, which classified TB8's first red as a **diagnostic
-insufficiency over a proved two-element candidate set** and froze one bounded **diagnostic-only** successor.
+**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB9-REV`, which classified TB9's first red as a **genuine
+product ownership defect on a valid witness** and froze one bounded **product** successor.
 
-**CB10 worked.** TB8 (package 78, source `e2b59295c9920db5685239c2da188858839fa94f`, run/job
-`33561723204 / 100035596811`) re-proved **365/365** and the mechanical production path is now **past** the TB7
-source-vertex-11 `VertexTransitSeedUnavailable` stop. Diagnostic identity **375**
-`FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries` passes both radial orientations, including the one CB9's
-half-open guard rejected. `M3-CP4c3-TB7-CAND-01` is **CLOSED**.
+**CB11 delivered.** TB9 (package 79, source `803300698289e0d0f629eaa878add1aebc7193c1`, run/job
+`33575920177 / 100079784804`) re-proved **365/365**, and ordinal 366 now carries exactly one typed condition plus
+full trace provenance:
+`networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`
+with five untruncated exact history rows. TB8's proved two-site ambiguity is resolved to the
+singularity-termination site. `M3-CP4c3-TB8-REV-CAND-01` is **CLOSED**.
 
-**The new first red at ordinal 366 cannot be attributed to one site, and that is the finding.**
-`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`. That typed
-code has **twelve** emission sites in `SurfaceCellTracing.cpp`. Ten are eliminated by proof — eight set too few
-locus fields to produce the observed shape, and `:3132`/`:3879` require the edge to be a `terminalBarrier`, which
-edge `36-38` cannot be: it is an interior edge with an **exactly 0° dihedral** inside a 50-face coplanar patch at
-`x = -1.4`, and barriers are a subset of hard feature edges. The two survivors — `:1900` (singularity-termination
-port ownership) and `:3920` (the `finalize_field_aligned_events` fall-through, reached because **`terminalContact`
-is never read in that function** and `first_trace_contact` structurally cannot match trace index 0) — emit the
-**identical** rendered locus.
+**Only one of the guard's three subconditions is reachable, and it means exactly one thing.** Both `VertexHit`
+constructions in `resolve_field_branch_continuation` derive the terminal vertex **from** `source_support()` (or
+build the point at the parameter that inverts to it), and `field_aligned_singularity_at` matches **by that same
+vertex** — so `vertexSupport` is never null and never disagrees with the port's vertex. Disjuncts 1 and 3 are dead
+by construction. The port table is built over **all** atlas singularities with a single `continue` on
+`portPolicy == BarrierAbsorbed`, and `expectedValence ∈ [3,6]` is pre-enforced, so **a missing port means
+`BarrierAbsorbed` and nothing else** — which on this closed witness means *singular ∧ barrier-incident*.
 
-**The discriminator exists and is thrown away at the pipeline boundary.** `FieldAlignedCurveNetworkError` carries
-`traceSeedVertex`, `traceSeedSingularity`, `traceHistory`, `traceSteps`, `singularity`, `rail`, `relatedSourceFace`,
-`relatedBranch`, `parameter`, `exactValues` and more. `SurfaceCellFailureLocusDiagnostics` has a field for **none**
-of them, and there are **zero readers in `RemeshPipeline.cpp`**. The trace-scoped group's only readers are the
-**test-local** renderer `network_error_locus` and assertions in ordinals 328/329.
+**A port is an origin credential being used as an arrival credential.** `FieldAlignedSingularityPort` records where
+a trace may **start**. The guard uses it to decide who owns an **arrival**, and takes the terminal node from
+`terminalPort->node`. A `BarrierAbsorbed` singularity has no ports *by design* — yet its node is allocated
+**unconditionally** (`nodeVertices.insert(singularity.sourceVertex)` runs before the policy test, and the terminal
+vertex is additionally a mandatory-barrier endpoint). The product rejects a legitimate termination whose owner it
+has already built.
 
-**The guarantee that should have caught it tests the wrong renderer.** Accepted ordinal **329**
-`NetworkDiagnosticsPublishEveryRequiredLocusLosslessly` builds errors by hand and asserts against
-`network_error_locus`. It never touches `network_failure_locus`, `SurfaceCellFailureLocusDiagnostics` or
-`append_cp4c_failure_locus` — the path every CP4c production witness reports through. **No identity in selector 375
-exercises the production projection.**
+**The witness is ordinary.** The trace runs from singular corner **v47** down the sharp box edge
+`(x = -1.4, z = -0.9)` through regular vertices 45, 43, 41, 39 — every chain edge at an **exactly 90°** dihedral —
+and terminates at **v36**, the chamfered corner where the silhouette meets the machined pocket. v38 is excluded as
+the terminal because its **entire star is coplanar** (every incident dihedral exactly 0°), so it can be
+barrier-incident under no threshold.
 
-One bounded successor is authorized: **`M3-CP4c-3-CB11`** under **BB0–BB9**, **diagnostic-only** — carry the
-trace-scoped fields to the production renderer, add a typed per-site discriminator **without** touching the
-`InvalidNetworkTerminalOwnership` enum value (accepted ordinal 328 asserts it), make `publishedFaces` honest, and
-re-aim ordinal 329's guarantee at the production path. **CB11 must diagnose the `terminalContact` fall-through and
-must not repair it.** No product correction is authorized until TB9 names the site. Selectors **374** and **375**
-stay byte-frozen; selector 376 is conditional on BB6 falsification. Stable accounting **44 / 14 / 30**, debt **5**,
-semantic M3 packages **75**.
+One bounded successor is authorized: **`M3-CP4c-3-CB12`** under **BD0–BD9**, a **product correction** — own a
+`BarrierAbsorbed` termination with the singularity's **network node**, leave the `Emit` port path untouched, carry
+the policy to the decision point rather than inferring it from an empty table, and add a witness for the disjunct
+production actually reaches. **Vertex 30 is still not reached and no vertex-30 discriminator is published.**
+Selectors **374**, **375** and **376** stay byte-frozen; selector 377 is conditional on BD6. Stable accounting
+**44 / 14 / 30**, debt **5**, semantic M3 packages **76**.
+
+*(Prior turn, retained for lineage: `M3-CP4c-3-TB8-REV` reduced the twelve `InvalidNetworkTerminalOwnership`
+emission sites to **two** and classified the red as **diagnostic insufficiency**, because the two survivors emitted
+an identical rendered locus while every discriminating field of `FieldAlignedCurveNetworkError` was dropped at the
+pipeline projection — and accepted ordinal 329's losslessness guarantee turned out to assert against a
+**test-local** renderer. CB11 discharged BB0–BB9 diagnostically: the discriminator was added as a **field**, so
+accepted ordinal 328 still asserts `InvalidNetworkTerminalOwnership` unchanged.)*
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB7-REV` proved ordinal 366 was a **CB9-introduced** product defect —
 CB9's fifth seed guard reused the **half-open ownership convention** as an admissibility test on one incoming ray,
@@ -135,25 +141,27 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB8-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
+**Current authority — TB9-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
 selector **374** (`d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`), byte-frozen across CB9, TB7,
-TB7-REV, CB10 and TB8. **Selector 375 now exists**
-(`aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`) — CB10 appended exactly one diagnostic
-identity, `ResolvedBranchCorrection.FaceInteriorRadialArrivalsAdmitBothClosedWedgeBoundaries`, and reordered
-nothing. Its first 365 lines are byte-identical to accepted selector 365.
+TB7-REV, CB10, TB8, TB8-REV, CB11 and TB9. Diagnostic selector **375**
+(`aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`) and execution selector **376**
+(`6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`) each append **exactly one** identity to their
+predecessor and reorder nothing; the first 365 lines of 376 are byte-identical to accepted selector 365.
 
-**TB8 is the latest semantic runtime evidence** (package 78, source
-`e2b59295c9920db5685239c2da188858839fa94f`, run/job `33561723204 / 100035596811`, result artifact `9821602279`):
+**TB9 is the latest semantic runtime evidence** (package 79, source
+`803300698289e0d0f629eaa878add1aebc7193c1`, run/job `33575920177 / 100079784804`, result artifact `9826689980`):
 ordinals **1–365 green**, first red **366** at
-`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`; report-only
-367–374 at **1 PASS / 7 RED** with zero gate credit; diagnostic 375 PASS; immutable pre/postflight PASS.
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2` with
+`networkErrorCondition=SingularityTerminationPortOwnershipMismatch`, `traceSeedVertex=47`,
+`traceSeedSingularity=5`, five untruncated history rows; report-only 367–375 at **2 PASS / 7 RED**; diagnostic 376
+PASS; immutable pre/postflight PASS.
 
-`M3-CP4c-3-TB8-REV` classified that red as **diagnostic insufficiency over a proved two-element candidate set**
-(§7 item 1) and froze **`M3-CP4c-3-CB11` under BB0–BB9**, diagnostic-only. Stable accounting is **44 / 14 / 30**,
-produced-witness debt **5**, semantic M3 packages **75**. Ordinal 370, the sphere, saturation, the folded-cone
-witness and the mechanical zero-unbound debt remain deferred and were untouched by this turn. **Vertex 30 is still
-not reached**, so the frozen row-209/row-208 owner election has no runtime acceptance and
-`M3-CP4c3-TB6-CAND-01` stays ACTIVE.
+`M3-CP4c-3-TB9-REV` classified that red **BC2 category 1 — a genuine product ownership defect** (§7 item 1) and
+froze **`M3-CP4c-3-CB12` under BD0–BD9**, a product correction. Stable accounting is **44 / 14 / 30**,
+produced-witness debt **5**, semantic M3 packages **76**. Ordinal 370, the sphere, saturation, the folded-cone
+witness and the mechanical zero-unbound debt remain deferred and were untouched. **Vertex 30 is still not
+reached**, so the frozen row-209/row-208 owner election has no runtime acceptance and `M3-CP4c3-TB6-CAND-01` stays
+ACTIVE.
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -371,7 +379,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F, closed, `χ=2`, 0 boundary edges | clears all A1, and since CB10 clears the vertex-11 transit too | **Current owner of the critical path.** TB8 first-reds at ordinal 366 with `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0` — a **network-assembly terminal-ownership** failure, *not* a vertex-star transit failure (the rendered line proves `vertexTransitStates` and `vertexStarTransit` are both empty). Face row 51 is exactly `(36,38,39)`; edge `36-38` is interior between rows 50 `(36,37,38)` and 51, with an **exactly 0° dihedral** inside a 50-face coplanar patch at `x = -1.4` — the opposite face of the part from vertex 11 at `(1.4, 0.72, -0.54)`. TB8-REV reduced the twelve emission sites of that code to **two** (`:1900` and `:3920`) and proved they are indistinguishable in the serialized locus. Vertex **30** is **still not reached**, so the DEFN-R2 owner election (row 209 or row 208, **row 41 unreachable**) remains runtime-unmeasured since TB6. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1 and, since CB10, the vertex-11 transit | **Current owner of the critical path.** TB9 first-reds at ordinal 366 with `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`. The trace runs from singular corner **v47** `(-1.4, 0.72, -0.9)` down the sharp box edge `(x = -1.4, z = -0.9)` through mesh rows 59, 57, 55, 53, 51 and **regular** vertices 45, 43, 41, 39 — every chain edge at an exactly **90.000000 degree** dihedral — and terminates at **v36** `(-1.4, -0.78, -0.9)`, the chamfered corner where the silhouette meets the machined pocket. v38 is excluded as terminal: its entire star is coplanar. TB9-REV proved the only reachable subcondition is *missing port*, which means `BarrierAbsorbed`, so **v36 carries a barrier-incident singularity that emits no ports** and the termination is rejected for lacking one. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -466,38 +474,36 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Network terminal ownership at ordinal 366 — ACTIVE and gating; the cause is not yet attributable, and that
-   is the finding.** TB8's first red is
-   `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0` on the
-   mechanical witness. `M3-CP4c-3-TB8-REV` proved:
+1. **Termination ownership at a barrier-absorbed singularity — ACTIVE and gating; cause established, owner
+   named, product-owned.** TB9's first red is
+   `InvalidNetworkTerminalOwnership;…;networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`.
+   `M3-CP4c-3-TB9-REV` proved:
 
-   - **Ten of twelve emission sites are eliminated.** Eight (`:1875`, `:3122`, `:3276`, `:3295`, `:3317`, `:3609`,
-     `:3635`, `:3706`) cannot populate `sourceEdge` + `sourceFace` + `branch` together. `:3132` and `:3879` require
-     the emitted edge to be a `terminalBarrier`; edge `36-38` has an **exactly 0° dihedral** between two
-     identical-normal faces inside a 50-face coplanar patch, and barriers are a subset of hard feature edges
-     (`FieldTransportAtlas.cpp:955-966`), so it can never be one.
-   - **The two survivors have different owners.** `:1900` is the singularity-termination **port-ownership** guard —
-     live disjunct: a `BarrierAbsorbed` singularity contributes **no ports**, so a trace terminating on it finds no
-     owner. `:3920` is the `finalize_field_aligned_events` **fall-through**, reached because **`terminalContact` is
-     never read anywhere in that function** (`:3745-3935`; every reference is at `:3285/:3303/:3333/:3662/:3675/
-     :3703/:4434/:4606`), so a contact-terminated trace is adjudicated by a **loop-closure** rule belonging to a
-     different terminal kind. It is reachable because `field_aligned_first_trace_contact` compares trace `i` only
-     against indices `< i` and therefore can never match trace 0.
-   - **They emit the identical rendered locus.** Same code, same three populated fields, same three absent ones.
+   - **Only one of the guard's three subconditions is reachable.** Both `VertexHit` constructions
+     (`SurfaceCellTracing.cpp:517-523` and `:546-556`) derive the terminal vertex **from** `source_support()`, or
+     build the boundary point at the exact parameter that `source_support()` inverts to it; and
+     `field_aligned_singularity_at` matches **by that same vertex**. So `vertexSupport` is never null and never
+     disagrees with the port's vertex — disjuncts 1 and 3 are **dead by construction**.
+   - **A missing port means `BarrierAbsorbed`, and nothing else.** The port loop runs over **all**
+     `fieldTransportAtlas.singularities()` with exactly one `continue` (on `BarrierAbsorbed`), and
+     `expectedValence ∈ [3,6]` is pre-enforced, so every `Emit` singularity gets at least three ports. Region
+     scoping, ordering and zero-valence are each excluded by a named check.
+   - **On this closed witness, `BarrierAbsorbed` ⟺ singular ∧ barrier-incident** (`FieldTransportAtlas.cpp:2296-2300`,
+     with the boundary clause vacuous because the mesh has 0 boundary edges).
 
-   **The blocker is diagnostic, not semantic.** `FieldAlignedCurveNetworkError` carries `traceSeedVertex`,
-   `traceSeedSingularity`, `traceHistory`, `traceSteps`, `traceStepBudget`, `traceCombinatorialVisits`,
-   `traceCombinatorialVisitAllowance`, `singularity`, `rail`, `relatedSourceFace`, `relatedBranch`, `signedLift`,
-   `parameter`, `exactValues` and `publishedEdges`. `SurfaceCellFailureLocusDiagnostics` declares a field for
-   **none** of them and `RemeshPipeline.cpp` reads none of them. `M3-CP4c-3-CB11` (BB0–BB9) is **diagnostic-only**:
-   project the trace-scoped group, add a typed per-site discriminator **as a field** (accepted ordinal 328 asserts
-   the enum value, so the enum must not be split), make `publishedFaces` honest, and re-aim ordinal 329 at the
-   production renderer. **The `terminalContact` fall-through must be diagnosed and must not be repaired** until TB9
-   names the site.
+   **The defect is a category error.** A **port** says where a trace may *originate*; a **node** says what it may
+   *terminate at*. The guard reaches the terminal node through `terminalPort->node` — a table the atlas
+   deliberately leaves empty for this policy — while the node itself is allocated **unconditionally**
+   (`nodeVertices.insert(singularity.sourceVertex)` precedes the policy test) and v36 is additionally a
+   mandatory-barrier endpoint. `M3-CP4c-3-CB12` (BD0–BD9) restores the invariant: **own a `BarrierAbsorbed`
+   termination with the singularity's network node**, leave the `Emit` port path unchanged, carry the policy to the
+   decision point rather than inferring it from an empty table, and add a witness for the disjunct production
+   actually reaches. Prohibited: converting the arrival into a barrier termination, reordering the `VertexHit`
+   check against the mandatory-edge check, synthesizing a port, or making the port table policy-blind.
 
-   *(Closed by CB10, retained for lineage: the CB9 half-open seed guard that made every edge-collinear vertex
-   arrival unresolvable in `FaceInterior` mode. TB8 clears vertex 11 on the production path and diagnostic 375
-   passes both radial orientations. `M3-CP4c3-TB7-CAND-01` is CLOSED.)*
+   *(Still open and separately owned: the `finalize_field_aligned_events` contact fall-through TB8-REV documented —
+   `terminalContact` is never read in `:3745-3935`. TB9 proves only that it is not the **first** mechanical failure.
+   CB12 must not repair it.)*
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -557,6 +563,27 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**An origin credential used as an arrival credential.** A singularity **port** records where a trace may
+*start*; a singularity **node** records what a trace may *end at*. The product allocates the node
+**unconditionally** and the port **conditionally** (`portPolicy == BarrierAbsorbed` emits none), then asks the port
+a question only the node can answer — so the very policy whose purpose is to suppress ports made a legitimate
+arrival unrepresentable. The authoring control: when two tables model the same entity at different cardinalities,
+name which one the question is about before writing the lookup. A lookup that reaches its real target *through* an
+optional table (`terminalPort->node`) is the smell. `LESSONS.md` §4 81.
+
+**A reachability witness proves the name, not the branch.** CB11's BB5 measure demanded a witness for each
+surviving emission site, and its witness for the port-ownership condition is valid — but it fires the *third*
+disjunct (a port exists owning a different vertex), which TB9-REV proves the production path **cannot reach**. The
+production path always fires the *second* (no port at all). A condition that is a disjunction owes a witness **per
+disjunct**; "reachable by some route" is not "reachable by the route production takes". `LESSONS.md` §4 82.
+
+**Geometry locates a failure; only the source predicate adjudicates it.** Every edge of TB9's traced chain has an
+exactly 90° dihedral, and the natural inference — sharp implies barrier — is **false on this witness**: v47 is
+equally sharp and provably emits ports. The barrier set is region-restricted at `FieldTransportAtlas.cpp:962`
+(both incident faces must lie inside the region), so a hard feature edge that *bounds* a region is not a barrier
+while one *interior* to it is. Reconstructing a fixture is the right way to find where a trace went and the wrong
+way to decide whether the product was correct. `LESSONS.md` §4 83.
 
 **A guarantee is scoped by its call graph, not by its name.** Accepted ordinal 329,
 `NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`, has passed every gate since it was written — while the
@@ -980,3 +1007,27 @@ The two-ring is constructed in the test file, not a fixture.
   and everything else falls through to a **loop-closure** test. `field_aligned_first_trace_contact` compares trace
   `i` only against indices `< i`, so it can never match trace 0 — and it declares a contact on **mere source-face
   coincidence**, with no crossing test (`field_aligned_segments_properly_cross` feeds the census only).
+- A singularity **port** and a singularity **node** are different authorities with different cardinality.
+  `nodeVertices.insert(singularity.sourceVertex)` runs for **every** singularity, before and outside the
+  `portPolicy` test, and `candidate.nodes` is materialized **before** `candidate.singularityPorts`. The port loop
+  then skips `BarrierAbsorbed` entirely, so such a singularity has a node and **zero** ports. Ports constrain a
+  trace's **origin** only.
+- `FieldSingularityFact::PortPolicy` is `BarrierAbsorbed` iff the vertex is in `slitCycleByGlobalVertex`
+  (`FieldTransportAtlas.cpp:2467-2470`), populated at `:2296-2300` iff *not a mesh-boundary vertex* ∧
+  *in `local->barrierVertices`* ∧ *singular*. Local-cycle and slit-cycle ownership are an exclusive XOR over all
+  singularities (`:2428-2432`). On a closed witness this reduces to **singular ∧ barrier-incident**.
+- **Barrier edges are region-restricted, not merely sharp** (`FieldTransportAtlas.cpp:955-966`): a hard feature
+  edge becomes a barrier only when **both** incident faces lie in the region being localized. So a sharp edge that
+  bounds a region is not a barrier. Do not use dihedral angle as a proxy for `barrierVertices` — v47 has three
+  exactly-90° incident edges and is proved `Emit` by TB9's own trace seed.
+- `FieldBoundaryPoint::source_support()` (`FieldTransportAtlas.h:601-610`) returns `SourceVertexSupport{edge.first()}`
+  at parameter 0, `SourceVertexSupport{edge.second()}` at parameter 1, and `SourceEdgeSupport` strictly between.
+  Both `VertexHit` constructions are built to invert exactly that mapping, so on the production path the terminal
+  support vertex always equals `decision.sourceVertex`.
+- `trace.terminalSingularity` is set at exactly one place — the `VertexHit` branch of
+  `field_aligned_advance_trace_proposal` — via `field_aligned_singularity_at(atlas, *decision.sourceVertex, …)`,
+  which matches **by vertex**. The `VertexHit` check runs **before** the `mandatoryByEdge` barrier check, so a
+  vertex that is both a barrier endpoint and a singularity is adjudicated as a singularity termination.
+- Trace history in a production locus is exact: `entryParameter=1/1` on every row means every entry point sat on a
+  vertex, i.e. the trace transited vertices rather than edge interiors. `incomingCarrier=none` on a first segment
+  is a port origin.

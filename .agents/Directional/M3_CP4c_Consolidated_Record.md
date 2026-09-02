@@ -3,15 +3,21 @@
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
 **Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED /
-ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB9 is current measured runtime authority** on immutable
-package 79 / source `803300698289e0d0f629eaa878add1aebc7193c1`: ordinals **1–365 PASS**, ordinal **366** first-reds at
-`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2` and now names exactly one condition,
-`SingularityTerminationPortOwnershipMismatch`, with seed vertex 47 / singularity 5 and five exact untruncated history
-rows. Diagnostic 376 PASSes, runtime-closing the CB11 production-projection gap. Exact next is independent
-**`M3-CP4c-3-TB9-REV`** under `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` BC0–BC7. Accepted authority
-remains **365/365**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic
-M3 package count **76**.
-## 1. Separate current/future authority
+ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. `M3-CP4c-3-TB9` is COMPLETE / valid semantic RED against
+immutable package **79** from source `803300698289e0d0f629eaa878add1aebc7193c1`: ordinals **1-365 PASS**, ordinal
+**366** first-reds at
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`;
+report-only 367-375 is **2 PASS / 7 RED**; diagnostic 376 PASSes. **`M3-CP4c-3-TB9-REV` has adjudicated that red as
+BC2 category 1 - a genuine product ownership defect on a valid mechanical witness.** Only one of the guard's three
+subconditions is reachable (both `VertexHit` constructions derive the terminal vertex from `source_support()`,
+which the guard re-reads), and a missing port means `portPolicy == BarrierAbsorbed` and nothing else. A **port**
+records where a trace may originate; the guard uses it to own an **arrival**, reaching the terminal node through
+`terminalPort->node`, while that node is allocated **unconditionally**. The trace runs from singular corner v47
+down the sharp box edge through regular vertices 45, 43, 41, 39 and terminates at **v36**.
+`M3-CP4c3-TB8-REV-CAND-01` is **CLOSED**; new `M3-CP4c3-TB9-REV-CAND-01` is **ACTIVE**; vertex 30 is still not
+reached. Exact next is **`M3-CP4c-3-CB12`** - Code + Build, **product correction**, under **BD0-BD9**. Accepted
+authority remains **365/365**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**,
+authoritative semantic M3 package count **76**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -40,7 +46,9 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_CB11_Code_Build_Report.md` - **current build/package authority**: source `803300…`, package 79, diagnostic-only BB0-BB9 discharge.
 - `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md` - consumed TB9 execution authority for package 79 / selector 376.
 - `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md` - **current measured runtime authority**: 365 green, first red 366 at the named singularity-terminal ownership site, complete remainder, diagnostic 376, immutable postflight.
-- `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` - **exact next-turn authority**, BC0–BC7.
+- `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` - discharged review scope, BC0-BC7.
+- `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` - **exact next-turn authority**: the BC0-BC7
+  adjudication and the frozen `M3-CP4c-3-CB12` successor, section 8 **BD0-BD9**.
 - `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` - diagnostic selector, 375 identities,
   `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`; selector 374 plus exactly one appended line.
 - `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — frozen append-only diagnostic selector; selector 374 is its unchanged byte prefix.
@@ -100,7 +108,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB9 is current runtime authority: ordinal 366 still reds at the frozen terminal-ownership locus and now names `SingularityTerminationPortOwnershipMismatch` with seed vertex 47 / singularity 5. Exact next is independent `M3-CP4c-3-TB9-REV`.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. CB11 made the failing site observable and TB9-REV classified the ordinal-366 red as a genuine product ownership defect: a `BarrierAbsorbed` singularity cannot receive a termination because the owner is looked up in the port table its policy deliberately leaves empty. Exact next is `M3-CP4c-3-CB12`, a product correction under BD0-BD9.** |
 
 ### 2.1 CP4c-0
 
@@ -648,12 +656,21 @@ After the durable start-of-turn checklist, load:
 1. `ORIENTATION.md` — read first.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` — **exact next-turn authority, BC0–BC7.**
+4. `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` - **exact next-turn authority, BD0-BD9.**
 5. `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md` — **current measured runtime authority.**
 6. `Architecture_M3_CP4c3_CB11_Code_Build_Report.md` — source/compile/package authority for package 79.
-7. `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` — prior two-site proof and BB9 no-correction authority.
+7. `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - prior two-site proof; its finalize/contact fall-through finding is still open and is NOT part of CB12.
 8. `Architecture_M3_CP4c3_Required_Green_Selector_376.txt`
 9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB9-REV` — independent REVIEW + PLAN** against immutable package-79 / TB9 result evidence. The review is static only: reconstruct which internal guard disjunct produced `SingularityTerminationPortOwnershipMismatch` for seed vertex 47 / singularity 5, classify the owning invariant, confirm the CB11 diagnostic closure without accepting the separately demonstrated finalize/contact site, preserve the inherited sphere/saturation/ordinal-370/folded-cone/vertex-30 debts, update `ORIENTATION.md`, and freeze exactly one bounded successor. **No runtime, build, package, benchmark, product correction, or test/fixture/selector mutation occurs in TB9-REV.**
+**Exact next:** **`M3-CP4c-3-CB12` - Code + Build, PRODUCT CORRECTION.** Follow section 8 **BD0-BD9** of
+`Architecture_M3_CP4c3_TB9_Independent_Review_Record.md`. Own a `BarrierAbsorbed` termination with the
+singularity's **network node** rather than through `terminalPort->node`; leave the `Emit` port path unchanged;
+carry `portPolicy` to the decision point instead of inferring it from an empty table; keep
+`SingularityTerminationPortOwnershipMismatch` correct and reachable for `Emit`, since accepted ordinal 328 asserts
+it; add a witness for the **missing-port** disjunct, which ordinal 328's synthetic witness does not cover. **Do not
+repair the `finalize_field_aligned_events` contact fall-through** - it is TB8-REV's separate open finding.
+Selectors 374, 375 and 376 stay byte-frozen; append selector 377 only on demonstrated falsification. GMP/GMPXX
+linkage is mandatory. **No vertex-30 discriminator is published**, because the corrected path is not proved to
+reach it.

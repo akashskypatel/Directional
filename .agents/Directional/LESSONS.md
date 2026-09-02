@@ -1329,6 +1329,27 @@ building any conclusion on it.**
     `publishedFaceCount=0`, which reads as an observation about the network and is in fact a property of the code.
     Before trusting a locus token as evidence, confirm the field behind it is written on the path that produced it.
 
+81. **An origin credential is not an arrival credential.** A singularity *port* says where a trace may start; a
+    singularity *node* says what a trace may end at. `append_field_aligned_singularity_termination` reached the
+    terminal node through `terminalPort->node`, so a `BarrierAbsorbed` singularity — which emits no ports **by
+    design** — could not receive a termination, even though its node is allocated unconditionally and is a
+    mandatory-barrier endpoint. When two tables model the same entity at different cardinalities, decide which one
+    the question is about before writing the lookup; reaching a required target *through* an optional table is the
+    defect. Declared at `M3-CP4c-3-TB9-REV`.
+
+82. **A reachability witness proves the name, not the branch.** `M3-CP4c-3-CB11` was required to demonstrate that
+    each surviving emission site is reachable, and did — but its witness for the port-ownership condition fires the
+    disjunct in which a port exists and owns a different vertex, which the production `VertexHit` path can never
+    reach because it derives the terminal vertex from the same `source_support()` the guard re-reads. When a typed
+    condition is a disjunction, the witness obligation is **per disjunct**: "reachable by some route" says nothing
+    about the route production takes.
+
+83. **Geometry locates a failure; only the source predicate adjudicates one.** Every edge of TB9's traced chain has
+    an exactly 90 degree dihedral, and "sharp implies barrier" is nonetheless false on that witness — v47 is
+    equally sharp and provably emits ports, because barrier edges are region-restricted
+    (`FieldTransportAtlas.cpp:962` requires both incident faces inside the region). Reconstructing a fixture is the
+    right tool for finding where a trace went and the wrong tool for deciding whether the product was correct.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

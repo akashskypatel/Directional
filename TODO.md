@@ -26,43 +26,61 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB9-REV` (Independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB12` (Code + Build, PRODUCT CORRECTION)
 
-`M3-CP4c-3-TB9` is **COMPLETE / VALID SEMANTIC RED / FIRST RED 366 / SITE DISCRIMINATED**. Report:
-`Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md`. Review scope:
-`Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` (**BC0–BC7**).
+`M3-CP4c-3-TB9-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` (**BC0–BC7** discharged, static only).
 
-Immutable TB9 authority: package **79** / semantic source `803300698289e0d0f629eaa878add1aebc7193c1`; TB9 run/job
-`33575920177 / 100079784804`; result artifact `9826689980`
-(`abea3172c6515bbf5b6fdede5abe96ae6086724299d014201ce3ff020016b68d`); log artifact `9826690247`
-(`c92be7d59ecfb963eb225099737ed99efcb169244bfaa4c9519a1a98967cd648`). Preflight/postflight PASS.
+TB9's ordinal-366 first red —
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`
+— is classified **BC2 category 1: a genuine product ownership defect on a valid mechanical witness**.
 
-Runtime result:
+- **Only one of the guard's three subconditions is reachable.** Both `VertexHit` constructions derive the terminal
+  vertex **from** `source_support()` (or invert its parameter mapping), and `field_aligned_singularity_at` matches
+  **by that same vertex** — so `vertexSupport` is never null and never disagrees with the port's vertex. Disjuncts
+  1 and 3 are dead by construction.
+- **A missing port means `BarrierAbsorbed`, and nothing else.** The port loop runs over **all** atlas singularities
+  with one `continue` on that policy, and `expectedValence ∈ [3,6]` is pre-enforced. On this closed witness that
+  means *singular ∧ barrier-incident*.
+- **The defect is a category error.** A **port** says where a trace may *originate*; a **node** says what it may
+  *terminate at*. The guard reaches the terminal node through `terminalPort->node` — a table the atlas
+  deliberately leaves empty for this policy — while the node is allocated **unconditionally** and the terminal
+  vertex is additionally a mandatory-barrier endpoint.
+- **The witness is ordinary.** From singular corner **v47** down the sharp box edge `(x = -1.4, z = -0.9)` through
+  regular vertices 45, 43, 41, 39 — every chain edge at an exactly **90.000000°** dihedral — terminating at
+  **v36**. v38 is excluded because its entire star is coplanar.
 
-- [x] ordinals **1–365 = 365/365 PASS**;
-- [x] ordinal **366** remains first red at `InvalidNetworkTerminalOwnership`, edge `36-38`, face `(36,38,39)`,
-      branch 2;
-- [x] the production condition is exactly **`SingularityTerminationPortOwnershipMismatch`**, selecting the
-      singularity-termination site and excluding the finalize/contact fall-through as this emitter;
-- [x] trace provenance is `traceSeedVertex=47`, `traceSeedSingularity=5`, five exact branch-2 history rows,
-      `traceHistoryTruncated=false`;
-- [x] the old misleading `publishedFaceCount` is gone; no `publishedFaces` token appears because the actual collection
-      is empty;
-- [x] report-only 367–375 = **2 PASS / 7 RED**, zero gate credit; 373 and 375 PASS; prior sphere/saturation/370/374
-      dispositions are unchanged;
-- [x] diagnostic identity **376 PASS**, zero gate credit, runtime-proving the CB11 production projection/discriminator.
+`M3-CP4c3-TB8-REV-CAND-01` is **CLOSED / RUNTIME PROVED**. New `M3-CP4c3-TB9-REV-CAND-01` is **ACTIVE**.
+`M3-CP4c3-TB6-CAND-01`, `M3-CP4c3-DEFN-R2-CAND-01` and `M3-CP4c3-TB7-CAND-02` remain **ACTIVE**. TB8-REV's
+`finalize_field_aligned_events` contact fall-through finding is **untouched and still open** — TB9 proves only that
+it is not the *first* mechanical failure, and CB12 must not repair it.
 
-`M3-CP4c3-TB8-REV-CAND-01` is **CLOSED / RUNTIME PROVED**. `M3-CP4c3-TB8-CAND-01` remains **ACTIVE / GATING**,
-now localized to the singularity-termination ownership site. TB9 does **not** prove which internal guard disjunct
-(support type, missing port, or source-vertex mismatch) is wrong; that is the review's first reconstruction task.
+**Two adversarial results worth carrying forward.** Geometric sharpness is **not** a proxy for the barrier set
+(v47 has three exactly-90° edges and provably emits ports; barriers are region-restricted at
+`FieldTransportAtlas.cpp:962`). And accepted ordinal **328**'s port-ownership witness is synthetic and fires
+**disjunct 3**, which production cannot reach — the accepted suite does not cover the production disjunct.
 
 ### Exact next turn
 
-Run independent **`M3-CP4c-3-TB9-REV`** under BC0–BC7, static only. Re-establish immutable evidence, reconstruct the
-seed-47/singularity-5 terminal state and candidate port authority, identify the exact failing guard disjunct, classify
-product/witness/residual-diagnostic ownership, preserve all independently owned report-only debt, reconcile
-regression/accounting state, update `ORIENTATION.md`, and freeze exactly one bounded successor. No runtime, build,
-product correction, fixture/selector mutation, or unchanged TB retry is authorized in the review.
+Run **`M3-CP4c-3-CB12`** under §8 **BD0–BD9** of
+`Architecture_M3_CP4c3_TB9_Independent_Review_Record.md`.
+
+- [ ] **BD0** — selectors 374/375/376 byte-frozen; accepted 365 untouched; **GMP/GMPXX linkage mandatory**.
+- [ ] **BD1** — own a `BarrierAbsorbed` termination with the singularity's **network node**; publish the same
+      `FirstContact` + `SingularityTermination` pair; leave the `Emit` port path unchanged.
+- [ ] **BD2** — carry `portPolicy` to the decision point; **do not** infer it from an empty port table.
+- [ ] **BD3** — keep `SingularityTerminationPortOwnershipMismatch` correct and reachable for `Emit` (accepted
+      ordinal 328 asserts it); add a fail-closed condition for a missing node.
+- [ ] **BD4** — add a **missing-port / `BarrierAbsorbed`** witness and a positive `Emit` witness; ordinal 328's
+      synthetic witness fires a disjunct production cannot reach.
+- [ ] **BD5** — prove on the mechanical fixture that the terminal vertex is **v36** and its singularity is
+      `BarrierAbsorbed`; report v36's node id and mandatory-barrier incidence.
+- [ ] **BD6** — append **selector 377** only on demonstrated falsification; republish 374/375/376 unchanged.
+- [ ] **BD7** — prohibitions: no barrier-termination conversion, no reordering of the `VertexHit` check, no
+      synthesized port, **no repair of the `finalize_field_aligned_events` contact fall-through**, no fixture
+      mutation, no tolerance or float-derived topological decision, no sphere/370/saturation/folded-cone correction.
+- [ ] **BD8** — audit by assumption; prove no accepted-green observable output changes.
+- [ ] **BD9** — publish the five `M3-CP4c-3-TB10` discriminators. **No vertex-30 discriminator.**
 
 Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **76**.
