@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB9` is the latest semantic RED, on immutable package **79** and execution selector **376**: 365/365 accepted prefix green, report-only 367-375 at 2 PASS / 7 RED, diagnostic 376 PASS. **CB11's diagnostic correction worked** - ordinal 366 now carries one typed condition plus full trace provenance, resolving TB8's proved two-site ambiguity, and `M3-CP4c3-TB8-REV-CAND-01` is CLOSED. The red is `networkErrorCondition=SingularityTerminationPortOwnershipMismatch;traceSeedVertex=47;traceSeedSingularity=5`. **`M3-CP4c-3-TB9-REV` classified it BC2 category 1 - a genuine product ownership defect on a valid witness.** Only one of the guard's three subconditions is reachable (both `VertexHit` constructions derive the terminal vertex from `source_support()`, which the guard re-reads), and a missing port means `portPolicy == BarrierAbsorbed` and nothing else. A **port** records where a trace may originate; the guard uses it to own an **arrival**, reaching the terminal node through `terminalPort->node` - while that node is allocated unconditionally. The trace runs from singular corner v47 down the sharp box edge through regular vertices 45, 43, 41, 39 and terminates at **v36**. Vertex 30 is still not reached. Selectors **374, 375 and 376 stay byte-frozen**; selector 377 is conditional on BD6. **NEXT:** `M3-CP4c-3-CB12` under BD0-BD9, a product correction - own a barrier-absorbed termination with the singularity's network node.)
+**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** TB9 is the latest measured runtime authority: package 79 / selector 376, accepted prefix 365/365, first red 366 at `SingularityTerminationPortOwnershipMismatch`, seed 47 / singularity 5. TB9-REV classified it as a valid product ownership defect. **CB12 is BUILD GREEN** on source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`: `BarrierAbsorbed` terminal arrivals now use the singularity network node, selector 377 adds the mechanical v36 regression, and immutable package **80** is frozen. No runtime has yet validated CB12. Vertex 30 and the separate finalize/contact fall-through remain open. **NEXT:** artifact-only `M3-CP4c-3-TB10` on package 80 / selector 377.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open, TB6 first-reds ordinal 366; CB8's stop was upheld and DEFN-R2 froze the vertex-star continuation semantics (Amendments 22–23) and proved the mechanical locus exactly, authorizing `CB9` |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB9 latest runtime red at 366; CB12 build-green on package 80 / selector 377; TB10 exact next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.

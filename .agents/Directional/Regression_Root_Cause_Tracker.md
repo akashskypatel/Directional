@@ -1,3 +1,20 @@
+## M3-CP4c3-CB12 — barrier-absorbed termination ownership correction — **COMPLETE / COMPILE-PROVED / RUNTIME UNPROVEN / NON-STABLE**
+
+- **Authority:** semantic/evidence source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`; compile run/job
+  `33581576670 / 100096794713`; immutable package **80** artifact `9828786744`. No Directional runtime executed.
+- **Correction:** `BarrierAbsorbed` terminal singularities now own arrivals through their already-created network node,
+  while `Emit` remains port-owned. Policy is explicit construction state rather than inferred from an empty port table.
+  Missing barrier node fails closed with `SingularityTerminationBarrierAbsorbedNodeMissing`; existing
+  `SingularityTerminationPortOwnershipMismatch` semantics remain for Emit.
+- **Regression authority:** selector **377** appends exactly
+  `ResolvedBranchCorrection.BarrierAbsorbedMechanicalTerminationUsesNetworkNodeWithoutPort`, SHA-256
+  `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`; selectors 374/375/376 remain frozen.
+- **Candidate disposition:** `M3-CP4c3-TB9-REV-CAND-01` remains **ACTIVE** until TB10 proves the accepted prefix,
+  absence of the old condition+seed at ordinal 366, and v36 network-node termination. No stable event is closed by
+  compilation alone.
+- **Accounting:** **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**; semantic packages
+  advance **76 → 77**. Exact next owner: artifact-only `M3-CP4c-3-TB10`.
+
 ## M3-CP4c3-TB9-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md`, measures **BC0-BC7** discharged. Static
@@ -48,9 +65,10 @@
 - **Invariant to restore.** Every singularity has exactly one network node and that node owns **every** trace
   terminating at its source vertex. A port constrains only a trace's **origin** and is never a precondition on an
   arrival. `BarrierAbsorbed` must still be able to receive terminations.
-- **Owner:** **BD1-BD5** of `M3-CP4c-3-CB12`.
+- **CB12 build status:** BD1–BD5 are implemented and compile-proved at source `a3b6f1a41feaa8a115faf11de52f85ce4cc42a15`; immutable package 80 is frozen. Runtime closure is not claimed.
+- **Owner:** artifact-only **`M3-CP4c-3-TB10`**, under the five BD9 discriminators.
 - **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
-  **44 / 14 / 30**, debt **5**, packages **76**.
+  **44 / 14 / 30**, debt **5**, packages **77**.
 
 ## M3-CP4c3-TB9 — artifact-only site discrimination — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 

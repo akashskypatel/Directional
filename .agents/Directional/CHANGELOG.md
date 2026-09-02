@@ -1,3 +1,33 @@
+## 2026-09-02 — `M3-CP4c-3-CB12`: barrier-absorbed termination ownership corrected; package 80 frozen for TB10
+
+Code + Build under TB9-REV **BD0–BD9**. Exact correction source
+`a3b6f1a41feaa8a115faf11de52f85ce4cc42a15` distinguishes a singularity port's **origin** role from the network
+node's **arrival** role: `BarrierAbsorbed` terminal singularities resolve their already-created node by support
+vertex, while `Emit` retains the existing port path. Policy is carried explicitly; empty ports are not a policy
+proxy. Existing `SingularityTerminationPortOwnershipMismatch` remains unchanged for Emit; missing barrier node has
+distinct fail-closed `SingularityTerminationBarrierAbsorbedNodeMissing`. The separate finalize/contact fall-through
+and every deferred sphere/370/saturation/folded-cone/vertex-30 correction remain untouched.
+
+A mechanical regression witness derives terminal **v36**, `BarrierAbsorbed` policy, its network node and mandatory-
+barrier incidence, covers the missing-node negative, and expects positive `SingularityTermination` at v36's node.
+Selector **377** appends that one identity to byte-frozen selector 376; SHA-256
+`7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`. Selectors 374/375/376 remain respectively
+`d496ce96…c503c4f`, `aa7b22bb…06a8f3a0`, `6ab2d9fa…6234bfa5e8`.
+
+Mandatory compile run/job **`33581576670 / 100096794713`** passed all eight targets on exact source with
+GMP/GMPXX and `runtimeExecution=false`; result/log artifacts **`9828721201 / 9828721582`**, SHA-256
+`53b40433f2b63c551d07ee5fdf7dd9a67c278825b7c3f8b2a1aa0ca1b9194155 / 680cbf8ec5b8632b1fcf0802c746fe87fe5a0d1d5407606bc78cce248faf4e0f`. Runtime-free package run/job
+**`33582280392 / 100098880900`** consumed that raw compile artifact without replacement compilation and produced
+immutable package **80** artifact **`9828786744`** SHA-256
+`f4643d0535684f81de5afc9660ef40f2ffb941d1c540b91026225681314fe20e`; package log `9828787020` SHA-256
+`c48c699d6422c4e8504a4b4708f73fb23bbbfc9e85b9d6a22fac1bdedfaf42f2`; inner tar
+`4e8303489adb46528ae0a92c7ecf9dae65f0cbd57527740d845d318c65af02ce`; source archive
+`026a8b1efa2dc85fe2b474e0e64657bf8f997aee5b49f274c7c0c69d279fd18a`.
+
+CB12 is build-complete, not accepted runtime. Authority remains **365/365**, CP4c-3 OPEN, stable **44 / 14 / 30**,
+debt **5**, semantic package count **77**. `M3-CP4c3-TB9-REV-CAND-01` remains ACTIVE pending the frozen TB10
+discriminators. Exact next: artifact-only **`M3-CP4c-3-TB10`** on package 80 / selector 377 from ordinal 1.
+
 ## 2026-09-02 — `M3-CP4c-3-TB9-REV`: ordinal 366 classified as a product ownership defect; `M3-CP4c-3-CB12` frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md`, measures **BC0–BC7**.
