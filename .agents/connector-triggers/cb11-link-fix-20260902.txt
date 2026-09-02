@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-CB11 repair compile-time diagnostic seam linkage
+base_sha=d8eb6332e10804bd847d3b10911efbcb75c39688
+patch_sha256=71e20f17ce54d0670a1393ab6327847e8aee4a715de5cca6914371f2d4c38632
+retry=1
