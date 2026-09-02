@@ -1,3 +1,19 @@
+## M3-CP4c3-CB11 — diagnostic production-projection correction — **COMPLETE / COMPILE-PROVED / NON-STABLE**
+
+- **Authority:** final semantic/evidence source `803300698289e0d0f629eaa878add1aebc7193c1`; compile run/job
+  `33573956609 / 100073749252`; immutable package 79 artifact `9826005253`. No Directional runtime executed.
+- **Correction:** the production failure DTO/renderer now preserves the trace-scoped diagnostic group, exact values,
+  published edge/face authority, and a typed condition distinguishing all twelve `InvalidNetworkTerminalOwnership`
+  emission conditions. Bounded trace history has explicit count/truncation state. Ordinal 329 now covers the
+  production projection, and diagnostic identity 376 targets the production failure path.
+- **No semantic fix:** CB11 does not change `field_aligned_first_trace_contact`, finalization control flow, ownership,
+  port policy, barrier derivation, fixture bytes, or acceptance semantics. The `terminalContact` fall-through remains
+  present for TB9 to discriminate.
+- **Disposition:** `M3-CP4c3-TB8-REV-CAND-01` closes at implementation/build scope. Runtime proof of the new projection
+  is deferred to TB9 identity 376. `M3-CP4c3-TB8-CAND-01` remains active/gating until ordinal 366 names one site.
+- **Accounting:** no runtime event and no accepted-green loss; **+0 events / +0 recurrences**. Totals remain
+  **44 / 14 / 30**, debt **5**, semantic packages **76**.
+
 ## M3-CP4c3-TB8-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md`, measures **BA0-BA7** discharged. Static only:
@@ -33,28 +49,22 @@
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
   remain **44 / 14 / 30**, debt **5**, packages **75**.
 
-## M3-CP4c3-TB8-REV-CAND-01 - the trace-scoped diagnostics have no production reader, and the identity that asserts losslessness tests the wrong renderer - **ACTIVE / STATIC / NON-STABLE**
+## M3-CP4c3-TB8-REV-CAND-01 - trace-scoped diagnostics were dropped by production projection and the losslessness identity targeted the wrong renderer - **CLOSED / COMPILE-PROVED / NON-STABLE**
 
-- **Declared at `M3-CP4c-3-TB8-REV`** from static derivation; no runtime executed.
-- **Two defects on one path.**
-  1. `SurfaceCellFailureLocusDiagnostics` declares a field for **none** of `traceSeedVertex`,
-     `traceSeedSingularity`, `traceHistory`, `traceSteps`, `traceStepBudget`, `traceCombinatorialVisits`,
-     `traceCombinatorialVisitAllowance`, `singularity`, `rail`, `relatedSourceFace`, `relatedBranch`, `signedLift`,
-     `parameter`, `exactValues` or `publishedEdges`, and `RemeshPipeline.cpp` reads none of them. The complete
-     reader set is `tests/FieldAlignedCurveNetworkTests.cpp:4808-4834` (the **test-local** `network_error_locus`)
-     plus assertions in ordinals 328/329.
-  2. Accepted ordinal **329** `NetworkDiagnosticsPublishEveryRequiredLocusLosslessly`
-     (`tests/FieldAlignedCurveNetworkTests.cpp:9127+`) constructs `FieldAlignedCurveNetworkError` values by hand and
-     asserts tokens against that same test-local renderer. It never executes `network_failure_locus`, never
-     populates a `SurfaceCellFailureLocusDiagnostics`, and never calls `append_cp4c_failure_locus`. **The
-     losslessness guarantee has never been enforced on the production path.**
-- **Why it matters as a class.** Fourth consecutive turn in which a measurement was ordered, built and discarded at
-  a stage boundary - AS1, AU1/AU3, AY7, now the trace-scoped group. AZ5 required the consumer set to be found *by
-  search against a predicate*, and it was - for the fields AY7 named. The predicate must instead be **every field of
-  the error DTO with no projected counterpart**. `LESSONS.md` section 4 lesson 78.
-- **Owner:** **BB1-BB5** of `M3-CP4c-3-CB11`.
-- **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
-  debt **5**, packages **75**.
+- **Declared at `M3-CP4c-3-TB8-REV`; corrected by `M3-CP4c-3-CB11`.** The review proved that the trace-scoped
+  `FieldAlignedCurveNetworkError` fields had no production DTO counterpart/reader and that accepted ordinal 329
+  asserted only against the test-local `network_error_locus`.
+- **CB11 correction:** `SurfaceCellFailureLocusDiagnostics`, `network_failure_locus`, and
+  `append_cp4c_failure_locus` now preserve/render the missing trace-scoped fields, exact values, `publishedEdges`,
+  and honest `publishedFaces`; all twelve terminal-ownership emission conditions carry a typed condition. The
+  production-path losslessness identity and two surviving-site witnesses compile in the authoritative test targets.
+- **Build proof:** exact source `803300698289e0d0f629eaa878add1aebc7193c1` compiled all required targets with
+  GMP/GMPXX in run/job `33573956609 / 100073749252`. Package 79 preserves selector 376 and the production binaries.
+- **Runtime boundary:** this closes the implementation/projection defect, not its runtime exercise. Identity 376 must
+  execute artifact-only in TB9. Any missing/ambiguous production site discriminator there reopens this candidate as
+  runtime falsification rather than licensing an inference.
+- **Accounting:** correction on an unaccepted surface and no runtime in CB11. **+0 events / +0 recurrences**; totals
+  remain **44 / 14 / 30**, debt **5**, packages **76**.
 
 ## M3-CP4c3-TB8 — artifact-only semantic disposition — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
@@ -95,9 +105,9 @@
 - **What is still not proved, and why it cannot be from this artifact.** Which of the two fired. They emit the same
   code with the same three populated fields and the same three absent ones, and every field that would separate
   them is dropped at the pipeline projection - see `M3-CP4c3-TB8-REV-CAND-01`.
-- **Owner:** re-owned to **`M3-CP4c-3-CB11`** (BB0-BB9, diagnostic-only), then to `M3-CP4c-3-TB9-REV` for the
-  product correction once TB9 names the site. **No product correction is authorized before then**, and CB11 must
-  **not** repair the `terminalContact` fall-through it is ordered to diagnose.
+- **Owner:** **`M3-CP4c-3-TB9`** now owns runtime site discrimination on immutable package 79; then
+  `M3-CP4c-3-TB9-REV` owns any product-correction plan once TB9 names the site. **No product correction is authorized
+  before then.**
 - **Accounting:** gating on an unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain
   **44 / 14 / 30**, debt **5**, packages **75**.
 

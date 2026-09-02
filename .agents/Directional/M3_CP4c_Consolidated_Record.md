@@ -2,23 +2,17 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-01).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED /
-ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. `M3-CP4c-3-TB8` is COMPLETE / valid semantic RED against
-immutable package **78** from source `e2b59295c9920db5685239c2da188858839fa94f`: ordinals **1-365 PASS**, ordinal
-**366** first-reds at
-`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`; report-only
-367-374 is **1 PASS / 7 RED**; diagnostic 375 PASSes separately. **`M3-CP4c-3-TB8-REV` has adjudicated that red as
-BA2 category 3 - diagnostic insufficiency over a proved two-element candidate set.** Ten of the twelve emission
-sites of that typed code are eliminated by proof; the two survivors (`SurfaceCellTracing.cpp:1900` and `:3920`) have
-different owners and emit the identical rendered locus, because every discriminating field of
-`FieldAlignedCurveNetworkError` - `traceSeedVertex`, `traceSeedSingularity`, `traceHistory`, `traceSteps`,
-`singularity`, `rail`, `relatedSourceFace`, `relatedBranch`, `parameter`, `exactValues`, ... - has no field in
-`SurfaceCellFailureLocusDiagnostics` and no reader in `RemeshPipeline.cpp`. `M3-CP4c3-TB7-CAND-01` and
-`M3-CP4c3-TB7-REV-CAND-01` are **CLOSED**; vertex 30 is still not reached. Exact next is
-**`M3-CP4c-3-CB11`** - Code + Build, **diagnostic-only**, under **BB0-BB9**. Accepted authority remains **365/365**.
-Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**, authoritative semantic M3 package count
-**75**.
-
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED /
+ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. TB8 remains current measured runtime authority: immutable
+package 78 re-proved **1–365 PASS** and ordinal **366** first-reds at
+`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`; TB8-REV proved
+exactly two possible emission sites and classified the ambiguity as diagnostic insufficiency. **`M3-CP4c-3-CB11` is
+COMPLETE / BUILD GREEN / diagnostic-only** at semantic source `803300698289e0d0f629eaa878add1aebc7193c1`: the
+production failure projection now preserves typed site condition, trace provenance, exact values, and honest
+published-face authority; selector **376** is append-only diagnostic authority. Immutable package **79** artifact
+`9826005253` is frozen for TB9. Exact next is **`M3-CP4c-3-TB9`**, artifact-only on selector 376 from ordinal 1.
+Accepted authority remains **365/365**. Stable accounting remains **44 / 14 / 30**, produced-witness debt **5**,
+authoritative semantic M3 package count **76**.
 ## 1. Separate current/future authority
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
@@ -44,11 +38,13 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB8 execution authority for package 78.
 - `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — **current measured runtime authority**: 365 green, first red ordinal 366 at terminal ownership, complete remainder and diagnostic 375.
 - `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` - discharged review scope, BA0-BA7.
-- `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - **exact next-turn authority**: the BA0-BA7
-  adjudication and the frozen `M3-CP4c-3-CB11` successor, section 8 **BB0-BB9**.
+- `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - completed BA0-BA7 adjudication and the BB0-BB9 scope that governed CB11.
+- `Architecture_M3_CP4c3_CB11_Code_Build_Report.md` - **current build/package authority**: source `803300…`, package 79, diagnostic-only BB0-BB9 discharge.
+- `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md` - **exact next-turn authority** for package 79 / selector 376.
 - `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` - diagnostic selector, 375 identities,
   `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0`; selector 374 plus exactly one appended line.
-- `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — append-only **diagnostic** selector; selector 374 is its unchanged byte prefix and remains the gate.
+- `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — frozen append-only diagnostic selector; selector 374 is its unchanged byte prefix.
+- `Architecture_M3_CP4c3_Required_Green_Selector_376.txt` — current append-only execution selector for TB9; identity 376 is zero-credit diagnostic authority and selector 375 is its unchanged byte prefix.
 - `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — current compile/package evidence.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB2 execution/retry authority.
 - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — current TB2 blocker/postflight authority.
@@ -94,6 +90,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-3 selector 373** | **`b47c269851fad1384b5dc9baaf674b3d4ad80ec6c2b40f7f8eda2055c6f44834`** |
 | **CP4c-3 selector 374 (gate)** | **`d496ce96b3776269cda8086a0a2173ce9a1f9967d81b2a80866266155c503c4f`** |
 | CP4c-3 selector 375 (diagnostic) | `aa7b22bb265f321fad6f85128e572e0251dc5f60d68856ca7ec4323006a8f3a0` |
+| **CP4c-3 selector 376 (TB9 execution / identity 376 diagnostic)** | **`6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`** |
 
 ## 2. Checkpoint closure record
 
@@ -103,7 +100,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; TB8 re-proved 365/365 and cleared the vertex-11 seed defect. TB8-REV classified the ordinal-366 `InvalidNetworkTerminalOwnership` red as diagnostic insufficiency over two proved candidate sites. Exact next is `M3-CP4c-3-CB11`, diagnostic-only under BB0-BB9.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. CB11 is build-green on source `803300…`, package 79 is frozen, and selector 376 supplies typed terminal-ownership site discrimination. Exact next is artifact-only `M3-CP4c-3-TB9`.** |
 
 ### 2.1 CP4c-0
 
@@ -200,8 +197,33 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
 `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
-`Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md`; current exact next-turn authority is
-`Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`.
+`Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
+`Architecture_M3_CP4c3_CB11_Code_Build_Report.md`; exact next-turn authority is
+`Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md`.
+
+### `M3-CP4c-3-CB11` — current build/package boundary
+
+CB11 executed TB8-REV **BB0–BB9** diagnostic-only. Final semantic/evidence source
+`803300698289e0d0f629eaa878add1aebc7193c1` carries the trace-scoped network-error group, exact values,
+published-edge/face authority, and a typed discriminator for all twelve `InvalidNetworkTerminalOwnership` emission
+conditions through the production failure DTO/renderer. It also moves ordinal 329's losslessness guarantee to the
+production projection and adds witnesses for both statically surviving ownership sites. The `terminalContact`
+fall-through is diagnosed but deliberately unchanged.
+
+Selector 374 and 375 hashes remain byte-frozen. Selector **376** is selector 375 plus exactly one diagnostic identity,
+`ResolvedBranchCorrection.NetworkTerminalOwnershipConditionsSurviveProductionFailureProjection`, SHA-256
+`6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`.
+
+The first compile exposed an anonymous-namespace linkage defect in the diagnostic wrapper; a one-site linkage-only
+correction produced final source `803300…`. Authoritative compile run/job `33573956609 / 100073749252` passed all
+eight required targets with GMP/GMPXX and no runtime. Result/log artifacts are `9825961944 / 9825962219`.
+Runtime-free package run/job `33574167362 / 100074416093` froze immutable package **79**, artifact `9826005253`, inner
+tar `dfc197b50ea5b9b88468aa00665470af5aa0e2959de9c380fcd6aebdb978ec99`, packaged source
+`61107e4fc90368793ebe97c3581cea6cb301effc74c6f39cc3259316066aa0f6`.
+
+No acceptance changes in CB11: authority stays **365/365**, CP4c-3 OPEN, stable totals **44 / 14 / 30**, debt **5**,
+semantic packages **76**. `M3-CP4c3-TB8-REV-CAND-01` closes at implementation/build scope;
+`M3-CP4c3-TB8-CAND-01` remains active until TB9 names the firing site.
 
 ### `M3-CP4c-3-TB8` — current runtime boundary
 
@@ -602,24 +624,20 @@ The CB1 report's exact bytes remain recoverable from Git history and no current/
 
 After the durable start-of-turn checklist, load:
 
-1. `ORIENTATION.md` — read first and update during the REVIEW.
+1. `ORIENTATION.md` — read first.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - **exact next-turn BB0-BB9 authority.**
-5. `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority.**
-6. `Architecture_M3_CP4c3_CB10_Code_Build_Report.md`
-7. `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — AZ0–AZ9 prior cause/corrective authority.
-8. `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — Amendments 22 and 23.
-9. `Architecture_M3_CP4c3_Required_Green_Selector_374.txt`
-10. `Regression_Root_Cause_Tracker.md`
-11. this consolidated record only when historical lineage is needed.
+4. `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md` — **exact next-turn execution authority.**
+5. `Architecture_M3_CP4c3_CB11_Code_Build_Report.md` — source/compile/package authority for package 79.
+6. `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — current measured runtime authority.
+7. `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` — BB9 discriminator and no-correction authority.
+8. `Architecture_M3_CP4c3_Required_Green_Selector_376.txt`
+9. `Regression_Root_Cause_Tracker.md`
+10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB11` - Code + Build, DIAGNOSTIC-ONLY.** Follow section 8 **BB0-BB9** of
-`Architecture_M3_CP4c3_TB8_Independent_Review_Record.md`. Carry the trace-scoped fields of
-`FieldAlignedCurveNetworkError` into `SurfaceCellFailureLocusDiagnostics` / `network_failure_locus` and render them
-in `append_cp4c_failure_locus`; add a typed per-site discriminator **as a field**, never by splitting the
-`InvalidNetworkTerminalOwnership` enum value, which accepted ordinal 328 asserts; make `publishedFaces` honest;
-re-aim accepted ordinal 329's losslessness guarantee at the production renderer. **Diagnose the `terminalContact`
-fall-through in `finalize_field_aligned_events` and do not repair it.** Selectors 374 and 375 stay byte-frozen;
-append selector 376 only on demonstrated falsification. GMP/GMPXX linkage is mandatory. **No product correction is
-authorized until `M3-CP4c-3-TB9` names the site.**
+**Exact next:** **`M3-CP4c-3-TB9` — artifact-only Test + Benchmark** against immutable package **79**, artifact
+`9826005253`, semantic source `803300698289e0d0f629eaa878add1aebc7193c1`, selector 376 from ordinal 1. Re-prove
+accepted ordinals 1–365; at ordinal 366 require the frozen coarse terminal-ownership locus plus exactly one typed
+survivor-site condition, trace provenance, and honest published-face observation; then execute the authorized
+zero-credit remainder and diagnostic identity 376 and complete immutable postflight. **No product correction is
+authorized in TB9.** A valid result routes to independent `M3-CP4c-3-TB9-REV`.

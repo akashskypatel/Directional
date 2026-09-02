@@ -92,86 +92,78 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB11` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB9` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
 
-`M3-CP4c-3-TB8-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` (measures **BA0–BA7** discharged, static only).
+`M3-CP4c-3-CB11` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Report:
+`Architecture_M3_CP4c3_CB11_Code_Build_Report.md`.
 
-### What the review established
+### CB11 authority now frozen
 
-TB8's first red at ordinal 366 —
-`InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0` — is classified
-**BA2 category 3, diagnostic insufficiency, over a proved two-element candidate set**.
+- Final semantic/evidence source: **`803300698289e0d0f629eaa878add1aebc7193c1`**.
+- Authoritative compile run/job: **`33573956609 / 100073749252`**.
+- Compile result artifact: **`9825961944`**, Actions SHA-256
+  `d3e8a50d880e4f8f5179718b7c91288a50b6755e8ec0d6d94e29c3da1ead3b99`.
+- Immutable package **79** run/job: **`33574167362 / 100074416093`**.
+- Package artifact: **`9826005253`**, Actions SHA-256
+  `1f9c6e1d098a08eb375d415f2724185043de1c1d5d08cdce46cc716d57e3fa8a`.
+- Inner `package79.tar.gz`: `dfc197b50ea5b9b88468aa00665470af5aa0e2959de9c380fcd6aebdb978ec99`.
+- Packaged source archive: `61107e4fc90368793ebe97c3581cea6cb301effc74c6f39cc3259316066aa0f6`.
+- Selector 374 remains frozen at `d496ce96…c503c4f`; selector 375 remains frozen at `aa7b22bb…06a8f3a0`.
+- Selector **376** is the append-only execution authority, SHA-256
+  **`6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`**, with selector 375 as its unchanged
+  375-line byte prefix.
+- CB11 added typed condition and trace-scoped production projection only. The `terminalContact` fall-through was
+  **not repaired**; no tracing/election/ownership/termination decision was changed.
+- No Directional runtime was executed in CB11. Current measured runtime authority therefore remains
+  `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md`.
 
-- **Ten of twelve emission sites eliminated.** Eight cannot populate `sourceEdge` + `sourceFace` + `branch`
-  together; `:3132` and `:3879` require the edge to be a `terminalBarrier`, and edge `36-38` has an **exactly 0°
-  dihedral** between two identical-normal faces inside a 50-face coplanar patch at `x = -1.4`, so it is not a hard
-  feature edge and can never be one.
-- **Two survivors with different owners.** `SurfaceCellTracing.cpp:1900` (singularity-termination port ownership;
-  live disjunct is a `BarrierAbsorbed` singularity contributing no ports) and `:3920` (the
-  `finalize_field_aligned_events` fall-through — `terminalContact` is **never read** in `:3745-3935`, and
-  `field_aligned_first_trace_contact` can never match trace index 0). **They emit the identical rendered locus.**
-- **The discriminator is destroyed at the pipeline boundary.** `SurfaceCellFailureLocusDiagnostics` has no field for
-  `traceSeedVertex`, `traceSeedSingularity`, `traceHistory`, `traceSteps`, `traceStepBudget`,
-  `traceCombinatorialVisits`, `traceCombinatorialVisitAllowance`, `singularity`, `rail`, `relatedSourceFace`,
-  `relatedBranch`, `signedLift`, `parameter`, `exactValues` or `publishedEdges`; `RemeshPipeline.cpp` reads none.
-- **Accepted ordinal 329's losslessness guarantee tests the wrong renderer** — it asserts against the test-local
-  `network_error_locus`, never against `network_failure_locus` / `append_cp4c_failure_locus`. **No identity in
-  selector 375 exercises the production projection.**
-- `M3-CP4c3-TB7-CAND-01` **CLOSED**. `M3-CP4c3-TB7-REV-CAND-01` **CLOSED**, verdict confirmed but its evidentiary
-  basis corrected (the reader CB10 added is the evidence, not identities 328/329/375, which are all unit-level).
-- New candidate `M3-CP4c3-TB8-REV-CAND-01` opened. `M3-CP4c3-TB6-CAND-01`, `M3-CP4c3-DEFN-R2-CAND-01` and
-  `M3-CP4c3-TB7-CAND-02` remain **ACTIVE**. Vertex 30 is still not reached.
+`M3-CP4c3-TB8-REV-CAND-01` is closed at the implementation/build boundary. `M3-CP4c3-TB8-CAND-01` remains
+**ACTIVE / GATING** until TB9 names which of the two proved ownership sites fires.
 
-### CB11 binding scope — `BB0–BB9`, in the review record §8
+### TB9 binding execution authority
 
-**Diagnostic-only.** No product decision, election, tolerance, or change to which traces succeed or fail.
+Use `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md` exactly. Artifact-only means no checkout-based
+rebuild, configure, compile, relink, package repair, generated discovery, source/test/fixture/selector mutation, or
+benchmark execution.
 
-- **BB0** — selectors **374** (`d496ce96…c503c4f`) and **375** (`aa7b22bb…06a8f3a0`) stay **byte-frozen**; accepted
-  365 untouched; **GMP/GMPXX linkage mandatory for every compile**.
-- **BB1** — project the trace-scoped fields into `SurfaceCellFailureLocusDiagnostics` / `network_failure_locus` and
-  render them in `append_cp4c_failure_locus`, including a **bounded** `traceHistory` with an explicit truncation
-  marker. Exact values stay exact reduced strings; no float in the locus.
-- **BB2** — add a typed **per-site discriminator field**; the `InvalidNetworkTerminalOwnership` enum value **must not
-  be split or renamed**, because accepted ordinal 328 asserts it (`tests/…:9408`).
-- **BB3** — make `publishedFaces` honest: populate it or remove it. It is currently declared and never assigned.
-- **BB4** — find consumers **by search against a predicate** (every error field with no projected counterpart), name
-  one the measure did not name, and re-aim ordinal 329's guarantee at the production path. Closes
-  `M3-CP4c3-TB8-REV-CAND-01`.
-- **BB5** — demonstrate reachability of both surviving sites through the **production** renderer.
-- **BB6** — append **selector 376** only on demonstrated falsification; republish 374/375 with unchanged SHA-256.
-- **BB7** — prohibitions, including: **CB11 must diagnose the `terminalContact` fall-through and must not repair
-  it**; no change to `field_aligned_first_trace_contact`, `finalize_field_aligned_events` control flow, port policy
-  or barrier derivation; no fixture mutation; no sphere/370/saturation/folded-cone correction; no acceptance claim.
-- **BB8** — audit by assumption; prove no accepted-green identity's observable output changes.
-- **BB9** — publish the five expected `M3-CP4c-3-TB9` discriminators before the TB runs.
+Execute selector **376 from ordinal 1**, one exact identity per fresh process, with truthful first-red gate accounting.
+The five mandatory BB9 discriminators are:
 
-**No product correction is authorized until TB9 names the site.** Successor after CB11 is artifact-only
-`M3-CP4c-3-TB9` on selector 376 from ordinal 1, then independent `M3-CP4c-3-TB9-REV`.
+1. ordinals **1–365 remain 365/365 PASS**;
+2. if ordinal 366 remains red, its coarse locus remains `InvalidNetworkTerminalOwnership` at edge `36-38`, faces
+   `36,38,39`, branch `2`;
+3. the same production-rendered line names **exactly one** of the singularity-port ownership site or the
+   finalize/contact fall-through site via the typed condition;
+4. it carries `traceSeedVertex`, `traceSeedSingularity`, and bounded `traceHistory` sufficient to identify the source
+   path, including explicit truncation state when applicable;
+5. `publishedFaceCount` is now a real populated observation; zero is acceptable only when the actual published-face
+   set is empty.
 
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **75**.
+After the first red, execute the authorized remainder through 375 report-only with zero gate credit and execute
+identity 376 once with zero gate credit. Complete immutable postflight and the regression-tracker gate before closeout.
+**TB9 may not correct product behavior.** A valid result routes to mandatory independent `M3-CP4c-3-TB9-REV`.
+
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 / 14 / 30**,
+produced-witness debt **5**, semantic M3 package count **76**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent CODE + BUILD guidance
+- turn-based-coding-agent TEST + BENCHMARK guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` — **frozen CB11 scope, §8 BB0–BB9**.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB10_Code_Build_Report.md` — package-78 implementation authority.
-4. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md` — **frozen TB9 execution authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB11_Code_Build_Report.md` — exact source/compile/package authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — current measured runtime baseline.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` — BB9 expected discriminators and
+   no-correction authority.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
    `M3_CP4c_Consolidated_Record.md`.
 
-Source surfaces CB11 will touch: `include/directional/diagnostics/RemeshDiagnostics.h`,
-`include/directional/geometry/SurfaceCellTracing.h`, `src/geometry/SurfaceCellTracing.cpp` (diagnostic annotation
-only), `src/pipeline/RemeshPipeline.cpp::network_failure_locus`, and
-`tests/FieldAlignedCurveNetworkTests.cpp::append_cp4c_failure_locus` plus identities 328/329.
-
+Do not preload implementation source unless TB9 evidence requires diagnosis after execution; the artifact-only plan
+and immutable package are the execution authority.
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
 **The lessons formerly listed here now live in `.agents/Directional/LESSONS.md`,** by explicit user

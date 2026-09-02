@@ -1,3 +1,39 @@
+## 2026-09-02 — `M3-CP4c-3-CB11`: terminal-ownership diagnostics projected; package 79 frozen for TB9
+
+Code + Build only under `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` **BB0–BB9**, diagnostic-only.
+Final semantic/evidence source **`803300698289e0d0f629eaa878add1aebc7193c1`**. No Directional runtime, test gate,
+benchmark, `ctest`, generated discovery, or custom runtime input executed.
+
+CB11 adds a typed per-site `FieldAlignedCurveNetworkErrorCondition` for all twelve
+`InvalidNetworkTerminalOwnership` emission conditions while preserving the existing error enum; carries the complete
+trace-scoped diagnostic group plus exact values and published-edge/face authority through
+`SurfaceCellFailureLocusDiagnostics` / `network_failure_locus` / `append_cp4c_failure_locus`; bounds `traceHistory`
+at eight entries with count/truncation state; makes `publishedFaces` honest; re-aims ordinal 329 at the production
+projection; and adds production-renderer witnesses for both statically surviving sites. The
+`terminalContact` fall-through is deliberately **not repaired** and no tracing/election/ownership/termination decision
+changes.
+
+Selector 374 remains `d496ce96…c503c4f`; selector 375 remains `aa7b22bb…06a8f3a0`. Append-only selector **376** is
+`6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`; identity 376 is
+`ResolvedBranchCorrection.NetworkTerminalOwnershipConditionsSurviveProductionFailureProjection` and is zero-credit
+diagnostic authority.
+
+The first compile (`33573114762 / 100071187094`) exposed one compile-time-only linkage defect: the diagnostic wrapper
+was defined inside an anonymous namespace. The smallest follow-up commit moved that definition to external linkage
+without changing its body. Authoritative retry `33573956609 / 100073749252` then compiled all eight required targets
+with GMP/GMPXX and `runtimeExecution=false`. Result artifact `9825961944`
+(`d3e8a50d880e4f8f5179718b7c91288a50b6755e8ec0d6d94e29c3da1ead3b99`); log artifact `9825962219`
+(`8f2e44d981900265836e8fc139cc1327b8169e139d94ac7f38e82f3937a0a0b3`).
+
+Immutable package **79** was produced runtime-free in `33574167362 / 100074416093`: artifact `9826005253`
+(`1f9c6e1d098a08eb375d415f2724185043de1c1d5d08cdce46cc716d57e3fa8a`), inner tar
+`dfc197b50ea5b9b88468aa00665470af5aa0e2959de9c380fcd6aebdb978ec99`, packaged source
+`61107e4fc90368793ebe97c3581cea6cb301effc74c6f39cc3259316066aa0f6`. Accepted authority remains **365/365**;
+CP4c-3 remains **OPEN**; stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **76**.
+
+Exact successor: artifact-only **`M3-CP4c-3-TB9`** on package 79, selector 376 from ordinal 1, followed by mandatory
+independent `M3-CP4c-3-TB9-REV`. No product correction is authorized before TB9 names the site.
+
 ## 2026-09-01 — `M3-CP4c-3-TB8-REV`: ordinal 366 classified as diagnostic insufficiency; `M3-CP4c-3-CB11` frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md`, measures **BA0–BA7**. Record:
