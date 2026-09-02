@@ -25,7 +25,7 @@ jobs:
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
       file_id: 1BLF0KoWvmaXNF1S-qDboh8PaRClNWawG
-      patch_sha256: 39b9dcfc873ce00373566a6cec4cc41c753c24e145c09a55ddf0b375593d0a81
+      patch_sha256: 7b9ba3dee25a182c12e7c84df81aba7dc2d6ac28d403aeee31cb631870bc8c21
       base_sha: ab0501de362c3518f1f040015f19b64c179aa007
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
       commit_message: "M3-CP4c-3-CB15: fix GlobalTopologyArc test construction"
