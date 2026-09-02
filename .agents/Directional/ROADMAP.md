@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** `M3-CP4c-3-CB13` is COMPLETE / BUILD GREEN / diagnostic-only on exact source `3070173894ee097f631b96c1c6d29f276df89a66`. Immutable package **81** is ready for artifact-only TB11; selector **377** remains byte-frozen. CB13 typed every reasonless `RotationSystemInconsistent` producer under BF1, carried the missing mapper/projection/certification-attempt diagnostics to ordinal 366's existing message, and changed no topology decision. **NEXT:** `M3-CP4c-3-TB11` on package 81, selector 377 from ordinal 1 plus one non-gating diagnostic identity. Accepted authority stays **365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic packages **78**.)
+**Status date:** 2026-09-02 (**CP4c-2 CLOSED / ACCEPTED 365/365; CP4c-3 OPEN. TB11 is current runtime authority on immutable package 81: 369 PASS / 8 RED, accepted prefix 365, first red 366 at `RotationRayOrderKeyCollision`, source vertex 47, initial certification. NEXT: independent `M3-CP4c-3-TB11-REV` under BG0–BG7. Stable accounting 44 / 14 / 30, debt 5, packages 78.**)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; CB13 diagnostic build/package 81 complete; TB11 exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB11 localized first red to vertex-47 `RotationRayOrderKeyCollision`; TB11-REV exact next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; append-only execution selector 377** | **OPEN.** CB13 diagnostic-only build is green and immutable package **81** is ready. **NEXT:** artifact-only `M3-CP4c-3-TB11`; ordinal 366 must name the newly typed rotation-system condition without moving the accepted prefix or first-red ordinal. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; append-only execution selector 377** | **OPEN.** TB11 is current runtime authority: 369 PASS / 8 RED; first red 366 is `RotationRayOrderKeyCollision` at source vertex 47 / cert attempt 0. **NEXT:** independent `M3-CP4c-3-TB11-REV`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

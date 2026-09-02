@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. TB10 remains the latest runtime authority (package 80 / selector 377, accepted **365/365**, first red 366 at `surface-cut-graph/CellularityNotEstablished/origin=RotationSystemInconsistent`). `M3-CP4c-3-TB10-REV` proved that exact cause unreadable and froze diagnostic-only BF0–BF9. **CB13 is now COMPLETE / BUILD GREEN** on exact compile/package source `3070173894ee097f631b96c1c6d29f276df89a66`: it reconciled the 46-site review census with the actual 37-site missing-reason predicate, typed those 37 plus eight same-code sites in `GlobalTopologyPlan.cpp` (**45 sites / 53 condition names**), carried source vertex/reason/trace/event/cut-attempt/certification-attempt evidence to ordinal 366's existing failure message, and changed no topology decision or selector byte. Compile run/job `33598896270 / 100148036281` is green with GMP/GMPXX and no runtime. Immutable package **81** is artifact `9834661539` (Actions SHA `10e18bc81c2f850a1e7bc3d4ce16830a5d5ebe7d1992cd728c1bb043dc71cb2f`, inner tar `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`). **Exact next:** artifact-only `M3-CP4c-3-TB11` on selector 377 from ordinal 1 plus the non-gating mechanical diagnostic identity. Accepted authority remains **365/365**; stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **78**.
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB11 is the latest runtime authority** on immutable package **81** / selector **377**: 369 PASS / 8 RED, accepted **365/365**, first red ordinal 366. CB13's diagnostics now expose `RotationRayOrderKeyCollision` at `sourceVertex=47`, `certificationAttempt=0`, `certificationCutEdges=0`; package source localizes it to post-sort trace-key collision validation in `build_rotation_system`, before final CCW rotation publication. TB11 run/job `33611378451 / 100187075757`; result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`), log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`). `M3-CP4c3-TB10-CAND-01` is closed as runtime-discriminated; `M3-CP4c3-TB11-CAND-01` is active/root-cause-unadjudicated. **Exact next:** independent `M3-CP4c-3-TB11-REV` under BG0–BG7. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **78**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -199,7 +199,11 @@ This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.
 `Architecture_M3_CP4c3_CB12_Code_Build_Report.md`; exact next-turn authority is
 `Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md`.
 
-### `M3-CP4c-3-TB10` — current measured runtime boundary
+### `M3-CP4c-3-TB11` — current measured runtime boundary
+
+Artifact-only TB11 consumed package **81** / selector **377** with no rebuild or repair. Run/job `33611378451 / 100187075757`; 377 fresh processes produced **369 PASS / 8 RED**, with accepted 1–365 green and first red 366. Ordinal 366 now publishes `RotationRayOrderKeyCollision`, source vertex 47, certification attempt 0 / zero cut edges, 450 cut candidates, zero non-disc components and zero remaining admissible edges. Static package source maps the reason uniquely to `build_rotation_system` after key construction/sort and before final CCW rotation publication. The one non-gating diagnostic independently re-derived the same reason/stage and has zero gate credit. Package postflight is immutable. 367/371/372 remain upstream-blocked; 368/369/370/374 retain prior ownership. Exact next is `M3-CP4c-3-TB11-REV` under BG0–BG7; accepted authority 365/365, accounting 44/14/30, debt 5, packages 78.
+
+### `M3-CP4c-3-TB10` — prior measured runtime boundary
 
 Artifact-only TB10 consumed package **80** / selector **377** without rebuild or repair. Run/job
 `33584653692 / 100106147126`, result artifact `9829700900`
@@ -692,7 +696,7 @@ After the durable start-of-turn checklist, load:
    `src/pipeline/RemeshPipeline.cpp`, `tests/FieldAlignedCurveNetworkTests.cpp`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB13` — diagnostic-only Code + Build, runtime-free, GMP/GMPXX linked.** Follow
+**Exact next:** **`M3-CP4c-3-TB11-REV` — independent REVIEW + PLAN only under BG0–BG7.** Follow
 **BF0–BF9** in `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` §7. Give every currently silent
 `RotationSystemInconsistent` emission site a distinct enumerated reason, scoped **by predicate** rather than by
 copying the record's list, with the re-derived counts reconciled in the report; add `sourceVertex` to

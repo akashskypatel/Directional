@@ -1,5 +1,8 @@
 # Directional — Orientation
 
+> **Current CP4c-3 runtime authority (2026-09-02):** TB11 on immutable package 81 / selector 377 is 369 PASS / 8 RED with accepted prefix 365/365. First red 366 is now `RotationRayOrderKeyCollision` at source vertex 47, certification attempt 0 / zero cut edges, localized to post-sort trace-key collision validation in `build_rotation_system`. Exact next is independent `M3-CP4c-3-TB11-REV`; no semantic fix is authorized yet.
+
+
 ## DURABLE — DO NOT DELETE, AND UPDATE AT EVERY REVIEW TURN
 
 **This document is durable project authority.** It may be corrected or extended. It must **not** be deleted,

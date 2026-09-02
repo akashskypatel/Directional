@@ -26,27 +26,15 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB11` (artifact-only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB11-REV` (independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB13` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Exact compile/package source:
-`3070173894ee097f631b96c1c6d29f276df89a66`. Compile run/job `33598896270 / 100148036281` succeeded across all eight standard targets with GMP/GMPXX and `runtimeExecution=false`. Immutable package **81** was created by run/job `33599637764 / 100150255983`; artifact `9834661539`, Actions SHA-256 `10e18bc81c2f850a1e7bc3d4ce16830a5d5ebe7d1992cd728c1bb043dc71cb2f`, inner tar SHA-256 `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`.
+`M3-CP4c-3-TB11` is **COMPLETE / VALID SEMANTIC RED** on immutable package 81. Run/job `33611378451 / 100187075757`; result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`); log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`). Selector 377 executed in 377 fresh processes: **369 PASS / 8 RED**, ordinals 1–365 green, first red 366, ordinal 377 PASS. Immutable postflight passed; no rebuild/repair/mutation/benchmark occurred.
 
-CB13 discharged BF0–BF9:
-- [x] **BF0** selectors 374–377 recomputed/frozen; accepted 365 prefix unchanged; no runtime/gate/benchmark/package repair; GMP/GMPXX proved.
-- [x] **BF1** re-derived 46 total `EmbeddedGraphTopology.cpp` emission sites and reconciled the review's 28 narrower no-reason/no-edge-or-face subset with the actual **37 reasonless-site predicate**; typed all 37 plus eight same-code sites in `GlobalTopologyPlan.cpp`: **45 sites / 53 condition names**.
-- [x] **BF2** added/copied `sourceVertex`; field audit records 11 other `GlobalTopologyPlanError` fields absent from `SurfaceCutGraphError`.
-- [x] **BF3** projected reason/vertex/trace/event/cut-attempt shape and found DTO consumers by search; `fail_surface_cells` is an independently named consumer.
-- [x] **BF4** certification attempt index and active cut-edge count are published.
-- [x] **BF5** ordinal 366's existing failure message renders the new evidence; no gate ordinal added; `MechanicalWitnessStageReachabilityIsObservable` is non-gating diagnostic-only for TB11.
-- [x] **BF6** audit-by-assumption found independent repeated-code/bare-emitter and subset-projection examples outside the review's named sites.
-- [x] **BF7/BF8** no topology decision, ray order, cellularity, cut proposal, admissibility, tolerance, sphere/370/saturation/folded-cone/vertex-30/finalize-contact/371-372 behavior, or selector byte changed.
-- [x] **BF9** TB11 discriminators frozen in `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Plan.md`.
+Ordinal 366 now publishes the required discriminator: **`RotationRayOrderKeyCollision`**, `sourceVertex=47`, `certificationAttempt=0`, `certificationCutEdges=0`, `cutCandidateCount=450`, `nonDiscComponentCount=0`, `remainingAdmissibleEdgeCount=0`. Static source maps it uniquely to `build_rotation_system` after ray-key construction/sort and before final CCW rotation publication. CB13's diagnostic owner is therefore discharged. The underlying semantic cause is **not yet adjudicated**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB11`** artifact-only on immutable package 81. Execute selector 377 from ordinal 1, one identity per fresh process, with normal mode-preserving extraction and no repository timeout on the complete selector. Then run `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once with zero gate credit. Do not configure, compile, relink, repair, regenerate, mutate source/test/fixture/selector bytes, or run a benchmark.
-
-Required discriminator: ordinal 366 must name a post-CB13 `rotationSystemReason`, map to exactly one producer phase, and publish `certificationAttempt`/`certificationCutEdges`; accepted 1–365 must stay green and first red remain 366. Carried reds 367/371/372 and 368/369/370/374 retain their existing ownership unless new exact evidence proves otherwise.
+Run **`M3-CP4c-3-TB11-REV`** under BG0–BG7 in `Architecture_M3_CP4c3_TB11_Independent_Review_Plan.md`. Review must recover or prove unavailable the two colliding trace incidences/key values at vertex 47, distinguish duplicate/stale incidence vs incomplete key vs valid coincident rays/tie-rule vs witness precondition, establish attempt-0 certification context, preserve carried reds without double counting, and freeze exactly one bounded successor. **No Directional runtime, compile, package, product/test/fixture/selector mutation, or unchanged TB retry.**
 
 Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **78**; accepted authority **365/365**; CP4c-3 **OPEN**.
 
@@ -85,7 +73,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB10 is current runtime authority at accepted prefix 365 / first red 366, now `CellularityNotEstablished/origin=RotationSystemInconsistent`. CB12 ownership is runtime-proved; exact next is independent `M3-CP4c-3-TB10-REV`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB11 is current runtime authority at accepted prefix 365 / first red 366, now `RotationRayOrderKeyCollision` at source vertex 47 during initial certification. Exact next is independent `M3-CP4c-3-TB11-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.

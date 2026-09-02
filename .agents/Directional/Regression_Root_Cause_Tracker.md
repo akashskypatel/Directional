@@ -1,3 +1,20 @@
+## M3-CP4c3-TB11 — typed rotation collision observed — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package 81 / source `3070173894ee097f631b96c1c6d29f276df89a66`; run/job `33611378451 / 100187075757`; result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`); log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`).
+- **Gate:** 377 fresh selector processes, **369 PASS / 8 RED**; ordinals 1–365 green, first red 366, ordinal 377 PASS; immutable postflight passed. Non-gating diagnostic ran once and has zero gate credit.
+- **Diagnostic owner discharged:** ordinal 366 now publishes `RotationRayOrderKeyCollision`, `sourceVertex=47`, `certificationAttempt=0`, `certificationCutEdges=0`, `cutCandidateCount=450`, `nonDiscComponentCount=0`, `remainingAdmissibleEdgeCount=0`. Package source maps the reason uniquely to post-sort collision validation in `build_rotation_system`, before final CCW rotation publication. `M3-CP4c3-TB10-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**.
+- **Carried:** 367/371/372 share the exact same upstream exception; 368 remains trace 2/event 30 `TraceEventPositionInvalid → NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains wrong typed code 4 vs expected 6 with missing source-face locus; 374 remains `atlasBuild=false`.
+- **Accounting:** same unaccepted first-red surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **78**.
+- **Owner transition:** exact next owner is independent `M3-CP4c-3-TB11-REV` under BG0–BG7.
+
+## M3-CP4c3-TB11-CAND-01 — vertex-47 trace-ray order key collision during initial certification — **ACTIVE / GATING / ROOT-CAUSE UNADJUDICATED / NON-STABLE**
+
+- **Runtime fact:** first-red ordinal 366 fails at `RotationRayOrderKeyCollision`, source vertex 47, certification attempt 0 with zero cut edges. This is no longer a diagnostic-projection ambiguity.
+- **Static localization:** the unique emitter is in `build_rotation_system` after ray keys are constructed and sorted. It rejects two vertex-locus trace rays whose `RayOrderKey.primary` and `.secondary` compare equal, before publishing the counter-clockwise rotation.
+- **Not yet proved:** whether the two incidences are duplicate/stale, distinct valid rays collapsed by an incomplete key, genuinely coincident rays needing a defined equivalence/tie rule, or witness/precondition invalidity. TB11 authorizes no semantic repair.
+- **Owner:** independent `M3-CP4c-3-TB11-REV`; recover the two colliding trace incidences/key values and adjudicate alternatives before freezing any CB successor.
+- **Accounting:** continuation of the existing unaccepted gating surface; **+0/+0**, totals remain **44 / 14 / 30**.
+
 ## M3-CP4c3-CB13 — diagnostic owner discharge — **BUILD GREEN / NON-STABLE / NO RUNTIME**
 
 - **Authority:** implementation commit `3e3411bdc63f1fb841bf223e6e5971284e3770ab`; exact compile/package source `3070173894ee097f631b96c1c6d29f276df89a66`; compile run/job `33598896270 / 100148036281`; immutable package **81** artifact `9834661539` with inner tar SHA `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`.

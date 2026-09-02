@@ -92,32 +92,31 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB11` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB11-REV` — EXACT NEXT / independent REVIEW + PLAN
 
-`M3-CP4c-3-CB13` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Record:
-`Architecture_M3_CP4c3_CB13_Code_Build_Report.md`. It discharged BF0–BF9 without executing a Directional binary and without changing topology decisions, gate ordinals, or selector bytes.
+`M3-CP4c-3-TB11` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Runtime authority: immutable package **81**, source `3070173894ee097f631b96c1c6d29f276df89a66`, selector 377 SHA `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`, run/job `33611378451 / 100187075757`, result artifact `9839236420` (`1f803fc725ecf5bcfd66891cdd70e1746e1cb28faf7bfebc5284f38c988e734a`), log artifact `9839236880` (`fb9350c7b8e1d464f6802cdb1da59c34dab5e264925fccd1c63b6ed8e255ab74`).
 
-### CB13 authority
+Selector result: **369 PASS / 8 RED** in 377 fresh processes; ordinals **1–365 PASS**, first red **366**, ordinal **377 PASS**. Non-gating diagnostic ran once with zero gate credit. Postflight package census and manifest are unchanged; configure/compile/relink/repair/discovery/product/test/fixture/selector mutation and benchmark flags are false.
 
-- implementation commit `3e3411bdc63f1fb841bf223e6e5971284e3770ab`; exact compile/package source **`3070173894ee097f631b96c1c6d29f276df89a66`**;
-- compile run/job **`33598896270 / 100148036281`**, result artifact `9834487605` (`3546a2795741f16aed374f49c666a8323de04a2605745fd1f83f5b8d52e820b8`), log artifact `9834487931` (`e64116b211ebe5180b6d12424eda0388c04bd2b9f32c5402860dc676637cd58e`), eight standard targets, GMP/GMPXX linked, `runtimeExecution=false`;
-- immutable package **81**, run/job **`33599637764 / 100150255983`**, artifact `9834661539` (`10e18bc81c2f850a1e7bc3d4ce16830a5d5ebe7d1992cd728c1bb043dc71cb2f`), inner tar `4f49b3de157e51aff05736f9ac4b210372eb4bfb4dec3ddc793869071b2f9d88`, package log `9834661871` (`b730ee97e1df872305b872e5a631226a71044dc240efe65a84fbf296ce0f0a76`);
-- selector **377** remains `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`; 374/375/376 remain byte-frozen and exact prefixes;
-- package 81 records `runtimeExecution=false`, `packageRepair=false`, `exactArithmeticBackend=GMP`, 27 fixtures and six executable-mode binaries.
+### TB11 discriminator
 
-### What CB13 changed — diagnostics only
+Ordinal 366 now reports `RotationRayOrderKeyCollision`, `sourceVertex=47`, `cutCandidateCount=450`, `nonDiscComponentCount=0`, `remainingAdmissibleEdgeCount=0`, `certificationAttempt=0`, `certificationCutEdges=0`. Package source maps this reason uniquely to **`build_rotation_system`**, after ray keys are constructed and sorted, during equal-primary/equal-secondary trace-key collision validation, before final `counterClockwise` publication. The non-gating diagnostic independently reports the same originating reason and failed stage.
 
-BF1 re-derived the review counts rather than copying them. `EmbeddedGraphTopology.cpp` has 46 code-emission sites; **37**, not 28, met the exact BF1 predicate of missing a reason. The review's 28 was the narrower no-reason/no-edge-or-face subset. All 37 were typed, plus the eight same-code reasonless sites in `GlobalTopologyPlan.cpp`: **45 sites / 53 new condition names**. Existing enum values 0–8 remain unchanged.
+`M3-CP4c3-TB10-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**. `M3-CP4c3-TB11-CAND-01` is **ACTIVE / GATING / ROOT-CAUSE UNADJUDICATED / NON-STABLE**. Review must determine whether the colliding vertex-47 trace incidences are duplicate/stale, distinct valid rays collapsed by an incomplete key, valid coincident rays requiring a defined tie/equivalence rule, or an invalid witness/precondition. TB11 authorizes no semantic fix.
 
-`SurfaceCutGraphError` now carries `sourceVertex`; `topology_error` copies it and was audited field-by-field. The mapper still lacks 11 `GlobalTopologyPlanError` payload fields (`region`, `secondRegion`, `arc`, `networkEdge`, `secondTrace`, `secondSourceFace`, `singularity`, `eulerCharacteristic`, `vertexCount`, `edgeCount`, `faceCount`), recorded rather than silently assumed away. `cut_graph_failure_locus` now projects the BF3 reason/vertex/trace/event/cut-attempt evidence, and `canonical_candidate` publishes certification attempt index plus cut-edge count. `append_cp4c_failure_locus` carries those fields into **ordinal 366's own failure message**. `fail_surface_cells`, not named by BF3, was independently found as a DTO consumer and retains the locus into original/terminal diagnostics.
+Carried results: 367/371/372 share the exact same upstream exception; 368 remains `TraceEventPositionInvalid` trace 2/event 30 with `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains wrong typed code 4 vs expected 6 with missing source-face locus; 374 remains `atlasBuild=false`.
 
-The assumption audit also found independent examples outside the review's named sites: repeated `InvalidSourceBinding` has bare emitters in `GlobalTopologyPlan.cpp`, and `topology_plan_failure_locus` is a separate subset projection. No unrelated repair was made.
+Accepted authority remains **365/365**; CP4c-3 **OPEN**; stable accounting **44 events / 14 categories / 30 recurrences**; debt **5**; semantic packages **78**.
 
-### Frozen TB11 boundary
+### Required review authority
 
-Use `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Plan.md`. TB11 consumes package 81 without rebuilding it, executes selector 377 from ordinal 1 one identity per fresh process, then runs `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once as **non-gating diagnostic-only** evidence. Ordinal 366 must name a new typed rotation-system condition and certification attempt while accepted 1–365 stay green and first red stays 366. A `walk_graph_faces`/`exterior_boundary_orbits` reason legitimately falsifies the current fan-order hypothesis.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Plan.md` — exact BG0–BG7 review measures.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB13_Code_Build_Report.md` — package-81 build authority and diagnostic implementation.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md` — candidate/accounting authority.
 
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count is now **78**. `M3-CP4c3-TB10-CAND-01` remains ACTIVE / GATING / DIAGNOSTIC INSUFFICIENCY / NON-STABLE until TB11 names the actual condition.
+**Turn boundary:** REVIEW + PLAN only. No Directional runtime, benchmark, configure, compile, link, package, product/test/fixture/selector mutation, or unchanged TB retry. Update `ORIENTATION.md` during the review and freeze exactly one bounded successor.
+
 
 ## Context Load Plan
 
