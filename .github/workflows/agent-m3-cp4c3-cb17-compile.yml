@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/compile/m3-cp4c3-cb17.txt
 
 permissions:
-  contents: read
+  contents: write
   actions: write
   issues: write
   pull-requests: write
