@@ -92,81 +92,76 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB12` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB12-REV` — EXACT NEXT / Independent REVIEW + PLAN only
 
-`M3-CP4c-3-CB14` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Owning record:
-`Architecture_M3_CP4c3_CB14_Code_Build_Report.md`. Frozen execution plan:
-`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md`.
+`M3-CP4c-3-TB12` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Owning report:
+`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md`. Frozen review authority:
+`Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` (**BI0-BI7**).
 
-### CB14 authority now frozen
+### TB12 runtime authority now frozen
 
-Final compile/package source is **`71ece3ca184e90858d9222fb014b37c16d292294`**. Authoritative compile run/job
-`33653092570 / 100324843819` built all eight standard targets with mandatory GMP/GMPXX and
-`runtimeExecution=false`. Compile result/log artifacts are `9855741844` / `9855742445`; their Actions ZIP
-SHA-256 digests are `b4b98c3f8ee0ad0a777f69f591591303e37c99d136dc028d511967b746e7fb16` and
-`aaf9c901cf2a36b3d925e3ba670cf5bd07f86b7afc2f218e3986ae3d157ee81a`.
+Immutable package **82** / semantic source `71ece3ca184e90858d9222fb014b37c16d292294` and selector **378** were
+executed artifact-only. Authoritative run/job `33657062615 / 100338185825` succeeded operationally. Result artifact
+`9857275334` has Actions SHA-256 `085b3de9ebf5a9a29cbcf883e4058c97855e11a1a7b2bc53f961c809dace9145`; log
+artifact `9857276091` has Actions SHA-256 `89cac6cb1ea6444b8204d8b5ca9233daed7e0ff88986d8592af576e319cb4120`.
 
-Immutable package **82** was produced without executing a Directional binary in run/job
-`33653737897 / 100327139865`. Package artifact `9855841174` has Actions SHA-256
-`4f597d260a6fb258767378489741326a6f6c2322522bdd60ef9fd071970c26ed`; inner `package82.tar.gz` is
-`58393e9927e80e894a753cafee074202fd6df8fec43d8cba244fe1404e23a5e1`; packaged source archive is
-`3ae91b7544749f00487ff57e1705d657d23d84ffe3107ce1a4565c3a24d35f1e`. Package verification preserved 27
-fixtures, six executable binaries, two static libraries, GMP authority, and `runtimeExecution=false`.
+All **378** selector identities ran once in fresh processes: **370 PASS / 8 RED**. Ordinals **1-365 remain
+365/365 PASS**; first red remains ordinal **366**, proving CB14 did not move semantics. Ordinals 367, 368, 369,
+370, 371, 372 and 374 are report-only RED; 373/375/376/377/**378** PASS. The separate mechanical diagnostic ran
+once with zero gate credit. Immutable package byte/mode census and manifest are identical postflight; all
+configure/compile/relink/repair/discovery/product/test/fixture/selector-mutation flags are false and no benchmark ran.
 
-CB14 discharged review measures **BH0–BH9** without a semantic correction:
+### BH9 discriminator — retained operands at vertex 47
 
-- both colliding rotation rays now retain typed key operands, arc/trace/face identity, orientation, fan slot, and
-  origin-port ordinal/source-vertex evidence;
-- the failing vertex can publish a bounded keyed-fan census with explicit total/truncation state;
-- certification-only counters are optional, so unmeasured struct defaults no longer render as observations;
-- the synthetic same-sector witness and the mechanical ordinal-366 renderer assertion compile through production
-  diagnostics but remain unexecuted until TB12;
-- selector **377** remains byte-frozen at
-  `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`;
-- selector **378** is exactly selector 377 plus one non-gating diagnostic identity, SHA-256
-  `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`;
-- collision predicate, comparator, `RayOrderKey`, key construction, incidence, rotation publication, cut decisions,
-  fixtures, and unrelated deferred owners are unchanged.
+Ordinal 366 remains `RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`.
+The two rejected rays are now explicit:
 
-`M3-CP4c3-TB11-REV-CAND-01` therefore remains **ACTIVE / UNDERDETERMINED** until runtime discrimination. No
-semantic correction is authorized before TB12. Accepted semantic authority remains **365/365**; CP4c-3 remains
-**OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**;
-authoritative semantic M3 package count **79**.
+- previous: arc **20**, trace **6**, `Forward`, `primary=3`, `secondary=0`, face `(45,46,47)`, fan slot **1**,
+  origin port ordinal **0**, origin port source vertex **47**;
+- current: arc **23**, trace **9**, `Reverse`, `primary=3`, `secondary=0`, the same face and fan slot, origin port
+  ordinal **0**, origin port source vertex **71**.
 
-### TB12 binding execution scope
+The bounded fan census is complete (**5 rays / truncated=false**). The simplest duplicate-incidence identity
+explanation is falsified by distinct arc/trace IDs, opposite orientations and different origin vertices. The failing
+production witness also proves `secondary` is not vertex-local: a ray at locus 47 carries an origin-port ordinal from
+vertex 71. The collision guard nevertheless equates the rays on `primary`/`secondary`. This is direct evidence for
+an under-discriminating collision-equivalence contract, but both rays share the same source face and fan slot; TB12
+does **not** decide whether they are valid coincident rays needing deterministic tie/equivalence semantics, invalid/
+stale provenance, or a witness/precondition failure. That semantic decision belongs to BI0-BI7 review.
 
-Run the frozen artifact-only plan exactly; no rebuild, relink, repair, fixture/source/test mutation, or generated
-runtime discovery.
+`cutCandidateCount=450` remains measured. `nonDiscComponentCount` and `remainingAdmissibleEdgeCount` are absent on
+this path, validating CB14's honest optional-counter correction. Selector 378 PASSes production diagnostic
+projection.
 
-1. Preflight immutable package 82 and selector lineage 373–378.
-2. Execute selector **378 from ordinal 1**, one exact identity per fresh process.
-3. Require ordinals **1–365 = 365/365** and ordinal **366** to remain
-   `RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`; any frontier
-   movement falsifies CB14's no-semantic-change audit.
-4. Preserve both colliding ray records and the bounded fan census at vertex 47, then discriminate the review's four
-   alternatives: duplicate/stale incidence, insufficient order key, valid coincident rays/tie semantics, or
-   witness/precondition.
-5. Require certification counters to be populated only when measured, otherwise absent.
-6. Execute `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once separately with **zero gate
-   credit**.
-7. Continue the remaining selector identities report-only after the first red, preserve immutable postflight, and
-   update `Regression_Root_Cause_Tracker.md` for every observed regression/candidate before TB12 closes.
+`M3-CP4c3-TB11-REV-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**.
+`M3-CP4c3-TB11-CAND-01` remains **ACTIVE / GATING / NON-STABLE**, transitioned to **DISTINCT-RAY SAME-SECTOR
+COLLISION / SEMANTIC POLICY UNADJUDICATED** and owned by `M3-CP4c-3-TB12-REV`. 367/371/372 remain shared
+upstream stops; sphere 368, saturation 369, ordinal 370, folded-cone 374, vertex 30, finalize/contact and the
+371/372 coupling candidate retain prior ownership.
+
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events /
+14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **79**.
+
+### Review boundary
+
+Run BI0-BI7 without runtime or mutation. Trace both ray incidences end to end, define the intended rotation
+equivalence invariant, adjudicate origin-port locality, falsify the remaining semantic alternatives, and freeze one
+bounded successor only after ownership is proved. Do **not** rerun TB12 or patch the collision predicate in review.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent TEST + BENCHMARK guidance
+- turn-based-coding-agent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md` — **frozen execution authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — immutable package-82/build authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — BH0–BH9 and the four alternatives.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
-   `M3_CP4c_Consolidated_Record.md`.
-6. Packaged source is inspection-only if TB12 evidence needs static emitter mapping; do not rebuild or mutate it.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during the review.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — **frozen BI0-BI7 authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**.
+3. `.agents/Directional/Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — immutable package-82/build authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — prior alternatives and BH0-BH9 rationale.
+5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `ROADMAP.md`.
+6. Packaged source is inspection-only; no runtime/build/package mutation is authorized in review.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

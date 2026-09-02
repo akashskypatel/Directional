@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB11` is the latest semantic RED, on immutable package **81** and selector **377**: 369 PASS / 8 RED, accepted prefix 365/365 green, first red ordinal 366. **CB13's diagnostics worked** - the red now names its producer condition and phase, `rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`, on the first certification of the **uncut** embedded graph; `M3-CP4c3-TB10-CAND-01` is CLOSED. **`M3-CP4c-3-TB11-REV` proved the root cause is underdetermined and proved why:** the guard compares only `primary`/`secondary` while `RayOrderKey` sorts on six members; `secondary` is the **origin** port ordinal with no check that its vertex is the locus vertex; a **self-loop arc** collides by construction; and the emitter retains **neither** colliding ray, so four distinct causes render identically. Vertex 30 is still not reached. Selector **377 stays byte-frozen**; selector 378 is conditional on BH6. **NEXT:** `M3-CP4c-3-CB14` under BH0-BH9, **diagnostic-only** - no semantic correction is authorized until TB12 separates the alternatives.)
+**Status date:** 2026-09-02 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365; CP4c-3 remains OPEN.** `M3-CP4c-3-TB12` is the latest semantic RED on immutable package **82** / selector **378**: 370 PASS / 8 RED, accepted prefix 365/365, first red ordinal 366. CB14 diagnostics prove the collision is between distinct rays — arc 20/trace 6/Forward/origin vertex 47 versus arc 23/trace 9/Reverse/origin vertex 71 — sharing `(primary,secondary)=(3,0)`, source face `(45,46,47)` and fan slot 1. The 5-ray census is complete; unmeasured certification counters are absent. The simplest duplicate-incidence identity case is falsified, while valid coincident/tie semantics versus invalid/stale provenance or witness/precondition remains semantically unadjudicated. **NEXT:** independent `M3-CP4c-3-TB12-REV` under BI0-BI7; no runtime or semantic correction before review.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB11 localized first red to vertex-47 `RotationRayOrderKeyCollision`; TB11-REV exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB12 retained a distinct-ray same-sector first red at vertex 47; TB12-REV exact next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; append-only execution selector 377** | **OPEN.** TB11 is current runtime authority: 369 PASS / 8 RED; first red 366 is `RotationRayOrderKeyCollision` at source vertex 47 / cert attempt 0. **NEXT:** independent `M3-CP4c-3-TB11-REV`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; append-only execution selector 378** | **OPEN.** TB12 is current runtime authority: 370 PASS / 8 RED; first red 366 is the distinct-ray `RotationRayOrderKeyCollision` at source vertex 47 / cert attempt 0. **NEXT:** independent `M3-CP4c-3-TB12-REV`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

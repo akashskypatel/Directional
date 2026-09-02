@@ -1,4 +1,30 @@
-## M3-CP4c3-TB11-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-TB12 — distinct-ray same-sector collision measured — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package 82 / source `71ece3ca184e90858d9222fb014b37c16d292294`; run/job
+  `33657062615 / 100338185825`; result artifact `9857275334`
+  (`085b3de9ebf5a9a29cbcf883e4058c97855e11a1a7b2bc53f961c809dace9145`); log artifact `9857276091`
+  (`89cac6cb1ea6444b8204d8b5ca9233daed7e0ff88986d8592af576e319cb4120`).
+- **Gate:** selector 378, 378 fresh processes, **370 PASS / 8 RED**; ordinals 1-365 green, first red 366;
+  373/375/376/377/378 PASS report-only; immutable postflight passed. Separate mechanical diagnostic ran once with
+  zero gate credit.
+- **BH9 discrimination:** ordinal 366 remains `RotationRayOrderKeyCollision` at source vertex 47 / attempt 0 / 0
+  cut edges. Previous ray is arc 20 / trace 6 / Forward / `(3,0)` / face `(45,46,47)` / slot 1 / origin vertex 47.
+  Current ray is arc 23 / trace 9 / Reverse / `(3,0)` / same face/slot / origin vertex **71**. Fan census is 5 and
+  untruncated. The two rays are therefore distinct identities, and runtime proves `secondary` is not vertex-local.
+- **Diagnostic owner discharged:** `M3-CP4c3-TB11-REV-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**. Both operands
+  and the fan census survive production projection; unmeasured `nonDiscComponentCount` /
+  `remainingAdmissibleEdgeCount` are absent rather than rendered as zeros.
+- **Gating candidate transition:** `M3-CP4c3-TB11-CAND-01` remains active but is no longer underdetermined by missing
+  operands. Classification is **DISTINCT-RAY SAME-SECTOR COLLISION / SEMANTIC POLICY UNADJUDICATED**. Distinct IDs
+  falsify the simplest duplicate-incidence identity case; same face/slot keeps valid coincident/tie semantics live;
+  stale provenance and witness/precondition are not proved. Owner: independent `M3-CP4c-3-TB12-REV` BI0-BI7.
+- **Carried:** 367/371/372 reproduce the same upstream collision; 368 remains trace 2/event 30
+  `TraceEventPositionInvalid -> NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370
+  remains typed code 4 vs 6 with missing source face; 374 remains `atlasBuild=false`. No duplicate stable event.
+- **Accounting:** same unaccepted first-red surface, **+0 stable events / +0 recurrences**; totals remain
+  **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **79**.
+
+## M3-CP4c3-TB11-REV - independent review adjudication - **PRIOR REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB11_Independent_Review_Record.md`, measures **BG0-BG7** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
@@ -43,7 +69,7 @@
 - **Accounting:** same unaccepted first-red surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **78**.
 - **Owner transition:** exact next owner is independent `M3-CP4c-3-TB11-REV` under BG0–BG7.
 
-## M3-CP4c3-TB11-REV-CAND-01 - the rotation collision guard discards both of its own operands - **ACTIVE / GATING / DIAGNOSTIC / NON-STABLE**
+## M3-CP4c3-TB11-REV-CAND-01 - the rotation collision guard discarded both operands - **CLOSED / RUNTIME DISCRIMINATED / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB11-REV`** from static derivation over TB11's runtime evidence.
 - **Mechanism.** The collision emitter compares `previous` and `current` `RayOrderKey`s and then reports neither.
@@ -55,21 +81,18 @@
 - **Secondary defect in the same locus.** `nonDiscComponentCount` and `remainingAdmissibleEdgeCount` are rendered
   unconditionally but assigned only on the `CutSearchExhaustedBeforeCellularity` path, so they publish struct
   defaults as observations - the third instance of that pattern after `publishedFaces` and the trace-scoped group.
-- **Owner:** **BH1-BH4** of `M3-CP4c-3-CB14`.
+- **Resolution:** CB14 BH1-BH4 retained both operands/fan census and made certification counters optional; TB12 runtime proved the projection and honest-counter behavior. **CLOSED / RUNTIME DISCRIMINATED.**
 - **Accounting:** static, on an unaccepted surface. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**,
   debt **5**, packages **78**.
 
-## M3-CP4c3-TB11-CAND-01 - vertex-47 trace-ray order key collision during initial certification - **ACTIVE / GATING / UNDERDETERMINED BY RETAINED EVIDENCE / NON-STABLE**
+## M3-CP4c3-TB11-CAND-01 - vertex-47 distinct-ray same-sector collision during initial certification - **ACTIVE / GATING / SEMANTIC POLICY UNADJUDICATED / NON-STABLE**
 
-- **Transitioned at `M3-CP4c-3-TB11-REV`:** the condition, phase and emitter are proved; the **root cause is
-  underdetermined because the emitter retains neither colliding ray**, and BG2 alternatives 1-4 render
-  byte-identically. Re-owned to **`M3-CP4c-3-CB14`** (BH0-BH9, diagnostic-only), then to `M3-CP4c-3-TB12-REV`
-  for the category decision. See `M3-CP4c3-TB11-REV-CAND-01`.
+- **Transitioned at TB12:** the missing-operand ambiguity is discharged. The rays are distinct: arc 20/trace 6/Forward/origin vertex 47 versus arc 23/trace 9/Reverse/origin vertex 71, while both have `(primary,secondary)=(3,0)` and the same face/fan slot. Exact semantic policy remains unadjudicated; owner is **`M3-CP4c-3-TB12-REV`** BI0-BI7.
 
 - **Runtime fact:** first-red ordinal 366 fails at `RotationRayOrderKeyCollision`, source vertex 47, certification attempt 0 with zero cut edges. This is no longer a diagnostic-projection ambiguity.
 - **Static localization:** the unique emitter is in `build_rotation_system` after ray keys are constructed and sorted. It rejects two vertex-locus trace rays whose `RayOrderKey.primary` and `.secondary` compare equal, before publishing the counter-clockwise rotation.
-- **Not yet proved:** whether the two incidences are duplicate/stale, distinct valid rays collapsed by an incomplete key, genuinely coincident rays needing a defined equivalence/tie rule, or witness/precondition invalidity. TB11 authorizes no semantic repair.
-- **Owner:** independent `M3-CP4c-3-TB11-REV`; recover the two colliding trace incidences/key values and adjudicate alternatives before freezing any CB successor.
+- **Current alternatives:** simplest duplicate-incidence identity is falsified by distinct arc/trace/origin identity. Review must still decide whether both rays are valid same-sector incidences needing a tie/equivalence rule, invalid/stale provenance, or a witness/precondition violation. TB12 authorizes no semantic repair.
+- **Owner:** independent `M3-CP4c-3-TB12-REV`; trace both retained incidences end to end and adjudicate the rotation equivalence/locality contract before freezing any CB successor.
 - **Accounting:** continuation of the existing unaccepted gating surface; **+0/+0**, totals remain **44 / 14 / 30**.
 
 ## M3-CP4c3-CB13 — diagnostic owner discharge — **BUILD GREEN / NON-STABLE / NO RUNTIME**

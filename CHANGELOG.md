@@ -1,3 +1,26 @@
+## 2026-09-02 — `M3-CP4c-3-TB12`: distinct-ray rotation collision measured; review required
+
+TB12 is **COMPLETE / VALID SEMANTIC RED / NON-STABLE** on immutable package **82** / source
+`71ece3ca184e90858d9222fb014b37c16d292294` and selector **378**. Authoritative run/job
+`33657062615 / 100338185825` executed 378 fresh selector processes: **370 PASS / 8 RED**, accepted ordinals
+**1-365 = 365/365 PASS**, first red remains **366**. Result/log artifacts are `9857275334`
+(`085b3de9ebf5a9a29cbcf883e4058c97855e11a1a7b2bc53f961c809dace9145`) / `9857276091`
+(`89cac6cb1ea6444b8204d8b5ca9233daed7e0ff88986d8592af576e319cb4120`).
+
+Ordinal 366 retains two distinct same-sector rays: arc 20/trace 6/Forward/origin vertex 47 and arc 23/trace
+9/Reverse/origin vertex 71, both `(primary,secondary)=(3,0)` in face `(45,46,47)` / fan slot 1. The complete
+5-ray census is untruncated. This falsifies the simplest duplicate-incidence identity explanation and proves
+`secondary` is not vertex-local in the failing production witness, but whether the rays are valid coincident rays
+requiring tie/equivalence semantics, invalid/stale provenance, or a witness/precondition violation remains a semantic
+review question. Unmeasured `nonDiscComponentCount` / `remainingAdmissibleEdgeCount` are absent; selector 378's
+production diagnostic projection PASSes. 367/371/372 share the same upstream stop; 368/369/370/374 reproduce prior
+carried reds unchanged. Immutable postflight passed; no build/repair/mutation/benchmark occurred.
+
+`M3-CP4c3-TB11-REV-CAND-01` is CLOSED / RUNTIME DISCRIMINATED; `M3-CP4c3-TB11-CAND-01` remains ACTIVE /
+GATING as **DISTINCT-RAY SAME-SECTOR COLLISION / SEMANTIC POLICY UNADJUDICATED**. Accepted authority stays
+**365/365**, stable accounting **44 / 14 / 30**, debt **5**, semantic packages **79**. Exact next: independent
+`M3-CP4c-3-TB12-REV` under BI0-BI7; no unchanged TB12 retry or semantic correction before review.
+
 ## 2026-09-02 — `M3-CP4c-3-CB14`: diagnostic collision witness build green; package 82 frozen
 
 CB14 is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE** at final source

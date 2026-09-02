@@ -26,55 +26,51 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB12` (Test + Benchmark, ARTIFACT-ONLY)
+## Current focus — `M3-CP4c-3-TB12-REV` (Independent REVIEW + PLAN only)
 
-`M3-CP4c-3-CB14` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Record:
-`Architecture_M3_CP4c3_CB14_Code_Build_Report.md`.
+`M3-CP4c-3-TB12` is **COMPLETE / VALID SEMANTIC RED / NON-STABLE**. Record:
+`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md`. Frozen successor:
+`Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md`.
 
-Final compile/package source is **`71ece3ca184e90858d9222fb014b37c16d292294`**. Compile run/job
-`33653092570 / 100324843819` built all eight standard targets with GMP/GMPXX and `runtimeExecution=false`. Immutable
-package **82** is artifact `9855841174`, Actions SHA-256
-`4f597d260a6fb258767378489741326a6f6c2322522bdd60ef9fd071970c26ed`; inner `package82.tar.gz` is
-`58393e9927e80e894a753cafee074202fd6df8fec43d8cba244fe1404e23a5e1`; packaged source archive is
-`3ae91b7544749f00487ff57e1705d657d23d84ffe3107ce1a4565c3a24d35f1e`.
+TB12 consumed immutable package **82** / selector **378** only. Run/job `33657062615 / 100338185825` executed
+378 fresh selector processes: **370 PASS / 8 RED**. Ordinals **1-365 remain 365/365 PASS**; first red remains
+ordinal **366**. Result/log artifacts are `9857275334`
+(`085b3de9ebf5a9a29cbcf883e4058c97855e11a1a7b2bc53f961c809dace9145`) and `9857276091`
+(`89cac6cb1ea6444b8204d8b5ca9233daed7e0ff88986d8592af576e319cb4120`). Immutable postflight passed; no
+configure/compile/relink/repair/generated discovery/mutation/benchmark occurred.
 
-CB14 discharged BH0-BH9 without a semantic correction:
+BH9 runtime discrimination is now concrete:
 
-- both colliding rotation rays now retain typed `primary`/`secondary`, arc/trace/face, orientation, fan slot, and
-  origin-port ordinal/source-vertex evidence;
-- the failing vertex publishes a bounded keyed-fan census with total/truncation state;
-- certification counters are optional and no longer render unmeasured default zeros;
-- a production-renderer synthetic diagnostic witness and the mechanical ordinal-366 failure-message assertion were
-  compiled but **not executed**;
-- selector **377** remains byte-frozen at `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`;
-  selector **378** is 377 plus exactly one diagnostic identity, SHA-256
-  `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`;
-- collision predicate, comparator, `RayOrderKey`, key construction, incidence, rotation publication, cut decisions,
-  fixtures, and unrelated deferred owners remain untouched.
+- previous ray: arc 20 / trace 6 / Forward / `(primary,secondary)=(3,0)` / face `(45,46,47)` / slot 1 / origin
+  port 0 at vertex **47**;
+- current ray: arc 23 / trace 9 / Reverse / `(3,0)` / the same face/slot / origin port 0 at vertex **71**;
+- fan census is **5 rays, not truncated**;
+- `cutCandidateCount=450`, attempt 0 / 0 cut edges remain measured; unmeasured `nonDiscComponentCount` and
+  `remainingAdmissibleEdgeCount` are absent;
+- selector ordinal 378 PASSes the production diagnostic projection.
 
-`M3-CP4c3-TB11-REV-CAND-01` remains **ACTIVE / UNDERDETERMINED** pending runtime discrimination. The 371/372
-fixture-coupling candidate, sphere 368, saturation 369, ordinal 370, folded-cone 374, vertex 30, and the
-finalize/contact fall-through keep their prior ownership/disposition.
+The simplest duplicate-incidence identity explanation is falsified: the two rays have distinct arc/trace IDs,
+opposite orientation and different origin vertices. Runtime also proves `secondary` is not vertex-local in this
+production failure. The remaining semantic distinction is whether these same-face/same-slot rays are valid and need
+a deterministic tie/equivalence rule, represent invalid/stale provenance, or violate a witness/precondition.
+`M3-CP4c3-TB11-REV-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**; `M3-CP4c3-TB11-CAND-01` remains the single
+gating candidate, transitioned to **DISTINCT-RAY SAME-SECTOR COLLISION / SEMANTIC POLICY UNADJUDICATED**.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB12`** exactly as frozen in
-`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md`.
+Run **`M3-CP4c-3-TB12-REV`** exactly as frozen in
+`Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — **review/planning only**.
 
-- [ ] Preflight immutable package 82 and selectors 373-378; no repair/rebuild/relink/generated discovery.
-- [ ] Execute selector **378 from ordinal 1**, one exact identity per fresh process; first-red gate accounting only.
-- [ ] Require ordinals **1-365 = 365/365** and ordinal **366** to remain
-      `RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`.
-- [ ] Preserve both colliding ray identities and the bounded fan census at vertex 47; classify the evidence among
-      duplicate/stale incidence, insufficient order key, valid coincident rays/tie semantics, or witness/precondition.
-- [ ] Require the two certification counters to be populated only when measured, otherwise absent.
-- [ ] Execute `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once separately with zero gate credit.
-- [ ] Execute remaining selector identities report-only after first red, immutable postflight, and update the regression
-      tracker before TB12 closes.
+- [ ] Trace arc 20/trace 6 and arc 23/trace 9 end to end and establish whether both incidences are valid at vertex 47.
+- [ ] Define the intended vertex rotation collision/equivalence invariant; do not add identity fields to the guard by fiat.
+- [ ] Adjudicate why an arriving ray from origin vertex 71 uses origin port ordinal 0 as `secondary` at locus 47.
+- [ ] Distinguish valid coincident/tie semantics from invalid/stale provenance or witness/precondition failure.
+- [ ] Reconfirm 367/371/372 share the same upstream stop and preserve 368/369/370/374 ownership unchanged.
+- [ ] Freeze exactly one bounded successor only after the semantic owner is proved.
 
-No semantic correction is authorized before TB12 evidence separates the alternatives. Accepted semantic authority
-remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**;
-produced-witness debt **5**; authoritative semantic M3 package count **79**.
+No runtime, build, package, product/test/fixture/selector mutation, or unchanged TB12 retry belongs in the review.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events /
+14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **79**.
 
 ## Carried forward from M1
 
@@ -111,7 +107,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB11 remains current runtime authority at accepted prefix 365 / first red 366, `RotationRayOrderKeyCollision` at source vertex 47 during initial certification. CB14 is build-green diagnostic-only on immutable package 82; exact next is artifact-only `M3-CP4c-3-TB12`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB12 is current runtime authority at accepted prefix 365 / first red 366, a distinct-ray same-sector `RotationRayOrderKeyCollision` at source vertex 47. Exact next is independent `M3-CP4c-3-TB12-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -148,4 +144,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **79** after CB14/package 82; TB12 has not started. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **79**. TB12 is complete VALID SEMANTIC RED; exact next is independent `M3-CP4c-3-TB12-REV`. PR #8 remains open, draft, and unmerged.
