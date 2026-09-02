@@ -1,0 +1,46 @@
+name: Agent M3 CP4c3 TB14 Closeout Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/google-drive/m3-cp4c3-tb14-closeout.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c3-tb14-closeout-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb14-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-tb14-closeout-apply.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1OjJsAf0pl51Y450qj0RTy_rbcqN2g68N
+      patch_sha256: 88afba0af1fb2db6ba7bcbf4289677c97b8e94724af929a8619298fb86628b98
+      base_sha: ddf47850111d0bb118a98d3066938c95d07fcd59
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-TB14: record orchestration-invalid attempt"
+    secrets: inherit
