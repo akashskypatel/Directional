@@ -1,0 +1,39 @@
+name: TB10 Closeout Docs Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb10-closeout-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: directional-tb10-closeout-drive-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb10-closeout-drive-apply
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1Z_m-NRro65W2bO87L1EMmqQMglmOZK1v
+      patch_sha256: '5b9c9e5474c6a2c71f09bf1693209167d1b17696164630dfcfb6bb404ad76316'
+      base_sha: 7f2a6b124cbc37bf9d826da8915befb6b5e01132
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: 'docs: close M3-CP4c-3-TB10 and freeze review plan'
+      retention_days: 14
+    secrets: inherit
