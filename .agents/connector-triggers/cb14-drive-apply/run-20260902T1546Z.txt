@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB14 diagnostic-only patch apply
-base_sha=1959eb0ab7c293ac943d8bd647d458ea22f362dd
-patch_sha256=b93677c03695d4d241487c5dd5820303a17ea085f76fe1e33b53b3b0c81ced9a
-retry=0
