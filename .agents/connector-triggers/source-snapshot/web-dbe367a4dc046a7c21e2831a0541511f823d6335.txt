@@ -1,2 +1,0 @@
-requested_source_sha=dbe367a4dc046a7c21e2831a0541511f823d6335
-purpose=M3-CP4c-3-TB13 start-of-turn source snapshot

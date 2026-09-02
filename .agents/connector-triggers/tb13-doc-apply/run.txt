@@ -1,2 +1,0 @@
-turn=M3-CP4c-3-TB13
-purpose=apply durable TB13 closeout documentation patch
