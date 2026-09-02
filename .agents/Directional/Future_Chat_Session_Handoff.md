@@ -92,62 +92,54 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB14` — EXACT NEXT / Artifact-Only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB14-REV` — EXACT NEXT / Independent REVIEW + PLAN
 
-`M3-CP4c-3-CB16` is **COMPLETE / BUILD + PACKAGE GREEN / PRODUCT CORRECTION / RUNTIME-FREE**. Record:
-`Architecture_M3_CP4c3_CB16_Code_Build_Report.md`.
+`M3-CP4c-3-TB14` is **TURN TERMINATED / ORCHESTRATION INVALID / SELECTOR INCOMPLETE / NO SEMANTIC DISPOSITION**.
+Record: `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md`.
 
-### Current immutable build authority
+### What happened
 
-- final semantic/compile/package source: **`6808c090f2dd229a48550d758f459bfd156da4b6`**;
-- selector 379 remains byte-frozen at **`ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`**;
-- selector **380** appends exactly `GlobalTopologyPlan.VertexExitSecondaryParameterUsesExactCornerSupportAndTypedFailure`, SHA-256 **`1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`**;
-- authoritative eight-target GMP/GMPXX compile: run/job **`33682499470 / 100422188581`**, result artifact **`9866902345`**, Actions digest `410f18cd45f0662d480592bc2bb567bb6ab02583cf0a0dd06629b5c57a0174f9`;
-- immutable package **84**: run/job **`33683929335 / 100426817194`**, artifact **`9867334959`**, Actions digest `67f1ea7012f3b0e06a1dd60e87d40c7e593e5260703cab425c9021cb0c2ebd55`, inner tar SHA-256 `8385a994ebff3e9d3583f95f769e107a73dcec892c7d9073502103a981a40eff`;
-- package log artifact `9867335519`, Actions digest `f4b1c14c5736f4ca3e19e06533c89aa44198d180a16b4508e77350e1256b75c3`; packaged source archive SHA-256 `ca898abdf3e5a4d01429048f13a2a6f09dd6bc70dabd3b866209533f9e43db95`;
-- 27 fixtures, six executable modes, selector-prefix chain and package manifests verified; `runtimeExecution=false`, `packageRepair=false`.
+- Immutable package **84** / semantic source `6808c090f2dd229a48550d758f459bfd156da4b6` passed full package/source/GMP/27-fixture/six-executable/selector-380 preflight.
+- Selector execution used one exact identity per fresh process. Ordinals **1-129** completed organically and PASSed.
+- Ordinal **130** (`FeatureBearingFinalMergedOracleAcceptsPresentRemappedFeatureAuthority`) reached GoogleTest `[ RUN ]`, then the surrounding local execution call exceeded its wall-clock allowance. No `[ OK ]`, final GoogleTest summary, or organic exit status exists.
+- Execution resumed **without rerunning 130**. Ordinals **131-136** completed organically and PASSed. Ordinal **137** (`FinalOracleRejectsMissingForeignOrUncertifiedHardRailChartAuthority`) then suffered the same host-level interruption after `[ RUN ]` and before any organic result.
+- Execution stopped at that point. **135 organic PASS / 0 semantic RED** observations exist for `1-129,131-136`; selector 366, selector 380, and the retained non-gating diagnostic were not reached. The accepted 1-365 discriminator is therefore **not measured by TB14** because ordinal 130 is inside it.
+- Postflight package bytes/modes remain exactly identical to preflight; census SHA-256 `95ba3950267a1e145be427b2e1c896204aef7d86bd079d039a63bc0834e8a3e2` and internal manifest reverify.
 
-### What CB16 changed
+This is **orchestration/infrastructure evidence, not a semantic red**. The frozen TB14 plan permits a rerun only for a demonstrated orchestration failure that executed no creditable semantic identity; this attempt already contains completed semantic identities and two started-but-nonorganic identities. TB14 therefore does **not** self-authorize retry, restart, or continuation. Latest valid runtime authority remains **TB13 / package 83 / selector 379**, accepted **365/365** / first red 366. CB16/package84 remains current build/package authority. Stable accounting remains **44 events / 14 categories / 30 recurrences**; debt **5**; packages **81**.
 
-TB13-REV proved the vertex-10 failure was a valid Forward `VertexHit` whose second point is source vertex 11, a corner of face `(8,10,11)`, but `vertex_trace_ray_second_point` had no vertex-exit case. CB16 appends one exact fallback **last** in that Forward chain: recover `SourceVertexSupport` from the next exact boundary point and return the current face's unit barycentric corner. Existing representable exits return earlier and remain unchanged.
+### Independent review scope — BM0-BM7
 
-CB16 also splits the collapsed diagnostic reason. The legacy port/ordinal emitter alone keeps `VertexTracePortOrdinalInvalid`; failure of `vertex_locus_secondary_parameter` now emits `VertexTraceSecondaryParameterUnavailable`, a typed subreason (`TraceRayFaceUnavailable`, `SourceFaceRecordUnavailable`, `LocusCornerUnavailable`, `SecondPointUnavailable`, or `InvalidDenominator`), and arc/trace/orientation/segment bounds. No identity tie-break, tolerance/float topology, fan-slot/edge-locus/incidence/cut change, CB12/CB14/CB15 revert, fixture mutation, finalize/contact repair, 371/372 decoupling, sphere/saturation/370/folded-cone correction, or vertex-30 change occurred.
+Run only `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`:
 
-Accepted authority remains **365/365**. CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **81**.
+1. re-establish package/source/selector and partial-execution evidence;
+2. classify the host-level interruptions without rerunning an identity;
+3. adjudicate whether `[ RUN ]` without organic completion counts as executed under the exact-once/no-rerun contract, and whether the 135 organic observations can carry into a successor ledger;
+4. choose a safe execution plane if more package-84 runtime is authorized;
+5. freeze exactly one recovery model (resume, complete replacement, or minimum policy/plan correction) rather than improvising;
+6. preserve every BL9 semantic obligation and carried surface; no product candidate closes from TB14;
+7. keep stable accounting unchanged unless later valid semantic evidence authorizes a change;
+8. freeze exactly one successor and update `ORIENTATION.md` as required for every REVIEW turn.
 
-### TB14 mandatory discriminators
-
-Run only `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` on immutable package 84:
-
-1. ordinals 1-365 remain **365/365 PASS**;
-2. ordinal 366 no longer reports the TB13 vertex-10 failure through the old ambiguous reason;
-3. any remaining vertex-trace secondary-parameter red is separable by the new typed reason/subreason plus arc/trace/orientation/segment bounds, while `VertexTracePortOrdinalInvalid` means the legacy emitter specifically;
-4. re-prove BK7: old v47 collision absent **and** the full five-ray v47 rotation is published with distinct former-pair secondary ranks;
-5. close `M3-CP4c3-TB11-CAND-01` / `M3-CP4c3-TB12-REV-CAND-01` only on 1+2+4; close the vertex-10 CB16 candidates only on runtime confirmation;
-6. if certification reaches face walking, publish the first legitimate non-disc/admissible counters and exact producing locus/reason.
-
-Execute selector 380 one identity per fresh process from ordinal 1; after the first semantic red the remainder is report-only. Execute `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once separately as non-gating diagnostic. **No vertex-30 discriminator is published.** A semantic red routes to independent REVIEW + PLAN; TB14 makes no correction or unchanged retry.
+**No Directional runtime, benchmark, configure, compile, link, package, product/test/fixture/selector mutation, or unreviewed retry is authorized in `M3-CP4c-3-TB14-REV`.**
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent TEST + BENCHMARK guidance
+- turn-based-coding-agent REVIEW guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — **binding next execution authority**.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — **current package-84/build authority**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — latest runtime authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — BL0-BL9/root-cause authority.
-5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_380.txt` and frozen selector 379.
-6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during the REVIEW turn.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` — **binding BM0-BM7 review scope**.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — orchestration-invalid attempt evidence.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — frozen exact-once/rerun contract being adjudicated.
+4. `.agents/Directional/Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — current package-84/build authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — latest valid runtime authority.
+6. `.agents/Directional/Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — BL0-BL9/root-cause authority.
+7. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
 
-Runtime source authority is entirely inside immutable package 84. Do not rebuild, repair, regenerate selectors, or run binaries from the repository checkout in TB14.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
-`review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and
-`fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
+Do not execute any package-84 identity before BM2/BM4 explicitly authorize the recovery model.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

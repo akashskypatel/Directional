@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB13 remains the latest runtime authority** on immutable package **83** / selector **379**: 371 PASS / 8 RED, accepted **365/365**, first red at source vertex 10 / face `(8,10,11)` under the then-collapsed `VertexTracePortOrdinalInvalid`. TB13-REV proved the failing incidence is a valid Forward `VertexHit` whose second point is vertex 11, exact corner barycentric `(0,0,1)` / parameter 0, and that `vertex_trace_ray_second_point` lacked that final vertex-exit case. **CB16 is now the current build/package authority** at final source `6808c090f2dd229a48550d758f459bfd156da4b6`: it appends the exact source-vertex fallback last, splits the secondary-parameter emitter to `VertexTraceSecondaryParameterUnavailable` with typed subreason plus arc/trace/orientation/segment bounds, preserves the legacy reason for the legacy emitter, and publishes selector **380** (`1a95d328…52a0e4e`) while selector 379 stays byte-frozen. Eight-target GMP/GMPXX compile and immutable package **84** are green and runtime-free. **The v47 five-ray re-proof remains owed**; vertex 30 remains undiscriminated. Exact next is artifact-only **`M3-CP4c-3-TB14`** on package 84 under the frozen TB14 plan. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **81**.
+**Current state (2026-09-02).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB13 remains the latest valid runtime authority** on immutable package **83** / selector **379** at accepted 365/365 and first red 366. **CB16/package84 remains current build/package authority** at source `6808c090f2dd229a48550d758f459bfd156da4b6`, selector 380. TB14 began artifact-only package-84 validation but terminated **ORCHESTRATION INVALID / INCOMPLETE**: 135 organic PASS observations for ordinals `1-129,131-136`; ordinal 130 and later 137 were each interrupted by the surrounding execution host after GoogleTest `[ RUN ]` and before an organic result. Selector 366, selector 380 and the non-gating diagnostic were not reached. Package 84 postflight remains byte/mode-identical. TB14 therefore has no semantic disposition, closes no product candidate, and does not re-prove the 365-prefix. Exact next is independent **`M3-CP4c-3-TB14-REV`** under BM0-BM7 to adjudicate exact-once/retry recovery before any further runtime. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **81**.
 
 These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
 
@@ -48,7 +48,9 @@ These CP4c files remain separate because current or future work depends on their
 - `Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — prior build/package authority: source `71ece3ca…`, immutable package 82, selector 378 diagnostics.
 - `Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — prior build/package authority: source `a2fd98ea…`, immutable package 83, selector 379 exact vertex-locus rank correction.
 - `Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — **current build/package authority**: source `6808c090…`, immutable package 84, selector 380 exact vertex-exit correction and typed split.
-- `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — **binding next execution authority** for package 84 / selector 380.
+- `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — frozen package-84 execution contract; TB14 terminated before satisfying it.
+- `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — **latest attempt evidence / orchestration-invalid**: 135 organic PASS observations, partial ordinals 130/137, immutable postflight, no semantic disposition.
+- `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` — **binding next review authority**, BM0-BM7 exact-once/recovery adjudication.
 - `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB13 execution authority for package 83 / selector 379.
 - `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: 365/365 accepted prefix, moved first red at v10 `VertexTracePortOrdinalInvalid`, complete 379-process remainder and immutable postflight.
 - `Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md` — discharged BK0-BK8 review scope.
@@ -114,7 +116,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB12 is current runtime authority on package 82 / selector 378: ordinal 366 remains `RotationRayOrderKeyCollision`, now with two distinct retained rays (arc 20/trace 6/origin 47 versus arc 23/trace 9/origin 71) sharing the same face/fan slot and `(primary,secondary)=(3,0)`. Exact next is independent `M3-CP4c-3-TB12-REV` under BI0-BI7.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB13 is latest valid runtime authority on package 83 / selector 379, first red 366 at v10. CB16/package84 is current build authority. TB14 terminated orchestration-invalid before ordinal 366; exact next is independent `M3-CP4c-3-TB14-REV` under BM0-BM7.** |
 
 ### 2.1 CP4c-0
 
@@ -745,15 +747,17 @@ The CB1 report's exact bytes remain recoverable from Git history and no current/
 
 After the durable start-of-turn checklist, load:
 
-1. `ORIENTATION.md` — read first.
+1. `ORIENTATION.md` — read first and update during REVIEW.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — **binding next execution authority.**
-5. `Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — **current package-84/build authority.**
-6. `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — latest runtime authority.
-7. `Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — root-cause and BL0-BL9 authority.
-8. `Architecture_M3_CP4c3_Required_Green_Selector_380.txt` and frozen selector 379.
-9. `Regression_Root_Cause_Tracker.md`
-10. this consolidated record only when historical lineage is needed.
+4. `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` — **binding BM0-BM7 review authority.**
+5. `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — orchestration-invalid attempt evidence.
+6. `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — frozen exact-once/rerun contract being adjudicated.
+7. `Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — **current package-84/build authority.**
+8. `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — latest valid runtime authority.
+9. `Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — root-cause and BL0-BL9 authority.
+10. `Regression_Root_Cause_Tracker.md`; this consolidated record only when historical lineage is needed.
 
-**Exact next:** artifact-only **`M3-CP4c-3-TB14`** on immutable package **84** / selector **380**. Follow `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` exactly. Re-prove 1-365 green, confirm vertex 10 clears the old ambiguous path, require typed separation for any remaining secondary-parameter red, and re-prove the full five-ray/distinct-rank v47 conjunction before inherited collision candidates close. No vertex-30 discriminator exists. Any semantic red routes to independent REVIEW + PLAN; TB14 makes no correction or unchanged retry.
+**Exact next:** independent **`M3-CP4c-3-TB14-REV`** under BM0-BM7. No Directional runtime, benchmark, build,
+package, product/test/fixture/selector mutation, unreviewed retry of ordinals 130/137, or silent selector restart is
+authorized before that review resolves the exact-once/retry recovery model.

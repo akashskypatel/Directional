@@ -1,11 +1,20 @@
-## M3-CP4c3-CB16 - exact vertex-exit secondary parameter correction - **CURRENT BUILD AUTHORITY / GREEN / RUNTIME-FREE / NON-STABLE**
+## M3-CP4c3-TB14-ORCH-01 - local execution host interrupts selector processes after semantic start - **ACTIVE / INFRASTRUCTURE / INDEPENDENT REVIEW REQUIRED / NON-STABLE**
+
+- **Declared at `M3-CP4c-3-TB14`.** Immutable package 84 preflight passed. Ordinals 1-129 completed organically PASS; ordinal 130 reached GoogleTest `[ RUN ]` but the outer execution call exceeded its wall-clock allowance before an organic result. A non-duplicating resume produced PASS at 131-136, then the same host failure interrupted ordinal 137 after `[ RUN ]`.
+- **Evidence:** completed ledger 135 PASS / 0 RED for `1-129,131-136`, SHA-256 `61e616cd54b6289ade99b53d111398df857f395ec633658f2bddd502ac933952`; partial ordinal-130/137 logs `cb179f3e…488846` / `8498d801…bc5dbc`. No residual process survived either host termination. Selector 366, selector 380 and the non-gating diagnostic were not reached.
+- **Classification:** orchestration/infrastructure only. Neither partial log has an organic test outcome, so neither is semantic failure evidence. TB14 §3/§8 does not self-authorize a retry after an attempt that already contains completed semantic identities and started-but-nonorganic identities.
+- **Postflight:** package 84 remains byte/mode-identical; 58-file census SHA-256 `95ba3950267a1e145be427b2e1c896204aef7d86bd079d039a63bc0834e8a3e2`; internal manifest reverified.
+- **Owner:** independent `M3-CP4c-3-TB14-REV` BM0-BM7 must adjudicate exact-once/retry semantics and freeze one safe recovery model before any further package-84 runtime.
+- **Accounting:** no semantic red and no accepted-green loss. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, accepted **365/365** from TB13, packages **81**.
+
+## M3-CP4c3-CB16 - exact vertex-exit secondary parameter correction - **CURRENT BUILD AUTHORITY / GREEN / RUNTIME-FREE / RUNTIME VALIDATION BLOCKED BY TB14 ORCHESTRATION / NON-STABLE**
 
 - **Final source:** `6808c090f2dd229a48550d758f459bfd156da4b6`; product correction landed at `a2efc8d10213c86aa9136821cd83bfcb32388f80`, with only the compiled mechanical-witness helper corrected afterward.
 - **Correction:** `vertex_trace_ray_second_point` appends an exact source-vertex corner fallback last in the Forward chain. The former secondary-parameter emitter now uses `VertexTraceSecondaryParameterUnavailable` plus a typed subreason and arc/trace/orientation/segment bounds; legacy `VertexTracePortOrdinalInvalid` remains specific to port lookup/ordinal validation.
 - **Build/package:** eight-target GMP/GMPXX compile `33682499470 / 100422188581` GREEN, result artifact `9866902345`; immutable package **84** GREEN on `33683929335 / 100426817194`, artifact `9867334959`, inner tar `8385a994ebff3e9d3583f95f769e107a73dcec892c7d9073502103a981a40eff`.
 - **Selector:** 379 byte-frozen; selector 380 appends `GlobalTopologyPlan.VertexExitSecondaryParameterUsesExactCornerSupportAndTypedFailure`, SHA-256 `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`. No identity ran in CB16.
-- **Runtime status:** build evidence only. TB14 must confirm vertex 10 clears and re-prove the full v47 five-ray/distinct-rank conjunction before inherited candidates close.
-- **Accounting:** +0 stable events / +0 recurrences. Totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **81**. Exact next: artifact-only `M3-CP4c-3-TB14`.
+- **Runtime status:** build evidence only. Valid package-84 runtime must still confirm vertex 10 clears and re-prove the full v47 five-ray/distinct-rank conjunction before inherited candidates close; TB14 did not reach those discriminators.
+- **Accounting:** +0 stable events / +0 recurrences. Totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **81**. Exact next: independent `M3-CP4c-3-TB14-REV`.
 
 ## M3-CP4c3-TB13-REV - independent review adjudication - **LATEST REVIEW AUTHORITY / STATIC / NON-STABLE**
 
@@ -49,7 +58,7 @@
 - **BJ9:** old v47 `RotationRayOrderKeyCollision` is absent, but ordinal 366 now fails earlier at source vertex **10**, face `(8,10,11)`, `VertexTracePortOrdinalInvalid`, attempt 0 / 0 cut edges, `cutCandidateCount=450`. The v47 five-ray census/former-pair secondary values are not published, so the required closure conjunction is incomplete.
 - **Accounting:** same unaccepted gating surface, **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **80**. Exact owner: independent `M3-CP4c-3-TB13-REV`.
 
-## M3-CP4c3-TB13-REV-CAND-01 - the Forward second-point chain has no case for a vertex exit - **BUILD CORRECTED / AWAITING TB14 RUNTIME / GATING / NON-STABLE**
+## M3-CP4c3-TB13-REV-CAND-01 - the Forward second-point chain has no case for a vertex exit - **BUILD CORRECTED / RUNTIME BLOCKED BY TB14 ORCHESTRATION / GATING / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB13-REV`** from static authority over TB13's runtime evidence.
 - **Mechanism.** `vertex_trace_ray_second_point` locates a Forward ray's second point through four cases:
@@ -63,19 +72,19 @@
 - **Correction.** Append a vertex-exit case **last** in the chain, recovering the vertex identity from existing
   exact authority (`FieldBoundaryPoint::source_support()` on the continuation entry point, or the segment's
   `outgoingCarrier` endpoint the continuation reaches). Last placement makes accepted-safety exact.
-- **Build disposition:** CB16 implements BL1-BL3 at final source `6808c090...`; runtime closure is owned by artifact-only **`M3-CP4c-3-TB14`**.
+- **Build disposition:** CB16 implements BL1-BL3 at final source `6808c090...`; runtime closure remains owed; TB14 terminated orchestration-invalid before the relevant production discriminator, so recovery authority moves to **`M3-CP4c-3-TB14-REV`**.
 - **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
   **44 / 14 / 30**, debt **5**, packages **81**.
 
-## M3-CP4c3-TB13-CAND-01 - `VertexTracePortOrdinalInvalid` conflates the new vertex-10 failure conditions - **BUILD CORRECTED / AWAITING TB14 RUNTIME / GATING / ROOT CAUSE PROVED / NON-STABLE**
+## M3-CP4c3-TB13-CAND-01 - `VertexTracePortOrdinalInvalid` conflates the new vertex-10 failure conditions - **BUILD CORRECTED / RUNTIME BLOCKED BY TB14 ORCHESTRATION / GATING / ROOT CAUSE PROVED / NON-STABLE**
 
 - **Adjudicated at `M3-CP4c-3-TB13-REV`:** the firing emitter is CB15's `vertex_locus_secondary_parameter ==
   nullopt` branch (`:1217`), not the legacy port branch (`:1204`), and the cause is a missing **vertex-exit**
-  case in `vertex_trace_ray_second_point`'s Forward chain. CB16 implements the BL0-BL9 correction and typed split; artifact-only **TB14** owns runtime closure. See `M3-CP4c3-TB13-REV-CAND-01`.
+  case in `vertex_trace_ray_second_point`'s Forward chain. CB16 implements the BL0-BL9 correction and typed split; TB14 did not reach ordinal 366, so runtime closure remains owed under recovery authority **`M3-CP4c-3-TB14-REV`**. See `M3-CP4c3-TB13-REV-CAND-01`.
 
 - **Runtime fact:** ordinal 366 first-red is `RotationSystemInconsistent` at source vertex 10 / face `(8,10,11)`, rendered as `VertexTracePortOrdinalInvalid`, certification attempt 0 / zero cut edges. 367/371/372 share the same upstream exception.
 - **Static ambiguity:** package source assigns that one reason to both (a) missing/negative origin port ordinal and (b) `vertex_locus_secondary_parameter(...) == nullopt`; the latter itself covers multiple exact second-point/face/locus/denominator failure modes. Retained evidence has no arc/trace/orientation or subcondition tag.
-- **Build disposition:** CB16 separates the emitters: `VertexTracePortOrdinalInvalid` is now legacy-only; secondary-parameter failure is `VertexTraceSecondaryParameterUnavailable` with typed subreason and retained incidence fields. TB14 must confirm the production failure no longer appears under the ambiguous path.
+- **Build disposition:** CB16 separates the emitters: `VertexTracePortOrdinalInvalid` is now legacy-only; secondary-parameter failure is `VertexTraceSecondaryParameterUnavailable` with typed subreason and retained incidence fields. A valid package-84 TB must still confirm the production failure no longer appears under the ambiguous path; TB14 did not reach ordinal 366.
 - **Accounting:** non-stable candidate on unaccepted CP4c-3 surface; **+0/+0**, totals remain **44 / 14 / 30**, debt **5**, packages **81**.
 
 ## M3-CP4c3-CB15 - exact vertex-locus within-wedge rank correction - **PRIOR BUILD AUTHORITY / GREEN / RUNTIME-FREE / NON-STABLE**

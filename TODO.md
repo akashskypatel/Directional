@@ -26,50 +26,37 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB14` (Artifact-Only Test + Benchmark)
+## Current focus — `M3-CP4c-3-TB14-REV` (Independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB16` is **COMPLETE / BUILD + PACKAGE GREEN / PRODUCT CORRECTION / RUNTIME-FREE**. Report:
-`Architecture_M3_CP4c3_CB16_Code_Build_Report.md`.
+`M3-CP4c-3-TB14` is **TURN TERMINATED / ORCHESTRATION INVALID / SELECTOR INCOMPLETE / NO SEMANTIC DISPOSITION**.
+Report: `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md`.
 
-CB16 discharged **BL0-BL9** from the TB13 independent review:
+Package 84 preflight and postflight are immutable and valid, but the local execution host interrupted two selector
+processes after they reached GoogleTest `[ RUN ]`: ordinal **130**, then ordinal **137** after a non-duplicating
+resume. Organic completed observations are **135 PASS / 0 RED** for `1-129,131-136`; ordinal 130 and 137 have no
+organic completion. Selector 366, selector 380 and the separate non-gating diagnostic were never reached. Because
+ordinal 130 lies inside the accepted boundary, TB14 does **not** re-prove 1-365 and has no gate disposition.
 
-- final source **`6808c090f2dd229a48550d758f459bfd156da4b6`**;
-- selector **379** remains byte-frozen at `ef51298f…842594b7`; selector **380** appends exactly
-  `GlobalTopologyPlan.VertexExitSecondaryParameterUsesExactCornerSupportAndTypedFailure`, SHA-256
-  `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`;
-- `vertex_trace_ray_second_point` adds the exact source-vertex corner fallback **last** in the Forward chain;
-- the secondary-parameter emitter now uses `VertexTraceSecondaryParameterUnavailable` plus a typed subreason and
-  retained arc/trace/orientation/segment bounds; the legacy port emitter alone retains `VertexTracePortOrdinalInvalid`;
-- the eight standard targets compile and link GREEN with mandatory GMP/GMPXX on run/job
-  `33682499470 / 100422188581`, artifact `9866902345`;
-- immutable package **84** was produced GREEN on run/job `33683929335 / 100426817194`, artifact `9867334959`,
-  inner tar SHA-256 `8385a994ebff3e9d3583f95f769e107a73dcec892c7d9073502103a981a40eff`;
-- no Directional runtime identity or benchmark ran in CB16.
-
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **81**.
+Accepted authority therefore remains **365/365 from TB13**; CP4c-3 remains **OPEN**. Stable accounting remains **44
+events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic package count **81**. CB16/package84
+remains current build authority; TB13 remains latest valid runtime authority.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB14`** exactly under
-`Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` on immutable package 84.
+Run independent **`M3-CP4c-3-TB14-REV`** exactly under BM0-BM7 of
+`Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`.
 
-- [ ] Verify immutable package/source/GMP/selector-380/prefix/mode authority before runtime.
-- [ ] Execute selector 380 from ordinal 1, one exact identity per fresh process; first semantic red stops gate
-      credit but the remainder still runs once report-only.
-- [ ] Re-prove accepted ordinals **1-365 = 365/365 PASS**.
-- [ ] Prove ordinal 366 no longer fails at vertex 10 through the old ambiguous reason.
-- [ ] If a vertex-trace secondary-parameter red remains, require the new typed reason/subreason and retained
-      arc/trace/orientation/segment bounds; `VertexTracePortOrdinalInvalid` now identifies the legacy emitter only.
-- [ ] Re-prove the **v47 five-ray conjunction**: old collision absent and the former pair has distinct secondary
-      ranks. `M3-CP4c3-TB11-CAND-01` / `M3-CP4c3-TB12-REV-CAND-01` do not close without it.
-- [ ] Execute `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once as non-gating diagnostic.
-- [ ] Record any legitimate face-walk non-disc/admissible counters if downstream certification is reached.
-- [ ] Update every observed regression/candidate, verify byte/mode-identical postflight, then route green to
-      checkpoint closure or red to independent REVIEW + PLAN.
+- [ ] Re-establish immutable package/source/selector, completed-ledger and partial-log evidence.
+- [ ] Classify the host interruptions without rerunning any identity.
+- [ ] Adjudicate exact-once/no-rerun semantics for ordinals 130/137 and whether completed observations may carry.
+- [ ] Choose a safe execution plane for any future package-84 runtime.
+- [ ] Freeze exactly one recovery model or the minimum policy/plan correction needed before runtime.
+- [ ] Preserve all six BL9 discriminators; no CB15/CB16 product candidate closes from the incomplete TB14 attempt.
+- [ ] Keep sphere 368, saturation 369, ordinal 370, 371/372 coupling, folded-cone 374, vertex 30 and finalize/contact under existing owners.
+- [ ] Update `ORIENTATION.md` and freeze exactly one bounded successor; REVIEW executes no runtime/build/mutation.
 
-**No vertex-30 discriminator is authorized.** Sphere 368, saturation 369, ordinal 370, the 371/372 coupling,
-folded-cone 374, vertex 30 and finalize/contact remain separate carried surfaces unless TB14 produces new evidence.
+**No unchanged TB14 retry, no retry of ordinals 130/137, and no additional selector execution is authorized before
+that review.**
 
 ## Carried forward from M1
 
@@ -106,7 +93,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB13 is the latest runtime authority at accepted prefix 365 / first red 366, now moved to vertex 10 `VertexTracePortOrdinalInvalid`. CB16/package84 is current build authority; TB13 remains latest runtime authority. Exact next is artifact-only `M3-CP4c-3-TB14`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB13 is the latest runtime authority at accepted prefix 365 / first red 366, now moved to vertex 10 `VertexTracePortOrdinalInvalid`. CB16/package84 is current build authority; TB13 remains latest valid runtime authority. TB14 terminated orchestration-invalid before ordinal 366 and has no semantic disposition. Exact next is independent `M3-CP4c-3-TB14-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -116,7 +103,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — CB16 build correction awaits TB14 runtime:** TB13's accepted prefix remains 365/365 and its first red is the vertex-10 `VertexTracePortOrdinalInvalid` failure. TB13-REV proved the missing vertex-exit case and reason collapse; CB16 implements the exact last-chain vertex-corner fallback and splits the secondary-parameter reason, but no runtime acceptance is claimed. TB14 must confirm vertex 10 clears, re-prove the full five-ray/distinct-rank v47 conjunction, and classify the next frontier. `M3-CP4c3-TB13-CAND-01` and `M3-CP4c3-TB13-REV-CAND-01` remain runtime-open until that evidence exists. Vertex 30 and finalize/contact remain separate and untouched.
+- [ ] **CP4c-3 criterion C2 — CB16 build correction awaits valid package-84 runtime after TB14 orchestration review:** TB13's accepted prefix remains 365/365 and its first red is the vertex-10 `VertexTracePortOrdinalInvalid` failure. TB13-REV proved the missing vertex-exit case and reason collapse; CB16 implements the exact last-chain vertex-corner fallback and splits the secondary-parameter reason, but no runtime acceptance is claimed. TB14 must confirm vertex 10 clears, re-prove the full five-ray/distinct-rank v47 conjunction, and classify the next frontier. `M3-CP4c3-TB13-CAND-01` and `M3-CP4c3-TB13-REV-CAND-01` remain runtime-open until that evidence exists. Vertex 30 and finalize/contact remain separate and untouched.
 - [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. Amendment 15's barrier-cycle and Euler-cut contracts have been unmeasured from TB2 through TB10 for a reason unrelated to either. Corrective is test-only (an atlas-scoped fixture accessor, assertions byte-unchanged); deferred because clearing ordinal 366 unblocks them automatically. `M3-CP4c3-TB10-REV-CAND-01`.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
@@ -143,4 +130,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **81**. CB16 is COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE; exact next is artifact-only `M3-CP4c-3-TB14` on immutable package 84. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **81**. CB16 remains current BUILD + PACKAGE GREEN / RUNTIME-FREE authority; TB13 remains latest valid runtime authority. TB14 terminated orchestration-invalid/incomplete with no semantic disposition. Exact next is independent `M3-CP4c-3-TB14-REV`. PR #8 remains open, draft, and unmerged.
