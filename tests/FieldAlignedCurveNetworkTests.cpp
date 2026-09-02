@@ -9989,7 +9989,8 @@ TEST(GlobalTopologyPlan,
   // Regression producer proof: the exact mechanical attempt-0 graph that
   // failed at vertex 10 in TB13 must now publish a complete rotation system.
   const Cp4cProductionFixture mechanical =
-      observe_cp4c_witness("mechanical_feature", "mechanical feature");
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
   ASSERT_TRUE(mechanical.sourceAuthority.has_value()) << mechanical.loadError;
   ASSERT_TRUE(mechanical.network.has_value()) << mechanical.terminalFailureCode;
   const auto mechanicalTopology = embedded::build_source_index(
