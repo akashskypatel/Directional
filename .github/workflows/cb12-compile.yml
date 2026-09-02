@@ -1,0 +1,35 @@
+name: CB12 Compile Only
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb12-compile.txt
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: directional-cb12-compile
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb12-compile
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
+    with:
+      source_sha: a3b6f1a41feaa8a115faf11de52f85ce4cc42a15
+      artifact_prefix: m3-cp4c3-cb12-compile
+    secrets: inherit
