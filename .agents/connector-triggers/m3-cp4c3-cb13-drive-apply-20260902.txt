@@ -1,0 +1,3 @@
+purpose=apply M3-CP4c-3-CB13 preserved patch
+patch_sha256=2b8aaa4f12b247356c8617ad1eb01b33e69f1830bb2c8923a108c3ea65c4b385
+base_sha=5b0f3e5e4b12b43b4d06dfedfc63bacf6eff407d
