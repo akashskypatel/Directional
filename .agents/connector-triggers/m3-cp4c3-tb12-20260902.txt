@@ -1,0 +1,5 @@
+turn=M3-CP4c-3-TB12
+package_artifact=9855841174
+selector=378
+workflow=.github/workflows/m3-cp4c3-tb12.yml
+control=.agents/Directional/turn-payloads/m3-cp4c3-tb12.sh
