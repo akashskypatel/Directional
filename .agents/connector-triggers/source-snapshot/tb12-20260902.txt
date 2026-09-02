@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-TB12
-purpose=exact source snapshot for artifact-only TB12
-initial_head=d83b0d7ce906065b594dee28a32cc567fdfa1c72

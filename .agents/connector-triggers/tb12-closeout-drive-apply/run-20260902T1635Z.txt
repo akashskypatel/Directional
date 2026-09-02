@@ -1,5 +1,0 @@
-turn=M3-CP4c-3-TB12
-purpose=apply durable TB12 closeout documentation patch
-base_sha=151a89fa0c2e2dbc63abed24659f3792631f5a99
-patch_sha256=4de03d7aa181c119a0b16d862b2dbca04d0b02e46814652c1dae3c57c1d40887
-file_id=1qj3Nf4nkcKRwNJ7VZ7Z_A0SGnY3MVZ0H
