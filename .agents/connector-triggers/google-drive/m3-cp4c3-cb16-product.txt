@@ -1,0 +1,5 @@
+purpose=M3-CP4c-3-CB16 verified product patch apply
+base_sha=9a55fbafeeb47457272a42026aea34760434d3f5
+drive_file_id=12ppndXizlrZNe5vpcV0-wwMhyeN3Uzyq
+patch_sha256=3fdebffc70ea459a800e09deb6a5e3115c68fef303384ecc3f502d4663d542a6
+retry=0
