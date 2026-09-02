@@ -1,0 +1,3 @@
+M3-CP4c-3-TB10 prepublication validation
+candidate=.agents/Directional/turn-payloads/tb10-candidate.yml
+attempt=1
