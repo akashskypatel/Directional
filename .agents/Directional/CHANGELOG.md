@@ -1,3 +1,29 @@
+## 2026-09-02 — `M3-CP4c-3-TB9`: terminal-ownership site discriminated to singularity termination
+
+Artifact-only Test + Benchmark on immutable package **79** / semantic source
+`803300698289e0d0f629eaa878add1aebc7193c1`. Authoritative run/job **`33575920177 / 100079784804`**; result
+artifact `9826689980` (`abea3172c6515bbf5b6fdede5abe96ae6086724299d014201ce3ff020016b68d`); log artifact
+`9826690247` (`c92be7d59ecfb963eb225099737ed99efcb169244bfaa4c9519a1a98967cd648`). Preflight/postflight PASS and
+all build/repair/discovery/mutation/benchmark controls remained false.
+
+Ordinals **1–365 remain 365/365 PASS**. Ordinal **366** remains first red at the same coarse
+`InvalidNetworkTerminalOwnership` locus (`sourceEdge=36-38;sourceFace=36,38,39;branch=2`) but now publishes exactly
+one typed condition: **`SingularityTerminationPortOwnershipMismatch`**. Production trace provenance identifies seed
+vertex **47**, singularity **5**, and five exact branch-2 history rows ending at `(36,38,39)`, with
+`traceHistoryTruncated=false`. This resolves TB8's two-site ambiguity to the singularity-termination ownership site and
+excludes the finalize/contact fall-through as the ordinal-366 emitter. The old `publishedFaceCount` token is gone; no
+`publishedFaces` token appears because the actual sparse collection is empty.
+
+Report-only 367–375 executes **2 PASS / 7 RED** with zero gate credit: 373 and 375 pass; 367/371/372 share the same
+mechanical ownership blocker; sphere 368, saturation 369, genuine empty-network 370, and pre-classified folded-cone
+374 preserve prior dispositions. Diagnostic identity **376 PASSes**, runtime-proving CB11's production projection and
+site discriminator. `M3-CP4c3-TB8-REV-CAND-01` is now **CLOSED / RUNTIME PROVED**;
+`M3-CP4c3-TB8-CAND-01` remains **ACTIVE / GATING** at the named singularity-terminal site.
+
+Accepted authority remains **365/365**; CP4c-3 remains OPEN; stable accounting remains **44 / 14 / 30**, debt **5**,
+semantic packages **76**. Exact successor is independent **`M3-CP4c-3-TB9-REV`** under BC0–BC7. TB9 authorizes no
+product correction.
+
 ## 2026-09-02 — `M3-CP4c-3-CB11`: terminal-ownership diagnostics projected; package 79 frozen for TB9
 
 Code + Build only under `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` **BB0–BB9**, diagnostic-only.

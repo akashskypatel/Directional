@@ -26,42 +26,43 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB9` (Test + Benchmark, ARTIFACT-ONLY)
+## Current focus — `M3-CP4c-3-TB9-REV` (Independent REVIEW + PLAN)
 
-`M3-CP4c-3-CB11` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Report:
-`Architecture_M3_CP4c3_CB11_Code_Build_Report.md`. Final semantic/evidence source is
-`803300698289e0d0f629eaa878add1aebc7193c1`; immutable package **79** is artifact `9826005253` from run/job
-`33574167362 / 100074416093`. No Directional runtime executed during CB11.
+`M3-CP4c-3-TB9` is **COMPLETE / VALID SEMANTIC RED / FIRST RED 366 / SITE DISCRIMINATED**. Report:
+`Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md`. Review scope:
+`Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` (**BC0–BC7**).
 
-CB11 discharged the frozen TB8-REV **BB0–BB9** scope without changing tracing/election/ownership/termination
-semantics:
+Immutable TB9 authority: package **79** / semantic source `803300698289e0d0f629eaa878add1aebc7193c1`; TB9 run/job
+`33575920177 / 100079784804`; result artifact `9826689980`
+(`abea3172c6515bbf5b6fdede5abe96ae6086724299d014201ce3ff020016b68d`); log artifact `9826690247`
+(`c92be7d59ecfb963eb225099737ed99efcb169244bfaa4c9519a1a98967cd648`). Preflight/postflight PASS.
 
-- [x] **BB0** — selectors 374/375 remain byte-frozen; accepted 365 untouched; authoritative compile linked GMP/GMPXX.
-- [x] **BB1** — trace-scoped error state is projected/rendered through the production failure DTO/path with bounded
-      `traceHistory` and explicit truncation state; exact values remain exact strings.
-- [x] **BB2** — all twelve `InvalidNetworkTerminalOwnership` emission conditions carry a distinct typed per-site
-      discriminator; the existing error enum is unchanged.
-- [x] **BB3** — `publishedFaces` now carries actual published-face authority and its count is no longer an unassigned
-      default.
-- [x] **BB4** — the projection audit used the missing-counterpart predicate, covered `publishedEdges`, and re-aimed
-      ordinal 329's losslessness guarantee at the production renderer. `M3-CP4c3-TB8-REV-CAND-01` is closed at the
-      implementation/build boundary; runtime identity 376 remains to execute in TB9.
-- [x] **BB5** — both statically surviving ownership sites have production-renderer witness coverage with distinct
-      typed conditions.
-- [x] **BB6** — selector **376** appended only for that demonstrated diagnostic gap; SHA-256
-      `6ab2d9fad0327e00bb2f782741afffe8a0ae08c08df8adbdf9accc6234bfa5e8`; selector 375 is its unchanged prefix.
-- [x] **BB7** — the `terminalContact` fall-through is diagnosed, not repaired; no prohibited semantic/fixture change.
-- [x] **BB8** — accepted/frozen selector bytes are unchanged; CB11 changes are diagnostic/witness-only.
-- [x] **BB9** — the five TB9 runtime discriminators are frozen in
-      `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md`.
+Runtime result:
+
+- [x] ordinals **1–365 = 365/365 PASS**;
+- [x] ordinal **366** remains first red at `InvalidNetworkTerminalOwnership`, edge `36-38`, face `(36,38,39)`,
+      branch 2;
+- [x] the production condition is exactly **`SingularityTerminationPortOwnershipMismatch`**, selecting the
+      singularity-termination site and excluding the finalize/contact fall-through as this emitter;
+- [x] trace provenance is `traceSeedVertex=47`, `traceSeedSingularity=5`, five exact branch-2 history rows,
+      `traceHistoryTruncated=false`;
+- [x] the old misleading `publishedFaceCount` is gone; no `publishedFaces` token appears because the actual collection
+      is empty;
+- [x] report-only 367–375 = **2 PASS / 7 RED**, zero gate credit; 373 and 375 PASS; prior sphere/saturation/370/374
+      dispositions are unchanged;
+- [x] diagnostic identity **376 PASS**, zero gate credit, runtime-proving the CB11 production projection/discriminator.
+
+`M3-CP4c3-TB8-REV-CAND-01` is **CLOSED / RUNTIME PROVED**. `M3-CP4c3-TB8-CAND-01` remains **ACTIVE / GATING**,
+now localized to the singularity-termination ownership site. TB9 does **not** prove which internal guard disjunct
+(support type, missing port, or source-vertex mismatch) is wrong; that is the review's first reconstruction task.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB9`** artifact-only against immutable package **79**, selector **376 from ordinal 1**. Re-prove
-1–365, preserve the ordinal-366 coarse locus if it remains red, require exactly one typed survivor-site condition plus
-trace provenance and honest published-face count, execute the authorized zero-credit remainder and diagnostic 376,
-then perform immutable postflight. **No product correction is authorized in TB9.** A valid semantic result routes to
-independent `M3-CP4c-3-TB9-REV`.
+Run independent **`M3-CP4c-3-TB9-REV`** under BC0–BC7, static only. Re-establish immutable evidence, reconstruct the
+seed-47/singularity-5 terminal state and candidate port authority, identify the exact failing guard disjunct, classify
+product/witness/residual-diagnostic ownership, preserve all independently owned report-only debt, reconcile
+regression/accounting state, update `ORIENTATION.md`, and freeze exactly one bounded successor. No runtime, build,
+product correction, fixture/selector mutation, or unchanged TB retry is authorized in the review.
 
 Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **76**.
@@ -101,7 +102,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB8 remains the current runtime authority at accepted prefix 365 with ordinal 366 red. CB11 is build-green on source `803300…` and froze package 79 plus selector 376 for site discrimination. Exact next is artifact-only `M3-CP4c-3-TB9`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB9 is current runtime authority at accepted prefix 365, first red 366, now naming `SingularityTerminationPortOwnershipMismatch` at seed vertex 47 / singularity 5. Exact next is independent `M3-CP4c-3-TB9-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -111,7 +112,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — terminal-ownership site discrimination:** TB8 first-reds at `InvalidNetworkTerminalOwnership`, source edge `36-38`, source face `(36,38,39)`, branch 2. TB8-REV proved exactly two possible emission sites; CB11 added typed site/trace production diagnostics without repairing either owner. TB9 must name the firing site before `TB9-REV` can authorize a product correction. Vertex 30 remains unreached and its row-209/row-208 owner acceptance remains open. No candidate-order, tolerance, float-transport, `signedLift`-as-ray, or target-representative shortcut.
+- [ ] **CP4c-3 criterion C2 — singularity-terminal ownership:** TB9 first-red 366 retains `InvalidNetworkTerminalOwnership` at edge `36-38`, face `(36,38,39)`, branch 2, and now names `networkErrorCondition=SingularityTerminationPortOwnershipMismatch`, seed vertex 47 / singularity 5, with five exact untruncated history rows. TB9-REV must determine which internal support/missing-port/source-vertex guard disjunct fires and who owns the invariant before any correction. The finalize/contact fall-through is excluded as this first-red emitter but is not thereby accepted. Vertex 30 remains unreached and row-209/row-208 acceptance remains open. No candidate-order, tolerance, float-transport, `signedLift`-as-ray, or target-representative shortcut.
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
 - [ ] **Prescribed sphere A2a′ upstream error:** ordinal 368 is now repeatedly measured report-only at `RotationSystemInconsistent → TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. AL4 still forbids a sphere semantic fix until separately reviewed.
 - [ ] `G4-B001 / PR8-R034 / G4-R007`: direct torus final `LocalSheetMismatch`; downstream of A2b and not a CP4c witness collision.
@@ -136,4 +137,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **75** after CB10/package 78; TB8 created no package. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **76** after CB11/package 79; TB9 created no package. PR #8 remains open, draft, and unmerged.

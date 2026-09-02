@@ -1,3 +1,25 @@
+## M3-CP4c3-TB9 — artifact-only site discrimination — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package 79 / semantic source `803300698289e0d0f629eaa878add1aebc7193c1`; run/job
+  `33575920177 / 100079784804`; result artifact `9826689980`
+  (`abea3172c6515bbf5b6fdede5abe96ae6086724299d014201ce3ff020016b68d`); log artifact `9826690247`
+  (`c92be7d59ecfb963eb225099737ed99efcb169244bfaa4c9519a1a98967cd648`).
+- **Gate:** ordinals **1–365 PASS**; ordinal **366 RED** at unchanged coarse
+  `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2`, now with exactly one typed
+  condition: **`SingularityTerminationPortOwnershipMismatch`**. Trace seed is vertex **47** / singularity **5**;
+  five exact branch-2 history rows are published and untruncated. This selects the singularity-termination site and
+  excludes the finalize/contact fall-through as this emitter.
+- **Published-face honesty:** `publishedFaceCount` is gone; no `publishedFaces` token appears because the actual
+  published-face collection is empty under the CB11 sparse renderer.
+- **Remainder:** ordinals 367–375 report-only = **2 PASS / 7 RED**. 367/371/372 share the mechanical ownership
+  blocker; 368 sphere, 369 saturation, 370 empty-network, and 374 folded-cone dispositions are unchanged; 373/375
+  pass. Diagnostic **376 PASSes**, runtime-proving the production condition/trace projection.
+- **Immutable boundary:** pre/postflight PASS; no configure/compile/relink/repair/generated discovery/product/test/
+  fixture/selector mutation or benchmark.
+- **Accounting:** accepted authority stays **365/365**, CP4c-3 remains unaccepted; **+0 events / +0 recurrences**.
+  Totals remain **44 / 14 / 30**, debt **5**, semantic packages **76**.
+- **Owner:** independent `M3-CP4c-3-TB9-REV`; no unchanged TB retry or semantic correction before review.
+
 ## M3-CP4c3-CB11 — diagnostic production-projection correction — **COMPLETE / COMPILE-PROVED / NON-STABLE**
 
 - **Authority:** final semantic/evidence source `803300698289e0d0f629eaa878add1aebc7193c1`; compile run/job
@@ -49,7 +71,7 @@
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
   remain **44 / 14 / 30**, debt **5**, packages **75**.
 
-## M3-CP4c3-TB8-REV-CAND-01 - trace-scoped diagnostics were dropped by production projection and the losslessness identity targeted the wrong renderer - **CLOSED / COMPILE-PROVED / NON-STABLE**
+## M3-CP4c3-TB8-REV-CAND-01 - trace-scoped diagnostics were dropped by production projection and the losslessness identity targeted the wrong renderer - **CLOSED / RUNTIME PROVED / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB8-REV`; corrected by `M3-CP4c-3-CB11`.** The review proved that the trace-scoped
   `FieldAlignedCurveNetworkError` fields had no production DTO counterpart/reader and that accepted ordinal 329
@@ -60,11 +82,8 @@
   production-path losslessness identity and two surviving-site witnesses compile in the authoritative test targets.
 - **Build proof:** exact source `803300698289e0d0f629eaa878add1aebc7193c1` compiled all required targets with
   GMP/GMPXX in run/job `33573956609 / 100073749252`. Package 79 preserves selector 376 and the production binaries.
-- **Runtime boundary:** this closes the implementation/projection defect, not its runtime exercise. Identity 376 must
-  execute artifact-only in TB9. Any missing/ambiguous production site discriminator there reopens this candidate as
-  runtime falsification rather than licensing an inference.
-- **Accounting:** correction on an unaccepted surface and no runtime in CB11. **+0 events / +0 recurrences**; totals
-  remain **44 / 14 / 30**, debt **5**, packages **76**.
+- **Runtime proof:** TB9 ordinal 366 publishes exactly `networkErrorCondition=SingularityTerminationPortOwnershipMismatch` plus seed vertex 47 / singularity 5 and bounded exact history through the production renderer; diagnostic identity 376 PASSes in a fresh process. The projection/discriminator gap is therefore runtime-closed.
+- **Accounting:** runtime closure is on an unaccepted surface with no accepted-green loss. **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **76**.
 
 ## M3-CP4c3-TB8 — artifact-only semantic disposition — **COMPLETE / VALID SEMANTIC RED / NON-STABLE**
 
@@ -89,27 +108,25 @@
   recurrences**; totals remain **44 / 14 / 30**, debt **5**, semantic packages **75**.
 - **Owner:** independent `M3-CP4c-3-TB8-REV`; no unchanged TB retry or semantic correction before review.
 
-## M3-CP4c3-TB8-CAND-01 - network terminal ownership invalid after the mechanical path clears vertex 11 - **ACTIVE / GATING / ADJUDICATED AT TB8-REV / NON-STABLE**
+## M3-CP4c3-TB8-CAND-01 - mechanical singularity termination fails terminal port ownership - **ACTIVE / GATING / SITE DISCRIMINATED AT TB9 / NON-STABLE**
 
-- **Observed:** authoritative TB8 ordinal 366 fails at
-  `InvalidNetworkTerminalOwnership;sourceEdge=36-38;sourceFace=36,38,39;branch=2;publishedFaceCount=0`.
-  Report-only ordinals 367/371/372 are blocked by the same locus.
-- **Adjudicated at `M3-CP4c-3-TB8-REV` as BA2 category 3 - diagnostic insufficiency over a proved two-element
-  candidate set.** This is later than TB7's seed-admissibility stop and is not a repeat of that mechanism; the
-  rendered field order proves it is not a vertex-star transit failure at all.
-- **What is now proved.** Ten of the twelve `InvalidNetworkTerminalOwnership` emission sites are eliminated: eight
-  cannot populate `sourceEdge` + `sourceFace` + `branch` together, and `:3132` / `:3879` require the edge to be a
-  `terminalBarrier`, which edge `36-38` cannot be (exactly 0 degree dihedral inside a 50-face coplanar patch;
-  barriers are a subset of hard feature edges). The survivors are `:1900` and `:3920`, with **different owners** -
-  singularity port ownership versus a missing `terminalContact` branch in `finalize_field_aligned_events`.
-- **What is still not proved, and why it cannot be from this artifact.** Which of the two fired. They emit the same
-  code with the same three populated fields and the same three absent ones, and every field that would separate
-  them is dropped at the pipeline projection - see `M3-CP4c3-TB8-REV-CAND-01`.
-- **Owner:** **`M3-CP4c-3-TB9`** now owns runtime site discrimination on immutable package 79; then
-  `M3-CP4c-3-TB9-REV` owns any product-correction plan once TB9 names the site. **No product correction is authorized
-  before then.**
-- **Accounting:** gating on an unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain
-  **44 / 14 / 30**, debt **5**, packages **75**.
+- **TB8 origin:** ordinal 366 exposed `InvalidNetworkTerminalOwnership` at edge `36-38`, face `(36,38,39)`, branch
+  2. TB8-REV eliminated ten of twelve producer sites and proved only singularity termination versus finalize/contact
+  remained possible; package 78 could not distinguish them.
+- **TB9 discrimination:** package 79 ordinal 366 reproduces the same coarse locus and adds exactly
+  `networkErrorCondition=SingularityTerminationPortOwnershipMismatch`, `traceSeedVertex=47`,
+  `traceSeedSingularity=5`, `traceHistoryCount=5`, `traceHistoryTruncated=false`. The history is branch 2 through
+  `(45,46,47) → (43,44,45) → (41,42,43) → (39,40,41) → (36,38,39)`, each exact entry parameter `1/1`.
+  The finalize/contact fall-through is therefore **excluded as the first-red emitter**.
+- **Remaining unknown:** the named site combines three guard alternatives: terminal support is not a source vertex, no
+  candidate singularity port matches the terminal singularity, or the matched port's source vertex differs from the
+  terminal support. TB9 does not by itself prove which disjunct fires or whether its owner is product, witness, or a
+  residual diagnostic gap.
+- **Owner:** **`M3-CP4c-3-TB9-REV`** must reconstruct the terminal object, candidate port set/policy, and exact guard
+  disjunct before freezing one correction. No correction to the unobserved finalize/contact site is authorized merely
+  because TB9 excluded it here.
+- **Accounting:** gating on an unaccepted CP4c-3 surface; **+0 events / +0 recurrences**. Totals remain **44 / 14 /
+  30**, debt **5**, packages **76**.
 
 ## M3-CP4c3-TB8-CLOSURE — CB10 radial-arrival and diagnostic-consumer corrections — **RUNTIME PROVED / NON-STABLE**
 
