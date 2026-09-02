@@ -1,0 +1,6 @@
+# M3-CP4c-3-TB13 final temporary-state cleanup
+.agents/connector-triggers/source-snapshot/web-dbe367a4dc046a7c21e2831a0541511f823d6335.txt
+.agents/connector-triggers/m3-cp4c3-tb13-20260902.txt
+.agents/connector-triggers/tb13-doc-apply
+.agents/Directional/turn-payloads/m3-cp4c3-tb13.sh
+.agents/Directional/turn-payloads/m3-cp4c3-tb13.py
