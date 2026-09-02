@@ -419,6 +419,17 @@ project_surface_cut_graph_failure_locus(
     locus.rotationSystemInconsistencyReason =
         geometry::rotation_system_inconsistency_reason_name(
             *error.originatingRotationSystemInconsistencyReason);
+  if (error.vertexTraceSecondaryParameterFailureReason.has_value())
+    locus.vertexTraceSecondaryParameterFailureReason =
+        geometry::vertex_trace_secondary_parameter_failure_reason_name(
+            *error.vertexTraceSecondaryParameterFailureReason);
+  if (error.rotationTraceOrientation.has_value())
+    locus.rotationTraceOrientation =
+        *error.rotationTraceOrientation == authority::Orientation::Forward
+            ? "Forward"
+            : "Reverse";
+  locus.traceFirstSegment = error.traceFirstSegment;
+  locus.traceOnePastLastSegment = error.traceOnePastLastSegment;
   if (error.arc.has_value()) locus.arc = error.arc->index();
   if (error.secondArc.has_value()) locus.secondArc = error.secondArc->index();
   if (error.trace.has_value()) locus.trace = error.trace->index();
@@ -6967,6 +6978,11 @@ remesh_from_raw_cross_field_impl_with_stage_products(
       projected.secondTrace = error.secondTrace;
       projected.originatingRotationSystemInconsistencyReason =
           error.rotationSystemInconsistencyReason;
+      projected.vertexTraceSecondaryParameterFailureReason =
+          error.vertexTraceSecondaryParameterFailureReason;
+      projected.rotationTraceOrientation = error.rotationTraceOrientation;
+      projected.traceFirstSegment = error.traceFirstSegment;
+      projected.traceOnePastLastSegment = error.traceOnePastLastSegment;
       projected.rotationPreviousRay = error.rotationPreviousRay;
       projected.rotationCurrentRay = error.rotationCurrentRay;
       projected.rotationFanCensus = error.rotationFanCensus;

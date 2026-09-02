@@ -2271,6 +2271,25 @@ const char *rotation_system_inconsistency_reason_name(
     return "CandidateRotationSystemMismatch";
   case RotationSystemInconsistencyReason::RotationVertexTraceRaysExactlyCoincident:
     return "RotationVertexTraceRaysExactlyCoincident";
+  case RotationSystemInconsistencyReason::VertexTraceSecondaryParameterUnavailable:
+    return "VertexTraceSecondaryParameterUnavailable";
+  }
+  return "Unknown";
+}
+
+const char *vertex_trace_secondary_parameter_failure_reason_name(
+    const VertexTraceSecondaryParameterFailureReason reason) noexcept {
+  switch (reason) {
+  case VertexTraceSecondaryParameterFailureReason::TraceRayFaceUnavailable:
+    return "TraceRayFaceUnavailable";
+  case VertexTraceSecondaryParameterFailureReason::SourceFaceRecordUnavailable:
+    return "SourceFaceRecordUnavailable";
+  case VertexTraceSecondaryParameterFailureReason::LocusCornerUnavailable:
+    return "LocusCornerUnavailable";
+  case VertexTraceSecondaryParameterFailureReason::SecondPointUnavailable:
+    return "SecondPointUnavailable";
+  case VertexTraceSecondaryParameterFailureReason::InvalidDenominator:
+    return "InvalidDenominator";
   }
   return "Unknown";
 }

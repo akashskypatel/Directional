@@ -148,6 +148,10 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> topologyRegion;
   std::string networkErrorCondition;
   std::string rotationSystemInconsistencyReason;
+  std::string vertexTraceSecondaryParameterFailureReason;
+  std::string rotationTraceOrientation;
+  std::optional<std::size_t> traceFirstSegment;
+  std::optional<std::size_t> traceOnePastLastSegment;
   std::optional<std::size_t> arc;
   std::optional<std::size_t> secondArc;
   std::optional<std::size_t> trace;

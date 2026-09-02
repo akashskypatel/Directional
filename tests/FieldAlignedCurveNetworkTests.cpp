@@ -3467,6 +3467,15 @@ void append_cp4c_failure_locus(
   if (!locus.rotationSystemInconsistencyReason.empty())
     report << ";rotationSystemReason="
            << locus.rotationSystemInconsistencyReason;
+  if (!locus.vertexTraceSecondaryParameterFailureReason.empty())
+    report << ";vertexTraceSecondaryFailure="
+           << locus.vertexTraceSecondaryParameterFailureReason;
+  if (!locus.rotationTraceOrientation.empty())
+    report << ";rotationTraceOrientation=" << locus.rotationTraceOrientation;
+  if (locus.traceFirstSegment.has_value())
+    report << ";traceFirstSegment=" << *locus.traceFirstSegment;
+  if (locus.traceOnePastLastSegment.has_value())
+    report << ";traceOnePastLastSegment=" << *locus.traceOnePastLastSegment;
   if (locus.arc.has_value()) report << ";arc=" << *locus.arc;
   if (locus.secondArc.has_value()) report << ";secondArc=" << *locus.secondArc;
   if (locus.trace.has_value()) report << ";trace=" << *locus.trace;
@@ -5049,6 +5058,23 @@ void append_plan_error(std::ostringstream &stream,
            << directional::geometry::rotation_system_inconsistency_reason_name(
                   *error.rotationSystemInconsistencyReason);
   }
+  if (error.vertexTraceSecondaryParameterFailureReason.has_value()) {
+    stream << ";vertexTraceSecondaryFailure="
+           << directional::geometry::
+                  vertex_trace_secondary_parameter_failure_reason_name(
+                      *error.vertexTraceSecondaryParameterFailureReason);
+  }
+  if (error.rotationTraceOrientation.has_value()) {
+    stream << ";rotationTraceOrientation="
+           << (*error.rotationTraceOrientation ==
+                       directional::authority::Orientation::Forward
+                   ? "Forward"
+                   : "Reverse");
+  }
+  if (error.traceFirstSegment.has_value())
+    stream << ";traceFirstSegment=" << *error.traceFirstSegment;
+  if (error.traceOnePastLastSegment.has_value())
+    stream << ";traceOnePastLastSegment=" << *error.traceOnePastLastSegment;
   const auto append_plan_ray = [&](
       const char *label,
       const directional::geometry::RotationRayOrderDiagnostic &ray) {
@@ -9827,6 +9853,184 @@ TEST(GlobalTopologyPlan,
   // currently-passing rotation.
   EXPECT_EQ(std::vector<std::size_t>({0U}),
             embedded::vertex_trace_secondary_ranks({*nearEndParameter}));
+}
+
+TEST(GlobalTopologyPlan,
+     VertexExitSecondaryParameterUsesExactCornerSupportAndTypedFailure) {
+  using directional::authority::FieldBranch;
+  using directional::authority::NetworkArcId;
+  using directional::authority::NetworkNodeId;
+  using directional::authority::Orientation;
+  using directional::authority::SourceComponentId;
+  using directional::authority::TopologyRegionId;
+  using directional::authority::TraceId;
+  using directional::geometry::FieldAlignedCandidateTrace;
+  using directional::geometry::GlobalTopologyArc;
+  using directional::geometry::GlobalTopologyArcKind;
+  using directional::geometry::GlobalTopologyPlanError;
+  using directional::geometry::GlobalTopologyNodeRotation;
+  using directional::geometry::RotationSystemInconsistencyReason;
+  using directional::geometry::SurfaceCutGraphError;
+  using directional::geometry::SurfaceCutGraphErrorCode;
+  using directional::geometry::VertexTraceSecondaryParameterFailureReason;
+
+  const TriMesh mesh = make_four_triangle_fan();
+  const auto sourceAuthority = make_source_authority(mesh);
+  ASSERT_TRUE(sourceAuthority.has_value());
+  const auto topology = embedded::build_source_index(
+      mesh.F, static_cast<std::size_t>(mesh.V.rows()), *sourceAuthority);
+  ASSERT_TRUE(topology.has_value());
+
+  const SourceVertexId locus = SourceVertexId::from_index(4, 5).value();
+  const auto component = SourceComponentId::from_index(0, 1).value();
+  const auto region = TopologyRegionId::from_index(0, 1).value();
+  const auto singularity = FieldSingularityId::from_index(0, 1).value();
+  const auto port = SingularityPortId::from_index(0, 1).value();
+  const auto branch = FieldBranch::from_integer(0);
+  const SourceFaceTopologyKey firstFace = topology_face(0, 1, 4, 5U);
+  const SourceFaceTopologyKey nextFace = topology_face(0, 3, 4, 5U);
+  const auto entryAtLocus = boundary_point(topology_edge(0, 4, 5U), 1, 1);
+  const auto firstOutgoing = topology_edge(0, 1, 5U);
+
+  FieldAlignedCandidateTrace vertexExit(
+      TraceId::from_index(0U, 3U).value(), port, singularity, locus, component,
+      region);
+  vertexExit.segments.emplace_back(firstFace, branch, entryAtLocus,
+                                   std::nullopt, firstOutgoing, std::nullopt);
+  vertexExit.segments.emplace_back(
+      nextFace, branch, boundary_point(topology_edge(0, 3, 5U), 0, 1),
+      std::nullopt, topology_edge(3, 4, 5U), std::nullopt);
+  const GlobalTopologyArc vertexExitArc{
+      NetworkArcId::from_index(0U, 3U).value(), GlobalTopologyArcKind::Trace,
+      NetworkNodeId::from_index(0U, 2U).value(),
+      NetworkNodeId::from_index(1U, 2U).value(), std::nullopt, vertexExit.id,
+      std::nullopt, 0U, 1U, {firstFace}};
+
+  VertexTraceSecondaryParameterFailureReason vertexExitFailure =
+      VertexTraceSecondaryParameterFailureReason::SecondPointUnavailable;
+  const auto vertexExitParameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, vertexExitArc, Orientation::Forward, vertexExit,
+      &vertexExitFailure);
+  ASSERT_TRUE(vertexExitParameter.has_value());
+  EXPECT_EQ(exact_integer(0), *vertexExitParameter);
+
+  // Existing edge-transit authority remains byte-for-byte exact: the new
+  // vertex fallback is last and cannot alter this earlier branch.
+  FieldAlignedCandidateTrace edgeTransit(
+      TraceId::from_index(1U, 3U).value(), port, singularity, locus, component,
+      region);
+  edgeTransit.segments.emplace_back(firstFace, branch, entryAtLocus,
+                                    std::nullopt, firstOutgoing, std::nullopt);
+  edgeTransit.segments.back().edgeTransitExit =
+      boundary_point(firstOutgoing, 1, 4);
+  const GlobalTopologyArc edgeTransitArc{
+      NetworkArcId::from_index(1U, 3U).value(), GlobalTopologyArcKind::Trace,
+      NetworkNodeId::from_index(0U, 2U).value(),
+      NetworkNodeId::from_index(1U, 2U).value(), std::nullopt, edgeTransit.id,
+      std::nullopt, 0U, 1U, {firstFace}};
+  const auto edgeTransitParameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, edgeTransitArc, Orientation::Forward, edgeTransit);
+  ASSERT_TRUE(edgeTransitParameter.has_value());
+  EXPECT_EQ(exact_ratio(1, 4), *edgeTransitParameter);
+
+  FieldAlignedCandidateTrace unrepresentable(
+      TraceId::from_index(2U, 3U).value(), port, singularity, locus, component,
+      region);
+  unrepresentable.segments.emplace_back(firstFace, branch, entryAtLocus,
+                                        std::nullopt, firstOutgoing,
+                                        std::nullopt);
+  const GlobalTopologyArc unrepresentableArc{
+      NetworkArcId::from_index(2U, 3U).value(), GlobalTopologyArcKind::Trace,
+      NetworkNodeId::from_index(0U, 2U).value(),
+      NetworkNodeId::from_index(1U, 2U).value(), std::nullopt,
+      unrepresentable.id, std::nullopt, 0U, 1U, {firstFace}};
+  VertexTraceSecondaryParameterFailureReason failureReason =
+      VertexTraceSecondaryParameterFailureReason::TraceRayFaceUnavailable;
+  const auto missingParameter = embedded::vertex_locus_secondary_parameter(
+      *topology, locus, unrepresentableArc, Orientation::Forward,
+      unrepresentable, &failureReason);
+  EXPECT_FALSE(missingParameter.has_value());
+  EXPECT_EQ(VertexTraceSecondaryParameterFailureReason::SecondPointUnavailable,
+            failureReason);
+  EXPECT_STREQ(
+      "VertexTraceSecondaryParameterUnavailable",
+      directional::geometry::rotation_system_inconsistency_reason_name(
+          RotationSystemInconsistencyReason::
+              VertexTraceSecondaryParameterUnavailable));
+  EXPECT_STREQ(
+      "SecondPointUnavailable",
+      directional::geometry::
+          vertex_trace_secondary_parameter_failure_reason_name(failureReason));
+
+  // The typed error payload is observable through the same production failure
+  // projection used by CP4c diagnostics.
+  SurfaceCutGraphError diagnostic;
+  diagnostic.code = SurfaceCutGraphErrorCode::CellularityNotEstablished;
+  diagnostic.sourceVertex = locus;
+  diagnostic.sourceFace = firstFace;
+  diagnostic.originatingRotationSystemInconsistencyReason =
+      RotationSystemInconsistencyReason::
+          VertexTraceSecondaryParameterUnavailable;
+  diagnostic.vertexTraceSecondaryParameterFailureReason = failureReason;
+  diagnostic.rotationTraceOrientation = Orientation::Forward;
+  diagnostic.traceFirstSegment = unrepresentableArc.firstSegment;
+  diagnostic.traceOnePastLastSegment = unrepresentableArc.onePastLastSegment;
+  diagnostic.arc = unrepresentableArc.id;
+  diagnostic.trace = unrepresentable.id;
+  const std::string emitted = production_cut_graph_error_locus(diagnostic);
+  for (const std::string &token : std::vector<std::string>{
+           "rotationSystemReason=VertexTraceSecondaryParameterUnavailable",
+           "vertexTraceSecondaryFailure=SecondPointUnavailable",
+           "rotationTraceOrientation=Forward", "traceFirstSegment=0",
+           "traceOnePastLastSegment=1", "arc=2", "trace=2"}) {
+    EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+  }
+
+  // Regression producer proof: the exact mechanical attempt-0 graph that
+  // failed at vertex 10 in TB13 must now publish a complete rotation system.
+  const Cp4cProductionFixture mechanical =
+      observe_cp4c_witness("mechanical_feature", "mechanical feature");
+  ASSERT_TRUE(mechanical.sourceAuthority.has_value()) << mechanical.loadError;
+  ASSERT_TRUE(mechanical.network.has_value()) << mechanical.terminalFailureCode;
+  const auto mechanicalTopology = embedded::build_source_index(
+      mechanical.mesh.F,
+      static_cast<std::size_t>(mechanical.mesh.V.rows()),
+      *mechanical.sourceAuthority);
+  ASSERT_TRUE(mechanicalTopology.has_value());
+  const auto cutNodeBuild =
+      embedded::build_cut_node_bindings(*mechanical.network, {});
+  ASSERT_TRUE(std::holds_alternative<embedded::CutNodeBindings>(cutNodeBuild));
+  const auto &cutNodes = std::get<embedded::CutNodeBindings>(cutNodeBuild);
+  const auto arcBuild = embedded::build_arcs(*mechanical.network, {}, cutNodes);
+  ASSERT_TRUE(
+      std::holds_alternative<std::vector<GlobalTopologyArc>>(arcBuild));
+  const auto &arcs = std::get<std::vector<GlobalTopologyArc>>(arcBuild);
+  const auto rotationBuild = embedded::build_rotation_system(
+      *mechanicalTopology, *mechanical.network, cutNodes, arcs);
+  if (const auto *error = std::get_if<GlobalTopologyPlanError>(&rotationBuild)) {
+    ADD_FAILURE() << "attempt-0 mechanical rotation must publish after the "
+                     "vertex-exit correction: "
+                  << (error->rotationSystemInconsistencyReason.has_value()
+                          ? directional::geometry::
+                                rotation_system_inconsistency_reason_name(
+                                    *error->rotationSystemInconsistencyReason)
+                          : directional::geometry::
+                                global_topology_plan_error_code_name(
+                                    error->code));
+    return;
+  }
+  const auto &rotations =
+      std::get<std::vector<GlobalTopologyNodeRotation>>(rotationBuild);
+  const SourceVertexId vertex10 = SourceVertexId::from_index(
+      10, static_cast<std::size_t>(mechanical.mesh.V.rows())).value();
+  const auto node = cutNodes.nodeByVertex.find(vertex10);
+  ASSERT_NE(cutNodes.nodeByVertex.end(), node);
+  const auto published = std::find_if(
+      rotations.begin(), rotations.end(), [&](const auto &rotation) {
+        return rotation.node == node->second;
+      });
+  ASSERT_NE(rotations.end(), published);
+  EXPECT_FALSE(published->counterClockwise.empty());
 }
 
 TEST(GlobalTopologyPlan,

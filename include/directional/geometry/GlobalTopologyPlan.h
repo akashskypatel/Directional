@@ -215,6 +215,15 @@ enum class RotationSystemInconsistencyReason : std::uint8_t {
   RegionOrbitMissing = 60,
   CandidateRotationSystemMismatch = 61,
   RotationVertexTraceRaysExactlyCoincident = 62,
+  VertexTraceSecondaryParameterUnavailable = 63,
+};
+
+enum class VertexTraceSecondaryParameterFailureReason : std::uint8_t {
+  TraceRayFaceUnavailable = 0,
+  SourceFaceRecordUnavailable = 1,
+  LocusCornerUnavailable = 2,
+  SecondPointUnavailable = 3,
+  InvalidDenominator = 4,
 };
 
 enum class TraceEventPositionFailureReason : std::uint8_t {
@@ -264,6 +273,11 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> faceCount;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
+  std::optional<VertexTraceSecondaryParameterFailureReason>
+      vertexTraceSecondaryParameterFailureReason;
+  std::optional<authority::Orientation> rotationTraceOrientation;
+  std::optional<std::size_t> traceFirstSegment;
+  std::optional<std::size_t> traceOnePastLastSegment;
   std::optional<std::size_t> traceEventIndex;
   std::optional<TraceEventPositionFailureReason> traceEventPositionFailureReason;
   std::optional<TraceEventPositionPass> traceEventPositionPass;
@@ -405,6 +419,8 @@ private:
     GlobalTopologyPlanErrorCode code) noexcept;
 [[nodiscard]] const char *rotation_system_inconsistency_reason_name(
     RotationSystemInconsistencyReason reason) noexcept;
+[[nodiscard]] const char *vertex_trace_secondary_parameter_failure_reason_name(
+    VertexTraceSecondaryParameterFailureReason reason) noexcept;
 [[nodiscard]] const char *trace_event_position_failure_reason_name(
     TraceEventPositionFailureReason reason) noexcept;
 [[nodiscard]] const char *trace_event_position_pass_name(

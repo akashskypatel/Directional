@@ -912,6 +912,21 @@ field_boundary_point_barycentric(
 }
 
 std::optional<std::array<authority::FieldExactRational, 3>>
+source_vertex_barycentric(const SourceFaceRecord &face,
+                          const authority::SourceVertexId vertex) {
+  std::array<authority::FieldExactRational, 3> barycentric{
+      authority::FieldExactRational::from_integer(0),
+      authority::FieldExactRational::from_integer(0),
+      authority::FieldExactRational::from_integer(0)};
+  for (std::size_t index = 0U; index < face.vertices.size(); ++index) {
+    if (face.vertices[index] != vertex) continue;
+    barycentric[index] = authority::FieldExactRational::from_integer(1);
+    return barycentric;
+  }
+  return std::nullopt;
+}
+
+std::optional<std::array<authority::FieldExactRational, 3>>
 vertex_trace_ray_second_point(
     const SourceFaceRecord &face, const GlobalTopologyArc &arc,
     const authority::Orientation orientation,
@@ -944,7 +959,26 @@ vertex_trace_ray_second_point(
     return trace.terminalContact->barycentric;
   }
   if (trace.terminalPoint.has_value()) {
-    return field_boundary_point_barycentric(face, *trace.terminalPoint);
+    const auto terminal =
+        field_boundary_point_barycentric(face, *trace.terminalPoint);
+    if (terminal.has_value()) return terminal;
+  }
+
+  // Vertex-hit continuation is the final exact fallback.  A continuation can
+  // enter its next face through an edge that is not an edge of this face even
+  // though the entry point itself is their shared source vertex.  Recover that
+  // vertex from the exact boundary-point support, then express the same source
+  // vertex as this face's unit barycentric corner.  Keeping this last preserves
+  // all previously representable Forward exits byte-for-byte.
+  if (segmentIndex + 1U < trace.segments.size()) {
+    const auto support =
+        trace.segments[segmentIndex + 1U].entryPoint.source_support();
+    if (support.has_value()) {
+      if (const auto *vertex =
+              std::get_if<authority::SourceVertexSupport>(&*support)) {
+        return source_vertex_barycentric(face, vertex->vertex);
+      }
+    }
   }
   return std::nullopt;
 }
@@ -953,11 +987,23 @@ std::optional<authority::FieldExactRational> vertex_locus_secondary_parameter(
     const SourceTopologyIndex &topology,
     const authority::SourceVertexId locus, const GlobalTopologyArc &arc,
     const authority::Orientation orientation,
-    const FieldAlignedCandidateTrace &trace) {
+    const FieldAlignedCandidateTrace &trace,
+    VertexTraceSecondaryParameterFailureReason *failureReason) {
+  const auto fail = [&](const VertexTraceSecondaryParameterFailureReason reason)
+      -> std::optional<authority::FieldExactRational> {
+    if (failureReason != nullptr) *failureReason = reason;
+    return std::nullopt;
+  };
   const auto faceKey = trace_ray_face(arc, orientation, trace);
-  if (!faceKey.has_value()) return std::nullopt;
+  if (!faceKey.has_value()) {
+    return fail(VertexTraceSecondaryParameterFailureReason::
+                    TraceRayFaceUnavailable);
+  }
   const auto faceIt = topology.faces.find(*faceKey);
-  if (faceIt == topology.faces.end()) return std::nullopt;
+  if (faceIt == topology.faces.end()) {
+    return fail(VertexTraceSecondaryParameterFailureReason::
+                    SourceFaceRecordUnavailable);
+  }
   const SourceFaceRecord &face = faceIt->second;
 
   std::size_t corner = 3U;
@@ -967,18 +1013,25 @@ std::optional<authority::FieldExactRational> vertex_locus_secondary_parameter(
       break;
     }
   }
-  if (corner >= 3U) return std::nullopt;
+  if (corner >= 3U) {
+    return fail(
+        VertexTraceSecondaryParameterFailureReason::LocusCornerUnavailable);
+  }
 
   const auto secondPoint =
       vertex_trace_ray_second_point(face, arc, orientation, trace);
-  if (!secondPoint.has_value()) return std::nullopt;
+  if (!secondPoint.has_value()) {
+    return fail(
+        VertexTraceSecondaryParameterFailureReason::SecondPointUnavailable);
+  }
   const std::size_t next = (corner + 1U) % 3U;
   const std::size_t previous = (corner + 2U) % 3U;
   const auto zero = authority::FieldExactRational::from_integer(0);
   const auto denominator = (*secondPoint)[next] + (*secondPoint)[previous];
   if (denominator <= zero || (*secondPoint)[next] < zero ||
       (*secondPoint)[previous] < zero) {
-    return std::nullopt;
+    return fail(
+        VertexTraceSecondaryParameterFailureReason::InvalidDenominator);
   }
 
   // build_vertex_fan_slots orders a face wedge from the oriented edge
@@ -1204,9 +1257,12 @@ RotationBuildResult build_rotation_system(
                 RotationSystemInconsistencyReason::VertexTracePortOrdinalInvalid;
             return result;
           }
+          VertexTraceSecondaryParameterFailureReason secondaryFailure =
+              VertexTraceSecondaryParameterFailureReason::
+                  SecondPointUnavailable;
           const auto secondaryParameter = vertex_locus_secondary_parameter(
               topology, *locusIt->second.vertex, arc, incidence.orientation,
-              *trace);
+              *trace, &secondaryFailure);
           if (!secondaryParameter.has_value()) {
             GlobalTopologyPlanError result =
                 error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
@@ -1214,7 +1270,14 @@ RotationBuildResult build_rotation_system(
             result.sourceFace = face;
             result.rotationSystemInconsistencyReason =
                 RotationSystemInconsistencyReason::
-                    VertexTracePortOrdinalInvalid;
+                    VertexTraceSecondaryParameterUnavailable;
+            result.vertexTraceSecondaryParameterFailureReason =
+                secondaryFailure;
+            result.arc = arc.id;
+            result.trace = trace->id;
+            result.rotationTraceOrientation = incidence.orientation;
+            result.traceFirstSegment = arc.firstSegment;
+            result.traceOnePastLastSegment = arc.onePastLastSegment;
             return result;
           }
           key.secondary = 0U;

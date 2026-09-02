@@ -146,7 +146,8 @@ using ExteriorOrbitBuildResult =
 vertex_locus_secondary_parameter(
     const SourceTopologyIndex &topology, authority::SourceVertexId locus,
     const GlobalTopologyArc &arc, authority::Orientation orientation,
-    const FieldAlignedCandidateTrace &trace);
+    const FieldAlignedCandidateTrace &trace,
+    VertexTraceSecondaryParameterFailureReason *failureReason = nullptr);
 
 /** Dense exact ranks corresponding to input parameters; exact ties share a rank. */
 [[nodiscard]] std::vector<std::size_t> vertex_trace_secondary_ranks(

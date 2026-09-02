@@ -26,6 +26,7 @@ namespace directional::geometry {
 
 enum class GlobalTopologyPlanErrorCode : std::uint8_t;
 enum class RotationSystemInconsistencyReason : std::uint8_t;
+enum class VertexTraceSecondaryParameterFailureReason : std::uint8_t;
 enum class TraceEventPositionFailureReason : std::uint8_t;
 enum class TraceEventPositionPass : std::uint8_t;
 enum class TraceEventPositionCarrierRole : std::uint8_t;
@@ -120,6 +121,11 @@ struct SurfaceCutGraphError {
   std::optional<std::size_t> certificationCutEdgeCount;
   std::optional<RotationSystemInconsistencyReason>
       originatingRotationSystemInconsistencyReason;
+  std::optional<VertexTraceSecondaryParameterFailureReason>
+      vertexTraceSecondaryParameterFailureReason;
+  std::optional<authority::Orientation> rotationTraceOrientation;
+  std::optional<std::size_t> traceFirstSegment;
+  std::optional<std::size_t> traceOnePastLastSegment;
   std::optional<authority::NetworkArcId> arc;
   std::optional<authority::NetworkArcId> secondArc;
   std::optional<authority::TraceId> trace;
