@@ -9747,16 +9747,11 @@ TEST(GlobalTopologyPlan,
   };
   const auto makeArc = [&](const std::size_t arcIndex,
                            const TraceId trace) {
-    GlobalTopologyArc arc;
-    arc.id = NetworkArcId::from_index(arcIndex, 4).value();
-    arc.kind = GlobalTopologyArcKind::Trace;
-    arc.firstNode = NetworkNodeId::from_index(0, 2).value();
-    arc.secondNode = NetworkNodeId::from_index(1, 2).value();
-    arc.trace = trace;
-    arc.firstSegment = 0U;
-    arc.onePastLastSegment = 1U;
-    arc.sourceFaces = {face};
-    return arc;
+    return GlobalTopologyArc{
+        NetworkArcId::from_index(arcIndex, 4).value(),
+        GlobalTopologyArcKind::Trace, NetworkNodeId::from_index(0, 2).value(),
+        NetworkNodeId::from_index(1, 2).value(), std::nullopt, trace,
+        std::nullopt, 0U, 1U, {face}};
   };
 
   const FieldAlignedCandidateTrace nearStart = makeForward(0U, 1, 4);
