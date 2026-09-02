@@ -4,5 +4,3 @@
 .agents/connector-triggers/cb15-package83
 .agents/connector-triggers/cb15-precompile
 .agents/connector-triggers/source-snapshot/web-66d1440369d7160074b354923f7f36445d5c67e1.txt
-.agents/workflow-observation
-.agents/Directional/turn-payloads
