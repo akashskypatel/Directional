@@ -8419,6 +8419,18 @@ TEST(GlobalTopologyPlan, TorusWitnessDerivesRegionsThroughProductionEntryPath) {
 
 TEST(GlobalTopologyPlan,
      MechanicalFeatureWitnessDerivesRegionsThroughProductionEntryPath) {
+  try {
+    (void)cp4c_mechanical_fixture();
+  } catch (const std::runtime_error &error) {
+    const std::string emitted = error.what();
+    for (const std::string &token :
+         std::vector<std::string>{";arc=", ";secondArc=", ";trace=",
+                                  ";secondTrace=", ";rotationPreviousRay={",
+                                  ";rotationCurrentRay={"}) {
+      EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+    }
+    throw;
+  }
   const auto &fixture = cp4c_mechanical_fixture();
   ASSERT_NO_FATAL_FAILURE(assert_cp4c_mechanical_preconditions(fixture));
   ASSERT_NO_FATAL_FAILURE(expect_cp4c_plan_disc_proofs(fixture));
