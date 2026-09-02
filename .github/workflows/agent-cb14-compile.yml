@@ -8,7 +8,7 @@ on:
       - .agents/connector-triggers/cb14-compile/**
 
 permissions:
-  contents: read
+  contents: write
   issues: write
   pull-requests: write
 
