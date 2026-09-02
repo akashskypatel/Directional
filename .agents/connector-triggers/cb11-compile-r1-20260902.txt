@@ -1,0 +1,4 @@
+purpose=M3-CP4c-3-CB11 compile retry after diagnostic seam linkage correction
+source_sha=803300698289e0d0f629eaa878add1aebc7193c1
+runtimeExecution=false
+retry=1
