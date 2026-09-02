@@ -92,102 +92,58 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB16` — EXACT NEXT / Code + Build, PRODUCT CORRECTION
+## Mandatory next turn — `M3-CP4c-3-TB14` — EXACT NEXT / Artifact-Only Test + Benchmark
 
-`M3-CP4c-3-TB13-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` (measures **BK0–BK8** discharged, static only).
+`M3-CP4c-3-CB16` is **COMPLETE / BUILD + PACKAGE GREEN / PRODUCT CORRECTION / RUNTIME-FREE**. Record:
+`Architecture_M3_CP4c3_CB16_Code_Build_Report.md`.
 
-### What the review established
+### Current immutable build authority
 
-TB13's first red moved **earlier**, to source vertex **10**, face `(8,10,11)`, reason
-`VertexTracePortOrdinalInvalid`. TB13 called the cause underdetermined; `M3-CP4c-3-TB13-REV` **determined it from
-static authority**.
+- final semantic/compile/package source: **`6808c090f2dd229a48550d758f459bfd156da4b6`**;
+- selector 379 remains byte-frozen at **`ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`**;
+- selector **380** appends exactly `GlobalTopologyPlan.VertexExitSecondaryParameterUsesExactCornerSupportAndTypedFailure`, SHA-256 **`1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`**;
+- authoritative eight-target GMP/GMPXX compile: run/job **`33682499470 / 100422188581`**, result artifact **`9866902345`**, Actions digest `410f18cd45f0662d480592bc2bb567bb6ab02583cf0a0dd06629b5c57a0174f9`;
+- immutable package **84**: run/job **`33683929335 / 100426817194`**, artifact **`9867334959`**, Actions digest `67f1ea7012f3b0e06a1dd60e87d40c7e593e5260703cab425c9021cb0c2ebd55`, inner tar SHA-256 `8385a994ebff3e9d3583f95f769e107a73dcec892c7d9073502103a981a40eff`;
+- package log artifact `9867335519`, Actions digest `f4b1c14c5736f4ca3e19e06533c89aa44198d180a16b4508e77350e1256b75c3`; packaged source archive SHA-256 `ca898abdf3e5a4d01429048f13a2a6f09dd6bc70dabd3b866209533f9e43db95`;
+- 27 fixtures, six executable modes, selector-prefix chain and package manifests verified; `runtimeExecution=false`, `packageRepair=false`.
 
-- **That reason names two emitters.** `EmbeddedGraphTopology.cpp:1204` (legacy: port lookup failed or
-  `ordinal < 0`) and `:1217` (CB15's `vertex_locus_secondary_parameter == nullopt`) both set only reason,
-  `sourceVertex` and `sourceFace`.
-- **The legacy emitter is excluded.** CB15 touched four files, none `SurfaceCellTracing.cpp`, so the network is
-  **byte-identical** to TB12's; node ids are monotone in vertex index and `incidences` is a node-id map, so v10 is
-  processed **before** v47 — which TB12 reached. v10 passed that branch on identical inputs.
-- **Only a `Forward` ray can fail.** The `Reverse` path resolves the segment's own entry point, which lies on an
-  edge of that segment's face by construction. So the failure is an **emanating ray at v10 in face `(8,10,11)`** —
-  mesh row 8, fan slot 7, bounded by edge `10-11`.
-- **The defect is one missing case.** `segment.edgeTransitExit` is assigned only on the edge-transit path, never
-  for a `VertexHit`. TB7-REV proved v10's port trace runs along mesh edge `(10,11)` to **vertex 11**, a corner of
-  its own face — so the four-case Forward chain finds nothing, while the point is barycentric `(0,0,1)` giving
-  denominator 1 and an exact within-wedge parameter of **0**. Every guard would have passed.
-- **Accepted-boundary safety is structural.** Appending the new case **last** means it is reached only where the
-  helper errors today, so no currently-succeeding rotation can change.
+### What CB16 changed
 
-`M3-CP4c3-TB13-CAND-01` transitions to **root cause proved**; new `M3-CP4c3-TB13-REV-CAND-01` is **ACTIVE**.
-**The v47 obligation stays open** — `M3-CP4c3-TB11-CAND-01` does **not** close and
-`M3-CP4c3-TB12-REV-CAND-01` is only partially discriminated, because the five-ray v47 rotation with distinct ranks
-was never reached. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, vertex 30 and
-the finalize/contact fall-through are unchanged. **There is still no vertex-30 discriminator.**
+TB13-REV proved the vertex-10 failure was a valid Forward `VertexHit` whose second point is source vertex 11, a corner of face `(8,10,11)`, but `vertex_trace_ray_second_point` had no vertex-exit case. CB16 appends one exact fallback **last** in that Forward chain: recover `SourceVertexSupport` from the next exact boundary point and return the current face's unit barycentric corner. Existing representable exits return earlier and remain unchanged.
 
-### CB16 binding scope — `BL0–BL9`, in the review record §9
+CB16 also splits the collapsed diagnostic reason. The legacy port/ordinal emitter alone keeps `VertexTracePortOrdinalInvalid`; failure of `vertex_locus_secondary_parameter` now emits `VertexTraceSecondaryParameterUnavailable`, a typed subreason (`TraceRayFaceUnavailable`, `SourceFaceRecordUnavailable`, `LocusCornerUnavailable`, `SecondPointUnavailable`, or `InvalidDenominator`), and arc/trace/orientation/segment bounds. No identity tie-break, tolerance/float topology, fan-slot/edge-locus/incidence/cut change, CB12/CB14/CB15 revert, fixture mutation, finalize/contact repair, 371/372 decoupling, sphere/saturation/370/folded-cone correction, or vertex-30 change occurred.
 
-**Product correction plus one typed split.** Owner:
-`src/geometry/EmbeddedGraphTopology.cpp::vertex_trace_ray_second_point`.
+Accepted authority remains **365/365**. CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **81**.
 
-- **BL0** — accepted 365 untouched; **selector 379 byte-frozen** at `ef51298f…842594b7`, republished unchanged;
-  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BL1** — add a **vertex-exit case** to the `Forward` chain: when the segment's exit resolves to a vertex that is
-  a corner of `face`, return the exact unit barycentric at that corner. Recover the vertex from existing exact
-  authority — `FieldBoundaryPoint::source_support()` on the continuation entry point (parameter 0 → `edge.first()`,
-  1 → `edge.second()`), or the `outgoingCarrier` endpoint the continuation reaches. **Exact rationals only.**
-- **BL2** — place the new case **last** in the chain. It is then reached only where the helper returns `nullopt`
-  today, which is already a hard error, making the accepted-safety proof exact. Where the existing continuation
-  case and the new case both apply they resolve to the same shared vertex.
-- **BL3** — **split the collapsed reason.** Give emitter B its own typed reason (e.g.
-  `VertexTraceSecondaryParameterUnavailable`), leaving `VertexTracePortOrdinalInvalid` to emitter A alone, and
-  retain on it at least the **arc, trace, orientation, segment bounds and which subcondition** produced the
-  `nullopt`. Do not broaden further.
-- **BL4** — preserve every CB15 invariant (locus-relative exact within-wedge ordering, both orientations,
-  interior-terminal support, exact-coincidence fail-close, no identity tie-break, unchanged edge-locus ranking,
-  unchanged fan-slot/incidence/cut ownership); do not revert CB12 or CB14.
-- **BL5** — witnesses. *Positive:* an emanating ray exiting at a wedge corner ranks with the exact boundary
-  parameter (0 or 1) and its rotation publishes. *Negative:* a ray with genuinely no representable second point
-  still fails, under the **new** typed reason. *Regression:* an edge-transit ray yields a byte-identical parameter
-  and rotation before and after.
-- **BL6** — append **selector 380** only on demonstrated falsification; no reordering of any existing ordinal.
-- **BL7** — prohibitions: no identity-based tie-break; no tolerance or float-derived topological decision; no
-  change to the projection formula, `vertex_trace_secondary_ranks`, `build_vertex_fan_slots`, `trace_ray_face`,
-  the edge-locus branch, the incidence map or cut ownership; no revert of CB12/CB14/CB15; no finalize/contact
-  repair; no 371/372 decoupling; no sphere, saturation, ordinal-370 or folded-cone correction; no fixture mutation.
-- **BL8** — audit by assumption; prove no accepted-green rotation changes and show a byte-identical before/after
-  parameter on at least one edge-transit witness.
-- **BL9** — publish six `M3-CP4c-3-TB14` discriminators: (1) 1–365 stay 365/365; (2) ordinal 366 no longer reports
-  a vertex-10 rotation failure; (3) any remaining rotation red is now separable — the new typed reason with its
-  arc/trace/orientation, or `VertexTracePortOrdinalInvalid` meaning emitter A specifically; (4) **the BK7
-  conjunction is re-proved** — old v47 collision absent **and** the full five-ray v47 rotation published with
-  **distinct** former-pair ranks; (5) `M3-CP4c3-TB11-CAND-01` and `M3-CP4c3-TB12-REV-CAND-01` close only on
-  1, 2 and 4 together; (6) certification may for the first time reach the face walk, where the non-disc /
-  admissible counters can legitimately appear.
+### TB14 mandatory discriminators
 
-**No vertex-30 discriminator is published.**
+Run only `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` on immutable package 84:
 
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **80**.
+1. ordinals 1-365 remain **365/365 PASS**;
+2. ordinal 366 no longer reports the TB13 vertex-10 failure through the old ambiguous reason;
+3. any remaining vertex-trace secondary-parameter red is separable by the new typed reason/subreason plus arc/trace/orientation/segment bounds, while `VertexTracePortOrdinalInvalid` means the legacy emitter specifically;
+4. re-prove BK7: old v47 collision absent **and** the full five-ray v47 rotation is published with distinct former-pair secondary ranks;
+5. close `M3-CP4c3-TB11-CAND-01` / `M3-CP4c3-TB12-REV-CAND-01` only on 1+2+4; close the vertex-10 CB16 candidates only on runtime confirmation;
+6. if certification reaches face walking, publish the first legitimate non-disc/admissible counters and exact producing locus/reason.
+
+Execute selector 380 one identity per fresh process from ordinal 1; after the first semantic red the remainder is report-only. Execute `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once separately as non-gating diagnostic. **No vertex-30 discriminator is published.** A semantic red routes to independent REVIEW + PLAN; TB14 makes no correction or unchanged retry.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent CODE + BUILD guidance
+- turn-based-coding-agent TEST + BENCHMARK guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — **frozen CB16 scope, §9 BL0–BL9**.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — package-83 implementation authority.
-4. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
-5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
-   `M3_CP4c_Consolidated_Record.md`.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — **binding next execution authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — **current package-84/build authority**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — latest runtime authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — BL0-BL9/root-cause authority.
+5. `.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_380.txt` and frozen selector 379.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`.
 
-Source surfaces CB16 will touch: `src/geometry/EmbeddedGraphTopology.cpp`
-(`vertex_trace_ray_second_point` only, plus the BL3 emitter split),
-`include/directional/geometry/GlobalTopologyPlan.h` (one new typed reason), and `tests/` for the BL5 witnesses.
+Runtime source authority is entirely inside immutable package 84. Do not rebuild, repair, regenerate selectors, or run binaries from the repository checkout in TB14.
 
 **Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
 `review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and

@@ -1,4 +1,13 @@
-## M3-CP4c3-TB13-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-CB16 - exact vertex-exit secondary parameter correction - **CURRENT BUILD AUTHORITY / GREEN / RUNTIME-FREE / NON-STABLE**
+
+- **Final source:** `6808c090f2dd229a48550d758f459bfd156da4b6`; product correction landed at `a2efc8d10213c86aa9136821cd83bfcb32388f80`, with only the compiled mechanical-witness helper corrected afterward.
+- **Correction:** `vertex_trace_ray_second_point` appends an exact source-vertex corner fallback last in the Forward chain. The former secondary-parameter emitter now uses `VertexTraceSecondaryParameterUnavailable` plus a typed subreason and arc/trace/orientation/segment bounds; legacy `VertexTracePortOrdinalInvalid` remains specific to port lookup/ordinal validation.
+- **Build/package:** eight-target GMP/GMPXX compile `33682499470 / 100422188581` GREEN, result artifact `9866902345`; immutable package **84** GREEN on `33683929335 / 100426817194`, artifact `9867334959`, inner tar `8385a994ebff3e9d3583f95f769e107a73dcec892c7d9073502103a981a40eff`.
+- **Selector:** 379 byte-frozen; selector 380 appends `GlobalTopologyPlan.VertexExitSecondaryParameterUsesExactCornerSupportAndTypedFailure`, SHA-256 `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`. No identity ran in CB16.
+- **Runtime status:** build evidence only. TB14 must confirm vertex 10 clears and re-prove the full v47 five-ray/distinct-rank conjunction before inherited candidates close.
+- **Accounting:** +0 stable events / +0 recurrences. Totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **81**. Exact next: artifact-only `M3-CP4c-3-TB14`.
+
+## M3-CP4c3-TB13-REV - independent review adjudication - **LATEST REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB13_Independent_Review_Record.md`, measures **BK0-BK8** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
@@ -40,7 +49,7 @@
 - **BJ9:** old v47 `RotationRayOrderKeyCollision` is absent, but ordinal 366 now fails earlier at source vertex **10**, face `(8,10,11)`, `VertexTracePortOrdinalInvalid`, attempt 0 / 0 cut edges, `cutCandidateCount=450`. The v47 five-ray census/former-pair secondary values are not published, so the required closure conjunction is incomplete.
 - **Accounting:** same unaccepted gating surface, **+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **80**. Exact owner: independent `M3-CP4c-3-TB13-REV`.
 
-## M3-CP4c3-TB13-REV-CAND-01 - the Forward second-point chain has no case for a vertex exit - **ACTIVE / GATING / PRODUCT / NON-STABLE**
+## M3-CP4c3-TB13-REV-CAND-01 - the Forward second-point chain has no case for a vertex exit - **BUILD CORRECTED / AWAITING TB14 RUNTIME / GATING / NON-STABLE**
 
 - **Declared at `M3-CP4c-3-TB13-REV`** from static authority over TB13's runtime evidence.
 - **Mechanism.** `vertex_trace_ray_second_point` locates a Forward ray's second point through four cases:
@@ -54,31 +63,30 @@
 - **Correction.** Append a vertex-exit case **last** in the chain, recovering the vertex identity from existing
   exact authority (`FieldBoundaryPoint::source_support()` on the continuation entry point, or the segment's
   `outgoingCarrier` endpoint the continuation reaches). Last placement makes accepted-safety exact.
-- **Owner:** **BL1-BL3** of `M3-CP4c-3-CB16`.
+- **Build disposition:** CB16 implements BL1-BL3 at final source `6808c090...`; runtime closure is owned by artifact-only **`M3-CP4c-3-TB14`**.
 - **Accounting:** gating on an unaccepted CP4c-3 surface. **+0 events / +0 recurrences**; totals remain
-  **44 / 14 / 30**, debt **5**, packages **80**.
+  **44 / 14 / 30**, debt **5**, packages **81**.
 
-## M3-CP4c3-TB13-CAND-01 - `VertexTracePortOrdinalInvalid` conflates the new vertex-10 failure conditions - **ACTIVE / GATING / ROOT CAUSE PROVED AT TB13-REV / NON-STABLE**
+## M3-CP4c3-TB13-CAND-01 - `VertexTracePortOrdinalInvalid` conflates the new vertex-10 failure conditions - **BUILD CORRECTED / AWAITING TB14 RUNTIME / GATING / ROOT CAUSE PROVED / NON-STABLE**
 
 - **Adjudicated at `M3-CP4c-3-TB13-REV`:** the firing emitter is CB15's `vertex_locus_secondary_parameter ==
   nullopt` branch (`:1217`), not the legacy port branch (`:1204`), and the cause is a missing **vertex-exit**
-  case in `vertex_trace_ray_second_point`'s Forward chain. Re-owned to **`M3-CP4c-3-CB16`** (BL0-BL9). The
-  reason-collapse itself is corrected by BL3. See `M3-CP4c3-TB13-REV-CAND-01`.
+  case in `vertex_trace_ray_second_point`'s Forward chain. CB16 implements the BL0-BL9 correction and typed split; artifact-only **TB14** owns runtime closure. See `M3-CP4c3-TB13-REV-CAND-01`.
 
 - **Runtime fact:** ordinal 366 first-red is `RotationSystemInconsistent` at source vertex 10 / face `(8,10,11)`, rendered as `VertexTracePortOrdinalInvalid`, certification attempt 0 / zero cut edges. 367/371/372 share the same upstream exception.
 - **Static ambiguity:** package source assigns that one reason to both (a) missing/negative origin port ordinal and (b) `vertex_locus_secondary_parameter(...) == nullopt`; the latter itself covers multiple exact second-point/face/locus/denominator failure modes. Retained evidence has no arc/trace/orientation or subcondition tag.
-- **Disposition:** do not infer a port defect or CB15 semantic defect from the name. Independent **`M3-CP4c-3-TB13-REV` BK0-BK8** must identify the earliest owner; if static authority cannot discriminate it, the next CB must be diagnostic-only.
-- **Accounting:** non-stable candidate on unaccepted CP4c-3 surface; **+0/+0**, totals remain **44 / 14 / 30**, debt **5**, packages **80**.
+- **Build disposition:** CB16 separates the emitters: `VertexTracePortOrdinalInvalid` is now legacy-only; secondary-parameter failure is `VertexTraceSecondaryParameterUnavailable` with typed subreason and retained incidence fields. TB14 must confirm the production failure no longer appears under the ambiguous path.
+- **Accounting:** non-stable candidate on unaccepted CP4c-3 surface; **+0/+0**, totals remain **44 / 14 / 30**, debt **5**, packages **81**.
 
-## M3-CP4c3-CB15 - exact vertex-locus within-wedge rank correction - **CURRENT BUILD AUTHORITY / GREEN / RUNTIME-FREE / NON-STABLE**
+## M3-CP4c3-CB15 - exact vertex-locus within-wedge rank correction - **PRIOR BUILD AUTHORITY / GREEN / RUNTIME-FREE / NON-STABLE**
 
 - Final source **`a2fd98eaa015ff5872890bb1945cf4e9e9493615`** implements BJ1-BJ5 and selector 379 without executing runtime.
 - Eight-target GMP/GMPXX compile `33667287957 / 100372314673` is GREEN; immutable package **83** is artifact `9861269273` (`1b8ce6a12edc8f7949deea3c43855e94e5755c0e73ed1cb603a2acd50901cab4`).
 - Vertex-locus trace-ray `secondary` is now exact and locus-relative; exact coincidence remains fail-closed as `RotationVertexTraceRaysExactlyCoincident`. Selector 378 is frozen; selector 379 appends one compiled witness.
 - **Runtime status:** TB13 preserved 365/365 and the focused selector-379 witness passes; the old v47 collision is absent at ordinal 366, but production now fails earlier at vertex 10 under ambiguous `VertexTracePortOrdinalInvalid`, so the five-ray/distinct-rank v47 proof is still unavailable.
-- **Accounting:** +0 stable events / +0 recurrences. Stable totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **80**. Exact next: independent `M3-CP4c-3-TB13-REV`.
+- **Accounting:** +0 stable events / +0 recurrences. Stable totals remain **44 / 14 / 30**, debt **5**, accepted **365/365**, packages **80**. Superseded by CB16/package84 as current build authority; TB13 remains its recorded runtime successor.
 
-## M3-CP4c3-TB12-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-TB12-REV - independent review adjudication - **PRIOR REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md`, measures **BI0-BI7** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
