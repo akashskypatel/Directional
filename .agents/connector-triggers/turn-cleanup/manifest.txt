@@ -1,0 +1,8 @@
+# M3-CP4c-3-CB15 final temporary-state cleanup
+.agents/connector-triggers/cb15-drive-apply
+.agents/connector-triggers/cb15-fullcompile
+.agents/connector-triggers/cb15-package83
+.agents/connector-triggers/cb15-precompile
+.agents/connector-triggers/source-snapshot/web-66d1440369d7160074b354923f7f36445d5c67e1.txt
+.agents/workflow-observation
+.agents/Directional/turn-payloads
