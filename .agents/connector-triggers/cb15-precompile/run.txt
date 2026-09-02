@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-CB15
+source_sha=ab0501de362c3518f1f040015f19b64c179aa007
+target=directional_core
+runtimeExecution=false
