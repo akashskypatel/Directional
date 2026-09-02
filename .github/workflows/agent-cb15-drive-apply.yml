@@ -28,5 +28,5 @@ jobs:
       patch_sha256: 63f4c2d3aa00d95b2810082337691697a619ec1493dc730d7c696be722b679ab
       base_sha: 66d1440369d7160074b354923f7f36445d5c67e1
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: M3-CP4c-3-CB15: rank vertex trace rays by exact wedge geometry
+      commit_message: "M3-CP4c-3-CB15: rank vertex trace rays by exact wedge geometry"
     secrets: inherit
