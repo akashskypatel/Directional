@@ -1,20 +1,20 @@
-name: CB12 Drive Patch Apply
+name: CB12 Compile Only
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/cb12-drive-apply.txt
+      - .agents/connector-triggers/cb12-compile.txt
 
 permissions:
   contents: write
-  id-token: write
+  actions: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: directional-cb12-drive-apply
+  group: directional-cb12-compile
   cancel-in-progress: false
 
 jobs:
@@ -22,18 +22,14 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: cb12-drive-apply
+      label: cb12-compile
       commit_run_file: false
       trim_stale_comments: false
     secrets: inherit
 
-  apply:
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+  compile:
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1ZXC8qVKXvHRFYbaXjt18rSM8B-b6I255
-      patch_sha256: 67049c0d4569c2406bad74ab1861f4b1bbc7d078ab5991e23a083fd69e6dd257
-      base_sha: 73dd62c81bd4d13bf0fb9bca2d5682c7157d589e
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB12: repair BarrierAbsorbed termination ownership"
-      retention_days: 14
+      source_sha: a3b6f1a41feaa8a115faf11de52f85ce4cc42a15
+      artifact_prefix: m3-cp4c3-cb12-compile
     secrets: inherit
