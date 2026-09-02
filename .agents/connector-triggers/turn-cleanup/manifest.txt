@@ -1,5 +1,0 @@
-.agents/Directional/turn-payloads/tb10-candidate.yml
-.agents/connector-triggers/tb10-schema-validate.txt
-.agents/connector-triggers/m3-cp4c3-tb10.txt
-.agents/connector-triggers/source-snapshot/tb10-start.txt
-.agents/connector-triggers/tb10-closeout-drive-apply.txt
