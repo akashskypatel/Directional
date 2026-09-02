@@ -1,3 +1,0 @@
-M3-CP4c-3-CB15 compile-fix Drive apply retry with metadata envelope
-base=ab0501de362c3518f1f040015f19b64c179aa007
-patch_sha256=7b9ba3dee25a182c12e7c84df81aba7dc2d6ac28d403aeee31cb631870bc8c21

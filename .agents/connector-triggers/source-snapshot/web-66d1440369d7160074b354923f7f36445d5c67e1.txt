@@ -1,2 +1,0 @@
-requested_source_sha=66d1440369d7160074b354923f7f36445d5c67e1
-purpose=M3-CP4c-3-CB15 source snapshot
