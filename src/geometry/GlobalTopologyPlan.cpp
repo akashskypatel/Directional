@@ -69,6 +69,14 @@ GlobalTopologyPlanError error(const GlobalTopologyPlanErrorCode code) {
   return result;
 }
 
+GlobalTopologyPlanError rotation_error(
+    const RotationSystemInconsistencyReason reason) {
+  GlobalTopologyPlanError result =
+      error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+  result.rotationSystemInconsistencyReason = reason;
+  return result;
+}
+
 bool fragment_diagnostics_enabled() noexcept {
   const char *value = std::getenv("DIRECTIONAL_CP4AB_FRAGMENT_DIAGNOSTICS");
   return value != nullptr && std::strcmp(value, "1") == 0;
@@ -214,7 +222,7 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
         GlobalTopologyOrientedArc{arc.id, authority::Orientation::Reverse});
     if (forwardDart >= walk.orbitByDart.size() ||
         reverseDart >= walk.orbitByDart.size()) {
-      return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+      return rotation_error(forwardDart >= walk.orbitByDart.size() ? RotationSystemInconsistencyReason::FragmentCornerForwardDartOutOfRange : RotationSystemInconsistencyReason::FragmentCornerReverseDartOutOfRange);
     }
     const std::size_t forwardOrbit = walk.orbitByDart[forwardDart];
     const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
@@ -369,7 +377,7 @@ FragmentCornerBuildResult build_fragment_corner_incidence(
           (index > 0U &&
            rays[index - 1U].forwardOrbit != rays[index].reverseOrbit)) {
         GlobalTopologyPlanError failure =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(rays[index].sourceCorner != rays.front().sourceCorner ? RotationSystemInconsistencyReason::FragmentCornerSourceCornerMismatch : ((index > 0U && rays[index - 1U].ordinal == rays[index].ordinal) ? RotationSystemInconsistencyReason::FragmentCornerRayOrdinalDuplicate : RotationSystemInconsistencyReason::FragmentCornerOrbitChainMismatch));
         failure.sourceFace = faceKey;
         return failure;
       }
@@ -463,7 +471,7 @@ RegionBuildResult build_regions(
         const std::size_t interiorDart =
             2U * arc.id.index() + (forward ? 0U : 1U);
         if (interiorDart >= walk.orbitByDart.size()) {
-          return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          return rotation_error(RotationSystemInconsistencyReason::MandatoryBoundaryInteriorDartOutOfRange);
         }
         const std::size_t interiorOrbit = walk.orbitByDart[interiorDart];
         fragmentOrbits[faceKey].insert(interiorOrbit);
@@ -511,7 +519,7 @@ RegionBuildResult build_regions(
         const std::size_t interiorDart =
             2U * arc.id.index() + (forward ? 0U : 1U);
         if (interiorDart >= walk.orbitByDart.size()) {
-          return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          return rotation_error(RotationSystemInconsistencyReason::CutBoundaryInteriorDartOutOfRange);
         }
         const std::size_t interiorOrbit = walk.orbitByDart[interiorDart];
         fragmentOrbits[faceKey].insert(interiorOrbit);
@@ -568,7 +576,7 @@ RegionBuildResult build_regions(
                                              authority::Orientation::Reverse});
     if (forwardDart >= walk.orbitByDart.size() ||
         reverseDart >= walk.orbitByDart.size()) {
-      return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+      return rotation_error(forwardDart >= walk.orbitByDart.size() ? RotationSystemInconsistencyReason::TraceBoundaryForwardDartOutOfRange : RotationSystemInconsistencyReason::TraceBoundaryReverseDartOutOfRange);
     }
     const std::size_t forwardOrbit = walk.orbitByDart[forwardDart];
     const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
@@ -925,7 +933,7 @@ std::optional<GlobalTopologyPlanError> validate_no_region_fragment_pinch(
           dart_index(reversed(rotation.counterClockwise[index]));
       if (incomingDart >= walk.orbitByDart.size()) {
         GlobalTopologyPlanError failure =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::RegionFragmentIncomingDartOutOfRange);
         failure.region = region.id;
         failure.sourceVertex = locus->second.vertex;
         failure.sourceEdge = locus->second.edge;
@@ -1504,7 +1512,7 @@ RegionCertificatesBuildResult build_region_certificates(
     const auto orbit = region_orbit(region, walk);
     if (!orbit.has_value()) {
       GlobalTopologyPlanError failure =
-          error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          rotation_error(RotationSystemInconsistencyReason::RegionOrbitMissing);
       failure.region = region.id;
       return failure;
     }
@@ -1904,7 +1912,7 @@ std::optional<GlobalTopologyPlanError> validate_candidate_structure(
   }
   if (candidate.rotations != wanted.rotations) {
     GlobalTopologyPlanError failure =
-        error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+        rotation_error(RotationSystemInconsistencyReason::CandidateRotationSystemMismatch);
     if (!candidate.rotations.empty()) {
       failure.arc = candidate.rotations.front().counterClockwise.empty()
                         ? std::optional<authority::NetworkArcId>{}
@@ -2155,6 +2163,112 @@ const char *rotation_system_inconsistency_reason_name(
     return "EdgeTraceFaceSideInvalid";
   case RotationSystemInconsistencyReason::EdgeTraceSecondaryRankInvalid:
     return "EdgeTraceSecondaryRankInvalid";
+  case RotationSystemInconsistencyReason::ArcTraceOriginPortMissing:
+    return "ArcTraceOriginPortMissing";
+  case RotationSystemInconsistencyReason::ArcTraceSegmentsEmpty:
+    return "ArcTraceSegmentsEmpty";
+  case RotationSystemInconsistencyReason::ArcTraceTerminalEventMissing:
+    return "ArcTraceTerminalEventMissing";
+  case RotationSystemInconsistencyReason::ArcTraceTerminalCutPositionMismatch:
+    return "ArcTraceTerminalCutPositionMismatch";
+  case RotationSystemInconsistencyReason::NodeLocusRegistrationMissing:
+    return "NodeLocusRegistrationMissing";
+  case RotationSystemInconsistencyReason::NodeLocusSourceVertexConflict:
+    return "NodeLocusSourceVertexConflict";
+  case RotationSystemInconsistencyReason::RotationNodeOutgoingIncidenceEmpty:
+    return "RotationNodeOutgoingIncidenceEmpty";
+  case RotationSystemInconsistencyReason::RotationNodeLocusMissing:
+    return "RotationNodeLocusMissing";
+  case RotationSystemInconsistencyReason::RotationVertexFanSlotsUnavailable:
+    return "RotationVertexFanSlotsUnavailable";
+  case RotationSystemInconsistencyReason::RotationVertexArcBindingMissing:
+    return "RotationVertexArcBindingMissing";
+  case RotationSystemInconsistencyReason::RotationVertexMandatoryArcMissingNetworkEdge:
+    return "RotationVertexMandatoryArcMissingNetworkEdge";
+  case RotationSystemInconsistencyReason::RotationVertexMandatoryNetworkEdgeMissing:
+    return "RotationVertexMandatoryNetworkEdgeMissing";
+  case RotationSystemInconsistencyReason::RotationVertexSourceEdgeMissingFromFan:
+    return "RotationVertexSourceEdgeMissingFromFan";
+  case RotationSystemInconsistencyReason::RotationVertexTraceBindingMissing:
+    return "RotationVertexTraceBindingMissing";
+  case RotationSystemInconsistencyReason::RotationVertexTraceMissing:
+    return "RotationVertexTraceMissing";
+  case RotationSystemInconsistencyReason::RotationVertexTraceRayFaceUnavailable:
+    return "RotationVertexTraceRayFaceUnavailable";
+  case RotationSystemInconsistencyReason::RotationEdgeIncidentFacesMissing:
+    return "RotationEdgeIncidentFacesMissing";
+  case RotationSystemInconsistencyReason::RotationEdgeIncidentFacesEmpty:
+    return "RotationEdgeIncidentFacesEmpty";
+  case RotationSystemInconsistencyReason::RotationEdgeSourceFaceMissing:
+    return "RotationEdgeSourceFaceMissing";
+  case RotationSystemInconsistencyReason::RotationEdgeRayCountInvalid:
+    return "RotationEdgeRayCountInvalid";
+  case RotationSystemInconsistencyReason::RotationEdgeRayValenceInvalid:
+    return "RotationEdgeRayValenceInvalid";
+  case RotationSystemInconsistencyReason::RotationEdgeArcBindingMissing:
+    return "RotationEdgeArcBindingMissing";
+  case RotationSystemInconsistencyReason::RotationEdgeNonTraceArcRequiresTwoRays:
+    return "RotationEdgeNonTraceArcRequiresTwoRays";
+  case RotationSystemInconsistencyReason::RotationEdgeMandatoryArcMissingNetworkEdge:
+    return "RotationEdgeMandatoryArcMissingNetworkEdge";
+  case RotationSystemInconsistencyReason::RotationEdgeCutArcLocusMismatch:
+    return "RotationEdgeCutArcLocusMismatch";
+  case RotationSystemInconsistencyReason::RotationEdgeRayEndpointDirectionUnavailable:
+    return "RotationEdgeRayEndpointDirectionUnavailable";
+  case RotationSystemInconsistencyReason::RotationEdgeTraceBindingMissing:
+    return "RotationEdgeTraceBindingMissing";
+  case RotationSystemInconsistencyReason::RotationEdgeTraceMissing:
+    return "RotationEdgeTraceMissing";
+  case RotationSystemInconsistencyReason::RotationNodeLocusUnsupported:
+    return "RotationNodeLocusUnsupported";
+  case RotationSystemInconsistencyReason::RotationRayOrderKeyCollision:
+    return "RotationRayOrderKeyCollision";
+  case RotationSystemInconsistencyReason::FaceWalkArcSetEmpty:
+    return "FaceWalkArcSetEmpty";
+  case RotationSystemInconsistencyReason::FaceWalkNodeRotationEmpty:
+    return "FaceWalkNodeRotationEmpty";
+  case RotationSystemInconsistencyReason::FaceWalkRotationDartOutOfRange:
+    return "FaceWalkRotationDartOutOfRange";
+  case RotationSystemInconsistencyReason::FaceWalkSuccessorAlreadyAssigned:
+    return "FaceWalkSuccessorAlreadyAssigned";
+  case RotationSystemInconsistencyReason::FaceWalkIncidenceCountInvalid:
+    return "FaceWalkIncidenceCountInvalid";
+  case RotationSystemInconsistencyReason::FaceWalkSuccessorMissing:
+    return "FaceWalkSuccessorMissing";
+  case RotationSystemInconsistencyReason::FaceWalkCurrentDartOutOfRange:
+    return "FaceWalkCurrentDartOutOfRange";
+  case RotationSystemInconsistencyReason::FaceWalkOrbitReenteredAtDifferentStart:
+    return "FaceWalkOrbitReenteredAtDifferentStart";
+  case RotationSystemInconsistencyReason::FaceWalkCycleDidNotCloseWithinDartBudget:
+    return "FaceWalkCycleDidNotCloseWithinDartBudget";
+  case RotationSystemInconsistencyReason::FaceWalkBoundaryEmpty:
+    return "FaceWalkBoundaryEmpty";
+  case RotationSystemInconsistencyReason::ExteriorBoundaryDartOutOfRange:
+    return "ExteriorBoundaryDartOutOfRange";
+  case RotationSystemInconsistencyReason::FragmentCornerForwardDartOutOfRange:
+    return "FragmentCornerForwardDartOutOfRange";
+  case RotationSystemInconsistencyReason::FragmentCornerReverseDartOutOfRange:
+    return "FragmentCornerReverseDartOutOfRange";
+  case RotationSystemInconsistencyReason::FragmentCornerSourceCornerMismatch:
+    return "FragmentCornerSourceCornerMismatch";
+  case RotationSystemInconsistencyReason::FragmentCornerRayOrdinalDuplicate:
+    return "FragmentCornerRayOrdinalDuplicate";
+  case RotationSystemInconsistencyReason::FragmentCornerOrbitChainMismatch:
+    return "FragmentCornerOrbitChainMismatch";
+  case RotationSystemInconsistencyReason::MandatoryBoundaryInteriorDartOutOfRange:
+    return "MandatoryBoundaryInteriorDartOutOfRange";
+  case RotationSystemInconsistencyReason::CutBoundaryInteriorDartOutOfRange:
+    return "CutBoundaryInteriorDartOutOfRange";
+  case RotationSystemInconsistencyReason::TraceBoundaryForwardDartOutOfRange:
+    return "TraceBoundaryForwardDartOutOfRange";
+  case RotationSystemInconsistencyReason::TraceBoundaryReverseDartOutOfRange:
+    return "TraceBoundaryReverseDartOutOfRange";
+  case RotationSystemInconsistencyReason::RegionFragmentIncomingDartOutOfRange:
+    return "RegionFragmentIncomingDartOutOfRange";
+  case RotationSystemInconsistencyReason::RegionOrbitMissing:
+    return "RegionOrbitMissing";
+  case RotationSystemInconsistencyReason::CandidateRotationSystemMismatch:
+    return "CandidateRotationSystemMismatch";
   }
   return "Unknown";
 }

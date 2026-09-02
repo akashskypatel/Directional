@@ -6851,10 +6851,33 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     const auto cut_graph_failure_locus = [&](
         const geometry::SurfaceCutGraphError &error) {
       SurfaceCellFailureLocusDiagnostics locus;
+      if (error.sourceVertex.has_value())
+        locus.sourceVertex = error.sourceVertex->index();
       if (error.sourceEdge.has_value())
         locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
       if (error.sourceFace.has_value())
         locus.sourceFace = topology_face_locus(*error.sourceFace);
+      if (error.originatingRotationSystemInconsistencyReason.has_value()) {
+        locus.rotationSystemInconsistencyReason =
+            geometry::rotation_system_inconsistency_reason_name(
+                *error.originatingRotationSystemInconsistencyReason);
+      }
+      if (error.trace.has_value()) locus.trace = error.trace->index();
+      locus.traceEventIndex = error.traceEventIndex;
+      if (error.traceEventPositionFailureReason.has_value()) {
+        locus.traceEventPositionFailureReason =
+            geometry::trace_event_position_failure_reason_name(
+                *error.traceEventPositionFailureReason);
+      }
+      if (error.traceEventPositionPass.has_value()) {
+        locus.traceEventPositionPass = geometry::trace_event_position_pass_name(
+            *error.traceEventPositionPass);
+      }
+      locus.cutCandidateCount = error.cutCandidates.size();
+      locus.nonDiscComponentCount = error.nonDiscComponentCount;
+      locus.remainingAdmissibleEdgeCount = error.remainingAdmissibleEdgeCount;
+      locus.certificationAttemptIndex = error.certificationAttemptIndex;
+      locus.certificationCutEdgeCount = error.certificationCutEdgeCount;
       return locus;
     };
     const auto topology_plan_failure_locus = [&](

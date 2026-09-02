@@ -39,6 +39,14 @@ GlobalTopologyPlanError error(const GlobalTopologyPlanErrorCode code) {
   result.code = code;
   return result;
 }
+
+GlobalTopologyPlanError rotation_error(
+    const RotationSystemInconsistencyReason reason) {
+  GlobalTopologyPlanError result =
+      error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+  result.rotationSystemInconsistencyReason = reason;
+  return result;
+}
 } // namespace
 
 std::optional<SourceTopologyIndex> build_source_index(
@@ -453,7 +461,7 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
     const auto origin = originByPort.find(trace.port);
     if (origin == originByPort.end() || trace.segments.empty()) {
       GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          rotation_error(origin == originByPort.end() ? RotationSystemInconsistencyReason::ArcTraceOriginPortMissing : RotationSystemInconsistencyReason::ArcTraceSegmentsEmpty);
       result.sourceVertex = trace.sourceVertex;
       return result;
     }
@@ -520,7 +528,7 @@ ArcBuildResult build_arcs(const FieldAlignedCurveNetwork &network,
     }
     if (!hasTerminal || cuts.rbegin()->first != trace.segments.size()) {
       GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          rotation_error(!hasTerminal ? RotationSystemInconsistencyReason::ArcTraceTerminalEventMissing : RotationSystemInconsistencyReason::ArcTraceTerminalCutPositionMismatch);
       result.sourceVertex = trace.sourceVertex;
       return result;
     }
@@ -633,13 +641,13 @@ NodeLocusResult build_node_loci(const FieldAlignedCurveNetwork &network,
     auto found = loci.find(node);
     if (found == loci.end()) {
       GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          rotation_error(RotationSystemInconsistencyReason::NodeLocusRegistrationMissing);
       result.sourceVertex = vertex;
       return result;
     }
     if (found->second.vertex.has_value() && *found->second.vertex != vertex) {
       GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          rotation_error(RotationSystemInconsistencyReason::NodeLocusSourceVertexConflict);
       result.sourceVertex = vertex;
       return result;
     }
@@ -959,12 +967,12 @@ RotationBuildResult build_rotation_system(
   for (auto &[node, outgoing] : incidences) {
     if (outgoing.empty()) {
       GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          rotation_error(RotationSystemInconsistencyReason::RotationNodeOutgoingIncidenceEmpty);
       return result;
     }
     const auto locusIt = loci.find(node);
     if (locusIt == loci.end()) {
-      return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+      return rotation_error(RotationSystemInconsistencyReason::RotationNodeLocusMissing);
     }
 
     std::vector<std::pair<RayOrderKey, GlobalTopologyOrientedArc>> keyed;
@@ -974,14 +982,14 @@ RotationBuildResult build_rotation_system(
           build_vertex_fan_slots(topology, *locusIt->second.vertex);
       if (!slots.has_value()) {
         GlobalTopologyPlanError result =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::RotationVertexFanSlotsUnavailable);
         result.sourceVertex = locusIt->second.vertex;
         return result;
       }
       for (const auto incidence : outgoing) {
         const auto arcIt = arcById.find(incidence.arc);
         if (arcIt == arcById.end()) {
-          return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          return rotation_error(RotationSystemInconsistencyReason::RotationVertexArcBindingMissing);
         }
         const GlobalTopologyArc &arc = *arcIt->second;
         RayOrderKey key(arc.id);
@@ -994,11 +1002,11 @@ RotationBuildResult build_rotation_system(
           std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
           if (arc.kind == GlobalTopologyArcKind::Mandatory) {
             if (!arc.mandatoryEdge.has_value()) {
-              return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+              return rotation_error(RotationSystemInconsistencyReason::RotationVertexMandatoryArcMissingNetworkEdge);
             }
             const auto *mandatory = find_mandatory(network, *arc.mandatoryEdge);
             if (mandatory == nullptr) {
-              return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+              return rotation_error(RotationSystemInconsistencyReason::RotationVertexMandatoryNetworkEdgeMissing);
             }
             sourceEdge = mandatory->sourceEdge;
           } else {
@@ -1010,7 +1018,7 @@ RotationBuildResult build_rotation_system(
           const auto slot = slots->edgeSlots.find(*sourceEdge);
           if (slot == slots->edgeSlots.end()) {
             GlobalTopologyPlanError result =
-                error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+                rotation_error(RotationSystemInconsistencyReason::RotationVertexSourceEdgeMissingFromFan);
             result.sourceVertex = locusIt->second.vertex;
             result.sourceEdge = *sourceEdge;
             return result;
@@ -1018,15 +1026,15 @@ RotationBuildResult build_rotation_system(
           key.primary = 2U * slot->second;
         } else {
           if (!arc.trace.has_value()) {
-            return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            return rotation_error(RotationSystemInconsistencyReason::RotationVertexTraceBindingMissing);
           }
           const auto *trace = find_trace(network, *arc.trace);
           if (trace == nullptr) {
-            return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            return rotation_error(RotationSystemInconsistencyReason::RotationVertexTraceMissing);
           }
           const auto face = trace_ray_face(arc, incidence.orientation, *trace);
           if (!face.has_value()) {
-            return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            return rotation_error(RotationSystemInconsistencyReason::RotationVertexTraceRayFaceUnavailable);
           }
           const auto slot = slots->faceSlots.find(*face);
           if (slot == slots->faceSlots.end()) {
@@ -1063,7 +1071,7 @@ RotationBuildResult build_rotation_system(
       if (incidentFaces == topology.incidentFaces.end() ||
           incidentFaces->second.empty()) {
         GlobalTopologyPlanError result =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(incidentFaces == topology.incidentFaces.end() ? RotationSystemInconsistencyReason::RotationEdgeIncidentFacesMissing : RotationSystemInconsistencyReason::RotationEdgeIncidentFacesEmpty);
         result.sourceEdge = locusIt->second.edge;
         return result;
       }
@@ -1071,7 +1079,7 @@ RotationBuildResult build_rotation_system(
       for (const auto &faceKey : incidentFaces->second) {
         const auto face = topology.faces.find(faceKey);
         if (face == topology.faces.end()) {
-          return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          return rotation_error(RotationSystemInconsistencyReason::RotationEdgeSourceFaceMissing);
         }
         sideRank.emplace(
             faceKey,
@@ -1089,13 +1097,13 @@ RotationBuildResult build_rotation_system(
           }));
       if (edgeRayCount != 0U && edgeRayCount != 2U) {
         GlobalTopologyPlanError result =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::RotationEdgeRayCountInvalid);
         result.sourceEdge = locusIt->second.edge;
         return result;
       }
       if (edgeRayCount == 2U && outgoing.size() != 3U && outgoing.size() != 4U) {
         GlobalTopologyPlanError result =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::RotationEdgeRayValenceInvalid);
         result.sourceEdge = locusIt->second.edge;
         return result;
       }
@@ -1103,7 +1111,7 @@ RotationBuildResult build_rotation_system(
       for (const auto incidence : outgoing) {
         const auto arcIt = arcById.find(incidence.arc);
         if (arcIt == arcById.end()) {
-          return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          return rotation_error(RotationSystemInconsistencyReason::RotationEdgeArcBindingMissing);
         }
         const GlobalTopologyArc &arc = *arcIt->second;
         RayOrderKey key(arc.id);
@@ -1116,18 +1124,18 @@ RotationBuildResult build_rotation_system(
             arc.kind == GlobalTopologyArcKind::Cut) {
           if (edgeRayCount != 2U) {
             GlobalTopologyPlanError result =
-                error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+                rotation_error(RotationSystemInconsistencyReason::RotationEdgeNonTraceArcRequiresTwoRays);
             result.sourceEdge = locusIt->second.edge;
             return result;
           }
           if (arc.kind == GlobalTopologyArcKind::Mandatory &&
               !arc.mandatoryEdge.has_value()) {
-            return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            return rotation_error(RotationSystemInconsistencyReason::RotationEdgeMandatoryArcMissingNetworkEdge);
           }
           if (arc.kind == GlobalTopologyArcKind::Cut &&
               arc.cutEdge != *locusIt->second.edge) {
             GlobalTopologyPlanError result =
-                error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+                rotation_error(RotationSystemInconsistencyReason::RotationEdgeCutArcLocusMismatch);
             result.sourceEdge = locusIt->second.edge;
             return result;
           }
@@ -1136,7 +1144,7 @@ RotationBuildResult build_rotation_system(
               cutNodes);
           if (!towardSecond.has_value()) {
             GlobalTopologyPlanError result =
-                error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+                rotation_error(RotationSystemInconsistencyReason::RotationEdgeRayEndpointDirectionUnavailable);
             result.sourceEdge = locusIt->second.edge;
             result.networkEdge = arc.mandatoryEdge;
             return result;
@@ -1151,13 +1159,13 @@ RotationBuildResult build_rotation_system(
 
         if (!arc.trace.has_value()) {
           GlobalTopologyPlanError result =
-              error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+              rotation_error(RotationSystemInconsistencyReason::RotationEdgeTraceBindingMissing);
           result.sourceEdge = locusIt->second.edge;
           return result;
         }
         const auto *trace = find_trace(network, *arc.trace);
         if (trace == nullptr) {
-          return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          return rotation_error(RotationSystemInconsistencyReason::RotationEdgeTraceMissing);
         }
         const auto face = trace_ray_face(arc, incidence.orientation, *trace);
         if (!face.has_value() || sideRank.count(*face) == 0U) {
@@ -1188,7 +1196,7 @@ RotationBuildResult build_rotation_system(
         keyed.emplace_back(key, incidence);
       }
     } else {
-      return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+      return rotation_error(RotationSystemInconsistencyReason::RotationNodeLocusUnsupported);
     }
 
     std::sort(keyed.begin(), keyed.end(), [](const auto &lhs, const auto &rhs) {
@@ -1203,7 +1211,7 @@ RotationBuildResult build_rotation_system(
           previous.primary == current.primary &&
           previous.secondary == current.secondary) {
         GlobalTopologyPlanError result =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::RotationRayOrderKeyCollision);
         result.sourceVertex = locusIt->second.vertex;
         result.sourceEdge = locusIt->second.edge;
         return result;
@@ -1275,7 +1283,7 @@ FaceWalkBuildResult walk_graph_faces(
     const std::vector<GlobalTopologyArc> &arcs,
     const std::vector<GlobalTopologyNodeRotation> &rotations) {
   if (arcs.empty()) {
-    return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+    return rotation_error(RotationSystemInconsistencyReason::FaceWalkArcSetEmpty);
   }
   const std::size_t dartCount = 2U * arcs.size();
   std::vector<std::size_t> successor(dartCount,
@@ -1285,7 +1293,7 @@ FaceWalkBuildResult walk_graph_faces(
     const std::size_t count = rotation.counterClockwise.size();
     if (count == 0U) {
       GlobalTopologyPlanError result =
-          error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+          rotation_error(RotationSystemInconsistencyReason::FaceWalkNodeRotationEmpty);
       return result;
     }
     for (std::size_t index = 0U; index < count; ++index) {
@@ -1293,7 +1301,7 @@ FaceWalkBuildResult walk_graph_faces(
       const std::size_t reverseDart = dart_index(reverseIncidence);
       if (reverseDart >= dartCount) {
         GlobalTopologyPlanError result =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::FaceWalkRotationDartOutOfRange);
         result.region.reset();
         result.arc = reverseIncidence.arc;
         return result;
@@ -1303,7 +1311,7 @@ FaceWalkBuildResult walk_graph_faces(
       const std::size_t incomingDart = dart_index(reversed(reverseIncidence));
       if (successor[incomingDart] != std::numeric_limits<std::size_t>::max()) {
         GlobalTopologyPlanError result =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::FaceWalkSuccessorAlreadyAssigned);
         result.arc = reverseIncidence.arc;
         return result;
       }
@@ -1315,7 +1323,7 @@ FaceWalkBuildResult walk_graph_faces(
       std::any_of(successor.begin(), successor.end(), [](const std::size_t next) {
         return next == std::numeric_limits<std::size_t>::max();
       })) {
-    return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+    return rotation_error(std::any_of(incidenceCount.begin(), incidenceCount.end(), [](const std::size_t count) { return count != 1U; }) ? RotationSystemInconsistencyReason::FaceWalkIncidenceCountInvalid : RotationSystemInconsistencyReason::FaceWalkSuccessorMissing);
   }
 
   FaceWalkResult result;
@@ -1328,13 +1336,13 @@ FaceWalkBuildResult walk_graph_faces(
     std::size_t current = start;
     for (std::size_t steps = 0U; steps <= dartCount; ++steps) {
       if (current >= dartCount) {
-        return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+        return rotation_error(RotationSystemInconsistencyReason::FaceWalkCurrentDartOutOfRange);
       }
       if (result.orbitByDart[current] !=
           std::numeric_limits<std::size_t>::max()) {
         if (current != start) {
           GlobalTopologyPlanError failure =
-              error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+              rotation_error(RotationSystemInconsistencyReason::FaceWalkOrbitReenteredAtDifferentStart);
           failure.arc = oriented_arc_from_dart(current, arcs.size()).arc;
           return failure;
         }
@@ -1345,11 +1353,11 @@ FaceWalkBuildResult walk_graph_faces(
       current = successor[current];
       if (current == start) break;
       if (steps == dartCount) {
-        return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+        return rotation_error(RotationSystemInconsistencyReason::FaceWalkCycleDidNotCloseWithinDartBudget);
       }
     }
     if (boundary.empty()) {
-      return error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+      return rotation_error(RotationSystemInconsistencyReason::FaceWalkBoundaryEmpty);
     }
     canonicalize_cycle(boundary);
     result.orbits.push_back(std::move(boundary));
@@ -1435,7 +1443,7 @@ ExteriorOrbitBuildResult exterior_boundary_orbits(
       const std::size_t exteriorDart = interiorDart ^ 1U;
       if (exteriorDart >= walk.orbitByDart.size()) {
         GlobalTopologyPlanError failure =
-            error(GlobalTopologyPlanErrorCode::RotationSystemInconsistent);
+            rotation_error(RotationSystemInconsistencyReason::ExteriorBoundaryDartOutOfRange);
         failure.arc = arc->id;
         return failure;
       }

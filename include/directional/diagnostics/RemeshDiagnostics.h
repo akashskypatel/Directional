@@ -128,6 +128,16 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<int> relatedBranch;
   std::optional<std::size_t> topologyRegion;
   std::string networkErrorCondition;
+  std::string rotationSystemInconsistencyReason;
+  std::optional<std::size_t> trace;
+  std::optional<std::size_t> traceEventIndex;
+  std::string traceEventPositionFailureReason;
+  std::string traceEventPositionPass;
+  std::optional<std::size_t> cutCandidateCount;
+  std::optional<std::size_t> nonDiscComponentCount;
+  std::optional<std::size_t> remainingAdmissibleEdgeCount;
+  std::optional<std::size_t> certificationAttemptIndex;
+  std::optional<std::size_t> certificationCutEdgeCount;
   std::optional<int> signedLift;
   std::optional<std::string> parameter;
   std::vector<std::string> exactValues;

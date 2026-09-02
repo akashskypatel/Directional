@@ -108,12 +108,15 @@ struct SurfaceCutGraphTraceEventPositionCandidate {
 
 struct SurfaceCutGraphError {
   SurfaceCutGraphErrorCode code = SurfaceCutGraphErrorCode::InvalidSourceBinding;
+  std::optional<authority::SourceVertexId> sourceVertex;
   std::optional<authority::SourceEdgeTopologyKey> sourceEdge;
   std::optional<authority::SourceFaceTopologyKey> sourceFace;
   std::optional<GlobalTopologyPlanErrorCode> originatingTopologyError;
   std::size_t nonDiscComponentCount = 0U;
   std::size_t remainingAdmissibleEdgeCount = 0U;
   std::vector<SurfaceCutCandidateEvidence> cutCandidates;
+  std::optional<std::size_t> certificationAttemptIndex;
+  std::optional<std::size_t> certificationCutEdgeCount;
   std::optional<RotationSystemInconsistencyReason>
       originatingRotationSystemInconsistencyReason;
   std::optional<authority::TraceId> trace;

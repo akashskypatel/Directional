@@ -3443,6 +3443,28 @@ void append_cp4c_failure_locus(
     report << ";topologyRegion=" << *locus.topologyRegion;
   if (!locus.networkErrorCondition.empty())
     report << ";networkErrorCondition=" << locus.networkErrorCondition;
+  if (!locus.rotationSystemInconsistencyReason.empty())
+    report << ";rotationSystemReason="
+           << locus.rotationSystemInconsistencyReason;
+  if (locus.trace.has_value()) report << ";trace=" << *locus.trace;
+  if (locus.traceEventIndex.has_value())
+    report << ";traceEvent=" << *locus.traceEventIndex;
+  if (!locus.traceEventPositionFailureReason.empty())
+    report << ";traceEventPositionFailure="
+           << locus.traceEventPositionFailureReason;
+  if (!locus.traceEventPositionPass.empty())
+    report << ";traceEventPositionPass=" << locus.traceEventPositionPass;
+  if (locus.cutCandidateCount.has_value())
+    report << ";cutCandidateCount=" << *locus.cutCandidateCount;
+  if (locus.nonDiscComponentCount.has_value())
+    report << ";nonDiscComponentCount=" << *locus.nonDiscComponentCount;
+  if (locus.remainingAdmissibleEdgeCount.has_value())
+    report << ";remainingAdmissibleEdgeCount="
+           << *locus.remainingAdmissibleEdgeCount;
+  if (locus.certificationAttemptIndex.has_value())
+    report << ";certificationAttempt=" << *locus.certificationAttemptIndex;
+  if (locus.certificationCutEdgeCount.has_value())
+    report << ";certificationCutEdges=" << *locus.certificationCutEdgeCount;
   if (locus.signedLift.has_value())
     report << ";signedLift=" << *locus.signedLift;
   if (locus.parameter.has_value())
