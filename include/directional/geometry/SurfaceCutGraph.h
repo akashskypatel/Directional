@@ -27,6 +27,7 @@ namespace directional::geometry {
 enum class GlobalTopologyPlanErrorCode : std::uint8_t;
 enum class RotationSystemInconsistencyReason : std::uint8_t;
 enum class VertexTraceSecondaryParameterFailureReason : std::uint8_t;
+enum class EdgeTraceSecondaryRankFailureReason : std::uint8_t;
 enum class TraceEventPositionFailureReason : std::uint8_t;
 enum class TraceEventPositionPass : std::uint8_t;
 enum class TraceEventPositionCarrierRole : std::uint8_t;
