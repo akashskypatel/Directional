@@ -110,7 +110,7 @@ jobs:
           echo "7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1  $work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_377.txt" | sha256sum -c -
           echo "86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8  $work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_378.txt" | sha256sum -c -
           echo "ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7  $work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_379.txt" | sha256sum -c -
-          echo "1a95d32852507441c10c81154a595ebc367fe4137143ec9290d85d852a0e4e  $work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_380.txt" | sha256sum -c -
+          echo "1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e  $work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_380.txt" | sha256sum -c -
           for n in 373 374 375 376 377 378 379 380; do
             test "$(wc -l < "$work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_${n}.txt" | tr -d ' ')" = "$n"
             test "$(sort "$work/source-tree/.agents/Directional/Architecture_M3_CP4c3_Required_Green_Selector_${n}.txt" | uniq | wc -l | tr -d ' ')" = "$n"
@@ -128,7 +128,7 @@ jobs:
           fixture_count=27
           fixture_authority=package-relative
           selector=380
-          selector_sha256=1a95d32852507441c10c81154a595ebc367fe4137143ec9290d85d852a0e4e
+          selector_sha256=1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e
           frozen_selector_379_sha256=ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7
           non_gating_diagnostic_identity=GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable
           runtimeExecution=false
