@@ -1,4 +1,0 @@
-# M3-CP4c-3-CB13 closeout temporary-state cleanup
-.agents/Directional/turn-payloads/m3-cp4c3-cb13-closeout-drive.yml
-.agents/connector-triggers/m3-cp4c3-cb13-closeout-drive-schema-validation-20260902.txt
-.agents/connector-triggers/m3-cp4c3-cb13-closeout-drive.txt

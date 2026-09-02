@@ -1,4 +1,0 @@
-purpose=M3-CP4c-3-CB13 documentation closeout via verified Drive patch
-base_sha=d36540bbad7debba4ec660f4efc268e16a470896
-patch_sha256=aa2c2ab031b2d35d03abc85f0e44413c73c33eb75a26343e20c8712043eeca99
-retry=1
