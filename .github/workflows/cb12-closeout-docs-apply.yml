@@ -1,0 +1,39 @@
+name: CB12 Closeout Docs Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb12-closeout-docs-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: directional-cb12-closeout-docs-apply
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb12-closeout-docs-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1gZg0l5Mf5l-kf8Wtcaw8h1Tqa_8ZGwjn
+      patch_sha256: 8c800085908587b88b545cb951fd8775be4f198f49ca80586b5ae8fbc0436aca
+      base_sha: 69784c3f94f97f0e3793cb66837995b03a2fa862
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3-CP4c-3-CB12 and freeze TB10"
+      retention_days: 14
+    secrets: inherit
