@@ -1,20 +1,20 @@
-name: Agent CB11 Link Fix Apply Caller
+name: Agent CB11 Compile Retry Caller
 
 on:
   push:
     branches:
       - agent/surface_cell_quad/p5-recover-bridge-healing
     paths:
-      - .agents/connector-triggers/cb11-link-fix-20260902.txt
+      - .agents/connector-triggers/cb11-compile-r1-20260902.txt
 
 permissions:
   contents: write
-  id-token: write
+  actions: write
   issues: write
   pull-requests: write
 
 concurrency:
-  group: agent-cb11-link-fix-apply
+  group: agent-cb11-compile-r1
   cancel-in-progress: false
 
 jobs:
@@ -29,20 +29,16 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: cb11-link-fix-apply
+      label: cb11-compile-r1
       commit_run_file: false
       trim_stale_comments: false
     secrets: inherit
 
-  apply:
+  compile:
     needs: validate
     if: ${{ needs.validate.outputs.valid == 'true' }}
-    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    uses: ./.github/workflows/agent-compile-reusable.yml
     with:
-      file_id: 1TaHUXejZR9To7TWt9Aou9DNFTrzk1-ty
-      patch_sha256: 71e20f17ce54d0670a1393ab6327847e8aee4a715de5cca6914371f2d4c38632
-      base_sha: d8eb6332e10804bd847d3b10911efbcb75c39688
-      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB11: expose diagnostic finalizer seam"
-      retention_days: 14
+      source_sha: 803300698289e0d0f629eaa878add1aebc7193c1
+      artifact_prefix: m3-cp4c3-cb11-compile-r1
     secrets: inherit
