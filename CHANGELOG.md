@@ -1,3 +1,21 @@
+## 2026-09-02 — `M3-CP4c-3-CB14`: diagnostic collision witness build green; package 82 frozen
+
+CB14 is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE** at final source
+`71ece3ca184e90858d9222fb014b37c16d292294`. TB11-REV BH0–BH9 are implemented without changing collision/order/
+incidence/rotation/cut semantics: both colliding rays retain typed key operands, identity/orientation/origin-port
+provenance and fan slots; the locus publishes a bounded keyed-fan census; unmeasured certification counters no
+longer render as observed zeros; and production-renderer synthetic/mechanical diagnostic assertions are compiled but
+unexecuted. Selector 377 remains byte-frozen at `7255ac86…26cbec1`; selector **378** is 377 plus one non-gating
+diagnostic identity, SHA-256 `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`.
+Compile run/job `33653092570 / 100324843819` passed all eight standard targets with GMP/GMPXX and no runtime. Immutable
+package **82** from `33653737897 / 100327139865` is artifact `9855841174`
+(`4f597d260a6fb258767378489741326a6f6c2322522bdd60ef9fd071970c26ed`); inner tar
+`58393e9927e80e894a753cafee074202fd6df8fec43d8cba244fe1404e23a5e1`; packaged source
+`3ae91b7544749f00487ff57e1705d657d23d84ffe3107ce1a4565c3a24d35f1e`; 27 fixtures and six executables verify.
+Accepted authority stays **365/365**, CP4c-3 OPEN, stable accounting **44 / 14 / 30**, debt **5**, semantic packages
+**79**. Exact next: artifact-only `M3-CP4c-3-TB12` under the frozen TB12 plan; no semantic correction before its
+runtime discrimination.
+
 ## 2026-09-01 — `M3-CP4c-3-TB7`: 365-prefix green; first red is vertex-11 seed unavailability
 
 TB7 is **COMPLETE / VALID SEMANTIC RED** on immutable package **76** / source

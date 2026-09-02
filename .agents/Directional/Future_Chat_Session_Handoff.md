@@ -92,99 +92,81 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB14` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB12` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
 
-`M3-CP4c-3-TB11-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` (measures **BG0–BG7** discharged, static only).
+`M3-CP4c-3-CB14` is **COMPLETE / BUILD GREEN / DIAGNOSTIC-ONLY**. Owning record:
+`Architecture_M3_CP4c3_CB14_Code_Build_Report.md`. Frozen execution plan:
+`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md`.
 
-### What the review established
+### CB14 authority now frozen
 
-TB11's ordinal-366 red —
-`rotationSystemReason=RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`
-— is **not adjudicable from the retained evidence**, and `M3-CP4c-3-TB11-REV` proved why.
+Final compile/package source is **`71ece3ca184e90858d9222fb014b37c16d292294`**. Authoritative compile run/job
+`33653092570 / 100324843819` built all eight standard targets with mandatory GMP/GMPXX and
+`runtimeExecution=false`. Compile result/log artifacts are `9855741844` / `9855742445`; their Actions ZIP
+SHA-256 digests are `b4b98c3f8ee0ad0a777f69f591591303e37c99d136dc028d511967b746e7fb16` and
+`aaf9c901cf2a36b3d925e3ba670cf5bd07f86b7afc2f218e3986ae3d157ee81a`.
 
-- **The unique emitter** is `EmbeddedGraphTopology.cpp:1214` in `build_rotation_system`: post key-construction,
-  post-sort, pre-`counterClockwise`, on adjacent sorted pairs that are both `Trace` at a **vertex** locus.
-- **The guard compares less than the key.** `RayOrderKey` sorts on six members; the predicate tests only `primary`
-  and `secondary`. `arc` and `orientation` are present and excluded.
-- **`secondary` is not vertex-local.** It is `port->ordinal` for the port the trace **originated** from, matched by
-  id with **no check** that the port's source vertex is the locus vertex.
-- **A self-loop arc collides by construction.** The incidence map pushes `Forward` at `firstNode` and `Reverse` at
-  `secondNode` unconditionally; both darts share `arc.trace` and hence `secondary`. No upstream defect is required.
-- **Neither colliding ray is retained.** The emitter sets only the reason, `sourceVertex` and `sourceEdge`, while
-  the DTO already declares `arc`, `trace`, `secondTrace`, `sourceFace` and `secondSourceFace` — and **no field can
-  hold `primary`/`secondary` at all**. BG2 alternatives 1–4 render **byte-identically**.
-- **Certification phase (BG3).** `certificationAttempt=0` / `certificationCutEdges=0` prove failure on the **first
-  certification of the uncut graph**, before any cut proposal. `cutCandidateCount=450` is a real measurement;
-  `nonDiscComponentCount=0` and `remainingAdmissibleEdgeCount=0` are **struct defaults on this path**, assigned
-  only at `SurfaceCutGraph.cpp:365`/`:367` under a different error code.
+Immutable package **82** was produced without executing a Directional binary in run/job
+`33653737897 / 100327139865`. Package artifact `9855841174` has Actions SHA-256
+`4f597d260a6fb258767378489741326a6f6c2322522bdd60ef9fd071970c26ed`; inner `package82.tar.gz` is
+`58393e9927e80e894a753cafee074202fd6df8fec43d8cba244fe1404e23a5e1`; packaged source archive is
+`3ae91b7544749f00487ff57e1705d657d23d84ffe3107ce1a4565c3a24d35f1e`. Package verification preserved 27
+fixtures, six executable binaries, two static libraries, GMP authority, and `runtimeExecution=false`.
 
-`M3-CP4c3-TB10-CAND-01` is **CLOSED / RUNTIME DISCRIMINATED**. `M3-CP4c3-TB11-CAND-01` transitions to
-**underdetermined by retained evidence**; new `M3-CP4c3-TB11-REV-CAND-01` is **ACTIVE**.
-`M3-CP4c3-TB10-REV-CAND-01` (371/372 test coupling) stays **DEFERRED**; sphere 368, saturation 369, ordinal 370,
-folded-cone 374, vertex 30 and the finalize/contact fall-through are unchanged.
+CB14 discharged review measures **BH0–BH9** without a semantic correction:
 
-**Caution:** the rotation system at a **singularity** node became reachable only after CB12 and CB13 let the
-pipeline advance this far. This is a **newly reachable** path, not demonstrably a newly introduced defect; CB12
-must not be reverted or treated as suspect on this evidence.
+- both colliding rotation rays now retain typed key operands, arc/trace/face identity, orientation, fan slot, and
+  origin-port ordinal/source-vertex evidence;
+- the failing vertex can publish a bounded keyed-fan census with explicit total/truncation state;
+- certification-only counters are optional, so unmeasured struct defaults no longer render as observations;
+- the synthetic same-sector witness and the mechanical ordinal-366 renderer assertion compile through production
+  diagnostics but remain unexecuted until TB12;
+- selector **377** remains byte-frozen at
+  `7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`;
+- selector **378** is exactly selector 377 plus one non-gating diagnostic identity, SHA-256
+  `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`;
+- collision predicate, comparator, `RayOrderKey`, key construction, incidence, rotation publication, cut decisions,
+  fixtures, and unrelated deferred owners are unchanged.
 
-### CB14 binding scope — `BH0–BH9`, in the review record §8
+`M3-CP4c3-TB11-REV-CAND-01` therefore remains **ACTIVE / UNDERDETERMINED** until runtime discrimination. No
+semantic correction is authorized before TB12. Accepted semantic authority remains **365/365**; CP4c-3 remains
+**OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**;
+authoritative semantic M3 package count **79**.
 
-**Diagnostic-only.** Owner: the collision emitter in
-`src/geometry/EmbeddedGraphTopology.cpp::build_rotation_system` and the DTO/projection surfaces it reports through.
+### TB12 binding execution scope
 
-- **BH0** — selector **377** byte-frozen at `7255ac86…6426cbec1`; accepted 365 untouched; **eight standard compile
-  targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BH1** — name both colliding rays using the fields the DTO already has: `arc`/`trace`/`sourceFace` for
-  `previous`, `secondTrace`/`secondSourceFace` for `current`; add a second arc field if absent. Render all of them.
-- **BH2** — add typed fields for the colliding `primary` and `secondary`, both `orientation`s, both origin port
-  ordinals **and both origin port source vertices** (the last proves whether `secondary` was vertex-local), and
-  each ray's resolved fan slot. Render them.
-- **BH3** — publish a **bounded** census of the keyed fan at the failing locus (kind, `primary`, `secondary`, arc,
-  trace, orientation per ray) with an explicit truncation marker. This is what separates BG2's alternatives 1–4.
-- **BH4** — make `nonDiscComponentCount` / `remainingAdmissibleEdgeCount` honest: assign them on the
-  certification-failure path or stop rendering them there. **No default may render as an observation.**
-- **BH5** — witnesses: a synthetic same-sector vertex collision (the self-loop shape is cheapest) asserting that
-  both sides, both key operands and the fan census render through the **production** locus path; plus a mechanical
-  assertion that ordinal 366 now carries both ray identities. Preserve every existing assertion verbatim.
-- **BH6** — append **selector 378** only on demonstrated falsification; republish 377 with unchanged SHA-256.
-- **BH7** — prohibitions: **do not** change the collision predicate, the sort comparator, `RayOrderKey`'s members,
-  `primary`/`secondary` construction, `trace_ray_face`, the incidence map, or any ordering/rotation semantics; do
-  **not** add `arc`/`orientation` to the collision test; do **not** revert or weaken CB12; do **not** repair the
-  `finalize_field_aligned_events` contact fall-through; do **not** decouple 371/372; no sphere, saturation,
-  ordinal-370 or folded-cone correction; no fixture mutation, tolerance, or float-derived topological decision.
-- **BH8** — audit by assumption; prove no accepted-green observable output changes and that no rotation, ordering
-  or cut decision differs before and after.
-- **BH9** — publish five `M3-CP4c-3-TB12` discriminators: (1) 1–365 stay 365/365; (2) ordinal 366 still reds at
-  `RotationRayOrderKeyCollision`, `sourceVertex=47`, attempt 0 / 0 cut edges — **any movement falsifies BH7**;
-  (3) the line names both arcs, both traces, both faces, both orientations and both origin ports with their source
-  vertices; (4) the bounded fan census at v47 shows the colliding sector's occupancy; (5) the two certification
-  counters are either populated on this path or absent from it.
+Run the frozen artifact-only plan exactly; no rebuild, relink, repair, fixture/source/test mutation, or generated
+runtime discovery.
 
-**No semantic correction is authorized until TB12 separates the alternatives.**
-
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **78**.
+1. Preflight immutable package 82 and selector lineage 373–378.
+2. Execute selector **378 from ordinal 1**, one exact identity per fresh process.
+3. Require ordinals **1–365 = 365/365** and ordinal **366** to remain
+   `RotationRayOrderKeyCollision;sourceVertex=47;certificationAttempt=0;certificationCutEdges=0`; any frontier
+   movement falsifies CB14's no-semantic-change audit.
+4. Preserve both colliding ray records and the bounded fan census at vertex 47, then discriminate the review's four
+   alternatives: duplicate/stale incidence, insufficient order key, valid coincident rays/tie semantics, or
+   witness/precondition.
+5. Require certification counters to be populated only when measured, otherwise absent.
+6. Execute `GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable` once separately with **zero gate
+   credit**.
+7. Continue the remaining selector identities report-only after the first red, preserve immutable postflight, and
+   update `Regression_Root_Cause_Tracker.md` for every observed regression/candidate before TB12 closes.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent CODE + BUILD guidance
+- turn-based-coding-agent TEST + BENCHMARK guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — **frozen CB14 scope, §8 BH0–BH9**.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB13_Code_Build_Report.md` — package-81 implementation authority.
-4. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md` — **frozen execution authority**.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — immutable package-82/build authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — BH0–BH9 and the four alternatives.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
    `M3_CP4c_Consolidated_Record.md`.
-
-Source surfaces CB14 will touch: `src/geometry/EmbeddedGraphTopology.cpp` (the collision emitter only),
-`include/directional/geometry/GlobalTopologyPlan.h` (added diagnostic fields),
-`include/directional/geometry/SurfaceCutGraph.h` and `src/geometry/SurfaceCutGraph.cpp` (BH4 counters),
-`src/pipeline/RemeshPipeline.cpp` (projection), and `tests/` for the BH5 witnesses.
+6. Packaged source is inspection-only if TB12 evidence needs static emitter mapping; do not rebuild or mutate it.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

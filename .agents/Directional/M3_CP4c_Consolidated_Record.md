@@ -195,9 +195,32 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
 `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
-`Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
-`Architecture_M3_CP4c3_CB12_Code_Build_Report.md`; exact next-turn authority is
-`Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md`.
+`Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
+`Architecture_M3_CP4c3_CB14_Code_Build_Report.md`; exact next-turn authority is
+`Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md`.
+
+### `M3-CP4c-3-CB14` — current build/package boundary
+
+CB14 executed TB11-REV **BH0–BH9** as a **diagnostic-only** Code + Build turn. Final source
+`71ece3ca184e90858d9222fb014b37c16d292294` retains both colliding rotation rays with typed key operands,
+arc/trace/face identity, orientation, fan slot, and origin-port ordinal/source-vertex evidence; publishes a bounded
+keyed-fan census; and prevents unmeasured certification counters from rendering as observed zeros. It also compiles
+a production-renderer synthetic same-sector witness and the mechanical ordinal-366 diagnostic assertion. No
+collision/order/incidence/rotation/cut semantics or fixtures changed.
+
+Selector **377** remains byte-frozen at
+`7255ac86e525e245c0c24231b70c9494349a4c1cc1dfcfeee9817cc6426cbec1`. Selector **378** is exactly 377 plus one
+non-gating diagnostic identity, SHA-256 `86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`.
+Authoritative compile run/job `33653092570 / 100324843819` passed all eight standard targets with GMP/GMPXX and no
+runtime. Immutable package **82** was frozen by run/job `33653737897 / 100327139865`: artifact `9855841174`
+(Actions SHA-256 `4f597d260a6fb258767378489741326a6f6c2322522bdd60ef9fd071970c26ed`), inner tar
+`58393e9927e80e894a753cafee074202fd6df8fec43d8cba244fe1404e23a5e1`, packaged source
+`3ae91b7544749f00487ff57e1705d657d23d84ffe3107ce1a4565c3a24d35f1e`, 27 fixtures and six executables.
+
+CB14 changes no acceptance: accepted authority remains **365/365**, CP4c-3 OPEN, stable **44 / 14 / 30**, debt
+**5**, semantic packages **79**. `M3-CP4c3-TB11-REV-CAND-01` remains active/underdetermined. Exact next is
+artifact-only **`M3-CP4c-3-TB12`** under the frozen TB12 plan; no semantic correction is authorized before runtime
+separates the review alternatives.
 
 ### `M3-CP4c-3-TB11` — current measured runtime boundary
 
@@ -687,22 +710,17 @@ After the durable start-of-turn checklist, load:
 1. `ORIENTATION.md` — read first.
 2. `Future_Chat_Session_Handoff.md`
 3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB10_Independent_Review_Record.md` — **current review authority and the BF0–BF9 measures.**
-5. `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md`
-6. `Architecture_M3_CP4c3_CB12_Code_Build_Report.md`
-7. `Architecture_M3_CP4c3_Required_Green_Selector_377.txt`
-8. `Regression_Root_Cause_Tracker.md`
-9. `src/geometry/EmbeddedGraphTopology.cpp`, `src/geometry/SurfaceCutGraph.cpp`,
-   `src/pipeline/RemeshPipeline.cpp`, `tests/FieldAlignedCurveNetworkTests.cpp`
+4. `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md` — **frozen TB12 execution authority.**
+5. `Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — package-82/build authority.
+6. `Architecture_M3_CP4c3_TB11_Independent_Review_Record.md` — BH0–BH9 and the four collision alternatives.
+7. `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+8. `Architecture_M3_CP4c3_Required_Green_Selector_378.txt` and frozen selector 377.
+9. `Regression_Root_Cause_Tracker.md`
 10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB14` - Code + Build, DIAGNOSTIC-ONLY.** Follow section 8 **BH0-BH9** of
-`Architecture_M3_CP4c3_TB11_Independent_Review_Record.md`. Name both colliding rays using the `arc`/`trace`/
-`sourceFace` and `secondTrace`/`secondSourceFace` fields the DTO already declares; add typed fields for the
-colliding `primary`/`secondary`, both orientations, and both origin ports' **source vertices**; publish a bounded
-fan census at the failing locus; and make `nonDiscComponentCount`/`remainingAdmissibleEdgeCount` honest on the
-certification-failure path. **Do not touch the collision predicate, the sort comparator, `RayOrderKey`,
-`primary`/`secondary` construction, `trace_ray_face`, the incidence map, or any ordering semantics**; do not revert
-CB12; do not repair the finalize/contact fall-through; do not decouple 371/372. Selector 377 stays byte-frozen;
-append selector 378 only on demonstrated falsification. Eight compile targets, GMP/GMPXX linkage mandatory. **No
-semantic correction is authorized until `M3-CP4c-3-TB12` separates the alternatives.**
+**Exact next:** **`M3-CP4c-3-TB12` — Test + Benchmark, ARTIFACT-ONLY.** Consume immutable package 82 from source
+`71ece3ca184e90858d9222fb014b37c16d292294`; execute selector 378 from ordinal 1, one exact identity per fresh
+process; require 1–365 to remain 365/365 and ordinal 366 to remain the vertex-47 `RotationRayOrderKeyCollision`;
+preserve the two colliding ray records and bounded fan census; execute the one non-gating diagnostic separately with
+zero gate credit; continue the remainder report-only after first red; and preserve immutable postflight. **No
+rebuild, relink, repair, source/test/fixture mutation, or semantic correction is authorized inside TB12.**
