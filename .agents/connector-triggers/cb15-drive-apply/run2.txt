@@ -1,0 +1,4 @@
+turn=M3-CP4c-3-CB15
+retry=1
+reason=quote-colon-in-commit-message
+patch_sha256=63f4c2d3aa00d95b2810082337691697a619ec1493dc730d7c696be722b679ab
