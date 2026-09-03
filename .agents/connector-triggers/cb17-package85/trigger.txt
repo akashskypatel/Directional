@@ -1,0 +1,10 @@
+turn=M3-CP4c-3-CB17
+caller_install_sha=6a670ba64a48423356c4a236c37bebba9f9cd915
+source_sha=1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4
+compile_run=33697315308
+compile_artifact_id=9872340053
+compile_artifact_digest=sha256:3a814357edf9b1f2424f4047b6c84b1e37ed54dc1751ab6a1fa3b125af206274
+package=85
+selector=381
+selector_sha256=af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90
+runtimeExecution=false
