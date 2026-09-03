@@ -1,9 +1,9 @@
-name: Agent CB20 Drive Patch Apply 20260903 0936
+name: Agent CB20 Closeout Drive Patch 20260903 0948
 
 on:
   push:
     paths:
-      - ".agents/connector-triggers/google-drive-patch/cb20-apply-20260903-0936.txt"
+      - ".agents/connector-triggers/google-drive-patch/cb20-closeout-20260903-0948.txt"
 
 permissions:
   contents: write
@@ -25,17 +25,17 @@ jobs:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: cb20-drive-patch
+      label: cb20-closeout-drive-patch
     secrets: inherit
 
   apply:
     needs: validate
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1FDirsW2cGZ97UL4613X1q3vhvNvNBvPa
-      patch_sha256: b0ced166471ef1c814846e9eea6dd487ce9c19fdf2be99d69bc7a11db411b398
-      base_sha: ae30c183c0b876a093cd1bbbd673f8e6cbd52f67
+      file_id: 1igiho1u5vBHWvwqC19_v7pgw9LvMdbf9
+      patch_sha256: 94b7b64253b0f9e5166f5cd55d0aa8859e642218242d3f12038488a0fa0358a3
+      base_sha: 416d75fc6141645309c223ee86c124eb0da77bc9
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB20: add fragment mismatch diagnostics"
+      commit_message: "docs: close CB20 and freeze TB18"
       retention_days: 1
     secrets: inherit
