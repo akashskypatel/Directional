@@ -1,0 +1,4 @@
+turn_id=M3-CP4c-3-TB17
+requested_source=4fe003f47eecc51678684117f0c734c605f4d44b
+purpose=start-of-turn-read-mode-snapshot
+runtimeExecution=false
