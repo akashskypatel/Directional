@@ -161,7 +161,8 @@ struct FragmentLocalArrangement {
 };
 
 [[nodiscard]] std::optional<FragmentExactPoint> boundary_point_barycentric(
-    const SourceFaceRecord &face, const authority::FieldBoundaryPoint &point) {
+    const embedded_graph_topology_detail::SourceFaceRecord &face,
+    const authority::FieldBoundaryPoint &point) {
   std::optional<std::size_t> firstCorner;
   std::optional<std::size_t> secondCorner;
   for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
@@ -181,7 +182,8 @@ struct FragmentLocalArrangement {
 }
 
 [[nodiscard]] std::optional<FragmentExactPoint> source_vertex_barycentric(
-    const SourceFaceRecord &face, const authority::SourceVertexId vertex) {
+    const embedded_graph_topology_detail::SourceFaceRecord &face,
+    const authority::SourceVertexId vertex) {
   const auto zero = authority::FieldExactRational::from_integer(0);
   const auto one = authority::FieldExactRational::from_integer(1);
   FragmentExactPoint result{zero, zero, zero};
@@ -195,8 +197,8 @@ struct FragmentLocalArrangement {
 }
 
 [[nodiscard]] std::optional<FragmentExactPoint> trace_segment_exit_barycentric(
-    const SourceFaceRecord &face, const FieldAlignedCandidateTrace &trace,
-    const std::size_t segmentIndex) {
+    const embedded_graph_topology_detail::SourceFaceRecord &face,
+    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
   if (segmentIndex >= trace.segments.size()) return std::nullopt;
   const auto &segment = trace.segments[segmentIndex];
   if (segment.edgeTransitExit.has_value()) {
@@ -987,8 +989,7 @@ RegionBuildResult build_regions(
                                : chordIt->second;
       FragmentLocalArrangement arrangement;
       arrangement = local_fragment_arrangement(chords);
-      TraceCutFaceFragmentOwnerEvidenceDiagnostic row;
-      row.sourceFace = faceKey;
+      TraceCutFaceFragmentOwnerEvidenceDiagnostic row{faceKey};
       row.localFragmentCount = arrangement.fragmentCount;
       row.ownerCount = found->second.size();
       row.expectedFragmentCount = expected;
