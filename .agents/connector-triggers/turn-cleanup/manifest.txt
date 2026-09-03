@@ -1,0 +1,7 @@
+# M3-CP4c-3-CB20 temporary state
+.agents/connector-triggers/source-snapshot/session-20260903-0903.txt
+.agents/connector-triggers/exact-source-snapshot/session-20260903-0903.txt
+.agents/connector-triggers/google-drive-patch/cb20-apply-20260903-0936.txt
+.agents/connector-triggers/compile/cb20-compile-20260903-0939.txt
+.agents/connector-triggers/google-drive-patch/cb20-closeout-20260903-0948.txt
+.agents/connector-triggers/google-drive-patch/cb20-closeout-r2-20260903-0952.txt
