@@ -26,33 +26,64 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB16-REV` (Independent REVIEW + PLAN, STATIC ONLY)
+## Current focus — `M3-CP4c-3-CB19` (product correction, Code + Build, runtime-free, GMP/GMPXX linked)
 
-`M3-CP4c-3-TB16` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / V47 RE-PROVED** on immutable package **86** / selector **382**.
+`M3-CP4c-3-TB16-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB16_Independent_Review_Record.md`, measures **BQ0–BQ8** discharged, static only.
 
-- Authoritative run/job: `33709721203 / 100506452813`; result/log artifacts `9876548209 / 9876548556`.
-- Corrected immutable ledger: **374 PASS / 8 RED**; ordinals **1-365 = 365/365 PASS**; true reds `366,367,368,369,370,371,372,374`.
-- The temporary exact-`[ OK ]` parser repeated TB14's reporting-only defect. Exit codes + terminal logs reconstruct the ledger at SHA-256 `7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`; **no rerun**.
-- Ordinal 366 clears `EdgeTraceSecondaryRankInvalid` and moves downstream to **`RegionTraceSourcePortCarrierNotAdmissible`**, source face **`(9,11,17)`**.
-- Selector **380 PASS**, 381 PASS, 382 PASS. Mechanical attempt-0 rotation now publishes completely; with unchanged network incidence and TB12's retained five-ray census, the v47 collision/distinct-rank obligation is discharged. `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01`, and `M3-CP4c3-TB15-CAND-01` close.
-- New **`M3-CP4c3-TB16-CAND-01`** owns the region-building frontier. Static source shows the carrier-less region branch searches the current face for trace-global `trace.sourceVertex`, but review must prove whether that assumption is invalid here rather than importing CB18's answer.
-- Package pre/post byte+mode census is identical at `606d193e3641ec68114c5616d41bd0e8e43207756f79ae50356ce973c1be10db`. No benchmark/build/repair/mutation occurred.
+**CB18 is runtime-proved.** TB16 (package 86, source `a01016ca59314232526c8b1222c96235856ace6d`, selector 382,
+run/job `33709721203 / 100506452813`) is **374 PASS / 8 RED**, accepted **365/365**, selectors 380/381/382 all
+PASS, edge-`25-31` cleared, mechanical attempt-0 rotation complete. `M3-CP4c3-TB11-CAND-01`,
+`M3-CP4c3-TB12-REV-CAND-01` and `M3-CP4c3-TB15-CAND-01` are **CLOSED**.
+
+**The new frontier is a product region-builder defect with two divergences in one copied loop.**
+
+- **Wrong datum.** `build_regions` (`GlobalTopologyPlan.cpp:409`, run `:1660`) treats `incomingCarrier == nullopt`
+  as a source-port incidence and searches the face for `trace->sourceVertex`. `incomingCarrier.reset()` at
+  `SurfaceCellTracing.cpp:2335`/`:2432` — the two vertex-transit continuations — proves a carrier-less segment is
+  ordinarily an Amendment-3 vertex continuation. **Fourth instance** of the class fixed at CB16/CB17/CB18.
+- **Consumes a hypothetical carrier.** `build_fragment_corner_incidence` (`:180`, run `:1492`) skips a trace's
+  final segment when there is no `terminalBarrier`; `build_regions` counts it in `tracePieceCount`, adds its
+  `outgoingCarrier` to `traceTouchedEdges`, and derives orbit evidence from it.
+- **The trigger is the second, and that is provable.** The earlier loop holds a textually identical predicate,
+  iterates the same arcs, and **passed**; its only carrier-less escape is the terminal slit. So the failing segment
+  is the trace's last segment on a trace with no `terminalBarrier`.
+- **Proved from committed bytes:** face `(9,11,17)` is mesh row 18 in vertex 11's closed six-face fan; port
+  vertices `{10,35,47,71}` are disjoint from row 18's corners `{9,11,17}`; a first segment's face always contains
+  its trace's origin vertex — so the segment is **not a first segment** and the failing disjunct is `sourceCorner`
+  not found.
+
+Accepted authority remains **365**; CP4c-3 remains **OPEN**. **Vertex 30 is still not reached.**
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB16-REV`** under **BQ0–BQ8** of `Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md`.
+Run **`M3-CP4c-3-CB19`** under **BR0–BR9** in
+`Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §8.
 
-- [ ] BQ0 re-establish immutable authority and reporting-only parser disposition; no rerun.
-- [ ] BQ1 prove the sole `RegionTraceSourcePortCarrierNotAdmissible` control path.
-- [ ] BQ2 reconstruct the exact face `(9,11,17)` trace/segment incidence and name every unavailable datum.
-- [ ] BQ3 adjudicate whether carrier-less region incidence is valid source-port, later vertex-transit, or invalid provenance.
-- [ ] BQ4 audit both source-port fallback contracts and all affected currently-succeeding classes.
-- [ ] BQ5 classify owner before prescribing correction; diagnostics-only if evidence is insufficient.
-- [ ] BQ6 preserve accepted 365/365, selector 382, and v47/CB18 closure.
-- [ ] BQ7 keep sphere/saturation/370/371-372/folded-cone/vertex30/finalize-contact separately owned.
-- [ ] BQ8 freeze exactly one bounded successor; **do not execute it during review**.
+- [ ] **BR0** selectors 380/381/382 byte-frozen and recomputed (LF-normalized) at authoring and preflight;
+      accepted 365 prefix untouched; `selected_gate=NONE`; `gate_execution_authorized=false`; GMP/GMPXX proved.
+- [ ] **BR1** bind the carrier-less branch to the segment's own entry support via
+      `FieldBoundaryPoint::source_support()` in **both** loops, fail-closed; keep the trace-origin rule only as the
+      first-segment special case.
+- [ ] **BR2** settle the terminal-slit contract **once** and apply it in both loops; silence is not an option.
+- [ ] **BR3** re-derive the fragment-count invariant `expected = tracePieceCount[face] + 1` (`:685-695`); state
+      what a terminal slit contributes. A green count that absorbed a changed operand is a weakened check.
+- [ ] **BR4** publish the full incidence at both emitters — trace, arc, orientation, segment index/range,
+      first-segment flag, bound corner and its provenance, entry/exit supports, outgoing carrier.
+- [ ] **BR5** **demonstrate** accepted-boundary safety: pin before/after for every currently-succeeding terminal
+      slit and non-first carrier-less segment across torus, two-ring and mechanical. Ordinals 1–365 must stay green.
+- [ ] **BR6** one positive witness (non-first carrier-less segment, entry corner ≠ trace origin corner) and one
+      boundary/negative witness (a terminal slit asserting the BR2 contract). Selector 383 only on demonstrated
+      falsification.
+- [ ] **BR7** prohibited: importing CB18's datum fix without settling BR2; scoping the repair to the source-port
+      branch; changing any rotation/cellularity/cut-proposal decision; touching the sphere, 370, saturation, the
+      folded cone, vertex 30, finalize/contact, or the 371/372 coupling; any tolerance or float-derived decision.
+- [ ] **BR8** audit by assumption: *"a per-segment decision bound to a whole-trace datum"* and *"two loops over the
+      same collection where one skips a case the other does not"*, each naming a site outside the record.
+- [ ] **BR9** publish the expected `M3-CP4c-3-TB17` discriminators.
 
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **83**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
+package count **83**.
 
 ## Carried forward from M1
 

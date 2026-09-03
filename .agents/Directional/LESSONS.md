@@ -1463,6 +1463,32 @@ building any conclusion on it.**
     defect, whose contact index happened to be the agreeing one. When two branches feed a single ordering, check
     that they share an origin, not merely a range.
 
+95. **A predicate copied into a second consumer inherits the original's defect and then diverges — and the
+    divergence, not the inherited defect, decides which copy fires.** `build_regions` and
+    `build_fragment_corner_incidence` hold the same carrier-less trace-segment predicate on the same trace-global
+    `trace->sourceVertex`, so both carry the same wrong binding. Only the region loop lacks the terminal-slit skip
+    — the sibling's documented refusal to consume a final segment whose "retained outgoing carrier is only a
+    hypothetical continuation" — and that is the sole reason TB16 reports
+    `RegionTraceSourcePortCarrierNotAdmissible` rather than its identically-predicated twin. Diagnosing the shared
+    defect alone would have produced a correction scoped to the symptom, leaving the region loop still consuming a
+    carrier its sibling calls hypothetical, and leaving the datum defect latent for the first non-terminal
+    carrier-less segment.
+    Two controls fall out. **When two consumers share a predicate, diff what each one *skips* before concluding
+    anything from which one failed** — the guards are the contract, and only one of them is usually written down.
+    And **when a divergence is found, settle the contract once and apply it in both**, rather than making the
+    stricter one match the observed failure. `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §5.
+
+96. **An earlier identical check that passed is evidence about the input, not noise — order of execution across
+    functions is usable the way order across turns is (89).** TB16 retained only `sourceFace`, yet the failing
+    segment was pinned exactly: `build_fragment_corner_incidence` runs before `build_regions`, over the same arcs
+    and the same segment ranges, with a byte-identical predicate, and it accepted the segment. Identical predicates
+    cannot disagree on identical inputs, so the input must have taken the one `continue` that loop has and the
+    other does not. That single negative fact identified the segment as a terminal slit without any datum the run
+    failed to publish.
+    The general move: **when a failure is under-instrumented, look for a sibling check that saw the same input and
+    reached a different verdict, and let the difference between their guards do the work.** It is often cheaper and
+    stronger than the diagnostic turn it replaces. `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §5.2.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

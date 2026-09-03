@@ -2,7 +2,7 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-03).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB16/package86 is current runtime authority** on source `a01016ca59314232526c8b1222c96235856ace6d` / selector **382**: **374 PASS / 8 RED**, accepted **365/365**, first red ordinal 366 `RegionTraceSourcePortCarrierNotAdmissible` at source face `(9,11,17)`. Selectors 380/381/382 pass; the old edge-25-31 rotation frontier is cleared and the v47 obligation is runtime-proved. The new `M3-CP4c3-TB16-CAND-01` owns the downstream region-building surface. Exact next is static **`M3-CP4c-3-TB16-REV`** under BQ0-BQ8. Stable accounting remains **44 / 14 / 30**, debt **5**, semantic packages **83**.
+**Current state (2026-09-03).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1` and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN** on execution selector **382**. `M3-CP4c-3-CB18` corrected the edge-locus fallback datum and corner rank; **`M3-CP4c-3-TB16`** (package **86**, source `a01016ca59314232526c8b1222c96235856ace6d`, run/job `33709721203 / 100506452813`) is **374 PASS / 8 RED**, accepted **365/365**, selectors 380/381/382 all PASS, and the old edge-`25-31` `EdgeTraceSecondaryRankInvalid` failure is gone with mechanical attempt-0 rotation publishing completely — closing `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01` and `M3-CP4c3-TB15-CAND-01`. Ordinal 366 now first-reds in **region construction**: `RegionTraceSourcePortCarrierNotAdmissible`, source face `(9,11,17)`, `cutCandidateCount=0`. **`M3-CP4c-3-TB16-REV` is COMPLETE** and discharged **BQ0–BQ8**. It classified the frontier a **product region-builder defect with two divergences in one copied loop**: `build_regions` (`GlobalTopologyPlan.cpp:409`) and `build_fragment_corner_incidence` (`:180`) hold a textually identical carrier-less predicate on the same trace-global `trace->sourceVertex` — the **fourth** instance of the class fixed at CB16/CB17/CB18, since `incomingCarrier.reset()` at `SurfaceCellTracing.cpp:2335`/`:2432` makes a later carrier-less segment an ordinary Amendment-3 vertex continuation — **and** the region loop lacks the sibling's terminal-slit skip, so it consumes a segment whose outgoing carrier the sibling documents as hypothetical. The review proved from committed bytes, with no unretained datum, that face `(9,11,17)` is mesh row 18 in vertex 11's closed six-face fan, that the failing segment is **not any trace's first segment** (port vertices `{10,35,47,71}` are disjoint from row 18's corners `{9,11,17}`, and a first segment's face always contains its trace's origin vertex), that the failing disjunct is therefore `sourceCorner` not found, and — because the earlier identical predicate ran first and passed, its only carrier-less escape being the terminal slit — that the failing segment **is** that terminal slit. Exact next is **`M3-CP4c-3-CB19`** under **BR0–BR9**, a product correction reconciling both loops, with the fragment-count invariant re-derived rather than assumed and accepted-boundary safety **demonstrated** rather than argued. Selectors **380/381/382** stay byte-frozen; 383 is conditional on BR6. Accepted authority stays **365/365**; stable accounting remains **44 / 14 / 30**, debt **5**, semantic M3 packages **83**. **Vertex 30 is still not reached.**
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
@@ -756,13 +756,24 @@ Their durable semantic, runtime, build/package, reversal, and selector-lineage f
 
 After the durable start-of-turn checklist, load:
 
-1. `ORIENTATION.md` — read first and update during REVIEW.
-2. `Future_Chat_Session_Handoff.md`.
-3. `TODO.md`.
-4. `Architecture_M3_CP4c3_TB16_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-5. `Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md` — frozen BQ0-BQ8 review contract.
-6. `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` — CB18 rationale and v47 obligation lineage.
-7. `Regression_Root_Cause_Tracker.md`.
-8. Semantic source `a01016ca...`, especially the `GlobalTopologyPlan.cpp` carrier-less region branch; do not rebuild or rerun package 86.
+1. `ORIENTATION.md` — read first.
+2. `Future_Chat_Session_Handoff.md`
+3. `TODO.md`
+4. `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` — **current review authority and the BR0–BR9 measures.**
+5. `Architecture_M3_CP4c3_TB16_Artifact_Only_Test_Benchmark_Report.md`
+6. `Architecture_M3_CP4c3_Required_Green_Selector_382.txt`
+7. `Regression_Root_Cause_Tracker.md`
+8. `tools/README.md` — the read-only review helpers; run `review_check.py authority <sha>` first every turn.
+9. `src/geometry/GlobalTopologyPlan.cpp` (`build_fragment_corner_incidence` `:180`, `build_regions` `:409`),
+   `src/geometry/SurfaceCellTracing.cpp` (`incomingCarrier.reset()` at `:2335`, `:2432`).
+10. this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-TB16-REV` — independent REVIEW + PLAN only.** Reconstruct the exact face `(9,11,17)` trace/segment incidence, adjudicate the `RegionTraceSourcePortCarrierNotAdmissible` source-port assumption, preserve accepted 365/365 and v47/CB18 closure, keep independent carried surfaces separate, and freeze exactly one bounded successor. No runtime, compile, package, or semantic mutation is authorized in the review turn.
+**Exact next:** **`M3-CP4c-3-CB19` — product correction, Code + Build, runtime-free, GMP/GMPXX linked.** Follow
+**BR0–BR9** in `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` §8. Bind the carrier-less branch to the
+segment's own entry support in **both** loops and keep it fail-closed; settle the terminal-slit contract once and
+apply it in both; **re-derive** the fragment-count invariant rather than assume it; publish the full incidence at
+the emitter; and **demonstrate** accepted-boundary safety with pinned before/after values across the torus,
+two-ring and mechanical witnesses. Selector 382 keeps every byte; ordinal 383 only on demonstrated falsification.
+Prohibited: importing CB18's datum fix without settling the terminal-slit contract, or scoping the repair to the
+source-port branch alone. The prescribed sphere, ordinal 370, saturation, the folded-cone witness, vertex 30, the
+finalize/contact fall-through and the 371/372 fixture coupling all remain deferred and separately owned.

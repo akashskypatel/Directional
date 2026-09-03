@@ -1,3 +1,72 @@
+## 2026-09-03 — `M3-CP4c-3-TB16-REV`: the region frontier is one copied loop that diverged twice, and `M3-CP4c-3-CB19` is frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB16_Independent_Review_Plan.md`, measures **BQ0–BQ8**
+discharged. Static only: no Directional runtime, benchmark, configure, compile, link, package, or
+product/test/fixture/selector mutation. Record:
+`Architecture_M3_CP4c3_TB16_Independent_Review_Record.md`.
+
+**BQ0.** `tools/review_check.py authority a01016ca…` passes every check, including **no code drift** between the
+package-86 source and the reviewed head — which is what licenses reading the working tree as evidence about the
+immutable package. `tools/selector_probe.py` reproduces, over LF-normalized bytes, selector **382**
+`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a` with 382 identities and prefixes 381
+`af667aae…`, 380 `1a95d328…` and accepted 365 `6b5b6555…`. The corrected ledger is arithmetically closed —
+**374 PASS + 8 RED = 382** — with reds 366/367/368/369/370/371/372/374, 373 passing, and every red `>= 366`.
+`M3-CP4c3-TB16-ORCH-01` rewrites generated summary fields after per-identity process exit and therefore cannot
+reach execution order, exit codes, package bytes, or semantic disposition; no rerun is authorized or needed.
+
+**BQ1.** `RegionTraceSourcePortCarrierNotAdmissible` has one emitter, `GlobalTopologyPlan.cpp:665`, inside
+`build_regions` (`:409`, run at `:1660`). It is entered when `segment.incomingCarrier == nullopt` and fails when
+`trace->sourceVertex` is not a corner of the segment's face, or when `*outgoing != (*sourceCorner + 1) % 3`. It
+publishes only `sourceFace`. Its chord-branch siblings are mutually exclusive on `incomingCarrier`;
+`TraceSourcePortCarrierNotAdmissible` (`:348`) differs only in which function holds it — the predicates are
+textually identical.
+
+**BQ2/BQ3 — the incidence, reconstructed with no unretained datum.** Face `(9,11,17)` is mesh **row 18**, an
+ordinary interior face of vertex 11's closed six-face fan (`angleDefect = 0`). The port-emitting singularities are
+`{10, 35, 47, 71}`; row 18's corners are `{9, 11, 17}`; the sets are disjoint. A trace's first segment always sits
+in a face containing its `sourceVertex`, because construction requires
+`field_boundary_point_at_vertex(startFace, port.sourceVertex)` to succeed or the network build fails
+`InvalidCandidateTraceBinding`. So **the failing segment is not any trace's first segment**, and the failing
+disjunct is `sourceCorner` **not found**, never the outgoing-rank test. `incomingCarrier.reset()` appears at exactly
+two sites — `SurfaceCellTracing.cpp:2335` and `:2432`, the two vertex-transit continuations — so a later
+carrier-less segment is an ordinary Amendment-3 vertex continuation and the branch's identification of carrier-less
+with source-port is wrong for every non-first segment. **Fourth instance** of the class corrected at CB16, CB17 and
+CB18. Data TB16 did not retain — trace, arc, orientation, segment index/range, the value of `trace->sourceVertex`,
+entry/exit supports, port/singularity, outgoing carrier, neighbouring orbit evidence — are named rather than
+guessed, and no conclusion depends on them.
+
+**BQ4 — the two paths are duplicates that diverged twice, not different contracts.**
+`build_fragment_corner_incidence` **skips** a trace's final segment when the trace has no `terminalBarrier`,
+recording that "the retained outgoing carrier is only a hypothetical continuation"; `build_regions` counts that
+segment in `tracePieceCount`, inserts its `outgoingCarrier` into `traceTouchedEdges`, and derives orbit evidence
+from it. Both loops iterate the same arcs with the same `Trace` filter and segment ranges. Since the earlier loop
+ran first with the identical predicate and **passed**, and that skip is its only escape for a carrier-less segment,
+**the failing segment is that terminal slit** — the divergence, not the datum, pulled the trigger.
+
+**BQ5 — owner: product region-builder defect**, established. Upstream/provenance and witness-precondition classes
+are falsified; diagnostic-only is rejected narrowly, since the owner and both defects are proved without the
+unretained data. A symptom-scoped fix is prohibited in both directions: correcting only the datum leaves the region
+loop consuming a hypothetical carrier, and correcting only the skip leaves the datum defect latent until a
+non-terminal carrier-less segment appears.
+
+**BQ6/BQ7.** Accepted **365/365**, selector 382 PASS, the cleared edge-`25-31` failure, complete attempt-0 rotation
+and the three closed candidates are preserved — reaching a later error in a different function is not evidence
+against an earlier closure. The prescribed sphere 368, saturation 369, empty-network 370, the 371/372 fixture
+coupling, folded-cone 374, vertex 30, the finalize/contact fall-through and package/reporting hygiene remain
+independently owned. **No vertex-30 discriminator.**
+
+**BQ8 — one bounded successor: `M3-CP4c-3-CB19` under BR0–BR9**, a product correction reconciling both loops: bind
+the carrier-less branch to the segment's own entry support and keep it fail-closed (BR1); settle the terminal-slit
+contract once and apply it in both (BR2); **re-derive** the fragment-count invariant
+`expected = tracePieceCount[face] + 1` rather than assume it, since BR2 moves its operand (BR3); publish the full
+incidence at the emitter (BR4); and **demonstrate** accepted-boundary safety with pinned before/after values across
+the torus, two-ring and mechanical witnesses (BR5) — this correction is **not** accepted-safe by construction.
+Selector 382 keeps every byte; ordinal 383 is conditional on BR6.
+
+Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Static review on an unaccepted surface:
+**+0 stable events / +0 recurrences**; totals remain **44 / 14 / 30**, produced-witness debt **5**, semantic M3
+package count **83**. New durable lessons: `LESSONS.md` 95 and 96.
+
 ## 2026-09-03 — M3-CP4c historical records consolidated before CB18
 
 User-authorized documentation maintenance consolidated superseded `*_M3_CP4c_*` per-turn records into `M3_CP4c_Consolidated_Record.md` before the next implementation turn. A live-dependency closure was computed from frozen definitions/selectors and durable current/future authorities; **43 unreferenced historical files** were retired, while every file referenced directly or transitively by current/frozen authority was retained. The consolidated record now carries current TB15/package85 runtime state, the completed TB15-REV adjudication, exact CB18 BP0-BP9 resume authority, and the retired-file census. `TODO.md` and `Future_Chat_Session_Handoff.md` stale pointers were corrected to `M3-CP4c-3-CB18`. No product, test, fixture, selector, build, package, benchmark, or runtime behavior changed.

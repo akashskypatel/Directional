@@ -31,47 +31,53 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-03 at `M3-CP4c-3-TB15-REV`. CB17's diagnostics named the branch, and the
-review **proved the incidence valid and the binding datum wrong** — plus a second, latent ordering defect in the
-same helper.
+**Currency.** Last updated 2026-09-03 at `M3-CP4c-3-TB16-REV`. CB18 cleared the edge-locus rotation frontier and
+the review **proved the next one is the same class one stage later — plus a second divergence in the same copied
+loop that is what actually fired.**
 
-**The branch is `SourceVertexFallbackUnbound`.** TB15 (package 85, source
-`1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4`, run/job `33700074471 / 100477303760`) is **372 PASS / 9 RED**, accepted
-**365/365**, ordinal 366 unchanged at edge `25-31` / face `(25,30,31)`, attempt 0 / zero cut edges, with the full
-incidence retained: source vertex **35**, arc **19**, trace **5**, **Reverse**, segments `[0,5)`, incoming carrier
-**none**, outgoing **`25-31`**, contact index **2**, other carrier **none**, census **3 rays untruncated**.
+**CB18 is runtime-proved.** TB16 (package 86, source `a01016ca59314232526c8b1222c96235856ace6d`, run/job
+`33709721203 / 100506452813`, selector **382**) is **374 PASS / 8 RED**, accepted **365/365**, selector 380/381/382
+all PASS. The edge-`25-31` `EdgeTraceSecondaryRankInvalid` failure is gone, mechanical attempt-0 rotation publishes
+completely, and `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01` and `M3-CP4c3-TB15-CAND-01` are **CLOSED**.
+Ordinal 366 now first-reds later, in region construction:
+`RegionTraceSourcePortCarrierNotAdmissible`, source face **`(9,11,17)`**, `cutCandidateCount=0`.
 
-**The segment entered its face through a vertex.** `proposal.nextIncomingCarrier` is assigned at exactly one site —
-`SurfaceCellTracing.cpp:3122`, on the **edge-exit** continuation. The `VertexHit` branch returns without setting
-it, so it stays `nullopt`. The arc is `[0,5)`, so segment 4 is not the trace's first segment; the only other
-producer of an absent incoming carrier is a port origin, which applies to segment 0. Therefore segment 4 entered
-row 41 through a **corner** — Amendment 3's ordinary continuation.
+**Two functions hold the same predicate on the same trace-global datum, and the copy diverged twice.**
+`build_regions` (`GlobalTopologyPlan.cpp:409`, run at `:1660`) and `build_fragment_corner_incidence` (`:180`, run
+at `:1492`) both treat `incomingCarrier == nullopt` as a source-port incidence and search the face for
+**`trace->sourceVertex`**. But `SurfaceCellTracing.cpp` calls `incomingCarrier.reset()` at both vertex-transit
+continuations (`:2335`, `:2432`), so a carrier-less segment is *ordinarily* an Amendment-3 vertex continuation —
+**the fourth instance** of the class corrected at CB16, CB17 and CB18 (lessons 85 / 87). The second divergence is
+that `build_fragment_corner_incidence` **skips** a trace's final segment when the trace has no `terminalBarrier`
+("the retained outgoing carrier is only a hypothetical continuation"), while `build_regions` counts it in
+`tracePieceCount`, adds its `outgoingCarrier` to `traceTouchedEdges`, and derives orbit evidence from it.
 
-**The fallback then asks the wrong question.** With no other carrier it searches the face's corners for
-`trace.sourceVertex` — the singularity the *whole trace* originated from, vertex **35**, elsewhere on the part —
-while row 41's corners are `{25,30,31}`. The correct datum is the segment's **own far-end support in this face**:
-the **entry** side for Reverse, the **exit** side for Forward, read through
-`FieldBoundaryPoint::source_support()` — the primitive CB16 already uses. The present rule is recovered as the
-special case where a trace's *first* segment starts at a singularity in that face, which is why it worked until
-now. Third instance of one class (lessons 85 / 87).
+**The divergence, not the datum, is what fired — and that is provable.** The earlier loop runs first, over the same
+arcs and segment ranges, with a textually identical predicate, and it **passed**; its only skip for a carrier-less
+segment is the terminal slit. So the failing segment is **the trace's last segment on a trace with no terminal
+barrier**. Independently, from the committed fixture: face `(9,11,17)` is mesh **row 18** in vertex **11**'s closed
+six-face fan; the port-emitting singularities are **v10, v35, v47, v71**; row 18's corners are `{9,11,17}`. A first
+segment's face always contains its trace's `sourceVertex` (construction requires
+`field_boundary_point_at_vertex(startFace, port.sourceVertex)`), so **the failing segment is not any trace's first
+segment** and the failing disjunct is `sourceCorner` not found, never the outgoing-rank test.
 
-**A second defect is proved by derivation, not by this run.** The carrier branch ranks **relative** to the contact
-edge, `2·((otherIndex + 3 − contactIndex) mod 3)`; the fallback ranks **absolutely**, `1 + 2·corner`. Walking the
-face boundary from contact edge `c` orders targets `c+1, e(c+1), c+2, e(c+2), c`, so corners must be
-`1 + 2·((corner + 2 − contactIndex) mod 3)`. The two agree **only when `contactIndex == 2`** — precisely this
-failure's value, so the run cannot see it.
+**Fixing only the datum would scope the repair to the symptom**; fixing only the skip leaves the datum defect
+latent until a witness produces a *non-terminal* carrier-less segment. Both must be reconciled together, and the
+change is **not accepted-safe by construction** — removing terminal slits from `build_regions` moves
+`tracePieceCount`, the fragment-count invariant, `traceTouchedEdges` and orbit evidence, and the torus reaches A2b
+end to end.
 
-**This correction is *not* accepted-safe by construction**, unlike the last three. It changes rays that currently
-*succeed*, in two classes: a fallback ray whose far-end corner differs from its trace's origin corner, and every
-succeeding fallback ray with `contactIndex ≠ 2`. The torus reaches A2b end to end, so accepted identities
-plausibly exercise this helper. Safety must be **demonstrated**, not argued.
+One bounded successor is authorized: **`M3-CP4c-3-CB19`** under **BR0–BR9**, a **product correction** reconciling
+both loops — bind the carrier-less branch to the segment's own entry support, settle the terminal-slit contract
+once, re-derive the fragment-count invariant rather than assume it, publish the incidence at the emitter, and
+**demonstrate** accepted-boundary safety with pinned before/after values. **Vertex 30 is still not reached and no
+vertex-30 discriminator is published.** Selectors **380, 381, 382** stay byte-frozen; selector 383 is conditional
+on BR6. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **83**.
 
-One bounded successor is authorized: **`M3-CP4c-3-CB18`** under **BP0–BP9**, a **product correction** — bind the
-fallback to the segment's far-end support, make the corner rank relative to the contact edge, keep the helper
-fail-closed, and pin every currently-succeeding fallback rank before and after. **The v47 obligation stays open**:
-selector 380 is still RED, so `M3-CP4c3-TB11-CAND-01` does not close. Package 85's diagnostic-name metadata
-mismatch is **inert and proved so** (`M3-CP4c3-TB15-PKG-01`). Selector **381** stays byte-frozen; selector 382 is
-conditional on BP7. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **82**.
+*(Prior turn, retained for lineage: `M3-CP4c-3-TB15-REV` proved the edge-locus fallback bound `trace.sourceVertex`
+instead of the ray's far-end support, and derived a second latent defect — the fallback ranked corners absolutely
+while the carrier branch ranked them relative to the contact edge, agreeing only at `contactIndex == 2`. CB18
+implemented both.)*
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB14-REV` proved the edge locus was newly reachable — contact nodes
 are appended after every vertex node — and that the helper's five `nullopt` branches were collapsed into one
@@ -175,23 +181,26 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB15-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
-selector **381** (`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`, 381 identities). Selector 380
-(`1a95d328…d852a0e4e`) is its exact 380-identity prefix and the first 365 lines reproduce accepted
-`6b5b6555…cfc14b8a1`, so CB17 appended exactly one identity and reordered nothing.
+**Current authority — TB16-REV.** Accepted authority remains selector **365**. CP4c-3's execution selector is
+**382** (`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`, 382 identities), with **381**
+(`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`) and **380**
+(`1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`) as byte-frozen prefixes and the accepted 365
+prefix byte-identical throughout. All were recomputed over LF-normalized bytes at this review with
+`tools/selector_probe.py`; a naive `sha256sum` on a CRLF checkout will not reproduce them.
 
-**TB15 is the latest semantic runtime evidence** (package 85, run/job `33700074471 / 100477303760`, result
-artifact `9873244271`): **372 PASS / 9 RED**, ordinals **1–365 green**, first red **366** at
-`EdgeTraceSecondaryRankInvalid`, typed branch **`SourceVertexFallbackUnbound`**, edge `25-31`, face `(25,30,31)`,
-attempt 0 / zero cut edges; selector 381's typed-production witness PASS; selector 380 RED; byte/mode-identical
-58-file postflight.
+**TB16 is the latest semantic runtime evidence** (package 86, source
+`a01016ca59314232526c8b1222c96235856ace6d`, run/job `33709721203 / 100506452813`): corrected immutable ledger
+**374 PASS / 8 RED**, accepted **365/365**, first red **366**, true reds 366/367/368/369/370/371/372/374 with 373
+passing — `374 + 8 = 382`, arithmetically closed against the selector cardinality. Selectors 380, 381 and 382 all
+PASS; the retained non-gating mechanical diagnostic is RED with zero gate credit; package pre/post byte+mode census
+identical at `606d193e…be10db`. `tools/review_check.py authority` confirms **no code drift** between the package-86
+source and the reviewed head, so static reading of the tree is valid evidence about the package.
 
-`M3-CP4c-3-TB15-REV` proved the incidence **valid** and the binding datum wrong, derived a second latent ordering
-defect in the same helper, and froze **`M3-CP4c-3-CB18` under BP0–BP9** (§7 item 1). Stable accounting is
-**44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **82**. Ordinal 370, the sphere, saturation,
-the folded-cone witness, the 371/372 coupling, the finalize/contact fall-through and the mechanical zero-unbound
-debt remain deferred and untouched. **The v47 five-ray re-proof is still owed**, and **vertex 30 is still not
-reached**.
+Ordinal 366 now first-reds in **region construction** at `RegionTraceSourcePortCarrierNotAdmissible`, source face
+`(9,11,17)`, `cutCandidateCount=0`. `M3-CP4c-3-TB16-REV` classified it a **product region-builder defect** with two
+divergences in one copied loop (§7 item 1) and froze **`M3-CP4c-3-CB19` under BR0–BR9**, a product correction.
+Stable accounting is **44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **83**. **Vertex 30 is
+still not reached**, so `M3-CP4c3-TB6-CAND-01` stays ACTIVE.
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -413,7 +422,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, and **every vertex locus** since CB16 | **Current owner of the critical path, in A2a'.** TB15's first red is `EdgeTraceSecondaryRankInvalid` at edge `25-31` / face `(25,30,31)` = **mesh row 41**, attempt 0 / zero cut edges, typed **`SourceVertexFallbackUnbound`**. The retained incidence is arc **19** / trace **5** / **Reverse** / `[0,5)`, incoming carrier **none**, outgoing `25-31`, contact index **2**, trace origin vertex **35**, census 3 rays untruncated. TB15-REV proved the segment **entered row 41 through a corner** (`nextIncomingCarrier` is set only on the edge-exit continuation, and segment 4 is not the trace's first), so the ray is valid and the fallback binds the wrong datum - the trace's **origin** singularity v35 instead of the segment's own far-end support. `contactIndex = 2` is independently reproduced by `edges[i] = (v[i], v[i+1])`. The v47 five-ray re-proof is **still owed**; vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, every vertex locus since CB16, and **the entire edge-locus rotation frontier** since CB18 | **Current owner of the critical path, now in region construction.** TB16's first red is `RegionTraceSourcePortCarrierNotAdmissible` at source face `(9,11,17)` = **mesh row 18**, attempt 0 / `cutCandidateCount=0`. Row 18 is an ordinary interior face of vertex **11**'s closed six-face fan (`angleDefect = 0`). TB16-REV proved the failing segment is **carrier-less**, **not any trace's first segment** (port vertices are `{10,35,47,71}`; row 18's corners are `{9,11,17}`; a first segment's face always contains its trace's `sourceVertex`), and therefore that the failing disjunct is `sourceCorner` **not found** rather than the outgoing-rank test. It is further proved to be a **terminal slit** — the trace's last segment on a trace with no `terminalBarrier` — because the textually identical predicate in `build_fragment_corner_incidence` ran first and passed, and its only skip for a carrier-less segment is exactly that case. Vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -508,29 +517,40 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Edge-locus fallback binds the trace's origin vertex instead of the ray's far end — ACTIVE and gating; cause
-   PROVED, product correction frozen.** TB15's typed branch is `SourceVertexFallbackUnbound` at edge `25-31` /
-   face `(25,30,31)`. `M3-CP4c-3-TB15-REV` proved:
+1. **Region construction binds the trace's origin vertex to a per-segment decision, and consumes a segment its
+   sibling loop documents as hypothetical — ACTIVE and gating; both defects PROVED, product correction frozen.**
+   TB16's first red is `RegionTraceSourcePortCarrierNotAdmissible` at source face `(9,11,17)`,
+   `cutCandidateCount=0`. `M3-CP4c-3-TB16-REV` proved:
 
-   - **The ray reaches the fallback because its segment entered through a vertex.**
-     `proposal.nextIncomingCarrier` is assigned only at `SurfaceCellTracing.cpp:3122`, on the edge-exit
-     continuation; the `VertexHit` branch returns without setting it. The arc is `[0,5)`, so segment 4 is not the
-     trace's first — the only other source of an absent incoming carrier.
-   - **The incidence is valid.** Vertex-transit entry is Amendment 3's ordinary continuation; rejecting it upstream
-     would reject valid networks.
-   - **The datum is wrong, not the shape.** The fallback searches the face's corners for `trace.sourceVertex`
-     (v35, a port-emitting singularity elsewhere) while row 41's corners are `{25,30,31}`. The canonical datum is
-     the segment's **far-end support in this face** — entry side for Reverse, exit side for Forward — via
-     `FieldBoundaryPoint::source_support()`. The present rule is the special case where they coincide.
-   - **A second, latent defect.** The carrier branch ranks relative to `contactIndex`; the fallback ranks
-     absolutely. The correct value is `1 + 2·((corner + 2 − contactIndex) mod 3)`, which equals `1 + 2·corner`
-     **only when `contactIndex == 2`** — this failure's value, so the run cannot expose it.
+   - **Sole emitter, two disjuncts.** `GlobalTopologyPlan.cpp:665`, inside `build_regions` (`:409`, run at
+     `:1660`). The branch is entered when `segment.incomingCarrier == nullopt` and fails when `trace->sourceVertex`
+     is not a corner of the segment's face, or when `*outgoing != (*sourceCorner + 1) % 3`. It publishes only
+     `sourceFace`.
+   - **The failing disjunct is `sourceCorner` not found.** Port vertices are `{10, 35, 47, 71}`; face `(9,11,17)`
+     is mesh row 18 with corners `{9, 11, 17}`. Disjoint, so the rank test is never reached.
+   - **The segment is not any trace's first segment.** A trace is built with `sourceVertex = port.sourceVertex` and
+     its first segment's entry point is `field_boundary_point_at_vertex(startFace, port.sourceVertex)`, which must
+     succeed or the network build fails `InvalidCandidateTraceBinding` — so a first segment's face always contains
+     that trace's origin vertex.
+   - **A later carrier-less segment is legitimate and produced by design.** `incomingCarrier.reset()` appears at
+     exactly two sites, `SurfaceCellTracing.cpp:2335` and `:2432`, the two **vertex-transit** continuations. So
+     `incomingCarrier == nullopt` means "entered through a corner", not "source port"; source port is the special
+     case where that corner is the trace's origin. **Fourth instance** of the class corrected at CB16, CB17 and
+     CB18 (lessons 85 / 87).
+   - **The trigger is a second divergence, not the datum.** `build_fragment_corner_incidence` (`:180`, run at
+     `:1492`) holds a **textually identical** predicate on the same datum, iterates the same arcs and segment
+     ranges — and passed. Its only skip for a carrier-less segment is the terminal-slit `continue` (`:242-249`),
+     taken when the trace has no `terminalBarrier`, because "the retained outgoing carrier is only a hypothetical
+     continuation". **Therefore the failing segment is exactly that terminal slit**, which `build_regions`
+     instead counts in `tracePieceCount`, adds to `traceTouchedEdges`, and derives orbit evidence from.
 
-   `M3-CP4c-3-CB18` (BP0–BP9) corrects both and keeps the helper fail-closed. **Unlike the last three successors
-   this is not accepted-safe by construction**: it changes rays that currently *succeed* (a far-end corner
-   differing from the trace's origin corner, and every succeeding fallback ray with `contactIndex ≠ 2`), and the
-   torus reaches A2b, so accepted identities plausibly exercise the helper. BP5 therefore requires the ranks to be
-   **pinned before and after**, and ordinals 1–365 re-passing is the load-bearing discriminator, not a formality.
+   **`M3-CP4c-3-CB19` (BR0–BR9) reconciles both loops**: bind the carrier-less branch to the segment's own entry
+   support via `FieldBoundaryPoint::source_support()` and keep it fail-closed (BR1); settle the terminal-slit
+   contract once and apply it in both (BR2); **re-derive** the fragment-count invariant rather than assume it, since
+   removing terminal slits moves its operand (BR3); publish the full incidence at the emitter (BR4); and
+   **demonstrate** accepted-boundary safety with pinned before/after values (BR5) — this correction is **not**
+   accepted-safe by construction, and the torus reaches A2b end to end. Prohibited: importing CB18's datum fix
+   without settling BR2, or scoping the repair to the source-port branch alone.
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -598,6 +618,29 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**A predicate copied into a second consumer inherits the original's defect and then diverges — and the divergence,
+not the inherited defect, decides which copy fires.** `build_regions` and `build_fragment_corner_incidence` hold
+the same carrier-less trace-segment predicate on the same trace-global datum, so both carry the same wrong binding.
+Only the region loop lacks the terminal-slit skip, and that is the sole reason TB16 shows
+`RegionTraceSourcePortCarrierNotAdmissible` rather than `TraceSourcePortCarrierNotAdmissible`. Diagnosing the
+shared defect alone would have produced a correction scoped to the symptom, leaving the region loop still consuming
+a carrier its sibling calls hypothetical. **When two consumers share a predicate, diff what each one *skips* before
+concluding anything from which one failed.**
+
+**An earlier identical check that passed is evidence about the input, not noise.** The whole reconstruction of the
+TB16 incidence rests on a negative: the fragment-corner loop ran first, over the same arcs and the same segment
+ranges, with a byte-identical predicate, and accepted the segment. Since the predicates cannot disagree on
+identical inputs, the only escape is the one `continue` that loop has and the other does not — which pins the
+failing segment to a terminal slit without any datum the run failed to retain. Order of execution across functions
+is usable evidence in the same way order across turns is (lesson 89).
+
+**The fourth instance of a class is a signal about the audit, not about the code.** `trace.sourceVertex` bound to a
+per-segment decision has now been found in the vertex-locus helper (CB16), the edge-locus fallback (CB17/CB18), the
+rotation fallback, and now the region builder — each found and fixed at its own site, one turn at a time. The
+scoping error is not in any of the fixes; it is that no measure ever ran the search *"a per-segment decision bound
+to a datum owned by the whole trace"* across the codebase. A class that recurs is owed a predicate-scoped sweep,
+not a fifth point fix.
 
 **An absent optional means whatever its producer's last branch chose to leave unset.**
 `FieldAlignedCandidateTraceSegment::incomingCarrier` is `nullopt` for two entirely different reasons — a port
