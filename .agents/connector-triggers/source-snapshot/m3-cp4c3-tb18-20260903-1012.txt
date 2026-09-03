@@ -1,0 +1,3 @@
+M3-CP4c-3-TB18 start-of-turn source snapshot.
+Initial branch authority: 1a7a32ad204ce4397545361d8ad8881d29db446c
+Purpose: materialize exact repository state for mandatory local document/policy inspection before artifact-only TB18 execution.
