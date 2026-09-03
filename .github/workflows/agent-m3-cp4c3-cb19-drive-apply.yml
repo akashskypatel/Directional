@@ -27,18 +27,18 @@ jobs:
     if: needs.workflow-schema-validation.outputs.valid == 'true'
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1NfK_onmSkkrtWlvufXXeh9YPX-dFlF-p
-      patch_sha256: bd817ce7ec4273c5e7df1a61f497508ba18d775fd4284fa14a5c2216b65759ad
-      base_sha: 9afe66ede2632c768ba0d96f43a6e9c7128c6076
+      file_id: 1n9dJcEjm4gN_ayukBN5P8O8KfTOHkxbF
+      patch_sha256: 78a27896d27f510bb8da27c3dd5323477cc6a27fc9a9a25798b19a9947395f90
+      base_sha: 1a4d1c26b276868030b6392dd854c10fab8b334a
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-CB19: restore source support diagnostics projection"
+      commit_message: "docs: close M3-CP4c-3-CB19 and hand off TB17"
     secrets: inherit
 
   observe:
     uses: ./.github/workflows/agent-run-observer-reusable.yml
     with:
       pr_number: 8
-      label: m3-cp4c3-cb19-drive-apply-r3
+      label: m3-cp4c3-cb19-closeout-docs
       commit_run_file: false
       trim_stale_comments: true
     secrets: inherit
