@@ -1,2 +1,0 @@
-source_ref=e5a4242a25f17fb995bf9b971ce3cfcd6eb98aae
-purpose=resume-session-source-snapshot
