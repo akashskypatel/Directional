@@ -1,0 +1,5 @@
+.agents/Directional/turn-payloads/m3-cp4c3-tb18-resume39.sh
+.agents/Directional/turn-payloads/m3-cp4c3-tb18-run.sh
+.agents/connector-triggers/drive/m3-cp4c3-tb18-closeout-apply.txt
+.agents/connector-triggers/source-snapshot/m3-cp4c3-tb18-20260903-1012.txt
+.agents/connector-triggers/tb/m3-cp4c3-tb18.txt
