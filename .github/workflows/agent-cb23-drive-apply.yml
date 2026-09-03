@@ -1,0 +1,37 @@
+name: Agent CB23 Drive Apply
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb23-drive-apply.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-cb23-drive-apply-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: M3-CP4c-3-CB23-drive-apply
+      commit_run_file: false
+    secrets: inherit
+
+  apply:
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1SV4Ztot879keAr_zr6HPbUeaXBwSDYU-
+      patch_sha256: 5b577613e69b4082e64687cec637c51f08403edaf57547b1f10feab0faaeb5d2
+      base_sha: e5a4242a25f17fb995bf9b971ce3cfcd6eb98aae
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "code: add CB23 Euler census diagnostics"
+    secrets: inherit
