@@ -1,0 +1,5 @@
+Purpose: apply preserved M3-CP4c-3-TB18 closeout documentation patch from Google Drive.
+Drive File ID: 1NH0vD6azAq12uKkvf1BO-vZkKSLOhBIi
+Patch SHA-256: 210a0089abd2c2cdd963921ea59918e64f13e6081f1b84519c58f36e2a5c6f71
+Patch base: ce20a7077e46a5870790cfe79fbab7c99c40ae19
+Retry: 0
