@@ -1,5 +1,5 @@
-turn_id=M3-CP4c-3-CB19-R2
-source_sha=9afe66ede2632c768ba0d96f43a6e9c7128c6076
+turn_id=M3-CP4c-3-CB19-R3
+source_sha=bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e
 compile_targets=default-eight-standard
 runtimeExecution=false
-retry=matching-enum-underlying-type
+retry=restore-source-support-projection-scope
