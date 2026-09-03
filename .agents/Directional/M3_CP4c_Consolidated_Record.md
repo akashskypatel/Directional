@@ -214,8 +214,12 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
 `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
 `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
-`Architecture_M3_CP4c3_CB16_Code_Build_Report.md`; exact next-turn authority is
-`Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md`.
+`Architecture_M3_CP4c3_CB17_Code_Build_Report.md`; exact next-turn authority is
+`Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Plan.md`.
+
+### `M3-CP4c-3-CB17` — current build/package boundary
+
+CB17 final source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` adds diagnostic-only typed exits for `edge_locus_secondary_rank`, preserves the failing incidence, and publishes a bounded production edge-locus ray census without changing rank/topology semantics. Selector **381** is selector 380 plus one compiled witness, SHA-256 `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`. Authoritative eight-target GMP/GMPXX compile `33697315308 / 100468915978` is green. Immutable package **85** artifact `9872426500` has Actions digest `6c0e960b3f689bae2d2ef7f79c32709f63d1fefa87ecefdf6351427ac91ea0e2`, inner tar `98f5940254beaa50ec200157a3cbe6ab0ec15d8a5117006679d42684968aad08`, packaged source `cb078005cef48d97401ddfb843a4276f92c53086b0827a915b01344dc665c4a9`. No runtime executed. Packages advance to 82; accepted authority remains 365/365. Exact next: artifact-only TB15 on selector 381.
 
 ### `M3-CP4c-3-TB14` — current measured runtime boundary
 
@@ -757,25 +761,13 @@ The CB1 report's exact bytes remain recoverable from Git history and no current/
 
 After the durable start-of-turn checklist, load:
 
-1. `ORIENTATION.md` — read first and update during REVIEW.
-2. `Future_Chat_Session_Handoff.md`
-3. `TODO.md`
-4. `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` — **binding BM0-BM8 semantic review authority.**
-5. `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — **current valid runtime authority.**
-6. `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — consumed frozen BL9 gate/discriminator contract.
-7. `Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — **current package-84/build authority.**
-8. `Architecture_M3_CP4c3_TB13_Independent_Review_Record.md` — vertex-10 root cause / inherited v47 obligation.
-9. `Architecture_M3_CP4c3_TB12_Independent_Review_Record.md` — distinct-ray v47 semantic authority.
-10. `Regression_Root_Cause_Tracker.md`; this consolidated record only when historical lineage is needed.
+1. `ORIENTATION.md` — read first; update only during REVIEW.
+2. `Future_Chat_Session_Handoff.md`.
+3. `TODO.md`.
+4. `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Plan.md` — **frozen next-turn execution authority**.
+5. `Architecture_M3_CP4c3_CB17_Code_Build_Report.md` — current package-85/build authority.
+6. `Architecture_M3_CP4c3_TB14_Independent_Review_Record.md` — BN0-BN9 and branch-discrimination authority.
+7. `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — current runtime baseline.
+8. `Regression_Root_Cause_Tracker.md`; this consolidated record only when historical lineage is needed.
 
-**Exact next:** **`M3-CP4c-3-CB17` - Code + Build, DIAGNOSTIC-ONLY.** Follow section 9 **BN0-BN9** of
-`Architecture_M3_CP4c3_TB14_Independent_Review_Record.md`. Give `edge_locus_secondary_rank` a **typed failure
-reason** per `nullopt` site, mirroring CB16's own `VertexTraceSecondaryParameterFailureReason`, and retain the
-incidence on the error: arc, trace, orientation, segment interval, both carriers, the resolved `contactIndex`, the
-candidate `other` carrier, `trace.sourceVertex` and the face's three corners. Project it through the **production**
-renderer and publish a bounded edge-locus ray census. **No semantic change whatsoever** - the rank formulas, the
-fallback, `sideRank`, `key.primary`, collision detection, `build_node_loci` and contact-node construction stay
-untouched; no revert of CB12/CB14/CB15/CB16. Selector 380 stays byte-frozen; append selector 381 only on
-demonstrated falsification. Eight compile targets, GMP/GMPXX linkage mandatory. **No product correction and no
-vertex-30 discriminator are authorized until `M3-CP4c-3-TB15` names the branch, and the v47 conjunction remains
-owed.**
+**Exact next:** **`M3-CP4c-3-TB15` — artifact-only Test + Benchmark.** Consume immutable package **85** / selector **381** only. Re-prove 1-365 = 365/365, require ordinal 366 to remain `EdgeTraceSecondaryRankInvalid` at edge 25-31 / face `(25,30,31)` / attempt 0, publish the exact typed branch and bounded incidence/census, and preserve the inherited v47 conjunction. No benchmark, rebuild, package repair, product/test/fixture/selector mutation, or vertex-30 discriminator is authorized.

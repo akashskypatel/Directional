@@ -26,58 +26,27 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB17` (Code + Build, DIAGNOSTIC-ONLY)
+## Current focus — `M3-CP4c-3-TB15` (artifact-only Test + Benchmark)
 
-`M3-CP4c-3-TB14-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB14_Independent_Review_Record.md` (**BM0–BM8** discharged, static only).
+`M3-CP4c-3-CB17` is **COMPLETE / BUILD + PACKAGE GREEN / DIAGNOSTIC-ONLY / RUNTIME-FREE**.
+Final semantic source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` implements the frozen BN0-BN9 observability scope without changing edge-locus ranking semantics. Selector 380 remains byte-frozen; selector **381** appends `GlobalTopologyPlan.EdgeLocusSecondaryRankFailuresAreTypedAndProductionVisible`, SHA-256 `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`.
 
-CB16 cleared **every vertex locus** and TB14's first red moved to
-`EdgeTraceSecondaryRankInvalid`, source edge `25-31`, source face `(25,30,31)` — mesh row **41** — attempt 0 /
-zero cut edges. `M3-CP4c-3-TB14-REV` proved the branch is **not determined** by the retained evidence.
-
-- **This is newly reachable code, not a regression.** Contact nodes are appended after every vertex node and
-  `incidences` is a node-id map, so **all vertex loci precede all edge loci**. TB13 failed at a vertex locus, so
-  `edge_locus_secondary_rank` had **never run** on this witness.
-- **The locus is a contact node.** `build_node_loci` gives an edge locus to any node lacking a vertex locus whose
-  event names a `sourceEdge` — not only to cut crossings — so `certificationCutEdges = 0` is consistent.
-- **One emitter, collapse one layer down.** `EmbeddedGraphTopology.cpp:1440` is the only emitter, but the helper
-  below it has **five** untyped `return std::nullopt` sites, and the emitter retains only `sourceEdge`,
-  `sourceFace` and the reason.
-- **Branches 1–3 excluded, 4 and 5 not separable.** The caller already resolved the face and required it in
-  `sideRank`, and edge `25-31` is an edge of row 41. What remains — opposite-carrier versus source-vertex fallback
-  — have **different owners and opposite corrections**: branch 4 makes the *producer* the owner, branch 5 the
-  *rank contract*.
-- *(Conditional, not asserted: if the fallback fires it cannot succeed here — it searches row 41's corners
-  `{25,30,31}` for `trace.sourceVertex`, and the port-emitting singularities are `{10,35,47,71}`.)*
-
-`M3-CP4c3-TB13-CAND-01` and `M3-CP4c3-TB13-REV-CAND-01` **CLOSE** — TB14 clears every vertex locus, which requires
-CB16's vertex-exit case to resolve. `M3-CP4c3-TB14-CAND-01` transitions to **branch undetermined**.
-**The v47 obligation stays open**: selector 380 REDs at its production assertion, so the five-ray/distinct-rank
-proof is again unpublished; `M3-CP4c3-TB11-CAND-01` stays OPEN and `M3-CP4c3-TB12-REV-CAND-01` partially
-discriminated. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, vertex 30 and the
-finalize/contact fall-through are unchanged. **There is still no vertex-30 discriminator.**
+Authoritative compile `33697315308 / 100468915978` is GREEN for all eight standard targets with GMP/GMPXX, source clean and `runtimeExecution=false`. Immutable package **85** is artifact `9872426500`, Actions digest `6c0e960b3f689bae2d2ef7f79c32709f63d1fefa87ecefdf6351427ac91ea0e2`; inner tar SHA-256 `98f5940254beaa50ec200157a3cbe6ab0ec15d8a5117006679d42684968aad08`; packaged source SHA-256 `cb078005cef48d97401ddfb843a4276f92c53086b0827a915b01344dc665c4a9`. No Directional runtime or benchmark executed.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB17`** under §9 **BN0–BN9** of
-`Architecture_M3_CP4c3_TB14_Independent_Review_Record.md`. **Diagnostic-only.**
+Run **`M3-CP4c-3-TB15`** from `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Plan.md` on immutable package 85 / selector 381.
 
-- [ ] **BN0** — selector 380 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
-- [ ] **BN1** — typed failure reason per `nullopt` site in `edge_locus_secondary_rank`, mirroring CB16's
-      `VertexTraceSecondaryParameterFailureReason`.
-- [ ] **BN2** — retain arc, trace, orientation, segment interval, both carriers, `contactIndex`, the candidate
-      `other` carrier, `trace.sourceVertex` and the face corners.
-- [ ] **BN3** — project through the **production** renderer, reusing CB16's pattern.
-- [ ] **BN4** — bounded edge-locus ray census with a truncation marker.
-- [ ] **BN5** — one witness per typed reason plus a byte-identical regression witness.
-- [ ] **BN6** — append selector 381 only on demonstrated falsification.
-- [ ] **BN7** — **no semantic change**: rank formulas, fallback, `sideRank`, `key.primary`, collision detection,
-      `build_node_loci` and contact-node construction untouched; no CB12/CB14/CB15/CB16 revert.
-- [ ] **BN8** — audit by assumption; prove ordinals 1–365 unaffected by construction.
-- [ ] **BN9** — publish the six `M3-CP4c-3-TB15` discriminators, **including that the v47 conjunction stays owed**.
+- [ ] Re-prove ordinals **1-365 = 365/365 PASS**.
+- [ ] Ordinal **366 must remain** `EdgeTraceSecondaryRankInvalid` at edge `25-31`, face `(25,30,31)`, attempt 0 / zero cut edges. **Any movement falsifies BN7.**
+- [ ] Name the exact `EdgeTraceSecondaryRankFailureReason` branch at ordinal 366.
+- [ ] Require arc, trace, orientation, segment interval, both carriers, bounded retained incidence, and edge-locus ray census with truncation state.
+- [ ] Execute selector 381's appended typed-failure production witness once in normal position.
+- [ ] Preserve the inherited **v47 five-ray/distinct-rank obligation**; selector 380 is expected to remain RED at the upstream edge-locus frontier until its owner is corrected.
+- [ ] Execute the retained non-gating mechanical diagnostic once with zero gate credit.
+- [ ] No benchmark, rebuild, package repair, generated discovery, or source/test/fixture/selector mutation.
 
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **81**.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **82**.
 
 ## Carried forward from M1
 
@@ -114,7 +83,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB14 is current valid runtime authority at accepted prefix 365 / first red 366 `EdgeTraceSecondaryRankInvalid` at edge 25-31. CB16/package84 remains current build authority. Exact next is independent `M3-CP4c-3-TB14-REV`.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; TB14 is current valid runtime authority at accepted prefix 365 / first red 366 `EdgeTraceSecondaryRankInvalid` at edge 25-31. CB17/package85 is current build authority. Exact next is artifact-only `M3-CP4c-3-TB15`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
