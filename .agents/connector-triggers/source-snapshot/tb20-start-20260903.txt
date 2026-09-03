@@ -1,0 +1,4 @@
+purpose=materialize exact TB20 start-of-turn source snapshot
+requested_turn=M3-CP4c-3-TB20
+initial_head=72fbd6ac2f77985ff61f06146924450f3ab35b8b
+read_mode=snapshot
