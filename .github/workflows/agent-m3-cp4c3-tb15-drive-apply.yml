@@ -40,10 +40,10 @@ jobs:
     if: ${{ needs.validate.outputs.valid == 'true' }}
     uses: ./.github/workflows/agent-google-drive-reusable.yml
     with:
-      file_id: 1J61OFms275ooE3DaKRElclmBrSIJzKeH
-      patch_sha256: 539ecbbe783f3e219ddfe0dea6847e241d05ea5347da57ca8e8e18db75512fdf
+      file_id: 1VRrEI4YxXLTJ_xBXQFGgozCkrB9Zzrxg
+      patch_sha256: 4c23f8ba4385ff9c4966a211d4e54bd89188531b1b9543ce34a93beff2a1b6bd
       base_sha: 93b1e159cafa6fe70ae1ed9e36b231abf4e82d8b
       target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
-      commit_message: "M3-CP4c-3-TB15: install artifact-only runner payload"
+      commit_message: "M3-CP4c-3-TB15: close out runtime evidence and freeze review"
       retention_days: 14
     secrets: inherit
