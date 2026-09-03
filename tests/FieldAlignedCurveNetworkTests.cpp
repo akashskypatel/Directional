@@ -3623,6 +3623,69 @@ void append_cp4c_failure_locus(
     }
     report << "]}";
   }
+  const auto &ownerEvidence = locus.fragmentOwnerEvidence;
+  if (ownerEvidence.faceCount != 0U || ownerEvidence.arcCount != 0U ||
+      ownerEvidence.traceCount != 0U || ownerEvidence.totalOrbitCount != 0U) {
+    report << ";fragmentOwnerFaceCount=" << ownerEvidence.faceCount
+           << ";fragmentOwnerFacesTruncated="
+           << (ownerEvidence.facesTruncated ? "true" : "false");
+    for (std::size_t index = 0U; index < ownerEvidence.faces.size(); ++index) {
+      const auto &row = ownerEvidence.faces[index];
+      report << ";fragmentOwnerFace[" << index << "]={sourceFace="
+             << row.sourceFace[0] << ',' << row.sourceFace[1] << ','
+             << row.sourceFace[2] << ",localFragmentCount=";
+      if (row.localFragmentCount.has_value()) report << *row.localFragmentCount;
+      else report << "unevaluated";
+      report << ",ownerCount=" << row.ownerCount
+             << ",expectedFragmentCount=" << row.expectedFragmentCount
+             << ",ownerDeficit=" << row.ownerDeficit
+             << ",traceChordCount=" << row.traceChordCount
+             << ",chordsCrossInside="
+             << (row.chordsCrossInside ? "true" : "false")
+             << ",localArrangementEvaluated="
+             << (row.localArrangementEvaluated ? "true" : "false")
+             << ",sharedOwnerChordCount=" << row.sharedOwnerChordCount
+             << ",sharedOwnerChordsTruncated="
+             << (row.sharedOwnerChordsTruncated ? "true" : "false") << '}';
+      for (std::size_t chordIndex = 0U;
+           chordIndex < row.sharedOwnerChords.size(); ++chordIndex) {
+        const auto &chord = row.sharedOwnerChords[chordIndex];
+        report << ";fragmentOwnerFace[" << index << "].sharedChord["
+               << chordIndex << "]={trace=" << chord.trace
+               << ",arc=" << chord.arc << ",segment=" << chord.segmentIndex
+               << ",forwardOrbit=" << chord.forwardOrbit
+               << ",reverseOrbit=" << chord.reverseOrbit << '}';
+      }
+    }
+    report << ";fragmentOwnerArcCount=" << ownerEvidence.arcCount
+           << ";fragmentOwnerArcsTruncated="
+           << (ownerEvidence.arcsTruncated ? "true" : "false");
+    for (std::size_t index = 0U; index < ownerEvidence.arcs.size(); ++index) {
+      const auto &row = ownerEvidence.arcs[index];
+      report << ";fragmentOwnerArc[" << index << "]={arc=" << row.arc
+             << ",trace=";
+      if (row.trace.has_value()) report << *row.trace;
+      else report << "none";
+      report << ",forwardOrbit=" << row.forwardOrbit
+             << ",reverseOrbit=" << row.reverseOrbit
+             << ",sharesOrbit=" << (row.sharesOrbit ? "true" : "false")
+             << '}';
+    }
+    report << ";fragmentOwnerTraceCount=" << ownerEvidence.traceCount
+           << ";fragmentOwnerTracesTruncated="
+           << (ownerEvidence.tracesTruncated ? "true" : "false");
+    for (std::size_t index = 0U; index < ownerEvidence.traces.size(); ++index) {
+      const auto &row = ownerEvidence.traces[index];
+      report << ";fragmentOwnerTrace[" << index << "]={trace=" << row.trace
+             << ",terminalSlit="
+             << (row.terminatesInTerminalSlit ? "true" : "false") << '}';
+    }
+    report << ";fragmentOwnerOrbitCount=" << ownerEvidence.totalOrbitCount
+           << ";fragmentOwnerExteriorOrbitCount="
+           << ownerEvidence.exteriorOrbitCount
+           << ";fragmentOwnerNonExteriorOrbitCount="
+           << ownerEvidence.nonExteriorOrbitCount;
+  }
   if (locus.rotationPreviousRay.has_value())
     append_rotation_ray_diagnostics(report, "rotationPreviousRay",
                                     *locus.rotationPreviousRay);
@@ -10856,6 +10919,140 @@ TEST(GlobalTopologyPlan,
   nonMismatch.sourceFace = topology_face(0, 1, 2, 128U);
   EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
             production_global_topology_plan_error_locus(nonMismatch));
+}
+
+TEST(GlobalTopologyPlan,
+     FragmentOwnerDeficitPublishesCorrectionEvidenceThroughProductionPath) {
+  using directional::authority::NetworkArcId;
+  using directional::authority::Orientation;
+  using directional::authority::TraceId;
+  using directional::geometry::GlobalTopologyPlanError;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+  using directional::geometry::TraceCutFaceEdgeOrbitEvidenceDiagnostic;
+  using directional::geometry::TraceCutFaceFragmentIncidenceDiagnostic;
+
+  const Cp4cProductionFixture mechanical =
+      build_cp4c_pipeline_products_fixture("mechanical_feature",
+                                           "mechanical feature");
+  ASSERT_TRUE(mechanical.network.has_value()) << mechanical.loadError;
+  ASSERT_TRUE(mechanical.cutGraph.has_value()) << mechanical.terminalFailureCode;
+  EXPECT_NE("TraceCutFaceFragmentCountMismatch",
+            mechanical.terminalFailureDetailCode)
+      << "the one-chord/one-owner witness must pass the corrected validation "
+         "site before any later production failure";
+
+  directional::SurfaceCellTraceFragmentOwnerEvidenceDiagnostics ownerEvidence;
+  if (mechanical.plan.has_value()) {
+    GlobalTopologyPlanError evidenceCarrier;
+    evidenceCarrier.code = GlobalTopologyPlanErrorCode::InvalidSourceBinding;
+    evidenceCarrier.fragmentOwnerEvidence =
+        mechanical.plan->fragment_owner_evidence();
+    ownerEvidence = directional::pipeline::remesh_pipeline_detail::
+                        project_global_topology_plan_failure_locus(
+                            evidenceCarrier)
+                        .fragmentOwnerEvidence;
+  } else {
+    ownerEvidence = mechanical.terminalFailureLocus.fragmentOwnerEvidence;
+  }
+
+  ASSERT_GT(ownerEvidence.faceCount, 0U);
+  EXPECT_EQ(ownerEvidence.faceCount > ownerEvidence.faces.size(),
+            ownerEvidence.facesTruncated);
+  const auto face = std::find_if(
+      ownerEvidence.faces.begin(), ownerEvidence.faces.end(),
+      [](const auto &row) {
+        return row.sourceFace == std::array<std::size_t, 3>{0U, 1U, 102U};
+      });
+  ASSERT_NE(ownerEvidence.faces.end(), face);
+  ASSERT_TRUE(face->localFragmentCount.has_value());
+  EXPECT_EQ(2U, *face->localFragmentCount);
+  EXPECT_EQ(1U, face->ownerCount);
+  EXPECT_EQ(2U, face->expectedFragmentCount);
+  EXPECT_EQ(1U, face->ownerDeficit);
+  EXPECT_EQ(1U, face->traceChordCount);
+  EXPECT_FALSE(face->chordsCrossInside);
+  EXPECT_TRUE(face->localArrangementEvaluated);
+  EXPECT_EQ(1U, face->sharedOwnerChordCount);
+  EXPECT_FALSE(face->sharedOwnerChordsTruncated);
+  ASSERT_EQ(1U, face->sharedOwnerChords.size());
+  EXPECT_EQ(1U, face->sharedOwnerChords[0].trace);
+  EXPECT_EQ(15U, face->sharedOwnerChords[0].arc);
+  EXPECT_EQ(4U, face->sharedOwnerChords[0].segmentIndex);
+  EXPECT_EQ(face->sharedOwnerChords[0].forwardOrbit,
+            face->sharedOwnerChords[0].reverseOrbit);
+
+  ASSERT_GT(ownerEvidence.arcCount, 0U);
+  EXPECT_EQ(ownerEvidence.arcCount > ownerEvidence.arcs.size(),
+            ownerEvidence.arcsTruncated);
+  const auto arc15 = std::find_if(
+      ownerEvidence.arcs.begin(), ownerEvidence.arcs.end(),
+      [](const auto &row) { return row.arc == 15U; });
+  ASSERT_NE(ownerEvidence.arcs.end(), arc15);
+  ASSERT_TRUE(arc15->trace.has_value());
+  EXPECT_EQ(1U, *arc15->trace);
+  EXPECT_EQ(arc15->forwardOrbit, arc15->reverseOrbit);
+  EXPECT_TRUE(arc15->sharesOrbit);
+
+  ASSERT_GT(ownerEvidence.traceCount, 0U);
+  EXPECT_EQ(ownerEvidence.traceCount > ownerEvidence.traces.size(),
+            ownerEvidence.tracesTruncated);
+  const auto trace1 = std::find_if(
+      ownerEvidence.traces.begin(), ownerEvidence.traces.end(),
+      [](const auto &row) { return row.trace == 1U; });
+  ASSERT_NE(ownerEvidence.traces.end(), trace1);
+  const auto sourceTrace1 = std::find_if(
+      mechanical.network->candidate_traces().begin(),
+      mechanical.network->candidate_traces().end(),
+      [](const auto &trace) { return trace.id.index() == 1U; });
+  ASSERT_NE(mechanical.network->candidate_traces().end(), sourceTrace1);
+  const bool expectedTerminalSlit =
+      !sourceTrace1->segments.empty() && !sourceTrace1->terminalBarrier.has_value();
+  EXPECT_EQ(expectedTerminalSlit, trace1->terminatesInTerminalSlit);
+  EXPECT_GT(ownerEvidence.totalOrbitCount, 0U);
+  EXPECT_EQ(ownerEvidence.totalOrbitCount,
+            ownerEvidence.exteriorOrbitCount +
+                ownerEvidence.nonExteriorOrbitCount);
+
+  // The stricter high-side failure remains byte-for-byte CB20 compatible.
+  GlobalTopologyPlanError highSide;
+  highSide.code = GlobalTopologyPlanErrorCode::TraceCutFaceFragmentCountMismatch;
+  highSide.sourceFace = topology_face(0, 1, 102, 128U);
+  highSide.fragmentOrbitCount = 4U;
+  highSide.tracePieceCount = 2U;
+  highSide.expectedFragmentCount = 3U;
+  highSide.fragmentIncidenceCount = 2U;
+  highSide.fragmentIncidencesTruncated = false;
+  highSide.fragmentIncidences.push_back(TraceCutFaceFragmentIncidenceDiagnostic{
+      TraceId::from_index(4U, 16U).value(),
+      NetworkArcId::from_index(7U, 32U).value(), 3U, Orientation::Forward,
+      topology_edge(0, 1, 128U), topology_edge(1, 102, 128U), 11U, 12U,
+      false, true});
+  highSide.fragmentIncidences.push_back(TraceCutFaceFragmentIncidenceDiagnostic{
+      TraceId::from_index(5U, 16U).value(),
+      NetworkArcId::from_index(8U, 32U).value(), 1U, Orientation::Forward,
+      std::nullopt, topology_edge(0, 102, 128U), 12U, 13U, false, false});
+  highSide.fragmentEdgeOrbitEvidence = {
+      TraceCutFaceEdgeOrbitEvidenceDiagnostic{topology_edge(0, 1, 128U),
+                                              {11U}, 1U, false},
+      TraceCutFaceEdgeOrbitEvidenceDiagnostic{topology_edge(0, 102, 128U),
+                                              {13U}, 1U, false},
+      TraceCutFaceEdgeOrbitEvidenceDiagnostic{topology_edge(1, 102, 128U),
+                                              {}, 0U, false}};
+  EXPECT_EQ(
+      ";sourceFace=0,1,102;fragmentOrbitCount=4;tracePieceCount=2;"
+      "expectedFragmentCount=3;fragmentIncidenceCount=2;"
+      "fragmentIncidencesTruncated=false;fragmentIncidence[0]={trace=4,arc=7,"
+      "segment=3,orientation=Forward,incomingCarrier=0-1,outgoingCarrier=1-102,"
+      "forwardOrbit=11,reverseOrbit=12,forwardExteriorDropped=false,"
+      "reverseExteriorDropped=true};fragmentIncidence[1]={trace=5,arc=8,"
+      "segment=1,orientation=Forward,incomingCarrier=none,outgoingCarrier=0-102,"
+      "forwardOrbit=12,reverseOrbit=13,forwardExteriorDropped=false,"
+      "reverseExteriorDropped=false};fragmentEdgeOrbitEvidence[0]={sourceEdge="
+      "0-1,totalOrbitCount=1,truncated=false,orbits=[11]};"
+      "fragmentEdgeOrbitEvidence[1]={sourceEdge=0-102,totalOrbitCount=1,"
+      "truncated=false,orbits=[13]};fragmentEdgeOrbitEvidence[2]={sourceEdge="
+      "1-102,totalOrbitCount=0,truncated=false,orbits=[]};cutCandidateCount=0",
+      production_global_topology_plan_error_locus(highSide));
 }
 
 TEST(GlobalTopologyPlan,

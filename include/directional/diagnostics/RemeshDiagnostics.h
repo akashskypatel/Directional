@@ -157,6 +157,49 @@ struct SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics {
   bool truncated = false;
 };
 
+struct SurfaceCellTraceCutFaceFragmentOwnerEvidenceDiagnostics {
+  std::array<std::size_t, 3> sourceFace{};
+  std::optional<std::size_t> localFragmentCount;
+  std::size_t ownerCount = 0U;
+  std::size_t expectedFragmentCount = 0U;
+  std::size_t ownerDeficit = 0U;
+  std::size_t traceChordCount = 0U;
+  bool chordsCrossInside = false;
+  bool localArrangementEvaluated = false;
+  std::vector<SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics>
+      sharedOwnerChords;
+  std::size_t sharedOwnerChordCount = 0U;
+  bool sharedOwnerChordsTruncated = false;
+};
+
+struct SurfaceCellTraceArcOwnerCensusDiagnostics {
+  std::size_t arc = 0U;
+  std::optional<std::size_t> trace;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  bool sharesOrbit = false;
+};
+
+struct SurfaceCellTraceTerminalSlitCensusDiagnostics {
+  std::size_t trace = 0U;
+  bool terminatesInTerminalSlit = false;
+};
+
+struct SurfaceCellTraceFragmentOwnerEvidenceDiagnostics {
+  std::vector<SurfaceCellTraceCutFaceFragmentOwnerEvidenceDiagnostics> faces;
+  std::size_t faceCount = 0U;
+  bool facesTruncated = false;
+  std::vector<SurfaceCellTraceArcOwnerCensusDiagnostics> arcs;
+  std::size_t arcCount = 0U;
+  bool arcsTruncated = false;
+  std::vector<SurfaceCellTraceTerminalSlitCensusDiagnostics> traces;
+  std::size_t traceCount = 0U;
+  bool tracesTruncated = false;
+  std::size_t totalOrbitCount = 0U;
+  std::size_t exteriorOrbitCount = 0U;
+  std::size_t nonExteriorOrbitCount = 0U;
+};
+
 struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> sourceVertex;
   std::optional<std::array<std::size_t, 2>> sourceEdge;
@@ -200,6 +243,7 @@ struct SurfaceCellFailureLocusDiagnostics {
   bool fragmentIncidencesTruncated = false;
   std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
       fragmentEdgeOrbitEvidence;
+  SurfaceCellTraceFragmentOwnerEvidenceDiagnostics fragmentOwnerEvidence;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;
   SurfaceCellRotationFanCensusDiagnostics rotationFanCensus;

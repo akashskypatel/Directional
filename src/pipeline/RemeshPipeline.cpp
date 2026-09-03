@@ -549,6 +549,26 @@ project_global_topology_plan_failure_locus(
     return std::array<std::size_t, 2>{edge.first().index(),
                                       edge.second().index()};
   };
+  const auto fragment_incidence_locus = [&](
+      const geometry::TraceCutFaceFragmentIncidenceDiagnostic &incidence) {
+    SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics row;
+    row.trace = incidence.trace.index();
+    row.arc = incidence.arc.index();
+    row.segmentIndex = incidence.segmentIndex;
+    row.orientation = incidence.orientation == authority::Orientation::Forward
+                          ? "Forward"
+                          : "Reverse";
+    if (incidence.incomingCarrier.has_value())
+      row.incomingCarrier = topology_edge_locus(*incidence.incomingCarrier);
+    row.outgoingCarrier = topology_edge_locus(incidence.outgoingCarrier);
+    row.forwardOrbit = incidence.forwardOrbit;
+    row.reverseOrbit = incidence.reverseOrbit;
+    row.forwardOrbitDroppedByExteriorFilter =
+        incidence.forwardOrbitDroppedByExteriorFilter;
+    row.reverseOrbitDroppedByExteriorFilter =
+        incidence.reverseOrbitDroppedByExteriorFilter;
+    return row;
+  };
 
   geometry::SurfaceCutGraphError projected;
   projected.sourceVertex = error.sourceVertex;
@@ -594,25 +614,8 @@ project_global_topology_plan_failure_locus(
   locus.fragmentIncidenceCount = error.fragmentIncidenceCount;
   locus.fragmentIncidencesTruncated = error.fragmentIncidencesTruncated;
   locus.fragmentIncidences.reserve(error.fragmentIncidences.size());
-  for (const auto &incidence : error.fragmentIncidences) {
-    SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics row;
-    row.trace = incidence.trace.index();
-    row.arc = incidence.arc.index();
-    row.segmentIndex = incidence.segmentIndex;
-    row.orientation = incidence.orientation == authority::Orientation::Forward
-                          ? "Forward"
-                          : "Reverse";
-    if (incidence.incomingCarrier.has_value())
-      row.incomingCarrier = topology_edge_locus(*incidence.incomingCarrier);
-    row.outgoingCarrier = topology_edge_locus(incidence.outgoingCarrier);
-    row.forwardOrbit = incidence.forwardOrbit;
-    row.reverseOrbit = incidence.reverseOrbit;
-    row.forwardOrbitDroppedByExteriorFilter =
-        incidence.forwardOrbitDroppedByExteriorFilter;
-    row.reverseOrbitDroppedByExteriorFilter =
-        incidence.reverseOrbitDroppedByExteriorFilter;
-    locus.fragmentIncidences.push_back(std::move(row));
-  }
+  for (const auto &incidence : error.fragmentIncidences)
+    locus.fragmentIncidences.push_back(fragment_incidence_locus(incidence));
   locus.fragmentEdgeOrbitEvidence.reserve(
       error.fragmentEdgeOrbitEvidence.size());
   for (const auto &evidence : error.fragmentEdgeOrbitEvidence) {
@@ -623,6 +626,55 @@ project_global_topology_plan_failure_locus(
     row.truncated = evidence.truncated;
     locus.fragmentEdgeOrbitEvidence.push_back(std::move(row));
   }
+
+  const auto &ownerEvidence = error.fragmentOwnerEvidence;
+  auto &projectedOwnerEvidence = locus.fragmentOwnerEvidence;
+  projectedOwnerEvidence.faceCount = ownerEvidence.faceCount;
+  projectedOwnerEvidence.facesTruncated = ownerEvidence.facesTruncated;
+  projectedOwnerEvidence.faces.reserve(ownerEvidence.faces.size());
+  for (const auto &face : ownerEvidence.faces) {
+    SurfaceCellTraceCutFaceFragmentOwnerEvidenceDiagnostics row;
+    const auto vertices = face.sourceFace.vertices();
+    row.sourceFace = {vertices[0].index(), vertices[1].index(),
+                      vertices[2].index()};
+    row.localFragmentCount = face.localFragmentCount;
+    row.ownerCount = face.ownerCount;
+    row.expectedFragmentCount = face.expectedFragmentCount;
+    row.ownerDeficit = face.ownerDeficit;
+    row.traceChordCount = face.traceChordCount;
+    row.chordsCrossInside = face.chordsCrossInside;
+    row.localArrangementEvaluated = face.localArrangementEvaluated;
+    row.sharedOwnerChordCount = face.sharedOwnerChordCount;
+    row.sharedOwnerChordsTruncated = face.sharedOwnerChordsTruncated;
+    row.sharedOwnerChords.reserve(face.sharedOwnerChords.size());
+    for (const auto &chord : face.sharedOwnerChords)
+      row.sharedOwnerChords.push_back(fragment_incidence_locus(chord));
+    projectedOwnerEvidence.faces.push_back(std::move(row));
+  }
+  projectedOwnerEvidence.arcCount = ownerEvidence.arcCount;
+  projectedOwnerEvidence.arcsTruncated = ownerEvidence.arcsTruncated;
+  projectedOwnerEvidence.arcs.reserve(ownerEvidence.arcs.size());
+  for (const auto &arc : ownerEvidence.arcs) {
+    SurfaceCellTraceArcOwnerCensusDiagnostics row;
+    row.arc = arc.arc.index();
+    if (arc.trace.has_value()) row.trace = arc.trace->index();
+    row.forwardOrbit = arc.forwardOrbit;
+    row.reverseOrbit = arc.reverseOrbit;
+    row.sharesOrbit = arc.sharesOrbit;
+    projectedOwnerEvidence.arcs.push_back(std::move(row));
+  }
+  projectedOwnerEvidence.traceCount = ownerEvidence.traceCount;
+  projectedOwnerEvidence.tracesTruncated = ownerEvidence.tracesTruncated;
+  projectedOwnerEvidence.traces.reserve(ownerEvidence.traces.size());
+  for (const auto &trace : ownerEvidence.traces) {
+    projectedOwnerEvidence.traces.push_back(
+        SurfaceCellTraceTerminalSlitCensusDiagnostics{
+            trace.trace.index(), trace.terminatesInTerminalSlit});
+  }
+  projectedOwnerEvidence.totalOrbitCount = ownerEvidence.totalOrbitCount;
+  projectedOwnerEvidence.exteriorOrbitCount = ownerEvidence.exteriorOrbitCount;
+  projectedOwnerEvidence.nonExteriorOrbitCount =
+      ownerEvidence.nonExteriorOrbitCount;
   return locus;
 }
 

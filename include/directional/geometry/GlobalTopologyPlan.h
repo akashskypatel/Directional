@@ -294,6 +294,58 @@ struct TraceCutFaceEdgeOrbitEvidenceDiagnostic {
       default;
 };
 
+struct TraceCutFaceFragmentOwnerEvidenceDiagnostic {
+  authority::SourceFaceTopologyKey sourceFace;
+  std::optional<std::size_t> localFragmentCount;
+  std::size_t ownerCount = 0U;
+  std::size_t expectedFragmentCount = 0U;
+  std::size_t ownerDeficit = 0U;
+  std::size_t traceChordCount = 0U;
+  bool chordsCrossInside = false;
+  bool localArrangementEvaluated = false;
+  std::vector<TraceCutFaceFragmentIncidenceDiagnostic> sharedOwnerChords;
+  std::size_t sharedOwnerChordCount = 0U;
+  bool sharedOwnerChordsTruncated = false;
+
+  auto operator<=>(const TraceCutFaceFragmentOwnerEvidenceDiagnostic &) const =
+      default;
+};
+
+struct TraceArcOwnerCensusDiagnostic {
+  authority::NetworkArcId arc;
+  std::optional<authority::TraceId> trace;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  bool sharesOrbit = false;
+
+  auto operator<=>(const TraceArcOwnerCensusDiagnostic &) const = default;
+};
+
+struct TraceTerminalSlitCensusDiagnostic {
+  authority::TraceId trace;
+  bool terminatesInTerminalSlit = false;
+
+  auto operator<=>(const TraceTerminalSlitCensusDiagnostic &) const = default;
+};
+
+struct TraceFragmentOwnerEvidenceDiagnostic {
+  std::vector<TraceCutFaceFragmentOwnerEvidenceDiagnostic> faces;
+  std::size_t faceCount = 0U;
+  bool facesTruncated = false;
+  std::vector<TraceArcOwnerCensusDiagnostic> arcs;
+  std::size_t arcCount = 0U;
+  bool arcsTruncated = false;
+  std::vector<TraceTerminalSlitCensusDiagnostic> traces;
+  std::size_t traceCount = 0U;
+  bool tracesTruncated = false;
+  std::size_t totalOrbitCount = 0U;
+  std::size_t exteriorOrbitCount = 0U;
+  std::size_t nonExteriorOrbitCount = 0U;
+
+  auto operator<=>(const TraceFragmentOwnerEvidenceDiagnostic &) const =
+      default;
+};
+
 struct GlobalTopologyPlanError {
   GlobalTopologyPlanErrorCode code =
       GlobalTopologyPlanErrorCode::InvalidSourceBinding;
@@ -321,6 +373,7 @@ struct GlobalTopologyPlanError {
   bool fragmentIncidencesTruncated = false;
   std::vector<TraceCutFaceEdgeOrbitEvidenceDiagnostic>
       fragmentEdgeOrbitEvidence;
+  TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
   std::optional<VertexTraceSecondaryParameterFailureReason>
@@ -366,6 +419,7 @@ struct GlobalTopologyPlanCandidate {
   std::uint64_t sourceDigest = 0U;
   std::uint64_t networkDigest = 0U;
   std::uint64_t cutGraphDigest = 0U;
+  TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence;
 };
 
 class GlobalTopologyPlanBuildResult;
@@ -405,6 +459,10 @@ public:
   region_certificates() const noexcept {
     return regionCertificates_;
   }
+  [[nodiscard]] const TraceFragmentOwnerEvidenceDiagnostic &
+  fragment_owner_evidence() const noexcept {
+    return fragmentOwnerEvidence_;
+  }
 
   [[nodiscard]] const GlobalTopologyArc *
   find_arc(authority::NetworkArcId arc) const noexcept;
@@ -437,13 +495,15 @@ private:
                      std::uint64_t sourceDigest,
                      std::uint64_t networkDigest,
                      std::uint64_t cutGraphDigest,
-                     std::uint64_t semanticDigest)
+                     std::uint64_t semanticDigest,
+                     TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence)
       : arcs_(std::move(arcs)), rotations_(std::move(rotations)),
         regions_(std::move(regions)),
         regionCertificates_(std::move(regionCertificates)),
         sourceDigest_(sourceDigest),
         networkDigest_(networkDigest), cutGraphDigest_(cutGraphDigest),
-        semanticDigest_(semanticDigest) {}
+        semanticDigest_(semanticDigest),
+        fragmentOwnerEvidence_(std::move(fragmentOwnerEvidence)) {}
 
   std::vector<GlobalTopologyArc> arcs_;
   std::vector<GlobalTopologyNodeRotation> rotations_;
@@ -453,6 +513,7 @@ private:
   std::uint64_t networkDigest_ = 0U;
   std::uint64_t cutGraphDigest_ = 0U;
   std::uint64_t semanticDigest_ = 0U;
+  TraceFragmentOwnerEvidenceDiagnostic fragmentOwnerEvidence_;
 };
 
 class GlobalTopologyPlanBuildResult {

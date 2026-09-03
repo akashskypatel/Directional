@@ -34,6 +34,8 @@ namespace {
 constexpr std::uint64_t kFnvOffset = 1469598103934665603ULL;
 constexpr std::uint64_t kFnvPrime = 1099511628211ULL;
 constexpr std::size_t kFragmentFailureEvidenceLimit = 8U;
+constexpr std::size_t kFragmentFaceEvidenceLimit = 4096U;
+constexpr std::size_t kFragmentOwnerCensusEvidenceLimit = 64U;
 
 void hash_consume(std::uint64_t &hash, const std::uint64_t value) noexcept {
   hash ^= value;
@@ -143,6 +145,137 @@ struct FragmentDiagnosticEvidence {
       edgeOrbitEvidence;
   std::vector<FragmentDiagnosticTraceSegment> traceSegments;
 };
+
+using FragmentExactPoint = std::array<authority::FieldExactRational, 3>;
+
+struct FragmentLocalTraceChord {
+  TraceCutFaceFragmentIncidenceDiagnostic incidence;
+  std::optional<FragmentExactPoint> first;
+  std::optional<FragmentExactPoint> second;
+};
+
+struct FragmentLocalArrangement {
+  std::optional<std::size_t> fragmentCount;
+  bool chordsCrossInside = false;
+  bool evaluated = true;
+};
+
+[[nodiscard]] std::optional<FragmentExactPoint> boundary_point_barycentric(
+    const SourceFaceRecord &face, const authority::FieldBoundaryPoint &point) {
+  std::optional<std::size_t> firstCorner;
+  std::optional<std::size_t> secondCorner;
+  for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
+    if (face.vertices[corner] == point.edge.first()) firstCorner = corner;
+    if (face.vertices[corner] == point.edge.second()) secondCorner = corner;
+  }
+  if (!firstCorner.has_value() || !secondCorner.has_value() ||
+      !point.parameter.in_unit_interval()) {
+    return std::nullopt;
+  }
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  FragmentExactPoint result{zero, zero, zero};
+  result[*firstCorner] = one - point.parameter.value;
+  result[*secondCorner] = point.parameter.value;
+  return result;
+}
+
+[[nodiscard]] std::optional<FragmentExactPoint> source_vertex_barycentric(
+    const SourceFaceRecord &face, const authority::SourceVertexId vertex) {
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  const auto one = authority::FieldExactRational::from_integer(1);
+  FragmentExactPoint result{zero, zero, zero};
+  for (std::size_t corner = 0U; corner < face.vertices.size(); ++corner) {
+    if (face.vertices[corner] == vertex) {
+      result[corner] = one;
+      return result;
+    }
+  }
+  return std::nullopt;
+}
+
+[[nodiscard]] std::optional<FragmentExactPoint> trace_segment_exit_barycentric(
+    const SourceFaceRecord &face, const FieldAlignedCandidateTrace &trace,
+    const std::size_t segmentIndex) {
+  if (segmentIndex >= trace.segments.size()) return std::nullopt;
+  const auto &segment = trace.segments[segmentIndex];
+  if (segment.edgeTransitExit.has_value()) {
+    return boundary_point_barycentric(face, *segment.edgeTransitExit);
+  }
+  if (segmentIndex + 1U < trace.segments.size()) {
+    const auto support = trace.segments[segmentIndex + 1U].entryPoint.source_support();
+    if (support.has_value()) {
+      if (const auto *vertex =
+              std::get_if<authority::SourceVertexSupport>(&*support)) {
+        if (const auto point = source_vertex_barycentric(face, vertex->vertex);
+            point.has_value()) {
+          return point;
+        }
+      }
+    }
+  }
+  if (trace.terminalContact.has_value() &&
+      trace.terminalContact->sourceFace == segment.sourceFace) {
+    return trace.terminalContact->barycentric;
+  }
+  if (trace.terminalPoint.has_value()) {
+    return boundary_point_barycentric(face, *trace.terminalPoint);
+  }
+  return std::nullopt;
+}
+
+[[nodiscard]] bool point_strictly_inside_face(
+    const FragmentExactPoint &point) {
+  const auto zero = authority::FieldExactRational::from_integer(0);
+  return point[0] > zero && point[1] > zero && point[2] > zero;
+}
+
+[[nodiscard]] FragmentLocalArrangement local_fragment_arrangement(
+    const std::vector<FragmentLocalTraceChord> &chords) {
+  using ContactKind =
+      surface_cell_tracing_detail::FieldAlignedSegmentContactKind;
+  FragmentLocalArrangement result;
+  std::size_t fragmentCount = 1U;
+
+  // Insert each exact boundary-to-boundary chord into the local triangle.
+  // A new chord creates one region plus one for every distinct pre-existing
+  // interior crossing it traverses. Collinear/unevaluated contacts make only
+  // this observational census unavailable; they never alter product control.
+  for (std::size_t chordIndex = 0U; chordIndex < chords.size(); ++chordIndex) {
+    const auto &chord = chords[chordIndex];
+    if (!chord.first.has_value() || !chord.second.has_value() ||
+        *chord.first == *chord.second) {
+      result.evaluated = false;
+      return result;
+    }
+    std::set<FragmentExactPoint> interiorCrossings;
+    for (std::size_t prior = 0U; prior < chordIndex; ++prior) {
+      if (!chords[prior].first.has_value() ||
+          !chords[prior].second.has_value()) {
+        result.evaluated = false;
+        return result;
+      }
+      const auto contact =
+          surface_cell_tracing_detail::classify_field_aligned_barycentric_contact(
+              *chord.first, *chord.second, *chords[prior].first,
+              *chords[prior].second);
+      if (contact.kind == ContactKind::CollinearOverlap ||
+          contact.kind == ContactKind::Unevaluated) {
+        result.evaluated = false;
+        return result;
+      }
+      if (contact.kind == ContactKind::ProperCrossing &&
+          contact.barycentric.has_value() &&
+          point_strictly_inside_face(*contact.barycentric)) {
+        interiorCrossings.insert(*contact.barycentric);
+        result.chordsCrossInside = true;
+      }
+    }
+    fragmentCount += 1U + interiorCrossings.size();
+  }
+  result.fragmentCount = fragmentCount;
+  return result;
+}
 
 [[nodiscard]] bool is_terminal_slit(
     const FieldAlignedCandidateTrace &trace,
@@ -495,7 +628,8 @@ RegionBuildResult build_regions(
     const FieldAlignedCurveNetwork &network,
     const SurfaceCutGraph &cutGraph,
     const std::vector<GlobalTopologyArc> &arcs,
-    const FaceWalkResult &walk, FragmentDiagnosticEvidence *diagnostics) {
+    const FaceWalkResult &walk, FragmentDiagnosticEvidence *diagnostics,
+    TraceFragmentOwnerEvidenceDiagnostic *ownerEvidence) {
   (void)sourceAuthority;
 
   const auto exteriorBuild =
@@ -517,6 +651,9 @@ RegionBuildResult build_regions(
                      authority::SourceEdgeTopologyKey>,
            std::set<std::size_t>>
       edgeOrbitEvidence;
+  std::map<authority::SourceFaceTopologyKey,
+           std::vector<FragmentLocalTraceChord>>
+      localTraceChords;
 
   const auto add_fragment_orbit = [&](const authority::SourceFaceTopologyKey &face,
                                       const std::size_t orbit) {
@@ -706,6 +843,33 @@ RegionBuildResult build_regions(
             segment.sourceFace, segment.incomingCarrier,
             segment.outgoingCarrier, sourcePortVertex});
       }
+      if (ownerEvidence != nullptr) {
+        const auto first = boundary_point_barycentric(faceIt->second,
+                                                      segment.entryPoint);
+        const auto second = trace_segment_exit_barycentric(
+            faceIt->second, *trace, segmentIndex);
+        if (first.has_value() && second.has_value()) {
+          localTraceChords[segment.sourceFace].push_back(FragmentLocalTraceChord{
+              TraceCutFaceFragmentIncidenceDiagnostic{
+                  trace->id, arc.id, segmentIndex,
+                  authority::Orientation::Forward, segment.incomingCarrier,
+                  segment.outgoingCarrier, forwardOrbit, reverseOrbit,
+                  exteriorOrbits.count(forwardOrbit) != 0U,
+                  exteriorOrbits.count(reverseOrbit) != 0U},
+              first, second});
+        } else {
+          // Retain an explicit unevaluated marker for this face. The local
+          // arrangement is evidence-only in CB21 and cannot reject input.
+          localTraceChords[segment.sourceFace].push_back(FragmentLocalTraceChord{
+              TraceCutFaceFragmentIncidenceDiagnostic{
+                  trace->id, arc.id, segmentIndex,
+                  authority::Orientation::Forward, segment.incomingCarrier,
+                  segment.outgoingCarrier, forwardOrbit, reverseOrbit,
+                  exteriorOrbits.count(forwardOrbit) != 0U,
+                  exteriorOrbits.count(reverseOrbit) != 0U},
+              std::nullopt, std::nullopt});
+        }
+      }
 
       // On a triangle, a chord between two carriers leaves the third edge
       // wholly on exactly one oriented side. Record that exact side so an
@@ -767,6 +931,46 @@ RegionBuildResult build_regions(
     }
   }
 
+  if (ownerEvidence != nullptr) {
+    ownerEvidence->totalOrbitCount = walk.orbits.size();
+    ownerEvidence->exteriorOrbitCount = exteriorOrbits.size();
+    ownerEvidence->nonExteriorOrbitCount =
+        walk.orbits.size() >= exteriorOrbits.size()
+            ? walk.orbits.size() - exteriorOrbits.size()
+            : 0U;
+    ownerEvidence->arcCount = arcs.size();
+    for (const auto &arc : arcs) {
+      if (ownerEvidence->arcs.size() >= kFragmentOwnerCensusEvidenceLimit)
+        break;
+      const std::size_t forwardDart = dart_index(GlobalTopologyOrientedArc{
+          arc.id, authority::Orientation::Forward});
+      const std::size_t reverseDart = dart_index(GlobalTopologyOrientedArc{
+          arc.id, authority::Orientation::Reverse});
+      if (forwardDart >= walk.orbitByDart.size() ||
+          reverseDart >= walk.orbitByDart.size()) {
+        continue;
+      }
+      const std::size_t forwardOrbit = walk.orbitByDart[forwardDart];
+      const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
+      ownerEvidence->arcs.push_back(TraceArcOwnerCensusDiagnostic{
+          arc.id, arc.trace, forwardOrbit, reverseOrbit,
+          forwardOrbit == reverseOrbit});
+    }
+    ownerEvidence->arcsTruncated = ownerEvidence->arcCount > ownerEvidence->arcs.size();
+
+    ownerEvidence->traceCount = network.candidate_traces().size();
+    for (const auto &trace : network.candidate_traces()) {
+      if (ownerEvidence->traces.size() >= kFragmentOwnerCensusEvidenceLimit)
+        break;
+      const bool terminalSlit = !trace.segments.empty() &&
+          is_terminal_slit(trace, trace.segments.size() - 1U);
+      ownerEvidence->traces.push_back(
+          TraceTerminalSlitCensusDiagnostic{trace.id, terminalSlit});
+    }
+    ownerEvidence->tracesTruncated =
+        ownerEvidence->traceCount > ownerEvidence->traces.size();
+  }
+
   // Validate every directly cut face before extending single-fragment interiors.
   // A face with k real trace chords has k+1 fragments; a terminal slit is
   // not a chord and contributes zero to k. A face with no real chord has one.
@@ -775,7 +979,43 @@ RegionBuildResult build_regions(
     const auto found = fragmentOrbits.find(faceKey);
     if (found == fragmentOrbits.end() || found->second.empty()) continue;
     const std::size_t expected = tracePieceCount[faceKey] + 1U;
-    if (found->second.size() != expected) {
+    if (ownerEvidence != nullptr) {
+      const auto chordIt = localTraceChords.find(faceKey);
+      const std::vector<FragmentLocalTraceChord> emptyChords;
+      const auto &chords = chordIt == localTraceChords.end()
+                               ? emptyChords
+                               : chordIt->second;
+      FragmentLocalArrangement arrangement;
+      arrangement = local_fragment_arrangement(chords);
+      TraceCutFaceFragmentOwnerEvidenceDiagnostic row;
+      row.sourceFace = faceKey;
+      row.localFragmentCount = arrangement.fragmentCount;
+      row.ownerCount = found->second.size();
+      row.expectedFragmentCount = expected;
+      row.ownerDeficit = expected > found->second.size()
+                             ? expected - found->second.size()
+                             : 0U;
+      row.traceChordCount = tracePieceCount[faceKey];
+      row.chordsCrossInside = arrangement.chordsCrossInside;
+      row.localArrangementEvaluated = arrangement.evaluated;
+      for (const auto &chord : chords) {
+        if (chord.incidence.forwardOrbit != chord.incidence.reverseOrbit)
+          continue;
+        ++row.sharedOwnerChordCount;
+        if (row.sharedOwnerChords.size() < kFragmentFailureEvidenceLimit) {
+          row.sharedOwnerChords.push_back(chord.incidence);
+        }
+      }
+      row.sharedOwnerChordsTruncated =
+          row.sharedOwnerChordCount > row.sharedOwnerChords.size();
+      ++ownerEvidence->faceCount;
+      if (ownerEvidence->faces.size() < kFragmentFaceEvidenceLimit) {
+        ownerEvidence->faces.push_back(std::move(row));
+      }
+      ownerEvidence->facesTruncated =
+          ownerEvidence->faceCount > ownerEvidence->faces.size();
+    }
+    if (found->second.size() > expected) {
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::TraceCutFaceFragmentCountMismatch);
       failure.sourceFace = faceKey;
@@ -1814,11 +2054,26 @@ CandidateBuildResult canonical_candidate(
   FragmentDiagnosticEvidence diagnosticEvidence;
   FragmentDiagnosticEvidence *diagnostics =
       fragment_diagnostics_enabled() ? &diagnosticEvidence : nullptr;
+  TraceFragmentOwnerEvidenceDiagnostic ownerEvidence;
+  const auto has_owner_deficit = [&]() {
+    return std::any_of(ownerEvidence.faces.begin(), ownerEvidence.faces.end(),
+                       [](const auto &face) { return face.ownerDeficit != 0U; });
+  };
+  const auto annotate_owner_evidence = [&](GlobalTopologyPlanError failure) {
+    // The high-side mismatch keeps the byte-identical CB20 failure envelope.
+    // Low-side evidence is observational and follows only later failures.
+    if (failure.code !=
+            GlobalTopologyPlanErrorCode::TraceCutFaceFragmentCountMismatch &&
+        has_owner_deficit()) {
+      failure.fragmentOwnerEvidence = ownerEvidence;
+    }
+    return failure;
+  };
   const RegionBuildResult regionBuild = build_regions(
       embedded.sourceTopology, sourceAuthority, network, cutGraph,
-      embedded.arcs, embedded.faceWalk, diagnostics);
+      embedded.arcs, embedded.faceWalk, diagnostics, &ownerEvidence);
   if (const auto *failure = std::get_if<GlobalTopologyPlanError>(&regionBuild)) {
-    return *failure;
+    return annotate_owner_evidence(*failure);
   }
 
   GlobalTopologyPlanCandidate candidate;
@@ -1832,13 +2087,14 @@ CandidateBuildResult canonical_candidate(
                                 candidate.regions, diagnostics);
   if (const auto *failure =
           std::get_if<GlobalTopologyPlanError>(&certificateBuild)) {
-    return *failure;
+    return annotate_owner_evidence(*failure);
   }
   candidate.regionCertificates =
       std::get<std::vector<GlobalTopologyRegionDiscCertificate>>(certificateBuild);
   candidate.sourceDigest = network.source_digest();
   candidate.networkDigest = network_binding_digest(network);
   candidate.cutGraphDigest = cutGraph.semantic_digest();
+  candidate.fragmentOwnerEvidence = std::move(ownerEvidence);
   canonicalize_candidate(candidate);
   return candidate;
 }
@@ -2174,7 +2430,7 @@ GlobalTopologyPlanBuildResult GlobalTopologyPlan::make_from_candidate(
       std::move(candidate.arcs), std::move(candidate.rotations),
       std::move(candidate.regions), std::move(candidate.regionCertificates),
       candidate.sourceDigest, candidate.networkDigest, candidate.cutGraphDigest,
-      semanticDigest));
+      semanticDigest, std::move(candidate.fragmentOwnerEvidence)));
 }
 
 const GlobalTopologyArc *
@@ -2211,7 +2467,8 @@ GlobalTopologyPlan::find_region_certificate(
 GlobalTopologyPlanCandidate GlobalTopologyPlan::validation_candidate() const {
   return GlobalTopologyPlanCandidate{arcs_, rotations_, regions_,
                                      regionCertificates_, sourceDigest_,
-                                     networkDigest_, cutGraphDigest_};
+                                     networkDigest_, cutGraphDigest_,
+                                     fragmentOwnerEvidence_};
 }
 
 const char *global_topology_plan_error_code_name(
