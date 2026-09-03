@@ -69,14 +69,19 @@ jobs:
           test "$(jq -r '.expired' "$RUNNER_TEMP/compile-artifact.json")" = false
           jq '{id,name,digest,expired,workflow_run}' "$RUNNER_TEMP/compile-artifact.json"
 
-      - name: Download immutable compile result
-        uses: actions/download-artifact@v4
-        with:
-          name: m3-cp4c3-cb18-result-33706268720
-          path: ${{ runner.temp }}/raw
-          repository: ${{ github.repository }}
-          run-id: 33706268720
-          github-token: ${{ github.token }}
+      - name: Download immutable compile result with mode-preserving ZIP extraction
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee -a "$RUNNER_TEMP/package86.log") 2>&1
+          raw="$RUNNER_TEMP/raw"
+          rm -rf "$raw"
+          mkdir -p "$raw"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/9875350611/zip" > "$RUNNER_TEMP/compile-result.zip"
+          unzip -q "$RUNNER_TEMP/compile-result.zip" -d "$raw"
+          echo 'compile_artifact_transport=gh-api-zip-mode-preserving'
 
       - name: Verify compile result and build package 86
         shell: bash
