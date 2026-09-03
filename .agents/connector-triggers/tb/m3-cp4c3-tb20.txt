@@ -1,0 +1,5 @@
+purpose=execute M3-CP4c-3-TB20 artifact-only selector 385 gate
+source_commit=c5d3c65936e14e1c3e2c8afcffbc4236f37aa131
+artifact_id=9912976409
+selector_sha256=164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca
+retry=0
