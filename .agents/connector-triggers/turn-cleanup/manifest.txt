@@ -1,0 +1,5 @@
+# M3-CP4c-3-CB23 temporary state
+.agents/connector-triggers/source-snapshot-exact-e5a424.txt
+.agents/connector-triggers/cb23-drive-apply.txt
+.agents/connector-triggers/cb23-compile.txt
+.agents/connector-triggers/cb23-closeout-drive-apply.txt
