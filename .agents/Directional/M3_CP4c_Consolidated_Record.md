@@ -2,13 +2,13 @@
 
 **Purpose.** Durable, deduplicated history for the `M3-CP4c` family. Completed or superseded per-turn plans, reports, review records, and diagnostic selector records are folded into this file once they are no longer required for current or future work. Normative definitions, frozen selector lineage, current review authority, and the active CP4c-3 definition/gate remain separate. For execution authority, use `Future_Chat_Session_Handoff.md` and `TODO.md`.
 
-**Current state (2026-09-03).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB15 is current runtime authority** on immutable package **85** / selector **381**: **372 PASS / 9 RED**, accepted **365/365**, first red ordinal 366 still `EdgeTraceSecondaryRankInvalid` at edge `25-31` / face `(25,30,31)` = mesh row 41, typed **`SourceVertexFallbackUnbound`**, with source vertex 35, arc 19 / trace 5 / Reverse / `[0,5)`, outgoing carrier `25-31`, contact index 2 and a 3-ray untruncated census. **`M3-CP4c-3-TB15-REV` proved the incidence VALID and the binding datum wrong:** `proposal.nextIncomingCarrier` is assigned only on the edge-exit continuation and the `VertexHit` branch returns without it, so segment 4 - not the trace's first - entered row 41 through a **corner**; the fallback must therefore bind the segment's own **far-end support in this face** (entry side for Reverse, exit side for Forward, via `FieldBoundaryPoint::source_support()`) rather than `trace.sourceVertex`, which is trace-global provenance naming a port-emitting singularity elsewhere. A **second latent defect** is proved by derivation: the fallback ranks corners absolutely (`1 + 2*corner`) while the carrier branch ranks relative to the contact edge, and the correct value `1 + 2*((corner + 2 - contactIndex) mod 3)` coincides **only at `contactIndex = 2`** - this failure's value. Unlike the last three successors the correction is **not accepted-safe by construction**, so ordinals 1-365 re-passing is the load-bearing discriminator. Package 85's diagnostic-name metadata mismatch is **inert and proved so** (the contract-named identity occurs zero times in `tests/` and neither name is in selector 381): `M3-CP4c3-TB15-PKG-01`, no rerun, no repair. `M3-CP4c3-TB14-CAND-01` CLOSES; new `M3-CP4c3-TB15-CAND-01` is ACTIVE; the v47 five-ray conjunction remains owed, so `M3-CP4c3-TB11-CAND-01` stays OPEN. Exact next is **`M3-CP4c-3-CB18`** - Code + Build, **product correction**, under **BP0-BP9**. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **82**.
+**Current state (2026-09-03).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB15 remains current runtime authority** on immutable package **85** / selector **381**: **372 PASS / 9 RED**, accepted **365/365**, first red ordinal 366 `EdgeTraceSecondaryRankInvalid -> SourceVertexFallbackUnbound` at edge `25-31` / face `(25,30,31)`. TB15-REV proved the incidence valid and froze CB18 BP0-BP9. **CB18 is now COMPLETE / BUILD + PACKAGE GREEN / PRODUCT CORRECTION / RUNTIME-FREE** at semantic source `a01016ca59314232526c8b1222c96235856ace6d`: the edge-locus fallback binds the segment's own far-end vertex support in the selected face and ranks it relative to `contactIndex`, with the genuinely unbindable case still typed fail-closed. Selector **382** appends exactly `GlobalTopologyPlan.EdgeLocusSecondaryRankUsesSegmentFarEndSupportAndContactRelativeOrdering`, SHA-256 `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`; selector 381 remains frozen. Eight-target GMP/GMPXX compile `33706268720 / 100495948544` is green and immutable package **86** is green on `33707299159 / 100499114323`, artifact `9875664940`, inner tar `125d2851164d7af62f90a3ff6ad8f360076a651c8575b655acac59fb50b9e9e7`, packaged source `c96446f169959c56f3c536c7fe711df6f7741d679cbd1413cc7c464838a659e8`, 57/57 manifest, 27 fixtures and six preserved executable modes. No Directional runtime ran. Exact next is artifact-only **`M3-CP4c-3-TB16`** on package 86 / selector 382 under BP9. Accepted authority remains **365/365** pending TB16; stable accounting **44 / 14 / 30**, debt **5**, semantic packages **83**.
 
 These CP4c authorities remain separate because current or future work still depends on them:
 
 - the CP4c-2 and CP4c-3 frozen `DEFN*` contracts and all frozen `Required_Green_Selector_*` lineage files;
 - `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`, which closes CP4c-2 and supplies live CP4c-3 carry-forward authority;
-- `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`, which are the current runtime and CB18 planning authorities;
+- `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`, which remain the current runtime baseline and frozen TB16 discriminator authority;
 - historical review/plan records still referenced by `DESIGN.md`, `LESSONS.md`, `ROADMAP.md`, `Regression_Root_Cause_Tracker.md`, or by a retained frozen definition/review authority. Their transitive dependency chain remains exact-byte authority and was deliberately excluded from this retirement.
 
 All other superseded CP4c-3 per-turn files that had no live current/future dependency were folded into §§4/6 below and retired from the working tree. Git history remains the exact-byte recovery source for every retired file.
@@ -33,7 +33,8 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-3 selector 378 (TB12 execution / diagnostic projection)** | **`86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`** |
 | **CP4c-3 selector 379 (TB13 execution / frozen prefix)** | **`ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`** |
 | **CP4c-3 selector 380 (TB14 execution)** | **`1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`** |
-| **CP4c-3 selector 381 (TB15 execution / current frozen selector)** | **`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`** |
+| **CP4c-3 selector 381 (TB15 execution / frozen prefix)** | **`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`** |
+| **CP4c-3 selector 382 (TB16 execution / current selector)** | **`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`** |
 
 ## 2. Checkpoint closure record
 
@@ -43,7 +44,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB15 is current runtime authority on package 85 / selector 381 with 372 PASS / 9 RED and first red 366 `EdgeTraceSecondaryRankInvalid -> SourceVertexFallbackUnbound` at edge 25-31 / face `(25,30,31)`. TB15-REV is complete; exact next is product-correction `M3-CP4c-3-CB18` under BP0-BP9.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB15/package85 remains current runtime authority with first red 366 `EdgeTraceSecondaryRankInvalid -> SourceVertexFallbackUnbound`; CB18/package86 is current runtime-free build/package authority at selector 382. Exact next is artifact-only `M3-CP4c-3-TB16`.** |
 
 ### 2.1 CP4c-0
 
@@ -140,13 +141,19 @@ R10-REV accepted the execution as valid, audited the CB8→CB9 conversion line b
 
 This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` and
 `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
-`Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
+`Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is CB18/package 86.
 
 ### `M3-CP4c-3-TB15` — current measured runtime boundary
 
 Artifact-only TB15 consumed immutable package **85** / semantic source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` / selector **381** with no rebuild or repair. Run/job `33700074471 / 100477303760` executed all 381 identities one-per-fresh-process for **372 PASS / 9 RED**; accepted ordinals **1-365 remain 365/365 PASS** and first red **366** remains `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid` at source edge `25-31` / face `(25,30,31)`, attempt 0 / zero cut edges. CB17's typed instrumentation identifies the exact branch as **`SourceVertexFallbackUnbound`** with source vertex 35, arc 19 / trace 5 / Reverse / `[0,5)`, outgoing carrier `25-31`, contact index 2, no incoming/other carrier, and a complete three-ray census. Result/log artifacts are `9873244271` / `9873244582`; immutable package postflight is unchanged. TB15-REV then proved the incidence valid, the fallback datum wrong, and the absolute corner-rank latent defect; it froze CB18 BP0-BP9. Stable accounting remains 44 / 14 / 30, debt 5, packages 82.
 
-### `M3-CP4c-3-CB17` — current build/package boundary
+### `M3-CP4c-3-CB18` — current build/package boundary
+
+CB18 final semantic source `a01016ca59314232526c8b1222c96235856ace6d` implements TB15-REV BP0-BP9. In `edge_locus_secondary_rank`, the carrier-less fallback now uses the selected segment's exact far-end boundary support (entry for Reverse, exit for Forward) through `FieldBoundaryPoint::source_support()` and accepts only a vertex support that is a corner of the selected face. Its corner rank is contact-relative, `1 + 2*((corner + 2 - contactIndex) mod 3)`; the `contactIndex == 2` case recovers the shipped ordering. An unbindable far end remains typed `SourceVertexFallbackUnbound`. The carrier branch and excluded topology/collision/vertex-locus paths are unchanged. Compiled witnesses pin the previously successful singularity-start cases for contact indices 0/1/2, the positive Reverse vertex-entry case, the typed negative, fallback/carrier ordering, and ordinary two-carrier regression.
+
+Selector **381** remains byte-frozen. Selector **382** is 381 plus exactly `GlobalTopologyPlan.EdgeLocusSecondaryRankUsesSegmentFarEndSupportAndContactRelativeOrdering`, SHA-256 `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`. Authoritative eight-target GMP/GMPXX compile `33706268720 / 100495948544` is green; result/log artifacts `9875350611` (`cc2935716ecf7022fda6c120f0ef6313e60df553d34d7354b587e47ee9663d3a`) / `9875350974` (`ea39d44a9196e47934cb3ff626633c3031a2c607c542ef5e34298cc6665328f5`). Immutable package **86** run/job `33707299159 / 100499114323` is green: artifact `9875664940` (`8c98b134a527db87b83852de175288a320a158405d22867d95ba986cf68cbef8`), log `9875665222` (`fe86b4f391d731eb629461e1d79cb3b9543f1bab968fa922c1f8a0deb9565d28`), inner tar `125d2851164d7af62f90a3ff6ad8f360076a651c8575b655acac59fb50b9e9e7`, packaged source `c96446f169959c56f3c536c7fe711df6f7741d679cbd1413cc7c464838a659e8`, 57/57 manifest, 27 fixtures and six executable modes. Final packaging used direct artifact-ZIP extraction after an orchestration-only mode-loss attempt; no package repair and no Directional runtime occurred. Accepted authority remains **365/365**, stable **44 / 14 / 30**, debt **5**, semantic packages **83**. Exact next is artifact-only TB16 on package 86 / selector 382, including the load-bearing 365-prefix re-proof and v47 five-ray conjunction.
+
+### `M3-CP4c-3-CB17` — prior build/package boundary
 
 CB17 final source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` adds diagnostic-only typed exits for `edge_locus_secondary_rank`, preserves the failing incidence, and publishes a bounded production edge-locus ray census without changing rank/topology semantics. Selector **381** is selector 380 plus one compiled witness, SHA-256 `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`. Authoritative eight-target GMP/GMPXX compile `33697315308 / 100468915978` is green. Immutable package **85** artifact `9872426500` has Actions digest `6c0e960b3f689bae2d2ef7f79c32709f63d1fefa87ecefdf6351427ac91ea0e2`, inner tar `98f5940254beaa50ec200157a3cbe6ab0ec15d8a5117006679d42684968aad08`, packaged source `cb078005cef48d97401ddfb843a4276f92c53086b0827a915b01344dc665c4a9`. No runtime executed. Packages advance to 82; accepted authority remains 365/365. Exact next: artifact-only TB15 on selector 381.
 
@@ -746,22 +753,10 @@ After the durable start-of-turn checklist, load:
 1. `ORIENTATION.md` — read first and update during REVIEW.
 2. `Future_Chat_Session_Handoff.md`.
 3. `TODO.md`.
-4. `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` §9 — **frozen CB18 BP0-BP9 authority**.
-5. `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` — current package-85 runtime authority and exact typed incidence.
-6. `M3_CP4c_Consolidated_Record.md` §4 — retained CB17/package-85 build/package facts; the superseded standalone CB17 report is no longer required.
-7. `Regression_Root_Cause_Tracker.md`; use this consolidated record for historical lineage.
-8. Source at semantic commit `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` as BP1-BP6 require. CB18 is compile-only after the bounded correction; runtime waits for TB16.
+4. `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` §9 — frozen BP9 TB16 discriminator authority.
+5. `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` — current runtime baseline on package 85.
+6. `M3_CP4c_Consolidated_Record.md` §4 — current CB18/package-86 build/package facts and retained lineage.
+7. `Regression_Root_Cause_Tracker.md`.
+8. Immutable package **86**, artifact `9875664940`; do not rebuild from source.
 
-**Exact next:** **`M3-CP4c-3-CB18` - Code + Build, PRODUCT CORRECTION.** Follow section 9 **BP0-BP9** of
-`Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`. Bind `edge_locus_secondary_rank`'s fallback to the
-segment's **far-end vertex support in this face** - entry side for Reverse, exit side for Forward, via
-`FieldBoundaryPoint::source_support()` - instead of `trace.sourceVertex`, keeping the present rule recovered as the
-special case where a first segment begins at a singularity in that face. Make the corner rank relative to the
-contact edge, `1 + 2*((corner + 2 - contactIndex) mod 3)`. Keep the helper fail-closed for a genuinely unbindable
-far end. Leave the carrier branch, `trace_ray_face`, `sideRank`, `key.primary`, collision detection,
-`build_node_loci` and the vertex-locus path untouched; do not revert CB12, CB14, CB15, CB16 or CB17. **BP5 is not a
-formality**: this correction changes rays that currently succeed, so every currently-succeeding fallback rank must
-be pinned before and after, and ordinals 1-365 re-passing is the load-bearing discriminator. Selector 381 stays
-byte-frozen; append selector 382 only on demonstrated falsification; no package-85 repair. Eight compile targets,
-GMP/GMPXX linkage mandatory. **The v47 five-ray conjunction must be re-proved by the next TB before
-`M3-CP4c3-TB11-CAND-01` closes.**
+**Exact next:** **`M3-CP4c-3-TB16` — artifact-only Test + Benchmark.** Consume package 86 / selector 382 without rebuild, relink, repair, package mutation, fixture/selector mutation, or generated discovery. Preserve archived executable modes. Run selector 382 one identity per fresh process plus the retained mechanical diagnostic with zero gate credit. The load-bearing discriminator is ordinals 1-365 remaining 365/365; ordinal 366 must clear the edge-25-31 `EdgeTraceSecondaryRankInvalid`, and the full v47 five-ray/distinct-rank conjunction must be re-proved before the inherited candidates can close. No vertex-30 discriminator is authorized.
