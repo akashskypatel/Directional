@@ -130,14 +130,15 @@ printf '%s\n' \
 owner(){ case $1 in
   [1-9]|1[0-7]|4[1-6]|11[4-9]|1[2-4][0-9]|15[0-4]|17[4-9]|1[89][0-9]|20[0-7]|20[9]|21[0-9]|2[2-4][0-9]|25[0-7]|29[4-9]|3[0-8][0-9]) echo directional_surface_cell_producer_tests;;
   1[89]|2[0-8]|15[5-9]|16[0-9]|17[0-3]) echo directional_surface_cell_authority_kernel_tests;;
-  29|3[0-9]|4[7-9]|[5-9][0-9]|10[0-4]|113|208|25[8-9]|260) echo directional_surface_cell_completion_tests;;
+  29|3[0-9]|40|4[7-9]|[5-9][0-9]|10[0-4]|113|208|25[8-9]|260) echo directional_surface_cell_completion_tests;;
   10[5-9]|11[0-2]|26[1-9]|27[0-9]|28[0-9]|29[0-3]) echo directional_surface_cell_validation_tests;;
   *) echo invalid-owner >&2; return 2;; esac; }
-printf 'ordinal\tdisposition\texit_code\tbinary\tidentity\tlog_path\tlog_sha256\tterminal_status\n' > "$out/results.tsv"
-: > "$out/fragment-evidence.raw.txt"
-pass=0
+helper="$GITHUB_WORKSPACE/.agents/Directional/turn-payloads/m3-cp4c3-tb18-resume39.sh"
+test -f "$helper"
+bash "$helper" "$root" "$out" "$s383"
+pass=39
 red=0
-apass=0
+apass=39
 ared=0
 first=0
 n=0
@@ -145,6 +146,7 @@ semantic_stop='none'
 while IFS= read -r id; do
   n=$((n+1))
   test -n "$id"
+  ((n<=39)) && continue
   bin=$(owner "$n")
   rel="ordinals/$(printf '%03d' "$n").log"
   log="$out/$rel"
