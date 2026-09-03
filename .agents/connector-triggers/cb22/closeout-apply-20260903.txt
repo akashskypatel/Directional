@@ -1,4 +1,0 @@
-purpose=apply corrected M3-CP4c-3-CB22 documentation closeout and TB20 plan
-base_sha=6b470979132dabb9db679933968c9a4365f6717e
-patch_sha256=3e72aae508b6b1dcdd52f8bdd89182729cf508a4270139d05953f7e475550803
-retry=1
