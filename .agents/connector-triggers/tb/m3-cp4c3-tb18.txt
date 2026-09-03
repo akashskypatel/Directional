@@ -1,0 +1,5 @@
+Purpose: execute M3-CP4c-3-TB18 artifact-only on immutable CB20 compile artifact / selector 383.
+Package artifact: 9903305256
+Semantic source: 57635e87306a416daabb8321e1f36fa9c788d208
+Runtime: full selector 383 from ordinal 1, one identity per fresh process; no benchmark/build/repair/discovery/mutation.
+Retry: 0
