@@ -4,91 +4,14 @@
 
 **Current state (2026-09-03).** `M3-CP4c-0`, `M3-CP4c-0b`, `M3-CP4c-1`, and **`M3-CP4c-2` are CLOSED / ACCEPTED** at selector **365**. CP4c-3 remains **OPEN**. **TB15 is current runtime authority** on immutable package **85** / selector **381**: **372 PASS / 9 RED**, accepted **365/365**, first red ordinal 366 still `EdgeTraceSecondaryRankInvalid` at edge `25-31` / face `(25,30,31)` = mesh row 41, typed **`SourceVertexFallbackUnbound`**, with source vertex 35, arc 19 / trace 5 / Reverse / `[0,5)`, outgoing carrier `25-31`, contact index 2 and a 3-ray untruncated census. **`M3-CP4c-3-TB15-REV` proved the incidence VALID and the binding datum wrong:** `proposal.nextIncomingCarrier` is assigned only on the edge-exit continuation and the `VertexHit` branch returns without it, so segment 4 - not the trace's first - entered row 41 through a **corner**; the fallback must therefore bind the segment's own **far-end support in this face** (entry side for Reverse, exit side for Forward, via `FieldBoundaryPoint::source_support()`) rather than `trace.sourceVertex`, which is trace-global provenance naming a port-emitting singularity elsewhere. A **second latent defect** is proved by derivation: the fallback ranks corners absolutely (`1 + 2*corner`) while the carrier branch ranks relative to the contact edge, and the correct value `1 + 2*((corner + 2 - contactIndex) mod 3)` coincides **only at `contactIndex = 2`** - this failure's value. Unlike the last three successors the correction is **not accepted-safe by construction**, so ordinals 1-365 re-passing is the load-bearing discriminator. Package 85's diagnostic-name metadata mismatch is **inert and proved so** (the contract-named identity occurs zero times in `tests/` and neither name is in selector 381): `M3-CP4c3-TB15-PKG-01`, no rerun, no repair. `M3-CP4c3-TB14-CAND-01` CLOSES; new `M3-CP4c3-TB15-CAND-01` is ACTIVE; the v47 five-ray conjunction remains owed, so `M3-CP4c3-TB11-CAND-01` stays OPEN. Exact next is **`M3-CP4c-3-CB18`** - Code + Build, **product correction**, under **BP0-BP9**. Accepted authority **365/365**; stable accounting **44 / 14 / 30**, debt **5**, packages **82**.
 
-These CP4c files remain separate because current or future work depends on their exact bytes or adjudication:
+These CP4c authorities remain separate because current or future work still depends on them:
 
-- `Architecture_M3_CP4c2_DEFN_Frozen_Definitions.md` — binding base contract plus Amendment 12.
-- `Architecture_M3_CP4c2_DEFN_R1_Frozen_Definitions.md` — Amendment 13 and still-binding §§4/5/7/9; read with R2.
-- `Architecture_M3_CP4c2_DEFN_R2_Frozen_Definitions.md` — Amendment 14, completeness theorem, AF5 and AG0–AG9.
-- `Architecture_M3_CP4c2_Required_Green_Selector_357.txt` — superseded selector retained as frozen lineage authority.
-- `Architecture_M3_CP4c2_Required_Green_Selector_358.txt` — withdrawn selector retained as frozen lineage authority.
-- `Architecture_M3_CP4c2_Required_Green_Selector_361.txt` — frozen prefix authority.
-- `Architecture_M3_CP4c2_Required_Green_Selector_365.txt` — accepted CP4c-2 gate authority.
-- `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md` — CP4c-2 closure/adjudication authority and current carry-forward source for CP4c-3.
-- `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.md` — current CP4c-3 definitions, review decisions, and AK0–AK9 plan.
-- `Architecture_M3_CP4c3_Required_Green_Selector_367.txt` — retained frozen CP4c-3 prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_370.txt` — retained AL7 prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_373.txt` — **current frozen CP4c-3 gate**.
-- `Architecture_M3_CP4c3_Required_Green_Selector_374.txt` — **current frozen CP4c-3 gate**; 373 is its byte-identical prefix.
-- `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` — **Amendments 22 and 23**, AX0–AX9 and the AY0–AY9 measures.
-- `Architecture_M3_CP4c3_CB9_Code_Build_Report.md` — package-76 compile/package authority and the AY8 static audit.
-- `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md` — prior runtime authority for the source-vertex-11 seed stop.
-- `Architecture_M3_CP4c3_TB7_Independent_Review_Record.md` — AZ0–AZ9 cause/corrective authority that governed `M3-CP4c-3-CB10`.
-- `Architecture_M3_CP4c3_CB10_Code_Build_Report.md` — final CB10 implementation, compile and immutable package-78 authority.
-- `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB8 execution authority for package 78.
-- `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md` — **prior runtime authority**: 365 green, first red ordinal 366 at terminal ownership, complete remainder and diagnostic 375.
-- `Architecture_M3_CP4c3_TB8_Independent_Review_Plan.md` - discharged review scope, BA0-BA7.
-- `Architecture_M3_CP4c3_TB8_Independent_Review_Record.md` - completed BA0-BA7 adjudication and the BB0-BB9 scope that governed CB11.
-- `Architecture_M3_CP4c3_CB11_Code_Build_Report.md` - prior package-79 diagnostic build authority.
-- `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md` - consumed TB9 execution authority for package 79 / selector 376.
-- `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md` - prior runtime authority: terminal-ownership site discrimination.
-- `Architecture_M3_CP4c3_TB9_Independent_Review_Plan.md` - discharged review scope, BC0-BC7.
-- `Architecture_M3_CP4c3_TB9_Independent_Review_Record.md` - BD0-BD9 product-correction authority discharged by CB12.
-- `Architecture_M3_CP4c3_CB12_Code_Build_Report.md` - prior build/package authority: source `a3b6f1a…`, package 80, selector 377.
-- `Architecture_M3_CP4c3_CB13_Code_Build_Report.md` — prior build/package authority: source `30701738…`, package 81, selector 377, BF0–BF9 diagnostic discharge.
-- `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB11 execution authority for immutable package 81.
-- `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md` - consumed TB10 execution authority: package 80 / selector 377 from ordinal 1.
-- `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md` - historical measured runtime authority: 365 green, moved first red 366 at surface-cut-graph `RotationSystemInconsistent`, complete 377-process remainder, immutable postflight.
-- `Architecture_M3_CP4c3_TB10_Independent_Review_Plan.md` - discharged review scope, BE0-BE7.
-- `Architecture_M3_CP4c3_Required_Green_Selector_375.txt` — frozen append-only diagnostic selector; selector 374 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_376.txt` — frozen append-only diagnostic selector; selector 375 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_377.txt` — frozen prefix authority; selector 376 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_378.txt` — frozen append-only prefix; selector 377 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_379.txt` — frozen prefix authority; selector 378 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_380.txt` — frozen prefix authority; selector 379 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_Required_Green_Selector_381.txt` — **current append-only execution selector**; selector 380 is its unchanged byte prefix.
-- `Architecture_M3_CP4c3_CB14_Code_Build_Report.md` — prior build/package authority: source `71ece3ca…`, immutable package 82, selector 378 diagnostics.
-- `Architecture_M3_CP4c3_CB15_Code_Build_Report.md` — prior build/package authority: source `a2fd98ea…`, immutable package 83, selector 379 exact vertex-locus rank correction.
-- `Architecture_M3_CP4c3_CB16_Code_Build_Report.md` — prior build/package authority: source `6808c090…`, immutable package 84, selector 380 exact vertex-exit correction and typed split.
-- `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md` — consumed frozen package-84 execution/BL9 contract.
-- `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md` — prior runtime authority: complete user-authorized replacement, corrected 371/9, accepted 365/365, first red edge-locus secondary rank, immutable postflight.
-- `Architecture_M3_CP4c3_TB14_Independent_Review_Plan.md` — discharged BM0-BM8 semantic edge-rank adjudication scope.
-- `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**: package 85 / selector 381, 372/9, accepted 365/365, exact `SourceVertexFallbackUnbound` incidence and immutable postflight.
-- `Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md` — **binding next review authority**, BO0-BO8 semantic fallback adjudication.
-- `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB13 execution authority for package 83 / selector 379.
-- `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md` — prior runtime authority: v10 `VertexTracePortOrdinalInvalid` frontier superseded by TB14 runtime.
-- `Architecture_M3_CP4c3_TB13_Independent_Review_Plan.md` — discharged BK0-BK8 review scope.
-- `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB12 execution authority for package 82 / selector 378.
-- `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md` — prior runtime authority: 365/365 accepted prefix, distinct-ray same-sector first red at ordinal 366, complete 378-process remainder and immutable postflight.
-- `Architecture_M3_CP4c3_TB12_Independent_Review_Plan.md` — discharged BI0-BI7 review scope.
-- `Architecture_M3_CP4c3_CB2_Code_Build_Report.md` — historical compile/package evidence.
-- `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md` — historical TB2 execution/retry authority.
-- `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md` — historical TB2 blocker/postflight authority.
-- `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md` — historical phase-1 runtime authority.
-- `Architecture_M3_CP4c3_TB1_Independent_Review_Record.md` — TB1 adjudication authority and the **AL0–AL9** measures; AL3/AL4 still govern the prescribed sphere.
-- `Architecture_M3_CP4c3_DEFN_R1_Frozen_Definitions.md` — **Amendment 15** and the AM0–AM9 measures.
-- `Architecture_M3_CP4c3_TB2_Independent_Review_Record.md` — Amendment 16 and the AN0–AN9 measures that governed `M3-CP4c-3-CB3`.
-- `Architecture_M3_CP4c3_CB3_Code_Build_Report.md` — compile authority for Amendment 16/P2 and the frozen semantic bytes inherited by package 72.
-- `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md` — authoritative pre-runtime package-71 blocker evidence (`0/373`).
-- `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md` — current ORCH-01 root-cause adjudication and AO0–AO5 package-only correction authority.
-- `Architecture_M3_CP4c3_TB3_R1_Artifact_Only_Test_Benchmark_Report.md` — historical valid semantic runtime authority for package 72; 365/365 accepted prefix green and first red at ordinal 366.
-- `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Plan.md` — the frozen AR0–AR7 scope that governed the TB3-R1 review.
-- `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md` — **historical review authority: the reconstructed transit invariant, the M1/M2/M3 enumeration, Amendment 16's widened scope, and the AP0–AP9 measures that govern `M3-CP4c-3-CB5`.**
-- `Architecture_M3_CP4c3_CB5_Code_Build_Report.md` — compile/package authority for the typed shared failure-locus surface and immutable package 73.
-- `Architecture_M3_CP4c3_TB4_Artifact_Only_Test_Benchmark_Report.md` — **historical runtime authority**: 365 green, first red at ordinal 366 with the exact two-candidate vertex-30 locus, plus AP6 report-only 367–373 evidence.
-- `Architecture_M3_CP4c3_TB4_Independent_Review_Plan.md` — the frozen AQ0–AQ8 scope that governed the TB4 review.
-- `Architecture_M3_CP4c3_TB4_Independent_Review_Record.md` — **historical review authority: the fixture-derived fan at vertex 30, the partition proof, M4/M5, Amendment 17, and the AS0–AS9 measures that govern `M3-CP4c-3-CB6`.**
-- `Architecture_M3_CP4c3_CB6_Code_Build_Report.md` — compile/package authority for Amendment 17 and immutable package 74.
-- `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Plan.md` — consumed TB5 execution authority, retained because its selector-358 lineage correction is evidence for the authoritative run.
-- `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md` — **historical runtime authority**: 365 green, first red ordinal 366 at the zero-candidate vertex-11 locus, plus AP6 diagnostic classifications.
-- `Architecture_M3_CP4c3_TB5_Independent_Review_Plan.md` — the frozen AT0–AT7 scope that governed the TB5 review.
-- `Architecture_M3_CP4c3_TB5_Independent_Review_Record.md` — **historical review authority: the seed-drop analysis, the exactness finding, the adversarial-review adjudication, Amendments 18-19, and the AU0–AU9 measures that govern `M3-CP4c-3-CB7`.**
-- `Architecture_M3_CP4c3_CB7_Code_Build_Report.md` — compile/package authority for Amendments 18/19, exact transit, diagnostic publication, repaired ordinal-370 witness, and immutable package 75.
-- `Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md` — **historical runtime authority**: 365 green, first red ordinal 366 at vertex 30 with two published faces, plus the complete 367–373 report-only disposition.
-- `Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md` — frozen AV0–AV7 scope for the mandatory next review.
-- `Architecture_M3_CP4c3_TB6_Independent_Review_Record.md` — **historical review authority**: artifact-ID correction, exact vertex-30 cause proof, diagnostic owner, selector-governance adjudication, and AV0–AV7 disposition.
-- `Architecture_M3_CP4c3_CB8_Code_Build_Plan.md` — **historical execution authority**: exact single-datum vertex transit, production audit projection, minimal regression, append-only selector 374, runtime-free GMP build/package.
-- `Architecture_Adversarial_Review_Reevaluation_Production_Lens.md` — **production-lens re-evaluation of the adversarial architecture review: Amendments 20-21, the witness-coverage gap, and the `M4-CP-COND` / `M4-CP-SCALE` / `M5-CP-REG` checkpoints.** Not CP4c-3 scope.
-- `M3_CP4c_Consolidated_Record.md` — this durable historical record.
+- the CP4c-2 and CP4c-3 frozen `DEFN*` contracts and all frozen `Required_Green_Selector_*` lineage files;
+- `Architecture_M3_CP4c2_TB_X2_R10_Independent_Review_Record.md`, which closes CP4c-2 and supplies live CP4c-3 carry-forward authority;
+- `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` and `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`, which are the current runtime and CB18 planning authorities;
+- historical review/plan records still referenced by `DESIGN.md`, `LESSONS.md`, `ROADMAP.md`, `Regression_Root_Cause_Tracker.md`, or by a retained frozen definition/review authority. Their transitive dependency chain remains exact-byte authority and was deliberately excluded from this retirement.
+
+All other superseded CP4c-3 per-turn files that had no live current/future dependency were folded into §§4/6 below and retired from the working tree. Git history remains the exact-byte recovery source for every retired file.
 
 `DESIGN.md` §7.2/§7.2.1 remains architecture authority. Current status, regression accounting, workflow lessons, and orientation context remain in `Future_Chat_Session_Handoff.md`, `TODO.md`, `Regression_Root_Cause_Tracker.md`, `CHANGELOG.md`, `LESSONS.md`, and `ORIENTATION.md`.
 
@@ -110,6 +33,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-3 selector 378 (TB12 execution / diagnostic projection)** | **`86259d919b387ba4a610b42c4dd1a190ae340f693437b5a769cd50ca396440b8`** |
 | **CP4c-3 selector 379 (TB13 execution / frozen prefix)** | **`ef51298f32dd095b469e97e3a86daf2727282bdd283c1e6b777a5705842594b7`** |
 | **CP4c-3 selector 380 (TB14 execution)** | **`1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`** |
+| **CP4c-3 selector 381 (TB15 execution / current frozen selector)** | **`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`** |
 
 ## 2. Checkpoint closure record
 
@@ -119,7 +43,7 @@ The retained selector lineage is intentional. DEFN-R2 AG0 requires the supersede
 | **CP4c-0b** | exact crash-on-contact termination / arrival | **353/353 CLOSED** |
 | **CP4c-1** | observability, diagnosability, non-vacuous terminal events | **355/355 CLOSED** |
 | **CP4c-2** | closed/higher-genus region authority, cut graph, cellularity | **365/365 CLOSED** |
-| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB14 is current valid runtime authority on package 84 / selector 380, corrected 371 PASS / 9 RED, first red 366 `EdgeTraceSecondaryRankInvalid` at edge 25-31 / face `(25,30,31)`. CB16/package84 is current build authority. Exact next is independent `M3-CP4c-3-TB14-REV` under BM0-BM8.** |
+| **CP4c-3** | mechanical witness / field-aligned continuation plus inherited CP4c-2 debts | **OPEN; accepted prefix remains 365/365. TB15 is current runtime authority on package 85 / selector 381 with 372 PASS / 9 RED and first red 366 `EdgeTraceSecondaryRankInvalid -> SourceVertexFallbackUnbound` at edge 25-31 / face `(25,30,31)`. TB15-REV is complete; exact next is product-correction `M3-CP4c-3-CB18` under BP0-BP9.** |
 
 ### 2.1 CP4c-0
 
@@ -218,17 +142,21 @@ This section is navigation only; `Architecture_M3_CP4c3_DEFN_Frozen_Definitions.
 `Architecture_M3_CP4c3_DEFN_R2_Frozen_Definitions.md` remain normative. Current measured runtime authority is
 `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md`; current build/package authority is
 
+### `M3-CP4c-3-TB15` — current measured runtime boundary
+
+Artifact-only TB15 consumed immutable package **85** / semantic source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` / selector **381** with no rebuild or repair. Run/job `33700074471 / 100477303760` executed all 381 identities one-per-fresh-process for **372 PASS / 9 RED**; accepted ordinals **1-365 remain 365/365 PASS** and first red **366** remains `RotationSystemInconsistent -> EdgeTraceSecondaryRankInvalid` at source edge `25-31` / face `(25,30,31)`, attempt 0 / zero cut edges. CB17's typed instrumentation identifies the exact branch as **`SourceVertexFallbackUnbound`** with source vertex 35, arc 19 / trace 5 / Reverse / `[0,5)`, outgoing carrier `25-31`, contact index 2, no incoming/other carrier, and a complete three-ray census. Result/log artifacts are `9873244271` / `9873244582`; immutable package postflight is unchanged. TB15-REV then proved the incidence valid, the fallback datum wrong, and the absolute corner-rank latent defect; it froze CB18 BP0-BP9. Stable accounting remains 44 / 14 / 30, debt 5, packages 82.
+
 ### `M3-CP4c-3-CB17` — current build/package boundary
 
 CB17 final source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` adds diagnostic-only typed exits for `edge_locus_secondary_rank`, preserves the failing incidence, and publishes a bounded production edge-locus ray census without changing rank/topology semantics. Selector **381** is selector 380 plus one compiled witness, SHA-256 `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`. Authoritative eight-target GMP/GMPXX compile `33697315308 / 100468915978` is green. Immutable package **85** artifact `9872426500` has Actions digest `6c0e960b3f689bae2d2ef7f79c32709f63d1fefa87ecefdf6351427ac91ea0e2`, inner tar `98f5940254beaa50ec200157a3cbe6ab0ec15d8a5117006679d42684968aad08`, packaged source `cb078005cef48d97401ddfb843a4276f92c53086b0827a915b01344dc665c4a9`. No runtime executed. Packages advance to 82; accepted authority remains 365/365. Exact next: artifact-only TB15 on selector 381.
 
-### `M3-CP4c-3-TB14` — current measured runtime boundary
+### `M3-CP4c-3-TB14` — prior measured runtime boundary
 
 Artifact-only TB14 consumed immutable package **84** / selector **380** from source `6808c090f2dd229a48550d758f459bfd156da4b6`. After a local-host partial attempt was classified infrastructure-only, the user authorized a complete replacement on GitHub Actions. Run/job `33689875040 / 100445977571` completed all 380 fresh selector processes plus the retained non-gating diagnostic with no repository timeout. Result/log artifacts are `9869697113` (`a96d8ff82b467c0cfd89c1437fc0a146461ab18d4850e04515acc562070b975a`) / `9869697543` (`5e961520a3844d5b01ab77d4b85b5117c4124bfa03d4993812270e4563deb5f2`). A temporary exact-line `[ OK ]` parser mislabeled passing rows but preserved raw exit codes/logs; corrected immutable evidence is **371 PASS / 9 RED**, accepted 1-365 **365/365 PASS**, first red 366. Corrected ledger SHA-256 is `0b42866471ce0ad5939ab2d3c2d5c82f4efebb93c0a56ca7a60e295fad07397b`; no semantic rerun was used to repair reporting.
 
 Ordinal 366 clears TB13's vertex-10 `VertexTracePortOrdinalInvalid` and now fails at source edge `25-31` / face `(25,30,31)` with `EdgeTraceSecondaryRankInvalid`, attempt 0 / zero cut edges / 450 candidates. Selector 379 PASSes; selector 380 REDs only at its final production assertion on the same new frontier. The old v47 collision remains absent, but complete attempt-0 rotation does not publish, so the five-ray v47/distinct-rank conjunction remains open. 368/369/370/374 retain prior owners; 371/372 inherit the new mechanical upstream stop. Package postflight is immutable. Stable accounting remains 44/14/30, debt 5, packages 81. Exact next: `M3-CP4c-3-TB14-REV` BM0-BM8.
 
-### `M3-CP4c-3-CB16` — current build/package boundary
+### `M3-CP4c-3-CB16` — prior build/package boundary
 
 CB16 final source `6808c090f2dd229a48550d758f459bfd156da4b6` adds the exact source-vertex corner fallback last in the Forward vertex-ray second-point chain and separates secondary-parameter failure from legacy port/ordinal failure. Eight-target GMP/GMPXX compile `33682499470 / 100422188581` is green. Immutable package **84** artifact `9867334959` has Actions SHA-256 `67f1ea7012f3b0e06a1dd60e87d40c7e593e5260703cab425c9021cb0c2ebd55`; inner tar `8385a994ebff3e9d3583f95f769e107a73dcec892c7d9073502103a981a40eff`; selector 380 `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`. TB14 now provides its runtime disposition; accepted authority remains 365/365.
 
@@ -255,7 +183,7 @@ postflight is immutable. The simplest duplicate-incidence identity case is falsi
 semantics versus invalid/stale provenance or witness/precondition remains semantically unadjudicated. Exact next is
 `M3-CP4c-3-TB12-REV` under BI0-BI7; accepted authority 365/365, accounting 44/14/30, debt 5, packages 79.
 
-### `M3-CP4c-3-CB14` — current build/package boundary
+### `M3-CP4c-3-CB14` — prior build/package boundary
 
 CB14 executed TB11-REV **BH0–BH9** as a **diagnostic-only** Code + Build turn. Final source
 `71ece3ca184e90858d9222fb014b37c16d292294` retains both colliding rotation rays with typed key operands,
@@ -342,7 +270,7 @@ No acceptance changes in CB11: authority stays **365/365**, CP4c-3 OPEN, stable 
 semantic packages **76**. `M3-CP4c3-TB8-REV-CAND-01` closes at implementation/build scope;
 `M3-CP4c3-TB8-CAND-01` remains active until TB9 names the firing site.
 
-### `M3-CP4c-3-TB9` — current runtime boundary
+### `M3-CP4c-3-TB9` — prior runtime boundary
 
 TB9 consumed immutable package **79** in run/job `33575920177 / 100079784804`. Result artifact `9826689980`
 (`abea3172c6515bbf5b6fdede5abe96ae6086724299d014201ce3ff020016b68d`) and log artifact `9826690247`
@@ -754,7 +682,60 @@ CB1 is:
 
 The CB1 report's exact bytes remain recoverable from Git history and no current/future authority depends on the file.
 
-### 6.4 Durable ORIENTATION authority
+### 6.4 Retired by the 2026-09-03 user-authorized consolidation
+
+The user explicitly requested consolidation of every `*_M3_CP4c_*` historical document that no longer relates to current or future work. A dependency-closure audit started from the current/frozen CP4c definitions and selectors plus `Future_Chat_Session_Handoff.md`, `TODO.md`, `ORIENTATION.md`, `DESIGN.md`, `REORIENTATION_PLAN.md`, `LESSONS.md`, `ROADMAP.md`, and `Regression_Root_Cause_Tracker.md`, then followed references transitively through retained CP4c authorities. **Only files outside that live dependency closure were retired.**
+
+Retired Code + Build evidence/plans (15):
+  - `Architecture_M3_CP4c3_CB10_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB11_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB12_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB13_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB14_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB15_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB16_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB2_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB3_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB5_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB6_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB7_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB8_Code_Build_Report.md`
+  - `Architecture_M3_CP4c3_CB8_Independent_Review_Plan.md`
+  - `Architecture_M3_CP4c3_CB9_Code_Build_Report.md`
+
+Retired Test + Benchmark / review evidence (28):
+  - `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB10_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB11_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB12_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB13_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB14_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB1_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB2_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB3_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB3_Independent_Review_Record.md`
+  - `Architecture_M3_CP4c3_TB3_R1_Independent_Review_Record.md`
+  - `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB5_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB6_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB6_Independent_Review_Plan.md`
+  - `Architecture_M3_CP4c3_TB6_Independent_Review_Record.md`
+  - `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB7_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB8_Artifact_Only_Test_Benchmark_Report.md`
+  - `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Plan.md`
+  - `Architecture_M3_CP4c3_TB9_Artifact_Only_Test_Benchmark_Report.md`
+
+Their durable semantic, runtime, build/package, reversal, and selector-lineage facts are already deduplicated in §§4-5 and the durable `CHANGELOG.md`; exact historical bytes remain recoverable from Git history. No frozen definition, selector, current TB15 runtime authority, current TB15 review record, CP4c-2 closure authority, or transitive dependency of a live durable document was removed.
+
+### 6.5 Durable ORIENTATION authority
 
 `ORIENTATION.md` is **DURABLE** and is not historical CP4c debris. Every REVIEW turn must update its currency line, current position, witness table when changed, open problems in priority order, and recurring-defect section when a new pattern or instance is found. It must not be deleted, renamed away, or collapsed into another document without explicit user authorization.
 
@@ -765,10 +746,11 @@ After the durable start-of-turn checklist, load:
 1. `ORIENTATION.md` — read first and update during REVIEW.
 2. `Future_Chat_Session_Handoff.md`.
 3. `TODO.md`.
-4. `Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md` — **frozen BO0-BO8 next-turn authority**.
+4. `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` §9 — **frozen CB18 BP0-BP9 authority**.
 5. `Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` — current package-85 runtime authority and exact typed incidence.
-6. `Regression_Root_Cause_Tracker.md`; this consolidated record only when historical lineage is needed.
-7. Source at semantic commit `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` as BO1-BO5 require. Do not execute it.
+6. `M3_CP4c_Consolidated_Record.md` §4 — retained CB17/package-85 build/package facts; the superseded standalone CB17 report is no longer required.
+7. `Regression_Root_Cause_Tracker.md`; use this consolidated record for historical lineage.
+8. Source at semantic commit `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` as BP1-BP6 require. CB18 is compile-only after the bounded correction; runtime waits for TB16.
 
 **Exact next:** **`M3-CP4c-3-CB18` - Code + Build, PRODUCT CORRECTION.** Follow section 9 **BP0-BP9** of
 `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`. Bind `edge_locus_secondary_rank`'s fallback to the

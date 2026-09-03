@@ -183,7 +183,7 @@ Minimum successor context after the mandatory durable policy/start checklist:
 0. `.agents/Directional/ORIENTATION.md` — read first.
 1. `.agents/Directional/Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` — **frozen CB18 scope, §9 BP0–BP9**.
 2. `.agents/Directional/Architecture_M3_CP4c3_TB15_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB17_Code_Build_Report.md` — package-85 implementation authority.
+3. `.agents/Directional/M3_CP4c_Consolidated_Record.md` §4 (`M3-CP4c-3-CB17`) — retained package-85 implementation/compile authority; the superseded standalone CB17 report is no longer required.
 4. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
 5. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
    `M3_CP4c_Consolidated_Record.md`.

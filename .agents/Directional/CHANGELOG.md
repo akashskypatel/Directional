@@ -1,3 +1,7 @@
+## 2026-09-03 — M3-CP4c historical records consolidated before CB18
+
+User-authorized documentation maintenance consolidated superseded `*_M3_CP4c_*` per-turn records into `M3_CP4c_Consolidated_Record.md` before the next implementation turn. A live-dependency closure was computed from frozen definitions/selectors and durable current/future authorities; **43 unreferenced historical files** were retired, while every file referenced directly or transitively by current/frozen authority was retained. The consolidated record now carries current TB15/package85 runtime state, the completed TB15-REV adjudication, exact CB18 BP0-BP9 resume authority, and the retired-file census. `TODO.md` and `Future_Chat_Session_Handoff.md` stale pointers were corrected to `M3-CP4c-3-CB18`. No product, test, fixture, selector, build, package, benchmark, or runtime behavior changed.
+
 ## 2026-09-03 — `M3-CP4c-3-TB15-REV`: edge-locus binding datum proved wrong; `M3-CP4c-3-CB18` frozen
 
 Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md`, measures **BO0–BO8**.
