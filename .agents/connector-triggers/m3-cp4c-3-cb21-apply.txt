@@ -1,4 +1,4 @@
-M3-CP4c-3-CB21 compile-fix patch apply
-file_id=1KnfdRCjVz71KbCLcBBLrTjj0HsIGOSLE
-patch_sha256=27c2ae25721bc553ac8615fe33d2af7a9da6f0a847579984b3f6f48751600bc8
-base_sha=b76d878f4ca689f72db9cfcd329965402151c89d
+M3-CP4c-3-CB21 closeout documentation patch apply
+base_sha=9d864ec802a79d9ebead2a5b3fdcc91940410841
+patch_sha256=326df4d64c796a96bc64b609972a6dfd06c6e2e2157178f683af935b6eb345e8
+file_id=1SF2MQgWORT0or4cEaTUXdWjP2AiV4ne1
