@@ -1,0 +1,41 @@
+name: Agent CB20 Drive Patch Apply 20260903 0936
+
+on:
+  push:
+    paths:
+      - ".agents/connector-triggers/google-drive-patch/cb20-apply-20260903-0936.txt"
+
+permissions:
+  contents: write
+  actions: read
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb20-drive-patch-apply-20260903-0936.yml
+      source_ref: ${{ github.sha }}
+      retention_days: 1
+    secrets: inherit
+
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: cb20-drive-patch
+    secrets: inherit
+
+  apply:
+    needs: validate
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1FDirsW2cGZ97UL4613X1q3vhvNvNBvPa
+      patch_sha256: b0ced166471ef1c814846e9eea6dd487ce9c19fdf2be99d69bc7a11db411b398
+      base_sha: ae30c183c0b876a093cd1bbbd673f8e6cbd52f67
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "M3-CP4c-3-CB20: add fragment mismatch diagnostics"
+      retention_days: 1
+    secrets: inherit
