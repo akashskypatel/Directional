@@ -1,3 +1,0 @@
-Purpose: source snapshot for M3_CP4c historical-document consolidation and next-turn continuation.
-Frozen semantic source: 6b6c0780fc8524b63c61980e740b56c9a6738686
-Retry: 0
