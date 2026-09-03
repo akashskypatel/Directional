@@ -101,105 +101,97 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB19-EXEC` — EXACT NEXT / artifact-only Test + Benchmark
+## Mandatory next turn — `M3-CP4c-3-TB19-REV` — EXACT NEXT / independent REVIEW + PLAN
 
-`M3-CP4c-3-CB21` is **COMPLETE / COMPILE GREEN / RUNTIME-FREE**. Record:
-`Architecture_M3_CP4c3_CB21_Code_Build_Report.md`.
+`M3-CP4c-3-TB19-EXEC` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE**. Record:
+`Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md`.
 
-### Immutable CB21 authority for TB19
+### Immutable TB19 runtime authority
 
 - semantic source: **`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`**;
 - compile run/job: **`33794307778 / 100778238374`**;
-- immutable result artifact: **`9908695433`**;
-- artifact/downloaded ZIP SHA-256:
+- immutable compile result artifact: **`9908695433`**, ZIP SHA-256
   **`efb65c06cc6d73d233ee271a31fc82705d2575da313fb7f18b389a5196441fc5`**;
-- packaged source archive SHA-256:
-  **`8b774500559e5cc9cd7afece39a68add2065a9812a0d15a40f39cf7f9aafd8e7`**;
-- compile log artifact: **`9908695835`**, SHA-256
-  **`f334db6b4bf254c3e2eb84f0a65cb0f6a21fc56285b3677a037cb20881b8ad3f`**;
-- selector **384**: **384 identities**, SHA-256
-  **`c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`**;
-- selector 383 remains byte-frozen at
-  `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c` and is an exact prefix of 384;
-- sole selector append:
-  `GlobalTopologyPlan.FragmentOwnerDeficitPublishesCorrectionEvidenceThroughProductionPath`;
-- build boundary: eight standard targets green, GMP/GMPXX authoritative, 28-entry manifest, clean source status,
-  **`runtimeExecution=false`**.
+- selector **384**: SHA-256
+  **`c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`**, selector 383 exact prefix;
+- TB19 run/job: **`33798040003 / 100790444711`**;
+- result/log artifacts: **`9910078670 / 9910079341`**;
+- exact 384-row ledger SHA-256:
+  **`e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`**;
+- pre/post package byte+mode census: **IDENTICAL**, SHA-256
+  **`c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d`**;
+- selector result: **376 PASS / 8 RED**; accepted ordinals 1–365 **365/365 PASS**;
+- reds: **366/367/368/369/370/371/372/374**.
 
-The first compile-only attempt failed before runtime because three local helper types were unqualified and a new
-diagnostic row was default-constructed despite a non-default-constructible face key. The one-file compile repair
-changed no semantic predicate or evidence contract and produced the final source above.
+No configure, compile, relink, package repair, benchmark, generated discovery, or source/test/fixture/selector mutation
+ran during TB19.
 
-### Runtime authority is still TB18
+### What TB19 proved
 
-CB21 executed no Directional runtime. Until TB19 completes, immutable runtime authority remains:
+CB21's one-sided fragment-owner correction reached production runtime exactly at its intended boundary:
 
-- source `57635e87306a416daabb8321e1f36fa9c788d208`;
-- selector 383;
-- TB18 run/job `33785382790 / 100748821924`;
-- exact ledger `a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`;
-- **375 PASS / 8 RED**; accepted ordinals 1–365 **365/365 PASS**;
-- reds 366/367/368/369/370/371/372/374.
+- 366/367/371/372 all move past `TraceCutFaceFragmentCountMismatch`;
+- ordinal 384 `GlobalTopologyPlan.FragmentOwnerDeficitPublishesCorrectionEvidenceThroughProductionPath` passes;
+- face `(0,1,102)` retains `localFragmentCount=2`, owner/expected/deficit `1/2/1`, one shared-owner chord
+  `trace=1 / arc=15 / segment=4`, `forwardOrbit=0 / reverseOrbit=0`, and no interior chord crossing;
+- the production census is untruncated at 70 face rows, 26 arc rows, 12 trace rows; arc 15 has
+  `sharesOrbit=true`, trace 1 has `terminalSlit=false`, and total/exterior/non-exterior orbit counts are `6/0/6`;
+- 368/369/370/374 retain the same terminal semantics as TB18.
+
+The new common terminal frontier for 366/367/371/372 is
+**`UncutFaceComponentOrbitSeedNotUnique` at source face `(0,1,2)`**. The retained envelope proves only that the
+affected unlabeled component's neighboring orbit-seed set does not have cardinality one. It does **not** retain
+component seed cardinality or seed rows, so zero seeds versus multiple seeds is not yet adjudicated. Do not infer
+that cardinality from the global six-orbit census.
 
 Accepted authority remains **365/365**. Stable accounting remains **44 events / 14 categories / 30 recurrences**;
 produced-witness debt **5**; semantic M3 package count **85**. CP4c-3 remains **OPEN**.
 
-### What CB21 changed
+### Review-owned candidates
 
-The only semantic relaxation is in the directly-cut-face validation loop:
-`found->second.size() != expected` became **`found->second.size() > expected`**. High-side owner overcount remains
-fatal. Low-side deficits are now observational and carry bounded typed evidence: local fragment count, owner count,
-expected count, deficit, chord-crossing state, shared-owner chord incidences, per-arc shared-orbit census,
-per-trace terminal-slit census, and global total/exterior/non-exterior orbit counts. No unrelated sphere,
-saturation, ordinal-370, folded-cone, vertex-30, finalize/contact, face-walk, rotation-system, exterior-filter, or
-trace-piece semantics were authorized or changed.
+- `M3-CP4c3-TB19-CAND-01` — **ACTIVE / GATING / REVIEW-OWNED / NON-STABLE**: the new component-seed frontier;
+  zero-vs-many remains unobserved.
+- `M3-CP4c3-TB18-REV-CAND-01` — **ACTIVE / EVIDENCE / REVIEW-OWNED**: TB19's 70 retained local arrangements are
+  all evaluated and non-crossing, but one witness does not establish a universal theorem.
+- `M3-CP4c3-TB10-REV-CAND-01` — **ACTIVE / TEST-COUPLING / DEFERRED**: 371/372 consume only atlas assertions but
+  still abort in the shared all-products mechanical fixture.
+- `M3-CP4c3-TB17-CAND-01` — **CLOSED BY TB19**: its fragment-owner low-side runtime condition is discharged.
 
-### TB19 binding execution contract
+### TB19-REV binding contract
 
-Plan: **`Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md`**.
+Plan: **`Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md`**, measures **CR0–CR8**.
 
-TB19 must use only artifact `9908695433`, verify package/manifest/source/GMP/selector authority, record a preflight
-byte+mode census, then execute the **full selector 384 in order, one identity per fresh process**. No configure,
-compile, relink, repair, source/test/fixture/selector/package mutation, generated discovery, or optional diagnostic
-environment enablement is allowed.
+This is independent **REVIEW + PLAN only**. It authorizes no runtime, compile, package, product/test/fixture/selector
+mutation, retry, acceptance attempt, or successor CB inside the review. The review must:
 
-Binding discriminators:
-
-1. **1–365 stay 365/365 PASS**.
-2. **366 must move past `TraceCutFaceFragmentCountMismatch`**. It may still fail later; a later typed stop is valid
-   new frontier evidence.
-3. **367/371/372** must independently move past that same fragment mismatch.
-4. Face `(0,1,102)` must retain the measured low-side evidence: owner 1 / expected 2 / deficit 1, local fragment
-   count 2, one real chord, shared chord `trace=1 / arc=15 / segment=4`, no interior chord crossing.
-5. Publish the CB21 arc/trace/orbit census, including arc 15 shared-orbit state and trace 1 terminal-slit state.
-6. Compare carried surfaces **368/369/370/374** against TB18; report actual movement without forcing an outcome.
-
-Ordinal **384** is executed exactly once. After all identities complete, the package byte+mode census must be
-identical, the exact ledger must arithmetically close, and every observed regression/candidate must be categorized
-in `Regression_Root_Cause_Tracker.md` before the TB turn closes.
-
-If orchestration fails, preserve completed per-identity hashes and resume only the unexecuted suffix after the
-orchestration correction. Do not treat orchestration failure as semantic RED. A valid semantic RED routes to the
-standing independent review step; **do not patch or begin that successor inside TB19**.
+1. re-verify immutable TB19 authority and static-source no-drift;
+2. trace the sole `UncutFaceComponentOrbitSeedNotUnique` emitter and decide whether the `(0,1,2)` component has
+   provably zero seeds, multiple seeds, or still-unobservable cardinality;
+3. compare the historical torus same-code stop without assuming recurrence by error name;
+4. adjudicate the local-fragment non-crossing candidate at the correct proof scope;
+5. decide continued 371/372 fixture coupling;
+6. keep 368/369/370/374 under their existing owners unless evidence proves movement;
+7. reconcile regression accounting, update `ORIENTATION.md`, and perform mandatory REVIEW-turn consolidation;
+8. freeze exactly one smallest justified successor after CR0–CR8 are discharged.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent TEST + BENCHMARK guidance
+- turn-based-coding-agent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
+0. `.agents/Directional/ORIENTATION.md` — read first and update during the REVIEW turn.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state and exact next turn.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md` — **binding execution plan**.
-3. `.agents/Directional/Architecture_M3_CP4c3_CB21_Code_Build_Report.md` — CB21 source/package/selector authority.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` — comparison runtime authority.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md` — **binding CR0–CR8 review plan**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` — preceding review authority.
 5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative CP4c-3 definitions.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — historical lineage only when needed.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — historical lineage and folded-document index.
 
-TB19 source surface is immutable artifact `9908695433`; repository source is context only and must not be used as a
-runtime substitute for packaged bytes.
+Because the exact next turn is REVIEW, `ORIENTATION.md` update and review-turn document consolidation are mandatory
+before that turn closes.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

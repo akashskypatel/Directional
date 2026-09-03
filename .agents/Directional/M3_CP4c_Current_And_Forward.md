@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-03** at `M3-CP4c-3-CB21`.
+Last updated **2026-09-03** at `M3-CP4c-3-TB19-EXEC`.
 
 ---
 
@@ -22,60 +22,59 @@ Last updated **2026-09-03** at `M3-CP4c-3-CB21`.
 | | |
 |---|---|
 | **Accepted authority** | **365 / 365** — selector 365, `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
-| **Current runtime authority** | **`M3-CP4c-3-TB18`** — source `57635e87306a416daabb8321e1f36fa9c788d208`, selector 383, run/job `33785382790 / 100748821924`, **375 PASS / 8 RED** |
-| **Current runtime selector** | **383** — `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c` |
-| **CB21 semantic source** | **`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`** — product correction complete, compile green, runtime-free |
-| **TB19 selector** | **384** — `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`; 383 exact prefix; sole append `GlobalTopologyPlan.FragmentOwnerDeficitPublishesCorrectionEvidenceThroughProductionPath` |
-| **TB19 immutable package** | CB21 run/job `33794307778 / 100778238374`, result artifact `9908695433`, ZIP SHA-256 `efb65c06cc6d73d233ee271a31fc82705d2575da313fb7f18b389a5196441fc5` |
-| **TB18 ledger** | `a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`; reds 366/367/368/369/370/371/372/374 |
+| **Current runtime authority** | **`M3-CP4c-3-TB19`** — source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, selector 384, run/job `33798040003 / 100790444711`, **376 PASS / 8 RED** |
+| **Current runtime selector** | **384** — `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564` |
+| **Immutable package** | compile run/job `33794307778 / 100778238374`, result artifact `9908695433`, ZIP SHA-256 `efb65c06cc6d73d233ee271a31fc82705d2575da313fb7f18b389a5196441fc5` |
+| **TB19 artifacts** | result/log `9910078670 / 9910079341` |
+| **TB19 ledger** | `e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`; reds 366/367/368/369/370/371/372/374 |
+| **Package census** | pre/post identical: `c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d` |
 | **Stable accounting** | **44 events / 14 categories / 30 recurrences** |
 | **Produced-witness debt** | **5** |
 | **Semantic M3 package count** | **85** |
 
 ---
 
-## 2. CB21 correction is built; runtime credit is pending
+## 2. What TB19 proved
 
-TB18 established that the fragment-owner equality was unsound for legitimate shared global ownership. CB21 has
-implemented the authorized correction:
+CB21's one-sided fragment-owner correction is now runtime evidence rather than compile evidence:
 
-- the only semantic relaxation is `ownerCount != expected` → **`ownerCount > expected`**;
-- the high-side mismatch remains fatal with the CB20 failure envelope unchanged;
-- a low-side owner deficit is retained as typed evidence and no longer fails the validation site;
-- exact local triangle-chord arrangement evidence publishes local fragment count and interior chord crossings;
-- bounded per-arc shared-orbit, per-trace terminal-slit, and global orbit census evidence is published through the
-  production path;
-- selector 384 appends exactly one production-path contract to frozen selector 383.
+- accepted ordinals 1–365 remain **365/365 PASS**;
+- ordinals **366/367/371/372** all clear `TraceCutFaceFragmentCountMismatch`;
+- ordinal **384** `GlobalTopologyPlan.FragmentOwnerDeficitPublishesCorrectionEvidenceThroughProductionPath` passes;
+- face `(0,1,102)` retains owner/expected/deficit `1/2/1`, local fragment count 2, one non-crossing shared chord
+  trace 1 / arc 15 / segment 4 / forward+reverse orbit `0/0`;
+- production census is untruncated: 70 face rows, 26 arc rows, 12 trace rows; arc 15 `sharesOrbit=true`, trace 1
+  `terminalSlit=false`, total/exterior/non-exterior orbit counts `6/0/6`;
+- 368/369/370/374 retain the same terminal semantics as TB18.
 
-The first compile exposed two local C++ construction/name-qualification defects and executed no runtime. The
-surgical correction produced final semantic source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`. Authoritative compile-only
-run/job `33794307778 / 100778238374` then built all eight standard targets green with GMP/GMPXX, clean source state,
-28-entry package manifest, and `runtimeExecution=false`.
+The later mechanical frontier is now
+**`UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`**, reached by 366/367/371/372. The emitter rejects
+an unlabeled face component unless the set of neighboring orbit seeds has exactly one element. TB19 retains the
+affected face but not that component's seed count or seed rows, so **zero seeds versus multiple seeds is not yet
+adjudicated**. Do not infer it from the global six-orbit census.
 
-**Nothing in CB21 is accepted runtime behavior yet.** TB18 remains the current runtime authority until TB19-EXEC
-consumes the immutable CB21 package.
+The full selector therefore remains red at **376 PASS / 8 RED**. CP4c-3 does not close.
 
 ---
 
-## 3. Exact next turn — `M3-CP4c-3-TB19-EXEC`
+## 3. Exact next turn — `M3-CP4c-3-TB19-REV`
 
-Binding plan: `Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md`.
+Binding plan: `Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md`.
 
-TB19 must execute selector **384** from immutable artifact **`9908695433`**, one identity per fresh process, with
-no configure/compile/link/repair/source/test/fixture/selector/package mutation. Mandatory discriminators:
+This is **independent REVIEW + PLAN only**. No runtime, compile, package, product/test/fixture/selector mutation,
+retry, or successor CB is allowed inside the turn.
 
-1. ordinals **1–365 remain 365/365 PASS**;
-2. ordinal **366** no longer stops at `TraceCutFaceFragmentCountMismatch`;
-3. **367/371/372** move past that same validation site;
-4. face `(0,1,102)` retains owner deficit **1**, local fragment count **2**, and shared chord
-   `trace=1 / arc=15 / segment=4`;
-5. the arc/trace/orbit census is published, including arc 15 shared-orbit state and trace 1 terminal-slit state;
-6. carried surfaces **368/369/370/374** are compared against TB18 and must be reported without forcing an expected
-   result.
+The review must:
 
-Ordinal 384 is executed exactly once. TB19 must preserve an exact per-identity ledger and prove pre/post package
-byte-and-mode census identity. A semantic RED is valid evidence and routes to review; no patch or later CB belongs
-inside TB19.
+1. re-verify TB19 immutable authority and no code drift for any static source used;
+2. determine whether the `(0,1,2)` component seed set is provably zero, multiple, or still unobservable;
+3. compare the historical torus same-code stop without assuming same mechanism from the code name;
+4. adjudicate the local-fragment non-crossing candidate: current mechanical evidence is 70/70 non-crossing and
+   untruncated, but one witness is not automatically a universal theorem;
+5. decide the continued 371/372 atlas-only shared-fixture coupling;
+6. keep 368/369/370/374 under their existing owners unless evidence proves movement;
+7. update regression accounting, `ORIENTATION.md`, and perform mandatory REVIEW-turn consolidation;
+8. freeze exactly one smallest justified successor only after those measures are discharged.
 
 ---
 
@@ -85,9 +84,9 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the cu
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB17-CAND-01` | **ACTIVE / CORRECTION IMPLEMENTED, RUNTIME UNVERIFIED** — equality owner proved at TB18-REV; CB21 changed only the low-side fatal predicate. Closes only when TB19 proves ordinal 366 moves past this site. |
-| `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / EVIDENCE** — local-fragment invariant depends on non-crossing chord arrangement; CB21 now publishes local count/crossing evidence, but no fatal local assertion is authorized before runtime review. |
-| `M3-CP4c3-TB10-REV-CAND-01` | **ACTIVE / TEST-COUPLING / DEFERRED** — 371/372 shared-fixture precondition; TB19 must observe their post-fragment frontier independently. |
+| `M3-CP4c3-TB19-CAND-01` | **ACTIVE / GATING / REVIEW-OWNED** — newly exposed unlabeled-component orbit seed set is not unique at `(0,1,2)`; zero-vs-many is not retained. |
+| `M3-CP4c3-TB18-REV-CAND-01` | **ACTIVE / EVIDENCE / REVIEW-OWNED** — TB19 mechanical witness has 70/70 locally evaluated non-crossing face arrangements; universal scope remains unproved. |
+| `M3-CP4c3-TB10-REV-CAND-01` | **ACTIVE / TEST-COUPLING / DEFERRED** — 371/372 read only the atlas but still abort in the all-products fixture at the new downstream mechanical frontier. |
 | `M3-CP4c3-TB7-CAND-02` | **ACTIVE / DEFERRED** — folded-cone witness, ordinal 374; no atlas invariant may be weakened for it. |
 | `M3-CP4c3-DEFN-R2-CAND-01` | **ACTIVE / ARCHITECTURAL CLASS** — exact decision with no declared input-size bound. |
 | `M3-CP4c3-TB6-CAND-01` | **ACTIVE** — vertex-30 evidence contract; still no vertex-30 discriminator. |
@@ -96,22 +95,28 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the cu
 | `M3-CP4c2-TB-X2-R8-CAND-02` | **ACTIVE / PRODUCT** — zero-node / zero-arc closed-surface cut-graph behavior, ordinal 370; no correction authorized. |
 | finalize/contact fall-through | **ACTIVE** — `terminalContact` never read in `finalize_field_aligned_events`; separate owner. |
 
+`M3-CP4c3-TB17-CAND-01` is **CLOSED BY TB19**: its runtime condition was that 366 move past the fragment-owner
+low-side mismatch, and 366/367/371/372 all do so with accepted 365/365 preserved.
+
 Closed candidates remain closed unless new immutable runtime evidence reopens them.
 
 ---
 
 ## 5. Settled facts a successor must not reopen
 
-- The face walk is a validated total permutation; its orbits are its cycles. Shared orbit ownership by the two
-  sides of one arc is legitimate topology, not automatically a merge defect.
-- `|global owners| = k+1` is not a valid universal invariant. CB21's only semantic correction is the low-side
-  relaxation; **high-side owner count remains fatal**.
-- CB21's local fragment count, chord-crossing state, shared-owner chord list, bridge/orbit census, and terminal-slit
-  census are **observational**. No local-fragment fatal assertion is authorized yet.
-- BS9-5 remains retired; do not enable its environment-gated duplicate text diagnostic in the artifact-only gate.
-- Accepted ordinals 1–365 remain the load-bearing boundary. Compile success cannot advance that authority.
-- CB12 through CB20 corrections stand; CB21 does not authorize unrelated sphere, saturation, ordinal-370,
-  folded-cone, vertex-30, or finalize/contact work.
+- The face walk is a validated total permutation; its orbits are its cycles. Shared orbit ownership by two sides of
+  one arc is legitimate topology.
+- `|global owners| = k+1` is not a valid universal invariant. CB21's low-side relaxation is runtime-proved; high-side
+  owner overcount remains fatal.
+- The current mechanical witness's 70 retained local chord arrangements are all evaluated and non-crossing, with no
+  truncation. This is **witness evidence**, not yet a universal product invariant.
+- `UncutFaceComponentOrbitSeedNotUnique` means an affected unlabeled component has seed cardinality other than one;
+  TB19 does not say whether that cardinality is zero or multiple.
+- Identical typed error names across witnesses do not establish identical root cause.
+- BS9-5 remains retired.
+- Accepted ordinals 1–365 remain the load-bearing authority.
+- 368/369/370/374 are unchanged carried surfaces with separate owners.
+- Vertex 30 and finalize/contact remain separate and untouched.
 
 ---
 
@@ -119,17 +124,17 @@ Closed candidates remain closed unless new immutable runtime evidence reopens th
 
 After the durable start-of-turn checklist, load:
 
-1. `ORIENTATION.md` — read first.
+1. `ORIENTATION.md` — read first and update during this REVIEW turn.
 2. **this file** — current state and exact next turn.
-3. `Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Plan.md` — **binding TB19 execution contract**.
-4. `Architecture_M3_CP4c3_CB21_Code_Build_Report.md` — immutable CB21 source/package/selector authority.
-5. `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` — comparison runtime authority.
+3. `Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md` — binding review measures CR0–CR8.
+4. `Architecture_M3_CP4c3_TB19_Artifact_Only_Test_Benchmark_Report.md` — current immutable runtime authority.
+5. `Architecture_M3_CP4c3_TB18_Independent_Review_Record.md` — current preceding review authority until TB19-REV
+   supersedes it.
 6. `M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
 7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-8. `M3_CP4c_Consolidated_Record.md` — only when historical lineage is required.
+8. `M3_CP4c_Consolidated_Record.md` — historical lineage and folded-document index.
 
-**Review tooling.** `.agents/Directional/tools/` remains read-only helper authority. Do not use it to mutate the
-immutable TB19 package.
+**Review tooling.** `.agents/Directional/tools/` remains read-only helper authority.
 
-**Document consolidation.** This was a Code + Build turn, not a REVIEW turn. The current CB21 report and unconsumed
-TB19 plan remain live documents and are not folded.
+**Document consolidation.** The exact next turn is REVIEW, so it must update `ORIENTATION.md` and perform the
+mandatory review-turn consolidation before closeout.

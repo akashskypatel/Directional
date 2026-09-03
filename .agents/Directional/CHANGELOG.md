@@ -1,3 +1,28 @@
+## 2026-09-03 — `M3-CP4c-3-TB19`: CB21 low-side fragment correction runtime-proved; later component-seed frontier exposed
+
+TB19 is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE** on immutable CB21 semantic source
+`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, compile artifact `9908695433`, selector **384**. Authoritative
+run/job **`33798040003 / 100790444711`** executes all 384 identities one per fresh process: **376 PASS / 8 RED**,
+accepted **365/365**, reds **366/367/368/369/370/371/372/374**. Result/log artifacts are
+`9910078670` (`4ac445f70449e42091ebff5b6ef31e1c841b79bf2e704f76a9217df717989129`) /
+`9910079341` (`769f06a180edd6b2ef7c218413ee16ceccb40ecee23bf399584f032712804c60`);
+exact ledger SHA-256 is `e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`.
+Pre/post package byte+mode census is identical at
+`c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d`.
+
+CB21's intended semantic effect is runtime-proved: 366/367/371/372 all move past
+`TraceCutFaceFragmentCountMismatch`. Their later terminal site is
+`UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`. Face `(0,1,102)` retains owner/expected/deficit
+`1/2/1`, local fragment count 2, one non-crossing chord, shared chord trace 1 / arc 15 / segment 4 / orbits `0/0`.
+The full untruncated census reports 70 face rows, 26 arc rows, 12 trace rows, arc 15 `sharesOrbit=true`, trace 1
+`terminalSlit=false`, and total/exterior/non-exterior orbit counts `6/0/6`. Ordinal 384 passes.
+
+Carried 368/369/370/374 terminal semantics are unchanged from TB18. New non-stable
+`M3-CP4c3-TB19-CAND-01` owns the component-seed frontier; the retained error does not distinguish zero seeds from
+multiple seeds. Stable accounting remains **44 events / 14 categories / 30 recurrences**, debt **5**, semantic M3
+packages **85**. CP4c-3 remains **OPEN**. Exact next:
+**`M3-CP4c-3-TB19-REV` — independent REVIEW + PLAN only**.
+
 ## 2026-09-03 — `M3-CP4c-3-CB21`: low-side fragment-owner equality corrected; selector 384 frozen; eight-target GMP compile green
 
 Code + Build product-correction turn under TB18-REV **BU0–BU9**. Final semantic source

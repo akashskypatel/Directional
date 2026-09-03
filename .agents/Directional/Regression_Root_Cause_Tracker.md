@@ -1,3 +1,56 @@
+## M3-CP4c3-TB19 — CB21 fragment-owner correction clears; uncut-component seed frontier exposed — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+
+- **Authority:** semantic source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, compile artifact `9908695433`,
+  selector 384; run/job `33798040003 / 100790444711`; result/log artifacts `9910078670 / 9910079341`; exact
+  ledger `e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`.
+- **Gate:** **376 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds
+  366/367/368/369/370/371/372/374. Ordinal 384 passes. Pre/post package byte+mode census is identical at
+  `c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d`.
+- **CB21 runtime proof:** 366/367/371/372 all clear `TraceCutFaceFragmentCountMismatch` and reach the later typed
+  `UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`. The low-side witness `(0,1,102)` remains
+  owner/expected/deficit `1/2/1`, local fragment count 2, one chord, no crossing, shared chord
+  trace 1 / arc 15 / segment 4 / orbits `0/0`.
+- **Census:** 70 face rows, 26 arc rows, 12 trace rows, all top-level truncation flags false and all 70 shared-chord
+  truncation flags false; all 70 local arrangements evaluated and non-crossing. Arc 15 is `0/0`,
+  `sharesOrbit=true`; trace 1 has `terminalSlit=false`; total/exterior/non-exterior orbit counts are `6/0/6`.
+- **Carried surfaces:** 368 remains `CellularityNotEstablished` from
+  `RotationSystemInconsistent/TraceEventPositionInvalid`, trace 2/event 30,
+  `NoCarrierMatch/SourceEdgeUnavailable`; 369 remains saturation-used; 370 retains error object `<04>` instead of
+  expected `EmptyNetworkOnClosedSurface` `<06>` and has no source-face locus; 374 remains `atlasBuild=false`.
+  These terminal semantics are unchanged from TB18.
+- **Accounting:** same red ordinal set, no accepted-green loss, CP4c-3 still unaccepted. **+0 stable events /
+  +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**. Exact next owner:
+  `M3-CP4c-3-TB19-REV`.
+
+## M3-CP4c3-TB19-CAND-01 — unlabeled mechanical component has non-unique retained orbit seed set after fragment correction — **NEW / ACTIVE / GATING / REVIEW-OWNED / NON-STABLE**
+
+- **Observed:** 366/367/371/372 now terminate at
+  `UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`, after the fragment-owner low-side correction
+  passes. This is the first post-CB21 production frontier.
+- **Exact guard:** `GlobalTopologyPlan::build_regions` partitions unlabeled source faces across non-barrier edges,
+  collects neighboring labeled face-walk orbit seeds per component, and rejects unless the affected component's
+  seed set has **exactly one** element.
+- **Evidence limit:** the runtime envelope names the first affected source face but does not retain the component id,
+  seed-set cardinality, or incoming edge→orbit seed rows. Therefore TB19 cannot distinguish **zero seeds** from
+  **multiple seeds** without guessing. The global `fragmentOwnerOrbitCount=6` is not the component seed count.
+- **Historical same-code caution:** `UncutFaceComponentOrbitSeedNotUnique` appeared on the torus earlier in CP4c,
+  but identical error names do not establish identical root cause. `M3-CP4c-3-TB19-REV` must compare the producer
+  state and emitter inputs before calling this a recurrence.
+- **Disposition:** valid later frontier on an unaccepted surface; no semantic correction or diagnostic-only turn is
+  authorized until independent review adjudicates zero-vs-many observability and ownership.
+- **Accounting:** **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **85**.
+
+## M3-CP4c3-CB21 — low-side fragment-owner validation correction — **CURRENT BUILD AUTHORITY / PRODUCT CORRECTION / COMPILE GREEN / TB19 RUNTIME-PROVED AT PRIOR STOP / NON-STABLE**
+
+- **Authority:** semantic source `b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`; compile run/job
+  `33794307778 / 100778238374`; result/log artifacts `9908695433 / 9908695835`; selector 384
+  `c9425b9309415d43d49e5791cc43fd5e5e3bf3ae50d02c329c65d3e632a05564`.
+- **Correction:** only low-side `ownerCount < expected` stopped being fatal (`!=` → `>`); high-side mismatch remains
+  fatal. Local-fragment, crossing, shared-chord, arc/trace/orbit census evidence is observational.
+- **Runtime disposition:** TB19 proves the prior fragment mismatch no longer terminates 366/367/371/372 and proves
+  ordinal 384 green. This does not close CP4c-3 because the gate remains red at the later component-seed frontier.
+- **Accounting:** unaccepted surface, **+0 stable events / +0 recurrences**.
+
 ## M3-CP4c3-TB18-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB18_Independent_Review_Record.md`, measures **BT0-BT9** discharged. Static
@@ -38,12 +91,14 @@
 
 ## M3-CP4c3-TB18-REV-CAND-01 - the sound local-fragment invariant is not yet established - **NEW / ACTIVE / EVIDENCE / NON-STABLE**
 
+**TB19 observation:** all 70 retained face arrangements are locally evaluated, all report `chordsCrossInside=false`, and no face/shared-chord evidence is truncated. This proves the current mechanical witness is non-crossing, not that every valid producer output is. `M3-CP4c-3-TB19-REV` still owns the scope/proof decision.
+
 Replacing `|owners| = k+1` with a locally computed fragment count is sound only if a triangle with `k` chords has
 exactly `k+1` local fragments, which holds only when no two chords cross inside the face. Nothing in the design or
 the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without making the local count fatal;
 `M3-CP4c-3-TB19-REV` owns promotion to fatal and the closure of this candidate.
 
-## M3-CP4c3-TB18 — fragment mismatch mechanism measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+## M3-CP4c3-TB18 — fragment mismatch mechanism measured — **SUPERSEDED BY TB19 / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** CB20 source `57635e87306a416daabb8321e1f36fa9c788d208`, compile artifact `9903305256`, selector 383; final run/job `33785382790 / 100748821924`; result/log artifacts `9905330011 / 9905330748`; ledger `a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`.
 - **Gate:** **375 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds 366/367/368/369/370/371/372/374; selector-383 projection witness at 383 PASS.
@@ -60,7 +115,7 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - Attempt-1 result/log artifacts `9904975159 / 9904975611` were preserved. The revision verified all 39 completed rows/log hashes and resumed at ordinal 40 with `rerun_completed_ordinals=false`; it did not rerun completed identities to seek green.
 - No product/source/test/fixture/selector/package semantics changed. **+0 events / +0 recurrences**.
 
-## M3-CP4c3-CB20 — fragment-mismatch retained incidence diagnostics — **CURRENT BUILD AUTHORITY / DIAGNOSTIC-ONLY / COMPILE GREEN / NON-STABLE**
+## M3-CP4c3-CB20 — fragment-mismatch retained incidence diagnostics — **SUPERSEDED BY CB21 / DIAGNOSTIC-ONLY / COMPILE GREEN / NON-STABLE**
 
 - **Authority:** semantic/evidence source `57635e87306a416daabb8321e1f36fa9c788d208`; selector 382 byte-identical; selector 383 appends only `GlobalTopologyPlan.TraceCutFaceFragmentMismatchDiagnosticsSurviveProductionFailureProjection`.
 - **Diagnostic surface:** the existing `TraceCutFaceFragmentCountMismatch` early failure now retains actual fragment-orbit count, `tracePieceCount`, expected local fragment count, bounded real-chord incidence with both orbit ids/exterior-drop flags, bounded three-edge orbit evidence, and failing-face `fragment_reconciliation`; production projection carries the same typed evidence.
@@ -112,7 +167,7 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss. **+0 events / +0 recurrences**; totals
   remain **44 / 14 / 30**, debt **5**, packages **84**.
 
-## M3-CP4c3-TB17 — fragment-count frontier after CB19 region-loop reconciliation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
+## M3-CP4c3-TB17 — fragment-count frontier after CB19 region-loop reconciliation — **SUPERSEDED BY TB18/TB19 / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 87 / source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e` / selector 382; run/job `33770523736 / 100699356052`; result/log artifacts `9899516228 / 9899516703`.
 - **Gate:** **374 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds 366/367/368/369/370/371/372/374, first red 366; exact ledger `7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`.
@@ -122,7 +177,7 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - **Postflight:** package census identical at `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; all build/repair/discovery/mutation/benchmark flags false.
 - **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **84**. Exact next owner: `M3-CP4c-3-TB17-REV` BRQ0–BRQ8.
 
-## M3-CP4c3-TB17-CAND-01 - face-local fragment cardinality is compared to distinct global face-walk owners — **ACTIVE / GATING / OWNER PROVED AT TB18-REV / CORRECTION AUTHORIZED UNDER BU1-BU2 / NON-STABLE**
+## M3-CP4c3-TB17-CAND-01 - face-local fragment cardinality is compared to distinct global face-walk owners — **CLOSED BY TB19 / OWNER PROVED AT TB18-REV / CORRECTION RUNTIME-PROVED / NON-STABLE**
 
 - **Observed:** TB18 ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at `(0,1,102)` with actual/trace/expected **`1 / 1 / 2`**. Accepted 1–365 remains 365/365. The same downstream stop is reached by 367/371/372.
 - **Retained incidence:** exactly one real chord is reported, untruncated: trace 1 / arc 15 / segment 4 / Forward, incoming carrier absent, outgoing carrier `0-102`; forward orbit `0`, reverse orbit `0`; neither side is dropped by the exterior filter. Every failing-face edge-evidence row contains only orbit `0`.
@@ -131,6 +186,7 @@ the code yet proves non-crossing. CB21 retains crossing evidence (BU3) without m
 - **Diagnostic insufficiency:** the typed failure envelope retains actual/expected counts, chord incidence and three-edge evidence, but the named `fragment_reconciliation` text record is absent from retained logs. Frozen TB18 rules prohibit an ad-hoc rerun merely to seek it.
 - **Settled facts not reopened:** CB19's segment-entry binding and terminal-slit zero-contribution contract remain runtime-observed; accepted 365/365 is green; 368/369/370/374 stay independently owned.
 - **Owner:** **`M3-CP4c-3-TB18-REV`** independent REVIEW + PLAN for representation adjudication and the BS9-5 sufficiency decision.
+- **TB19 closure:** selector-384 runtime proves 366/367/371/372 all move past `TraceCutFaceFragmentCountMismatch`; ordinal 384 passes and accepted 365/365 remains green. Ownership transfers to `M3-CP4c3-TB19-CAND-01` for the later component-seed frontier.
 - **Accounting:** gating on an unaccepted surface; **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **84**.
 
 ## M3-CP4c3-TB16-REV — independent review adjudication — **SUPERSEDED BY TB17 / STATIC / NON-STABLE**
@@ -4069,16 +4125,20 @@ No new stable regression event or recurrence is assigned. `RP-01 / RP-05` and `R
 
 ## Authoritative next step
 
-Latest accepted runtime authority remains CP4c-1 **355/355**. Latest CP4c-2 semantic runtime is R8 run/job
-`33288495471 / 99195869180`: inherited 355/355 PASS, ordinals 356-358 PASS, first red at 359; 360-365 not run.
+Current immutable CP4c-3 runtime authority is **M3-CP4c-3-TB19**: semantic source
+`b00efbd53d3da8caa2bcac0d66594e06e44d2cb2`, compile artifact `9908695433`, selector 384, run/job
+`33798040003 / 100790444711`, **376 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds
+366/367/368/369/370/371/372/374. Exact ledger:
+`e9ab64a8392aa1e16e30e03f440865914df846567e4b4fd12f3dce241841c04b`; pre/post package census identical at
+`c238668140634325a75dbb48ed23ce5659376cb5d2d7b79f3f3f46ab275e133d`. Stable totals remain
+**44 events / 14 categories / 30 recurrences**, debt **5**, M3 packages **85**.
 
-Current immutable CP4c-2 build authority is CB8 semantic/test source
-`05f9ef299ee54f8c9d50318fc9a37e5a5503740d`, GMP package **66** artifact `9726295440`
-(`1017a2f40829c171a0ec066b16e1f9f5436588f5e2376742e340ce1617d2556f`), packaged source
-`ec9b9b7929521e3f2cd1df4e21beb2f01012f97ff1907ffbf5ae2b35334fd20c`, compile run/job
-`33292137782 / 99205507393`, runtime-free. Stable totals remain **44 / 14 / 30**, debt **5**, M3 packages **66**.
+CB21's fragment-owner low-side correction is runtime-proved: 366/367/371/372 clear
+`TraceCutFaceFragmentCountMismatch`, ordinal 384 passes, and accepted 365/365 is preserved. The later current
+frontier is `UncutFaceComponentOrbitSeedNotUnique` at `(0,1,2)`, owned by non-stable
+`M3-CP4c3-TB19-CAND-01`; the retained envelope does not distinguish zero component seeds from multiple seeds.
 
-Historical next at this point was artifact-only `M3-CP4c-2-TB-X2-R9-EXEC` under the frozen R9 plan now
-consolidated in `M3_CP4c_Consolidated_Record.md` §3.7. Run selector 365 from ordinal 1 with the
-frozen first-semantic-red hard stop, no benchmark, and AH6 if ordinals 363-365 are reached. No rebuild/repair or
-source/test/fixture/selector mutation is authorized.
+**Exact next: `M3-CP4c-3-TB19-REV` — independent REVIEW + PLAN only**, under
+`Architecture_M3_CP4c3_TB19_Independent_Review_Plan.md` CR0–CR8. No runtime, compile, package, product/test/fixture/
+selector mutation, retry, or successor CB is authorized before that review adjudicates the component-seed frontier,
+the local-fragment non-crossing candidate, 371/372 fixture coupling, and unchanged carried surfaces.
