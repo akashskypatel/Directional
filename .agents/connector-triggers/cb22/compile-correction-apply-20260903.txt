@@ -1,0 +1,4 @@
+purpose=apply M3-CP4c-3-CB22 compile correction
+base_sha=a73a6b8220efd20b59c3f10c4ba3e63638a99d2f
+patch_sha256=a047f74ebccb49504fe7c4e5ab8066bfd7366a786bfd739d4aa9d43033cb57c0
+retry=0
