@@ -1,6 +1,0 @@
-source_patch_file_id=1igiho1u5vBHWvwqC19_v7pgw9LvMdbf9
-patch_sha256=6c5c616813716f5db22debb82d988efb35a47fa45773036139bb83708973da45
-base_sha=416d75fc6141645309c223ee86c124eb0da77bc9
-caller=.github/workflows/agent-cb20-drive-patch-apply-20260903-0936.yml
-retry=2
-reason=correct intended_paths metadata delimiter only; diff body unchanged
