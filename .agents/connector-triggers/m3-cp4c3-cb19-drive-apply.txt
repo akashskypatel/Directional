@@ -1,5 +1,6 @@
-turn_id=M3-CP4c-3-CB19-R3
-base_sha=9afe66ede2632c768ba0d96f43a6e9c7128c6076
-patch_sha256=bd817ce7ec4273c5e7df1a61f497508ba18d775fd4284fa14a5c2216b65759ad
-drive_file_id=1NfK_onmSkkrtWlvufXXeh9YPX-dFlF-p
-retry=restore-source-support-projection-scope
+turn_id=M3-CP4c-3-CB19-CLOSEOUT
+base_sha=1a4d1c26b276868030b6392dd854c10fab8b334a
+patch_sha256=78a27896d27f510bb8da27c3dd5323477cc6a27fc9a9a25798b19a9947395f90
+diff_body_sha256=e82bb2d3cc14d23f6f0296bbc79981821fbd3e01e1e0022a2ae5bcc1f736cedf
+drive_file_id=1n9dJcEjm4gN_ayukBN5P8O8KfTOHkxbF
+retry=closeout-docs
