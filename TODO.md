@@ -1,6 +1,6 @@
 # Directional Surface-Cell TODO
 
-Last updated: 2026-09-02 UTC
+Last updated: 2026-09-03 UTC
 
 ## Purpose
 
@@ -26,43 +26,19 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB17` (artifact-only Test + Benchmark on immutable package 87)
+## Current focus — `M3-CP4c-3-TB17-REV` (independent REVIEW + PLAN only)
 
-`M3-CP4c-3-CB19` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE** at semantic source
-`bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`. It reconciles the two region loops under one terminal-slit contract,
-binds non-first carrier-less segments to their segment-entry support, re-derives `k real chords -> k+1 fragments`,
-publishes the full trace-segment incidence through production diagnostics, updates the independent oracle, and
-compiles the BR5/BR6 witnesses. Selector **382 remains byte-frozen**; no 383 was created.
+`M3-CP4c-3-TB17` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE** on immutable package **87** / source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e` / selector **382**. Run/job `33770523736 / 100699356052` completed all 382 exact identities one per fresh process plus the retained non-gating diagnostic. Result/log artifacts are `9899516228` (`c03480f525e6125367c360c851ba374c59dc32180044efd49e40938368509f0f`) / `9899516703` (`f4933482c6b5ec943edf258356157dabd2a5d69de8dfd64a6c893c89344a9bda`).
 
-Authoritative eight-target GMP/GMPXX compile `33761967427 / 100670323823` is green. Immutable package **87** is
-green on `33763450567 / 100675268847`, artifact `9896472535` (Actions digest
-`78d1ac33c9db7592a8a852fafe91d0cabd0548ca5cf6309ceb50f689da9d9770`), inner tar SHA-256
-`015c1113e2237e779076e397f4907b8a44f101ce159e566ff482f9c598f51c48`, packaged source archive SHA-256
-`f54461f5cba89fdd8d54ad2a43d8476a1785676419535eaa21e1556e3e9b538a`. `selected_gate=NONE`,
-`gate_execution_authorized=false`, `runtimeExecution=false`, `packageRepair=false`. The failed package attempt
-`33763246701` was orchestration-only (wrong accepted-selector filename) and reused no runtime evidence.
+Gate result is **374 PASS / 8 RED**, accepted **365/365**, reds **366/367/368/369/370/371/372/374**. Ordinal 366 clears TB16's `RegionTraceSourcePortCarrierNotAdmissible` at `(9,11,17)` and moves downstream to **`TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`**. 367/371/372 inherit that new face-fragment stop. 368/369/370/374 retain their pre-classified independent surfaces. The independent trace-segment observation reports 48 non-first carrier-less segments, all 48 with segment-entry support distinct from trace origin, ten terminal slits, and a concrete terminal witness with `realChordContribution=0`; CB19's intended source-port/terminal-slit branch movement is therefore runtime-demonstrated.
 
-**Runtime authority is still TB16/package 86:** **374 PASS / 8 RED**, accepted **365/365**, first red 366
-`RegionTraceSourcePortCarrierNotAdmissible` at face `(9,11,17)`. CB19 is compiled but not runtime-proved.
+The new fragment-count rejection publishes only `sourceFace`, not actual/expected cardinality or the contributing trace/arc/orbit evidence, so its semantic owner is **not adjudicated in TB17**. Package pre/post byte+mode census is identical at `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; all build/repair/discovery/mutation/benchmark flags are false.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB17`** artifact-only on immutable package **87**, selector **382** from ordinal 1, one identity per
-fresh process, plus the retained non-gating mechanical diagnostic. No rebuild, repair, source/test/fixture/selector
-mutation, generated-binary discovery, package mutation, or benchmark execution.
+Run **`M3-CP4c-3-TB17-REV`** under `Architecture_M3_CP4c3_TB17_Independent_Review_Plan.md`. Review only: do not rerun TB17, compile, package, benchmark, or mutate product/tests/fixtures/selectors. Required outcome is to adjudicate the `TraceCutFaceFragmentCountMismatch` representation/invariant at face `(0,1,102)` and freeze exactly one bounded successor. If the omitted actual/expected fragment/orbit incidence cannot be recovered statically from immutable evidence, the successor must be **diagnostic-only Code + Build** before any semantic correction.
 
-Binding discriminators from `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` BR9:
-
-- [ ] **TB17-1** ordinal 366 clears the old region-source-port failure at `(9,11,17)` or first-reds at a different locus.
-- [ ] **TB17-2** any next region failure publishes full BR4 trace-segment incidence.
-- [ ] **TB17-3** accepted ordinals **1–365 remain green**.
-- [ ] **TB17-4** 367/371/372 either clear with 366 or publish independent first loci.
-- [ ] **TB17-5** 368/369/370/374 reproduce their pre-classified surfaces unchanged.
-- [ ] **TB17-6** the terminal-slit boundary witness confirms BR2 or falsifies the reconstruction and routes to review.
-- [ ] **TB17-7** immutable pre/post package byte+mode census passes and all mutation/build/repair/benchmark flags stay false.
-
-Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3
-package count **84**.
+Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **84**. Accepted authority remains **365/365**; CP4c-3 remains **OPEN**.
 
 ## Carried forward from M1
 
@@ -99,7 +75,7 @@ Inherited baseline-red / non-gating fixtures remain frozen in the M1 exclusion r
 Checkpoint decomposition, per-milestone acceptance mapping, and the path to production-ready are in **`ROADMAP.md`**. Summary only:
 
 - [x] **M0** preserve evidence  ·  [x] **M1** single-authority cutover  ·  [x] **M2** closed stage products
-- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB16/package86 is current runtime authority** at 374 PASS / 8 RED and accepted 365/365, while **CB19/package87 is current build/package authority** at source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`. Exact next is artifact-only `M3-CP4c-3-TB17` on package 87 / selector 382.
+- [ ] **M3 — field-aligned curve network.** CP4ab, CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are accepted. CP4c-3 remains open; **TB17/package87 is current runtime authority** at 374 PASS / 8 RED and accepted 365/365, first red 366 `TraceCutFaceFragmentCountMismatch` at `(0,1,102)`. Exact next is independent `M3-CP4c-3-TB17-REV`.
 - [ ] **M4** global conformity plan — also discharges the 3 `G4-B002` produced-witness debts.
 - [ ] **M5** certificate-carrying chart/quotient relations — also discharges the 2 `G4-B003` debts.
 - [ ] **M6** occurrence, embedding, independent verification.
@@ -109,7 +85,7 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ## Active product blockers
 
-- [ ] **CP4c-3 criterion C2 — region source-port carrier frontier:** TB16 proves accepted 365/365 and first-reds at `RegionTraceSourcePortCarrierNotAdmissible` on `(9,11,17)`. CB19/package87 implements the reviewed two-loop correction and compiled BR5/BR6 witnesses without runtime. TB17 must now prove the accepted boundary, clear or move ordinal 366, preserve 368/369/370/374, and publish full incidence on any next region failure. Vertex 30 and finalize/contact remain separate and untouched.
+- [ ] **CP4c-3 criterion C2 — face-fragment orbit/count frontier:** TB17 proves accepted 365/365, runtime-clears the prior `(9,11,17)` source-port rejection and first-reds at `TraceCutFaceFragmentCountMismatch` on `(0,1,102)`. The new error retains only the face locus, not actual/expected fragment counts or contributing trace/arc/orbit incidence. `M3-CP4c-3-TB17-REV` must adjudicate local fragments versus global face-walk orbit ownership before any semantic patch; diagnostic-only CB is mandatory if static evidence cannot recover the missing incidence. Vertex 30 and finalize/contact remain separate and untouched.
 - [ ] **CP4c-3 ordinals 371/372 (deferred, test-coupling):** both read only `fixture.atlas`, yet abort in the shared `cp4c_mechanical_fixture()` constructor, which throws unless all five downstream products are retained. Amendment 15's barrier-cycle and Euler-cut contracts have been unmeasured from TB2 through TB10 for a reason unrelated to either. Corrective is test-only (an atlas-scoped fixture accessor, assertions byte-unchanged); deferred because clearing ordinal 366 unblocks them automatically. `M3-CP4c3-TB10-REV-CAND-01`.
 
 - [ ] **CP4c-3 ordinal 374 (deferred, different owner):** the folded-cone AY5 witness declares a flat-star field (`effort ≡ 0`, no singularities) on a star with `Θ = 3π/2`, so the atlas rejects it with `CycleTransportMismatch`. Corrective is test-only — derive matching/effort/singularities with `directional::fields::principal_matching`, keep the exact expected-owner derivation, certify against the whole admissibility chain. Selector 374 stays byte-frozen and is **not** withdrawn. TB8 repeated this pre-classified stop; it adds no new product evidence.
@@ -136,4 +112,4 @@ Checkpoint decomposition, per-milestone acceptance mapping, and the path to prod
 
 ---
 
-Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **84**. **TB16/package86 remains current runtime authority: 374 PASS / 8 RED, accepted 365/365. CB19/package87 is current build/package authority at source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`.** Exact next is artifact-only `M3-CP4c-3-TB17` on package 87 / selector 382. PR #8 remains open, draft, and unmerged.
+Current stable totals are **44 events / 14 categories / 30 recurrences**. Produced-witness debt remains **5**. Authoritative semantic M3 package count is **84**. **TB17/package87 is current runtime authority: 374 PASS / 8 RED, accepted 365/365, first red 366 `TraceCutFaceFragmentCountMismatch` at `(0,1,102)`.** Exact next is independent `M3-CP4c-3-TB17-REV`. PR #8 remains open, draft, and unmerged.

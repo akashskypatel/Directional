@@ -1,4 +1,24 @@
-## M3-CP4c3-TB16-REV — independent review adjudication — **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+## M3-CP4c3-TB17 — fragment-count frontier after CB19 region-loop reconciliation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
+
+- **Authority:** package 87 / source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e` / selector 382; run/job `33770523736 / 100699356052`; result/log artifacts `9899516228 / 9899516703`.
+- **Gate:** **374 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds 366/367/368/369/370/371/372/374, first red 366; exact ledger `7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`.
+- **New frontier:** ordinal 366 clears `RegionTraceSourcePortCarrierNotAdmissible` at `(9,11,17)` and reaches `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`, `cutCandidateCount=0`. 367/371/372 inherit the same new stop.
+- **CB19 branch evidence:** independent network observation reports 48 non-first carrier-less segments, 48 distinct-from-origin entry supports, 10 terminal slits, a positive segment-entry witness at face `9-11-17`, and a terminal witness with `realChordContribution=0`.
+- **Independent carried surfaces unchanged:** 368 prescribed-sphere `TraceEventPositionInvalid / NoCarrierMatch / SourceEdgeUnavailable`; 369 saturation; 370 empty-network typed-code/locus; 374 folded-cone `atlasBuild=false`.
+- **Postflight:** package census identical at `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; all build/repair/discovery/mutation/benchmark flags false.
+- **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **84**. Exact next owner: `M3-CP4c-3-TB17-REV` BRQ0–BRQ8.
+
+## M3-CP4c3-TB17-CAND-01 — face-local chord count is compared to distinct global face-walk orbit owners without retaining the mismatch incidence — **ACTIVE / GATING / OWNER UNADJUDICATED / NON-STABLE**
+
+- **Observed:** TB17 ordinal 366 first-reds at `TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`, after the TB16 `(9,11,17)` source-port rejection is gone. The same downstream stop is reached by 367/371/372.
+- **Sole emitter:** `build_regions` validates each directly cut face using `expected = tracePieceCount[face] + 1` and compares that local geometric count to `fragmentOrbits[face].size()`, where `fragmentOrbits` is a set of global face-walk orbit IDs contributed by oriented trace/cut/mandatory darts.
+- **Evidence gap is material:** the typed error publishes only `sourceFace`; TB17 does not retain actual/expected counts, the face's real trace segments/arcs/ranges, forward/reverse orbit IDs, repeated orbit ownership, or edge-orbit evidence. BR9's next-region diagnostic requirement is therefore not discharged.
+- **Do not guess ownership:** the failure may be a product local-fragment/orbit representation defect, trace/arc incidence defect, upstream network/provenance defect, or witness/precondition defect. The geometric statement `k real chords -> k+1 local fragments` must not be silently equated with `k+1 distinct global region owners` until review proves that equivalence.
+- **Settled facts not reopened:** CB19's segment-entry binding and terminal-slit zero-contribution contract are runtime-observed; accepted 365/365 is green; 368/369/370/374 stay independently owned.
+- **Owner:** **`M3-CP4c-3-TB17-REV`** under BRQ0–BRQ8. If static immutable evidence cannot reconstruct the missing face incidence, the next CB must be diagnostic-only.
+- **Accounting:** gating on an unaccepted surface; **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **84**.
+
+## M3-CP4c3-TB16-REV — independent review adjudication — **SUPERSEDED BY TB17 / STATIC / NON-STABLE**
 
 - **Record:** `Architecture_M3_CP4c3_TB16_Independent_Review_Record.md`, measures **BQ0–BQ8** discharged. Static
   only: no runtime, compile, package, or product/test/fixture/selector mutation.
@@ -36,7 +56,7 @@
 - **Accounting:** static review on an unaccepted surface. **+0 events / +0 recurrences**; totals remain
   **44 / 14 / 30**, debt **5**, semantic packages **83**. Accepted authority remains **365/365**.
 
-## M3-CP4c3-TB16 — region-building frontier after complete mechanical rotation — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / NON-STABLE**
+## M3-CP4c3-TB16 — region-building frontier after complete mechanical rotation — **SUPERSEDED BY TB17 / VALID SEMANTIC RED / NON-STABLE**
 
 - **Authority:** package 86 / source `a01016ca59314232526c8b1222c96235856ace6d` / selector 382; run/job `33709721203 / 100506452813`; result/log artifacts `9876548209 / 9876548556`.
 - **Corrected gate:** **374 PASS / 8 RED**, accepted 1-365 **365/365 PASS**, first red 366. True reds are 366/367/368/369/370/371/372/374; selectors 380/381/382 PASS.
@@ -45,7 +65,7 @@
 - **Postflight:** package census identical at `606d193e3641ec68114c5616d41bd0e8e43207756f79ae50356ce973c1be10db`; no build/repair/mutation/benchmark.
 - **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **83**. Exact owner: `M3-CP4c-3-TB16-REV` BQ0-BQ8.
 
-## M3-CP4c3-TB16-CAND-01 — region construction binds a trace-global vertex to a per-segment decision, in a loop that also consumes a terminal slit its sibling skips — **ACTIVE / GATING / OWNER ADJUDICATED: PRODUCT REGION BUILDER / NON-STABLE**
+## M3-CP4c3-TB16-CAND-01 — region construction binds a trace-global vertex to a per-segment decision, in a loop that also consumes a terminal slit its sibling skips — **CLOSED BY CB19/TB17 / NON-STABLE**
 
 - **Observed:** TB16 ordinal 366 first-reds at `RegionTraceSourcePortCarrierNotAdmissible`, source face
   `(9,11,17)`, `cutCandidateCount=0`. The emitter publishes only `sourceFace`.
@@ -82,6 +102,7 @@
   `traceTouchedEdges` and orbit evidence. The torus reaches A2b end to end, so accepted identities plausibly
   exercise this loop. Safety must be **demonstrated** with pinned before/after values, not argued.
 - **Owner:** **`M3-CP4c-3-CB19`** under **BR0–BR9**.
+- **Closure:** CB19 implemented both adjudicated corrections. TB17 proves the old `(9,11,17)` source-port failure is gone and independently observes the segment-entry/terminal-slit contract; ownership transfers downstream to `M3-CP4c3-TB17-CAND-01`.
 - **Accounting:** gating on an unaccepted surface, accepted 365 prefix green; **+0 events / +0 recurrences**.
   Totals remain **44 / 14 / 30**, debt **5**, packages **83**.
 

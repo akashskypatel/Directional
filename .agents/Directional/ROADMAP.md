@@ -10,7 +10,7 @@ without a checkpoint decomposition had to acquire one at cost.
 into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is corrected.
 `TODO.md` owns the current open task list; this file is not a task list and must not accumulate one.
 
-**Status date:** 2026-09-03 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB16` on immutable package **86** and execution selector **382** is **374 PASS / 8 RED** with accepted **365/365**; CB18 is runtime-proved, the edge-`25-31` rotation failure is cleared, mechanical attempt-0 rotation publishes completely, and `M3-CP4c3-TB11-CAND-01`, `M3-CP4c3-TB12-REV-CAND-01` and `M3-CP4c3-TB15-CAND-01` are CLOSED. Ordinal 366 now first-reds in **region construction** at `RegionTraceSourcePortCarrierNotAdmissible`, source face `(9,11,17)`. **`M3-CP4c-3-TB16-REV` classified it a product region-builder defect with two divergences in one copied loop** — the same trace-global `trace->sourceVertex` binding fixed at CB16/CB17/CB18, now in its fourth instance, **and** a missing terminal-slit skip that its sibling loop documents; the sibling ran first with a textually identical predicate and passed, which pins the failing segment to that terminal slit. **NEXT:** `M3-CP4c-3-CB19` under BR0–BR9, reconciling both loops, re-deriving the fragment-count invariant, and **demonstrating** accepted-boundary safety; selectors 380/381/382 stay byte-frozen.)
+**Status date:** 2026-09-03 (**CP4c-2 remains CLOSED / ACCEPTED at 365/365. CP4c-3 remains OPEN.** `M3-CP4c-3-TB17` on immutable package **87** / selector **382** is current runtime authority at **374 PASS / 8 RED** with accepted **365/365**. CB19 runtime-clears the former `(9,11,17)` region source-port branch and proves its segment-entry / terminal-slit contract; ordinal 366 now first-reds downstream at **`TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`**. The rejection retains only the face locus, so ownership is not yet adjudicated. 368/369/370/374 remain unchanged independent surfaces. **NEXT:** independent `M3-CP4c-3-TB17-REV` under BRQ0–BRQ8; no rerun or Code + Build before review.)
 
 ---
 
@@ -21,7 +21,7 @@ into checkpoints*. If the two conflict, `DESIGN.md` governs and this file is cor
 | M0 | historical prerequisite | artifacts retained as regression/oracle evidence only |
 | M1 | **CLOSED / ACCEPTED** | `M1_Closure_Record.md` |
 | M2 | **CLOSED / ACCEPTED** | `M2_Closure_Record.md` |
-| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB15 current valid runtime at 365/365 accepted / first red 366 `SourceVertexFallbackUnbound`; package85 current immutable authority; TB15-REV exact next |
+| M3 | **in progress — 1 checkpoint remaining** | CP4c-2 **365/365** accepted; CP4c-3 open; TB17/package87 current runtime **374 PASS / 8 RED**, accepted **365/365**, first red 366 `TraceCutFaceFragmentCountMismatch` at `(0,1,102)`; TB17-REV exact next |
 | M4–M8 | not started | — |
 
 M3 checkpoint state: CP0 (compile evidence only), CP1, CP2, CP2b, CP3a, CP3b, **CP4ab** are closed.
@@ -75,7 +75,7 @@ immutable run. What remains is split into three checkpoints. Identity names are 
 | **`M3-CP4c-0b`** | **trace termination** — trace/trace contact, arrival priority, contact node and event (`DESIGN.md` §4.6) | **353**, `51ff96d7…ac6a5` | **CLOSED / ACCEPTED.** T5 `33136084757 / 98736295227` passed 353/353; U3/U4 predictions and immutable postflight PASS. Closure: `M3_CP4c0b_Closure_Record.md`. |
 | **`M3-CP4c-1`** | diagnosability, witness observability, event non-vacuity | **355 = accepted 353 + C4 + C5**, `e9d88f11…fb5afeaa` | **CLOSED / ACCEPTED.** TB-R5 `33161644741 / 98817323175` passed 355/355, W3 exact union/contributor prediction, and immutable postflight. Closure: `M3_CP4c1_Closure_Record.md`. |
 | **`M3-CP4c-2`** | closed / higher-genus region authority in A2b | **365 = accepted 355 + C1 + C3 + C6 + four `SurfaceCutGraph` identities + three Amendment-14 identities** (frozen at CB7 under AG7) | **CLOSED / ACCEPTED 365/365** |
-| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; selector 381** | **OPEN.** TB15 current runtime: 365/365 accepted, first red 366 `EdgeTraceSecondaryRankInvalid -> SourceVertexFallbackUnbound` at edge 25-31 / face `(25,30,31)`. Package85/source `1e671ef7...` current immutable authority. **NEXT:** independent `M3-CP4c-3-TB15-REV`. |
+| **`M3-CP4c-3`** | closed-surface missing field-transport adjacency in A1, then the mechanical witness (**C2**); plus inherited sphere/quality/empty-network debt | **accepted prefix 365; execution selector 382** | **OPEN.** TB17/package87 current runtime: **374 PASS / 8 RED**, accepted 365/365; first red 366 `TraceCutFaceFragmentCountMismatch` at face `(0,1,102)` after CB19 cleared the prior source-port branch. **NEXT:** independent `M3-CP4c-3-TB17-REV`. |
 
 > **`M3-CP4c-0` exists because `DESIGN.md` §4.5 is half-implemented, and its definitions are now frozen**
 > in `Architecture_M3_CP4c0_DEFN_Frozen_Definitions.md`. §4.5 requires the inflow/outflow interval

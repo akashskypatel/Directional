@@ -93,94 +93,42 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB17` — EXACT NEXT / artifact-only Test + Benchmark, immutable package 87, selector 382
+## Mandatory next turn — `M3-CP4c-3-TB17-REV` — EXACT NEXT / independent REVIEW + PLAN only
 
-`M3-CP4c-3-CB19` is **COMPLETE / BUILD + PACKAGE GREEN / PRODUCT CORRECTION / RUNTIME-FREE** at semantic source
-`bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`. It discharged the bounded BR0–BR9 authoring/build scope from
-`Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` without executing Directional runtime.
+`M3-CP4c-3-TB17` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE** on immutable package **87**, semantic source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`, selector **382**. Run/job **`33770523736 / 100699356052`** completed all 382 exact selector identities one per fresh process plus the retained non-gating mechanical diagnostic. Result/log artifacts are **`9899516228 / 9899516703`**, Actions digests `c03480f525e6125367c360c851ba374c59dc32180044efd49e40938368509f0f` / `f4933482c6b5ec943edf258356157dabd2a5d69de8dfd64a6c893c89344a9bda`.
 
-### What CB19 changed
+### TB17 runtime authority
 
-1. **One terminal-slit contract in both region loops.** `is_terminal_slit()` now makes the final no-barrier segment
-   non-material: it contributes no face chord, no `tracePieceCount`, no touched source edge and no orbit evidence in
-   either `build_fragment_corner_incidence` or `build_regions`. The fragment invariant is stated from geometry:
-   a face with `k` real trace chords has exactly `k+1` fragments; a terminal slit contributes zero to `k`.
-2. **Carrier-less corner binding is segment-local.** `resolve_carrierless_corner_binding()` binds through
-   `segment.entryPoint.source_support()` and fails closed unless that support is a vertex of the selected face. The
-   trace-origin rule survives only for segment 0; a non-first carrier-less segment may bind a different entry corner.
-3. **The full incidence is retained at the emitter and projected.** Typed failure data now carries arc/trace,
-   orientation, segment index/range, first-segment status, source vertex/port, bound corner plus provenance,
-   entry/exit supports and incoming/outgoing carriers through the surface-cut-graph and production diagnostic paths.
-4. **Witness/oracle code was updated without selector drift.** The independent fragment oracle applies the same
-   real-chord/terminal-slit contract, and compiled BR5/BR6 observations cover non-first carrier-less entry-corner
-   binding plus terminal-slit non-contribution. These assertions are **compiled, not runtime-proved** in CB19.
-   Selector **382 remains byte-frozen**; no selector 383 was created.
-5. **Scope stayed bounded.** No rotation-system, cut-proposal, cellularity policy, prescribed-sphere, empty-network,
-   saturation, folded-cone, vertex-30, finalize/contact or 371/372 fixture-coupling correction was imported.
+- gate: **374 PASS / 8 RED**; accepted ordinals **1–365 = 365/365 PASS**; reds 366/367/368/369/370/371/372/374; first red 366;
+- exact result-ledger SHA-256: **`7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`**;
+- ordinal 366 clears TB16's `RegionTraceSourcePortCarrierNotAdmissible` at `(9,11,17)` and now fails **`TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`**, `cutCandidateCount=0`;
+- 367/371/372 move with 366 to the same downstream fragment-count stop;
+- 368 is unchanged prescribed-sphere `RotationSystemInconsistent -> TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`; 369 remains `saturationUsed=true`; 370 remains actual `CellularityNotEstablished` with no source-face locus instead of `EmptyNetworkOnClosedSurface`; 374 remains `atlasBuild=false`;
+- independent CB19 trace-segment observation on the mechanical witness: `nonFirstCarrierless=48`, `nonFirstCarrierlessDistinctOrigin=48`, `terminalSlits=10`, positive segment-entry witness `trace=0/segment=1/face=9-11-17/entryCorner=11`, terminal witness `trace=0/segment=4/face=28-29-35/realChordContribution=0`;
+- non-gating mechanical diagnostic is RED at the same new `TraceCutFaceFragmentCountMismatch`, `sourceFace=0-1-102`, while retaining `surfaceCutGraph=true`, `networkAlreadyCellular=true`, zero cut edges;
+- package pre/post byte+mode census is **IDENTICAL**, SHA-256 `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; configure/compile/relink/repair/generated-discovery/source/test/fixture/selector mutation and benchmark execution are all false.
 
-### Immutable CB19 build/package authority
+### Review boundary
 
-- semantic source: `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`;
-- selector **382**: `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`;
-  prefix 381 `af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`, prefix 380
-  `1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`, accepted prefix 365
-  `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` — all frozen/prefix-verified by packaging;
-- authoritative eight-target GMP/GMPXX compile run/job `33761967427 / 100670323823`; result artifact `9895999746`
-  (Actions digest `71b268f187b39ce547648c27543913e8fdef0bb1087eaaeca0d2948ce020c990`); compile log artifact
-  `9896000247` (Actions digest `767a9802e82e696aa714e9ca483813df253835a6132d9ec34e3b4a0e89b2c707`);
-- immutable package **87** run/job `33763450567 / 100675268847`; artifact `9896472535`
-  (Actions digest `78d1ac33c9db7592a8a852fafe91d0cabd0548ca5cf6309ceb50f689da9d9770`), inner tar SHA-256
-  `015c1113e2237e779076e397f4907b8a44f101ce159e566ff482f9c598f51c48`, packaged source archive SHA-256
-  `f54461f5cba89fdd8d54ad2a43d8476a1785676419535eaa21e1556e3e9b538a`, 27 fixtures and preserved executable modes;
-- package attempt `33763246701` was orchestration-only invalid because the package caller looked for accepted selector 365
-  under the CP4c-3 filename. The corrected retry reused the same immutable compile artifact; no rebuild, repair or
-  Directional execution occurred;
-- `selected_gate=NONE`, `gate_execution_authorized=false`, `runtimeExecution=false`, `packageRepair=false`.
+The new rejection's sole emitter validates `fragmentOrbits[face].size() == tracePieceCount[face] + 1`, but TB17 publishes only the failing face. It does **not** retain the actual/expected counts, contributing trace segments/arcs, forward/reverse face-walk orbit IDs or edge-orbit evidence. Do not infer those values. `M3-CP4c3-TB17-CAND-01` is therefore gating but owner-unadjudicated until independent review distinguishes local geometric fragments from global face-walk/region orbit ownership and audits the reconciled CB19 loops at `(0,1,102)`. If static immutable evidence cannot recover the missing incidence, the review must freeze a diagnostic-only CB rather than a semantic patch.
 
-### Retained runtime authority and TB17 discriminators
-
-TB16/package 86 remains the latest **runtime** authority: **374 PASS / 8 RED**, accepted **365/365**, true reds
-366/367/368/369/370/371/372/374, corrected-ledger SHA-256
-`7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd`. CB19 does not supersede those runtime
-facts; it supplies the immutable successor package that TB17 must measure.
-
-`M3-CP4c-3-TB17` executes selector 382 from ordinal 1, one identity per fresh process, plus the retained non-gating
-mechanical diagnostic, with every configure/compile/relink/repair/generated-discovery/source/test/fixture/selector/
-package-mutation and benchmark flag false. The review's BR9 discriminators remain binding:
-
-1. ordinal 366 must clear `RegionTraceSourcePortCarrierNotAdmissible` at face `(9,11,17)` or first-red at a different
-   locus; a repeat at the same face means BR1/BR2 missed the branch;
-2. any next region failure must publish the full BR4 incidence rather than only `sourceFace`;
-3. accepted ordinals **1–365 must remain green**;
-4. 367/371/372 either clear with 366 or publish their own independent loci;
-5. 368/369/370/374 must reproduce their pre-classified surfaces unchanged; and
-6. the terminal-slit BR6 boundary witness must confirm the BR2 contract or return the question to review.
-
-Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count advances to **84**.
+CB19's settled facts stay settled: the source-port datum is segment-local, the old `(9,11,17)` branch is cleared, terminal slits are independently observed as zero real-chord contribution, selectors 380/381/382 remain byte-frozen, and no selector 383 exists. Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; semantic M3 packages **84**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent TEST + BENCHMARK guidance
+- turn-based-coding-agent independent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` — BR9 TB17 discriminators and
-   BR0 mutation/runtime boundary.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB16_Artifact_Only_Test_Benchmark_Report.md` — prior runtime authority
-   and exact carried reds.
-3. `.agents/Directional/tools/README.md` — run `review_check.py authority bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`
-   first and `review_check.py boundary` at closeout.
-4. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`,
-   `M3_CP4c_Consolidated_Record.md`.
-5. Immutable package **87** artifact `9896472535` from run/job `33763450567 / 100675268847`; selector 382 and
-   accepted-prefix hashes are listed above.
+1. `.agents/Directional/Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority and BR9 disposition.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB17_Independent_Review_Plan.md` — BRQ0–BRQ8 exact review measures.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB16_Independent_Review_Record.md` — CB19 semantic rationale/BR9 lineage only; do not treat TB16 as current runtime.
+4. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`, `M3_CP4c_Consolidated_Record.md`, `ROADMAP.md`.
+5. Immutable package **87** artifact `9896472535` and TB17 result/log artifacts **`9899516228 / 9899516703`**. No rerun is authorized in review.
 
-TB17 is artifact-only. It may execute Directional test identities from package 87 but may not rebuild, repair, edit
-source/tests/fixtures/selectors, regenerate binaries, or execute benchmarks. A green full gate closes CP4c-3; any
-semantic red routes to independent REVIEW + PLAN before another Code + Build turn.
+The review must finish with exactly one bounded successor and no runtime/product mutation.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
