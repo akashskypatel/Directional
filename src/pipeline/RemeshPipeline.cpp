@@ -398,6 +398,26 @@ project_surface_cut_graph_failure_locus(
     return std::array<std::size_t, 2>{edge.first().index(),
                                       edge.second().index()};
   };
+  const auto source_support_locus = [&](const authority::SourceSupport &support) {
+    return std::visit(
+        [&](const auto &typedSupport) {
+          using Support = std::decay_t<decltype(typedSupport)>;
+          std::ostringstream out;
+          if constexpr (std::is_same_v<Support, authority::SourceVertexSupport>) {
+            out << "Vertex(" << typedSupport.vertex.index() << ')';
+          } else if constexpr (std::is_same_v<Support,
+                                              authority::SourceEdgeSupport>) {
+            const auto edge = topology_edge_locus(typedSupport.edge);
+            out << "Edge(" << edge[0] << '-' << edge[1] << ')';
+          } else {
+            const auto face = topology_face_locus(typedSupport.face);
+            out << "Face(" << face[0] << ',' << face[1] << ',' << face[2]
+                << ')';
+          }
+          return out.str();
+        },
+        support);
+  };
   const auto rotation_ray_diagnostics = [&](
       const geometry::RotationRayOrderDiagnostic &ray) {
     SurfaceCellRotationRayDiagnostics diagnostic;
