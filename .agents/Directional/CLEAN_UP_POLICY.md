@@ -50,15 +50,19 @@ current document per role instead of an accumulating per-turn series.
    index** of its family's consolidated record (`M3_CP4c_Consolidated_Record.md` for the CP4c family; the
    corresponding closure record for a closed checkpoint) together with the verdict or role it carried. The full
    text remains recoverable from git history; the index is what makes it findable.
-3. **Retain one current document per role.** After consolidation the family retains: the current runtime-authority
+3. **Index what other turns retired.** A Code + Build or Test + Benchmark turn's stale-evidence cleanup removes
+   superseded per-turn documents without writing the folded document index. The next REVIEW turn must add an index
+   entry for each such document — recovering its name and line count from git history — so a filename retired
+   between reviews still resolves. First applied at `M3-CP4c-3-TB20-REV`.
+4. **Retain one current document per role.** After consolidation the family retains: the current runtime-authority
    report, the current review record, exactly one next-turn plan, the consolidated historical record, the
    consolidated normative definitions, and every byte-frozen selector file. Nothing else from the per-turn series.
-4. **Never fold current authority.** The current immutable source/package/runtime authority and the single frozen
+5. **Never fold current authority.** The current immutable source/package/runtime authority and the single frozen
    next-turn plan are retained until superseded by their successors.
-5. **Repair references in the same turn.** After folding, rewrite live citations of the folded filenames to the
+6. **Repair references in the same turn.** After folding, rewrite live citations of the folded filenames to the
    consolidated record (and its part/section where one exists). Historical citations tied to a cited commit may
    remain as provenance when the retained record carries a resolver note naming the index that resolves them.
-6. **Verify the diff against the authorized scope.** Inventory what is at risk before the edit and confirm
+7. **Verify the diff against the authorized scope.** Inventory what is at risk before the edit and confirm
    afterwards that no durable document, explicitly durable section, policy, acceptance criterion, normative
    definition, selector file, stable ID, artifact identity, unresolved blocker, failed-attempt lesson or
    resume-critical state was removed or weakened.

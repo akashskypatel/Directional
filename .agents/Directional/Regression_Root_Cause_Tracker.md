@@ -1,3 +1,64 @@
+## M3-CP4c3-TB20-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
+
+- **Record:** `Architecture_M3_CP4c3_TB20_Independent_Review_Record.md`, measures **CW0-CW9** discharged per the
+  binding plan. Static only: no runtime, compile, package, or product/test/fixture/selector mutation.
+- **CW0.** Source `c5d3c659` exists, is an ancestor of HEAD, **no code drift**; the gate selector file hashes to
+  `164a8b25...6e1d0fca` with **388** identities, selector 384 an exact prefix, accepted 365-prefix unchanged; the
+  ledger closes at 380+8=388; pre/post census identical. **Convention break recorded:** every selector file
+  357-384 is named by its identity count; this file is named 385 and holds 388. Bytes are frozen and correct - do
+  not rename - but a count must never again be derived from a selector filename. Cause: BV6's wording in the
+  TB19-REV record said "append selector 385" while BV1-BV5 required four separable witnesses.
+- **CW1 - branch confirmed without inference.** `uncutFaceComponent=0`, `seedCount=3`, `seedState=Multiple`,
+  `sourceFaceLocusKind=FirstUnlabeledFaceInIterationOrder`, component census
+  `faceCount=191, seedOrbits=[0,1,3], seedOrbitsTruncated=false`, global census 9 rows untruncated. TB19-REV's
+  two predictions - `Multiple` rather than `None`, and the locus being an iteration artifact - are both confirmed.
+- **CW2 - NORMATIVE AUTHORITY ALREADY ADJUDICATES THE GUARD, AND RULES IT CORRECT.**
+  `M3_CP4c_Frozen_Definitions.md` **Part I §3**, on this exact construction and line: the rule "requires each
+  resulting component to receive **exactly one** orbit seed from its labeled neighbours ... **The error code is
+  correct and the producer is behaving correctly. There is no bug at that line.** It is reporting a missing
+  input." The missing input is that **the network is not a cut graph of the surface**. **Parts IV and V**
+  additionally prohibit relaxing `proves_cellularity()`, the fragment-count invariant, or this guard; **Part VI**
+  is scoped to vertex-star continuation and lifts none of them. **No correction is authorized at the guard.**
+- **CW3 - candidates NOT merged, but linked as one class.** Torus = zero-seed (0 traces, nothing can seed),
+  proved by Part I's Euler argument (`V = E = 48`, `chi = 0`, so `F = 0`). Mechanical = three-seed. **The class is
+  now observed on a genus-0 witness** (chi = 2), which Part I's genus-1 argument does not cover - new information.
+- **CW4 - the bounded boundary evidence is sufficient; the missing datum is different and far smaller.** The 33
+  unretained rows cannot change the disposition: `seedOrbitCount=3` is explicitly untruncated and more rows could
+  only add orbits. What is missing is the **embedded graph's own `V`, `E` and connected-component count**, which
+  decide cellularity by `V - E + F = chi` exactly as Part I decided the torus. TB19's "26 arcs" is the
+  fragment-owner trace-arc census, not the graph's `E`. **No further boundary retention is warranted.**
+- **CW6 - 371/372 decoupling AUTHORIZED.** TB19 and TB20 are two consecutive TB turns at the same frontier, so
+  the standing trigger fired; and the deferral reasoning has inverted, because CW2 shows the frontier is an
+  architectural condition rather than one about to clear. Test-only atlas-scoped accessor, assertions
+  byte-unchanged, selector membership and ordering unchanged, no product source touched. Combined with a
+  diagnostic-only successor, so CW6's bar on combining with a product correction is not engaged.
+- **CW9 - one bounded successor frozen:** **`M3-CP4c-3-CB23`** under **BW0-BW9** - publish the embedded graph's
+  Euler census on the production path for all three witnesses, publish the failing component's per-orbit boundary
+  attribution, and land the 371/372 decoupling. **No product semantic change.** The turn after TB21 is expected to
+  be a **definition-level** turn, not a CB.
+- **Accounting:** static, unaccepted surface, no accepted-green loss, red set unchanged. **+0 events / +0
+  recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**.
+
+## M3-CP4c3-TB20-REV-CAND-01 - the field-aligned network is not a cut graph of its surface, on a GENUS-0 witness - **NEW / ACTIVE / ARCHITECTURAL / GATING / NON-STABLE**
+
+Second instance of the class `M3_CP4c_Frozen_Definitions.md` Part I §3 proved for the torus, reached by a route
+that proof does not cover. Symptom: `UncutFaceComponentOrbitSeedNotUnique`, component 0, 191 faces, seed orbits
+`[0,1,3]`. The guard is correct and must not be relaxed; the owner is the missing cut graph. `M3-CP4c3-TB19-CAND-01`
+is reclassified as the **symptom** record under this class, and the historical torus record is **linked, not
+merged**, as the genus-1 instance. Owner: **BW1-BW3** evidence, then a definition-level turn that decides whether
+the producer must construct a cut graph.
+
+## M3-CP4c3-TB20-REV-CAND-02 - CB21 weakened an invariant the frozen definitions prohibit weakening - **NEW / ACTIVE / GOVERNANCE / NON-STABLE**
+
+`M3-CP4c-3-CB21` made the fragment-count invariant's low side non-fatal. **Parts IV and V** of
+`M3_CP4c_Frozen_Definitions.md` prohibit relaxing that invariant, and Part I §3 explains the reason the sibling
+guard exists: it detects a missing input rather than asserting a theorem. `M3-CP4c-3-TB18-REV` authorized the
+relaxation without consulting those lists; its mathematics was sound and its accepted-boundary proof holds, but
+under Part I's frame the mismatch it suppressed was reporting the same missing cut graph this guard now reports.
+**Not reverted** - CW5 binds this review's successor to preserve CB21, and ordinal 366's movement is real. Owner:
+the definition-level turn, which must either lift the prohibition with stated reasons or restore the invariant
+with an accepted-boundary argument. Related: `M3-CP4c3-TB20-REV-CAND-01`, lessons 103-104.
+
 ## M3-CP4c3-TB20 — three-seed component branch measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
 
 - **Authority:** semantic source `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`, compile artifact `9912976409`, selector 385; run/job `33809177155 / 100826787667`; result/log artifacts `9914226104 / 9914226799`; exact ledger `0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a`.
@@ -47,7 +108,7 @@
 - **Accounting:** static, on an unaccepted surface, no accepted-green loss, red ordinal set unexpanded.
   **+0 events / +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**.
 
-## M3-CP4c3-TB19-REV-CAND-02 - component-seed discriminator evidence contract - **CLOSED / SATISFIED / NON-STABLE**
+## M3-CP4c3-TB19-REV-CAND-02 - the component-seed error cannot identify its own cause - **CLOSED / SATISFIED AT TB20 / NON-STABLE**
 
 TB19 proved that `sourceFace` alone could not distinguish branch, component, or seed set. CB22 retained the
 component identity, exact seed count/state, bounded component/boundary evidence and component census while keeping
@@ -80,7 +141,7 @@ the next semantic correction. Related: `M3-CP4c3-TB19-CAND-01`.
   +0 recurrences**; totals remain **44 / 14 / 30**, debt **5**, packages **85**. Exact next owner:
   `M3-CP4c-3-TB19-REV`.
 
-## M3-CP4c3-TB19-CAND-01 - mechanical uncut-face component has three orbit seeds - **ACTIVE / GATING / BRANCH RESOLVED: MULTIPLE / SEMANTIC OWNER PENDING / NON-STABLE**
+## M3-CP4c3-TB19-CAND-01 - unlabeled-face component orbit seed set is not unique - **ACTIVE / SYMPTOM RECORD / BRANCH RESOLVED: Multiple(3) / RECLASSIFIED UNDER M3-CP4c3-TB20-REV-CAND-01 / NON-STABLE**
 
 - **Observed:** 366/367/371/372 now terminate at
   `UncutFaceComponentOrbitSeedNotUnique`, source face `(0,1,2)`, after the fragment-owner low-side correction

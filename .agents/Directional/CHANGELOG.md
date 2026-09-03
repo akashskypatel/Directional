@@ -1,3 +1,70 @@
+## 2026-09-03 — `M3-CP4c-3-TB20-REV`: the seed guard is normative and correct; the missing input is a cut graph, now on a genus-0 witness; CB23 frozen
+
+Independent review of immutable TB20 evidence under the binding plan's measures **CW0–CW9**. Record:
+`Architecture_M3_CP4c3_TB20_Independent_Review_Record.md`. Static only — no runtime, compile, link, package,
+benchmark, or product/test/fixture/selector mutation.
+
+Authority re-verified: source `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131` exists, is an ancestor of HEAD and has
+**no code drift**; the gate selector file hashes to
+`164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca` with **388** identities, selector 384 an exact
+prefix and accepted `6b5b6555…cfc14b8a1` an exact 365-prefix; the ledger closes at 380 + 8; pre/post package census
+identical at `f0b1beec…dab653c5b0`.
+
+**Convention break recorded.** Every selector file 357–384 is named by its identity count; the current gate file is
+named 385 and holds 388. Its bytes are frozen and correct and it must **not** be renamed, but a count must never
+again be derived from a selector filename. Cause: BV6's wording in the TB19-REV record said "append selector 385"
+while BV1–BV5 required four separable witnesses. BW6 fixes the wording going forward.
+
+**Branch confirmed without inference:** `uncutFaceComponent=0`, `seedCount=3`, `seedState=Multiple`,
+`sourceFaceLocusKind=FirstUnlabeledFaceInIterationOrder`, component census
+`faceCount=191, seedOrbits=[0,1,3], seedOrbitsTruncated=false`, global census 9 rows untruncated. Both TB19-REV
+predictions hold, and `M3-CP4c3-TB19-REV-CAND-02` closes as satisfied.
+
+**Normative authority already adjudicates this guard, and rules it correct.** `M3_CP4c_Frozen_Definitions.md`
+**Part I §3**, on this exact construction and line: the rule "requires each resulting component to receive
+**exactly one** orbit seed from its labeled neighbours … **The error code is correct and the producer is behaving
+correctly. There is no bug at that line.** It is reporting a missing input." The missing input is that the
+field-aligned network is **not a cut graph** of its surface. **Parts IV and V** additionally prohibit relaxing
+`proves_cellularity()`, the fragment-count invariant, or this guard; **Part VI** is vertex-star scoped and lifts
+none of them. **No correction is authorized at the guard.**
+
+**New information: the class now appears on a genus-0 witness.** Part I proved it for the torus from `χ = 0` and
+`E = V = 48`; the mechanical witness is closed with `χ = 2`, where that argument does not apply. The torus
+(zero-seed) and mechanical (three-seed) occurrences remain **separate candidates**, linked as two instances of one
+architectural class under new `M3-CP4c3-TB20-REV-CAND-01`.
+
+**The bounded boundary evidence is sufficient; the missing datum is far smaller.** The 33 unretained rows cannot
+change the disposition — `seedOrbitCount=3` is explicitly untruncated and more rows could only add orbits. What is
+missing is the embedded graph's own `V`, `E` and connected-component count, which decide cellularity by
+`V − E + F = χ` exactly as Part I decided the torus. TB19's "26 arcs" is the fragment-owner trace-arc census, not
+the graph's `E`. **No further boundary retention is warranted.**
+
+**Escalated:** new `M3-CP4c3-TB20-REV-CAND-02` — `M3-CP4c-3-CB21` weakened the fragment-count invariant, which
+Parts IV and V prohibit, and `M3-CP4c-3-TB18-REV` authorized it without consulting those lists. Its mathematics was
+sound and its accepted-boundary proof holds, but under Part I's frame the mismatch it suppressed was reporting the
+same missing cut graph this guard now reports. **Not reverted** — CW5 binds the successor to preserve CB21 — and
+only a definition-level turn may resolve it.
+
+**371/372 decoupling authorized.** TB19 and TB20 are two consecutive TB turns at the same frontier, so the standing
+trigger in `M3-CP4c3-TB10-REV-CAND-01` fired; and the deferral reasoning inverted, because the frontier is an
+architectural condition rather than one about to clear. Test-only atlas-scoped accessor under BW7: assertions
+byte-unchanged, selector membership and ordering unchanged, no product source touched. 368/369/370/374 unchanged
+under their existing owners; vertex 30 still not reached. Lessons **103–105** added.
+
+Static turn on an unaccepted surface with the red set unchanged: **+0 events / +0 recurrences**; totals remain
+**44 / 14 / 30**, debt **5**, packages **85**; accepted authority **365/365**; CP4c-3 **OPEN**.
+
+Exact successor frozen: **`M3-CP4c-3-CB23`** under **BW0–BW9** — publish the embedded graph's Euler census and the
+`V − E + F − χ` residual on the production path for all three witnesses, publish the failing component's per-orbit
+boundary attribution, and land the 371/372 decoupling. **No product semantic change.** The turn after TB21 is
+expected to be a **definition-level** turn owning both the cut-graph contract and `M3-CP4c3-TB20-REV-CAND-02`.
+
+Third application of the standing REVIEW-turn consolidation rule: the TB19 review record and the consumed TB20
+review plan were folded, and the TB19 report and CB22 build report — which `M3-CP4c-3-TB20`'s stale-evidence
+cleanup had already retired at `ce9e6ad5` without an index entry — were indexed retrospectively. 4 documents /
+818 lines, running total 48 documents / 10753 lines. `CLEAN_UP_POLICY.md` gained a clause making that
+retrospective indexing a standing REVIEW-turn duty, so a filename retired between reviews still resolves.
+
 ## 2026-09-03 — `M3-CP4c-3-TB20`: mechanical component seed branch resolved as Multiple/3; accepted 365/365 preserved
 
 Artifact-only TB20 consumed immutable CB22 semantic source **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`** and

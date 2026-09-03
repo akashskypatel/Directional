@@ -1539,6 +1539,23 @@ building any conclusion on it.**
      `TraceIntersection` contact nodes bound to a source face, so crossings are a modelled case where `k` chords
      make `k + 1 + c` local fragments. Uniform evidence from one witness is evidence about that witness.
 
+103. **Check the frozen definitions' prohibited list before authorizing a correction, not after.** A review proved
+     a real mathematical fact - the fragment-count equality is not a universal invariant - and authorized relaxing
+     the check that asserts it. Two frozen definition revisions explicitly prohibit relaxing that invariant, and a
+     third section explains why: the guard **detects a missing input** rather than asserting a theorem. Correct
+     mathematics about a check says nothing about whether the check is load-bearing.
+
+104. **When a frontier "advances" without the underlying condition changing, the previous turn removed a detector
+     rather than a defect.** Ordinal 366 moved from `TraceCutFaceFragmentCountMismatch` to
+     `UncutFaceComponentOrbitSeedNotUnique`; both are downstream detectors of the same missing cut graph. Frontier
+     movement is progress only when the thing being detected changed - otherwise it is the same failure, reported
+     later and with less context.
+
+105. **An architectural theorem proved on one witness bounds its own scope.** The torus cut-graph proof turns on
+     `chi = 0` and on a disjoint union of cycles having `E = V`; it says nothing about a closed genus-0 surface.
+     The mechanical witness reached the same conclusion by a route the theorem does not describe. Re-derive the
+     bound on a new witness rather than assuming the old proof carries.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

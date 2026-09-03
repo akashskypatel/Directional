@@ -101,73 +101,135 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB20-REV` — EXACT NEXT / independent REVIEW + PLAN, planning-only
+## Mandatory next turn — `M3-CP4c-3-CB23` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY + TEST DECOUPLING
 
-`M3-CP4c-3-TB20` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**.
+`M3-CP4c-3-TB20-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB20_Independent_Review_Record.md` (measures **CW0–CW9** discharged, static only).
 
-### Immutable TB20 runtime authority
+### TB20 immutable runtime authority
 
-- semantic source: **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`**;
-- compile run/job: **`33805683152 / 100815534364`**; immutable result artifact **`9912976409`**, ZIP SHA-256 **`b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`**;
-- runtime run/job: **`33809177155 / 100826787667`**;
-- result/log artifacts: **`9914226104 / 9914226799`**, SHA-256 **`38acaac785afed41c1a0daf0ced6f3b925ebba62e8219d45e40f564cbe54b0bd`** / **`438b3480ebd5ecce937dcbfba94c79357bd5d77e2a7c460662df6a88d7c112c5`**;
-- selector 385: **388 identities**, SHA-256 `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, selector 384 and accepted 365 exact prefixes;
-- result: **380 PASS / 8 RED**, accepted **365/365**, reds 366/367/368/369/370/371/372/374;
-- ledger SHA-256 **`0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a`**;
-- package pre/post census identical at **`f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0`**;
-- TB20 performed runtime only: no configure/compile/relink/benchmark/package repair/mode repair/generated discovery or source/test/fixture/selector mutation.
+- semantic/evidence source: **`c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`** — ancestor of HEAD, **no code drift**;
+- CB22 compile run/job: **`33805683152 / 100815534364`**; compile artifact **`9912976409`**, ZIP SHA-256
+  **`b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`**;
+- gate selector file `Architecture_M3_CP4c3_Required_Green_Selector_385.txt`:
+  **`164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`**, **388 identities**, selector 384 an exact
+  prefix, accepted 365 an exact prefix;
+- TB20 run/job: **`33809177155 / 100826787667`**; result/log artifacts **`9914226104 / 9914226799`**;
+- exact 388-row ledger: **`0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a`**;
+- pre/post package byte+mode census: **IDENTICAL**, `f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0`;
+- selector result: **380 PASS / 8 RED**; accepted 1–365 **365/365 PASS**; reds 366/367/368/369/370/371/372/374.
 
-### Resolved discriminator and evidence limit
+### What the review established
 
-Ordinal 366 remains at `UncutFaceComponentOrbitSeedNotUnique`, but CB22/TB20 now prove the mechanical branch is
-**component 0 / seed count 3 / `seedState=Multiple` / seed orbits `[0,1,3]`**. `sourceFace=(0,1,2)` remains an
-explicit iteration-order locus and is not the cause discriminator. The historical torus occurrence remains the
-distinct zero-seed mechanism and must not be merged.
+The branch is measured and the guard is normative.
 
-Component 0 has 191 faces and 97 boundary edges. TB20 retains 64 face rows and 64 boundary rows, both explicitly
-truncated. In that retained boundary window: 44 rows contribute orbit 0, one contributes orbit 1, one contributes
-orbit 3, and 18 are barrier-skipped. No `edgeOrbitEvidenceNotUnique` row occurs in the retained production window;
-that is not evidence of global absence because 33 boundary rows are unretained. Ordinal 386 independently proves
-that reason survives the projection contract when present.
+- **Branch confirmed without inference.** `uncutFaceComponent=0`, `seedCount=3`, `seedState=Multiple`,
+  `sourceFaceLocusKind=FirstUnlabeledFaceInIterationOrder`; component census `faceCount=191, seedOrbits=[0,1,3],
+  seedOrbitsTruncated=false`; global census 9 rows untruncated. Both TB19-REV predictions hold.
+- **Normative authority already adjudicates the guard and rules it CORRECT.**
+  `M3_CP4c_Frozen_Definitions.md` **Part I §3**, on this exact construction and line: the rule "requires each
+  resulting component to receive **exactly one** orbit seed from its labeled neighbours ... **The error code is
+  correct and the producer is behaving correctly. There is no bug at that line.** It is reporting a missing
+  input." The missing input is that **the network is not a cut graph of the surface**. **Parts IV and V** prohibit
+  relaxing `proves_cellularity()`, the fragment-count invariant, or this guard; **Part VI** is vertex-star scoped
+  and lifts none of them. **No correction is authorized at the guard.**
+- **New information: the class now appears on a GENUS-0 witness.** Part I proved it for the torus from `chi = 0`
+  and `E = V = 48`. The mechanical witness is closed with `chi = 2`, where that argument does not apply.
+- **The bounded boundary evidence is sufficient; the missing datum is different and far smaller.** The 33
+  unretained rows cannot change anything - `seedOrbitCount=3` is explicitly untruncated and more rows could only
+  add orbits. What is missing is the **embedded graph's own `V`, `E` and connected-component count**, which decide
+  cellularity by `V - E + F = chi` exactly as Part I decided the torus. TB19's "26 arcs" is the fragment-owner
+  trace-arc census, not the graph's `E`. **No further boundary retention is warranted.**
+- **371/372 decoupling is AUTHORIZED.** The two-consecutive-TB trigger fired, and the deferral reasoning has
+  inverted: the frontier is architectural, not about to clear.
+- **Escalated:** `M3-CP4c3-TB20-REV-CAND-02` - CB21 weakened the fragment-count invariant, which Parts IV and V
+  prohibit, and TB18-REV authorized it without consulting those lists. Not reverted (CW5 binds the successor to
+  preserve CB21); only a definition-level turn may resolve it.
 
-TB19 and TB20 are two consecutive TB turns with 371/372 stopped at the same downstream mechanical production
-frontier. The standing trigger in `M3-CP4c3-TB10-REV-CAND-01` is therefore met as a fact; TB20-REV must adjudicate
-the previously specified test-only atlas-scoped decoupling.
+368/369/370/374 are unchanged under their existing owners. **There is still no vertex-30 discriminator.**
 
-### TB20-REV execution contract
+**Selector convention break, recorded:** every selector file 357-384 is named by its identity count; the current
+gate file is named 385 and holds **388**. Its bytes are frozen and correct - **do not rename it** - but never
+derive a count from a selector filename.
 
-Run `Architecture_M3_CP4c3_TB20_Independent_Review_Plan.md` under **CW0–CW9** exactly. The review is static/planning
-only. It must:
+### CB23 binding scope — `BW0–BW9`, in the review record §10
 
-1. re-verify TB20 source/artifact/run/selector/ledger/package immutability;
-2. independently prove the component-0 / count-3 / `Multiple` discriminator and seed orbits `[0,1,3]`;
-3. trace the three seeds through committed producer semantics and decide whether the exactly-one-seed requirement or its inputs are wrong;
-4. keep the historical zero-seed torus case separate;
-5. decide whether the bounded 64/97 boundary evidence is sufficient, and freeze one smallest evidence-only successor only if a concrete missing field is truly necessary;
-6. preserve accepted 365/365 and settled CB21 behavior;
-7. adjudicate the reached 371/372 test-coupling trigger;
-8. keep 368/369/370/374 under their existing owners;
-9. freeze exactly one smallest sufficient successor.
+**Diagnostic-only on the product, plus the authorized test-only 371/372 decoupling.** No product semantics change.
+This is not another diagnostic turn for convenience: CB22 measured *seeding*; BW measures *cellularity*, by the
+same arithmetic that settled the torus, and it is the only evidence that closes the architectural question rather
+than its symptom.
 
-No product/test/fixture/selector/build mutation, compile, benchmark, or runtime is authorized by this handoff.
+- **BW0** - accepted 365 untouched; the gate selector file byte-frozen at `164a8b25...6e1d0fca` and republished
+  unchanged; **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
+- **BW1** - publish the **embedded graph's own Euler census** on the production path: node count `V`, arc count
+  `E`, face-walk orbit count `F`, and the number of connected components. These are the graph's counts, **not**
+  the fragment-owner census's trace-arc subset.
+- **BW2** - publish `chi(S)` as the product computes it and the per-component residual `V - E + F - chi`, so
+  cellularity is decided by arithmetic rather than inference, exactly as Part I §3 decided the torus.
+- **BW3** - for the failing component, publish which graph faces its boundary touches and how many boundary edges
+  contribute each - the per-orbit attribution the aggregate rows lack. Bounded, with a truncation marker.
+  **No increase in boundary-row retention.**
+- **BW4** - carry the same census into the torus and prescribed-sphere paths so the class can be compared across
+  witnesses without a further turn.
+- **BW5** - one witness per new field through the **production** path, plus a byte-identical unrelated-error
+  regression witness.
+- **BW6** - append the next selector **named by its resulting identity count**, not by a predicted number, and
+  restate that convention in the plan. The current file keeps its frozen name and bytes.
+- **BW7** - **the test-only 371/372 decoupling**: add the atlas-scoped accessor, leave both identities' assertions
+  **byte-unchanged**, leave selector membership and ordering unchanged, touch **no product source**, and keep the
+  existing all-products fixture contract intact for every other consumer.
+- **BW8** - **no product semantic change whatsoever**: `UncutFaceComponentOrbitSeedNotUnique` and its predicate,
+  `componentBarriers`, the component partition, `seedOrbits`, `edgeOrbitEvidence`, `add_fragment_orbit`, the
+  `exteriorOrbits` filter, `is_terminal_slit`, the face walk, the rotation system, region drafts, CB21's
+  comparison and `proves_cellularity()` are untouched; `localFragmentCount` stays non-fatal. No fixture geometry
+  mutation, tolerance, float-derived decision or accepted-boundary relaxation; no sphere / saturation /
+  ordinal-370 / folded-cone / vertex-30 / finalize-contact work.
+- **BW9** - six `M3-CP4c-3-TB21` discriminators: (1) 1-365 stay **365/365**; (2) ordinal 366 **still** reds at
+  `UncutFaceComponentOrbitSeedNotUnique` with `seedState=Multiple`, component 0, orbits `[0,1,3]` - any movement
+  falsifies BW8; (3) `V`, `E`, `F`, component count and the `V - E + F - chi` residual are published, so
+  **cellularity is decided**; (4) the failing component's per-orbit boundary attribution is published; (5) **371
+  and 372 execute their own assertions for the first time** and report their real result - a red there is new
+  information, not a regression; (6) carried surfaces 368/369/370/374 and co-reacher 367 are unchanged.
+
+**The turn after TB21 is expected to be a definition turn, not a Code + Build turn.** If BW2's residual confirms
+non-cellularity, CP4c-3's contract needs revising rather than patching - the producer must be required to
+**construct** a cut graph - and `M3-CP4c3-TB20-REV-CAND-02` belongs to that same turn. Under the project workflow
+`DEFN` absorbs `REVIEW + PLAN`, so that turn is the review of TB21.
+
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **85**.
 
+**Document consolidation ran this turn** under the standing rule (`CLEAN_UP_POLICY.md`). The TB19 report, the TB19
+review record, the CB22 build report and the consumed TB20 review plan were folded into
+`M3_CP4c_Consolidated_Record.md`'s folded document index after their durable facts were verified present in the
+retained records. Current authority is the TB20 report plus the TB20-REV record. No selector file, normative
+definition or policy was touched.
+
 ### Context Load Plan
+
+`load_next`: turn-based-coding-agent CODE + BUILD guidance.
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md`.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB20_Independent_Review_Plan.md` — **exact next plan**.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB19_Independent_Review_Record.md` — prior review/CB22 rationale.
-5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI.
-6. `.agents/Directional/GMP_COMPILE_POLICY.md` and `.agents/Directional/Regression_Root_Cause_Tracker.md`.
-7. `TODO.md` and `CHANGELOG.md`.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB20_Independent_Review_Record.md` — **frozen CB23 scope, §10 BW0–BW9**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` — **Part I §3** (the normative adjudication of this guard and
+   the cut-graph theorem), **Parts IV and V** prohibited lists, and **Part VI** for vertex-star definitions.
+   **Read the prohibited lists before authorizing any correction.**
+5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
+   document index** resolves every folded per-turn plan, report and record.
 
-For the turn-based coding skill, load canonical review/planning guidance. Do not preload sibling turn files or
-historical folded records unless CW2–CW4 require lineage.
+Source surfaces CB23 will touch: `src/geometry/EmbeddedGraphTopology.cpp` and
+`src/geometry/GlobalTopologyPlan.cpp` for the Euler census only, the plan diagnostics headers for the added typed
+fields, and `tests/` for the BW5 witnesses and the BW7 atlas-scoped accessor.
+
+**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
+`review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and
+`fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
