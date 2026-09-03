@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-03** at `M3-CP4c-3-TB17-REV`.
+Last updated **2026-09-03** at `M3-CP4c-3-CB20`.
 
 ---
 
@@ -22,8 +22,10 @@ Last updated **2026-09-03** at `M3-CP4c-3-TB17-REV`.
 | | |
 |---|---|
 | **Accepted authority** | **365 / 365** — selector 365, `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
-| **Current gate selector** | **382** — `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`, 382 identities, accepted 365 as an exact prefix |
+| **Current runtime selector** | **382** — `f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`, TB17 authority |
+| **Frozen next gate selector** | **383** — `a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`, exact selector-382 prefix plus the CB20 diagnostic witness |
 | **Current runtime authority** | **`M3-CP4c-3-TB17`**, immutable package **87**, source `bf971a6c9ad55e9c06c58f9fc73e9112808e5a1e`, run/job `33770523736 / 100699356052` |
+| **Current build authority** | **`M3-CP4c-3-CB20`**, diagnostic-only source `57635e87306a416daabb8321e1f36fa9c788d208`, compile `33780005014 / 100731152066`, runtime unexecuted |
 | **Ledger** | `7c4464134a7be19150094bbee874ebe99878c3eaa004908d3660c1ffaa36b6fd` — **374 PASS / 8 RED** |
 | **First red** | ordinal **366**, `TraceCutFaceFragmentCountMismatch`, source face **`(0,1,102)`** = mesh row 259 |
 | **Red set** | 366, 367, 368, 369, 370, 371, 372, 374 |
@@ -63,33 +65,28 @@ Face `(0,1,102)` is mesh row **259** (stored corner order `(102,1,0)`); vertex 0
 
 ---
 
-## 3. Exact next turn — `M3-CP4c-3-CB20`, diagnostic-only, `BS0–BS9`
+## 3. Exact next turn — `M3-CP4c-3-TB18`, artifact-only diagnostic gate
 
-Full text in §10 of `Architecture_M3_CP4c3_TB17_Independent_Review_Record.md`. In brief:
+CB20 is complete under BS0–BS9. It adds only retained evidence to the existing fragment-count failure:
 
-- **BS0** — accepted 365 untouched; selector **382 byte-frozen** and republished unchanged; eight standard compile
-  targets with **mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BS1** — put **actual**, **expected** and `tracePieceCount` on the error and render them through the production
-  locus path.
-- **BS2** — retain the failing face's contributing incidences: per real chord the trace and arc ids, segment index,
-  orientation, both carriers, **both** orbit ids, and any exterior-drop flag. Bounded, with a truncation marker.
-- **BS3** — publish the accumulated `edgeOrbitEvidence` for the face's three edges, bounded the same way.
-- **BS4** — make the existing `fragment_reconciliation` diagnostic reachable on the failing path.
-- **BS5** — one witness per new field through the production path, plus a byte-identical regression witness.
-- **BS6** — append selector **383** only on demonstrated falsification; no reordering.
-- **BS7** — **no semantic change whatsoever**: the comparison, `tracePieceCount`, `add_fragment_orbit`, the
-  `exteriorOrbits` filter, `is_terminal_slit`, `resolve_carrierless_corner_binding`,
-  `build_fragment_corner_incidence`, `build_regions` and all orbit/region construction stay untouched; CB19 is not
-  reverted.
-- **BS8** — audit by assumption; prove ordinals 1–365 unaffected by construction.
-- **BS9** — six `M3-CP4c-3-TB18` discriminators, chiefly: 1–365 stay 365/365; ordinal 366 **still** reds at the
-  same face (any movement falsifies BS7); and the line now carries the **direction** of the mismatch plus the
-  per-chord incidences.
+- actual fragment-orbit owner count, `tracePieceCount`, and expected local fragment count;
+- bounded real-chord incidence with trace/arc/segment/orientation, both carriers, both face-walk orbit ids and
+  exterior-drop flags;
+- bounded edge-orbit evidence for the failing face's three edges;
+- the existing `fragment_reconciliation` record before the failing early return;
+- production projection and a compiled typed projection/regression witness.
 
-**No product correction is authorized until TB18 supplies the direction and the contributing incidences.** The
-successor after TB18 is an independent `M3-CP4c-3-TB18-REV`, which owns the representation decision.
+The comparison and every topology-construction decision remain unchanged. Selector 382 is still byte-identical;
+selector 383 is only selector 382 plus the one diagnostic projection witness. Exact build evidence is in
+`Architecture_M3_CP4c3_CB20_Code_Build_Report.md`.
 
----
+**TB18** must consume the immutable CB20 compile artifact only and discharge the six BS9 runtime discriminators:
+accepted 365/365 stays green; ordinal 366 stays at the same reason/locus; exact mismatch direction becomes visible;
+the bounded chord/edge incidence publishes; failing-face reconciliation is retained; and all carried failure surfaces
+stay unchanged. No rebuild, repair, selector/source mutation, benchmark, or semantic correction is authorized.
+
+Frozen plan: `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md`. The successor after a complete TB18
+is **`M3-CP4c-3-TB18-REV` — independent REVIEW + PLAN only**.
 
 ## 4. Open candidates
 
@@ -97,7 +94,7 @@ Authoritative detail stays in `Regression_Root_Cause_Tracker.md`; this is the in
 
 | Candidate | State |
 |---|---|
-| `M3-CP4c3-TB17-CAND-01` | **ACTIVE / GATING** — owner class named at TB17-REV (local-fragment vs global-owner representation); corrective contract unadjudicated. Owner: BS1–BS4, then TB18-REV. |
+| `M3-CP4c3-TB17-CAND-01` | **ACTIVE / GATING / DIAGNOSTICS COMPILED** — owner class named at TB17-REV; CB20 retains the deciding counts/incidences without changing semantics. Owner: TB18 measurement, then TB18-REV adjudication. |
 | `M3-CP4c3-TB10-REV-CAND-01` | **ACTIVE / TEST-COUPLING / DEFERRED** — ordinals 371/372 blocked by a shared fixture precondition, not their own contracts. |
 | `M3-CP4c3-TB7-CAND-02` | **ACTIVE / DEFERRED** — folded-cone witness declares a flat-star field on a non-flat star; ordinal 374. No atlas invariant may be weakened for it. |
 | `M3-CP4c3-DEFN-R2-CAND-01` | **ACTIVE / ARCHITECTURAL CLASS** — an exact decision with no declared bound on its input size. |
@@ -135,10 +132,10 @@ After the durable start-of-turn checklist, load:
 
 1. `ORIENTATION.md` — read first.
 2. **this file** — current state, frozen successor, candidate index.
-3. `Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` — the frozen **CB20** scope, §10 BS0–BS9.
-4. `Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-5. `M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
-6. `GMP_COMPILE_POLICY.md` — mandatory for every compile.
+3. `Architecture_M3_CP4c3_CB20_Code_Build_Report.md` — current build authority and BS0–BS9 closeout.
+4. `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` — frozen exact next runtime plan.
+5. `Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
+6. `M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
 7. `Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 8. `M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed.
 

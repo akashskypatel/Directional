@@ -1,3 +1,12 @@
+## M3-CP4c3-CB20 — fragment-mismatch retained incidence diagnostics — **CURRENT BUILD AUTHORITY / DIAGNOSTIC-ONLY / COMPILE GREEN / NON-STABLE**
+
+- **Authority:** semantic/evidence source `57635e87306a416daabb8321e1f36fa9c788d208`; selector 382 byte-identical; selector 383 appends only `GlobalTopologyPlan.TraceCutFaceFragmentMismatchDiagnosticsSurviveProductionFailureProjection`.
+- **Diagnostic surface:** the existing `TraceCutFaceFragmentCountMismatch` early failure now retains actual fragment-orbit count, `tracePieceCount`, expected local fragment count, bounded real-chord incidence with both orbit ids/exterior-drop flags, bounded three-edge orbit evidence, and failing-face `fragment_reconciliation`; production projection carries the same typed evidence.
+- **Semantic boundary:** the comparison, counts, orbit insertion/dedup/filtering, terminal-slit rule, carrier-less binding, fragment incidence, region construction and inherited CB19 corrections are unchanged. No fixture/tolerance or accepted-boundary change.
+- **Compile:** run/job `33780005014 / 100731152066`, result/log artifacts `9903305256 / 9903306009`; all eight standard targets GREEN with mandatory GMP/GMPXX; `runtimeExecution=false`.
+- **Owner transfer:** `M3-CP4c3-TB17-CAND-01` remains active/gating, but its missing evidence is now **compiled and unexecuted**. Exact owner is artifact-only `M3-CP4c-3-TB18`, then independent `TB18-REV`; no semantic correction is authorized before those measurements/adjudication.
+- **Accounting:** diagnostic-only build on an unaccepted surface; **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **84**.
+
 ## M3-CP4c3-TB17-REV - independent review adjudication - **CURRENT REVIEW AUTHORITY / STATIC / NON-STABLE**
 
 > **Folded-document references.** Any `Architecture_M3_CP4*` filename cited below that no longer exists was
@@ -51,14 +60,14 @@
 - **Postflight:** package census identical at `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; all build/repair/discovery/mutation/benchmark flags false.
 - **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **84**. Exact next owner: `M3-CP4c-3-TB17-REV` BRQ0–BRQ8.
 
-## M3-CP4c3-TB17-CAND-01 - face-local chord count is compared to distinct global face-walk orbit owners without retaining the mismatch incidence - **ACTIVE / GATING / OWNER CLASS NAMED AT TB17-REV / CONTRACT UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB17-CAND-01 - face-local chord count is compared to distinct global face-walk orbit owners — **ACTIVE / GATING / DIAGNOSTICS COMPILED AT CB20 / CONTRACT UNADJUDICATED / NON-STABLE**
 
 - **Observed:** TB17 ordinal 366 first-reds at `TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`, after the TB16 `(9,11,17)` source-port rejection is gone. The same downstream stop is reached by 367/371/372.
 - **Sole emitter:** `build_regions` validates each directly cut face using `expected = tracePieceCount[face] + 1` and compares that local geometric count to `fragmentOrbits[face].size()`, where `fragmentOrbits` is a set of global face-walk orbit IDs contributed by oriented trace/cut/mandatory darts.
-- **Evidence gap is material:** the typed error publishes only `sourceFace`; TB17 does not retain actual/expected counts, the face's real trace segments/arcs/ranges, forward/reverse orbit IDs, repeated orbit ownership, or edge-orbit evidence. BR9's next-region diagnostic requirement is therefore not discharged.
+- **TB17 evidence gap:** TB17 published only `sourceFace`; it did not retain actual/expected counts, real trace segments/arcs, forward/reverse orbit IDs, exterior-drop state or edge-orbit evidence. **CB20 now compiles exactly that evidence without semantic change; TB18 must measure it before the contract can be adjudicated.**
 - **Do not guess ownership:** the failure may be a product local-fragment/orbit representation defect, trace/arc incidence defect, upstream network/provenance defect, or witness/precondition defect. The geometric statement `k real chords -> k+1 local fragments` must not be silently equated with `k+1 distinct global region owners` until review proves that equivalence.
 - **Settled facts not reopened:** CB19's segment-entry binding and terminal-slit zero-contribution contract are runtime-observed; accepted 365/365 is green; 368/369/370/374 stay independently owned.
-- **Owner:** **`M3-CP4c-3-TB17-REV`** under BRQ0–BRQ8. If static immutable evidence cannot reconstruct the missing face incidence, the next CB must be diagnostic-only.
+- **Owner:** TB17-REV named the owner class and mandated diagnostic-only CB20; CB20 is compile-green. Exact next owner is **`M3-CP4c-3-TB18`** for immutable measurement, then **`M3-CP4c-3-TB18-REV`** for representation adjudication.
 - **Accounting:** gating on an unaccepted surface; **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **84**.
 
 ## M3-CP4c3-TB16-REV — independent review adjudication — **SUPERSEDED BY TB17 / STATIC / NON-STABLE**

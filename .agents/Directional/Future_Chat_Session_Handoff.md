@@ -93,102 +93,66 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-CB20` — EXACT NEXT / Code + Build, DIAGNOSTIC-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB18` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
 
-`M3-CP4c-3-TB17-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` (measures **BRQ0–BRQ8** discharged, static only).
+`M3-CP4c-3-CB20` is **COMPLETE / DIAGNOSTIC-ONLY / COMPILE GREEN / RUNTIME NOT EXECUTED**.
 
-### What the review established
+### CB20 authority
 
-TB17's first red is `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)` = mesh row 259, published with
-**`sourceFace` and nothing else**.
+- semantic/evidence source: **`57635e87306a416daabb8321e1f36fa9c788d208`**;
+- selector 382 remains byte-identical at **`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`**;
+- selector 383 is exactly the 382-line prefix plus
+  `GlobalTopologyPlan.TraceCutFaceFragmentMismatchDiagnosticsSurviveProductionFailureProjection`, SHA-256
+  **`a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`**;
+- compile run/job: **`33780005014 / 100731152066`**;
+- result artifact: **`9903305256`** (`sha256:06def1b690bf63391520392da9381088c2bf6529138b6e9f44816bf06996563a`);
+- log artifact: **`9903306009`** (`sha256:f99eb8978f4eb2f014d4d1ca39ecd03e9c885f16d3621d821e7147044b63b8ec`);
+- exact target set: the eight standard CP4c targets, configured Release/static/PRE_TEST with mandatory GMP/GMPXX;
+- `runtimeExecution=false`. No Directional runtime/test/benchmark/discovery/generated binary ran.
 
-- **The invariant is falsified.** `GlobalTopologyPlan.cpp:779` compares `fragmentOrbits[face].size()` with
-  `tracePieceCount[face] + 1`. Each real chord adds **one** to the count and **two** *global* orbit ids to a
-  `std::set`; equality requires the local-fragment → global-owner map to be **injective**, which nothing
-  establishes and which is false in general on a closed surface. `add_fragment_orbit` also drops any
-  `exteriorOrbits` member unconditionally.
-- **Three mechanisms, opposite directions.** Shared global owner (fails low), exterior filtering (fails low),
-  non-collapsing chord sides or duplicated orbit evidence (fails high). `k = 1` is trivially satisfiable, so the
-  first exposing face has **two or more chords**.
-- **The deciding numbers are computed and then discarded.** The same function fills
-  `diagnostics->fragmentOrbits`, `tracePieceCount` and `edgeOrbitEvidence` and prints `fragment_orbit_count`,
-  `trace_piece_count`, `expected_fragment_count` for every face — thirty lines *below* the early `return failure`.
-- **Owner class named, contract not provable.** A product local-fragment/orbit **representation** defect, but the
-  three mechanisms imply different corrections and no accepted-boundary argument exists for a stage the torus and
-  sphere pass. **BRQ6 makes diagnostic-only mandatory.**
+### What CB20 changed — evidence only
 
-CB19's facts are preserved (`(9,11,17)` cleared; 48 carrier-less segments with distinct entry support;
-`SegmentEntrySupport` witness; 10 terminal slits; `realChordContribution=0`). The `READ_MODE` control-plane miss is
-**inert** — package bytes, selector order and per-identity exit codes are each pinned independently.
-`M3-CP4c3-TB17-CAND-01` transitions to **owner class named**. Sphere 368, saturation 369, ordinal 370, folded-cone
-374, the 371/372 co-reachers, vertex 30 and the finalize/contact fall-through are unchanged.
-**There is still no vertex-30 discriminator.**
+`TraceCutFaceFragmentCountMismatch` now retains actual fragment-orbit count, `tracePieceCount`, expected count, a
+bounded real-chord incidence list with both face-walk orbit ids and exterior-drop flags, and bounded three-edge
+orbit evidence. The existing `fragment_reconciliation` record is emitted for the failing face before the existing
+early return. These fields project through the production failure locus. A compiled witness pins every field plus
+a byte-identical unrelated-locus regression.
 
-### CB20 binding scope — `BS0–BS9`, in the review record §10
+The fragment comparison, `tracePieceCount`, `add_fragment_orbit`, `exteriorOrbits` filter, terminal-slit rule,
+carrier-less binding, fragment-corner incidence, region construction, CB19 corrections, fixtures and tolerances are
+unchanged. **No product correction is authorized until TB18 measures the retained evidence.**
 
-**Diagnostic-only**, under BRQ6's mandate. Owner: `src/geometry/GlobalTopologyPlan.cpp`, the fragment-count
-validation loop and the error it emits.
+### TB18 frozen six-discriminator boundary
 
-- **BS0** — accepted 365 untouched; **selector 382 byte-frozen** at `f30d5d56…50d665a1a`, republished unchanged;
-  **eight standard compile targets with mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BS1** — put **actual**, **expected** and `tracePieceCount` on the error and render them through the production
-  locus path.
-- **BS2** — retain the failing face's contributing incidences: per real chord the trace and arc ids, segment
-  index, orientation, both carriers, **both** orbit ids, and any exterior-drop flag. Bounded, with a truncation
-  marker.
-- **BS3** — publish the face's accumulated `edgeOrbitEvidence` for its three edges, bounded the same way.
-- **BS4** — make the existing `fragment_reconciliation` diagnostic reachable on the failing path; do not delete or
-  weaken the all-faces version.
-- **BS5** — one witness per new field through the **production** path, plus a byte-identical regression witness.
-- **BS6** — append **selector 383** only on demonstrated falsification; no reordering.
-- **BS7** — **no semantic change whatsoever**: the comparison, `tracePieceCount`, `add_fragment_orbit`, the
-  `exteriorOrbits` filter, `is_terminal_slit`, `resolve_carrierless_corner_binding`,
-  `build_fragment_corner_incidence`, `build_regions` and all orbit/region construction stay untouched; CB19 is not
-  reverted; no fixture mutation, tolerance, float-derived decision or accepted-boundary weakening; no sphere /
-  saturation / ordinal-370 / folded-cone correction; no vertex-30 or finalize/contact work.
-- **BS8** — audit by assumption; prove no count, orbit, region or plan changes and that 1–365 are unaffected.
-- **BS9** — six `M3-CP4c-3-TB18` discriminators: (1) 1–365 stay **365/365**; (2) ordinal 366 **still** reds at
-  `TraceCutFaceFragmentCountMismatch`, still at `(0,1,102)` — any movement falsifies BS7; (3) the line carries
-  **actual**, **expected** and `tracePieceCount`, so the **direction** is finally known; (4) it carries the
-  bounded per-chord incidence list with both orbit ids and any exterior-drop flag; (5) the
-  `fragment_reconciliation` record for the failing face is in the retained log; (6) carried surfaces 368, 369,
-  370, 374 and the 367/371/372 co-reachers are unchanged.
+Use only `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` against the immutable CB20 compile
+artifact. Required outcomes/evidence: (1) accepted 1–365 stays 365/365; (2) ordinal 366 remains
+`TraceCutFaceFragmentCountMismatch` at `(0,1,102)`; (3) exact actual/expected/`tracePieceCount` and mismatch direction;
+(4) bounded per-chord incidence with both orbit ids/exterior-drop flags; (5) failing-face `fragment_reconciliation`
+and three-edge evidence retained; (6) 367/368/369/370/371/372/374 carried surfaces unchanged.
 
-**No product correction is authorized until TB18 supplies the direction and the contributing incidences.**
+After a complete TB18 report, exact successor is **`M3-CP4c-3-TB18-REV` — independent REVIEW + PLAN only**.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **84**.
 
-**Document layout changed this turn.** The CP4c family is now `M3_CP4c_Current_And_Forward.md` (current state and
-forward plan) plus `M3_CP4c_Consolidated_Record.md` (history, carrying a **folded document index** for the 35
-folded per-turn plans/reports/records) plus `M3_CP4c_Frozen_Definitions.md`, which carries all six former
-frozen-definition documents **verbatim** as Parts I–VI with a citation map. All selector files are unchanged.
-
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent CODE + BUILD guidance
+- turn-based-coding-agent TEST + BENCHMARK guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
 0. `.agents/Directional/ORIENTATION.md` — read first.
-1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state, frozen successor, candidate index.
-2. `.agents/Directional/Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` — **frozen CB20 scope, §10 BS0–BS9**.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime authority.
-4. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions and amendments.
-5. `.agents/Directional/GMP_COMPILE_POLICY.md` — mandatory for every compile.
+1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state and exact successor.
+2. `.agents/Directional/Architecture_M3_CP4c3_CB20_Code_Build_Report.md` — exact source/build authority.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` — **frozen TB18 execution contract**.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime baseline.
+5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions/amendments.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
-7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed; its **folded
-   document index** resolves every per-turn plan/report/record folded on 2026-09-03.
+7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed.
 
-Source surfaces CB20 will touch: `src/geometry/GlobalTopologyPlan.cpp` (the fragment-count validation loop and its
-error only), the plan error/diagnostics headers for the added typed fields, `src/pipeline/RemeshPipeline.cpp` for
-the projection, and `tests/` for the BS5 witnesses.
-
-**Review tooling:** `.agents/Directional/tools/` holds read-only helpers — `review_check.py authority <sha>` and
-`review_check.py boundary`, `selector_probe.py` for selector hashes and ordinal ↔ identity lookups, and
-`fixture_probe.py` for fixture topology and vertex fans. See `tools/README.md` for the caveats.
+TB18 must consume the immutable CB20 compile artifact directly. No configure, compile, relink, repair, source/test/fixture/selector
+mutation, generated discovery, or benchmark execution is authorized.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 
