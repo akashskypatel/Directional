@@ -1,5 +1,0 @@
-.agents/connector-triggers/source-snapshot/m3-cp4c-3-tb19-exec.txt
-.agents/connector-triggers/tb/m3-cp4c3-tb19-apply.txt
-.agents/connector-triggers/tb/m3-cp4c3-tb19.txt
-.agents/connector-triggers/tb/m3-cp4c3-tb19-closeout-apply.txt
-.agents/Directional/turn-payloads/m3-cp4c3-tb19-run.sh
