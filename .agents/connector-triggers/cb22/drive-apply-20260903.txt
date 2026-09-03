@@ -1,4 +1,0 @@
-purpose=apply preserved M3-CP4c-3-CB22 diagnostic-only patch
-base_sha=e5f10cc40381392425ca9c1ef3e7eea67d2bcc16
-patch_sha256=821bd43d0e4918621520f39196fce5bb337db4c6f464e5ae1533395e730aa731
-retry=0
