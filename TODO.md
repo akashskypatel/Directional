@@ -26,67 +26,38 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-CB23` (Code + Build, DIAGNOSTIC-ONLY + test decoupling)
+## Current focus — `M3-CP4c-3-TB21` (Artifact-Only Test + Benchmark)
 
-`M3-CP4c-3-TB20-REV` is **COMPLETE**. Record:
-`Architecture_M3_CP4c3_TB20_Independent_Review_Record.md` (**CW0–CW9** discharged, static only).
+`M3-CP4c-3-CB23` is **COMPLETE / BUILD + PACKAGE GREEN / RUNTIME-FREE**. Record:
+`Architecture_M3_CP4c3_CB23_Code_Build_Report.md`.
 
-The branch is measured and the guard is normative.
+CB23 implemented BW0–BW9 without a product semantic correction:
 
-- **Branch confirmed without inference.** `uncutFaceComponent=0`, `seedCount=3`, `seedState=Multiple`,
-  `sourceFaceLocusKind=FirstUnlabeledFaceInIterationOrder`; component census `faceCount=191, seedOrbits=[0,1,3],
-  seedOrbitsTruncated=false`; global census 9 rows untruncated. Both TB19-REV predictions hold.
-- **Normative authority already adjudicates the guard and rules it CORRECT.**
-  `M3_CP4c_Frozen_Definitions.md` **Part I §3**, on this exact construction and line: the rule "requires each
-  resulting component to receive **exactly one** orbit seed from its labeled neighbours ... **The error code is
-  correct and the producer is behaving correctly. There is no bug at that line.** It is reporting a missing
-  input." The missing input is that **the network is not a cut graph of the surface**. **Parts IV and V** prohibit
-  relaxing `proves_cellularity()`, the fragment-count invariant, or this guard; **Part VI** is vertex-star scoped
-  and lifts none of them. **No correction is authorized at the guard.**
-- **New information: the class now appears on a GENUS-0 witness.** Part I proved it for the torus from `chi = 0`
-  and `E = V = 48`. The mechanical witness is closed with `chi = 2`, where that argument does not apply.
-- **The bounded boundary evidence is sufficient; the missing datum is different and far smaller.** The 33
-  unretained rows cannot change anything - `seedOrbitCount=3` is explicitly untruncated and more rows could only
-  add orbits. What is missing is the **embedded graph's own `V`, `E` and connected-component count**, which decide
-  cellularity by `V - E + F = chi` exactly as Part I decided the torus. TB19's "26 arcs" is the fragment-owner
-  trace-arc census, not the graph's `E`. **No further boundary retention is warranted.**
-- **371/372 decoupling is AUTHORIZED.** The two-consecutive-TB trigger fired, and the deferral reasoning has
-  inverted: the frontier is architectural, not about to clear.
-- **Escalated:** `M3-CP4c3-TB20-REV-CAND-02` - CB21 weakened the fragment-count invariant, which Parts IV and V
-  prohibit, and TB18-REV authorized it without consulting those lists. Not reverted (CW5 binds the successor to
-  preserve CB21); only a definition-level turn may resolve it.
-
-368/369/370/374 are unchanged under their existing owners. **There is still no vertex-30 discriminator.**
-
-**Selector convention break, recorded:** every selector file 357-384 is named by its identity count; the current
-gate file is named 385 and holds **388**. Its bytes are frozen and correct - **do not rename it** - but never
-derive a count from a selector filename.
+- production failures now publish the embedded graph's own `V`, `E`, `F`, connected-component count, source `χ(S)` and `V − E + F − χ(S)` residual;
+- the uncut-component seed failure publishes bounded per-orbit boundary-edge attribution without increasing raw boundary-row retention;
+- the census projects through the mechanical production failure and is carried to torus/prescribed-sphere witness paths;
+- the CW6-authorized test-only atlas accessor decouples ordinals 371/372 while leaving their assertions, ordinals and selector membership unchanged;
+- selector **391** contains 391 identities, SHA-256 `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`; accepted 365 remains byte-identical;
+- exact semantic source is **`fa5646106ccaa23770b84a935c6d1d6007928640`**;
+- authoritative compile/package run **`33815475590`** is GREEN; package job `100847694307`, immutable package artifact **`9916511617`** (`sha256:8378a108811740cff5fd1a0fc9db66f9e3334d7048ea9e7c7d6e8e1cbd852050`), log `9916511915`; GMP/GMPXX link evidence and `runtimeExecution=false` verified.
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-CB23`** under §10 **BW0–BW9** of
-`Architecture_M3_CP4c3_TB20_Independent_Review_Record.md`. **No product semantic change.**
+Run **`M3-CP4c-3-TB21`** under
+`Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Plan.md`.
 
-- [ ] **BW0** — gate selector byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
-- [ ] **BW1** — publish the embedded graph's own `V`, `E`, `F` and connected-component count.
-- [ ] **BW2** — publish `chi(S)` and the per-component residual `V - E + F - chi`, deciding cellularity.
-- [ ] **BW3** — the failing component's per-orbit boundary attribution, bounded. **No extra boundary retention.**
-- [ ] **BW4** — carry the census to the torus and prescribed-sphere paths.
-- [ ] **BW5** — one witness per new field plus an unrelated-error regression witness.
-- [ ] **BW6** — append the next selector **named by its identity count**; restate the convention.
-- [ ] **BW7** — the **test-only** 371/372 atlas-scoped accessor: assertions byte-unchanged, selector membership
-      unchanged, no product source touched.
-- [ ] **BW8** — **no product semantic change**; the guard, barrier set, partition, `seedOrbits`,
-      `edgeOrbitEvidence`, face walk, rotation system, region drafts, CB21's comparison and `proves_cellularity()`
-      stay untouched; `localFragmentCount` stays non-fatal.
-- [ ] **BW9** — publish the six `M3-CP4c-3-TB21` discriminators, chiefly that cellularity is decided and that
-      371/372 execute their own assertions for the first time.
+- [ ] execute all **391** selector identities, one fresh process per identity, with no source/package mutation;
+- [ ] require accepted ordinals **1–365 = 365/365 PASS**;
+- [ ] verify ordinal **366** remains `UncutFaceComponentOrbitSeedNotUnique`, component 0, `seedState=Multiple`, seed orbits `[0,1,3]`;
+- [ ] publish the mechanical embedded-graph `V/E/F/componentCount/χ/residual` and decide cellularity from the production evidence;
+- [ ] publish failing-component per-orbit boundary attribution;
+- [ ] force **371/372 to execute their own existing assertions** and record their real result;
+- [ ] execute appended identities **389–391** and retain torus/sphere comparison evidence;
+- [ ] preserve pre/post byte+mode package identity and classify every observed red in `Regression_Root_Cause_Tracker.md`.
 
-**The turn after TB21 is expected to be a definition turn**, owning both the cut-graph contract and
-`M3-CP4c3-TB20-REV-CAND-02` (CB21's weakening of a prohibited invariant).
+If TB21's Euler residual confirms non-cellularity, the exact successor is expected to be **`M3-CP4c-3-DEFN`**, which absorbs review+plan and owns the cut-graph construction contract plus `M3-CP4c3-TB20-REV-CAND-02`. If the Euler evidence conflicts with that conclusion or BW8 immutability fails, route instead to independent `M3-CP4c-3-TB21-REV`. No CB is pre-authorized.
 
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **85**.
+Accepted runtime authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **86**.
 
 ## Carried forward from M1
 

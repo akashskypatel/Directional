@@ -10,7 +10,7 @@ Anything in this file that is no longer current is moved to the consolidated his
 the project. It may be corrected or extended; it must not be collapsed into another document or replaced by a
 summary without explicit user authorization.
 
-Last updated **2026-09-03** at `M3-CP4c-3-TB20-REV`.
+Last updated **2026-09-03** at `M3-CP4c-3-CB23`.
 
 ---
 
@@ -23,22 +23,23 @@ Last updated **2026-09-03** at `M3-CP4c-3-TB20-REV`.
 |---|---|
 | **Accepted authority** | **365 / 365** — selector 365, `6b5b6555d39c250c24cbf3faeafdeca93b4b11379118a29583253e6cfc14b8a1` |
 | **Current runtime authority** | **`M3-CP4c-3-TB20`** — source `c5d3c65936e14e1c3e2c8afcffbc4236f37aa131`, run/job `33809177155 / 100826787667`, **380 PASS / 8 RED** |
-| **Current gate selector** | file `..._Required_Green_Selector_385.txt`, `164a8b25118a4d00fc9261e4645795ad396130b6d6ea4dd8784158b76e1d0fca`, **388 identities**, selector 384 and accepted 365 exact prefixes |
-| **Compile authority** | run/job `33805683152 / 100815534364`, result artifact `9912976409`, ZIP SHA-256 `b4cbcbf5304ff94bd815790264ac360fa1275f23b3af2080cffda381a698a851`, GMP/GMPXX |
+| **Current semantic source** | **`fa5646106ccaa23770b84a935c6d1d6007928640`** — CB23 diagnostic/test-only source, runtime not yet executed |
+| **Current gate selector** | `Architecture_M3_CP4c3_Required_Green_Selector_391.txt`, **391 identities**, `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`; selector 385 (388 identities) and accepted 365 exact prefixes |
+| **Compile/package authority** | run `33815475590`, package job `100847694307`, artifact `9916511617`, digest `sha256:8378a108811740cff5fd1a0fc9db66f9e3334d7048ea9e7c7d6e8e1cbd852050`, GMP/GMPXX, `runtimeExecution=false` |
 | **TB20 artifacts** | result/log `9914226104 / 9914226799` |
-| **Ledger** | `0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a` — 380 + 8 = 388, closes |
-| **First red** | ordinal **366**, `UncutFaceComponentOrbitSeedNotUnique`, component **0**, `seedState=Multiple`, seed count **3**, seed orbits **`[0,1,3]`** |
-| **Red set** | 366, 367, 368, 369, 370, 371, 372, 374 |
-| **Package census** | pre/post identical, `f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0` |
+| **TB20 ledger** | `0a4d8b17abd4e397bb80ff0fa92b70bc50e971589e368d1cdf2ecef85868203a` — 380 + 8 = 388 |
+| **First runtime red** | ordinal **366**, `UncutFaceComponentOrbitSeedNotUnique`, component **0**, `seedState=Multiple`, seed count **3**, seed orbits **`[0,1,3]`** |
+| **TB20 red set** | 366, 367, 368, 369, 370, 371, 372, 374 |
+| **TB20 package census** | pre/post identical, `f0b1beec127dacbec9b356630ce8d9e7364de55a5b014598ee67fcdab653c5b0` |
 | **Stable accounting** | **44 events / 14 categories / 30 recurrences** |
 | **Produced-witness debt** | **5** |
-| **Semantic M3 package count** | **85** |
+| **Semantic M3 package count** | **86** |
 
-> **Selector naming.** Every selector file 357–384 is named by its identity count. The current gate file is named
-> **385** and holds **388** identities. Its bytes are frozen, hash-verified and correct — **do not rename it** —
-> but never derive a count from a selector filename. Future selector files are named by their identity count.
-> `Required_Green_Selector_Manifest.md` indexes the whole set: counts, LF hashes, prefix parents, appended
-> identities and roles. **Selector files are never consolidated** (`RETENTION_POLICY.md`).
+> **Selector naming.** Every selector file 357–384 is named by its identity count. The frozen file named **385**
+> is the one historical exception and contains **388** identities; do not rename it or derive a count from its
+> filename. CB23 restores the convention: selector **391** is named by its **391** identities.
+> `Required_Green_Selector_Manifest.md` indexes counts, LF hashes, prefix parents, appended identities and roles.
+> **Selector files are never consolidated** (`RETENTION_POLICY.md`).
 
 ---
 
@@ -81,35 +82,25 @@ marked truncated.
 
 ---
 
-## 3. Exact next turn — `M3-CP4c-3-CB23`, `BW0–BW9`
+## 3. Exact next turn — `M3-CP4c-3-TB21`, artifact-only
 
-Full text in §10 of `Architecture_M3_CP4c3_TB20_Independent_Review_Record.md`. **Diagnostic-only on the product,
-plus the authorized test-only 371/372 decoupling.** CB22 measured *seeding*; BW measures *cellularity*, by the same
-arithmetic that settled the torus.
+CB23 is closed by `Architecture_M3_CP4c3_CB23_Code_Build_Report.md`. The executable contract is frozen in
+`Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Plan.md`.
 
-- **BW0** — accepted 365 untouched; the gate selector file byte-frozen and republished unchanged; eight standard
-  compile targets with **mandatory GMP/GMPXX linkage**; no runtime; no acceptance claimed.
-- **BW1** — publish the **embedded graph's own** `V`, `E`, `F` and connected-component count — not the
-  fragment-owner census's trace-arc subset.
-- **BW2** — publish `χ(S)` and the per-component residual `V − E + F − χ`, deciding cellularity by arithmetic.
-- **BW3** — the failing component's per-orbit boundary attribution, bounded. **No extra boundary retention.**
-- **BW4** — carry the census to the torus and prescribed-sphere paths.
-- **BW5** — one witness per new field through the production path, plus an unrelated-error regression witness.
-- **BW6** — append the next selector **named by its resulting identity count**; restate the convention.
-- **BW7** — the **test-only** 371/372 atlas-scoped accessor: assertions byte-unchanged, selector membership and
-  ordering unchanged, **no product source touched**, the all-products fixture contract intact for other consumers.
-- **BW8** — **no product semantic change**: the guard and its predicate, `componentBarriers`, the partition,
-  `seedOrbits`, `edgeOrbitEvidence`, `add_fragment_orbit`, the `exteriorOrbits` filter, `is_terminal_slit`, the
-  face walk, the rotation system, region drafts, CB21's comparison and `proves_cellularity()` stay untouched;
-  `localFragmentCount` stays non-fatal.
-- **BW9** — six `M3-CP4c-3-TB21` discriminators, chiefly: 1–365 stay 365/365; ordinal 366 **still** reds at the
-  same site with the same branch; **cellularity is decided**; and **371/372 execute their own assertions for the
-  first time** — a red there is new information, not a regression.
+- consume only immutable package `9916511617` from semantic source `fa5646106ccaa23770b84a935c6d1d6007928640`;
+- verify selector 391 `f60638a5890e133d7eb3cfcee2783c000192f310a41ef5ec1b4ec3b0cf6086c0`, predecessor 385 and accepted 365 before runtime;
+- execute all **391 identities one per fresh process**; no configure/compile/relink/discovery/package repair/source-test-fixture-selector mutation;
+- require accepted **1–365 = 365/365 PASS**;
+- require ordinal 366 to stay on the same normative `Multiple(3)` seed-uniqueness frontier;
+- retain the mechanical embedded-graph `V/E/F/componentCount/χ/residual` and per-orbit boundary attribution;
+- make 371/372 execute their existing assertions through the atlas-only fixture and record whatever they actually prove;
+- execute appended 389–391 and preserve torus/prescribed-sphere comparison evidence;
+- preserve byte+mode package identity and classify every observed red before closeout.
 
-**The turn after TB21 is expected to be a definition turn, not a Code + Build turn.** If BW2's residual confirms
-non-cellularity, CP4c-3's contract needs revising rather than patching — the producer must be required to
-**construct** a cut graph — and `M3-CP4c3-TB20-REV-CAND-02` belongs to that same turn. Under the project workflow
-`DEFN` absorbs `REVIEW + PLAN`, so that turn is the review of TB21.
+If the Euler residual confirms non-cellularity, the next decision turn is **`M3-CP4c-3-DEFN`** — `DEFN` absorbs
+review+plan and owns both the cut-graph construction requirement and `M3-CP4c3-TB20-REV-CAND-02`. A contradictory
+Euler result or movement of ordinal 366 routes to **`M3-CP4c-3-TB21-REV`** instead. No Code + Build successor is
+pre-authorized.
 
 ---
 
@@ -171,8 +162,9 @@ After the durable start-of-turn checklist, load:
 
 1. `ORIENTATION.md` — read first.
 2. **this file** — current state, frozen successor, candidate index.
-3. `Architecture_M3_CP4c3_TB20_Independent_Review_Record.md` — the frozen **CB23** scope, §10 BW0–BW9.
-4. `Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Report.md` — current immutable runtime authority.
+3. `Architecture_M3_CP4c3_TB21_Artifact_Only_Test_Benchmark_Plan.md` — **exact TB21 execution contract**.
+4. `Architecture_M3_CP4c3_CB23_Code_Build_Report.md` — current semantic/build authority; then
+   `Architecture_M3_CP4c3_TB20_Artifact_Only_Test_Benchmark_Report.md` for the preceding immutable runtime authority.
 5. `M3_CP4c_Frozen_Definitions.md` — **Part I §3** (the normative adjudication of this guard and the cut-graph
    theorem), **Parts IV and V** prohibited lists, **Part VI** for vertex-star definitions.
 6. `GMP_COMPILE_POLICY.md` — mandatory for every compile.
