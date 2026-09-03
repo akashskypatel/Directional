@@ -126,36 +126,33 @@ jobs:
           cp -a "$src/benchmarks/fixtures" "$out/package86/test-data/benchmarks/fixtures"
           fixture_count="$(find "$out/package86/test-data/benchmarks/fixtures" -type f | wc -l | tr -d ' ')"
           test "$fixture_count" = 27
-          cat > "$out/package86/metadata/fixture-package-contract.txt" <<EOF
-package=86
-source_commit=$source_sha
-fixture_count=27
-fixture_authority=package-relative
-selector=382
-selector_sha256=f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a
-frozen_selector_381_sha256=af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90
-non_gating_diagnostic_identity=GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable
-runtimeExecution=false
-packageRepair=false
-EOF
-          cat > "$out/package86/metadata/package-envelope.txt" <<'EOF'
-runtimeExecution=false
-turnBoundary=Code+Build-only
-exactArithmeticBackend=GMP
-modePreservingEnvelope=true
-semanticContracts=compiled-not-executed
-EOF
+          printf '%s\n' \
+            'package=86' \
+            "source_commit=$source_sha" \
+            'fixture_count=27' \
+            'fixture_authority=package-relative' \
+            'selector=382' \
+            'selector_sha256=f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a' \
+            'frozen_selector_381_sha256=af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90' \
+            'non_gating_diagnostic_identity=GlobalTopologyPlan.MechanicalWitnessStageReachabilityIsObservable' \
+            'runtimeExecution=false' \
+            'packageRepair=false' > "$out/package86/metadata/fixture-package-contract.txt"
+          printf '%s\n' \
+            'runtimeExecution=false' \
+            'turnBoundary=Code+Build-only' \
+            'exactArithmeticBackend=GMP' \
+            'modePreservingEnvelope=true' \
+            'semanticContracts=compiled-not-executed' > "$out/package86/metadata/package-envelope.txt"
           (cd "$out/package86" && find . -type f ! -name SHA256SUMS -print0 | LC_ALL=C sort -z | xargs -0 sha256sum > SHA256SUMS)
           (cd "$out/package86" && sha256sum -c SHA256SUMS)
           test "$(grep -c 'SHA256SUMS' "$out/package86/SHA256SUMS" || true)" = 0
           tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner -czf "$out/package86.tar.gz" -C "$out" package86
           sha256sum "$out/package86.tar.gz" > "$out/package86.sha256"
           sha256sum "$source_archive" > "$out/source-archive.sha256"
-          cat > "$out/package86-boundary.txt" <<'EOF'
-runtimeExecution=false
-packageRepair=false
-No Directional binary was executed while packaging.
-EOF
+          printf '%s\n' \
+            'runtimeExecution=false' \
+            'packageRepair=false' \
+            'No Directional binary was executed while packaging.' > "$out/package86-boundary.txt"
           echo "fixture_count=$fixture_count"
           echo "package86_sha256=$(awk '{print $1}' "$out/package86.sha256")"
           echo "source_archive_sha256=$(awk '{print $1}' "$out/source-archive.sha256")"
@@ -179,12 +176,11 @@ EOF
         shell: bash
         run: |
           set +e
-          {
-            echo "final_job_status=${{ job.status }}"
-            echo 'runtimeExecution=false'
-            echo 'packageRepair=false'
-            echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          } | tee -a "$RUNNER_TEMP/package86.log"
+          printf '%s\n' \
+            "final_job_status=${{ job.status }}" \
+            'runtimeExecution=false' \
+            'packageRepair=false' \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$RUNNER_TEMP/package86.log"
 
       - name: Upload package log
         if: always()
