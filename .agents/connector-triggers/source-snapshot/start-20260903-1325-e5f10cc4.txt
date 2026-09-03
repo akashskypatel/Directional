@@ -1,0 +1,3 @@
+purpose=materialize exact source snapshot for start-of-turn inspection
+source_sha=e5f10cc40381392425ca9c1ef3e7eea67d2bcc16
+retry=0
