@@ -1201,8 +1201,7 @@ RegionBuildResult build_regions(
 
       ++rowCount;
       if (rows.size() >= kUncutComponentBoundaryEvidenceLimit) continue;
-      UncutFaceComponentBoundaryEdgeDiagnostic row;
-      row.sourceEdge = edge;
+      UncutFaceComponentBoundaryEdgeDiagnostic row{edge};
       row.barrierClass = component_barrier_class(edge);
 
       if (incident.size() != 2U) {
