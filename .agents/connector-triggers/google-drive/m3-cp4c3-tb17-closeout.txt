@@ -1,6 +1,0 @@
-turn_id=M3-CP4c-3-TB17-CLOSEOUT
-base_sha=d35d04a377af92433b9bb1b690021d1cb5a083ea
-patch_sha256=a59a04452b113ac8fb7670c35f2a100560194dc3c8920ee84b2caa711693519f
-diff_body_sha256=c0969858c50f51fdfe1a8bd7753a743dae46b754987184daf99426818098fbe7
-drive_file_id=1vDE3gMCGGG5HXEBFov70_PXVaRlad0H6
-purpose=tb17-closeout-docs
