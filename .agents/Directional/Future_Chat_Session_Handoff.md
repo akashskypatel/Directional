@@ -93,66 +93,84 @@ separate `REVIEW + PLAN` turn is no longer scheduled ahead of a `DEFN`. This col
 `REVIEW + PLAN` without a `DEFN` still gets its own review turn. First applied at
 `M3-CP4c-3-DEFN`.
 
-## Mandatory next turn — `M3-CP4c-3-TB18` — EXACT NEXT / Test + Benchmark, ARTIFACT-ONLY
+## Mandatory next turn — `M3-CP4c-3-TB18-REV` — EXACT NEXT / independent REVIEW + PLAN only
 
-`M3-CP4c-3-CB20` is **COMPLETE / DIAGNOSTIC-ONLY / COMPILE GREEN / RUNTIME NOT EXECUTED**.
+`M3-CP4c-3-TB18` is **COMPLETE / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**.
 
-### CB20 authority
+### TB18 immutable runtime authority
 
 - semantic/evidence source: **`57635e87306a416daabb8321e1f36fa9c788d208`**;
-- selector 382 remains byte-identical at **`f30d5d5625682d928a4878e0139e6b04c9e9082f58e8a545c49c8a350d665a1a`**;
-- selector 383 is exactly the 382-line prefix plus
-  `GlobalTopologyPlan.TraceCutFaceFragmentMismatchDiagnosticsSurviveProductionFailureProjection`, SHA-256
-  **`a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`**;
-- compile run/job: **`33780005014 / 100731152066`**;
-- result artifact: **`9903305256`** (`sha256:06def1b690bf63391520392da9381088c2bf6529138b6e9f44816bf06996563a`);
-- log artifact: **`9903306009`** (`sha256:f99eb8978f4eb2f014d4d1ca39ecd03e9c885f16d3621d821e7147044b63b8ec`);
-- exact target set: the eight standard CP4c targets, configured Release/static/PRE_TEST with mandatory GMP/GMPXX;
-- `runtimeExecution=false`. No Directional runtime/test/benchmark/discovery/generated binary ran.
+- CB20 compile run/job: **`33780005014 / 100731152066`**;
+- compile artifact: **`9903305256`** (`sha256:06def1b690bf63391520392da9381088c2bf6529138b6e9f44816bf06996563a`);
+- selector 383: **`a7fe57cc47c5035414a82f02f044a911f9c430f90d11f1bd3ef1bca76f3a4b2c`**;
+- final TB18 run/job: **`33785382790 / 100748821924`**;
+- result artifact: **`9905330011`** (`sha256:c060eea3b1469c2ddc368bcf1d1d3a61c4ce35ad1de7bda249e11bdb566c5faa`);
+- log artifact: **`9905330748`** (`sha256:2bb5e0504d80b9f9d1f905d802a90980caedc47c42531664df7eb063a3c181c3`);
+- exact result ledger: **`a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`**;
+- pre/post package byte+mode census: **IDENTICAL**, `5fb1dcf55b2850f5655e76a58b3a77e3b49c29b137c3773ebd416bbedb350eb8`;
+- selector result: **375 PASS / 8 RED**; accepted 1–365 **365/365 PASS**; reds 366/367/368/369/370/371/372/374.
 
-### What CB20 changed — evidence only
+Attempt 1 `33784755615 / 100746771952` executed ordinals 1–39 PASS and stopped before ordinal 40 on a temporary
+owner-map omission. Its evidence was preserved; the successful revision verified those 39 results and resumed at 40
+without rerunning them.
 
-`TraceCutFaceFragmentCountMismatch` now retains actual fragment-orbit count, `tracePieceCount`, expected count, a
-bounded real-chord incidence list with both face-walk orbit ids and exterior-drop flags, and bounded three-edge
-orbit evidence. The existing `fragment_reconciliation` record is emitted for the failing face before the existing
-early return. These fields project through the production failure locus. A compiled witness pins every field plus
-a byte-identical unrelated-locus regression.
+### New deciding runtime evidence
 
-The fragment comparison, `tracePieceCount`, `add_fragment_orbit`, `exteriorOrbits` filter, terminal-slit rule,
-carrier-less binding, fragment-corner incidence, region construction, CB19 corrections, fixtures and tolerances are
-unchanged. **No product correction is authorized until TB18 measures the retained evidence.**
+Ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at source face `(0,1,102)`, preserving CB20's no-semantic-
+change boundary. The production failure now reports:
 
-### TB18 frozen six-discriminator boundary
+- `fragmentOrbitCount=1`;
+- `tracePieceCount=1`;
+- `expectedFragmentCount=2` — **actual < expected**;
+- one untruncated incidence: trace 1 / arc 15 / segment 4 / Forward, incoming `none`, outgoing `0-102`;
+- `forwardOrbit=0`, `reverseOrbit=0`;
+- `forwardExteriorDropped=false`, `reverseExteriorDropped=false`;
+- all three source edges (`1-102`, `0-1`, `0-102`) each retain exactly orbit `[0]`.
 
-Use only `Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` against the immutable CB20 compile
-artifact. Required outcomes/evidence: (1) accepted 1–365 stays 365/365; (2) ordinal 366 remains
-`TraceCutFaceFragmentCountMismatch` at `(0,1,102)`; (3) exact actual/expected/`tracePieceCount` and mismatch direction;
-(4) bounded per-chord incidence with both orbit ids/exterior-drop flags; (5) failing-face `fragment_reconciliation`
-and three-edge evidence retained; (6) 367/368/369/370/371/372/374 carried surfaces unchanged.
+For this witness the mismatch is therefore a **shared-global-owner collapse**, not exterior filtering: the two oriented
+sides of one real chord map to one global face-walk owner. TB18 records the mechanism but does **not** prescribe the
+replacement representation/invariant.
 
-After a complete TB18 report, exact successor is **`M3-CP4c-3-TB18-REV` — independent REVIEW + PLAN only**.
+BS9-5 is **FAIL / diagnostic insufficiency**: the typed production failure retains the three-edge evidence, but the
+selector logs contain no `M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation` line for the failing face. The
+frozen plan forbids an ad-hoc evidence-seeking rerun.
+
+367/371/372 co-reach the same mismatch; 368 remains prescribed-sphere
+`TraceEventPositionInvalid / NoCarrierMatch / SourceEdgeUnavailable`; 369 remains saturation; 370 remains the
+`CellularityNotEstablished` / missing-locus surface; 374 remains `atlasBuild=false`.
+
+### Exact review mandate
+
+`M3-CP4c-3-TB18-REV` must independently adjudicate the representation contract. It must decide whether the product
+must carry local face-fragment identity separately from global region-orbit ownership or prove another invariant that
+is valid under shared owners, exterior filtering, and closed-surface topology. It must explicitly disposition the
+missing `fragment_reconciliation` text record and may not authorize a symptom-scoped count tweak, fixture exception,
+dedup bypass, exterior-filter weakening, or accepted-boundary relaxation without proof.
+
+Because this is a REVIEW turn, update `ORIENTATION.md` before closeout. No semantic Code + Build is pre-authorized by
+TB18.
 
 Accepted authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
-categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **84**.
+categories / 30 recurrences**; produced-witness debt **5**; semantic M3 package count **84**.
 
 ## Context Load Plan
 
 `load_next`:
-- turn-based-coding-agent TEST + BENCHMARK guidance
+- turn-based-coding-agent REVIEW + PLAN guidance
 
 Minimum successor context after the mandatory durable policy/start checklist:
 
-0. `.agents/Directional/ORIENTATION.md` — read first.
+0. `.agents/Directional/ORIENTATION.md` — read first; update it during this REVIEW turn.
 1. `.agents/Directional/M3_CP4c_Current_And_Forward.md` — current state and exact successor.
-2. `.agents/Directional/Architecture_M3_CP4c3_CB20_Code_Build_Report.md` — exact source/build authority.
-3. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` — **frozen TB18 execution contract**.
-4. `.agents/Directional/Architecture_M3_CP4c3_TB17_Artifact_Only_Test_Benchmark_Report.md` — current runtime baseline.
+2. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Report.md` — **current runtime authority**.
+3. `.agents/Directional/Architecture_M3_CP4c3_TB18_Artifact_Only_Test_Benchmark_Plan.md` — frozen TB18 evidence contract.
+4. `.agents/Directional/Architecture_M3_CP4c3_TB17_Independent_Review_Record.md` — prior static owner-class adjudication.
 5. `.agents/Directional/M3_CP4c_Frozen_Definitions.md` Part VI — normative definitions/amendments.
 6. `.agents/Directional/Regression_Root_Cause_Tracker.md`, `TODO.md`, `CHANGELOG.md`.
 7. `.agents/Directional/M3_CP4c_Consolidated_Record.md` — only when historical lineage is needed.
 
-TB18 must consume the immutable CB20 compile artifact directly. No configure, compile, relink, repair, source/test/fixture/selector
-mutation, generated discovery, or benchmark execution is authorized.
+No runtime, compile, benchmark, product/test/fixture/selector mutation, or semantic correction is authorized in
+TB18-REV. It is independent review and planning only.
 
 ## Resume-critical lessons — DURABLE, DO NOT DELETE
 

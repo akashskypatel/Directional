@@ -1,3 +1,33 @@
+## 2026-09-03 — `M3-CP4c-3-TB18`: shared global-owner fragment collapse measured; independent review next
+
+Artifact-only TB18 consumed immutable CB20 source/artifact `57635e87306a416daabb8321e1f36fa9c788d208 / 9903305256` with
+no configure, compile, relink, repair, generated discovery, source/test/fixture/selector mutation, or benchmark.
+Final run/job `33785382790 / 100748821924` produced result/log artifacts `9905330011 / 9905330748` with Actions
+digests `c060eea3b1469c2ddc368bcf1d1d3a61c4ce35ad1de7bda249e11bdb566c5faa /
+2bb5e0504d80b9f9d1f905d802a90980caedc47c42531664df7eb063a3c181c3`.
+
+Selector 383 completes **375 PASS / 8 RED**; accepted 1–365 remains **365/365 PASS** and the red set remains
+366/367/368/369/370/371/372/374. Exact ledger SHA-256 is
+`a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`; pre/post package byte+mode census is
+identical at `5fb1dcf55b2850f5655e76a58b3a77e3b49c29b137c3773ebd416bbedb350eb8`.
+
+Ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at `(0,1,102)` and now publishes
+`fragmentOrbitCount=1`, `tracePieceCount=1`, `expectedFragmentCount=2`. The sole retained real chord is trace 1 /
+arc 15 / segment 4 / Forward, with `forwardOrbit=0`, `reverseOrbit=0`, and both exterior-drop flags false; all three
+face edges retain only orbit `0`. The runtime mechanism is therefore a **shared-global-owner collapse**, not exterior
+filtering. TB18 does not choose the replacement representation/invariant.
+
+BS9-5 remains diagnostically insufficient: the typed failure envelope includes three-edge evidence but the retained
+logs contain no `M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation` line. The frozen plan forbids an ad-hoc
+rerun solely to seek it. Carried 367/368/369/370/371/372/374 surfaces remain unchanged.
+
+Attempt 1 `33784755615 / 100746771952` stopped before ordinal 40 on a temporary owner-map omission after ordinals
+1–39 passed. Its result artifact was preserved and the successful revision verified those 39 rows/log hashes and
+resumed at 40; completed identities were not rerun.
+
+Stable accounting remains **44 / 14 / 30**, debt **5**, packages **84**. CP4c-3 remains OPEN. Exact next turn is
+**`M3-CP4c-3-TB18-REV` — independent REVIEW + PLAN only**.
+
 ## 2026-09-03 — CP4c definitions consolidated; CP4ab references redirected
 
 Documentation consolidation, user-directed. No runtime, compile, package, or product/test/fixture/selector

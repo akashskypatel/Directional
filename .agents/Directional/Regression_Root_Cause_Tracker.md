@@ -1,3 +1,20 @@
+## M3-CP4c3-TB18 — fragment mismatch mechanism measured — **CURRENT RUNTIME AUTHORITY / VALID SEMANTIC RED / ACCEPTED PREFIX SAFE / NON-STABLE**
+
+- **Authority:** CB20 source `57635e87306a416daabb8321e1f36fa9c788d208`, compile artifact `9903305256`, selector 383; final run/job `33785382790 / 100748821924`; result/log artifacts `9905330011 / 9905330748`; ledger `a99c31d84200cb97e78bb399fa32c76bea1f3767092f29fc339c4cc9130604ed`.
+- **Gate:** **375 PASS / 8 RED**, accepted 1–365 **365/365 PASS**, reds 366/367/368/369/370/371/372/374; selector-383 projection witness at 383 PASS.
+- **Measured frontier:** ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at `(0,1,102)` with `fragmentOrbitCount=1`, `tracePieceCount=1`, `expectedFragmentCount=2` (**actual < expected**). One untruncated real chord is retained: trace 1 / arc 15 / segment 4 / Forward, incoming none, outgoing `0-102`, forward/reverse orbit ids `0/0`, exterior-drop flags `false/false`. Each of the three face edges retains only orbit `0`.
+- **Mechanism classification:** this witness is a **shared-global-owner collapse**, not exterior filtering. The two oriented sides of the real chord deduplicate to one global face-walk owner. The replacement local-fragment/global-owner representation contract remains unadjudicated and belongs to independent TB18-REV.
+- **BS9-5:** typed failure evidence includes all three edge-evidence rows, but no `M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation` line was retained. Frozen TB18 stop rules prohibit an ad-hoc evidence-seeking rerun; classify as diagnostic insufficiency, not a new stable regression.
+- **Carried surfaces:** 367/371/372 co-reach the same fragment mismatch; 368 remains `TraceEventPositionInvalid / NoCarrierMatch / SourceEdgeUnavailable`; 369 remains saturation; 370 remains `CellularityNotEstablished` / missing locus rather than the expected empty-network surface; 374 remains `atlasBuild=false`.
+- **Immutability:** pre/post package byte+mode census identical at `5fb1dcf55b2850f5655e76a58b3a77e3b49c29b137c3773ebd416bbedb350eb8`; all build/repair/discovery/source/test/fixture/selector/benchmark mutation flags false.
+- **Accounting:** unaccepted CP4c-3 surface, no accepted-green loss; **+0 stable events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **84**. Exact owner: `M3-CP4c-3-TB18-REV`.
+
+## M3-CP4c3-TB18-ORCH-01 — ordinal-40 owner map omission — **RESOLVED / ORCHESTRATION-ONLY / NON-STABLE**
+
+- Attempt 1 `33784755615 / 100746771952` executed ordinals 1–39, all PASS, then the temporary runner returned `invalid-owner` before ordinal 40 because its shell owner map omitted exactly ordinal 40.
+- Attempt-1 result/log artifacts `9904975159 / 9904975611` were preserved. The revision verified all 39 completed rows/log hashes and resumed at ordinal 40 with `rerun_completed_ordinals=false`; it did not rerun completed identities to seek green.
+- No product/source/test/fixture/selector/package semantics changed. **+0 events / +0 recurrences**.
+
 ## M3-CP4c3-CB20 — fragment-mismatch retained incidence diagnostics — **CURRENT BUILD AUTHORITY / DIAGNOSTIC-ONLY / COMPILE GREEN / NON-STABLE**
 
 - **Authority:** semantic/evidence source `57635e87306a416daabb8321e1f36fa9c788d208`; selector 382 byte-identical; selector 383 appends only `GlobalTopologyPlan.TraceCutFaceFragmentMismatchDiagnosticsSurviveProductionFailureProjection`.
@@ -60,14 +77,15 @@
 - **Postflight:** package census identical at `0438202b4717c69610374c640c2e7970ce38580b816935a8093e98253dbcd518`; all build/repair/discovery/mutation/benchmark flags false.
 - **Accounting:** unaccepted CP4c-3 surface, **+0 stable events / +0 recurrences**; totals **44 / 14 / 30**, debt **5**, packages **84**. Exact next owner: `M3-CP4c-3-TB17-REV` BRQ0–BRQ8.
 
-## M3-CP4c3-TB17-CAND-01 - face-local chord count is compared to distinct global face-walk orbit owners — **ACTIVE / GATING / DIAGNOSTICS COMPILED AT CB20 / CONTRACT UNADJUDICATED / NON-STABLE**
+## M3-CP4c3-TB17-CAND-01 - face-local fragment cardinality is compared to distinct global face-walk owners — **ACTIVE / GATING / MECHANISM RUNTIME-MEASURED / CONTRACT UNADJUDICATED / NON-STABLE**
 
-- **Observed:** TB17 ordinal 366 first-reds at `TraceCutFaceFragmentCountMismatch`, source face `(0,1,102)`, after the TB16 `(9,11,17)` source-port rejection is gone. The same downstream stop is reached by 367/371/372.
-- **Sole emitter:** `build_regions` validates each directly cut face using `expected = tracePieceCount[face] + 1` and compares that local geometric count to `fragmentOrbits[face].size()`, where `fragmentOrbits` is a set of global face-walk orbit IDs contributed by oriented trace/cut/mandatory darts.
-- **TB17 evidence gap:** TB17 published only `sourceFace`; it did not retain actual/expected counts, real trace segments/arcs, forward/reverse orbit IDs, exterior-drop state or edge-orbit evidence. **CB20 now compiles exactly that evidence without semantic change; TB18 must measure it before the contract can be adjudicated.**
-- **Do not guess ownership:** the failure may be a product local-fragment/orbit representation defect, trace/arc incidence defect, upstream network/provenance defect, or witness/precondition defect. The geometric statement `k real chords -> k+1 local fragments` must not be silently equated with `k+1 distinct global region owners` until review proves that equivalence.
-- **Settled facts not reopened:** CB19's segment-entry binding and terminal-slit zero-contribution contract are runtime-observed; accepted 365/365 is green; 368/369/370/374 stay independently owned.
-- **Owner:** TB17-REV named the owner class and mandated diagnostic-only CB20; CB20 is compile-green. Exact next owner is **`M3-CP4c-3-TB18`** for immutable measurement, then **`M3-CP4c-3-TB18-REV`** for representation adjudication.
+- **Observed:** TB18 ordinal 366 remains `TraceCutFaceFragmentCountMismatch` at `(0,1,102)` with actual/trace/expected **`1 / 1 / 2`**. Accepted 1–365 remains 365/365. The same downstream stop is reached by 367/371/372.
+- **Retained incidence:** exactly one real chord is reported, untruncated: trace 1 / arc 15 / segment 4 / Forward, incoming carrier absent, outgoing carrier `0-102`; forward orbit `0`, reverse orbit `0`; neither side is dropped by the exterior filter. Every failing-face edge-evidence row contains only orbit `0`.
+- **Mechanism now measured:** on this witness the low-side mismatch is caused by **shared global owner identity**. Two oriented chord sides that geometrically separate local face fragments map to the same deduplicated global face-walk orbit owner. Exterior filtering is falsified as the trigger here because both drop flags are false.
+- **What remains open:** runtime evidence does not itself define the replacement product contract. Independent TB18-REV must decide whether local fragment identity must be represented separately from global region ownership or whether another invariant can be proved. No symptom-scoped count tweak, dedup bypass, exterior-filter change, fixture exception, or accepted-boundary weakening is authorized by TB18.
+- **Diagnostic insufficiency:** the typed failure envelope retains actual/expected counts, chord incidence and three-edge evidence, but the named `fragment_reconciliation` text record is absent from retained logs. Frozen TB18 rules prohibit an ad-hoc rerun merely to seek it.
+- **Settled facts not reopened:** CB19's segment-entry binding and terminal-slit zero-contribution contract remain runtime-observed; accepted 365/365 is green; 368/369/370/374 stay independently owned.
+- **Owner:** **`M3-CP4c-3-TB18-REV`** independent REVIEW + PLAN for representation adjudication and the BS9-5 sufficiency decision.
 - **Accounting:** gating on an unaccepted surface; **+0 events / +0 recurrences**. Totals remain **44 / 14 / 30**, debt **5**, packages **84**.
 
 ## M3-CP4c3-TB16-REV — independent review adjudication — **SUPERSEDED BY TB17 / STATIC / NON-STABLE**
