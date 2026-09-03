@@ -1,4 +1,0 @@
-purpose=apply verified M3-CP4c-3-TB14 valid retry closeout documentation patch
-base_sha=11f9b15d162894d41598288b165c739b8b28038e
-patch_sha256=54d6d1fa654689ff4abfe0d2fce98e6e092c0fd581122cc763eb1a5b3b6acad3
-retry=1

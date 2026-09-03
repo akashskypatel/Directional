@@ -1,4 +1,0 @@
-requested_source_sha=f1c94358b8551614bee8bb76265e1c9a51c7aea3
-purpose=resume-current-authoritative-turn
-requested_at=2026-09-03T04:15:00Z
-attempt=3

@@ -1,3 +1,0 @@
-purpose=M3-CP4c-3-TB11 source snapshot
-target_source=866c4c629f6c88427bfe964c8a517a11d0653090
-retry=0

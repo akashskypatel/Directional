@@ -1,3 +1,0 @@
-turn=M3-CP4c-3-TB14
-semantic_source_sha=0e9c9f6052b057024b407356955e6625b99685e6
-purpose=start-of-turn source snapshot trigger
