@@ -1,5 +1,0 @@
-Purpose: execute M3-CP4c-3-TB16 artifact-only on immutable package 86 / selector 382.
-Package artifact: 9875664940
-Semantic source: a01016ca59314232526c8b1222c96235856ace6d
-Runtime: full selector, one identity per fresh process; no benchmark/build/repair/discovery.
-Retry: 0
