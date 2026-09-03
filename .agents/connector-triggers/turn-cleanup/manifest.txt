@@ -1,0 +1,5 @@
+# M3-CP4c-3-TB16 temporary state
+.agents/Directional/turn-payloads/m3-cp4c3-tb16-run.sh
+.agents/connector-triggers/tb/m3-cp4c3-tb16.txt
+.agents/connector-triggers/google-drive/m3-cp4c3-tb16-closeout-apply-20260903.txt
+.agents/connector-triggers/source-snapshot/m3-cp4c3-tb16-20260902.txt
