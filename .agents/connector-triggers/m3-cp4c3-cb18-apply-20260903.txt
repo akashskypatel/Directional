@@ -1,0 +1,3 @@
+Purpose: apply verified M3-CP4c-3-CB18 source/test/selector patch from Google Drive.
+Expected patch base: 7426df924be2c87648b1e70e0069bb6363f38466
+Retry: 0
