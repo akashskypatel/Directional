@@ -1,0 +1,48 @@
+name: Agent CB22 Closeout Apply 20260903
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/cb22/closeout-apply-20260903.txt
+
+permissions:
+  contents: write
+  id-token: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-cb22-closeout-apply-20260903
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: M3-CP4c-3-CB22-closeout-apply
+      commit_run_file: false
+      trim_stale_comments: false
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-cb22-closeout-apply-20260903.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  apply:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    uses: ./.github/workflows/agent-google-drive-reusable.yml
+    with:
+      file_id: 1LCxxqTbsE65MoQ9NH9md-7yBI3xRjXog
+      patch_sha256: 0b18f94c9b640956b7f821678589643a150e24733f8e51197bf4262134288667
+      base_sha: 6b470979132dabb9db679933968c9a4365f6717e
+      target_branch: agent/surface_cell_quad/p5-recover-bridge-healing
+      commit_message: "docs: close M3-CP4c-3-CB22 and freeze TB20"
+      retention_days: 14
+    secrets: inherit
