@@ -1,1 +1,3 @@
 .agents/connector-triggers/source-snapshot/tb20-start-20260903.txt
+.agents/Directional/turn-payloads/m3-cp4c3-tb20-run.sh
+.agents/connector-triggers/tb/m3-cp4c3-tb20.txt
