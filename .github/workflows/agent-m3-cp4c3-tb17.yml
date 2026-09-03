@@ -1,0 +1,134 @@
+name: Agent M3 CP4c3 TB17
+
+on:
+  push:
+    branches:
+      - agent/surface_cell_quad/p5-recover-bridge-healing
+    paths:
+      - .agents/connector-triggers/tb/m3-cp4c3-tb17.txt
+
+permissions:
+  actions: read
+  contents: write
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: agent-m3-cp4c3-tb17
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    uses: ./.github/workflows/agent-run-observer-reusable.yml
+    with:
+      pr_number: 8
+      label: m3-cp4c3-tb17
+      commit_run_file: false
+      trim_stale_comments: true
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/agent-workflow-schema-validator-reusable.yml
+    with:
+      workflow_path: .github/workflows/agent-m3-cp4c3-tb17.yml
+      source_ref: ${{ github.sha }}
+    secrets: inherit
+
+  execute:
+    needs: validate
+    if: ${{ needs.validate.outputs.valid == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize diagnostic log
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/m3-cp4c3-tb17-diagnostic.log"
+          : > "$log"
+          printf '%s\n' \
+            "workflow=$GITHUB_WORKFLOW" \
+            "run_id=$GITHUB_RUN_ID" \
+            "event=$GITHUB_EVENT_NAME" \
+            "event_sha=$GITHUB_SHA" \
+            "ref=$GITHUB_REF" \
+            "repository=$GITHUB_REPOSITORY" \
+            'turn=M3-CP4c-3-TB17' \
+            'artifactOnly=true' \
+            'runtimeExecution=true' \
+            'benchmarkExecution=false' \
+            'configureExecution=false' \
+            'compileExecution=false' \
+            'relinkExecution=false' \
+            'packageRepair=false' \
+            'generatedDiscovery=false' \
+            "started_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$log"
+
+      - name: Checkout orchestration control files
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+
+      - name: Verify TB17 runner bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          runner=.agents/Directional/turn-payloads/m3-cp4c3-tb17-run.sh
+          test -f "$runner"
+          test "$(git hash-object "$runner")" = '4970a49fe64ba087b0136530aeef907d3eed97f3'
+          echo "runner_blob_sha1=$(git hash-object "$runner")" | tee -a "$RUNNER_TEMP/m3-cp4c3-tb17-diagnostic.log"
+          echo "runner_sha256=$(sha256sum "$runner" | awk '{print $1}')" | tee -a "$RUNNER_TEMP/m3-cp4c3-tb17-diagnostic.log"
+
+      - name: Execute immutable package 87 selector 382 gate
+        id: tb17
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -o pipefail
+          bash .agents/Directional/turn-payloads/m3-cp4c3-tb17-run.sh 2>&1 \
+            | tee -a "$RUNNER_TEMP/m3-cp4c3-tb17-diagnostic.log"
+          exit "${PIPESTATUS[0]}"
+
+      - name: Record final execution state
+        if: always()
+        env:
+          TB17_OUTCOME: ${{ steps.tb17.outcome }}
+        shell: bash
+        run: |
+          set +e
+          printf '%s\n' \
+            "tb17_step_outcome=${TB17_OUTCOME:-not-run}" \
+            'runtimeExecution=true' \
+            'benchmarkExecution=false' \
+            "final_event_sha=$GITHUB_SHA" \
+            "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            | tee -a "$RUNNER_TEMP/m3-cp4c3-tb17-diagnostic.log"
+
+      - name: Upload TB17 result evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb17-result-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb17/result
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload TB17 diagnostic log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-cp4c3-tb17-log-${{ github.run_id }}
+          path: ${{ runner.temp }}/m3-cp4c3-tb17-diagnostic.log
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Fail on orchestration-invalid execution
+        if: always() && steps.tb17.outcome != 'success'
+        shell: bash
+        run: |
+          echo 'M3-CP4c-3-TB17 did not complete its immutable selector execution organically.' >&2
+          exit 1
