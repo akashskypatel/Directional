@@ -31,44 +31,51 @@ turn workflow, no policies, no checklists, no transport or connector mechanics. 
 `Future_Chat_Session_Handoff.md`, `AGENT_POLICY.md`, `RETENTION_POLICY.md`, `CLEAN_UP_POLICY.md`,
 `TOOL_USE_CONSERVATION_POLICY.md` and `GitHub_Workflow_Policy.md`.
 
-**Currency.** Last updated 2026-09-02 at `M3-CP4c-3-TB14-REV`. CB16 cleared **every vertex locus**, and the
-rotation reached the **first edge (contact) locus in this witness's history** — where the failing branch is **not
-determined by the retained evidence**, so the successor is diagnostic-only.
+**Currency.** Last updated 2026-09-03 at `M3-CP4c-3-TB15-REV`. CB17's diagnostics named the branch, and the
+review **proved the incidence valid and the binding datum wrong** — plus a second, latent ordering defect in the
+same helper.
 
-**CB16 worked.** TB14 (package 84, source `6808c090f2dd229a48550d758f459bfd156da4b6`, replacement run/job
-`33689875040 / 100445977571`) is **371 PASS / 9 RED** with accepted **365/365**. The vertex-10
-`VertexTracePortOrdinalInvalid` stop is gone. Ordinal 366 is now
-`RotationSystemInconsistent → EdgeTraceSecondaryRankInvalid`, source edge `25-31`, source face `(25,30,31)` — mesh
-row **41** — attempt 0 / zero cut edges / 450 candidates.
+**The branch is `SourceVertexFallbackUnbound`.** TB15 (package 85, source
+`1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4`, run/job `33700074471 / 100477303760`) is **372 PASS / 9 RED**, accepted
+**365/365**, ordinal 366 unchanged at edge `25-31` / face `(25,30,31)`, attempt 0 / zero cut edges, with the full
+incidence retained: source vertex **35**, arc **19**, trace **5**, **Reverse**, segments `[0,5)`, incoming carrier
+**none**, outgoing **`25-31`**, contact index **2**, other carrier **none**, census **3 rays untruncated**.
 
-**This is newly reachable code, not a regression.** Vertex nodes are created first from the sorted `nodeVertices`
-set; **contact nodes are appended after** (`field_aligned_append_contact_node` takes
-`nodeIndex = candidate.nodes.size()`). `build_rotation_system` iterates `incidences` in node-id order, so **every
-vertex locus precedes every edge locus**. TB13 failed at a vertex locus, so no edge locus had ever been reached.
-`edge_locus_secondary_rank` has never run on this witness before.
+**The segment entered its face through a vertex.** `proposal.nextIncomingCarrier` is assigned at exactly one site —
+`SurfaceCellTracing.cpp:3122`, on the **edge-exit** continuation. The `VertexHit` branch returns without setting
+it, so it stays `nullopt`. The arc is `[0,5)`, so segment 4 is not the trace's first segment; the only other
+producer of an absent incoming carrier is a port origin, which applies to segment 0. Therefore segment 4 entered
+row 41 through a **corner** — Amendment 3's ordinary continuation.
 
-**The locus is a contact node, and zero cut edges is consistent.** `build_node_loci` assigns an edge locus from
-`cutNodes.syntheticCrossings` **or**, in its events loop, to any node lacking a vertex locus that carries an event
-with a `sourceEdge`. Vertex loci come only from singularity ports and mandatory-edge endpoints, so the remainder are
-**contact nodes**.
+**The fallback then asks the wrong question.** With no other carrier it searches the face's corners for
+`trace.sourceVertex` — the singularity the *whole trace* originated from, vertex **35**, elsewhere on the part —
+while row 41's corners are `{25,30,31}`. The correct datum is the segment's **own far-end support in this face**:
+the **entry** side for Reverse, the **exit** side for Forward, read through
+`FieldBoundaryPoint::source_support()` — the primitive CB16 already uses. The present rule is recovered as the
+special case where a trace's *first* segment starts at a singularity in that face, which is why it worked until
+now. Third instance of one class (lessons 85 / 87).
 
-**Three of five `nullopt` branches are excluded; two are not separable.** Edge `25-31` **is** an edge of row 41, and
-the caller already resolved the face and found it in `sideRank`, so the ray-face, face-record and contact-index
-branches cannot fire. What remains is the **opposite-carrier** branch or the **source-vertex fallback**. The
-emitter retains only `sourceEdge`, `sourceFace` and the reason — no arc, trace, orientation, segment interval or
-carriers — so **nothing in TB14 separates them**, and they have **different owners and opposite corrections**.
+**A second defect is proved by derivation, not by this run.** The carrier branch ranks **relative** to the contact
+edge, `2·((otherIndex + 3 − contactIndex) mod 3)`; the fallback ranks **absolutely**, `1 + 2·corner`. Walking the
+face boundary from contact edge `c` orders targets `c+1, e(c+1), c+2, e(c+2), c`, so corners must be
+`1 + 2·((corner + 2 − contactIndex) mod 3)`. The two agree **only when `contactIndex == 2`** — precisely this
+failure's value, so the run cannot see it.
 
-*(Conditional, recorded not asserted: **if** the fallback branch fires, it is structurally guaranteed to fail here —
-it searches the face's corners for `trace.sourceVertex`, row 41's corners are `{25,30,31}`, and the port-emitting
-singularities are `{10,35,47,71}`. Origin-namespace reasoning again, cf. lessons 85 and 87.)*
+**This correction is *not* accepted-safe by construction**, unlike the last three. It changes rays that currently
+*succeed*, in two classes: a fallback ray whose far-end corner differs from its trace's origin corner, and every
+succeeding fallback ray with `contactIndex ≠ 2`. The torus reaches A2b end to end, so accepted identities
+plausibly exercise this helper. Safety must be **demonstrated**, not argued.
 
-One bounded successor is authorized: **`M3-CP4c-3-CB17`** under **BN0–BN9**, **diagnostic-only** — give
-`edge_locus_secondary_rank` a typed failure reason per `nullopt` site, exactly mirroring CB16's own
-`VertexTraceSecondaryParameterFailureReason`, retain the incidence (arc, trace, orientation, segment interval, both
-carriers, `trace.sourceVertex`, face corners), and publish a bounded edge-locus ray census. **No semantic change.**
-**The v47 obligation stays open** — selector 380 REDs at its production assertion, so the five-ray/distinct-rank
-proof is again unpublished and `M3-CP4c3-TB11-CAND-01` does not close. Selector **380** stays byte-frozen; selector
-381 is conditional on BN6. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **81**.
+One bounded successor is authorized: **`M3-CP4c-3-CB18`** under **BP0–BP9**, a **product correction** — bind the
+fallback to the segment's far-end support, make the corner rank relative to the contact edge, keep the helper
+fail-closed, and pin every currently-succeeding fallback rank before and after. **The v47 obligation stays open**:
+selector 380 is still RED, so `M3-CP4c3-TB11-CAND-01` does not close. Package 85's diagnostic-name metadata
+mismatch is **inert and proved so** (`M3-CP4c3-TB15-PKG-01`). Selector **381** stays byte-frozen; selector 382 is
+conditional on BP7. Stable accounting **44 / 14 / 30**, debt **5**, semantic M3 packages **82**.
+
+*(Prior turn, retained for lineage: `M3-CP4c-3-TB14-REV` proved the edge locus was newly reachable — contact nodes
+are appended after every vertex node — and that the helper's five `nullopt` branches were collapsed into one
+untyped result, so the branch could not be attributed. CB17's typed split produced the evidence above.)*
 
 *(Prior turn, retained for lineage: `M3-CP4c-3-TB13-REV` determined the vertex-10 emitter — CB15's
 `vertex_locus_secondary_parameter == nullopt`, not the legacy port branch — and proved the cause was a missing
@@ -168,25 +175,23 @@ from A3 onward is unreached, and the prescribed sphere still cannot reach A2b (�
 
 ## 3. Where we are
 
-**Current authority — TB14-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
-selector **380** (`1a95d32852507441c10c0c81154a595ebc367fe4137143ec9290d85d852a0e4e`, 380 identities). Selector 379
-(`ef51298f…842594b7`) is its exact 379-identity prefix and the first 365 lines reproduce accepted
-`6b5b6555…cfc14b8a1`, so CB16 appended exactly one identity and reordered nothing.
+**Current authority — TB15-REV.** Accepted authority remains selector **365**. CP4c-3's frozen unaccepted gate is
+selector **381** (`af667aae37dc6c2342c8f084b4c7ff97719798d76bce5cbb34163afecdd38d90`, 381 identities). Selector 380
+(`1a95d328…d852a0e4e`) is its exact 380-identity prefix and the first 365 lines reproduce accepted
+`6b5b6555…cfc14b8a1`, so CB17 appended exactly one identity and reordered nothing.
 
-**TB14 is the latest semantic runtime evidence** (package 84, source
-`6808c090f2dd229a48550d758f459bfd156da4b6`, replacement run/job `33689875040 / 100445977571`, result artifact
-`9869697113`): **371 PASS / 9 RED**, ordinals **1–365 green**, first red **366** at
-`EdgeTraceSecondaryRankInvalid`, source edge `25-31`, source face `(25,30,31)`, attempt 0 / zero cut edges / 450
-candidates; selector 379 PASS; selector 380 RED at its final production assertion; immutable 58-file postflight
-equal to preflight. The earlier local-host interruption is superseded infrastructure history, and the exact-line
-`[ OK ]` parser defect was **reporting-only** — the corrected ledger derives from per-process exit codes and
-terminal logs, which precede parsing.
+**TB15 is the latest semantic runtime evidence** (package 85, run/job `33700074471 / 100477303760`, result
+artifact `9873244271`): **372 PASS / 9 RED**, ordinals **1–365 green**, first red **366** at
+`EdgeTraceSecondaryRankInvalid`, typed branch **`SourceVertexFallbackUnbound`**, edge `25-31`, face `(25,30,31)`,
+attempt 0 / zero cut edges; selector 381's typed-production witness PASS; selector 380 RED; byte/mode-identical
+58-file postflight.
 
-`M3-CP4c-3-TB14-REV` proved the failing branch is **not determined** by that evidence and froze the diagnostic-only
-**`M3-CP4c-3-CB17` under BN0–BN9** (§7 item 1). Stable accounting is **44 / 14 / 30**, produced-witness debt **5**,
-semantic M3 packages **81**. Ordinal 370, the sphere, saturation, the folded-cone witness, the 371/372 coupling, the
-finalize/contact fall-through and the mechanical zero-unbound debt remain deferred and untouched. **The v47
-five-ray re-proof is still owed**, and **vertex 30 is still not reached**.
+`M3-CP4c-3-TB15-REV` proved the incidence **valid** and the binding datum wrong, derived a second latent ordering
+defect in the same helper, and froze **`M3-CP4c-3-CB18` under BP0–BP9** (§7 item 1). Stable accounting is
+**44 / 14 / 30**, produced-witness debt **5**, semantic M3 packages **82**. Ordinal 370, the sphere, saturation,
+the folded-cone witness, the 371/372 coupling, the finalize/contact fall-through and the mechanical zero-unbound
+debt remain deferred and untouched. **The v47 five-ray re-proof is still owed**, and **vertex 30 is still not
+reached**.
 
 **Accepted authority: CP4c-2 at 365/365.** CP4c-0, CP4c-0b, CP4c-1 and **CP4c-2** are CLOSED / ACCEPTED. The
 accepted selector is cumulative and each checkpoint's prefix is byte-identical to its predecessor, so
@@ -408,7 +413,7 @@ selecting it.
 | **torus** | fixture, closed genus 1, `χ=0`, V/E/F = 72/216/144 | 48 `HardFeature` mandatory edges, 0 singularities, 48 nodes, **0 traces**, 0 events | **A2a′ and A2b both work end to end through the production path.** 28 cut edges; actual embedded graph `V/E/F = 72/76/4`, `χ=0`; 4 regions with disc proofs. Producer and independent oracle agree term for term (`76 − 48 = 28`). Criteria C1/C6 green at ordinals 356/357. Fails later, downstream of A2b, at `tracing` (out of CP4c-2 scope) |
 | **prescribed sphere** | fixture, closed genus 0, `χ=2`, V/E/F = 98/288/192, zero mandatory edges | 24 traces / 56 events | A2a′ remains deferred. TB6 report-only ordinal 368 localizes the current producer stop to `TraceEventPositionInvalid`, trace 2/event 30, `NoCarrierMatch / SourceEdgeUnavailable`. This is localization only; no sphere semantic fix is authorized. |
 | **two-ring** | constructed, disc, `χ=1`, V/E/F = 11/25/15 | 3 traces / 8 events | actual embedded graph `V/E/F = 9/11/3`; the accepted invariance witness, and the **only** witness on which the A2a′ semantic/provenance split is runtime-proved |
-| **mechanical feature** | fixture, 152 V / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, and **every vertex locus** since CB16 | **Current owner of the critical path, in A2a'.** TB14's first red is `EdgeTraceSecondaryRankInvalid` at source edge `25-31`, source face `(25,30,31)` = **mesh row 41**, attempt 0 / zero cut edges. This is the **first edge (contact) locus ever reached on this witness**: contact nodes are appended after all vertex nodes and `incidences` is a node-id map, so every vertex locus precedes them, and TB13 failed at a vertex locus. Edge `25-31` is interior between rows 41 and 198 with dihedral **91.302 deg**; vertex 30's fan is degree 6 and closed, with row 41 at slot 9 - reproduced by `tools/fixture_probe.py fan 30`. TB14-REV excluded three of the helper's five `nullopt` branches and proved the remaining two - opposite-carrier versus source-vertex fallback - are **not separable** from the retained locus, which carries no arc, trace, orientation or carriers. The v47 five-ray re-proof is **still owed**; vertex **30** is **still not reached**. See §7 item 1. |
+| **mechanical feature** | fixture, 152 V / 450 E / 300 F, closed, `chi=2`, 0 boundary edges | clears all A1, the vertex-11 transit (CB10), the whole of A2a since CB12, and **every vertex locus** since CB16 | **Current owner of the critical path, in A2a'.** TB15's first red is `EdgeTraceSecondaryRankInvalid` at edge `25-31` / face `(25,30,31)` = **mesh row 41**, attempt 0 / zero cut edges, typed **`SourceVertexFallbackUnbound`**. The retained incidence is arc **19** / trace **5** / **Reverse** / `[0,5)`, incoming carrier **none**, outgoing `25-31`, contact index **2**, trace origin vertex **35**, census 3 rays untruncated. TB15-REV proved the segment **entered row 41 through a corner** (`nextIncomingCarrier` is set only on the edge-exit continuation, and segment 4 is not the trace's first), so the ray is valid and the fallback binds the wrong datum - the trace's **origin** singularity v35 instead of the segment's own far-end support. `contactIndex = 2` is independently reproduced by `edges[i] = (v[i], v[i+1])`. The v47 five-ray re-proof is **still owed**; vertex **30** is **still not reached**. See §7 item 1. |
 
 ## 5. The central theorem of CP4c-2
 
@@ -503,34 +508,29 @@ features first, then threads them through source authority *and* atlas). Copy on
 
 ## 7. Open problems, in priority order
 
-1. **Edge-locus trace secondary rank in A2a′ — ACTIVE and gating; newly reachable, and the branch is
-   UNDETERMINED by design of the diagnostics.** TB14's first red is `EdgeTraceSecondaryRankInvalid` at edge
-   `25-31`, face `(25,30,31)` (mesh row 41). `M3-CP4c-3-TB14-REV` proved:
+1. **Edge-locus fallback binds the trace's origin vertex instead of the ray's far end — ACTIVE and gating; cause
+   PROVED, product correction frozen.** TB15's typed branch is `SourceVertexFallbackUnbound` at edge `25-31` /
+   face `(25,30,31)`. `M3-CP4c-3-TB15-REV` proved:
 
-   - **One emitter, no reason-level collapse** (`EmbeddedGraphTopology.cpp:1440`) — but the helper below it has
-     **five** untyped `return std::nullopt` sites, and the emitter retains only `sourceEdge`, `sourceFace` and the
-     reason.
-   - **This is newly reachable code.** Contact nodes are appended after every vertex node and `incidences` is a
-     node-id map, so all vertex loci are processed first; TB13 failed at a vertex locus, so
-     `edge_locus_secondary_rank` had never run on this witness.
-   - **The locus is a contact node.** `build_node_loci` gives an edge locus to any node lacking a vertex locus
-     whose event names a `sourceEdge` — not only to cut crossings — so `certificationCutEdges = 0` is consistent.
-   - **Branches 1–3 are excluded**: the caller already resolved the face and required it in `sideRank`, and edge
-     `25-31` is an edge of row 41.
-   - **Branches 4 and 5 are not separable** — opposite-carrier versus source-vertex fallback — and they have
-     **different owners and opposite corrections**: branch 4 would make the *producer* the owner (a segment whose
-     other carrier is not an edge of its own face), branch 5 the *rank contract* (a fallback under-specified for
-     contact-node rays).
+   - **The ray reaches the fallback because its segment entered through a vertex.**
+     `proposal.nextIncomingCarrier` is assigned only at `SurfaceCellTracing.cpp:3122`, on the edge-exit
+     continuation; the `VertexHit` branch returns without setting it. The arc is `[0,5)`, so segment 4 is not the
+     trace's first — the only other source of an absent incoming carrier.
+   - **The incidence is valid.** Vertex-transit entry is Amendment 3's ordinary continuation; rejecting it upstream
+     would reject valid networks.
+   - **The datum is wrong, not the shape.** The fallback searches the face's corners for `trace.sourceVertex`
+     (v35, a port-emitting singularity elsewhere) while row 41's corners are `{25,30,31}`. The canonical datum is
+     the segment's **far-end support in this face** — entry side for Reverse, exit side for Forward — via
+     `FieldBoundaryPoint::source_support()`. The present rule is the special case where they coincide.
+   - **A second, latent defect.** The carrier branch ranks relative to `contactIndex`; the fallback ranks
+     absolutely. The correct value is `1 + 2·((corner + 2 − contactIndex) mod 3)`, which equals `1 + 2·corner`
+     **only when `contactIndex == 2`** — this failure's value, so the run cannot expose it.
 
-   `M3-CP4c-3-CB17` (BN0–BN9) is **diagnostic-only**: a typed failure reason per `nullopt` site, mirroring CB16's
-   own `VertexTraceSecondaryParameterFailureReason`; retention of arc, trace, orientation, segment interval, both
-   carriers, `trace.sourceVertex` and the face corners; and a bounded edge-locus ray census. **Prohibited:** any
-   semantic change — the rank formulas, the fallback, `sideRank`, `key.primary`, collision detection,
-   `build_node_loci` and contact-node construction all stay untouched.
-
-   *(Conditional, not asserted: **if** the fallback fires, it cannot succeed on this face — it searches for
-   `trace.sourceVertex` among row 41's corners `{25,30,31}` while the port-emitting singularities are
-   `{10,35,47,71}`.)*
+   `M3-CP4c-3-CB18` (BP0–BP9) corrects both and keeps the helper fail-closed. **Unlike the last three successors
+   this is not accepted-safe by construction**: it changes rays that currently *succeed* (a far-end corner
+   differing from the trace's origin corner, and every succeeding fallback ray with `contactIndex ≠ 2`), and the
+   torus reaches A2b, so accepted identities plausibly exercise the helper. BP5 therefore requires the ranks to be
+   **pinned before and after**, and ordinals 1–365 re-passing is the load-bearing discriminator, not a formality.
 
 2. **AY5 folded-cone witness — ACTIVE, gating at ordinal 374, cause classified, correction deferred.** The witness
    is invalid and the product is right. `make_three_right_angle_cone_fan` has `Θ = 3π/2` at its center, hence angle
@@ -598,6 +598,27 @@ features first, then threads them through source authority *and* atlas). Copy on
     tangent to edge `(10,11)` — so it is **not** the cause of ordinal 366 and must not be repaired as if it were.
 
 ## 8. Recurring defect patterns — the highest-value section
+
+**An absent optional means whatever its producer's last branch chose to leave unset.**
+`FieldAlignedCandidateTraceSegment::incomingCarrier` is `nullopt` for two entirely different reasons — a port
+origin, and a vertex transit — because `proposal.nextIncomingCarrier` is assigned only on the edge-exit
+continuation and the `VertexHit` branch simply returns without it. Consumers then read one absence as the other,
+which is exactly how the edge-locus fallback came to ask about a trace's origin singularity. When an optional is
+set on some producer paths and skipped on others, the skip carries meaning and belongs in the type: a named
+alternative, not a hole. `LESSONS.md` §4 93.
+
+**A rank derived relative to a locus must be derived relative to it in every branch.** In
+`edge_locus_secondary_rank` the carrier branch measures from `contactIndex` and the fallback measures from the
+face's absolute corner numbering. They agree on exactly one of three possible contact indices — so the
+disagreement is invisible two thirds of the time, and entirely invisible on the very witness that exposed the
+neighbouring defect. When two branches feed one ordering, check that they share an **origin**, not merely a range.
+`LESSONS.md` §4 94.
+
+**Third instance of one class, and the reason to stop fixing instances.** `port->ordinal` at the vertex locus
+(TB12-REV), the missing vertex-exit case (TB13-REV), and `trace.sourceVertex` at the edge locus (TB15-REV) are the
+same defect: a value correct in the scope that produced it, used in a scope that does not make it unique. Each was
+found only when a preceding correction made its code newly reachable. The standing check is cheap — at every
+locus-relative computation, ask which scope guarantees the datum, and whether it is the scope being ordered.
 
 **Clearing a stage exposes the next stage's untested contract.** CB16 fixed the last vertex-locus defect and the
 very next node the rotation reached was the **first contact node ever processed on this witness** — whose
@@ -1265,3 +1286,21 @@ The two-ring is constructed in the test file, not a fixture.
   owner**. That proof is about continuation ownership at vertex 30 and is *not* contradicted by a trace holding a
   segment in row 41 reached through ordinary transits. Vertex 30's fan is degree 6 and closed: rows 43, 218, 209,
   208, 41, 40 at slots 1, 3, 5, 7, 9, 11.
+- `proposal.nextIncomingCarrier` is assigned at exactly **one** site (`SurfaceCellTracing.cpp:3122`), on the
+  **edge-exit** continuation. The `VertexHit` continuation returns having set only `nextFace`, `nextBranch`,
+  `nextEntryPoint` and `endArrival`. So **a segment entered by a vertex transit carries
+  `incomingCarrier == std::nullopt`**, indistinguishable by type from a port-origin first segment — the two are
+  separated only by whether the segment is the trace's first.
+- `SourceFaceRecord::edges[i] = (vertices[i], vertices[i+1 mod 3])` — the convention `face_orients_edge_forward`
+  walks. So edge `i` joins corners `i` and `i+1`, and is opposite corner `i+2`. TB15's retained
+  `contactIndex = 2` for locus `25-31` in face `(25,30,31)` reproduces from this exactly, which is a free
+  cross-check on any retained edge-locus evidence.
+- `edge_locus_secondary_rank` ranks a ray by its **far end inside the face** — the end opposite the contact edge:
+  the entry side for `Reverse`, the exit side for `Forward`. Carrier far ends take even ranks
+  `2·((otherIndex + 3 − contactIndex) mod 3) ∈ {2,4}`; corner far ends take odd ranks. Walking the boundary from
+  contact edge `c` gives the order `corner c+1, edge c+1, corner c+2, edge c+2, corner c`, so the corner rank must
+  be `1 + 2·((corner + 2 − contactIndex) mod 3)` — the shipped `1 + 2·corner` coincides **only at
+  `contactIndex = 2`**.
+- The four port-emitting singularities of the mechanical fixture are **v10, v35, v47, v71**. `trace.sourceVertex`
+  always names one of them and says nothing about which face a later segment is in — it is trace-global
+  provenance, not a face-local datum.

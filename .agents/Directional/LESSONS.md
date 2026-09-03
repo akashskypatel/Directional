@@ -1449,6 +1449,20 @@ building any conclusion on it.**
     diagnostic-collapse defect, the measure should name the class - every helper funnelling multiple conditions
     into one bare `nullopt` behind a single typed reason - rather than the one instance the current red exposed.
 
+93. **An absent optional means whatever its producer's last branch chose to leave unset.** A trace segment's
+    `incomingCarrier` is `nullopt` for two unrelated reasons - a port origin and a vertex transit - because
+    `proposal.nextIncomingCarrier` is assigned only on the edge-exit continuation while the `VertexHit` branch
+    returns without setting it. The edge-locus rank fallback then read one absence as the other and asked about the
+    trace's origin singularity. When an optional is set on some producer paths and skipped on others, the skip is a
+    value with meaning and belongs in the type as a named alternative, not a hole.
+
+94. **A rank derived relative to a locus must be derived relative to it in every branch.**
+    `edge_locus_secondary_rank` measures carrier far ends from `contactIndex` and corner far ends from the face's
+    absolute corner numbering. The two agree on exactly one of three possible contact indices, so the disagreement
+    is invisible two thirds of the time - and entirely invisible on the witness that exposed the neighbouring
+    defect, whose contact index happened to be the agreeing one. When two branches feed a single ordering, check
+    that they share an origin, not merely a range.
+
 ## 5. Cross-field, cycle, and orientation conventions
 
 These are A1/A2-specific and have been the single most expensive area in M3.

@@ -26,30 +26,63 @@ the review-and-plan turn: one turn freezes definitions, adjudicates inherited ca
 and issues the successor's measures. Only the `REVIEW+PLAN → DEFN` edge collapses; a red TB with no `DEFN` ahead of
 it still gets its own review turn.
 
-## Current focus — `M3-CP4c-3-TB15-REV` (independent REVIEW + PLAN)
+## Current focus — `M3-CP4c-3-CB18` (Code + Build, PRODUCT CORRECTION)
 
-`M3-CP4c-3-TB15` is **COMPLETE / VALID SEMANTIC RED / BRANCH DISCRIMINATED / NON-STABLE** on immutable package **85** / source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` / selector **381**. Authoritative run/job `33700074471 / 100477303760` completed **372 PASS / 9 RED**, with accepted ordinals **1-365 = 365/365 PASS** and first red still ordinal **366**.
+`M3-CP4c-3-TB15-REV` is **COMPLETE**. Record:
+`Architecture_M3_CP4c3_TB15_Independent_Review_Record.md` (**BO0–BO8** discharged, static only).
 
-TB15 proves the edge-locus failure branch is **`SourceVertexFallbackUnbound`** at source edge `25-31`, face `(25,30,31)`, source vertex 35, arc 19 / trace 5 / Reverse / `[0,5)`, incoming carrier none, outgoing `25-31`, contact index 2, other carrier none. The bounded rotation census is complete at three rays (`truncated=false`). Selector 381's typed-production witness PASSes; selector 380 remains RED, so the inherited v47 five-ray/distinct-secondary production obligation remains open.
+TB15's typed branch is **`SourceVertexFallbackUnbound`** at edge `25-31` / face `(25,30,31)` = mesh row 41, with
+the full incidence retained: source vertex **35**, arc **19**, trace **5**, **Reverse**, segments `[0,5)`, incoming
+carrier **none**, outgoing **`25-31`**, contact index **2**, census **3 rays untruncated**.
 
-Package 85 also carries a non-semantic metadata mismatch for the non-gating diagnostic identity. The frozen TB15 plan selected and executed the correct existing diagnostic; package bytes were not repaired and pre/post 58-file census is identical.
+- **The segment entered its face through a vertex.** `proposal.nextIncomingCarrier` is assigned at exactly one site
+  (`SurfaceCellTracing.cpp:3122`, the **edge-exit** continuation); the `VertexHit` branch returns without setting
+  it. The arc is `[0,5)`, so segment 4 is not the trace's first — the only other producer of an absent incoming
+  carrier.
+- **The incidence is valid.** Vertex-transit entry is Amendment 3's ordinary continuation; rejecting it upstream
+  would reject valid networks.
+- **The datum is wrong, not the shape.** The fallback searches the face's corners for `trace.sourceVertex` — v35, a
+  port-emitting singularity elsewhere on the part — while row 41's corners are `{25,30,31}`. The canonical datum is
+  the segment's **far-end support in this face**: entry side for Reverse, exit side for Forward, via
+  `FieldBoundaryPoint::source_support()`. The shipped rule is the special case where they coincide.
+- **A second, latent defect, proved by derivation.** The carrier branch ranks relative to `contactIndex`; the
+  fallback ranks absolutely. The correct corner rank is `1 + 2·((corner + 2 − contactIndex) mod 3)`, equal to the
+  shipped `1 + 2·corner` **only when `contactIndex == 2`** — this failure's value, so the run cannot see it.
+- **This correction is NOT accepted-safe by construction.** It changes rays that currently *succeed*, in two
+  classes, and the torus reaches A2b, so accepted identities plausibly exercise the helper. Safety must be
+  **demonstrated**, and ordinals 1–365 re-passing is the load-bearing discriminator.
+
+Package 85's diagnostic-name metadata mismatch is **inert and proved so**: the contract-named identity occurs zero
+times in `tests/`, the executed one exists, and **neither is in selector 381** — recorded as
+`M3-CP4c3-TB15-PKG-01`, no rerun, no repair. `M3-CP4c3-TB14-CAND-01` **CLOSES**; new
+`M3-CP4c3-TB15-CAND-01` is **ACTIVE**. **The v47 obligation stays open** — selector 380 is still RED, so
+`M3-CP4c3-TB11-CAND-01` does not close and `M3-CP4c3-TB12-REV-CAND-01` stays partially discriminated. Sphere 368,
+saturation 369, ordinal 370, folded-cone 374, the 371/372 coupling, vertex 30 and the finalize/contact fall-through
+are unchanged. **There is still no vertex-30 discriminator.**
 
 ### Exact next turn
 
-Run **`M3-CP4c-3-TB15-REV`** from `Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md`, measures **BO0-BO8**. Static REVIEW + PLAN only.
+Run **`M3-CP4c-3-CB18`** under §9 **BP0–BP9** of
+`Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`.
 
-- [ ] Re-establish immutable package-85/TB15 evidence authority; no rerun or package repair.
-- [ ] Prove the exact `SourceVertexFallbackUnbound` call path and reconstruct arc-19/trace-5 Reverse contact incidence end to end.
-- [ ] Decide whether source vertex 35 being outside face `{25,30,31}` is invalid/stale producer provenance or a valid contact-node ray whose fallback binds the wrong datum/namespace.
-- [ ] Derive the canonical rank datum if valid; reject fixture-ID/order rules and fail closed on true ambiguity.
-- [ ] Audit Forward/Reverse and contact-node edge-locus fallback semantics broadly enough to generalize.
-- [ ] Preserve accepted **365/365**, the full v47 five-ray/distinct-secondary obligation, and independent 368/369/370/371/372/374/vertex-30/finalize owners.
-- [ ] Adjudicate `M3-CP4c3-TB15-PKG-01` as package-authoring metadata without reinterpreting runtime.
-- [ ] Freeze exactly one bounded successor; update `ORIENTATION.md` as required for REVIEW.
+- [ ] **BP0** — selector 381 byte-frozen; accepted 365 untouched; eight compile targets, **GMP/GMPXX mandatory**.
+      Selector 381's PASS is **not** evidence for this correction.
+- [ ] **BP1** — bind the fallback to the segment's **far-end vertex support in this face** via
+      `FieldBoundaryPoint::source_support()`; entry side for Reverse, exit side for Forward.
+- [ ] **BP2** — corner rank relative to the contact edge: `1 + 2·((corner + 2 − contactIndex) mod 3)`.
+- [ ] **BP3** — keep the helper fail-closed for a genuinely unbindable far end.
+- [ ] **BP4** — leave the carrier branch, `trace_ray_face`, `sideRank`, `key.primary`, collision detection,
+      `build_node_loci` and the vertex-locus path untouched; no CB12/CB14/CB15/CB16/CB17 revert.
+- [ ] **BP5** — **demonstrate** accepted-boundary safety: pin every currently-succeeding fallback rank before and
+      after. **Not a formality** — this correction changes rays that currently succeed.
+- [ ] **BP6** — positive, negative, ordering and regression witnesses.
+- [ ] **BP7** — append selector 382 only on demonstrated falsification; no package-85 repair.
+- [ ] **BP8** — audit by assumption; report the complete class of inputs whose rank changes.
+- [ ] **BP9** — publish the six `M3-CP4c-3-TB16` discriminators, **including the v47 five-ray re-proof**.
+      **No vertex-30 discriminator.**
 
-No runtime, benchmark, configure, compile, link, package, or product/test/fixture/selector mutation is authorized in TB15-REV.
-
-Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14 categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **82**.
+Accepted semantic authority remains **365/365**; CP4c-3 remains **OPEN**. Stable accounting remains **44 events / 14
+categories / 30 recurrences**; produced-witness debt **5**; authoritative semantic M3 package count **82**.
 
 ## Carried forward from M1
 

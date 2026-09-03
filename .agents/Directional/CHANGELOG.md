@@ -1,3 +1,56 @@
+## 2026-09-03 — `M3-CP4c-3-TB15-REV`: edge-locus binding datum proved wrong; `M3-CP4c-3-CB18` frozen
+
+Independent REVIEW + PLAN under `Architecture_M3_CP4c3_TB15_Independent_Review_Plan.md`, measures **BO0–BO8**.
+Record: `Architecture_M3_CP4c3_TB15_Independent_Review_Record.md`. Static only — no runtime, compile, link,
+package, benchmark, or product/test/fixture/selector mutation.
+
+**BO0.** Source `1e671ef7` verified as an ancestor of branch HEAD with **no code drift**; selector 381 recomputes
+to `af667aae…cdd38d90` with 381 identities, selector 380 is its exact 380-identity prefix, and the first 365 lines
+reproduce accepted `6b5b6555…cfc14b8a1`.
+
+**BO0 — the package-85 metadata mismatch is inert, and proved rather than assumed.** The contract-named diagnostic
+`EdgeTraceSecondaryRankUnavailableIsTypedAndObservable` occurs **zero** times in `tests/`; the executed
+`MechanicalWitnessStageReachabilityIsObservable` exists at `tests/FieldAlignedCurveNetworkTests.cpp:8209`; and
+**neither appears in selector 381**. A contract string that names no test and is absent from the selector cannot
+select, deselect or reorder anything. `M3-CP4c3-TB15-PKG-01` is authoring metadata — no rerun, no package repair.
+
+**BO1/BO2 — the control path and the incidence.** Reverse binds `other = incomingCarrier` because
+`outgoingCarrier == locus`, and that carrier is `nullopt`. `proposal.nextIncomingCarrier` is assigned at exactly
+one site — `SurfaceCellTracing.cpp:3122`, the **edge-exit** continuation — and the `VertexHit` branch returns
+without setting it, so **segment 4 entered face row 41 through a corner**. The arc is `[0,5)`, so segment 4 is not
+the trace's first, which is the only other producer of an absent incoming carrier. TB15's retained
+`contactIndex = 2` independently reproduces from `edges[i] = (v[i], v[i+1])`.
+
+**BO3 — valid incidence, wrong datum.** Vertex-transit entry is Amendment 3's ordinary continuation, so a rank must
+exist. The canonical datum is the segment's **far-end support in this face** — entry side for Reverse, exit side
+for Forward — via `FieldBoundaryPoint::source_support()`, the primitive CB16 already uses. `trace.sourceVertex`
+(v35, a port-emitting singularity elsewhere) is trace-global provenance; the shipped rule is the special case where
+a first segment starts at a singularity in that face, and the general rule recovers it.
+
+**BO4 — a second, latent defect proved by derivation.** The carrier branch ranks relative to `contactIndex`; the
+fallback ranks absolutely. Walking the face boundary from contact edge `c` orders targets
+`c+1, e(c+1), c+2, e(c+2), c`, so corners must take `1 + 2·((corner + 2 − contactIndex) mod 3)` — equal to the
+shipped `1 + 2·corner` **only at `contactIndex = 2`**, which is this failure's value, so the run cannot expose it.
+
+**BO5 — this correction is NOT accepted-safe by construction.** Unlike the last three successors it changes rays
+that currently *succeed*: a fallback ray whose far-end corner differs from its trace's origin corner, and every
+succeeding fallback ray with `contactIndex ≠ 2`. The torus reaches A2b end to end, so accepted identities plausibly
+exercise this helper. BP5 therefore requires the ranks to be **pinned before and after**, and ordinals 1–365
+re-passing is the load-bearing discriminator rather than a formality.
+
+**BO6/BO7.** Selector 380 remains RED at the upstream stop, so the v47 five-ray/distinct-rank conjunction is still
+owed: `M3-CP4c3-TB11-CAND-01` stays **OPEN** and `M3-CP4c3-TB12-REV-CAND-01` **PARTIALLY DISCRIMINATED**; selector
+381's PASS is diagnostic-contract evidence only. `M3-CP4c3-TB14-CAND-01` **CLOSES / RUNTIME DISCRIMINATED**; new
+`M3-CP4c3-TB15-CAND-01` is **ACTIVE**. Sphere 368, saturation 369, ordinal 370, folded-cone 374, the 371/372
+coupling, vertex 30 and the finalize/contact fall-through keep their owners. **+0 stable events / +0 recurrences**;
+totals remain **44 / 14 / 30**, debt **5**, packages **82**.
+
+**BO8.** One bounded successor frozen: **`M3-CP4c-3-CB18`** under **BP0–BP9**, a product correction.
+
+**Lessons added.** §4 **93** — an absent optional means whatever its producer's last branch left unset. §4 **94** —
+a rank derived relative to a locus must be derived relative to it in every branch. Lessons 85 and 87 record their
+third instance.
+
 ## 2026-09-03 — `M3-CP4c-3-TB15`: package 85 valid semantic red; exact edge-locus fallback branch discriminated
 
 Artifact-only TB15 consumed immutable package **85** / source `1e671ef79a4cf3fbbcfc8664c9d792ace26b58e4` / selector **381**. Run/job **`33700074471 / 100477303760`** completed all 381 selector identities one-per-fresh-process for **372 PASS / 9 RED**, accepted ordinals **1-365 = 365/365 PASS**, first red **366**. Result/log artifacts `9873244271` / `9873244582` have SHA-256 `4bf9cbbf415aecf42f08f6840890e7e21dfd18899cfec863f4984ddab618493a` / `243d8867a5a2807d329d2945184ca4999622ed1ae2129fbe30026d2c40919c46`.
