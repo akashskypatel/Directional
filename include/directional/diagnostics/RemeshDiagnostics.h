@@ -137,6 +137,26 @@ struct SurfaceCellRotationFanCensusDiagnostics {
   bool truncated = false;
 };
 
+struct SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics {
+  std::size_t trace = 0U;
+  std::size_t arc = 0U;
+  std::size_t segmentIndex = 0U;
+  std::string orientation;
+  std::optional<std::array<std::size_t, 2>> incomingCarrier;
+  std::array<std::size_t, 2> outgoingCarrier{};
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  bool forwardOrbitDroppedByExteriorFilter = false;
+  bool reverseOrbitDroppedByExteriorFilter = false;
+};
+
+struct SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics {
+  std::array<std::size_t, 2> sourceEdge{};
+  std::vector<std::size_t> orbitIds;
+  std::size_t totalOrbitCount = 0U;
+  bool truncated = false;
+};
+
 struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> sourceVertex;
   std::optional<std::array<std::size_t, 2>> sourceEdge;
@@ -171,6 +191,15 @@ struct SurfaceCellFailureLocusDiagnostics {
   std::optional<std::size_t> secondArc;
   std::optional<std::size_t> trace;
   std::optional<std::size_t> secondTrace;
+  std::optional<std::size_t> fragmentOrbitCount;
+  std::optional<std::size_t> tracePieceCount;
+  std::optional<std::size_t> expectedFragmentCount;
+  std::vector<SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics>
+      fragmentIncidences;
+  std::size_t fragmentIncidenceCount = 0U;
+  bool fragmentIncidencesTruncated = false;
+  std::vector<SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics>
+      fragmentEdgeOrbitEvidence;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationPreviousRay;
   std::optional<SurfaceCellRotationRayDiagnostics> rotationCurrentRay;
   SurfaceCellRotationFanCensusDiagnostics rotationFanCensus;

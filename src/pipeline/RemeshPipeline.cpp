@@ -541,6 +541,91 @@ project_surface_cut_graph_failure_locus(
   return locus;
 }
 
+SurfaceCellFailureLocusDiagnostics
+project_global_topology_plan_failure_locus(
+    const geometry::GlobalTopologyPlanError &error) {
+  const auto topology_edge_locus = [](
+      const authority::SourceEdgeTopologyKey &edge) {
+    return std::array<std::size_t, 2>{edge.first().index(),
+                                      edge.second().index()};
+  };
+
+  geometry::SurfaceCutGraphError projected;
+  projected.sourceVertex = error.sourceVertex;
+  projected.sourceEdge = error.sourceEdge;
+  projected.sourceFace = error.sourceFace;
+  projected.singularity = error.singularity;
+  projected.secondSourceFace = error.secondSourceFace;
+  projected.arc = error.arc;
+  projected.secondArc = error.secondArc;
+  projected.trace = error.trace;
+  projected.secondTrace = error.secondTrace;
+  projected.originatingRotationSystemInconsistencyReason =
+      error.rotationSystemInconsistencyReason;
+  projected.vertexTraceSecondaryParameterFailureReason =
+      error.vertexTraceSecondaryParameterFailureReason;
+  projected.edgeTraceSecondaryRankFailureReason =
+      error.edgeTraceSecondaryRankFailureReason;
+  projected.rotationTraceOrientation = error.rotationTraceOrientation;
+  projected.traceFirstSegment = error.traceFirstSegment;
+  projected.traceOnePastLastSegment = error.traceOnePastLastSegment;
+  projected.traceIncomingCarrier = error.traceIncomingCarrier;
+  projected.traceOutgoingCarrier = error.traceOutgoingCarrier;
+  projected.traceSegmentOrientation = error.traceSegmentOrientation;
+  projected.traceSegmentIndex = error.traceSegmentIndex;
+  projected.traceSegmentIsFirst = error.traceSegmentIsFirst;
+  projected.traceSourcePort = error.traceSourcePort;
+  projected.traceBoundCorner = error.traceBoundCorner;
+  projected.traceBoundCornerProvenance = error.traceBoundCornerProvenance;
+  projected.traceEntrySupport = error.traceEntrySupport;
+  projected.traceExitSupport = error.traceExitSupport;
+  projected.edgeTraceContactIndex = error.edgeTraceContactIndex;
+  projected.edgeTraceOtherCarrier = error.edgeTraceOtherCarrier;
+  projected.edgeTraceFaceCorners = error.edgeTraceFaceCorners;
+  projected.rotationPreviousRay = error.rotationPreviousRay;
+  projected.rotationCurrentRay = error.rotationCurrentRay;
+  projected.rotationFanCensus = error.rotationFanCensus;
+
+  SurfaceCellFailureLocusDiagnostics locus =
+      project_surface_cut_graph_failure_locus(projected);
+  locus.fragmentOrbitCount = error.fragmentOrbitCount;
+  locus.tracePieceCount = error.tracePieceCount;
+  locus.expectedFragmentCount = error.expectedFragmentCount;
+  locus.fragmentIncidenceCount = error.fragmentIncidenceCount;
+  locus.fragmentIncidencesTruncated = error.fragmentIncidencesTruncated;
+  locus.fragmentIncidences.reserve(error.fragmentIncidences.size());
+  for (const auto &incidence : error.fragmentIncidences) {
+    SurfaceCellTraceCutFaceFragmentIncidenceDiagnostics row;
+    row.trace = incidence.trace.index();
+    row.arc = incidence.arc.index();
+    row.segmentIndex = incidence.segmentIndex;
+    row.orientation = incidence.orientation == authority::Orientation::Forward
+                          ? "Forward"
+                          : "Reverse";
+    if (incidence.incomingCarrier.has_value())
+      row.incomingCarrier = topology_edge_locus(*incidence.incomingCarrier);
+    row.outgoingCarrier = topology_edge_locus(incidence.outgoingCarrier);
+    row.forwardOrbit = incidence.forwardOrbit;
+    row.reverseOrbit = incidence.reverseOrbit;
+    row.forwardOrbitDroppedByExteriorFilter =
+        incidence.forwardOrbitDroppedByExteriorFilter;
+    row.reverseOrbitDroppedByExteriorFilter =
+        incidence.reverseOrbitDroppedByExteriorFilter;
+    locus.fragmentIncidences.push_back(std::move(row));
+  }
+  locus.fragmentEdgeOrbitEvidence.reserve(
+      error.fragmentEdgeOrbitEvidence.size());
+  for (const auto &evidence : error.fragmentEdgeOrbitEvidence) {
+    SurfaceCellTraceCutFaceEdgeOrbitEvidenceDiagnostics row;
+    row.sourceEdge = topology_edge_locus(evidence.sourceEdge);
+    row.orbitIds = evidence.orbitIds;
+    row.totalOrbitCount = evidence.totalOrbitCount;
+    row.truncated = evidence.truncated;
+    locus.fragmentEdgeOrbitEvidence.push_back(std::move(row));
+  }
+  return locus;
+}
+
 } // namespace directional::pipeline::remesh_pipeline_detail
 
 namespace directional::pipeline {
@@ -6987,13 +7072,6 @@ remesh_from_raw_cross_field_impl_with_stage_products(
         sourceTopologyRegionsProduct;
     tracingOptions.sourceAuthority = &*sourceTopologyRegionsProduct;
 
-    const auto topology_face_locus = [](
-        const authority::SourceFaceTopologyKey &face) {
-      const auto &vertices = face.vertices();
-      return std::array<std::size_t, 3>{vertices[0].index(),
-                                        vertices[1].index(),
-                                        vertices[2].index()};
-    };
     const auto topology_edge_locus = [](
         const authority::SourceEdgeTopologyKey &edge) {
       return std::array<std::size_t, 2>{edge.first().index(),
@@ -7035,54 +7113,8 @@ remesh_from_raw_cross_field_impl_with_stage_products(
     };
     const auto topology_plan_failure_locus = [&](
         const geometry::GlobalTopologyPlanError &error) {
-      SurfaceCellFailureLocusDiagnostics locus;
-      if (error.sourceVertex.has_value())
-        locus.sourceVertex = error.sourceVertex->index();
-      if (error.sourceEdge.has_value())
-        locus.sourceEdge = topology_edge_locus(*error.sourceEdge);
-      if (error.sourceFace.has_value())
-        locus.sourceFace = topology_face_locus(*error.sourceFace);
-      if (error.rotationSystemInconsistencyReason.has_value())
-        locus.rotationSystemInconsistencyReason =
-            geometry::rotation_system_inconsistency_reason_name(
-                *error.rotationSystemInconsistencyReason);
-      geometry::SurfaceCutGraphError projected;
-      projected.sourceVertex = error.sourceVertex;
-      projected.sourceEdge = error.sourceEdge;
-      projected.sourceFace = error.sourceFace;
-      projected.singularity = error.singularity;
-      projected.secondSourceFace = error.secondSourceFace;
-      projected.arc = error.arc;
-      projected.secondArc = error.secondArc;
-      projected.trace = error.trace;
-      projected.secondTrace = error.secondTrace;
-      projected.originatingRotationSystemInconsistencyReason =
-          error.rotationSystemInconsistencyReason;
-      projected.vertexTraceSecondaryParameterFailureReason =
-          error.vertexTraceSecondaryParameterFailureReason;
-      projected.edgeTraceSecondaryRankFailureReason =
-          error.edgeTraceSecondaryRankFailureReason;
-      projected.rotationTraceOrientation = error.rotationTraceOrientation;
-      projected.traceFirstSegment = error.traceFirstSegment;
-      projected.traceOnePastLastSegment = error.traceOnePastLastSegment;
-      projected.traceIncomingCarrier = error.traceIncomingCarrier;
-      projected.traceOutgoingCarrier = error.traceOutgoingCarrier;
-      projected.traceSegmentOrientation = error.traceSegmentOrientation;
-      projected.traceSegmentIndex = error.traceSegmentIndex;
-      projected.traceSegmentIsFirst = error.traceSegmentIsFirst;
-      projected.traceSourcePort = error.traceSourcePort;
-      projected.traceBoundCorner = error.traceBoundCorner;
-      projected.traceBoundCornerProvenance = error.traceBoundCornerProvenance;
-      projected.traceEntrySupport = error.traceEntrySupport;
-      projected.traceExitSupport = error.traceExitSupport;
-      projected.edgeTraceContactIndex = error.edgeTraceContactIndex;
-      projected.edgeTraceOtherCarrier = error.edgeTraceOtherCarrier;
-      projected.edgeTraceFaceCorners = error.edgeTraceFaceCorners;
-      projected.rotationPreviousRay = error.rotationPreviousRay;
-      projected.rotationCurrentRay = error.rotationCurrentRay;
-      projected.rotationFanCensus = error.rotationFanCensus;
-      return remesh_pipeline_detail::project_surface_cut_graph_failure_locus(
-          projected);
+      return remesh_pipeline_detail::project_global_topology_plan_failure_locus(
+          error);
     };
 
     authority::FieldTransportAtlasBuildResult atlasBuild =

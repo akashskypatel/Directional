@@ -3576,6 +3576,53 @@ void append_cp4c_failure_locus(
   if (locus.trace.has_value()) report << ";trace=" << *locus.trace;
   if (locus.secondTrace.has_value())
     report << ";secondTrace=" << *locus.secondTrace;
+  if (locus.fragmentOrbitCount.has_value())
+    report << ";fragmentOrbitCount=" << *locus.fragmentOrbitCount;
+  if (locus.tracePieceCount.has_value())
+    report << ";tracePieceCount=" << *locus.tracePieceCount;
+  if (locus.expectedFragmentCount.has_value())
+    report << ";expectedFragmentCount=" << *locus.expectedFragmentCount;
+  if (locus.fragmentIncidenceCount != 0U ||
+      locus.fragmentIncidencesTruncated || !locus.fragmentIncidences.empty()) {
+    report << ";fragmentIncidenceCount=" << locus.fragmentIncidenceCount
+           << ";fragmentIncidencesTruncated="
+           << (locus.fragmentIncidencesTruncated ? "true" : "false");
+    for (std::size_t index = 0U; index < locus.fragmentIncidences.size();
+         ++index) {
+      const auto &row = locus.fragmentIncidences[index];
+      report << ";fragmentIncidence[" << index << "]={trace=" << row.trace
+             << ",arc=" << row.arc << ",segment=" << row.segmentIndex
+             << ",orientation=" << row.orientation << ",incomingCarrier=";
+      if (row.incomingCarrier.has_value()) {
+        report << (*row.incomingCarrier)[0] << '-'
+               << (*row.incomingCarrier)[1];
+      } else {
+        report << "none";
+      }
+      report << ",outgoingCarrier=" << row.outgoingCarrier[0] << '-'
+             << row.outgoingCarrier[1] << ",forwardOrbit="
+             << row.forwardOrbit << ",reverseOrbit=" << row.reverseOrbit
+             << ",forwardExteriorDropped="
+             << (row.forwardOrbitDroppedByExteriorFilter ? "true" : "false")
+             << ",reverseExteriorDropped="
+             << (row.reverseOrbitDroppedByExteriorFilter ? "true" : "false")
+             << '}';
+    }
+  }
+  for (std::size_t index = 0U;
+       index < locus.fragmentEdgeOrbitEvidence.size(); ++index) {
+    const auto &row = locus.fragmentEdgeOrbitEvidence[index];
+    report << ";fragmentEdgeOrbitEvidence[" << index << "]={sourceEdge="
+           << row.sourceEdge[0] << '-' << row.sourceEdge[1]
+           << ",totalOrbitCount=" << row.totalOrbitCount
+           << ",truncated=" << (row.truncated ? "true" : "false")
+           << ",orbits=[";
+    for (std::size_t orbit = 0U; orbit < row.orbitIds.size(); ++orbit) {
+      if (orbit != 0U) report << ',';
+      report << row.orbitIds[orbit];
+    }
+    report << "]}";
+  }
   if (locus.rotationPreviousRay.has_value())
     append_rotation_ray_diagnostics(report, "rotationPreviousRay",
                                     *locus.rotationPreviousRay);
@@ -5107,6 +5154,15 @@ std::string production_cut_graph_error_locus(
     const directional::geometry::SurfaceCutGraphError &error) {
   const auto locus = directional::pipeline::remesh_pipeline_detail::
       project_surface_cut_graph_failure_locus(error);
+  std::ostringstream stream;
+  append_cp4c_failure_locus(stream, locus);
+  return stream.str();
+}
+
+std::string production_global_topology_plan_error_locus(
+    const directional::geometry::GlobalTopologyPlanError &error) {
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_global_topology_plan_failure_locus(error);
   std::ostringstream stream;
   append_cp4c_failure_locus(stream, locus);
   return stream.str();
@@ -10728,6 +10784,78 @@ TEST(GlobalTopologyPlan,
   EXPECT_FALSE(missingRank.has_value());
   EXPECT_EQ(EdgeTraceSecondaryRankFailureReason::SourceVertexFallbackUnbound,
             failureReason);
+}
+
+TEST(GlobalTopologyPlan,
+     TraceCutFaceFragmentMismatchDiagnosticsSurviveProductionFailureProjection) {
+  using directional::authority::NetworkArcId;
+  using directional::authority::Orientation;
+  using directional::authority::TraceId;
+  using directional::geometry::GlobalTopologyPlanError;
+  using directional::geometry::GlobalTopologyPlanErrorCode;
+  using directional::geometry::TraceCutFaceEdgeOrbitEvidenceDiagnostic;
+  using directional::geometry::TraceCutFaceFragmentIncidenceDiagnostic;
+
+  GlobalTopologyPlanError error;
+  error.code = GlobalTopologyPlanErrorCode::TraceCutFaceFragmentCountMismatch;
+  error.sourceFace = topology_face(0, 1, 102, 128U);
+  error.fragmentOrbitCount = 2U;
+  error.tracePieceCount = 2U;
+  error.expectedFragmentCount = 3U;
+  error.fragmentIncidenceCount = 2U;
+  error.fragmentIncidencesTruncated = false;
+  error.fragmentIncidences.push_back(TraceCutFaceFragmentIncidenceDiagnostic{
+      TraceId::from_index(4U, 16U).value(),
+      NetworkArcId::from_index(7U, 32U).value(), 3U, Orientation::Forward,
+      topology_edge(0, 1, 128U), topology_edge(1, 102, 128U), 11U, 12U,
+      false, true});
+  error.fragmentIncidences.push_back(TraceCutFaceFragmentIncidenceDiagnostic{
+      TraceId::from_index(5U, 16U).value(),
+      NetworkArcId::from_index(8U, 32U).value(), 1U, Orientation::Forward,
+      std::nullopt, topology_edge(0, 102, 128U), 12U, 13U, false, false});
+  error.fragmentEdgeOrbitEvidence = {
+      TraceCutFaceEdgeOrbitEvidenceDiagnostic{topology_edge(0, 1, 128U),
+                                              {11U}, 1U, false},
+      TraceCutFaceEdgeOrbitEvidenceDiagnostic{topology_edge(0, 102, 128U),
+                                              {13U}, 1U, false},
+      TraceCutFaceEdgeOrbitEvidenceDiagnostic{topology_edge(1, 102, 128U),
+                                              {}, 0U, false}};
+
+  const auto locus = directional::pipeline::remesh_pipeline_detail::
+      project_global_topology_plan_failure_locus(error);
+  ASSERT_TRUE(locus.fragmentOrbitCount.has_value());
+  EXPECT_EQ(2U, *locus.fragmentOrbitCount);
+  ASSERT_TRUE(locus.tracePieceCount.has_value());
+  EXPECT_EQ(2U, *locus.tracePieceCount);
+  ASSERT_TRUE(locus.expectedFragmentCount.has_value());
+  EXPECT_EQ(3U, *locus.expectedFragmentCount);
+  EXPECT_EQ(2U, locus.fragmentIncidenceCount);
+  ASSERT_EQ(2U, locus.fragmentIncidences.size());
+  EXPECT_FALSE(locus.fragmentIncidencesTruncated);
+  EXPECT_TRUE(locus.fragmentIncidences[0].reverseOrbitDroppedByExteriorFilter);
+  ASSERT_EQ(3U, locus.fragmentEdgeOrbitEvidence.size());
+
+  const std::string emitted = production_global_topology_plan_error_locus(error);
+  for (const std::string &token : std::vector<std::string>{
+           "sourceFace=0,1,102", "fragmentOrbitCount=2",
+           "tracePieceCount=2", "expectedFragmentCount=3",
+           "fragmentIncidenceCount=2", "fragmentIncidencesTruncated=false",
+           "fragmentIncidence[0]={trace=4,arc=7,segment=3,orientation=Forward,incomingCarrier=0-1,outgoingCarrier=1-102,forwardOrbit=11,reverseOrbit=12,forwardExteriorDropped=false,reverseExteriorDropped=true}",
+           "fragmentIncidence[1]={trace=5,arc=8,segment=1,orientation=Forward,incomingCarrier=none,outgoingCarrier=0-102,forwardOrbit=12,reverseOrbit=13,forwardExteriorDropped=false,reverseExteriorDropped=false}",
+           "fragmentEdgeOrbitEvidence[0]={sourceEdge=0-1,totalOrbitCount=1,truncated=false,orbits=[11]}",
+           "fragmentEdgeOrbitEvidence[1]={sourceEdge=0-102,totalOrbitCount=1,truncated=false,orbits=[13]}",
+           "fragmentEdgeOrbitEvidence[2]={sourceEdge=1-102,totalOrbitCount=0,truncated=false,orbits=[]}"}) {
+    EXPECT_NE(std::string::npos, emitted.find(token)) << emitted;
+  }
+
+  // Regression witness: when the invariant has not failed, the new optional
+  // fields remain absent and the pre-existing production projection is byte
+  // identical to its historical source-face-only representation.
+  GlobalTopologyPlanError nonMismatch;
+  nonMismatch.code = GlobalTopologyPlanErrorCode::InvalidSourceBinding;
+  nonMismatch.sourceFace = topology_face(0, 1, 2, 128U);
+  EXPECT_EQ(";sourceFace=0,1,2;cutCandidateCount=0",
+            production_global_topology_plan_error_locus(nonMismatch));
 }
 
 TEST(GlobalTopologyPlan,

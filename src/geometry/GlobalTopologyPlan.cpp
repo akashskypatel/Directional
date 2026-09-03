@@ -33,6 +33,7 @@ namespace {
 
 constexpr std::uint64_t kFnvOffset = 1469598103934665603ULL;
 constexpr std::uint64_t kFnvPrime = 1099511628211ULL;
+constexpr std::size_t kFragmentFailureEvidenceLimit = 8U;
 
 void hash_consume(std::uint64_t &hash, const std::uint64_t value) noexcept {
   hash ^= value;
@@ -778,6 +779,75 @@ RegionBuildResult build_regions(
       GlobalTopologyPlanError failure =
           error(GlobalTopologyPlanErrorCode::TraceCutFaceFragmentCountMismatch);
       failure.sourceFace = faceKey;
+      failure.fragmentOrbitCount = found->second.size();
+      failure.tracePieceCount = tracePieceCount[faceKey];
+      failure.expectedFragmentCount = expected;
+
+      // Retain only bounded, exact evidence for the failing face. This repeats
+      // the already-completed trace/orbit read without mutating any count,
+      // orbit, region, or control-flow decision. Segment indices traverse the
+      // candidate trace in its Forward orientation.
+      for (const auto &arc : arcs) {
+        if (arc.kind != GlobalTopologyArcKind::Trace || !arc.trace.has_value())
+          continue;
+        const auto *trace = find_trace(network, *arc.trace);
+        if (trace == nullptr) continue;
+        const std::size_t forwardDart = dart_index(GlobalTopologyOrientedArc{
+            arc.id, authority::Orientation::Forward});
+        const std::size_t reverseDart = dart_index(GlobalTopologyOrientedArc{
+            arc.id, authority::Orientation::Reverse});
+        if (forwardDart >= walk.orbitByDart.size() ||
+            reverseDart >= walk.orbitByDart.size())
+          continue;
+        const std::size_t forwardOrbit = walk.orbitByDart[forwardDart];
+        const std::size_t reverseOrbit = walk.orbitByDart[reverseDart];
+        for (std::size_t segmentIndex = arc.firstSegment;
+             segmentIndex < arc.onePastLastSegment; ++segmentIndex) {
+          const auto &segment = trace->segments[segmentIndex];
+          if (segment.sourceFace != faceKey ||
+              is_terminal_slit(*trace, segmentIndex))
+            continue;
+          ++failure.fragmentIncidenceCount;
+          if (failure.fragmentIncidences.size() >=
+              kFragmentFailureEvidenceLimit)
+            continue;
+          failure.fragmentIncidences.push_back(
+              TraceCutFaceFragmentIncidenceDiagnostic{
+                  trace->id, arc.id, segmentIndex,
+                  authority::Orientation::Forward, segment.incomingCarrier,
+                  segment.outgoingCarrier, forwardOrbit, reverseOrbit,
+                  exteriorOrbits.count(forwardOrbit) != 0U,
+                  exteriorOrbits.count(reverseOrbit) != 0U});
+        }
+      }
+      failure.fragmentIncidencesTruncated =
+          failure.fragmentIncidenceCount > failure.fragmentIncidences.size();
+
+      for (const auto &edge : record.edges) {
+        TraceCutFaceEdgeOrbitEvidenceDiagnostic row{edge, {}, 0U, false};
+        const auto evidence =
+            edgeOrbitEvidence.find(std::make_pair(faceKey, edge));
+        if (evidence != edgeOrbitEvidence.end()) {
+          row.totalOrbitCount = evidence->second.size();
+          for (const std::size_t orbit : evidence->second) {
+            if (row.orbitIds.size() >= kFragmentFailureEvidenceLimit) break;
+            row.orbitIds.push_back(orbit);
+          }
+          row.truncated = row.totalOrbitCount > row.orbitIds.size();
+        }
+        failure.fragmentEdgeOrbitEvidence.push_back(std::move(row));
+      }
+
+      // The success-path diagnostic below remains unchanged; when fragment
+      // diagnostics are enabled, publish that same record before this early
+      // return so the first failing face is observable.
+      if (diagnostics != nullptr) {
+        std::cerr << "M3_CP4AB_FRAGMENT_DIAG record=fragment_reconciliation"
+                  << " source_face=" << diagnostic_face(faceKey)
+                  << " fragment_orbit_count=" << found->second.size()
+                  << " trace_piece_count=" << tracePieceCount[faceKey]
+                  << " expected_fragment_count=" << expected << '\n';
+      }
       return failure;
     }
   }

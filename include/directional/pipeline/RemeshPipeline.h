@@ -1179,6 +1179,11 @@ SurfaceCellFailureLocusDiagnostics
 project_surface_cut_graph_failure_locus(
     const geometry::SurfaceCutGraphError &error);
 
+/** Diagnostic-only projection used by the production topology-plan failure path. */
+SurfaceCellFailureLocusDiagnostics
+project_global_topology_plan_failure_locus(
+    const geometry::GlobalTopologyPlanError &error);
+
 struct SurfaceCellComponentStageProducts {
   std::optional<geometry::SourceTopologyRegions> sourceTopologyRegions;
   std::optional<authority::FieldTransportAtlas> fieldTransportAtlas;

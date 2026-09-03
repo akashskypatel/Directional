@@ -268,6 +268,32 @@ struct TraceEventPositionCandidate {
   auto operator<=>(const TraceEventPositionCandidate &) const = default;
 };
 
+struct TraceCutFaceFragmentIncidenceDiagnostic {
+  authority::TraceId trace;
+  authority::NetworkArcId arc;
+  std::size_t segmentIndex = 0U;
+  authority::Orientation orientation = authority::Orientation::Forward;
+  std::optional<authority::SourceEdgeTopologyKey> incomingCarrier;
+  authority::SourceEdgeTopologyKey outgoingCarrier;
+  std::size_t forwardOrbit = 0U;
+  std::size_t reverseOrbit = 0U;
+  bool forwardOrbitDroppedByExteriorFilter = false;
+  bool reverseOrbitDroppedByExteriorFilter = false;
+
+  auto operator<=>(const TraceCutFaceFragmentIncidenceDiagnostic &) const =
+      default;
+};
+
+struct TraceCutFaceEdgeOrbitEvidenceDiagnostic {
+  authority::SourceEdgeTopologyKey sourceEdge;
+  std::vector<std::size_t> orbitIds;
+  std::size_t totalOrbitCount = 0U;
+  bool truncated = false;
+
+  auto operator<=>(const TraceCutFaceEdgeOrbitEvidenceDiagnostic &) const =
+      default;
+};
+
 struct GlobalTopologyPlanError {
   GlobalTopologyPlanErrorCode code =
       GlobalTopologyPlanErrorCode::InvalidSourceBinding;
@@ -287,6 +313,14 @@ struct GlobalTopologyPlanError {
   std::optional<std::size_t> vertexCount;
   std::optional<std::size_t> edgeCount;
   std::optional<std::size_t> faceCount;
+  std::optional<std::size_t> fragmentOrbitCount;
+  std::optional<std::size_t> tracePieceCount;
+  std::optional<std::size_t> expectedFragmentCount;
+  std::vector<TraceCutFaceFragmentIncidenceDiagnostic> fragmentIncidences;
+  std::size_t fragmentIncidenceCount = 0U;
+  bool fragmentIncidencesTruncated = false;
+  std::vector<TraceCutFaceEdgeOrbitEvidenceDiagnostic>
+      fragmentEdgeOrbitEvidence;
   std::optional<RotationSystemInconsistencyReason>
       rotationSystemInconsistencyReason;
   std::optional<VertexTraceSecondaryParameterFailureReason>
